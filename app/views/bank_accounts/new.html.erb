@@ -1,0 +1,38 @@
+<h1>Link a bank account</h1>
+<button id="linkButton">Begin</button>
+
+<%= form_for :auth, url: '/bank_accounts', html: { id: 'authForm' } do |f| %>
+  <%= f.hidden_field :public_token %>
+  <%= f.hidden_field :account_id %>
+  <%= f.hidden_field :account_name %>
+<% end %>
+
+<script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"></script>
+<script>
+var linkHandler = Plaid.create({
+  selectAccount: true,
+  env: '<%= @link_env %>',
+  clientName: 'Client Name',
+  key: '<%= @public_key %>',
+  product: ['transactions'],
+  onSuccess: function(public_token, metadata) {
+    var authForm = document.getElementById('authForm')
+
+    authForm.elements['auth_public_token'].value = public_token
+    authForm.elements['auth_account_id'].value = metadata.account.id
+    authForm.elements['auth_account_name'].value = metadata.account.name
+
+    authForm.submit()
+  },
+  onExit: function(err, metadata) {
+    if (err != null) {
+      alert('Ran into an error while authenticating! Please try again.')
+    }
+  },
+});
+
+// Trigger the standard Institution Select view
+document.getElementById('linkButton').onclick = function() {
+  linkHandler.open();
+};
+</script>

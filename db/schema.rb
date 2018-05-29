@@ -10,10 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_05_28_202559) do
+ActiveRecord::Schema.define(version: 2018_05_29_060521) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "bank_accounts", force: :cascade do |t|
+    t.text "plaid_access_token"
+    t.text "plaid_item_id"
+    t.text "plaid_account_id"
+    t.text "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "events", force: :cascade do |t|
     t.text "name"
@@ -25,14 +34,34 @@ ActiveRecord::Schema.define(version: 2018_05_28_202559) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "versions", force: :cascade do |t|
-    t.string "item_type", null: false
-    t.integer "item_id", null: false
-    t.string "event", null: false
-    t.string "whodunnit"
-    t.text "object"
-    t.datetime "created_at"
-    t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
+  create_table "transactions", force: :cascade do |t|
+    t.text "plaid_id"
+    t.text "transaction_type"
+    t.text "plaid_category_id"
+    t.text "name"
+    t.bigint "amount"
+    t.date "date"
+    t.text "location_address"
+    t.text "location_city"
+    t.text "location_state"
+    t.text "location_zip"
+    t.decimal "location_lat"
+    t.decimal "location_lng"
+    t.text "payment_meta_reference_number"
+    t.text "payment_meta_ppd_id"
+    t.boolean "pending"
+    t.text "pending_transaction_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "bank_account_id"
+    t.text "payment_meta_by_order_of"
+    t.text "payment_meta_payee"
+    t.text "payment_meta_payer"
+    t.text "payment_meta_payment_method"
+    t.text "payment_meta_payment_processor"
+    t.text "payment_meta_reason"
+    t.index ["bank_account_id"], name: "index_transactions_on_bank_account_id"
   end
 
+  add_foreign_key "transactions", "bank_accounts"
 end

@@ -1,0 +1,4 @@
+<h1>Transaction ID #<%= @transaction.id %></h1>
+<pre>
+<%= JSON.pretty_generate(JSON.parse(@transaction.to_json)) %>
+</pre>

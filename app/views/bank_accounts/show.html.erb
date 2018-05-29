@@ -1,0 +1,32 @@
+<h1><%= @account.name %></h1>
+<pre>
+<%= JSON.pretty_generate(JSON.parse(@account.to_json)) %>
+</pre>
+<table>
+<tr>
+  <th>Date</th>
+  <th>Type</th>
+  <th>Name</th>
+  <th>Amount</th>
+  <th>Full Info</th>
+</tr>
+<% @account.transactions.each do |t| %>
+  <tr>
+    <td>
+      <%= t.date %>
+    </td>
+    <td>
+      <%= t.transaction_type %>
+    </td>
+    <td>
+      <%= t.name %>
+    </td>
+    <td>
+      <%= number_to_currency(t.amount / 100) %>
+    </td>
+    <td>
+      <%= link_to 'Click', t %>
+    </td>
+  </tr>
+<% end %>
+</table>
