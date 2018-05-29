@@ -8,6 +8,7 @@
   <th>Type</th>
   <th>Name</th>
   <th>Amount</th>
+  <th>Event</th>
   <th>Full Info</th>
 </tr>
 <% @account.transactions.each do |t| %>
@@ -23,6 +24,13 @@
     </td>
     <td>
       <%= number_to_currency(t.amount / 100) %>
+    </td>
+    <td>
+      <% if t.event %>
+        <%= link_to t.event.name, t.event %>
+      <% else %>
+        <%= link_to 'Set Event', edit_transaction_path(t) %>
+      <% end %>
     </td>
     <td>
       <%= link_to 'Click', t %>
