@@ -20,5 +20,8 @@ module Bank
     config.generators do |g|
       g.test_framework false
     end
+
+    # Use Sidekiq
+    config.active_job.queue_adapter = :sidekiq
   end
 end

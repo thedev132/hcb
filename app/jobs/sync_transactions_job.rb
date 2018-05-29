@@ -1,5 +1,7 @@
 class SyncTransactionsJob < ApplicationJob
-  def perform
+  RUN_EVERY = 1.minute
+
+  def perform(repeat = false)
     begin_date = Time.current.at_beginning_of_month
     end_date = Time.current.at_beginning_of_month.next_month
 
@@ -62,6 +64,10 @@ class SyncTransactionsJob < ApplicationJob
 
       begin_date = begin_date.prev_month
       end_date = end_date.prev_month
+    end
+
+    if repeat
+      self.class.set(wait: RUN_EVERY).perform_later
     end
   end
 end
