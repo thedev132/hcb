@@ -1,5 +1,5 @@
 class Transaction < ApplicationRecord
-  default_scope { order(date: :desc) }
+  default_scope { order(date: :desc, id: :desc) }
 
   belongs_to :bank_account
   belongs_to :fee_relationship, inverse_of: :t_transaction
