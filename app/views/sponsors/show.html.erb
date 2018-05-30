@@ -16,28 +16,12 @@
 </p>
 
 <p>
-  <strong>Address line1:</strong>
-  <%= @sponsor.address_line1 %>
-</p>
-
-<p>
-  <strong>Address line2:</strong>
-  <%= @sponsor.address_line2 %>
-</p>
-
-<p>
-  <strong>Address city:</strong>
-  <%= @sponsor.address_city %>
-</p>
-
-<p>
-  <strong>Address state:</strong>
-  <%= @sponsor.address_state %>
-</p>
-
-<p>
-  <strong>Address postal code:</strong>
-  <%= @sponsor.address_postal_code %>
+  <strong>Address:</strong><br />
+  <%= @sponsor.address_line1 %><br />
+  <% if @sponsor.address_line2.present? %>
+    <%= @sponsor.address_line2 %><br />
+  <% end %>
+  <%= @sponsor.address_city %>, <%= @sponsor.address_state %> <%= @sponsor.address_postal_code %>
 </p>
 
 <p>

@@ -2,6 +2,10 @@ class Event < ApplicationRecord
   has_many :fee_relationships
   has_many :transactions, through: :fee_relationships, source: :t_transaction
 
+  has_many :sponsors
+
+  validates :name, :start, :end, :address, :sponsorship_fee, presence: true
+
   def balance
     self.transactions.sum(:amount)
   end

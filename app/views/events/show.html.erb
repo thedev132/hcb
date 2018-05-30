@@ -44,6 +44,29 @@
   </table>
 <% end %>
 
+<h2>Sponsors</h2>
+
+<p><%= link_to 'New Sponsor', new_sponsor_path %></p>
+
+<% unless @event.sponsors.size.zero? %>
+  <table>
+    <tr>
+      <th>Created</th>
+      <th>Name</th>
+      <th>Contact Email</th>
+      <th>Full Info</th>
+    </tr>
+    <% @event.sponsors.each do |s| %>
+      <tr>
+        <td><%= s.created_at.to_date %></td>
+        <td><%= s.name %></td>
+        <td><%= mail_to s.contact_email %></td>
+        <td><%= link_to 'Click', s %></td>
+      </tr>
+    <% end %>
+  </table>
+<% end %>
+
 <h2>Fiscal Sponsorship Fee Breakdown</h2>
 
 <p>Total Owed: <%= render_money @event.fee_balance %></p>
