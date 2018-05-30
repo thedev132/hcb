@@ -5,6 +5,9 @@ class TransactionsController < ApplicationController
 
   def edit
     @transaction = Transaction.find(params[:id])
+
+    # so the fee relationship fields render
+    @transaction.fee_relationship ||= FeeRelationship.new
   end
 
   def update
