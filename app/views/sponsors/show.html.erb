@@ -35,3 +35,24 @@
 <h2>Invoices</h2>
 
 <p><%= link_to 'New Invoice', new_sponsor_invoice_path(@sponsor) %></p>
+
+<% unless @sponsor.invoices.size.zero? %>
+<table>
+  <tr>
+    <th>Date</th>
+    <th>Amount</th>
+    <th>Paid</th>
+    <th>View in Stripe</th>
+    <th>Full Info</th>
+  </tr>
+  <% @sponsor.invoices.each do |invoice| %>
+    <tr>
+      <td><%= invoice.created_at.to_date %></td>
+      <td><%= render_money invoice.total %></td>
+      <td><%= invoice.paid %></td>
+      <td><%= link_to 'Click', invoice.stripe_dashboard_url %></td>
+      <td><%= link_to 'Click', invoice %></td>
+    </tr>
+  <% end %>
+  </table>
+<% end %>

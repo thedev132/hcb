@@ -1,5 +1,6 @@
 class Sponsor < ApplicationRecord
   belongs_to :event
+  has_many :invoices
 
   validates_presence_of :name, :contact_email
 

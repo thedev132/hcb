@@ -40,6 +40,18 @@ class Invoice < ApplicationRecord
     self.total = inv.total
   end
 
+  def stripe_dashboard_url
+    url = 'https://dashboard.stripe.com'
+
+    if StripeService.mode == :test
+      url += '/test'
+    end
+
+    url += "/invoices/#{self.stripe_invoice_id}"
+    
+    url
+  end
+
   private
 
   def stripe_invoice_item_params
