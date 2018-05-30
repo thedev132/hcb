@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_05_30_041412) do
+ActiveRecord::Schema.define(version: 2018_05_30_181006) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -42,6 +42,37 @@ ActiveRecord::Schema.define(version: 2018_05_30_041412) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["event_id"], name: "index_fee_relationships_on_event_id"
+  end
+
+  create_table "invoices", force: :cascade do |t|
+    t.bigint "sponsor_id"
+    t.text "stripe_invoice_id"
+    t.bigint "amount_due"
+    t.bigint "amount_paid"
+    t.bigint "amount_remaining"
+    t.bigint "attempt_count"
+    t.boolean "attempted"
+    t.text "stripe_charge_id"
+    t.text "memo"
+    t.datetime "due_date"
+    t.bigint "ending_balance"
+    t.boolean "forgiven"
+    t.boolean "paid"
+    t.bigint "starting_balance"
+    t.text "statement_descriptor"
+    t.bigint "subtotal"
+    t.bigint "tax"
+    t.decimal "tax_percent"
+    t.bigint "total"
+    t.text "item_description"
+    t.bigint "item_amount"
+    t.text "item_stripe_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "closed"
+    t.index ["item_stripe_id"], name: "index_invoices_on_item_stripe_id", unique: true
+    t.index ["sponsor_id"], name: "index_invoices_on_sponsor_id"
+    t.index ["stripe_invoice_id"], name: "index_invoices_on_stripe_invoice_id", unique: true
   end
 
   create_table "sponsors", force: :cascade do |t|
@@ -91,6 +122,7 @@ ActiveRecord::Schema.define(version: 2018_05_30_041412) do
   end
 
   add_foreign_key "fee_relationships", "events"
+  add_foreign_key "invoices", "sponsors"
   add_foreign_key "sponsors", "events"
   add_foreign_key "transactions", "bank_accounts"
   add_foreign_key "transactions", "fee_relationships"

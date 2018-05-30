@@ -6,7 +6,11 @@ Rails.application.routes.draw do
   get '/', to: 'static_pages#index'
 
   resources :events
-  resources :sponsors
+  resources :sponsors do
+    resources :invoices, only: [ :new, :create ]
+  end
+  resources :invoices, only: [ :show ]
+
   resources :bank_accounts, only: [ :new, :create, :show ]
   resources :transactions, only: [ :show, :edit, :update ]
 end
