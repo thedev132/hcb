@@ -27,6 +27,18 @@ class Sponsor < ApplicationRecord
     cu.delete
   end
 
+  def stripe_dashboard_url
+    url = 'https://dashboard.stripe.com'
+
+    if StripeService.mode == :test
+      url += '/test'
+    end
+
+    url += "/customers/#{self.stripe_customer_id}"
+    
+    url
+  end
+
   private
 
   def stripe_params

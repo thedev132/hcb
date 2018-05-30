@@ -1,18 +1,18 @@
 module StripeService
-  def self.publishable_key
+  def self.mode
     if Rails.env.production?
-      Rails.application.credentials.stripe[:live][:publishable_key]
+      :live
     else
-      Rails.application.credentials.stripe[:test][:publishable_key]
+      :test
     end
   end
 
+  def self.publishable_key
+    Rails.application.credentials.stripe[self.mode][:publishable_key]
+  end
+
   def self.secret_key
-    if Rails.env.production?
-      Rails.application.credentials.stripe[:live][:secret_key]
-    else
-      Rails.application.credentials.stripe[:test][:secret_key]
-    end
+    Rails.application.credentials.stripe[self.mode][:secret_key]
   end
 
   Stripe.api_key = self.secret_key

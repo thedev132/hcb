@@ -25,8 +25,8 @@
 </p>
 
 <p>
-  <strong>Stripe customer:</strong>
-  <%= @sponsor.stripe_customer_id %>
+  <strong>Stripe dashboard link:</strong>
+  <%= link_to 'click here', @sponsor.stripe_dashboard_url %>
 </p>
 
 <%= link_to 'Edit', edit_sponsor_path(@sponsor) %> |
