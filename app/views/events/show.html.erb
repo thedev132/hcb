@@ -15,16 +15,16 @@
 
 <h3>Transactions</h3>
 
-<table>
-<tr>
-  <th>Date</th>
-  <th>Description</th>
-  <th>Amount</th>
-  <th>Full Info</th>
-</tr>
 <% if @event.transactions.size.zero? %>
   <p>No transactions yet!</p>
 <% else %>
+  <table>
+  <tr>
+    <th>Date</th>
+    <th>Description</th>
+    <th>Amount</th>
+    <th>Full Info</th>
+  </tr>
   <% @event.transactions.each do |t| %>
     <tr>
       <td>
