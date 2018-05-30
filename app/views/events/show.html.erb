@@ -5,16 +5,13 @@
 <p>
   <strong>Date:</strong> <%= @event.start %> - <%= @event.end %><br />
   <strong>Address:</strong> <%= @event.address %><br />
-  <strong>Sponsorship fee:</strong> <%= @event.sponsorship_fee %> <br />
+  <strong>Sponsorship fee:</strong> <%= number_to_percentage(@event.sponsorship_fee*100, precision: 2)%> <br />
   <strong>Edit:</strong> <%= link_to 'click here', edit_event_path(@event) %>
 </p>
 
-<h2>Money Breakdown</h2>
+<h2>Account Transactions</h2>
 
-<p>
-  <strong>Current balance:</strong> <%= render_money @event.balance %><br />
-  <strong>Fee balance:</strong> <%= render_money @event.fee_balance %>
-</p>
+<p>Account Balance: <%= render_money @event.balance %></p>
 
 <h3>Transactions</h3>
 
@@ -23,8 +20,6 @@
   <th>Date</th>
   <th>Description</th>
   <th>Amount</th>
-  <th>Fee applies?</th>
-  <th>Fee amount</th>
   <th>Full Info</th>
 </tr>
 <% @event.transactions.each do |t| %>
@@ -39,18 +34,82 @@
       <%= render_money t.amount %>
     </td>
     <td>
-      <%= t.fee_relationship.fee_applies %>
-    </td>
-    <td>
-      <% if t.fee_relationship.fee_applies %>
-        <%= render_money t.fee_relationship.fee_amount %>
-      <% else %>
-        N/A
-      <% end %>
-    </td>
-    <td>
       <%= link_to 'Click', t %>
     </td>
   </tr>
 <% end %>
 </table>
+
+<h2>Fiscal Sponsorship Fee Breakdown</h2>
+
+<p>Total Owed: <%= render_money @event.fee_balance %></p>
+
+<h3>Billed Transactions</h3>
+
+<% if @event.billed_transactions.size.zero? %>
+  <p>No transactions yet!</p>
+<% else %>
+  <table>
+  <tr>
+    <th>Date</th>
+    <th>Description</th>
+    <th>Amount</th>
+    <th>Fee Amount</th>
+    <th>Full Info</th>
+  </tr>
+  <% @event.billed_transactions.each do |t| %>
+    <tr>
+      <td>
+        <%= t.date %>
+      </td>
+      <td>
+        <%= t.name %>
+      </td>
+      <td>
+        <%= render_money t.amount %>
+      </td>
+      <td>
+        <% if t.fee_relationship.fee_applies %>
+          <%= render_money t.fee_relationship.fee_amount %>
+        <% else %>
+          N/A
+        <% end %>
+      </td>
+      <td>
+        <%= link_to 'Click', t %>
+      </td>
+    </tr>
+  <% end %>
+  </table>
+<% end %>
+
+<h3>Fee Payments</h3>
+
+<% if @event.fee_payments.size.zero? %>
+  <p>No payments made yet!</p>
+<% else %>
+  <table>
+  <tr>
+    <th>Date</th>
+    <th>Description</th>
+    <th>Amount</th>
+    <th>Full Info</th>
+  </tr>
+  <% @event.fee_payments.each do |t| %>
+    <tr>
+      <td>
+        <%= t.date %>
+      </td>
+      <td>
+        <%= t.name %>
+      </td>
+      <td>
+        <%= render_money t.amount %>
+      </td>
+      <td>
+        <%= link_to 'Click', t %>
+      </td>
+    </tr>
+  <% end %>
+  </table>
+<% end %>

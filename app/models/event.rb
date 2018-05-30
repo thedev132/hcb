@@ -6,6 +6,18 @@ class Event < ApplicationRecord
     self.transactions.sum(:amount)
   end
 
+  def billed_transactions
+    self.transactions
+        .joins(:fee_relationship)
+        .where(fee_relationships: { fee_applies: true } )
+  end
+
+  def fee_payments
+    self.transactions
+        .joins(:fee_relationship)
+        .where(fee_relationships: { is_fee_payment: true } )
+  end
+
   def fee_balance
     total_fees = self.fee_relationships.sum(:fee_amount)
 
