@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_05_30_010404) do
+ActiveRecord::Schema.define(version: 2018_05_30_041412) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -42,6 +42,21 @@ ActiveRecord::Schema.define(version: 2018_05_30_010404) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["event_id"], name: "index_fee_relationships_on_event_id"
+  end
+
+  create_table "sponsors", force: :cascade do |t|
+    t.bigint "event_id"
+    t.text "name"
+    t.text "contact_email"
+    t.text "address_line1"
+    t.text "address_line2"
+    t.text "address_city"
+    t.text "address_state"
+    t.text "address_postal_code"
+    t.text "stripe_customer_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["event_id"], name: "index_sponsors_on_event_id"
   end
 
   create_table "transactions", force: :cascade do |t|
@@ -76,6 +91,7 @@ ActiveRecord::Schema.define(version: 2018_05_30_010404) do
   end
 
   add_foreign_key "fee_relationships", "events"
+  add_foreign_key "sponsors", "events"
   add_foreign_key "transactions", "bank_accounts"
   add_foreign_key "transactions", "fee_relationships"
 end

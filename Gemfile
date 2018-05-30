@@ -31,6 +31,8 @@ gem 'turbolinks', '~> 5'
 
 # For Plaid integration
 gem 'plaid', '~> 6.0'
+# And Stripe...
+gem 'stripe'
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.1.0', require: false

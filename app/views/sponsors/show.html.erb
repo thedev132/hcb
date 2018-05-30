@@ -1,0 +1,49 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Event:</strong>
+  <%= @sponsor.event %>
+</p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @sponsor.name %>
+</p>
+
+<p>
+  <strong>Contact email:</strong>
+  <%= @sponsor.contact_email %>
+</p>
+
+<p>
+  <strong>Address line1:</strong>
+  <%= @sponsor.address_line1 %>
+</p>
+
+<p>
+  <strong>Address line2:</strong>
+  <%= @sponsor.address_line2 %>
+</p>
+
+<p>
+  <strong>Address city:</strong>
+  <%= @sponsor.address_city %>
+</p>
+
+<p>
+  <strong>Address state:</strong>
+  <%= @sponsor.address_state %>
+</p>
+
+<p>
+  <strong>Address postal code:</strong>
+  <%= @sponsor.address_postal_code %>
+</p>
+
+<p>
+  <strong>Stripe customer:</strong>
+  <%= @sponsor.stripe_customer_id %>
+</p>
+
+<%= link_to 'Edit', edit_sponsor_path(@sponsor) %> |
+<%= link_to 'Back', sponsors_path %>
