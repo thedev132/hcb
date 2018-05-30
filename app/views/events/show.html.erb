@@ -22,23 +22,27 @@
   <th>Amount</th>
   <th>Full Info</th>
 </tr>
-<% @event.transactions.each do |t| %>
-  <tr>
-    <td>
-      <%= t.date %>
-    </td>
-    <td>
-      <%= t.name %>
-    </td>
-    <td>
-      <%= render_money t.amount %>
-    </td>
-    <td>
-      <%= link_to 'Click', t %>
-    </td>
-  </tr>
+<% if @event.transactions.size.zero? %>
+  <p>No transactions yet!</p>
+<% else %>
+  <% @event.transactions.each do |t| %>
+    <tr>
+      <td>
+        <%= t.date %>
+      </td>
+      <td>
+        <%= t.name %>
+      </td>
+      <td>
+        <%= render_money t.amount %>
+      </td>
+      <td>
+        <%= link_to 'Click', t %>
+      </td>
+    </tr>
+  <% end %>
+  </table>
 <% end %>
-</table>
 
 <h2>Fiscal Sponsorship Fee Breakdown</h2>
 
