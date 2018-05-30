@@ -67,7 +67,7 @@ class SyncTransactionsJob < ApplicationJob
     end
 
     if repeat
-      self.class.set(wait: RUN_EVERY).perform_later
+      self.class.set(wait: RUN_EVERY).perform_later(true)
     end
   end
 end
