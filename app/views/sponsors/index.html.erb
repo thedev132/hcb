@@ -21,7 +21,7 @@
   <tbody>
     <% @sponsors.each do |sponsor| %>
       <tr>
-        <td><%= sponsor.event %></td>
+        <td><%= sponsor.event.name %></td>
         <td><%= sponsor.name %></td>
         <td><%= sponsor.contact_email %></td>
         <td><%= sponsor.address_line1 %></td>
