@@ -1,42 +1,29 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Name:</strong>
-  <%= @event.name %>
-</p>
+<h1><%= @event.name %></h1>
 
 <p>
-  <strong>Start:</strong>
-  <%= @event.start %>
+  <strong>Date:</strong> <%= @event.start %> - <%= @event.end %><br />
+  <strong>Address:</strong> <%= @event.address %><br />
+  <strong>Sponsorship fee:</strong> <%= @event.sponsorship_fee %> <br />
+  <strong>Edit:</strong> <%= link_to 'click here', edit_event_path(@event) %>
 </p>
+
+<h2>Money Breakdown</h2>
 
 <p>
-  <strong>End:</strong>
-  <%= @event.end %>
+  <strong>Current balance:</strong> <%= render_money @event.balance %>
 </p>
 
-<p>
-  <strong>Address:</strong>
-  <%= @event.address %>
-</p>
-
-<p>
-  <strong>Sponsorship fee:</strong>
-  <%= @event.sponsorship_fee %>
-</p>
-
-<%= link_to 'Edit', edit_event_path(@event) %> |
-<%= link_to 'Back', events_path %>
-
-<h2>Transactions</h2>
+<h3>Transactions</h3>
 
 <table>
 <tr>
   <th>Date</th>
-  <th>Type</th>
-  <th>Name</th>
+  <th>Description</th>
   <th>Amount</th>
-  <th>Event</th>
+  <th>Fee applies?</th>
+  <th>Fee amount</th>
   <th>Full Info</th>
 </tr>
 <% @event.transactions.each do |t| %>
@@ -45,19 +32,19 @@
       <%= t.date %>
     </td>
     <td>
-      <%= t.transaction_type %>
-    </td>
-    <td>
       <%= t.name %>
     </td>
     <td>
-      <%= number_to_currency(t.amount / 100) %>
+      <%= render_money t.amount %>
     </td>
     <td>
-      <% if t.event %>
-        <%= link_to t.event.name, t.event %>
+      <%= t.fee_relationship.fee_applies %>
+    </td>
+    <td>
+      <% if t.fee_relationship.fee_applies %>
+        <%= render_money t.fee_relationship.fee_amount %>
       <% else %>
-        <%= link_to 'Set Event', edit_transaction_path(t) %>
+        N/A
       <% end %>
     </td>
     <td>

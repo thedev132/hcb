@@ -20,6 +20,8 @@ class TransactionsController < ApplicationController
   private
 
   def transaction_params
-    params.require(:transaction).permit(:event_id)
+    params.require(:transaction).permit(
+      fee_relationship_attributes: [ :event_id ]
+    )
   end
 end

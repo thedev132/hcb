@@ -11,10 +11,12 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= form.label :event %>
-    <%= form.collection_select(:event_id, Event.all, :id, :name) %>
-  </div>
+  <%= form.fields_for :fee_relationship do |fr_form| %>
+    <div class="field">
+      <%= fr_form.label :event %>
+      <%= fr_form.collection_select(:event_id, Event.all, :id, :name) %>
+    </div>
+  <% end %>
 
   <div class="actions">
     <%= form.submit %>

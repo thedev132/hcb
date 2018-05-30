@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_05_29_203559) do
+ActiveRecord::Schema.define(version: 2018_05_30_010404) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -32,6 +32,16 @@ ActiveRecord::Schema.define(version: 2018_05_29_203559) do
     t.decimal "sponsorship_fee"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "fee_relationships", force: :cascade do |t|
+    t.bigint "event_id"
+    t.boolean "fee_applies"
+    t.bigint "fee_amount"
+    t.boolean "is_fee_payment"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["event_id"], name: "index_fee_relationships_on_event_id"
   end
 
   create_table "transactions", force: :cascade do |t|
@@ -60,11 +70,12 @@ ActiveRecord::Schema.define(version: 2018_05_29_203559) do
     t.text "payment_meta_payment_method"
     t.text "payment_meta_payment_processor"
     t.text "payment_meta_reason"
-    t.bigint "event_id"
+    t.bigint "fee_relationship_id"
     t.index ["bank_account_id"], name: "index_transactions_on_bank_account_id"
-    t.index ["event_id"], name: "index_transactions_on_event_id"
+    t.index ["fee_relationship_id"], name: "index_transactions_on_fee_relationship_id"
   end
 
+  add_foreign_key "fee_relationships", "events"
   add_foreign_key "transactions", "bank_accounts"
-  add_foreign_key "transactions", "events"
+  add_foreign_key "transactions", "fee_relationships"
 end
