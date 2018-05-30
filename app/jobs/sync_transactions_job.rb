@@ -1,5 +1,5 @@
 class SyncTransactionsJob < ApplicationJob
-  RUN_EVERY = 6.hours
+  RUN_EVERY = 1.hour
 
   def perform(repeat = false)
     begin_date = Time.current.at_beginning_of_month
