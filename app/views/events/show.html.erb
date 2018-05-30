@@ -27,3 +27,42 @@
 
 <%= link_to 'Edit', edit_event_path(@event) %> |
 <%= link_to 'Back', events_path %>
+
+<h2>Transactions</h2>
+
+<table>
+<tr>
+  <th>Date</th>
+  <th>Type</th>
+  <th>Name</th>
+  <th>Amount</th>
+  <th>Event</th>
+  <th>Full Info</th>
+</tr>
+<% @event.transactions.each do |t| %>
+  <tr>
+    <td>
+      <%= t.date %>
+    </td>
+    <td>
+      <%= t.transaction_type %>
+    </td>
+    <td>
+      <%= t.name %>
+    </td>
+    <td>
+      <%= number_to_currency(t.amount / 100) %>
+    </td>
+    <td>
+      <% if t.event %>
+        <%= link_to t.event.name, t.event %>
+      <% else %>
+        <%= link_to 'Set Event', edit_transaction_path(t) %>
+      <% end %>
+    </td>
+    <td>
+      <%= link_to 'Click', t %>
+    </td>
+  </tr>
+<% end %>
+</table>
