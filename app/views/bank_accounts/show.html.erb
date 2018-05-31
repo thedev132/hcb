@@ -23,7 +23,7 @@
       <%= t.name %>
     </td>
     <td>
-      <%= number_to_currency(t.amount / 100) %>
+      <%= render_money t.amount %>
     </td>
     <td>
       <% if t.event %>
