@@ -5,7 +5,7 @@
 <p>
   <strong>Date:</strong> <%= @event.start %> - <%= @event.end %><br />
   <strong>Address:</strong> <%= @event.address %><br />
-  <strong>Sponsorship fee:</strong> <%= number_to_percentage(@event.sponsorship_fee*100, precision: 2)%> <br />
+  <strong>Sponsorship fee:</strong> <%= render_percentage @event.sponsorship_fee %> <br />
   <strong>Edit:</strong> <%= link_to 'click here', edit_event_path(@event) %>
 </p>
 
@@ -69,7 +69,10 @@
 
 <h2>Fiscal Sponsorship Fee Breakdown</h2>
 
-<p>Total Owed: <%= render_money @event.fee_balance %></p>
+<p>
+  Total Owed: <%= render_money @event.fee_balance %><br/>
+  Total Paid: <%= render_money @event.fee_paid %>
+</p>
 
 <h3>Billed Transactions</h3>
 

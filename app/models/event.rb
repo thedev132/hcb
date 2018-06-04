@@ -22,14 +22,17 @@ class Event < ApplicationRecord
         .where(fee_relationships: { is_fee_payment: true } )
   end
 
-  def fee_balance
-    total_fees = self.fee_relationships.sum(:fee_amount)
-
+  # total amount over all time paid agains tthe fee
+  def fee_paid
     # TODO: inefficient, refactor
-    total_payments = self.fee_relationships
-      .where(is_fee_payment: true)
+    total_payments = self.fee_payments
       .map { |fr| fr.t_transaction.amount }
       .sum
+  end
+
+  def fee_balance
+    total_fees = self.fee_relationships.sum(:fee_amount)
+    total_payments = self.fee_paid
 
     total_fees + total_payments
   end
