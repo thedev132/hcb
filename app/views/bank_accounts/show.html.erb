@@ -2,6 +2,7 @@
 <pre>
 <%= JSON.pretty_generate(JSON.parse(@account.to_json)) %>
 </pre>
+<p>Current balance: <%= render_money @account.balance %></p>
 <table>
 <tr>
   <th>Date</th>

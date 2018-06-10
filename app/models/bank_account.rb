@@ -13,4 +13,8 @@ class BankAccount < ApplicationRecord
     errors.add(:base, 'only one instance allowed')
     throw(:abort)
   end
+
+  def balance
+    self.transactions.sum(:amount)
+  end
 end
