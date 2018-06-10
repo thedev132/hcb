@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_05_30_181006) do
+ActiveRecord::Schema.define(version: 2018_06_10_195914) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -117,7 +117,9 @@ ActiveRecord::Schema.define(version: 2018_05_30_181006) do
     t.text "payment_meta_payment_processor"
     t.text "payment_meta_reason"
     t.bigint "fee_relationship_id"
+    t.datetime "deleted_at"
     t.index ["bank_account_id"], name: "index_transactions_on_bank_account_id"
+    t.index ["deleted_at"], name: "index_transactions_on_deleted_at"
     t.index ["fee_relationship_id"], name: "index_transactions_on_fee_relationship_id"
   end
 

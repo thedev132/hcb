@@ -1,4 +1,6 @@
 class Transaction < ApplicationRecord
+  acts_as_paranoid
+
   default_scope { order(date: :desc, id: :desc) }
 
   belongs_to :bank_account

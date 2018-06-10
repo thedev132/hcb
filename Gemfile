@@ -37,8 +37,8 @@ gem 'stripe'
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.1.0', require: false
 
-# Track changes to models
-gem 'paper_trail', '~> 9.1'
+# Allow un-deletions
+gem 'acts_as_paranoid', '~> 0.6.0'
 
 # Jobs!
 gem 'sidekiq'
