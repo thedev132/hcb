@@ -9,31 +9,27 @@ class SyncTransactionsJob < ApplicationJob
       go_to_previous_month = true
 
       while go_to_previous_month do
-        transaction_response = PlaidService.instance.client.transactions.get(
-          BankAccount.instance.plaid_access_token,
+        plaid_transactions = transactions_in_range(begin_date, end_date)
+        db_transactions = Transaction.where(
+          'date > ? AND date < ?',
           begin_date,
           end_date
         )
 
-        transactions = transaction_response.transactions
-
-        if transactions.length.zero?
+        if plaid_transactions.length.zero? && db_transactions.length.zero?
           go_to_previous_month = false
           next
         end
 
-        while transactions.length < transaction_response['total_transactions']
-          transaction_response = client.transactions.get(
-            access_token,
-            begin_date,
-            end_date,
-            offset: transactions.length
-          )
+        # will keep track of transactions in the state map. transactions that
+        # are created / updated will be marked as processed.
+        #
+        # transactions that no longer exist in plaid will be destroyed.
+        state_map = {}
+        db_transactions.map { |t| state_map[t.id] = :unprocessed }
 
-          transactions += transaction_response.transactions
-        end
-
-        transactions.each do |t|
+        # now that we have the transactions, do the sync
+        plaid_transactions.each do |t|
           account = BankAccount.find_by(plaid_account_id: t.account_id)
           next unless account
 
@@ -61,7 +57,15 @@ class SyncTransactionsJob < ApplicationJob
             pending: t.pending,
             pending_transaction_id: t.pending_transaction_id
           )
+
+          state_map[tr.id] = :processed
         end
+
+        unprocessed = state_map.select { |k, v| v == :unprocessed}.map { |k, v| k }
+
+        # for transactions that were in our db, but were not found in plaid,
+        # delete them
+        unprocessed.each { |tr_id| Transaction.find(tr_id).destroy }
 
         begin_date = begin_date.prev_month
         end_date = end_date.prev_month
@@ -71,5 +75,28 @@ class SyncTransactionsJob < ApplicationJob
     if repeat
       self.class.set(wait: RUN_EVERY).perform_later(true)
     end
+  end
+
+  def transactions_in_range(begin_date, end_date)
+    transaction_response = PlaidService.instance.client.transactions.get(
+      BankAccount.instance.plaid_access_token,
+      begin_date,
+      end_date
+    )
+
+    transactions = transaction_response.transactions
+
+    while transactions.length < transaction_response['total_transactions']
+      transaction_response = client.transactions.get(
+        access_token,
+        begin_date,
+        end_date,
+        offset: transactions.length
+      )
+
+      transactions += transaction_response.transactions
+    end
+
+    transactions
   end
 end
