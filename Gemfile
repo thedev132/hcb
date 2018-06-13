@@ -29,6 +29,9 @@ gem 'turbolinks', '~> 5'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
+# Track bugs
+gem 'bugsnag'
+
 # For Plaid integration
 gem 'plaid', '~> 6.0'
 # And Stripe...
