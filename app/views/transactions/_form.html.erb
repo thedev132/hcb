@@ -16,6 +16,9 @@
       <%= fr_form.label :event %>
       <%= fr_form.collection_select(:event_id, Event.all, :id, :name) %>
     </div>
+    <div class="field">
+      Is fee payment? <%= fr_form.check_box :is_fee_payment %>
+    </div>
   <% end %>
 
   <div class="actions">
