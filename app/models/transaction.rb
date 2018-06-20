@@ -13,7 +13,7 @@ class Transaction < ApplicationRecord
   validates :fee_relationship, :event,
     presence: true,
     if: -> { self.is_event_related == true }
-  validates :fee_relationship, :event
+  validates :fee_relationship, :event,
     absence: true,
     if: -> { self.is_event_related == false }
 
