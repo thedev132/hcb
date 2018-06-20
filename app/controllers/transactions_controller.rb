@@ -14,7 +14,7 @@ class TransactionsController < ApplicationController
     @transaction = Transaction.find(params[:id])
 
     if @transaction.update(transaction_params)
-      redirect_to @transaction.bank_account
+      redirect_to @transaction
     else
       render :edit
     end
@@ -24,7 +24,7 @@ class TransactionsController < ApplicationController
 
   def transaction_params
     params.require(:transaction).permit(
-      fee_relationship_attributes: [ :event_id ]
+      fee_relationship_attributes: [ :event_id, :is_fee_payment ]
     )
   end
 end

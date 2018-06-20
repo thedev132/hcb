@@ -24,13 +24,14 @@ class Event < ApplicationRecord
 
   # total amount over all time paid agains the fee
   def fee_paid
-    self.fee_payments.sum(:amount)
+    # fee payments are withdrawals, so negate value
+    -self.fee_payments.sum(:amount)
   end
 
   def fee_balance
     total_fees = self.fee_relationships.sum(:fee_amount)
     total_payments = self.fee_paid
 
-    total_fees + total_payments
+    total_fees - total_payments
   end
 end
