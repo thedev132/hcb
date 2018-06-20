@@ -35,6 +35,22 @@ Rails.application.configure do
 
   config.action_mailer.perform_caching = false
 
+  # Configure the URL host for links
+  config.action_mailer.default_url_options = {
+    host: Rails.application.credentials.default_url_host[:test]
+  }
+
+  # SMTP config
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    user_name: Rails.application.credentials.smtp[:username],
+    password: Rails.application.credentials.smtp[:password],
+    address: Rails.application.credentials.smtp[:address],
+    domain: Rails.application.credentials.smtp[:domain],
+    port: Rails.application.credentials.smtp[:port],
+    authentication: :plain
+  }
+
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
 

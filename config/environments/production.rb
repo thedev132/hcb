@@ -65,6 +65,22 @@ Rails.application.configure do
 
   config.action_mailer.perform_caching = false
 
+  # Configure the URL host for links
+  config.action_mailer.default_url_options = {
+    host: Rails.application.credentials.default_url_host[:live]
+  }
+
+  # SMTP config
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    user_name: Rails.application.credentials.smtp[:username],
+    password: Rails.application.credentials.smtp[:password],
+    address: Rails.application.credentials.smtp[:address],
+    domain: Rails.application.credentials.smtp[:domain],
+    port: Rails.application.credentials.smtp[:port],
+    authentication: :plain
+  }
+
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
   # config.action_mailer.raise_delivery_errors = false
