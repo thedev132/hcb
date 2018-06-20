@@ -12,11 +12,26 @@ class TransactionsController < ApplicationController
 
   def update
     @transaction = Transaction.find(params[:id])
+    was_event_related = @transaction.is_event_related
+    fee_relationship = @transaction.fee_relationship if was_event_related
 
-    if @transaction.update(transaction_params)
-      redirect_to @transaction
-    else
-      render :edit
+    @transaction.assign_attributes(transaction_params)
+
+    @transaction.transaction do
+      if was_event_related && !@transaction.is_event_related
+        @transaction.fee_relationship = nil
+        should_delete_fee_relationship = true
+      end
+
+      if @transaction.save
+        # need to destroy the fee relationship here because we have a foreign
+        # key that'll be erased on the @transaction.save
+        fee_relationship.destroy! if should_delete_fee_relationship
+
+        redirect_to @transaction
+      else
+        render :edit
+      end
     end
   end
 
@@ -24,6 +39,7 @@ class TransactionsController < ApplicationController
 
   def transaction_params
     params.require(:transaction).permit(
+      :is_event_related,
       fee_relationship_attributes: [ :event_id, :is_fee_payment ]
     )
   end

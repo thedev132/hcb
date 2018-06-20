@@ -29,8 +29,10 @@
     <td>
       <% if t.event %>
         <%= link_to t.event.name, t.event %>
-      <% else %>
+      <% elsif t.is_event_related %>
         <%= link_to 'Set Event', edit_transaction_path(t) %>
+      <% else %>
+        N/A
       <% end %>
     </td>
     <td>

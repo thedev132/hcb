@@ -9,4 +9,14 @@ class Transaction < ApplicationRecord
   has_one :event, through: :fee_relationship
 
   accepts_nested_attributes_for :fee_relationship
+
+  validates :fee_relationship,
+    absence: true,
+    if: -> { self.is_event_related == false }
+
+  after_initialize :default_values
+
+  def default_values
+    self.is_event_related = true if self.is_event_related.nil?
+  end
 end
