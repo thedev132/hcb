@@ -6,16 +6,16 @@ class Transaction < ApplicationRecord
   belongs_to :bank_account
 
   belongs_to :fee_relationship, inverse_of: :t_transaction, required: false
-  has_one :event, through: :fee_relationship, required: false
+  has_one :event, through: :fee_relationship
 
   accepts_nested_attributes_for :fee_relationship
 
-  validates :fee_relationship, :event,
+  validates :fee_relationship,
     presence: true,
-    if: -> { self.is_event_related == true }
-  validates :fee_relationship, :event,
+    if: -> { self.is_event_related }
+  validates :fee_relationship,
     absence: true,
-    if: -> { self.is_event_related == false }
+    unless: -> { self.is_event_related }
 
   after_initialize :default_values
 

@@ -12,15 +12,14 @@ class TransactionsController < ApplicationController
 
   def update
     @transaction = Transaction.find(params[:id])
-    was_event_related = @transaction.is_event_related
-    fee_relationship = @transaction.fee_relationship if was_event_related
+    fee_relationship = @transaction.fee_relationship
 
     @transaction.assign_attributes(transaction_params)
 
     @transaction.transaction do
-      if was_event_related && !@transaction.is_event_related
+      if !@transaction.is_event_related
         @transaction.fee_relationship = nil
-        should_delete_fee_relationship = true
+        should_delete_fee_relationship = true if fee_relationship&.persisted?
       end
 
       if @transaction.save
