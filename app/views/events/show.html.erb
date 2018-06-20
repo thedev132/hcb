@@ -3,8 +3,9 @@
 <h1><%= @event.name %></h1>
 
 <p>
-  <strong>Date:</strong> <%= @event.start %> - <%= @event.end %><br />
-  <strong>Address:</strong> <%= @event.address %><br />
+  <strong>Date:</strong> <%= @event.start.to_date %> - <%= @event.end.to_date %><br />
+  <strong>Address:</strong> <br />
+  <%= @event.address %><br />
   <strong>Sponsorship fee:</strong> <%= render_percentage @event.sponsorship_fee %> <br />
   <strong>Edit:</strong> <%= link_to 'click here', edit_event_path(@event) %>
 </p>
