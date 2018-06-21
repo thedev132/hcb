@@ -1,0 +1,269 @@
+/*
+ *= require_tree .
+ *= require_self
+ */
+@font-face {
+  font-family: Averta;
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(//hackclub.com/fonts/averta-regular.woff2) format('woff2'),
+    url(//hackclub.com/fonts/averta-regular.woff) format('woff');
+  unicode-range: U + 0000 - F8FE, U + F900-FFFF;
+}
+@font-face {
+  font-family: Averta;
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(//hackclub.com/fonts/averta-bold.woff2) format('woff2'),
+    url(//hackclub.com/fonts/averta-bold.woff) format('woff');
+  unicode-range: U + 0000 - F8FE, U + F900-FFFF;
+}
+* {
+  box-sizing: border-box;
+  font-weight: inherit;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+html,
+body {
+  min-height: 100%;
+  min-width: 100%;
+}
+body {
+  max-width: 64rem;
+  display: flex;
+  flex-direction: column;
+  font-size: 16px;
+  font-family: Averta, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    sans-serif;
+  line-height: 1.5;
+  position: relative;
+  width: 100%;
+  -webkit-font-smoothing: antialiased;
+  color: #384046;
+  margin: 0;
+  padding: 16px;
+  @media (min-width: 32em) {
+    max-width: 64rem;
+  }
+}
+
+a {
+  color: currentColor;
+}
+
+textarea {
+  resize: none;
+}
+
+input[type='text'],
+input[type='url'],
+input[type='email'],
+input[type='file'],
+select,
+textarea {
+  -webkit-appearance: none;
+  display: block;
+  vertical-align: middle;
+  max-width: 32rem;
+  min-height: 36px;
+  line-height: inherit;
+  font-family: inherit;
+  font-size: 16px;
+  padding-left: 8px;
+  padding-right: 8px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  width: 100%;
+  color: inherit;
+  background-color: transparent;
+  border-radius: 4px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: rgb(221, 225, 228);
+  transition: box-shadow 0.125s ease-out;
+
+  &:focus {
+    box-shadow: rgb(173, 217, 245) 0 0 0 2px;
+    outline: none;
+    border-color: rgb(45, 158, 228);
+  }
+}
+
+$select: "url(<%= asset_url 'select.svg' %>)";
+select {
+  background: #{$select} right 0.75rem center / 0.5rem no-repeat #fff;
+}
+// rails date(time) inputs
+select[name$='i)]'] {
+  width: 72px;
+  display: inline-block;
+}
+input[type='submit'],
+.btn {
+  padding-left: 16px;
+  padding-right: 16px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  background-color: rgb(228, 45, 66);
+  color: rgb(255, 255, 255);
+  font-size: 20px;
+  display: inline-block;
+  vertical-align: middle;
+  text-align: center;
+  font-family: inherit;
+  font-weight: bold;
+  line-height: 1.125;
+  -webkit-appearance: none;
+  cursor: pointer;
+  box-shadow: rgba(0, 0, 0, 0.16) 0 2px 4px;
+  margin: 0;
+  text-decoration: none;
+  transition: box-shadow 0.125s ease-out;
+  border-radius: 9999px;
+  border-width: 0px;
+  border-style: solid;
+}
+h1,
+h2,
+h3,
+h4 {
+  font-weight: bold;
+}
+h1 {
+  font-size: 40px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid #dde1e4;
+  margin-bottom: 1rem;
+}
+h2 {
+  font-size: 28px;
+  padding-bottom: 2px;
+  border-bottom: 1px solid #dde1e4;
+  margin-bottom: 0.5rem;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 20px;
+}
+.flash {
+  color: #fff;
+  font-weight: bold;
+  padding: 12px 16px;
+  border-radius: 4px;
+  max-width: 32rem;
+}
+.primary {
+  color: #e42d42;
+}
+.bg-primary {
+  background-color: #e42d42;
+}
+.b--primary {
+  border-color: #e42d42;
+}
+.accent {
+  color: #7280ed;
+}
+.bg-accent {
+  background-color: #7280ed;
+}
+.b--accent {
+  border-color: #7280ed;
+}
+.success {
+  color: #2de473;
+}
+.bg-success {
+  background-color: #2de473;
+}
+.b--success {
+  border-color: #2de473;
+}
+.info {
+  color: #2d9ee4;
+}
+.bg-info {
+  background-color: #2d9ee4;
+}
+.b--info {
+  border-color: #2d9ee4;
+}
+.warning {
+  color: #e4732d;
+}
+.bg-warning {
+  background-color: #e4732d;
+}
+.b--warning {
+  border-color: #e4732d;
+}
+.error {
+  color: #b52434;
+}
+.bg-error {
+  background-color: #b52434;
+}
+.b--error {
+  border-color: #b52434;
+}
+.black {
+  color: #384046;
+}
+.bg-black {
+  background-color: #384046;
+}
+.b--black {
+  border-color: #384046;
+}
+.slate {
+  color: #606e77;
+}
+.bg-slate {
+  background-color: #606e77;
+}
+.b--slate {
+  border-color: #606e77;
+}
+.muted {
+  color: #7a8c97;
+}
+.bg-muted {
+  background-color: #7a8c97;
+}
+.b--muted {
+  border-color: #7a8c97;
+}
+.smoke {
+  color: #dde1e4;
+}
+.bg-smoke {
+  background-color: #dde1e4;
+}
+.b--smoke {
+  border-color: #dde1e4;
+}
+.snow {
+  color: #f9f9fa;
+}
+.bg-snow {
+  background-color: #f9f9fa;
+}
+.b--white {
+  border-color: #f9f9fa;
+}
+.white {
+  color: #ffffff;
+}
+.bg-white {
+  background-color: #ffffff;
+}
+.b--white {
+  border-color: #ffffff;
+}
