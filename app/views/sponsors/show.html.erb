@@ -3,10 +3,9 @@
   <%= link_to @sponsor.event.name, @sponsor.event %>
 </p>
 
-<p>
-  <strong>Name:</strong>
+<h1>
   <%= @sponsor.name %>
-</p>
+</h1>
 
 <p>
   <strong>Contact email:</strong>
@@ -48,7 +47,7 @@
       <td><%= invoice.created_at.to_date %></td>
       <td><%= render_money invoice.total %></td>
       <td><%= invoice.paid %></td>
-      <td><%= link_to 'Click', invoice.stripe_dashboard_url %></td>
+      <td><%= link_to 'Stripe', invoice.stripe_dashboard_url %></td>
       <td><%= link_to 'Click', invoice %></td>
     </tr>
   <% end %>
