@@ -25,7 +25,7 @@
     <th>Full Info</th>
   </tr>
   <% @event.transactions.each do |t| %>
-    <tr>
+    <tr class="transaction--<%= t.amount.negative? ? 'negative' : 'positive' %>">
       <td>
         <%= t.date %>
       </td>
@@ -86,7 +86,7 @@
     <th>Full Info</th>
   </tr>
   <% @event.fee_payments.each do |t| %>
-    <tr>
+    <tr class="transaction--negative">
       <td>
         <%= t.date %>
       </td>
@@ -118,7 +118,7 @@
     <th>Full Info</th>
   </tr>
   <% @event.billed_transactions.each do |t| %>
-    <tr>
+    <tr class="transaction--positive">
       <td>
         <%= t.date %>
       </td>
