@@ -36,6 +36,8 @@ gem 'bugsnag'
 gem 'plaid', '~> 6.0'
 # And Stripe...
 gem 'stripe'
+# And our own API...
+gem 'faraday'
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.1.0', require: false

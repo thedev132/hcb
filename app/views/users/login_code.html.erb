@@ -1,0 +1,8 @@
+<h1>Enter Login Code</h1>
+<%= form_tag exchange_login_code_users_path do %>
+  <%= label_tag(:login_code, 'Login code') %>
+  <%= text_field_tag(:login_code) %><br/>
+  <%= hidden_field_tag(:user_id, @user_id) %>
+  <br />
+  <%= submit_tag('Submit') %>
+<% end %>

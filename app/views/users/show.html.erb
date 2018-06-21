@@ -1,0 +1,10 @@
+<h1>(local id: <%= @user.id %>): <%= @user.email %></h1>
+<p>Local info:</p>
+<pre>
+<%= JSON.pretty_generate(JSON.parse(@user.to_json)) %>
+</pre>
+
+<p>Backend info:</p>
+<pre>
+<%= JSON.pretty_generate(JSON.parse(@user.api_record.to_json)) %>
+</pre>
