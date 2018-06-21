@@ -7,9 +7,16 @@
 
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
   </head>
 
   <body>
+    <% flash.each do |key, value| %>
+      <article role="alertdialog" class="flash bg-<%= key %>">
+        <%= value %>
+      </article>
+    <% end %>
     <%= yield %>
     <span style="position: absolute; top: 15px; right: 15px;">
       <%= link_to 'Go To Root', '/' %>
