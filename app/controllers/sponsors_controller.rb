@@ -24,7 +24,8 @@ class SponsorsController < ApplicationController
     @sponsor = Sponsor.new(sponsor_params)
 
     if @sponsor.save
-      redirect_to @sponsor, notice: 'Sponsor was successfully created.'
+      flash[:success] = 'Sponsor was successfully created.'
+      redirect_to @sponsor
     else
       render :new
     end
@@ -33,7 +34,8 @@ class SponsorsController < ApplicationController
   # PATCH/PUT /sponsors/1
   def update
     if @sponsor.update(sponsor_params)
-      redirect_to @sponsor, notice: 'Sponsor was successfully updated.'
+      flash[:success] = 'Sponsor was successfully updated.'
+      redirect_to @sponsor
     else
       render :edit
     end
@@ -42,7 +44,8 @@ class SponsorsController < ApplicationController
   # DELETE /sponsors/1
   def destroy
     @sponsor.destroy
-    redirect_to sponsors_url, notice: 'Sponsor was successfully destroyed.'
+    flash[:success] = 'Sponsor was successfully destroyed.'
+    redirect_to sponsors_url
   end
 
   private

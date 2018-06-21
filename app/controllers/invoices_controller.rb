@@ -11,7 +11,8 @@ class InvoicesController < ApplicationController
     @invoice.sponsor = @sponsor
 
     if @invoice.save
-      redirect_to @invoice, notice: 'Invoice successfully created'
+      flash[:success] = 'Invoice successfully created'
+      redirect_to @invoice
     else
       render :new
     end
