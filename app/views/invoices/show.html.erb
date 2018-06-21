@@ -1,3 +1,5 @@
+<%= link_to 'Stripe', @invoice.stripe_dashboard_url %>
+
 <pre>
 <%= JSON.pretty_generate(JSON.parse(@invoice.to_json)) %>
 </pre>

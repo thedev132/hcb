@@ -57,6 +57,10 @@ a {
   color: currentColor;
 }
 
+strong {
+  font-weight: bold;
+}
+
 textarea {
   resize: none;
 }
@@ -177,6 +181,38 @@ h4 {
     margin-left: auto;
   }
 }
+h2.heading {
+  margin-bottom: 0;
+  .btn {
+    font-size: 14px;
+  }
 }
+
+$chevron: "url(<%= asset_url 'chevron.svg' %>) right 12px center no-repeat";
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  a {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+  }
+  li {
+    border-bottom: 1px solid $gray2;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    background: #{$chevron};
+    &.transaction--positive {
+      background: $teal0 #{$chevron};
+    }
+    &.transaction--negative {
+      background: $red0 #{$chevron};
+    }
+  }
+  &.list--row li {
+    flex-direction: row;
+  }
 }
 @import 'utilities';
