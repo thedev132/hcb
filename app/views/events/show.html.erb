@@ -47,7 +47,7 @@
 
 <h2 class="heading mb0">
   Sponsors
-  <%= link_to 'New Sponsor', new_sponsor_path, class: 'btn bg-success' %>
+  <%= link_to 'New Sponsor', new_sponsor_path(event_id: @event.id), class: 'btn bg-success' %>
 </h2>
 
 <% unless @event.sponsors.size.zero? %>
