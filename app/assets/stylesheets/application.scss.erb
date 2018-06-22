@@ -223,6 +223,19 @@ p + p {
   background-color: $red0;
 }
 
+.breadcrumb {
+  text-transform: uppercase;
+  text-decoration: none;
+  color: $gray7;
+  &:after {
+    content: ' »';
+  }
+  + h1,
+  + h2 {
+    margin-top: 0;
+  }
+}
+
 .heading {
   display: flex;
   justify-content: center;
