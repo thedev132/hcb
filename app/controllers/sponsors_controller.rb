@@ -4,7 +4,7 @@ class SponsorsController < ApplicationController
 
   # GET /sponsors
   def index
-    @sponsors = Sponsor.all
+    @sponsors = Sponsor.all.includes(:event)
   end
 
   # GET /sponsors/1

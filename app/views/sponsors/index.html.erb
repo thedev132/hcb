@@ -1,29 +1,15 @@
-<h1>Sponsors</h1>
+<h1 class="heading">
+  Sponsors
+  <%= link_to 'New Sponsor', new_sponsor_path, class: 'btn bg-success' %>
+</h1>
 
-<table>
-  <thead>
-    <tr>
-      <th>Event</th>
-      <th>Name</th>
-      <th>Contact email</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @sponsors.each do |sponsor| %>
-      <tr>
-        <td><%= sponsor.event.name %></td>
-        <td><%= sponsor.name %></td>
-        <td><%= sponsor.contact_email %></td>
-        <td><%= link_to 'Show', sponsor %></td>
-        <td><%= link_to 'Edit', edit_sponsor_path(sponsor) %></td>
-        <td><%= link_to 'Destroy', sponsor, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
+<ul class="list">
+  <% @sponsors.each do |s| %>
+    <%= link_to s do %>
+      <li class="transaction--<%= s.status %>">
+        <strong><%= "#{s.event.name}: " if s.event %><%= s.name %></strong>
+        <span class="muted"><%= s.status_description %></span>
+      </li>
     <% end %>
-  </tbody>
-</table>
-
-<br>
-
-<%= link_to 'New Sponsor', new_sponsor_path %>
+  <% end %>
+</ul>
