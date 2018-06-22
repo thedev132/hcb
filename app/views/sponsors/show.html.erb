@@ -30,19 +30,21 @@
   <%= link_to 'New Invoice', new_sponsor_invoice_path(@sponsor), class: 'btn bg-success' %>
 </h2>
 
-<% unless @sponsor.invoices.size.zero? %>
-<ul class="list">
-  <% @sponsor.invoices.each do |invoice| %>
-    <%= link_to invoice do %>
-      <li class="transaction--<%= invoice.paid ? 'positive' : 'negative' %>">
-        <strong>
-          <%= render_money invoice.total %> – <span class="<%= invoice.paid ? 'success' : 'error' %>">
-            <%= invoice.paid ? 'PAID' : 'UNPAID' %>
-          </span>
-        </strong>
-        <span class="muted">Due <%= invoice.due_date.to_date %></span>
-      </li>
+<% if @sponsor.invoices.any? %>
+  <ul class="list">
+    <% @sponsor.invoices.each do |invoice| %>
+      <%= link_to invoice do %>
+        <li class="transaction--<%= invoice.paid ? 'positive' : 'negative' %>">
+          <strong>
+            <%= render_money invoice.total %> – <span class="<%= invoice.paid ? 'success' : 'error' %>">
+              <%= invoice.paid ? 'PAID' : 'UNPAID' %>
+            </span>
+          </strong>
+          <span class="muted">Due <%= invoice.due_date.to_date %></span>
+        </li>
+      <% end %>
     <% end %>
-  <% end %>
-</ul>
+  </ul>
+<% else %>
+  <p class="center py2 slate bold h3">No invoices yet</p>
 <% end %>
