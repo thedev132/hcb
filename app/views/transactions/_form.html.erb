@@ -12,10 +12,12 @@
   <% end %>
 
   <%= form.fields_for :fee_relationship do |fr_form| %>
+    <% if admin_signed_in? %>
     <div class="field">
       <%= fr_form.label :event %>
       <%= fr_form.collection_select(:event_id, Event.all, :id, :name, include_blank: 'select one...') %>
     </div>
+    <% end %>
     <div class="field">
       Is event related? <%= form.check_box :is_event_related %>
     </div>
