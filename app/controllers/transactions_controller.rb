@@ -3,6 +3,7 @@ class TransactionsController < ApplicationController
 
   def show
     @transaction = Transaction.find(params[:id])
+    @fee = @transaction.is_event_related && @transaction.fee_relationship
   end
 
   def edit

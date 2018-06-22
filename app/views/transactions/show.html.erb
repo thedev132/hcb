@@ -1,6 +1,14 @@
-<h1>Transaction ID #<%= @transaction.id %></h1>
-<%= link_to 'Edit', edit_transaction_path(@transaction) %>
-<%= link_to 'See All Transactions', @transaction.bank_account %>
-<pre>
-<%= JSON.pretty_generate(JSON.parse(@transaction.to_json)) %>
-</pre>
+<%= link_to @transaction.event.name, @transaction.event, class: 'breadcrumb' if @transaction.event %>
+
+<h1 class="heading">
+  <%= render_money @transaction.amount %> transaction
+  <%= link_to 'Edit', edit_transaction_path(@transaction), class: 'btn bg-info' %>
+</h1>
+
+<p>Name: <%= @transaction.name %></p>
+<p>Amount: <%= render_money @transaction.amount %></p>
+<p class="<%= 'slate' unless @fee %>">
+  <%= @fee.present? ?
+    "Fee applies: #{render_money @fee.fee_amount}" :
+    "Not event related; no fee applies." %>
+</p>
