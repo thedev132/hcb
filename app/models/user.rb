@@ -4,7 +4,7 @@ class User < ApplicationRecord
 
   before_create :create_session_token
 
-  validates_uniqueness_of :api_access_token
+  validates_uniqueness_of :api_id, :api_access_token
 
   def self.new_session_token
     SecureRandom.urlsafe_base64
