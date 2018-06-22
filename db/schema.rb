@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_06_21_231404) do
+ActiveRecord::Schema.define(version: 2018_06_21_234752) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -75,6 +75,15 @@ ActiveRecord::Schema.define(version: 2018_06_21_231404) do
     t.index ["stripe_invoice_id"], name: "index_invoices_on_stripe_invoice_id", unique: true
   end
 
+  create_table "organizer_positions", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "event_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["event_id"], name: "index_organizer_positions_on_event_id"
+    t.index ["user_id"], name: "index_organizer_positions_on_user_id"
+  end
+
   create_table "sponsors", force: :cascade do |t|
     t.bigint "event_id"
     t.text "name"
@@ -129,11 +138,14 @@ ActiveRecord::Schema.define(version: 2018_06_21_231404) do
     t.text "api_access_token"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "session_token"
     t.index ["api_access_token"], name: "index_users_on_api_access_token", unique: true
   end
 
   add_foreign_key "fee_relationships", "events"
   add_foreign_key "invoices", "sponsors"
+  add_foreign_key "organizer_positions", "events"
+  add_foreign_key "organizer_positions", "users"
   add_foreign_key "sponsors", "events"
   add_foreign_key "transactions", "bank_accounts"
   add_foreign_key "transactions", "fee_relationships"

@@ -24,7 +24,8 @@ class UsersController < ApplicationController
 
     u.save
 
-    redirect_to u
+    sign_in u
+    redirect_back_or u
   end
 
   def show

@@ -1,4 +1,6 @@
 class ApplicationController < ActionController::Base
+  include SessionsHelper
+
   def self.auth
     if Rails.env.production?
       Rails.application.credentials.auth[:live]

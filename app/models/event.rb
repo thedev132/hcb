@@ -1,4 +1,7 @@
 class Event < ApplicationRecord
+  has_many :organizer_positions
+  has_many :users, through: :organizer_position
+
   has_many :fee_relationships
   has_many :transactions, through: :fee_relationships, source: :t_transaction
 
