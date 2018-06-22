@@ -31,11 +31,11 @@
 
 <ul class="mb0">
   <% @event.organizer_positions.each do |position| %>
-    <li><%= position.user.email %>  (added <span title="<%= position.created_at %>"><%= time_ago_in_words position.created_at %></span>)</li>
+    <li><%= position.user.email %>  (added <span title="<%= position.created_at %>"><%= time_ago_in_words position.created_at %> ago</span>)</li>
   <% end %>
 </ul>
 
-<% if @event.organizer_position_invites.any? %>
+<% if @event.organizer_position_invites.pending.any? %>
   <h3 class="mb1">Pending invitations</h3>
   <ul class="m0">
     <% @event.organizer_position_invites.pending.each do |invite| %>
