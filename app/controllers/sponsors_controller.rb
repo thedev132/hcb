@@ -1,4 +1,6 @@
 class SponsorsController < ApplicationController
+  before_action :signed_in_admin, only: [ :index ]
+  before_action :signed_in_user, except: [ :index ]
   before_action :set_sponsor, only: [:show, :edit, :update, :destroy]
 
   # GET /sponsors

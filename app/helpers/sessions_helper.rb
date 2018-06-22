@@ -26,7 +26,14 @@ module SessionsHelper
   def signed_in_user
     unless signed_in?
       store_location
-      redirect_to users_auth_url, notice: 'Please sign in'
+      redirect_to auth_users_path, flash: { error:  'Please sign in' }
+    end
+  end
+
+  def signed_in_admin
+    unless admin_signed_in?
+      store_location
+      redirect_to auth_users_path, flash: { error: 'Please sign in as admin' }
     end
   end
 

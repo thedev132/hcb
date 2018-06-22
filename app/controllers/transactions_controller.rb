@@ -1,4 +1,7 @@
 class TransactionsController < ApplicationController
+  before_action :signed_in_admin, except: [ :show ]
+  before_action :signed_in_user, only: [ :show ]
+
   def show
     @transaction = Transaction.find(params[:id])
   end

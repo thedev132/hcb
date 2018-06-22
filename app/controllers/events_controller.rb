@@ -1,4 +1,7 @@
 class EventsController < ApplicationController
+  before_action :signed_in_admin, except: [ :show ]
+  before_action :signed_in_user, only: [ :show ]
+
   before_action :set_event, only: [:show, :edit, :update, :destroy]
 
   # GET /events

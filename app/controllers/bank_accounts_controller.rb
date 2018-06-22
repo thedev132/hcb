@@ -1,4 +1,6 @@
 class BankAccountsController < ApplicationController
+  before_action :signed_in_admin
+
   def new
     @link_env = PlaidService.instance.env
     @public_key = PlaidService.instance.public_key
