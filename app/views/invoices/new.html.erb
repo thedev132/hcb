@@ -1,6 +1,5 @@
-<% if @sponsor.event.present? %>
-  <%= link_to @sponsor.event.name, @sponsor.event, class: 'breadcrumb' %>
-<% end %>
+<%= link_to @sponsor.event.name, @sponsor.event, class: 'breadcrumb' %>
+<%= link_to @sponsor.name, @sponsor, class: 'breadcrumb' %>
 
 <h1>New Invoice</h1>
 
