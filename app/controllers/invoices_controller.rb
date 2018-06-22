@@ -12,6 +12,8 @@ class InvoicesController < ApplicationController
     @invoice = Invoice.new(invoice_params)
     @invoice.sponsor = @sponsor
 
+    authorize @invoice
+
     if @invoice.save
       flash[:success] = 'Invoice successfully created'
       redirect_to @invoice
@@ -22,7 +24,9 @@ class InvoicesController < ApplicationController
 
   def show
     @invoice = Invoice.find(params[:id])
-    @sponsor = Sponsor.find(@invoice.id)
+    @sponsor = @invoice.sponsor
+
+    authorize @invoice
   end
 
   private

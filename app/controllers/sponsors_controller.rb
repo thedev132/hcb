@@ -4,11 +4,13 @@ class SponsorsController < ApplicationController
 
   # GET /sponsors
   def index
+    authorize Sponsor
     @sponsors = Sponsor.all.includes(:event)
   end
 
   # GET /sponsors/1
   def show
+    authorize @sponsor
   end
 
   # GET /sponsors/new
@@ -23,6 +25,7 @@ class SponsorsController < ApplicationController
   # POST /sponsors
   def create
     @sponsor = Sponsor.new(sponsor_params)
+    authorize @sponsor
 
     if @sponsor.save
       flash[:success] = 'Sponsor was successfully created.'
@@ -34,6 +37,8 @@ class SponsorsController < ApplicationController
 
   # PATCH/PUT /sponsors/1
   def update
+    authorize @sponsor
+
     if @sponsor.update(sponsor_params)
       flash[:success] = 'Sponsor was successfully updated.'
       redirect_to @sponsor
@@ -44,6 +49,8 @@ class SponsorsController < ApplicationController
 
   # DELETE /sponsors/1
   def destroy
+    authorize @sponsor
+
     @sponsor.destroy
     flash[:success] = 'Sponsor was successfully destroyed.'
     redirect_to sponsors_url
