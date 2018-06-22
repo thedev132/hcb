@@ -12,10 +12,12 @@
   <% end %>
 
   <% if admin_signed_in? %>
-  <div class="field">
-    <%= form.label :event_id %>
-    <%= form.collection_select(:event_id, Event.all, :id, :name, prompt: 'select event...') %>
-  </div>
+    <div class="field">
+      <%= form.label :event_id %>
+      <%= form.collection_select(:event_id, Event.all, :id, :name, prompt: 'Select event…') %>
+    </div>
+  <% else %>
+    <%= form.hidden_field :event_id, value: params[:event_id] %>
   <% end %>
 
   <div class="field">
