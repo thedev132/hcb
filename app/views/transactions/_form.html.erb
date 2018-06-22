@@ -15,15 +15,17 @@
     <% if admin_signed_in? %>
     <div class="field">
       <%= fr_form.label :event %>
-      <%= fr_form.collection_select(:event_id, Event.all, :id, :name, include_blank: 'select one...') %>
+      <%= fr_form.collection_select(:event_id, Event.all, :id, :name, include_blank: 'Select one…') %>
     </div>
     <% end %>
-    <div class="field">
-      Is event related? <%= form.check_box :is_event_related %>
-    </div>
-    <div class="field">
-      Is fee payment? <%= fr_form.check_box :is_fee_payment %>
-    </div>
+    <%= form.label :is_event_related, class: 'field mb1' do %>
+      <%= form.check_box :is_event_related %>
+      Is event-related?
+    <% end %>
+    <%= fr_form.label :is_fee_payment, class: 'field mb2' do %>
+      <%= form.check_box :is_fee_payment %>
+      Is fee payment?
+    <% end %>
   <% end %>
 
   <div class="actions">
