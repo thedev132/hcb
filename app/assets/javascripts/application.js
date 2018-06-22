@@ -17,13 +17,23 @@
 
 // Disable use without FullStory
 window.onload = function() {
+  var blocked
   setTimeout(function() {
     if (typeof FS === 'undefined') {
+      blocked = true
+    } else {
+      axios.post('https://rs.fullstory.com/rec/page').catch(function() {
+        blocked = true
+      })
+    }
+  }, 4000)
+  setTimeout(function() {
+    if (blocked) {
       var body = document.getElementsByTagName('body')
       body[0].remove()
       alert(
         'Your adblocker is preventing us from reporting bugs. Please disable it in order to use Hack Club Bank.'
       )
     }
-  }, 5000)
+  }, 4500)
 }
