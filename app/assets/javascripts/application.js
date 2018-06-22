@@ -25,5 +25,5 @@ window.onload = function() {
         'Please disable your tracking blocker in order to use Hack Club Bank.'
       )
     }
-  }, 1536)
+  }, 5000)
 }
