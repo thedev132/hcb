@@ -3,6 +3,13 @@ module SessionsHelper
     session_token = User.new_session_token
     cookies.permanent[:session_token] = session_token
     user.update_attribute(:session_token, User.digest(session_token))
+
+    # probably a better place to do this, but we gotta assign any pending
+    # organizer position invites - see that class for details
+    OrganizerPositionInvite.pending.where(email: user.email).find_each do |invite|
+      invite.update(user: user)
+    end
+
     self.current_user = user
   end
 

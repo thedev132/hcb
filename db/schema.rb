@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_06_22_065203) do
+ActiveRecord::Schema.define(version: 2018_06_22_090346) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -73,6 +73,22 @@ ActiveRecord::Schema.define(version: 2018_06_22_065203) do
     t.index ["item_stripe_id"], name: "index_invoices_on_item_stripe_id", unique: true
     t.index ["sponsor_id"], name: "index_invoices_on_sponsor_id"
     t.index ["stripe_invoice_id"], name: "index_invoices_on_stripe_invoice_id", unique: true
+  end
+
+  create_table "organizer_position_invites", force: :cascade do |t|
+    t.bigint "event_id"
+    t.text "email"
+    t.bigint "user_id"
+    t.bigint "sender_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "accepted_at"
+    t.datetime "rejected_at"
+    t.bigint "organizer_position_id"
+    t.index ["event_id"], name: "index_organizer_position_invites_on_event_id"
+    t.index ["organizer_position_id"], name: "index_organizer_position_invites_on_organizer_position_id"
+    t.index ["sender_id"], name: "index_organizer_position_invites_on_sender_id"
+    t.index ["user_id"], name: "index_organizer_position_invites_on_user_id"
   end
 
   create_table "organizer_positions", force: :cascade do |t|
@@ -139,12 +155,17 @@ ActiveRecord::Schema.define(version: 2018_06_22_065203) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "session_token"
+    t.text "email"
     t.index ["api_access_token"], name: "index_users_on_api_access_token", unique: true
     t.index ["api_id"], name: "index_users_on_api_id", unique: true
   end
 
   add_foreign_key "fee_relationships", "events"
   add_foreign_key "invoices", "sponsors"
+  add_foreign_key "organizer_position_invites", "events"
+  add_foreign_key "organizer_position_invites", "organizer_positions"
+  add_foreign_key "organizer_position_invites", "users"
+  add_foreign_key "organizer_position_invites", "users", column: "sender_id"
   add_foreign_key "organizer_positions", "events"
   add_foreign_key "organizer_positions", "users"
   add_foreign_key "sponsors", "events"

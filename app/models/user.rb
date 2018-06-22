@@ -4,7 +4,8 @@ class User < ApplicationRecord
 
   before_create :create_session_token
 
-  validates_uniqueness_of :api_id, :api_access_token
+  validates_presence_of :api_id, :api_access_token, :email
+  validates_uniqueness_of :api_id, :api_access_token, :email
 
   def self.new_session_token
     SecureRandom.urlsafe_base64
@@ -12,10 +13,6 @@ class User < ApplicationRecord
 
   def self.digest(token)
     Digest::SHA1.hexdigest(token.to_s)
-  end
-
-  def email
-    api_record[:email]
   end
 
   def admin_at

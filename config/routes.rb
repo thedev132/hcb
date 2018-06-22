@@ -14,7 +14,17 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :events
+  resources :organizer_position_invites, only: [ :show ], path: 'invites' do
+    post 'accept'
+    post 'reject'
+  end
+
+  resources :events do
+    resources :organizer_position_invites,
+      only: [ :new, :create ],
+      path: 'invites'
+  end
+
   resources :sponsors do
     resources :invoices, only: [ :new, :create ]
   end

@@ -14,13 +14,19 @@ class UsersController < ApplicationController
 
   # post to exchange auth token for access token
   def exchange_login_code
+    @user_id = params[:user_id]
     login_code = params[:login_code].gsub('-', '')
-    user_id = params[:user_id]
 
-    resp = ApiService.exchange_login_code(user_id, login_code)
+    resp = ApiService.exchange_login_code(@user_id, login_code)
 
-    u = User.find_or_initialize_by(api_id: user_id)
+    if resp[:errors].present?
+      flash[:error] = 'Invalid login code'
+      return render :login_code
+    end
+
+    u = User.find_or_initialize_by(api_id: @user_id)
     u.api_access_token = resp[:auth_token]
+    u.email = u.api_record[:email]
 
     u.save
 

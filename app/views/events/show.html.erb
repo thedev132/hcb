@@ -10,6 +10,24 @@
   <strong>Sponsorship fee:</strong> <%= render_percentage @event.sponsorship_fee %>
 </p>
 
+<h2>Team Members</h2>
+
+<ul>
+  <% @event.organizer_positions.each do |position| %>
+    <li><%= position.user.email %>  (added <%= position.created_at %>)</li>
+  <% end %>
+</ul>
+
+<p>Pending invites:</p>
+
+<ul>
+  <% @event.organizer_position_invites.pending.each do |invite| %>
+    <li><%= invite.email %></li>
+  <% end %>
+</ul>
+
+<%= link_to 'Invite More', new_event_organizer_position_invite_path(@event) %>
+
 <h2>Account Transactions</h2>
 
 <p>Account Balance: <%= render_money @event.balance %></p>

@@ -1,0 +1,8 @@
+<h1>Manage Invite</h1>
+<p>Event: <%= @invite.event.name %></p>
+
+<p>Actions:</p>
+<ul>
+  <li><%= link_to 'Accept', organizer_position_invite_accept_path(@invite), method: :post %></li>
+  <li><%= link_to 'Reject', organizer_position_invite_reject_path(@invite), method: :post %></li>
+</ul>
