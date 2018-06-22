@@ -24,23 +24,25 @@
   </div>
 </section>
 
-<h2>Team Members</h2>
+<h2 class="heading">
+  Team Members
+  <%= link_to 'Invite More', new_event_organizer_position_invite_path(@event), class: 'btn bg-success' %>
+</h2>
 
-<ul>
+<ul class="mb0">
   <% @event.organizer_positions.each do |position| %>
-    <li><%= position.user.email %>  (added <%= position.created_at %>)</li>
+    <li><%= position.user.email %>  (added <span title="<%= position.created_at %>"><%= time_ago_in_words position.created_at %></span>)</li>
   <% end %>
 </ul>
 
-<p>Pending invites:</p>
-
-<ul>
-  <% @event.organizer_position_invites.pending.each do |invite| %>
-    <li><%= invite.email %></li>
-  <% end %>
-</ul>
-
-<%= link_to 'Invite More', new_event_organizer_position_invite_path(@event) %>
+<% if @event.organizer_position_invites.any? %>
+  <h3 class="mb1">Pending invitations</h3>
+  <ul class="m0">
+    <% @event.organizer_position_invites.pending.each do |invite| %>
+      <li><%= invite.email %></li>
+    <% end %>
+  </ul>
+<% end %>
 
 <h2>Transactions</h2>
 
