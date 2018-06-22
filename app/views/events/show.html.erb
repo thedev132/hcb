@@ -3,18 +3,28 @@
   <%= link_to 'Edit', edit_event_path(@event), class: 'btn bg-info' %>
 </h1>
 
-<p>
-  <strong>Date:</strong> <%= @event.start.to_date %> - <%= @event.end.to_date %><br />
-  <strong>Address:</strong> <br />
-  <%= @event.address %><br />
-  <strong>Sponsorship fee:</strong> <%= render_percentage @event.sponsorship_fee %>
-</p>
+<section class="event-summary my2">
+  <div class="event-summary__panel bg-accent white">
+    <div class="stat">
+      <span class="stat__label">Account balance</span>
+      <span class="stat__value"><%= render_money @event.balance, '' %></span>
+    </div>
+    <div class="stat stat--small">
+      <span class="stat__label">Fees to pay</span>
+      <span class="stat__value"><%= render_money @event.fee_balance, '' %></span>
+    </div>
+  </div>
+  <div class="event-summary__panel bg-smoke">
+    <p>
+      <strong>Date:</strong> <%= @event.start.to_date %> – <%= @event.end.to_date %><br />
+      <strong>Address:</strong> <br />
+      <%= @event.address %><br />
+      <strong>Sponsorship fee:</strong> <%= render_percentage @event.sponsorship_fee %>
+    </p>
+  </div>
+</section>
 
-<h2>Account Transactions</h2>
-
-<p>Account Balance: <%= render_money @event.balance %></p>
-
-<h3>Transactions</h3>
+<h2>Transactions</h2>
 
 <% if @event.transactions.size.zero? %>
   <p>No transactions yet!</p>
