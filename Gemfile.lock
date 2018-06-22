@@ -116,6 +116,8 @@ GEM
       hashie (>= 3.4.3)
     public_suffix (3.0.2)
     puma (3.11.4)
+    pundit (1.1.0)
+      activesupport (>= 3.0.0)
     rack (2.0.5)
     rack-protection (2.0.1)
       rack
@@ -222,6 +224,7 @@ DEPENDENCIES
   pg (>= 0.18, < 2.0)
   plaid (~> 6.0)
   puma (~> 3.11)
+  pundit
   rails (~> 5.2.0)
   sass-rails (~> 5.0)
   selenium-webdriver
