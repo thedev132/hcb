@@ -4,9 +4,12 @@
   <%= @invoice.paid ? 'PAID' : 'UNPAID' %>
 </span></h1>
 
-<div class="card mt2" style="max-width: 24rem;">
+<div class="card my2" style="max-width: 24rem;">
   <h2 class="mt0 mb2" style="font-size: 24px;"><%= @sponsor.name %></h2>
-  <strong><%= render_money @invoice.total %> TOTAL</strong>
+  <div class="flex justify-between ttu">
+    <span><strong><%= render_money @invoice.total %></strong> total</span>
+    <span>Due <strong><%= @invoice.due_date.to_date %></strong></span>
+  </div>
   <div class="invoice-progress">
     <% if @invoice.amount_paid > 0 %>
     <div class="invoice-progress__paid" style="width: <%= number_to_percentage 100 * @invoice.amount_paid / @invoice.total %>;">
@@ -14,15 +17,9 @@
     </div>
     <% end %>
     <div class="invoice-progress__remaining">
-      <%= render_money @invoice.amount_remaining %> <%= 'remaining' if @invoice.amount_paid == 0 %>
+      <%= render_money @invoice.amount_remaining %> <%= 'unpaid' if @invoice.amount_paid == 0 %>
     </div>
   </div>
-  <p>Due: <%= @invoice.due_date.to_date %></p>
 </div>
-<!--
-<pre>
-<%# JSON.pretty_generate(JSON.parse(@invoice.to_json)) %>
-</pre>
--->
 
 <%= link_to 'Stripe', @invoice.stripe_dashboard_url if admin_signed_in? %>
