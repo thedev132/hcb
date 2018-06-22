@@ -95,7 +95,7 @@
 
 <h2>Fiscal Sponsorship Fee Breakdown</h2>
 
-<h3>Fee Payments <span class="regular slate h3">(total paid: <%= render_money @event.fee_paid %>)</span></h3>
+<h3>Fee Payments <span class="regular slate h3">(total fees paid: <%= render_money @event.fee_paid %>)</span></h3>
 
 <% if @event.fee_payments.size.zero? %>
   <p>No payments made yet!</p>
@@ -126,7 +126,7 @@
   </table>
 <% end %>
 
-<h3>Billed Transactions <span class="regular slate h3">(total owed: <%= render_money @event.fee_balance %>)</span></h3>
+<h3>Transactions Incurring Fees <span class="regular slate h3">(total outstanding fees: <%= render_money @event.fee_balance %>)</span></h3>
 
 <% if @event.billed_transactions.size.zero? %>
   <p>No transactions yet!</p>
