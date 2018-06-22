@@ -29,10 +29,10 @@
             <% end %>
           <% end %>
         </ul>
-        <%= link_to 'Sign out', logout_users_path, method: :delete, class: 'btn mt2' %>
       <% else %>
         <p class="slate h3 bold">No events found.</p>
       <% end %>
+      <%= link_to 'Sign out', logout_users_path, method: :delete, class: 'btn mt2' %>
     <% else %>
       <%= link_to 'Sign in', auth_users_path, class: 'btn h2' %>
     <% end %>
