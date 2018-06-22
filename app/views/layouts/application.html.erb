@@ -17,6 +17,9 @@
         <%= value %>
       </article>
     <% end %>
+    <% if signed_in? %>
+      <p>Logged in!</p>
+    <% end %>
     <%= yield %>
     <span style="position: absolute; top: 15px; right: 15px;">
       <%= link_to 'Go To Root', '/' %>

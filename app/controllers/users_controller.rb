@@ -28,6 +28,16 @@ class UsersController < ApplicationController
     redirect_back_or u
   end
 
+  def logout
+    unless signed_in?
+      flash[:error] = 'Not signed in!'
+      return
+    end
+
+    sign_out
+    redirect_to root_url
+  end
+
   def show
     @user = User.find(params[:id])
   end

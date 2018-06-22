@@ -8,5 +8,9 @@
   </li>
   <li><%= link_to 'Events', events_path %></li>
   <li><%= link_to 'Sponsors', sponsors_path %></li>
-  <li><%= link_to 'Login', auth_users_path %></li>
+  <li><%= link_to 'Login', auth_users_path %>
+    <ul>
+      <li><%= link_to 'Logout', logout_users_path, method: :delete %></li>
+    </ul>
+  </li>
 </ul>
