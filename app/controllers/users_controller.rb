@@ -31,7 +31,7 @@ class UsersController < ApplicationController
     u.save
 
     sign_in u
-    redirect_back_or u
+    redirect_back_or root_path
   end
 
   def logout
@@ -43,9 +43,5 @@ class UsersController < ApplicationController
 
     sign_out
     redirect_to root_path
-  end
-
-  def show
-    @user = User.find(params[:id])
   end
 end

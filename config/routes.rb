@@ -5,7 +5,7 @@ Rails.application.routes.draw do
 
   root to: 'static_pages#index'
 
-  resources :users, only: [:show] do
+  resources :users, only: [] do
     collection do
       get 'auth', to: 'users#auth'
       post 'login_code', to: 'users#login_code'
