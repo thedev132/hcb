@@ -223,6 +223,19 @@ p + p {
   background-color: $red0;
 }
 
+.breadcrumb {
+  text-transform: uppercase;
+  text-decoration: none;
+  color: $gray7;
+  &:after {
+    content: ' »';
+  }
+  + h1,
+  + h2 {
+    margin-top: 0;
+  }
+}
+
 .heading {
   display: flex;
   justify-content: center;
@@ -279,4 +292,6 @@ $chevron: "url(<%= asset_url 'chevron.svg' %>) right 12px center no-repeat";
     flex-direction: row;
   }
 }
+
+@import 'basscss';
 @import 'utilities';

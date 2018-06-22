@@ -1,7 +1,4 @@
-<p>
-  <strong>Event:</strong>
-  <%= link_to @sponsor.event.name, @sponsor.event %>
-</p>
+<%= link_to @sponsor.event.name, @sponsor.event, class: 'breadcrumb' %>
 
 <h1 class="heading">
   <%= @sponsor.name %>
