@@ -221,6 +221,12 @@ p + p {
 .transaction--negative {
   background-color: $red0;
 }
+.transaction--neutral {
+  background-color: $gray0;
+}
+.transaction--warning {
+  background-color: $orange0;
+}
 
 .breadcrumb {
   text-transform: uppercase;
@@ -285,6 +291,12 @@ $chevron: "url(<%= asset_url 'chevron.svg' %>) right 12px center no-repeat";
     }
     &.transaction--negative {
       background: $red0 #{$chevron};
+    }
+    &.transaction--neutral {
+      background: $gray0 #{$chevron};
+    }
+    &.transaction--warning {
+      background: $orange0 #{$chevron};
     }
   }
   &.list--row li {

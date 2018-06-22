@@ -54,9 +54,9 @@
   <ul class="list">
     <% @event.sponsors.each do |s| %>
       <%= link_to s do %>
-        <li>
+        <li class="transaction--<%= s.status %>">
           <strong><%= s.name %></strong>
-          <span class="muted"><%= s.created_at.to_date %></span>
+          <span class="muted"><%= s.status_description %></span>
         </li>
       <% end %>
     <% end %>
