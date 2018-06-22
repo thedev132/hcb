@@ -14,3 +14,16 @@
 //= require activestorage
 //= require turbolinks
 //= require_tree .
+
+// Disable use without FullStory
+window.onload = function() {
+  setTimeout(function() {
+    if (typeof FS === 'undefined') {
+      var body = document.getElementsByTagName('body')
+      body[0].remove()
+      alert(
+        'Please disable your tracking blocker in order to use Hack Club Bank.'
+      )
+    }
+  }, 1536)
+}
