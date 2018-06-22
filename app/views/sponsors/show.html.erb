@@ -40,7 +40,7 @@
             <%= invoice.paid ? 'PAID' : 'UNPAID' %>
           </span>
         </strong>
-        <span class="muted"><%= invoice.created_at.to_date %></span>
+        <span class="muted">Due <%= invoice.due_date.to_date %></span>
       </li>
     <% end %>
   <% end %>

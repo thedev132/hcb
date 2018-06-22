@@ -3,12 +3,26 @@
   <%= link_to 'Edit', edit_event_path(@event), class: 'btn bg-info' %>
 </h1>
 
-<p>
-  <strong>Date:</strong> <%= @event.start.to_date %> - <%= @event.end.to_date %><br />
-  <strong>Address:</strong> <br />
-  <%= @event.address %><br />
-  <strong>Sponsorship fee:</strong> <%= render_percentage @event.sponsorship_fee %>
-</p>
+<section class="event-summary my2">
+  <div class="event-summary__panel bg-accent white">
+    <div class="stat">
+      <span class="stat__label">Account balance</span>
+      <span class="stat__value"><%= render_money @event.balance, '' %></span>
+    </div>
+    <div class="stat stat--small">
+      <span class="stat__label">Fees to pay</span>
+      <span class="stat__value"><%= render_money @event.fee_balance, '' %></span>
+    </div>
+  </div>
+  <div class="event-summary__panel bg-smoke">
+    <p>
+      <strong>Date:</strong> <%= @event.start.to_date %> – <%= @event.end.to_date %><br />
+      <strong>Address:</strong> <br />
+      <%= @event.address %><br />
+      <strong>Sponsorship fee:</strong> <%= render_percentage @event.sponsorship_fee %>
+    </p>
+  </div>
+</section>
 
 <h2>Team Members</h2>
 
@@ -28,11 +42,7 @@
 
 <%= link_to 'Invite More', new_event_organizer_position_invite_path(@event) %>
 
-<h2>Account Transactions</h2>
-
-<p>Account Balance: <%= render_money @event.balance %></p>
-
-<h3>Transactions</h3>
+<h2>Transactions</h2>
 
 <% if @event.transactions.size.zero? %>
   <p>No transactions yet!</p>
@@ -72,9 +82,9 @@
   <ul class="list">
     <% @event.sponsors.each do |s| %>
       <%= link_to s do %>
-        <li>
+        <li class="transaction--<%= s.status %>">
           <strong><%= s.name %></strong>
-          <span class="muted"><%= s.created_at.to_date %></span>
+          <span class="muted"><%= s.status_description %></span>
         </li>
       <% end %>
     <% end %>
@@ -83,12 +93,7 @@
 
 <h2>Fiscal Sponsorship Fee Breakdown</h2>
 
-<p>
-  Total Owed: <%= render_money @event.fee_balance %><br/>
-  Total Paid: <%= render_money @event.fee_paid %>
-</p>
-
-<h3>Fee Payments</h3>
+<h3>Fee Payments <span class="regular slate h3">(total paid: <%= render_money @event.fee_paid %>)</span></h3>
 
 <% if @event.fee_payments.size.zero? %>
   <p>No payments made yet!</p>
@@ -119,7 +124,7 @@
   </table>
 <% end %>
 
-<h3>Billed Transactions</h3>
+<h3>Billed Transactions <span class="regular slate h3">(total owed: <%= render_money @event.fee_balance %>)</span></h3>
 
 <% if @event.billed_transactions.size.zero? %>
   <p>No transactions yet!</p>

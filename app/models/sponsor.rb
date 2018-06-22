@@ -8,6 +8,36 @@ class Sponsor < ApplicationRecord
   before_update :update_stripe_customer
   before_destroy :destroy_stripe_customer
 
+  def status
+    i = invoices.last
+    if i.nil?
+      'neutral'
+    elsif i.paid
+      'positive'
+    elsif i.due_date < Time.current
+      'negative'
+    elsif i.due_date < 3.days.from_now
+      'warning'
+    else
+      'neutral'
+    end
+  end
+
+  def status_description
+    i = invoices.last
+    if i.nil?
+      'No invoices yet'
+    elsif i.paid
+      'Last invoice paid'
+    elsif i.due_date < Time.current
+      'Last invoice overdue + unpaid'
+    elsif i.due_date < 5.days.from_now
+      'Last invoice due soon'
+    else
+      'Last invoice due further out'
+    end
+  end
+
   def create_stripe_customer
     cu = StripeService::Customer.create(stripe_params)
     self.stripe_customer_id = cu.id
@@ -36,7 +66,7 @@ class Sponsor < ApplicationRecord
     end
 
     url += "/customers/#{self.stripe_customer_id}"
-    
+
     url
   end
 
