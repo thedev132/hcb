@@ -3,13 +3,14 @@
   <%= link_to @sponsor.event.name, @sponsor.event %>
 </p>
 
-<h1>
+<h1 class="heading">
   <%= @sponsor.name %>
+  <%= link_to 'Edit', edit_sponsor_path(@sponsor), class: 'btn bg-info' %>
 </h1>
 
 <p>
   <strong>Contact email:</strong>
-  <%= @sponsor.contact_email %>
+  <%= mail_to @sponsor.contact_email %>
 </p>
 
 <p>
@@ -26,30 +27,24 @@
   <%= link_to 'click here', @sponsor.stripe_dashboard_url %>
 </p>
 
-<%= link_to 'Edit', edit_sponsor_path(@sponsor) %> |
-<%= link_to 'Back', sponsors_path %>
-
-<h2>Invoices</h2>
-
-<p><%= link_to 'New Invoice', new_sponsor_invoice_path(@sponsor) %></p>
+<h2 class="heading">
+  Invoices
+  <%= link_to 'New Invoice', new_sponsor_invoice_path(@sponsor), class: 'btn bg-success' %>
+</h2>
 
 <% unless @sponsor.invoices.size.zero? %>
-<table>
-  <tr>
-    <th>Date</th>
-    <th>Amount</th>
-    <th>Paid</th>
-    <th>View in Stripe</th>
-    <th>Full Info</th>
-  </tr>
+<ul class="list">
   <% @sponsor.invoices.each do |invoice| %>
-    <tr>
-      <td><%= invoice.created_at.to_date %></td>
-      <td><%= render_money invoice.total %></td>
-      <td><%= invoice.paid %></td>
-      <td><%= link_to 'Stripe', invoice.stripe_dashboard_url %></td>
-      <td><%= link_to 'Click', invoice %></td>
-    </tr>
+    <%= link_to invoice do %>
+      <li class="transaction--<%= invoice.paid ? 'positive' : 'negative' %>">
+        <strong>
+          <%= render_money invoice.total %> – <span class="<%= invoice.paid ? 'success' : 'error' %>">
+            <%= invoice.paid ? 'PAID' : 'UNPAID' %>
+          </span>
+        </strong>
+        <span class="muted"><%= invoice.created_at.to_date %></span>
+      </li>
+    <% end %>
   <% end %>
-  </table>
+</ul>
 <% end %>

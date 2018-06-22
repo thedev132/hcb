@@ -45,28 +45,22 @@
   </table>
 <% end %>
 
-<h2 class="heading">
+<h2 class="heading mb0">
   Sponsors
-  <%= link_to 'New Sponsor', edit_event_path(@event), class: 'btn bg-success' %>
+  <%= link_to 'New Sponsor', new_sponsor_path, class: 'btn bg-success' %>
 </h2>
 
 <% unless @event.sponsors.size.zero? %>
-  <table>
-    <tr>
-      <th>Created</th>
-      <th>Name</th>
-      <th>Contact Email</th>
-      <th>Full Info</th>
-    </tr>
+  <ul class="list">
     <% @event.sponsors.each do |s| %>
-      <tr>
-        <td><%= s.created_at.to_date %></td>
-        <td><%= s.name %></td>
-        <td><%= mail_to s.contact_email %></td>
-        <td><%= link_to 'Click', s %></td>
-      </tr>
+      <%= link_to s do %>
+        <li>
+          <strong><%= s.name %></strong>
+          <span class="muted"><%= s.created_at.to_date %></span>
+        </li>
+      <% end %>
     <% end %>
-  </table>
+  </ul>
 <% end %>
 
 <h2>Fiscal Sponsorship Fee Breakdown</h2>
