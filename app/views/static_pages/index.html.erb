@@ -1,16 +1,40 @@
-<h1>Grand Central Station of the <u>Hack Club Bank</u></h1>
-<ul>
-  <li>Bank Account
-    <ul>
-      <li><%= link_to 'Setup Bank', new_bank_account_path %></li>
-      <li><%= link_to 'See Transactions', BankAccount.instance %></li>
-    </ul>
-  </li>
-  <li><%= link_to 'Events', events_path %></li>
-  <li><%= link_to 'Sponsors', sponsors_path %></li>
-  <li><%= link_to 'Login', auth_users_path %>
-    <ul>
-      <li><%= link_to 'Logout', logout_users_path, method: :delete %></li>
-    </ul>
-  </li>
-</ul>
+<% if admin_signed_in? %>
+  <h1>Grand Central Station of the <span class="primary">Hack Club Bank</span></h1>
+  <ul class="list">
+    <li>Bank Account
+      <ul>
+        <li><%= link_to 'Setup Bank', new_bank_account_path %></li>
+        <li><%= link_to 'See Transactions', BankAccount.instance %></li>
+      </ul>
+    </li>
+    <li><%= link_to 'Events', events_path %></li>
+    <li><%= link_to 'Sponsors', sponsors_path %></li>
+    <li><%= link_to 'Login', auth_users_path %>
+      <ul>
+        <li><%= link_to 'Logout', logout_users_path, method: :delete %></li>
+      </ul>
+    </li>
+  </ul>
+<% else %>
+  <main class="flex flex-column mx-auto center items-center max-width-4">
+    <h1>Welcome to Hack Club Bank.</h1>
+    <% if signed_in? %>
+      <% if current_user.events.any? %>
+        <ul class="list left-align col-12 mtn3">
+          <% current_user.events.each do |event| %>
+            <%= link_to event do %>
+              <li>
+                <strong><%= event.name %></strong>
+              </li>
+            <% end %>
+          <% end %>
+        </ul>
+        <%= link_to 'Sign out', logout_users_path, method: :delete, class: 'btn mt2' %>
+      <% else %>
+        <p class="slate h3 bold">No events found.</p>
+      <% end %>
+    <% else %>
+      <%= link_to 'Sign in', auth_users_path, class: 'btn h2' %>
+    <% end %>
+  </main>
+<% end %>
