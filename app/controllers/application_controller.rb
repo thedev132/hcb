@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::Base
+  include Pundit
   include SessionsHelper
 
   def self.auth
@@ -9,5 +10,16 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  protect_from_forgery
+
   http_basic_authenticate_with name: auth[:username], password: auth[:password]
+
+  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
+
+  private
+
+  def user_not_authorized
+    flash[:error] = 'Your are not authorized to perform this action.'
+    redirect_to(request.referrer || root_path)
+  end
 end

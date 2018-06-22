@@ -1,6 +1,5 @@
 class TransactionsController < ApplicationController
-  before_action :signed_in_admin, except: [ :show ]
-  before_action :signed_in_user, only: [ :show ]
+  before_action :signed_in_user
 
   def show
     @transaction = Transaction.find(params[:id])
@@ -15,6 +14,8 @@ class TransactionsController < ApplicationController
 
   def update
     @transaction = Transaction.find(params[:id])
+    authorize @transaction
+
     fee_relationship = @transaction.fee_relationship
 
     @transaction.assign_attributes(transaction_params)

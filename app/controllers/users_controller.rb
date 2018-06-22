@@ -31,11 +31,12 @@ class UsersController < ApplicationController
   def logout
     unless signed_in?
       flash[:error] = 'Not signed in!'
+      redirect_to(request.referrer || root_path)
       return
     end
 
     sign_out
-    redirect_to root_url
+    redirect_to root_path
   end
 
   def show
