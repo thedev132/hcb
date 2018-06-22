@@ -37,7 +37,8 @@ class OrganizerPositionInvitesController < ApplicationController
     if @invite.accept
       redirect_to @invite.event
     else
-      redirect_to :show
+      flash[:error] = 'Failed to accept'
+      redirect_to @invite
     end
   end
 
@@ -48,7 +49,8 @@ class OrganizerPositionInvitesController < ApplicationController
     if @invite.reject
       redirect_to root_path
     else
-      redirect_to :show
+      flash[:error] = 'Failed to reject'
+      redirect_to @invite
     end
   end
 

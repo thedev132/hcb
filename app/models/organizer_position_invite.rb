@@ -43,6 +43,11 @@ class OrganizerPositionInvite < ApplicationRecord
       return false
     end
 
+    if self.accepted?
+      self.errors.add(:base, 'already accepted!')
+      return false
+    end
+
     self.organizer_position = OrganizerPosition.new(
       event: event,
       user: user
@@ -53,14 +58,27 @@ class OrganizerPositionInvite < ApplicationRecord
     self.save
   end
 
+  def accepted?
+    self.accepted_at.present?
+  end
+
   def reject
     unless self.user.present?
       self.errors.add(:user, 'must be present to reject invite')
       return false
     end
 
+    if self.rejected?
+      self.errors.add(:base, 'already rejected!')
+      return false
+    end
+
     self.rejected_at = Time.current
 
     self.save
+  end
+
+  def rejected?
+    self.rejected_at.present?
   end
 end
