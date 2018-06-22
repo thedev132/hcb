@@ -22,6 +22,7 @@ class InvoicesController < ApplicationController
 
   def show
     @invoice = Invoice.find(params[:id])
+    @sponsor = Sponsor.find(@invoice.id)
   end
 
   private

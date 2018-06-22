@@ -102,7 +102,7 @@ textarea {
 
 $select: "url(<%= asset_url 'select.svg' %>)";
 select {
-  background: #{$select} right 0.75rem center / 0.5rem no-repeat #fff;
+  background: #{$select} right 0.75rem center / 0.5rem no-repeat $white;
 }
 // rails date(time) inputs
 select[name$='i)]'] {
@@ -117,7 +117,7 @@ input[type='submit'],
   padding-top: 8px;
   padding-bottom: 8px;
   background-color: $red5;
-  color: #fff;
+  color: $white;
   font-size: 20px;
   display: inline-block;
   vertical-align: middle;
@@ -162,8 +162,54 @@ h4 {
   font-size: 20px;
 }
 
+p + p {
+  margin-top: 0;
+}
+
+.card {
+  background-color: $white;
+  box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.0125), 0 4px 8px 0 rgba(0, 0, 0, 0.125);
+  padding: 20px;
+  border-radius: 4px;
+}
+
+.invoice-progress {
+  background-color: $gray2;
+  border-radius: 4px;
+  height: 48px;
+  line-height: 48px;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+.invoice-progress__paid,
+.invoice-progress__remaining {
+  display: inline-block;
+  height: 100%;
+  overflow: hidden;
+  left: 0;
+}
+.invoice-progress__paid {
+  position: absolute;
+  padding-left: 8px;
+  background-color: $teal6;
+  color: $white;
+  z-index: 1;
+}
+.invoice-progress__remaining {
+  left: 0;
+  right: 0;
+  padding-right: 8px;
+  width: 100%;
+  text-align: right;
+  color: $gray7;
+  z-index: 0;
+}
+
 .flash {
-  color: #fff;
+  color: $white;
   font-weight: bold;
   padding: 12px 16px;
   border-radius: 4px;
