@@ -1,0 +1,42 @@
+<%= form_with(model: load_card_request, local: true) do |form| %>
+  <% if load_card_request.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(load_card_request.errors.count, "error") %> prohibited this load_card_request from being saved:</h2>
+
+      <ul>
+      <% load_card_request.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :card_id %>
+    <%= form.text_field :card_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :user_id %>
+    <%= form.text_field :user_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :user_id %>
+    <%= form.text_field :user_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :fulfilled_at %>
+    <%= form.datetime_select :fulfilled_at %>
+  </div>
+
+  <div class="field">
+    <%= form.label :load_amount %>
+    <%= form.text_field :load_amount %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

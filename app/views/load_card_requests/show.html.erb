@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Card:</strong>
+  <%= @load_card_request.card %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= @load_card_request.user %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= @load_card_request.user %>
+</p>
+
+<p>
+  <strong>Fulfilled at:</strong>
+  <%= @load_card_request.fulfilled_at %>
+</p>
+
+<p>
+  <strong>Load amount:</strong>
+  <%= @load_card_request.load_amount %>
+</p>
+
+<%= link_to 'Edit', edit_load_card_request_path(@load_card_request) %> |
+<%= link_to 'Back', load_card_requests_path %>

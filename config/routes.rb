@@ -1,6 +1,9 @@
 require 'sidekiq/web'
 
 Rails.application.routes.draw do
+  resources :load_card_requests
+  resources :cards
+  resources :card_requests
   mount Sidekiq::Web => '/sidekiq'
 
   root to: 'static_pages#index'

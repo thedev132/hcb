@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>User:</strong>
+  <%= @card_request.user %>
+</p>
+
+<p>
+  <strong>Event:</strong>
+  <%= @card_request.event %>
+</p>
+
+<p>
+  <strong>Daily limit:</strong>
+  <%= @card_request.daily_limit %>
+</p>
+
+<%= link_to 'Edit', edit_card_request_path(@card_request) %> |
+<%= link_to 'Back', card_requests_path %>
