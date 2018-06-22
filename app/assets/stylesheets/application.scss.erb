@@ -21,6 +21,7 @@
   unicode-range: U + 0000 - F8FE, U + F900-FFFF;
 }
 @import 'variables';
+
 * {
   box-sizing: border-box;
   font-weight: inherit;
@@ -108,14 +109,15 @@ select[name$='i)]'] {
   width: 72px;
   display: inline-block;
 }
+
 input[type='submit'],
 .btn {
   padding-left: 16px;
   padding-right: 16px;
   padding-top: 8px;
   padding-bottom: 8px;
-  background-color: rgb(228, 45, 66);
-  color: rgb(255, 255, 255);
+  background-color: $red5;
+  color: #fff;
   font-size: 20px;
   display: inline-block;
   vertical-align: middle;
@@ -125,7 +127,7 @@ input[type='submit'],
   line-height: 1.125;
   -webkit-appearance: none;
   cursor: pointer;
-  box-shadow: rgba(0, 0, 0, 0.16) 0 2px 4px;
+  box-shadow: rgba(0, 0, 0, 0.125) 0 2px 4px;
   margin: 0;
   text-decoration: none;
   transition: box-shadow 0.125s ease-out;
@@ -133,21 +135,23 @@ input[type='submit'],
   border-width: 0px;
   border-style: solid;
 }
+
 h1,
 h2,
 h3,
 h4 {
   font-weight: bold;
+  line-height: 1.125;
 }
 h1 {
   font-size: 40px;
-  padding-bottom: 4px;
+  padding-bottom: 8px;
   border-bottom: 1px solid #dde1e4;
   margin-bottom: 1rem;
 }
 h2 {
   font-size: 28px;
-  padding-bottom: 2px;
+  padding-bottom: 4px;
   border-bottom: 1px solid #dde1e4;
   margin-bottom: 0.5rem;
 }
@@ -175,16 +179,30 @@ h4 {
 
 .heading {
   display: flex;
-  align-items: center;
+  justify-content: center;
+  align-items: flex-start;
+  flex-direction: column;
   flex-wrap: wrap;
   .btn {
-    margin-left: auto;
+    margin-top: 8px;
+    margin-bottom: 4px;
   }
 }
 h2.heading {
   margin-bottom: 0;
   .btn {
     font-size: 14px;
+  }
+}
+@media (min-width: 32em) {
+  .heading {
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    .btn {
+      margin-left: auto;
+      margin-top: 0;
+    }
   }
 }
 
