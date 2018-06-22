@@ -19,10 +19,11 @@
   <%= @sponsor.address_city %>, <%= @sponsor.address_state %> <%= @sponsor.address_postal_code %>
 </p>
 
+<% if admin_signed_in? %>
 <p>
-  <strong>Stripe dashboard link:</strong>
-  <%= link_to 'click here', @sponsor.stripe_dashboard_url %>
+  <%= link_to 'Open in Stripe dashboard', @sponsor.stripe_dashboard_url %>
 </p>
+<% end %>
 
 <h2 class="heading">
   Invoices
