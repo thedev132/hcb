@@ -1,8 +1,8 @@
-<h1>Manage Invite</h1>
-<p>Event: <%= @invite.event.name %></p>
+<main class="center max-width-3 mx-auto">
+<h1>You’ve been invited to manage finances for <%= @invite.event.name %>.</h1>
 
-<p>Actions:</p>
-<ul>
-  <li><%= link_to 'Accept', organizer_position_invite_accept_path(@invite), method: :post %></li>
-  <li><%= link_to 'Reject', organizer_position_invite_reject_path(@invite), method: :post %></li>
-</ul>
+<div class="flex justify-center items-center mt3">
+  <%= link_to 'Accept invitation', organizer_position_invite_accept_path(@invite), method: :post, class: 'btn bg-success h2 mr1' %>
+  <%= link_to 'Reject', organizer_position_invite_reject_path(@invite), method: :post, class: 'btn bg-error ml1' %>
+</div>
+</main>
