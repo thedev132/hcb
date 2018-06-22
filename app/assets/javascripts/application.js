@@ -22,7 +22,7 @@ window.onload = function() {
       var body = document.getElementsByTagName('body')
       body[0].remove()
       alert(
-        'Please disable your tracking blocker in order to use Hack Club Bank.'
+        'Your adblocker is preventing us from reporting bugs. Please disable it in order to use Hack Club Bank.'
       )
     }
   }, 5000)
