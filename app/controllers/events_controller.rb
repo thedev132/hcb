@@ -4,25 +4,21 @@ class EventsController < ApplicationController
 
   # GET /events
   def index
-    @events = Event.all
-  end
+    authorize Event
 
-  # GET /events/1
-  def show
+    @events = Event.all
   end
 
   # GET /events/new
   def new
     @event = Event.new
-  end
-
-  # GET /events/1/edit
-  def edit
+    authorize @event
   end
 
   # POST /events
   def create
     @event = Event.new(event_params)
+    authorize @event
 
     if @event.save
       flash[:success] = 'Event was successfully created.'
@@ -32,8 +28,20 @@ class EventsController < ApplicationController
     end
   end
 
+  # GET /events/1
+  def show
+    authorize @event
+  end
+
+  # GET /events/1/edit
+  def edit
+    authorize @event
+  end
+
   # PATCH/PUT /events/1
   def update
+    authorize @event
+
     if @event.update(event_params)
       flash[:success] = 'Event was successfully updated.'
       redirect_to @event
@@ -44,6 +52,8 @@ class EventsController < ApplicationController
 
   # DELETE /events/1
   def destroy
+    authorize @event
+
     @event.destroy
     flash[:success] = 'Event was successfully destroyed.'
     redirect_to events_url
