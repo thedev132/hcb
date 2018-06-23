@@ -1,4 +1,7 @@
 class CardRequestsController < ApplicationController
+  before_action :signed_in_user
+  before_action :signed_in_admin, only: [:accept, :reject]
+  before_action :ensure_pending_request, only: [:update, :edit]
   before_action :set_card_request, only: [:show, :edit, :update, :destroy]
 
   # GET /card_requests
@@ -19,9 +22,26 @@ class CardRequestsController < ApplicationController
   def edit
   end
 
+  def accept
+    @card_request = CardRequest.find(params[:card_request_id])
+    @card_request.accepted_at = Time.current
+    @card_request.fulfilled_by = current_user
+    @card = Card.create(
+      daily_limit: @card_request.daily_limit,
+      full_name: @card_request.full_name,
+      card_request: @card_request
+    )
+  end
+
+  def reject
+    @card_request = CardRequest.find(params[:card_request_id])
+    @card_request.rejected_at = Time.current
+  end
+
   # POST /card_requests
   def create
     @card_request = CardRequest.new(card_request_params)
+    @card_request.creator = current_user
 
     if @card_request.save
       redirect_to @card_request, notice: 'Card request was successfully created.'
@@ -41,11 +61,18 @@ class CardRequestsController < ApplicationController
 
   # DELETE /card_requests/1
   def destroy
-    @card_request.destroy
-    redirect_to card_requests_url, notice: 'Card request was successfully destroyed.'
+    @card_request.canceled_at = Time.now
+    redirect_to card_requests_url, notice: 'Request canceled'
   end
 
   private
+
+    def ensure_pending_request
+      raise 'Requests cannot be edited after they are accepted' if @card_request.accepted_at.present?
+      raise 'Requests cannot be edited after they are rejected' if @card_request.rejected_at.present?
+      raise 'Requests cannot be edited after they are canceled' if @card_request.canceled_at.present?
+    end
+
     # Use callbacks to share common setup or constraints between actions.
     def set_card_request
       @card_request = CardRequest.find(params[:id])
@@ -53,6 +80,6 @@ class CardRequestsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def card_request_params
-      params.require(:card_request).permit(:user_id, :event_id, :daily_limit)
+      params.require(:card_request).permit(:daily_limit, :shipping_address, :full_name, :rejected_at, :accepted_at, :notes, :event_id)
     end
 end

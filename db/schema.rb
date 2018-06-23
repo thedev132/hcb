@@ -32,19 +32,23 @@ ActiveRecord::Schema.define(version: 2018_06_27_072729) do
     t.bigint "daily_limit"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "shipping_address"
+    t.string "full_name"
+    t.datetime "rejected_at"
+    t.datetime "accepted_at"
+    t.datetime "canceled_at"
+    t.text "notes"
     t.index ["creator_id"], name: "index_card_requests_on_creator_id"
     t.index ["event_id"], name: "index_card_requests_on_event_id"
     t.index ["fulfilled_by_id"], name: "index_card_requests_on_fulfilled_by_id"
   end
 
   create_table "cards", force: :cascade do |t|
-    t.bigint "admin_id"
     t.bigint "user_id"
     t.bigint "event_id"
     t.bigint "daily_limit"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["admin_id"], name: "index_cards_on_admin_id"
     t.index ["event_id"], name: "index_cards_on_event_id"
     t.index ["user_id"], name: "index_cards_on_user_id"
   end
@@ -106,7 +110,6 @@ ActiveRecord::Schema.define(version: 2018_06_27_072729) do
     t.bigint "card_id"
     t.bigint "creator_id"
     t.bigint "fulfilled_by_id"
-    t.datetime "fulfilled_at"
     t.bigint "load_amount"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -205,7 +208,6 @@ ActiveRecord::Schema.define(version: 2018_06_27_072729) do
   add_foreign_key "card_requests", "users", column: "fulfilled_by_id"
   add_foreign_key "cards", "events"
   add_foreign_key "cards", "users"
-  add_foreign_key "cards", "users", column: "admin_id"
   add_foreign_key "fee_relationships", "events"
   add_foreign_key "invoices", "sponsors"
   add_foreign_key "load_card_requests", "cards"

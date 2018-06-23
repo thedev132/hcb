@@ -1,9 +1,6 @@
 require 'sidekiq/web'
 
 Rails.application.routes.draw do
-  resources :load_card_requests
-  resources :cards
-  resources :card_requests
   mount Sidekiq::Web => '/sidekiq'
 
   root to: 'static_pages#index'
@@ -35,4 +32,11 @@ Rails.application.routes.draw do
 
   resources :bank_accounts, only: [ :new, :create, :show ]
   resources :transactions, only: [ :index, :show, :edit, :update ]
+
+  resources :cards
+  resources :card_requests, path: 'card_requests' do
+    post 'accept'
+    post 'reject'
+  end
+  resources :load_card_requests
 end

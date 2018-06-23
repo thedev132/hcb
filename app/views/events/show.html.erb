@@ -52,10 +52,26 @@
   </ul>
 <% end %>
 
+<h2 class="heading">
+  Credit Cards
+  <%= link_to 'Request Cards', new_card_request_path(event_id: @event.id), class: 'btn bg-success' %>
+</h2>
+<ul class="list mb0">
+  <% @event.cards.each do |card| %>
+    <li style="background: white;">
+      <p class="my0">
+        <strong><%= card.full_name %></strong>
+        <span class="muted">(added <span title="<%= card.created_at %>"><%= time_ago_in_words card.created_at %> ago</span>)</span>
+      </p>
+    </li>
+  <% end %>
+</ul>
+
 <h2 class="heading mb0">
   Transactions
   <%= link_to 'Export CSV', transactions_path(event: @event), class: 'btn bg-info', target: :_blank %>
 </h2>
+
 <% if @event.transactions.size.zero? %>
   <p>No transactions yet!</p>
 <% else %>
