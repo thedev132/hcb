@@ -44,7 +44,8 @@ class CardRequestsController < ApplicationController
     @card_request.creator = current_user
 
     if @card_request.save
-      redirect_to @card_request, notice: 'Card request was successfully created.'
+      flash[:success] = 'Your card request is being reviewed.'
+      redirect_to @card_request
     else
       render :new
     end
@@ -53,7 +54,8 @@ class CardRequestsController < ApplicationController
   # PATCH/PUT /card_requests/1
   def update
     if @card_request.update(card_request_params)
-      redirect_to @card_request, notice: 'Card request was successfully updated.'
+      flash[:success] = 'Changes to card request saved.'
+      redirect_to @card_request
     else
       render :edit
     end
