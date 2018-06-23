@@ -4,6 +4,7 @@ class OrganizerPositionInvitesController < ApplicationController
   def new
     @invite = OrganizerPositionInvite.new
     @invite.event = Event.find(params[:event_id])
+    authorize @invite
   end
 
   def create

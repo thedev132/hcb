@@ -7,6 +7,10 @@ class OrganizerPositionInvitePolicy < ApplicationPolicy
     record.user == user
   end
 
+  def new?
+    record.event&.users&.include?(user)
+  end
+
   def accept?
     record.user == user
   end
