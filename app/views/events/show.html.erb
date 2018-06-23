@@ -45,9 +45,14 @@
 
 <% if @event.organizer_position_invites.pending.any? %>
   <h3 class="mb1">Pending invitations</h3>
-  <ul class="m0">
+  <ul class="list m0">
     <% @event.organizer_position_invites.pending.each do |invite| %>
-      <li><%= invite.email %></li>
+      <li>
+        <p>
+          <strong><%= invite.email %></strong>
+          <span class="muted">(added <span title="<%= invite.created_at %>"><%= time_ago_in_words invite.created_at %> ago</span>)</span>
+        </p>
+      </li>
     <% end %>
   </ul>
 <% end %>
