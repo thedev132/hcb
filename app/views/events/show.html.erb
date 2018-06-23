@@ -143,9 +143,7 @@
 
 <h3>Fee Payments <span class="regular slate h3">(total fees paid: <%= render_money @event.fee_paid %>)</span></h3>
 
-<% if @event.fee_payments.size.zero? %>
-  <p>No payments made yet!</p>
-<% else %>
+<% if @event.fee_payments.any? %>
   <table>
   <tr>
     <th>Date</th>
@@ -170,6 +168,8 @@
     </tr>
   <% end %>
   </table>
+<% else %>
+  <p class="center mt0 pb1 slate bold h3">No payments yet</p>
 <% end %>
 
 <h3>Transactions Incurring Fees <span class="regular slate h3">(total outstanding fees: <%= render_money @event.fee_balance %>)</span></h3>
