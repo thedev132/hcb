@@ -18,7 +18,7 @@ class CardsController < ApplicationController
     @card_request.fulfilled_by = current_user
     @card = Card.new(
       event: @card_request.event,
-      user_id: @card_request.owner_id,
+      user_id: @card_request.creator_id,
       daily_limit: @card_request.daily_limit,
       full_name: @card_request.full_name,
       address: @card_request.shipping_address,
