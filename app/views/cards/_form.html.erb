@@ -17,33 +17,33 @@
   </div>
 
   <div class="field">
-    <%= form.label :daily_limit %>
+    <%= form.label :daily_limit, 'Daily spending limit (USD)' %>
     <%= form.text_field :daily_limit %>
   </div>
 
   <div class="field">
-    <%= form.label :last_four %>
+    <%= form.label :last_four, 'Last four digits of card number' %>
     <%= form.text_field :last_four %>
   </div>
 
   <div class="field">
-    <%= form.label :full_name %>
+    <%= form.label :full_name, 'Full name on card' %>
     <%= form.text_field :full_name %>
   </div>
 
   <div class="field">
-    <%= form.label :address %>
+    <%= form.label :address, 'Shipping/billing address' %>
     <%= form.text_area :address %>
   </div>
 
   <div class="field">
-    <%= form.label :expiration_month %>
-    <%= form.text_area :expiration_month %>
+    <%= form.label :expiration_month, 'Expiration month (MM)' %>
+    <%= form.number_field :expiration_month %>
   </div>
 
   <div class="field">
-    <%= form.label :expiration_year %>
-    <%= form.text_area :expiration_year %>
+    <%= form.label :expiration_year, 'Expiration year (YYYY)' %>
+    <%= form.number_field :expiration_year %>
   </div>
 
   <div class="actions">
