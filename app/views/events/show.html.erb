@@ -72,7 +72,7 @@
 <% end %>
 
 <% if @event.card_requests.any? %>
-  <h3>Card requests</h3>
+  <h3 class="mb1">Card requests</h3>
   <ul class="list">
     <% @event.card_requests.each do |request| %>
       <%= link_to request do %>
