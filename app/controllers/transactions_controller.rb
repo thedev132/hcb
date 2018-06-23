@@ -4,10 +4,13 @@ class TransactionsController < ApplicationController
   def show
     @transaction = Transaction.find(params[:id])
     @fee = @transaction.is_event_related && @transaction.fee_relationship
+
+    authorize @transaction
   end
 
   def edit
     @transaction = Transaction.find(params[:id])
+    authorize @transaction
 
     # so the fee relationship fields render
     @transaction.fee_relationship ||= FeeRelationship.new
