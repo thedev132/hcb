@@ -1,16 +1,24 @@
 <%= link_to @event.name, @event, class: 'breadcrumb' %>
+<h1 class="heading">
+  Card request for <%= @card_request.full_name %>
+  <%= link_to 'Edit', edit_card_request_path(@card_request), class: 'btn bg-info' %>
+</h1>
 
 <p>
-  <strong>Event:</strong>
-  <%= @card_request.event %>
+  <strong>Status:</strong>
+  <%= @card_request.status %>
+</p>
+
+<p>
+  <strong>Name on card:</strong>
+  <%= @card_request.full_name %>
 </p>
 
 <p>
   <strong>Daily limit:</strong>
-  <%= @card_request.daily_limit %>
+  <%= @card_request.daily_limit || 'none' %>
 </p>
 
-<%= link_to 'Edit', edit_card_request_path(@card_request) %> |
 <p>
   <%= link_to 'Cancel request', card_request_path(@card_request), method: :delete, class: 'btn' %>
 </p>

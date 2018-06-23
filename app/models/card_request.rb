@@ -1,10 +1,17 @@
 class CardRequest < ApplicationRecord
-  belongs_to :creator, class_name: "User"
-  belongs_to :fulfilled_by, class_name: "User", required: false
+  belongs_to :creator, class_name: 'User'
+  belongs_to :fulfilled_by, class_name: 'User', required: false
   belongs_to :event
 
   validates :full_name, :shipping_address, presence: true
   validate :single_status
+
+  def status
+    'rejected' if rejected_at.present?
+    'canceled' if canceled_at.present?
+    'accepted' if accepted_at.present?
+    'under review'
+  end
 
   private
 
