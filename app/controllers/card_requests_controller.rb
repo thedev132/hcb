@@ -1,8 +1,8 @@
 class CardRequestsController < ApplicationController
   before_action :signed_in_user
   before_action :signed_in_admin, only: [:accept, :reject]
-  before_action :ensure_pending_request, only: [:update, :edit]
   before_action :set_card_request, only: [:show, :edit, :update, :destroy]
+  before_action :ensure_pending_request, only: [:update, :edit]
 
   # GET /card_requests
   def index
