@@ -1,5 +1,6 @@
 class CardsController < ApplicationController
   before_action :set_card, only: [:show, :edit, :update, :destroy]
+  before_action :signed_in_admin, only: [:edit, :update, :destroy]
 
   # GET /cards
   def index
