@@ -20,7 +20,7 @@
     <h1>Welcome to Hack Club Bank.</h1>
     <% if signed_in? %>
       <% if current_user.events.any? %>
-        <ul class="list left-align col-12 mtn3">
+        <ul class="list left-align col-12">
           <% current_user.events.each do |event| %>
             <%= link_to event do %>
               <li>
@@ -32,6 +32,18 @@
       <% else %>
         <p class="slate h3 bold">No events found.</p>
       <% end %>
+      <% if current_user.organizer_position_invites.pending.any? %>
+        <h2 class="h4 col-12 left-align mt3 mb0 ttu slate">Your pending invitations</h2>
+        <ul class="list left-align col-12">
+          <% current_user.organizer_position_invites.pending.each do |invite| %>
+            <%= link_to invite do %>
+              <li>
+                <strong><%= invite.event.name %></strong>
+              </li>
+            <% end %>
+          <% end %>
+        </ul>
+        <% end %>
       <%= link_to 'Sign out', logout_users_path, method: :delete, class: 'btn mt2' %>
     <% else %>
       <%= link_to 'Sign in', auth_users_path, class: 'btn h2' %>
