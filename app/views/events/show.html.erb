@@ -57,7 +57,7 @@
   <%= link_to 'Request Cards', new_card_request_path(event_id: @event.id), class: 'btn bg-success' %>
 </h2>
 <% if @event.cards.any? %>
-  <ul class="list list--unlinked mb0">
+  <ul class="list list--unlinked">
     <% @event.cards.each do |card| %>
       <li>
         <p>
@@ -69,6 +69,22 @@
   </ul>
 <% else %>
   <p class="center py2 slate bold h3">No cards yet</p>
+<% end %>
+
+<% if @event.card_requests.any? %>
+  <h3>Card requests</h3>
+  <ul class="list">
+    <% @event.card_requests.each do |request| %>
+      <%= link_to request do %>
+        <li>
+          <p>
+            <strong><%= request.full_name %> – <%= request.status %></strong>
+            <span class="muted">(added <span title="<%= request.created_at %>"><%= time_ago_in_words request.created_at %> ago</span>)</span>
+          </p>
+        </li>
+      <% end %>
+    <% end %>
+  </ul>
 <% end %>
 
 <h2 class="heading mb0">
