@@ -56,16 +56,20 @@
   Credit Cards
   <%= link_to 'Request Cards', new_card_request_path(event_id: @event.id), class: 'btn bg-success' %>
 </h2>
-<ul class="list mb0">
-  <% @event.cards.each do |card| %>
-    <li style="background: white;">
-      <p class="my0">
-        <strong><%= card.full_name %></strong>
-        <span class="muted">(added <span title="<%= card.created_at %>"><%= time_ago_in_words card.created_at %> ago</span>)</span>
-      </p>
-    </li>
-  <% end %>
-</ul>
+<% if @event.cards.any? %>
+  <ul class="list list--unlinked mb0">
+    <% @event.cards.each do |card| %>
+      <li>
+        <p>
+          <strong><%= card.full_name %></strong>
+          <span class="muted">(added <span title="<%= card.created_at %>"><%= time_ago_in_words card.created_at %> ago</span>)</span>
+        </p>
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <p class="center py2 slate bold h3">No cards yet</p>
+<% end %>
 
 <h2 class="heading mb0">
   Transactions
