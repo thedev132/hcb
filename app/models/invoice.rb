@@ -3,6 +3,8 @@ class Invoice < ApplicationRecord
 
   validates_presence_of :item_description, :item_amount, :due_date
 
+  validate :due_date_cannot_be_in_past
+
   before_create :set_memo, :create_stripe_invoice
 
   def set_memo
@@ -55,6 +57,12 @@ class Invoice < ApplicationRecord
   end
 
   private
+
+  def due_date_cannot_be_in_past
+    if due_date.present? && due_date < Time.current
+      errors.add(:due_date, "can't be in the past")
+    end
+  end
 
   def stripe_invoice_item_params
     {
