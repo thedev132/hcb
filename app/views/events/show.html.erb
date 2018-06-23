@@ -45,7 +45,7 @@
 
 <% if @event.organizer_position_invites.pending.any? %>
   <h3 class="mb1">Pending invitations</h3>
-  <ul class="list m0">
+  <ul class="list list--unlinked my0">
     <% @event.organizer_position_invites.pending.each do |invite| %>
       <li>
         <p>
