@@ -16,6 +16,7 @@ class SponsorsController < ApplicationController
   # GET /sponsors/new
   def new
     @sponsor = Sponsor.new(event_id: params[:event_id])
+    authorize @sponsor
   end
 
   # GET /sponsors/1/edit
