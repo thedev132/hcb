@@ -45,6 +45,9 @@ gem 'bootsnap', '>= 1.1.0', require: false
 # Allow un-deletions
 gem 'acts_as_paranoid', '~> 0.6.0'
 
+# Email validation!
+gem 'validates_email_format_of'
+
 # Jobs!
 gem 'sidekiq'
 
