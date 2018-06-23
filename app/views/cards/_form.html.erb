@@ -12,13 +12,8 @@
   <% end %>
 
   <div class="field">
-    <%= form.label :user_id %>
-    <%= form.text_field :user_id %>
-  </div>
-
-  <div class="field">
-    <%= form.label :event_id %>
-    <%= form.text_field :event_id %>
+    <%= form.label :event_id, 'Event' %>
+    <%= form.collection_select(:event_id, Event.all, :id, :name, prompt: 'Select event…') %>
   </div>
 
   <div class="field">
