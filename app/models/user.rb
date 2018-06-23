@@ -1,4 +1,5 @@
 class User < ApplicationRecord
+  has_many :organizer_position_invites
   has_many :organizer_positions
   has_many :events, through: :organizer_positions
 
