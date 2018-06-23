@@ -32,10 +32,10 @@
   <%= link_to 'Invite More', new_event_organizer_position_invite_path(@event), class: 'btn bg-success' %>
 </h2>
 
-<ul class="list mb0">
+<ul class="list list--unlinked mb0">
   <% @event.organizer_positions.each do |position| %>
-    <li style="background: white;">
-      <p class="my0">
+    <li>
+      <p>
         <strong><%= position.user.email %></strong>
         <span class="muted">(added <span title="<%= position.created_at %>"><%= time_ago_in_words position.created_at %> ago</span>)</span>
       </p>

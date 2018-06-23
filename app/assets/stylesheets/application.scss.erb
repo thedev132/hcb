@@ -134,6 +134,9 @@ input[type='submit'],
   border-width: 0px;
   border-style: solid;
 }
+.btn.bg-white {
+  color: $red5 !important;
+}
 
 h1,
 h2,
@@ -372,6 +375,9 @@ $chevron: "url(<%= asset_url 'chevron.svg' %>) right 12px center no-repeat";
     &.transaction--warning {
       background: $orange0 #{$chevron};
     }
+    > p {
+      margin: 0;
+    }
   }
   &.list--row > li,
   &.list--row > a > li {
@@ -387,6 +393,12 @@ $chevron: "url(<%= asset_url 'chevron.svg' %>) right 12px center no-repeat";
       border-bottom: 0;
     }
   }
+}
+.list--row li {
+  flex-direction: row;
+}
+.list--unlinked li {
+  background: white;
 }
 h1 + .list {
   margin-top: -1rem;
