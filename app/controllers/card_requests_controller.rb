@@ -15,6 +15,7 @@ class CardRequestsController < ApplicationController
 
   # GET /card_requests/new
   def new
+    @event = Event.find(params[:event_id]) if params[:event_id]
     @card_request = CardRequest.new
   end
 
@@ -78,6 +79,7 @@ class CardRequestsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_card_request
       @card_request = CardRequest.find(params[:id])
+      @event = @card_request.event
     end
 
     # Only allow a trusted parameter "white list" through.
