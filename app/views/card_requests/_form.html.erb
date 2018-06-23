@@ -37,7 +37,7 @@
   <% end %>
 
   <div class="field">
-    <%= form.label :full_name %>
+    <%= form.label :full_name, 'Full name (as will appear on card)' %>
     <%= form.text_field :full_name %>
   </div>
 
@@ -47,11 +47,11 @@
   </div>
 
   <div class="field">
-    <%= form.label :daily_limit %>
+    <%= form.label :daily_limit, 'Daily spending limit (optional, in USD)' %>
     <%= form.number_field :daily_limit %>
   </div>
 
   <div class="actions">
-    <%= form.submit %>
+    <%= form.submit 'Send me this card' %>
   </div>
 <% end %>
