@@ -65,7 +65,8 @@ class CardRequestsController < ApplicationController
   # DELETE /card_requests/1
   def destroy
     @card_request.canceled_at = Time.now
-    redirect_to card_requests_url, notice: 'Request canceled'
+    flash[:success] = 'Canceled your card request.'
+    redirect_to @event
   end
 
   private

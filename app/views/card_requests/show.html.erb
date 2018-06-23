@@ -11,4 +11,6 @@
 </p>
 
 <%= link_to 'Edit', edit_card_request_path(@card_request) %> |
-<%= link_to 'Back', card_requests_path %>
+<p>
+  <%= link_to 'Cancel request', card_request_path(@card_request), method: :delete, class: 'btn' %>
+</p>
