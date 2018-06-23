@@ -10,8 +10,15 @@ class LoadCardRequestsController < ApplicationController
   def show
   end
 
+  def accept
+    @load_card_request.fulfiled_at = Time.now
+    @load_card_request.fulfiled_by = current_user
+    @load_card_request.save
+  end
+
   # GET /load_card_requests/new
   def new
+    @card = Card.find(params[:card_id])
     @load_card_request = LoadCardRequest.new
   end
 
@@ -53,6 +60,6 @@ class LoadCardRequestsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def load_card_request_params
-      params.require(:load_card_request).permit(:card_id, :user_id, :fulfilled_by, :fulfilled_at, :load_amount)
+      params.require(:load_card_request).permit(:card_id, :creator_id, :load_amount)
     end
 end

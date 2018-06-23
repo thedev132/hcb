@@ -16,9 +16,13 @@
 
 <p>
   <strong>Daily spending limit:</strong>
-  <%= render_money @card.daily_limit %>
+  <%= @card.daily_limit ? render_money(@card.daily_limit) : 'no limit' %>
 </p>
 
 <p>
   <%= link_to 'See balance', @card.emburse_path, class: 'btn bg-info' %>
+</p>
+
+<p>
+  <%= link_to 'Reload balance', new_load_card_request_path(card_id: @card.id), class: 'btn bg-info' %>
 </p>

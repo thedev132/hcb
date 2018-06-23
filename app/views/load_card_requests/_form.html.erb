@@ -11,25 +11,9 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= form.label :card_id %>
-    <%= form.text_field :card_id %>
-  </div>
+  <%= form.hidden_field :creator_id, value: current_user.id %>
 
-  <div class="field">
-    <%= form.label :user_id %>
-    <%= form.text_field :user_id %>
-  </div>
-
-  <div class="field">
-    <%= form.label :user_id %>
-    <%= form.text_field :user_id %>
-  </div>
-
-  <div class="field">
-    <%= form.label :fulfilled_at %>
-    <%= form.datetime_select :fulfilled_at %>
-  </div>
+  <%= form.hidden_field :card_id, value: @card.id %>
 
   <div class="field">
     <%= form.label :load_amount %>

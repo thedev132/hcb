@@ -37,5 +37,7 @@ Rails.application.routes.draw do
   resources :card_requests, path: 'card_requests' do
     post 'reject'
   end
-  resources :load_card_requests
+  resources :load_card_requests, path: 'load_card_requests' do
+    post 'accept'
+  end
 end
