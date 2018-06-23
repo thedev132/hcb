@@ -22,6 +22,6 @@ class SponsorPolicy < ApplicationPolicy
   private
 
   def user_has_position?
-    record.event&.users.include? user
+    record.event&.users&.include?(user)
   end
 end
