@@ -7,6 +7,10 @@ class SponsorPolicy < ApplicationPolicy
     user.admin? || user_has_position?
   end
 
+  def new?
+    user.admin? || user_has_position?
+  end
+
   def create?
     user.admin? || user_has_position?
   end
