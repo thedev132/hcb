@@ -1,17 +1,17 @@
+<%= link_to 'Load card requests', load_card_requests_path, class: 'breadcrumb' %>
+<h1 class="heading">
+  Load card request for <%= @load_card_request.card.last_four %>
+  <%= link_to 'Edit', edit_load_card_request_path(@load_card_request), class: 'btn bg-info' %>
+</h1>
 
 <p>
   <strong>Card:</strong>
-  <%= @load_card_request.card %>
+  <%= link_to @load_card_request.card.last_four, @load_card_request.card %>
 </p>
 
 <p>
   <strong>User:</strong>
-  <%= @load_card_request.user %>
-</p>
-
-<p>
-  <strong>User:</strong>
-  <%= @load_card_request.user %>
+  <%= @load_card_request.user.email %>
 </p>
 
 <p>
@@ -21,8 +21,5 @@
 
 <p>
   <strong>Load amount:</strong>
-  <%= @load_card_request.load_amount %>
+  <%= render_money @load_card_request.load_amount %>
 </p>
-
-<%= link_to 'Edit', edit_load_card_request_path(@load_card_request) %> |
-<%= link_to 'Back', load_card_requests_path %>

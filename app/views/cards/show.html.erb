@@ -1,23 +1,20 @@
+<%= link_to 'Cards', cards_path, class: 'breadcrumb' %>
+<h1 class="heading">
+  Card for <%= @card.user.email %>
+  <%= link_to 'Edit', edit_card_path(@card), class: 'btn bg-info' %>
+</h1>
 
 <p>
-  <strong>User:</strong>
-  <%= @card.user %>
-</p>
-
-<p>
-  <strong>User:</strong>
-  <%= @card.user %>
+  <strong>User email:</strong>
+  <%= @card.user.email %>
 </p>
 
 <p>
   <strong>Event:</strong>
-  <%= @card.event %>
+  <%= link_to @card.event.name, event %>
 </p>
 
 <p>
-  <strong>Daily limit:</strong>
-  <%= @card.daily_limit %>
+  <strong>Daily spending limit:</strong>
+  <%= render_money @card.daily_limit %>
 </p>
-
-<%= link_to 'Edit', edit_card_path(@card) %> |
-<%= link_to 'Back', cards_path %>
