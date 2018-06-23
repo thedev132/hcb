@@ -1,6 +1,9 @@
 <h1 class="heading">
   <%= @event.name %>
-  <%= link_to 'Edit', edit_event_path(@event), class: 'btn bg-info' if admin_signed_in? %>
+  <% if admin_signed_in? %>
+    <%= link_to 'Edit', edit_event_path(@event), class: 'btn bg-info' %>
+    <%= link_to 'Destroy', @event, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn bg-white primary' %>
+  <% end %>
 </h1>
 
 <section class="event-summary my2">
