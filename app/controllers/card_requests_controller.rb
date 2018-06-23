@@ -23,20 +23,13 @@ class CardRequestsController < ApplicationController
   def edit
   end
 
-  def accept
-    @card_request = CardRequest.find(params[:card_request_id])
-    @card_request.accepted_at = Time.current
-    @card_request.fulfilled_by = current_user
-    @card = Card.create(
-      daily_limit: @card_request.daily_limit,
-      full_name: @card_request.full_name,
-      card_request: @card_request
-    )
-  end
-
   def reject
     @card_request = CardRequest.find(params[:card_request_id])
     @card_request.rejected_at = Time.current
+    if @card_request.save
+      flash[:success] = 'Card request rejected.'
+      redirect_to card_requests_path
+    end
   end
 
   # POST /card_requests
@@ -79,7 +72,7 @@ class CardRequestsController < ApplicationController
 
     # Use callbacks to share common setup or constraints between actions.
     def set_card_request
-      @card_request = CardRequest.find(params[:id])
+      @card_request = CardRequest.find(params[:id] || params[:card_request_id])
       @event = @card_request.event
     end
 

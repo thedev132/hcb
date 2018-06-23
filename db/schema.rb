@@ -49,6 +49,13 @@ ActiveRecord::Schema.define(version: 2018_06_27_072729) do
     t.bigint "daily_limit"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "last_four"
+    t.string "full_name"
+    t.text "address"
+    t.integer "expiration_month"
+    t.integer "expiration_year"
+    t.bigint "card_request_id"
+    t.index ["card_request_id"], name: "index_cards_on_card_request_id"
     t.index ["event_id"], name: "index_cards_on_event_id"
     t.index ["user_id"], name: "index_cards_on_user_id"
   end

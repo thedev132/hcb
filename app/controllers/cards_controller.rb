@@ -12,7 +12,18 @@ class CardsController < ApplicationController
 
   # GET /cards/new
   def new
-    @card = Card.new
+    @card_request = CardRequest.find(params[:card_request_id])
+    @card_request.accepted_at = Time.current
+    @card_request.fulfilled_by = current_user
+    @card = Card.new(
+      daily_limit: @card_request.daily_limit,
+      full_name: @card_request.full_name,
+      address: @card_request.shipping_address,
+      card_request_id: @card_request.id
+    )
+    if @card.save
+      redirect_to @card, notice: 'Card request was accepted.'
+    end
   end
 
   # GET /cards/1/edit

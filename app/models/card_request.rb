@@ -4,6 +4,7 @@ class CardRequest < ApplicationRecord
   belongs_to :event
 
   validates :full_name, :shipping_address, presence: true
+  validates :full_name, length: { maximum: 21 }
   validate :single_status
 
   def status

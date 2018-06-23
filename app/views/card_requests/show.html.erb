@@ -19,6 +19,15 @@
   <%= @card_request.daily_limit || 'none' %>
 </p>
 
-<p>
-  <%= link_to 'Cancel request', card_request_path(@card_request), method: :delete, class: 'btn' %>
-</p>
+<% if admin_signed_in? %>
+  <p>
+    <%= link_to 'Reject request', card_request_reject_path(@card_request), method: :post, class: 'btn' %>
+  </p>
+  <p>
+    <%= link_to 'Accept request', new_card_path(card_request_id: @card_request), class: 'btn' %>
+  </p>
+<% else %>
+  <p>
+    <%= link_to 'Cancel request', card_request_path(@card_request), method: :delete, class: 'btn' %>
+  </p>
+<% end %>

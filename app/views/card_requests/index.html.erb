@@ -22,7 +22,7 @@
         <td><%= link_to 'Edit', edit_card_request_path(card_request) %></td>
         <td><%= link_to 'Destroy', card_request, method: :delete, data: { confirm: 'Are you sure?' } %></td>
         <% if admin_signed_in? %>
-          <td><%= link_to 'Accept', card_request_accept_path(card_request), method: :post %></td>
+          <td><%= link_to 'Accept', new_card_path(card_request_id: card_request) %></td>
           <td><%= link_to 'Reject', card_request_reject_path(card_request), method: :post %></td>
         <% end %>
       </tr>
