@@ -11,10 +11,14 @@
 
 <p>
   <strong>Event:</strong>
-  <%= link_to @card.event.name, event %>
+  <%= link_to @card.event.name, @card.event %>
 </p>
 
 <p>
   <strong>Daily spending limit:</strong>
   <%= render_money @card.daily_limit %>
+</p>
+
+<p>
+  <%= link_to 'See balance', @card.emburse_path, class: 'btn bg-info' %>
 </p>

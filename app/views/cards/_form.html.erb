@@ -11,6 +11,13 @@
     </div>
   <% end %>
 
+  <%= form.hidden_field :card_request_id %>
+
+  <div class="field">
+    <%= form.label :user_id, 'User' %>
+    <%= form.collection_select(:user_id, User.all, :id, :email, prompt: 'Select user…') %>
+  </div>
+
   <div class="field">
     <%= form.label :event_id, 'Event' %>
     <%= form.collection_select(:event_id, Event.all, :id, :name, prompt: 'Select event…') %>
@@ -19,6 +26,11 @@
   <div class="field">
     <%= form.label :daily_limit, 'Daily spending limit (USD)' %>
     <%= form.text_field :daily_limit %>
+  </div>
+
+  <div class="field">
+    <%= form.label :emburse_id, 'Emburse ID' %>
+    <%= form.text_field :emburse_id %>
   </div>
 
   <div class="field">

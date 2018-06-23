@@ -64,12 +64,14 @@
 <% if @event.cards.any? %>
   <ul class="list list--unlinked">
     <% @event.cards.each do |card| %>
-      <li>
-        <p>
-          <strong><%= card.full_name %></strong>
-          <span class="muted">(added <span title="<%= card.created_at %>"><%= time_ago_in_words card.created_at %> ago</span>)</span>
-        </p>
-      </li>
+      <%= link_to card do %>
+        <li>
+          <p>
+            <strong><%= card.full_name %></strong>
+            <span class="muted">(added <span title="<%= card.created_at %>"><%= time_ago_in_words card.created_at %> ago</span>)</span>
+          </p>
+        </li>
+      <% end %>
     <% end %>
   </ul>
 <% else %>

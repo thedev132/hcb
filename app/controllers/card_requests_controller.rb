@@ -20,8 +20,8 @@ class CardRequestsController < ApplicationController
   end
 
   # GET /card_requests/1/edit
-  def edit
-  end
+  # def edit
+  # end
 
   def reject
     @card_request = CardRequest.find(params[:card_request_id])

@@ -2,6 +2,9 @@ class User < ApplicationRecord
   has_many :organizer_position_invites
   has_many :organizer_positions
   has_many :events, through: :organizer_positions
+  has_many :load_card_requests
+  has_many :card_requests
+  has_many :cards
 
   before_create :create_session_token
 

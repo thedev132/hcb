@@ -53,6 +53,6 @@ class LoadCardRequestsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def load_card_request_params
-      params.require(:load_card_request).permit(:card_id, :user_id, :user_id, :fulfilled_at, :load_amount)
+      params.require(:load_card_request).permit(:card_id, :user_id, :fulfilled_by, :fulfilled_at, :load_amount)
     end
 end
