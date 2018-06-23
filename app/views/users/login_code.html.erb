@@ -2,7 +2,7 @@
 <p>We’ve sent a code to your email address.</p>
 <%= form_tag exchange_login_code_users_path do %>
   <%= label_tag :login_code, 'Login code' %>
-  <%= text_field_tag :login_code, '', style: 'max-width: 16rem;' %>
+  <%= text_field_tag :login_code, '', class: 'mb2', style: 'max-width: 16rem;' %>
   <%= hidden_field_tag :user_id, @user_id %>
-  <%= submit_tag 'Sign in'  %>
+  <%= submit_tag 'Sign in' %>
 <% end %>
