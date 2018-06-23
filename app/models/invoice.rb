@@ -1,6 +1,8 @@
 class Invoice < ApplicationRecord
   belongs_to :sponsor
 
+  validates_presence_of :item_description, :item_amount, :due_date
+
   before_create :set_memo, :create_stripe_invoice
 
   def set_memo
