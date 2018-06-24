@@ -35,6 +35,7 @@ class CardsController < ApplicationController
     @card = Card.new(card_params)
     @card_request.accepted_at = Time.current
     @card_request.fulfilled_by = current_user
+    @card_request.send_accept_email
 
     if @card.save && @card_request.save
       redirect_to @card, notice: 'Card was successfully created.'

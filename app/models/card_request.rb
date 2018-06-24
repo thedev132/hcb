@@ -15,6 +15,10 @@ class CardRequest < ApplicationRecord
     'under review'
   end
 
+  def send_accept_email
+    CardRequestMailer.with(recipient: creator).notify_accept.deliver_later
+  end
+
   private
 
   def single_status
