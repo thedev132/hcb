@@ -2,6 +2,7 @@ class Card < ApplicationRecord
   belongs_to :user
   belongs_to :event
   has_one :card_request
+  has_many :load_card_requests
 
   validates :last_four,
             :full_name,

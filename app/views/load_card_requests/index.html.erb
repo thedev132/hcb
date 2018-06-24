@@ -6,8 +6,8 @@
   <thead>
     <tr>
       <th>Card</th>
-      <th>User</th>
-      <th>Fulfilled at</th>
+      <th>creator</th>
+      <th>Fulfilled by</th>
       <th>Load amount</th>
       <th colspan="3"></th>
     </tr>
@@ -17,8 +17,8 @@
     <% @load_card_requests.each do |load_card_request| %>
       <tr>
         <td><%= link_to load_card_request.card.last_four, load_card_request.card %></td>
-        <td><%= load_card_request.user.email %></td>
-        <td><%= load_card_request.fulfilled_at %></td>
+        <td><%= load_card_request.creator.email %></td>
+        <td><%= load_card_request.fulfilled_by&.email %></td>
         <td><%= render_money load_card_request.load_amount %></td>
         <td><%= link_to 'Show', load_card_request %></td>
         <td><%= link_to 'Edit', edit_load_card_request_path(load_card_request) %></td>

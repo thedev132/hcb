@@ -26,3 +26,15 @@
 <p>
   <%= link_to 'Reload balance', new_load_card_request_path(card_id: @card.id), class: 'btn bg-info' %>
 </p>
+
+<h3 class="mb1">Load requests</h3>
+<ul class="list list--unlinked my0">
+  <% @load_card_requests.each do |request| %>
+    <li>
+      <p>
+        <strong><%= render_money request.load_amount %></strong>
+        <span class="muted">(added <span title="<%= request.created_at %>"><%= time_ago_in_words request.created_at %> ago</span>)</span>
+      </p>
+    </li>
+  <% end %>
+</ul>

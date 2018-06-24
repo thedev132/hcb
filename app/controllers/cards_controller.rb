@@ -9,6 +9,7 @@ class CardsController < ApplicationController
 
   # GET /cards/1
   def show
+    @load_card_requests = @card.load_card_requests
   end
 
   # GET /cards/new
