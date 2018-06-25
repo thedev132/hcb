@@ -24,8 +24,8 @@
   </div>
 
   <div class="field">
-    <%= form.label :daily_limit, 'Daily spending limit (USD)' %>
-    <%= form.text_field :daily_limit %>
+    <%= form.label :daily_limit, 'Daily spending limit (cents)' %>
+    <%= form.number_field :daily_limit %>
   </div>
 
   <div class="field">
@@ -35,7 +35,7 @@
 
   <div class="field">
     <%= form.label :last_four, 'Last four digits of card number' %>
-    <%= form.text_field :last_four %>
+    <%= form.number_field :last_four %>
   </div>
 
   <div class="field">
