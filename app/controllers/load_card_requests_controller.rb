@@ -41,7 +41,8 @@ class LoadCardRequestsController < ApplicationController
   # PATCH/PUT /load_card_requests/1
   def update
     if @load_card_request.update(load_card_request_params)
-      redirect_to @load_card_request, notice: 'Load card request was successfully updated.'
+      flash[:success] = 'Load card request was successfully updated.'
+      redirect_to load_card_requests
     else
       render :edit
     end
@@ -50,7 +51,8 @@ class LoadCardRequestsController < ApplicationController
   # DELETE /load_card_requests/1
   def destroy
     @load_card_request.destroy
-    redirect_to load_card_requests_url, notice: 'Load card request was successfully destroyed.'
+    flash[:success] = 'Load card request cancelled.'
+    redirect_to @load_card_request.event
   end
 
   private
