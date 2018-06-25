@@ -33,11 +33,12 @@ class CardsController < ApplicationController
   def create
     @card_request = CardRequest.find(card_params['card_request_id'])
     @card = Card.new(card_params)
+    @card.card_request_id = @card_request.id
     @card_request.accepted_at = Time.current
     @card_request.fulfilled_by = current_user
-    @card_request.send_accept_email
 
     if @card.save && @card_request.save
+      @card_request.send_accept_email
       redirect_to @card, notice: 'Card was successfully created.'
     else
       render :new

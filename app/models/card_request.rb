@@ -18,7 +18,7 @@ class CardRequest < ApplicationRecord
   end
 
   def send_accept_email
-    CardRequestMailer.with(recipient: creator).notify_accept.deliver_later
+    CardRequestMailer.with(card_request: self).accepted.deliver_later
   end
 
   private

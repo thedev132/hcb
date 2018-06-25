@@ -1,8 +1,9 @@
 class CardRequestMailer < ApplicationMailer
   def accepted
-    @recipient = params[:recipient]
-    @card = params[:card]
-    @name = @card.full_name
+    @request = params[:card_request]
+    @recipient = @request.creator.email
+    @card = @request.card
+    @name = @request.full_name
     @last_four = @card.last_four
     @event = @card.event.name
     @activation_link = @card.emburse_link
