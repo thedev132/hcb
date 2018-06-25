@@ -8,6 +8,8 @@ class CardRequest < ApplicationRecord
   validates :full_name, length: { maximum: 21 }
   validate :single_status
 
+  scope :outstanding, -> { where(accepted_at: nil) }
+
   def status
     return 'rejected' if rejected_at.present?
     return 'canceled' if canceled_at.present?
