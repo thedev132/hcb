@@ -16,11 +16,11 @@
   <%= form.hidden_field :card_id, value: @card.id %>
 
   <div class="field">
-    <%= form.label :load_amount %>
-    <%= form.text_field :load_amount %>
+    <%= form.label :load_amount, 'Amount to add (cents)' %>
+    <%= form.number_field :load_amount %>
   </div>
 
   <div class="actions">
-    <%= form.submit %>
+    <%= form.submit 'Request balance added' %>
   </div>
 <% end %>
