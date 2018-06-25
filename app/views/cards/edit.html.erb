@@ -1,6 +1,5 @@
+<%= link_to 'Cards', cards_path, class: 'breadcrumb' %>
+<%= link_to 'This card', @card, class: 'breadcrumb' %>
 <h1>Editing Card</h1>
 
 <%= render 'form', card: @card %>
-
-<%= link_to 'Show', @card %> |
-<%= link_to 'Back', cards_path %>

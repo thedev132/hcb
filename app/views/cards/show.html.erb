@@ -1,17 +1,12 @@
-<%= link_to 'Cards', cards_path, class: 'breadcrumb' %>
+<%= link_to @card.event.name, event_path(@card.event), class: 'breadcrumb' %>
 <h1 class="heading">
   Card for <%= @card.user.email %>
-  <%= link_to 'Edit', edit_card_path(@card), class: 'btn bg-info' %>
+  <%= link_to 'Edit', edit_card_path(@card), class: 'btn bg-info' if admin_signed_in? %>
 </h1>
 
 <p>
-  <strong>User email:</strong>
+  <strong>Email address:</strong>
   <%= @card.user.email %>
-</p>
-
-<p>
-  <strong>Event:</strong>
-  <%= link_to @card.event.name, @card.event %>
 </p>
 
 <p>
@@ -24,7 +19,7 @@
 </p>
 
 <p>
-  <%= link_to 'Reload balance', new_load_card_request_path(card_id: @card.id), class: 'btn bg-info' %>
+  <%= link_to 'Reload balance', new_load_card_request_path(card_id: @card.id), class: 'btn bg-success' %>
 </p>
 
 <h3 class="mb1">Load requests</h3>
