@@ -8,6 +8,7 @@ class LoadCardRequestsController < ApplicationController
 
   # GET /load_card_requests/1
   def show
+    @card = @load_card_request.card
   end
 
   def accept
@@ -18,7 +19,7 @@ class LoadCardRequestsController < ApplicationController
 
   # GET /load_card_requests/new
   def new
-    @card = Card.find(params[:card_id])
+    @card = Card.includes(:event).find(params[:card_id])
     @load_card_request = LoadCardRequest.new
   end
 
