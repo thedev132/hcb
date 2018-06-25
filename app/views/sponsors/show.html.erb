@@ -5,23 +5,25 @@
   <%= link_to 'Edit', edit_sponsor_path(@sponsor), class: 'btn bg-info' %>
 </h1>
 
+<section class="details">
 <p>
-  <strong>Contact email:</strong>
+  <strong>Contact email</strong>
   <%= mail_to @sponsor.contact_email %>
 </p>
 
 <p>
-  <strong>Address:</strong><br />
+  <strong>Address</strong>
   <%= @sponsor.address_line1 %><br />
   <% if @sponsor.address_line2.present? %>
     <%= @sponsor.address_line2 %><br />
   <% end %>
   <%= @sponsor.address_city %>, <%= @sponsor.address_state %> <%= @sponsor.address_postal_code %>
 </p>
+</section>
 
 <% if admin_signed_in? %>
 <p>
-  <%= link_to 'Open in Stripe dashboard', @sponsor.stripe_dashboard_url %>
+  <%= link_to 'Open in Stripe dashboard', @sponsor.stripe_dashboard_url, target: '_blank' %>
 </p>
 <% end %>
 

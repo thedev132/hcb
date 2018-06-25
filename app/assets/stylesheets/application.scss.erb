@@ -34,7 +34,6 @@ body {
   min-width: 100%;
 }
 body {
-  max-width: 64rem;
   display: flex;
   flex-direction: column;
   font-size: 16px;
@@ -46,10 +45,6 @@ body {
   -webkit-font-smoothing: antialiased;
   color: #384046;
   margin: 0;
-  padding: 16px;
-  @media (min-width: 32em) {
-    max-width: 64rem;
-  }
 }
 
 a {
@@ -121,10 +116,6 @@ a {
   &:hover &:focus {
     color: $gray9;
   }
-}
-
-th {
-  padding-bottom: 0.25rem;
 }
 
 .field,
@@ -232,10 +223,6 @@ p + p {
   left: 50%;
   transform: translateX(-50%);
   text-decoration: none;
-
-  + h1 {
-    margin-top: 2rem;
-  }
 }
 
 th {
@@ -344,6 +331,13 @@ td {
   text-align: right;
   color: $gray7;
   z-index: 0;
+}
+
+.container {
+  width: 100%;
+  max-width: 64rem;
+  margin: 1rem auto;
+  padding: 0 1rem;
 }
 
 .flash {
@@ -466,11 +460,87 @@ $chevron: "url(<%= asset_url 'chevron.svg' %>) right 12px center no-repeat";
 .list--unlinked li {
   background: white;
 }
-h1 + .list {
+h1 + .list,
+h1 + .details {
   margin-top: -1rem;
 }
 h3 + .list {
   border-top: 1px solid $gray2;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+th {
+  padding-bottom: 0.125rem;
+}
+td {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+td,
+th {
+  &:first-child {
+    padding-left: 0.75rem;
+  }
+}
+
+.details {
+  > p,
+  > div {
+    display: grid;
+    border-bottom: 1px solid $gray2;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    margin: 0;
+
+    @media (min-width: 32em) {
+      grid-template-columns: 16rem auto;
+      grid-gap: 0.5rem;
+
+      strong {
+        text-align: right;
+      }
+    }
+  }
+}
+
+// Make mobile views nice. Full-bleed separator lines
+@media screen and (max-width: 32em) {
+  table,
+  .list,
+  .heading,
+  .details,
+  h1,
+  h2,
+  h3 {
+    width: 100vw;
+    margin-left: -1rem;
+    margin-right: -1rem;
+  }
+  table {
+    td,
+    th {
+      &:first-child {
+        padding-left: 1rem;
+      }
+      &:last-child {
+        padding-right: 1rem;
+      }
+    }
+  }
+  .list > a > li,
+  .list > li,
+  .heading,
+  .details > p,
+  .details > div,
+  h1,
+  h2,
+  h3 {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
 }
 
 @import 'basscss';

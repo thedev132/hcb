@@ -4,22 +4,24 @@
   <%= link_to 'Edit', edit_load_card_request_path(@load_card_request), class: 'btn bg-info' %>
 </h1>
 
+<section class="details">
 <p>
-  <strong>Card:</strong>
+  <strong>Card</strong>
   <%= link_to @load_card_request.card.last_four, @load_card_request.card %>
 </p>
 
 <p>
-  <strong>Creator:</strong>
+  <strong>Made by</strong>
   <%= @load_card_request.creator.email %>
 </p>
 
 <p>
-  <strong>Fulfilled by:</strong>
-  <%= @load_card_request.fulfilled_by %>
+  <strong>Fulfilled by</strong>
+  <%= @load_card_request.fulfilled_by ? @load_card_request.fulfilled_by.email : 'unfulfilled' %>
 </p>
 
 <p>
-  <strong>Load amount:</strong>
+  <strong>Load amount</strong>
   <%= render_money @load_card_request.load_amount %>
 </p>
+</section>
