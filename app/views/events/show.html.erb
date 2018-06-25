@@ -75,7 +75,7 @@
     <% end %>
   </ul>
 <% else %>
-  <p class="center py2 slate bold h3">No cards yet</p>
+  <%= blankslate 'No cards yet' %>
 <% end %>
 
 <% if @event.card_requests.any? %>
@@ -176,7 +176,7 @@
   <% end %>
   </table>
 <% else %>
-  <p class="center mt0 pb1 slate bold h3">No payments yet</p>
+  <%= blankslate 'No payments yet' %>
 <% end %>
 
 <h3>Transactions Incurring Fees <span class="regular slate h3">(total outstanding fees: <%= render_money @event.fee_balance %>)</span></h3>
