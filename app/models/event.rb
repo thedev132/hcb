@@ -4,6 +4,7 @@ class Event < ApplicationRecord
   has_many :users, through: :organizer_positions
   has_many :cards
   has_many :card_requests
+  has_many :load_card_requests, through: :cards
 
   has_many :fee_relationships
   has_many :transactions, through: :fee_relationships, source: :t_transaction
