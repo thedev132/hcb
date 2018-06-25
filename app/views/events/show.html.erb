@@ -99,9 +99,7 @@
   <%= link_to 'Export CSV', transactions_path(event: @event), class: 'btn bg-info', target: :_blank %>
 </h2>
 
-<% if @event.transactions.size.zero? %>
-  <p>No transactions yet!</p>
-<% else %>
+<% if @event.transactions.any? %>
   <table>
   <tr>
     <th>Date</th>
@@ -126,6 +124,8 @@
     </tr>
   <% end %>
   </table>
+<% else %>
+  <%= blankslate 'No transactions yet' %>
 <% end %>
 
 <h2 class="heading mb0">
@@ -133,7 +133,7 @@
   <%= link_to 'New Sponsor', new_sponsor_path(event_id: @event.id), class: 'btn bg-success' %>
 </h2>
 
-<% unless @event.sponsors.size.zero? %>
+<% if @event.sponsors.any? %>
   <ul class="list">
     <% @event.sponsors.each do |s| %>
       <%= link_to s do %>
@@ -144,6 +144,8 @@
       <% end %>
     <% end %>
   </ul>
+<% else %>
+  <%= blankslate 'No sponsors yet' %>
 <% end %>
 
 <h2>Fiscal Sponsorship Fee Breakdown</h2>
@@ -176,14 +178,12 @@
   <% end %>
   </table>
 <% else %>
-  <%= blankslate 'No payments yet' %>
+  <%= blankslate 'No fee payments yet' %>
 <% end %>
 
 <h3>Transactions Incurring Fees <span class="regular slate h3">(total outstanding fees: <%= render_money @event.fee_balance %>)</span></h3>
 
-<% if @event.billed_transactions.size.zero? %>
-  <p>No transactions yet!</p>
-<% else %>
+<% if @event.billed_transactions.any? %>
   <table>
   <tr>
     <th>Date</th>
@@ -216,6 +216,8 @@
     </tr>
   <% end %>
   </table>
+<% else %>
+  <%= blankslate 'No transactions have incurred fees' %>
 <% end %>
 
 <p>Looking for expense reimbursements? <%= mail_to 'zach@hackclub.com', 'Ask Zach' %> for an invitation to Expensify.</p>
