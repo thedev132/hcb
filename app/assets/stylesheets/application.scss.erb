@@ -118,9 +118,11 @@ a {
   }
 }
 
-.field,
-.actions {
+.field {
   margin-bottom: 0.75rem;
+}
+.actions {
+  margin-top: 1.5rem;
 }
 
 #error_explanation {
@@ -183,6 +185,7 @@ input[type='submit'],
   border-style: solid;
 }
 .btn.bg-white {
+  background-color: $gray0 !important;
   color: $red5 !important;
 }
 
@@ -442,6 +445,17 @@ $chevron: "url(<%= asset_url 'chevron.svg' %>) right 12px center no-repeat";
   &.list--row > li,
   &.list--row > a > li {
     flex-direction: row;
+    align-items: center;
+  }
+  &.list--row p {
+    flex: 1 1 auto;
+  }
+  .btn {
+    font-size: 0.875rem;
+    @media screen and (min-width: 32em) {
+      margin-top: -4px;
+      margin-bottom: -3px;
+    }
   }
   .list {
     border-top: 1px solid $gray2;

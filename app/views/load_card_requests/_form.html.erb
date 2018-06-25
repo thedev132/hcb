@@ -1,4 +1,4 @@
-<%= form_with(model: load_card_request, local: true) do |form| %>
+<%= form_for [@card, load_card_request] do |form| %>
   <% if load_card_request.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(load_card_request.errors.count, "error") %> prohibited this load_card_request from being saved:</h2>

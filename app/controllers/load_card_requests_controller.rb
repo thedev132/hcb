@@ -1,12 +1,10 @@
 class LoadCardRequestsController < ApplicationController
   before_action :set_load_card_request, only: [:show, :edit, :update, :destroy]
 
-  # GET /load_card_requests
   def index
     @load_card_requests = LoadCardRequest.all
   end
 
-  # GET /load_card_requests/1
   def show
     @card = @load_card_request.card
   end
@@ -17,17 +15,14 @@ class LoadCardRequestsController < ApplicationController
     @load_card_request.save
   end
 
-  # GET /load_card_requests/new
   def new
     @card = Card.includes(:event).find(params[:card_id])
     @load_card_request = LoadCardRequest.new
   end
 
-  # GET /load_card_requests/1/edit
   def edit
   end
 
-  # POST /load_card_requests
   def create
     @load_card_request = LoadCardRequest.new(load_card_request_params)
 
@@ -38,7 +33,6 @@ class LoadCardRequestsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /load_card_requests/1
   def update
     if @load_card_request.update(load_card_request_params)
       flash[:success] = 'Load card request was successfully updated.'
@@ -48,7 +42,6 @@ class LoadCardRequestsController < ApplicationController
     end
   end
 
-  # DELETE /load_card_requests/1
   def destroy
     @load_card_request.destroy
     flash[:success] = 'Load card request cancelled.'

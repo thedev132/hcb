@@ -33,11 +33,12 @@ Rails.application.routes.draw do
   resources :bank_accounts, only: [ :new, :create, :show ]
   resources :transactions, only: [ :index, :show, :edit, :update ]
 
-  resources :cards
+  resources :cards do
+    resources :load_card_requests, path: 'load_requests' do
+      post 'accept'
+    end
+  end
   resources :card_requests, path: 'card_requests' do
     post 'reject'
-  end
-  resources :load_card_requests, path: 'load_card_requests' do
-    post 'accept'
   end
 end

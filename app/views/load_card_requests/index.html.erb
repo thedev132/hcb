@@ -14,15 +14,15 @@
   </thead>
 
   <tbody>
-    <% @load_card_requests.each do |load_card_request| %>
+    <% @load_card_requests.each do |request| %>
       <tr>
-        <td><%= link_to load_card_request.card.last_four, load_card_request.card %></td>
-        <td><%= load_card_request.creator.email %></td>
-        <td><%= load_card_request.fulfilled_by&.email %></td>
-        <td><%= render_money load_card_request.load_amount %></td>
-        <td><%= link_to 'Show', load_card_request %></td>
-        <td><%= link_to 'Edit', edit_load_card_request_path(load_card_request) %></td>
-        <td><%= link_to 'Destroy', load_card_request, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to request.card.last_four, request.card %></td>
+        <td><%= request.creator.email %></td>
+        <td><%= request.fulfilled_by&.email %></td>
+        <td><%= render_money request.load_amount %></td>
+        <td><%= link_to 'Show', card_load_card_request_path(request, card_id: request.card.id) %></td>
+        <td><%= link_to 'Edit', edit_card_load_card_request_path(request, card_id: request.card.id) %></td>
+        <td><%= link_to 'Destroy', card_load_card_request_path(request, card_id: request.card.id), method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>

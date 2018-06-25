@@ -1,7 +1,8 @@
-<%= link_to 'Load card requests', load_card_requests_path, class: 'breadcrumb' %>
+<%= link_to 'Load card requests', card_load_card_requests_path(@load_card_request, card_id: @card.id), class: 'breadcrumb' %>
+<%= link_to "Card #{@load_card_request.card.last_four}", @load_card_request.card, class: 'breadcrumb' %>
 <h1 class="heading">
   Load card request for <%= @load_card_request.card.last_four %>
-  <%= link_to 'Edit', edit_load_card_request_path(@load_card_request), class: 'btn bg-info' %>
+  <%= link_to 'Edit', edit_card_load_card_request_path(@load_card_request, card_id: @card.id), class: 'btn bg-info' %>
 </h1>
 
 <section class="details">
