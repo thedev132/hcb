@@ -6,9 +6,7 @@ class LoadCardRequest < ApplicationRecord
   scope :outstanding, -> { where.not(fulfilled_by_id: nil) }
 
   def status
-    return 'rejected' if rejected_at.present?
-    return 'canceled' if canceled_at.present?
-    return 'accepted' if accepted_at.present?
+    return 'completed' if fulfilled_by_id.present?
     'under review'
   end
 end
