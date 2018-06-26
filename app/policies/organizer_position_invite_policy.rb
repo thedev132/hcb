@@ -8,7 +8,7 @@ class OrganizerPositionInvitePolicy < ApplicationPolicy
   end
 
   def new?
-    record.event&.users&.include?(user)
+    record.event&.users&.include?(user) || user.admin?
   end
 
   def accept?
