@@ -28,7 +28,8 @@ class GSuiteApplicationsController < ApplicationController
     authorize @g_suite_application
 
     if @g_suite_application.save
-      redirect_to @g_suite_application, notice: 'G suite application was successfully created.'
+      flash[:success] = 'G Suite application submitted!'
+      redirect_to @g_suite_application
     else
       render :new
     end
@@ -39,7 +40,8 @@ class GSuiteApplicationsController < ApplicationController
     authorize @g_suite_application
 
     if @g_suite_application.update(g_suite_application_params)
-      redirect_to @g_suite_application, notice: 'G suite application was successfully updated.'
+      flash[:success] = 'G Suite application was successfully updated.'
+      redirect_to @g_suite_application
     else
       render :edit
     end
@@ -51,7 +53,8 @@ class GSuiteApplicationsController < ApplicationController
 
     authorize @g_suite_application
 
-    redirect_to g_suite_applications_url, notice: 'G suite application was successfully destroyed.'
+    flash[:success] = 'G Suite application was successfully destroyed.'
+    redirect_to g_suite_applications_url
   end
 
   private

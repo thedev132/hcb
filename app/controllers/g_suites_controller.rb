@@ -28,7 +28,8 @@ class GSuitesController < ApplicationController
     authorize @g_suite
 
     if @g_suite.save
-      redirect_to @g_suite, notice: 'G suite was successfully created.'
+      flash[:success] = 'G Suite was successfully created.'
+      redirect_to @g_suite
     else
       render :new
     end
@@ -39,7 +40,8 @@ class GSuitesController < ApplicationController
     authorize @g_suite
 
     if @g_suite.update(g_suite_params)
-      redirect_to @g_suite, notice: 'G suite was successfully updated.'
+      flash[:success] = 'G Suite was successfully updated.'
+      redirect_to @g_suite
     else
       render :edit
     end
@@ -50,7 +52,8 @@ class GSuitesController < ApplicationController
     authorize @g_suite
 
     @g_suite.deleted_at = Time.now
-    redirect_to g_suites_url, notice: 'G suite was successfully destroyed.'
+    flash[:success] = 'G Suite was successfully destroyed.'
+    redirect_to g_suites_url
   end
 
   private
