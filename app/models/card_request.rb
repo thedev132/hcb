@@ -22,6 +22,10 @@ class CardRequest < ApplicationRecord
     rejected_at.nil? && canceled_at.nil? && accepted_at.nil?
   end
 
+  def rejected?
+    rejected_at.present?
+  end
+
   def send_accept_email
     CardRequestMailer.with(card_request: self).accepted.deliver_later
   end
