@@ -14,12 +14,8 @@
       <li><%= link_to 'Load Card Requests', load_card_requests_path %></li>
       <li><%= link_to 'Events', events_path %></li>
       <li><%= link_to 'Sponsors', sponsors_path %></li>
-      <li><%= link_to 'Login', auth_users_path %>
-        <ul class="list">
-          <li><%= link_to 'Logout', logout_users_path, method: :delete %></li>
-        </ul>
-      </li>
     </ul>
+    <%= link_to 'Sign out', logout_users_path, method: :delete, class: 'btn mt2' %>
   <% else %>
     <h1>Welcome to <span class="primary">Hack Club Bank</span>.</h1>
     <% if signed_in? %>
