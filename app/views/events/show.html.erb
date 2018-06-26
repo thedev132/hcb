@@ -80,10 +80,10 @@
   <%= blankslate 'No cards yet' %>
 <% end %>
 
-<% if @event.card_requests.any? %>
+<% if @card_requests.any? %>
   <h3 class="mb1">Card Requests</h3>
   <ul class="list list--unlinked list--row">
-    <% @event.card_requests.each do |request| %>
+    <% @card_requests.each do |request| %>
       <li>
         <p>
           <strong><%= request.full_name %> – <%= request.status %></strong>
