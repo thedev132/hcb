@@ -29,7 +29,7 @@ class GSuiteApplicationsController < ApplicationController
 
     if @g_suite_application.save
       flash[:success] = 'G Suite application submitted!'
-      redirect_to @g_suite_application
+      redirect_to @g_suite_application.event
     else
       render :new
     end
@@ -54,7 +54,7 @@ class GSuiteApplicationsController < ApplicationController
     authorize @g_suite_application
 
     flash[:success] = 'G Suite application was successfully destroyed.'
-    redirect_to g_suite_applications_url
+    redirect_to @g_suite_application.event
   end
 
   private
