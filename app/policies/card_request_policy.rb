@@ -8,7 +8,7 @@ class CardRequestPolicy < ApplicationPolicy
   end
 
   def create?
-    record.user == user || user.admin?
+    record.creator == user || user.admin?
   end
 
   def show?
