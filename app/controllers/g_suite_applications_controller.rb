@@ -13,6 +13,26 @@ class GSuiteApplicationsController < ApplicationController
     authorize @g_suite_application
   end
 
+  def accept
+    @g_suite_application.accepted_at = Time.now
+
+    authorize @g_suite_application
+
+    if @g_suite_application.save
+      flash[:success] = 'G Suite application accepted!'
+    end
+  end
+
+  def reject
+    @g_suite_application.rejected_at = Time.now
+
+    authorize @g_suite_application
+
+    if @g_suite_application.save
+      flash[:error] = 'G Suite application rejected!'
+    end
+  end
+
   # GET /g_suite_applications/new
   def new
     @g_suite_application = GSuiteApplication.new(event: @event)

@@ -3,6 +3,14 @@ class GSuiteApplicationPolicy < ApplicationPolicy
     user.admin?
   end
 
+  def accept?
+    user.admin?
+  end
+
+  def reject?
+    user.admin?
+  end
+
   def create?
     user.admin? || record.event.users.include?(user)
   end
