@@ -22,7 +22,7 @@
 
   <% if admin_signed_in? %>
     <div class="field">
-      <%= form.label :notes %>
+      <%= form.label :notes, 'Notes (admin-only)' %>
       <%= form.text_area :notes %>
     </div>
   <% end %>
@@ -52,6 +52,6 @@
   </div>
 
   <div class="actions">
-    <%= form.submit 'Send me this card' %>
+    <%= form.submit 'Send this card' %>
   </div>
 <% end %>
