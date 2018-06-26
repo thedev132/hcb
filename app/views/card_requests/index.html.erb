@@ -20,7 +20,7 @@
         <td><%= link_to card_request.event&.name, card_request.event %></td>
         <td><%= render_money card_request.daily_limit.to_i %></td>
         <td><%= card_request.status %></td>
-        <% if card_request.status == 'under review' %>
+        <% if card_request.under_review? %>
           <td><%= link_to 'Show', card_request %></td>
           <td><%= link_to 'Edit', edit_card_request_path(card_request) %></td>
           <td><%= link_to 'Destroy', card_request, method: :delete, data: { confirm: 'Are you sure?' } %></td>
