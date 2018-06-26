@@ -21,7 +21,7 @@ Rails.application.routes.draw do
 
   resources :events do
     resources :g_suite_applications, only: [ :show ], path: 'gsuite_invite'
-    resources :g_suite_accounts
+    resources :g_suite_accounts, only: [ :index ]
     resources :g_suites
 
     resources :organizer_position_invites,
