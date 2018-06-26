@@ -414,7 +414,8 @@ $chevron: "url(<%= asset_url 'chevron.svg' %>) right 12px center no-repeat";
   list-style: none;
   padding: 0;
   margin: 0;
-  a {
+  > a,
+  li > a:first-child {
     display: block;
     color: inherit;
     text-decoration: none;
@@ -473,6 +474,9 @@ $chevron: "url(<%= asset_url 'chevron.svg' %>) right 12px center no-repeat";
 }
 .list--unlinked li {
   background: white;
+  &.bg-snow {
+    background: $gray0;
+  }
 }
 h1 + .list,
 h1 + .details {

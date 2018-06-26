@@ -31,17 +31,55 @@ class UsersController < ApplicationController
     u.save
 
     sign_in u
-    redirect_back_or root_path
+    if u.full_name.blank?
+      redirect_to edit_user_path(u)
+    else
+      redirect_back_or root_path
+    end
   end
 
   def logout
+    require_auth
+    sign_out
+    redirect_to root_path
+  end
+
+  def edit
+    require_current_profile
+    @user = User.find(params[:id])
+  end
+
+  def update
+    require_current_profile
+    @user = User.find(params[:id])
+    if @user.update(user_params)
+      flash[:success] = 'Profile changes saved successfully.'
+      redirect_to params[:redirect_to] || root_path
+    else
+      render :edit
+    end
+  end
+
+  private
+
+  def user_params
+    params.require(:user).permit(:full_name, :email)
+  end
+
+  def require_auth
     unless signed_in?
       flash[:error] = 'Not signed in!'
       redirect_to(request.referrer || root_path)
       return
     end
+  end
 
-    sign_out
-    redirect_to root_path
+  def require_current_profile
+    require_auth
+    unless params[:id].to_i == current_user.id
+      flash[:error] = 'Not your profile!'
+      redirect_to(request.referrer || root_path)
+      return
+    end
   end
 end

@@ -207,6 +207,7 @@ ActiveRecord::Schema.define(version: 2018_06_27_072729) do
     t.datetime "updated_at", null: false
     t.text "session_token"
     t.text "email"
+    t.string "full_name"
     t.index ["api_access_token"], name: "index_users_on_api_access_token", unique: true
     t.index ["api_id"], name: "index_users_on_api_id", unique: true
   end
