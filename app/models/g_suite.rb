@@ -4,6 +4,7 @@ class GSuite < ApplicationRecord
   belongs_to :event
 
   validates_presence_of :domain, :dns_verification_key
+  validates_uniqueness_of :domain 
   validates :domain, format: { with: URI.regexp }, if: lambda { domain.present? }
 
   def verified?
