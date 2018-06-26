@@ -1,0 +1,42 @@
+<%= form_with(model: g_suite, local: true) do |form| %>
+  <% if g_suite.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(g_suite.errors.count, "error") %> prohibited this g_suite from being saved:</h2>
+
+      <ul>
+      <% g_suite.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :g_suite_application_id %>
+    <%= form.text_field :g_suite_application_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :domain %>
+    <%= form.text_area :domain %>
+  </div>
+
+  <div class="field">
+    <%= form.label :event_id %>
+    <%= form.text_field :event_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :verification_key %>
+    <%= form.text_area :verification_key %>
+  </div>
+
+  <div class="field">
+    <%= form.label :deleted_at %>
+    <%= form.datetime_select :deleted_at %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

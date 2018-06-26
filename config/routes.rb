@@ -1,6 +1,7 @@
 require 'sidekiq/web'
 
 Rails.application.routes.draw do
+  resources :g_suites
   mount Sidekiq::Web => '/sidekiq'
 
   root to: 'static_pages#index'

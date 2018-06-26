@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>G suite application:</strong>
+  <%= @g_suite.g_suite_application %>
+</p>
+
+<p>
+  <strong>Domain:</strong>
+  <%= @g_suite.domain %>
+</p>
+
+<p>
+  <strong>Event:</strong>
+  <%= @g_suite.event %>
+</p>
+
+<p>
+  <strong>Verification key:</strong>
+  <%= @g_suite.verification_key %>
+</p>
+
+<p>
+  <strong>Deleted at:</strong>
+  <%= @g_suite.deleted_at %>
+</p>
+
+<%= link_to 'Edit', edit_g_suite_path(@g_suite) %> |
+<%= link_to 'Back', g_suites_path %>
