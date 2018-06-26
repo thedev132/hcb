@@ -29,8 +29,9 @@ Rails.application.routes.draw do
       path: 'invites'
   end
   resources :g_suite_applications, only: [ :index ]
-  resources :g_suite_accounts, only: [ :index ]
-  get 'verify', to: 'g_suite_account#verify'
+  resources :g_suite_accounts, only: [ :index ], path: 'g_suite_accounts' do
+    get 'verify', to: 'g_suite_account#verify'
+  end
   resources :g_suites, only: [ :index ]
 
   resources :sponsors do
