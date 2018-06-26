@@ -12,6 +12,7 @@
   <% end %>
 
   <%= form.hidden_field :event_id %>
+  <%= form.hidden_field :creator_id, value: current_user.id %>
 
   <div class="field">
     <%= form.label :domain, 'Domain (ex. hackchicago.io)' %>
