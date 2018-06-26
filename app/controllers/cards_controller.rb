@@ -26,8 +26,8 @@ class CardsController < ApplicationController
   end
 
   # GET /cards/1/edit
-  # def edit
-  # end
+  def edit
+  end
 
   # POST /cards
   def create
@@ -39,26 +39,29 @@ class CardsController < ApplicationController
 
     if @card.save && @card_request.save
       @card_request.send_accept_email
-      redirect_to @card, notice: 'Card was successfully created.'
+      flash[:success] = 'Card was successfully created.'
+      redirect_to @card
     else
       render :new
     end
   end
 
   # PATCH/PUT /cards/1
-  # def update
-  #   if @card.update(card_params)
-  #     redirect_to @card, notice: 'Card was successfully updated.'
-  #   else
-  #     render :edit
-  #   end
-  # end
+  def update
+    if @card.update(card_params)
+      flash[:success] = 'Card was successfully updated.'
+      redirect_to @card
+    else
+      render :edit
+    end
+  end
 
   # DELETE /cards/1
-  # def destroy
-  #   @card.destroy
-  #   redirect_to cards_url, notice: 'Card was successfully destroyed.'
-  # end
+  def destroy
+    @card.destroy
+    flash[:success] = 'Card was successfully destroyed.'
+    redirect_to cards_url
+  end
 
   private
     # Use callbacks to share common setup or constraints between actions.
