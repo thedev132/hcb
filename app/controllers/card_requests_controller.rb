@@ -1,16 +1,17 @@
 class CardRequestsController < ApplicationController
   before_action :signed_in_user
-  before_action :signed_in_admin, only: [:accept, :reject]
   before_action :set_card_request, only: [:show, :edit, :update, :destroy]
   before_action :ensure_pending_request, only: [:update, :edit]
 
   # GET /card_requests
   def index
     @card_requests = CardRequest.all
+    authorize @card_requests
   end
 
   # GET /card_requests/1
   def show
+    authorize @card_request
   end
 
   # GET /card_requests/new
@@ -20,11 +21,15 @@ class CardRequestsController < ApplicationController
   end
 
   # GET /card_requests/1/edit
-  # def edit
-  # end
+  def edit
+    authorize @card_request
+  end
 
   def reject
     @card_request = CardRequest.find(params[:card_request_id])
+
+    authorize @card_request
+
     @card_request.rejected_at = Time.current
     if @card_request.save
       flash[:success] = 'Card request rejected.'
@@ -38,6 +43,8 @@ class CardRequestsController < ApplicationController
     @card_request.daily_limit = card_request_params['daily_limit'] * 100
     @card_request.creator = current_user
 
+    authorize @card_request
+
     if @card_request.save
       flash[:success] = 'Your card request is being reviewed.'
       redirect_to @card_request
@@ -48,6 +55,7 @@ class CardRequestsController < ApplicationController
 
   # PATCH/PUT /card_requests/1
   def update
+    authorize @card_request
     if @card_request.update(card_request_params)
       flash[:success] = 'Changes to card request saved.'
       redirect_to @card_request
@@ -58,6 +66,7 @@ class CardRequestsController < ApplicationController
 
   # DELETE /card_requests/1
   def destroy
+    authorize @card_request
     @card_request.canceled_at = Time.now
     flash[:success] = 'Canceled your card request.'
     redirect_to @event
