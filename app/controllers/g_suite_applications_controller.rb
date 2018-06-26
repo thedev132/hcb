@@ -20,6 +20,9 @@ class GSuiteApplicationsController < ApplicationController
 
     if @g_suite_application.save
       flash[:success] = 'G Suite application accepted!'
+      redirect_to @g_suite_application
+    else
+      redirect_to :new
     end
   end
 
@@ -29,7 +32,10 @@ class GSuiteApplicationsController < ApplicationController
     authorize @g_suite_application
 
     if @g_suite_application.save
-      flash[:error] = 'G Suite application rejected!'
+      flash[:success] = 'G Suite application rejected!'
+      redirect_to @g_suite_application
+    else
+      redirect_to :new
     end
   end
 
