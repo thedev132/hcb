@@ -2,7 +2,7 @@ class Event < ApplicationRecord
   has_many :organizer_position_invites
   has_many :organizer_positions
   has_many :users, through: :organizer_positions
-  has_one :g_suite_applications, required: false
+  has_one :g_suite_application, required: false
   has_one :g_suites, required: false
   has_many :g_suite_accounts, through: :g_suite
 
