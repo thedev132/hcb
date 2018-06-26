@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_06_22_090346) do
+ActiveRecord::Schema.define(version: 2018_06_26_021815) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,6 +22,43 @@ ActiveRecord::Schema.define(version: 2018_06_22_090346) do
     t.text "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "card_requests", force: :cascade do |t|
+    t.bigint "creator_id"
+    t.bigint "event_id"
+    t.bigint "fulfilled_by_id"
+    t.datetime "fulfilled_at"
+    t.bigint "daily_limit"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.text "shipping_address"
+    t.string "full_name"
+    t.datetime "rejected_at"
+    t.datetime "accepted_at"
+    t.datetime "canceled_at"
+    t.text "notes"
+    t.index ["creator_id"], name: "index_card_requests_on_creator_id"
+    t.index ["event_id"], name: "index_card_requests_on_event_id"
+    t.index ["fulfilled_by_id"], name: "index_card_requests_on_fulfilled_by_id"
+  end
+
+  create_table "cards", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "event_id"
+    t.bigint "daily_limit"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "last_four"
+    t.string "full_name"
+    t.text "address"
+    t.integer "expiration_month"
+    t.integer "expiration_year"
+    t.bigint "card_request_id"
+    t.text "emburse_id"
+    t.index ["card_request_id"], name: "index_cards_on_card_request_id"
+    t.index ["event_id"], name: "index_cards_on_event_id"
+    t.index ["user_id"], name: "index_cards_on_user_id"
   end
 
   create_table "events", force: :cascade do |t|
@@ -42,6 +79,21 @@ ActiveRecord::Schema.define(version: 2018_06_22_090346) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["event_id"], name: "index_fee_relationships_on_event_id"
+  end
+
+  create_table "g_suite_applications", force: :cascade do |t|
+    t.bigint "creator_id"
+    t.bigint "event_id"
+    t.bigint "fulfilled_by_id"
+    t.text "domain"
+    t.datetime "rejected_at"
+    t.datetime "accepted_at"
+    t.datetime "canceled_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["creator_id"], name: "index_g_suite_applications_on_creator_id"
+    t.index ["event_id"], name: "index_g_suite_applications_on_event_id"
+    t.index ["fulfilled_by_id"], name: "index_g_suite_applications_on_fulfilled_by_id"
   end
 
   create_table "invoices", force: :cascade do |t|
@@ -73,6 +125,18 @@ ActiveRecord::Schema.define(version: 2018_06_22_090346) do
     t.index ["item_stripe_id"], name: "index_invoices_on_item_stripe_id", unique: true
     t.index ["sponsor_id"], name: "index_invoices_on_sponsor_id"
     t.index ["stripe_invoice_id"], name: "index_invoices_on_stripe_invoice_id", unique: true
+  end
+
+  create_table "load_card_requests", force: :cascade do |t|
+    t.bigint "card_id"
+    t.bigint "creator_id"
+    t.bigint "fulfilled_by_id"
+    t.bigint "load_amount"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["card_id"], name: "index_load_card_requests_on_card_id"
+    t.index ["creator_id"], name: "index_load_card_requests_on_creator_id"
+    t.index ["fulfilled_by_id"], name: "index_load_card_requests_on_fulfilled_by_id"
   end
 
   create_table "organizer_position_invites", force: :cascade do |t|
@@ -160,8 +224,19 @@ ActiveRecord::Schema.define(version: 2018_06_22_090346) do
     t.index ["api_id"], name: "index_users_on_api_id", unique: true
   end
 
+  add_foreign_key "card_requests", "events"
+  add_foreign_key "card_requests", "users", column: "creator_id"
+  add_foreign_key "card_requests", "users", column: "fulfilled_by_id"
+  add_foreign_key "cards", "events"
+  add_foreign_key "cards", "users"
   add_foreign_key "fee_relationships", "events"
+  add_foreign_key "g_suite_applications", "events"
+  add_foreign_key "g_suite_applications", "users", column: "creator_id"
+  add_foreign_key "g_suite_applications", "users", column: "fulfilled_by_id"
   add_foreign_key "invoices", "sponsors"
+  add_foreign_key "load_card_requests", "cards"
+  add_foreign_key "load_card_requests", "users", column: "creator_id"
+  add_foreign_key "load_card_requests", "users", column: "fulfilled_by_id"
   add_foreign_key "organizer_position_invites", "events"
   add_foreign_key "organizer_position_invites", "organizer_positions"
   add_foreign_key "organizer_position_invites", "users"

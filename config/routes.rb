@@ -20,6 +20,7 @@ Rails.application.routes.draw do
   end
 
   resources :events do
+    resources :g_suite_applications, only: [ :show ], path: 'gsuite_invite'
     resources :organizer_position_invites,
       only: [ :new, :create ],
       path: 'invites'
