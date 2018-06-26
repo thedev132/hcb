@@ -1,7 +1,7 @@
 class GSuiteAccount < ApplicationRecord
   belongs_to :g_suite
 
-  validates :address, presence: true
+  validates_presence_of :address
 
   def verified?
     verified_at.present?

@@ -4,9 +4,9 @@ class GSuite < ApplicationRecord
   belongs_to :event
 
   validates_presence_of :domain, :dns_verification_key
-  validates :domain, format: { with: URI.regexp }, if: 'domain.present?'
+  validates :domain, format: { with: URI.regexp }, if: lambda { domain.present? }
 
   def verified?
-    # one of the accounts is verified
+    self.g_suite_accounts.any? { |account| !account.verified_at.null? }
   end
 end

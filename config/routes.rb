@@ -30,6 +30,7 @@ Rails.application.routes.draw do
   end
   resources :g_suite_applications, only: [ :index ]
   resources :g_suite_accounts, only: [ :index ]
+  get 'verify', to: 'g_suite_account#verify'
   resources :g_suites, only: [ :index ]
 
   resources :sponsors do
