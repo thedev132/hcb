@@ -1,4 +1,5 @@
-<main class="flex flex-column mx-auto center items-center max-width-4 pt3">
+<main class="flex flex-column mx-auto center items-center col-12 pt3"
+  style="max-width: 36rem;">
   <% if admin_signed_in? %>
     <h1 class="col-12">Grand Central Station of <span class="primary">Bank</span></h1>
     <ul class="list left-align col-12">
@@ -17,11 +18,11 @@
     </ul>
     <%= link_to 'Sign out', logout_users_path, method: :delete, class: 'btn mt2' %>
   <% else %>
-    <h1>Welcome to <span class="primary">Hack Club Bank</span>.</h1>
+    <h1 class="col-12">Welcome to <span class="primary">Hack Club Bank</span>.</h1>
     <% if signed_in? %>
-      <% if current_user.events.any? %>
+      <% if @events.any? %>
         <ul class="list left-align col-12">
-          <% current_user.events.each do |event| %>
+          <% @events.each do |event| %>
             <%= link_to event do %>
               <li>
                 <strong><%= event.name %></strong>
@@ -29,13 +30,11 @@
             <% end %>
           <% end %>
         </ul>
-      <% else %>
-        <p class="slate h3 bold">No events found.</p>
       <% end %>
-      <% if current_user.organizer_position_invites.pending.any? %>
+      <% if @invites.any? %>
         <h2 class="h4 col-12 left-align mt3 mb0 ttu slate">Your pending invitations</h2>
         <ul class="list left-align col-12">
-          <% current_user.organizer_position_invites.pending.each do |invite| %>
+          <% @invites.each do |invite| %>
             <%= link_to invite do %>
               <li>
                 <strong><%= invite.event.name %></strong>
@@ -43,7 +42,10 @@
             <% end %>
           <% end %>
         </ul>
-        <% end %>
+      <% end %>
+      <% if @events.empty? && @invites.empty? %>
+        <%= blankslate 'No events found' %>
+      <% end %>
       <%= link_to 'Sign out', logout_users_path, method: :delete, class: 'btn mt2' %>
     <% else %>
       <%= link_to 'Sign in', auth_users_path, class: 'btn h2' %>
