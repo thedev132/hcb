@@ -15,7 +15,7 @@ class UsersController < ApplicationController
   # post to exchange auth token for access token
   def exchange_login_code
     @user_id = params[:user_id]
-    login_code = params[:login_code].gsub('-', '')
+    login_code = params[:login_code].to_s.gsub('-', '').gsub(/\s+/, '')
 
     resp = ApiService.exchange_login_code(@user_id, login_code)
 
