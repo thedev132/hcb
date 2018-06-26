@@ -40,7 +40,7 @@ class CardRequestsController < ApplicationController
   # POST /card_requests
   def create
     @card_request = CardRequest.new(card_request_params)
-    @card_request.daily_limit = card_request_params['daily_limit'] * 100
+    @card_request.daily_limit = card_request_params['daily_limit'].to_i * 100
     @card_request.creator = current_user
 
     authorize @card_request
