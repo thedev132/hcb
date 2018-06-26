@@ -2,7 +2,7 @@
   <% if admin_signed_in? %>
     <h1>Grand Central Station of <span class="primary">Bank</span></h1>
     <ul class="list left-align col-12">
-      <li>
+      <li class="ultrawhite">
         Bank Account
         <ul class="list">
           <li><%= link_to 'Setup Bank', new_bank_account_path %></li>
@@ -11,6 +11,14 @@
       </li>
       <li><%= link_to 'Events', events_path %></li>
       <li><%= link_to 'Sponsors', sponsors_path %></li>
+      <li class="ultrawhite">
+        G Suite
+        <ul class="list">
+          <li><%= link_to 'G Suite Applications', g_suite_applications_path %></li>
+          <li><%= link_to 'G Suites', g_suites_path %></li>
+          <li><%= link_to 'G Suite Accounts', g_suite_accounts_path %></li>
+        </ul>
+      </li>
       <li><%= link_to 'Login', auth_users_path %>
         <ul class="list">
           <li><%= link_to 'Logout', logout_users_path, method: :delete %></li>

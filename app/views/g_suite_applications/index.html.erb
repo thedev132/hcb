@@ -1,13 +1,10 @@
-<p id="notice"><%= notice %></p>
-
 <h1>G Suite Applications</h1>
 
 <table>
   <thead>
     <tr>
-      <th>User</th>
+      <th>Creator</th>
       <th>Event</th>
-      <th>User</th>
       <th>Domain</th>
       <th>Rejected at</th>
       <th>Accepted at</th>
@@ -19,9 +16,8 @@
   <tbody>
     <% @g_suite_applications.each do |g_suite_application| %>
       <tr>
-        <td><%= g_suite_application.user %></td>
-        <td><%= g_suite_application.event %></td>
-        <td><%= g_suite_application.user %></td>
+        <td><%= g_suite_application.creator.email %></td>
+        <td><%= link_to g_suite_application.event.name, g_suite_application.event %></td>
         <td><%= g_suite_application.domain %></td>
         <td><%= g_suite_application.rejected_at %></td>
         <td><%= g_suite_application.accepted_at %></td>
@@ -33,7 +29,3 @@
     <% end %>
   </tbody>
 </table>
-
-<br>
-
-<%= link_to 'New G Suite Application', new_g_suite_application_path %>

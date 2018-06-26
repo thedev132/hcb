@@ -1,11 +1,12 @@
-<p id="notice"><%= notice %></p>
-
-<h1>G Suites</h1>
+<h1 class="heading">
+  G Suites
+  <%= link_to 'New G Suite', new_g_suite_path, class: 'btn bg-success' %>
+</h1>
 
 <table>
   <thead>
     <tr>
-      <th>G Suite application</th>
+      <th>Application</th>
       <th>Domain</th>
       <th>Event</th>
       <th>Verification key</th>
@@ -17,9 +18,9 @@
   <tbody>
     <% @g_suites.each do |g_suite| %>
       <tr>
-        <td><%= g_suite.g_suite_application %></td>
+        <td><%= link_to 'Application', g_suite.g_suite_application %></td>
         <td><%= g_suite.domain %></td>
-        <td><%= g_suite.event %></td>
+        <td><%= link_to g_suite.event.name, g_suite.event %></td>
         <td><%= g_suite.verification_key %></td>
         <td><%= g_suite.deleted_at %></td>
         <td><%= link_to 'Show', g_suite %></td>
@@ -29,7 +30,3 @@
     <% end %>
   </tbody>
 </table>
-
-<br>
-
-<%= link_to 'New G Suite', new_g_suite_path %>

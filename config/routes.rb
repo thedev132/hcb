@@ -28,6 +28,9 @@ Rails.application.routes.draw do
       only: [ :new, :create ],
       path: 'invites'
   end
+  resources :g_suite_applications, only: [ :index ]
+  resources :g_suite_accounts, only: [ :index ]
+  resources :g_suites, only: [ :index ]
 
   resources :sponsors do
     resources :invoices, only: [ :new, :create ]
