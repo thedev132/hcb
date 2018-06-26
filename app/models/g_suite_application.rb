@@ -3,7 +3,9 @@ class GSuiteApplication < ApplicationRecord
   belongs_to :event
   belongs_to :fulfilled_by, class_name: 'User', required: false
 
-  validates :creator, :event, :domain, :fulfilled_by, presence: true
+  validates_presence_of :creator, :event, :domain
+  validates_uniqueness_of :domain
+  validate :domain_without_protocol
 
   scope :outstanding, -> { where(accepted_at: nil) }
   scope :under_review, -> { where(rejected_at: nil, canceled_at: nil, accepted_at: nil) }
@@ -21,5 +23,12 @@ class GSuiteApplication < ApplicationRecord
 
   def rejected?
     rejected_at.present?
+  end
+
+  private
+
+  def domain_without_protocol
+    uri = URI.parse(domain)
+    uri.scheme.nil?
   end
 end
