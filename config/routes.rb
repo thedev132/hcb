@@ -28,7 +28,10 @@ Rails.application.routes.draw do
       only: [ :new, :create ],
       path: 'invites'
   end
-  resources :g_suite_applications, only: [ :index ]
+  resources :g_suite_applications, only: [ :index ] do
+    post 'accept'
+    post 'reject'
+  end
   resources :g_suite_accounts, only: [ :index ], path: 'g_suite_accounts' do
     get 'verify', to: 'g_suite_account#verify'
   end
