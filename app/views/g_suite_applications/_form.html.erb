@@ -1,4 +1,4 @@
-<%= form_with(model: g_suite_application, local: true) do |form| %>
+<%= form_with(model: [g_suite_application.event, g_suite_application]) do |form| %>
   <% if g_suite_application.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(g_suite_application.errors.count, "error") %> prohibited this g_suite_application from being saved:</h2>
@@ -11,42 +11,14 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= form.label :user_id %>
-    <%= form.text_field :user_id %>
-  </div>
+  <%= form.hidden_field :event_id %>
 
   <div class="field">
-    <%= form.label :event_id %>
-    <%= form.text_field :event_id %>
-  </div>
-
-  <div class="field">
-    <%= form.label :user_id %>
-    <%= form.text_field :user_id %>
-  </div>
-
-  <div class="field">
-    <%= form.label :domain %>
-    <%= form.text_area :domain %>
-  </div>
-
-  <div class="field">
-    <%= form.label :rejected_at %>
-    <%= form.datetime_select :rejected_at %>
-  </div>
-
-  <div class="field">
-    <%= form.label :accepted_at %>
-    <%= form.datetime_select :accepted_at %>
-  </div>
-
-  <div class="field">
-    <%= form.label :canceled_at %>
-    <%= form.datetime_select :canceled_at %>
+    <%= form.label :domain, 'Domain (ex. hackchicago.io)' %>
+    <%= form.text_field :domain %>
   </div>
 
   <div class="actions">
-    <%= form.submit %>
+    <%= form.submit 'Submit application' %>
   </div>
 <% end %>

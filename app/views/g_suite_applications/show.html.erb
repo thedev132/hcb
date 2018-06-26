@@ -1,39 +1,36 @@
-<p id="notice"><%= notice %></p>
+<%= link_to 'G Suite Applications', g_suite_applications_path, class: 'breadcrumb' %>
+<h1>Application for <%= @g_suite_application.domain %></h1>
 
+<section class="details">
 <p>
-  <strong>User:</strong>
-  <%= @g_suite_application.user %>
+  <strong>Submitted by</strong>
+  <%= @g_suite_application.creator.email %>
 </p>
 
 <p>
-  <strong>Event:</strong>
-  <%= @g_suite_application.event %>
+  <strong>Event</strong>
+  <%= link_to @g_suite_application.event.name, @g_suite_application.event %>
 </p>
 
 <p>
-  <strong>User:</strong>
-  <%= @g_suite_application.user %>
-</p>
-
-<p>
-  <strong>Domain:</strong>
+  <strong>Domain</strong>
   <%= @g_suite_application.domain %>
 </p>
 
 <p>
-  <strong>Rejected at:</strong>
+  <strong>Rejected at</strong>
   <%= @g_suite_application.rejected_at %>
 </p>
 
 <p>
-  <strong>Accepted at:</strong>
+  <strong>Accepted at</strong>
   <%= @g_suite_application.accepted_at %>
 </p>
 
 <p>
-  <strong>Canceled at:</strong>
+  <strong>Canceled at</strong>
   <%= @g_suite_application.canceled_at %>
 </p>
+</section>
 
-<%= link_to 'Edit', edit_g_suite_application_path(@g_suite_application) %> |
-<%= link_to 'Back', g_suite_applications_path %>
+<!-- TODO: needs accept/reject buttons -->

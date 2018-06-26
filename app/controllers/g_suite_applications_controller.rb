@@ -1,5 +1,6 @@
 class GSuiteApplicationsController < ApplicationController
   before_action :set_g_suite_application, only: [:show, :edit, :update, :destroy]
+  before_action :set_event, except: [:index]
 
   # GET /g_suite_applications
   def index
@@ -14,7 +15,7 @@ class GSuiteApplicationsController < ApplicationController
 
   # GET /g_suite_applications/new
   def new
-    @g_suite_application = GSuiteApplication.new
+    @g_suite_application = GSuiteApplication.new(event: @event)
   end
 
   # GET /g_suite_applications/1/edit
@@ -54,7 +55,7 @@ class GSuiteApplicationsController < ApplicationController
     authorize @g_suite_application
 
     flash[:success] = 'G Suite application was successfully destroyed.'
-    redirect_to @g_suite_application.event
+    redirect_to @event
   end
 
   private
@@ -63,8 +64,13 @@ class GSuiteApplicationsController < ApplicationController
       @g_suite_application = GSuiteApplication.find(params[:id])
     end
 
+    def set_event
+      # TODO: needs security for if event isnt yours
+      @event = Event.find(params[:event_id])
+    end
+
     # Only allow a trusted parameter "white list" through.
     def g_suite_application_params
-      params.require(:g_suite_application).permit(:user_id, :event_id, :user_id, :domain, :rejected_at, :accepted_at, :canceled_at)
+      params.require(:g_suite_application).permit(:user_id, :event_id, :fulfilled_by, :domain, :rejected_at, :accepted_at, :canceled_at)
     end
 end

@@ -1,6 +1,5 @@
+<%= link_to 'All G Suite Applications', g_suite_applications_path, class: 'breadcrumb' %>
+<%= link_to 'This Application', @g_suite_application, class: 'breadcrumb' %>
 <h1>Editing G Suite Application</h1>
 
 <%= render 'form', g_suite_application: @g_suite_application %>
-
-<%= link_to 'Show', @g_suite_application %> |
-<%= link_to 'Back', g_suite_applications_path %>

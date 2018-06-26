@@ -1,5 +1,4 @@
-<h1>New G Suite Application</h1>
+<%= link_to @g_suite_application.event.name, @g_suite_application.event, class: 'breadcrumb' %>
+<h1>Apply for G Suite</h1>
 
 <%= render 'form', g_suite_application: @g_suite_application %>
-
-<%= link_to 'Back', g_suite_applications_path %>

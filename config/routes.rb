@@ -20,7 +20,7 @@ Rails.application.routes.draw do
   end
 
   resources :events do
-    resources :g_suite_applications, only: [ :show ], path: 'gsuite_invite'
+    resources :g_suite_applications, except: [ :index ]
     resources :g_suite_accounts, only: [ :index ]
     resources :g_suites
 
