@@ -17,7 +17,7 @@
       <tr>
         <td><%= card_request.creator.email %> (#<%= card_request.creator.id %>)</td>
         <td><%= card_request.full_name %></td>
-        <td><%= link_to card_request.event.name, card_request.event %></td>
+        <td><%= link_to card_request.event&.name, card_request.event %></td>
         <td><%= render_money card_request.daily_limit.to_i %></td>
         <td><%= card_request.status %></td>
         <% if card_request.status == 'under review' %>
