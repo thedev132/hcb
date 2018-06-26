@@ -31,7 +31,6 @@
   Team Members
   <%= link_to 'Invite More', new_event_organizer_position_invite_path(@event), class: 'btn bg-success' %>
 </h2>
-
 <ul class="list list--unlinked mb0">
   <% @event.organizer_positions.each do |position| %>
     <li>
@@ -44,7 +43,7 @@
 </ul>
 
 <% if @event.organizer_position_invites.pending.any? %>
-  <h3 class="mb1">Pending invitations</h3>
+  <h3 class="mb1">Pending Invitations</h3>
   <ul class="list list--unlinked my0">
     <% @event.organizer_position_invites.pending.each do |invite| %>
       <li>
@@ -79,7 +78,7 @@
 <% end %>
 
 <% if @event.card_requests.any? %>
-  <h3 class="mb1">Card requests</h3>
+  <h3 class="mb1">Card Requests</h3>
   <ul class="list list--unlinked list--row">
     <% @event.card_requests.each do |request| %>
       <li>
@@ -94,7 +93,7 @@
 <% end %>
 
 <% if @load_card_requests.any? %>
-  <h3 class="mb1">Card load requests</h3>
+  <h3 class="mb1">Load Card Requests</h3>
   <ul class="list list--unlinked list--row">
     <% @load_card_requests.each do |request| %>
       <li>
@@ -119,7 +118,7 @@
     <th>Date</th>
     <th>Description</th>
     <th>Amount</th>
-    <th>Full Info</th>
+    <th>More</th>
   </tr>
   <% @event.transactions.each do |t| %>
     <tr class="transaction--<%= t.amount.negative? ? 'negative' : 'positive' %>">
@@ -133,7 +132,7 @@
         <%= render_money t.amount %>
       </td>
       <td>
-        <%= link_to 'Click', t %>
+        <%= link_to 'Details', t %>
       </td>
     </tr>
   <% end %>
@@ -172,7 +171,7 @@
     <th>Date</th>
     <th>Description</th>
     <th>Amount</th>
-    <th>Full Info</th>
+    <th>More</th>
   </tr>
   <% @event.fee_payments.each do |t| %>
     <tr class="transaction--negative">
@@ -186,7 +185,7 @@
         <%= render_money t.amount %>
       </td>
       <td>
-        <%= link_to 'Click', t %>
+        <%= link_to 'Details', t %>
       </td>
     </tr>
   <% end %>
@@ -203,8 +202,8 @@
     <th>Date</th>
     <th>Description</th>
     <th>Amount</th>
-    <th>Fee Amount</th>
-    <th>Full Info</th>
+    <th>Fee</th>
+    <th>More</th>
   </tr>
   <% @event.billed_transactions.each do |t| %>
     <tr class="transaction--positive">
@@ -225,7 +224,7 @@
         <% end %>
       </td>
       <td>
-        <%= link_to 'Click', t %>
+        <%= link_to 'Details', t %>
       </td>
     </tr>
   <% end %>
