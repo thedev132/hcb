@@ -1,15 +1,16 @@
 class CardsController < ApplicationController
   before_action :set_card, only: [:show, :edit, :update, :destroy]
-  before_action :signed_in_admin, only: [:edit, :update, :destroy]
 
   # GET /cards
   def index
     @cards = Card.all
+    authorize @cards
   end
 
   # GET /cards/1
   def show
     @load_card_requests = @card.load_card_requests
+    authorize @card
   end
 
   # GET /cards/new
@@ -23,16 +24,21 @@ class CardsController < ApplicationController
       address: @card_request.shipping_address,
       card_request_id: @card_request.id
     )
+    authorize @card
   end
 
   # GET /cards/1/edit
   def edit
+    authorize @card
   end
 
   # POST /cards
   def create
     @card_request = CardRequest.find(card_params['card_request_id'])
     @card = Card.new(card_params)
+
+    authorize @card
+
     @card.card_request_id = @card_request.id
     @card_request.accepted_at = Time.current
     @card_request.fulfilled_by = current_user
@@ -48,6 +54,8 @@ class CardsController < ApplicationController
 
   # PATCH/PUT /cards/1
   def update
+    authorize @card
+
     if @card.update(card_params)
       flash[:success] = 'Card was successfully updated.'
       redirect_to @card
@@ -58,7 +66,9 @@ class CardsController < ApplicationController
 
   # DELETE /cards/1
   def destroy
-    @card.destroy
+    authorize @card
+
+    @card.deleted_at = Time.now
     flash[:success] = 'Card was successfully destroyed.'
     redirect_to cards_url
   end
