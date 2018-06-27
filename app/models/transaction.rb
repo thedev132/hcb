@@ -10,9 +10,8 @@ class Transaction < ApplicationRecord
 
   accepts_nested_attributes_for :fee_relationship
 
-  validates :fee_relationship,
-    presence: true,
-    if: -> { self.is_event_related }
+  validates :is_event_related, inclusion: { in: [ true, false ] }
+
   validates :fee_relationship,
     absence: true,
     unless: -> { self.is_event_related }
