@@ -3,7 +3,7 @@ class Invoice < ApplicationRecord
 
   validates_presence_of :item_description, :item_amount, :due_date
 
-  validate :due_date_cannot_be_in_past
+  validate :due_date_cannot_be_in_past, on: :create
 
   before_create :set_memo, :create_stripe_invoice
 
