@@ -52,8 +52,10 @@
   </ul>
 <% end %>
 
-<h2>Transactions</h2>
-
+<h2 class="heading mb0">
+  Transactions
+  <%= link_to 'Export CSV', transactions_path(event: @event), class: 'btn bg-info', target: :_blank %>
+</h2>
 <% if @event.transactions.size.zero? %>
   <p>No transactions yet!</p>
 <% else %>

@@ -1,7 +1,10 @@
+require 'csv'
+
 class Transaction < ApplicationRecord
   acts_as_paranoid
 
   default_scope { order(date: :desc, id: :desc) }
+  default_scope { where(deleted_at: nil) }
 
   belongs_to :bank_account
 

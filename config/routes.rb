@@ -31,5 +31,5 @@ Rails.application.routes.draw do
   resources :invoices, only: [ :show ]
 
   resources :bank_accounts, only: [ :new, :create, :show ]
-  resources :transactions, only: [ :show, :edit, :update ]
+  resources :transactions, only: [ :index, :show, :edit, :update ]
 end
