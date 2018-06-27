@@ -2,8 +2,8 @@ class Sponsor < ApplicationRecord
   belongs_to :event
   has_many :invoices
 
-  validates_presence_of :name, :contact_email, :address_line1,
-    :address_line2, :address_city, :address_state, :address_postal_code
+  validates_presence_of :name, :contact_email, :address_line1, :address_city,
+    :address_state, :address_postal_code
 
   before_create :create_stripe_customer
   before_update :update_stripe_customer
