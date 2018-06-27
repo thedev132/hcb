@@ -50,7 +50,7 @@ class GSuiteApplicationsController < ApplicationController
 
   # POST /g_suite_applications
   def create
-    @g_suite_application = GSuiteApplication.new(g_suite_application_params)
+    @g_suite_application = GSuiteApplication.new(g_suite_application_params.merge(creator: current_user))
 
     authorize @g_suite_application
 
