@@ -20,7 +20,12 @@ class GSuiteApplicationsController < ApplicationController
 
     if @g_suite_application.save
       flash[:success] = "G Suite application accepted for #{@g_suite_application.event.name}. Domain: #{@g_suite_application.domain}"
-      redirect_to new_event_g_suite_path(event_id: @g_suite_application.event.id, domain: @g_suite_application.domain)
+      redirect_to new_event_g_suite_path(
+        event_id: @g_suite_application.event.id,
+        params: {
+          domain: @g_suite_application.domain,
+          g_suite_application_id: @g_suite_application.id
+        })
     else
       redirect_to :new
     end
