@@ -1,7 +1,7 @@
 <main class="flex flex-column mx-auto center items-center max-width-4 pt3">
   <% if admin_signed_in? %>
     <h1>Grand Central Station of <span class="primary">Bank</span></h1>
-    <ul class="list left-align col-12">
+    <ul class="list left-align w-100">
       <li class="ultrawhite">
         Bank Account
         <ul class="list">
@@ -29,7 +29,7 @@
     <h1>Welcome to <span class="primary">Hack Club Bank</span>.</h1>
     <% if signed_in? %>
       <% if current_user.events.any? %>
-        <ul class="list left-align col-12">
+        <ul class="list left-align w-100">
           <% current_user.events.each do |event| %>
             <%= link_to event do %>
               <li>
@@ -42,8 +42,8 @@
         <p class="slate h3 bold">No events found.</p>
       <% end %>
       <% if current_user.organizer_position_invites.pending.any? %>
-        <h2 class="h4 col-12 left-align mt3 mb0 ttu slate">Your pending invitations</h2>
-        <ul class="list left-align col-12">
+        <h2 class="h4 w-100 left-align mt3 mb0 ttu slate">Your pending invitations</h2>
+        <ul class="list left-align w-100">
           <% current_user.organizer_position_invites.pending.each do |invite| %>
             <%= link_to invite do %>
               <li>
