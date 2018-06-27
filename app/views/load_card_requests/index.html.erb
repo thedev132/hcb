@@ -9,6 +9,7 @@
       <th>Creator</th>
       <th>Fulfilled by</th>
       <th>Load amount</th>
+      <th>Status</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -20,9 +21,12 @@
         <td><%= request.creator.email %></td>
         <td><%= request.fulfilled_by&.email %></td>
         <td><%= render_money request.load_amount %></td>
-        <td><%= link_to 'Show', card_load_card_request_path(request, card_id: request.card.id) %></td>
-        <td><%= link_to 'Edit', edit_card_load_card_request_path(request, card_id: request.card.id) %></td>
-        <td><%= link_to 'Destroy', card_load_card_request_path(request, card_id: request.card.id), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= request.status %></td>
+        <% if request.status == 'under review' %>
+          <td><%= link_to 'Show', card_load_card_request_path(request, card_id: request.card.id) %></td>
+          <td><%= link_to 'Reject', card_load_card_request_reject_path(request, card_id: request.card.id), method: :post, data: { confirm: 'Are you sure?' } %></td>
+          <td><%= link_to 'Accept', card_load_card_request_accept_path(request, card_id: request.card.id), method: :post, data: { confirm: 'Are you sure?' } %></td>
+        <% end %>
       </tr>
     <% end %>
   </tbody>

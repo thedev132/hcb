@@ -9,6 +9,6 @@ class LoadCardRequest < ApplicationRecord
     return 'completed' if accepted_at.present?
     return 'canceled' if canceled_at.present?
     return 'rejected' if rejected_at.present?
-    'under_review'
+    'under review'
   end
 end

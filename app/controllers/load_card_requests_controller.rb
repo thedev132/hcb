@@ -1,5 +1,5 @@
 class LoadCardRequestsController < ApplicationController
-  before_action :set_load_card_request, only: [:show, :edit, :update, :reject, :cancel]
+  before_action :set_load_card_request, only: [:show, :edit, :update, :reject, :cancel, :accept]
 
   def index
     @load_card_requests = LoadCardRequest.all
@@ -12,12 +12,14 @@ class LoadCardRequestsController < ApplicationController
   end
 
   def accept
-    @load_card_request.fulfiled_at = Time.now
-    @load_card_request.fulfiled_by = current_user
+    @load_card_request.accepted_at = Time.now
+    @load_card_request.fulfilled_by = current_user
+
 
     authorize @load_card_request
 
     @load_card_request.save
+    redirect_to load_card_requests_path
   end
 
   def new
