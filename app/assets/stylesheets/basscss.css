@@ -415,22 +415,22 @@
   border: 0;
 }
 .rounded {
-  border-radius: 3px;
+  border-radius: 4px;
 }
 .circle {
   border-radius: 50%;
 }
 .rounded-top {
-  border-radius: 3px 3px 0 0;
+  border-radius: 4px 4px 0 0;
 }
 .rounded-right {
-  border-radius: 0 3px 3px 0;
+  border-radius: 0 4px 4px 0;
 }
 .rounded-bottom {
-  border-radius: 0 0 3px 3px;
+  border-radius: 0 0 4px 4px;
 }
 .rounded-left {
-  border-radius: 3px 0 0 3px;
+  border-radius: 4px 0 0 4px;
 }
 .not-rounded {
   border-radius: 0;
