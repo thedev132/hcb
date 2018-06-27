@@ -51,9 +51,12 @@ class GSuitesController < ApplicationController
   def destroy
     authorize @g_suite
 
-    @g_suite.deleted_at = Time.now
-    flash[:success] = 'G Suite was successfully destroyed.'
-    redirect_to g_suites_url
+    if @g_suite.update(deleted_at: Time.now)
+      flash[:success] = 'G Suite was successfully destroyed.'
+      redirect_to g_suites_url
+    else
+      render :index
+    end
   end
 
   def status
