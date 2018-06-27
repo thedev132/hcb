@@ -23,13 +23,12 @@ class Invoice < ApplicationRecord
   end
 
   def set_fields_from_stripe_invoice(inv)
-    # TODO: set self.stripe_charge_id
-
     self.amount_due = inv.amount_due,
     self.amount_paid = inv.amount_paid
     self.amount_remaining = inv.amount_remaining
     self.attempt_count = inv.attempt_count
     self.attempted = inv.attempted
+    self.stripe_charge_id = inv.charge
     self.closed = inv.closed
     self.memo = inv.description
     self.due_date = Time.at(inv.due_date).to_datetime # convert from unixtime
