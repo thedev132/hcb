@@ -70,7 +70,7 @@
         <li>
           <p>
             <strong><%= card.full_name %></strong>
-            <span class="muted">(added <span title="<%= card.created_at %>"><%= time_ago_in_words card.created_at %> ago</span>)</span>
+            <span class="muted">XXXX-XXXX-XXXX-<%= card.last_four %> (added <span title="<%= card.created_at %>"><%= time_ago_in_words card.created_at %> ago</span>)</span>
           </p>
         </li>
       <% end %>
@@ -89,7 +89,9 @@
           <strong><%= request.full_name %> – <%= request.status %></strong>
           <span class="muted">(added <span title="<%= request.created_at %>"><%= time_ago_in_words request.created_at %> ago</span>)</span>
         </p>
-        <%= link_to 'Cancel', request, method: :delete, 'data-confirm': 'Are you sure you want to cancel this card request?', class: 'btn bg-white' unless request.rejected? %>
+        <% if request.under_review? %>
+          <%= link_to 'Cancel', request, method: :delete, 'data-confirm': 'Are you sure you want to cancel this card request?', class: 'btn bg-white' unless request.rejected? %>
+        <% end %>
       </li>
     <% end %>
   </ul>
