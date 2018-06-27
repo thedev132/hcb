@@ -10,6 +10,8 @@ when :start %>
 <% when :app_accepted %>
   <p><strong>Your application was accepted!</strong> It’s time to set up your servers.</p>
   <!-- instructions go here -->
+<% when :app_rejected %>
+  <p class="error">Your application was rejected.</p>
 <% when :verify_setup %>
   <p>Time to verify your G Suite setup. You and your teammates got emailed links to verify your accounts—click yours now.</p>
   <p>This will disappear as soon as you’ve clicked that link!</p>
