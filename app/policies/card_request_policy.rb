@@ -24,7 +24,7 @@ class CardRequestPolicy < ApplicationPolicy
   end
 
   def destroy?
-    user.admin?
+    user.events.include?(record.event) || user.admin?
   end
 
   def accept?

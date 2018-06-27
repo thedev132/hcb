@@ -42,12 +42,13 @@ class CardRequestsController < ApplicationController
     @card_request = CardRequest.new(card_request_params)
     @card_request.daily_limit = card_request_params['daily_limit'].to_i * 100
     @card_request.creator = current_user
+    @event = @card_request.event
 
     authorize @card_request
 
     if @card_request.save
       flash[:success] = 'Your card request is being reviewed.'
-      redirect_to @card_request
+      redirect_to @event
     else
       render :new
     end
@@ -68,8 +69,12 @@ class CardRequestsController < ApplicationController
   def destroy
     authorize @card_request
     @card_request.canceled_at = Time.now
-    flash[:success] = 'Canceled your card request.'
-    redirect_to @event
+    if @card_request.save
+      flash[:success] = 'Canceled your card request.'
+      redirect_to @event
+    else
+      redirect_to @event
+    end
   end
 
   private
