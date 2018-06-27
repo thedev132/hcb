@@ -22,4 +22,8 @@ class GSuitePolicy < ApplicationPolicy
   def destroy?
     user.admin?
   end
+
+  def status?
+    user.admin? || record.event.users.include?(user)
+  end
 end

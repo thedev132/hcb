@@ -24,6 +24,8 @@ Rails.application.routes.draw do
     resources :g_suite_accounts, only: [ :index ]
     resources :g_suites
 
+    get 'g_suite', to: 'g_suites#status', as: :g_suite_status
+
     resources :organizer_position_invites,
       only: [ :new, :create ],
       path: 'invites'

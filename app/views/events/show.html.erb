@@ -26,25 +26,25 @@
       <strong>Sponsorship fee:</strong> <%= render_percentage @event.sponsorship_fee %>
     </p>
   </div>
-  <div class="event-summary__panel shade-<%= g_suite_summary_color @g_suite_status %>">
+  <% @g_color = g_suite_summary_color(@g_suite_status) %>
+  <div class="event-summary__panel white bg-<%= @g_color %>">
     <h2 class="h3 my0">G Suite</h2>
     <% case @g_suite_status
     when :start %>
       <p>Your event gets free G Suite through Bank! Apply to set it up.</p>
-      <%= link_to 'Get started', new_event_g_suite_application_path(event_id: @event.id), class: 'btn bg-info mt2' %>
+      <%= link_to 'Get started', new_event_g_suite_application_path(event_id: @event.id), class: "btn bg-white #{@g_color} mt1" %>
     <% when :under_review %>
       <p>Your application is under review. Check back soon!</p>
     <% when :app_accepted %>
       <p>Your application was accepted! It’s time to set up your servers.</p>
-      <%= link_to 'Set up G Suite', event_g_suite_path(event_id: @event.id), class: 'btn bg-warning mt2' %>
+      <%= link_to 'Set up G Suite', event_g_suite_status_path(event_id: @event.id), class: "btn bg-white #{@g_color} mt1" %>
     <% when :verify_setup %>
       <p>Time to verify your G Suite setup.</p>
-      <%= link_to 'Get instructions', event.g_suite, class: 'btn bg-warning mt2' %>
+      <%= link_to 'Get instructions', event_g_suite_status_path(event_id: @event.id), class: "btn bg-white #{@g_color} mt1" %>
     <% when :done %>
       <p>Your G Suite is set up!</p>
-      <%= link_to 'Manage G Suite', event.g_suite, class: 'btn bg-success mt2' %>
+      <%= link_to 'Manage G Suite', event_g_suite_status_path(event_id: @event.id), class: "btn bg-white #{@g_color} mt1" %>
     <% end %>
-    </p>
   </div>
 </section>
 
