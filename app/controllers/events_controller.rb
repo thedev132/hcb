@@ -30,8 +30,8 @@ class EventsController < ApplicationController
 
   # GET /events/1
   def show
-    @card_requests = @event.card_requests.outstanding
-    @load_card_requests = @event.load_card_requests.outstanding
+    @card_requests = @event.card_requests.under_review
+    @load_card_requests = @event.load_card_requests.under_review
     authorize @event
   end
 
