@@ -4,7 +4,7 @@
 <section class="details">
 <p>
   <strong>Application</strong>
-  <%= link_to 'Open', @g_suite.g_suite_application %>
+  <%= link_to 'Open', event_g_suite_application_path(@g_suite.g_suite_application.id, event_id: @g_suite.g_suite_application.event.id) %>
 </p>
 
 <p>
