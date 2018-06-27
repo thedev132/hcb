@@ -34,6 +34,8 @@ class Invoice < ApplicationRecord
     self.due_date = Time.at(inv.due_date).to_datetime # convert from unixtime
     self.ending_balance = inv.ending_balance
     self.forgiven = inv.forgiven
+    self.hosted_invoice_url = inv.hosted_invoice_url
+    self.invoice_pdf = inv.invoice_pdf
     self.paid = inv.paid
     self.starting_balance = inv.starting_balance
     self.statement_descriptor = inv.statement_descriptor
