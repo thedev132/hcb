@@ -1,9 +1,26 @@
 class TransactionsController < ApplicationController
   before_action :signed_in_user
 
+  def index
+    @event = Event.find(params[:event])
+    @transactions = @event.transactions
+
+    attributes = %w{date name amount fee}
+
+    result = CSV.generate(headers: true) do |csv|
+      csv << attributes
+
+      @transactions.each do |transaction|
+        csv << attributes.map{ |attr| transaction.send(attr) }
+      end
+    end
+
+    send_data result, filename: "#{@event.name} transactions #{Date.today}.csv"
+  end
+
   def show
     @transaction = Transaction.find(params[:id])
-    @fee = @transaction.is_event_related && @transaction.fee_relationship
+    @fee = fee
 
     authorize @transaction
   end
@@ -43,6 +60,10 @@ class TransactionsController < ApplicationController
   end
 
   private
+
+  def fee
+    @transaction.is_event_related && @transaction.fee_relationship
+  end
 
   def transaction_params
     params.require(:transaction).permit(
