@@ -1,5 +1,5 @@
 <%= link_to 'G Suite Applications', g_suite_applications_path, class: 'breadcrumb' %>
-<h1>Application for <%= @g_suite_application.domain %></h1>
+<h1>Application for <%= @g_suite_application.event.name %></h1>
 
 <section class="details">
 <p>
@@ -17,6 +17,12 @@
   <%= @g_suite_application.domain %>
 </p>
 
+<% if @g_suite_application.under_review? %>
+<p>
+  <strong>Status</strong>
+  under review
+</p>
+<% else %>
 <p>
   <strong>Rejected at</strong>
   <%= @g_suite_application.rejected_at %>
@@ -31,6 +37,12 @@
   <strong>Canceled at</strong>
   <%= @g_suite_application.canceled_at %>
 </p>
+<% end %>
 </section>
 
-<!-- TODO: needs accept/reject buttons -->
+<p>
+  <%= link_to 'Reject request', g_suite_application_reject_path(@g_suite_application), method: :post, class: 'btn bg-error' %>
+</p>
+<p>
+  <%= link_to 'Accept request', g_suite_application_accept_path(@g_suite_application), method: :post, class: 'btn bg-success' %>
+</p>
