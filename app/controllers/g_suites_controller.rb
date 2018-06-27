@@ -28,6 +28,7 @@ class GSuitesController < ApplicationController
     authorize @g_suite
 
     if @g_suite.save
+      @g_suite.event.g_suite_application.update(g_suite: @g_suite)
       flash[:success] = 'G Suite was successfully created.'
       redirect_to event_g_suite_path(@g_suite.id, event_id: @g_suite.event.id)
     else
