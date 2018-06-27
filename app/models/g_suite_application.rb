@@ -2,6 +2,7 @@ class GSuiteApplication < ApplicationRecord
   belongs_to :creator, class_name: 'User'
   belongs_to :event
   belongs_to :fulfilled_by, class_name: 'User', required: false
+  belongs_to :g_suite, required: false
 
   validates_presence_of :creator, :event, :domain
   validates_uniqueness_of :domain

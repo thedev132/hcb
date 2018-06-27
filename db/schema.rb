@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_06_26_082631) do
+ActiveRecord::Schema.define(version: 2018_06_27_075613) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -102,11 +102,11 @@ ActiveRecord::Schema.define(version: 2018_06_26_082631) do
     t.datetime "canceled_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "g_suites_id"
+    t.bigint "g_suite_id"
     t.index ["creator_id"], name: "index_g_suite_applications_on_creator_id"
     t.index ["event_id"], name: "index_g_suite_applications_on_event_id"
     t.index ["fulfilled_by_id"], name: "index_g_suite_applications_on_fulfilled_by_id"
-    t.index ["g_suites_id"], name: "index_g_suite_applications_on_g_suites_id"
+    t.index ["g_suite_id"], name: "index_g_suite_applications_on_g_suite_id"
   end
 
   create_table "g_suites", force: :cascade do |t|
@@ -255,7 +255,7 @@ ActiveRecord::Schema.define(version: 2018_06_26_082631) do
   add_foreign_key "fee_relationships", "events"
   add_foreign_key "g_suite_accounts", "g_suites"
   add_foreign_key "g_suite_applications", "events"
-  add_foreign_key "g_suite_applications", "g_suites", column: "g_suites_id"
+  add_foreign_key "g_suite_applications", "g_suites"
   add_foreign_key "g_suite_applications", "users", column: "creator_id"
   add_foreign_key "g_suite_applications", "users", column: "fulfilled_by_id"
   add_foreign_key "g_suites", "events"
