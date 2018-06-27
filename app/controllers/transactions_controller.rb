@@ -1,3 +1,5 @@
+require 'csv'
+
 class TransactionsController < ApplicationController
   before_action :signed_in_user
 
@@ -6,12 +8,19 @@ class TransactionsController < ApplicationController
     @transactions = @event.transactions
 
     attributes = %w{date name amount fee}
+    attributes_to_currency = %w{amount fee}
 
     result = CSV.generate(headers: true) do |csv|
       csv << attributes
 
       @transactions.each do |transaction|
-        csv << attributes.map{ |attr| transaction.send(attr) }
+        csv << attributes.map do |attr|
+          if attributes_to_currency.include? attr
+            view_context.number_to_currency transaction.send(attr) / 100
+          else
+            transaction.send(attr)
+          end
+        end
       end
     end
 
@@ -60,10 +69,6 @@ class TransactionsController < ApplicationController
   end
 
   private
-
-  def fee
-    @transaction.is_event_related && @transaction.fee_relationship
-  end
 
   def transaction_params
     params.require(:transaction).permit(

@@ -1,5 +1,3 @@
-require 'csv'
-
 class Transaction < ApplicationRecord
   acts_as_paranoid
 
@@ -28,5 +26,9 @@ class Transaction < ApplicationRecord
 
   def notify_admin
     TransactionMailer.with(transaction: self).notify_admin.deliver_later
+  end
+
+  def fee
+    is_event_related && fee_relationship&.fee_amount || 0
   end
 end
