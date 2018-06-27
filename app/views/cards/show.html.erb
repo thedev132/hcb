@@ -34,6 +34,11 @@
           <strong><%= render_money request.load_amount %> – <%= request.status %></strong>
           <span class="muted">(added by <%= request.creator.email %> <span title="<%= request.created_at %>"><%= time_ago_in_words request.created_at %> ago</span>)</span>
         </p>
+        <% if request.status == 'under_review' %>
+          <p>
+            <%= link_to 'Cancel request', card_load_card_request_cancel_path(load_card_request_id: request.id, card_id: request.card.id), method: :post, class: 'btn bg-white' %>
+          </p>
+        <% end %>
       </li>
     <% end %>
   </ul>

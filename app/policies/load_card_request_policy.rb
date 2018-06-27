@@ -1,14 +1,10 @@
-class CardRequestPolicy < ApplicationPolicy
+class LoadCardRequestPolicy < ApplicationPolicy
   def index?
     user.admin?
   end
 
-  def new?
-    record.user == user || user.admin?
-  end
-
   def create?
-    record.user == user || user.admin?
+    record.creator == user || user.admin?
   end
 
   def show?
@@ -23,8 +19,12 @@ class CardRequestPolicy < ApplicationPolicy
     user.admin?
   end
 
-  def destroy?
-    record.user == user || user.admin?
+  def reject?
+    user.admin?
+  end
+
+  def cancel?
+    record.creator == user
   end
 
   def accept?

@@ -121,6 +121,9 @@ ActiveRecord::Schema.define(version: 2018_06_27_072729) do
     t.bigint "load_amount"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "accepted_at"
+    t.datetime "rejected_at"
+    t.datetime "canceled_at"
     t.index ["card_id"], name: "index_load_card_requests_on_card_id"
     t.index ["creator_id"], name: "index_load_card_requests_on_creator_id"
     t.index ["fulfilled_by_id"], name: "index_load_card_requests_on_fulfilled_by_id"
