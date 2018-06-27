@@ -1,5 +1,7 @@
 <h1>G Suite Applications</h1>
 
+<p><span class="transaction--positive">green</span> = needs to be accepted/rejected.</p>
+
 <table>
   <thead>
     <tr>
@@ -15,7 +17,7 @@
 
   <tbody>
     <% @g_suite_applications.each do |g_suite_application| %>
-      <tr>
+      <tr class="<%= 'transaction--positive' if g_suite_application.under_review? %>">
         <td><%= g_suite_application.creator.email %></td>
         <td><%= link_to g_suite_application.event.name, g_suite_application.event %></td>
         <td><%= g_suite_application.domain %></td>
