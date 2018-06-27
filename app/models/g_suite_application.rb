@@ -32,7 +32,7 @@ class GSuiteApplication < ApplicationRecord
   private
 
   def domain_without_protocol
-    uri = URI.parse(domain)
-    uri.scheme.nil?
+    bad = ['http', ':', '/'].any? { |s| domain.include? s }
+    errors.add(:domain, 'shouldn’t include http(s):// or ending /') if bad
   end
 end
