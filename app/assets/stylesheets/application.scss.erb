@@ -179,20 +179,11 @@ p + p {
 }
 
 .event-summary {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  display: grid;
   border-radius: 4px;
   overflow: hidden;
-  max-width: 36rem;
   @media (min-width: 32em) {
-    flex-direction: row;
-    .event-summary__panel:first-of-type {
-      width: 40%;
-    }
-    .event-summary__panel:last-of-type {
-      width: 60%;
-    }
+    grid-template-columns: 2fr 3fr 3fr;
   }
 }
 .event-summary__panel {

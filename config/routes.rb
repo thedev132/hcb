@@ -35,7 +35,7 @@ Rails.application.routes.draw do
   resources :g_suite_accounts, only: [ :index ], path: 'g_suite_accounts' do
     get 'verify', to: 'g_suite_account#verify'
   end
-  resources :g_suites, only: [ :index ]
+  resources :g_suites, only: [ :index, :new, :create ]
 
   resources :sponsors do
     resources :invoices, only: [ :new, :create ]

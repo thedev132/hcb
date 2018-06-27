@@ -21,6 +21,10 @@ class GSuiteApplication < ApplicationRecord
     rejected_at.nil? && canceled_at.nil? && accepted_at.nil?
   end
 
+  def accepted?
+    accepted_at.present?
+  end
+
   def rejected?
     rejected_at.present?
   end

@@ -41,4 +41,13 @@ class Event < ApplicationRecord
 
     total_fees - total_payments
   end
+
+  def g_suite_status
+    return :start if g_suite_application.nil?
+    return :under_review if g_suite_application.under_review?
+    return :app_accepted if g_suite_application.accepted?
+    return :verify_setup if g_suite.present?
+    return :done if g_suite.verified?
+    :start
+  end
 end

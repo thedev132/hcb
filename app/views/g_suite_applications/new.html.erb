@@ -1,4 +1,6 @@
 <%= link_to @g_suite_application.event.name, @g_suite_application.event, class: 'breadcrumb' %>
 <h1>Apply for G Suite</h1>
 
+<p>G Suite gives you Gmail, Google Drive, Hangouts, Calendar, and more, all for free, including domain email addresses like <strong><%= current_user.full_name.to_s.length > 3 ? current_user.full_name.downcase.split(' ').first : 'yourname' %>@<%= @g_suite_application.event.name.downcase.gsub(' ', '') %>.com</strong>, provide your real domain. You’ll set up the names of the accounts later.</p>
+
 <%= render 'form', g_suite_application: @g_suite_application %>

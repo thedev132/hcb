@@ -30,6 +30,7 @@ class EventsController < ApplicationController
 
   # GET /events/1
   def show
+    @g_suite_status = @event.g_suite_status
     authorize @event
   end
 

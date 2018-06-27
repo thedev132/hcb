@@ -1,3 +1,5 @@
+@import 'variables';
+
 .ttu {
   text-transform: uppercase;
 }
@@ -5,111 +7,46 @@
   background: white;
 }
 
-.primary {
-  color: #e42d42;
+$__shades: (
+  red: $red0,
+  orange: $orange0,
+  yellow: $yellow0,
+  green: $teal0,
+  blue: $blue0,
+  neutral: $gray0
+);
+
+@each $name, $val in $__shades {
+  .shade-#{$name} {
+    background-color: $val;
+  }
 }
-.bg-primary {
-  background-color: #e42d42;
-}
-.b--primary {
-  border-color: #e42d42;
-}
-.accent {
-  color: #7280ed;
-}
-.bg-accent {
-  background-color: #7280ed;
-}
-.b--accent {
-  border-color: #7280ed;
-}
-.success {
-  color: #2de473;
-}
-.bg-success {
-  background-color: #2de473;
-}
-.b--success {
-  border-color: #2de473;
-}
-.info {
-  color: #2d9ee4;
-}
-.bg-info {
-  background-color: #2d9ee4;
-}
-.b--info {
-  border-color: #2d9ee4;
-}
-.warning {
-  color: #e4732d;
-}
-.bg-warning {
-  background-color: #e4732d;
-}
-.b--warning {
-  border-color: #e4732d;
-}
-.error {
-  color: #b52434;
-}
-.bg-error {
-  background-color: #b52434;
-}
-.b--error {
-  border-color: #b52434;
-}
-.black {
-  color: #384046;
-}
-.bg-black {
-  background-color: #384046;
-}
-.b--black {
-  border-color: #384046;
-}
-.slate {
-  color: #606e77;
-}
-.bg-slate {
-  background-color: #606e77;
-}
-.b--slate {
-  border-color: #606e77;
-}
-.muted {
-  color: #7a8c97;
-}
-.bg-muted {
-  background-color: #7a8c97;
-}
-.b--muted {
-  border-color: #7a8c97;
-}
-.smoke {
-  color: #dde1e4;
-}
-.bg-smoke {
-  background-color: #dde1e4;
-}
-.b--smoke {
-  border-color: #dde1e4;
-}
-.snow {
-  color: #f9f9fa;
-}
-.bg-snow {
-  background-color: #f9f9fa;
-}
-.b--white {
-  border-color: #f9f9fa;
-}
-.white {
-  color: #ffffff;
-}
-.bg-white {
-  background-color: #ffffff;
-}
-.b--white {
-  border-color: #ffffff;
+
+$__palette: (
+  primary: $red5,
+  accent: $indigo4,
+  info: $blue5,
+  success: $teal5,
+  error: $red7,
+  warning: $orange5,
+  black: $gray9,
+  slate: $gray8,
+  muted: $gray7,
+  smoke: $gray2,
+  snow: $gray0,
+  white: $white
+);
+
+@each $name, $val in $__palette {
+  .#{$name} {
+    color: $val;
+  }
+
+  .bg-#{$name} {
+    background-color: $val;
+  }
+
+  .b--#{$name} {
+    border-color: $val;
+  }
 }
