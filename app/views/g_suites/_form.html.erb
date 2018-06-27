@@ -12,8 +12,13 @@
   <% end %>
 
   <div class="field">
+    <%= form.label :event_id, 'Event' %>
+    <%= form.collection_select(:event_id, Event.all, :id, :name, prompt: 'Select event…', selected: params[:event_id] ) %>
+  </div>
+
+  <div class="field">
     <%= form.label :domain %>
-    <%= form.text_field :domain %>
+    <%= form.text_field :domain, value: params[:domain] %>
   </div>
 
   <div class="field">

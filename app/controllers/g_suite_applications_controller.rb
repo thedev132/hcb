@@ -1,6 +1,6 @@
 class GSuiteApplicationsController < ApplicationController
-  before_action :set_g_suite_application, only: [:show, :edit, :update, :destroy]
-  before_action :set_event, except: [:index]
+  before_action :set_g_suite_application, only: [:show, :edit, :update, :destroy, :accept, :reject]
+  before_action :set_event, except: [:index, :accept, :reject]
 
   # GET /g_suite_applications
   def index
@@ -19,8 +19,8 @@ class GSuiteApplicationsController < ApplicationController
     authorize @g_suite_application
 
     if @g_suite_application.save
-      flash[:success] = 'G Suite application accepted!'
-      redirect_to @g_suite_application
+      flash[:success] = "G Suite application accepted for #{@g_suite_application.event.name}. Domain: #{@g_suite_application.domain}"
+      redirect_to new_event_g_suite_path(event_id: @g_suite_application.event.id, domain: @g_suite_application.domain)
     else
       redirect_to :new
     end
@@ -33,7 +33,7 @@ class GSuiteApplicationsController < ApplicationController
 
     if @g_suite_application.save
       flash[:success] = 'G Suite application rejected!'
-      redirect_to @g_suite_application
+      redirect_to g_suite_applications_path
     else
       redirect_to :new
     end
@@ -87,7 +87,7 @@ class GSuiteApplicationsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_g_suite_application
-      @g_suite_application = GSuiteApplication.find(params[:id])
+      @g_suite_application = GSuiteApplication.find(params[:id] || params[:g_suite_application_id])
     end
 
     def set_event
