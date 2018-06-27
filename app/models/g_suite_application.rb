@@ -7,7 +7,6 @@ class GSuiteApplication < ApplicationRecord
   validates_uniqueness_of :domain
   validate :domain_without_protocol
 
-  scope :outstanding, -> { where(accepted_at: nil) }
   scope :under_review, -> { where(rejected_at: nil, canceled_at: nil, accepted_at: nil) }
 
   def status
