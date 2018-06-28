@@ -65,8 +65,8 @@ class CardRequestsController < ApplicationController
     end
   end
 
-  # DELETE /card_requests/1
-  def destroy
+  # POST /card_requests/1
+  def cancel
     authorize @card_request
     @card_request.canceled_at = Time.now
     if @card_request.save
