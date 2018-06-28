@@ -42,6 +42,7 @@ Rails.application.routes.draw do
   end
   resources :card_requests, path: 'card_requests' do
     post 'reject'
+    post 'cancel'
   end
   resources :load_card_requests, only: [ :index ]
 end
