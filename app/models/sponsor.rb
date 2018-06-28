@@ -7,6 +7,7 @@ class Sponsor < ApplicationRecord
 
   before_create :create_stripe_customer
   before_update :update_stripe_customer
+  before_destroy :destroy_invoices
   before_destroy :destroy_stripe_customer
 
   def status
@@ -57,6 +58,10 @@ class Sponsor < ApplicationRecord
   def destroy_stripe_customer
     cu = StripeService::Customer.retrieve(self.stripe_customer_id)
     cu.delete
+  end
+
+  def destroy_invoices
+    self.invoices.destroy_all
   end
 
   def stripe_dashboard_url
