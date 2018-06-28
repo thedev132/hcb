@@ -24,7 +24,9 @@ class LoadCardRequestsController < ApplicationController
 
   def new
     @card = Card.includes(:event).find(params[:card_id])
-    @load_card_request = LoadCardRequest.new
+    @load_card_request = LoadCardRequest.new(card: @card)
+
+    authorize @load_card_request
   end
 
   def edit

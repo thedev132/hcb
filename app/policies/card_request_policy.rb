@@ -4,7 +4,7 @@ class CardRequestPolicy < ApplicationPolicy
   end
 
   def new?
-    record.user == user || user.admin?
+    record.event.users.include?(user) || user.admin?
   end
 
   def create?

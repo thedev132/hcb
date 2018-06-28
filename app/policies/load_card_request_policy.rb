@@ -3,6 +3,10 @@ class LoadCardRequestPolicy < ApplicationPolicy
     user.admin?
   end
 
+  def new?
+    record.event.users.include?(user) || user.admin?
+  end
+
   def create?
     record.creator == user || user.admin?
   end

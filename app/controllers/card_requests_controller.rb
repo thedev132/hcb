@@ -17,7 +17,9 @@ class CardRequestsController < ApplicationController
   # GET /card_requests/new
   def new
     @event = Event.find(params[:event_id]) if params[:event_id]
-    @card_request = CardRequest.new
+    @card_request = CardRequest.new(event: @event)
+
+    authorize @card_request
   end
 
   # GET /card_requests/1/edit
