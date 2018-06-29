@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_06_27_072729) do
+ActiveRecord::Schema.define(version: 2018_06_29_183822) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -38,6 +38,8 @@ ActiveRecord::Schema.define(version: 2018_06_27_072729) do
     t.datetime "accepted_at"
     t.datetime "canceled_at"
     t.text "notes"
+    t.bigint "card_id"
+    t.index ["card_id"], name: "index_card_requests_on_card_id"
     t.index ["creator_id"], name: "index_card_requests_on_creator_id"
     t.index ["event_id"], name: "index_card_requests_on_event_id"
     t.index ["fulfilled_by_id"], name: "index_card_requests_on_fulfilled_by_id"
@@ -54,9 +56,7 @@ ActiveRecord::Schema.define(version: 2018_06_27_072729) do
     t.text "address"
     t.integer "expiration_month"
     t.integer "expiration_year"
-    t.bigint "card_request_id"
     t.text "emburse_id"
-    t.index ["card_request_id"], name: "index_cards_on_card_request_id"
     t.index ["event_id"], name: "index_cards_on_event_id"
     t.index ["user_id"], name: "index_cards_on_user_id"
   end
@@ -215,6 +215,7 @@ ActiveRecord::Schema.define(version: 2018_06_27_072729) do
     t.index ["api_id"], name: "index_users_on_api_id", unique: true
   end
 
+  add_foreign_key "card_requests", "cards"
   add_foreign_key "card_requests", "events"
   add_foreign_key "card_requests", "users", column: "creator_id"
   add_foreign_key "card_requests", "users", column: "fulfilled_by_id"
