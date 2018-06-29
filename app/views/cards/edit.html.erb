@@ -1,0 +1,5 @@
+<%= link_to 'Cards', cards_path, class: 'breadcrumb' %>
+<%= link_to "Card for #{@card.full_name}", @card, class: 'breadcrumb' %>
+<h1>Editing Card</h1>
+
+<%= render 'form', card: @card %>

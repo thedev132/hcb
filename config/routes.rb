@@ -5,7 +5,7 @@ Rails.application.routes.draw do
 
   root to: 'static_pages#index'
 
-  resources :users, only: [] do
+  resources :users, only: [ :edit, :update ] do
     collection do
       get 'auth', to: 'users#auth'
       post 'login_code', to: 'users#login_code'
@@ -32,4 +32,17 @@ Rails.application.routes.draw do
 
   resources :bank_accounts, only: [ :new, :create, :show ]
   resources :transactions, only: [ :index, :show, :edit, :update ]
+
+  resources :cards do
+    resources :load_card_requests, except: [ :index ], path: 'load_requests' do
+      post 'accept'
+      post 'reject'
+      post 'cancel'
+    end
+  end
+  resources :card_requests, path: 'card_requests' do
+    post 'reject'
+    post 'cancel'
+  end
+  resources :load_card_requests, only: [ :index ]
 end

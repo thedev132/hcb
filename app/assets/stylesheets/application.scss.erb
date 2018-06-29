@@ -34,7 +34,6 @@ body {
   min-width: 100%;
 }
 body {
-  max-width: 64rem;
   display: flex;
   flex-direction: column;
   font-size: 16px;
@@ -46,10 +45,6 @@ body {
   -webkit-font-smoothing: antialiased;
   color: #384046;
   margin: 0;
-  padding: 16px;
-  @media (min-width: 32em) {
-    max-width: 64rem;
-  }
 }
 
 a {
@@ -99,6 +94,61 @@ textarea {
   }
 }
 
+.field_with_errors {
+  label {
+    font-weight: bold;
+    color: $red7;
+  }
+  input {
+    border-color: $red7;
+  }
+}
+
+pre {
+  background-color: $gray0;
+  padding: 12px;
+  font-size: 12px;
+}
+
+a {
+  color: $gray8;
+
+  &:hover &:focus {
+    color: $gray9;
+  }
+}
+
+.field {
+  margin-bottom: 0.75rem;
+}
+.actions {
+  margin-top: 1.5rem;
+}
+
+#error_explanation {
+  width: 512px;
+  border: 2px solid $red7;
+  padding: 1rem;
+  margin-bottom: 24px;
+  background-color: $red0;
+  border-radius: 4px;
+
+  h2 {
+    color: $red7;
+    border-bottom-color: $red6;
+    margin-top: 0;
+    font-size: 1.25rem;
+  }
+
+  ul {
+    margin-bottom: 0;
+  }
+}
+
+label {
+  display: block;
+}
+
 $select: "url(<%= asset_url 'select.svg' %>)";
 select {
   background: #{$select} right 0.75rem center / 0.5rem no-repeat $white;
@@ -133,6 +183,10 @@ input[type='submit'],
   border-radius: 9999px;
   border-width: 0px;
   border-style: solid;
+}
+.btn.bg-white {
+  background-color: $gray0 !important;
+  color: $red5 !important;
 }
 
 h1,
@@ -172,10 +226,15 @@ p + p {
   left: 50%;
   transform: translateX(-50%);
   text-decoration: none;
+}
 
-  + h1 {
-    margin-top: 2rem;
-  }
+th {
+  text-align: left;
+  font-weight: bold;
+}
+
+td {
+  padding-left: 0;
 }
 
 .event-summary {
@@ -277,12 +336,19 @@ p + p {
   z-index: 0;
 }
 
+.container {
+  width: 100%;
+  max-width: 64rem;
+  margin: 1rem auto;
+  padding: 0 1rem;
+}
+
 .flash {
   color: $white;
   font-weight: bold;
-  padding: 12px 16px;
+  padding: 0.75rem 1rem;
   border-radius: 4px;
-  max-width: 32rem;
+  max-width: 24rem;
 }
 
 .transaction--positive {
@@ -348,7 +414,8 @@ $chevron: "url(<%= asset_url 'chevron.svg' %>) right 12px center no-repeat";
   list-style: none;
   padding: 0;
   margin: 0;
-  a {
+  > a,
+  li > a:first-child {
     display: block;
     color: inherit;
     text-decoration: none;
@@ -372,10 +439,24 @@ $chevron: "url(<%= asset_url 'chevron.svg' %>) right 12px center no-repeat";
     &.transaction--warning {
       background: $orange0 #{$chevron};
     }
+    > p {
+      margin: 0;
+    }
   }
   &.list--row > li,
   &.list--row > a > li {
     flex-direction: row;
+    align-items: center;
+  }
+  &.list--row p {
+    flex: 1 1 auto;
+  }
+  .btn {
+    font-size: 0.875rem;
+    @media screen and (min-width: 32em) {
+      margin-top: -4px;
+      margin-bottom: -3px;
+    }
   }
   .list {
     border-top: 1px solid $gray2;
@@ -388,8 +469,96 @@ $chevron: "url(<%= asset_url 'chevron.svg' %>) right 12px center no-repeat";
     }
   }
 }
-h1 + .list {
+.list--row li {
+  flex-direction: row;
+}
+.list--unlinked li {
+  background: white;
+  &.bg-snow {
+    background: $gray0;
+  }
+}
+h1 + .list,
+h1 + .details {
   margin-top: -1rem;
+}
+h3 + .list {
+  border-top: 1px solid $gray2;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+th {
+  padding-bottom: 0.125rem;
+}
+td {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+td,
+th {
+  &:first-child {
+    padding-left: 0.75rem;
+  }
+}
+
+.details {
+  > p,
+  > div {
+    display: grid;
+    border-bottom: 1px solid $gray2;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    margin: 0;
+
+    @media (min-width: 32em) {
+      grid-template-columns: 16rem auto;
+      grid-gap: 0.5rem;
+
+      strong {
+        text-align: right;
+      }
+    }
+  }
+}
+
+// Make mobile views nice. Full-bleed separator lines
+@media screen and (max-width: 32em) {
+  table,
+  .list,
+  .heading,
+  .details,
+  h1,
+  h2,
+  h3 {
+    width: 100vw;
+    margin-left: -1rem;
+    margin-right: -1rem;
+  }
+  table {
+    td,
+    th {
+      &:first-child {
+        padding-left: 1rem;
+      }
+      &:last-child {
+        padding-right: 1rem;
+      }
+    }
+  }
+  .list > a > li,
+  .list > li,
+  .heading,
+  .details > p,
+  .details > div,
+  h1,
+  h2,
+  h3 {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
 }
 
 @import 'basscss';

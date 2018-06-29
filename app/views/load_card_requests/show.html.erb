@@ -1,0 +1,28 @@
+<%= link_to 'Load card requests', card_load_card_requests_path(@load_card_request, card_id: @card.id), class: 'breadcrumb' %>
+<%= link_to "Card #{@load_card_request.card.last_four}", @load_card_request.card, class: 'breadcrumb' %>
+<h1 class="heading">
+  Load card request for <%= @load_card_request.card.last_four %>
+  <%= link_to 'Edit', edit_card_load_card_request_path(@load_card_request, card_id: @card.id), class: 'btn bg-info' %>
+</h1>
+
+<section class="details">
+<p>
+  <strong>Card</strong>
+  <%= link_to @load_card_request.card.last_four, @load_card_request.card %>
+</p>
+
+<p>
+  <strong>Made by</strong>
+  <%= @load_card_request.creator.email %>
+</p>
+
+<p>
+  <strong>Fulfilled by</strong>
+  <%= @load_card_request.fulfilled_by ? @load_card_request.fulfilled_by.email : 'unfulfilled' %>
+</p>
+
+<p>
+  <strong>Load amount</strong>
+  <%= render_money @load_card_request.load_amount %>
+</p>
+</section>
