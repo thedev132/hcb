@@ -6,7 +6,7 @@ class CardRequestMailer < ApplicationMailer
     @name = @request.full_name
     @last_four = @card.last_four
     @event = @card.event.name
-    @activation_link = @card.emburse_link
+    @activation_link = @card.emburse_path
 
     mail to: @recipient.email,
       subject: "Your #{@event} credit card for #{@card.full_name} is on the way"
