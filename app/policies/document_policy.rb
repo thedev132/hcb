@@ -1,14 +1,14 @@
 class DocumentPolicy < ApplicationPolicy
   def new?
-    user.admin? || record.event.includes?(user)
+    user.admin? || record.event.users.includes?(user)
   end
 
   def create?
-    user.admin? || record.event.includes?(user)
+    user.admin? || record.event.users.includes?(user)
   end
 
   def show?
-    user.admin? || record.event.includes?(user)
+    user.admin? || record.event.users.includes?(user)
   end
 
   def edit?
