@@ -30,6 +30,8 @@ Rails.application.routes.draw do
   end
   resources :invoices, only: [ :show ]
 
+  resources :documents, except: [ :index ]
+
   resources :bank_accounts, only: [ :new, :create, :show ]
   resources :transactions, only: [ :index, :show, :edit, :update ]
 

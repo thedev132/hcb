@@ -1,0 +1,7 @@
+<% if @document.event.present? %>
+  <%= link_to @document.event.name, @document.event, class: 'breadcrumb' %>
+<% end %>
+
+<h1>New Document</h1>
+
+<%= render 'form', document: @document %>

@@ -238,4 +238,24 @@
   <%= blankslate 'No transactions have incurred fees' %>
 <% end %>
 
+<h2 class="heading mb0">
+  Documents
+  <%= link_to 'New Document', new_document_path(event_id: @event.id), class: 'btn bg-success' %>
+</h2>
+
+<% if @event.documents.any? %>
+  <ul class="list">
+    <% @event.documents.each do |d| %>
+      <%= link_to d do %>
+        <li>
+          <strong><%= d.name %></strong>
+          <span class="muted">Added by <%= d.user.full_name %></span>
+        </li>
+      <% end %>
+    <% end %>
+  </ul>
+<% else %>
+  <%= blankslate 'No documents yet' %>
+<% end %>
+
 <p>Looking for expense reimbursements? <%= mail_to 'zach@hackclub.com', 'Ask Zach' %> for an invitation to Expensify.</p>

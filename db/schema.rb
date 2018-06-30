@@ -10,10 +10,31 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_06_29_183822) do
+ActiveRecord::Schema.define(version: 2018_06_30_035251) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "active_storage_attachments", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "record_type", null: false
+    t.bigint "record_id", null: false
+    t.bigint "blob_id", null: false
+    t.datetime "created_at", null: false
+    t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
+    t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
+  end
+
+  create_table "active_storage_blobs", force: :cascade do |t|
+    t.string "key", null: false
+    t.string "filename", null: false
+    t.string "content_type"
+    t.text "metadata"
+    t.bigint "byte_size", null: false
+    t.string "checksum", null: false
+    t.datetime "created_at", null: false
+    t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
 
   create_table "bank_accounts", force: :cascade do |t|
     t.text "plaid_access_token"
@@ -59,6 +80,16 @@ ActiveRecord::Schema.define(version: 2018_06_29_183822) do
     t.text "emburse_id"
     t.index ["event_id"], name: "index_cards_on_event_id"
     t.index ["user_id"], name: "index_cards_on_user_id"
+  end
+
+  create_table "documents", force: :cascade do |t|
+    t.bigint "event_id"
+    t.text "name"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["event_id"], name: "index_documents_on_event_id"
+    t.index ["user_id"], name: "index_documents_on_user_id"
   end
 
   create_table "events", force: :cascade do |t|
@@ -221,6 +252,8 @@ ActiveRecord::Schema.define(version: 2018_06_29_183822) do
   add_foreign_key "card_requests", "users", column: "fulfilled_by_id"
   add_foreign_key "cards", "events"
   add_foreign_key "cards", "users"
+  add_foreign_key "documents", "events"
+  add_foreign_key "documents", "users"
   add_foreign_key "fee_relationships", "events"
   add_foreign_key "invoices", "sponsors"
   add_foreign_key "load_card_requests", "cards"
