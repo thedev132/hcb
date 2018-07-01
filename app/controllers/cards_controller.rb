@@ -22,7 +22,7 @@ class CardsController < ApplicationController
       daily_limit: @card_request.daily_limit,
       full_name: @card_request.full_name,
       address: @card_request.shipping_address,
-      card_request_id: @card_request.id
+      card_request: @card_request
     )
     authorize @card
   end
@@ -35,11 +35,21 @@ class CardsController < ApplicationController
   # POST /cards
   def create
     @card_request = CardRequest.find(card_params['card_request_id'])
-    @card = Card.new(card_params)
+    @card = Card.new(
+      user_id: card_params[:user_id],
+      event_id: card_params[:event_id],
+      daily_limit: card_params[:daily_limit],
+      emburse_id: card_params[:emburse_id],
+      last_four: card_params[:last_four],
+      full_name: card_params[:full_name],
+      address: card_params[:address],
+      expiration_year: card_params[:expiration_year],
+      expiration_month: card_params[:expiration_month]
+    )
 
     authorize @card
 
-    @card.card_request_id = @card_request.id
+    @card.card_request = @card_request
     @card_request.accepted_at = Time.current
     @card_request.fulfilled_by = current_user
 

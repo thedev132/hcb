@@ -11,7 +11,7 @@
     </div>
   <% end %>
 
-  <%= form.hidden_field :card_request_id %>
+  <%= form.hidden_field :card_request_id, value: @card_request.id %>
 
   <div class="field">
     <%= form.label :user_id, 'User' %>
