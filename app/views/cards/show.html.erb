@@ -36,7 +36,7 @@
         </p>
         <% if request.status == 'under review' %>
           <p>
-            <%= link_to 'Cancel request', card_load_card_request_cancel_path(load_card_request_id: request.id, card_id: request.card.id), method: :post, class: 'btn bg-white' %>
+            <%= link_to 'Cancel request', card_load_card_request_cancel_path(load_card_request_id: request.id, card_id: request.card.id), method: :post, class: 'btn btn--destroy' %>
           </p>
         <% end %>
       </li>
