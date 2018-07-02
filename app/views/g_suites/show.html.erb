@@ -1,0 +1,24 @@
+<%= link_to 'All G Suites', g_suites_path, class: 'breadcrumb' %>
+<h1>G Suite for <%= @g_suite.domain %></h1>
+
+<section class="details">
+<p>
+  <strong>Application</strong>
+  <%= link_to 'Open', @g_suite %>
+</p>
+
+<p>
+  <strong>Domain</strong>
+  <%= @g_suite.domain %>
+</p>
+
+<p>
+  <strong>Event</strong>
+  <%= link_to @g_suite.event.name, @g_suite.event %>
+</p>
+
+<p>
+  <strong>Verification key</strong>
+  <%= @g_suite.verification_key %>
+</p>
+</section>

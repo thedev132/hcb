@@ -1,0 +1,34 @@
+<%= link_to 'G Suite Accounts', g_suite_accounts_path, class: 'breadcrumb' %>
+<h1>Editing G Suite Account</h1>
+
+<%= form_with(model: @g_suite_account, local: true) do |form| %>
+  <% if @g_suite_account.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@g_suite_account.errors.count, 'error') %> prohibited this account from being saved:</h2>
+      <ul>
+      <% @g_suite_account.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :address %>
+    <%= form.email_field :address %>
+  </div>
+
+  <div class="field">
+    <%= form.label :backup_email %>
+    <%= form.email_field :backup_email %>
+  </div>
+
+  <div class="field">
+    <%= form.label :initial_password, class: @g_suite_account.initial_password.blank? && 'bold shade-yellow' %>
+    <%= form.text_field :initial_password %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

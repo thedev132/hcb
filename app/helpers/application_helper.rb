@@ -1,6 +1,6 @@
 module ApplicationHelper
   def render_money(amount, unit = '$')
-    number_to_currency(BigDecimal.new(amount) / 100, unit: unit)
+    number_to_currency(BigDecimal.new(amount || 0) / 100, unit: unit)
   end
 
   def render_percentage(decimal, params={})
@@ -9,6 +9,6 @@ module ApplicationHelper
   end
 
   def blankslate(text, options={})
-    content_tag :p, text, class: "center my0 py2 slate bold h3 #{options.class}"
+    content_tag :p, text, class: "center mt0 mb0 pt2 pb2 slate bold h3 #{options.class}"
   end
 end

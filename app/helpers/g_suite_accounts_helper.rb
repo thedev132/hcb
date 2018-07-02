@@ -1,0 +1,2 @@
+module GSuiteAccountsHelper
+end

@@ -1,0 +1,18 @@
+<h2 class="mt0">Your accounts</h2>
+
+<% if @g_suite.g_suite_accounts.any? %>
+  <ul class="list list--unlinked mt0 mb2">
+    <% @g_suite.g_suite_accounts.each do |account| %>
+      <li>
+        <p>
+          <strong><%= account.username %></strong><span><%= account.at_domain %></span>
+          – <strong><%= account.status %></strong>
+        </p>
+      </li>
+      <% end %>
+  </ul>
+<% else %>
+  <%= blankslate 'You’ll need to create one or more accounts before continuing.' %>
+<% end %>
+
+<%= render 'g_suite_accounts/new', g_suite_account: GSuiteAccount.new(g_suite: @g_suite) %>

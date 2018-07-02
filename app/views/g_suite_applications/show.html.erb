@@ -1,0 +1,50 @@
+<%= link_to 'G Suite Applications', g_suite_applications_path, class: 'breadcrumb' %>
+<h1>Application for <%= @g_suite_application.event.name %></h1>
+
+<section class="details">
+<p>
+  <strong>Submitted by</strong>
+  <%= @g_suite_application.creator.email %>
+</p>
+
+<p>
+  <strong>Event</strong>
+  <%= link_to @g_suite_application.event.name, @g_suite_application.event %>
+</p>
+
+<p>
+  <strong>Domain</strong>
+  <%= @g_suite_application.domain %>
+</p>
+
+<% if @g_suite_application.under_review? %>
+<p>
+  <strong>Status</strong>
+  under review
+</p>
+<% else %>
+<p>
+  <strong>Rejected at</strong>
+  <%= @g_suite_application.rejected_at %>
+</p>
+
+<p>
+  <strong>Accepted at</strong>
+  <%= @g_suite_application.accepted_at %>
+</p>
+
+<p>
+  <strong>Canceled at</strong>
+  <%= @g_suite_application.canceled_at %>
+</p>
+<% end %>
+</section>
+
+<% if @g_suite_application.under_review? %>
+  <p>
+    <%= link_to 'Reject request', g_suite_application_reject_path(@g_suite_application), method: :post, class: 'btn bg-error' %>
+  </p>
+  <p>
+    <%= link_to 'Accept request', g_suite_application_accept_path(@g_suite_application), method: :post, class: 'btn bg-success' %>
+  </p>
+<% end %>

@@ -30,6 +30,6 @@
   </p>
 <% else %>
   <p>
-    <%= link_to 'Cancel request', card_request_path(@card_request), method: :delete, class: 'btn bg-white' %>
+    <%= link_to 'Cancel request', card_request_path(@card_request), method: :delete, class: 'btn btn--destroy' %>
   </p>
 <% end %>

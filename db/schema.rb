@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_07_01_212515) do
+ActiveRecord::Schema.define(version: 2018_07_02_192625) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -122,6 +122,48 @@ ActiveRecord::Schema.define(version: 2018_07_01_212515) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["event_id"], name: "index_fee_relationships_on_event_id"
+  end
+
+  create_table "g_suite_accounts", force: :cascade do |t|
+    t.text "address"
+    t.datetime "accepted_at"
+    t.datetime "rejected_at"
+    t.bigint "g_suite_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "verified_at"
+    t.bigint "creator_id"
+    t.text "backup_email"
+    t.string "initial_password"
+    t.index ["creator_id"], name: "index_g_suite_accounts_on_creator_id"
+    t.index ["g_suite_id"], name: "index_g_suite_accounts_on_g_suite_id"
+  end
+
+  create_table "g_suite_applications", force: :cascade do |t|
+    t.bigint "creator_id"
+    t.bigint "event_id"
+    t.bigint "fulfilled_by_id"
+    t.text "domain"
+    t.datetime "rejected_at"
+    t.datetime "accepted_at"
+    t.datetime "canceled_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "g_suite_id"
+    t.index ["creator_id"], name: "index_g_suite_applications_on_creator_id"
+    t.index ["event_id"], name: "index_g_suite_applications_on_event_id"
+    t.index ["fulfilled_by_id"], name: "index_g_suite_applications_on_fulfilled_by_id"
+    t.index ["g_suite_id"], name: "index_g_suite_applications_on_g_suite_id"
+  end
+
+  create_table "g_suites", force: :cascade do |t|
+    t.text "domain"
+    t.bigint "event_id"
+    t.text "verification_key"
+    t.datetime "deleted_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["event_id"], name: "index_g_suites_on_event_id"
   end
 
   create_table "invoices", force: :cascade do |t|
@@ -267,6 +309,13 @@ ActiveRecord::Schema.define(version: 2018_07_01_212515) do
   add_foreign_key "documents", "events"
   add_foreign_key "documents", "users"
   add_foreign_key "fee_relationships", "events"
+  add_foreign_key "g_suite_accounts", "g_suites"
+  add_foreign_key "g_suite_accounts", "users", column: "creator_id"
+  add_foreign_key "g_suite_applications", "events"
+  add_foreign_key "g_suite_applications", "g_suites"
+  add_foreign_key "g_suite_applications", "users", column: "creator_id"
+  add_foreign_key "g_suite_applications", "users", column: "fulfilled_by_id"
+  add_foreign_key "g_suites", "events"
   add_foreign_key "invoices", "sponsors"
   add_foreign_key "load_card_requests", "cards"
   add_foreign_key "load_card_requests", "users", column: "creator_id"

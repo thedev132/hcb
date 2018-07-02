@@ -4,7 +4,7 @@
   <%= @document.name %>
   <% if (@document.user == current_user) || current_user.admin? %>
     <%= link_to 'Edit', edit_document_path(@document), class: 'btn bg-info' %>
-    <%= link_to 'Destroy', @document, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn bg-white primary' %>
+    <%= link_to 'Destroy', @document, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn--destroy' %>
   <% end %>
 </h1>
 

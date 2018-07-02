@@ -1,17 +1,35 @@
 <%= link_to @transaction.event.name, @transaction.event, class: 'breadcrumb' if @transaction.event %>
 
 <h1 class="heading">
-  <%= render_money @transaction.amount %> transaction
+  <%= render_money @transaction.amount %>
+  <%= @fee&.fee_amount.nil? ? 'fee payment' : 'transaction' %>
   <%= link_to 'Edit', edit_transaction_path(@transaction), class: 'btn bg-info' %>
 </h1>
 
-<p>Name: <%= @transaction.name %></p>
-<p>Amount: <%= render_money @transaction.amount %></p>
-<p class="<%= 'slate' unless @fee %>">
-  <%= @fee.present? ?
-    "Fee applies: #{render_money @fee.fee_amount}" :
-    "Not event related; no fee applies." %>
+<section class="details">
+<p>
+  <strong>Name</strong>
+  <%= @transaction.name %>
 </p>
+
+<p>
+  <strong>Amount</strong>
+  <%= render_money @transaction.amount %>
+</p>
+
+<p>
+  <strong>Fee</strong>
+  <% if @fee %>
+    <% if @fee.fee_amount.nil? %>
+    n/a <span class="slate">(this is a fee payment)</span>
+    <% else %>
+    <%= render_money @fee.fee_amount %>
+    <% end %>
+  <% else %>
+    n/a <span class="slate">(this transaction isn’t event-related)</span>
+  <% end %>
+</p>
+</section>
 
 <h2>Comments</h2>
 <%= render "comments/form" %>

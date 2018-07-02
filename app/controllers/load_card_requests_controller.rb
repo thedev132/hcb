@@ -11,17 +11,6 @@ class LoadCardRequestsController < ApplicationController
     authorize @load_card_request
   end
 
-  def accept
-    @load_card_request.accepted_at = Time.now
-    @load_card_request.fulfilled_by = current_user
-
-
-    authorize @load_card_request
-
-    @load_card_request.save
-    redirect_to load_card_requests_path
-  end
-
   def new
     @card = Card.find(params[:card_id])
     @load_card_request = LoadCardRequest.new(card: @card)
@@ -55,6 +44,16 @@ class LoadCardRequestsController < ApplicationController
     else
       render :edit
     end
+  end
+
+  def accept
+    @load_card_request.accepted_at = Time.now
+    @load_card_request.fulfilled_by = current_user
+
+    authorize @load_card_request
+
+    @load_card_request.save
+    redirect_to load_card_requests_path
   end
 
   def reject

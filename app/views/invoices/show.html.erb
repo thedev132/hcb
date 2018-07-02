@@ -4,8 +4,8 @@
   <%= @invoice.paid ? 'PAID' : 'UNPAID' %>
 </span></h1>
 
-<div class="card my2" style="max-width: 24rem;">
-  <h2 class="mt0 mb2" style="font-size: 24px;"><%= @sponsor.name %></h2>
+<div class="card mt2 mb2 max-width-1">
+  <h2 class="h2 mt0 mb2"><%= @sponsor.name %></h2>
   <div class="flex justify-between ttu">
     <span><strong><%= render_money @invoice.total %></strong> total</span>
     <span>Due <strong><%= @invoice.due_date.to_date %></strong></span>

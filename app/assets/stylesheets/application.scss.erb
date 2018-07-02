@@ -1,14 +1,12 @@
-/*
- *= require_tree .
- *= require_self
- */
+@import "variables";
+
 @font-face {
   font-family: Averta;
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url(//hackclub.com/fonts/averta-regular.woff2) format('woff2'),
-    url(//hackclub.com/fonts/averta-regular.woff) format('woff');
+  src: url(//hackclub.com/fonts/averta-regular.woff2) format("woff2"),
+    url(//hackclub.com/fonts/averta-regular.woff) format("woff");
   unicode-range: U + 0000 - F8FE, U + F900-FFFF;
 }
 @font-face {
@@ -16,11 +14,10 @@
   font-style: normal;
   font-weight: 700;
   font-display: swap;
-  src: url(//hackclub.com/fonts/averta-bold.woff2) format('woff2'),
-    url(//hackclub.com/fonts/averta-bold.woff) format('woff');
+  src: url(//hackclub.com/fonts/averta-bold.woff2) format("woff2"),
+    url(//hackclub.com/fonts/averta-bold.woff) format("woff");
   unicode-range: U + 0000 - F8FE, U + F900-FFFF;
 }
-@import 'variables';
 
 * {
   box-sizing: border-box;
@@ -37,7 +34,7 @@ body {
   display: flex;
   flex-direction: column;
   font-size: 16px;
-  font-family: Averta, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+  font-family: Averta, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     sans-serif;
   line-height: 1.5;
   position: relative;
@@ -59,11 +56,11 @@ textarea {
   resize: none;
 }
 
-input[type='text'],
-input[type='url'],
-input[type='email'],
-input[type='file'],
-input[type='number'],
+input[type="text"],
+input[type="url"],
+input[type="email"],
+input[type="file"],
+input[type="number"],
 select,
 textarea {
   -webkit-appearance: none;
@@ -154,12 +151,16 @@ select {
   background: #{$select} right 0.75rem center / 0.5rem no-repeat $white;
 }
 // rails date(time) inputs
-select[name$='i)]'] {
+select[name$="i)]"] {
   width: 72px;
   display: inline-block;
 }
 
-input[type='submit'],
+.input--short {
+  max-width: 16rem !important;
+}
+
+input[type="submit"],
 .btn {
   padding-left: 16px;
   padding-right: 16px;
@@ -184,7 +185,7 @@ input[type='submit'],
   border-width: 0px;
   border-style: solid;
 }
-.btn.bg-white {
+.btn.btn--destroy {
   background-color: $gray0 !important;
   color: $red5 !important;
 }
@@ -238,26 +239,16 @@ td {
 }
 
 .event-summary {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  display: grid;
   border-radius: 4px;
   overflow: hidden;
-  max-width: 36rem;
   @media (min-width: 32em) {
-    flex-direction: row;
-    .event-summary__panel:first-of-type {
-      width: 40%;
-    }
-    .event-summary__panel:last-of-type {
-      width: 60%;
-    }
+    grid-template-columns: 2fr 3fr 3fr;
   }
 }
 .event-summary__panel {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   padding: 1rem;
   &.bg-accent .stat__label {
     color: $indigo1;
@@ -274,7 +265,7 @@ td {
   margin-bottom: 4px;
   text-transform: uppercase;
   &:before {
-    content: '$';
+    content: "$";
     font-size: 24px;
     vertical-align: super;
   }
@@ -297,7 +288,7 @@ td {
 .card {
   background-color: $white;
   box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.0125), 0 4px 8px 0 rgba(0, 0, 0, 0.125);
-  padding: 20px;
+  padding: 1rem;
   border-radius: 4px;
 }
 
@@ -369,7 +360,7 @@ td {
   text-decoration: none;
   color: $gray7;
   &:after {
-    content: ' »';
+    content: " »";
   }
   + h1,
   + h2 {
@@ -438,6 +429,9 @@ $chevron: "url(<%= asset_url 'chevron.svg' %>) right 12px center no-repeat";
     }
     &.transaction--warning {
       background: $orange0 #{$chevron};
+    }
+    &.ultrawhite {
+      padding-right: 0;
     }
     > p {
       margin: 0;
@@ -561,5 +555,59 @@ th {
   }
 }
 
-@import 'basscss';
-@import 'utilities';
+.card h1,
+.card h2 {
+  margin-right: 0;
+  width: 100%;
+}
+
+.card .list {
+  &,
+  > a > li,
+  > li {
+    margin-right: 2rem;
+  }
+}
+
+.steps {
+  counter-reset: li;
+  list-style: none;
+  text-align: left;
+  padding: 0;
+  li {
+    position: relative;
+    padding-left: 0.5rem;
+    margin-bottom: 1rem;
+    @media screen and (min-width: 32em) {
+      padding-left: 2rem;
+    }
+    &:before {
+      content: counter(li);
+      counter-increment: li;
+      position: absolute;
+      top: -0.25rem;
+      left: -1rem;
+      height: 2rem;
+      width: 2rem;
+      line-height: 2rem;
+      background-color: $blue5;
+      color: $white;
+      border-radius: 50%;
+      font-weight: bold;
+      text-align: center;
+    }
+    @media screen and (max-width: 32em) {
+      &:before {
+        left: -2rem;
+        top: -0.25rem;
+        height: 1.75rem;
+        line-height: 1.75rem;
+        width: 1.75rem;
+      }
+    }
+  }
+}
+
+@import "basscss";
+@import "space";
+@import "utilities";
