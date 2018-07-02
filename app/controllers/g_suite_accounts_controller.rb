@@ -34,19 +34,11 @@ class GSuiteAccountsController < ApplicationController
 
   private
 
-  def full_email_address(address, g_suite)
-    "#{address}@#{g_suite.domain}"
-  end
-
-<<<<<<< HEAD
-  def g_suite_account_params
-    params.require(:g_suite_account).permit(:address, :accepted_at, :rejected_at, :g_suite_id)
-  end
-=======
-  private
+    def full_email_address(address, g_suite)
+      "#{address}@#{g_suite.domain}"
+    end
 
     def g_suite_account_params
       params.require(:g_suite_account).permit(:address, :accepted_at, :rejected_at, :g_suite_id)
     end
->>>>>>> Fix g_suite flow
 end
