@@ -1,12 +1,22 @@
 class Event < ApplicationRecord
   has_many :organizer_position_invites
   has_many :organizer_positions
+
   has_many :users, through: :organizer_positions
+  has_one :g_suite_application, required: false
+  has_one :g_suite, required: false
+  has_many :g_suite_accounts, through: :g_suite
 
   has_many :fee_relationships
   has_many :transactions, through: :fee_relationships, source: :t_transaction
 
+  has_many :cards
+  has_many :card_requests
+  has_many :load_card_requests, through: :cards
+
   has_many :sponsors
+
+  has_many :documents
 
   validates :name, :start, :end, :address, :sponsorship_fee, presence: true
 
@@ -37,5 +47,15 @@ class Event < ApplicationRecord
     total_payments = self.fee_paid
 
     total_fees - total_payments
+  end
+
+  def g_suite_status
+    return :start if g_suite_application.nil?
+    return :under_review if g_suite_application.under_review?
+    return :app_accepted if g_suite_application.accepted? && g_suite.present?
+    return :app_rejected if g_suite_application.rejected?
+    return :verify_setup if !g_suite.verified?
+    return :done if g_suite.verified?
+    :start
   end
 end

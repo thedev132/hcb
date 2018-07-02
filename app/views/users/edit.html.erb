@@ -1,0 +1,30 @@
+<h1>
+  <%= @user.full_name.present? ? 'Edit' : 'Complete' %> Your Profile
+</h1>
+
+<%= form_with model: @user do |form| %>
+  <% if @user.errors.any? %>
+    <div id="error_explanation">
+      <h2>Oops!</h2>
+      <ul>
+      <% @user.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :full_name %>
+    <%= form.text_field :full_name, required: true %>
+  </div>
+
+  <div class="field">
+    <%= form.label :email %>
+    <%= form.email_field :email, required: true %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit 'Save changes' %>
+  </div>
+<% end %>

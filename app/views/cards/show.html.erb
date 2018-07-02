@@ -1,0 +1,47 @@
+<%= link_to @card.event.name, event_path(@card.event), class: 'breadcrumb' %>
+<h1 class="heading">
+  Card for <%= @card.user.email %>
+  <%= link_to 'See Balance', @card.emburse_path, target: '_blank', class: 'btn bg-accent' %>
+  <%= link_to 'Edit', edit_card_path(@card), class: 'btn bg-info' if admin_signed_in? %>
+</h1>
+
+<section class="details">
+<p>
+  <strong>Email address</strong>
+  <%= @card.user.email %>
+</p>
+
+<p>
+  <strong>Card number</strong>
+  XXXX-XXXX-XXXX-<%= @card.last_four %>
+</p>
+
+<p>
+  <strong>Daily spending limit</strong>
+  <%= @card.daily_limit ? render_money(@card.daily_limit) : 'no limit' %>
+</p>
+</section>
+
+<h2 class="heading">
+  Load requests
+  <%= link_to 'Request to Add Money', new_card_load_card_request_path(card_id: @card.id), class: 'btn bg-success' %>
+</h2>
+<% if @card.load_card_requests.any? %>
+  <ul class="list list--unlinked my0">
+    <% @card.load_card_requests.each do |request| %>
+      <li>
+        <p>
+          <strong><%= render_money request.load_amount %> – <%= request.status %></strong>
+          <span class="muted">(added by <%= request.creator.email %> <span title="<%= request.created_at %>"><%= time_ago_in_words request.created_at %> ago</span>)</span>
+        </p>
+        <% if request.status == 'under review' %>
+          <p>
+            <%= link_to 'Cancel request', card_load_card_request_cancel_path(load_card_request_id: request.id, card_id: request.card.id), method: :post, class: 'btn btn--destroy' %>
+          </p>
+        <% end %>
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <%= blankslate 'No load card requests' %>
+<% end %>

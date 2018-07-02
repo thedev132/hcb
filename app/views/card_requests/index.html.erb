@@ -1,0 +1,34 @@
+<h1>Card Requests</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Creator</th>
+      <th>Name on card</th>
+      <th>Event</th>
+      <th>Daily limit</th>
+      <th>Status</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @card_requests.each do |card_request| %>
+      <tr>
+        <td><%= card_request.creator.email %> (#<%= card_request.creator.id %>)</td>
+        <td><%= card_request.full_name %></td>
+        <td><%= link_to card_request.event&.name, card_request.event %></td>
+        <td><%= render_money card_request.daily_limit.to_i %></td>
+        <td><%= card_request.status %></td>
+        <% if card_request.under_review? %>
+          <td><%= link_to 'Show', card_request %></td>
+          <td><%= link_to 'Edit', edit_card_request_path(card_request) %></td>
+          <% if admin_signed_in? %>
+            <td><%= link_to 'Accept', new_card_path(card_request_id: card_request) %></td>
+            <td><%= link_to 'Reject', card_request_reject_path(card_request), method: :post %></td>
+          <% end %>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

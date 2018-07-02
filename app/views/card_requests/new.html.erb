@@ -1,0 +1,4 @@
+<%= link_to @event.name, @event, class: 'breadcrumb' if @event %>
+<h1>New Card Request</h1>
+
+<%= render 'form', card_request: @card_request %>

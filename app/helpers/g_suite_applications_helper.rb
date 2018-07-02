@@ -1,0 +1,2 @@
+module GSuiteApplicationsHelper
+end

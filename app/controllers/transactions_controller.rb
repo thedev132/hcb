@@ -6,6 +6,7 @@ class TransactionsController < ApplicationController
   def index
     @event = Event.find(params[:event])
     @transactions = @event.transactions
+    authorize @transactions
 
     attributes = %w{date name amount fee}
     attributes_to_currency = %w{amount fee}
@@ -29,7 +30,13 @@ class TransactionsController < ApplicationController
 
   def show
     @transaction = Transaction.find(params[:id])
-    @fee = fee
+
+    @fee = @transaction.fee
+
+    @commentable = @transaction
+    @comments = @commentable.comments
+    @comment = Comment.new
+
 
     authorize @transaction
   end
