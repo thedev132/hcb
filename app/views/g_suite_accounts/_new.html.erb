@@ -1,4 +1,4 @@
-<%= form_with(model: [g_suite_account.g_suite.event, g_suite_account], local: true) do |form| %>
+<%= form_with(model: [@g_suite, g_suite_account], local: true) do |form| %>
   <% if g_suite_account.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(g_suite_account.errors.count, 'error') %> prohibited this account from being saved:</h2>

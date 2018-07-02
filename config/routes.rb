@@ -24,20 +24,21 @@ Rails.application.routes.draw do
     post 'reject'
   end
 
-  resources :g_suite_accounts, only: [ :index ]
-  resources :g_suites, except: [ :new, :create, :edit, :update ]
-  get 'g_suite', to: 'g_suites#status', as: :g_suite_status
+  resources :g_suite_accounts, path: 'g_suite_accounts' do
+    get 'verify', to: 'g_suite_account#verify'
+  end
+
+  resources :g_suites, except: [ :new, :create, :edit, :update ] do
+    resources :g_suite_accounts, only: [ :create ]
+  end
 
   resources :events do
+    get 'g_suite', to: 'g_suites#status', as: :g_suite_status
     resources :organizer_position_invites,
       only: [ :new, :create ],
       path: 'invites'
     resources :g_suites, only: [ :new, :create, :edit, :update ]
     resources :g_suite_applications, only: [ :new, :create, :edit, :update ]
-  end
-
-  resources :g_suite_accounts, only: [ :index ], path: 'g_suite_accounts' do
-    get 'verify', to: 'g_suite_account#verify'
   end
 
   resources :sponsors do

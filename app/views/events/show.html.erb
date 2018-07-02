@@ -37,15 +37,15 @@
       <p>Your application is under review. Check back soon!</p>
     <% when :app_accepted %>
       <p>Your application was accepted! It’s time to set up your servers.</p>
-      <%= link_to 'Set up G Suite', g_suite_status_path(event_id: @event.id), class: "btn bg-white #{@g_color} mt1" %>
+      <%= link_to 'Set up G Suite', event_g_suite_status_path(event_id: @event.id), class: "btn bg-white #{@g_color} mt1" %>
     <% when :app_rejected %>
       <p>Your application was rejected.</p>
     <% when :verify_setup %>
       <p>Time to verify your G Suite setup.</p>
-      <%= link_to 'Get instructions', g_suite_status_path(event_id: @event.id), class: "btn bg-white #{@g_color} mt1" %>
+      <%= link_to 'Get instructions', event_g_suite_status_path(event_id: @event.id), class: "btn bg-white #{@g_color} mt1" %>
     <% when :done %>
       <p>Your G Suite is set up!</p>
-      <%= link_to 'Manage G Suite', g_suite_status_path(event_id: @event.id), class: "btn bg-white #{@g_color} mt1" %>
+      <%= link_to 'Manage G Suite', event_g_suite_status_path(event_id: @event.id), class: "btn bg-white #{@g_color} mt1" %>
     <% end %>
   </div>
 </section>

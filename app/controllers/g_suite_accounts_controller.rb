@@ -4,8 +4,8 @@ class GSuiteAccountsController < ApplicationController
   end
 
   def create
-    @event = Event.find(params[:event_id])
-    @g_suite = @event.g_suite
+    @g_suite = GSuite.find(params[:g_suite_id])
+    @event = @g_suite.event
     @g_suite_account = GSuiteAccount.new(g_suite_account_params.merge(g_suite: @g_suite))
     @g_suite_account.address = full_email_address(params[:g_suite_account][:address], @g_suite)
 

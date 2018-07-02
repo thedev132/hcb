@@ -40,6 +40,7 @@ class GSuitesController < ApplicationController
     authorize @g_suite
     @g_suite_application = GSuiteApplication.find(g_suite_params[:g_suite_application_id])
     @g_suite_application.accepted_at = Time.now
+    @g_suite_application.fulfilled_by = current_user
 
     if @g_suite_application.save && @g_suite.save
       flash[:success] = "G Suite application accepted for #{@g_suite.event.name}. Domain: #{@g_suite.domain}"
