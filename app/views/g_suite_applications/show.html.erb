@@ -40,9 +40,11 @@
 <% end %>
 </section>
 
-<p>
-  <%= link_to 'Reject request', g_suite_application_reject_path(@g_suite_application), method: :post, class: 'btn bg-error' %>
-</p>
-<p>
-  <%= link_to 'Accept request', g_suite_application_accept_path(@g_suite_application), method: :post, class: 'btn bg-success' %>
-</p>
+<% if @g_suite_application.under_review? %>
+  <p>
+    <%= link_to 'Reject request', g_suite_application_reject_path(@g_suite_application), method: :post, class: 'btn bg-error' %>
+  </p>
+  <p>
+    <%= link_to 'Accept request', g_suite_application_accept_path(@g_suite_application), method: :post, class: 'btn bg-success' %>
+  </p>
+<% end %>

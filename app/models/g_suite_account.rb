@@ -1,9 +1,12 @@
 class GSuiteAccount < ApplicationRecord
+  include Rejectable
+
   belongs_to :g_suite
   belongs_to :creator, class_name: 'User'
 
   validates_presence_of :address, :backup_email
 
+  validate :status_accepted_or_rejected
   validate :uniqueness_of_address_in_domain
 
   def status

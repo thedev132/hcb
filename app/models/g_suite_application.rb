@@ -1,10 +1,13 @@
 class GSuiteApplication < ApplicationRecord
+  include Rejectable
+
   belongs_to :creator, class_name: 'User'
   belongs_to :event
   belongs_to :fulfilled_by, class_name: 'User', required: false
   belongs_to :g_suite, required: false
 
   validates_presence_of :creator, :event, :domain
+  validate :status_accepted_canceled_or_rejected
   validates_presence_of :fulfilled_by, if: -> { rejected_at.present? || accepted_at.present? }
   validates_uniqueness_of :domain
   validate :domain_without_protocol, :domain_is_lowercase
@@ -20,14 +23,6 @@ class GSuiteApplication < ApplicationRecord
 
   def under_review?
     rejected_at.nil? && canceled_at.nil? && accepted_at.nil?
-  end
-
-  def accepted?
-    accepted_at.present?
-  end
-
-  def rejected?
-    rejected_at.present?
   end
 
   private

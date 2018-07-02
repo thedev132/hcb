@@ -25,10 +25,10 @@ class GSuiteApplicationsController < ApplicationController
 
     if @g_suite_application.save
       flash[:success] = 'G Suite application rejected!'
-      redirect_to g_suite_applications_path
     else
-      redirect_to :new
+      flash[:error] = @g_suite_application.errors.full_messages.join("\n")
     end
+    redirect_to g_suite_applications_path
   end
 
   # GET /g_suite_applications/new
