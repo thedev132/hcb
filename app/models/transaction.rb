@@ -4,6 +4,7 @@ class Transaction < ApplicationRecord
   default_scope { order(date: :desc, id: :desc) }
   default_scope { where(deleted_at: nil) }
 
+  has_many :comments, as: :commentable
   belongs_to :bank_account
 
   belongs_to :fee_relationship, inverse_of: :t_transaction, required: false
@@ -22,6 +23,7 @@ class Transaction < ApplicationRecord
 
   def default_values
     self.is_event_related = true if self.is_event_related.nil?
+
   end
 
   def notify_admin
@@ -29,6 +31,6 @@ class Transaction < ApplicationRecord
   end
 
   def fee
-    is_event_related && fee_relationship&.fee_amount || 0
+    is_event_related && fee_relationship&.fee_amount
   end
 end

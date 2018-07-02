@@ -5,6 +5,7 @@ class User < ApplicationRecord
   has_many :load_card_requests
   has_many :card_requests
   has_many :cards
+  has_many :comments, as: :commentable
 
   before_create :create_session_token
 
