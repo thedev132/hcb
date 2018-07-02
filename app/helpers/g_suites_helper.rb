@@ -9,4 +9,16 @@ module GSuitesHelper
     when :done then :success
     end
   end
+
+  def example_email_username
+    current_user.full_name.to_s.length > 3 ? current_user.full_name.downcase.split(' ').first : 'yourname'
+  end
+
+  def example_email_domain(event = @event)
+    "#{event.name.to_s.downcase.gsub(' ', '')}.com"
+  end
+
+  def example_email(event = @event)
+    "#{example_email_username}@#{example_email_domain(event)}"
+  end
 end

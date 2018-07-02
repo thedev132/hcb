@@ -1,0 +1,23 @@
+<%= form_with(model: [g_suite_account.g_suite.event, g_suite_account], local: true) do |form| %>
+  <% if g_suite_account.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(g_suite_account.errors.count, 'error') %> prohibited this account from being saved:</h2>
+      <ul>
+      <% g_suite_account.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="flex items-end w-100">
+    <div>
+      <%= form.label :address %>
+      <div class="flex items-center">
+        <%= form.text_field :address, value: example_email_username, style: 'background: white;' %>
+        <span style="margin-left: 2px;">@<%= g_suite_account.g_suite.domain %></span>
+      </div>
+    </div>
+    <%= form.submit 'Create', style: 'margin-left: auto;' %>
+  </div>
+<% end %>

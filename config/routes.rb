@@ -21,7 +21,7 @@ Rails.application.routes.draw do
 
   resources :events do
     resources :g_suite_applications, except: [ :index ]
-    resources :g_suite_accounts, only: [ :index ]
+    resources :g_suite_accounts, only: [ :index, :create ]
     resources :g_suites
 
     get 'g_suite', to: 'g_suites#status', as: :g_suite_status
