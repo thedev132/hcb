@@ -23,10 +23,6 @@ class LoadCardRequestPolicy < ApplicationPolicy
     user.admin?
   end
 
-  def reject?
-    user.admin?
-  end
-
   def cancel?
     record.creator == user
   end

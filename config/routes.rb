@@ -26,6 +26,8 @@ Rails.application.routes.draw do
 
   resources :g_suite_accounts, path: 'g_suite_accounts' do
     get 'verify', to: 'g_suite_account#verify'
+    post 'accept'
+    post 'reject'
   end
 
   resources :g_suites, except: [ :new, :create, :edit, :update ] do

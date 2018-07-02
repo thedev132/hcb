@@ -10,7 +10,11 @@ class GSuiteAccount < ApplicationRecord
     return 'rejected' if rejected_at.present?
     return 'accepted' if accepted_at.present?
     return 'verified' if verified_at.present?
-    'under review'
+    'pending'
+  end
+
+  def under_review?
+    rejected_at.nil? && accepted_at.nil?
   end
 
   def verified?

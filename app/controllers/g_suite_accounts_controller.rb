@@ -1,4 +1,6 @@
 class GSuiteAccountsController < ApplicationController
+  before_action :set_g_suite_account, only: [ :accept, :reject ]
+
   def index
     @g_suite_accounts = GSuiteAccount.all
   end
@@ -35,13 +37,43 @@ class GSuiteAccountsController < ApplicationController
     end
   end
 
+  def accept
+    authorize @g_suite_account
+
+    @g_suite_account.accepted_at = Time.now
+
+    if @g_suite_account.save
+      flash[:success] = 'G Suite Account accepted.'
+    else
+      flash[:error] = 'Something went wrong.'
+    end
+    redirect_to g_suite_accounts_path
+  end
+
+  def reject
+    authorize @g_suite_account
+
+    @g_suite_account.rejected_at = Time.now
+
+    if @g_suite_account.save
+      flash[:success] = 'G Suite Account rejected.'
+    else
+      flash[:error] = 'Something went wrong.'
+    end
+    redirect_to g_suite_accounts_path
+  end
+
   private
 
-    def full_email_address(address, g_suite)
-      "#{address}@#{g_suite.domain}"
-    end
-  
-    def g_suite_account_params
-    end
+  def set_g_suite_account
+    @g_suite_account = GSuiteAccount.find(params[:g_suite_account_id])
+  end
+
+  def g_suite_account_params
     params.require(:g_suite_account).permit(:backup_email, :address, :accepted_at, :rejected_at, :g_suite_id)
+  end
+
+  def full_email_address(address, g_suite)
+    "#{address}@#{g_suite.domain}"
+  end
 end

@@ -14,4 +14,12 @@ class GSuiteAccountPolicy < ApplicationPolicy
   def update?
     user.admin?
   end
+
+  def accept?
+    user.admin?
+  end
+
+  def reject?
+    user.admin?
+  end
 end
