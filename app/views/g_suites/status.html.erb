@@ -8,7 +8,7 @@ when :start %>
 <% when :under_review %>
   <p>Your application is under review. Check back here soon!</p>
 <% when :app_accepted %>
-  <article class="card p0 max-width-3">
+  <article class="card p0 max-width-3 mx-auto">
     <div class="p2 bg-success white center rounded-top">
       <p><strong class="h3">Your application was accepted!</strong><br />It’s time to set up your servers.</p>
     </div>
@@ -95,7 +95,7 @@ when :start %>
         </li>
       </ol>
     </div>
-    <div class="p2 bg-snow md-pl5">
+    <div class="p2 md-pl5">
       <%= render 'g_suite_accounts/panel' %>
     </div>
   </article>

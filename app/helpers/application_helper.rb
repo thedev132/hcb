@@ -9,6 +9,6 @@ module ApplicationHelper
   end
 
   def blankslate(text, options={})
-    content_tag :p, text, class: "center my0 py2 slate bold h3 #{options.class}"
+    content_tag :p, text, class: "center mt0 mb0 pt2 pb2 slate bold h3 #{options.class}"
   end
 end
