@@ -1,10 +1,14 @@
 class OrganizerPositionInvitePolicy < ApplicationPolicy
+  def new?
+    user.admin? || record.event&.users&.include?(user)
+  end
+
   def create?
     user.admin? || record.event.users.include?(user)
   end
 
   def show?
-    record.user == user
+    record.user == user || user.admin?
   end
 
   def new?

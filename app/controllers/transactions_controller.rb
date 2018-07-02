@@ -1,9 +1,42 @@
+require 'csv'
+
 class TransactionsController < ApplicationController
   before_action :signed_in_user
 
+  def index
+    @event = Event.find(params[:event])
+    @transactions = @event.transactions
+    authorize @transactions
+
+    attributes = %w{date name amount fee}
+    attributes_to_currency = %w{amount fee}
+
+    result = CSV.generate(headers: true) do |csv|
+      csv << attributes
+
+      @transactions.each do |transaction|
+        csv << attributes.map do |attr|
+          if attributes_to_currency.include? attr
+            view_context.number_to_currency transaction.send(attr) / 100
+          else
+            transaction.send(attr)
+          end
+        end
+      end
+    end
+
+    send_data result, filename: "#{@event.name} transactions #{Date.today}.csv"
+  end
+
   def show
     @transaction = Transaction.find(params[:id])
-    @fee = @transaction.is_event_related ? @transaction.fee_relationship : nil
+
+    @fee = @transaction.fee
+
+    @commentable = @transaction
+    @comments = @commentable.comments
+    @comment = Comment.new
+
 
     authorize @transaction
   end

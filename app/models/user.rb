@@ -6,6 +6,10 @@ class User < ApplicationRecord
   has_many :g_suite_applications, inverse_of: :fulfilled_by
   has_many :g_suite_accounts, inverse_of: :fulfilled_by
   has_many :g_suite_accounts, inverse_of: :creator
+  has_many :load_card_requests
+  has_many :card_requests
+  has_many :cards
+  has_many :comments, as: :commentable
 
   before_create :create_session_token
 

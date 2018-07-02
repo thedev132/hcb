@@ -3,7 +3,7 @@ class Invoice < ApplicationRecord
 
   validates_presence_of :item_description, :item_amount, :due_date
 
-  validate :due_date_cannot_be_in_past
+  validate :due_date_cannot_be_in_past, on: :create
 
   before_create :set_memo, :create_stripe_invoice
 
@@ -23,18 +23,19 @@ class Invoice < ApplicationRecord
   end
 
   def set_fields_from_stripe_invoice(inv)
-    # TODO: set self.stripe_charge_id
-
     self.amount_due = inv.amount_due,
     self.amount_paid = inv.amount_paid
     self.amount_remaining = inv.amount_remaining
     self.attempt_count = inv.attempt_count
     self.attempted = inv.attempted
+    self.stripe_charge_id = inv.charge
     self.closed = inv.closed
     self.memo = inv.description
     self.due_date = Time.at(inv.due_date).to_datetime # convert from unixtime
     self.ending_balance = inv.ending_balance
     self.forgiven = inv.forgiven
+    self.hosted_invoice_url = inv.hosted_invoice_url
+    self.invoice_pdf = inv.invoice_pdf
     self.paid = inv.paid
     self.starting_balance = inv.starting_balance
     self.statement_descriptor = inv.statement_descriptor

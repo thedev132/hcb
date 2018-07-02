@@ -30,7 +30,12 @@ class EventsController < ApplicationController
 
   # GET /events/1
   def show
+
     @g_suite_status = @event.g_suite_status
+
+    @card_requests = @event.card_requests.under_review
+    @load_card_requests = @event.load_card_requests.under_review
+
     authorize @event
   end
 

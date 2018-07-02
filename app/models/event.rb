@@ -1,6 +1,7 @@
 class Event < ApplicationRecord
   has_many :organizer_position_invites
   has_many :organizer_positions
+
   has_many :users, through: :organizer_positions
   has_one :g_suite_application, required: false
   has_one :g_suite, required: false
@@ -9,7 +10,13 @@ class Event < ApplicationRecord
   has_many :fee_relationships
   has_many :transactions, through: :fee_relationships, source: :t_transaction
 
+  has_many :cards
+  has_many :card_requests
+  has_many :load_card_requests, through: :cards
+
   has_many :sponsors
+
+  has_many :documents
 
   validates :name, :start, :end, :address, :sponsorship_fee, presence: true
 
