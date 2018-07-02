@@ -21,9 +21,10 @@
         <td><%= g_suite_account.rejected_at %></td>
         <td><%= link_to 'G Suite', g_suite_account.g_suite %></td>
         <% if g_suite_account.under_review? %>
-          <td><%= link_to 'Reject', g_suite_account_reject_path(g_suite_account), method: :post, data: { confirm: 'Are you sure?' }, class: 'h5 btn bg-error' %></td>
-          <td><%= link_to 'Accept', g_suite_account_accept_path(g_suite_account), method: :post, class: 'h5 btn bg-success' %></td>
+          <td><%= link_to 'Reject', g_suite_account_reject_path(g_suite_account),
+            method: :post, data: { confirm: 'Are you sure?' }, class: 'h5 btn bg-error' %></td>
         <% end %>
+        <td><%= link_to 'Edit', edit_g_suite_account_path(g_suite_account), class: 'h5 btn bg-info' %></td>
       </tr>
     <% end %>
   </tbody>

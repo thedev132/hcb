@@ -11,11 +11,11 @@ class GSuiteAccountPolicy < ApplicationPolicy
     user.admin? || record.event.users.include?(user)
   end
 
-  def update?
+  def edit?
     user.admin?
   end
 
-  def accept?
+  def update?
     user.admin?
   end
 
