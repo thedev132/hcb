@@ -33,7 +33,9 @@ Rails.application.routes.draw do
   resources :documents, except: [ :index ]
 
   resources :bank_accounts, only: [ :new, :create, :show ]
-  resources :transactions, only: [ :index, :show, :edit, :update ]
+  resources :transactions, only: [ :index, :show, :edit, :update ] do
+    resources :comments
+  end
 
   resources :cards do
     resources :load_card_requests, except: [ :index ], path: 'load_requests' do

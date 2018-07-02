@@ -30,7 +30,11 @@ class TransactionsController < ApplicationController
 
   def show
     @transaction = Transaction.find(params[:id])
-    @fee = fee
+    @fee = @transaction.fee
+
+    @commentable = @transaction
+    @comments = @commentable.comments
+    @comment = Comment.new
 
     authorize @transaction
   end
