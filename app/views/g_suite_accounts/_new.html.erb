@@ -10,14 +10,19 @@
     </div>
   <% end %>
 
-  <div class="flex items-end w-100">
-    <div>
-      <%= form.label :address %>
-      <div class="flex items-center">
-        <%= form.text_field :address, value: example_email_username, style: 'background: white;' %>
-        <span style="margin-left: 2px;">@<%= g_suite_account.g_suite.domain %></span>
-      </div>
+  <h3 class="mb1">Add an account</h3>
+  <div class="field">
+    <%= form.label :address %>
+    <div class="flex items-center">
+      <%= form.text_field :address, value: example_email_username, class: 'input--short right-align' %>
+      <span style="margin-left: 2px;">@<%= g_suite_account.g_suite.domain %></span>
     </div>
-    <%= form.submit 'Create', style: 'margin-left: auto;' %>
+  </div>
+  <div class="field">
+    <%= form.label :backup_email %>
+    <%= form.email_field :backup_email, value: current_user.email %>
+  </div>
+  <div class="actions">
+    <%= form.submit 'Create' %>
   </div>
 <% end %>

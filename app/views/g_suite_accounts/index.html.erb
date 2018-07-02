@@ -3,7 +3,8 @@
 <table>
   <thead>
     <tr>
-      <th>Address</th>
+      <th>G Suite email</th>
+      <th>Backup email</th>
       <th>Accepted at</th>
       <th>Rejected at</th>
       <th>G suite</th>
@@ -15,6 +16,7 @@
     <% @g_suite_accounts.each do |g_suite_account| %>
       <tr>
         <td><%= g_suite_account.address %></td>
+        <td><%= g_suite_account.backup_email %></td>
         <td><%= g_suite_account.accepted_at %></td>
         <td><%= g_suite_account.rejected_at %></td>
         <td><%= link_to 'G Suite', g_suite_account.g_suite %></td>

@@ -2,7 +2,7 @@ class GSuiteAccount < ApplicationRecord
   belongs_to :g_suite
   belongs_to :creator, class_name: 'User'
 
-  validates_presence_of :address
+  validates_presence_of :address, :backup_email
 
   validate :uniqueness_of_address_in_domain
 
