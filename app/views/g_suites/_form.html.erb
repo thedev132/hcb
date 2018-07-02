@@ -1,4 +1,4 @@
-<%= form_with(model: g_suite, local: true) do |form| %>
+<%= form_with(model: g_suite, local: true, url: event_g_suites_path) do |form| %>
   <% if g_suite.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(g_suite.errors.count, "error") %> prohibited this g_suite from being saved:</h2>
@@ -11,19 +11,23 @@
     </div>
   <% end %>
 
+  <% if @g_suite_application %>
+    <%= form.hidden_field :g_suite_application_id, value: @g_suite_application.id %>
+  <% end %>
+
   <div class="field">
     <%= form.label :event_id, 'Event' %>
-    <%= form.collection_select(:event_id, Event.all, :id, :name, prompt: 'Select event…', selected: params[:event_id] ) %>
+    <%= form.collection_select(:event_id, Event.all, :id, :name, prompt: 'Select event…', selected: @g_suite.event.id ) %>
   </div>
 
   <div class="field">
     <%= form.label :domain %>
-    <%= form.text_field :domain, value: params[:domain] %>
+    <%= form.text_field :domain, value: @g_suite.domain %>
   </div>
 
   <div class="field">
     <%= form.label :verification_key %>
-    <%= form.text_field :verification_key %>
+    <%= form.text_field :verification_key, value: @g_suite.verification_key %>
   </div>
 
   <div class="actions">

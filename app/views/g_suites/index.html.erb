@@ -1,6 +1,5 @@
 <h1 class="heading">
   G Suites
-  <%= link_to 'New G Suite', new_g_suite_path, class: 'btn bg-success' %>
 </h1>
 
 <table>
@@ -21,9 +20,9 @@
         <td><%= link_to g_suite.event.name, g_suite.event %></td>
         <td><%= g_suite.verification_key %></td>
         <td><%= g_suite.deleted_at %></td>
-        <td><%= link_to 'Show', event_g_suite_path(g_suite, event_id: g_suite.event.id) %></td>
+        <td><%= link_to 'Show', g_suite_path(g_suite, event_id: g_suite.event.id) %></td>
         <td><%= link_to 'Edit', edit_event_g_suite_path(g_suite, event_id: g_suite.event.id) %></td>
-        <td><%= link_to 'Destroy', event_g_suite_path(g_suite, event_id: g_suite.event.id), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Destroy', g_suite_path(g_suite, event_id: g_suite.event.id), method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>

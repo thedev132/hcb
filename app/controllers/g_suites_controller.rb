@@ -14,7 +14,15 @@ class GSuitesController < ApplicationController
 
   # GET /g_suites/new
   def new
-    @g_suite = GSuite.new
+    @g_suite_application = GSuiteApplication.find(params[:g_suite_application_id])
+    @g_suite = GSuite.new(
+      g_suite_application: @g_suite_application,
+      event: @g_suite_application.event,
+      domain: @g_suite_application.domain
+    )
+    @g_suite_application.g_suite = @g_suite
+
+    authorize @g_suite
   end
 
   # GET /g_suites/1/edit
@@ -23,14 +31,19 @@ class GSuitesController < ApplicationController
 
   # POST /g_suites
   def create
-    @g_suite = GSuite.new(g_suite_params)
+    @g_suite = GSuite.new(
+      domain: g_suite_params[:domain],
+      event_id: g_suite_params[:event_id],
+      verification_key: g_suite_params[:verification_key]
+    )
 
     authorize @g_suite
+    @g_suite_application = GSuiteApplication.find(g_suite_params[:g_suite_application_id])
+    @g_suite_application.accepted_at = Time.now
 
-    if @g_suite.save
-      @g_suite.event.g_suite_application.update(g_suite: @g_suite)
-      flash[:success] = 'G Suite was successfully created.'
-      redirect_to event_g_suite_path(@g_suite.id, event_id: @g_suite.event.id)
+    if @g_suite_application.save && @g_suite.save
+      flash[:success] = "G Suite application accepted for #{@g_suite.event.name}. Domain: #{@g_suite.domain}"
+      redirect_to @g_suite
     else
       render :new
     end

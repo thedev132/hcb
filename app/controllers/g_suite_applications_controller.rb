@@ -14,25 +14,12 @@ class GSuiteApplicationsController < ApplicationController
   end
 
   def accept
-    @g_suite_application.accepted_at = Time.now
-
-    authorize @g_suite_application
-
-    if @g_suite_application.save
-      flash[:success] = "G Suite application accepted for #{@g_suite_application.event.name}. Domain: #{@g_suite_application.domain}"
-      redirect_to new_event_g_suite_path(
-        event_id: @g_suite_application.event.id,
-        params: {
-          domain: @g_suite_application.domain,
-          g_suite_application_id: @g_suite_application.id
-        })
-    else
-      redirect_to :new
-    end
+    redirect_to new_event_g_suite_path(g_suite_application_id: @g_suite_application.id, event_id: @g_suite_application.event.id)
   end
 
   def reject
     @g_suite_application.rejected_at = Time.now
+    @g_suite_application.fulfilled_by = current_user
 
     authorize @g_suite_application
 
@@ -97,7 +84,7 @@ class GSuiteApplicationsController < ApplicationController
 
     def set_event
       # TODO: needs security for if event isnt yours
-      @event = Event.find(params[:event_id])
+      @event = @g_suite_application&.event || Event.find(params[:id] || params[:event_id])
     end
 
     # Only allow a trusted parameter "white list" through.

@@ -5,8 +5,9 @@ class GSuiteApplication < ApplicationRecord
   belongs_to :g_suite, required: false
 
   validates_presence_of :creator, :event, :domain
+  validates_presence_of :fulfilled_by, if: -> { rejected_at.present? || accepted_at.present? }
   validates_uniqueness_of :domain
-  validate :domain_without_protocol
+  validate :domain_without_protocol, :domain_is_lowercase
 
   scope :under_review, -> { where(rejected_at: nil, canceled_at: nil, accepted_at: nil) }
 
@@ -34,5 +35,11 @@ class GSuiteApplication < ApplicationRecord
   def domain_without_protocol
     bad = ['http', ':', '/'].any? { |s| domain.include? s }
     errors.add(:domain, 'shouldn’t include http(s):// or ending /') if bad
+  end
+
+  def domain_is_lowercase
+    return if domain.downcase == domain
+
+    errors.add(:domain, 'must be all lowercase')
   end
 end

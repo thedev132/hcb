@@ -4,6 +4,7 @@ class GSuiteAccount < ApplicationRecord
   validates_presence_of :address
 
   validate :uniqueness_of_address_in_domain
+<<<<<<< HEAD
 
   def status
     return 'rejected' if rejected_at.present?
@@ -11,6 +12,8 @@ class GSuiteAccount < ApplicationRecord
     return 'verified' if verified_at.present?
     'under review'
   end
+=======
+>>>>>>> Fix g_suite flow
 
   def verified?
     verified_at.present?
