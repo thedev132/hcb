@@ -11,11 +11,12 @@ module GSuitesHelper
   end
 
   def example_email_username
-    current_user.full_name.to_s.length > 3 ? current_user.full_name.downcase.split(' ').first : 'yourname'
+    name = current_user.full_name.downcase.split(' ').first
+    name.blank? ? 'max' : name
   end
 
   def example_email_domain(event = @event)
-    "#{event.name.to_s.downcase.gsub(' ', '')}.com"
+    "#{event.name.to_s.downcase.gsub(/[^a-z0-9]/i, '')}.com"
   end
 
   def example_email(event = @event)
