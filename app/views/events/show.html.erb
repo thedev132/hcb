@@ -84,7 +84,7 @@
 
 <h2 class="heading">
   Credit Cards
-  <%= link_to 'Request Cards', new_card_request_path(event_id: @event.id), class: 'btn bg-success' %>
+  <%= link_to 'Request a Card', new_card_request_path(event_id: @event.id), class: 'btn bg-success' %>
 </h2>
 <% if @event.cards.any? %>
   <ul class="list list--unlinked">
