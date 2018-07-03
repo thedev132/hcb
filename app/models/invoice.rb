@@ -6,6 +6,7 @@ class Invoice < ApplicationRecord
   validate :due_date_cannot_be_in_past, on: :create
 
   before_create :set_memo, :create_stripe_invoice
+  before_destroy :close_stripe_invoice
 
   def set_memo
     event = self.sponsor.event.name
@@ -20,6 +21,13 @@ class Invoice < ApplicationRecord
     self.stripe_invoice_id = inv.id
 
     self.set_fields_from_stripe_invoice(inv)
+  end
+
+  def close_stripe_invoice
+    invoice = StripeService::Invoice.retrieve(stripe_invoice_id)
+    invoice.closed = true
+    invoice.save
+    self.set_fields_from_stripe_invoice invoice
   end
 
   def set_fields_from_stripe_invoice(inv)
