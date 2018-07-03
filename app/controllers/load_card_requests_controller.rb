@@ -52,7 +52,11 @@ class LoadCardRequestsController < ApplicationController
 
     authorize @load_card_request
 
-    @load_card_request.save
+    if @load_card_request.save
+      flash[:success] = 'Load card request accepted.'
+    else
+      flash[:error] = 'Something went wrong.'
+    end
     redirect_to load_card_requests_path
   end
 
