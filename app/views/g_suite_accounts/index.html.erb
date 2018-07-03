@@ -14,7 +14,7 @@
 
   <tbody>
     <% @g_suite_accounts.each do |g_suite_account| %>
-      <tr class="<%= 'shade-green' if g_suite_account.under_review? %>">
+      <tr class="<%= 'shade-yellow' if g_suite_account.under_review? %>">
         <td><%= g_suite_account.address %></td>
         <td><%= g_suite_account.backup_email %></td>
         <td><%= g_suite_account.accepted_at %></td>

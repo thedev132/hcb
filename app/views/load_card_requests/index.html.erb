@@ -16,7 +16,7 @@
 
   <tbody>
     <% @load_card_requests.each do |request| %>
-      <tr>
+      <tr class="<%= 'shade-yellow' if request.under_review? %>">
         <td><%= link_to request.card.last_four, request.card %></td>
         <td><%= request.creator.email %></td>
         <td><%= request.fulfilled_by&.email %></td>

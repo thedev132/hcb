@@ -14,7 +14,7 @@
 
   <tbody>
     <% @card_requests.each do |card_request| %>
-      <tr>
+      <tr class="<%= 'shade-yellow' if card_request.under_review? %>">
         <td><%= card_request.creator.email %> (#<%= card_request.creator.id %>)</td>
         <td><%= card_request.full_name %></td>
         <td><%= link_to card_request.event&.name, card_request.event %></td>

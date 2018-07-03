@@ -1,7 +1,5 @@
 <h1>G Suite Applications</h1>
 
-<p><span class="shade-green">green</span> = needs to be accepted/rejected.</p>
-
 <table>
   <thead>
     <tr>
@@ -17,8 +15,8 @@
 
   <tbody>
     <% @g_suite_applications.each do |g_suite_application| %>
-      <tr class="<%= 'shade-green' if g_suite_application.under_review? %>">
-        <td><%= g_suite_application.creator.email %></td>
+      <tr class="<%= 'shade-yellow' if g_suite_application.under_review? %>">
+        <td><%= g_suite_application.creator.email %> (#<%= g_suite_application.creator.id %>)</td>
         <td><%= link_to g_suite_application.event.name, g_suite_application.event %></td>
         <td><%= g_suite_application.domain %></td>
         <td><%= g_suite_application.rejected_at %></td>

@@ -15,4 +15,8 @@ class LoadCardRequest < ApplicationRecord
     return 'rejected' if rejected_at.present?
     'under review'
   end
+
+  def under_review?
+    rejected_at.nil? && canceled_at.nil? && accepted_at.nil?
+  end
 end
