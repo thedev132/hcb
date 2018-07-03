@@ -10,6 +10,9 @@ class Sponsor < ApplicationRecord
   before_destroy :destroy_invoices
   before_destroy :destroy_stripe_customer
 
+  scope :archived, -> { where.not(archived_at: nil) }
+  default_scope { where(archived_at: nil) }
+
   def status
     i = invoices.last
     if i.nil?
@@ -62,6 +65,11 @@ class Sponsor < ApplicationRecord
 
   def destroy_invoices
     self.invoices.destroy_all
+  end
+
+  def archive
+    self.invoices.each { |inv| inv.close_stripe_invoice }
+    self.update(archived_at: Time.now)
   end
 
   def stripe_dashboard_url

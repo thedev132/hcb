@@ -1,6 +1,6 @@
 class SponsorsController < ApplicationController
   before_action :signed_in_user
-  before_action :set_sponsor, only: [:show, :edit, :update, :destroy]
+  before_action :set_sponsor, only: [:show, :edit, :update, :destroy, :archive]
 
   # GET /sponsors
   def index
@@ -48,6 +48,15 @@ class SponsorsController < ApplicationController
     end
   end
 
+  def archive
+    authorize @sponsor
+
+    @sponsor.archive
+
+    flash[:success] = 'Sponsor was successfully archived.'
+    redirect_to sponsors_path
+  end
+
   # DELETE /sponsors/1
   def destroy
     authorize @sponsor
@@ -61,7 +70,7 @@ class SponsorsController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_sponsor
-    @sponsor = Sponsor.find(params[:id])
+    @sponsor = Sponsor.find(params[:sponsor_id] || params[:id])
   end
 
   # Only allow a trusted parameter "white list" through.

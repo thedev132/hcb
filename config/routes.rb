@@ -43,6 +43,7 @@ Rails.application.routes.draw do
   end
 
   resources :sponsors do
+    post 'archive'
     resources :invoices, only: [ :new, :create ]
   end
   resources :invoices, only: [ :show ]
