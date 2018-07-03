@@ -42,9 +42,12 @@
 
 <% if @g_suite_application.under_review? %>
   <p>
-    <%= link_to 'Reject request', g_suite_application_reject_path(@g_suite_application), method: :post, class: 'btn bg-error' %>
+    <%= link_to 'Reject request', g_suite_application_reject_path(@g_suite_application), method: :post, data: { confirm: 'Are you sure you want to reject it?' }, class: 'btn bg-error' %>
   </p>
   <p>
     <%= link_to 'Accept request', g_suite_application_accept_path(@g_suite_application), method: :post, class: 'btn bg-success' %>
   </p>
 <% end %>
+<p>
+  <%= link_to 'Cancel request', g_suite_application_path(@g_suite_application), method: :delete, data: { confirm: 'Are you sure you want to cancel?' }, class: 'btn bg-muted' %>
+</p>
