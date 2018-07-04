@@ -55,12 +55,7 @@ class TransactionsController < ApplicationController
 
     fee_relationship = @transaction.fee_relationship
 
-    @transaction.assign_attributes(transaction_params.except(:load_card_request_id))
-
-    if lcr_id = params[:transaction][:load_card_request_id]
-      @load_card_request = LoadCardRequest.find(lcr_id)
-      @transaction.load_card_request = @load_card_request
-    end
+    @transaction.assign_attributes(transaction_params)
 
     # NOTE: @transaction is the record, .transaction is a keyword here
     @transaction.transaction do

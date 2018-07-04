@@ -4,13 +4,21 @@ class LoadCardRequest < ApplicationRecord
   belongs_to :card
   belongs_to :fulfilled_by, class_name: 'User', required: false
   belongs_to :creator, class_name: 'User'
-  belongs_to :t_transaction, class_name: 'Transaction', required: false
+  has_one :t_transaction, class_name: 'Transaction'
 
   validate :status_accepted_canceled_or_rejected
 
   scope :under_review, -> { where(rejected_at: nil, canceled_at: nil, accepted_at: nil) }
   scope :accepted, -> { where.not(accepted_at: nil) }
-  scope :pending, -> { where(emburse_transaction_id: nil, transaction_id: nil) }
+  scope :pending, -> do
+    includes(:t_transaction)
+      .accepted
+      .where(
+        emburse_transaction_id: nil,
+        transactions: { id: nil }
+      )
+  end
+
 
   def status
     return 'completed' if accepted_at.present?
