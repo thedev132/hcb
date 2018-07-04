@@ -1,8 +1,12 @@
 <h1><%= @account.name %></h1>
-<pre>
-<%= JSON.pretty_generate(JSON.parse(@account.to_json)) %>
-</pre>
-<p>Current balance: <%= render_money @account.balance %></p>
+<section class="event-summary my2">
+  <div class="event-summary__panel rounded bg-accent white">
+    <div class="stat">
+      <span class="stat__label">Account balance</span>
+      <span class="stat__value"><%= render_money @account.balance, '' %></span>
+    </div>
+  </div>
+</section>
 <table>
 <tr>
   <th>Date</th>
