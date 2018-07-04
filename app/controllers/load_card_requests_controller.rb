@@ -40,7 +40,7 @@ class LoadCardRequestsController < ApplicationController
 
     if @load_card_request.update(load_card_request_params)
       flash[:success] = 'Load card request was successfully updated.'
-      redirect_to @card
+      redirect_to @load_card_request.card
     else
       render :edit
     end
@@ -92,6 +92,6 @@ class LoadCardRequestsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def load_card_request_params
-      params.require(:load_card_request).permit(:card_id, :creator_id, :load_amount)
+      params.require(:load_card_request).permit(:card_id, :creator_id, :load_amount, :emburse_transaction_id)
     end
 end

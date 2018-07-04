@@ -36,7 +36,7 @@
   <%= "Load card request ID##{@load_card_request.id}" %>
 </p>
 
-<p class="<%= 'shade-yellow ' if @load_card_request.emburse_transaction_id.blank? && @load_card_request. %>">
+<p class="<%= 'shade-yellow ' if @load_card_request.emburse_transaction_id.blank? %>">
   <strong>Emburse transaction ID</strong>
   <%= @load_card_request.emburse_transaction_id.present? ? link_to(@load_card_request.emburse_transaction_id, "https://app.emburse.com/transactions/#{@load_card_request.emburse_transaction_id}") : 'unset' %>
 </p>

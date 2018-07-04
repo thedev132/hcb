@@ -23,7 +23,7 @@
   <% if admin_signed_in? %>
   <div class="field">
     <%= form.label :emburse_transaction_id, 'Emburse transaction ID', class: load_card_request.emburse_transaction_id.blank? && 'shade-yellow' %>
-    <%= form.number_field :emburse_transaction_id %>
+    <%= form.text_field :emburse_transaction_id %>
   </div>
   <% end %>
 

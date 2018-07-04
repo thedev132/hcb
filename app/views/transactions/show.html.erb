@@ -21,7 +21,7 @@
   <strong>Fee</strong>
   <% if @fee %>
     <% if @fee.fee_amount.nil? %>
-    n/a <span class="slate">(this is a fee payment)</span>
+    <span>n/a <span class="slate">(this is a fee payment)</span></span>
     <% else %>
     <%= render_money @fee.fee_amount %>
     <% end %>
