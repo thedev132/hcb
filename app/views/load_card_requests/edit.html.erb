@@ -1,5 +1,5 @@
 <%= link_to 'Load card requests', load_card_requests_path, class: 'breadcrumb' %>
-<%= link_to 'This request', @load_card_request, class: 'breadcrumb' %>
+<%= link_to 'This request', card_load_card_request_path(@load_card_request, card_id: @load_card_request.card.id), class: 'breadcrumb' %>
 <h1>Editing Load Card Request</h1>
 
 <%= render 'form', load_card_request: @load_card_request %>
