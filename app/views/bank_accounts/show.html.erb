@@ -16,7 +16,7 @@
   <th>Full Info</th>
 </tr>
 <% @account.transactions.each do |t| %>
-  <tr>
+  <tr class="<%= 'shade-yellow' if !t.event && t.is_event_related %>">
     <td>
       <%= t.date %>
     </td>
@@ -30,13 +30,13 @@
       <% if t.event %>
         <%= link_to t.event.name, t.event %>
       <% elsif t.is_event_related %>
-        <%= link_to 'Set Event', edit_transaction_path(t) %>
+        <%= link_to 'Set Event', edit_transaction_path(t), class: 'btn bg-info' %>
       <% else %>
         N/A
       <% end %>
     </td>
     <td>
-      <%= link_to 'Click', t %>
+      <%= link_to 'View', t %>
     </td>
   </tr>
 <% end %>
