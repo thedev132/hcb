@@ -18,10 +18,11 @@ class LoadCardRequest < ApplicationRecord
         transactions: { id: nil }
       )
   end
-
+  scope :completed, -> { accepted.where.not(id: pending) }
 
   def status
-    return 'completed' if accepted_at.present?
+    return 'pending' if LoadCardRequest.pending.include?(self)
+    return 'completed' if LoadCardRequest.completed.include?(self)
     return 'canceled' if canceled_at.present?
     return 'rejected' if rejected_at.present?
     'under review'
