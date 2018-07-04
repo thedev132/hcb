@@ -24,6 +24,10 @@ class Card < ApplicationRecord
     "https://app.emburse.com/cards/#{emburse_id}"
   end
 
+  def total_budget
+    load_card_requests.where('emburse_transaction_id IS NOT NULL').sum(:load_amount)
+  end
+
   private
 
   def emburse_id_format

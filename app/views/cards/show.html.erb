@@ -20,6 +20,13 @@
   <strong>Daily spending limit</strong>
   <%= @card.daily_limit ? render_money(@card.daily_limit) : 'no limit' %>
 </p>
+
+<% if admin_signed_in? %>
+<p>
+  <strong>Total budget</strong>
+  <%= render_money @card.total_budget %>
+</p>
+<% end %>
 </section>
 
 <h2 class="heading">
@@ -32,7 +39,7 @@
       <li>
         <p>
           <strong><%= render_money request.load_amount %> – <%= request.status %>
-          <%= "– ID#{request.id}" if admin_signed_in? %></strong>
+          <%= "– ID##{request.id}" if admin_signed_in? %></strong>
           <span class="muted">(added by <%= request.creator.email %> <span title="<%= request.created_at %>"><%= time_ago_in_words request.created_at %> ago</span>)</span>
         </p>
         <% if request.status == 'under review' %>
