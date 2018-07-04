@@ -21,7 +21,7 @@
     <% if transaction.emburse? %>
     <div class="field">
       <%= form.label :load_card_request, 'Load card request' %>
-      <%= form.collection_select(:load_card_request_id, transaction.event.present? ? transaction&.event&.cards&.map { |c| c.load_card_requests.pending }.to_a.flatten : LoadCardRequest.all, :id, :description, include_blank: 'Select one…') %>
+      <%= form.collection_select(:load_card_request_id, LoadCardRequest.all, :id, :description, include_blank: 'Select one…') %>
     </div>
     <p class="muted h5 mb2">If this isn’t from transferring money to Emburse to fulfill a Load Card Request, leave this field blank.</p>
     <% end %>
