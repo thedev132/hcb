@@ -1,3 +1,5 @@
-<h1>Edit Transaction</h1>
+<%= link_to 'This transaction', @transaction, class: 'breadcrumb' %>
+<h1>Edit <%= render_money @transaction.amount %>
+<%= @fee && @fee.fee_amount.nil? ? 'fee payment' : 'transaction' %></h1>
 
 <%= render 'form', transaction: @transaction %>

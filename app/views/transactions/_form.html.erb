@@ -18,6 +18,13 @@
       <%= fr_form.collection_select(:event_id, Event.all, :id, :name, include_blank: 'Select one…') %>
     </div>
     <% end %>
+    <% if transaction.emburse? %>
+    <div class="field">
+      <%= form.label :load_card_request, 'Load card request' %>
+      <%= form.collection_select(:load_card_request_id, transaction.event.present? ? transaction&.event&.cards&.map { |c| c.load_card_requests.pending }.to_a.flatten : LoadCardRequest.all, :id, :description, include_blank: 'Select one…') %>
+    </div>
+    <p class="muted h5 mb2">If this isn’t from transferring money to Emburse to fulfill a Load Card Request, leave this field blank.</p>
+    <% end %>
     <%= form.label :is_event_related, class: 'field mb1' do %>
       <%= form.check_box :is_event_related %>
       Is event-related?

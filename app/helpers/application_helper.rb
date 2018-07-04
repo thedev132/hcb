@@ -1,4 +1,5 @@
 module ApplicationHelper
+  include ActionView::Helpers
   def render_money(amount, unit = '$')
     number_to_currency(BigDecimal.new(amount || 0) / 100, unit: unit)
   end

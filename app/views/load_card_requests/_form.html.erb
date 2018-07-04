@@ -1,4 +1,4 @@
-<%= form_for [@card, load_card_request] do |form| %>
+<%= form_with(model: [load_card_request.card, load_card_request], local: true) do |form| %>
   <% if load_card_request.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(load_card_request.errors.count, "error") %> prohibited this load_card_request from being saved:</h2>
@@ -13,12 +13,19 @@
 
   <%= form.hidden_field :creator_id, value: current_user.id %>
 
-  <%= form.hidden_field :card_id, value: @card.id %>
+  <%= form.hidden_field :card_id, value: load_card_request.card.id %>
 
   <div class="field">
     <%= form.label :load_amount, 'Amount to add (cents)' %>
     <%= form.number_field :load_amount %>
   </div>
+
+  <% if admin_signed_in? %>
+  <div class="field">
+    <%= form.label :emburse_transaction_id, 'Emburse transaction ID', class: load_card_request.emburse_transaction_id.blank? && 'shade-yellow' %>
+    <%= form.number_field :emburse_transaction_id %>
+  </div>
+  <% end %>
 
   <div class="actions">
     <%= form.submit 'Request balance added' %>

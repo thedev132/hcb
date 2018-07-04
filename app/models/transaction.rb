@@ -7,6 +7,8 @@ class Transaction < ApplicationRecord
   has_many :comments, as: :commentable
   belongs_to :bank_account
 
+  has_one :load_card_request
+
   belongs_to :fee_relationship, inverse_of: :t_transaction, required: false
   has_one :event, through: :fee_relationship
 
@@ -32,5 +34,9 @@ class Transaction < ApplicationRecord
 
   def fee
     is_event_related && fee_relationship
+  end
+
+  def emburse?
+    name.include? 'emburse'
   end
 end

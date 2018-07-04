@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_07_02_235428) do
+ActiveRecord::Schema.define(version: 2018_07_04_003640) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -209,9 +209,12 @@ ActiveRecord::Schema.define(version: 2018_07_02_235428) do
     t.datetime "accepted_at"
     t.datetime "rejected_at"
     t.datetime "canceled_at"
+    t.string "emburse_transaction_id"
+    t.bigint "transaction_id"
     t.index ["card_id"], name: "index_load_card_requests_on_card_id"
     t.index ["creator_id"], name: "index_load_card_requests_on_creator_id"
     t.index ["fulfilled_by_id"], name: "index_load_card_requests_on_fulfilled_by_id"
+    t.index ["transaction_id"], name: "index_load_card_requests_on_transaction_id"
   end
 
   create_table "organizer_position_invites", force: :cascade do |t|
@@ -319,6 +322,7 @@ ActiveRecord::Schema.define(version: 2018_07_02_235428) do
   add_foreign_key "g_suites", "events"
   add_foreign_key "invoices", "sponsors"
   add_foreign_key "load_card_requests", "cards"
+  add_foreign_key "load_card_requests", "transactions"
   add_foreign_key "load_card_requests", "users", column: "creator_id"
   add_foreign_key "load_card_requests", "users", column: "fulfilled_by_id"
   add_foreign_key "organizer_position_invites", "events"

@@ -2,7 +2,7 @@
 
 <h1 class="heading">
   <%= render_money @transaction.amount %>
-  <%= @fee&.fee_amount.nil? ? 'fee payment' : 'transaction' %>
+  <%= @fee && @fee.fee_amount.nil? ? 'fee payment' : 'transaction' %>
   <%= link_to 'Edit', edit_transaction_path(@transaction), class: 'btn bg-info' %>
 </h1>
 
@@ -26,9 +26,16 @@
     <%= render_money @fee.fee_amount %>
     <% end %>
   <% else %>
-    n/a <span class="slate">(this transaction isn’t event-related)</span>
+    <span>n/a <span class="slate">(this transaction isn’t event-related)</span></span>
   <% end %>
 </p>
+
+<% if @transaction.load_card_request %>
+<p>
+  <strong>Load card request</strong>
+  <%= link_to 'View', card_load_card_request_path(@transaction.load_card_request, card_id: @transaction.load_card_request.card.id) %>
+</p>
+<% end %>
 </section>
 
 <h2>Comments</h2>

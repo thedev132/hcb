@@ -13,7 +13,7 @@
   <th>Name</th>
   <th>Amount</th>
   <th>Event</th>
-  <th>Full Info</th>
+  <th colspan="2">Full Info</th>
 </tr>
 <% @account.transactions.each do |t| %>
   <tr class="<%= 'shade-yellow' if !t.event && t.is_event_related %>">
