@@ -57,7 +57,7 @@ class LoadCardRequestsController < ApplicationController
     else
       flash[:error] = 'Something went wrong.'
     end
-    redirect_to load_card_requests_path
+    redirect_to edit_card_load_card_request_path(@load_card_request, card_id: @load_card_request.card.id)
   end
 
   def reject
