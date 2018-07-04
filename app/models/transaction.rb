@@ -31,6 +31,6 @@ class Transaction < ApplicationRecord
   end
 
   def fee
-    is_event_related && fee_relationship&.fee_amount
+    is_event_related && fee_relationship
   end
 end
