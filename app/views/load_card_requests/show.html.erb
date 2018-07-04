@@ -1,4 +1,4 @@
-<%= link_to 'Load card requests', card_load_card_requests_path(@load_card_request, card_id: @card.id), class: 'breadcrumb' %>
+<%= link_to 'Load card requests', load_card_requests_path(@load_card_request), class: 'breadcrumb' %>
 <%= link_to "Card #{@load_card_request.card.last_four}", @load_card_request.card, class: 'breadcrumb' %>
 <h1 class="heading">
   Load card request for <%= @load_card_request.card.last_four %>
@@ -25,4 +25,16 @@
   <strong>Load amount</strong>
   <%= render_money @load_card_request.load_amount %>
 </p>
+
+<p class="shade-yellow">
+  <strong>Memo for Emburse</strong>
+  <%= "Load card request ID##{@load_card_request.id}" %>
+</p>
 </section>
+
+<% if @load_card_request.under_review? %>
+<p>Load in Emburse before accepting!</p>
+
+<p><%= link_to 'Reject', card_load_card_request_reject_path(@load_card_request, card_id: @load_card_request.card.id), method: :post, data: { confirm: 'Are you sure?' }, class: 'btn bg-error' %></p>
+<p><%= link_to 'Accept request', card_load_card_request_accept_path(@load_card_request, card_id: @load_card_request.card.id), method: :post, data: { confirm: 'Have you processed in Emburse?' },class: 'btn bg-success' %></p>
+<% end %>

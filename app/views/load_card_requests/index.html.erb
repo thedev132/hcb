@@ -5,6 +5,7 @@
 <table>
   <thead>
     <tr>
+      <th>ID</th>
       <th>Card</th>
       <th>Creator</th>
       <th>Fulfilled by</th>
@@ -17,16 +18,19 @@
   <tbody>
     <% @load_card_requests.each do |request| %>
       <tr class="<%= 'shade-yellow' if request.under_review? %>">
+        <td><%= "ID##{request.id}" %></td>
         <td><%= link_to request.card.last_four, request.card %></td>
         <td><%= request.creator.email %></td>
         <td><%= request.fulfilled_by&.email %></td>
         <td><%= render_money request.load_amount %></td>
         <td><%= request.status %></td>
-        <% if request.status == 'under review' %>
-          <td><%= link_to 'Show', card_load_card_request_path(request, card_id: request.card.id) %></td>
-          <td><%= link_to 'Reject', card_load_card_request_reject_path(request, card_id: request.card.id), method: :post, data: { confirm: 'Are you sure?' } %></td>
-          <td><%= link_to 'Accept', card_load_card_request_accept_path(request, card_id: request.card.id), method: :post, data: { confirm: 'Are you sure?' } %></td>
-        <% end %>
+        <td>
+          <% if request.under_review? %>
+            <%= link_to 'Process', card_load_card_request_path(request, card_id: request.card.id), class: 'btn bg-info' %>
+          <% else %>
+            <%= link_to 'View', card_load_card_request_path(request, card_id: request.card.id) %>
+          <% end %>
+        </td>
       </tr>
     <% end %>
   </tbody>

@@ -31,7 +31,8 @@
     <% @card.load_card_requests.each do |request| %>
       <li>
         <p>
-          <strong><%= render_money request.load_amount %> – <%= request.status %></strong>
+          <strong><%= render_money request.load_amount %> – <%= request.status %>
+          <%= "– ID#{request.id}" if admin_signed_in? %></strong>
           <span class="muted">(added by <%= request.creator.email %> <span title="<%= request.created_at %>"><%= time_ago_in_words request.created_at %> ago</span>)</span>
         </p>
         <% if request.status == 'under review' %>
