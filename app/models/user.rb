@@ -33,7 +33,9 @@ class User < ApplicationRecord
   end
 
   def api_record
-    @api_record ||= ApiService.get_user(self.api_id, self.api_access_token)
+    Rails.cache.fetch("#{cache_key}/api_record", expires_in: 6.hours) do
+      ApiService.get_user(self.api_id, self.api_access_token)
+    end
   end
 
   private
