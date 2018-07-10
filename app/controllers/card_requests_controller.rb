@@ -5,7 +5,7 @@ class CardRequestsController < ApplicationController
 
   # GET /card_requests
   def index
-    @card_requests = CardRequest.all
+    @card_requests = CardRequest.all.order(created_at: :desc)
     authorize @card_requests
   end
 

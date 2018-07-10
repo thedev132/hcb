@@ -2,7 +2,7 @@ class LoadCardRequestsController < ApplicationController
   before_action :set_load_card_request, only: [:show, :edit, :update, :reject, :cancel, :accept]
 
   def index
-    @load_card_requests = LoadCardRequest.all
+    @load_card_requests = LoadCardRequest.all.order(created_at: :desc)
     authorize @load_card_requests
   end
 
