@@ -40,7 +40,7 @@
       <% end %>
       <% if @invites.any? %>
         <h2 class="h4 w-100 left-align mt3 mb0 ttu slate">Your pending invitations</h2>
-        <ul class="list left-align col-12">
+        <ul class="list left-align w-100">
           <% @invites.each do |invite| %>
             <%= link_to invite do %>
               <li>
