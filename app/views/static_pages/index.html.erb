@@ -1,27 +1,17 @@
 <main class="flex flex-column mx-auto center items-center max-width-3 w-100 pt3">
   <% if admin_signed_in? %>
     <h1 class="w-100">Grand Central Station of <span class="primary">Bank</span></h1>
-    <ul class="list left-align w-100">
+    <ul class="list list--row left-align w-100">
       <li><%= link_to 'Events', events_path %></li>
       <li><%= link_to 'Sponsors', sponsors_path %></li>
       <li><%= link_to 'Cards', cards_path %></li>
-      <li><%= link_to 'Card Requests', card_requests_path %></li>
-      <li><%= link_to 'Load Card Requests', load_card_requests_path %></li>
-      <li class="ultrawhite">
-        G Suite
-        <ul class="list">
-          <li><%= link_to 'G Suite Applications', g_suite_applications_path %></li>
-          <li><%= link_to 'G Suites', g_suites_path %></li>
-          <li><%= link_to 'G Suite Accounts', g_suite_accounts_path %></li>
-        </ul>
-      </li>
-      <li class="ultrawhite">
-        Bank Account
-        <ul class="list">
-          <li><%= link_to 'Setup Bank', new_bank_account_path %></li>
-          <li><%= link_to 'See Transactions', BankAccount.instance %></li>
-        </ul>
-      </li>
+      <li><%= link_to 'Card Requests', card_requests_path %><%= badge_for @active[:card_requests] %></li>
+      <li><%= link_to 'Load Card Requests', load_card_requests_path %><%= badge_for @active[:load_card_requests] %></li>
+      <li><%= link_to 'G Suite Applications', g_suite_applications_path %><%= badge_for @active[:g_suite_applications] %></li>
+      <li><%= link_to 'G Suite Accounts', g_suite_accounts_path %><%= badge_for @active[:g_suite_accounts] %></li>
+      <li><%= link_to 'G Suites', g_suites_path %></li>
+      <li><%= link_to 'Transactions', BankAccount.instance %></li>
+      <li><%= link_to 'Setup Bank', new_bank_account_path %></li>
     </ul>
     <%= link_to 'Sign out', logout_users_path, method: :delete, class: 'btn mt2' %>
   <% else %>

@@ -12,4 +12,8 @@ module ApplicationHelper
   def blankslate(text, options={})
     content_tag :p, text, class: "center mt0 mb0 pt2 pb2 slate bold h3 #{options.class}"
   end
+
+  def badge_for(count)
+    content_tag :span, count, class: "badge #{'bg-muted' if count == 0}"
+  end
 end

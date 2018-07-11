@@ -9,6 +9,8 @@ class GSuiteAccount < ApplicationRecord
   validate :status_accepted_or_rejected
   validate :uniqueness_of_address_in_domain
 
+  scope :under_review, -> { where(rejected_at: nil, accepted_at: nil) }
+
   def status
     return 'rejected' if rejected_at.present?
     return 'accepted' if accepted_at.present?
