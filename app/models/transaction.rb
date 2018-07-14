@@ -8,7 +8,7 @@ class Transaction < ApplicationRecord
   belongs_to :fee_relationship, inverse_of: :t_transaction, required: false
   has_one :event, through: :fee_relationship
 
-  belongs_to :load_card_request, inverse_of: :t_transaction
+  belongs_to :load_card_request, inverse_of: :t_transaction, required: false
 
   has_many :comments, as: :commentable
 
