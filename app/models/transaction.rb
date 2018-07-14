@@ -3,13 +3,14 @@ class Transaction < ApplicationRecord
 
   default_scope { order(date: :desc, id: :desc) }
 
-  has_many :comments, as: :commentable
   belongs_to :bank_account
-
-  belongs_to :load_card_request, inverse_of: :t_transaction
 
   belongs_to :fee_relationship, inverse_of: :t_transaction, required: false
   has_one :event, through: :fee_relationship
+
+  belongs_to :load_card_request, inverse_of: :t_transaction
+
+  has_many :comments, as: :commentable
 
   accepts_nested_attributes_for :fee_relationship
 
