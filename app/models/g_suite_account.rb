@@ -7,7 +7,7 @@ class GSuiteAccount < ApplicationRecord
   validates_presence_of :address, :backup_email
 
   validate :status_accepted_or_rejected
-  validate :uniqueness_of_address_in_domain
+  validates :address, uniqueness: { scope: :g_suite }
 
   scope :under_review, -> { where(rejected_at: nil, accepted_at: nil) }
 
@@ -32,13 +32,5 @@ class GSuiteAccount < ApplicationRecord
 
   def at_domain
     "@#{address.to_s.split('@').last}"
-  end
-
-  private
-
-  def uniqueness_of_address_in_domain
-    g_suite.g_suite_accounts.where(address: address).each do |account|
-      errors.add(:unique_error, 'Address already in use') if id != account.id
-    end
   end
 end
