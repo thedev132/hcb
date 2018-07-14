@@ -35,6 +35,9 @@ class Transaction < ApplicationRecord
     is_event_related && fee_relationship
   end
 
+  # Emburse adds the word "emburse" to bank transactions made. This is a
+  # convenience method to see when the statement line was probably from
+  # Emburse.
   def emburse?
     name.include? 'emburse'
   end
