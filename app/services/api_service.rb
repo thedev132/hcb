@@ -1,6 +1,8 @@
 class ApiService
   BASE_URL = 'https://api.hackclub.com'
 
+  class UnauthorizedError < StandardError; end
+
   def self.req(method, path, params, access_token=nil)
     conn = Faraday.new(url: BASE_URL)
 
@@ -15,7 +17,11 @@ class ApiService
       req.body = params.to_json
     end
 
-    JSON.parse(resp.body, symbolize_names: true)
+    if resp.status == 401
+      raise UnauthorizedError.new
+    else
+      JSON.parse(resp.body, symbolize_names: true)
+    end
   end
 
   def self.request_login_code(email)
