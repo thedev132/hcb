@@ -2,7 +2,6 @@ class Transaction < ApplicationRecord
   acts_as_paranoid
 
   default_scope { order(date: :desc, id: :desc) }
-  default_scope { where(deleted_at: nil) }
 
   has_many :comments, as: :commentable
   belongs_to :bank_account
