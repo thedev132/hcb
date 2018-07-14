@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_07_04_035017) do
+ActiveRecord::Schema.define(version: 2018_07_14_055316) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -290,6 +290,7 @@ ActiveRecord::Schema.define(version: 2018_07_04_035017) do
     t.index ["deleted_at"], name: "index_transactions_on_deleted_at"
     t.index ["fee_relationship_id"], name: "index_transactions_on_fee_relationship_id"
     t.index ["load_card_request_id"], name: "index_transactions_on_load_card_request_id"
+    t.index ["plaid_id"], name: "index_transactions_on_plaid_id", unique: true
   end
 
   create_table "users", force: :cascade do |t|

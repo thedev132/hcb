@@ -14,6 +14,7 @@ class Transaction < ApplicationRecord
 
   accepts_nested_attributes_for :fee_relationship
 
+  validates :plaid_id, uniqueness: true
   validates :is_event_related, inclusion: { in: [ true, false ] }
 
   validates :fee_relationship,
