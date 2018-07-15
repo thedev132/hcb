@@ -32,8 +32,12 @@ class Transaction < ApplicationRecord
     TransactionMailer.with(transaction: self).notify_admin.deliver_later
   end
 
-  def fee
-    is_event_related && fee_relationship
+  def fee_payment?
+    is_event_related && fee_relationship.is_fee_payment
+  end
+
+  def fee_applies?
+    is_event_related && fee_relationship.fee_applies
   end
 
   # Emburse adds the word "emburse" to bank transactions made. This is a
