@@ -19,10 +19,6 @@ class SponsorPolicy < ApplicationPolicy
     user.admin? || user_has_position?
   end
 
-  def archive?
-    user.admin?
-  end
-
   def destroy
     user.admin?
   end
