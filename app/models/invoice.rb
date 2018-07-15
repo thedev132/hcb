@@ -1,5 +1,6 @@
 class Invoice < ApplicationRecord
   belongs_to :sponsor
+  belongs_to :creator, class_name: 'User'
 
   validates_presence_of :item_description, :item_amount, :due_date
 

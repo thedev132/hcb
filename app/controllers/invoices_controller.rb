@@ -11,6 +11,7 @@ class InvoicesController < ApplicationController
 
     @invoice = Invoice.new(invoice_params)
     @invoice.sponsor = @sponsor
+    @invoice.creator = current_user
 
     authorize @invoice
 

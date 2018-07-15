@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_07_14_055316) do
+ActiveRecord::Schema.define(version: 2018_07_15_044132) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -194,6 +194,8 @@ ActiveRecord::Schema.define(version: 2018_07_14_055316) do
     t.boolean "closed"
     t.text "hosted_invoice_url"
     t.text "invoice_pdf"
+    t.bigint "creator_id"
+    t.index ["creator_id"], name: "index_invoices_on_creator_id"
     t.index ["item_stripe_id"], name: "index_invoices_on_item_stripe_id", unique: true
     t.index ["sponsor_id"], name: "index_invoices_on_sponsor_id"
     t.index ["stripe_invoice_id"], name: "index_invoices_on_stripe_invoice_id", unique: true
@@ -322,6 +324,7 @@ ActiveRecord::Schema.define(version: 2018_07_14_055316) do
   add_foreign_key "g_suite_applications", "users", column: "fulfilled_by_id"
   add_foreign_key "g_suites", "events"
   add_foreign_key "invoices", "sponsors"
+  add_foreign_key "invoices", "users", column: "creator_id"
   add_foreign_key "load_card_requests", "cards"
   add_foreign_key "load_card_requests", "users", column: "creator_id"
   add_foreign_key "load_card_requests", "users", column: "fulfilled_by_id"
