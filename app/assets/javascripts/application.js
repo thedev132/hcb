@@ -32,7 +32,7 @@ window.onload = function() {
       var body = document.getElementsByTagName('body')
       body[0].remove()
       alert(
-        'Your adblocker is preventing us from reporting bugs. Please disable it in order to use Hack Club Bank.'
+        "Hack Club Bank is still in development. To continue improving the product, it's crucial for us to receive full telemetry data to debug any issues that arise, but your adblocker is currently blocking our bug reporting and analytics. Please unblock to continue using the site."
       )
     }
   }, 4500)
