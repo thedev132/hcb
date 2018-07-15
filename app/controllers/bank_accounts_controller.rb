@@ -4,6 +4,8 @@ class BankAccountsController < ApplicationController
   def new
     @link_env = PlaidService.instance.env
     @public_key = PlaidService.instance.public_key
+
+    authorize BankAccount
   end
 
   def create
@@ -19,6 +21,8 @@ class BankAccountsController < ApplicationController
       plaid_account_id: account_id,
       name: account_name
     )
+
+    authorize @account
 
     if @account.save
       redirect_to @account
