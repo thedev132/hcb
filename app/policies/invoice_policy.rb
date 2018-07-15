@@ -6,4 +6,12 @@ class InvoicePolicy < ApplicationPolicy
   def show?
     user.admin? || record.sponsor.event.users.include?(user)
   end
+
+  def manual_payment?
+    user.admin?
+  end
+
+  def manually_mark_as_paid?
+    user.admin?
+  end
 end

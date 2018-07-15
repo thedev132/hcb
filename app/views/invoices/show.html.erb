@@ -10,16 +10,25 @@
     <span><strong><%= render_money @invoice.total %></strong> total</span>
     <span>Due <strong><%= @invoice.due_date.to_date %></strong></span>
   </div>
-  <div class="invoice-progress">
-    <% if @invoice.amount_paid > 0 %>
-    <div class="invoice-progress__paid" style="width: <%= number_to_percentage 100 * @invoice.amount_paid / @invoice.total %>;">
-      <%= render_money @invoice.amount_paid %> paid
+  <% if @invoice.manually_marked_as_paid? %>
+    <p>
+      <em>
+        This invoice was manually marked as paid by <%= @invoice.manually_marked_as_paid_user.full_name %>.
+        Reason given: "<%= @invoice.manually_marked_as_paid_reason %>"
+      </em>
+    </p>
+  <% else %>
+    <div class="invoice-progress">
+      <% if @invoice.amount_paid > 0 %>
+      <div class="invoice-progress__paid" style="width: <%= number_to_percentage 100 * @invoice.amount_paid / @invoice.total %>;">
+        <%= render_money @invoice.amount_paid %> paid
+      </div>
+      <% end %>
+      <div class="invoice-progress__remaining">
+        <%= render_money @invoice.amount_remaining %> <%= 'unpaid' if @invoice.amount_paid == 0 %>
+      </div>
     </div>
-    <% end %>
-    <div class="invoice-progress__remaining">
-      <%= render_money @invoice.amount_remaining %> <%= 'unpaid' if @invoice.amount_paid == 0 %>
-    </div>
-  </div>
+  <% end %>
 </div>
 
 <% if @invoice.hosted_invoice_url && @invoice.invoice_pdf %>
@@ -29,6 +38,12 @@
   </p>
 <% end %>
 
-<p>Created by <%= @invoice.creator.full_name %>.</p>
+<p>Invoice created by <%= @invoice.creator.full_name %>.</p>
 
-<%= link_to 'Stripe', @invoice.stripe_dashboard_url if admin_signed_in? %>
+<% if current_user.admin? %>
+  <% unless @invoice.manually_marked_as_paid? %>
+    <p><%= link_to 'Manually mark this invoice as paid.', invoice_manual_payment_path(@invoice) %></p>
+  <% end %>
+
+  <p><%= link_to 'View on Stripe.', @invoice.stripe_dashboard_url %></p>
+<% end %>

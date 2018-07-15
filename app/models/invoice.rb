@@ -1,8 +1,16 @@
 class Invoice < ApplicationRecord
   belongs_to :sponsor
   belongs_to :creator, class_name: 'User'
+  belongs_to :manually_marked_as_paid_user, class_name: 'User', required: false
 
   validates_presence_of :item_description, :item_amount, :due_date
+
+  # all manually_marked_as_paid_... fields must be present all together or not
+  # present at all
+  validates_presence_of :manually_marked_as_paid_user, :manually_marked_as_paid_reason,
+    if: -> { !self.manually_marked_as_paid_at.nil? }
+  validates_absence_of :manually_marked_as_paid_user, :manually_marked_as_paid_reason,
+    if: -> { self.manually_marked_as_paid_at.nil? }
 
   validate :due_date_cannot_be_in_past, on: :create
 
@@ -12,6 +20,33 @@ class Invoice < ApplicationRecord
   def set_memo
     event = self.sponsor.event.name
     self.memo = "To support #{event}. #{event} is fiscally sponsored by The Hack Foundation (d.b.a. Hack Club), a 501(c)(3) nonprofit with the EIN 81-2908499."
+  end
+
+  def manually_mark_as_paid(user_who_did_it, reason_for_manual_payment)
+    inv = StripeService::Invoice.retrieve(stripe_invoice_id)
+    inv.paid = true
+
+    if inv.save 
+      self.set_fields_from_stripe_invoice(inv)
+
+      self.manually_marked_as_paid_at = Time.current
+      self.manually_marked_as_paid_user = user_who_did_it
+      self.manually_marked_as_paid_reason = reason_for_manual_payment
+
+      if self.save
+        true
+      else
+        false
+      end
+    else
+      errors.add(:base, 'failed to save with vendor')
+
+      false
+    end
+  end
+
+  def manually_marked_as_paid?
+    self.manually_marked_as_paid_at.present?
   end
 
   def create_stripe_invoice

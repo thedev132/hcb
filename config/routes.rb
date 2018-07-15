@@ -46,7 +46,10 @@ Rails.application.routes.draw do
     post 'archive'
     resources :invoices, only: [ :new, :create ]
   end
-  resources :invoices, only: [ :show ]
+  resources :invoices, only: [ :show ] do
+    get 'manual_payment'
+    post 'manually_mark_as_paid'
+  end
 
   resources :documents, except: [ :index ]
 
