@@ -22,6 +22,10 @@
     <strong>Fee</strong>
     <%= render_money @transaction.fee_relationship.fee_amount %> (<%= render_percentage @transaction.fee_relationship.fee_percent %>)
   </p>
+<% elsif @transaction.fee_payment? %>
+  <p>
+    <strong>Note: this is a fee payment</strong>
+  </p>
 <% end %>
 
 <% if @transaction.load_card_request %>
