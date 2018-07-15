@@ -16,7 +16,11 @@ class InvoicesController < ApplicationController
     authorize @invoice
 
     if @invoice.save
-      flash[:success] = 'Invoice successfully created'
+      # the 1 hour wait is a result of stripe. they automatically send the
+      # invoice then, there's unfortunately no way for us to speed up the
+      # process right now. their support team says they're aware of this being
+      # annoying & is on it, so we'll see.
+      flash[:success] = 'Invoice successfully created. It will be emailed to the point of contact of the associated sponsor in 1 hour.'
       redirect_to @invoice
     else
       render :new
