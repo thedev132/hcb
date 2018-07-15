@@ -22,6 +22,13 @@
   </div>
 </div>
 
+<% if @invoice.hosted_invoice_url && @invoice.invoice_pdf %>
+  <p>
+    View online invoice: <%= link_to @invoice.hosted_invoice_url, @invoice.hosted_invoice_url, target: '_blank' %><br />
+    Download PDF of invoice: <%= link_to 'click here', @invoice.invoice_pdf, download: true %>
+  </p>
+<% end %>
+
 <p>Created by <%= @invoice.creator.full_name %>.</p>
 
 <%= link_to 'Stripe', @invoice.stripe_dashboard_url if admin_signed_in? %>
