@@ -8,8 +8,18 @@
           <strong><%= account.username %></strong><span><%= account.at_domain %></span>
           – <strong><%= account.status %></strong>
         </p>
+        <p class="slate">
+          <% if account.initial_password.present? %>
+            <%= status_badge :success %>
+            <span>sign in with password:</span>
+            <code class="bg-snow pl1 pr1"><%= account.initial_password %></code>
+          <% else %>
+            <%= status_badge :pending %>
+            <span>account not yet set up</span>
+          <% end %>
+        </p>
         <% if admin_signed_in? || account.backup_email === current_user.email %>
-          <p class="muted"><%= account.backup_email %></p>
+          <p class="muted">for <%= account.backup_email %></p>
         <% end %>
       </li>
       <% end %>

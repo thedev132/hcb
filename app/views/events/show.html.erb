@@ -109,6 +109,7 @@
     <% @card_requests.each do |request| %>
       <li>
         <p>
+          <%= status_if :pending, request.under_review? %>
           <strong><%= request.full_name %> – <%= request.status %></strong>
           <span class="muted">(added <span title="<%= request.created_at %>"><%= time_ago_in_words request.created_at %> ago</span>)</span>
         </p>
@@ -126,6 +127,7 @@
     <% @load_card_requests.each do |request| %>
       <li>
         <p class="flex-auto">
+          <%= status_if :pending, request.under_review? %>
           <strong><%= request.card.full_name %> for <%= render_money request.load_amount %> – <%= request.status %></strong>
           <span class="muted">(added <span title="<%= request.created_at %>"><%= time_ago_in_words request.created_at %> ago</span>)</span>
         </p>
@@ -175,7 +177,7 @@
 </h2>
 
 <% if @event.sponsors.any? %>
-  <ul class="list">
+  <ul class="list list--row">
     <% @event.sponsors.each do |s| %>
       <%= link_to s do %>
         <li class="transaction--<%= s.status %>">
@@ -281,4 +283,4 @@
   <%= blankslate 'No documents yet' %>
 <% end %>
 
-<p>Looking for expense reimbursements? <%= mail_to 'zach@hackclub.com', 'Ask Zach' %> for an invitation to Expensify.</p>
+<p class="muted mt3">Looking for expense reimbursements? <%= mail_to 'zach@hackclub.com', 'Ask Zach' %> for an invitation to Expensify.</p>
