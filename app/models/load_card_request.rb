@@ -28,6 +28,15 @@ class LoadCardRequest < ApplicationRecord
     'under review'
   end
 
+  def status_badge_type
+    s = status.to_sym
+    return 'warning' if s == :pending
+    return 'success' if s == :completed
+    return 'muted' if s == :canceled
+    return 'error' if s == :rejected
+    'pending'
+  end
+
   def under_review?
     rejected_at.nil? && canceled_at.nil? && accepted_at.nil?
   end

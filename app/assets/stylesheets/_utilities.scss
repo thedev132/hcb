@@ -1,4 +1,4 @@
-@import "variables";
+@import 'variables';
 
 .ttu {
   text-transform: uppercase;
@@ -42,6 +42,7 @@ $__palette: (
   success: $teal5,
   error: $red7,
   warning: $orange5,
+  pending: $yellow5,
   black: $gray9,
   slate: $gray8,
   muted: $gray7,

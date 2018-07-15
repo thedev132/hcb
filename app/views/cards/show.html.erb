@@ -34,19 +34,21 @@
   <%= link_to 'Request to Add Money', new_card_load_card_request_path(card_id: @card.id), class: 'btn bg-success' %>
 </h2>
 <% if @card.load_card_requests.any? %>
-  <ul class="list list--unlinked my0">
+  <ul class="list list--row list--unlinked my0">
     <% @card.load_card_requests.each do |request| %>
       <li>
-        <p>
+        <p class="flex-auto">
+          <%= status_badge request.status_badge_type %>
           <strong><%= render_money request.load_amount %> – <%= request.status %>
           <%= "– ID##{request.id}" if admin_signed_in? %></strong>
           <span class="muted">(added by <%= request.creator.email %> <span title="<%= request.created_at %>"><%= time_ago_in_words request.created_at %> ago</span>)</span>
         </p>
-        <% if request.status == 'under review' %>
-          <p>
-            <%= link_to 'Cancel request', card_load_card_request_cancel_path(load_card_request_id: request.id, card_id: request.card.id), method: :post, class: 'btn btn--destroy' %>
-          </p>
-        <% end %>
+        <%= link_to 'Cancel',
+          card_load_card_request_cancel_path(
+            load_card_request_id: request.id,
+            card_id: request.card.id),
+          method: :post,
+          class: 'btn btn--destroy' if request.under_review? %>
       </li>
     <% end %>
   </ul>
