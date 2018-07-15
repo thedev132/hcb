@@ -17,6 +17,9 @@
         Reason given: "<%= @invoice.manually_marked_as_paid_reason %>"
       </em>
     </p>
+    <% if @invoice.manually_marked_as_paid_attachment.attached? %>
+      <p><em><%= link_to 'Download provided attachment.', @invoice.manually_marked_as_paid_attachment, download: true %></em></p>
+    <% end %>
   <% else %>
     <div class="invoice-progress">
       <% if @invoice.amount_paid > 0 %>

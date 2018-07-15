@@ -3,6 +3,8 @@ class Invoice < ApplicationRecord
   belongs_to :creator, class_name: 'User'
   belongs_to :manually_marked_as_paid_user, class_name: 'User', required: false
 
+  has_one_attached :manually_marked_as_paid_attachment
+
   validates_presence_of :item_description, :item_amount, :due_date
 
   # all manually_marked_as_paid_... fields must be present all together or not
@@ -22,16 +24,19 @@ class Invoice < ApplicationRecord
     self.memo = "To support #{event}. #{event} is fiscally sponsored by The Hack Foundation (d.b.a. Hack Club), a 501(c)(3) nonprofit with the EIN 81-2908499."
   end
 
-  def manually_mark_as_paid(user_who_did_it, reason_for_manual_payment)
+  def manually_mark_as_paid(user_who_did_it, reason_for_manual_payment, attachment=nil)
+    self.manually_marked_as_paid_at = Time.current
+    self.manually_marked_as_paid_user = user_who_did_it
+    self.manually_marked_as_paid_reason = reason_for_manual_payment
+    self.manually_marked_as_paid_attachment = attachment
+
+    return false unless self.valid?
+
     inv = StripeService::Invoice.retrieve(stripe_invoice_id)
     inv.paid = true
 
     if inv.save 
       self.set_fields_from_stripe_invoice(inv)
-
-      self.manually_marked_as_paid_at = Time.current
-      self.manually_marked_as_paid_user = user_who_did_it
-      self.manually_marked_as_paid_reason = reason_for_manual_payment
 
       if self.save
         true

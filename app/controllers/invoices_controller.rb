@@ -47,7 +47,10 @@ class InvoicesController < ApplicationController
 
     authorize @invoice
 
-    if @invoice.manually_mark_as_paid(current_user, params[:manually_marked_as_paid_reason])
+    reason = params[:manually_marked_as_paid_reason]
+    attachment = params[:manually_marked_as_paid_attachment]
+
+    if @invoice.manually_mark_as_paid(current_user, reason, attachment)
       flash[:success] = 'Manually marked invoice as paid'
       redirect_to @invoice
     else
