@@ -4,7 +4,7 @@ module EmburseClient
 
     resp = conn.send(method) do |req|
       req.url(path)
-      req.body(body.to_json) if %i{post put}.include? method
+      req.body = body.to_json if %i{post put}.include? method
       req.headers['Content-Type'] = 'application/json'
       req.headers['Authorization'] = "Token #{access_token}"
     end
