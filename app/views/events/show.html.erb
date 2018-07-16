@@ -84,7 +84,9 @@
 
 <h2 class="heading">
   Credit Cards
-  <%= link_to 'Request a Card', new_card_request_path(event_id: @event.id), class: 'btn bg-success' %>
+  <%= link_to 'Request a Card',
+    new_card_request_path(event_id: @event.id),
+    class: 'btn bg-success' %>
 </h2>
 <% if @event.cards.any? %>
   <ul class="list list--unlinked">
@@ -113,25 +115,31 @@
           <strong><%= request.full_name %> – <%= request.status %></strong>
           <span class="muted">(added <span title="<%= request.created_at %>"><%= time_ago_in_words request.created_at %> ago</span>)</span>
         </p>
-        <% if request.under_review? %>
-          <%= link_to 'Cancel', card_request_cancel_path(request), method: :post, 'data-confirm': 'Are you sure you want to cancel this card request?', class: 'btn btn--destroy' unless request.rejected? %>
-        <% end %>
+        <%= link_to 'Cancel',
+          card_request_cancel_path(request),
+          method: :post,
+          'data-confirm': 'Are you sure you want to cancel this card request?',
+          class: 'btn btn--destroy' if request.under_review? %>
       </li>
     <% end %>
   </ul>
 <% end %>
 
 <% if @load_card_requests.any? %>
-  <h3 class="mb1">Load Card Requests</h3>
+  <h3 class="mb1">Credit Card Balance Requests</h3>
   <ul class="list list--unlinked list--row">
     <% @load_card_requests.each do |request| %>
       <li>
         <p class="flex-auto">
           <%= status_if :pending, request.under_review? %>
-          <strong><%= request.card.full_name %> for <%= render_money request.load_amount %> – <%= request.status %></strong>
-          <span class="muted">(added <span title="<%= request.created_at %>"><%= time_ago_in_words request.created_at %> ago</span>)</span>
+          <strong><%= render_money request.load_amount %> – <%= request.status %></strong>
+          <span class="muted">(added by <%= request.creator.name %> for <span title="<%= request.created_at %>"><%= time_ago_in_words request.created_at %> ago</span>)</span>
         </p>
-        <%= link_to 'Cancel', event_load_card_request_cancel_path(request, event_id: request.event.id), method: :post, 'data-confirm': 'Are you sure you want to cancel this load request?', class: 'btn btn--destroy' %>
+        <%= link_to 'Cancel',
+          event_load_card_request_cancel_path(request, event_id: request.event.id),
+          method: :post,
+          'data-confirm': 'Are you sure you want to cancel this balance request?',
+          class: 'btn btn--destroy' %>
       </li>
     <% end %>
   </ul>
@@ -139,7 +147,10 @@
 
 <h2 class="heading mb0">
   Transactions
-  <%= link_to 'Export CSV', transactions_path(event: @event), class: 'btn bg-info', target: :_blank %>
+  <%= link_to 'Export CSV',
+    transactions_path(event: @event),
+    class: 'btn bg-info',
+    target: :_blank %>
 </h2>
 
 <% if @event.transactions.any? %>
@@ -173,7 +184,9 @@
 
 <h2 class="heading mb0">
   Sponsors
-  <%= link_to 'New Sponsor', new_sponsor_path(event_id: @event.id), class: 'btn bg-success' %>
+  <%= link_to 'New Sponsor',
+    new_sponsor_path(event_id: @event.id),
+    class: 'btn bg-success' %>
 </h2>
 
 <% if @event.sponsors.any? %>
@@ -224,7 +237,10 @@
   <%= blankslate 'No fee payments yet' %>
 <% end %>
 
-<h3>Transactions Incurring Fees <span class="regular slate h3">(total outstanding fees: <%= render_money @event.fee_balance %>)</span></h3>
+<h3>
+  Transactions Incurring Fees
+  <span class="regular slate h3">(total outstanding fees: <%= render_money @event.fee_balance %>)</span>
+</h3>
 
 <% if @event.billed_transactions.any? %>
   <table>
@@ -265,7 +281,9 @@
 
 <h2 class="heading mb0">
   Documents
-  <%= link_to 'New Document', new_document_path(event_id: @event.id), class: 'btn bg-success' %>
+  <%= link_to 'New Document',
+    new_document_path(event_id: @event.id),
+    class: 'btn bg-success' %>
 </h2>
 
 <% if @event.documents.any? %>
@@ -283,4 +301,7 @@
   <%= blankslate 'No documents yet' %>
 <% end %>
 
-<p class="muted mt3">Looking for expense reimbursements? <%= mail_to 'zach@hackclub.com', 'Ask Zach' %> for an invitation to Expensify.</p>
+<p class="muted mt3">
+  Looking for expense reimbursements?
+  <%= mail_to 'zach@hackclub.com', 'Ask Zach' %> for an invitation to Expensify.
+</p>
