@@ -64,6 +64,10 @@ class Invoice < ApplicationRecord
     self.manually_marked_as_paid_at.present?
   end
 
+  def paid?
+    self.paid
+  end
+
   def queue_payout!
     inv = StripeService::Invoice.retrieve(id: stripe_invoice_id, expand: ['charge.balance_transaction'])
     b_tnx = inv.charge.balance_transaction
