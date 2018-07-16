@@ -12,13 +12,17 @@ class Event < ApplicationRecord
 
   has_many :cards
   has_many :card_requests
-  has_many :load_card_requests, through: :cards
+  has_many :load_card_requests
 
   has_many :sponsors
 
   has_many :documents
 
   validates :name, :start, :end, :address, :sponsorship_fee, presence: true
+
+  def emburse_budget
+    self.load_card_requests.completed.sum(:load_amount)
+  end
 
   def balance
     self.transactions.sum(:amount)

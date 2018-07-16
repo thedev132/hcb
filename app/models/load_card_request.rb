@@ -1,7 +1,11 @@
 class LoadCardRequest < ApplicationRecord
   include Rejectable
 
-  belongs_to :card
+  # NOTE(@msw) LCRs used to be on a per-card basis & we're keeping the
+  # association for compatability with migrations
+  belongs_to :card, required: false
+
+  belongs_to :event
   belongs_to :fulfilled_by, class_name: 'User', required: false
   belongs_to :creator, class_name: 'User'
   has_one :t_transaction, class_name: 'Transaction'
@@ -43,6 +47,6 @@ class LoadCardRequest < ApplicationRecord
 
   include ApplicationHelper
   def description
-    "#{self.id} (#{render_money self.load_amount}, #{time_ago_in_words self.created_at} ago, #{self.card.event.name})"
+    "#{self.id} (#{render_money self.load_amount}, #{time_ago_in_words self.created_at} ago, #{self.event.name})"
   end
 end

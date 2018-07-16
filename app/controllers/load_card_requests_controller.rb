@@ -7,13 +7,13 @@ class LoadCardRequestsController < ApplicationController
   end
 
   def show
-    @card = @load_card_request.card
+    @event = @load_card_request.event
     authorize @load_card_request
   end
 
   def new
-    @card = Card.find(params[:card_id])
-    @load_card_request = LoadCardRequest.new(card: @card)
+    @event = Event.find(params[:event_id])
+    @load_card_request = LoadCardRequest.new(event: @event)
 
     authorize @load_card_request
   end
@@ -24,12 +24,12 @@ class LoadCardRequestsController < ApplicationController
 
   def create
     @load_card_request = LoadCardRequest.new(load_card_request_params)
-    @card = Card.find(params[:card_id])
+    @event = Event.find(params[:event_id])
 
     authorize @load_card_request
 
     if @load_card_request.save
-      redirect_to @card, notice: 'Load card request was successfully created.'
+      redirect_to @event, notice: 'Load card request was successfully created.'
     else
       render :new
     end
@@ -40,7 +40,7 @@ class LoadCardRequestsController < ApplicationController
 
     if @load_card_request.update(load_card_request_params)
       flash[:success] = 'Load card request was successfully updated.'
-      redirect_to @load_card_request.card
+      redirect_to @load_card_request.event
     else
       render :edit
     end
@@ -57,7 +57,7 @@ class LoadCardRequestsController < ApplicationController
     else
       flash[:error] = 'Something went wrong.'
     end
-    redirect_to edit_card_load_card_request_path(@load_card_request, card_id: @load_card_request.card.id)
+    redirect_to edit_event_load_card_request_path(@load_card_request, event_id: @load_card_request.event.id)
   end
 
   def reject
@@ -66,7 +66,7 @@ class LoadCardRequestsController < ApplicationController
     @load_card_request.rejected_at = Time.now
     if @load_card_request.save
       flash[:success] = 'Load card request rejected.'
-      redirect_to @load_card_request.card
+      redirect_to @load_card_request.event
     else
       redirect_to @load_card_request
     end
@@ -78,7 +78,7 @@ class LoadCardRequestsController < ApplicationController
     @load_card_request.canceled_at = Time.now
     if @load_card_request.save
       flash[:success] = 'Load card request cancelled.'
-      redirect_to @load_card_request.card
+      redirect_to @load_card_request.event
     else
       redirect_to @load_card_request
     end
@@ -92,6 +92,6 @@ class LoadCardRequestsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def load_card_request_params
-      params.require(:load_card_request).permit(:card_id, :creator_id, :load_amount, :emburse_transaction_id)
+      params.require(:load_card_request).permit(:event_id, :creator_id, :load_amount, :emburse_transaction_id)
     end
 end

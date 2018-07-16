@@ -166,6 +166,31 @@ ActiveRecord::Schema.define(version: 2018_07_16_202116) do
     t.index ["event_id"], name: "index_g_suites_on_event_id"
   end
 
+  create_table "invoice_payouts", force: :cascade do |t|
+    t.text "stripe_payout_id"
+    t.bigint "amount"
+    t.datetime "arrival_date"
+    t.boolean "automatic"
+    t.text "stripe_balance_transaction_id"
+    t.datetime "stripe_created_at"
+    t.text "currency"
+    t.text "description"
+    t.text "stripe_destination_id"
+    t.text "failure_stripe_balance_transaction_id"
+    t.text "failure_code"
+    t.text "failure_message"
+    t.text "method"
+    t.text "source_type"
+    t.text "statement_descriptor"
+    t.text "status"
+    t.text "type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["failure_stripe_balance_transaction_id"], name: "index_invoice_payouts_on_failure_stripe_balance_transaction_id", unique: true
+    t.index ["stripe_balance_transaction_id"], name: "index_invoice_payouts_on_stripe_balance_transaction_id", unique: true
+    t.index ["stripe_payout_id"], name: "index_invoice_payouts_on_stripe_payout_id", unique: true
+  end
+
   create_table "invoices", force: :cascade do |t|
     t.bigint "sponsor_id"
     t.text "stripe_invoice_id"
@@ -198,9 +223,16 @@ ActiveRecord::Schema.define(version: 2018_07_16_202116) do
     t.datetime "manually_marked_as_paid_at"
     t.bigint "manually_marked_as_paid_user_id"
     t.text "manually_marked_as_paid_reason"
+    t.bigint "payout_id"
+    t.datetime "payout_creation_queued_at"
+    t.datetime "payout_creation_queued_for"
+    t.text "payout_creation_queued_job_id"
+    t.datetime "payout_creation_balance_available_at"
     t.index ["creator_id"], name: "index_invoices_on_creator_id"
     t.index ["item_stripe_id"], name: "index_invoices_on_item_stripe_id", unique: true
     t.index ["manually_marked_as_paid_user_id"], name: "index_invoices_on_manually_marked_as_paid_user_id"
+    t.index ["payout_creation_queued_job_id"], name: "index_invoices_on_payout_creation_queued_job_id", unique: true
+    t.index ["payout_id"], name: "index_invoices_on_payout_id"
     t.index ["sponsor_id"], name: "index_invoices_on_sponsor_id"
     t.index ["stripe_invoice_id"], name: "index_invoices_on_stripe_invoice_id", unique: true
   end
@@ -328,6 +360,7 @@ ActiveRecord::Schema.define(version: 2018_07_16_202116) do
   add_foreign_key "g_suite_applications", "users", column: "creator_id"
   add_foreign_key "g_suite_applications", "users", column: "fulfilled_by_id"
   add_foreign_key "g_suites", "events"
+  add_foreign_key "invoices", "invoice_payouts", column: "payout_id"
   add_foreign_key "invoices", "sponsors"
   add_foreign_key "invoices", "users", column: "creator_id"
   add_foreign_key "invoices", "users", column: "manually_marked_as_paid_user_id"
