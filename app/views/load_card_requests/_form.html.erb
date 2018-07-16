@@ -1,8 +1,7 @@
 <%= form_with(model: [load_card_request.event, load_card_request], local: true) do |form| %>
   <% if load_card_request.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(load_card_request.errors.count, "error") %> prohibited this load_card_request from being saved:</h2>
-
+      <h2>Something went wrong 🙁</h2>
       <ul>
       <% load_card_request.errors.full_messages.each do |message| %>
         <li><%= message %></li>
@@ -16,8 +15,11 @@
   <%= form.hidden_field :event_id, value: load_card_request.event.id %>
 
   <div class="field">
-    <%= form.label :load_amount, 'Amount to add (cents)' %>
-    <%= form.number_field :load_amount %>
+    <%= form.label :load_amount, 'Amount to add (USD)' %>
+    <div class="flex items-center">
+      <span class="bold muted" style="width: 1rem;">$</span>
+      <%= form.number_field :load_amount %>
+    </div>
   </div>
 
   <% if admin_signed_in? %>
