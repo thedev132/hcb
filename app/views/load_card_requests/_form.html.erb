@@ -16,8 +16,8 @@
   <%= form.hidden_field :event_id, value: load_card_request.event.id %>
 
   <div class="field">
-    <%= form.label :load_amount, 'Amount to add (cents)' %>
-    <%= form.number_field :load_amount %>
+    <%= form.label :load_amount, 'Amount to add (in USD)' %>
+    <%= form.number_field :load_amount, value: (@load_card_request.load_amount || 0) / 100 %>
   </div>
 
   <% if admin_signed_in? %>
