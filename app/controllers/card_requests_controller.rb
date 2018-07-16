@@ -42,7 +42,6 @@ class CardRequestsController < ApplicationController
   # POST /card_requests
   def create
     @card_request = CardRequest.new(card_request_params)
-    @card_request.daily_limit = card_request_params['daily_limit'].to_i * 100
     @card_request.creator = current_user
     @event = @card_request.event
 
@@ -95,6 +94,6 @@ class CardRequestsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def card_request_params
-      params.require(:card_request).permit(:daily_limit, :shipping_address, :full_name, :rejected_at, :accepted_at, :notes, :event_id)
+      params.require(:card_request).permit(:shipping_address, :full_name, :rejected_at, :accepted_at, :notes, :event_id)
     end
 end

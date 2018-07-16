@@ -44,7 +44,7 @@
 <p>Invoice created by <%= @invoice.creator.full_name %>.</p>
 
 <% if current_user.admin? %>
-  <% unless @invoice.manually_marked_as_paid? %>
+  <% unless @invoice.paid? %>
     <p><%= link_to 'Manually mark this invoice as paid.', invoice_manual_payment_path(@invoice) %></p>
   <% end %>
 

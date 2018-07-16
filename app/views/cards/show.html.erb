@@ -16,11 +16,6 @@
   XXXX-XXXX-XXXX-<%= @card.last_four %>
 </p>
 
-<p>
-  <strong>Daily spending limit</strong>
-  <%= @card.daily_limit ? render_money(@card.daily_limit) : 'no limit' %>
-</p>
-
 <% if admin_signed_in? %>
 <p>
   <strong>Total budget</strong>

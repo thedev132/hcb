@@ -14,11 +14,6 @@
   <strong>Name on card</strong>
   <%= @card_request.full_name %>
 </p>
-
-<p>
-  <strong>Daily limit</strong>
-  <%= @card_request.daily_limit || 'none' %>
-</p>
 </section>
 
 <% if admin_signed_in? %>
