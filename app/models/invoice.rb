@@ -2,6 +2,7 @@ class Invoice < ApplicationRecord
   belongs_to :sponsor
   belongs_to :creator, class_name: 'User'
   belongs_to :manually_marked_as_paid_user, class_name: 'User', required: false
+  belongs_to :payout, class_name: 'InvoicePayout', required: false
 
   has_one_attached :manually_marked_as_paid_attachment
 
@@ -13,6 +14,14 @@ class Invoice < ApplicationRecord
     if: -> { !self.manually_marked_as_paid_at.nil? }
   validates_absence_of :manually_marked_as_paid_user, :manually_marked_as_paid_reason,
     if: -> { self.manually_marked_as_paid_at.nil? }
+
+  # all payout_creation... fields must be present all together or not at all
+  validates_presence_of :payout_creation_queued_for,
+    :payout_creation_queued_job_id, :payout_creation_balance_available_at,
+    if: -> { !self.payout_creation_queued_at.nil? }
+  validates_absence_of :payout_creation_queued_for,
+    :payout_creation_queued_job_id, :payout_creation_balance_available_at,
+    if: -> { self.payout_creation_queued_at.nil? }
 
   validate :due_date_cannot_be_in_past, on: :create
 
@@ -53,6 +62,41 @@ class Invoice < ApplicationRecord
 
   def manually_marked_as_paid?
     self.manually_marked_as_paid_at.present?
+  end
+
+  def queue_payout!
+    inv = StripeService::Invoice.retrieve(id: stripe_invoice_id, expand: ['charge.balance_transaction'])
+    b_tnx = inv.charge.balance_transaction
+
+    funds_available_at_unixtime = b_tnx.available_on
+
+    # really dumb... but this seems to be the best way to convert unixtime to
+    # datetime w/o timezone issues. see https://stackoverflow.com/a/7819254.
+    funds_available_at = DateTime.strptime(funds_available_at_unixtime.to_s, '%s')
+
+    create_payout_at = funds_available_at + 1.hour
+
+    job = CreateInvoicePayoutJob.set(wait_until: create_payout_at).perform_later(self)
+
+    self.payout_creation_queued_at = Time.current
+    self.payout_creation_queued_for = create_payout_at
+    self.payout_creation_queued_job_id = job.job_id
+    self.payout_creation_balance_available_at = funds_available_at
+
+    self.save!
+  end
+
+  def create_payout!
+    inv = StripeService::Invoice.retrieve(id: stripe_invoice_id, expand: ['charge.balance_transaction'])
+    amount = inv.charge.balance_transaction.net
+
+    #raise StandardError, 'Funds not yet available' unless Time.current.to_i > inv.charge.balance_transaction.available_on
+
+    self.payout = InvoicePayout.new(
+      amount: amount
+    )
+
+    self.save!
   end
 
   def set_fields_from_stripe_invoice(inv)
