@@ -23,5 +23,7 @@ module Bank
 
     # Use Sidekiq
     config.active_job.queue_adapter = :sidekiq
+
+    config.autoload_paths << "#{config.root}/lib"
   end
 end
