@@ -2,10 +2,8 @@ class SyncInvoicesJob < ApplicationJob
   RUN_EVERY = 1.hour
 
   def perform(repeat = false)
-    ActiveRecord::Base.transaction do
-      needs_payout_queued = []
-
-      Invoice.find_each do |i|
+    Invoice.find_each do |i|
+      i.transaction do
         was_paid = i.paid
 
         inv = StripeService::Invoice.retrieve(i.stripe_invoice_id)
@@ -14,11 +12,9 @@ class SyncInvoicesJob < ApplicationJob
 
         now_paid = i.paid
 
-        needs_payout_queued << i if !was_paid && now_paid
-      end
-
-      needs_payout_queued.each do |i|
-        i.queue_payout!
+        if !was_paid && now_paid
+          i.queue_payout!
+        end
       end
     end
 
