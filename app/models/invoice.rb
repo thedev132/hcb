@@ -16,14 +16,15 @@ class Invoice < ApplicationRecord
 
   validate :due_date_cannot_be_in_past, on: :create
 
-  before_create :set_memo, :create_stripe_invoice
+  before_create :set_memo
+
+  # Stripe syncing...
+  before_create :create_stripe_invoice
   before_destroy :close_stripe_invoice
 
-  def set_memo
-    event = self.sponsor.event.name
-    self.memo = "To support #{event}. #{event} is fiscally sponsored by The Hack Foundation (d.b.a. Hack Club), a 501(c)(3) nonprofit with the EIN 81-2908499."
-  end
-
+  # Manually mark this invoice as paid (probably in the case of a physical
+  # check being sent to pay it). This marks the corresponding payment on Stripe
+  # as paid and stores some metadata about why it was marked as paid.
   def manually_mark_as_paid(user_who_did_it, reason_for_manual_payment, attachment=nil)
     self.manually_marked_as_paid_at = Time.current
     self.manually_marked_as_paid_user = user_who_did_it
@@ -52,23 +53,6 @@ class Invoice < ApplicationRecord
 
   def manually_marked_as_paid?
     self.manually_marked_as_paid_at.present?
-  end
-
-  def create_stripe_invoice
-    item = StripeService::InvoiceItem.create(stripe_invoice_item_params)
-    self.item_stripe_id = item.id
-
-    inv = StripeService::Invoice.create(stripe_invoice_params)
-    self.stripe_invoice_id = inv.id
-
-    self.set_fields_from_stripe_invoice(inv)
-  end
-
-  def close_stripe_invoice
-    invoice = StripeService::Invoice.retrieve(stripe_invoice_id)
-    invoice.closed = true
-    invoice.save
-    self.set_fields_from_stripe_invoice invoice
   end
 
   def set_fields_from_stripe_invoice(inv)
@@ -108,10 +92,32 @@ class Invoice < ApplicationRecord
 
   private
 
+  def set_memo
+    event = self.sponsor.event.name
+    self.memo = "To support #{event}. #{event} is fiscally sponsored by The Hack Foundation (d.b.a. Hack Club), a 501(c)(3) nonprofit with the EIN 81-2908499."
+  end
+
   def due_date_cannot_be_in_past
     if due_date.present? && due_date < Time.current
       errors.add(:due_date, "can't be in the past")
     end
+  end
+
+  def create_stripe_invoice
+    item = StripeService::InvoiceItem.create(stripe_invoice_item_params)
+    self.item_stripe_id = item.id
+
+    inv = StripeService::Invoice.create(stripe_invoice_params)
+    self.stripe_invoice_id = inv.id
+
+    self.set_fields_from_stripe_invoice(inv)
+  end
+
+  def close_stripe_invoice
+    invoice = StripeService::Invoice.retrieve(stripe_invoice_id)
+    invoice.closed = true
+    invoice.save
+    self.set_fields_from_stripe_invoice invoice
   end
 
   def stripe_invoice_item_params
