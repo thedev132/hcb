@@ -23,6 +23,8 @@ class LoadCardRequestsController < ApplicationController
   end
 
   def create
+    # Load amount is in cents on the backend, but dollars on the frontend
+    load_card_request_params[:load_amount] = load_card_request_params[:load_amount] * 100
     @load_card_request = LoadCardRequest.new(load_card_request_params)
     @event = Event.find(params[:event_id])
 
@@ -37,6 +39,9 @@ class LoadCardRequestsController < ApplicationController
 
   def update
     authorize @load_card_request
+
+      # Load amount is in cents on the backend, but dollars on the frontend
+    load_card_request_params[:load_amount] = load_card_request_params[:load_amount] * 100
 
     if @load_card_request.update(load_card_request_params)
       flash[:success] = 'Load card request was successfully updated.'
