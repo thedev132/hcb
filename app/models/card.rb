@@ -31,7 +31,12 @@ class Card < ApplicationRecord
   end
 
   def total_budget
-    load_card_requests.where('emburse_transaction_id IS NOT NULL').sum(:load_amount)
+    load_card_requests.where('emburse_transaction_id IS NOT NULL').sum(:load_amount) || 0
+  end
+
+  def balance
+    # NOTE(@msw) Emburse spending amounts can change, so this should be considered an approximation
+    total_budget - amount_spent
   end
 
   private
