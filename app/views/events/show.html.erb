@@ -13,8 +13,8 @@
       <span class="stat__value"><%= render_money @event.balance, '' %></span>
     </div>
     <div class="stat stat--small">
-      <span class="stat__label">card balance</span>
-      <span class="stat__value"><%= render_money @event.emburse_balance, '' %></span>
+      <span class="stat__label">Card balance</span>
+      <span class="stat__values pl2">—<%# render_money @event.emburse_balance, '' %></span>
     </div>
     <div class="stat stat--small">
       <span class="stat__label">Pending fees</span>
@@ -135,7 +135,7 @@
 <% if @load_card_requests.any? %>
   <h3 class="heading">
     Credit Card Balance Requests
-    <%= link_to 'Request to Add Money',
+    <%# link_to 'Request to Add Money',
       new_event_load_card_request_path(event_id: @event.id),
       class: 'btn bg-success' %>
   </h3>
