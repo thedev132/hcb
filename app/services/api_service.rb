@@ -3,7 +3,7 @@ class ApiService
 
   class UnauthorizedError < StandardError; end
 
-  def self.req(method, path, params, access_token=nil)
+  def self.req(method, path, params, access_token=nil, raise_on_unauthorized: true)
     conn = Faraday.new(url: BASE_URL)
 
     resp = conn.send(method) do |req|
@@ -17,7 +17,7 @@ class ApiService
       req.body = params.to_json
     end
 
-    if resp.status == 401
+    if resp.status == 401 && raise_on_unauthorized
       raise UnauthorizedError.new
     else
       JSON.parse(resp.body, symbolize_names: true)
@@ -29,9 +29,12 @@ class ApiService
   end
 
   def self.exchange_login_code(user_id, login_code)
-    resp = req(:post, "/v1/users/#{user_id}/exchange_login_code", { login_code: login_code })
-  rescue UnauthorizedError # 401 is ok in this method because it means the user just gave a bad login code
-    resp
+    req(
+      :post,
+      "/v1/users/#{user_id}/exchange_login_code",
+      { login_code: login_code },
+      raise_on_unauthorized: false # 401 just means invalid login code in our case
+    )
   end
 
   def self.get_user(user_id, access_token)
