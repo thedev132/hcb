@@ -40,7 +40,7 @@ body {
   position: relative;
   width: 100%;
   -webkit-font-smoothing: antialiased;
-  color: #384046;
+  color: $black;
   margin: 0;
 }
 
@@ -262,61 +262,84 @@ td {
 
 .event-summary {
   display: grid;
-  border-radius: 4px;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.0625),
+    0 16px 48px 0 rgba(0, 0, 0, 0.125);
   overflow: hidden;
   @media (min-width: 32em) {
-    grid-template-columns: 2fr 3fr 3fr;
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 .event-summary__panel {
-  display: flex;
-  flex-direction: column;
   padding: 1rem;
-  &.bg-accent .stat__label {
+
+  &:last-of-type h2 {
+    border-bottom-color: rgba(255, 255, 255, 0.5);
+  }
+  p {
+    margin: 0.5rem 0;
+  }
+}
+.event-summary__panel--stats {
+  display: grid;
+  grid-template-areas: 'full full' 'card fees';
+
+  .stat__label {
     color: $indigo1;
+  }
+
+  .stat:nth-of-type(1) {
+    grid-area: full;
+  }
+  .stat:nth-of-type(2) {
+    grid-area: card;
+  }
+  .stat:nth-of-type(3) {
+    grid-area: fees;
   }
 }
 
 .stat {
   display: block;
-  margin-bottom: 16px;
 }
 .stat__value {
-  font-size: 48px;
+  font-size: 3rem;
   line-height: 1;
-  margin-bottom: 4px;
+  margin-bottom: 0.25rem;
   text-transform: uppercase;
   &:before {
     content: '$';
-    font-size: 24px;
+    font-size: 1.5rem;
     vertical-align: super;
   }
 }
 .stat__label {
   display: block;
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: bold;
   text-transform: uppercase;
 }
 .stat--small {
+  display: inline-block;
   .stat__value {
-    font-size: 32px;
+    font-size: 2rem;
     &:before {
-      font-size: 16px;
+      font-size: 1rem;
     }
   }
 }
 
 .card {
   background-color: $white;
-  box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.0125), 0 4px 8px 0 rgba(0, 0, 0, 0.125);
+  box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.0625), 0 4px 8px 0 rgba(0, 0, 0, 0.125);
   padding: 1rem;
-  border-radius: 4px;
+  border-radius: 0.5rem;
+  overflow: hidden;
 }
 
 .invoice-progress {
   background-color: $gray2;
-  border-radius: 4px;
+  border-radius: 0.5rem;
   height: 48px;
   line-height: 48px;
   width: 100%;
@@ -496,6 +519,9 @@ h3 + .list {
 table {
   border-collapse: collapse;
   width: 100%;
+}
+tr {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.0625);
 }
 th {
   padding-bottom: 0.125rem;
