@@ -46,7 +46,7 @@ class Sponsor < ApplicationRecord
   end
 
   def update_stripe_customer
-    cu = Stripe::Customer.retrieve(self.stripe_customer_id)
+    cu = StripeService::Customer.retrieve(self.stripe_customer_id)
 
     stripe_params.each do |k, v|
       cu.send("#{k}=", v)

@@ -38,9 +38,11 @@ class SponsorsController < ApplicationController
 
   # PATCH/PUT /sponsors/1
   def update
+    @sponsor.attributes = sponsor_params
+
     authorize @sponsor
 
-    if @sponsor.update(sponsor_params)
+    if @sponsor.save
       flash[:success] = 'Sponsor was successfully updated.'
       redirect_to @sponsor
     else
@@ -66,15 +68,7 @@ class SponsorsController < ApplicationController
 
   # Only allow a trusted parameter "white list" through.
   def sponsor_params
-    params.require(:sponsor).permit(
-      :event_id,
-      :name,
-      :contact_email,
-      :address_line1,
-      :address_line2,
-      :address_city,
-      :address_state,
-      :address_postal_code
-    )
+    # see pundit readme for details on permitted_attributes
+    params.require(:sponsor).permit(policy(Sponsor).permitted_attributes)
   end
 end
