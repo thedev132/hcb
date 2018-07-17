@@ -40,11 +40,7 @@
       "quantity": 1
     }
   },
-  "addons": [
-    "heroku-postgresql",
-    "heroku-postgresql",
-    "heroku-redis"
-  ],
+  "addons": ["heroku-postgresql", "heroku-postgresql", "heroku-redis"],
   "buildpacks": [
     {
       "url": "heroku/ruby"
