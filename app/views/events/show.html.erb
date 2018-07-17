@@ -126,7 +126,12 @@
 <% end %>
 
 <% if @load_card_requests.any? %>
-  <h3 class="mb1">Credit Card Balance Requests</h3>
+  <h3 class="heading">
+    Credit Card Balance Requests
+    <%= link_to 'Request to Add Money',
+      new_event_load_card_request_path(event_id: @event.id),
+      class: 'btn bg-success' %>
+  </h3>
   <ul class="list list--unlinked list--row">
     <% @load_card_requests.each do |request| %>
       <li>
