@@ -76,7 +76,7 @@ class LoadCardRequestsController < ApplicationController
       flash[:success] = 'Load card request rejected.'
       redirect_to @load_card_request.event
     else
-      redirect_to @load_card_request
+      redirect_to load_card_requests_path
     end
   end
 
@@ -88,7 +88,7 @@ class LoadCardRequestsController < ApplicationController
       flash[:success] = 'Load card request cancelled.'
       redirect_to @load_card_request.event
     else
-      redirect_to @load_card_request
+      redirect_to @load_card_request.event
     end
   end
 
