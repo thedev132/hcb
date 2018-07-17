@@ -91,6 +91,9 @@
 
 <h2 class="heading">
   Credit Cards
+  <%= link_to 'Request to Add Money',
+    new_event_load_card_request_path(event_id: @event.id),
+    class: 'btn bg-success' unless @load_card_requests.any? %>
   <%= link_to 'Request a Card',
     new_card_request_path(event_id: @event.id),
     class: 'btn bg-success' %>
@@ -134,8 +137,8 @@
 
 <% if @load_card_requests.any? %>
   <h3 class="heading">
-    Credit Card Balance Requests
-    <%# link_to 'Request to Add Money',
+    Emburse Balance Requests
+    <%= link_to 'Request to Add Money',
       new_event_load_card_request_path(event_id: @event.id),
       class: 'btn bg-success' %>
   </h3>
@@ -145,7 +148,7 @@
         <p class="flex-auto">
           <%= status_if :pending, request.under_review? %>
           <strong><%= render_money request.load_amount %> – <%= request.status %></strong>
-          <span class="muted">(added by <%= request.creator.name %> for <span title="<%= request.created_at %>"><%= time_ago_in_words request.created_at %> ago</span>)</span>
+          <span class="muted">(added by <%= request.creator.name %> <span title="<%= request.created_at %>"><%= time_ago_in_words request.created_at %> ago</span>)</span>
         </p>
         <%= link_to 'Cancel',
           event_load_card_request_cancel_path(request, event_id: request.event.id),
