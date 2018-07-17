@@ -33,7 +33,7 @@ class Card < ApplicationRecord
   private
 
   def emburse_obj
-    EmburseClient::Card.get(self.emburse_id)
+    ::EmburseClient::Card.get(self.emburse_id)
   end
 
   def emburse_id_format
