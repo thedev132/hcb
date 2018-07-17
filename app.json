@@ -1,6 +1,7 @@
 {
   "name": "bank",
   "scripts": {
+    "postdeploy": "rails db:schema:load"
   },
   "env": {
     "HEROKU_POSTGRESQL_ONYX_URL": {
@@ -39,11 +40,7 @@
       "quantity": 1
     }
   },
-  "addons": [
-    "heroku-postgresql",
-    "heroku-postgresql",
-    "heroku-redis"
-  ],
+  "addons": ["heroku-postgresql", "heroku-postgresql", "heroku-redis"],
   "buildpacks": [
     {
       "url": "heroku/ruby"
