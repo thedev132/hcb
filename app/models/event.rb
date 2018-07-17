@@ -24,6 +24,12 @@ class Event < ApplicationRecord
     self.load_card_requests.completed.sum(:load_amount)
   end
 
+  def emburse_balance
+    # This is only an approximation of the balance b/c Emburse card balances can change while a charge is being settled
+    spend = self.cards.map(&:amount_spent).sum || 0
+    emburse_budget - spend
+  end
+
   def balance
     self.transactions.sum(:amount)
   end

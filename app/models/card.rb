@@ -24,11 +24,21 @@ class Card < ApplicationRecord
     "https://app.emburse.com/cards/#{emburse_id}"
   end
 
+  def amount_spent
+    obj = emburse_obj
+    return (obj[:allowance][:balance].to_f * 100).round(2) if obj
+    nil
+  end
+
   def total_budget
     load_card_requests.where('emburse_transaction_id IS NOT NULL').sum(:load_amount)
   end
 
   private
+
+  def emburse_obj
+    EmburseClient::Card.get(self.emburse_id)
+  end
 
   def emburse_id_format
     emburse_id_regex = /^[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}$/
