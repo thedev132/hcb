@@ -29,7 +29,9 @@ class ApiService
   end
 
   def self.exchange_login_code(user_id, login_code)
-    req(:post, "/v1/users/#{user_id}/exchange_login_code", { login_code: login_code })
+    resp = req(:post, "/v1/users/#{user_id}/exchange_login_code", { login_code: login_code })
+  rescue UnauthorizedError # 401 is ok in this method because it means the user just gave a bad login code
+    resp
   end
 
   def self.get_user(user_id, access_token)
