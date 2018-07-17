@@ -1,7 +1,6 @@
 <%= link_to @card.event.name, event_path(@card.event), class: 'breadcrumb' %>
 <h1 class="heading">
   Card for <%= @card.user.email %>
-  <%= link_to 'See Balance', @card.emburse_path, target: '_blank', class: 'btn bg-accent' %>
   <%= link_to 'Edit', edit_card_path(@card), class: 'btn bg-info' if admin_signed_in? %>
 </h1>
 
