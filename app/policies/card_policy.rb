@@ -12,7 +12,7 @@ class CardPolicy < ApplicationPolicy
   end
 
   def show?
-    record.user == user || user.admin?
+    record.event.users.include?(user) || user.admin?
   end
 
   def edit?

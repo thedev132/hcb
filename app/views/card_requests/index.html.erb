@@ -6,7 +6,6 @@
       <th>Creator</th>
       <th>Name on card</th>
       <th>Event</th>
-      <th>Daily limit</th>
       <th>Status</th>
       <th colspan="3"></th>
     </tr>
@@ -18,7 +17,6 @@
         <td><%= card_request.creator.email %> (#<%= card_request.creator.id %>)</td>
         <td><%= card_request.full_name %></td>
         <td><%= link_to card_request.event&.name, card_request.event %></td>
-        <td><%= render_money card_request.daily_limit.to_i %></td>
         <td><%= card_request.status %></td>
         <% if card_request.under_review? %>
           <td><%= link_to 'Show', card_request %></td>

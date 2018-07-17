@@ -40,6 +40,11 @@ Rails.application.routes.draw do
       path: 'invites'
     resources :g_suites, only: [ :new, :create, :edit, :update ]
     resources :g_suite_applications, only: [ :new, :create, :edit, :update ]
+    resources :load_card_requests, except: [ :index ], path: 'load_requests' do
+      post 'accept'
+      post 'reject'
+      post 'cancel'
+    end
   end
 
   resources :sponsors do
@@ -50,6 +55,8 @@ Rails.application.routes.draw do
     post 'manually_mark_as_paid'
   end
 
+  resources :cards
+
   resources :documents, except: [ :index ]
 
   resources :bank_accounts, only: [ :new, :create, :show ]
@@ -57,16 +64,10 @@ Rails.application.routes.draw do
     resources :comments
   end
 
-  resources :cards do
-    resources :load_card_requests, except: [ :index ], path: 'load_requests' do
-      post 'accept'
-      post 'reject'
-      post 'cancel'
-    end
-  end
   resources :card_requests, path: 'card_requests' do
     post 'reject'
     post 'cancel'
   end
+
   resources :load_card_requests, only: [ :index ]
 end

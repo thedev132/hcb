@@ -1,5 +1,4 @@
-<%= link_to @card.event.name, @card.event, class: 'breadcrumb' %>
-<%= link_to "Card for #{@card.full_name}", @card, class: 'breadcrumb' %>
-<h1>Request loading money onto card <%= @card.last_four %></h1>
+<%= link_to @event.name, @event, class: 'breadcrumb' %>
+<h1>Request loading money onto <%= @event.name %>’s Emburse account</h1>
 
 <%= render 'form', load_card_request: @load_card_request %>

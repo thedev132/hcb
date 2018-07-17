@@ -20,7 +20,6 @@ class CardsController < ApplicationController
     @card = Card.new(
       event: @card_request.event,
       user_id: @card_request.creator_id,
-      daily_limit: @card_request.daily_limit,
       full_name: @card_request.full_name,
       address: @card_request.shipping_address,
       card_request: @card_request
@@ -39,7 +38,6 @@ class CardsController < ApplicationController
     @card = Card.new(
       user_id: card_params[:user_id],
       event_id: card_params[:event_id],
-      daily_limit: card_params[:daily_limit],
       emburse_id: card_params[:emburse_id],
       last_four: card_params[:last_four],
       full_name: card_params[:full_name],
@@ -92,6 +90,6 @@ class CardsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def card_params
-      params.require(:card).permit(:user_id, :event_id, :daily_limit, :full_name, :address, :card_request_id, :last_four, :expiration_month, :expiration_year, :emburse_id)
+      params.require(:card).permit(:user_id, :event_id, :full_name, :address, :card_request_id, :last_four, :expiration_month, :expiration_year, :emburse_id)
     end
 end

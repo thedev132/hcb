@@ -38,6 +38,10 @@ class User < ApplicationRecord
     end
   end
 
+  def name
+    full_name || email
+  end
+
   private
 
   def create_session_token

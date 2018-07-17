@@ -4,7 +4,7 @@ class LoadCardRequestPolicy < ApplicationPolicy
   end
 
   def new?
-    record.card.event.users.include?(user) || user.admin?
+    record.event.users.include?(user) || user.admin?
   end
 
   def create?

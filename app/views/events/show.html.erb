@@ -7,10 +7,14 @@
 </h1>
 
 <section class="event-summary my2">
-  <div class="event-summary__panel bg-accent white">
+  <div class="event-summary__panel event-summary__panel--stats bg-accent white">
     <div class="stat">
       <span class="stat__label">Account balance</span>
       <span class="stat__value"><%= render_money @event.balance, '' %></span>
+    </div>
+    <div class="stat stat--small">
+      <span class="stat__label">card balance</span>
+      <span class="stat__value"><%= render_money @event.emburse_balance, '' %></span>
     </div>
     <div class="stat stat--small">
       <span class="stat__label">Pending fees</span>
@@ -18,7 +22,7 @@
     </div>
   </div>
   <div class="event-summary__panel bg-snow">
-    <h2 class="h3 my0">Info</h2>
+    <h2 class="h3 mt0 mb0">Info</h2>
     <p>
       <strong>Date:</strong> <%= @event.start.to_date %> – <%= @event.end.to_date %><br />
       <strong>Address:</strong> <br />
@@ -28,7 +32,8 @@
   </div>
   <% @g_color = g_suite_summary_color(@g_suite_status) %>
   <div class="event-summary__panel white bg-<%= @g_color %>">
-    <h2 class="h3 my0">G Suite</h2>
+    <h2 class="h3 mt0 mb0">G Suite</h2>
+    <% @g_suite_text = 'Manage G Suite' %>
     <% case @g_suite_status
     when :start %>
       <p>Your event gets free G Suite through Bank! Apply to set it up.</p>
@@ -37,16 +42,18 @@
       <p>Your application is under review. Check back soon!</p>
     <% when :app_accepted %>
       <p>Your application was accepted! It’s time to set up your servers.</p>
-      <%= link_to 'Set up G Suite', event_g_suite_status_path(event_id: @event.id), class: "btn bg-white #{@g_color} mt1" %>
+      <% @g_suite_text = 'Set up G Suite' %>
     <% when :app_rejected %>
       <p>Your application was rejected.</p>
     <% when :verify_setup %>
       <p>Time to verify your G Suite setup.</p>
-      <%= link_to 'Get instructions', event_g_suite_status_path(event_id: @event.id), class: "btn bg-white #{@g_color} mt1" %>
+      <% @g_suite_text = 'Verify G Suite' %>
     <% when :done %>
       <p>Your G Suite is set up!</p>
-      <%= link_to 'Manage G Suite', event_g_suite_status_path(event_id: @event.id), class: "btn bg-white #{@g_color} mt1" %>
     <% end %>
+    <%= link_to @g_suite_text,
+      event_g_suite_status_path(event_id: @event.id),
+      class: "btn bg-white #{@g_color} mt1" %>
   </div>
 </section>
 
@@ -70,7 +77,7 @@
 
 <% if @event.organizer_position_invites.pending.any? %>
   <h3 class="mb1">Pending Invitations</h3>
-  <ul class="list list--unlinked my0">
+  <ul class="list list--unlinked mt0 mb0">
     <% @event.organizer_position_invites.pending.each do |invite| %>
       <li>
         <p>
@@ -84,7 +91,9 @@
 
 <h2 class="heading">
   Credit Cards
-  <%= link_to 'Request a Card', new_card_request_path(event_id: @event.id), class: 'btn bg-success' %>
+  <%= link_to 'Request a Card',
+    new_card_request_path(event_id: @event.id),
+    class: 'btn bg-success' %>
 </h2>
 <% if @event.cards.any? %>
   <ul class="list list--unlinked">
@@ -113,37 +122,51 @@
           <strong><%= request.full_name %> – <%= request.status %></strong>
           <span class="muted">(added <span title="<%= request.created_at %>"><%= time_ago_in_words request.created_at %> ago</span>)</span>
         </p>
-        <% if request.under_review? %>
-          <%= link_to 'Cancel', card_request_cancel_path(request), method: :post, 'data-confirm': 'Are you sure you want to cancel this card request?', class: 'btn btn--destroy' unless request.rejected? %>
-        <% end %>
+        <%= link_to 'Cancel',
+          card_request_cancel_path(request),
+          method: :post,
+          'data-confirm': 'Are you sure you want to cancel this card request?',
+          class: 'btn btn--destroy' if request.under_review? && !admin_signed_in? %>
       </li>
     <% end %>
   </ul>
 <% end %>
 
 <% if @load_card_requests.any? %>
-  <h3 class="mb1">Load Card Requests</h3>
+  <h3 class="heading">
+    Credit Card Balance Requests
+    <%= link_to 'Request to Add Money',
+      new_event_load_card_request_path(event_id: @event.id),
+      class: 'btn bg-success' %>
+  </h3>
   <ul class="list list--unlinked list--row">
     <% @load_card_requests.each do |request| %>
       <li>
         <p class="flex-auto">
           <%= status_if :pending, request.under_review? %>
-          <strong><%= request.card.full_name %> for <%= render_money request.load_amount %> – <%= request.status %></strong>
-          <span class="muted">(added <span title="<%= request.created_at %>"><%= time_ago_in_words request.created_at %> ago</span>)</span>
+          <strong><%= render_money request.load_amount %> – <%= request.status %></strong>
+          <span class="muted">(added by <%= request.creator.name %> for <span title="<%= request.created_at %>"><%= time_ago_in_words request.created_at %> ago</span>)</span>
         </p>
-        <%= link_to 'Cancel', card_load_card_request_cancel_path(request, card_id: request.card.id), method: :post, 'data-confirm': 'Are you sure you want to cancel this load request?', class: 'btn btn--destroy' %>
+        <%= link_to 'Cancel',
+          event_load_card_request_cancel_path(request, event_id: request.event.id),
+          method: :post,
+          'data-confirm': 'Are you sure you want to cancel this balance request?',
+          class: 'btn btn--destroy' unless admin_signed_in? %>
       </li>
     <% end %>
   </ul>
 <% end %>
 
-<h2 class="heading mb0">
+<h2 class="heading">
   Transactions
-  <%= link_to 'Export CSV', transactions_path(event: @event), class: 'btn bg-info', target: :_blank %>
+  <%= link_to 'Export CSV',
+    transactions_path(event: @event),
+    class: 'btn bg-info',
+    target: :_blank %>
 </h2>
 
 <% if @event.transactions.any? %>
-  <table>
+  <table class="mt2">
   <tr>
     <th>Date</th>
     <th>Description</th>
@@ -173,11 +196,13 @@
 
 <h2 class="heading mb0">
   Sponsors
-  <%= link_to 'New Sponsor', new_sponsor_path(event_id: @event.id), class: 'btn bg-success' %>
+  <%= link_to 'New Sponsor',
+    new_sponsor_path(event_id: @event.id),
+    class: 'btn bg-success' %>
 </h2>
 
 <% if @event.sponsors.any? %>
-  <ul class="list list--row">
+  <ul class="list">
     <% @event.sponsors.each do |s| %>
       <%= link_to s do %>
         <li class="transaction--<%= s.status %>">
@@ -224,7 +249,10 @@
   <%= blankslate 'No fee payments yet' %>
 <% end %>
 
-<h3>Transactions Incurring Fees <span class="regular slate h3">(total outstanding fees: <%= render_money @event.fee_balance %>)</span></h3>
+<h3>
+  Transactions Incurring Fees
+  <span class="regular slate h3">(total outstanding fees: <%= render_money @event.fee_balance %>)</span>
+</h3>
 
 <% if @event.billed_transactions.any? %>
   <table>
@@ -265,7 +293,9 @@
 
 <h2 class="heading mb0">
   Documents
-  <%= link_to 'New Document', new_document_path(event_id: @event.id), class: 'btn bg-success' %>
+  <%= link_to 'New Document',
+    new_document_path(event_id: @event.id),
+    class: 'btn bg-success' %>
 </h2>
 
 <% if @event.documents.any? %>
@@ -283,4 +313,7 @@
   <%= blankslate 'No documents yet' %>
 <% end %>
 
-<p class="muted mt3">Looking for expense reimbursements? <%= mail_to 'zach@hackclub.com', 'Ask Zach' %> for an invitation to Expensify.</p>
+<p class="muted mt3">
+  Looking for expense reimbursements?
+  <%= mail_to 'zach@hackclub.com', 'Ask Zach' %> for an invitation to Expensify.
+</p>

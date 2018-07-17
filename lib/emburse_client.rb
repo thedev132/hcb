@@ -1,4 +1,6 @@
 module EmburseClient
+  class NotFoundError < StandardError; end
+
   def self.request(path, method = :get, body = nil, headers = nil)
     conn = Faraday.new(url: 'https://api.emburse.com/')
 
@@ -8,6 +10,8 @@ module EmburseClient
       req.headers['Content-Type'] = 'application/json'
       req.headers['Authorization'] = "Token #{access_token}"
     end
+
+    raise NotFoundError if resp.status === 404
 
     JSON.parse(resp.body, symbolize_names: true)
   end
