@@ -31,7 +31,7 @@ class Card < ApplicationRecord
   end
 
   def total_budget
-    load_card_requests.where('emburse_transaction_id IS NOT NULL').sum(:load_amount) || 0
+    load_card_requests.where.not(emburse_transaction_id: nil).sum(:load_amount) || 0
   end
 
   def balance
