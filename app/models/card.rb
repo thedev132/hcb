@@ -30,15 +30,6 @@ class Card < ApplicationRecord
     nil
   end
 
-  def total_budget
-    load_card_requests.where.not(emburse_transaction_id: nil).sum(:load_amount) || 0
-  end
-
-  def balance
-    # NOTE(@msw) Emburse spending amounts can change, so this should be considered an approximation
-    total_budget - amount_spent
-  end
-
   private
 
   def emburse_obj

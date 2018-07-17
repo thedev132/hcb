@@ -17,8 +17,8 @@
 
 <% if admin_signed_in? %>
 <p>
-  <strong>Total budget</strong>
-  <%= render_money @card.total_budget %>
+  <strong>Emburse ID</strong>
+  <%= link_to @card.emburse_id, @card.emburse_path %>
 </p>
 <% end %>
 </section>
