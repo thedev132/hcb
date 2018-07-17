@@ -195,7 +195,7 @@
 </h2>
 
 <% if @event.sponsors.any? %>
-  <ul class="list list--row">
+  <ul class="list">
     <% @event.sponsors.each do |s| %>
       <%= link_to s do %>
         <li class="transaction--<%= s.status %>">
