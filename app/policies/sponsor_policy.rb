@@ -23,6 +23,22 @@ class SponsorPolicy < ApplicationPolicy
     user.admin?
   end
 
+  def permitted_attributes
+    attrs = [
+      :name,
+      :contact_email,
+      :address_line1,
+      :address_line2,
+      :address_city,
+      :address_state,
+      :address_postal_code
+    ]
+
+    attrs << :event_id if user.admin?
+
+    attrs
+  end
+
   private
 
   def user_has_position?
