@@ -1,6 +1,7 @@
 {
   "name": "bank",
   "scripts": {
+    "postdeploy": "rails db:schema:load"
   },
   "env": {
     "HEROKU_POSTGRESQL_ONYX_URL": {
