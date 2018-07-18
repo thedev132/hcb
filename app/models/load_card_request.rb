@@ -35,7 +35,7 @@ class LoadCardRequest < ApplicationRecord
 
   def status_badge_type
     s = status.to_sym
-    return 'warning' if s == :pending
+    return 'accent' if s == :pending
     return 'success' if s == :completed
     return 'muted' if s == :canceled
     return 'error' if s == :rejected

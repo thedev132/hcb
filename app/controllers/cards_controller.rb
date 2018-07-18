@@ -82,6 +82,12 @@ class CardsController < ApplicationController
     redirect_to cards_url
   end
 
+  def status
+    @event = Event.find(params[:event_id])
+    @card_requests = @event.card_requests.under_review
+    @load_card_requests = @event.load_card_requests
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_card

@@ -17,7 +17,7 @@ module ApplicationHelper
     content_tag :span, count, class: "badge #{'bg-muted' if count == 0}"
   end
 
-  def status_badge(type = 'pending')
+  def status_badge(type = :pending)
     content_tag :span, '', class: "status bg-#{type}"
   end
 
