@@ -14,6 +14,8 @@ class Event < ApplicationRecord
   has_many :card_requests
   has_many :load_card_requests
 
+  has_many :emburse_transactions
+
   has_many :sponsors
 
   has_many :documents
@@ -21,13 +23,12 @@ class Event < ApplicationRecord
   validates :name, :start, :end, :address, :sponsorship_fee, presence: true
 
   def emburse_budget
-    self.load_card_requests.completed.sum(:load_amount)
+    self.emburse_transactions.completed.where('amount > 0').sum(:amount)
   end
 
   def emburse_balance
-    # This is only an approximation of the balance b/c Emburse card balances can change while a charge is being settled
-    spend = self.cards.map(&:amount_spent).sum || 0
-    emburse_budget - spend
+    emburse_debit = self.emburse_transactions.undeclined.where('amount < 0').sum(:amount)
+    emburse_budget + emburse_debit
   end
 
   def balance
