@@ -28,8 +28,10 @@
   </div>
   <div class="event-summary__panel bg-accent white">
     <h2 class="heading">
-      Credit Cards
-      <%= badge_for @event.cards.count %>
+      <span class="flex items-center">
+        Credit Cards
+        <%= badge_for @event.cards.count %>
+      </span>
     </h2>
     <div class="stat">
       <span class="stat__label">Emburse balance</span>
