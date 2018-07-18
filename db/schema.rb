@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_07_16_202116) do
+ActiveRecord::Schema.define(version: 2018_07_18_063852) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -104,6 +104,17 @@ ActiveRecord::Schema.define(version: 2018_07_16_202116) do
     t.index ["user_id"], name: "index_documents_on_user_id"
   end
 
+  create_table "emburse_transactions", force: :cascade do |t|
+    t.string "emburse_id"
+    t.integer "amount"
+    t.integer "state"
+    t.string "emburse_department_id"
+    t.bigint "event_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["event_id"], name: "index_emburse_transactions_on_event_id"
+  end
+
   create_table "events", force: :cascade do |t|
     t.text "name"
     t.datetime "start"
@@ -112,6 +123,7 @@ ActiveRecord::Schema.define(version: 2018_07_16_202116) do
     t.decimal "sponsorship_fee"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "emburse_department_id"
   end
 
   create_table "fee_relationships", force: :cascade do |t|
@@ -352,6 +364,7 @@ ActiveRecord::Schema.define(version: 2018_07_16_202116) do
   add_foreign_key "cards", "users"
   add_foreign_key "documents", "events"
   add_foreign_key "documents", "users"
+  add_foreign_key "emburse_transactions", "events"
   add_foreign_key "fee_relationships", "events"
   add_foreign_key "g_suite_accounts", "g_suites"
   add_foreign_key "g_suite_accounts", "users", column: "creator_id"

@@ -16,6 +16,21 @@ module EmburseClient
     JSON.parse(resp.body, symbolize_names: true)
   end
 
+  def self.request_paginated(path)
+    next_url = path
+    result = []
+    while next_url != nil do
+      resp = self.request next_url
+      result += resp[:results]
+      if resp[:next].nil?
+        next_url = nil
+      else
+        next_url = resp[:next].sub('https://api.emburse.com/', '')
+      end
+    end
+    return result
+  end
+
   private
 
   def self.access_token
