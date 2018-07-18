@@ -26,7 +26,7 @@ class LoadCardRequest < ApplicationRecord
   scope :completed, -> { accepted.where.not(id: pending) }
 
   def status
-    return 'pending' if LoadCardRequest.pending.include?(self)
+    return 'transfer in progress' if LoadCardRequest.pending.include?(self)
     return 'completed' if LoadCardRequest.completed.include?(self)
     return 'canceled' if canceled_at.present?
     return 'rejected' if rejected_at.present?
@@ -35,7 +35,7 @@ class LoadCardRequest < ApplicationRecord
 
   def status_badge_type
     s = status.to_sym
-    return 'accent' if s == :pending
+    return 'info' if s == 'transfer in progress'.to_sym
     return 'success' if s == :completed
     return 'muted' if s == :canceled
     return 'error' if s == :rejected
