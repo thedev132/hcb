@@ -1,0 +1,86 @@
+<%= link_to @event.name, @event, class: 'breadcrumb' %>
+<h1 class="heading">
+  Credit Cards
+</h1>
+
+<div class="card bg-white">
+  <div class="stat mb2">
+    <span class="stat__label">Emburse balance</span>
+    <span class="stat__value"><%= render_money @event.emburse_balance, '' %></span>
+  </div>
+
+  <%= link_to 'Increase Balance',
+    new_event_load_card_request_path(event_id: @event.id),
+    class: 'btn bg-success' %>
+
+  <%# render 'load_card_requests/form', load_card_request: LoadCardRequest.new(event_id: @event.id) %>
+</div>
+
+<h2 class="heading">
+  Event Cards
+  <%= link_to 'Request a Card',
+    new_card_request_path(event_id: @event.id),
+    class: 'btn bg-success' %>
+</h2>
+<% if @event.cards.any? %>
+  <section class="emburse-cards mt2 md-mt3">
+    <% @event.cards.each do |card| %>
+      <%= link_to card do %>
+        <div class="emburse-cards__card">
+          <p class="emburse-cards__card__number">
+            <span>XXXX-XXXX-XXXX-</span><strong><%= card.last_four %></strong>
+          </p>
+          <p class="emburse-cards__card__name"><%= card.full_name %></p>
+        </div>
+        <p class="emburse-cards__caption">(sent <span title="<%= card.created_at %>"><%= time_ago_in_words card.created_at %> ago</span>)</p>
+      <% end %>
+    <% end %>
+  </section>
+<% else %>
+  <%= blankslate 'No cards yet' %>
+<% end %>
+
+<% if @card_requests.any? %>
+  <h3 class="mb1">Card Requests</h3>
+  <ul class="list list--unlinked list--row">
+    <% @card_requests.each do |request| %>
+      <li>
+        <p>
+          <%= status_if :pending, request.under_review? %>
+          <strong><%= request.full_name %> – <%= request.status %></strong>
+          <span class="muted">(added <span title="<%= request.created_at %>"><%= time_ago_in_words request.created_at %> ago</span>)</span>
+        </p>
+        <%= link_to 'Cancel',
+          card_request_cancel_path(request),
+          method: :post,
+          'data-confirm': 'Are you sure you want to cancel this card request?',
+          class: 'btn btn--destroy' if request.under_review? && !admin_signed_in? %>
+      </li>
+    <% end %>
+  </ul>
+<% end %>
+
+<% if @load_card_requests.any? %>
+  <h3 class="heading">
+    Emburse Balance Requests
+    <%# link_to 'Request to Add Money',
+      new_event_load_card_request_path(event_id: @event.id),
+      class: 'btn bg-success' %>
+  </h3>
+  <ul class="list list--unlinked list--row">
+    <% @load_card_requests.each do |request| %>
+      <li>
+        <p class="flex-auto">
+          <%= status_badge request.status_badge_type %>
+          <strong><%= render_money request.load_amount %> – <%= request.status %></strong>
+          <span class="muted">(added by <%= request.creator.name %> <span title="<%= request.created_at %>"><%= time_ago_in_words request.created_at %> ago</span>)</span>
+        </p>
+        <%= link_to 'Cancel',
+          event_load_card_request_cancel_path(request, event_id: request.event.id),
+          method: :post,
+          'data-confirm': 'Are you sure you want to cancel this balance request?',
+          class: 'btn btn--destroy' unless admin_signed_in? %>
+      </li>
+    <% end %>
+  </ul>
+<% end %>

@@ -225,7 +225,8 @@ h1 {
   border-bottom: 1px solid #dde1e4;
   margin-bottom: 1rem;
 }
-h2 {
+h2,
+.summary-h2 {
   font-size: 28px;
   padding-bottom: 4px;
   border-bottom: 1px solid #dde1e4;
@@ -262,40 +263,64 @@ td {
 
 .event-summary {
   display: grid;
-  border-radius: 0.5rem;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.0625),
-    0 16px 48px 0 rgba(0, 0, 0, 0.125);
-  overflow: hidden;
+  grid-gap: 1rem;
   @media (min-width: 32em) {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 2rem;
   }
 }
 .event-summary__panel {
-  padding: 1rem;
+  padding: 0.75rem;
+  background-color: $white;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.0625),
+    0 12px 24px 0 rgba(0, 0, 0, 0.125);
+  overflow: hidden;
 
-  &:last-of-type h2 {
-    border-bottom-color: rgba(255, 255, 255, 0.5);
+  h2.heading {
+    margin: 0.5rem -0.75rem;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
   }
+  &[class*='bg'] h2.heading {
+    color: $white;
+    border-bottom-color: rgba(255, 255, 255, 0.25);
+  }
+
+  .badge {
+    background-color: $gray6;
+  }
+  &[class*='bg'] .badge {
+    background-color: rgba(255, 255, 255, 0.25);
+  }
+
   p {
-    margin: 0.5rem 0;
+    margin-top: 0.75rem;
+    margin-bottom: 0;
   }
-}
-.event-summary__panel--stats {
-  display: grid;
-  grid-template-areas: 'full full' 'card fees';
 
-  .stat__label {
+  &.bg-primary .stat__label {
+    color: $red1;
+  }
+  &.bg-info .stat__label {
+    color: $blue1;
+  }
+  &.bg-accent .stat__label {
     color: $indigo1;
   }
 
-  .stat:nth-of-type(1) {
-    grid-area: full;
+  .list {
+    width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
   }
-  .stat:nth-of-type(2) {
-    grid-area: card;
-  }
-  .stat:nth-of-type(3) {
-    grid-area: fees;
+
+  @media screen and (min-width: 32em) {
+    .list {
+      max-height: 16rem;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
   }
 }
 
@@ -422,6 +447,10 @@ td {
   .btn {
     margin-top: 8px;
     margin-bottom: 4px;
+  }
+  &.summary-h2 {
+    display: inline-flex;
+    width: 100%;
   }
 }
 h2.heading,
@@ -645,6 +674,78 @@ th {
       }
     }
   }
+}
+
+.emburse-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+  grid-gap: 1rem;
+
+  @media (min-width: 32em) {
+    grid-gap: 2rem;
+  }
+
+  a {
+    text-decoration: none;
+  }
+
+  p {
+    margin: 0;
+  }
+}
+.emburse-cards__card {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  width: 100%;
+  max-width: 32rem;
+  min-height: 12rem;
+  padding: 1.5rem;
+  position: relative;
+  background-color: #54d;
+  background-image: radial-gradient(ellipse at top right, #867ae7, transparent);
+  font-family: SFMono-Regular, 'Roboto Mono', Menlo, monospace;
+  font-size: 1.25rem;
+  color: $white;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.25);
+  transition: 0.25s ease-out all;
+  transform: scale(1);
+
+  &:focus,
+  &:hover {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.25),
+      0 18px 36px 0 rgba(0, 0, 0, 0.25);
+    transform: scale(1.0625);
+  }
+
+  &:before {
+    content: '';
+    width: 10rem;
+    height: 3rem;
+    background: url(<%= asset_url 'emburse.svg' %>) no-repeat;
+    background-size: 100%;
+    flex: 1 1 auto;
+  }
+}
+.emburse-cards__card__name {
+  text-transform: uppercase;
+  font-weight: 600;
+}
+.emburse-cards__card__number {
+  color: rgba(255, 255, 255, 0.5);
+
+  strong {
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: $white;
+  }
+}
+.emburse-cards__caption {
+  font-size: 0.875rem;
+  color: $gray7;
+  text-align: center;
+  padding-top: 0.5rem;
 }
 
 @import 'basscss';

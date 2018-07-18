@@ -5,20 +5,25 @@
 </h1>
 
 <section class="details">
-<p>
-  <strong>Email address</strong>
-  <%= @card.user.email %>
-</p>
+  <p>
+    <strong>Full name</strong>
+    <%= @card.full_name %>
+  </p>
 
-<p>
-  <strong>Card number</strong>
-  XXXX-XXXX-XXXX-<%= @card.last_four %>
-</p>
+  <p>
+    <strong>Email address</strong>
+    <%= @card.user.email %>
+  </p>
 
-<% if admin_signed_in? %>
-<p>
-  <strong>Emburse ID</strong>
-  <%= link_to @card.emburse_id, @card.emburse_path %>
-</p>
-<% end %>
+  <p>
+    <strong>Card number</strong>
+    XXXX-XXXX-XXXX-<%= @card.last_four %>
+  </p>
+
+  <% if admin_signed_in? %>
+  <p>
+    <strong>Emburse ID</strong>
+    <%= link_to @card.emburse_id, @card.emburse_path %>
+  </p>
+  <% end %>
 </section>
