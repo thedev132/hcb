@@ -13,6 +13,8 @@ class LoadCardRequest < ApplicationRecord
   validate :status_accepted_canceled_or_rejected
   validates :load_amount, numericality: { greater_than_or_equal_to: 1 }
 
+  default_scope { order(created_at: :desc) }
+
   scope :under_review, -> { where(rejected_at: nil, canceled_at: nil, accepted_at: nil) }
   scope :accepted, -> { where.not(accepted_at: nil) }
   scope :pending, -> do
