@@ -1,5 +1,5 @@
 class SyncEmburseTransactionsJob < ApplicationJob
-  RUN_EVERY = 10.minutes
+  RUN_EVERY = 5.minutes
 
   def perform(repeat = false)
     ActiveRecord::Base.transaction do
