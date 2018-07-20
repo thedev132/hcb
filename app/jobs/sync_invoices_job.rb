@@ -13,8 +13,15 @@ class SyncInvoicesJob < ApplicationJob
         now_paid = i.paid
 
         if !was_paid && now_paid
+          logger.debug("Queueing payout for invoice: #{i.attributes.inspect}}")
           i.queue_payout!
         end
+
+      rescue NoMethodError => e
+        Bugsnag.notify(e)
+
+        e.skip_bugsnag = true
+        raise e
       end
     end
 
