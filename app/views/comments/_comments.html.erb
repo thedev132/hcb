@@ -1,5 +1,5 @@
 <% @comments.each do |comment| %>
   <p>
-    <%= comment.user.full_name || comment.user.email %>: <%= comment.content %>
+    <%= comment.user.full_name || comment.user.email %>: <%= auto_link_new_tab comment.content %>
   </p>
 <% end %>

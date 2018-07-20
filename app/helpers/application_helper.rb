@@ -24,4 +24,8 @@ module ApplicationHelper
   def status_if(type, condition)
     status_badge(type) if condition
   end
+
+  def auto_link_new_tab(text)
+    auto_link(text, html: { target: '_blank' })
+  end
 end
