@@ -26,4 +26,12 @@ class EventPolicy < ApplicationPolicy
   def destroy?
     user.admin?
   end
+
+  def card_overview?
+    user.admin? || record.users.include?(user)
+  end
+
+  def g_suite_overview?
+    user.admin? || record.users.include?(user)
+  end
 end

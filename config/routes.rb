@@ -34,8 +34,8 @@ Rails.application.routes.draw do
   end
 
   resources :events do
-    get 'g_suite', to: 'g_suites#status', as: :g_suite_status
-    get 'cards', to: 'cards#status', as: :cards_status
+    get 'g_suite', to: 'events#g_suite_overview', as: :g_suite_overview
+    get 'cards', to: 'events#card_overview', as: :cards_overview
     resources :organizer_position_invites,
       only: [ :new, :create ],
       path: 'invites'

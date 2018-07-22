@@ -38,7 +38,7 @@
       <span class="stat__value"><%= render_money @event.emburse_balance, '' %></span>
     </div>
     <%= link_to 'Manage Cards',
-      event_cards_status_path(event_id: @event.id),
+      event_cards_overview_path(event_id: @event.id),
       class: "btn bg-white accent mt2" %>
   </div>
   <% @g_color = g_suite_summary_color(@g_suite_status) %>
@@ -62,7 +62,7 @@
       <p>Your G Suite is set up!</p>
     <% end %>
     <%= link_to @g_suite_text,
-      event_g_suite_status_path(event_id: @event.id),
+      event_g_suite_overview_path(event_id: @event.id),
       class: "btn bg-white #{@g_color} mt2" %>
   </div>
   <div class="event-summary__panel bg-warning white">
