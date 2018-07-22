@@ -49,7 +49,7 @@ class CardRequestsController < ApplicationController
 
     if @card_request.save
       flash[:success] = 'Your card request is being reviewed.'
-      redirect_to @event
+      redirect_to event_cards_overview_path(@event)
     else
       render :new
     end
@@ -68,14 +68,17 @@ class CardRequestsController < ApplicationController
 
   # POST /card_requests/1
   def cancel
+    @card_request = CardRequest.find(params[:card_request_id])
     authorize @card_request
+
     @card_request.canceled_at = Time.now
     if @card_request.save
       flash[:success] = 'Canceled your card request.'
-      redirect_to @event
     else
-      redirect_to @event
+      flash[:error] = 'Failed to cancel card request.'
     end
+
+    redirect_to event_cards_overview_path(@card_request.event)
   end
 
   private
