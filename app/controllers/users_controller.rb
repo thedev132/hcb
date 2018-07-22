@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+  before_action :signed_in_user, except: [:auth, :login_code, :exchange_login_code]
   skip_after_action :verify_authorized, except: [:edit, :update]
 
   # view to log in
@@ -41,7 +42,6 @@ class UsersController < ApplicationController
   end
 
   def logout
-    require_auth
     sign_out
     redirect_to root_path
   end
@@ -67,13 +67,5 @@ class UsersController < ApplicationController
 
   def user_params
     params.require(:user).permit(:full_name, :email)
-  end
-
-  def require_auth
-    unless signed_in?
-      flash[:error] = 'Not signed in!'
-      redirect_to(request.referrer || root_path)
-      return
-    end
   end
 end
