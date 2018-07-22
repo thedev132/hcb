@@ -11,7 +11,7 @@
         <p class="slate">
           <% if account.initial_password.present? %>
             <%= status_badge :success %>
-            <span>sign in with password:</span>
+            <span>sign in with one-time password:</span>
             <code class="bg-snow pl1 pr1"><%= account.initial_password %></code>
           <% else %>
             <%= status_badge :pending %>
