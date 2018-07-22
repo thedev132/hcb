@@ -11,6 +11,10 @@ class GSuiteApplicationPolicy < ApplicationPolicy
     user.admin?
   end
 
+  def new?
+    user.admin? || record.event.users.include?(user)
+  end
+
   def create?
     user.admin? || record.event.users.include?(user)
   end
