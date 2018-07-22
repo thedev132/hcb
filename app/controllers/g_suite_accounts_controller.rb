@@ -21,7 +21,8 @@ class GSuiteAccountsController < ApplicationController
     else
       flash[:error] = 'That email address is already in use.'
     end
-    redirect_to event_g_suite_status_path(event_id: @event.id)
+
+    redirect_to event_g_suite_overview_path(event_id: @event.id)
   end
 
   def edit
