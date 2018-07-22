@@ -1,5 +1,5 @@
 class BankAccountsController < ApplicationController
-  before_action :signed_in_admin
+  before_action :signed_in_user
 
   def new
     @link_env = PlaidService.instance.env
@@ -33,5 +33,6 @@ class BankAccountsController < ApplicationController
 
   def show
     @account = BankAccount.find(params[:id])
+    authorize @account
   end
 end

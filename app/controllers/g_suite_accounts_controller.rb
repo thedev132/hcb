@@ -2,6 +2,8 @@ class GSuiteAccountsController < ApplicationController
   before_action :set_g_suite_account, only: [ :edit, :update, :reject ]
 
   def index
+    authorize GSuiteAccount
+
     @g_suite_accounts = GSuiteAccount.all.order(created_at: :desc)
   end
 

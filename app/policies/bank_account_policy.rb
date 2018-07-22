@@ -7,6 +7,10 @@ class BankAccountPolicy < ApplicationPolicy
     bank_account_does_not_exist && user.admin?
   end
 
+  def show?
+    user.admin?
+  end
+
   private
 
   def bank_account_does_not_exist
