@@ -21,6 +21,7 @@ class SponsorsController < ApplicationController
 
   # GET /sponsors/1/edit
   def edit
+    authorize @sponsor
   end
 
   # POST /sponsors
@@ -40,7 +41,6 @@ class SponsorsController < ApplicationController
   # PATCH/PUT /sponsors/1
   def update
     @sponsor.attributes = sponsor_params
-
     authorize @sponsor
 
     if @sponsor.save
