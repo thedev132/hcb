@@ -1,4 +1,7 @@
 class UsersController < ApplicationController
+  before_action :signed_in_user, except: [:auth, :login_code, :exchange_login_code]
+  skip_after_action :verify_authorized, except: [:edit, :update]
+
   # view to log in
   def auth
   end
@@ -39,19 +42,19 @@ class UsersController < ApplicationController
   end
 
   def logout
-    require_auth
     sign_out
     redirect_to root_path
   end
 
   def edit
-    require_current_profile
     @user = User.find(params[:id])
+    authorize @user
   end
 
   def update
-    require_current_profile
     @user = User.find(params[:id])
+    authorize @user
+
     if @user.update(user_params)
       flash[:success] = 'Profile changes saved successfully.'
       redirect_to params[:redirect_to] || root_path
@@ -64,22 +67,5 @@ class UsersController < ApplicationController
 
   def user_params
     params.require(:user).permit(:full_name, :email)
-  end
-
-  def require_auth
-    unless signed_in?
-      flash[:error] = 'Not signed in!'
-      redirect_to(request.referrer || root_path)
-      return
-    end
-  end
-
-  def require_current_profile
-    require_auth
-    unless params[:id].to_i == current_user.id
-      flash[:error] = 'Not your profile!'
-      redirect_to(request.referrer || root_path)
-      return
-    end
   end
 end

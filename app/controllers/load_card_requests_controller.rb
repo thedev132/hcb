@@ -33,7 +33,8 @@ class LoadCardRequestsController < ApplicationController
     authorize @load_card_request
 
     if @load_card_request.save
-      redirect_to @event, notice: 'Load card request was successfully created.'
+      redirect_to event_cards_overview_path(@event),
+        notice: 'Load card request was successfully created.'
     else
       render :new
     end
@@ -83,13 +84,18 @@ class LoadCardRequestsController < ApplicationController
   def cancel
     authorize @load_card_request
 
-    @load_card_request.canceled_at = Time.now
-    if @load_card_request.save
-      flash[:success] = 'Load card request cancelled.'
-      redirect_to @load_card_request.event
+    if @load_card_request.under_review?
+      @load_card_request.canceled_at = Time.now
+      if @load_card_request.save
+        flash[:success] = 'Load card request canceled.'
+      else
+        flash[:error] = 'Failed to cancel load card request.'
+      end
     else
-      redirect_to @load_card_request.event
+      flash[:error] = 'Load card request cannot be canceled.'
     end
+
+    redirect_to event_cards_overview_path(@load_card_request.event)
   end
 
   private

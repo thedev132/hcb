@@ -34,4 +34,8 @@ class CardRequestPolicy < ApplicationPolicy
   def reject?
     user.admin?
   end
+
+  def cancel?
+    record.creator == user
+  end
 end

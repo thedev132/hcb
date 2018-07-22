@@ -4,6 +4,9 @@ class ApplicationController < ActionController::Base
 
   protect_from_forgery
 
+  # Force usage of Pundit on actions
+  after_action :verify_authorized
+
   rescue_from ApiService::UnauthorizedError, with: :user_not_authenticated
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 

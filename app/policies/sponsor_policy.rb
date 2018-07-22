@@ -15,6 +15,10 @@ class SponsorPolicy < ApplicationPolicy
     user.admin? || user_has_position?
   end
 
+  def edit?
+    user.admin? || user_has_position?
+  end
+
   def update?
     user.admin? || user_has_position?
   end

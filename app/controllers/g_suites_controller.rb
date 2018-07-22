@@ -74,13 +74,6 @@ class GSuitesController < ApplicationController
     end
   end
 
-  def status
-    @event = Event.find(params[:event_id])
-    @status = @event.g_suite_status
-    @g_suite = @event.g_suite
-    @g_suite_application = @event.g_suite_application
-  end
-
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_g_suite

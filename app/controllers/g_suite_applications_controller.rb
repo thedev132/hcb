@@ -14,6 +14,7 @@ class GSuiteApplicationsController < ApplicationController
   end
 
   def accept
+    authorize @g_suite_application
     redirect_to new_event_g_suite_path(g_suite_application_id: @g_suite_application.id, event_id: @g_suite_application.event.id)
   end
 
@@ -34,6 +35,7 @@ class GSuiteApplicationsController < ApplicationController
   # GET /g_suite_applications/new
   def new
     @g_suite_application = GSuiteApplication.new(event: @event)
+    authorize @g_suite_application
   end
 
   # GET /g_suite_applications/1/edit
