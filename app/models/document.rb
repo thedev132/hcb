@@ -3,6 +3,7 @@ class Document < ApplicationRecord
   belongs_to :user
 
   has_one_attached :file
+  has_many :downloads, class_name: 'DocumentDownload'
 
   validates_presence_of :event, :user
   validate :ensure_file_attached

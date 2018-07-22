@@ -58,7 +58,9 @@ Rails.application.routes.draw do
 
   resources :cards
 
-  resources :documents, except: [ :index ]
+  resources :documents, except: [ :index ] do
+    get 'download'
+  end
 
   resources :bank_accounts, only: [ :new, :create, :show ]
   resources :transactions, only: [ :index, :show, :edit, :update ] do

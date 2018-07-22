@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_07_18_063852) do
+ActiveRecord::Schema.define(version: 2018_07_22_024901) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -92,6 +92,17 @@ ActiveRecord::Schema.define(version: 2018_07_18_063852) do
     t.index ["commentable_id", "commentable_type"], name: "index_comments_on_commentable_id_and_commentable_type"
     t.index ["commentable_type", "commentable_id"], name: "index_comments_on_commentable_type_and_commentable_id"
     t.index ["user_id"], name: "index_comments_on_user_id"
+  end
+
+  create_table "document_downloads", force: :cascade do |t|
+    t.bigint "document_id"
+    t.bigint "user_id"
+    t.inet "ip_address"
+    t.text "user_agent"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["document_id"], name: "index_document_downloads_on_document_id"
+    t.index ["user_id"], name: "index_document_downloads_on_user_id"
   end
 
   create_table "documents", force: :cascade do |t|
@@ -362,6 +373,8 @@ ActiveRecord::Schema.define(version: 2018_07_18_063852) do
   add_foreign_key "card_requests", "users", column: "fulfilled_by_id"
   add_foreign_key "cards", "events"
   add_foreign_key "cards", "users"
+  add_foreign_key "document_downloads", "documents"
+  add_foreign_key "document_downloads", "users"
   add_foreign_key "documents", "events"
   add_foreign_key "documents", "users"
   add_foreign_key "emburse_transactions", "events"

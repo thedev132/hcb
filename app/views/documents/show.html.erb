@@ -11,10 +11,18 @@
 <section class="details">
 <p>
   <strong>Download file</strong>
-  <%= link_to 'Click here', url_for(@document.file), download: true %>
+  <%= link_to 'Click here', document_download_path(@document), download: true %>
 </p>
 
 <p>
   <strong>Added by:</strong> <%= @document.user.full_name %>
 </p>
+
+<% if @document.downloads.any? %>
+<ul>
+  <% @document.downloads.each do |download| %>
+    <li><%= download.user.full_name %> downloaded at <%= download.created_at %></li>
+  <% end %>
+</ul>
+<% end %>
 </section>

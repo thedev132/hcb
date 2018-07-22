@@ -22,4 +22,8 @@ class DocumentPolicy < ApplicationPolicy
   def destroy?
     user.admin? || (record.user == user)
   end
+
+  def download?
+    user.admin? || record.event.users.include?(user)
+  end
 end

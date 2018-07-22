@@ -49,6 +49,19 @@ class DocumentsController < ApplicationController
     redirect_to @document.event
   end
 
+  def download
+    @document = Document.find(params[:document_id])
+    authorize @document
+
+    redirect_to url_for(@document.file)
+
+    DocumentDownload.from_request(
+      request,
+      document: @document,
+      user: current_user
+    ).save!
+  end
+
   private
 
   def document_params
