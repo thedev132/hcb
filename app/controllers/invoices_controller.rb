@@ -3,7 +3,9 @@ class InvoicesController < ApplicationController
 
   def new
     @sponsor = Sponsor.find(params[:sponsor_id])
-    @invoice = Invoice.new
+    @invoice = Invoice.new(sponsor: @sponsor)
+
+    authorize @invoice
   end
 
   def create

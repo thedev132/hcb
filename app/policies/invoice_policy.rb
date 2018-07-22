@@ -1,4 +1,8 @@
 class InvoicePolicy < ApplicationPolicy
+  def new?
+    user.admin? || record.sponsor.event.users.include?(user)
+  end
+
   def create?
     user.admin? || record.sponsor.event.users.include?(user)
   end

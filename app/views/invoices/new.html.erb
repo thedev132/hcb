@@ -1,11 +1,5 @@
 <%= link_to @sponsor.event.name, @sponsor.event, class: 'breadcrumb' %>
 <%= link_to @sponsor.name, @sponsor, class: 'breadcrumb' %>
-<h1>Invoice for <%= render_money @invoice.total %> – <span class="<%= @invoice.paid ? 'success' : 'error' %>">
-  <%= @invoice.paid ? 'PAID' : 'UNPAID' %>
-</span></h1>
-
-<%= link_to @sponsor.event.name, @sponsor.event, class: 'breadcrumb' %>
-<%= link_to @sponsor.name, @sponsor, class: 'breadcrumb' %>
 
 <h1>New Invoice</h1>
 
