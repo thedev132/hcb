@@ -28,6 +28,7 @@ class GSuiteAccountsController < ApplicationController
   end
 
   def edit
+    authorize @g_suite_account
   end
 
   def update
