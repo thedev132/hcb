@@ -27,6 +27,7 @@ class GSuitesController < ApplicationController
 
   # GET /g_suites/1/edit
   def edit
+    authorize @g_suite
   end
 
   # POST /g_suites
