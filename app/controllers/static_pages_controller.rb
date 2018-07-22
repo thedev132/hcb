@@ -1,4 +1,6 @@
 class StaticPagesController < ApplicationController
+  skip_after_action :verify_authorized # do not force pundit
+
   def index
     if signed_in?
       @events = current_user.events
