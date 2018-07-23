@@ -3,7 +3,9 @@
 <h1 class="heading">
   <%= render_money @transaction.amount %>
   <%= @transaction.fee_payment? ? 'fee payment' : 'transaction' %>
-  <%= link_to 'Edit', edit_transaction_path(@transaction), class: 'btn bg-info' %>
+  <% if current_user.admin? %>
+    <%= link_to 'Edit', edit_transaction_path(@transaction), class: 'btn bg-info' %>
+  <% end %>
 </h1>
 
 <section class="details">
