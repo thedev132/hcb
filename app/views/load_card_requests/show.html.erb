@@ -2,7 +2,7 @@
 <%= link_to @load_card_request.event.name, @load_card_request.event, class: 'breadcrumb' %>
 <h1 class="heading">
   Load card request for <%= @load_card_request.event.name %>
-  <%= link_to 'Edit', edit_event_load_card_request_path(@load_card_request, event_id: @event.id), class: 'btn bg-info' %>
+  <%= link_to 'Edit', edit_load_card_request_path(@load_card_request, event_id: @event.id), class: 'btn bg-info' %>
 </h1>
 
 <section class="details">
@@ -41,6 +41,10 @@
 <% if @load_card_request.under_review? %>
 <p>Load in Emburse before accepting!</p>
 
-<p><%= link_to 'Reject', event_load_card_request_reject_path(@load_card_request, event_id: @load_card_request.event.id), method: :post, data: { confirm: 'Are you sure?' }, class: 'btn bg-error' %></p>
-<p><%= link_to 'Accept request', event_load_card_request_accept_path(@load_card_request, event_id: @load_card_request.event.id), method: :post, data: { confirm: 'Have you processed in Emburse?' },class: 'btn bg-success' %></p>
+<p><%= link_to 'Reject', load_card_request_reject_path(@load_card_request, event_id: @load_card_request.event.id), method: :post, data: { confirm: 'Are you sure?' }, class: 'btn bg-error' %></p>
+<p><%= link_to 'Accept request', load_card_request_accept_path(@load_card_request, event_id: @load_card_request.event.id), method: :post, data: { confirm: 'Have you processed in Emburse?' },class: 'btn bg-success' %></p>
 <% end %>
+
+<h2>Comments</h2>
+<%= render "comments/form" %>
+<%= render "comments/comments" %>

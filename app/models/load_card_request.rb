@@ -10,6 +10,8 @@ class LoadCardRequest < ApplicationRecord
   belongs_to :creator, class_name: 'User'
   has_one :t_transaction, class_name: 'Transaction'
 
+  has_many :comments, as: :commentable
+
   validate :status_accepted_canceled_or_rejected
   validates :load_amount, numericality: { greater_than_or_equal_to: 1 }
 

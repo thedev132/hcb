@@ -9,6 +9,10 @@ class LoadCardRequestsController < ApplicationController
   def show
     @event = @load_card_request.event
     authorize @load_card_request
+
+    @commentable = @load_card_request
+    @comments = @commentable.comments
+    @comment = Comment.new
   end
 
   def new
@@ -66,7 +70,7 @@ class LoadCardRequestsController < ApplicationController
     else
       flash[:error] = 'Something went wrong.'
     end
-    redirect_to edit_event_load_card_request_path(@load_card_request, event_id: @load_card_request.event.id)
+    redirect_to edit_load_card_request_path(@load_card_request, event_id: @load_card_request.event.id)
   end
 
   def reject
