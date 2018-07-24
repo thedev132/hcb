@@ -43,7 +43,7 @@ Rails.application.routes.draw do
       path: 'invites'
     resources :g_suites, only: [ :new, :create, :edit, :update ]
     resources :g_suite_applications, only: [ :new, :create, :edit, :update ]
-    resources :load_card_requests, only: [ :new, :create ], path: 'load_requests'
+    resources :load_card_requests, only: [ :new ]
   end
 
   resources :sponsors do
@@ -70,7 +70,7 @@ Rails.application.routes.draw do
     post 'cancel'
   end
 
-  resources :load_card_requests, except: [ :new, :create ] do
+  resources :load_card_requests, except: [ :new ] do
     post 'accept'
     post 'reject'
     post 'cancel'

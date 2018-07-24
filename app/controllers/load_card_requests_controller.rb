@@ -32,7 +32,7 @@ class LoadCardRequestsController < ApplicationController
     result_params[:load_amount] = result_params[:load_amount].to_f * 100
 
     @load_card_request = LoadCardRequest.new(result_params)
-    @event = Event.find(params[:event_id])
+    @event = Event.find(params[:load_card_request][:event_id])
 
     authorize @load_card_request
 
