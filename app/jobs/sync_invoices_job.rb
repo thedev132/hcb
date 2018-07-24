@@ -15,6 +15,13 @@ class SyncInvoicesJob < ApplicationJob
         if !was_paid && now_paid
           logger.debug("Queueing payout for invoice: #{i.attributes.inspect}}")
           i.queue_payout!
+
+        # This happens in the case where the invoice was for such a low amount,
+        # like $0.10, that Stripe didn't bother creating a charge and instead
+        # credited a balance to the invoice. See in_1CppXuFSaumjmb9rrEUviPYy
+        # in live mode for an example.
+        rescue Invoice::NoAssociatedStripeCharge
+          logger.debug("Payout aborted due to no associated Stripe charge existing")
         end
       end
     end

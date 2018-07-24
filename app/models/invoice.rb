@@ -1,4 +1,10 @@
 class Invoice < ApplicationRecord
+  # Raise this when attempting to do an operation with the associated Stripe
+  # charge, but it doesn't exist, like in the case of trying to create a payout
+  # for an invoice that was so low that no charge was created on Stripe's end
+  # (ex. for $0.10).
+  class NoAssociatedStripeCharge < StandardError; end
+
   belongs_to :sponsor
   belongs_to :creator, class_name: 'User'
   belongs_to :manually_marked_as_paid_user, class_name: 'User', required: false
@@ -70,6 +76,8 @@ class Invoice < ApplicationRecord
 
   def queue_payout!
     inv = StripeService::Invoice.retrieve(id: stripe_invoice_id, expand: ['charge.balance_transaction'])
+    raise NoAssociatedStripeCharge if inv.charge.nil?
+
     b_tnx = inv.charge.balance_transaction
 
     funds_available_at_unixtime = b_tnx.available_on
