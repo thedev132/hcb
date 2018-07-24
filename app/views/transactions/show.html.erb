@@ -33,7 +33,7 @@
 <% if @transaction.load_card_request %>
 <p>
   <strong>Load card request</strong>
-  <%= link_to 'View', load_card_request_path(@transaction.load_card_request, card_id: @transaction.load_card_request.card.id) %>
+  <%= link_to 'View', load_card_request_path(@transaction.load_card_request) %>
 </p>
 <% end %>
 </section>
