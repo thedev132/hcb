@@ -24,12 +24,12 @@
         <td><%= request.fulfilled_by&.email %></td>
         <td><%= render_money request.load_amount %></td>
         <td><%= request.status %></td>
-        <td><%= link_to 'Edit', edit_event_load_card_request_path(request, event_id: request.event.id) %></td>
+        <td><%= link_to 'Edit', edit_load_card_request_path(request, event_id: request.event.id) %></td>
         <td>
           <% if request.under_review? %>
-            <%= link_to 'Process', event_load_card_request_path(request, event_id: request.event.id), class: 'btn bg-info' %>
+            <%= link_to 'Process', load_card_request_path(request, event_id: request.event.id), class: 'btn bg-info' %>
           <% else %>
-            <%= link_to 'View', event_load_card_request_path(request, event_id: request.event.id) %>
+            <%= link_to 'View', load_card_request_path(request, event_id: request.event.id) %>
           <% end %>
         </td>
       </tr>
