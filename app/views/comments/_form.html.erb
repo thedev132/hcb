@@ -12,11 +12,8 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= form.text_area :content %>
-  </div>
+  <div class="comment__name bold mt2"><%= current_user.name %></div>
+  <%= form.text_area :content, class: 'mb2' %>
 
-  <div class="actions">
-    <%= form.submit %>
-  </div>
+  <%= form.submit 'Post Comment' %>
 <% end %>
