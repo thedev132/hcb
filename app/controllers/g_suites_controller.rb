@@ -1,4 +1,5 @@
 class GSuitesController < ApplicationController
+  before_action :signed_in_user
   before_action :set_g_suite, only: [:show, :edit, :update, :destroy]
 
   # GET /g_suites
