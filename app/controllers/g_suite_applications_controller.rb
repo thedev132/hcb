@@ -1,4 +1,5 @@
 class GSuiteApplicationsController < ApplicationController
+  before_action :signed_in_user
   before_action :set_g_suite_application, only: [:show, :edit, :update, :destroy, :accept, :reject]
   before_action :set_event, except: [:index, :accept, :reject]
 
