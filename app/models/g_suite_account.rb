@@ -4,7 +4,7 @@ class GSuiteAccount < ApplicationRecord
   belongs_to :g_suite
   belongs_to :creator, class_name: 'User'
 
-  validates_presence_of :address, :backup_email
+  validates_presence_of :address, :backup_email, :first_name, :last_name
 
   validate :status_accepted_or_rejected
   validates :address, uniqueness: { scope: :g_suite }

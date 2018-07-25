@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_07_22_024901) do
+ActiveRecord::Schema.define(version: 2018_07_24_230147) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -158,6 +158,8 @@ ActiveRecord::Schema.define(version: 2018_07_22_024901) do
     t.bigint "creator_id"
     t.text "backup_email"
     t.string "initial_password"
+    t.string "first_name"
+    t.string "last_name"
     t.index ["creator_id"], name: "index_g_suite_accounts_on_creator_id"
     t.index ["g_suite_id"], name: "index_g_suite_accounts_on_g_suite_id"
   end
