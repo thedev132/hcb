@@ -1,5 +1,11 @@
+<div class="comments">
 <% @comments.each do |comment| %>
-  <p>
-    <%= comment.user.full_name || comment.user.email %>: <%= auto_link_new_tab comment.content %>
-  </p>
+  <div class="comment">
+    <div class="comment__name">
+      <strong><%= comment.user.name %></strong>
+      <span class="ml1"><%= time_ago_in_words comment.created_at %> ago</span>
+    </div>
+    <div class="comment__bubble"><%= comment.content %></div>
+  </div>
 <% end %>
+</div>
