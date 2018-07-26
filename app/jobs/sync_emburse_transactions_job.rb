@@ -15,7 +15,7 @@ class SyncEmburseTransactionsJob < ApplicationJob
         end
 
         amount = trn[:amount] * 100
-        related_event_id = department_id ? Event.find_by(emburse_department_id: department_id).id || null
+        related_event_id = department_id ? Event.find_by(emburse_department_id: department_id).id : null
 
         et.update!(
           amount: amount,
