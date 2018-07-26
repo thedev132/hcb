@@ -9,4 +9,8 @@ class EmburseTransaction < ApplicationRecord
   belongs_to :event, required: false
 
   validates_uniqueness_of :emburse_id
+
+  def emburse_path
+    "https://app.emburse.com/transactions/#{emburse_id}"
+  end
 end

@@ -23,9 +23,19 @@ class SyncEmburseTransactionsJob < ApplicationJob
           emburse_department_id: department_id,
           event: related_event
         )
+
+        self.notify_admin(et) unless department_id
       end
     end
 
     self.class.set(wait: RUN_EVERY).perform_later(true) if repeat
   end
+
+  def notify_admin(emburse_t)
+    return if emburse_t.notified_admin_at
+
+    EmburseTransactionsMailer.notify(emburse_transaction: emburse_t).deliver_later
+    emburse_t.update!(notified_admin_at: Time.now)
+  end
+
 end
