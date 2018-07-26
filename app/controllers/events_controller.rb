@@ -69,6 +69,7 @@ class EventsController < ApplicationController
     @event = Event.find(params[:event_id])
     @card_requests = @event.card_requests.under_review
     @load_card_requests = @event.load_card_requests
+    @emburse_transactions = @event.emburse_transactions
 
     authorize @event
   end
