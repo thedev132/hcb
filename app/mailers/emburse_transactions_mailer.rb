@@ -1,9 +1,9 @@
 class EmburseTransactionsMailer < ApplicationMailer
   def notify(params)
-    @recipient = 'team@hackclub.com'
     @emburse_transaction = params[:emburse_transaction]
+    env = Rails.environment.production? ? :prod : :dev
 
-    mail to: @recipient,
-      subject: "[Action Requested] Triage unassociated Emburse transaction ##{@emburse_transaction.id}"
+    mail to: Rails.application.credentials.admin_email[env],
+      subject: "[Action Requested] No department linked to Emburse transaction ##{@emburse_transaction.id}"
   end
 end
