@@ -4,6 +4,7 @@ class SyncEmburseTransactionsJob < ApplicationJob
   def perform(repeat = false)
     ActiveRecord::Base.transaction do
       EmburseClient::Transaction.list.each do |trn|
+        next unless trn[:state] == 'completed'
         et = EmburseTransaction.find_by(emburse_id: trn[:id])
         et ||= EmburseTransaction.new(emburse_id: trn[:id])
 
