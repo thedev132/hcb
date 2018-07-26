@@ -54,7 +54,7 @@ class Event < ApplicationRecord
   end
 
   def fee_balance
-    total_fees = self.fee_relationships.sum(:fee_amount)
+    total_fees = self.billed_transactions.sum('fee_relationships.fee_amount')
     total_payments = self.fee_paid
 
     total_fees - total_payments
