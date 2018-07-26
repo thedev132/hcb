@@ -35,7 +35,10 @@
     </h2>
     <div class="stat">
       <span class="stat__label">Emburse balance</span>
-      <span class="stat__value"><%= render_money @event.emburse_balance, '' %></span>
+      <!-- <span class="stat__value"><%= render_money @event.emburse_balance, '' %></span> -->
+        Emburse balance is unavailable for 30 minutes
+        <br />
+        —Max (<a href="mailto:max@hackclub.com" class="white">max@hackclub.com</a>)
     </div>
     <%= link_to 'Manage Cards',
       event_cards_overview_path(event_id: @event.id),
