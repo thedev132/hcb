@@ -22,13 +22,11 @@ class Event < ApplicationRecord
 
   validates :name, :start, :end, :address, :sponsorship_fee, presence: true
 
-  def emburse_budget
-    self.load_card_requests.completed.sum(:load_amount)
-  end
-
   def emburse_balance
-    emburse_debit = self.emburse_transactions.undeclined.where('amount < 0').sum(:amount)
-    emburse_budget + emburse_debit
+    completed_t = self.emburse_transactions.completed.sum(:amount)
+    # We're including only pending charges on cards so organizers have a conservative estimate of their balance
+    pending_t = self.emburse_transactions.pending.where('amount < 0').sum(:amount)
+    completed_t + pending_t
   end
 
   def balance
