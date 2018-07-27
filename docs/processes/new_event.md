@@ -11,3 +11,5 @@
 3. Add the Emburse event/department's ID to the event on Bank. You can get the Emburse ID by going to the transactions page, filtering by event/department, and pulling it out of the URL.
 
      ![](img/new_event_set_emburse_department.gif)
+
+And that's all! You're set.
