@@ -25,6 +25,10 @@ class Transaction < ApplicationRecord
   after_initialize :default_values
   after_create :notify_admin
 
+  def self.total_volume
+    self.sum('@amount')
+  end
+
   def default_values
     self.is_event_related = true if self.is_event_related.nil?
   end

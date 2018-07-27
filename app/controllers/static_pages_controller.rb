@@ -7,6 +7,7 @@ class StaticPagesController < ApplicationController
       @invites = current_user.organizer_position_invites.pending
     end
     if admin_signed_in?
+      @transaction_volume = Transaction.total_volume
       @active = {
         card_requests: CardRequest.under_review.count,
         load_card_requests: LoadCardRequest.under_review.count,
