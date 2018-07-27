@@ -13,4 +13,11 @@ class EmburseTransaction < ApplicationRecord
   def emburse_path
     "https://app.emburse.com/transactions/#{emburse_id}"
   end
+
+  def status_badge_type
+    s = state.to_sym
+    return 'success' if s == :completed
+    return 'error' if s == :declined
+    'pending'
+  end
 end

@@ -62,6 +62,25 @@
   </ul>
 <% end %>
 
+<% if @emburse_transactions.any? and admin_signed_in? %>
+  <h3 class="heading">
+    Emburse Transactions
+  </h3>
+  <ul class="list list--row">
+    <% @emburse_transactions.each do |transaction| %>
+      <a href="<%= transaction.emburse_path %>">
+        <li>
+            <p class="flex-auto">
+              <%= status_badge transaction.status_badge_type %>
+              <strong><%= render_money transaction.amount %> – <%= transaction.state %></strong>
+              <span class="muted">(created <%= time_ago_in_words transaction.created_at %> ago)</span>
+            </p>
+        </li>
+      </a>
+    <% end %>
+  </ul>
+<% end %>
+
 <% if @load_card_requests.any? %>
   <h3 class="heading">
     Emburse Balance Requests
