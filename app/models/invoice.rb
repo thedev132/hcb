@@ -81,9 +81,12 @@ class Invoice < ApplicationRecord
     b_tnx = inv.charge.balance_transaction
 
     funds_available_at_unixtime = b_tnx.available_on
-    funds_available_at = Time.at(funds_available_at_unixtime) # parse unixtime
 
-    create_payout_at = funds_available_at + 1.hour
+    # really dumb... but this seems to be the best way to convert unixtime to
+    # datetime w/o timezone issues. see https://stackoverflow.com/a/7819254.
+    funds_available_at = DateTime.strptime(funds_available_at_unixtime.to_s, '%s')
+
+    create_payout_at = funds_available_at + 1.day
 
     job = CreateInvoicePayoutJob.set(wait_until: create_payout_at).perform_later(self)
 
