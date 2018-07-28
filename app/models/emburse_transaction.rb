@@ -26,6 +26,6 @@ class EmburseTransaction < ApplicationRecord
   end
 
   def self.total_card_transaction_count
-    -self.where('amount < 0').completed.count
+    self.where('amount < 0').completed.count
   end
 end
