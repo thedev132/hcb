@@ -7,6 +7,9 @@ Rails.application.routes.draw do
 
   root to: 'static_pages#index'
 
+  get 'emburse_transactions/stats'
+  get 'transactions/stats'
+
   resources :users, only: [ :edit, :update ] do
     collection do
       get 'auth', to: 'users#auth'

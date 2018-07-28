@@ -1,7 +1,8 @@
 require 'csv'
 
 class TransactionsController < ApplicationController
-  before_action :signed_in_user
+  before_action :signed_in_user, except: [ :stats ]
+  before_action :skip_authorization, only: [ :stats ]
 
   def index
     @event = Event.find(params[:event])
@@ -71,6 +72,12 @@ class TransactionsController < ApplicationController
         render :edit
       end
     end
+  end
+
+  def stats
+    render json: {
+      total_volume: Transaction.total_volume
+    }
   end
 
   private

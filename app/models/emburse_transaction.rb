@@ -20,4 +20,12 @@ class EmburseTransaction < ApplicationRecord
     return 'error' if s == :declined
     'pending'
   end
+
+  def self.total_card_transaction_volume
+    -self.where('amount < 0').completed.sum(:amount)
+  end
+
+  def self.total_card_transaction_count
+    -self.where('amount < 0').completed.count
+  end
 end
