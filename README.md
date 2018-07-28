@@ -1,24 +1,3 @@
-# README
+# _[github bootstrappin'](https://youtu.be/csJ7mBWb2Zo)_
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
-
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+![](https://lh3.googleusercontent.com/iMW1fPFJ1pxduZtonkw7gvsd9s2iGTx56Dx0ewKAc8DlEkTeLXVCfnPofstvEQn9NZjlBAwZgfIppfJ22YlWinUIM9I9n3HzowBbkg39_gUuGzGnC20IN66CvtB_OfWSY45MymrZICuNkf3xYQgRkH4v0y5SvsYmWpHLZYV8xmdrDFayp46dXtOQCuKojrxzoiRWMgft6BrW-8ut8TN9zS5_3or753cYWcKRN3-P_s_0AWFq3rKbhgEA1X295m1AaNCWvPg9rsAICJ0tQCSlqoOWKLFc8zGZc6Eobpoe0oRj_IlmIArw9rYHMm6-COo8DgQLt4vRMV4ZNlmK428muS8SiAJ-p59lImvPvpoWFsxjxw8Z-Fma7VwO5eapI44Qtn7dzKGqf_gSReFZNhfFnJWZK6T_6M1p8x6Qm4gx7RWK2nUhOzeTPJzO8bB7-ofe-4uRy2euJP3n62N-11Pyq8O-HacBokdgRn0zHHrI-3SoRNrJ2VFoVL_-Ytv9gmB1OSBnXV560A30zqghTb9KGULHQN97PzBh_wai1DE6WnQkI1Gof6FT-VHx1Z7riqRj0-S8o6Bvdk-FoJTIGDtB10tpx2ub-eS04SFAoCon=w335-h189-no)
