@@ -174,6 +174,8 @@ class Invoice < ApplicationRecord
   end
 
   def send_payment_notification_if_needed
+    return unless saved_changes[:paid].present?
+
     was = saved_changes[:paid][0] # old value of paid
     now = saved_changes[:paid][1] # new value of paid
 
