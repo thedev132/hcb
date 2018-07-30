@@ -18,7 +18,7 @@ class TransactionsController < ApplicationController
       @transactions.each do |transaction|
         csv << attributes.map do |attr|
           if attributes_to_currency.include? attr
-            view_context.number_to_currency transaction.send(attr) / 100
+            view_context.render_money transaction.send(attr)
           else
             transaction.send(attr)
           end
