@@ -5,7 +5,7 @@
       <strong><%= comment.user.name %></strong>
       <span class="ml1"><%= time_ago_in_words comment.created_at %> ago</span>
     </div>
-    <div class="comment__bubble"><%= comment.content %></div>
+    <div class="comment__bubble"><%= auto_link comment.content %></div>
   </div>
 <% end %>
 </div>
