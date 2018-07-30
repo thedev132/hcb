@@ -37,6 +37,8 @@ class Invoice < ApplicationRecord
   before_create :create_stripe_invoice
   before_destroy :close_stripe_invoice
 
+  after_update :send_payment_notification_if_needed
+
   # Manually mark this invoice as paid (probably in the case of a physical
   # check being sent to pay it). This marks the corresponding payment on Stripe
   # as paid and stores some metadata about why it was marked as paid.
@@ -169,6 +171,15 @@ class Invoice < ApplicationRecord
     invoice.closed = true
     invoice.save
     self.set_fields_from_stripe_invoice invoice
+  end
+
+  def send_payment_notification_if_needed
+    was = saved_changes[:paid][0] # old value of paid
+    now = saved_changes[:paid][1] # new value of paid
+
+    if was == false && now == true
+      InvoiceMailer.with(invoice: self).payment_notification.deliver_later
+    end
   end
 
   def stripe_invoice_item_params

@@ -1,0 +1,14 @@
+<p><%= @emails.length > 1 ? 'Hi all,' : 'Hi,' %></p>
+
+<p>
+  An outstanding invoice has been paid by <%= @invoice.sponsor.name %>.
+</p>
+
+<p>
+  <%= link_to 'Click here', @invoice %> to see the full details.
+</p>
+
+<p>
+  Best,<br>
+  Hack Club Bank
+</p>
