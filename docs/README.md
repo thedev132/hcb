@@ -7,3 +7,4 @@ This page will serve as the home base for future documentation.
 Process docs overview:
 
 - [Creating a new event](processes/new_event.md)
+- [Processing card requests](processes/processing_card_requests.md)
