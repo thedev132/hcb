@@ -31,6 +31,11 @@
         <%= render_money @invoice.amount_remaining %> <%= 'unpaid' if @invoice.amount_paid == 0 %>
       </div>
     </div>
+    <% if @invoice.payout_creation_queued_at && @invoice.payout.nil? %>
+      <p>Payout of funds queued for <%= @invoice.payout_creation_queued_for.to_date %>.</p>
+    <% elsif @invoice.payout_creation_queued_at && @invoice.payout.present? %>
+      <p>Payout for <%= render_money @invoice.payout.amount %> created on <%= @invoice.payout.created_at.to_date %>. Funds should be available <%= @invoice.payout.arrival_date.to_date %>.</p>
+    <% end %>
   <% end %>
 </div>
 
