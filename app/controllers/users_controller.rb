@@ -34,7 +34,7 @@ class UsersController < ApplicationController
     u.save
 
     sign_in u
-    if u.full_name.blank?
+    if u.full_name.blank? || u.phone_number.blank?
       redirect_to edit_user_path(u)
     else
       redirect_back_or root_path
@@ -66,6 +66,6 @@ class UsersController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:full_name, :email)
+    params.require(:user).permit(:full_name, :phone_number, :email)
   end
 end

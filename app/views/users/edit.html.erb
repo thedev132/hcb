@@ -2,7 +2,7 @@
   <%= @user.full_name.present? ? 'Edit' : 'Complete' %> Your Profile
 </h1>
 
-<%= form_with model: @user do |form| %>
+<%= form_with(model: @user, local: true) do |form| %>
   <% if @user.errors.any? %>
     <div id="error_explanation">
       <h2>Oops!</h2>
@@ -17,6 +17,11 @@
   <div class="field">
     <%= form.label :full_name %>
     <%= form.text_field :full_name, required: true %>
+  </div>
+
+  <div class="field">
+    <%= form.label :phone_number, 'Mobile phone number (so we can contact you on short notice)' %>
+    <%= form.text_field :phone_number, required: true %>
   </div>
 
   <div class="field">

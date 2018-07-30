@@ -49,6 +49,8 @@ gem 'acts_as_paranoid', '~> 0.6.0'
 
 # Email validation!
 gem 'validates_email_format_of'
+# Phone validation!
+gem 'phonelib'
 
 # Jobs!
 gem 'sidekiq'

@@ -15,6 +15,7 @@ class User < ApplicationRecord
 
   validates_presence_of :api_id, :api_access_token, :email
   validates_uniqueness_of :api_id, :api_access_token, :email
+  validates :phone_number, phone: { allow_blank: true }
 
   def self.new_session_token
     SecureRandom.urlsafe_base64
