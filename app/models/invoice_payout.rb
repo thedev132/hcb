@@ -13,6 +13,7 @@ class InvoicePayout < ApplicationRecord
   has_one :t_transaction, class_name: 'Transaction'
 
   before_create :create_stripe_payout
+  after_create :notify_organizers
 
   def set_fields_from_stripe_payout(payout)
     self.amount = payout.amount
@@ -47,6 +48,10 @@ class InvoicePayout < ApplicationRecord
     self.stripe_payout_id = payout.id
 
     self.set_fields_from_stripe_payout(payout)
+  end
+
+  def notify_organizers
+    InvoicePayoutsMailer.with(payout: self).notify_organizers.deliver_later
   end
 
   def stripe_payout_params

@@ -1,0 +1,26 @@
+<p>
+  Hi,
+</p>
+
+<p>
+  The funds from <%= link_to "a recently paid invoice to
+  #{@payout.invoice.sponsor.name}", @payout.invoice %> have become available
+  for withdrawal from our payment processor into your account with Hack Club
+  Bank.
+</p>
+
+<p>
+  We've automatically requested a payout on your behalf for
+  <%= render_money @payout.amount %> (the invoice amount minus our payment
+  processor's fees).
+</p>
+
+<p>
+  The funds will be available on approximately <%= @payout.arrival_date.to_date %>.
+  Please don't hesitate to reach out to staff if you have any questions.
+</p>
+
+<p>
+Yours truly,<br/>
+Hack Club Bank
+</p>
