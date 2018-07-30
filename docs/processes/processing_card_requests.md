@@ -1,3 +1,7 @@
 # Processing Card Requests
 
-Please see [this screencast](https://youtu.be/ZfMeF_P0UNE) for information on how to do this.
+While our processes are still being finalized, I made a quick screencast breaking down how we're currently processing card requests.
+
+[Click here](https://youtu.be/ZfMeF_P0UNE) to view it.
+
+\- Zach
