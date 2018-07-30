@@ -10,6 +10,7 @@ class Transaction < ApplicationRecord
   has_one :event, through: :fee_relationship
 
   belongs_to :load_card_request, inverse_of: :t_transaction, required: false
+  belongs_to :invoice_payout, inverse_of: :t_transaction, required: false
 
   has_many :comments, as: :commentable
 
@@ -50,5 +51,10 @@ class Transaction < ApplicationRecord
   # Emburse.
   def emburse?
     name.include? 'emburse'
+  end
+
+  # is this a potential invoice payout transaction?
+  def potential_payout?
+    self.amount > 0
   end
 end

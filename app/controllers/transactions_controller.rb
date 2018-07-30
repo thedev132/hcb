@@ -86,6 +86,7 @@ class TransactionsController < ApplicationController
     params.require(:transaction).permit(
       :is_event_related,
       :load_card_request_id,
+      :invoice_payout_id,
       fee_relationship_attributes: [ :event_id, :is_fee_payment ]
     )
   end

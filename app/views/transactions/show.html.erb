@@ -19,6 +19,13 @@
   <%= render_money @transaction.amount %>
 </p>
 
+<% if @transaction.invoice_payout %>
+  <p>
+    <strong>Invoice</strong>
+    <%= link_to "##{@transaction.invoice_payout.invoice.id}", @transaction.invoice_payout.invoice %>
+  </p>
+<% end %>
+
 <% if @transaction.fee_applies? %>
   <p>
     <strong>Fee</strong>

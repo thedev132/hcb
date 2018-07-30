@@ -6,7 +6,11 @@ class InvoicePayout < ApplicationRecord
   # This removes the Rails reservation on 'type' for this class.
   self.inheritance_column = nil
 
-  has_one :invoice
+  # find invoice payouts that don't yet have an associated transaction
+  scope :lacking_transaction, -> { includes(:t_transaction).where(transactions: { invoice_payout_id: nil } ) }
+
+  has_one :invoice, inverse_of: :payout, foreign_key: :payout_id
+  has_one :t_transaction, class_name: 'Transaction'
 
   before_create :create_stripe_payout
 
@@ -27,6 +31,13 @@ class InvoicePayout < ApplicationRecord
     self.statement_descriptor = payout.statement_descriptor
     self.status = payout.status
     self.type = payout.type
+  end
+
+  # Description when displaying a payout in a form dropdown for associating
+  # transactions.
+  include ApplicationHelper # for render_money helper
+  def dropdown_description
+    "##{self.id} (#{render_money self.amount}, #{self.invoice.sponsor.event.name}, invoice ##{self.invoice.id})"
   end
 
   private
