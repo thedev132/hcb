@@ -136,6 +136,7 @@ GEM
     pundit (1.1.0)
       activesupport (>= 3.0.0)
     rack (2.0.5)
+    rack-cors (1.0.2)
     rack-protection (2.0.1)
       rack
     rack-test (1.0.0)
@@ -247,6 +248,7 @@ DEPENDENCIES
   plaid (~> 6.0)
   puma (~> 3.11)
   pundit
+  rack-cors
   rails (~> 5.2.0)
   rinku
   sass-rails (~> 5.0)
