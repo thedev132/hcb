@@ -1,6 +1,4 @@
 class InvoicesController < ApplicationController
-  before_action :signed_in_user
-
   def new
     @sponsor = Sponsor.find(params[:sponsor_id])
     @invoice = Invoice.new(sponsor: @sponsor)

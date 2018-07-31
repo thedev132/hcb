@@ -1,6 +1,4 @@
 class OrganizerPositionInvitesController < ApplicationController
-  before_action :signed_in_user
-
   def new
     @invite = OrganizerPositionInvite.new
     @invite.event = Event.find(params[:event_id])

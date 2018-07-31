@@ -1,6 +1,4 @@
 class DocumentsController < ApplicationController
-  before_action :signed_in_user
-
   def new
     @document = Document.new(event_id: params[:event_id])
     authorize @document

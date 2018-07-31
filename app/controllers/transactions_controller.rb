@@ -1,7 +1,7 @@
 require 'csv'
 
 class TransactionsController < ApplicationController
-  before_action :signed_in_user, except: [ :stats ]
+  skip_before_action :signed_in_user, only: [ :stats ]
   before_action :skip_authorization, only: [ :stats ]
 
   def index
