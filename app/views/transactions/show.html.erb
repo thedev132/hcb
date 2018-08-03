@@ -1,3 +1,6 @@
+<% if current_user.admin? %>
+  <%= link_to 'Transactions', '/bank_accounts/1', class: 'breadcrumb' %>
+<% end %>
 <%= link_to @transaction.event.name, @transaction.event, class: 'breadcrumb' if @transaction.event %>
 
 <h1 class="heading">
