@@ -34,8 +34,9 @@
       </span>
     </h2>
     <div class="stat">
-      <span class="stat__label">Emburse balance</span>
-      <span class="stat__value"><%= render_money @event.emburse_balance, '' %></span>
+      <span>Card budgets will be available in 30 minutes. — Max</span>
+      <!-- <span class="stat__label">Emburse balance</span> -->
+      <!-- <span class="stat__value"><%= render_money @event.emburse_balance, '' %></span> -->
     </div>
     <%= link_to 'Manage Cards',
       event_cards_overview_path(event_id: @event.id),
