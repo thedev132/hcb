@@ -79,4 +79,6 @@ Rails.application.routes.draw do
     post 'cancel'
     resources :comments
   end
+
+  resources :emburse_transactions, only: [:index, :show, :edit, :update]
 end

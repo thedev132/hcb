@@ -1,0 +1,36 @@
+<%= link_to 'Emburse Transactions', emburse_transactions_path, class: 'breadcrumb' %>
+<h1>Editing Emburse Transaction</h1>
+
+<%= form_with(model: @emburse_transaction, local: true) do |form| %>
+  <% if @emburse_transaction.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@emburse_transaction.errors.count, 'error') %> prohibited this account from being saved:</h2>
+      <ul>
+      <% @emburse_transaction.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="mb2">
+    View on emburse: <%= link_to @emburse_transaction.emburse_id, @emburse_transaction.emburse_path, target: '_blank' %>
+  </div>
+
+  <div class="field">
+    <%= form.label :event %>
+    <%= form.collection_select(:event_id, Event.all, :id, :name, include_blank: 'Select one…') %>
+  </div>
+
+  <div class="field">
+    <%= form.label :amount, 'Amount to add (USD)' %>
+    <div class="flex items-center">
+      <span class="bold muted" style="width: 1rem;">$</span>
+      <%= form.number_field :amount, value: @amount, step: 0.01 %>
+    </div>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>
