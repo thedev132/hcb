@@ -80,5 +80,5 @@ Rails.application.routes.draw do
     resources :comments
   end
 
-  resources :emburse_transactions, only: [:index, :show, :edit, :update]
+  resources :emburse_transactions, only: [:index, :edit, :update]
 end

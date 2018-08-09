@@ -1,6 +1,6 @@
 class EmburseTransactionsController < ApplicationController
   before_action :skip_authorization, only: [ :stats ]
-  before_action :set_emburse_transaction, only: [ :show, :edit, :update ]
+  before_action :set_emburse_transaction, only: [ :edit, :update ]
 
   def stats
     render json: {
@@ -13,9 +13,6 @@ class EmburseTransactionsController < ApplicationController
     authorize EmburseTransaction
     all_et = EmburseTransaction.undeclined.order(created_at: :desc)
     @emburse_transactions = all_et.where(event_id: nil) + all_et.where.not(event_id: nil)
-  end
-
-  def show
   end
 
   def edit
