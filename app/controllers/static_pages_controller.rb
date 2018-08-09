@@ -13,7 +13,8 @@ class StaticPagesController < ApplicationController
         load_card_requests: LoadCardRequest.under_review.count,
         g_suite_applications: GSuiteApplication.under_review.count,
         g_suite_accounts: GSuiteAccount.under_review.count,
-        transactions: Transaction.uncategorized.count
+        transactions: Transaction.uncategorized.count,
+        emburse_transactions: EmburseTransaction.under_review.count
       }
     end
   end

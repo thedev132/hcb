@@ -6,15 +6,19 @@
 <div class="card bg-white">
   <div class="stat mb2">
     <span class="stat__label">Emburse balance</span>
-    <span>Card budgets will be available in 30 minutes. — Max</span>
-    <!-- <span class="stat__value"><%= render_money @event.emburse_balance, '' %></span> -->
+    <span class="stat__value"><%= render_money @event.emburse_balance, '' %></span>
+
+    <% if admin_signed_in? %>
+      <div class="stat stat--small ml2">
+        <span class="stat__label">Emburse budget limit</span>
+        <span class="stat__value"><%= render_money @event.emburse_budget_limit, '' %></span>
+      </div>
+    <% end %>
   </div>
 
   <%# link_to 'Increase Balance',
     new_event_load_card_request_path(event_id: @event.id),
     class: 'btn bg-success' %>
-
-  <%# render 'load_card_requests/form', load_card_request: LoadCardRequest.new(event_id: @event.id) %>
 </div>
 
 <h2 class="heading">

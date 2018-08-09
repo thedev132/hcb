@@ -3,6 +3,7 @@ class Card < ApplicationRecord
   belongs_to :event
   has_one :card_request
   has_many :load_card_requests
+  has_many :emburse_transactions
 
   validates :last_four,
             :full_name,
@@ -28,6 +29,10 @@ class Card < ApplicationRecord
     obj = emburse_obj
     return (obj[:allowance][:balance].to_f * 100).round(2) if obj
     nil
+  end
+
+  def department_id
+    emburse_obj&.department&.id
   end
 
   private

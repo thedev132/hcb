@@ -5,10 +5,20 @@ class EmburseTransaction < ApplicationRecord
   scope :completed, -> { where(state: 'completed' )}
   scope :undeclined, -> { where.not(state: 'declined') }
   scope :declined, -> { where(state: 'declined' )}
+  scope :under_review, -> { where(emburse_department_id: nil).undeclined }
 
   belongs_to :event, required: false
+  belongs_to :card, required: false
 
   validates_uniqueness_of :emburse_id
+
+  def under_review?
+    self.event_id.nil? && undeclined?
+  end
+
+  def undeclined?
+    self.state != 'declined'
+  end
 
   def emburse_path
     "https://app.emburse.com/transactions/#{emburse_id}"

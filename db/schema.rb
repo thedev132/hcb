@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_07_30_220708) do
+ActiveRecord::Schema.define(version: 2018_08_09_001842) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -124,6 +124,9 @@ ActiveRecord::Schema.define(version: 2018_07_30_220708) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "notified_admin_at"
+    t.string "emburse_card_id"
+    t.bigint "card_id"
+    t.index ["card_id"], name: "index_emburse_transactions_on_card_id"
     t.index ["event_id"], name: "index_emburse_transactions_on_event_id"
   end
 
@@ -383,6 +386,7 @@ ActiveRecord::Schema.define(version: 2018_07_30_220708) do
   add_foreign_key "document_downloads", "users"
   add_foreign_key "documents", "events"
   add_foreign_key "documents", "users"
+  add_foreign_key "emburse_transactions", "cards"
   add_foreign_key "emburse_transactions", "events"
   add_foreign_key "fee_relationships", "events"
   add_foreign_key "g_suite_accounts", "g_suites"
