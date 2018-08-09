@@ -23,7 +23,7 @@ class Event < ApplicationRecord
   validates :name, :start, :end, :address, :sponsorship_fee, presence: true
 
   def emburse_budget_limit
-    self.emburse_transactions.completed.where('amount > 0').sum(:amount)
+    self.emburse_transactions.completed.where(card_id: nil).sum(:amount)
   end
 
   def emburse_balance
