@@ -7,12 +7,10 @@ class SyncEmburseTransactionsJob < ApplicationJob
         et = EmburseTransaction.find_by(emburse_id: trn[:id])
         et ||= EmburseTransaction.new(emburse_id: trn[:id])
 
-        department_id = trn[:department] && trn[:department][:id]
+        department_id = trn.dig(:department, :id)
+        card = Card.find_by(emburse_id: trn.dig(:cards, :id))
         # If the transaction isn't assigned to a department directly, we'll use the card's department
-        if department_id.nil? && trn[:card]
-          card = EmburseClient::Card.get(trn[:card][:id])
-          department_id = card[:department][:id]
-        end
+        department_id = card.department_id if department_id.nil? and card
 
         amount = trn[:amount] * 100
         related_event = department_id ? Event.find_by(emburse_department_id: department_id) : nil
@@ -21,10 +19,12 @@ class SyncEmburseTransactionsJob < ApplicationJob
           amount: amount,
           state: trn[:state],
           emburse_department_id: department_id,
-          event: related_event
+          event: related_event || et.event,
+          emburse_card_id: trn.dig(:cards, :id),
+          card: card
         )
 
-        self.notify_admin(et) unless department_id
+        self.notify_admin(et) if department_id.nil?
       end
     end
 

@@ -3,6 +3,7 @@ class Card < ApplicationRecord
   belongs_to :event
   has_one :card_request
   has_many :load_card_requests
+  has_many :emburse_transactions
 
   validates :last_four,
             :full_name,

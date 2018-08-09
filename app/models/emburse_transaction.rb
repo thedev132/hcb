@@ -7,6 +7,7 @@ class EmburseTransaction < ApplicationRecord
   scope :declined, -> { where(state: 'declined' )}
 
   belongs_to :event, required: false
+  belongs_to :card, required: false
 
   validates_uniqueness_of :emburse_id
 
