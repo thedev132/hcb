@@ -31,6 +31,10 @@ class Card < ApplicationRecord
     nil
   end
 
+  def department_id
+    emburse_obj&.department&.id
+  end
+
   private
 
   def emburse_obj
