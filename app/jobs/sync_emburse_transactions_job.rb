@@ -8,7 +8,7 @@ class SyncEmburseTransactionsJob < ApplicationJob
         et ||= EmburseTransaction.new(emburse_id: trn[:id])
 
         department_id = trn.dig(:department, :id)
-        card = Card.find_by(emburse_id: trn.dig(:cards, :id))
+        card = Card.find_by(emburse_id: trn.dig(:card, :id))
         # If the transaction isn't assigned to a department directly, we'll use the card's department
         department_id = card.department_id if department_id.nil? and card
 
