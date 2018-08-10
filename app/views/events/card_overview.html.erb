@@ -5,7 +5,7 @@
 
 <div class="card bg-white">
   <div class="stat mb2">
-    <span class="stat__label">Emburse balance</span>
+    <span class="stat__label">Available balance</span>
     <span class="stat__value"><%= render_money @event.emburse_balance, '' %></span>
     <% if admin_signed_in? %>
       <div class="stat stat--small ml2">
