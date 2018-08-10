@@ -20,7 +20,7 @@ class SyncEmburseTransactionsJob < ApplicationJob
           state: trn[:state],
           emburse_department_id: department_id,
           event: related_event || et.event,
-          emburse_card_id: trn.dig(:cards, :id),
+          emburse_card_id: trn.dig(:card, :id),
           card: card
         )
 
