@@ -11,6 +11,10 @@ class BankAccountPolicy < ApplicationPolicy
     user.admin?
   end
 
+  def reauthenticate?
+    user.admin?
+  end
+
   private
 
   def bank_account_does_not_exist

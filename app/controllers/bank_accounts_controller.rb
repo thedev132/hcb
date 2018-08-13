@@ -1,8 +1,7 @@
 class BankAccountsController < ApplicationController
-  def new
-    @link_env = PlaidService.instance.env
-    @public_key = PlaidService.instance.public_key
+  before_action :set_link_vars, only: [ :new, :reauthenticate ]
 
+  def new
     authorize BankAccount
   end
 
@@ -32,5 +31,23 @@ class BankAccountsController < ApplicationController
   def show
     @account = BankAccount.find(params[:id])
     authorize @account
+  end
+
+  def reauthenticate
+    @account = BankAccount.find(params[:bank_account_id])
+    authorize @account
+
+    @public_token = PlaidService.instance.client.item.public_token.create(
+      @account.plaid_access_token
+    ).public_token
+  end
+
+  private
+
+  def set_link_vars
+    @client_name = PlaidService.instance.client_name
+    @link_env = PlaidService.instance.env
+    @public_key = PlaidService.instance.public_key
+    @product = [ 'transactions' ].to_json.html_safe
   end
 end

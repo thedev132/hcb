@@ -1,0 +1,27 @@
+<h1>Reauthenticate bank account</h1>
+<button id="linkButton">Reauthenticate</button>
+
+<script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"></script>
+<script>
+var linkHandler = Plaid.create({
+  env: '<%= @link_env %>',
+  clientName: '<%= @client_name %>',
+  key: '<%= @public_key %>',
+  product: <%= @product %>,
+  token: '<%= @public_token %>',
+  onSuccess: function(public_token, metadata) {
+    // Don't need to do anything, access token remains the same
+    alert('Done! Feel free to continue using Bank.')
+  },
+  onExit: function(err, metadata) {
+    if (err != null) {
+      alert('Ran into an error while authenticating! Please try again.')
+    }
+  },
+});
+
+// Trigger the standard Institution Select view
+document.getElementById('linkButton').onclick = function() {
+  linkHandler.open();
+};
+</script>

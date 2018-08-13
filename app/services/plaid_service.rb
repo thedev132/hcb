@@ -10,18 +10,23 @@ class PlaidService
   end
 
   def secret_key
-    if Rails.env.production?
-      # Since we're only using one account & Plaid's development plan supports
-      # up to 100 accounts, we're just going to stick with the development key
-      # in production for now.
+    case env
+    when 'development'
       Rails.application.credentials.plaid[:development_secret]
-    else
+    when 'sandbox'
       Rails.application.credentials.plaid[:sandbox_secret]
     end
   end
 
+  def client_name
+    'Hack Club'
+  end
+
   # env to provide to Plaid Link integration
   def env
+    # Since we're only using one account & Plaid's development plan supports up
+    # to 100 accounts, we're just going to stick with the development key in
+    # production for now.
     if Rails.env.production?
       'development'
     else

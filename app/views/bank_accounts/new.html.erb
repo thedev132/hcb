@@ -12,9 +12,9 @@
 var linkHandler = Plaid.create({
   selectAccount: true,
   env: '<%= @link_env %>',
-  clientName: 'Client Name',
+  clientName: '<%= @client_name %>',
   key: '<%= @public_key %>',
-  product: ['transactions'],
+  product: <%= @product %>,
   onSuccess: function(public_token, metadata) {
     var authForm = document.getElementById('authForm')
 
