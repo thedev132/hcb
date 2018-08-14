@@ -8,3 +8,4 @@ Process docs overview:
 
 - [Creating a new event](processes/new_event.md)
 - [Processing card requests](processes/processing_card_requests.md)
+- [Creating Emburse event budgets](processes/emburse_event_budgets.md)
