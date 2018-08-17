@@ -1,4 +1,8 @@
 class Transaction < ApplicationRecord
+  extend FriendlyId
+
+  friendly_id :slug_text, use: :slugged
+
   acts_as_paranoid
 
   default_scope { order(date: :desc, id: :desc) }
@@ -62,5 +66,11 @@ class Transaction < ApplicationRecord
   # is this a potential invoice payout transaction?
   def potential_payout?
     self.amount > 0
+  end
+
+  private
+
+  def slug_text
+    "#{date} #{name}"
   end
 end
