@@ -94,6 +94,8 @@ GEM
     faraday_middleware (0.12.2)
       faraday (>= 0.7.4, < 1.0)
     ffi (1.9.23)
+    friendly_id (5.2.4)
+      activerecord (>= 4.0.0)
     globalid (0.4.1)
       activesupport (>= 4.2.0)
     hashie (3.5.7)
@@ -241,6 +243,7 @@ DEPENDENCIES
   capybara (>= 2.15, < 4.0)
   chromedriver-helper
   faraday
+  friendly_id (~> 5.2.0)
   listen (>= 3.0.5, < 3.2)
   mini_racer
   pg (>= 0.18, < 2.0)

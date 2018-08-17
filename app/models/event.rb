@@ -1,4 +1,8 @@
 class Event < ApplicationRecord
+  extend FriendlyId
+
+  friendly_id :name, use: :slugged
+
   has_many :organizer_position_invites
   has_many :organizer_positions
 
