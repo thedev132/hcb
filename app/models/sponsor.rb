@@ -1,4 +1,8 @@
 class Sponsor < ApplicationRecord
+  extend FriendlyId
+
+  friendly_id :slug_candidates, use: :slugged
+
   belongs_to :event
   has_many :invoices
 
@@ -93,5 +97,12 @@ class Sponsor < ApplicationRecord
         }
       }
     }
+  end
+
+  def slug_candidates
+    [
+      :name,
+      [ :name, -> { self.event.name } ]
+    ]
   end
 end

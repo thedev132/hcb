@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_17_171149) do
+ActiveRecord::Schema.define(version: 2018_08_17_195334) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -334,7 +334,9 @@ ActiveRecord::Schema.define(version: 2018_08_17_171149) do
     t.text "stripe_customer_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "slug"
     t.index ["event_id"], name: "index_sponsors_on_event_id"
+    t.index ["slug"], name: "index_sponsors_on_slug", unique: true
   end
 
   create_table "transactions", force: :cascade do |t|
