@@ -29,12 +29,12 @@
   <div class="event-summary__panel bg-accent white">
     <h2 class="heading">
       <span class="flex items-center">
-        Credit Cards
+        Debit Cards
         <%= badge_for @event.cards.count %>
       </span>
     </h2>
     <div class="stat">
-      <span class="stat__label">Emburse balance</span>
+      <span class="stat__label">Available balance</span>
       <span class="stat__value"><%= render_money @event.emburse_balance, '' %></span>
     </div>
     <%= link_to 'Manage Cards',
