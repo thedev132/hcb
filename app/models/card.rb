@@ -1,4 +1,8 @@
 class Card < ApplicationRecord
+  extend FriendlyId
+
+  friendly_id :slug_text, use: :slugged
+
   belongs_to :user
   belongs_to :event
   has_one :card_request
@@ -46,5 +50,9 @@ class Card < ApplicationRecord
     unless emburse_id_regex.match? emburse_id
       errors.add(:emburse_id, "is incorrectly formatted")
     end
+  end
+
+  def slug_text
+    "#{self.last_four} #{self.full_name}"
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_17_202515) do
+ActiveRecord::Schema.define(version: 2018_08_17_203319) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -78,7 +78,9 @@ ActiveRecord::Schema.define(version: 2018_08_17_202515) do
     t.integer "expiration_month"
     t.integer "expiration_year"
     t.text "emburse_id"
+    t.text "slug"
     t.index ["event_id"], name: "index_cards_on_event_id"
+    t.index ["slug"], name: "index_cards_on_slug", unique: true
     t.index ["user_id"], name: "index_cards_on_user_id"
   end
 
