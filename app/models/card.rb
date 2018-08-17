@@ -53,6 +53,6 @@ class Card < ApplicationRecord
   end
 
   def slug_text
-    "#{self.last_four} #{self.full_name}"
+    "#{self.full_name} #{self.last_four}"
   end
 end
