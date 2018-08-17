@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_17_201838) do
+ActiveRecord::Schema.define(version: 2018_08_17_202515) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -270,11 +270,13 @@ ActiveRecord::Schema.define(version: 2018_08_17_201838) do
     t.datetime "payout_creation_queued_for"
     t.text "payout_creation_queued_job_id"
     t.datetime "payout_creation_balance_available_at"
+    t.text "slug"
     t.index ["creator_id"], name: "index_invoices_on_creator_id"
     t.index ["item_stripe_id"], name: "index_invoices_on_item_stripe_id", unique: true
     t.index ["manually_marked_as_paid_user_id"], name: "index_invoices_on_manually_marked_as_paid_user_id"
     t.index ["payout_creation_queued_job_id"], name: "index_invoices_on_payout_creation_queued_job_id", unique: true
     t.index ["payout_id"], name: "index_invoices_on_payout_id"
+    t.index ["slug"], name: "index_invoices_on_slug", unique: true
     t.index ["sponsor_id"], name: "index_invoices_on_sponsor_id"
     t.index ["stripe_invoice_id"], name: "index_invoices_on_stripe_invoice_id", unique: true
   end

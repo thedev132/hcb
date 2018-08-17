@@ -1,4 +1,8 @@
 class Invoice < ApplicationRecord
+  extend FriendlyId
+
+  friendly_id :slug_text, use: :slugged
+
   # Raise this when attempting to do an operation with the associated Stripe
   # charge, but it doesn't exist, like in the case of trying to create a payout
   # for an invoice that was so low that no charge was created on Stripe's end
@@ -202,5 +206,9 @@ class Invoice < ApplicationRecord
       statement_descriptor: self.statement_descriptor,
       tax_percent: self.tax_percent
     }
+  end
+
+  def slug_text
+    "#{self.sponsor.name} #{self.item_description}"
   end
 end
