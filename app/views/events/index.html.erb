@@ -7,7 +7,7 @@
   <% @events.each do |event| %>
     <%= link_to event do %>
       <li>
-        <strong><%= event.name %></strong>
+        <strong>#<%= event.id %> <%= event.name %></strong>
         <span class="muted"><%= render_percentage event.sponsorship_fee %> fee, <%= event.start %>–<%= event.end %></span>
       </li>
     <% end %>
