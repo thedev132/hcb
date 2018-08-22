@@ -62,6 +62,8 @@ gem 'pundit'
 
 # Helper for automatically adding links to rendered text
 gem 'rinku', require: 'rails_rinku'
+# Allow Markdown for views
+gem 'maildown'
 
 # Manage CORS
 gem 'rack-cors', require: 'rack/cors'

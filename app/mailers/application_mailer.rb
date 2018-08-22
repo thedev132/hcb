@@ -4,4 +4,11 @@ class ApplicationMailer < ActionMailer::Base
 
   # allow usage of application helper
   helper :application
+
+  protected
+
+  def admin_email
+    env = Rails.env.production? ? :prod : :dev
+    Rails.application.credentials.admin_email[env]
+  end
 end

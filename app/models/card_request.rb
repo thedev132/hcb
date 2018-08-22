@@ -13,6 +13,8 @@ class CardRequest < ApplicationRecord
   scope :outstanding, -> { where(accepted_at: nil) }
   scope :under_review, -> { where(rejected_at: nil, canceled_at: nil, accepted_at: nil) }
 
+  after_create :send_admin_notification
+
   def status
     return 'rejected' if rejected_at.present?
     return 'canceled' if canceled_at.present?
@@ -26,5 +28,11 @@ class CardRequest < ApplicationRecord
 
   def send_accept_email
     CardRequestMailer.with(card_request: self).accepted.deliver_later
+  end
+
+  private
+
+  def send_admin_notification
+    CardRequestMailer.with(card_request: self).admin_notification.deliver_later
   end
 end
