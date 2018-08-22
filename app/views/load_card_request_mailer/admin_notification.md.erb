@@ -1,0 +1,7 @@
+Hi there,
+
+A new load card request has been created by <%= @lcr.creator.name %> requesting a transfer of <%= render_money @lcr.load_amount %> on behalf of <%= link_to @event.name, @event %>.
+
+[Click here to process the request.](<%= load_card_requests_url %>)
+
+\- Hack Club Bank

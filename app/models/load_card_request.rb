@@ -29,6 +29,8 @@ class LoadCardRequest < ApplicationRecord
   end
   scope :completed, -> { accepted.where.not(id: pending) }
 
+  after_create :send_admin_notification
+
   def status
     return 'transfer in progress' if LoadCardRequest.pending.include?(self)
     return 'completed' if LoadCardRequest.completed.include?(self)
@@ -53,5 +55,11 @@ class LoadCardRequest < ApplicationRecord
   include ApplicationHelper
   def description
     "#{self.id} (#{render_money self.load_amount}, #{time_ago_in_words self.created_at} ago, #{self.event.name})"
+  end
+
+  private
+
+  def send_admin_notification
+    LoadCardRequestMailer.with(load_card_request: self).admin_notification.deliver_later
   end
 end
