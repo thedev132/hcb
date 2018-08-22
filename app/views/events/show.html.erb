@@ -1,5 +1,8 @@
 <h1 class="heading mt4">
-  <span style="font-size: 3rem;"><%= @event.name %></span>
+  <span style="font-size: 3rem;">
+    <%= if admin_signed_in? %>#<%= @event.id %> <% end %>
+    <%= @event.name %>
+  </span>
   <% if admin_signed_in? %>
     <%= link_to 'Edit',
       edit_event_path(@event),
