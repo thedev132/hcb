@@ -28,6 +28,7 @@ module SessionsHelper
   def current_user
     session_token = User.digest(cookies[:session_token])
     @current_user ||= User.find_by(session_token: session_token)
+    return nil unless @current_user
 
     # ensure that our auth token is valid. this will throw
     # ApiService::UnauthorizedError if we get an authorization error, which
