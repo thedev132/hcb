@@ -1,6 +1,8 @@
 <h1 class="heading mt4">
   <span style="font-size: 3rem;">
-    <% if admin_signed_in? %>#<%= @event.id %> <% end %>
+    <% if admin_signed_in? %>
+      #<%= @event.id %>
+    <% end %>
     <%= @event.name %>
   </span>
   <% if admin_signed_in? %>
