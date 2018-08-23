@@ -25,17 +25,19 @@ module SessionsHelper
     @current_user = user
   end
 
-  def current_user
+  def current_user(ensure_api_authorized: true)
     session_token = User.digest(cookies[:session_token])
     @current_user ||= User.find_by(session_token: session_token)
     return nil unless @current_user
 
-    # ensure that our auth token is valid. this will throw
-    # ApiService::UnauthorizedError if we get an authorization error, which
-    # will be caught by ApplicationController and sign out the user
-    Rails.cache.fetch("#{@current_user.cache_key_with_version}/authed") do
-      @current_user.api_record.present? 
-    end
+    if ensure_api_authorized
+      # ensure that our auth token is valid. this will throw
+      # ApiService::UnauthorizedError if we get an authorization error, which
+      # will be caught by ApplicationController and sign out the user
+      Rails.cache.fetch("#{@current_user.cache_key_with_version}/authed") do
+        @current_user.api_record.present? 
+      end
+    else
 
     @current_user
   end
@@ -55,7 +57,7 @@ module SessionsHelper
   end
 
   def sign_out
-    current_user.update_attribute(:session_token, User.digest(User.new_session_token))
+    current_user(false).update_attribute(:session_token, User.digest(User.new_session_token))
     cookies.delete(:session_token)
     self.current_user = nil
   end
