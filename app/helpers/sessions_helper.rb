@@ -28,6 +28,15 @@ module SessionsHelper
   def current_user
     session_token = User.digest(cookies[:session_token])
     @current_user ||= User.find_by(session_token: session_token)
+
+    # ensure that our auth token is valid. this will throw
+    # ApiService::UnauthorizedError if we get an authorization error, which
+    # will be caught by ApplicationController and sign out the user
+    Rails.cache.fetch("#{@current_user.cache_key_with_version}/authed") do
+      @current_user.api_record.present? 
+    end
+
+    @current_user
   end
 
   def signed_in_user
