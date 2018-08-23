@@ -22,7 +22,12 @@
 </p>
 
 <p>
-  <strong>Total event balance</strong>
+  <strong>Event account balance</strong>
+  <%= render_money @load_card_request.event.balance %>
+</p>
+
+<p>
+  <strong>Event Emburse balance</strong>
   <%= render_money @load_card_request.event.emburse_balance %>
 </p>
 
