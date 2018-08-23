@@ -11,6 +11,9 @@ class ApplicationController < ActionController::Base
   # Force usage of Pundit on actions
   after_action :verify_authorized
 
+  # Associate user w/ Bugsnag for error reports
+  before_bugsnag_notify :add_user_info_to_bugsnag
+
   rescue_from ApiService::UnauthorizedError, with: :user_not_authenticated
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
@@ -26,5 +29,15 @@ class ApplicationController < ActionController::Base
   def user_not_authorized
     flash[:error] = 'You are not authorized to perform this action.'
     redirect_to(root_path)
+  end
+
+  def add_user_info_to_bugsnag
+    return unless current_user
+
+    report.user = {
+      email: current_user.email,
+      name: current_user.full_name,
+      id: current_user.id
+    }
   end
 end
