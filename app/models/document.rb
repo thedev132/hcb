@@ -1,11 +1,15 @@
 class Document < ApplicationRecord
+  include FriendlyId
+
+  friendly_id :slug_text, use: :slugged
+
   belongs_to :event
   belongs_to :user
 
   has_one_attached :file
   has_many :downloads, class_name: 'DocumentDownload'
 
-  validates_presence_of :event, :user
+  validates_presence_of :event, :user, :name
   validate :ensure_file_attached
 
   private
@@ -15,5 +19,9 @@ class Document < ApplicationRecord
   # file is attached for the time being.
   def ensure_file_attached
     errors.add(:file, 'must be attached') unless file.attached?
+  end
+
+  def slug_text
+    "#{self.event.name} #{self.name}"
   end
 end
