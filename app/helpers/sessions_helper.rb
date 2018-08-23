@@ -37,7 +37,7 @@ module SessionsHelper
       Rails.cache.fetch("#{@current_user.cache_key_with_version}/authed") do
         @current_user.api_record.present? 
       end
-    else
+    end
 
     @current_user
   end
