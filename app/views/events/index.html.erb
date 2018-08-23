@@ -8,7 +8,13 @@
     <%= link_to event do %>
       <li>
         <strong>#<%= event.id %> <%= event.name %></strong>
-        <span class="muted"><%= render_percentage event.sponsorship_fee %> fee, <%= event.start %>–<%= event.end %></span>
+        <span class="muted">
+          <%= event.start.to_date %> – <%= event.end.to_date %>,
+          <%= render_percentage event.sponsorship_fee %> fee
+          <% if current_user.admin? %>
+            - <%= event.point_of_contact.name %>
+          <% end %>
+        </span>
       </li>
     <% end %>
   <% end %>
