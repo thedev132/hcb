@@ -30,6 +30,7 @@ class UsersController < ApplicationController
     u = User.find_or_initialize_by(api_id: @user_id)
     u.api_access_token = resp[:auth_token]
     u.email = u.api_record[:email]
+    u.admin_at = u.api_record[:admin_at]
 
     u.save
 

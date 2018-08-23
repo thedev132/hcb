@@ -3,6 +3,8 @@ class Event < ApplicationRecord
 
   friendly_id :name, use: :slugged
 
+  belongs_to :point_of_contact, class_name: 'User'
+
   has_many :organizer_position_invites
   has_many :organizer_positions
 
@@ -23,6 +25,8 @@ class Event < ApplicationRecord
   has_many :sponsors
 
   has_many :documents
+
+  validate :point_of_contact_is_admin
 
   validates :name, :start, :end, :address, :sponsorship_fee, presence: true
 
@@ -74,5 +78,13 @@ class Event < ApplicationRecord
     return :verify_setup if !g_suite.verified?
     return :done if g_suite.verified?
     :start
+  end
+
+  private
+
+  def point_of_contact_is_admin
+    return if self.point_of_contact&.admin?
+
+    errors.add(:point_of_contact, 'must be an admin')
   end
 end

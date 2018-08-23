@@ -17,6 +17,12 @@
   <% end %>
 </h1>
 
+<p class="muted mt3">
+  Your point of contact is <%= @event.point_of_contact.name %>. Please don't
+  hesitate to text / call them at <%= @event.point_of_contact.pretty_phone_number %>
+  or email at <%= mail_to @event.point_of_contact.email %>.
+</p>
+
 <section class="event-summary mt2 mb2 md-mt3 md-mb3">
   <div class="event-summary__panel bg-primary white">
     <h2 class="heading">
