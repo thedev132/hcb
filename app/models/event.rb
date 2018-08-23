@@ -1,6 +1,8 @@
 class Event < ApplicationRecord
   extend FriendlyId
 
+  default_scope { order(id: :asc) }
+
   friendly_id :name, use: :slugged
 
   belongs_to :point_of_contact, class_name: 'User'
