@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_17_203319) do
+ActiveRecord::Schema.define(version: 2018_08_23_194322) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -142,6 +142,8 @@ ActiveRecord::Schema.define(version: 2018_08_17_203319) do
     t.datetime "updated_at", null: false
     t.string "emburse_department_id"
     t.text "slug"
+    t.bigint "point_of_contact_id"
+    t.index ["point_of_contact_id"], name: "index_events_on_point_of_contact_id"
   end
 
   create_table "fee_relationships", force: :cascade do |t|
@@ -393,6 +395,7 @@ ActiveRecord::Schema.define(version: 2018_08_17_203319) do
     t.text "email"
     t.string "full_name"
     t.text "phone_number"
+    t.datetime "admin_at"
     t.index ["api_access_token"], name: "index_users_on_api_access_token", unique: true
     t.index ["api_id"], name: "index_users_on_api_id", unique: true
   end
@@ -409,6 +412,7 @@ ActiveRecord::Schema.define(version: 2018_08_17_203319) do
   add_foreign_key "documents", "users"
   add_foreign_key "emburse_transactions", "cards"
   add_foreign_key "emburse_transactions", "events"
+  add_foreign_key "events", "users", column: "point_of_contact_id"
   add_foreign_key "fee_relationships", "events"
   add_foreign_key "g_suite_accounts", "g_suites"
   add_foreign_key "g_suite_accounts", "users", column: "creator_id"

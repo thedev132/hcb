@@ -1,7 +1,10 @@
 class User < ApplicationRecord
+  scope :admin, -> { where.not(admin_at: nil) }
+
   has_many :organizer_position_invites
   has_many :organizer_positions
   has_many :events, through: :organizer_positions
+  has_many :managed_events, inverse_of: :point_of_contact
   has_many :g_suite_applications, inverse_of: :creator
   has_many :g_suite_applications, inverse_of: :fulfilled_by
   has_many :g_suite_accounts, inverse_of: :fulfilled_by
@@ -25,10 +28,6 @@ class User < ApplicationRecord
     Digest::SHA1.hexdigest(token.to_s)
   end
 
-  def admin_at
-    api_record[:admin_at]
-  end
-
   def admin?
     self.admin_at.present?
   end
@@ -41,6 +40,10 @@ class User < ApplicationRecord
 
   def name
     full_name || email
+  end
+
+  def pretty_phone_number
+    Phonelib.parse(self.phone_number).national
   end
 
   private
