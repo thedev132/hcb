@@ -7,6 +7,10 @@ class SyncEmburseTransactionsJob < ApplicationJob
         et = EmburseTransaction.find_by(emburse_id: trn[:id])
         et ||= EmburseTransaction.new(emburse_id: trn[:id])
 
+        # Emburse transactions will sometimes post as $0 & update to their correct value later.
+        # We want to skip over them until they settle on their correct amount
+        next if trn[:amount] === 0
+
         department_id = trn.dig(:department, :id)
         card = Card.find_by(emburse_id: trn.dig(:card, :id))
         # If the transaction isn't assigned to a department directly, we'll use the card's department
