@@ -20,6 +20,13 @@
     class: 'btn bg-success' %>
 </div>
 
+<% if @event.cards.any? %>
+  <div class="card mt2">
+    <p class="stat__label">Your billing address:</p>
+    <pre>8605 Santa Monica Blvd #86294<br />West Hollywood, CA 90069</pre>
+  </div>
+<% end %>
+
 <h2 class="heading">
   Event Cards
   <%= link_to 'Request a Card',
