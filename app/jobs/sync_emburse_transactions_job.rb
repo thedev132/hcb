@@ -25,7 +25,25 @@ class SyncEmburseTransactionsJob < ApplicationJob
           emburse_department_id: department_id,
           event: related_event || et.event,
           emburse_card_id: trn.dig(:card, :id),
-          card: card
+          card: card,
+          merchant_mid: trn.dig(:merchant, :mid),
+          merchant_mcc: trn.dig(:merchant, :mcc),
+          merchant_name: trn.dig(:merchant, :name),
+          merchant_address: trn.dig(:merchant, :address),
+          merchant_city: trn.dig(:merchant, :city),
+          merchant_state: trn.dig(:merchant, :state),
+          merchant_zip: trn.dig(:merchant, :zip),
+          category_emburse_id: trn.dig(:category, :id),
+          category_url: trn.dig(:category, :url),
+          category_code: trn.dig(:category, :code),
+          category_name: trn.dig(:category, :name),
+          category_parent: trn.dig(:category, :parent),
+          label: trn[:label],
+          location: trn[:location],
+          note: trn[:note],
+          receipt_url: trn.dig(:receipt, :url),
+          receipt_filename: trn.dig(:receipt, :filename),
+          transaction_time: trn[:time]
         )
 
         self.notify_admin(et) if department_id.nil?

@@ -78,13 +78,13 @@
     Emburse Transactions
   </h3>
   <ul class="list list--row">
-    <% @emburse_transactions.each do |transaction| %>
-      <a href="<%= transaction.emburse_path %>">
+    <% @emburse_transactions.order(transaction_time: :desc).where.not(transaction_time: nil).each do |transaction| %>
+      <a href="<%= transaction.emburse_path %>" target="_blank">
         <li>
             <p class="flex-auto">
               <%= status_badge transaction.status_badge_type %>
-              <strong><%= render_money transaction.amount %> – <%= transaction.state %></strong>
-              <span class="muted">(created <%= time_ago_in_words transaction.created_at %> ago)</span>
+              <strong><%= render_money transaction.amount %> <%= transaction.merchant_name %> <%= '– ' + transaction.card.full_name if transaction.card %> – <%= transaction.state %></strong>
+              <span class="muted">(created on <%= transaction.transaction_time.to_date %>)</span>
             </p>
         </li>
       </a>
@@ -105,7 +105,7 @@
         <p class="flex-auto">
           <%= status_badge request.status_badge_type %>
           <strong><%= render_money request.load_amount %> – <%= request.status %></strong>
-          <span class="muted">(added by <%= request.creator.name %> <span title="<%= request.created_at %>"><%= time_ago_in_words request.created_at %> ago</span>)</span>
+          <span class="muted">(processed by <%= request.creator.name %> on <span title="<%= request.created_at %>"><%= request.created_at.to_date %></span>)</span>
         </p>
         <% if request.under_review? && request.creator == current_user %>
           <%= link_to 'Cancel',

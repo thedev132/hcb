@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_23_210452) do
+ActiveRecord::Schema.define(version: 2018_09_23_235320) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -130,6 +130,24 @@ ActiveRecord::Schema.define(version: 2018_08_23_210452) do
     t.datetime "notified_admin_at"
     t.string "emburse_card_id"
     t.bigint "card_id"
+    t.bigint "merchant_mid"
+    t.integer "merchant_mcc"
+    t.text "merchant_name"
+    t.text "merchant_address"
+    t.text "merchant_city"
+    t.text "merchant_state"
+    t.text "merchant_zip"
+    t.text "category_emburse_id"
+    t.text "category_url"
+    t.text "category_code"
+    t.text "category_name"
+    t.text "category_parent"
+    t.text "label"
+    t.text "location"
+    t.text "note"
+    t.text "receipt_url"
+    t.text "receipt_filename"
+    t.datetime "transaction_time"
     t.index ["card_id"], name: "index_emburse_transactions_on_card_id"
     t.index ["event_id"], name: "index_emburse_transactions_on_event_id"
   end
