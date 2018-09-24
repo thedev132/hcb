@@ -105,7 +105,7 @@
         <p class="flex-auto">
           <%= status_badge request.status_badge_type %>
           <strong><%= render_money request.load_amount %> – <%= request.status %></strong>
-          <span class="muted">(processed by <%= request.creator.name %> on <span title="<%= request.created_at %>"><%= request.created_at.to_date %></span>)</span>
+          <span class="muted">(created by <%= request.creator.name %> on <span title="<%= request.created_at %>"><%= request.created_at.to_date %></span>)</span>
         </p>
         <% if request.under_review? && request.creator == current_user %>
           <%= link_to 'Cancel',
