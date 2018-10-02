@@ -26,7 +26,7 @@
   <%= render_money @load_card_request.event.balance %>
 </p>
 
-<p>
+<p class="<%= 'shade-yellow ' unless @load_card_request.emburse_transaction_id.blank? %>">
   <strong>Event Emburse balance</strong>
   <%= render_money @load_card_request.event.emburse_balance %>
 </p>

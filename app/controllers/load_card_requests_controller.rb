@@ -52,8 +52,8 @@ class LoadCardRequestsController < ApplicationController
     result_params[:load_amount] = result_params[:load_amount].to_f * 100
 
     if @load_card_request.update(result_params)
-      flash[:success] = 'Load card request was successfully updated.'
-      redirect_to @load_card_request.event
+      flash[:success] = 'Load card request was successfully updated. Please update Emburse balance.'
+      redirect_to @load_card_request
     else
       render :edit
     end
