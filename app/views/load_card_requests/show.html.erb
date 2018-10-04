@@ -26,9 +26,14 @@
   <%= render_money @load_card_request.event.balance %>
 </p>
 
-<p class="<%= 'shade-yellow ' unless @load_card_request.emburse_transaction_id.blank? %>">
+<p>
   <strong>Event Emburse balance</strong>
   <%= render_money @load_card_request.event.emburse_balance %>
+</p>
+
+<p class="<%= 'shade-yellow ' unless @load_card_request.emburse_transaction_id.blank? %>">
+  <strong>Event Emburse budget</strong>
+  <%= render_money @load_card_request.event.emburse_budget_limit %>
 </p>
 
 <p class="<%= 'shade-yellow ' if @load_card_request.emburse_transaction_id.blank? %>">
