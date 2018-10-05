@@ -30,6 +30,10 @@
   <% end %>
 
   <div class="actions">
-    <%= form.submit 'Request' %>
+    <% if load_card_request.persisted? %>
+      <%= form.submit 'Update' %>
+    <% else %>
+      <%= form.submit 'Request', data: { confirmation: "Your money will finish transferring in 2-3 days. After that you can spend it from your card."} %>
+    <% end %>
   </div>
 <% end %>
