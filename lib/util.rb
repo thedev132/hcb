@@ -6,4 +6,8 @@ module Util
   def self.unixtime(unixtime)
     DateTime.strptime(unixtime.to_s, '%s')
   end
+
+  def self.average(array)
+    array.sum / array.length
+  end
 end

@@ -15,9 +15,16 @@
     <% end %>
   </div>
 
-  <%= link_to 'Increase Balance',
+  <%= link_to "Increase Balance (Average Transfer Time: #{LoadCardRequest.processing_time} #{"Day".pluralize(LoadCardRequest.processing_time)})",
     new_event_load_card_request_path(event_id: @event.slug),
     class: 'btn bg-success' %>
+  <div>
+    <small>
+      Transfers may take longer than the current average time. This is
+      unfortunately out of our control and a hard constraint on the US
+      banking / ACH transfer system.
+    </small>
+  </div>
 </div>
 
 <% if @event.cards.any? %>

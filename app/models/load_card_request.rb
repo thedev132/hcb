@@ -28,8 +28,19 @@ class LoadCardRequest < ApplicationRecord
       )
   end
   scope :completed, -> { accepted.where.not(id: pending) }
+  scope :transferred, -> { completed.includes(:t_transaction).where.not(transactions: { id: nil }) }
 
   after_create :send_admin_notification
+
+  # Return average processing time in days over last_n completed requests rounding up
+  def self.processing_time(last_n: 5)
+    reqs = LoadCardRequest.transferred.first(last_n)
+    processing_times = reqs.map { |r| (r.t_transaction.date.to_time - r.created_at) / 24.hours }
+    avg = Util.average(processing_times)
+
+    # round up
+    avg.ceil
+  end
 
   def status
     return 'transfer in progress' if LoadCardRequest.pending.include?(self)
