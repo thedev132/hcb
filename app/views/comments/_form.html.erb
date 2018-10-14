@@ -15,5 +15,9 @@
   <div class="comment__name bold mt2"><%= current_user.name %></div>
   <%= form.text_area :content, class: 'mb2' %>
 
+  <div class="field">
+    <%= form.file_field :file %>
+  </div>
+
   <%= form.submit 'Post Comment' %>
 <% end %>

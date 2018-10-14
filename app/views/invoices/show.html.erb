@@ -55,3 +55,7 @@
 
   <p><%= link_to 'View on Stripe.', @invoice.stripe_dashboard_url %></p>
 <% end %>
+
+<h2>Comments</h2>
+<%= render "comments/comments" %>
+<%= render "comments/form" %>

@@ -16,6 +16,8 @@ class Invoice < ApplicationRecord
 
   has_one_attached :manually_marked_as_paid_attachment
 
+  has_many :comments, as: :commentable
+
   validates_presence_of :item_description, :item_amount, :due_date
 
   # all manually_marked_as_paid_... fields must be present all together or not

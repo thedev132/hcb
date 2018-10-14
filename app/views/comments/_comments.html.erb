@@ -5,7 +5,12 @@
       <strong><%= comment.user.name %></strong>
       <span class="ml1"><%= time_ago_in_words comment.created_at %> ago</span>
     </div>
-    <div class="comment__bubble"><%= auto_link comment.content %></div>
+    <div class="comment__bubble">
+      <%= auto_link comment.content %>
+      <% if comment.file.attached? %>
+        <%= link_to '📎', url_for(comment.file), target: '_blank' %>
+      <% end %>
+    </div>
   </div>
 <% end %>
 </div>

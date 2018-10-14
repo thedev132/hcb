@@ -31,6 +31,10 @@ class InvoicesController < ApplicationController
     @invoice = Invoice.find(params[:id])
     @sponsor = @invoice.sponsor
 
+    @commentable = @invoice
+    @comment = Comment.new
+    @comments = @invoice.comments
+
     authorize @invoice
   end
 
