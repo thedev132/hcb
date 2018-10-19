@@ -10,6 +10,10 @@ class GSuitesController < ApplicationController
   # GET /g_suites/1
   def show
     authorize @g_suite
+
+    @commentable = @g_suite
+    @comments = @commentable.comments
+    @comment = Comment.new
   end
 
   # GET /g_suites/new

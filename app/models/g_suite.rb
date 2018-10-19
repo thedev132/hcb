@@ -2,6 +2,7 @@ class GSuite < ApplicationRecord
   has_one :g_suite_application
   has_many :g_suite_accounts
   belongs_to :event
+  has_many :comments, as: :commentable
 
   validates_presence_of :domain, :verification_key
   validates_uniqueness_of :domain

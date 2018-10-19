@@ -5,6 +5,7 @@ class CardRequest < ApplicationRecord
   belongs_to :fulfilled_by, class_name: 'User', required: false
   belongs_to :event
   belongs_to :card, required: false
+  has_many :comments, as: :commentable
 
   validates :full_name, :shipping_address, presence: true
   validates :full_name, length: { maximum: 21 }

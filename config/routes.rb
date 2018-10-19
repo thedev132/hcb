@@ -27,6 +27,8 @@ Rails.application.routes.draw do
   resources :g_suite_applications, except: [ :new, :create, :edit, :update ] do
     post 'accept'
     post 'reject'
+
+    resources :comments
   end
 
   resources :g_suite_accounts, only: [ :index, :create, :update, :edit ], path: 'g_suite_accounts' do
@@ -36,6 +38,8 @@ Rails.application.routes.draw do
 
   resources :g_suites, except: [ :new, :create, :edit, :update ] do
     resources :g_suite_accounts, only: [ :create ]
+
+    resources :comments
   end
 
   resources :events do
@@ -76,6 +80,8 @@ Rails.application.routes.draw do
   resources :card_requests, path: 'card_requests' do
     post 'reject'
     post 'cancel'
+
+    resources :comments
   end
 
   resources :load_card_requests, except: [ :new ] do

@@ -11,6 +11,10 @@ class GSuiteApplicationsController < ApplicationController
   # GET /g_suite_applications/1
   def show
     authorize @g_suite_application
+
+    @commentable = @g_suite_application
+    @comments = @commentable.comments
+    @comment = Comment.new
   end
 
   def accept

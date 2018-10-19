@@ -5,6 +5,7 @@ class GSuiteApplication < ApplicationRecord
   belongs_to :event
   belongs_to :fulfilled_by, class_name: 'User', required: false
   belongs_to :g_suite, required: false
+  has_many :comments, as: :commentable
 
   validates_presence_of :creator, :event, :domain
   validate :status_accepted_canceled_or_rejected
