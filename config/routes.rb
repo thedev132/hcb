@@ -27,6 +27,8 @@ Rails.application.routes.draw do
   resources :g_suite_applications, except: [ :new, :create, :edit, :update ] do
     post 'accept'
     post 'reject'
+
+    resources :comments
   end
 
   resources :g_suite_accounts, only: [ :index, :create, :update, :edit ], path: 'g_suite_accounts' do
