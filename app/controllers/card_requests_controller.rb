@@ -11,6 +11,11 @@ class CardRequestsController < ApplicationController
   # GET /card_requests/1
   def show
     authorize @card_request
+
+
+    @commentable = @card_request
+    @comments = @commentable.comments
+    @comment = Comment.new
   end
 
   # GET /card_requests/new

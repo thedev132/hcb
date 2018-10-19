@@ -28,3 +28,7 @@
     <%= link_to 'Cancel request', card_request_path(@card_request), method: :delete, class: 'btn btn--destroy' %>
   </p>
 <% end %>
+
+<h2>Comments</h2>
+<%= render "comments/form" %>
+<%= render "comments/comments" %>

@@ -80,6 +80,8 @@ Rails.application.routes.draw do
   resources :card_requests, path: 'card_requests' do
     post 'reject'
     post 'cancel'
+
+    resources :comments
   end
 
   resources :load_card_requests, except: [ :new ] do
