@@ -58,7 +58,7 @@ when :start %>
               </tr>
               <% if @g_suite.dkim_key %>
               <tr class="shade-neutral">
-                <td>@ <span class="muted">or leave blank</span></td>
+                <td>google._domainkey.<%= @g_suite.domain %></td>
                 <td>3600</td>
                 <td>TXT</td>
                 <td>1</td>
