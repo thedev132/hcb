@@ -64,6 +64,13 @@ when :start %>
                 <td>1</td>
                 <td><%= @g_suite.dkim_key %></td>
               </tr>
+              <tr class="shade-neutral">
+                <td>_DMARC.<%= @g_suite.domain %></td>
+                <td>3600</td>
+                <td>TXT</td>
+                <td>1</td>
+                <td>v=DMARC1; p=none; rua=mailto:dmarc_report@hackclub.com; ruf=mailto:dmarc_report@hackclub.com; fo=1</td>
+              </tr>
               <% end %>
               <tr class="shade-neutral">
                 <td>@ <span class="muted">or leave blank</span></td>
