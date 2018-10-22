@@ -39,7 +39,8 @@ class GSuitesController < ApplicationController
     @g_suite = GSuite.new(
       domain: g_suite_params[:domain],
       event_id: g_suite_params[:event_id],
-      verification_key: g_suite_params[:verification_key]
+      verification_key: g_suite_params[:verification_key],
+      dkim_key: g_suite_params[:dkim_key]
     )
 
     authorize @g_suite
@@ -87,6 +88,6 @@ class GSuitesController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def g_suite_params
-      params.require(:g_suite).permit(:g_suite_application_id, :domain, :event_id, :verification_key, :deleted_at)
+      params.require(:g_suite).permit(:g_suite_application_id, :domain, :event_id, :verification_key, :dkim_key, :deleted_at)
     end
 end

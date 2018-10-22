@@ -30,6 +30,11 @@
     <%= form.text_field :verification_key, value: @g_suite.verification_key %>
   </div>
 
+  <div class="field">
+    <%= form.label :dkim_key %>
+    <%= form.text_area :dkim_key, value: @g_suite.dkim_key %>
+  </div>
+
   <div class="actions">
     <%= form.submit %>
   </div>

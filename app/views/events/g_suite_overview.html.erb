@@ -56,6 +56,15 @@ when :start %>
                 <td>1</td>
                 <td>v=spf1 include:_spf.google.com ~all</td>
               </tr>
+              <% if @g_suite.dkim_key %>
+              <tr class="shade-neutral">
+                <td>@ <span class="muted">or leave blank</span></td>
+                <td>3600</td>
+                <td>TXT</td>
+                <td>1</td>
+                <td><%= @g_suite.dkim_key %></td>
+              </tr>
+              <% end %>
               <tr class="shade-neutral">
                 <td>@ <span class="muted">or leave blank</span></td>
                 <td>3600</td>
