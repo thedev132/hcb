@@ -36,9 +36,9 @@ when :start %>
           Continue to #5, but you’ll need to <strong>refresh this page later for this step</strong>.
           <% end %>
         </li>
-        <li><strong>Add new MX records</strong> for the Google mail servers.
-          <p>If your domain host limits the number of MX records, just add the first 2 records in this table.</p>
-          <table summary="This table displays server addresses for use in MX records configured for G Suite">
+        <li><strong>Add new DNS records</strong> for the Google mail servers.
+          <p>If your domain host limits the number of MX records, just add the first 2 MX records in this table.</p>
+          <table summary="This table displays server addresses for use in DNS records configured for G Suite">
             <thead>
               <tr class="bold">
                 <th>Name/Host/Alias</th>
@@ -49,6 +49,13 @@ when :start %>
               </tr>
             </thead>
             <tbody>
+              <tr class="shade-neutral">
+                <td>@ <span class="muted">or leave blank</span></td>
+                <td>3600</td>
+                <td>TXT</td>
+                <td>1</td>
+                <td>v=spf1 include:_spf.google.com ~all</td>
+              </tr>
               <tr class="shade-neutral">
                 <td>@ <span class="muted">or leave blank</span></td>
                 <td>3600</td>
