@@ -59,7 +59,7 @@ class Invoice < ApplicationRecord
     inv = StripeService::Invoice.retrieve(stripe_invoice_id)
     inv.paid = true
 
-    if inv.save 
+    if inv.save
       self.set_fields_from_stripe_invoice(inv)
 
       if self.save
@@ -145,7 +145,7 @@ class Invoice < ApplicationRecord
     end
 
     url += "/invoices/#{self.stripe_invoice_id}"
-    
+
     url
   end
 

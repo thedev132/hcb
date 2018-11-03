@@ -9,7 +9,10 @@ class InvoicesController < ApplicationController
   def create
     @sponsor = Sponsor.find(params[:sponsor_id])
 
-    @invoice = Invoice.new(invoice_params)
+    filtered_params = invoice_params.except(:action, :controller)
+    filtered_params[:item_amount] = (invoice_params[:item_amount].to_f * 100.to_i)
+
+    @invoice = Invoice.new(filtered_params)
     @invoice.sponsor = @sponsor
     @invoice.creator = current_user
 
