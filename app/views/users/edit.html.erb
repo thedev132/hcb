@@ -1,5 +1,5 @@
 <h1>
-  <%= @user.full_name.present? ? 'Edit' : 'Complete' %> Your Profile
+  <%= @user.full_name.present? ? 'Update' : 'Complete' %> Your Profile
 </h1>
 
 <%= form_with(model: @user, local: true) do |form| %>
@@ -15,6 +15,11 @@
   <% end %>
 
   <div class="field">
+    <%= form.label :email, class: 'muted' %>
+    <%= form.email_field :email, disabled: true %>
+  </div>
+
+  <div class="field">
     <%= form.label :full_name %>
     <%= form.text_field :full_name, required: true %>
   </div>
@@ -22,11 +27,6 @@
   <div class="field">
     <%= form.label :phone_number, 'Mobile phone number (so we can contact you on short notice)' %>
     <%= form.text_field :phone_number, required: true %>
-  </div>
-
-  <div class="field">
-    <%= form.label :email %>
-    <%= form.email_field :email, required: true %>
   </div>
 
   <div class="actions">
