@@ -1,26 +1,27 @@
 @import 'variables';
 
 @font-face {
-  font-family: Averta;
+  font-family: 'Phantom Sans';
+  src: url('https://hackclub.com/fonts/Phantom_Sans_0.4/Regular.woff')
+      format('woff'),
+    url('https://hackclub.com/fonts/Phantom_Sans_0.4/Regular.woff2')
+      format('woff2');
+  font-weight: normal;
   font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: url(//hackclub.com/fonts/averta-regular.woff2) format('woff2'),
-    url(//hackclub.com/fonts/averta-regular.woff) format('woff');
-  unicode-range: U + 0000 - F8FE, U + F900-FFFF;
 }
 @font-face {
-  font-family: Averta;
+  font-family: 'Phantom Sans';
+  src: url('https://hackclub.com/fonts/Phantom_Sans_0.4/Bold.woff')
+      format('woff'),
+    url('https://hackclub.com/fonts/Phantom_Sans_0.4/Bold.woff2')
+      format('woff2');
+  font-weight: bold;
   font-style: normal;
-  font-weight: 700;
-  font-display: swap;
-  src: url(//hackclub.com/fonts/averta-bold.woff2) format('woff2'),
-    url(//hackclub.com/fonts/averta-bold.woff) format('woff');
-  unicode-range: U + 0000 - F8FE, U + F900-FFFF;
 }
 
 * {
   box-sizing: border-box;
+  font-family: inherit;
   font-weight: inherit;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -34,7 +35,7 @@ body {
   display: flex;
   flex-direction: column;
   font-size: 16px;
-  font-family: Averta, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
     sans-serif;
   line-height: 1.5;
   position: relative;
@@ -42,6 +43,17 @@ body {
   -webkit-font-smoothing: antialiased;
   color: $black;
   margin: 0;
+}
+
+h1,
+h2,
+h3,
+.heading,
+.btn,
+input[type='submit'],
+.brand-sans {
+  font-family: 'Phantom Sans', system-ui, -apple-system, BlinkMacSystemFont,
+    'Segoe UI', Roboto, sans-serif;
 }
 
 a {
@@ -53,7 +65,7 @@ strong {
 }
 
 textarea {
-  resize: none;
+  resize: vertical;
 }
 
 input[type='text'],
@@ -66,11 +78,9 @@ select,
 textarea {
   -webkit-appearance: none;
   display: block;
-  vertical-align: middle;
   max-width: 32rem;
   min-height: 36px;
   line-height: inherit;
-  font-family: inherit;
   font-size: 16px;
   padding-left: 8px;
   padding-right: 8px;
@@ -194,7 +204,6 @@ input[type='submit'],
   display: inline-block;
   vertical-align: middle;
   text-align: center;
-  font-family: inherit;
   font-weight: bold;
   line-height: 1.125;
   -webkit-appearance: none;
@@ -723,7 +732,7 @@ th {
     content: '';
     width: 10rem;
     height: 3rem;
-    background: url(<%= asset_url 'emburse.svg' %>) no-repeat;
+    background: url(<%=asset_url'emburse.svg'%>) no-repeat;
     background-size: 100%;
     flex: 1 1 auto;
   }
