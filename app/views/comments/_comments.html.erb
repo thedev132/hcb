@@ -1,5 +1,6 @@
 <div class="comments">
 <% @comments.each do |comment| %>
+  <% next if comment.admin_only && !admin_signed_in? %>
   <div class="comment">
     <div class="comment__name">
       <strong><%= comment.user.name %></strong>
