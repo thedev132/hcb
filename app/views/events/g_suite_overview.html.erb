@@ -56,7 +56,7 @@ when :start %>
                 <td>1</td>
                 <td>v=spf1 include:_spf.google.com ~all</td>
               </tr>
-              <% if @g_suite.dkim_key %>
+              <% unless @g_suite.dkim_key.blank? %>
               <tr class="shade-neutral">
                 <td>google._domainkey.<%= @g_suite.domain %></td>
                 <td>3600</td>
