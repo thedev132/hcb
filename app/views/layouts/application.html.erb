@@ -21,7 +21,7 @@
     <%= link_to '🏡', root_path, class: 'home pt1 md-pt2 h1' %>
     <main class="container">
       <% flash.each do |key, value| %>
-        <article role="alertdialog" class="flash bg-<%= key %> mb2">
+        <article role="alertdialog" class="flash <%= key %> mb2">
           <%= value %>
         </article>
       <% end %>
