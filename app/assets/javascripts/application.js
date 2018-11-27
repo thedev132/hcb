@@ -23,7 +23,7 @@ window.onload = function() {
       blocked = true
     } else {
       fetch('https://rs.fullstory.com/rec/page', { method: 'POST' })
-        .then(res => {
+        .then(function(res) {
           if (!res.ok) {
             blocked = true
           }
