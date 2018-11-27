@@ -22,9 +22,15 @@ window.onload = function() {
     if (typeof FS === 'undefined') {
       blocked = true
     } else {
-      axios.post('https://rs.fullstory.com/rec/page').catch(function() {
-        blocked = true
-      })
+      fetch('https://rs.fullstory.com/rec/page', { method: 'POST' })
+        .then(res => {
+          if (!res.ok) {
+            blocked = true
+          }
+        })
+        .catch(function() {
+          blocked = true
+        })
     }
   }, 4000)
   setTimeout(function() {
@@ -32,7 +38,7 @@ window.onload = function() {
       var body = document.getElementsByTagName('body')
       body[0].remove()
       alert(
-        "Hack Club Bank is still in development. To continue improving the product, it's crucial for us to debug any issues that arise, but your adblocker is currently blocking our bug reporting and analytics. Please unblock to continue using the site."
+        'Hack Club Bank is still in development. To continue improving the product, it’s crucial for us to debug any issues that arise, but your adblocker is currently blocking our bug reporting + analytics. Please unblock to continue using the app.'
       )
     }
   }, 4500)
