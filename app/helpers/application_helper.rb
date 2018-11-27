@@ -28,4 +28,12 @@ module ApplicationHelper
   def auto_link_new_tab(text)
     auto_link(text, html: { target: '_blank' })
   end
+
+  def page_hide_home
+    @hide_home = true
+  end
+
+  def page_snow
+    content_for(:page_class) { 'bg-snow' }
+  end
 end

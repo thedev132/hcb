@@ -1,6 +1,15 @@
-<h1>Sign in to Hack Club Bank</h1>
-<%= form_tag login_code_users_path do %>
-  <%= label_tag :email, 'Enter your email…' %>
-  <%= email_field_tag :email, '', autofocus: true, class: 'mb2' %>
-  <%= submit_tag 'Continue' %>
-<% end %>
+<% page_snow %>
+<% page_hide_home %>
+
+<article class="container container--extranarrow center">
+  <%= image_tag 'logo.svg', style: 'max-width: 128px;', class: 'mx-auto mt4 w-100' %>
+  <h1 class="mt2">
+    <span class="h3 caps slate block">Sign in to</span>
+    <span class="primary">Hack Club Bank</span>
+  </h1>
+  <%= form_tag login_code_users_path do %>
+    <%= label_tag :email, 'Enter your email…', class: 'left-align' %>
+    <%= email_field_tag :email, '', autofocus: true, class: 'left-align mb2' %>
+    <%= submit_tag 'Continue' %>
+  <% end %>
+</article>
