@@ -5,12 +5,12 @@
 
 <h2 class="mb2">Summary</h2>
 
-<div class="stat inline-block mb2">
+<div class="stat inline-block mr2 mb2">
   <span class="stat__label">Available balance</span>
   <span class="stat__value"><%= render_money @event.emburse_balance, '' %></span>
 </div>
 <% if admin_signed_in? %>
-  <div class="stat stat--small slate inline-block ml2">
+  <div class="stat inline-block">
     <span class="stat__label">Emburse budget limit</span>
     <span class="stat__value"><%= render_money @event.emburse_budget_limit, '' %></span>
   </div>
