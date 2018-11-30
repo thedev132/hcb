@@ -45,7 +45,7 @@
         </ul>
       <% end %>
       <% if @events.empty? && @invites.empty? %>
-        <%= blankslate 'No events found' %>
+        <%= blankslate 'No events associated with your account. Perhaps reach out to a co-organizer to get added?' %>
       <% end %>
       <%= link_to 'Sign out', logout_users_path, method: :delete, class: 'btn mt2' %>
     <% else %>
