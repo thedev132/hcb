@@ -420,6 +420,7 @@ ActiveRecord::Schema.define(version: 2018_11_06_020237) do
     t.datetime "admin_at"
     t.index ["api_access_token"], name: "index_users_on_api_access_token", unique: true
     t.index ["api_id"], name: "index_users_on_api_id", unique: true
+    t.index ["email"], name: "index_users_on_email", unique: true
   end
 
   add_foreign_key "card_requests", "cards"

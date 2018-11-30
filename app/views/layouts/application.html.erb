@@ -4,7 +4,6 @@
     <title>Bank</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
@@ -16,12 +15,15 @@
     <meta name="msapplication-TileColor" content="#e42d42">
     <meta name="theme-color" content="#e42d42">
   </head>
-
-  <body>
-    <%= link_to '🏡', root_path, class: 'home pt1 md-pt2 h1' %>
+  <body class="<%= content_for :page_class %>">
+    <% unless @hide_home %>
+      <%= link_to root_path, class: 'home pt1 md-pt2' do %>
+        <%= image_tag 'logo.svg', width: 48, height: 48, alt: 'Bank logo' %>
+      <% end %>
+    <% end %>
     <main class="container">
       <% flash.each do |key, value| %>
-        <article role="alertdialog" class="flash bg-<%= key %> mb2">
+        <article role="alertdialog" class="flash <%= key %> mb2">
           <%= value %>
         </article>
       <% end %>

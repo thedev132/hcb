@@ -36,10 +36,9 @@ class LoadCardRequest < ApplicationRecord
   def self.processing_time(last_n: 5)
     reqs = LoadCardRequest.transferred.first(last_n)
     processing_times = reqs.map { |r| (r.t_transaction.date.to_time - r.created_at) / 24.hours }
-    avg = Util.average(processing_times)
 
     # round up
-    avg.ceil
+    processing_times.present? ? Util.average(processing_times).ceil : '?'
   end
 
   def status
