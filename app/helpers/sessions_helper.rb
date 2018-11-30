@@ -45,7 +45,7 @@ module SessionsHelper
   def signed_in_user
     unless signed_in?
       store_location
-      redirect_to auth_users_path, flash: { error:  'Please sign in to Bank' }
+      redirect_to auth_users_path
     end
   end
 
