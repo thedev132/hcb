@@ -1,5 +1,5 @@
 <main class="center max-width-3 mx-auto">
-<h1>You’ve been invited to manage finances for <%= @invite.event.name %>.</h1>
+<h1>You’ve been invited to <%= @invite.event.name %>.</h1>
 
 <div class="flex justify-center items-center mt3">
   <%= link_to 'Accept invitation', organizer_position_invite_accept_path(@invite), method: :post, class: 'btn bg-success h2 mr1' %>
