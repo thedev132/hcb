@@ -35,7 +35,6 @@ class OrganizerPositionInvitesController < ApplicationController
     authorize @invite
 
     if @invite.accept
-      flash[:success] = 'You’ve accepted your invitation!'
       redirect_to @invite.event
     else
       flash[:error] = 'Failed to accept'
