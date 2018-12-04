@@ -1,0 +1,63 @@
+def money(cents)
+  cents.to_f / 100
+end
+
+date = Time.now.strftime("%Y-%m-%d")
+
+wb = xlsx_package.workbook
+wb.add_worksheet(name: "HC Bank Export - #{date}") do |sheet|
+  sheet.sheet_view.show_grid_lines = false
+
+  sheet.add_row
+
+  @events.each do |event|
+    sheet.add_row ["", "##{event.id} #{event.name}"]
+    sheet.add_row [
+      "",
+      "",
+      "Date",
+      "Transaction",
+      "Amount",
+      "Emburse Transfer?",
+      "Fee Payment?",
+      "Fee Charged",
+      "Balance",
+      "Fee Balance"
+    ]
+
+    running_balance = 0
+    running_fee_balance = 0
+
+    event.transactions.order(date: :asc).find_each do |t|
+      fee_charged = if t.fee_relationship.fee_applies
+        t.fee_relationship.fee_amount
+      elsif t.fee_relationship.is_fee_payment
+        t.amount
+      else
+        0
+      end
+
+      running_balance += t.amount
+      running_fee_balance += fee_charged
+
+      sheet.add_row [
+        "",
+        "",
+        t.date,
+        t.name,
+        money(t.amount),
+        t.load_card_request.present?,
+        t.fee_relationship.fee_applies,
+        money(fee_charged),
+        money(running_balance),
+        money(running_fee_balance)
+      ]
+    end
+
+    if event.transactions.size == 0
+      sheet.add_row ["", "", "[no transactions yet]"]
+    end
+
+    sheet.add_row
+  end
+end

@@ -1,0 +1,2 @@
+class FinancialExport < Export
+end
