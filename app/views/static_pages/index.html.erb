@@ -15,6 +15,7 @@
       <% if BankAccount.instance.nil? %>
         <li><%= link_to 'Setup Bank', new_bank_account_path %></li>
       <% end %>
+      <li><%= link_to 'Export Finances', export_finances_path, method: :post %></li>
     </ul>
     <p>With <%= render_money @transaction_volume %> in transactions and counting...</p>
     <%= link_to 'Sign out', logout_users_path, method: :delete, class: 'btn mt2' %>
@@ -45,7 +46,8 @@
         </ul>
       <% end %>
       <% if @events.empty? && @invites.empty? %>
-        <%= blankslate 'No events found' %>
+        <%= blankslate 'No events associated with your account.' %>
+        <%= blankslate 'Perhaps reach out to a co-organizer to get added?' %>
       <% end %>
       <%= link_to 'Sign out', logout_users_path, method: :delete, class: 'btn mt2' %>
     <% else %>

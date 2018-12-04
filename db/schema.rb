@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_03_215817) do
+ActiveRecord::Schema.define(version: 2018_12_04_180903) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -91,6 +91,7 @@ ActiveRecord::Schema.define(version: 2018_11_03_215817) do
     t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "admin_only", default: false, null: false
     t.index ["commentable_id", "commentable_type"], name: "index_comments_on_commentable_id_and_commentable_type"
     t.index ["commentable_type", "commentable_id"], name: "index_comments_on_commentable_type_and_commentable_id"
     t.index ["user_id"], name: "index_comments_on_user_id"
@@ -164,6 +165,15 @@ ActiveRecord::Schema.define(version: 2018_11_03_215817) do
     t.text "slug"
     t.bigint "point_of_contact_id"
     t.index ["point_of_contact_id"], name: "index_events_on_point_of_contact_id"
+  end
+
+  create_table "exports", force: :cascade do |t|
+    t.text "type"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["type"], name: "index_exports_on_type"
+    t.index ["user_id"], name: "index_exports_on_user_id"
   end
 
   create_table "fee_relationships", force: :cascade do |t|
@@ -435,6 +445,7 @@ ActiveRecord::Schema.define(version: 2018_11_03_215817) do
   add_foreign_key "emburse_transactions", "cards"
   add_foreign_key "emburse_transactions", "events"
   add_foreign_key "events", "users", column: "point_of_contact_id"
+  add_foreign_key "exports", "users"
   add_foreign_key "fee_relationships", "events"
   add_foreign_key "g_suite_accounts", "g_suites"
   add_foreign_key "g_suite_accounts", "users", column: "creator_id"

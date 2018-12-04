@@ -19,5 +19,11 @@
     <%= form.file_field :file %>
   </div>
 
+  <% if admin_signed_in? %>
+  <div class="field">
+    <%= form.check_box :admin_only, {}, "true", "false" %> Post as admin-only comment
+  </div>
+  <% end %>
+
   <%= form.submit 'Post Comment' %>
 <% end %>

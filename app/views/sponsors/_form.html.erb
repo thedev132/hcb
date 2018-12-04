@@ -21,38 +21,37 @@
   <% end %>
 
   <div class="field">
-    <%= form.label :name %>
-    <%= form.text_field :name %>
+    <%= form.label :name, "Name (use company name if applicable)" %>
+    <%= form.text_field :name, placeholder: 'Raviga Capital' %>
   </div>
 
   <div class="field">
-    <%= form.label :contact_email %>
-    <%= form.email_field :contact_email %>
+    <%= form.label :contact_email, 'Contact email (email to send invoice to)' %>
+    <%= form.email_field :contact_email, placeholder: 'peter.gregory@ravigacapital.com' %>
   </div>
 
   <div class="field">
-    <%= form.label :address_line1 %>
-    <%= form.text_field :address_line1 %>
+    <%= form.label :address_line1, 'Street address' %>
+    <%= form.text_field :address_line1, placeholder: '1 Letterman Drive' %>
   </div>
 
   <div class="field">
-    <%= form.label :address_line2 %>
-    <%= form.text_field :address_line2 %>
+    <%= form.text_field :address_line2, placeholder: 'Suite 500' %>
   </div>
 
   <div class="field">
-    <%= form.label :address_city %>
-    <%= form.text_field :address_city %>
+    <%= form.label :address_city, 'City' %>
+    <%= form.text_field :address_city, placeholder: 'San Francisco' %>
   </div>
 
   <div class="field">
-    <%= form.label :address_state %>
-    <%= form.text_field :address_state %>
+    <%= form.label :address_state, 'State' %>
+    <%= form.text_field :address_state, placeholder: 'CA' %>
   </div>
 
   <div class="field">
-    <%= form.label :address_postal_code %>
-    <%= form.text_field :address_postal_code %>
+    <%= form.label :address_postal_code, 'ZIP' %>
+    <%= form.text_field :address_postal_code, placeholder: '94129' %>
   </div>
 
   <div class="actions">

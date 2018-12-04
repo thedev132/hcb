@@ -18,7 +18,7 @@
       </em>
     </p>
     <% if @invoice.manually_marked_as_paid_attachment.attached? %>
-      <p><em><%= link_to 'Download provided attachment.', @invoice.manually_marked_as_paid_attachment, download: true %></em></p>
+      <p><em><%= link_to 'Download provided attachment.', @invoice.manually_marked_as_paid_attachment %></em></p>
     <% end %>
   <% else %>
     <div class="invoice-progress">
@@ -42,7 +42,7 @@
 <% if @invoice.hosted_invoice_url && @invoice.invoice_pdf %>
   <p>
     View online invoice: <%= link_to @invoice.hosted_invoice_url, @invoice.hosted_invoice_url, target: '_blank' %><br />
-    Download PDF of invoice: <%= link_to 'click here', @invoice.invoice_pdf, download: true %>
+    Download PDF of invoice: <%= link_to 'click here', @invoice.invoice_pdf %>
   </p>
 <% end %>
 

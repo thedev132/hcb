@@ -92,4 +92,6 @@ Rails.application.routes.draw do
   end
 
   resources :emburse_transactions, only: [:index, :edit, :update]
+
+  post 'export/finances', to: 'exports#financial_export'
 end

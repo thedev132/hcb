@@ -1,4 +1,4 @@
-<h1 class="heading mt4">
+<h1 class="heading">
   <span style="font-size: 3rem;">
     <% if admin_signed_in? %>
       #<%= @event.id %>
@@ -63,7 +63,7 @@
       <p>Your application is under review. Check back soon!</p>
     <% when :app_accepted %>
       <p>Your application was accepted! It’s time to set up your servers.</p>
-      <% @g_suite_text = 'Set up G Suite' %>
+      <% @g_suite_text = 'Manage G Suite' %>
     <% when :app_rejected %>
       <p>Your application was rejected.</p>
     <% when :verify_setup %>
@@ -98,16 +98,20 @@
         class: 'btn bg-success' %>
     </h2>
     <ul class="list list--unlinked list--row mb0">
-      <% @event.organizer_positions.each do |position| %>
-        <li class="<%= 'bg-snow' unless position.user == current_user %>">
-          <p>
-            <strong><%= position.user.full_name || 'Unnamed' %></strong>
-            <br />
-            <%= position.user.email %>
-            <span class="muted">(added <span title="<%= position.created_at %>"><%= time_ago_in_words position.created_at %> ago</span>)</span>
-          </p>
-          <%= link_to 'Edit', edit_user_path(current_user.id), class: 'btn bg-info' if position.user == current_user %>
-        </li>
+      <% if @event.organizer_positions.any? %>
+        <% @event.organizer_positions.each do |position| %>
+          <li class="<%= 'bg-snow' unless position.user == current_user %>">
+            <p>
+              <strong><%= position.user.full_name || 'Unnamed' %></strong>
+              <br />
+              <%= position.user.email %>
+              <span class="muted">(added <span title="<%= position.created_at %>"><%= time_ago_in_words position.created_at %> ago</span>)</span>
+            </p>
+            <%= link_to 'Edit', edit_user_path(current_user.id), class: 'btn bg-info' if position.user == current_user %>
+          </li>
+        <% end %>
+      <% else %>
+        <%= blankslate 'No others on your team yet' %>
       <% end %>
     </ul>
   </div>
@@ -189,42 +193,9 @@
   <%= blankslate 'No transactions yet' %>
 <% end %>
 
-<h2>Fiscal Sponsorship Fee Breakdown</h2>
-
-<h3>Fee Payments <span class="regular slate h3">(total fees paid: <%= render_money @event.fee_paid %>)</span></h3>
-
-<% if @event.fee_payments.any? %>
-  <table>
-  <tr>
-    <th>Date</th>
-    <th>Description</th>
-    <th>Amount</th>
-    <th>More</th>
-  </tr>
-  <% @event.fee_payments.each do |t| %>
-    <tr class="transaction--negative">
-      <td>
-        <%= t.date %>
-      </td>
-      <td>
-        <%= t.name %>
-      </td>
-      <td>
-        <%= render_money t.amount %>
-      </td>
-      <td>
-        <%= link_to 'Details', t %>
-      </td>
-    </tr>
-  <% end %>
-  </table>
-<% else %>
-  <%= blankslate 'No fee payments yet' %>
-<% end %>
-
 <h3>
   Transactions Incurring Fees
-  <span class="regular slate h3">(total outstanding fees: <%= render_money @event.fee_balance %>)</span>
+  <span class="regular slate sans h3">(total outstanding fees: <%= render_money @event.fee_balance %>)</span>
 </h3>
 
 <% if @event.billed_transactions.any? %>

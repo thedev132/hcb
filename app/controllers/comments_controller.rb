@@ -22,7 +22,7 @@ class CommentsController < ApplicationController
   private
 
   def comment_params
-    params.require(:comment).permit(:content, :file)
+    params.require(:comment).permit(:content, :file, :admin_only)
   end
 
   # Given a route "/transactions/25/comments", this method sets @commentable to
