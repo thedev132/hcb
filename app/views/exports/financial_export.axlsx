@@ -6,8 +6,7 @@ date = Time.now.strftime("%Y-%m-%d")
 
 wb = xlsx_package.workbook
 wb.add_worksheet(name: "HC Bank Export - #{date}") do |sheet|
-  sheet.sheet_view.show_grid_lines = false
-
+  currency = wb.styles.add_style :format_code => '$#,##0.00_);[Red]($#,##0.00)'
   sheet.add_row
 
   @events.each do |event|
@@ -51,6 +50,17 @@ wb.add_worksheet(name: "HC Bank Export - #{date}") do |sheet|
         money(fee_charged),
         money(running_balance),
         money(running_fee_balance)
+      ], style: [
+        nil,
+        nil,
+        nil,
+        nil,
+        currency,
+        nil,
+        nil,
+        currency,
+        currency,
+        currency
       ]
     end
 
@@ -59,5 +69,8 @@ wb.add_worksheet(name: "HC Bank Export - #{date}") do |sheet|
     end
 
     sheet.add_row
+
+    sheet.sheet_view.show_grid_lines = false
+    sheet.column_widths 3, 3, 9
   end
 end
