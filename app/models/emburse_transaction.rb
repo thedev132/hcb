@@ -1,6 +1,8 @@
 class EmburseTransaction < ApplicationRecord
   enum state: %w{pending completed declined}
 
+  acts_as_paranoid
+
   scope :pending, -> { where(state: 'pending') }
   scope :completed, -> { where(state: 'completed' )}
   scope :undeclined, -> { where.not(state: 'declined') }

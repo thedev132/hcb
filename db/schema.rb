@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_04_180903) do
+ActiveRecord::Schema.define(version: 2018_12_18_214023) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -149,7 +149,9 @@ ActiveRecord::Schema.define(version: 2018_12_04_180903) do
     t.text "receipt_url"
     t.text "receipt_filename"
     t.datetime "transaction_time"
+    t.datetime "deleted_at"
     t.index ["card_id"], name: "index_emburse_transactions_on_card_id"
+    t.index ["deleted_at"], name: "index_emburse_transactions_on_deleted_at"
     t.index ["event_id"], name: "index_emburse_transactions_on_event_id"
   end
 

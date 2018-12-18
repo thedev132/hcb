@@ -3,7 +3,17 @@ class SyncEmburseTransactionsJob < ApplicationJob
 
   def perform(repeat = false)
     ActiveRecord::Base.transaction do
+
+    # When Emburse gets a 'test' transaction (ie. AWS charges a card to make
+    # sure it's valid, but removes the charge later), it will later remove the
+    # transaction from their API. We want to archive any transactions that are
+    # no longer on Emburse or we'll end up with a bunch of garbage transaction
+    # data showing up for our users.
+    deleted_transactions = EmburseTransaction.all.pluck :emburse_id
+
       EmburseClient::Transaction.list.each do |trn|
+        deleted_transactions.delete(trn[:id])
+
         et = EmburseTransaction.find_by(emburse_id: trn[:id])
         et ||= EmburseTransaction.new(emburse_id: trn[:id])
 
@@ -48,6 +58,8 @@ class SyncEmburseTransactionsJob < ApplicationJob
 
         self.notify_admin(et) if department_id.nil?
       end
+
+    deleted_transactions.each { |emburse_id| EmburseTransaction.find_by(emburse_id: emburse_id).destroy }
     end
 
     self.class.set(wait: RUN_EVERY).perform_later(true) if repeat
