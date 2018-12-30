@@ -23,6 +23,7 @@
 
 $font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
   sans-serif;
+$mono: 'SFMono-Regular', 'Roboto Mono', Menlo, monospace;
 
 * {
   box-sizing: border-box;
@@ -59,6 +60,11 @@ h3,
 }
 .sans {
   font-family: $font-family;
+}
+pre,
+code,
+.mono {
+  font-family: $mono;
 }
 
 a {
@@ -120,6 +126,7 @@ textarea {
 
 pre {
   background-color: $gray0;
+  border-radius: 4px;
   padding: 12px;
   font-size: 12px;
 }
@@ -748,7 +755,7 @@ th {
   position: relative;
   background-color: #54d;
   background-image: radial-gradient(ellipse at top right, #867ae7, transparent);
-  font-family: SFMono-Regular, 'Roboto Mono', Menlo, monospace;
+  font-family: $mono;
   font-size: 1.25rem;
   color: $white;
   border-radius: 0.5rem;
