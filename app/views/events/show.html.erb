@@ -1,19 +1,21 @@
-<h1 class="heading">
-  <span style="font-size: 3rem;">
+<h1 class="heading center flex-column">
+  <span class="flex flex-wrap items-center" style="font-size: 3rem;">
     <% if admin_signed_in? %>
-      #<%= @event.id %>
+      <span class="badge mr2">#<%= @event.id %></span>
     <% end %>
     <%= @event.name %>
   </span>
   <% if admin_signed_in? %>
-    <%= link_to 'Edit',
-      edit_event_path(@event),
-      class: 'btn bg-info' %>
-    <%= link_to 'Delete',
-      @event,
-      method: :delete,
-      data: { confirm: 'Are you sure?' },
-      class: 'btn btn--destroy primary' %>
+    <div>
+      <%= link_to 'Edit',
+        edit_event_path(@event),
+        class: 'btn bg-info' %>
+      <%= link_to 'Delete',
+        @event,
+        method: :delete,
+        data: { confirm: 'Are you sure?' },
+        class: 'btn btn--destroy primary' %>
+    </div>
   <% end %>
 </h1>
 
