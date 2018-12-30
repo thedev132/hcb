@@ -239,7 +239,7 @@
   Documents
   <%= link_to 'New Document',
     new_document_path(event_id: @event.id),
-    class: 'btn bg-success' %>
+    class: 'btn bg-success' if admin_signed_in? %>
 </h2>
 
 <% if @event.documents.any? %>
