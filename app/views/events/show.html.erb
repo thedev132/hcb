@@ -243,12 +243,12 @@
 </h2>
 
 <% if @event.documents.any? %>
-  <ul class="list">
+  <ul class="grid">
     <% @event.documents.each do |d| %>
       <%= link_to document_download_path(d) do %>
-        <li>
-          <strong><%= d.name %></strong>
-          <span class="muted">Added by <%= d.user.full_name %></span>
+        <li class="card">
+          <strong class="h3 block"><%= d.name %></strong>
+          <%= user_mention d.user %>
         </li>
       <% end %>
     <% end %>
