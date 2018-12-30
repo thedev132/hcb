@@ -15,13 +15,17 @@
 </p>
 
 <p>
-  <strong>Added by</strong> <%= @document.user.full_name %>
+  <strong>Added by</strong> <%= user_mention @document.user %>
 </p>
 
 <% if @document.downloads.any? %>
-<ul>
+<h2 class="mt3 mb0">Download history</h2>
+<ul class="list list--unlinked">
   <% @document.downloads.each do |download| %>
-    <li><%= download.user.full_name %> downloaded at <%= download.created_at %></li>
+    <li>
+      <%= user_mention download.user %>
+      <%= content_tag :span, download.created_at %>
+    </li>
   <% end %>
 </ul>
 <% end %>
