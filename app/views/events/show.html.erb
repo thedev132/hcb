@@ -245,7 +245,7 @@
 <% if @event.documents.any? %>
   <ul class="list">
     <% @event.documents.each do |d| %>
-      <%= link_to d do %>
+      <%= link_to document_download_path(d) do %>
         <li>
           <strong><%= d.name %></strong>
           <span class="muted">Added by <%= d.user.full_name %></span>
