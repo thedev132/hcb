@@ -1,15 +1,13 @@
 <h1 class="heading center flex-column">
-  <span class="flex flex-wrap items-center" style="font-size: 3rem;">
-    <% if admin_signed_in? %>
-      <span class="badge mr2">#<%= @event.id %></span>
-    <% end %>
+  <span style="font-size: 3rem;">
     <%= @event.name %>
   </span>
   <% if admin_signed_in? %>
-    <div>
+    <div class="flex justify-center items-center w-100">
+      <span class="badge bg-muted ml0 mr2">#<%= @event.id %></span>
       <%= link_to 'Edit',
         edit_event_path(@event),
-        class: 'btn bg-info' %>
+        class: 'btn bg-info ml0 mr2' %>
       <%= link_to 'Delete',
         @event,
         method: :delete,
