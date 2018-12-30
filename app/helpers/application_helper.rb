@@ -36,4 +36,12 @@ module ApplicationHelper
   def page_snow
     content_for(:page_class) { 'bg-snow' }
   end
+
+  def page_narrow
+    content_for(:container_class) { 'container--narrow' }
+  end
+
+  def page_extranarrow
+    content_for(:container_class) { 'container--extranarrow' }
+  end
 end
