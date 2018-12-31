@@ -161,6 +161,22 @@ a {
   padding: 0.25rem 0.625rem;
 }
 
+.pop {
+  background-color: $white;
+  border-radius: 50%;
+  border: 2px solid currentColor;
+  color: map-get($palette, info);
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: -0.125em;
+  padding: 0.25rem;
+  height: 2rem;
+  width: 2rem;
+}
+
 .status {
   border-radius: 4px;
   display: inline-block;
@@ -268,6 +284,10 @@ input[type='submit'],
 .btn.btn--destroy {
   background-color: $gray1 !important;
   color: $red5 !important;
+}
+
+form .flex-auto + input[type='submit'] {
+  height: 2.5rem;
 }
 
 h1,
@@ -487,6 +507,7 @@ td {
     text-decoration: none;
   }
 }
+.list-reset,
 ul.grid {
   list-style: none;
   padding-left: 0;
@@ -552,7 +573,8 @@ h3.heading {
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
-    .btn {
+
+    > .btn {
       margin-left: auto;
       margin-top: 0;
       + .btn {

@@ -20,6 +20,44 @@
   border-color: $gray2;
 }
 
+.px0 {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+.py0 {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+.mx0 {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+.my0 {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+@media screen and (min-width: 32em) {
+  .md-px0 {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+  .md-py0 {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+  }
+
+  .md-mx0 {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+  .md-my0 {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+  }
+}
+
 $shades: (
   red: $red0,
   orange: $orange0,

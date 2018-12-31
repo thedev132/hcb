@@ -19,7 +19,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :organizer_position_invites, only: [ :show ], path: 'invites' do
+  resources :organizer_position_invites, only: [ :index, :show ], path: 'invites' do
     post 'accept'
     post 'reject'
   end
@@ -43,6 +43,7 @@ Rails.application.routes.draw do
   end
 
   resources :events do
+    get 'team', to: 'organizer_position_invites#index', as: :team
     get 'g_suite', to: 'events#g_suite_overview', as: :g_suite_overview
     get 'cards', to: 'events#card_overview', as: :cards_overview
     resources :organizer_position_invites,

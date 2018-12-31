@@ -1,4 +1,11 @@
 class OrganizerPositionInvitesController < ApplicationController
+  def index
+    @event = Event.find(params[:event_id])
+    @positions = @event.organizer_positions
+    @pending = @event.organizer_position_invites.pending
+    authorize @event
+  end
+
   def new
     @invite = OrganizerPositionInvite.new
     @invite.event = Event.find(params[:event_id])

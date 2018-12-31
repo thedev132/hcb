@@ -1,0 +1,48 @@
+<% page_narrow %>
+<%= link_to @event.name, @event, class: 'breadcrumb' %>
+<h1 class="flex items-center">
+  Team Members
+  <%= badge_for @positions.count, class: 'bg-muted' %>
+</h1>
+
+<% if @positions.any? %>
+  <ul class="list list--unlinked list--row mb0">
+    <% @positions.each do |position| %>
+      <li class="md-px0">
+        <%= avatar_for position.user, 48, class: 'mr2' %>
+        <p>
+          <strong><%= position.user.full_name || 'Unnamed' %></strong>
+          <br />
+          <%= position.user.email %>
+          <br />
+          <span class="muted h5">(added <span title="<%= position.created_at %>"><%= time_ago_in_words position.created_at %> ago</span>)</span>
+        </p>
+        <%= link_to 'Edit', edit_user_path(current_user.id), class: 'btn bg-info' if position.user == current_user %>
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <%= blankslate 'No others on your team yet' %>
+<% end %>
+
+<h2 class="mt3">Invite a team member</h2>
+<%= render 'form', invite: OrganizerPositionInvite.new %>
+
+<% if @event.organizer_position_invites.pending.any? %>
+  <h2 class="flex items-center mt3 mb0">
+    Pending invitations
+    <%= badge_for @pending.count, class: 'bg-muted' %>
+  </h2>
+  <ul class="list list--unlinked list--row my0">
+    <% @pending.each do |invite| %>
+      <li>
+        <%= avatar_for OpenStruct.new(email: invite.email, name: invite.email), 24, class: 
+        'mr1' %>
+        <p>
+          <strong><%= invite.email %></strong>
+          <span class="muted h5">(sent <span title="<%= invite.created_at %>"><%= time_ago_in_words invite.created_at %> ago</span>)</span>
+        </p>
+      </li>
+    <% end %>
+  </ul>
+<% end %>
