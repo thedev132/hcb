@@ -17,11 +17,6 @@ class OrganizerPositionInvitesController < ApplicationController
 
     authorize @invite
 
-    if event.users.pluck(:email).include? @invite.email
-      flash[:error] = 'That user is already added to this event!'
-      return render :new
-    end
-
     if @invite.save
       flash[:success] = 'Invite successfully sent'
       redirect_to @invite.event
