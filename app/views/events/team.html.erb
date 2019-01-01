@@ -18,7 +18,7 @@
           <span class="muted h5">(added <span title="<%= position.created_at %>"><%= time_ago_in_words position.created_at %> ago</span>)</span>
         </p>
         <%= link_to 'Edit', edit_user_path(position.user.slug), class: 'btn bg-info' if position.user == current_user || current_user.admin? %>
-        <%= link_to 'Delete', organizer_position_delete_path(position.id), method: :post, class: 'btn bg-error ml1' if current_user.admin? && position.user != current_user %>
+        <%= link_to 'Delete', organizer_position_delete_path(position.id), method: :post, data: {confirm: "This will remove this user from #{@event.name}. Are you sure you want to do this?"}, class: 'btn bg-error ml1' if current_user.admin? && position.user != current_user %>
       </li>
     <% end %>
   </ul>
@@ -44,7 +44,7 @@
             <strong><%= invite.email %></strong>
             <span class="muted h5">(sent <span title="<%= invite.created_at %>"><%= time_ago_in_words invite.created_at %> ago</span>)</span>
           </p>
-          <%= link_to 'Cancel', organizer_position_invite_cancel_path(invite.id), method: :post, class: 'btn bg-error' %>
+          <%= link_to 'Cancel', organizer_position_invite_cancel_path(invite.slug), method: :post, class: 'btn bg-error' %>
         </li>
       <% end %>
     <% end %>

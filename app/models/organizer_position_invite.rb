@@ -20,6 +20,10 @@
 #     creation.
 #
 class OrganizerPositionInvite < ApplicationRecord
+  include FriendlyId
+
+  friendly_id :slug_candidates, use: :slugged
+
   scope :pending, -> { where(accepted_at: nil, rejected_at: nil, cancelled_at: nil) }
   # tmb@hackclub: this is the scope that the SessionHelper looks to assign un-assigned invites. we need to include cancelled invites so that we can assign users to them 
   scope :pending_assign, -> { where(accepted_at: nil, rejected_at: nil ) }
@@ -114,6 +118,13 @@ class OrganizerPositionInvite < ApplicationRecord
 
   def cancelled?
     self.cancelled_at.present?
+  end
+
+  def slug_candidates
+    slug = normalize_friendly_id("#{self.event.name} #{self.email}")
+    # https://github.com/norman/friendly_id/issues/480
+    sequence = OrganizerPositionInvite.where("slug LIKE ?", "#{slug}-%").count + 2
+    [slug, "#{slug} #{sequence}"]
   end
 
 

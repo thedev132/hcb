@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_01_093640) do
+ActiveRecord::Schema.define(version: 2019_01_01_193001) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -347,9 +347,11 @@ ActiveRecord::Schema.define(version: 2019_01_01_093640) do
     t.datetime "rejected_at"
     t.bigint "organizer_position_id"
     t.datetime "cancelled_at"
+    t.string "slug"
     t.index ["event_id"], name: "index_organizer_position_invites_on_event_id"
     t.index ["organizer_position_id"], name: "index_organizer_position_invites_on_organizer_position_id"
     t.index ["sender_id"], name: "index_organizer_position_invites_on_sender_id"
+    t.index ["slug"], name: "index_organizer_position_invites_on_slug", unique: true
     t.index ["user_id"], name: "index_organizer_position_invites_on_user_id"
   end
 
