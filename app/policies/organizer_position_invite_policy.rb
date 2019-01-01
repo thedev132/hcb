@@ -1,6 +1,6 @@
 class OrganizerPositionInvitePolicy < ApplicationPolicy
   def index?
-    user.admin? || record.users&.include?(user)
+    user.admin? || record.event&.users&.include?(user)
   end
 
   def new?

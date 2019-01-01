@@ -38,6 +38,13 @@ class EventsController < ApplicationController
     authorize @event
   end
 
+  def team
+    @event = Event.find(params[:event_id])
+    @positions = @event.organizer_positions
+    @pending = @event.organizer_position_invites.pending
+    authorize @event
+  end
+
   # GET /events/1/edit
   def edit
     authorize @event

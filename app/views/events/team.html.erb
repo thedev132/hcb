@@ -17,7 +17,7 @@
           <br />
           <span class="muted h5">(added <span title="<%= position.created_at %>"><%= time_ago_in_words position.created_at %> ago</span>)</span>
         </p>
-        <%= link_to 'Edit', edit_user_path(current_user.id), class: 'btn bg-info' if position.user == current_user %>
+        <%= link_to 'Edit', edit_user_path(current_user.id), class: 'btn bg-info' if position.user == current_user || current_user.admin? %>
       </li>
     <% end %>
   </ul>
@@ -26,7 +26,7 @@
 <% end %>
 
 <h2 class="mt3">Invite a team member</h2>
-<%= render 'form', invite: OrganizerPositionInvite.new %>
+<%= render 'form_invite', invite: OrganizerPositionInvite.new %>
 
 <% if @event.organizer_position_invites.pending.any? %>
   <h2 class="flex items-center mt3 mb0">
