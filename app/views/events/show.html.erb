@@ -214,7 +214,7 @@
 <% if @event.documents.any? %>
   <ul class="grid">
     <% @event.documents.each do |d| %>
-      <%= link_to document_download_path(d) do %>
+      <%= link_to admin_signed_in? ? d : document_download_path(d) do %>
         <li class="card">
           <strong class="h3 block"><%= d.name %></strong>
           <%= user_mention d.user %>
