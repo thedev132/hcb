@@ -1,4 +1,7 @@
 class User < ApplicationRecord
+  extend FriendlyId
+  
+  friendly_id :name, use: :slugged
   scope :admin, -> { where.not(admin_at: nil) }
 
   has_many :organizer_position_invites
