@@ -1,0 +1,78 @@
+$chevron: "#{image-url('chevron.svg')} right 12px center no-repeat";
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  > a,
+  li > a:first-child {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  > a > li,
+  > li {
+    border-bottom: 1px solid $gray2;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    background: #{$chevron};
+    background-color: initial;
+    &.transaction--positive {
+      background: $teal0 #{$chevron};
+    }
+    &.transaction--negative {
+      background: $red0 #{$chevron};
+    }
+    &.transaction--neutral {
+      background: $gray0 #{$chevron};
+    }
+    &.transaction--warning {
+      background: $orange0 #{$chevron};
+    }
+    &.ultrawhite {
+      padding-right: 0;
+    }
+    > p {
+      margin: 0;
+    }
+  }
+  &.list--row > li,
+  &.list--row > a > li {
+    flex-direction: row;
+    align-items: center;
+  }
+  &.list--row p {
+    flex: 1 1 auto;
+  }
+
+  .btn {
+    font-size: 0.875rem;
+    @media screen and (min-width: 32em) {
+      margin-top: -4px;
+      margin-bottom: -3px;
+    }
+  }
+}
+
+.list--row li {
+  flex-direction: row;
+}
+.list--unlinked li {
+  background: white;
+  &.bg-snow {
+    background: $gray0;
+  }
+}
+h1 + .list,
+h1 + .details {
+  margin-top: -1rem;
+}
+h3 + .list {
+  border-top: 1px solid $gray2;
+}
+
+.card--item {
+  background: $white #{$chevron};
+}

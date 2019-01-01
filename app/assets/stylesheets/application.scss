@@ -1,0 +1,237 @@
+@import 'variables';
+
+@font-face {
+  font-family: 'Phantom Sans';
+  src: url('https://hackclub.com/fonts/Phantom_Sans_0.4/Regular.woff')
+      format('woff'),
+    url('https://hackclub.com/fonts/Phantom_Sans_0.4/Regular.woff2')
+      format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Phantom Sans';
+  src: url('https://hackclub.com/fonts/Phantom_Sans_0.4/Bold.woff')
+      format('woff'),
+    url('https://hackclub.com/fonts/Phantom_Sans_0.4/Bold.woff2')
+      format('woff2');
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+$font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+  sans-serif;
+$mono: 'SFMono-Regular', 'Roboto Mono', Menlo, monospace;
+
+* {
+  box-sizing: border-box;
+  font-family: inherit;
+  font-weight: inherit;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+html,
+body {
+  min-height: 100%;
+  min-width: 100%;
+}
+body {
+  display: flex;
+  flex-direction: column;
+  font-size: 16px;
+  font-family: $font-family;
+  line-height: 1.5;
+  position: relative;
+  width: 100%;
+  -webkit-font-smoothing: antialiased;
+  color: $black;
+  margin: 0;
+}
+
+h1,
+h2,
+h3,
+.heading,
+.stat__value,
+.brand-sans {
+  font-family: 'Phantom Sans', $font-family;
+}
+.sans {
+  font-family: $font-family;
+}
+pre,
+code,
+.mono {
+  font-family: $mono;
+}
+
+a {
+  color: currentColor;
+}
+
+strong {
+  font-weight: bold;
+}
+
+textarea {
+  min-height: 4rem;
+  line-height: 1.5;
+  resize: vertical;
+}
+
+pre {
+  background-color: $gray0;
+  border-radius: 4px;
+  padding: 12px;
+  font-size: 12px;
+}
+
+a {
+  color: $gray8;
+
+  &:hover &:focus {
+    color: $gray9;
+  }
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-weight: bold;
+  line-height: 1.125;
+}
+h1 {
+  font-size: 3rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #dde1e4;
+  margin-bottom: 1rem;
+}
+h2,
+.summary-h2 {
+  font-size: 1.75rem;
+  padding-bottom: 0.25rem;
+  border-bottom: 1px solid #dde1e4;
+  margin-bottom: 0.5rem;
+}
+h3 {
+  font-size: 1.5rem;
+}
+h4 {
+  font-size: 1.25rem;
+}
+
+p + p {
+  margin-top: 0;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+tr {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.0625);
+}
+th {
+  font-weight: bold;
+  text-align: left;
+  padding-bottom: 0.125rem;
+}
+td {
+  padding-left: 0;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+td,
+th {
+  &:first-child {
+    padding-left: 0.75rem;
+  }
+}
+
+@import 'components/badges';
+@import 'components/buttons';
+@import 'components/cards';
+@import 'components/comments';
+@import 'components/details';
+@import 'components/emburse_cards';
+@import 'components/forms';
+@import 'components/headings';
+@import 'components/invoices';
+@import 'components/layouts';
+@import 'components/lists';
+@import 'components/stats';
+@import 'components/steps';
+
+.home {
+  line-height: 0;
+  text-align: center;
+  text-decoration: none;
+  margin-bottom: -0.5rem;
+}
+
+.flash {
+  background-color: $white;
+  border-radius: 4px;
+  border: 1px solid currentColor;
+  font-weight: 500;
+  margin: 24px auto;
+  max-width: 24rem;
+  padding: 0.75rem 1.25rem;
+}
+
+// Make mobile views nice. Full-bleed separator lines
+@media screen and (max-width: 32em) {
+  table,
+  .list,
+  .heading,
+  .details,
+  h1,
+  h2,
+  h3 {
+    width: 100vw;
+    margin-left: -1rem;
+    margin-right: -1rem;
+  }
+  table {
+    td,
+    th {
+      &:first-child {
+        padding-left: 1rem;
+      }
+      &:last-child {
+        padding-right: 1rem;
+      }
+    }
+  }
+  .list > a > li,
+  .list > li,
+  .heading,
+  .details > p,
+  .details > div,
+  h1,
+  h2,
+  h3 {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+@import 'basscss';
+@import 'space';
+@import 'utilities';
+
+.transaction--positive {
+  @extend .shade-green;
+}
+.transaction--negative {
+  @extend .shade-red;
+}
+.transaction--neutral {
+  @extend .shade-neutral;
+}
+.transaction--warning {
+  @extend .shade-orange;
+}

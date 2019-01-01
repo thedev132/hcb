@@ -1,0 +1,29 @@
+.stat {
+  display: block;
+}
+.stat__value {
+  font-size: 3rem;
+  line-height: 1;
+  margin-bottom: 0.25rem;
+  text-transform: uppercase;
+  &:before {
+    content: '$';
+    font-size: 1.5rem;
+    vertical-align: super;
+  }
+}
+.stat__label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+.stat--small {
+  display: inline-block;
+  .stat__value {
+    font-size: 2rem;
+    &:before {
+      font-size: 1rem;
+    }
+  }
+}

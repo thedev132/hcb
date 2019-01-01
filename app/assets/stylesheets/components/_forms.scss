@@ -1,0 +1,87 @@
+input[type='text'],
+input[type='url'],
+input[type='email'],
+input[type='file'],
+input[type='number'],
+input[type='tel'],
+input[type='password'],
+select,
+textarea {
+  -webkit-appearance: none;
+  background-color: $white;
+  border-radius: 4px;
+  border: 1px solid $gray2;
+  color: inherit;
+  display: block;
+  font-size: 1rem;
+  height: 2.5rem;
+  outline: 0;
+  padding: 0.25rem 0.5rem;
+  position: relative;
+  transition: border 0.2s ease;
+  width: 100%;
+  max-width: 24rem;
+
+  &:focus {
+    border-color: $base;
+  }
+}
+
+.input--narrow {
+  max-width: 16rem !important;
+}
+
+.field_with_errors {
+  label {
+    font-weight: bold;
+    color: $red7;
+  }
+  input {
+    border-color: map-get($palette, error);
+  }
+}
+
+.field {
+  margin-bottom: 0.75rem;
+}
+.actions {
+  margin-top: 1.5rem;
+}
+
+#error_explanation {
+  width: 32rem;
+  border: 2px solid $red7;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  background-color: $red0;
+  border-radius: 4px;
+
+  h2 {
+    color: $red7;
+    border-bottom-color: $red6;
+    margin-top: 0;
+    font-size: 1.25rem;
+  }
+
+  ul {
+    margin-bottom: 0;
+  }
+}
+
+label {
+  display: block;
+}
+
+$select: image-url('select.svg');
+select {
+  background: #{$select} right 0.75rem center / 0.5rem no-repeat $white;
+}
+// rails date(time) inputs
+select[name$='i)]'] {
+  width: 4.5rem;
+  display: inline-block;
+}
+// rails month inputs should be wider
+select[id$='date_2i'] {
+  width: 8rem;
+}
