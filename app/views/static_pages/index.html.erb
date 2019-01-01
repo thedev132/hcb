@@ -1,57 +1,74 @@
-<main class="flex flex-column mx-auto center items-center max-width-3 w-100 pt3">
+<% page_snow %>
+<% page_hide_home %>
+<% page_narrow %>
+<main class="flex flex-column items-center center pt4 pb3">
+  <%= image_tag 'logo.svg', style: 'max-width: 128px;', class: 'mx-auto w-100' %>
+  <h1 class="heading items-center justify-center mt2">
+    <span class="h3 caps slate block">Welcome to</span>
+    <span class="primary">Hack Club Bank</span>
+  </h1>
+
+  <% if signed_in? %>
+    <% if @events.any? %>
+      <h2 class="w-100 left-align mt3 pb0 border-none">Your events</h2>
+      <ul class="grid grid--narrow left-align w-100 mt0">
+        <% @events.each do |event| %>
+          <%= link_to event do %>
+            <li class="card card--tall flex flex-column justify-between">
+              <strong class="h3 line-height-2 mb1"><%= event.name %></strong>
+              <div class="flex" style="height: 24px; overflow-x: hidden;">
+                <% event.organizer_positions.each do |position| %>
+                  <%= avatar_for position.user, 24, class: 'mr1'%>
+                <% end %>
+              </div>
+            </li>
+          <% end %>
+        <% end %>
+      </ul>
+    <% end %>
+    <% if @invites.any? %>
+      <h2 class="w-100 left-align mt3 pb0 border-none">Your pending invitations</h2>
+      <ul class="grid grid--narrow left-align w-100 mt0">
+        <% @invites.each do |invite| %>
+          <%= link_to invite do %>
+            <li class="card card--item">
+              <strong><%= invite.event.name %></strong>
+            </li>
+          <% end %>
+        <% end %>
+      </ul>
+    <% end %>
+    <% if @events.empty? && @invites.empty? %>
+      <%= blankslate 'No events associated with your account.' %>
+      <%= blankslate 'Perhaps reach out to a co-organizer to get added?' %>
+    <% end %>
+  <% end %>
+
   <% if admin_signed_in? %>
-    <h1 class="w-100">Grand Central Station of <span class="primary">Bank</span></h1>
-    <ul class="list list--row left-align w-100">
-      <li><%= link_to 'Events', events_path %></li>
-      <li><%= link_to 'Sponsors', sponsors_path %></li>
-      <li><%= link_to 'Cards', cards_path %></li>
-      <li><%= link_to 'Card Requests', card_requests_path %><%= badge_for @active[:card_requests] %></li>
-      <li><%= link_to 'Load Card Requests', load_card_requests_path %><%= badge_for @active[:load_card_requests] %></li>
-      <li><%= link_to 'G Suite Applications', g_suite_applications_path %><%= badge_for @active[:g_suite_applications] %></li>
-      <li><%= link_to 'G Suite Accounts', g_suite_accounts_path %><%= badge_for @active[:g_suite_accounts] %></li>
-      <li><%= link_to 'G Suites', g_suites_path %></li>
-      <li><%= link_to 'Transactions', BankAccount.instance %><%= badge_for @active[:transactions] %></li>
-      <li><%= link_to 'Emburse Transactions', emburse_transactions_path %><%= badge_for @active[:emburse_transactions] %></li>
-      <% if BankAccount.instance.nil? %>
-        <li><%= link_to 'Setup Bank', new_bank_account_path %></li>
-      <% end %>
-      <li><%= link_to 'Export Finances', export_finances_path, method: :post %></li>
+    <h2 class="w-100 left-align mt3 pb0 border-none">Bank HQ</h2>
+    <ul class="grid grid--narrow left-align w-100 mt0">
+      <%= card_to 'Events', events_path %>
+      <%= card_to 'Sponsors', sponsors_path %>
+      <%= card_to 'Cards', cards_path %>
+      <%= card_to 'Card Requests', card_requests_path, { badge: @active[:card_requests] } %>
+      <%= card_to 'Load Card Requests', load_card_requests_path, { badge: @active[:load_card_requests] } %>
+      <%= card_to 'G Suite Applications', g_suite_applications_path, { badge: @active[:g_suite_applications] } %>
+      <%= card_to 'G Suite Accounts', g_suite_accounts_path, { badge: @active[:g_suite_accounts] } %>
+      <%= card_to 'G Suites', g_suites_path %>
+      <%= card_to 'Transactions', BankAccount.instance, { badge: @active[:transactions] } %>
+      <%= card_to 'Emburse Transactions', emburse_transactions_path, { badge: @active[:emburse_transactions] } %>
+      <%= card_to 'Setup Bank', new_bank_account_path if BankAccount.instance.nil? %>
+      <%= card_to 'Export Finances', export_finances_path, { method: :post } %>
     </ul>
-    <p>With <%= render_money @transaction_volume %> in transactions and counting...</p>
+    <p>
+      <%= content_tag :strong, render_money(@transaction_volume) %>
+      in transactions & counting…
+    </p>
+  <% end %>
+
+  <% if signed_in? %>
     <%= link_to 'Sign out', logout_users_path, method: :delete, class: 'btn mt2' %>
   <% else %>
-    <h1 class="w-100">Welcome to <span class="primary">Hack Club Bank</span>.</h1>
-    <% if signed_in? %>
-      <% if @events.any? %>
-        <ul class="list left-align w-100">
-          <% @events.each do |event| %>
-            <%= link_to event do %>
-              <li>
-                <strong><%= event.name %></strong>
-              </li>
-            <% end %>
-          <% end %>
-        </ul>
-      <% end %>
-      <% if @invites.any? %>
-        <h2 class="h4 w-100 left-align mt3 mb0 ttu slate">Your pending invitations</h2>
-        <ul class="list left-align w-100">
-          <% @invites.each do |invite| %>
-            <%= link_to invite do %>
-              <li>
-                <strong><%= invite.event.name %></strong>
-              </li>
-            <% end %>
-          <% end %>
-        </ul>
-      <% end %>
-      <% if @events.empty? && @invites.empty? %>
-        <%= blankslate 'No events associated with your account.' %>
-        <%= blankslate 'Perhaps reach out to a co-organizer to get added?' %>
-      <% end %>
-      <%= link_to 'Sign out', logout_users_path, method: :delete, class: 'btn mt2' %>
-    <% else %>
-      <%= link_to 'Sign in', auth_users_path, class: 'btn h2' %>
-    <% end %>
+    <%= link_to 'Sign in', auth_users_path, class: 'btn h2' %>
   <% end %>
 </main>
