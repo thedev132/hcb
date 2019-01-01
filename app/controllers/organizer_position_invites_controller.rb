@@ -56,6 +56,20 @@ class OrganizerPositionInvitesController < ApplicationController
     end
   end
 
+  def cancel
+    @invite = OrganizerPositionInvite.find(params[:organizer_position_invite_id])
+    authorize @invite
+
+    if @invite.cancel
+      flash[:success] = "#{@invite.email}\'s invitation has been cancelled."
+      redirect_to event_team_path(@invite.event)
+    else
+      flash[:error] = 'Failed to cancel the invitation.'
+      redirect_to @invite.event
+    end
+  end
+
+
   private
 
   def invite_params

@@ -20,7 +20,7 @@
 #     creation.
 #
 class OrganizerPositionInvite < ApplicationRecord
-  scope :pending, -> { where(accepted_at: nil, rejected_at: nil) }
+  scope :pending, -> { where(accepted_at: nil, rejected_at: nil, cancelled_at: nil) }
 
   belongs_to :event
   belongs_to :user, required: false
@@ -42,6 +42,11 @@ class OrganizerPositionInvite < ApplicationRecord
   def accept
     unless self.user.present?
       self.errors.add(:user, 'must be present to accept invite')
+      return false
+    end
+
+    if self.cancelled?
+      self.errors.add(:base, 'was cancelled!')
       return false
     end
 
@@ -70,6 +75,11 @@ class OrganizerPositionInvite < ApplicationRecord
       return false
     end
 
+    if self.cancelled?
+      self.errors.add(:base, 'was cancelled!')
+      return false
+    end
+
     if self.rejected?
       self.errors.add(:base, 'already rejected!')
       return false
@@ -83,4 +93,26 @@ class OrganizerPositionInvite < ApplicationRecord
   def rejected?
     self.rejected_at.present?
   end
+
+  def cancel
+    if self.accepted?
+      self.errors.add(:user, 'has already accepted this invite!')
+      return false
+    end
+
+    if self.rejected?
+      self.errors.add(:user, 'has already rejected this invite!')
+      return false
+    end
+
+    self.cancelled_at = Time.current
+
+    self.save
+  end
+
+  def cancelled?
+    self.cancelled_at.present?
+  end
+
+
 end

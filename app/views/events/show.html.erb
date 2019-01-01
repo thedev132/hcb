@@ -21,8 +21,8 @@
   <% @event.organizer_positions.each do |position| %>
     <%= avatar_for position.user, 48, class: 'mr1' %>
   <% end %>
-  <% if @event.organizer_position_invites.any? %>
-    <span class="pop muted mr1" title="Team member invitations sent">+<%= @event.organizer_position_invites.count %></span>
+  <% if @event.organizer_position_invites.pending.any? %>
+    <span class="pop muted mr1" title="Team member invitations sent">+<%= @event.organizer_position_invites.pending.count %></span>
   <% end %>
   <%= link_to '>', event_team_path(@event), class: 'pop' %>
 </div>

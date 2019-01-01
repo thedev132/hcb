@@ -22,6 +22,7 @@ Rails.application.routes.draw do
   resources :organizer_position_invites, only: [ :index, :show ], path: 'invites' do
     post 'accept'
     post 'reject'
+    post 'cancel'
   end
 
   resources :g_suite_applications, except: [ :new, :create, :edit, :update ] do
