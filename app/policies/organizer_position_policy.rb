@@ -1,5 +1,5 @@
 class OrganizerPositionPolicy < ApplicationPolicy
-	def delete?
-		user.admin?
-	end
+  def delete?
+    user.admin?
+  end
 end

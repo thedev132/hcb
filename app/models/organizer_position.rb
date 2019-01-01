@@ -4,12 +4,12 @@ class OrganizerPosition < ApplicationRecord
   belongs_to :event
 
   def delete!
-  	self.deleted_at = Time.current
-  	self.save
+    self.deleted_at = Time.current
+    self.save
   end
 
   def active?
-  	return true unless self.deleted_at.present?
+    return true unless self.deleted_at.present?
   end
 
 
