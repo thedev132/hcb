@@ -45,7 +45,7 @@
     content: '';
     width: 10rem;
     height: 3rem;
-    background: #{"url(<%=asset_url'emburse.svg'%>) no-repeat"};
+    background: #{image-url('emburse.svg')} no-repeat;
     background-size: 100%;
     flex: 1 1 auto;
   }
