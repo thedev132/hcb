@@ -1,3 +1,4 @@
+// Numeric count badge, see the badge_for helper
 .badge {
   background-color: map-get($palette, primary);
   color: $white;
@@ -9,6 +10,7 @@
   padding: 0.25rem 0.625rem;
 }
 
+// Circular button
 .pop {
   background-color: $white;
   border-radius: 50%;
@@ -25,6 +27,7 @@
   width: 2rem;
 }
 
+// Small dots for indicating row status
 .status {
   border-radius: 4px;
   display: inline-block;
@@ -35,6 +38,7 @@
   bottom: 2px;
 }
 
+// User mentions, use the user_mention helper
 .mention {
   display: inline-block;
   vertical-align: middle;
