@@ -71,23 +71,23 @@ $shades: (
   neutral: $gray0
 );
 
-@each $name, $val in $shades {
-  .shade-#{$name} {
-    background-color: $val;
+@each $name, $value in $shades {
+  .shade-#{'' + $name} {
+    background-color: $value;
   }
 }
 
-@each $name, $val in $palette {
-  .#{$name} {
-    color: $val;
+@each $name, $value in $palette {
+  .#{'' + $name} {
+    color: $value;
   }
 
-  .bg-#{$name} {
-    background-color: $val;
+  .bg-#{'' + $name} {
+    background-color: $value;
   }
 
-  .b--#{$name} {
-    border-color: $val;
+  .b--#{'' + $name} {
+    border-color: $value;
   }
 }
 
