@@ -2,7 +2,7 @@ class User < ApplicationRecord
   scope :admin, -> { where.not(admin_at: nil) }
 
   has_many :organizer_position_invites
-  has_many :organizer_positions
+  has_many :organizer_positions, -> { active }
   has_many :events, through: :organizer_positions
   has_many :managed_events, inverse_of: :point_of_contact
   has_many :g_suite_applications, inverse_of: :creator

@@ -6,7 +6,7 @@ module SessionsHelper
 
     # probably a better place to do this, but we gotta assign any pending
     # organizer position invites - see that class for details
-    OrganizerPositionInvite.pending.where(email: user.email).find_each do |invite|
+    OrganizerPositionInvite.pending_assign.where(email: user.email).find_each do |invite|
       invite.update(user: user)
     end
 

@@ -20,7 +20,7 @@ class OrganizerPositionInvitesController < ApplicationController
 
     if @invite.save
       flash[:success] = 'Invite successfully sent'
-      redirect_to @invite.event
+      redirect_to event_team_path @invite.event
     else
       render :new
     end
@@ -29,6 +29,10 @@ class OrganizerPositionInvitesController < ApplicationController
   def show
     @invite = OrganizerPositionInvite.find(params[:id])
     authorize @invite
+    if @invite.cancelled?
+      flash[:error] = 'That invite was cancelled!'
+      redirect_to root_path
+    end
   end
 
   def accept

@@ -8,8 +8,7 @@ class Event < ApplicationRecord
   belongs_to :point_of_contact, class_name: 'User'
 
   has_many :organizer_position_invites
-  has_many :organizer_positions
-
+  has_many :organizer_positions, -> { active }
   has_many :users, through: :organizer_positions
   has_one :g_suite_application, required: false
   has_one :g_suite, required: false

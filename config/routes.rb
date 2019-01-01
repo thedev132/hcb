@@ -93,6 +93,10 @@ Rails.application.routes.draw do
     resources :comments
   end
 
+  resources :organizer_positions, only: [] do
+      post 'delete', to: 'organizer_positions#delete'
+  end
+
   resources :emburse_transactions, only: [:index, :edit, :update]
 
   post 'export/finances', to: 'exports#financial_export'
