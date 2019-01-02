@@ -41,18 +41,14 @@ class OrganizerPositionDeletionRequestsController < ApplicationController
 
   def close
     authorize OrganizerPositionDeletionRequest
-    @opdr.closed_at = Time.now
-    @opdr.closed_by = current_user
-    @opdr.save
+    @opdr.close current_user
 
     redirect_to @opdr, notice: 'Removal request closed.'
   end
 
   def open
     authorize OrganizerPositionDeletionRequest
-    @opdr.closed_at = nil
-    @opdr.closed_by = nil
-    @opdr.save
+    @opdr.open
 
     redirect_to @opdr, notice: 'Removal request opened.'
   end
