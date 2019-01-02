@@ -25,6 +25,15 @@ Rails.application.routes.draw do
     post 'cancel'
   end
 
+  resources :organizer_positions, only: [ :destroy ], as: 'organizers' do
+    resources :organizer_position_deletion_requests, only: [ :new ], as: 'remove'
+  end
+
+  resources :organizer_position_deletion_requests, only: [ :index, :show, :create ], path: 'organizer_deletion_request' do
+    post 'close'
+    post 'open'
+  end
+
   resources :g_suite_applications, except: [ :new, :create, :edit, :update ] do
     post 'accept'
     post 'reject'
@@ -91,10 +100,6 @@ Rails.application.routes.draw do
     post 'reject'
     post 'cancel'
     resources :comments
-  end
-
-  resources :organizer_positions, only: [] do
-      post 'delete', to: 'organizer_positions#delete'
   end
 
   resources :emburse_transactions, only: [:index, :edit, :update]

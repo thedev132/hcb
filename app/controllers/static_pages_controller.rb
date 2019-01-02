@@ -14,7 +14,8 @@ class StaticPagesController < ApplicationController
         g_suite_applications: GSuiteApplication.under_review.count,
         g_suite_accounts: GSuiteAccount.under_review.count,
         transactions: Transaction.uncategorized.count,
-        emburse_transactions: EmburseTransaction.under_review.count
+        emburse_transactions: EmburseTransaction.under_review.count,
+        organizer_position_deletion_requests: OrganizerPositionDeletionRequest.under_review.count
       }
     end
   end
