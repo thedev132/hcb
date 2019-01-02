@@ -10,14 +10,10 @@ class OrganizerPositionDeletionRequest < ApplicationRecord
   validates_presence_of :reason
 
   def under_review?
-    closed_at == nil
+    closed_at.nil?
   end
 
   def status
-    if closed_at == nil
-      :under_review
-    else
-      :closed
-    end
+    under_review? ? :under_review : :closed
   end
 end
