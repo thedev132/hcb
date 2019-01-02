@@ -54,7 +54,7 @@ class OrganizerPositionDeletionRequestsController < ApplicationController
     @opdr.closed_by = nil
     @opdr.save
 
-    redirect_to @opdr, notice: 'Removal request openned.'
+    redirect_to @opdr, notice: 'Removal request opened.'
   end
 
   private
