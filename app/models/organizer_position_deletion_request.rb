@@ -3,6 +3,8 @@ class OrganizerPositionDeletionRequest < ApplicationRecord
   belongs_to :closed_by, class_name: 'User', required: false
   belongs_to :organizer_position, -> { with_deleted }
 
+  has_many :comments, as: :commentable
+
   scope :under_review, -> { where(closed_at: nil) }
 
   validates_presence_of :reason

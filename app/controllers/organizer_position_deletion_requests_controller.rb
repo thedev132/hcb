@@ -8,6 +8,10 @@ class OrganizerPositionDeletionRequestsController < ApplicationController
 
   def show
     authorize @opdr
+
+    @commentable = @opdr
+    @comment = Comment.new
+    @comments = @commentable.comments
   end
 
   def new

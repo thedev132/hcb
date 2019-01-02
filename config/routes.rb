@@ -29,9 +29,11 @@ Rails.application.routes.draw do
     resources :organizer_position_deletion_requests, only: [ :new ], as: 'remove'
   end
 
-  resources :organizer_position_deletion_requests, only: [ :index, :show, :create ], path: 'organizer_deletion_request' do
+  resources :organizer_position_deletion_requests, only: [ :index, :show, :create ] do
     post 'close'
     post 'open'
+
+    resources :comments
   end
 
   resources :g_suite_applications, except: [ :new, :create, :edit, :update ] do
