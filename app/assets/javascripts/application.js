@@ -1,45 +1,40 @@
-// This is a manifest file that'll be compiled into application.js, which will include all the files
-// listed below.
-//
-// Any JavaScript/Coffee file within this directory, lib/assets/javascripts, or any plugin's
-// vendor/assets/javascripts directory can be referenced here using a relative path.
-//
-// It's not advisable to add code directly here, but if you do, it'll appear at the bottom of the
-// compiled file. JavaScript code in this file should be added after the last require_* statement.
-//
-// Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
-// about supported directives.
-//
-//= require rails-ujs
+//= require jquery3
+//= require jquery_ujs
 //= require activestorage
 //= require turbolinks
-//= require_tree .
+
+// BK is our global namespace for utilities
+const BK = {
+  blocked: false
+}
 
 // Disable use without FullStory
-window.onload = function() {
-  var blocked
-  setTimeout(function() {
+$(document).ready(() => {
+  // BK.s('some_behavior') is a shortcut for selecting elements by data-behavior
+  BK.s = selector => $(`[data-behavior~=${selector}]`)
+
+  setTimeout(() => {
     if (typeof FS === 'undefined') {
-      blocked = true
+      BK.blocked = true
     } else {
       fetch('https://rs.fullstory.com/rec/page', { method: 'POST' })
-        .then(function(res) {
+        .then(res => {
           if (!res.ok) {
-            blocked = true
+            BK.blocked = true
           }
         })
-        .catch(function() {
-          blocked = true
+        .catch(() => {
+          BK.blocked = true
         })
     }
   }, 4000)
-  setTimeout(function() {
-    if (blocked) {
-      var body = document.getElementsByTagName('body')
+  setTimeout(() => {
+    if (BK.blocked) {
+      const body = document.getElementsByTagName('body')
       body[0].remove()
       alert(
         'Hack Club Bank is still in development. To continue improving the product, it’s crucial for us to debug any issues that arise, but your adblocker is currently blocking our bug reporting + analytics. Please unblock to continue using the app.'
       )
     }
   }, 4500)
-}
+})
