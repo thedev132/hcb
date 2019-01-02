@@ -33,7 +33,7 @@ class OrganizerPositionDeletionRequestsController < ApplicationController
     authorize @opdr
 
     if @opdr.save
-      redirect_to @event, notice: 'Removal request accepted. We’ll be in touch shortly.'
+      redirect_to @event, flash[:success] = 'Removal request accepted. We’ll be in touch shortly.'
     else
       render :new
     end
