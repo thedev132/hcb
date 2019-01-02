@@ -90,7 +90,6 @@ class OrganizerPositionInvite < ApplicationRecord
   def not_already_organizer
     if self.event.users.pluck(:email).include? self.email
       self.errors.add(:user, 'is already an organizer of this event!')
-      return false
     end
   end
 
