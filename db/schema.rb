@@ -336,6 +336,22 @@ ActiveRecord::Schema.define(version: 2019_01_01_193001) do
     t.index ["fulfilled_by_id"], name: "index_load_card_requests_on_fulfilled_by_id"
   end
 
+  create_table "organizer_position_deletion_requests", force: :cascade do |t|
+    t.bigint "organizer_position_id"
+    t.bigint "submitted_by_id"
+    t.bigint "closed_by_id"
+    t.datetime "closed_at"
+    t.text "reason"
+    t.boolean "subject_has_outstanding_expenses_expensify", default: false, null: false
+    t.boolean "subject_has_outstanding_transactions_emburse", default: false, null: false
+    t.boolean "subject_emails_should_be_forwarded", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["closed_by_id"], name: "index_organizer_position_deletion_requests_on_closed_by_id"
+    t.index ["organizer_position_id"], name: "index_organizer_deletion_requests_on_organizer_position_id"
+    t.index ["submitted_by_id"], name: "index_organizer_position_deletion_requests_on_submitted_by_id"
+  end
+
   create_table "organizer_position_invites", force: :cascade do |t|
     t.bigint "event_id"
     t.text "email"
@@ -470,6 +486,9 @@ ActiveRecord::Schema.define(version: 2019_01_01_193001) do
   add_foreign_key "load_card_requests", "events"
   add_foreign_key "load_card_requests", "users", column: "creator_id"
   add_foreign_key "load_card_requests", "users", column: "fulfilled_by_id"
+  add_foreign_key "organizer_position_deletion_requests", "organizer_positions"
+  add_foreign_key "organizer_position_deletion_requests", "users", column: "closed_by_id"
+  add_foreign_key "organizer_position_deletion_requests", "users", column: "submitted_by_id"
   add_foreign_key "organizer_position_invites", "events"
   add_foreign_key "organizer_position_invites", "organizer_positions"
   add_foreign_key "organizer_position_invites", "users"

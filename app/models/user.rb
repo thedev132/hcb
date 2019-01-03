@@ -1,17 +1,19 @@
 class User < ApplicationRecord
   extend FriendlyId
-  
-  friendly_id :name, use: :slugged
+
+  friendly_id :slug_candidates, use: :slugged
   scope :admin, -> { where.not(admin_at: nil) }
 
   has_many :organizer_position_invites
-  has_many :organizer_positions, -> { active }
+  has_many :organizer_positions
   has_many :events, through: :organizer_positions
   has_many :managed_events, inverse_of: :point_of_contact
   has_many :g_suite_applications, inverse_of: :creator
   has_many :g_suite_applications, inverse_of: :fulfilled_by
   has_many :g_suite_accounts, inverse_of: :fulfilled_by
   has_many :g_suite_accounts, inverse_of: :creator
+  has_many :organizer_position_deletion_requests, inverse_of: :submitted_by
+  has_many :organizer_position_deletion_requests, inverse_of: :closed_by
   has_many :load_card_requests
   has_many :card_requests
   has_many :cards
@@ -51,5 +53,12 @@ class User < ApplicationRecord
 
   def create_session_token
     self.session_token = User.digest(User.new_session_token)
+  end
+
+  def slug_candidates
+    slug = normalize_friendly_id self.name
+    # From https://github.com/norman/friendly_id/issues/480
+    sequence = User.where("slug LIKE ?", "#{slug}-%").count + 2
+    [slug, "#{slug} #{sequence}"]
   end
 end

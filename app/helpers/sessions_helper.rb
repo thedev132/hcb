@@ -35,7 +35,7 @@ module SessionsHelper
       # ApiService::UnauthorizedError if we get an authorization error, which
       # will be caught by ApplicationController and sign out the user
       Rails.cache.fetch("#{@current_user.cache_key_with_version}/authed", expires_in: 1.hour) do
-        @current_user.api_record.present? 
+        @current_user.api_record.present?
       end
     end
 

@@ -1,0 +1,39 @@
+<%= form_with(model: organizer_position_deletion_request, local: true) do |form| %>
+  <% if organizer_position_deletion_request.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(organizer_position_deletion_request.errors.count, "error") %> prevent this from submitting:</h2>
+
+      <ul>
+      <% organizer_position_deletion_request.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= form.hidden_field :organizer_position_id %>
+
+  <div class="field">
+    <%= form.label "Give a short description of why you’re removing their account so we have context when we contact you" %>
+    <%= form.text_area :reason %>
+  </div>
+
+  <div class="field">
+    <%= form.label "Does #{@target.full_name || @target.email} have outstanding expenses on Expensify?" %>
+    <%= form.check_box :subject_has_outstanding_expenses_expensify %>
+  </div>
+
+  <div class="field">
+    <%= form.label "Does #{@target.full_name || @target.email} have transactions without receipts on Emburse?" %>
+    <%= form.check_box :subject_has_outstanding_transactions_emburse %>
+  </div>
+
+  <div class="field">
+    <%= form.label "Does #{@target.full_name || @target.email} have important emails in their G Suite account?" %>
+    <%= form.check_box :subject_emails_should_be_forwarded %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit 'Submit' %>
+  </div>
+<% end %>
