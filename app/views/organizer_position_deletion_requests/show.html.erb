@@ -40,7 +40,7 @@
 <% if @opdr.under_review? %>
 <%= link_to 'Close Request', organizer_position_deletion_request_close_path(@opdr.id), method: :post, data: {confirm: "This will mark the request as processed. Only continue if no follow-up is needed for this request."}, class: 'btn bg-accent ml1' %>
 <% else %>
-<%= link_to 'Open Request', organizer_position_deletion_request_open_path(@opdr.id), method: :post, data: {confirm: "This will mark the request as processed. Only continue if no follow-up is needed for this request."}, class: 'btn bg-info ml1' %>
+<%= link_to 'Open Request', organizer_position_deletion_request_open_path(@opdr.id), method: :post, data: {confirm: "This will re-open the request."}, class: 'btn bg-info ml1' %>
 <% end %>
 
 <%= link_to 'Back', organizer_position_deletion_requests_path %>
