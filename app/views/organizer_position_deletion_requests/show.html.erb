@@ -1,50 +1,62 @@
+<%= link_to 'Organizer deletion requests', organizer_position_deletion_requests_path, class: 'breadcrumb' %>
+
 <div class="details">
   <p>
-    <strong>Submitted by:</strong>
-    <%= @opdr.submitted_by.full_name %>
+    <strong>Submitted by</strong>
+    <%= user_mention @opdr.submitted_by %>
     (<%= @opdr.submitted_by.email %>)
   </p>
 
   <p>
-    <strong>Organizer position for deletion:</strong>
+    <strong>Organizer position for deletion</strong>
     #<%= @opdr.organizer_position.id %> <%= @opdr.organizer_position.user.full_name %>
   </p>
 
   <p>
-    <strong>Reason for deletion:</strong>
+    <strong>Reason for deletion</strong>
     <%= @opdr.reason %>
   </p>
 
   <p>
-    <strong>Subject has outstanding expenses expensify:</strong>
+    <strong>Outstanding Expensify expenses?</strong>
     <%= @opdr.subject_has_outstanding_expenses_expensify ? '✅' : '❌' %>
   </p>
 
   <p>
-    <strong>Subject has outstanding transactions emburse:</strong>
+    <strong>Outstanding Emburse transactions?</strong>
     <%= @opdr.subject_has_outstanding_transactions_emburse ? '✅' : '❌' %>
   </p>
 
   <p>
-    <strong>Subject emails should be forwarded:</strong>
+    <strong>Forward emails?</strong>
     <%= @opdr.subject_emails_should_be_forwarded ? '✅' : '❌' %>
   </p>
 
   <% if @opdr.organizer_position.deleted_at.nil? %>
-  <%= link_to 'Delete organizer ⚠️☣☠', organizer_path(@opdr.organizer_position.id), method: :delete, data: {confirm: "This will remove this user from #{@opdr.organizer_position.event.name} from the database. Are you sure you want to do this?"}, class: 'btn bg-error ml1' %>
+    <%= link_to 'Delete organizer ⚠️☣☠',
+      organizer_path(@opdr.organizer_position.id),
+      method: :delete,
+      data: { confirm: "This will remove this user from #{@opdr.organizer_position.event.name} from the database. Are you sure you want to do this?" },
+      class: 'btn bg-error ml1' %>
   <% else %>
-  <p><strong>Organizer is marked as deleted</strong></p>
+    <p><strong>Organizer is marked as deleted</strong></p>
   <% end %>
 </div>
 
 <% if @opdr.under_review? %>
-<%= link_to 'Close Request', organizer_position_deletion_request_close_path(@opdr.id), method: :post, data: {confirm: "This will mark the request as processed. Only continue if no follow-up is needed for this request."}, class: 'btn bg-accent ml1' %>
+  <%= link_to 'Close Request',
+    organizer_position_deletion_request_close_path(@opdr.id),
+    method: :post,
+    data: { confirm: 'This will mark the request as processed. Only continue if no follow-up is needed for this request.' },
+    class: 'btn bg-accent' %>
 <% else %>
-<%= link_to 'Open Request', organizer_position_deletion_request_open_path(@opdr.id), method: :post, data: {confirm: "This will re-open the request."}, class: 'btn bg-info ml1' %>
+  <%= link_to 'Open Request',
+    organizer_position_deletion_request_open_path(@opdr.id),
+    method: :post,
+    data: { confirm: 'This will re-open the request.' },
+    class: 'btn bg-info' %>
 <% end %>
 
-<%= link_to 'Back', organizer_position_deletion_requests_path %>
-
 <h2>Comments</h2>
-<%= render "comments/comments" %>
-<%= render "comments/form" %>
+<%= render 'comments/comments' %>
+<%= render 'comments/form' %>
