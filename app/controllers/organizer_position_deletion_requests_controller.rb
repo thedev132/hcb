@@ -33,7 +33,8 @@ class OrganizerPositionDeletionRequestsController < ApplicationController
     authorize @opdr
 
     if @opdr.save
-      redirect_to @event, flash[:success] = 'Removal request accepted. We’ll be in touch shortly.'
+      flash[:success] = 'Removal request accepted. We’ll be in touch shortly.'
+      redirect_to @event
     else
       render :new
     end
@@ -42,24 +43,25 @@ class OrganizerPositionDeletionRequestsController < ApplicationController
   def close
     authorize OrganizerPositionDeletionRequest
     @opdr.close current_user
-
-    redirect_to @opdr, notice: 'Removal request closed.'
+    flash[:success] = 'Removal request closed.'
+    redirect_to @opdr
   end
 
   def open
     authorize OrganizerPositionDeletionRequest
     @opdr.open
-
-    redirect_to @opdr, notice: 'Removal request opened.'
+    flash[:success] = 'Removal request opened.'
+    redirect_to @opdr
   end
 
   private
-    def set_opdr
-      id = params[:organizer_position_deletion_request_id] || params[:id]
-      @opdr = OrganizerPositionDeletionRequest.find(id)
-    end
 
-    def filtered_params
-      params.require(:organizer_position_deletion_request).permit(:organizer_position_id, :reason, :subject_has_outstanding_expenses_expensify, :subject_has_outstanding_transactions_emburse, :subject_emails_should_be_forwarded)
-    end
+  def set_opdr
+    id = params[:organizer_position_deletion_request_id] || params[:id]
+    @opdr = OrganizerPositionDeletionRequest.find(id)
+  end
+
+  def filtered_params
+    params.require(:organizer_position_deletion_request).permit(:organizer_position_id, :reason, :subject_has_outstanding_expenses_expensify, :subject_has_outstanding_transactions_emburse, :subject_emails_should_be_forwarded)
+  end
 end
