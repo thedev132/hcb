@@ -1,6 +1,8 @@
 class LoadCardRequestsController < ApplicationController
   before_action :set_load_card_request, only: [:show, :edit, :update, :reject, :cancel, :accept]
 
+  before_save :normalize_blank_values
+
   def index
     @load_card_requests = LoadCardRequest.all.order(created_at: :desc)
     authorize @load_card_requests
@@ -111,5 +113,11 @@ class LoadCardRequestsController < ApplicationController
     # Only allow a trusted parameter "white list" through.
     def load_card_request_params
       params.require(:load_card_request).permit(:event_id, :creator_id, :load_amount, :emburse_transaction_id)
+    end
+
+    def normalize_blank_values
+      attributes.each do |column, value|
+        self[column].present? || self[column] = nil
+      end
     end
 end
