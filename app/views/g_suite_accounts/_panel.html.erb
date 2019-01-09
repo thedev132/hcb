@@ -11,8 +11,7 @@
         <p class="slate">
           <% if account.initial_password.present? %>
             <%= status_badge :success %>
-            <span>sign in with one-time password:</span>
-            <code class="bg-snow pl1 pr1"><%= account.initial_password %></code>
+            <span>Account active. Use the one-time password emailed to <%= account.backup_email %> to sign in the first time.</span>
           <% else %>
             <%= status_badge :pending %>
             <span>account not yet set up</span>
