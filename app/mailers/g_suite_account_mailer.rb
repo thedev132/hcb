@@ -12,7 +12,7 @@ class GSuiteAccountMailer < ApplicationMailer
     @password = params[:password]
 
     mail to: @recipient,
-      subject: "G Suite account created"
+      subject: "Your Bank G Suite account is ready for you!"
   end
 
   def notify_user_of_reset(params)
@@ -21,6 +21,6 @@ class GSuiteAccountMailer < ApplicationMailer
     @password = params[:password]
 
     mail to: @recipient,
-      subject: "G Suite password reset"
+      subject: "Bank G Suite password reset"
   end
 end
