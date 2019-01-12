@@ -16,11 +16,11 @@ class EventPolicy < ApplicationPolicy
   end
 
   def edit?
-    user.admin?
+    record.users.include?(user) || user.admin?
   end
 
   def update?
-    user.admin?
+    record.users.include?(user) || user.admin?
   end
 
   def destroy?

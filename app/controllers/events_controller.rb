@@ -54,12 +54,21 @@ class EventsController < ApplicationController
   def update
     authorize @event
 
-    if @event.update(event_params)
-      flash[:success] = 'Event was successfully updated.'
-      redirect_to @event
+    if current_user.admin?
+      if @event.update(event_params)
+        flash[:success] = 'Event was successfully updated.'
+        redirect_to @event
+      else
+        render :edit
+      end
     else
-      render :edit
-    end
+      if @event.update(user_event_params)
+        flash[:success] = 'Event was successfully updated.'
+        redirect_to @event
+      else
+        render :edit
+      end
+    end      
   end
 
   # DELETE /events/1
@@ -107,4 +116,13 @@ class EventsController < ApplicationController
         :point_of_contact_id
       )
     end
+
+    def user_event_params
+      params.require(:event).permit(
+          :start,
+          :end,
+          :address
+        )
+    end
 end
+
