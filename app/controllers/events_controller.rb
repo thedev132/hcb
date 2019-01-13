@@ -59,7 +59,7 @@ class EventsController < ApplicationController
       redirect_to @event
     else
       render :edit
-    end    
+    end
   end
 
   # DELETE /events/1
