@@ -2,19 +2,21 @@
   <span style="font-size: 3rem;">
     <%= @event.name %>
   </span>
-  <% if admin_signed_in? %>
-    <div class="flex justify-center items-center w-100">
-      <span class="badge bg-muted ml0 mr2">#<%= @event.id %></span>
-      <%= link_to 'Edit',
-        edit_event_path(@event),
-        class: 'btn bg-info ml0 mr2' %>
+
+  <div class="flex justify-center items-center w-100">
+    <span class="badge bg-muted ml0 mr2">#<%= @event.id %></span>
+    <%= link_to 'Edit',
+      edit_event_path(@event),
+      class: 'btn bg-info ml0 mr2' %>
+    <% if admin_signed_in? %>
       <%= link_to 'Delete',
         @event,
         method: :delete,
         data: { confirm: 'Are you sure?' },
         class: 'btn btn--destroy primary' %>
-    </div>
-  <% end %>
+    <% end %>
+  </div>
+
 </h1>
 
 <div class="flex flex-wrap items-center justify-center">

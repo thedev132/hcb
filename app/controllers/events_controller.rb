@@ -54,7 +54,7 @@ class EventsController < ApplicationController
   def update
     authorize @event
 
-    if @event.update(event_params)
+    if @event.update(current_user.admin? ? event_params : user_event_params)
       flash[:success] = 'Event was successfully updated.'
       redirect_to @event
     else
@@ -105,6 +105,14 @@ class EventsController < ApplicationController
         :sponsorship_fee,
         :emburse_department_id,
         :point_of_contact_id
+      )
+    end
+
+    def user_event_params
+      params.require(:event).permit(
+        :start,
+        :end,
+        :address
       )
     end
 end
