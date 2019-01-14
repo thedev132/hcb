@@ -6,6 +6,9 @@
   <h1 class="heading items-center justify-center mt2">
     <span class="h3 caps slate block">Welcome to</span>
     <span class="primary">Hack Club Bank</span>
+    <% if Rails.env.development? %>
+    <span>Development Mode</span>
+    <% end %>
   </h1>
 
   <% if signed_in? %>
