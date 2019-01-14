@@ -65,7 +65,6 @@ Rails.application.routes.draw do
     resources :g_suite_applications, only: [ :new, :create, :edit, :update ]
     resources :load_card_requests, only: [ :new ]
 
-    # TODO
     resources :invoices, only: [ :new, :create, :index, :show ]
   end
 
