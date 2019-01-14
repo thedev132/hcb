@@ -4,6 +4,10 @@ module ApplicationHelper
     number_to_currency(BigDecimal.new(amount || 0) / 100, unit: unit)
   end
 
+  def render_money_short(amount, unit = '$')
+    render_money(amount, unit).remove('.00')
+  end
+
   def render_percentage(decimal, params={})
     precision = params[:precision] || 2
     number_to_percentage(decimal * 100, precision: precision)
