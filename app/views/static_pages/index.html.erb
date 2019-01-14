@@ -35,6 +35,7 @@
         <% @invites.each do |invite| %>
           <%= link_to invite do %>
             <li class="card card--item">
+              <%= status_badge 'info' %>
               <strong><%= invite.event.name %></strong>
             </li>
           <% end %>
