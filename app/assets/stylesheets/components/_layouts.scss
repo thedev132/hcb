@@ -4,10 +4,13 @@
   margin: 0 auto;
   padding: 0 1rem;
 }
-.container--narrow {
+.container--md {
+  max-width: 48rem;
+}
+.container--sm {
   max-width: 32rem;
 }
-.container--extranarrow {
+.container--xs {
   max-width: 24rem;
 }
 

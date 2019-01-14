@@ -37,11 +37,17 @@ module ApplicationHelper
     content_for(:page_class) { 'bg-snow' }
   end
 
-  def page_narrow
-    content_for(:container_class) { 'container--narrow' }
+  def page_md
+    content_for(:container_class) { 'container--md' }
   end
 
-  def page_extranarrow
-    content_for(:container_class) { 'container--extranarrow' }
+  def page_sm
+    content_for(:container_class) { 'container--sm' }
   end
+  alias_method :page_narrow, :page_sm
+
+  def page_xs
+    content_for(:container_class) { 'container--xs' }
+  end
+  alias_method :page_extranarrow, :page_xs
 end
