@@ -66,10 +66,12 @@ Rails.application.routes.draw do
     resources :load_card_requests, only: [ :new ]
 
     # TODO
-    resources :invoices, only: [ :new, :create, :index ]
+    resources :invoices, only: [ :new, :create, :index, :show ]
   end
 
-  resources :invoices, only: [ :show ] do
+  resources :sponsors
+
+  resources :invoices, only: [ ] do
     get 'manual_payment'
     post 'manually_mark_as_paid'
 
