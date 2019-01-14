@@ -18,8 +18,14 @@ class InvoicesController < ApplicationController
     filtered_params = invoice_params.except(:action, :controller)
     filtered_params[:item_amount] = (invoice_params[:item_amount].to_f * 100.to_i)
 
-    @sponsor = Sponsor.find(params[:sponsor_id])
-    @sponsor ||= Sponsor.create(invoice_params[:sponsor_attributes])
+    if params[:sponsor_id].nil?
+      event = Event.find params[:event_id]
+      sponsor_attributes = invoice_params[:sponsor_attributes].merge(event: event)
+      @sponsor = Sponsor.create(sponsor_attributes)
+    else
+      @sponsor = Sponsor.find(params[:sponsor_id])
+    end
+
     @invoice = Invoice.new(filtered_params)
     @invoice.sponsor = @sponsor
     @invoice.creator = current_user

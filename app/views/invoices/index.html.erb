@@ -15,11 +15,11 @@
 <% if @invoices.any? %>
   <ul class="grid">
     <% @invoices.each do |i| %>
-      <%= link_to i do %>
+      <%= link_to event_invoice_path(id: i.id) do %>
         <li class="card">
-          <strong class="block h2 <%= i.status %>"><%= render_money_short s.invoice_amount %></strong>
-          <strong class="block"><%= s.sponsor.name %></strong>
-          <%= user_mention d.user %>
+          <strong class="block h2 <%= i.status %>"><%= render_money_short i.item_amount %></strong>
+          <strong class="block"><%= i.sponsor.name %></strong>
+          <%= user_mention i.creator %>
         </li>
       <% end %>
     <% end %>
