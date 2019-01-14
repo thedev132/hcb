@@ -24,6 +24,7 @@ class Event < ApplicationRecord
   has_many :emburse_transactions
 
   has_many :sponsors
+  has_many :invoices, through: :sponsors
 
   has_many :documents
 

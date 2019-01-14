@@ -1,3 +1,4 @@
+<% page_snow %>
 <h1 class="heading center flex-column">
   <span style="font-size: 3rem;">
     <%= @event.name %>
@@ -101,30 +102,6 @@
   </div>
   
   <div class="event-summary__panel pl0 pr0 pb0 pt2">
-    <h2 class="heading" style="margin: 0;">
-      <span class="flex items-center">
-        Sponsors
-        <%= badge_for @event.sponsors.count %>
-      </span>
-      <%= link_to 'New Sponsor',
-        new_sponsor_path(event_id: @event.id),
-        class: 'btn bg-success' %>
-    </h2>
-    <% if @event.sponsors.any? %>
-      <ul class="list">
-        <% @event.sponsors.each do |s| %>
-          <%= link_to s do %>
-            <li class="transaction--<%= s.status %>">
-              <strong><%= s.name %></strong>
-              <span class="muted"><%= s.status_description %></span>
-            </li>
-          <% end %>
-        <% end %>
-      </ul>
-    <% else %>
-      <%= blankslate 'No sponsors yet' %>
-    <% end %>
-  </div>
 </section>
 
 <h2 class="heading">

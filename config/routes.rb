@@ -64,11 +64,11 @@ Rails.application.routes.draw do
     resources :g_suites, only: [ :new, :create, :edit, :update ]
     resources :g_suite_applications, only: [ :new, :create, :edit, :update ]
     resources :load_card_requests, only: [ :new ]
+
+    # TODO
+    resources :invoices, only: [ :new, :create, :index ]
   end
 
-  resources :sponsors do
-    resources :invoices, only: [ :new, :create ]
-  end
   resources :invoices, only: [ :show ] do
     get 'manual_payment'
     post 'manually_mark_as_paid'

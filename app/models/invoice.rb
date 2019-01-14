@@ -10,6 +10,8 @@ class Invoice < ApplicationRecord
   class NoAssociatedStripeCharge < StandardError; end
 
   belongs_to :sponsor
+  accepts_nested_attributes_for :sponsor
+
   belongs_to :creator, class_name: 'User'
   belongs_to :manually_marked_as_paid_user, class_name: 'User', required: false
   belongs_to :payout, class_name: 'InvoicePayout', required: false
@@ -39,11 +41,23 @@ class Invoice < ApplicationRecord
 
   before_create :set_memo
 
-  # Stripe syncing...
+  # Stripe syncing…
   before_create :create_stripe_invoice
   before_destroy :close_stripe_invoice
 
   after_update :send_payment_notification_if_needed
+
+  def status
+    if paid
+      'positive'
+    elsif due_date < Time.current
+      'negative'
+    elsif due_date < 3.days.from_now
+      'warning'
+    else
+      'neutral'
+    end
+  end
 
   # Manually mark this invoice as paid (probably in the case of a physical
   # check being sent to pay it). This marks the corresponding payment on Stripe
