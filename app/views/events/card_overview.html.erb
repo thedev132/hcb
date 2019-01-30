@@ -12,11 +12,18 @@
     <span class="stat__label">Available balance</span>
     <span class="stat__value"><%= render_money @event.emburse_balance, '' %></span>
   </div>
+  
   <% if admin_signed_in? %>
     <div class="stat inline-block">
       <span class="stat__label">Emburse budget limit</span>
       <span class="stat__value"><%= render_money @event.emburse_budget_limit, '' %></span>
     </div>
+
+    <% if @event.emburse_department_path.nil? %>
+      <%= link_to 'Set Emburse Department ID', edit_event_path(@event), class: 'btn bg-accent mr2' %>
+    <% else %>
+      <%= link_to 'Set Emburse Budget', @event.emburse_department_path, class: 'btn bg-accent mr2' %>
+    <% end %>
   <% end %>
 
   <div class="flex flex-wrap items-center">

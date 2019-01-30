@@ -36,6 +36,7 @@ class OrganizerPositionInvite < ApplicationRecord
 
   validates_email_format_of :email
 
+  validate :not_already_organizer
   validates :accepted_at, absence: true, if: -> { rejected_at.present? }
   validates :rejected_at, absence: true, if: -> { accepted_at.present? }
 
@@ -125,5 +126,13 @@ class OrganizerPositionInvite < ApplicationRecord
     # https://github.com/norman/friendly_id/issues/480
     sequence = OrganizerPositionInvite.where("slug LIKE ?", "#{slug}-%").count + 2
     [slug, "#{slug} #{sequence}"]
+  end
+
+  private
+
+  def not_already_organizer
+    if self.event.users.pluck(:email).include? self.email
+      self.errors.add(:user, 'is already an organizer of this event!')
+    end
   end
 end
