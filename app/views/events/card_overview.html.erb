@@ -1,40 +1,44 @@
-<%= link_to @event.name, @event, class: 'breadcrumb' %>
-<h1 class="heading">
+<% page_md %>
+<% page_snow %>
+<%= render 'nav'%>
+
+<h1>
   Debit Cards
 </h1>
 
-<h2 class="mb2">Summary</h2>
-
-<div class="stat inline-block mr2 mb2">
-  <span class="stat__label">Available balance</span>
-  <span class="stat__value"><%= render_money @event.emburse_balance, '' %></span>
-</div>
-<% if admin_signed_in? %>
-  <div class="stat inline-block">
-    <span class="stat__label">Emburse budget limit</span>
-    <span class="stat__value"><%= render_money @event.emburse_budget_limit, '' %></span>
+<article class="card">
+  <h2 class="mt0 mb2">Summary</h2>
+  <div class="stat inline-block mr2 mb2">
+    <span class="stat__label">Available balance</span>
+    <span class="stat__value"><%= render_money @event.emburse_balance, '' %></span>
   </div>
-<% end %>
+  <% if admin_signed_in? %>
+    <div class="stat inline-block">
+      <span class="stat__label">Emburse budget limit</span>
+      <span class="stat__value"><%= render_money @event.emburse_budget_limit, '' %></span>
+    </div>
+  <% end %>
 
-<div class="flex flex-wrap items-center">
-  <%= link_to 'Increase Balance', new_event_load_card_request_path(event_id: @event.slug), class: 'btn bg-success mr2' %>
-  <span class="h5 mt1 mb1">
-    (Average transfer time: <%= pluralize LoadCardRequest.processing_time, 'day' %>)
-  </span>
-</div>
+  <div class="flex flex-wrap items-center">
+    <%= link_to 'Increase Balance', new_event_load_card_request_path(event_id: @event.slug), class: 'btn bg-success mr2' %>
+    <span class="h5 mt1 mb1">
+      (Average transfer time: <%= pluralize LoadCardRequest.processing_time, 'day' %>)
+    </span>
+  </div>
 
-<p class="slate measure h5">
-  Transfers may take longer than the current average. Sadly
-  this is beyond our control, constrained by the US banking /
-  ACH transfer system. Please plan accordingly.
-</p>
+  <p class="slate measure h5 mb0">
+    Transfers may take longer than the current average. Sadly
+    this is beyond our control, constrained by the US banking /
+    ACH transfer system. Please plan accordingly.
+  </p>
 
-<% if @event.cards.any? %>
-  <p class="stat__label">Your billing address for purchases</p>
-  <pre class="inline-block mt0 mb0">The Hack Foundation
+  <% if @event.cards.any? %>
+    <p class="stat__label mt2">Your billing address for purchases</p>
+    <pre class="inline-block mt0 mb0">The Hack Foundation
 8605 Santa Monica Blvd #86294
 West Hollywood, CA 90069</pre>
-<% end %>
+  <% end %>
+</article>
 
 <h2 class="heading">
   Event Cards
@@ -56,8 +60,6 @@ West Hollywood, CA 90069</pre>
       <% end %>
     <% end %>
   </section>
-<% else %>
-  <%= blankslate 'No cards yet' %>
 <% end %>
 
 <% if @card_requests.any? %>
@@ -80,6 +82,8 @@ West Hollywood, CA 90069</pre>
       </li>
     <% end %>
   </ul>
+<% else %>
+  <%= blankslate 'You haven’t requested any physical debit cards yet.' %>
 <% end %>
 
 <% if @emburse_transactions.any? and admin_signed_in? %>
