@@ -1,5 +1,6 @@
-<% page_narrow %>
-<%= link_to @event.name, @event, class: 'breadcrumb' %>
+<% page_sm %>
+<%= render 'nav' %>
+
 <h1 class="flex items-center">
   Team Members
   <%= badge_for @positions.count, class: 'bg-muted' %>
