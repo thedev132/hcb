@@ -30,7 +30,7 @@
   <% end %>
 </h1>
 
-<div class="flex flex-wrap items-center justify-center">
+<div class="flex flex-wrap items-center justify-center mb3">
   <% @event.organizer_positions.each do |position| %>
     <%= avatar_for position.user, 48, class: 'mr1' %>
   <% end %>
@@ -39,6 +39,8 @@
   <% end %>
   <%= link_to '›', event_team_path(@event), class: 'pop' %>
 </div>
+
+<%= render 'nav', hide_name: true %>
 
 <p class="muted mt3">
   Your point of contact is <%= user_mention @event.point_of_contact %>– please
@@ -52,11 +54,11 @@
     <h2 class="heading">
       Financials
     </h2>
-    <div class="stat">
+    <div class="stat inline-block">
       <span class="stat__label">Account balance</span>
       <span class="stat__value"><%= render_money @event.balance, '' %></span>
     </div>
-    <div class="stat stat--small">
+    <div class="stat stat--small inline-block ml2">
       <span class="stat__label">Pending fees</span>
       <span class="stat__value"><%= render_money @event.fee_balance, '' %></span>
     </div>
@@ -72,36 +74,7 @@
       <span class="stat__label">Available balance</span>
       <span class="stat__value"><%= render_money @event.emburse_balance, '' %></span>
     </div>
-    <%= link_to 'Manage Cards',
-      event_cards_overview_path(event_id: @event.slug),
-      class: "btn bg-white accent mt2" %>
   </div>
-  <% @g_color = g_suite_summary_color(@g_suite_status) %>
-  <div class="event-summary__panel white bg-<%= @g_color %>">
-    <h2 class="heading mt0 mb0">G Suite</h2>
-    <% @g_suite_text = 'Manage G Suite' %>
-    <% case @g_suite_status
-    when :start %>
-      <p>Your event gets free G Suite through Bank! Apply to set it up.</p>
-    <% when :under_review %>
-      <p>Your application is under review. Check back soon!</p>
-    <% when :app_accepted %>
-      <p>Your application was accepted! It’s time to set up your servers.</p>
-      <% @g_suite_text = 'Manage G Suite' %>
-    <% when :app_rejected %>
-      <p>Your application was rejected.</p>
-    <% when :verify_setup %>
-      <p>Time to verify your G Suite setup.</p>
-      <% @g_suite_text = 'Verify G Suite' %>
-    <% when :done %>
-      <p>Your G Suite is set up!</p>
-    <% end %>
-    <%= link_to @g_suite_text,
-      event_g_suite_overview_path(event_id: @event.slug),
-      class: "btn bg-white #{@g_color} mt2" %>
-  </div>
-  
-  <div class="event-summary__panel pl0 pr0 pb0 pt2">
 </section>
 
 <h2 class="heading">
