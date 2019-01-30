@@ -126,6 +126,4 @@ class OrganizerPositionInvite < ApplicationRecord
     sequence = OrganizerPositionInvite.where("slug LIKE ?", "#{slug}-%").count + 2
     [slug, "#{slug} #{sequence}"]
   end
-
-
 end

@@ -40,8 +40,8 @@
         <li class="list--row">
           <%= avatar_for OpenStruct.new(email: invite.email, name: invite.email), 24, class:
           'mr1' %>
-          <p>
-            <strong><%= invite.email %></strong>
+          <p class="line-height-3">
+            <strong><%= invite.email %></strong><br>
             <span class="muted h5">(sent <span title="<%= invite.created_at %>"><%= time_ago_in_words invite.created_at %> ago</span>)</span>
           </p>
           <%= link_to 'Cancel', organizer_position_invite_cancel_path(invite.slug), method: :post, class: 'btn bg-error' %>

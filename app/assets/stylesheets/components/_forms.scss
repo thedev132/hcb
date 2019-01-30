@@ -44,6 +44,14 @@ textarea {
 .field {
   margin-bottom: 0.75rem;
 }
+.field--checkbox {
+  display: flex;
+  align-items: center;
+
+  input {
+    margin-right: 0.5rem;
+  }
+}
 .actions {
   margin-top: 1.5rem;
 }

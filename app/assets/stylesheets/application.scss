@@ -151,6 +151,12 @@ th {
   }
 }
 
+hr {
+  margin: 2rem 0;
+  border: 0;
+  border-bottom: 1px solid map-get($palette, smoke);
+}
+
 @import 'components/badges';
 @import 'components/buttons';
 @import 'components/cards';
