@@ -4,17 +4,21 @@ module ApplicationHelper
     number_to_currency(BigDecimal.new(amount || 0) / 100, unit: unit)
   end
 
+  def render_money_short(amount, unit = '$')
+    render_money(amount, unit).remove('.00')
+  end
+
   def render_percentage(decimal, params={})
     precision = params[:precision] || 2
     number_to_percentage(decimal * 100, precision: precision)
   end
 
   def blankslate(text, options = {})
-    content_tag :p, text, class: "center mt0 mb0 pt2 pb2 slate bold h3 #{options[:class]}"
+    content_tag :p, text, class: "center mt0 mb0 pt2 pb2 slate bold h3 mx-auto max-width-2 #{options[:class]}"
   end
 
   def badge_for(count, options = {})
-    content_tag :span, count, class: "badge #{options[:class]}#{'bg-muted' if count == 0}"
+    content_tag :span, count, class: "badge #{options[:class]} #{'bg-muted' if count == 0}"
   end
 
   def status_badge(type = :pending)

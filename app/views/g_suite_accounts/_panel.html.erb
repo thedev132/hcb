@@ -23,8 +23,6 @@
       </li>
       <% end %>
   </ul>
-<% else %>
-  <%= blankslate 'You’ll need to create one or more accounts before continuing.' %>
 <% end %>
 
 <%= render 'g_suite_accounts/new', g_suite_account: GSuiteAccount.new(g_suite: @g_suite) %>

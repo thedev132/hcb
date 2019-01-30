@@ -1,0 +1,13 @@
+.dock {
+  color: $black;
+}
+.dock a {
+  font-weight: bold;
+  font-size: 0.875rem;
+  text-decoration: none;
+  margin: 0.5rem 1rem;
+  width: 8rem;
+}
+.dock + h1.heading {
+  font-size: 3rem;
+}

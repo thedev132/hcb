@@ -1,4 +1,11 @@
 class DocumentsController < ApplicationController
+  before_action :set_event
+
+  def index
+    @documents = @event.documents
+    authorize Document
+  end
+
   def new
     @document = Document.new(event_id: params[:event_id])
     authorize @document
@@ -66,5 +73,9 @@ class DocumentsController < ApplicationController
 
   def document_params
     params.require(:document).permit(:event_id, :name, :file)
+  end
+
+  def set_event
+    @event = Event.find(params[:id] || params[:event_id])
   end
 end

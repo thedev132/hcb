@@ -1,9 +1,9 @@
 <% page_snow %>
 <% page_xs %>
-<% page_hide_home %>
+<% @home_size = 128 %>
+<% content_for(:page_class) { 'bg-snow pt4' } %>
 
-<article class="center">
-  <%= image_tag 'logo.svg', style: 'max-width: 128px;', class: 'mx-auto mt4 w-100' %>
+<article class="center mt3">
   <h1 class="mt2">
     <span class="h3 caps slate block">Sign in to Bank</span>
     <span class="black">Enter login code</span>

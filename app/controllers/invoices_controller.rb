@@ -1,16 +1,30 @@
 class InvoicesController < ApplicationController
+  before_action :set_event, only: [:index]
+
+  def index
+    @invoices = @event.invoices
+    authorize Invoice
+  end
+
   def new
-    @sponsor = Sponsor.find(params[:sponsor_id])
+    @event = Event.find(params[:event_id])
+    @sponsor = Sponsor.new(event: @event)
     @invoice = Invoice.new(sponsor: @sponsor)
 
     authorize @invoice
   end
 
   def create
-    @sponsor = Sponsor.find(params[:sponsor_id])
-
     filtered_params = invoice_params.except(:action, :controller)
     filtered_params[:item_amount] = (invoice_params[:item_amount].to_f * 100.to_i)
+
+    if params[:sponsor_id].nil?
+      event = Event.find params[:event_id]
+      sponsor_attributes = invoice_params[:sponsor_attributes].merge(event: event)
+      @sponsor = Sponsor.create(sponsor_attributes)
+    else
+      @sponsor = Sponsor.find(params[:sponsor_id])
+    end
 
     @invoice = Invoice.new(filtered_params)
     @invoice.sponsor = @sponsor
@@ -71,7 +85,13 @@ class InvoicesController < ApplicationController
     params.require(:invoice).permit(
       :due_date,
       :item_description,
-      :item_amount
+      :item_amount,
+      :sponsor_id,
+      sponsor_attributes: policy(Sponsor).permitted_attributes
     )
+  end
+
+  def set_event
+    @event = Event.find(params[:id] || params[:event_id])
   end
 end

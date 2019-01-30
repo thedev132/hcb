@@ -85,6 +85,7 @@ class EventsController < ApplicationController
     @status = @event.g_suite_status
     @g_suite = @event.g_suite
     @g_suite_application = @event.g_suite_application
+    @g_suite_status = @event.g_suite_status
 
     authorize @event
   end

@@ -1,4 +1,8 @@
 class DocumentPolicy < ApplicationPolicy
+  def index?
+    user.admin? || record.event.users.include?(user)
+  end
+
   def new?
     user.admin?
   end

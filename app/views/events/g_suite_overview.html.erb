@@ -1,5 +1,10 @@
-<%= link_to @event.name, @event, class: 'breadcrumb' %>
-<h1>G Suite <% "for #{@g_suite_application.domain}" if @g_suite_application %></h1>
+<% page_md %>
+<% page_snow %>
+<%= render 'nav'%>
+
+<h1>
+  G Suite <% "for #{@g_suite_application.domain}" if @g_suite_application %>
+</h1>
 
 <% case @status
 when :start %>
@@ -8,7 +13,7 @@ when :start %>
 <% when :under_review %>
   <p>Your application is under review. Check back here soon!</p>
 <% when :app_accepted %>
-  <article class="card p0 max-width-3 mx-auto">
+  <article class="card overflow-visible p0 max-width-3 mx-auto">
     <div class="p2 bg-success white center rounded-top">
       <p><strong class="h3">Your application was accepted!</strong><br />It’s time to set up your servers.</p>
     </div>

@@ -18,7 +18,7 @@
   <body class="<%= content_for :page_class %>">
     <% unless @hide_home %>
       <%= link_to root_path, class: 'home pt1 md-pt2' do %>
-        <%= image_tag 'logo.svg', width: 48, height: 48, alt: 'Bank logo' %>
+        <%= image_tag 'logo.svg', width: @home_size || 48, height: @home_size || 48, alt: 'Bank logo' %>
       <% end %>
     <% end %>
     <main class="container <%= content_for :container_class %>">

@@ -1,0 +1,17 @@
+<% unless defined? hide_name %>
+  <%= link_to @event do %>
+    <h1 class="heading center flex-column h2 border-none mt3 mb0 pb0 underline info">
+      <%= @event.name %>
+    </h1>
+  <% end %>
+<% end %>
+</main>
+
+<nav class="dock flex flex-wrap center justify-center mt2">
+  <%= link_to 'Invoices', event_invoices_path(event_id: @event.slug), class: 'card' %>
+  <%= link_to 'Cards', event_cards_overview_path(event_id: @event.slug), class: 'card' %>
+  <%= link_to 'G Suite', event_g_suite_overview_path(event_id: @event.slug), class: "card #{g_suite_summary_color(@g_suite_status) if defined? @g_suite_status}" %>
+  <%= link_to 'Documents', event_documents_path(event_id: @event.slug), class: 'card' %>
+</nav>
+
+<main class="container <%= content_for :container_class %>">
