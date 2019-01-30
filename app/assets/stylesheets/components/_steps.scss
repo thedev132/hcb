@@ -8,9 +8,11 @@
     position: relative;
     padding-left: 0.5rem;
     margin-bottom: 1rem;
+
     @media screen and (min-width: 32em) {
       padding-left: 2rem;
     }
+
     &:before {
       content: counter(li);
       counter-increment: li;
@@ -25,10 +27,9 @@
       border-radius: 50%;
       font-weight: bold;
       text-align: center;
-    }
-    @media screen and (max-width: 32em) {
-      &:before {
-        left: -2rem;
+
+      @media screen and (max-width: 32em) {
+        left: -1.75rem;
         top: -0.25rem;
         height: 1.75rem;
         line-height: 1.75rem;
