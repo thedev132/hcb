@@ -1,22 +1,32 @@
 <h1 class="heading center flex-column">
-  <span style="font-size: 3rem;">
-    <%= @event.name %>
+  <span class="flex items-center">
+    <span style="font-size: 3rem;">
+      <%= @event.name %>
+    </span>
+    <%= link_to '✏️',
+      edit_event_path(@event),
+      class: 'pop ml2' %>
   </span>
 
-  <div class="flex justify-center items-center w-100">
-    <span class="badge bg-muted ml0 mr2">#<%= @event.id %></span>
-    <%= link_to 'Edit',
-      edit_event_path(@event),
-      class: 'btn bg-info ml0 mr2' %>
-    <% if admin_signed_in? %>
-      <%= link_to 'Delete',
+  <% if admin_signed_in? %>
+    <div class="flex justify-center items-center w-100">
+      <span class="badge bg-muted ml0 mr2">#<%= @event.id %></span>
+      <details class="regular h4 left-align mr2">
+        <summary>Details</summary>
+        <p>
+          <strong>Date:</strong> <%= @event.start.to_date %>–<%= @event.end.to_date %><br />
+          <strong>Address:</strong> <br />
+          <%= @event.address %><br />
+          <strong>Sponsorship fee:</strong> <%= render_percentage @event.sponsorship_fee %>
+        </p>
+      </details>
+      <%= link_to '❌',
         @event,
         method: :delete,
-        data: { confirm: 'Are you sure?' },
-        class: 'btn btn--destroy primary' %>
-    <% end %>
-  </div>
-
+        data: { confirm: '⚠️ Are you sure you want to DELETE THIS EVENT OMG?' },
+        class: 'pop error' %>
+    </div>
+  <% end %>
 </h1>
 
 <div class="flex flex-wrap items-center justify-center">
@@ -26,13 +36,14 @@
   <% if @event.organizer_position_invites.pending.any? %>
     <span class="pop muted mr1" title="Team member invitations sent">+<%= @event.organizer_position_invites.pending.count %></span>
   <% end %>
-  <%= link_to '>', event_team_path(@event), class: 'pop' %>
+  <%= link_to '›', event_team_path(@event), class: 'pop' %>
 </div>
 
 <p class="muted mt3">
-  Your point of contact is <%= @event.point_of_contact.name %>. Please don't
-  hesitate to text / call at <%= @event.point_of_contact.pretty_phone_number
-  %> or email at <%= mail_to @event.point_of_contact.email %>.
+  Your point of contact is <%= user_mention @event.point_of_contact %>– please
+  don’t hesitate to text/call at
+  <%= @event.point_of_contact.pretty_phone_number %> or email at
+  <%= mail_to @event.point_of_contact.email %>.
 </p>
 
 <section class="event-summary mt2 mb2 md-mt3 md-mb3">
@@ -87,17 +98,6 @@
     <%= link_to @g_suite_text,
       event_g_suite_overview_path(event_id: @event.slug),
       class: "btn bg-white #{@g_color} mt2" %>
-  </div>
-  <div class="event-summary__panel bg-warning white">
-    <h2 class="heading">
-      Event Details
-    </h2>
-    <p>
-      <strong>Date:</strong> <%= @event.start.to_date %> – <%= @event.end.to_date %><br />
-      <strong>Address:</strong> <br />
-      <%= @event.address %><br />
-      <strong>Sponsorship fee:</strong> <%= render_percentage @event.sponsorship_fee %>
-    </p>
   </div>
   
   <div class="event-summary__panel pl0 pr0 pb0 pt2">
