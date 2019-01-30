@@ -1,9 +1,9 @@
-<% page_snow %>
-<% page_hide_home %>
-<% page_narrow %>
-<main class="flex flex-column items-center center pt4 pb3">
-  <%= image_tag 'logo.svg', style: 'max-width: 128px;', class: 'mx-auto w-100' %>
-  <h1 class="heading items-center justify-center mt2">
+<% page_sm %>
+<% @home_size = 128 %>
+<% content_for(:page_class) { 'bg-snow pt4' } %>
+
+<main class="flex flex-column items-center center pt3 pb3">
+  <h1 class="heading flex-column items-center justify-center mt2">
     <span class="h3 caps slate block">Welcome to</span>
     <span class="primary">Hack Club Bank</span>
     <% if Rails.env.development? %>
