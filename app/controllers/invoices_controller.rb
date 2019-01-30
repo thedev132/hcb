@@ -92,7 +92,6 @@ class InvoicesController < ApplicationController
   end
 
   def set_event
-    # TODO: needs security for if event isnt yours
-    @event = @g_suite_application&.event || Event.find(params[:id] || params[:event_id])
+    @event = Event.find(params[:id] || params[:event_id])
   end
 end
