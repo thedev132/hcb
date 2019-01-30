@@ -10,4 +10,5 @@
   <%= link_to 'Invoices', event_invoices_path(event_id: @event.slug), class: 'card' %>
   <%= link_to 'Cards', event_cards_overview_path(event_id: @event.slug), class: 'card' %>
   <%= link_to 'G Suite', event_g_suite_overview_path(event_id: @event.slug), class: "card #{g_suite_summary_color(@g_suite_status) if defined? @g_suite_status}" %>
+  <%= link_to 'Documents', event_documents_path(event_id: @event.slug), class: 'card' %>
 </nav>

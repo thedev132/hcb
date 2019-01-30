@@ -1,0 +1,28 @@
+<% page_snow %>
+<% page_md %>
+<%= render 'events/nav' %>
+
+<h1 class="heading">
+  <span class="flex items-center">
+    Documents
+    <%= badge_for @documents.count %>
+  </span>
+  <%= link_to 'New Document',
+    new_document_path(event_id: @event.id),
+    class: 'btn bg-success' if admin_signed_in? %>
+</h1>
+
+<% if @event.documents.any? %>
+  <ul class="grid">
+    <% @event.documents.each do |d| %>
+      <%= link_to admin_signed_in? ? d : document_download_path(d) do %>
+        <li class="card">
+          <strong class="h3 block"><%= d.name %></strong>
+          <%= user_mention d.user %>
+        </li>
+      <% end %>
+    <% end %>
+  </ul>
+<% else %>
+  <%= blankslate 'No documents yet' %>
+<% end %>
