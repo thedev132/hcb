@@ -5,9 +5,9 @@
 <h1 class="heading">
   <span class="flex items-center">
     Documents
-    <%= badge_for @documents.count %>
+    <%= badge_for @documents.count, class: 'bg-muted' %>
   </span>
-  <%= link_to 'New Document',
+  <%= link_to 'Upload a document',
     new_document_path(event_id: @event.id),
     class: 'btn bg-success' if admin_signed_in? %>
 </h1>

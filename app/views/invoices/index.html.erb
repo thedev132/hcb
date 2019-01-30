@@ -5,7 +5,7 @@
 <h1 class="heading">
   <span class="flex items-center">
     Invoices
-    <%= badge_for @invoices.count %>
+    <%= badge_for @invoices.count, class: 'bg-muted' %>
   </span>
   <%= link_to 'Send an invoice',
     new_event_invoice_path(event_id: @event.id),
@@ -25,5 +25,5 @@
     <% end %>
   </ul>
 <% else %>
-  <%= blankslate 'Collect sponsor donations with invoices.' %>
+  <%= blankslate 'Collect sponsor donations with Invoices' %>
 <% end %>
