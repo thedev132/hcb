@@ -1,5 +1,5 @@
 class DocumentsController < ApplicationController
-  before_action :set_event, only: [:index]
+  before_action :set_event
 
   def index
     @documents = @event.documents
