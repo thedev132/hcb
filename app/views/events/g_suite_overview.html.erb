@@ -1,5 +1,10 @@
-<%= link_to @event.name, @event, class: 'breadcrumb' %>
-<h1>G Suite <% "for #{@g_suite_application.domain}" if @g_suite_application %></h1>
+<% page_md %>
+<% page_snow %>
+<%= render 'nav'%>
+
+<h1>
+  G Suite <% "for #{@g_suite_application.domain}" if @g_suite_application %>
+</h1>
 
 <% case @status
 when :start %>
