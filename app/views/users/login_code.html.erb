@@ -10,7 +10,7 @@
   </h1>
   <%= form_tag exchange_login_code_users_path do %>
     <%= label_tag :login_code, 'Login code', class: 'left-align' %>
-    <%= telephone_field_tag :login_code, '', autofocus: true, class: 'left-align mb2' %>
+    <%= telephone_field_tag :login_code, '', autofocus: true, autocomplete: 'one-time-code', class: 'left-align mb2' %>
     <%= hidden_field_tag :user_id, @user_id %>
     <%= submit_tag 'Continue' %>
   <% end %>
