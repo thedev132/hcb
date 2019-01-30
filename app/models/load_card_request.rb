@@ -1,6 +1,8 @@
 class LoadCardRequest < ApplicationRecord
   include Rejectable
 
+  before_save :normalize_blank_values
+
   # NOTE(@msw) LCRs used to be on a per-card basis & we're keeping the
   # association for compatability with migrations
   belongs_to :card, required: false
@@ -71,5 +73,11 @@ class LoadCardRequest < ApplicationRecord
 
   def send_admin_notification
     LoadCardRequestMailer.with(load_card_request: self).admin_notification.deliver_later
+  end
+
+  def normalize_blank_values
+    attributes.each do |column, value|
+      self[column].present? || self[column] = nil
+    end
   end
 end

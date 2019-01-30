@@ -31,6 +31,10 @@ class Event < ApplicationRecord
 
   validates :name, :start, :end, :address, :sponsorship_fee, presence: true
 
+  def emburse_department_path
+    "https://app.emburse.com/budgets/#{emburse_department_id}"
+  end
+
   def emburse_budget_limit
     self.emburse_transactions.completed.where(emburse_card_id: nil).sum(:amount)
   end
