@@ -18,7 +18,10 @@ module UsersHelper
   end
 
   def admin_tools(&block)
-    content_tag(:div, block.call, class: 'admin-tools') if current_user.admin?
+    return unless current_user.admin?
+    concat('<div class="admin-tools">'.html_safe)
+      yield
+    concat('</div>'.html_safe)
   end
 
   def creator_bar(object)

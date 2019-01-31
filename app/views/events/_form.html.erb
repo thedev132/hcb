@@ -28,7 +28,7 @@
   </div>
 
 
-  <% if current_user.admin? %>
+  <% admin_tools do %>
     <div class="field">
       <%= form.label :name %>
       <%= form.text_area :name %>

@@ -22,7 +22,7 @@
   </p>
 </section>
 
-<% if admin_signed_in? %>
+<% admin_tools do %>
 <p>
   <%= link_to 'Open in Stripe dashboard', @sponsor.stripe_dashboard_url, target: '_blank' %>
 </p>

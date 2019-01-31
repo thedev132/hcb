@@ -193,6 +193,13 @@ svg {
   padding: 0.75rem 1.25rem;
 }
 
+.admin-tools {
+  padding: 1rem;
+  border-radius: 0.5rem;
+  border: 1px dashed map-get($palette, warning);
+  background: $yellow0;
+}
+
 // Make mobile views nice. Full-bleed separator lines
 @media screen and (max-width: 32em) {
   table,

@@ -20,7 +20,7 @@
     XXXX-XXXX-XXXX-<%= @card.last_four %>
   </p>
 
-  <% if admin_signed_in? %>
+  <% admin_tools do %>
   <p>
     <strong>Emburse ID</strong>
     <%= link_to @card.emburse_id, @card.emburse_path %>

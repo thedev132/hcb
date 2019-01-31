@@ -12,7 +12,7 @@
   <% end %>
 
   <%= form.fields_for :fee_relationship do |fr_form| %>
-    <% if admin_signed_in? %>
+    <% admin_tools do %>
     <div class="field">
       <%= fr_form.label :event %>
       <%= fr_form.collection_select(:event_id, Event.all, :id, :name, include_blank: 'Select one…') %>
