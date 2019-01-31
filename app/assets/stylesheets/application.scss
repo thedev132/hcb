@@ -157,6 +157,10 @@ hr {
   border-bottom: 1px solid map-get($palette, smoke);
 }
 
+svg {
+  fill: currentColor;
+}
+
 @import 'components/badges';
 @import 'components/buttons';
 @import 'components/cards';

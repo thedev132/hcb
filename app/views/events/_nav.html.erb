@@ -7,11 +7,11 @@
 <% end %>
 </main>
 
-<nav class="dock flex flex-wrap center justify-center mt2">
-  <%= link_to 'Invoices', event_invoices_path(event_id: @event.slug), class: 'card' %>
-  <%= link_to 'Cards', event_cards_overview_path(event_id: @event.slug), class: 'card' %>
-  <%= link_to 'G Suite', event_g_suite_overview_path(event_id: @event.slug), class: "card #{g_suite_summary_color(@g_suite_status) if defined? @g_suite_status}" %>
-  <%= link_to 'Documents', event_documents_path(event_id: @event.slug), class: 'card' %>
+<nav class="dock mt2">
+  <%= dock_card 'Invoices', 'payment-docs', 'warning', event_invoices_path(event_id: @event.slug) %>
+  <%= dock_card 'Cards', 'card', 'accent', event_cards_overview_path(event_id: @event.slug) %>
+  <%= dock_card 'G Suite', 'google', defined? @g_suite_status ? g_suite_summary_color(@g_suite_status) : 'muted', event_g_suite_overview_path(event_id: @event.slug) %>
+  <%= dock_card 'Documents', 'docs', 'info', event_documents_path(event_id: @event.slug) %>
 </nav>
 
 <main class="container <%= content_for :container_class %>">

@@ -1,12 +1,31 @@
 .dock {
+  width: 100%;
+  max-width: 48rem;
+  margin: 0.5rem auto;
+  padding: 0 1rem;
   color: $black;
-}
-.dock a {
-  font-weight: bold;
-  font-size: 0.875rem;
-  text-decoration: none;
-  margin: 0.5rem 1rem;
-  width: 8rem;
+  display: grid;
+  grid-gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+
+  a {
+    font-weight: bold;
+    font-size: 0.875rem;
+    text-decoration: none;
+    padding: 0.75rem 1rem;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    @media screen and (max-width: 32em) {
+      padding: 0.5rem;
+    }
+  }
+
+  svg {
+    margin-right: 0.5rem;
+  }
 }
 .dock + h1.heading {
   font-size: 3rem;
