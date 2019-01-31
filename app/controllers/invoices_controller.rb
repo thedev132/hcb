@@ -47,6 +47,7 @@ class InvoicesController < ApplicationController
   def show
     @invoice = Invoice.find(params[:id])
     @sponsor = @invoice.sponsor
+    @event = @sponsor.event
 
     @commentable = @invoice
     @comment = Comment.new

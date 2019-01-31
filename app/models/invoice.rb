@@ -49,13 +49,13 @@ class Invoice < ApplicationRecord
 
   def status
     if paid
-      'positive'
+      'success'
     elsif due_date < Time.current
-      'negative'
+      'pending'
     elsif due_date < 3.days.from_now
       'warning'
     else
-      'neutral'
+      'muted'
     end
   end
 

@@ -23,9 +23,13 @@
   justify-content: center;
   letter-spacing: -0.1em;
   font-size: 0.875rem;
-  padding: 0.25rem;
-  height: 2rem;
-  width: 2rem;
+  height: 36px;
+  width: 36px;
+}
+summary.pop {
+  &::-webkit-details-marker {
+    display: none;
+  }
 }
 
 // Small dots for indicating row status
@@ -44,7 +48,6 @@
   display: inline-block;
   vertical-align: middle;
   white-space: nowrap;
-  font-size: 0.875em;
   font-weight: 600;
   color: map-get($palette, muted);
   margin-right: 0.25rem;

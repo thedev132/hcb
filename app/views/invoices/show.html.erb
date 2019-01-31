@@ -1,15 +1,44 @@
-<%= link_to @sponsor.event.name, @sponsor.event, class: 'breadcrumb' %>
-<%= link_to @sponsor.name, @sponsor, class: 'breadcrumb' %>
-<h1>Invoice for <%= render_money @invoice.total %> – <span class="<%= @invoice.paid ? 'success' : 'error' %>">
-  <%= @invoice.paid ? 'PAID' : 'UNPAID' %>
-</span></h1>
+<% page_sm %>
+<% page_snow %>
+<%= render 'events/nav' %>
 
-<div class="card mt2 mb2 max-width-1">
-  <h2 class="h2 mt0 mb2"><%= @sponsor.name %></h2>
-  <div class="flex justify-between ttu">
-    <span><strong><%= render_money @invoice.total %></strong> total</span>
-    <span>Due <strong><%= @invoice.due_date.to_date %></strong></span>
-  </div>
+<h1 class="flex items-center">
+  <%= render_money @invoice.total %> invoice
+  <span class="badge h3 bg-<%= @invoice.paid ? 'success' : 'error' %>">
+    <%= @invoice.paid ? 'Paid' : 'Unpaid' %>
+  </span>
+</h1>
+
+<%= creator_bar @invoice %>
+
+<div class="card my3">
+  <span class="right h3">
+    <strong><%= render_money @invoice.total %></strong> total
+  </span>
+  <%= link_to @sponsor do %>
+    <h2 class="h2 my0"><%= @sponsor.name %></h2>
+  <% end %>
+  
+  <section class="details mb2">
+    <p>
+      <strong>Contact email</strong>
+      <%= mail_to @sponsor.contact_email %>
+    </p>
+
+    <p>
+      <strong>Address</strong>
+      <%= @sponsor.address_line1 %><br />
+      <% if @sponsor.address_line2.present? %>
+        <%= @sponsor.address_line2 %><br />
+      <% end %>
+      <%= @sponsor.address_city %>, <%= @sponsor.address_state %> <%= @sponsor.address_postal_code %>
+    </p>
+
+    <p>
+      <strong>Due</strong> <%= @invoice.due_date.to_date %>
+    </p>
+  </section>
+
   <% if @invoice.manually_marked_as_paid? %>
     <p>
       <em>
@@ -37,16 +66,14 @@
       <p>Payout for <%= render_money @invoice.payout.amount %> created on <%= @invoice.payout.created_at.to_date %>. Funds should be available <%= @invoice.payout.arrival_date.to_date %>.</p>
     <% end %>
   <% end %>
-</div>
 
-<% if @invoice.hosted_invoice_url && @invoice.invoice_pdf %>
-  <p>
-    View online invoice: <%= link_to @invoice.hosted_invoice_url, @invoice.hosted_invoice_url, target: '_blank' %><br />
-    Download PDF of invoice: <%= link_to 'click here', @invoice.invoice_pdf %>
-  </p>
-<% end %>
+  <% if @invoice.hosted_invoice_url && @invoice.invoice_pdf %>
+    <p>
+      View online invoice: <%= link_to @invoice.hosted_invoice_url, @invoice.hosted_invoice_url, target: '_blank' %><br />
+      Download PDF of invoice: <%= link_to 'click here', @invoice.invoice_pdf %>
+    </p>
+  <% end %>
 
-<p>Invoice created by <%= @invoice.creator.full_name %>.</p>
   <% admin_tools do %>
     <% unless @invoice.paid? %>
       <p><%= link_to 'Manually mark this invoice as paid', invoice_manual_payment_path(@invoice) %></p>
@@ -57,5 +84,5 @@
 </div>
 
 <h2>Comments</h2>
-<%= render "comments/comments" %>
-<%= render "comments/form" %>
+<%= render 'comments/comments' %>
+<%= render 'comments/form' %>

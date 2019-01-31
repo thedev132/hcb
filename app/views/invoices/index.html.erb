@@ -17,9 +17,19 @@
     <% @invoices.each do |i| %>
       <%= link_to event_invoice_path(id: i.id) do %>
         <li class="card">
-          <strong class="block h2 <%= i.status %>"><%= render_money_short i.item_amount %></strong>
-          <strong class="block"><%= i.sponsor.name %></strong>
-          <%= user_mention i.creator %>
+          <div class="flex flex-wrap justify-between items-center">
+            <strong class="flex items-center mb1">
+              <span class="h3"><%= i.sponsor.name %></span>
+              <span class="badge bg-<%= i.paid ? 'success' : 'error' %>">
+                <%= i.paid ? 'Paid' : 'Unpaid' %>
+              </span>
+            </strong>
+            <span class="block h1 black line-height-1 <%= i.status %>"><%= render_money_short i.item_amount %></span>
+          </div>
+          <div class="flex flex-wrap justify-between items-center">
+            <%= user_mention i.creator %>
+            <span class="muted"><%= time_ago_in_words i.created_at %> ago</span>
+          </div>
         </li>
       <% end %>
     <% end %>
