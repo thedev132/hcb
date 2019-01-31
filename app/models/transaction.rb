@@ -42,6 +42,10 @@ class Transaction < ApplicationRecord
     TransactionMailer.with(transaction: self).notify_admin.deliver_later
   end
 
+  def notify_user_invoice
+    MoneyReceivedMailer.with(transaction: self).money_received.deliver_later
+  end
+
   # Utility method for getting the fee on the transaction if there is one. Used
   # in CSV export.
   def fee
@@ -54,6 +58,10 @@ class Transaction < ApplicationRecord
 
   def fee_applies?
     is_event_related && fee_relationship&.fee_applies
+  end
+
+  def uncategorized?
+    is_event_related && fee_relationship_id
   end
 
   # Emburse adds the word "emburse" to bank transactions made. This is a
