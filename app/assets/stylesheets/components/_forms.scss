@@ -95,8 +95,8 @@ select[name$='i)]'] {
   display: inline-block;
 }
 // rails month inputs should be wider
-select[id$='date_2i'] {
-  width: 8rem;
+select[id$='_2i'] {
+  width: 9.125rem; // magic number, makes form page_sm wide
 }
 
 textarea.card {

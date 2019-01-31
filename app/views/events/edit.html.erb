@@ -1,4 +1,6 @@
-<%= link_to @event.name, @event, class: 'breadcrumb' %>
-<h1>Editing Event</h1>
+<% page_sm %>
+<%= render 'events/nav' %>
+
+<h1>Editing <%= @event.name %></h1>
 
 <%= render 'form', event: @event %>
