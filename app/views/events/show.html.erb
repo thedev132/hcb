@@ -37,7 +37,7 @@
   <% if @event.organizer_position_invites.pending.any? %>
     <span class="pop muted mr1" title="Team member invitations sent">+<%= @event.organizer_position_invites.pending.count %></span>
   <% end %>
-  <%= link_to '›', event_team_path(@event), class: 'pop' %>
+  <%= pop_icon_to 'member-add', event_team_path(@event) %>
 </div>
 
 <%= render 'nav', hide_name: true %>
