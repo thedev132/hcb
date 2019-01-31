@@ -16,4 +16,8 @@ module UsersHelper
     name = content_tag :span, user.name
     content_tag :span, avi + name, class: 'mention'
   end
+
+  def admin_tools(&block)
+    content_tag(:div, block.call, class: 'admin-tools') if current_user.admin?
+  end
 end

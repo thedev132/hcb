@@ -47,14 +47,14 @@
 <% end %>
 
 <p>Invoice created by <%= @invoice.creator.full_name %>.</p>
+  <% admin_tools do %>
+    <% unless @invoice.paid? %>
+      <p><%= link_to 'Manually mark this invoice as paid', invoice_manual_payment_path(@invoice) %></p>
+    <% end %>
 
-<% if current_user.admin? %>
-  <% unless @invoice.paid? %>
-    <p><%= link_to 'Manually mark this invoice as paid.', invoice_manual_payment_path(@invoice) %></p>
+    <%= link_to 'View on Stripe', @invoice.stripe_dashboard_url, class: 'btn bg-info' %>
   <% end %>
-
-  <p><%= link_to 'View on Stripe.', @invoice.stripe_dashboard_url %></p>
-<% end %>
+</div>
 
 <h2>Comments</h2>
 <%= render "comments/comments" %>
