@@ -10,7 +10,7 @@
   <% end %>
 </h1>
 
-<section class="details">
+<section class="details mb3">
 <p>
   <strong>Download file</strong>
   <%= link_to 'Click here', document_download_path(@document) %>
@@ -19,9 +19,11 @@
 <p>
   <strong>Added by</strong> <%= user_mention @document.user %>
 </p>
+</section>
 
+<% admin_tools do %>
 <% if @document.downloads.any? %>
-<h2 class="mt3 mb0">Download history</h2>
+<h2 class="my0">Download history</h2>
 <ul class="list list--unlinked">
   <% @document.downloads.each do |download| %>
     <li>
@@ -31,4 +33,4 @@
   <% end %>
 </ul>
 <% end %>
-</section>
+<% end %>
