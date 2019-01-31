@@ -2,10 +2,7 @@
 <% @comments.each do |comment| %>
   <% next if comment.admin_only && !admin_signed_in? %>
   <div class="my2">
-    <div class="comment__name">
-      <%= user_mention @invoice.creator %>
-      <span class="h5 muted"><%= time_ago_in_words @invoice.created_at %> ago</span>
-    </div>
+    <%= creator_bar comment %>
     <div class="card">
       <%= auto_link comment.content %>
       <% if comment.file.attached? %>

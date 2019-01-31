@@ -20,4 +20,11 @@ module UsersHelper
   def admin_tools(&block)
     content_tag(:div, block.call, class: 'admin-tools') if current_user.admin?
   end
+
+  def creator_bar(object)
+    creator = defined?(object.creator) ? object.creator : object.user
+    content_tag :div, class: 'comment__name' do
+      user_mention(creator) + relative_timestamp(object.created_at, class: 'h5 muted')
+    end
+  end
 end

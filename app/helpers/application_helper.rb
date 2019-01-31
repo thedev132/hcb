@@ -29,6 +29,10 @@ module ApplicationHelper
     status_badge(type) if condition
   end
 
+  def relative_timestamp(time, options = {})
+    content_tag :span, "#{time_ago_in_words time} ago", options.reverse_merge({ title: time })
+  end
+
   def auto_link_new_tab(text)
     auto_link(text, html: { target: '_blank' })
   end
