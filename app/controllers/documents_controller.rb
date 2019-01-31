@@ -1,5 +1,6 @@
 class DocumentsController < ApplicationController
-  before_action :set_event
+  before_action :set_event, only: [:index, :new]
+  before_action :set_document, except: [:index, :new, :create]
 
   def index
     @documents = @event.documents
@@ -25,17 +26,14 @@ class DocumentsController < ApplicationController
   end
 
   def show
-    @document = Document.find(params[:id])
     authorize @document
   end
 
   def edit
-    @document = Document.find(params[:id])
     authorize @document
   end
 
   def update
-    @document = Document.find(params[:id])
     @document.assign_attributes(document_params)
     authorize @document
 
@@ -48,7 +46,6 @@ class DocumentsController < ApplicationController
   end
 
   def destroy
-    @document = Document.find(params[:id])
     authorize @document
 
     @document.destroy!
@@ -57,7 +54,6 @@ class DocumentsController < ApplicationController
   end
 
   def download
-    @document = Document.find(params[:document_id])
     authorize @document
 
     redirect_to url_for(@document.file)
@@ -73,6 +69,11 @@ class DocumentsController < ApplicationController
 
   def document_params
     params.require(:document).permit(:event_id, :name, :file)
+  end
+
+  def set_document
+    @document = Document.find(params[:id] || params[:document_id])
+    @event = @document.event
   end
 
   def set_event
