@@ -6,16 +6,14 @@
     <span style="font-size: 3rem;">
       <%= @event.name %>
     </span>
-    <%= link_to '✏️',
-      edit_event_path(@event),
-      class: 'pop ml2' %>
+    <%= pop_icon_to 'controls', edit_event_path(@event), class: 'ml2' %>
   </span>
 
   <% if admin_signed_in? %>
     <div class="flex justify-center items-center w-100">
       <span class="badge bg-muted ml0 mr2">#<%= @event.id %></span>
       <details class="regular h4 left-align mr2">
-        <summary>Details</summary>
+        <summary class="pop muted"><%= inline_icon 'docs', size: 32 %></summary>
         <p>
           <strong>Date:</strong> <%= @event.start.to_date %>–<%= @event.end.to_date %><br />
           <strong>Address:</strong> <br />
@@ -23,11 +21,11 @@
           <strong>Sponsorship fee:</strong> <%= render_percentage @event.sponsorship_fee %>
         </p>
       </details>
-      <%= link_to '❌',
+      <%= pop_icon_to 'delete',
         @event,
         method: :delete,
         data: { confirm: '⚠️ Are you sure you want to DELETE THIS EVENT OMG?' },
-        class: 'pop error' %>
+        class: 'error' %>
     </div>
   <% end %>
 </h1>

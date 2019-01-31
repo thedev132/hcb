@@ -29,6 +29,12 @@ module ApplicationHelper
     status_badge(type) if condition
   end
 
+  def pop_icon_to(icon, url, options = {})
+    link_to url, options.merge({ class: "pop #{options[:class]}" }) do
+      inline_icon icon, size: 32
+    end
+  end
+
   def relative_timestamp(time, options = {})
     content_tag :span, "#{time_ago_in_words time} ago", options.merge({ title: time })
   end
