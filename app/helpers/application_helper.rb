@@ -33,6 +33,20 @@ module ApplicationHelper
     auto_link(text, html: { target: '_blank' })
   end
 
+  def inline_icon(filename, options = {})
+    file = File.read(Rails.root.join('app', 'assets', 'images', 'icons', "#{filename}.svg"))
+    doc = Nokogiri::HTML::DocumentFragment.parse file
+    svg = doc.at_css 'svg'
+    options[:style] ||= ''
+    if options[:size]
+      options[:width] = options[:size]
+      options[:height] = options[:size]
+      options.delete :size
+    end
+    options.each { |key, value| svg[key.to_s] = value }
+    doc.to_html.html_safe
+  end
+
   def page_hide_home
     @hide_home = true
   end
