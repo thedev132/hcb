@@ -1,4 +1,5 @@
 <% page_sm %>
+<% page_snow %>
 <%= render 'nav' %>
 
 <h1 class="flex items-center">
@@ -7,22 +8,20 @@
 </h1>
 
 <% if @positions.any? %>
-  <ul class="list list--unlinked list--row mb0">
-    <% @positions.each do |position| %>
-      <li class="md-px0">
-        <%= avatar_for position.user, 48, class: 'mr2' %>
-        <p>
-          <strong><%= position.user.full_name || 'Unnamed' %></strong>
-          <br />
-          <%= position.user.email %>
-          <br />
-          <span class="muted h5">(added <span title="<%= position.created_at %>"><%= time_ago_in_words position.created_at %> ago</span>)</span>
-        </p>
-        <%= link_to 'Edit', edit_user_path(position.user.slug), class: 'btn bg-info' if position.user == current_user || admin_signed_in? %>
-        <%= link_to 'Remove', new_organizer_remove_path(organizer_id: position.id), class: 'btn' unless position.user == current_user %>
-      </li>
-    <% end %>
-  </ul>
+  <% @positions.each do |position| %>
+    <div class="card flex items-center py1 mb2">
+      <%= avatar_for position.user, 48, class: 'mr2' %>
+      <p class="flex-auto">
+        <strong class="h3"><%= position.user.full_name || 'Unnamed' %></strong>
+        <br />
+        <%= position.user.email %>
+        <br />
+        <span class="muted h5">(added <span title="<%= position.created_at %>"><%= time_ago_in_words position.created_at %> ago</span>)</span>
+      </p>
+      <%= pop_icon_to 'member-remove', new_organizer_remove_path(organizer_id: position.id), class: 'error' unless position.user == current_user %>
+      <%= pop_icon_to 'controls', edit_user_path(position.user.slug), class: 'ml2' if position.user == current_user || admin_signed_in? %>
+    </div>
+  <% end %>
 <% else %>
   <%= blankslate 'No others on your team yet' %>
 <% end %>
@@ -45,7 +44,7 @@
             <strong><%= invite.email %></strong><br>
             <span class="muted h5">(sent <span title="<%= invite.created_at %>"><%= time_ago_in_words invite.created_at %> ago</span>)</span>
           </p>
-          <%= link_to 'Cancel', organizer_position_invite_cancel_path(invite.slug), method: :post, class: 'btn bg-error' %>
+          <%= pop_icon_to 'view-close', organizer_position_invite_cancel_path(invite.slug), method: :post, class: 'error' %>
         </li>
       <% end %>
     <% end %>
