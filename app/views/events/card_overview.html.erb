@@ -12,19 +12,6 @@
     <span class="stat__label">Available balance</span>
     <span class="stat__value"><%= render_money @event.emburse_balance, '' %></span>
   </div>
-  
-  <% if admin_signed_in? %>
-    <div class="stat inline-block">
-      <span class="stat__label">Emburse budget limit</span>
-      <span class="stat__value"><%= render_money @event.emburse_budget_limit, '' %></span>
-    </div>
-
-    <% if @event.emburse_department_path.nil? %>
-      <%= link_to 'Set Emburse Department ID', edit_event_path(@event), class: 'btn bg-accent mr2' %>
-    <% else %>
-      <%= link_to 'Set Emburse Budget', @event.emburse_department_path, class: 'btn bg-accent mr2' %>
-    <% end %>
-  <% end %>
 
   <div class="flex flex-wrap items-center">
     <%= link_to 'Increase Balance', new_event_load_card_request_path(event_id: @event.slug), class: 'btn bg-success mr2' %>
@@ -44,6 +31,19 @@
     <pre class="inline-block mt0 mb0">The Hack Foundation
 8605 Santa Monica Blvd #86294
 West Hollywood, CA 90069</pre>
+  <% end %>
+
+  <% admin_tools do %>
+    <div class="stat inline-block">
+      <span class="stat__label">Emburse budget limit</span>
+      <span class="stat__value"><%= render_money @event.emburse_budget_limit, '' %></span>
+    </div>
+
+    <% if @event.emburse_department_path.nil? %>
+      <%= link_to 'Set Emburse Department ID', edit_event_path(@event), class: 'btn bg-accent mr2' %>
+    <% else %>
+      <%= link_to 'Set Emburse Budget', @event.emburse_department_path, class: 'btn bg-accent mr2' %>
+    <% end %>
   <% end %>
 </article>
 
@@ -67,28 +67,29 @@ West Hollywood, CA 90069</pre>
       <% end %>
     <% end %>
   </section>
+<% elsif @card_requests.any? %>
+  <%= blankslate 'No cards have been accepted yet' %>
 <% end %>
 
 <% if @card_requests.any? %>
-  <h3 class="mb1">Card Requests</h3>
-  <ul class="list list--unlinked list--row">
-    <% @card_requests.each do |request| %>
-      <li>
-        <p>
-          <%= status_if :pending, request.under_review? %>
-          <strong><%= request.full_name %> – <%= request.status %></strong>
-          <span class="muted">(added <span title="<%= request.created_at %>"><%= time_ago_in_words request.created_at %> ago</span>)</span>
-        </p>
-        <% if request.creator == current_user %>
-          <%= link_to 'Cancel',
-            card_request_cancel_path(request),
-            method: :post,
-            'data-confirm': 'Are you sure you want to cancel this card request?',
-            class: 'btn btn--destroy' if request.under_review? && !admin_signed_in? %>
-        <% end %>
-      </li>
-    <% end %>
-  </ul>
+  <h2 class="mb1">Card Requests</h2>
+  <% @card_requests.each do |request| %>
+    <%= creator_bar request %>
+    <div class="card">
+      <p class="my0">
+        <%= status_if :pending, request.under_review? %>
+        <strong class="h3"><%= request.full_name %></strong>
+        <span class="muted">(<%= request.status %>)</span>
+      </p>
+      <% if request.creator == current_user %>
+        <%= link_to 'Cancel',
+          card_request_cancel_path(request),
+          method: :post,
+          'data-confirm': 'Are you sure you want to cancel this card request?',
+          class: 'btn btn--destroy' if request.under_review? && !admin_signed_in? %>
+      <% end %>
+    </div>
+  <% end %>
 <% else %>
   <%= blankslate 'You haven’t requested any physical debit cards yet.' %>
 <% end %>
