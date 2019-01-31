@@ -1,12 +1,12 @@
 <div class="comments">
 <% @comments.each do |comment| %>
   <% next if comment.admin_only && !admin_signed_in? %>
-  <div class="comment">
+  <div class="my2">
     <div class="comment__name">
-      <strong><%= comment.user.name %></strong>
-      <span class="ml1"><%= time_ago_in_words comment.created_at %> ago</span>
+      <%= user_mention @invoice.creator %>
+      <span class="h5 muted"><%= time_ago_in_words @invoice.created_at %> ago</span>
     </div>
-    <div class="comment__bubble">
+    <div class="card">
       <%= auto_link comment.content %>
       <% if comment.file.attached? %>
         <%= link_to '📎', url_for(comment.file), target: '_blank' %>

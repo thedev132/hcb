@@ -1,21 +1,12 @@
-.comment {
-  margin-top: 1rem;
-}
 .comment__name {
-  font-size: 0.875rem;
-  color: $gray7;
-  margin: 0;
-}
-.comment__bubble {
-  display: inline-block;
-  max-width: 28rem;
-  background-color: $gray1;
-  background-image: linear-gradient(to bottom, $gray0, $gray1);
-  padding: 0.5rem 1rem;
-  border-radius: 1.25rem;
-  font-size: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+  margin-bottom: 0.25rem;
 
   @media screen and (min-width: 32em) {
-    margin-left: -1rem;
+    margin-left: -1.875rem;
   }
 }

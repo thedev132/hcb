@@ -12,17 +12,20 @@
     </div>
   <% end %>
 
-  <div class="comment__name bold mt2"><%= current_user.name %></div>
-  <%= form.text_area :content, class: 'mb2' %>
+  <div class="comment__name mt2">
+    <%= user_mention current_user %>
+  </div>
+  <%= form.text_area :content, class: 'card mb2', placeholder: 'Add a comment…' %>
 
   <div class="field">
     <%= form.file_field :file %>
   </div>
 
-  <% if admin_signed_in? %>
-  <div class="field">
-    <%= form.check_box :admin_only, {}, "true", "false" %> Post as admin-only comment
-  </div>
+  <% admin_tools do %>
+    <div class="field field--checkbox">
+      <%= form.check_box :admin_only, {}, true, false %>
+      <%= form.label :admin_only, 'Post as admin-only comment' %>
+    </div>
   <% end %>
 
   <%= form.submit 'Post Comment' %>

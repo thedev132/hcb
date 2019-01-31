@@ -98,3 +98,14 @@ select[name$='i)]'] {
 select[id$='date_2i'] {
   width: 8rem;
 }
+
+textarea.card {
+  max-width: none;
+  border: 0;
+  transition: 0.2s ease box-shadow;
+
+  &:focus {
+    box-shadow: inset 0 0 0 1px $base, 0 0 2px 0 rgba(0, 0, 0, 0.0625),
+      0 4px 8px 0 rgba(0, 0, 0, 0.125);
+  }
+}
