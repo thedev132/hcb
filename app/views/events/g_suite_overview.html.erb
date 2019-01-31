@@ -13,7 +13,10 @@ when :start %>
 <% when :under_review %>
   <p>Your application is under review. Check back here soon!</p>
 <% when :app_accepted %>
-  <article class="card overflow-visible p0 max-width-3 mx-auto">
+  <article class="card mb3">
+    <%= render 'g_suite_accounts/panel' %>
+  </article>
+  <article class="card overflow-visible p0">
     <div class="p2 bg-success white center rounded-top">
       <p><strong class="h3">Your application was accepted!</strong><br />It’s time to set up your servers.</p>
     </div>
@@ -121,11 +124,8 @@ when :start %>
         <li>Save your changes.
           <p class="slate mt1 mb0">Typically, you can send and receive messages at your new G Suite email address in less than 6 hours. However, it may take 48–72 hours before you receive email at your new address. It’s no fun to wait, but the time for MX records to take effect depends on your domain host. We have no control over this.</p>
         </li>
-        <li>Add your accounts below!</li>
+        <li>Add your accounts above!</li>
       </ol>
-    </div>
-    <div class="p2 md-pl5">
-      <%= render 'g_suite_accounts/panel' %>
     </div>
   </article>
 <% when :app_rejected %>
