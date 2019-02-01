@@ -21,7 +21,7 @@ class GSuiteAccountMailer < ApplicationMailer
     @last_name = params[:last_name]
 
     mail to: @recipient,
-      subject: "The Bank G Suite account that you created for #{@first_name} #{@last_name} has been activated."
+      subject: "The Bank G Suite account you created for #{@first_name} #{@last_name} has been activated"
   end
 
   def notify_user_of_reset(params)
