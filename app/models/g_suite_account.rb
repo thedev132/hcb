@@ -48,8 +48,15 @@ class GSuiteAccount < ApplicationRecord
         password: initial_password
       }
 
+      creator_email_params = {
+        recipient: creator.email,
+        first_name: first_name,
+        last_name: last_name 
+      }
+
       if initial_password_before_last_save.nil?
         GSuiteAccountMailer.notify_user_of_activation(email_params).deliver_later
+        GSuiteAccountMailer.notify_creator_of_activation(creator_email_params).deliver_later
       else
         GSuiteAccountMailer.notify_user_of_reset(email_params).deliver_later
       end
