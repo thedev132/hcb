@@ -30,6 +30,8 @@ class EventsController < ApplicationController
   # GET /events/1
   def show
     authorize @event
+    @organizers = @event.organizer_positions.includes(:user)
+    @transactions = @event.transactions.includes(:fee_relationship)
   end
 
   def team
@@ -85,29 +87,30 @@ class EventsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_event
-      @event = Event.find(params[:id])
-    end
 
-    # Only allow a trusted parameter "white list" through.
-    def event_params
-      params.require(:event).permit(
-        :name,
-        :start,
-        :end,
-        :address,
-        :sponsorship_fee,
-        :emburse_department_id,
-        :point_of_contact_id
-      )
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_event
+    @event = Event.find(params[:id])
+  end
 
-    def user_event_params
-      params.require(:event).permit(
-        :start,
-        :end,
-        :address
-      )
-    end
+  # Only allow a trusted parameter "white list" through.
+  def event_params
+    params.require(:event).permit(
+      :name,
+      :start,
+      :end,
+      :address,
+      :sponsorship_fee,
+      :emburse_department_id,
+      :point_of_contact_id
+    )
+  end
+
+  def user_event_params
+    params.require(:event).permit(
+      :start,
+      :end,
+      :address
+    )
+  end
 end

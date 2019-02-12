@@ -20,7 +20,7 @@ Sponsorship fee: <%= render_percentage @event.sponsorship_fee %>`)">
 </h1>
 
 <div class="flex flex-wrap items-center justify-center mb3">
-  <% @event.organizer_positions.each do |position| %>
+  <% @organizers.each do |position| %>
     <%= avatar_for position.user, 48, class: 'mr1' %>
   <% end %>
   <%= pop_icon_to 'view-forward', event_team_path(@event) %>
@@ -71,7 +71,7 @@ Sponsorship fee: <%= render_percentage @event.sponsorship_fee %>`)">
     target: :_blank %>
 </h2>
 
-<% if @event.transactions.any? %>
+<% if @transactions.any? %>
   <table class="mt2">
   <tr>
     <th>Date</th>
@@ -79,7 +79,7 @@ Sponsorship fee: <%= render_percentage @event.sponsorship_fee %>`)">
     <th>Amount</th>
     <th>More</th>
   </tr>
-  <% @event.transactions.each do |t| %>
+  <% @transactions.each do |t| %>
     <tr class="transaction--<%= t.amount.negative? ? 'negative' : 'positive' %>">
       <td>
         <%= t.date %>
