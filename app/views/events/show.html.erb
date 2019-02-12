@@ -23,7 +23,7 @@ Sponsorship fee: <%= render_percentage @event.sponsorship_fee %>`)">
   <% @event.organizer_positions.each do |position| %>
     <%= avatar_for position.user, 48, class: 'mr1' %>
   <% end %>
-  <%= pop_icon_to 'member-add', event_team_path(@event) %>
+  <%= pop_icon_to 'view-forward', event_team_path(@event) %>
 </div>
 
 <%= render 'nav', hide_name: true %>
