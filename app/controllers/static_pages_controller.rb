@@ -5,6 +5,10 @@ class StaticPagesController < ApplicationController
     if signed_in?
       @events = current_user.events
       @invites = current_user.organizer_position_invites.pending
+
+      if @events.count == 1 && @invites.count == 0
+        redirect_to current_user.events.first
+      end
     end
     if admin_signed_in?
       @transaction_volume = Transaction.total_volume
