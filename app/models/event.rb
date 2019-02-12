@@ -51,6 +51,12 @@ class Event < ApplicationRecord
     self.transactions.sum(:amount)
   end
 
+  # used for load card requests, this is the amount of money available that isn't being transferred out by an LCR -tmb@hackclub
+  def balance_available
+    lcrs = self.load_card_requests
+    balance - (lcrs.under_review + lcrs.accepted - lcrs.completed - lcrs.canceled - lcrs.rejected).sum(&:load_amount)
+  end
+
   def billed_transactions
     self.transactions
         .joins(:fee_relationship)

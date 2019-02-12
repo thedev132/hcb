@@ -1,4 +1,5 @@
 <%= link_to @event.name, @event, class: 'breadcrumb' %>
 <h1>Request loading money onto <%= @event.name %>’s Emburse account</h1>
+<p><%= render_money @event.balance_available%> is available to transfer to Emburse </p>
 
 <%= render 'form', load_card_request: @load_card_request %>

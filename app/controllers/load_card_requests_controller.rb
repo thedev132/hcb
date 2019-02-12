@@ -36,6 +36,14 @@ class LoadCardRequestsController < ApplicationController
 
     authorize @load_card_request
 
+    load_amount = @load_card_request.load_amount
+
+    if load_amount > @event.balance_available + load_amount
+      flash[:error] = "You don't have enough money to load onto your card!"
+      render :new
+      return
+    end
+
     if @load_card_request.save
       redirect_to event_cards_overview_path(@event),
         notice: 'Load card request was successfully created.'
