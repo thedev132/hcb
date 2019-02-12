@@ -45,6 +45,11 @@ class User < ApplicationRecord
     full_name || email
   end
 
+  def initials
+    words = name.split(/[^[[:word:]]]+/)
+    words.any? ? words.map(&:first).join.upcase : name
+  end
+
   def pretty_phone_number
     Phonelib.parse(self.phone_number).national
   end
