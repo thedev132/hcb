@@ -44,7 +44,7 @@
             <strong><%= invite.email %></strong><br>
             <span class="muted h5">(sent <span title="<%= invite.created_at %>"><%= time_ago_in_words invite.created_at %> ago</span>)</span>
           </p>
-          <%= pop_icon_to 'view-close', organizer_position_invite_cancel_path(invite.slug), method: :post, class: 'error' %>
+          <%= pop_icon_to 'view-close', organizer_position_invite_cancel_path(invite.id), method: :post, class: 'error' %>
         </li>
       <% end %>
     <% end %>
