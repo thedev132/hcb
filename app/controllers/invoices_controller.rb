@@ -3,7 +3,7 @@ class InvoicesController < ApplicationController
 
   def index
     @invoices = @event.invoices
-    authorize Invoice
+    authorize @invoices
   end
 
   def new
