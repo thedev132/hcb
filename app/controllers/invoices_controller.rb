@@ -3,7 +3,7 @@ class InvoicesController < ApplicationController
 
   def index
     @invoices = @event.invoices.includes(:creator, :sponsor)
-    authorize Invoice
+    authorize @invoices
   end
 
   def new

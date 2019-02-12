@@ -4,7 +4,7 @@ class DocumentsController < ApplicationController
 
   def index
     @documents = @event.documents
-    authorize Document
+    authorize @documents
   end
 
   def new
