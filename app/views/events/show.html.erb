@@ -21,11 +21,6 @@
           <strong>Sponsorship fee:</strong> <%= render_percentage @event.sponsorship_fee %>
         </p>
       </details>
-      <%= pop_icon_to 'delete',
-        @event,
-        method: :delete,
-        data: { confirm: '⚠️ Are you sure you want to DELETE THIS EVENT OMG?' },
-        class: 'error' %>
     </div>
   <% end %>
 </h1>
