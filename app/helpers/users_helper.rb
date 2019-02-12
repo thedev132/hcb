@@ -8,7 +8,8 @@ module UsersHelper
   end
 
   def avatar_for(user, size = 24, options = {})
-    image_tag gravatar_url(user.email, user.name, size * 2), options.merge({ alt: user.name, width: size, height: size, class: "circle #{options[:class]}" })
+    image_tag gravatar_url(user.email, user.initials, size * 2),
+      options.merge({ alt: user.name, width: size, height: size, class: "circle #{options[:class]}" })
   end
 
   def user_mention(user)

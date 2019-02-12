@@ -3,36 +3,27 @@
 
 <h1 class="heading center flex-column mt2">
   <span class="flex items-center">
+    <% if admin_signed_in? %>
+      <span
+        class="badge bg-info ml0 mr2"
+        onclick="alert(`Date: <%= @event.start.to_date %>–<%= @event.end.to_date %>
+Address: <%= @event.address %>
+Sponsorship fee: <%= render_percentage @event.sponsorship_fee %>`)">
+        #<%= @event.id %>
+      </span>
+    <% end %>
     <span style="font-size: 3rem;">
       <%= @event.name %>
     </span>
     <%= pop_icon_to 'controls', edit_event_path(@event), class: 'ml2' %>
   </span>
-
-  <% if admin_signed_in? %>
-    <div class="flex justify-center items-center w-100">
-      <span class="badge bg-muted ml0 mr2">#<%= @event.id %></span>
-      <details class="regular h4 left-align mr2">
-        <summary class="pop muted"><%= inline_icon 'docs', size: 32 %></summary>
-        <p>
-          <strong>Date:</strong> <%= @event.start.to_date %>–<%= @event.end.to_date %><br />
-          <strong>Address:</strong> <br />
-          <%= @event.address %><br />
-          <strong>Sponsorship fee:</strong> <%= render_percentage @event.sponsorship_fee %>
-        </p>
-      </details>
-    </div>
-  <% end %>
 </h1>
 
 <div class="flex flex-wrap items-center justify-center mb3">
-  <% @event.organizer_positions.each do |position| %>
+  <% @organizers.each do |position| %>
     <%= avatar_for position.user, 48, class: 'mr1' %>
   <% end %>
-  <% if @event.organizer_position_invites.pending.any? %>
-    <span class="pop muted mr1" title="Team member invitations sent">+<%= @event.organizer_position_invites.pending.count %></span>
-  <% end %>
-  <%= pop_icon_to 'member-add', event_team_path(@event) %>
+  <%= pop_icon_to 'view-forward', event_team_path(@event) %>
 </div>
 
 <%= render 'nav', hide_name: true %>
@@ -80,7 +71,7 @@
     target: :_blank %>
 </h2>
 
-<% if @event.transactions.any? %>
+<% if @transactions.any? %>
   <table class="mt2">
   <tr>
     <th>Date</th>
@@ -88,7 +79,7 @@
     <th>Amount</th>
     <th>More</th>
   </tr>
-  <% @event.transactions.each do |t| %>
+  <% @transactions.each do |t| %>
     <tr class="transaction--<%= t.amount.negative? ? 'negative' : 'positive' %>">
       <td>
         <%= t.date %>

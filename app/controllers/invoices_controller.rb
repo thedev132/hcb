@@ -2,7 +2,7 @@ class InvoicesController < ApplicationController
   before_action :set_event, only: [:index]
 
   def index
-    @invoices = @event.invoices
+    @invoices = @event.invoices.includes(:creator, :sponsor)
     authorize @invoices
   end
 
