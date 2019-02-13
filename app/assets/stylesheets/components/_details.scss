@@ -1,19 +1,19 @@
-.details {
-  > p,
-  > div {
-    display: grid;
-    border-bottom: 1px solid $gray2;
-    padding-top: 1rem;
-    padding-bottom: 1rem;
-    margin: 0;
+.details > p,
+.details > div,
+.details__row {
+  align-items: center;
+  border-bottom: 1px solid $gray2;
+  display: grid;
+  margin: 0;
+  padding-bottom: 1rem;
+  padding-top: 1rem;
 
-    @media (min-width: 32em) {
-      grid-template-columns: 10rem auto;
-      grid-gap: 0.5rem;
+  @media (min-width: 32em) {
+    grid-template-columns: 10rem auto;
+    grid-gap: 0.5rem;
 
-      strong {
-        text-align: right;
-      }
+    strong {
+      text-align: right;
     }
   }
 }
