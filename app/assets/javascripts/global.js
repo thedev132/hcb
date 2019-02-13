@@ -7,6 +7,13 @@ BK.s = (selector, filter = '') =>
   $(`[data-behavior~=${selector}]`).filter(
     filter.length > 0 ? filter : () => true
   )
+BK.thereIsNot = (selector, filter) => BK.s(selector, filter).is(':empty')
+BK.thereIs = (selector, filter) => !BK.thereIsNot(selector, filter)
+
+BK.deselect = (selector, filter = '[aria-selected=true]') =>
+  BK.s(selector, filter).attr('aria-selected', false)
+BK.select = (selector, filter) =>
+  BK.s(selector, filter).attr('aria-selected', true)
 
 // Disable use without FullStory
 $(document).ready(() => {
