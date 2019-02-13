@@ -1,0 +1,35 @@
+.filterbar {
+  padding: 1rem 0;
+}
+
+.filterbar__filters {
+  overflow-x: scroll;
+  -webkit-overflow-scrolling: touch;
+
+  @media screen and (max-width: 32em) {
+    margin-left: -1rem;
+    margin-right: -1rem;
+    padding-left: 1rem;
+  }
+}
+
+.filterbar__item {
+  border-radius: 1rem;
+  cursor: pointer;
+  display: inline-block;
+  flex-shrink: 0;
+  font-weight: 500;
+  line-height: 1.75;
+  outline: 0;
+  padding: 0.125rem 0.75rem;
+  text-decoration: none;
+
+  &:focus {
+    color: map-get($palette, info);
+  }
+
+  &[aria-selected='true'] {
+    background-color: map-get($palette, primary);
+    color: $white;
+  }
+}

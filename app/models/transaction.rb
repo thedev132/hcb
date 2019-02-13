@@ -64,11 +64,27 @@ class Transaction < ApplicationRecord
     is_event_related && fee_relationship_id
   end
 
-  # Emburse adds the word "emburse" to bank transactions made. This is a
-  # convenience method to see when the statement line was probably from
-  # Emburse.
+  def filter_data
+    {
+      exists: true,
+      fee_applies: self.fee_applies?,
+      fee_pamynet: self.fee_payment?,
+      emburse: self.emburse?,
+      expensfify: self.expensify?,
+      for_invoice: self.for_invoice?
+    }
+  end
+
   def emburse?
-    name.include? 'emburse'
+    filter_for 'emburse'
+  end
+
+  def expensify?
+    filter_for 'expensify'
+  end
+
+  def for_invoice?
+    filter_for 'event transfer'
   end
 
   # is this a potential invoice payout transaction?
@@ -80,5 +96,9 @@ class Transaction < ApplicationRecord
 
   def slug_text
     "#{date} #{name}"
+  end
+
+  def filter_for(text)
+    name.downcase.include? text
   end
 end
