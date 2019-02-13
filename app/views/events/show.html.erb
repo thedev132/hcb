@@ -71,73 +71,56 @@ Sponsorship fee: <%= render_percentage @event.sponsorship_fee %>`)">
     target: :_blank %>
 </h2>
 
+<div class="filterbar flex flex-wrap items-center width-100">
+  <input
+    type="search"
+    data-behavior="transactions_search"
+    placeholder="Search…"
+    aria-label="Filter transactions"
+    class="flex-auto md-mr2"
+    style="width: auto; max-width: none;">
+  <div data-behavior="transactions_filter" role="tablist" class="filterbar__filters flex mt1 lg-mt0">
+    <%= transactions_filter_item 'All', :exists, true %>
+    <%= transactions_filter_item 'Incurring fees', :fee_applies %>
+    <%= transactions_filter_item 'Fees', :fee_payment %>
+    <%= transactions_filter_item 'Invoices', :for_invoice %>
+    <%= transactions_filter_item 'Emburse', :emburse %>
+    <%= transactions_filter_item 'Expensify', :expensify %>
+  </div>
+</div>
+
 <% if @transactions.any? %>
-  <table class="mt2">
-  <tr>
-    <th>Date</th>
-    <th>Description</th>
-    <th>Amount</th>
-    <th>More</th>
-  </tr>
-  <% @transactions.each do |t| %>
-    <tr class="transaction--<%= t.amount.negative? ? 'negative' : 'positive' %>">
-      <td>
-        <%= t.date %>
-      </td>
-      <td>
-        <%= t.name %>
-      </td>
-      <td>
-        <%= render_money t.amount %>
-      </td>
-      <td>
-        <%= link_to 'Details', t %>
-      </td>
-    </tr>
-  <% end %>
+  <table>
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Description</th>
+        <th>Amount</th>
+        <th>More</th>
+      </tr>
+    </thead>
+    <tbody data-behavior="transactions">
+    <% @transactions.each do |t| %>
+      <tr
+        class="transaction--<%= t.amount.negative? ? 'negative' : 'positive' %>"
+        data-behavior="transactions_item"
+        data-filter="<%= t.filter_data.to_json %>">
+        <td>
+          <%= t.date %>
+        </td>
+        <td>
+          <%= t.name %>
+        </td>
+        <td>
+          <%= render_money t.amount %>
+        </td>
+        <td>
+          <%= link_to 'Details', t %>
+        </td>
+      </tr>
+    <% end %>
+    </tbody>
   </table>
 <% else %>
   <%= blankslate 'No transactions yet' %>
-<% end %>
-
-<h3>
-  Transactions Incurring Fees
-  <span class="regular slate sans h3">(total outstanding fees: <%= render_money @event.fee_balance %>)</span>
-</h3>
-
-<% if @event.billed_transactions.any? %>
-  <table>
-  <tr>
-    <th>Date</th>
-    <th>Description</th>
-    <th>Amount</th>
-    <th>Fee</th>
-    <th>More</th>
-  </tr>
-  <% @event.billed_transactions.each do |t| %>
-    <tr class="transaction--positive">
-      <td>
-        <%= t.date %>
-      </td>
-      <td>
-        <%= t.name %>
-      </td>
-      <td>
-        <%= render_money t.amount %>
-      </td>
-      <td>
-        <% if t.fee_relationship.fee_applies %>
-          <%= render_money t.fee_relationship.fee_amount %>
-        <% else %>
-          N/A
-        <% end %>
-      </td>
-      <td>
-        <%= link_to 'Details', t %>
-      </td>
-    </tr>
-  <% end %>
-  </table>
-<% else %>
-  <%= blankslate 'No transactions have incurred fees' %>
 <% end %>
