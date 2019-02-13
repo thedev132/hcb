@@ -48,19 +48,19 @@ class Event < ApplicationRecord
   end
 
   def balance
-    self.transactions.sum(:amount)
+    transactions.sum(:amount)
   end
 
   def billed_transactions
-    self.transactions
-        .joins(:fee_relationship)
-        .where(fee_relationships: { fee_applies: true } )
+    transactions
+      .joins(:fee_relationship)
+      .where(fee_relationships: { fee_applies: true } )
   end
 
   def fee_payments
-    self.transactions
-        .joins(:fee_relationship)
-        .where(fee_relationships: { is_fee_payment: true } )
+    transactions
+      .joins(:fee_relationship)
+      .where(fee_relationships: { is_fee_payment: true } )
   end
 
   # total amount over all time paid agains the fee
