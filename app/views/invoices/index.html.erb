@@ -14,7 +14,7 @@
 
 <% if @invoices.any? %>
   <ul class="grid">
-    <% @invoices.each do |i| %>
+    <% @invoices.order('due_date DESC').each do |i| %>
       <%= link_to event_invoice_path(id: i.id) do %>
         <li class="card">
           <div class="flex flex-wrap justify-between items-center">
