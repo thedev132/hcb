@@ -36,7 +36,7 @@
 <% if @sponsor.invoices.any? %>
   <ul class="list">
     <% @sponsor.invoices.each do |invoice| %>
-      <%= link_to event_invoice_path(invoice) do %>
+      <%= link_to invoice_path(invoice) do %>
         <li class="transaction--<%= invoice.paid ? 'positive' : 'negative' %>">
           <strong>
             <%= render_money invoice.total %> – <span class="<%= invoice.paid ? 'success' : 'error' %>">

@@ -8,14 +8,14 @@
     <%= badge_for @invoices.count, class: 'bg-muted' %>
   </span>
   <%= link_to 'Send an invoice',
-    new_event_invoice_path(event_id: @event.id),
+    new_event_invoice_path(event_id: @event.slug),
     class: 'btn bg-success' %>
 </h1>
 
 <% if @invoices.any? %>
   <ul class="grid">
     <% @invoices.each do |i| %>
-      <%= link_to event_invoice_path(id: i.id) do %>
+      <%= link_to i do %>
         <li class="card">
           <div class="flex flex-wrap justify-between items-center">
             <strong class="flex items-center mb1">

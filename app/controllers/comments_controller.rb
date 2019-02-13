@@ -11,6 +11,7 @@ class CommentsController < ApplicationController
     @comment.user = current_user
 
     authorize @comment
+
     if @comment.save
       flash[:success] = 'Comment created.'
       redirect_to @commentable
