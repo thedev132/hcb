@@ -43,6 +43,10 @@ module ApplicationHelper
     auto_link(text, html: { target: '_blank' })
   end
 
+  def debug_obj(object)
+    content_tag :pre, pp(item.attributes.to_yaml)
+  end
+
   def inline_icon(filename, options = {})
     file = File.read(Rails.root.join('app', 'assets', 'images', 'icons', "#{filename}.svg"))
     doc = Nokogiri::HTML::DocumentFragment.parse file
