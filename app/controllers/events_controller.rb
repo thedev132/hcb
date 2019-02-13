@@ -36,8 +36,8 @@ class EventsController < ApplicationController
 
   def team
     @event = Event.find(params[:event_id])
-    @positions = @event.organizer_positions
-    @pending = @event.organizer_position_invites.pending
+    @positions = @event.organizer_positions.includes(:user)
+    @pending = @event.organizer_position_invites.pending.includes(:sender)
     authorize @event
   end
 
