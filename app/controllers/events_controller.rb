@@ -69,7 +69,7 @@ class EventsController < ApplicationController
 
   def card_overview
     @event = Event.find(params[:event_id])
-    @card_requests = @event.card_requests.under_review
+    @card_requests = @event.card_requests
     @load_card_requests = @event.load_card_requests
     @emburse_transactions = @event.emburse_transactions
 

@@ -86,7 +86,7 @@ West Hollywood, CA 90069</pre>
           card_request_cancel_path(request),
           method: :post,
           'data-confirm': 'Are you sure you want to cancel this card request?',
-          class: 'btn btn--destroy' if request.under_review? && !admin_signed_in? %>
+          class: 'btn btn--destroy' if request.under_review? %>
       <% end %>
     </div>
   <% end %>
