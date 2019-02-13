@@ -31,7 +31,7 @@ module ApplicationHelper
 
   def pop_icon_to(icon, url, options = {})
     link_to url, options.merge({ class: "pop #{options[:class]}" }) do
-      inline_icon icon, size: 32
+      inline_icon icon, size: 28
     end
   end
 
