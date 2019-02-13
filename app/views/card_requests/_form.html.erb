@@ -24,7 +24,7 @@
 
     <div class="field">
       <%= form.label :email %>
-      <%= form.text_field :email %>
+      <%= form.email_field :email %>
     </div>
   <% end %>
 
@@ -39,7 +39,7 @@
   </div>
 
   <div class="field">
-    <%= form.label :shipping_address, 'Shipping address (include city, state, and zip code)' %>
+    <%= form.label :shipping_address, 'Shipping address (with city, state, + zip code)' %>
     <%= form.text_area :shipping_address, placeholder: '1600 Pennsylvania Ave NW, Washington, DC 20500' %>
   </div>
 
