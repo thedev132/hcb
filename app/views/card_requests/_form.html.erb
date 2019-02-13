@@ -11,7 +11,7 @@
     </div>
   <% end %>
 
-  <%= admin_tools('mb2') do %>
+  <% admin_tools('mb2') do %>
     <div class="field">
       <%= form.label :event_id %>
       <%= form.collection_select(:event_id, Event.all, :id, :name, prompt: 'Select event…') %>
