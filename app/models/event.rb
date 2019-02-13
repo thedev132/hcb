@@ -92,6 +92,22 @@ class Event < ApplicationRecord
     :start
   end
 
+  def past?
+    self.end < Time.current
+  end
+
+  def future?
+    self.start > Time.current
+  end
+
+  def filter_data
+    {
+      exists: true,
+      past: past?,
+      future: future?
+    }
+  end
+
   private
 
   def point_of_contact_is_admin
