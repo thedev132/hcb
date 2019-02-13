@@ -19,9 +19,9 @@ module UsersHelper
     content_tag :span, avi + name, class: 'mention'
   end
 
-  def admin_tools(&block)
+  def admin_tools(class_name = '', &block)
     return unless current_user.admin?
-    concat('<div class="admin-tools">'.html_safe)
+    concat("<div class='admin-tools #{class_name}'>".html_safe)
       yield
     concat('</div>'.html_safe)
   end
