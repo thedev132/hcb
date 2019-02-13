@@ -37,19 +37,15 @@
     Pending invitations
     <%= badge_for @pending.count, class: 'bg-muted' %>
   </h2>
-  <ul class="list list--unlinked list--row my0">
-    <% @pending.each do |invite| %>
-      <% unless invite.cancelled? %>
-        <li class="list--row">
-          <%= avatar_for OpenStruct.new(email: invite.email, name: invite.email), 24, class:
-          'mr1' %>
-          <p class="line-height-3">
-            <strong><%= invite.email %></strong><br>
-            <span class="muted h5">(sent <span title="<%= invite.created_at %>"><%= time_ago_in_words invite.created_at %> ago</span>)</span>
-          </p>
-          <%= pop_icon_to 'view-close', organizer_position_invite_cancel_path(invite.id), method: :post, class: 'error' %>
-        </li>
-      <% end %>
-    <% end %>
-  </ul>
+  <% @pending.each do |invite| %>
+    <%= creator_bar invite %>
+    <div class="card flex items-center pt0 pb0 mb3">
+      <%= avatar_for OpenStruct.new(email: invite.email, name: invite.email), 24, class:
+      'mr1' %>
+      <p class="line-height-3 flex-auto">
+        <strong><%= invite.email %></strong>
+      </p>
+      <%= pop_icon_to 'view-close', organizer_position_invite_cancel_path(invite.id), size: 24, method: :post, size: 24, class: 'error' if invite.sender == current_user || admin_signed_in? %>
+    </div>
+  <% end %>
 <% end %>

@@ -17,6 +17,7 @@
   border: 2px solid currentColor;
   color: map-get($palette, info);
   font-weight: 600;
+  flex-shrink: 0;
   text-decoration: none;
   display: inline-flex;
   align-items: center;

@@ -22,12 +22,13 @@ module UsersHelper
   def admin_tools(class_name = '', &block)
     return unless current_user.admin?
     concat("<div class='admin-tools #{class_name}'>".html_safe)
-      yield
+    yield
     concat('</div>'.html_safe)
   end
 
   def creator_bar(object)
-    creator = defined?(object.creator) ? object.creator : object.user
+    creator = defined?(object.creator) ? object.creator :
+      defined?(object.sender) ? object.sender : object.user
     content_tag :div, class: 'comment__name' do
       user_mention(creator) + relative_timestamp(object.created_at, class: 'h5 muted')
     end
