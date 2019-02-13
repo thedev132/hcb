@@ -19,5 +19,3 @@ _It’s a bank, folks._
 ```
 pg_restore --verbose --clean --no-acl --no-owner -h db -U postgres -d bank_development latest.dump
 ```
-
-MIT License
