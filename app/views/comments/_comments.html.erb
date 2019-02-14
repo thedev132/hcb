@@ -1,14 +1,27 @@
 <div class="comments">
 <% @comments.each do |comment| %>
-  <% next if comment.admin_only && !admin_signed_in? %>
-  <div class="my2">
-    <%= creator_bar comment %>
-    <div class="card">
-      <%= auto_link comment.content %>
-      <% if comment.file.attached? %>
-        <%= link_to '📎', url_for(comment.file), target: '_blank' %>
-      <% end %>
+  <% if comment.admin_only %>
+    <% admin_tools do %>
+      <div class="my2">
+        <%= creator_bar comment %>
+        <div class="card">
+          <%= auto_link comment.content %>
+          <% if comment.file.attached? %>
+            <%= link_to '📎', url_for(comment.file), target: '_blank' %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  <% else %>
+    <div class="my2">
+      <%= creator_bar comment %>
+      <div class="card">
+        <%= auto_link comment.content %>
+        <% if comment.file.attached? %>
+          <%= link_to '📎', url_for(comment.file), target: '_blank' %>
+        <% end %>
+      </div>
     </div>
-  </div>
+  <% end %>
 <% end %>
 </div>
