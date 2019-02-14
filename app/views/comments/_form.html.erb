@@ -21,7 +21,7 @@
     <%= form.file_field :file %>
   </div>
 
-  <% admin_tools do %>
+  <% admin_tools('pb0 mb2') do %>
     <div class="field field--checkbox">
       <%= form.check_box :admin_only, {}, true, false %>
       <%= form.label :admin_only, 'Post as admin-only comment' %>
