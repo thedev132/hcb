@@ -31,6 +31,7 @@ class TransactionsController < ApplicationController
 
   def show
     @transaction = Transaction.find(params[:id])
+    @event = @transaction.event
 
     @commentable = @transaction
     @comments = @commentable.comments
@@ -42,6 +43,7 @@ class TransactionsController < ApplicationController
   def edit
     @transaction = Transaction.find(params[:id])
     authorize @transaction
+    @event = @transaction.event
 
     # so the fee relationship fields render
     @transaction.fee_relationship ||= FeeRelationship.new

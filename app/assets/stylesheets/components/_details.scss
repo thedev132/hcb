@@ -7,6 +7,7 @@
   margin: 0;
   padding-bottom: 1rem;
   padding-top: 1rem;
+  position: relative;
 
   @media (min-width: 32em) {
     grid-template-columns: 10rem auto;
@@ -15,5 +16,11 @@
     strong {
       text-align: right;
     }
+  }
+
+  > a:last-child,
+  > svg {
+    position: absolute;
+    right: 0;
   }
 }

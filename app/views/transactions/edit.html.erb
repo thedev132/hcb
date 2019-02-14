@@ -1,7 +1,10 @@
-<%= link_to 'This transaction', @transaction, class: 'breadcrumb' %>
-<h1>Edit <%= render_money @transaction.amount %>
-<%= @fee && @fee.fee_amount.nil? ? 'fee payment' : 'transaction' %>
-<p class="muted h5"><%= @transaction.name %></p>
+<% page_sm %>
+<% page_snow %>
+
+<%= render 'events/nav' %>
+
+<h1>
+  Editing <%= link_to @fee && @fee.fee_amount.nil? ? 'fee payment' : 'transaction', @transaction %>
 </h1>
 
 <%= render 'form', transaction: @transaction %>

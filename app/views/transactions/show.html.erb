@@ -1,65 +1,64 @@
-<% if current_user.admin? %>
-  <%= link_to 'Transactions', '/bank_accounts/1', class: 'breadcrumb' %>
-<% end %>
-<%= link_to @transaction.event.name, @transaction.event, class: 'breadcrumb' if @transaction.event %>
+<% page_sm %>
+<% page_snow %>
 
-<h1>
-  <%= render_money @transaction.amount %>
-  <%= @transaction.fee_payment? ? 'fee payment' : 'transaction' %>
-  <% if current_user.admin? %>
+<%= render 'events/nav' %>
+
+<h1 class="heading">
+  <span class="flex-auto">
+    <%= @transaction.fee_payment? ? 'Fee payment' : 'Transaction' %>
+  </span>
+  <% admin_tools('pt0') do %>
     <%= link_to 'Edit', edit_transaction_path(@transaction), class: 'btn bg-info' %>
   <% end %>
-  <p class="muted h5"><%= @transaction.name %></p>
 </h1>
 
 <section class="details">
+  <% admin_tools do %>
+    <strong>Name</strong>
+    <%= @transaction.name %>
+  <% end %>
 
-<% if admin_signed_in? %>
-<% admin_tools do %>
-  <strong>Name</strong>
-  <%= @transaction.name %>
-<% end %>
-<% end %>
-
-<p>
-  <strong>Display Name</strong>
-  <span>
-  <%= @transaction.display_name %>
-  <%= link_to 'Rename', edit_transaction_path(@transaction) %>
-  </span>
-</p>
-
-<p>
-  <strong>Amount</strong>
-  <%= render_money @transaction.amount %>
-</p>
-
-<% if @transaction.invoice_payout %>
   <p>
-    <strong>Invoice</strong>
-    <%= link_to "##{@transaction.invoice_payout.invoice.id}", invoice_path(@transaction.invoice_payout.invoice) %>
+    <strong>Display Name</strong>
+    <span>
+      <%= @transaction.display_name %>
+    </span>
+    <%= link_to edit_transaction_path(@transaction), title: 'Rename' do %>
+      <%= inline_icon 'edit', size: 32, class: 'info', 'aria-label': 'Edit icon' %>
+    <% end %>
   </p>
-<% end %>
 
-<% if @transaction.fee_applies? %>
   <p>
-    <strong>Fee</strong>
-    <%= render_money @transaction.fee_relationship.fee_amount %> (<%= render_percentage @transaction.fee_relationship.fee_percent %>)
+    <strong>Amount</strong>
+    <%= render_money @transaction.amount %>
   </p>
-<% elsif @transaction.fee_payment? %>
-  <p>
-    <strong>Note: this is a fee payment</strong>
-  </p>
-<% end %>
 
-<% if @transaction.load_card_request %>
-<p>
-  <strong>Load card request</strong>
-  <%= link_to 'View', load_card_request_path(@transaction.load_card_request) %>
-</p>
-<% end %>
+  <% if @transaction.invoice_payout %>
+    <p>
+      <strong>Invoice</strong>
+      <%= link_to "##{@transaction.invoice_payout.invoice.id}", invoice_path(@transaction.invoice_payout.invoice) %>
+    </p>
+  <% end %>
+
+  <% if @transaction.fee_applies? %>
+    <p>
+      <strong>Fee</strong>
+      <%= render_money @transaction.fee_relationship.fee_amount %> (<%= render_percentage @transaction.fee_relationship.fee_percent %>)
+    </p>
+  <% elsif @transaction.fee_payment? %>
+    <p>
+      <strong>Note: this is a fee payment</strong>
+    </p>
+  <% end %>
+
+  <% if @transaction.load_card_request %>
+    <p>
+      <strong>Load card request</strong>
+      <%= link_to 'View', load_card_request_path(@transaction.load_card_request) %>
+    </p>
+  <% end %>
 </section>
 
 <h2>Comments</h2>
-<%= render "comments/comments" %>
-<%= render "comments/form" %>
+<%= render 'comments/comments' %>
+<%= render 'comments/form' %>
