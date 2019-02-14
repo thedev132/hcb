@@ -28,9 +28,9 @@ class EmburseTransaction < ApplicationRecord
 
   def status_badge_type
     s = state.to_sym
-    return 'success' if s == :completed
-    return 'error' if s == :declined
-    'pending'
+    return :success if s == :completed
+    return :error if s == :declined
+    :pending
   end
 
   def self.total_card_transaction_volume
