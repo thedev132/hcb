@@ -11,6 +11,12 @@
     </div>
   <% end %>
 
+  <div class="field">
+  <%= form.label :display_name, 'Display name' %>
+  <%= form.text_field :display_name, placeholder: transaction.name %>
+  </div>
+
+  <% if admin_signed_in? %>
   <%= form.fields_for :fee_relationship do |fr_form| %>
     <% admin_tools do %>
     <div class="field">
@@ -45,6 +51,7 @@
       <%= fr_form.check_box :is_fee_payment %>
       Is fee payment?
     <% end %>
+  <% end %>
   <% end %>
 
   <div class="actions">
