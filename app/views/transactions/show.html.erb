@@ -13,6 +13,14 @@
 </h1>
 
 <section class="details">
+
+<% if admin_signed_in? %>
+<% admin_tools do %>
+  <strong>Name</strong>
+  <%= @transaction.name %>
+<% end %>
+<% end %>
+
 <p>
   <strong>Display Name</strong>
   <span>
@@ -20,13 +28,6 @@
   <%= link_to 'Rename', edit_transaction_path(@transaction) %>
   </span>
 </p>
-
-<% if admin_signed_in? %>
-<p class="admin-tools">
-  <strong>Name</strong>
-  <%= @transaction.name %>
-</p>
-<% end %>
 
 <p>
   <strong>Amount</strong>
