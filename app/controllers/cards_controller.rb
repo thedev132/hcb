@@ -3,7 +3,7 @@ class CardsController < ApplicationController
 
   # GET /cards
   def index
-    @cards = Card.all
+    @cards = Card.all.includes(:event, :user)
     authorize @cards
   end
 
@@ -88,13 +88,15 @@ class CardsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_card
-      @card = Card.find(params[:id])
-    end
 
-    # Only allow a trusted parameter "white list" through.
-    def card_params
-      params.require(:card).permit(:user_id, :event_id, :full_name, :address, :card_request_id, :last_four, :expiration_month, :expiration_year, :emburse_id)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_card
+    @card = Card.find(params[:id])
+    @event = @card.event
+  end
+
+  # Only allow a trusted parameter "white list" through.
+  def card_params
+    params.require(:card).permit(:user_id, :event_id, :full_name, :address, :card_request_id, :last_four, :expiration_month, :expiration_year, :emburse_id)
+  end
 end
