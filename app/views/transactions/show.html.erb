@@ -3,18 +3,30 @@
 <% end %>
 <%= link_to @transaction.event.name, @transaction.event, class: 'breadcrumb' if @transaction.event %>
 
-<h1 class="heading">
+<h1>
   <%= render_money @transaction.amount %>
   <%= @transaction.fee_payment? ? 'fee payment' : 'transaction' %>
   <% if current_user.admin? %>
     <%= link_to 'Edit', edit_transaction_path(@transaction), class: 'btn bg-info' %>
   <% end %>
+  <p class="muted h5"><%= @transaction.name %></p>
 </h1>
 
 <section class="details">
-<p>
+
+<% if admin_signed_in? %>
+<% admin_tools do %>
   <strong>Name</strong>
   <%= @transaction.name %>
+<% end %>
+<% end %>
+
+<p>
+  <strong>Display Name</strong>
+  <span>
+  <%= @transaction.display_name %>
+  <%= link_to 'Rename', edit_transaction_path(@transaction) %>
+  </span>
 </p>
 
 <p>

@@ -36,6 +36,11 @@ class Transaction < ApplicationRecord
 
   def default_values
     self.is_event_related = true if self.is_event_related.nil?
+    set_default_display_name
+  end
+
+  def set_default_display_name
+    self.display_name ||= self.name
   end
 
   def notify_admin
