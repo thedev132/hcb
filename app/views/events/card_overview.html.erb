@@ -91,8 +91,6 @@ West Hollywood, CA 90069</pre>
   <%= blankslate 'You haven’t requested any physical debit cards yet.' %>
 <% end %>
 
-<% if @emburse_transactions.any? and admin_signed_in? %>
-  <h3 class="heading">
 <% if @load_card_requests.any? %>
   <h2 class="heading">
     Emburse Balance Requests
@@ -117,16 +115,25 @@ West Hollywood, CA 90069</pre>
     </div>
   <% end %>
 <% end %>
+
+<% admin_tools do %>
+  <h2 class="h2 mt0 mb0">
     Emburse Transactions
-  </h3>
+  </h2>
   <ul class="list list--row">
-    <% @emburse_transactions.order(transaction_time: :desc).where.not(transaction_time: nil).each do |transaction| %>
-      <a href="<%= transaction.emburse_path %>" target="_blank">
+    <% @emburse_transactions.each do |t| %>
+      <a href="<%= t.emburse_path %>" target="_blank">
         <li>
           <p class="flex-auto">
-            <%= status_badge transaction.status_badge_type %>
-            <strong><%= render_money transaction.amount %> <%= transaction.merchant_name %> <%= '– ' + transaction.card.full_name if transaction.card %> – <%= transaction.state %></strong>
-            <span class="muted">(created on <%= transaction.transaction_time.to_date %>)</span>
+            <%= status_badge t.status_badge_type %>
+            <strong>
+              <%= render_money t.amount %>
+              <%= t.merchant_name %> – <%= t.state %>
+            </strong>
+            <span class="block muted">
+              <%= user_mention t.card.user if t.card %>
+              (<%= t.transaction_time.to_date %>)
+            </span>
           </p>
         </li>
       </a>
