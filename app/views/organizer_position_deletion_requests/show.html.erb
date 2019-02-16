@@ -1,35 +1,45 @@
-<%= link_to 'Organizer deletion requests', organizer_position_deletion_requests_path, class: 'breadcrumb' %>
+<% page_sm %>
+<% page_snow %>
+<%= render 'events/nav' %>
 
-<div class="details">
-  <p>
-    <strong>Submitted by</strong>
-    <%= user_mention @opdr.submitted_by %>
-    (<%= @opdr.submitted_by.email %>)
-  </p>
+<article class="card mt3">
+  <h1 class="h2 mt0">Organizer position deletion request</h1>
+
+  <div class="details">
+    <p>
+      <strong>Submitted by</strong>
+      <%= user_mention @opdr.submitted_by %>
+    </p>
+
+    <p>
+      <strong>Submitter email</strong>
+      <%= @opdr.submitted_by.email %>
+    </p>
+
+    <p>
+      <strong>Organizer position for deletion</strong>
+      #<%= @opdr.organizer_position.id %> <%= @opdr.organizer_position.user.full_name %>
+    </p>
+
+    <p>
+      <strong>Reason for deletion</strong>
+      <%= @opdr.reason %>
+    </p>
+  </div>
 
   <p>
-    <strong>Organizer position for deletion</strong>
-    #<%= @opdr.organizer_position.id %> <%= @opdr.organizer_position.user.full_name %>
-  </p>
-
-  <p>
-    <strong>Reason for deletion</strong>
-    <%= @opdr.reason %>
-  </p>
-
-  <p>
-    <strong>Outstanding Expensify expenses?</strong>
     <%= @opdr.subject_has_outstanding_expenses_expensify ? '✅' : '❌' %>
+    <strong>Outstanding Expensify expenses?</strong>
   </p>
 
   <p>
-    <strong>Outstanding Emburse transactions?</strong>
     <%= @opdr.subject_has_outstanding_transactions_emburse ? '✅' : '❌' %>
+    <strong>Outstanding Emburse transactions?</strong>
   </p>
 
   <p>
-    <strong>Forward emails?</strong>
     <%= @opdr.subject_emails_should_be_forwarded ? '✅' : '❌' %>
+    <strong>Forward emails?</strong>
   </p>
 
   <% if @opdr.organizer_position.deleted_at.nil? %>
@@ -56,6 +66,7 @@
     data: { confirm: 'This will re-open the request.' },
     class: 'btn bg-info' %>
 <% end %>
+</article>
 
 <h2>Comments</h2>
 <%= render 'comments/comments' %>

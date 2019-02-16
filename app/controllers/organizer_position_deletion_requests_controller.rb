@@ -59,6 +59,7 @@ class OrganizerPositionDeletionRequestsController < ApplicationController
   def set_opdr
     id = params[:organizer_position_deletion_request_id] || params[:id]
     @opdr = OrganizerPositionDeletionRequest.find(id)
+    @event = @opdr.organizer_position.event
   end
 
   def filtered_params
