@@ -18,9 +18,10 @@
     }
   }
 
-  > a:last-child,
+  > a.right:last-child,
   > svg {
     position: absolute;
     right: 0;
+    float: none;
   }
 }

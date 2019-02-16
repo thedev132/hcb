@@ -1,29 +1,34 @@
-<%= link_to @card.event.name, event_path(@card.event), class: 'breadcrumb' %>
-<h1 class="heading">
-  Card for <%= @card.user.email %>
-  <%= link_to 'Edit', edit_card_path(@card), class: 'btn bg-info' if admin_signed_in? %>
-</h1>
+<% page_sm %>
+<% page_snow %>
+<%= render 'events/nav' %>
 
-<section class="details">
-  <p>
-    <strong>Full name</strong>
-    <%= @card.full_name %>
-  </p>
+<article class="card mt3">
+  <section class="details mb3">
+    <h2 class="mt0 mb0">Card</h2>
 
-  <p>
-    <strong>Email address</strong>
-    <%= @card.user.email %>
-  </p>
+    <p>
+      <strong>Belongs to</strong>
+      <%= user_mention @card.user %>
+    </p>
 
-  <p>
-    <strong>Card number</strong>
-    XXXX-XXXX-XXXX-<%= @card.last_four %>
-  </p>
+    <p>
+      <strong>Email address</strong>
+      <%= @card.user.email %>
+    </p>
+
+    <p>
+      <strong>Card number</strong>
+      XXXX-XXXX-XXXX-<%= @card.last_four %>
+      <%= inline_icon 'private', size: 32, class: 'smoke', 'aria-label': 'Lock icon', title: 'Hidden to protect security' %>
+    </p>
+
+    <% admin_tools do %>
+      <strong>Emburse ID</strong>
+      <%= link_to @card.emburse_id, @card.emburse_path %>
+    <% end %>
+  </section>
 
   <% admin_tools do %>
-  <p>
-    <strong>Emburse ID</strong>
-    <%= link_to @card.emburse_id, @card.emburse_path %>
-  </p>
+    <%= link_to 'Edit', edit_card_path(@card), class: 'btn bg-info' %>
   <% end %>
-</section>
+</article>
