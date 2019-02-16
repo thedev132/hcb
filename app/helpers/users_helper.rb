@@ -5,7 +5,7 @@ module UsersHelper
   def gravatar_url(email, name, size)
     name ||= email
     hex = Digest::MD5.hexdigest(email.downcase.strip)
-    "https://gravatar.com/avatar/#{hex}?s=#{size}&d=https%3A%2F%2Fui-avatars.com%2Fapi%2F/#{URI.encode(name)}/#{size}/e42d42/fff"
+    "https://gravatar.com/avatar/#{hex}?s=#{size}&d=https%3A%2F%2Fui-avatars.com%2Fapi%2F/#{URI.encode(name)}/#{size}/#{get_letter_color(name)}/fff"
   end
 
   def avatar_for(user, size = 24, options = {})
@@ -32,5 +32,13 @@ module UsersHelper
     content_tag :div, class: 'comment__name' do
       user_mention(creator) + relative_timestamp(object.created_at, class: 'h5 muted')
     end
+  end
+
+  private
+
+  def get_letter_color(letter)
+    alphabet = ('A'..'Z').to_a
+    colors = ['a9b4bb', '2d9ee4', '2d42e4', '732de4', 'cf2de4', 'e42d9e', 'e42d42', 'e4732d', 'e4cf2d', '9ee42d', '2de473', '2de4cf']
+    colors[alphabet.index(letter.first).to_i % alphabet.length] || colors.last
   end
 end
