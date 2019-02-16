@@ -81,13 +81,15 @@ class GSuitesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_g_suite
-      @g_suite = GSuite.find(params[:id])
-    end
 
-    # Only allow a trusted parameter "white list" through.
-    def g_suite_params
-      params.require(:g_suite).permit(:g_suite_application_id, :domain, :event_id, :verification_key, :dkim_key, :deleted_at)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_g_suite
+    @g_suite = GSuite.find(params[:id])
+    @event = Event.find(params[:event_id]) || @g_suite.event
+  end
+
+  # Only allow a trusted parameter "white list" through.
+  def g_suite_params
+    params.require(:g_suite).permit(:g_suite_application_id, :domain, :event_id, :verification_key, :dkim_key, :deleted_at)
+  end
 end

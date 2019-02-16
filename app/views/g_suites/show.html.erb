@@ -1,4 +1,8 @@
-<%= link_to 'All G Suites', g_suites_path, class: 'breadcrumb' %>
+<% page_sm %>
+<% page_snow %>
+<%= render 'events/nav' %>
+
+<article class="card mt3">
 <h1>G Suite for <%= @g_suite.domain %></h1>
 
 <section class="details">
@@ -22,6 +26,7 @@
   <%= @g_suite.verification_key %>
 </p>
 </section>
+</article>
 
 <h2>Comments</h2>
 <%= render "comments/form" %>

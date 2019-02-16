@@ -1,5 +1,7 @@
-<%= link_to @sponsor.event.name, @sponsor.event, class: 'breadcrumb' %>
-<%= link_to @sponsor.name, @sponsor, class: 'breadcrumb' %>
+<% page_sm %>
+<% page_snow %>
+<%= render 'events/nav' %>
+
 <h1>Editing Sponsor</h1>
 
 <%= render 'form', sponsor: @sponsor %>

@@ -1,3 +1,5 @@
+<% page_md %>
+
 <%= link_to @invoice.sponsor.event.name, @invoice.sponsor.event, class: 'breadcrumb' %>
 <%= link_to @invoice.sponsor.name, @invoice.sponsor, class: 'breadcrumb' %>
 <h1>Invoice for <%= render_money @invoice.total %></h1>

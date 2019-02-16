@@ -8,7 +8,7 @@ class DocumentsController < ApplicationController
   end
 
   def new
-    @document = Document.new(event_id: params[:event_id])
+    @document = Document.new(event: @event)
     authorize @document
   end
 
