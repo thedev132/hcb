@@ -111,13 +111,15 @@ class LoadCardRequestsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_load_card_request
-      @load_card_request = LoadCardRequest.find(params[:id] || params[:load_card_request_id])
-    end
 
-    # Only allow a trusted parameter "white list" through.
-    def load_card_request_params
-      params.require(:load_card_request).permit(:event_id, :creator_id, :load_amount, :emburse_transaction_id)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_load_card_request
+    @load_card_request = LoadCardRequest.find(params[:id] || params[:load_card_request_id])
+    @event = Event.find(params[:event_id]) || @load_card_request.event
+  end
+
+  # Only allow a trusted parameter "white list" through.
+  def load_card_request_params
+    params.require(:load_card_request).permit(:event_id, :creator_id, :load_amount, :emburse_transaction_id)
+  end
 end

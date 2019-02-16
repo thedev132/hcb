@@ -1,59 +1,71 @@
-<%= link_to 'Load card requests', load_card_requests_path, class: 'breadcrumb' %>
-<%= link_to @load_card_request.event.name, @load_card_request.event, class: 'breadcrumb' %>
-<h1 class="heading">
-  Load card request for <%= @load_card_request.event.name %>
-  <%= link_to 'Edit', edit_load_card_request_path(@load_card_request, event_id: @event.id), class: 'btn bg-info' %>
-</h1>
+<% page_sm %>
+<% page_snow %>
+<%= render 'events/nav' %>
 
-<section class="details">
-<p>
-  <strong>Made by</strong>
-  <%= @load_card_request.creator.email %>
-</p>
+<article class="card mt3">
+  <h1 class="heading h2 mt0 mb0">
+    Load card request
+  </h1>
 
-<p>
-  <strong>Fulfilled by</strong>
-  <%= @load_card_request.fulfilled_by ? @load_card_request.fulfilled_by.email : 'unfulfilled' %>
-</p>
+  <section class="details">
+  <p>
+    <strong>Event</strong>
+    <%= link_to @load_card_request.event.name, @load_card_request.event %>
+  </p>
 
-<p>
-  <strong>Load amount</strong>
-  <%= render_money @load_card_request.load_amount %>
-</p>
+  <p>
+    <strong>Made by</strong>
+    <%= user_mention @load_card_request.creator %>
+  </p>
 
-<p>
-  <strong>Event account balance</strong>
-  <%= render_money @load_card_request.event.balance %>
-</p>
+  <p>
+    <strong>Fulfilled by</strong>
+    <%= @load_card_request.fulfilled_by ? user_mention(@load_card_request.fulfilled_by) : 'unfulfilled' %>
+  </p>
 
-<p>
-  <strong>Event Emburse balance</strong>
-  <%= render_money @load_card_request.event.emburse_balance %>
-</p>
+  <p>
+    <strong>Load amount</strong>
+    <%= render_money @load_card_request.load_amount %>
+  </p>
 
-<p class="<%= 'shade-yellow ' unless @load_card_request.emburse_transaction_id.blank? %>">
-  <strong>Event Emburse budget</strong>
-  <%= render_money @load_card_request.event.emburse_budget_limit %>
-</p>
+  <p>
+    <strong>Event account balance</strong>
+    <%= render_money @load_card_request.event.balance %>
+  </p>
 
-<p class="<%= 'shade-yellow ' if @load_card_request.emburse_transaction_id.blank? %>">
-  <strong>Emburse memo</strong>
-  <%= "Load card request ID##{@load_card_request.id}" %>
-</p>
+  <p>
+    <strong>Event Emburse balance</strong>
+    <%= render_money @load_card_request.event.emburse_balance %>
+  </p>
 
-<p class="<%= 'shade-yellow ' if @load_card_request.emburse_transaction_id.blank? %>">
-  <strong>Emburse transaction ID</strong>
-  <%= @load_card_request.emburse_transaction_id.present? ? link_to(@load_card_request.emburse_transaction_id, "https://app.emburse.com/transactions/#{@load_card_request.emburse_transaction_id}") : 'unset' %>
-</p>
+  <p class="<%= 'shade-yellow ' unless @load_card_request.emburse_transaction_id.blank? %>">
+    <strong>Event Emburse budget</strong>
+    <%= render_money @load_card_request.event.emburse_budget_limit %>
+  </p>
 
-</section>
+  <p class="<%= 'shade-yellow ' if @load_card_request.emburse_transaction_id.blank? %>">
+    <strong>Emburse memo</strong>
+    <%= "Load card request ID##{@load_card_request.id}" %>
+  </p>
 
-<% if @load_card_request.under_review? %>
-<p>Load in Emburse before accepting!</p>
+  <p class="<%= 'shade-yellow ' if @load_card_request.emburse_transaction_id.blank? %>">
+    <strong>Emburse transaction ID</strong>
+    <%= @load_card_request.emburse_transaction_id.present? ? link_to(@load_card_request.emburse_transaction_id, "https://app.emburse.com/transactions/#{@load_card_request.emburse_transaction_id}") : 'unset' %>
+  </p>
 
-<p><%= link_to 'Reject', load_card_request_reject_path(@load_card_request, event_id: @load_card_request.event.id), method: :post, data: { confirm: 'Are you sure?' }, class: 'btn bg-error' %></p>
-<p><%= link_to 'Accept request', load_card_request_accept_path(@load_card_request, event_id: @load_card_request.event.id), method: :post, data: { confirm: 'Have you processed in Emburse?' },class: 'btn bg-success' %></p>
-<% end %>
+  </section>
+
+  <% admin_tools do %>
+    <%= link_to 'Edit', edit_load_card_request_path(@load_card_request, event_id: @event.id), class: 'btn bg-info' %>
+  <% end %>
+
+  <% if @load_card_request.under_review? %>
+  <p>Load in Emburse before accepting!</p>
+
+  <p><%= link_to 'Reject', load_card_request_reject_path(@load_card_request, event_id: @load_card_request.event.id), method: :post, data: { confirm: 'Are you sure?' }, class: 'btn bg-error' %></p>
+  <p><%= link_to 'Accept request', load_card_request_accept_path(@load_card_request, event_id: @load_card_request.event.id), method: :post, data: { confirm: 'Have you processed in Emburse?' }, class: 'btn bg-success' %></p>
+  <% end %>
+</article>
 
 <h2>Comments</h2>
 <%= render "comments/form" %>
