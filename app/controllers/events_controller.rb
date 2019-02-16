@@ -69,21 +69,19 @@ class EventsController < ApplicationController
 
   def card_overview
     @event = Event.find(params[:event_id])
+    authorize @event
     @card_requests = @event.card_requests
     @load_card_requests = @event.load_card_requests
-    @emburse_transactions = @event.emburse_transactions
-
-    authorize @event
+    @emburse_transactions = @event.emburse_transactions.order(transaction_time: :desc).where.not(transaction_time: nil).includes({ card: :user })
   end
 
   def g_suite_overview
     @event = Event.find(params[:event_id])
+    authorize @event
     @status = @event.g_suite_status
     @g_suite = @event.g_suite
     @g_suite_application = @event.g_suite_application
     @g_suite_status = @event.g_suite_status
-
-    authorize @event
   end
 
   private

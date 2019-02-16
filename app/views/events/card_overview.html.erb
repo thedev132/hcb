@@ -93,6 +93,30 @@ West Hollywood, CA 90069</pre>
 
 <% if @emburse_transactions.any? and admin_signed_in? %>
   <h3 class="heading">
+<% if @load_card_requests.any? %>
+  <h2 class="heading">
+    Emburse Balance Requests
+    <%= link_to 'Request to Add Money',
+      new_event_load_card_request_path(event_id: @event.id),
+      class: 'btn bg-success' %>
+  </h2>
+  <% @load_card_requests.each do |request| %>
+    <%= creator_bar request %>
+    <div class="card flex items-center pt0 pb0 mb3">
+      <p class="line-height-3 flex-auto">
+        <%= status_badge request.status_badge_type %>
+        <strong class="h3"><%= render_money request.load_amount %></strong>
+        <span class="muted">(<%= request.status %>)</span>
+      </p>
+      <%= pop_icon_to 'view-close',
+        load_card_request_cancel_path(request, event_id: request.event.id),
+        method: :post,
+        title: 'Cancel this request',
+        'data-confirm': 'Are you sure you want to cancel this balance request?',
+        class: 'error' if request.under_review? && (request.creator == current_user || admin_signed_in?) %>
+    </div>
+  <% end %>
+<% end %>
     Emburse Transactions
   </h3>
   <ul class="list list--row">
@@ -106,33 +130,6 @@ West Hollywood, CA 90069</pre>
           </p>
         </li>
       </a>
-    <% end %>
-  </ul>
-<% end %>
-
-<% if @load_card_requests.any? %>
-  <h3 class="heading">
-    Emburse Balance Requests
-    <%# link_to 'Request to Add Money',
-      new_event_load_card_request_path(event_id: @event.id),
-      class: 'btn bg-success' %>
-  </h3>
-  <ul class="list list--unlinked list--row">
-    <% @load_card_requests.each do |request| %>
-      <li>
-        <p class="flex-auto">
-          <%= status_badge request.status_badge_type %>
-          <strong><%= render_money request.load_amount %> – <%= request.status %></strong>
-          <span class="muted">(created by <%= request.creator.name %> on <span title="<%= request.created_at %>"><%= request.created_at.to_date %></span>)</span>
-        </p>
-        <% if request.under_review? && request.creator == current_user %>
-          <%= link_to 'Cancel',
-            load_card_request_cancel_path(request, event_id: request.event.id),
-            method: :post,
-            'data-confirm': 'Are you sure you want to cancel this balance request?',
-            class: 'btn btn--destroy' unless admin_signed_in? %>
-        <% end %>
-      </li>
     <% end %>
   </ul>
 <% end %>

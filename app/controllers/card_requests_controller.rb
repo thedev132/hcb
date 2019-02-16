@@ -12,7 +12,6 @@ class CardRequestsController < ApplicationController
   def show
     authorize @card_request
 
-
     @commentable = @card_request
     @comments = @commentable.comments
     @comment = Comment.new
