@@ -19,19 +19,34 @@
     <span class="muted h5">(So we have context when we contact you.)</span>
   </div>
 
-  <div class="field field--checkbox">
-    <%= form.check_box :subject_has_outstanding_expenses_expensify %>
-    <%= form.label :subject_has_outstanding_expenses_expensify, "Does #{user_mention @target} have outstanding expenses on Expensify?".html_safe %>
+  <p>
+    Does <%= user_mention @target %> have outstanding expenses on Expensify?
+  </p>
+  <div class="field field--radiobox">
+    <%= form.radio_button :subject_has_outstanding_expenses_expensify, false, value: false %>
+    <%= form.label :subject_has_outstanding_expenses_expensify, 'No', value: false %>
+    <%= form.radio_button :subject_has_outstanding_expenses_expensify, true, value: true %>
+    <%= form.label :subject_has_outstanding_expenses_expensify, 'Yes', value: true %>
   </div>
 
-  <div class="field field--checkbox">
-    <%= form.check_box :subject_has_outstanding_transactions_emburse %>
-    <%= form.label :subject_has_outstanding_transactions_emburse, "Does #{user_mention @target} have transactions without receipts on Emburse?".html_safe %>
+  <p>
+    Does <%= user_mention @target %> have transactions without receipts on Emburse?
+  </p>
+  <div class="field field--radiobox">
+    <%= form.radio_button :subject_has_outstanding_transactions_emburse, false, value: false %>
+    <%= form.label :subject_has_outstanding_transactions_emburse, 'No', value: false %>
+    <%= form.radio_button :subject_has_outstanding_transactions_emburse, true, value: true %>
+    <%= form.label :subject_has_outstanding_transactions_emburse, 'Yes', value: true %>
   </div>
 
-  <div class="field field--checkbox">
-    <%= form.check_box :subject_emails_should_be_forwarded %>
-    <%= form.label :subject_emails_should_be_forwarded, "Does #{user_mention @target} have important emails in their G Suite account?".html_safe %>
+  <p>
+    Does <%= user_mention @target %> have important emails in their G Suite account?
+  </p>
+  <div class="field field--radiobox">
+    <%= form.radio_button :subject_emails_should_be_forwarded, false, value: false %>
+    <%= form.label :subject_emails_should_be_forwarded, 'No', value: false %>
+    <%= form.radio_button :subject_emails_should_be_forwarded, true, value: true %>
+    <%= form.label :subject_emails_should_be_forwarded, 'Yes', value: true %>
   </div>
 
   <div class="actions">
