@@ -59,7 +59,7 @@ class Event < ApplicationRecord
 
   # amount incoming from paid Stripe invoices not yet deposited
   def pending_deposits
-    0
+    self.invoices.where(status: 'paid', payout: nil).sum(:payout_creation_balance_net)
   end
 
   def billed_transactions

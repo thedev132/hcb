@@ -136,18 +136,20 @@ class Invoice < ApplicationRecord
     self.payout_creation_queued_at = Time.current
     self.payout_creation_queued_for = create_payout_at
     self.payout_creation_queued_job_id = job.job_id
+    self.payout_creation_balance_net = b_tnx.net # amount to pay out
+    self.payout_creation_balance_stripe_fee = b_tnx.fee
     self.payout_creation_balance_available_at = funds_available_at
 
     self.save!
   end
 
   def create_payout!
-    inv = StripeService::Invoice.retrieve(id: stripe_invoice_id, expand: ['charge.balance_transaction'])
-    amount = inv.charge.balance_transaction.net
-
     raise StandardError, 'Funds not yet available' unless Time.current.to_i > inv.charge.balance_transaction.available_on
 
-    self.payout = InvoicePayout.new(amount: amount, invoice: self)
+    self.payout = InvoicePayout.new(
+      amount: self.payout_creation_balance_net,
+      invoice: self
+    )
 
     self.save!
   end
