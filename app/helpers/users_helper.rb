@@ -2,14 +2,15 @@ require 'digest/md5'
 require 'uri'
 
 module UsersHelper
-  def gravatar_url(email, name, size)
+  def gravatar_url(email, name, id, size)
     name ||= email
     hex = Digest::MD5.hexdigest(email.downcase.strip)
-    "https://gravatar.com/avatar/#{hex}?s=#{size}&d=https%3A%2F%2Fui-avatars.com%2Fapi%2F/#{URI.encode(name)}/#{size}/#{get_letter_color(name)}/fff"
+    puts id
+    "https://gravatar.com/avatar/#{hex}?s=#{size}&d=https%3A%2F%2Fui-avatars.com%2Fapi%2F/#{URI.encode(name)}/#{size}/#{get_user_color(id)}/fff"
   end
 
   def avatar_for(user, size = 24, options = {})
-    image_tag gravatar_url(user.email, user.initials, size * 2),
+    image_tag gravatar_url(user.email, user.initials, user.id, size * 2),
       options.merge({ alt: user.name, width: size, height: size, class: "circle #{options[:class]}" })
   end
 
@@ -36,9 +37,9 @@ module UsersHelper
 
   private
 
-  def get_letter_color(letter)
+  def get_user_color(id)
     alphabet = ('A'..'Z').to_a
-    colors = ['a9b4bb', '2d9ee4', '2d42e4', '732de4', 'cf2de4', 'e42d9e', 'e42d42', 'e4732d', 'e4cf2d', '9ee42d', '2de473', '2de4cf']
-    colors[alphabet.index(letter.first).to_i % alphabet.length] || colors.last
+    colors = ['2d9ee4', '2d42e4', '732de4', 'cf2de4', 'e42d9e', 'e42d42', 'e4732d', 'e9d858', '2de473', '2de4cf']
+    colors[id.to_i % colors.length] || colors.last
   end
 end
