@@ -111,9 +111,9 @@ West Hollywood, CA 90069</pre>
           <%= status_badge t.status_badge_type %>
           </span>
           <% if t.amount > 0 %>
-            <em>Transfer from bank account</em>
+            <strong>Transfer from bank account</strong>
           <% elsif t.merchant_name.nil? %>
-            <em>Transfer back to bank account</em>
+            <strong>Transfer back to bank account</strong>
           <% else %>
             <%= t.merchant_name %>
           <% end %>
