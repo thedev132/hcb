@@ -8,7 +8,7 @@
     <span class="h3 caps slate block">Sign in to</span>
     <span class="primary">Hack Club Bank</span>
   </h1>
-  <%= form_tag login_code_users_path do %>
+  <%= form_tag login_code_users_path, 'data-behavior': 'login' do %>
     <%= label_tag :email, 'Enter your email…', class: 'left-align' %>
     <%= email_field_tag :email, '', placeholder: 'Email address',autofocus: true, autocomplete: 'username', class: 'left-align mb2' %>
     <%= submit_tag 'Get login code' %>

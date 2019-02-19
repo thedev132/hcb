@@ -36,3 +36,13 @@ $(document).on 'turbolinks:load', ->
     value = $(this).val().toLowerCase()
     filterRecords (record) ->
       $(record).text().toLowerCase().indexOf(value) > -1
+
+  $(document).on 'submit', '[data-behavior~=login]', ->
+    val = $('input[name=email]').val()
+    localStorage.setItem 'login_email', val
+
+  if BK.thereIs 'login'
+    if email = localStorage.getItem 'login_email'
+      $('input[type=email]').val email
+
+
