@@ -62,16 +62,6 @@
       <p><em><%= link_to 'Download provided attachment.', @invoice.manually_marked_as_paid_attachment %></em></p>
     <% end %>
   <% else %>
-    <div class="invoice-progress">
-      <% if @invoice.amount_paid > 0 %>
-      <div class="invoice-progress__paid" style="width: <%= number_to_percentage 100 * @invoice.amount_paid / @invoice.total %>;">
-        <%= render_money @invoice.amount_paid %> paid
-      </div>
-      <% end %>
-      <div class="invoice-progress__remaining">
-        <%= render_money @invoice.amount_remaining %> <%= 'unpaid' if @invoice.amount_paid == 0 %>
-      </div>
-    </div>
     <% if @invoice.payout_creation_queued_at && @invoice.payout.nil? %>
       <p>Payout of funds queued for <%= @invoice.payout_creation_queued_for.to_date %>.</p>
     <% elsif @invoice.payout_creation_queued_at && @invoice.payout.present? %>
@@ -80,18 +70,13 @@
   <% end %>
 
   <% if @invoice.hosted_invoice_url && @invoice.invoice_pdf %>
-    <p>
-      View online invoice: <%= link_to @invoice.hosted_invoice_url, @invoice.hosted_invoice_url, target: '_blank' %><br />
-      Download PDF of invoice: <%= link_to 'click here', @invoice.invoice_pdf %>
-    </p>
+    <%= link_to 'Download PDF', @invoice.invoice_pdf, class: 'btn bg-info mr2', target: '_blank'  %>
+    <%= link_to 'View live', @invoice.hosted_invoice_url, class: 'btn bg-accent', target: '_blank'  %>
   <% end %>
 
-  <% admin_tools do %>
-    <% unless @invoice.paid? %>
-      <p><%= link_to 'Manually mark this invoice as paid', invoice_manual_payment_path(@invoice) %></p>
-    <% end %>
-
-    <%= link_to 'View on Stripe', @invoice.stripe_dashboard_url, class: 'btn bg-info' %>
+  <% admin_tools('mt2') do %>
+    <%= link_to 'Manually mark as paid', invoice_manual_payment_path(@invoice), class: 'btn bg-success mr2' unless @invoice.paid? %>
+    <%= link_to 'View on Stripe', @invoice.stripe_dashboard_url, class: 'btn bg-accent' %>
   <% end %>
 </div>
 
