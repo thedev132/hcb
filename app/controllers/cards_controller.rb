@@ -9,8 +9,9 @@ class CardsController < ApplicationController
 
   # GET /cards/1
   def show
-    @load_card_requests = @card.load_card_requests
     authorize @card
+    @load_card_requests = @card.load_card_requests
+    @emburse_transactions = @card.emburse_transactions
   end
 
   # GET /cards/new

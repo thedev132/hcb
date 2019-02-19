@@ -1,8 +1,8 @@
-<% page_sm %>
+<% page_md %>
 <% page_snow %>
 <%= render 'events/nav' %>
 
-<article class="card mt3">
+<article class="card max-width-2 mx-auto mt3">
   <section class="details mb3">
     <h2 class="mt0 mb0">Card</h2>
 
@@ -34,3 +34,43 @@
     <%= link_to 'Edit', edit_card_path(@card), class: 'btn bg-info' %>
   <% end %>
 </article>
+
+<% if @emburse_transactions.any? %>
+  <% show_status = one_isnt_completed? @emburse_transactions %>
+  <h2 class="mt3">
+    Recent Transactions
+  </h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Name</th>
+        <th>Amount</th>
+        <% if show_status %>
+          <th>Status</th>
+        <% end %>
+        <th>Details</th>
+      </tr>
+    </thead>
+    <tbody>
+    <% @emburse_transactions.each do |t| %>
+      <tr>
+        <td><%= t.transaction_time.to_date %></td>
+        <td>
+          <%= status_badge t.status_badge_type %>
+          <%= t.merchant_name %>
+        </td>
+        <td><%= render_money t.amount %></td>
+        <% if show_status %>
+          <td>
+            <%= t.state %>
+          </td>
+        <% end %>
+        <td>
+          <a href="<%= t.emburse_path %>" target="_blank">More</a>
+        </td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+<% end %>
