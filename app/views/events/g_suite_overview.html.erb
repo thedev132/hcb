@@ -16,6 +16,8 @@ when :start %>
   <article class="card mb3">
     <%= render 'g_suite_accounts/panel' %>
   </article>
+  <details <%= @g_suite.g_suite_accounts.nil? ? "open" : nil %>>
+  <summary><h2 class="inline-block pb0 border-none mt0">Setup Instructions</h2></summary>
   <article class="card overflow-visible p0">
     <div class="p2 bg-success white center rounded-top">
       <p><strong class="h3">Your application was accepted!</strong><br />It’s time to set up your servers.</p>
@@ -128,6 +130,7 @@ when :start %>
       </ol>
     </div>
   </article>
+  </details>
 <% when :app_rejected %>
   <p class="error">Your application was rejected.</p>
 <% when :verify_setup %>
