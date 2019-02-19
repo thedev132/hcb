@@ -10,13 +10,19 @@
   <h2 class="mt0 mb2">Summary</h2>
 
   <div class="flex flex-wrap">
-    <div class="stat md-w-50 muted mb2">
-      <span class="stat__label">Bank balance</span>
-      <span class="stat__value"><%= render_money @event.balance, '' %></span>
-    </div>
-    <div class="stat md-w-50 mb2">
-      <span class="stat__label">Emburse balance</span>
+    <div class="stat md-w-50 mb2 tooltipped tooltipped--s" aria-label="The amount available to spend on your debit cards">
+      <span class="stat__label flex items-center">
+      Debit card balance
+      <%= inline_icon 'info', size: 24, class: 'ml1', 'aria-label': 'Info icon' %>
+      </span>
       <span class="stat__value"><%= render_money @event.emburse_balance, '' %></span>
+    </div>
+    <div class="stat md-w-50 muted mb2 tooltipped tooltipped--s" aria-label="The amount stored in your bank–you need to transfer it your card balance if you want to spend it">
+      <span class="stat__label flex items-center">
+      Bank balance
+      <%= inline_icon 'info', size: 24, class: 'muted ml1', 'aria-label': 'Info icon' %>
+      </span>
+      <span class="stat__value"><%= render_money @event.balance, '' %></span>
     </div>
   </div>
 
