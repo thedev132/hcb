@@ -42,7 +42,7 @@
         <% end %>
       </ul>
     <% end %>
-    <% if @events.empty? && @invites.empty? %>
+    <% if @events.empty? && @invites.empty? && !current_user.admin? %>
       <%= blankslate 'No events associated with your account.' %>
       <%= blankslate 'Perhaps reach out to a co-organizer to get added?' %>
     <% end %>
