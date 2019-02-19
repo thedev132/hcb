@@ -5,7 +5,7 @@
 <h1 class="heading">
   <span class="flex items-center flex-auto">
     Documents
-    <%= badge_for @documents.count, class: 'bg-muted' %>
+    <%= badge_for @documents.size, class: 'bg-muted' %>
   </span>
   <% admin_tools do %>
     <%= link_to 'Upload a document',

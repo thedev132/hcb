@@ -3,7 +3,7 @@
 <%= form_with(model: invite, local: true, url: event_organizer_position_invites_path) do |form| %>
   <% if invite.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@invite.errors.count, "error") %> prohibited this invite from being saved:</h2>
+      <h2><%= pluralize(@invite.errors.size, "error") %> prohibited this invite from being saved:</h2>
 
       <ul>
       <% invite.errors.full_messages.each do |message| %>

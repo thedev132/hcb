@@ -4,7 +4,7 @@
 
 <h1 class="flex items-center">
   Team Members
-  <%= badge_for @positions.count, class: 'bg-muted' %>
+  <%= badge_for @positions.size, class: 'bg-muted' %>
 </h1>
 
 <% if @positions.any? %>
@@ -35,7 +35,7 @@
 <% if @pending.any? %>
   <h2 class="flex items-center mt3 mb0">
     Pending invitations
-    <%= badge_for @pending.count, class: 'bg-muted' %>
+    <%= badge_for @pending.size, class: 'bg-muted' %>
   </h2>
   <% @pending.each do |invite| %>
     <%= creator_bar invite %>

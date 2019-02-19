@@ -1,7 +1,7 @@
 <%= form_with(model: [g_suite_application.event, g_suite_application], local: true) do |form| %>
   <% if g_suite_application.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(g_suite_application.errors.count, "error") %> prohibited this g_suite_application from being saved:</h2>
+      <h2><%= pluralize(g_suite_application.errors.size, "error") %> prohibited this g_suite_application from being saved:</h2>
 
       <ul>
       <% g_suite_application.errors.full_messages.each do |message| %>

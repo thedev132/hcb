@@ -1,7 +1,7 @@
 <%= form_with(model: g_suite, local: true, url: event_g_suites_path) do |form| %>
   <% if g_suite.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(g_suite.errors.count, "error") %> prohibited this g_suite from being saved:</h2>
+      <h2><%= pluralize(g_suite.errors.size, "error") %> prohibited this g_suite from being saved:</h2>
 
       <ul>
       <% g_suite.errors.full_messages.each do |message| %>

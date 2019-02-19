@@ -6,20 +6,20 @@ class StaticPagesController < ApplicationController
       @events = current_user.events
       @invites = current_user.organizer_position_invites.pending
 
-      if @events.count == 1 && @invites.count == 0
+      if @events.size == 1 && @invites.size == 0
         redirect_to current_user.events.first
       end
     end
     if admin_signed_in?
       @transaction_volume = Transaction.total_volume
       @active = {
-        card_requests: CardRequest.under_review.count,
-        load_card_requests: LoadCardRequest.under_review.count,
-        g_suite_applications: GSuiteApplication.under_review.count,
-        g_suite_accounts: GSuiteAccount.under_review.count,
-        transactions: Transaction.uncategorized.count,
-        emburse_transactions: EmburseTransaction.under_review.count,
-        organizer_position_deletion_requests: OrganizerPositionDeletionRequest.under_review.count
+        card_requests: CardRequest.under_review.size,
+        load_card_requests: LoadCardRequest.under_review.size,
+        g_suite_applications: GSuiteApplication.under_review.size,
+        g_suite_accounts: GSuiteAccount.under_review.size,
+        transactions: Transaction.uncategorized.size,
+        emburse_transactions: EmburseTransaction.under_review.size,
+        organizer_position_deletion_requests: OrganizerPositionDeletionRequest.under_review.size
       }
     end
   end

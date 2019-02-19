@@ -5,7 +5,7 @@
 <%= form_with(model: @emburse_transaction, local: true) do |form| %>
   <% if @emburse_transaction.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@emburse_transaction.errors.count, 'error') %> prohibited this account from being saved:</h2>
+      <h2><%= pluralize(@emburse_transaction.errors.size, 'error') %> prohibited this account from being saved:</h2>
       <ul>
       <% @emburse_transaction.errors.full_messages.each do |message| %>
         <li><%= message %></li>

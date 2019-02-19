@@ -63,7 +63,7 @@ class User < ApplicationRecord
   def slug_candidates
     slug = normalize_friendly_id self.name
     # From https://github.com/norman/friendly_id/issues/480
-    sequence = User.where("slug LIKE ?", "#{slug}-%").count + 2
+    sequence = User.where("slug LIKE ?", "#{slug}-%").size + 2
     [slug, "#{slug} #{sequence}"]
   end
 end
