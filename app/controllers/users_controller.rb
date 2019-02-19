@@ -8,7 +8,7 @@ class UsersController < ApplicationController
 
   # post to request login code
   def login_code
-    @email = params[:email]
+    @email = params[:email].downcase
 
     resp = ApiService.request_login_code(@email)
 
