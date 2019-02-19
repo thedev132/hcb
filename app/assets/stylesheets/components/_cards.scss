@@ -5,27 +5,11 @@
   border-radius: 0.5rem;
   overflow: hidden;
 }
-.card--tall {
-  min-height: 6rem;
-}
 
 .card h1,
 .card h2 {
   margin-right: 0;
   width: 100%;
-}
-
-.card strong {
-  font-size: 1.125;
-  line-height: 1.125;
-}
-
-.card .list {
-  &,
-  > a > li,
-  > li {
-    margin-right: 2rem;
-  }
 }
 
 .event-summary {
@@ -70,24 +54,7 @@
   &.bg-primary .stat__label {
     color: $red1;
   }
-  &.bg-info .stat__label {
-    color: $blue1;
-  }
   &.bg-accent .stat__label {
     color: $indigo1;
-  }
-
-  .list {
-    width: 100% !important;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-  }
-
-  @media screen and (min-width: 32em) {
-    .list {
-      max-height: 16rem;
-      overflow-y: auto;
-      -webkit-overflow-scrolling: touch;
-    }
   }
 }
