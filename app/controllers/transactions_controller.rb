@@ -96,7 +96,7 @@ class TransactionsController < ApplicationController
       :load_card_request_id,
       :invoice_payout_id,
       :display_name,
-      fee_relationship_attributes: [ :event_id, :is_fee_payment ]
+      fee_relationship_attributes: [ :event_id, :fee_applies, :is_fee_payment ]
     )
   end
 end

@@ -45,8 +45,12 @@
         <%= form.check_box :is_event_related %>
         Is event-related?
       <% end %>
+      <%= fr_form.label :fee_applies, class: 'field mb1' do %>
+        &nbsp;&nbsp;&nbsp;&nbsp;<%= fr_form.check_box :fee_applies %>
+        Should charge fee?
+      <% end %>
       <%= fr_form.label :is_fee_payment, class: 'field mb2' do %>
-        <%= fr_form.check_box :is_fee_payment %>
+        &nbsp;&nbsp;&nbsp;&nbsp;<%= fr_form.check_box :is_fee_payment %>
         Is fee payment?
       <% end %>
     <% end %>
