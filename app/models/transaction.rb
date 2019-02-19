@@ -34,6 +34,12 @@ class Transaction < ApplicationRecord
     self.sum('@amount')
   end
 
+  delegate :url_helpers, to: 'Rails.application.routes'
+  def link
+    host = Rails.application.config.action_mailer.default_url_options[:host]
+    host + url_helpers.transaction_path(self)
+  end
+
   def default_values
     self.is_event_related = true if self.is_event_related.nil?
     set_default_display_name
