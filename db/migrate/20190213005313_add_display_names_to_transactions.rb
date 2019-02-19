@@ -3,7 +3,7 @@ class AddDisplayNamesToTransactions < ActiveRecord::Migration[5.2]
     add_column :transactions, :display_name, :text
 
     reversible do |dir|
-      dir.up { Transaction.update_all('display_name = name') }
+      dir.up { Transaction.find_each(&:set_default_display_name) }
     end
   end
 end
