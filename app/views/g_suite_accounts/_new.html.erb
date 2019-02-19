@@ -32,6 +32,7 @@
   <div class="field">
     <%= form.label :backup_email %>
     <%= form.email_field :backup_email, value: current_user.email %>
+    <span class="block muted h5">(This address will receive an initial password, password reset emails, etc.)</span>
   </div>
   <div class="actions">
     <%= form.submit 'Create' %>

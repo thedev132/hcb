@@ -18,7 +18,7 @@
     <meta name="msapplication-TileColor" content="#e42d42">
     <meta name="theme-color" content="#e42d42">
   </head>
-  <body class="<%= content_for :page_class %>">
+  <body class="bg-snow <%= content_for :page_class %>">
     <% unless @hide_home %>
       <%= link_to root_path, class: 'home pt1 md-pt2' do %>
         <%= image_tag 'logo.svg', width: @home_size || 48, height: @home_size || 48, alt: 'Bank logo' %>
