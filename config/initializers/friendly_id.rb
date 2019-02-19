@@ -66,9 +66,9 @@ FriendlyId.defaults do |config|
   # a UUID, separated by a single dash. You can configure the character used as the
   # separator. If you're upgrading from FriendlyId 4, you may wish to replace this
   # with two dashes.
-
-  config.sequence_separator = '_' # use underscore instead of dash
-
+  #
+  # config.sequence_separator = '-'
+  #
   # Note that you must use the :slugged addon **prior** to the line which
   # configures the sequence separator, or else FriendlyId will raise an undefined
   # method error.
