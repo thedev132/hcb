@@ -31,11 +31,18 @@ Sponsorship fee: <%= render_percentage @event.sponsorship_fee %>`)">
 
 <%= render 'nav', hide_name: true %>
 
-<p class="muted mt3">
-  Your point of contact is <%= user_mention @event.point_of_contact %>– please
-  don’t hesitate to text/call at
-  <%= @event.point_of_contact.pretty_phone_number %> or email at
-  <%= mail_to @event.point_of_contact.email %>.
+<p class="muted flex flex-wrap items-center justify-center center mt2">
+  Your point of contact is <%= user_mention @event.point_of_contact, class: 'ml1 mr0' %>.
+  Text / call at 
+  <span class="flex items-center medium ml1">
+    <%= inline_icon 'message', size: 24, class: 'muted', style: 'margin-right: 0.125rem;' %>
+    <%= @event.point_of_contact.pretty_phone_number %>
+  </span>
+  <span class="ml1 mr1">or email at</span>
+  <%= mail_to @event.point_of_contact.email, class: 'flex items-center medium' do %>
+    <%= inline_icon 'email', size: 24, class: 'muted', style: 'margin-right: 0.125rem;' %>
+    <%= @event.point_of_contact.email %>
+  <% end %>.
 </p>
 
 <h2 class="mb2">

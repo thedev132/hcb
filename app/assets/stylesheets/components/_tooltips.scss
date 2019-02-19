@@ -1,6 +1,5 @@
 .tooltipped {
   position: relative;
-  z-index: 1;
 
   &:after {
     background-color: rgba(map-get($palette, black), 0.875);
@@ -28,7 +27,7 @@
     transform: translateY(50%);
     transition: 0.125s all ease-in-out;
     width: max-content;
-    z-index: 4;
+    z-index: -1;
   }
 
   &:hover:after,

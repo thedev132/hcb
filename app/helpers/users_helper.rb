@@ -13,17 +13,17 @@ module UsersHelper
       options.merge({ alt: user.name, width: size, height: size, class: "circle #{options[:class]}" })
   end
 
-  def user_mention(user)
+  def user_mention(user, options = {})
     avi = avatar_for user
     name = content_tag :span, user.name
     if user.admin?
       bolt = inline_icon 'admin-badge', size: 20 
       content_tag :span,
         avi + bolt + name,
-        class: 'mention mention--admin inline-flex items-center tooltipped tooltipped--n',
+        class: "mention mention--admin inline-flex items-center tooltipped tooltipped--n #{options[:class]}",
         'aria-label': "#{user.name.split(' ').first} is an admin"
     else
-      content_tag :span, avi + name, class: 'mention inline-flex items-center'
+      content_tag :span, avi + name, class: "mention inline-flex items-center #{options[:class]}"
     end
   end
 
