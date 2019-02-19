@@ -4,4 +4,4 @@
 //= require turbolinks
 
 //= require global
-//= require transactions
+//= require ui

@@ -193,12 +193,25 @@ svg {
 
 .flash {
   background-color: $white;
-  border-radius: 4px;
+  border-radius: 0.5rem;
   border: 1px solid currentColor;
+  box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.0625), 0 4px 8px 0 rgba(0, 0, 0, 0.125);
   font-weight: 500;
-  margin: 24px auto;
   max-width: 24rem;
-  padding: 0.75rem 1.25rem;
+  padding: 0.5rem 0.75rem 0.5rem 1rem;
+
+  &.success {
+    color: $teal7;
+    background-color: $teal0;
+  }
+  &.info {
+    color: $blue7;
+    background-color: $blue0;
+  }
+  &.error {
+    color: $red7;
+    background-color: $red0;
+  }
 }
 
 .admin-tools {

@@ -1,4 +1,7 @@
 $(document).on 'turbolinks:load', ->
+  $(document).on 'click', '[data-behavior~=flash]', ->
+    $(this).fadeOut 'medium'
+
   currentFilter = ->
     BK.s('transactions_filter_item', '[aria-selected=true]').data('name')
 
