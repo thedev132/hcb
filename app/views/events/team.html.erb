@@ -45,7 +45,22 @@
       <p class="line-height-3 flex-auto">
         <strong><%= invite.email %></strong>
       </p>
-      <%= pop_icon_to 'view-close', organizer_position_invite_cancel_path(invite.id), size: 24, method: :post, size: 24, class: 'error' if invite.sender == current_user || admin_signed_in? %>
+      <% if invite.sender == current_user || admin_signed_in? %>
+        <%= pop_icon_to 'view-close',
+          organizer_position_invite_cancel_path(invite.id),
+          size: 24,
+          method: :post,
+          class: 'error tooltipped tooltipped--w',
+          'aria-label': 'Cancel this invitation' %>
+      <% else %>
+        <%= pop_icon_to 'view-close',
+          organizer_position_invite_cancel_path(invite.id),
+          method: :post,
+          size: 24,
+          class: 'muted tooltipped tooltipped--w',
+          'aria-label': 'Only the sender can cancel an invitation',
+          disabled: true %>
+      <% end %>
     </div>
   <% end %>
 <% end %>

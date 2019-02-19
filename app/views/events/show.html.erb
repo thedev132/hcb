@@ -6,7 +6,7 @@
   <span class="flex items-center">
     <% if admin_signed_in? %>
       <span
-        class="badge bg-info ml0 mr2"
+        class="badge bg-warning ml0 mr2"
         onclick="alert(`Date: <%= @event.start.to_date %>–<%= @event.end.to_date %>
 Address: <%= @event.address %>
 Sponsorship fee: <%= render_percentage @event.sponsorship_fee %>`)">
