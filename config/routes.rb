@@ -54,20 +54,6 @@ Rails.application.routes.draw do
     resources :comments
   end
 
-  resources :events do
-    get 'team', to: 'events#team', as: :team
-    get 'g_suite', to: 'events#g_suite_overview', as: :g_suite_overview
-    get 'cards', to: 'events#card_overview', as: :cards_overview
-    resources :organizer_position_invites,
-      only: [ :new, :create ],
-      path: 'invites'
-    resources :g_suites, only: [ :new, :create, :edit, :update ]
-    resources :g_suite_applications, only: [ :new, :create, :edit, :update ]
-    resources :load_card_requests, only: [ :new ]
-    resources :documents, only: [ :index ]
-    resources :invoices, only: [ :new, :create, :index ]
-  end
-
   resources :sponsors
 
   resources :invoices, only: [ :show ] do
@@ -107,4 +93,21 @@ Rails.application.routes.draw do
   resources :emburse_transactions, only: [:index, :edit, :update]
 
   post 'export/finances', to: 'exports#financial_export'
+
+  get '/events' => 'events#index'
+  resources :events, path: '/' do
+    get 'team', to: 'events#team', as: :team
+    get 'g_suite', to: 'events#g_suite_overview', as: :g_suite_overview
+    get 'cards', to: 'events#card_overview', as: :cards_overview
+    resources :organizer_position_invites,
+      only: [ :new, :create ],
+      path: 'invites'
+    resources :g_suites, only: [ :new, :create, :edit, :update ]
+    resources :g_suite_applications, only: [ :new, :create, :edit, :update ]
+    resources :load_card_requests, only: [ :new ]
+    resources :documents, only: [ :index ]
+    resources :invoices, only: [ :new, :create, :index ]
+  end
+  # Beware: Routes after "resources :events" might be overwritten by a
+  # similarly named event
 end
