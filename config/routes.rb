@@ -109,6 +109,10 @@ Rails.application.routes.draw do
     resources :documents, only: [ :index ]
     resources :invoices, only: [ :new, :create, :index ]
   end
+
+  # rewrite old event urls to the new ones not prefixed by /events/
+  get '/events/*path', to: redirect('/%{path}', status: 302)
+
   # Beware: Routes after "resources :events" might be overwritten by a
   # similarly named event
 end
