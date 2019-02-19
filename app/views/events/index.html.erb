@@ -10,15 +10,15 @@
 <div class="filterbar flex flex-wrap items-center width-100">
   <input
     type="search"
-    data-behavior="transactions_search"
+    data-behavior="filterbar_search"
     placeholder="Search…"
     aria-label="Filter events"
     class="flex-auto md-mr2"
     style="width: auto; max-width: none;">
-  <div data-behavior="transactions_filter" role="tablist" class="filterbar__filters flex mt1 lg-mt0">
-    <%= transactions_filter_item 'All', :exists, true %>
-    <%= transactions_filter_item 'Past', :past %>
-    <%= transactions_filter_item 'Future', :future %>
+  <div data-behavior="filterbar" role="tablist" class="filterbar__filters flex mt1 lg-mt0">
+    <%= filterbar_item 'All', :exists, true %>
+    <%= filterbar_item 'Past', :past %>
+    <%= filterbar_item 'Future', :future %>
   </div>
 </div>
 

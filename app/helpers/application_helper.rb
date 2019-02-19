@@ -61,6 +61,12 @@ module ApplicationHelper
     doc.to_html.html_safe
   end
 
+  def filterbar_item(label, name, selected = false)
+    content_tag :a, label, class: 'filterbar__item',
+      tabindex: 0, role: 'tab', 'aria-selected': selected,
+      data: { name: name.to_s, behavior: 'filterbar_item' }
+  end
+
   def page_hide_home
     @hide_home = true
   end
