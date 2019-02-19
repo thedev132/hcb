@@ -30,22 +30,21 @@
     </div>
   </div>
 
-  <ul class="grid">
+  <ul class="grid grid--spacious">
     <% @invoices.each do |i| %>
       <%= link_to i, data: { behavior: 'filterbar_row', filter: i.filter_data.to_json } do %>
+        <%= creator_bar i %>
         <li class="card">
           <div class="flex flex-wrap items-center">
             <strong class="flex flex-auto items-center mb1">
               <span class="h3"><%= i.sponsor.name %></span>
-              <span class="badge bg-<%= i.paid? ? 'success' : 'error' %>">
-                <%= i.paid? ? 'Paid' : 'Unpaid' %>
-              </span>
             </strong>
             <span class="block h1 black line-height-1 <%= i.state %>"><%= render_money_short i.item_amount %></span>
           </div>
           <div class="flex flex-wrap justify-between items-center">
-            <%= user_mention i.creator %>
-            <span class="muted"><%= time_ago_in_words i.created_at %> ago</span>
+              <span class="ml0 badge bg-<%= i.paid? ? 'success' : 'error' %>">
+                <%= i.paid? ? 'Paid' : 'Unpaid' %>
+              </span>
           </div>
         </li>
       <% end %>
