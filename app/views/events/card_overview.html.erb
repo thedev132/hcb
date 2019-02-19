@@ -92,6 +92,8 @@ West Hollywood, CA 90069</pre>
 <% end %>
 
 <% if @emburse_transactions.any? %>
+</main>
+<main class="container">
   <h2 class="mt3 mb2">
     Debit Card Transactions
   </h2>
@@ -102,16 +104,15 @@ West Hollywood, CA 90069</pre>
         <th>Name</th>
         <th>Amount</th>
         <th>Running total</th>
-        <th>By</th>
         <th>On</th>
-        <th>Details</th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
-    <% running_sum = @emburse_transactions.sum(&:amount) %>
+    <% running_sum = @emburse_transactions.completed.sum(&:amount) %>
     <% @emburse_transactions.each do |t| %>
       <tr>
-        <td><%= t.transaction_time.to_date %></td>
+        <td><%= t.transaction_time.nil? ? '–' : t.transaction_time.to_date %></td>
         <td>
           <span class="tooltipped tooltipped--n" aria-label="<%= t.state.capitalize %>">
           <%= status_badge t.status_badge_type %>
@@ -126,12 +127,10 @@ West Hollywood, CA 90069</pre>
         </td>
         <td><%= render_money t.amount %></td>
         <td><%= render_money running_sum %></td>
-        <% running_sum -= t.amount %>
-        <td>
-          <%= t.card.nil? ? '—' : t.card.full_name %>
-        </td>
+        <% running_sum -= t.amount if t.completed? %>
         <td>
           <%= t.card.nil? ? '—' : card_mention(t.card) %>
+          <%= "(#{t.card.full_name})" if t.card %>
         </td>
         <td>
           <a href="<%= t.emburse_path %>" target="_blank">More</a>

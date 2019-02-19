@@ -2,17 +2,11 @@
 <% page_md %>
 <%= render 'events/nav' %>
 
-<div class="emburse-cards__card">
-  <p class="emburse-cards__card__number">
-    <span>XXXX-XXXX-XXXX-</span><strong><%= @card.last_four %></strong>
-  </p>
-  <p class="emburse-cards__card__name"><%= @card.full_name %></p>
-</div>
 <article class="card max-width-2 mx-auto mt3">
   <section class="details mb3">
     <h2 class="mt0 mb0 heading">
-    <span class="flex-auto">Card for <%= @card.full_name %></span>
-    <%= card_mention @card %>
+      <span class="flex-auto">Card for <%= @card.full_name %></span>
+      <span class="h3"><%= card_mention @card %></span>
     </h2>
 
     <p>
