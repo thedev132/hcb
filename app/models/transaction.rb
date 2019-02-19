@@ -71,7 +71,7 @@ class Transaction < ApplicationRecord
     is_event_related && fee_relationship&.fee_applies
   end
 
-  def uncategorized?
+  def categorized?
     is_event_related && fee_relationship_id
   end
 

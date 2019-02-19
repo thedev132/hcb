@@ -53,8 +53,7 @@ class TransactionsController < ApplicationController
     @transaction = Transaction.find(params[:id])
     authorize @transaction
 
-    currently_categorized = @transaction.uncategorized?
-
+    currently_categorized = @transaction.categorized?
     fee_relationship = @transaction.fee_relationship
 
     @transaction.assign_attributes(transaction_params)
@@ -72,7 +71,7 @@ class TransactionsController < ApplicationController
         fee_relationship.destroy! if should_delete_fee_relationship
 
         # if we just categorized the transaction & it's an invoice payout, send email to organizers
-        if currently_categorized != @transaction.uncategorized? && @transaction.invoice_payout
+        if (currently_categorized != @transaction.categorized?) && @transaction.invoice_payout
           @transaction.notify_user_invoice
         end
 
