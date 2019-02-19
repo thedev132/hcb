@@ -74,27 +74,7 @@ West Hollywood, CA 90069</pre>
   </section>
 <% elsif @card_requests.any? %>
   <%= blankslate 'No cards have been accepted yet.' %>
-<% end %>
-
-<% if @card_requests.any? %>
-  <h2 class="mb1">Card Requests</h2>
-  <% @card_requests.each do |request| %>
-    <%= creator_bar request %>
-    <div class="card flex items-center pt0 pb0 mb3">
-      <p class="line-height-3 flex-auto">
-        <%= status_badge request.status_badge_type %>
-        <strong class="h3"><%= request.full_name %></strong>
-        <span class="muted">(<%= request.status %>)</span>
-      </p>
-      <%= pop_icon_to 'view-close',
-        card_request_cancel_path(request),
-        method: :post,
-        title: 'Cancel this request',
-        'data-confirm': 'Are you sure you want to cancel your card request?',
-        class: 'error' if request.under_review? && (request.creator == current_user || admin_signed_in?) %>
-    </div>
-  <% end %>
-<% elsif @cards.empty? %>
+<% elsif @cards.blank? %>
   <%= blankslate 'You haven’t requested any physical debit cards yet.' %>
 <% end %>
 
@@ -107,7 +87,7 @@ West Hollywood, CA 90069</pre>
   </h2>
   <% @load_card_requests.each do |request| %>
     <%= creator_bar request %>
-    <div class="card flex items-center pt0 pb0 mb3">
+    <div class="card flex items-center pt0 pb0 mb2">
       <p class="line-height-3 flex-auto">
         <%= status_badge request.status_badge_type %>
         <strong class="h3"><%= render_money request.load_amount %></strong>
@@ -120,6 +100,20 @@ West Hollywood, CA 90069</pre>
         'data-confirm': 'Are you sure you want to cancel this balance request?',
         class: 'error' if request.under_review? && (request.creator == current_user || admin_signed_in?) %>
     </div>
+  <% end %>
+<% end %>
+
+<% admin_tools('mt3') do %>
+  <h2 class="mt0 mb1">Card Requests</h2>
+  <% @card_requests.each do |request| %>
+    <%= link_to request, class: 'text-decoration-none mb2' do %>
+      <%= creator_bar request %>
+      <div class="card">
+        <%= status_badge request.status_badge_type %>
+        <strong class="h3"><%= request.full_name %></strong>
+        <span class="muted">(<%= request.status %>)</span>
+      </div>
+    <% end %>
   <% end %>
 <% end %>
 
