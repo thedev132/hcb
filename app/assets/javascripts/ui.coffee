@@ -43,7 +43,7 @@ $(document).on 'turbolinks:load', ->
 
   if BK.thereIs 'login'
     if email = localStorage.getItem 'login_email'
-      $('input[type=email]').val email
+      BK.s('login').find('input[type=email]').val email
   
   $(document).on 'change', '[name="invoice[sponsor]"]', (e) ->
     sponsor = $(e.target).children('option:selected').data 'json'
