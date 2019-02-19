@@ -123,27 +123,25 @@ West Hollywood, CA 90069</pre>
   <% end %>
 <% end %>
 
-<% admin_tools do %>
-  <h2 class="h2 mt0 mb0">
-    Emburse Transactions
-  </h2>
-  <ul class="list list--row">
-    <% @emburse_transactions.each do |t| %>
-      <a href="<%= t.emburse_path %>" target="_blank">
-        <li>
-          <p class="flex-auto">
-            <%= status_badge t.status_badge_type %>
-            <strong>
-              <%= render_money t.amount %>
-              <%= t.merchant_name %> – <%= t.state %>
-            </strong>
-            <span class="block muted">
-              <%= user_mention t.card.user if t.card %>
-              (<%= t.transaction_time.to_date %>)
-            </span>
-          </p>
-        </li>
-      </a>
-    <% end %>
-  </ul>
-<% end %>
+<h2 class="mt3 mb0">
+  Emburse Transactions
+</h2>
+<ul class="list list--row">
+  <% @emburse_transactions.each do |t| %>
+    <a href="<%= t.emburse_path %>" target="_blank">
+      <li>
+        <p class="flex-auto">
+          <%= status_badge t.status_badge_type %>
+          <strong>
+            <%= render_money t.amount %>
+            <%= t.merchant_name %> – <%= t.state %>
+          </strong>
+          <span class="block muted">
+            <%= user_mention t.card.user if t.card %>
+            (<%= t.transaction_time.to_date %>)
+          </span>
+        </p>
+      </li>
+    </a>
+  <% end %>
+</ul>
