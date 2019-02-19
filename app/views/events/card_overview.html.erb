@@ -8,9 +8,16 @@
 
 <article class="card">
   <h2 class="mt0 mb2">Summary</h2>
-  <div class="stat inline-block mr2 mb2">
-    <span class="stat__label">Available balance</span>
-    <span class="stat__value"><%= render_money @event.emburse_balance, '' %></span>
+
+  <div class="flex flex-wrap">
+    <div class="stat md-w-50 muted mb2">
+      <span class="stat__label">Bank balance</span>
+      <span class="stat__value"><%= render_money @event.balance, '' %></span>
+    </div>
+    <div class="stat md-w-50 mb2">
+      <span class="stat__label">Emburse balance</span>
+      <span class="stat__value"><%= render_money @event.emburse_balance, '' %></span>
+    </div>
   </div>
 
   <div class="flex flex-wrap items-center">
