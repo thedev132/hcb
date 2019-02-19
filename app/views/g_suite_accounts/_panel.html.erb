@@ -11,18 +11,21 @@
         <p class="slate">
           <% if account.initial_password.present? %>
             <%= status_badge :success %>
-            <span>Account active. Use the one-time password emailed to <%= account.backup_email %> to sign in the first time.</span>
+            <span>Active.</span>
           <% else %>
             <%= status_badge :pending %>
-            <span>account not yet set up</span>
+            <span>Account not yet set up.</span>
+          <% end %>
+          <% if admin_signed_in? || account.backup_email == current_user.email %>
+            <span>Backup email: <%= content_tag :code, account.backup_email %></span>
           <% end %>
         </p>
-        <% if admin_signed_in? || account.backup_email === current_user.email %>
-          <p class="muted">for <%= account.backup_email %></p>
-        <% end %>
       </li>
       <% end %>
   </ul>
+  <% if one_has_password? @g_suite.g_suite_accounts %>
+    <p>Sign in to your active account with the one-time password emailed to your backup address.</p>
+  <% end %>
 <% end %>
 
 <%= render 'g_suite_accounts/new', g_suite_account: GSuiteAccount.new(g_suite: @g_suite) %>
