@@ -32,6 +32,8 @@ gem 'turbolinks', '~> 5'
 
 # Track bugs
 gem 'bugsnag'
+# Performance tracking
+gem 'skylight'
 
 # For Plaid integration
 gem 'plaid', '~> 6.0'
