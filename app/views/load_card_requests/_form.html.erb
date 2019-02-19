@@ -22,18 +22,18 @@
     </div>
   </div>
 
-  <% if admin_signed_in? %>
-  <div class="field">
-    <%= form.label :emburse_transaction_id, 'Emburse transaction ID', class: load_card_request.emburse_transaction_id.blank? && 'shade-yellow' %>
-    <%= form.text_field :emburse_transaction_id %>
-  </div>
+  <% admin_tools do %>
+    <div class="field">
+      <%= form.label :emburse_transaction_id, 'Emburse transaction ID', class: load_card_request.emburse_transaction_id.blank? %>
+      <%= form.text_field :emburse_transaction_id %>
+    </div>
   <% end %>
 
   <div class="actions">
     <% if load_card_request.persisted? %>
       <%= form.submit 'Update' %>
     <% else %>
-      <%= form.submit 'Request', data: { confirmation: "Your money will finish transferring in 2-3 days. After that you can spend it from your card."} %>
+      <%= form.submit 'Request transfer', data: { confirmation: 'Your money will finish transferring in 2-3 days. After that you can spend it from your card.' } %>
     <% end %>
   </div>
 <% end %>
