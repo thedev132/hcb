@@ -4,7 +4,7 @@
 
 <article class="card mt3">
   <h1 class="heading h2 mt0 mb0">
-    Load card request
+    Transfer Request
   </h1>
 
   <section class="details">
@@ -45,7 +45,7 @@
 
   <p class="<%= 'shade-yellow ' if @load_card_request.emburse_transaction_id.blank? %>">
     <strong>Emburse memo</strong>
-    <%= "Load card request ID##{@load_card_request.id}" %>
+    <%= "Transfer request ID##{@load_card_request.id}" %>
   </p>
 
   <p class="<%= 'shade-yellow ' if @load_card_request.emburse_transaction_id.blank? %>">
