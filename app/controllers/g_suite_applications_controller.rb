@@ -87,7 +87,7 @@ class GSuiteApplicationsController < ApplicationController
   # Use callbacks to share common setup or constraints between actions.
   def set_g_suite_application
     @g_suite_application = GSuiteApplication.find(params[:id] || params[:g_suite_application_id])
-    @event = Event.find(params[:event_id]) || @g_suite_application.event
+    @event = @g_suite_application.event
   end
 
   def set_event
