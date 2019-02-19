@@ -94,6 +94,7 @@ Rails.application.routes.draw do
 
   post 'export/finances', to: 'exports#financial_export'
 
+  post '/events' => 'events#create'
   get '/events' => 'events#index'
   resources :events, path: '/' do
     get 'team', to: 'events#team', as: :team
