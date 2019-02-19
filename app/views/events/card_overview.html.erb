@@ -95,12 +95,14 @@ West Hollywood, CA 90069</pre>
         <th>Date</th>
         <th>Name</th>
         <th>Amount</th>
+        <th>Running total</th>
         <th>By</th>
         <th>On</th>
         <th>Details</th>
       </tr>
     </thead>
     <tbody>
+    <% running_sum = @emburse_transactions.sum(&:amount) %>
     <% @emburse_transactions.each do |t| %>
       <tr>
         <td><%= t.transaction_time.to_date %></td>
@@ -117,6 +119,8 @@ West Hollywood, CA 90069</pre>
           <% end %>
         </td>
         <td><%= render_money t.amount %></td>
+        <td><%= render_money running_sum %></td>
+        <% running_sum -= t.amount %>
         <td>
           <%= t.card.full_name if t.card %>
         </td>
