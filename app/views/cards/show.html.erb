@@ -16,11 +16,13 @@
       <%= @card.user.email %>
     </p>
 
-    <p>
+    <div>
       <strong>Card number</strong>
       XXXX-XXXX-XXXX-<%= @card.last_four %>
-      <%= inline_icon 'private', size: 32, class: 'smoke', 'aria-label': 'Lock icon', title: 'Hidden to protect security' %>
-    </p>
+      <div class="right tooltipped tooltipped--w" aria-label="Full number hidden to protect security">
+        <%= inline_icon 'private', size: 32, class: 'smoke' %>
+      </div>
+    </div>
 
     <% admin_tools do %>
       <strong>Emburse ID</strong>
