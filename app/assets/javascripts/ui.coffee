@@ -44,6 +44,23 @@ $(document).on 'turbolinks:load', ->
   if BK.thereIs 'login'
     if email = localStorage.getItem 'login_email'
       $('input[type=email]').val email
+  
+  $(document).on 'change', '[name="invoice[sponsor]"]', (e) ->
+    sponsor = $(e.target).children('option:selected').data 'json'
+    sponsor ||= {}
+    fields = [
+      'name',
+      'contact_email',
+      'address_line1',
+      'address_line2',
+      'address_city',
+      'address_state',
+      'address_postal_code',
+      'id'
+    ]
+
+    fields.forEach (field) ->
+      $("input#invoice_sponsor_attributes_#{field}").val sponsor[field]
 
   $(document).on 'keydown', '[data-behavior~=autosize]', ->
     t = this

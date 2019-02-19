@@ -15,24 +15,20 @@ class InvoicesController < ApplicationController
   end
 
   def create
-    filtered_params = invoice_params.except(:action, :controller)
-    filtered_params[:item_amount] = (invoice_params[:item_amount].to_f * 100.to_i)
+    invoice_params = filtered_params.except(:action, :controller, :sponsor_attributes)
+    invoice_params[:item_amount] = (filtered_params[:item_amount].to_f * 100.to_i)
 
-    if params[:sponsor_id].nil?
-      event = Event.find params[:event_id]
-      sponsor_attributes = invoice_params[:sponsor_attributes].merge(event: event)
-      @sponsor = Sponsor.create(sponsor_attributes)
-    else
-      @sponsor = Sponsor.find(params[:sponsor_id])
-    end
+    event = Event.find params[:event_id]
+    sponsor_attributes = filtered_params[:sponsor_attributes].merge(event: event)
 
-    @invoice = Invoice.new(filtered_params)
+    @sponsor = Sponsor.find_or_initialize_by(id: sponsor_attributes[:id], event: event)
+    @invoice = Invoice.new(invoice_params)
     @invoice.sponsor = @sponsor
     @invoice.creator = current_user
 
     authorize @invoice
 
-    if @invoice.save
+    if @sponsor.update(sponsor_attributes) && @invoice.save
       flash[:success] = "Invoice successfully created and emailed to #{@invoice.sponsor.contact_email}."
       redirect_to @invoice
     else
@@ -78,7 +74,7 @@ class InvoicesController < ApplicationController
 
   private
 
-  def invoice_params
+  def filtered_params
     params.require(:invoice).permit(
       :due_date,
       :item_description,

@@ -11,25 +11,21 @@
     </div>
   <% end %>
 
-  <%= form.label :item_amount, 'Amount' %>
-  <div class="field flex items-center">
-    <span class="bold muted" style="width: 1rem;">$</span>
-    <%= form.number_field :item_amount, value: (invoice.item_amount.nil? ? nil : (invoice.item_amount.to_f / 100)), placeholder: '500.00', step: 0.01, class: 'bold' %>
-  </div>
-
-  <div class="field">
-    <%= form.label :item_description, 'Description' %>
-    <%= form.text_field :item_description, placeholder: "#{sponsor.event.name} Silver Sponsorship" %>
-  </div>
-
-  <div class="field">
-    <%= form.label :due_date %>
-    <%= form.date_select :due_date %>
-  </div>
+  <% if @event.invoices.map(&:sponsor).count > 0 %>
+    <div class="field">
+      <%= form.label :sponsor, 'Sponsor' %>
+      <%= form.select :sponsor,
+        options_for_select(@event.invoices.map(&:sponsor).map { |s|
+          [s.name, s.id, { 'data-json': s.to_json } ]
+        }),
+        include_blank: 'New sponsor…' %>
+    </div>
+  <% end %>
 
   <%= form.fields_for :sponsor_attributes do |form| %>
     <h2>Sponsor details</h2>
 
+    <%= form.hidden_field :id %>
     <div class="field mt2">
       <%= form.label :name, "Name (use company name if applicable)" %>
       <%= form.text_field :name, placeholder: 'Raviga Capital' %>
@@ -65,6 +61,24 @@
       <%= form.text_field :address_postal_code, placeholder: '94129' %>
     </div>
   <% end %>
+
+  <h2>Invoice details</h2>
+
+  <%= form.label :item_amount, 'Amount' %>
+  <div class="field flex items-center">
+    <span class="bold muted" style="width: 1rem;">$</span>
+    <%= form.number_field :item_amount, value: (invoice.item_amount.nil? ? nil : (invoice.item_amount.to_f / 100)), placeholder: '500.00', step: 0.01, class: 'bold' %>
+  </div>
+
+  <div class="field">
+    <%= form.label :item_description, 'Description' %>
+    <%= form.text_field :item_description, placeholder: "#{sponsor.event.name} Silver Sponsorship" %>
+  </div>
+
+  <div class="field">
+    <%= form.label :due_date %>
+    <%= form.date_select :due_date, selected: (Date.today + 30.days) %>
+  </div>
 
   <div class="actions tooltipped tooltipped--n inline-block" aria-label="Your invoice will be sent within an hour">
     <%= form.submit 'Queue invoice' %>

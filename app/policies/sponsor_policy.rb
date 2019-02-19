@@ -35,7 +35,8 @@ class SponsorPolicy < ApplicationPolicy
       :address_line2,
       :address_city,
       :address_state,
-      :address_postal_code
+      :address_postal_code,
+      :id
     ]
 
     attrs << :event_id if user.admin?
