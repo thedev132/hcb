@@ -26,11 +26,11 @@ module UsersHelper
     concat('</div>'.html_safe)
   end
 
-  def creator_bar(object)
+  def creator_bar(object, options = {})
     creator = defined?(object.creator) ? object.creator :
       defined?(object.sender) ? object.sender : object.user
     content_tag :div, class: 'comment__name' do
-      user_mention(creator) + relative_timestamp(object.created_at, class: 'h5 muted')
+      user_mention(creator) + relative_timestamp(object.created_at, prefix: options[:prefix], class: 'h5 muted')
     end
   end
 
