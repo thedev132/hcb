@@ -82,7 +82,7 @@ class Transaction < ApplicationRecord
       fee_applies: self.fee_applies?,
       fee_pamynet: self.fee_payment?,
       emburse: self.emburse?,
-      expensfify: self.expensify?,
+      expensify: self.expensify?,
       for_invoice: self.for_invoice?
     }
   end
