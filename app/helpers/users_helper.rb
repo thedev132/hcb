@@ -16,7 +16,15 @@ module UsersHelper
   def user_mention(user)
     avi = avatar_for user
     name = content_tag :span, user.name
-    content_tag :span, avi + name, class: 'mention'
+    if user.admin?
+      bolt = inline_icon 'admin-badge', size: 20 
+      content_tag :span,
+        avi + bolt + name,
+        class: 'mention mention--admin inline-flex items-center tooltipped tooltipped--n',
+        'aria-label': "#{user.name.split(' ').first} is an admin"
+    else
+      content_tag :span, avi + name, class: 'mention inline-flex items-center'
+    end
   end
 
   def admin_tools(class_name = '', &block)
