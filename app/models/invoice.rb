@@ -49,13 +49,25 @@ class Invoice < ApplicationRecord
 
   def status
     if paid
-      'success'
+      :success
     elsif due_date < Time.current
-      'pending'
+      :pending
     elsif due_date < 3.days.from_now
-      'warning'
+      :warning
     else
-      'muted'
+      :muted
+    end
+  end
+
+  def status_text
+    if paid
+      'Paid'
+    elsif due_date < Time.current
+      'Overdue'
+    elsif due_date < 3.days.from_now
+      'Due soon'
+    else
+      'Sent'
     end
   end
 
