@@ -5,8 +5,7 @@ class Transaction < ApplicationRecord
 
   acts_as_paranoid
 
-  default_scope { includes(:fee_relationship).order(date: :desc, id: :desc) }
-
+  default_scope { order(date: :desc, id: :desc) }
   scope :uncategorized, -> { where(is_event_related: true, fee_relationship_id: nil) }
 
   belongs_to :bank_account

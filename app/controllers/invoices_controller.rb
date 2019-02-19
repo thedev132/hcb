@@ -89,6 +89,6 @@ class InvoicesController < ApplicationController
   end
 
   def set_event
-    @event = Event.includes(invoices: [:creator, :sponsor]).find(params[:id] || params[:event_id])
+    @event = Event.find(params[:id] || params[:event_id])
   end
 end

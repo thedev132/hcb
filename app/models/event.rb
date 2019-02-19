@@ -1,7 +1,7 @@
 class Event < ApplicationRecord
   extend FriendlyId
 
-  default_scope { includes({organizer_positions: :user}, :cards, :transactions).order(id: :asc) }
+  default_scope { order(id: :asc) }
 
   friendly_id :name, use: :slugged
 
