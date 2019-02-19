@@ -1,28 +1,33 @@
 .tooltipped {
   position: relative;
+  z-index: 1;
 
   &:after {
-    position: absolute;
-    pointer-events: none;
-    content: attr(aria-label);
-    padding: 2px 12px;
+    background-color: rgba(map-get($palette, black), 0.75);
+    border-radius: 0.25rem;
+    bottom: 50%;
     box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.0625),
       0 4px 8px 0 rgba(0, 0, 0, 0.125);
+    color: map-get($palette, white);
+    content: attr(aria-label);
     font-family: $font-family;
     font-size: 0.875rem;
     font-weight: 500;
-    line-height: 1.625;
-    height: 1.5rem;
-    color: map-get($palette, white);
-    background-color: map-get($palette, slate);
-    border-radius: 0.25rem;
-    right: 100%;
-    bottom: 50%;
+    height: min-content;
+    line-height: 1.375;
     margin-right: 0.5rem;
-    transform: translateY(50%);
+    max-width: 12rem;
+    min-height: 1.25rem;
     opacity: 0;
+    padding: 0.25rem 0.75rem;
+    pointer-events: none;
+    position: absolute;
+    right: 100%;
+    text-align: center;
+    transform: translateY(50%);
     transition: 0.125s all ease-in-out;
     width: max-content;
+    z-index: 2;
   }
 
   &:hover:after,
