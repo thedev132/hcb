@@ -9,7 +9,7 @@ class InvoicePayout < ApplicationRecord
   # find invoice payouts that don't yet have an associated transaction
   scope :lacking_transaction, -> { includes(:t_transaction).where(transactions: { invoice_payout_id: nil } ) }
 
-  has_one :invoice, inverse_of: :payout, foreign_key: :payout_id
+  has_one :invoice, inverse_of: :payout, foreign_key: :payout_id, required: true
   has_one :t_transaction, class_name: 'Transaction'
 
   after_initialize :default_values
