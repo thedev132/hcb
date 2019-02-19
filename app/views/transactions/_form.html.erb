@@ -12,46 +12,45 @@
   <% end %>
 
   <div class="field">
-  <%= form.label :display_name, 'Display name' %>
-  <%= form.text_field :display_name, placeholder: transaction.name %>
+    <%= form.label :display_name, 'Display name' %>
+    <%= form.text_field :display_name, placeholder: transaction.name %>
   </div>
 
-  <% if admin_signed_in? %>
   <% admin_tools do %>
-  <%= form.fields_for :fee_relationship do |fr_form| %>
-    <div class="field">
-      <%= fr_form.label :event %>
-      <%= fr_form.collection_select(:event_id, Event.all, :id, :name, include_blank: 'Select one…') %>
-    </div>
-    <% if transaction.emburse? %>
-    <div class="field">
-      <%= form.label :load_card_request, 'Load card request' %>
-      <%= form.collection_select(:load_card_request_id, LoadCardRequest.all, :id, :description, include_blank: 'Select one…') %>
-    </div>
-    <p class="muted h5 mb2">If this isn’t from transferring money to Emburse to fulfill a Load Card Request, leave this field blank.</p>
-    <% end %>
-    <% if transaction.potential_payout? %>
+    <%= form.fields_for :fee_relationship do |fr_form| %>
       <div class="field">
-        <%= form.label :invoice_payout, 'Invoice payout' %>
-        <%= form.collection_select(
-          :invoice_payout_id,
-          InvoicePayout.lacking_transaction.all + [transaction.invoice_payout].compact, # .compact to remove nil values if transaction.invoice_payout is nil
-          :id,
-          :dropdown_description,
-          include_blank: 'Select one…'
-        ) %>
+        <%= fr_form.label :event %>
+        <%= fr_form.collection_select(:event_id, Event.all, :id, :name, include_blank: 'Select one…') %>
       </div>
+      <% if transaction.emburse? %>
+        <div class="field">
+          <%= form.label :load_card_request, 'Load card request' %>
+          <%= form.collection_select(:load_card_request_id, LoadCardRequest.all, :id, :description, include_blank: 'Select one…') %>
+        </div>
+        <p class="muted h5 mb2">If this isn’t from transferring money to Emburse to fulfill a Load Card Request, leave this field blank.</p>
+      <% end %>
+      <% if transaction.potential_payout? %>
+        <div class="field">
+          <%= form.label :invoice_payout, 'Invoice payout' %>
+          <%= form.collection_select(
+            :invoice_payout_id,
+            InvoicePayout.lacking_transaction.all + [transaction.invoice_payout].compact, # .compact to remove nil values if transaction.invoice_payout is nil
+            :id,
+            :dropdown_description,
+            include_blank: 'Select one…'
+          ) %>
+        </div>
+      <% end %>
+      <%= form.label :is_event_related, class: 'field mb1' do %>
+        <%= form.check_box :is_event_related %>
+        Is event-related?
+      <% end %>
+      <%= fr_form.label :is_fee_payment, class: 'field mb2' do %>
+        <%= fr_form.check_box :is_fee_payment %>
+        Is fee payment?
+      <% end %>
     <% end %>
-    <%= form.label :is_event_related, class: 'field mb1' do %>
-      <%= form.check_box :is_event_related %>
-      Is event-related?
     <% end %>
-    <%= fr_form.label :is_fee_payment, class: 'field mb2' do %>
-      <%= fr_form.check_box :is_fee_payment %>
-      Is fee payment?
-    <% end %>
-  <% end %>
-  <% end %>
   <% end %>
 
   <div class="actions">
