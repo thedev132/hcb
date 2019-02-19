@@ -1,6 +1,12 @@
+<% page_sm %>
+
 <h1>
-  <%= @user.full_name.present? ? 'Update' : 'Complete' %> Your Profile
+  <%= @user.full_name.present? ? 'Update your profile' : 'Welcome to Bank!' %>
 </h1>
+
+<% if @user.full_name.blank? %>
+  <p>Complete your profile to get started.</p>
+<% end %>
 
 <%= form_with(model: @user, local: true) do |form| %>
   <% if @user.errors.any? %>
@@ -26,10 +32,15 @@
 
   <div class="field">
     <%= form.label :phone_number, 'Mobile phone number (so we can contact you on short notice)' %>
-    <%= form.text_field :phone_number, required: true %>
+    <%= form.text_field :phone_number, required: true, placeholder: '555-555-5555' %>
   </div>
 
+  <p class="flex items-center">
+    <%= avatar_for @user, 28, class: 'mr1' %>
+    <span>Want to customize your avatar? Edit it on <a href="https://gravatar.com">Gravatar</a>.</span>
+  </p>
+
   <div class="actions">
-    <%= form.submit 'Save changes' %>
+    <%= form.submit @user.full_name.present? ? 'Save profile' : 'Start using Bank' %>
   </div>
 <% end %>

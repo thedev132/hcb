@@ -5,7 +5,7 @@ class EventsController < ApplicationController
   def index
     authorize Event
 
-    @events = Event.all
+    @events = Event.all.includes(:point_of_contact)
   end
 
   # GET /events/new

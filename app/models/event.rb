@@ -57,6 +57,11 @@ class Event < ApplicationRecord
     balance - (lcrs.under_review + lcrs.accepted - lcrs.completed - lcrs.canceled - lcrs.rejected).sum(&:load_amount)
   end
 
+  # amount incoming from paid Stripe invoices not yet deposited
+  def pending_deposits
+    0
+  end
+
   def billed_transactions
     transactions
       .joins(:fee_relationship)
