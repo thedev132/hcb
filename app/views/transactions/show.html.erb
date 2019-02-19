@@ -23,7 +23,7 @@
     <span>
       <%= @transaction.display_name %>
     </span>
-    <%= link_to edit_transaction_path(@transaction), title: 'Rename' do %>
+    <%= link_to edit_transaction_path(@transaction), class: 'right tooltipped tooltipped--w', 'aria-label': 'Rename' do %>
       <%= inline_icon 'edit', size: 32, class: 'info', 'aria-label': 'Edit icon' %>
     <% end %>
   </p>
