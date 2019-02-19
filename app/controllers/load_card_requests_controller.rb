@@ -115,7 +115,7 @@ class LoadCardRequestsController < ApplicationController
   # Use callbacks to share common setup or constraints between actions.
   def set_load_card_request
     @load_card_request = LoadCardRequest.find(params[:id] || params[:load_card_request_id])
-    @event = Event.find(params[:event_id]) || @load_card_request.event
+    @event = @load_card_request.event
   end
 
   # Only allow a trusted parameter "white list" through.
