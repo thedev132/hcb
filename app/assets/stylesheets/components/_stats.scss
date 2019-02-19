@@ -27,3 +27,29 @@
     }
   }
 }
+
+.event-summary {
+  display: grid;
+  align-items: end;
+
+  @media screen and (max-width: 32em) {
+    grid-gap: 1rem;
+    grid-template-columns: repeat(2, 1fr);
+    [area='spendable'] {
+      grid-column: 1;
+      grid-row: 2;
+    }
+    [area='incoming'] {
+      grid-column: 2;
+    }
+  }
+
+  @media screen and (max-width: 28em) {
+    grid-gap: 0.5rem !important;
+  }
+
+  @media (min-width: 32em) {
+    grid-gap: 2rem;
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
