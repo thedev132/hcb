@@ -11,11 +11,11 @@
     </div>
   <% end %>
 
-  <% if @event.invoices.map(&:sponsor).count > 0 %>
+  <% if @event.sponsors.count > 0 %>
     <div class="field">
       <%= form.label :sponsor, 'Sponsor' %>
       <%= form.select :sponsor,
-        options_for_select(@event.invoices.map(&:sponsor).map { |s|
+        options_for_select(@event.sponsors.map { |s|
           [s.name, s.id, { 'data-json': s.to_json } ]
         }),
         include_blank: 'New sponsor…' %>
