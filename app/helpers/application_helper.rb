@@ -82,4 +82,8 @@ module ApplicationHelper
     content_for(:container_class) { 'container--xs' }
   end
   alias_method :page_extranarrow, :page_xs
+
+  def title(text)
+    content_for :title, text
+  end
 end
