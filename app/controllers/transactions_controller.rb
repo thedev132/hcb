@@ -13,7 +13,7 @@ class TransactionsController < ApplicationController
     attributes_to_currency = %w{amount fee}
 
     result = CSV.generate(headers: true) do |csv|
-      csv << attributes
+      csv << attributes.map(&:capitalize)
 
       @transactions.each do |transaction|
         csv << attributes.map do |attr|
