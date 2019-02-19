@@ -57,7 +57,7 @@ class UsersController < ApplicationController
     authorize @user
 
     if @user.update(user_params)
-      flash[:success] = 'Profile changes saved successfully.'
+      flash[:success] = 'Updated your profile!'
       redirect_to params[:redirect_to] || root_path
     else
       render :edit
