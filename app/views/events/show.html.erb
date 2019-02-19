@@ -110,7 +110,7 @@ Sponsorship fee: <%= render_percentage @event.sponsorship_fee %>`)">
     <% @transactions.each do |t| %>
       <tr
         class="transaction--<%= t.amount.negative? ? 'negative' : 'positive' %>"
-        data-behavior="transactions_item"
+        data-behavior="filterbar_row"
         data-filter="<%= t.filter_data.to_json %>">
         <td>
           <%= t.date %>

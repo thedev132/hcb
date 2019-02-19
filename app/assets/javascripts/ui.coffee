@@ -16,7 +16,7 @@ $(document).on 'turbolinks:load', ->
 
   # pass in function for each record
   filterRecords = (valid) ->
-    records = BK.s('transactions_item').hide()
+    records = BK.s('filterbar_row').hide()
     records.each ->
       $(this).show() if valid(this)
   

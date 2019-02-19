@@ -24,7 +24,7 @@
 
 <ul class="grid">
 <% @events.each do |event| %>
-  <%= link_to event, data: { behavior: 'transactions_item', filter: event.filter_data.to_json } do %>
+  <%= link_to event, data: { behavior: 'filterbar_row', filter: event.filter_data.to_json } do %>
     <li class="card">
       <strong class="block">#<%= event.id %> <%= event.name %></strong>
       <span class="muted block">

@@ -59,6 +59,16 @@ class Invoice < ApplicationRecord
     end
   end
 
+  def filter_data
+    {
+      exists: true,
+      paid: paid,
+      unpaid: !paid,
+      upcoming: due_date > 3.days.from_now,
+      overdue: due_date < 3.days.from_now
+    }
+  end
+
   # Manually mark this invoice as paid (probably in the case of a physical
   # check being sent to pay it). This marks the corresponding payment on Stripe
   # as paid and stores some metadata about why it was marked as paid.

@@ -14,9 +14,26 @@
 </h1>
 
 <% if @invoices.any? %>
+  <div class="filterbar flex flex-wrap items-center width-100">
+    <input
+      type="search"
+      data-behavior="filterbar_search"
+      placeholder="Search…"
+      aria-label="Filter invoices"
+      class="flex-auto md-mr2"
+      style="width: auto; max-width: none;">
+    <div data-behavior="filterbar" role="tablist" class="filterbar__filters flex mt1 lg-mt0">
+      <%= filterbar_item 'All', :exists, true %>
+      <%= filterbar_item 'Paid', :paid %>
+      <%= filterbar_item 'Unpaid', :unpaid %>
+      <%= filterbar_item 'Upcoming', :upcoming %>
+      <%= filterbar_item 'Overdue', :overdue %>
+    </div>
+  </div>
+
   <ul class="grid">
     <% @invoices.order('due_date DESC').each do |i| %>
-      <%= link_to i do %>
+      <%= link_to i, data: { behavior: 'filterbar_row', filter: i.filter_data.to_json } do %>
         <li class="card">
           <div class="flex flex-wrap items-center">
             <strong class="flex flex-auto items-center mb1">
