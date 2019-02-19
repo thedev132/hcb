@@ -48,6 +48,12 @@ $(document).on 'turbolinks:load', ->
   $(document).on 'change', '[name="invoice[sponsor]"]', (e) ->
     sponsor = $(e.target).children('option:selected').data 'json'
     sponsor ||= {}
+
+    if sponsor.id
+      $('[data-behavior~=sponsor_update_warning]').slideDown 'fast'
+    else
+      $('[data-behavior~=sponsor_update_warning]').slideUp 'fast'
+
     fields = [
       'name',
       'contact_email',

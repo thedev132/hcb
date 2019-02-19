@@ -25,6 +25,11 @@
   <%= form.fields_for :sponsor_attributes do |form| %>
     <h2>Sponsor details</h2>
 
+    <p data-behavior="sponsor_update_warning" style="display: none;" class="flex items-center info line-height-3">
+      <%= inline_icon 'important', size: 32, class: 'mr1' %>
+      Editing these fields will update the current sponsor record & past invoices
+    </p>
+
     <%= form.hidden_field :id %>
     <div class="field mt2">
       <%= form.label :name, "Name (use company name if applicable)" %>

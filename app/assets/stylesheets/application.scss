@@ -160,6 +160,7 @@ hr {
 
 svg {
   fill: currentColor;
+  flex-shrink: 0;
 }
 
 @import 'components/badges';
