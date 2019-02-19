@@ -2,7 +2,7 @@ class InvoicesController < ApplicationController
   before_action :set_event, only: [:index]
 
   def index
-    @invoices = @event.invoices.includes(:creator, :sponsor)
+    @invoices = @event.invoices
     authorize @invoices
   end
 
@@ -89,6 +89,6 @@ class InvoicesController < ApplicationController
   end
 
   def set_event
-    @event = Event.find(params[:id] || params[:event_id])
+    @event = Event.includes(invoices: [:creator, :sponsor]).find(params[:id] || params[:event_id])
   end
 end
