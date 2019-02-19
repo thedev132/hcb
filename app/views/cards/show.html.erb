@@ -47,21 +47,28 @@
       <tr>
         <th>Date</th>
         <th>Name</th>
-        <th>Cost</th>
-        <th>Details</th>
+        <th>Amount</th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
+    <% running_sum = @emburse_transactions.completed.sum(&:amount) %>
     <% @emburse_transactions.each do |t| %>
       <tr>
-        <td><%= t.transaction_time.to_date %></td>
+        <td><%= t.transaction_time.nil? ? '–' : t.transaction_time.to_date %></td>
         <td>
           <span class="tooltipped tooltipped--n" aria-label="<%= t.state.capitalize %>">
           <%= status_badge t.status_badge_type %>
           </span>
-          <%= t.merchant_name %>
+          <% if t.amount > 0 %>
+            <strong>Transfer from bank account</strong>
+          <% elsif t.merchant_name.nil? %>
+            <strong>Transfer back to bank account</strong>
+          <% else %>
+            <%= t.merchant_name %>
+          <% end %>
         </td>
-        <td><%= render_money -t.amount %></td>
+        <td><%= render_money t.amount %></td>
         <td>
           <a href="<%= t.emburse_path %>" target="_blank">More</a>
         </td>
