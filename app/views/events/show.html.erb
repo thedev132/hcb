@@ -82,13 +82,12 @@ Sponsorship fee: <%= render_percentage @event.sponsorship_fee %>`)">
     aria-label="Filter transactions"
     class="flex-auto md-mr2"
     style="width: auto; max-width: none;">
-    <%= transactions_filter_item 'All', :exists, true %>
-    <%= transactions_filter_item 'Incurring fees', :fee_applies %>
-    <%= transactions_filter_item 'Fees', :fee_payment %>
-    <%= transactions_filter_item 'Invoices', :for_invoice %>
-    <%= transactions_filter_item 'Emburse', :emburse %>
-    <%= transactions_filter_item 'Expensify', :expensify %>
   <div data-behavior="filterbar" role="tablist" class="filterbar__filters flex mt1 lg-mt0">
+    <%= filterbar_item 'All', :exists, true %>
+    <%= filterbar_item 'Revenue', :fee_applies %>
+    <%= filterbar_item 'Fees', :fee_payment %>
+    <%= filterbar_item 'Emburse', :emburse %>
+    <%= filterbar_item 'Reimbursements', :expensify %>
   </div>
 </div>
 
