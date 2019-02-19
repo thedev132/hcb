@@ -3,8 +3,11 @@
 
 <%= render 'events/nav' if @event %>
 
-<h1>
-  Editing <%= link_to @fee && @fee.fee_amount.nil? ? 'fee payment' : 'transaction', @transaction %>
+<h1 class="h1">
+  Rename <%= render_money @transaction.amount %> <%= @fee && @fee.fee_amount.nil? ? 'fee payment' : 'transaction' %>
 </h1>
+
+<strong>Original transaction name</strong>
+<pre class="bg-smoke mt0"><%= @transaction.name %></pre>
 
 <%= render 'form', transaction: @transaction %>
