@@ -45,6 +45,11 @@
   transform: translateY(50%);
 }
 
+.tooltipped--w:after {
+  right: 100%;
+  transform: translateY(50%);
+}
+
 .tooltipped--n:after {
   right: 50%;
   bottom: 100%;

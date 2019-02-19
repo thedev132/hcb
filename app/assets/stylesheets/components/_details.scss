@@ -20,8 +20,9 @@
 
   > a.right:last-child,
   > svg {
+    float: none;
+    line-height: 0;
     position: absolute;
     right: 0;
-    float: none;
   }
 }

@@ -34,7 +34,10 @@
 
     <p>
       <strong>Contact email</strong>
-      <%= mail_to @sponsor.contact_email %>
+      <%= @sponsor.contact_email %>
+      <%= mail_to @sponsor.contact_email, class: 'right tooltipped tooltipped--w', 'aria-label': 'Email this sponsor' do %>
+        <%= inline_icon 'email', size: 32, class: 'info', 'aria-label': 'Email icon' %>
+      <% end %>
     </p>
 
     <p>
