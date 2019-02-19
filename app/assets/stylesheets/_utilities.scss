@@ -137,3 +137,9 @@ $shades: (
 .w-auto {
   width: auto;
 }
+
+@media screen and (min-width: 32em) {
+  .md-w-50 {
+    width: 50%;
+  }
+}

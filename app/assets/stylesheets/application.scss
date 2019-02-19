@@ -177,6 +177,12 @@ svg {
 @import 'components/lists';
 @import 'components/stats';
 @import 'components/steps';
+@import 'components/tooltips';
+
+.turbolinks-progress-bar {
+  height: 0.25rem;
+  background-color: map-get($palette, primary);
+}
 
 .home {
   line-height: 0;

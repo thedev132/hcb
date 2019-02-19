@@ -48,8 +48,8 @@
     <% end %>
   <% end %>
 
-  <% if admin_signed_in? %>
-    <h2 class="w-100 left-align mt3 pb0 border-none">Bank HQ</h2>
+  <% admin_tools('w-100 mt3') do %>
+    <h2 class="mt0 left-align pb0 border-none">Bank HQ</h2>
     <ul class="grid grid--narrow left-align w-100 mt0">
       <%= card_to 'Events', events_path %>
       <%= card_to 'Sponsors', sponsors_path %>

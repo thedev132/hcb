@@ -3,7 +3,7 @@ class DocumentsController < ApplicationController
   before_action :set_document, except: [:index, :new, :create]
 
   def index
-    @documents = @event.documents
+    @documents = @event.documents.includes(:user)
     authorize @documents
   end
 

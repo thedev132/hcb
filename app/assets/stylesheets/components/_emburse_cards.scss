@@ -4,7 +4,7 @@
   grid-gap: 1rem;
 
   @media (min-width: 32em) {
-    grid-gap: 2rem;
+    grid-gap: 4rem;
   }
 
   a {
@@ -62,10 +62,4 @@
     font-weight: 900;
     color: $white;
   }
-}
-.emburse-cards__caption {
-  font-size: 0.875rem;
-  color: $gray7;
-  text-align: center;
-  padding-top: 0.5rem;
 }

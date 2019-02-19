@@ -22,7 +22,9 @@ Sponsorship fee: <%= render_percentage @event.sponsorship_fee %>`)">
 
 <div class="flex flex-wrap items-center justify-center mb3">
   <% @organizers.each do |position| %>
-    <%= avatar_for position.user, 48, class: 'mr1' %>
+    <div class="tooltipped tooltipped--s mr1" aria-label="<%= position.user.full_name %>">
+      <%= avatar_for position.user, 48 %>
+    </div>
   <% end %>
   <%= pop_icon_to 'view-forward', event_team_path(@event) %>
 </div>
