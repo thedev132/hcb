@@ -18,7 +18,7 @@
     <%= form.label :load_amount, 'Amount to transfer' %>
     <div class="flex items-center">
       <span class="bold muted" style="width: 1rem;">$</span>
-      <%= form.number_field :load_amount, value: load_card_request.load_amount || (@event.balance_available / 100), step: 0.01, placeholder: '100.00' %>
+      <%= form.number_field :load_amount, value: load_card_request.load_amount || (@event.balance_available / 100), max: (@event.balance_available / 100), step: 0.01, placeholder: '100.00' %>
     </div>
   </div>
 
