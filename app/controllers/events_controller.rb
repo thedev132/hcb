@@ -72,7 +72,7 @@ class EventsController < ApplicationController
     authorize @event
     @card_requests = @event.card_requests
     @load_card_requests = @event.load_card_requests
-    @emburse_transactions = @event.emburse_transactions.order(transaction_time: :desc).where.not(transaction_time: nil).includes({ card: :user })
+    @emburse_transactions = @event.emburse_transactions.order(transaction_time: :desc).where.not(transaction_time: nil).includes(:card)
   end
 
   def g_suite_overview

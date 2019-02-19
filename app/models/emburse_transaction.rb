@@ -19,7 +19,11 @@ class EmburseTransaction < ApplicationRecord
   end
 
   def undeclined?
-    self.state != 'declined'
+    state != 'declined'
+  end
+
+  def completed?
+    state == 'completed'
   end
 
   def emburse_path
