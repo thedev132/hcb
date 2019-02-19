@@ -143,9 +143,7 @@ class Invoice < ApplicationRecord
 
     raise StandardError, 'Funds not yet available' unless Time.current.to_i > inv.charge.balance_transaction.available_on
 
-    self.payout = InvoicePayout.new(
-      amount: amount
-    )
+    self.payout = InvoicePayout.new(amount: amount, invoice: self)
 
     self.save!
   end
@@ -164,6 +162,7 @@ class Invoice < ApplicationRecord
     self.forgiven = inv.forgiven
     self.hosted_invoice_url = inv.hosted_invoice_url
     self.invoice_pdf = inv.invoice_pdf
+    self.number = inv.number
     self.paid = inv.paid
     self.starting_balance = inv.starting_balance
     self.statement_descriptor = inv.statement_descriptor

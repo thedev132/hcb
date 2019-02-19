@@ -12,6 +12,7 @@ class InvoicePayout < ApplicationRecord
   has_one :invoice, inverse_of: :payout, foreign_key: :payout_id
   has_one :t_transaction, class_name: 'Transaction'
 
+  after_initialize :default_values
   before_create :create_stripe_payout
   after_create :notify_organizers
 
@@ -42,6 +43,12 @@ class InvoicePayout < ApplicationRecord
   end
 
   private
+
+  def default_values
+    return unless invoice
+
+    self.statement_descriptor ||= "#{self.invoice.sponsor.name} Payout"[0...22] # limit to 22 characters, the stripe limit
+  end
 
   def create_stripe_payout
     payout = StripeService::Payout.create(stripe_payout_params)
