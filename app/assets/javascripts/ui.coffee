@@ -45,4 +45,9 @@ $(document).on 'turbolinks:load', ->
     if email = localStorage.getItem 'login_email'
       $('input[type=email]').val email
 
-
+  $(document).on 'keydown', '[data-behavior~=autosize]', ->
+    t = this
+    setTimeout (->
+      $(t).attr { rows: Math.floor(t.scrollHeight / 28) }
+      $(t).css { height: 'auto' }
+    ), 0
