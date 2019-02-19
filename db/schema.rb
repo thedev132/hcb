@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_19_075659) do
+ActiveRecord::Schema.define(version: 2019_02_19_093432) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -282,8 +282,6 @@ ActiveRecord::Schema.define(version: 2019_02_19_075659) do
     t.text "memo"
     t.datetime "due_date"
     t.bigint "ending_balance"
-    t.boolean "forgiven"
-    t.boolean "paid"
     t.bigint "starting_balance"
     t.text "statement_descriptor"
     t.bigint "subtotal"
@@ -295,7 +293,7 @@ ActiveRecord::Schema.define(version: 2019_02_19_075659) do
     t.text "item_stripe_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.boolean "closed"
+    t.boolean "auto_advance"
     t.text "hosted_invoice_url"
     t.text "invoice_pdf"
     t.bigint "creator_id"
@@ -309,6 +307,8 @@ ActiveRecord::Schema.define(version: 2019_02_19_075659) do
     t.datetime "payout_creation_balance_available_at"
     t.text "slug"
     t.text "number"
+    t.datetime "finalized_at"
+    t.text "status"
     t.index ["creator_id"], name: "index_invoices_on_creator_id"
     t.index ["item_stripe_id"], name: "index_invoices_on_item_stripe_id", unique: true
     t.index ["manually_marked_as_paid_user_id"], name: "index_invoices_on_manually_marked_as_paid_user_id"
@@ -316,6 +316,7 @@ ActiveRecord::Schema.define(version: 2019_02_19_075659) do
     t.index ["payout_id"], name: "index_invoices_on_payout_id"
     t.index ["slug"], name: "index_invoices_on_slug", unique: true
     t.index ["sponsor_id"], name: "index_invoices_on_sponsor_id"
+    t.index ["status"], name: "index_invoices_on_status"
     t.index ["stripe_invoice_id"], name: "index_invoices_on_stripe_invoice_id", unique: true
   end
 

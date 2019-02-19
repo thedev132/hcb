@@ -4,8 +4,8 @@
 
 <h1 class="flex items-center">
   <%= render_money @invoice.total %> invoice
-  <span class="badge h3 bg-<%= @invoice.paid ? 'success' : 'error' %>">
-    <%= @invoice.paid ? 'Paid' : 'Unpaid' %>
+  <span class="badge h3 bg-<%= @invoice.paid? ? 'success' : 'error' %>">
+    <%= @invoice.paid? ? 'Paid' : 'Unpaid' %>
   </span>
 </h1>
 
@@ -21,7 +21,7 @@
     <p>
       <strong>Status</strong>
       <span>
-        <span class="badge h4 ml0 bg-<%= @invoice.status %>"><%= @invoice.status_text %></span>
+        <span class="badge h4 ml0 bg-<%= @invoice.state %>"><%= @invoice.state_text %></span>
       </span>
     </p>
 

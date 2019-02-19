@@ -20,6 +20,14 @@ class Invoice < ApplicationRecord
 
   has_many :comments, as: :commentable
 
+  enum status: {
+    draft: 'draft',
+    open: 'open',
+    paid: 'paid',
+    void: 'void',
+    uncollectible: 'uncollectible'
+  }
+
   validates_presence_of :item_description, :item_amount, :due_date
 
   # all manually_marked_as_paid_... fields must be present all together or not
@@ -39,7 +47,7 @@ class Invoice < ApplicationRecord
 
   validate :due_date_cannot_be_in_past, on: :create
 
-  before_create :set_memo
+  before_create :set_defaults
 
   # Stripe syncing…
   before_create :create_stripe_invoice
@@ -47,8 +55,8 @@ class Invoice < ApplicationRecord
 
   after_update :send_payment_notification_if_needed
 
-  def status
-    if paid
+  def state
+    if paid?
       :success
     elsif due_date < Time.current
       :pending
@@ -59,8 +67,8 @@ class Invoice < ApplicationRecord
     end
   end
 
-  def status_text
-    if paid
+  def state_text
+    if paid?
       'Paid'
     elsif due_date < Time.current
       'Overdue'
@@ -74,8 +82,8 @@ class Invoice < ApplicationRecord
   def filter_data
     {
       exists: true,
-      paid: paid,
-      unpaid: !paid,
+      paid: paid?,
+      unpaid: !paid?,
       upcoming: due_date > 3.days.from_now,
       overdue: due_date < 3.days.from_now
     }
@@ -93,7 +101,7 @@ class Invoice < ApplicationRecord
     return false unless self.valid?
 
     inv = StripeService::Invoice.retrieve(stripe_invoice_id)
-    inv.paid = true
+    inv.status = 'paid'
 
     if inv.save
       self.set_fields_from_stripe_invoice(inv)
@@ -112,10 +120,6 @@ class Invoice < ApplicationRecord
 
   def manually_marked_as_paid?
     self.manually_marked_as_paid_at.present?
-  end
-
-  def paid?
-    self.paid
   end
 
   def queue_payout!
@@ -155,21 +159,21 @@ class Invoice < ApplicationRecord
     self.attempt_count = inv.attempt_count
     self.attempted = inv.attempted
     self.stripe_charge_id = inv.charge
-    self.closed = inv.closed
+    self.auto_advance = inv.auto_advance
     self.memo = inv.description
     self.due_date = Time.at(inv.due_date).to_datetime # convert from unixtime
     self.ending_balance = inv.ending_balance
-    self.forgiven = inv.forgiven
+    self.finalized_at = inv.finalized_at
     self.hosted_invoice_url = inv.hosted_invoice_url
     self.invoice_pdf = inv.invoice_pdf
     self.number = inv.number
-    self.paid = inv.paid
     self.starting_balance = inv.starting_balance
     self.statement_descriptor = inv.statement_descriptor
     self.subtotal = inv.subtotal
     self.tax = inv.tax
     self.tax_percent = inv.tax_percent
     self.total = inv.total
+    self.status = inv.status
   end
 
   def stripe_dashboard_url
@@ -186,9 +190,11 @@ class Invoice < ApplicationRecord
 
   private
 
-  def set_memo
+  def set_defaults
     event = self.sponsor.event.name
     self.memo = "To support #{event}. #{event} is fiscally sponsored by The Hack Foundation (d.b.a. Hack Club), a 501(c)(3) nonprofit with the EIN 81-2908499."
+
+    self.auto_advance = true
   end
 
   def due_date_cannot_be_in_past
@@ -204,23 +210,25 @@ class Invoice < ApplicationRecord
     inv = StripeService::Invoice.create(stripe_invoice_params)
     self.stripe_invoice_id = inv.id
 
+    inv.send_invoice
+
     self.set_fields_from_stripe_invoice(inv)
   end
 
   def close_stripe_invoice
     invoice = StripeService::Invoice.retrieve(stripe_invoice_id)
-    invoice.closed = true
-    invoice.save
+    invoice.void_invoice
+
     self.set_fields_from_stripe_invoice invoice
   end
 
   def send_payment_notification_if_needed
-    return unless saved_changes[:paid].present?
+    return unless saved_changes[:status].present?
 
-    was = saved_changes[:paid][0] # old value of paid
-    now = saved_changes[:paid][1] # new value of paid
+    was = saved_changes[:status][0] # old value of status
+    now = saved_changes[:status][1] # new value of status
 
-    if was == false && now == true
+    if was != 'paid' && now == 'paid'
       InvoiceMailer.with(invoice: self).payment_notification.deliver_later
     end
   end
@@ -237,9 +245,11 @@ class Invoice < ApplicationRecord
   def stripe_invoice_params
     {
       customer: self.sponsor.stripe_customer_id,
+      auto_advance: self.auto_advance,
       billing: 'send_invoice',
       due_date: self.due_date.to_i, # convert to unixtime
       description: self.memo,
+      status: self.status,
       statement_descriptor: self.statement_descriptor,
       tax_percent: self.tax_percent
     }

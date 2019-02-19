@@ -4,13 +4,13 @@ class SyncInvoicesJob < ApplicationJob
   def perform(repeat = false)
     Invoice.find_each do |i|
       i.transaction do
-        was_paid = i.paid
+        was_paid = i.paid?
 
         inv = StripeService::Invoice.retrieve(i.stripe_invoice_id)
         i.set_fields_from_stripe_invoice(inv)
         i.save!
 
-        now_paid = i.paid
+        now_paid = i.paid?
 
         if !was_paid && now_paid
           begin
