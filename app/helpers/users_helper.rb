@@ -5,7 +5,6 @@ module UsersHelper
   def gravatar_url(email, name, id, size)
     name ||= email
     hex = Digest::MD5.hexdigest(email.downcase.strip)
-    puts id
     "https://gravatar.com/avatar/#{hex}?s=#{size}&d=https%3A%2F%2Fui-avatars.com%2Fapi%2F/#{URI.encode(name)}/#{size}/#{get_user_color(id)}/fff"
   end
 

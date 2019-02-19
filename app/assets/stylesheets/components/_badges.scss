@@ -47,12 +47,15 @@ summary.pop {
 
 // User mentions, use the user_mention helper
 .mention {
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -webkit-user-select: none;
+  color: map-get($palette, muted);
   display: inline-block;
+  font-weight: 500;
+  margin-right: 0.25rem;
   vertical-align: middle;
   white-space: nowrap;
-  font-weight: 600;
-  color: map-get($palette, muted);
-  margin-right: 0.25rem;
 
   img {
     width: 1.5rem;
@@ -60,9 +63,6 @@ summary.pop {
     vertical-align: middle;
     border-radius: 50%;
     overflow: hidden;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    -webkit-user-select: none;
     user-select: none;
   }
 }
