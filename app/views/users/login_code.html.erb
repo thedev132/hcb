@@ -14,6 +14,7 @@
     <%= label_tag :login_code, "Enter your login code", class: 'left-align' %>
     <%= telephone_field_tag :login_code, '', placeholder: 'Login code', autofocus: true, autocomplete: 'off', class: 'left-align mb2' %>
     <%= hidden_field_tag :user_id, @user_id %>
+    <p><em>Make sure to check your spam folder</em></p>
     <%= submit_tag 'Submit' %>
   <% end %>
 </article>
