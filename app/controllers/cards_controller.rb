@@ -11,7 +11,7 @@ class CardsController < ApplicationController
   def show
     authorize @card
     @load_card_requests = @card.load_card_requests
-    @emburse_transactions = @card.emburse_transactions
+    @emburse_transactions = @card.emburse_transactions.order(transaction_time: :desc)
   end
 
   # GET /cards/new
