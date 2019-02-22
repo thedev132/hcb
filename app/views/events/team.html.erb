@@ -48,7 +48,7 @@
       <p class="line-height-3 flex-auto">
         <strong><%= invite.email %></strong>
       </p>
-      <% if invite.sender == current_user %>
+      <% if invite.sender == current_user || admin_signed_in? %>
         <%= pop_icon_to 'view-close',
           organizer_position_invite_cancel_path(invite.id),
           size: 24,
