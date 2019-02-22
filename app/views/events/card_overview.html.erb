@@ -10,7 +10,7 @@
   <h2 class="mt0 mb2">Summary</h2>
 
   <div class="flex flex-wrap">
-    <div class="stat md-w-50 mb2 tooltipped tooltipped--n" aria-label="The amount available to spend on your cards">
+    <div class="stat md-w-50 mb2 tooltipped tooltipped--s" aria-label="The amount available to spend on your cards">
       <span class="stat__label flex items-center">
       Card balance
       <%= inline_icon 'info', size: 24, class: 'ml1', 'aria-label': 'Info icon' %>
@@ -129,7 +129,7 @@ West Hollywood, CA 90069</pre>
       <tr>
         <td><%= t.transaction_time.nil? ? '–' : t.transaction_time.to_date %></td>
         <td>
-          <span class="tooltipped tooltipped--n" aria-label="<%= t.state.capitalize %>">
+          <span class="tooltipped tooltipped--s" aria-label="<%= t.state.capitalize %>">
           <%= status_badge t.status_badge_type %>
           </span>
           <% if t.amount > 0 %>
