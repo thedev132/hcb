@@ -53,8 +53,8 @@ class GSuiteApplicationsController < ApplicationController
     authorize @g_suite_application
 
     if @g_suite_application.save
-      flash[:success] = 'G Suite application submitted!'
-      redirect_to @g_suite_application.event
+      flash[:success] = 'Your G Suite is being configured'
+      redirect_to event_g_suite_overview_path(@g_suite_application.event)
     else
       render :new
     end
