@@ -21,11 +21,6 @@
   <% end %>
 
   <div class="field">
-    <%= form.label :email, class: 'muted' %>
-    <%= form.email_field :email, disabled: true %>
-  </div>
-
-  <div class="field">
     <%= form.label :full_name %>
     <%= form.text_field :full_name, required: true %>
   </div>
@@ -33,6 +28,11 @@
   <div class="field">
     <%= form.label :phone_number, 'Mobile phone number (so we can contact you on short notice)' %>
     <%= form.text_field :phone_number, required: true, placeholder: '555-555-5555' %>
+  </div>
+
+  <div class="field">
+    <%= form.label :email, class: 'muted' %>
+    <%= form.email_field :email, disabled: true %>
   </div>
 
   <p class="flex items-center">
