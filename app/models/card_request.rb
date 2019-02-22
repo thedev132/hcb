@@ -12,6 +12,7 @@ class CardRequest < ApplicationRecord
   validate :status_accepted_canceled_or_rejected
 
   scope :outstanding, -> { where(accepted_at: nil) }
+  scope :accepted, -> { where.not(id: outstanding) }
   scope :under_review, -> { where(rejected_at: nil, canceled_at: nil, accepted_at: nil) }
 
   after_create :send_admin_notification
