@@ -19,7 +19,7 @@ class OrganizerPositionInvitesController < ApplicationController
     authorize @invite
 
     if @invite.save
-      flash[:success] = 'Invite successfully sent'
+      flash[:success] = "Invite successfully sent to #{invite_params[:email]}"
       redirect_to event_team_path @invite.event
     else
       render :new
