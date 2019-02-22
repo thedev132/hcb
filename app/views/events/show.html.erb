@@ -16,7 +16,9 @@ Sponsorship fee: <%= render_percentage @event.sponsorship_fee %>`)">
     <span style="font-size: 3rem;">
       <%= @event.name %>
     </span>
-    <%= pop_icon_to 'controls', edit_event_path(@event), class: 'ml2' %>
+    <% admin_tools('ml2') do %>
+      <%= pop_icon_to 'controls', edit_event_path(@event) %>
+    <% end %>
   </span>
 </h1>
 
