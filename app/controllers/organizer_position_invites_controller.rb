@@ -31,7 +31,7 @@ class OrganizerPositionInvitesController < ApplicationController
     authorize @invite
     @organizers = @invite.event.organizer_positions.includes(:user)
     if @invite.cancelled?
-      flash[:error] = 'That invite was cancelled!'
+      flash[:error] = 'That invite was canceled!'
       redirect_to root_path
     end
   end
@@ -66,7 +66,7 @@ class OrganizerPositionInvitesController < ApplicationController
     authorize @invite
 
     if @invite.cancel
-      flash[:success] = "#{@invite.email}\'s invitation has been cancelled."
+      flash[:success] = "#{@invite.email}\'s invitation has been canceled."
       redirect_to event_team_path(@invite.event)
     else
       flash[:error] = 'Failed to cancel the invitation.'

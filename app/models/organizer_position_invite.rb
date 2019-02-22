@@ -53,7 +53,7 @@ class OrganizerPositionInvite < ApplicationRecord
     end
 
     if self.cancelled?
-      self.errors.add(:base, 'was cancelled!')
+      self.errors.add(:base, 'was canceled!')
       return false
     end
 
@@ -83,7 +83,7 @@ class OrganizerPositionInvite < ApplicationRecord
     end
 
     if self.cancelled?
-      self.errors.add(:base, 'was cancelled!')
+      self.errors.add(:base, 'was canceled!')
       return false
     end
 
