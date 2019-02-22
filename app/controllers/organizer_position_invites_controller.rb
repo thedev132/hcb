@@ -29,6 +29,7 @@ class OrganizerPositionInvitesController < ApplicationController
   def show
     @invite = OrganizerPositionInvite.find(params[:id])
     authorize @invite
+    @organizers = @invite.event.organizer_positions.includes(:user)
     if @invite.cancelled?
       flash[:error] = 'That invite was cancelled!'
       redirect_to root_path

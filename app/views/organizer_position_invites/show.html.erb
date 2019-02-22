@@ -2,6 +2,17 @@
 <main class="center max-width-3 mx-auto">
 <h1>You’ve been invited to <%= @invite.event.name %>.</h1>
 
+<% if @organizers.any? %>
+  <p>You'll be joining:</p>
+  <div class="flex justify-center flex-wrap">
+    <% @organizers.each do |position| %>
+      <div class="tooltipped tooltipped--s mr1" aria-label="<%= position.user.full_name %>">
+        <%= avatar_for position.user, 48 %>
+      </div>
+    <% end %>
+  </div>
+<% end %>
+  
 <div class="flex justify-center items-center mt3">
   <%= link_to 'Accept invitation', organizer_position_invite_accept_path(@invite), method: :post, class: 'btn bg-success h2 mr1' %>
   <%= link_to 'Reject', organizer_position_invite_reject_path(@invite), method: :post, class: 'btn bg-error ml1' %>
