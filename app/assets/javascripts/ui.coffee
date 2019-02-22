@@ -25,6 +25,9 @@ $(document).on 'turbolinks:load', ->
         acc++
     if acc is 0
       BK.s('filterbar_blankslate').fadeIn 'fast'
+  
+  if BK.thereIs 'filterbar_blankslate'
+    BK.s('filterbar_blankslate').hide()
 
   # patch for keyboard accessibility: simulate click on enter key
   $(document).on 'keyup', '[data-behavior~=filterbar_item]', (e) ->
