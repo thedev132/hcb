@@ -21,12 +21,17 @@ Sponsorship fee: <%= render_percentage @event.sponsorship_fee %>`)">
 </h1>
 
 <div class="flex flex-wrap items-center justify-center mb3">
-  <% @organizers.each do |position| %>
-    <div class="tooltipped tooltipped--s mr1" aria-label="<%= position.user.full_name %>">
-      <%= avatar_for position.user, 48 %>
-    </div>
+  <% if @organizers.any? %>
+    <% @organizers.each do |position| %>
+      <div class="tooltipped tooltipped--s mr1" aria-label="<%= position.user.full_name %>">
+        <%= avatar_for position.user, 48 %>
+      </div>
+    <% end %>
+    <%= pop_icon_to 'view-forward', event_team_path(@event) %>
+  <% else %>
+    <p class="slate bold h3 mr2">No organizers invited yet</p>
+    <%= pop_icon_to 'member-add', event_team_path(@event) %>
   <% end %>
-  <%= pop_icon_to 'view-forward', event_team_path(@event) %>
 </div>
 
 <%= render 'nav', hide_name: true %>
