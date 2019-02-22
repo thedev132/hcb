@@ -27,13 +27,14 @@
     transform: translateY(50%);
     transition: 0.125s all ease-in-out;
     width: max-content;
-    z-index: -1;
+    z-index: 1;
   }
 
   &:hover:after,
   &:active:after,
   &:focus:after {
     opacity: 1;
+    z-index: 9;
   }
 }
 

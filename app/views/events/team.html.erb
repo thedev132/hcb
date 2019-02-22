@@ -56,14 +56,15 @@
           class: 'error tooltipped tooltipped--w',
           'aria-label': 'Cancel this invitation' %>
       <% else %>
+      <div class="tooltipped tooltipped--w" aria-label="Only the sender can cancel an invitation">
         <%= pop_icon_to 'view-close',
           organizer_position_invite_cancel_path(invite.id),
           method: :post,
           size: 24,
-          class: 'muted tooltipped tooltipped--w',
-          'aria-label': 'Only the sender can cancel an invitation',
+          class: 'muted',
           disabled: true %>
-      <% end %>
+        <% end %>
+      </div>
     </div>
   <% end %>
 <% end %>
