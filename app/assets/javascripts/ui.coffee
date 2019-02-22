@@ -1,4 +1,14 @@
 $(document).on 'turbolinks:load', ->
+  hankIndex = 0
+  $(document).on 'keydown', (e) ->
+    if e.originalEvent.key == 'hank'[hankIndex]
+      hankIndex++
+      if hankIndex == 4
+        $('[name="header-logo"]').hide()
+        $('[name="alternative-logo"]').show()
+    else
+      hankIndex = 0
+
   $(document).on 'click', '[data-behavior~=flash]', ->
     $(this).fadeOut 'medium'
 

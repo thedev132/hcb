@@ -21,7 +21,8 @@
   <body class="bg-snow <%= content_for :page_class %>">
     <% unless @hide_home %>
       <%= link_to root_path, class: 'home pt1 md-pt2' do %>
-        <%= image_tag 'logo.svg', width: @home_size || 48, height: @home_size || 48, alt: 'Bank logo' %>
+        <%= image_tag 'logo.svg', name: 'header-logo', width: @home_size || 48, height: @home_size || 48, alt: 'Bank logo' %>
+        <%= image_tag 'hank.png', name: 'alternative-logo', style: 'display: none;', width: @home_size || 48, height: @home_size || 48, alt: 'Hank logo' %>
       <% end %>
     <% end %>
     <main class="container <%= content_for :container_class %>">
