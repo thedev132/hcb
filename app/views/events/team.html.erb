@@ -40,7 +40,7 @@
     Pending invitations
     <%= badge_for @pending.size, class: 'bg-muted' %>
   </h2>
-  <% @pending.each do |invite| %>
+  <% @pending.order(created_at: :desc).each do |invite| %>
     <%= creator_bar invite %>
     <div class="card flex items-center pt0 pb0 mb3">
       <%= avatar_for OpenStruct.new(email: invite.email, name: invite.email), 24, class:
