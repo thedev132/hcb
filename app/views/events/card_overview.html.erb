@@ -1,16 +1,16 @@
-<% title "Debit cards for #{@event.name}" %>
+<% title "Cards for #{@event.name}" %>
 <% page_md %>
 <%= render 'nav'%>
 
 <h1>
-  Debit Cards
+  Cards
 </h1>
 
 <article class="card">
   <h2 class="mt0 mb2">Summary</h2>
 
   <div class="flex flex-wrap">
-    <div class="stat md-w-50 mb2 tooltipped tooltipped--s" aria-label="The amount available to spend on your debit cards">
+    <div class="stat md-w-50 mb2 tooltipped tooltipped--n" aria-label="The amount available to spend on your cards">
       <span class="stat__label flex items-center">
       Card balance
       <%= inline_icon 'info', size: 24, class: 'ml1', 'aria-label': 'Info icon' %>
@@ -74,7 +74,7 @@ West Hollywood, CA 90069</pre>
 <% elsif @card_requests.any? %>
   <%= blankslate 'No cards have been accepted yet.' %>
 <% elsif @cards.blank? %>
-  <%= blankslate 'You haven’t requested any physical debit cards yet.' %>
+  <%= blankslate 'You haven’t requested any physical cards yet.' %>
 <% end %>
 
 <% admin_tools('mt3') do %>
@@ -95,7 +95,7 @@ West Hollywood, CA 90069</pre>
 </main>
 <main class="container">
   <h2 class="mt3 mb2">
-    Debit Card Transactions
+    Card Transactions
   </h2>
   <table>
     <thead>
