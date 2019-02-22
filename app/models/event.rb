@@ -56,6 +56,7 @@ class Event < ApplicationRecord
     lcrs = self.load_card_requests
     balance - (lcrs.under_review + lcrs.accepted - lcrs.completed - lcrs.canceled - lcrs.rejected).sum(&:load_amount)
   end
+  alias_method :available_balance, :balance_available
 
   # amount incoming from paid Stripe invoices not yet deposited
   def pending_deposits

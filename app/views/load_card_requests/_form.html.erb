@@ -14,11 +14,18 @@
 
   <%= form.hidden_field :event_id, value: load_card_request.event.id %>
 
+  <% if @event.available_balance == 0 %>
+    <p class="card__banner card__banner--top bg-error white">
+      <%= inline_icon 'payment', size: 32, class: 'mr1' %>
+      You need funds available in your bank to make a transfer
+    </p>
+  <% end %>
+
   <div class="field">
     <%= form.label :load_amount, 'Amount to transfer' %>
     <div class="flex items-center">
       <span class="bold muted" style="width: 1rem;">$</span>
-      <%= form.number_field :load_amount, value: load_card_request.load_amount, max: (@event.balance_available / 100), step: 0.01, placeholder: '100.00', autofocus: true %>
+      <%= form.number_field :load_amount, value: load_card_request.load_amount, max: (@event.available_balance / 100), step: 0.01, placeholder: '100.00', autofocus: true, disabled: @event.balance_available == 0 %>
     </div>
   </div>
 
@@ -33,7 +40,7 @@
     <% if load_card_request.persisted? %>
       <%= form.submit 'Update' %>
     <% else %>
-      <%= form.submit 'Request transfer', data: { confirmation: 'Your money will finish transferring in 2-3 days. After that you can spend it from your card.' } %>
+      <%= form.submit 'Request transfer', disabled: @event.available_balance == 0 %>
     <% end %>
   </div>
 <% end %>

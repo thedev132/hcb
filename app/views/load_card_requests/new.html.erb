@@ -6,8 +6,8 @@
 
 <div class="flex flex-wrap justify-between mt3">
   <div class="stat muted mb1">
-    <span class="stat__label">Bank balance</span>
-    <span class="stat__value"><%= render_money @event.balance, '' %></span>
+    <span class="stat__label">Available Bank balance</span>
+    <span class="stat__value"><%= render_money @event.balance_available, '' %></span>
   </div>
   <span class="flex-auto h1 pl2 pr2 md-center">→</span>
   <div class="stat mb1">
@@ -18,7 +18,7 @@
 
 <p class="black bold mt1 mb0">
   The average time of the last five transfers is
-  <span class="primary"><%= pluralize LoadCardRequest.processing_time, 'day' %></span>.
+  <span class="primary"><%= pluralize LoadCardRequest.processing_time + 2, 'day' %></span>.
 </p>
 <p class="slate h5 mt0">
   Transfers may take longer than the current average. Sadly
