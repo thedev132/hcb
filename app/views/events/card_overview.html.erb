@@ -17,7 +17,6 @@
       </span>
       <span class="stat__value"><%= render_money @event.emburse_balance, '' %></span>
     </div>
-    <div class="stat md-w-50 muted mb2 tooltipped tooltipped--s" aria-label="The amount stored in your bank–you need to transfer it your card balance if you want to spend it">
     <div class="stat md-w-50 muted mb2 tooltipped tooltipped--n" aria-label="The amount stored in your bank–you need to transfer it your card balance if you want to spend it">
       <span class="stat__label flex items-center">
       Bank balance
@@ -78,19 +77,22 @@ West Hollywood, CA 90069</pre>
   <%= blankslate 'You haven’t requested any physical cards yet.' %>
 <% end %>
 
+<% if @card_requests.outstanding.any? %>
 <h2 class="mt3 mb1">Card Requests</h2>
-<% @card_requests.outstanding.each do |request| %>
-  <%= link_to request, class: 'text-decoration-none mb2' do %>
-    <%= creator_bar request %>
-    <div class="card">
-      <%= status_badge request.status_badge_type %>
-      <strong class="h3"><%= request.full_name %></strong>
-      <span class="muted">(<%= request.status %>)</span>
-    </div>
+  <% @card_requests.outstanding.each do |request| %>
+    <%= link_to request, class: 'text-decoration-none mb2' do %>
+      <%= creator_bar request %>
+      <div class="card">
+        <%= status_badge request.status_badge_type %>
+        <strong class="h3"><%= request.full_name %></strong>
+        <span class="muted">(<%= request.status %>)</span>
+      </div>
+    <% end %>
   <% end %>
 <% end %>
 <% if @card_requests.accepted.any? %>
   <% admin_tools('mt3') do %>
+    <h2 class="mt0 mb1">Accepted Card Requests</h2>
     <% @card_requests.accepted.each do |request| %>
       <%= link_to request, class: 'text-decoration-none mb2' do %>
         <%= creator_bar request %>
