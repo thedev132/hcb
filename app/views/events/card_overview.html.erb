@@ -83,9 +83,10 @@ West Hollywood, CA 90069</pre>
     <%= link_to request, class: 'text-decoration-none mb2' do %>
       <%= creator_bar request %>
       <div class="card">
-        <%= status_badge request.status_badge_type %>
-        <strong class="h3"><%= request.full_name %></strong>
-        <span class="muted">(<%= request.status %>)</span>
+        <span class="tooltipped tooltipped--e" aria-label="<%= request.status.capitalize %>">
+          <%= status_badge request.status_badge_type %>
+        </span>
+        <strong class="h3"><%= request.full_name %>’s card</strong>
       </div>
     <% end %>
   <% end %>
@@ -97,9 +98,7 @@ West Hollywood, CA 90069</pre>
       <%= link_to request, class: 'text-decoration-none mb2' do %>
         <%= creator_bar request %>
         <div class="card">
-          <%= status_badge request.status_badge_type %>
-          <strong class="h3"><%= request.full_name %></strong>
-          <span class="muted">(<%= request.status %>)</span>
+          <strong class="h3"><%= request.full_name %>’s card</strong>
         </div>
       <% end %>
     <% end %>
@@ -130,7 +129,7 @@ West Hollywood, CA 90069</pre>
         <td><%= t.transaction_time.nil? ? '–' : t.transaction_time.to_date %></td>
         <td>
           <span class="tooltipped tooltipped--s" aria-label="<%= t.state.capitalize %>">
-          <%= status_badge t.status_badge_type %>
+            <%= status_badge t.status_badge_type %>
           </span>
           <% if t.amount > 0 %>
             <strong>Transfer from bank account</strong>
