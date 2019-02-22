@@ -17,9 +17,15 @@ $(document).on 'turbolinks:load', ->
   # pass in function for each record
   filterRecords = (valid) ->
     records = BK.s('filterbar_row').hide()
+    BK.s('filterbar_blankslate').hide()
+    acc = 0
     records.each ->
-      $(this).show() if valid(this)
-  
+      if valid(this)
+        $(this).show()
+        acc++
+    if acc is 0
+      BK.s('filterbar_blankslate').fadeIn 'fast'
+
   # patch for keyboard accessibility: simulate click on enter key
   $(document).on 'keyup', '[data-behavior~=filterbar_item]', (e) ->
     $(e.target).click() if e.keyCode is 13

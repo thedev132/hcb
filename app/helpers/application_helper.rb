@@ -14,7 +14,12 @@ module ApplicationHelper
   end
 
   def blankslate(text, options = {})
-    content_tag :p, text, class: "center mt0 mb0 pt2 pb2 slate bold h3 mx-auto max-width-2 #{options[:class]}"
+    other_options = options.except(:class)
+    content_tag(:p, text, class: "center mt0 mb0 pt2 pb2 slate bold h3 mx-auto max-width-2 #{options[:class]}", **other_options)
+  end
+
+  def filterbar_blankslate(text, options = {})
+    blankslate(text, 'data-behavior': 'filterbar_blankslate', class: 'mt2 mb2', **options)
   end
 
   def badge_for(count, options = {})
