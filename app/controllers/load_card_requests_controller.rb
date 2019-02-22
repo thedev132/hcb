@@ -45,7 +45,7 @@ class LoadCardRequestsController < ApplicationController
     end
 
     if @load_card_request.save
-      flash[:success] = 'Successfully requested transfer to debit cards.'
+      flash[:success] = 'Successfully requested transfer to cards.'
       redirect_to event_cards_overview_path(@event)
     else
       render :new
