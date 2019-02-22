@@ -3,6 +3,6 @@ class OrganizerPositionInvitesMailer < ApplicationMailer
     @invite = params[:invite]
 
     mail to: @invite.email,
-      subject: "[Action Requested] You've been invited to the Hack Club Bank"
+      subject: "[Action Requested] You've been invited to Hack Club Bank"
   end
 end
