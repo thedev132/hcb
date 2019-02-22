@@ -26,7 +26,10 @@
 <% @events.each do |event| %>
   <%= link_to event, data: { behavior: 'filterbar_row', filter: event.filter_data.to_json } do %>
     <li class="card">
-      <strong class="block">#<%= event.id %> <%= event.name %></strong>
+      <div class="card__banner card__banner--top bg-<%= event.past? ? 'muted' : 'info' %> white">
+        <span class="block mr1">#<%= event.id %></span>
+        <strong class="h4"><%= event.name %></strong>
+      </div>
       <span class="muted block">
         <%= event.start.to_date %> – <%= event.end.to_date %>,
         <%= render_percentage event.sponsorship_fee %> fee
