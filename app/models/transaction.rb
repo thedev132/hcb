@@ -79,7 +79,7 @@ class Transaction < ApplicationRecord
     {
       exists: true,
       fee_applies: self.fee_applies?,
-      fee_pamynet: self.fee_payment?,
+      fee_payment: self.fee_payment?,
       emburse: self.emburse?,
       expensify: self.expensify?,
       for_invoice: self.for_invoice?
