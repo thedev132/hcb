@@ -231,6 +231,12 @@ class Invoice < ApplicationRecord
     now = saved_changes[:status][1] # new value of status
 
     if was != 'paid' && now == 'paid'
+      # send special email on first invoice paid
+      if self.sponsor.event.invoices.select { |i| i.status == 'paid'}.count == 1
+        InvoiceMailer.with(invoice: self).first_payment_notification.deliver_later
+        return
+      end
+
       InvoiceMailer.with(invoice: self).payment_notification.deliver_later
     end
   end
