@@ -8,6 +8,42 @@ $(document).on 'turbolinks:load', ->
         $('[name="alternative-logo"]').show()
     else
       hankIndex = 0
+  
+  if BK.thereIs 'application_form'
+    # Method for adding a hide/show for parent info
+    parentToggle = (index) ->
+      birthdate = new Date($('[name="application[team_members][' + index + '][birthdate]"]').val())
+      minorThreshold = new Date().setFullYear(new Date().getFullYear() - 18)
+      isMinor = birthdate > minorThreshold
+      parentInfo = $('[data-index="' + index + '"]>.parent-info')
+      parentInfo.toggle(isMinor)
+      parentInfo.find(':input').prop('required', isMinor)
+
+    # Handle change of birthday selector
+    $(document).on 'change', '[data-behavior~=birthday_selector]', (e) ->
+      index = $(e.target).parent().data('index')
+      console.log(index)
+      parentToggle(index)
+
+    # Add team-member on application form
+    $(document).on 'click', '[data-behavior~=add_member]', ->
+      newDiv = $('.member-attributes:last').clone()
+      newID = Number(newDiv.data('index')) + 1
+      newDiv.attr('data-index', newID)
+
+      incrementAttr = (div, attr) ->
+        oldValue = $(div).attr(attr)
+        newValue = oldValue.replace(/\d+/, newID)
+        $(div).attr(attr, newValue)
+
+      $.each newDiv.children(), ->
+        if this.tagName == 'INPUT'
+          incrementAttr(this, 'name')
+          incrementAttr(this, 'id')
+          $(this).val('')
+        if this.tagName == 'LABEL'
+          incrementAttr(this, 'for')
+      $('.members-list').append(newDiv)
 
   $(document).on 'click', '[data-behavior~=flash]', ->
     $(this).fadeOut 'medium'

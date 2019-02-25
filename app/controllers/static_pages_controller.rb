@@ -1,5 +1,6 @@
 class StaticPagesController < ApplicationController
   skip_after_action :verify_authorized # do not force pundit
+  skip_before_action :signed_in_user, only: [ :apply, :submit ]
 
   def index
     if signed_in?
@@ -22,5 +23,12 @@ class StaticPagesController < ApplicationController
         organizer_position_deletion_requests: OrganizerPositionDeletionRequest.under_review.size
       }
     end
+  end
+
+  def apply
+  end
+
+  def submit
+    # TODO: submission logic
   end
 end

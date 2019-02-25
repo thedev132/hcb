@@ -7,6 +7,9 @@ Rails.application.routes.draw do
 
   root to: 'static_pages#index'
 
+  get 'apply', to: 'static_pages#apply'
+  post 'submit', to: 'static_pages#submit'
+
   get 'emburse_transactions/stats'
   get 'transactions/stats'
 

@@ -1,0 +1,67 @@
+<%= form_for :application, url: "submit", data: { behavior: 'application_form' } do |form| %>
+  <%= form.label :name %>
+  <%= form.text_field :name %>
+
+  <%= form.label :website %>
+  <%= form.text_field :website %>
+
+  <%= form.label 'Tell us about your event' %>
+  <%= form.text_field :about_event %>
+
+  <%= form.label 'Tell us about your history' %>
+  <%= form.text_field :about_history %>
+
+  <%= form.label 'Have you already opened sign-ups for your event?' %>
+  <%= form.check_box :opened_sign_ups %>
+
+  <%= form.label :expected_attendees %>
+  <%= form.number_field :expected_attendees %>
+
+  <%= form.label :expected_budget %>
+  <%= form.number_field :expected_budget %>
+
+  <%= form.label 'Has your team organized events before? If so, which ones, what were the budgets, and how many people came?' %>
+  <%= form.text_field :organizer_history %>
+
+  <div class="members-list">
+    <button data-behavior="add_member" type="button">Add teammember</button>
+    <%= form.fields_for :team_members, index: 0 do |member_form| %>
+      <div class="member-attributes" data-index="<%= member_form.index %>">
+        <%= member_form.label :name %>
+        <%= member_form.text_field :name %>
+
+        <%= member_form.label :email %>
+        <%= member_form.text_field :email %>
+
+        <%= member_form.label :phone_number %>
+        <%= member_form.text_field :phone_number %>
+
+        <%= member_form.label :birthdate %>
+        <%= member_form.date_field :birthdate, 'data-behavior': 'birthday_selector' %>
+
+        <%= member_form.label :title %>
+        <%= member_form.text_field :title %>
+
+        <div class="parent-info" style="display:none;">
+          <p>
+            Parent info is required for organizers under 18. We only use it for writing contracts if your team is accepted.
+          </p>
+
+          <%= member_form.label :parent_name %>
+          <%= member_form.text_field :parent_name %>
+
+          <%= member_form.label :parent_email %>
+          <%= member_form.text_field :parent_email %>
+
+          <%= member_form.label :parent_phone_number %>
+          <%= member_form.text_field :parent_phone_number %>
+
+          <%= member_form.label :parent_birthdate %>
+          <%= member_form.text_field :parent_birthdate %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <%= form.submit  %>
+<% end  %>
