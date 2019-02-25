@@ -18,12 +18,13 @@ $(document).on 'turbolinks:load', ->
       parentInfo = $('[data-index="' + index + '"]>.parent-info')
       parentInfo.toggle(isMinor)
       parentInfo.find(':input').prop('required', isMinor)
+      parentInfo.find(':input').prop('disabled', !isMinor)
 
     # Handle change of birthday selector
-    $(document).on 'change', '[data-behavior~=birthday_selector]', (e) ->
-      index = $(e.target).parent().data('index')
-      console.log(index)
+    addBirthdayHandler = -> $(document).on 'change', '[data-behavior~=birthday_selector]', (e) ->
+      index = $(e.target).parent().attr('data-index')
       parentToggle(index)
+    addBirthdayHandler()
 
     # Add team-member on application form
     $(document).on 'click', '[data-behavior~=add_member]', ->
@@ -44,6 +45,8 @@ $(document).on 'turbolinks:load', ->
         if this.tagName == 'LABEL'
           incrementAttr(this, 'for')
       $('.members-list').append(newDiv)
+      parentToggle(newID)
+      addBirthdayHandler()
 
   $(document).on 'click', '[data-behavior~=flash]', ->
     $(this).fadeOut 'medium'
