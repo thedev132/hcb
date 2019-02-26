@@ -5,7 +5,7 @@
   <%= inline_icon 'important', size: 32, class: 'mr1' %>
   <span>
   This application is for events and clubs not registered as Hack Club chapters.
-  Registered Hack Clubs should use the application form <%= link_to 'here', 'https://airtable.com/shrmh0kVBku2XJcB4' %>.
+  Registered Hack Clubs should use the application form <%= link_to 'here', 'https://airtable.com/shrmh0kVBku2XJcB4', class: 'info' %>.
   </span>
 </p>
 <%= form_for :application, url: "submit", data: { behavior: 'application_form' } do |form| %>
