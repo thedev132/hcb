@@ -12,7 +12,11 @@ $(document).on 'turbolinks:load', ->
   if BK.thereIs 'application_form'
     # Method for adding a hide/show for parent info
     parentToggle = (index) ->
-      birthdate = new Date($('[name="application[team_members][' + index + '][birthdate]"]').val())
+      b0 = $($('[data-index="' + index + '"]>.birthdate-selector').children()[0]).val()
+      b1 = $($('[data-index="' + index + '"]>.birthdate-selector').children()[1]).val()
+      b2 = $($('[data-index="' + index + '"]>.birthdate-selector').children()[2]).val()
+      birthdate = new Date(b0, b1, b2)
+
       minorThreshold = new Date().setFullYear(new Date().getFullYear() - 18)
       isMinor = birthdate > minorThreshold
       parentInfo = $('[data-index="' + index + '"]>.parent-info')
@@ -21,10 +25,9 @@ $(document).on 'turbolinks:load', ->
       parentInfo.find(':input').prop('disabled', !isMinor)
 
     # Handle change of birthday selector
-    addBirthdayHandler = -> $(document).on 'change', '[data-behavior~=birthday_selector]', (e) ->
-      index = $(e.target).parent().attr('data-index')
+    $(document).on 'change', '[data-behavior~=birthdate_selector]', (e) ->
+      index = $(e.target).parent().parent().attr('data-index')
       parentToggle(index)
-    addBirthdayHandler()
 
     # Add team-member on application form
     $(document).on 'click', '[data-behavior~=add_member]', ->
@@ -46,7 +49,6 @@ $(document).on 'turbolinks:load', ->
           incrementAttr(this, 'for')
       $('.members-list').append(newDiv)
       parentToggle(newID)
-      addBirthdayHandler()
 
   $(document).on 'click', '[data-behavior~=flash]', ->
     $(this).fadeOut 'medium'
