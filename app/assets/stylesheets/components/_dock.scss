@@ -1,0 +1,48 @@
+.dock {
+  width: 100%;
+  max-width: 48rem;
+  margin: 0.5rem auto;
+  padding: 0 1rem;
+  display: grid;
+  grid-gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+}
+
+.dock__card {
+  font-weight: bold;
+  font-size: 0.875rem;
+  text-decoration: none;
+  padding: 0.75rem 1rem;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: visible; // for tooltips
+  transform: none;
+  transition: 0.125s transform ease-in-out;
+
+  &:focus,
+  &:hover {
+    transform: translateY(-0.25rem);
+
+    &:after {
+      margin-bottom: 0.5rem; // for tooltips
+    }
+  }
+
+  @media screen and (max-width: 32em) {
+    padding: 0.5rem;
+  }
+
+  svg {
+    margin-right: 0.5rem;
+  }
+
+  span {
+    color: $black;
+  }
+}
+
+.dock + h1.heading {
+  font-size: 3rem;
+}

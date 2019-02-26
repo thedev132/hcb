@@ -21,7 +21,7 @@
         <% if card_request.under_review? %>
           <td><%= link_to 'Show', card_request %></td>
           <td><%= link_to 'Edit', edit_card_request_path(card_request) %></td>
-          <% if admin_signed_in? %>
+          <% admin_tools do %>
             <td><%= link_to 'Accept', new_card_path(card_request_id: card_request) %></td>
             <td><%= link_to 'Reject', card_request_reject_path(card_request), method: :post %></td>
           <% end %>

@@ -1,0 +1,68 @@
+.emburse-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+  grid-gap: 1rem;
+
+  @media (min-width: 32em) {
+    .comment__name {
+      margin-left: 0;
+      margin-top: 0;
+    }
+  }
+
+  a {
+    text-decoration: none;
+  }
+
+  p {
+    margin: 0;
+  }
+}
+.emburse-cards__card {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  width: 100%;
+  max-width: 32rem;
+  min-height: 12rem;
+  padding: 1.5rem;
+  position: relative;
+  background-color: #54d;
+  background-image: radial-gradient(ellipse at top right, #867ae7, transparent);
+  font-family: $mono;
+  font-size: 1.25rem;
+  color: $white;
+  border-radius: 6px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.25);
+  transition: 0.25s ease-out all;
+  transform: scale(1);
+
+  &:focus,
+  &:hover {
+    box-shadow: 0 6px 12px 0 rgba(0, 0, 0, 0.25),
+      0 18px 36px 0 rgba(0, 0, 0, 0.25);
+    transform: scale(1.0625);
+  }
+
+  &:before {
+    content: '';
+    width: 10rem;
+    height: 3rem;
+    background: #{image-url('emburse.svg')} no-repeat;
+    background-size: 100%;
+    flex: 1 1 auto;
+  }
+}
+.emburse-cards__card__name {
+  text-transform: uppercase;
+  font-weight: bold;
+}
+.emburse-cards__card__number {
+  color: rgba(255, 255, 255, 0.5);
+
+  strong {
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: $white;
+  }
+}

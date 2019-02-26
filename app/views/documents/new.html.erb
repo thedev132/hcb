@@ -1,6 +1,5 @@
-<% if @document.event.present? %>
-  <%= link_to @document.event.name, @document.event, class: 'breadcrumb' %>
-<% end %>
+<% page_xs %>
+<% render 'events/nav' if defined? @event %>
 
 <h1>New Document</h1>
 

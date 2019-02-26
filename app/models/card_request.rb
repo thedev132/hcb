@@ -12,6 +12,7 @@ class CardRequest < ApplicationRecord
   validate :status_accepted_canceled_or_rejected
 
   scope :outstanding, -> { where(accepted_at: nil) }
+  scope :accepted, -> { where.not(id: outstanding) }
   scope :under_review, -> { where(rejected_at: nil, canceled_at: nil, accepted_at: nil) }
 
   after_create :send_admin_notification
@@ -21,6 +22,14 @@ class CardRequest < ApplicationRecord
     return 'canceled' if canceled_at.present?
     return 'accepted' if accepted_at.present?
     'under review'
+  end
+
+  def status_badge_type
+    s = status.to_sym
+    return :success if s == :accepted
+    return :error if s == :rejected
+    return :muted if s == :canceled
+    :pending
   end
 
   def under_review?

@@ -3,6 +3,6 @@ class LoadCardRequestMailer < ApplicationMailer
     @lcr = params[:load_card_request]
     @event = @lcr.event
 
-    mail to: admin_email, subject: 'New load card request received'
+    mail to: admin_email, subject: 'Balance transfer received'
   end
 end

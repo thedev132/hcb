@@ -1,0 +1,40 @@
+.steps {
+  counter-reset: li;
+  list-style: none;
+  text-align: left;
+  padding: 0;
+
+  li {
+    position: relative;
+    padding-left: 0.5rem;
+    margin-bottom: 1rem;
+
+    @media screen and (min-width: 32em) {
+      padding-left: 2rem;
+    }
+
+    &:before {
+      content: counter(li);
+      counter-increment: li;
+      position: absolute;
+      top: -0.25rem;
+      left: -1rem;
+      height: 2rem;
+      width: 2rem;
+      line-height: 2rem;
+      background-color: map-get($palette, success);
+      color: $white;
+      border-radius: 50%;
+      font-weight: bold;
+      text-align: center;
+
+      @media screen and (max-width: 32em) {
+        left: -1.75rem;
+        top: -0.25rem;
+        height: 1.75rem;
+        line-height: 1.75rem;
+        width: 1.75rem;
+      }
+    }
+  }
+}

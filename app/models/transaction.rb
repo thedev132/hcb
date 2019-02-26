@@ -31,15 +31,30 @@ class Transaction < ApplicationRecord
   after_create :notify_admin
 
   def self.total_volume
-    self.sum('@amount')
+    self.sum('@amount').to_f
+  end
+
+  delegate :url_helpers, to: 'Rails.application.routes'
+  def link
+    host = Rails.application.config.action_mailer.default_url_options[:host]
+    host + url_helpers.transaction_path(self)
   end
 
   def default_values
     self.is_event_related = true if self.is_event_related.nil?
+    set_default_display_name
+  end
+
+  def set_default_display_name
+    self.display_name ||= self.name
   end
 
   def notify_admin
     TransactionMailer.with(transaction: self).notify_admin.deliver_later
+  end
+
+  def notify_user_invoice
+    MoneyReceivedMailer.with(transaction: self).money_received.deliver_later
   end
 
   # Utility method for getting the fee on the transaction if there is one. Used
@@ -56,11 +71,31 @@ class Transaction < ApplicationRecord
     is_event_related && fee_relationship&.fee_applies
   end
 
-  # Emburse adds the word "emburse" to bank transactions made. This is a
-  # convenience method to see when the statement line was probably from
-  # Emburse.
+  def categorized?
+    is_event_related && fee_relationship_id
+  end
+
+  def filter_data
+    {
+      exists: true,
+      fee_applies: self.fee_applies?,
+      fee_payment: self.fee_payment?,
+      emburse: self.emburse?,
+      expensify: self.expensify?,
+      for_invoice: self.for_invoice?
+    }
+  end
+
   def emburse?
-    name.include? 'emburse'
+    filter_for 'emburse'
+  end
+
+  def expensify?
+    filter_for 'expensify'
+  end
+
+  def for_invoice?
+    filter_for 'event transfer'
   end
 
   # is this a potential invoice payout transaction?
@@ -72,5 +107,9 @@ class Transaction < ApplicationRecord
 
   def slug_text
     "#{date} #{name}"
+  end
+
+  def filter_for(text)
+    name.downcase.include? text
   end
 end

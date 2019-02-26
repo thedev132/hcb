@@ -1,7 +1,7 @@
 <%= form_with(model: transaction, local: true) do |form| %>
   <% if transaction.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(transaction.errors.count, "error") %> prohibited this transaction from being saved:</h2>
+      <h2><%= pluralize(transaction.errors.size, "error") %> prohibited this transaction from being saved:</h2>
 
       <ul>
       <% transaction.errors.full_messages.each do |message| %>
@@ -11,43 +11,55 @@
     </div>
   <% end %>
 
-  <%= form.fields_for :fee_relationship do |fr_form| %>
-    <% if admin_signed_in? %>
-    <div class="field">
-      <%= fr_form.label :event %>
-      <%= fr_form.collection_select(:event_id, Event.all, :id, :name, include_blank: 'Select one…') %>
-    </div>
-    <% end %>
-    <% if transaction.emburse? %>
-    <div class="field">
-      <%= form.label :load_card_request, 'Load card request' %>
-      <%= form.collection_select(:load_card_request_id, LoadCardRequest.all, :id, :description, include_blank: 'Select one…') %>
-    </div>
-    <p class="muted h5 mb2">If this isn’t from transferring money to Emburse to fulfill a Load Card Request, leave this field blank.</p>
-    <% end %>
-    <% if transaction.potential_payout? %>
+  <div class="field">
+    <%= form.label :display_name, 'Display name' %>
+    <%= form.text_field :display_name, placeholder: transaction.name, autofocus: true, style: 'max-width: none;' %>
+    <span class="muted block h5">
+      Give this transaction a more descriptive name to improve your records.
+    </span>
+  </div>
+
+  <% admin_tools do %>
+    <%= form.fields_for :fee_relationship do |fr_form| %>
       <div class="field">
-        <%= form.label :invoice_payout, 'Invoice payout' %>
-        <%= form.collection_select(
-          :invoice_payout_id,
-          InvoicePayout.lacking_transaction.all + [transaction.invoice_payout].compact, # .compact to remove nil values if transaction.invoice_payout is nil
-          :id,
-          :dropdown_description,
-          include_blank: 'Select one…'
-        ) %>
+        <%= fr_form.label :event %>
+        <%= fr_form.collection_select(:event_id, Event.all, :id, :name, include_blank: 'Select one…') %>
       </div>
-    <% end %>
-    <%= form.label :is_event_related, class: 'field mb1' do %>
-      <%= form.check_box :is_event_related %>
-      Is event-related?
-    <% end %>
-    <%= fr_form.label :is_fee_payment, class: 'field mb2' do %>
-      <%= fr_form.check_box :is_fee_payment %>
-      Is fee payment?
+      <% if transaction.emburse? %>
+        <div class="field">
+          <%= form.label :load_card_request, 'Load card request' %>
+          <%= form.collection_select(:load_card_request_id, LoadCardRequest.all, :id, :description, include_blank: 'Select one…') %>
+        </div>
+        <p class="muted h5 mb2">If this isn’t from transferring money to Emburse to fulfill a Load Card Request, leave this field blank.</p>
+      <% end %>
+      <% if transaction.potential_payout? %>
+        <div class="field">
+          <%= form.label :invoice_payout, 'Invoice payout' %>
+          <%= form.collection_select(
+            :invoice_payout_id,
+            InvoicePayout.lacking_transaction.all + [transaction.invoice_payout].compact, # .compact to remove nil values if transaction.invoice_payout is nil
+            :id,
+            :dropdown_description,
+            include_blank: 'Select one…'
+          ) %>
+        </div>
+      <% end %>
+      <%= form.label :is_event_related, class: 'field mb1' do %>
+        <%= form.check_box :is_event_related %>
+        Is event-related?
+      <% end %>
+      <%= fr_form.label :fee_applies, class: 'field mb1' do %>
+        &nbsp;&nbsp;&nbsp;&nbsp;<%= fr_form.check_box :fee_applies %>
+        Should charge fee?
+      <% end %>
+      <%= fr_form.label :is_fee_payment, class: 'field mb2' do %>
+        &nbsp;&nbsp;&nbsp;&nbsp;<%= fr_form.check_box :is_fee_payment %>
+        Is fee payment?
+      <% end %>
     <% end %>
   <% end %>
 
   <div class="actions">
-    <%= form.submit %>
+    <%= form.submit 'Rename transaction' %>
   </div>
 <% end %>

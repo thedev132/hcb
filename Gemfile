@@ -11,6 +11,10 @@ gem 'pg', '>= 0.18', '< 2.0'
 gem 'puma', '~> 3.11'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
+# Use CoffeeScript
+gem 'coffee-rails'
+# Include jQuery
+gem 'jquery-rails'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
 # See https://github.com/rails/execjs#readme for more supported runtimes
@@ -26,11 +30,10 @@ gem 'turbolinks', '~> 5'
 # Use ActiveStorage variant
 # gem 'mini_magick', '~> 4.8'
 
-# Use Capistrano for deployment
-# gem 'capistrano-rails', group: :development
-
 # Track bugs
 gem 'bugsnag'
+# Performance tracking
+gem 'skylight'
 
 # For Plaid integration
 gem 'plaid', '~> 6.0'
@@ -73,6 +76,9 @@ gem 'axlsx_rails'
 
 # Manage CORS
 gem 'rack-cors', require: 'rack/cors'
+
+# Connecting to Airtable
+gem 'airtable', git: 'https://github.com/Airtable/airtable-ruby'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

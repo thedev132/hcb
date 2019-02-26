@@ -1,7 +1,13 @@
-<%= link_to 'This transaction', @transaction, class: 'breadcrumb' %>
-<h1>Edit <%= render_money @transaction.amount %>
-<%= @fee && @fee.fee_amount.nil? ? 'fee payment' : 'transaction' %>
-<p class="muted h5"><%= @transaction.name %></p>
+<% title "Rename transaction for #{render_money @transaction.amount}" %>
+<% page_sm %>
+
+<%= render 'events/nav' if @event %>
+
+<h1 class="h1">
+  Rename <%= render_money @transaction.amount %> <%= @fee && @fee.fee_amount.nil? ? 'fee payment' : 'transaction' %>
 </h1>
+
+<strong>Original transaction name</strong>
+<pre class="bg-smoke mt0"><%= @transaction.name %></pre>
 
 <%= render 'form', transaction: @transaction %>

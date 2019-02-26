@@ -100,6 +100,9 @@
 .table-cell {
   display: table-cell;
 }
+.overflow-visible {
+  overflow: visible;
+}
 .overflow-hidden {
   overflow: hidden;
 }
@@ -159,15 +162,7 @@
   display: -ms-flexbox;
   display: flex;
 }
-@media (min-width: 40em) {
-  .sm-flex {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-  }
-}
-@media (min-width: 52em) {
+@media (min-width: 32em) {
   .md-flex {
     display: -webkit-box;
     display: -webkit-flex;
@@ -284,6 +279,7 @@
   -ms-flex-pack: distribute;
   justify-content: space-around;
 }
+/*
 .content-start {
   -webkit-align-content: flex-start;
   -ms-flex-line-pack: start;
@@ -314,6 +310,7 @@
   -ms-flex-line-pack: stretch;
   align-content: stretch;
 }
+*/
 .flex-auto {
   -webkit-box-flex: 1;
   -webkit-flex: 1 1 auto;
@@ -442,17 +439,17 @@
   overflow: hidden;
   clip: rect(1px, 1px, 1px, 1px);
 }
-@media (max-width: 40em) {
+@media (max-width: 32em) {
   .xs-hide {
     display: none !important;
   }
 }
-@media (min-width: 40em) and (max-width: 52em) {
+@media (min-width: 32em) and (max-width: 48em) {
   .sm-hide {
     display: none !important;
   }
 }
-@media (min-width: 52em) and (max-width: 64em) {
+@media (min-width: 48em) and (max-width: 64em) {
   .md-hide {
     display: none !important;
   }

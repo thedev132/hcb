@@ -6,9 +6,10 @@ Rails.application.routes.draw do
   get '/sidekiq', to: 'users#auth' # fallback if adminconstraint fails, meaning user is not signed in
 
   root to: 'static_pages#index'
+  get 'stats', to: 'static_pages#stats'
 
-  get 'emburse_transactions/stats'
-  get 'transactions/stats'
+  get 'apply', to: 'applications#apply'
+  post 'submit', to: 'applications#submit'
 
   resources :users, only: [ :edit, :update ] do
     collection do
@@ -19,9 +20,21 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :organizer_position_invites, only: [ :show ], path: 'invites' do
+  resources :organizer_position_invites, only: [ :index, :show ], path: 'invites' do
     post 'accept'
     post 'reject'
+    post 'cancel'
+  end
+
+  resources :organizer_positions, only: [ :destroy ], as: 'organizers' do
+    resources :organizer_position_deletion_requests, only: [ :new ], as: 'remove'
+  end
+
+  resources :organizer_position_deletion_requests, only: [ :index, :show, :create ] do
+    post 'close'
+    post 'open'
+
+    resources :comments
   end
 
   resources :g_suite_applications, except: [ :new, :create, :edit, :update ] do
@@ -42,24 +55,11 @@ Rails.application.routes.draw do
     resources :comments
   end
 
-  resources :events do
-    get 'g_suite', to: 'events#g_suite_overview', as: :g_suite_overview
-    get 'cards', to: 'events#card_overview', as: :cards_overview
-    resources :organizer_position_invites,
-      only: [ :new, :create ],
-      path: 'invites'
-    resources :g_suites, only: [ :new, :create, :edit, :update ]
-    resources :g_suite_applications, only: [ :new, :create, :edit, :update ]
-    resources :load_card_requests, only: [ :new ]
-  end
+  resources :sponsors
 
-  resources :sponsors do
-    resources :invoices, only: [ :new, :create ]
-  end
   resources :invoices, only: [ :show ] do
     get 'manual_payment'
     post 'manually_mark_as_paid'
-
     resources :comments
   end
 
@@ -94,4 +94,26 @@ Rails.application.routes.draw do
   resources :emburse_transactions, only: [:index, :edit, :update]
 
   post 'export/finances', to: 'exports#financial_export'
+
+  post '/events' => 'events#create'
+  get '/events' => 'events#index'
+  resources :events, path: '/' do
+    get 'team', to: 'events#team', as: :team
+    get 'g_suite', to: 'events#g_suite_overview', as: :g_suite_overview
+    get 'cards', to: 'events#card_overview', as: :cards_overview
+    resources :organizer_position_invites,
+      only: [ :new, :create ],
+      path: 'invites'
+    resources :g_suites, only: [ :new, :create, :edit, :update ]
+    resources :g_suite_applications, only: [ :new, :create, :edit, :update ]
+    resources :load_card_requests, only: [ :new ]
+    resources :documents, only: [ :index ]
+    resources :invoices, only: [ :new, :create, :index ]
+  end
+
+  # rewrite old event urls to the new ones not prefixed by /events/
+  get '/events/*path', to: redirect('/%{path}', status: 302)
+
+  # Beware: Routes after "resources :events" might be overwritten by a
+  # similarly named event
 end

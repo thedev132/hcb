@@ -18,7 +18,7 @@ class Sponsor < ApplicationRecord
     i = invoices.last
     if i.nil?
       'neutral'
-    elsif i.paid
+    elsif i.paid?
       'positive'
     elsif i.due_date < Time.current
       'negative'
@@ -33,7 +33,7 @@ class Sponsor < ApplicationRecord
     i = invoices.last
     if i.nil?
       'No invoices yet'
-    elsif i.paid
+    elsif i.paid?
       'Last invoice paid'
     elsif i.due_date < Time.current
       'Last invoice overdue + unpaid'

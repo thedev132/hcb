@@ -12,12 +12,6 @@ class SponsorsController < ApplicationController
     authorize @sponsor
   end
 
-  # GET /sponsors/new
-  def new
-    @sponsor = Sponsor.new(event_id: params[:event_id])
-    authorize @sponsor
-  end
-
   # GET /sponsors/1/edit
   def edit
     authorize @sponsor
@@ -64,6 +58,7 @@ class SponsorsController < ApplicationController
   # Use callbacks to share common setup or constraints between actions.
   def set_sponsor
     @sponsor = Sponsor.find(params[:id])
+    @event = @sponsor.event
   end
 
   # Only allow a trusted parameter "white list" through.

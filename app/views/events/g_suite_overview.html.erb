@@ -1,26 +1,36 @@
-<%= link_to @event.name, @event, class: 'breadcrumb' %>
-<h1>G Suite <% "for #{@g_suite_application.domain}" if @g_suite_application %></h1>
+<% title "G Suite for #{@event.name}" %>
+<% page_md %>
+<%= render 'nav'%>
+
+<h1>
+  G Suite <% "for #{@g_suite_application.domain}" if @g_suite_application %>
+</h1>
 
 <% case @status
 when :start %>
-  <p>Your event gets free G Suite through Bank! Apply to set it up.</p>
+  <p>Your event gets free G Suite through Bank.</p>
   <%= link_to 'Get started', new_event_g_suite_application_path(event_id: @event.id), class: 'btn bg-success mt2' %>
 <% when :under_review %>
-  <p>Your application is under review. Check back here soon!</p>
+  <p>Your G Suite is being configured for <strong><%= @g_suite_application.domain %></strong>. You’ll get an email within a day letting you know the next steps.</p>
 <% when :app_accepted %>
-  <article class="card p0 max-width-3 mx-auto">
+  <article class="card mb3">
+    <%= render 'g_suite_accounts/panel' %>
+  </article>
+  <details <%= @g_suite.accounts.any? ? nil : "open" %>>
+  <summary><h2 class="inline-block pb0 border-none mt0">Setup Instructions</h2></summary>
+  <article class="card overflow-visible p0">
     <div class="p2 bg-success white center rounded-top">
       <p><strong class="h3">Your application was accepted!</strong><br />It’s time to set up your servers.</p>
     </div>
     <div class="p2 md-pl3">
       <h2 class="mt0 ml1 md-ml3">Instructions</h2>
       <style>
-      table {
-        max-width: 100%;
-        display: block;
-        overflow-x: auto;
-        white-space: nowrap;
-      }
+        table {
+          max-width: 100%;
+          display: block;
+          overflow-x: auto;
+          white-space: nowrap;
+        }
       </style>
       <ol class="steps">
         <li>Sign in to your domain’s account at your domain host.</li>
@@ -116,13 +126,11 @@ when :start %>
         <li>Save your changes.
           <p class="slate mt1 mb0">Typically, you can send and receive messages at your new G Suite email address in less than 6 hours. However, it may take 48–72 hours before you receive email at your new address. It’s no fun to wait, but the time for MX records to take effect depends on your domain host. We have no control over this.</p>
         </li>
-        <li>Add your accounts below!</li>
+        <li>Add your accounts above!</li>
       </ol>
     </div>
-    <div class="p2 md-pl5">
-      <%= render 'g_suite_accounts/panel' %>
-    </div>
   </article>
+  </details>
 <% when :app_rejected %>
   <p class="error">Your application was rejected.</p>
 <% when :verify_setup %>

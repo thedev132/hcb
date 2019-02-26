@@ -7,9 +7,25 @@
   background: $white !important;
 }
 
+.pointer {
+  cursor: pointer;
+}
+
+.measure {
+  max-width: 36rem;
+}
+
 .mx-auto {
   margin-left: auto;
   margin-right: auto;
+}
+
+.inline-flex {
+  display: inline-flex;
+}
+
+.medium {
+  font-weight: 500;
 }
 
 .border,
@@ -20,7 +36,45 @@
   border-color: $gray2;
 }
 
-$__shades: (
+.px0 {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+.py0 {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+.mx0 {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+.my0 {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+@media screen and (min-width: 32em) {
+  .md-px0 {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+  .md-py0 {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+  }
+
+  .md-mx0 {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+  .md-my0 {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+  }
+}
+
+$shades: (
   red: $red0,
   orange: $orange0,
   yellow: $yellow0,
@@ -29,39 +83,23 @@ $__shades: (
   neutral: $gray0
 );
 
-@each $name, $val in $__shades {
-  .shade-#{$name} {
-    background-color: $val;
+@each $name, $value in $shades {
+  .shade-#{'' + $name} {
+    background-color: $value;
   }
 }
 
-$__palette: (
-  primary: $red5,
-  accent: $indigo4,
-  info: $blue5,
-  success: $teal6,
-  error: $red7,
-  warning: $orange5,
-  pending: $yellow5,
-  black: $gray9,
-  slate: $gray8,
-  muted: $gray7,
-  smoke: $gray2,
-  snow: $gray0,
-  white: $white
-);
-
-@each $name, $val in $__palette {
-  .#{$name} {
-    color: $val;
+@each $name, $value in $palette {
+  .#{'' + $name} {
+    color: $value;
   }
 
-  .bg-#{$name} {
-    background-color: $val;
+  .bg-#{'' + $name} {
+    background-color: $value;
   }
 
-  .b--#{$name} {
-    border-color: $val;
+  .b--#{'' + $name} {
+    border-color: $value;
   }
 }
 
@@ -110,4 +148,13 @@ $__palette: (
 }
 .w-auto {
   width: auto;
+}
+
+@media screen and (min-width: 32em) {
+  .md-w-50 {
+    width: 50%;
+  }
+  .md-center {
+    text-align: center;
+  }
 }

@@ -1,5 +1,7 @@
-<%= link_to 'Load card requests', load_card_requests_path, class: 'breadcrumb' %>
-<%= link_to 'This request', load_card_request_path(@load_card_request, event_id: @load_card_request.event.id), class: 'breadcrumb' %>
-<h1>Editing Load Card Request</h1>
+<% title 'Update transfer request' %>
+<% page_sm %>
+<%= render 'events/nav' %>
+
+<h1>Editing Transfer Request</h1>
 
 <%= render 'form', load_card_request: @load_card_request %>

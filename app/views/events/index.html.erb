@@ -1,21 +1,41 @@
+
+<% title "*slaps index page* this bad boy can hold so many events" %>
+
 <h1 class="heading">
   Events
   <%= link_to 'New Event', new_event_path, class: 'btn bg-success' %>
 </h1>
 
-<ul class="list">
-  <% @events.each do |event| %>
-    <%= link_to event do %>
-      <li>
-        <strong>#<%= event.id %> <%= event.name %></strong>
-        <span class="muted">
-          <%= event.start.to_date %> – <%= event.end.to_date %>,
-          <%= render_percentage event.sponsorship_fee %> fee
-          <% if current_user.admin? %>
-            - <%= event.point_of_contact.name %>
-          <% end %>
-        </span>
-      </li>
-    <% end %>
+<div class="filterbar flex flex-wrap items-center width-100">
+  <input
+    type="search"
+    autofocus
+    data-behavior="filterbar_search"
+    placeholder="Search…"
+    aria-label="Filter events"
+    class="flex-auto md-mr2"
+    style="width: auto; max-width: none;">
+  <div data-behavior="filterbar" role="tablist" class="filterbar__filters flex mt1 lg-mt0">
+    <%= filterbar_item 'All', :exists, true %>
+    <%= filterbar_item 'Past', :past %>
+    <%= filterbar_item 'Future', :future %>
+  </div>
+</div>
+
+<ul class="grid">
+<% @events.each do |event| %>
+  <%= link_to event, data: { behavior: 'filterbar_row', filter: event.filter_data.to_json } do %>
+    <li class="card">
+      <div class="card__banner card__banner--top bg-<%= event.past? ? 'muted' : 'info' %> white">
+        <span class="block mr1">#<%= event.id %></span>
+        <strong class="h4"><%= event.name %></strong>
+      </div>
+      <span class="muted block">
+        <%= event.start.to_date %> – <%= event.end.to_date %>,
+        <%= render_percentage event.sponsorship_fee %> fee
+      </span>
+      <%= user_mention event.point_of_contact %>
+    </li>
   <% end %>
+<% end %>
 </ul>

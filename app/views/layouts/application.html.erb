@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Bank</title>
+    <title>
+      <%= if content_for?(:title) then yield(:title) + ' | ' end %>
+      Bank
+    </title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
@@ -15,16 +18,18 @@
     <meta name="msapplication-TileColor" content="#e42d42">
     <meta name="theme-color" content="#e42d42">
   </head>
-  <body class="<%= content_for :page_class %>">
+  <body class="bg-snow <%= content_for :page_class %>">
     <% unless @hide_home %>
       <%= link_to root_path, class: 'home pt1 md-pt2' do %>
-        <%= image_tag 'logo.svg', width: 48, height: 48, alt: 'Bank logo' %>
+        <%= image_tag 'logo.svg', name: 'header-logo', width: @home_size || 48, height: @home_size || 48, alt: 'Bank logo' %>
+        <%= image_tag 'hank.png', name: 'alternative-logo', style: 'display: none;', width: @home_size || 48, height: @home_size || 48, alt: 'Hank logo' %>
       <% end %>
     <% end %>
-    <main class="container">
+    <main class="container <%= content_for :container_class %>">
       <% flash.each do |key, value| %>
-        <article role="alertdialog" class="flash <%= key %> mb2">
-          <%= value %>
+        <article role="alertdialog" class="flash flex items-center mt3 mb2 mx-auto <%= key %>" data-behavior="flash">
+          <span class="flex-auto"><%= value %></span>
+          <%= inline_icon 'view-close', size: 32, class: 'pointer' %>
         </article>
       <% end %>
       <%= yield %>

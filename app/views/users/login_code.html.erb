@@ -1,16 +1,19 @@
-<% page_snow %>
-<% page_hide_home %>
+<% title 'Enter login code' %>
+<% page_xs %>
+<% @home_size = 128 %>
+<% content_for(:page_class) { 'bg-snow pt4' } %>
 
-<article class="container container--extranarrow center">
-  <%= image_tag 'logo.svg', style: 'max-width: 128px;', class: 'mx-auto mt4 w-100' %>
+<article class="center mt3">
   <h1 class="mt2">
     <span class="h3 caps slate block">Sign in to Bank</span>
     <span class="black">Enter login code</span>
   </h1>
+  <p>We just sent a login code to <%= @email %></p>
   <%= form_tag exchange_login_code_users_path do %>
-    <%= label_tag :login_code, 'Login code', class: 'left-align' %>
-    <%= telephone_field_tag :login_code, '', autofocus: true, class: 'left-align mb2' %>
+    <%= label_tag :login_code, "Enter your login code", class: 'left-align' %>
+    <%= telephone_field_tag :login_code, '', placeholder: 'Login code', autofocus: true, autocomplete: 'off', class: 'left-align mb2' %>
     <%= hidden_field_tag :user_id, @user_id %>
-    <%= submit_tag 'Continue' %>
+    <p><em>Make sure to check your spam folder</em></p>
+    <%= submit_tag 'Submit' %>
   <% end %>
 </article>

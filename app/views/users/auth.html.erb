@@ -1,15 +1,16 @@
-<% page_snow %>
-<% page_hide_home %>
+<% title 'Sign in' %>
+<% page_xs %>
+<% @home_size = 128 %>
+<% content_for(:page_class) { 'bg-snow pt4' } %>
 
-<article class="container container--extranarrow center">
-  <%= image_tag 'logo.svg', style: 'max-width: 128px;', class: 'mx-auto mt4 w-100' %>
+<article class="center mt3">
   <h1 class="mt2">
     <span class="h3 caps slate block">Sign in to</span>
     <span class="primary">Hack Club Bank</span>
   </h1>
-  <%= form_tag login_code_users_path do %>
+  <%= form_tag login_code_users_path, 'data-behavior': 'login' do %>
     <%= label_tag :email, 'Enter your email…', class: 'left-align' %>
-    <%= email_field_tag :email, '', autofocus: true, class: 'left-align mb2' %>
-    <%= submit_tag 'Continue' %>
+    <%= email_field_tag :email, '', placeholder: 'Email address',autofocus: true, autocomplete: 'username', class: 'left-align mb2' %>
+    <%= submit_tag 'Get login code' %>
   <% end %>
 </article>

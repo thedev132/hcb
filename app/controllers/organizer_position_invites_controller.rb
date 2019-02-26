@@ -1,4 +1,5 @@
 class OrganizerPositionInvitesController < ApplicationController
+
   def new
     @invite = OrganizerPositionInvite.new
     @invite.event = Event.find(params[:event_id])
@@ -18,8 +19,8 @@ class OrganizerPositionInvitesController < ApplicationController
     authorize @invite
 
     if @invite.save
-      flash[:success] = 'Invite successfully sent'
-      redirect_to @invite.event
+      flash[:success] = "Invite successfully sent to #{invite_params[:email]}"
+      redirect_to event_team_path @invite.event
     else
       render :new
     end
@@ -28,6 +29,11 @@ class OrganizerPositionInvitesController < ApplicationController
   def show
     @invite = OrganizerPositionInvite.find(params[:id])
     authorize @invite
+    @organizers = @invite.event.organizer_positions.includes(:user)
+    if @invite.cancelled?
+      flash[:error] = 'That invite was canceled!'
+      redirect_to root_path
+    end
   end
 
   def accept
@@ -54,6 +60,20 @@ class OrganizerPositionInvitesController < ApplicationController
       redirect_to @invite
     end
   end
+
+  def cancel
+    @invite = OrganizerPositionInvite.find(params[:organizer_position_invite_id])
+    authorize @invite
+
+    if @invite.cancel
+      flash[:success] = "#{@invite.email}\'s invitation has been canceled."
+      redirect_to event_team_path(@invite.event)
+    else
+      flash[:error] = 'Failed to cancel the invitation.'
+      redirect_to @invite.event
+    end
+  end
+
 
   private
 

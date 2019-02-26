@@ -36,9 +36,17 @@ class LoadCardRequestsController < ApplicationController
 
     authorize @load_card_request
 
+    load_amount = @load_card_request.load_amount
+
+    if load_amount > @event.balance_available + load_amount
+      flash[:error] = "You don't have enough money to load onto your card!"
+      render :new
+      return
+    end
+
     if @load_card_request.save
-      redirect_to event_cards_overview_path(@event),
-        notice: 'Load card request was successfully created.'
+      flash[:success] = 'Successfully requested transfer to cards.'
+      redirect_to event_cards_overview_path(@event)
     else
       render :new
     end
@@ -52,7 +60,7 @@ class LoadCardRequestsController < ApplicationController
     result_params[:load_amount] = result_params[:load_amount].to_f * 100
 
     if @load_card_request.update(result_params)
-      flash[:success] = 'Load card request was successfully updated. Please update Emburse balance.'
+      flash[:success] = 'Transfer request was successfully updated. Please update Emburse balance.'
       redirect_to @load_card_request
     else
       render :edit
@@ -66,7 +74,7 @@ class LoadCardRequestsController < ApplicationController
     authorize @load_card_request
 
     if @load_card_request.save
-      flash[:success] = 'Load card request accepted.'
+      flash[:success] = 'Transfer accepted.'
     else
       flash[:error] = 'Something went wrong.'
     end
@@ -78,7 +86,7 @@ class LoadCardRequestsController < ApplicationController
 
     @load_card_request.rejected_at = Time.now
     if @load_card_request.save
-      flash[:success] = 'Load card request rejected.'
+      flash[:success] = 'Transfer rejected.'
       redirect_to @load_card_request.event
     else
       redirect_to load_card_requests_path
@@ -91,25 +99,27 @@ class LoadCardRequestsController < ApplicationController
     if @load_card_request.under_review?
       @load_card_request.canceled_at = Time.now
       if @load_card_request.save
-        flash[:success] = 'Load card request canceled.'
+        flash[:success] = 'Transfer canceled.'
       else
-        flash[:error] = 'Failed to cancel load card request.'
+        flash[:error] = 'Failed to cancel transfer.'
       end
     else
-      flash[:error] = 'Load card request cannot be canceled.'
+      flash[:error] = 'Transfer cannot be canceled.'
     end
 
     redirect_to event_cards_overview_path(@load_card_request.event)
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_load_card_request
-      @load_card_request = LoadCardRequest.find(params[:id] || params[:load_card_request_id])
-    end
 
-    # Only allow a trusted parameter "white list" through.
-    def load_card_request_params
-      params.require(:load_card_request).permit(:event_id, :creator_id, :load_amount, :emburse_transaction_id)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_load_card_request
+    @load_card_request = LoadCardRequest.find(params[:id] || params[:load_card_request_id])
+    @event = @load_card_request.event
+  end
+
+  # Only allow a trusted parameter "white list" through.
+  def load_card_request_params
+    params.require(:load_card_request).permit(:event_id, :creator_id, :load_amount, :emburse_transaction_id)
+  end
 end

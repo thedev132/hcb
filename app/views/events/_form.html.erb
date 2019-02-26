@@ -1,7 +1,7 @@
-<%= form_with(model: event, local: true) do |form| %>
+<%= form_with(model: event, local: true, class: 'mb3') do |form| %>
   <% if event.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(event.errors.count, "error") %> prohibited this event from being saved:</h2>
+      <h2><%= pluralize(event.errors.size, "error") %> prohibited this event from being saved:</h2>
 
       <ul>
       <% event.errors.full_messages.each do |message| %>
@@ -12,39 +12,42 @@
   <% end %>
 
   <div class="field">
-    <%= form.label :name %>
-    <%= form.text_area :name %>
-  </div>
-
-  <div class="field">
-    <%= form.label :start %>
-    <%= form.datetime_select :start %>
-  </div>
-
-  <div class="field">
-    <%= form.label :end %>
-    <%= form.datetime_select :end %>
-  </div>
-
-  <div class="field">
     <%= form.label :address %>
     <%= form.text_area :address %>
   </div>
 
-  <div class="field">
-    <%= form.label :sponsorship_fee %>
-    <%= form.text_field :sponsorship_fee %>
-  </div>
 
-  <div class="field">
-    <%= form.label :emburse_department_id %>
-    <%= form.text_field :emburse_department_id %>
-  </div>
+  <% admin_tools do %>
+    <div class="field">
+      <%= form.label :name %>
+      <%= form.text_area :name %>
+    </div>
 
-  <div class="field">
-    <%= form.label :point_of_contact_id %>
-    <%= form.collection_select :point_of_contact_id, User.admin.all, :id, :email %>
-  </div>
+    <div class="field">
+      <%= form.label :start %>
+      <%= form.date_select :start %>
+    </div>
+
+    <div class="field">
+      <%= form.label :end %>
+      <%= form.date_select :end %>
+    </div>
+
+    <div class="field">
+      <%= form.label :sponsorship_fee, "Sponsorship fee (%)" %>
+      <%= form.text_field :sponsorship_fee, placeholder: '0.07' %>
+    </div>
+
+    <div class="field">
+      <%= form.label :emburse_department_id %>
+      <%= form.text_field :emburse_department_id %>
+    </div>
+
+    <div class="field">
+      <%= form.label :point_of_contact_id %>
+      <%= form.collection_select :point_of_contact_id, User.admin.all, :id, :email %>
+    </div>
+  <% end %>
 
   <div class="actions">
     <%= form.submit %>

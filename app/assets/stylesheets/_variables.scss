@@ -131,3 +131,19 @@ $cyan6: #28cebb;
 $cyan7: #23b5a4;
 $cyan8: #1d9789;
 $cyan9: #156d63;
+
+$palette: (
+  primary: $red5,
+  accent: $indigo4,
+  info: $blue5,
+  success: $teal6,
+  error: $red7,
+  warning: $orange5,
+  pending: $yellow5,
+  black: $gray9,
+  slate: $gray8,
+  muted: $gray7,
+  smoke: $gray2,
+  snow: $gray0,
+  white: $white
+);

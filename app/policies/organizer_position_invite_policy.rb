@@ -1,4 +1,8 @@
 class OrganizerPositionInvitePolicy < ApplicationPolicy
+  def index?
+    user.admin? || record.event&.users&.include?(user)
+  end
+
   def new?
     user.admin? || record.event&.users&.include?(user)
   end
@@ -21,5 +25,9 @@ class OrganizerPositionInvitePolicy < ApplicationPolicy
 
   def reject?
     record.user == user
+  end
+
+  def cancel?
+    user.admin? || record.event.users.include?(user)
   end
 end

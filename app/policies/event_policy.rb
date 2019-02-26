@@ -27,6 +27,10 @@ class EventPolicy < ApplicationPolicy
     user.admin?
   end
 
+  def team?
+    user.admin? || record.users.include?(user)
+  end
+
   def card_overview?
     user.admin? || record.users.include?(user)
   end

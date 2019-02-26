@@ -8,9 +8,9 @@ class UsersController < ApplicationController
 
   # post to request login code
   def login_code
-    email = params[:email]
+    @email = params[:email].downcase
 
-    resp = ApiService.request_login_code(email)
+    resp = ApiService.request_login_code(@email)
 
     @user_id = resp[:id]
   end
@@ -57,7 +57,7 @@ class UsersController < ApplicationController
     authorize @user
 
     if @user.update(user_params)
-      flash[:success] = 'Profile changes saved successfully.'
+      flash[:success] = 'Updated your profile!'
       redirect_to params[:redirect_to] || root_path
     else
       render :edit

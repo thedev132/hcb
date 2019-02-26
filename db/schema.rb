@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_18_214023) do
+ActiveRecord::Schema.define(version: 2019_02_19_113221) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -282,8 +282,6 @@ ActiveRecord::Schema.define(version: 2018_12_18_214023) do
     t.text "memo"
     t.datetime "due_date"
     t.bigint "ending_balance"
-    t.boolean "forgiven"
-    t.boolean "paid"
     t.bigint "starting_balance"
     t.text "statement_descriptor"
     t.bigint "subtotal"
@@ -295,7 +293,7 @@ ActiveRecord::Schema.define(version: 2018_12_18_214023) do
     t.text "item_stripe_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.boolean "closed"
+    t.boolean "auto_advance"
     t.text "hosted_invoice_url"
     t.text "invoice_pdf"
     t.bigint "creator_id"
@@ -308,6 +306,11 @@ ActiveRecord::Schema.define(version: 2018_12_18_214023) do
     t.text "payout_creation_queued_job_id"
     t.datetime "payout_creation_balance_available_at"
     t.text "slug"
+    t.text "number"
+    t.datetime "finalized_at"
+    t.text "status"
+    t.integer "payout_creation_balance_net"
+    t.integer "payout_creation_balance_stripe_fee"
     t.index ["creator_id"], name: "index_invoices_on_creator_id"
     t.index ["item_stripe_id"], name: "index_invoices_on_item_stripe_id", unique: true
     t.index ["manually_marked_as_paid_user_id"], name: "index_invoices_on_manually_marked_as_paid_user_id"
@@ -315,6 +318,7 @@ ActiveRecord::Schema.define(version: 2018_12_18_214023) do
     t.index ["payout_id"], name: "index_invoices_on_payout_id"
     t.index ["slug"], name: "index_invoices_on_slug", unique: true
     t.index ["sponsor_id"], name: "index_invoices_on_sponsor_id"
+    t.index ["status"], name: "index_invoices_on_status"
     t.index ["stripe_invoice_id"], name: "index_invoices_on_stripe_invoice_id", unique: true
   end
 
@@ -336,6 +340,22 @@ ActiveRecord::Schema.define(version: 2018_12_18_214023) do
     t.index ["fulfilled_by_id"], name: "index_load_card_requests_on_fulfilled_by_id"
   end
 
+  create_table "organizer_position_deletion_requests", force: :cascade do |t|
+    t.bigint "organizer_position_id"
+    t.bigint "submitted_by_id"
+    t.bigint "closed_by_id"
+    t.datetime "closed_at"
+    t.text "reason"
+    t.boolean "subject_has_outstanding_expenses_expensify", default: false, null: false
+    t.boolean "subject_has_outstanding_transactions_emburse", default: false, null: false
+    t.boolean "subject_emails_should_be_forwarded", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["closed_by_id"], name: "index_organizer_position_deletion_requests_on_closed_by_id"
+    t.index ["organizer_position_id"], name: "index_organizer_deletion_requests_on_organizer_position_id"
+    t.index ["submitted_by_id"], name: "index_organizer_position_deletion_requests_on_submitted_by_id"
+  end
+
   create_table "organizer_position_invites", force: :cascade do |t|
     t.bigint "event_id"
     t.text "email"
@@ -346,9 +366,12 @@ ActiveRecord::Schema.define(version: 2018_12_18_214023) do
     t.datetime "accepted_at"
     t.datetime "rejected_at"
     t.bigint "organizer_position_id"
+    t.datetime "cancelled_at"
+    t.string "slug"
     t.index ["event_id"], name: "index_organizer_position_invites_on_event_id"
     t.index ["organizer_position_id"], name: "index_organizer_position_invites_on_organizer_position_id"
     t.index ["sender_id"], name: "index_organizer_position_invites_on_sender_id"
+    t.index ["slug"], name: "index_organizer_position_invites_on_slug", unique: true
     t.index ["user_id"], name: "index_organizer_position_invites_on_user_id"
   end
 
@@ -357,6 +380,7 @@ ActiveRecord::Schema.define(version: 2018_12_18_214023) do
     t.bigint "event_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "deleted_at"
     t.index ["event_id"], name: "index_organizer_positions_on_event_id"
     t.index ["user_id"], name: "index_organizer_positions_on_user_id"
   end
@@ -410,6 +434,7 @@ ActiveRecord::Schema.define(version: 2018_12_18_214023) do
     t.bigint "load_card_request_id"
     t.bigint "invoice_payout_id"
     t.text "slug"
+    t.text "display_name"
     t.index ["bank_account_id"], name: "index_transactions_on_bank_account_id"
     t.index ["deleted_at"], name: "index_transactions_on_deleted_at"
     t.index ["fee_relationship_id"], name: "index_transactions_on_fee_relationship_id"
@@ -429,9 +454,11 @@ ActiveRecord::Schema.define(version: 2018_12_18_214023) do
     t.string "full_name"
     t.text "phone_number"
     t.datetime "admin_at"
+    t.string "slug"
     t.index ["api_access_token"], name: "index_users_on_api_access_token", unique: true
     t.index ["api_id"], name: "index_users_on_api_id", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["slug"], name: "index_users_on_slug", unique: true
   end
 
   add_foreign_key "card_requests", "cards"
@@ -464,6 +491,9 @@ ActiveRecord::Schema.define(version: 2018_12_18_214023) do
   add_foreign_key "load_card_requests", "events"
   add_foreign_key "load_card_requests", "users", column: "creator_id"
   add_foreign_key "load_card_requests", "users", column: "fulfilled_by_id"
+  add_foreign_key "organizer_position_deletion_requests", "organizer_positions"
+  add_foreign_key "organizer_position_deletion_requests", "users", column: "closed_by_id"
+  add_foreign_key "organizer_position_deletion_requests", "users", column: "submitted_by_id"
   add_foreign_key "organizer_position_invites", "events"
   add_foreign_key "organizer_position_invites", "organizer_positions"
   add_foreign_key "organizer_position_invites", "users"

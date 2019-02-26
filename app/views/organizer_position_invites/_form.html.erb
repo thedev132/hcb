@@ -1,0 +1,23 @@
+<p class="muted mb1">This person will have full access to your event finances.</p>
+
+<%= form_with(model: invite, local: true, url: event_organizer_position_invites_path) do |form| %>
+  <% if invite.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@invite.errors.size, "error") %> prohibited this invite from being saved:</h2>
+
+      <ul>
+      <% invite.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field flex items-end">
+    <div class="mr2 flex-auto">
+      <%= form.label :email %>
+      <%= form.email_field :email %>
+    </div>
+    <%= form.submit 'Send' %>
+  </div>
+<% end %>

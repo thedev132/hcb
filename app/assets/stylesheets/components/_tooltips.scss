@@ -1,0 +1,66 @@
+.tooltipped {
+  position: relative;
+
+  &:after {
+    background-color: rgba(map-get($palette, black), 0.875);
+    border-radius: 0.25rem;
+    bottom: 50%;
+    box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.0625),
+      0 4px 8px 0 rgba(0, 0, 0, 0.125);
+    color: map-get($palette, white);
+    content: attr(aria-label);
+    font-family: $font-family;
+    font-size: 0.875rem;
+    font-weight: 500;
+    height: min-content;
+    letter-spacing: 0;
+    line-height: 1.375;
+    margin-right: 0.5rem;
+    max-width: 12rem;
+    min-height: 1.25rem;
+    opacity: 0;
+    padding: 0.25rem 0.75rem;
+    pointer-events: none;
+    position: absolute;
+    right: 100%;
+    text-align: center;
+    transform: translateY(50%);
+    transition: 0.125s all ease-in-out;
+    width: max-content;
+    z-index: 1;
+  }
+
+  &:hover:after,
+  &:active:after,
+  &:focus:after {
+    opacity: 1;
+    z-index: 9;
+  }
+}
+
+.tooltipped--e:after {
+  left: 100%;
+  right: 0;
+  margin-left: 0.5rem;
+  margin-right: 0;
+  transform: translateY(50%);
+}
+
+.tooltipped--w:after {
+  right: 100%;
+  transform: translateY(50%);
+}
+
+.tooltipped--n:after {
+  right: 50%;
+  bottom: 100%;
+  margin-right: 0;
+  transform: translateX(50%);
+}
+
+.tooltipped--s:after {
+  right: 50%;
+  top: 100%;
+  margin-right: 0;
+  transform: translateX(50%);
+}

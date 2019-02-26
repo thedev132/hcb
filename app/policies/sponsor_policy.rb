@@ -4,23 +4,23 @@ class SponsorPolicy < ApplicationPolicy
   end
 
   def show?
-    user.admin? || user_has_position?
+    user.admin?
   end
 
   def new?
-    user.admin? || user_has_position?
+    user.admin?
   end
 
   def create?
-    user.admin? || user_has_position?
+    user.admin?
   end
 
   def edit?
-    user.admin? || user_has_position?
+    user.admin?
   end
 
   def update?
-    user.admin? || user_has_position?
+    user.admin?
   end
 
   def destroy
@@ -35,7 +35,8 @@ class SponsorPolicy < ApplicationPolicy
       :address_line2,
       :address_city,
       :address_state,
-      :address_postal_code
+      :address_postal_code,
+      :id
     ]
 
     attrs << :event_id if user.admin?

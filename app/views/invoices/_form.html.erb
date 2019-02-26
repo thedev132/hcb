@@ -1,7 +1,7 @@
-<%= form_with(model: [sponsor, invoice], local: true) do |form| %>
+<%= form_with(model: invoice, url: :event_invoices, local: true) do |form| %>
   <% if invoice.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(invoice.errors.count, "error") %> prohibited this invoice from being saved:</h2>
+      <h2><%= pluralize(invoice.errors.size, "error") %> prohibited this invoice from being saved:</h2>
 
       <ul>
       <% invoice.errors.full_messages.each do |message| %>
@@ -11,9 +11,68 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= form.label :due_date %>
-    <%= form.date_select :due_date %>
+  <% if @event.sponsors.count > 0 %>
+    <div class="field">
+      <%= form.label :sponsor, 'Sponsor' %>
+      <%= form.select :sponsor,
+        options_for_select(@event.sponsors.map { |s|
+          [s.name, s.id, { 'data-json': s.to_json } ]
+        }),
+        include_blank: 'New sponsor…' %>
+    </div>
+  <% end %>
+
+  <%= form.fields_for :sponsor_attributes do |form| %>
+    <h2>Sponsor details</h2>
+
+    <p data-behavior="sponsor_update_warning" style="display: none;" class="flex items-center info line-height-3">
+      <%= inline_icon 'important', size: 32, class: 'mr1' %>
+      Editing these fields will update the current sponsor record & past invoices
+    </p>
+
+    <%= form.hidden_field :id %>
+    <div class="field mt2">
+      <%= form.label :name, "Name (use company name if applicable)" %>
+      <%= form.text_field :name, placeholder: 'Raviga Capital' %>
+    </div>
+
+    <div class="field">
+      <%= form.label :contact_email, 'Contact email (email to send invoice to)' %>
+      <%= form.email_field :contact_email, placeholder: 'peter.gregory@ravigacapital.com' %>
+    </div>
+
+    <div class="field">
+      <%= form.label :address_line1, 'Street address' %>
+      <%= form.text_field :address_line1, placeholder: '1 Letterman Drive' %>
+    </div>
+
+    <div class="field">
+      <%= form.text_field :address_line2, placeholder: 'Suite 500' %>
+    </div>
+
+    <div class="flex">
+      <div class="field flex-auto mr1">
+        <%= form.label :address_city, 'City' %>
+        <%= form.text_field :address_city, placeholder: 'San Francisco' %>
+      </div>
+      <div class="field flex-auto ml1">
+        <%= form.label :address_state, 'State' %>
+        <%= form.text_field :address_state, placeholder: 'CA' %>
+      </div>
+    </div>
+
+    <div class="field">
+      <%= form.label :address_postal_code, 'ZIP' %>
+      <%= form.text_field :address_postal_code, placeholder: '94129' %>
+    </div>
+  <% end %>
+
+  <h2>Invoice details</h2>
+
+  <%= form.label :item_amount, 'Amount' %>
+  <div class="field flex items-center">
+    <span class="bold muted" style="width: 1rem;">$</span>
+    <%= form.number_field :item_amount, value: (invoice.item_amount.nil? ? nil : (invoice.item_amount.to_f / 100)), placeholder: '500.00', step: 0.01, class: 'bold' %>
   </div>
 
   <div class="field">
@@ -22,11 +81,11 @@
   </div>
 
   <div class="field">
-    <%= form.label :item_amount, 'Amount (in USD)' %>
-    <%= form.number_field :item_amount, value: (invoice.item_amount.nil? ? nil : (invoice.item_amount.to_f / 100)), placeholder: '$1,000.00', step: 0.01 %>
+    <%= form.label :due_date %>
+    <%= form.date_select :due_date, selected: (Date.today + 30.days) %>
   </div>
 
-  <div class="actions">
-    <%= form.submit %>
+  <div class="actions tooltipped tooltipped--n inline-block" aria-label="Your invoice is immediatly emailed to the sponsor">
+    <%= form.submit 'Send invoice immediately' %>
   </div>
 <% end %>

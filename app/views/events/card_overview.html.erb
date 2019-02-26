@@ -1,49 +1,55 @@
-<%= link_to @event.name, @event, class: 'breadcrumb' %>
-<h1 class="heading">
-  Debit Cards
+<% title "Cards for #{@event.name}" %>
+<% page_md %>
+<%= render 'nav'%>
+
+<h1>
+  Cards
 </h1>
 
-<h2 class="mb2">Summary</h2>
+<article class="card">
+  <h2 class="mt0 mb2">Summary</h2>
 
-<div class="stat inline-block mr2 mb2">
-  <span class="stat__label">Available balance</span>
-  <span class="stat__value"><%= render_money @event.emburse_balance, '' %></span>
-</div>
-<% if admin_signed_in? %>
-  <div class="stat inline-block">
-    <span class="stat__label">Emburse budget limit</span>
-    <span class="stat__value"><%= render_money @event.emburse_budget_limit, '' %></span>
+  <div class="flex flex-wrap">
+    <div class="stat md-w-50 mb2 tooltipped tooltipped--s" aria-label="The amount available to spend on your cards">
+      <span class="stat__label flex items-center">
+      Card balance
+      <%= inline_icon 'info', size: 24, class: 'ml1', 'aria-label': 'Info icon' %>
+      </span>
+      <span class="stat__value"><%= render_money @event.emburse_balance, '' %></span>
+    </div>
+    <div class="stat md-w-50 muted mb2 tooltipped tooltipped--s" aria-label="The amount stored in your bank–you need to transfer it to your card balance before spending it">
+      <span class="stat__label flex items-center">
+      Bank balance
+      <%= inline_icon 'info', size: 24, class: 'muted ml1', 'aria-label': 'Info icon' %>
+      </span>
+      <span class="stat__value"><%= render_money @event.balance, '' %></span>
+    </div>
   </div>
-  <% if @event.emburse_department_path.nil? %>
-    <%= link_to 'Set Emburse Department ID', edit_event_path(@event), class: 'btn bg-accent mr2' %>
-  <% else %>
-    <%= link_to 'Set Emburse Budget', @event.emburse_department_path, class: 'btn bg-accent mr2' %>
-  <% end %>
-<% end %>
 
-<div class="flex flex-wrap items-center">
-  <%= link_to 'Increase Balance', new_event_load_card_request_path(event_id: @event.slug), class: 'btn bg-success mr2' %>
-  <span class="h5 mt1 mb1">
-    (Average transfer time: <%= pluralize LoadCardRequest.processing_time, 'day' %>)
-  </span>
-</div>
+  <div class="flex flex-wrap items-center">
+    <%= link_to 'Transfer to card balance', new_event_load_card_request_path(event_id: @event.slug), class: 'btn bg-success mr2' %>
+    <span class="h5 mt1 mb1">
+    </span>
+  </div>
 
-<p class="slate measure h5">
-  Transfers may take longer than the current average. Sadly
-  this is beyond our control, constrained by the US banking /
-  ACH transfer system. Please plan accordingly.
-</p>
-
-<% if @event.cards.any? %>
-  <div class="card mt2">
-    <p class="stat__label">Your billing address when making purchases:</p>
-<pre>
-The Hack Foundation
+  <% if @event.cards.any? %>
+    <p class="bold mt2 mb1">Your billing address for purchases</p>
+    <pre class="inline-block mt0 mb0">The Hack Foundation
 8605 Santa Monica Blvd #86294
-West Hollywood, CA 90069
-</pre>
-  </div>
-<% end %>
+West Hollywood, CA 90069</pre>
+  <% end %>
+
+  <% admin_tools('flex items-center mt2') do %>
+    <% if @event.emburse_department_path.nil? %>
+      <%= link_to 'Set Emburse Department ID', edit_event_path(@event), class: 'btn bg-accent mr2' %>
+    <% else %>
+      <%= link_to 'Set Emburse Budget', @event.emburse_department_path, class: 'btn bg-accent mr2' %>
+    <% end %>
+    <span class="h5 mt1 mb1">
+      (Current: <strong>$<%= render_money @event.emburse_budget_limit, '' %></strong>)
+    </span>
+  <% end %>
+</article>
 
 <h2 class="heading">
   Event Cards
@@ -52,87 +58,99 @@ West Hollywood, CA 90069
     class: 'btn bg-success' %>
 </h2>
 <% if @event.cards.any? %>
-  <section class="emburse-cards mt2 md-mt3">
+  <section class="emburse-cards grid--spacious mt2">
     <% @event.cards.each do |card| %>
       <%= link_to card do %>
+        <%= creator_bar card, prefix: 'requested ' %>
         <div class="emburse-cards__card">
           <p class="emburse-cards__card__number">
             <span>XXXX-XXXX-XXXX-</span><strong><%= card.last_four %></strong>
           </p>
           <p class="emburse-cards__card__name"><%= card.full_name %></p>
         </div>
-        <p class="emburse-cards__caption">(sent <span title="<%= card.created_at %>"><%= time_ago_in_words card.created_at %> ago</span>)</p>
       <% end %>
     <% end %>
   </section>
-<% else %>
-  <%= blankslate 'No cards yet' %>
+<% elsif @card_requests.any? %>
+  <%= blankslate 'No cards have been accepted yet.' %>
+<% elsif @cards.blank? %>
+  <%= blankslate 'You haven’t requested any physical cards yet.' %>
 <% end %>
 
-<% if @card_requests.any? %>
-  <h3 class="mb1">Card Requests</h3>
-  <ul class="list list--unlinked list--row">
-    <% @card_requests.each do |request| %>
-      <li>
-        <p>
-          <%= status_if :pending, request.under_review? %>
-          <strong><%= request.full_name %> – <%= request.status %></strong>
-          <span class="muted">(added <span title="<%= request.created_at %>"><%= time_ago_in_words request.created_at %> ago</span>)</span>
-        </p>
-        <% if request.creator == current_user %>
-          <%= link_to 'Cancel',
-            card_request_cancel_path(request),
-            method: :post,
-            'data-confirm': 'Are you sure you want to cancel this card request?',
-            class: 'btn btn--destroy' if request.under_review? && !admin_signed_in? %>
-        <% end %>
-      </li>
-    <% end %>
-  </ul>
-<% end %>
-
-<% if @emburse_transactions.any? and admin_signed_in? %>
-  <h3 class="heading">
-    Emburse Transactions
-  </h3>
-  <ul class="list list--row">
-    <% @emburse_transactions.order(transaction_time: :desc).where.not(transaction_time: nil).each do |transaction| %>
-      <a href="<%= transaction.emburse_path %>" target="_blank">
-        <li>
-            <p class="flex-auto">
-              <%= status_badge transaction.status_badge_type %>
-              <strong><%= render_money transaction.amount %> <%= transaction.merchant_name %> <%= '– ' + transaction.card.full_name if transaction.card %> – <%= transaction.state %></strong>
-              <span class="muted">(created on <%= transaction.transaction_time.to_date %>)</span>
-            </p>
-        </li>
-      </a>
-    <% end %>
-  </ul>
-<% end %>
-
-<% if @load_card_requests.any? %>
-  <h3 class="heading">
-    Emburse Balance Requests
-    <%# link_to 'Request to Add Money',
-      new_event_load_card_request_path(event_id: @event.id),
-      class: 'btn bg-success' %>
-  </h3>
-  <ul class="list list--unlinked list--row">
-    <% @load_card_requests.each do |request| %>
-      <li>
-        <p class="flex-auto">
+<% if @card_requests.outstanding.any? %>
+<h2 class="mt3 mb1">Card Requests</h2>
+  <% @card_requests.outstanding.each do |request| %>
+    <%= link_to request, class: 'text-decoration-none mb2' do %>
+      <%= creator_bar request %>
+      <div class="card">
+        <span class="tooltipped tooltipped--e" aria-label="<%= request.status.capitalize %>">
           <%= status_badge request.status_badge_type %>
-          <strong><%= render_money request.load_amount %> – <%= request.status %></strong>
-          <span class="muted">(created by <%= request.creator.name %> on <span title="<%= request.created_at %>"><%= request.created_at.to_date %></span>)</span>
-        </p>
-        <% if request.under_review? && request.creator == current_user %>
-          <%= link_to 'Cancel',
-            load_card_request_cancel_path(request, event_id: request.event.id),
-            method: :post,
-            'data-confirm': 'Are you sure you want to cancel this balance request?',
-            class: 'btn btn--destroy' unless admin_signed_in? %>
-        <% end %>
-      </li>
+        </span>
+        <strong class="h3"><%= request.full_name %>’s card</strong>
+      </div>
     <% end %>
-  </ul>
+  <% end %>
+<% end %>
+<% if @card_requests.accepted.any? %>
+  <% admin_tools('mt3') do %>
+    <h2 class="mt0 mb1">Accepted Card Requests</h2>
+    <% @card_requests.accepted.each do |request| %>
+      <%= link_to request, class: 'text-decoration-none mb2' do %>
+        <%= creator_bar request %>
+        <div class="card">
+          <strong class="h3"><%= request.full_name %>’s card</strong>
+        </div>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>
+
+<% if @emburse_transactions.any? %>
+</main>
+<main class="container">
+  <h2 class="mt3 mb2">
+    Card Transactions
+  </h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Name</th>
+        <th>Amount</th>
+        <th>Running total</th>
+        <th>On</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+    <% running_sum = @emburse_transactions.completed.sum(&:amount) %>
+    <% @emburse_transactions.each do |t| %>
+      <tr>
+        <td><%= t.transaction_time.nil? ? '–' : t.transaction_time.to_date %></td>
+        <td>
+          <span class="tooltipped tooltipped--s" aria-label="<%= t.state.capitalize %>">
+            <%= status_badge t.status_badge_type %>
+          </span>
+          <% if t.amount > 0 %>
+            <strong>Transfer from bank account</strong>
+          <% elsif t.merchant_name.nil? %>
+            <strong>Transfer back to bank account</strong>
+          <% else %>
+            <%= t.merchant_name %>
+          <% end %>
+        </td>
+        <td><%= render_money t.amount %></td>
+        <td><%= render_money running_sum %></td>
+        <% running_sum -= t.amount if t.completed? %>
+        <td>
+          <%= t.card.nil? ? '—' : card_mention(t.card) %>
+          <%= "(#{t.card.full_name})" if t.card %>
+        </td>
+        <td>
+          <a href="<%= t.emburse_path %>" target="_blank">More</a>
+        </td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
 <% end %>

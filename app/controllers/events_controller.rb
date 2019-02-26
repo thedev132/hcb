@@ -5,7 +5,7 @@ class EventsController < ApplicationController
   def index
     authorize Event
 
-    @events = Event.all
+    @events = Event.all.includes(:point_of_contact)
   end
 
   # GET /events/new
@@ -29,12 +29,15 @@ class EventsController < ApplicationController
 
   # GET /events/1
   def show
+    authorize @event
+    @organizers = @event.organizer_positions.includes(:user)
+    @transactions = @event.transactions.includes(:fee_relationship)
+  end
 
-    @g_suite_status = @event.g_suite_status
-
-    @card_requests = @event.card_requests.under_review
-    @load_card_requests = @event.load_card_requests.under_review
-
+  def team
+    @event = Event.find(params[:event_id])
+    @positions = @event.organizer_positions.includes(:user)
+    @pending = @event.organizer_position_invites.pending.includes(:sender)
     authorize @event
   end
 
@@ -47,7 +50,7 @@ class EventsController < ApplicationController
   def update
     authorize @event
 
-    if @event.update(event_params)
+    if @event.update(current_user.admin? ? event_params : user_event_params)
       flash[:success] = 'Event was successfully updated.'
       redirect_to @event
     else
@@ -66,38 +69,46 @@ class EventsController < ApplicationController
 
   def card_overview
     @event = Event.find(params[:event_id])
-    @card_requests = @event.card_requests.under_review
-    @load_card_requests = @event.load_card_requests
-    @emburse_transactions = @event.emburse_transactions
-
     authorize @event
+    @card_requests = @event.card_requests
+    @load_card_requests = @event.load_card_requests
+    @emburse_transactions = @event.emburse_transactions.order(transaction_time: :desc).where.not(transaction_time: nil).includes(:card)
   end
 
   def g_suite_overview
     @event = Event.find(params[:event_id])
+    authorize @event
     @status = @event.g_suite_status
     @g_suite = @event.g_suite
     @g_suite_application = @event.g_suite_application
-
-    authorize @event
+    @g_suite_status = @event.g_suite_status
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_event
-      @event = Event.find(params[:id])
-    end
 
-    # Only allow a trusted parameter "white list" through.
-    def event_params
-      params.require(:event).permit(
-        :name,
-        :start,
-        :end,
-        :address,
-        :sponsorship_fee,
-        :emburse_department_id,
-        :point_of_contact_id
-      )
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_event
+    @event = Event.find(params[:id])
+  end
+
+  # Only allow a trusted parameter "white list" through.
+  def event_params
+    params.require(:event).permit(
+      :name,
+      :start,
+      :end,
+      :address,
+      :sponsorship_fee,
+      :emburse_department_id,
+      :point_of_contact_id
+    )
+  end
+
+  def user_event_params
+    params.require(:event).permit(
+      :start,
+      :end,
+      :address
+    )
+  end
 end

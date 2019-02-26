@@ -1,3 +1,21 @@
-# _[github bootstrappin'](https://youtu.be/csJ7mBWb2Zo)_
+# Bank
 
-![](https://lh3.googleusercontent.com/iMW1fPFJ1pxduZtonkw7gvsd9s2iGTx56Dx0ewKAc8DlEkTeLXVCfnPofstvEQn9NZjlBAwZgfIppfJ22YlWinUIM9I9n3HzowBbkg39_gUuGzGnC20IN66CvtB_OfWSY45MymrZICuNkf3xYQgRkH4v0y5SvsYmWpHLZYV8xmdrDFayp46dXtOQCuKojrxzoiRWMgft6BrW-8ut8TN9zS5_3or753cYWcKRN3-P_s_0AWFq3rKbhgEA1X295m1AaNCWvPg9rsAICJ0tQCSlqoOWKLFc8zGZc6Eobpoe0oRj_IlmIArw9rYHMm6-COo8DgQLt4vRMV4ZNlmK428muS8SiAJ-p59lImvPvpoWFsxjxw8Z-Fma7VwO5eapI44Qtn7dzKGqf_gSReFZNhfFnJWZK6T_6M1p8x6Qm4gx7RWK2nUhOzeTPJzO8bB7-ofe-4uRy2euJP3n62N-11Pyq8O-HacBokdgRn0zHHrI-3SoRNrJ2VFoVL_-Ytv9gmB1OSBnXV560A30zqghTb9KGULHQN97PzBh_wai1DE6WnQkI1Gof6FT-VHx1Z7riqRj0-S8o6Bvdk-FoJTIGDtB10tpx2ub-eS04SFAoCon=w335-h189-no)
+_It’s a bank, folks._
+
+## Getting Started
+
+1. Install Docker.
+2. Clone this repo.
+3. ```sh
+    docker-compose build
+    docker-compose run web bundle
+    docker-compose run web bundle exec rails db:create db:migrate
+    docker-compose up
+   ```
+4. Open [localhost:3000](http://localhost:3000)
+
+## Import database dump from Heroku
+
+```
+pg_restore --verbose --clean --no-acl --no-owner -h db -U postgres -d bank_development latest.dump
+```

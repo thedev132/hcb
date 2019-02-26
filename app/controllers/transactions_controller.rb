@@ -1,19 +1,16 @@
 require 'csv'
 
 class TransactionsController < ApplicationController
-  skip_before_action :signed_in_user, only: [ :stats ]
-  before_action :skip_authorization, only: [ :stats ]
-
   def index
     @event = Event.find(params[:event])
     @transactions = @event.transactions
     authorize @transactions
 
-    attributes = %w{date name amount fee}
+    attributes = %w{date name amount fee link}
     attributes_to_currency = %w{amount fee}
 
     result = CSV.generate(headers: true) do |csv|
-      csv << attributes
+      csv << attributes.map(&:capitalize)
 
       @transactions.each do |transaction|
         csv << attributes.map do |attr|
@@ -31,6 +28,7 @@ class TransactionsController < ApplicationController
 
   def show
     @transaction = Transaction.find(params[:id])
+    @event = @transaction.event
 
     @commentable = @transaction
     @comments = @commentable.comments
@@ -42,6 +40,7 @@ class TransactionsController < ApplicationController
   def edit
     @transaction = Transaction.find(params[:id])
     authorize @transaction
+    @event = @transaction.event
 
     # so the fee relationship fields render
     @transaction.fee_relationship ||= FeeRelationship.new
@@ -51,6 +50,7 @@ class TransactionsController < ApplicationController
     @transaction = Transaction.find(params[:id])
     authorize @transaction
 
+    currently_categorized = @transaction.categorized?
     fee_relationship = @transaction.fee_relationship
 
     @transaction.assign_attributes(transaction_params)
@@ -67,17 +67,16 @@ class TransactionsController < ApplicationController
         # key that'll be erased on the @transaction.save
         fee_relationship.destroy! if should_delete_fee_relationship
 
+        # if we just categorized the transaction & it's an invoice payout, send email to organizers
+        if (currently_categorized != @transaction.categorized?) && @transaction.invoice_payout
+          @transaction.notify_user_invoice
+        end
+
         redirect_to @transaction
       else
         render :edit
       end
     end
-  end
-
-  def stats
-    render json: {
-      total_volume: Transaction.total_volume
-    }
   end
 
   private
@@ -87,7 +86,8 @@ class TransactionsController < ApplicationController
       :is_event_related,
       :load_card_request_id,
       :invoice_payout_id,
-      fee_relationship_attributes: [ :event_id, :is_fee_payment ]
+      :display_name,
+      fee_relationship_attributes: [ :event_id, :fee_applies, :is_fee_payment ]
     )
   end
 end

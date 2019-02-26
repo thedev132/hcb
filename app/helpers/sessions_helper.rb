@@ -6,7 +6,7 @@ module SessionsHelper
 
     # probably a better place to do this, but we gotta assign any pending
     # organizer position invites - see that class for details
-    OrganizerPositionInvite.pending.where(email: user.email).find_each do |invite|
+    OrganizerPositionInvite.pending_assign.where(email: user.email).find_each do |invite|
       invite.update(user: user)
     end
 
@@ -35,7 +35,7 @@ module SessionsHelper
       # ApiService::UnauthorizedError if we get an authorization error, which
       # will be caught by ApplicationController and sign out the user
       Rails.cache.fetch("#{@current_user.cache_key_with_version}/authed", expires_in: 1.hour) do
-        @current_user.api_record.present? 
+        @current_user.api_record.present?
       end
     end
 

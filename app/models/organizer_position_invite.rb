@@ -20,7 +20,13 @@
 #     creation.
 #
 class OrganizerPositionInvite < ApplicationRecord
-  scope :pending, -> { where(accepted_at: nil, rejected_at: nil) }
+  include FriendlyId
+
+  friendly_id :slug_candidates, use: :slugged
+
+  scope :pending, -> { where(accepted_at: nil, rejected_at: nil, cancelled_at: nil) }
+  # tmb@hackclub: this is the scope that the SessionHelper looks to assign un-assigned invites. we need to include cancelled invites so that we can assign users to them
+  scope :pending_assign, -> { where(accepted_at: nil, rejected_at: nil ) }
 
   belongs_to :event
   belongs_to :user, required: false
@@ -43,6 +49,11 @@ class OrganizerPositionInvite < ApplicationRecord
   def accept
     unless self.user.present?
       self.errors.add(:user, 'must be present to accept invite')
+      return false
+    end
+
+    if self.cancelled?
+      self.errors.add(:base, 'was canceled!')
       return false
     end
 
@@ -71,6 +82,11 @@ class OrganizerPositionInvite < ApplicationRecord
       return false
     end
 
+    if self.cancelled?
+      self.errors.add(:base, 'was canceled!')
+      return false
+    end
+
     if self.rejected?
       self.errors.add(:base, 'already rejected!')
       return false
@@ -85,6 +101,33 @@ class OrganizerPositionInvite < ApplicationRecord
     self.rejected_at.present?
   end
 
+  def cancel
+    if self.accepted?
+      self.errors.add(:user, 'has already accepted this invite!')
+      return false
+    end
+
+    if self.rejected?
+      self.errors.add(:user, 'has already rejected this invite!')
+      return false
+    end
+
+    self.cancelled_at = Time.current
+
+    self.save
+  end
+
+  def cancelled?
+    self.cancelled_at.present?
+  end
+
+  def slug_candidates
+    slug = normalize_friendly_id("#{self.event.name} #{self.email}")
+    # https://github.com/norman/friendly_id/issues/480
+    sequence = OrganizerPositionInvite.where("slug LIKE ?", "#{slug}-%").size + 2
+    [slug, "#{slug} #{sequence}"]
+  end
+
   private
 
   def not_already_organizer
@@ -92,6 +135,4 @@ class OrganizerPositionInvite < ApplicationRecord
       self.errors.add(:user, 'is already an organizer of this event!')
     end
   end
-
-
 end

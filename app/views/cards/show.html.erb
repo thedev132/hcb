@@ -1,29 +1,79 @@
-<%= link_to @card.event.name, event_path(@card.event), class: 'breadcrumb' %>
-<h1 class="heading">
-  Card for <%= @card.user.email %>
-  <%= link_to 'Edit', edit_card_path(@card), class: 'btn bg-info' if admin_signed_in? %>
-</h1>
+<% title "Card #{@card.last_four}" %>
+<% page_md %>
+<%= render 'events/nav' %>
 
-<section class="details">
-  <p>
-    <strong>Full name</strong>
-    <%= @card.full_name %>
-  </p>
+<article class="card max-width-2 mx-auto mt3">
+  <section class="details mb3">
+    <h2 class="mt0 mb0 heading">
+      <span class="flex-auto">Card for <%= @card.full_name %></span>
+      <span class="h3"><%= card_mention @card %></span>
+    </h2>
 
-  <p>
-    <strong>Email address</strong>
-    <%= @card.user.email %>
-  </p>
+    <p>
+      <strong>Ordered by</strong>
+      <%= user_mention @card.user %>
+    </p>
 
-  <p>
-    <strong>Card number</strong>
-    XXXX-XXXX-XXXX-<%= @card.last_four %>
-  </p>
+    <p>
+      <strong>Email address</strong>
+      <%= @card.user.email %>
+    </p>
 
-  <% if admin_signed_in? %>
-  <p>
-    <strong>Emburse ID</strong>
-    <%= link_to @card.emburse_id, @card.emburse_path %>
-  </p>
+    <div>
+      <strong>Card number</strong>
+      XXXX-XXXX-XXXX-<%= @card.last_four %>
+      <div class="right tooltipped tooltipped--w" aria-label="Full number hidden to protect security">
+        <%= inline_icon 'private', size: 32, class: 'smoke' %>
+      </div>
+    </div>
+
+    <% admin_tools do %>
+      <strong>Emburse ID</strong>
+      <%= link_to @card.emburse_id, @card.emburse_path %>
+    <% end %>
+  </section>
+
+  <% admin_tools do %>
+    <%= link_to 'Edit', edit_card_path(@card), class: 'btn bg-info' %>
   <% end %>
-</section>
+</article>
+
+<% if @emburse_transactions.any? %>
+  <h2 class="mt3">
+    Transactions made on this card
+  </h2>
+  <table class="mb5">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Name</th>
+        <th>Amount</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+    <% running_sum = @emburse_transactions.completed.sum(&:amount) %>
+    <% @emburse_transactions.each do |t| %>
+      <tr>
+        <td><%= t.transaction_time.nil? ? '–' : t.transaction_time.to_date %></td>
+        <td>
+          <span class="tooltipped tooltipped--n" aria-label="<%= t.state.capitalize %>">
+          <%= status_badge t.status_badge_type %>
+          </span>
+          <% if t.amount > 0 %>
+            <strong>Transfer from bank account</strong>
+          <% elsif t.merchant_name.nil? %>
+            <strong>Transfer back to bank account</strong>
+          <% else %>
+            <%= t.merchant_name %>
+          <% end %>
+        </td>
+        <td><%= render_money t.amount %></td>
+        <td>
+          <a href="<%= t.emburse_path %>" target="_blank">More</a>
+        </td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+<% end %>

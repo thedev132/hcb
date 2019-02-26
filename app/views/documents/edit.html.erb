@@ -1,5 +1,6 @@
-<%= link_to @document.event.name, @document.event, class: 'breadcrumb' %>
-<%= link_to @document.name, @document, class: 'breadcrumb'%>
+<% page_sm %>
+<%= render 'events/nav' %>
+
 <h1>Editing Document</h1>
 
 <%= render 'form', document: @document %>

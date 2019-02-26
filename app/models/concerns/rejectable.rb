@@ -27,7 +27,7 @@ module Rejectable
 
   def single_status(status_columns)
     columns_with_errors = status_columns.select { |col| self[col].present? }
-    if columns_with_errors.count > 1
+    if columns_with_errors.size > 1
       columns_with_errors.each do |col|
         other_columns = columns_with_errors - [col]
         errors.add(col, "can’t be present along with #{other_columns}")

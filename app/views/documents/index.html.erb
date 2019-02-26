@@ -1,0 +1,30 @@
+<% title "Documents for #{@event.name}" %>
+<% page_md %>
+<%= render 'events/nav' %>
+
+<h1 class="heading">
+  <span class="flex items-center flex-auto">
+    Documents
+    <%= badge_for @documents.size, class: 'bg-muted' %>
+  </span>
+  <% admin_tools do %>
+    <%= link_to 'Upload a document',
+    new_document_path(event_id: @event.id),
+    class: 'btn bg-success my0 block' %>
+  <% end %>
+</h1>
+
+<% if @event.documents.any? %>
+  <ul class="grid">
+    <% @event.documents.each do |d| %>
+      <%= link_to admin_signed_in? ? d : document_download_path(d) do %>
+        <li class="card">
+          <strong class="h3 block"><%= d.name %></strong>
+          <%= user_mention d.user %>
+        </li>
+      <% end %>
+    <% end %>
+  </ul>
+<% else %>
+  <%= blankslate 'No documents yet' %>
+<% end %>

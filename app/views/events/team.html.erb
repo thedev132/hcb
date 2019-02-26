@@ -1,0 +1,70 @@
+<% title "Team overview" %>
+<% page_sm %>
+<%= render 'nav' %>
+
+<h1 class="flex items-center">
+  Team Members
+  <%= badge_for @positions.size, class: 'bg-muted' %>
+</h1>
+
+<% if @positions.any? %>
+  <% @positions.each do |position| %>
+    <div class="card flex items-center pt0 pb0 mb2">
+      <%= avatar_for position.user, 48, class: 'mr2' %>
+      <p class="flex-auto">
+        <strong class="h3 block"><%= position.user.full_name || 'Unnamed' %></strong>
+        <%= position.user.email %>
+        <span class="muted h5 block">(added <span title="<%= position.created_at %>"><%= time_ago_in_words position.created_at %> ago</span>)</span>
+        <% if admin_signed_in? %>
+          <span class="admin-tools inline-block p1 h5">
+          phone: <%= position.user.phone_number %>
+          </span>
+        <% end %>
+      </p>
+      <% admin_tools('mr2') do %>
+        <%= pop_icon_to 'controls', edit_user_path(position.user.id) if position.user == current_user || admin_signed_in? %>
+      <% end %>
+      <%= pop_icon_to 'member-remove', new_organizer_remove_path(organizer_id: position.id), class: 'error' unless position.user == current_user %>
+      <%= pop_icon_to 'controls', edit_user_path(position.user.id), class: 'mr2' if position.user == current_user && !admin_signed_in? %>
+    </div>
+  <% end %>
+<% else %>
+  <%= blankslate 'No others on your team yet' %>
+<% end %>
+
+<h2 class="mt3">Invite a team member</h2>
+<%= render 'form_invite', invite: OrganizerPositionInvite.new %>
+
+<% if @pending.any? %>
+  <h2 class="flex items-center mt3 mb0">
+    Pending invitations
+    <%= badge_for @pending.size, class: 'bg-muted' %>
+  </h2>
+  <% @pending.order(created_at: :desc).each do |invite| %>
+    <%= creator_bar invite %>
+    <div class="card flex items-center pt0 pb0 mb3">
+      <%= avatar_for OpenStruct.new(email: invite.email, name: invite.email), 24, class:
+      'mr1' %>
+      <p class="line-height-3 flex-auto">
+        <strong><%= invite.email %></strong>
+      </p>
+      <% if invite.sender == current_user || admin_signed_in? %>
+        <%= pop_icon_to 'view-close',
+          organizer_position_invite_cancel_path(invite.id),
+          size: 24,
+          method: :post,
+          class: 'error tooltipped tooltipped--w',
+          'aria-label': 'Cancel this invitation' %>
+      <% else %>
+      <div class="tooltipped tooltipped--w" aria-label="Only the sender can cancel an invitation">
+        <%= pop_icon_to 'view-close',
+          organizer_position_invite_cancel_path(invite.id),
+          method: :post,
+          size: 24,
+          class: 'muted',
+          disabled: true %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+<% end %>

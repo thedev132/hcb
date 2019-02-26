@@ -9,7 +9,6 @@ class Event < ApplicationRecord
 
   has_many :organizer_position_invites
   has_many :organizer_positions
-
   has_many :users, through: :organizer_positions
   has_one :g_suite_application, required: false
   has_one :g_suite, required: false
@@ -25,6 +24,7 @@ class Event < ApplicationRecord
   has_many :emburse_transactions
 
   has_many :sponsors
+  has_many :invoices, through: :sponsors
 
   has_many :documents
 
@@ -48,19 +48,31 @@ class Event < ApplicationRecord
   end
 
   def balance
-    self.transactions.sum(:amount)
+    transactions.sum(:amount)
+  end
+
+  # used for load card requests, this is the amount of money available that isn't being transferred out by an LCR -tmb@hackclub
+  def balance_available
+    lcrs = self.load_card_requests
+    balance - (lcrs.under_review + lcrs.accepted - lcrs.completed - lcrs.canceled - lcrs.rejected).sum(&:load_amount)
+  end
+  alias_method :available_balance, :balance_available
+
+  # amount incoming from paid Stripe invoices not yet deposited
+  def pending_deposits
+    self.invoices.where(status: 'paid', payout: nil).sum(:payout_creation_balance_net)
   end
 
   def billed_transactions
-    self.transactions
-        .joins(:fee_relationship)
-        .where(fee_relationships: { fee_applies: true } )
+    transactions
+      .joins(:fee_relationship)
+      .where(fee_relationships: { fee_applies: true } )
   end
 
   def fee_payments
-    self.transactions
-        .joins(:fee_relationship)
-        .where(fee_relationships: { is_fee_payment: true } )
+    transactions
+      .joins(:fee_relationship)
+      .where(fee_relationships: { is_fee_payment: true } )
   end
 
   # total amount over all time paid agains the fee
@@ -84,6 +96,22 @@ class Event < ApplicationRecord
     return :verify_setup if !g_suite.verified?
     return :done if g_suite.verified?
     :start
+  end
+
+  def past?
+    self.end < Time.current
+  end
+
+  def future?
+    self.start > Time.current
+  end
+
+  def filter_data
+    {
+      exists: true,
+      past: past?,
+      future: future?
+    }
   end
 
   private

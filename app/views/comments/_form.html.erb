@@ -2,7 +2,7 @@
   <% if @comment.errors.any? %>
   <p>There are errors</p>
     <div id="error_explanation">
-      <h2><%= pluralize(@comment.errors.count, "error") %> prohibited this comment from being saved:</h2>
+      <h2><%= pluralize(@comment.errors.size, "error") %> prohibited this comment from being saved:</h2>
 
       <ul>
       <% @comment.errors.full_messages.each do |message| %>
@@ -12,17 +12,20 @@
     </div>
   <% end %>
 
-  <div class="comment__name bold mt2"><%= current_user.name %></div>
-  <%= form.text_area :content, class: 'mb2' %>
+  <div class="comment__name mt2">
+    <%= user_mention current_user %>
+  </div>
+  <%= form.text_area :content, class: 'card mb2', placeholder: 'Add a comment…', 'data-behavior': 'autosize' %>
 
   <div class="field">
     <%= form.file_field :file %>
   </div>
 
-  <% if admin_signed_in? %>
-  <div class="field">
-    <%= form.check_box :admin_only, {}, "true", "false" %> Post as admin-only comment
-  </div>
+  <% admin_tools('pb0 mb2') do %>
+    <div class="field field--checkbox">
+      <%= form.check_box :admin_only, {}, true, false %>
+      <%= form.label :admin_only, 'Post as admin-only comment' %>
+    </div>
   <% end %>
 
   <%= form.submit 'Post Comment' %>

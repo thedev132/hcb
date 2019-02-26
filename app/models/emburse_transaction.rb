@@ -19,7 +19,11 @@ class EmburseTransaction < ApplicationRecord
   end
 
   def undeclined?
-    self.state != 'declined'
+    state != 'declined'
+  end
+
+  def completed?
+    state == 'completed'
   end
 
   def emburse_path
@@ -28,9 +32,9 @@ class EmburseTransaction < ApplicationRecord
 
   def status_badge_type
     s = state.to_sym
-    return 'success' if s == :completed
-    return 'error' if s == :declined
-    'pending'
+    return :success if s == :completed
+    return :error if s == :declined
+    :pending
   end
 
   def self.total_card_transaction_volume
@@ -38,6 +42,6 @@ class EmburseTransaction < ApplicationRecord
   end
 
   def self.total_card_transaction_count
-    self.where('amount < 0').completed.count
+    self.where('amount < 0').completed.size
   end
 end

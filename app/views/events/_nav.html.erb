@@ -1,0 +1,29 @@
+<% unless defined? hide_name %>
+  <%= link_to @event do %>
+    <h1 class="center border-none h1 mt3 mb1 pb0 underline primary">
+      <%= @event.name %>
+    </h1>
+  <% end %>
+<% end %>
+</main>
+
+<nav class="dock">
+  <%= dock_card 'Invoices',
+    'Collect payment from event sponsors.',
+    'payment-docs', 'warning',
+    event_invoices_path(event_id: @event.slug) %>
+  <%= dock_card 'Cards',
+    'Request and manage cards for your team.',
+    'card', 'accent',
+    event_cards_overview_path(event_id: @event.slug) %>
+  <%= dock_card 'G Suite',
+    'Manage your event’s Google domain.',
+    'google', 'info',
+    event_g_suite_overview_path(event_id: @event.slug) %>
+  <%= dock_card 'Documents',
+    'Download resources from the Bank team.',
+    'docs', 'primary',
+    event_documents_path(event_id: @event.slug) %>
+</nav>
+
+<main class="container <%= content_for :container_class %>">

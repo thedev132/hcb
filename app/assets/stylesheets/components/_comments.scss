@@ -1,0 +1,12 @@
+.comment__name {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+  margin-bottom: 0.25rem;
+
+  @media screen and (min-width: 32em) {
+    margin-left: -1.875rem;
+  }
+}

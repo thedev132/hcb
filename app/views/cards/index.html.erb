@@ -14,7 +14,7 @@
   <tbody>
     <% @cards.each do |card| %>
       <tr>
-        <td><%= card.full_name %></td>
+        <td><%= user_mention card.user %></td>
         <td><%= card.event.name %></td>
         <td><%= link_to 'Show', card %></td>
         <td><%= link_to 'Edit', edit_card_path(card) %></td>

@@ -1,29 +1,35 @@
 class InvoicesController < ApplicationController
+  before_action :set_event, only: [:index]
+
+  def index
+    @invoices = @event.invoices.order("CASE status WHEN 'paid' THEN 1 ELSE 0 END DESC").order(item_amount: :desc, due_date: :desc)
+    authorize @invoices
+  end
+
   def new
-    @sponsor = Sponsor.find(params[:sponsor_id])
+    @event = Event.find(params[:event_id])
+    @sponsor = Sponsor.new(event: @event)
     @invoice = Invoice.new(sponsor: @sponsor)
 
     authorize @invoice
   end
 
   def create
-    @sponsor = Sponsor.find(params[:sponsor_id])
+    invoice_params = filtered_params.except(:action, :controller, :sponsor_attributes)
+    invoice_params[:item_amount] = (filtered_params[:item_amount].to_f * 100.to_i)
 
-    filtered_params = invoice_params.except(:action, :controller)
-    filtered_params[:item_amount] = (invoice_params[:item_amount].to_f * 100.to_i)
+    event = Event.find params[:event_id]
+    sponsor_attributes = filtered_params[:sponsor_attributes].merge(event: event)
 
-    @invoice = Invoice.new(filtered_params)
+    @sponsor = Sponsor.find_or_initialize_by(id: sponsor_attributes[:id], event: event)
+    @invoice = Invoice.new(invoice_params)
     @invoice.sponsor = @sponsor
     @invoice.creator = current_user
 
     authorize @invoice
 
-    if @invoice.save
-      # the 1 hour wait is a result of stripe. they automatically send the
-      # invoice then, there's unfortunately no way for us to speed up the
-      # process right now. their support team says they're aware of this being
-      # annoying & is on it, so we'll see.
-      flash[:success] = 'Invoice successfully created. It will be emailed to the point of contact of the associated sponsor in 1 hour.'
+    if @sponsor.update(sponsor_attributes) && @invoice.save
+      flash[:success] = "Invoice successfully created and emailed to #{@invoice.sponsor.contact_email}."
       redirect_to @invoice
     else
       render :new
@@ -33,6 +39,7 @@ class InvoicesController < ApplicationController
   def show
     @invoice = Invoice.find(params[:id])
     @sponsor = @invoice.sponsor
+    @event = @sponsor.event
 
     @commentable = @invoice
     @comment = Comment.new
@@ -67,11 +74,17 @@ class InvoicesController < ApplicationController
 
   private
 
-  def invoice_params
+  def filtered_params
     params.require(:invoice).permit(
       :due_date,
       :item_description,
-      :item_amount
+      :item_amount,
+      :sponsor_id,
+      sponsor_attributes: policy(Sponsor).permitted_attributes
     )
+  end
+
+  def set_event
+    @event = Event.find(params[:id] || params[:event_id])
   end
 end

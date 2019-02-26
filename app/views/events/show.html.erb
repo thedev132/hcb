@@ -1,160 +1,82 @@
-<h1 class="heading">
-  <span style="font-size: 3rem;">
+<% title @event.name %>
+<% content_for(:page_class) { 'bg-snow pt2' } %>
+<% @home_size = 72 %>
+
+<h1 class="heading center flex-column mt2">
+  <span class="flex items-center">
     <% if admin_signed_in? %>
-      #<%= @event.id %>
+      <span
+        class="badge bg-warning ml0 mr2"
+        onclick="alert(`Date: <%= @event.start.to_date %>–<%= @event.end.to_date %>
+Address: <%= @event.address %>
+Sponsorship fee: <%= render_percentage @event.sponsorship_fee %>`)">
+        #<%= @event.id %>
+      </span>
     <% end %>
-    <%= @event.name %>
+    <span style="font-size: 3rem;">
+      <%= @event.name %>
+    </span>
+    <%= pop_icon_to 'controls', edit_event_path(@event), class: 'ml2 warning' if admin_signed_in? %>
   </span>
-  <% if admin_signed_in? %>
-    <%= link_to 'Edit',
-      edit_event_path(@event),
-      class: 'btn bg-info' %>
-    <%= link_to 'Delete',
-      @event,
-      method: :delete,
-      data: { confirm: 'Are you sure?' },
-      class: 'btn btn--destroy primary' %>
-  <% end %>
 </h1>
 
-<p class="muted mt3">
-  Your point of contact is <%= @event.point_of_contact.name %>. Please don't
-  hesitate to text / call at <%= @event.point_of_contact.pretty_phone_number
-  %> or email at <%= mail_to @event.point_of_contact.email %>.
+<div class="flex flex-wrap items-center justify-center mb3">
+  <% if @organizers.any? %>
+    <% @organizers.each do |position| %>
+      <div class="tooltipped tooltipped--s mr1" aria-label="<%= position.user.full_name %>">
+        <%= avatar_for position.user, 48 %>
+      </div>
+    <% end %>
+    <%= pop_icon_to 'view-forward', event_team_path(@event) %>
+  <% else %>
+    <p class="slate bold h3 mr2">No organizers invited yet</p>
+    <%= pop_icon_to 'member-add', event_team_path(@event) %>
+  <% end %>
+</div>
+
+<%= render 'nav', hide_name: true %>
+
+<p class="muted flex flex-wrap items-center justify-center center mt2">
+  Your point of contact is <%= user_mention @event.point_of_contact, class: 'ml1 mr0' %>.
+  Text / call at 
+  <span class="flex items-center medium ml1">
+    <%= inline_icon 'message', size: 24, class: 'muted', style: 'margin-right: 0.125rem;' %>
+    <%= @event.point_of_contact.pretty_phone_number %>
+  </span>
+  <span class="ml1 mr1">or email at</span>
+  <%= mail_to @event.point_of_contact.email, class: 'flex items-center medium' do %>
+    <%= inline_icon 'email', size: 24, class: 'muted', style: 'margin-right: 0.125rem;' %>
+    <%= @event.point_of_contact.email %>
+  <% end %>.
 </p>
 
-<section class="event-summary mt2 mb2 md-mt3 md-mb3">
-  <div class="event-summary__panel bg-primary white">
-    <h2 class="heading">
-      Financials
-    </h2>
-    <div class="stat">
-      <span class="stat__label">Account balance</span>
-      <span class="stat__value"><%= render_money @event.balance, '' %></span>
-    </div>
-    <div class="stat stat--small">
-      <span class="stat__label">Pending fees</span>
-      <span class="stat__value"><%= render_money @event.fee_balance, '' %></span>
-    </div>
+<h2 class="mb2">
+  Financials
+</h2>
+<div class="event-summary">
+  <div class="stat" area="balance">
+    <span class="stat__label">Account balance</span>
+    <span class="stat__value"><%= render_money @event.balance, '' %></span>
   </div>
-  <div class="event-summary__panel bg-accent white">
-    <h2 class="heading">
-      <span class="flex items-center">
-        Debit Cards
-        <%= badge_for @event.cards.count %>
-      </span>
-    </h2>
-    <div class="stat">
-      <span class="stat__label">Available balance</span>
-      <span class="stat__value"><%= render_money @event.emburse_balance, '' %></span>
-    </div>
-    <%= link_to 'Manage Cards',
-      event_cards_overview_path(event_id: @event.slug),
-      class: "btn bg-white accent mt2" %>
+  <div class="stat stat--small tooltipped tooltipped--s" aria-label="The amount that will be automatically deducted from your account balance" area="fees">
+    <span class="stat__label flex items-center">
+      Pending fees
+      <%= inline_icon 'info', size: 24, class: 'muted ml1', 'aria-label': 'Info icon' %>
+    </span>
+    <span class="stat__value"><%= render_money @event.fee_balance, '' %></span>
   </div>
-  <% @g_color = g_suite_summary_color(@g_suite_status) %>
-  <div class="event-summary__panel white bg-<%= @g_color %>">
-    <h2 class="heading mt0 mb0">G Suite</h2>
-    <% @g_suite_text = 'Manage G Suite' %>
-    <% case @g_suite_status
-    when :start %>
-      <p>Your event gets free G Suite through Bank! Apply to set it up.</p>
-    <% when :under_review %>
-      <p>Your application is under review. Check back soon!</p>
-    <% when :app_accepted %>
-      <p>Your application was accepted! It’s time to set up your servers.</p>
-      <% @g_suite_text = 'Manage G Suite' %>
-    <% when :app_rejected %>
-      <p>Your application was rejected.</p>
-    <% when :verify_setup %>
-      <p>Time to verify your G Suite setup.</p>
-      <% @g_suite_text = 'Verify G Suite' %>
-    <% when :done %>
-      <p>Your G Suite is set up!</p>
-    <% end %>
-    <%= link_to @g_suite_text,
-      event_g_suite_overview_path(event_id: @event.slug),
-      class: "btn bg-white #{@g_color} mt2" %>
+  <div class="stat stat--small tooltipped tooltipped--s" aria-label="The amount on the way to your account" area="incoming">
+    <span class="stat__label flex items-center">
+      Incoming deposits
+      <%= inline_icon 'info', size: 24, class: 'muted ml1', 'aria-label': 'Info icon' %>
+    </span>
+    <span class="stat__value"><%= render_money @event.pending_deposits, '' %></span>
   </div>
-  <div class="event-summary__panel bg-warning white">
-    <h2 class="heading">
-      Event Details
-    </h2>
-    <p>
-      <strong>Date:</strong> <%= @event.start.to_date %> – <%= @event.end.to_date %><br />
-      <strong>Address:</strong> <br />
-      <%= @event.address %><br />
-      <strong>Sponsorship fee:</strong> <%= render_percentage @event.sponsorship_fee %>
-    </p>
+  <div class="stat" area="spendable">
+    <span class="stat__label">Card balance</span>
+    <span class="stat__value"><%= render_money @event.emburse_balance, '' %></span>
   </div>
-  <div class="event-summary__panel pl0 pr0 pb0 pt2">
-    <h2 class="heading" style="margin: 0;">
-      <span class="flex items-center">
-        Team Members
-        <%= badge_for @event.organizer_positions.count %>
-      </span>
-      <%= link_to 'Invite More',
-        new_event_organizer_position_invite_path(@event),
-        class: 'btn bg-success' %>
-    </h2>
-    <ul class="list list--unlinked list--row mb0">
-      <% if @event.organizer_positions.any? %>
-        <% @event.organizer_positions.each do |position| %>
-          <li class="<%= 'bg-snow' unless position.user == current_user %>">
-            <p>
-              <strong><%= position.user.full_name || 'Unnamed' %></strong>
-              <br />
-              <%= position.user.email %>
-              <span class="muted">(added <span title="<%= position.created_at %>"><%= time_ago_in_words position.created_at %> ago</span>)</span>
-            </p>
-            <%= link_to 'Edit', edit_user_path(current_user.id), class: 'btn bg-info' if position.user == current_user %>
-          </li>
-        <% end %>
-      <% else %>
-        <%= blankslate 'No others on your team yet' %>
-      <% end %>
-    </ul>
-  </div>
-  <div class="event-summary__panel pl0 pr0 pb0 pt2">
-    <h2 class="heading" style="margin: 0;">
-      <span class="flex items-center">
-        Sponsors
-        <%= badge_for @event.sponsors.count %>
-      </span>
-      <%= link_to 'New Sponsor',
-        new_sponsor_path(event_id: @event.id),
-        class: 'btn bg-success' %>
-    </h2>
-    <% if @event.sponsors.any? %>
-      <ul class="list">
-        <% @event.sponsors.each do |s| %>
-          <%= link_to s do %>
-            <li class="transaction--<%= s.status %>">
-              <strong><%= s.name %></strong>
-              <span class="muted"><%= s.status_description %></span>
-            </li>
-          <% end %>
-        <% end %>
-      </ul>
-    <% else %>
-      <%= blankslate 'No sponsors yet' %>
-    <% end %>
-  </div>
-</section>
-
-<% if @event.organizer_position_invites.pending.any? %>
-  <h3 class="mb1">Pending Invitations</h3>
-  <ul class="list list--unlinked mt0 mb0">
-    <% @event.organizer_position_invites.pending.each do |invite| %>
-      <li>
-        <p>
-          <strong><%= invite.email %></strong>
-          <span class="muted">(added <span title="<%= invite.created_at %>"><%= time_ago_in_words invite.created_at %> ago</span>)</span>
-        </p>
-      </li>
-    <% end %>
-  </ul>
-<% end %>
+</div>
 
 <h2 class="heading">
   Transactions
@@ -164,100 +86,56 @@
     target: :_blank %>
 </h2>
 
-<% if @event.transactions.any? %>
-  <table class="mt2">
-  <tr>
-    <th>Date</th>
-    <th>Description</th>
-    <th>Amount</th>
-    <th>More</th>
-  </tr>
-  <% @event.transactions.each do |t| %>
-    <tr class="transaction--<%= t.amount.negative? ? 'negative' : 'positive' %>">
-      <td>
-        <%= t.date %>
-      </td>
-      <td>
-        <%= t.name %>
-      </td>
-      <td>
-        <%= render_money t.amount %>
-      </td>
-      <td>
-        <%= link_to 'Details', t %>
-      </td>
-    </tr>
-  <% end %>
+<div class="filterbar flex flex-wrap items-center width-100">
+  <input
+    type="search"
+    data-behavior="filterbar_search"
+    placeholder="Search…"
+    aria-label="Filter transactions"
+    class="flex-auto md-mr2"
+    style="width: auto; max-width: none;">
+  <div data-behavior="filterbar" role="tablist" class="filterbar__filters flex mt1 lg-mt0">
+    <%= filterbar_item 'All', :exists, true %>
+    <%= filterbar_item 'Revenue', :fee_applies %>
+    <%= filterbar_item 'Fees', :fee_payment %>
+    <%= filterbar_item 'Emburse', :emburse %>
+    <%= filterbar_item 'Reimbursements', :expensify %>
+  </div>
+</div>
+
+<% if @transactions.any? %>
+  <table>
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Description</th>
+        <th>Amount</th>
+        <th>More</th>
+      </tr>
+    </thead>
+    <tbody data-behavior="transactions">
+    <% @transactions.each do |t| %>
+      <tr
+        class="transaction--<%= t.amount.negative? ? 'negative' : 'positive' %>"
+        data-behavior="filterbar_row"
+        data-filter="<%= t.filter_data.to_json %>">
+        <td>
+          <%= t.date %>
+        </td>
+        <td>
+          <%= t.display_name %>
+        </td>
+        <td>
+          <%= render_money t.amount %>
+        </td>
+        <td>
+          <%= link_to 'Details', t %>
+        </td>
+      </tr>
+    <% end %>
+    </tbody>
   </table>
+  <%= filterbar_blankslate 'No transactions match this filter' %>
 <% else %>
   <%= blankslate 'No transactions yet' %>
 <% end %>
-
-<h3>
-  Transactions Incurring Fees
-  <span class="regular slate sans h3">(total outstanding fees: <%= render_money @event.fee_balance %>)</span>
-</h3>
-
-<% if @event.billed_transactions.any? %>
-  <table>
-  <tr>
-    <th>Date</th>
-    <th>Description</th>
-    <th>Amount</th>
-    <th>Fee</th>
-    <th>More</th>
-  </tr>
-  <% @event.billed_transactions.each do |t| %>
-    <tr class="transaction--positive">
-      <td>
-        <%= t.date %>
-      </td>
-      <td>
-        <%= t.name %>
-      </td>
-      <td>
-        <%= render_money t.amount %>
-      </td>
-      <td>
-        <% if t.fee_relationship.fee_applies %>
-          <%= render_money t.fee_relationship.fee_amount %>
-        <% else %>
-          N/A
-        <% end %>
-      </td>
-      <td>
-        <%= link_to 'Details', t %>
-      </td>
-    </tr>
-  <% end %>
-  </table>
-<% else %>
-  <%= blankslate 'No transactions have incurred fees' %>
-<% end %>
-
-<h2 class="heading mb0">
-  Documents
-  <%= link_to 'New Document',
-    new_document_path(event_id: @event.id),
-    class: 'btn bg-success' %>
-</h2>
-
-<% if @event.documents.any? %>
-  <ul class="list">
-    <% @event.documents.each do |d| %>
-      <%= link_to d do %>
-        <li>
-          <strong><%= d.name %></strong>
-          <span class="muted">Added by <%= d.user.full_name %></span>
-        </li>
-      <% end %>
-    <% end %>
-  </ul>
-<% else %>
-  <%= blankslate 'No documents yet' %>
-<% end %>
-
-<p class="muted mt3">
-  Looking for expense reimbursements?
-  <%= mail_to 'zach@hackclub.com', 'Ask Zach' %> for an invitation to Expensify.
-</p>

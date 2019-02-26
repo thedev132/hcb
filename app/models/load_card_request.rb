@@ -31,6 +31,8 @@ class LoadCardRequest < ApplicationRecord
   end
   scope :completed, -> { accepted.where.not(id: pending) }
   scope :transferred, -> { completed.includes(:t_transaction).where.not(transactions: { id: nil }) }
+  scope :canceled, -> { where(canceled_at: nil) }
+  scope :rejected, -> { where(rejected_at: nil) }
 
   after_create :send_admin_notification
 
@@ -53,15 +55,19 @@ class LoadCardRequest < ApplicationRecord
 
   def status_badge_type
     s = status.to_sym
-    return 'info' if s == 'transfer in progress'.to_sym
-    return 'success' if s == :completed
-    return 'muted' if s == :canceled
-    return 'error' if s == :rejected
-    'pending'
+    return :info if s == 'transfer in progress'.to_sym
+    return :success if s == :completed
+    return :muted if s == :canceled
+    return :error if s == :rejected
+    :pending
   end
 
   def under_review?
     rejected_at.nil? && canceled_at.nil? && accepted_at.nil?
+  end
+
+  def unfulfilled?
+    fulfilled_by.nil?
   end
 
   include ApplicationHelper

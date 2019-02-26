@@ -1,4 +1,7 @@
-<%= link_to @document.event.name, @document.event, class: 'breadcrumb '%>
+<% title @document.name %>
+<% page_sm %>
+
+<%= render 'events/nav' %>
 
 <h1 class="heading">
   <%= @document.name %>
@@ -8,21 +11,27 @@
   <% end %>
 </h1>
 
-<section class="details">
+<section class="details mb3">
 <p>
   <strong>Download file</strong>
-  <%= link_to 'Click here', document_download_path(@document) %>
+  <%= link_to 'Click here', document_download_path(@document), target: :_blank %>
 </p>
 
 <p>
-  <strong>Added by</strong> <%= @document.user.full_name %>
+  <strong>Added by</strong> <%= user_mention @document.user %>
 </p>
+</section>
 
+<% admin_tools do %>
 <% if @document.downloads.any? %>
-<ul>
+<h2 class="my0">Download history</h2>
+<ul class="list list--unlinked">
   <% @document.downloads.each do |download| %>
-    <li><%= download.user.full_name %> downloaded at <%= download.created_at %></li>
+    <li>
+      <%= user_mention download.user %>
+      <%= content_tag :span, download.created_at %>
+    </li>
   <% end %>
 </ul>
 <% end %>
-</section>
+<% end %>
