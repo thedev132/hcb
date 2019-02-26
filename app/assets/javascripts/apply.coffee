@@ -15,11 +15,16 @@ $(document).on 'turbolinks:load', ->
       index = $(e.target).parent().attr('data-index')
       parentToggle(index)
 
+    # Remove team-member on application form
+    $(document).on 'click', '[data-behavior~=remove_member]', (e) ->
+      $(e.target).parent().remove()
+
     # Add team-member on application form
     $(document).on 'click', '[data-behavior~=add_member]', ->
       newDiv = $('.member-attributes:last').clone()
       newID = Number(newDiv.data('index')) + 1
       newDiv.attr('data-index', newID)
+      newDiv.show()
 
       incrementAttr = (div, attr) ->
         oldValue = $(div).attr(attr)
@@ -31,6 +36,7 @@ $(document).on 'turbolinks:load', ->
           incrementAttr(this, 'name')
           incrementAttr(this, 'id')
           $(this).val('')
+          $(this).prop('required', true)
         if this.tagName == 'LABEL'
           incrementAttr(this, 'for')
       $('.members-list').append(newDiv)
