@@ -36,6 +36,7 @@ class ApplicationsController < ApplicationController
 
     @members = []
     params[:application][:team_members].each do |key, member_params|
+      next if key == '0'
       team_member = Airtable::Record.new({
         "Name (First / Last)": member_params[:name],
         "Email": member_params[:email],
