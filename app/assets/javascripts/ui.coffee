@@ -38,7 +38,7 @@ $(document).on 'turbolinks:load', ->
         $(div).attr(attr, newValue)
 
       $.each newDiv.children(), ->
-        if this.tagName == 'INPUT'
+        if this.tagName == 'INPUT' || this.tagName == 'SELECT'
           incrementAttr(this, 'name')
           incrementAttr(this, 'id')
           $(this).val('')
