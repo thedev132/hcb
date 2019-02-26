@@ -12,7 +12,7 @@ $(document).on 'turbolinks:load', ->
 
     # Handle change of birthday selector
     $(document).on 'change', '[data-behavior~=birthdate]', (e) ->
-      index = $(e.target).parent().attr('data-index')
+      index = $(e.target).parent().parent().attr('data-index')
       parentToggle(index)
 
     # Remove team-member on application form
@@ -32,7 +32,7 @@ $(document).on 'turbolinks:load', ->
         newValue = oldValue.replace(/\d+/, newID)
         $(div).attr(attr, newValue)
 
-      $.each newDiv.children(), ->
+      $.each newDiv.find('.field>*'), ->
         if this.tagName == 'INPUT' || this.tagName == 'SELECT'
           incrementAttr(this, 'name')
           incrementAttr(this, 'id')
