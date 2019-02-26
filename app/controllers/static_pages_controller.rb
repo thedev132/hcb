@@ -30,8 +30,8 @@ class StaticPagesController < ApplicationController
       transactions_volume: Transaction.total_volume,
       transactions_count: Transaction.all.size,
       events_count: Event.all.size,
-      card_transactions_volume: EmburseTransaction.total_card_transaction_volume,
-      card_transactions_count: EmburseTransaction.total_card_transaction_count
+      # card_transactions_volume: EmburseTransaction.total_card_transaction_volume,
+      # card_transactions_count: EmburseTransaction.total_card_transaction_count
     }
   end
 end
