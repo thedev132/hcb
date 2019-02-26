@@ -1,11 +1,10 @@
 <%= title 'Apply' %>
-<h1>Apply</h1>
 
-<p class="flex items-center info line-height-3">
+<h1>Apply</h1>
+<p class="flex items-center info line-height-3 card">
   <%= inline_icon 'important', size: 32, class: 'mr1' %>
   <span>
-  This application is for events and clubs not registered as Hack Club chapters.
-  Registered Hack Clubs should use the application form <%= link_to 'here', 'https://airtable.com/shrmh0kVBku2XJcB4', class: 'info' %>.
+  If you’re leading a Hack Club instead of an event you can use the application <%= link_to 'here', 'https://airtable.com/shrmh0kVBku2XJcB4', class: 'info', target: :_blank %>.
   </span>
 </p>
 <%= form_for :application, url: "submit", data: { behavior: 'application_form' } do |form| %>
@@ -53,10 +52,15 @@
     <button data-behavior="remove_member" type="button" class="btn btn--destroy">Remove teammember</button>
     <div class="field">
       <%= member_form.label :name, 'Full Name' %>
-      <%= member_form.text_field :name  %>
+      <%= member_form.text_field :name, placeholder: 'Charlie Dahl' %>
+    </div>
+    <div class="field">
+      <%= member_form.label :birthdate %>
+      <%= member_form.date_field :birthdate, placeholder: 'YYYY-MM-DD', data: { behavior: 'birthdate' } %>
     </div>
     <div class="field">
       <%= member_form.label :email %>
+      <span class="muted">You’ll use this to sign in</span>
       <%= member_form.text_field :email, placeholder: 'you@example.com' %>
     </div>
     <div class="field">
@@ -64,20 +68,21 @@
       <%= member_form.text_field :phone_number, placeholder: '(xxx) xxx-xxxx' %>
     </div>
     <div class="field">
-      <%= member_form.label :birthdate %>
-      <%= member_form.date_field :birthdate, placeholder: 'YYYY-MM-DD', data: { behavior: 'birthdate' } %>
-    </div>
-    <div class="field">
       <%= member_form.label :title %>
       <%= member_form.text_field :title, placeholder: 'Co-founder' %>
     </div>
     <div class="field">
       <%= member_form.label :identification %>
+      <span class="muted">Student ID, driver’s license, passport, etc.</span>
       <%= member_form.file_field :identification %>
     </div>
     <div class="parent-info" style="display:none;">
-      <p>
-        Parent info is required for organizers under 18. We only use it for writing contracts if your team is accepted.
+      <h3>Parent info</h3>
+      <p class="flex items-center info line-height-3">
+        <%= inline_icon 'important', size: 32, class: 'mr1' %>
+        <span>
+          Parent info is required for organizers under 18. We only use it for writing contracts if your team is accepted.
+        </span>
       </p>
       <div class="field">
         <%= member_form.label :parent_name %>
@@ -103,5 +108,5 @@
   </div>
   <% end %>
 </div>
-<%= form.submit 'Submit application' %>
+<%= form.submit 'Submit application', class: 'mt3 mb3' %>
 <% end  %>
