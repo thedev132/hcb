@@ -39,9 +39,7 @@
         <%= member_form.text_field :phone_number %>
 
         <%= member_form.label :birthdate %>
-        <div data-behavior="birthdate_selector" class="birthdate-selector">
-        <%= member_form.date_select :birthdate %>
-        </div>
+        <%= member_form.date_field :birthdate, data: { behavior: 'birthdate' } %>
 
         <%= member_form.label :title %>
         <%= member_form.text_field :title %>
@@ -61,7 +59,7 @@
           <%= member_form.text_field :parent_phone_number %>
 
           <%= member_form.label :parent_birthdate %>
-          <%= member_form.text_field :parent_birthdate %>
+          <%= member_form.date_field :parent_birthdate %>
         </div>
       </div>
     <% end %>
