@@ -1,78 +1,99 @@
 <%= title 'Apply' %>
-
 <h1>Apply</h1>
 <%= form_for :application, url: "submit", data: { behavior: 'application_form' } do |form| %>
+<div class="field">
   <%= form.label :event_name %>
-  <%= form.text_field :event_name, required: true %>
-
+  <%= form.text_field :event_name, required: true, placeholder: 'Hack Pennsylvania' %>
+</div>
+<div class="field">
   <%= form.label :website %>
-  <%= form.text_field :website %>
-
+  <%= form.text_field :website, placeholder: 'https://hackpenn.com' %>
+</div>
+<div class="field">
   <%= form.label 'Tell us about your event' %>
-  <%= form.text_field :about_event, required: true %>
-
+  <%= form.text_area :about_event, required: true %>
+</div>
+<div class="field">
   <%= form.label 'Tell us about your history' %>
-  <%= form.text_field :about_history, required: true %>
-
+  <%= form.text_area :about_history, required: true %>
+</div>
+<div class="field">
   <%= form.label 'Have you already opened sign-ups for your event?' %>
   <%= form.check_box :opened_sign_ups %>
-
+</div>
+<div class="field">
   <%= form.label :expected_attendees %>
-  <%= form.number_field :expected_attendees, required: true %>
-
+  <%= form.number_field :expected_attendees, required: true, min: 1 %>
+</div>
+<div class="field">
   <%= form.label :expected_budget %>
-  <%= form.number_field :expected_budget, required: true %>
-
-  <%= form.label 'Has your team organized events before? If so, which ones, what were the budgets, and how many people came?' %>
-  <%= form.text_field :organizer_history, required: true %>
-
-  <div class="members-list card">
-    <h2>Member list</h2>
-    <button data-behavior="add_member" type="button">Add teammember</button>
-    <%= form.fields_for :team_members, index: 0 do |member_form| %>
-      <div class="member-attributes card" style="display: none;" data-index="<%= member_form.index %>">
-        <button data-behavior="remove_member" type="button">Remove teammember</button>
-        <%= member_form.label :name %>
-        <%= member_form.text_field :name %>
-
-        <%= member_form.label :email %>
-        <%= member_form.text_field :email %>
-
-        <%= member_form.label :phone_number %>
-        <%= member_form.text_field :phone_number %>
-
-        <%= member_form.label :birthdate %>
-        <%= member_form.date_field :birthdate, data: { behavior: 'birthdate' } %>
-
-        <%= member_form.label :title %>
-        <%= member_form.text_field :title %>
-
-        <%= member_form.label :identification %>
-        <%= member_form.file_field :identification %>
-
-        <div class="parent-info" style="display:none;">
-          <p>
-            Parent info is required for organizers under 18. We only use it for writing contracts if your team is accepted.
-          </p>
-
-          <%= member_form.label :parent_name %>
-          <%= member_form.text_field :parent_name %>
-
-          <%= member_form.label :parent_email %>
-          <%= member_form.text_field :parent_email %>
-
-          <%= member_form.label :parent_phone_number %>
-          <%= member_form.text_field :parent_phone_number %>
-
-          <%= member_form.label :parent_birthdate %>
-          <%= member_form.date_field :parent_birthdate %>
-
-          <%= member_form.label :parent_identification %>
-          <%= member_form.file_field :parent_identification %>
-        </div>
-      </div>
-    <% end %>
+  <div class="field flex items-center">
+    <span class="bold muted" style="width: 1rem;">$</span>
+    <%= form.number_field :expected_budget, placeholder: '5000.00', step: 0.01, class: 'bold', required: true, min: 1 %>
   </div>
-
-  <%= form.submit  %>
+</div>
+</div>
+<div class="field">
+  <%= form.label 'Has your team organized events before? If so, which ones, what were the budgets, and how many people came?' %>
+  <%= form.text_area :organizer_history, required: true %>
+</div>
+<div class="members-list card">
+  <h2>Member list</h2>
+  <button data-behavior="add_member" type="button">Add teammember</button>
+  <%= form.fields_for :team_members, index: 0 do |member_form| %>
+  <div class="member-attributes card" style="display: none;" data-index="<%= member_form.index %>">
+    <button data-behavior="remove_member" type="button">Remove teammember</button>
+    <div class="field">
+      <%= member_form.label :name, 'Full Name' %>
+      <%= member_form.text_field :name  %>
+    </div>
+    <div class="field">
+      <%= member_form.label :email %>
+      <%= member_form.text_field :email, placeholder: 'you@example.com' %>
+    </div>
+    <div class="field">
+      <%= member_form.label :phone_number %>
+      <%= member_form.text_field :phone_number, placeholder: '(xxx) xxx-xxxx' %>
+    </div>
+    <div class="field">
+      <%= member_form.label :birthdate %>
+      <%= member_form.date_field :birthdate, placeholder: 'YYYY-MM-DD', data: { behavior: 'birthdate' } %>
+    </div>
+    <div class="field">
+      <%= member_form.label :title %>
+      <%= member_form.text_field :title, placeholder: 'Co-founder' %>
+    </div>
+    <div class="field">
+      <%= member_form.label :identification %>
+      <%= member_form.file_field :identification %>
+    </div>
+    <div class="parent-info" style="display:none;">
+      <p>
+        Parent info is required for organizers under 18. We only use it for writing contracts if your team is accepted.
+      </p>
+      <div class="field">
+        <%= member_form.label :parent_name %>
+        <%= member_form.text_field :parent_name %>
+      </div>
+      <div class="field">
+        <%= member_form.label :parent_email %>
+        <%= member_form.text_field :parent_email %>
+      </div>
+      <div class="field">
+        <%= member_form.label :parent_phone_number %>
+        <%= member_form.text_field :parent_phone_number %>
+      </div>
+      <div class="field">
+        <%= member_form.label :parent_birthdate %>
+        <%= member_form.date_field :parent_birthdate %>
+      </div>
+      <div class="field">
+        <%= member_form.label :parent_identification %>
+        <%= member_form.file_field :parent_identification %>
+      </div>
+    </div>
+  </div>
+  <% end %>
+</div>
+<%= form.submit  %>
 <% end  %>
