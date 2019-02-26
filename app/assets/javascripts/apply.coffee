@@ -17,14 +17,15 @@ $(document).on 'turbolinks:load', ->
 
     # Remove team-member on application form
     $(document).on 'click', '[data-behavior~=remove_member]', (e) ->
-      $(e.target).parent().remove()
+      $(e.target).parent().slideUp('fast')
+      setTimeout (-> $(e.target).parent().remove()), 1000
 
     # Add team-member on application form
     $(document).on 'click', '[data-behavior~=add_member]', ->
       newDiv = $('.member-attributes:last').clone()
       newID = Number(newDiv.data('index')) + 1
       newDiv.attr('data-index', newID)
-      newDiv.show()
+      newDiv.fadeIn 'fast'
 
       incrementAttr = (div, attr) ->
         oldValue = $(div).attr(attr)

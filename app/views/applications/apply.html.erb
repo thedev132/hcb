@@ -39,10 +39,10 @@
 </div>
 <div class="members-list card">
   <h2>Member list</h2>
-  <button data-behavior="add_member" type="button">Add teammember</button>
+  <button data-behavior="add_member" type="button" class="btn btn--accent">Add teammember</button>
   <%= form.fields_for :team_members, index: 0 do |member_form| %>
   <div class="member-attributes card" style="display: none;" data-index="<%= member_form.index %>">
-    <button data-behavior="remove_member" type="button">Remove teammember</button>
+    <button data-behavior="remove_member" type="button" class="btn btn--destroy">Remove teammember</button>
     <div class="field">
       <%= member_form.label :name, 'Full Name' %>
       <%= member_form.text_field :name  %>
@@ -95,5 +95,5 @@
   </div>
   <% end %>
 </div>
-<%= form.submit  %>
+<%= form.submit 'Submit application' %>
 <% end  %>
