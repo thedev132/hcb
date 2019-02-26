@@ -29,26 +29,25 @@ class ApplicationsController < ApplicationController
     teams.create(team)
 
     params[:application][:team_members].each do |key, member_params|
-      birthdate = "#{member_params['birthdate(1i)']}-#{member_params['birthdate(2i)']}-#{member_params['birthdate(3i)']}"
       team_member = Airtable::Record.new({
         "Name (First / Last)": member_params[:name],
         "Email": member_params[:email],
         "Phone": member_params[:phone_number],
-        "Date of birth": birthdate,
+        "Date of birth": member_params[:birthdate],
         "Title": member_params[:title],
         "Team": [ team.id ]
       })
       team_members.create(team_member)
 
-      if Date.today - 18.years <= Date.parse(birthdate)
-        parent_birthdate = "#{member_params['parent_birthdate(1i)']}-#{member_params['parent_birthdate(2i)']}-#{member_params['parent_birthdate(3i)']}"
+      if Date.today - 18.years <= Date.parse(member_params[:birthdate])
         parent = Airtable::Record.new({
           "Name (First / Last)": member_params[:parent_name],
           "Child": [ team_member.id ],
           "Email": member_params[:parent_email],
           "Phone": member_params[:parent_phone_number],
-          "Date of birth": parent_birthdate
+          "Date of birth": member_params[:parent_birthdate]
         })
+        parents.create(parent)
     end
   end
 
