@@ -15,7 +15,7 @@ class ApplicationsController < ApplicationController
       "Website": params[:application][:website],
       "Tell us about your event": params[:application][:about_event],
       "Tell us about your history": params[:application][:about_history],
-      "Have you already opened sign-ups for the event?": params[:application][:opened_sign_ups] ? "No" : "Yes",
+      "Have you already opened sign-ups for the event?": params[:application][:opened_sign_ups].to_i == 0 ? "No" : "Yes",
       "Expected Attendees": params[:application][:expected_attendees].to_i,
       "Application": [ app.id ],
       "Expected Budget": params[:application][:expected_budget].to_i
