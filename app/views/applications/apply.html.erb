@@ -1,5 +1,13 @@
 <%= title 'Apply' %>
 <h1>Apply</h1>
+
+<p class="flex items-center info line-height-3">
+  <%= inline_icon 'important', size: 32, class: 'mr1' %>
+  <span>
+  This application is for events and clubs not registered as Hack Club chapters.
+  Registered Hack Clubs should use the application form <%= link_to 'here', 'https://airtable.com/shrmh0kVBku2XJcB4' %>.
+  </span>
+</p>
 <%= form_for :application, url: "submit", data: { behavior: 'application_form' } do |form| %>
 <div class="field">
   <%= form.label :event_name %>
@@ -23,7 +31,7 @@
 </div>
 <div class="field">
   <%= form.label :expected_attendees %>
-  <%= form.number_field :expected_attendees, required: true, min: 1 %>
+  <%= form.number_field :expected_attendees, placeholder: 100, required: true, min: 1 %>
 </div>
 <div class="field">
   <%= form.label :expected_budget %>
