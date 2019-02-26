@@ -1,6 +1,7 @@
+<h1>Apply</h1>
 <%= form_for :application, url: "submit", data: { behavior: 'application_form' } do |form| %>
-  <%= form.label :name %>
-  <%= form.text_field :name %>
+  <%= form.label :event_name %>
+  <%= form.text_field :event_name %>
 
   <%= form.label :website %>
   <%= form.text_field :website %>
@@ -23,10 +24,11 @@
   <%= form.label 'Has your team organized events before? If so, which ones, what were the budgets, and how many people came?' %>
   <%= form.text_field :organizer_history %>
 
-  <div class="members-list">
+  <div class="members-list card">
+    <h2>Member list</h2>
     <button data-behavior="add_member" type="button">Add teammember</button>
     <%= form.fields_for :team_members, index: 0 do |member_form| %>
-      <div class="member-attributes" data-index="<%= member_form.index %>">
+      <div class="member-attributes card" data-index="<%= member_form.index %>">
         <%= member_form.label :name %>
         <%= member_form.text_field :name %>
 
