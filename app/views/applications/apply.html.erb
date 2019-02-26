@@ -17,7 +17,7 @@
   <%= form.text_field :website, placeholder: 'https://hackpenn.com' %>
 </div>
 <div class="field">
-  <%= form.label 'Tell us about your event' %>
+  <%= form.label :about_event, 'Tell us about your event' %>
   <%= form.text_area :about_event, required: true %>
 </div>
 <div class="field">
@@ -25,7 +25,7 @@
   <%= form.text_area :about_history, required: true %>
 </div>
 <div class="field">
-  <%= form.label 'Have you already opened sign-ups for your event?' %>
+  <%= form.label :opened_sign_ups, 'Have you already opened sign-ups for your event?' %>
   <%= form.check_box :opened_sign_ups %>
 </div>
 <div class="field">
@@ -41,7 +41,7 @@
 </div>
 </div>
 <div class="field">
-  <%= form.label 'Has your team organized events before? If so, which ones, what were the budgets, and how many people came?' %>
+  <%= form.label :organizer_history, 'Has your team organized events before? If so, which ones, what were the budgets, and how many people came?' %>
   <%= form.text_area :organizer_history, required: true %>
 </div>
 <div class="members-list card">
