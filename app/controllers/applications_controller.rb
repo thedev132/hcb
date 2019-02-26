@@ -16,7 +16,7 @@ class ApplicationsController < ApplicationController
     app = Airtable::Record.new({})
     applications.create(app)
 
-    event = Airtable::Record.new({
+    @event = Airtable::Record.new({
       "Event Name": params[:application][:event_name],
       "Website": params[:application][:website],
       "Tell us about your event": params[:application][:about_event],
@@ -26,14 +26,15 @@ class ApplicationsController < ApplicationController
       "Application": [ app.id ],
       "Expected Budget": params[:application][:expected_budget].to_i
     })
-    events.create(event)
+    events.create(@event)
 
-    team = Airtable::Record.new(
+    @team = Airtable::Record.new(
       "Has your team organized events before? If so, which ones, what were the budgets, and how many people came?": params[:application][:organizer_history],
       "Application": [ app.id ]
     )
-    teams.create(team)
+    teams.create(@team)
 
+    @members = []
     params[:application][:team_members].each do |key, member_params|
       team_member = Airtable::Record.new({
         "Name (First / Last)": member_params[:name],
@@ -42,9 +43,10 @@ class ApplicationsController < ApplicationController
         "Date of birth": member_params[:birthdate],
         "Title": member_params[:title],
         "Identification document": [ { url: to_blob(member_params[:identification]).service_url } ],
-        "Team": [ team.id ]
+        "Team": [ @team.id ]
       })
       team_members.create(team_member)
+      @members << team_member
 
       if Date.today - 18.years <= Date.parse(member_params[:birthdate])
 
