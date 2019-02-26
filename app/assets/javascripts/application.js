@@ -5,3 +5,4 @@
 
 //= require global
 //= require ui
+//= require apply
