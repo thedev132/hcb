@@ -3,28 +3,28 @@
 <h1>Apply</h1>
 <%= form_for :application, url: "submit", data: { behavior: 'application_form' } do |form| %>
   <%= form.label :event_name %>
-  <%= form.text_field :event_name %>
+  <%= form.text_field :event_name, required: true %>
 
   <%= form.label :website %>
   <%= form.text_field :website %>
 
   <%= form.label 'Tell us about your event' %>
-  <%= form.text_field :about_event %>
+  <%= form.text_field :about_event, required: true %>
 
   <%= form.label 'Tell us about your history' %>
-  <%= form.text_field :about_history %>
+  <%= form.text_field :about_history, required: true %>
 
   <%= form.label 'Have you already opened sign-ups for your event?' %>
   <%= form.check_box :opened_sign_ups %>
 
   <%= form.label :expected_attendees %>
-  <%= form.number_field :expected_attendees %>
+  <%= form.number_field :expected_attendees, required: true %>
 
   <%= form.label :expected_budget %>
-  <%= form.number_field :expected_budget %>
+  <%= form.number_field :expected_budget, required: true %>
 
   <%= form.label 'Has your team organized events before? If so, which ones, what were the budgets, and how many people came?' %>
-  <%= form.text_field :organizer_history %>
+  <%= form.text_field :organizer_history, required: true %>
 
   <div class="members-list card">
     <h2>Member list</h2>
