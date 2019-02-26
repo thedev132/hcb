@@ -1,5 +1,6 @@
 class StaticPagesController < ApplicationController
   skip_after_action :verify_authorized # do not force pundit
+  skip_before_action :signed_in_user, only: [ :stats ]
 
   def index
     if signed_in?
@@ -22,5 +23,15 @@ class StaticPagesController < ApplicationController
         organizer_position_deletion_requests: OrganizerPositionDeletionRequest.under_review.size
       }
     end
+  end
+
+  def stats
+    render json: {
+      transactions_volume: Transaction.total_volume,
+      transactions_count: Transaction.all.size,
+      events_count: Event.all.size,
+      card_transactions_volume: EmburseTransaction.total_card_transaction_volume,
+      card_transactions_count: EmburseTransaction.total_card_transaction_count
+    }
   end
 end

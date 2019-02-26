@@ -6,12 +6,10 @@ Rails.application.routes.draw do
   get '/sidekiq', to: 'users#auth' # fallback if adminconstraint fails, meaning user is not signed in
 
   root to: 'static_pages#index'
+  get 'stats', to: 'static_pages#stats'
 
   get 'apply', to: 'applications#apply'
   post 'submit', to: 'applications#submit'
-
-  get 'emburse_transactions/stats'
-  get 'transactions/stats'
 
   resources :users, only: [ :edit, :update ] do
     collection do
