@@ -50,7 +50,8 @@ class ApplicationsController < ApplicationController
           "Date of birth": parent_birthdate
         })
     end
+  end
 
-    render :submit
+  render :submit
   end
 end
