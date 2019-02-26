@@ -1,10 +1,11 @@
 <%= title 'Apply' %>
+<% page_md %>
 
-<h1>Apply</h1>
-<p class="flex items-center info line-height-3 card">
-  <%= inline_icon 'important', size: 32, class: 'mr1' %>
+<h1>Apply to Hack Club Bank</h1>
+<p class="flex items-center muted line-height-3">
+  <%= inline_icon 'clubs', size: 32, class: 'mr1' %>
   <span>
-  If you’re leading a Hack Club instead of an event you can use the application <%= link_to 'here', 'https://airtable.com/shrmh0kVBku2XJcB4', class: 'info', target: :_blank %>.
+  If you’re leading a Hack Club instead of an event you can use the application <%= link_to 'here', 'https://airtable.com/shrmh0kVBku2XJcB4', class: 'info', target: '_blank' %>.
   </span>
 </p>
 <%= form_for :application, url: "submit", data: { behavior: 'application_form' } do |form| %>
@@ -24,9 +25,9 @@
   <%= form.label 'Tell us about your history' %>
   <%= form.text_area :about_history, required: true %>
 </div>
-<div class="field">
-  <%= form.label :opened_sign_ups, 'Have you already opened sign-ups for your event?' %>
+<div class="field field--checkbox">
   <%= form.check_box :opened_sign_ups %>
+  <%= form.label :opened_sign_ups, 'Have you already opened sign-ups for your event?' %>
 </div>
 <div class="field">
   <%= form.label :expected_attendees %>
@@ -34,9 +35,8 @@
 </div>
 <div class="field">
   <%= form.label :expected_budget %>
-  <div class="field flex items-center">
-    <span class="bold muted" style="width: 1rem;">$</span>
-    <%= form.number_field :expected_budget, placeholder: '15,000.00', step: 0.01, required: true, min: 1 %>
+  <div class="field field--money">
+    <%= form.number_field :expected_budget, placeholder: '15000.00', step: 0.01, class: 'bold', required: true, min: 1 %>
   </div>
 </div>
 </div>
@@ -45,8 +45,8 @@
   <%= form.text_area :organizer_history, required: true %>
 </div>
 <div class="members-list card">
-  <h2>Member list</h2>
-  <button data-behavior="add_member" type="button" class="btn btn--accent">Add teammember</button>
+  <h2 class="mt0">Member list</h2>
+  <button data-behavior="add_member" type="button" class="btn bg-success">Add teammember</button>
   <%= form.fields_for :team_members, index: 0 do |member_form| %>
   <div class="member-attributes card" style="display: none;" data-index="<%= member_form.index %>">
     <button data-behavior="remove_member" type="button" class="btn btn--destroy">Remove teammember</button>
@@ -76,7 +76,7 @@
       <span class="muted">Student ID, driver’s license, passport, etc.</span>
       <%= member_form.file_field :identification %>
     </div>
-    <div class="parent-info" style="display:none;">
+    <div class="parent-info" style="display: none;">
       <h3>Parent info</h3>
       <p class="flex items-center info line-height-3">
         <%= inline_icon 'important', size: 32, class: 'mr1' %>

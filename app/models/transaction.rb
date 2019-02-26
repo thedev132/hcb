@@ -31,7 +31,7 @@ class Transaction < ApplicationRecord
   after_create :notify_admin
 
   def self.total_volume
-    self.sum('@amount').to_f
+    self.sum('@amount')
   end
 
   delegate :url_helpers, to: 'Rails.application.routes'

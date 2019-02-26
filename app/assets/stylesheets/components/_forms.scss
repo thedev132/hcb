@@ -51,6 +51,22 @@ input[type='file'] {
 .field {
   margin-bottom: 0.75rem;
 }
+.field--money {
+  display: flex;
+  align-items: center;
+
+  &:before {
+    content: '$';
+    font-weight: bold;
+    color: map-get($palette, muted);
+    display: inline-block;
+    width: 1rem;
+  }
+
+  input {
+    max-width: 16rem;
+  }
+}
 .field--checkbox {
   display: flex;
   align-items: center;
