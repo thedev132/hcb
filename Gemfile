@@ -78,7 +78,7 @@ gem 'axlsx_rails'
 gem 'rack-cors', require: 'rack/cors'
 
 # Connecting to Airtable
-gem 'airtable'
+gem 'airtable', git: 'https://github.com/Airtable/airtable-ruby'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
