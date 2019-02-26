@@ -3,6 +3,12 @@ class ApplicationsController < ApplicationController
   skip_after_action :verify_authorized # do not force pundit
   skip_before_action :signed_in_user
 
+  # This pigsty was created from
+  # https://stackoverflow.com/a/51110844
+  before_action do
+    ActiveStorage::Current.host = request.base_url
+  end
+
   def apply
   end
 
@@ -35,22 +41,35 @@ class ApplicationsController < ApplicationController
         "Phone": member_params[:phone_number],
         "Date of birth": member_params[:birthdate],
         "Title": member_params[:title],
+        "Identification document": [ { url: to_blob(member_params[:identification]).service_url } ],
         "Team": [ team.id ]
       })
       team_members.create(team_member)
 
       if Date.today - 18.years <= Date.parse(member_params[:birthdate])
+
         parent = Airtable::Record.new({
           "Name (First / Last)": member_params[:parent_name],
           "Child": [ team_member.id ],
           "Email": member_params[:parent_email],
           "Phone": member_params[:parent_phone_number],
-          "Date of birth": member_params[:parent_birthdate]
+          "Date of birth": member_params[:parent_birthdate],
+          "Identification document": [ { url: to_blob(member_params[:parent_identification]).service_url } ],
         })
         parents.create(parent)
     end
   end
 
   render :submit
+  end
+
+  private
+
+  def to_blob(file)
+    ActiveStorage::Blob.build_after_upload(
+      io: file,
+      filename: file.original_filename,
+      content_type: file.content_type
+    )
   end
 end

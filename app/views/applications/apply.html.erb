@@ -46,6 +46,9 @@
         <%= member_form.label :title %>
         <%= member_form.text_field :title %>
 
+        <%= member_form.label :identification %>
+        <%= member_form.file_field :identification %>
+
         <div class="parent-info" style="display:none;">
           <p>
             Parent info is required for organizers under 18. We only use it for writing contracts if your team is accepted.
@@ -62,6 +65,9 @@
 
           <%= member_form.label :parent_birthdate %>
           <%= member_form.date_field :parent_birthdate %>
+
+          <%= member_form.label :parent_identification %>
+          <%= member_form.file_field :parent_identification %>
         </div>
       </div>
     <% end %>
