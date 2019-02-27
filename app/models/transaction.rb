@@ -46,6 +46,7 @@ class Transaction < ApplicationRecord
   end
 
   def set_default_display_name
+    self.display_name = "Transfer from account to card balance" if emburse?
     self.display_name ||= self.name
   end
 
