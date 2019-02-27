@@ -2,12 +2,21 @@
 <% page_md %>
 
 <h1>Apply to Hack Club Bank</h1>
+
 <p class="flex items-center muted line-height-3">
   <%= inline_icon 'clubs', size: 32, class: 'mr1' %>
   <span>
-  If you’re leading a Hack Club instead of an event you can use the application <%= link_to 'here', 'https://airtable.com/shrmh0kVBku2XJcB4', class: 'info', target: '_blank' %>.
+    If you’re leading a registered Hack Club instead of an event, use the application <%= link_to 'here', 'https://airtable.com/shrmh0kVBku2XJcB4', class: 'info', target: '_blank' %>.
   </span>
 </p>
+
+<p class="flex items-center muted line-height-3">
+  <%= inline_icon 'info', size: 32, class: 'mr1' %>
+  <span>
+    Not a hackathon or leading a Hack Club? We’re accepting other groups on a case-by-case basis. Shoot us an email at <%= mail_to 'bank@hackclub.com', 'bank@hackclub.com', class: 'info' %>.
+  </span>
+</p>
+
 <%= form_for :application, url: "submit", data: { behavior: 'application_form' } do |form| %>
 <div class="field">
   <%= form.label :event_name %>
