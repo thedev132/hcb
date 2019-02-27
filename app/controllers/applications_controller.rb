@@ -10,6 +10,7 @@ class ApplicationsController < ApplicationController
   end
 
   def apply
+    @dark = true
   end
 
   def submit
@@ -63,7 +64,8 @@ class ApplicationsController < ApplicationController
     end
   end
 
-  render :submit
+    @dark = true
+    render :submit
   end
 
   private

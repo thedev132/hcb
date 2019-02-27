@@ -38,6 +38,20 @@ summary.pop {
     display: none;
   }
 }
+.card > .pop:first-child {
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-bottom: 1rem;
+  @media (min-width: 32em) {
+    position: absolute;
+    margin: 1rem;
+    transform: none;
+    left: auto;
+    right: 0;
+    top: 0;
+  }
+}
 
 // Small dots for indicating row status
 .status {

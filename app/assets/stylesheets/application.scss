@@ -110,8 +110,7 @@ h1 {
   border-bottom: 1px solid #dde1e4;
   margin-bottom: 1rem;
 }
-h2,
-.summary-h2 {
+h2 {
   font-size: 1.75rem;
   padding-bottom: 0.25rem;
   border-bottom: 1px solid #dde1e4;
@@ -274,3 +273,5 @@ svg {
 .transaction--warning {
   @extend .shade-orange;
 }
+
+@import 'dark';

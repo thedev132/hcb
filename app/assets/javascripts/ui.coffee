@@ -8,7 +8,7 @@ $(document).on 'turbolinks:load', ->
         $('[name="alternative-logo"]').show()
     else
       hankIndex = 0
-  
+
   $(document).on 'click', '[data-behavior~=flash]', ->
     $(this).fadeOut 'medium'
 

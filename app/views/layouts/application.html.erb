@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html data-dark="<%= !!@dark %>">
   <head>
     <title>
       <%= if content_for?(:title) then yield(:title) + ' | ' end %>

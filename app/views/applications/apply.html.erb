@@ -45,7 +45,7 @@
 <div class="field">
   <%= form.label :expected_budget %>
   <div class="field field--money">
-    <%= form.number_field :expected_budget, placeholder: '15000.00', step: 0.01, class: 'bold', required: true, min: 1 %>
+    <%= form.number_field :expected_budget, placeholder: '15000.00', step: 0.01, required: true, min: 1 %>
   </div>
 </div>
 </div>
@@ -53,70 +53,77 @@
   <%= form.label :organizer_history, 'Has your team organized events before? If so, which ones, what were the budgets, and how many people came?' %>
   <%= form.text_area :organizer_history, required: true %>
 </div>
-<div class="members-list card">
-  <h2 class="mt0">Member list</h2>
+
+<div data-behavior="members_list">
+<h2 class="heading mb3">
+  Team members
   <button data-behavior="add_member" type="button" class="btn bg-success">Add teammember</button>
-  <%= form.fields_for :team_members, index: 0 do |member_form| %>
-  <div class="member-attributes card" style="display: none;" data-index="<%= member_form.index %>">
-    <button data-behavior="remove_member" type="button" class="btn btn--destroy">Remove teammember</button>
+</h2>
+
+<%= form.fields_for :team_members, index: 0 do |member_form| %>
+<div class="card relative mt3" style="display: none;" data-index="<%= member_form.index %>" data-behavior="member_attributes">
+  <button data-behavior="remove_member" type="button" class="card__pop pop error">
+    <%= inline_icon 'delete', size: 28 %>
+  </button>
+  <div class="field">
+    <%= member_form.label :name, 'Full Name' %>
+    <%= member_form.text_field :name, placeholder: 'Rose Cao' %>
+  </div>
+  <div class="field">
+    <%= member_form.label :birthdate %>
+    <%= member_form.date_field :birthdate, placeholder: 'YYYY-MM-DD', 'data-behavior': 'birthdate' %>
+  </div>
+  <div class="field">
+    <%= member_form.label :email %>
+    <%= member_form.text_field :email, placeholder: 'you@example.com' %>
+    <span class="muted h5 block">You’ll use this to sign in</span>
+  </div>
+  <div class="field">
+    <%= member_form.label :phone_number %>
+    <%= member_form.text_field :phone_number, placeholder: '(xxx) xxx-xxxx' %>
+  </div>
+  <div class="field">
+    <%= member_form.label :title %>
+    <%= member_form.text_field :title, placeholder: 'Co-founder' %>
+  </div>
+  <div class="field">
+    <%= member_form.label :identification %>
+    <%= member_form.file_field :identification %>
+    <span class="muted h5 block">Student ID, driver’s license, passport, etc.</span>
+  </div>
+  <div class="parent-info" style="display: none;">
+    <h3>Parent info</h3>
+    <p class="flex items-center info line-height-3">
+      <%= inline_icon 'important', size: 32, class: 'mr1' %>
+      <span>
+        Parent info is required for organizers under 18. We only use it for writing contracts if your team is accepted.
+      </span>
+    </p>
     <div class="field">
-      <%= member_form.label :name, 'Full Name' %>
-      <%= member_form.text_field :name, placeholder: 'Charlie Dahl' %>
+      <%= member_form.label :parent_name %>
+      <%= member_form.text_field :parent_name %>
     </div>
     <div class="field">
-      <%= member_form.label :birthdate %>
-      <%= member_form.date_field :birthdate, placeholder: 'YYYY-MM-DD', data: { behavior: 'birthdate' } %>
+      <%= member_form.label :parent_email %>
+      <%= member_form.text_field :parent_email %>
     </div>
     <div class="field">
-      <%= member_form.label :email %>
-      <span class="muted">You’ll use this to sign in</span>
-      <%= member_form.text_field :email, placeholder: 'you@example.com' %>
+      <%= member_form.label :parent_phone_number %>
+      <%= member_form.text_field :parent_phone_number %>
     </div>
     <div class="field">
-      <%= member_form.label :phone_number %>
-      <%= member_form.text_field :phone_number, placeholder: '(xxx) xxx-xxxx' %>
+      <%= member_form.label :parent_birthdate %>
+      <%= member_form.date_field :parent_birthdate %>
     </div>
     <div class="field">
-      <%= member_form.label :title %>
-      <%= member_form.text_field :title, placeholder: 'Co-founder' %>
-    </div>
-    <div class="field">
-      <%= member_form.label :identification %>
-      <span class="muted">Student ID, driver’s license, passport, etc.</span>
-      <%= member_form.file_field :identification %>
-    </div>
-    <div class="parent-info" style="display: none;">
-      <h3>Parent info</h3>
-      <p class="flex items-center info line-height-3">
-        <%= inline_icon 'important', size: 32, class: 'mr1' %>
-        <span>
-          Parent info is required for organizers under 18. We only use it for writing contracts if your team is accepted.
-        </span>
-      </p>
-      <div class="field">
-        <%= member_form.label :parent_name %>
-        <%= member_form.text_field :parent_name %>
-      </div>
-      <div class="field">
-        <%= member_form.label :parent_email %>
-        <%= member_form.text_field :parent_email %>
-      </div>
-      <div class="field">
-        <%= member_form.label :parent_phone_number %>
-        <%= member_form.text_field :parent_phone_number %>
-      </div>
-      <div class="field">
-        <%= member_form.label :parent_birthdate %>
-        <%= member_form.date_field :parent_birthdate %>
-      </div>
-      <div class="field">
-        <%= member_form.label :parent_identification %>
-        <span class="muted">Driver’s license, passport, etc.</span>
-        <%= member_form.file_field :parent_identification %>
-      </div>
+      <%= member_form.label :parent_identification %>
+      <%= member_form.file_field :parent_identification %>
+      <span class="muted h5 block">Driver’s license, passport, etc.</span>
     </div>
   </div>
-  <% end %>
 </div>
+<% end %>
+</div>
+
 <%= form.submit 'Submit application', class: 'mt3 mb3' %>
 <% end  %>

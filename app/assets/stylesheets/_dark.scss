@@ -1,0 +1,50 @@
+html[data-dark='true'] {
+  body {
+    background-color: #17171d;
+    color: map-get($palette, smoke);
+  }
+
+  input[type='date'],
+  input[type='email'],
+  input[type='number'],
+  input[type='password'],
+  input[type='search'],
+  input[type='tel'],
+  input[type='text'],
+  input[type='url'],
+  select,
+  textarea {
+    background: #252429;
+    color: map-get($palette, white);
+    border-color: #252429;
+
+    &:focus {
+      border-color: map-get($palette, info);
+    }
+  }
+
+  h1,
+  h2,
+  .heading,
+  .details > p,
+  .details > div,
+  .details__row {
+    border-color: map-get($palette, black);
+  }
+
+  .pop {
+    background: #252429;
+  }
+
+  .card {
+    background-color: #121217;
+  }
+
+  .dock__card span {
+    color: map-get($palette, smoke) !important;
+  }
+
+  .admin-tools {
+    background-color: rgba(map-get($palette, warning), 0.125);
+  }
+}

@@ -1,6 +1,12 @@
 <%= title "#{@event['Event Name']}" %>
+<% page_sm %>
 
-<h1>Your application was submitted!</h1>
-<p>
-  We’ll be getting in contact with you about <%= @event['Event Name'] %> soon.
-</p>
+<article class="center">
+  <%= inline_icon 'checkmark', size: 128, class: 'success mt5' %>
+
+  <h1 class="mt0">Your application was submitted!</h1>
+
+  <p>
+    We’ll be getting in contact with you about <%= @event['Event Name'] %> soon.
+  </p>
+</article>
