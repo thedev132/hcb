@@ -192,6 +192,10 @@ class Invoice < ApplicationRecord
     url
   end
 
+  def event
+    self.sponsor.event
+  end
+
   private
 
   def set_defaults
