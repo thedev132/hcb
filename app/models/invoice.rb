@@ -144,6 +144,8 @@ class Invoice < ApplicationRecord
   end
 
   def create_payout!
+    inv = StripeService::Invoice.retrieve(id: stripe_invoice_id, expand: ['charge.balance_transaction'])		
+
     raise StandardError, 'Funds not yet available' unless Time.current.to_i > inv.charge.balance_transaction.available_on
 
     self.payout = InvoicePayout.new(
