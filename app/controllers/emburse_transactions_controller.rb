@@ -15,8 +15,15 @@ class EmburseTransactionsController < ApplicationController
     result_params = emburse_transaction_params
     result_params[:amount] = result_params[:amount].to_f * 100.0
     if @emburse_transaction.update(result_params)
-      flash[:success] = 'Emburse Transaction successfully updated.'
-      redirect_to emburse_transactions_path
+      if result_params[:amount] > 0 && @emburse_transaction.event.present?
+        # it's generally a LCR
+        flash[:success] = 'Emburse Transaction updated. Now you can update the Emburse budget.'
+        redirect_to event_cards_overview_path(@emburse_transaction.event.id)
+      else
+        # it's generally a card transaction
+        flash[:success] = 'Emburse Transaction successfully updated.'
+        redirect_to emburse_transactions_path
+      end
     else
       render :edit
     end
