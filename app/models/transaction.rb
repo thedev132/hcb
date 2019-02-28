@@ -111,6 +111,6 @@ class Transaction < ApplicationRecord
   end
 
   def filter_for(text)
-    name&.downcase.include? text
+    name&.downcase&.include? text
   end
 end
