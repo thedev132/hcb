@@ -19,7 +19,7 @@ class SyncEmburseTransactionsJob < ApplicationJob
 
         # Emburse transactions will sometimes post as $0 & update to their correct value later.
         # We want to skip over them until they settle on their correct amount
-        next if trn[:amount] === 0
+        next if trn[:amount] == 0 && et.amount == 0
 
         department_id = trn.dig(:department, :id)
         card = Card.find_by(emburse_id: trn.dig(:card, :id))
