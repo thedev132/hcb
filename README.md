@@ -2,6 +2,8 @@
 
 _It’s a bank, folks._
 
+![](hack_club_bank_laser.gif)
+
 ## Getting Started
 
 1. Install Docker.
