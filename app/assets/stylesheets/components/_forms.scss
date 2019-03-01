@@ -35,6 +35,12 @@ input[type='file'] {
   font-size: 1rem;
 }
 
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
 input[type='number'],
 .input--narrow {
   max-width: 16rem !important;
