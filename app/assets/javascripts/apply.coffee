@@ -1,5 +1,16 @@
 $(document).on 'turbolinks:load', ->
   if BK.thereIs 'application_form'
+    # For fields with length requirements
+    $(document).on 'keyup', '[data-behavior~=character_limit]', (e) ->
+      field = $(e.target)
+      indicator = field.siblings('[data-behavior~=character_limit_indicator]')
+      length = field.val().length
+      console.log(e, length)
+      if length > 0
+        indicator.html "#{length} characters (250 to 600)"
+      else
+        indicator.html "(Must be between 250 and 600 characters)"
+
     # Method for adding a hide/show for parent info
     parentToggle = (index) ->
       birthdate = new Date($('#application_team_members_' + index + '_birthdate').val())
