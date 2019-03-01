@@ -20,11 +20,11 @@
 <%= form_for :application, url: "submit", data: { behavior: 'application_form' } do |form| %>
 <div class="field">
   <%= form.label :event_name %>
-  <%= form.text_field :event_name, required: true, placeholder: 'Hack Pennsylvania' %>
+  <%= form.text_field :event_name, required: true, placeholder: 'Hack Chicago' %>
 </div>
 <div class="field">
   <%= form.label :website %>
-  <%= form.text_field :website, placeholder: 'https://hackpenn.com' %>
+  <%= form.text_field :website, placeholder: 'https://hackchicago.com' %>
 </div>
 <div class="field">
   <%= form.label :about_event, 'Tell us about your event' %>
