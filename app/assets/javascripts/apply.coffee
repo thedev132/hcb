@@ -5,7 +5,6 @@ $(document).on 'turbolinks:load', ->
       field = $(e.target)
       indicator = field.siblings('[data-behavior~=character_limit_indicator]')
       length = field.val().length
-      console.log(e, length)
       if length > 0
         indicator.html "#{length} characters (250 to 600)"
       else
