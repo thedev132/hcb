@@ -17,6 +17,13 @@
   </span>
 </p>
 
+<p class="flex items-center muted line-height-3">
+  <%= inline_icon 'card', size: 32, class: 'mr1' %>
+  <span>
+    You’ll need your co-leaders' identification (school ID, passport, etc.) to finish the application.
+  </span>
+</p>
+
 <%= form_for :application, url: "submit", data: { behavior: 'application_form' } do |form| %>
 <div class="field">
   <%= form.label :event_name %>
