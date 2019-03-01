@@ -1,5 +1,41 @@
 $(document).on 'turbolinks:load', ->
   if BK.thereIs 'application_form'
+
+    # Form validation
+    $('form').submit (e) ->
+      if $('[data-behavior~="member_attributes"]').length == 1
+        e.preventDefault()
+        BK.s('loading_message').html 'You need to add a team member'
+        BK.s('add_member').effect 'highlight', color: '#000'
+        return
+      
+      $('[type="submit"]').addClass 'disabled'
+      messageList = {
+        0: 'Submitting your application',
+        500: 'Submitting your application.',
+        1000: 'Submitting your application..',
+        1500: 'Submitting your application...',
+        2000: 'Submitting your application',
+        2500: 'Submitting your application.',
+        3000: 'Submitting your application..',
+        3500: 'Submitting your application...',
+        4500: 'Submitting your application.',
+        5000: 'Submitting your application.',
+        5500: 'Submitting your application..',
+        6000: 'Submitting your application...',
+        6500: 'So',
+        7500: 'So.',
+        8500: 'So..',
+        9500: 'So...',
+        11000: 'Ya like jazz?',
+        15000: 'Ok, truth be told I think there’s something wrong with this page or your internet',
+        20000: 'Send a screenshot to max@hackclub.com & we’ll get your application submitted',
+      }
+      for timestamp in Object.keys(messageList)
+        do (timestamp) ->
+            setTimeout (() -> BK.s('loading_message').html messageList[timestamp]), timestamp
+      
+        
     # For filling in fields from URL params
     $('[name="application[event_name]"]').val(BK.getQueryParams().name)
     $('[name="application[website]"]').val(BK.getQueryParams().url)
@@ -33,7 +69,7 @@ $(document).on 'turbolinks:load', ->
     # Remove team-member on application form
     $(document).on 'click', '[data-behavior~=remove_member]', (e) ->
       $(e.target).closest('[data-behavior~=member_attributes]').slideUp 'fast'
-      setTimeout (-> $(e.target).parent().remove()), 1000
+      setTimeout (-> $(e.target).closest('[data-behavior~=member_attributes]').remove()), 1000
 
     # Add team-member on application form
     $(document).on 'click', '[data-behavior~=add_member]', ->

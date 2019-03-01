@@ -138,5 +138,7 @@
 <% end %>
 </div>
 
-<%= form.submit 'Submit application', class: 'mt3 mb3' %>
+
+<%= form.submit 'Submit application', data: { disable_with: false }, class: 'mt3 mb3 btn' %>
+<span class="muted h5" data-behavior="loading_message"></span>
 <% end  %>

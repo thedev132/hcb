@@ -1,5 +1,6 @@
 //= require jquery3
 //= require jquery_ujs
+//= require jquery-ui
 //= require activestorage
 //= require turbolinks
 
