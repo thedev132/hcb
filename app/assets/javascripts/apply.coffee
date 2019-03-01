@@ -1,18 +1,23 @@
 $(document).on 'turbolinks:load', ->
   if BK.thereIs 'application_form'
+    # For filling in fields from URL params
+    $('[name="application[event_name]"]').val(BK.getQueryParams().name)
+    $('[name="application[website]"]').val(BK.getQueryParams().url)
+    $('[name="application[about_event]"]').val(BK.getQueryParams().about_event)
+
     # For fields with length requirements
     $(document).on 'keyup', '[data-behavior~=character_limit]', (e) ->
       field = $(e.target)
       indicator = field.siblings('[data-behavior~=character_limit_indicator]')
       length = field.val().length
       if length > 0
-        indicator.html "#{length} characters (250 to 600)"
+        indicator.html "#{length} characters (aim for 250 to 600)"
       else
-        indicator.html "(Must be between 250 and 600 characters)"
+        indicator.html "(Between 250 and 600 characters)"
 
     # Method for adding a hide/show for parent info
     parentToggle = (index) ->
-      birthdate = new Date($('#application_team_members_' + index + '_birthdate').val())
+      birthdate = new Date($("#application_team_members_#{index}_birthdate").val())
       minorThreshold = new Date().setFullYear(new Date().getFullYear() - 18)
       isMinor = birthdate > minorThreshold
       parentInfo = $("[data-index='#{index}']>.parent-info")

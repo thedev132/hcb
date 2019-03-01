@@ -30,13 +30,13 @@
   <%= form.label :about_event, 'Tell us about your event' %>
   <span class="h5 muted">Who are your attendees? Where is your venue?</span>
   <%= form.text_area :about_event, required: true, 'data-behavior': 'character_limit' %>
-  <span class="h5 muted" data-behavior="character_limit_indicator">(Must be between 250 and 600 characters)</span>
+  <span class="h5 muted" data-behavior="character_limit_indicator">(Between 250 and 600 characters)</span>
 </div>
 <div class="field">
   <%= form.label 'Tell us about your history' %>
   <span class="h5 muted">How did you get started? Who's on your team? Include links if relevant. Please be as detailed as possible.</span>
   <%= form.text_area :about_history, required: true, 'data-behavior': 'character_limit' %>
-  <span class="h5 muted" data-behavior="character_limit_indicator">(Must be between 250 and 600 characters)</span>
+  <span class="h5 muted" data-behavior="character_limit_indicator">(Between 250 and 600 characters)</span>
 </div>
 <div class="field field--checkbox">
   <%= form.check_box :opened_sign_ups %>
@@ -57,7 +57,7 @@
   <%= form.label :organizer_history, 'Has your team organized events before?' %>
   <span class="h5 muted">Yes? No? If so, which ones, what were the budgets, and how many people came? Please include links.</span>
   <%= form.text_area :organizer_history, required: true, 'data-behavior': 'character_limit' %>
-  <span class="h5 muted" data-behavior="character_limit_indicator">(Must be between 250 and 600 characters)</span>
+  <span class="h5 muted" data-behavior="character_limit_indicator">(Between 250 and 600 characters)</span>
 </div>
 
 <div data-behavior="members_list">
