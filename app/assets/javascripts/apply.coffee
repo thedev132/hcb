@@ -40,6 +40,7 @@ $(document).on 'turbolinks:load', ->
     $('[name="application[event_name]"]').val(BK.getQueryParams().name)
     $('[name="application[website]"]').val(BK.getQueryParams().url)
     $('[name="application[about_event]"]').val(BK.getQueryParams().about_event)
+    $('[name="application[expected_attendance]"]').val(BK.getQueryParams().expected_attendance)
 
     # For fields with length requirements
     $(document).on 'keyup', '[data-behavior~=character_limit]', (e) ->
