@@ -47,7 +47,10 @@ class InvoicePayout < ApplicationRecord
   def default_values
     return unless invoice
 
-    self.statement_descriptor ||= "#{self.invoice.sponsor.name} Payout"[0...22] # limit to 22 characters, the stripe limit
+    self.statement_descriptor ||=
+      "#{self.invoice.sponsor.name} Payout"[0...22] # limit to 22 characters, the stripe limit
+        .gsub!(/[^0-9a-z ]/i, '') # alphanumeric only
+        .upcase
   end
 
   def create_stripe_payout
