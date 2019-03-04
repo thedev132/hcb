@@ -20,7 +20,7 @@ class GSuitesController < ApplicationController
   def new
     @g_suite_application = GSuiteApplication.find(params[:g_suite_application_id])
     @g_suite = GSuite.new(
-      g_suite_application: @g_suite_application,
+      application: @g_suite_application,
       event: @g_suite_application.event,
       domain: @g_suite_application.domain
     )
