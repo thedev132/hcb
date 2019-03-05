@@ -18,7 +18,7 @@ class GSuite < ApplicationRecord
   private
 
   def notify_of_creation
-    GSuiteMailer.notify_on_creation(
+    GSuiteMailer.notify_of_creation(
       recipient: self.application.creator.email,
       g_suite: self
     )
