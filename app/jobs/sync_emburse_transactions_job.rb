@@ -57,6 +57,8 @@ class SyncEmburseTransactionsJob < ApplicationJob
         )
 
         self.notify_admin(et) if department_id.nil?
+
+        self.notify_user(et) unless et.notified_admin_at
       end
 
     deleted_transactions.each { |emburse_id| EmburseTransaction.find_by(emburse_id: emburse_id).destroy }
@@ -72,4 +74,8 @@ class SyncEmburseTransactionsJob < ApplicationJob
     emburse_t.update!(notified_admin_at: Time.now)
   end
 
+  def notify_user(emburse_t)
+    return if !emburse_t.event
+
+    EmburseTransactionsMailer.organizer_notify(emburse_transaction: emburse_t, event: emburse_t.event)
 end
