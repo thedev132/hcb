@@ -12,6 +12,6 @@ class EmburseTransactionsMailer < ApplicationMailer
 
     emails = @event.users.map { |u| u.email }
     mail to: emails,
-      subject: "#{@emburse_transaction.card.user.name} spent $#{BigDecimal.new(@emburse_transaction.amount.abs)/100} at #{@emburse_transaction.merchant_name}"
+      subject: "$#{BigDecimal.new(@emburse_transaction.amount.abs)/100} spent at #{@emburse_transaction.merchant_name} by #{@emburse_transaction.card.user.name}"
   end
 end
