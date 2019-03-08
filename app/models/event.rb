@@ -60,7 +60,13 @@ class Event < ApplicationRecord
 
   # amount incoming from paid Stripe invoices not yet deposited
   def pending_deposits
-    self.invoices.where(status: 'paid', payout: nil).sum(:payout_creation_balance_net)
+    # money that is pending payout- aka payout has not been created yet
+    pre_payout = self.invoices.where(status: 'paid', payout: nil).sum(:payout_creation_balance_net)
+    
+    # money that has a payout created, but where the transaction has not hit the account yet / been associated with the pending payout
+    payout_created = self.invoices.includes(payout: :t_transaction).where(status: 'paid', payout: { transactions: { id: nil } }).sum(:payout_creation_balance_net)
+    
+    pre_payout + payout_created
   end
 
   def billed_transactions
