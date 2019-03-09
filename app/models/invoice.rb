@@ -101,7 +101,7 @@ class Invoice < ApplicationRecord
     return false unless self.valid?
 
     inv = StripeService::Invoice.retrieve(stripe_invoice_id)
-    inv.status = 'paid'
+    inv.paid = true
 
     if inv.save
       self.set_fields_from_stripe_invoice(inv)
