@@ -15,7 +15,27 @@ BK.deselect = (selector, filter = '[aria-selected=true]') =>
 BK.select = (selector, filter) =>
   BK.s(selector, filter).attr('aria-selected', true)
 
-// Disable use without FullStory
+// document.getElementsByTagName('html')[0].getAttribute('data-dark') === 'true'
+BK.isDark = () => localStorage.getItem('dark') === 'true'
+BK.styleDark = theme => {
+  document.getElementsByTagName('html')[0].setAttribute('data-dark', theme)
+  BK.s('toggle_theme')
+    .find('svg')
+    .toggle()
+}
+BK.toggleDark = () => {
+  theme = !BK.isDark()
+  // animate background color
+  // not in base CSS because otherwise theme restore has background animation on load
+  $('body').css({
+    transition: 'background-color 0.25s ease-in-out, color 0.125s ease-in-out'
+  })
+  BK.styleDark(theme)
+  localStorage.setItem('dark', theme)
+  return theme
+}
+
+// Annoy users without FullStory
 $(document).ready(() => {
   setTimeout(() => {
     if (typeof FS === 'undefined') {
@@ -31,17 +51,16 @@ $(document).ready(() => {
           BK.blocked = true
         })
     }
-  }, 4000)
+  }, 3000)
   setTimeout(() => {
     if (BK.blocked) {
-      const body = document.getElementsByTagName('body')
-      body[0].remove()
       alert(
-        'Hack Club Bank is still in development. To continue improving the product, it’s crucial for us to debug any issues that arise, but your adblocker is currently blocking our bug reporting + analytics. Please unblock to continue using the app.'
+        'Hack Club Bank is still in development. To continue improving the product, it’s crucial for us to debug any issues that arise, but your adblocker is currently blocking our bug reporting + analytics. Please unblock before continuing to use the app.'
       )
     }
-  }, 4500)
+  }, 3250)
 })
+
 // https://css-tricks.com/snippets/jquery/get-query-params-object/
 BK.getQueryParams = () => {
   const result = {}

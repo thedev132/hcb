@@ -50,13 +50,11 @@
 
   <% if @invoice.manually_marked_as_paid? %>
     <p>
-      <em>
-        This invoice was manually marked as paid by <%= @invoice.manually_marked_as_paid_user.full_name %>.
-        Reason given: "<%= @invoice.manually_marked_as_paid_reason %>"
-      </em>
+      This invoice was manually marked as paid by <%= @invoice.manually_marked_as_paid_user.full_name %>.
+      Reason given: "<%= @invoice.manually_marked_as_paid_reason %>"
     </p>
     <% if @invoice.manually_marked_as_paid_attachment.attached? %>
-      <p><em><%= link_to 'Download provided attachment.', @invoice.manually_marked_as_paid_attachment %></em></p>
+      <p><%= link_to 'Download provided attachment', @invoice.manually_marked_as_paid_attachment %></p>
     <% end %>
   <% else %>
     <% if @invoice.payout_creation_queued_at && @invoice.payout.nil? %>
@@ -67,8 +65,8 @@
   <% end %>
 
   <% if @invoice.hosted_invoice_url && @invoice.invoice_pdf %>
-    <%= link_to 'View live invoice', @invoice.hosted_invoice_url, class: 'btn bg-accent', target: '_blank'  %>
-    <%= link_to 'Download PDF', @invoice.invoice_pdf, class: 'btn bg-info mr2', target: '_blank'  %>
+    <%= link_to 'View live invoice', @invoice.hosted_invoice_url, class: 'btn bg-accent mr2', target: '_blank'  %>
+    <%= link_to 'Download PDF', @invoice.invoice_pdf, class: 'btn bg-info', target: '_blank'  %>
   <% end %>
 
   <% admin_tools('mt2') do %>

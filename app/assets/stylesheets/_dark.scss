@@ -1,3 +1,7 @@
+$dark: #17171d;
+$darker: #121217;
+$darkless: #252429;
+
 html[data-dark='true'] {
   body {
     background-color: #17171d;
@@ -14,9 +18,9 @@ html[data-dark='true'] {
   input[type='url'],
   select,
   textarea {
-    background: #252429;
+    background: $darkless;
     color: map-get($palette, white);
-    border-color: #252429;
+    border-color: $darkless;
 
     &:focus {
       border-color: map-get($palette, info);
@@ -29,22 +33,80 @@ html[data-dark='true'] {
   .details > p,
   .details > div,
   .details__row {
-    border-color: map-get($palette, black);
+    border-color: $darkless;
+  }
+  .list > a > li,
+  .list > li {
+    border-bottom-color: $darkless;
   }
 
   .pop {
-    background: #252429;
+    background: $darkless;
   }
 
   .card {
-    background-color: #121217;
+    background-color: $darkless;
+
+    h1,
+    h2,
+    .heading,
+    .details > p,
+    .details > div,
+    .details__row {
+      border-color: map-get($palette, black);
+    }
+
+    input[type='date'],
+    input[type='email'],
+    input[type='number'],
+    input[type='password'],
+    input[type='search'],
+    input[type='tel'],
+    input[type='text'],
+    input[type='url'],
+    select,
+    textarea {
+      background: $dark;
+      border-color: $dark;
+    }
+
+    pre {
+      background-color: $dark;
+    }
   }
 
+  .black,
+  .btn,
   .dock__card span {
     color: map-get($palette, smoke) !important;
   }
 
   .admin-tools {
-    background-color: rgba(map-get($palette, warning), 0.125);
+    background-color: rgba(map-get($palette, warning), 0.0625);
+  }
+
+  input[type='submit'],
+  .btn,
+  .bg-info {
+    background-color: $blue8;
+  }
+  .bg-accent {
+    background-color: $violet8;
+  }
+  .bg-success {
+    background-color: $teal8;
+  }
+  .btn--destroy {
+    background: $red8 !important;
+  }
+  .transaction--positive {
+    background-color: darken($teal9, 10%);
+  }
+  .transaction--negative {
+    background-color: darken($red9, 10%);
+  }
+
+  .shade-neutral {
+    background: $darkless;
   }
 }

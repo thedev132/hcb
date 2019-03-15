@@ -2,12 +2,12 @@
 <html data-dark="<%= !!@dark %>">
   <head>
     <title>
-      <%= if content_for?(:title) then yield(:title) + ' | ' end %>
+      <%= "#{yield(:title)} – " if content_for?(:title) %>
       Bank
     </title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
@@ -20,10 +20,23 @@
   </head>
   <body class="bg-snow <%= content_for :page_class %>">
     <% unless @hide_home %>
-      <%= link_to root_path, class: 'home pt1 md-pt2' do %>
-        <%= image_tag 'logo.svg', name: 'header-logo', width: @home_size || 48, height: @home_size || 48, alt: 'Bank logo' %>
-        <%= image_tag 'hank.png', name: 'alternative-logo', style: 'display: none;', width: @home_size || 48, height: @home_size || 48, alt: 'Hank logo' %>
-      <% end %>
+      <header class="home flex items-center justify-center pt1 md-pt2">
+        <% if signed_in? %>
+          <action role="button" data-behavior="toggle_theme" class="muted pointer tooltipped tooltipped--s" aria-label="Toggle dark mode">
+            <%= inline_icon 'moon', size: home_action_size %>
+            <%= inline_icon 'moon-fill', size: home_action_size, style: 'display: none;' %>
+          </action>
+        <% end %>
+        <%= link_to root_path, class: 'pl2 pr2' do %>
+          <%= image_tag 'logo.svg', name: 'header-logo', width: @home_size || 48, height: @home_size || 48, alt: 'Bank logo' %>
+          <%= image_tag 'hank.png', name: 'alternative-logo', style: 'display: none;', width: @home_size || 48, height: @home_size || 48, alt: 'Hank logo' %>
+        <% end %>
+        <%= link_to logout_users_path, method: :delete,
+            class: 'muted tooltipped tooltipped--s',
+            'aria-label': 'Sign out' do %>
+            <%= inline_icon 'door-leave', size: home_action_size %>
+        <% end if signed_in? %>
+      </header>
     <% end %>
     <main class="container <%= content_for :container_class %>">
       <% flash.each do |key, value| %>

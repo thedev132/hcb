@@ -1,4 +1,11 @@
+# restore previous theme setting
+$(document).ready ->
+  BK.styleDark(true) if localStorage.getItem('dark') is 'true'
+
 $(document).on 'turbolinks:load', ->
+  $(document).on 'click', '[data-behavior~=toggle_theme]', ->
+    BK.toggleDark()
+
   hankIndex = 0
   $(document).on 'keydown', (e) ->
     if e.originalEvent.key == 'hank'[hankIndex]

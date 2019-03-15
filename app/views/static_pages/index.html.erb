@@ -3,7 +3,7 @@
 <% content_for(:page_class) { 'bg-snow pt4' } %>
 
 <main class="flex flex-column items-center center pt3 pb3">
-  <h1 class="heading flex-column items-center justify-center mt2">
+  <h1 class="heading flex-column items-center justify-center mt2 w-100">
     <span class="h3 caps slate block">Welcome to</span>
     <span class="primary">Hack Club Bank</span>
     <% if Rails.env.development? %>
@@ -71,9 +71,5 @@
     </p>
   <% end %>
 
-  <% if signed_in? %>
-    <%= link_to 'Sign out', logout_users_path, method: :delete, class: 'btn mt2' %>
-  <% else %>
-    <%= link_to 'Sign in', auth_users_path, class: 'btn h2' %>
-  <% end %>
+  <%= link_to 'Sign in', auth_users_path, class: 'btn h2' unless signed_in? %>
 </main>

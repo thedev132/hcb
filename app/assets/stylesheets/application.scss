@@ -261,18 +261,4 @@ svg {
 @import 'basscss';
 @import 'space';
 @import 'utilities';
-
-.transaction--positive {
-  @extend .shade-green;
-}
-.transaction--negative {
-  @extend .shade-red;
-}
-.transaction--neutral {
-  @extend .shade-neutral;
-}
-.transaction--warning {
-  @extend .shade-orange;
-}
-
 @import 'dark';
