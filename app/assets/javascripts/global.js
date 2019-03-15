@@ -15,6 +15,26 @@ BK.deselect = (selector, filter = '[aria-selected=true]') =>
 BK.select = (selector, filter) =>
   BK.s(selector, filter).attr('aria-selected', true)
 
+// document.getElementsByTagName('html')[0].getAttribute('data-dark') === 'true'
+BK.isDark = () => localStorage.getItem('dark') === 'true'
+BK.styleDark = theme => {
+  document.getElementsByTagName('html')[0].setAttribute('data-dark', theme)
+  BK.s('toggle_theme')
+    .find('svg')
+    .toggle()
+}
+BK.toggleDark = () => {
+  theme = !BK.isDark()
+  // animate background color
+  // not in base CSS because otherwise theme restore has background animation on load
+  $('body').css({
+    transition: 'background-color 0.25s ease-in-out, color 0.125s ease-in-out'
+  })
+  BK.styleDark(theme)
+  localStorage.setItem('dark', theme)
+  return theme
+}
+
 // Annoy users without FullStory
 $(document).ready(() => {
   setTimeout(() => {

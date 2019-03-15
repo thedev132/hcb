@@ -51,7 +51,7 @@ $chevron: "#{image-url('chevron.svg')} right 12px center no-repeat";
   flex-direction: row;
 }
 .list--unlinked li {
-  background: white;
+  background: transparent;
   &.bg-snow {
     background: $gray0;
   }
