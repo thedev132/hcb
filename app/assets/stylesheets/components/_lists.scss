@@ -25,15 +25,6 @@ $chevron: "#{image-url('chevron.svg')} right 12px center no-repeat";
     &.transaction--negative {
       background: $red0 #{$chevron};
     }
-    &.transaction--neutral {
-      background: $gray0 #{$chevron};
-    }
-    &.transaction--warning {
-      background: $orange0 #{$chevron};
-    }
-    &.ultrawhite {
-      padding-right: 0;
-    }
     > p {
       margin: 0;
     }

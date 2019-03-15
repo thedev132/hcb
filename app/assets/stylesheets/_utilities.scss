@@ -89,6 +89,13 @@ $shades: (
   }
 }
 
+.transaction--positive {
+  @extend .shade-green;
+}
+.transaction--negative {
+  @extend .shade-red;
+}
+
 @each $name, $value in $palette {
   .#{'' + $name} {
     color: $value;
