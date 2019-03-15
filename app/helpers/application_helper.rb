@@ -72,6 +72,10 @@ module ApplicationHelper
     data: { name: name.to_s, behavior: 'filterbar_item' }
   end
 
+  def home_action_size
+    @home_size.to_i > 48 ? 36 : 28 
+  end
+
   def page_hide_home
     @hide_home = true
   end

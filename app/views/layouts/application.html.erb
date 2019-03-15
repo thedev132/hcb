@@ -20,10 +20,13 @@
   </head>
   <body class="bg-snow <%= content_for :page_class %>">
     <% unless @hide_home %>
-      <%= link_to root_path, class: 'home pt1 md-pt2' do %>
-        <%= image_tag 'logo.svg', name: 'header-logo', width: @home_size || 48, height: @home_size || 48, alt: 'Bank logo' %>
-        <%= image_tag 'hank.png', name: 'alternative-logo', style: 'display: none;', width: @home_size || 48, height: @home_size || 48, alt: 'Hank logo' %>
-      <% end %>
+      <header class="home flex items-center justify-center pt1 md-pt2">
+        <%= link_to logout_users_path, method: :delete,
+            class: 'muted tooltipped tooltipped--s',
+            'aria-label': 'Sign out' do %>
+            <%= inline_icon 'door-leave', size: home_action_size %>
+        <% end if signed_in? %>
+      </header>
     <% end %>
     <main class="container <%= content_for :container_class %>">
       <% flash.each do |key, value| %>
