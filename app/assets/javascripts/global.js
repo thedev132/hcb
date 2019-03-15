@@ -15,7 +15,7 @@ BK.deselect = (selector, filter = '[aria-selected=true]') =>
 BK.select = (selector, filter) =>
   BK.s(selector, filter).attr('aria-selected', true)
 
-// Disable use without FullStory
+// Annoy users without FullStory
 $(document).ready(() => {
   setTimeout(() => {
     if (typeof FS === 'undefined') {
@@ -31,17 +31,16 @@ $(document).ready(() => {
           BK.blocked = true
         })
     }
-  }, 4000)
+  }, 3000)
   setTimeout(() => {
     if (BK.blocked) {
-      const body = document.getElementsByTagName('body')
-      body[0].remove()
       alert(
-        'Hack Club Bank is still in development. To continue improving the product, it’s crucial for us to debug any issues that arise, but your adblocker is currently blocking our bug reporting + analytics. Please unblock to continue using the app.'
+        'Hack Club Bank is still in development. To continue improving the product, it’s crucial for us to debug any issues that arise, but your adblocker is currently blocking our bug reporting + analytics. Please unblock before continuing to use the app.'
       )
     }
-  }, 4500)
+  }, 3250)
 })
+
 // https://css-tricks.com/snippets/jquery/get-query-params-object/
 BK.getQueryParams = () => {
   const result = {}
