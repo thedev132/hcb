@@ -3,7 +3,7 @@
 }
 
 .filterbar__filters {
-  overflow-x: scroll;
+  overflow-x: auto;
   -webkit-overflow-scrolling: touch;
 
   @media screen and (max-width: 32em) {
