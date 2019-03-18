@@ -12,14 +12,18 @@ class SyncEmburseTransactionsJob < ApplicationJob
     deleted_transactions = EmburseTransaction.all.pluck :emburse_id
 
       EmburseClient::Transaction.list.each do |trn|
-        deleted_transactions.delete(trn[:id])
-
         et = EmburseTransaction.find_by(emburse_id: trn[:id])
         et ||= EmburseTransaction.new(emburse_id: trn[:id])
 
         # Emburse transactions will sometimes post as $0 & update to their correct value later.
         # We want to skip over them until they settle on their correct amount
+        #
+        # Note: by skipping over them, we're not removing them from the deleted_transactions
+        # array, meaning their corresponding transaction will be removed if it exists.
         next if trn[:amount] == 0 && et.amount == 0
+        
+        # Transaction is above 0.0 and exists, so we want to keep it around
+        deleted_transactions.delete(trn[:id])
 
         department_id = trn.dig(:department, :id)
         card = Card.find_by(emburse_id: trn.dig(:card, :id))
