@@ -36,7 +36,7 @@ class SyncEmburseTransactionsJob < ApplicationJob
         #
         # Note: by skipping over them, we're not removing them from the deleted_transactions
         # array, meaning their corresponding transaction will be removed if it exists.
-        next if trn[:amount] == 0 && et.amount == 0
+        next if trn[:amount] == 0 && (et.amount == nil || et.amount == 0)
 
         # Transaction is above 0.0 and exists, so we want to keep it around
         deleted_transactions.delete(trn[:id])
