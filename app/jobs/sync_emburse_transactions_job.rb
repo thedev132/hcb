@@ -15,13 +15,29 @@ class SyncEmburseTransactionsJob < ApplicationJob
         et = EmburseTransaction.find_by(emburse_id: trn[:id])
         et ||= EmburseTransaction.new(emburse_id: trn[:id])
 
+        # Emburse has a feature called "Personal Expenses" that allows users to
+        # spend money on Emburse cards, but then credit the organization back
+        # for the amount (ex. if the user accidentally puts a meal on their
+        # Emburse card).
+        #
+        # As of March 21, 2019, they don't expose whether a transaction is a
+        # personal expense through the API, meaning we have to use heuristics
+        # to figure out whether a transaction is a personal expense.
+        #
+        # My (Zach)'s best attempt after trial and error is to check whether
+        # the transaction has an associated card, but no associated department
+        # (bc personal expenses don't have associated departments). I've tested
+        # this as a filter for all transactions and the only ones returned are
+        # personal expenses, so I'm going to go with this method for now.
+        next if trn[:department] == nil && trn[:card] != nil
+
         # Emburse transactions will sometimes post as $0 & update to their correct value later.
         # We want to skip over them until they settle on their correct amount
         #
         # Note: by skipping over them, we're not removing them from the deleted_transactions
         # array, meaning their corresponding transaction will be removed if it exists.
         next if trn[:amount] == 0 && et.amount == 0
-        
+
         # Transaction is above 0.0 and exists, so we want to keep it around
         deleted_transactions.delete(trn[:id])
 
