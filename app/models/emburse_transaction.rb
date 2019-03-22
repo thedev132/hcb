@@ -2,6 +2,7 @@ class EmburseTransaction < ApplicationRecord
   enum state: %w{pending completed declined}
 
   acts_as_paranoid
+  validates_as_paranoid
 
   scope :pending, -> { where(state: 'pending') }
   scope :completed, -> { where(state: 'completed' )}
@@ -12,7 +13,7 @@ class EmburseTransaction < ApplicationRecord
   belongs_to :event, required: false
   belongs_to :card, required: false
 
-  validates_uniqueness_of :emburse_id
+  validates_uniqueness_of_without_deleted :emburse_id
 
   def under_review?
     self.event_id.nil? && undeclined?
