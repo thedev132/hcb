@@ -25,7 +25,8 @@ class ApplicationsController < ApplicationController
       "Have you already opened sign-ups for the event?": params[:application][:opened_sign_ups].to_i == 0 ? "No" : "Yes",
       "Expected Attendees": params[:application][:expected_attendees].to_i,
       "Application": [ app.id ],
-      "Expected Budget": params[:application][:expected_budget].to_i
+      "Expected Budget": params[:application][:expected_budget].to_i,
+      "Mailing Address": params[:application][:mailing_address]
     })
     events.create(@event)
 
