@@ -66,6 +66,11 @@
   <%= form.text_area :organizer_history, required: true, 'data-behavior': 'character_limit' %>
   <span class="h5 muted" data-behavior="character_limit_indicator">(Must be between 250 and 600 characters)</span>
 </div>
+<div class="field">
+  <%= form.label :mailing_address %>
+  <span class="h5 muted">We mail Hack Club Bank stickers to every event—at what address can one of your organizers receive a package?</span>
+  <%= form.text_area :mailing_address, required: true %>
+</div>
 
 <div data-behavior="members_list">
 <h2 class="heading mb3">
