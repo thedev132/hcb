@@ -93,15 +93,21 @@ class EventsController < ApplicationController
 
   # Only allow a trusted parameter "white list" through.
   def event_params
-    params.require(:event).permit(
+    result_params = params.require(:event).permit(
       :name,
       :start,
       :end,
       :address,
       :sponsorship_fee,
+      :expected_budget,
       :emburse_department_id,
       :point_of_contact_id
     )
+
+    # Expected budget is in cents on the backend, but dollars on the frontend
+    result_params[:expected_budget] = result_params[:expected_budget].to_f * 100
+
+    result_params
   end
 
   def user_event_params

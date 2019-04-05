@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_19_113221) do
+ActiveRecord::Schema.define(version: 2019_04_05_203143) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -166,6 +166,7 @@ ActiveRecord::Schema.define(version: 2019_02_19_113221) do
     t.string "emburse_department_id"
     t.text "slug"
     t.bigint "point_of_contact_id"
+    t.integer "expected_budget"
     t.index ["point_of_contact_id"], name: "index_events_on_point_of_contact_id"
   end
 
