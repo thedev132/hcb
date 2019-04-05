@@ -42,7 +42,7 @@
       <%= form.label :expected_budget, 'Expected budget' %>
       <div class="flex items-center">
         <span class="bold muted" style="width: 1rem;">$</span>
-        <%= form.number_field :expected_budget, value: render_money(event.expected_budget, ''), step: '0.01' %>
+        <%= form.number_field :expected_budget, value: number_with_precision(event.expected_budget, precision: 2), step: '0.01' %>
       </div>
     </div>
 
