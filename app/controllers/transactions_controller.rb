@@ -87,7 +87,15 @@ class TransactionsController < ApplicationController
       :load_card_request_id,
       :invoice_payout_id,
       :display_name,
-      fee_relationship_attributes: [ :event_id, :fee_applies, :is_fee_payment ]
+
+      # WARNING: I (@zrl) think users might be able to mess with the fee
+      # relationship ID on the clientside.
+      fee_relationship_attributes: [
+        :id,
+        :event_id,
+        :fee_applies,
+        :is_fee_payment
+      ]
     )
   end
 end
