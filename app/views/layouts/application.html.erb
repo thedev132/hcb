@@ -20,6 +20,7 @@
   </head>
   <body class="bg-snow <%= content_for :page_class %>">
     <% unless @hide_home %>
+      <div class="headway"></div>
       <header class="home flex items-center justify-center pt1 md-pt2">
         <% if signed_in? %>
           <action role="button" data-behavior="toggle_theme" class="muted pointer tooltipped tooltipped--s" aria-label="Toggle dark mode">
@@ -62,5 +63,13 @@
       <% end %>
       }}();
     </script>
+    <script>
+    // @see https://docs.headwayapp.co/widget for more configuration options.
+      var HW_config = {
+        selector: ".headway", // CSS selector where to inject the badge
+        account:  "7z8ovy"
+      }
+    </script>
+    <script async src="https://cdn.headwayapp.co/widget.js"></script>
   </body>
 </html>
