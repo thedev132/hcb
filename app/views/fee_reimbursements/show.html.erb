@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Amount:</strong>
+  <%= @fee_reimbursement.amount %>
+</p>
+
+<p>
+  <strong>Status:</strong>
+  <%= @fee_reimbursement.status %>
+</p>
+
+<p>
+  <strong>Transaction memo:</strong>
+  <%= @fee_reimbursement.transaction_memo %>
+</p>
+
+<%= link_to 'Edit', edit_fee_reimbursement_path(@fee_reimbursement) %> |
+<%= link_to 'Back', fee_reimbursements_path %>
