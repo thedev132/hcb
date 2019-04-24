@@ -20,7 +20,6 @@
   </head>
   <body class="bg-snow <%= content_for :page_class %>">
     <% unless @hide_home %>
-      <div class="headway"></div>
       <header class="home flex items-center justify-center pt1 md-pt2">
         <% if signed_in? %>
           <action role="button" data-behavior="toggle_theme" class="muted pointer tooltipped tooltipped--s" aria-label="Toggle dark mode">
@@ -29,6 +28,7 @@
           </action>
         <% end %>
         <%= link_to root_path, class: 'pl2 pr2' do %>
+          <div class="headway"></div>
           <%= image_tag 'logo.svg', name: 'header-logo', width: @home_size || 48, height: @home_size || 48, alt: 'Bank logo' %>
           <%= image_tag 'hank.png', name: 'alternative-logo', style: 'display: none;', width: @home_size || 48, height: @home_size || 48, alt: 'Hank logo' %>
         <% end %>

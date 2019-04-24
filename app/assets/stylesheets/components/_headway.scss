@@ -1,10 +1,23 @@
+@import 'variables';
+
 #HW_badge_cont {
   margin-left: auto;
+  height: initial;
+  width: initial;
 }
 
 #HW_badge {
+  padding: 1em !important;
+  font-size: 1em !important;
+  width: unset !important;
+  line-height: unset !important;
 }
 
 .headway {
-  float: right;
+  position: relative !important;
+  right: 0px;
+  height: 0px !important;
+  [data-count-unseen*=""] {
+    right: 10px;
+  }
 }
