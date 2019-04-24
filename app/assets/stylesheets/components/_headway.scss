@@ -10,9 +10,8 @@
 #HW_badge[data-count-unseen] {
   opacity: 1 !important;
   background: map-get($palette, primary) !important;
-  border: 1px solid white;
-  top: 0;
-  left: 0;
+  top: -5px;
+  left: 24px;
 }
 #HW_badge[data-count-unseen=""] {
   opacity: 0 !important;

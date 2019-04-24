@@ -21,10 +21,8 @@
   <body class="bg-snow <%= content_for :page_class %>">
     <% unless @hide_home %>
       <header class="home flex items-center justify-center pt1 md-pt2">
+        <div class="mr4"><!--spacer--></div>
         <% if signed_in? %>
-          <div class="muted pointer mr2 tooltipped tooltipped--s headway" aria-label="Show updates">
-            <%= inline_icon 'bell', size: home_action_size %>
-          </div>
           <action role="button" data-behavior="toggle_theme" class="muted pointer tooltipped tooltipped--s" aria-label="Toggle dark mode">
             <%= inline_icon 'moon', size: home_action_size %>
             <%= inline_icon 'moon-fill', size: home_action_size, style: 'display: none;' %>
@@ -33,6 +31,11 @@
         <%= link_to root_path, class: 'pl2 pr2' do %>
           <%= image_tag 'logo.svg', name: 'header-logo', width: @home_size || 48, height: @home_size || 48, alt: 'Bank logo' %>
           <%= image_tag 'hank.png', name: 'alternative-logo', style: 'display: none;', width: @home_size || 48, height: @home_size || 48, alt: 'Hank logo' %>
+        <% end %>
+        <% if signed_in? %>
+          <div class="muted pointer mr2 tooltipped tooltipped--s headway" aria-label="Show updates">
+            <%= inline_icon 'bell', size: home_action_size %>
+          </div>
         <% end %>
         <%= link_to logout_users_path, method: :delete,
             class: 'muted tooltipped tooltipped--s',
