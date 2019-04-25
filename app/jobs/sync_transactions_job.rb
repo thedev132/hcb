@@ -58,6 +58,8 @@ class SyncTransactionsJob < ApplicationJob
             pending_transaction_id: t.pending_transaction_id
           )
 
+          check_fee_reimbursement(tr)
+
           state_map[tr.id] = :processed
         end
 
@@ -76,6 +78,21 @@ class SyncTransactionsJob < ApplicationJob
       self.class.set(wait: RUN_EVERY).perform_later(true)
     end
   end
+
+  def check_fee_reimbursement(transaction)
+    FeeReimbursement.pending.each do | reimbursement |
+      # match transaction to event so less work for Michael!
+      if(transaction.name.include? reimbursement.transaction_memo)
+        transaction.fee_relationship.new(
+            event_id: reimbursement.invoice.event.id
+            fee_applies: true
+          )
+        transaction.display_name = "Fee reimbursement from #{reimbursement.invoice.sponsor.name} invoice"
+        transaction.save
+      end
+    end
+  end
+
 
   def transactions_in_range(begin_date, end_date)
     transaction_response = PlaidService.instance.client.transactions.get(

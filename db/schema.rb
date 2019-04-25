@@ -181,7 +181,6 @@ ActiveRecord::Schema.define(version: 2019_04_24_211751) do
 
   create_table "fee_reimbursements", force: :cascade do |t|
     t.bigint "amount"
-    t.integer "status"
     t.string "transaction_memo"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

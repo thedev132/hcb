@@ -15,6 +15,7 @@ class Invoice < ApplicationRecord
   belongs_to :creator, class_name: 'User'
   belongs_to :manually_marked_as_paid_user, class_name: 'User', required: false
   belongs_to :payout, class_name: 'InvoicePayout', required: false
+  belongs_to :fee_reimbursement, required: false
 
   has_one_attached :manually_marked_as_paid_attachment
 
@@ -152,6 +153,11 @@ class Invoice < ApplicationRecord
       amount: self.payout_creation_balance_net,
       invoice: self
     )
+
+    self.fee_reimbursement = FeeReimbursement.new(
+        amount: self.amount_due - self.payout_creation_balance_net # fee
+        invoice: self
+      )
 
     self.save!
   end
