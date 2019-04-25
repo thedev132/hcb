@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_24_211751) do
+ActiveRecord::Schema.define(version: 2019_04_24_215344) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -181,9 +181,11 @@ ActiveRecord::Schema.define(version: 2019_04_24_211751) do
 
   create_table "fee_reimbursements", force: :cascade do |t|
     t.bigint "amount"
+    t.integer "status"
     t.string "transaction_memo"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "processed_at"
   end
 
   create_table "fee_relationships", force: :cascade do |t|
@@ -319,7 +321,10 @@ ActiveRecord::Schema.define(version: 2019_04_24_211751) do
     t.text "status"
     t.integer "payout_creation_balance_net"
     t.integer "payout_creation_balance_stripe_fee"
+    t.boolean "reimbursable", default: true
+    t.bigint "fee_reimbursements_id"
     t.index ["creator_id"], name: "index_invoices_on_creator_id"
+    t.index ["fee_reimbursements_id"], name: "index_invoices_on_fee_reimbursements_id"
     t.index ["item_stripe_id"], name: "index_invoices_on_item_stripe_id", unique: true
     t.index ["manually_marked_as_paid_user_id"], name: "index_invoices_on_manually_marked_as_paid_user_id"
     t.index ["payout_creation_queued_job_id"], name: "index_invoices_on_payout_creation_queued_job_id", unique: true
@@ -443,8 +448,10 @@ ActiveRecord::Schema.define(version: 2019_04_24_211751) do
     t.bigint "invoice_payout_id"
     t.text "slug"
     t.text "display_name"
+    t.bigint "fee_reimbursement_id"
     t.index ["bank_account_id"], name: "index_transactions_on_bank_account_id"
     t.index ["deleted_at"], name: "index_transactions_on_deleted_at"
+    t.index ["fee_reimbursement_id"], name: "index_transactions_on_fee_reimbursement_id"
     t.index ["fee_relationship_id"], name: "index_transactions_on_fee_relationship_id"
     t.index ["invoice_payout_id"], name: "index_transactions_on_invoice_payout_id"
     t.index ["load_card_request_id"], name: "index_transactions_on_load_card_request_id"
@@ -491,6 +498,7 @@ ActiveRecord::Schema.define(version: 2019_04_24_211751) do
   add_foreign_key "g_suite_applications", "users", column: "creator_id"
   add_foreign_key "g_suite_applications", "users", column: "fulfilled_by_id"
   add_foreign_key "g_suites", "events"
+  add_foreign_key "invoices", "fee_reimbursements", column: "fee_reimbursements_id"
   add_foreign_key "invoices", "invoice_payouts", column: "payout_id"
   add_foreign_key "invoices", "sponsors"
   add_foreign_key "invoices", "users", column: "creator_id"
@@ -510,6 +518,7 @@ ActiveRecord::Schema.define(version: 2019_04_24_211751) do
   add_foreign_key "organizer_positions", "users"
   add_foreign_key "sponsors", "events"
   add_foreign_key "transactions", "bank_accounts"
+  add_foreign_key "transactions", "fee_reimbursements"
   add_foreign_key "transactions", "fee_relationships"
   add_foreign_key "transactions", "invoice_payouts"
   add_foreign_key "transactions", "load_card_requests"
