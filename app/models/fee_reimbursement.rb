@@ -1,12 +1,12 @@
 class FeeReimbursement < ApplicationRecord
   has_one :invoice
-  has_one :transaction
+  has_one :t_transaction, class_name: 'Transaction'
 
   after_initialize :default_values
 
-  scope :unprocessed, -> { where(processed_at: nil && transaction: nil) }
+  scope :unprocessed, -> { where(processed_at: nil, t_transaction: nil) }
   scope :pending, -> { where.not(processed_at: nil) }
-  scope :completed, -> { where.not(transaction: nil) }
+  scope :completed, -> { where.not(t_transaction: nil) }
 
   def process
     processed_at = DateTime.now

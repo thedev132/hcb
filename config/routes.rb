@@ -2,7 +2,6 @@ require 'sidekiq/web'
 require 'admin_constraint'
 
 Rails.application.routes.draw do
-  resources :fee_reimbursements
   mount Sidekiq::Web => '/sidekiq', constraints: AdminConstraint.new
   get '/sidekiq', to: 'users#auth' # fallback if adminconstraint fails, meaning user is not signed in
 
@@ -75,6 +74,10 @@ Rails.application.routes.draw do
   end
 
   resources :transactions, only: [ :index, :show, :edit, :update ] do
+    resources :comments
+  end
+
+  resources :fee_reimbursements, only: [ :index, :show, :edit, :update ] do
     resources :comments
   end
 

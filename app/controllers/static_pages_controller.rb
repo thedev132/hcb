@@ -15,6 +15,7 @@ class StaticPagesController < ApplicationController
       @transaction_volume = Transaction.total_volume
       @active = {
         card_requests: CardRequest.under_review.size,
+        fee_reimbursements: FeeReimbursement.unprocessed.size,
         load_card_requests: LoadCardRequest.under_review.size,
         g_suite_applications: GSuiteApplication.under_review.size,
         g_suite_accounts: GSuiteAccount.under_review.size,
