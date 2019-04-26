@@ -159,6 +159,14 @@ class Invoice < ApplicationRecord
         invoice: self
       )
 
+    self.fee_reimbursement.save
+
+    # if a transfer takes longer than 5 days something is probably wrong. so send an email
+    fee_reimbursement_job = SendUnmatchedFeeReimbursementEmailJob.set(wait_until: DateTime.now + 5.days).perform_later(self.fee_reimbursement)
+    self.fee_reimbursement.mailer_queued_job_id = fee_reimbursement_job.provider_job_id
+
+    self.fee_reimbursement.save
+
     self.save!
   end
 
