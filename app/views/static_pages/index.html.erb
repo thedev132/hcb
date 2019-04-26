@@ -64,6 +64,7 @@
       <%= card_to 'Emburse Transactions', emburse_transactions_path, { badge: @active[:emburse_transactions] } %>
       <%= card_to 'Setup Bank', new_bank_account_path if BankAccount.instance.nil? %>
       <%= card_to 'Export Finances', export_finances_path, { method: :post } %>
+      <%= card_to 'Publish Changelog', 'https://headwayapp.co/bank-changelog' %>
     </ul>
     <p>
       <%= content_tag :strong, render_money(@transaction_volume) %>
