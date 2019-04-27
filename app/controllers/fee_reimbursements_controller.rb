@@ -29,7 +29,7 @@ class FeeReimbursementsController < ApplicationController
     end
   end
 
-  def process
+  def mark_as_processed
     @fee_reimbursement.processed_at = Time.now
     @fee_reimbursement.fulfilled_by = current_user
 

@@ -78,7 +78,7 @@ Rails.application.routes.draw do
   end
 
   resources :fee_reimbursements, only: [ :index, :show, :edit, :update ] do
-    post 'process'
+    post 'mark_as_processed'
     resources :comments
   end
 
