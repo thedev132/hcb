@@ -9,7 +9,7 @@ class FeeRelationship < ApplicationRecord
   validates :fee_amount, presence: true, if: :fee_applies
 
   after_initialize :default_values
-  before_create :calculate_fee
+  before_validation :calculate_fee
 
   def default_values
     self.fee_applies ||= false
