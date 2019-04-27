@@ -14,4 +14,8 @@ class FeeReimbursementPolicy < ApplicationPolicy
   def update?
     user.admin?
   end
+
+  def process?
+    user.admin?
+  end
 end

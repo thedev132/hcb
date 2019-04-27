@@ -11,8 +11,7 @@
     </div>
   <% end %>
 
-  <p>Reimbursement amount is calculated: <%= render_money fee_reimbursement.invoice.item_amount %> - <%= render_money fee_reimbursement.invoice.payout_creation_balance_net %> = <%= render_money fee_reimbursement.amount %></p>
-  <%= link_to "Invoice", fee_reimbursement.invoice %>
+  <p>Reimbursement amount is calculated: <%= render_money fee_reimbursement.invoice.item_amount %> - <%= render_money fee_reimbursement.invoice.payout_creation_balance_net %> = <strong><%= render_money fee_reimbursement.amount %></strong></p>
 
   <div class="field">
     <%= form.label :amount, 'Amount to reimburse' %>

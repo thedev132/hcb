@@ -78,6 +78,7 @@ Rails.application.routes.draw do
   end
 
   resources :fee_reimbursements, only: [ :index, :show, :edit, :update ] do
+    post 'process'
     resources :comments
   end
 
