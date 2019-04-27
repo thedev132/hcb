@@ -26,6 +26,12 @@ class FeeReimbursement < ApplicationRecord
     'unprocessed'
   end
 
+  def status_color
+    return 'success' if completed?
+    return 'warning' if pending?
+    'error'
+  end
+
   def process
     processed_at = DateTime.now
   end

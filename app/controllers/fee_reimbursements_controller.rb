@@ -9,6 +9,7 @@ class FeeReimbursementsController < ApplicationController
 
   # GET /fee_reimbursements/1
   def show
+    @event = @fee_reimbursement.invoice.event
     authorize @fee_reimbursement
   end
 
@@ -26,6 +27,20 @@ class FeeReimbursementsController < ApplicationController
     else
       render :edit
     end
+  end
+
+  def process
+    @fee_reimbursement.processed_at = Time.now
+    @fee_reimbursement.fulfilled_by = current_user
+
+    authorize @fee_reimbursement
+
+    if @fee_reimbursement.save
+      flash[:success] = 'Marked as processed.'
+    else
+      flash[:error] = 'Something went wrong.'
+    end
+    redirect_to fee_reimbursement
   end
 
   private
