@@ -84,7 +84,7 @@ class SyncTransactionsJob < ApplicationJob
       # match transaction to event so less work for Michael!
       if(transaction.name.include? reimbursement.transaction_memo)
         transaction.fee_relationship.new(
-            event_id: reimbursement.invoice.event.id
+            event_id: reimbursement.invoice.event.id,
             fee_applies: true
           )
         transaction.display_name = "Fee reimbursement from #{reimbursement.invoice.sponsor.name} invoice"
