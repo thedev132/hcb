@@ -89,9 +89,6 @@ class SyncTransactionsJob < ApplicationJob
           )
         transaction.display_name = "Fee reimbursement from #{reimbursement.invoice.sponsor.name} invoice"
         transaction.save
-
-        # deleting mailer job https://stackoverflow.com/questions/24180899/rails-cancelling-a-scheduled-job-in-sidekiq
-        Sidekiq::ScheduledSet.new.find_job(reimbursement.mailer_queued_job_id).try(:delete)
       end
     end
   end
