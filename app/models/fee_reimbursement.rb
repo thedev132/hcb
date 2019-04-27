@@ -1,6 +1,7 @@
 class FeeReimbursement < ApplicationRecord
   has_one :invoice
   has_one :t_transaction, class_name: 'Transaction'
+  has_many :comments, as: :commentable
 
   after_initialize :default_values
 

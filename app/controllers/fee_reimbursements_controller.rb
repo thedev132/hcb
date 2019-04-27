@@ -11,6 +11,10 @@ class FeeReimbursementsController < ApplicationController
   def show
     @event = @fee_reimbursement.invoice.event
     authorize @fee_reimbursement
+
+    @commentable = @fee_reimbursement
+    @comments = @commentable.comments
+    @comment = Comment.new
   end
 
   # GET /fee_reimbursements/1/edit
