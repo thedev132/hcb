@@ -1,19 +1,45 @@
-<p id="notice"><%= notice %></p>
+<% title "Reimbursement of #{render_money @fee_reimbursement.amount}" %>
+<% page_sm %>
+<%= render 'events/nav' %>
 
-<p>
-  <strong>Amount:</strong>
-  <%= @fee_reimbursement.amount %>
-</p>
+<h1 class="flex items-center">
+  <%= render_money @fee_reimbursement.amount %> reimbursement
+  <span class="badge h3 bg-<%= @fee_reimbursement.status_color %>">
+    <%= @fee_reimbursement.status.capitalize %>
+  </span>
+</h1>
 
-<p>
-  <strong>Status:</strong>
-  <%= @fee_reimbursement.status %>
-</p>
+<article class="card mt3">
+  <section class="details">
+    <p>
+      <strong>Invoice</strong>
+      <%= link_to render_money(@fee_reimbursement.invoice.item_amount), @fee_reimbursement.invoice %>
+    </p>
 
-<p>
-  <strong>Transaction memo:</strong>
-  <%= @fee_reimbursement.transaction_memo %>
-</p>
+    <p>
+      <strong>Stripe fee</strong>
+      <%= render_money @fee_reimbursement.amount %>
+    </p>
 
-<%= link_to 'Edit', edit_fee_reimbursement_path(@fee_reimbursement) %> |
-<%= link_to 'Back', fee_reimbursements_path %>
+    <p>
+      <strong>Status</strong>
+      <%= @fee_reimbursement.status %>
+    </p>
+
+    <p>
+      <strong>Transaction memo</strong>
+      <span class="tooltipped tooltipped--s" aria-label="Click to select"><%= @fee_reimbursement.transaction_memo %></span>
+    </p>
+
+    <% admin_tools('mt2') do %>
+      <% if @fee_reimbursement.unprocessed? %>
+        <%= link_to 'Edit', edit_fee_reimbursement_path(@fee_reimbursement), class: 'btn bg-info' %>
+      <% end %>
+      <%= link_to 'Process on SVB', 'https://svbconnect.com/booktransfer/bookTransfer.do?cmdBookTransfer=1&mode=new', target: '_blank', class: 'btn bg-accent' %>
+    <% end %>
+  </section>
+</article>
+
+<h2>Comments</h2>
+<%# <%= render "comments/form" %>
+<%# render "comments/comments" %>
