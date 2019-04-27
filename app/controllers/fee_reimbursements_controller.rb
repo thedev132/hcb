@@ -29,6 +29,20 @@ class FeeReimbursementsController < ApplicationController
     end
   end
 
+  def process
+    @fee_reimbursement.processed_at = Time.now
+    @fee_reimbursement.fulfilled_by = current_user
+
+    authorize @fee_reimbursement
+
+    if @fee_reimbursement.save
+      flash[:success] = 'Marked as processed.'
+    else
+      flash[:error] = 'Something went wrong.'
+    end
+    redirect_to fee_reimbursement
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_fee_reimbursement
