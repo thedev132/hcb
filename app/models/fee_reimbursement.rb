@@ -7,6 +7,7 @@ class FeeReimbursement < ApplicationRecord
   scope :unprocessed, -> { where(processed_at: nil, t_transaction: nil) }
   scope :pending, -> { where.not(processed_at: nil) }
   scope :completed, -> { where.not(t_transaction: nil) }
+  scope :failed, -> { where('processed_at < ?', Time.now - 5.days).pending }
 
   def unprocessed?
     processed_at.nil? && t_transaction.nil?
