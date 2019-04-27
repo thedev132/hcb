@@ -25,6 +25,24 @@
       </span>
     </p>
 
+    <% if @invoice.payout.present? %>
+    <p class="tooltipped tooltipped--s" aria-label="Amount paid from Stripe after fees">
+      <strong>Transaction</strong>
+      <span>
+        <%= link_to render_money(@invoice.payout.t_transaction.amount), @invoice.payout.t_transaction %>
+      </span>
+    </p>
+    <% end %>
+
+    <% if @invoice.fee_reimbursement.present? %>
+    <p class="tooltipped tooltipped--s" aria-label="Fees paid by Hack Club Bank">
+      <strong>Transaction</strong>
+      <span>
+      <%= link_to render_money(@invoice.fee_reimbursement.t_transaction), @invoice.fee_reimbursement.t_transaction %>
+      </span>
+    </p>
+    <% end %>
+
     <p>
       <strong>Due</strong> <%= @invoice.due_date.to_date %>
     </p>
