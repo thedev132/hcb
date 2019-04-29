@@ -1,0 +1,29 @@
+<% transaction = invoice.payout.t_transaction %>
+<tr
+  class="transaction--<%= transaction.amount.negative? ? 'negative' : 'positive' %>"
+  data-behavior="filterbar_row"
+  data-filter="<%= transaction.filter_data.to_json %>">
+  <td>
+    <%= link_to invoice do %>
+      <%= transaction.date %>
+    <% end %>
+  </td>
+  <td>
+    <%= link_to invoice do %>
+      Invoice of <%= render_money invoice.item_amount %>
+    <% end %>
+  </td>
+  <td>
+    <%= link_to invoice do %>
+      <% paid_amount = transaction.amount + invoice&.fee_reimbursement&.t_transaction&.amount.to_i %>
+      <%= render_money paid_amount %>
+    <% end %>
+  </td>
+  <td>
+    <%= link_to '➜', transaction, class: 'center' %>
+  </td>
+</tr>
+<%= render transaction, is_nested: true %>
+<% if invoice&.fee_reimbursement&.t_transaction %>
+  <%= render invoice.fee_reimbursement.t_transaction, is_nested: true %>
+<% end %>

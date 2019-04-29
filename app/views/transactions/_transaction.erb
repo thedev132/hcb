@@ -5,20 +5,26 @@
   data-behavior="filterbar_row"
   data-filter="<%= transaction.filter_data.to_json %>">
   <td>
-    <% unless is_nested %>
-      <%= transaction.date %>
+    <%= link_to transaction do %>
+      <% unless is_nested %>
+        <%= transaction.date %>
+      <% end %>
     <% end %>
   </td>
   <td>
-    <% if is_nested %>
-      <span class="flip-horizontal"> ↵</span>
+    <%= link_to transaction do %>
+      <% if is_nested %>
+        <span class="flip-horizontal"> ↵</span>
+      <% end %>
+      <%= transaction.display_name %>
     <% end %>
-    <%= transaction.display_name %>
   </td>
   <td>
-    <%= render_money transaction.amount %>
+    <%= link_to transaction do %>
+      <%= render_money transaction.amount %>
+    <% end %>
   </td>
   <td>
-    <%= link_to 'Details', transaction %>
+    <%= link_to '➜', transaction, class: 'center' %>
   </td>
 </tr>
