@@ -134,12 +134,12 @@ Sponsorship fee: <%= render_percentage @event.sponsorship_fee %>`)">
             <%= link_to 'Invoice', t.invoice_payout.invoice %>
           </td>
         </tr>
-        <%= render 'transactions/table_row', transaction: t, is_nested: true %>
+        <%= render t, is_nested: true %>
         <% if t.invoice_payout.invoice&.fee_reimbursement&.t_transaction %>
-          <%= render 'transactions/table_row', transaction: t.invoice_payout.invoice.fee_reimbursement.t_transaction, is_nested: true %>
+          <%= render t.invoice_payout.invoice.fee_reimbursement.t_transaction, is_nested: true %>
         <% end %>
       <% else %>
-        <%= render 'transactions/table_row', transaction: t %>
+        <%= render t %>
       <% end %>
     <% end %>
     </tbody>
