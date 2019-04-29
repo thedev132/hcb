@@ -115,23 +115,32 @@ Sponsorship fee: <%= render_percentage @event.sponsorship_fee %>`)">
     </thead>
     <tbody data-behavior="transactions">
     <% @transactions.each do |t| %>
-      <tr
-        class="transaction--<%= t.amount.negative? ? 'negative' : 'positive' %>"
-        data-behavior="filterbar_row"
-        data-filter="<%= t.filter_data.to_json %>">
-        <td>
-          <%= t.date %>
-        </td>
-        <td>
-          <%= t.display_name %>
-        </td>
-        <td>
-          <%= render_money t.amount %>
-        </td>
-        <td>
-          <%= link_to 'Details', t %>
-        </td>
-      </tr>
+      <% if t&.invoice_payout&.invoice %>
+        <tr
+          class="transaction--<%= t.amount.negative? ? 'negative' : 'positive' %>"
+          data-id="<%= t.invoice_payout.invoice.slug %>"
+          data-behavior="filterbar_row"
+          data-filter="<%= t.filter_data.to_json %>">
+          <td>
+            <%= t.date %>
+          </td>
+          <td>
+            <%= t.display_name %>
+          </td>
+          <td>
+            <%= render_money t.invoice_payout.invoice.item_amount %>
+          </td>
+          <td>
+            <%= link_to 'Invoice', t.invoice_payout.invoice %>
+          </td>
+        </tr>
+        <%= render 'transactions/table_row', transaction: t, is_nested: true %>
+        <% if t.invoice_payout.invoice&.fee_reimbursement&.t_transaction %>
+          <%= render 'transactions/table_row', transaction: t.invoice_payout.invoice.fee_reimbursement.t_transaction, is_nested: true %>
+        <% end %>
+      <% else %>
+        <%= render 'transactions/table_row', transaction: t %>
+      <% end %>
     <% end %>
     </tbody>
   </table>
