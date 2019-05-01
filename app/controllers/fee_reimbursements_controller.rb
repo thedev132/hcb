@@ -1,5 +1,5 @@
 class FeeReimbursementsController < ApplicationController
-  before_action :set_fee_reimbursement, only: [:show, :edit, :update, :destroy]
+  before_action :set_fee_reimbursement, only: [:show, :edit, :update, :destroy, :mark_as_processed]
 
   # GET /fee_reimbursements
   def index
@@ -35,7 +35,6 @@ class FeeReimbursementsController < ApplicationController
 
   def mark_as_processed
     @fee_reimbursement.processed_at = Time.now
-    @fee_reimbursement.fulfilled_by = current_user
 
     authorize @fee_reimbursement
 
@@ -44,13 +43,13 @@ class FeeReimbursementsController < ApplicationController
     else
       flash[:error] = 'Something went wrong.'
     end
-    redirect_to fee_reimbursement
+    redirect_to @fee_reimbursement
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_fee_reimbursement
-      @fee_reimbursement = FeeReimbursement.find(params[:id])
+      @fee_reimbursement = FeeReimbursement.find(params[:fee_reimbursement_id] || params[:id])
     end
 
     # Only allow a trusted parameter "white list" through.
