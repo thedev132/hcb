@@ -43,7 +43,11 @@
 >
   <td></td>
   <td>
-    <span class="slate">Payment processor fees (we cover this):</span>
+    <% if invoice.fee_reimbursed? %>
+      <span class="slate">Payment processor fees (we cover this):</span>
+    <% else %>
+      <span class="slate">Payment processor fees:</span>
+    <% end %>
     <span class="right">-<%= invoice_payment_processor_fee invoice %></span>
   </td>
   <td class="xs-hide"></td>
@@ -57,7 +61,11 @@
   <td></td>
   <td>
     <% if invoice_hcb_percent(invoice) %>
+      <% if invoice.fee_reimbursed? %>
       <span class="slate">Fiscal sponsorship fee (<%= invoice_hcb_percent %>):</span>
+      <% else %>
+      <span class="slate">Fiscal sponsorship fee (<%= invoice_hcb_percent %> after p.p. fees):</span>
+      <% end %>
       <span class="right">-<%= invoice_hcb_revenue %></span>
     <% else %>=
       <span class="slate">Fiscal sponsorship fee waived:</span>
@@ -67,6 +75,8 @@
   <td class="xs-hide"></td>
   <td></td>
 </tr>
+
+<% if invoice.fee_reimbursed? %>
 <tr
   class="transaction__explanation"
   data-behavior="row_expand_row filterbar_row_exclude"
@@ -95,6 +105,7 @@
   data-behavior="row_expand_row filterbar_row_exclude"
   data-id="<%= transaction.id %>"
 >
+<% end %>
   <td></td>
   <td>
     <span class="slate">Net recieved:</span>
