@@ -13,7 +13,7 @@
 
 <div class="card my3">
   <span class="right h3">
-    <strong><%= render_money @invoice.total %></strong> total
+    <strong><%= invoice_event_profit @invoice %></strong> total
   </span>
   <h2 class="h2 my0"><%= @sponsor.name %></h2>
   
@@ -25,23 +25,27 @@
       </span>
     </p>
 
-    <% if @invoice.payout&.t_transaction %>
-    <p class="tooltipped tooltipped--s" aria-label="Amount paidout after Stripe fees">
-      <strong>Stripe payout</strong>
-      <span>
-        <%= link_to render_money(@invoice.payout.t_transaction.amount), @invoice.payout.t_transaction %>
-      </span>
+    <p>
+      <strong>Sponsor paid</strong> <%= render_money @invoice.item_amount %> via <%= @invoice.payout.source_type %>
+    </p>
+
+    <p>
+      <strong>Payment processor fee</strong> -<%= invoice_payment_processor_fee(@invoice) %>
+    </p>
+
+    <p>
+      <strong>Payment processor payout</strong> <%= link_to render_money(@invoice.payout.amount), @invoice.payout.t_transaction %>
+    </p>
+
+    <% if @invoice&.fee_reimbursement&.t_transaction %>
+    <p>
+      <strong>Payment processor reimbursement</strong> <%= link_to invoice_payment_processor_fee(@invoice), @invoice.fee_reimbursement.t_transaction %>
     </p>
     <% end %>
 
-    <% if @invoice.fee_reimbursement&.t_transaction %>
-    <p class="tooltipped tooltipped--s" aria-label="Fees reimbursed by Hack Club Bank">
-      <strong>Stripe fees reimbursed</strong>
-      <span>
-      <%= link_to render_money(@invoice.fee_reimbursement.t_transaction.amount), @invoice.fee_reimbursement.t_transaction %>
-      </span>
+    <p>
+      <strong>Total recieved</strong> <%= invoice_event_profit @invoice %>
     </p>
-    <% end %>
 
     <p>
       <strong>Due</strong> <%= @invoice.due_date.to_date %>
