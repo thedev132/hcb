@@ -17,6 +17,13 @@ module InvoicesHelper
   def invoice_hcb_revenue(invoice = @invoice, humanized = true)
     revenue = invoice.item_amount * invoice.payout.t_transaction.fee_relationship.fee_percent
 
+    unless invoice.fee_reimbursed?
+      # (max@maxwofford.com) before we reimbursed Stripe fees, we calculated
+      # our fee from the invoice payout amount *after* Stripe fees were
+      # deducted
+      revenue = invoice.payout.t_transaction.fee_relationship.fee_amount
+    end
+
     return revenue unless humanized
     render_money revenue
   end
@@ -30,6 +37,12 @@ module InvoicesHelper
 
   def invoice_event_profit(invoice = @invoice, humanized = true)
     profit = invoice.item_amount * (1 - invoice.payout.t_transaction.fee_relationship.fee_percent)
+
+    unless invoice.fee_reimbursed?
+      # (max@maxwofford.com) before we reimbursed Stripe fees, event fees were
+      # calculated as a percent of the payout
+      invoice.payout.t_transaction.amount - invoice.payout.t_transaction.fee_relationship.fee_amount
+    end
 
     return profit unless humanized
     render_money profit
