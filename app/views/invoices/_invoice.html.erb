@@ -1,54 +1,83 @@
 <% transaction = invoice.payout.t_transaction %>
+<% @invoice = invoice %>
 <tr
   class="transaction--<%= transaction.amount.negative? ? 'negative' : 'positive' %>"
   data-behavior="filterbar_row"
-  data-filter="<%= transaction.filter_data.to_json %>">
+  data-filter="<%= transaction.filter_data.to_json %>"
+>
   <td>
-    <%= link_to invoice do %>
-      <%= transaction.date %>
-    <% end %>
+    <%= link_to transaction.date, invoice %>
   </td>
   <td>
-    <%= link_to invoice do %>
-      <%= transaction.display_name %>
-    <% end %>
+    <%= link_to transaction.display_name, invoice %>
   </td>
   <td>
-    <%= link_to invoice do %>
-      <%= invoice_event_profit invoice %>
-    <% end %>
+    <%= link_to invoice_event_profit(invoice), invoice %>
   </td>
   <td>
     <%= link_to '➜', transaction, class: 'center' %>
   </td>
 </tr>
-<tr><td></td><td>
-Sponsor paid:
-<span class="right"><%= render_money invoice.item_amount %> via <%= invoice.payout.source_type %></span>
-</td><td></td><td></td></tr>
-<tr><td></td><td>Payment processor fees (we cover this):
-<span class="right">-<%= invoice_payment_processor_fee invoice %></span>
-</td><td></td><td></td></tr>
-<tr><td></td><td>
-<% if invoice_hcb_percent(invoice) %>
-  Fiscal sponsorship fee (<%= invoice_hcb_percent invoice %>):
-  <span class="right">
-    -<%= invoice_hcb_revenue invoice %></span>
-<% else %>
-  Fiscal sponsorship fee waived:
-  <span class="right">$0</span>
-<% end %>
-</td><td></td><td></td></tr>
-<tr><td></td><td>
-<% if invoice_hcb_percent(invoice) %>
-  Hack Club Bank recieves (after reimbursement):
-  <span class="right">
-    <%= invoice_hcb_revenue invoice %> - <%= invoice_payment_processor_fee invoice %> = <%= invoice_hcb_profit invoice %></span>
-<% else %>
-  Hack Club Bank fee waived:
-  <span class="right">$0</span>
-<% end %>
-</td><td></td><td></td></tr>
-<tr><td></td><td>Net recieved:
-<span class="right"><%= invoice_event_profit invoice %></span>
-</td><td></td><td></td></tr>
+<tr>
+  <td></td>
+  <td>
+    <span class="slate">Sponsor paid:</span>
+    <span class="right">
+      <span class="muted">(via <%= invoice.payout.source_type %>)</span>
+      <%= render_money invoice.item_amount %>
+    </span >
+  </td>
+  <td></td>
+  <td></td>
+</tr>
+<tr>
+  <td></td>
+  <td>
+    <span class="slate">Payment processor fees (we cover this):</span>
+    <span class="right">-<%= invoice_payment_processor_fee invoice %></span>
+  </td>
+  <td></td>
+  <td></td>
+</tr>
+<tr>
+  <td></td>
+  <td>
+    <% if invoice_hcb_percent(invoice) %>
+      <span class="slate">Fiscal sponsorship fee (<%= invoice_hcb_percent %>):</span>
+      <span class="right">-<%= invoice_hcb_revenue %></span>
+    <% else %>=
+      <span class="slate">Fiscal sponsorship fee waived:</span>
+      <span class="right">$0</span>
+    <% end %>
+  </td>
+  <td></td>
+  <td></td>
+</tr>
+<tr>
+  <td></td>
+  <td>
+    <% if invoice_hcb_percent(invoice) %>
+      <span class="slate">Hack Club Bank recieves (after reimbursement):</span>
+      <span class="right">
+        <span class="muted">
+          <%= invoice_hcb_revenue %> - <%= invoice_payment_processor_fee %> =
+        </span>
+        <%= invoice_hcb_profit %>
+      </span>
+    <% else %>
+      <span class="slate">Hack Club Bank fee waived:</span>
+      <span class="right">$0</span>
+    <% end %>
+  </td>
+  <td></td>
+  <td></td>
+</tr>
+<tr>
+  <td></td>
+  <td>
+    <span class="slate">Net recieved:</span>
+    <span class="right"><%= invoice_event_profit %></span>
+  </td>
+  <td></td>
+  <td></td>
+</tr>
