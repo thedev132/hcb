@@ -14,3 +14,12 @@
     }
   }
 }
+
+.row-expander {
+  transform: rotate(180deg);
+  transition: transform 0.125s ease-in-out;
+}
+
+tr[aria-expanded='true'] .row-expander {
+  transform: rotate(90deg);
+}
