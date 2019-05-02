@@ -1,31 +1,37 @@
 module InvoicesHelper
-  def invoice_hcb_percent(invoice)
-    percent = invoice.payout.t_transaction.fee_relationship.fee_percent * 100
+  def invoice_hcb_percent(invoice, humanized=true)
+    percent = invoice.payout.t_transaction.fee_relationship.fee_percent
 
-    unless percent == 0
-      number_to_percentage invoice.payout.t_transaction.fee_relationship.fee_percent * 100, precision: 0
-    end
+    return nil if percent == 0
+    return percent unless humanized
+    number_to_percentage percent * 100, precision: 0
   end
 
-  def invoice_payment_processor_fee(invoice)
-    render_money invoice.item_amount - invoice.payout.amount
+  def invoice_payment_processor_fee(invoice, humanized=true)
+    fee = invoice.item_amount - invoice.payout.amount
+
+    return fee unless humanized
+    render_money fee
   end
 
-  def invoice_hcb_revenue(invoice)
-    render_money invoice.item_amount * invoice.payout.t_transaction.fee_relationship.fee_percent
-  end
-
-  def invoice_hcb_profit(invoice)
-    payment_processor_fee = invoice.item_amount - invoice.payout.t_transaction.amount
+  def invoice_hcb_revenue(invoice, humanized=true)
     revenue = invoice.item_amount * invoice.payout.t_transaction.fee_relationship.fee_percent
 
-    render_money revenue - payment_processor_fee
+    return revenue unless humanized
+    render_money revenue
   end
 
-  def invoice_event_profit(invoice)
-    t = invoice.payout.t_transaction
-    percent = 1 - t.fee_relationship.fee_percent
+  def invoice_hcb_profit(invoice, humanized=true)
+    profit = invoice_hcb_revenue(invoice, false) - invoice_payment_processor_fee(invoice, false)
 
-    render_money invoice.item_amount * percent
+    return profit unless humanized
+    render_money profit
+  end
+
+  def invoice_event_profit(invoice, humanized=true)
+    profit = invoice.item_amount * (1 - invoice.payout.t_transaction.fee_relationship.fee_percent)
+
+    return profit unless humanized
+    render_money profit
   end
 end
