@@ -133,7 +133,7 @@ table {
   width: 100%;
 }
 tr {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.0625);
+  border-bottom: 1px solid map-get($palette, smoke);
   a {
     color: unset;
     text-decoration: none;
@@ -183,6 +183,7 @@ svg {
 @import 'components/stats';
 @import 'components/steps';
 @import 'components/tooltips';
+@import 'components/transactions';
 
 .turbolinks-progress-bar {
   height: 0.25rem;

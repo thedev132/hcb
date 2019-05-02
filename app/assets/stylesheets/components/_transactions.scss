@@ -1,0 +1,16 @@
+.transaction__explanation {
+  border-bottom-width: 0;
+
+  td {
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+  }
+
+  &.transaction__explanation--last {
+    border-bottom-width: 1px;
+
+    td {
+      padding-bottom: 0.75rem;
+    }
+  }
+}
