@@ -41,7 +41,7 @@ module InvoicesHelper
     unless invoice.fee_reimbursed?
       # (max@maxwofford.com) before we reimbursed Stripe fees, event fees were
       # calculated as a percent of the payout
-      invoice.payout.t_transaction.amount - invoice.payout.t_transaction.fee_relationship.fee_amount
+      profit = invoice.item_amount - invoice_payment_processor_fee(invoice, false) - invoice_hcb_revenue(invoice, false)
     end
 
     return profit unless humanized
