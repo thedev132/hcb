@@ -4,33 +4,43 @@
   class="transaction--<%= transaction.amount.negative? ? 'negative' : 'positive' %>"
   data-behavior="filterbar_row"
   data-filter="<%= transaction.filter_data.to_json %>"
+  data-id="<%= transaction.id %>"
+  aria-expanded="false"
 >
   <td>
     <%= link_to transaction.date, invoice %>
   </td>
   <td>
-    <%= link_to transaction.display_name, invoice %>
+    <%= link_to transaction.display_name, invoice, class: 'black underline' %>
   </td>
-  <td>
-    <%= link_to invoice_event_profit(invoice), invoice %>
+  <td data-behavior="row_expand_trigger">
+    <%= invoice_event_profit %>
   </td>
-  <td>
-    <%= link_to '➜', transaction, class: 'center' %>
+  <td data-behavior="row_expand_trigger" class="muted pt0 pb0 line-height-1">
+    <%= inline_icon 'view-forward', size: 24, class: 'row-expander' %>
   </td>
 </tr>
-<tr class="transaction__explanation" data-behavior="filterbar_row_exclude">
+<tr
+  class="transaction__explanation"
+  data-behavior="row_expand_row filterbar_row_exclude"
+  data-id="<%= transaction.id %>"
+>
   <td></td>
   <td>
     <span class="slate">Sponsor paid:</span>
     <span class="right">
-      <span class="muted">(via <%= invoice.payout.source_type %>)</span>
+      <span class="muted mr1">(via <%= invoice.payout.source_type %>)</span>
       <%= render_money invoice.item_amount %>
     </span >
   </td>
-  <td></td>
+  <td class="xs-hide"></td>
   <td></td>
 </tr>
-<tr class="transaction__explanation" data-behavior="filterbar_row_exclude">
+<tr
+  class="transaction__explanation"
+  data-behavior="row_expand_row filterbar_row_exclude"
+  data-id="<%= transaction.id %>"
+>
   <td></td>
   <td>
     <% if invoice.fee_reimbursed? %>
@@ -40,10 +50,14 @@
     <% end %>
     <span class="right">-<%= invoice_payment_processor_fee invoice %></span>
   </td>
-  <td></td>
+  <td class="xs-hide"></td>
   <td></td>
 </tr>
-<tr class="transaction__explanation" data-behavior="filterbar_row_exclude">
+<tr
+  class="transaction__explanation"
+  data-behavior="row_expand_row filterbar_row_exclude"
+  data-id="<%= transaction.id %>"
+>
   <td></td>
   <td>
     <% if invoice_hcb_percent(invoice) %>
@@ -58,11 +72,16 @@
       <span class="right">$0</span>
     <% end %>
   </td>
-  <td></td>
+  <td class="xs-hide"></td>
   <td></td>
 </tr>
+
 <% if invoice.fee_reimbursed? %>
-<tr class="transaction__explanation">
+<tr
+  class="transaction__explanation"
+  data-behavior="row_expand_row filterbar_row_exclude"
+  data-id="<%= transaction.id %>"
+>
   <td></td>
   <td>
     <% if invoice_hcb_percent(invoice) %>
@@ -78,16 +97,24 @@
       <span class="right">$0</span>
     <% end %>
   </td>
-  <td></td>
+  <td class="xs-hide"></td>
   <td></td>
 </tr>
+<tr
+  class="transaction__explanation transaction__explanation--last"
+  data-behavior="row_expand_row filterbar_row_exclude"
+  data-id="<%= transaction.id %>"
+>
 <% end %>
-<tr class="transaction__explanation transaction__explanation--last">
   <td></td>
   <td>
     <span class="slate">Net recieved:</span>
     <span class="right"><%= invoice_event_profit %></span>
   </td>
-  <td></td>
-  <td></td>
+  <td class="xs-hide"></td>
+  <td class="line-height-1 pt0 pb0">
+    <%= link_to transaction, class: 'muted' do %>
+      <%= inline_icon 'info', size: 24 %>
+    <% end %>
+  </td>
 </tr>

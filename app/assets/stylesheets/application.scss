@@ -247,7 +247,7 @@ svg {
         padding-left: 1rem;
       }
       &:last-child {
-        padding-right: 1rem;
+        padding-right: 0.5rem;
       }
     }
   }
@@ -261,6 +261,15 @@ svg {
   h3 {
     padding-left: 1rem;
     padding-right: 1rem;
+  }
+}
+
+@media print {
+  .home,
+  .dock,
+  .heading .btn,
+  input[type='search'] {
+    display: none !important;
   }
 }
 
