@@ -33,11 +33,11 @@
     </p>
 
     <% admin_tools('mt2') do %>
+      <%= link_to 'Edit', edit_fee_reimbursement_path(@fee_reimbursement), class: 'btn bg-info' %>
       <% if @fee_reimbursement.unprocessed? %>
-        <%= link_to 'Edit', edit_fee_reimbursement_path(@fee_reimbursement), class: 'btn bg-info' %>
+        <%= link_to 'Process on SVB', 'https://svbconnect.com/booktransfer/bookTransfer.do?cmdBookTransfer=1&mode=new', target: '_blank', class: 'btn bg-accent' %>
+        <%= link_to 'Marked as processed', fee_reimbursement_mark_as_processed_path(@fee_reimbursement), method: :post, class: 'btn bg-warning' %>
       <% end %>
-      <%= link_to 'Process on SVB', 'https://svbconnect.com/booktransfer/bookTransfer.do?cmdBookTransfer=1&mode=new', target: '_blank', class: 'btn bg-accent' %>
-      <%= link_to 'Marked as processed', fee_reimbursement_mark_as_processed_path(@fee_reimbursement), method: :post, class: 'btn bg-warning' %>
     <% end %>
   </section>
 </article>
