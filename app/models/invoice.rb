@@ -210,6 +210,10 @@ class Invoice < ApplicationRecord
     self.sponsor.event
   end
 
+  def fee_reimbursed?
+    !fee_reimbursement.nil?
+  end
+
   private
 
   def set_defaults
