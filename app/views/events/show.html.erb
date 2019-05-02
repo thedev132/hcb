@@ -95,11 +95,11 @@ Sponsorship fee: <%= render_percentage @event.sponsorship_fee %>`)">
     class="flex-auto md-mr2"
     style="width: auto; max-width: none;">
   <div data-behavior="filterbar" role="tablist" class="filterbar__filters flex mt1 lg-mt0">
-    <%= filterbar_item 'All', :exists, true %>
+    <%= filterbar_item 'Summary', :exists, true %>
     <%= filterbar_item 'Revenue', :fee_applies %>
     <%= filterbar_item 'Fees', :fee_payment %>
     <%= filterbar_item 'Card transfers', :emburse %>
-    <%= filterbar_item 'Reimbursements', :expensify %>
+    <%= filterbar_item 'Expensify', :expensify if transactions_have_expensify? %>
   </div>
 </div>
 
