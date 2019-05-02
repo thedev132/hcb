@@ -33,7 +33,9 @@ $(document).on 'turbolinks:load', ->
 
   # pass in function for each record
   filterRecords = (valid) ->
-    records = BK.s('filterbar_row').hide()
+    records = BK.s('filterbar_row').not('[data-behavior~=filterbar_row_exclude]')
+    BK.s('filterbar_row_exclude').hide()
+    records.hide()
     BK.s('filterbar_blankslate').hide()
     acc = 0
     records.each ->
