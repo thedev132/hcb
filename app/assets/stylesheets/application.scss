@@ -264,6 +264,15 @@ svg {
   }
 }
 
+@media print {
+  .home,
+  .dock,
+  .heading .btn,
+  input[type='search'] {
+    display: none !important;
+  }
+}
+
 @import 'basscss';
 @import 'space';
 @import 'utilities';
