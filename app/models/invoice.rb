@@ -74,7 +74,7 @@ class Invoice < ApplicationRecord
     if self&.payout&.t_transaction
       'Paid'
     elsif paid?
-      'Transferring'
+      'Pending'
     elsif due_date < Time.current
       'Overdue'
     elsif due_date < 3.days.from_now
