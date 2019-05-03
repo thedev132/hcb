@@ -17,6 +17,8 @@ class FeeRelationship < ApplicationRecord
   end
 
   def calculate_fee
+    return if self.fee_amount
+
     amount = self.t_transaction.amount
     fee = self.event.sponsorship_fee
 

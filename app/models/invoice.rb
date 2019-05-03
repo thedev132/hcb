@@ -159,7 +159,6 @@ class Invoice < ApplicationRecord
     )
 
     self.fee_reimbursement = FeeReimbursement.new(
-        amount: self.item_amount - self.payout_creation_balance_net, # fee
         invoice: self
       )
 

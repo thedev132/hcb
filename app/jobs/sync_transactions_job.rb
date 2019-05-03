@@ -82,11 +82,12 @@ class SyncTransactionsJob < ApplicationJob
   def check_fee_reimbursement(transaction)
     FeeReimbursement.pending.each do | reimbursement |
       # match transaction to event so less work for Michael!
-      if(transaction.name.include? reimbursement.transaction_memo)
-        reimbursement.transaction = transaction
+      if(transaction.name == reimbursement.transaction_memo)
+        reimbursement.t_transaction = transaction
         transaction.fee_relationship = FeeRelationship.new(
             event_id: reimbursement.invoice.event.id,
-            fee_applies: true
+            fee_applies: true,
+            fee_amount: reimbursement.fee_percentage * reimbursement.amount
           )
         transaction.display_name = "Fee reimbursement from #{reimbursement.invoice.id} invoice"
         transaction.save
