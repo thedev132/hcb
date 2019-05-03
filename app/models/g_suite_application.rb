@@ -19,6 +19,7 @@ class GSuiteApplication < ApplicationRecord
     return 'rejected' if rejected_at.present?
     return 'canceled' if canceled_at.present?
     return 'accepted' if accepted_at.present?
+
     'under review'
   end
 

@@ -5,9 +5,9 @@ class EmburseTransaction < ApplicationRecord
   validates_as_paranoid
 
   scope :pending, -> { where(state: 'pending') }
-  scope :completed, -> { where(state: 'completed' )}
+  scope :completed, -> { where(state: 'completed') }
   scope :undeclined, -> { where.not(state: 'declined') }
-  scope :declined, -> { where(state: 'declined' )}
+  scope :declined, -> { where(state: 'declined') }
   scope :under_review, -> { where(event_id: nil).undeclined }
 
   belongs_to :event, required: false
@@ -35,6 +35,7 @@ class EmburseTransaction < ApplicationRecord
     s = state.to_sym
     return :success if s == :completed
     return :error if s == :declined
+
     :pending
   end
 

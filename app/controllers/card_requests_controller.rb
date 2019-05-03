@@ -86,20 +86,20 @@ class CardRequestsController < ApplicationController
 
   private
 
-    def ensure_pending_request
-      raise 'Requests cannot be edited after they are accepted' if @card_request.accepted_at.present?
-      raise 'Requests cannot be edited after they are rejected' if @card_request.rejected_at.present?
-      raise 'Requests cannot be edited after they are canceled' if @card_request.canceled_at.present?
-    end
+  def ensure_pending_request
+    raise 'Requests cannot be edited after they are accepted' if @card_request.accepted_at.present?
+    raise 'Requests cannot be edited after they are rejected' if @card_request.rejected_at.present?
+    raise 'Requests cannot be edited after they are canceled' if @card_request.canceled_at.present?
+  end
 
-    # Use callbacks to share common setup or constraints between actions.
-    def set_card_request
-      @card_request = CardRequest.find(params[:id] || params[:card_request_id])
-      @event = @card_request.event
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_card_request
+    @card_request = CardRequest.find(params[:id] || params[:card_request_id])
+    @event = @card_request.event
+  end
 
-    # Only allow a trusted parameter "white list" through.
-    def card_request_params
-      params.require(:card_request).permit(:shipping_address, :full_name, :rejected_at, :accepted_at, :notes, :event_id)
-    end
+  # Only allow a trusted parameter "white list" through.
+  def card_request_params
+    params.require(:card_request).permit(:shipping_address, :full_name, :rejected_at, :accepted_at, :notes, :event_id)
+  end
 end

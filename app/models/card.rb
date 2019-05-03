@@ -32,6 +32,7 @@ class Card < ApplicationRecord
   def amount_spent
     obj = emburse_obj
     return (obj[:allowance][:balance].to_f * 100).round(2) if obj
+
     nil
   end
 

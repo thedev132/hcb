@@ -13,7 +13,7 @@ class CommentsController < ApplicationController
     authorize @comment
 
     if @comment.save
-      flash[:success] = 'Comment created.'
+      flash[:success] = 'Note created.'
       redirect_to @commentable
     else
       render :new
@@ -29,7 +29,7 @@ class CommentsController < ApplicationController
   # Given a route "/transactions/25/comments", this method sets @commentable to
   # Transaction with ID 25
   def set_commentable
-    resource, id = request.path.split('/')[1,2]
+    resource, id = request.path.split('/')[1, 2]
     @commentable = resource.singularize.classify.constantize.find(id)
   end
 end

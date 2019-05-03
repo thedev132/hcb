@@ -3,7 +3,6 @@
 
 <%= render 'events/nav' if @event %>
 
-
 <article class="card mt3">
   <h1 class="heading h1 mt0 mb0">
     <span class="flex-auto">
@@ -30,9 +29,18 @@
   <section class="details">
     <% if @transaction.invoice_payout&.invoice %>
       <p>
-        <strong>Invoice</strong>
-        <%= link_to "##{@transaction.invoice_payout.invoice.id}", invoice_path(@transaction.invoice_payout.invoice) %>
+        <strong>For</strong>
+        <%= link_to "Invoice of #{render_money @transaction.invoice_payout.invoice.item_amount}", invoice_path(@transaction.invoice_payout.invoice) %>
       </p>
+    <% end %>
+
+    <% if @transaction.fee_reimbursement&.invoice %>
+    <p>
+      <strong>For</strong>
+      <span>
+      <%= link_to "Fees from an invoice of #{render_money @transaction.fee_reimbursement.invoice.item_amount}", @transaction.fee_reimbursement.invoice %>
+      </span>
+    </p>
     <% end %>
 
     <% if @transaction.fee_applies? %>
@@ -55,6 +63,6 @@
   </section>
 </article>
 
-<h2>Comments</h2>
+<h2>Notes</h2>
 <%= render 'comments/comments' %>
 <%= render 'comments/form' %>

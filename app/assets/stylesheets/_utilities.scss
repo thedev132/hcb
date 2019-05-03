@@ -96,6 +96,11 @@ $shades: (
   @extend .shade-red;
 }
 
+.flip-horizontal {
+  display: inline-block;
+  transform: scale(-1, 1);
+}
+
 @each $name, $value in $palette {
   .#{'' + $name} {
     color: $value;

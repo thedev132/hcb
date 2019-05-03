@@ -1,5 +1,4 @@
 class OrganizerPositionInvitesController < ApplicationController
-
   def new
     @invite = OrganizerPositionInvite.new
     @invite.event = Event.find(params[:event_id])
@@ -73,7 +72,6 @@ class OrganizerPositionInvitesController < ApplicationController
       redirect_to @invite.event
     end
   end
-
 
   private
 

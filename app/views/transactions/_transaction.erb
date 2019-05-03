@@ -1,0 +1,26 @@
+<% is_nested = false if local_assigns[:is_nested].nil? %>
+
+<tr
+  class="transaction--<%= transaction.amount.negative? ? 'negative' : 'positive' %> <%= 'muted' if is_nested %>"
+  data-behavior="filterbar_row"
+  data-filter="<%= transaction.filter_data.to_json %>">
+  <td>
+    <%= link_to transaction.date, transaction unless is_nested %>
+  </td>
+  <td>
+    <%= link_to transaction do %>
+      <% if is_nested %>
+        <span class="flip-horizontal"> ↵</span>
+      <% end %>
+      <%= transaction.display_name %>
+    <% end %>
+  </td>
+  <td>
+    <%= link_to render_money(transaction.amount), transaction %>
+  </td>
+  <td class="line-height-1 pt0 pb0">
+    <%= link_to transaction, class: 'muted' do %>
+      <%= inline_icon 'info', size: 24 %>
+    <% end %>
+  </td>
+</tr>

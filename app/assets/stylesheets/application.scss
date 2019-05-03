@@ -133,7 +133,12 @@ table {
   width: 100%;
 }
 tr {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.0625);
+  border-bottom: 1px solid map-get($palette, smoke);
+  a {
+    color: unset;
+    text-decoration: none;
+    display: block;
+  }
 }
 th {
   font-weight: bold;
@@ -178,6 +183,7 @@ svg {
 @import 'components/stats';
 @import 'components/steps';
 @import 'components/tooltips';
+@import 'components/transactions';
 
 .turbolinks-progress-bar {
   height: 0.25rem;
@@ -241,7 +247,7 @@ svg {
         padding-left: 1rem;
       }
       &:last-child {
-        padding-right: 1rem;
+        padding-right: 0.5rem;
       }
     }
   }
@@ -255,6 +261,15 @@ svg {
   h3 {
     padding-left: 1rem;
     padding-right: 1rem;
+  }
+}
+
+@media print {
+  .home,
+  .dock,
+  .heading .btn,
+  input[type='search'] {
+    display: none !important;
   }
 }
 
