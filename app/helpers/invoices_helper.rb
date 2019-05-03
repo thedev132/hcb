@@ -18,7 +18,8 @@ module InvoicesHelper
   end
 
   def invoice_hcb_revenue(invoice = @invoice, humanized = true)
-    revenue = invoice.item_amount * invoice.payout.t_transaction.fee_relationship.fee_percent
+    fee = invoice.payout.t_transaction.fee_relationship.fee_percent
+    revenue = fee.present? ? invoice.item_amount * fee : 0
 
     unless invoice.fee_reimbursed?
       # (max@maxwofford.com) before we reimbursed Stripe fees, we calculated
