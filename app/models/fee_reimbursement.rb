@@ -50,11 +50,15 @@ class FeeReimbursement < ApplicationRecord
 
   def default_values
     self.transaction_memo ||= "FEE REIMBURSEMENT #{Time.now.to_i}"
-    self.amount ||= calculate_amount
+    self.amount ||= self.invoice.item_amount - self.invoice.payout_creation_balance_net
   end
 
-  def calculate_amount
-    stripe_fee = self.invoice.item_amount - self.invoice.payout_creation_balance_net
-    stripe_fee * (1 + self.invoice.event.sponsorship_fee)
+  # this needs to exist for the case where amount of reimbursement is less than $1 and we need to do fee weirdness
+  def calculate_fee_amount
+    if amount < 100
+      return (amount * self.invoice.event.sponsorship_fee) + (100 - amount)
+    else
+      amount * self.invoice.event.sponsorship_fee
+    end
   end
 end
