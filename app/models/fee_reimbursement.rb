@@ -50,6 +50,11 @@ class FeeReimbursement < ApplicationRecord
 
   def default_values
     self.transaction_memo ||= "FEE REIMBURSEMENT #{Time.now.to_i}"
-    self.amount ||= self.invoice.item_amount - self.invoice.payout_creation_balance_net
+    self.amount ||= calculate_amount
+  end
+
+  def calculate_amount
+    stripe_fee = self.invoice.item_amount - self.invoice.payout_creation_balance_net
+    stripe_fee * (1 - self.invoice.event.sponsorship_fee)
   end
 end
