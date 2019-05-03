@@ -2,7 +2,7 @@
   <% if @comment.errors.any? %>
   <p>There are errors</p>
     <div id="error_explanation">
-      <h2><%= pluralize(@comment.errors.size, "error") %> prohibited this comment from being saved:</h2>
+      <h2><%= pluralize(@comment.errors.size, "error") %> prohibited this note from being saved:</h2>
 
       <ul>
       <% @comment.errors.full_messages.each do |message| %>
@@ -28,5 +28,5 @@
     </div>
   <% end %>
 
-  <%= form.submit 'Post Comment' %>
+  <%= form.submit 'Post Note' %>
 <% end %>

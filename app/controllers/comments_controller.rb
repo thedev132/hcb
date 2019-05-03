@@ -13,7 +13,7 @@ class CommentsController < ApplicationController
     authorize @comment
 
     if @comment.save
-      flash[:success] = 'Comment created.'
+      flash[:success] = 'Note created.'
       redirect_to @commentable
     else
       render :new
