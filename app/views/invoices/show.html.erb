@@ -4,18 +4,20 @@
 
 <h1 class="flex items-center">
   <%= render_money @invoice.total %> invoice
-  <span class="badge h3 bg-<%= @invoice.paid? ? 'success' : 'error' %>">
-    <%= @invoice.paid? ? 'Paid' : 'Unpaid' %>
+  <span class="badge h3 bg-<%= @invoice.state %>">
+    <%= @invoice.state_text.capitalize %>
   </span>
 </h1>
 
 <%= creator_bar @invoice %>
 
 <div class="card my3">
+  <% if @invoice.state == :success %>
   <span class="right h3">
     <strong><%= invoice_event_profit @invoice %></strong> total
   </span>
   <h2 class="h2 my0"><%= @sponsor.name %></h2>
+  <% end%>
   
   <section class="details mb2">
     <p>
@@ -25,17 +27,26 @@
       </span>
     </p>
 
+    <% if @invoice.state == :success %>
     <p>
-      <strong>Sponsor paid</strong> <%= render_money @invoice.item_amount %> via <%= @invoice.payout.source_type %>
+      <strong>Sponsor paid</strong> <%= render_money @invoice.item_amount %>
+      <% if @invoice&.payout %>
+        via <%= @invoice.payout.source_type %>
+      <% end %>
     </p>
+    <% end %>
 
+    <% if @invoice.state == :success %>
     <p>
       <strong>Payment processor fee</strong> -<%= invoice_payment_processor_fee(@invoice) %>
     </p>
+    <% end %>
 
+    <% if @invoice.state == :success %>
     <p>
       <strong>Payment processor payout</strong> <%= link_to render_money(@invoice.payout.amount), @invoice.payout.t_transaction %>
     </p>
+    <% end %>
 
     <% if @invoice&.fee_reimbursement&.t_transaction %>
     <p>
@@ -43,9 +54,11 @@
     </p>
     <% end %>
 
+    <% if @invoice.state == :success %>
     <p>
       <strong>Total recieved</strong> <%= invoice_event_profit @invoice %>
     </p>
+    <% end %>
 
     <p>
       <strong>Due</strong> <%= @invoice.due_date.to_date %>
