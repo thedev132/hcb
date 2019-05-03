@@ -25,7 +25,7 @@ module SessionsHelper
     @current_user = user
   end
 
-  def current_user(ensure_api_authorized=true)
+  def current_user(ensure_api_authorized = true)
     session_token = User.digest(cookies[:session_token])
     @current_user ||= User.find_by(session_token: session_token)
     return nil unless @current_user

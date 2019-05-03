@@ -63,7 +63,7 @@ class SyncTransactionsJob < ApplicationJob
           state_map[tr.id] = :processed
         end
 
-        unprocessed = state_map.select { |k, v| v == :unprocessed}.map { |k, v| k }
+        unprocessed = state_map.select { |k, v| v == :unprocessed }.map { |k, v| k }
 
         # for transactions that were in our db, but were not found in plaid,
         # delete them
@@ -80,21 +80,20 @@ class SyncTransactionsJob < ApplicationJob
   end
 
   def check_fee_reimbursement(transaction)
-    FeeReimbursement.pending.each do | reimbursement |
+    FeeReimbursement.pending.each do |reimbursement|
       # match transaction to event so less work for Michael!
-      if(transaction.name == reimbursement.transaction_memo)
+      if (transaction.name == reimbursement.transaction_memo)
         reimbursement.t_transaction = transaction
         transaction.fee_relationship = FeeRelationship.new(
-            event_id: reimbursement.invoice.event.id,
-            fee_applies: true,
-            fee_amount: reimbursement.fee_percentage * reimbursement.amount
-          )
+          event_id: reimbursement.invoice.event.id,
+          fee_applies: true,
+          fee_amount: reimbursement.fee_percentage * reimbursement.amount
+        )
         transaction.display_name = "Fee reimbursement from #{reimbursement.invoice.id} invoice"
         transaction.save
       end
     end
   end
-
 
   def transactions_in_range(begin_date, end_date)
     transaction_response = PlaidService.instance.client.transactions.get(

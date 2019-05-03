@@ -19,6 +19,7 @@ class OrganizerPositionDeletionRequest < ApplicationRecord
 
   def close(closed_by)
     raise StandardError.new('Already closed') unless self.closed_at.nil?
+
     self.closed_by = closed_by
     self.closed_at = Time.now
     self.save

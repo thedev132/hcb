@@ -47,13 +47,14 @@ class FeeReimbursementsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_fee_reimbursement
-      @fee_reimbursement = FeeReimbursement.find(params[:fee_reimbursement_id] || params[:id])
-    end
 
-    # Only allow a trusted parameter "white list" through.
-    def fee_reimbursement_params
-      params.require(:fee_reimbursement).permit(:amount, :status, :transaction_memo)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_fee_reimbursement
+    @fee_reimbursement = FeeReimbursement.find(params[:fee_reimbursement_id] || params[:id])
+  end
+
+  # Only allow a trusted parameter "white list" through.
+  def fee_reimbursement_params
+    params.require(:fee_reimbursement).permit(:amount, :status, :transaction_memo)
+  end
 end

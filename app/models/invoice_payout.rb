@@ -7,7 +7,7 @@ class InvoicePayout < ApplicationRecord
   self.inheritance_column = nil
 
   # find invoice payouts that don't yet have an associated transaction
-  scope :lacking_transaction, -> { includes(:t_transaction).where(transactions: { invoice_payout_id: nil } ) }
+  scope :lacking_transaction, -> { includes(:t_transaction).where(transactions: { invoice_payout_id: nil }) }
 
   has_one :invoice, inverse_of: :payout, foreign_key: :payout_id, required: true
   has_one :t_transaction, class_name: 'Transaction'
@@ -47,9 +47,9 @@ class InvoicePayout < ApplicationRecord
   def default_values
     return unless invoice
 
-    self.statement_descriptor ||= "#{self.invoice.sponsor.name} Payout"[0...22]. # limit to 22 characters, the stripe limit
-      gsub(/[^0-9a-z ]/i, ''). # alphanumeric only
-      upcase
+    self.statement_descriptor ||= "#{self.invoice.sponsor.name} Payout"[0...22] # limit to 22 characters, the stripe limit
+                                  .gsub(/[^0-9a-z ]/i, '') # alphanumeric only
+                                  .upcase
   end
 
   def create_stripe_payout

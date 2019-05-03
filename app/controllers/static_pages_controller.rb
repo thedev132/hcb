@@ -1,6 +1,6 @@
 class StaticPagesController < ApplicationController
   skip_after_action :verify_authorized # do not force pundit
-  skip_before_action :signed_in_user, only: [ :stats ]
+  skip_before_action :signed_in_user, only: [:stats]
 
   def index
     if signed_in?

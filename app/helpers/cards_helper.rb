@@ -5,7 +5,7 @@ module CardsHelper
     link_to(card, class: 'mention') { icon + text }
   end
 
-  def one_isnt_completed?(emburse_transactions) 
+  def one_isnt_completed?(emburse_transactions)
     emburse_transactions.collect { |a| !a.completed? }.include?(true)
   end
 end

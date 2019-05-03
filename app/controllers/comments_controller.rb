@@ -29,7 +29,7 @@ class CommentsController < ApplicationController
   # Given a route "/transactions/25/comments", this method sets @commentable to
   # Transaction with ID 25
   def set_commentable
-    resource, id = request.path.split('/')[1,2]
+    resource, id = request.path.split('/')[1, 2]
     @commentable = resource.singularize.classify.constantize.find(id)
   end
 end

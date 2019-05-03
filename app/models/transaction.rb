@@ -23,11 +23,11 @@ class Transaction < ApplicationRecord
   accepts_nested_attributes_for :fee_relationship
 
   validates :plaid_id, uniqueness: true
-  validates :is_event_related, inclusion: { in: [ true, false ] }
+  validates :is_event_related, inclusion: { in: [true, false] }
 
   validates :fee_relationship,
-    absence: true,
-    unless: -> { self.is_event_related }
+            absence: true,
+            unless: -> { self.is_event_related }
 
   after_initialize :default_values
   after_create :notify_admin

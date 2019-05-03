@@ -10,7 +10,7 @@ class OrganizerPositionDeletionRequestPolicy < ApplicationPolicy
   end
 
   def create?
-  event = record.organizer_position.event
+    event = record.organizer_position.event
     user.admin? ||
       (event.users.include?(user) && event.organizer_positions.include?(record.organizer_position))
   end

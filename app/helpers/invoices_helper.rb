@@ -4,6 +4,7 @@ module InvoicesHelper
 
     return nil if percent == 0
     return percent unless humanized
+
     number_to_percentage percent * 100, precision: 0
   end
 
@@ -11,6 +12,7 @@ module InvoicesHelper
     fee = invoice.item_amount - invoice.payout.amount
 
     return fee unless humanized
+
     render_money fee
   end
 
@@ -25,6 +27,7 @@ module InvoicesHelper
     end
 
     return revenue unless humanized
+
     render_money revenue
   end
 
@@ -32,6 +35,7 @@ module InvoicesHelper
     profit = invoice_hcb_revenue(invoice, false) - invoice_payment_processor_fee(invoice, false)
 
     return profit unless humanized
+
     render_money profit
   end
 
@@ -45,6 +49,7 @@ module InvoicesHelper
     end
 
     return profit unless humanized
+
     render_money profit
   end
 end

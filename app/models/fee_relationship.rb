@@ -3,8 +3,8 @@ class FeeRelationship < ApplicationRecord
   has_one :t_transaction, class_name: 'Transaction', inverse_of: :fee_relationship
 
   # these two are mutually exclusive
-  validates :fee_applies, inclusion: { in: [ false ] }, if: :is_fee_payment
-  validates :is_fee_payment, inclusion: { in: [ false ] }, if: :fee_applies
+  validates :fee_applies, inclusion: { in: [false] }, if: :is_fee_payment
+  validates :is_fee_payment, inclusion: { in: [false] }, if: :fee_applies
 
   validates :fee_amount, presence: true, if: :fee_applies
 

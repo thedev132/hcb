@@ -4,7 +4,7 @@ class GSuiteMailer < ApplicationMailer
     @domain = @g_suite.domain
     @recipient = params[:recipient]
 
-     mail to: @recipient,
-      subject: '[Action Requested] Your G Suite is configured'
+    mail to: @recipient,
+         subject: '[Action Requested] Your G Suite is configured'
   end
 end
