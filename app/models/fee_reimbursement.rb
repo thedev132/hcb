@@ -30,7 +30,7 @@ class FeeReimbursement < ApplicationRecord
 
   def status_color
     return 'success' if completed?
-    return 'warning' if pending?
+    return 'info' if pending?
     'error'
   end
 
