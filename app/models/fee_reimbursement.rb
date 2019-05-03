@@ -5,6 +5,12 @@ class FeeReimbursement < ApplicationRecord
 
   before_create :default_values
 
+  # SVB has a 30 character limit for transfer descriptions
+  validates_length_of :transaction_memo, maximum: 30
+  # SVB has a $1 minimum transfer
+  validates_numericality_of :amount, greater_than_or_equal_to: 100
+  validates_uniqueness_of :transaction_memo
+
   scope :unprocessed, -> { includes(:t_transaction).where(processed_at: nil, transactions: { fee_reimbursement_id: nil }) }
   scope :pending, -> { where.not(processed_at: nil) }
   scope :completed, -> { includes(:t_transaction).where.not(transactions: { fee_reimbursement_id: nil }) }
@@ -43,7 +49,7 @@ class FeeReimbursement < ApplicationRecord
   private
 
   def default_values
-    self.transaction_memo ||= "#{self.invoice.slug} FEE REIMBURSEMENT"
+    self.transaction_memo ||= "FEE REIMBURSEMENT ##{self.id}"
     self.amount ||= self.invoice.item_amount - self.invoice.payout_creation_balance_net
 
     self.amount = transfer_amount
