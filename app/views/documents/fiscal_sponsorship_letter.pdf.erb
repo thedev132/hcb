@@ -1,69 +1,93 @@
-<head> 
-<%= stylesheet_link_tag "https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css" %>
-<%= stylesheet_link_tag "https://fonts.googleapis.com/css?family=Open+Sans" %>
-<title>Hack Club Fiscal Sponsorship Letter</title>
-<style>
-	.container {
-		font-family: 'Open Sans', sans-serif;
-	}
+<head>
+  <%= stylesheet_link_tag
+  "https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css" %>
+  <%= stylesheet_link_tag "https://fonts.googleapis.com/css?family=Open+Sans" %>
+  <title>Hack Club Fiscal Sponsorship Letter</title>
+  <style>
+    .container {
+      font-family: "Open Sans", sans-serif;
+    }
 
-	.letter {
-		margin-bottom: 15;
-		font-size: 12pt;
-		
-	}
+    .letter {
+      margin-bottom: 15;
+      font-size: 12pt;
+    }
 
-	.margin-zero {
-		margin: 0;
-	}
+    .margin-zero {
+      margin: 0;
+    }
 
-	.bottom {
-    	position: fixed;
-    	bottom: 5px;
-	}
-</style>
+    .bottom {
+      position: fixed;
+      bottom: 5px;
+    }
+  </style>
 </head>
 <body>
-	<div class="container">
-		<br>
-		<div class="row">
-			<div class="seven columns"><%= image_tag wicked_pdf_asset_base64('hackclublogo.png') %></div>
-			<div class="five columns" style="text-align: right;">
-				<p>
-				   <b>Hack Club</b><br>
-				   8605 Santa Monica Boulevard #86294<br>
-                   West Hollywood, CA 90069<br>
-                   team@hackclub.com
-				</p>
-				
-			</div>
-		</div>
-		<br>
-		<p class="margin-zero"><%= Time.now.strftime("%m/%d/%Y") %></p>
-		<br>
-		<p style="font-weight: bold;"><%= @event.name %> Subsidary Confirmation</p>
+  <div class="container">
+    <br />
+    <div class="row">
+      <div class="seven columns">
+        <%= image_tag wicked_pdf_asset_base64('hackclublogo.png') %>
+      </div>
+      <div class="five columns" style="text-align: right;">
+        <p>
+          <b>Hack Club</b><br />
+          8605 Santa Monica Boulevard #86294<br />
+          West Hollywood, CA 90069<br />
+          team@hackclub.com
+        </p>
+      </div>
+    </div>
+    <br />
+    <p class="margin-zero"><%= Time.now.strftime("%m/%d/%Y") %></p>
+    <br />
+    <p style="font-weight: bold;"><%= @event.name %> Subsidary Confirmation</p>
 
-		<div class="letter">
-			<p>To whom it may concern,</p>
-			<p>This letter is to verify that The Hack Foundation (d.b.a. Hack Club) is acting as the nonprofit <a href="https://en.wikipedia.org/wiki/Fiscal_sponsorship">fiscal sponsor</a> for <%= @event.name %>.</p>
-			<p>We have established a restricted fund within our foundation to support their venture and are receiving funds on their behalf.</p>
-			<p>Please don't hesitate to contact me with any additional questions. I can be reached at <a href="mailto:zach@hackclub.com">zach@hackclub.com</a>. The director of our fiscal sponsorship program, Michael Destefanis, can be reached at <a href="mailto:michael@hackclub.com">michael@hackclub.com</a>.</p>
-		</div>
-		<br>
-		<p class="margin-zero">
-		Best,
-		</p>
-		<%= image_tag wicked_pdf_asset_base64('zachlattasignature.png') %>
-		<p>
-		Zach Latta<br>
-		Executive Director<br>
-		Hack Club
-		</p>
-		<br>
-		<br>
-		<p class="margin-zero" style="font-size: 13px; font-weight: bold; color: #434343; position: fixed; bottom: 40px">By the students, for the students.</p>
-		<p style="font-size: 10px; font-weight: bold; color: #999999; position: fixed; bottom: 0px">Hack Club is a 501(c)(3) public charity. Our nonprofit EIN is 81-2908499.</p>
-	</div>
-
-
+    <div class="letter">
+      <p>To whom it may concern,</p>
+      <p>
+        This letter is to verify that The Hack Foundation (d.b.a. Hack Club) is
+        acting as the nonprofit
+        <a href="https://en.wikipedia.org/wiki/Fiscal_sponsorship"
+          >fiscal sponsor</a
+        >
+        for <%= @event.name %>.
+      </p>
+      <p>
+        We have established a restricted fund within our foundation to support
+        their venture and are receiving funds on their behalf.
+      </p>
+      <p>
+        Please don't hesitate to contact me with any additional questions. I can
+        be reached at <a href="mailto:zach@hackclub.com">zach@hackclub.com</a>.
+        The director of our fiscal sponsorship program, Michael Destefanis, can
+        be reached at
+        <a href="mailto:michael@hackclub.com">michael@hackclub.com</a>.
+      </p>
+    </div>
+    <br />
+    <p class="margin-zero">
+      Best,
+    </p>
+    <%= image_tag wicked_pdf_asset_base64('zachlattasignature.png') %>
+    <p>
+      Zach Latta<br />
+      Executive Director<br />
+      Hack Club
+    </p>
+    <br />
+    <br />
+    <p
+      class="margin-zero"
+      style="font-size: 13px; font-weight: bold; color: #434343; position: fixed; bottom: 40px"
+    >
+      By the students, for the students.
+    </p>
+    <p
+      style="font-size: 10px; font-weight: bold; color: #999999; position: fixed; bottom: 0px"
+    >
+      Hack Club is a 501(c)(3) public charity. Our nonprofit EIN is 81-2908499.
+    </p>
+  </div>
 </body>
