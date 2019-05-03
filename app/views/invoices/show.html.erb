@@ -1,32 +1,38 @@
 <% title "Invoice to #{@invoice.sponsor.name} for #{render_money @invoice.total}" %>
-<% page_sm %>
+<% page_md %>
 <%= render 'events/nav' %>
-
-<h1 class="flex items-center">
-  <%= render_money @invoice.total %> invoice
-  <span class="badge h3 bg-<%= @invoice.state %>">
-    <%= @invoice.state_text.capitalize %>
-  </span>
-</h1>
 
 <%= creator_bar @invoice %>
 
-<div class="card my3">
-  <% if @invoice.state == :success %>
-  <span class="right h3">
-    <strong><%= invoice_event_profit @invoice %></strong> total
-  </span>
-  <h2 class="h2 my0"><%= @sponsor.name %></h2>
-  <% end%>
-  
-  <section class="details mb2">
+<article class="card pb0">
+  <h2 class="h2 sans mt0 border-none">
+    <%= @sponsor.name %>
+    <span class="regular muted"> invoiced for </span>
+    <span class="regular"><%= invoice_event_profit @invoice %></span>
+    <span class="badge h4 md-right bg-<%= @invoice.state %>"><%= @invoice.state_text %></span>
+  </h2>
+
+  <section class="card__banner details-horiz bg-snow border-top border-bottom">
     <p>
-      <strong>Status</strong>
-      <span>
-        <span class="badge h4 ml0 bg-<%= @invoice.state %>"><%= @invoice.state_text %></span>
-      </span>
+      <strong>Due</strong>
+      <%= format_date @invoice.due_date.to_date %>
     </p>
 
+    <p>
+      <strong>Contact email</strong>
+      <%= mail_to @sponsor.contact_email, @sponsor.contact_email, class: 'black underline' %>
+    </p>
+
+    <p>
+      <strong>Address</strong>
+      <%= @sponsor.address_line1 %>
+      <%= @sponsor.address_line2 if @sponsor.address_line2.present? %>
+      <br />
+      <%= @sponsor.address_city %>, <%= @sponsor.address_state %> <%= @sponsor.address_postal_code %>
+    </p>
+  </section>
+  
+  <section class="details details--wide mt2 mb1">
     <% if @invoice.state == :success %>
     <p>
       <strong>Sponsor paid</strong> <%= render_money @invoice.item_amount %>
@@ -34,53 +40,50 @@
         via <%= @invoice.payout.source_type %>
       <% end %>
     </p>
-    <% end %>
 
-    <% if @invoice.state == :success %>
     <p>
-      <strong>Payment processor fee</strong> -<%= invoice_payment_processor_fee(@invoice) %>
+      <strong>Processing fee</strong> -<%= invoice_payment_processor_fee(@invoice) %>
     </p>
-    <% end %>
 
-    <% if @invoice.state == :success %>
     <p>
-      <strong>Payment processor payout</strong> <%= link_to render_money(@invoice.payout.amount), @invoice.payout.t_transaction %>
+      <strong>Processor payout</strong>
+      <span>
+        <%= link_to '+' + render_money(@invoice.payout.amount), @invoice.payout.t_transaction, class: 'black' %>
+        <span class="muted">(made on <%= format_date @invoice.payout.created_at.to_date %>)</span>
+      </span>
     </p>
     <% end %>
 
     <% if @invoice&.fee_reimbursement&.t_transaction %>
     <p>
-      <strong>Payment processor reimbursement</strong> <%= link_to invoice_payment_processor_fee(@invoice), @invoice.fee_reimbursement.t_transaction %>
+      <strong>Processing reimbursement</strong>
+      <span>
+        <%= link_to '+' + invoice_payment_processor_fee(@invoice), @invoice.fee_reimbursement.t_transaction, class: 'black' %>
+        <span class="muted">(made on <%= format_date @invoice.fee_reimbursement.t_transaction.date.to_date %>)</span>
+      </span>
     </p>
     <% end %>
 
     <% if @invoice.state == :success %>
     <p>
-      <strong>Total recieved</strong> <%= invoice_event_profit @invoice %>
+      <strong>Total recieved</strong>
+      <%= invoice_event_profit @invoice %>
     </p>
     <% end %>
 
-    <p>
-      <strong>Due</strong> <%= @invoice.due_date.to_date %>
-    </p>
-
-    <p>
-      <strong>Contact email</strong>
-      <%= @sponsor.contact_email %>
-      <%= mail_to @sponsor.contact_email, class: 'right tooltipped tooltipped--w', 'aria-label': 'Email this sponsor' do %>
-        <%= inline_icon 'email', size: 32, class: 'info', 'aria-label': 'Email icon' %>
+    <% unless @invoice.manually_marked_as_paid? %>
+      <% if @invoice.payout_creation_queued_at && @invoice.payout.nil? %>
+      <p>
+        <strong>Payout of funds queued for</strong>
+        <%= format_date @invoice.payout_creation_queued_for.to_date %>
+      </p>
+      <% elsif @invoice.payout_creation_queued_at && @invoice.payout.present? %>
+      <p>
+        <strong>Funds should be available</strong>
+        <%= format_date @invoice.payout.arrival_date.to_date %></p>
+      </p>
       <% end %>
-    </p>
-
-    <p>
-      <strong>Address</strong>
-      <%= @sponsor.address_line1 %><br />
-      <% if @sponsor.address_line2.present? %>
-        <%= @sponsor.address_line2 %><br />
-      <% end %>
-      <%= @sponsor.address_city %>, <%= @sponsor.address_state %> <%= @sponsor.address_postal_code %>
-    </p>
-
+    <% end %>
   </section>
 
   <% if @invoice.manually_marked_as_paid? %>
@@ -91,24 +94,20 @@
     <% if @invoice.manually_marked_as_paid_attachment.attached? %>
       <p><%= link_to 'Download provided attachment', @invoice.manually_marked_as_paid_attachment %></p>
     <% end %>
-  <% else %>
-    <% if @invoice.payout_creation_queued_at && @invoice.payout.nil? %>
-      <p>Payout of funds queued for <%= @invoice.payout_creation_queued_for.to_date %>.</p>
-    <% elsif @invoice.payout_creation_queued_at && @invoice.payout.present? %>
-      <p>Payout for <%= render_money @invoice.payout.amount %> created on <%= @invoice.payout.created_at.to_date %>. Funds should be available <%= @invoice.payout.arrival_date.to_date %>.</p>
+  <% end %>
+
+  <section class="card__banner bg-snow border-top">
+    <% if @invoice.hosted_invoice_url && @invoice.invoice_pdf %>
+      <%= link_to 'View live invoice', @invoice.hosted_invoice_url, class: 'btn bg-accent mr2', target: '_blank'  %>
+      <%= link_to 'Download PDF', @invoice.invoice_pdf, class: 'btn bg-info', target: '_blank'  %>
     <% end %>
-  <% end %>
 
-  <% if @invoice.hosted_invoice_url && @invoice.invoice_pdf %>
-    <%= link_to 'View live invoice', @invoice.hosted_invoice_url, class: 'btn bg-accent mr2', target: '_blank'  %>
-    <%= link_to 'Download PDF', @invoice.invoice_pdf, class: 'btn bg-info', target: '_blank'  %>
-  <% end %>
-
-  <% admin_tools('mt2') do %>
-    <%= link_to 'Manually mark as paid', invoice_manual_payment_path(@invoice), class: 'btn bg-success mr2' unless @invoice.paid? %>
-    <%= link_to 'View on Stripe', @invoice.stripe_dashboard_url, class: 'btn bg-accent' %>
-  <% end %>
-</div>
+    <% admin_tools('mt2') do %>
+      <%= link_to 'Manually mark as paid', invoice_manual_payment_path(@invoice), class: 'btn bg-success mr2' unless @invoice.paid? %>
+      <%= link_to 'View on Stripe', @invoice.stripe_dashboard_url, class: 'btn bg-accent' %>
+    <% end %>
+  </section>
+</article>
 
 <h2>Notes</h2>
 <%= render 'comments/comments' %>

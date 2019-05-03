@@ -62,7 +62,7 @@ class Invoice < ApplicationRecord
     elsif paid?
       :info
     elsif due_date < Time.current
-      :pending
+      :error
     elsif due_date < 3.days.from_now
       :warning
     else
