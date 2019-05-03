@@ -57,8 +57,10 @@ class Invoice < ApplicationRecord
   after_update :send_payment_notification_if_needed
 
   def state
-    if paid?
+    if self&.payout&.t_transaction
       :success
+    elsif paid?
+      :info
     elsif due_date < Time.current
       :pending
     elsif due_date < 3.days.from_now
@@ -69,8 +71,10 @@ class Invoice < ApplicationRecord
   end
 
   def state_text
-    if paid?
+    if self&.payout&.t_transaction
       'Paid'
+    elsif paid?
+      'Transferring'
     elsif due_date < Time.current
       'Overdue'
     elsif due_date < 3.days.from_now
