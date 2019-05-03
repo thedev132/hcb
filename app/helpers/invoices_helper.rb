@@ -1,6 +1,7 @@
 module InvoicesHelper
   def invoice_hcb_percent(invoice = @invoice, humanized = true)
-    percent = invoice.payout.t_transaction.fee_relationship.fee_percent
+    percent = invoice.event.sponsorship_fee
+    percent ||= invoice.payout.t_transaction.fee_relationship.fee_percent
 
     return nil if percent == 0
     return percent unless humanized
@@ -40,7 +41,7 @@ module InvoicesHelper
   end
 
   def invoice_event_profit(invoice = @invoice, humanized = true)
-    profit = invoice.item_amount * (1 - invoice.payout.t_transaction.fee_relationship.fee_percent)
+    profit = invoice.item_amount * (1 - invoice_hcb_percent(invoice, false))
 
     unless invoice.fee_reimbursed?
       # (max@maxwofford.com) before we reimbursed Stripe fees, event fees were
