@@ -1,16 +1,21 @@
 <head>
-  <%= stylesheet_link_tag
-  "https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css" %>
-  <%= stylesheet_link_tag "https://fonts.googleapis.com/css?family=Open+Sans" %>
+  <%= stylesheet_link_tag 'https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css' %>
+  <%= stylesheet_link_tag 'https://fonts.googleapis.com/css?family=Spectral:400,700' %>
   <title>Hack Club Fiscal Sponsorship Letter</title>
   <style>
     .container {
-      font-family: "Open Sans", sans-serif;
+      font-family: Spectral, sans-serif;
+      font-size: 15pt;
     }
 
     .letter {
       margin-bottom: 15;
-      font-size: 12pt;
+      font-size: 15pt;
+      line-height: 1.5;
+    }
+    
+    a {
+      color: #07c;
     }
 
     .margin-zero {
@@ -40,18 +45,16 @@
       </div>
     </div>
     <br />
-    <p class="margin-zero"><%= Time.now.strftime("%m/%d/%Y") %></p>
+    <p class="margin-zero" style="font-size: 15pt;"><%= Time.now.strftime("%m/%d/%Y") %></p>
     <br />
-    <p style="font-weight: bold;"><%= @event.name %> Subsidary Confirmation</p>
+    <p style="font-weight: bold; font-size: 18pt;"><%= @event.name %> Subsidary Confirmation</p>
 
     <div class="letter">
       <p>To whom it may concern,</p>
       <p>
         This letter is to verify that The Hack Foundation (d.b.a. Hack Club) is
         acting as the nonprofit
-        <a href="https://en.wikipedia.org/wiki/Fiscal_sponsorship"
-          >fiscal sponsor</a
-        >
+        <a href="https://en.wikipedia.org/wiki/Fiscal_sponsorship">fiscal sponsor</a>
         for <%= @event.name %>.
       </p>
       <p>
@@ -80,12 +83,12 @@
     <br />
     <p
       class="margin-zero"
-      style="font-size: 13px; font-weight: bold; color: #434343; position: fixed; bottom: 40px"
+      style="font-size: 14pt; font-weight: bold; color: #434343; position: fixed; bottom: 48px"
     >
       By the students, for the students.
     </p>
     <p
-      style="font-size: 10px; font-weight: bold; color: #999999; position: fixed; bottom: 0px"
+      style="font-size: 12pt; color: #666666; position: fixed; bottom: 0px"
     >
       Hack Club is a 501(c)(3) public charity. Our nonprofit EIN is 81-2908499.
     </p>
