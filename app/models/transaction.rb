@@ -16,7 +16,7 @@ class Transaction < ApplicationRecord
   belongs_to :load_card_request, inverse_of: :t_transaction, required: false
   belongs_to :invoice_payout, inverse_of: :t_transaction, required: false
 
-  belongs_to :fee_reimbursement, required: false
+  belongs_to :fee_reimbursement, inverse_of: :t_transaction, required: false
 
   has_many :comments, as: :commentable
 
