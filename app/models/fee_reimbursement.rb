@@ -7,8 +7,6 @@ class FeeReimbursement < ApplicationRecord
 
   # SVB has a 30 character limit for transfer descriptions
   validates_length_of :transaction_memo, maximum: 30
-  # SVB has a $1 minimum transfer
-  validates_numericality_of :amount, greater_than_or_equal_to: 100
   validates_uniqueness_of :transaction_memo
 
   scope :unprocessed, -> { includes(:t_transaction).where(processed_at: nil, transactions: { fee_reimbursement_id: nil }) }
@@ -46,20 +44,12 @@ class FeeReimbursement < ApplicationRecord
     processed_at = DateTime.now
   end
 
-  private
-
-  def default_values
-    self.transaction_memo ||= "FEE REIMBURSEMENT ##{self.id}"
-    self.amount ||= self.invoice.item_amount - self.invoice.payout_creation_balance_net
-
-    self.amount = transfer_amount
+  def transfer_amount
+    [self.amount, 100].max
   end
 
-  def transfer_amount
-    if self.amount < 100
-      self.invoice.event.sponsorship_fee * self.amount + (100 - self.amount)
-    else
-      self.invoice.event.sponsorship_fee * self.amount
-    end
+  def default_values
+    self.transaction_memo ||= "FEE REIMBURSEMENT #{Time.now.to_i}"
+    self.amount ||= self.invoice.item_amount - self.invoice.payout_creation_balance_net
   end
 end

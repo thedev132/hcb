@@ -13,6 +13,16 @@
 <article class="card mt3">
   <section class="details">
     <p>
+      <strong>Transaction memo</strong>
+      <%= @fee_reimbursement.transaction_memo %>
+    </p>
+
+    <p>
+      <strong>Transfer amount</strong>
+      <%= render_money @fee_reimbursement.transfer_amount %>
+    </p>
+
+    <p>
       <strong>Invoice</strong>
       <%= link_to render_money(@fee_reimbursement.invoice.item_amount), @fee_reimbursement.invoice %>
     </p>
@@ -25,11 +35,6 @@
     <p>
       <strong>Status</strong>
       <%= @fee_reimbursement.status %>
-    </p>
-
-    <p>
-      <strong>Transaction memo</strong>
-      <span class="tooltipped tooltipped--s" aria-label="Click to select"><%= @fee_reimbursement.transaction_memo %></span>
     </p>
 
     <% admin_tools('mt2') do %>
