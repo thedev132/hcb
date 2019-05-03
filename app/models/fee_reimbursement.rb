@@ -1,13 +1,13 @@
 class FeeReimbursement < ApplicationRecord
   has_one :invoice
-  has_one :t_transaction, class_name: 'Transaction'
+  has_one :t_transaction, class_name: 'Transaction', inverse_of: :fee_reimbursement
   has_many :comments, as: :commentable
 
   after_initialize :default_values
 
-  scope :unprocessed, -> { where(processed_at: nil, t_transaction: nil) }
+  scope :unprocessed, -> { includes(:t_transaction).where(processed_at: nil, transactions: { fee_reimbursement_id: nil } ) }
   scope :pending, -> { where.not(processed_at: nil) }
-  scope :completed, -> { where.not(t_transaction: nil) }
+  scope :completed, -> { includes(:t_transaction).where.not(transactions: { fee_reimbursement_id: nil } ) }
   scope :failed, -> { where('processed_at < ?', Time.now - 5.days).pending }
 
   def unprocessed?
@@ -43,5 +43,4 @@ class FeeReimbursement < ApplicationRecord
   def default_values
     self.transaction_memo = "#{self.invoice.slug} FEE REIMBURSEMENT"
   end
-
 end
