@@ -44,17 +44,16 @@ class FeeReimbursement < ApplicationRecord
 
   def default_values
     self.transaction_memo ||= "#{self.invoice.slug} FEE REIMBURSEMENT"
-    self.fee_percentage ||= self.invoice.event.sponsorship_fee
     self.amount ||= self.invoice.item_amount - self.invoice.payout_creation_balance_net
 
-    self.amount = 100 * fee_percent if self.amount < 100
+    self.amount = transfer_amount
   end
 
-  def fee_percent
+  def transfer_amount
     if self.amount < 100
-      self.fee_percentage = (self.amount * self.invoice.event.sponsorship_fee + (100 - self.amount)) / 100
+      self.invoice.event.sponsorship_fee * self.amount + (100 - self.amount)
     else
-      self.invoice.event.sponsorship_fee
+      self.invoice.event.sponsorship_fee * self.amount
     end
   end
 end
