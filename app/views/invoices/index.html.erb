@@ -42,8 +42,8 @@
             <span class="block h1 black line-height-1 <%= i.state %>"><%= render_money_short i.item_amount %></span>
           </div>
           <div class="flex flex-wrap justify-between items-center">
-              <span class="ml0 badge bg-<%= i.paid? ? 'success' : 'error' %>">
-                <%= i.paid? ? 'Paid' : 'Unpaid' %>
+              <span class="ml0 badge bg-<%= i.state %>">
+                <%= i.state_text %>
               </span>
           </div>
         </li>
