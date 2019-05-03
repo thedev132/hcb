@@ -55,6 +55,6 @@ class FeeReimbursement < ApplicationRecord
 
   def calculate_amount
     stripe_fee = self.invoice.item_amount - self.invoice.payout_creation_balance_net
-    stripe_fee * (1 - self.invoice.event.sponsorship_fee)
+    stripe_fee * (1 + self.invoice.event.sponsorship_fee)
   end
 end
