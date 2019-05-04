@@ -64,14 +64,6 @@ $(document).on 'turbolinks:load', ->
     value = $(this).val().toLowerCase()
     filterRecords (record) ->
       $(record).text().toLowerCase().indexOf(value) > -1
-      $(record).attr 'aria-expanded', 'false'
-  
-  BK.s('row_expand_row').hide() # set all auxiliary rows to display none
-  $(document).on 'click', '[data-behavior~=row_expand_trigger]', ->
-    id = $(this).closest('tr').data 'id'
-    expanded = $(this).closest('[aria-expanded]').attr('aria-expanded') is 'true'
-    $(this).closest('[aria-expanded]').attr 'aria-expanded', !expanded # rotates arrow
-    BK.s('row_expand_row').filter("[data-id=#{id}]").toggle 'slow' # toggles rows
 
   $(document).on 'submit', '[data-behavior~=login]', ->
     val = $('input[name=email]').val()
