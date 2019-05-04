@@ -29,9 +29,6 @@
 .bold {
   font-weight: 700;
 }
-.medium {
-  font-weight: 500;
-}
 .regular {
   font-weight: 400;
 }
@@ -166,12 +163,6 @@
   display: flex;
 }
 @media (min-width: 32em) {
-  .md-left {
-    float: left;
-  }
-  .md-right {
-    float: right;
-  }
   .md-flex {
     display: -webkit-box;
     display: -webkit-flex;

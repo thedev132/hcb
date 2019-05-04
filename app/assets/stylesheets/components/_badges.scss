@@ -9,27 +9,6 @@
   line-height: 1.125;
   margin-left: 1rem;
   padding: 0.25rem 0.625rem;
-
-  &.bg-success {
-    color: $teal9;
-    background-color: $teal1;
-  }
-  &.bg-info {
-    color: $blue9;
-    background-color: $blue1;
-  }
-  &.bg-pending {
-    color: $yellow9;
-    background-color: $yellow1;
-  }
-  &.bg-warning {
-    color: $orange9;
-    background-color: $orange1;
-  }
-  &.bg-error {
-    color: $red9;
-    background-color: $red1;
-  }
 }
 
 // Circular button
