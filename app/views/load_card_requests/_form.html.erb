@@ -15,7 +15,7 @@
   <%= form.hidden_field :event_id, value: load_card_request.event.id %>
 
   <% if @event.available_balance == 0 %>
-    <p class="card__banner card__banner--top flex items-center bg-error white">
+    <p class="card__banner card__banner--top bg-error white">
       <%= inline_icon 'payment', size: 32, class: 'mr1' %>
       You need funds available in your bank to make a transfer
     </p>

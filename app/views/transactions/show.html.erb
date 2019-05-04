@@ -27,11 +27,6 @@
   <pre class="bg-snow mt0"><%= @transaction.name %></pre>
 
   <section class="details">
-    <p>
-      <strong>Date</strong>
-      <%= format_date @transaction.date.to_date %>
-    </p>
-
     <% if @transaction.invoice_payout&.invoice %>
       <p>
         <strong>For</strong>
