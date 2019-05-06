@@ -48,7 +48,7 @@ module ApplicationHelper
     auto_link(text, html: { target: '_blank' })
   end
 
-  def debug_obj(object)
+  def debug_obj(item)
     content_tag :pre, pp(item.attributes.to_yaml)
   end
 
@@ -70,6 +70,10 @@ module ApplicationHelper
     content_tag :a, label, class: 'filterbar__item',
                            tabindex: 0, role: 'tab', 'aria-selected': selected,
                            data: { name: name.to_s, behavior: 'filterbar_item' }
+  end
+
+  def format_date(date)
+    date.strftime '%b %e, %Y'
   end
 
   def home_action_size
