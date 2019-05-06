@@ -115,7 +115,13 @@ Sponsorship fee: <%= render_percentage @event.sponsorship_fee %>`)">
     </thead>
     <tbody data-behavior="transactions">
     <% @transactions.each do |t| %>
-      <%= render t %>
+      <% if t&.invoice_payout&.invoice %>
+        <%= render t&.invoice_payout&.invoice %>
+      <% elsif t&.fee_reimbursement && !t.fee_reimbursement&.invoice&.state != 'paid' %>
+        <%= render t %>
+      <% elsif !t&.fee_reimbursement %>
+        <%= render t %>
+      <% end %>
     <% end %>
     </tbody>
   </table>
