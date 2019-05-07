@@ -64,7 +64,7 @@ $(document).on 'turbolinks:load', ->
 
     # Handle change of birthday selector
     $(document).on 'change', '[data-behavior~=birthdate]', (e) ->
-      index = $(e.target).parent().parent().data 'index'
+      index = $(e.target).parent().parent().data('index') + 1
       parentToggle index
 
     # Remove team-member on application form
