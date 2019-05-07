@@ -52,18 +52,18 @@ class ApplicationsController < ApplicationController
       team_members.create(team_member)
       @members << team_member
 
-      if Date.today - 18.years <= Date.parse(member_params[:birthdate])
+    #   if Date.today - 18.years <= Date.parse(member_params[:birthdate])
 
-        parent = Airtable::Record.new({
-                                        "Name (First / Last)": member_params[:parent_name],
-                                        "Child": [team_member.id],
-                                        "Email": member_params[:parent_email],
-                                        "Phone": member_params[:parent_phone_number],
-                                        "Date of birth": member_params[:parent_birthdate],
-                                        "Identification document": [{ url: to_blob(member_params[:parent_identification]).service_url }],
-                                      })
-        parents.create(parent)
-    end
+    #     parent = Airtable::Record.new({
+    #                                     "Name (First / Last)": member_params[:parent_name],
+    #                                     "Child": [team_member.id],
+    #                                     "Email": member_params[:parent_email],
+    #                                     "Phone": member_params[:parent_phone_number],
+    #                                     "Date of birth": member_params[:parent_birthdate],
+    #                                     "Identification document": [{ url: to_blob(member_params[:parent_identification]).service_url }],
+    #                                   })
+    #     parents.create(parent)
+    # end
     end
 
     @dark = true
