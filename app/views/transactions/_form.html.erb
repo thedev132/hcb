@@ -28,7 +28,7 @@
       <% if FeeReimbursement.failed.any? %>
         <div class="field">
           <%= form.label :fee_reimbursement, 'Stripe fee reimbursement' %>
-          <%= form.collection_select(:fee_reimbursement_id, FeeReimbursement.failed, :id, :description, include_blank: 'Select one…') %>
+          <%= form.collection_select(:fee_reimbursement_id, FeeReimbursement.failed, :id, :transaction_memo, include_blank: 'Select one…') %>
         <p class="muted h5 mb2">If this isn’t a transfer to reimburse a stripe fee, leave this field blank.</p>
         </div>
       <% end %>
