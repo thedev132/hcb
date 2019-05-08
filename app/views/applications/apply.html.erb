@@ -89,7 +89,7 @@
   </div>
   <div class="field">
     <%= member_form.label :birthdate %>
-    <%= member_form.date_field :birthdate, {required: true, 'data-behavior':'birthdate', max: "#{(DateTime.now).strftime("%Y%m%d")}", min: "#{(DateTime.now - 100.years).strftime("%Y%m%d")}"  }%>
+    <%= member_form.date_field :birthdate, {'data-behavior':'birthdate', max: "#{(DateTime.now).strftime("%Y%m%d")}", min: "#{(DateTime.now - 100.years).strftime("%Y%m%d")}"  }%>
   </div>
   <div class="field">
     <%= member_form.label :email %>
