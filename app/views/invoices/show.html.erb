@@ -8,7 +8,7 @@
   <h2 class="h2 sans mt0 border-none">
     <%= @sponsor.name %>
     <span class="regular muted"> invoiced for </span>
-    <span class="regular"><%= invoice_event_profit @invoice %></span>
+    <span class="regular"><%= render_money @invoice.item_amount %></span>
     <span class="badge h4 md-right bg-<%= @invoice.state %>"><%= @invoice.state_text %></span>
   </h2>
 
