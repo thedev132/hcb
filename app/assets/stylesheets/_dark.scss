@@ -4,7 +4,7 @@ $darkless: #252429;
 
 html[data-dark='true'] {
   body {
-    background-color: #17171d;
+    background-color: $dark;
     color: map-get($palette, smoke);
   }
 
