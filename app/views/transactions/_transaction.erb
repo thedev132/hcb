@@ -16,11 +16,9 @@
     <% end %>
   </td>
   <td>
-    <%= link_to render_money(transaction.amount), transaction %>
+    <%= link_to 'See Transaction', transaction, class: 'underline' %>
   </td>
-  <td class="line-height-1 pt0 pb0">
-    <%= link_to transaction, class: 'muted' do %>
-      <%= inline_icon 'info', size: 24 %>
-    <% end %>
+  <td colspan="2">
+    <%= link_to render_money(transaction.amount), transaction %>
   </td>
 </tr>

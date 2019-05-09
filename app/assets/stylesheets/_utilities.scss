@@ -96,6 +96,16 @@ $shades: (
   @extend .shade-red;
 }
 
+.transaction--nested {
+  transform: translateX(3em);
+}
+.invoice--expanded:not(.is-expanded) {
+  display: none;
+}
+.invoice--retracted.is-expanded {
+  display: none;
+}
+
 .flip-horizontal {
   display: inline-block;
   transform: scale(-1, 1);
