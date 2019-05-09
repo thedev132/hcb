@@ -100,7 +100,7 @@ $shades: (
   transform: translateX(3em);
 }
 .invoice--expanded:not(.is-expanded) {
-  display: none;
+  display: none !important;
 }
 
 .flip-horizontal {

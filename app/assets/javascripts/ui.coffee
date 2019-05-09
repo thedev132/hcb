@@ -40,7 +40,10 @@ $(document).on 'turbolinks:load', ->
     acc = 0
     records.each ->
       if valid(this)
-        $(this).show()
+        $(this).show(
+          "slow", ->
+            $(this).css("display", "table-row")
+        )
         acc++
     if acc is 0
       BK.s('filterbar_blankslate').fadeIn 'fast'
@@ -68,16 +71,17 @@ $(document).on 'turbolinks:load', ->
   
   $(document).on 'click', '[data-behavior~=row_expand_trigger]', ->
     id = $(this).data 'id'
-    expanded = $(this).data 'expanded'
+    button = BK.s('row_expand_trigger').filter("[data-id=#{id}]")
     targets = BK.s('expandable_row').filter("[data-id=#{id}]")
+    expanded = button.data 'expanded'
     if expanded
       targets.removeClass('is-expanded')
-      $(this).text 'Expand'
-      $(this).data 'expanded', false
+      button.text 'Expand'
+      button.data 'expanded', false
     else
       targets.addClass('is-expanded')
-      $(this).text 'Retract'
-      $(this).data 'expanded', true
+      button.text 'Retract'
+      button.data 'expanded', true
 
   $(document).on 'submit', '[data-behavior~=login]', ->
     val = $('input[name=email]').val()

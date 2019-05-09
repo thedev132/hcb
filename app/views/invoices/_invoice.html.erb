@@ -4,7 +4,7 @@
 <% @invoice = invoice %>
 <tr
   class="transaction--positive"
-  data-behavior="filterbar_row"
+  data-behavior="filterbar_row parent_expandable_row"
   data-filter="<%= transaction.filter_data.to_json %>"
   data-id="<%= transaction.id %>"
   aria-expanded="false"
@@ -28,7 +28,11 @@
   </td>
 </tr>
 <% if refund %>
-<tr class="transaction--positive invoice--expanded" data-behavior="expandable_row" data-id="<%= transaction.id %>">
+<tr class="transaction--positive invoice--expanded"
+data-behavior="expandable_row filterbar_row"
+data-id="<%= transaction.id %>"
+data-filter="<%= transaction.filter_data.to_json %>"
+>
   <td class="transaction--nested">
     <%= transaction.date %>
   </td>
@@ -39,7 +43,11 @@
     <%= render_money transaction.amount %>
   </td>
 </tr>
-<tr class="transaction--positive invoice--expanded <%= 'muted' unless refund_t %>"  data-behavior="expandable_row" data-id="<%= transaction.id %>">
+<tr class="transaction--positive invoice--expanded <%= 'muted' unless refund_t %>"
+data-behavior="expandable_row filterbar_row"
+data-id="<%= transaction.id %>"
+data-filter="<%= transaction.filter_data.to_json %>"
+>
   <td class="transaction--nested">
     <%= refund_t ? refund_t.date : '(pending)' %>
   </td>
