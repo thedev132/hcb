@@ -27,7 +27,7 @@ class FeeReimbursementsController < ApplicationController
     authorize @fee_reimbursement
 
     if @fee_reimbursement.update(fee_reimbursement_params)
-      redirect_to @fee_reimbursement, notice: 'Fee reimbursement was successfully updated.'
+      redirect_to @fee_reimbursement, notice: 'Fee refund was successfully updated.'
     else
       render :edit
     end

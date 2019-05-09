@@ -89,7 +89,7 @@ class SyncTransactionsJob < ApplicationJob
           fee_applies: true,
           fee_amount: reimbursement.calculate_fee_amount
         )
-        transaction.display_name = "Fee reimbursement from #{reimbursement.invoice.id} invoice"
+        transaction.display_name = "Fee refund from #{reimbursement.invoice.id} invoice"
         transaction.save
       end
     end
