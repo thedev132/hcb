@@ -18,6 +18,6 @@ _It’s a bank, folks._
 
 ## Import database dump from Heroku
 
-```
-pg_restore --verbose --clean --no-acl --no-owner -h db -U postgres -d bank_development latest.dump
-```
+    $ heroku pg:backups:capture
+    $ heroku pg:backups:download # will save as latest.dump, double check to make sure that file is created
+    $ pg_restore --verbose --clean --no-acl --no-owner -h db -U postgres -d bank_development latest.dump
