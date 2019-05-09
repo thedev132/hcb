@@ -1,121 +1,53 @@
 <% transaction = invoice.payout.t_transaction %>
+<% refund = invoice&.fee_reimbursement %>
+<% refund_t = refund&.t_transaction %>
 <% @invoice = invoice %>
 <tr
-  class="transaction--<%= transaction.amount.negative? ? 'negative' : 'positive' %>"
+  class="transaction--positive"
   data-behavior="filterbar_row"
   data-filter="<%= transaction.filter_data.to_json %>"
   data-id="<%= transaction.id %>"
   aria-expanded="false"
 >
   <td>
-    <%= link_to transaction.date, invoice %>
+    <%= transaction.date %>
   </td>
   <td>
-    <%= link_to transaction.display_name, invoice, class: 'black underline' %>
+    Invoice to <%= invoice.sponsor.name %> for <%= render_money invoice.item_amount %>
   </td>
-  <td data-behavior="row_expand_trigger">
-    <%= invoice_event_profit %>
-  </td>
-  <td data-behavior="row_expand_trigger" class="muted pt0 pb0 line-height-1">
-    <%= inline_icon 'view-forward', size: 24, class: 'row-expander' %>
-  </td>
-</tr>
-<tr
-  class="transaction__explanation"
-  data-behavior="row_expand_row filterbar_row_exclude"
-  data-id="<%= transaction.id %>"
->
-  <td></td>
   <td>
-    <span class="slate">Sponsor paid:</span>
-    <span class="right">
-      <span class="muted mr1">(via <%= invoice.payout.source_type %>)</span>
-      <%= render_money invoice.item_amount %>
-    </span >
+    <%= link_to 'See Invoice', invoice, class: 'underline' %>
   </td>
-  <td class="xs-hide"></td>
-  <td></td>
-</tr>
-<tr
-  class="transaction__explanation"
-  data-behavior="row_expand_row filterbar_row_exclude"
-  data-id="<%= transaction.id %>"
->
-  <td></td>
   <td>
-    <% if invoice.fee_reimbursed? %>
-      <span class="slate">Payment processor fees (we cover this):</span>
-    <% else %>
-      <span class="slate">Payment processor fees:</span>
-    <% end %>
-    <span class="right">-<%= invoice_payment_processor_fee invoice %></span>
+    <%= render_money transaction.amount + refund_t&.amount.to_i %>
   </td>
-  <td class="xs-hide"></td>
-  <td></td>
-</tr>
-<tr
-  class="transaction__explanation"
-  data-behavior="row_expand_row filterbar_row_exclude"
-  data-id="<%= transaction.id %>"
->
-  <td></td>
   <td>
-    <% if invoice_hcb_percent(invoice) %>
-      <% if invoice.fee_reimbursed? %>
-      <span class="slate">Fiscal sponsorship fee (<%= invoice_hcb_percent %>):</span>
-      <% else %>
-      <span class="slate">Fiscal sponsorship fee (<%= invoice_hcb_percent %> after p.p. fees):</span>
-      <% end %>
-      <span class="right">-<%= invoice_hcb_revenue %></span>
-    <% else %>=
-      <span class="slate">Fiscal sponsorship fee waived:</span>
-      <span class="right">$0</span>
+    <% if refund %>
+      <span class="underline pointer no-select" data-id="<%= transaction.id %>" data-expanded="false" data-behavior="row_expand_trigger">Expand</span>
     <% end %>
   </td>
-  <td class="xs-hide"></td>
-  <td></td>
 </tr>
-
-<% if invoice.fee_reimbursed? %>
-<tr
-  class="transaction__explanation"
-  data-behavior="row_expand_row filterbar_row_exclude"
-  data-id="<%= transaction.id %>"
->
-  <td></td>
-  <td>
-    <% if invoice_hcb_percent(invoice) %>
-      <span class="slate">Hack Club Bank recieves (after reimbursement):</span>
-      <span class="right">
-        <span class="muted">
-          <%= invoice_hcb_revenue %> - <%= invoice_payment_processor_fee %> =
-        </span>
-        <%= invoice_hcb_profit %>
-      </span>
-    <% else %>
-      <span class="slate">Hack Club Bank fee waived:</span>
-      <span class="right">$0</span>
-    <% end %>
+<% if refund %>
+<tr class="transaction--positive invoice--expanded" data-behavior="expandable_row" data-id="<%= transaction.id %>">
+  <td class="transaction--nested">
+    <%= transaction.date %>
   </td>
-  <td class="xs-hide"></td>
-  <td></td>
+  <td colspan="2" class="transaction--nested">
+    <%= transaction.display_name %>
+  </td>
+  <td colspan="2">
+    <%= render_money transaction.amount %>
+  </td>
+</tr>
+<tr class="transaction--positive invoice--expanded <%= 'muted' unless refund_t %>"  data-behavior="expandable_row" data-id="<%= transaction.id %>">
+  <td class="transaction--nested">
+    <%= refund_t ? refund_t.date : '(pending)' %>
+  </td>
+  <td colspan="2" class="transaction--nested">
+    <%= refund_t ? refund_t.display_name : 'Payment processor fee refund' %>
+  </td>
+  <td colspan="2">
+    <%= invoice_payment_processor_fee %>
+  </td>
 </tr>
 <% end %>
-
-<tr
-  class="transaction__explanation transaction__explanation--last"
-  data-behavior="row_expand_row filterbar_row_exclude"
-  data-id="<%= transaction.id %>"
->
-  <td></td>
-  <td>
-    <span class="slate">Net recieved:</span>
-    <span class="right"><%= invoice_event_profit %></span>
-  </td>
-  <td class="xs-hide"></td>
-  <td class="line-height-1 pt0 pb0">
-    <%= link_to transaction, class: 'muted' do %>
-      <%= inline_icon 'info', size: 24 %>
-    <% end %>
-  </td>
-</tr>

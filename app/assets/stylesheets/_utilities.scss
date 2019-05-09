@@ -102,9 +102,6 @@ $shades: (
 .invoice--expanded:not(.is-expanded) {
   display: none;
 }
-.invoice--retracted.is-expanded {
-  display: none;
-}
 
 .flip-horizontal {
   display: inline-block;
