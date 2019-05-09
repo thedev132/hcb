@@ -114,6 +114,29 @@ $(document).on 'turbolinks:load', ->
     fields.forEach (field) ->
       $("input#invoice_sponsor_attributes_#{field}").val sponsor[field]
 
+  updateAmountPreview = ->
+    amount = $('[name="invoice[item_amount]"]').val()
+    previousAmount = BK.s('amount-preview').data('amount') || 0
+    if amount == previousAmount
+      return 
+    if amount > 0
+      feePercent = BK.s('amount-preview').data 'fee'
+      lFeePercent = Math.round(feePercent * 100)
+      lAmount = BK.money amount * 100
+      feeAmount = BK.money feePercent * amount * 100
+      revenue = BK.money (1 - feePercent) * amount * 100
+      BK.s('amount-preview').text "#{lAmount} - #{feeAmount} (#{lFeePercent}% Bank fee) = #{revenue}"
+      BK.s('amount-preview').show()
+      BK.s('amount-preview').data 'amount', amount
+    else
+      BK.s('amount-preview').hide()
+      BK.s('amount-preview').data 'amount', 0
+
+  $(document).on 'keyup', '[name="invoice[item_amount]"]', ->
+    updateAmountPreview()
+  $(document).on 'change', '[name="invoice[item_amount]"]', ->
+    updateAmountPreview()
+
   $(document).on 'keydown', '[data-behavior~=autosize]', ->
     t = this
     setTimeout (->
