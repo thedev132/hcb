@@ -105,7 +105,7 @@
 
   <section class="card__banner bg-snow border-top">
     <% if @invoice.hosted_invoice_url && @invoice.invoice_pdf %>
-      <%= link_to 'View live invoice', @invoice.hosted_invoice_url, class: 'btn bg-accent mr2', target: '_blank'  %>
+      <%= link_to 'View sent invoice', @invoice.hosted_invoice_url, class: 'btn bg-accent mr2', target: '_blank'  %>
       <%= link_to 'Download invoice PDF', @invoice.invoice_pdf, class: 'btn bg-info', target: '_blank'  %>
     <% end %>
 
