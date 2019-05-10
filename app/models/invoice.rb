@@ -57,7 +57,10 @@ class Invoice < ApplicationRecord
   after_update :send_payment_notification_if_needed
 
   def state
-    if self&.payout&.t_transaction || self.manually_marked_as_paid?
+    if ((self&.payout&.t_transaction && !self&.fee_reimbursement) ||
+        (self&.payout&.t_transaction && self&.fee_reimbursement&.t_transaction) ||
+        self.manually_marked_as_paid?
+        )
       :success
     elsif paid?
       :info
@@ -71,7 +74,10 @@ class Invoice < ApplicationRecord
   end
 
   def state_text
-    if self&.payout&.t_transaction || self.manually_marked_as_paid?
+    if ((self&.payout&.t_transaction && !self&.fee_reimbursement) ||
+        (self&.payout&.t_transaction && self&.fee_reimbursement&.t_transaction) ||
+        self.manually_marked_as_paid?
+        )
       'Paid'
     elsif paid?
       'Pending'
@@ -82,6 +88,10 @@ class Invoice < ApplicationRecord
     else
       'Sent'
     end
+  end
+
+  def state_icon
+    'checkmark' if state_text == 'Paid'
   end
 
   def filter_data

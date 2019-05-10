@@ -9,7 +9,12 @@
     <%= @sponsor.name %>
     <span class="regular muted"> invoiced for </span>
     <span class="regular"><%= render_money @invoice.item_amount %></span>
-    <span class="badge h4 md-right bg-<%= @invoice.state %>"><%= @invoice.state_text %></span>
+    <span class="badge h4 md-right bg-<%= @invoice.state %>">
+      <%= @invoice.state_text %>
+      <% if @invoice.state_icon %>
+        <%= inline_icon @invoice.state_icon, size: 16 %>
+      <% end %>
+    </span>
   </h2>
 
   <section class="card__banner details-horiz bg-snow border-top border-bottom">
@@ -23,18 +28,25 @@
       <% end %>
     </p>
 
+    <% if invoice_payment_method %>
     <p>
-      <strong>Contact email</strong>
+      <strong>Payment method</strong>
+      <%= invoice_payment_method %>
+    </p>
+    <% end %>
+
+    <p>
+      <strong>Recipient email</strong>
       <%= mail_to @sponsor.contact_email, @sponsor.contact_email.downcase, class: 'black underline' %>
     </p>
 
-    <p>
+    <!-- <p>
       <strong>Address</strong>
       <%= @sponsor.address_line1 %>
       <%= @sponsor.address_line2 if @sponsor.address_line2.present? %>
       <br />
       <%= @sponsor.address_city %>, <%= @sponsor.address_state %> <%= @sponsor.address_postal_code %>
-    </p>
+    </p> -->
   </section>
   
   <section class="details details--wide mt2 mb1">
