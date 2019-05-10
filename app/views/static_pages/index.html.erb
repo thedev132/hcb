@@ -13,7 +13,6 @@
 
   <% if signed_in? %>
     <% if @events.any? %>
-      <h2 class="w-100 left-align mt3 pb0 border-none">Your events</h2>
       <ul class="grid grid--narrow left-align w-100 mt0">
         <% @events.each do |event| %>
           <%= link_to event do %>
