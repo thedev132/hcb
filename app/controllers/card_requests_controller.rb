@@ -51,7 +51,7 @@ class CardRequestsController < ApplicationController
     authorize @card_request
 
     if @card_request.save
-      flash[:success] = 'Card successfully requested!.'
+      flash[:success] = 'Card successfully requested!'
       redirect_to event_cards_overview_path(@event)
     else
       render :new
