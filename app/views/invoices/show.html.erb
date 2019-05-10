@@ -14,8 +14,13 @@
 
   <section class="card__banner details-horiz bg-snow border-top border-bottom">
     <p>
-      <strong>Due</strong>
-      <%= format_date @invoice.due_date.to_date %>
+      <% if invoice_paid_at %>
+        <strong>Paid at</strong>
+        <%= invoice_paid_at %>
+      <% else %>
+        <strong>Due</strong>
+        <%= format_date @invoice.due_date.to_date %>
+      <% end %>
     </p>
 
     <p>
@@ -54,14 +59,6 @@
       </span>
     </p>
     <% end %>
-
-    <p>
-      <strong>Bank fee</strong>
-      <span>
-        <%= render_money -(@invoice.item_amount * invoice_hcb_percent(@invoice, false)) %>
-        <span class="muted">(<%= invoice_hcb_percent %>)</span>
-      </span>
-    </p>
     <% if @payout_t %>
     <p>
       <strong>Total</strong>

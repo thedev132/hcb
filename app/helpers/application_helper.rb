@@ -76,6 +76,10 @@ module ApplicationHelper
     date.strftime '%b %e, %Y'
   end
 
+  def format_datetime(datetime)
+    datetime.strftime '%b %e, %Y, %l:%M %p'
+  end
+
   def home_action_size
     @home_size.to_i > 48 ? 36 : 28
   end

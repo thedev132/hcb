@@ -1,4 +1,9 @@
 module InvoicesHelper
+  def invoice_paid_at(invoice = @invoice)
+    timestamp = invoice.manually_marked_as_paid_at || invoice&.payout&.created_at
+    timestamp ? format_datetime(timestamp) : nil
+  end
+
   def invoice_hcb_percent(invoice = @invoice, humanized = true)
     percent = invoice.event.sponsorship_fee
     percent ||= invoice.payout.t_transaction.fee_relationship.fee_percent
