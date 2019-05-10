@@ -18,7 +18,7 @@
   <td>
     <%= link_to 'See Invoice', invoice, class: 'underline' %>
   </td>
-  <td>
+  <td class="<%= 'bold' if invoice.state_text == 'Paid' %>">
     <%= render_money transaction.amount + refund_t&.amount.to_i %>
   </td>
   <td>
