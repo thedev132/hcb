@@ -26,6 +26,9 @@
 .text-decoration-none {
   text-decoration: none;
 }
+.italic {
+  text-decoration: italic;
+}
 .bold {
   font-weight: 700;
 }

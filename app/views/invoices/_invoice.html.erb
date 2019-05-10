@@ -43,7 +43,7 @@ data-filter="<%= transaction.filter_data.to_json %>"
     <%= render_money transaction.amount %>
   </td>
 </tr>
-<tr class="transaction--positive invoice--expanded <%= 'muted' unless refund_t %>"
+<tr class="transaction--positive invoice--expanded<%= ' muted italic' unless refund_t %>"
 data-behavior="expandable_row filterbar_row"
 data-id="<%= transaction.id %>"
 data-filter="<%= transaction.filter_data.to_json %>"
