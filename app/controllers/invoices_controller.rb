@@ -40,6 +40,10 @@ class InvoicesController < ApplicationController
     @invoice = Invoice.find(params[:id])
     @sponsor = @invoice.sponsor
     @event = @sponsor.event
+    @payout = @invoice&.payout
+    @refund = @invoice&.fee_reimbursement
+    @payout_t = @payout&.t_transaction
+    @refund_t = @refund&.t_transaction
 
     @commentable = @invoice
     @comment = Comment.new

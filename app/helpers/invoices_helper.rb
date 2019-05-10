@@ -10,7 +10,7 @@ module InvoicesHelper
   end
 
   def invoice_payment_processor_fee(invoice = @invoice, humanized = true)
-    fee = invoice.item_amount - invoice.payout.amount
+    fee = invoice.manually_marked_as_paid? ? 0 : invoice.item_amount - invoice.payout.amount
 
     return fee unless humanized
 

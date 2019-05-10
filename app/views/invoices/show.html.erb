@@ -20,7 +20,7 @@
 
     <p>
       <strong>Contact email</strong>
-      <%= mail_to @sponsor.contact_email, @sponsor.contact_email, class: 'black underline' %>
+      <%= mail_to @sponsor.contact_email, @sponsor.contact_email.downcase, class: 'black underline' %>
     </p>
 
     <p>
@@ -35,54 +35,61 @@
   <section class="details details--wide mt2 mb1">
     <% if @invoice.state == :success %>
     <p>
-      <strong>Sponsor paid</strong> <%= render_money @invoice.item_amount %>
+      <strong>Sponsor paid</strong>
+      <span>
+      <%= render_money @invoice.item_amount %>
       <% if @invoice&.payout %>
         via <%= @invoice.payout.source_type %>
+        <% if @invoice&.payout&.created_at %>
+          <span class="muted">(on <%= format_date @invoice.payout.created_at.to_date %>)</span>
+        <% end %>
       <% end %>
+      </span>
     </p>
-
+    <% else %>
     <p>
-      <strong>Processing fee</strong> -<%= invoice_payment_processor_fee(@invoice) %>
-    </p>
-
-    <p>
-      <strong>Processor payout</strong>
+      <strong>Invoice amount</strong>
       <span>
-        <%= link_to '+' + render_money(@invoice.payout.amount), @invoice.payout.t_transaction, class: 'black' %>
-        <span class="muted">(made on <%= format_date @invoice.payout.created_at.to_date %>)</span>
+      <%= render_money @invoice.item_amount %>
       </span>
     </p>
     <% end %>
 
-    <% if @invoice&.fee_reimbursement&.t_transaction %>
     <p>
-      <strong>Processing reimbursement</strong>
+      <strong>Bank fee</strong>
       <span>
-        <%= link_to '+' + invoice_payment_processor_fee(@invoice), @invoice.fee_reimbursement.t_transaction, class: 'black' %>
-        <span class="muted">(made on <%= format_date @invoice.fee_reimbursement.t_transaction.date.to_date %>)</span>
+        <%= render_money -(@invoice.item_amount * invoice_hcb_percent(@invoice, false)) %>
+        <span class="muted">(<%= invoice_hcb_percent %>)</span>
       </span>
     </p>
-    <% end %>
-
-    <% if @invoice.state == :success %>
+    <% if @payout_t %>
     <p>
-      <strong>Total recieved</strong>
+      <strong>Total</strong>
       <%= invoice_event_profit @invoice %>
+    </p>
+    <% else %>
+    <p>
+      <strong>Total</strong>
+      <%= render_money @invoice.item_amount * (1 - invoice_hcb_percent(@invoice, false))  %>
     </p>
     <% end %>
 
     <% unless @invoice.manually_marked_as_paid? %>
-      <% if @invoice.payout_creation_queued_at && @invoice.payout.nil? %>
       <p>
+      <% if @payout_t && @refund_t %>
+        <strong>Funds available since</strong>
+        <%= format_date [@payout_t.created_at, @refund_t.created_at].max %>
+      <% elsif @payout_t && !@refund %>
+        <strong>Funds available since</strong>
+        <%= format_date @payout_t.created_at %>
+      <% elsif @invoice.payout_creation_queued_at && @invoice.payout.nil? %>
         <strong>Payout of funds queued for</strong>
         <%= format_date @invoice.payout_creation_queued_for.to_date %>
-      </p>
       <% elsif @invoice.payout_creation_queued_at && @invoice.payout.present? %>
-      <p>
         <strong>Funds should be available</strong>
         <%= format_date @invoice.payout.arrival_date.to_date %></p>
-      </p>
       <% end %>
+      </p>
     <% end %>
   </section>
 
