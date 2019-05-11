@@ -5,13 +5,13 @@
   <td>
     <%= transaction.date %>
   </td>
-  <td>
+  <td colspan="2">
     <%= transaction.display_name %>
-  </td>
-  <td>
-    <%= link_to 'See Transaction', transaction, class: 'underline' %>
   </td>
   <td colspan="2" class="bold">
     <%= render_money transaction.amount %>
+  </td>
+  <td>
+    <%= link_to 'Details', transaction, class: 'underline' %>
   </td>
 </tr>

@@ -26,6 +26,11 @@
       <span class="underline pointer no-select" data-id="<%= transaction.id %>" data-expanded="false" data-behavior="row_expand_trigger">Expand</span>
     <% end %>
   </td>
+  <td>
+    <% unless refund %>
+      <%= link_to 'Details', transaction, class: 'underline' %>
+    <% end %>
+  </td>
 </tr>
 <% if refund %>
 <tr class="transaction--positive invoice--expanded"
@@ -42,6 +47,7 @@ data-filter="<%= transaction.filter_data.to_json %>"
   <td colspan="2">
     <%= render_money transaction.amount %>
   </td>
+  <td></td>
 </tr>
 <tr class="transaction--positive invoice--expanded<%= ' muted italic' unless refund_t %>"
 data-behavior="expandable_row filterbar_row"
@@ -57,5 +63,6 @@ data-filter="<%= transaction.filter_data.to_json %>"
   <td colspan="2">
     <%= invoice_payment_processor_fee %>
   </td>
+  <td></td>
 </tr>
 <% end %>

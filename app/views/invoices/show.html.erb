@@ -2,6 +2,8 @@
 <% page_md %>
 <%= render 'events/nav' %>
 
+<% qa = 3 %>
+
 <%= creator_bar @invoice %>
 
 <article class="card pb0">
@@ -32,7 +34,7 @@
       <strong>Payment method</strong>
       <span class="inline">
         <span>Visa<%# invoice.payment_method_card_brand.humanize.capitalize %></span>
-        <span class="ml0 mr1"><%= inline_icon 'card', size: 24, class: 'accent inline' %></span>
+        <span class="ml0 mr1"><%= inline_icon 'card', size: 16, class: 'accent inline' %></span>
         <span>••••1759<%# invoice.payment_method_card_last4 %></span>
       </span>
     </p>
@@ -116,7 +118,6 @@
   </section>
 </article>
 
-<%# Only if payment method is "card" %>
 <article class="card pb0 mt3">
   <h2 class="h2 sans mt0 border-none">
     Payment details
@@ -140,6 +141,7 @@
   </section>
 </article>
 
+<% if qa == 1 %>
 <article class="card pb0 mt3">
   <h2 class="h2 sans mt0 border-none">
     Transaction details
@@ -176,6 +178,8 @@
     </p>
   </section>
 </article>
+<% end %>
+<% if qa == 2 %>
 <article class="card pb0 mt3">
   <h2 class="h2 sans mt0 border-none">
     Transaction details
@@ -190,53 +194,44 @@
       </tr>
       <tr>
         <td class="muted no-wrap pr3">Statement name</td>
-        <td class="w-100" colspan="3"><%= @payout_t.name.truncate(30) %></td>
+        <td class="w-100" colspan="3"><%= @payout_t.name %></td>
       </tr>
     </tbody>
   </table>
   <table>
-    <thead></thead>
-    <tbody>
-      <tr class="right-align border-none">
-        <td class="left-align muted">Paid</td>
-        <td class="w-10">$</td>
-        <td class="w-10"><%= render_money @invoice.item_amount, '' %></td>
-      </tr>
-      <tr class="right-align border-none">
-        <td class="left-align muted">Fee <span class="tooltipped tooltipped--e" aria-label="<%= invoice_hcb_percent %> Bank fee"><%= inline_icon 'info', size: 16 %></span></td>
-        <td class="w-10">$</td>
-        <td class="w-10"><%= render_money invoice_hcb_revenue(false), '' %></td>
-      </tr>
-      <tr class="right-align border-none">
-        <td class="left-align muted">Total</td>
-        <td class="w-10">$</td>
-        <td class="w-10"><%= render_money invoice_event_profit(false), '' %></td>
+    <thead>
+    <tr class="right-align border-none">
+      <td><!-- Spacer --></td>
+      <td><!-- Spacer --></td>
+      <td><!-- explaination --></td>
+      <td class="muted">Change</td>
+      <td>Balance</td>
+    </tr>
+    </thead>
+    <tbody class="no-wrap">
+      <%= render 'invoices/line_item', name: 'Paid', tip: nil, change: @invoice.item_amount, balance: @invoice.item_amount %>
+      <%= render 'invoices/line_item', name: 'Fee', tip: 'Payment processor fees', change: -invoice_payment_processor_fee(false), balance: @invoice.item_amount - invoice_payment_processor_fee(false) %>
+      <%= render 'invoices/line_item', name: 'Refund', tip: 'We cover the processor fee', change: invoice_payment_processor_fee(false), balance: @invoice.item_amount %>
+      <%= render 'invoices/line_item', name: 'Bank', tip: "#{invoice_hcb_percent} Bank fee", change: -invoice_hcb_revenue(false), balance: invoice_event_profit(false) %>
+      <tr class="right-align border-top">
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>Total: <span class="bold"><%= render_money invoice_event_profit(false) %></span></td>
       </tr>
     </tbody>
   </table>
   </section>
 </article>
+<% end %>
+<% if qa == 3 %>
 <article class="card pb0 mt3">
   <h2 class="h2 sans mt0 border-none">
     Transaction details
   </h2>
-  <section class="card__banner bg-snow border-top border-bottom">
-  <table>
-    <thead></thead>
-    <tbody>
-      <tr>
-        <td class="muted no-wrap pr3">Display name</td>
-        <td class="w-100" colspan="3"><%= @payout_t.display_name %> <%= link_to 'Edit', edit_transaction_path(@payout_t), class: 'underline inline ml2' %></td>
-      </tr>
-      <tr>
-        <td class="muted no-wrap pr3">Statement name</td>
-        <td class="w-100" colspan="3"><%= @payout_t.name.truncate(30) %></td>
-      </tr>
-    </tbody>
-  </table>
-  </section>
-  <section class="details details--wide mt2 mb1">
-  <table class="mt3 ml-auto">
+  <section class="details details--wide bg-snow card__banner border-top">
+  <table class="max-width-1">
     <thead>
     <tr class="right-align border-none">
       <td><!-- explaination --></td>
@@ -251,7 +246,7 @@
         <td><%= render_money @invoice.item_amount %></td>
       </tr>
       <tr class="right-align border-none">
-        <td class="left-align muted">Processor fee<span class="tooltipped tooltipped--e" aria-label="Payment processor fees"><%= inline_icon 'info', size: 16 %></span></td>
+        <td class="left-align muted">Fee<span class="tooltipped tooltipped--e" aria-label="Payment processor fees"><%= inline_icon 'info', size: 16 %></span></td>
         <td class="muted">-<%= render_money invoice_payment_processor_fee(false), '' %></td>
         <td><%= render_money @invoice.item_amount - invoice_payment_processor_fee(false) %></td>
       </tr>
@@ -260,20 +255,16 @@
         <td class="muted">+<%= render_money invoice_payment_processor_fee(false), '' %></td>
         <td><%= render_money @invoice.item_amount %></td>
       </tr>
-      <tr class="right-align">
-        <td class="left-align muted">Fee <span class="tooltipped tooltipped--e" aria-label="<%= invoice_hcb_percent %> Bank fee"><%= inline_icon 'info', size: 16 %></span></td>
-        <td class="muted">-<%= render_money invoice_hcb_revenue(false), '' %></td>
-        <td><%= render_money invoice_event_profit(false) %></td>
-      </tr>
       <tr class="right-align border-none">
         <td></td>
         <td></td>
-        <td>Total: <span class="bold"><%= render_money invoice_event_profit(false) %></span></td>
+        <td>Total: <span class="bold"><%= render_money @invoice.item_amount %></span></td>
       </tr>
     </tbody>
   </table>
   </section>
 </article>
+<% end %>
 
 <h2>Notes</h2>
 <%= render 'comments/comments' %>
