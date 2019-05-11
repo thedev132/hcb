@@ -46,7 +46,7 @@
 
   > p,
   > div,
-  .details-horiz__row {
+  .details-horiz__col {
     display: flex;
     flex-direction: column;
 
@@ -71,7 +71,7 @@
 
     > p,
     > div,
-    .details-horiz__row {
+    .details-horiz__col {
       margin-top: 0;
       margin-bottom: 0;
 
@@ -83,7 +83,7 @@
 
     > p + p,
     > div + div,
-    > .details-horiz__row + .details-horiz__row {
+    > .details-horiz__col + .details-horiz__col {
       padding-left: 1rem;
     }
   }

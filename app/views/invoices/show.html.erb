@@ -28,25 +28,27 @@
       <% end %>
     </p>
 
+    <p>
+      <strong>Payment method</strong>
+      <span class="inline">
+        <span>Visa<%# invoice.payment_method_card_brand.humanize.capitalize %></span>
+        <span class="ml0 mr1"><%= inline_icon 'card', size: 24, class: 'accent inline' %></span>
+        <span>••••1759<%# invoice.payment_method_card_last4 %></span>
+      </span>
+    </p>
+    <!--
     <% if invoice_payment_method %>
     <p>
       <strong>Payment method</strong>
       <%= invoice_payment_method %>
     </p>
     <% end %>
+    -->
 
     <p>
       <strong>Recipient email</strong>
       <%= mail_to @sponsor.contact_email, @sponsor.contact_email.downcase, class: 'black underline' %>
     </p>
-
-    <!-- <p>
-      <strong>Address</strong>
-      <%= @sponsor.address_line1 %>
-      <%= @sponsor.address_line2 if @sponsor.address_line2.present? %>
-      <br />
-      <%= @sponsor.address_city %>, <%= @sponsor.address_state %> <%= @sponsor.address_postal_code %>
-    </p> -->
   </section>
   
   <section class="details details--wide mt2 mb1">
@@ -56,7 +58,7 @@
       <span>
       <%= render_money @invoice.item_amount %>
       <% if @invoice&.payout %>
-        via <%= @invoice.payout.source_type %>
+        via <%= @invoice.payout.source_type.humanize.downcase %>
         <% if @invoice&.payout&.created_at %>
           <span class="muted">(on <%= format_date @invoice.payout.created_at.to_date %>)</span>
         <% end %>
@@ -69,17 +71,6 @@
       <span>
       <%= render_money @invoice.item_amount %>
       </span>
-    </p>
-    <% end %>
-    <% if @payout_t %>
-    <p>
-      <strong>Total</strong>
-      <%= invoice_event_profit @invoice %>
-    </p>
-    <% else %>
-    <p>
-      <strong>Total</strong>
-      <%= render_money @invoice.item_amount * (1 - invoice_hcb_percent(@invoice, false))  %>
     </p>
     <% end %>
 
@@ -124,6 +115,104 @@
     <% end %>
   </section>
 </article>
+
+<%# Only if payment method is "card" %>
+<article class="card pb0 mt3">
+  <h2 class="h2 sans mt0 border-none">
+    Payment details
+    <span class="regular muted"> of </span>
+    <span class="regular">Visa card</span>
+  </h2>
+  <section class="card__banner bg-snow border-top border-bottom">
+  <table>
+    <thead></thead>
+    <tbody>
+    <tr><td>Number</td><td>•••• 9071</td></tr>
+    <tr><td>Expires</td><td>07 / 2022</td></tr>
+    <tr><td>Type</td><td>Visa credit card</td></tr>
+    <tr><td>Postal code</td><td>90069</td></tr>
+    <tr><td>Origin</td><td>United States</td></tr>
+    <tr><td>CVC check</td><td><span class="badge h4 medium bg-success ml0">Passed <%= inline_icon 'checkmark', size: 20 %></span></td></tr>
+    <tr><td>Zip check</td><td><span class="badge h4 medium bg-success ml0">Passed <%= inline_icon 'checkmark', size: 20 %></span></td></tr>
+    <tr class="border-none"><td>Address check</td><td><span class="badge h4 medium bg-success ml0">Passed <%= inline_icon 'checkmark', size: 20 %></span></td></tr>
+    </tbody>
+  </table>
+  </section>
+</article>
+
+<article class="card pb0 mt3">
+  <h2 class="h2 sans mt0 border-none">
+    Transaction details
+  </h2>
+  <section class="card__banner details-horiz bg-snow border-top border-bottom">
+    <p class="w-100 center">
+      <strong>Amount</strong>
+      <%= render_money @invoice.item_amount %>
+    </p>
+    <p class="w-100 center">
+      <strong>
+        Fee
+        <span class="tooltipped tooltipped--e" aria-label="<%= invoice_hcb_percent %> Bank fee"><%= inline_icon 'info', size: 16 %></span>
+      </strong>
+      <%= invoice_hcb_revenue %>
+    </p>
+    <p class="w-100 center">
+      <strong>Net</strong>
+      <%= invoice_event_profit %>
+    </p>
+  </section>
+  <section class="details details--wide mt2 mb1">
+    <p>
+      <strong>Display name</strong>
+      <span>
+        <%= @payout_t.display_name %> <%= link_to 'Edit', edit_transaction_path(@payout_t), class: 'underline inline ml2' %>
+      </span>
+    </p>
+    <p>
+      <strong>Statement name</strong>
+      <span>
+        <%= @payout_t.name %>
+      </span>
+    </p>
+  </section>
+</article>
+<!--
+<article class="card pb0 mt3">
+  <h2 class="h2 sans mt0 border-none">
+    Transaction details
+  </h2>
+  <section class="card__banner bg-snow border-top border-bottom">
+  <table>
+    <thead></thead>
+    <tbody>
+      <tr>
+        <td class="muted no-wrap pr3">Display name</td>
+        <td class="w-100" colspan="3"><%= @payout_t.display_name %> <%= link_to 'Edit', edit_transaction_path(@payout_t), class: 'underline inline ml2' %></td>
+      </tr>
+      <tr>
+        <td class="muted no-wrap pr3">Statement name</td>
+        <td class="w-100" colspan="3"><%= @payout_t.name.truncate(30) %></td>
+      </tr>
+      <tr class="right-align border-none">
+        <td class="left-align muted">Paid</td>
+        <td class="w-10">$</td>
+        <td class="w-10"><%= render_money @invoice.item_amount, '' %></td>
+      </tr>
+      <tr class="right-align border-none">
+        <td class="left-align muted">Fee <span class="tooltipped tooltipped--e" aria-label="<%= invoice_hcb_percent %> Bank fee"><%= inline_icon 'info', size: 16 %></span></td>
+        <td class="w-10">$</td>
+        <td class="w-10"><%= render_money invoice_hcb_revenue(false), '' %></td>
+      </tr>
+      <tr class="right-align border-none">
+        <td class="left-align muted">Total</td>
+        <td class="w-10">$</td>
+        <td class="w-10"><%= render_money invoice_event_profit(false), '' %></td>
+      </tr>
+    </tbody>
+  </table>
+  </section>
+</article>
+-->
 
 <h2>Notes</h2>
 <%= render 'comments/comments' %>

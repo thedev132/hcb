@@ -12,7 +12,7 @@ module InvoicesHelper
     end
   end
 
-  def invoice_hcb_percent(invoice = @invoice, humanized = true)
+  def invoice_hcb_percent(humanized = true, invoice = @invoice)
     percent = invoice.event.sponsorship_fee
     percent ||= invoice.payout.t_transaction.fee_relationship.fee_percent
 
@@ -22,7 +22,7 @@ module InvoicesHelper
     number_to_percentage percent * 100, precision: 0
   end
 
-  def invoice_payment_processor_fee(invoice = @invoice, humanized = true)
+  def invoice_payment_processor_fee(humanized = true, invoice = @invoice)
     fee = invoice.manually_marked_as_paid? ? 0 : invoice.item_amount - invoice.payout.amount
 
     return fee unless humanized
@@ -30,7 +30,7 @@ module InvoicesHelper
     render_money fee
   end
 
-  def invoice_hcb_revenue(invoice = @invoice, humanized = true)
+  def invoice_hcb_revenue(humanized = true, invoice = @invoice)
     fee = invoice.payout.t_transaction.fee_relationship.fee_percent
     revenue = fee.present? ? invoice.item_amount * fee : 0
 
@@ -46,21 +46,21 @@ module InvoicesHelper
     render_money revenue
   end
 
-  def invoice_hcb_profit(invoice = @invoice, humanized = true)
-    profit = invoice_hcb_revenue(invoice, false) - invoice_payment_processor_fee(invoice, false)
+  def invoice_hcb_profit(humanized = true, invoice = @invoice)
+    profit = invoice_hcb_revenue(false) - invoice_payment_processor_fee(false)
 
     return profit unless humanized
 
     render_money profit
   end
 
-  def invoice_event_profit(invoice = @invoice, humanized = true)
-    profit = invoice.item_amount * (1 - invoice_hcb_percent(invoice, false))
+  def invoice_event_profit(humanized = true, invoice = @invoice)
+    profit = invoice.item_amount * (1 - invoice_hcb_percent(false))
 
     unless invoice.fee_reimbursed?
       # (max@maxwofford.com) before we reimbursed Stripe fees, event fees were
       # calculated as a percent of the payout
-      profit = invoice.item_amount - invoice_payment_processor_fee(invoice, false) - invoice_hcb_revenue(invoice, false)
+      profit = invoice.item_amount - invoice_payment_processor_fee(false) - invoice_hcb_revenue(false)
     end
 
     return profit unless humanized

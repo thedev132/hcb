@@ -1,5 +1,6 @@
 // Numeric count badge, see the badge_for helper
 .badge {
+  display: inline-flex;
   background-color: map-get($palette, primary);
   color: $white;
   border-radius: 9999px;
