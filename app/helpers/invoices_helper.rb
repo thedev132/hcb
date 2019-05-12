@@ -145,6 +145,8 @@ def invoice_payout_datetime(invoice = @invoice)
   elsif @invoice.payout_creation_queued_at && @invoice.payout.present?
     title = 'Funds should be available'
     datetime = @invoice.payout.arrival_date
+  else
+    return
   end
 
   strong_tag = content_tag :strong, title
