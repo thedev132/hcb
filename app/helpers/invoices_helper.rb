@@ -84,11 +84,12 @@ def invoice_payment_method_mention(invoice = @invoice)
     description_text = "••••#{invoice&.payment_method_card_last4}"
   else
     icon_name = 'bank-account'
+    size = 16
     description_text = invoice.payment_method_type.humanize
   end
 
   description = content_tag :span, description_text, class: 'ml1'
-  icon = inline_icon icon_name, size: 24, class: 'slate'
+  icon = inline_icon icon_name, size: size || 24, class: 'slate'
   content_tag(:span, class: 'inline-flex items-center') { icon + description }
 end
 
