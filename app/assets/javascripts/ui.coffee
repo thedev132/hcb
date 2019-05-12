@@ -70,8 +70,8 @@ $(document).on 'turbolinks:load', ->
       $(record).attr 'aria-expanded', 'false'
   
   $(document).on 'click', '[data-behavior~=row_expand_trigger]', ->
-    id = $(this).data 'id'
-    button = BK.s('row_expand_trigger').filter("[data-id=#{id}]")
+    button = $(this)
+    id = button.data 'id'
     targets = BK.s('expandable_row').filter("[data-id=#{id}]")
     expanded = button.data 'expanded'
     if expanded
