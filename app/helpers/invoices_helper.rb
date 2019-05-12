@@ -120,7 +120,8 @@ def invoice_card_check_badge(check, invoice = @invoice)
     icon_name = 'checkbox'
     text = 'Unchecked'
   else
-    background = 'info'
+    background = 'smoke'
+    color = 'slate'
     icon_name = 'checkbox'
     text = 'Unavailable'
   end
@@ -128,7 +129,7 @@ def invoice_card_check_badge(check, invoice = @invoice)
   icon_tag = inline_icon icon_name, size: 20
   description_tag = content_tag :span, text
 
-  content_tag(:span, class: "badge h4 medium ml0 bg-#{background}") { description_tag + icon_tag }
+  content_tag(:span, class: "badge h4 medium ml0 bg-#{background} #{color || ''}") { description_tag + icon_tag }
 end
 
 def invoice_payout_datetime(invoice = @invoice)
