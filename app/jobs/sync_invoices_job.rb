@@ -6,7 +6,10 @@ class SyncInvoicesJob < ApplicationJob
       i.transaction do
         was_paid = i.paid?
 
-        inv = StripeService::Invoice.retrieve(i.stripe_invoice_id)
+        inv = StripeService::Invoice.retrieve({
+          id: i.stripe_invoice_id,
+          expand: ['charge.payment_method_details']
+        })
         i.set_fields_from_stripe_invoice(inv)
         i.save!
 
