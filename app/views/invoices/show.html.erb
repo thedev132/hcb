@@ -76,6 +76,23 @@
           <strong>Address check</strong>
           <span> <%= invoice_card_check_badge 'address_line1' %> </span>
         </p>
+      <% elsif @invoice.payment_method_type == 'ach_credit_transfer' %>
+        <p>
+          <strong>Bank</strong>
+          <span><%= @invoice.payment_method_ach_credit_transfer_bank_name %></span>
+        </p>
+        <p>
+          <strong>Routing number</strong>
+          <span><%= @invoice.payment_method_ach_credit_transfer_routing_number %></span>
+        </p>
+        <p>
+          <strong>Account number</strong>
+          <span><%= @invoice.payment_method_ach_credit_transfer_account_number %></span>
+        </p>
+        <p>
+          <strong>SWIFT code</strong>
+          <span><%= @invoice.payment_method_ach_credit_transfer_swift_code %></span>
+        </p>
       <% end %>
     <% end %>
     <% unless @invoice.manually_marked_as_paid? %>
