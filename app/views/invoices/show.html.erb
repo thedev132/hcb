@@ -14,7 +14,7 @@
     <span class="regular muted"> paid </span>
     <span class="regular"><%= render_money @invoice.item_amount %></span>
   </h2>
-  <section class="card__banner details-horiz bg-snow border-top border-bottom">
+  <section class="card__banner card__darker details-horiz border-top border-bottom">
     <p>
       <strong>Paid at</strong>
       <%= invoice_paid_at %>
@@ -149,7 +149,7 @@
         <span><%= @invoice.memo %></span>
       </p>
     </section>
-    <section class="card__banner details details--wide bg-snow border-top">
+    <section class="card__banner card__darker details details--wide border-top">
       <table>
       <thead>
         <tr>
@@ -170,7 +170,7 @@
       </table>
     </section>
 
-  <section class="card__banner bg-snow border-top">
+  <section class="card__banner card__darker border-top">
     <%= link_to 'View sent invoice', @invoice.hosted_invoice_url, class: 'btn bg-accent mr2', target: '_blank'  %>
     <%= link_to 'Download invoice PDF', @invoice.invoice_pdf, class: 'btn bg-info', target: '_blank'  %>
   </section>

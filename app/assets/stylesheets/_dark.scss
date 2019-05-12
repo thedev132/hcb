@@ -81,6 +81,10 @@ html[data-dark='true'] {
     color: map-get($palette, smoke) !important;
   }
 
+  .card__darker {
+    background: map-get($palette, black);
+  }
+
   .admin-tools {
     background-color: rgba(map-get($palette, warning), 0.0625);
   }
