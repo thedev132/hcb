@@ -184,27 +184,49 @@ class Invoice < ApplicationRecord
   end
 
   def set_fields_from_stripe_invoice(inv)
-    self.amount_due = inv.amount_due,
-                      self.amount_paid = inv.amount_paid
+    self.amount_due = inv.amount_due
+    self.amount_paid = inv.amount_paid
     self.amount_remaining = inv.amount_remaining
     self.attempt_count = inv.attempt_count
     self.attempted = inv.attempted
-    self.stripe_charge_id = inv.charge
     self.auto_advance = inv.auto_advance
-    self.memo = inv.description
     self.due_date = Time.at(inv.due_date).to_datetime # convert from unixtime
     self.ending_balance = inv.ending_balance
     self.finalized_at = inv.finalized_at
     self.hosted_invoice_url = inv.hosted_invoice_url
     self.invoice_pdf = inv.invoice_pdf
+    self.livemode = inv.livemode
+    self.memo = inv.description
     self.number = inv.number
     self.starting_balance = inv.starting_balance
     self.statement_descriptor = inv.statement_descriptor
+    self.status = inv.status
+    self.stripe_charge_id = inv.charge
     self.subtotal = inv.subtotal
     self.tax = inv.tax
     self.tax_percent = inv.tax_percent
     self.total = inv.total
-    self.status = inv.status
+    # https://stripe.com/docs/api/charges/object#charge_object-payment_method_details
+    self.payment_method_type = type = inv&.charge&.payment_method_details&.type
+    return unless self.payment_method_type
+    details = inv&.charge&.payment_method_details[self.payment_method_type]
+    return unless details
+    if type == 'card'
+      self.payment_method_card_brand = details.brand
+      self.payment_method_card_checks_address_line1_check = details.checks.address_line1_check
+      self.payment_method_card_checks_address_postal_code_check = details.checks.address_postal_code_check
+      self.payment_method_card_checks_cvc_check = details.checks.cvc_check
+      self.payment_method_card_country = details.country
+      self.payment_method_card_exp_month = details.exp_month
+      self.payment_method_card_exp_year = details.exp_year
+      self.payment_method_card_funding = details.funding
+      self.payment_method_card_last4 = details.last4
+    elsif type == 'ach_credit_transfer'
+      self.payment_method_ach_credit_transfer_bank_name = details.bank_name
+      self.payment_method_ach_credit_transfer_routing_number = details.routing_number
+      self.payment_method_ach_credit_transfer_account_number = details.account_number
+      self.payment_method_ach_credit_transfer_swift_code = details.swift_code
+    end
   end
 
   def stripe_dashboard_url
