@@ -85,31 +85,30 @@
       <%= invoice_payout_datetime %>
     <% end %>
   </section>
-  <% unless @invoice.manually_marked_as_paid? %>
+  <% unless @invoice.manually_marked_as_paid? || !@invoice.payout %>
     <section class="card__banner card__darker border-top details">
       <p>
-        <strong>Transaction fee</strong>
+        <strong><%= invoice_fee_type %></strong>
         <span>
           -<%= invoice_payment_processor_fee %>
-          <span class="muted">
-            <% if @invoice.payment_method_type == 'card' %>
-              (<%= @invoice.payment_method_card_brand.humanize %>
-              <%= @invoice.payment_method_card_funding.humanize.downcase %>
-              <%= @invoice.payment_method_type.humanize.downcase %> fees)
-            <% else %>
-              (ACH / wire fees)
-            <% end %>
-          </span>
         </span>
       </p>
       <p>
         <strong>
           <span class="tooltipped tooltipped--e" aria-label="We cover the fee">
-            Refund<%= inline_icon 'info', size: 16 %>
-          </span>
-        </strong>
+            <%= inline_icon 'info', size: 16 %>
+            Refund</span></strong>
         <span>
           +<%= invoice_payment_processor_fee %>
+          <span class="muted">
+            <% if @invoice&.fee_reimbursement&.t_transaction %>
+              (<%= format_datetime @invoice.fee_reimbursement.t_transaction.created_at %>)
+            <% elsif @invoice&.fee_reimbursement %>
+              (pending)
+            <% else %>
+              (see the <%= link_to 'details', 'https://docs.google.com/document/d/1thMtIakuXid-1hOM3yRmLX1cLFjEPfDs1z-PGt58g-Q/edit?ts=5cd59f53'%>)
+            <% end %>
+          </span>
         </span>
       </p>
     </section>
