@@ -2,12 +2,17 @@
 <% page_md %>
 <%= render 'events/nav' %>
 
+<% admin_tools('mt2') do %>
+  <%= link_to 'Manually mark as paid', invoice_manual_payment_path(@invoice), class: 'btn bg-success mr2' unless @invoice.paid? %>
+  <%= link_to 'View on Stripe', @invoice.stripe_dashboard_url, class: 'btn bg-accent' %>
+<% end %>
+
 <%= creator_bar @invoice %>
 
 <article class="card pb0">
   <h2 class="h2 sans mt0 border-none">
     <%= @sponsor.name %>
-    <span class="regular muted"> invoiced for </span>
+    <span class="regular muted"> <%= @invoice.paid? ? 'paid invoice for' : 'invoiced for' %> </span>
     <span class="regular"><%= render_money @invoice.item_amount %></span>
     <span class="badge h4 md-right bg-<%= @invoice.state %>">
       <%= @invoice.state_text %>
@@ -151,22 +156,35 @@
         </span>
       </p>
       <p>
-        <strong>Invoice memo</strong>
+        <strong>Memo</strong>
         <span><%= @invoice.memo %></span>
       </p>
+    </section>
+    <section class="card__banner details details--wide bg-snow border-top">
+      <table>
+      <thead>
+        <tr>
+          <td>Description</td>
+          <td>Amount</td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><%= @invoice.item_description %></td>
+          <td><%= render_money @invoice.item_amount %></td>
+        </tr>
+        <tr class="border-none">
+          <td class="right-align pr1"><strong>Total</strong></td>
+          <td><strong><%= render_money @invoice.item_amount %></strong></td>
+        </tr>
+      </tbody>
+      </table>
     </section>
   <% end %>
 
   <section class="card__banner bg-snow border-top">
-    <% if @invoice.hosted_invoice_url && @invoice.invoice_pdf %>
-      <%= link_to 'View sent invoice', @invoice.hosted_invoice_url, class: 'btn bg-accent mr2 mb1', target: '_blank'  %>
-      <%= link_to 'Download invoice PDF', @invoice.invoice_pdf, class: 'btn bg-info', target: '_blank'  %>
-    <% end %>
-
-    <% admin_tools('mt2') do %>
-      <%= link_to 'Manually mark as paid', invoice_manual_payment_path(@invoice), class: 'btn bg-success mr2' unless @invoice.paid? %>
-      <%= link_to 'View on Stripe', @invoice.stripe_dashboard_url, class: 'btn bg-accent' %>
-    <% end %>
+    <%= link_to 'View sent invoice', @invoice.hosted_invoice_url, class: 'btn bg-accent mr2', target: '_blank'  %>
+    <%= link_to 'Download invoice PDF', @invoice.invoice_pdf, class: 'btn bg-info', target: '_blank'  %>
   </section>
 </article>
 
