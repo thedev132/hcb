@@ -85,6 +85,35 @@
       <%= invoice_payout_datetime %>
     <% end %>
   </section>
+  <% unless @invoice.manually_marked_as_paid? %>
+    <section class="card__banner card__darker border-top details">
+      <p>
+        <strong>Transaction fee</strong>
+        <span>
+          -<%= invoice_payment_processor_fee %>
+          <span class="muted">
+            <% if @invoice.payment_method_type == 'card' %>
+              (<%= @invoice.payment_method_card_brand.humanize %>
+              <%= @invoice.payment_method_card_funding.humanize.downcase %>
+              <%= @invoice.payment_method_type.humanize.downcase %> fees)
+            <% else %>
+              (ACH / wire fees)
+            <% end %>
+          </span>
+        </span>
+      </p>
+      <p>
+        <strong>
+          <span class="tooltipped tooltipped--e" aria-label="We cover the fee">
+            Refund<%= inline_icon 'info', size: 16 %>
+          </span>
+        </strong>
+        <span>
+          +<%= invoice_payment_processor_fee %>
+        </span>
+      </p>
+    </section>
+  <% end %>
 </article>
 <% end %>
 
