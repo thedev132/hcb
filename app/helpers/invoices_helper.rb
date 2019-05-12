@@ -1,7 +1,7 @@
 module InvoicesHelper
   def invoice_paid_at(invoice = @invoice)
     timestamp = invoice.manually_marked_as_paid_at || invoice&.payout&.created_at
-    timestamp ? format_datetime(timestamp) : nil
+    timestamp ? format_datetime(timestamp) : '–'
   end
 
   def invoice_payment_method(invoice = @invoice)
@@ -70,7 +70,7 @@ module InvoicesHelper
 end
 
 def invoice_payment_method_mention(invoice = @invoice)
-  return nil unless invoice.manually_marked_as_paid? || invoice&.payment_method_type
+  return '–' unless invoice.manually_marked_as_paid? || invoice&.payment_method_type
 
   if invoice.manually_marked_as_paid?
     icon_name = 'post-fill'
@@ -128,5 +128,26 @@ def invoice_card_check_badge(check, invoice = @invoice)
   icon_tag = inline_icon icon_name, size: 20
   description_tag = content_tag :span, text
 
-  content_tag('span', class: "badge h4 medium ml0 bg-#{background}"){ description_tag + icon_tag }
+  content_tag(:span, class: "badge h4 medium ml0 bg-#{background}") { description_tag + icon_tag }
+end
+
+def invoice_payout_datetime(invoice = @invoice)
+  if @payout_t && @refund_t
+    title = 'Funds available since'
+    datetime = [@payout_t.created_at, @refund_t.created_at].max
+  elsif @payout_t && !@refund
+    title = 'Funds available since'
+    datetime = @payout_t.created_at
+  elsif @invoice.payout_creation_queued_at && @invoice.payout.nil?
+    title = 'Payout of funds queued for'
+    datetime = @invoice.payout_creation_queued_for
+  elsif @invoice.payout_creation_queued_at && @invoice.payout.present?
+    title = 'Funds should be available'
+    datetime = @invoice.payout.arrival_date
+  end
+
+  strong_tag = content_tag :strong, title
+  date_tag = format_datetime datetime
+
+  content_tag(:p) { strong_tag + date_tag }
 end

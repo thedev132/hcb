@@ -1,7 +1,6 @@
 .details > p,
 .details > div,
 .details__row {
-  align-items: center;
   display: grid;
   margin: 0;
   padding-bottom: 0.25rem;
@@ -37,6 +36,13 @@
   .details--wide > div,
   .details--wide .details__row {
     grid-template-columns: 14rem auto;
+  }
+
+  .details--tall > p,
+  .details--tall > div,
+  .details--tall .details__row {
+    margin-bottom: 1rem;
+    margin-top: 1rem;
   }
 }
 

@@ -17,113 +17,133 @@
     </span>
   </h2>
 
-  <section class="card__banner details-horiz bg-snow border-top border-bottom">
-    <p>
-      <% if invoice_paid_at %>
+  <% if %w[Paid Pending].include? @invoice.state_text %>
+    <section class="card__banner details-horiz bg-snow border-top border-bottom">
+      <p>
         <strong>Paid at</strong>
         <%= invoice_paid_at %>
-      <% else %>
-        <strong>Due</strong>
-        <%= format_date @invoice.due_date.to_date %>
-      <% end %>
-    </p>
+      </p>
+      <p>
+        <strong>Payment method</strong>
+        <span class="inline-flex">
+          <%= invoice_payment_method_mention %>
+        </span>
+      </p>
+      <p>
+        <strong>Recipient email</strong>
+        <%= mail_to @sponsor.contact_email, @sponsor.contact_email.downcase, class: 'black underline' %>
+      </p>
+    </section>
+  <% else %>
+    <!-- Hide details row if invoice isn't paid -->
+  <% end %>
 
-    <% if invoice_payment_method_mention %>
-    <p>
-      <strong>Payment method</strong>
-      <span class="inline-flex">
-        <%= invoice_payment_method_mention %>
-      </span>
-    </p>
-    <% end %>
-
-    <p>
-      <strong>Recipient email</strong>
-      <%= mail_to @sponsor.contact_email, @sponsor.contact_email.downcase, class: 'black underline' %>
-    </p>
-  </section>
-  <section class="details-horiz details--wide mt2 mb1">
-    <% if %w[Pending Paid].include? @invoice.state_text %>
-      <div class="details no-border">
+  <!-- white body section -->
+  <% if %w[Pending Paid].include? @invoice.state_text %>
+    <section class="details-horiz details--wide mt2 mb1">
       <% if @invoice.payment_method_type == 'card' %>
-        <p>
-          <strong>Brand</strong>
-          <span><%= @invoice.payment_method_card_brand.humanize.capitalize %></span>
-        </p>
-        <p>
-          <strong>Expiration</strong>
-          <span><%= @invoice.payment_method_card_exp_month.to_s.rjust(2, '0') %> / <%= @invoice.payment_method_card_exp_year %></span>
-        </p>
-        <p>
-          <strong>Type</strong>
-          <span><%= @invoice.payment_method_card_funding.humanize.capitalize %></span>
-        </p>
-        <p>
-          <strong>Country code</strong>
-          <span><%= invoice_card_country_mention %></span>
-        </p>
+        <div class="details no-border">
+          <p>
+            <strong>Brand</strong>
+            <span><%= @invoice.payment_method_card_brand.humanize.capitalize %></span>
+          </p>
+          <p>
+            <strong>Expiration</strong>
+            <span><%= @invoice.payment_method_card_exp_month.to_s.rjust(2, '0') %> / <%= @invoice.payment_method_card_exp_year %></span>
+          </p>
+          <p>
+            <strong>Type</strong>
+            <span><%= @invoice.payment_method_card_funding.humanize.capitalize %></span>
+          </p>
+          <p>
+            <strong>Country code</strong>
+            <span><%= invoice_card_country_mention %></span>
+          </p>
         </div>
         <div class="details no-border">
-        <p>
-          <strong>CVC check</strong>
-          <span> <%= invoice_card_check_badge 'cvc' %> </span>
-        </p>
-        <p>
-          <strong>Zip check</strong>
-          <span> <%= invoice_card_check_badge 'address_postal_code' %> </span>
-        </p>
-        <p>
-          <strong>Address check</strong>
-          <span> <%= invoice_card_check_badge 'address_line1' %> </span>
-        </p>
-      <% elsif @invoice.payment_method_type == 'ach_credit_transfer' %>
-        <p>
-          <strong>Bank</strong>
-          <span><%= @invoice.payment_method_ach_credit_transfer_bank_name %></span>
-        </p>
-        <p>
-          <strong>Routing number</strong>
-          <span><%= @invoice.payment_method_ach_credit_transfer_routing_number %></span>
-        </p>
-        <p>
-          <strong>Account number</strong>
-          <span><%= @invoice.payment_method_ach_credit_transfer_account_number %></span>
-        </p>
-        <p>
-          <strong>SWIFT code</strong>
-          <span><%= @invoice.payment_method_ach_credit_transfer_swift_code %></span>
-        </p>
-      <% end %>
-    <% end %>
-    <% unless @invoice.manually_marked_as_paid? %>
-      <p>
-      <% if @payout_t && @refund_t %>
-        <strong>Funds available since</strong>
-        <%= format_datetime [@payout_t.created_at, @refund_t.created_at].max %>
-      <% elsif @payout_t && !@refund %>
-        <strong>Funds available since</strong>
-        <%= format_datetime @payout_t.created_at %>
-      <% elsif @invoice.payout_creation_queued_at && @invoice.payout.nil? %>
-        <strong>Payout of funds queued for</strong>
-        <%= format_date @invoice.payout_creation_queued_for.to_date %>
-      <% elsif @invoice.payout_creation_queued_at && @invoice.payout.present? %>
-        <strong>Funds should be available</strong>
-        <%= format_datetime @invoice.payout.arrival_date %></p>
-      <% end %>
-      </p>
+          <p>
+            <strong>CVC check</strong>
+            <span> <%= invoice_card_check_badge 'cvc' %> </span>
+          </p>
+          <p>
+            <strong>Zip check</strong>
+            <span> <%= invoice_card_check_badge 'address_postal_code' %> </span>
+          </p>
+          <p>
+            <strong>Address check</strong>
+            <span> <%= invoice_card_check_badge 'address_line1' %> </span>
+          </p>
+          <%= invoice_payout_datetime %>
         </div>
-    <% end %>
-  </section>
-  <% if @invoice.manually_marked_as_paid? %>
-    <p>
-      This invoice was manually marked as paid by <%= @invoice.manually_marked_as_paid_user.full_name %>.
-    </p>
-    <p>
-      Reason given: "<%= @invoice.manually_marked_as_paid_reason %>"
-    </p>
-    <% if @invoice.manually_marked_as_paid_attachment.attached? %>
-      <p><%= link_to 'Download provided attachment', @invoice.manually_marked_as_paid_attachment %></p>
-    <% end %>
+      <% elsif @invoice.payment_method_type == 'ach_credit_transfer' %>
+        <div class="details no-border">
+          <p>
+            <strong>Bank</strong>
+            <span><%= @invoice.payment_method_ach_credit_transfer_bank_name %></span>
+          </p>
+          <p>
+            <strong>Routing number</strong>
+            <span><%= @invoice.payment_method_ach_credit_transfer_routing_number %></span>
+          </p>
+          <p>
+            <strong>Account number</strong>
+            <span><%= @invoice.payment_method_ach_credit_transfer_account_number %></span>
+          </p>
+          <p>
+            <strong>SWIFT code</strong>
+            <span><%= @invoice.payment_method_ach_credit_transfer_swift_code %></span>
+          </p>
+          <%= invoice_payout_datetime %>
+        </div>
+      <% elsif @invoice.manually_marked_as_paid? %>
+        <div>
+          <p>
+            This invoice was manually marked as paid by <%= @invoice.manually_marked_as_paid_user.full_name %>.
+          </p>
+          <p>
+            Reason given: "<%= @invoice.manually_marked_as_paid_reason %>"
+          </p>
+          <% if @invoice.manually_marked_as_paid_attachment.attached? %>
+            <p><%= link_to 'Download provided attachment', @invoice.manually_marked_as_paid_attachment %></p>
+          <% end %>
+        </div>
+      <% else %>
+        <%= invoice_payout_datetime %>
+      <% end %>
+    </section>
+  <% else %>
+    <!-- timeline info -->
+    <section class="card__banner details details--wide mt2 bg-snow border-top border-bottom">
+      <p>
+        <strong>Due date</strong>
+        <span><%= format_date @invoice.due_date %></span>
+      </p>
+      <p>
+        <strong><%= @invoice.state_text == 'Overdue' ? 'Overdue by' : 'Due in' %></strong>
+        <span><%= distance_of_time_in_words @invoice.due_date, Time.now %></span>
+      </p>
+    </section>
+    <!-- recipient info -->
+    <section class="details details--wide mb1 details--tall">
+      <p>
+        <strong>Billed to</strong>
+        <span><%= mail_to @invoice.sponsor.contact_email.downcase %></span>
+      </p>
+      <p>
+        <strong>Address</strong>
+        <span>
+        <%= @sponsor.address_line1 %><br />
+        <% if @sponsor.address_line2.present? %>
+          <%= @sponsor.address_line2 %><br />
+        <% end %>
+        <%= @sponsor.address_city %>, <%= @sponsor.address_state %> <%= @sponsor.address_postal_code %>
+        </span>
+      </p>
+      <p>
+        <strong>Invoice memo</strong>
+        <span><%= @invoice.memo %></span>
+      </p>
+    </section>
   <% end %>
 
   <section class="card__banner bg-snow border-top">
