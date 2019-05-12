@@ -140,7 +140,7 @@ def invoice_payout_datetime(invoice = @invoice)
     title = 'Funds available since'
     datetime = @payout_t.created_at
   elsif @invoice.payout_creation_queued_at && @invoice.payout.nil?
-    title = 'Payout of funds queued for'
+    title = 'Transfer scheduled'
     datetime = @invoice.payout_creation_queued_for
   elsif @invoice.payout_creation_queued_at && @invoice.payout.present?
     title = 'Funds should be available'
