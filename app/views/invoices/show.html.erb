@@ -100,6 +100,8 @@
   <% if @invoice.manually_marked_as_paid? %>
     <p>
       This invoice was manually marked as paid by <%= @invoice.manually_marked_as_paid_user.full_name %>.
+    </p>
+    <p>
       Reason given: "<%= @invoice.manually_marked_as_paid_reason %>"
     </p>
     <% if @invoice.manually_marked_as_paid_attachment.attached? %>
