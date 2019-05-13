@@ -32,7 +32,8 @@ html[data-dark='true'] {
   .heading,
   .details > p,
   .details > div,
-  .details__row {
+  .details__row,
+  tr {
     border-color: $darkless;
   }
   .list > a > li,
