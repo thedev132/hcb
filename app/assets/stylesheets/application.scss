@@ -140,6 +140,9 @@ tr {
     display: block;
   }
 }
+thead {
+  table-layout: fixed;
+}
 th {
   font-weight: bold;
   text-align: left;
