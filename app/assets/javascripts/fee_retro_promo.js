@@ -24,7 +24,8 @@ function togglePromo() {
 }
 
 // create 160 emoji to fall down the screen
-$(document).ready(function() {
+
+$(document).on('turbolinks:load', function() {
 	$('#retrofees__promo-modal-trigger').click(function(event) {
 		togglePromo()
 	})
@@ -98,6 +99,7 @@ $(document).ready(function() {
 		)
 	}
 })
+
 // push circle into array (method called above)
 function addCircle(delay, range, color) {
 	setTimeout(function() {
