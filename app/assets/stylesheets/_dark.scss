@@ -38,6 +38,8 @@ html[data-dark='true'] {
   .border-right,
   .border-bottom,
   .border-left,
+  .details-horiz > p:not(:last-of-type),
+  .details-horiz > div:not(:last-of-type),
   tr {
     border-color: $darkless;
   }

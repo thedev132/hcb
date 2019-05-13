@@ -106,7 +106,7 @@ def invoice_card_country_mention(invoice = @invoice)
   # https://stackoverflow.com/a/50859942
   emoji = country_code.tr('A-Z', "\u{1F1E6}-\u{1F1FF}")
 
-  "#{country_code} #{emoji}"
+  content_tag :span, emoji, class: 'tooltipped tooltipped--w pr1', 'aria-label': country_code
 end
 
 def invoice_card_check_badge(check, invoice = @invoice)

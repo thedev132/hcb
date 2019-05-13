@@ -171,6 +171,10 @@
       <section class="card__banner card__darker details-horiz border-top mt2">
         <div class="details">
           <p>
+            <strong>Payment type</strong>
+            <%= @invoice.payment_method_card_funding.humanize.capitalize %>
+          </p>
+          <p>
             <strong>Brand</strong>
             <%= @invoice.payment_method_card_brand.humanize.capitalize %>
           </p>
@@ -178,27 +182,19 @@
             <strong>Expiration</strong>
             <%= @invoice.payment_method_card_exp_month.to_s.rjust(2, '0') %> / <%= @invoice.payment_method_card_exp_year %>
           </p>
-          <p>
-            <strong>Type</strong>
-            <%= @invoice.payment_method_card_funding.humanize.capitalize %>
-          </p>
-          <p>
-            <strong>Country code</strong>
-            <%= invoice_card_country_mention %>
-          </p>
         </div>
-        <div>
-          <p class="flex items-center mt0 mb0">
+        <div class="mt1 md-mt0">
+          <p class="details__simulated">
             <%= invoice_card_check_badge 'cvc' %>
             <span>CVC check</span>
           </p>
-          <p class="flex items-center mt1 mb1">
+          <p class="details__simulated">
             <%= invoice_card_check_badge 'address_postal_code' %>
             <span>Zip check</span>
           </p>
-          <p class="flex items-center mt0 mb0">
-            <%= invoice_card_check_badge 'address_line1' %>
-            <span>Address check</span>
+          <p class="details__simulated">
+            <%= invoice_card_country_mention %>
+            <span>Payment country</span>
           </p>
         </div>
       </section>
