@@ -1,6 +1,7 @@
 // Numeric count badge, see the badge_for helper
 .badge {
   display: inline-flex;
+  align-items: center;
   background-color: map-get($palette, primary);
   color: $white;
   border-radius: 9999px;
@@ -10,6 +11,7 @@
   line-height: 1.125;
   margin-left: 1rem;
   padding: 0.25rem 0.625rem;
+  width: min-intrinsic;
 
   &.bg-success {
     color: $teal9;
@@ -30,6 +32,10 @@
   &.bg-error {
     color: $red9;
     background-color: $red1;
+  }
+
+  svg:last-child {
+    margin-left: 0.25rem;
   }
 }
 

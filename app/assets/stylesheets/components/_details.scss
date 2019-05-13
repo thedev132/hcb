@@ -2,6 +2,7 @@
 .details > div,
 .details__row {
   display: grid;
+  align-items: center;
   margin: 0;
   padding-bottom: 0.25rem;
   padding-top: 0.25rem;
@@ -72,8 +73,7 @@
     flex-direction: row;
 
     > p,
-    > div,
-    .details-horiz__col {
+    > div {
       margin-top: 0;
       margin-bottom: 0;
 
@@ -84,8 +84,7 @@
     }
 
     > p + p,
-    > div + div,
-    > .details-horiz__col + .details-horiz__col {
+    > div + div {
       padding-left: 1rem;
     }
   }

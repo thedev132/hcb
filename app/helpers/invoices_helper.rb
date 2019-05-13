@@ -1,4 +1,8 @@
 module InvoicesHelper
+  def invoice_sent_at(invoice = @invoice)
+    format_datetime invoice.created_at
+  end
+
   def invoice_paid_at(invoice = @invoice)
     timestamp = invoice.manually_marked_as_paid_at || invoice&.payout&.created_at
     timestamp ? format_datetime(timestamp) : '–'
@@ -113,7 +117,7 @@ def invoice_card_check_badge(check, invoice = @invoice)
     text = 'Passed'
   when 'failed'
     background = 'warning'
-    icon_name = 'checkbox'
+    icon_name = 'view-close'
     text = 'Failed'
   when 'unchecked'
     background = 'info'
@@ -121,15 +125,12 @@ def invoice_card_check_badge(check, invoice = @invoice)
     text = 'Unchecked'
   else
     background = 'smoke'
-    color = 'slate'
     icon_name = 'checkbox'
     text = 'Unavailable'
   end
 
-  icon_tag = inline_icon icon_name, size: 20
-  description_tag = content_tag :span, text
-
-  content_tag(:span, class: "badge h4 medium ml0 bg-#{background} #{color || ''}") { description_tag + icon_tag }
+  tag = inline_icon icon_name, size: 24
+  content_tag(:span, class: "pr1 #{background} line-height-0 tooltipped tooltipped--w", 'aria-label': text) { tag }
 end
 
 def invoice_payout_datetime(invoice = @invoice)
