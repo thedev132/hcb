@@ -33,7 +33,7 @@
           <%= image_tag 'hank.png', name: 'alternative-logo', style: 'display: none;', width: @home_size || 48, height: @home_size || 48, alt: 'Hank logo' %>
         <% end %>
         <% if signed_in? %>
-          <div class="muted pointer mr2 tooltipped tooltipped--s headway" aria-label="Show changes">
+          <div class="muted pointer mr2 tooltipped tooltipped--s headway" aria-label="Show changes" data-behavior="toggle_changelog">
             <%= inline_icon 'bell', size: home_action_size %>
           </div>
         <% end %>
@@ -69,7 +69,9 @@
       }}();
     </script>
     <script>
-      var HW_config = { selector: '.headway', account:  '7z8ovy', position: { y: 'bottom' } }
+      var HW_config = { selector: '.headway', account:  '7z8ovy', position: { y: 'bottom' }, callbacks: {
+        onShowWidget: () => window.updateChangelogTooltip(),
+        onHideWidget: () => window.updateChangelogTooltip() } }
     </script>
     <script async src="https://cdn.headwayapp.co/widget.js"></script>
   </body>

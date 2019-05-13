@@ -6,6 +6,15 @@ $(document).on 'turbolinks:load', ->
   $(document).on 'click', '[data-behavior~=toggle_theme]', ->
     BK.toggleDark()
 
+  window.updateChangelogTooltip = ->
+    target = $('[data-behavior~=toggle_changelog]')
+    if $('#HW_frame_cont.HW_visible').length > 0
+      target.attr 'aria-label', ''
+    else 
+      target.attr 'aria-label', 'Show changes'
+
+  $(document).on 'mouseover', '[data-behavior~=toggle_changelog]', updateChangelogTooltip
+
   hankIndex = 0
   $(document).on 'keydown', (e) ->
     if e.originalEvent.key == 'hank'[hankIndex]
