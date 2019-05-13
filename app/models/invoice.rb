@@ -201,7 +201,7 @@ class Invoice < ApplicationRecord
     self.starting_balance = inv.starting_balance
     self.statement_descriptor = inv.statement_descriptor
     self.status = inv.status
-    self.stripe_charge_id = inv.charge
+    self.stripe_charge_id = inv&.charge&.id
     self.subtotal = inv.subtotal
     self.tax = inv.tax
     self.tax_percent = inv.tax_percent
