@@ -1,0 +1,18 @@
+<tr
+  class="transaction--<%= transaction.amount.negative? ? 'negative' : 'positive' %> animated tada delay-2s"
+  id="retrofees__triggerPromoModal"
+  data-behavior="filterbar_row"
+  data-filter="<%= transaction.filter_data.to_json %>">
+  <td>
+    <%= transaction.date %>
+  </td>
+  <td colspan="2">
+    <span style="font-weight: bold">🎉 HACK CLUB BANK GIVES YOUR OLD PROCESSING FEES BACK! 🎉</span>(click me)
+  </td>
+  <td colspan="2" class="bold">
+    <%= render_money transaction.amount %>
+  </td>
+  <td>
+    <%= link_to 'Details', transaction, class: 'underline', id: 'promo-modal' %>
+  </td>
+</tr>

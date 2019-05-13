@@ -1,3 +1,4 @@
+
 <% title @event.name %>
 <% content_for(:page_class) { 'bg-snow pt2' } %>
 <% @home_size = 72 %>
@@ -33,7 +34,6 @@ Sponsorship fee: <%= render_percentage @event.sponsorship_fee %>`)">
     <%= pop_icon_to 'member-add', event_team_path(@event) %>
   <% end %>
 </div>
-
 <%= render 'nav', hide_name: true %>
 
 <p class="muted flex flex-wrap items-center justify-center center mt2">
@@ -114,6 +114,10 @@ Sponsorship fee: <%= render_percentage @event.sponsorship_fee %>`)">
     </thead>
     <tbody data-behavior="transactions">
     <% @transactions.each do |t| %>
+      <% if t.name.include? "LUMP FEE REIMBURSEMENT" %>
+        <%= render "transactions/fancy_transaction", transaction: t %>
+        <% next %>
+      <% end %>
       <% if t&.invoice_payout&.invoice %>
         <%= render t&.invoice_payout&.invoice %>
       <% elsif !t&.fee_reimbursement %>
@@ -126,3 +130,4 @@ Sponsorship fee: <%= render_percentage @event.sponsorship_fee %>`)">
 <% else %>
   <%= blankslate 'No transactions yet' %>
 <% end %>
+<%= render 'promo_modal' %>
