@@ -1,12 +1,12 @@
 <tr
-  class="transaction--<%= transaction.amount.negative? ? 'negative' : 'positive' %> animated tada delay-2s pointer"
-  id="retrofees__triggerPromoModal"
+  class="transaction--<%= transaction.amount.negative? ? 'negative' : 'positive' %>"
+  id="retrofees__transaction"
   data-behavior="filterbar_row"
   data-filter="<%= transaction.filter_data.to_json %>">
   <td>
     <%= transaction.date %>
   </td>
-  <td colspan="2">
+  <td colspan="2" id="retrofees__promo-modal-trigger" class="pointer">
     <span style="font-weight: bold">🎉 Hack Club Bank Gift 🎉</span>
   </td>
   <td>

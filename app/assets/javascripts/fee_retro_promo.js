@@ -23,26 +23,35 @@ function togglePromo() {
 	}
 }
 
-$(document).click(function() {
-	if (animationId > previousAnimationId + 100) {
-		togglePromo()
-	}
-})
-
 // create 160 emoji to fall down the screen
 $(document).ready(function() {
-	$('#retrofees__triggerPromoModal').click(function() {
+	$('#retrofees__promo-modal-trigger').click(function(event) {
 		togglePromo()
 	})
 
 	var innerText = $('#retrofees__moneyFieldHere').text()
 
-	var money = $('#retrofees__triggerPromoModal').children()[2].innerText
+	var money = $('#retrofees__transaction').children()[2].innerText
 	var eventName = $('span[style*="font-size: 3rem"]')[0].innerText
 
 	$('#retrofees__moneyFieldHere').text(
 		innerText.replace('%money%', money).replace('%event%', eventName)
 	)
+
+	$('#retrofees__all').click(function() {
+		if (animationId > previousAnimationId + 100) {
+			togglePromo()
+		}
+	})
+
+	if (!window.localStorage.getItem('wiggleReimbursement')) {
+		window.localStorage.setItem('wiggleReimbursement', false)
+		$('#retrofees__transaction').addClass('animated tada delay-2s')
+	}
+
+	$('.retrofees__close_button').click(function() {
+		togglePromo()
+	})
 
 	container = document.getElementById('retrofees__emojis')
 
@@ -94,7 +103,7 @@ function addCircle(delay, range, color) {
 	setTimeout(function() {
 		var c = new Circle(
 			range[0] + Math.random() * range[1],
-			Math.random() * (Math.random() * 10),
+			Math.random() * (Math.random() * 15) - 150,
 			color,
 			{
 				x: -0.15 + Math.random() * 0.3,
