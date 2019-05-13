@@ -15,10 +15,6 @@
   @media (min-width: 32em) {
     grid-template-columns: 10rem auto;
     grid-gap: 0.5rem;
-
-    strong:after {
-      content: ':';
-    }
   }
 
   > a.right:last-child,
@@ -41,8 +37,8 @@
   .details--tall > p,
   .details--tall > div,
   .details--tall .details__row {
-    margin-bottom: 1rem;
-    margin-top: 1rem;
+    padding-bottom: 0.5rem;
+    padding-top: 0.5rem;
   }
 }
 

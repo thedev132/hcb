@@ -21,77 +21,77 @@
       <% end %>
     </span>
   </h2>
-    <!-- recipient info -->
-    <section class="card__banner details details--wide mb1 details--tall border-top">
-      <% unless %w[Paid Pending].include? @invoice.state_text %>
-        <p>
-          <strong>Due date</strong>
-          <span>
-            <%= format_date @invoice.due_date %>
-            <span class="muted">
-              <% if @invoice.due_date > Time.now %>
-                (in <%= distance_of_time_in_words @invoice.due_date, Time.now %>)
-              <% else %>
-                (<%= distance_of_time_in_words @invoice.due_date, Time.now %> ago)
-              <% end %>
-            </span>
+  <!-- recipient info -->
+  <section class="details details--wide pt2 pb2 details--tall border-top">
+    <% unless %w[Paid Pending].include? @invoice.state_text %>
+      <p>
+        <strong>Due date</strong>
+        <span>
+          <%= format_date @invoice.due_date %>
+          <span class="muted">
+            <% if @invoice.due_date > Time.now %>
+              (in <%= distance_of_time_in_words @invoice.due_date, Time.now %>)
+            <% else %>
+              (<%= distance_of_time_in_words @invoice.due_date, Time.now %> ago)
+            <% end %>
           </span>
-        </p>
+        </span>
+      </p>
+    <% end %>
+    <p>
+      <strong>Billed to</strong>
+      <span><%= mail_to @invoice.sponsor.contact_email.downcase %></span>
+    </p>
+    <p>
+      <strong>Payment methods</strong>
+      <span class="flex">
+        <span class="bg-smoke slate tooltipped tooltipped--s inline-flex rounded mr2" aria-label="Credit or debit cards" style="padding: 4px;">
+          <%= inline_icon 'card', size: 24 %>
+        </span>
+        <span class="bg-smoke slate tooltipped tooltipped--s inline-flex rounded" aria-label="ACH credit transfers and domestic wires">
+          <%= inline_icon 'bank-account', size: 32 %>
+        </span>
+      </span>
+    </p>
+    <p>
+      <strong>Address</strong>
+      <span>
+      <%= @sponsor.address_line1 %><br />
+      <% if @sponsor.address_line2.present? %>
+        <%= @sponsor.address_line2 %><br />
       <% end %>
-      <p>
-        <strong>Billed to</strong>
-        <span><%= mail_to @invoice.sponsor.contact_email.downcase %></span>
-      </p>
-      <p>
-        <strong>Payment methods</strong>
-        <span>
-          <span class="bg-smoke slate tooltipped tooltipped--s inline-flex rounded pointer" aria-label="Credit or debit cards">
-            <%= inline_icon 'card-other', size: 24, class: 'm1' %>
-          </span>
-          <span class="bg-smoke slate tooltipped tooltipped--s inline-flex rounded pointer" aria-label="ACH credit transfers and domestic wires">
-            <%= inline_icon 'bank-account', size: 24, class: 'm1' %>
-          </span>
-        </span>
-      </p>
-      <p>
-        <strong>Address</strong>
-        <span>
-        <%= @sponsor.address_line1 %><br />
-        <% if @sponsor.address_line2.present? %>
-          <%= @sponsor.address_line2 %><br />
-        <% end %>
-        <%= @sponsor.address_city %>, <%= @sponsor.address_state %> <%= @sponsor.address_postal_code %>
-        </span>
-      </p>
-      <p>
-        <strong>Memo</strong>
-        <span><%= @invoice.memo %></span>
-      </p>
-    </section>
-    <section class="card__banner card__darker details details--wide border-top">
-      <table>
-      <thead>
-        <tr>
-          <td>Description</td>
-          <td>Amount</td>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><%= @invoice.item_description %></td>
-          <td><%= render_money @invoice.item_amount %></td>
-        </tr>
-        <tr class="border-none">
-          <td class="right-align pr1"><strong>Total</strong></td>
-          <td><strong><%= render_money @invoice.item_amount %></strong></td>
-        </tr>
-      </tbody>
-      </table>
-    </section>
+      <%= @sponsor.address_city %>, <%= @sponsor.address_state %> <%= @sponsor.address_postal_code %>
+      </span>
+    </p>
+    <p>
+      <strong>Memo</strong>
+      <span><%= @invoice.memo %></span>
+    </p>
+  </section>
+  <section class="card__banner card__darker details details--wide border-top md-pl0 md-pr0">
+    <table>
+    <thead>
+      <tr>
+        <td>Description</td>
+        <td>Amount</td>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><%= @invoice.item_description %></td>
+        <td><%= render_money @invoice.item_amount %></td>
+      </tr>
+      <tr class="border-none">
+        <td class="right-align pr1"><strong>Total</strong></td>
+        <td><strong><%= render_money @invoice.item_amount %></strong></td>
+      </tr>
+    </tbody>
+    </table>
+  </section>
 
-  <section class="card__banner card__darker border-top">
+  <section class="card__banner border-top">
     <%= link_to 'View sent invoice', @invoice.hosted_invoice_url, class: 'btn bg-accent mr2', target: '_blank'  %>
-    <%= link_to 'Download invoice PDF', @invoice.invoice_pdf, class: 'btn bg-info', target: '_blank'  %>
+    <%= link_to 'Download PDF', @invoice.invoice_pdf, class: 'btn bg-info', target: '_blank'  %>
   </section>
 </article>
 
@@ -198,7 +198,6 @@
   <% end %>
 </article>
 <% end %>
-
 
 <h2>Notes</h2>
 <%= render 'comments/comments' %>
