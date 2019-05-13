@@ -7,115 +7,6 @@
   <%= link_to 'View on Stripe', @invoice.stripe_dashboard_url, class: 'btn bg-accent' %>
 <% end %>
 
-<% if %w[Paid Pending].include? @invoice.state_text %>
-<article class="card pb0 mt3">
-  <h2 class="h2 sans mt0 border-none">
-    <%= @sponsor.name %>
-    <span class="regular muted"> paid </span>
-    <span class="regular"><%= render_money @invoice.item_amount %></span>
-  </h2>
-  <section class="card__banner card__darker details-horiz border-top border-bottom">
-    <p>
-      <strong>Paid at</strong>
-      <%= invoice_paid_at %>
-    </p>
-    <p>
-      <strong>Payment method</strong>
-      <span class="inline-flex">
-        <%= invoice_payment_method_mention %>
-      </span>
-    </p>
-    <p>
-      <strong>Recipient email</strong>
-      <%= mail_to @sponsor.contact_email, @sponsor.contact_email.downcase, class: 'black underline' %>
-    </p>
-  </section>
-  <section class="details-horiz details--wide mt2 mb1">
-    <% if @invoice.payment_method_type == 'card' %>
-      <div class="details no-border">
-        <p>
-          <strong>Brand</strong>
-          <span><%= @invoice.payment_method_card_brand.humanize.capitalize %></span>
-        </p>
-        <p>
-          <strong>Expiration</strong>
-          <span><%= @invoice.payment_method_card_exp_month.to_s.rjust(2, '0') %> / <%= @invoice.payment_method_card_exp_year %></span>
-        </p>
-        <p>
-          <strong>Type</strong>
-          <span><%= @invoice.payment_method_card_funding.humanize.capitalize %></span>
-        </p>
-        <p>
-          <strong>Country code</strong>
-          <span><%= invoice_card_country_mention %></span>
-        </p>
-      </div>
-      <div class="details no-border">
-        <p>
-          <strong>CVC check</strong>
-          <span> <%= invoice_card_check_badge 'cvc' %> </span>
-        </p>
-        <p>
-          <strong>Zip check</strong>
-          <span> <%= invoice_card_check_badge 'address_postal_code' %> </span>
-        </p>
-        <p>
-          <strong>Address check</strong>
-          <span> <%= invoice_card_check_badge 'address_line1' %> </span>
-        </p>
-        <%= invoice_payout_datetime %>
-      </div>
-    <% elsif @invoice.payment_method_type == 'ach_credit_transfer' %>
-      <div class="details no-border">
-        <%= invoice_payout_datetime %>
-      </div>
-    <% elsif @invoice.manually_marked_as_paid? %>
-      <div>
-        <p>
-          This invoice was manually marked as paid by <%= @invoice.manually_marked_as_paid_user.full_name %>.
-        </p>
-        <p>
-          Reason given: "<%= @invoice.manually_marked_as_paid_reason %>"
-        </p>
-        <% if @invoice.manually_marked_as_paid_attachment.attached? %>
-          <p><%= link_to 'Download provided attachment', @invoice.manually_marked_as_paid_attachment %></p>
-        <% end %>
-      </div>
-    <% else %>
-      <%= invoice_payout_datetime %>
-    <% end %>
-  </section>
-  <% unless @invoice.manually_marked_as_paid? || !@invoice.payout %>
-    <section class="card__banner card__darker border-top details">
-      <p>
-        <strong><%= invoice_fee_type %></strong>
-        <span>
-          -<%= invoice_payment_processor_fee %>
-        </span>
-      </p>
-      <p>
-        <strong>
-          <span class="tooltipped tooltipped--e" aria-label="We cover the fee">
-            <%= inline_icon 'info', size: 16 %>
-            Refund</span></strong>
-        <span>
-          +<%= invoice_payment_processor_fee %>
-          <span class="muted">
-            <% if @invoice&.fee_reimbursement&.t_transaction %>
-              (<%= format_datetime @invoice.fee_reimbursement.t_transaction.created_at %>)
-            <% elsif @invoice&.fee_reimbursement %>
-              (pending)
-            <% else %>
-              (see the <%= link_to 'details', "https://headwayapp.co/bank-changelog/we'll-cover-the-fee-101088"%>)
-            <% end %>
-          </span>
-        </span>
-      </p>
-    </section>
-  <% end %>
-</article>
-<% end %>
-
 <%= creator_bar @invoice %>
 
 <article class="card pb0">
@@ -203,6 +94,111 @@
     <%= link_to 'Download invoice PDF', @invoice.invoice_pdf, class: 'btn bg-info', target: '_blank'  %>
   </section>
 </article>
+
+<% if %w[Paid Pending].include? @invoice.state_text %>
+<article class="card pb0 mt3">
+  <h2 class="h2 sans mt0 border-none">
+    <%= @sponsor.name %>
+    <span class="regular muted"> paid </span>
+    <span class="regular"><%= render_money @invoice.item_amount %></span>
+    <span class="regular muted">
+      <%= distance_of_time_in_words @invoice.due_date, Time.now %> ago
+    </span>
+  </h2>
+  <section class="card__banner card__darker details-horiz border-top border-bottom">
+    <p>
+      <strong>Paid at</strong>
+      <%= invoice_paid_at %>
+    </p>
+    <p>
+      <strong>Payment method</strong>
+      <span class="inline-flex">
+        <%= invoice_payment_method_mention %>
+      </span>
+    </p>
+    <p>
+      <strong>Recipient email</strong>
+      <%= mail_to @sponsor.contact_email, @sponsor.contact_email.downcase, class: 'black underline' %>
+    </p>
+  </section>
+  <section class="details-horiz details--wide mt2 mb1">
+    <% if @invoice.payment_method_type == 'card' %>
+      <div class="details no-border">
+        <p>
+          <strong>Brand</strong>
+          <span><%= @invoice.payment_method_card_brand.humanize.capitalize %></span>
+        </p>
+        <p>
+          <strong>Expiration</strong>
+          <span><%= @invoice.payment_method_card_exp_month.to_s.rjust(2, '0') %> / <%= @invoice.payment_method_card_exp_year %></span>
+        </p>
+        <p>
+          <strong>Type</strong>
+          <span><%= @invoice.payment_method_card_funding.humanize.capitalize %></span>
+        </p>
+        <p>
+          <strong>Country code</strong>
+          <span><%= invoice_card_country_mention %></span>
+        </p>
+      </div>
+      <div class="details no-border">
+        <p>
+          <strong>CVC check</strong>
+          <span> <%= invoice_card_check_badge 'cvc' %> </span>
+        </p>
+        <p>
+          <strong>Zip check</strong>
+          <span> <%= invoice_card_check_badge 'address_postal_code' %> </span>
+        </p>
+        <p>
+          <strong>Address check</strong>
+          <span> <%= invoice_card_check_badge 'address_line1' %> </span>
+        </p>
+        <%= invoice_payout_datetime %>
+      </div>
+    <% elsif @invoice.payment_method_type == 'ach_credit_transfer' %>
+      <div class="details no-border">
+        <%= invoice_payout_datetime %>
+      </div>
+    <% elsif @invoice.manually_marked_as_paid? %>
+      <div>
+        <p>
+          This invoice was manually marked as paid by <%= @invoice.manually_marked_as_paid_user.full_name %>.
+        </p>
+        <p>
+          Reason given: "<%= @invoice.manually_marked_as_paid_reason %>"
+        </p>
+        <% if @invoice.manually_marked_as_paid_attachment.attached? %>
+          <p><%= link_to 'Download provided attachment', @invoice.manually_marked_as_paid_attachment %></p>
+        <% end %>
+      </div>
+    <% else %>
+      <%= invoice_payout_datetime %>
+    <% end %>
+  </section>
+  <% unless @invoice.manually_marked_as_paid? || !@invoice.payout %>
+    <section class="card__banner card__darker border-top details">
+      <p>
+        <strong><%= invoice_fee_type %></strong>
+        <span>
+          -<%= invoice_payment_processor_fee %>
+        </span>
+      </p>
+      <p>
+        <strong>Fee refund</strong>
+        <span>
+          +<%= invoice_payment_processor_fee %>
+          <span class="muted">
+            <% 'Pending ' unless @invoice&.fee_reimbursement&.t_transaction %>
+            (<%= link_to 'learn more', "https://headwayapp.co/bank-changelog/we'll-cover-the-fee-101088"%>)
+          </span>
+        </span>
+      </p>
+    </section>
+  <% end %>
+</article>
+<% end %>
+
 
 <h2>Notes</h2>
 <%= render 'comments/comments' %>
