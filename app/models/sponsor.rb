@@ -17,15 +17,15 @@ class Sponsor < ApplicationRecord
   def status
     i = invoices.last
     if i.nil?
-      'neutral'
+      :muted
     elsif i.paid?
-      'positive'
+      :success
     elsif i.due_date < Time.current
-      'negative'
+      :error
     elsif i.due_date < 3.days.from_now
-      'warning'
+      :warning
     else
-      'neutral'
+      :muted
     end
   end
 
