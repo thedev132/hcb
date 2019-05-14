@@ -22,12 +22,21 @@
 
 .transaction__table_container {
   overflow-x: scroll;
+  margin-left: -1rem;
+  margin-right: -1rem;
 }
 .transaction__table {
   td {
-    white-space: nowrap;
     @extend .pr1;
     @extend .pl1;
+  }
+  @media screen and (max-width: 32em) {
+    td {
+      white-space: nowrap;
+    }
+    tr {
+      transform: translateX(1rem);
+    }
   }
 }
 
@@ -39,7 +48,6 @@
   @extend .bold;
 }
 .invoice--expanded.is-expanded {
-
   > td:nth-child(2) {
     transform: translateX(-3em);
   }
