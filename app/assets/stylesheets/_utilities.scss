@@ -108,9 +108,12 @@ $shades: (
   @extend .shade-red;
 }
 
-.transaction--nested {
-  transform: translateX(3em);
+.invoice--expanded-parent + .invoice--expanded,
+.invoice--expanded-parent.is-expanded {
+  border-bottom-style: dashed;
+  border-width: 2px;
 }
+
 .invoice--expanded:not(.is-expanded) {
   display: none !important;
 }

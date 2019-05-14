@@ -82,13 +82,16 @@ $(document).on 'turbolinks:load', ->
     button = $(this)
     id = button.data 'id'
     targets = BK.s('expandable_row').filter("[data-id=#{id}]")
+    parent = BK.s('parent_expandable_row').filter("[data-id=#{id}]")
     expanded = button.data 'expanded'
     if expanded
       targets.removeClass('is-expanded')
+      parent.removeClass('is-expanded')
       button.text 'Expand'
       button.data 'expanded', false
     else
       targets.addClass('is-expanded')
+      parent.addClass('is-expanded')
       button.text 'Retract'
       button.data 'expanded', true
 

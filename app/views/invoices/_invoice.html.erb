@@ -3,7 +3,7 @@
 <% refund_t = refund&.t_transaction %>
 <% @invoice = invoice %>
 <tr
-  class="transaction--positive"
+  class="transaction--positive invoice--expanded-parent"
   data-behavior="filterbar_row parent_expandable_row"
   data-filter="<%= transaction.filter_data.to_json %>"
   data-id="<%= transaction.id %>"
@@ -35,10 +35,10 @@ data-behavior="expandable_row filterbar_row"
 data-id="<%= transaction.id %>"
 data-filter="<%= transaction.filter_data.to_json %>"
 >
-  <td class="transaction--nested">
+  <td>
     <%= transaction.date %>
   </td>
-  <td colspan="2" class="transaction--nested">
+  <td colspan="2">
     <%= transaction.display_name %>
   </td>
   <td>
@@ -53,10 +53,10 @@ data-behavior="expandable_row filterbar_row"
 data-id="<%= transaction.id %>"
 data-filter="<%= transaction.filter_data.to_json %>"
 >
-  <td class="transaction--nested">
+  <td>
     <%= refund_t ? refund_t.date : '(pending)' %>
   </td>
-  <td colspan="2" class="transaction--nested">
+  <td colspan="2">
     <%= refund_t ? refund_t.display_name : 'Payment processor fee refund' %>
   </td>
   <td>
