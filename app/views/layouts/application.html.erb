@@ -21,7 +21,7 @@
   <body class="bg-snow <%= content_for :page_class %>">
     <% unless @hide_home %>
       <header class="home flex items-center justify-center pt1 md-pt2">
-        <div class="mr4"><!--spacer--></div>
+        <div class="inline-block mr2" style="width: 36px;"><!-- spacer --></div>
         <% if signed_in? %>
           <action role="button" data-behavior="toggle_theme" class="muted pointer tooltipped tooltipped--s" aria-label="Toggle dark mode">
             <%= inline_icon 'moon', size: home_action_size %>
