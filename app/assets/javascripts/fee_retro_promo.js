@@ -26,7 +26,7 @@ function togglePromo() {
 // create 160 emoji to fall down the screen
 
 $(document).on('turbolinks:load', function() {
-  $('#retrofees__promo-modal-trigger').click(function(event) {
+  $(document).on('click', '[data-behavior~=retrofees-modal-trigger]', function() {
     togglePromo()
   })
 
