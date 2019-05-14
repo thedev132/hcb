@@ -20,6 +20,16 @@
   transition: transform 0.125s ease-in-out;
 }
 
+.transaction__table_container {
+  overflow-x: scroll;
+}
+.transaction__table {
+  td {
+    white-space: nowrap;
+    @extend .pr1;
+    @extend .pl1;
+  }
+}
 
 .invoice--expanded-parent.is-expanded,
 .invoice--expanded-parent + .is-expanded {

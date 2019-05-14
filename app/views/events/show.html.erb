@@ -106,6 +106,7 @@ Sponsorship fee: <%= render_percentage @event.sponsorship_fee %>`)">
 </div>
 
 <% if @transactions.any? %>
+  <div class="transaction__table_container">
   <table class="transaction__table">
     <thead>
       <tr>
@@ -128,6 +129,7 @@ Sponsorship fee: <%= render_percentage @event.sponsorship_fee %>`)">
     <% end %>
     </tbody>
   </table>
+  </div>
   <%= filterbar_blankslate 'No transactions match this filter' %>
 <% else %>
   <%= blankslate 'No transactions yet' %>
