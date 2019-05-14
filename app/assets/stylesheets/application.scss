@@ -140,6 +140,9 @@ tr {
     display: block;
   }
 }
+thead {
+  table-layout: fixed;
+}
 th {
   font-weight: bold;
   text-align: left;
@@ -153,7 +156,7 @@ td {
 td,
 th {
   &:first-child {
-    padding-left: 0.75rem;
+    padding-left: 1rem;
   }
 }
 
@@ -178,6 +181,7 @@ svg {
 @import 'components/filters';
 @import 'components/forms';
 @import 'components/headings';
+@import 'components/headway';
 @import 'components/layouts';
 @import 'components/lists';
 @import 'components/stats';
@@ -277,3 +281,5 @@ svg {
 @import 'space';
 @import 'utilities';
 @import 'dark';
+@import 'animate';
+@import 'retro_fees';

@@ -49,7 +49,7 @@ class FeeReimbursement < ApplicationRecord
   end
 
   def default_values
-    self.transaction_memo ||= "FEE REIMBURSEMENT #{Time.now.to_i}"
+    self.transaction_memo ||= "FEE REFUND #{Time.now.to_i}"
     self.amount ||= self.invoice.item_amount - self.invoice.payout_creation_balance_net
   end
 

@@ -32,7 +32,15 @@ html[data-dark='true'] {
   .heading,
   .details > p,
   .details > div,
-  .details__row {
+  .details__row,
+  .border,
+  .border-top,
+  .border-right,
+  .border-bottom,
+  .border-left,
+  .details-horiz > p:not(:last-of-type),
+  .details-horiz > div:not(:last-of-type),
+  tr {
     border-color: $darkless;
   }
   .list > a > li,
@@ -81,6 +89,10 @@ html[data-dark='true'] {
     color: map-get($palette, smoke) !important;
   }
 
+  .card__darker {
+    background: $dark;
+  }
+
   .admin-tools {
     background-color: rgba(map-get($palette, warning), 0.0625);
   }
@@ -96,6 +108,10 @@ html[data-dark='true'] {
   .bg-success {
     background-color: $teal8;
   }
+  .bg-warning {
+    background-color: $orange8;
+  }
+  .bg-error,
   .btn--destroy {
     background: $red8 !important;
   }
@@ -104,6 +120,22 @@ html[data-dark='true'] {
   }
   .transaction--negative {
     background-color: darken($red9, 10%);
+  }
+
+  .badge.bg-info {
+    color: $blue0 !important;
+  }
+  .badge.bg-accent {
+    color: $violet0 !important;
+  }
+  .badge.bg-success {
+    color: $teal0 !important;
+  }
+  .badge.bg-warning {
+    color: $orange0 !important;
+  }
+  .badge.bg-error {
+    color: $red0 !important;
   }
 
   .shade-neutral {

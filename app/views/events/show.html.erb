@@ -1,3 +1,4 @@
+
 <% title @event.name %>
 <% content_for(:page_class) { 'bg-snow pt2' } %>
 <% @home_size = 72 %>
@@ -13,14 +14,14 @@ Sponsorship fee: <%= render_percentage @event.sponsorship_fee %>`)">
         #<%= @event.id %>
       </span>
     <% end %>
-    <span style="font-size: 3rem;">
+    <span class="line-height-1" style="font-size: 3rem;">
       <%= @event.name %>
     </span>
     <%= pop_icon_to 'controls', edit_event_path(@event), class: 'ml2 warning' if admin_signed_in? %>
   </span>
 </h1>
 
-<div class="flex flex-wrap items-center justify-center mb3">
+<div class="flex flex-wrap items-center justify-center mb2 md-mb3">
   <% if @organizers.any? %>
     <% @organizers.each do |position| %>
       <div class="tooltipped tooltipped--s mr1" aria-label="<%= position.user.full_name %>">
@@ -33,11 +34,11 @@ Sponsorship fee: <%= render_percentage @event.sponsorship_fee %>`)">
     <%= pop_icon_to 'member-add', event_team_path(@event) %>
   <% end %>
 </div>
-
 <%= render 'nav', hide_name: true %>
 
 <p class="muted flex flex-wrap items-center justify-center center mt2">
-  Your point of contact is <%= user_mention @event.point_of_contact, class: 'ml1 mr0' %>.
+  Your point of contact is <%= user_mention @event.point_of_contact, class: 'ml1 mr0' %>
+  <span class="xs-hide mr1">.</span>
   Text / call at 
   <span class="flex items-center medium ml1">
     <%= inline_icon 'message', size: 24, class: 'muted', style: 'margin-right: 0.125rem;' %>
@@ -47,7 +48,8 @@ Sponsorship fee: <%= render_percentage @event.sponsorship_fee %>`)">
   <%= mail_to @event.point_of_contact.email, class: 'flex items-center medium' do %>
     <%= inline_icon 'email', size: 24, class: 'muted', style: 'margin-right: 0.125rem;' %>
     <%= @event.point_of_contact.email %>
-  <% end %>.
+  <% end %>
+  <span class="xs-hide">.</span>
 </p>
 
 <h2 class="mb2">
@@ -104,22 +106,33 @@ Sponsorship fee: <%= render_percentage @event.sponsorship_fee %>`)">
 </div>
 
 <% if @transactions.any? %>
-  <table>
+  <div class="transaction__table_container">
+  <table class="transaction__table">
     <thead>
       <tr>
         <th>Date</th>
-        <th>Description</th>
-        <th>Amount</th>
-        <th></th>
+        <th colspan="2">Description</th>
+        <th colspan="2">Amount</th>
       </tr>
     </thead>
     <tbody data-behavior="transactions">
     <% @transactions.each do |t| %>
-      <%= render t %>
+      <% if t.name.include? "LUMP FEE REIMBURSEMENT" %>
+        <%= render "transactions/fancy_transaction", transaction: t %>
+        <% next %>
+      <% end %>
+      <% if t&.invoice_payout&.invoice %>
+        <%= render t&.invoice_payout&.invoice %>
+      <% elsif !t&.fee_reimbursement %>
+        <%= render t %>
+      <% end %>
     <% end %>
     </tbody>
   </table>
+  </div>
   <%= filterbar_blankslate 'No transactions match this filter' %>
 <% else %>
   <%= blankslate 'No transactions yet' %>
 <% end %>
+
+<%= render 'promo_modal' %>

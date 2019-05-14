@@ -26,8 +26,14 @@
 .text-decoration-none {
   text-decoration: none;
 }
+.italic {
+  text-decoration: italic;
+}
 .bold {
   font-weight: 700;
+}
+.medium {
+  font-weight: 500;
 }
 .regular {
   font-weight: 400;
@@ -75,6 +81,15 @@
 .underline {
   text-decoration: underline;
 }
+.no-select {
+  -webkit-user-select: none;
+  -moz-user-select: all;
+  -ms-user-select: all;
+  user-select: none;
+}
+.no-wrap {
+  white-space: nowrap;
+}
 .truncate {
   max-width: 100%;
   overflow: hidden;
@@ -108,9 +123,11 @@
 }
 .overflow-scroll {
   overflow: scroll;
+  -webkit-overflow-scrolling: touch;
 }
 .overflow-auto {
   overflow: auto;
+  -webkit-overflow-scrolling: touch;
 }
 .clearfix:after,
 .clearfix:before {
@@ -163,6 +180,12 @@
   display: flex;
 }
 @media (min-width: 32em) {
+  .md-left {
+    float: left;
+  }
+  .md-right {
+    float: right;
+  }
   .md-flex {
     display: -webkit-box;
     display: -webkit-flex;
