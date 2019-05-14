@@ -20,6 +20,21 @@
   transition: transform 0.125s ease-in-out;
 }
 
-tr[aria-expanded='true'] .row-expander {
-  transform: rotate(90deg);
+
+.invoice--expanded-parent.is-expanded,
+.invoice--expanded-parent + .is-expanded {
+  border-bottom-width: 0px;
+}
+.invoice--expanded-parent.is-expanded > td:nth-child(4) {
+  @extend .bold;
+}
+.invoice--expanded.is-expanded {
+
+  > td:nth-child(2) {
+    transform: translateX(-3em);
+  }
+}
+
+.invoice--expanded:not(.is-expanded) {
+  display: none !important;
 }

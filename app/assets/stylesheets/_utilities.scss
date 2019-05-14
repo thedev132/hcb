@@ -108,16 +108,6 @@ $shades: (
   @extend .shade-red;
 }
 
-.invoice--expanded-parent + .invoice--expanded,
-.invoice--expanded-parent.is-expanded {
-  border-bottom-style: dashed;
-  border-width: 2px;
-}
-
-.invoice--expanded:not(.is-expanded) {
-  display: none !important;
-}
-
 .flip-horizontal {
   display: inline-block;
   transform: scale(-1, 1);
