@@ -3,7 +3,7 @@ $(document).ready ->
   BK.styleDark(true) if localStorage.getItem('dark') is 'true'
 
 $(document).on 'turbolinks:load', ->
-  $(document).on 'click', '[data-behavior~=toggle_theme]', ->
+  $('[data-behavior~=toggle_theme]').on 'click', ->
     BK.toggleDark()
 
   window.updateChangelogTooltip = ->
