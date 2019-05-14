@@ -1,5 +1,5 @@
 <% title 'All Sponsors' %>
-<% page_md %>
+<% page_sm %>
 
 <h1 class="heading">
   Sponsors
@@ -9,7 +9,7 @@
 <ul class="list list--row">
   <% @sponsors.each do |s| %>
     <%= link_to s do %>
-      <li>
+      <li class="tooltipped tooltipped--w" aria-label="<%= s.status_description %>">
         <%= status_badge s.status %>
         <strong class="ml1"><%= "#{s.event.name}: " if s.event %><%= s.name %></strong>
       </li>
