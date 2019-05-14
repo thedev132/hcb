@@ -48,8 +48,8 @@
   @extend .bold;
 }
 .invoice--expanded.is-expanded {
-  > td:nth-child(2) {
-    transform: translateX(-3em);
+  > td:nth-child(-n+2) {
+    transform: translateX(2em);
   }
 }
 

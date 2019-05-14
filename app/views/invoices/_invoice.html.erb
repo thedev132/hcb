@@ -36,20 +36,17 @@ data-id="<%= transaction.id %>"
 data-filter="<%= transaction.filter_data.to_json %>"
 >
   <td>
+    <%= transaction.date %>
   </td>
   <td>
-    <span class="mr1">
-    <%= transaction.date %>
-    </span>
     <%= transaction.display_name %>
   </td>
-  <td>
-    <%= link_to 'See Payout', transaction, class: 'underline' %>
-  </td>
+  <td></td>
   <td>
     <%= render_money transaction.amount %>
   </td>
   <td>
+    <%= link_to 'Details', transaction, class: 'underline' %>
   </td>
 </tr>
 <tr class="transaction--positive invoice--expanded<%= ' muted italic' unless refund_t %>"
@@ -58,24 +55,21 @@ data-id="<%= transaction.id %>"
 data-filter="<%= transaction.filter_data.to_json %>"
 >
   <td>
+    <%= refund_t ? refund_t.date : '(pending)' %>
   </td>
   <td>
-    <span class="mr1">
-    <%= refund_t ? refund_t.date : '(pending)' %>
-    </span>
     <%= refund_t ? refund_t.display_name : 'Payment processor fee refund' %>
   </td>
-  <td>
-    <% if refund_t %>
-      <%= link_to 'See Refund', refund_t, class: 'underline' %>
-    <% else %>
-      –
-    <% end %>
-  </td>
+  <td></td>
   <td>
     <%= invoice_payment_processor_fee %>
   </td>
   <td>
+    <% if refund_t %>
+      <%= link_to 'Details', refund_t, class: 'underline' %>
+    <% else %>
+      –
+    <% end %>
   </td>
 </tr>
 <% end %>
