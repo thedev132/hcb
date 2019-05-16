@@ -67,7 +67,6 @@ class DocumentsController < ApplicationController
 
   def fiscal_sponsorship_letter
     @documents = @event.documents.includes(:user)
-    puts @documents
     authorize @documents
 
     respond_to do |format|
