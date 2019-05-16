@@ -32,7 +32,7 @@ class Event < ApplicationRecord
 
   validates :name, :start, :end, :address, :sponsorship_fee, presence: true
 
-  after_initialize :default_values
+  before_create :default_values
 
   def emburse_department_path
     "https://app.emburse.com/budgets/#{emburse_department_id}"
