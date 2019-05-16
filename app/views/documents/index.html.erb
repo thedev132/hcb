@@ -24,11 +24,13 @@
         </li>
       <% end %>
     <% end %>
-    <%= link_to event_fiscal_sponsorship_letter_path(event_id: @event.slug, format: "pdf") do %>
+    <% if @event.has_fiscal_sponsorship_document %>
+      <%= link_to event_fiscal_sponsorship_letter_path(event_id: @event.slug, format: "pdf") do %>
       <li class="card">
         <strong class="h3 block">Fiscal Sponsorship Letter</strong>
-        <span class="mention inline-flex items-center">Hack Club Bank</span>
+        <%= user_mention @event.point_of_contact %>
       </li>
+      <% end %>
     <% end %>
   </ul>
 <% else %>

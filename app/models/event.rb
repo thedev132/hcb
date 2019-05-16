@@ -32,6 +32,8 @@ class Event < ApplicationRecord
 
   validates :name, :start, :end, :address, :sponsorship_fee, presence: true
 
+  after_initialize :default_values
+
   def emburse_department_path
     "https://app.emburse.com/budgets/#{emburse_department_id}"
   end
@@ -62,23 +64,23 @@ class Event < ApplicationRecord
   def pending_deposits
     # money that is pending payout- aka payout has not been created yet
     pre_payout = self.invoices.where(status: 'paid', payout: nil).sum(:payout_creation_balance_net)
-    
+
     # money that has a payout created, but where the transaction has not hit the account yet / been associated with the pending payout
     payout_created = self.invoices.includes(payout: :t_transaction).where(status: 'paid', payout: { transactions: { id: nil } }).sum(:payout_creation_balance_net)
-    
+
     pre_payout + payout_created
   end
 
   def billed_transactions
     transactions
       .joins(:fee_relationship)
-      .where(fee_relationships: { fee_applies: true } )
+      .where(fee_relationships: { fee_applies: true })
   end
 
   def fee_payments
     transactions
       .joins(:fee_relationship)
-      .where(fee_relationships: { is_fee_payment: true } )
+      .where(fee_relationships: { is_fee_payment: true })
   end
 
   # total amount over all time paid agains the fee
@@ -101,6 +103,7 @@ class Event < ApplicationRecord
     return :app_rejected if g_suite_application.rejected?
     return :verify_setup if !g_suite.verified?
     return :done if g_suite.verified?
+
     :start
   end
 
@@ -121,6 +124,10 @@ class Event < ApplicationRecord
   end
 
   private
+
+  def default_values
+    self.has_fiscal_sponsorship_document = true
+  end
 
   def point_of_contact_is_admin
     return if self.point_of_contact&.admin?

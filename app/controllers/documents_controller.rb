@@ -65,8 +65,9 @@ class DocumentsController < ApplicationController
     ).save!
   end
 
-  def fiscal_sponsorship_letter 
+  def fiscal_sponsorship_letter
     @documents = @event.documents.includes(:user)
+    puts @documents
     authorize @documents
 
     respond_to do |format|

@@ -4,7 +4,7 @@ class DocumentDownload < ApplicationRecord
 
   validates_presence_of :ip_address
 
-  def self.from_request(request, params={})
+  def self.from_request(request, params = {})
     DocumentDownload.new(
       ip_address: request.remote_ip,
       user_agent: request.user_agent,
