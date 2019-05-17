@@ -5,37 +5,21 @@
   <style>
     .container {
       font-family: 'IBM Plex Sans', sans-serif;
-      font-size: 15pt;
-    }
-
-    .letter {
-      margin-bottom: 15;
-      font-size: 15pt;
-      line-height: 1.5;
+      font-size: 14pt;
+      line-height: 1.25;
+      position: relative;
     }
     
     a {
       color: #07c;
-    }
-
-    .margin-zero {
-      margin: 0;
-    }
-
-    .bottom {
-      position: fixed;
-      bottom: 5px;
     }
   </style>
 </head>
 <body>
   <div class="container">
     <br />
-    <div class="row">
-      <div class="seven columns">
-        <%= image_tag wicked_pdf_asset_base64('hackclublogo.png') %>
-      </div>
-      <div class="five columns" style="text-align: right;">
+    <div>
+      <div style="float: right;">
         <p>
           <b>Hack Club</b><br />
           8605 Santa Monica Boulevard #86294<br />
@@ -43,13 +27,21 @@
           team@hackclub.com
         </p>
       </div>
+      <div style="">
+        <%= image_tag wicked_pdf_asset_base64('hackclublogo.png') %>
+      </div>
     </div>
-    <br />
-    <p class="margin-zero" style="font-size: 15pt;"><%= Time.now.strftime("%m/%d/%Y") %></p>
-    <br />
-    <p style="font-weight: bold; font-size: 18pt;"><%= @event.name %> Subsidary Confirmation</p>
 
-    <div class="letter">
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <p style="margin-top: 2rem;"><%= Time.now.strftime("%m/%d/%Y") %></p>
+    <br />
+    <p><b><%= @event.name %> Subsidary Confirmation</b></p>
+
+    <div style="line-height: 1.5;">
       <p>To whom it may concern,</p>
       <p>
         This letter is to verify that The Hack Foundation (d.b.a. Hack Club) is
@@ -69,8 +61,9 @@
         <a href="mailto:michael@hackclub.com">michael@hackclub.com</a>.
       </p>
     </div>
+
     <br />
-    <p class="margin-zero">
+    <p>
       Best,
     </p>
     <%= image_tag wicked_pdf_asset_base64('zachlattasignature.png') %>
@@ -81,15 +74,10 @@
     </p>
     <br />
     <br />
-    <p
-      class="margin-zero"
-      style="font-size: 14pt; font-weight: bold; color: #434343; position: fixed; bottom: 48px"
-    >
+    <p style="font-size: 14pt; font-weight: bold; color: #434343; position: fixed; bottom: 48px;">
       By the students, for the students.
     </p>
-    <p
-      style="font-size: 12pt; color: #666666; position: fixed; bottom: 0px"
-    >
+    <p style="font-size: 12pt; color: #666666; position: fixed; bottom: 0px;">
       Hack Club is a 501(c)(3) public charity. Our nonprofit EIN is 81-2908499.
     </p>
   </div>
