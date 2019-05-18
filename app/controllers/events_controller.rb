@@ -101,7 +101,8 @@ class EventsController < ApplicationController
       :sponsorship_fee,
       :expected_budget,
       :emburse_department_id,
-      :point_of_contact_id
+      :point_of_contact_id,
+      :slug
     )
 
     # Expected budget is in cents on the backend, but dollars on the frontend
@@ -112,9 +113,8 @@ class EventsController < ApplicationController
 
   def user_event_params
     params.require(:event).permit(
-      :start,
-      :end,
-      :address
+      :address,
+      :slug
     )
   end
 end
