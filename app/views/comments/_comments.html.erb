@@ -16,7 +16,7 @@
     <div class="my2">
       <%= creator_bar comment %>
       <div class="card">
-        <%= auto_link comment.content %>
+        <%== MarkdownService.instance.renderer.render comment.content %>
         <% if comment.file.attached? %>
           <%= link_to '📎', url_for(comment.file), target: '_blank' %>
         <% end %>
