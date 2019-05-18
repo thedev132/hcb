@@ -47,11 +47,6 @@
     </div>
 
     <div class="field">
-      <%= form.label :has_fiscal_sponsorship_document %>
-      <%= form.check_box :has_fiscal_sponsorship_document %>
-    </div>
-
-    <div class="field">
       <%= form.label :emburse_department_id %>
       <%= form.text_field :emburse_department_id %>
     </div>
@@ -60,6 +55,14 @@
       <%= form.label :point_of_contact_id %>
       <%= form.collection_select :point_of_contact_id, User.admin.all, :id, :email %>
     </div>
+
+    <div class="field">
+      <%= form.label :has_fiscal_sponsorship_document do %>
+        <%= form.check_box :has_fiscal_sponsorship_document %>
+        Display Fiscal Sponsorship Confirmation in Documents tab?
+      <% end %>
+    </div>
+
   <% end %>
 
   <div class="actions">

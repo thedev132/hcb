@@ -27,7 +27,7 @@
     <% if @event.has_fiscal_sponsorship_document %>
       <%= link_to event_fiscal_sponsorship_letter_path(event_id: @event.slug, format: "pdf") do %>
       <li class="card">
-        <strong class="h3 block">Fiscal Sponsorship Letter</strong>
+        <strong class="h3 block">Fiscal Sponsorship Confirmation</strong>
         <%= user_mention @event.point_of_contact %>
       </li>
       <% end %>
