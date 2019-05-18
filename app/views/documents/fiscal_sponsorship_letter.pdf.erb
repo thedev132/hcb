@@ -15,27 +15,18 @@
   </style>
 </head>
 <body>
+  <br />
   <div class="container">
-    <br />
-    <div>
-      <div style="float: right;">
-        <p>
-          <b>Hack Club</b><br />
-          8605 Santa Monica Boulevard #86294<br />
-          West Hollywood, CA 90069<br />
-          team@hackclub.com
-        </p>
-      </div>
-      <%= image_tag wicked_pdf_asset_base64('hackclublogo.png') %>
+    <%= image_tag wicked_pdf_asset_base64('hackclublogo.png') %>
+    <div style="position: fixed; right: 0; top: 5pt;">
+      <b>Hack Club</b><br />
+      8605 Santa Monica Boulevard #86294<br />
+      West Hollywood, CA 90069<br />
+      team@hackclub.com
     </div>
 
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <p style="margin-top: 2rem;"><%= Time.now.strftime("%B #{Time.now.day.ordinalize}, %Y") %></p>
-    <br />
+    <br /><br /><br /><br /><br />
+    <p><%= Time.now.strftime("%B #{Time.now.day.ordinalize}, %Y") %></p>
     <p><b><%= @event.name %> Subsidary Confirmation</b></p>
 
     <div style="line-height: 1.5;">
