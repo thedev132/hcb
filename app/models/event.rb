@@ -31,7 +31,7 @@ class Event < ApplicationRecord
   validate :point_of_contact_is_admin
 
   validates :name, :start, :end, :address, :sponsorship_fee, presence: true
-  validates :slug, uniqueness: true
+  validates :slug, uniqueness: { message: "^This URL is already taken!" }
 
   def emburse_department_path
     "https://app.emburse.com/budgets/#{emburse_department_id}"

@@ -89,6 +89,9 @@ class EventsController < ApplicationController
   # Use callbacks to share common setup or constraints between actions.
   def set_event
     @event = Event.find(params[:id])
+  rescue ActiveRecord::RecordNotFound
+      flash[:error] = "We couldn't find that event!"
+      redirect_to root_path
   end
 
   # Only allow a trusted parameter "white list" through.
