@@ -71,7 +71,7 @@ class DocumentsController < ApplicationController
 
     respond_to do |format|
       format.pdf do
-        render pdf: "fiscal_sponsorship_letter", page_height: "11in", page_width: "8.5in"
+        render pdf: 'fiscal_sponsorship_letter', page_height: '11in', page_width: '8.5in'
       end
     end
   end
