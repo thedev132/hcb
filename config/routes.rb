@@ -77,6 +77,11 @@ Rails.application.routes.draw do
     resources :comments
   end
 
+  resources :fee_reimbursements, only: [ :index, :show, :edit, :update ] do
+    post 'mark_as_processed'
+    resources :comments
+  end
+
   resources :card_requests, path: 'card_requests' do
     post 'reject'
     post 'cancel'

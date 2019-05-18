@@ -50,6 +50,7 @@ class LoadCardRequest < ApplicationRecord
     return 'completed' if LoadCardRequest.completed.include?(self)
     return 'canceled' if canceled_at.present?
     return 'rejected' if rejected_at.present?
+
     'under review'
   end
 
@@ -59,6 +60,7 @@ class LoadCardRequest < ApplicationRecord
     return :success if s == :completed
     return :muted if s == :canceled
     return :error if s == :rejected
+
     :pending
   end
 

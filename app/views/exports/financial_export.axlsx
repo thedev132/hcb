@@ -29,11 +29,11 @@ wb.add_worksheet(name: "HC Bank Export - #{date}") do |sheet|
 
     event.transactions.order(date: :asc).find_each do |t|
       fee_charged = if t.fee_relationship.fee_applies
-        t.fee_relationship.fee_amount
-      elsif t.fee_relationship.is_fee_payment
-        t.amount
-      else
-        0
+                      t.fee_relationship.fee_amount
+                    elsif t.fee_relationship.is_fee_payment
+                      t.amount
+                    else
+                      0
       end
 
       running_balance += t.amount

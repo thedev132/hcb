@@ -1,0 +1,19 @@
+<tr
+  class="transaction--<%= transaction.amount.negative? ? 'negative' : 'positive' %>"
+  id="retrofees__transaction"
+  data-behavior="filterbar_row"
+  data-filter="<%= transaction.filter_data.to_json %>">
+  <td>
+    <%= transaction.date %>
+  </td>
+  <td id="retrofees__promo-modal-trigger" class="pointer bold">
+    🎉 Hack Club Bank Gift 🎉
+  </td>
+  <td></td>
+  <td>
+    <%= render_money transaction.amount %>
+  </td>
+  <td>
+    <%= link_to 'Details', transaction, class: 'underline', id: 'promo-modal' %>
+  </td>
+</tr>

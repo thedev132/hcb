@@ -70,9 +70,12 @@
   <h2>Invoice details</h2>
 
   <%= form.label :item_amount, 'Amount' %>
-  <div class="field flex items-center">
-    <span class="bold muted" style="width: 1rem;">$</span>
-    <%= form.number_field :item_amount, value: (invoice.item_amount.nil? ? nil : (invoice.item_amount.to_f / 100)), placeholder: '500.00', step: 0.01, class: 'bold' %>
+  <div class="field">
+    <div class="flex items-center">
+      <span class="bold muted" style="width: 1rem;">$</span>
+      <%= form.number_field :item_amount, value: (invoice.item_amount.nil? ? nil : (invoice.item_amount.to_f / 100)), placeholder: '500.00', step: 0.01 %>
+    </div>
+    <span class="muted" data-behavior="amount-preview" data-fee="<%= sponsor.event.sponsorship_fee %>"></span>
   </div>
 
   <div class="field">

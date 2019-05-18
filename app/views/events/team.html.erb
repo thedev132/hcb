@@ -22,10 +22,10 @@
         <% end %>
       </p>
       <% admin_tools('mr2') do %>
-        <%= pop_icon_to 'controls', edit_user_path(position.user.id) if position.user == current_user || admin_signed_in? %>
+        <%= pop_icon_to 'controls', edit_user_path(position.user.slug) if position.user == current_user || admin_signed_in? %>
       <% end %>
       <%= pop_icon_to 'member-remove', new_organizer_remove_path(organizer_id: position.id), class: 'error' unless position.user == current_user %>
-      <%= pop_icon_to 'controls', edit_user_path(position.user.id), class: 'mr2' if position.user == current_user && !admin_signed_in? %>
+      <%= pop_icon_to 'controls', edit_user_path(position.user.slug), class: 'mr2' if position.user == current_user && !admin_signed_in? %>
     </div>
   <% end %>
 <% else %>

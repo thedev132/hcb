@@ -15,6 +15,7 @@ class Invoice < ApplicationRecord
   belongs_to :creator, class_name: 'User'
   belongs_to :manually_marked_as_paid_user, class_name: 'User', required: false
   belongs_to :payout, class_name: 'InvoicePayout', required: false
+  belongs_to :fee_reimbursement, required: false
 
   has_one_attached :manually_marked_as_paid_attachment
 
@@ -33,17 +34,17 @@ class Invoice < ApplicationRecord
   # all manually_marked_as_paid_... fields must be present all together or not
   # present at all
   validates_presence_of :manually_marked_as_paid_user, :manually_marked_as_paid_reason,
-    if: -> { !self.manually_marked_as_paid_at.nil? }
+                        if: -> { !self.manually_marked_as_paid_at.nil? }
   validates_absence_of :manually_marked_as_paid_user, :manually_marked_as_paid_reason,
-    if: -> { self.manually_marked_as_paid_at.nil? }
+                       if: -> { self.manually_marked_as_paid_at.nil? }
 
   # all payout_creation... fields must be present all together or not at all
   validates_presence_of :payout_creation_queued_for,
-    :payout_creation_queued_job_id, :payout_creation_balance_available_at,
-    if: -> { !self.payout_creation_queued_at.nil? }
+                        :payout_creation_queued_job_id, :payout_creation_balance_available_at,
+                        if: -> { !self.payout_creation_queued_at.nil? }
   validates_absence_of :payout_creation_queued_for,
-    :payout_creation_queued_job_id, :payout_creation_balance_available_at,
-    if: -> { self.payout_creation_queued_at.nil? }
+                       :payout_creation_queued_job_id, :payout_creation_balance_available_at,
+                       if: -> { self.payout_creation_queued_at.nil? }
 
   validate :due_date_cannot_be_in_past, on: :create
 
@@ -56,10 +57,15 @@ class Invoice < ApplicationRecord
   after_update :send_payment_notification_if_needed
 
   def state
-    if paid?
+    if ((self&.payout&.t_transaction && !self&.fee_reimbursement) ||
+        (self&.payout&.t_transaction && self&.fee_reimbursement&.t_transaction) ||
+        self.manually_marked_as_paid?
+        )
       :success
+    elsif paid?
+      :info
     elsif due_date < Time.current
-      :pending
+      :error
     elsif due_date < 3.days.from_now
       :warning
     else
@@ -68,8 +74,13 @@ class Invoice < ApplicationRecord
   end
 
   def state_text
-    if paid?
+    if ((self&.payout&.t_transaction && !self&.fee_reimbursement) ||
+        (self&.payout&.t_transaction && self&.fee_reimbursement&.t_transaction) ||
+        self.manually_marked_as_paid?
+        )
       'Paid'
+    elsif paid?
+      'Pending'
     elsif due_date < Time.current
       'Overdue'
     elsif due_date < 3.days.from_now
@@ -77,6 +88,10 @@ class Invoice < ApplicationRecord
     else
       'Sent'
     end
+  end
+
+  def state_icon
+    'checkmark' if state_text == 'Paid'
   end
 
   def filter_data
@@ -92,7 +107,7 @@ class Invoice < ApplicationRecord
   # Manually mark this invoice as paid (probably in the case of a physical
   # check being sent to pay it). This marks the corresponding payment on Stripe
   # as paid and stores some metadata about why it was marked as paid.
-  def manually_mark_as_paid(user_who_did_it, reason_for_manual_payment, attachment=nil)
+  def manually_mark_as_paid(user_who_did_it, reason_for_manual_payment, attachment = nil)
     self.manually_marked_as_paid_at = Time.current
     self.manually_marked_as_paid_user = user_who_did_it
     self.manually_marked_as_paid_reason = reason_for_manual_payment
@@ -144,7 +159,7 @@ class Invoice < ApplicationRecord
   end
 
   def create_payout!
-    inv = StripeService::Invoice.retrieve(id: stripe_invoice_id, expand: ['charge.balance_transaction'])		
+    inv = StripeService::Invoice.retrieve(id: stripe_invoice_id, expand: ['charge.balance_transaction'])
 
     raise StandardError, 'Funds not yet available' unless Time.current.to_i > inv.charge.balance_transaction.available_on
 
@@ -153,31 +168,65 @@ class Invoice < ApplicationRecord
       invoice: self
     )
 
+    self.fee_reimbursement = FeeReimbursement.new(
+      invoice: self
+    )
+
+    self.fee_reimbursement.save
+
+    # if a transfer takes longer than 5 days something is probably wrong. so send an email
+    fee_reimbursement_job = SendUnmatchedFeeReimbursementEmailJob.set(wait_until: DateTime.now + 5.days).perform_later(self.fee_reimbursement)
+    self.fee_reimbursement.mailer_queued_job_id = fee_reimbursement_job.provider_job_id
+
+    self.fee_reimbursement.save
+
     self.save!
   end
 
   def set_fields_from_stripe_invoice(inv)
-    self.amount_due = inv.amount_due,
+    self.amount_due = inv.amount_due
     self.amount_paid = inv.amount_paid
     self.amount_remaining = inv.amount_remaining
     self.attempt_count = inv.attempt_count
     self.attempted = inv.attempted
-    self.stripe_charge_id = inv.charge
     self.auto_advance = inv.auto_advance
-    self.memo = inv.description
     self.due_date = Time.at(inv.due_date).to_datetime # convert from unixtime
     self.ending_balance = inv.ending_balance
     self.finalized_at = inv.finalized_at
     self.hosted_invoice_url = inv.hosted_invoice_url
     self.invoice_pdf = inv.invoice_pdf
+    self.livemode = inv.livemode
+    self.memo = inv.description
     self.number = inv.number
     self.starting_balance = inv.starting_balance
     self.statement_descriptor = inv.statement_descriptor
+    self.status = inv.status
+    self.stripe_charge_id = inv&.charge&.id
     self.subtotal = inv.subtotal
     self.tax = inv.tax
     self.tax_percent = inv.tax_percent
     self.total = inv.total
-    self.status = inv.status
+    # https://stripe.com/docs/api/charges/object#charge_object-payment_method_details
+    self.payment_method_type = type = inv&.charge&.payment_method_details&.type
+    return unless self.payment_method_type
+    details = inv&.charge&.payment_method_details[self.payment_method_type]
+    return unless details
+    if type == 'card'
+      self.payment_method_card_brand = details.brand
+      self.payment_method_card_checks_address_line1_check = details.checks.address_line1_check
+      self.payment_method_card_checks_address_postal_code_check = details.checks.address_postal_code_check
+      self.payment_method_card_checks_cvc_check = details.checks.cvc_check
+      self.payment_method_card_country = details.country
+      self.payment_method_card_exp_month = details.exp_month
+      self.payment_method_card_exp_year = details.exp_year
+      self.payment_method_card_funding = details.funding
+      self.payment_method_card_last4 = details.last4
+    elsif type == 'ach_credit_transfer'
+      self.payment_method_ach_credit_transfer_bank_name = details.bank_name
+      self.payment_method_ach_credit_transfer_routing_number = details.routing_number
+      self.payment_method_ach_credit_transfer_account_number = details.account_number
+      self.payment_method_ach_credit_transfer_swift_code = details.swift_code
+    end
   end
 
   def stripe_dashboard_url
@@ -194,6 +243,10 @@ class Invoice < ApplicationRecord
 
   def event
     self.sponsor.event
+  end
+
+  def fee_reimbursed?
+    !fee_reimbursement.nil?
   end
 
   private
@@ -238,7 +291,7 @@ class Invoice < ApplicationRecord
 
     if was != 'paid' && now == 'paid'
       # send special email on first invoice paid
-      if self.sponsor.event.invoices.select { |i| i.status == 'paid'}.count == 1
+      if self.sponsor.event.invoices.select { |i| i.status == 'paid' }.count == 1
         InvoiceMailer.with(invoice: self).first_payment_notification.deliver_later
         return
       end

@@ -1,5 +1,5 @@
 class BankAccountsController < ApplicationController
-  before_action :set_link_vars, only: [ :new, :reauthenticate ]
+  before_action :set_link_vars, only: [:new, :reauthenticate]
 
   def new
     authorize BankAccount
@@ -48,6 +48,6 @@ class BankAccountsController < ApplicationController
     @client_name = PlaidService.instance.client_name
     @link_env = PlaidService.instance.env
     @public_key = PlaidService.instance.public_key
-    @product = [ 'transactions' ].to_json.html_safe
+    @product = ['transactions'].to_json.html_safe
   end
 end

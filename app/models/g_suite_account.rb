@@ -17,6 +17,7 @@ class GSuiteAccount < ApplicationRecord
     return 'rejected' if rejected_at.present?
     return 'accepted' if accepted_at.present?
     return 'verified' if verified_at.present?
+
     'pending'
   end
 
@@ -51,7 +52,7 @@ class GSuiteAccount < ApplicationRecord
       creator_email_params = {
         recipient: creator.email,
         first_name: first_name,
-        last_name: last_name 
+        last_name: last_name
       }
 
       if initial_password_before_last_save.nil?

@@ -8,7 +8,7 @@ module ApplicationHelper
     render_money(amount, unit).remove('.00')
   end
 
-  def render_percentage(decimal, params={})
+  def render_percentage(decimal, params = {})
     precision = params[:precision] || 2
     number_to_percentage(decimal * 100, precision: precision)
   end
@@ -48,7 +48,7 @@ module ApplicationHelper
     auto_link(text, html: { target: '_blank' })
   end
 
-  def debug_obj(object)
+  def debug_obj(item)
     content_tag :pre, pp(item.attributes.to_yaml)
   end
 
@@ -68,12 +68,20 @@ module ApplicationHelper
 
   def filterbar_item(label, name, selected = false)
     content_tag :a, label, class: 'filterbar__item',
-    tabindex: 0, role: 'tab', 'aria-selected': selected,
-    data: { name: name.to_s, behavior: 'filterbar_item' }
+                           tabindex: 0, role: 'tab', 'aria-selected': selected,
+                           data: { name: name.to_s, behavior: 'filterbar_item' }
+  end
+
+  def format_date(date)
+    date.strftime '%b %e, %Y'
+  end
+
+  def format_datetime(datetime)
+    datetime.strftime '%b %e, %Y, %l:%M %p'
   end
 
   def home_action_size
-    @home_size.to_i > 48 ? 36 : 28 
+    @home_size.to_i > 48 ? 36 : 28
   end
 
   def page_hide_home

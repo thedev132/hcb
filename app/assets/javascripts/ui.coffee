@@ -3,8 +3,17 @@ $(document).ready ->
   BK.styleDark(true) if localStorage.getItem('dark') is 'true'
 
 $(document).on 'turbolinks:load', ->
-  $(document).on 'click', '[data-behavior~=toggle_theme]', ->
+  $('[data-behavior~=toggle_theme]').on 'click', ->
     BK.toggleDark()
+
+  window.updateChangelogTooltip = ->
+    target = $('[data-behavior~=toggle_changelog]')
+    if $('#HW_frame_cont.HW_visible').length > 0
+      target.attr 'aria-label', ''
+    else 
+      target.attr 'aria-label', 'Show changes'
+
+  $(document).on 'mouseover', '[data-behavior~=toggle_changelog]', updateChangelogTooltip
 
   hankIndex = 0
   $(document).on 'keydown', (e) ->
@@ -33,12 +42,17 @@ $(document).on 'turbolinks:load', ->
 
   # pass in function for each record
   filterRecords = (valid) ->
-    records = BK.s('filterbar_row').hide()
+    records = BK.s('filterbar_row').not('[data-behavior~=filterbar_row_exclude]')
+    BK.s('filterbar_row_exclude').hide()
+    records.hide()
     BK.s('filterbar_blankslate').hide()
     acc = 0
     records.each ->
       if valid(this)
-        $(this).show()
+        $(this).show(
+          "slow", ->
+            $(this).css("display", "table-row")
+        )
         acc++
     if acc is 0
       BK.s('filterbar_blankslate').fadeIn 'fast'
@@ -62,6 +76,24 @@ $(document).on 'turbolinks:load', ->
     value = $(this).val().toLowerCase()
     filterRecords (record) ->
       $(record).text().toLowerCase().indexOf(value) > -1
+      $(record).attr 'aria-expanded', 'false'
+  
+  $(document).on 'click', '[data-behavior~=row_expand_trigger]', ->
+    button = $(this)
+    id = button.data 'id'
+    targets = BK.s('expandable_row').filter("[data-id=#{id}]")
+    parent = BK.s('parent_expandable_row').filter("[data-id=#{id}]")
+    expanded = button.data 'expanded'
+    if expanded
+      targets.removeClass('is-expanded')
+      parent.removeClass('is-expanded')
+      button.text 'Expand'
+      button.data 'expanded', false
+    else
+      targets.addClass('is-expanded')
+      parent.addClass('is-expanded')
+      button.text 'Retract'
+      button.data 'expanded', true
 
   $(document).on 'submit', '[data-behavior~=login]', ->
     val = $('input[name=email]').val()
@@ -93,6 +125,29 @@ $(document).on 'turbolinks:load', ->
 
     fields.forEach (field) ->
       $("input#invoice_sponsor_attributes_#{field}").val sponsor[field]
+
+  updateAmountPreview = ->
+    amount = $('[name="invoice[item_amount]"]').val()
+    previousAmount = BK.s('amount-preview').data('amount') || 0
+    if amount == previousAmount
+      return 
+    if amount > 0
+      feePercent = BK.s('amount-preview').data 'fee'
+      lFeePercent = Math.round(feePercent * 100)
+      lAmount = BK.money amount * 100
+      feeAmount = BK.money feePercent * amount * 100
+      revenue = BK.money (1 - feePercent) * amount * 100
+      BK.s('amount-preview').text "#{lAmount} - #{feeAmount} (#{lFeePercent}% Bank fee) = #{revenue}"
+      BK.s('amount-preview').show()
+      BK.s('amount-preview').data 'amount', amount
+    else
+      BK.s('amount-preview').hide()
+      BK.s('amount-preview').data 'amount', 0
+
+  $(document).on 'keyup', '[name="invoice[item_amount]"]', ->
+    updateAmountPreview()
+  $(document).on 'change', '[name="invoice[item_amount]"]', ->
+    updateAmountPreview()
 
   $(document).on 'keydown', '[data-behavior~=autosize]', ->
     t = this

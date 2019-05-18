@@ -1,5 +1,5 @@
 class EmburseTransactionsController < ApplicationController
-  before_action :set_emburse_transaction, only: [ :edit, :update ]
+  before_action :set_emburse_transaction, only: [:edit, :update]
 
   def index
     authorize EmburseTransaction

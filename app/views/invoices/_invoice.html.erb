@@ -1,0 +1,75 @@
+<% transaction = invoice.payout.t_transaction %>
+<% refund = invoice&.fee_reimbursement %>
+<% refund_t = refund&.t_transaction %>
+<% @invoice = invoice %>
+<tr
+  class="transaction--positive invoice--expanded-parent"
+  data-behavior="filterbar_row parent_expandable_row"
+  data-filter="<%= transaction.filter_data.to_json %>"
+  data-id="<%= transaction.id %>"
+  aria-expanded="false"
+>
+  <td>
+    <%= transaction.date %>
+  </td>
+  <td>
+    Invoice to <%= invoice.sponsor.name %> for <%= render_money invoice.item_amount %>
+  </td>
+  <td>
+    <%= link_to 'See Invoice', invoice, class: 'underline' %>
+  </td>
+  <td>
+    <%= render_money transaction.amount + refund_t&.amount.to_i %>
+  </td>
+  <td>
+    <% if refund %>
+      <span class="underline pointer no-select" data-id="<%= transaction.id %>" data-expanded="false" data-behavior="row_expand_trigger">Expand</span>
+    <% else %>
+      <%= link_to 'Details', transaction, class: 'underline' %>
+    <% end %>
+  </td>
+</tr>
+<% if refund %>
+<tr class="transaction--positive invoice--expanded"
+data-behavior="expandable_row filterbar_row"
+data-id="<%= transaction.id %>"
+data-filter="<%= transaction.filter_data.to_json %>"
+>
+  <td>
+    <%= transaction.date %>
+  </td>
+  <td>
+    <%= transaction.display_name %>
+  </td>
+  <td></td>
+  <td>
+    <%= render_money transaction.amount %>
+  </td>
+  <td>
+    <%= link_to 'Details', transaction, class: 'underline' %>
+  </td>
+</tr>
+<tr class="transaction--positive invoice--expanded<%= ' muted italic' unless refund_t %>"
+data-behavior="expandable_row filterbar_row"
+data-id="<%= transaction.id %>"
+data-filter="<%= transaction.filter_data.to_json %>"
+>
+  <td>
+    <%= refund_t ? refund_t.date : '(pending)' %>
+  </td>
+  <td>
+    <%= refund_t ? refund_t.display_name : 'Payment processor fee refund' %>
+  </td>
+  <td></td>
+  <td>
+    <%= invoice_payment_processor_fee %>
+  </td>
+  <td>
+    <% if refund_t %>
+      <%= link_to 'Details', refund_t, class: 'underline' %>
+    <% else %>
+      –
+    <% end %>
+  </td>
+</tr>
+<% end %>

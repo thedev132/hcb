@@ -58,10 +58,12 @@ class SyncTransactionsJob < ApplicationJob
             pending_transaction_id: t.pending_transaction_id
           )
 
+          check_fee_reimbursement(tr)
+
           state_map[tr.id] = :processed
         end
 
-        unprocessed = state_map.select { |k, v| v == :unprocessed}.map { |k, v| k }
+        unprocessed = state_map.select { |k, v| v == :unprocessed }.map { |k, v| k }
 
         # for transactions that were in our db, but were not found in plaid,
         # delete them
@@ -74,6 +76,25 @@ class SyncTransactionsJob < ApplicationJob
 
     if repeat
       self.class.set(wait: RUN_EVERY).perform_later(true)
+    end
+  end
+
+  def check_fee_reimbursement(transaction)
+    FeeReimbursement.pending.each do |reimbursement|
+      # match transaction to event so less work for Michael!
+      if (transaction.name.start_with? reimbursement.transaction_memo)
+        # Delay matching transactions until after an invoice payout transaction
+        # has shown up
+        return unless reimbursement.invoice&.payout&.t_transaction
+        reimbursement.t_transaction = transaction
+        transaction.fee_relationship = FeeRelationship.new(
+          event_id: reimbursement.invoice.event.id,
+          fee_applies: true,
+          fee_amount: reimbursement.calculate_fee_amount
+        )
+        transaction.display_name = "Fee refund from #{reimbursement.invoice.sponsor.name} invoice"
+        transaction.save
+      end
     end
   end
 

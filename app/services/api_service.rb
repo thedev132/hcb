@@ -3,7 +3,7 @@ class ApiService
 
   class UnauthorizedError < StandardError; end
 
-  def self.req(method, path, params, access_token=nil, raise_on_unauthorized: true)
+  def self.req(method, path, params, access_token = nil, raise_on_unauthorized: true)
     conn = Faraday.new(url: BASE_URL)
 
     resp = conn.send(method) do |req|
@@ -38,6 +38,6 @@ class ApiService
   end
 
   def self.get_user(user_id, access_token)
-    req(:get, "/v1/users/#{user_id}", nil, access_token) 
+    req(:get, "/v1/users/#{user_id}", nil, access_token)
   end
 end
