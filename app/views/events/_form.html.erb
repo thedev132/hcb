@@ -20,7 +20,7 @@
     <%= form.label :slug, 'URL' %>    
     <div class="flex items-center">
       <span class="slate">bank.hackclub.com/</span>
-      <%= form.text_field :slug %>
+      <%= form.text_field :slug, placeholder: event.name.parameterize %>
     </div>
          <p class="flex items-center warning line-height-3 mb3">
       <%= inline_icon 'important', size: 32, class: 'mr1' %> This will break all bookmarks you may have & also force anyone who is currently using your event on Bank to restart whatever they were doing from the homepage. Proceed carefully!
