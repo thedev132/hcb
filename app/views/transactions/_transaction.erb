@@ -1,0 +1,18 @@
+<tr
+  class="transaction--<%= transaction.amount.negative? ? 'negative' : 'positive' %>"
+  data-behavior="filterbar_row"
+  data-filter="<%= transaction.filter_data.to_json %>">
+  <td>
+    <%= transaction.date %>
+  </td>
+  <td>
+    <%= transaction.display_name %>
+  </td>
+  <td></td>
+  <td>
+    <%= render_money transaction.amount %>
+  </td>
+  <td>
+    <%= link_to 'Details', transaction, class: 'underline' %>
+  </td>
+</tr>

@@ -3,10 +3,19 @@ class SyncInvoicesJob < ApplicationJob
 
   def perform(repeat = false)
     Invoice.find_each do |i|
+
+      if i.livemode && !Rails.env.production?
+        puts "(Development) Skipping invoice ##{i.id}: accessing production invoices with development keys will fail"
+        next
+      end
+
       i.transaction do
         was_paid = i.paid?
 
-        inv = StripeService::Invoice.retrieve(i.stripe_invoice_id)
+        inv = StripeService::Invoice.retrieve({
+          id: i.stripe_invoice_id,
+          expand: ['charge.payment_method_details']
+        })
         i.set_fields_from_stripe_invoice(inv)
         i.save!
 

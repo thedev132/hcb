@@ -10,18 +10,18 @@ module UsersHelper
 
   def avatar_for(user, size = 24, options = {})
     image_tag gravatar_url(user.email, user.initials, user.id, size * 2),
-      options.merge({ alt: user.name, width: size, height: size, class: "circle #{options[:class]}" })
+              options.merge({ alt: user.name, width: size, height: size, class: "circle #{options[:class]}" })
   end
 
   def user_mention(user, options = {})
     avi = avatar_for user
     name = content_tag :span, user.name
     if user.admin?
-      bolt = inline_icon 'admin-badge', size: 20 
+      bolt = inline_icon 'admin-badge', size: 20
       content_tag :span,
-        avi + bolt + name,
-        class: "mention mention--admin inline-flex items-center tooltipped tooltipped--n #{options[:class]}",
-        'aria-label': "#{user.name.split(' ').first} is an admin"
+                  avi + bolt + name,
+                  class: "mention mention--admin inline-flex items-center tooltipped tooltipped--n #{options[:class]}",
+                  'aria-label': "#{user.name.split(' ').first} is an admin"
     else
       content_tag :span, avi + name, class: "mention inline-flex items-center #{options[:class]}"
     end
@@ -29,6 +29,7 @@ module UsersHelper
 
   def admin_tools(class_name = '', &block)
     return unless current_user.admin?
+
     concat("<div class='admin-tools #{class_name}'>".html_safe)
     yield
     concat('</div>'.html_safe)

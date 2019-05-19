@@ -1,14 +1,17 @@
+<% title 'All Sponsors' %>
+<% page_sm %>
+
 <h1 class="heading">
   Sponsors
   <%= link_to 'New Sponsor', new_sponsor_path, class: 'btn bg-success' %>
 </h1>
 
-<ul class="list">
+<ul class="list list--row">
   <% @sponsors.each do |s| %>
     <%= link_to s do %>
-      <li class="transaction--<%= s.status %>">
-        <strong><%= "#{s.event.name}: " if s.event %><%= s.name %></strong>
-        <span class="muted"><%= s.status_description %></span>
+      <li class="tooltipped tooltipped--w" aria-label="<%= s.status_description %>">
+        <%= status_badge s.status %>
+        <strong class="ml1"><%= "#{s.event.name}: " if s.event %><%= s.name %></strong>
       </li>
     <% end %>
   <% end %>

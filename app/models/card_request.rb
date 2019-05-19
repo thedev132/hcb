@@ -21,6 +21,7 @@ class CardRequest < ApplicationRecord
     return 'rejected' if rejected_at.present?
     return 'canceled' if canceled_at.present?
     return 'accepted' if accepted_at.present?
+
     'under review'
   end
 
@@ -29,6 +30,7 @@ class CardRequest < ApplicationRecord
     return :success if s == :accepted
     return :error if s == :rejected
     return :muted if s == :canceled
+
     :pending
   end
 

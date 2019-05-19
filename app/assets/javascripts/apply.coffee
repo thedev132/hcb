@@ -40,7 +40,7 @@ $(document).on 'turbolinks:load', ->
     $('[name="application[event_name]"]').val(BK.getQueryParams().name)
     $('[name="application[website]"]').val(BK.getQueryParams().url)
     $('[name="application[about_event]"]').val(BK.getQueryParams().about_event)
-    $('[name="application[expected_attendance]"]').val(BK.getQueryParams().expected_attendance)
+    $('[name="application[expected_attendees]"]').val(BK.getQueryParams().expected_attendees)
 
     # For fields with length requirements
     $(document).on 'keyup', '[data-behavior~=character_limit]', (e) ->
@@ -64,7 +64,7 @@ $(document).on 'turbolinks:load', ->
 
     # Handle change of birthday selector
     $(document).on 'change', '[data-behavior~=birthdate]', (e) ->
-      index = $(e.target).parent().parent().data 'index'
+      index = $(e.target).parent().parent().data('index') + 1
       parentToggle index
 
     # Remove team-member on application form

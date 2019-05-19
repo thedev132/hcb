@@ -4,7 +4,7 @@ class SponsorsController < ApplicationController
   # GET /sponsors
   def index
     authorize Sponsor
-    @sponsors = Sponsor.all.includes(:event)
+    @sponsors = Sponsor.all.includes(:event).order(created_at: :desc)
   end
 
   # GET /sponsors/1

@@ -73,3 +73,11 @@ BK.getQueryParams = () => {
   }
   return result
 }
+
+BK.money = (amount) => {
+  if (typeof amount !== 'number')
+    return '–'
+  const localAmount = Math.abs((Math.round(amount) / 100)).toLocaleString()
+  const sign = Math.sign(amount) === -1 ? '-' : ''
+  return `${sign}$${localAmount}`
+}

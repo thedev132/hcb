@@ -7,7 +7,7 @@ class Sponsor < ApplicationRecord
   has_many :invoices
 
   validates_presence_of :name, :contact_email, :address_line1, :address_city,
-    :address_state, :address_postal_code
+                        :address_state, :address_postal_code
 
   before_create :create_stripe_customer
   before_update :update_stripe_customer
@@ -17,15 +17,15 @@ class Sponsor < ApplicationRecord
   def status
     i = invoices.last
     if i.nil?
-      'neutral'
+      :muted
     elsif i.paid?
-      'positive'
+      :success
     elsif i.due_date < Time.current
-      'negative'
+      :error
     elsif i.due_date < 3.days.from_now
-      'warning'
+      :warning
     else
-      'neutral'
+      :muted
     end
   end
 
@@ -102,7 +102,7 @@ class Sponsor < ApplicationRecord
   def slug_candidates
     [
       :name,
-      [ :name, -> { self.event.name } ]
+      [:name, -> { self.event.name }]
     ]
   end
 end
