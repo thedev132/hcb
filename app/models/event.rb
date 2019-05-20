@@ -32,6 +32,11 @@ class Event < ApplicationRecord
 
   validates :name, :start, :end, :address, :sponsorship_fee, presence: true
 
+  def self.fees_pending
+    # minimum that you can move with SVB is $1
+    select { | event | event.fee_balance > 100 }
+  end
+
   def emburse_department_path
     "https://app.emburse.com/budgets/#{emburse_department_id}"
   end

@@ -82,6 +82,8 @@ Rails.application.routes.draw do
     resources :comments
   end
 
+  get 'fees_pending', to: 'static_pages#fees_pending'
+
   resources :card_requests, path: 'card_requests' do
     post 'reject'
     post 'cancel'

@@ -1,0 +1,22 @@
+<% title 'Events with Pending Fees' %>
+<h1>
+  Events with Pending Fees
+</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Amount</th>
+      <th>Event</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @fees_pending.each do |event| %>
+      <tr class="shade-yellow">
+        <td><%= render_money event.fee_balance %></td>
+        <td><%= link_to "#{event.name}", event %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
