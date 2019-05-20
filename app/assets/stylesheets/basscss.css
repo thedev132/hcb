@@ -17,12 +17,14 @@
 .h6 {
   font-size: 0.75rem;
 }
+/*
 .font-family-inherit {
   font-family: inherit;
 }
 .font-size-inherit {
   font-size: inherit;
 }
+*/
 .text-decoration-none {
   text-decoration: none;
 }
@@ -43,7 +45,7 @@
 }
 .caps {
   text-transform: uppercase;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.125em;
 }
 .left-align {
   text-align: left;
@@ -75,12 +77,10 @@
 .line-height-4 {
   line-height: 1.5;
 }
-.list-style-none {
-  list-style: none;
-}
 .underline {
   text-decoration: underline;
 }
+/*
 .no-select {
   -webkit-user-select: none;
   -moz-user-select: all;
@@ -90,6 +90,7 @@
 .no-wrap {
   white-space: nowrap;
 }
+*/
 .truncate {
   max-width: 100%;
   overflow: hidden;
@@ -158,9 +159,11 @@
 .max-width-4 {
   max-width: 64rem;
 }
+/*
 .border-box {
   box-sizing: border-box;
 }
+*/
 .align-baseline {
   vertical-align: baseline;
 }
@@ -241,6 +244,7 @@
   -ms-grid-row-align: baseline;
   align-items: baseline;
 }
+/*
 .items-stretch {
   -webkit-box-align: stretch;
   -webkit-align-items: stretch;
@@ -273,6 +277,7 @@
   -ms-flex-item-align: stretch;
   align-self: stretch;
 }
+*/
 .justify-start {
   -webkit-box-pack: start;
   -webkit-justify-content: flex-start;
@@ -348,6 +353,7 @@
   -ms-flex: none;
   flex: none;
 }
+/*
 .order-0 {
   -webkit-box-ordinal-group: 1;
   -webkit-order: 0;
@@ -378,6 +384,7 @@
   -ms-flex-order: 99999;
   order: 99999;
 }
+*/
 .relative {
   position: relative;
 }

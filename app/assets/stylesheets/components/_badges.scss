@@ -94,9 +94,6 @@ summary.pop {
 
 // User mentions, use the user_mention helper
 .mention {
-  -moz-user-select: none;
-  -ms-user-select: none;
-  -webkit-user-select: none;
   color: map-get($palette, muted);
   display: inline-block;
   font-weight: 500;
@@ -113,6 +110,9 @@ summary.pop {
     border-radius: 50%;
     overflow: hidden;
     user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-user-select: none;
   }
 
   svg {
