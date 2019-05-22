@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_11_050731) do
+ActiveRecord::Schema.define(version: 2019_05_22_215806) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -186,6 +186,7 @@ ActiveRecord::Schema.define(version: 2019_05_11_050731) do
     t.datetime "updated_at", null: false
     t.datetime "processed_at"
     t.string "mailer_queued_job_id"
+    t.index ["transaction_memo"], name: "index_fee_reimbursements_on_transaction_memo", unique: true
   end
 
   create_table "fee_relationships", force: :cascade do |t|
