@@ -6,11 +6,14 @@ class TransactionsController < ApplicationController
     @transactions = @event.transactions
     authorize @transactions
 
-    attributes = %w{date name display_name amount fee link}
+    attributes = %w{date display_name name amount fee link}
     attributes_to_currency = %w{amount fee}
 
     result = CSV.generate(headers: true) do |csv|
-      csv << attributes.map { |k| k.sub('_', ' ').capitalize}
+      csv << attributes.map { |k|
+        next 'Raw Name' if k == 'name'
+        k.sub('_', ' ').gsub(/\S+/, &:capitalize)
+      }
 
       @transactions.each do |transaction|
         csv << attributes.map do |attr|
