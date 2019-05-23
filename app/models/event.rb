@@ -32,6 +32,8 @@ class Event < ApplicationRecord
 
   validates :name, :start, :end, :address, :sponsorship_fee, presence: true
 
+  before_create :default_values
+
   def emburse_department_path
     "https://app.emburse.com/budgets/#{emburse_department_id}"
   end
@@ -122,6 +124,10 @@ class Event < ApplicationRecord
   end
 
   private
+
+  def default_values
+    self.has_fiscal_sponsorship_document = true
+  end
 
   def point_of_contact_is_admin
     return if self.point_of_contact&.admin?

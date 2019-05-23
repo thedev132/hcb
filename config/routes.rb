@@ -113,6 +113,7 @@ Rails.application.routes.draw do
     resources :g_suite_applications, only: [ :new, :create, :edit, :update ]
     resources :load_card_requests, only: [ :new ]
     resources :documents, only: [ :index ]
+    get 'fiscal_sponsorship_letter', to: 'documents#fiscal_sponsorship_letter'
     resources :invoices, only: [ :new, :create, :index ]
   end
 
