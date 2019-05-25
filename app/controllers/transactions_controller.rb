@@ -10,10 +10,10 @@ class TransactionsController < ApplicationController
     attributes_to_currency = %w{amount fee}
 
     result = CSV.generate(headers: true) do |csv|
-      csv << attributes.map { |k|
+      csv << attributes.map  do |k|
         next 'Raw Name' if k == 'name'
         k.sub('_', ' ').gsub(/\S+/, &:capitalize)
-      }
+      end
 
       @transactions.each do |transaction|
         csv << attributes.map do |attr|
