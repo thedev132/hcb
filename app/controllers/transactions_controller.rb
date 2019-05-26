@@ -87,6 +87,7 @@ class TransactionsController < ApplicationController
       :load_card_request_id,
       :invoice_payout_id,
       :display_name,
+      :fee_reimbursement_id,
       # WARNING: I (@zrl) think users might be able to mess with the fee
       # relationship ID on the clientside.
       fee_relationship_attributes: [
