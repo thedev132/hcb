@@ -8,3 +8,4 @@
 //= require ui
 //= require apply
 //= require fee_retro_promo
+//= require filterbar
