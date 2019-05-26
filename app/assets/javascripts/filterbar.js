@@ -79,6 +79,7 @@ $(document).on('turbolinks:load', function() {
         .toLowerCase()
 
       return filterRecords(function(record) {
+        $(record).attr('aria-expanded', 'false')
         return (
           $(record)
             .text()
