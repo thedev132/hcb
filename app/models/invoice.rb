@@ -1,6 +1,9 @@
 class Invoice < ApplicationRecord
   extend FriendlyId
 
+  scope :unarchived, -> { where(archived_at: nil) }
+  scope :archived, -> { where.not(archived_at: nil) }
+
   friendly_id :slug_text, use: :slugged
 
   # Raise this when attempting to do an operation with the associated Stripe
@@ -100,8 +103,17 @@ class Invoice < ApplicationRecord
       paid: paid?,
       unpaid: !paid?,
       upcoming: due_date > 3.days.from_now,
-      overdue: due_date < 3.days.from_now && !paid?
+      overdue: due_date < 3.days.from_now && !paid?,
+      archived: archived?
     }
+  end
+
+  def archive
+    self.archived_at = DateTime.now
+  end
+
+  def archived?
+    self.archived_at.present?
   end
 
   # Manually mark this invoice as paid (probably in the case of a physical

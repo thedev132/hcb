@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_16_014413) do
+ActiveRecord::Schema.define(version: 2019_05_26_155056) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -339,6 +339,7 @@ ActiveRecord::Schema.define(version: 2019_05_16_014413) do
     t.text "payment_method_ach_credit_transfer_routing_number"
     t.text "payment_method_ach_credit_transfer_account_number"
     t.text "payment_method_ach_credit_transfer_swift_code"
+    t.datetime "archived_at"
     t.index ["creator_id"], name: "index_invoices_on_creator_id"
     t.index ["fee_reimbursement_id"], name: "index_invoices_on_fee_reimbursement_id"
     t.index ["item_stripe_id"], name: "index_invoices_on_item_stripe_id", unique: true

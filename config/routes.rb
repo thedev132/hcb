@@ -60,6 +60,7 @@ Rails.application.routes.draw do
   resources :invoices, only: [ :show ] do
     get 'manual_payment'
     post 'manually_mark_as_paid'
+    post 'archive'
     resources :comments
   end
 

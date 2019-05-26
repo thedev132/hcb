@@ -76,6 +76,22 @@ class InvoicesController < ApplicationController
     end
   end
 
+  def archive
+    @invoice = Invoice.find(params[:invoice_id])
+
+    authorize @invoice
+
+    @invoice.archive
+
+    if @invoice.save
+      flash[:success] = 'Invoice has been archived!'
+      redirect_to @invoice
+    else
+      flash[:error] = 'Something went wrong while trying to archive this invoice!'
+      redirect_to @invoice
+    end
+  end
+
   private
 
   def filtered_params
