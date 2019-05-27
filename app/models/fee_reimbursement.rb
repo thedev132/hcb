@@ -49,8 +49,12 @@ class FeeReimbursement < ApplicationRecord
   end
 
   def default_values
-    self.transaction_memo ||= "FEE REFUND #{Time.now.to_i}"
+    self.transaction_memo ||= "FEE REFUND #{SecureRandom.hex(6)}"
     self.amount ||= self.invoice.item_amount - self.invoice.payout_creation_balance_net
+  end
+
+  def admin_dropdown_description
+    "#{ApplicationController.helpers.render_money self.amount} - #{self.transaction_memo}"
   end
 
   # this needs to exist for the case where amount of reimbursement is less than $1 and we need to do fee weirdness
