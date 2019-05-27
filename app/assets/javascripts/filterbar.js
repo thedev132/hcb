@@ -62,31 +62,40 @@ $(document).on('turbolinks:load', function() {
     return filterRecords(function(record) {
       // get the data from within the filter data attribute
       const data = $(record).data('filter')
+      if (name !== 'archived' && data['archived']) {
+        return false
+      }
       // return whatever the value is from within that json (either true or false)
       return data[name]
     })
   }) // returns true/false from currentFilter record in data-filter
 
-  return $(document).on(
-    'input',
-    '[data-behavior~=filterbar_search]',
-    function() {
-      if (currentFilter() !== 'exists') {
-        activateFilterItem('exists')
-      }
-      const value = $(this)
-        .val()
-        .toLowerCase()
-
-      return filterRecords(function(record) {
-        $(record).attr('aria-expanded', 'false')
-        return (
-          $(record)
-            .text()
-            .toLowerCase()
-            .indexOf(value) > -1
-        )
-      })
+  $(document).on('input', '[data-behavior~=filterbar_search]', function() {
+    if (currentFilter() !== 'exists') {
+      activateFilterItem('exists')
     }
-  )
+    const value = $(this)
+      .val()
+      .toLowerCase()
+
+    return filterRecords(function(record) {
+      $(record).attr('aria-expanded', 'false')
+      return (
+        $(record)
+          .text()
+          .toLowerCase()
+          .indexOf(value) > -1
+      )
+    })
+  })
+
+  // initial filtering out archived invoices
+  filterRecords(function(record) {
+    const data = $(record).data('filter')
+    if (data['archived']) {
+      return false
+    }
+
+    return true
+  })
 })

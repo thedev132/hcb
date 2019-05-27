@@ -63,7 +63,7 @@ class Invoice < ApplicationRecord
     if ((self&.payout&.t_transaction && !self&.fee_reimbursement) ||
         (self&.payout&.t_transaction && self&.fee_reimbursement&.t_transaction) ||
         self.manually_marked_as_paid?
-        )
+       )
       :success
     elsif paid?
       :info
@@ -80,7 +80,7 @@ class Invoice < ApplicationRecord
     if ((self&.payout&.t_transaction && !self&.fee_reimbursement) ||
         (self&.payout&.t_transaction && self&.fee_reimbursement&.t_transaction) ||
         self.manually_marked_as_paid?
-        )
+       )
       'Paid'
     elsif paid?
       'Pending'
@@ -110,6 +110,10 @@ class Invoice < ApplicationRecord
 
   def archive
     self.archived_at = DateTime.now
+  end
+
+  def unarchive
+    self.archived_at = nil
   end
 
   def archived?
@@ -221,8 +225,10 @@ class Invoice < ApplicationRecord
     # https://stripe.com/docs/api/charges/object#charge_object-payment_method_details
     self.payment_method_type = type = inv&.charge&.payment_method_details&.type
     return unless self.payment_method_type
+
     details = inv&.charge&.payment_method_details[self.payment_method_type]
     return unless details
+
     if type == 'card'
       self.payment_method_card_brand = details.brand
       self.payment_method_card_checks_address_line1_check = details.checks.address_line1_check
