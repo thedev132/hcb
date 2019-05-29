@@ -6,17 +6,18 @@
 <table>
   <thead>
     <tr>
-      <th>Amount</th>
       <th>Event</th>
-      <th>Time since fees pulled</th>
+      <th>Amount</th>
+      <th>How late we are on withdrawing fees</th>
     </tr>
   </thead>
 
   <tbody>
     <% @pending_fees.each do |event| %>
       <tr class="shade-yellow">
-        <td><%= render_money event.fee_balance %></td>
+        // sort by biggest how late we are 
         <td class="underline"><%= link_to "#{event.name}", event %></td>
+        <td><%= render_money event.fee_balance %></td>
         <td><%= distance_of_time_in_words(DateTime.now, event.transactions.first.date) %></td>
       </tr>
     <% end %>
