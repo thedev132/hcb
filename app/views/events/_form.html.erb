@@ -22,15 +22,15 @@
       <span class="slate">bank.hackclub.com/</span>
       <%= form.text_field :slug, placeholder: event.name.parameterize %>
     </div>
-    <div class="flex flex-wrap items-center warning line-height-3 mb3 mt2">
+    <div class="flex flex-wrap items-center warning line-height-3 mb2 mt2">
       <div class="flex">
         <%= inline_icon 'important', size: 32, class: 'mr1 self-center' %>
         <p class="ml-auto bold mt0 mb0">UNEXCEPTED THINGS COULD HAPPEN IF YOU CHANGE YOUR URL, effective immediately:</p>
       </div>
       <ul class="mt1">
-        <li>Another event can claim your previous URL and you could be <span class="bold">unable to get it back</span></li>
-        <li>All bookmarks to <%= @event.name %>'s Bank that you may have will <span class="bold">break</span></li>
-        <li>Anyone who is currently doing something with your event on Bank will be bumped back to the home page</li>
+        <li>Another event may claim your previous URL and you will be <span class="bold">unable to get it back</span></li>
+        <li>All bookmarks to <%= @event.name %>'s Bank will <span class="bold">break</span></li>
+        <li>Everyone from your team currently using Bank will be bumped back to the home page</li>
       </ul>
     </div>
   </div>
