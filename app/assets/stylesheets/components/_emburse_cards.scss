@@ -18,6 +18,7 @@
     margin: 0;
   }
 }
+
 .emburse-cards__card {
   display: flex;
   justify-content: space-between;
@@ -53,10 +54,12 @@
     flex: 1 1 auto;
   }
 }
+
 .emburse-cards__card__name {
   text-transform: uppercase;
   font-weight: bold;
 }
+
 .emburse-cards__card__number {
   color: rgba(255, 255, 255, 0.5);
 

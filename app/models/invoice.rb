@@ -100,7 +100,7 @@ class Invoice < ApplicationRecord
       paid: paid?,
       unpaid: !paid?,
       upcoming: due_date > 3.days.from_now,
-      overdue: due_date < 3.days.from_now
+      overdue: due_date < 3.days.from_now && !paid?
     }
   end
 

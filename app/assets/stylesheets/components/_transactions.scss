@@ -42,13 +42,13 @@
 
 .invoice--expanded-parent.is-expanded,
 .invoice--expanded-parent + .is-expanded {
-  border-bottom-width: 0px;
+  border-bottom-width: 0;
 }
 .invoice--expanded-parent.is-expanded > td:nth-child(4) {
   @extend .bold;
 }
 .invoice--expanded.is-expanded {
-  > td:nth-child(-n+2) {
+  > td:nth-child(-n + 2) {
     transform: translateX(2em);
   }
 }

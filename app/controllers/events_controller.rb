@@ -100,6 +100,7 @@ class EventsController < ApplicationController
       :address,
       :sponsorship_fee,
       :expected_budget,
+      :has_fiscal_sponsorship_document,
       :emburse_department_id,
       :point_of_contact_id
     )

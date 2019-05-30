@@ -1,5 +1,5 @@
 class SyncInvoicesJob < ApplicationJob
-  RUN_EVERY = 1.hour
+  RUN_EVERY = 20.minutes
 
   def perform(repeat = false)
     Invoice.find_each do |i|

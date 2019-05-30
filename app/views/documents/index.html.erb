@@ -5,7 +5,6 @@
 <h1 class="heading">
   <span class="flex items-center flex-auto">
     Documents
-    <%= badge_for @documents.size, class: 'bg-muted' %>
   </span>
   <% admin_tools do %>
     <%= link_to 'Upload a document',
@@ -22,6 +21,14 @@
           <strong class="h3 block"><%= d.name %></strong>
           <%= user_mention d.user %>
         </li>
+      <% end %>
+    <% end %>
+    <% if @event.has_fiscal_sponsorship_document %>
+      <%= link_to event_fiscal_sponsorship_letter_path(event_id: @event.slug, format: "pdf") do %>
+      <li class="card">
+        <strong class="h3 block">Fiscal Sponsorship Confirmation</strong>
+        <%= user_mention @event.point_of_contact %>
+      </li>
       <% end %>
     <% end %>
   </ul>

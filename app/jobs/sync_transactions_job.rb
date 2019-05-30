@@ -108,8 +108,8 @@ class SyncTransactionsJob < ApplicationJob
     transactions = transaction_response.transactions
 
     while transactions.length < transaction_response['total_transactions']
-      transaction_response = client.transactions.get(
-        access_token,
+      transaction_response = PlaidService.instance.client.transactions.get(
+        BankAccount.instance.plaid_access_token,
         begin_date,
         end_date,
         offset: transactions.length

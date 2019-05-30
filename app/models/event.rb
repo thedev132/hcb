@@ -32,6 +32,8 @@ class Event < ApplicationRecord
 
   validates :name, :start, :end, :address, :sponsorship_fee, presence: true
 
+  before_create :default_values
+
   def self.pending_fees
     # minimum that you can move with SVB is $1
     select { | event | event.fee_balance > 100 }
@@ -69,7 +71,7 @@ class Event < ApplicationRecord
     pre_payout = self.invoices.where(status: 'paid', payout: nil).sum(:payout_creation_balance_net)
 
     # money that has a payout created, but where the transaction has not hit the account yet / been associated with the pending payout
-    payout_created = self.invoices.includes(payout: :t_transaction).where(status: 'paid', payout: { transactions: { id: nil } }).sum(:payout_creation_balance_net)
+    payout_created = self.invoices.joins(payout: :t_transaction).where(status: 'paid', payout: { transactions: { id: nil } }).sum(:payout_creation_balance_net)
 
     pre_payout + payout_created
   end
@@ -127,6 +129,10 @@ class Event < ApplicationRecord
   end
 
   private
+
+  def default_values
+    self.has_fiscal_sponsorship_document = true
+  end
 
   def point_of_contact_is_admin
     return if self.point_of_contact&.admin?
