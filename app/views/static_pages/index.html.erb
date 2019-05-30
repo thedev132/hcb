@@ -62,6 +62,7 @@
       <%= card_to 'Account Deletion Requests', organizer_position_deletion_requests_path, { badge: @active[:organizer_position_deletion_requests] } %>
       <%= card_to 'Transactions', BankAccount.instance, { badge: @active[:transactions] } %>
       <%= card_to 'Emburse Transactions', emburse_transactions_path, { badge: @active[:emburse_transactions] } %>
+      <%= card_to 'Pending Fees', pending_fees_path, { badge: @active[:pending_fees] } %>
       <%= card_to 'Setup Bank', new_bank_account_path if BankAccount.instance.nil? %>
       <%= card_to 'Export Finances', export_finances_path, { method: :post } %>
       <%= card_to 'Publish Changelog', 'https://headwayapp.co/bank-changelog' %>

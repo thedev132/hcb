@@ -15,6 +15,7 @@ class StaticPagesController < ApplicationController
       @transaction_volume = Transaction.total_volume
       @active = {
         card_requests: CardRequest.under_review.size,
+        pending_fees: Event.pending_fees.size,
         fee_reimbursements: FeeReimbursement.unprocessed.size,
         load_card_requests: LoadCardRequest.under_review.size,
         g_suite_applications: GSuiteApplication.under_review.size,
@@ -24,6 +25,10 @@ class StaticPagesController < ApplicationController
         organizer_position_deletion_requests: OrganizerPositionDeletionRequest.under_review.size
       }
     end
+  end
+
+  def pending_fees
+    @pending_fees = Event.pending_fees.sort_by { |event| (DateTime.now - event.transactions.first.date) }.reverse
   end
 
   def stats
