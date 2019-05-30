@@ -15,7 +15,6 @@
   <tbody>
     <% @pending_fees.each do |event| %>
       <tr class="shade-yellow">
-        // sort by biggest how late we are 
         <td class="underline"><%= link_to "#{event.name}", event %></td>
         <td><%= render_money event.fee_balance %></td>
         <td><%= distance_of_time_in_words(DateTime.now, event.transactions.first.date) %></td>
