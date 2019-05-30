@@ -28,7 +28,7 @@ class StaticPagesController < ApplicationController
   end
 
   def pending_fees
-    @pending_fees = Event.pending_fees
+    @pending_fees = Event.pending_fees.sort_by { |event| (DateTime.now - event.transactions.first.date) }.reverse
   end
 
   def stats
