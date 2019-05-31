@@ -48,8 +48,8 @@ html[data-dark='true'] {
     border-bottom-color: $darkless;
   }
 
-  .pop {
-    background: $darkless;
+  .flash {
+    border: 0;
   }
 
   .card {
@@ -90,55 +90,95 @@ html[data-dark='true'] {
   }
 
   .card__darker {
-    background: $dark;
+    background: $darker;
+    color: map-get($palette, muted) !important;
   }
 
   .admin-tools {
     background-color: rgba(map-get($palette, warning), 0.0625);
   }
 
-  input[type='submit'],
-  .btn,
-  .bg-info {
-    background-color: $blue8;
-  }
-  .bg-accent {
-    background-color: $violet8;
-  }
-  .bg-success {
-    background-color: $teal8;
-  }
-  .bg-warning {
-    background-color: $orange8;
-  }
-  .bg-error,
-  .btn--destroy {
-    background: $red8 !important;
-  }
   .transaction--positive {
-    background-color: darken($teal9, 10%);
+    background-color: rgba(map-get($palette, success), 0.25);
   }
   .transaction--negative {
-    background-color: darken($red9, 10%);
+    background-color: rgba(map-get($palette, error), 0.25);
   }
 
+  input[type='submit'],
+  .btn {
+    background-color: rgba(map-get($palette, info), 0.625);
+  }
+  .btn.bg-primary {
+    background-color: rgba(map-get($palette, primary), 0.625);
+  }
+  .btn.bg-accent {
+    background-color: rgba(map-get($palette, accent), 0.625);
+  }
+  .btn.bg-success {
+    background-color: rgba(map-get($palette, success), 0.625);
+  }
+  .btn.bg-warning {
+    background-color: rgba(map-get($palette, warning), 0.625);
+  }
+  .btn.bg-error {
+    background-color: rgba(map-get($palette, error), 0.625);
+  }
+
+  .badge {
+    color: map-get($palette, primary);
+  }
   .badge.bg-info {
-    color: $blue0 !important;
+    color: map-get($palette, warning);
   }
   .badge.bg-accent {
-    color: $violet0 !important;
+    color: map-get($palette, accent);
   }
   .badge.bg-success {
-    color: $teal0 !important;
+    color: map-get($palette, success);
   }
   .badge.bg-warning {
-    color: $orange0 !important;
+    color: map-get($palette, warning);
   }
   .badge.bg-error {
-    color: $red0 !important;
+    color: map-get($palette, error);
+  }
+
+  .badge {
+    background-color: rgba(map-get($palette, primary), 0.125);
+  }
+  .flash.info,
+  .pop,
+  .pop.info {
+    background-color: rgba(map-get($palette, info), 0.125);
+  }
+  .flash.accent,
+  .badge.bg-accent,
+  .pop.accent {
+    background-color: rgba(map-get($palette, accent), 0.125);
+  }
+  .flash.success,
+  .badge.bg-success,
+  .pop.success {
+    background-color: rgba(map-get($palette, success), 0.125);
+  }
+  .flash.warning,
+  .badge.bg-warning,
+  .pop.warning {
+    background-color: rgba(map-get($palette, warning), 0.125);
+  }
+  .flash.error,
+  .btn--destroy,
+  #error_explanation,
+  .badge.bg-error,
+  .pop.error {
+    background-color: rgba(map-get($palette, error), 0.125);
   }
 
   .shade-neutral {
     background: $darkless;
+  }
+  .shade-yellow {
+    background-color: rgba($yellow4, 0.125);
   }
 }
