@@ -44,6 +44,9 @@ $(document).on 'turbolinks:load', ->
       parent.addClass('is-expanded')
       button.text 'Retract'
       button.data 'expanded', true
+  
+  $(document).on 'keyup', 'action', (e) ->
+    $(e.target).click() if e.keyCode is 13
 
   $(document).on 'submit', '[data-behavior~=login]', ->
     val = $('input[name=email]').val()
