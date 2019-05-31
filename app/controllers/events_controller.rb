@@ -89,6 +89,9 @@ class EventsController < ApplicationController
   # Use callbacks to share common setup or constraints between actions.
   def set_event
     @event = Event.find(params[:id])
+  rescue ActiveRecord::RecordNotFound
+      flash[:error] = 'We couldn’t find that event!'
+      redirect_to root_path
   end
 
   # Only allow a trusted parameter "white list" through.
@@ -102,7 +105,8 @@ class EventsController < ApplicationController
       :expected_budget,
       :has_fiscal_sponsorship_document,
       :emburse_department_id,
-      :point_of_contact_id
+      :point_of_contact_id,
+      :slug
     )
 
     # Expected budget is in cents on the backend, but dollars on the frontend
@@ -113,9 +117,8 @@ class EventsController < ApplicationController
 
   def user_event_params
     params.require(:event).permit(
-      :start,
-      :end,
-      :address
+      :address,
+      :slug
     )
   end
 end
