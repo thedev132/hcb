@@ -16,22 +16,21 @@
     <%= form.text_area :address %>
   </div>
 
-  <div class="field">
-    <%= form.label :slug, 'URL' %>    
+  <h3 class="mb1">Danger Zone</h3>
+  <div class="card border b--warning mb3">
+    <div class="flex items-center warning">
+      <%= inline_icon 'important', size: 32, class: 'mr1' %>
+      <p class="bold mt0 mb0">If you change your URL, beware:</p>
+    </div>
+    <ul class="mt1 mb2">
+      <li>Another event may claim your current URL and you could be <span class="bold">unable to get it back</span></li>
+      <li>All bookmarks to this event’s Bank will <span class="bold">break</span></li>
+      <li>Your team members currently using Bank will be bumped to the home page</li>
+    </ul>   
+    <%= form.label :slug, 'Bank URL', class: 'bold' %> 
     <div class="flex items-center">
       <span class="slate">bank.hackclub.com/</span>
       <%= form.text_field :slug, placeholder: event.name.parameterize %>
-    </div>
-    <div class="flex flex-wrap items-center warning line-height-3 mb2 mt2">
-      <div class="flex">
-        <%= inline_icon 'important', size: 32, class: 'mr1 self-center' %>
-        <p class="ml-auto bold mt0 mb0">UNEXCEPTED THINGS COULD HAPPEN IF YOU CHANGE YOUR URL, effective immediately:</p>
-      </div>
-      <ul class="mt1">
-        <li>Another event may claim your previous URL and you will be <span class="bold">unable to get it back</span></li>
-        <li>All bookmarks to <%= @event.name %>'s Bank will <span class="bold">break</span></li>
-        <li>Everyone from your team currently using Bank will be bumped back to the home page</li>
-      </ul>
     </div>
   </div>
 
