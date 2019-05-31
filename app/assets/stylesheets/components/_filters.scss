@@ -31,5 +31,9 @@
   &[aria-selected='true'] {
     background-color: map-get($palette, primary);
     color: $white;
+
+    &:focus {
+      background-color: map-get($palette, info);
+    }
   }
 }

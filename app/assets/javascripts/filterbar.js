@@ -2,8 +2,6 @@ $(document).on('turbolinks:load', function() {
   const currentFilter = () =>
     BK.s('filterbar_item', '[aria-selected=true]').data('name')
 
-  const findFilterItem = name => BK.s('filterbar_item', `[data-name=${name}]`)
-
   const activateFilterItem = function(name) {
     BK.deselect('filterbar_item')
     return BK.select('filterbar_item', `[data-name=${name}]`)
@@ -37,7 +35,7 @@ $(document).on('turbolinks:load', function() {
     })
     // if there are no records found, show the "there are no records"
     if (acc === 0) {
-      return BK.s('filterbar_blankslate').fadeIn('fast')
+      BK.s('filterbar_blankslate').fadeIn('fast')
     }
   }
 
@@ -48,7 +46,7 @@ $(document).on('turbolinks:load', function() {
   // patch for keyboard accessibility: simulate click on enter key
   $(document).on('keyup', '[data-behavior~=filterbar_item]', function(e) {
     if (e.keyCode === 13) {
-      return $(e.target).click()
+      $(e.target).click()
     }
   })
 
@@ -67,26 +65,22 @@ $(document).on('turbolinks:load', function() {
     })
   }) // returns true/false from currentFilter record in data-filter
 
-  return $(document).on(
-    'input',
-    '[data-behavior~=filterbar_search]',
-    function() {
-      if (currentFilter() !== 'exists') {
-        activateFilterItem('exists')
-      }
-      const value = $(this)
-        .val()
-        .toLowerCase()
-
-      return filterRecords(function(record) {
-        $(record).attr('aria-expanded', 'false')
-        return (
-          $(record)
-            .text()
-            .toLowerCase()
-            .indexOf(value) > -1
-        )
-      })
+  $(document).on('input', '[data-behavior~=filterbar_search]', function() {
+    if (currentFilter() !== 'exists') {
+      activateFilterItem('exists')
     }
-  )
+    const value = $(this)
+      .val()
+      .toLowerCase()
+
+    filterRecords(function(record) {
+      $(record).attr('aria-expanded', 'false')
+      return (
+        $(record)
+          .text()
+          .toLowerCase()
+          .indexOf(value) > -1
+      )
+    })
+  })
 })
