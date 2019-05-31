@@ -43,9 +43,8 @@
 .pop {
   background-color: $white;
   border-radius: 50%;
-  border: 2px solid currentColor;
-  color: map-get($palette, info);
-  font-weight: 600;
+  color: $blue6;
+  background-color: $blue0;
   flex-shrink: 0;
   text-decoration: none;
   display: inline-flex;
@@ -59,6 +58,23 @@
   &[disabled] {
     opacity: 0.5;
     pointer-events: none;
+  }
+
+  &.success {
+    color: $teal5;
+    background-color: $teal0;
+  }
+  &.pending {
+    color: $yellow5;
+    background-color: $yellow0;
+  }
+  &.warning {
+    color: $orange5;
+    background-color: $orange0;
+  }
+  &.error {
+    color: $red5;
+    background-color: $red0;
   }
 }
 summary.pop {
