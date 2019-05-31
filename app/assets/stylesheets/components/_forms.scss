@@ -46,10 +46,14 @@ input[type='number'],
   max-width: 16rem !important;
 }
 
+input[type='search'] {
+  padding-left: 0.25rem;
+}
+
 .field_with_errors {
   label {
-    font-weight: bold;
-    color: $red7;
+    font-weight: 500;
+    color: map-get($palette, error);
   }
   input {
     border-color: map-get($palette, error);

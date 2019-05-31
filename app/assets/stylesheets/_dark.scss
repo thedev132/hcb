@@ -125,6 +125,7 @@ html[data-dark='true'] {
     background-color: rgba(map-get($palette, error), 0.625);
   }
 
+  .filterbar__item[aria-selected='true'],
   .badge {
     color: map-get($palette, primary);
   }
@@ -144,6 +145,7 @@ html[data-dark='true'] {
     color: map-get($palette, error);
   }
 
+  .filterbar__item[aria-selected='true'],
   .badge {
     background-color: rgba(map-get($palette, primary), 0.125);
   }

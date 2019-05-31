@@ -21,21 +21,18 @@
 }
 
 .transaction__table_container {
-  overflow-x: scroll;
-  margin-left: -1rem;
-  margin-right: -1rem;
+  -webkit-overflow-scrolling: touch;
+  overflow-x: auto;
 }
-.transaction__table {
-  td {
-    @extend .pr1;
-    @extend .pl1;
+@media screen and (max-width: 48em) {
+  .transaction__table_container {
+    margin-left: -1rem;
+    margin-right: -1rem;
   }
-  @media screen and (max-width: 32em) {
+  .transaction__table {
+    margin: 0 !important;
     td {
       white-space: nowrap;
-    }
-    tr {
-      transform: translateX(1rem);
     }
   }
 }
