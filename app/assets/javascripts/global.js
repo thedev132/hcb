@@ -28,7 +28,7 @@ BK.toggleDark = () => {
   // animate background color
   // not in base CSS because otherwise theme restore has background animation on load
   $('body').css({
-    transition: 'background-color 0.25s ease-in-out, color 0.125s ease-in-out'
+    transition: 'background-color 0.125s ease-in-out, color 0.0625s ease-in-out'
   })
   BK.styleDark(theme)
   localStorage.setItem('dark', theme)
@@ -74,10 +74,9 @@ BK.getQueryParams = () => {
   return result
 }
 
-BK.money = (amount) => {
-  if (typeof amount !== 'number')
-    return '–'
-  const localAmount = Math.abs((Math.round(amount) / 100)).toLocaleString()
+BK.money = amount => {
+  if (typeof amount !== 'number') return '–'
+  const localAmount = Math.abs(Math.round(amount) / 100).toLocaleString()
   const sign = Math.sign(amount) === -1 ? '-' : ''
   return `${sign}$${localAmount}`
 }
