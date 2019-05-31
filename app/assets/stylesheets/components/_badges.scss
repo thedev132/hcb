@@ -61,19 +61,15 @@
   }
 
   &.success {
-    color: $teal5;
     background-color: $teal0;
   }
   &.pending {
-    color: $yellow5;
     background-color: $yellow0;
   }
   &.warning {
-    color: $orange5;
     background-color: $orange0;
   }
   &.error {
-    color: $red5;
     background-color: $red0;
   }
 }
