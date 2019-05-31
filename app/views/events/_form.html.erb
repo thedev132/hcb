@@ -56,13 +56,10 @@
       <%= form.collection_select :point_of_contact_id, User.admin.all, :id, :email %>
     </div>
 
-    <div class="field">
-      <%= form.label :has_fiscal_sponsorship_document do %>
-        <%= form.check_box :has_fiscal_sponsorship_document %>
-        Display Fiscal Sponsorship Confirmation in Documents tab?
-      <% end %>
+    <div class="field field--checkbox">
+      <%= form.check_box :has_fiscal_sponsorship_document %>
+      <%= form.label :has_fiscal_sponsorship_document, 'Display Fiscal Sponsorship Confirmation in Documents tab?' %>
     </div>
-
   <% end %>
 
   <div class="actions">
