@@ -97,6 +97,10 @@ html[data-dark='true'] {
     background-color: rgba(map-get($palette, warning), 0.0625);
   }
 
+  .shade-yellow {
+    background-color: rgba(saturate($yellow0, 50%), 0.25);
+  }
+
   input[type='submit'],
   .btn,
   .bg-info {
