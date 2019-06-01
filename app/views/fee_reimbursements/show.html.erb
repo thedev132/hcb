@@ -3,12 +3,12 @@
 <%= render 'events/nav' %>
 
 <h1 class="flex items-center">
-  <%= render_money @fee_reimbursement.amount %> reimbursed
+  <%= render_money @fee_reimbursement.amount %> refund
   <span class="badge h3 bg-<%= @fee_reimbursement.status_color %>">
     <%= @fee_reimbursement.status.capitalize %>
   </span>
 </h1>
-<p class="muted">Hack Club Bank pays for all of Stripe’s transaction fees by reimbursing the amount removed from payouts.</p>
+<p class="muted">Hack Club Bank pays for all of Stripe’s transaction fees by refunding the amount removed from payouts.</p>
 
 <article class="card mt3">
   <section class="details">
