@@ -10,7 +10,7 @@ module UsersHelper
 
   def avatar_for(user, size = 24, options = {})
     image = user.is_a?(User) && user.profile_picture.attached? ?
-      user.profile_picture.variant(resize: "#{size*2}x#{size*2}") :
+      user.profile_picture.variant(resize: "#{size * 2}x#{size * 2}") :
       gravatar_url(user.email, user.initials, user.id, size * 2)
 
     image_tag(image, options.merge({ alt: user.name, width: size, height: size, class: "circle #{options[:class]}" }))
