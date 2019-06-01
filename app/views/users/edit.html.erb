@@ -35,10 +35,14 @@
     <%= form.email_field :email, disabled: true %>
   </div>
 
-  <p class="flex items-center">
-    <%= avatar_for @user, 28, class: 'mr1' %>
-    <span>Want to customize your avatar? Edit it on <a href="https://gravatar.com">Gravatar</a>.</span>
+  <%= form.label :profile_picture %>
+  <p class="flex items-center mt1">
+    <%= avatar_for @user, 48, class: 'mr2' %>
+    <span>If you have a <a href="https://gravatar.com">Gravatar</a>, we’ll pull it in here.<br> Or, you can upload a profile picture below.</span>
   </p>
+  <div class="field">
+    <%= form.file_field :profile_picture, accept: 'image/png, image/jpeg' %>
+  </div>
 
   <div class="actions">
     <%= form.submit @user.full_name.present? ? 'Save profile' : 'Start using Bank' %>

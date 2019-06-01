@@ -19,11 +19,14 @@ class User < ApplicationRecord
   has_many :cards
   has_many :comments, as: :commentable
 
+  has_one_attached :profile_picture
+
   before_create :create_session_token
 
   validates_presence_of :api_id, :api_access_token, :email
   validates_uniqueness_of :api_id, :api_access_token, :email
   validates :phone_number, phone: { allow_blank: true }
+  validate :profile_picture_format
 
   def self.new_session_token
     SecureRandom.urlsafe_base64
@@ -65,5 +68,12 @@ class User < ApplicationRecord
     # From https://github.com/norman/friendly_id/issues/480
     sequence = User.where("slug LIKE ?", "#{slug}-%").size + 2
     [slug, "#{slug} #{sequence}"]
+  end
+
+  def profile_picture_format
+    return unless profile_picture.attached?
+    return if profile_picture.blob.content_type.start_with? 'image/'
+    profile_picture.purge_later
+    errors.add(:profile_picture, 'needs to be an image')
   end
 end
