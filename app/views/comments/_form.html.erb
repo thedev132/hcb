@@ -14,8 +14,11 @@
 
   <div class="comment__name mt2">
     <%= user_mention current_user %>
+    <%= link_to 'https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet#table-of-contents', class: 'muted flex items-center justify-end h6', target: '_blank' do %>
+      <%= inline_icon 'markdown-fill', size: 32 %> Styling with Markdown is supported
+    <% end %>
   </div>
-  <%= form.text_area :content, class: 'card mb2', placeholder: 'Add a note… (Markdown supported)', 'data-behavior': 'autosize' %>
+  <%= form.text_area :content, class: 'card mb2', placeholder: 'Add a note…', 'data-behavior': 'autosize' %>
 
   <div class="field">
     <%= form.file_field :file %>
