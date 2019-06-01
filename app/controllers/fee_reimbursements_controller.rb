@@ -26,7 +26,11 @@ class FeeReimbursementsController < ApplicationController
   def update
     authorize @fee_reimbursement
 
-    if @fee_reimbursement.update(fee_reimbursement_params)
+    # Load amount is in cents on the backend, but dollars on the frontend
+    result_params = fee_reimbursement_params
+    result_params[:amount] = result_params[:amount].to_f * 100
+
+    if @fee_reimbursement.update(result_params)
       redirect_to @fee_reimbursement, notice: 'Fee refund was successfully updated.'
     else
       render :edit
