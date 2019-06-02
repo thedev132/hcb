@@ -9,6 +9,8 @@ module UsersHelper
   end
 
   def avatar_for(user, size = 24, options = {})
+    # avatar_for works with OpenStructs (used on the front end when a user isn't registered),
+    # so this method shows Gravatars/intials for non-registered and allows showing of uploaded profile pictures for registered users.
     image = user.is_a?(User) && user.profile_picture.attached? ?
       user.profile_picture.variant(resize: "#{size * 2}x#{size * 2}") :
       gravatar_url(user.email, user.initials, user.id, size * 2)
