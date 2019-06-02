@@ -20,7 +20,7 @@ class EventsController < ApplicationController
     authorize @event
 
     if @event.save
-      flash[:success] = 'Event was successfully created.'
+      flash[:success] = 'Event successfully created.'
       redirect_to @event
     else
       render :new
@@ -51,7 +51,7 @@ class EventsController < ApplicationController
     authorize @event
 
     if @event.update(current_user.admin? ? event_params : user_event_params)
-      flash[:success] = 'Event was successfully updated.'
+      flash[:success] = 'Event successfully updated.'
       redirect_to @event
     else
       render :edit
@@ -63,7 +63,7 @@ class EventsController < ApplicationController
     authorize @event
 
     @event.destroy
-    flash[:success] = 'Event was successfully destroyed.'
+    flash[:success] = 'Event successfully destroyed.'
     redirect_to events_url
   end
 
