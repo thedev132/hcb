@@ -82,7 +82,7 @@ class SyncEmburseTransactionsJob < ApplicationJob
       deleted_transactions.each { |emburse_id| EmburseTransaction.find_by(emburse_id: emburse_id).destroy }
     end
 
-    transaction_wo_department.each { |et| self.notify_admin(et) }
+    transactions_wo_department.each { |et| self.notify_admin(et) }
 
     self.class.set(wait: RUN_EVERY).perform_later(true) if repeat
   end
