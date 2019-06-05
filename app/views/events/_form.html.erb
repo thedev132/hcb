@@ -30,7 +30,7 @@
     <%= form.label :slug, 'Bank URL', class: 'bold' %> 
     <div class="flex items-center">
       <span class="slate">bank.hackclub.com/</span>
-      <%= form.text_field :slug, placeholder: event.name.parameterize %>
+      <%= form.text_field :slug, placeholder: event.persisted? ? event.name.parameterize : nil %>
     </div>
   </div>
 
