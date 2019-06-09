@@ -84,7 +84,23 @@ class InvoicesController < ApplicationController
     @invoice.archive
 
     if @invoice.save
-      flash[:success] = 'Invoice has been archived!'
+      flash[:success] = 'Invoice has been archived.'
+      redirect_to @invoice
+    else
+      flash[:error] = 'Something went wrong while trying to archive this invoice!'
+      redirect_to @invoice
+    end
+  end
+
+  def unarchive
+    @invoice = Invoice.find(params[:invoice_id])
+
+    authorize @invoice
+
+    @invoice.archived_at = nil
+
+    if @invoice.save
+      flash[:success] = 'Invoice has been un-archived.'
       redirect_to @invoice
     else
       flash[:error] = 'Something went wrong while trying to archive this invoice!'

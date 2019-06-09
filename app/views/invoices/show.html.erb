@@ -95,7 +95,7 @@
   <section class="card__banner border-top flex">
     <%= link_to 'View sent invoice', @invoice.hosted_invoice_url, class: 'btn bg-accent mr2', target: '_blank'  %>
     <%= link_to 'Download PDF', @invoice.invoice_pdf, class: 'btn bg-info', target: '_blank'  %>
-    <%= link_to 'Archive invoice', invoice_archive_path(@invoice), method: :post, class: 'btn bg-slate ml-auto' %>
+    <%= link_to "#{@invoice.archived? ? 'Un-archive' : 'Archive'}", (@invoice.archived? ? invoice_unarchive_path(@invoice) : invoice_archive_path(@invoice)), method: :post, class: 'btn bg-slate ml-auto' %>
   </section>
 </article>
 
