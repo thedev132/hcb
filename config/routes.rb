@@ -18,6 +18,7 @@ Rails.application.routes.draw do
       post 'exchange_login_code', to: 'users#exchange_login_code'
       delete 'logout', to: 'users#logout'
     end
+    post 'delete_profile_picture', to: 'users#delete_profile_picture'
   end
 
   resources :organizer_position_invites, only: [ :index, :show ], path: 'invites' do

@@ -38,7 +38,13 @@
   <%= form.label :profile_picture %>
   <p class="flex items-center mt1">
     <%= avatar_for @user, 48, class: 'mr2' %>
-    <span>If you have a <a href="https://gravatar.com">Gravatar</a>, we’ll pull it in here.<br> Or, you can upload a profile picture below.</span>
+    <span>
+      <% if @user.profile_picture.attached? %>
+        You're currently using an uploaded profile picture.<br>If you'd like to switch back to your Gravatar, <%= link_to 'click here', user_delete_profile_picture_path(@user), method: :post %>.
+      <% else %>
+        If you have a <a href="https://gravatar.com">Gravatar</a>, we’ll pull it in here.<br> Or, you can upload a profile picture below.<br>
+      <% end %>
+    </span>
   </p>
   <div class="field">
     <%= form.file_field :profile_picture, accept: 'image/png, image/jpeg' %>

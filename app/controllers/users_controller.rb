@@ -58,10 +58,20 @@ class UsersController < ApplicationController
 
     if @user.update(user_params)
       flash[:success] = 'Updated your profile!'
-      redirect_to params[:redirect_to] || root_path
+      redirect_to edit_user_path(@user.slug)
     else
       render :edit
     end
+  end
+
+  def delete_profile_picture
+    @user = User.find(params[:user_id])
+    authorize @user
+
+    @user.profile_picture.purge_later
+
+    flash[:success] = "Switched back to Gravatar!"
+    redirect_to edit_user_path(@user.slug)
   end
 
   private
