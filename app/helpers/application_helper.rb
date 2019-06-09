@@ -73,11 +73,11 @@ module ApplicationHelper
   end
 
   def format_date(date)
-    date.strftime '%b %e, %Y'
+    local_time(date, '%b %e, %Y')
   end
 
   def format_datetime(datetime)
-    datetime.strftime '%b %e, %Y, %l:%M %p'
+    local_time(datetime, '%b %e, %Y, %l:%M %p')
   end
 
   def home_action_size

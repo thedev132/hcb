@@ -3,6 +3,7 @@
 //= require jquery-ui
 //= require activestorage
 //= require turbolinks
+//= require local-time
 
 //= require global
 //= require ui
