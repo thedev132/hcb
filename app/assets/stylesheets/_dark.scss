@@ -82,7 +82,7 @@ html[data-dark='true'] {
   }
 
   .admin-tools {
-    background-color: rgba(map-get($palette, warning), 0.0025);
+    background-color: rgba(map-get($palette, warning), 0.0625);
   }
 
   input[type='submit'],
