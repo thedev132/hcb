@@ -59,10 +59,15 @@ class Event < ApplicationRecord
     transactions.sum(:amount)
   end
 
+  def lcr_pending
+    lcrs = self.load_card_requests
+    (lcrs.under_review + lcrs.accepted - lcrs.completed - lcrs.canceled - lcrs.rejected).sum(&:load_amount)
+  end
+
   # used for load card requests, this is the amount of money available that isn't being transferred out by an LCR -tmb@hackclub
   def balance_available
     lcrs = self.load_card_requests
-    balance - (lcrs.under_review + lcrs.accepted - lcrs.completed - lcrs.canceled - lcrs.rejected).sum(&:load_amount)
+    balance - lcr_pending
   end
   alias_method :available_balance, :balance_available
 
@@ -100,6 +105,19 @@ class Event < ApplicationRecord
     total_payments = self.fee_paid
 
     total_fees - total_payments
+  end
+
+  def balance_transacted_since_last_fee_payment
+    date = self.fee_payments.first.date
+    transactions = self.transactions.select { |t| t.date > date && t.fee_relationship.fee_applies }
+
+    return 0 if transactions.size == 0
+    return transactions.sum(&:amount)
+  end
+
+  def balance_being_withdrawn
+    lcrs = self.load_card_requests
+    return fee_balance + lcr_pending
   end
 
   def g_suite_status

@@ -166,6 +166,10 @@ svg {
   flex-shrink: 0;
 }
 
+action {
+  cursor: pointer;
+}
+
 @import 'components/badges';
 @import 'components/buttons';
 @import 'components/cards';
@@ -183,6 +187,8 @@ svg {
 @import 'components/steps';
 @import 'components/tooltips';
 @import 'components/transactions';
+@import 'components/modals';
+@import 'components/withdraw_breakdown';
 
 .turbolinks-progress-bar {
   height: 0.125rem;

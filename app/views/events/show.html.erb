@@ -1,4 +1,3 @@
-
 <% title @event.name %>
 <% content_for(:page_class) { 'bg-snow pt2' } %>
 <% @home_size = 72 %>
@@ -60,20 +59,20 @@ Sponsorship fee: <%= render_percentage @event.sponsorship_fee %>`)">
     <span class="stat__label">Account balance</span>
     <span class="stat__value"><%= render_money @event.balance, '' %></span>
   </div>
-  <div class="stat stat--small tooltipped tooltipped--s" aria-label="The amount that will be automatically deducted from your account balance">
+  <action class="stat stat--small tooltipped tooltipped--s" aria-label="The amount that will be automatically deducted from your account balance" data-behavior="modal_trigger" data-modal="pending_withdrawals">
     <span class="stat__label flex items-center">
-      Pending fees
-      <%= inline_icon 'info', size: 24, class: 'muted ml1', 'aria-label': 'Info icon' %>
+      Pending withdraws
+      <%= inline_icon 'external', size: 24, class: 'muted ml1', 'aria-label': 'Icon indicating click for more' %>
     </span>
     <span class="stat__value"><%= render_money @event.fee_balance, '' %></span>
   </div>
-  <div class="stat stat--small tooltipped tooltipped--s" aria-label="The amount on the way to your account">
+  <action class="stat stat--small tooltipped tooltipped--s" aria-label="The amount on the way to your account" data-behavior="modal_trigger" data-modal="incoming_deposits">
     <span class="stat__label flex items-center">
       Incoming deposits
-      <%= inline_icon 'info', size: 24, class: 'muted ml1', 'aria-label': 'Info icon' %>
+      <%= inline_icon 'external', size: 24, class: 'muted ml1', 'aria-label': 'Icon indicating click for more' %>
     </span>
     <span class="stat__value"><%= render_money @event.pending_deposits, '' %></span>
-  </div>
+  </action>
   <%= link_to new_event_load_card_request_path(event_id: @event.slug), class: 'stat statset__wide link-reset' do %>
     <span class="stat__label flex items-center">
       Card balance
@@ -137,5 +136,35 @@ Sponsorship fee: <%= render_percentage @event.sponsorship_fee %>`)">
 <% else %>
   <%= blankslate 'No transactions yet' %>
 <% end %>
+
+<div class="modal" data-behavior="modal" role="dialog" id="pending_withdrawals">
+  <%= modal_header 'Pending Withdraws' %>
+
+  <h3 class="mb1">Fees</h3>
+  <div class="breakdown">
+    <div class="stat--small">
+      <span class="stat__value"><%= render_money @event.fee_balance, '' %></span>
+    </div>
+    <span class="breakdown__equals">&#61;</span>
+    <div>
+      <span class="breakdown__amount">
+        <%= render_money @event.balance_transacted_since_last_fee_payment %>
+      </span>
+      <span class="breakdown__sub">Transacted since last fee&nbsp;payment</span>
+    </div>
+    <span class="breakdown__equals">&times;</span>
+    <div>
+      <span class="breakdown__amount"><%= @event.sponsorship_fee * 100 %>%</span>
+      <span class="breakdown__sub">Bank fee</span>
+    </div>
+  </div>
+
+  <hr class="mt2 mb2">
+
+  <h3 class="mb1">Load Card Requests</h3>
+  <div class="breakdown stat--small">
+    <span class="stat__value"><%= render_money @event.lcr_pending, '' %></span>
+  </div>
+</div>
 
 <%= render 'promo_modal' %>
