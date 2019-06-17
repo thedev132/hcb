@@ -59,9 +59,9 @@ Sponsorship fee: <%= render_percentage @event.sponsorship_fee %>`)">
     <span class="stat__label">Account balance</span>
     <span class="stat__value"><%= render_money @event.balance, '' %></span>
   </div>
-  <action class="stat stat--small" area="fees" data-behavior="modal_trigger" data-modal="pending_withdraws">
+  <action class="stat stat--small" area="fees" data-behavior="modal_trigger" data-modal="pending_withdrawals">
     <span class="stat__label flex items-center">
-      Pending withdraws
+      Pending withdrawals
       <%= inline_icon 'external', size: 24, class: 'muted ml1', 'aria-label': 'Icon indicating click for more' %>
     </span>
     <span class="stat__value"><%= render_money @event.balance_being_withdrawn, '' %></span>
@@ -134,8 +134,8 @@ Sponsorship fee: <%= render_percentage @event.sponsorship_fee %>`)">
   <%= blankslate 'No transactions yet' %>
 <% end %>
 
-<div class="modal" data-behavior="modal" role="dialog" id="pending_withdraws">
-  <%= modal_header 'Pending Withdraws' %>
+<div class="modal" data-behavior="modal" role="dialog" id="pending_withdrawals">
+  <%= modal_header 'Pending Withdrawals' %>
 
   <h3 class="mb1">Fees</h3>
   <div class="breakdown">
