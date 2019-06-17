@@ -10,3 +10,4 @@
 //= require apply
 //= require fee_retro_promo
 //= require filterbar
+//= require jquery-modal

@@ -1,0 +1,25 @@
+.breakdown {
+	display: grid;
+	grid-template-columns: auto auto 1fr auto 2fr;
+	// NOTE(@lachlanjc): this is not so great
+	overflow-x: auto;
+	-webkit-overflow-scrolling: touch;
+}
+
+.breakdown__equals { 
+	color: map-get($palette, muted);
+	font-size: 2rem;
+	line-height: 1;
+	padding: 0 1rem;
+}
+
+.breakdown__amount {
+	font-size: 1.5rem;
+}
+
+.breakdown__sub {
+	font-size: 0.75rem;
+	color: map-get($palette, muted);
+	line-height: 1.125;
+	display: block;
+}

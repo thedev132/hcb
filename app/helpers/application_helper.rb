@@ -40,6 +40,18 @@ module ApplicationHelper
     end
   end
 
+  def modal_close
+    content_tag :a,
+                inline_icon('view-close', size: 36),
+                class: 'modal__close right inline-block line-height pointer grey-3',
+                rel: 'modal:close',
+                href: '#close-modal'
+  end
+  
+  def modal_header(text)
+    modal_close + content_tag(:h2, text, class: 'mt0')
+  end
+
   def relative_timestamp(time, options = {})
     content_tag :span, "#{options[:prefix]}#{time_ago_in_words time} ago", options.merge({ title: time })
   end
