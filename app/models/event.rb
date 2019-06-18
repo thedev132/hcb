@@ -109,9 +109,11 @@ class Event < ApplicationRecord
 
   def balance_transacted_since_last_fee_payment
     date = self&.fee_payments&.first&.date
-    transactions = self.transactions.select { |t| t.date > date && t.fee_relationship.fee_applies }
 
+    return fee_balance if date == nil
     return 0 if transactions.size == 0
+
+    transactions = self.transactions.select { |t| t.date > date && t.fee_relationship.fee_applies }
     return transactions.sum(&:amount)
   end
 
