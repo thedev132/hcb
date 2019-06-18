@@ -32,6 +32,9 @@ class EventsController < ApplicationController
     authorize @event
     @organizers = @event.organizer_positions.includes(:user)
     @transactions = @event.transactions.includes(:fee_relationship)
+
+    @invoices_with_payouts_queued = @event.invoices.where(payout_id: nil, status: 'paid').where.not(payout_creation_queued_for: nil)
+    @invoices_with_payouts_transferring = @event.invoices.joins(:payout).where(invoice_payouts: { status: ('pending' || 'in_transit') })
   end
 
   def team
