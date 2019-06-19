@@ -173,9 +173,9 @@ Sponsorship fee: <%= render_percentage @event.sponsorship_fee %>`)">
       <% @invoices_with_payouts_transferring.each do |invoice| %>
         <%= link_to invoice, class: 'text-decoration-none' do %>
           <div class="card">
-            <div class="card__banner card__banner--top <%= DateTime.now > invoice.payout.arrival_date ? "bg-success" : "bg-error" %> flex">
+            <div class="card__banner card__banner--top <%= DateTime.now < invoice.payout.arrival_date ? "bg-success" : "bg-error" %> flex">
               <span class="bold white">Invoice to <%= invoice.sponsor.name %></span>
-              <span class="badge ml-auto center incoming_deposits__badge <%= DateTime.now > invoice.payout.arrival_date ? "bg-success" : "bg-error" %>"><%= DateTime.now > invoice.payout.arrival_date ? "On Time" : "Late" %></span>
+              <span class="badge ml-auto center incoming_deposits__badge <%= DateTime.now < invoice.payout.arrival_date ? "bg-success" : "bg-error" %>"><%= DateTime.now < invoice.payout.arrival_date ? "On Time" : "Late" %></span>
             </div>
             <div class="flex items-center">
               <div>
@@ -204,9 +204,9 @@ Sponsorship fee: <%= render_percentage @event.sponsorship_fee %>`)">
       <% @invoices_with_payouts_queued.each do |invoice| %>
         <%= link_to invoice, class: 'text-decoration-none' do %>
           <div class="card">
-            <div class="card__banner card__banner--top <%= DateTime.now > invoice.payout_creation_queued_for ? "bg-success" : "bg-error" %> flex">
+            <div class="card__banner card__banner--top <%= DateTime.now < invoice.payout_creation_queued_for ? "bg-success" : "bg-error" %> flex">
               <span class="bold white">Invoice to <%= invoice.sponsor.name %></span>
-              <span class="badge ml-auto center incoming_deposits__badge <%= DateTime.now > invoice.payout_creation_queued_for ? "bg-success" : "bg-error" %>"><%= DateTime.now > invoice.payout_creation_queued_for ? "On Time" : "Late" %></span>
+              <span class="badge ml-auto center incoming_deposits__badge <%= DateTime.now < invoice.payout_creation_queued_for ? "bg-success" : "bg-error" %>"><%= DateTime.now < invoice.payout_creation_queued_for ? "On Time" : "Late" %></span>
             </div>
           <div class="flex items-center">
             <div>
