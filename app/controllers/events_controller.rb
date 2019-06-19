@@ -34,7 +34,7 @@ class EventsController < ApplicationController
     @transactions = @event.transactions.includes(:fee_relationship)
 
     @invoices_with_payouts_queued = @event.invoices.where(payout_id: nil, status: 'paid').where.not(payout_creation_queued_for: nil)
-    @invoices_with_payouts_transferring = @event.invoices.joins(:payout).where(invoice_payouts: { status: ('pending' || 'in_transit') })
+    @invoices_with_payouts_transferring = @event.invoices.joins(:payout).where(invoice_payouts: { status: ('in_transit') }).or(@event.invoices.joins(:payout).where(invoice_payouts: { status: ('pending') }))
   end
 
   def team
