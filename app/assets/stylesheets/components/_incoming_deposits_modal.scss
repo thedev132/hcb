@@ -66,4 +66,33 @@
 
 .incoming_deposits__badge {
   flex-shrink: 0;
+  max-height: 2em;
 }
+
+.incoming_deposits__card {
+  height: 157px;
+  width: 248px;
+  margin: .2rem;
+}
+.incoming_deposits__payout_grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 0rem;
+  max-height: 100%;
+  overflow-y: scroll;
+
+}
+
+@media (max-width: 32em) {
+  .incoming_deposits__card {
+    margin: .5rem;
+  }
+}
+
+.incoming_deposits__sponsor {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+
