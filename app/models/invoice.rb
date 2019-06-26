@@ -249,6 +249,14 @@ class Invoice < ApplicationRecord
     !fee_reimbursement.nil?
   end
 
+  def arrival_date
+    self&.payout&.arrival_date
+  end
+
+  def predicted_arrival_date
+    3.business_days.after(self.payout_creation_queued_for)
+  end
+
   private
 
   def set_defaults

@@ -66,13 +66,13 @@ Sponsorship fee: <%= render_percentage @event.sponsorship_fee %>`)">
     </span>
     <span class="stat__value"><%= render_money @event.balance_being_withdrawn, '' %></span>
   </action>
-  <div class="stat stat--small tooltipped tooltipped--s" aria-label="The amount on the way to your account" area="incoming" data-behavior="modal_trigger" data-modal="incoming_deposits">
+  <action class="stat stat--small" area="deposits" data-behavior="modal_trigger" data-modal="incoming_deposits">
     <span class="stat__label flex items-center">
       Incoming deposits
       <%= inline_icon 'external', size: 24, class: 'muted ml1', 'aria-label': 'Icon indicating click for more' %>
     </span>
     <span class="stat__value"><%= render_money @event.pending_deposits, '' %></span>
-  </div>
+  </action>
   <div class="stat" area="spendable">
     <span class="stat__label">Card balance</span> 
     <span class="stat__value"><%= render_money @event.emburse_balance, '' %></span>
@@ -168,65 +168,31 @@ Sponsorship fee: <%= render_percentage @event.sponsorship_fee %>`)">
 
 <div class="modal" data-behavior="modal" role="dialog" id="incoming_deposits">
   <%= modal_header 'Incoming Deposits' %>
-
-  <% if @invoices_with_payouts_transferring.any? || @invoices_with_payouts_queued.any?  %>
-    <% if @invoices_with_payouts_transferring.any? %>
-      <h3 class="mb1">On the way to Bank</h3>
-      <div class="incoming_deposits__payout_grid">
-        <% @invoices_with_payouts_transferring.each do |invoice| %>
-          <%= link_to invoice, class: 'text-decoration-none' do %>
-            <div class="card">
-              <div class="card__banner card__banner--top <%= DateTime.now < invoice.payout.arrival_date ? " bg-success " : "bg-error " %> flex">
-                <span class="bold white mr1">Invoice to <%= invoice.sponsor.name %></span>
-                <span class="badge ml-auto center incoming_deposits__badge <%= DateTime.now < invoice.payout.arrival_date ? " bg-success " : "bg-error " %>"><%= DateTime.now < invoice.payout.arrival_date ? "On Time" : "Late" %></span>
+  <% if @invoices_being_deposited.any?  %>
+    <div class="incoming_deposits__payout_grid">
+      <% @invoices_being_deposited.each do |invoice| %>
+        <%= link_to invoice, class: 'text-decoration-none' do %>
+          <div class="card incoming_deposits__card">
+            <div class="card__banner card__banner--top <%= (invoice.arrival_date ? (DateTime.now < invoice.arrival_date ? " bg-success " : "bg-error ") : (DateTime.now < invoice.predicted_arrival_date ? "bg-success" : "bg-error")) %> flex">
+              <span class="bold white mr1 incoming_deposits__sponsor">Invoice to<br><%= invoice.sponsor.name %></span>
+              <span class="badge ml-auto center incoming_deposits__badge <%= (invoice.arrival_date ? (DateTime.now < invoice.arrival_date ? " bg-success " : "bg-error ") : (DateTime.now < invoice.predicted_arrival_date ? "bg-success" : "bg-error"))%>"><%= (invoice.arrival_date ? (DateTime.now < invoice.arrival_date ? "On Time" : "Late") : (DateTime.now < invoice.predicted_arrival_date ? "On Time" : "Late")) %></span>
+            </div>
+            <div class="flex items-center">
+              <div>
+                <span class="incoming_deposits__amount"><%= render_money invoice.amount_paid %></span>
+                <span class="breakdown__sub">estimated arrival</span>
               </div>
-              <div class="flex items-center">
-                <div>
-                  <span class="incoming_deposits__amount"><%= render_money invoice.amount_paid %></span>
-                  <span class="breakdown__sub">will arrive on</span>
-                </div>
-                <div class="flex justify-center ml-auto">
-                  <span datetime="<%= invoice.payout.arrival_date.strftime('%m-%d-%y') %>" class="time-icon">
-                    <strong><%= invoice.payout.arrival_date.strftime('%b') %></strong>
-                    <span><%= invoice.payout.arrival_date.strftime('%d') %></span>
-                  </span>
-                </div>
+              <div class="flex justify-center ml-auto">
+                <span datetime="<%= (invoice.arrival_date ? invoice.arrival_date.strftime('%m-%d-%y') : invoice.predicted_arrival_date.strftime('%m-%d-%y')) %>" class="time-icon">
+                  <strong><%= (invoice.arrival_date ? invoice.arrival_date.strftime('%b') : invoice.predicted_arrival_date.strftime('%b')) %></strong>
+                  <span><%= (invoice.arrival_date ? invoice.arrival_date.strftime('%d') : invoice.predicted_arrival_date.strftime('%d')) %></span>
+                </span>
               </div>
             </div>
+          </div>
           <% end %>
         <% end %>
-      </div>
-      <hr class="mt2 mb2">
-    <% end %>
-
-    <% if @invoices_with_payouts_queued.any? %>
-      <h3 class="mb1">On the way to Bank</h3>
-      <div class="incoming_deposits__payout_grid">
-        <% @invoices_with_payouts_queued.each do |invoice| %>
-          <%= link_to invoice, class: 'text-decoration-none' do %>
-            <div class="card">
-              <div class="card__banner card__banner--top <%= DateTime.now < invoice.payout_creation_queued_for ? "bg-success" : "bg-error" %> flex">
-                <span class="bold white mr1">Invoice to <%= invoice.sponsor.name %></span>
-                <span class="badge ml-auto center incoming_deposits__badge <%= DateTime.now < invoice.payout_creation_queued_for ? "bg-success" : "bg-error" %>"><%= DateTime.now < invoice.payout_creation_queued_for ? "On Time" : "Late" %></span>
-              </div>
-              <div class="flex items-center">
-                <div>
-                  <span class="incoming_deposits__amount"><%= render_money invoice.amount_paid %></span>
-                  <span class="breakdown__sub mr1">will begin transport to Bank on</span>
-                </div>
-                <div class="flex justify-center ml-auto">
-                  <span datetime="<%= invoice.payout_creation_queued_for.strftime('%m-%d-%y') %>" class="time-icon">
-                    <strong><%= invoice.payout_creation_queued_for.strftime('%b') %></strong>
-                    <span><%= invoice.payout_creation_queued_for.strftime('%d') %></span>
-                  </span>
-                </div>
-              </div>
-            </div>
-          <% end %>
-        <% end %>
-      </div>
-    <% end %>
-
+    </div>
   <% else %>
     <%= blankslate "You don't have any money incoming. Go get some!" %>
   <% end %>
