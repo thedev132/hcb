@@ -1,98 +1,63 @@
 .time-icon {
-    font-size: 1em;
-    display: block;
-    position: relative;
-    width: 3.5em;
-    height: 3.5em;
-    border-color: map-get($palette, black);
-    border-width: 3px;
-    border-style: solid;
-    border-radius: 0.6em;
-    overflow: hidden;
-    -webkit-backface-visibility: hidden;
-    -webkit-transform: rotate(0deg) skewY(0deg);
-    -webkit-transform-origin: 50% 10%;
-    transform-origin: 50% 10%;
-}
+	display: block;
+	width: 3.5rem;
+	height: 3.5rem;
+	color: map-get($palette, slate);
+	border: 3px solid currentColor;
+	border-radius: 0.5rem;
+	overflow: hidden;
+	font-weight: bold;
+	text-align: center;
 
-.time-icon strong {
-    position: absolute;
-    top: 0;
-    padding: .35em 0;
-    line-height: .7rem;
-    color: #fff;
-    background-color: map-get($palette, black);
-}
+	strong {
+		display: block;
+    padding: .25rem 0;
+    line-height: 1;
+    font-size: 0.75rem;
+		color: $white;
+	}
 
-.time-icon span {
-    width: 100%;
-    font-size: 1.9em;
+	&.success strong {
+		background-color: map-get($palette, success);
+	}
+	&.error strong {
+		background-color: map-get($palette, error);
+	}
+
+	span {
+		display: block;
+		font-size: 1.5rem;
     letter-spacing: -0.05em;
-    padding-top: .37em;
-    color: map-get($palette, black);
+    line-height: 1.125;
+	}
 }
 
-.time-icon * {
-    display: block;
-    width: 100%;
-    font-size: .8em;
-    font-weight: bold;
-    font-style: normal;
-    text-align: center;
-}
-
-.incoming_deposits__payout_grid {
+.incoming_deposits {
 	display: grid;
-	grid-template-columns: 1fr 1fr;
 	grid-gap: 1rem;
-}
+	max-height: 100%;
+	overflow-y: scroll;
+	-webkit-overflow-scrolling: touch;
+	padding: 1rem;
+	margin: -0.5rem -1rem 0;
 
-.incoming_deposits__content_grid {
-	display: grid;
-	grid-template-columns: 1fr .5fr 1fr;
-}
-
-.incoming_deposits__amount {
-	font-size: 2rem;
-}
-
-.incoming_deposits__willarrive {
-  color: map-get($palette, muted);
-	line-height: .9rem;
-  font-size: .9rem;
-  text-align: center;
-  padding: 0 .5rem;
+	@media (min-width: 32em) {
+		grid-template-columns: repeat(2, 1fr);
+		overflow-y: auto;
+	}
 }
 
 .incoming_deposits__badge {
-  flex-shrink: 0;
-  max-height: 2em;
+	flex-shrink: 0;
 }
 
-.incoming_deposits__card {
-  height: 157px;
-  width: 248px;
-  margin: .2rem;
-}
-.incoming_deposits__payout_grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-gap: 0rem;
-  max-height: 100%;
-  overflow-y: scroll;
-
-}
-
-@media (max-width: 32em) {
-  .incoming_deposits__card {
-    margin: .5rem;
-  }
+.incoming_deposits__spacer {
+	display: block;
+	height: 1rem;
 }
 
 .incoming_deposits__sponsor {
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
 }
-
-

@@ -33,7 +33,7 @@ class EventsController < ApplicationController
     @organizers = @event.organizer_positions.includes(:user)
     @transactions = @event.transactions.includes(:fee_relationship)
 
-    @invoices_being_deposited = (@event.invoices.where(payout_id: nil, status: 'paid').where.not(payout_creation_queued_for: nil) + @event.invoices.joins(:payout).where(invoice_payouts: { status: ('in_transit') }).or(@event.invoices.joins(:payout).where(invoice_payouts: { status: ('pending') })))
+    @invoices_being_deposited = (@event.invoices.where(payout_id: nil, status: 'paid').where.not(payout_creation_queued_for: nil) + @event.invoices.joins(:payout).where(invoice_payouts: { status: ('in_transit') }).or(@event.invoices.joins(:payout).where(invoice_payouts: { status: ('pending') }))).sort_by { |i| i.arrival_date }
   end
 
   def team
