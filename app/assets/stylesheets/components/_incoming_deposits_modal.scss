@@ -2,8 +2,8 @@
 	display: block;
 	width: 3.5rem;
 	height: 3.5rem;
-	color: map-get($palette, slate);
-	border: 3px solid currentColor;
+	color: map-get($palette, white);
+	border: 3px solid;
 	border-radius: 0.5rem;
 	overflow: hidden;
 	font-weight: bold;
@@ -15,13 +15,7 @@
     line-height: 1;
     font-size: 0.75rem;
 		color: $white;
-	}
-
-	&.success strong {
-		background-color: map-get($palette, success);
-	}
-	&.error strong {
-		background-color: map-get($palette, error);
+		background-color: map-get($palette, black);
 	}
 
 	span {

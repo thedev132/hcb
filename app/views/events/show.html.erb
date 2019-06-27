@@ -172,8 +172,8 @@ Sponsorship fee: <%= render_percentage @event.sponsorship_fee %>`)">
     <div class="incoming_deposits flex-auto">
       <% [@invoices_being_deposited, @invoices_being_deposited, @invoices_being_deposited, @invoices_being_deposited, @invoices_being_deposited,@invoices_being_deposited, @invoices_being_deposited, @invoices_being_deposited, @invoices_being_deposited,@invoices_being_deposited, @invoices_being_deposited, @invoices_being_deposited].flatten.each do |invoice| %>
         <%= link_to invoice, class: 'card' do %>
-          <div class="card__banner card__banner--top bg-smoke flex items-center">
-            <span class="black mr1 incoming_deposits__sponsor">
+          <div class="card__banner card__banner--top bg-<%= DateTime.now < invoice.arrival_date ? :success : :error %> flex items-center">
+            <span class="white mr1 incoming_deposits__sponsor">
               Invoice to
               <strong class="block"><%= invoice.sponsor.name %></strong>
             </span>
@@ -189,7 +189,7 @@ Sponsorship fee: <%= render_percentage @event.sponsorship_fee %>`)">
                 <%= distance_of_time_in_words DateTime.now, invoice.arrival_date %>
               </span>
             </div>
-            <span datetime="<%= invoice.arrival_date.strftime('%m-%d-%y') %>" class="ml-auto time-icon <%= DateTime.now < invoice.arrival_date ? :success : :error %>">
+            <span datetime="<%= invoice.arrival_date.strftime('%m-%d-%y') %>" class="ml-auto time-icon black">
               <strong><%= invoice.arrival_date.strftime('%b') %></strong>
               <span><%= invoice.arrival_date.strftime('%d') %></span>
             </span>
