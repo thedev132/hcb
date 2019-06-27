@@ -46,10 +46,14 @@ input[type='number'],
   max-width: 16rem !important;
 }
 
+input[type='search'] {
+  padding-left: 0.25rem;
+}
+
 .field_with_errors {
   label {
-    font-weight: bold;
-    color: $red7;
+    font-weight: 500;
+    color: map-get($palette, error);
   }
   input {
     border-color: map-get($palette, error);
@@ -93,26 +97,6 @@ input[type='number'],
 }
 .actions {
   margin-top: 1.5rem;
-}
-
-#error_explanation {
-  width: 32rem;
-  border: 2px solid $red7;
-  padding: 1rem;
-  margin-bottom: 1.5rem;
-  background-color: $red0;
-  border-radius: 4px;
-
-  h2 {
-    color: $red7;
-    border-bottom-color: $red6;
-    margin-top: 0;
-    font-size: 1.25rem;
-  }
-
-  ul {
-    margin-bottom: 0;
-  }
 }
 
 label {

@@ -2,10 +2,8 @@
 <% page_sm %>
 <%= render 'events/nav' %>
 
-<article class="card mt3">
-  <h1>Configure G Suite</h1>
+<h1>Configure G Suite</h1>
 
-  <p>G Suite gives you Gmail, Google Drive, Hangouts, Calendar, and more, all for free, including domain email addresses like <strong><%= example_email @g_suite_application.event %></strong>.</p>
+<p>G Suite gives you Gmail, Google Drive, Hangouts, Calendar, and more, all for free, including domain email addresses like <strong><%= example_email @g_suite_application.event %></strong>.</p>
 
-  <%= render 'form', g_suite_application: @g_suite_application %>
-</article>
+<%= render 'form', g_suite_application: @g_suite_application %>

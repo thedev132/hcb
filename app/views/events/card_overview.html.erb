@@ -6,7 +6,7 @@
   Cards
 </h1>
 
-<article class="card">
+<article class="card overflow-visible">
   <h2 class="mt0 mb2">Summary</h2>
 
   <div class="flex flex-wrap">
@@ -52,8 +52,8 @@ West Hollywood, CA 90069</pre>
 </article>
 
 <h2 class="heading">
-  Event Cards
-  <%= link_to 'Request a Card',
+  Issued Cards
+  <%= link_to 'Issue a Card',
     new_card_request_path(event_id: @event.id),
     class: 'btn bg-success' %>
 </h2>
@@ -72,7 +72,7 @@ West Hollywood, CA 90069</pre>
     <% end %>
   </section>
 <% elsif @card_requests.any? %>
-  <%= blankslate 'No cards have been accepted yet.' %>
+  <%= blankslate 'No cards have been issued yet.' %>
 <% elsif @cards.blank? %>
   <%= blankslate 'You haven’t requested any physical cards yet.' %>
 <% end %>
@@ -81,7 +81,7 @@ West Hollywood, CA 90069</pre>
 <h2 class="mt3 mb1">Card Requests</h2>
   <% @card_requests.outstanding.each do |request| %>
     <%= link_to request, class: 'text-decoration-none mb2' do %>
-      <%= creator_bar request %>
+      <%= creator_bar request, prefix: 'requested ' %>
       <div class="card">
         <span class="tooltipped tooltipped--e" aria-label="<%= request.status.capitalize %>">
           <%= status_badge request.status_badge_type %>

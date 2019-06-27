@@ -15,12 +15,12 @@
 
   <tbody>
     <% @opdrs.each do |opdr| %>
-      <tr>
+      <tr class="<%= 'shade-yellow' if opdr.under_review? %>">
         <td><%= opdr.organizer_position.event.name %></td>
         <td><%= opdr.submitted_by.name %></td>
         <td><%= opdr.organizer_position.user.name %></td>
         <td><%= opdr.status.to_s.humanize %></td>
-        <td><%= link_to (opdr.under_review? ? 'Process' : 'View'), opdr %></td>
+        <td><%= link_to (opdr.under_review? ? 'Process' : 'View'), opdr, class: 'btn' %></td>
       </tr>
     <% end %>
   </tbody>

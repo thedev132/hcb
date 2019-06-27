@@ -186,6 +186,7 @@ ActiveRecord::Schema.define(version: 2019_05_26_155056) do
     t.datetime "updated_at", null: false
     t.datetime "processed_at"
     t.string "mailer_queued_job_id"
+    t.index ["transaction_memo"], name: "index_fee_reimbursements_on_transaction_memo", unique: true
   end
 
   create_table "fee_relationships", force: :cascade do |t|
