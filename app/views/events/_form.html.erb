@@ -1,7 +1,7 @@
 <%= form_with(model: event, local: true, class: 'mb3') do |form| %>
   <% if event.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(event.errors.size, "error") %> prohibited this event from being saved:</h2>
+      <h2><%= pluralize(event.errors.size, "error") %> prohibited your account info from being saved:</h2>
 
       <ul>
       <% event.errors.full_messages.each do |message| %>
@@ -16,6 +16,23 @@
     <%= form.text_area :address %>
   </div>
 
+  <h3 class="mb1">Danger Zone</h3>
+  <div class="card border b--warning mb3">
+    <div class="flex items-center warning">
+      <%= inline_icon 'important', size: 32, class: 'mr1' %>
+      <p class="bold mt0 mb0">If you change your URL, beware:</p>
+    </div>
+    <ul class="mt1 mb2">
+      <li>Another project may claim your current URL and you could be <span class="bold">unable to get it back</span></li>
+      <li>All bookmarks to this event’s Bank will <span class="bold">break</span></li>
+      <li>Your team members currently using Bank will be bumped to the home page</li>
+    </ul>   
+    <%= form.label :slug, 'Bank URL', class: 'bold' %> 
+    <div class="flex items-center">
+      <span class="slate">bank.hackclub.com/</span>
+      <%= form.text_field :slug, placeholder: event.persisted? ? event.name.parameterize : nil %>
+    </div>
+  </div>
 
   <% admin_tools do %>
     <div class="field">
@@ -56,13 +73,10 @@
       <%= form.collection_select :point_of_contact_id, User.admin.all, :id, :email %>
     </div>
 
-    <div class="field">
-      <%= form.label :has_fiscal_sponsorship_document do %>
-        <%= form.check_box :has_fiscal_sponsorship_document %>
-        Display Fiscal Sponsorship Confirmation in Documents tab?
-      <% end %>
+    <div class="field field--checkbox">
+      <%= form.check_box :has_fiscal_sponsorship_document %>
+      <%= form.label :has_fiscal_sponsorship_document, 'Display Fiscal Sponsorship Confirmation in Documents tab?' %>
     </div>
-
   <% end %>
 
   <div class="actions">

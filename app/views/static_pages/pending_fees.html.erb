@@ -1,0 +1,24 @@
+<% title 'Pending Fees' %>
+<h1>
+  Pending Fees
+</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Event</th>
+      <th>Amount</th>
+      <th>How late we are on withdrawing fees</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @pending_fees.each do |event| %>
+      <tr class="shade-yellow">
+        <td class="underline"><%= link_to "#{event.name}", event %></td>
+        <td><%= render_money event.fee_balance %></td>
+        <td><%= distance_of_time_in_words(DateTime.now, event.transactions.first.date) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

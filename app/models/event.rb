@@ -31,8 +31,14 @@ class Event < ApplicationRecord
   validate :point_of_contact_is_admin
 
   validates :name, :start, :end, :address, :sponsorship_fee, presence: true
+  validates :slug, uniqueness: true, presence: true,  format: { without: /\s/ }
 
   before_create :default_values
+
+  def self.pending_fees
+    # minimum that you can move with SVB is $1
+    select { | event | event.fee_balance > 100 }
+  end
 
   def emburse_department_path
     "https://app.emburse.com/budgets/#{emburse_department_id}"

@@ -4,6 +4,11 @@
   padding: 1rem;
   border-radius: 0.5rem;
   overflow: hidden;
+
+  &.b--warning {
+    box-shadow: 0 0 2px 0 rgba($orange6, 0.0625),
+      0 4px 8px 0 rgba($orange7, 0.125);
+  }
 }
 
 .card h1,
@@ -28,4 +33,24 @@
 
 .archived {
   background-color: $red2
+}
+
+#error_explanation {
+  @extend .card;
+  max-width: 32rem;
+  border: 1px solid $red7;
+  margin-bottom: 1.5rem;
+  background-color: $red0;
+  box-shadow: 0 0 2px 0 rgba($red6, 0.025), 0 4px 8px 0 rgba($red7, 0.125);
+
+  h2 {
+    color: $red7;
+    border-bottom-color: $red3;
+    margin-top: 0;
+    font-size: 1.25rem;
+  }
+
+  ul {
+    margin-bottom: 0;
+  }
 }

@@ -143,21 +143,17 @@ tr {
 thead {
   table-layout: fixed;
 }
+th,
+td {
+  padding: 0.5rem;
+  &:first-child {
+    padding-left: 1rem;
+  }
+}
 th {
   font-weight: bold;
   text-align: left;
   padding-bottom: 0.125rem;
-}
-td {
-  padding-left: 0;
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
-}
-td,
-th {
-  &:first-child {
-    padding-left: 1rem;
-  }
 }
 
 hr {
@@ -190,7 +186,7 @@ svg {
 @import 'components/transactions';
 
 .turbolinks-progress-bar {
-  height: 0.25rem;
+  height: 0.125rem;
   background-color: map-get($palette, primary);
 }
 
@@ -251,7 +247,7 @@ svg {
         padding-left: 1rem;
       }
       &:last-child {
-        padding-right: 0.5rem;
+        padding-right: 1rem;
       }
     }
   }

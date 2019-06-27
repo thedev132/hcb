@@ -16,14 +16,16 @@
   </div>
 </div>
 
-<p class="black bold mt1 mb0">
-  The average time of the last five transfers is
-  <span class="primary"><%= pluralize LoadCardRequest.processing_time + 2, 'day' %></span>.
+<p class="black bold mt1 mb1">
+  All transfer requests processed Monday-Thursday before 1pm PT will be
+  completed within 1 day, typically in 8 hours.
 </p>
 <p class="slate h5 mt0">
-  Transfers may take longer than the current average. Sadly
-  this is beyond our control, constrained by the US banking /
-  ACH transfer system.<br />
+  Transfer requests processed Friday-Sunday can take 3-5 days to complete
+  depending on the time of day your request is processed. Sadly, this is
+  beyond our control, constrained by the US banking / ACH transfer system.
+</p>
+<p class="slate h5 mt0">
   Please plan accordingly.
 </p>
 
