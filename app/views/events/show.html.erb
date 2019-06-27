@@ -169,34 +169,39 @@ Sponsorship fee: <%= render_percentage @event.sponsorship_fee %>`)">
 
 <%= render 'promo_modal' %>
 
-<div class="modal" data-behavior="modal" role="dialog" id="incoming_deposits">
+<div class="modal flex flex-column" data-behavior="modal" role="dialog" id="incoming_deposits">
   <%= modal_header 'Incoming Deposits' %>
   <% if @invoices_being_deposited.any?  %>
-    <div class="incoming_deposits__payout_grid">
-      <% @invoices_being_deposited.each do |invoice| %>
-        <%= link_to invoice, class: 'text-decoration-none' do %>
-          <div class="card incoming_deposits__card">
-            <div class="card__banner card__banner--top <%= (invoice.arrival_date ? (DateTime.now < invoice.arrival_date ? " bg-success " : "bg-error ") : (DateTime.now < invoice.predicted_arrival_date ? "bg-success" : "bg-error")) %> flex">
-              <span class="bold white mr1 incoming_deposits__sponsor">Invoice to<br><%= invoice.sponsor.name %></span>
-              <span class="badge ml-auto center incoming_deposits__badge <%= (invoice.arrival_date ? (DateTime.now < invoice.arrival_date ? " bg-success " : "bg-error ") : (DateTime.now < invoice.predicted_arrival_date ? "bg-success" : "bg-error"))%>"><%= (invoice.arrival_date ? (DateTime.now < invoice.arrival_date ? "On Time" : "Late") : (DateTime.now < invoice.predicted_arrival_date ? "On Time" : "Late")) %></span>
+    <div class="incoming_deposits flex-auto">
+      <% [@invoices_being_deposited, @invoices_being_deposited, @invoices_being_deposited, @invoices_being_deposited, @invoices_being_deposited,@invoices_being_deposited, @invoices_being_deposited, @invoices_being_deposited, @invoices_being_deposited,@invoices_being_deposited, @invoices_being_deposited, @invoices_being_deposited].flatten.each do |invoice| %>
+        <%= link_to invoice, class: 'card' do %>
+          <div class="card__banner card__banner--top bg-smoke flex items-center">
+            <span class="black mr1 incoming_deposits__sponsor">
+              Invoice to
+              <strong class="block"><%= invoice.sponsor.name %></strong>
+            </span>
+            <span class="badge ml-auto center incoming_deposits__badge bg-<%= DateTime.now < invoice.arrival_date ? :success : :error %>">
+              <%= DateTime.now < invoice.arrival_date ? 'On Time' : 'Late' %>
+            </span>
+          </div>
+          <div class="flex">
+            <div>
+              <span class="h1 black line-height-1 mb1 block"><%= render_money invoice.amount_paid %></span>
+              <span class="breakdown__sub">
+                arrives in approx.
+                <%= distance_of_time_in_words DateTime.now, invoice.arrival_date %>
+              </span>
             </div>
-            <div class="flex items-center">
-              <div>
-                <span class="incoming_deposits__amount"><%= render_money invoice.amount_paid %></span>
-                <span class="breakdown__sub">estimated arrival</span>
-              </div>
-              <div class="flex justify-center ml-auto">
-                <span datetime="<%= (invoice.arrival_date ? invoice.arrival_date.strftime('%m-%d-%y') : invoice.predicted_arrival_date.strftime('%m-%d-%y')) %>" class="time-icon">
-                  <strong><%= (invoice.arrival_date ? invoice.arrival_date.strftime('%b') : invoice.predicted_arrival_date.strftime('%b')) %></strong>
-                  <span><%= (invoice.arrival_date ? invoice.arrival_date.strftime('%d') : invoice.predicted_arrival_date.strftime('%d')) %></span>
-                </span>
-              </div>
-            </div>
+            <span datetime="<%= invoice.arrival_date.strftime('%m-%d-%y') %>" class="ml-auto time-icon <%= DateTime.now < invoice.arrival_date ? :success : :error %>">
+              <strong><%= invoice.arrival_date.strftime('%b') %></strong>
+              <span><%= invoice.arrival_date.strftime('%d') %></span>
+            </span>
           </div>
           <% end %>
         <% end %>
+        <div class="incoming_deposits__spacer"></div>
     </div>
   <% else %>
-    <%= blankslate "You don't have any money incoming. Go get some!" %>
+    <%= blankslate 'You don’t have any money incoming. Go get some!' %>
   <% end %>
 </div> 
