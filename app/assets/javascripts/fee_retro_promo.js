@@ -48,11 +48,6 @@ $(document).on('turbolinks:load', function() {
 		}
 	})
 
-	if (!window.localStorage.getItem('wiggleReimbursement')) {
-		window.localStorage.setItem('wiggleReimbursement', false)
-		$('#retrofees__transaction').addClass('animated tada delay-2s')
-	}
-
 	$('.retrofees__close_button').click(function() {
 		togglePromo()
 	})
