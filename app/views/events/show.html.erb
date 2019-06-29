@@ -74,10 +74,13 @@ Sponsorship fee: <%= render_percentage @event.sponsorship_fee %>`)">
     </span>
     <span class="stat__value"><%= render_money @event.pending_deposits, '' %></span>
   </div>
-  <div class="stat" area="spendable">
-    <span class="stat__label">Card balance</span>
+  <%= link_to new_event_load_card_request_path(event_id: @event.slug), class: 'stat link-reset', area: 'spendable' do %>
+    <span class="stat__label flex items-center">
+      Card balance
+      <%= inline_icon 'plus', size: 24, class: 'muted ml1', 'aria-label': 'Info icon' %>
+    </span>
     <span class="stat__value"><%= render_money @event.emburse_balance, '' %></span>
-  </div>
+  <% end %>
 </div>
 
 <h2 class="heading">
