@@ -1,4 +1,3 @@
-@import 'jquery-ui';
 @import 'variables';
 
 @font-face {
@@ -273,9 +272,9 @@ svg {
   }
 }
 
+@import 'jquery-ui';
 @import 'basscss';
 @import 'space';
 @import 'utilities';
 @import 'dark';
-@import 'animate';
 @import 'retro_fees';
