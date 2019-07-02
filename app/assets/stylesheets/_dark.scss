@@ -144,6 +144,11 @@ html[data-dark='true'] {
   .badge.bg-error {
     color: map-get($palette, error);
   }
+  .badge.archived {
+    background-color: rgba($yellow8, 0.625);
+    border: none;
+    color: $yellow3;
+  }
 
   .filterbar__item[aria-selected='true'],
   .badge {
@@ -182,5 +187,13 @@ html[data-dark='true'] {
   }
   .shade-yellow {
     background-color: rgba($yellow4, 0.125);
+  }
+  .banner--archived {
+    background-color: rgba($yellow1, 0.125);
+    border-color: rgba($yellow8, 0.625);
+    color: $yellow3;
+    a {
+      color: $yellow3;
+    }
   }
 }

@@ -2,6 +2,16 @@
 <% page_md %>
 <%= render 'events/nav' %>
 
+<% if @invoice.archived? %>
+  <div class="banner banner--archived mx-auto mt3 flex items-center justify-center pl2 pr2 py1 line-height-1.5">
+      <div class="center">
+        <span class="bold block">This invoice is archived.</span>
+        <span class="block">It will only display in the Archived tab on the Invoices page.</span>
+        <span>You can <%= link_to 'un-archive it', invoice_unarchive_path(@invoice), method: :post %>.</span>
+      </div>
+  </div>
+<% end %>
+
 <article class="card pb0 mt3 mb3">
   <h2 class="h2 sans mt0 border-none">
     <%= @sponsor.name %>
@@ -95,7 +105,7 @@
   <section class="card__banner border-top flex">
     <%= link_to 'View sent invoice', @invoice.hosted_invoice_url, class: 'btn bg-accent mr2', target: '_blank'  %>
     <%= link_to 'Download PDF', @invoice.invoice_pdf, class: 'btn bg-info', target: '_blank'  %>
-    <%= link_to "#{@invoice.archived? ? 'Un-archive' : 'Archive'}", (@invoice.archived? ? invoice_unarchive_path(@invoice) : invoice_archive_path(@invoice)), method: :post, class: 'btn bg-slate ml-auto' %>
+    <%= link_to "#{@invoice.archived? ? 'Un-archive' : 'Archive'}", (@invoice.archived? ? invoice_unarchive_path(@invoice) : invoice_archive_path(@invoice)), method: :post, class: 'btn bg-muted ml-auto' %>
   </section>
 </article>
 

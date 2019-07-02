@@ -84,7 +84,6 @@ class InvoicesController < ApplicationController
     @invoice.archive
 
     if @invoice.save
-      flash[:success] = 'Invoice has been archived.'
       redirect_to @invoice
     else
       flash[:error] = 'Something went wrong while trying to archive this invoice!'
