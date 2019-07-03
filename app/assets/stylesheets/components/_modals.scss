@@ -60,11 +60,6 @@
       margin: 0 -2rem 1rem;
       padding: 2rem 2rem 0.75rem;
     }
-
-    @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
-      background-color: rgba($white, 0.75);
-      -webkit-backdrop-filter: saturate(180%) blur(20px);
-    }
   }
 
   &.bg-snow header {
