@@ -59,21 +59,20 @@ Sponsorship fee: <%= render_percentage @event.sponsorship_fee %>`)">
     <span class="stat__label">Account balance</span>
     <span class="stat__value"><%= render_money @event.balance, '' %></span>
   </div>
-  <action class="stat stat--small" area="fees" data-behavior="modal_trigger" data-modal="pending_withdrawals">
+  <action class="stat stat--small" area="fees" data-behavior="modal_trigger" data-modal="pending_withdrawals" tabindex="0">
     <span class="stat__label flex items-center">
       Pending withdrawals
       <%= inline_icon 'external', size: 24, class: 'muted ml1', 'aria-label': 'Icon indicating click for more' %>
     </span>
     <span class="stat__value"><%= render_money @event.balance_being_withdrawn, '' %></span>
   </action>
-  <action class="stat stat--small" area="deposits" data-behavior="modal_trigger" data-modal="incoming_deposits">
+  <action class="stat stat--small" area="deposits" data-behavior="modal_trigger" data-modal="incoming_deposits" tabindex="0">
     <span class="stat__label flex items-center">
       Incoming deposits
       <%= inline_icon 'external', size: 24, class: 'muted ml1', 'aria-label': 'Icon indicating click for more' %>
     </span>
     <span class="stat__value"><%= render_money @event.pending_deposits, '' %></span>
   </action>
-  </div>
   <%= link_to new_event_load_card_request_path(event_id: @event.slug), class: 'stat link-reset', area: 'spendable' do %>
     <span class="stat__label flex items-center">
       Card balance

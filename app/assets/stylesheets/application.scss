@@ -168,6 +168,10 @@ svg {
 
 action {
   cursor: pointer;
+
+  &:focus {
+    outline: 1;
+  }
 }
 
 @import 'components/badges';
