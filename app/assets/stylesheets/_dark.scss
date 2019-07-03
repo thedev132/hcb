@@ -55,6 +55,16 @@ html[data-dark='true'] {
   .modal {
     background-color: $darkless;
   }
+  .modal--scroll.bg-snow {
+    background-color: $dark;
+  }
+  .modal--scroll header {
+    background-color: $darkless;
+  }
+  .mini-calendar strong {
+    background-color: map-get($palette, smoke);
+    color: map-get($palette, black);
+  }
 
   .card {
     background-color: $darkless;
@@ -102,11 +112,19 @@ html[data-dark='true'] {
     background-color: rgba(map-get($palette, warning), 0.0625);
   }
 
+  .card__banner.bg-success,
   .transaction--positive {
     background-color: rgba(map-get($palette, success), 0.25);
   }
+  .card__banner.bg-error,
   .transaction--negative {
     background-color: rgba(map-get($palette, error), 0.25);
+  }
+  .shade-neutral {
+    background: $darkless;
+  }
+  .shade-yellow {
+    background-color: rgba($yellow4, 0.125);
   }
 
   input[type='submit'],
@@ -173,18 +191,16 @@ html[data-dark='true'] {
   .pop.warning {
     background-color: rgba(map-get($palette, warning), 0.125);
   }
+  .flash.muted,
+  .badge.bg-muted,
+  .pop.muted {
+    background-color: rgba(map-get($palette, muted), 0.125);
+  }
   .flash.error,
   .btn--destroy,
   #error_explanation,
   .badge.bg-error,
   .pop.error {
     background-color: rgba(map-get($palette, error), 0.125);
-  }
-
-  .shade-neutral {
-    background: $darkless;
-  }
-  .shade-yellow {
-    background-color: rgba($yellow4, 0.125);
   }
 }
