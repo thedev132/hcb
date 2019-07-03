@@ -6,7 +6,7 @@ class TransactionsController < ApplicationController
     @transactions = @event.transactions
     authorize @transactions
 
-    attributes = %w{id created_at date display_name name amount fee fee_balance link}
+    attributes = %w{date display_name name amount fee fee_balance link}
     attributes_to_currency = %w{amount fee}
 
     result = CSV.generate(headers: true) do |csv|
@@ -25,18 +25,10 @@ class TransactionsController < ApplicationController
           elsif attr == 'fee_balance'
             prev_fee_balance = fee_balance
 
-            (fee_balance = fee_balance + transaction.fee_relationship.fee_amount) if transaction.fee_relationship.fee_applies
-            puts "#{fee_balance} 1st"
-            (fee_balance = fee_balance + transaction.amount) if transaction.fee_relationship.is_fee_payment
-            puts "#{fee_balance} 2nd"
+            fee_balance = fee_balance + transaction.fee_relationship.fee_amount if transaction.fee_relationship.fee_applies
+            fee_balance = fee_balance + transaction.amount if transaction.fee_relationship.is_fee_payment
 
             view_context.render_money -(prev_fee_balance)
-            # previous_transactions = @transactions.select { |t| t.date <= transaction.date }.select{ |t| t.created_at < transaction.created_at }
-
-            # fees_occured = previous_transactions.map { |t| t.fee_relationship.fee_applies ? t.fee_relationship.fee_amount : 0 }.sum
-            # fee_paid = previous_transactions.map { |t| t.fee_relationship.is_fee_payment ? t.amount : 0 }.sum
-
-            # view_context.render_money (fees_occured + fee_paid)
           else
             transaction.send(attr)
           end
