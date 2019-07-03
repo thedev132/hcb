@@ -168,28 +168,28 @@ class Invoice < ApplicationRecord
   end
 
   def create_payout!
-    #inv = StripeService::Invoice.retrieve(id: stripe_invoice_id, expand: ['charge.balance_transaction'])
+    # inv = StripeService::Invoice.retrieve(id: stripe_invoice_id, expand: ['charge.balance_transaction'])
 
-    #raise StandardError, 'Funds not yet available' unless Time.current.to_i > inv.charge.balance_transaction.available_on
+    # raise StandardError, 'Funds not yet available' unless Time.current.to_i > inv.charge.balance_transaction.available_on
 
     self.payout = InvoicePayout.new(
-      amount: self.payout_creation_balance_net,
+      amount: payout_creation_balance_net,
       invoice: self
     )
 
-    #self.fee_reimbursement = FeeReimbursement.new(
-     # invoice: self
-    #)
+    # self.fee_reimbursement = FeeReimbursement.new(
+    # invoice: self
+    # )
 
-    #self.fee_reimbursement.save
+    # self.fee_reimbursement.save
 
     # if a transfer takes longer than 5 days something is probably wrong. so send an email
-    #fee_reimbursement_job = SendUnmatchedFeeReimbursementEmailJob.set(wait_until: DateTime.now + 5.days).perform_later(self.fee_reimbursement)
-    #self.fee_reimbursement.mailer_queued_job_id = fee_reimbursement_job.provider_job_id
+    # fee_reimbursement_job = SendUnmatchedFeeReimbursementEmailJob.set(wait_until: DateTime.now + 5.days).perform_later(self.fee_reimbursement)
+    # self.fee_reimbursement.mailer_queued_job_id = fee_reimbursement_job.provider_job_id
 
-    #self.fee_reimbursement.save
+    # self.fee_reimbursement.save
 
-    self.save!
+    save!
   end
 
   def set_fields_from_stripe_invoice(inv)
@@ -261,9 +261,9 @@ class Invoice < ApplicationRecord
   end
 
   def arrival_date
-    self&.payout&.arrival_date ? self.payout.arrival_date : 3.business_days.after(self.payout_creation_queued_for)
+    self&.payout&.arrival_date ? payout.arrival_date : 3.business_days.after(payout_creation_queued_for)
   end
-  
+
   private
 
   def set_defaults

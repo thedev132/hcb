@@ -31,7 +31,7 @@ class Event < ApplicationRecord
   validate :point_of_contact_is_admin
 
   validates :name, :start, :end, :address, :sponsorship_fee, presence: true
-  validates :slug, uniqueness: true, presence: true,  format: { without: /\s/ }
+  validates :slug, uniqueness: true, presence: true, format: { without: /\s/ }
 
   before_create :default_values
 
@@ -60,24 +60,24 @@ class Event < ApplicationRecord
   end
 
   def lcr_pending
-    lcrs = self.load_card_requests
+    lcrs = load_card_requests
     (lcrs.under_review + lcrs.accepted - lcrs.completed - lcrs.canceled - lcrs.rejected).sum(&:load_amount)
   end
 
   # used for load card requests, this is the amount of money available that isn't being transferred out by an LCR -tmb@hackclub
   def balance_available
-    lcrs = self.load_card_requests
+    lcrs = load_card_requests
     balance - lcr_pending
   end
-  alias_method :available_balance, :balance_available
+  alias available_balance balance_available
 
   # amount incoming from paid Stripe invoices not yet deposited
   def pending_deposits
     # money that is pending payout- aka payout has not been created yet
-    pre_payout = self.invoices.where(status: 'paid', payout: nil).sum(:amount_paid)
+    pre_payout = invoices.where(status: 'paid', payout: nil).sum(:amount_paid)
 
     # money that has a payout created, but where the transaction has not hit the account yet / been associated with the pending payout
-    payout_created = self.invoices.joins(payout: :t_transaction).where(status: 'paid', payout: { transactions: { id: nil } }).sum(:amount_paid)
+    payout_created = invoices.joins(payout: :t_transaction).where(status: 'paid', payout: { transactions: { id: nil } }).sum(:amount_paid)
 
     pre_payout + payout_created
   end
@@ -110,16 +110,16 @@ class Event < ApplicationRecord
   def balance_transacted_since_last_fee_payment
     date = self&.fee_payments&.first&.date
 
-    return fee_balance if date == nil
-    return 0 if transactions.size == 0
+    return fee_balance if date.nil?
+    return 0 if transactions.empty?
 
     transactions = self.transactions.select { |t| t.date > date && t.fee_relationship.fee_applies }
-    return transactions.sum(&:amount)
+    transactions.sum(&:amount)
   end
 
   def balance_being_withdrawn
-    lcrs = self.load_card_requests
-    return fee_balance + lcr_pending
+    lcrs = load_card_requests
+    fee_balance + lcr_pending
   end
 
   def g_suite_status

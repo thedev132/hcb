@@ -13,7 +13,7 @@ class InvoicePayout < ApplicationRecord
   has_one :t_transaction, class_name: 'Transaction'
 
   after_initialize :default_values
-  #before_create :create_stripe_payout
+  # before_create :create_stripe_payout
   after_create :notify_organizers
 
   def set_fields_from_stripe_payout(payout)
