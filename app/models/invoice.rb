@@ -261,7 +261,11 @@ class Invoice < ApplicationRecord
   end
 
   def arrival_date
-    self&.payout&.arrival_date ? payout.arrival_date : 3.business_days.after(payout_creation_queued_for)
+    self&.payout&.arrival_date || 3.business_days.after(payout_creation_queued_for)
+  end
+
+  def arriving_late?
+    DateTime.now < self.arrival_date
   end
 
   private
