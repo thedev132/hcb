@@ -81,7 +81,8 @@ class InvoicesController < ApplicationController
 
     authorize @invoice
 
-    @invoice.archive
+    @invoice.archived_at = DateTime.now
+    @invoice.archived_by = current_user
 
     if @invoice.save
       redirect_to @invoice
@@ -97,6 +98,7 @@ class InvoicesController < ApplicationController
     authorize @invoice
 
     @invoice.archived_at = nil
+    @invoice.archived_by = nil
 
     if @invoice.save
       flash[:success] = 'Invoice has been un-archived.'

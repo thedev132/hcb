@@ -19,6 +19,7 @@ class Invoice < ApplicationRecord
   belongs_to :manually_marked_as_paid_user, class_name: 'User', required: false
   belongs_to :payout, class_name: 'InvoicePayout', required: false
   belongs_to :fee_reimbursement, required: false
+  belongs_to :archived_by, class_name: 'User', required: false
 
   has_one_attached :manually_marked_as_paid_attachment
 
@@ -106,14 +107,6 @@ class Invoice < ApplicationRecord
       overdue: due_date < 3.days.from_now && !paid?,
       archived: archived?
     }
-  end
-
-  def archive
-    self.archived_at = DateTime.now
-  end
-
-  def unarchive
-    self.archived_at = nil
   end
 
   def archived?
