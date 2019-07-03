@@ -68,6 +68,7 @@ html[data-dark='true'] {
 
   .card {
     background-color: $darkless;
+    box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.125), 0 4px 8px 0 rgba(0, 0, 0, 0.25);
 
     h1,
     h2,
@@ -104,7 +105,7 @@ html[data-dark='true'] {
   }
 
   .card__darker {
-    background: $darker;
+    background: $dark;
     color: map-get($palette, muted) !important;
   }
 
@@ -129,22 +130,22 @@ html[data-dark='true'] {
 
   input[type='submit'],
   .btn {
-    background-color: rgba(map-get($palette, info), 0.625);
+    background-color: rgba(map-get($palette, info), 0.75);
   }
   .btn.bg-primary {
-    background-color: rgba(map-get($palette, primary), 0.625);
+    background-color: rgba(map-get($palette, primary), 0.75);
   }
   .btn.bg-accent {
-    background-color: rgba(map-get($palette, accent), 0.625);
+    background-color: rgba(map-get($palette, accent), 0.75);
   }
   .btn.bg-success {
-    background-color: rgba(map-get($palette, success), 0.625);
+    background-color: rgba(map-get($palette, success), 0.75);
   }
   .btn.bg-warning {
-    background-color: rgba(map-get($palette, warning), 0.625);
+    background-color: rgba(map-get($palette, warning), 0.75);
   }
   .btn.bg-error {
-    background-color: rgba(map-get($palette, error), 0.625);
+    background-color: rgba(map-get($palette, error), 0.75);
   }
 
   .filterbar__item[aria-selected='true'],
