@@ -181,15 +181,15 @@ action {
 @import 'components/forms';
 @import 'components/headings';
 @import 'components/headway';
+@import 'components/incoming_deposits';
 @import 'components/layouts';
 @import 'components/lists';
+@import 'components/modals';
 @import 'components/stats';
 @import 'components/steps';
 @import 'components/tooltips';
 @import 'components/transactions';
-@import 'components/modals';
 @import 'components/withdraw_breakdown';
-@import 'components/incoming_deposits_modal';
 
 .turbolinks-progress-bar {
   height: 0.125rem;
