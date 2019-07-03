@@ -53,3 +53,18 @@ a.card {
     margin-bottom: 0;
   }
 }
+
+.banner {
+  @extend .card;
+  max-width: 32rem;
+  padding: .5em;
+}
+
+.banner--archived {
+  background-color: $yellow1;
+  border: 1px solid $yellow3;
+  color: $yellow8;
+  a {
+    color: $yellow8;
+  }
+}
