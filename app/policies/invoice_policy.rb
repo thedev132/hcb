@@ -20,6 +20,14 @@ class InvoicePolicy < ApplicationPolicy
     user.admin? || record.sponsor.event.users.include?(user)
   end
 
+  def archive?
+    user.admin? || record.sponsor.event.users.include?(user)
+  end
+
+  def unarchive?
+    user.admin? || record.sponsor.event.users.include?(user)
+  end
+
   def manual_payment?
     user.admin?
   end

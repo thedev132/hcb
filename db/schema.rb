@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_22_215806) do
+ActiveRecord::Schema.define(version: 2019_07_03_172432) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -340,6 +340,9 @@ ActiveRecord::Schema.define(version: 2019_05_22_215806) do
     t.text "payment_method_ach_credit_transfer_routing_number"
     t.text "payment_method_ach_credit_transfer_account_number"
     t.text "payment_method_ach_credit_transfer_swift_code"
+    t.datetime "archived_at"
+    t.bigint "archived_by_id"
+    t.index ["archived_by_id"], name: "index_invoices_on_archived_by_id"
     t.index ["creator_id"], name: "index_invoices_on_creator_id"
     t.index ["fee_reimbursement_id"], name: "index_invoices_on_fee_reimbursement_id"
     t.index ["item_stripe_id"], name: "index_invoices_on_item_stripe_id", unique: true
@@ -518,6 +521,7 @@ ActiveRecord::Schema.define(version: 2019_05_22_215806) do
   add_foreign_key "invoices", "fee_reimbursements"
   add_foreign_key "invoices", "invoice_payouts", column: "payout_id"
   add_foreign_key "invoices", "sponsors"
+  add_foreign_key "invoices", "users", column: "archived_by_id"
   add_foreign_key "invoices", "users", column: "creator_id"
   add_foreign_key "invoices", "users", column: "manually_marked_as_paid_user_id"
   add_foreign_key "load_card_requests", "cards"

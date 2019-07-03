@@ -60,6 +60,9 @@ $(document).on('turbolinks:load', function() {
     return filterRecords(function(record) {
       // get the data from within the filter data attribute
       const data = $(record).data('filter')
+      if (name !== 'archived' && data['archived']) {
+        return false
+      }
       // return whatever the value is from within that json (either true or false)
       return data[name]
     })
@@ -73,7 +76,7 @@ $(document).on('turbolinks:load', function() {
       .val()
       .toLowerCase()
 
-    filterRecords(function(record) {
+    return filterRecords(function(record) {
       $(record).attr('aria-expanded', 'false')
       return (
         $(record)
@@ -82,5 +85,15 @@ $(document).on('turbolinks:load', function() {
           .indexOf(value) > -1
       )
     })
+  })
+
+  // initial filtering out archived invoices
+  filterRecords(function(record) {
+    const data = $(record).data('filter')
+    if (data['archived']) {
+      return false
+    }
+
+    return true
   })
 })
