@@ -41,7 +41,7 @@ module ApplicationHelper
   end
 
   def modal_close
-    pop_icon_to 'view-close', '#close_modal', class: 'modal__close muted', rel: 'modal:close'
+    pop_icon_to 'view-close', '#close_modal', class: 'modal__close muted', rel: 'modal:close', tabindex: 0
   end
   
   def modal_header(text)
