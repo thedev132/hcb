@@ -1,6 +1,9 @@
 class Invoice < ApplicationRecord
   extend FriendlyId
 
+  scope :unarchived, -> { where(archived_at: nil) }
+  scope :archived, -> { where.not(archived_at: nil) }
+
   friendly_id :slug_text, use: :slugged
 
   # Raise this when attempting to do an operation with the associated Stripe
@@ -16,6 +19,7 @@ class Invoice < ApplicationRecord
   belongs_to :manually_marked_as_paid_user, class_name: 'User', required: false
   belongs_to :payout, class_name: 'InvoicePayout', required: false
   belongs_to :fee_reimbursement, required: false
+  belongs_to :archived_by, class_name: 'User', required: false
 
   has_one_attached :manually_marked_as_paid_attachment
 
@@ -60,7 +64,7 @@ class Invoice < ApplicationRecord
     if ((self&.payout&.t_transaction && !self&.fee_reimbursement) ||
         (self&.payout&.t_transaction && self&.fee_reimbursement&.t_transaction) ||
         self.manually_marked_as_paid?
-        )
+       )
       :success
     elsif paid?
       :info
@@ -77,7 +81,7 @@ class Invoice < ApplicationRecord
     if ((self&.payout&.t_transaction && !self&.fee_reimbursement) ||
         (self&.payout&.t_transaction && self&.fee_reimbursement&.t_transaction) ||
         self.manually_marked_as_paid?
-        )
+       )
       'Paid'
     elsif paid?
       'Pending'
@@ -100,8 +104,13 @@ class Invoice < ApplicationRecord
       paid: paid?,
       unpaid: !paid?,
       upcoming: due_date > 3.days.from_now,
-      overdue: due_date < 3.days.from_now && !paid?
+      overdue: due_date < 3.days.from_now && !paid?,
+      archived: archived?
     }
+  end
+
+  def archived?
+    self.archived_at.present?
   end
 
   # Manually mark this invoice as paid (probably in the case of a physical
@@ -209,8 +218,10 @@ class Invoice < ApplicationRecord
     # https://stripe.com/docs/api/charges/object#charge_object-payment_method_details
     self.payment_method_type = type = inv&.charge&.payment_method_details&.type
     return unless self.payment_method_type
+
     details = inv&.charge&.payment_method_details[self.payment_method_type]
     return unless details
+
     if type == 'card'
       self.payment_method_card_brand = details.brand
       self.payment_method_card_checks_address_line1_check = details.checks.address_line1_check
