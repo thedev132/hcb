@@ -100,7 +100,8 @@ html[data-dark='true'] {
 
   .black,
   .btn,
-  .dock__card span {
+  .dock__card span,
+  a > .card {
     color: map-get($palette, smoke) !important;
   }
 
