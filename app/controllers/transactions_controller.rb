@@ -8,7 +8,7 @@ class TransactionsController < ApplicationController
 
     attributes = %w{date display_name name amount fee fee_balance link}
     attributes_to_currency = %w{amount fee}
-    i = 0
+    
     result = CSV.generate(headers: true) do |csv|
       csv << attributes.map do |k|
         next 'Raw Name' if k == 'name'
