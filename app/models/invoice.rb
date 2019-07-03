@@ -68,6 +68,8 @@ class Invoice < ApplicationRecord
       :success
     elsif paid?
       :info
+    elsif archived?
+      :pending
     elsif due_date < Time.current
       :error
     elsif due_date < 3.days.from_now
@@ -85,6 +87,8 @@ class Invoice < ApplicationRecord
       'Paid'
     elsif paid?
       'Pending'
+    elsif archived?
+      'Archived'
     elsif due_date < Time.current
       'Overdue'
     elsif due_date < 3.days.from_now
@@ -110,7 +114,7 @@ class Invoice < ApplicationRecord
   end
 
   def archived?
-    self.archived_at.present?
+    archived_at.present?
   end
 
   # Manually mark this invoice as paid (probably in the case of a physical
