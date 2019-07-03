@@ -28,12 +28,9 @@
     color: map-get($palette, info);
   }
 
+  &:active,
   &[aria-selected='true'] {
-    background-color: map-get($palette, primary);
-    color: $white;
-
-    &:focus {
-      background-color: map-get($palette, info);
-    }
+    background-color: map-get($palette, primary) !important;
+    color: $white !important;
   }
 }
