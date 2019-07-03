@@ -189,7 +189,7 @@ Sponsorship fee: <%= render_percentage @event.sponsorship_fee %>`)">
                 <%= distance_of_time_in_words DateTime.now, invoice.arrival_date %>
               </span>
             </div>
-            <span datetime="<%= invoice.arrival_date.strftime('%m-%d-%y') %>" class="ml-auto time-icon black">
+            <span datetime="<%= invoice.arrival_date.strftime('%m-%d-%y') %>" class="ml-auto mini-calendar black">
               <strong><%= invoice.arrival_date.strftime('%b') %></strong>
               <span><%= invoice.arrival_date.strftime('%d') %></span>
             </span>

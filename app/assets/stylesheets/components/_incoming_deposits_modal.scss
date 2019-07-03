@@ -1,9 +1,8 @@
-.time-icon {
+.mini-calendar {
   display: block;
   width: 3.5rem;
   height: 3.5rem;
-  color: map-get($palette, white);
-  border: 3px solid;
+  border: 3px solid currentColor;
   border-radius: 0.5rem;
   overflow: hidden;
   font-weight: bold;
@@ -11,17 +10,17 @@
 
   strong {
     display: block;
-    padding: 0.25rem 0;
-    line-height: 1;
-    font-size: 0.75rem;
+    padding-bottom: 0.125rem;
+    line-height: 1.25;
+    font-size: 0.875rem;
     color: $white;
     background-color: map-get($palette, black);
   }
 
   span {
     display: block;
-    font-size: 1.5rem;
-    letter-spacing: -0.05em;
+    font-size: 1.625rem;
+    letter-spacing: -0.04em;
     line-height: 1.125;
   }
 }
