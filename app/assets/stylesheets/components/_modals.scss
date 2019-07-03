@@ -8,7 +8,11 @@
   bottom: 0;
   z-index: 8;
   background-color: rgba(0, 0, 0, 0.375);
-  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.125), rgba(0, 0, 0, 0.25));
+  background-image: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.125),
+    rgba(0, 0, 0, 0.25)
+  );
   display: flex;
   flex-direction: column;
 }
@@ -31,11 +35,53 @@
   position: relative;
   z-index: 2;
   text-align: left;
+
+  @media (min-width: 32rem) {
+    padding: 2rem;
+  }
+}
+.modal--wide {
+  width: 48rem;
+}
+.modal--scroll {
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-top: 0 !important;
+
+  header {
+    background-color: $white;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    margin: 0 -1rem 1rem;
+    padding: 1rem 1rem 0.5rem;
+
+    @media (min-width: 32em) {
+      margin: 0 -2rem 1rem;
+      padding: 2rem 2rem 0.75rem;
+    }
+
+    @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
+      background-color: rgba($white, 0.75);
+      -webkit-backdrop-filter: saturate(180%) blur(20px);
+    }
+  }
+
+  &.bg-snow header {
+    border-bottom: 1px solid rgba(48, 48, 48, 0.125);
+  }
 }
 
-// NOTE: icon for mouse users to close modal
+// NOTE: icon for mouse/touch users to close modal
+// this design is too small for touch users, but larger area doesn't fit well
 .modal__close {
-  margin: -1.5rem -0.5rem;
+  float: right;
+  width: 28px;
+  height: 28px;
+
+  @media (min-width: 32em) {
+    margin: -14px; // half the size
+  }
 }
 
 // NOTE: text for screenreader users to close modal. hidden onscreen
@@ -48,16 +94,6 @@
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border: 0;
-}
-
-@media (min-width: 32rem) {
-  .modal {
-    padding: 2rem;
-  }
-
-  .modal__close {
-    margin: -0.75rem -0.5rem;
-  }
 }
 
 /*

@@ -41,15 +41,11 @@ module ApplicationHelper
   end
 
   def modal_close
-    content_tag :a,
-                inline_icon('view-close', size: 36),
-                class: 'modal__close right inline-block line-height pointer grey-3',
-                rel: 'modal:close',
-                href: '#close-modal'
+    pop_icon_to 'view-close', '#close_modal', class: 'modal__close muted', rel: 'modal:close'
   end
   
   def modal_header(text)
-    modal_close + content_tag(:h2, text, class: 'mt0')
+    content_tag :header, modal_close + content_tag(:h2, text, class: 'h1 mt0 mb0 pb0 border-none'), class: 'pb2'
   end
 
   def relative_timestamp(time, options = {})

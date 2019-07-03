@@ -166,24 +166,26 @@ Sponsorship fee: <%= render_percentage @event.sponsorship_fee %>`)">
 
 <%= render 'promo_modal' %>
 
-<div class="modal flex flex-column" data-behavior="modal" role="dialog" id="incoming_deposits">
+<div class="modal modal--wide modal--scroll bg-snow" data-behavior="modal" role="dialog" id="incoming_deposits">
   <%= modal_header 'Incoming Deposits' %>
   <% if @invoices_being_deposited.any?  %>
     <div class="incoming_deposits flex-auto">
-      <% [@invoices_being_deposited, @invoices_being_deposited, @invoices_being_deposited, @invoices_being_deposited, @invoices_being_deposited,@invoices_being_deposited, @invoices_being_deposited, @invoices_being_deposited, @invoices_being_deposited,@invoices_being_deposited, @invoices_being_deposited, @invoices_being_deposited].flatten.each do |invoice| %>
+      <% [@invoices_being_deposited, @event.invoices.where.not(payout_creation_queued_for: nil)].flatten.each do |invoice| %>
         <%= link_to invoice, class: 'card' do %>
-          <div class="card__banner card__banner--top bg-<%= DateTime.now < invoice.arrival_date ? :success : :error %> flex items-center">
+          <div class="card__banner card__banner--top bg-<%= invoice.arriving_late? ? :success : :error %> flex items-center">
             <span class="white mr1 incoming_deposits__sponsor">
               Invoice to
               <strong class="block"><%= invoice.sponsor.name %></strong>
             </span>
-            <span class="badge ml-auto center incoming_deposits__badge bg-<%= DateTime.now < invoice.arrival_date ? :success : :error %>">
+            <span class="badge ml-auto center incoming_deposits__badge bg-<%= invoice.arriving_late? ? :success : :error %>">
               <%= DateTime.now < invoice.arrival_date ? 'On Time' : 'Late' %>
             </span>
           </div>
           <div class="flex">
             <div>
-              <span class="h1 black line-height-1 mb1 block"><%= render_money invoice.amount_paid %></span>
+              <span class="h1 black line-height-1 mb1 block">
+                <%= render_money invoice.amount_paid %>
+              </span>
               <span class="breakdown__sub">
                 arrives in approx.
                 <%= distance_of_time_in_words DateTime.now, invoice.arrival_date %>

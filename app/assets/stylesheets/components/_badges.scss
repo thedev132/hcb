@@ -72,6 +72,9 @@
   &.error {
     background-color: $red0;
   }
+  &.muted {
+    background-color: $gray1;
+  }
 }
 summary.pop {
   &::-webkit-details-marker {
