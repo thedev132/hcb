@@ -37,16 +37,14 @@
         <%= creator_bar i %>
         <li class="card">
           <div class="flex">
-            <strong class="flex flex-auto items-center mb1">
-              <span class="h3"><%= i.sponsor.name %></span>
+            <strong class="flex-auto h3 line-height-3 mb1">
+              <%= i.sponsor.name %>
             </strong>
             <span class="block h1 black line-height-1 <%= i.state %>"><%= render_money_short i.item_amount %></span>
           </div>
-          <div class="flex flex-wrap justify-between items-center">
-              <span class="ml0 badge bg-<%= i.archived? ? 'pending' : i.state %>">
-                <%= i.archived? ? 'Archived' : i.state_text %>
-              </span>
-          </div>
+          <span class="ml0 badge bg-<%= i.state %>">
+            <%= i.state_text %>
+          </span>
         </li>
       <% end %>
     <% end %>
