@@ -6,12 +6,13 @@ class TransactionsController < ApplicationController
     @transactions = @event.transactions
     authorize @transactions
 
-    attributes = %w{date display_name name amount fee link}
+    attributes = %w{date display_name name amount fee fee_balance link}
     attributes_to_currency = %w{amount fee}
 
     result = CSV.generate(headers: true) do |csv|
       csv << attributes.map do |k|
         next 'Raw Name' if k == 'name'
+
         k.sub('_', ' ').gsub(/\S+/, &:capitalize)
       end
 
@@ -19,6 +20,13 @@ class TransactionsController < ApplicationController
         csv << attributes.map do |attr|
           if attributes_to_currency.include? attr
             view_context.render_money transaction.send(attr)
+          elsif attr == 'fee_balance'
+            previous_transactions = @transactions.select { |t| t.date <= transaction.date }
+
+            fees_occured = previous_transactions.map { |t| t.fee_relationship.fee_applies ? t.fee_relationship.fee_amount : 0 }.sum
+            fee_paid = previous_transactions.map { |t| t.fee_relationship.is_fee_payment ? t.amount : 0 }.sum
+
+            view_context.render_money (fees_occured + fee_paid)
           else
             transaction.send(attr)
           end
