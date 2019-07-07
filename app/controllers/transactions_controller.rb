@@ -2,6 +2,10 @@ require 'csv'
 
 class TransactionsController < ApplicationController
   def index
+    authorize Transaction
+  end
+
+  def export
     @event = Event.find(params[:event])
     @transactions = @event.transactions
     authorize @transactions
