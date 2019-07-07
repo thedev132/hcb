@@ -2,15 +2,24 @@ class SyncTransactionsJob < ApplicationJob
   RUN_EVERY = 1.hour
 
   def perform(repeat = false)
-    ActiveRecord::Base.transaction do
+    BankAccount.each { |bank_account| sync_account bank_account }
+
+    if repeat
+      self.class.set(wait: RUN_EVERY).perform_later(true)
+    end
+  end
+
+  def sync_account(bank_account)
+    puts "Syncing account '#{bank_account.name}'..."
+
       begin_date = Time.current.at_beginning_of_month
       end_date = Time.current.at_beginning_of_month.next_month
 
       go_to_previous_month = true
 
       while go_to_previous_month do
-        plaid_transactions = transactions_in_range(begin_date, end_date)
-        db_transactions = Transaction.where(
+        plaid_transactions = transactions_in_range(bank_account, begin_date, end_date)
+        db_transactions = bank_account.transactions.where(
           'date > ? AND date < ?',
           begin_date,
           end_date
@@ -30,13 +39,11 @@ class SyncTransactionsJob < ApplicationJob
 
         # now that we have the transactions, do the sync
         plaid_transactions.each do |t|
-          account = BankAccount.find_by(plaid_account_id: t.account_id)
-          next unless account
 
           tr = Transaction.find_or_initialize_by(plaid_id: t.transaction_id)
 
           tr.update_attributes!(
-            bank_account: account,
+            bank_account: bank_account,
             plaid_category_id: t.category_id,
             name: t.name,
             amount: -(t.amount * 100), # convert to cents & reverse negativity
@@ -65,18 +72,13 @@ class SyncTransactionsJob < ApplicationJob
 
         unprocessed = state_map.select { |k, v| v == :unprocessed }.map { |k, v| k }
 
-        # for transactions that were in our db, but were not found in plaid,
-        # delete them
+        # for transactions that were in our db under this bank account, but
+        # were not found in plaid, delete them
         unprocessed.each { |tr_id| Transaction.find(tr_id).destroy }
 
         begin_date = begin_date.prev_month
         end_date = end_date.prev_month
       end
-    end
-
-    if repeat
-      self.class.set(wait: RUN_EVERY).perform_later(true)
-    end
   end
 
   def check_fee_reimbursement(transaction)
@@ -98,9 +100,9 @@ class SyncTransactionsJob < ApplicationJob
     end
   end
 
-  def transactions_in_range(begin_date, end_date)
+  def transactions_in_range(account, begin_date, end_date)
     transaction_response = PlaidService.instance.client.transactions.get(
-      BankAccount.instance.plaid_access_token,
+      account.plaid_access_token,
       begin_date,
       end_date
     )
@@ -109,7 +111,7 @@ class SyncTransactionsJob < ApplicationJob
 
     while transactions.length < transaction_response['total_transactions']
       transaction_response = PlaidService.instance.client.transactions.get(
-        BankAccount.instance.plaid_access_token,
+        account.plaid_access_token,
         begin_date,
         end_date,
         offset: transactions.length
