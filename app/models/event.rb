@@ -64,10 +64,9 @@ class Event < ApplicationRecord
     (lcrs.under_review + lcrs.accepted - lcrs.completed - lcrs.canceled - lcrs.rejected).sum(&:load_amount)
   end
 
-  # used for load card requests, this is the amount of money available that isn't being transferred out by an LCR -tmb@hackclub
+  # used for load card requests, this is the amount of money available that isn't being transferred out by an LCR or isn't going to be pulled out via fee -tmb@hackclub
   def balance_available
-    lcrs = load_card_requests
-    balance - lcr_pending
+    balance - lcr_pending - fee_balance
   end
   alias available_balance balance_available
 
@@ -108,13 +107,39 @@ class Event < ApplicationRecord
   end
 
   def balance_transacted_since_last_fee_payment
-    date = self&.fee_payments&.first&.date
+    recent_fee_payment = self.fee_payments&.first
 
-    return fee_balance if date.nil?
-    return 0 if transactions.empty?
+    # if no fee payment
+    transaction_total = self.transactions.select { |t| t.amount > 0 && t.fee_relationship.fee_applies }.sum(&:amount)
+    return transaction_total if recent_fee_payment.nil?
 
-    transactions = self.transactions.select { |t| t.date > date && t.fee_relationship.fee_applies }
-    transactions.sum(&:amount)
+    # if no transactions
+    return 0 if self.transactions.empty?
+
+    # counters
+    amount_transacted = 0
+    hit = false
+
+    # iterate through each transaction from the bottom
+    self.transactions.reverse.each do |tr|
+      # if we haven't hit the most recent fee payment
+      unless hit
+        # if this is the most recent fee payment, we want to start adding the total
+        if tr == recent_fee_payment
+          hit = true
+        end
+
+        next
+      end
+
+      # but only if a fee applies
+      next unless tr.fee_relationship.fee_applies
+
+      # actually adding the total
+      amount_transacted += tr.amount
+    end
+    
+    amount_transacted
   end
 
   def balance_being_withdrawn
