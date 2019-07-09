@@ -71,7 +71,7 @@ Sponsorship fee: <%= render_percentage @event.sponsorship_fee %>`)">
       Incoming deposits
       <%= inline_icon 'external', size: 24, class: 'muted ml1', 'aria-label': 'Icon indicating click for more' %>
     </span>
-    <span class="stat__value"><%= render_money @event.pending_deposits, '' %></span>
+    <span class="stat__value"><%= render_money @invoices_being_deposited.sum(&:amount_paid), '' %></span>
   </action>
   <%= link_to new_event_load_card_request_path(event_id: @event.slug), class: 'stat statset__wide link-reset' do %>
     <span class="stat__label flex items-center">
@@ -142,7 +142,7 @@ Sponsorship fee: <%= render_percentage @event.sponsorship_fee %>`)">
 
   <h3 class="mt0 mb2">Fees</h3>
   <div class="breakdown">
-    <div class="stat--small">
+    <div class="stat--small flex items-center">
       <span class="stat__value"><%= render_money @event.fee_balance, '' %></span>
     </div>
     <span class="breakdown__equals">&#61;</span>
@@ -173,7 +173,7 @@ Sponsorship fee: <%= render_percentage @event.sponsorship_fee %>`)">
   <%= modal_header 'Incoming Deposits' %>
   <% if @invoices_being_deposited.any?  %>
     <div class="incoming_deposits flex-auto">
-      <% [@invoices_being_deposited, @event.invoices.where.not(payout_creation_queued_for: nil)].flatten.each do |invoice| %>
+      <% @invoices_being_deposited.each do |invoice| %>
         <%= link_to invoice, class: 'card' do %>
           <div class="card__banner card__banner--top bg-<%= invoice.arriving_late? ? :success : :error %> flex items-center">
             <span class="white mr1 incoming_deposits__sponsor">
