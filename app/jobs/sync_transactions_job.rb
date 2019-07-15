@@ -2,7 +2,14 @@ class SyncTransactionsJob < ApplicationJob
   RUN_EVERY = 1.hour
 
   def perform(repeat = false)
-    BankAccount.each { |bank_account| sync_account bank_account }
+    ActiveRecord::Base.transaction do
+      @transactions_sync_state = {}
+      Transaction.find_each { |t| @transactions_sync_state[t.id] = :not_found }
+
+      BankAccount.where.not(id: 1).find_each { |bank_account| sync_account bank_account }
+
+      @transactions_sync_state.each { |id, state| Transaction.find(id).destroy if state == :not_found }
+    end
 
     if repeat
       self.class.set(wait: RUN_EVERY).perform_later(true)
@@ -30,17 +37,12 @@ class SyncTransactionsJob < ApplicationJob
           next
         end
 
-        # will keep track of transactions in the state map. transactions that
-        # are created / updated will be marked as processed.
-        #
-        # transactions that no longer exist in plaid will be destroyed.
-        state_map = {}
-        db_transactions.map { |t| state_map[t.id] = :unprocessed }
-
         # now that we have the transactions, do the sync
         plaid_transactions.each do |t|
 
-          tr = Transaction.find_or_initialize_by(plaid_id: t.transaction_id)
+          tr = Transaction.with_deleted.find_or_initialize_by(plaid_id: t.transaction_id)
+
+          @transactions_sync_state[tr.id] = :on_plaid
 
           tr.update_attributes!(
             bank_account: bank_account,
@@ -62,19 +64,12 @@ class SyncTransactionsJob < ApplicationJob
             payment_meta_ppd_id: t.payment_meta&.ppd_id,
             payment_meta_reference_number: t.payment_meta&.reference_number,
             pending: t.pending,
-            pending_transaction_id: t.pending_transaction_id
+            pending_transaction_id: t.pending_transaction_id,
+            deleted_at: nil
           )
 
           check_fee_reimbursement(tr)
-
-          state_map[tr.id] = :processed
         end
-
-        unprocessed = state_map.select { |k, v| v == :unprocessed }.map { |k, v| k }
-
-        # for transactions that were in our db under this bank account, but
-        # were not found in plaid, delete them
-        unprocessed.each { |tr_id| Transaction.find(tr_id).destroy }
 
         begin_date = begin_date.prev_month
         end_date = end_date.prev_month
