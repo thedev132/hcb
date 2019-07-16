@@ -28,6 +28,10 @@ class BankAccountsController < ApplicationController
     end
   end
 
+  def index
+    authorize BankAccount
+  end
+
   def show
     @account = BankAccount.find(params[:id])
     authorize @account

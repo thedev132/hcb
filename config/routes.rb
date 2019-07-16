@@ -72,7 +72,7 @@ Rails.application.routes.draw do
     get 'download'
   end
 
-  resources :bank_accounts, only: [:new, :create, :show] do
+  resources :bank_accounts, only: [:new, :create, :show, :index] do
     get 'reauthenticate'
   end
 
