@@ -16,7 +16,7 @@ class TransactionsController < ApplicationController
         k.sub('_', ' ').gsub(/\S+/, &:capitalize)
       end
 
-      fee_balance = 0
+      fee_balance = -(@event.fee_balance)
 
       @transactions.each do |transaction|
         csv << attributes.map do |attr|
