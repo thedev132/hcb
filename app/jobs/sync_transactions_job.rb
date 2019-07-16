@@ -2,14 +2,7 @@ class SyncTransactionsJob < ApplicationJob
   RUN_EVERY = 1.hour
 
   def perform(repeat = false)
-    ActiveRecord::Base.transaction do
-      @transactions_sync_state = {}
-      Transaction.find_each { |t| @transactions_sync_state[t.id] = :not_found }
-
-      BankAccount.where.not(id: 1).find_each { |bank_account| sync_account bank_account }
-
-      @transactions_sync_state.each { |id, state| Transaction.find(id).destroy if state == :not_found }
-    end
+      BankAccount.find_each { |bank_account| sync_account bank_account }
 
     if repeat
       self.class.set(wait: RUN_EVERY).perform_later(true)
@@ -18,6 +11,9 @@ class SyncTransactionsJob < ApplicationJob
 
   def sync_account(bank_account)
     puts "Syncing account '#{bank_account.name}'..."
+    ActiveRecord::Base.transaction do
+      transactions_sync_state = {}
+      bank_account.transactions.find_each { |t| transactions_sync_state[t.id] = :not_found }
 
       begin_date = Time.current.at_beginning_of_month
       end_date = Time.current.at_beginning_of_month.next_month
@@ -40,9 +36,9 @@ class SyncTransactionsJob < ApplicationJob
         # now that we have the transactions, do the sync
         plaid_transactions.each do |t|
 
-          tr = Transaction.with_deleted.find_or_initialize_by(plaid_id: t.transaction_id)
+          tr = bank_account.transactions.with_deleted.find_or_initialize_by(plaid_id: t.transaction_id)
 
-          @transactions_sync_state[tr.id] = :on_plaid
+          transactions_sync_state[tr.id] = :on_plaid
 
           tr.update_attributes!(
             bank_account: bank_account,
@@ -74,6 +70,8 @@ class SyncTransactionsJob < ApplicationJob
         begin_date = begin_date.prev_month
         end_date = end_date.prev_month
       end
+      transactions_sync_state.each { |id, state| Transaction.find(id).destroy if state == :not_found }
+    end
   end
 
   def check_fee_reimbursement(transaction)
