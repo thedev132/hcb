@@ -106,40 +106,25 @@ class Event < ApplicationRecord
     total_fees - total_payments
   end
 
-  def balance_transacted_since_last_fee_payment
-    recent_fee_payment = self.fee_payments&.first
+  # amount of balance that fees haven't been pulled out for
+  def balance_not_feed
+    a_fee_balance = self.fee_balance
+    self.transactions.select {|t| t.fee_reimbursement.present?}.each do |t|
+      a_fee_balance -= (100 - t.fee_reimbursement.amount) if t.fee_reimbursement.amount < 100
+    end 
 
-    # if no fee payment
-    transaction_total = self.transactions.select { |t| t.amount > 0 && t.fee_relationship.fee_applies }.sum(&:amount)
-    return transaction_total if recent_fee_payment.nil?
+    percent = self.sponsorship_fee * 100
 
-    # if no transactions
-    return 0 if self.transactions.empty?
+    (a_fee_balance * 100 / percent)
+  end
 
-    # counters
-    amount_transacted = 0
-    hit = false
-
-    # iterate through each transaction from the bottom
-    self.transactions.reverse.each do |tr|
-      # if we haven't hit the most recent fee payment
-      unless hit
-        # if this is the most recent fee payment, we want to start adding the total
-        if tr == recent_fee_payment
-          hit = true
-        end
-
-        next
-      end
-
-      # but only if a fee applies
-      next unless tr.fee_relationship.fee_applies
-
-      # actually adding the total
-      amount_transacted += tr.amount
+  def fee_balance_without_fee_reimbursement_reconcilliation
+    a_fee_balance = self.fee_balance
+    self.transactions.select {|t| t.fee_reimbursement.present?}.each do |t|
+      a_fee_balance -= (100 - t.fee_reimbursement.amount) if t.fee_reimbursement.amount < 100
     end
-    
-    amount_transacted
+
+    a_fee_balance
   end
 
   def balance_being_withdrawn
