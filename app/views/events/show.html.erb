@@ -143,14 +143,14 @@ Sponsorship fee: <%= render_percentage @event.sponsorship_fee %>`)">
   <h3 class="mt0 mb2">Fees</h3>
   <div class="breakdown">
     <div class="stat--small flex items-center">
-      <span class="stat__value"><%= render_money @event.fee_balance, '' %></span>
+      <span class="stat__value"><%= render_money @event.fee_balance_without_fee_reimbursement_reconcilliation, '' %></span>
     </div>
     <span class="breakdown__equals">&#61;</span>
     <div>
       <span class="breakdown__amount">
-        <%= render_money @event.balance_transacted_since_last_fee_payment %>
+        <%= render_money @event.balance_not_feed %>
       </span>
-      <span class="breakdown__sub">Transacted since last fee&nbsp;payment</span>
+      <span class="breakdown__sub">transacted so far without fees</span>
     </div>
     <span class="breakdown__equals">&times;</span>
     <div>
@@ -161,9 +161,16 @@ Sponsorship fee: <%= render_percentage @event.sponsorship_fee %>`)">
 
   <hr class="mt2 mb2">
 
-  <h3 class="mb1">Load Card Requests</h3>
+  <h3 class="mb1">Transferring to Emburse</h3>
   <div class="breakdown stat--small">
     <span class="stat__value"><%= render_money @event.lcr_pending, '' %></span>
+  </div>
+
+  <hr class="mt2 mb2">
+
+  <h3 class="mb1">Fee Refund Reconciliation</h3>
+  <div class="breakdown stat--small">
+    <span class="stat__value"><%= render_money (@event.fee_balance - @event.fee_balance_without_fee_reimbursement_reconcilliation), '' %></span>
   </div>
 </div>
 
