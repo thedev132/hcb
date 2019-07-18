@@ -60,8 +60,14 @@ class Event < ApplicationRecord
   end
 
   def lcr_pending
-    lcrs = load_card_requests
-    (lcrs.under_review + lcrs.accepted - lcrs.completed - lcrs.canceled - lcrs.rejected).sum(&:load_amount)
+    (
+      load_card_requests.under_review + 
+      load_card_requests.accepted -
+      load_card_requests.completed -
+      load_card_requests.canceled -
+      load_card_requests.rejected
+    )
+    .sum(&:load_amount)
   end
 
   # used for load card requests, this is the amount of money available that isn't being transferred out by an LCR or isn't going to be pulled out via fee -tmb@hackclub
@@ -109,7 +115,7 @@ class Event < ApplicationRecord
   # amount of balance that fees haven't been pulled out for
   def balance_not_feed
     a_fee_balance = self.fee_balance
-    self.transactions.select {|t| t.fee_reimbursement.present?}.each do |t|
+    self.transactions.where.not(fee_reimbursement: nil).each do |t|
       a_fee_balance -= (100 - t.fee_reimbursement.amount) if t.fee_reimbursement.amount < 100
     end 
 
@@ -120,7 +126,7 @@ class Event < ApplicationRecord
 
   def fee_balance_without_fee_reimbursement_reconcilliation
     a_fee_balance = self.fee_balance
-    self.transactions.select {|t| t.fee_reimbursement.present?}.each do |t|
+    self.transactions.where.not(fee_reimbursement: nil).each do |t|
       a_fee_balance -= (100 - t.fee_reimbursement.amount) if t.fee_reimbursement.amount < 100
     end
 
