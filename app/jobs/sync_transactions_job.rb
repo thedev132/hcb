@@ -86,6 +86,7 @@ class SyncTransactionsJob < ApplicationJob
         # Delay matching transactions until after an invoice payout transaction
         # has shown up
         return unless reimbursement.invoice&.payout&.t_transaction
+        return unless transaction.amount == reimbursement.amount
 
         reimbursement.t_transaction = transaction
         transaction.fee_relationship = FeeRelationship.new(
