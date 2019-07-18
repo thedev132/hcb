@@ -37,7 +37,7 @@ class Event < ApplicationRecord
 
   def self.pending_fees
     # minimum that you can move with SVB is $1
-    select { | event | event.fee_balance > 100 }
+    select { |event| event.fee_balance > 100 }
   end
 
   def emburse_department_path
@@ -61,13 +61,13 @@ class Event < ApplicationRecord
 
   def lcr_pending
     (
-      load_card_requests.under_review + 
+      load_card_requests.under_review +
       load_card_requests.accepted -
       load_card_requests.completed -
       load_card_requests.canceled -
       load_card_requests.rejected
     )
-    .sum(&:load_amount)
+      .sum(&:load_amount)
   end
 
   # used for load card requests, this is the amount of money available that isn't being transferred out by an LCR or isn't going to be pulled out via fee -tmb@hackclub
@@ -117,7 +117,7 @@ class Event < ApplicationRecord
     a_fee_balance = self.fee_balance
     self.transactions.where.not(fee_reimbursement: nil).each do |t|
       a_fee_balance -= (100 - t.fee_reimbursement.amount) if t.fee_reimbursement.amount < 100
-    end 
+    end
 
     percent = self.sponsorship_fee * 100
 
