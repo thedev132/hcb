@@ -120,8 +120,8 @@ Sponsorship fee: <%= render_percentage @event.sponsorship_fee %>`)">
     </thead>
     <tbody data-behavior="transactions">
     <% @transactions.each do |t| %>
-      <% if t.name.include? "Hack Club Bank Gift" %>
-        <%= render "transactions/fancy_transaction", transaction: t %>
+      <% if t.name.include? 'Hack Club Bank Gift' %>
+        <%= render 'transactions/fancy_transaction', transaction: t %>
         <% next %>
       <% end %>
       <% if t&.invoice_payout&.invoice %>
