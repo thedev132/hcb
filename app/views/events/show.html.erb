@@ -55,26 +55,26 @@ Sponsorship fee: <%= render_percentage @event.sponsorship_fee %>`)">
 <h2 class="mb2">
   Financials
 </h2>
-<div class="event-summary">
-  <div class="stat" area="balance">
+<div class="statset">
+  <div class="stat statset__wide">
     <span class="stat__label">Account balance</span>
     <span class="stat__value"><%= render_money @event.balance, '' %></span>
   </div>
-  <div class="stat stat--small tooltipped tooltipped--s" aria-label="The amount that will be automatically deducted from your account balance" area="fees">
+  <div class="stat stat--small tooltipped tooltipped--s" aria-label="The amount that will be automatically deducted from your account balance">
     <span class="stat__label flex items-center">
       Pending fees
       <%= inline_icon 'info', size: 24, class: 'muted ml1', 'aria-label': 'Info icon' %>
     </span>
     <span class="stat__value"><%= render_money @event.fee_balance, '' %></span>
   </div>
-  <div class="stat stat--small tooltipped tooltipped--s" aria-label="The amount on the way to your account" area="incoming">
+  <div class="stat stat--small tooltipped tooltipped--s" aria-label="The amount on the way to your account">
     <span class="stat__label flex items-center">
       Incoming deposits
       <%= inline_icon 'info', size: 24, class: 'muted ml1', 'aria-label': 'Info icon' %>
     </span>
     <span class="stat__value"><%= render_money @event.pending_deposits, '' %></span>
   </div>
-  <%= link_to new_event_load_card_request_path(event_id: @event.slug), class: 'stat link-reset', area: 'spendable' do %>
+  <%= link_to new_event_load_card_request_path(event_id: @event.slug), class: 'stat statset__wide link-reset' do %>
     <span class="stat__label flex items-center">
       Card balance
       <%= inline_icon 'plus', size: 24, class: 'muted ml1', 'aria-label': 'Info icon' %>
@@ -120,8 +120,8 @@ Sponsorship fee: <%= render_percentage @event.sponsorship_fee %>`)">
     </thead>
     <tbody data-behavior="transactions">
     <% @transactions.each do |t| %>
-      <% if t.name.include? "Hack Club Bank Gift" %>
-        <%= render "transactions/fancy_transaction", transaction: t %>
+      <% if t.name.include? 'Hack Club Bank Gift' %>
+        <%= render 'transactions/fancy_transaction', transaction: t %>
         <% next %>
       <% end %>
       <% if t&.invoice_payout&.invoice %>

@@ -6,11 +6,12 @@
   line-height: 1;
   margin-bottom: 0.25rem;
   text-transform: uppercase;
-  &:before {
-    content: '$';
-    font-size: 1.5rem;
-    vertical-align: super;
-  }
+}
+.stat:not(.stat--numerical) .stat__value:before {
+  content: '$';
+  color: map-get($palette, muted);
+  font-size: 1.5rem;
+  vertical-align: top;
 }
 .stat__label {
   display: block;
@@ -20,38 +21,42 @@
 }
 .stat--small {
   display: inline-block;
+
   .stat__value {
     font-size: 2rem;
+
     &:before {
-      font-size: 1rem;
+      font-size: 1.125rem;
     }
   }
 }
 
-.event-summary {
+// Set of 4 stats, like the main event & invoices pages
+.statset {
   display: grid;
   grid-gap: 0.5rem;
-  align-items: end;
+  align-items: end; // bottom-align stats of varying sizes
 
-  @media screen and (max-width: 32em) {
-    [area='balance'] {
-      grid-column: span 2;
-    }
-    [area='spendable'] {
-      grid-column: span 2;
-    }
-  }
-
-  @media screen and (max-width: 48em) {
+  // On iPhone SE/super small screens, 1 column. Most phones, 2 columns
+  @media screen and (max-width: 48em) and (min-width: 24em) {
     grid-template-columns: repeat(2, 1fr);
     grid-gap: 1rem;
-    [area='spendable'] {
+
+    .statset__wide:last-child {
       grid-row: 2;
     }
   }
 
+  // On larger screens, 4 columns
   @media (min-width: 48em) {
     grid-gap: 2rem;
     grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media screen and (min-width: 24em) and (max-width: 32em) {
+  // wide stats for long numbers
+  .statset__wide {
+    grid-column: span 2;
   }
 }
