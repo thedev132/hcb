@@ -31,6 +31,7 @@ class BankAccountsController < ApplicationController
   def show
     @account = BankAccount.find(params[:id])
     authorize @account
+    @transactions = @account.transactions.includes(:event)
   end
 
   def reauthenticate
