@@ -17,6 +17,7 @@
     <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#e42d42">
     <meta name="msapplication-TileColor" content="#e42d42">
     <meta name="theme-color" content="#e42d42">
+    <%= yield(:head) if content_for?(:head) %>
   </head>
   <body class="bg-snow <%= content_for :page_class %>">
     <% unless @hide_home %>

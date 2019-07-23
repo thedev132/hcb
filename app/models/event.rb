@@ -115,6 +115,7 @@ class Event < ApplicationRecord
   # amount of balance that fees haven't been pulled out for
   def balance_not_feed
     a_fee_balance = self.fee_balance
+
     self.transactions.where.not(fee_reimbursement: nil).each do |t|
       a_fee_balance -= (100 - t.fee_reimbursement.amount) if t.fee_reimbursement.amount < 100
     end
