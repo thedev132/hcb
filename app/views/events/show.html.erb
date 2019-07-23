@@ -1,6 +1,9 @@
 <% title @event.name %>
 <% content_for(:page_class) { 'bg-snow pt2' } %>
 <% @home_size = 72 %>
+<% content_for :head do %>
+  <meta name="turbolinks-visit-control" content="reload">
+<% end %>
 
 <h1 class="heading center flex-column mt2">
   <span class="flex items-center">
@@ -139,39 +142,45 @@ Sponsorship fee: <%= render_percentage @event.sponsorship_fee %>`)">
 
 <div class="modal" data-behavior="modal" role="dialog" id="pending_withdrawals">
   <%= modal_header 'Pending Withdrawals' %>
-
-  <h3 class="mt0 mb2">Fees</h3>
-  <div class="breakdown">
-    <div class="stat--small flex items-center">
-      <span class="stat__value"><%= render_money @event.fee_balance_without_fee_reimbursement_reconcilliation, '' %></span>
+  <% if @event.balance_being_withdrawn != 0 %>
+    <div class="breakdown">
+      <div class="stat--small flex items-center">
+        <span class="stat__value"><%= render_money @event.fee_balance_without_fee_reimbursement_reconcilliation, '' %></span>
+      </div>
+      <span class="breakdown__equals">&#61;</span>
+      <div>
+        <span class="breakdown__amount">
+          <%= render_money @event.balance_not_feed %>
+        </span>
+        <span class="breakdown__sub">transacted so far without fee payment</span>
+      </div>
+      <span class="breakdown__equals">&times;</span>
+      <div>
+        <span class="breakdown__amount"><%= @event.sponsorship_fee * 100 %>%</span>
+        <span class="breakdown__sub">Bank fee</span>
+      </div>
     </div>
-    <span class="breakdown__equals">&#61;</span>
-    <div>
-      <span class="breakdown__amount">
-        <%= render_money @event.balance_not_feed %>
+
+    <hr class="mt2 mb2">
+
+    <h3 class="mb1">Transferring to card balance</h3>
+    <div class="breakdown stat--small">
+      <span class="stat__value"><%= render_money @event.lcr_pending, '' %></span>
+    </div>
+    <% if (@event.fee_balance - @event.fee_balance_without_fee_reimbursement_reconcilliation) != 0 %>
+      <hr class="mt2 mb2">
+
+      <h3 class="mb1">Micro-fee refunds</h3>
+      <div class="breakdown stat--small">
+        <span class="stat__value"><%= render_money (@event.fee_balance - @event.fee_balance_without_fee_reimbursement_reconcilliation), '' %></span>
+      </div>
+      <span class="breakdown__sub mb1 line-height-3">
+        The transaction fee on a recent invoice was less than $1. We cover transaction fees, but due to US banking restrictions, Bank can’t credit your account <$1. Instead, we’ve credited $1 & will withdrawal this extra.
       </span>
-      <span class="breakdown__sub">transacted so far without fees</span>
-    </div>
-    <span class="breakdown__equals">&times;</span>
-    <div>
-      <span class="breakdown__amount"><%= @event.sponsorship_fee * 100 %>%</span>
-      <span class="breakdown__sub">Bank fee</span>
-    </div>
-  </div>
-
-  <hr class="mt2 mb2">
-
-  <h3 class="mb1">Transferring to card balance</h3>
-  <div class="breakdown stat--small">
-    <span class="stat__value"><%= render_money @event.lcr_pending, '' %></span>
-  </div>
-
-  <hr class="mt2 mb2">
-
-  <h3 class="mb1">Fee Refund Reconciliation</h3>
-  <div class="breakdown stat--small">
-    <span class="stat__value"><%= render_money (@event.fee_balance - @event.fee_balance_without_fee_reimbursement_reconcilliation), '' %></span>
-  </div>
+    <% end %>
+  <% else %>
+    <%= blankslate 'You have no pending withdrawals.' %>
+  <% end %>
 </div>
 
 <%= render 'promo_modal' %>
@@ -184,7 +193,7 @@ Sponsorship fee: <%= render_percentage @event.sponsorship_fee %>`)">
         <%= link_to invoice, class: 'card' do %>
           <div class="card__banner card__banner--top bg-<%= invoice.arriving_late? ? :success : :error %> flex items-center">
             <span class="white mr1 incoming_deposits__sponsor">
-              Invoice to
+              Payment from
               <strong class="block"><%= invoice.sponsor.name %></strong>
             </span>
             <span class="badge ml-auto center incoming_deposits__badge bg-<%= invoice.arriving_late? ? :success : :error %>">
