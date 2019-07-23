@@ -1,11 +1,9 @@
 # restore previous theme setting
 $(document).ready ->
-  BK.styleDark(true) if localStorage.getItem('dark') is 'true'
   BK.s('toggle_theme').find('svg').toggle() if localStorage.getItem('dark') is 'true'
+  BK.styleDark(true) if localStorage.getItem('dark') is 'true'
 
 $(document).on 'turbolinks:load', ->
-  BK.s('toggle_theme').find('svg').toggle() if localStorage.getItem('dark') is 'true'
-
   $('[data-behavior~=toggle_theme]').on 'click', ->
     BK.toggleDark()
 
