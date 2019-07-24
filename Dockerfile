@@ -1,4 +1,4 @@
-FROM ruby:2.3.3
+FROM ruby:2.5.5
 
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
@@ -8,7 +8,7 @@ RUN printf "deb http://archive.debian.org/debian/ jessie main\ndeb-src http://ar
 
 # Install latest version of pg_restore for easy importing of production
 # database & vim for easy editing of credentials.
-RUN apt-get -y update && apt-get -y install postgresql-client vim
+RUN apt-get -y update && apt-get -y install postgresql-client
 ENV EDITOR=vim
 
 ADD Gemfile /usr/src/app/Gemfile
