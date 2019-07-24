@@ -40,6 +40,7 @@ html[data-dark='true'] {
   .border-left,
   .details-horiz > p:not(:last-of-type),
   .details-horiz > div:not(:last-of-type),
+  .details-horiz > .details-horiz__col,
   tr {
     border-color: $darkless;
   }
