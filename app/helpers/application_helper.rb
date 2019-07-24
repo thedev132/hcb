@@ -48,6 +48,14 @@ module ApplicationHelper
     content_tag :header, modal_close + content_tag(:h2, text.html_safe, class: 'h1 mt0 mb0 pb0 border-none'), class: 'pb2'
   end
 
+  # jQuery plugins are buggy when navigating between pages with Turbolinks.
+  # This forces the page to reload when Turbolinks navigates to it
+  def include_modals
+    content_for :head do
+      tag(:meta, name: 'turbolinks-visit-control', content: 'reload')
+    end
+  end
+
   def relative_timestamp(time, options = {})
     content_tag :span, "#{options[:prefix]}#{time_ago_in_words time} ago", options.merge({ title: time })
   end

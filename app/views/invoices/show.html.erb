@@ -1,5 +1,6 @@
 <% title "Invoice to #{@invoice.sponsor.name} for #{render_money @invoice.total}" %>
 <% page_md %>
+<% include_modals %>
 <%= render 'events/nav' %>
 
 <% admin_tools('mt3') do %>
