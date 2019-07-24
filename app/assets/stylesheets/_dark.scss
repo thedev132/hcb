@@ -211,18 +211,9 @@ html[data-dark='true'] {
     background-color: rgba(map-get($palette, error), 0.125);
   }
 
-  .shade-neutral {
-    background: $darkless;
-  }
-  .shade-yellow {
-    background-color: rgba($yellow4, 0.125);
-  }
   .banner--archived {
     background-color: rgba($yellow1, 0.125);
     border-color: rgba($yellow8, 0.625);
     color: $yellow3;
-    a {
-      color: $yellow3;
-    }
   }
 }

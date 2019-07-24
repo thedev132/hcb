@@ -87,6 +87,12 @@ gem 'wkhtmltopdf-binary'
 # Markdown in Comments
 gem 'redcarpet'
 
+# Localize to user's timezone
+gem 'local_time'
+
+# Calculate dates with business days
+gem 'business_time'
+
 # Image Processing for ActiveStorage
 gem 'mini_magick'
 
