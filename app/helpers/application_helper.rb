@@ -45,7 +45,7 @@ module ApplicationHelper
   end
 
   def modal_header(text)
-    content_tag :header, modal_close + content_tag(:h2, text, class: 'h1 mt0 mb0 pb0 border-none'), class: 'pb2'
+    content_tag :header, modal_close + content_tag(:h2, text.html_safe, class: 'h1 mt0 mb0 pb0 border-none'), class: 'pb2'
   end
 
   def relative_timestamp(time, options = {})

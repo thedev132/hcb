@@ -73,7 +73,7 @@ module InvoicesHelper
   end
 end
 
-def invoice_payment_method_mention(invoice = @invoice)
+def invoice_payment_method_mention(invoice = @invoice, options = {})
   return '–' unless invoice.manually_marked_as_paid? || invoice&.payment_method_type
 
   if invoice.manually_marked_as_paid?
@@ -95,15 +95,7 @@ def invoice_payment_method_mention(invoice = @invoice)
     }[brand] || description_text
     tooltip += " ending in #{last4}" if last4
     description_text = "••••#{last4}"
-
-    description = content_tag :span, description_text, class: 'ml1'
-    icon = inline_icon icon_name, width: 40, height: 24, class: 'slate'
-    return content_tag(:span,
-      class: 'inline-flex items-center  tooltipped tooltipped--e',
-      'aria-label': tooltip
-    ) {
-      icon + description
-    }
+    icon = inline_icon icon_name, width: 32, height: 20, class: 'slate'
   else
     icon_name = 'bank-account'
     size = 20
@@ -111,8 +103,8 @@ def invoice_payment_method_mention(invoice = @invoice)
   end
 
   description = content_tag :span, description_text, class: 'ml1'
-  icon = inline_icon icon_name, width: size, height: size, class: 'slate'
-  content_tag(:span, class: 'inline-flex items-center') { icon + description }
+  icon ||= inline_icon icon_name, width: size, height: size, class: 'slate'
+  content_tag(:span, class: "inline-flex items-center #{options[:class]}") { icon + description }
 end
 
 def invoice_card_country_mention(invoice = @invoice)
