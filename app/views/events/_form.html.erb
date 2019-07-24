@@ -12,7 +12,11 @@
   <% end %>
 
   <div class="field">
-    <%= form.label :address %>
+    <p class="mb0 bold">Fee</p>
+    <p>Bank is charging <%= event.sponsorship_fee * 100 %>% of your revenue.</p>
+  </div>
+  <div class="field">
+    <%= form.label :address, class: 'bold' %>
     <%= form.text_area :address %>
   </div>
 
