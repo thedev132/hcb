@@ -66,8 +66,8 @@ module ApplicationHelper
     svg = doc.at_css 'svg'
     options[:style] ||= ''
     if options[:size]
-      options[:width] = options[:size]
-      options[:height] = options[:size]
+      options[:width] ||= options[:size]
+      options[:height] ||= options[:size]
       options.delete :size
     end
     options.each { |key, value| svg[key.to_s] = value }

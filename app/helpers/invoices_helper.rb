@@ -80,20 +80,38 @@ def invoice_payment_method_mention(invoice = @invoice)
     icon_name = 'post-fill'
     description_text = 'Manually marked as paid'
   elsif invoice&.payment_method_card_brand
+    brand = invoice&.payment_method_card_brand
+    last4 = invoice&.payment_method_card_last4
+
     icon_name = {
       'amex' => 'card-amex',
       'mastercard' => 'card-mastercard',
       'visa' => 'card-visa'
-    }[invoice&.payment_method_card_brand] || 'card-other'
-    description_text = "••••#{invoice&.payment_method_card_last4}"
+    }[brand] || 'card-other'
+    tooltip = {
+      'amex' => 'American Express',
+      'mastercard' => 'Mastercard',
+      'visa' => 'Visa'
+    }[brand] || description_text
+    tooltip += " ending in #{last4}" if last4
+    description_text = "••••#{last4}"
+
+    description = content_tag :span, description_text, class: 'ml1'
+    icon = inline_icon icon_name, width: 40, height: 24, class: 'slate'
+    return content_tag(:span,
+      class: 'inline-flex items-center  tooltipped tooltipped--e',
+      'aria-label': tooltip
+    ) {
+      icon + description
+    }
   else
     icon_name = 'bank-account'
-    size = 16
+    size = 20
     description_text = invoice.payment_method_type.humanize
   end
 
   description = content_tag :span, description_text, class: 'ml1'
-  icon = inline_icon icon_name, size: size || 24, class: 'slate'
+  icon = inline_icon icon_name, width: size, height: size, class: 'slate'
   content_tag(:span, class: 'inline-flex items-center') { icon + description }
 end
 
