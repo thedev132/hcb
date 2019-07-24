@@ -18,7 +18,6 @@ ENV BUNDLE_GEMFILE=Gemfile \
   BUNDLE_JOBS=4 \
   BUNDLE_PATH=/bundle
 
-RUN bundle update
 RUN bundle install
 
 ADD . /usr/src/app
