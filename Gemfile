@@ -89,15 +89,11 @@ gem 'redcarpet'
 
 # Localize to user's timezone
 gem 'local_time'
-
 # Calculate dates with business days
 gem 'business_time'
 
 # Image Processing for ActiveStorage
 gem 'mini_magick'
-
-# Localize to user's timezone
-gem 'local_time'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
