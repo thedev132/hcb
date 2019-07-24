@@ -47,7 +47,10 @@ input[type='number'],
 }
 
 input[type='search'] {
-  padding-left: 0.25rem;
+  padding-left: 1rem;
+}
+input[type='search']::-webkit-search-decoration {
+  display: none;
 }
 
 .field_with_errors {
