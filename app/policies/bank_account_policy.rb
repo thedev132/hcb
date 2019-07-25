@@ -1,10 +1,18 @@
 class BankAccountPolicy < ApplicationPolicy
+  def index?
+    user.admin?
+  end
+
   def new?
-    bank_account_does_not_exist && user.admin?
+    user.admin?
+  end
+
+  def update?
+    user.admin?
   end
 
   def create?
-    bank_account_does_not_exist && user.admin?
+    user.admin?
   end
 
   def show?
@@ -13,11 +21,5 @@ class BankAccountPolicy < ApplicationPolicy
 
   def reauthenticate?
     user.admin?
-  end
-
-  private
-
-  def bank_account_does_not_exist
-    BankAccount.instance.nil?
   end
 end

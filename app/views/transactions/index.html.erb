@@ -1,0 +1,42 @@
+<h1>Transactions</h1>
+<p>
+  <strong><%= pluralize(Transaction.uncategorized.size, 'unprocessed transaction') %></strong>
+</p>
+<table>
+<tr>
+  <th>Date</th>
+  <th>Name</th>
+  <th>Amount</th>
+  <th>Account</th>
+  <th>Event</th>
+  <th colspan="2">Full Info</th>
+</tr>
+<% Transaction.order(:date).each do |t| %>
+  <tr class="<%= 'shade-yellow' if !t.event && t.is_event_related %>">
+    <td>
+      <%= t.date %>
+    </td>
+    <td>
+      <%= t.name %>
+    </td>
+    <td>
+      <%= render_money t.amount %>
+    </td>
+    <td>
+      <%= link_to t.bank_account.name, t.bank_account %>
+    </td>
+    <td>
+      <% if t.event %>
+        <%= link_to t.event.name, t.event %>
+      <% elsif t.is_event_related %>
+        <%= link_to 'Set Event', edit_transaction_path(t), class: 'btn bg-info' %>
+      <% else %>
+        N/A
+      <% end %>
+    </td>
+    <td>
+      <%= link_to 'View', t %>
+    </td>
+  </tr>
+<% end %>
+</table>

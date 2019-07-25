@@ -1,13 +1,19 @@
 <h1><%= @account.name %></h1>
-
-<section class="statset mb2">
-  <div class="stat stat--wide">
-    <span class="stat__label">Account balance</span>
-    <span class="stat__value"><%= render_money @account.balance, '' %></span>
-  </div>
-  <div class="stat stat--numerical stat--small">
-    <span class="stat__label">Transactions</span>
-    <span class="stat__value"><%= @transactions.size %></span>
+<div class="mt2 mb2">
+<% if @account.should_sync? %>
+  <%= status_badge 'success' %>Enabled.
+  <%= link_to 'Pause syncing.', bank_account_path(@account, bank_account: { should_sync: false }), remote: true, method: :patch %>
+<% else %>
+  <%= status_badge 'muted' %>Paused.
+  <%= link_to 'Enable syncing.', bank_account_path(@account, bank_account: { should_sync: true }), remote: true, method: :patch %>
+<% end %>
+</div>
+<section class="event-summary mt2 mb2">
+  <div class="event-summary__panel rounded bg-accent white p1">
+    <div class="stat">
+      <span class="stat__label">Account balance</span>
+      <span class="stat__value"><%= render_money @account.balance, '' %></span>
+    </div>
   </div>
 </section>
 

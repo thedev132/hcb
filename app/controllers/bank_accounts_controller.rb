@@ -28,6 +28,26 @@ class BankAccountsController < ApplicationController
     end
   end
 
+  def update
+    @bank_account = BankAccount.find(params[:id])
+    authorize @bank_account
+
+    if @bank_account.update(bank_account_update_params)
+      if @bank_account.should_sync?
+        flash[:success] = "Bank account transaction syncing is enabled."
+      else
+        flash[:muted] = "Bank account transaction syncing is paused."
+      end
+      redirect_to @bank_account
+    else
+      render :show
+    end
+  end
+
+  def index
+    authorize BankAccount
+  end
+
   def show
     @account = BankAccount.find(params[:id])
     authorize @account
@@ -50,5 +70,9 @@ class BankAccountsController < ApplicationController
     @link_env = PlaidService.instance.env
     @public_key = PlaidService.instance.public_key
     @product = ['transactions'].to_json.html_safe
+  end
+
+  def bank_account_update_params
+    params.require(:bank_account).permit(:should_sync)
   end
 end
