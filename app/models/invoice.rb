@@ -68,6 +68,8 @@ class Invoice < ApplicationRecord
       :success
     elsif paid?
       :info
+    elsif archived?
+      :pending
     elsif due_date < Time.current
       :error
     elsif due_date < 3.days.from_now
@@ -85,6 +87,8 @@ class Invoice < ApplicationRecord
       'Paid'
     elsif paid?
       'Pending'
+    elsif archived?
+      'Archived'
     elsif due_date < Time.current
       'Overdue'
     elsif due_date < 3.days.from_now
@@ -110,7 +114,7 @@ class Invoice < ApplicationRecord
   end
 
   def archived?
-    self.archived_at.present?
+    archived_at.present?
   end
 
   # Manually mark this invoice as paid (probably in the case of a physical
@@ -173,7 +177,7 @@ class Invoice < ApplicationRecord
     raise StandardError, 'Funds not yet available' unless Time.current.to_i > inv.charge.balance_transaction.available_on
 
     self.payout = InvoicePayout.new(
-      amount: self.payout_creation_balance_net,
+      amount: payout_creation_balance_net,
       invoice: self
     )
 
@@ -189,7 +193,7 @@ class Invoice < ApplicationRecord
 
     self.fee_reimbursement.save
 
-    self.save!
+    save!
   end
 
   def set_fields_from_stripe_invoice(inv)
@@ -258,6 +262,14 @@ class Invoice < ApplicationRecord
 
   def fee_reimbursed?
     !fee_reimbursement.nil?
+  end
+
+  def arrival_date
+    self&.payout&.arrival_date || 3.business_days.after(payout_creation_queued_for)
+  end
+
+  def arriving_late?
+    DateTime.now > self.arrival_date
   end
 
   private

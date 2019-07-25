@@ -40,6 +40,14 @@ module ApplicationHelper
     end
   end
 
+  def modal_close
+    pop_icon_to 'view-close', '#close_modal', class: 'modal__close muted', rel: 'modal:close', tabindex: 0
+  end
+
+  def modal_header(text)
+    content_tag :header, modal_close + content_tag(:h2, text, class: 'h1 mt0 mb0 pb0 border-none'), class: 'pb2'
+  end
+
   def relative_timestamp(time, options = {})
     content_tag :span, "#{options[:prefix]}#{time_ago_in_words time} ago", options.merge({ title: time })
   end
@@ -73,11 +81,11 @@ module ApplicationHelper
   end
 
   def format_date(date)
-    date.strftime '%b %e, %Y'
+    local_time(date, '%b %e, %Y')
   end
 
   def format_datetime(datetime)
-    datetime.strftime '%b %e, %Y, %l:%M %p'
+    local_time(datetime, '%b %e, %Y, %l:%M %p')
   end
 
   def home_action_size

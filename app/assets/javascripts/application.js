@@ -1,8 +1,10 @@
 //= require jquery3
 //= require jquery_ujs
 //= require jquery-ui
-//= require activestorage
+//= require jquery-modal
 //= require turbolinks
+//= require activestorage
+//= require local-time
 
 //= require global
 //= require ui

@@ -1,6 +1,7 @@
 .stat {
   display: block;
 }
+
 .stat__value {
   font-size: 3rem;
   line-height: 1;
@@ -13,12 +14,14 @@
   font-size: 1.5rem;
   vertical-align: top;
 }
+
 .stat__label {
   display: block;
   font-size: 0.75rem;
   font-weight: bold;
   text-transform: uppercase;
 }
+
 .stat--small {
   display: inline-block;
 

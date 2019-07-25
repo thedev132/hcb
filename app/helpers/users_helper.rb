@@ -12,7 +12,7 @@ module UsersHelper
     # avatar_for works with OpenStructs (used on the front end when a user isn't registered),
     # so this method shows Gravatars/intials for non-registered and allows showing of uploaded profile pictures for registered users.
     image = user.is_a?(User) && user.profile_picture.attached? ?
-      user.profile_picture.variant(combine_options: {thumbnail: "#{size*2}x#{size*2}^", gravity: 'center', extent: "#{size*2}x#{size*2}"}) :
+      user.profile_picture.variant(combine_options: { thumbnail: "#{size * 2}x#{size * 2}^", gravity: 'center', extent: "#{size * 2}x#{size * 2}" }) :
       gravatar_url(user.email, user.initials, user.id, size * 2)
 
     image_tag(image, options.merge({ alt: user.name, width: size, height: size, class: "circle #{options[:class]}" }))
@@ -28,7 +28,7 @@ module UsersHelper
                   class: "mention mention--admin inline-flex items-center tooltipped tooltipped--n #{options[:class]}",
                   'aria-label': "#{user.name.split(' ').first} is an admin"
     else
-      content_tag :span, avi + name, class: "mention inline-flex items-center #{options[:class]}"
+      content_tag :span, avi + name, class: "mention inline-flex #{options[:class]}"
     end
   end
 

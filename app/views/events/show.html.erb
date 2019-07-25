@@ -1,7 +1,10 @@
-
 <% title @event.name %>
 <% content_for(:page_class) { 'bg-snow pt2' } %>
 <% @home_size = 72 %>
+<% content_for :head do %>
+  <% # This is here because JQuery plugins are buggy when navigating between pages with Turbolinks. It forces the page to reload when Turbolinks navigates to it %>
+  <meta name="turbolinks-visit-control" content="reload">
+<% end %>
 
 <h1 class="heading center flex-column mt2">
   <span class="flex items-center">
@@ -60,20 +63,20 @@ Sponsorship fee: <%= render_percentage @event.sponsorship_fee %>`)">
     <span class="stat__label">Account balance</span>
     <span class="stat__value"><%= render_money @event.balance, '' %></span>
   </div>
-  <div class="stat stat--small tooltipped tooltipped--s" aria-label="The amount that will be automatically deducted from your account balance">
+  <action class="stat stat--small tooltipped tooltipped--s" aria-label="The amount that will be automatically deducted from your account balance" data-behavior="modal_trigger" data-modal="pending_withdrawals" tabindex="0">
     <span class="stat__label flex items-center">
-      Pending fees
-      <%= inline_icon 'info', size: 24, class: 'muted ml1', 'aria-label': 'Info icon' %>
+      Pending withdrawals
+      <%= inline_icon 'external', size: 24, class: 'muted ml1', 'aria-label': 'Icon indicating click for more' %>
     </span>
-    <span class="stat__value"><%= render_money @event.fee_balance, '' %></span>
-  </div>
-  <div class="stat stat--small tooltipped tooltipped--s" aria-label="The amount on the way to your account">
+    <span class="stat__value"><%= render_money @event.balance_being_withdrawn, '' %></span>
+  </action>
+  <action class="stat stat--small" area="deposits" data-behavior="modal_trigger" data-modal="incoming_deposits" tabindex="0">
     <span class="stat__label flex items-center">
       Incoming deposits
-      <%= inline_icon 'info', size: 24, class: 'muted ml1', 'aria-label': 'Info icon' %>
+      <%= inline_icon 'external', size: 24, class: 'muted ml1', 'aria-label': 'Icon indicating click for more' %>
     </span>
-    <span class="stat__value"><%= render_money @event.pending_deposits, '' %></span>
-  </div>
+    <span class="stat__value"><%= render_money @invoices_being_deposited.sum(&:amount_paid), '' %></span>
+  </action>
   <%= link_to new_event_load_card_request_path(event_id: @event.slug), class: 'stat statset__wide link-reset' do %>
     <span class="stat__label flex items-center">
       Card balance
@@ -138,4 +141,89 @@ Sponsorship fee: <%= render_percentage @event.sponsorship_fee %>`)">
   <%= blankslate 'No transactions yet' %>
 <% end %>
 
+<div class="modal" data-behavior="modal" role="dialog" id="pending_withdrawals">
+  <%= modal_header "Pending Withdrawals #{"(#{render_money @event.balance_being_withdrawn})" if @event.balance_being_withdrawn > 0}" %>
+  <% if @event.balance_being_withdrawn != 0 %>
+    <h3 class="mb1 mt0">Bank fee</h3>
+    <div class="breakdown">
+      <div class="stat stat--small flex items-center">
+        <span class="stat__value"><%= render_money @event.fee_balance_without_fee_reimbursement_reconcilliation, '' %></span>
+      </div>
+      <span class="breakdown__equals">&#61;</span>
+      <div>
+        <span class="breakdown__amount">
+          <%= render_money @event.balance_not_feed %>
+        </span>
+        <span class="breakdown__sub">revenue without fee withdrawn</span>
+      </div>
+      <span class="breakdown__equals">&times;</span>
+      <div>
+        <span class="breakdown__amount"><%= @event.sponsorship_fee * 100 %>%</span>
+        <span class="breakdown__sub">our fee</span>
+      </div>
+    </div>
+    <% if @event.lcr_pending != 0 || true%>
+      <hr class="mt2 mb2">
+
+      <h3 class="mb1">Transferring to card balance</h3>
+      <div class="breakdown stat stat--small">
+        <span class="stat__value"><%= render_money @event.lcr_pending, '' %></span>
+      </div>
+    <% end %>
+    <% if (@event.fee_balance - @event.fee_balance_without_fee_reimbursement_reconcilliation) != 0 %>
+      <hr class="mt2 mb2">
+
+      <h3 class="mb1">Micro-fee refunds</h3>
+      <div class="breakdown stat stat--small">
+        <span class="stat__value"><%= render_money (@event.fee_balance - @event.fee_balance_without_fee_reimbursement_reconcilliation), '' %></span>
+      </div>
+      <span class="breakdown__sub mb1 line-height-3">
+        One of your recent invoices had a payment processing fee of less than a dollar. We cover all payment processing fees, however due to a quark with our bank, we can't easily credit under a dollar to your account. Instead, we gave you a dollar and are taking out the remainder so that you get refunded the exact amount of the processing fee.
+      </span>
+    <% end %>
+  <% else %>
+    <%= blankslate 'You have no pending withdrawals.' %>
+  <% end %>
+  <span><span class="slate bold h6 inline-block mt2">Questions? Your point of contact (<%= @event.point_of_contact.name.split(' ')[0] %>) is happy to help. You can reach them at <%= link_to @event.point_of_contact.pretty_phone_number, "tel:#{@event.point_of_contact.pretty_phone_number}" %> or <%= link_to @event.point_of_contact.email, "mailto:#{@event.point_of_contact.email}" %>.</span>
+</div>
+
 <%= render 'promo_modal' %>
+
+<div class="modal modal--wide modal--scroll bg-snow" data-behavior="modal" role="dialog" id="incoming_deposits">
+  <%= modal_header 'Incoming Deposits' %>
+  <% if @invoices_being_deposited.any?  %>
+    <div class="incoming_deposits flex-auto">
+      <% @invoices_being_deposited.each do |invoice| %>
+        <%= link_to invoice, class: 'card' do %>
+          <div class="card__banner card__banner--top bg-<%= invoice.arriving_late? ? :error : :success %> flex items-center">
+            <span class="white mr1 incoming_deposits__sponsor">
+              Payment from
+              <strong class="block"><%= invoice.sponsor.name %></strong>
+            </span>
+            <span class="badge ml-auto center incoming_deposits__badge bg-<%= invoice.arriving_late? ? :error : :success %>">
+              <%= invoice.arriving_late? ? 'Late' : 'On Time' %>
+            </span>
+          </div>
+          <div class="flex">
+            <div>
+              <span class="h1 black line-height-1 mb1 block">
+                <%= render_money invoice.amount_paid %>
+              </span>
+              <span class="breakdown__sub">
+                <%= invoice.arriving_late? ? "was supposed to arrive " : "arrives in " %> approx. 
+                <%= distance_of_time_in_words(invoice.arrival_date.ceil_to(1.day), DateTime.now) %> <%= "ago" if invoice.arriving_late? %>
+              </span>
+            </div>
+            <span datetime="<%= invoice.arrival_date.strftime('%m-%d-%y') %>" class="ml-auto mini-calendar black">
+              <strong><%= invoice.arrival_date.strftime('%b') %></strong>
+              <span><%= invoice.arrival_date.strftime('%d') %></span>
+            </span>
+          </div>
+          <% end %>
+        <% end %>
+        <div class="incoming_deposits__spacer"></div>
+    </div>
+  <% else %>
+    <%= blankslate 'You don’t have any money incoming. Go get some!' %>
+  <% end %>
+</div> 

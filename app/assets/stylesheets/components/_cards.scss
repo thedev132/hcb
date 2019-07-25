@@ -10,6 +10,9 @@
       0 4px 8px 0 rgba($orange7, 0.125);
   }
 }
+a.card {
+  text-decoration: none;
+}
 
 .card h1,
 .card h2 {
@@ -53,15 +56,23 @@
 
 .banner {
   @extend .card;
-  max-width: 32rem;
-  padding: .5em;
+  max-width: 36rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 1rem;
+  text-align: center;
+  line-height: 1.25;
 }
-
 .banner--archived {
   background-color: $yellow1;
   border: 1px solid $yellow3;
-  color: $yellow8;
+  color: $yellow9;
   a {
-    color: $yellow8;
+    color: inherit;
+  }
+  .mention {
+    margin: 0 0.125rem;
+    color: inherit;
+    font-weight: inherit;
   }
 }

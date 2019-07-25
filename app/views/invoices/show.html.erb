@@ -3,12 +3,10 @@
 <%= render 'events/nav' %>
 
 <% if @invoice.archived? %>
-  <div class="banner banner--archived mx-auto mt3 flex items-center justify-center pl2 pr2 py1 line-height-1.5">
-      <div class="center">
-        <span class="bold block">This invoice was archived by <%= @invoice.archived_by.name %> on <%= format_date @invoice.archived_at %></span>
-        <span class="block">It will only display in the Archived tab on the Invoices page.</span>
-        <span>You can <%= link_to 'un-archive it', invoice_unarchive_path(@invoice), method: :post %>.</span>
-      </div>
+  <div class="banner banner--archived mt3">
+    <span class="bold block mb1">This invoice was archived by <%= user_mention @invoice.archived_by %> on <%= format_date @invoice.archived_at %>.</span>
+    <span class="block">It will only display in the Archived tab<span class="xs-hide"> on the Invoices page</span>.</span>
+    <span>You can <%= link_to 'un-archive it', invoice_unarchive_path(@invoice), method: :post %>.</span>
   </div>
 <% end %>
 

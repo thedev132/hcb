@@ -21,7 +21,7 @@ gem 'uglifier', '>= 1.3.0'
 # See https://github.com/rails/execjs#readme for more supported runtimes
 gem 'mini_racer', platforms: :ruby
 # Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
-gem 'turbolinks', '~> 5'
+gem 'turbolinks', '~> 5.2.0'
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'
 # Use ActiveModel has_secure_password
@@ -57,6 +57,9 @@ gem 'validates_email_format_of'
 # Phone validation!
 gem 'phonelib'
 
+# Rounding dates
+gem 'rounding'
+
 # Jobs!
 gem 'sidekiq'
 
@@ -86,6 +89,11 @@ gem 'wkhtmltopdf-binary'
 
 # Markdown in Comments
 gem 'redcarpet'
+
+# Localize to user's timezone
+gem 'local_time'
+# Calculate dates with business days
+gem 'business_time'
 
 # Image Processing for ActiveStorage
 gem 'mini_magick'

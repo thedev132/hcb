@@ -1,5 +1,6 @@
 # restore previous theme setting
 $(document).ready ->
+  BK.s('toggle_theme').find('svg').toggle() if localStorage.getItem('dark') is 'true'
   BK.styleDark(true) if localStorage.getItem('dark') is 'true'
 
 $(document).on 'turbolinks:load', ->
@@ -27,6 +28,10 @@ $(document).on 'turbolinks:load', ->
 
   $(document).on 'click', '[data-behavior~=flash]', ->
     $(this).fadeOut 'medium'
+
+  $(document).on 'click', '[data-behavior~=modal_trigger]', ->
+    BK.s('modal', '#' + $(this).data('modal')).modal()
+    this.blur()
 
   $(document).on 'click', '[data-behavior~=row_expand_trigger]', ->
     button = $(this)

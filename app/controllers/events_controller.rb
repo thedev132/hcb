@@ -32,6 +32,13 @@ class EventsController < ApplicationController
     authorize @event
     @organizers = @event.organizer_positions.includes(:user)
     @transactions = @event.transactions.includes(:fee_relationship)
+
+    @invoices_being_deposited = (@event.invoices.where(payout_id: nil, status: 'paid')
+      .where
+      .not(payout_creation_queued_for: nil) +
+      @event.invoices.joins(:payout)
+      .where(invoice_payouts: { status: ('in_transit') })
+      .or(@event.invoices.joins(:payout).where(invoice_payouts: { status: ('pending') }))).sort_by { |i| i.arrival_date }
   end
 
   def team
@@ -90,8 +97,8 @@ class EventsController < ApplicationController
   def set_event
     @event = Event.find(params[:id])
   rescue ActiveRecord::RecordNotFound
-      flash[:error] = 'We couldn’t find that event!'
-      redirect_to root_path
+    flash[:error] = 'We couldn’t find that event!'
+    redirect_to root_path
   end
 
   # Only allow a trusted parameter "white list" through.

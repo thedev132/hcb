@@ -31,13 +31,13 @@ class Event < ApplicationRecord
   validate :point_of_contact_is_admin
 
   validates :name, :start, :end, :address, :sponsorship_fee, presence: true
-  validates :slug, uniqueness: true, presence: true,  format: { without: /\s/ }
+  validates :slug, uniqueness: true, presence: true, format: { without: /\s/ }
 
   before_create :default_values
 
   def self.pending_fees
     # minimum that you can move with SVB is $1
-    select { | event | event.fee_balance > 100 }
+    select { |event| event.fee_balance > 100 }
   end
 
   def emburse_department_path
@@ -59,20 +59,30 @@ class Event < ApplicationRecord
     transactions.sum(:amount)
   end
 
-  # used for load card requests, this is the amount of money available that isn't being transferred out by an LCR -tmb@hackclub
-  def balance_available
-    lcrs = self.load_card_requests
-    balance - (lcrs.under_review + lcrs.accepted - lcrs.completed - lcrs.canceled - lcrs.rejected).sum(&:load_amount)
+  def lcr_pending
+    (
+      load_card_requests.under_review +
+      load_card_requests.accepted -
+      load_card_requests.completed -
+      load_card_requests.canceled -
+      load_card_requests.rejected
+    )
+      .sum(&:load_amount)
   end
-  alias_method :available_balance, :balance_available
+
+  # used for load card requests, this is the amount of money available that isn't being transferred out by an LCR or isn't going to be pulled out via fee -tmb@hackclub
+  def balance_available
+    balance - lcr_pending - fee_balance
+  end
+  alias available_balance balance_available
 
   # amount incoming from paid Stripe invoices not yet deposited
   def pending_deposits
     # money that is pending payout- aka payout has not been created yet
-    pre_payout = self.invoices.where(status: 'paid', payout: nil).sum(:payout_creation_balance_net)
+    pre_payout = invoices.where(status: 'paid', payout: nil).sum(:amount_paid)
 
     # money that has a payout created, but where the transaction has not hit the account yet / been associated with the pending payout
-    payout_created = self.invoices.joins(payout: :t_transaction).where(status: 'paid', payout: { transactions: { id: nil } }).sum(:payout_creation_balance_net)
+    payout_created = invoices.joins(payout: :t_transaction).where(status: 'paid', payout: { transactions: { id: nil } }).sum(:amount_paid)
 
     pre_payout + payout_created
   end
@@ -100,6 +110,33 @@ class Event < ApplicationRecord
     total_payments = self.fee_paid
 
     total_fees - total_payments
+  end
+
+  # amount of balance that fees haven't been pulled out for
+  def balance_not_feed
+    a_fee_balance = self.fee_balance
+
+    self.transactions.where.not(fee_reimbursement: nil).each do |t|
+      a_fee_balance -= (100 - t.fee_reimbursement.amount) if t.fee_reimbursement.amount < 100
+    end
+
+    percent = self.sponsorship_fee * 100
+
+    (a_fee_balance * 100 / percent)
+  end
+
+  def fee_balance_without_fee_reimbursement_reconcilliation
+    a_fee_balance = self.fee_balance
+    self.transactions.where.not(fee_reimbursement: nil).each do |t|
+      a_fee_balance -= (100 - t.fee_reimbursement.amount) if t.fee_reimbursement.amount < 100
+    end
+
+    a_fee_balance
+  end
+
+  def balance_being_withdrawn
+    lcrs = load_card_requests
+    fee_balance + lcr_pending
   end
 
   def g_suite_status
