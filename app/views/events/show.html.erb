@@ -142,10 +142,11 @@ Sponsorship fee: <%= render_percentage @event.sponsorship_fee %>`)">
 <% end %>
 
 <div class="modal" data-behavior="modal" role="dialog" id="pending_withdrawals">
-  <%= modal_header 'Pending Withdrawals' %>
+  <%= modal_header "Pending Withdrawals #{"(#{render_money @event.balance_being_withdrawn})" if @event.balance_being_withdrawn > 0}" %>
   <% if @event.balance_being_withdrawn != 0 %>
+    <h3 class="mb1 mt0">Bank fee</h3>
     <div class="breakdown">
-      <div class="stat--small flex items-center">
+      <div class="stat stat--small flex items-center">
         <span class="stat__value"><%= render_money @event.fee_balance_without_fee_reimbursement_reconcilliation, '' %></span>
       </div>
       <span class="breakdown__equals">&#61;</span>
@@ -153,35 +154,37 @@ Sponsorship fee: <%= render_percentage @event.sponsorship_fee %>`)">
         <span class="breakdown__amount">
           <%= render_money @event.balance_not_feed %>
         </span>
-        <span class="breakdown__sub">transacted so far without fee payment</span>
+        <span class="breakdown__sub">revenue without fee withdrawn</span>
       </div>
       <span class="breakdown__equals">&times;</span>
       <div>
         <span class="breakdown__amount"><%= @event.sponsorship_fee * 100 %>%</span>
-        <span class="breakdown__sub">Bank fee</span>
+        <span class="breakdown__sub">our fee</span>
       </div>
     </div>
+    <% if @event.lcr_pending != 0 || true%>
+      <hr class="mt2 mb2">
 
-    <hr class="mt2 mb2">
-
-    <h3 class="mb1">Transferring to card balance</h3>
-    <div class="breakdown stat--small">
-      <span class="stat__value"><%= render_money @event.lcr_pending, '' %></span>
-    </div>
+      <h3 class="mb1">Transferring to card balance</h3>
+      <div class="breakdown stat stat--small">
+        <span class="stat__value"><%= render_money @event.lcr_pending, '' %></span>
+      </div>
+    <% end %>
     <% if (@event.fee_balance - @event.fee_balance_without_fee_reimbursement_reconcilliation) != 0 %>
       <hr class="mt2 mb2">
 
       <h3 class="mb1">Micro-fee refunds</h3>
-      <div class="breakdown stat--small">
+      <div class="breakdown stat stat--small">
         <span class="stat__value"><%= render_money (@event.fee_balance - @event.fee_balance_without_fee_reimbursement_reconcilliation), '' %></span>
       </div>
       <span class="breakdown__sub mb1 line-height-3">
-        The transaction fee on a recent invoice was less than $1. We cover transaction fees, but due to US banking restrictions, Bank can’t credit your account <$1. Instead, we’ve credited $1 & will withdrawal this extra.
+        One of your recent invoices had a payment processing fee of less than a dollar. We cover all payment processing fees, however due to a quark with our bank, we can't easily credit under a dollar to your account. Instead, we gave you a dollar and are taking out the remainder so that you get refunded the exact amount of the processing fee.
       </span>
     <% end %>
   <% else %>
     <%= blankslate 'You have no pending withdrawals.' %>
   <% end %>
+  <span><span class="slate bold h6 inline-block mt2">Questions? Your point of contact (<%= @event.point_of_contact.name.split(' ')[0] %>) is happy to help. You can reach them at <%= link_to @event.point_of_contact.pretty_phone_number, "tel:#{@event.point_of_contact.pretty_phone_number}" %> or <%= link_to @event.point_of_contact.email, "mailto:#{@event.point_of_contact.email}" %>.</span>
 </div>
 
 <%= render 'promo_modal' %>
@@ -192,13 +195,13 @@ Sponsorship fee: <%= render_percentage @event.sponsorship_fee %>`)">
     <div class="incoming_deposits flex-auto">
       <% @invoices_being_deposited.each do |invoice| %>
         <%= link_to invoice, class: 'card' do %>
-          <div class="card__banner card__banner--top bg-<%= invoice.arriving_late? ? :success : :error %> flex items-center">
+          <div class="card__banner card__banner--top bg-<%= invoice.arriving_late? ? :error : :success %> flex items-center">
             <span class="white mr1 incoming_deposits__sponsor">
               Payment from
               <strong class="block"><%= invoice.sponsor.name %></strong>
             </span>
-            <span class="badge ml-auto center incoming_deposits__badge bg-<%= invoice.arriving_late? ? :success : :error %>">
-              <%= DateTime.now < invoice.arrival_date ? 'On Time' : 'Late' %>
+            <span class="badge ml-auto center incoming_deposits__badge bg-<%= invoice.arriving_late? ? :error : :success %>">
+              <%= invoice.arriving_late? ? 'Late' : 'On Time' %>
             </span>
           </div>
           <div class="flex">
@@ -207,8 +210,8 @@ Sponsorship fee: <%= render_percentage @event.sponsorship_fee %>`)">
                 <%= render_money invoice.amount_paid %>
               </span>
               <span class="breakdown__sub">
-                arrives in approx.
-                <%= distance_of_time_in_words DateTime.now, invoice.arrival_date %>
+                <%= invoice.arriving_late? ? "was supposed to arrive " : "arrives in " %> approx. 
+                <%= distance_of_time_in_words(invoice.arrival_date.ceil_to(1.day), DateTime.now) %> <%= "ago" if invoice.arriving_late? %>
               </span>
             </div>
             <span datetime="<%= invoice.arrival_date.strftime('%m-%d-%y') %>" class="ml-auto mini-calendar black">

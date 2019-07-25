@@ -269,7 +269,7 @@ class Invoice < ApplicationRecord
   end
 
   def arriving_late?
-    DateTime.now < self.arrival_date
+    DateTime.now > self.arrival_date
   end
 
   private

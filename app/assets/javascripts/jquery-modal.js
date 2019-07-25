@@ -170,6 +170,7 @@
           this.$elm
             .css({ opacity: 0, display: 'inline-block' })
             .animate({ opacity: 1 }, this.options.fadeDuration)
+          this.$elm.focus()
         } else {
           this.$elm.css('display', 'inline-block')
         }

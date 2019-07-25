@@ -31,6 +31,7 @@ $(document).on 'turbolinks:load', ->
 
   $(document).on 'click', '[data-behavior~=modal_trigger]', ->
     BK.s('modal', '#' + $(this).data('modal')).modal()
+    this.blur()
 
   $(document).on 'click', '[data-behavior~=row_expand_trigger]', ->
     button = $(this)

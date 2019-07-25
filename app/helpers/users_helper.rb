@@ -25,7 +25,7 @@ module UsersHelper
       bolt = inline_icon 'admin-badge', size: 20
       content_tag :span,
                   avi + bolt + name,
-                  class: "mention mention--admin inline-flex tooltipped tooltipped--n #{options[:class]}",
+                  class: "mention mention--admin inline-flex items-center tooltipped tooltipped--n #{options[:class]}",
                   'aria-label': "#{user.name.split(' ').first} is an admin"
     else
       content_tag :span, avi + name, class: "mention inline-flex #{options[:class]}"
