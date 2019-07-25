@@ -45,7 +45,7 @@ class SyncTransactionsJob < ApplicationJob
             bank_account: bank_account,
             plaid_category_id: t.category_id,
             name: t.name,
-            amount: -(t.amount * 100), # convert to cents & reverse negativity
+            amount: -BigDecimal.new(t.amount.to_s) * 100, # convert to cents & reverse negativity
             date: t.date,
             location_address: t.location&.address,
             location_city: t.location&.city,
@@ -82,6 +82,8 @@ class SyncTransactionsJob < ApplicationJob
         # Delay matching transactions until after an invoice payout transaction
         # has shown up
         return unless reimbursement.invoice&.payout&.t_transaction
+        return unless transaction.amount == reimbursement.amount
+
         reimbursement.t_transaction = transaction
         transaction.fee_relationship = FeeRelationship.new(
           event_id: reimbursement.invoice.event.id,

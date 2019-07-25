@@ -16,37 +16,38 @@
     </div>
   </div>
 </section>
+
 <table>
-<tr>
-  <th>Date</th>
-  <th>Name</th>
-  <th>Amount</th>
-  <th>Event</th>
-  <th colspan="2">Full Info</th>
-</tr>
-<% @account.transactions.each do |t| %>
-  <tr class="<%= 'shade-yellow' if !t.event && t.is_event_related %>">
-    <td>
-      <%= t.date %>
-    </td>
-    <td>
-      <%= t.name %>
-    </td>
-    <td>
-      <%= render_money t.amount %>
-    </td>
-    <td>
-      <% if t.event %>
-        <%= link_to t.event.name, t.event %>
-      <% elsif t.is_event_related %>
-        <%= link_to 'Set Event', edit_transaction_path(t), class: 'btn bg-info' %>
-      <% else %>
-        N/A
-      <% end %>
-    </td>
-    <td>
-      <%= link_to 'View', t %>
-    </td>
+  <tr>
+    <th>Date</th>
+    <th>Name</th>
+    <th>Amount</th>
+    <th>Event</th>
+    <th>Details</th>
   </tr>
-<% end %>
+  <% @transactions.each do |t| %>
+    <tr class="<%= 'shade-yellow' if !t.event && t.is_event_related %>">
+      <td>
+        <%= t.date %>
+      </td>
+      <td>
+        <%= t.name %>
+      </td>
+      <td>
+        <%= render_money t.amount %>
+      </td>
+      <td>
+        <% if t.event %>
+          <%= link_to t.event.name, t.event %>
+        <% elsif t.is_event_related %>
+          <%= link_to 'Set Event', edit_transaction_path(t), class: 'btn bg-info' %>
+        <% else %>
+          n/a
+        <% end %>
+      </td>
+      <td>
+        <%= link_to 'View', t %>
+      </td>
+    </tr>
+  <% end %>
 </table>

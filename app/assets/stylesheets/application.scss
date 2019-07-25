@@ -134,8 +134,7 @@ table {
 tr {
   border-bottom: 1px solid map-get($palette, smoke);
   a {
-    color: unset;
-    text-decoration: none;
+    color: map-get($palette, slate);
     display: block;
   }
 }
@@ -147,6 +146,7 @@ td {
   padding: 0.5rem;
   &:first-child {
     padding-left: 1rem;
+    white-space: nowrap;
   }
 }
 th {

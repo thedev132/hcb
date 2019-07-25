@@ -8,10 +8,6 @@
   line-height: 0;
 }
 
-.measure {
-  max-width: 36rem;
-}
-
 .mx-auto {
   margin-left: auto;
   margin-right: auto;
@@ -112,6 +108,10 @@ $shades: (
   .bg-#{'' + $name} {
     background-color: $value;
   }
+}
+
+.b--warning {
+  border-color: map-get($palette, warning);
 }
 
 .w-50 {
