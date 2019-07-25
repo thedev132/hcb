@@ -162,7 +162,7 @@ Sponsorship fee: <%= render_percentage @event.sponsorship_fee %>`)">
         <span class="breakdown__sub">our fee</span>
       </div>
     </div>
-    <% if @event.lcr_pending != 0 || true%>
+    <% if @event.lcr_pending != 0 %>
       <hr class="mt2 mb2">
 
       <h3 class="mb1">Transferring to card balance</h3>
@@ -210,7 +210,7 @@ Sponsorship fee: <%= render_percentage @event.sponsorship_fee %>`)">
                 <%= render_money invoice.amount_paid %>
               </span>
               <span class="breakdown__sub">
-                <%= invoice.arriving_late? ? "was supposed to arrive " : "arrives in " %> approx. 
+                <%= invoice.arriving_late? ? 'was supposed to arrive ' : 'arrives in ' %> approx. 
                 <%= distance_of_time_in_words(invoice.arrival_date.ceil_to(1.day), DateTime.now) %> <%= "ago" if invoice.arriving_late? %>
               </span>
             </div>
