@@ -1,10 +1,7 @@
 <% title @event.name %>
 <% content_for(:page_class) { 'bg-snow pt2' } %>
 <% @home_size = 72 %>
-<% content_for :head do %>
-  <% # This is here because JQuery plugins are buggy when navigating between pages with Turbolinks. It forces the page to reload when Turbolinks navigates to it %>
-  <meta name="turbolinks-visit-control" content="reload">
-<% end %>
+<% include_modals %>
 
 <h1 class="heading center flex-column mt2">
   <span class="flex items-center">

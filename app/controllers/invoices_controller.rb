@@ -47,7 +47,7 @@ class InvoicesController < ApplicationController
 
     @commentable = @invoice
     @comment = Comment.new
-    @comments = @invoice.comments
+    @comments = @invoice.comments.includes(:user)
 
     authorize @invoice
   end
