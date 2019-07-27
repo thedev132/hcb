@@ -100,7 +100,8 @@ class SyncTransactionsJob < ApplicationJob
     transaction_response = PlaidService.instance.client.transactions.get(
       account.plaid_access_token,
       begin_date,
-      end_date
+      end_date,
+      account_ids: [account.plaid_account_id]
     )
 
     transactions = transaction_response.transactions
@@ -110,6 +111,7 @@ class SyncTransactionsJob < ApplicationJob
         account.plaid_access_token,
         begin_date,
         end_date,
+        account_ids: [account.plaid_account_id],
         offset: transactions.length
       )
 
