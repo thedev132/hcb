@@ -39,7 +39,7 @@ Sponsorship fee: <%= render_percentage @event.sponsorship_fee %>`)">
 <p class="muted flex flex-wrap items-center justify-center center mt2">
   Your point of contact is <%= user_mention @event.point_of_contact, class: 'ml1 mr0' %>
   <span class="xs-hide mr1">.</span>
-  Text / call at 
+  Text / call at
   <span class="flex items-center medium ml1">
     <%= inline_icon 'message', size: 24, class: 'muted', style: 'margin-right: 0.125rem;' %>
     <%= @event.point_of_contact.pretty_phone_number %>
@@ -109,29 +109,29 @@ Sponsorship fee: <%= render_percentage @event.sponsorship_fee %>`)">
 </div>
 
 <% if @transactions.any? %>
-  <div class="transaction__table_container">
-  <table class="transaction__table">
-    <thead>
-      <tr>
-        <th>Date</th>
-        <th colspan="2">Description</th>
-        <th colspan="2">Amount</th>
-      </tr>
-    </thead>
-    <tbody data-behavior="transactions">
-    <% @transactions.each do |t| %>
-      <% if t.name.include? 'Hack Club Bank Gift' %>
-        <%= render 'transactions/fancy_transaction', transaction: t %>
-        <% next %>
+  <div class="table-container">
+    <table class="table-container">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th colspan="2">Description</th>
+          <th colspan="2">Amount</th>
+        </tr>
+      </thead>
+      <tbody data-behavior="transactions">
+      <% @transactions.each do |t| %>
+        <% if t.name.include? 'Hack Club Bank Gift' %>
+          <%= render 'transactions/fancy_transaction', transaction: t %>
+          <% next %>
+        <% end %>
+        <% if t&.invoice_payout&.invoice %>
+          <%= render t&.invoice_payout&.invoice %>
+        <% elsif !t&.fee_reimbursement %>
+          <%= render t %>
+        <% end %>
       <% end %>
-      <% if t&.invoice_payout&.invoice %>
-        <%= render t&.invoice_payout&.invoice %>
-      <% elsif !t&.fee_reimbursement %>
-        <%= render t %>
-      <% end %>
-    <% end %>
-    </tbody>
-  </table>
+      </tbody>
+    </table>
   </div>
   <%= filterbar_blankslate 'No transactions match this filter' %>
 <% else %>
@@ -207,7 +207,7 @@ Sponsorship fee: <%= render_percentage @event.sponsorship_fee %>`)">
                 <%= render_money invoice.amount_paid %>
               </span>
               <span class="breakdown__sub">
-                <%= invoice.arriving_late? ? 'was supposed to arrive ' : 'arrives in ' %> approx. 
+                <%= invoice.arriving_late? ? 'was supposed to arrive ' : 'arrives in ' %> approx.
                 <%= distance_of_time_in_words(invoice.arrival_date.ceil_to(1.day), DateTime.now) %> <%= "ago" if invoice.arriving_late? %>
               </span>
             </div>
@@ -223,4 +223,4 @@ Sponsorship fee: <%= render_percentage @event.sponsorship_fee %>`)">
   <% else %>
     <%= blankslate 'You don’t have any money incoming. Go get some!' %>
   <% end %>
-</div> 
+</div>

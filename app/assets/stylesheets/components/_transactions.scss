@@ -20,16 +20,16 @@
   transition: transform 0.125s ease-in-out;
 }
 
-.transaction__table_container {
-  -webkit-overflow-scrolling: touch;
+.table-container {
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 @media screen and (max-width: 48em) {
-  .transaction__table_container {
+  .table-container {
     margin-left: -1rem;
     margin-right: -1rem;
   }
-  .transaction__table {
+  .table-container {
     margin: 0 !important;
     td {
       white-space: nowrap;
