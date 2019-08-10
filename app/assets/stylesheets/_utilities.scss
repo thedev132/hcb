@@ -21,14 +21,6 @@
   margin-right: auto;
 }
 
-.ml-auto {
-  margin-left: auto;
-}
-
-.mr-auto {
-  margin-right: auto;
-}
-
 .inline-flex {
   display: inline-flex;
 }
@@ -85,6 +77,14 @@
   .md-my0 {
     margin-top: 0 !important;
     margin-bottom: 0 !important;
+  }
+
+  .md-ml-auto {
+    margin-left: auto;
+  }
+
+  .md-mr-auto {
+    margin-right: auto;
   }
 }
 
