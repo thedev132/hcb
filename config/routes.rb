@@ -76,7 +76,10 @@ Rails.application.routes.draw do
     get 'reauthenticate'
   end
 
-  resources :transactions, only: [:index, :show, :edit, :update, :export] do
+  resources :transactions, only: [:index, :show, :edit, :update] do
+    collection do
+      get 'export'
+    end
     resources :comments
   end
 

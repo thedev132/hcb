@@ -86,7 +86,7 @@ Sponsorship fee: <%= render_percentage @event.sponsorship_fee %>`)">
 <h2 class="heading">
   Transactions
   <%= link_to 'Export CSV',
-    transactions_path(event: @event),
+    export_transactions_path(event: @event),
     class: 'btn bg-info',
     target: :_blank %>
 </h2>
