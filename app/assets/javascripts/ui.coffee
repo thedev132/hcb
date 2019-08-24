@@ -91,7 +91,7 @@ $(document).on 'turbolinks:load', ->
       return 
     if amount > 0
       feePercent = BK.s('amount-preview').data 'fee'
-      lFeePercent = Math.round(feePercent * 100)
+      lFeePercent = (feePercent * 100).toFixed 1
       lAmount = BK.money amount * 100
       feeAmount = BK.money feePercent * amount * 100
       revenue = BK.money (1 - feePercent) * amount * 100
