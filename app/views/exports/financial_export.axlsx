@@ -46,7 +46,7 @@ wb.add_worksheet(name: "HC Bank Export - #{date}") do |sheet|
         t.name,
         money(t.amount),
         t.load_card_request.present?,
-        t.fee_relationship.fee_applies,
+        t.fee_relationship.is_fee_payment,
         money(fee_charged),
         money(running_balance),
         money(running_fee_balance)
