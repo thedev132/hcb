@@ -1,10 +1,13 @@
 <%= form_with(model: invoice, url: :event_invoices, local: true) do |form| %>
-  <% if invoice.errors.any? %>
+  <% if invoice.errors.any? || @sponsor.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(invoice.errors.size, "error") %> prohibited this invoice from being saved:</h2>
+      <h2><%= pluralize(invoice.errors.size + @sponsor.errors.size, "error") %> prohibited this invoice from being saved:</h2>
 
       <ul>
       <% invoice.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      <% @sponsor.errors.full_messages.each do |message| %>
         <li><%= message %></li>
       <% end %>
       </ul>
