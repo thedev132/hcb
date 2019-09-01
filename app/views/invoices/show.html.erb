@@ -17,10 +17,12 @@
 <% end %>
 
 <article class="card pb0 mt3 mb3">
-  <h2 class="h2 sans mt0 border-none">
-    <%= @sponsor.name %>
-    <span class="regular muted"> invoiced for </span>
-    <span class="regular"><%= render_money @invoice.item_amount %></span>
+  <h2 class="h2 sans mt0 border-none flex items-center justify-between">
+    <span>
+      <%= @sponsor.name %>
+      <span class="regular muted"> invoiced for </span>
+      <span class="regular"><%= render_money @invoice.item_amount %></span>
+    </span>
     <span class="badge h4 md-right bg-<%= @invoice.state %>">
       <%= @invoice.state_text %>
       <% if @invoice.state_icon %>
