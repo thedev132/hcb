@@ -35,7 +35,7 @@ BK.toggleDark = () => {
   return theme
 }
 
-// Annoy users without FullStory
+// Attempt to load Fullstory
 $(document).ready(() => {
   setTimeout(() => {
     if (typeof FS === 'undefined') {
@@ -52,13 +52,6 @@ $(document).ready(() => {
         })
     }
   }, 3000)
-  setTimeout(() => {
-    if (BK.blocked) {
-      alert(
-        'Hack Club Bank is still in development. To continue improving the product, it’s crucial for us to debug any issues that arise, but your adblocker is currently blocking our bug reporting + analytics. Please unblock before continuing to use the app.'
-      )
-    }
-  }, 3250)
 })
 
 // https://css-tricks.com/snippets/jquery/get-query-params-object/
