@@ -22,13 +22,14 @@ class SyncTransactionsJob < ApplicationJob
 
       while go_to_previous_month do
         plaid_transactions = transactions_in_range(bank_account, begin_date, end_date)
+
         db_transactions = bank_account.transactions.where(
           'date > ? AND date < ?',
           begin_date,
           end_date
         )
 
-        if plaid_transactions.length.zero? && db_transactions.length.zero?
+        if plaid_transactions.length.zero? && db_transactions.length.zero? && end_date < Transaction.with_deleted.last.created_at
           go_to_previous_month = false
           next
         end
@@ -36,7 +37,6 @@ class SyncTransactionsJob < ApplicationJob
         # now that we have the transactions, do the sync
         plaid_transactions.each do |t|
           next if t.pending
-
           tr = bank_account.transactions.with_deleted.find_or_initialize_by(plaid_id: t.transaction_id)
 
           transactions_sync_state[tr.id] = :on_plaid
@@ -103,6 +103,8 @@ class SyncTransactionsJob < ApplicationJob
       end_date,
       account_ids: [account.plaid_account_id]
     )
+
+    puts transaction_response
 
     transactions = transaction_response.transactions
 
