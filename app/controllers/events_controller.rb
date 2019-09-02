@@ -118,14 +118,21 @@ class EventsController < ApplicationController
 
     # Expected budget is in cents on the backend, but dollars on the frontend
     result_params[:expected_budget] = result_params[:expected_budget].to_f * 100
+    # convert whatever the user inputted into something that is a legal slug
+    result_params[:slug] = ActiveSupport::Inflector.parameterize(user_event_params[:slug])
 
     result_params
   end
 
   def user_event_params
-    params.require(:event).permit(
+    result_params = params.require(:event).permit(
       :address,
       :slug
     )
+
+    # convert whatever the user inputted into something that is a legal slug
+    result_params[:slug] = ActiveSupport::Inflector.parameterize(result_params[:slug])
+
+    result_params
   end
 end

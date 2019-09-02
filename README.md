@@ -16,6 +16,8 @@ _It’s a bank, folks._
    ```
 4. Open [localhost:3000](http://localhost:3000)
 
+Alternatively, you can run `docker-compose run --service-ports web /bin/bash` to open a shell into the container with the right ports bound, and then manually start the Rails app.
+
 ## Import database dump from Heroku
 
     $ heroku pg:backups:capture
