@@ -52,6 +52,8 @@ class Invoice < ApplicationRecord
 
   validate :due_date_cannot_be_in_past, on: :create
 
+  validates :item_amount, numericality: { greater_than_or_equal_to: 100 }
+
   before_create :set_defaults
 
   # Stripe syncing…

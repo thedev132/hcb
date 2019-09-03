@@ -34,9 +34,16 @@ en:
     attributes:
       event:
         slug: "URL"
+      invoice:
+        item_amount: "Amount"
     errors:
       models:
         event:
           attributes:
             slug:
               uniqueness: "is already taken!"
+        invoice:
+          attributes:
+            item_amount:
+                # This is kinda hacky and will break if we ever need use greater_than_or_equal_to on item_amount in Invoice. Better than the alternative for now. -tmb@hackclub
+                greater_than_or_equal_to: 'needs to be at least $1'
