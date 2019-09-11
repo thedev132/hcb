@@ -1,0 +1,19 @@
+<tr
+  class="transaction--<%= transaction.amount.negative? ? 'negative' : 'positive' %>"
+  data-behavior="filterbar_row"
+  data-filter="<%= transaction.filter_data.to_json %>">
+  <td>
+    <%= transaction.date %>
+  </td>
+  <td class="bold transaction__github_grant">
+    🚀 GitHub Grant
+    <%= image_tag 'github-icon.png', class: 'transaction__github_icon', alt: 'GitHub Grant' %>
+  </td>
+  <td></td>
+  <td>
+    <%= render_money transaction.amount %>
+  </td>
+  <td>
+    <%= link_to 'Details', transaction %>
+  </td>
+</tr>

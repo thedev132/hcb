@@ -124,6 +124,10 @@ Sponsorship fee: <%= render_percentage @event.sponsorship_fee %>`)">
           <%= render 'transactions/fancy_transaction', transaction: t %>
           <% next %>
         <% end %>
+        <% if t.name.include? 'GitHub Grant' %>
+          <%= render 'transactions/github_transaction', transaction: t %>
+          <% next %>
+        <% end %>
         <% if t&.invoice_payout&.invoice %>
           <%= render t&.invoice_payout&.invoice %>
         <% elsif !t&.fee_reimbursement %>
