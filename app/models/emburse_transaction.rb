@@ -16,7 +16,17 @@ class EmburseTransaction < ApplicationRecord
   validates_uniqueness_of_without_deleted :emburse_id
 
   def under_review?
-    self.event_id.nil? && undeclined?
+    event_id.nil? && undeclined? && !should_be_ignored?
+  end
+
+  # Emburse surfaces pending transactions of two types:
+  # 1. expenses, which are negative TXs signifying money spent on Emburse cards
+  # 2. deposits, which are TXs we make to move money from Bank to Emburse
+  #
+  # No. 2 (deposits) shouldn't really be triaged until they become COMPLETED. So
+  # we ignore them for the purposes of reviewing transactions.
+  def should_be_ignored?
+    :pending && amount > 0
   end
 
   def undeclined?

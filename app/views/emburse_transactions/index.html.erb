@@ -13,17 +13,19 @@
 
   <tbody>
     <% @emburse_transactions.each do |emburse_transaction| %>
-      <tr class="<%= 'shade-yellow' if emburse_transaction.under_review? %>">
-        <td><%= link_to emburse_transaction.emburse_id, emburse_transaction.emburse_path %></td>
-        <td><%= render_money emburse_transaction.amount %></td>
-        <td><%= emburse_transaction.state %></td>
-        <% if emburse_transaction.event.nil? %>
-          <td>Unset</td>
-        <% else %>
-          <td><%= link_to emburse_transaction.event.name, emburse_transaction.event %></td>
-        <% end %>
-        <td><%= link_to emburse_transaction.under_review? ? 'Process' : 'Edit', edit_emburse_transaction_path(emburse_transaction), class: 'h5 btn bg-info' %></td>
-      </tr>
+      <% if not emburse_transaction.should_be_ignored? %>
+        <tr class="<%= 'shade-yellow' if emburse_transaction.under_review? %>">
+          <td><%= link_to emburse_transaction.emburse_id, emburse_transaction.emburse_path %></td>
+          <td><%= render_money emburse_transaction.amount %></td>
+          <td><%= emburse_transaction.state %></td>
+          <% if emburse_transaction.event.nil? %>
+            <td>Unset</td>
+          <% else %>
+            <td><%= link_to emburse_transaction.event.name, emburse_transaction.event %></td>
+          <% end %>
+          <td><%= link_to emburse_transaction.under_review? ? 'Process' : 'Edit', edit_emburse_transaction_path(emburse_transaction), class: 'h5 btn bg-info' %></td>
+        </tr>
+      <% end %>
     <% end %>
   </tbody>
 </table>
