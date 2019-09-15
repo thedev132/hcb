@@ -1,4 +1,4 @@
-<% title "Invoice to #{@invoice.sponsor.name} for #{render_money @invoice.total}" %>
+<% title "Invoice to #{@invoice.sponsor.name.html_safe} for #{render_money @invoice.total}" %>
 <% page_md %>
 <% include_modals %>
 <%= render 'events/nav' %>
