@@ -1,0 +1,11 @@
+.header-center {
+  flex-grow: 0;
+  flex-shrink: 1;
+}
+
+.header-left,
+.header-right {
+  flex-shrink: 1;
+  flex-grow: 1;
+  width: 100%;
+}

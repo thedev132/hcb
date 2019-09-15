@@ -112,6 +112,7 @@ class EventsController < ApplicationController
       :expected_budget,
       :has_fiscal_sponsorship_document,
       :emburse_department_id,
+      :partner_logo_url,
       :point_of_contact_id,
       :slug
     )

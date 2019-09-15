@@ -22,27 +22,39 @@
   <body class="bg-snow <%= content_for :page_class %>">
     <% unless @hide_home %>
       <header class="home flex items-center justify-center pt1 md-pt2">
-        <% if signed_in? %>
-          <div class="inline-block mr2" style="width: 36px;"><!-- spacer --></div>
-          <action role="button" data-behavior="toggle_theme" class="muted pointer tooltipped tooltipped--s" aria-label="Toggle dark mode" tabindex="0">
-            <%= inline_icon 'moon', size: home_action_size %>
-            <%= inline_icon 'moon-fill', size: home_action_size, style: 'display: none;' %>
-          </action>
-        <% end %>
-        <%= link_to root_path, class: 'pl2 pr2' do %>
-          <%= image_tag 'logo.svg', name: 'header-logo', width: @home_size || 48, height: @home_size || 48, alt: 'Bank logo' %>
-          <%= image_tag 'hank.png', name: 'alternative-logo', style: 'display: none;', width: @home_size || 48, height: @home_size || 48, alt: 'Hank logo' %>
-        <% end %>
-        <% if signed_in? %>
-          <action role="button" class="muted pointer mr2 tooltipped tooltipped--s headway" aria-label="Show changes" data-behavior="toggle_changelog">
-            <%= inline_icon 'bell', size: home_action_size %>
-          </action>
-        <% end %>
-        <%= link_to logout_users_path, method: :delete,
-            class: 'muted tooltipped tooltipped--s',
-            'aria-label': 'Sign out' do %>
-            <%= inline_icon 'door-leave', size: home_action_size %>
-        <% end if signed_in? %>
+        <div class="header-left flex items-center justify-end">
+          <% if signed_in? %>
+            <action role="button" data-behavior="toggle_theme" class="muted pointer tooltipped tooltipped--s" aria-label="Toggle dark mode" tabindex="0">
+              <%= inline_icon 'moon', size: home_action_size %>
+              <%= inline_icon 'moon-fill', size: home_action_size, style: 'display: none;' %>
+            </action>
+          <% end %>
+          <% if @event and @event.partner_logo_url %>
+            <div class="partner-logo ml2">
+              <%= image_tag @event.partner_logo_url, name: 'partner-logo', height: home_action_size, alt: 'Partner logo', style: 'box-sizing: border-box; padding: 5px;' %>
+            </div>
+          <% end %>
+        </div>
+
+        <div class="header-center flex items-center justify-start">
+          <%= link_to root_path, class: 'pl2 pr2' do %>
+            <%= image_tag 'logo.svg', name: 'header-logo', width: @home_size || 48, height: @home_size || 48, alt: 'Bank logo' %>
+            <%= image_tag 'hank.png', name: 'alternative-logo', style: 'display: none;', width: @home_size || 48, height: @home_size || 48, alt: 'Hank logo' %>
+          <% end %>
+        </div>
+
+        <div class="header-right flex items-center justify-left">
+          <% if signed_in? %>
+            <action role="button" class="muted pointer mr2 tooltipped tooltipped--s headway" aria-label="Show changes" data-behavior="toggle_changelog">
+              <%= inline_icon 'bell', size: home_action_size %>
+            </action>
+          <% end %>
+          <%= link_to logout_users_path, method: :delete,
+              class: 'muted tooltipped tooltipped--s',
+              'aria-label': 'Sign out' do %>
+              <%= inline_icon 'door-leave', size: home_action_size %>
+          <% end if signed_in? %>
+        </div>
       </header>
     <% end %>
     <main class="container <%= content_for :container_class %>">

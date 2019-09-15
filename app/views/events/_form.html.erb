@@ -63,6 +63,11 @@
     </div>
 
     <div class="field">
+      <%= form.label :partner_logo_url %>
+      <%= form.text_field :partner_logo_url %>
+    </div>
+
+    <div class="field">
       <%= form.label :point_of_contact_id %>
       <%= form.collection_select :point_of_contact_id, User.admin.all, :id, :email %>
     </div>
