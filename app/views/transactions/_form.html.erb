@@ -23,12 +23,12 @@
     <%= form.fields_for :fee_relationship do |fr_form| %>
       <div class="field">
         <%= fr_form.label :event %>
-        <%= fr_form.collection_select(:event_id, Event.all, :id, :name, include_blank: 'Select one…') %>
+        <%= fr_form.collection_select(:event_id, Event.reorder(:name), :id, :name, include_blank: 'Select one…') %>
       </div>
       <% if FeeReimbursement.failed.any? %>
         <div class="field">
           <%= form.label :fee_reimbursement, 'Fee refund' %>
-          <%= form.collection_select(:fee_reimbursement_id, FeeReimbursement.failed, :id, :admin_dropdown_description, include_blank: 'Select one…') %>
+          <%= form.collection_select(:fee_reimbursement_id, FeeReimbursement.failed.reorder(:amount), :id, :admin_dropdown_description, include_blank: 'Select one…') %>
         <p class="muted h5 mb2">If this isn’t a transfer to reimburse a stripe fee, leave this field blank.</p>
         </div>
       <% end %>
@@ -44,7 +44,7 @@
           <%= form.label :invoice_payout, 'Invoice payout' %>
           <%= form.collection_select(
             :invoice_payout_id,
-            InvoicePayout.lacking_transaction.all + [transaction.invoice_payout].compact, # .compact to remove nil values if transaction.invoice_payout is nil
+            InvoicePayout.lacking_transaction.reorder(:amount) + [transaction.invoice_payout].compact, # .compact to remove nil values if transaction.invoice_payout is nil
             :id,
             :dropdown_description,
             include_blank: 'Select one…'
