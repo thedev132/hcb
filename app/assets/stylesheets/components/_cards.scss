@@ -34,7 +34,7 @@ a.card {
   margin-bottom: 1rem;
 }
 
-#error_explanation {
+.error-card {
   @extend .card;
   max-width: 32rem;
   border: 1px solid $red7;
@@ -51,6 +51,7 @@ a.card {
 
   ul {
     margin-bottom: 0;
+    padding-left: 1.5rem;
   }
 }
 

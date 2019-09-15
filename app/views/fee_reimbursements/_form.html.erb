@@ -1,15 +1,5 @@
 <%= form_with(model: fee_reimbursement, local: true) do |form| %>
-  <% if fee_reimbursement.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(fee_reimbursement.errors.count, "error") %> prohibited this fee_reimbursement from being saved:</h2>
-
-      <ul>
-      <% fee_reimbursement.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
+  <%= form_errors fee_reimbursement %>
 
   <p>Reimbursement amount is calculated: <%= render_money fee_reimbursement.invoice.item_amount %> - <%= render_money fee_reimbursement.invoice.payout_creation_balance_net %> = <strong><%= render_money fee_reimbursement.amount %></strong></p>
 

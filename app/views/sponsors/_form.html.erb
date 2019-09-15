@@ -1,15 +1,5 @@
 <%= form_with(model: sponsor, local: true) do |form| %>
-  <% if sponsor.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(sponsor.errors.size, "error") %> prohibited this sponsor from being saved:</h2>
-
-      <ul>
-      <% sponsor.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
+  <%= form_errors sponsor %>
 
   <% admin_tools do %>
     <div class="field">

@@ -1,18 +1,6 @@
 <%= form_with(model: invoice, url: :event_invoices, local: true) do |form| %>
-  <% if invoice.errors.any? || @sponsor.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(invoice.errors.size + @sponsor.errors.size, "error") %> prohibited this invoice from being saved:</h2>
-
-      <ul>
-      <% invoice.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      <% @sponsor.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
+  <%= form_errors invoice %>
+  <%= form_errors @sponsor %>
 
   <% if @event.sponsors.count > 0 %>
     <div class="field">

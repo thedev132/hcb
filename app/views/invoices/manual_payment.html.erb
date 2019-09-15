@@ -22,17 +22,7 @@
 </p>
 
 <%= form_tag invoice_manually_mark_as_paid_path(@invoice), multipart: true do %>
-  <% if @invoice.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@invoice.errors.size, "error") %> prohibited the invoice from being marked as paid:</h2>
-
-      <ul>
-      <% @invoice.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
+  <%= form_errors @invoice %>
 
   <div class="field">
     <%= label_tag :manually_marked_as_paid_reason, 'Reason for manually marking as paid:' %>

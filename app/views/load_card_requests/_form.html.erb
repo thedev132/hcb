@@ -1,14 +1,5 @@
 <%= form_with(model: load_card_request, local: true) do |form| %>
-  <% if load_card_request.errors.any? %>
-    <div id="error_explanation">
-      <h2>Something went wrong 🙁</h2>
-      <ul>
-      <% load_card_request.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
+  <%= form_errors load_card_request, 'transfer request' %>
 
   <%= form.hidden_field :creator_id, value: current_user.id %>
 

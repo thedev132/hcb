@@ -1,15 +1,5 @@
 <%= form_with(model: g_suite, local: true, url: event_g_suites_path) do |form| %>
-  <% if g_suite.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(g_suite.errors.size, "error") %> prohibited this g_suite from being saved:</h2>
-
-      <ul>
-      <% g_suite.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
+  <%= form_errors g_suite, 'G Suite' %>
 
   <% if @g_suite_application %>
     <%= form.hidden_field :g_suite_application_id, value: @g_suite_application.id %>

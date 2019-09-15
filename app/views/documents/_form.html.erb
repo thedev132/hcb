@@ -1,14 +1,5 @@
 <%= form_with(model: document, local: true) do |form| %>
-  <% if document.errors.any? %>
-    <div id="error_explanation">
-    <h2><%= pluralize(document.errors.size, "error") %> prohibited this document from being saved:</h2>
-
-    <ul>
-    <% document.errors.full_messages.each do |message| %>
-      <li><%= message %></li>
-    <% end %>
-    </ul>
-  <% end %>
+  <%= form_errors document %>
 
   <%= form.hidden_field :event_id, value: document.event_id || params[:event_id] %>
 

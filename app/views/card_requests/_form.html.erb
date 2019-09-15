@@ -1,15 +1,5 @@
 <%= form_with(model: card_request, local: true) do |form| %>
-  <% if card_request.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(card_request.errors.size, "error") %> prohibited this card_request from being saved:</h2>
-
-      <ul>
-      <% card_request.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
+  <%= form_errors card_request %>
 
   <% admin_tools('mb2') do %>
     <div class="field">

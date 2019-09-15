@@ -206,7 +206,7 @@ html[data-dark='true'] {
   }
   .flash.error,
   .btn--destroy,
-  #error_explanation,
+  .error-card,
   .badge.bg-error,
   .pop.error {
     background-color: rgba(map-get($palette, error), 0.125);

@@ -1,15 +1,5 @@
 <%= form_with(model: organizer_position_deletion_request, local: true) do |form| %>
-  <% if organizer_position_deletion_request.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(organizer_position_deletion_request.errors.size, "error") %> prevent this from submitting:</h2>
-
-      <ul>
-      <% organizer_position_deletion_request.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
+  <%= form_errors organizer_position_deletion_request, 'request' %>
 
   <%= form.hidden_field :organizer_position_id %>
 

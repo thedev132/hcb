@@ -40,6 +40,23 @@ module ApplicationHelper
     end
   end
 
+  def form_errors(model, name = nil)
+    return if model.errors.none?
+
+    name ||= model.class.name.underscore.humanize.downcase
+
+    errors_list = content_tag :ul do
+      model.errors.full_messages.map do |message|
+        concat(content_tag :li, message)
+      end
+    end
+
+    content_tag :div, class: 'error-card' do
+      content_tag(:h2, "We couldn't save this #{name} because of #{pluralize(model.errors.size, 'error')}.") +
+        errors_list
+    end
+  end
+
   def modal_close
     pop_icon_to 'view-close', '#close_modal', class: 'modal__close muted', rel: 'modal:close', tabindex: 0
   end

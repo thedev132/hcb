@@ -3,16 +3,7 @@
 <h1>Editing Emburse Transaction</h1>
 
 <%= form_with(model: @emburse_transaction, local: true) do |form| %>
-  <% if @emburse_transaction.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@emburse_transaction.errors.size, 'error') %> prohibited this account from being saved:</h2>
-      <ul>
-      <% @emburse_transaction.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
+  <%= form_errors @emburse_transaction, 'account' %>
 
   <div class="mb2">
     View on emburse: <%= link_to @emburse_transaction.emburse_id, @emburse_transaction.emburse_path, target: '_blank' %>

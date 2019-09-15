@@ -1,15 +1,5 @@
 <%= form_with(model: event, local: true, class: 'mb3') do |form| %>
-  <% if event.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(event.errors.size, "error") %> prohibited your account info from being saved:</h2>
-
-      <ul>
-      <% event.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
+  <%= form_errors event, 'account info' %>
 
   <div class="field">
     <p class="mb0 bold">Fee</p>
