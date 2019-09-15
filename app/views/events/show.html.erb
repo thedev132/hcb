@@ -212,7 +212,7 @@ Sponsorship fee: <%= render_percentage @event.sponsorship_fee %>`)">
               </span>
               <span class="breakdown__sub">
                 <%= invoice.arriving_late? ? 'was supposed to arrive ' : 'arrives in ' %> approx.
-                <%= distance_of_time_in_words(invoice.arrival_date.ceil_to(1.day), DateTime.now) %> <%= "ago" if invoice.arriving_late? %>
+                <%= distance_of_time_in_words(invoice.arrival_date.ceil_to(1.day), DateTime.now.ceil_to(1.day)) %> <%= "ago" if invoice.arriving_late? %>
               </span>
             </div>
             <span datetime="<%= invoice.arrival_date.strftime('%m-%d-%y') %>" class="ml-auto mini-calendar black">
