@@ -29,7 +29,7 @@
               <%= inline_icon 'moon-fill', size: home_action_size, style: 'display: none;' %>
             </action>
           <% end %>
-          <% if @event and @event.partner_logo_url %>
+          <% if @event and not @event.partner_logo_url.blank? %>
             <div class="partner-logo ml2">
               <%= image_tag @event.partner_logo_url, name: 'partner-logo', height: home_action_size, alt: 'Partner logo', style: 'box-sizing: border-box; padding: 5px;' %>
             </div>
