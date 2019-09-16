@@ -2,7 +2,7 @@
 
 _It’s a bank, folks._
 
-![](hack_club_bank_laser.gif)
+![Hack Club Bank](hack_club_bank_laser.gif)
 
 ## Getting Started
 
@@ -23,3 +23,13 @@ Alternatively, you can run `docker-compose run --service-ports web /bin/bash` to
     $ heroku pg:backups:capture
     $ heroku pg:backups:download # will save as latest.dump, double check to make sure that file is created
     $ pg_restore --verbose --clean --no-acl --no-owner -h db -U postgres -d bank_development latest.dump
+
+## Running migrations
+
+Currently, migrations are decoupled from deployments. After deploying a patch with a new migration, run:
+
+```
+heroku run /bin/bash -a bank-hackclub
+rails db:migrate:status
+rails db:migrate
+```
