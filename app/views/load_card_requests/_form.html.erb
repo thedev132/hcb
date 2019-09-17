@@ -16,7 +16,11 @@
     <%= form.label :load_amount, 'Amount to transfer' %>
     <div class="flex items-center">
       <span class="bold muted" style="width: 1rem;">$</span>
-      <%= form.number_field :load_amount, value: load_card_request.load_amount / 100.00, max: (current_user.admin? ? nil : (@event.available_balance / 100.00)), step: 0.01, placeholder: '100.00', autofocus: true, disabled: @event.balance_available == 0 %>
+      <%= form.number_field :load_amount,
+        value: load_card_request.load_amount.nil? ? nil : (load_card_request.load_amount / 100.00),
+        max: (current_user.admin? ? nil : (@event.available_balance / 100.00)),
+        step: 0.01, placeholder: '100.00',
+        autofocus: true, disabled: @event.balance_available == 0 %>
     </div>
   </div>
 
