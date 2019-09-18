@@ -1,0 +1,31 @@
+<h1>Process ACH Transfer #<%= @ach_transfer.id %></h1>
+
+<p class="bold">Steps to process ACH:</p>
+<ol>
+  <li>Check that all values below look sane</li>
+  <li>Go into SVB and fill in all the values below into the wire transfer form</li>
+  <li>Click "Submit"</li>
+  <li>Click "Process" below</li>
+</ol>
+
+<p class="bold mb0">Submitted By</p>
+<div class="flex items-center">
+  <%= user_mention @ach_transfer.creator, class: 'ml1' %>
+  <p>(<%= link_to @ach_transfer.creator.pretty_phone_number, "tel:#{@ach_transfer.creator.phone_number}" %>, <%= mail_to @ach_transfer.creator.email %>) of <%= link_to @ach_transfer.event.name, @ach_transfer.event %></p>
+</div>
+
+<p class="bold mb0">Bank Name</p>
+<p>
+  <%= @ach_transfer.bank_name %>
+</p>
+
+<p class="bold mb0">Routing Number</p>
+<p><%= @ach_transfer.routing_number %></p>
+
+<p class="bold mb0">Account Number</p>
+<p><%= @ach_transfer.account_number %></p>
+
+<p class="bold mb0">Amount</p>
+<p><%= render_money @ach_transfer.amount %></p> 
+
+<%= link_to 'Approve', ach_transfer_approve_path(@ach_transfer), method: :post, class: 'btn bg-success' %>

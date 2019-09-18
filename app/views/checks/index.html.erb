@@ -1,0 +1,38 @@
+<h1 class="heading">
+  Checks
+  <%= link_to 'Export for FRB', export_checks_path, class: 'btn bg-info' %>
+</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Number</th>
+      <th>Event</th>
+      <th>Amount</th>
+      <th>Status</th>
+      <th colspan="1"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @checks.each do |check| %>
+      <tr>
+        <td><%= check.check_number || 'n/a' %></td>
+        <td><%= check.event.name %></td>
+        <td><%= render_money check.amount %></td>
+        <td>
+          <%= status_badge check.state %> <%= check.status.to_s.humanize %>
+        </td>
+        <td>
+          <% if check.approved_at.nil? && !check.voided? %>
+            <%= link_to 'Start Approval', check_start_approval_path(check)%>
+          <% elsif check.unfinished_void? %>
+            <%= link_to 'Refund Check', check_refund_path(check) %>
+          <% end %>   
+          </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+

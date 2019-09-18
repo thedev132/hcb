@@ -25,9 +25,7 @@
     </span>
     <span class="badge h4 md-right bg-<%= @invoice.state %>">
       <%= @invoice.state_text %>
-      <% if @invoice.state_icon %>
-        <%= inline_icon @invoice.state_icon, size: 20 %>
-      <% end %>
+      <%= inline_icon @invoice.state_icon, size: 20 if @invoice.state_icon %>
     </span>
   </h2>
   <section class="card__banner card__darker details-horiz border-top border-bottom">

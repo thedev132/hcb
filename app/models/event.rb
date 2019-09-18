@@ -20,6 +20,10 @@ class Event < ApplicationRecord
   has_many :cards
   has_many :card_requests
   has_many :load_card_requests
+  has_many :ach_transfers
+
+  has_many :lob_addresses
+  has_many :checks, through: :lob_addresses
 
   has_many :emburse_transactions
 

@@ -1,0 +1,25 @@
+<% page_md %>
+
+<h1>Check - <%= @check.description %></h1>
+
+<p>Make this transfer from the positive pay FRB account into Hack Club's @ FRB</p>
+
+<p>
+  <strong>Amount</strong>
+  <%= render_money @check.amount %>
+</p>
+
+
+<p>Make this transfer from the Hack Club account @ SVB into Fiscal Sponsorship</p>
+
+<p>
+	<strong>Amount</strong>
+	<%= render_money @check.amount %>
+</p>
+
+<p>
+	<strong>Transaction Memo</strong>
+	<%= @check.transaction_memo %>
+</p>
+
+<%= link_to 'Refund check', check_refund_path(@check), method: :post %>

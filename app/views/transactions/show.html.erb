@@ -48,6 +48,16 @@
     </p>
     <% end %>
 
+    <% if @transaction&.check %>
+    <p>
+      <strong>For</strong>
+      <span>
+      <%= link_to "A check of #{render_money @transaction.check.amount}", @transaction.check %>
+      </span>
+    </p>
+    <% end %>
+
+
     <% if @transaction.fee_applies? %>
       <p>
         <strong>Fee</strong>

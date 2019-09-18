@@ -2,7 +2,7 @@ class SyncTransactionsJob < ApplicationJob
   RUN_EVERY = 1.hour
 
   def perform(repeat = false)
-      BankAccount.syncing.each { |bank_account| sync_account bank_account }
+    BankAccount.syncing.each { |bank_account| sync_account bank_account }
 
     if repeat
       self.class.set(wait: RUN_EVERY).perform_later(true)
@@ -67,6 +67,7 @@ class SyncTransactionsJob < ApplicationJob
           )
 
           check_fee_reimbursement(tr)
+          check_for_check(tr)
         end
 
         begin_date = begin_date.prev_month
@@ -92,6 +93,24 @@ class SyncTransactionsJob < ApplicationJob
           fee_amount: reimbursement.calculate_fee_amount
         )
         transaction.display_name = "Fee refund from #{reimbursement.invoice.sponsor.name} invoice"
+        transaction.save
+      end
+    end
+  end
+
+  def check_for_check(transaction)
+    Check.all.each do |check|
+      if transaction.name.include? check.transaction_memo
+        return unless transaction.amount == check.amount
+
+        check.t_transaction = transaction
+
+        transaction.fee_relationship = FeeRelationship.new(
+          event_id: check.event.id,
+          fee_applies: false
+        )
+
+        transaction.display_name = "Check to #{check.lob_address.name}"
         transaction.save
       end
     end

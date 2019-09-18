@@ -1,0 +1,112 @@
+<% title "Check – #{@check.memo}" %>
+<% page_md %>
+<%= render 'events/nav' %>
+
+<link href="https://fonts.googleapis.com/css?family=Damion" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Space+Mono" rel="stylesheet">
+
+<div class="check xs-hide w-100 mt3 mb3">
+  <div class="check__number"><%= @check.check_number %></div>
+
+  <div class="flex w-100 justify-end mb1">
+    <div class="check__field check__field--date" data-label="Date"><%= (@check.send_date || @check.created_at).strftime('%b %d, %Y') %></div>
+  </div>
+
+  <div class="check__row">
+    <div class="check__field check__field--orderof" data-label="Pay to the order of"><%= @check.lob_address.name %></div>
+    <div class="check__field check__field--num" data-label="$">
+      <%= render_money @check.amount, '' %>
+    </div>
+  </div>
+
+  <div class="check__field check__field--dollars" data-label="Dollars" data-check-amount="<%= render_money @check.amount, '' %>" data-behavior="fill_check_words"></div>
+
+  <div class="check__row items-start">
+    <div class="check__field check__field--memo" data-label="Memo"><%= @check.memo %></div>
+    <div class="check__sig"></div>
+
+  </div>
+
+  <p class="check__meta">
+      &#9286;
+      00000000000
+      &#9286;
+      123456789
+      &#9286;
+  </p>
+</div>
+
+<article class="card pb0 mt3 mb3">
+  <h2 class="h2 sans mt0 border-none">
+    <div class="flex items-start">
+      <span class="flex-auto">
+        <span class="regular muted"><%= @check.deposited? ? 'Sent' : 'Sending' %> </span>
+        <%= @check.lob_address.name %>
+        <span class="regular muted"> a&nbsp;check for </span>
+        <span class="regular mr3"><%= render_money @check.amount %></span>
+      </span>
+      <span class="badge h4 ml2 bg-<%= @check.state %>">
+        <%= @check.status_text %>
+        <%= inline_icon @check.state_icon, size: 20 if @check.state_icon %>
+      </span>
+    </div>
+  </h2>
+  <section class="card__banner card__darker details-horiz border-top border-bottom">
+    <p>
+      <strong>Sent by</strong>
+      <%= user_mention @check.creator %>
+    </p>
+    <p>
+      <% if @check.sent? %>
+        <strong>Sent at</strong>
+        <%= format_datetime @check.send_date %>
+      <% else %>
+        <strong>Drafted at</strong>
+        <%= format_datetime @check.created_at %>
+      <% end %>
+    </p>
+
+    <% if @check.sent? %>
+      <p>
+        <strong>Delivery expected on</strong>
+        <%= format_datetime @check.expected_delivery_date %>
+      </p>
+    <% end %>
+  </section>
+
+  <section class="details pt2 pb2">
+    <p>
+      <strong>Status</strong>
+      <%= @check.status_text_long %>
+    </p>
+    <p>
+      <strong>Sent to</strong>
+      <%= @check.lob_address.name %>
+    </p>
+
+    <p>
+      <strong>Adressed to</strong>
+      <%= @check.lob_address.address_text %>
+    </p>
+
+    <p>
+      <strong>Memo</strong>
+      <%= @check.memo %>
+    </p>
+
+    <p>
+      <strong>Amount</strong>
+      <%= render_money @check.amount %>
+    </p>
+  </section>
+
+  <section class="card__banner card__darker border-top">
+    <% if @check.pending? %>
+      <%= link_to 'Edit', edit_check_path(@check), class: 'btn bg-info right' %>
+    <% end %>    
+    <% if @check.voidable? %>
+      <%= link_to 'Void', check_start_void_path(@check), class: 'btn bg-error mr1' %>
+    <% end %>
+    <%= link_to 'View check', @check.url, target: :_blank, class: 'btn bg-info' if @check.sent? %>
+  </section>
+</article>

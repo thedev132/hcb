@@ -84,6 +84,10 @@ class TransactionsController < ApplicationController
         should_delete_fee_relationship = true if fee_relationship&.persisted?
       end
 
+      if @transaction.check && @transaction.is_event_related
+        @transaction.fee_relationship.event = @transaction.check.event
+      end
+
       if @transaction.save
         # need to destroy the fee relationship here because we have a foreign
         # key that'll be erased on the @transaction.save
@@ -110,6 +114,8 @@ class TransactionsController < ApplicationController
       :invoice_payout_id,
       :display_name,
       :fee_reimbursement_id,
+      :check_id,
+      :ach_transfer_id,
       # WARNING: I (@zrl) think users might be able to mess with the fee
       # relationship ID on the clientside.
       fee_relationship_attributes: [

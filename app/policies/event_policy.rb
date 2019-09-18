@@ -38,4 +38,8 @@ class EventPolicy < ApplicationPolicy
   def g_suite_overview?
     user.admin? || record.users.include?(user)
   end
+
+  def transfers?
+    user.admin? || record.users.include?(user)
+  end
 end

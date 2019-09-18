@@ -91,6 +91,16 @@ class EventsController < ApplicationController
     @g_suite_status = @event.g_suite_status
   end
 
+  def transfers
+    @event = Event.find(params[:event_id])
+    authorize @event
+
+    @checks = @event.checks.includes(:creator)
+    @ach_transfers = @event.ach_transfers.includes(:creator)
+
+    @transfers = (@checks + @ach_transfers).sort_by { |o| o.created_at }.reverse
+  end
+
   private
 
   # Use callbacks to share common setup or constraints between actions.

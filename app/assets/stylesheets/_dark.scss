@@ -41,6 +41,7 @@ html[data-dark='true'] {
   .details-horiz > p:not(:last-of-type),
   .details-horiz > div:not(:last-of-type),
   .details-horiz > .details-horiz__col,
+  .menu__toggle[aria-expanded='true']:after,
   tr {
     border-color: $darkless;
   }
@@ -49,10 +50,22 @@ html[data-dark='true'] {
     border-bottom-color: $darkless;
   }
 
+  .menu__content,
+  .menu__content > a,
+  .menu__action {
+    background: $darkless;
+    border-color: $darker;
+    color: map-get($palette, smoke);
+  }
+  .menu__toggle[aria-expanded='true']:before {
+    border-color: $darker;
+  }
+
   .flash {
     border: 0;
   }
 
+  .card,
   .modal {
     background-color: $darkless;
   }
@@ -67,10 +80,13 @@ html[data-dark='true'] {
     color: map-get($palette, black);
   }
 
-  .card {
-    background-color: $darkless;
+  .modal,
+  .card,
+  .menu__content {
     box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.125), 0 4px 8px 0 rgba(0, 0, 0, 0.25);
+  }
 
+  .card {
     h1,
     h2,
     .heading,
@@ -155,7 +171,7 @@ html[data-dark='true'] {
     color: map-get($palette, primary);
   }
   .badge.bg-info {
-    color: map-get($palette, warning);
+    color: map-get($palette, info);
   }
   .badge.bg-accent {
     color: map-get($palette, accent);
@@ -179,6 +195,10 @@ html[data-dark='true'] {
   .badge {
     background-color: rgba(map-get($palette, primary), 0.125);
   }
+  .menu__action:hover,
+  .menu__action:focus,
+  .menu__content > a:hover,
+  .menu__content > a:focus,
   .flash.info,
   .pop,
   .pop.info {
@@ -216,5 +236,25 @@ html[data-dark='true'] {
     background-color: rgba($yellow1, 0.125);
     border-color: rgba($yellow8, 0.625);
     color: $yellow3;
+  }
+
+  .check,
+  .transfer-preview--check {
+    background: #193046;
+    color: inherit;
+  }
+  .check__field {
+    color: map-get($palette, white);
+
+    &:before {
+      border-color: #193046;
+      color: map-get($palette, smoke);
+    }
+  }
+  .check__field--num {
+    border-color: map-get($palette, slate);
+  }
+  .check__sig {
+    filter: invert(1) hue-rotate(180deg);
   }
 }

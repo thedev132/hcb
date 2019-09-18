@@ -121,6 +121,8 @@ GEM
     concurrent-ruby (1.1.5)
     connection_pool (2.2.2)
     crass (1.0.4)
+    domain_name (0.5.20190701)
+      unf (>= 0.0.5, < 1.0.0)
     erubi (1.8.0)
     execjs (2.7.0)
     faraday (0.15.4)
@@ -134,6 +136,8 @@ GEM
       activesupport (>= 4.2.0)
     hashie (3.6.0)
     htmlentities (4.3.4)
+    http-cookie (1.0.3)
+      domain_name (~> 0.5)
     httparty (0.14.0)
       multi_xml (>= 0.5.2)
     i18n (1.6.0)
@@ -152,6 +156,8 @@ GEM
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
       ruby_dep (~> 1.2)
+    lob (5.0.0)
+      rest-client (>= 1.8, < 3.0)
     local_time (2.1.0)
     loofah (2.2.3)
       crass (~> 1.0.2)
@@ -164,6 +170,9 @@ GEM
     marcel (0.3.3)
       mimemagic (~> 0.3.2)
     method_source (0.9.2)
+    mime-types (3.2.2)
+      mime-types-data (~> 3.2015)
+    mime-types-data (3.2019.0331)
     mimemagic (0.3.3)
     mini_magick (4.9.5)
     mini_mime (1.0.2)
@@ -176,6 +185,7 @@ GEM
     multipart-post (2.1.1)
     net-http-persistent (3.0.1)
       connection_pool (~> 2.2)
+    netrc (0.11.0)
     nio4r (2.4.0)
     nokogiri (1.10.4)
       mini_portile2 (~> 2.4.0)
@@ -226,6 +236,10 @@ GEM
     redcarpet (3.4.0)
     redis (4.1.2)
     regexp_parser (1.6.0)
+    rest-client (2.0.2)
+      http-cookie (>= 1.0.2, < 2.0)
+      mime-types (>= 1.16, < 4.0)
+      netrc (~> 0.8)
     rinku (2.0.6)
     rounding (1.0.1)
     ruby_dep (1.5.0)
@@ -277,6 +291,9 @@ GEM
       thread_safe (~> 0.1)
     uglifier (4.1.20)
       execjs (>= 0.3.0, < 3)
+    unf (0.1.4)
+      unf_ext
+    unf_ext (0.0.7.6)
     validates_email_format_of (1.6.3)
       i18n
     web-console (3.7.0)
@@ -314,6 +331,7 @@ DEPENDENCIES
   jquery-rails
   jquery-ui-rails
   listen (>= 3.0.5, < 3.2)
+  lob
   local_time
   maildown
   mini_magick

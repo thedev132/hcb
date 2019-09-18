@@ -1,0 +1,78 @@
+<%= form_with(model: check, local: true, url: event_checks_path(@event)) do |form| %>
+  <% if check.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(check.errors.count, "error") %> prohibited this check from being saved:</h2>
+
+      <ul>
+      <% check.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :memo %>
+    <%= form.text_field :memo, maxlength: 40, placeholder: 'for venue payment', required: true, data: { behavior: 'check_memo_field'} %>
+    <span class="muted" data-behavior="check_characters_update">This will appear on the physical check. You have 40 characters remaining.</span>
+  </div>
+
+  <%= form.label :amount, 'Amount' %>
+  <div class="field">
+    <div class="flex items-center">
+      <span class="bold muted" style="width: 1rem;">$</span>
+      <%= form.number_field :amount, placeholder: '500.00', step: :any, min: 0, required: true, data: { behavior: 'check_amount_field' } %>
+    </div>
+  </div>
+
+  <% if @event.lob_addresses.any? %>
+    <div class="field">
+      <%= form.label :lob_address, 'Payee' %>
+      <%= form.select :lob_address,
+        options_for_select(@event.lob_addresses.map { |la|
+          [la.name, la.id, { 'data-json': la.to_json } ]
+        }),
+        include_blank: 'New payee…' %>
+    </div>
+  <% end %>
+
+  <%= form.fields_for :lob_address_attributes do |form| %>
+    <h2>Payee details</h2>
+
+    <p data-behavior="lob_address_update_warning" style="display: none;" class="flex items-center info line-height-3">
+      <%= inline_icon 'important', size: 32, class: 'mr1' %>
+      Editing these fields will update the current payee record.
+    </p>
+
+    <%= form.hidden_field :id %>
+    <div class="field mt2">
+      <%= form.label :name, "Name (use company name if applicable)" %>
+      <%= form.text_field :name, placeholder: 'Raviga Capital', required: true, data: {'behavior': 'check_payee_name_field'} %>
+    </div>
+
+    <div class="field">
+      <%= form.label :address1, 'Street address' %>
+      <%= form.text_field :address1, placeholder: '1 Letterman Drive', required: true %>
+    </div>
+
+    <div class="field">
+      <%= form.text_field :address2, placeholder: 'Suite 500' %>
+    </div>
+
+    <div class="flex">
+      <div class="field flex-auto mr1">
+        <%= form.label :city, 'City' %>
+        <%= form.text_field :city, placeholder: 'San Francisco', required: true %>
+      </div>
+      <div class="field flex-auto ml1">
+        <%= form.label :state, 'State' %>
+        <%= form.text_field :state, placeholder: 'CA', required: true %>
+      </div>
+    </div>
+
+    <div class="field">
+      <%= form.label :zip, 'ZIP' %>
+      <%= form.text_field :zip, placeholder: '94129', required: true %>
+    </div>
+  <% end %>
+<% end %>

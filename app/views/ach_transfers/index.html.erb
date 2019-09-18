@@ -1,0 +1,29 @@
+<h1>ACH Transfers</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Routing #</th>
+      <th>Account #</th>
+      <th>Bank name</th>
+      <th>Recipient</th>
+      <th>Status</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @ach_transfers.each do |ach_transfer| %>
+      <tr>
+        <td><%= ach_transfer.routing_number %></td>
+        <td><%= ach_transfer.account_number %></td>
+        <td><%= ach_transfer.bank_name %></td>
+        <td><%= ach_transfer.recipient_name %></td>
+        <td>
+          <%= status_badge ach_transfer.state %> <%= ach_transfer.status.to_s.humanize %>
+        </td>
+        <td><%= (link_to 'Approve', ach_transfer_start_approval_path(ach_transfer)) if @ach_transfer.approved_at.nil? %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

@@ -1,0 +1,35 @@
+<%= form_with(model: ach_transfer, local: true, url: event_ach_transfers_path(@event)) do |form| %>
+  <%= form_errors(ach_transfer, 'ACH transfer') %>
+
+  <div class="field">
+    <%= form.label :recipient_name %>
+    <%= form.text_field :recipient_name %>
+  </div>
+
+  <div class="field">
+    <%= form.label :bank_name %>
+    <%= form.text_field :bank_name %>
+  </div>
+
+  <div class="field">
+    <%= form.label :routing_number %>
+    <%= form.text_field :routing_number %>
+  </div>
+
+  <div class="field">
+    <%= form.label :account_number %>
+    <%= form.text_field :account_number %>
+  </div>
+
+  <%= form.label :amount, 'Amount' %>
+  <div class="field">
+    <div class="flex items-center">
+      <span class="bold muted" style="width: 1rem;">$</span>
+      <%= form.number_field :amount, placeholder: '500.00', step: 0.01, required: true %>
+    </div>
+  </div>
+
+  <div class="actions tooltipped tooltipped--n inline-block" aria-label="ACH transfers can't be cancelled">
+    <%= form.submit 'Transfer money now', class: 'btn bg-error' %>
+  </div>
+<% end %>

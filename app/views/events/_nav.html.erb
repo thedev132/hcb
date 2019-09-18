@@ -1,6 +1,6 @@
 <% unless defined? hide_name %>
   <%= link_to @event do %>
-    <h1 class="center border-none h1 mt3 mb1 pb0 underline primary">
+    <h1 class="center border-none h1 mt0 mb0 pt3 pb1 underline primary">
       <%= @event.name %>
     </h1>
   <% end %>
@@ -16,14 +16,23 @@
     'Request and manage cards for your team.',
     'card', 'accent',
     event_cards_overview_path(event_id: @event.slug) %>
-  <%= dock_card 'G Suite',
-    'Manage your event’s Google domain.',
-    'google', 'info',
-    event_g_suite_overview_path(event_id: @event.slug) %>
-  <%= dock_card 'Documents',
-    'Download resources from the Bank team.',
-    'docs', 'primary',
-    event_documents_path(event_id: @event.slug) %>
+  <%= 
+  # dock_card 'Send money', 'Send checks & ACH/wire transfers.', 'transactions', 'success', event_transfers_path(event_id: @event.slug)
+  %>
+  <div class="md-pl1">
+    <action type="button" class="pop menu__toggle" data-behavior="menu_toggle" aria-expanded="false" tabindex="0">
+      <%= inline_icon 'more' %>
+      <div class="menu__content" data-behavior="menu_content">
+        <% unless controller_name == 'events' && action_name == 'show' %>
+          <%= link_to 'Event settings', edit_event_path(@event) %>
+          <%= link_to 'Manage team', event_team_path(@event) %>
+          <hr />
+        <% end %>
+        <%= link_to 'G Suite', event_g_suite_overview_path(event_id: @event.slug) %>
+        <%= link_to 'Documents', event_documents_path(event_id: @event.slug) %>
+      </div>
+    </action>
+  </div>
 </nav>
 
 <main class="container <%= content_for :container_class %>">

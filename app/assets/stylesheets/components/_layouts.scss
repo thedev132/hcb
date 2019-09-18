@@ -25,9 +25,31 @@
   }
 }
 .list-reset,
-ul.grid {
+ul.grid,
+ul.mixed-grid {
   list-style: none;
   padding-left: 0;
+}
+
+.mixed-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+  grid-gap: 1rem;
+
+  @media (min-width: 32em) {
+    .comment__name {
+      margin-left: 0;
+      margin-top: 0;
+    }
+  }
+
+  a {
+    text-decoration: none;
+  }
+
+  p {
+    margin: 0;
+  }
 }
 
 @media screen and (min-width: 32em) {

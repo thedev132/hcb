@@ -18,6 +18,9 @@ class Transaction < ApplicationRecord
 
   belongs_to :fee_reimbursement, inverse_of: :t_transaction, required: false
 
+  belongs_to :check, inverse_of: :t_transactions, required: false
+  belongs_to :ach_transfer, inverse_of: :t_transaction, required: false
+
   has_many :comments, as: :commentable
 
   accepts_nested_attributes_for :fee_relationship

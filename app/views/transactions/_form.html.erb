@@ -19,8 +19,30 @@
         <div class="field">
           <%= form.label :fee_reimbursement, 'Fee refund' %>
           <%= form.collection_select(:fee_reimbursement_id, FeeReimbursement.failed.reorder(:amount), :id, :admin_dropdown_description, include_blank: 'Select one…') %>
-        <p class="muted h5 mb2">If this isn’t a transfer to reimburse a stripe fee, leave this field blank.</p>
+        <p class="muted h5 mb0">If this isn’t a transfer to reimburse a stripe fee, leave this field blank.</p>
         </div>
+      <% end %>
+      <% if Check.in_transit.any? || Check.refunded_but_needs_match.any? %>
+        <div class="field">
+          <%= form.label :check, 'Check' %>
+          <%= form.collection_select(:check_id, Check.in_transit + Check.refunded_but_needs_match, :id, :admin_dropdown_description, include_blank: 'Select one…') %>
+          <p class="muted h5 mb2">If this isn't a transaction made from a Check, leave this field blank.</p>
+          <% if transaction.bank_account.is_positive_pay %>
+            <% if transaction.amount > 0 %>
+              <p>This is a positive transaction & is into a positive pay account, so it's money being put in place for a recently sent check.</p>
+            <% elsif transaction.amount < 0 %>
+              <p>This is a negative transaction & is from a positive pay account, so it's either the money being withdrawn via check or a refund</p>
+              <% if transaction.name.include? 'Check' %>
+                <p>We suspect that it's the money being withdrawn via check because of transaction memo. Please double check.</p>
+              <% end %>
+            <% end %>
+          <% end %>
+        </div>
+      <% end %>
+      <% if AchTransfer.in_transit.any? %>
+          <%= form.label :ach_transfer, 'ACH Transfer' %>
+          <%= form.collection_select(:ach_transfer_id, AchTransfer.in_transit, :id, :admin_dropdown_description, include_blank: 'Select one…') %>
+          <p class="muted h5 mb2">If this isn't a transaction from an ACH Transfer, leave this field blank.</p>    
       <% end %>
       <% if transaction.emburse? %>
         <div class="field">

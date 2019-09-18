@@ -1,0 +1,60 @@
+<%= form_with(model: check, local: true) do |form| %>
+  <%= form_errors(check, 'check') %>
+
+  <%= form.fields_for :lob_address do |form| %>
+    <h2>Payee details</h2>
+
+    <p data-behavior="sponsor_update_warning" style="display: none;" class="flex items-center info line-height-3">
+      <%= inline_icon 'important', size: 32, class: 'mr1' %>
+      Editing these fields will update the current payee record.
+    </p>
+
+    <%= form.hidden_field :id %>
+    <div class="field mt2">
+      <%= form.label :name, "Name (use company name if applicable)" %>
+      <%= form.text_field :name, placeholder: 'Raviga Capital' %>
+    </div>
+
+    <div class="field">
+      <%= form.label :address1, 'Street address' %>
+      <%= form.text_field :address1, placeholder: '1 Letterman Drive' %>
+    </div>
+
+    <div class="field">
+      <%= form.text_field :address2, placeholder: 'Suite 500' %>
+    </div>
+
+    <div class="flex">
+      <div class="field flex-auto mr1">
+        <%= form.label :city, 'City' %>
+        <%= form.text_field :city, placeholder: 'San Francisco' %>
+      </div>
+      <div class="field flex-auto ml1">
+        <%= form.label :state, 'State' %>
+        <%= form.text_field :state, placeholder: 'CA' %>
+      </div>
+    </div>
+
+    <div class="field">
+      <%= form.label :zip, 'ZIP' %>
+      <%= form.text_field :zip, placeholder: '94129' %>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :memo %>
+    <%= form.text_area :memo %>
+  </div>
+
+  <%= form.label :amount, 'Amount' %>
+  <div class="field">
+    <div class="flex items-center">
+      <span class="bold muted" style="width: 1rem;">$</span>
+      <%= form.number_field :amount, value: (check.amount.nil? ? nil : (check.amount.to_f / 100)), placeholder: '500.00', step: 0.01 %>
+    </div>
+  </div>
+
+  <div class="actions tooltipped tooltipped--n inline-block" aria-label="Your check request will be submitted for approval">
+    <%= form.submit 'Update check' %>
+  </div>
+<% end %>

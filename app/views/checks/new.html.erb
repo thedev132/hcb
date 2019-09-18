@@ -1,0 +1,67 @@
+<% title 'Send a Check' %>
+<%= render 'events/nav' %>
+
+<article class="grid grid--spacious grid--check md-mt2">
+  <aside class="mt2">
+    <div class="check mb3 sm-hide">
+      <div class="check__number">1024</div>
+
+      <div class="flex w-100 justify-end mb1">
+        <div class="check__field check__field--date" data-label="Date"><%= Date.today.strftime('%b %d, %Y') %></div>
+      </div>
+
+      <div class="check__row">
+        <div class="check__field check__field--orderof" data-label="Pay to the order of" data-behavior="check_orderof">　</div>
+        <div class="check__field check__field--num" data-label="$" data-behavior="check_amount">　</div>
+      </div>
+
+      <div class="check__field check__field--dollars" data-label="Dollars" data-behavior="check_amount_words">　</div>
+
+      <div class="check__row items-start">
+        <div class="check__field check__field--memo truncate" data-label="Memo" data-behavior="check_memo">　</div>
+        <div class="check__sig"></div>
+      </div>
+
+      <p class="check__meta">
+        &#9286;
+        00000000000
+        &#9286;
+        123456789
+        &#9286;
+      </p>
+    </div>
+    <link href="https://fonts.googleapis.com/css?family=Damion" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Space+Mono" rel="stylesheet">
+          <div class="card border b--warning pb0 mb2">
+        <div class="flex items-center warning">
+          <%= inline_icon 'important', size: 32, class: 'mr1' %>
+          <p class="bold mt0 mb0">Important info about checks:</p>
+        </div>
+        <ul class="mt1 mb2">
+          <li>This check will be valid for 30 days, until <%= format_date DateTime.now + 1.month %></li>
+          <li>Your point of contact, <%= @event.point_of_contact.name.split(' ')[0] %>, needs to approve your check before it's sent out. This usually takes 1 business day.</li>
+        </ul>
+        <div class="border-top card__banner card__darker slate">
+          <strong class="info">Questions?</strong> Talk to your point of contact, <%= @event.point_of_contact.name %>
+        </div>
+    </div>
+  </aside>
+
+
+  <div class="container--xs mt2">
+    <h1 class="mt0">Send a check</h1>
+    <%= render 'new_form', check: @check, lob_address: @lob_address %>
+    <div class="actions tooltipped tooltipped--n inline-block mt1" aria-label="Your check will be submitted for approval by <%= @event.point_of_contact.name.split[0] %>">
+      <input type="submit" value="Send check for approval" data-behavior="modal_trigger send_check_modal_trigger" data-modal="confirm_dialog"></input>
+    </div>
+  </div>
+
+  <div class="modal" data-behavior="modal" role="dialog" id="confirm_dialog">
+    <%= modal_header "Confirm Check" %>
+    <p class="h3 mt0 mb1" data-behavior="modal_confirm_words">You are about to send a check to <span class="bold">%person%</span> for <span class="bold">%amount%</span>.</p>
+
+    <p class="">Once you send this check, you can only cancel if you do so at least <strong>one day</strong> before it's deposited.</p>
+    
+    <button class="btn bg-error" data-behavior="submit_check">I understand, send check for approval</button>
+  </div>
+</article>

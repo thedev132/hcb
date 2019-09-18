@@ -68,6 +68,24 @@ Rails.application.routes.draw do
 
   resources :cards
 
+  resources :checks, only: [:show, :index, :edit, :update] do
+    collection do
+      get 'export'
+    end
+
+    get 'start_approval'
+    post 'approve'
+    get 'start_void'
+    post 'void'
+    get 'refund', to: 'checks#refund_get'
+    post 'refund', to: 'checks#refund'
+  end
+
+  resources :ach_transfers, only: [:show, :index] do
+    get 'start_approval'
+    post 'approve'
+  end
+
   resources :documents, except: [:index] do
     get 'download'
   end
@@ -114,6 +132,9 @@ Rails.application.routes.draw do
     get 'team', to: 'events#team', as: :team
     get 'g_suite', to: 'events#g_suite_overview', as: :g_suite_overview
     get 'cards', to: 'events#card_overview', as: :cards_overview
+    get 'transfers', to: 'events#transfers', as: :transfers
+    resources :checks, only: [:new, :create]
+    resources :ach_transfers, only: [:new, :create]
     resources :organizer_position_invites,
               only: [:new, :create],
               path: 'invites'

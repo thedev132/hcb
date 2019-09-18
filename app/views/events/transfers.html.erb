@@ -1,0 +1,53 @@
+<% title "Transfers for #{@event.name}" %>
+<% page_md %>
+<%= render 'events/nav' %>
+
+<h1 class="heading">
+  Transfers
+
+  <div class="flex items-center justify-center ml0 md-ml-auto mt1 md-mt0">
+    <div class="flex items-center justify-center">
+      <%= link_to 'Send a Check', new_event_check_path(@event), class: 'btn bg-success mr1' %>
+      <%= link_to 'Make ACH Transfer', new_event_ach_transfer_path(@event), class: 'btn bg-info' %>
+    </div>
+  </div>
+</h1>
+
+<ul class="grid grid--spacious">
+  <% @transfers.each do |transfer| %>
+    <%= link_to transfer do %>
+      <li>
+        <%= creator_bar transfer %>
+        <% if transfer.is_a? Check %>
+          <div class="transfer-preview transfer-preview--check">
+            <p class="mt0 mb1 flex items-start">
+              <span class="h5 caps slate bold">Check</span>
+              <span class="ml-auto badge bg-<%= transfer.state %>"><%= transfer.status_text %></span>
+            </p>
+            <div class="flex items-start mt2 mb1">
+              <strong class="flex-auto h3 line-height-3">
+                <%= transfer.lob_address.name %>
+              </strong>
+              <span class="block h1 line-height-1"><%= render_money_short transfer.amount %></span>
+            </div>
+            <p class="h5 slate mt0 mb0"><%= transfer.memo %></p>
+          </div>
+        <% elsif transfer.is_a? AchTransfer %>
+          <div class="card transfer-preview">
+            <p class="mt0 mb1 flex items-start">
+              <span class="h5 caps slate bold">ACH Transfer</span>
+              <span class="ml-auto badge bg-<%= transfer.state %>"><%= transfer.status_text %></span>
+            </p>
+            <div class="flex items-start mt2 mb1">
+              <strong class="flex-auto h3 line-height-3">
+                <%= transfer.recipient_name %>
+              </strong>
+              <span class="block h1 line-height-1"><%= render_money_short transfer.amount %></span>
+            </div>
+            <p class="h5 slate mt0 mb0"><%= transfer.bank_name %> <%= transfer.routing_number %></p>
+          </div>
+        <% end %>
+      </li>
+    <% end %>
+  <% end %>
+</ul>

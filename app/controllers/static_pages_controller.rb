@@ -15,6 +15,8 @@ class StaticPagesController < ApplicationController
       @transaction_volume = Transaction.total_volume
       @active = {
         card_requests: CardRequest.under_review.size,
+        checks: Check.pending.size + Check.unfinished_void.size,
+        ach_transfers: AchTransfer.pending.size,
         pending_fees: Event.pending_fees.size,
         fee_reimbursements: FeeReimbursement.unprocessed.size,
         load_card_requests: LoadCardRequest.under_review.size,

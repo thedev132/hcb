@@ -23,7 +23,7 @@
 
 $font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
   sans-serif;
-$mono: 'SFMono-Regular', 'Roboto Mono', Menlo, monospace;
+$mono: 'SFMono-Regular', 'Roboto Mono', Menlo, Consolas, monospace;
 
 * {
   box-sizing: border-box;
@@ -177,6 +177,7 @@ action {
 @import 'components/badges';
 @import 'components/buttons';
 @import 'components/cards';
+@import 'components/checks';
 @import 'components/comments';
 @import 'components/details';
 @import 'components/dock';
@@ -189,6 +190,7 @@ action {
 @import 'components/incoming_deposits';
 @import 'components/layouts';
 @import 'components/lists';
+@import 'components/menus';
 @import 'components/modals';
 @import 'components/stats';
 @import 'components/steps';

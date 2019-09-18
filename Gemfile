@@ -60,6 +60,9 @@ gem 'phonelib'
 # Rounding dates
 gem 'rounding'
 
+# Checks!
+gem 'lob'
+
 # Jobs!
 gem 'sidekiq'
 

@@ -10,10 +10,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_21_115438) do
+ActiveRecord::Schema.define(version: 2019_08_29_211125) do
 
   # These are extensions that must be enabled in order to support this database
+  enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
+
+  create_table "ach_transfers", force: :cascade do |t|
+    t.bigint "event_id"
+    t.bigint "creator_id"
+    t.string "routing_number"
+    t.string "account_number"
+    t.string "bank_name"
+    t.string "recipient_name"
+    t.integer "amount"
+    t.datetime "approved_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["creator_id"], name: "index_ach_transfers_on_creator_id"
+    t.index ["event_id"], name: "index_ach_transfers_on_event_id"
+  end
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -44,6 +60,7 @@ ActiveRecord::Schema.define(version: 2019_08_21_115438) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "should_sync", default: true
+    t.boolean "is_positive_pay"
   end
 
   create_table "card_requests", force: :cascade do |t|
@@ -83,6 +100,29 @@ ActiveRecord::Schema.define(version: 2019_08_21_115438) do
     t.index ["event_id"], name: "index_cards_on_event_id"
     t.index ["slug"], name: "index_cards_on_slug", unique: true
     t.index ["user_id"], name: "index_cards_on_user_id"
+  end
+
+  create_table "checks", force: :cascade do |t|
+    t.bigint "creator_id"
+    t.bigint "lob_address_id"
+    t.string "lob_id"
+    t.text "description"
+    t.text "memo"
+    t.integer "check_number"
+    t.integer "amount"
+    t.string "url"
+    t.datetime "expected_delivery_date"
+    t.datetime "send_date"
+    t.string "transaction_memo"
+    t.datetime "voided_at"
+    t.datetime "approved_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "deposited_at"
+    t.datetime "exported_at"
+    t.datetime "refunded_at"
+    t.index ["creator_id"], name: "index_checks_on_creator_id"
+    t.index ["lob_address_id"], name: "index_checks_on_lob_address_id"
   end
 
   create_table "comments", force: :cascade do |t|
@@ -375,6 +415,22 @@ ActiveRecord::Schema.define(version: 2019_08_21_115438) do
     t.index ["fulfilled_by_id"], name: "index_load_card_requests_on_fulfilled_by_id"
   end
 
+  create_table "lob_addresses", force: :cascade do |t|
+    t.bigint "event_id"
+    t.text "description"
+    t.string "name"
+    t.string "address1"
+    t.string "address2"
+    t.string "city"
+    t.string "state"
+    t.string "zip"
+    t.string "country"
+    t.string "lob_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["event_id"], name: "index_lob_addresses_on_event_id"
+  end
+
   create_table "organizer_position_deletion_requests", force: :cascade do |t|
     t.bigint "organizer_position_id"
     t.bigint "submitted_by_id"
@@ -471,7 +527,11 @@ ActiveRecord::Schema.define(version: 2019_08_21_115438) do
     t.text "slug"
     t.text "display_name"
     t.bigint "fee_reimbursement_id"
+    t.bigint "check_id"
+    t.bigint "ach_transfer_id"
+    t.index ["ach_transfer_id"], name: "index_transactions_on_ach_transfer_id"
     t.index ["bank_account_id"], name: "index_transactions_on_bank_account_id"
+    t.index ["check_id"], name: "index_transactions_on_check_id"
     t.index ["deleted_at"], name: "index_transactions_on_deleted_at"
     t.index ["fee_reimbursement_id"], name: "index_transactions_on_fee_reimbursement_id"
     t.index ["fee_relationship_id"], name: "index_transactions_on_fee_relationship_id"
@@ -498,12 +558,16 @@ ActiveRecord::Schema.define(version: 2019_08_21_115438) do
     t.index ["slug"], name: "index_users_on_slug", unique: true
   end
 
+  add_foreign_key "ach_transfers", "events"
+  add_foreign_key "ach_transfers", "users", column: "creator_id"
   add_foreign_key "card_requests", "cards"
   add_foreign_key "card_requests", "events"
   add_foreign_key "card_requests", "users", column: "creator_id"
   add_foreign_key "card_requests", "users", column: "fulfilled_by_id"
   add_foreign_key "cards", "events"
   add_foreign_key "cards", "users"
+  add_foreign_key "checks", "lob_addresses"
+  add_foreign_key "checks", "users", column: "creator_id"
   add_foreign_key "document_downloads", "documents"
   add_foreign_key "document_downloads", "users"
   add_foreign_key "documents", "events"
@@ -530,6 +594,7 @@ ActiveRecord::Schema.define(version: 2019_08_21_115438) do
   add_foreign_key "load_card_requests", "events"
   add_foreign_key "load_card_requests", "users", column: "creator_id"
   add_foreign_key "load_card_requests", "users", column: "fulfilled_by_id"
+  add_foreign_key "lob_addresses", "events"
   add_foreign_key "organizer_position_deletion_requests", "organizer_positions"
   add_foreign_key "organizer_position_deletion_requests", "users", column: "closed_by_id"
   add_foreign_key "organizer_position_deletion_requests", "users", column: "submitted_by_id"
@@ -540,7 +605,9 @@ ActiveRecord::Schema.define(version: 2019_08_21_115438) do
   add_foreign_key "organizer_positions", "events"
   add_foreign_key "organizer_positions", "users"
   add_foreign_key "sponsors", "events"
+  add_foreign_key "transactions", "ach_transfers"
   add_foreign_key "transactions", "bank_accounts"
+  add_foreign_key "transactions", "checks"
   add_foreign_key "transactions", "fee_reimbursements"
   add_foreign_key "transactions", "fee_relationships"
   add_foreign_key "transactions", "invoice_payouts"

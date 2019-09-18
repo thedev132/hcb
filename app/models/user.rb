@@ -17,6 +17,7 @@ class User < ApplicationRecord
   has_many :load_card_requests
   has_many :card_requests
   has_many :cards
+  has_many :checks, inverse_of: :creator
   has_many :comments, as: :commentable
 
   has_one_attached :profile_picture

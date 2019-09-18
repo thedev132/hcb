@@ -136,7 +136,16 @@ $shades: (
   .md-w-50 {
     width: 50%;
   }
+
   .md-center {
     text-align: center;
+  }
+
+  .md-ml-auto {
+    margin-left: auto;
+  }
+
+  .md-mr-auto {
+    margin-right: auto;
   }
 }

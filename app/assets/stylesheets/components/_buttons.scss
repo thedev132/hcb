@@ -44,3 +44,13 @@ input[type='submit'],
 form .flex-auto + input[type='submit'] {
   height: 2.5rem;
 }
+
+.btn-group {
+  display: flex;
+  border-radius: 6px;
+  overflow: hidden;
+
+  .btn {
+    border-radius: 0;
+  }
+}

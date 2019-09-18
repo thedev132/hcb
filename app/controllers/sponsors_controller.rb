@@ -20,7 +20,7 @@ class SponsorsController < ApplicationController
   # POST /sponsors
   def create
     @sponsor = Sponsor.new(sponsor_params)
-    @sponsor.event_id = params[:sponsor][:event_id] # one-time allow users to set the event
+    @sponsor.event_id = params[:sponsor][:event_id]
     authorize @sponsor
 
     if @sponsor.save

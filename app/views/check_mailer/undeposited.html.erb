@@ -1,0 +1,27 @@
+<p>Hi there,</p>
+
+<p>
+  Just wanted to give you a quick heads up that we're voiding <%= link_to @check, "Check ##{@check.check_number}" %> because it hasn't been cashed since a month after issuing.
+</p>
+
+<p>
+	I've sent the <%= @check.event.name %> team an email about this, however you may want to contact the lead organizer and give a second heads up. You'll see a request to transfer money back in the Bank dashboard shortly.
+</p>
+
+<p>
+  Best,<br/>
+  <%= [
+    'The hivemind known as Bank',
+    'A cloud full of money',
+    "Hack Club's pot of gold",
+    'A sentient stack of dollars',
+    'The Hack Club Federal Reserve',
+    'Hack Club Bank 💰',
+    'A money-crazed virus called Bank 🤑',
+    'A cloud raining money',
+    "A pile of money in the cloud that isn't Bitcoin",
+    "A mattress"
+  ].sample %>
+</p>
+
+

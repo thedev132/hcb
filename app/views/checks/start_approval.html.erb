@@ -1,0 +1,31 @@
+<h1>Check - <%= @check.description %></h1>
+
+<p class="bold">Steps to process check:</p>
+<ol>
+  <li>Check that all values below look sane</li>
+  <li>If they do, proceed, if not, contact the organizer who filed the check and have them use the "Edit Payee" button on their dashboard to fix the errors</li>
+  <li>Click "Process"</li>
+  <li>Make the transfer</li>
+</ol>
+
+<p class="bold mb0">Submitted By</p>
+<div class="flex items-center">
+  <%= user_mention @check.creator, class: 'ml1' %>
+  <p>(<%= link_to @check.creator.pretty_phone_number, "tel:#{@check.creator.phone_number}" %>, <%= mail_to @check.creator.email %>) of <%= link_to @check.event.name, @check.event %></p>
+</div>
+
+<p class="bold mb0">Payee</p>
+<p>
+  <%= @check.lob_address.name %><br>
+  <%= @check.lob_address.address1 %><br>
+  <%= @check.lob_address.address2 if !@check.lob_address.address2.blank? %>
+  <%= @check.lob_address.city %>, <%= @check.lob_address.state %> <%= @check.lob_address.zip %>
+</p>
+
+<p class="bold mb0">Memo</p>
+<p><%= @check.memo %></p>
+
+<p class="bold mb0">Amount</p>
+<p><%= render_money @check.amount %></p>
+
+<%= link_to 'Approve', check_approve_path(@check), method: :post, class: 'btn bg-success' %>

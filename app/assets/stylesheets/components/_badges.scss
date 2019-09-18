@@ -1,6 +1,7 @@
 // Numeric count badge, see the badge_for helper
 .badge {
   display: inline-flex;
+  flex-shrink: none;
   align-items: center;
   background-color: map-get($palette, primary);
   color: $white;
@@ -42,7 +43,7 @@
 // Circular button
 .pop {
   background-color: $white;
-  border-radius: 50%;
+  border-radius: 18px;
   color: $blue6;
   background-color: $blue0;
   flex-shrink: 0;

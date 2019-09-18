@@ -58,15 +58,15 @@ West Hollywood, CA 90069</pre>
     class: 'btn bg-success' %>
 </h2>
 <% if @event.cards.any? %>
-  <section class="emburse-cards grid--spacious mt2">
+  <section class="mixed-grid grid--spacious mt2">
     <% @event.cards.each do |card| %>
       <%= link_to card do %>
         <%= creator_bar card, prefix: 'issued ' %>
-        <div class="emburse-cards__card">
-          <p class="emburse-cards__card__number">
+        <div class="emburse-card">
+          <p class="emburse-card__number">
             <span>XXXX-XXXX-XXXX-</span><strong><%= card.last_four %></strong>
           </p>
-          <p class="emburse-cards__card__name"><%= card.full_name %></p>
+          <p class="emburse-card__name"><%= card.full_name %></p>
         </div>
       <% end %>
     <% end %>
