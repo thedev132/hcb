@@ -15,6 +15,10 @@ class EventPolicy < ApplicationPolicy
     record.users.include?(user) || user.admin?
   end
 
+  def by_airtable_id?
+    user.admin?
+  end
+
   def edit?
     record.users.include?(user) || user.admin?
   end

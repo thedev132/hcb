@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_29_211125) do
+ActiveRecord::Schema.define(version: 2019_09_22_180205) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
@@ -116,11 +116,10 @@ ActiveRecord::Schema.define(version: 2019_08_29_211125) do
     t.string "transaction_memo"
     t.datetime "voided_at"
     t.datetime "approved_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.boolean "deposited_at"
     t.datetime "exported_at"
     t.datetime "refunded_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["creator_id"], name: "index_checks_on_creator_id"
     t.index ["lob_address_id"], name: "index_checks_on_lob_address_id"
   end
@@ -210,6 +209,8 @@ ActiveRecord::Schema.define(version: 2019_08_29_211125) do
     t.integer "expected_budget"
     t.boolean "has_fiscal_sponsorship_document"
     t.text "partner_logo_url"
+    t.text "club_airtable_id"
+    t.index ["club_airtable_id"], name: "index_events_on_club_airtable_id", unique: true
     t.index ["point_of_contact_id"], name: "index_events_on_point_of_contact_id"
   end
 

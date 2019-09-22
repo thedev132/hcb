@@ -41,6 +41,19 @@ class EventsController < ApplicationController
       .or(@event.invoices.joins(:payout).where(invoice_payouts: { status: ('pending') }))).sort_by { |i| i.arrival_date }
   end
 
+  # GET /event_by_airtable_id/recABC
+  def by_airtable_id
+    authorize Event
+    @event = Event.find_by(club_airtable_id: params[:airtable_id])
+
+    if @event.nil?
+      flash[:error] = 'We couldn’t find that event!'
+      redirect_to root_path
+    else
+      redirect_to @event
+    end
+  end
+
   def team
     @event = Event.find(params[:event_id])
     @positions = @event.organizer_positions.includes(:user)
@@ -123,6 +136,7 @@ class EventsController < ApplicationController
       :has_fiscal_sponsorship_document,
       :emburse_department_id,
       :partner_logo_url,
+      :club_airtable_id,
       :point_of_contact_id,
       :slug
     )
