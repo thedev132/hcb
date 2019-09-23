@@ -1,7 +1,8 @@
 <%= form_with(model: load_card_request, local: true) do |form| %>
   <%= form_errors load_card_request, 'transfer request' %>
 
-  <%= form.hidden_field :creator_id, value: current_user.id %>
+  <%= form.hidden_field :creator_id,
+    value: load_card_request.creator_id.nil? ? current_user.id : load_card_request.creator_id %>
 
   <%= form.hidden_field :event_id, value: load_card_request.event.id %>
 
