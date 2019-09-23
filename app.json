@@ -1,10 +1,10 @@
 {
   "name": "bank",
   "scripts": {
-    "postdeploy": "rails db:schema:load"
+    "postdeploy": "pg_dump -Fc $HEROKU_POSTGRESQL_OLIVE_URL | pg_restore --clean --if-exists --no-acl --no-owner -d $DATABASE_URL; bundle exec rails db:migrate"
   },
   "env": {
-    "HEROKU_POSTGRESQL_ONYX_URL": {
+    "HEROKU_POSTGRESQL_OLIVE_URL": {
       "required": true
     },
     "LANG": {
@@ -40,7 +40,7 @@
       "quantity": 1
     }
   },
-  "addons": ["heroku-postgresql", "heroku-postgresql", "heroku-redis"],
+  "addons": ["heroku-postgresql", "heroku-redis"],
   "buildpacks": [
     {
       "url": "heroku/ruby"
