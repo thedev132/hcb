@@ -81,6 +81,11 @@
       <%= form.label :club_airtable_id, 'Club Airtable ID' %>
       <%= form.text_field :club_airtable_id %>
     </div>
+
+    <div class="field field--checkbox">
+      <%= form.check_box :beta_features_enabled %>
+      <%= form.label :beta_features_enabled, 'Turn on beta (features in development) for this event?' %>
+    </div>
   <% end %>
 
   <div class="actions">

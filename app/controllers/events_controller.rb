@@ -138,7 +138,8 @@ class EventsController < ApplicationController
       :partner_logo_url,
       :club_airtable_id,
       :point_of_contact_id,
-      :slug
+      :slug,
+      :beta_features_enabled
     )
 
     # Expected budget is in cents on the backend, but dollars on the frontend

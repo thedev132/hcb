@@ -12,7 +12,6 @@ module.exports = props =>
       style: {
         boxSizing: 'border-box',
         margin: 0,
-        // borderRadius,
         padding,
         width,
         height: width,

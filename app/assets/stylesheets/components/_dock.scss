@@ -3,14 +3,11 @@
   max-width: 48rem;
   margin: 0.5rem auto;
   padding: 0 1rem;
-  display: grid;
   align-items: center;
-  grid-gap: 0.75rem;
-  grid-template-columns: repeat(2, minmax(6rem, 1fr)) auto;
-
-  @media (min-width: 32em) {
-    grid-gap: 1rem;
-  }
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .dock__card {
@@ -18,7 +15,9 @@
   font-size: 0.875rem;
   text-decoration: none;
   padding: 0.75rem 1rem;
+  margin: 0 0.375rem;
   width: 100%;
+  flex-shrink: 1;
   display: flex;
   justify-content: center;
   align-items: center;
