@@ -78,6 +78,7 @@ class GSuiteApplicationsController < ApplicationController
 
     authorize @g_suite_application
 
+    @g_suite_application.destroy
     flash[:success] = 'G Suite application was successfully destroyed.'
     redirect_to @event
   end
