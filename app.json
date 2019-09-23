@@ -1,10 +1,10 @@
 {
   "name": "bank",
   "scripts": {
-    "postdeploy": "rails db:schema:load"
+    "postdeploy": "pg_dump -Fc $HEROKU_POSTGRESQL_OLIVE_URL | pg_restore --clean --no-owner -n public -d $DATABASE_URL && bundle exec rails db:migrate"
   },
   "env": {
-    "HEROKU_POSTGRESQL_ONYX_URL": {
+    "HEROKU_POSTGRESQL_OLIVE_URL": {
       "required": true
     },
     "LANG": {
