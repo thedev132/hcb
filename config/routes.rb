@@ -59,6 +59,9 @@ Rails.application.routes.draw do
   resources :sponsors
 
   resources :invoices, only: [:show] do
+    collection do
+      get '', to: 'invoices#all_index', as: :all
+    end
     get 'manual_payment'
     post 'manually_mark_as_paid'
     post 'archive'

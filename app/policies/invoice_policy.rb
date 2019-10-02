@@ -1,4 +1,9 @@
 class InvoicePolicy < ApplicationPolicy
+
+  def all_index?
+    user.admin?
+  end
+
   def index?
     return true if user.admin?
     return true if record.blank?

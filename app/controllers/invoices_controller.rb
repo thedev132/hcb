@@ -1,6 +1,12 @@
 class InvoicesController < ApplicationController
   before_action :set_event, only: [:index]
 
+  def all_index
+    @invoices = Invoice.all.order(created_at: :desc).includes(:creator)
+
+    authorize Invoice
+  end
+  
   def index
     @invoices = @event.invoices.order("CASE status WHEN 'paid' THEN 1 ELSE 0 END DESC").order(item_amount: :desc, due_date: :desc)
     authorize @invoices
