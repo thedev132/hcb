@@ -16,6 +16,9 @@ class EventsController < ApplicationController
 
   # POST /events
   def create
+    event_params[:club_airtable_id] = nil if event_params[:club_airtable_id].empty?
+    event_params[:partner_logo_url] = nil if event_params[:partner_logo_url].empty?
+
     @event = Event.new(event_params)
     authorize @event
 
@@ -69,6 +72,9 @@ class EventsController < ApplicationController
   # PATCH/PUT /events/1
   def update
     authorize @event
+
+    event_params[:club_airtable_id] = nil if event_params[:club_airtable_id].empty?
+    event_params[:partner_logo_url] = nil if event_params[:partner_logo_url].empty?
 
     if @event.update(current_user.admin? ? event_params : user_event_params)
       flash[:success] = 'Event successfully updated.'
