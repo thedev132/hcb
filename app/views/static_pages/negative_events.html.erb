@@ -1,0 +1,24 @@
+<% title 'Negative Balance' %>
+<h1>
+  Events with a negative balance
+</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Event</th>
+      <th>Amount (balance)</th>
+      <th>Amount (balance_not_feed)</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @negative_events.each do |event| %>
+      <tr class="shade-yellow">
+        <td class="underline"><%= link_to "#{event.name}", event %></td>
+        <td><%= render_money event.balance %></td>
+        <td><%= render_money event.balance_not_feed %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

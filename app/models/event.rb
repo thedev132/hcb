@@ -44,6 +44,11 @@ class Event < ApplicationRecord
     select { |event| event.fee_balance > 100 }
   end
 
+  # events with a negative balance or negative balance_not_feed
+  def self.negatives
+    select { |event| event.balance_not_feed < 0 || event.balance < 0 }
+  end
+
   def emburse_department_path
     "https://app.emburse.com/budgets/#{emburse_department_id}"
   end

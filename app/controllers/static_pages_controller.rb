@@ -18,6 +18,7 @@ class StaticPagesController < ApplicationController
         checks: Check.pending.size + Check.unfinished_void.size,
         ach_transfers: AchTransfer.pending.size,
         pending_fees: Event.pending_fees.size,
+        negative_events: Event.negatives.size,
         fee_reimbursements: FeeReimbursement.unprocessed.size,
         load_card_requests: LoadCardRequest.under_review.size,
         g_suite_applications: GSuiteApplication.under_review.size,
@@ -31,6 +32,10 @@ class StaticPagesController < ApplicationController
 
   def pending_fees
     @pending_fees = Event.pending_fees.sort_by { |event| (DateTime.now - event.transactions.first.date) }.reverse
+  end
+
+  def negative_events
+    @negative_events = Event.negatives.sort_by { |event| event.balance > event.balance_not_feed ? event.balance_not_feed : event.balance }
   end
 
   def stats

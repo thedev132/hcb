@@ -67,6 +67,7 @@
       <%= card_to 'Emburse Transactions', emburse_transactions_path, { badge: @active[:emburse_transactions] } %>
       <%= card_to 'Bank Accounts', bank_accounts_path %>
       <%= card_to 'Pending Fees', pending_fees_path, { badge: @active[:pending_fees] } %>
+      <%= card_to 'Negative Events', negative_events_path, { badge: @active[:negative_events] } %>
       <%= card_to 'Setup Bank', new_bank_account_path %>
       <%= card_to 'Export Finances', export_finances_path, { method: :post } %>
       <%= card_to 'Publish Changelog', 'https://headwayapp.co/bank-changelog' %>

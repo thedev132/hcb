@@ -109,8 +109,6 @@ Rails.application.routes.draw do
     resources :comments
   end
 
-  get 'pending_fees', to: 'static_pages#pending_fees'
-
   resources :card_requests, path: 'card_requests' do
     post 'reject'
     post 'cancel'
@@ -128,6 +126,9 @@ Rails.application.routes.draw do
   resources :emburse_transactions, only: [:index, :edit, :update]
 
   post 'export/finances', to: 'exports#financial_export'
+
+  get 'pending_fees', to: 'static_pages#pending_fees'
+  get 'negative_events', to: 'static_pages#negative_events'
 
   post '/events' => 'events#create'
   get '/events' => 'events#index'
