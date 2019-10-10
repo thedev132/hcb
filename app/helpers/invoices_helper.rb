@@ -77,6 +77,7 @@ def invoice_payment_method_mention(invoice = @invoice, options = {})
   return '–' unless invoice.manually_marked_as_paid? || invoice&.payment_method_type
 
   if invoice.manually_marked_as_paid?
+    size = 20
     icon_name = 'post-fill'
     description_text = 'Manually marked as paid'
   elsif invoice&.payment_method_card_brand
