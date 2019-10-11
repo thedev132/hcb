@@ -16,10 +16,13 @@ class EventsController < ApplicationController
 
   # POST /events
   def create
-    event_params[:club_airtable_id] = nil if event_params[:club_airtable_id].present? && event_params[:club_airtable_id].empty?
-    event_params[:partner_logo_url] = nil if event_params[:partner_logo_url].present? && event_params[:partner_logo_url].empty?
+    # have to use `fixed_event_params` because `event_params` seems to be a constant
+    fixed_event_params = event_params
 
-    @event = Event.new(event_params)
+    fixed_event_params[:club_airtable_id] = nil if event_params[:club_airtable_id].empty?
+    fixed_event_params[:partner_logo_url] = nil if event_params[:partner_logo_url].empty?
+
+    @event = Event.new(fixed_event_params)
     authorize @event
 
     if @event.save
@@ -73,10 +76,13 @@ class EventsController < ApplicationController
   def update
     authorize @event
 
-    event_params[:club_airtable_id] = nil if event_params[:club_airtable_id].present? && event_params[:club_airtable_id].empty?
-    event_params[:partner_logo_url] = nil if event_params[:partner_logo_url].present? && event_params[:partner_logo_url].empty?
+    # have to use `fixed_event_params` because `event_params` seems to be a constant
+    fixed_event_params = event_params
 
-    if @event.update(current_user.admin? ? event_params : user_event_params)
+    fixed_event_params[:club_airtable_id] = nil if event_params.key?(:club_airtable_id) && event_params[:club_airtable_id].empty?
+    fixed_event_params[:partner_logo_url] = nil if event_params.key?(:partner_logo_url) && event_params[:partner_logo_url].empty?
+
+    if @event.update(current_user.admin? ? fixed_event_params : user_event_params)
       flash[:success] = 'Event successfully updated.'
       redirect_to @event
     else
