@@ -105,8 +105,8 @@
       <%= link_to 'Edit', edit_check_path(@check), class: 'btn bg-info right' %>
     <% end %>    
     <% if @check.voidable? %>
-      <%= link_to 'Void', check_start_void_path(@check), class: 'btn bg-error mr1' %>
+      <%= link_to 'Void', check_start_void_path(@check), class: 'btn bg-error mr1 right' %>
     <% end %>
-    <%= link_to 'View check', @check.url, target: :_blank, class: 'btn bg-info' if @check.sent? %>
+    <%= link_to 'View image', @check.url, target: :_blank, class: 'btn bg-info' if @check.sent? %>
   </section>
 </article>

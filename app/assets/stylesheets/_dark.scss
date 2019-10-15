@@ -41,9 +41,11 @@ html[data-dark='true'] {
   .details-horiz > p:not(:last-of-type),
   .details-horiz > div:not(:last-of-type),
   .details-horiz > .details-horiz__col,
-  .menu__toggle[aria-expanded='true']:after,
   tr {
     border-color: $darkless;
+  }
+  .menu__toggle[aria-expanded='true']:after {
+    border-bottom-color: $darkless;
   }
   .list > a > li,
   .list > li {
@@ -58,7 +60,7 @@ html[data-dark='true'] {
     color: map-get($palette, smoke);
   }
   .menu__toggle[aria-expanded='true']:before {
-    border-color: $darker;
+    border-bottom-color: $darker;
   }
 
   .flash {

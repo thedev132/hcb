@@ -7,12 +7,12 @@
 <div class="card border b--warning pb0 mt3 mb3">
   <div class="flex items-center warning">
     <%= inline_icon 'important', size: 32, class: 'mr1' %>
-    <p class="bold mt0 mb0">This should be used as a last resort, read ahead and proceed with caution</p>
+    <p class="bold mt0 mb0">Voiding should be used as a last resort, read ahead and proceed with caution</p>
   </div>
   <% if @check.approved? %>
     <ul class="mt1 mb2">
       <li>We can't void this check if it has already been deposited.</li>
-      <li>A void will <strong>stop the payee from cashing the check</strong>, and probably charge them a bounce fee.</li>
+      <li>A void will <strong>stop the payee from cashing the check</strong>, and probably <strong>charge them a bounce fee</strong>.</li>
       <li><strong>If it hasn’t been deposited, you’ll get your money back in the next few business days.</strong></li>
     </ul>
   <% else %>

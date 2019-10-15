@@ -21,7 +21,12 @@
   <div class="field">
     <div class="flex items-center">
       <span class="bold muted" style="width: 1rem;">$</span>
-      <%= form.number_field :amount, placeholder: '500.00', step: :any, min: 0, required: true, data: { behavior: 'check_amount_field' } %>
+      <%= form.number_field :amount,
+        placeholder: '500.00',
+        step: 0.01,
+        min: 0,
+        required: true,
+        'data-behavior': 'check_amount_field' %>
     </div>
   </div>
 
@@ -51,7 +56,7 @@
     </div>
 
     <div class="field">
-      <%= form.label :address1, 'Street address' %>
+      <%= form.label :address1, 'Street address (where we’re mailing it to)' %>
       <%= form.text_field :address1, placeholder: '1 Letterman Drive', required: true %>
     </div>
 

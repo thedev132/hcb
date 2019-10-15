@@ -30,6 +30,12 @@ class AchTransfersController < ApplicationController
 
     authorize @ach_transfer
 
+    if @ach_transfer.amount > @event.balance_available
+      flash[:error] = 'You don’t have enough money to transfer this amount.'
+      render :new
+      return
+    end
+
     if @ach_transfer.save
       flash[:success] = 'ACH Transfer successfully submitted.'
       redirect_to event_transfers_path(@event)

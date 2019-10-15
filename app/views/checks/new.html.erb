@@ -32,7 +32,7 @@
     </div>
     <link href="https://fonts.googleapis.com/css?family=Damion" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Space+Mono" rel="stylesheet">
-          <div class="card border b--warning pb0 mb2">
+    <div class="card border b--warning pb0 mb2 max-width-2">
         <div class="flex items-center warning">
           <%= inline_icon 'important', size: 32, class: 'mr1' %>
           <p class="bold mt0 mb0">Important info about checks:</p>
@@ -42,7 +42,7 @@
           <li>Your point of contact, <%= @event.point_of_contact.name.split(' ')[0] %>, needs to approve your check before it's sent out. This usually takes 1 business day.</li>
         </ul>
         <div class="border-top card__banner card__darker slate">
-          <strong class="info">Questions?</strong> Talk to your point of contact, <%= @event.point_of_contact.name %>
+          <strong>Questions?</strong> Talk to your point of contact, <%= @event.point_of_contact.name %>
         </div>
     </div>
   </aside>

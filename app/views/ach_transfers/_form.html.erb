@@ -3,22 +3,22 @@
 
   <div class="field">
     <%= form.label :recipient_name %>
-    <%= form.text_field :recipient_name %>
+    <%= form.text_field :recipient_name, placeholder: 'Albert Smith', required: true %>
   </div>
 
   <div class="field">
     <%= form.label :bank_name %>
-    <%= form.text_field :bank_name %>
+    <%= form.text_field :bank_name, placeholder: 'First National Bank of Omaha', required: true %>
   </div>
 
   <div class="field">
     <%= form.label :routing_number %>
-    <%= form.text_field :routing_number %>
+    <%= form.text_field :routing_number, placeholder: '123456789', required: true %>
   </div>
 
   <div class="field">
     <%= form.label :account_number %>
-    <%= form.text_field :account_number %>
+    <%= form.text_field :account_number, placeholder: '0913338883', required: true %>
   </div>
 
   <%= form.label :amount, 'Amount' %>
@@ -30,6 +30,6 @@
   </div>
 
   <div class="actions tooltipped tooltipped--n inline-block" aria-label="ACH transfers can't be cancelled">
-    <%= form.submit 'Transfer money now', class: 'btn bg-error' %>
+    <%= form.submit 'Transfer money now', class: 'btn bg-warning' %>
   </div>
 <% end %>

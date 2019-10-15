@@ -39,7 +39,10 @@ $(document).on('turbolinks:load', function() {
 		}
 
 		if (fieldName == 'amount') {
-			const amount = $(event.currentTarget).val()
+			let amount = $(event.currentTarget).val()
+			if (amount.includes('.')) {
+				amount = amount.slice(0, amount.indexOf('.') + 3);
+			}
 			const words = amountToCheckWords(amount)
 
 			$('[data-behavior~="check_amount"]').text(amount || '　')

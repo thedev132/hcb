@@ -7,7 +7,7 @@
 <div class="card border b--warning pb0 mt3 mb3">
   <div class="flex items-center warning">
     <%= inline_icon 'important', size: 32, class: 'mr1' %>
-    <p class="bold mt0 mb0">Important info about wiring money:</p>
+    <p class="bold mt0 mb0">Important info about ACH transfers:</p>
   </div>
   <ul class="mt1 mb2">
     <li><strong>Sending via ACH is irreversible</strong>—you cannot cancel.</li>
@@ -15,7 +15,7 @@
     <li>These are US banking system restrictions, so we have limited ability to fix mistakes.</li>
   </ul>
   <div class="border-top card__banner card__darker slate">
-    <strong class="info">Questions?</strong> Talk to your point of contact.
+    <strong class="warning">Questions?</strong> Talk to your point of contact, <%= @event.point_of_contact.name %>
   </div>
 </div>
 
