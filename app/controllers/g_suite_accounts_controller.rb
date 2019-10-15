@@ -4,7 +4,8 @@ class GSuiteAccountsController < ApplicationController
   def index
     authorize GSuiteAccount
 
-    @g_suite_accounts = GSuiteAccount.all.order(created_at: :desc)
+    # this #sort_by thing is a hacky way of making sort_by want to work with true/false
+    @g_suite_accounts = GSuiteAccount.all.order(created_at: :desc).sort_by { |account| account.under_review? ? 0 : 1 }
   end
 
   def create
