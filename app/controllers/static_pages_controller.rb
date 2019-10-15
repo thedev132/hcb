@@ -41,7 +41,7 @@ class StaticPagesController < ApplicationController
       { name: 'Outlined Black', criteria: 'For white or light colored backgrounds.', background: 'snow' },
       { name: 'Outlined White', criteria: 'For black or dark colored backgrounds.', background: 'black' }
     ]
-    @event_name = signed_in? ? current_user.events.first.name : 'Hack Pennsylvania'
+    @event_name = signed_in? && current_user.events.first ? current_user.events.first.name : 'Hack Pennsylvania'
   end
 
   def negative_events
