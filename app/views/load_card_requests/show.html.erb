@@ -28,6 +28,12 @@
     <%= render_money @load_card_request.load_amount %>
   </p>
 
+
+  <p>
+    <strong>Outstanding balance transfers</strong>
+    <%= render_money @load_card_request.event.load_card_requests.pending.sum(:load_amount) %>
+  </p>
+
   <p>
     <strong>Event account balance</strong>
     <%= render_money @load_card_request.event.balance %>
