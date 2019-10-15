@@ -6,6 +6,9 @@ $(document).ready ->
 $(document).on 'turbolinks:load', ->
   $('[data-behavior~=toggle_theme]').on 'click', ->
     BK.toggleDark()
+  
+  $('[data-behavior~=select_content]').on 'click', (e) ->
+    e.target.select()
 
   window.updateChangelogTooltip = ->
     target = $('[data-behavior~=toggle_changelog]')

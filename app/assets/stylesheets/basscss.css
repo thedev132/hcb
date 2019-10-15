@@ -80,13 +80,16 @@
 .underline {
   text-decoration: underline;
 }
-/*
 .no-select {
   -webkit-user-select: none;
   -moz-user-select: all;
   -ms-user-select: all;
   user-select: none;
 }
+.no-resize {
+  resize: none;
+}
+/*
 .no-wrap {
   white-space: nowrap;
 }

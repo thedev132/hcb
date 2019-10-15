@@ -109,6 +109,9 @@ Rails.application.routes.draw do
     resources :comments
   end
 
+  get 'pending_fees', to: 'static_pages#pending_fees'
+  get 'branding', to: 'static_pages#branding'
+
   resources :card_requests, path: 'card_requests' do
     post 'reject'
     post 'cancel'

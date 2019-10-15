@@ -24,7 +24,7 @@
       <header class="home flex items-center justify-center pt1 md-pt2">
         <div class="header-left flex items-center justify-end">
           <% if signed_in? %>
-            <action role="button" data-behavior="toggle_theme" class="muted pointer tooltipped tooltipped--s" aria-label="Toggle dark mode" tabindex="0">
+            <action role="button" data-behavior="toggle_theme" class="muted pointer no-select tooltipped tooltipped--s" aria-label="Toggle dark mode" tabindex="0">
               <%= inline_icon 'moon', size: home_action_size %>
               <%= inline_icon 'moon-fill', size: home_action_size, style: 'display: none;' %>
             </action>

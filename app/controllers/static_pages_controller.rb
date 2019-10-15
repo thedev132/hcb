@@ -1,6 +1,6 @@
 class StaticPagesController < ApplicationController
   skip_after_action :verify_authorized # do not force pundit
-  skip_before_action :signed_in_user, only: [:stats]
+  skip_before_action :signed_in_user, only: [:stats, :branding]
 
   def index
     if signed_in?
@@ -32,6 +32,16 @@ class StaticPagesController < ApplicationController
 
   def pending_fees
     @pending_fees = Event.pending_fees.sort_by { |event| (DateTime.now - event.transactions.first.date) }.reverse
+  end
+
+  def branding
+    @logos = [
+      { name: 'Original Light', criteria: 'For white or light colored backgrounds.', background: 'smoke' },
+      { name: 'Original Dark', criteria: 'For black or dark colored backgrounds.', background: 'black' },
+      { name: 'Outlined Black', criteria: 'For white or light colored backgrounds.', background: 'snow' },
+      { name: 'Outlined White', criteria: 'For black or dark colored backgrounds.', background: 'black' }
+    ]
+    @event_name = signed_in? ? current_user.events.first.name : 'Hack Pennsylvania'
   end
 
   def negative_events

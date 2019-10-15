@@ -24,6 +24,7 @@
     text-decoration: none;
   }
 }
+
 .list-reset,
 ul.grid,
 ul.mixed-grid {
@@ -64,6 +65,10 @@ ul.mixed-grid {
 
   .grid--narrow {
     grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+  }
+
+  .grid--wide {
+    grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
   }
 
   .grid--spacious {
