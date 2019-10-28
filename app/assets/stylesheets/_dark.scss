@@ -122,6 +122,7 @@ html[data-dark='true'] {
   .dock__card span,
   a > .card {
     color: map-get($palette, smoke) !important;
+    white-space: nowrap;
   }
 
   .card__darker {
