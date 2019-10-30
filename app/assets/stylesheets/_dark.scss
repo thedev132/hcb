@@ -260,4 +260,9 @@ html[data-dark='true'] {
   .check__sig {
     filter: invert(1) hue-rotate(180deg);
   }
+
+  pre.bg-smoke {
+    background: $darkless;
+    color: map-get($palette, white);
+  }
 }
