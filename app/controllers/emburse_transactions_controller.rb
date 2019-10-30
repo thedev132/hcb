@@ -17,7 +17,8 @@ class EmburseTransactionsController < ApplicationController
     if @emburse_transaction.update(result_params)
       if result_params[:amount] > 0 && @emburse_transaction.event.present?
         # it's generally a LCR
-        flash[:success] = 'Emburse Transaction updated. Now you can update the Emburse budget.'
+        flash[:success] = 'Emburse Transaction updated.'
+        flash[:error] = 'You should update the Emburse budget now.'
         redirect_to event_cards_overview_path(@emburse_transaction.event.id)
       else
         # it's generally a card transaction
