@@ -11,7 +11,7 @@ class GSuiteApplication < ApplicationRecord
   validate :status_accepted_canceled_or_rejected
   validates_presence_of :fulfilled_by, if: -> { rejected_at.present? || accepted_at.present? }
   validates_uniqueness_of :domain
-  validate :domain_without_protocol, :domain_is_lowercase
+  validate :domain_without_protocol, :domain_is_lowercase, :domain_not_email
 
   scope :under_review, -> { where(rejected_at: nil, canceled_at: nil, accepted_at: nil) }
 
@@ -32,6 +32,10 @@ class GSuiteApplication < ApplicationRecord
   def domain_without_protocol
     bad = ['http', ':', '/'].any? { |s| domain.include? s }
     errors.add(:domain, 'shouldn’t include http(s):// or ending /') if bad
+  end
+
+  def domain_not_email
+    errors.add(:domain, 'shouldn’t be an email address') if domain.include? '@'
   end
 
   def domain_is_lowercase
