@@ -4,12 +4,23 @@
   padding: 1rem;
   border-radius: 0.5rem;
   overflow: hidden;
+  transition: transform .2s;
 
   &.b--warning {
     box-shadow: 0 0 2px 0 rgba($orange6, 0.0625),
       0 4px 8px 0 rgba($orange7, 0.125);
   }
+
+  &.card--hover:hover {
+      transform: translateY(-3px);
+  }
+
+  &.card--hover:active {
+      transform: translateY(-1px);
+  }
+
 }
+
 a.card {
   text-decoration: none;
 }

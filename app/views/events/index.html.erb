@@ -24,7 +24,7 @@
 <ul class="grid">
 <% @events.each do |event| %>
   <%= link_to event, data: { behavior: 'filterbar_row', filter: event.filter_data.to_json } do %>
-    <li class="card">
+    <li class="card card--hover">
       <div class="card__banner card__banner--top <%= event.past? ? 'card__darker' : 'bg-info white' %>">
         <span class="block mr1">#<%= event.id %></span>
         <strong class="h4"><%= event.name %></strong>

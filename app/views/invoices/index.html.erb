@@ -54,7 +54,7 @@
     <% @invoices.each do |i| %>
       <%= link_to i, data: { behavior: 'filterbar_row', filter: i.filter_data.to_json } do %>
         <%= creator_bar i %>
-        <li class="card">
+        <li class="card card--hover">
           <div class="flex">
             <strong class="flex-auto h3 line-height-3 mb1">
               <%= i.sponsor.name %>
