@@ -60,11 +60,32 @@ class Invoice < ApplicationRecord
 
   after_update :send_payment_notification_if_needed
 
+  def event
+    sponsor.event
+  end
+
+  def fee_reimbursed?
+    !fee_reimbursement.nil?
+  end
+
+  def manually_marked_as_paid?
+    manually_marked_as_paid_at.present?
+  end
+
+  def payout_transaction
+    self&.payout&.t_transaction
+  end
+
+  def completed?
+    (payout_transaction && !self&.fee_reimbursement) || (payout_transaction && self&.fee_reimbursement&.t_transaction) || manually_marked_as_paid?
+  end
+
+  def archived?
+    archived_at.present?
+  end
+
   def state
-    if ((self&.payout&.t_transaction && !self&.fee_reimbursement) ||
-        (self&.payout&.t_transaction && self&.fee_reimbursement&.t_transaction) ||
-        self.manually_marked_as_paid?
-       )
+    if completed?
       :success
     elsif paid?
       :info
@@ -80,10 +101,7 @@ class Invoice < ApplicationRecord
   end
 
   def state_text
-    if ((self&.payout&.t_transaction && !self&.fee_reimbursement) ||
-        (self&.payout&.t_transaction && self&.fee_reimbursement&.t_transaction) ||
-        self.manually_marked_as_paid?
-       )
+    if completed?
       'Paid'
     elsif paid?
       'Pending'
@@ -113,10 +131,6 @@ class Invoice < ApplicationRecord
     }
   end
 
-  def archived?
-    archived_at.present?
-  end
-
   # Manually mark this invoice as paid (probably in the case of a physical
   # check being sent to pay it). This marks the corresponding payment on Stripe
   # as paid and stores some metadata about why it was marked as paid.
@@ -126,7 +140,7 @@ class Invoice < ApplicationRecord
     self.manually_marked_as_paid_reason = reason_for_manual_payment
     self.manually_marked_as_paid_attachment = attachment
 
-    return false unless self.valid?
+    return false unless valid?
 
     inv = StripeService::Invoice.retrieve(stripe_invoice_id)
     inv.paid = true
@@ -144,10 +158,6 @@ class Invoice < ApplicationRecord
 
       false
     end
-  end
-
-  def manually_marked_as_paid?
-    self.manually_marked_as_paid_at.present?
   end
 
   def queue_payout!
@@ -264,21 +274,11 @@ class Invoice < ApplicationRecord
   def stripe_dashboard_url
     url = 'https://dashboard.stripe.com'
 
-    if StripeService.mode == :test
-      url += '/test'
-    end
+    url += '/test' if StripeService.mode == :test
 
     url += "/invoices/#{self.stripe_invoice_id}"
 
     url
-  end
-
-  def event
-    self.sponsor.event
-  end
-
-  def fee_reimbursed?
-    !fee_reimbursement.nil?
   end
 
   def arrival_date
@@ -292,7 +292,7 @@ class Invoice < ApplicationRecord
   private
 
   def set_defaults
-    event = self.sponsor.event.name
+    event = sponsor.event.name
     self.memo = "To support #{event}. #{event} is fiscally sponsored by The Hack Foundation (d.b.a. Hack Club), a 501(c)(3) nonprofit with the EIN 81-2908499."
 
     self.auto_advance = true

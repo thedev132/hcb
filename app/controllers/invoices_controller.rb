@@ -10,6 +10,20 @@ class InvoicesController < ApplicationController
   def index
     @invoices = @event.invoices.order(created_at: :desc)
     authorize @invoices
+
+    # from events controller
+    @invoices_being_deposited = (@invoices.where(payout_id: nil, status: 'paid')
+      .where
+      .not(payout_creation_queued_for: nil) +
+      @event.invoices.joins(:payout)
+      .where(invoice_payouts: { status: ('in_transit') })
+      .or(@event.invoices.joins(:payout).where(invoice_payouts: { status: ('pending') })))
+
+    @stats = {
+      total: @invoices.unarchived.sum(:item_amount),
+      paid: @invoices.sum(:amount_paid),
+      pending: @invoices_being_deposited.sum(&:amount_paid),
+    }
   end
 
   def new

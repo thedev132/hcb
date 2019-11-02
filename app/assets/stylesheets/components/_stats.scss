@@ -52,12 +52,18 @@
 
   // On larger screens, 4 columns
   @media (min-width: 48em) {
-    grid-gap: 2rem;
+    grid-gap: 1rem;
     grid-template-columns: repeat(4, 1fr);
   }
 }
 
 @media screen and (min-width: 24em) and (max-width: 32em) {
+  // "aux" stats are small & go the right of the first, large stat
+  .statset__aux {
+    grid-row: 1;
+    grid-column: 2;
+  }
+
   // wide stats for long numbers
   .statset__wide {
     grid-column: span 2;
