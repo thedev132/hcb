@@ -72,7 +72,7 @@ class ChecksController < ApplicationController
     authorize @check
 
     # verify that a user has enough money to write a check
-    if @check.amount < @event.balance_available
+    if @check.amount > @event.balance_available
       flash[:error] = 'You don’t have enough money to write this check!'
       render :new
       return
