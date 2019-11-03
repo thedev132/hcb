@@ -185,7 +185,7 @@ Sponsorship fee: <%= render_percentage @event.sponsorship_fee %>`)">
   <% else %>
     <%= blankslate 'You have no pending withdrawals.' %>
   <% end %>
-  <span><span class="h6 inline-block mt2">Questions? Your point of contact (<%= @event.point_of_contact.name.split(' ')[0] %>) is happy to help. You can reach them at <%= link_to @event.point_of_contact.pretty_phone_number, "tel:#{@event.point_of_contact.pretty_phone_number}" %> or <%= link_to @event.point_of_contact.email, "mailto:#{@event.point_of_contact.email}" %>.</span>
+  <span><span class="h6 inline-block mt2">Questions? Your point of contact (<%= @event.point_of_contact.name %>) is happy to help. You can reach them at <%= link_to @event.point_of_contact.pretty_phone_number, "tel:#{@event.point_of_contact.pretty_phone_number}" %> or <%= link_to @event.point_of_contact.email, "mailto:#{@event.point_of_contact.email}" %>.</span>
 </div>
 
 <%= render 'promo_modal' %>
