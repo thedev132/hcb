@@ -41,6 +41,13 @@ class OrganizerPositionInvite < ApplicationRecord
   validates :rejected_at, absence: true, if: -> { accepted_at.present? }
 
   after_create :send_email
+  before_save :normalize_email
+
+  def normalize_email
+    # canonicalize emails as soon as possible -- otherwise, Bank gets
+    # confused about who's invited and who's not when they log in.
+    self.email = self.email.downcase
+  end
 
   def send_email
     OrganizerPositionInvitesMailer.with(invite: self).notify.deliver_later

@@ -4,6 +4,13 @@
 
 <h1>Configure G Suite</h1>
 
-<p>G Suite gives you Gmail, Google Drive, Hangouts, Calendar, and more, all for free, including domain email addresses like <strong><%= example_email @g_suite_application.event %></strong>.</p>
+<p>
+  G Suite gives you Gmail, Google Drive, Hangouts, Calendar, and more, all for free, including domain email addresses like <strong><%= example_email @g_suite_application.event %></strong>.
+</p>
+
+<p>
+  When you apply, be sure to <strong>buy and register the domain you're using</strong> so you can connect it to G Suite.
+  You can contact your point of contact, <%= link_to @event.point_of_contact.name, "mailto:#{@event.point_of_contact.email}" %>, with any questions.
+</p>
 
 <%= render 'form', g_suite_application: @g_suite_application %>

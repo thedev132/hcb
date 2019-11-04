@@ -44,11 +44,6 @@
         </div>
 
         <div class="header-right flex items-center justify-left">
-          <% if signed_in? %>
-            <action role="button" class="muted pointer mr2 tooltipped tooltipped--s headway" aria-label="Show changes" data-behavior="toggle_changelog">
-              <%= inline_icon 'bell', size: home_action_size %>
-            </action>
-          <% end %>
           <%= link_to logout_users_path, method: :delete,
               class: 'muted tooltipped tooltipped--s',
               'aria-label': 'Sign out' do %>
@@ -81,11 +76,5 @@
       <% end %>
       }}();
     </script>
-    <script>
-      var HW_config = { selector: '.headway', account:  '7z8ovy', position: { y: 'bottom' }, callbacks: {
-        onShowWidget: () => window.updateChangelogTooltip(),
-        onHideWidget: () => window.updateChangelogTooltip() } }
-    </script>
-    <script async src="https://cdn.headwayapp.co/widget.js"></script>
   </body>
 </html>
