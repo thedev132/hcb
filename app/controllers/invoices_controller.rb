@@ -21,7 +21,7 @@ class InvoicesController < ApplicationController
 
     @stats = {
       total: @invoices.unarchived.sum(:item_amount),
-      paid: @invoices.sum(:amount_paid),
+      paid: @invoices.sum(:amount_paid) + @invoices.where.not(manually_marked_as_paid_at: nil).sum(:item_amount),
       pending: @invoices_being_deposited.sum(&:amount_paid),
     }
   end
