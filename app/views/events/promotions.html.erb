@@ -1,0 +1,14 @@
+<% title "Promotions for #{@event.name}" %>
+<% page_md %>
+<%= render 'events/nav' %>
+
+<h1 class="heading">
+  Promotions
+</h1>
+
+<ul class="grid grid--spacious">
+	<div class="promotion promotion--stickermule flex justify-between">
+		<%= image_tag 'stickermule.svg', width: 300, class: 'promotion--stickermule__logo' %>
+		<a class="btn bg-success" href="/mahacks/ach_transfers/new">Apply</a>
+	</div>
+</ul>

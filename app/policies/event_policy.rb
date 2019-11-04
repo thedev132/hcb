@@ -46,4 +46,8 @@ class EventPolicy < ApplicationPolicy
   def transfers?
     user.admin? || record.users.include?(user)
   end
+
+  def promotions?
+    user.admin? || record.users.include?(user)
+  end
 end

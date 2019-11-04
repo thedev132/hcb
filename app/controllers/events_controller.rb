@@ -126,6 +126,11 @@ class EventsController < ApplicationController
     @transfers = (@checks + @ach_transfers).sort_by { |o| o.created_at }.reverse
   end
 
+  def promotions
+    @event = Event.find(params[:event_id])
+    authorize @event
+  end
+
   private
 
   # Use callbacks to share common setup or constraints between actions.

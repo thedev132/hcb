@@ -141,6 +141,7 @@ Rails.application.routes.draw do
     get 'g_suite', to: 'events#g_suite_overview', as: :g_suite_overview
     get 'cards', to: 'events#card_overview', as: :cards_overview
     get 'transfers', to: 'events#transfers', as: :transfers
+    get 'promotions', to: 'events#promotions', as: :promotions
     resources :checks, only: [:new, :create]
     resources :ach_transfers, only: [:new, :create]
     resources :organizer_position_invites,

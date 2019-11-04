@@ -1,0 +1,13 @@
+.promotion {
+	@extend .card;
+	height: 6rem;
+	padding: 0;
+}
+
+.promotion--stickermule {
+	background-color: #4E2817 !important;
+}
+
+.promotion--stickermule__logo {
+	height: 6rem;
+}
