@@ -11,7 +11,10 @@
   <%= form_tag login_code_users_path, 'data-behavior': 'login' do %>
     <%= label_tag :email, 'Enter your email…', class: 'left-align' %>
     <%= email_field_tag :email, '', placeholder: 'Email address',autofocus: true, autocomplete: 'username', class: 'left-align mb2' %>
-    <%= submit_tag 'Get login code' %>
+    <div class="flex justify-between">
+      <p class="h5"><a href="https://hackclub.com/bank?ref=bank_auth">Get a HCB account</a></p>
+      <%= submit_tag 'Get login code' %>
+    </div>
   <% end %>
   <p class="h6 mt5">Issues logging into your event? Contact the team at <a href="mailto:bank@hackclub.com">bank@hackclub.com</a>.</p>
 </article>
