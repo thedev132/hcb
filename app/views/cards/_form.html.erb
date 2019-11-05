@@ -1,5 +1,5 @@
 <%= form_with(model: card, local: true) do |form| %>
-  <p>For <strong>#<%= card.event.id %> - <%= card.event.name %></strong></p>
+  <p>For <strong>#<%= card.event.id %> <%= card.event.name %></strong></p>
 
   <%= form_errors card %>
 
