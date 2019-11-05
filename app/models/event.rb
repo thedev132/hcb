@@ -54,7 +54,11 @@ class Event < ApplicationRecord
   end
 
   def emburse_budget_limit
-    self.emburse_transactions.completed.where(emburse_card_id: nil).sum(:amount)
+    # We want to count positive Emburse TXs that are either pending OR complete,
+    # because pending TXs will silently switch to complete and the admin will not
+    # be notified to update the Emburse budget for this event later when that happens.
+    # See also PR #317.
+    self.emburse_transactions.undeclined.where(emburse_card_id: nil).sum(:amount)
   end
 
   def emburse_balance
