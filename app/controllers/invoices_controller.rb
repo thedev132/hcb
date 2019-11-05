@@ -19,9 +19,11 @@ class InvoicesController < ApplicationController
       .where(invoice_payouts: { status: ('in_transit') })
       .or(@event.invoices.joins(:payout).where(invoice_payouts: { status: ('pending') })))
 
+    @unarchived = @invoices.unarchived
+
     @stats = {
-      total: @invoices.unarchived.sum(:item_amount),
-      paid: @invoices.sum(:amount_paid) + @invoices.where.not(manually_marked_as_paid_at: nil).sum(:item_amount),
+      total: @unarchived.sum(:item_amount),
+      paid: @unarchived.paid.sum(:item_amount),
       pending: @invoices_being_deposited.sum(&:amount_paid),
     }
   end
