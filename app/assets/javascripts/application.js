@@ -13,3 +13,4 @@
 //= require fee_retro_promo
 //= require filterbar
 //= require checks
+//= require card_requests
