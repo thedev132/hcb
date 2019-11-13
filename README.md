@@ -18,13 +18,15 @@ _It’s a bank, folks._
 
 Alternatively, you can run `docker-compose run --service-ports web /bin/bash` to open a shell into the container with the right ports bound, and then manually start the Rails app.
 
-## Import database dump from Heroku
+## Admin tasks
+
+### Import database dump from Heroku
 
     $ heroku pg:backups:capture
     $ heroku pg:backups:download # will save as latest.dump, double check to make sure that file is created
     $ pg_restore --verbose --clean --no-acl --no-owner -h db -U postgres -d bank_development latest.dump
 
-## Running migrations
+### Running migrations
 
 Currently, migrations are decoupled from deployments. After deploying a patch with a new migration, run:
 
@@ -33,3 +35,20 @@ heroku run /bin/bash -a bank-hackclub
 rails db:migrate:status
 rails db:migrate
 ```
+
+### Log into the Rails console in production
+
+```
+heroku console -a bank-hackclub
+```
+
+We can also replace `bank-hackclub` with any other app name (like a review app) to get the console for that app instead.
+
+### Restart periodic / repeating jobs
+
+For example, for the `SyncTransactionsJob`:
+
+```
+SyncTransactionsJob.perform_now(repeat: true)
+```
+
