@@ -1,5 +1,5 @@
 class FeeReimbursement < ApplicationRecord
-  has_one :invoice
+  has_one :invoice, required: true
   has_one :t_transaction, class_name: 'Transaction', inverse_of: :fee_reimbursement
   has_many :comments, as: :commentable
 
