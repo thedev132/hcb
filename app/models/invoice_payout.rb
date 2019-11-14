@@ -9,7 +9,9 @@ class InvoicePayout < ApplicationRecord
   # find invoice payouts that don't yet have an associated transaction
   scope :lacking_transaction, -> { includes(:t_transaction).where(transactions: { invoice_payout_id: nil }) }
 
-  has_one :invoice, inverse_of: :payout, foreign_key: :payout_id, required: true
+  # although it normally doesn't make sense for a paynot not to be linked to an invoice,
+  # Stripe's schema makes this possible, and when that happens, requiring invoice<>payout breaks bank
+  has_one :invoice, inverse_of: :payout, foreign_key: :payout_id
   has_one :t_transaction, class_name: 'Transaction'
 
   after_initialize :default_values
