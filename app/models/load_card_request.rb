@@ -75,6 +75,10 @@ class LoadCardRequest < ApplicationRecord
     rejected_at.nil? && canceled_at.nil? && accepted_at.nil?
   end
 
+  def pending?
+    t_transaction.nil? && emburse_transaction_id.nil? && !accepted_at.nil?
+  end
+
   def unfulfilled?
     fulfilled_by.nil?
   end
