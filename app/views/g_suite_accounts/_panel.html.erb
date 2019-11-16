@@ -2,7 +2,7 @@
 
 <% if @g_suite.accounts.any? %>
   <ul class="list list--unlinked mt0 mb2">
-    <% @g_suite.accounts.each do |account| %>
+    <% @g_suite.accounts.order(:address).each do |account| %>
       <li>
         <p>
           <strong><%= account.username %></strong><span><%= account.at_domain %></span>
