@@ -21,9 +21,10 @@ class AchTransfersController < ApplicationController
 
   # POST /ach_transfers
   def create
-    ach_transfer_params[:amount] = ach_transfer_params[:amount].to_f * 100.to_i
+    ach_params = ach_transfer_params
+    ach_params[:amount] = ach_transfer_params[:amount].to_f * 100.to_i
 
-    @ach_transfer = AchTransfer.new(ach_transfer_params)
+    @ach_transfer = AchTransfer.new(ach_params)
 
     @ach_transfer.event = @event
     @ach_transfer.creator = current_user

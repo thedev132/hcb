@@ -25,7 +25,7 @@
   <div class="field">
     <div class="flex items-center">
       <span class="bold muted" style="width: 1rem;">$</span>
-      <%= form.number_field :amount, placeholder: '500.00', step: 0.01, required: true %>
+      <%= form.number_field :amount, value: (@ach_transfer.nil? ? nil : (@ach_transfer.amount.to_f / 100)), placeholder: '500.00', step: 0.01, required: true %>
     </div>
   </div>
 

@@ -23,7 +23,7 @@
 
   <div class="field">
     <%= form.label :amount %>
-    <%= form.number_field :amount %>
+    <%= form.number_field :amount, value: (@check.nil? ? nil : (@check.amount.to_f / 100)) %>
   </div>
 
   <div class="field">

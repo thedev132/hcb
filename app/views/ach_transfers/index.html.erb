@@ -22,7 +22,7 @@
         <td>
           <%= status_badge ach_transfer.state %> <%= ach_transfer.status.to_s.humanize %>
         </td>
-        <td><%= (link_to 'Approve', ach_transfer_start_approval_path(ach_transfer)) if @ach_transfer.approved_at.nil? %></td>
+        <td><%= (link_to 'Approve', ach_transfer_start_approval_path(ach_transfer)) if ach_transfer.approved_at.nil? %></td>
       </tr>
     <% end %>
   </tbody>
