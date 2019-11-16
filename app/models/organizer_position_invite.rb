@@ -37,8 +37,10 @@ class OrganizerPositionInvite < ApplicationRecord
   validates_email_format_of :email
 
   validate :not_already_organizer
+  validate :not_already_invited, on: :create
   validates :accepted_at, absence: true, if: -> { rejected_at.present? }
   validates :rejected_at, absence: true, if: -> { accepted_at.present? }
+
 
   after_create :send_email
   before_save :normalize_email
@@ -140,6 +142,12 @@ class OrganizerPositionInvite < ApplicationRecord
   def not_already_organizer
     if self.event.users.pluck(:email).include? self.email
       self.errors.add(:user, 'is already an organizer of this event!')
+    end
+  end
+
+  def not_already_invited
+    if self.event.organizer_position_invites.pending.pluck(:email).include? self.email
+      self.errors.add(:user, 'already has a pending invite!')
     end
   end
 end
