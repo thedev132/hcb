@@ -1,6 +1,8 @@
 class Card < ApplicationRecord
   extend FriendlyId
 
+  paginates_per 100
+
   friendly_id :slug_text, use: :slugged
 
   belongs_to :user

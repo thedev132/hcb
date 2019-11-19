@@ -3,6 +3,8 @@ require 'csv'
 class TransactionsController < ApplicationController
   def index
     authorize Transaction
+
+    @transactions = Transaction.order(:date).page params[:page]
   end
 
   def export

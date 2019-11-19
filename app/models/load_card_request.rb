@@ -3,6 +3,8 @@ class LoadCardRequest < ApplicationRecord
 
   before_save :normalize_blank_values
 
+  paginates_per 50
+
   # NOTE(@msw) LCRs used to be on a per-card basis & we're keeping the
   # association for compatability with migrations
   belongs_to :card, required: false

@@ -3,8 +3,8 @@ class EmburseTransactionsController < ApplicationController
 
   def index
     authorize EmburseTransaction
-    all_et = EmburseTransaction.undeclined.order(created_at: :desc)
-    @emburse_transactions = all_et.where(event_id: nil) + all_et.where.not(event_id: nil)
+    @all_et = EmburseTransaction.undeclined.order(created_at: :desc).page params[:page]
+    @emburse_transactions = @all_et.where(event_id: nil) + @all_et.where.not(event_id: nil)
   end
 
   def edit

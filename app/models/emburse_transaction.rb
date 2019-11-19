@@ -4,6 +4,8 @@ class EmburseTransaction < ApplicationRecord
   acts_as_paranoid
   validates_as_paranoid
 
+  paginates_per 100
+
   scope :pending, -> { where(state: 'pending') }
   scope :completed, -> { where(state: 'completed') }
   scope :undeclined, -> { where.not(state: 'declined') }

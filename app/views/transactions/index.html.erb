@@ -2,6 +2,7 @@
 <p>
   <strong><%= pluralize(Transaction.uncategorized.size, 'unprocessed transaction') %></strong>
 </p>
+<%= paginate @transactions %>
 <table>
 <tr>
   <th>Date</th>
@@ -11,7 +12,7 @@
   <th>Event</th>
   <th colspan="2">Full Info</th>
 </tr>
-<% Transaction.order(:date).each do |t| %>
+<% @transactions.each do |t| %>
   <tr class="<%= 'shade-yellow' if !t.event && t.is_event_related %>">
     <td>
       <%= t.date %>

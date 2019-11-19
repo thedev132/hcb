@@ -3,7 +3,7 @@ class CardsController < ApplicationController
 
   # GET /cards
   def index
-    @cards = Card.all.includes(:event, :user)
+    @cards = Card.all.includes(:event, :user).page params[:page]
     authorize @cards
   end
 

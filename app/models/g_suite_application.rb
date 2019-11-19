@@ -1,6 +1,8 @@
 class GSuiteApplication < ApplicationRecord
   include Rejectable
 
+  paginates_per 50
+
   belongs_to :creator, class_name: 'User'
   belongs_to :event
   belongs_to :fulfilled_by, class_name: 'User', required: false

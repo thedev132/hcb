@@ -3,6 +3,8 @@ class GSuiteAccount < ApplicationRecord
 
   after_update :notify_user_of_password_change
 
+  paginates_per 50
+
   belongs_to :g_suite
   belongs_to :creator, class_name: 'User'
 

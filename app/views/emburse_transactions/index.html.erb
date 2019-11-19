@@ -1,8 +1,10 @@
 <h1>Emburse Transactions</h1>
 
+<%= paginate @all_et %>
 <table>
   <thead>
     <tr>
+      <th>Date/Time</th>
       <th>Emburse ID</th>
       <th>Amount</th>
       <th>State</th>
@@ -14,6 +16,7 @@
   <tbody>
     <% @emburse_transactions.each do |emburse_transaction| %>
       <tr class="<%= 'shade-yellow' if emburse_transaction.under_review? %>">
+        <td><%= format_datetime emburse_transaction.created_at %></td>
         <td><%= link_to emburse_transaction.emburse_id, emburse_transaction.emburse_path %></td>
         <td><%= render_money emburse_transaction.amount %></td>
         <td><%= emburse_transaction.state %></td>

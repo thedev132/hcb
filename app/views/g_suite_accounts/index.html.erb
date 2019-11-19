@@ -1,6 +1,46 @@
 <% title 'G Suite Accounts' %>
 <h1>G Suite Accounts</h1>
 
+<% if params[:page] == nil %>
+
+  <h2>Accounts under review</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>G Suite email</th>
+        <th>Backup email</th>
+        <th>G suite</th>
+        <th colspan="3"></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @under_review.each do |g_suite_account| %>
+        <tr class="shade-yellow">
+          <td><%= g_suite_account.address %></td>
+          <td><%= g_suite_account.backup_email %></td>
+          <td><%= link_to 'G Suite', g_suite_account.g_suite %></td>
+          <% if g_suite_account.under_review? %>
+            <td><%= link_to 'Reject', g_suite_account_reject_path(g_suite_account),
+              method: :post, data: { confirm: 'Are you sure?' }, class: 'h5 btn bg-error' %></td>
+          <% end %>
+          <% if g_suite_account.under_review? %>
+            <td><%= link_to 'Process', edit_g_suite_account_path(g_suite_account), class: 'btn bg-info' %></td>
+          <% else %>
+            <td><%= link_to 'Edit', edit_g_suite_account_path(g_suite_account), class: 'h5 btn bg-info' %></td>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <h2>All accounts</h2>
+
+<% end %>
+
+<%= paginate @g_suite_accounts %>
+
 <table>
   <thead>
     <tr>

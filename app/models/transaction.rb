@@ -1,6 +1,8 @@
 class Transaction < ApplicationRecord
   extend FriendlyId
 
+  paginates_per 100
+
   friendly_id :slug_text, use: :slugged
 
   acts_as_paranoid

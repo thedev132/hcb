@@ -3,7 +3,7 @@ class FeeReimbursementsController < ApplicationController
 
   # GET /fee_reimbursements
   def index
-    @fee_reimbursements = FeeReimbursement.all
+    @fee_reimbursements = FeeReimbursement.all.page params[:page]
     authorize @fee_reimbursements
   end
 
