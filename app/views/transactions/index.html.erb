@@ -1,8 +1,44 @@
 <h1>Transactions</h1>
+
+<h2>Uncategorized transactions</h2>
+
 <p>
-  <strong><%= pluralize(Transaction.uncategorized.size, 'unprocessed transaction') %></strong>
+  <strong><%= pluralize(Transaction.uncategorized.size, 'uncategorized transaction') %></strong>
 </p>
+
+<table>
+<tr>
+  <th>Date</th>
+  <th>Name</th>
+  <th>Amount</th>
+  <th>Account</th>
+  <th colspan="2">Full Info</th>
+</tr>
+<% @uncategorized.each do |t| %>
+  <tr class="<%= 'shade-yellow' if !t.event && t.is_event_related %>">
+    <td>
+      <%= t.date %>
+    </td>
+    <td>
+      <%= t.name %>
+    </td>
+    <td>
+      <%= render_money t.amount %>
+    </td>
+    <td>
+      <%= link_to t.bank_account.name, t.bank_account %>
+    </td>
+    <td>
+      <%= link_to 'View', t %>
+    </td>
+  </tr>
+<% end %>
+</table>
+
+<h2>All transactions</h2>
+
 <%= paginate @transactions %>
+
 <table>
 <tr>
   <th>Date</th>

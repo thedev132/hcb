@@ -4,7 +4,7 @@ class GSuiteAccountsController < ApplicationController
   def index
     authorize GSuiteAccount
 
-    @under_review = GSuiteAccount.under_review
+    @under_review = GSuiteAccount.under_review.order(created_at: :desc)
     @g_suite_accounts = GSuiteAccount.all.order(created_at: :desc).page params[:page]
   end
 
