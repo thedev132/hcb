@@ -12,19 +12,20 @@ class InvoicesController < ApplicationController
     authorize @invoices
 
     # from events controller
-    @invoices_being_deposited = (@invoices.where(payout_id: nil, status: 'paid')
+    @invoices_in_transit = (@invoices.where(payout_id: nil, status: 'paid')
       .where
       .not(payout_creation_queued_for: nil) +
       @event.invoices.joins(:payout)
       .where(invoice_payouts: { status: ('in_transit') })
       .or(@event.invoices.joins(:payout).where(invoice_payouts: { status: ('pending') })))
-
-    @unarchived = @invoices.unarchived
+    amount_in_transit = @invoices_in_transit.sum(&:amount_paid)
 
     @stats = {
-      total: @unarchived.sum(:item_amount),
-      paid: @unarchived.paid.sum(:item_amount),
-      pending: @invoices_being_deposited.sum(&:amount_paid),
+      total: @invoices.unarchived.sum(:item_amount),
+      # "paid" status invoices include manually paid invoices and
+      # Stripe invoices that are paid, but for which the funds are in transit
+      paid: @invoices.unarchived.paid.sum(:item_amount) - amount_in_transit,
+      pending: amount_in_transit,
     }
   end
 
