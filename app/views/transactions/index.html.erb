@@ -12,6 +12,7 @@
   <th>Name</th>
   <th>Amount</th>
   <th>Account</th>
+  <th>Event</th>
   <th colspan="2">Full Info</th>
 </tr>
 <% @uncategorized.each do |t| %>
@@ -27,6 +28,9 @@
     </td>
     <td>
       <%= link_to t.bank_account.name, t.bank_account %>
+    </td>
+    <td>
+      <%= link_to 'Set Event', edit_transaction_path(t), class: 'btn bg-info' %>
     </td>
     <td>
       <%= link_to 'View', t %>
