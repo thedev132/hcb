@@ -17,6 +17,10 @@ Rails.application.routes.draw do
       post 'login_code', to: 'users#login_code'
       post 'exchange_login_code', to: 'users#exchange_login_code'
       delete 'logout', to: 'users#logout'
+
+      # sometimes users refresh the login code page and get 404'd
+      get 'exchange_login_code', to: redirect('/users/auth', status: 301)
+      get 'login_code', to: redirect('/users/auth', status: 301)
     end
     post 'delete_profile_picture', to: 'users#delete_profile_picture'
   end

@@ -10,7 +10,7 @@
   </h1>
   <%= form_tag login_code_users_path, 'data-behavior': 'login' do %>
     <%= label_tag :email, 'Enter your email…', class: 'left-align' %>
-    <%= email_field_tag :email, '', placeholder: 'Email address',autofocus: true, autocomplete: 'username', class: 'left-align mb2' %>
+    <%= email_field_tag :email, '', placeholder: 'Email address', autofocus: true, autocomplete: 'username', class: 'left-align mb2' %>
     <div class="flex justify-between">
       <p class="h5"><a href="https://hackclub.com/bank?ref=bank_auth">Get a HCB account</a></p>
       <%= submit_tag 'Get login code' %>
