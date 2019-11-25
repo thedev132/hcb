@@ -6,8 +6,8 @@
 <table>
   <thead>
     <tr>
-      <th>Number</th>
       <th>Event</th>
+      <th>Number</th>
       <th>Amount</th>
       <th>Status</th>
       <th colspan="1"></th>
@@ -17,8 +17,8 @@
   <tbody>
     <% @checks.each do |check| %>
       <tr>
-        <td><%= check.check_number || 'n/a' %></td>
         <td><%= link_to check.event.name, check.event %></td>
+        <td><%= check.check_number || 'n/a' %></td>
         <td><%= render_money check.amount %></td>
         <td>
           <%= status_badge check.state %> <%= check.status.to_s.humanize %>
