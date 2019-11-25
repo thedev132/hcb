@@ -38,8 +38,9 @@
           <p class="bold mt0 mb0">Important info about checks:</p>
         </div>
         <ul class="mt1 mb2">
+          <li>Need to reimburse someone? Checks are not intended for that purpose. Ask your point of contact about using Expensify instead.</li>
           <li>This check will be valid for 30 days, until <%= format_date DateTime.now + 1.month %></li>
-          <li>Your point of contact, <%= @event.point_of_contact.name.split(' ')[0] %>, needs to approve your check before it's sent out. This usually takes 1 business day.</li>
+          <li>Your point of contact needs to approve your check before it's sent out. This usually takes 1 business day.</li>
         </ul>
         <div class="border-top card__banner card__darker slate">
           <strong>Questions?</strong> Talk to your point of contact, <%= @event.point_of_contact.name %>
