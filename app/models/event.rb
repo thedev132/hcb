@@ -44,7 +44,7 @@ class Event < ApplicationRecord
     select { |event| event.fee_balance > 100 }
   end
 
-  # events with a negative balance or negative balance_not_feed
+  # displayed on /negative_events
   def self.negatives
     select { |event| event.balance < 0 || event.emburse_balance < 0 || event.fee_balance < 0 }
   end
@@ -72,33 +72,12 @@ class Event < ApplicationRecord
     transactions.sum(:amount)
   end
 
-  def lcr_pending
-    (
-      load_card_requests.under_review +
-      load_card_requests.accepted -
-      load_card_requests.completed -
-      load_card_requests.canceled -
-      load_card_requests.rejected
-    )
-      .sum(&:load_amount)
-  end
-
   # used for load card requests, this is the amount of money available that isn't being transferred out by an LCR or isn't going to be pulled out via fee -tmb@hackclub
   def balance_available
+    lcr_pending = (load_card_requests.under_review + load_card_requests.pending).sum(&:load_amount)
     balance - lcr_pending - fee_balance
   end
   alias available_balance balance_available
-
-  # amount incoming from paid Stripe invoices not yet deposited
-  def pending_deposits
-    # money that is pending payout- aka payout has not been created yet
-    pre_payout = invoices.where(status: 'paid', payout: nil).sum(:amount_paid)
-
-    # money that has a payout created, but where the transaction has not hit the account yet / been associated with the pending payout
-    payout_created = invoices.joins(payout: :t_transaction).where(status: 'paid', payout: { transactions: { id: nil } }).sum(:amount_paid)
-
-    pre_payout + payout_created
-  end
 
   def billed_transactions
     transactions
@@ -145,11 +124,6 @@ class Event < ApplicationRecord
     end
 
     a_fee_balance
-  end
-
-  def balance_being_withdrawn
-    lcrs = load_card_requests
-    fee_balance + lcr_pending
   end
 
   def g_suite_status
