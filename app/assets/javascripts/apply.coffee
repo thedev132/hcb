@@ -29,7 +29,7 @@ $(document).on 'turbolinks:load', ->
         9500: 'So...',
         11000: 'Ya like jazz?',
         15000: 'Ok, truth be told I think there’s something wrong with this page or your internet',
-        20000: 'Send a screenshot to max@hackclub.com & we’ll get your application submitted',
+        20000: 'Send a screenshot to bank@hackclub.com and we’ll get your application submitted',
       }
       for timestamp in Object.keys(messageList)
         do (timestamp) ->

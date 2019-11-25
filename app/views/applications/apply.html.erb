@@ -13,7 +13,7 @@
 <p class="flex items-center muted line-height-3">
   <%= inline_icon 'info', size: 32, class: 'mr1' %>
   <span>
-    Not a hackathon or leading a Hack Club? We’re accepting other groups on a case-by-case basis. Shoot us an email at <%= mail_to 'bank@hackclub.com', 'bank@hackclub.com', class: 'info' %>.
+    Not a hackathon or a registered Hack Club? We’re accepting other groups, too!. Shoot us an email at <%= mail_to 'bank@hackclub.com', 'bank@hackclub.com', class: 'info' %>.
   </span>
 </p>
 
@@ -34,7 +34,7 @@
   <%= form.text_field :website, placeholder: 'https://windyhacks.com' %>
 </div>
 <div class="field">
-  <%= form.label :about_event, 'Tell us about your event' %>
+  <%= form.label :about_event, 'Tell us about your event or organization' %>
   <span class="h5 muted">Who are your attendees? Where is your venue?</span>
   <%= form.text_area :about_event, required: true, 'data-behavior': 'character_limit' %>
   <span class="h5 muted" data-behavior="character_limit_indicator">(Must be between 250 and 600 characters)</span>
@@ -89,7 +89,13 @@
   </div>
   <div class="field">
     <%= member_form.label :birthdate %>
-    <%= member_form.date_field :birthdate, {'data-behavior':'birthdate', max: "#{(DateTime.now).strftime("%Y%m%d")}", min: "#{(DateTime.now - 100.years).strftime("%Y%m%d")}"  }%>
+    <%= member_form.date_field :birthdate, {
+      'data-behavior':'birthdate',
+      max: "#{(DateTime.now).strftime("%Y%m%d")}",
+      min: "#{(DateTime.now - 100.years).strftime("%Y%m%d")}",
+      placeholder: '2001-02-03',
+      pattern: '\d{4}-\d{2}-\d{2}' # in case the browser doesn't have input[type=date]
+    }%>
   </div>
   <div class="field">
     <%= member_form.label :email %>
@@ -131,7 +137,13 @@
     </div>
     <div class="field">
       <%= member_form.label :parent_birthdate %>
-      <%= member_form.date_field :parent_birthdate %>
+      <%= member_form.date_field :parent_birthdate, {
+        'data-behavior':'birthdate',
+        max: "#{(DateTime.now).strftime("%Y%m%d")}",
+        min: "#{(DateTime.now - 100.years).strftime("%Y%m%d")}",
+        placeholder: '2001-02-03',
+        pattern: '\d{4}-\d{2}-\d{2}' # in case the browser doesn't have input[type=date]
+      }%>
     </div>
     <div class="field">
       <%= member_form.label :parent_identification %>
@@ -145,5 +157,5 @@
 
 
 <%= form.submit 'Submit application', data: { disable_with: false }, class: 'mt3 mb3 btn' %>
-<span class="muted h5" data-behavior="loading_message"></span>
+  <span class="muted h5" data-behavior="loading_message"></span>
 <% end  %>
