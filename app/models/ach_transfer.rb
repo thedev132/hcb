@@ -2,6 +2,8 @@ class AchTransfer < ApplicationRecord
   belongs_to :creator, class_name: 'User'
   belongs_to :event
 
+  has_many :comments, as: :commentable
+
   validates_length_of :routing_number, is: 9
 
   has_one :t_transaction, class_name: 'Transaction', inverse_of: :ach_transfer

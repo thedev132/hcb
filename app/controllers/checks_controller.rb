@@ -43,6 +43,10 @@ class ChecksController < ApplicationController
   # GET /checks/1
   def show
     authorize @check
+
+    @commentable = @check
+    @comments = @commentable.comments
+    @comment = Comment.new
   end
 
   # GET /checks/new

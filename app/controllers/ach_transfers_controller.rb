@@ -11,6 +11,10 @@ class AchTransfersController < ApplicationController
   # GET /ach_transfers/1
   def show
     authorize @ach_transfer
+
+    @commentable = @ach_transfer
+    @comments = @commentable.comments
+    @comment = Comment.new
   end
 
   # GET /ach_transfers/new

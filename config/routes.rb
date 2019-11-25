@@ -86,11 +86,15 @@ Rails.application.routes.draw do
     post 'void'
     get 'refund', to: 'checks#refund_get'
     post 'refund', to: 'checks#refund'
+
+    resources :comments
   end
 
   resources :ach_transfers, only: [:show, :index] do
     get 'start_approval'
     post 'approve'
+
+    resources :comments
   end
 
   resources :documents, except: [:index] do

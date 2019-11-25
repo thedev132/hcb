@@ -1,19 +1,17 @@
 <div class="comments">
-<% @comments.each do |comment| %>
+<% @comments.order(created_at: :desc).each do |comment| %>
   <% if comment.admin_only %>
-    <% admin_tools do %>
-      <div class="my2">
-        <%= creator_bar comment %>
-        <div class="card">
-          <%= auto_link comment.content %>
-          <% if comment.file.attached? %>
-            <%= link_to '📎', url_for(comment.file), target: '_blank' %>
-          <% end %>
-        </div>
+    <% admin_tools('mt2 mb2') do %>
+      <%= creator_bar comment %>
+      <div class="card">
+        <%= auto_link comment.content %>
+        <% if comment.file.attached? %>
+          <%= link_to '📎', url_for(comment.file), target: '_blank' %>
+        <% end %>
       </div>
     <% end %>
   <% else %>
-    <div class="my2">
+    <div class="mt2 mb2">
       <%= creator_bar comment %>
       <div class="card">
         <%== MarkdownService.instance.renderer.render comment.content %>
