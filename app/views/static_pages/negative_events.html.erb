@@ -7,8 +7,9 @@
   <thead>
     <tr>
       <th>Event</th>
-      <th>Amount (balance)</th>
-      <th>Amount (balance_not_feed)</th>
+      <th>Account balance</th>
+      <th>Card balance</th>
+      <th>Pending withdrawals</th>
     </tr>
   </thead>
 
@@ -16,8 +17,27 @@
     <% @negative_events.each do |event| %>
       <tr class="shade-yellow">
         <td class="underline"><%= link_to "#{event.name}", event %></td>
-        <td><%= render_money event.balance %></td>
-        <td><%= render_money event.balance_not_feed %></td>
+        <td>
+          <% if event.balance < 0 %>
+            <strong><%= render_money event.balance %></strong>
+          <% else %>
+            <%= render_money event.balance %>
+          <% end %>
+        </td>
+        <td>
+          <% if event.emburse_balance < 0 %>
+            <strong><%= render_money event.emburse_balance %></strong>
+          <% else %>
+            <%= render_money event.emburse_balance %>
+          <% end %>
+        </td>
+        <td>
+          <% if event.fee_balance < 0 %>
+            <strong><%= render_money event.fee_balance %></strong>
+          <% else %>
+            <%= render_money event.fee_balance %>
+          <% end %>
+        </td>
       </tr>
     <% end %>
   </tbody>

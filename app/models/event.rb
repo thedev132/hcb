@@ -46,7 +46,7 @@ class Event < ApplicationRecord
 
   # events with a negative balance or negative balance_not_feed
   def self.negatives
-    select { |event| event.balance_not_feed < 0 || event.balance < 0 }
+    select { |event| event.balance < 0 || event.emburse_balance < 0 || event.fee_balance < 0 }
   end
 
   def emburse_department_path

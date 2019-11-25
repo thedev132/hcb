@@ -45,7 +45,7 @@ class StaticPagesController < ApplicationController
   end
 
   def negative_events
-    @negative_events = Event.negatives.sort_by { |event| event.balance > event.balance_not_feed ? event.balance_not_feed : event.balance }
+    @negative_events = Event.negatives
   end
 
   def stats
