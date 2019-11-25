@@ -3,8 +3,8 @@
 <table>
   <thead>
     <tr>
-      <th>Routing #</th>
       <th>Event</th>
+      <th>Routing #</th>
       <th>Account #</th>
       <th>Bank name</th>
       <th>Recipient</th>
@@ -16,8 +16,8 @@
   <tbody>
     <% @ach_transfers.each do |ach_transfer| %>
       <tr>
-        <td><%= ach_transfer.routing_number %></td>
         <td><%= link_to ach_transfer.event.name, ach_transfer.event %></td>
+        <td><%= ach_transfer.routing_number %></td>
         <td><%= ach_transfer.account_number %></td>
         <td><%= ach_transfer.bank_name %></td>
         <td><%= ach_transfer.recipient_name %></td>
