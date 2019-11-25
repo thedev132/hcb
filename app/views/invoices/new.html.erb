@@ -5,11 +5,19 @@
 <h1>New Invoice</h1>
 
 <% if @event.invoices.none? %>
-<p class="flex items-center info line-height-3">
+  <p class="flex items-center info line-height-3">
     <%= inline_icon 'important', size: 32, class: 'mr1' %>
     We recommend sending yourself an invoice for $1 to understand what your
     sponsors will see.
-</p>
+  </p>
+<% else %>
+  <div class="flex items-center info line-height-3">
+    <%= inline_icon 'important', size: 32, class: 'mr1' %>
+    <p class="mt0 mb2">If the sponsor wants to pay via a mailed check or direct deposit instead of
+    the online invoice, be sure to let your point of contact
+    <%= mail_to @event.point_of_contact.email, class: 'info' do %><%= @event.point_of_contact.full_name %><% end %>
+    know.</p>
+  </div>
 <% end %>
 
 <%= render 'form', invoice: @invoice, sponsor: @sponsor %>
