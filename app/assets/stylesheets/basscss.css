@@ -207,6 +207,14 @@
     display: flex;
   }
 }
+.flex-row {
+  /* added as override */
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+}
 .flex-column {
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;

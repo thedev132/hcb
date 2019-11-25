@@ -1,14 +1,15 @@
 <h2 class="mt0 mb0">Your accounts</h2>
 
 <% if @g_suite.accounts.any? %>
-  <ul class="list list--unlinked mt0 mb2">
+  <ul class="list list--row list--unlinked mt0 mb2">
     <% @g_suite.accounts.order(:address).each do |account| %>
-      <li>
-        <p>
+      <li class="flex items-center justify-between">
+        <div class="description">
+          <p class="m0">
           <strong><%= account.username %></strong><span><%= account.at_domain %></span>
           – <strong><%= account.status %></strong>
-        </p>
-        <p class="slate">
+          </p>
+          <p class="slate m0">
           <% if account.initial_password.present? %>
             <%= status_badge :success %>
             <span>Active.</span>
@@ -19,9 +20,15 @@
           <% if admin_signed_in? || account.backup_email == current_user.email %>
             <span>Backup email: <%= content_tag :code, account.backup_email %></span>
           <% end %>
-        </p>
+          </p>
+        </div>
+        <div class="tools">
+          <% admin_tools('flex items-center') do %>
+            <%= link_to 'Delete', account, method: :delete, data: { confirm: "Are you sure you want to delete #{account.address}?" }, class: 'btn bg-error' %>
+          <% end %>
+        </div>
       </li>
-      <% end %>
+    <% end %>
   </ul>
   <% if one_has_password? @g_suite.accounts %>
     <p>Sign in to your active account with the one-time password emailed to your backup address.</p>

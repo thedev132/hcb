@@ -48,6 +48,21 @@ class GSuiteAccountsController < ApplicationController
     end
   end
 
+  def destroy
+    @g_suite_account = GSuiteAccount.find(params[:id])
+    @event = @g_suite_account.g_suite.event
+
+    authorize @g_suite_account
+
+    if @g_suite_account.delete
+      flash[:success] = 'G Suite account deleted successfully'
+    else
+      flash[:error] = `Error while trying to delete G Suite account`
+    end
+
+    redirect_to event_g_suite_overview_path(event_id: @event.slug)
+  end
+
   def verify
     email = params[:email]
     @g_suite_account = GSuiteAccount.select { |account| account.full_email_address == email }

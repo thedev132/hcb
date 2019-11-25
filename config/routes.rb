@@ -49,7 +49,7 @@ Rails.application.routes.draw do
     resources :comments
   end
 
-  resources :g_suite_accounts, only: [:index, :create, :update, :edit], path: 'g_suite_accounts' do
+  resources :g_suite_accounts, only: [:index, :create, :update, :edit, :destroy], path: 'g_suite_accounts' do
     get 'verify', to: 'g_suite_account#verify'
     post 'reject'
   end
