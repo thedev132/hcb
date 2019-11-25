@@ -52,3 +52,19 @@ For example, for the `SyncTransactionsJob`:
 SyncTransactionsJob.perform_now(repeat: true)
 ```
 
+### Demo mode
+
+When demoing HCB, it's often useful to be able to show a page as an admin without showing admin tools (the yellow boxes). Load a page with the `demo=1` query parameter (or `demo` query string set to anything non-empty) to hide admin tools, even if you are logged in as an admin user. For example
+
+```
+https://bank.hackclub.com/hackpenn/cards
+```
+
+will show lots of admin tool boxes, but 
+
+```
+https://bank.hackclub.com/hackpenn/cards?demo=true
+```
+
+will show the page as if you were logged in as a non-admin user.
+
