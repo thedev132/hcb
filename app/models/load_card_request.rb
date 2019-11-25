@@ -40,8 +40,8 @@ class LoadCardRequest < ApplicationRecord
   end
   scope :completed, -> { accepted.where.not(id: pending) }
   scope :transferred, -> { completed.includes(:t_transaction).where.not(transactions: { id: nil }) }
-  scope :canceled, -> { where(canceled_at: nil) }
-  scope :rejected, -> { where(rejected_at: nil) }
+  scope :canceled, -> { where.not(canceled_at: nil) }
+  scope :rejected, -> { where.not(rejected_at: nil) }
 
   after_create :send_admin_notification
 
