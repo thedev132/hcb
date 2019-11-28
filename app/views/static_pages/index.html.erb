@@ -6,9 +6,7 @@
   <h1 class="heading flex-column items-center justify-center mt2 w-100">
     <span class="h3 caps slate block">Welcome to</span>
     <span class="primary">Hack Club Bank</span>
-    <% if Rails.env.development? %>
-    <span class="badge h5 caps">Development Mode</span>
-    <% end %>
+    <span class="badge h5 caps"><%= random_nickname() %></span>
   </h1>
 
   <% if signed_in? %>
