@@ -17,6 +17,6 @@ class CardRequestMailer < ApplicationMailer
     @activation_link = @card.emburse_path
 
     mail to: @recipient,
-      subject: "Your #{@event.name} credit card from Hack Club Bank is on the way!"
+      subject: "Your #{@event} credit card from Hack Club Bank is on the way!"
   end
 end
