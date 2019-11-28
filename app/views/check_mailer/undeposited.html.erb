@@ -1,11 +1,11 @@
 <p>Hi there,</p>
 
 <p>
-  Just wanted to give you a quick heads up that we're voiding <%= link_to @check, "Check ##{@check.check_number}" %> because it hasn't been cashed since a month after issuing.
+  Just wanted to give you a quick heads up that we're voiding <%= link_to @check, "Check ##{@check.check_number}" %> because it hasn't been cashed for a month after we sent it.
 </p>
 
 <p>
-	I've sent the <%= @check.event.name %> team an email about this, however you may want to contact the lead organizer and give a second heads up. You'll see a request to transfer money back in the Bank dashboard shortly.
+  I've sent the <%= @check.event.name %> team an email about this, however you may want to contact the lead organizer and give a second heads up. You'll see a request to transfer money back in the Bank dashboard shortly.
 </p>
 
 <p>
@@ -23,5 +23,3 @@
     "A mattress"
   ].sample %>
 </p>
-
-

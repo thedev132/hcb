@@ -1,11 +1,7 @@
-<p><%= @emails.length > 1 ? 'Hi all,' : 'Hi,' %></p>
+<p><%= @emails.length > 1 ? 'Hi all,' : 'Hi there,' %></p>
 
 <p>
-  An outstanding invoice has been paid by <%= @invoice.sponsor.name %>.
-</p>
-
-<p>
-  <%= link_to 'Click here', @invoice %> to see the full details.
+  <%= @invoice.sponsor.name %> just paid their <%= render_money @invoice.item_amount %> invoice from you for <%= @invoice.event.name %>! You can <%= link_to 'click here', @invoice %> to see the full details, including when the payment will land in your account.
 </p>
 
 <p>

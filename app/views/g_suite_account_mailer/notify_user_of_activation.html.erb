@@ -1,20 +1,16 @@
 <p>Hi there,</p>
 
 <p>
-  Welcome to your new G Suite inbox! The first time you sign into your account, use these credentials:
+  Welcome to your new G Suite account for <%= @event %>! The first time you sign into your account, you can use these credentials:
 </p>
 
 <pre>
   username: <%= @address %>
-  one-time password: <%= @password %>
+  password: <%= @password %>
 </pre>
 
 <p>
-  <a href="https://accounts.google.com/signin/v2/identifier?continue=https%3A%2F%2Fmail.google.com&Email=<%= URI.encode @address %>&passive=true">Sign in on Google.com now</a>
-</p>
-
-<p>
-  You’ll be prompted to set up your own password once you’ve signed in successfuly.
+  You can <a href="https://accounts.google.com/signin/v2/identifier?continue=https%3A%2F%2Fmail.google.com&Email=<%= URI.encode @address %>&passive=true">sign in to your account now</a>. After you do, it may be a good idea to change your password as well :)
 </p>
 
 <p>

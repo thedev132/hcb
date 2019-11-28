@@ -3,7 +3,7 @@ class InvoiceMailer < ApplicationMailer
     @invoice = params[:invoice]
     @emails = @invoice.sponsor.event.users.map { |u| u.email }
 
-    mail to: @emails, subject: "Invoice to #{@invoice.sponsor.name} paid"
+    mail to: @emails, subject: "Your invoice to #{@invoice.sponsor.name} was paid ✅"
   end
 
   def first_payment_notification

@@ -4,7 +4,7 @@ class CardRequestMailer < ApplicationMailer
     @creator = @request.creator
     @event = @request.event
 
-    mail to: admin_email, subject: 'New card request received'
+    mail to: admin_email, subject: "New card request for #{@event}"
   end
 
   def accepted
@@ -17,6 +17,6 @@ class CardRequestMailer < ApplicationMailer
     @activation_link = @card.emburse_path
 
     mail to: @recipient,
-         subject: "Your #{@event} credit card for #{@card.full_name} is on the way"
+         subject: "Your #{@event} credit card from Hack Club Bank is on the way!"
   end
 end

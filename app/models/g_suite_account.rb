@@ -48,13 +48,15 @@ class GSuiteAccount < ApplicationRecord
       email_params = {
         recipient: backup_email,
         address: address,
-        password: initial_password
+        password: initial_password,
+        event: g_suite.event.name,
       }
 
       creator_email_params = {
         recipient: creator.email,
         first_name: first_name,
-        last_name: last_name
+        last_name: last_name,
+        event: g_suite.event.name,
       }
 
       if initial_password_before_last_save.nil?

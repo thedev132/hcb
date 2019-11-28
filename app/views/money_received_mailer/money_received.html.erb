@@ -1,18 +1,17 @@
 <p>
-  Hi,
+  Hi there,
 </p>
 
 <p>
-  The funds from <%= link_to "a recently paid invoice to
+  Just letting you know that the funds (<strong><%= @transaction.invoice_payout.invoice.item_amount %></strong>) from <%= link_to "a recently paid invoice to
   #{@transaction.invoice_payout.invoice.sponsor.name}", @transaction.invoice_payout.invoice %> have become available within your Hack Club Bank account.
 </p>
 
 <p>
-  You can now transfer them to your cards, or leave them in Bank. Please
-  don't hesitate to reach out if you have any questions.
+  You can now transfer them to your card balance, or leave them in your main account balance. Please don't hesitate to reach out if you have any questions!
 </p>
 
 <p>
-Yours truly,<br/>
-Hack Club Bank
+  Yours truly,<br/>
+  The Hack Club Team
 </p>

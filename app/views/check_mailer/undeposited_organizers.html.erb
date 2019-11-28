@@ -1,11 +1,11 @@
 <p>Hi there,</p>
 
 <p>
-	Your check to <%= @check.lob_address.name %> for <%= render_money @check.amount %> hasn't been deposited since it was sent 1 month ago. Due to this, we've requested a void on the check.
+  Your check from <%= @event.name %> to <%= @check.lob_address.name %> for <%= render_money @check.amount %> hasn't been deposited since it was sent 1 month ago. Due to this, we've requested a void on the check for you.
 </p>
 
 <p>
-  We expect the money to be in your account within the next few business days.
+  We expect the money to be back in your account within the next few business days. If you think this was done in error, or have other questions, just get in touch with your point of contact at Hack Club Bank!
 </p>
 
 <p>

@@ -1,17 +1,18 @@
-<p><%= @emails.length > 1 ? 'Hi all,' : 'Hi,' %></p>
+<p><%= @emails.length > 1 ? 'Hi all,' : 'Hi there,' %></p>
 
 <p>
   Congrats! We're emailing to let you know that you're on your way to running the best event the world has ever seen.
 
   Why? Because for the first time, one of your Bank invoices was paid!
 
-  You have a long road ahead of you, but this a huge first step, and we want you to celebrate.
+  You have a long road ahead of you, but this a huge first step, and we want you to celebrate 🎉🎉
 </p>
+
 <p>
-  <%= link_to 'Click here', @invoice %> to see the full details.
+  You can <%= link_to 'click here', @invoice %> to see the full details, including when you'll receive the payment to be able to spend it.
 </p>
 
 <p>
   From,<br>
-  The Hack Club Bank Team
+  The Hack Club Team
 </p>

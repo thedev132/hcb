@@ -1,19 +1,18 @@
 <p>
-  Hi,
+  Hi there,
 </p>
 
 <p>
-  The funds from
-  <%= link_to "a recently paid invoice to #{@payout.invoice.sponsor.name}", @payout.invoice %>
-  are transferring into your account with Hack Club Bank.
+  The funds from <%= link_to "a recently paid invoice to #{@payout.invoice.sponsor.name}", @payout.invoice %>
+  are transferring into your Hack Club Bank account.
 </p>
 
 <p>
-  The funds (<%= render_money @payout.invoice.item_amount %>) will be available on approximately <%= @payout.arrival_date.to_date %>.
-  Please don't hesitate to reach out if you have any questions.
+  The funds (<strong><%= render_money @payout.invoice.item_amount %></strong>) will be available on approximately <strong><%= @payout.arrival_date.to_date %></strong>.
+  Please don't hesitate to reach out to your Bank point of contact if you have any questions!
 </p>
 
 <p>
-Yours truly,<br/>
-Hack Club Bank
+  Yours truly,<br/>
+  The Hack Club Team
 </p>

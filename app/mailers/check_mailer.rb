@@ -8,8 +8,8 @@ class CheckMailer < ApplicationMailer
   def undeposited_organizers(params)
     @check = params[:check]
     @emails = @check.event.users.map { |u| u.email }
+    @event = @check.event
 
-    # TODO: Better subject
-    mail to: @emails, subject: "Voided check to #{@check.lob_address.name} for #{render_money @check.amount}."
+    mail to: @emails, subject: "Your check to #{@check.lob_address.name} for #{render_money @check.amount}"
   end
 end
