@@ -82,6 +82,7 @@ Rails.application.routes.draw do
 
     get 'start_approval'
     post 'approve'
+    post 'reject'
     get 'start_void'
     post 'void'
     get 'refund', to: 'checks#refund_get'

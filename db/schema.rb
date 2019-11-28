@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_22_214931) do
+ActiveRecord::Schema.define(version: 2019_11_25_085631) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
@@ -120,6 +120,7 @@ ActiveRecord::Schema.define(version: 2019_09_22_214931) do
     t.datetime "refunded_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "rejected_at"
     t.index ["creator_id"], name: "index_checks_on_creator_id"
     t.index ["lob_address_id"], name: "index_checks_on_lob_address_id"
   end

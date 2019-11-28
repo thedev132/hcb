@@ -12,7 +12,9 @@ class Check < ApplicationRecord
   validates_length_of :transaction_memo, maximum: 30
   validates_uniqueness_of :transaction_memo
 
-  scope :pending, -> { where(approved_at: nil) }
+  scope :pending, -> { where(approved_at: nil, rejected_at: nil) }
+  scope :approved, -> { where.not(approved_at: nil) }
+  scope :rejected, -> { where.not(rejected_at: nil) }
 
   # Syncing with Lob
   before_save :create_lob_check
@@ -42,6 +44,8 @@ class Check < ApplicationRecord
       :deposited
     elsif approved?
       :in_transit
+    elsif rejected?
+      :rejected
     else
       :pending
     end
@@ -54,6 +58,7 @@ class Check < ApplicationRecord
     when :pending_void then 'Pending void'
     when :deposited then 'Deposited'
     when :in_transit then 'In transit'
+    when :rejected then 'Rejected'
     when :pending then 'Pending approval'
     end
   end
@@ -65,6 +70,7 @@ class Check < ApplicationRecord
     when :pending_void then 'Attempting to void'
     when :deposited then 'Deposited successfully'
     when :in_transit then 'In transit'
+    when :rejected then 'Rejected by your point of contact'
     when :pending then 'Waiting approval from your point of contact'
     end
   end
@@ -76,6 +82,7 @@ class Check < ApplicationRecord
     when :pending_void then :error
     when :deposited then :success
     when :in_transit then :info
+    when :rejected then :error
     when :pending then :pending
     end
   end
@@ -106,6 +113,10 @@ class Check < ApplicationRecord
 
   def approved?
     approved_at.present?
+  end
+
+  def rejected?
+    rejected_at.present?
   end
 
   # A check is in transit if it's been approved & hasn't been voided
@@ -165,7 +176,7 @@ class Check < ApplicationRecord
   end
 
   def voidable?
-    !deposited? && !pending_void? && !voided?
+    !deposited? && !pending_void? && !voided? && !rejected?
   end
 
   def sent?
@@ -182,6 +193,15 @@ class Check < ApplicationRecord
       return true
     end
     false
+  end
+
+  def reject!
+    if rejectable? and update(rejected_at: DateTime.now)
+      return true
+    else
+      errors.add(:check, 'is not able to be rejected!')
+      return false
+    end
   end
 
   def export!
@@ -250,6 +270,10 @@ class Check < ApplicationRecord
   end
 
   def destroyable?
+    approved_at.nil?
+  end
+
+  def rejectable?
     approved_at.nil?
   end
 end
