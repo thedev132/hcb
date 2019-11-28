@@ -20,11 +20,11 @@ module StaticPagesHelper
         'money money money money money',
         'A money-crazed virus 🤑',
         'A cloud raining money',
-        "A pile of money in the cloud that isn't Bitcoin",
+        "A pile of money in the cloud",
         'Hack Club Smoothmunny',
         'Hack Club ezBUCKS',
         'Hack Club Money Bucket',
-        'A mattress stuffed with 100 dollar bills',
+        'A mattress stuffed with 100 dollar bills', # this is the max length allowed for this header
         'Hack Club Dollaringos',
         'The Hack Foundation dba The Dolla Store',
         'Hack on.',
