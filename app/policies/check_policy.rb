@@ -47,6 +47,10 @@ class CheckPolicy < ApplicationPolicy
     user.admin?
   end
 
+  def reject?
+    user.admin?
+  end
+
   def export?
     user.admin?
   end

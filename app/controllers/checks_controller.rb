@@ -166,6 +166,20 @@ class ChecksController < ApplicationController
     @check.approve!
   end
 
+  def reject
+    authorize @check
+
+    if @check.rejected?
+      flash[:error] = 'This check has already been rejected!'
+      redirect_to checks_path
+      return
+    end
+
+    @check.reject!
+
+    redirect_to checks_path
+  end
+
   def start_approval
     authorize @check
   end

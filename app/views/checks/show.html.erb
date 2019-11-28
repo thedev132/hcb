@@ -100,7 +100,7 @@
     </p>
   </section>
 
-  <section class="card__banner card__darker border-top">
+  <section class="card__banner card__darker border-top overflow-hidden">
     <% if @check.pending? %>
       <%= link_to 'Edit', edit_check_path(@check), class: 'btn bg-info right' %>
     <% end %>    
