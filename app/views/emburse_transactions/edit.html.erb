@@ -15,7 +15,7 @@
   </div>
 
   <div class="field">
-    <%= form.label :amount, 'Amount to add (USD)' %>
+    <%= form.label :amount, 'Transaction amount (USD)' %>
     <div class="flex items-center">
       <span class="bold muted" style="width: 1rem;">$</span>
       <%= form.number_field :amount, value: @amount, step: 0.01 %>
