@@ -3,7 +3,11 @@
 
 <%= render 'events/nav' if @event %>
 
-<article class="card mt3">
+<% admin_tools('mt3 mb0') do %>
+  <%= link_to 'All transactions', transactions_path, class: 'breadcrumb' %>
+<% end %>
+
+<article class="card mt2">
   <h1 class="heading h1 mt0 mb0">
     <span class="flex-auto">
       <%= @transaction.fee_payment? ? 'Fee payment' : 'Transaction' %>
