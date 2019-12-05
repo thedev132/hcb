@@ -3,6 +3,7 @@
 //= require jquery-ui
 //= require jquery-modal
 //= require numbersToWords
+//= require pair_transactions
 //= require turbolinks
 //= require activestorage
 //= require local-time

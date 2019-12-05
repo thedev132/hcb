@@ -11,11 +11,6 @@
 
   <% admin_tools do %>
     <%= form.fields_for :fee_relationship do |fr_form| %>
-      <div class="field">
-        <%= fr_form.label :event %>
-        <%= fr_form.collection_select(:event_id, Event.reorder(:name), :id, :name, include_blank: 'Select one…') %>
-      </div>
-
       <% if transaction.potential_fee_reimbursement? %>
         <div class="field">
           <%= form.label :fee_reimbursement, 'Fee refund' %>
@@ -30,9 +25,9 @@
           <p class="muted h5 mb2">If this isn't a transaction made from a Check, leave this field blank.</p>
           <% if transaction.bank_account.is_positive_pay %>
             <% if transaction.amount > 0 %>
-              <p>This is a positive transaction & is into a positive pay account, so it's money being put in place for a recently sent check.</p>
+              <p>This is a positive transaction into a positive pay account, so it's money being put in place for a recently sent check.</p>
             <% elsif transaction.amount < 0 %>
-              <p>This is a negative transaction & is from a positive pay account, so it's either the money being withdrawn via check or a refund</p>
+              <p>This is a negative transaction from a positive pay account, so it's either the money being withdrawn via check or a refund</p>
               <% if transaction.name.include? 'Check' %>
                 <p>We suspect that it's the money being withdrawn via check because of transaction memo. Please double check.</p>
               <% end %>
@@ -46,7 +41,7 @@
           <p class="muted h5 mb2">If this isn't a transaction from an ACH Transfer, leave this field blank.</p>    
       <% end %>
       <% if transaction.emburse? %>
-        <div class="field">
+        <div class="field lcr-select-target">
           <%= form.label :load_card_request, 'Load card request' %>
           <%= form.collection_select(:load_card_request_id, LoadCardRequest.unpaired.reorder(:load_amount) + [transaction.load_card_request].compact,
                                      :id, :description, include_blank: 'Select one…') %>
@@ -54,7 +49,7 @@
         <p class="muted h5 mb2">If this isn’t from transferring money to Emburse to fulfill a Load Card Request, leave this field blank.</p>
       <% end %>
       <% if transaction.potential_payout? %>
-        <div class="field">
+        <div class="field invoicepayout-select-target">
           <%= form.label :invoice_payout, 'Invoice payout' %>
           <%= form.collection_select(
             :invoice_payout_id,
@@ -65,6 +60,11 @@
           ) %>
         </div>
       <% end %>
+
+      <div class="field event-select-target">
+        <%= fr_form.label :event %>
+        <%= fr_form.collection_select(:event_id, Event.reorder(:name), :id, :name, include_blank: 'Select one…') %>
+      </div>
 
       <%= form.label :is_event_related, class: 'field field--checkbox mb1' do %>
         <%= form.check_box :is_event_related %>
