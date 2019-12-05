@@ -12,6 +12,10 @@
     <%= form.collection_select(:user_id, User.reorder(:email), :id, :email, prompt: 'Select user…') %>
   </div>
 
+  <% admin_tools do %>
+    <p>Copy-pastable user email: <pre><%= card.user.email %></pre></p>
+  <% end %>
+
   <div class="field">
     <%= form.label :event_id, 'Event' %>
     <%= form.collection_select(:event_id, Event.all, :id, :name, prompt: 'Select event…') %>
