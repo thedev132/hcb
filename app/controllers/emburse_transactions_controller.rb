@@ -9,6 +9,11 @@ class EmburseTransactionsController < ApplicationController
 
   def edit
     @amount = @emburse_transaction.amount / 100.0
+
+    # when pairing positive Emburse transactions, it's sometimes useful to be
+    # able to cross check with the latest LCRs because most positive Emburse TXs
+    # are load card requests. Shown to admins on amount > 0 only.
+    @load_card_requests = LoadCardRequest.accepted.order(created_at: :desc).limit(10)
   end
 
   def update

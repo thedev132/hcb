@@ -1,4 +1,4 @@
-<% page_sm %>
+<% page_md %>
 
 <h1>Editing Emburse Transaction</h1>
 
@@ -25,4 +25,36 @@
   <div class="actions">
     <%= form.submit %>
   </div>
+
+  <% if @emburse_transaction.amount > 0 %>
+    <% admin_tools('mt3') do %>
+      <h2>Recent card transfer requests</h2>
+      <p>Use this list to cross-reference recent card load requests to any positive Emburse transaction above.</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Event</th>
+            <th>Creator</th>
+            <th>Load amount</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% @load_card_requests.each do |request| %>
+            <tr>
+              <td><%= "##{request.id}" %></td>
+              <td><%= link_to request.event.name, request.event %></td>
+              <td><%= user_mention request.creator %></td>
+              <td><%= render_money request.load_amount %></td>
+              <td><%= request.status %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+
+    <% end %>
+  <% end %>
 <% end %>
