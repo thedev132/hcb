@@ -68,7 +68,14 @@ class TransactionsController < ApplicationController
     @event = @transaction.event
 
     # so the fee relationship fields render
-    @transaction.fee_relationship ||= FeeRelationship.new
+    if @transaction.fee_relationship == nil
+      @transaction.fee_relationship = FeeRelationship.new
+
+      # If a new transaction is positive, we would probably charge a fee
+      if @transaction.is_event_related && @transaction.amount > 0
+        @transaction.fee_relationship.fee_applies = true
+      end
+    end
   end
 
   def update
