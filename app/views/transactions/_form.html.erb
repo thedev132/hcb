@@ -15,11 +15,12 @@
         <%= fr_form.label :event %>
         <%= fr_form.collection_select(:event_id, Event.reorder(:name), :id, :name, include_blank: 'Select one…') %>
       </div>
-      <% if FeeReimbursement.failed.any? %>
+
+      <% if transaction.potential_fee_reimbursement? %>
         <div class="field">
           <%= form.label :fee_reimbursement, 'Fee refund' %>
-          <%= form.collection_select(:fee_reimbursement_id, FeeReimbursement.failed.reorder(:amount), :id, :admin_dropdown_description, include_blank: 'Select one…') %>
-        <p class="muted h5 mb0">If this isn’t a transfer to reimburse a stripe fee, leave this field blank.</p>
+          <%= form.collection_select(:fee_reimbursement_id, FeeReimbursement.pending.reorder(:amount) + [transaction.fee_reimbursement].compact, :id, :admin_dropdown_description, include_blank: 'Select one…') %>
+        <p class="muted h5 mb0">If this isn’t a transfer to reimburse a Stripe fee, leave this field blank.</p>
         </div>
       <% end %>
       <% if Check.in_transit.any? || Check.refunded_but_needs_match.any? %>
@@ -64,6 +65,7 @@
           ) %>
         </div>
       <% end %>
+
       <%= form.label :is_event_related, class: 'field field--checkbox mb1' do %>
         <%= form.check_box :is_event_related %>
         Is event-related?

@@ -10,9 +10,8 @@ class FeeReimbursement < ApplicationRecord
   validates_uniqueness_of :transaction_memo
 
   scope :unprocessed, -> { includes(:t_transaction).where(processed_at: nil, transactions: { fee_reimbursement_id: nil }) }
-  scope :pending, -> { where.not(processed_at: nil) }
+  scope :pending, -> { includes(:t_transaction).where.not(processed_at: nil).where(transactions: { fee_reimbursement_id: nil }) }
   scope :completed, -> { includes(:t_transaction).where.not(transactions: { fee_reimbursement_id: nil }) }
-  scope :failed, -> { where('processed_at < ?', Time.now - 5.days).pending }
 
   def unprocessed?
     processed_at.nil? && t_transaction.nil?

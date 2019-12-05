@@ -111,6 +111,10 @@ class Transaction < ApplicationRecord
     self.amount > 0
   end
 
+  def potential_fee_reimbursement?
+    self.name.include?('FEE REFUND') || self.name.include?('FEE REIMBURSEMENT')
+  end
+
   private
 
   def slug_text
