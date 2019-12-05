@@ -7,7 +7,7 @@ class StaticPagesController < ApplicationController
       @events = current_user.events
       @invites = current_user.organizer_position_invites.pending
 
-      if @events.size == 1 && @invites.size == 0
+      if @events.size == 1 && @invites.size == 0 && !admin_signed_in?
         redirect_to current_user.events.first
       end
     end
