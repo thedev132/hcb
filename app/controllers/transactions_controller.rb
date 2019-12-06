@@ -75,6 +75,10 @@ class TransactionsController < ApplicationController
       if @transaction.is_event_related && @transaction.amount > 0
         @transaction.fee_relationship.fee_applies = true
       end
+
+      if @transaction.potential_fee_payment?
+        @transaction.fee_relationship.is_fee_payment = true
+      end
     end
   end
 
