@@ -208,7 +208,7 @@ GEM
       faraday_middleware
       hashie (>= 3.4.3)
     public_suffix (3.1.1)
-    puma (3.12.1)
+    puma (3.12.2)
     pundit (2.0.1)
       activesupport (>= 3.0.0)
     rack (2.0.7)
@@ -353,7 +353,7 @@ DEPENDENCIES
   pg (>= 0.18, < 2.0)
   phonelib
   plaid (~> 6.0)
-  puma (~> 3.11)
+  puma (~> 3.12)
   pundit
   rack-cors
   rails (~> 5.2.3)
