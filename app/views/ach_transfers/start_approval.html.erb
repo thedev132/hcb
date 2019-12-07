@@ -1,11 +1,14 @@
 <h1>Process ACH Transfer #<%= @ach_transfer.id %></h1>
 
+<p>Go to <%= link_to 'this ACH transfer', @ach_transfer %>.</p>
+
 <p class="bold">Steps to process ACH:</p>
 <ol>
-  <li>Check that all values below look sane</li>
-  <li>Go into SVB and fill in all the values below into the wire transfer form</li>
-  <li>Click "Submit"</li>
+  <li>Check that all values below look correct.</li>
+  <li>Go into SVB &gt; "Bill Pay" and create a new individual payee with the information below, and be sure to include the nickname.</li>
+  <li>Under Bill Pay, initiate a new ACH transfer to the new payee.</li>
   <li>Click "Process" below</li>
+  <li>Make sure that we have proper documentation and papertrail for this ACH transfer! You can <%= link_to 'attach receipts or other notes to the ACH transfer', @ach_transfer %> to keep track.</li>
 </ol>
 
 <p class="bold mb0">Submitted By</p>
@@ -14,10 +17,19 @@
   <p>(<%= link_to @ach_transfer.creator.pretty_phone_number, "tel:#{@ach_transfer.creator.phone_number}" %>, <%= mail_to @ach_transfer.creator.email %>) of <%= link_to @ach_transfer.event.name, @ach_transfer.event %></p>
 </div>
 
+<hr/>
+
+<p class="bold mb0">Payee Name</p>
+<p><%= @ach_transfer.recipient_name%></p>
+
+<p class="bold mb0">Payee Nickname</p>
+<p>HCB ACH #<%= @ach_transfer.id %></p>
+
+<p class="bold mb0">Payee Phone Number</p>
+<p><%= @ach_transfer.recipient_tel %></p>
+
 <p class="bold mb0">Bank Name</p>
-<p>
-  <%= @ach_transfer.bank_name %>
-</p>
+<p><%= @ach_transfer.bank_name %></p>
 
 <p class="bold mb0">Routing Number</p>
 <p><%= @ach_transfer.routing_number %></p>
@@ -28,4 +40,4 @@
 <p class="bold mb0">Amount</p>
 <p><%= render_money @ach_transfer.amount %></p> 
 
-<%= link_to 'Approve', ach_transfer_approve_path(@ach_transfer), method: :post, class: 'btn bg-success' %>
+<%= link_to 'Mark as approved and sent', ach_transfer_approve_path(@ach_transfer), method: :post, class: 'btn bg-success', data: {confirm: 'Mark as approved and sent?'} %>

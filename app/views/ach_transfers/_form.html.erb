@@ -7,6 +7,11 @@
   </div>
 
   <div class="field">
+    <%= form.label :recipient_tel %>
+    <%= form.text_field :recipient_tel, placeholder: '1234567890', required: true %>
+  </div>
+
+  <div class="field">
     <%= form.label :bank_name %>
     <%= form.text_field :bank_name, placeholder: 'Gringotts Wizarding Bank', required: true %>
   </div>
