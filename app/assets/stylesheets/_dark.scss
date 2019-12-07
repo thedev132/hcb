@@ -52,6 +52,10 @@ html[data-dark='true'] {
     border-bottom-color: $darkless;
   }
 
+  hr {
+      border-color: map-get($palette, slate);
+  }
+
   .menu__content,
   .menu__content > a,
   .menu__action {
