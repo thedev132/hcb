@@ -59,6 +59,20 @@ class AchTransfersController < ApplicationController
     end
   end
 
+  def reject
+    authorize @ach_transfer
+
+    if @ach_transfer.rejected?
+      flash[:error] = 'This ACH Transfer has already been rejected!'
+      redirect_to ach_transfers_path
+      return
+    end
+
+    @ach_transfer.reject!
+
+    redirect_to ach_transfers_path
+  end
+
   def start_approval
     authorize @ach_transfer
   end

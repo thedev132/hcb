@@ -8,7 +8,9 @@ class AchTransfer < ApplicationRecord
 
   has_one :t_transaction, class_name: 'Transaction', inverse_of: :ach_transfer
 
-  scope :pending, -> { where(approved_at: nil) }
+  scope :pending, -> { where(approved_at: nil, rejected_at: nil) }
+  scope :approved, -> { where.not(approved_at: nil) }
+  scope :rejected, -> { where.not(rejected_at: nil) }
 
   def self.in_transit
     select { |a| a.approved_at.present? && a.t_transaction.nil? }
@@ -23,7 +25,9 @@ class AchTransfer < ApplicationRecord
       :deposited
     elsif approved_at
       :in_transit
-    elsif approved_at.nil?
+    elsif rejected_at
+      :rejected
+    elsif pending?
       :pending
     end
   end
@@ -37,6 +41,7 @@ class AchTransfer < ApplicationRecord
     when :deposited then 'Deposited successfully'
     when :in_transit then 'In transit'
     when :pending then 'Waiting on Bank approval'
+    when :rejected then 'Rejected'
     end
   end
 
@@ -45,6 +50,7 @@ class AchTransfer < ApplicationRecord
     when :deposited then :success
     when :in_transit then :info
     when :pending then :pending
+    when :rejected then :error
     end
   end
 
@@ -53,7 +59,8 @@ class AchTransfer < ApplicationRecord
       exists: true,
       deposited: deposited?,
       in_transit: in_transit?,
-      pending: pending?
+      pending: pending?,
+      rejected: rejected?
     }
   end
 
@@ -62,11 +69,15 @@ class AchTransfer < ApplicationRecord
   end
 
   def pending?
-    approved_at.nil?
+    approved_at.nil? && rejected_at.nil?
   end
 
   def approved?
     !pending?
+  end
+
+  def rejected?
+    rejected_at.present?
   end
 
   def in_transit?
@@ -82,10 +93,19 @@ class AchTransfer < ApplicationRecord
   end
 
   def approve!
-    if approved_at != nil
-      errors.add(:ach_transfer, 'has already been approved!')
+    if !pending?
+      errors.add(:ach_transfer, 'has already been approved or rejected!')
       return false
     end
     update(approved_at: DateTime.now)
   end
+
+  def reject!
+    if !pending?
+      errors.add(:ach_transfer, 'has already been approved or rejected!')
+      return false
+    end
+    update(rejected_at: DateTime.now)
+  end
+
 end

@@ -22,9 +22,10 @@
         <td><%= ach_transfer.bank_name %></td>
         <td><%= ach_transfer.recipient_name %></td>
         <td>
-          <%= status_badge ach_transfer.state %> <%= ach_transfer.status.to_s.humanize %>
+          <%= status_badge ach_transfer.state %> <%= ach_transfer.status_text %>
         </td>
-        <td><%= (link_to 'Approve', ach_transfer_start_approval_path(ach_transfer)) if ach_transfer.approved_at.nil? %></td>
+        <td>
+        <td><%= (link_to 'Approve', ach_transfer_start_approval_path(ach_transfer)) if ach_transfer.pending? %></td>
       </tr>
     <% end %>
   </tbody>

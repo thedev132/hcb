@@ -94,6 +94,7 @@ Rails.application.routes.draw do
   resources :ach_transfers, only: [:show, :index] do
     get 'start_approval'
     post 'approve'
+    post 'reject'
 
     resources :comments
   end
