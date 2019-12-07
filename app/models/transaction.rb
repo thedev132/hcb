@@ -128,9 +128,9 @@ class Transaction < ApplicationRecord
     # that may be cached for the model and thus incorrect.
 
     # if linked to an invoice, check that invoice's event is transaction's event
-    if !invoice_payout.nil? && invoice_payout.invoice&.event != fee_relationship&.event
-      # NOTE: the coalescing operator                ^^ is to not break with historical data that
-      # no longer correctly conforms to correct schema. (InvoicePayout without Invoice)
+    if !invoice_payout.nil? && invoice_payout.invoice && invoice_payout.invoice.event != fee_relationship&.event
+      # NOTE: this extra check ^^^^^^^^^^^^^^^^^^^^^^ is to not break with historical data that
+      # no longer correctly conforms to correct schema. (InvoicePayout without Invoice) (TX ID 5467)
       errors.add(:base, "Paired invoice payout's event must match transaction's event")
     end
 
