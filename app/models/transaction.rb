@@ -121,6 +121,26 @@ class Transaction < ApplicationRecord
     self.name.include?('Bank Fee')
   end
 
+  def ensure_paired_correctly
+    # NOTE: here, we have to compare to fee_relationship&.event and not just event,
+    # because fee_relationship is the attribute directly set by a request to update
+    # and reflects the most up-to-date value of event, and just "event" is a getter
+    # that may be cached for the model and thus incorrect.
+
+    # if linked to an invoice, check that invoice's event is transaction's event
+    if !invoice_payout.nil? && invoice_payout.invoice&.event != fee_relationship&.event
+      # NOTE: the coalescing operator                ^^ is to not break with historical data that
+      # no longer correctly conforms to correct schema. (InvoicePayout without Invoice)
+      errors.add(:base, "Paired invoice payout's event must match transaction's event")
+    end
+
+    # if LCR linked, check that LCR's event is transaction's event
+    if !load_card_request.nil? && load_card_request.event != fee_relationship&.event
+      errors.add(:base, "Paired load card request's event must match transaction's event")
+      return 3
+    end
+  end
+
   private
 
   def slug_text
@@ -129,23 +149,6 @@ class Transaction < ApplicationRecord
 
   def filter_for(text)
     name&.downcase&.include? text
-  end
-
-  def ensure_paired_correctly
-    # NOTE: here, we have to compare to fee_relationship&.event and not just event,
-    # because fee_relationship is the attribute directly set by a request to update
-    # and reflects the most up-to-date value of event, and just "event" is a getter
-    # that may be cached for the model and thus incorrect.
-
-    # if linked to an invoice, check that invoice's event is transaction's event
-    if invoice_payout != nil && invoice_payout.invoice.event != fee_relationship&.event
-      errors.add(:base, "Paired invoice payout's event must match transaction's event")
-    end
-
-    # if LCR linked, check that LCR's event is transaction's event
-    if load_card_request != nil && load_card_request.event != fee_relationship&.event
-      errors.add(:base, "Paired load card request's event must match transaction's event")
-    end
   end
 
 end
