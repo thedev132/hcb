@@ -24,7 +24,7 @@
         </div>
         <div class="tools">
           <% admin_tools('flex items-center') do %>
-            <%= link_to 'Delete', account, method: :delete, data: { confirm: "Are you sure you want to delete #{account.address}?" }, class: 'btn bg-error' %>
+            <%= link_to 'Delete', account, method: :delete, data: { confirm: "Delete #{account.address}? Be sure to also delete the account in the G Suite admin panel!" }, class: 'btn bg-error' %>
           <% end %>
         </div>
       </li>
