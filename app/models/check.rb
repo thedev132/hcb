@@ -12,7 +12,7 @@ class Check < ApplicationRecord
   validates_length_of :transaction_memo, maximum: 30
   validates_uniqueness_of :transaction_memo
 
-  scope :pending, -> { where(approved_at: nil, rejected_at: nil) }
+  scope :pending, -> { where(approved_at: nil, rejected_at: nil, voided_at: nil) }
   scope :approved, -> { where.not(approved_at: nil) }
   scope :rejected, -> { where.not(rejected_at: nil) }
 
@@ -95,12 +95,8 @@ class Check < ApplicationRecord
     select { |check| check.in_transit? }
   end
 
-  # This is used to show Michael what refund transfers he needs to make
-  # basically, we're looking for checks w/o refunds that have been "pending void" for a day and aren't deposited
-  # it's a bit fucky but better than making more jobs (i think)
-  # -theo
   def self.unfinished_void
-    select { |check| !check.refunded? && !check.deposited? && check&.voided_at && check.voided_at + 1.day < DateTime.now }
+    select { |check| check.unfinished_void? }
   end
 
   def self.refunded_but_needs_match
@@ -126,7 +122,10 @@ class Check < ApplicationRecord
 
   # if a void was put in and the sum of transaction is neutral (no money lost or gained)
   def voided?
-    approved? && voided_at.present? && t_transactions.size == 4 && t_transactions.sum(&:amount) == 0 || !approved_at && voided_at
+    voided_at.present? && (
+      approved? && t_transactions.size == 4 && t_transactions.sum(&:amount) == 0 ||
+      !approved?
+    )
   end
 
   # Deposited
@@ -234,7 +233,7 @@ class Check < ApplicationRecord
       return self
     end
 
-    if pending_void?
+    if pending_void? || voided?
       return update(refunded_at: DateTime.now)
     else
       errors.add(:check, 'needs to be voided first')

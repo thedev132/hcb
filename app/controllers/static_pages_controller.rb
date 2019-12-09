@@ -15,6 +15,7 @@ class StaticPagesController < ApplicationController
       @transaction_volume = Transaction.total_volume
       @active = {
         card_requests: CardRequest.under_review.size,
+        # These don't need to be merged, as they are mutually exclusive sets
         checks: Check.pending.size + Check.unfinished_void.size,
         ach_transfers: AchTransfer.pending.size,
         pending_fees: Event.pending_fees.size,
