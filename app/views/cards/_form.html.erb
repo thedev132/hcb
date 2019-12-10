@@ -12,10 +12,6 @@
     <%= form.collection_select(:user_id, User.reorder(:email), :id, :email, prompt: 'Select user…') %>
   </div>
 
-  <% admin_tools do %>
-    <p>Copy-pastable user email: <pre><%= card.user.email %></pre></p>
-  <% end %>
-
   <div class="field">
     <%= form.label :event_id, 'Event' %>
     <%= form.collection_select(:event_id, Event.all, :id, :name, prompt: 'Select event…') %>
@@ -26,10 +22,21 @@
     <%= form.text_field :full_name %>
   </div>
 
-  <div class="field">
-    <%= form.label :address, 'Shipping/billing address' %>
-    <%= form.text_area :address %>
-  </div>
+  <%= form.hidden_field :address %>
+
+  <% admin_tools('mb1') do %>
+    <p>User email <input type="text" disabled="disabled" value="<%= card.user.email %>"></p>
+    <% if @card_request %>
+      <p>
+        Address fields
+        <input type="text" disabled="disabled" value="<%= @card_request.shipping_address_street_one %>">
+        <input type="text" disabled="disabled" value="<%= @card_request.shipping_address_street_two %>">
+        <input type="text" disabled="disabled" value="<%= @card_request.shipping_address_city %>">
+        <input type="text" disabled="disabled" value="<%= @card_request.shipping_address_state %>">
+        <input type="text" disabled="disabled" value="<%= @card_request.shipping_address_zip %>">
+      </p>
+    <% end %>
+  <% end %>
 
   <div class="field">
     <%= form.label :emburse_id, 'Emburse ID' %>

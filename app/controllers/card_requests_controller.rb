@@ -100,6 +100,17 @@ class CardRequestsController < ApplicationController
 
   # Only allow a trusted parameter "white list" through.
   def card_request_params
-    params.require(:card_request).permit(:shipping_address, :full_name, :rejected_at, :accepted_at, :notes, :event_id)
+    params.require(:card_request).permit(
+      :shipping_address_street_one,
+      :shipping_address_street_two,
+      :shipping_address_city,
+      :shipping_address_state,
+      :shipping_address_zip,
+      :full_name,
+      :rejected_at,
+      :accepted_at,
+      :notes,
+      :event_id,
+    )
   end
 end

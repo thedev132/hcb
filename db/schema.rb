@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_07_064127) do
+ActiveRecord::Schema.define(version: 2019_12_09_231112) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
@@ -80,6 +80,11 @@ ActiveRecord::Schema.define(version: 2019_12_07_064127) do
     t.datetime "canceled_at"
     t.text "notes"
     t.bigint "card_id"
+    t.string "shipping_address_street_one"
+    t.string "shipping_address_street_two"
+    t.string "shipping_address_city"
+    t.string "shipping_address_state"
+    t.string "shipping_address_zip"
     t.index ["card_id"], name: "index_card_requests_on_card_id"
     t.index ["creator_id"], name: "index_card_requests_on_creator_id"
     t.index ["event_id"], name: "index_card_requests_on_event_id"

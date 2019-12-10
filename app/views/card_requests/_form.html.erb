@@ -28,9 +28,31 @@
     <%= form.text_field :full_name, value: card_request.full_name || current_user.full_name %>
   </div>
 
+  <h3>Shipping address</h3>
+
   <div class="field">
-    <%= form.label :shipping_address, 'Shipping address (with city, state, + zip code)' %>
-    <%= form.text_area :shipping_address, placeholder: "1600 Pennsylvania Ave NW\nWashington, DC 20500" %>
+    <%= form.label :shipping_address_street_one, 'Address line 1' %>
+    <%= form.text_field :shipping_address_street_one, required: true, placeholder: "1600 Pennsylvania Ave NW" %>
+  </div>
+
+  <div class="field">
+    <%= form.label :shipping_address_street_two, 'Address line 2' %>
+    <%= form.text_field :shipping_address_street_two, required: false, placeholder: "Suite 39" %>
+  </div>
+
+  <div class="field">
+    <%= form.label :shipping_address_city, 'City' %>
+    <%= form.text_field :shipping_address_city, required: true, placeholder: "Washington" %>
+  </div>
+
+  <div class="field">
+    <%= form.label :shipping_address_state, 'State / Territory / Region' %>
+    <%= form.text_field :shipping_address_state, required: true, placeholder: "DC" %>
+  </div>
+
+  <div class="field">
+    <%= form.label :shipping_address_zip, 'Postal code' %>
+    <%= form.text_field :shipping_address_zip, required: true, placeholder: "20500" %>
   </div>
 
   <div class="actions">

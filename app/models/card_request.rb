@@ -7,7 +7,7 @@ class CardRequest < ApplicationRecord
   belongs_to :card, required: false
   has_many :comments, as: :commentable
 
-  validates :full_name, :shipping_address, presence: true
+  validates :full_name, presence: true
   validates :full_name, length: { maximum: 21 }
   validate :status_accepted_canceled_or_rejected
 
@@ -32,6 +32,20 @@ class CardRequest < ApplicationRecord
     return :muted if s == :canceled
 
     :pending
+  end
+
+  def shipping_address_full
+    # NOTE: when HCB was first written, CardRequest had a single field for
+    # address. We later switched to a more structured address format
+    # (street_one, street_two, city, state, zip) but this method wraps both
+    # for backwards compatibility.
+    if shipping_address.blank?
+      "#{shipping_address_street_one}\n#{
+        shipping_address_street_two ? shipping_address_street_two + "\n" : ''
+      }#{shipping_address_city}, #{shipping_address_state} #{shipping_address_zip}"
+    else
+      shipping_address
+    end
   end
 
   def under_review?

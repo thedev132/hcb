@@ -21,7 +21,7 @@ class CardsController < ApplicationController
       event: @card_request.event,
       user_id: @card_request.creator_id,
       full_name: @card_request.full_name,
-      address: @card_request.shipping_address,
+      address: @card_request.shipping_address_full,
       card_request: @card_request
     )
     authorize @card
