@@ -103,7 +103,7 @@ class SyncTransactionsJob < ApplicationJob
       if transaction.name.include? check.transaction_memo
         return unless transaction.amount == check.amount
 
-        check.t_transaction = transaction
+        transaction.check = check
 
         transaction.fee_relationship = FeeRelationship.new(
           event_id: check.event.id,
