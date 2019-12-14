@@ -7,6 +7,7 @@
 //= require turbolinks
 //= require activestorage
 //= require local-time
+//= require tilt.jquery.min.js
 
 //= require global
 //= require ui

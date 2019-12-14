@@ -16,12 +16,12 @@
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.25);
   transition: 0.25s ease-out all;
   transform: scale(1);
+  transform-style: preserve-3d;
 
   &:focus,
   &:hover {
     box-shadow: 0 6px 12px 0 rgba(0, 0, 0, 0.25),
       0 18px 36px 0 rgba(0, 0, 0, 0.25);
-    transform: scale(1.0625);
   }
 
   &:before {
@@ -31,16 +31,19 @@
     background: #{image-url('emburse.svg')} no-repeat;
     background-size: 100%;
     flex: 1 1 auto;
+    transform: translateZ(20px);
   }
 }
 
 .emburse-card__name {
   text-transform: uppercase;
   font-weight: bold;
+  transform: translateZ(20px);
 }
 
 .emburse-card__number {
   color: rgba(255, 255, 255, 0.5);
+  transform: translateZ(20px);
 
   strong {
     font-size: 1.5rem;

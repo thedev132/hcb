@@ -157,3 +157,24 @@ $(document).on 'turbolinks:load', ->
     # Close popover menus on esc
     if e.keyCode is 27 and $(BK.openMenuSelector).length > 0
       BK.toggleMenu $(BK.openMenuSelector)
+
+  tiltElement = $('[data-behavior~=hover_tilt]')
+  enableTilt = ->
+    tiltElement.tilt
+      maxTilt: 15
+      speed: 400
+      perspective: 1500
+      glare: true
+      maxGlare: .25
+      scale: 1.0625
+  disableTilt = ->
+    tiltElement.tilt.destroy.call(tiltElement)
+  setTilt = ->
+    if window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      disableTilt()
+    else
+      enableTilt()
+  setTilt()
+  window.matchMedia('(prefers-reduced-motion: reduce)').addListener -> 
+    setTilt()
+

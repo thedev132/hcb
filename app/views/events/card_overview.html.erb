@@ -62,7 +62,7 @@ West Hollywood, CA 90069</pre>
     <% @event.cards.each do |card| %>
       <%= link_to card do %>
         <%= creator_bar card, prefix: 'issued ' %>
-        <div class="emburse-card">
+        <div class="emburse-card" data-behavior="hover_tilt">
           <p class="emburse-card__number">
             <span>XXXX-XXXX-XXXX-</span><strong><%= card.last_four %></strong>
           </p>
