@@ -42,7 +42,6 @@
 
 // Circular button
 .pop {
-  background-color: $white;
   border-radius: 18px;
   color: $blue6;
   background-color: $blue0;
@@ -51,7 +50,6 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  letter-spacing: -0.1em;
   font-size: 0.875rem;
   height: 36px;
   width: 36px;
@@ -77,16 +75,15 @@
     background-color: $gray1;
   }
 }
-summary.pop {
-  &::-webkit-details-marker {
-    display: none;
-  }
+summary.pop::-webkit-details-marker {
+  display: none;
 }
 .card > .pop:first-child {
   position: relative;
   left: 50%;
   transform: translateX(-50%);
   margin-bottom: 1rem;
+
   @media (min-width: 32em) {
     position: absolute;
     margin: 1rem;

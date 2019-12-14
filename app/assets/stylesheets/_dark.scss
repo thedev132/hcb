@@ -126,7 +126,6 @@ html[data-dark='true'] {
   .dock__card span,
   a > .card {
     color: map-get($palette, smoke) !important;
-    white-space: nowrap;
   }
 
   .card__darker {
@@ -173,6 +172,7 @@ html[data-dark='true'] {
     background-color: rgba(map-get($palette, error), 0.75);
   }
 
+  .filterbar__item:active,
   .filterbar__item[aria-selected='true'],
   .badge {
     color: map-get($palette, primary);
@@ -198,6 +198,7 @@ html[data-dark='true'] {
     color: $yellow3;
   }
 
+  .filterbar__item:active,
   .filterbar__item[aria-selected='true'],
   .badge {
     background-color: rgba(map-get($palette, primary), 0.125);
