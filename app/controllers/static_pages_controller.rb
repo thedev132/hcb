@@ -62,6 +62,9 @@ class StaticPagesController < ApplicationController
     qtr_ago = now - 3.month
     month_ago = now - 1.month
 
+    # NOTE: These stats are consumed by the hackclub/goblin
+    # slack bot, and modifying the JSON schema without updating the bot
+    # MAY BREAK THE BOT. - @thesephist
     render json: {
       transactions_volume: Transaction.total_volume,
       transactions_count: Transaction.all.size,
