@@ -53,7 +53,7 @@ html[data-dark='true'] {
   }
 
   hr {
-      border-color: map-get($palette, slate);
+    border-color: map-get($palette, black);
   }
 
   .menu__content,
@@ -71,6 +71,7 @@ html[data-dark='true'] {
     border: 0;
   }
 
+  .retrofees,
   .card,
   .modal {
     background-color: $darkless;
