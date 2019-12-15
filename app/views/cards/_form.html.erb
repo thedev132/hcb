@@ -25,16 +25,18 @@
   <%= form.hidden_field :address %>
 
   <% admin_tools('mb1') do %>
-    <p>User email <input type="text" disabled="disabled" value="<%= card.user.email %>"></p>
+    <p class="mt0">User email <input type="text" disabled="disabled" value="<%= card.user.email %>"></p>
     <% if @card_request %>
-      <p>
+      <div class="mb1">
         Address fields
         <input type="text" disabled="disabled" value="<%= @card_request.shipping_address_street_one %>">
         <input type="text" disabled="disabled" value="<%= @card_request.shipping_address_street_two %>">
         <input type="text" disabled="disabled" value="<%= @card_request.shipping_address_city %>">
-        <input type="text" disabled="disabled" value="<%= @card_request.shipping_address_state %>">
-        <input type="text" disabled="disabled" value="<%= @card_request.shipping_address_zip %>">
-      </p>
+        <div class="flex mt0">
+          <input type="text" disabled="disabled" value="<%= @card_request.shipping_address_state %>">
+          <input type="text" disabled="disabled" value="<%= @card_request.shipping_address_zip %>">
+        </div>
+      </div>
     <% end %>
   <% end %>
 

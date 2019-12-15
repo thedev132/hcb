@@ -25,10 +25,20 @@
 
   <div class="field">
     <%= form.label :full_name, 'Full name (as will appear on card)' %>
-    <%= form.text_field :full_name, value: card_request.full_name || current_user.full_name %>
+    <%= form.text_field :full_name, value: card_request.full_name || current_user.full_name, :readonly => true, :disabled => true %>
   </div>
 
-  <h3>Shipping address</h3>
+  <p>
+    Issuing a card for another team member?
+    <%= link_to 'Invite them to Hack Club Bank', event_team_path(card_request.event) %>,
+    and ask them to issue a card from their account.
+  </p>
+
+  <hr/>
+
+  <h3 class="mb1">Shipping address</h3>
+
+  <p>We'll send you card to this address.</p>
 
   <div class="field">
     <%= form.label :shipping_address_street_one, 'Address line 1' %>
@@ -45,15 +55,18 @@
     <%= form.text_field :shipping_address_city, required: true, placeholder: "Washington" %>
   </div>
 
-  <div class="field">
-    <%= form.label :shipping_address_state, 'State / Territory / Region' %>
-    <%= form.text_field :shipping_address_state, required: true, placeholder: "DC" %>
+  <div class="flex">
+    <div class="field">
+      <%= form.label :shipping_address_state, 'State / Region' %>
+      <%= form.text_field :shipping_address_state, required: true, placeholder: "DC" %>
+    </div>
+
+    <div class="field ml1">
+      <%= form.label :shipping_address_zip, 'Postal code' %>
+      <%= form.text_field :shipping_address_zip, required: true, placeholder: "20500" %>
+    </div>
   </div>
 
-  <div class="field">
-    <%= form.label :shipping_address_zip, 'Postal code' %>
-    <%= form.text_field :shipping_address_zip, required: true, placeholder: "20500" %>
-  </div>
 
   <div class="actions">
     <%= form.submit 'Send this card' %>
