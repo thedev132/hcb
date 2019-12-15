@@ -40,7 +40,7 @@ class Transaction < ApplicationRecord
   after_create :notify_admin
 
   def self.total_volume
-    self.sum('@amount')
+    self.sum('@amount').to_i
   end
 
   def self.during(start_time, end_time)
@@ -48,7 +48,7 @@ class Transaction < ApplicationRecord
   end
 
   def self.volume_during(start_time, end_time)
-    self.during(start_time, end_time).sum('@amount')
+    self.during(start_time, end_time).sum('@amount').to_i
   end
 
   def self.raised_during(start_time, end_time)
@@ -61,7 +61,7 @@ class Transaction < ApplicationRecord
         },
     )
 
-    raised_during.sum(:amount)
+    raised_during.sum(:amount).to_i
   end
 
   def self.revenue_during(start_time, end_time)
@@ -75,7 +75,7 @@ class Transaction < ApplicationRecord
     )
 
     # revenue for Bank is expense for Events
-    -fees_during.sum(:amount)
+    -fees_during.sum(:amount).to_i
   end
 
   delegate :url_helpers, to: 'Rails.application.routes'
