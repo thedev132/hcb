@@ -1,6 +1,6 @@
 class StaticPagesController < ApplicationController
   skip_after_action :verify_authorized # do not force pundit
-  skip_before_action :signed_in_user, only: [:stats, :branding]
+  skip_before_action :signed_in_user, only: [:stats, :branding, :faq]
 
   def index
     if signed_in?
@@ -43,6 +43,9 @@ class StaticPagesController < ApplicationController
       { name: 'Outlined White', criteria: 'For black or dark colored backgrounds.', background: 'black' }
     ]
     @event_name = signed_in? && current_user.events.first ? current_user.events.first.name : 'Hack Pennsylvania'
+  end
+
+  def faq
   end
 
   def negative_events

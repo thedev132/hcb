@@ -1,0 +1,75 @@
+<% title 'FAQ - Hack Club Bank' %>
+
+<div class="container container--md">
+  <h1>
+    FAQ
+    <span class="muted h3 regular sans block">
+      Frequently Asked Questions about Hack Club Bank
+    </span>
+  </h1>
+
+  <ul class="list-reset">
+    <li class="mb3">
+      <details open>
+        <summary class="cursor-pointer">
+          <h3 class="inline mb1">I'm working on something that's not a hackathon. Can I use Hack Club Bank?</h3>
+        </summary>
+        <article>
+          <p>
+          Yes! Hack Club Bank started as a tool for hackathon organizers, but today, we support
+          a spectrum of events related to science, technology, and entrepreneurship education. Chances are,
+          you'll be able to use Hack Club Bank!
+          </p>
+        </article>
+      </details>
+    </li>
+
+    <li class="mb3">
+      <details open>
+        <summary class="cursor-pointer">
+          <h3 class="inline mb1">I need to deposit a paper check to my Hack Club Bank account. What should I do?</h3>
+        </summary>
+        <article>
+          <p>
+          Hack Club Bank accepts paper checks! Just mail the check to our billing address,
+          <strong>8605 Santa Monica Blvd #86294, West Hollywood, CA 90069</strong>. Be sure to label
+          the envelope or the check's memo with the name of your event or organization, so we can make sure
+          that you receive the funds.
+          </p>
+        </article>
+      </details>
+    </li>
+
+    <li class="mb3">
+      <details open>
+        <summary class="cursor-pointer">
+          <h3 class="inline mb1">A sponsor is asking for our tax ID or employer number. Where can I find it?</h3>
+        </summary>
+        <article>
+          <p>
+          Hack Club Bank's nonprofit status comes from Hack Club, also known as The Hack Foundation. Our EIN, which is
+          the same as our tax ID, is <strong>81-2908499</strong>.
+          </p>
+        </article>
+      </details>
+    </li>
+
+    <li class="mb3">
+      <details open>
+        <summary class="cursor-pointer">
+          <h3 class="inline mb1">I have a question that isn't listed here.</h3>
+        </summary>
+        <article>
+          <p>
+          That's... not really a question. But you can email
+          <%= mail_to 'bank@hackclub.com', class: 'info' do %>bank@hackclub.com<% end %>
+          with all your questions about Hack Club Bank. If we get it often, we'll also
+          add your question to this FAQ page!
+          </p>
+        </article>
+      </details>
+    </li>
+  </ul>
+
+
+</div>

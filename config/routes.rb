@@ -121,6 +121,7 @@ Rails.application.routes.draw do
 
   get 'pending_fees', to: 'static_pages#pending_fees'
   get 'branding', to: 'static_pages#branding'
+  get 'faq', to: 'static_pages#faq'
 
   resources :card_requests, path: 'card_requests' do
     post 'reject'
