@@ -3,12 +3,99 @@
 <%= render 'events/nav' %>
 
 <h1 class="heading">
-  Promotions
+  Promotions &amp; Perks
 </h1>
 
-<ul class="grid grid--spacious">
-	<div class="promotion promotion--stickermule flex justify-between">
-		<%= image_tag 'stickermule.svg', width: 300, class: 'promotion--stickermule__logo' %>
-		<a class="btn bg-success" href="/mahacks/ach_transfers/new">Apply</a>
-	</div>
-</ul>
+<div class="card card--hover mb3">
+  <div class="card__banner card__banner--top flex justify-between items-center" style="background-color:#eee">
+    <%= image_tag 'github.png', width: 170, class: 'ml1' %>
+    <a class="btn bg-success mr1" href="https://hack.af/grant">Apply</a>
+  </div>
+
+  <p>
+  GitHub is supporting hackathons on Hack Club Bank with up to $500 in grants, growing with attendance.
+  Be sure to include GitHub in your list of sponsors or sponsor logos for your event!
+  </p>
+
+  <h3 class="mb0">Hackathons</h3>
+  <table>
+    <tr>
+      <th>Attendees</th>
+      <th>Credit</th>
+    </tr>
+    <tr>
+      <td>Up to 50</td>
+      <td>$100</td>
+    </tr>
+    <tr>
+      <td>Up to 200</td>
+      <td>$250</td>
+    </tr>
+    <tr>
+      <td>Above 200</td>
+      <td>$500</td>
+    </tr>
+  </table>
+</div>
+
+<div class="card card--hover mb3">
+  <div class="card__banner card__banner--top flex justify-between items-center" style="background-color:#4E2817">
+    <%= image_tag 'stickermule.svg', width: 240 %>
+    <a class="btn bg-success mr1" href="https://hack.af/stickermule">Apply</a>
+  </div>
+
+  <p>
+  Hack Club Bank is working with Sticker Mule to make up to $400 of Sticker Mule credits
+  available to hackathons and clubs on Hack Club Bank, growing with attendance for hackathons.
+  </p>
+
+  <div class="grid grid-spacious">
+    <div class="mr1">
+      <h3 class="mb0">Hack Clubs</h3>
+      <table>
+        <tr>
+          <th>Tier</th>
+          <th>Credit</th>
+        </tr>
+        <tr>
+          <td>Base</td>
+          <td>$20</td>
+        </tr>
+        <tr>
+          <td>With logo on website*</td>
+          <td>$200</td>
+        </tr>
+      </table>
+    </div>
+    <div>
+      <h3 class="mb0">Hackathons</h3>
+      <table>
+        <tr>
+          <th>Attendees</th>
+          <th>Credit</th>
+        </tr>
+        <tr>
+          <td>Base</td>
+          <td>$50</td>
+        </tr>
+        <tr>
+          <td>Up to 100*</td>
+          <td>$100</td>
+        </tr>
+        <tr>
+          <td>Up to 200*</td>
+          <td>$200</td>
+        </tr>
+        <tr>
+          <td>Up to 400*</td>
+          <td>$400</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <p>
+  * To qualify for these tiers, add the Sticker Mule logo to your club website
+  that links back to <a href="https://www.stickermule.com" target="_blank">stickermule.com</a>,
+  and to any other materials like hackathon T-shirts.
+  </p>
+</div>

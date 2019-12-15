@@ -30,9 +30,7 @@
         <hr />
       <% end %>
       <%= link_to 'G Suite', event_g_suite_overview_path(event_id: @event.slug) %>
-      <% if @event.beta_features_enabled %>
-        <%= link_to 'Promotions', event_promotions_path(event_id: @event.slug) %>
-      <% end %>
+      <%= link_to 'Promotions & perks', event_promotions_path(event_id: @event.slug) %>
       <%= link_to 'Make reimbursements', event_reimbursements_path(event_id: @event.slug) %>
       <%= link_to 'Documents', event_documents_path(event_id: @event.slug) %>
     </div>
