@@ -5,7 +5,7 @@ class ChecksController < ApplicationController
   # GET /checks
   def index
     authorize Check
-    @checks = Check.all
+    @checks = Check.all.order(created_at: :desc)
   end
 
   def export
