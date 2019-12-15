@@ -50,12 +50,39 @@ class StaticPagesController < ApplicationController
   end
 
   def stats
+    events_list = []
+    Event.order(created_at: :desc).limit(10).each { |event|
+      events_list.push({
+        created_at: event.created_at.to_i, # unix timestamp
+      })
+    }
+
+    now = DateTime.current
+    year_ago = now - 1.year
+    qtr_ago = now - 3.month
+    month_ago = now - 1.month
+
     render json: {
       transactions_volume: Transaction.total_volume,
       transactions_count: Transaction.all.size,
       events_count: Event.all.size,
-      # card_transactions_volume: EmburseTransaction.total_card_transaction_volume,
-      # card_transactions_count: EmburseTransaction.total_card_transaction_count
+      raised: Transaction.raised_during(DateTime.strptime('0', '%s'), now),
+      last_year: {
+        transactions_volume: Transaction.volume_during(year_ago, now),
+        revenue: Transaction.revenue_during(year_ago, now),
+        raised: Transaction.raised_during(year_ago, now),
+      },
+      last_qtr: {
+        transactions_volume: Transaction.volume_during(qtr_ago, now),
+        revenue: Transaction.revenue_during(qtr_ago, now),
+        raised: Transaction.raised_during(qtr_ago, now),
+      },
+      last_month: {
+        transactions_volume: Transaction.volume_during(month_ago, now),
+        revenue: Transaction.revenue_during(month_ago, now),
+        raised: Transaction.raised_during(month_ago, now),
+      },
+      events: events_list,
     }
   end
 end

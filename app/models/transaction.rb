@@ -43,6 +43,41 @@ class Transaction < ApplicationRecord
     self.sum('@amount')
   end
 
+  def self.during(start_time, end_time)
+    self.where(["transactions.created_at > ? and transactions.created_at < ?", start_time, end_time])
+  end
+
+  def self.volume_during(start_time, end_time)
+    self.during(start_time, end_time).sum('@amount')
+  end
+
+  def self.raised_during(start_time, end_time)
+    raised_during = self.during(start_time, end_time)
+      .includes(:fee_relationship)
+      .where(
+        is_event_related: true,
+        fee_relationships: {
+          fee_applies: true,
+        },
+    )
+
+    raised_during.sum(:amount)
+  end
+
+  def self.revenue_during(start_time, end_time)
+    fees_during = self.during(start_time, end_time)
+      .includes(:fee_relationship)
+      .where(
+        is_event_related: true,
+        fee_relationships: {
+          is_fee_payment: true,
+        },
+    )
+
+    # revenue for Bank is expense for Events
+    -fees_during.sum(:amount)
+  end
+
   delegate :url_helpers, to: 'Rails.application.routes'
   def link
     host = Rails.application.config.action_mailer.default_url_options[:host]
