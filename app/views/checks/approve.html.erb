@@ -1,22 +1,41 @@
 <% page_md %>
 
-<h1>Check - <%= @check.description %></h1>
+<h1>Approved check</h1>
 
-<p>Make this transfer from the fiscal sponsorship account into Hack Club’s</p>
+<p>Approved a check for <%= @check.description %></p>
+
+<h2>At our primary Fiscal Sponsorship bank (Silicon Valley Bank)</h2>
+
+<p>Make this transfer:</p>
+
 <p>
-  <strong>Amount</strong>
-  <%= render_money @check.amount %>
+  <strong>From account:</strong> Fiscal Sponsorship account (x7027)
+</p>
+<p>
+  <strong>To account:</strong> Hack Club account (x0703)
+</p>
+<p>
+  <strong>Amount:</strong> <%= render_money @check.amount %>
+</p>
+<p>
+  <strong>Transaction Memo:</strong> <%= @check.transaction_memo %>
 </p>
 
+<h2>At the Positive Pay account (First Republic Bank)</h2>
+
+<p>Make this transfer:</p>
+
 <p>
-  <strong>Transaction Memo</strong>
-  <%= @check.transaction_memo %>
+  <strong>From account:</strong> Hack Club account (x9524)
+</p>
+<p>
+  <strong>To account:</strong> Hack Club Positive Pay account (x5667)
+</p>
+<p>
+  <strong>Amount:</strong> <%= render_money @check.amount %>
+</p>
+<p>
+  <strong>Transaction Memo:</strong> <%= @check.transaction_memo %>
 </p>
 
-<p>Make this transfer from Hack Club's account at FRB into the positive pay FRB account</p>
-<p>
-  <strong>Amount</strong>
-  <%= render_money @check.amount %>
-</p>
-
-<%= link_to 'Back', checks_path %>
+<%= link_to 'Mark as processed', checks_path, class: 'btn', data: {confirm: 'Mark check as processed?'} %>

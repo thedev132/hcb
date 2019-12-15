@@ -1,7 +1,13 @@
 <h1 class="heading">
   Checks
-  <%= link_to 'Export for FRB', export_checks_path, class: 'btn bg-info', data: {confirm: 'Export checks CSV for bank?'} %>
+  <%= link_to 'Export I/V CSV for FRB', export_checks_path, class: 'btn bg-info', data: {confirm: 'Export checks CSV? This is a one-time operation.'} %>
 </h1>
+
+<p>After you're done approving checks:</p>
+<ol>
+  <li>Export the CSV from above.</li>
+  <li>Go to <strong>FRB &gt; Positive Pay &gt; Imports &gt; Run imports</strong> and upload the CSV under <strong>"Hack Club Positive Pay Import"</strong> format.</li>
+</ol>
 
 <table>
   <thead>
