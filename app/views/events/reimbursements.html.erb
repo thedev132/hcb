@@ -1,0 +1,117 @@
+<% title "Reimbursements for #{@event.name}" %>
+<% page_md %>
+<%= render 'events/nav' %>
+
+
+<h1 class="heading">
+  Make reimbursements
+</h1>
+
+<div class="mb4">
+  <p>
+    Hack Club Bank currently uses a service called
+    <a class="info" href="https://www.expensify.com" target="_blank">Expensify</a>
+    to streamline your reimbursement process. Expensify allows
+    you to upload receipts and receive reimbursements back
+    into their bank account 🏦.
+  </p>
+
+  <p>
+    Get in touch with your point of contact
+    <strong><%= @event.point_of_contact.full_name %></strong> at
+    <%= mail_to @event.point_of_contact.email, class: 'inline' do %>
+      <%= @event.point_of_contact.email %>
+    <% end %>
+    with the email of the person to be reimbursed, and they'll be invited
+    to Expensify to upload their receipts.
+  </p>
+</div>
+
+<h2 class="mb2">Expensify FAQ</h2>
+
+<ul class="list-reset">
+  <li class="mb3">
+    <details open>
+      <summary class="inline-block cursor-pointer">
+        <strong>What happens when someone's invited to Expensify?</strong>
+      </summary>
+      <article>
+        <p>
+        We'll invite whoever needs to be reimbursed (let's call them "Max") to Expensify through their email.
+        When Max receives the email, they'll make an account or log into Expensify, where they can upload their
+        receipts as "expenses," and submit their expenses in a "Report."
+        </p>
+        <p>
+        When Max submits a report, your point of contact will receive it, make sure that the numbers make sense,
+        and approve the reimbursement. Max will get a couple of emails letting them know that the expense was approved,
+        and the reimbursement is on their way.
+        </p>
+        <p>
+        To receive the reimbursement, Max will need to connect their bank account with Expensify. They'll need to do it
+        only once, and for future reimbursements, the funds will arrive into their bank account within a few days.
+        </p>
+      </article>
+    </details>
+  </li>
+
+  <li class="mb3">
+    <details>
+      <summary class="inline-block cursor-pointer">
+        <strong>Can I just send them a check or direct deposit?</strong>
+      </summary>
+      <article>
+        <p>
+        Usually, no. We ask that you make all reimbursements through Expensify on Hack Club Bank, because Expensify makes it
+        easy for us as a nonprofit to keep track of receipts and expenses in an auditable way.
+        </p>
+        <p>
+        If you think you have an exceptional case where using Expensify isn't sensible, feel free to get in touch with
+        your point of contact!
+        </p>
+      </article>
+    </details>
+  </li>
+
+  <li class="mb3">
+    <details>
+      <summary class="inline-block cursor-pointer">
+        <strong>Does the reimbursement come out of my account balance, or my card balance?</strong>
+      </summary>
+      <article>
+        <p>
+        Reimbursements from Expensify draw money from your account balance, where you currently have
+        <strong><%= render_money @event.balance %></strong>.
+        </p>
+      </article>
+    </details>
+  </li>
+
+  <li class="mb3">
+    <details>
+      <summary class="inline-block cursor-pointer">
+        <strong>How long does it take to be reimbursed?</strong>
+      </summary>
+      <article>
+        <p>
+        If the reimbursee has a bank account connected to Expensify, they'll receive the reimbursement within a few days of
+        its approval. If they need to connect their bank account to Expensify, that may take a couple of extra days at most.
+        </p>
+      </article>
+    </details>
+  </li>
+
+  <li class="mb3">
+    <details>
+      <summary class="inline-block cursor-pointer">
+        <strong>Can I reimburse someone for a part of an expense?</strong>
+      </summary>
+      <article>
+        <p>
+        Yep! When you submit your receipts to get reimbursed on Expensify, just make sure to make the expense amount the
+        partial reimbursement amount rather than the full expense, and add a note there that it's a partial reimbursement.
+        </p>
+      </article>
+    </details>
+  </li>
+</ul>
+

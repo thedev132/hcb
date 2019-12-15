@@ -50,4 +50,8 @@ class EventPolicy < ApplicationPolicy
   def promotions?
     user.admin? || record.users.include?(user)
   end
+
+  def reimbursements?
+    user.admin? || record.users.include?(user)
+  end
 end

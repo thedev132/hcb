@@ -7,11 +7,20 @@
 
   <div class="flex items-center justify-center ml0 md-ml-auto mt1 md-mt0">
     <div class="flex items-center justify-center">
-      <%= link_to 'Send a Check', new_event_check_path(@event), class: 'btn bg-success mr1' %>
-      <%= link_to 'Make ACH Transfer', new_event_ach_transfer_path(@event), class: 'btn bg-info' %>
+      <%= link_to 'Send a check', new_event_check_path(@event), class: 'btn bg-success mr1' %>
+      <%= link_to 'Send direct deposit', new_event_ach_transfer_path(@event), class: 'btn bg-info' %>
     </div>
   </div>
 </h1>
+
+<div class="flex items-center info">
+  <%= inline_icon 'important', size: 32, class: 'mr1' %>
+  <div class="info">
+    Making a reimbursement to someone? Checks aren't for reimbursements, but visit the
+    <%= link_to 'reimbursements page', event_reimbursements_path(@event), class: 'info' %>
+    to learn how.
+  </div>
+</div>
 
 <ul class="grid grid--spacious">
   <% if @transfers.size == 0 %>

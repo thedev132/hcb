@@ -6,11 +6,7 @@
 <h1 class="heading center flex-column mt2">
   <span class="flex items-center">
     <% if admin_signed_in? %>
-      <span
-        class="badge bg-warning ml0 mr2"
-        onclick="alert(`Date: <%= @event.start.to_date %>–<%= @event.end.to_date %>
-Address: <%= @event.address %>
-Sponsorship fee: <%= render_percentage @event.sponsorship_fee %>`)">
+      <span class="badge bg-warning ml0 mr2">
         #<%= @event.id %>
       </span>
     <% end %>

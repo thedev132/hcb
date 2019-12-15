@@ -16,8 +16,8 @@
     'Request and manage cards for your team.',
     'card', 'accent',
     event_cards_overview_path(event_id: @event.slug) %>
-  <%= dock_card 'Send money',
-    'Send checks and ACH transfers.',
+  <%= dock_card 'Send',
+    'Send money from Hack Club Bank.',
     'transactions', 'success',
     event_transfers_path(event_id: @event.slug) %>
   <div class="md-pl1">
@@ -33,6 +33,7 @@
       <% if @event.beta_features_enabled %>
         <%= link_to 'Promotions', event_promotions_path(event_id: @event.slug) %>
       <% end %>
+      <%= link_to 'Make reimbursements', event_reimbursements_path(event_id: @event.slug) %>
       <%= link_to 'Documents', event_documents_path(event_id: @event.slug) %>
     </div>
     </action>

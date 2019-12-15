@@ -131,6 +131,11 @@ class EventsController < ApplicationController
     authorize @event
   end
 
+  def reimbursements
+    @event = Event.find(params[:event_id])
+    authorize @event
+  end
+
   private
 
   # Use callbacks to share common setup or constraints between actions.

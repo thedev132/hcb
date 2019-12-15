@@ -152,6 +152,7 @@ Rails.application.routes.draw do
     get 'cards', to: 'events#card_overview', as: :cards_overview
     get 'transfers', to: 'events#transfers', as: :transfers
     get 'promotions', to: 'events#promotions', as: :promotions
+    get 'reimbursements', to: 'events#reimbursements', as: :reimbursements
     resources :checks, only: [:new, :create]
     resources :ach_transfers, only: [:new, :create]
     resources :organizer_position_invites,
