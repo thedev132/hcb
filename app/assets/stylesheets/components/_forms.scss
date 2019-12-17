@@ -24,8 +24,19 @@ textarea {
   width: 100%;
   max-width: 24rem;
 
+  .card & {
+    background-color: $gray1;
+    border-color: transparent;
+  }
+
   &:focus {
     border-color: $base;
+  }
+
+  &[readonly],
+  &[disabled] {
+    cursor: no-drop;
+    color: map-get($palette, slate);
   }
 }
 
@@ -104,6 +115,7 @@ input[type='search']::-webkit-search-decoration {
 
 label {
   display: block;
+  color: map-get($palette, slate);
 }
 
 $select: image-url('select.svg');

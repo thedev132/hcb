@@ -24,14 +24,24 @@
         </div>
         <div class="tools">
           <% admin_tools('flex items-center') do %>
-            <%= link_to 'Delete', account, method: :delete, data: { confirm: "Delete #{account.address}? Be sure to also delete the account in the G Suite admin panel!" }, class: 'btn bg-error' %>
+            <%= link_to 'Delete', account, method: :delete,
+              data: { confirm: "Delete #{account.address}? Be sure to also delete the account in the G Suite admin panel!" },
+              class: 'btn bg-error'
+            %>
           <% end %>
         </div>
       </li>
     <% end %>
   </ul>
+
   <% if one_has_password? @g_suite.accounts %>
-    <p>Sign in to your active account with the one-time password emailed to your backup address.</p>
+    <div class="flex items-center info">
+      <%= inline_icon 'important', size: 32, class: 'mr1' %>
+      <p class="info mt0 mb0">
+        Need to deactivate G Suite accounts? Talk to your point of contact,
+        <%= @g_suite.event.point_of_contact.full_name %>.
+      </p>
+    </div>
   <% end %>
 <% end %>
 
