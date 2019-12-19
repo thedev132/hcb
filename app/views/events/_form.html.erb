@@ -10,6 +10,10 @@
     <%= form.text_area :address %>
   </div>
 
+  <% if event.beta_features_enabled %>
+    <%= link_to 'Give this link to other people if they want to donate to you', start_donation_donations_path(event.slug) %>
+  <% end %>
+
   <h3 class="mb1">Danger Zone</h3>
   <div class="card border b--warning mb3">
     <div class="flex items-center warning">

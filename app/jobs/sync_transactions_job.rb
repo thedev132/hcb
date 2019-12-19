@@ -66,8 +66,10 @@ class SyncTransactionsJob < ApplicationJob
             deleted_at: nil
           )
 
-          check_fee_reimbursement(tr)
+          check_for_fee_reimbursement(tr)
+          check_for_donation(tr)
           check_for_check(tr)
+
         end
 
         begin_date = begin_date.prev_month
@@ -77,7 +79,7 @@ class SyncTransactionsJob < ApplicationJob
     end
   end
 
-  def check_fee_reimbursement(transaction)
+  def check_for_fee_reimbursement(transaction)
     FeeReimbursement.pending.each do |reimbursement|
       # match transaction to event so less work for Michael!
       if (transaction.name.start_with? reimbursement.transaction_memo)
@@ -111,6 +113,24 @@ class SyncTransactionsJob < ApplicationJob
         )
 
         transaction.display_name = "Check to #{check.lob_address.name}"
+        transaction.save
+      end
+    end
+  end
+
+  def check_for_donation(transaction)
+    DonationPayout.lacking_transaction.each do |payout|
+      if transaction.name.include? payout.statement_descriptor
+        return unless transaction.amount == payout.amount
+
+        payout.t_transaction = transaction
+
+        transaction.fee_relationship = FeeRelationship.new(
+            event_id: payout.donation.event.id,
+            fee_applies: true
+          )
+
+        transaction.display_name = "Donation from #{payout.donation.name}"
         transaction.save
       end
     end

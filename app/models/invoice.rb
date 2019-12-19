@@ -169,7 +169,7 @@ class Invoice < ApplicationRecord
     funds_available_at = Util.unixtime(b_tnx.available_on)
     create_payout_at = funds_available_at + 1.day
 
-    job = CreateInvoicePayoutJob.set(wait_until: create_payout_at).perform_later(self)
+    job = CreatePayoutJob.set(wait_until: create_payout_at).perform_later(self)
 
     self.payout_creation_queued_at = Time.current
     self.payout_creation_queued_for = create_payout_at

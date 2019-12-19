@@ -22,10 +22,20 @@
       <%= render_money @fee_reimbursement.transfer_amount %>
     </p>
 
+
+    <% if @fee_reimbursement.invoice %>
     <p>
       <strong>Invoice</strong>
       <%= link_to render_money(@fee_reimbursement.invoice.item_amount), @fee_reimbursement.invoice %>
     </p>
+    <% end %>
+
+    <% if @fee_reimbursement.donation %>
+      <p>
+        <strong>Donation</strong>
+        <%= link_to render_money(@fee_reimbursement.donation.amount), @fee_reimbursement.donation %>
+      </p>
+    <% end %>
 
     <p>
       <strong>Stripe fee</strong>

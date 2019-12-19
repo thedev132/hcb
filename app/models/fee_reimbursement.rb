@@ -1,5 +1,6 @@
 class FeeReimbursement < ApplicationRecord
-  has_one :invoice, required: true
+  has_one :invoice, required: false
+  has_one :donation, required: false
   has_one :t_transaction, class_name: 'Transaction', inverse_of: :fee_reimbursement
   has_many :comments, as: :commentable
 
@@ -49,7 +50,11 @@ class FeeReimbursement < ApplicationRecord
 
   def default_values
     self.transaction_memo ||= "FEE REFUND #{SecureRandom.hex(6)}"
-    self.amount ||= self.invoice.item_amount - self.invoice.payout_creation_balance_net
+    if invoice
+      self.amount ||= self.invoice.item_amount - self.invoice.payout_creation_balance_net
+    else
+      self.amount ||= self.donation.payout_creation_balance_stripe_fee
+    end
   end
 
   def admin_dropdown_description
@@ -59,9 +64,17 @@ class FeeReimbursement < ApplicationRecord
   # this needs to exist for the case where amount of reimbursement is less than $1 and we need to do fee weirdness
   def calculate_fee_amount
     if amount < 100
-      return (amount * self.invoice.event.sponsorship_fee) + (100 - amount)
+      if invoice.present?
+        return (amount * self.invoice.event.sponsorship_fee) + (100 - amount)
+      else
+        return (amount * self.donation.event.sponsorship_fee) + (100 - amount)
+      end
     else
-      amount * self.invoice.event.sponsorship_fee
+      if invoice.present?
+        return amount * self.invoice.event.sponsorship_fee 
+      else
+        return amount * self.donation.event.sponsorship_fee
+      end
     end
   end
 end

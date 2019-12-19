@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_09_231112) do
+ActiveRecord::Schema.define(version: 2019_12_15_125051) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
@@ -27,6 +27,7 @@ ActiveRecord::Schema.define(version: 2019_12_09_231112) do
     t.datetime "approved_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "recipient_phone_number"
     t.string "recipient_tel"
     t.datetime "rejected_at"
     t.index ["creator_id"], name: "index_ach_transfers_on_creator_id"
@@ -166,6 +167,56 @@ ActiveRecord::Schema.define(version: 2019_12_09_231112) do
     t.index ["event_id"], name: "index_documents_on_event_id"
     t.index ["slug"], name: "index_documents_on_slug", unique: true
     t.index ["user_id"], name: "index_documents_on_user_id"
+  end
+
+  create_table "donation_payouts", force: :cascade do |t|
+    t.text "stripe_payout_id"
+    t.bigint "amount"
+    t.datetime "arrival_date"
+    t.boolean "automatic"
+    t.text "stripe_balance_transaction_id"
+    t.datetime "stripe_created_at"
+    t.text "currency"
+    t.text "description"
+    t.text "stripe_destination_id"
+    t.text "failure_stripe_balance_transaction_id"
+    t.text "failure_code"
+    t.text "failure_message"
+    t.text "method"
+    t.text "source_type"
+    t.text "statement_descriptor"
+    t.text "status"
+    t.text "type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["failure_stripe_balance_transaction_id"], name: "index_donation_payouts_on_failure_stripe_balance_transaction_id", unique: true
+    t.index ["stripe_balance_transaction_id"], name: "index_donation_payouts_on_stripe_balance_transaction_id", unique: true
+    t.index ["stripe_payout_id"], name: "index_donation_payouts_on_stripe_payout_id", unique: true
+  end
+
+  create_table "donations", force: :cascade do |t|
+    t.text "email"
+    t.text "name"
+    t.string "url_hash"
+    t.integer "amount"
+    t.integer "amount_received"
+    t.string "status"
+    t.string "stripe_client_secret"
+    t.string "stripe_payment_intent_id"
+    t.datetime "payout_creation_queued_at"
+    t.datetime "payout_creation_queued_for"
+    t.string "payout_creation_queued_job_id"
+    t.integer "payout_creation_balance_net"
+    t.integer "payout_creation_balance_stripe_fee"
+    t.datetime "payout_creation_balance_available_at"
+    t.bigint "event_id"
+    t.bigint "payout_id"
+    t.bigint "fee_reimbursement_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["event_id"], name: "index_donations_on_event_id"
+    t.index ["fee_reimbursement_id"], name: "index_donations_on_fee_reimbursement_id"
+    t.index ["payout_id"], name: "index_donations_on_payout_id"
   end
 
   create_table "emburse_transactions", force: :cascade do |t|
@@ -539,10 +590,12 @@ ActiveRecord::Schema.define(version: 2019_12_09_231112) do
     t.bigint "fee_reimbursement_id"
     t.bigint "check_id"
     t.bigint "ach_transfer_id"
+    t.bigint "donation_payout_id"
     t.index ["ach_transfer_id"], name: "index_transactions_on_ach_transfer_id"
     t.index ["bank_account_id"], name: "index_transactions_on_bank_account_id"
     t.index ["check_id"], name: "index_transactions_on_check_id"
     t.index ["deleted_at"], name: "index_transactions_on_deleted_at"
+    t.index ["donation_payout_id"], name: "index_transactions_on_donation_payout_id"
     t.index ["fee_reimbursement_id"], name: "index_transactions_on_fee_reimbursement_id"
     t.index ["fee_relationship_id"], name: "index_transactions_on_fee_relationship_id"
     t.index ["invoice_payout_id"], name: "index_transactions_on_invoice_payout_id"
@@ -582,6 +635,9 @@ ActiveRecord::Schema.define(version: 2019_12_09_231112) do
   add_foreign_key "document_downloads", "users"
   add_foreign_key "documents", "events"
   add_foreign_key "documents", "users"
+  add_foreign_key "donations", "donation_payouts", column: "payout_id"
+  add_foreign_key "donations", "events"
+  add_foreign_key "donations", "fee_reimbursements"
   add_foreign_key "emburse_transactions", "cards"
   add_foreign_key "emburse_transactions", "events"
   add_foreign_key "events", "users", column: "point_of_contact_id"
@@ -618,6 +674,7 @@ ActiveRecord::Schema.define(version: 2019_12_09_231112) do
   add_foreign_key "transactions", "ach_transfers"
   add_foreign_key "transactions", "bank_accounts"
   add_foreign_key "transactions", "checks"
+  add_foreign_key "transactions", "donation_payouts"
   add_foreign_key "transactions", "fee_reimbursements"
   add_foreign_key "transactions", "fee_relationships"
   add_foreign_key "transactions", "invoice_payouts"

@@ -10,7 +10,7 @@
     <tr>
       <th>ID</th>
       <th>Event</th>
-      <th>Invoice</th>
+      <th>Invoice/Donation</th>
       <th>Transaction Memo</th>
       <th>Amount</th>
       <th>Status</th>
@@ -22,8 +22,13 @@
     <% @fee_reimbursements.order(processed_at: :desc, created_at: :desc).each do |reimbursement| %>
       <tr class="<%= 'shade-yellow' if reimbursement.unprocessed? %>">
         <td><%= "##{reimbursement.id}" %></td>
-        <td><%= link_to "#{reimbursement.invoice.event.name}", reimbursement.invoice.event, class: 'underline' %></td>
-        <td><%= link_to "##{reimbursement.invoice.id}", reimbursement.invoice, class: 'underline' %></td>
+        <% if reimbursement.invoice %>
+          <td><%= link_to "#{reimbursement.invoice.event.name}", reimbursement.invoice.event, class: 'underline' %></td>
+          <td><%= link_to "##{reimbursement.invoice.id}", reimbursement.invoice, class: 'underline' %></td>
+        <% else %>
+          <td><%= link_to "#{reimbursement.donation.event.name}", reimbursement.donation.event, class: 'underline' %></td>
+          <td><%= link_to "##{reimbursement.donation.id}", reimbursement.donation, class: 'underline' %></td>
+        <% end %>
         <td><%= "#{reimbursement.transaction_memo}" %></td>
         <td><%= render_money reimbursement.amount %></td>
         <td><%= reimbursement.status %></td>

@@ -25,6 +25,9 @@ Rails.application.routes.draw do
     post 'delete_profile_picture', to: 'users#delete_profile_picture'
   end
 
+  # webhooks
+  post 'webhooks/donations', to: 'donations#accept_donation_hook'
+
   resources :organizer_position_invites, only: [:index, :show], path: 'invites' do
     post 'accept'
     post 'reject'
@@ -138,6 +141,14 @@ Rails.application.routes.draw do
   end
 
   resources :emburse_transactions, only: [:index, :edit, :update]
+
+  resources :donations, only: [:show] do
+    collection do
+      get 'start/:event_name', to: 'donations#start_donation', as: 'start_donation'
+      post 'start/:event_name', to: 'donations#make_donation', as: 'make_donation'
+      get ':event_name/:donation', to: 'donations#finish_donation', as: 'finish_donation'
+    end
+  end
 
   post 'export/finances', to: 'exports#financial_export'
 

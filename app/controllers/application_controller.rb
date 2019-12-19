@@ -40,4 +40,8 @@ class ApplicationController < ActionController::Base
       id: current_user.id
     }
   end
+
+  def not_found
+    raise ActionController::RoutingError.new('Not Found')
+  end
 end

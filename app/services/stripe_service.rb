@@ -1,4 +1,8 @@
 module StripeService
+
+  # stripe enforces that statement descriptors are limited to this long
+  StatementDescriptorCharLimit = 22
+
   def self.mode
     if Rails.env.production?
       :live

@@ -1,0 +1,12 @@
+<p>Hi <%= @donation.name %>,</p>
+
+<p>
+  This email will serve as an official record of your donation of <%= render_money @donation.amount %> to <%= @donation.event.name %>, which is fiscally sponsored by The Hack Foundation d.b.a Hack Club (EIN: 81-2908499).
+</p>
+
+<p>Thank you for supporting student-led organizations.</p>
+
+<p>
+  Best,<br />
+  The Hack Club Team
+</p>

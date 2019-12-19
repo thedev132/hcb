@@ -102,6 +102,10 @@ class TransactionsController < ApplicationController
         @transaction.fee_relationship.event = @transaction.check.event
       end
 
+      if @transaction.donation_payout && @transaction.is_event_related
+        @transaction.fee_relationship.event = @transaction.donation_payout.donation.event
+      end
+
       if @transaction.save
         # need to destroy the fee relationship here because we have a foreign
         # key that'll be erased on the @transaction.save
@@ -130,6 +134,7 @@ class TransactionsController < ApplicationController
       :fee_reimbursement_id,
       :check_id,
       :ach_transfer_id,
+      :donation_payout_id,
       # WARNING: I (@zrl) think users might be able to mess with the fee
       # relationship ID on the clientside.
       fee_relationship_attributes: [

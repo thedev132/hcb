@@ -59,6 +59,17 @@
             include_blank: 'Select one…'
           ) %>
         </div>
+        <div class="field">
+          <%= form.label :donation_payout, 'Donation payout' %>
+          <%= form.collection_select(
+            :donation_payout_id,
+            DonationPayout.lacking_transaction.reorder(:amount) + [transaction.donation_payout].compact, # .compact to remove nil values if transaction.donation_payout is nil
+            :id,
+            :dropdown_description,
+            include_blank: 'Select one…'
+          ) %>
+        </div>
+
       <% end %>
 
       <div class="field event-select-target">

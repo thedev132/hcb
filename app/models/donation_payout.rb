@@ -1,22 +1,23 @@
-# Used for withdrawing sponsor payments from Stripe. Please see
-# Invoice#queue_payout! for more info. Contact Zach with any questions - this
-# flow is currently janky.
-class InvoicePayout < ApplicationRecord
+class DonationPayout < ApplicationRecord
+  # most of this was copied from models/invoice.rb
+
   # Stripe provides a field called type, which is reserved in rails for STI.
   # This removes the Rails reservation on 'type' for this class.
   self.inheritance_column = nil
 
-  # find invoice payouts that don't yet have an associated transaction
-  scope :lacking_transaction, -> { includes(:t_transaction).where(transactions: { invoice_payout_id: nil }) }
+  # find donation payouts that don't yet have an associated transaction
+  scope :lacking_transaction, -> { includes(:t_transaction).where(transactions: { donation_payout_id: nil }) }
 
-  # although it normally doesn't make sense for a paynot not to be linked to an invoice,
-  # Stripe's schema makes this possible, and when that happens, requiring invoice<>payout breaks bank
-  has_one :invoice, inverse_of: :payout, foreign_key: :payout_id
+  # although it normally doesn't make sense for a paynot not to be linked to an donation,
+  # Stripe's schema makes this possible, and when that happens, requiring donation<>payout breaks bank
+  has_one :donation, inverse_of: :payout, foreign_key: :payout_id
   has_one :t_transaction, class_name: 'Transaction'
+
+  validates_length_of :statement_descriptor, maximum: 22
+  validates_uniqueness_of :statement_descriptor
 
   after_initialize :default_values
   before_create :create_stripe_payout
-  after_create :notify_organizers
 
   def set_fields_from_stripe_payout(payout)
     self.amount = payout.amount
@@ -41,15 +42,15 @@ class InvoicePayout < ApplicationRecord
   # transactions.
   include ApplicationHelper # for render_money helper
   def dropdown_description
-    "##{self.id} (#{render_money self.amount}, #{self.invoice&.sponsor&.event&.name}, inv ##{self.invoice&.id} for #{self.invoice&.sponsor&.name})"
+    "##{self.id} | #{self.stripe_created_at.to_date} - #{render_money self.amount} - #{self.donation&.name}"
   end
 
   private
 
   def default_values
-    return unless invoice
+    return unless donation
 
-    self.statement_descriptor ||= "#{self.invoice.sponsor.name} Payout"[0...StripeService::StatementDescriptorCharLimit]
+    self.statement_descriptor ||= "DONATION #{SecureRandom.hex(6)}"[0...StripeService::StatementDescriptorCharLimit] # limit to 22 characters, the stripe limit
                                   .gsub(/[^0-9a-z ]/i, '') # alphanumeric only
                                   .upcase
   end
@@ -61,13 +62,9 @@ class InvoicePayout < ApplicationRecord
     self.set_fields_from_stripe_payout(payout)
   end
 
-  def notify_organizers
-    InvoicePayoutsMailer.with(payout: self).notify_organizers.deliver_later
-  end
-
   def stripe_payout_params
     {
-      amount: self.amount,
+      amount: self.donation.payout_creation_balance_net,
       currency: 'usd',
       description: self.description,
       destination: self.stripe_destination_id,

@@ -1,0 +1,5 @@
+<% title 'Donate to ' + @event.name %>
+<% page_md %>
+
+<h1>Donate to <%= @event.name %></h1>
+<%= render 'donation_form', donation: @donation %>

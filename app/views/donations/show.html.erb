@@ -1,0 +1,28 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @donation.name %>
+</p>
+
+<p>
+  <strong>Email:</strong>
+  <%= @donation.email %>
+</p>
+
+<p>
+  <strong>Amount:</strong>
+  <%= render_money @donation.amount %>
+</p>
+
+<p>
+  <strong>Event:</strong>
+  <%= link_to @donation.event.name, @donation.event %>
+</p>
+
+
+<p>
+  <strong>Status:</strong>
+  <%= @donation.status %>
+</p>
+
