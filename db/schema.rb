@@ -13,7 +13,6 @@
 ActiveRecord::Schema.define(version: 2019_12_15_125051) do
 
   # These are extensions that must be enabled in order to support this database
-  enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
 
   create_table "ach_transfers", force: :cascade do |t|
@@ -27,7 +26,6 @@ ActiveRecord::Schema.define(version: 2019_12_15_125051) do
     t.datetime "approved_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.text "recipient_phone_number"
     t.string "recipient_tel"
     t.datetime "rejected_at"
     t.index ["creator_id"], name: "index_ach_transfers_on_creator_id"
