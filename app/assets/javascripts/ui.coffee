@@ -64,6 +64,18 @@ $(document).on 'turbolinks:load', ->
     if email = localStorage.getItem 'login_email'
       BK.s('login').find('input[type=email]').val email
 
+  # login code sanitization
+  $("input[name='login_code']").keyup () -> 
+    currentVal = $(this).val().replace(/[^0-9]+/g, "")
+
+    if currentVal.length > 3
+      currentVal = currentVal.slice(0, 3) + "-" + currentVal.slice(3)
+
+    if currentVal.length > 7
+      currentVal = currentVal.slice(0, -1)
+
+    $(this).val(currentVal)
+
   $(document).on 'change', '[name="invoice[sponsor]"]', (e) ->
     sponsor = $(e.target).children('option:selected').data 'json'
     sponsor ||= {}
