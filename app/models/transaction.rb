@@ -39,7 +39,6 @@ class Transaction < ApplicationRecord
   validate :ensure_paired_correctly
 
   after_initialize :default_values
-  after_create :notify_admin
 
   def self.total_volume
     self.sum('@amount').to_i
@@ -94,10 +93,6 @@ class Transaction < ApplicationRecord
   def set_default_display_name
     self.display_name = "Transfer from account to card balance" if emburse?
     self.display_name ||= self.name
-  end
-
-  def notify_admin
-    TransactionMailer.with(transaction: self).notify_admin.deliver_later
   end
 
   def notify_user_invoice
