@@ -67,10 +67,12 @@
     </p>
 
     <% if @check.sent? %>
-      <p>
-        <strong>Delivery expected on</strong>
-        <%= format_datetime @check.expected_delivery_date %>
-      </p>
+      <div>
+        <strong>Delivery expected between</strong>
+        <div>
+          <%= format_date @check.expected_delivery_date %> - <%= format_date 7.business_days.after(@check.expected_delivery_date) %>
+        </div>
+      </div>
     <% end %>
   </section>
 
