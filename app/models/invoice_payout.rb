@@ -49,7 +49,7 @@ class InvoicePayout < ApplicationRecord
   def default_values
     return unless invoice
 
-    self.statement_descriptor ||= "#{self.invoice.sponsor.name} Payout"[0...StripeService::StatementDescriptorCharLimit]
+    self.statement_descriptor ||= "Payout #{self.invoice.sponsor.name}"[0...StripeService::StatementDescriptorCharLimit]
                                   .gsub(/[^0-9a-z ]/i, '') # alphanumeric only
                                   .upcase
   end
