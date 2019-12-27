@@ -58,7 +58,7 @@ class FeeReimbursement < ApplicationRecord
   end
 
   def admin_dropdown_description
-    "#{ApplicationController.helpers.render_money self.amount} - #{self.transaction_memo} (#{self.invoice.event.name})"
+    "#{ApplicationController.helpers.render_money self.amount} - #{self.transaction_memo} (#{self.event.name})"
   end
 
   # this needs to exist for the case where amount of reimbursement is less than $1 and we need to do fee weirdness
