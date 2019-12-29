@@ -40,6 +40,14 @@ class FeeReimbursement < ApplicationRecord
     'error'
   end
 
+  def event
+    if donation
+      return donation.event
+    else
+      return invoice.event
+    end
+  end
+
   def process
     processed_at = DateTime.now
   end

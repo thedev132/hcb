@@ -90,7 +90,7 @@ class SyncTransactionsJob < ApplicationJob
 
         reimbursement.t_transaction = transaction
         transaction.fee_relationship = FeeRelationship.new(
-          event_id: reimbursement.invoice.event.id,
+          event_id: reimbursement.event.id,
           fee_applies: true,
           fee_amount: reimbursement.calculate_fee_amount
         )

@@ -11,9 +11,9 @@ class FeeReimbursementsController < ApplicationController
   def show
 
     if @fee_reimbursement.invoice
-      @event = @fee_reimbursement.invoice.event
+      @event = @fee_reimbursement.event
     else
-      @event = @fee_reimbursement.donation.event
+      @event = @fee_reimbursement.event
     end
     authorize @fee_reimbursement
 
