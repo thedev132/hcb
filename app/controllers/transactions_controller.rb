@@ -72,7 +72,7 @@ class TransactionsController < ApplicationController
       @transaction.fee_relationship = FeeRelationship.new
 
       # If a new transaction is positive, we would probably charge a fee
-      if @transaction.is_event_related && @transaction.amount > 0
+      if @transaction.is_event_related && @transaction.amount > 0 && !@transaction.potential_github?
         @transaction.fee_relationship.fee_applies = true
       end
 
@@ -96,14 +96,6 @@ class TransactionsController < ApplicationController
       if !@transaction.is_event_related
         @transaction.fee_relationship = nil
         should_delete_fee_relationship = true if fee_relationship&.persisted?
-      end
-
-      if @transaction.check && @transaction.is_event_related
-        @transaction.fee_relationship.event = @transaction.check.event
-      end
-
-      if @transaction.donation_payout && @transaction.is_event_related
-        @transaction.fee_relationship.event = @transaction.donation_payout.donation.event
       end
 
       if @transaction.save

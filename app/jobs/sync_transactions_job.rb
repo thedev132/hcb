@@ -66,73 +66,13 @@ class SyncTransactionsJob < ApplicationJob
             deleted_at: nil
           )
 
-          check_for_fee_reimbursement(tr)
-          check_for_donation(tr)
-          check_for_check(tr)
-
+          tr.try_pair_automatically!
         end
 
         begin_date = begin_date.prev_month
         end_date = end_date.prev_month
       end
       transactions_sync_state.each { |id, state| Transaction.find(id).destroy if state == :not_found }
-    end
-  end
-
-  def check_for_fee_reimbursement(transaction)
-    FeeReimbursement.pending.each do |reimbursement|
-      # match transaction to event so less work for Michael!
-      if (transaction.name.start_with? reimbursement.transaction_memo)
-        # Delay matching transactions until after an invoice payout transaction
-        # has shown up
-        return unless reimbursement.invoice&.payout&.t_transaction
-        return unless transaction.amount == reimbursement.amount || reimbursement.amount < 100 && transaction.amount == 100
-
-        reimbursement.t_transaction = transaction
-        transaction.fee_relationship = FeeRelationship.new(
-          event_id: reimbursement.event.id,
-          fee_applies: true,
-          fee_amount: reimbursement.calculate_fee_amount
-        )
-        transaction.display_name = "Fee refund from #{reimbursement.invoice.sponsor.name} invoice"
-        transaction.save
-      end
-    end
-  end
-
-  def check_for_check(transaction)
-    Check.all.each do |check|
-      if transaction.name.include? check.transaction_memo
-        return unless transaction.amount == check.amount
-
-        transaction.check = check
-
-        transaction.fee_relationship = FeeRelationship.new(
-          event_id: check.event.id,
-          fee_applies: false
-        )
-
-        transaction.display_name = "Check to #{check.lob_address.name}"
-        transaction.save
-      end
-    end
-  end
-
-  def check_for_donation(transaction)
-    DonationPayout.lacking_transaction.each do |payout|
-      if transaction.name.include? payout.statement_descriptor
-        return unless transaction.amount == payout.amount
-
-        payout.t_transaction = transaction
-
-        transaction.fee_relationship = FeeRelationship.new(
-            event_id: payout.donation.event.id,
-            fee_applies: true
-          )
-
-        transaction.display_name = "Donation from #{payout.donation.name}"
-        transaction.save
-      end
     end
   end
 

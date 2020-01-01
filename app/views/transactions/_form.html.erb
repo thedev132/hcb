@@ -18,7 +18,7 @@
         <p class="muted h5 mb0">If this isn’t a transfer to reimburse a Stripe fee, leave this field blank.</p>
         </div>
       <% end %>
-      <% if Check.in_transit.any? || Check.refunded_but_needs_match.any? %>
+      <% if transaction.potential_check? && (Check.in_transit.any? || Check.refunded_but_needs_match.any?) %>
         <div class="field">
           <%= form.label :check, 'Check' %>
           <%= form.collection_select(:check_id, Check.in_transit + Check.refunded_but_needs_match, :id, :admin_dropdown_description, include_blank: 'Select one…') %>
@@ -35,12 +35,12 @@
           <% end %>
         </div>
       <% end %>
-      <% if AchTransfer.in_transit.any? %>
+      <% if transaction.potential_ach_transfer? && AchTransfer.in_transit.any? %>
           <%= form.label :ach_transfer, 'ACH Transfer' %>
           <%= form.collection_select(:ach_transfer_id, AchTransfer.in_transit, :id, :admin_dropdown_description, include_blank: 'Select one…') %>
           <p class="muted h5 mb2">If this isn't a transaction from an ACH Transfer, leave this field blank.</p>    
       <% end %>
-      <% if transaction.emburse? %>
+      <% if transaction.potential_emburse? %>
         <div class="field lcr-select-target">
           <%= form.label :load_card_request, 'Load card request' %>
           <%= form.collection_select(:load_card_request_id, LoadCardRequest.unpaired.reorder(:load_amount) + [transaction.load_card_request].compact,
@@ -48,7 +48,7 @@
         </div>
         <p class="muted h5 mb2">If this isn’t from transferring money to Emburse to fulfill a Load Card Request, leave this field blank.</p>
       <% end %>
-      <% if transaction.potential_payout? %>
+      <% if transaction.potential_invoice_payout? %>
         <div class="field invoicepayout-select-target">
           <%= form.label :invoice_payout, 'Invoice payout' %>
           <%= form.collection_select(
@@ -59,6 +59,8 @@
             include_blank: 'Select one…'
           ) %>
         </div>
+      <% end %>
+      <% if transaction.potential_donation_payout? %>
         <div class="field">
           <%= form.label :donation_payout, 'Donation payout' %>
           <%= form.collection_select(
@@ -69,7 +71,6 @@
             include_blank: 'Select one…'
           ) %>
         </div>
-
       <% end %>
 
       <div class="field event-select-target">

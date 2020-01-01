@@ -44,6 +44,11 @@ class Event < ApplicationRecord
     select { |event| event.fee_balance > 100 }
   end
 
+  # When a fee payment is collected from this event, what will the TX memo be?
+  def fee_payment_memo
+    "#{self.name} Bank Fee"
+  end
+
   # displayed on /negative_events
   def self.negatives
     select { |event| event.balance < 0 || event.emburse_balance < 0 || event.fee_balance < 0 }

@@ -33,8 +33,8 @@ class Transaction < ApplicationRecord
   validates :is_event_related, inclusion: { in: [true, false] }
 
   validates :fee_relationship,
-            absence: true,
-            unless: -> { self.is_event_related }
+    absence: true,
+    unless: -> { self.is_event_related }
 
   validate :ensure_paired_correctly
 
@@ -91,7 +91,6 @@ class Transaction < ApplicationRecord
   end
 
   def set_default_display_name
-    self.display_name = "Transfer from account to card balance" if emburse?
     self.display_name ||= self.name
   end
 
@@ -122,35 +121,9 @@ class Transaction < ApplicationRecord
       exists: true,
       fee_applies: self.fee_applies?,
       fee_payment: self.fee_payment?,
-      emburse: self.emburse?,
-      expensify: self.expensify?,
-      for_invoice: self.for_invoice?
+      emburse: self.potential_emburse?,
+      expensify: self.potential_expensify?,
     }
-  end
-
-  def emburse?
-    filter_for 'emburse'
-  end
-
-  def expensify?
-    filter_for 'expensify'
-  end
-
-  def for_invoice?
-    filter_for 'event transfer'
-  end
-
-  # is this a potential invoice payout transaction?
-  def potential_payout?
-    self.amount > 0
-  end
-
-  def potential_fee_reimbursement?
-    self.name.include?('FEE REFUND') || self.name.include?('FEE REIMBURSEMENT')
-  end
-
-  def potential_fee_payment?
-    self.name.include?('Bank Fee')
   end
 
   def ensure_paired_correctly
@@ -170,6 +143,240 @@ class Transaction < ApplicationRecord
     if !load_card_request.nil? && load_card_request.event != fee_relationship&.event
       errors.add(:base, "Paired load card request's event must match transaction's event")
       return 3
+    end
+  end
+
+  # The following set of "potential_[ xxx ]?" methods
+  # use usually-reliable heuristics to try to guess
+  # whether the tx is a certain kind, usually by the tx memo.
+  #
+  # As noted by the "potential" prefix, these are not reliable,
+  # and meant to aid human work.
+  #
+  # They are used in try_pair_automatically! and rendering Transaction#edit
+  #
+  # TODO: eventually, we want to move these concerns out to their
+  # corresponding models. i.e. potential_donation_payout?
+  # should probably be a part of the Donation class, not Transaction.
+
+  def potential_invoice_payout?
+    self.name.start_with?('HC Payout ') && amount > 0
+  end
+
+  def potential_donation_payout?
+    self.name.start_with?('HC DONATE ') && amount > 0
+  end
+
+  # We used to also use 'FEE REIMBURSEMENT' as prefix
+  # but is deprecated, so don't look for it anymore.
+  def potential_fee_reimbursement?
+    self.name.start_with?('FEE REFUND')
+  end
+
+  def potential_fee_payment?
+    self.name.include?('Bank Fee')
+  end
+
+  def potential_emburse?
+    self.name.include?('emburse.com')
+  end
+
+  # GitHub Grants
+  def potential_github?
+    self.name.include?('GitHub Grant')
+  end
+
+  def potential_expensify?
+    self.name.include?('Expensify')
+  end
+
+  def potential_ach_transfer?
+    # Based on observations, SVB does not guarantee this TX memo
+    self.name.include?('BUSBILLPAY')
+  end
+
+  def potential_check?
+    # This is a guess from observation, but may not cover 100%
+    # of the cases. FRB's transaction memos are weird.
+    self.name.start_with?('TO DDA#')
+  end
+
+  # Tries to fully pair this transaction successfully
+  # re: https://github.com/hackclub/bank/issues/364
+  # returns True if paired successfully, false otherwise.
+  #
+  # NOTE: wrap calls to this in a SQL transaction to avoid
+  # broken states.
+  def try_pair_automatically!
+    return unless !categorized?
+
+    if potential_invoice_payout?
+      try_pair_invoice
+    elsif potential_donation_payout?
+      try_pair_donation
+    elsif potential_fee_reimbursement?
+      try_pair_fee_reimbursement
+    elsif potential_fee_payment?
+      try_pair_fee_payment
+    elsif potential_emburse?
+      try_pair_emburse
+    elsif potential_github?
+      try_pair_github
+    elsif potential_check?
+      try_pair_check
+    end
+    # NOTE: we cannot curently auto-pair Expensify txs
+  end
+
+  def try_pair_invoice
+    return unless potential_invoice_payout?
+
+    InvoicePayout.lacking_transaction.each do |payout|
+      if self.name.include? payout.statement_descriptor
+        return unless self.amount == payout.amount
+
+        self.invoice_payout = payout
+
+        self.fee_relationship = FeeRelationship.new(
+          event_id: payout.donation.event.id,
+          fee_applies: true
+        )
+
+        self.display_name = "Invoice to #{payout.sponsor.name}"
+        self.save
+
+        break
+      end
+    end
+  end
+
+  def try_pair_donation
+    return unless potential_donation_payout?
+
+    DonationPayout.lacking_transaction.each do |payout|
+      if self.name.include? payout.statement_descriptor
+        return unless self.amount == payout.amount
+
+        self.donation_payout = payout
+
+        self.fee_relationship = FeeRelationship.new(
+          event_id: payout.donation.event.id,
+          fee_applies: true
+        )
+
+        self.display_name = "Donation from #{payout.donation.name}"
+        self.save
+
+        break
+      end
+    end
+  end
+
+  def try_pair_fee_reimbursement
+    return unless potential_fee_reimbursement?
+
+    FeeReimbursement.pending.each do |reimbursement|
+      if (self.name.start_with? reimbursement.transaction_memo)
+        return unless reimbursement.payout&.t_transaction
+        return unless self.amount == reimbursement.amount || reimbursement.amount < 100 && self.amount == 100
+
+        reimbursement.t_transaction = self
+
+        self.fee_relationship = FeeRelationship.new(
+          event_id: reimbursement.event.id,
+          fee_applies: true,
+          fee_amount: reimbursement.calculate_fee_amount
+        )
+
+        self.display_name = reimbursement.transaction_display_name
+        self.save
+
+        break
+      end
+    end
+  end
+
+  def try_pair_fee_payment
+    return unless potential_fee_payment?
+
+    # TODO: event names might use special chars in their names
+    # that are not valid SVB TX memos. In that case, we may have to
+    # switch to selecting events whose fee_payment_memo() matches instead
+    # of this regex matching thing.
+    potential_event_name = /(.*) Bank Fee.*/.match(self.name)[1]
+    matching_events = Event.where(name: potential_event_name)
+
+    return unless matching_events.count == 1
+    event = matching_events[0]
+
+    self.fee_relationship = FeeRelationship.new(
+      event_id: event.id,
+      is_fee_payment: true,
+    )
+
+    self.save
+  end
+
+  def try_pair_emburse
+    return unless potential_emburse?
+
+    # load card requests will be negative on the account balance
+    unpaired_matching_amount = LoadCardRequest
+      .unpaired.where(load_amount: -self.amount)
+      .order(accepted_at: :desc)
+
+    return unless unpaired_matching_amount.count > 0
+    lcr = unpaired_matching_amount[0]
+
+    self.load_card_request = lcr
+
+    self.fee_relationship = FeeRelationship.new(
+      event_id: lcr.event.id,
+      fee_applies: false
+    )
+
+    self.display_name = "Transfer from account to card balance"
+    self.save
+  end
+
+  def try_pair_github
+    return unless potential_github?
+
+    potential_event_name = /(.*) GitHub Grant.*/.match(self.name)[1]
+    matching_events = Event.where(name: potential_event_name)
+
+    return unless matching_events.count == 1
+    event = matching_events[0]
+
+    self.fee_relationship = FeeRelationship.new(
+      event_id: event.id,
+      fee_applies: false
+    )
+
+    self.save
+  end
+
+  def try_pair_check
+    return unless potential_check?
+
+    Check.approved.each do |check|
+      # NOTE: this doesn't currently work because FRB memos
+      # are not customizable.
+      if self.name.include? check.transaction_memo
+        return unless self.amount == check.amount
+
+        self.check = check
+
+        self.fee_relationship = FeeRelationship.new(
+          event_id: check.event.id,
+          fee_applies: false
+        )
+
+        self.display_name = "Check to #{check.lob_address.name}"
+        self.save
+
+        break
+      end
     end
   end
 

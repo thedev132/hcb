@@ -48,6 +48,22 @@ class FeeReimbursement < ApplicationRecord
     end
   end
 
+  def payout
+    if donation
+      return donation.payout
+    else
+      return invoice.payout
+    end
+  end
+
+  def transaction_display_name
+    if donation
+      return "Fee refund for donation from #{donation.name}"
+    else
+      return "Fee refund for invoice to #{invoice.sponsor.name}"
+    end
+  end
+
   def process
     processed_at = DateTime.now
   end
