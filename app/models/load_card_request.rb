@@ -43,8 +43,6 @@ class LoadCardRequest < ApplicationRecord
   scope :canceled, -> { where.not(canceled_at: nil) }
   scope :rejected, -> { where.not(rejected_at: nil) }
 
-  after_create :send_admin_notification
-
   # Return average processing time in days over last_n completed requests rounding up
   def self.processing_time(last_n: 5)
     reqs = LoadCardRequest.transferred.first(last_n)
@@ -91,10 +89,6 @@ class LoadCardRequest < ApplicationRecord
   end
 
   private
-
-  def send_admin_notification
-    LoadCardRequestMailer.with(load_card_request: self).admin_notification.deliver_later
-  end
 
   def normalize_blank_values
     attributes.each do |column, value|
