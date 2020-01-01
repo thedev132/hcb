@@ -12,7 +12,7 @@
   <% if signed_in? %>
     <% if @events.any? %>
       <ul class="grid grid--narrow left-align w-100 mt0">
-        <% @events.each do |event| %>
+        <% @events.not_hidden.each do |event| %>
           <%= link_to event do %>
             <li class="card card--tall flex flex-column justify-between">
               <strong class="h3 line-height-2 mb1"><%= event.name %></strong>
@@ -25,6 +25,27 @@
           <% end %>
         <% end %>
       </ul>
+
+      <% if @events.hidden.any? %>
+        <details class="w-100 left-align">
+          <summary><h3 class="inline-block pb0 border-none">Hidden Events</h3></summary>
+          <ul class="grid grid--narrow left-align mt0">
+            <% @events.hidden.each do |event| %>
+              <%= link_to event do %>
+                <li class="card card--tall flex flex-column justify-between">
+                  <strong class="h3 line-height-2 mb1"><%= event.name %></strong>
+                  <div class="flex" style="height: 24px; overflow-x: hidden;">
+                    <% event.organizer_positions.each do |position| %>
+                      <%= avatar_for position.user, 24, class: 'mr1'%>
+                    <% end %>
+                  </div>
+                </li>
+              <% end %>
+            <% end %>
+          </ul>
+        </details>
+      <% end %>
+
     <% end %>
     <% if @invites.any? %>
       <h2 class="w-100 left-align mt3 pb0 border-none">Your pending invitations</h2>

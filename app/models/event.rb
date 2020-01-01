@@ -2,6 +2,8 @@ class Event < ApplicationRecord
   extend FriendlyId
 
   default_scope { order(id: :asc) }
+  scope :hidden, -> { where.not(hidden_at: nil) }
+  scope :not_hidden, -> { where(hidden_at: nil) }
 
   friendly_id :name, use: :slugged
 
@@ -150,11 +152,16 @@ class Event < ApplicationRecord
     self.start > Time.current
   end
 
+  def hidden?
+    hidden_at.present?
+  end
+
   def filter_data
     {
       exists: true,
       past: past?,
-      future: future?
+      future: future?,
+      hidden: hidden?
     }
   end
 

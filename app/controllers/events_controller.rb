@@ -22,6 +22,10 @@ class EventsController < ApplicationController
     fixed_event_params[:club_airtable_id] = nil if event_params[:club_airtable_id].empty?
     fixed_event_params[:partner_logo_url] = nil if event_params[:partner_logo_url].empty?
 
+    # all new events should be un-hidden, so no need to worry about setting it here
+    # just delete the auxiliary param.
+    fixed_event_params.delete(:hidden)
+
     @event = Event.new(fixed_event_params)
     authorize @event
 
@@ -78,11 +82,28 @@ class EventsController < ApplicationController
 
     # have to use `fixed_event_params` because `event_params` seems to be a constant
     fixed_event_params = event_params
+    fixed_user_event_params = user_event_params
 
     fixed_event_params[:club_airtable_id] = nil if event_params.key?(:club_airtable_id) && event_params[:club_airtable_id].empty?
     fixed_event_params[:partner_logo_url] = nil if event_params.key?(:partner_logo_url) && event_params[:partner_logo_url].empty?
 
-    if @event.update(current_user.admin? ? fixed_event_params : user_event_params)
+    # processing hidden for admins
+    if fixed_event_params[:hidden] == "1" && !@event.hidden_at.present?
+      fixed_event_params[:hidden_at] = DateTime.now
+    elsif fixed_event_params[:hidden] == "0" && @event.hidden_at.present?
+      fixed_event_params[:hidden_at] = nil
+    end
+    fixed_event_params.delete(:hidden)
+
+    # processing hidden for users
+    if fixed_user_event_params[:hidden] == "1" && !@event.hidden_at.present?
+      fixed_user_event_params[:hidden_at] = DateTime.now
+    elsif fixed_user_event_params[:hidden] == "0" && @event.hidden_at.present?
+      fixed_user_event_params[:hidden_at] = nil
+    end
+    fixed_user_event_params.delete(:hidden)
+
+    if @event.update(current_user.admin? ? fixed_event_params : fixed_user_event_params)
       flash[:success] = 'Event successfully updated.'
       redirect_to @event
     else
@@ -161,7 +182,8 @@ class EventsController < ApplicationController
       :club_airtable_id,
       :point_of_contact_id,
       :slug,
-      :beta_features_enabled
+      :beta_features_enabled,
+      :hidden
     )
 
     # Expected budget is in cents on the backend, but dollars on the frontend
@@ -175,7 +197,8 @@ class EventsController < ApplicationController
   def user_event_params
     result_params = params.require(:event).permit(
       :address,
-      :slug
+      :slug,
+      :hidden
     )
 
     # convert whatever the user inputted into something that is a legal slug

@@ -63,6 +63,10 @@ $(document).on('turbolinks:load', function() {
       if (name !== 'archived' && data['archived']) {
         return false
       }
+
+      if (name !== 'hidden' && data['hidden']) {
+        return false
+      }
       // return whatever the value is from within that json (either true or false)
       return data[name]
     })
@@ -91,6 +95,10 @@ $(document).on('turbolinks:load', function() {
   filterRecords(function(record) {
     const data = $(record).data('filter')
     if (data['archived']) {
+      return false
+    }
+
+    if (data['hidden']) {
       return false
     }
 
