@@ -2,7 +2,6 @@ class SyncEmburseTransactionsJob < ApplicationJob
   RUN_EVERY = 5.minutes
 
   def perform(repeat = false)
-    transactions_wo_department = []
     ActiveRecord::Base.transaction do
       # When Emburse gets a 'test' transaction (ie. AWS charges a card to make
       # sure it's valid, but removes the charge later), it will later remove the
@@ -75,22 +74,11 @@ class SyncEmburseTransactionsJob < ApplicationJob
           receipt_filename: trn.dig(:receipt, :filename),
           transaction_time: trn[:time]
         )
-
-        transactions_wo_department << et if department_id.nil?
       end
 
       deleted_transactions.each { |emburse_id| EmburseTransaction.find_by(emburse_id: emburse_id).destroy }
     end
 
-    transactions_wo_department.each { |et| self.notify_admin(et) }
-
     self.class.set(wait: RUN_EVERY).perform_later(true) if repeat
-  end
-
-  def notify_admin(emburse_t)
-    return if emburse_t.notified_admin_at
-
-    EmburseTransactionsMailer.notify(emburse_transaction: emburse_t).deliver_later
-    emburse_t.update!(notified_admin_at: Time.now)
   end
 end
