@@ -1,12 +1,4 @@
 class CardRequestMailer < ApplicationMailer
-  def admin_notification
-    @request = params[:card_request]
-    @creator = @request.creator
-    @event = @request.event
-
-    mail to: admin_email, subject: "New card request for #{@event.name}"
-  end
-
   def accepted
     @request = params[:card_request]
     @recipient = @request.creator.email
