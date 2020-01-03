@@ -6,6 +6,8 @@ class Donation < ApplicationRecord
   before_create :create_stripe_payment_intent
   before_create :assign_unique_hash
 
+  validates :name, :email, :amount, presence: true
+
   def set_fields_from_stripe_payment_intent(payment_intent)
     self.amount = payment_intent.amount
     self.amount_received = payment_intent.amount_received
