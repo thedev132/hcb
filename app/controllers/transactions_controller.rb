@@ -88,6 +88,7 @@ class TransactionsController < ApplicationController
 
     currently_categorized = @transaction.categorized?
     fee_relationship = @transaction.fee_relationship
+    current_fee_reimbursement = @transaction.fee_reimbursement
 
     @transaction.assign_attributes(transaction_params)
 
@@ -96,6 +97,14 @@ class TransactionsController < ApplicationController
       if !@transaction.is_event_related
         @transaction.fee_relationship = nil
         should_delete_fee_relationship = true if fee_relationship&.persisted?
+      end
+
+      if current_fee_reimbursement.nil? && @transaction.fee_reimbursement.present?
+        @transaction.fee_relationship = FeeRelationship.new(
+          event_id: @transaction.fee_reimbursement.event.id,
+          fee_applies: true,
+          fee_amount: @transaction.fee_reimbursement.calculate_fee_amount
+        )
       end
 
       if @transaction.save
