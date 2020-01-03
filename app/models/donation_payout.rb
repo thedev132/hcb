@@ -42,7 +42,7 @@ class DonationPayout < ApplicationRecord
   # transactions.
   include ApplicationHelper # for render_money helper
   def dropdown_description
-    "##{self.id} | #{render_money self.amount} (#{self.donation.event}, #{self.donation.name})"
+    "##{self.id} | #{render_money self.amount} (#{self.donation.event.name}, #{self.donation.name})"
   end
 
   private
