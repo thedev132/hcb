@@ -198,7 +198,7 @@ class Transaction < ApplicationRecord
   def potential_check?
     # This is a guess from observation, but may not cover 100%
     # of the cases. FRB's transaction memos are weird.
-    self.name.start_with?('TO DDA#')
+    self.name.include?('DDA#') || self.name.include?('Check')
   end
 
   # Tries to fully pair this transaction successfully
