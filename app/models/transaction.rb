@@ -360,11 +360,7 @@ class Transaction < ApplicationRecord
     return unless potential_check?
 
     Check.approved.each do |check|
-      # NOTE: this doesn't currently work because FRB memos
-      # are not customizable.
-      if self.name.include? check.transaction_memo
-        return unless self.amount == check.amount
-
+      if check.in_transit? && self.amount.abs == check.amount.abs
         self.check = check
 
         self.fee_relationship = FeeRelationship.new(
