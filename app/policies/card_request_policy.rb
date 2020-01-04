@@ -36,6 +36,10 @@ class CardRequestPolicy < ApplicationPolicy
   end
 
   def cancel?
-    record.creator == user
+    record.creator == user || user.admin?
+  end
+
+  def export?
+    user.admin?
   end
 end

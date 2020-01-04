@@ -2,6 +2,32 @@ class CardRequestsController < ApplicationController
   before_action :set_card_request, only: [:show, :edit, :update, :destroy]
   before_action :ensure_pending_request, only: [:update, :edit]
 
+  def export
+    authorize CardRequest
+
+    card_requests = CardRequest.under_review
+
+    attributes = %w{full_name user_email event_name shipping_address_street_one shipping_address_street_two shipping_address_city shipping_address_state shipping_address_zip}
+
+    result = CSV.generate(headers: true) do |csv|
+      csv << attributes.map
+
+      card_requests.each do |cr|
+        csv << attributes.map do |attr|
+          if attr == 'user_email'
+            cr.creator.email
+          elsif attr == 'event_name'
+            cr.event.name
+          else
+            cr.send(attr)
+          end
+        end
+      end
+    end
+
+    send_data result, filename: "Pending CRs #{Date.today}.csv"
+  end
+
   # GET /card_requests
   def index
     @card_requests = CardRequest.all.order(created_at: :desc).page params[:page]

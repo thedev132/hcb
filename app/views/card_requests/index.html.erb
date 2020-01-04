@@ -1,4 +1,7 @@
-<h1>Card Requests</h1>
+<h1 class="heading">
+  Card Requests
+  <%= link_to 'Export Pending CRs for Selenium', export_card_requests_path, class: 'btn bg-info' %>
+</h1>
 
 <%= paginate @card_requests %>
 

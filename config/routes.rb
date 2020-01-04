@@ -127,6 +127,9 @@ Rails.application.routes.draw do
   get 'faq', to: 'static_pages#faq'
 
   resources :card_requests, path: 'card_requests' do
+    collection do
+      get 'export'
+    end
     post 'reject'
     post 'cancel'
 
