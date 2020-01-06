@@ -160,11 +160,11 @@ class Transaction < ApplicationRecord
   # should probably be a part of the Donation class, not Transaction.
 
   def potential_invoice_payout?
-    self.name.start_with?('HC Payout ') && amount > 0
+    (self.name.start_with?('HC Payout ') || self.name.start_with?('HACK CLUB EVENT PAYOUT')) && amount > 0
   end
 
   def potential_donation_payout?
-    self.name.start_with?('HC DONATE ') && amount > 0
+    (self.name.start_with?('HC DONATE ') || self.name.start_with?('HACK CLUB EVENT DONATE')) && amount > 0
   end
 
   # We used to also use 'FEE REIMBURSEMENT' as prefix
