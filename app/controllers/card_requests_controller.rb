@@ -17,7 +17,7 @@ class CardRequestsController < ApplicationController
           if attr == 'user_email'
             cr.creator.email
           elsif attr == 'event_name'
-            cr.event.name
+            "##{cr.event.id} #{cr.event.name}"
           else
             cr.send(attr)
           end
