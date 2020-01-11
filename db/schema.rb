@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_23_002952) do
+ActiveRecord::Schema.define(version: 2020_01_08_033645) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
@@ -29,6 +29,8 @@ ActiveRecord::Schema.define(version: 2019_12_23_002952) do
     t.datetime "updated_at", null: false
     t.string "recipient_tel"
     t.datetime "rejected_at"
+    t.text "payment_for"
+    t.datetime "scheduled_arrival_date"
     t.index ["creator_id"], name: "index_ach_transfers_on_creator_id"
     t.index ["event_id"], name: "index_ach_transfers_on_event_id"
   end
@@ -104,6 +106,7 @@ ActiveRecord::Schema.define(version: 2019_12_23_002952) do
     t.integer "expiration_year"
     t.text "emburse_id"
     t.text "slug"
+    t.datetime "deactivated_at"
     t.index ["event_id"], name: "index_cards_on_event_id"
     t.index ["slug"], name: "index_cards_on_slug", unique: true
     t.index ["user_id"], name: "index_cards_on_user_id"
@@ -128,6 +131,7 @@ ActiveRecord::Schema.define(version: 2019_12_23_002952) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "rejected_at"
+    t.text "payment_for"
     t.index ["creator_id"], name: "index_checks_on_creator_id"
     t.index ["lob_address_id"], name: "index_checks_on_lob_address_id"
   end

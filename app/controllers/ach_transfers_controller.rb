@@ -51,7 +51,8 @@ class AchTransfersController < ApplicationController
 
   def approve
     authorize @ach_transfer
-    if @ach_transfer.approve!
+
+    if @ach_transfer.approve! && @ach_transfer.update(ach_approve_params)
       flash[:sucesss] = 'ACH Transfer successfully approved!'
       redirect_to ach_transfers_url
     else
@@ -90,5 +91,9 @@ class AchTransfersController < ApplicationController
 
   def ach_transfer_params
     params.require(:ach_transfer).permit(:routing_number, :account_number, :bank_name, :recipient_name, :recipient_tel, :amount)
+  end
+
+  def ach_approve_params
+    params.require(:ach_transfer).permit(:scheduled_arrival_date)
   end
 end

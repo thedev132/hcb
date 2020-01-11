@@ -1,0 +1,16 @@
+<%= form_with(model: ach_transfer, local: true, url: ach_transfer_approve_path, method: :post) do |form| %>
+  <%= form_errors(ach_transfer, 'ACH transfer') %>
+
+  <div class="field">
+    <%= form.label :scheduled_arrival_date %>
+    <%= form.date_field :scheduled_arrival_date, required: true %>
+  </div>
+
+
+  <% if @ach_transfer.pending? %>
+  <%= form.submit 'Mark as approved and sent', class: 'btn bg-success', data: {confirm: 'Mark as approved and sent?'} %>
+  <%= link_to 'Reject', ach_transfer_reject_path(@ach_transfer), method: :post, class: 'btn bg-error', data: {confirm: 'Mark as rejected? This requires you to communicate to the organizer about the reason why.'} %>
+  <% else %>
+    <p><strong>ACH Transfer already processed -- cannot approve nor reject.</strong></p>
+  <% end %>
+<% end %>
