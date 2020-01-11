@@ -160,7 +160,7 @@ class Transaction < ApplicationRecord
   # should probably be a part of the Donation class, not Transaction.
 
   def potential_invoice_payout?
-    (self.name.start_with?('HACKC Payout ') || self.name.start_with?('HACK CLUB EVENT PAYOUT')) && amount > 0
+    (self.name.start_with?('HACKC PAYOUT') || self.name.start_with?('HACK CLUB EVENT PAYOUT')) && amount > 0
   end
 
   def potential_donation_payout?
