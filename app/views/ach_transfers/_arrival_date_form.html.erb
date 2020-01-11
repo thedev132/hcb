@@ -3,7 +3,7 @@
 
   <div class="field">
     <%= form.label :scheduled_arrival_date %>
-    <%= form.date_field :scheduled_arrival_date, required: true %>
+    <%= form.date_field :scheduled_arrival_date, required: true, placeholder: 'MM/DD/YYYY', pattern: '\d{2}\/\d{2}\/\d{4}' %>
   </div>
 
 
