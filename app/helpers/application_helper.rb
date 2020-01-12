@@ -40,7 +40,7 @@ module ApplicationHelper
     end
   end
 
-  def form_errors(model, name = nil)
+  def form_errors(model, name = nil, prefix = "We couldn't save this")
     return if model.errors.none?
 
     name ||= model.class.name.underscore.humanize.downcase
@@ -52,7 +52,7 @@ module ApplicationHelper
     end
 
     content_tag :div, class: 'error-card' do
-      content_tag(:h2, "We couldn't save this #{name} because of #{pluralize(model.errors.size, 'error')}.") +
+      content_tag(:h2, "#{prefix} #{name} because of #{pluralize(model.errors.size, 'error')}.") +
         errors_list
     end
   end

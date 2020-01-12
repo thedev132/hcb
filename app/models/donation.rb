@@ -7,6 +7,7 @@ class Donation < ApplicationRecord
   before_create :assign_unique_hash
 
   validates :name, :email, :amount, presence: true
+  validates :amount, numericality: { greater_than_or_equal_to: 100 }
 
   def set_fields_from_stripe_payment_intent(payment_intent)
     self.amount = payment_intent.amount

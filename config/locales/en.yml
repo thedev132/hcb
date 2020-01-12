@@ -36,6 +36,10 @@ en:
         slug: "URL"
     errors:
       models:
+        donation:
+          attributes:
+            amount:
+              greater_than_or_equal_to: "must be $1.00 or more."
         event:
           attributes:
             slug:
