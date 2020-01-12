@@ -32,12 +32,10 @@
     </span>
   </div>
 
-  <% if @event.cards.any? %>
-    <p class="bold mt2 mb1">Your billing address for purchases</p>
-    <pre class="inline-block mt0 mb0">The Hack Foundation
+  <p class="bold mt2 mb1">Your billing address for purchases</p>
+  <pre class="inline-block mt0 mb0">The Hack Foundation
 8605 Santa Monica Blvd #86294
 West Hollywood, CA 90069</pre>
-  <% end %>
 
   <% admin_tools('flex items-center mt2') do %>
     <% if @event.emburse_department_path.nil? %>
