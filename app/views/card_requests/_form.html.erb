@@ -56,14 +56,14 @@
   </div>
 
   <div class="flex">
-    <div class="field">
+    <div class="field w-50">
       <%= form.label :shipping_address_state, 'State / Region' %>
       <%= form.select :shipping_address_state, options_for_select(['AL','AK','AZ','AR','CA','CO','CT','DE','DC','FL','GA','HI','ID','IL','IN','IA','KS','KY','LA','ME','MD','MA','MI','MN','MS','MO','MT','NE','NV','NH','NJ','NM','NY','NC','ND','OH','OK','OR','PA','RI','SC','SD','TN','TX','UT','VT','VA','WA','WV','WI','WY']),
         prompt: "Select state", 
         required: true %>
     </div>
 
-    <div class="field ml1">
+    <div class="field ml1 w-50">
       <%= form.label :shipping_address_zip, 'Postal code' %>
       <%= form.text_field :shipping_address_zip, required: true, placeholder: "20500" %>
     </div>
