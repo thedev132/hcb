@@ -39,6 +39,9 @@ class DonationsController < ApplicationController
   end
 
   def accept_donation_hook
+    # only proceed if payment intent is a donation and not an invoice
+    return unless request.params['data']['object']['metadata']['donation'].present?
+
     # get donation to process
     donation = Donation.find_by_stripe_payment_intent_id(request.params['data']['object']['id'])
 
@@ -49,7 +52,6 @@ class DonationsController < ApplicationController
     # create donation payout
     donation.queue_payout!
 
-    
     donation.send_receipt!
 
     return true

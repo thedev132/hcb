@@ -72,7 +72,8 @@ class Donation < ApplicationRecord
   def create_stripe_payment_intent
     payment_intent = StripeService::PaymentIntent.create({
                                                            amount: self.amount,
-                                                           currency: 'usd'
+                                                           currency: 'usd',
+                                                           metadata: {'donation': true}
                                                          })
 
     self.stripe_payment_intent_id = payment_intent.id
