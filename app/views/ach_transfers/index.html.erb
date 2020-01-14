@@ -25,7 +25,7 @@
           <%= status_badge ach_transfer.state %> <%= ach_transfer.status_text %>
         </td>
         <td>
-        <td><%= (link_to 'Approve', ach_transfer_start_approval_path(ach_transfer)) if ach_transfer.pending? %></td>
+        <td><%= (link_to 'Process', ach_transfer_start_approval_path(ach_transfer)) if ach_transfer.pending? %></td>
       </tr>
     <% end %>
   </tbody>
