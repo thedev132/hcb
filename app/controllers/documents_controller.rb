@@ -96,9 +96,11 @@ class DocumentsController < ApplicationController
 
   def set_event
     event_id = params[:id] || params[:event_id]
+
     if event_id
-      @event = Event.find(params[:id] || params[:event_id])
+      @event = Event.find(event_id)
     else
+      # this happens for common documents, shared across all events
       nil
     end
   end
