@@ -105,6 +105,7 @@ ActiveRecord::Schema.define(version: 2020_01_08_033645) do
     t.integer "expiration_year"
     t.text "emburse_id"
     t.text "slug"
+    t.datetime "deactivated_at"
     t.index ["event_id"], name: "index_cards_on_event_id"
     t.index ["slug"], name: "index_cards_on_slug", unique: true
     t.index ["user_id"], name: "index_cards_on_user_id"

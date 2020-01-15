@@ -76,7 +76,9 @@ Rails.application.routes.draw do
     resources :comments
   end
 
-  resources :cards
+  resources :cards do
+    post 'toggle_active'
+  end
 
   resources :checks, only: [:show, :index, :edit, :update] do
     collection do

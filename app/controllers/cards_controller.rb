@@ -1,5 +1,5 @@
 class CardsController < ApplicationController
-  before_action :set_card, only: [:show, :edit, :update, :destroy]
+  before_action :set_card, only: [:show, :edit, :update, :destroy, :toggle_active]
 
   # GET /cards
   def index
@@ -82,6 +82,25 @@ class CardsController < ApplicationController
     redirect_to cards_url
   end
 
+  def toggle_active
+    authorize @card
+
+    if @card.requires_activation?
+      flash[:error] = 'Card must be activated first!'
+      return redirect_to @card
+    end
+
+    if @card.active?
+      @card.deactivate!
+      flash[:success] = 'Card deactivated.'
+    elsif
+      @card.reactivate!
+      flash[:success] = 'Card reactivated.'
+    end
+
+    redirect_to @card
+  end
+
   def status
     @event = Event.find(params[:event_id])
     @card_requests = @event.card_requests.under_review
@@ -92,7 +111,7 @@ class CardsController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_card
-    @card = Card.find(params[:id])
+    @card = Card.find(params[:id] || params[:card_id])
     @event = @card.event
   end
 

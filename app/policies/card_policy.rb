@@ -15,6 +15,10 @@ class CardPolicy < ApplicationPolicy
     record.event.users.include?(user) || user.admin?
   end
 
+  def toggle_active?
+    record.event.users.include?(user) || user.admin?
+  end
+
   def edit?
     user.admin?
   end

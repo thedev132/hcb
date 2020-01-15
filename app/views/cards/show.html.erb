@@ -3,12 +3,12 @@
 <%= render 'events/nav' %>
 
 <article class="card max-width-2 mx-auto mt3">
-  <section class="details mb3">
+  <section class="details mb2">
     <h2 class="mt0 mb0 heading">
       <span class="flex-auto">Card for <%= @card.full_name %></span>
       <span class="h3"><%= card_mention @card %></span>
     </h2>
-
+  
     <p>
       <strong>Ordered by</strong>
       <%= user_mention @card.user %>
@@ -27,6 +27,17 @@
       </div>
     </div>
 
+    <p>
+      <strong>Activation status</strong>
+      <%= @card.status_text %>
+    </p>
+
+    <% if !@card.requires_activation? %>
+      <%= link_to "#{@card.active? ? "Deactivate" : "Activate"}", card_toggle_active_path(@card.id),
+        method: :post,
+        class: "btn #{@card.active? ? "bg-error" : "bg-success"} mt1" %>
+    <% end %>
+
     <% admin_tools do %>
       <strong>Emburse ID</strong>
       <%= link_to @card.emburse_id, @card.emburse_path %>
@@ -36,6 +47,17 @@
   <% admin_tools do %>
     <%= link_to 'Edit', edit_card_path(@card), class: 'btn bg-info' %>
   <% end %>
+
+    <div class="flex items-center info">
+      <%= inline_icon 'important', size: 32, class: 'mr1' %>
+      <p class="info mt0 mb0">
+        If there are fradulent or incorrect charges on your card,
+        please let your point of contact,
+        <%= @card.event.point_of_contact.full_name %>
+        know.
+      </p>
+    </div>
+
 </article>
 
 <% if @emburse_transactions.any? %>
