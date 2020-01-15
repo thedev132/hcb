@@ -95,6 +95,11 @@ class DocumentsController < ApplicationController
   end
 
   def set_event
-    @event = Event.find(params[:id] || params[:event_id]) || nil
+    event_id = params[:id] || params[:event_id]
+    if event_id
+      @event = Event.find(params[:id] || params[:event_id])
+    else
+      nil
+    end
   end
 end
