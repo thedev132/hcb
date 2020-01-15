@@ -3,14 +3,16 @@ class Document < ApplicationRecord
 
   friendly_id :slug_text, use: :slugged
 
-  belongs_to :event
+  belongs_to :event, optional: true
   belongs_to :user
 
   has_one_attached :file
   has_many :downloads, class_name: 'DocumentDownload'
 
-  validates_presence_of :event, :user, :name
+  validates_presence_of :user, :name
   validate :ensure_file_attached
+
+  scope :common, -> { where(event_id: nil) }
 
   private
 
@@ -22,6 +24,6 @@ class Document < ApplicationRecord
   end
 
   def slug_text
-    "#{self.event.name} #{self.name}"
+    "#{self.event ? self.event.name : 'common'} #{self.name}"
   end
 end

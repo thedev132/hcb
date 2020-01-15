@@ -1,7 +1,7 @@
 <% title @document.name %>
 <% page_sm %>
 
-<%= render 'events/nav' %>
+<%= render 'events/nav' if !@event.nil? %>
 
 <h1 class="heading">
   <%= @document.name %>

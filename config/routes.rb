@@ -105,6 +105,9 @@ Rails.application.routes.draw do
   end
 
   resources :documents, except: [:index] do
+    collection do
+      get '', to: 'documents#common_index', as: :common
+    end
     get 'download'
   end
 

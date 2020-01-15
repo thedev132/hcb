@@ -1,4 +1,8 @@
 class DocumentPolicy < ApplicationPolicy
+  def common_index?
+    user.admin?
+  end
+
   def index?
     return true if user.admin?
     return true if record.blank?
@@ -33,7 +37,7 @@ class DocumentPolicy < ApplicationPolicy
   end
 
   def download?
-    user.admin? || record.event.users.include?(user)
+    user.admin? || record.event.nil? || record.event.users.include?(user)
   end
 
   def fiscal_sponsorship_letter?

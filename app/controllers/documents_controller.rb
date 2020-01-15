@@ -1,6 +1,11 @@
 class DocumentsController < ApplicationController
   before_action :set_event, only: [:index, :new, :fiscal_sponsorship_letter]
-  before_action :set_document, except: [:index, :new, :create, :fiscal_sponsorship_letter]
+  before_action :set_document, except: [:common_index, :index, :new, :create, :fiscal_sponsorship_letter]
+
+  def common_index
+    @documents = Document.common
+    authorize @documents
+  end
 
   def index
     @documents = @event.documents.includes(:user)
@@ -8,7 +13,9 @@ class DocumentsController < ApplicationController
   end
 
   def new
-    @document = Document.new(event: @event)
+    # documents whose event_id is nil is shared across
+    # all events
+    @document = Document.new(event: @event || nil)
     authorize @document
   end
 
@@ -88,6 +95,6 @@ class DocumentsController < ApplicationController
   end
 
   def set_event
-    @event = Event.find(params[:id] || params[:event_id])
+    @event = Event.find(params[:id] || params[:event_id]) || nil
   end
 end

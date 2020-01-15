@@ -1,0 +1,30 @@
+<% title "Common Documents" %>
+<% page_md %>
+
+<h1 class="heading">
+  <span class="flex items-center flex-auto">
+    Common documents
+  </span>
+  <% admin_tools do %>
+    <%= link_to 'Upload a common document',
+    new_document_path,
+    class: 'btn bg-success my0 block' %>
+  <% end %>
+</h1>
+
+<p>
+  Common documents are shared documents that appear for every event
+  that does not otherwise have event-specific documents uploaded for them.
+  Common docs appear under "documents" for those events.
+</p>
+
+<ul class="grid">
+  <% @documents.each do |doc| %>
+    <%= link_to doc do %>
+      <li class="card">
+        <strong class="h3 block"><%= doc.name %></strong>
+        <%= user_mention doc.user %>
+      </li>
+    <% end %>
+  <% end %>
+</ul>
