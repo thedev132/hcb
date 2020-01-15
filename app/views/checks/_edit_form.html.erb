@@ -54,6 +54,11 @@
     </div>
   </div>
 
+  <div class="field">
+    <%= form.label :payment_for %>
+    <%= form.text_field :payment_for, placeholder: 'Meal from Subway', required: true %>
+  </div>
+
   <div class="actions tooltipped tooltipped--n inline-block" aria-label="Your check request will be submitted for approval">
     <%= form.submit 'Update check' %>
   </div>

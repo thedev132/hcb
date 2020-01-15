@@ -214,6 +214,7 @@ class ChecksController < ApplicationController
     params.require(:check).permit(
       :memo,
       :amount,
+      :payment_for,
       :lob_address_id,
       lob_address_attributes: [
         :name,

@@ -12,6 +12,12 @@
   </div>
 
   <div class="field">
+    <%= form.label :payment_for, "What are you paying for with this deposit?" %>
+    <%= form.text_field :payment_for, placeholder: 'Shipment of potions', required: true %>
+    <span class="muted">This is to help Hack Club Bank keep record of our transactions. Your point of contact will see this.</span>
+  </div>
+
+  <div class="field">
     <%= form.label :bank_name %>
     <%= form.text_field :bank_name, placeholder: 'Gringotts Wizarding Bank', required: true %>
   </div>
@@ -33,7 +39,6 @@
       <%= form.number_field :amount, value: (@ach_transfer.nil? ? nil : (@ach_transfer.amount.to_f / 100)), placeholder: '500.00', step: 0.01, required: true %>
     </div>
   </div>
-
   <div class="actions tooltipped tooltipped--n inline-block" aria-label="ACH transfers can't be cancelled">
     <%= form.submit 'Transfer money now', class: 'btn bg-warning' %>
   </div>

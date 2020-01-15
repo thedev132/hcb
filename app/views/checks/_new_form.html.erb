@@ -21,6 +21,12 @@
     </div>
   </div>
 
+  <div class="field">
+    <%= form.label :payment_for, "What are you paying for with this check?" %>
+    <%= form.text_field :payment_for, placeholder: 'Event venue', required: true %>
+    <span class="muted">This is to help Hack Club Bank keep record of our transactions. Your point of contact will see this.</span>
+  </div>
+
   <% if @event.lob_addresses.any? %>
     <div class="field">
       <%= form.label :lob_address, 'Payee' %>
