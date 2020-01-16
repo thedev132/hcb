@@ -236,7 +236,8 @@ class Transaction < ApplicationRecord
     #   -- if it's a complete TX
     # 2. HACKC PAYOUT [PREFIX]
     #   -- if it's a pending TX
-    # where PREFIX is a prefix of the invoice payout's statement_descriptor.
+    # where PREFIX appears in InvoicePayout.statement_descriptor as
+    #   "PAYOUT [PREFIX]"
     #
     # We should parse out the PREFIX from the TX.name, try to find any matching
     # InvoicePayouts, and match it.
@@ -256,7 +257,7 @@ class Transaction < ApplicationRecord
     # find all payouts that match both amount and statement_descriptor
     payouts_matching_amount = InvoicePayout.lacking_transaction.where(amount: self.amount)
     payouts_matching_prefix = payouts_matching_amount.select { |po|
-      po.statement_descriptor.start_with?(prefix)
+      po.statement_descriptor.start_with?('PAYOUT ' + prefix)
     }
 
     # if there's exactly one match, pick that one

@@ -78,6 +78,11 @@ class UsersController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:full_name, :phone_number, :profile_picture)
+    params.require(:user).permit(
+      :full_name,
+      :phone_number,
+      :profile_picture,
+      :pretend_is_not_admin,
+    )
   end
 end
