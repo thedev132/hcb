@@ -44,6 +44,10 @@ class GSuiteAccount < ApplicationRecord
     "@#{address.to_s.split('@').last}"
   end
 
+  def event
+    self.g_suite.event
+  end
+
   def reset_password!
     if Rails.env.development?
       puts "☣️ In production, we would currently be syncing the GSuite account password reset ☣️"

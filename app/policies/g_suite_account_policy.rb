@@ -4,7 +4,7 @@ class GSuiteAccountPolicy < ApplicationPolicy
   end
 
   def create?
-    user.admin? || record.g_suite.event.users.include?(user)
+    user.admin? || record.event.users.include?(user)
   end
 
   def show?
