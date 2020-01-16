@@ -37,7 +37,15 @@ class User < ApplicationRecord
     Digest::SHA1.hexdigest(token.to_s)
   end
 
+  # admin? takes into account an admin user's preference
+  # to pretend to be a non-admin, normal user
   def admin?
+    self.admin_at.present? && !self.pretend_is_not_admin
+  end
+
+  # admin_override_pretend? ignores an admin user's
+  # preference to pretend not to be an admin.
+  def admin_override_pretend?
     self.admin_at.present?
   end
 
