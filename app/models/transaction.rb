@@ -160,11 +160,11 @@ class Transaction < ApplicationRecord
   # should probably be a part of the Donation class, not Transaction.
 
   def potential_invoice_payout?
-    (self.name.start_with?('HACKC PAYOUT') || self.name.start_with?('HACK CLUB EVENT PAYOUT')) && amount > 0
+    (self.name.start_with?('HACKC PAYOUT') || self.name.start_with?('HACK CLUB EVENT')) && amount > 0
   end
 
   def potential_donation_payout?
-    (self.name.start_with?('HACKC DONATE ') || self.name.start_with?('HACK CLUB EVENT DONATE')) && amount > 0
+    (self.name.start_with?('HACKC DONATE ') || self.name.start_with?('HACK CLUB EVENT')) && amount > 0
   end
 
   # We used to also use 'FEE REIMBURSEMENT' as prefix
@@ -231,45 +231,94 @@ class Transaction < ApplicationRecord
   def try_pair_invoice
     return unless potential_invoice_payout?
 
-    InvoicePayout.lacking_transaction.each do |payout|
-      if self.name.include? payout.statement_descriptor
-        return unless self.amount == payout.amount
+    # tx name can be one of two forms, from observation:
+    # 1. HACKC PAYOUT [PREFIX] ST-XXXXXXXXXX The Hack Foundation
+    #   -- if it's a complete TX
+    # 2. HACKC PAYOUT [PREFIX]
+    #   -- if it's a pending TX
+    # where PREFIX is a prefix of the invoice payout's statement_descriptor.
+    #
+    # We should parse out the PREFIX from the TX.name, try to find any matching
+    # InvoicePayouts, and match it.
 
-        self.invoice_payout = payout
-
-        self.fee_relationship = FeeRelationship.new(
-          event_id: payout.donation.event.id,
-          fee_applies: true
-        )
-
-        self.display_name = "Invoice to #{payout.sponsor.name}"
-        self.save
-
-        break
-      end
+    # case 1
+    match = /HACKC PAYOUT (.*) ST-.*/.match(self.name)
+    prefix = match ? match[1] : false
+    if !prefix
+      # case 2
+      match = /HACKC PAYOUT (.*)/.match(self.name)
+      prefix = match ? match[1] : false
     end
+
+    # if we can't find a prefix, bail
+    return unless prefix
+
+    # find all payouts that match both amount and statement_descriptor
+    payouts_matching_amount = InvoicePayout.lacking_transaction.where(amount: self.amount)
+    payouts_matching_prefix = payouts_matching_amount.select { |po|
+      po.statement_descriptor.start_with?(prefix)
+    }
+
+    # if there's exactly one match, pick that one
+    return unless payouts_matching_prefix.count == 1
+    payout = payouts_matching_prefix[0]
+
+    # pair the transaction
+    self.invoice_payout = payout
+    self.fee_relationship = FeeRelationship.new(
+      event_id: payout.invoice.event.id,
+      fee_applies: true
+    )
+
+    self.display_name = "Invoice to #{payout.invoice.sponsor.name}"
+    self.save
   end
 
   def try_pair_donation
     return unless potential_donation_payout?
 
-    DonationPayout.lacking_transaction.each do |payout|
-      if self.name.include? payout.statement_descriptor
-        return unless self.amount == payout.amount
+    # tx name can be one of two forms, from observation:
+    # 1. HACKC DONATE [PREFIX] ST-XXXXXXXXXX The Hack Foundation
+    #   -- if it's a complete TX
+    # 2. HACKC DONATE [PREFIX]
+    #   -- if it's a pending TX
+    # where PREFIX appears in DonationPayout.statement_descriptor as
+    #   "DONATE [PREFIX]"
+    #
+    # We should parse out the PREFIX from the TX.name, try to find any matching
+    # DonationPayouts, and match it.
 
-        self.donation_payout = payout
-
-        self.fee_relationship = FeeRelationship.new(
-          event_id: payout.donation.event.id,
-          fee_applies: true
-        )
-
-        self.display_name = "Donation from #{payout.donation.name}"
-        self.save
-
-        break
-      end
+    # case 1
+    match = /HACKC DONATE (.*) ST-.*/.match(self.name)
+    prefix = match ? match[1] : false
+    if !prefix
+      # case 2
+      match = /HACKC DONATE (.*)/.match(self.name)
+      prefix = match ? match[1] : false
     end
+
+    # if we can't find a prefix, bail
+    return unless prefix
+
+    # find all payouts that match both amount and statement_descriptor
+    payouts_matching_amount = DonationPayout.lacking_transaction.where(amount: self.amount)
+    payouts_matching_prefix = payouts_matching_amount.select { |po|
+      po.statement_descriptor.start_with?('DONATE ' + prefix)
+    }
+
+    # if there's exactly one match, pick that one
+    return unless payouts_matching_prefix.count == 1
+    payout = payouts_matching_prefix[0]
+
+    # pair the transaction
+    self.donation_payout = payout
+    self.fee_relationship = FeeRelationship.new(
+      event_id: payout.donation.event.id,
+      fee_applies: true
+    )
+
+    self.display_name = "Donation from #{payout.donation.name}"
+    self.save
   end
 
   def try_pair_fee_reimbursement
