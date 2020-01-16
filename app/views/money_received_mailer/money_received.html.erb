@@ -3,7 +3,7 @@
 </p>
 
 <p>
-  Just letting you know that the funds (<strong><%= @transaction.invoice_payout.invoice.item_amount %></strong>) from <%= link_to "a recently paid invoice to
+  Just letting you know that the funds (<strong><%= render_money @transaction.invoice_payout.invoice.item_amount %></strong>) from <%= link_to "a recently paid invoice to
   #{@transaction.invoice_payout.invoice.sponsor.name}", @transaction.invoice_payout.invoice %> have become available within your Hack Club Bank account.
 </p>
 
