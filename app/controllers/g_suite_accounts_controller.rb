@@ -1,5 +1,5 @@
 class GSuiteAccountsController < ApplicationController
-  before_action :set_g_suite_account, only: [:edit, :update, :reject]
+  before_action :set_g_suite_account, only: [:edit, :update, :reject, :reset_password]
 
   def index
     authorize GSuiteAccount
@@ -20,9 +20,13 @@ class GSuiteAccountsController < ApplicationController
     authorize @g_suite_account
 
     if @g_suite_account.save
-      flash[:success] = 'G Suite account application submitted!'
+      flash[:success] = 'G Suite account application submitted.'
     else
-      flash[:error] = 'That email address is already in use.'
+      if @g_suite_account.errors.messages[:domain]
+        flash[:error] = "Your domain setup is not complete yet."
+      else
+        flash[:error] = 'That email address is already in use.'
+      end
     end
 
     redirect_to event_g_suite_overview_path(event_id: @event.slug)
@@ -41,7 +45,7 @@ class GSuiteAccountsController < ApplicationController
         @g_suite_account.update(accepted_at: Time.now)
         flash[:info] = 'Accepted!'
       end
-      flash[:success] = 'Saved changes to G Suite Account.'
+      flash[:success] = 'Saved changes to G Suite account.'
       redirect_to g_suite_accounts_path
     else
       render :edit
@@ -54,10 +58,10 @@ class GSuiteAccountsController < ApplicationController
 
     authorize @g_suite_account
 
-    if @g_suite_account.delete
-      flash[:success] = 'G Suite account deleted successfully'
+    if @g_suite_account.destroy
+      flash[:success] = 'G Suite account deleted successfully.'
     else
-      flash[:error] = `Error while trying to delete G Suite account`
+      flash[:error] = `Error while trying to delete G Suite account. Please check G Suite dashboard for more information.`
     end
 
     redirect_to event_g_suite_overview_path(event_id: @event.slug)
@@ -72,10 +76,12 @@ class GSuiteAccountsController < ApplicationController
       flash[:success] = 'Email verified!'
       redirect_to @g_suite_account.g_suite.event
     else
-      flash[:error] = 'Email not found!'
+      flash[:error] = 'Email not found.'
     end
   end
 
+  # Deprecated: we automatically handle G Suite requests so no applications
+  # are rejected.
   def reject
     authorize @g_suite_account
 
@@ -88,6 +94,17 @@ class GSuiteAccountsController < ApplicationController
     end
     redirect_to g_suite_accounts_path
   end
+
+  def reset_password
+    authorize @g_suite_account
+
+    @event = @g_suite_account.g_suite.event
+
+    @g_suite_account.reset_password!
+    flash[:success] = "We just sent reset instructions to the backup email for #{@g_suite_account.address}."
+    redirect_to event_g_suite_overview_path(event_id: @event.slug)
+  end
+
 
   private
 

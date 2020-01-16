@@ -21,12 +21,16 @@
             <span>Backup email: <%= content_tag :code, account.backup_email %></span>
           <% end %>
           </p>
+          <%= link_to 'Reset password', g_suite_account_reset_password_path(account.id), method: :put,
+              data: { confirm: "Reset the account password for #{account.address}? We'll email a new password to the backup email." },
+              class: 'h5 muted underline'
+            %>
         </div>
-        <div class="tools">
+        <div class="tools flex items-center">
           <% admin_tools('flex items-center') do %>
             <%= link_to 'Delete', account, method: :delete,
-              data: { confirm: "Delete #{account.address}? Be sure to also delete the account in the G Suite admin panel!" },
-              class: 'btn bg-error'
+              data: { confirm: "Deleting #{account.address} is *permanent, irreversible, and does not back up any data*. Think carefully before you click ok." },
+              class: 'h5 muted underline'
             %>
           <% end %>
         </div>

@@ -11,6 +11,10 @@ class GSuiteAccountPolicy < ApplicationPolicy
     user.admin? || record.event.users.include?(user)
   end
 
+  def reset_password?
+    user.admin? || record.event.users.include?(user)
+  end
+
   def edit?
     user.admin?
   end

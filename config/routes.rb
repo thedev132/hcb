@@ -53,6 +53,7 @@ Rails.application.routes.draw do
   end
 
   resources :g_suite_accounts, only: [:index, :create, :update, :edit, :destroy], path: 'g_suite_accounts' do
+    put 'reset_password'
     get 'verify', to: 'g_suite_account#verify'
     post 'reject'
   end
