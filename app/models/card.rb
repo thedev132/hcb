@@ -80,6 +80,10 @@ class Card < ApplicationRecord
     emburse_obj[:state] == 'active'
   end
 
+  def suspended?
+    emburse_obj[:state] == 'suspended'
+  end
+
   private
 
   def emburse_obj
