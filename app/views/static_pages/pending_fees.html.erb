@@ -16,7 +16,7 @@
     <% @pending_fees.each do |event| %>
       <tr class="shade-yellow">
         <td class="underline"><%= link_to "#{event.name}", event %></td>
-        <td><%= event.name %> Bank Fee</td>
+        <td>Event <%= event.id %> Bank Fee</td>
         <td><%= render_money event.fee_balance %></td>
       </tr>
     <% end %>

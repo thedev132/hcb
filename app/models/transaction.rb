@@ -351,12 +351,13 @@ class Transaction < ApplicationRecord
   def try_pair_fee_payment
     return unless potential_fee_payment?
 
-    # TODO: event names might use special chars in their names
-    # that are not valid SVB TX memos. In that case, we may have to
-    # switch to selecting events whose fee_payment_memo() matches instead
-    # of this regex matching thing.
-    potential_event_name = /(.*) Bank Fee.*/.match(self.name)[1]
-    matching_events = Event.where(name: potential_event_name)
+    match = /Event (.*) Bank Fee.*/.match(self.name)
+    event_id = match ? match[1].to_i : 0
+
+    return if event_id == 0
+    # we don't use Event.find here because it will raise
+    # an exception if the ID doesn't exist.
+    matching_events = Event.where(id: event_id)
 
     return unless matching_events.count == 1
     event = matching_events[0]
@@ -366,6 +367,7 @@ class Transaction < ApplicationRecord
       is_fee_payment: true,
     )
 
+    self.display_name = "#{event.name} Bank Fee"
     self.save
   end
 
