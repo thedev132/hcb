@@ -136,7 +136,7 @@ class TransactionsController < ApplicationController
       :check_id,
       :ach_transfer_id,
       :donation_payout_id,
-      # WARNING: I (@zrl) think users might be able to mess with the fee
+      # TODO: I (@zrl) think users might be able to mess with the fee
       # relationship ID on the clientside.
       fee_relationship_attributes: [
         :id,

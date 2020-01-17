@@ -222,6 +222,8 @@ class Transaction < ApplicationRecord
       try_pair_emburse
     elsif potential_github?
       try_pair_github
+    elsif potential_ach_transfer?
+      try_pair_ach_transfer
     elsif potential_check?
       try_pair_check
     end
@@ -403,6 +405,31 @@ class Transaction < ApplicationRecord
       fee_applies: false
     )
 
+    self.save
+  end
+
+  def try_pair_ach_transfer
+    # This is largely modeled after try_pair_load_card_request
+    return unless potential_ach_transfer?
+
+    # ach transfers out will be negative on the account balance
+    unpaired_matching_amount = AchTransfer
+      .approved
+      .where(amount: -self.amount)
+      .order(approved_at: :desc)
+      .in_transit
+
+    return unless unpaired_matching_amount.count > 0
+    matched_ach = unpaired_matching_amount[0]
+
+    self.ach_transfer = matched_ach
+
+    self.fee_relationship = FeeRelationship.new(
+      event_id: matched_ach.event.id,
+      fee_applies: false
+    )
+
+    self.display_name = "ACH direct deposit out to #{matched_ach.recipient_name}"
     self.save
   end
 
