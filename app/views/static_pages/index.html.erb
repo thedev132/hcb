@@ -69,15 +69,12 @@
   <% admin_tools('w-100 mt3') do %>
     <h2>Daily Tasks</h2>
     <ul class="grid grid--narrow left-align w-100 mt0">
-      <%= card_to 'Cards', cards_path %>
       <%= card_to 'Card Requests', card_requests_path, { badge: @active[:card_requests] } %>
       <%= card_to 'Transfer Requests', load_card_requests_path, { badge: @active[:load_card_requests] } %>
       <%= card_to 'Checks', checks_path, { badge: @active[:checks] } %>
       <%= card_to 'ACH Transfers', ach_transfers_path, { badge: @active[:ach_transfers] } %>
       <%= card_to 'Fee Refunds', fee_reimbursements_path, { badge: @active[:fee_reimbursements] } %>
       <%= card_to 'G Suite Applications', g_suite_applications_path, { badge: @active[:g_suite_applications] } %>
-      <%= card_to 'G Suite Accounts', g_suite_accounts_path, { badge: @active[:g_suite_accounts] } %>
-      <%= card_to 'G Suites', g_suites_path %>
       <%= card_to 'Account Deletion Requests', organizer_position_deletion_requests_path, { badge: @active[:organizer_position_deletion_requests] } %>
       <%= card_to 'Transactions', transactions_path, { badge: @active[:transactions] } %>
       <%= card_to 'Emburse Transactions', emburse_transactions_path, { badge: @active[:emburse_transactions] } %>
@@ -89,6 +86,9 @@
       <%= card_to 'Events', events_path %>
       <%= card_to 'Sponsors', sponsors_path %>
       <%= card_to 'Invoices', all_invoices_path %>
+      <%= card_to 'Cards', cards_path %>
+      <%= card_to 'G Suites', g_suites_path %>
+      <%= card_to 'G Suite Accounts', g_suite_accounts_path, { badge: @active[:g_suite_accounts] } %>
       <%= card_to 'Negative Events', negative_events_path, { badge: @active[:negative_events] } %>
     </ul>
 
