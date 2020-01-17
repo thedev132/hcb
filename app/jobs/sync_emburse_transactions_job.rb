@@ -40,13 +40,14 @@ class SyncEmburseTransactionsJob < ApplicationJob
         # Transaction is above 0.0 and exists, so we want to keep it around
         deleted_transactions.delete(trn[:id])
 
-        department_id = trn.dig(:department, :id)
+        # find the card and associated event
         card = Card.find_by(emburse_id: trn.dig(:card, :id))
-        # If the transaction isn't assigned to a department directly, we'll use the card's department
+        related_event = card.event if card
+
+        department_id = trn.dig(:department, :id)
         department_id = card.department_id if department_id.nil? and card
 
         amount = trn[:amount] * 100
-        related_event = department_id ? Event.find_by(emburse_department_id: department_id) : nil
 
         et.update!(
           amount: amount,
