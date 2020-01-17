@@ -1,9 +1,9 @@
 <% title 'Send a Check' %>
 <%= render 'events/nav' %>
 
-<article class="grid grid--spacious grid--check md-mt2">
-  <aside class="mt2">
-    <div class="check mb3 sm-hide" data-behavior="hover_tilt">
+<article class="check--form flex align-start justify-center mt2">
+  <aside class="mr3">
+    <div class="check mb3" data-behavior="hover_tilt">
       <div class="check__number">1024</div>
 
       <div class="flex w-100 justify-end mb1">
@@ -49,7 +49,7 @@
   </aside>
 
 
-  <div class="container--xs mt2">
+  <div class="container--xs">
     <h1 class="mt0">Send a check</h1>
     <%= render 'new_form', check: @check, lob_address: @lob_address %>
     <div class="actions tooltipped tooltipped--n inline-block mt1" aria-label="Your check will be submitted for approval by <%= @event.point_of_contact.name.split[0] %>">

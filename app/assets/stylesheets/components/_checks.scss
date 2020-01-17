@@ -1,15 +1,21 @@
-  .grid--check {
-    grid-template-columns: auto !important;
-  }
+$bg: #E2ECF5;
 
-@media (min-width: 64em) {
-  .grid--check {
-    grid-gap: 2rem;
-    grid-template-columns: 32rem 24rem !important;
+/* check form layout goes vertical
+  on small screens */
+.check--form {
+  @media (max-width: 56em) {
+    flex-direction: column;
+    align-items: center;
+
+    .check {
+      display: none;
+    }
+
+    aside {
+      margin-right: 0;
+    }
   }
 }
-
-$bg: #E2ECF5;
 
 .transfer-preview--check,
 .check {
@@ -30,11 +36,6 @@ $bg: #E2ECF5;
   padding: 1.5rem;
   width: 32rem;
   height: 16em;
-
-  @media (max-width: 32em) {
-    transform: scale(0.75) translateX(-25%);
-    transform-origin-x: 0;
-  }
 
   &:before {
     position: absolute;

@@ -3,34 +3,36 @@
 <%= render 'events/nav' %>
 
 <article class="card max-width-2 mx-auto mt3">
-  <section class="details mb2">
+  <section class="mb2">
     <h2 class="mt0 mb0 heading">
       <span class="flex-auto">Card for <%= @card.full_name %></span>
       <span class="h3"><%= card_mention @card %></span>
     </h2>
-  
-    <p>
-      <strong>Ordered by</strong>
-      <%= user_mention @card.user %>
-    </p>
 
-    <p>
-      <strong>Email address</strong>
-      <%= @card.user.email %>
-    </p>
+    <section class="details">
+      <p>
+        <strong>Ordered by</strong>
+        <%= user_mention @card.user %>
+      </p>
 
-    <div>
-      <strong>Card number</strong>
-      XXXX-XXXX-XXXX-<%= @card.last_four %>
-      <div class="right tooltipped tooltipped--w" aria-label="Full number hidden to protect security">
-        <%= inline_icon 'private', size: 32, class: 'smoke' %>
+      <p>
+        <strong>Email address</strong>
+        <%= @card.user.email %>
+      </p>
+
+      <div>
+        <strong>Card number</strong>
+        XXXX-XXXX-XXXX-<%= @card.last_four %>
+        <div class="right tooltipped tooltipped--w" aria-label="Full number hidden to protect security">
+          <%= inline_icon 'private', size: 32, class: 'smoke' %>
+        </div>
       </div>
-    </div>
 
-    <p>
-      <strong>Activation status</strong>
-      <%= @card.status_text %>
-    </p>
+      <p>
+        <strong>Activation status</strong>
+        <%= @card.status_text %>
+      </p>
+    </section>
 
     <% if !@card.requires_activation? %>
       <%= link_to "#{@card.active? ? "Deactivate" : "Activate"}", card_toggle_active_path(@card.id),
@@ -90,7 +92,7 @@
             <%= t.merchant_name %>
           <% end %>
         </td>
-        <td><%= render_money t.amount %></td>
+        <td class="nowrap"><%= render_money t.amount %></td>
         <td>
           <a href="<%= t.emburse_path %>" target="_blank">More</a>
         </td>

@@ -15,7 +15,7 @@
       Card balance
       <%= inline_icon 'info', size: 24, class: 'ml1', 'aria-label': 'Info icon' %>
       </span>
-      <span class="stat__value"><%= render_money @event.emburse_balance, '' %></span>
+      <span class="stat__value mr2"><%= render_money @event.emburse_balance, '' %></span>
     </div>
     <div class="stat md-w-50 muted mb2 tooltipped tooltipped--s" aria-label="The available amount stored in your bank–you need to transfer it to your card balance before spending it">
       <span class="stat__label flex items-center">
@@ -197,8 +197,8 @@ West Hollywood, CA 90069</pre>
             <%= t.merchant_name %>
           <% end %>
         </td>
-        <td><%= render_money t.amount %></td>
-        <td><%= render_money running_sum %></td>
+        <td class="nowrap"><%= render_money t.amount %></td>
+        <td class="nowrap"><%= render_money running_sum %></td>
         <% running_sum -= t.amount if t.completed? %>
         <td>
           <%= t.card.nil? ? '—' : card_mention(t.card) %>
