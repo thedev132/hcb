@@ -1,26 +1,40 @@
-<%= form_with(model: donation, local: true, url: make_donation_donations_path) do |form| %>
+<%= form_with(model: donation, local: true, url: make_donation_donations_path,
+              class: 'card mb3') do |form| %>
   <%= form_errors(donation, nil, "We couldn't start this") %>
 
-  <div class="field">
-    <%= form.label :name %>
-    <%= form.text_field :name, required: true %>
+  <div class="field mb3">
+    <%= form.label :name, 'Your name' %>
+    <%= form.text_field :name, placeholder: 'Harry Potter', required: true,
+      class: 'fit w-100 mt1' %>
   </div>
 
-  <div class="field">
-    <%= form.label :email %>
-    <%= form.email_field :email, required: true %>
+  <div class="field mb3">
+    <%= form.label :email, 'Your email' %>
+    <span class="muted h5">We'll send a tax-deductible receipt here.</span>
+    <%= form.email_field :email, placeholder: 'potter@hogwarts.edu', required: true,
+      class: 'fit mt1' %>
   </div>
 
 
-  <%= form.label :amount %>
-  <div class="field">
-    <div class="flex items-center">
+  <div class="field mb2">
+    <%= form.label :amount, 'Donation amount' %>
+    <span class="muted h5 mb1">
+      Your contribution is tax-deductible.
+      <%= @event.name %> is fiscally sponsored by Hack Club,
+      a 501(c)(3) not-for-profit.
+    </span>
+    <div class="flex items-center mt1">
       <span class="bold muted" style="width: 1rem;">$</span>
-      <%= form.number_field :amount, value: (donation.amount.nil? ? nil : (donation.amount.to_f / 100)), placeholder: '500.00', step: 0.01, required: true %>
+      <%= form.number_field :amount,
+        value: (donation.amount.nil? ? nil : (donation.amount.to_f / 100)),
+        placeholder: '20.00',
+        step: 0.01,
+        required: true,
+        class: 'fit w-100' %>
     </div>
   </div>
 
   <div class="actions">
-    <%= form.submit %>
+    <%= form.submit 'Next →', class: 'w-100 donation-btn' %>
   </div>
 <% end %>

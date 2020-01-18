@@ -21,7 +21,7 @@
     <%= yield(:head) if content_for?(:head) %>
   </head>
   <body class="bg-snow <%= content_for :page_class %>">
-    <% unless @hide_home %>
+    <% unless @no_app_shell %>
       <header class="home flex items-center justify-center pt1 md-pt2">
         <div class="header-left flex items-center justify-end">
           <% if signed_in? %>
@@ -61,7 +61,7 @@
         </article>
       <% end %>
       <%= yield %>
-      <%= render 'footer' %>
+      <%= render 'footer' unless @no_app_shell %>
     </main>
 
     <script type="text/javascript">

@@ -40,6 +40,10 @@ module ApplicationHelper
     end
   end
 
+  def no_app_shell
+    @no_app_shell = true
+  end
+
   def form_errors(model, name = nil, prefix = "We couldn't save this")
     return if model.errors.none?
 
@@ -115,10 +119,6 @@ module ApplicationHelper
 
   def home_action_size
     @home_size.to_i > 48 ? 36 : 28
-  end
-
-  def page_hide_home
-    @hide_home = true
   end
 
   def page_md

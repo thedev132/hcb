@@ -1,5 +1,14 @@
-<% title 'Donate to ' + @event.name %>
-<% page_md %>
+<% title 'Give to ' + @event.name %>
+<% page_sm %>
+<% no_app_shell %>
 
-<h1>Donate to <%= @event.name %></h1>
+<a href="<%= start_donation_donations_path(@event.slug) %>" class="black text-decoration-none">
+  <h1 class="border-none center mt3 mb2">
+    <div class="h2">Give to</div>
+    <div class="h1"><%= @event.name %></div>
+  </h1>
+</a>
+
 <%= render 'donation_form', donation: @donation %>
+
+<%= render 'footer' %>
