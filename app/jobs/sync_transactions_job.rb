@@ -66,6 +66,9 @@ class SyncTransactionsJob < ApplicationJob
             deleted_at: nil
           )
 
+          # first, try to see if it was previously paired.
+          # if it wasn't, then try to auto-pair it.
+          tr.try_recover_pending_tx_details!
           tr.try_pair_automatically!
         end
 

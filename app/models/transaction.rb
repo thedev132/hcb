@@ -230,6 +230,69 @@ class Transaction < ApplicationRecord
     # NOTE: we cannot curently auto-pair Expensify txs
   end
 
+  # Tries to recover transaction data from a previously paired / modified
+  # transaction that was pending, for a currently complete transaction.
+  # This is complicated by the fact that the pending? attribute Plaid
+  # returns from SVB is just a big fat lie ~because Plaid hates us~.
+  # So every TX shows as complete, and we can't disambiguate in code.
+  #
+  # This is a workaround for the issue highlighted in GH Issue #443.
+  # TL;DR - when a TX goes from pending -> complete, SVB deletes
+  # the old TX and creates a new one, but we want to persist our
+  # model data between them.
+  #
+  # NOTE: wrap calls to this in a SQL transaction to avoid
+  # broken states.
+  def try_recover_pending_tx_details!
+    deleted_tx_from_last_week = Transaction.with_deleted
+      .where(date: 1.week.ago..DateTime.now)
+      .where.not(deleted_at: nil)
+
+    # transactions that were deleted, that match in TX memo
+    # and amount, are good candidates for a previously pending TX
+    # that is now complete as `self`.
+    matching_deleted_tx = deleted_tx_from_last_week
+      .where(amount: self.amount, name: self.name)
+
+    return unless matching_deleted_tx.count == 1
+    previous = matching_deleted_tx[0]
+
+
+    # copy over copyable details
+    self.display_name = previous.display_name
+    previous.comments.each do |comment|
+      comment.update(commentable_id: self.id)
+    end
+    pfr = previous.fee_relationship
+    self.fee_relationship = FeeRelationship.new(
+      event_id: pfr.event_id,
+      fee_applies: pfr.fee_applies,
+      fee_amount: pfr.fee_amount,
+      is_fee_payment: pfr.is_fee_payment,
+    )
+
+    self.invoice_payout = previous.invoice_payout
+    previous.invoice_payout = nil
+
+    self.donation_payout = previous.donation_payout
+    previous.donation_payout = nil
+
+    self.load_card_request = previous.load_card_request
+    previous.load_card_request = nil
+
+    self.fee_reimbursement = previous.fee_reimbursement
+    previous.fee_reimbursement = nil
+
+    self.check = previous.check
+    previous.check = nil
+
+
+    self.save
+    previous.save
+  end
+
+  private
+
   def try_pair_invoice
     return unless potential_invoice_payout?
 
@@ -454,8 +517,6 @@ class Transaction < ApplicationRecord
       end
     end
   end
-
-  private
 
   def slug_text
     "#{date} #{name}"
