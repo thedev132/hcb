@@ -4,7 +4,7 @@ class TransactionsController < ApplicationController
   def index
     authorize Transaction
 
-    @needs_action = Transaction.needs_action.order(:date)
+    @needs_action = Transaction.needs_action
     @transactions = Transaction.order(:date).page params[:page]
   end
 
