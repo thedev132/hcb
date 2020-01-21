@@ -24,7 +24,7 @@ class StaticPagesController < ApplicationController
         load_card_requests: LoadCardRequest.under_review.size,
         g_suite_applications: GSuiteApplication.under_review.size,
         g_suite_accounts: GSuiteAccount.under_review.size,
-        transactions: Transaction.uncategorized.size,
+        transactions: Transaction.needs_action.size,
         emburse_transactions: EmburseTransaction.under_review.size,
         organizer_position_deletion_requests: OrganizerPositionDeletionRequest.under_review.size
       }

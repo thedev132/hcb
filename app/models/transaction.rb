@@ -9,6 +9,13 @@ class Transaction < ApplicationRecord
 
   default_scope { order(date: :desc, id: :desc) }
   scope :uncategorized, -> { where(is_event_related: true, fee_relationship_id: nil) }
+  # needs_action is a subset of :uncategorized that needs action TODAY. It excludes
+  # FeeReimbursement transactions that will eventually be paired when an Invoice gets paid,
+  # but includes FeeReimbursements that have been unpaired for a long time.
+  scope :needs_action, -> {
+    where(is_event_related: true, fee_relationship_id: nil)
+      .select {|t| !t.potential_fee_reimbursement? || t.date < 3.weeks.ago }
+  }
 
   belongs_to :bank_account
 

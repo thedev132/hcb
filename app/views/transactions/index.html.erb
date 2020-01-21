@@ -3,7 +3,7 @@
 <h2>Uncategorized transactions</h2>
 
 <p>
-  <strong><%= pluralize(Transaction.uncategorized.size, 'uncategorized transaction') %></strong>
+  <strong><%= pluralize(@needs_action.size, 'uncategorized transaction') %></strong>
 </p>
 
 <table>
@@ -15,7 +15,7 @@
   <th>Event</th>
   <th colspan="2">Full Info</th>
 </tr>
-<% @uncategorized.each do |t| %>
+<% @needs_action.each do |t| %>
   <tr class="<%= 'shade-yellow' if !t.event && t.is_event_related %>">
     <td>
       <%= t.date %>
