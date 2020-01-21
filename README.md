@@ -49,7 +49,7 @@ We can also replace `bank-hackclub` with any other app name (like a review app) 
 For example, for the `SyncTransactionsJob`:
 
 ```
-SyncTransactionsJob.perform_now(true)
+SyncTransactionsJob.perform_now(repeat: true)
 ```
 
 ### Demo mode
