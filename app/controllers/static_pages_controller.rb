@@ -73,7 +73,7 @@ class StaticPagesController < ApplicationController
       transactions_count: Transaction.all.size,
       events_count: Event.all.size,
       # Transactions are sorted by date DESC by default, so first one is... chronologically last
-      last_transaction_date: Transaction.first.date.to_time.to_i,
+      last_transaction_date: Transaction.first.created_at.to_i,
       raised: Transaction.raised_during(DateTime.strptime('0', '%s'), now),
       last_year: {
         transactions_volume: Transaction.volume_during(year_ago, now),
