@@ -22,7 +22,7 @@ class GSuiteAccountsController < ApplicationController
     if @g_suite_account.save
       flash[:success] = 'G Suite account application submitted.'
     else
-      if @g_suite_account.errors.messages[:domain]
+      if @g_suite_account.errors.messages[:domain].present?
         flash[:error] = "Your domain setup is not complete yet."
       else
         flash[:error] = 'That email address is already in use.'

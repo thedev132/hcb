@@ -21,10 +21,12 @@
             <span>Backup email: <%= content_tag :code, account.backup_email %></span>
           <% end %>
           </p>
-          <%= link_to 'Reset password', g_suite_account_reset_password_path(account.id), method: :put,
-              data: { confirm: "Reset the account password for #{account.address}? We'll email a new password to the backup email." },
-              class: 'h5 muted underline'
-            %>
+          <% if account.accepted? %>
+            <%= link_to 'Reset password', g_suite_account_reset_password_path(account.id), method: :put,
+                data: { confirm: "Reset the account password for #{account.address}? We'll email a new password to the backup email." },
+                class: 'h5 muted underline'
+              %>
+          <% end %>
         </div>
         <div class="tools flex items-center">
           <% admin_tools('flex items-center') do %>
