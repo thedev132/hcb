@@ -19,8 +19,8 @@ class EventsController < ApplicationController
     # have to use `fixed_event_params` because `event_params` seems to be a constant
     fixed_event_params = event_params
 
-    fixed_event_params[:club_airtable_id] = nil if event_params[:club_airtable_id].empty?
-    fixed_event_params[:partner_logo_url] = nil if event_params[:partner_logo_url].empty?
+    fixed_event_params[:club_airtable_id] = nil if event_params.key?(:club_airtable_id) && event_params[:club_airtable_id].empty?
+    fixed_event_params[:partner_logo_url] = nil if event_params.key?(:partner_logo_url) && event_params[:partner_logo_url].empty?
 
     # all new events should be un-hidden, so no need to worry about setting it here
     # just delete the auxiliary param.

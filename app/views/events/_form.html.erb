@@ -7,7 +7,7 @@
   </div>
   <div class="field">
     <%= form.label :address, class: 'bold' %>
-    <%= form.text_area :address %>
+    <%= form.text_area :address, value: event.address || '42 Placeholder Ave.' %>
   </div>
 
   <% if event.beta_features_enabled %>
