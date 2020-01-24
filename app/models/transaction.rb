@@ -517,10 +517,15 @@ class Transaction < ApplicationRecord
       if check.in_transit? && self.amount.abs == check.amount.abs
         self.check = check
 
-        self.fee_relationship = FeeRelationship.new(
-          event_id: check.event.id,
-          fee_applies: false
-        )
+        # if from a positive pay account, does not belong to any event
+        if self.bank_account.is_positive_pay?
+          self.is_event_related = false
+        else
+          self.fee_relationship = FeeRelationship.new(
+            event_id: check.event.id,
+            fee_applies: false
+          )
+        end
 
         self.display_name = "Check to #{check.lob_address.name}"
         self.save
