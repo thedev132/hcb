@@ -143,6 +143,9 @@ Rails.application.routes.draw do
   end
 
   resources :load_card_requests, except: [:new] do
+    collection do
+      get 'export'
+    end
     post 'accept'
     post 'reject'
     post 'cancel'

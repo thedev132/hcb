@@ -34,4 +34,8 @@ class LoadCardRequestPolicy < ApplicationPolicy
   def reject?
     user.admin?
   end
+
+  def export?
+    user.admin?
+  end
 end

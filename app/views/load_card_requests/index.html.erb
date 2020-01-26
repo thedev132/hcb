@@ -1,6 +1,7 @@
 <% title 'Transfer requests' %>
-<h1>
+<h1 class="heading">
   Transfer requests
+  <%= link_to 'Export Under Review TRs for Selenium', export_load_card_requests_path, class: 'btn bg-info' %>
 </h1>
 
 <%= paginate @load_card_requests %>

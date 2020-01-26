@@ -1,6 +1,32 @@
 class LoadCardRequestsController < ApplicationController
   before_action :set_load_card_request, only: [:show, :edit, :update, :reject, :cancel, :accept]
 
+  def export
+    authorize LoadCardRequest
+
+    lcrs = LoadCardRequest.under_review
+
+    attributes = %w{load_amount emburse_memo}
+
+    result = CSV.generate(headers: true) do |csv|
+      csv << attributes.map
+
+      lcrs.each do |lcr|
+        csv << attributes.map do |attr|
+          if attr == 'load_amount'
+            lcr.load_amount.to_f / 100
+          elsif attr == 'emburse_memo'
+            "Transfer request ID##{lcr.id}"
+          else
+            cr.send(attr)
+          end
+        end
+      end
+    end
+
+    send_data result, filename: "Pending LCRs #{Date.today}.csv"
+  end
+
   def index
     @load_card_requests = LoadCardRequest.all.order(created_at: :desc).page params[:page]
     authorize @load_card_requests
