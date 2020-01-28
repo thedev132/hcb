@@ -1,9 +1,11 @@
 .dock {
   width: 100%;
   max-width: 48rem;
-  margin: 0 auto 0.5rem;
-  padding: 0 0.625rem;
+  margin: 0.5rem auto;
+  padding: 0 1rem;
+  align-items: center;
   display: flex;
+  flex-direction: row;
   align-items: center;
   justify-content: space-between;
 }
@@ -46,4 +48,8 @@
   span {
     color: $black;
   }
+}
+
+.dock + h1.heading {
+  font-size: 3rem;
 }

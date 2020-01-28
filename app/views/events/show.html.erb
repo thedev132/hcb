@@ -3,15 +3,18 @@
 <% @home_size = 72 %>
 <% include_modals %>
 
-<h1 class="heading center items-center mt2">
-   <% if admin_signed_in? %>
-     <span class="badge bg-primary ml0 mr2">
-       #<%= @event.id %>
-     </span>
-   <% end %>
-   <span class="line-height-1" style="font-size: 3rem;">
-     <%= @event.name %>
-   </span>
+<h1 class="heading center flex-column mt2">
+  <span class="flex items-center">
+    <% if admin_signed_in? %>
+      <span class="badge bg-warning ml0 mr2">
+        #<%= @event.id %>
+      </span>
+    <% end %>
+    <span class="line-height-1" style="font-size: 3rem;">
+      <%= @event.name %>
+    </span>
+    <%= pop_icon_to 'controls', edit_event_path(@event), class: 'ml2' %>
+  </span>
 </h1>
 
 <div class="flex flex-wrap items-center justify-center mb2 md-mb3">
@@ -30,7 +33,8 @@
 <%= render 'nav', hide_name: true %>
 
 <p class="muted flex flex-wrap items-center justify-center center mt2">
-  Your point of contact is <%= user_mention @event.point_of_contact, class: 'ml1 mr0' %>.
+  Your point of contact is <%= user_mention @event.point_of_contact, class: 'ml1 mr0' %>
+  <span class="mr1">.</span>
   Text / call at
   <span class="flex items-center medium ml1">
     <%= inline_icon 'message', size: 24, class: 'muted', style: 'margin-right: 0.125rem;' %>
