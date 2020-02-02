@@ -68,7 +68,7 @@
       Incoming deposits
       <%= inline_icon 'external', size: 24, class: 'muted ml1', 'aria-label': 'Icon indicating click for more' %>
     </span>
-    <span class="stat__value"><%= render_money @invoices_being_deposited.sum(&:amount_paid), '' %></span>
+    <span class="stat__value"><%= render_money @invoices_being_deposited.sum(&:amount_paid) + @donations_being_deposited.sum(&:amount), '' %></span>
   </action>
   <%= link_to new_event_load_card_request_path(event_id: @event.slug), class: 'stat statset__wide link-reset' do %>
     <span class="stat__label flex items-center">
@@ -182,7 +182,7 @@
 
 <div class="modal modal--wide modal--scroll bg-snow" data-behavior="modal" role="dialog" id="incoming_deposits">
   <%= modal_header 'Incoming Deposits' %>
-  <% if @invoices_being_deposited.any?  %>
+  <% if @invoices_being_deposited.any? || @donations_being_deposited.any? %>
     <div class="incoming_deposits flex-auto">
       <% @invoices_being_deposited.each do |invoice| %>
         <%= link_to invoice, class: 'card' do %>
@@ -217,7 +217,42 @@
           </div>
           <% end %>
         <% end %>
-        <div class="incoming_deposits__spacer"></div>
+
+      <% @donations_being_deposited.each do |donation| %>
+        <div class="card">
+          <div class="card__banner card__banner--top bg-<%= donation.arriving_late? ? :error : :success %> flex items-center">
+            <span class="white mr1 incoming_deposits__sponsor">
+              Donation from
+              <strong class="block"><%= donation.name %></strong>
+            </span>
+            <span class="badge ml-auto center incoming_deposits__badge bg-<%= donation.arriving_late? ? :error : :success %>">
+              <%= donation.arriving_late? ? 'Late' : 'On Time' %>
+            </span>
+          </div>
+          <div class="flex">
+            <div>
+              <span class="h1 black line-height-1 mb1 block">
+                <%= render_money donation.amount %>
+              </span>
+              <span class="breakdown__sub">
+                <% if donation.arrival_date.ceil_to(1.day) == DateTime.now.floor_to(1.day) %>
+                  arriving today
+                <% else %>
+                  <%= donation.arriving_late? ? 'should have arrived ' : 'arrives in ' %> approx.
+                  <%= distance_of_time_in_words(donation.arrival_date.ceil_to(1.day), DateTime.now.floor_to(1.day)) %>
+                  <%= "ago" if donation.arriving_late? %>
+                <% end %>
+              </span>
+            </div>
+            <span datetime="<%= donation.arrival_date.strftime('%m-%d-%y') %>" class="ml-auto mini-calendar black">
+              <strong><%= donation.arrival_date.strftime('%b') %></strong>
+              <span><%= donation.arrival_date.strftime('%d') %></span>
+            </span>
+          </div>
+        </div>
+      <% end %>
+
+      <div class="incoming_deposits__spacer"></div>
     </div>
   <% else %>
     <%= blankslate 'You don’t have any money incoming. Go get some!' %>

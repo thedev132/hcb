@@ -56,7 +56,7 @@ class Donation < ApplicationRecord
     # if a transfer takes longer than 5 days something is probably wrong. so send an email
     fee_reimbursement_job = SendUnmatchedFeeReimbursementEmailJob.set(wait_until: DateTime.now + 5.days).perform_later(self.fee_reimbursement)
     self.fee_reimbursement.mailer_queued_job_id = fee_reimbursement_job.provider_job_id
-    
+
     # saving a second time because we needed the fee reimbursement to exist in order to capture the job id
     self.fee_reimbursement.save
 
@@ -67,13 +67,21 @@ class Donation < ApplicationRecord
     DonationMailer.with(donation: self).donor_receipt.deliver_later
   end
 
+  def arrival_date
+    self&.payout&.arrival_date || 3.business_days.after(payout_creation_queued_for)
+  end
+
+  def arriving_late?
+    DateTime.now > self.arrival_date
+  end
+
   private
 
   def create_stripe_payment_intent
     payment_intent = StripeService::PaymentIntent.create({
                                                            amount: self.amount,
                                                            currency: 'usd',
-                                                           metadata: {'donation': true}
+                                                           metadata: { 'donation': true }
                                                          })
 
     self.stripe_payment_intent_id = payment_intent.id

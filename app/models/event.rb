@@ -23,6 +23,7 @@ class Event < ApplicationRecord
   has_many :card_requests
   has_many :load_card_requests
   has_many :ach_transfers
+  has_many :donations
 
   has_many :lob_addresses
   has_many :checks, through: :lob_addresses

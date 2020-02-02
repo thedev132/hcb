@@ -49,6 +49,13 @@ class EventsController < ApplicationController
       @event.invoices.joins(:payout)
       .where(invoice_payouts: { status: ('in_transit') })
       .or(@event.invoices.joins(:payout).where(invoice_payouts: { status: ('pending') }))).sort_by { |i| i.arrival_date }
+
+    @donations_being_deposited = (@event.donations.where(payout_id: nil, status: 'succeeded')
+      .where
+      .not(payout_creation_queued_for: nil) +
+      @event.donations.joins(:payout)
+      .where(donation_payouts: { status: ('in_transit') })
+      .or(@event.donations.joins(:payout).where(donation_payouts: { status: ('pending') }))).sort_by { |d| d.arrival_date }
   end
 
   # GET /event_by_airtable_id/recABC
