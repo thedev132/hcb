@@ -1,5 +1,5 @@
 class GSuiteAccountsController < ApplicationController
-  before_action :set_g_suite_account, only: [:edit, :update, :reject, :reset_password]
+  before_action :set_g_suite_account, only: [:edit, :update, :reject, :reset_password, :toggle_suspension]
 
   def index
     authorize GSuiteAccount
@@ -100,11 +100,28 @@ class GSuiteAccountsController < ApplicationController
 
     @event = @g_suite_account.g_suite.event
 
-    @g_suite_account.reset_password!
-    flash[:success] = "We just sent reset instructions to the backup email for #{@g_suite_account.address}."
-    redirect_to event_g_suite_overview_path(event_id: @event.slug)
+    if @g_suite_account.reset_password!
+      flash[:success] = "We just sent reset instructions to the backup email for #{@g_suite_account.address}."
+      redirect_to event_g_suite_overview_path(event_id: @event.slug)
+    else
+      flash[:error] = "Something went wrong while trying to reset the password for #{@g_suite_account.address}."
+      redirect_to event_g_suite_overview_path(event_id: @event.slug)
+    end
   end
 
+  def toggle_suspension
+    authorize @g_suite_account
+
+    @event = @g_suite_account.g_suite.event
+
+    if @g_suite_account.toggle_suspension!
+      flash[:success] = "#{@g_suite_account.address} has been successfully #{@g_suite_account.suspended? ? 'suspended' : 're-activated'}."
+      redirect_to event_g_suite_overview_path(event_id: @event.slug)
+    else
+      flash[:error] = "Something went wrong while trying to #{@g_suite_account.suspended? ? 'suspended' : 're-activate'} #{@g_suite_account.address}."
+      redirect_to event_g_suite_overview_path(event_id: @event.slug)
+    end
+  end
 
   private
 

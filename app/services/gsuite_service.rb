@@ -93,6 +93,7 @@ class GsuiteService
     rescue Google::Apis::ClientError => e
       reason = JSON.parse(e.body)['error']['errors'][0]['message']
       return nil if reason == "Domain not found."
+
       raise e
     end
   end
@@ -100,7 +101,7 @@ class GsuiteService
   # gets an org unit
   # returns nil if something doesn't work
   def get_organizational_unit(ou)
-    begin 
+    begin
       # 'my_customer' is a hard-coded default-provided user that Google
       # specifies. It must be this string and not any other name.
       client.get_org_unit('my_customer', ou)
@@ -111,11 +112,11 @@ class GsuiteService
 
   def create_organizational_unit(name, parent_ou_path)
     org_unit_struct = Google::Apis::AdminDirectoryV1::OrgUnit.new(
-        {
-          name: name,
-          parent_org_unit_path: parent_ou_path
-        }
-      )
+      {
+        name: name,
+        parent_org_unit_path: parent_ou_path
+      }
+    )
     # 'my_customer' is a hard-coded default-provided user that Google
     # specifies. It must be this string and not any other name.
     client.insert_org_unit('my_customer', org_unit_struct)
@@ -124,11 +125,16 @@ class GsuiteService
   # sets a GSuite user's password to something specified & forces them to change it on next login
   def reset_gsuite_user_password(email, password)
     update_user_struct = Google::Apis::AdminDirectoryV1::User.new(
-        change_password_at_next_login: true,
-        password: password
-      )
+      change_password_at_next_login: true,
+      password: password
+    )
     client.update_user(email, update_user_struct)
   end
 
+  def toggle_gsuite_user_suspension(email, suspend)
+    update_user_struct = Google::Apis::AdminDirectoryV1::User.new(
+      suspended: suspend
+    )
+    client.update_user(email, update_user_struct)
+  end
 end
-
