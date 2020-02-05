@@ -279,12 +279,14 @@ class Transaction < ApplicationRecord
       comment.update(commentable_id: self.id)
     end
     pfr = previous.fee_relationship
-    self.fee_relationship = FeeRelationship.new(
-      event_id: pfr.event_id,
-      fee_applies: pfr.fee_applies,
-      fee_amount: pfr.fee_amount,
-      is_fee_payment: pfr.is_fee_payment,
-    )
+    if !pfr.nil?
+      self.fee_relationship = FeeRelationship.new(
+        event_id: pfr.event_id,
+        fee_applies: pfr.fee_applies,
+        fee_amount: pfr.fee_amount,
+        is_fee_payment: pfr.is_fee_payment,
+      )
+    end
 
     self.invoice_payout = previous.invoice_payout
     previous.invoice_payout = nil
