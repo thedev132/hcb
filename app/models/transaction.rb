@@ -1,7 +1,7 @@
 class Transaction < ApplicationRecord
   extend FriendlyId
 
-  paginates_per 100
+  paginates_per 250
 
   friendly_id :slug_text, use: :slugged
 
@@ -257,14 +257,17 @@ class Transaction < ApplicationRecord
   # broken states.
   def try_recover_pending_tx_details!
     deleted_tx_from_last_week = Transaction.with_deleted
-      .where(date: 1.week.ago..DateTime.now)
+      .where(date: 1.week.before(self.date)..self.date)
       .where.not(deleted_at: nil)
 
     # transactions that were deleted, that match in TX memo
     # and amount, are good candidates for a previously pending TX
     # that is now complete as `self`.
-    matching_deleted_tx = deleted_tx_from_last_week
-      .where(amount: self.amount, name: self.name)
+    matching_amt_deleted_tx = deleted_tx_from_last_week
+      .where(amount: self.amount)
+    matching_deleted_tx = matching_amt_deleted_tx.select { |tx|
+      self.name.start_with?(tx.name)
+    }
 
     return unless matching_deleted_tx.count == 1
     previous = matching_deleted_tx[0]
