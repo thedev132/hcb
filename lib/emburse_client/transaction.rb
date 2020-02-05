@@ -4,7 +4,7 @@ module EmburseClient
       url = 'v1/transactions'
 
       unless search.nil?
-        allowed_params = %i{card member category department location label}
+        allowed_params = %i{card member category department location label before after}
         filtered_search = search.select { |k,v| allowed_params.include?(k) }
         url << "?#{filtered_search.to_query}"
       end

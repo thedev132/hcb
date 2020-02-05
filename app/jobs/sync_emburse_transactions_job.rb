@@ -10,7 +10,7 @@ class SyncEmburseTransactionsJob < ApplicationJob
       # data showing up for our users.
       deleted_transactions = EmburseTransaction.all.pluck :emburse_id
 
-      EmburseClient::Transaction.list.each do |trn|
+      EmburseClient::Transaction.search({ after: 1.month.ago.iso8601() }).each do |trn|
         et = EmburseTransaction.find_by(emburse_id: trn[:id])
         et ||= EmburseTransaction.new(emburse_id: trn[:id])
 
