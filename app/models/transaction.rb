@@ -57,7 +57,7 @@ class Transaction < ApplicationRecord
   def self.during(start_time, end_time)
     # all transactions between time period except for HQ's (because we don't want them incl. in stats)
     self.includes(:fee_relationship).where.not(fee_relationships: { event_id: HQ_EVENT_ID })
-      .where(["transactions.created_at > ? and transactions.created_at < ?", start_time, end_time])
+      .where(["transactions.date > ? and transactions.date < ?", start_time, end_time])
   end
 
   def self.volume_during(start_time, end_time)

@@ -8,9 +8,14 @@ class SyncEmburseTransactionsJob < ApplicationJob
       # transaction from their API. We want to archive any transactions that are
       # no longer on Emburse or we'll end up with a bunch of garbage transaction
       # data showing up for our users.
-      deleted_transactions = EmburseTransaction.all.pluck :emburse_id
+      #
+      # NOTE: We only check for deleted transactions from the last 21 days,
+      # assuming that transactions will not disappear after that time.
+      # We query Emburse for TXs for the last 30 days, as a precaution, so
+      # we do not accidentally delete valid transactions
+      deleted_transactions = EmburseTransaction.during(21.days.ago, DateTime.now).pluck :emburse_id
 
-      EmburseClient::Transaction.search({ after: 1.month.ago.iso8601() }).each do |trn|
+      EmburseClient::Transaction.search({ after: 30.days.ago.iso8601() }).each do |trn|
         et = EmburseTransaction.find_by(emburse_id: trn[:id])
         et ||= EmburseTransaction.new(emburse_id: trn[:id])
 

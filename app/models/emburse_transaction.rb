@@ -17,6 +17,10 @@ class EmburseTransaction < ApplicationRecord
 
   validates_uniqueness_of_without_deleted :emburse_id
 
+  def self.during(start_time, end_time)
+    self.where(["emburse_transactions.transaction_time > ? and emburse_transactions.transaction_time < ?", start_time, end_time])
+  end
+
   def under_review?
     self.event_id.nil? && undeclined?
   end
