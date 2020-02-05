@@ -10,8 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_16_211714) do
-
+ActiveRecord::Schema.define(version: 2020_01_25_163803) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
@@ -332,6 +331,7 @@ ActiveRecord::Schema.define(version: 2020_01_16_211714) do
     t.string "initial_password"
     t.string "first_name"
     t.string "last_name"
+    t.datetime "suspended_at"
     t.index ["creator_id"], name: "index_g_suite_accounts_on_creator_id"
     t.index ["g_suite_id"], name: "index_g_suite_accounts_on_g_suite_id"
   end

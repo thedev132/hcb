@@ -10,7 +10,10 @@
           – <strong><%= account.status %></strong>
           </p>
           <p class="slate m0">
-          <% if account.initial_password.present? %>
+          <% if account.suspended? %>
+            <%= status_badge :error %>
+            <span>Suspended.</span>
+          <% elsif account.initial_password.present? %>
             <%= status_badge :success %>
             <span>Active.</span>
           <% else %>
@@ -24,6 +27,12 @@
           <% if account.accepted? %>
             <%= link_to 'Reset password', g_suite_account_reset_password_path(account.id), method: :put,
                 data: { confirm: "Reset the account password for #{account.address}? We'll email a new password to the backup email." },
+                class: 'h5 muted underline'
+              %>
+            <%= link_to (account.suspended? ? 'Re-activate' : 'Suspend'),
+                g_suite_account_toggle_suspension_path(account.id),
+                method: :put,
+                data: { confirm: "Do you really want to #{account.suspended? ? 're-activate' : 'suspend'} #{account.address}?"},
                 class: 'h5 muted underline'
               %>
           <% end %>

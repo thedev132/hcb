@@ -16,16 +16,23 @@ class GSuiteAccount < ApplicationRecord
   before_create :sync_create_to_gsuite
   after_create :send_email_notification
 
+  before_update :sync_update_to_gsuite
+
   before_destroy :sync_delete_to_gsuite
 
   scope :under_review, -> { where(rejected_at: nil, accepted_at: nil) }
 
   def status
     return 'rejected' if rejected_at.present?
+    return 'suspended' if suspended_at.present?
     return 'accepted' if accepted_at.present?
     return 'verified' if verified_at.present?
 
     'pending'
+  end
+
+  def suspended?
+    self.suspended_at.present?
   end
 
   def under_review?
@@ -64,28 +71,42 @@ class GSuiteAccount < ApplicationRecord
     self.save
   end
 
+  def toggle_suspension!
+    if self.suspended_at.nil?
+      self.suspended_at = DateTime.now
+    else
+      self.suspended_at = nil
+    end
+
+    self.save
+  end
+
   private
 
   def notify_user_of_password_change(first_password = false)
     email_params = {
-        recipient: backup_email,
-        address: address,
-        password: initial_password,
-        event: g_suite.event.name,
-      }
+      recipient: backup_email,
+      address: address,
+      password: initial_password,
+      event: g_suite.event.name,
+    }
 
-      creator_email_params = {
-        recipient: creator.email,
-        first_name: first_name,
-        last_name: last_name,
-        event: g_suite.event.name,
-      }
+    creator_email_params = {
+      recipient: creator.email,
+      first_name: first_name,
+      last_name: last_name,
+      event: g_suite.event.name,
+    }
 
-      if first_password
-        GSuiteAccountMailer.notify_user_of_activation(email_params).deliver_later
-      else
-        GSuiteAccountMailer.notify_user_of_reset(email_params).deliver_later
-      end
+    if first_password
+      GSuiteAccountMailer.notify_user_of_activation(email_params).deliver_later
+    else
+      GSuiteAccountMailer.notify_user_of_reset(email_params).deliver_later
+    end
+  end
+
+  def send_email_notification
+    notify_user_of_password_change(true)
   end
 
   def sync_create_to_gsuite
@@ -97,13 +118,13 @@ class GSuiteAccount < ApplicationRecord
     # new 12-character password
     password = SecureRandom.hex(6)
     account = GsuiteService.instance.create_event_gsuite_user(
-        first_name,
-        last_name,
-        address,
-        backup_email,
-        password,
-        GsuiteService.instance.get_ou_name_from_event(g_suite.event)
-      )
+      first_name,
+      last_name,
+      address,
+      backup_email,
+      password,
+      GsuiteService.instance.get_ou_name_from_event(g_suite.event)
+    )
     # this means that the domain doesn't exist
     if account == nil
       errors.add(:domain, "hasn't been setup yet!")
@@ -111,11 +132,7 @@ class GSuiteAccount < ApplicationRecord
     end
 
     self.initial_password = password
-    self.accepted_at = DateTime.now 
-  end
-
-  def send_email_notification
-    notify_user_of_password_change(true)
+    self.accepted_at = DateTime.now
   end
 
   def sync_delete_to_gsuite
@@ -123,10 +140,25 @@ class GSuiteAccount < ApplicationRecord
       puts "☣️ In production, we would currently be syncing the GSuite account deletion ☣️"
       return
     end
-    
+
     if !GsuiteService.instance.delete_gsuite_user(address)
       errors.add(self, "couldn't be deleted from GSuite!")
       throw :abort
+    end
+  end
+
+  def sync_update_to_gsuite
+    return unless suspended_at_changed?
+
+    if Rails.env.development?
+      puts "☣️ In production, we would currently be syncing the GSuite account suspension ☣️"
+      return
+    end
+
+    if suspended_at.nil?
+      GsuiteService.instance.toggle_gsuite_user_suspension(address, false)
+    else
+      GsuiteService.instance.toggle_gsuite_user_suspension(address, true)
     end
   end
 
