@@ -28,6 +28,11 @@ module StaticPagesHelper
         'Hack Club Dollaringos',
         'The Hack Foundation dba The Dolla Store',
         'Hack on.',
+        "please don't hack",
+        'HCB– Happily Celebrating Bees',
+        'HCB– Hungry Computer Bison',
+        'HCB– Huge Cellophane Boats',
+        'HCB– Hydrofoils Chartered by Bandits',
       ].sample
     end
   end
