@@ -11,7 +11,7 @@ class DonationsController < ApplicationController
   def start_donation
     @event = Event.find(params['event_name'])
 
-    if !@event.beta_features_enabled
+    if !@event.donation_page_enabled
       return not_found
     end
 

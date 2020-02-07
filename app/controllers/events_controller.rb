@@ -112,7 +112,7 @@ class EventsController < ApplicationController
 
     if @event.update(current_user.admin? ? fixed_event_params : fixed_user_event_params)
       flash[:success] = 'Event successfully updated.'
-      redirect_to @event
+      redirect_to edit_event_path(@event.id)
     else
       render :edit
     end
@@ -190,7 +190,9 @@ class EventsController < ApplicationController
       :point_of_contact_id,
       :slug,
       :beta_features_enabled,
-      :hidden
+      :hidden,
+      :donation_page_enabled,
+      :donation_page_message
     )
 
     # Expected budget is in cents on the backend, but dollars on the frontend
@@ -205,7 +207,9 @@ class EventsController < ApplicationController
     result_params = params.require(:event).permit(
       :address,
       :slug,
-      :hidden
+      :hidden,
+      :donation_page_enabled,
+      :donation_page_message
     )
 
     # convert whatever the user inputted into something that is a legal slug

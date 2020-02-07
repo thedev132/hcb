@@ -2,17 +2,29 @@
   <%= form_errors event, 'account info' %>
 
   <div class="field">
-    <p class="mb0 bold">Fee</p>
-    <p>Bank is charging <%= event.sponsorship_fee.blank? ? "" : event.sponsorship_fee * 100 %>% of your revenue</p>
+    <label class="bold">Fee</label>
+    <p class="mt0">Bank is charging <%= event.sponsorship_fee.blank? ? "" : event.sponsorship_fee * 100 %>% of your revenue</p>
   </div>
+
   <div class="field">
     <%= form.label :address, class: 'bold' %>
     <%= form.text_area :address, value: event.address || '42 Placeholder Ave.' %>
   </div>
 
-  <% if event.beta_features_enabled %>
-    <%= link_to 'Give this link to other people if they want to donate to you', start_donation_donations_path(event.slug) %>
+  <h3 class="mb1">Donations</h3>
+
+  <div class="field field--checkbox">
+      <%= form.check_box :donation_page_enabled %>
+      <%= form.label :donation_page_enabled, "Enable donation page" %>
+  </div>
+  <% if event.donation_page_enabled %>
+    <div class="field">
+      <%= form.label :donation_page_message, "Message to show on donation page" %>
+      <%= form.text_area :donation_page_message %>
+    </div>
+    <%= link_to 'Click here to go to your donations page', start_donation_donations_path(event.slug) %>
   <% end %>
+
 
   <% if current_user.events.size > 1 && event.persisted?%>
     <div class="field field--checkbox">

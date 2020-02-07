@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_25_163803) do
+ActiveRecord::Schema.define(version: 2020_02_02_040220) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
@@ -273,6 +273,8 @@ ActiveRecord::Schema.define(version: 2020_01_25_163803) do
     t.text "club_airtable_id"
     t.boolean "beta_features_enabled"
     t.datetime "hidden_at"
+    t.boolean "donation_page_enabled"
+    t.text "donation_page_message"
     t.index ["club_airtable_id"], name: "index_events_on_club_airtable_id", unique: true
     t.index ["point_of_contact_id"], name: "index_events_on_point_of_contact_id"
   end
