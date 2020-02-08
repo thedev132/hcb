@@ -178,6 +178,7 @@ Rails.application.routes.draw do
     get 'transfers', to: 'events#transfers', as: :transfers
     get 'promotions', to: 'events#promotions', as: :promotions
     get 'reimbursements', to: 'events#reimbursements', as: :reimbursements
+    get 'donations', to: 'events#donation_overview', as: :donation_overview
     resources :checks, only: [:new, :create]
     resources :ach_transfers, only: [:new, :create]
     resources :organizer_position_invites,

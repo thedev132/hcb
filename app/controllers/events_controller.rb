@@ -144,6 +144,12 @@ class EventsController < ApplicationController
     @g_suite_status = @event.g_suite_status
   end
 
+  def donation_overview
+    @event = Event.find(params[:event_id])
+    authorize @event
+    @donations = @event.donations.where(status: 'succeeded').sort_by {|d| d.created_at }.reverse
+  end
+
   def transfers
     @event = Event.find(params[:event_id])
     authorize @event

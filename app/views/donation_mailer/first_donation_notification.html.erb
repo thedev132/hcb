@@ -1,0 +1,14 @@
+<p><%= @emails.length > 1 ? 'Hi all,' : 'Hi there,' %></p>
+
+<p>
+  Congrats! We're emailing to let you know that you've received your first-ever donation of <%= render_money @donation.amount %> from <%= @donation.name %>.
+</p>
+
+<p>
+  You can <%= link_to 'click here', event_donation_overview_path(@donation.event.slug) %> to see the full details, including when you'll receive the payment to be able to spend it.
+</p>
+
+<p>
+  From,<br>
+  The Hack Club Team
+</p>

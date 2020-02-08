@@ -54,4 +54,8 @@ class EventPolicy < ApplicationPolicy
   def reimbursements?
     user.admin? || record.users.include?(user)
   end
+
+  def donation_overview?
+    user.admin? || record.users.include?(user)
+  end
 end

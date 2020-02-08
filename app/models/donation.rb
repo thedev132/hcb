@@ -6,6 +6,8 @@ class Donation < ApplicationRecord
   before_create :create_stripe_payment_intent
   before_create :assign_unique_hash
 
+  after_update :send_first_payment_notification
+
   validates :name, :email, :amount, presence: true
   validates :amount, numericality: { greater_than_or_equal_to: 100 }
 
@@ -36,6 +38,24 @@ class Donation < ApplicationRecord
     self.payout_creation_balance_available_at = funds_available_at
 
     self.save!
+  end
+
+  def status_text
+    if status == 'succeeded' && self&.payout&.t_transaction.present?
+      return 'Deposited'
+    elsif status == 'succeeded' && payout_id == nil
+      return 'In transit'
+    end
+
+    'Contact your POC'
+  end
+
+  def filter_data
+    {
+      in_transit: (status == 'succeeded' && payout_id == nil),
+      deposited: (status == 'succeeded' && self&.payout&.t_transaction.present?),
+      exists: true
+    }
   end
 
   def create_payout!
@@ -76,6 +96,21 @@ class Donation < ApplicationRecord
   end
 
   private
+
+  def send_payment_notification_if_needed
+    return unless saved_changes[:status].present?
+
+    was = saved_changes[:status][0] # old value of status
+    now = saved_changes[:status][1] # new value of status
+
+    if was != 'succeeded' && now == 'succeeded'
+      # send special email on first donation paid
+      if self.event.donations.select { |d| d.status == 'succeeded' }.count == 1
+        DonationMailer.with(donation: self).first_donation_notification.deliver_later
+        return
+      end
+    end
+  end
 
   def create_stripe_payment_intent
     payment_intent = StripeService::PaymentIntent.create({
