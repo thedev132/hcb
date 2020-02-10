@@ -476,7 +476,7 @@ class Transaction < ApplicationRecord
   def try_pair_github
     return unless potential_github?
 
-    potential_event_name = /(.*)GitHub Grant.*/.strip.match(self.name)[1]
+    potential_event_name = /(.*)GitHub Grant.*/.match(self.name).strip()[1]
     matching_events = Event.where(name: potential_event_name)
 
     return unless matching_events.count == 1
