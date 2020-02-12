@@ -275,6 +275,7 @@ class Transaction < ApplicationRecord
 
     # copy over copyable details
     self.display_name = previous.display_name
+    self.is_event_related = previous.is_event_related
     previous.comments.each do |comment|
       comment.update(commentable_id: self.id)
     end
