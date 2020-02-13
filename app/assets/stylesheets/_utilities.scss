@@ -39,7 +39,7 @@
 .border-right,
 .border-bottom,
 .border-left {
-  border-color: $gray2;
+  border-color: map-get($palette, smoke);
 }
 
 .px0 {
@@ -89,10 +89,10 @@
 }
 
 $shades: (
-  red: $red0,
-  yellow: $yellow0,
-  green: $teal0,
-  neutral: $gray0
+  red: rgba($red, 0.125),
+  yellow: rgba($yellow, 0.125),
+  green: rgba($green, 0.125),
+  neutral: rgba($muted, 0.125)
 );
 
 @each $name, $value in $shades {
@@ -107,10 +107,18 @@ $shades: (
 .transaction--negative {
   @extend .shade-red;
 }
+tr.transaction--positive,
+tr.transaction--negative {
+  border-bottom-color: rgba(map-get($palette, smoke), 0.5);
+}
 
 @each $name, $value in $palette {
   .#{'' + $name} {
     color: $value;
+  }
+  a.#{'' + $name}:hover,
+  a.#{'' + $name}:focus {
+    color: darken($value, 10%);
   }
 
   .bg-#{'' + $name} {

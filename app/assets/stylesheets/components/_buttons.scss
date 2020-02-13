@@ -2,9 +2,10 @@ input[type='submit'],
 .btn {
   -webkit-appearance: none;
   align-items: center;
-  background-color: $base;
+  background-color: map-get($palette, info);
   border: 0;
-  border-radius: 6px;
+  border-radius: 9999px;
+  box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.125);
   color: $white;
   cursor: pointer;
   display: inline-flex;
@@ -19,7 +20,16 @@ input[type='submit'],
   text-align: center;
   text-decoration: none;
   text-transform: uppercase;
+  transform: scale(1);
+  transition: transform 0.125s ease-in-out, box-shadow 0.25s ease-in-out;
   user-select: none;
+  
+  &:hover,
+  &:focus {
+    color: $white;
+    box-shadow: 4px 8px 16px rgba(0, 0, 0, 0.1875);
+    transform: scale(1.0625);
+  }
 
   svg {
     width: 24px;
@@ -41,8 +51,8 @@ input[type='submit'],
   }
 
   &.btn--destroy {
-    background-color: $red5 !important;
-    color: $gray1 !important;
+    background-color: map-get($palette, error) !important;
+    color: map-get($palette, snow) !important;
   }
 }
 

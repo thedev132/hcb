@@ -83,17 +83,19 @@ textarea {
 }
 
 pre {
-  background-color: $gray1;
+  background-color: map-get($palette, snow);
   border-radius: 4px;
   padding: 12px;
   font-size: 12px;
 }
 
 a {
-  color: $gray8;
+  color: map-get($palette, muted);
+  transition: color .125s ease-in-out;
 
-  &:hover &:focus {
-    color: $gray9;
+  &:hover,
+  &:focus {
+    color: map-get($palette, slate);
   }
 }
 
@@ -107,13 +109,13 @@ h4 {
 h1 {
   font-size: 3rem;
   padding-bottom: 0.5rem;
-  border-bottom: 1px solid #dde1e4;
+  border-bottom: 1px solid map-get($palette, smoke);
   margin-bottom: 1rem;
 }
 h2 {
   font-size: 1.75rem;
   padding-bottom: 0.25rem;
-  border-bottom: 1px solid #dde1e4;
+  border-bottom: 1px solid map-get($palette, smoke);
   margin-bottom: 0.5rem;
 }
 h3 {
@@ -218,34 +220,11 @@ action {
   margin-bottom: -0.5rem;
 }
 
-.flash {
-  background-color: $white;
-  border-radius: 0.5rem;
-  border: 1px solid currentColor;
-  box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.0625), 0 4px 8px 0 rgba(0, 0, 0, 0.125);
-  font-weight: 500;
-  max-width: 24rem;
-  padding: 0.5rem 0.75rem 0.5rem 1rem;
-
-  &.success {
-    color: $teal7;
-    background-color: $teal0;
-  }
-  &.info {
-    color: $blue7;
-    background-color: $blue0;
-  }
-  &.error {
-    color: $red7;
-    background-color: $red0;
-  }
-}
-
 .admin-tools {
   padding: 0.5rem;
   border-radius: 0.5rem;
   border: 1px dashed map-get($palette, warning);
-  background: $yellow0;
+  background: rgba(map-get($palette, pending), 0.125);
 }
 
 // Make mobile views nice. Full-bleed separator lines

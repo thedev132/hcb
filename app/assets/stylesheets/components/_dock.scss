@@ -36,6 +36,8 @@
 }
 
 .dock__card {
+  @extend .card;
+  box-shadow: 2px 4px 12px rgba(0, 0, 0, 0.125);
   font-weight: bold;
   font-size: 0.875rem;
   text-decoration: none;

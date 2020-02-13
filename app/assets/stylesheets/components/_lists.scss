@@ -13,17 +13,17 @@ $chevron: "#{image-url('chevron.svg')} right 12px center no-repeat";
 
   > a > li,
   > li {
-    border-bottom: 1px solid $gray2;
+    border-bottom: 1px solid map-get($palette, smoke);
     padding: 12px;
     display: flex;
     flex-direction: column;
     background: #{$chevron};
     background-color: initial;
     &.transaction--positive {
-      background: $teal0 #{$chevron};
+      background: rgba(map-get($palette, success), 0.125) #{$chevron};
     }
     &.transaction--negative {
-      background: $red0 #{$chevron};
+      background: rgba(map-get($palette, error), 0.125) #{$chevron};
     }
     > p {
       margin: 0;
@@ -53,7 +53,7 @@ $chevron: "#{image-url('chevron.svg')} right 12px center no-repeat";
 .list--unlinked li {
   background: transparent;
   &.bg-snow {
-    background: $gray0;
+    background: map-get($palette, snow);
   }
 }
 h1 + .list,
@@ -61,7 +61,7 @@ h1 + .details {
   margin-top: -1rem;
 }
 h3 + .list {
-  border-top: 1px solid $gray2;
+  border-top: 1px solid map-get($palette, smoke);
 }
 
 .card--item {
