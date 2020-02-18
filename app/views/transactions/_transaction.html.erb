@@ -5,8 +5,9 @@
   <td>
     <%= transaction.date %>
   </td>
-  <td>
-    <%= transaction.display_name %>
+  <td class="flex justify-between">
+    <span><%= transaction.display_name %></span>
+    <span><%= "💬#{transaction.comments.size}" if transaction.comments.size > 0 %></span>
   </td>
   <td></td>
   <td>
@@ -16,3 +17,4 @@
     <%= link_to 'Details', transaction %>
   </td>
 </tr>
+  
