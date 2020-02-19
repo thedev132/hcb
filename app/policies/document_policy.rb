@@ -41,13 +41,6 @@ class DocumentPolicy < ApplicationPolicy
   end
 
   def fiscal_sponsorship_letter?
-    return true if user.admin?
-
-    # get all event ids in document collection
-    event_ids = record.map(&:event).pluck(:id)
-    # boolean for if all of them are the same
-    same_event = event_ids.uniq.size == 1
-    # if all the event ids are the same and the user accessing owns that event, give access.
-    return true if same_event && user.events.pluck(:id).include?(event_ids.first) && Event.find(event_ids[0]).has_fiscal_sponsorship_document
+    return true if record.users.include?(user) || user.admin?
   end
 end
