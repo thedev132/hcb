@@ -11,7 +11,6 @@ _It’s a bank, folks._
 3. Get a copy of the encrypted credentials file from a team member (`config/credentials.yml.enc`)
 4. ```sh
     docker-compose build
-    docker-compose run web bundle
     docker-compose run web bundle exec rails db:create db:migrate
     docker-compose up
    ```
