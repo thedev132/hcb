@@ -8,13 +8,14 @@ _It’s a bank, folks._
 
 1. Install Docker.
 2. Clone this repo.
-3. ```sh
+3. Get a copy of the encrypted credentials file from a team member (`config/credentials.yml.enc`)
+4. ```sh
     docker-compose build
     docker-compose run web bundle
     docker-compose run web bundle exec rails db:create db:migrate
     docker-compose up
    ```
-4. Open [localhost:3000](http://localhost:3000)
+5. Open [localhost:3000](http://localhost:3000)
 
 Alternatively, you can run `docker-compose run --service-ports web /bin/bash` to open a shell into the container with the right ports bound, and then manually start the Rails app, or just run `docker-compose run web bundle exec rails s -b 0.0.0.0` to start the rails server directly from Docker.
 
