@@ -73,8 +73,7 @@ class DocumentsController < ApplicationController
   end
 
   def fiscal_sponsorship_letter
-    @documents = @event.documents.includes(:user)
-    authorize @documents
+    authorize @event, policy_class: DocumentPolicy
 
     respond_to do |format|
       format.pdf do
