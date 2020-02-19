@@ -168,6 +168,9 @@ Rails.application.routes.draw do
   get 'pending_fees', to: 'static_pages#pending_fees'
   get 'negative_events', to: 'static_pages#negative_events'
 
+  get 'admin_search', to: 'static_pages#search'
+  post 'admin_search', to: 'static_pages#search'
+
   post '/events' => 'events#create'
   get '/events' => 'events#index'
   get '/event_by_airtable_id/:airtable_id' => 'events#by_airtable_id'

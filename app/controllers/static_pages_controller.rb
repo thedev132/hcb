@@ -45,6 +45,22 @@ class StaticPagesController < ApplicationController
     @event_name = signed_in? && current_user.events.first ? current_user.events.first.name : 'Hack Pennsylvania'
   end
 
+  def search
+    # allows the same URL to easily be used for form and GET
+    return if request.method == 'GET'
+    
+    # removing dashes to deal with phone number
+    query = params[:q].gsub('-', '')
+
+    users = []
+
+    users.push(User.where(full_name: query).compact)
+    users.push(User.where(email: query).compact)
+    users.push(User.where(phone_number: query).compact)
+
+    @result = users.flatten.compact
+  end
+
   def faq
   end
 

@@ -1,0 +1,25 @@
+<% title 'Search by Contact Info' %>
+<h1>
+  Search
+</h1>
+
+<%= form_with(url: admin_search_path, local: true) do %>
+  <%= label_tag(:q, "Search for:") %>
+  <%= text_field_tag(:q) %>
+  <%= submit_tag("Search") %>
+<% end %>
+<p class="mt0">you can use name, phone number, or email</p>
+
+<% if @result.present? %>
+	<% @result.each do |r| %>
+		<% next if r == nil %>
+		<p><%= r.name %></p>
+		<% r.events.each do |e| %>
+			<a href="<%= e.slug %>"><%= e.name %></a>
+		<% end %>
+		<p><%= r.email %></p>
+		<p><%= r.phone_number %></p>
+		<p>------</p>
+	<% end %>
+<% end %>
+

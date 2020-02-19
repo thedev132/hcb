@@ -23,6 +23,7 @@ class User < ApplicationRecord
   has_one_attached :profile_picture
 
   before_create :create_session_token
+  before_create :format_number
 
   validates_presence_of :api_id, :api_access_token, :email
   validates_uniqueness_of :api_id, :api_access_token, :email
@@ -85,5 +86,9 @@ class User < ApplicationRecord
 
     profile_picture.purge_later
     errors.add(:profile_picture, 'needs to be an image')
+  end
+
+  def format_number
+    self.phone_number = Phonelib.parse(self.phone_number).sanitized
   end
 end
