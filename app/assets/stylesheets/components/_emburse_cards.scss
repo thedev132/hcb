@@ -9,6 +9,8 @@
   position: relative;
   background-color: #54d;
   background-image: radial-gradient(ellipse at top right, #867ae7, transparent);
+  background-image: #{image-url('emburse-swoosh.svg')}, radial-gradient(ellipse at top right, #867ae7, transparent);
+  background-repeat: no-repeat;
   font-family: $mono;
   font-size: 1.25rem;
   color: $white;
