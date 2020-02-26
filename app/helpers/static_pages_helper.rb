@@ -35,6 +35,7 @@ module StaticPagesHelper
         'HCB– Hungry Computer Bison',
         'HCB– Huge Cellophane Boats',
         'HCB– Hydrofoils Chartered by Bandits',
+        'The best thing since sliced bread',
       ].sample
     end
   end
