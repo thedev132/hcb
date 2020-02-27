@@ -1,6 +1,32 @@
 class FeeReimbursementsController < ApplicationController
   before_action :set_fee_reimbursement, only: [:show, :edit, :update, :destroy, :mark_as_processed]
 
+  def export
+    authorize FeeReimbursement
+
+    fee_reimbursements = FeeReimbursement.unprocessed
+
+    attributes = %w{amount transaction_memo}
+
+    result = CSV.generate(headers: true) do |csv|
+      csv << attributes.map
+
+      fee_reimbursements.each do |fr|
+        csv << attributes.map do |attr|
+          if attr == 'amount'
+            fr.amount
+          elsif attr == 'transaction_memo'
+            fr.transaction_memo
+          else
+            fr.send(attr)
+          end
+        end
+      end
+    end
+
+    send_data result, filename: "Pending FRs #{Date.today}.csv"
+  end
+
   # GET /fee_reimbursements
   def index
     @fee_reimbursements = FeeReimbursement.all.page params[:page]

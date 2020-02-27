@@ -18,4 +18,8 @@ class FeeReimbursementPolicy < ApplicationPolicy
   def mark_as_processed?
     user.admin?
   end
+
+  def export?
+    user.admin?
+  end
 end
