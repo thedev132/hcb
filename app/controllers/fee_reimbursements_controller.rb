@@ -14,7 +14,7 @@ class FeeReimbursementsController < ApplicationController
       fee_reimbursements.each do |fr|
         csv << attributes.map do |attr|
           if attr == 'amount'
-            fr.amount
+            fr.amount.to_f / 100
           elsif attr == 'transaction_memo'
             fr.transaction_memo
           else
