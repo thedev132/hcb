@@ -288,20 +288,30 @@ class Transaction < ApplicationRecord
       )
     end
 
-    self.invoice_payout = previous.invoice_payout
-    previous.invoice_payout = nil
+    if self.invoice_payout.nil? && previous.invoice_payout
+      self.invoice_payout = previous.invoice_payout
+      previous.invoice_payout = nil
+    end
 
-    self.donation_payout = previous.donation_payout
-    previous.donation_payout = nil
+    if self.donation_payout.nil? && previous.donation_payout
+      self.donation_payout = previous.donation_payout
+      previous.donation_payout = nil
+    end
 
-    self.load_card_request = previous.load_card_request
-    previous.load_card_request = nil
+    if self.load_card_request.nil? && previous.load_card_request
+      self.load_card_request = previous.load_card_request
+      previous.load_card_request = nil
+    end
 
-    self.fee_reimbursement = previous.fee_reimbursement
-    previous.fee_reimbursement = nil
+    if self.fee_reimbursement.nil? && previous.fee_reimbursement
+      self.fee_reimbursement = previous.fee_reimbursement
+      previous.fee_reimbursement = nil
+    end
 
-    self.check = previous.check
-    previous.check = nil
+    if self.check.nil? && previous.check
+      self.check = previous.check
+      previous.check = nil
+    end
 
 
     self.save
