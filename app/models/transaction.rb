@@ -256,22 +256,21 @@ class Transaction < ApplicationRecord
   # NOTE: wrap calls to this in a SQL transaction to avoid
   # broken states.
   def try_recover_pending_tx_details!
-    deleted_tx_from_last_week = Transaction.with_deleted
-      .where(date: 1.week.before(self.date)..self.date)
-      .where.not(deleted_at: nil)
-
-    # transactions that were deleted, that match in TX memo
+    # transactions that were deleted, that match in TX memo, date,
     # and amount, are good candidates for a previously pending TX
     # that is now complete as `self`.
-    matching_amt_deleted_tx = deleted_tx_from_last_week
+    matching_deleted_tx = Transaction.with_deleted
+      .where(date: self.date)
       .where(amount: self.amount)
-    matching_deleted_tx = matching_amt_deleted_tx.select { |tx|
-      self.name.start_with?(tx.name)
-    }
+      .where.not(deleted_at: nil)
+      .select { |t| self.name.start_with?(t.name) }
 
     return unless matching_deleted_tx.count == 1
     previous = matching_deleted_tx[0]
 
+    # if for some reason we've found the transaction itself,
+    # stop now.
+    return if self == previous
 
     # copy over copyable details
     self.display_name = previous.display_name
