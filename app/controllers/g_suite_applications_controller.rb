@@ -19,7 +19,7 @@ class GSuiteApplicationsController < ApplicationController
 
   def accept
     authorize @g_suite_application
-    redirect_to new_event_g_suite_path(g_suite_application_id: @g_suite_application.id, event_id: @g_suite_application.event.id)
+    redirect_to new_event_g_suite_path(g_suite_application_id: @g_suite_application.id, event_id: @g_suite_application.event.slug)
   end
 
   def reject

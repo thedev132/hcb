@@ -27,11 +27,11 @@
         <td><%= render_money request.load_amount %></td>
         <td><%= request.status %></td>
         <td>
-          <%= link_to 'View', load_card_request_path(request, event_id: request.event.id) %>
+          <%= link_to 'View', load_card_request_path(request, event_id: request.event.slug) %>
         </td>
         <td>
           <% if request.under_review? %>
-            <p><%= link_to 'Accept', load_card_request_accept_path(request, event_id: request.event.id),
+            <p><%= link_to 'Accept', load_card_request_accept_path(request, event_id: request.event.slug),
               method: :post,
               data: { confirm: 'Have you processed in Emburse?' },
               class: 'btn bg-success' %></p>

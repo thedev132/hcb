@@ -55,7 +55,7 @@ class LoadCardRequestsController < ApplicationController
   def create
     # Load amount is in cents on the backend, but dollars on the frontend
     result_params = load_card_request_params
-    result_params[:load_amount] = result_params[:load_amount].to_f * 100
+    result_params[:load_amount] = result_params[:load_amount].gsub(',', '').to_f * 100
 
     @load_card_request = LoadCardRequest.new(result_params)
     @event = Event.find(params[:load_card_request][:event_id])

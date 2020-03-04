@@ -112,7 +112,7 @@ class EventsController < ApplicationController
 
     if @event.update(current_user.admin? ? fixed_event_params : fixed_user_event_params)
       flash[:success] = 'Event successfully updated.'
-      redirect_to edit_event_path(@event.id)
+      redirect_to edit_event_path(@event.slug)
     else
       render :edit
     end

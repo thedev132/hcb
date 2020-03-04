@@ -24,7 +24,7 @@ class EmburseTransactionsController < ApplicationController
         # it's generally a LCR
         flash[:success] = 'Emburse Transaction updated.'
         flash[:error] = 'You should update the Emburse budget now.'
-        redirect_to event_cards_overview_path(@emburse_transaction.event.id)
+        redirect_to event_cards_overview_path(@emburse_transaction.event.slug)
       else
         # it's generally a card transaction
         flash[:success] = 'Emburse Transaction successfully updated.'

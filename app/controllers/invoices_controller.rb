@@ -39,7 +39,7 @@ class InvoicesController < ApplicationController
 
   def create
     invoice_params = filtered_params.except(:action, :controller, :sponsor_attributes)
-    invoice_params[:item_amount] = (filtered_params[:item_amount].to_f * 100.to_i)
+    invoice_params[:item_amount] = (filtered_params[:item_amount].gsub(',', '').to_f * 100.to_i)
 
     @event = Event.find params[:event_id]
     sponsor_attributes = filtered_params[:sponsor_attributes].merge(event: @event)

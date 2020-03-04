@@ -52,7 +52,7 @@ West Hollywood, CA 90069</pre>
 <h2 class="heading">
   Issued Cards
   <%= link_to 'Issue a Card',
-    new_card_request_path(event_id: @event.id),
+    new_card_request_path(event_id: @event.slug),
     class: 'btn bg-success' %>
 </h2>
 <% if @event.cards.any? %>
@@ -158,7 +158,7 @@ West Hollywood, CA 90069</pre>
         <% end %>
       </tbody>
     </table>
-    <%= blankslate "You don't have any pending card transfers!", id: 'lcr_blank' %>
+    <%= blankslate "You don't have any pending transfers to your card balance!", id: 'lcr_blank' %>
   </div>
 <% end %>
 
