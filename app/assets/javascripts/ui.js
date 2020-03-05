@@ -115,9 +115,19 @@ $(document).on("turbolinks:load", function() {
       .replace(/,/g, '') // replace all commas with nothing
       .replace(/[^0-9.]+/g, "") // replace anything that isn't a number or a dot with nothing
       .replace(/\B(?=(\d{3})+(?!\d))/g, ",") // put commas into the number (pulled off of stack overflow)
-      .replace(/(?<=\..{2}).*/g, "") // replace anything that is two characters after the dot
 
-    $(this).val(value)
+    let removeExtraCents
+
+    if (value.lastIndexOf(".") != -1) {
+      let cents = value.substring(value.lastIndexOf('.'), value.length)
+      cents = cents.replace(/[\.\,]/g, "").substring(0, (cents.length > 2 ? 2 : 1))
+
+      removeExtraCents = value.substring(0, value.lastIndexOf('.')) + "." + cents
+    } else {
+      removeExtraCents = value
+    }
+
+    $(this).val(removeExtraCents)
   })
 
   $(document).on("change", '[name="invoice[sponsor]"]', function(e) {
