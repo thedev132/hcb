@@ -186,7 +186,7 @@ West Hollywood, CA 90069</pre>
       <tr>
         <td><%= t.transaction_time.nil? ? '–' : t.transaction_time.to_date %></td>
         <td>
-          <span class="tooltipped tooltipped--s" aria-label="<%= t.state.capitalize %>">
+          <span class="tooltipped tooltipped--w" aria-label="<%= t.state.capitalize %>">
             <%= status_badge t.status_badge_type %>
           </span>
           <% if t.amount > 0 %>
