@@ -1,5 +1,5 @@
 <div class="comments">
-<% @comments.order(created_at: :desc).each do |comment| %>
+<% @comments.order(created_at: :asc).each do |comment| %>
   <% if comment.admin_only %>
     <% admin_tools('mt2 mb2') do %>
       <%= creator_bar comment %>
