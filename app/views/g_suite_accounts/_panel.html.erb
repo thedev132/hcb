@@ -6,8 +6,9 @@
       <li class="flex items-center justify-between">
         <div class="description">
           <p class="m0">
-          <strong><%= account.username %></strong><span><%= account.at_domain %></span>
-          – <strong><%= account.status %></strong>
+            <strong><%= account.first_name %> <%= account.last_name %></strong>
+            &middot;
+            <span><%= account.username %></span><span class="muted"><%= account.at_domain %></span>
           </p>
           <p class="slate m0">
           <% if account.suspended? %>
@@ -18,7 +19,7 @@
             <span>Active.</span>
           <% else %>
             <%= status_badge :pending %>
-            <span>Account not yet set up.</span>
+            <span><%= account.status %>.</span>
           <% end %>
           <% if admin_signed_in? || account.backup_email == current_user.email %>
             <span>Backup email: <%= content_tag :code, account.backup_email %></span>
@@ -29,6 +30,7 @@
                 data: { confirm: "Reset the account password for #{account.address}? We'll email a new password to the backup email." },
                 class: 'h5 muted underline'
               %>
+            &middot;
             <%= link_to (account.suspended? ? 'Re-activate' : 'Suspend'),
                 g_suite_account_toggle_suspension_path(account.id),
                 method: :put,
