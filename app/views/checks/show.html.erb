@@ -39,13 +39,13 @@
 <article class="card pb0 mt3 mb3">
   <h2 class="h2 sans mt0 border-none">
     <div class="flex items-start">
-      <span class="flex-auto">
+      <span class="flex-auto mr1">
         <span class="regular muted"><%= @check.deposited? ? 'Sent' : 'Sending' %> </span>
         <%= @check.lob_address.name %>
         <span class="regular muted"> a&nbsp;check for </span>
-        <span class="regular mr3"><%= render_money @check.amount %></span>
+        <span class="regular"><%= render_money @check.amount %></span>
       </span>
-      <span class="badge h4 ml2 bg-<%= @check.state %>">
+      <span class="badge h4 ml2 nowrap bg-<%= @check.state %>">
         <%= @check.status_text %>
         <%= inline_icon @check.state_icon, size: 20 if @check.state_icon %>
       </span>

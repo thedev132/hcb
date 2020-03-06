@@ -542,7 +542,7 @@ class Transaction < ApplicationRecord
           )
         end
 
-        self.display_name = "Check to #{check.lob_address.name}"
+        self.display_name = "Check to #{check.lob_address.name} - #{check.memo}"
         self.save
 
         break

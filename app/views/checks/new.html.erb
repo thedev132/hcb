@@ -43,7 +43,11 @@
           <li>Your point of contact needs to approve your check before it's sent out. This usually takes 1 business day.</li>
         </ul>
         <div class="border-top card__banner card__darker slate">
-          <strong>Questions?</strong> Talk to your point of contact, <%= @event.point_of_contact.name %>
+          <strong>Questions?</strong>
+          Talk to your point of contact,
+          <%= mail_to @event.point_of_contact.email do %>
+            <%= @event.point_of_contact.name %>
+          <% end %>
         </div>
     </div>
   </aside>
