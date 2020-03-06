@@ -27,6 +27,7 @@
       <% unless controller_name == 'events' && action_name == 'show' %>
         <%= link_to 'Event settings', edit_event_path(@event) %>
         <%= link_to 'Manage team', event_team_path(@event) %>
+        <%= link_to 'My account', edit_user_path(current_user) %>
         <hr />
       <% end %>
       <%= link_to 'G Suite', event_g_suite_overview_path(event_id: @event.slug) %>
