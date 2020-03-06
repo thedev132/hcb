@@ -50,13 +50,13 @@ class StaticPagesController < ApplicationController
     return if request.method == 'GET'
     
     # removing dashes to deal with phone number
-    query = params[:q].gsub('-', '')
+    query = params[:q].gsub('-', '').strip
 
     users = []
 
-    users.push(User.where(full_name: query).compact)
-    users.push(User.where(email: query).compact)
-    users.push(User.where(phone_number: query).compact)
+    users.push(User.where("full_name ilike ?", "%#{query.downcase}%"))
+    users.push(User.where(email: query))
+    users.push(User.where(phone_number: query))
 
     @result = users.flatten.compact
   end

@@ -1,25 +1,44 @@
+<% page_sm %>
 <% title 'Search by Contact Info' %>
 <h1>
   Search
 </h1>
 
 <%= form_with(url: admin_search_path, local: true) do %>
-  <%= label_tag(:q, "Search for:") %>
-  <%= text_field_tag(:q) %>
-  <%= submit_tag("Search") %>
+  <%= label_tag(:q, "Search for users by name, tel, email") %>
+  <div class="flex flex-row mt1">
+    <%= text_field_tag(:q) %>
+    <%= submit_tag "Search", class: 'ml1' %>
+  </div>
 <% end %>
-<p class="mt0">you can use name, phone number, or email</p>
 
 <% if @result.present? %>
-	<% @result.each do |r| %>
-		<% next if r == nil %>
-		<p><%= r.name %></p>
-		<% r.events.each do |e| %>
-			<a href="<%= e.slug %>"><%= e.name %></a>
-		<% end %>
-		<p><%= r.email %></p>
-		<p><%= r.phone_number %></p>
-		<p>------</p>
-	<% end %>
+  <% @result.each do |r| %>
+    <div class="card card--hover mt2">
+      <div class="card__banner card__banner--top <%= r.events.any? ? 'bg-info' : 'bg-muted' %>">
+        <%= link_to r, class: 'text-decoration-none white' do %>
+          <h3 class="mt0 mb0"><%= r.name %></h3>
+        <% end %>
+      </div>
+      <section class="details">
+        <p>
+          <strong>Email</strong>
+          <%= r.email %>
+        </p>
+        <p>
+          <strong>Phone number</strong>
+          <%= r.phone_number %>
+        </p>
+      </section>
+      <% if r.events.any? %>
+        <p class="mb1 slate">Associated events</p>
+        <p>
+          <% r.events.each do |e| %>
+            <a href="<%= e.slug %>"><%= e.name %></a>
+          <% end %>
+        </p>
+      <% end %>
+    </div>
+  <% end %>
 <% end %>
 
