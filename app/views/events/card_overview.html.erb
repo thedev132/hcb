@@ -52,7 +52,7 @@ West Hollywood, CA 90069</pre>
 <h2 class="heading">
   Issued Cards
   <%= link_to 'Issue a Card',
-    new_card_request_path(event_id: @event.slug),
+    new_card_request_path(event_id: @event.id),
     class: 'btn bg-success' %>
 </h2>
 <% if @event.cards.any? %>
