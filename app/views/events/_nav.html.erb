@@ -24,12 +24,10 @@
     <action type="button" class="pop menu__toggle" data-behavior="menu_toggle" aria-expanded="false" tabindex="0">
     <%= inline_icon 'more' %>
     <div class="menu__content" data-behavior="menu_content">
-      <% unless controller_name == 'events' && action_name == 'show' %>
-        <%= link_to 'Event settings', edit_event_path(@event) %>
-        <%= link_to 'Manage team', event_team_path(@event) %>
-        <%= link_to 'My account', edit_user_path(current_user) %>
-        <hr />
-      <% end %>
+      <%= link_to 'Project settings', edit_event_path(@event) %>
+      <%= link_to 'Manage team', event_team_path(@event) %>
+      <%= link_to 'My account', edit_user_path(current_user) %>
+      <hr />
       <%= link_to 'G Suite', event_g_suite_overview_path(event_id: @event.slug) %>
       <%= link_to 'Promotions & perks', event_promotions_path(event_id: @event.slug) %>
       <%= link_to 'Make reimbursements', event_reimbursements_path(event_id: @event.slug) %>
