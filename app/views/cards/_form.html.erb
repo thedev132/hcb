@@ -47,7 +47,7 @@
 
   <div class="field field--checkbox">
     <%= form.check_box :is_virtual, checked: @card_request&.is_virtual  %>
-    <%= form.label :is_virtual, 'This is a virtual card' %>
+    <%= form.label :is_virtual, 'This is a virtual card', :readonly => true %>
   </div>
 
   <% if @card_request && !@card_request.is_virtual || @card_request.nil? %>
