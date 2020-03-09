@@ -197,6 +197,7 @@ class EventsController < ApplicationController
       :slug,
       :beta_features_enabled,
       :hidden,
+      :is_spend_only,
       :donation_page_enabled,
       :donation_page_message
     )

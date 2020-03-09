@@ -106,6 +106,11 @@ Rails.application.routes.draw do
     resources :comments
   end
 
+  resources :disbursements, only: [:index, :new, :create, :show, :edit, :update] do
+    post 'mark_fulfilled'
+    post 'reject'
+  end
+
   resources :documents, except: [:index] do
     collection do
       get '', to: 'documents#common_index', as: :common
@@ -133,6 +138,7 @@ Rails.application.routes.draw do
   end
 
   get 'pending_fees', to: 'static_pages#pending_fees'
+  get 'pending_disbursements', to: 'static_pages#pending_disbursements'
   get 'branding', to: 'static_pages#branding'
   get 'faq', to: 'static_pages#faq'
 
@@ -165,6 +171,12 @@ Rails.application.routes.draw do
       get ':event_name/:donation', to: 'donations#finish_donation', as: 'finish_donation'
     end
   end
+
+  # api
+  get 'api/v1/events/find', to: 'api#event_find'
+  post 'api/v1/events', to: 'api#event_new'
+
+  post 'api/v1/disbursements', to: 'api#disbursement_new'
 
   post 'export/finances', to: 'exports#financial_export'
 

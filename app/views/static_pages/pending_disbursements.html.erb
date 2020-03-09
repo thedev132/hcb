@@ -1,0 +1,30 @@
+<% title 'Pending disbursements' %>
+<h1>
+  Pending disbursements
+</h1>
+
+<p>Make two transfers for each item, one out from Fiscal Sponsorship and one back in, both with the same memo.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>From event</th>
+      <th>To event</th>
+      <th>Memo</th>
+      <th>Amount</th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @pending_disbursements.each do |dsb| %>
+      <tr class="shade-yellow">
+        <td class="underline"><%= link_to "#{dsb.source_event.name}", dsb.source_event %></td>
+        <td class="underline"><%= link_to "#{dsb.event.name}", dsb.event %></td>
+        <td class="underline"><%= link_to "HCB DISBURSE #{dsb.id}", dsb %></td>
+        <td><%= render_money dsb.amount %></td>
+        <td><%= link_to 'Mark fulfilled', disbursement_mark_fulfilled_path(dsb), method: :post %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

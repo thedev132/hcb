@@ -20,13 +20,27 @@
         <%= @card.user.email %>
       </p>
 
+      <p>
+        <strong>Type</strong>
+        <%= @card.is_virtual ? 'virtual card' : 'physical card' %>
+      </p>
+
       <div>
         <strong>Card number</strong>
-        XXXX-XXXX-XXXX-<%= @card.last_four %>
-        <div class="right tooltipped tooltipped--w" aria-label="Full number hidden to protect security">
-          <%= inline_icon 'private', size: 32, class: 'smoke' %>
-        </div>
+        <%= @card.dashed_card_number %>
+        <% if !@card.is_virtual %>
+          <div class="right tooltipped tooltipped--w" aria-label="Full number hidden to protect security">
+            <%= inline_icon 'private', size: 32, class: 'smoke' %>
+          </div>
+        <% end %>
       </div>
+
+      <% if @card.is_virtual %>
+      <p>
+        <strong>CVV</strong>
+        <%= @card.cvv %>
+      </p>
+      <% end %>
 
       <p>
         <strong>Activation status</strong>

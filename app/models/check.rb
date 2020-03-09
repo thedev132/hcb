@@ -100,7 +100,7 @@ class Check < ApplicationRecord
   end
 
   def self.refunded_but_needs_match
-    select { |check| check.refunded_at.present? && check.t_transactions != 4 }
+    select { |check| check.refunded_at.present? && check.t_transactions.size != 4 }
   end
 
   def pending?

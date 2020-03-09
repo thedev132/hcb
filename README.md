@@ -1,6 +1,6 @@
 # Bank
 
-_It’s a bank, folks._
+Bank is a tool for hackers to hack on the real world, like GitHub, but for building with atoms and people, not bits and cycles.
 
 ![Hack Club Bank](hack_club_bank_laser.gif)
 
@@ -52,19 +52,124 @@ For example, for the `SyncTransactionsJob`:
 SyncTransactionsJob.perform_now(repeat: true)
 ```
 
-### Demo mode
+## Internal API for operations (clubs) integration
 
-When demoing HCB, it's often useful to be able to show a page as an admin without showing admin tools (the yellow boxes). Load a page with the `demo=1` query parameter (or `demo` query string set to anything non-empty) to hide admin tools, even if you are logged in as an admin user. For example
+These APIs are not public, but have a reasonable expectation of stability because the Hack Club clubs team integrates with various Bank facilities through these JSON endpoints. They're oriented around three use cases:
+
+1. Send money to a student to spend on a project
+    - Student either specifies a Bank event, or we create one for them
+    - We disburse funds to that event
+2. Send money to a club or event
+    - We find out their bank event slug (probably referencing Slack / Airtable, which happens outside of Bank)
+    - We disburse funds to that event
+
+So to make this possible, the Bank API currently supports three actions:
+
+1. Check if an event with given slug exists
+2. Create an event with given organizer emails
+3. Schedule a disbursement of grants to a given event
+
+### Authentication
+
+Because Bank currently uses auth through `hackclub/api` which doesn't support bot authentication and tokens, we auth with a hard-coded string key. Get this key from a Bank developer, and in JSON requests, include the key as a `access_token`.
+
+### Creating events
+
+#### `GET /api/v1/events/find`
+
+Request should have parameters:
 
 ```
-https://bank.hackclub.com/hackpenn/cards
+slug: <string>
 ```
 
-will show lots of admin tool boxes, but 
+Response will be of shape:
 
 ```
-https://bank.hackclub.com/hackpenn/cards?demo=true
+HTTP 200
+{
+    name: <string>,
+    organizer_emails: Array<string>,
+    total_balance: <number>,
+}
 ```
 
-will show the page as if you were logged in as a non-admin user.
+or
 
+```
+HTTP 404
+```
+
+`total_balance` will be the sum of their account and card balances, in dollars.
+
+#### `POST /api/v1/events`
+
+Request should be of shape:
+
+```
+{
+    name: <string>,
+    slug: <string>, [optional]
+    organizer_emails: Array<string>,
+}
+```
+
+`slug` is optional. If no `slug` is provided, we'll take the name and attempt to sluggify it. Events created this way will be `spend_only`.
+
+Response will be of shape:
+
+```
+HTTP 201
+{
+    name: <string>,
+    is_spend_only: <boolean>,
+    slug: <string>,
+    organizer_emails: Array<string>,
+}
+```
+
+or an error of type 400 (invalid input). If a successful response (201), no fields will be missing.
+
+### Requesting disbursements
+
+Disbursements are executed using the `Disbursement` model / system within Hack Club Bank.
+
+#### `POST /api/v1/disbursements`
+
+Disbursements take money out of one HCB event and into another HCB event, for example from the `hq` event into the `hackpenn` event. In this case, the `source_event_slug` is `hq` and `destination_event_slug` is `hackpenn`.
+
+You can view all past and pending disbursements at `/disbursements`.
+
+Request should be of shape:
+
+```
+{
+    source_event_slug: <string>,
+    destination_event_slug: <string>,
+    amount: <number>,
+    name: <string>,
+}
+```
+
+Amount is in dollars in decimals, name is the name of the disbursement / grant. For example, a sensible `name` could be `GitHub Grant`. This name will be shown to Bank users.
+
+Response will be of shape:
+
+```
+HTTP 201
+{
+    source_event_slug: <string>,
+    destination_event_slug: <string>,
+    amount: <number>,
+    name: <string>,
+}
+```
+
+or one of
+
+```
+HTTP 404 - no event with that slug was found
+HTTP 400 - generic invalid input
+```
+
+If a `201` response, all fields will always be present.

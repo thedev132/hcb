@@ -7,7 +7,7 @@ class CardRequestsController < ApplicationController
 
     card_requests = CardRequest.under_review
 
-    attributes = %w{full_name user_email event_name shipping_address_street_one shipping_address_street_two shipping_address_city shipping_address_state shipping_address_zip}
+    attributes = %w{full_name user_email event_name is_virtual shipping_address_street_one shipping_address_street_two shipping_address_city shipping_address_state shipping_address_zip}
 
     result = CSV.generate(headers: true) do |csv|
       csv << attributes.map
@@ -137,6 +137,7 @@ class CardRequestsController < ApplicationController
       :accepted_at,
       :notes,
       :event_id,
+      :is_virtual,
     )
   end
 end

@@ -39,7 +39,10 @@ class CardsController < ApplicationController
       user_id: card_params[:user_id],
       event_id: card_params[:event_id],
       emburse_id: card_params[:emburse_id],
+      is_virtual: card_params[:is_virtual],
       last_four: card_params[:last_four],
+      card_number: card_params[:card_number],
+      cvv: card_params[:cvv],
       full_name: card_params[:full_name],
       address: card_params[:address],
       expiration_year: card_params[:expiration_year],
@@ -117,6 +120,19 @@ class CardsController < ApplicationController
 
   # Only allow a trusted parameter "white list" through.
   def card_params
-    params.require(:card).permit(:user_id, :event_id, :full_name, :address, :card_request_id, :last_four, :expiration_month, :expiration_year, :emburse_id)
+    params.require(:card).permit(
+      :user_id,
+      :event_id,
+      :full_name,
+      :address,
+      :card_request_id,
+      :is_virtual,
+      :last_four,
+      :card_number,
+      :cvv,
+      :expiration_month,
+      :expiration_year,
+      :emburse_id,
+    )
   end
 end
