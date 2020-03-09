@@ -139,6 +139,8 @@ Rails.application.routes.draw do
 
   get 'pending_fees', to: 'static_pages#pending_fees'
   get 'pending_disbursements', to: 'static_pages#pending_disbursements'
+  get 'export_pending_disbursements', to: 'static_pages#export_pending_disbursements'
+
   get 'branding', to: 'static_pages#branding'
   get 'faq', to: 'static_pages#faq'
 

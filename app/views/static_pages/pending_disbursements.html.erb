@@ -1,6 +1,7 @@
 <% title 'Pending disbursements' %>
 <h1>
   Pending disbursements
+  <%= link_to 'Export pending DBs for Selenium', export_pending_disbursements_path, class: 'btn bg-info' %>
 </h1>
 
 <p>Make two transfers for each item, one out from Fiscal Sponsorship and one back in, both with the same memo.</p>
@@ -21,7 +22,7 @@
       <tr class="shade-yellow">
         <td class="underline"><%= link_to "#{dsb.source_event.name}", dsb.source_event %></td>
         <td class="underline"><%= link_to "#{dsb.event.name}", dsb.event %></td>
-        <td class="underline"><%= link_to "HCB DISBURSE #{dsb.id}", dsb %></td>
+        <td class="underline"><%= link_to dsb.transaction_memo, dsb %></td>
         <td><%= render_money dsb.amount %></td>
         <td><%= link_to 'Mark fulfilled', disbursement_mark_fulfilled_path(dsb), method: :post %></td>
       </tr>

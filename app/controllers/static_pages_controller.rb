@@ -38,6 +38,32 @@ class StaticPagesController < ApplicationController
 
   def pending_disbursements
     @pending_disbursements = Disbursement.pending
+
+    authorize @pending_disbursements
+  end
+
+  def export_pending_disbursements
+    authorize Disbursement
+
+    disbursements = Disbursement.pending
+
+    attributes = %w{memo amount}
+
+    result = CSV.generate(headers: true) do |csv|
+      csv << attributes.map
+
+      disbursements.each do |dsb|
+        csv << attributes.map do |attr|
+          if attr == 'memo'
+            dsb.transaction_memo
+          else
+            dsb.amount.to_f / 100
+          end
+        end
+      end
+    end
+
+    send_data result, filename: "Pending Disbursements #{Date.today}.csv"
   end
 
   def branding

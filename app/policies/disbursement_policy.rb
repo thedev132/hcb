@@ -30,4 +30,12 @@ class DisbursementPolicy < ApplicationPolicy
   def reject?
     user.admin? || record.event.users.include?(user)
   end
+
+  def pending_disbursements?
+    user.admin?
+  end
+
+  def export_pending_disbursements?
+    user.admin?
+  end
 end

@@ -79,4 +79,8 @@ class Disbursement < ApplicationRecord
   def admin_dropdown_description
     "#{amount} for #{name} to #{event.name}"
   end
+
+  def transaction_memo
+    "HCB DISBURSE #{id}"
+  end
 end

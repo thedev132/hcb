@@ -4,10 +4,8 @@
 
 - Grant-only account (flag that disables invoicing)
     - Make a page for explaining different plans and how to change it, link from events settings
-    - Should send only accounts get G Suite access?
 - Quest for when you first make an account.
     - Should be for a user's first event.
-- API hook for clubs team
 - Virtual cards
     - Make sure emails that go out for card creations know about virtual cards
     - Make sure physical card requests validate that there's all the required address fields in the req.
