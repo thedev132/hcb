@@ -145,6 +145,14 @@ class Event < ApplicationRecord
     :start
   end
 
+  def plan_name
+    if is_spend_only
+      "spend-only"
+    else
+      "full fiscal sponsorship"
+    end
+  end
+
   def past?
     self.end < Time.current
   end

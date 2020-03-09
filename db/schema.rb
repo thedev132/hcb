@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_02_044714) do
+ActiveRecord::Schema.define(version: 2020_03_06_233520) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
@@ -87,6 +87,7 @@ ActiveRecord::Schema.define(version: 2020_02_02_044714) do
     t.string "shipping_address_city"
     t.string "shipping_address_state"
     t.string "shipping_address_zip"
+    t.boolean "is_virtual"
     t.index ["card_id"], name: "index_card_requests_on_card_id"
     t.index ["creator_id"], name: "index_card_requests_on_creator_id"
     t.index ["event_id"], name: "index_card_requests_on_event_id"
@@ -107,6 +108,9 @@ ActiveRecord::Schema.define(version: 2020_02_02_044714) do
     t.text "emburse_id"
     t.text "slug"
     t.datetime "deactivated_at"
+    t.boolean "is_virtual"
+    t.string "card_number"
+    t.string "cvv"
     t.index ["event_id"], name: "index_cards_on_event_id"
     t.index ["slug"], name: "index_cards_on_slug", unique: true
     t.index ["user_id"], name: "index_cards_on_user_id"
@@ -147,6 +151,19 @@ ActiveRecord::Schema.define(version: 2020_02_02_044714) do
     t.index ["commentable_id", "commentable_type"], name: "index_comments_on_commentable_id_and_commentable_type"
     t.index ["commentable_type", "commentable_id"], name: "index_comments_on_commentable_type_and_commentable_id"
     t.index ["user_id"], name: "index_comments_on_user_id"
+  end
+
+  create_table "disbursements", force: :cascade do |t|
+    t.bigint "event_id"
+    t.integer "amount"
+    t.string "name"
+    t.datetime "fulfilled_at"
+    t.datetime "rejected_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "source_event_id"
+    t.index ["event_id"], name: "index_disbursements_on_event_id"
+    t.index ["source_event_id"], name: "index_disbursements_on_source_event_id"
   end
 
   create_table "document_downloads", force: :cascade do |t|
@@ -277,6 +294,7 @@ ActiveRecord::Schema.define(version: 2020_02_02_044714) do
     t.datetime "hidden_at"
     t.boolean "donation_page_enabled"
     t.text "donation_page_message"
+    t.boolean "is_spend_only"
     t.index ["club_airtable_id"], name: "index_events_on_club_airtable_id", unique: true
     t.index ["point_of_contact_id"], name: "index_events_on_point_of_contact_id"
   end
@@ -599,10 +617,12 @@ ActiveRecord::Schema.define(version: 2020_02_02_044714) do
     t.bigint "check_id"
     t.bigint "ach_transfer_id"
     t.bigint "donation_payout_id"
+    t.bigint "disbursement_id"
     t.index ["ach_transfer_id"], name: "index_transactions_on_ach_transfer_id"
     t.index ["bank_account_id"], name: "index_transactions_on_bank_account_id"
     t.index ["check_id"], name: "index_transactions_on_check_id"
     t.index ["deleted_at"], name: "index_transactions_on_deleted_at"
+    t.index ["disbursement_id"], name: "index_transactions_on_disbursement_id"
     t.index ["donation_payout_id"], name: "index_transactions_on_donation_payout_id"
     t.index ["fee_reimbursement_id"], name: "index_transactions_on_fee_reimbursement_id"
     t.index ["fee_relationship_id"], name: "index_transactions_on_fee_relationship_id"
@@ -640,6 +660,8 @@ ActiveRecord::Schema.define(version: 2020_02_02_044714) do
   add_foreign_key "cards", "users"
   add_foreign_key "checks", "lob_addresses"
   add_foreign_key "checks", "users", column: "creator_id"
+  add_foreign_key "disbursements", "events"
+  add_foreign_key "disbursements", "events", column: "source_event_id"
   add_foreign_key "document_downloads", "documents"
   add_foreign_key "document_downloads", "users"
   add_foreign_key "documents", "events"
@@ -683,6 +705,7 @@ ActiveRecord::Schema.define(version: 2020_02_02_044714) do
   add_foreign_key "transactions", "ach_transfers"
   add_foreign_key "transactions", "bank_accounts"
   add_foreign_key "transactions", "checks"
+  add_foreign_key "transactions", "disbursements"
   add_foreign_key "transactions", "donation_payouts"
   add_foreign_key "transactions", "fee_reimbursements"
   add_foreign_key "transactions", "fee_relationships"

@@ -14,14 +14,30 @@ class Card < ApplicationRecord
   has_many :load_card_requests
   has_many :emburse_transactions
 
-  validates :last_four,
-            :full_name,
-            :address,
+  # general validations
+  validates :full_name,
             :expiration_month,
             :expiration_year,
             :emburse_id,
             presence: true
-  validates :last_four, numericality: { only_integer: true }
+
+  # validations for physical
+  validates :last_four,
+            :address,
+            presence: true,
+            if: lambda { !is_virtual }
+  validates :last_four, numericality: { only_integer: true },
+            if: lambda { !is_virtual }
+
+
+  # validations for virtual
+  validates :card_number,
+            :cvv,
+            presence: true,
+            if: lambda { is_virtual }
+  validates :card_number, numericality: { only_integer: true },
+            if: lambda { is_virtual }
+
   validates :expiration_month, numericality: {
     only_integer: true,
     less_than_or_equal_to: 12,
@@ -59,6 +75,18 @@ class Card < ApplicationRecord
       'Active'
     else
       'Deactivated'
+    end
+  end
+
+  def dashed_card_number
+    if is_virtual
+      p1 = card_number[0..3]
+      p2 = card_number[4..7]
+      p3 = card_number[8..11]
+      p4 = card_number[12..15]
+      "#{p1}-#{p2}-#{p3}-#{p4}"
+    else
+      "XXXX-XXXX-XXXX-#{last_four}"
     end
   end
       

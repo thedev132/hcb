@@ -11,12 +11,14 @@
   background-image: radial-gradient(ellipse at top right, #867ae7, transparent);
   background-image: #{image-url('emburse-swoosh.svg')}, radial-gradient(ellipse at top right, #867ae7, transparent);
   background-repeat: no-repeat;
+  /* 120% to account for z-axis perspective */
+  background-size:120%;
   font-family: $mono;
   font-size: 1.25rem;
   color: $white;
   border-radius: 6px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.25);
-  transition: 0.25s ease-out all;
+  transition: 0.25s ease-out transform;
   transform: scale(1);
   transform-style: preserve-3d;
 
@@ -35,6 +37,10 @@
     flex: 1 1 auto;
     transform: translateZ(20px);
   }
+
+  &.virtual {
+      background-image: #{image-url('emburse-virtual.svg')}, radial-gradient(ellipse at top right, #867ae7, transparent);
+  }
 }
 
 .emburse-card__name {
@@ -44,7 +50,6 @@
 }
 
 .emburse-card__number {
-  color: rgba(255, 255, 255, 0.5);
   transform: translateZ(20px);
 
   strong {

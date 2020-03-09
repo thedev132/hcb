@@ -26,6 +26,7 @@ class StaticPagesController < ApplicationController
         g_suite_accounts: GSuiteAccount.under_review.size,
         transactions: Transaction.needs_action.size,
         emburse_transactions: EmburseTransaction.under_review.size,
+        disbursements: Disbursement.pending.size,
         organizer_position_deletion_requests: OrganizerPositionDeletionRequest.under_review.size
       }
     end
@@ -33,6 +34,10 @@ class StaticPagesController < ApplicationController
 
   def pending_fees
     @pending_fees = Event.pending_fees.sort_by { |event| (DateTime.now - event.transactions.first.date) }.reverse
+  end
+
+  def pending_disbursements
+    @pending_disbursements = Disbursement.pending
   end
 
   def branding

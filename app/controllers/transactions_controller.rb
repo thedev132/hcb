@@ -72,7 +72,9 @@ class TransactionsController < ApplicationController
       @transaction.fee_relationship = FeeRelationship.new
 
       # If a new transaction is positive, we would probably charge a fee
-      if @transaction.is_event_related && @transaction.amount > 0 && !@transaction.potential_github?
+      if @transaction.is_event_related && @transaction.amount > 0 &&
+          !@transaction.potential_github?  &&
+          !@transaction.potential_disbursement?
         @transaction.fee_relationship.fee_applies = true
       end
 

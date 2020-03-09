@@ -26,7 +26,7 @@
 
   <% admin_tools('mb1') do %>
     <p class="mt0">User email <input type="text" disabled="disabled" value="<%= card.user.email %>"></p>
-    <% if @card_request %>
+    <% if !@card_request&.is_virtual  %>
       <div class="mb1">
         Address fields
         <input type="text" disabled="disabled" value="<%= @card_request.shipping_address_street_one %>">
@@ -45,10 +45,33 @@
     <%= form.text_field :emburse_id %>
   </div>
 
-  <div class="field">
-    <%= form.label :last_four, 'Last four digits of card number' %>
-    <%= form.number_field :last_four %>
+  <div class="field field--checkbox">
+    <%= form.check_box :is_virtual, checked: @card_request&.is_virtual  %>
+    <%= form.label :is_virtual, 'This is a virtual card' %>
   </div>
+
+  <% if @card_request && !@card_request.is_virtual || @card_request.nil? %>
+    <h3>Physical card</h3>
+
+    <div class="field">
+      <%= form.label :last_four, 'Last four digits of card number' %>
+      <%= form.number_field :last_four %>
+    </div>
+  <% end %>
+
+  <% if @card_request && @card_request.is_virtual || @card_request.nil? %>
+    <h3>Virtual card</h3>
+
+    <div class="field">
+      <%= form.label :card_number, 'Card number' %>
+      <%= form.text_field :card_number %>
+    </div>
+
+    <div class="field">
+      <%= form.label :cvv, 'CVV' %>
+      <%= form.text_field :cvv %>
+    </div>
+  <% end %>
 
   <div class="field">
     <%= form.label :expiration_month, 'Expiration month (MM)' %>

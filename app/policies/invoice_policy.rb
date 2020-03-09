@@ -10,6 +10,7 @@ class InvoicePolicy < ApplicationPolicy
 
     event_ids = record.map(&:sponsor).map(&:event).pluck(:id)
     same_event = event_ids.uniq.size == 1
+    return false if same_event && Event.find(event_ids.first).is_spend_only
     return true if same_event && user.events.pluck(:id).include?(event_ids.first)
   end
 

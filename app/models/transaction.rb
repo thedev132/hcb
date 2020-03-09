@@ -29,6 +29,7 @@ class Transaction < ApplicationRecord
 
   belongs_to :check, inverse_of: :t_transactions, required: false
   belongs_to :ach_transfer, inverse_of: :t_transaction, required: false
+  belongs_to :disbursement, inverse_of: :t_transaction, required: false
 
   belongs_to :donation_payout, inverse_of: :t_transaction, required: false
 
@@ -213,6 +214,10 @@ class Transaction < ApplicationRecord
     self.name.include?('DDA#') || self.name.include?('Check')
   end
 
+  def potential_disbursement?
+    self.name.start_with?('HCB DISBURSE')
+  end
+
   # Tries to fully pair this transaction successfully
   # re: https://github.com/hackclub/bank/issues/364
   # returns True if paired successfully, false otherwise.
@@ -238,6 +243,8 @@ class Transaction < ApplicationRecord
       try_pair_ach_transfer
     elsif potential_check?
       try_pair_check
+    elsif potential_disbursement?
+      try_pair_disbursement
     end
     # NOTE: we cannot curently auto-pair Expensify txs
   end
@@ -501,7 +508,7 @@ class Transaction < ApplicationRecord
   end
 
   def try_pair_ach_transfer
-    # This is largely modeled after try_pair_load_card_request
+    # This is largely modeled after try_pair_emburse
     return unless potential_ach_transfer?
 
     # ach transfers out will be negative on the account balance
@@ -548,6 +555,32 @@ class Transaction < ApplicationRecord
         break
       end
     end
+  end
+
+  def try_pair_disbursement
+    return unless potential_disbursement?
+
+    match = /HCB DISBURSE (\d*).*/.match(self.name)
+    disbursement_id = match ? match[1].to_i : 0
+
+    return if disbursement_id == 0
+    # we don't use Event.find here because it will raise
+    # an exception if the ID doesn't exist.
+    matching_disbursements = Disbursement.where(id: disbursement_id)
+
+    return unless matching_disbursements.count == 1
+    disbursement = matching_disbursements[0]
+    # if money coming in, it's for destination event. otherwise,
+    # it's for source event
+    event = self.amount > 0 ? disbursement.event : disbursement.source_event
+
+    self.fee_relationship = FeeRelationship.new(
+      event_id: event.id,
+      fee_applies: false
+    )
+
+    self.display_name = "#{disbursement.name} from #{disbursement.source_event.name}"
+    self.save
   end
 
   def slug_text

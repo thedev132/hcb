@@ -60,9 +60,9 @@ West Hollywood, CA 90069</pre>
     <% @event.cards.active.each do |card| %>
       <%= link_to card do %>
         <%= creator_bar card, prefix: 'issued ' %>
-        <div class="emburse-card" data-behavior="hover_tilt">
+        <div class="emburse-card <%= card.is_virtual ? 'virtual' : '' %>" data-behavior="hover_tilt">
           <p class="emburse-card__number">
-            <span>XXXX-XXXX-XXXX-</span><strong><%= card.last_four %></strong>
+            <span><%= card.dashed_card_number %></span>
           </p>
           <p class="emburse-card__name"><%= card.full_name %></p>
         </div>
@@ -76,9 +76,9 @@ West Hollywood, CA 90069</pre>
             <% @event.cards.deactivated.each do |card| %>
               <%= link_to card do %>
                 <%= creator_bar card, prefix: 'issued ' %>
-                <div class="emburse-card" data-behavior="hover_tilt">
+                <div class="emburse-card <%= card.is_virtual ? 'virtual ' : '' %>" data-behavior="hover_tilt">
                   <p class="emburse-card__number">
-                    <span>XXXX-XXXX-XXXX-</span><strong><%= card.last_four %></strong>
+                    <span><%= card.dashed_card_number %></span>
                   </p>
                   <p class="emburse-card__name"><%= card.full_name %></p>
                 </div>
