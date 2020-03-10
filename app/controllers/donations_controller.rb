@@ -1,7 +1,8 @@
 class DonationsController < ApplicationController
   before_action :set_donation, only: [:show, :edit, :update, :destroy]
-  skip_after_action :verify_authorized, only: [:start_donation, :make_donation, :finish_donation, :accept_donation_hook]
-  skip_before_action :signed_in_user, only: [:start_donation, :make_donation, :finish_donation, :accept_donation_hook]
+  skip_after_action :verify_authorized, only: [:start_donation, :make_donation, :finish_donation, :accept_donation_hook, :qr_code]
+  skip_before_action :signed_in_user, only: [:start_donation, :make_donation, :finish_donation, :accept_donation_hook, :qr_code]
+  before_action :set_event, only: [:start_donation, :make_donation, :finish_donation, :qr_code]
 
   # GET /donations/1
   def show
@@ -9,8 +10,6 @@ class DonationsController < ApplicationController
   end
 
   def start_donation
-    @event = Event.find(params['event_name'])
-
     if !@event.donation_page_enabled
       return not_found
     end
@@ -22,7 +21,6 @@ class DonationsController < ApplicationController
     d_params = public_donation_params
     d_params[:amount] = (public_donation_params[:amount].to_f * 100.to_i)
 
-    @event = Event.find(params['event_name'])
     @donation = Donation.new(d_params)
     @donation.event = @event
 
@@ -34,7 +32,6 @@ class DonationsController < ApplicationController
   end
 
   def finish_donation
-    @event = Event.find(params['event_name'])
     @donation = Donation.find_by_url_hash(params['donation'])
 
     if @donation.status == 'succeeded'
@@ -62,7 +59,28 @@ class DonationsController < ApplicationController
     return true
   end
 
+  def qr_code
+    qrcode = RQRCode::QRCode.new("https://bank.hackclub.com" + start_donation_donations_path(@event.slug))
+
+    png = qrcode.as_png(
+      bit_depth: 1,
+      border_modules: 2,
+      color_mode: ChunkyPNG::COLOR_GRAYSCALE,
+      color: 'black',
+      fill: 'white',
+      module_px_size: 6,
+      size: 300
+    )
+
+    send_data png, filename: "#{@event.name} Donate.png",
+      type: 'image/png', disposition: 'inline'
+  end
+
   private
+
+  def set_event
+    @event = Event.find(params['event_name'])
+  end
 
   # Use callbacks to share common setup or constraints between actions.
   def set_donation

@@ -9,6 +9,10 @@
   </h1>
 </a>
 
+<blockquote class="medium">
+  <%= @event.donation_page_message %>
+</blockquote>
+
 <%= render 'donation_form', donation: @donation %>
 
 <%= render 'footer' %>
