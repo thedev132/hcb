@@ -111,6 +111,8 @@ Rails.application.routes.draw do
     post 'reject'
   end
 
+  resources :comments, only: [:edit, :update]
+
   resources :documents, except: [:index] do
     collection do
       get '', to: 'documents#common_index', as: :common

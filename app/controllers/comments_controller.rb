@@ -1,5 +1,6 @@
 class CommentsController < ApplicationController
-  before_action :set_commentable
+  before_action :set_comment, only: [:edit, :update]
+  before_action :set_commentable, except: [:edit, :update]
 
   def new
     authorize @commentable
@@ -20,6 +21,28 @@ class CommentsController < ApplicationController
     end
   end
 
+  def edit
+    @commentable = @comment.commentable
+    @event = @commentable.event
+
+    authorize @comment
+  end
+
+  def update
+    @comment.assign_attributes(comment_params)
+    authorize @comment
+
+    if @comment.save
+      flash[:success] = 'Note successfully updated'
+      # @commentable is not guaranteed to have a #show,
+      # but all commentables effectively have a #show
+      # because that's the only place comments show up as a list.
+      redirect_to @comment.commentable
+    else
+      render :edit
+    end
+  end
+
   private
 
   def comment_params
@@ -31,5 +54,9 @@ class CommentsController < ApplicationController
   def set_commentable
     resource, id = request.path.split('/')[1, 2]
     @commentable = resource.singularize.classify.constantize.find(id)
+  end
+
+  def set_comment
+    @comment = Comment.find(params[:id] || params[:comment_id])
   end
 end

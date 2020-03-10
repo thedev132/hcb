@@ -7,11 +7,20 @@
       <%= inline_icon 'markdown-fill', size: 32 %> Styling with Markdown is supported
     <% end %>
   </div>
-  <%= form.text_area :content, class: 'card mb2 overflow-visible', placeholder: 'Add a note…', 'data-behavior': 'autosize' %>
+  <%= form.text_area :content, class: 'card mb2 overflow-visible', placeholder: 'Add a note…', 'data-behavior': 'autosize',
+    style: 'min-height: 100px' %>
 
-  <div class="field">
-    <%= form.file_field :file %>
-  </div>
+  <% if @comment.persisted? %>
+    <% if comment.file.attached? %>
+      <div class="field">
+        <%= link_to '📎 1 attachment', url_for(comment.file), target: '_blank' %>
+      </div>
+    <% end %>
+  <% else %>
+    <div class="field">
+      <%= form.file_field :file %>
+    </div>
+  <% end %>
 
   <% admin_tools('pb0 mb2') do %>
     <div class="field field--checkbox">
@@ -20,5 +29,5 @@
     </div>
   <% end %>
 
-  <%= form.submit 'Add note' %>
+  <%= form.submit 'Save note' %>
 <% end %>

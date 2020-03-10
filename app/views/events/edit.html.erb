@@ -5,11 +5,3 @@
 <h1><%= @event.name %></h1>
 
 <%= render 'form', event: @event %>
-
-<% admin_tools do %>
-  <%= link_to 'Delete event',
-    @event,
-    method: :delete,
-    data: { confirm: '⚠️ Are you sure you want to DELETE THIS EVENT OMG?' },
-    class: 'btn bg-error' %>
-<% end %>

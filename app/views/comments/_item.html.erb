@@ -1,0 +1,13 @@
+<div class="mt2 mb2">
+  <%= creator_bar comment %>
+  <div class="card">
+    <%== MarkdownService.instance.renderer.render comment.content %>
+    <p class="mb0 h5">
+      <% if comment.file.attached? %>
+        <%= link_to '📎 attachment', url_for(comment.file), target: '_blank' %>
+        &middot;
+      <% end %>
+      <%= link_to 'Edit', edit_comment_path(comment) %>
+    </p>
+  </div>
+</div>

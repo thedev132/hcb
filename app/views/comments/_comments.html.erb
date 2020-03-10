@@ -1,25 +1,11 @@
 <div class="comments">
-<% @comments.order(created_at: :asc).each do |comment| %>
-  <% if comment.admin_only %>
-    <% admin_tools('mt2 mb2') do %>
-      <%= creator_bar comment %>
-      <div class="card">
-        <%= auto_link comment.content %>
-        <% if comment.file.attached? %>
-          <%= link_to '📎', url_for(comment.file), target: '_blank' %>
-        <% end %>
-      </div>
+  <% @comments.order(created_at: :asc).each do |comment| %>
+    <% if comment.admin_only %>
+      <% admin_tools do %>
+        <%= render 'comments/item', comment: comment %>
+      <% end %>
+    <% else %>
+      <%= render 'comments/item', comment: comment %>
     <% end %>
-  <% else %>
-    <div class="mt2 mb2">
-      <%= creator_bar comment %>
-      <div class="card">
-        <%== MarkdownService.instance.renderer.render comment.content %>
-        <% if comment.file.attached? %>
-          <%= link_to '📎', url_for(comment.file), target: '_blank' %>
-        <% end %>
-      </div>
-    </div>
   <% end %>
-<% end %>
 </div>
