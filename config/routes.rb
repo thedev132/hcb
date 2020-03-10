@@ -8,9 +8,6 @@ Rails.application.routes.draw do
   root to: 'static_pages#index'
   get 'stats', to: 'static_pages#stats'
 
-  get 'apply', to: 'applications#apply'
-  post 'submit', to: 'applications#submit'
-
   resources :users, only: [:edit, :update] do
     collection do
       get 'auth', to: 'users#auth'
