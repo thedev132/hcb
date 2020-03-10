@@ -36,6 +36,7 @@ module StaticPagesHelper
         'HCB– Huge Cellophane Boats',
         'HCB– Hydrofoils Chartered by Bandits',
         'The best thing since sliced bread',
+        'Hack Club Bink',
       ].sample
     end
   end
