@@ -63,6 +63,16 @@ class Card < ApplicationRecord
     emburse_obj&.department&.id
   end
 
+  # safe_last_four works for both virtual cards
+  # and physical cards, and returns the last four of the card
+  def safe_last_four
+    if is_virtual
+      card_number[12..15]
+    else
+      last_four
+    end
+  end
+
   # Emburse cards have three activation states:
   # 1. "unactivated", when card first ships. Must be activated by user
   #   at emburse.com/activate to be active, cannot be activated by Bank
@@ -78,16 +88,20 @@ class Card < ApplicationRecord
     end
   end
 
-  def dashed_card_number
+  def formatted_card_number
     if is_virtual
       p1 = card_number[0..3]
       p2 = card_number[4..7]
       p3 = card_number[8..11]
       p4 = card_number[12..15]
-      "#{p1}-#{p2}-#{p3}-#{p4}"
+      "#{p1} #{p2} #{p3} #{p4}"
     else
-      "XXXX-XXXX-XXXX-#{last_four}"
+      "•••• •••• •••• #{last_four}"
     end
+  end
+
+  def safe_card_number
+      "•••• •••• •••• #{safe_last_four}"
   end
       
   def deactivate!

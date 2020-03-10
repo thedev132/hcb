@@ -1,5 +1,5 @@
 class EmburseTransactionsController < ApplicationController
-  before_action :set_emburse_transaction, only: [:edit, :update]
+  before_action :set_emburse_transaction, only: [:edit, :update, :show]
 
   def index
     authorize EmburseTransaction
@@ -33,6 +33,12 @@ class EmburseTransactionsController < ApplicationController
     else
       render :edit
     end
+  end
+
+  def show
+    authorize @emburse_transaction
+    @card = @emburse_transaction.card
+    @event = @emburse_transaction.event
   end
 
   private

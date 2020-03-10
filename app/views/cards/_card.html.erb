@@ -1,0 +1,9 @@
+<%= link_to card, class: 'text-decoration-none' do %>
+  <%= creator_bar card, prefix: 'issued ' %>
+  <div class="emburse-card <%= card.is_virtual ? 'virtual' : '' %>" data-behavior="hover_tilt">
+    <p class="emburse-card__number">
+    <span><%= card.safe_card_number %></span>
+    </p>
+    <p class="emburse-card__name"><%= card.full_name %></p>
+  </div>
+<% end %>

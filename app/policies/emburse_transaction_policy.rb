@@ -4,7 +4,7 @@ class EmburseTransactionPolicy < ApplicationPolicy
   end
 
   def show?
-    user.admin?
+    user.admin? || record.event.users.include?(user)
   end
 
   def edit?

@@ -1,0 +1,36 @@
+<tr>
+  <td><%= et.transaction_time.nil? ? '–' : et.transaction_time.to_date %></td>
+  <td>
+    <div class="flex items-center">
+      <span class="tooltipped tooltipped--w mr1" aria-label="<%= et.state.capitalize %>">
+        <%= status_badge et.status_badge_type %>
+      </span>
+      <% if et.amount > 0 %>
+        <strong>Transfer from bank account</strong>
+      <% elsif et.merchant_name.nil? %>
+        <strong>Transfer back to bank account</strong>
+      <% else %>
+        <%= et.merchant_name %>
+      <% end %>
+      <% if et.receipt_url.present? %>
+        <span class="tooltipped tooltipped--e"
+              aria-label="<%= et.category_name.present? ? et.category_name : 'Not categorized' %>">
+              <%= link_to et.receipt_url, target: '_blank', class: 'text-decoration-none' do %>
+                <%= inline_icon 'receipt', size: 16, class: 'ml1' %>
+              <% end %>
+        </span>
+      <% end %>
+    </div>
+  </td>
+  <td class="nowrap"><%= render_money et.amount %></td>
+  <% if show_running_sum %>
+    <td class="nowrap"><%= render_money et.event_running_sum %></td>
+  <% end %>
+  <td>
+    <%= et.card.nil? ? '—' : card_mention(et.card) %>
+    <%= "(#{et.card.full_name})" if et.card %>
+  </td>
+  <td>
+    <%= link_to "More", et %>
+  </td>
+</tr>

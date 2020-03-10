@@ -2,6 +2,14 @@
 <% page_md %>
 <%= render 'events/nav' %>
 
+<% if @card %>
+  <%# if we don't limit width of the card, it looks weird
+    on larger screens %>
+  <div style="max-width: 400px; margin: 0 auto">
+    <%= render 'cards/card', card: @card %>
+  </div>
+<% end %>
+
 <article class="card max-width-2 mx-auto mt3">
   <section class="mb2">
     <h2 class="mt0 mb0 heading">
@@ -27,7 +35,7 @@
 
       <div>
         <strong>Card number</strong>
-        <%= @card.dashed_card_number %>
+        <%= @card.formatted_card_number %>
         <% if !@card.is_virtual %>
           <div class="right tooltipped tooltipped--w" aria-label="Full number hidden to protect security">
             <%= inline_icon 'private', size: 32, class: 'smoke' %>
@@ -91,26 +99,8 @@
     </thead>
     <tbody>
     <% running_sum = @emburse_transactions.completed.sum(&:amount) %>
-    <% @emburse_transactions.each do |t| %>
-      <tr>
-        <td><%= t.transaction_time.nil? ? '–' : t.transaction_time.to_date %></td>
-        <td>
-          <span class="tooltipped tooltipped--n" aria-label="<%= t.state.capitalize %>">
-          <%= status_badge t.status_badge_type %>
-          </span>
-          <% if t.amount > 0 %>
-            <strong>Transfer from bank account</strong>
-          <% elsif t.merchant_name.nil? %>
-            <strong>Transfer back to bank account</strong>
-          <% else %>
-            <%= t.merchant_name %>
-          <% end %>
-        </td>
-        <td class="nowrap"><%= render_money t.amount %></td>
-        <td>
-          <a href="<%= t.emburse_path %>" target="_blank">More</a>
-        </td>
-      </tr>
+    <% @emburse_transactions.each do |et| %>
+      <%= render 'emburse_transactions/transaction', et: et, show_running_sum: false %>
     <% end %>
     </tbody>
   </table>
