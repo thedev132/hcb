@@ -18,12 +18,12 @@
     <section class="details">
       <p>
         <strong>Source event</strong>
-        <%= @disbursement.source_event.name %>
+        <%= link_to @disbursement.source_event.name, @disbursement.source_event %>
       </p>
 
       <p>
         <strong>Destination event</strong>
-        <%= @disbursement.event.name %>
+        <%= link_to @disbursement.event.name, @disbursement.event %>
       </p>
 
       <p>

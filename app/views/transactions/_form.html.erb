@@ -35,14 +35,14 @@
           <% end %>
         </div>
       <% end %>
-      <% if transaction.potential_ach_transfer? && AchTransfer.in_transit.any? %>
+      <% if transaction.potential_ach_transfer? %>
           <%= form.label :ach_transfer, 'ACH Transfer' %>
           <%= form.collection_select(:ach_transfer_id, AchTransfer.in_transit, :id, :admin_dropdown_description, include_blank: 'Select one…') %>
           <p class="muted h5 mb2">If this isn't a transaction from an ACH Transfer, leave this field blank.</p>    
       <% end %>
-      <% if transaction.potential_disbursement? && Disbursement.processing.any? %>
+      <% if transaction.potential_disbursement? %>
           <%= form.label :disbursement, 'Disbursement' %>
-          <%= form.collection_select(:disbursement_id, Disbursement.processing, :id, :admin_dropdown_description, include_blank: 'Select one…') %>
+          <%= form.collection_select(:disbursement_id, Disbursement.processing.sort_by {|d| d.amount} + [transaction.disbursement].compact, :id, :admin_dropdown_description, include_blank: 'Select one…') %>
           <p class="muted h5 mb2">If this isn't a transaction from a disbursement, leave this field blank.</p>    
       <% end %>
       <% if transaction.potential_emburse? %>

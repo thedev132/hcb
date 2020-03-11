@@ -61,15 +61,6 @@
     </p>
     <% end %>
 
-    <% if @transaction&.disbursement %>
-    <p>
-      <strong>For</strong>
-      <span>
-      <%= link_to "A disbursement of #{render_money @transaction.disbursement.amount}", @transaction.disbursement %>
-      </span>
-    </p>
-    <% end %>
-
     <% if @transaction&.donation_payout %>
     <p>
       <strong>For</strong>
@@ -78,7 +69,6 @@
       </span>
     </p>
     <% end %>
-
 
     <% if @transaction.fee_applies? %>
       <p>
@@ -99,6 +89,18 @@
       </p>
     <% end %>
   </section>
+
+  <% admin_tools('py0') do %>
+    <%# admin tools because disbursements are not designed
+      to be end-user visible %>
+    <% if @transaction&.disbursement %>
+      <p>
+        This transaction is linked to
+        <%= link_to "a #{render_money @transaction.disbursement.amount} disbursement '#{@transaction.disbursement.name}'", @transaction.disbursement %>
+      </p>
+    <% end %>
+  <% end %>
+
 </article>
 
 <h2>Notes</h2>

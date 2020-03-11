@@ -2,7 +2,7 @@ class Disbursement < ApplicationRecord
   belongs_to :event
   belongs_to :source_event, class_name: 'Event'
 
-  has_many :t_transactions, class_name: 'Transaction', inverse_of: :check
+  has_many :t_transactions, class_name: 'Transaction', inverse_of: :disbursement
 
   validates_presence_of :source_event_id,
                         :event_id,
@@ -42,17 +42,17 @@ class Disbursement < ApplicationRecord
     {
       exists: true,
       pending: pending?,
-      processing: processed?,
+      processing: processed? && !fulfilled?,
       fulfilled: fulfilled?,
       rejected: rejected?,
     }
   end
 
   def state
-    if processed?
-      :info
-    elsif fulfilled?
+    if fulfilled?
       :success
+    elsif processed?
+      :info
     elsif rejected?
       :error
     else
@@ -61,10 +61,10 @@ class Disbursement < ApplicationRecord
   end
 
   def state_text
-    if processed?
-      'processing'
-    elsif fulfilled?
+    if fulfilled?
       'fulfilled'
+    elsif processed?
+      'processing'
     elsif rejected?
       'rejected'
     else
@@ -77,7 +77,7 @@ class Disbursement < ApplicationRecord
   end
 
   def admin_dropdown_description
-    "#{render_money amount} for #{name} to #{event.name}"
+    "#{ApplicationController.helpers.render_money amount} for #{name} to #{event.name}"
   end
 
   def transaction_memo
