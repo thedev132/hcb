@@ -77,7 +77,7 @@ class Disbursement < ApplicationRecord
   end
 
   def admin_dropdown_description
-    "#{amount} for #{name} to #{event.name}"
+    "#{render_money amount} for #{name} to #{event.name}"
   end
 
   def transaction_memo

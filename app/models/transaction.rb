@@ -574,6 +574,8 @@ class Transaction < ApplicationRecord
     # it's for source event
     event = self.amount > 0 ? disbursement.event : disbursement.source_event
 
+    self.disbursement = disbursement
+
     self.fee_relationship = FeeRelationship.new(
       event_id: event.id,
       fee_applies: false
