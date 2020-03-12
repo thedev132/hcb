@@ -90,10 +90,10 @@
     <% end %>
   </section>
 
-  <% admin_tools('py0') do %>
-    <%# admin tools because disbursements are not designed
-      to be end-user visible %>
-    <% if @transaction&.disbursement %>
+  <% if @transaction&.disbursement %>
+    <% admin_tools('py0') do %>
+      <%# admin tools because disbursements are not designed
+        to be end-user visible %>
       <p>
         This transaction is linked to
         <%= link_to "a #{render_money @transaction.disbursement.amount} disbursement '#{@transaction.disbursement.name}'", @transaction.disbursement %>
