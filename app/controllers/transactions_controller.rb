@@ -136,6 +136,7 @@ class TransactionsController < ApplicationController
       :display_name,
       :fee_reimbursement_id,
       :check_id,
+      :disbursement_id,
       :ach_transfer_id,
       :donation_payout_id,
       # TODO: I (@zrl) think users might be able to mess with the fee
