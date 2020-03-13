@@ -62,7 +62,7 @@ class EmburseTransaction < ApplicationRecord
   end
 
   def event_running_sum
-    EmburseTransaction.where(event: event).during(
+    EmburseTransaction.undeclined.where(event: event).during(
       event.emburse_transactions.first.transaction_time,
       self.transaction_time
     ).sum(&:amount)
