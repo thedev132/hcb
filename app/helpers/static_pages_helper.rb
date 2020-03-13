@@ -37,6 +37,9 @@ module StaticPagesHelper
         'HCB– Hydrofoils Chartered by Bandits',
         'The best thing since sliced bread',
         'Hack Club Bink',
+        'Hack 👏 Club 👏 Bank 👏',
+        '💻 ♣ 🏦',
+        'aka Hack Bank'
       ].sample
     end
   end
