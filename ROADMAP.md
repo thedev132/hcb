@@ -1,6 +1,21 @@
 # Bank Roadmap
 
-# linus-clubs-tools branch
+## Auth
+
+Proposal: Mostly-stateless authentication service that just provides pairing of session tokens to Email / SMSes.
+
+Requirements:
+- Auth methods
+    - email auth
+    - SMS auth
+- Multi-session support
+- Longer sessions ("remember this computer")
+- Allow other services to talk to it
+
+Best effort:
+- Ability to see + exit out of other logged-in sessions (This allows longer sessions to be safe)
+
+## Clubs tools
 
 - Grant-only account (flag that disables invoicing)
     - Make a page for explaining different plans and how to change it, link from events settings
@@ -12,7 +27,6 @@
 
 ## Big-ticket items
 
-- Auth
 - Demo accounts
 - Stripe Issuing
     - Receipt collection
