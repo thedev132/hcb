@@ -282,13 +282,19 @@ class Transaction < ApplicationRecord
     return if self == previous
 
     # copy over copyable details
-    self.display_name = previous.display_name
+
+    # copy over old display name only if old one was renamed
+    # and new one was not
+    if self.display_name == self.name && previous.display_name != previous.name
+      self.display_name = previous.display_name
+    end
+
     self.is_event_related = previous.is_event_related
     previous.comments.each do |comment|
       comment.update(commentable_id: self.id)
     end
     pfr = previous.fee_relationship
-    if !pfr.nil?
+    if !pfr.nil? # this is only true if previous was paired successfully
       self.fee_relationship = FeeRelationship.new(
         event_id: pfr.event_id,
         fee_applies: pfr.fee_applies,
