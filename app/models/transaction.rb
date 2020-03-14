@@ -543,8 +543,8 @@ class Transaction < ApplicationRecord
   def try_pair_check
     return unless potential_check?
 
-    Check.approved.each do |check|
-      if check.in_transit? && self.amount.abs == check.amount.abs
+    Check.in_transit.each do |check|
+      if self.amount.abs == check.amount.abs
         self.check = check
 
         # if from a positive pay account, does not belong to any event
