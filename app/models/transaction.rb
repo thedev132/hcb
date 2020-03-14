@@ -484,7 +484,7 @@ class Transaction < ApplicationRecord
       .unpaired.where(load_amount: -self.amount)
       .order(accepted_at: :desc)
 
-    return unless unpaired_matching_amount.count > 0
+    return unless unpaired_matching_amount.count == 1
     lcr = unpaired_matching_amount[0]
 
     self.load_card_request = lcr
