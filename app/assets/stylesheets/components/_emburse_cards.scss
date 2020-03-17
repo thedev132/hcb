@@ -9,7 +9,7 @@
   position: relative;
   background-color: #54d;
   background-image: radial-gradient(ellipse at top right, #867ae7, transparent);
-  background-image: #{image-url('emburse-plastic.svg')}, radial-gradient(ellipse at top right, #867ae7, transparent);
+  background-image: #{image-url('emburse-swoosh.svg')}, radial-gradient(ellipse at top right, #867ae7, transparent);
   background-repeat: no-repeat;
   /* 120% to account for z-axis perspective */
   background-size:120%;
@@ -39,17 +39,13 @@
   }
 
   &.virtual {
-    background-image: #{image-url('emburse-virtual.svg')}, radial-gradient(ellipse at top right, #867ae7, transparent);
+      background-image: #{image-url('emburse-virtual.svg')}, radial-gradient(ellipse at top right, #867ae7, transparent);
   }
 }
 
 .emburse-card__name {
   text-transform: uppercase;
   font-weight: bold;
-  transform: translateZ(20px);
-}
-
-.emburse-card__type {
   transform: translateZ(20px);
 }
 
