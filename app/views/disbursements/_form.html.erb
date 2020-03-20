@@ -3,12 +3,12 @@
 
   <div class="field">
     <%= form.label :source_event_id, 'Source event' %>
-    <%= form.collection_select(:source_event_id, Event.all, :id, :name, required: true, prompt: 'Select event…') %>
+    <%= form.collection_select(:source_event_id, Event.all.order(name: :asc), :id, :name, required: true, prompt: 'Select event…') %>
   </div>
 
   <div class="field">
     <%= form.label :event_id, 'Destination event' %>
-    <%= form.collection_select(:event_id, Event.all, :id, :name, required: true, prompt: 'Select event…') %>
+    <%= form.collection_select(:event_id, Event.all.order(name: :asc), :id, :name, required: true, prompt: 'Select event…') %>
   </div>
 
   <div class="field">
