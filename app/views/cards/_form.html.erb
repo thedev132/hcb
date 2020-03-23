@@ -50,28 +50,10 @@
     <%= form.label :is_virtual, 'This is a virtual card', :readonly => true %>
   </div>
 
-  <% if @card_request && !@card_request.is_virtual || @card_request.nil? %>
-    <h3>Physical card</h3>
-
-    <div class="field">
-      <%= form.label :last_four, 'Last four digits of card number' %>
-      <%= form.number_field :last_four %>
-    </div>
-  <% end %>
-
-  <% if @card_request && @card_request.is_virtual || @card_request.nil? %>
-    <h3>Virtual card</h3>
-
-    <div class="field">
-      <%= form.label :card_number, 'Card number' %>
-      <%= form.text_field :card_number %>
-    </div>
-
-    <div class="field">
-      <%= form.label :cvv, 'CVV' %>
-      <%= form.text_field :cvv %>
-    </div>
-  <% end %>
+  <div class="field">
+    <%= form.label :last_four, 'Last four digits of card number' %>
+    <%= form.number_field :last_four %>
+  </div>
 
   <div class="field">
     <%= form.label :expiration_month, 'Expiration month (MM)' %>

@@ -16,6 +16,17 @@
       <%= form.label :email %>
       <%= form.email_field :email %>
     </div>
+
+    <div class="field">
+      <%= form.label :creator_id, 'Card holder' %>
+      <%= form.collection_select(
+        :creator_id,
+        ([current_user] + @event.users.reorder(email: :asc)).compact.uniq,
+        :id,
+        :email,
+        selected: current_user,
+      ) %>
+    </div>
   <% end %>
 
   <% unless admin_signed_in? %>
@@ -36,12 +47,10 @@
     and ask them to issue a card from their account.
   </p>
 
-  <% admin_tools do %>
-    <div class="field field--checkbox">
-      <%= form.check_box :is_virtual %>
-      <%= form.label :is_virtual, 'Make this a virtual card' %>
-    </div>
-  <% end %>
+  <div class="field field--checkbox">
+    <%= form.check_box :is_virtual %>
+    <%= form.label :is_virtual, 'Make this a virtual card' %>
+  </div>
 
   <hr/>
 

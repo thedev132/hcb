@@ -51,6 +51,10 @@ class CardRequest < ApplicationRecord
   end
 
   def send_accept_email
-    CardRequestMailer.with(card_request: self).accepted.deliver_later
+    if is_virtual
+      CardRequestMailer.with(card_request: self).accepted_virtual.deliver_later
+    else
+      CardRequestMailer.with(card_request: self).accepted_physical.deliver_later
+    end
   end
 end

@@ -24,19 +24,9 @@ class Card < ApplicationRecord
   # validations for physical
   validates :last_four,
             :address,
-            presence: true,
-            if: lambda { !is_virtual }
-  validates :last_four, numericality: { only_integer: true },
-            if: lambda { !is_virtual }
+            presence: true
+  validates :last_four, numericality: { only_integer: true }
 
-
-  # validations for virtual
-  validates :card_number,
-            :cvv,
-            presence: true,
-            if: lambda { is_virtual }
-  validates :card_number, numericality: { only_integer: true },
-            if: lambda { is_virtual }
 
   validates :expiration_month, numericality: {
     only_integer: true,
@@ -66,11 +56,7 @@ class Card < ApplicationRecord
   # safe_last_four works for both virtual cards
   # and physical cards, and returns the last four of the card
   def safe_last_four
-    if is_virtual
-      card_number[12..15]
-    else
       last_four
-    end
   end
 
   # Emburse cards have three activation states:
@@ -89,15 +75,7 @@ class Card < ApplicationRecord
   end
 
   def formatted_card_number
-    if is_virtual
-      p1 = card_number[0..3]
-      p2 = card_number[4..7]
-      p3 = card_number[8..11]
-      p4 = card_number[12..15]
-      "#{p1} #{p2} #{p3} #{p4}"
-    else
       "•••• •••• •••• #{last_four}"
-    end
   end
 
   def safe_card_number

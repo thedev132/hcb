@@ -35,20 +35,22 @@
 
       <div>
         <strong>Card number</strong>
-        <%= @card.formatted_card_number %>
         <% if !@card.is_virtual %>
-          <div class="right tooltipped tooltipped--w" aria-label="Full number hidden to protect security">
-            <%= inline_icon 'private', size: 32, class: 'smoke' %>
-          </div>
+          <%= @card.formatted_card_number %>
+            <div class="right tooltipped tooltipped--w" aria-label="Full number hidden to protect security">
+              <%= inline_icon 'private', size: 32, class: 'smoke' %>
+            </div>
+        <% else %>
+          <% if @card.user == current_user || current_user.admin? %>
+            <%= link_to 'View on Emburse', @card.emburse_path, target: '_blank' %>
+          <% else %>
+            <%= @card.formatted_card_number %>
+            <div class="right tooltipped tooltipped--w" aria-label="Full number hidden to protect security">
+              <%= inline_icon 'private', size: 32, class: 'smoke' %>
+            </div>
+          <% end %>
         <% end %>
       </div>
-
-      <% if @card.is_virtual %>
-      <p>
-        <strong>CVV</strong>
-        <%= @card.cvv %>
-      </p>
-      <% end %>
 
       <p>
         <strong>Activation status</strong>

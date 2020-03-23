@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_06_233520) do
+ActiveRecord::Schema.define(version: 2020_03_17_172413) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
@@ -109,8 +109,6 @@ ActiveRecord::Schema.define(version: 2020_03_06_233520) do
     t.text "slug"
     t.datetime "deactivated_at"
     t.boolean "is_virtual"
-    t.string "card_number"
-    t.string "cvv"
     t.index ["event_id"], name: "index_cards_on_event_id"
     t.index ["slug"], name: "index_cards_on_slug", unique: true
     t.index ["user_id"], name: "index_cards_on_user_id"

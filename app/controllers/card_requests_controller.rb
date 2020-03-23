@@ -71,7 +71,7 @@ class CardRequestsController < ApplicationController
   # POST /card_requests
   def create
     @card_request = CardRequest.new(card_request_params)
-    @card_request.creator = current_user
+    @card_request.creator = card_request_params[:creator_id] ? User.find(card_request_params[:creator_id]) : current_user
     @event = @card_request.event
 
     authorize @card_request
@@ -138,6 +138,7 @@ class CardRequestsController < ApplicationController
       :notes,
       :event_id,
       :is_virtual,
+      :creator_id,
     )
   end
 end
