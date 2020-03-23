@@ -6,7 +6,7 @@ class Donation < ApplicationRecord
   before_create :create_stripe_payment_intent
   before_create :assign_unique_hash
 
-  after_update :send_first_payment_notification
+  after_update :send_payment_notification_if_needed
 
   validates :name, :email, :amount, presence: true
   validates :amount, numericality: { greater_than_or_equal_to: 100 }
