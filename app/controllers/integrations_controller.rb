@@ -1,4 +1,6 @@
 class IntegrationsController < ApplicationController
+  include Rails::Pagination
+
   before_action :authenticate
   skip_before_action :signed_in_user, only: [:frankly]
   skip_after_action :verify_authorized # do not force pundit
@@ -19,6 +21,7 @@ class IntegrationsController < ApplicationController
         created_at: t.created_at,
         type: 'bank',
         memo: t.display_name,
+        uuid: "T#{t.id}"
       }
     end
     # and emburse transactions...
@@ -28,14 +31,16 @@ class IntegrationsController < ApplicationController
     #     created_at: et.transaction_time,
     #     type: 'card',
     #     memo: et.merchant_name,
+    #     uuid: "ET#{et.id}"
     #   }
     # end
+    @paged_transactions = paginate @transactions, per_page: 100
     render json: {
       event: @event.name,
       account_url: event_url(@event),
       donation_url: start_donation_donations_url(@event),
       balance: @event.balance.to_i,
-      transactions: @transactions,
+      transactions: @paged_transactions,
     }
   end
 

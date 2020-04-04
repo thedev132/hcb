@@ -106,6 +106,7 @@ gem 'mini_magick'
 
 # Pagination
 gem 'kaminari'
+gem 'api-pagination'
 
 # Google (GSuite)
 gem 'google-api-client'
