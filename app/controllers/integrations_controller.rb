@@ -1,5 +1,5 @@
 class IntegrationsController < ApplicationController
-  # before_action :authenticate
+  before_action :authenticate
   skip_before_action :signed_in_user, only: [:frankly]
   skip_after_action :verify_authorized # do not force pundit
 
