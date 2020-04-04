@@ -188,6 +188,8 @@ Rails.application.routes.draw do
   get 'admin_search', to: 'static_pages#search'
   post 'admin_search', to: 'static_pages#search'
 
+  get '/integrations/frankly' => 'integrations#frankly'
+
   post '/events' => 'events#create'
   get '/events' => 'events#index'
   get '/event_by_airtable_id/:airtable_id' => 'events#by_airtable_id'
