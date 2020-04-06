@@ -1,12 +1,12 @@
 class IntegrationsController < ApplicationController
   include Rails::Pagination
 
-  before_action :authenticate
+  before_action :set_event
   skip_before_action :signed_in_user, only: [:frankly]
   skip_after_action :verify_authorized # do not force pundit
 
   def frankly
-    @event = Event.find_by slug: 'hq'
+    # @event = Event.find_by slug: 'hq'
     # transactions have...
     #   date
     #   transaction type [card, check, bank]
@@ -46,10 +46,19 @@ class IntegrationsController < ApplicationController
 
   private
 
-  def authenticate
+  def render_invalid_authorization
+    render json: {error: 'Unauthorized'}, status: 401
+  end
+
+  def set_event
     authenticate_or_request_with_http_token do |bearer_token, _options|
       token = Rails.application.credentials.dig(:mvp_frankly_token)
-      ActiveSupport::SecurityUtils.secure_compare(bearer_token, token)
+      api_key = bearer_token.split('|')[0]
+      slug = bearer_token.split('|')[1]
+      return render_invalid_authorization unless api_key and slug
+      @event = Event.find_by slug: slug
+      return render_invalid_authorization if @event.nil?
+      ActiveSupport::SecurityUtils.secure_compare(api_key, token)
     end
   end
 end
