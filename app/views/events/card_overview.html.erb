@@ -57,17 +57,13 @@ West Hollywood, CA 90069</pre>
 </h2>
 <% if @event.cards.any? %>
   <section class="mixed-grid grid--spacious mt2">
-    <% @event.cards.active.each do |card| %>
-      <%= render 'cards/card', card: card %>
-    <% end %>
+    <%= render partial: 'cards/card', collection: @event.cards.active %>
   </section>
   <% if @event.cards.deactivated.size > 0 %>
     <details class="w-100 left-align">
       <summary><h3 class="inline-block pb0 border-none">Deactivated cards</h3></summary>
       <section class="mixed-grid grid--spacious mt2">
-        <% @event.cards.deactivated.each do |card| %>
-          <%= render 'cards/card', card: card %>
-        <% end %>
+      <%= render partial: 'cards/card', collection: @event.cards.deactivated %>
       </section>
     </details>
   <% end %>
@@ -165,10 +161,11 @@ West Hollywood, CA 90069</pre>
       </tr>
     </thead>
     <tbody>
-    <% @emburse_transactions.each do |et| %>
-      <%= render 'emburse_transactions/transaction', et: et,
-        show_running_sum: true %>
-    <% end %>
+
+    <%= render partial: 'emburse_transactions/transaction',
+               collection: @emburse_transactions,
+               as: :et,
+               locals: { show_running_sum: true } %>
     </tbody>
   </table>
   </div>

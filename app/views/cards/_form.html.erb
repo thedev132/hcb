@@ -17,52 +17,57 @@
     <%= form.collection_select(:event_id, Event.all, :id, :name, prompt: 'Select event…') %>
   </div>
 
-  <div class="field">
-    <%= form.label :full_name, 'Full name on card' %>
-    <%= form.text_field :full_name %>
-  </div>
+  <% if card.persisted? %>
+    <div class="field">
+      <%= form.label :full_name, 'Full name on card' %>
+      <%= form.text_field :full_name %>
+    </div>
+  <% end %>
 
   <%= form.hidden_field :address %>
 
-  <% admin_tools('mb1') do %>
-    <p class="mt0">User email <input type="text" disabled="disabled" value="<%= card.user.email %>"></p>
-    <% if !@card_request&.is_virtual  %>
-      <div class="mb1">
-        Address fields
-        <input type="text" disabled="disabled" value="<%= @card_request.shipping_address_street_one %>">
-        <input type="text" disabled="disabled" value="<%= @card_request.shipping_address_street_two %>">
-        <input type="text" disabled="disabled" value="<%= @card_request.shipping_address_city %>">
-        <div class="flex mt0">
-          <input type="text" disabled="disabled" value="<%= @card_request.shipping_address_state %>">
-          <input type="text" disabled="disabled" value="<%= @card_request.shipping_address_zip %>">
-        </div>
+  <p class="mt0">User email <input type="text" disabled="disabled" value="<%= card&.user&.email %>"></p>
+  <p class="mt0">Full name <input type="text" disabled="disabled" value="<%= card&.user&.full_name || @card_request.full_name %>"></p>
+  <% if @card_request&.is_virtual  %>
+    <div class="field field--checkbox">
+      <%= form.check_box :is_virtual, checked: @card_request&.is_virtual, disabled: true %>
+      <%= form.label :is_virtual, 'Is virtual', readonly: true %>
+    </div>
+  <% else %>
+    <div class="mb1">
+      Address fields
+      <input type="text" disabled="disabled" value="<%= @card_request.shipping_address_street_one %>">
+      <input type="text" disabled="disabled" value="<%= @card_request.shipping_address_street_two %>">
+      <input type="text" disabled="disabled" value="<%= @card_request.shipping_address_city %>">
+      <div class="flex mt0">
+        <input type="text" disabled="disabled" value="<%= @card_request.shipping_address_state %>">
+        <input type="text" disabled="disabled" value="<%= @card_request.shipping_address_zip %>">
       </div>
-    <% end %>
+    </div>
+  <% end %>
+
+  <% if card.persisted? %>
+
+    <div class="field">
+      <%= form.label :last_four, 'Last four digits of card number' %>
+      <%= form.number_field :last_four, disabled: true %>
+    </div>
+
+    <div class="field">
+      <%= form.label :expiration_month, 'Expiration month (MM)' %>
+      <%= form.number_field :expiration_month, disabled: true %>
+    </div>
+
+    <div class="field">
+      <%= form.label :expiration_year, 'Expiration year (YYYY)' %>
+      <%= form.number_field :expiration_year, disabled: true %>
+    </div>
+
   <% end %>
 
   <div class="field">
     <%= form.label :emburse_id, 'Emburse ID' %>
     <%= form.text_field :emburse_id %>
-  </div>
-
-  <div class="field field--checkbox">
-    <%= form.check_box :is_virtual, checked: @card_request&.is_virtual  %>
-    <%= form.label :is_virtual, 'This is a virtual card', :readonly => true %>
-  </div>
-
-  <div class="field">
-    <%= form.label :last_four, 'Last four digits of card number' %>
-    <%= form.number_field :last_four %>
-  </div>
-
-  <div class="field">
-    <%= form.label :expiration_month, 'Expiration month (MM)' %>
-    <%= form.number_field :expiration_month %>
-  </div>
-
-  <div class="field">
-    <%= form.label :expiration_year, 'Expiration year (YYYY)' %>
-    <%= form.number_field :expiration_year %>
   </div>
 
   <div class="actions">

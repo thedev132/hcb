@@ -36,7 +36,8 @@ class Card < ApplicationRecord
   validates :expiration_year, numericality: { only_integer: true }
   validate :emburse_id_format
 
-  before_save :sync_with_emburse
+  after_save :sync_to_emburse!
+  before_validation :sync_from_emburse!, unless: :persisted?
 
   def emburse_path
     "https://app.emburse.com/cards/#{emburse_id}"
@@ -53,12 +54,6 @@ class Card < ApplicationRecord
     emburse_obj&.department&.id
   end
 
-  # safe_last_four works for both virtual cards
-  # and physical cards, and returns the last four of the card
-  def safe_last_four
-      last_four
-  end
-
   # Emburse cards have three activation states:
   # 1. "unactivated", when card first ships. Must be activated by user
   #   at emburse.com/activate to be active, cannot be activated by Bank
@@ -66,20 +61,18 @@ class Card < ApplicationRecord
   # 3. "suspended", deactivated by user and can be activated again thru Bank.
   def status_text
     if requires_activation?
-      'Awaiting activation'
+      'Shipping'
     elsif active?
       'Active'
-    else
-      'Deactivated'
+    elsif suspended?
+      'Suspended'
+    elsif canceled?
+      'Canceled'
     end
   end
 
   def formatted_card_number
-      "•••• •••• •••• #{last_four}"
-  end
-
-  def safe_card_number
-      "•••• •••• •••• #{safe_last_four}"
+    "•••• •••• •••• #{last_four}"
   end
       
   def deactivate!
@@ -93,21 +86,57 @@ class Card < ApplicationRecord
   end
 
   def requires_activation?
-    emburse_obj[:state] == 'unactivated'
+    sync_from_emburse! && self.save if self.emburse_state.blank?
+    self.emburse_state == 'unactivated'
   end
 
   def active?
-    emburse_obj[:state] == 'active'
+    sync_from_emburse! && self.save if self.emburse_state.blank?
+    self.emburse_state == 'active'
   end
 
   def suspended?
-    emburse_obj[:state] == 'suspended'
+    sync_from_emburse! && self.save if self.emburse_state.blank?
+    self.emburse_state == 'suspended'
+  end
+
+  def canceled?
+    sync_from_emburse! && self.save if self.emburse_state.blank?
+    self.emburse_state == 'terminated'
+  end
+
+  def sync_from_emburse!
+    self.is_virtual = emburse_obj[:is_virtual]
+
+    expiration = Date.parse(emburse_obj[:expiration])
+    self.expiration_month = expiration.month
+    self.expiration_year = expiration.year.to_s[-2..-1].to_i
+
+    self.emburse_state = emburse_obj[:state]
+
+    self.last_four = emburse_obj[:last_four]
+
+    first_name = emburse_obj[:assigned_to][:first_name]
+    last_name = emburse_obj[:assigned_to][:last_name]
+    self.full_name = "#{first_name} #{last_name}"
+
+    if emburse_obj[:shipping_address]
+      sa = emburse_obj[:shipping_address]
+      address = []
+      address << sa[:attn]
+      address << sa[:address_1]
+      address << sa[:address_2] unless sa[:address_2].blank?
+      address << "#{sa[:city]}, #{sa[:state]} #{sa[:zip_code]}"
+
+      self.address = address.join('/n').strip
+    end
   end
 
   private
 
   def emburse_obj
-    ::EmburseClient::Card.get(self.emburse_id)
+    @emburse_obj ||= ::EmburseClient::Card.get(self.emburse_id)
+    @emburse_obj
   end
 
   def emburse_id_format
@@ -117,9 +146,9 @@ class Card < ApplicationRecord
     end
   end
 
-  def sync_with_emburse
+  def sync_to_emburse!
     if self.deactivated_at_changed?
-      if emburse_obj[:state] != 'active' && emburse_obj[:state] != 'suspended'
+      if emburse_obj[:state] == 'unactive'
         errors.add(:card, 'cannot be deactivated until it is first activated')
         return
       end

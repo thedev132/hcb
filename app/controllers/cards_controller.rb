@@ -39,12 +39,6 @@ class CardsController < ApplicationController
       user_id: card_params[:user_id],
       event_id: card_params[:event_id],
       emburse_id: card_params[:emburse_id],
-      is_virtual: card_params[:is_virtual],
-      last_four: card_params[:last_four],
-      full_name: card_params[:full_name],
-      address: card_params[:address],
-      expiration_year: card_params[:expiration_year],
-      expiration_month: card_params[:expiration_month]
     )
 
     authorize @card
@@ -121,13 +115,7 @@ class CardsController < ApplicationController
     params.require(:card).permit(
       :user_id,
       :event_id,
-      :full_name,
-      :address,
       :card_request_id,
-      :is_virtual,
-      :last_four,
-      :expiration_month,
-      :expiration_year,
       :emburse_id,
     )
   end

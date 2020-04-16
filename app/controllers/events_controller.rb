@@ -128,11 +128,17 @@ class EventsController < ApplicationController
   end
 
   def card_overview
-    @event = Event.find(params[:event_id])
+    @event = Event.includes([
+      { cards: :user },
+      { load_card_requests: [:t_transaction, :creator] }
+      ]).find(params[:event_id])
     authorize @event
-    @card_requests = @event.card_requests
+    @cards = @event.cards.includes(user: [:profile_picture_attachment])
+    @card_requests = @event.card_requests.includes(creator: :profile_picture_attachment)
     @load_card_requests = @event.load_card_requests
     @emburse_transactions = @event.emburse_transactions.order(transaction_time: :desc).where.not(transaction_time: nil).includes(:card)
+
+    @sum = @event.emburse_balance
   end
 
   def g_suite_overview

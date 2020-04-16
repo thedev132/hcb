@@ -24,7 +24,8 @@
   </td>
   <td class="nowrap"><%= render_money et.amount %></td>
   <% if show_running_sum %>
-    <td class="nowrap"><%= render_money et.event_running_sum %></td>
+    <td class="nowrap"><%= render_money @sum %></td>
+    <% @sum -= et.amount if et.undeclined? %>
   <% end %>
   <td>
     <%= et.card.nil? ? '—' : card_mention(et.card) %>

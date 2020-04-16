@@ -1,22 +1,27 @@
 .emburse-card {
+  margin: 0 auto;
   display: flex;
   justify-content: space-between;
   flex-direction: column;
   width: 100%;
-  max-width: 32rem;
-  min-height: 12rem;
+  width: #{13 * 1.75}rem;
+  height: #{8 * 1.75}rem;
   padding: 1.5rem;
   position: relative;
   background-color: #54d;
   background-image: radial-gradient(ellipse at top right, #867ae7, transparent);
-  background-image: #{image-url('emburse-swoosh.svg')}, radial-gradient(ellipse at top right, #867ae7, transparent);
+  background-image: #{image-url('emburse-swoosh-plastic.svg')}, radial-gradient(ellipse at top right, #867ae7, transparent);
+  &.deactivated {
+    -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
+    filter: grayscale(100%);
+  }
   background-repeat: no-repeat;
   /* 120% to account for z-axis perspective */
   background-size:120%;
   font-family: $mono;
   font-size: 1.25rem;
   color: $white;
-  border-radius: 6px;
+  border-radius: 12px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.25);
   transition: 0.25s ease-out transform;
   transform: scale(1);
@@ -32,29 +37,54 @@
     content: '';
     width: 10rem;
     height: 3rem;
-    background: #{image-url('emburse.svg')} no-repeat;
-    background-size: 100%;
+    background: #{image-url('emburse-logo-plastic.svg')};
+    background-repeat: no-repeat !important;
+    background-size: 100% !important;
     flex: 1 1 auto;
     transform: translateZ(20px);
   }
 
   &.virtual {
-      background-image: #{image-url('emburse-virtual.svg')}, radial-gradient(ellipse at top right, #867ae7, transparent);
+    background-image: #{image-url('emburse-swoosh-digital.svg')}, radial-gradient(ellipse at top right, #867ae7, transparent);
+    &:before {
+      background: #{image-url('emburse-logo-digital.svg')};
+    }
   }
+
+  &:not(.virtual):after {
+    content: '';
+    position: absolute;
+    left: 2rem;
+    top: 35%;
+    height: 3.5rem;
+    width: 3.5rem;
+    background: #{image-url('emburse-chip.svg')} no-repeat;
+    background-size: contain;
+    transform: translateZ(10px);
+  }
+}
+
+.emburse-card__status {
+  position: absolute;
+  right: 0rem;
+  top: 0rem;
+  background: rgba(255, 255, 255, 0.25);
+  padding: 1rem;
+  border-bottom-left-radius: 12px;
+  border-top-right-radius: 12px;
+  transform: translateZ(10px);
 }
 
 .emburse-card__name {
   text-transform: uppercase;
   font-weight: bold;
   transform: translateZ(20px);
+  margin-top: 0px;
+  margin-bottom: 0px;
 }
 
 .emburse-card__number {
   transform: translateZ(20px);
-
-  strong {
-    font-size: 1.5rem;
-    font-weight: 900;
-    color: $white;
-  }
+  margin-top: 0px;
+  margin-bottom: 0px;
 }
