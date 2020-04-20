@@ -171,7 +171,7 @@ class Check < ApplicationRecord
   end
 
   def admin_dropdown_description
-    "#{event.name} | #{lob_address.name} | #{status} - #{ApplicationController.helpers.render_money amount}"
+    "#{check_number} | #{event.name} | #{lob_address.name} | #{status} - #{ApplicationController.helpers.render_money amount}"
   end
 
   def voidable?
