@@ -46,6 +46,10 @@ class CardRequest < ApplicationRecord
     end
   end
 
+  def emburse_department_id
+    event.emburse_department_id
+  end
+
   def under_review?
     rejected_at.nil? && canceled_at.nil? && accepted_at.nil?
   end
