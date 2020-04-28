@@ -1,0 +1,28 @@
+<% page_sm %>
+<% @home_size = 128 %>
+<% content_for(:page_class) { 'bg-snow pt4' } %>
+
+<main class="flex flex-column items-center center pt3 pb3">
+  <h1 class="heading flex-column items-center justify-center mt2 w-100">
+    <span class="h3 caps slate block">Welcome to</span>
+    <span class="primary">Hack Club Bank</span>
+    <span class="badge h5 caps"><%= random_nickname() %></span>
+  </h1>
+</main>
+
+<% admin_tools('w-100 mt3') do %>
+  <h2>Pending Tasks</h2>
+  <ul class="grid grid--narrow left-align w-100 mt0">
+    <%= card_to 'Card Requests', card_requests_path, { badge: @active[:card_requests] } %>
+    <%= card_to 'Transfer Requests', load_card_requests_path, { badge: @active[:load_card_requests] } %>
+    <%= card_to 'Checks', checks_path, { badge: @active[:checks] } %>
+    <%= card_to 'ACH Transfers', ach_transfers_path, { badge: @active[:ach_transfers] } %>
+    <%= card_to 'Fee Refunds', fee_reimbursements_path, { badge: @active[:fee_reimbursements] } %>
+    <%= card_to 'G Suite Applications', g_suite_applications_path, { badge: @active[:g_suite_applications] } %>
+    <%= card_to 'Account Deletion Requests', organizer_position_deletion_requests_path, { badge: @active[:organizer_position_deletion_requests] } %>
+    <%= card_to 'Transactions', transactions_path, { badge: @active[:transactions] } %>
+    <%= card_to 'Emburse Transactions', emburse_transactions_path, { badge: @active[:emburse_transactions] } %>
+    <%= card_to 'Pending Fees', pending_fees_path, { badge: @active[:pending_fees] } %>
+    <%= card_to 'Pending disbursements', pending_disbursements_path, { badge: @active[:disbursements] } %>
+  </ul>
+<% end %>

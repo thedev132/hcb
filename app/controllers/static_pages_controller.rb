@@ -1,6 +1,7 @@
 class StaticPagesController < ApplicationController
   skip_after_action :verify_authorized # do not force pundit
   skip_before_action :signed_in_user, only: [:stats, :branding, :faq]
+  before_action :signed_in_admin, only: :admin_tasks
 
   def index
     if signed_in?
@@ -10,26 +11,35 @@ class StaticPagesController < ApplicationController
       if @events.size == 1 && @invites.size == 0 && !admin_signed_in?
         redirect_to current_user.events.first
       end
+
+      @active = {
+        g_suite_accounts: GSuiteAccount.under_review.size,
+      }
     end
     if admin_signed_in?
       @transaction_volume = Transaction.total_volume
-      @active = {
-        card_requests: CardRequest.under_review.size,
-        # These don't need to be merged, as they are mutually exclusive sets
-        checks: Check.pending.size + Check.unfinished_void.size,
-        ach_transfers: AchTransfer.pending.size,
-        pending_fees: Event.pending_fees.size,
-        negative_events: Event.negatives.size,
-        fee_reimbursements: FeeReimbursement.unprocessed.size,
-        load_card_requests: LoadCardRequest.under_review.size,
-        g_suite_applications: GSuiteApplication.under_review.size,
-        g_suite_accounts: GSuiteAccount.under_review.size,
-        transactions: Transaction.needs_action.size,
-        emburse_transactions: EmburseTransaction.under_review.size,
-        disbursements: Disbursement.pending.size,
-        organizer_position_deletion_requests: OrganizerPositionDeletionRequest.under_review.size
-      }
     end
+  end
+
+  def admin_tasks
+    @pending_hackathon_listings = pending_hackathon_listings
+    @active = {
+      pending_hackathon_listings: @pending_hackathon_listings.size,
+      card_requests: CardRequest.under_review.size,
+      # These don't need to be merged, as they are mutually exclusive sets
+      checks: Check.pending.size + Check.unfinished_void.size,
+      ach_transfers: AchTransfer.pending.size,
+      pending_fees: Event.pending_fees.size,
+      negative_events: Event.negatives.size,
+      fee_reimbursements: FeeReimbursement.unprocessed.size,
+      load_card_requests: LoadCardRequest.under_review.size,
+      g_suite_applications: GSuiteApplication.under_review.size,
+      g_suite_accounts: GSuiteAccount.under_review.size,
+      transactions: Transaction.needs_action.size,
+      emburse_transactions: EmburseTransaction.under_review.size,
+      disbursements: Disbursement.pending.size,
+      organizer_position_deletion_requests: OrganizerPositionDeletionRequest.under_review.size,
+    }
   end
 
   def pending_fees
@@ -139,5 +149,16 @@ class StaticPagesController < ApplicationController
       },
       events: events_list,
     }
+  end
+
+  private
+
+  def pending_hackathon_listings
+    require 'net/http'
+
+    api2_domain = 'api2.hackclub.com'
+    api2_endpoint = '/v0/hackathons.hackclub.com/applications?select={"filterByFormula":"AND(Approved=0,Rejected=0)"}'
+    request = Net::HTTP.get_response(api2_domain, api2_endpoint)
+    request.response.body
   end
 end

@@ -185,6 +185,7 @@ Rails.application.routes.draw do
   get 'pending_fees', to: 'static_pages#pending_fees'
   get 'negative_events', to: 'static_pages#negative_events'
 
+  get 'admin_tasks', to: 'static_pages#admin_tasks'
   get 'admin_search', to: 'static_pages#search'
   post 'admin_search', to: 'static_pages#search'
 
