@@ -24,5 +24,6 @@
     <%= card_to 'Emburse Transactions', emburse_transactions_path, { badge: @active[:emburse_transactions] } %>
     <%= card_to 'Pending Fees', pending_fees_path, { badge: @active[:pending_fees] } %>
     <%= card_to 'Pending disbursements', pending_disbursements_path, { badge: @active[:disbursements] } %>
+    <%= card_to 'hackathons.hackclub.com', pending_hackathon_listings_path, { badge: @active[:pending_hackathon_listings] } %>
   </ul>
 <% end %>

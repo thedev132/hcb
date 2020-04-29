@@ -8,6 +8,10 @@ module StaticPagesHelper
                         path, method: options[:method]
   end
 
+  def pending_hackathon_listings_path
+    'https://airtable.com/tblYVTFLwY378YZa4/viwpJOp6ZmMDfcbgb?blocks=hide'
+  end
+
   def random_nickname()
     if Rails.env.development?
       'Development Mode'

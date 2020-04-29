@@ -158,7 +158,7 @@ class StaticPagesController < ApplicationController
 
     api2_domain = 'api2.hackclub.com'
     api2_endpoint = '/v0/hackathons.hackclub.com/applications?select={"filterByFormula":"AND(Approved=0,Rejected=0)"}'
-    request = Net::HTTP.get_response(api2_domain, api2_endpoint)
-    request.response.body
+    request = Net::HTTP.get_response api2_domain, api2_endpoint
+    JSON.parse request.response.body
   end
 end
