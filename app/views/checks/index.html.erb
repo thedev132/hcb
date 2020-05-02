@@ -23,7 +23,7 @@
   <tbody>
     <% @checks.each do |check| %>
       <tr>
-        <td><%= check.check_number || 'n/a' %></td>
+        <td><%= link_to check.check_number || 'n/a', check %></td>
         <td><%= link_to check.event.name, check.event %></td>
         <td><%= render_money check.amount %></td>
         <td>
