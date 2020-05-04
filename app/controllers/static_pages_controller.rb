@@ -40,6 +40,15 @@ class StaticPagesController < ApplicationController
       disbursements: Disbursement.pending.size,
       organizer_position_deletion_requests: OrganizerPositionDeletionRequest.under_review.size,
     }
+    @pending_actions = @active.values.any? { |e| e.nonzero? }
+    @blankslate_message = [
+      "You look great today, #{current_user.first_name}.",
+      "You’re a *credit* to your team, #{current_user.first_name}.",
+      "Everybody thinks you’re amazing, #{current_user.first_name}.",
+      "You’re every organizer’s favorite point of contact.",
+      "You’re so good at finances, even we think your balance is outstanding.",
+      "You’re sweeter than a savings account."
+    ].sample
   end
 
   def pending_fees

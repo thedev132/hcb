@@ -54,6 +54,11 @@ class User < ApplicationRecord
     ApiService.get_user(self.api_id, self.api_access_token)
   end
 
+  def first_name
+    # beware– not all users will have their full_name set
+    full_name.partition(" ").first
+  end
+
   def name
     full_name || email
   end
