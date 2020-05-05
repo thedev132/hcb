@@ -8,7 +8,11 @@
           <p class="m0">
             <strong><%= account.first_name %> <%= account.last_name %></strong>
             &middot;
-            <span><%= account.username %></span><span class="muted"><%= account.at_domain %></span>
+            <% if organizer_signed_in? %>
+              <span><%= account.username %></span><span class="muted"><%= account.at_domain %></span>
+            <% else %>
+              <span class="muted">You can't see or edit G Suite accounts in Open Mode</span>
+            <% end %>
           </p>
           <p class="slate m0">
           <% if account.suspended? %>
@@ -21,11 +25,11 @@
             <%= status_badge :pending %>
             <span><%= account.status %>.</span>
           <% end %>
-          <% if admin_signed_in? || account.backup_email == current_user.email %>
+          <% if admin_signed_in? || account.backup_email == current_user&.email %>
             <span>Backup email: <%= content_tag :code, account.backup_email %></span>
           <% end %>
           </p>
-          <% if account.accepted? %>
+          <% if account.accepted? && organizer_signed_in? %>
             <%= link_to 'Reset password', g_suite_account_reset_password_path(account.id), method: :put,
                 data: { confirm: "Reset the account password for #{account.address}? We'll email a new password to the backup email." },
                 class: 'h5 muted underline'

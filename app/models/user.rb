@@ -56,7 +56,12 @@ class User < ApplicationRecord
 
   def first_name
     # beware– not all users will have their full_name set
-    full_name.partition(" ").first
+    full_name&.split(" ")&.first
+  end
+
+  def last_name
+    # beware– not all users will have their full_name set
+    full_name&.split(" ")&.first
   end
 
   def name

@@ -1,6 +1,7 @@
 class AchTransfersController < ApplicationController
   before_action :set_ach_transfer, except: [:new, :create, :index]
   before_action :set_event, only: [:new, :create]
+  skip_before_action :signed_in_user
 
   # GET /ach_transfers
   def index

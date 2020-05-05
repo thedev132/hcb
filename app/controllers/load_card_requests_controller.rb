@@ -1,5 +1,6 @@
 class LoadCardRequestsController < ApplicationController
   before_action :set_load_card_request, only: [:show, :edit, :update, :reject, :cancel, :accept]
+  skip_before_action :signed_in_user
 
   def export
     authorize LoadCardRequest

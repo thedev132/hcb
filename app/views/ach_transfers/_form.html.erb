@@ -40,6 +40,6 @@
     </div>
   </div>
   <div class="actions tooltipped tooltipped--n inline-block" aria-label="ACH transfers can't be cancelled">
-    <%= form.submit 'Transfer money now', class: 'btn bg-warning' %>
+    <%= form.submit 'Transfer money now', class: 'btn bg-warning', disabled: !organizer_signed_in? %>
   </div>
 <% end %>

@@ -31,14 +31,14 @@
 
   <% unless admin_signed_in? %>
     <%= form.hidden_field :event_id, value: params[:event_id] %>
-    <%= form.hidden_field :email, value: current_user.email %>
+    <%= form.hidden_field :email, value: current_user&.email %>
   <% end %>
 
   <div class="field">
     <%= form.label :full_name, 'Full name (as will appear on card)' %>
     <%= form.text_field :full_name,
-      value: card_request.full_name || current_user.full_name,
-      :readonly => current_user.admin? ? false : true %>
+      value: card_request.full_name || current_user&.full_name,
+      readonly: !current_user&.admin? %>
   </div>
 
   <p>
@@ -57,7 +57,7 @@
   <div class="shipping_address_inputs">
     <h3 class="mb1">Shipping address</h3>
 
-    <p>We'll send your physical card to this address, addressed to "<%= card_request.full_name || current_user.full_name %> C/O Hack Club".</p>
+    <p>We'll send your physical card to this address, addressed to "<%= card_request.full_name || current_user&.full_name %> C/O Hack Club".</p>
 
     <div class="field">
       <%= form.label :shipping_address_street_one, 'Address line 1' %>
@@ -95,6 +95,6 @@
   </div>
 
   <div class="actions">
-    <%= form.submit 'Request this card' %>
+    <%= form.submit 'Request this card', disabled: !organizer_signed_in? %>
   </div>
 <% end %>

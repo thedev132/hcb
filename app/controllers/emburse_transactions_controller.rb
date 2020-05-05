@@ -1,5 +1,6 @@
 class EmburseTransactionsController < ApplicationController
   before_action :set_emburse_transaction, only: [:edit, :update, :show]
+  skip_before_action :signed_in_user
 
   def index
     authorize EmburseTransaction

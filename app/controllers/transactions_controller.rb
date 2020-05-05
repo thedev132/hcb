@@ -1,6 +1,8 @@
 require 'csv'
 
 class TransactionsController < ApplicationController
+  skip_before_action :signed_in_user
+
   def index
     authorize Transaction
 

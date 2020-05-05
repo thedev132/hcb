@@ -1,61 +1,69 @@
 class EventPolicy < ApplicationPolicy
   def index?
-    user.admin?
+    user&.admin?
   end
 
   def new?
-    user.admin?
+    user&.admin?
   end
 
   def create?
-    user.admin?
+    user&.admin?
   end
 
   def show?
-    record.users.include?(user) || user.admin?
+    is_public || user_or_admin
   end
 
   def by_airtable_id?
-    user.admin?
+    user&.admin?
   end
 
   def edit?
-    record.users.include?(user) || user.admin?
+    user_or_admin
   end
 
   def update?
-    record.users.include?(user) || user.admin?
+    user_or_admin
   end
 
   def destroy?
-    user.admin?
+    user&.admin?
   end
 
   def team?
-    user.admin? || record.users.include?(user)
+    is_public || user_or_admin
   end
 
   def card_overview?
-    user.admin? || record.users.include?(user)
+    is_public || user_or_admin
   end
 
   def g_suite_overview?
-    user.admin? || record.users.include?(user)
+    is_public || user_or_admin
   end
 
   def transfers?
-    user.admin? || record.users.include?(user)
+    is_public || user_or_admin
   end
 
   def promotions?
-    user.admin? || record.users.include?(user)
+    is_public || user_or_admin
   end
 
   def reimbursements?
-    user.admin? || record.users.include?(user)
+    is_public || user_or_admin
   end
 
   def donation_overview?
-    user.admin? || record.users.include?(user)
+    is_public || user_or_admin
+  end
+
+  def user_or_admin
+    user&.admin? || record.users.include?(user)
+  end
+
+  def is_public
+    record.is_public?
   end
 end

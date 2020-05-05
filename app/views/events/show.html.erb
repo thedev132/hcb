@@ -13,7 +13,9 @@
     <span class="line-height-1" style="font-size: 3rem;">
       <%= @event.name %>
     </span>
-    <%= pop_icon_to 'controls', edit_event_path(@event), class: 'ml2' %>
+    <% if organizer_signed_in? %>
+      <%= pop_icon_to 'controls', edit_event_path(@event), class: 'ml2' %>
+    <% end %>
   </span>
 </h1>
 
@@ -83,6 +85,7 @@
   Transactions
   <%= link_to 'Export CSV',
     export_transactions_path(event: @event),
+    disabled: !organizer_signed_in?,
     class: 'btn bg-info',
     target: :_blank %>
 </h2>

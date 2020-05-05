@@ -1,33 +1,33 @@
 class CardPolicy < ApplicationPolicy
   def index?
-    user.admin?
+    user&.admin?
   end
 
   def new?
-    user.admin?
+    user&.admin?
   end
 
   def create?
-    user.admin?
+    user&.admin?
   end
 
   def show?
-    record.event.users.include?(user) || user.admin?
+    record.event.users.include?(user) || user&.admin?
   end
 
   def toggle_active?
-    record.event.users.include?(user) || user.admin?
+    record.event.users.include?(user) || user&.admin?
   end
 
   def edit?
-    user.admin?
+    user&.admin?
   end
 
   def update?
-    user.admin?
+    user&.admin?
   end
 
   def destroy?
-    user.admin?
+    user&.admin?
   end
 end

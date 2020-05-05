@@ -1,5 +1,6 @@
 class InvoicesController < ApplicationController
   before_action :set_event, only: [:index]
+  skip_before_action :signed_in_user
 
   def all_index
     @invoices = Invoice.all.order(created_at: :desc).includes(:creator)

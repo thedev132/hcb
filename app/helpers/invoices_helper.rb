@@ -95,8 +95,8 @@ def invoice_payment_method_mention(invoice = @invoice, options = {})
       'visa' => 'Visa',
       'discover' => 'Discover'
     }[brand] || 'Card'
-    tooltip += " ending in #{last4}" if last4
-    description_text = "••••#{last4}"
+    tooltip += " ending in #{last4}" if last4 && organizer_signed_in?
+    description_text = organizer_signed_in? ? "••••#{last4}" : "••••"
     icon = inline_icon icon_name, width: 32, height: 20, class: 'slate'
   else
     icon_name = 'bank-account'

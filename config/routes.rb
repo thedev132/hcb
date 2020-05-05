@@ -175,9 +175,8 @@ Rails.application.routes.draw do
   end
 
   # api
-  get 'api/v1/events/find', to: 'api#event_find'
+  get  'api/v1/events/find', to: 'api#event_find'
   post 'api/v1/events', to: 'api#event_new'
-
   post 'api/v1/disbursements', to: 'api#disbursement_new'
 
   post 'export/finances', to: 'exports#financial_export'
@@ -203,7 +202,7 @@ Rails.application.routes.draw do
     get 'reimbursements', to: 'events#reimbursements', as: :reimbursements
     get 'donations', to: 'events#donation_overview', as: :donation_overview
     # suspend this while check processing is on hold
-    # resources :checks, only: [:new, :create]
+    resources :checks, only: [:new, :create]
     resources :ach_transfers, only: [:new, :create]
     resources :organizer_position_invites,
               only: [:new, :create],

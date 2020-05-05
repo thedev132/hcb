@@ -8,6 +8,6 @@
 </h1>
 
 <strong>Original transaction name</strong>
-<pre class="bg-smoke mt0"><%= @transaction.name %></pre>
+<pre class="bg-smoke mt0"><%= organizer_signed_in? ? @transaction.name : 'REDACTED– SIGN IN TO REVEAL' %></pre>
 
 <%= render 'form', transaction: @transaction %>

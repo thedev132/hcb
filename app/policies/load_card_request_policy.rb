@@ -1,26 +1,26 @@
 class LoadCardRequestPolicy < ApplicationPolicy
   def index?
-    user.admin?
+    user&.admin?
   end
 
   def new?
-    record.event.users.include?(user) || user.admin?
+    is_public || record.event.users.include?(user) || user&.admin?
   end
 
   def create?
-    record.creator == user || user.admin?
+    (record.creator == user && record.event.users.include?(user)) || user&.admin?
   end
 
   def show?
-    user.admin?
+    user&.admin?
   end
 
   def edit?
-    user.admin?
+    user&.admin?
   end
 
   def update?
-    user.admin?
+    user&.admin?
   end
 
   def cancel?
@@ -28,14 +28,20 @@ class LoadCardRequestPolicy < ApplicationPolicy
   end
 
   def accept?
-    user.admin?
+    user&.admin?
   end
 
   def reject?
-    user.admin?
+    user&.admin?
   end
 
   def export?
-    user.admin?
+    user&.admin?
+  end
+
+  private
+
+  def is_public
+    record.event.is_public?
   end
 end

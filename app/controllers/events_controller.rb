@@ -1,5 +1,6 @@
 class EventsController < ApplicationController
   before_action :set_event, only: [:show, :edit, :update, :destroy]
+  skip_before_action :signed_in_user
 
   # GET /events
   def index
@@ -205,7 +206,9 @@ class EventsController < ApplicationController
       :hidden,
       :is_spend_only,
       :donation_page_enabled,
-      :donation_page_message
+      :donation_page_message,
+      :is_public,
+      :public_message
     )
 
     # Expected budget is in cents on the backend, but dollars on the frontend
@@ -222,7 +225,9 @@ class EventsController < ApplicationController
       :slug,
       :hidden,
       :donation_page_enabled,
-      :donation_page_message
+      :donation_page_message,
+      :is_public,
+      :public_message
     )
 
     # convert whatever the user inputted into something that is a legal slug

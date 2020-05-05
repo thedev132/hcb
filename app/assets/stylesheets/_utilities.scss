@@ -122,6 +122,10 @@ $shades: (
   border-color: map-get($palette, warning);
 }
 
+.b--info {
+  border-color: map-get($palette, info);
+}
+
 .w-50 {
   width: 50%;
 }

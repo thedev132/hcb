@@ -1,6 +1,7 @@
 class ChecksController < ApplicationController
   before_action :set_check, except: %i[index new create export]
   before_action :set_event, only: %i[new create]
+  skip_before_action :signed_in_user
 
   # GET /checks
   def index

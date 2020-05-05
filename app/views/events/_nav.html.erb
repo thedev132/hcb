@@ -7,6 +7,8 @@
 <% end %>
 </main>
 
+<%= render 'events/public_message' %>
+
 <nav class="dock">
   <% if !@event.is_spend_only %>
     <%= dock_card 'Invoices',
@@ -26,9 +28,9 @@
     <action type="button" class="pop menu__toggle" data-behavior="menu_toggle" aria-expanded="false" tabindex="0">
     <%= inline_icon 'more' %>
     <div class="menu__content" data-behavior="menu_content">
-      <%= link_to 'Project settings', edit_event_path(@event) %>
+      <%= link_to 'Project settings', edit_event_path(@event) if organizer_signed_in? %>
       <%= link_to 'Manage team', event_team_path(@event) %>
-      <%= link_to 'My account', edit_user_path(current_user) %>
+      <%= link_to 'My account', edit_user_path(current_user) if organizer_signed_in? %>
       <hr />
       <%= link_to 'G Suite', event_g_suite_overview_path(event_id: @event.slug) %>
       <%= link_to 'Promotions & perks', event_promotions_path(event_id: @event.slug) %>

@@ -99,6 +99,6 @@
   <% end %>
 
   <div class="actions">
-    <%= form.submit 'Rename transaction' %>
+    <%= form.submit 'Rename transaction', disabled: !current_user %>
   </div>
 <% end %>

@@ -33,7 +33,7 @@ module UsersHelper
   end
 
   def admin_tools(class_name = '', &block)
-    return unless current_user.admin?
+    return unless current_user&.admin?
 
     concat("<div class='admin-tools #{class_name}'>".html_safe)
     yield

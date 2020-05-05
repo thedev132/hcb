@@ -37,7 +37,7 @@
 
     <p>
       <strong>Recipient phone</strong>
-      <%= @ach_transfer.recipient_tel %>
+      <%= organizer_signed_in? ? 'Sign in to view' : @ach_transfer.recipient_tel %>
     </p>
 
     <p>
@@ -47,17 +47,17 @@
 
     <p>
       <strong>Bank name</strong>
-      <%= @ach_transfer.bank_name %>
+      <%= organizer_signed_in? ? 'Sign in to view' : @ach_transfer.bank_name %>
     </p>
 
     <p>
       <strong>Routing number</strong>
-      <%= @ach_transfer.routing_number %>
+      <%= organizer_signed_in? ? 'Sign in to view' : @ach_transfer.routing_number %>
     </p>
 
     <p>
       <strong>Account number</strong>
-      <%= @ach_transfer.account_number %>
+      <%= organizer_signed_in? ? 'Sign in to view' : @ach_transfer.account_number %>
     </p>
 
     <p>
@@ -73,5 +73,4 @@
 </article>
 
 <h2>Notes</h2>
-<%= render 'comments/form' %>
 <%= render 'comments/comments' %>

@@ -18,11 +18,15 @@ module SessionsHelper
   end
 
   def admin_signed_in?
-    signed_in? && current_user.admin?
+    signed_in? && current_user&.admin?
   end
 
   def current_user=(user)
     @current_user = user
+  end
+
+  def organizer_signed_in?
+    (signed_in? && @event&.users&.include?(current_user)) || admin_signed_in?
   end
 
   def current_user(ensure_api_authorized = true)

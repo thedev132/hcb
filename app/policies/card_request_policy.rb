@@ -1,45 +1,55 @@
 class CardRequestPolicy < ApplicationPolicy
   def index?
-    user.admin?
+    user&.admin?
   end
 
   def new?
-    record.event.users.include?(user) || user.admin?
+    is_public || admin_or_user
   end
 
   def create?
-    record.creator == user || user.admin?
+    admin_or_user
   end
 
   def show?
-    user.admin?
+    user&.admin?
   end
 
   def edit?
-    user.admin?
+    user&.admin?
   end
 
   def update?
-    user.admin?
+    user&.admin?
   end
 
   def destroy?
-    user.events.include?(record.event) || user.admin?
+    admin_or_user
   end
 
   def accept?
-    user.admin?
+    user&.admin?
   end
 
   def reject?
-    user.admin?
+    user&.admin?
   end
 
   def cancel?
-    record.creator == user || user.admin?
+    record.creator == user || user&.admin?
   end
 
   def export?
-    user.admin?
+    user&.admin?
+  end
+
+  private
+
+  def admin_or_user
+    user&.admin? || user&.events&.include?(record.event)
+  end
+
+  def is_public
+    record&.event&.is_public?
   end
 end

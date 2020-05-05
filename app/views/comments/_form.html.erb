@@ -2,7 +2,7 @@
   <%= form_errors @comment, 'note' %>
 
   <div class="comment__name mt2">
-    <%= user_mention current_user %>
+    <%= user_mention current_user if organizer_signed_in? %>
     <%= link_to 'https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet#table-of-contents', class: 'muted flex items-center justify-end h6', target: '_blank' do %>
       <%= inline_icon 'markdown-fill', size: 32 %> Styling with Markdown is supported
     <% end %>
@@ -29,5 +29,5 @@
     </div>
   <% end %>
 
-  <%= form.submit 'Save note' %>
+  <%= form.submit 'Save note', disabled: !organizer_signed_in? %>
 <% end %>

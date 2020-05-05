@@ -57,7 +57,11 @@
     <% end %>
     <p>
       <strong>Billed to</strong>
-      <span><%= mail_to @invoice.sponsor.contact_email.downcase %></span>
+      <% if organizer_signed_in? %>
+        <span><%= mail_to @invoice.sponsor.contact_email.downcase %></span>
+      <% else %>
+        <span><strong>Sign in to view</strong></span>
+      <% end %>
     </p>
     <p>
       <strong>Payment methods</strong>
@@ -72,13 +76,17 @@
     </p>
     <p>
       <strong>Address</strong>
-      <span>
-      <%= @sponsor.address_line1 %><br />
-      <% if @sponsor.address_line2.present? %>
-        <%= @sponsor.address_line2 %><br />
+      <% if organizer_signed_in? %>
+        <span>
+        <%= @sponsor.address_line1 %><br />
+        <% if @sponsor.address_line2.present? %>
+          <%= @sponsor.address_line2 %><br />
+        <% end %>
+        <%= @sponsor.address_city %>, <%= @sponsor.address_state %> <%= @sponsor.address_postal_code %>
+        </span>
+      <% else %>
+        <span><strong>Sign in to view</strong></span>
       <% end %>
-      <%= @sponsor.address_city %>, <%= @sponsor.address_state %> <%= @sponsor.address_postal_code %>
-      </span>
     </p>
     <p>
       <strong>Memo</strong>
@@ -107,9 +115,24 @@
   </section>
 
   <section class="card__banner border-top flex">
-    <%= link_to 'View sent invoice', @invoice.hosted_invoice_url, class: 'btn bg-accent mr1', target: '_blank'  %>
-    <%= link_to 'Download PDF', @invoice.invoice_pdf, class: 'btn bg-info mr1', target: '_blank'  %>
-    <%= link_to "#{@invoice.archived? ? 'Un-archive' : 'Archive'}", (@invoice.archived? ? invoice_unarchive_path(@invoice) : invoice_archive_path(@invoice)), method: :post, class: 'btn bg-muted ml-auto' %>
+    <%= link_to 'View sent invoice',
+      organizer_signed_in? ? @invoice.hosted_invoice_url : root_path,
+      disabled: !organizer_signed_in?,
+      class: 'btn bg-accent mr1',
+      target: '_blank'
+    %>
+    <%= link_to 'Download PDF',
+      organizer_signed_in? ? @invoice.invoice_pdf : root_path,
+      disabled: !organizer_signed_in?,
+      class: 'btn bg-info mr1',
+      target: '_blank'
+    %>
+    <%= link_to "#{@invoice.archived? ? 'Un-archive' : 'Archive'}",
+      (@invoice.archived? ? invoice_unarchive_path(@invoice) : invoice_archive_path(@invoice)),
+      disabled: !organizer_signed_in?,
+      method: :post,
+      class: 'btn bg-muted ml-auto'
+    %>
   </section>
 </article>
 
@@ -158,7 +181,7 @@
           Reason given: "<%= @invoice.manually_marked_as_paid_reason %>"
         </p>
         <% if @invoice.manually_marked_as_paid_attachment.attached? %>
-          <p><%= link_to 'Download provided attachment', @invoice.manually_marked_as_paid_attachment %></p>
+          <p><%= link_to 'Download provided attachment', @invoice.manually_marked_as_paid_attachment if organizer_signed_in? %></p>
         <% end %>
       </div>
       <div class="details">
@@ -169,7 +192,11 @@
     <section class="pt2 pb2 details">
       <p>
         <strong>Recipient email</strong>
-        <%= mail_to @sponsor.contact_email, @sponsor.contact_email.downcase, class: 'slate underline' %>
+        <% if organizer_signed_in? %>
+          <%= mail_to @sponsor.contact_email, @sponsor.contact_email.downcase, class: 'slate underline' %>
+        <% else %>
+          <strong>Sign in to view</strong>
+        <% end %>
       </p>
       <p>
         <strong>Amount</strong>
@@ -211,7 +238,11 @@
         </p>
         <p>
           <strong>Expiration</strong>
-          <%= @invoice.payment_method_card_exp_month.to_s.rjust(2, '0') %> / <%= @invoice.payment_method_card_exp_year %>
+          <% if organizer_signed_in? %>
+            <%= @invoice.payment_method_card_exp_month.to_s.rjust(2, '0') %> / <%= @invoice.payment_method_card_exp_year %>
+          <% else %>
+            MM / YYYY (Sign in to view)
+          <% end %>
         </p>
       </div>
       <div class="mt1 md-mt0">
@@ -233,5 +264,4 @@
 <% end %>
 
 <h2>Notes</h2>
-<%= render 'comments/form' %>
 <%= render 'comments/comments' %>

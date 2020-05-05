@@ -13,9 +13,9 @@
       <%= avatar_for position.user, 48, class: 'mr2' %>
       <p class="flex-auto">
         <strong class="h3 block"><%= position.user.full_name || 'Unnamed' %></strong>
-        <%= position.user.email %>
+        <%= organizer_signed_in? ? position.user.email : 'Sign in to view email'  %>
         <span class="muted h5 block">(added <span title="<%= position.created_at %>"><%= time_ago_in_words position.created_at %> ago</span> by <%= position.organizer_position_invite.sender.full_name %>)</span>
-        <% if admin_signed_in? %>
+        <%= admin_tools do %>
           <span class="admin-tools inline-block p1 h5">
           phone: <%= position.user.phone_number %>
           </span>
@@ -24,7 +24,7 @@
       <% admin_tools('mr2') do %>
         <%= pop_icon_to 'controls', edit_user_path(position.user.slug) if position.user == current_user || admin_signed_in? %>
       <% end %>
-      <%= pop_icon_to 'member-remove', new_organizer_remove_path(organizer_id: position.id), class: 'error' unless position.user == current_user %>
+      <%= pop_icon_to 'member-remove', new_organizer_remove_path(organizer_id: position.id), class: 'error', disabled: !organizer_signed_in? unless position.user == current_user %>
       <%= pop_icon_to 'controls', edit_user_path(position.user.slug), class: 'ml2' if position.user == current_user && !admin_signed_in? %>
     </div>
   <% end %>
@@ -46,7 +46,7 @@
       <%= avatar_for OpenStruct.new(email: invite.email, name: invite.email), 24, class:
       'mr1' %>
       <p class="line-height-3 flex-auto">
-        <strong><%= invite.email %></strong>
+        <strong><%= organizer_signed_in? ? invite.email : 'Sign in to view' %></strong>
       </p>
       <% if invite.sender == current_user || admin_signed_in? %>
         <%= pop_icon_to 'view-close',

@@ -88,7 +88,7 @@
 
     <p>
       <strong>Addressed to</strong>
-      <%= @check.lob_address.address_text %>
+      <%= organizer_signed_in? ? @check.lob_address.address_text : 'Sign in to view' %>
     </p>
 
     <p>
@@ -114,11 +114,14 @@
     <% if @check.voidable? %>
       <%= link_to 'Void', check_start_void_path(@check), class: 'btn bg-error mr1 right' %>
     <% end %>
-    <%= link_to 'View scan', @check.url, target: :_blank, class: 'btn bg-info' if @check.sent? %>
+    <%= link_to 'View scan',
+        organizer_signed_in? ? @check.url : root_path,
+        target: :_blank,
+        disabled: !organizer_signed_in?,
+        class: 'btn bg-info' if @check.sent? %>
   </section>
 </article>
 
 
 <h2>Notes</h2>
-<%= render 'comments/form' %>
 <%= render 'comments/comments' %>

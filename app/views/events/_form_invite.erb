@@ -8,6 +8,6 @@
       <%= form.label :email %>
       <%= form.email_field :email %>
     </div>
-    <%= form.submit 'Send' %>
+    <%= form.submit 'Send', disabled: !organizer_signed_in? %>
   </div>
 <% end %>

@@ -9,7 +9,10 @@
 <div class="card card--hover mb3">
   <div class="card__banner card__banner--top flex justify-between items-center" style="background-color:#eee">
     <%= image_tag 'github.png', width: 170, class: 'ml1' %>
-    <a class="btn bg-success mr1" href="https://hack.af/grant?prefill_Event%20Name=<%= @event.name %>">Apply</a>
+    <%= link_to 'Apply',
+      current_user ? "https://hack.af/grant?prefill_Event%20Name=#{@event.name}" : root_path,
+      class: 'btn bg-success mr1'
+    %>
   </div>
 
   <p>
@@ -41,7 +44,10 @@
 <div class="card card--hover mb3">
   <div class="card__banner card__banner--top flex justify-between items-center" style="background-color:#4E2817">
     <%= image_tag 'stickermule.svg', width: 240 %>
-    <a class="btn bg-success mr1" href="https://hack.af/stickermule?prefill_Event%20Name=<%= @event.name %>">Apply</a>
+    <%= link_to 'Apply',
+      current_user ? "https://hack.af/stickermule?prefill_Event%20Name=#{@event.name}" : root_path,
+      class: 'btn bg-success mr1'
+    %>
   </div>
 
   <p>

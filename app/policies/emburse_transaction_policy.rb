@@ -1,17 +1,23 @@
 class EmburseTransactionPolicy < ApplicationPolicy
   def index?
-    user.admin?
+    user&.admin?
   end
 
   def show?
-    user.admin? || record.event.users.include?(user)
+    is_public || user&.admin? || record.event.users.include?(user)
   end
 
   def edit?
-    user.admin?
+    user&.admin?
   end
 
   def update?
-    user.admin?
+    user&.admin?
+  end
+
+  private
+
+  def is_public
+    record.event.is_public?
   end
 end

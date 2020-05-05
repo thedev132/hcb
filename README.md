@@ -71,7 +71,7 @@ So to make this possible, the Bank API currently supports three actions:
 
 ### Authentication
 
-Because Bank currently uses auth through `hackclub/api` which doesn't support bot authentication and tokens, we auth with a hard-coded string key. Get this key from a Bank developer, and in JSON requests, include the key as a `access_token`.
+Because Bank currently uses auth through `hackclub/api` which doesn't support bot authentication and tokens, we auth with a hard-coded string key. Get this key from a Bank developer, and in JSON requests, include the key as a `token`.
 
 ### Creating events
 

@@ -1,57 +1,67 @@
 class CheckPolicy < ApplicationPolicy
   def index?
-    user.admin?
+    user&.admin?
   end
 
   def new?
-    record.lob_address.event.users.include?(user) || user.admin?
+    is_public || admin_or_user
   end
 
   def create?
-    record.lob_address.event.users.include?(user) || user.admin?
+    admin_or_user
   end
 
   def show?
-    record.lob_address.event.users.include?(user) || user.admin?
+    is_public || admin_or_user
   end
 
   def start_void?
-    record.lob_address.event.users.include?(user) || user.admin?
+    admin_or_user
   end
 
   def void?
-    record.lob_address.event.users.include?(user) || user.admin?
+    admin_or_user
   end
 
   def edit?
-    record.lob_address.event.users.include?(user) || user.admin?
+    admin_or_user
   end
 
   def update?
-    record.lob_address.event.users.include?(user) || user.admin?
+    admin_or_user
   end
 
   def refund_get?
-    user.admin?
+    user&.admin?
   end
 
   def refund?
-    user.admin?
+    user&.admin?
   end
 
   def start_approval?
-    user.admin?
+    user&.admin?
   end
 
   def approve?
-    user.admin?
+    user&.admin?
   end
 
   def reject?
-    user.admin?
+    user&.admin?
   end
 
   def export?
-    user.admin?
+    user&.admin?
+  end
+
+  private
+
+  def admin_or_user
+    user&.admin? || record.lob_address.event.users.include?(user)
+  end
+
+  def is_public
+    record.lob_address.event.is_public?
   end
 end

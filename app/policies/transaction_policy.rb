@@ -1,19 +1,19 @@
 class TransactionPolicy < ApplicationPolicy
   def index?
-    user.admin?
+    user&.admin?
   end
 
   def export?
-    user.admin? ||
+    user&.admin? ||
       record.all? { |r| r.event.users.include? user }
   end
 
   def show?
-    admin_or_teammember
+    is_public || admin_or_teammember
   end
 
   def edit?
-    admin_or_teammember
+    is_public || admin_or_teammember
   end
 
   def update?
@@ -21,6 +21,10 @@ class TransactionPolicy < ApplicationPolicy
   end
 
   def admin_or_teammember
-    user.admin? || record&.event&.users&.include?(user)
+    user&.admin? || record&.event&.users&.include?(user)
+  end
+
+  def is_public
+    record&.event&.is_public?
   end
 end

@@ -1,5 +1,6 @@
 class CardsController < ApplicationController
   before_action :set_card, only: [:show, :edit, :update, :destroy, :toggle_active]
+  skip_before_action :signed_in_user
 
   # GET /cards
   def index

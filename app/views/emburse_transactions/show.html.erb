@@ -51,7 +51,11 @@
         <p>
           <strong>Receipt</strong>
           <% if @emburse_transaction.receipt_url %>
-            <a href="<%= @emburse_transaction.receipt_url %>">See attachment</a>
+            <% if organizer_signed_in? %>
+                <a href="<%= @emburse_transaction.receipt_url %>">See attachment</a>
+              <% else %>
+                <strong>Sign in to view</strong>
+              <% end %>
           <% else %>
             Not uploaded yet
           <% end %>

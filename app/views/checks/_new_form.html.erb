@@ -31,7 +31,7 @@
     <div class="field">
       <%= form.label :lob_address, 'Payee' %>
       <%= form.select :lob_address,
-        options_for_select(@event.lob_addresses.map { |la|
+        options_for_select(!organizer_signed_in? ? [] : @event.lob_addresses.map { |la|
           [la.name, la.id, { 'data-json': la.to_json } ]
         }),
         include_blank: 'New payee…' %>

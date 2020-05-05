@@ -8,11 +8,11 @@
   <div class="flex items-center">
   <div class="field mr2">
     <%= form.label :first_name %>
-    <%= form.text_field :first_name, value: current_user.full_name.split(' ').first %>
+    <%= form.text_field :first_name, value: current_user&.first_name %>
   </div>
   <div class="field">
     <%= form.label :last_name %>
-    <%= form.text_field :last_name, value: current_user.full_name.split(' ').last %>
+    <%= form.text_field :last_name, value: current_user&.last_name %>
   </div>
   </div>
   <div class="field">
@@ -24,10 +24,10 @@
   </div>
   <div class="field">
     <%= form.label :backup_email %>
-    <%= form.email_field :backup_email, value: current_user.email %>
+    <%= form.email_field :backup_email, value: current_user&.email %>
     <span class="block muted h5">(To sign into your account for the first time, you'll receive your initial password to this email.)</span>
   </div>
   <div class="actions">
-    <%= form.submit 'Create' %>
+    <%= form.submit 'Create', disabled: !organizer_signed_in? %>
   </div>
 <% end %>

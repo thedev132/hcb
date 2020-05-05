@@ -11,6 +11,11 @@
       0 4px 8px 0 rgba($orange7, 0.125);
   }
 
+  &.b--info {
+    box-shadow: 0 0 2px 0 rgba(map-get($palette, info), 0.0625),
+      0 4px 8px 0 rgba(map-get($palette, info), 0.125);
+  }
+
   &.card--hover:hover {
       transform: translateY(-3px);
   }

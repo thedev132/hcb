@@ -6,7 +6,7 @@
     <div class="field">
       <%= form.label :sponsor, 'Sponsor' %>
       <%= form.select :sponsor,
-        options_for_select(@event.sponsors.map { |s|
+        options_for_select(!organizer_signed_in? ? [] : @event.sponsors.map { |s|
           [s.name, s.id, { 'data-json': s.to_json } ]
         }),
         include_blank: 'New sponsor…' %>
@@ -80,6 +80,6 @@
   </div>
 
   <div class="actions tooltipped tooltipped--n inline-block" aria-label="Your invoice will immediately be emailed to the sponsor">
-    <%= form.submit 'Send invoice now' %>
+    <%= form.submit 'Send invoice now', disabled: !organizer_signed_in? %>
   </div>
 <% end %>

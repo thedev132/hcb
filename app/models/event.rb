@@ -42,6 +42,39 @@ class Event < ApplicationRecord
 
   before_create :default_values
 
+  # Used by the api's '/event' POST route
+  def self.create_send_only(event_name, user_emails)
+    ActiveRecord::Base.transaction do
+      # most common POC will be the POC for this event
+      point_of_contact_id = Event.all.pluck(:point_of_contact_id).max_by {|i| Event.all.count(i) }
+
+      event = Event.create(
+        name: event_name,
+        start: Date.current,
+        end: Date.current,
+        address: 'N/A',
+        sponsorship_fee: 0.07,
+        expected_budget: 100.0,
+        has_fiscal_sponsorship_document: false,
+        point_of_contact_id: point_of_contact_id,
+        is_spend_only: true,
+      )
+
+      sender = User.find_by_id point_of_contact_id
+
+      user_emails ||= []
+      user_emails.each do |email|
+        OrganizerPositionInvite.create(
+          sender: sender,
+          event: event,
+          email: email
+        )
+      end
+
+      event
+    end
+  end
+
   def self.pending_fees
     # minimum that you can move with SVB is $1
     select { |event| event.fee_balance > 100 }

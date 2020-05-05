@@ -1,30 +1,39 @@
 class AchTransferPolicy < ApplicationPolicy
   def index?
-    user.admin?
+    user&.admin?
   end
 
   def new?
-    record.event.users.include?(user) || user.admin?
+    is_public || admin_or_user
   end
 
   def create?
-    record.event.users.include?(user) || user.admin?
+    admin_or_user
   end
 
   def show?
-    record.event.users.include?(user) || user.admin?
+    is_public || admin_or_user
   end
 
   def start_approval?
-    user.admin?
+    user&.admin?
   end
 
   def approve?
-    user.admin?
+    user&.admin?
   end
 
   def reject?
-    user.admin?
+    user&.admin?
   end
 
+  private
+
+  def admin_or_user
+    user&.admin? || record.event.users.include?(user)
+  end
+
+  def is_public
+    record.event.is_public?
+  end
 end

@@ -28,7 +28,7 @@
   </div>
 
   <strong>Imported transaction name</strong>
-  <pre class="bg-snow mt0"><%= @transaction.name %></pre>
+  <pre class="bg-snow mt0"><%= organizer_signed_in? ? @transaction.name : 'REDACTED– SIGN IN TO REVEAL' %></pre>
 
   <section class="details">
     <p>
@@ -104,5 +104,4 @@
 </article>
 
 <h2>Notes</h2>
-<%= render 'comments/form' %>
 <%= render 'comments/comments' %>

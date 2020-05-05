@@ -1,6 +1,7 @@
 class CardRequestsController < ApplicationController
   before_action :set_card_request, only: [:show, :edit, :update, :destroy]
   before_action :ensure_pending_request, only: [:update, :edit]
+  skip_before_action :signed_in_user
 
   def export
     authorize CardRequest
