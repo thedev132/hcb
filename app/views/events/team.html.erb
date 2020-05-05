@@ -15,7 +15,7 @@
         <strong class="h3 block"><%= position.user.full_name || 'Unnamed' %></strong>
         <%= organizer_signed_in? ? position.user.email : 'Sign in to view email'  %>
         <span class="muted h5 block">(added <span title="<%= position.created_at %>"><%= time_ago_in_words position.created_at %> ago</span> by <%= position.organizer_position_invite.sender.full_name %>)</span>
-        <%= if admin_signed_in? %>
+        <% if admin_signed_in? %>
           <span class="admin-tools inline-block p1 h5">
           phone: <%= position.user.phone_number %>
           </span>
