@@ -40,12 +40,25 @@
   Text / call at
   <span class="flex items-center medium ml1">
     <%= inline_icon 'message', size: 24, class: 'muted', style: 'margin-right: 0.125rem;' %>
-    <%= @event.point_of_contact.pretty_phone_number %>
+    <% if organizer_signed_in? %>
+      <%= @event.point_of_contact.pretty_phone_number %>
+    <% else %>
+      <%= link_to root_path, class: 'flex items-center medium' do %>
+        (sign in to view)
+      <% end %>
+    <% end %>
   </span>
   <span class="ml1 mr1">or email at</span>
-  <%= mail_to @event.point_of_contact.email, class: 'flex items-center medium' do %>
-    <%= inline_icon 'email', size: 24, class: 'muted', style: 'margin-right: 0.125rem;' %>
-    <%= @event.point_of_contact.email %>
+  <% if organizer_signed_in? %>
+    <%= mail_to @event.point_of_contact.email, class: 'flex items-center medium' do %>
+      <%= inline_icon 'email', size: 24, class: 'muted', style: 'margin-right: 0.125rem;' %>
+      <%= @event.point_of_contact.email %>
+    <% end %>
+  <% else %>
+    <%= link_to root_path, class: 'flex items-center medium' do %>
+      <%= inline_icon 'email', size: 24, class: 'muted', style: 'margin-right: 0.125rem;' %>
+      (sign in to view)
+    <% end %>
   <% end %>
   <span class="xs-hide">.</span>
 </p>

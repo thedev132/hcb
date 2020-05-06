@@ -1,6 +1,6 @@
 <% if !organizer_signed_in? && @event&.is_public && !@event&.public_message.blank? %>
   <div class="container container--sm">
-    <div class="card border b--info mt3 mb3 pb0 pt0">
+    <div class="card border b--info mt3 mb3 pb0 pt0 public-message">
       <%== MarkdownService.instance.renderer.render @event.public_message %>
     </div>
   </div>
