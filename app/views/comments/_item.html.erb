@@ -4,10 +4,14 @@
     <%== MarkdownService.instance.renderer.render comment.content %>
     <p class="mb0 h5">
       <% if comment.file.attached? %>
-        <%= link_to '📎 attachment', url_for(comment.file), target: '_blank' %>
-        &middot;
+        <% if organizer_signed_in? %>
+          <%= link_to '📎 attachment', url_for(comment.file), target: '_blank' %>
+          &middot;
+        <% else %>
+          <%= link_to '📎 sign in to download attachment', root_path, target: '_blank' %>
+        <% end %>
       <% end %>
-      <%= link_to 'Edit', edit_comment_path(comment) %>
+      <%= link_to 'Edit', edit_comment_path(comment) if organizer_signed_in? %>
     </p>
   </div>
 </div>

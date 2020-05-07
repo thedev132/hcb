@@ -24,7 +24,10 @@
         <%= @transaction.display_name %>
       </span>
     </p>
-    <%= pop_icon_to 'edit', edit_transaction_path(@transaction), class: 'right tooltipped tooltipped--w', 'aria-label': 'Rename transaction' %>
+    <%= pop_icon_to 'edit',
+      edit_transaction_path(@transaction),
+      disabled: !organizer_signed_in?,
+      class: 'right tooltipped tooltipped--w', 'aria-label': 'Rename transaction' %>
   </div>
 
   <strong>Imported transaction name</strong>

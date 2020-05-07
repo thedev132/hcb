@@ -19,9 +19,11 @@
   <p>
     Get in touch with your point of contact
     <strong><%= @event.point_of_contact.full_name %></strong> at
-    <%= mail_to @event.point_of_contact.email, class: 'inline' do %>
-      <%= @event.point_of_contact.email %>
-    <% end %>
+    <% if organizer_signed_in? %>
+      <%= mail_to @event.point_of_contact.email, nil, class: 'inline' %>
+    <% else %>
+      <span class="muted">(sign in to view)</span>
+    <% end%>
     with the email of the person to be reimbursed, and they'll be invited
     to Expensify to upload their receipts.
   </p>

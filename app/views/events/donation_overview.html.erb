@@ -7,18 +7,18 @@
 
 <div class="table-container">
 <table>
-	<thead>
-	  <tr>
-	    <th>Donor</th>
-	    <th>Date</th>
+  <thead>
+    <tr>
+      <th>Donor</th>
+      <th>Date</th>
       <th>Status</th>
-	    <th>Expected arrival</th>
-	    <th>Amount</th>
-	    <th>Message</th>
-	    <th></th>
-	  </tr>
-	</thead>
-	<tbody>
+      <th>Expected arrival</th>
+      <th>Amount</th>
+      <th>Message</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
   <div class="filterbar flex flex-wrap items-center width-100">
     <input
       type="search"
@@ -33,19 +33,18 @@
       <%= filterbar_item 'In transit', :in_transit %>
     </div>
   </div>
-	<% @donations.each do |d| %>
-	  <tr data-behavior="filterbar_row" data-filter="<%= d.filter_data.to_json %>">
-	    <td><%= d.name %></td>
-	    <td><%= format_date d.created_at %></td>
+  <% @donations.each do |d| %>
+    <tr data-behavior="filterbar_row" data-filter="<%= d.filter_data.to_json %>">
+      <td><%= d.name %></td>
+      <td><%= format_date d.created_at %></td>
       <td><%= d.status_text %></td>
-	    <td><%= format_date d.arrival_date %></td>
-	    <td><%= render_money d.amount %></td>
-	    <td><%= d.message.present? ? d.message : 'No message' %></td>
-	    <td>
-	      <a href="mailto:<%= d.email %>">Contact donor</a>
-	    </td>
-	  </tr>
-	<% end %>
-	</tbody>
+      <td><%= format_date d.arrival_date %></td>
+      <td><%= render_money d.amount %></td>
+      <td><%= d.message.present? ? d.message : 'No message' %></td>
+      <td><%= mail_to d.email, "Email #{d.name}" if organizer_signed_in? %>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
 </table>
 </div>

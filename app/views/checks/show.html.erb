@@ -22,7 +22,7 @@
   <div class="check__field check__field--dollars" data-label="Dollars" data-check-amount="<%= render_money @check.amount, '' %>" data-behavior="fill_check_words"></div>
 
   <div class="check__row items-start">
-    <div class="check__field check__field--memo" data-label="Memo"><%= @check.memo %></div>
+    <div class="check__field check__field--memo" data-label="Memo"><%= organizer_signed_in? ? @check.memo : 'Sign in to view' %></div>
     <div class="check__sig"></div>
 
   </div>
@@ -31,7 +31,7 @@
       &#9286;
       00000<%= @check.check_number %>
       &#9286;
-      12345[REDACTED]
+      123[HIDDEN]
       &#9286;
   </p>
 </div>
@@ -93,7 +93,7 @@
 
     <p>
       <strong>Memo</strong>
-      <%= @check.memo %>
+      <%= organizer_signed_in? ? @check.memo : 'Sign in to view' %>
     </p>
 
     <p>
@@ -109,15 +109,21 @@
 
   <section class="card__banner card__darker border-top overflow-hidden">
     <% if @check.pending? %>
-      <%= link_to 'Edit', edit_check_path(@check), class: 'btn bg-info right' %>
+      <%= link_to 'Edit',
+        organizer_signed_in? ? edit_check_path(@check) : root_path,
+        disabled: !organizer_signed_in?,
+        class: 'btn bg-info right' %>
     <% end %>    
     <% if @check.voidable? %>
-      <%= link_to 'Void', check_start_void_path(@check), class: 'btn bg-error mr1 right' %>
+      <%= link_to 'Void',
+        organizer_signed_in? ? check_start_void_path(@check) : root_path,
+        disabled: !organizer_signed_in?,
+        class: 'btn bg-error mr1 right' %>
     <% end %>
     <%= link_to 'View scan',
         organizer_signed_in? ? @check.url : root_path,
-        target: :_blank,
         disabled: !organizer_signed_in?,
+        target: :_blank,
         class: 'btn bg-info' if @check.sent? %>
   </section>
 </article>

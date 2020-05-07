@@ -55,7 +55,7 @@
               </strong>
               <span class="block h1 line-height-1"><%= render_money_short transfer.amount %></span>
             </div>
-            <p class="h5 slate mt0 mb0"><%= transfer.memo %></p>
+            <p class="h5 slate mt0 mb0"><%= organizer_signed_in? ? transfer.memo : 'Sign in full details' %></p>
           </div>
         <% elsif transfer.is_a? AchTransfer %>
           <div class="card transfer-preview">
