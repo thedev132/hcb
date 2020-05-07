@@ -197,7 +197,7 @@
   <% if organizer_signed_in? %>
     <%= link_to @event.point_of_contact.pretty_phone_number, "tel:#{@event.point_of_contact.pretty_phone_number}" %>
     or
-    <%= email_to @event.point_of_contact.email %>
+    <%= mail_to @event.point_of_contact.email %>
   <% else %>
     (sign in to view)
   <% end %>
