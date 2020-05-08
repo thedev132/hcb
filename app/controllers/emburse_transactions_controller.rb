@@ -38,6 +38,11 @@ class EmburseTransactionsController < ApplicationController
 
   def show
     authorize @emburse_transaction
+
+    @commentable = @emburse_transaction
+    @comments = @commentable.comments
+    @comment = Comment.new
+
     @card = @emburse_transaction.card
     @event = @emburse_transaction.event
   end

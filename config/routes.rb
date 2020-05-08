@@ -163,7 +163,9 @@ Rails.application.routes.draw do
     resources :comments
   end
 
-  resources :emburse_transactions, only: [:index, :edit, :update, :show]
+  resources :emburse_transactions, only: [:index, :edit, :update, :show] do
+    resources :comments
+  end
 
   resources :donations, only: [:show] do
     collection do

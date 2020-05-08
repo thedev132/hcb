@@ -15,6 +15,8 @@ class EmburseTransaction < ApplicationRecord
   belongs_to :event, required: false
   belongs_to :card, required: false
 
+  has_many :comments, as: :commentable
+
   validates_uniqueness_of_without_deleted :emburse_id
 
   def self.during(start_time, end_time)
