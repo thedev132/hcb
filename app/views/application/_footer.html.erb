@@ -3,3 +3,7 @@
   &middot;
   <%= link_to 'HCB Brand Guidelines', branding_path, class: 'muted' %>
 </p>
+
+<% unless commit_hash.blank? %>
+<p class="center muted h6">Build <em><%= commit_hash %></em> from <%= commit_duration %> ago.</p>
+<% end %>

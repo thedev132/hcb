@@ -40,9 +40,9 @@
           <% end %>
         </div>
 
-        <div class="header-center flex items-center justify-start">
+        <div class="header-center flex items-center justify-start <%= Rails.env.development? && 'tooltipped tooltipped--n' %>" aria-label="You're in development mode. <%= development_mode_flavor %>">
           <%= link_to root_path, class: 'pl2 pr2' do %>
-            <%= image_tag 'logo.svg', name: 'header-logo', width: @home_size || 48, height: @home_size || 48, alt: 'Bank logo' %>
+            <%= image_tag Rails.env.development? ? 'dev-logo.svg' : 'logo.svg', name: 'header-logo', width: @home_size || 48, height: @home_size || 48, alt: 'Bank logo' %>
             <%= image_tag 'hank.png', name: 'alternative-logo', style: 'display: none;', width: @home_size || 48, height: @home_size || 48, alt: 'Hank logo' %>
           <% end %>
         </div>

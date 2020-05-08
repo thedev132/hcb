@@ -138,4 +138,40 @@ module ApplicationHelper
   def title(text)
     content_for :title, text
   end
+
+  def commit_hash
+    @commit_hash ||= begin
+      hash = ENV['HEROKU_SLUG_COMMIT'] || `git show --pretty=%H -q`&.chomp
+
+      hash[0...7]
+    end
+
+    @commit_hash
+  end
+
+  def commit_time
+    @commit_time ||= begin
+      ENV['HEROKU_RELEASE_CREATED_AT'] || `git log -1 --format=%at`&.chomp&.to_i
+    end
+
+    @commit_time
+  end
+
+
+  def commit_duration
+    @commit_duration ||= begin
+      distance_of_time_in_words Time.at(commit_time), Time.now
+    end
+  end
+
+  def development_mode_flavor
+    [
+      "Drop the tables for all I care.",
+      "More, tonight at 9.",
+      "Go wild.",
+      "But, the night is still young ;P",
+      "You pansy.",
+      "Now go write some code?"
+    ].sample
+  end
 end
