@@ -382,6 +382,7 @@ DEPENDENCIES
   faraday
   friendly_id (~> 5.2.0)
   google-api-client
+  httparty
   jquery-rails
   jquery-ui-rails
   kaminari

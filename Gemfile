@@ -30,6 +30,8 @@ gem 'turbolinks', '~> 5.2.0'
 # Use ActiveStorage variant
 # gem 'mini_magick', '~> 4.8'
 
+gem 'httparty'
+
 # Track bugs
 gem 'bugsnag'
 # Performance tracking

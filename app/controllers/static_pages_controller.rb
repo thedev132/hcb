@@ -149,21 +149,19 @@ class StaticPagesController < ApplicationController
   private
 
   def pending_hackathon_listings
-    @pending_hackathon_listings ||= get_pending_hackathons
-
-    @pending_hackathon_listings
+    res = HTTParty.get 'https://api2.hackclub.com/v0/hackathons.hackclub.com/applications', query: { select: '{"filterByFormula":"AND(Approved=0,Rejected=0)"}'}
+    JSON.parse res.body
   end
 
-  def get_pending_hackathons
-    api2_domain = 'api2.hackclub.com'
-    api2_endpoint = '/v0/hackathons.hackclub.com/applications?select={"filterByFormula":"AND(Approved=0,Rejected=0)"}'
-    request = Net::HTTP.get_response api2_domain, api2_endpoint
-    JSON.parse request.response.body
+  def pending_grant_listings
+    res = HTTParty.get 'https://api2.hackclub.com/v0/Bank%20Promotions/Github%20Grant', query: { select: "{\"filterByFormula\":\"Status='Pending'\"}"}
+    JSON.parse res.body
   end
 
   def pending_tasks
     # This method could take upwards of 10 seconds. USE IT SPARINGLY
     @pending_tasks ||= {
+      pending_grant_listings: pending_grant_listings.size,
       pending_hackathon_listings: pending_hackathon_listings.size,
       card_requests: CardRequest.under_review.size,
       # These don't need to be merged, as they are mutually exclusive sets

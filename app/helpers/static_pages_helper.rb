@@ -12,6 +12,10 @@ module StaticPagesHelper
     'https://airtable.com/tblYVTFLwY378YZa4/viwpJOp6ZmMDfcbgb?blocks=hide'
   end
 
+  def pending_grant_listings_path
+    'https://airtable.com/tblsYQ54Rg1Pjz1xP/viwjETKo05TouqYev?blocks=hide'
+  end
+
   def random_nickname
     if Rails.env.development?
       'Development Mode'
