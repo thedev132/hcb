@@ -1,3 +1,5 @@
+require 'net/http'
+
 class StaticPagesController < ApplicationController
   skip_after_action :verify_authorized # do not force pundit
   skip_before_action :signed_in_user, only: [:stats, :branding, :faq]
@@ -22,24 +24,7 @@ class StaticPagesController < ApplicationController
   end
 
   def admin_tasks
-    @pending_hackathon_listings = pending_hackathon_listings
-    @active = {
-      pending_hackathon_listings: @pending_hackathon_listings.size,
-      card_requests: CardRequest.under_review.size,
-      # These don't need to be merged, as they are mutually exclusive sets
-      checks: Check.pending.size + Check.unfinished_void.size,
-      ach_transfers: AchTransfer.pending.size,
-      pending_fees: Event.pending_fees.size,
-      negative_events: Event.negatives.size,
-      fee_reimbursements: FeeReimbursement.unprocessed.size,
-      load_card_requests: LoadCardRequest.under_review.size,
-      g_suite_applications: GSuiteApplication.under_review.size,
-      g_suite_accounts: GSuiteAccount.under_review.size,
-      transactions: Transaction.needs_action.size,
-      emburse_transactions: EmburseTransaction.under_review.size,
-      disbursements: Disbursement.pending.size,
-      organizer_position_deletion_requests: OrganizerPositionDeletionRequest.under_review.size,
-    }
+    @active = pending_tasks
     @pending_actions = @active.values.any? { |e| e.nonzero? }
     @blankslate_message = [
       "You look great today, #{current_user.first_name}.",
@@ -47,7 +32,8 @@ class StaticPagesController < ApplicationController
       "Everybody thinks you’re amazing, #{current_user.first_name}.",
       "You’re every organizer’s favorite point of contact.",
       "You’re so good at finances, even we think your balance is outstanding.",
-      "You’re sweeter than a savings account."
+      "You’re sweeter than a savings account.",
+      "Though they don't show it off, those flowers sure are pretty."
     ].sample
   end
 
@@ -163,11 +149,38 @@ class StaticPagesController < ApplicationController
   private
 
   def pending_hackathon_listings
-    require 'net/http'
+    @pending_hackathon_listings ||= get_pending_hackathons
 
+    @pending_hackathon_listings
+  end
+
+  def get_pending_hackathons
     api2_domain = 'api2.hackclub.com'
     api2_endpoint = '/v0/hackathons.hackclub.com/applications?select={"filterByFormula":"AND(Approved=0,Rejected=0)"}'
     request = Net::HTTP.get_response api2_domain, api2_endpoint
     JSON.parse request.response.body
+  end
+
+  def pending_tasks
+    # This method could take upwards of 10 seconds. USE IT SPARINGLY
+    @pending_tasks ||= {
+      pending_hackathon_listings: pending_hackathon_listings.size,
+      card_requests: CardRequest.under_review.size,
+      # These don't need to be merged, as they are mutually exclusive sets
+      checks: Check.pending.size + Check.unfinished_void.size,
+      ach_transfers: AchTransfer.pending.size,
+      pending_fees: Event.pending_fees.size,
+      negative_events: Event.negatives.size,
+      fee_reimbursements: FeeReimbursement.unprocessed.size,
+      load_card_requests: LoadCardRequest.under_review.size,
+      g_suite_applications: GSuiteApplication.under_review.size,
+      g_suite_accounts: GSuiteAccount.under_review.size,
+      transactions: Transaction.needs_action.size,
+      emburse_transactions: EmburseTransaction.under_review.size,
+      disbursements: Disbursement.pending.size,
+      organizer_position_deletion_requests: OrganizerPositionDeletionRequest.under_review.size,
+    }
+
+    @pending_tasks
   end
 end

@@ -32,4 +32,12 @@
   <% else %>
     <h3>It’s <%= Time.now.strftime("%A") %>. There are no more pending tasks. <%= @blankslate_message %></h3>
   <% end %>
+  <% unless OpsCheckin.is_cooldown_active? %>
+    <%= link_to 'Record all tasks as done',
+      ops_checkins_path,
+      size: 24,
+      method: :post,
+      class: 'info tooltipped tooltipped--w',
+      'aria-label': 'Record a checkin' %>
+  <% end %>
 <% end %>

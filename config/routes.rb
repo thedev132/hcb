@@ -188,6 +188,8 @@ Rails.application.routes.draw do
   get 'admin_search', to: 'static_pages#search'
   post 'admin_search', to: 'static_pages#search'
 
+  resources :ops_checkins, only: [:create]
+
   get '/integrations/frankly' => 'integrations#frankly'
 
   post '/events' => 'events#create'

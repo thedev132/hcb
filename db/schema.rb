@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_05_035453) do
+ActiveRecord::Schema.define(version: 2020_05_06_190650) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
@@ -519,6 +519,13 @@ ActiveRecord::Schema.define(version: 2020_05_05_035453) do
     t.index ["event_id"], name: "index_lob_addresses_on_event_id"
   end
 
+  create_table "ops_checkins", force: :cascade do |t|
+    t.bigint "point_of_contact_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["point_of_contact_id"], name: "index_ops_checkins_on_point_of_contact_id"
+  end
+
   create_table "organizer_position_deletion_requests", force: :cascade do |t|
     t.bigint "organizer_position_id"
     t.bigint "submitted_by_id"
@@ -693,6 +700,7 @@ ActiveRecord::Schema.define(version: 2020_05_05_035453) do
   add_foreign_key "load_card_requests", "users", column: "creator_id"
   add_foreign_key "load_card_requests", "users", column: "fulfilled_by_id"
   add_foreign_key "lob_addresses", "events"
+  add_foreign_key "ops_checkins", "users", column: "point_of_contact_id"
   add_foreign_key "organizer_position_deletion_requests", "organizer_positions"
   add_foreign_key "organizer_position_deletion_requests", "users", column: "closed_by_id"
   add_foreign_key "organizer_position_deletion_requests", "users", column: "submitted_by_id"

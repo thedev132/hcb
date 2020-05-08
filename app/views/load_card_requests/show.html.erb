@@ -2,6 +2,10 @@
 <% page_sm %>
 <%= render 'events/nav' %>
 
+<% admin_tools('mt3 mb0') do %>
+  <%= link_to 'All transfers', load_card_requests_path, class: 'breadcrumb' %>
+<% end %>
+
 <article class="card mt3">
   <h1 class="heading h2 mt0 mb0">
     Transfer Request

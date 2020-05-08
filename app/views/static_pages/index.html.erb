@@ -9,6 +9,10 @@
     <span class="badge h5 caps"><%= random_nickname() %></span>
   </h1>
 
+  <% admin_tools('w-100 mt3') do %>
+    <%= OpsCheckin.streak %> days since last incident
+  <% end %>
+
   <% if signed_in? %>
     <% if @events.any? %>
       <ul class="grid grid--narrow left-align w-100 mt0">

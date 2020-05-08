@@ -12,7 +12,7 @@ module StaticPagesHelper
     'https://airtable.com/tblYVTFLwY378YZa4/viwpJOp6ZmMDfcbgb?blocks=hide'
   end
 
-  def random_nickname()
+  def random_nickname
     if Rails.env.development?
       'Development Mode'
     else

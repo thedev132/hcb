@@ -2,6 +2,16 @@
 <% page_md %>
 <%= render 'events/nav' %>
 
+<% if card.created_at > Time.now - 1.hour %>
+  <%# if the card was created in the last hour, let's give a link back to the card requests list %>
+  <% admin_tools('mt3 mb0') do %>
+    <%= link_to 'All card requests', card_requests_path, class: 'breadcrumb' %>
+  <% end %>
+<% end %>
+<% admin_tools('mt3 mb0') do %>
+  <%= link_to 'All cards', cards_path, class: 'breadcrumb' %>
+<% end %>
+
 <% if @card %>
   <%# if we don't limit width of the card, it looks weird
     on larger screens %>
