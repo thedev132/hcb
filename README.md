@@ -22,18 +22,22 @@ Alternatively, you can run `docker-compose run --service-ports web /bin/bash` to
 
 ### Import database dump from Heroku
 
-    $ heroku pg:backups:capture
-    $ heroku pg:backups:download # will save as latest.dump, double check to make sure that file is created
-    $ pg_restore --verbose --clean --no-acl --no-owner -h db -U postgres -d bank_development latest.dump
+```
+$ heroku git:remote -a bank-hackclub # if your repo isn't attached to the heroku app
+$ heroku pg:backups:capture
+$ heroku pg:backups:download # will save as latest.dump, double check to make sure that file is created
+$ docker-compose run --service-ports web /bin/bash # enter the docker container, which includes pg_restore pre-installed
+$ pg_restore --verbose --clean --no-acl --no-owner -h db -U postgres -d bank_development latest.dump
+```
 
 ### Running migrations
 
 Currently, migrations are decoupled from deployments. After deploying a patch with a new migration, run:
 
 ```
-heroku run /bin/bash -a bank-hackclub
-rails db:migrate:status
-rails db:migrate
+$ heroku run /bin/bash -a bank-hackclub
+$ rails db:migrate:status
+$ rails db:migrate
 ```
 
 ### Log into the Rails console in production
