@@ -48,7 +48,9 @@ module StaticPagesHelper
         'Hack Club Bink',
         'Hack 👏 Club 👏 Bank 👏',
         '💻 ♣ 🏦',
-        'aka Hack Bank'
+        'aka Hack Bank',
+        'aka Hank',
+        'Open late'
       ].sample
     end
   end
