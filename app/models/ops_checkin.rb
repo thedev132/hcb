@@ -3,16 +3,12 @@ class OpsCheckin < ApplicationRecord
   validates_presence_of :point_of_contact
 
   def self.streak
-    # returns a count of days with a checkin
     streak_count = 0
-    today = Time.now.to_date
-    checkin_dates = all.map{ |oc| oc.created_at.to_date }.uniq
-    checkin_dates.reduce(today) do |memo, date|
-      yesterday = memo.yesterday.to_date
-      if date == yesterday || date == today
-        streak_count += 1
-        memo = date
-      end
+    checkin_dates = all.pluck(:created_at).map(&:to_date).uniq
+    cursor = Time.now.to_date
+    while checkin_dates.include?(cursor) || checkin_dates.include?(cursor.yesterday)
+      streak_count += 1
+      cursor = cursor.yesterday
     end
 
     streak_count
