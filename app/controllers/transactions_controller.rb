@@ -21,6 +21,8 @@ class TransactionsController < ApplicationController
     result = CSV.generate(headers: true) do |csv|
       csv << attributes.map do |k|
         next 'Raw Name' if k == 'name'
+        next 'Fiscal Sponsorship Fee' if k == 'fee'
+        next 'Fiscal Sponsorship Fee Balance' if k == 'fee_balance'
 
         k.sub('_', ' ').gsub(/\S+/, &:capitalize)
       end
