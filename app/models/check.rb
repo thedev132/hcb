@@ -29,7 +29,6 @@ class Check < ApplicationRecord
     self.check_number = check['check_number']
     self.expected_delivery_date = check['expected_delivery_date']
     self.send_date = check['send_date']
-    self.url = check['url']
     self.lob_id = check['id']
   end
 
@@ -239,6 +238,19 @@ class Check < ApplicationRecord
       errors.add(:check, 'needs to be voided first')
       return self
     end
+  end
+
+  def url
+    # lob URLs expire after 30 days https://lob.com/docs/ruby#urls
+    # so we'll regenerate this whenever we need it
+
+    @lob_check_url ||= begin
+      lob_check = LobService.instance.client.checks.find(self.lob_id)
+
+      lob_check["url"]
+    end
+
+    @lob_check_url
   end
 
   private

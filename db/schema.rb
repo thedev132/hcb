@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_06_190650) do
+ActiveRecord::Schema.define(version: 2020_05_15_030957) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
@@ -123,7 +123,6 @@ ActiveRecord::Schema.define(version: 2020_05_06_190650) do
     t.text "memo"
     t.integer "check_number"
     t.integer "amount"
-    t.string "url"
     t.datetime "expected_delivery_date"
     t.datetime "send_date"
     t.string "transaction_memo"

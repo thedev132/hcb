@@ -83,6 +83,7 @@ Rails.application.routes.draw do
     collection do
       get 'export'
     end
+    get 'view_scan'
 
     get 'start_approval'
     post 'approve'

@@ -15,6 +15,10 @@ class CheckPolicy < ApplicationPolicy
     is_public || admin_or_user
   end
 
+  def view_scan?
+    admin_or_user
+  end
+
   def start_void?
     admin_or_user
   end

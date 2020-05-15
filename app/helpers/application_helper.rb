@@ -176,9 +176,10 @@ module ApplicationHelper
       "Drop the tables for all I care.",
       "More, tonight at 9.",
       "Go wild.",
-      "But, the night is still young ;P",
+      "But, the night is still young.",
       "You pansy.",
-      "Now go write some code?"
+      "Now go write some code?",
+      "AKA a world of pure imagination"
     ].sample
   end
 end

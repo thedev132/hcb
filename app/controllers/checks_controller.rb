@@ -50,6 +50,13 @@ class ChecksController < ApplicationController
     @comment = Comment.new
   end
 
+  # GET /checks/1/scan
+  def view_scan
+    authorize @check
+
+    redirect_to @check.url
+  end
+
   # GET /checks/new
   def new
     @lob_address = LobAddress.new(event: @event)

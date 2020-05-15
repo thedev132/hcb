@@ -121,7 +121,7 @@
         class: 'btn bg-error mr1 right' %>
     <% end %>
     <%= link_to 'View scan',
-        organizer_signed_in? ? @check.url : root_path,
+        organizer_signed_in? ? check_view_scan_path(@check) : root_path,
         disabled: !organizer_signed_in?,
         target: :_blank,
         class: 'btn bg-info' if @check.sent? %>
