@@ -191,17 +191,14 @@
   <% else %>
     <%= blankslate 'You have no pending withdrawals.' %>
   <% end %>
-  <span class="h6 inline-block mt2">
-  Questions? Your point of contact (<%= @event.point_of_contact.name %>) is
-  happy to help. You can reach them at
   <% if organizer_signed_in? %>
-    <%= link_to @event.point_of_contact.pretty_phone_number, "tel:#{@event.point_of_contact.pretty_phone_number}" %>
-    or
-    <%= mail_to @event.point_of_contact.email %>
-  <% else %>
-    (sign in to view)
+    <span class="h6 inline-block mt2">
+      Questions? Your point of contact (<%= @event.point_of_contact.name %>) is
+      happy to help. You can reach them at
+      <%= link_to @event.point_of_contact.pretty_phone_number, "tel:#{@event.point_of_contact.pretty_phone_number}" %>
+      or <%= mail_to @event.point_of_contact.email %>.
+    </span>
   <% end %>
-  .</span>
 </div>
 
 <%= render 'promo_modal' %>

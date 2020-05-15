@@ -47,7 +47,7 @@
     </div>
   <% end %>
 
-    <h3 class="mb1">Open Mode</h3>
+    <h3 class="mb1">Transparency Mode</h3>
 
     <div class="card border b--warning mb3">
       <div class="flex items-center warning">
@@ -55,10 +55,10 @@
         <p class="bold mt0 mb0">Experimental feature</p>
       </div>
       <ul class="mt1 mb2">
-        <li><strong>Only use this if you know what you're doing.</strong></li>
+        <li><strong>Only use this if you know what you’re doing.</strong></li>
         <li>Unauthenticated users will be able to access a <strong>read-only</strong> version of your account.</li>
-        <li>None of Hack Club Bank's pages will change for signed in team members.</li>
-        <li>We'll do our best effort to redact contact info, but we can't guarantee it doesn't show up in these fields:
+        <li>None of Hack Club Bank’s pages will change for signed in team members.</li>
+        <li>We’ll do our best effort to redact contact info, but we can’t guarantee it doesn't show up in these fields:
         <ul>
           <li>Transaction display names</li>
           <li>Sponsor company names</li>
@@ -69,7 +69,7 @@
       </ul>
       <div class="field field--checkbox">
         <%= form.check_box :is_public %>
-        <%= form.label :is_public, "Enable Open Mode" %>
+        <%= form.label :is_public, "Enable Transparenncy Mode" %>
       </div>
       <div class="field">
         <%= form.label :public_message, "(optional) Message to show guest users" %>
