@@ -1,8 +1,13 @@
 <% title "Donations to #{@event.name.html_safe}" %>
 <%= render 'nav'%>
 
-<h1>
-  Donations
+<h1 class="heading">
+  <span class="flex items-center">
+    Donations
+  </span>
+  <%= link_to 'Accept a donation',
+    start_donation_donations_path(@event),
+    class: 'btn bg-success' %>
 </h1>
 
 <div class="table-container">
