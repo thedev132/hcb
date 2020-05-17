@@ -12,6 +12,8 @@ class Check < ApplicationRecord
   validates_length_of :transaction_memo, maximum: 30
   validates_uniqueness_of :transaction_memo
 
+  validate :transaction_amount
+
   scope :pending, -> { where(approved_at: nil, rejected_at: nil, voided_at: nil) }
   scope :approved, -> { where.not(approved_at: nil) }
   scope :rejected, -> { where.not(rejected_at: nil) }
@@ -259,6 +261,14 @@ class Check < ApplicationRecord
     self.description = "#{event.name} - #{lob_address.name}"[0..255]
     self.transaction_memo = "PENDING-#{SecureRandom.hex(6)}"[0..30]
     self.exported_at = nil
+  end
+
+  def transaction_amount
+    self.t_transactions.each do |t|
+      unless t.amount.abs == self.amount.abs
+        errors.add :t_transactions, "Check and transaction amount don't match"
+      end
+    end
   end
 
   def create_lob_check
