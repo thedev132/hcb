@@ -28,12 +28,14 @@ class BankAccount < ApplicationRecord
         end
 
         puts "Found synonyms: ##{original_t.id} written over by #{overwriting_t.id} (#{original_t.name})"
-        original_t.update_attributes(
-          plaid_id: original_t.plaid_id + '-bak'
+        plaid_id = original_t.plaid_id
+        original_t.update_attributes!(
+          plaid_id: original_t.plaid_id + '-bak',
+          name: "BACKUP TX: " + original_t.name
         )
         overwriting_t.update_attributes!(
           bank_account: self,
-          plaid_id: original_t.plaid_id.gsub('-bak', ''),
+          plaid_id: plaid_id,
           plaid_category_id: original_t.plaid_category_id,
           pending_transaction_id: original_t.pending_transaction_id,
         )

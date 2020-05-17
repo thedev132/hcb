@@ -36,6 +36,9 @@
       </td>
       <td>
         <%= t.name %>
+        <span class="muted h6 tooltipped tooltipped--s" aria-label="<%= t.plaid_id %>%" style="display: inherit;">
+        <%= t.short_plaid_id %>
+        </span>
       </td>
       <td>
         <%= render_money t.amount %>

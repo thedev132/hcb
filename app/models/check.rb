@@ -203,7 +203,7 @@ class Check < ApplicationRecord
   end
 
   def export!
-    if exported_at != nil
+    unless exported_at.nil?
       errors.add(:check, 'has already been exported!')
       return self
     end
@@ -227,7 +227,7 @@ class Check < ApplicationRecord
   end
 
   def refund!
-    if refunded_at != nil
+    unless refunded_at.nil?
       errors.add(:check, 'has already been refunded')
       return self
     end

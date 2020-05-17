@@ -50,6 +50,10 @@ class Transaction < ApplicationRecord
 
   HQ_EVENT_ID = 183
 
+  def short_plaid_id
+    plaid_id[0...4] + "…" + plaid_id[-4..-1]
+  end
+
   def self.total_volume
     # all transactions between time period except for HQ's (because we don't want them incl. in stats)
     self.includes(:fee_relationship).where.not(fee_relationships: { event_id: HQ_EVENT_ID }).sum('@amount').to_i
@@ -100,10 +104,11 @@ class Transaction < ApplicationRecord
 
   def default_values
     self.is_event_related = true if self.is_event_related.nil?
-    set_default_display_name
+    self.display_name ||= self.name
   end
 
   def set_default_display_name
+    # used by the migration that adds display names
     self.display_name ||= self.name
   end
 
@@ -225,7 +230,7 @@ class Transaction < ApplicationRecord
   # NOTE: wrap calls to this in a SQL transaction to avoid
   # broken states.
   def try_pair_automatically!
-    return unless !categorized?
+    return if categorized?
 
     if potential_invoice_payout?
       try_pair_invoice
