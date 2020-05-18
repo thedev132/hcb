@@ -2,25 +2,12 @@
 <% page_md %>
 <%= render 'events/nav' %>
 
-<%= render 'checks/suspended' %>
-
 <h1 class="heading">
   Send money
 
   <div class="flex items-center justify-center ml0 md-ml-auto mt1 md-mt0">
     <div class="flex items-center justify-center">
-      <%#
-      this looks backwards, and normally it would be...
-      but right now check sending is disabled, so we don't want regular organizers to reach the page.
-      people viewing a publicly viewable event should still be able to preview this stuff though so permissions are inverted...
-
-      logged in? => view is blocked
-      not logged in? => view is allowed
-      %>
-      <%= link_to 'Send a check',
-          organizer_signed_in? ? new_event_check_path(@event) : nil,
-          class: 'btn bg-success mr1',
-          disabled: !organizer_signed_in? %>
+      <%= link_to 'Send a check', new_event_check_path(@event), class: 'btn bg-success mr1' %>
       <%= link_to 'Send direct deposit', new_event_ach_transfer_path(@event), class: 'btn bg-info' %>
     </div>
   </div>
