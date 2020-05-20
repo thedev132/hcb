@@ -36,6 +36,11 @@
             <%= inline_icon 'moon', size: home_action_size %>
             <%= inline_icon 'moon-fill', size: home_action_size, style: 'display: none;' %>
           </action>
+          <%= link_to 'https://changelog.bank.hackclub.com',
+            class: 'muted tooltipped tooltipped--s ml2',
+            'aria-label': 'See what’s new in Bank' do %>
+            <%= inline_icon 'rep', size: home_action_size %>
+          <% end if signed_in? %>
           <% if @event and not @event.partner_logo_url.blank? %>
             <div class="partner-logo ml2">
               <%= image_tag @event.partner_logo_url, name: 'partner-logo', height: home_action_size, alt: 'Partner logo', style: 'box-sizing: border-box; padding: 5px;' %>
@@ -52,6 +57,11 @@
 
         <div class="header-right flex items-center justify-left">
           <% if signed_in? %>
+            <%= link_to edit_user_path(current_user),
+              class: 'muted tooltipped tooltipped--s mr2',
+              'aria-label': 'Profile settings' do %>
+              <%= inline_icon 'settings', size: home_action_size %>
+            <% end %>
             <%= link_to logout_users_path, method: :delete,
                 class: 'muted tooltipped tooltipped--s',
                 'aria-label': 'Sign out' do %>
