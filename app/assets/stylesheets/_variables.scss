@@ -132,10 +132,6 @@ $cyan7: #23b5a4;
 $cyan8: #1d9789;
 $cyan9: #156d63;
 
-$dark: #17171d;
-$darker: #121217;
-$darkless: #252429;
-
 $palette: (
   primary: $red5,
   accent: $indigo4,
@@ -144,13 +140,10 @@ $palette: (
   error: $red7,
   warning: $orange5,
   pending: $yellow5,
-  dark: $dark,
-  darker: $darker,
-  darkless: $darkless,
   black: $gray9,
   slate: $gray8,
   muted: $gray7,
   smoke: $gray2,
   snow: $gray0,
-  white: $white,
+  white: $white
 );
