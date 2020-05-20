@@ -1,11 +1,38 @@
 .dock {
-  width: 100%;
-  max-width: 48rem;
-  margin: 0 auto 0.5rem;
-  padding: 0 0.625rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  width: 100%;
+
+  @media (min-width: 32em) {
+    max-width: 48rem;
+    margin: 0 auto 0.5rem;
+    padding: 0 0.625rem;
+  }
+
+  @media screen and (max-width: 32em) {
+    position: fixed;
+    z-index: 10;
+    bottom: 0;
+    padding: 0 1rem;
+    background-color: rgba(255, 255, 255, 0.98);
+    @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
+      background-color: rgba(255, 255, 255, 0.75);
+      -webkit-backdrop-filter: saturate(180%) blur(12px);
+    }
+
+    html[data-dark='true'] & {
+      background-color: rgba(0, 0, 0, 0.875);
+      @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
+        background-color: rgba(0, 0, 0, 0.75);
+        -webkit-backdrop-filter: saturate(180%) blur(12px);
+      }
+    }
+
+    @supports (padding: env(safe-area-inset-bottom)) {
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+  }
 }
 
 .dock__card {
@@ -23,23 +50,39 @@
   transform: none;
   transition: 0.125s transform ease-in-out;
 
-  &:focus,
-  &:hover {
-    transform: translateY(-0.25rem);
-
-    &:after {
-      margin-bottom: 0.5rem; // for tooltips
-    }
-  }
-
   @media screen and (max-width: 32em) {
     flex-direction: column;
     padding: 0.5rem;
+
+    &:after {
+      display: none;
+    }
   }
 
   @media (min-width: 32em) {
+    background-color: $white;
+    box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.0625),
+      0 4px 8px 0 rgba(0, 0, 0, 0.125);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    transition: transform 0.2s;
+
+    &:focus,
+    &:hover {
+      transform: translateY(-0.25rem);
+
+      &:after {
+        margin-bottom: 0.5rem; // for tooltips
+      }
+    }
+
     svg {
       margin-right: 0.5rem;
+    }
+
+    html[data-dark='true'] & {
+      background-color: map-get($palette, darkless);
     }
   }
 
