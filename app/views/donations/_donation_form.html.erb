@@ -10,7 +10,7 @@
 
   <div class="field mb3">
     <%= form.label :email, 'Your email' %>
-    <span class="muted h5">We'll send a receipt here for your tax records.</span>
+    <span class="muted block h5">We’ll send a receipt here for your tax records.</span>
     <%= form.email_field :email, placeholder: 'fionah@gmail.com', required: true,
       class: 'fit mt1' %>
   </div>
@@ -18,7 +18,7 @@
 
   <div class="field mb2">
     <%= form.label :amount, 'Donation amount' %>
-    <span class="muted h5 mb1">
+    <span class="muted block h5 mb1">
       Your contribution is tax-deductible.
       <%= @event.name %> is fiscally sponsored by Hack Club,
       a 501(c)(3) not-for-profit.
@@ -35,6 +35,6 @@
   </div>
 
   <div class="actions">
-    <%= form.submit 'Next →', class: 'w-100 donation-btn' %>
+    <%= form.submit 'Continue →', class: 'w-100 bg-success' %>
   </div>
 <% end %>

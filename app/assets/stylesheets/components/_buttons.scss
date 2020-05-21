@@ -35,10 +35,15 @@ input[type='submit'],
     cursor: not-allowed;
     pointer-events: none;
   }
-}
-.btn.btn--destroy {
-  background-color: $red5 !important;
-  color: $gray1 !important;
+
+  &.bg-success {
+    background-color: map-get($palette, success) !important;
+  }
+
+  &.btn--destroy {
+    background-color: $red5 !important;
+    color: $gray1 !important;
+  }
 }
 
 form .flex-auto + input[type='submit'] {

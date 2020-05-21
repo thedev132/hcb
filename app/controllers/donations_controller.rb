@@ -36,7 +36,7 @@ class DonationsController < ApplicationController
     @donation = Donation.find_by_url_hash(params['donation'])
 
     if @donation.status == 'succeeded'
-      flash[:info] = "You tried to access the payment page for a donation that's already been sent."
+      flash[:info] = 'You tried to access the payment page for a donation that’s already been sent.'
       redirect_to start_donation_donations_path(@event)
     end
   end
@@ -48,7 +48,9 @@ class DonationsController < ApplicationController
     # get donation to process
     donation = Donation.find_by_stripe_payment_intent_id(request.params['data']['object']['id'])
 
-    pi = StripeService::PaymentIntent.retrieve(id: donation.stripe_payment_intent_id, expand: ['charges.data.balance_transaction'])
+    pi = StripeService::PaymentIntent.retrieve(
+      id: donation.stripe_payment_intent_id,
+      expand: ['charges.data.balance_transaction'])
     donation.set_fields_from_stripe_payment_intent(pi)
     donation.save
 
@@ -98,6 +100,6 @@ class DonationsController < ApplicationController
   end
 
   def allow_iframe
-    response.headers.delete "X-Frame-Options"
+    response.headers.delete 'X-Frame-Options'
   end
 end

@@ -115,7 +115,7 @@ input[type='search']::-webkit-search-decoration {
 
 label {
   display: block;
-  color: map-get($palette, slate);
+  color: map-get($palette, black);
 }
 
 $select: image-url('select.svg');

@@ -1,13 +1,5 @@
-// Place all the styles related to the Donations controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
-
 input.fit {
   max-width: 100% !important;
-}
-
-.donation-btn {
-  background: map-get($palette, success) !important;
 }
 
 .donation--payment-info {

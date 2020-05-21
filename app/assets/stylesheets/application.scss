@@ -187,6 +187,7 @@ action {
 @import 'components/comments';
 @import 'components/details';
 @import 'components/dock';
+@import 'components/donations';
 @import 'components/emburse_cards';
 @import 'components/filters';
 @import 'components/forms';
@@ -240,7 +241,7 @@ action {
 }
 
 .admin-tools {
-  padding: .5rem;
+  padding: 0.5rem;
   border-radius: 0.5rem;
   border: 1px dashed map-get($palette, warning);
   background: $yellow0;
@@ -298,4 +299,3 @@ action {
 @import 'utilities';
 @import 'dark';
 @import 'retro_fees';
-@import 'donations';
