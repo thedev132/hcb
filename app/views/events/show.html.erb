@@ -20,7 +20,7 @@
 <div class="flex flex-wrap items-center justify-center mb2 md-mb3">
   <% if @organizers.any? %>
     <% @organizers.each do |position| %>
-      <div class="tooltipped tooltipped--s mr1" aria-label="<%= position.user.full_name %>">
+      <div class="avatar-grow tooltipped tooltipped--s mr1" aria-label="<%= position.user.full_name %>">
         <%= avatar_for position.user, 48 %>
       </div>
     <% end %>
