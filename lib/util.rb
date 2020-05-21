@@ -10,4 +10,13 @@ module Util
   def self.average(array)
     array.sum / array.length
   end
+
+  # also in ApplicationHelper for frontend use
+  def self.commit_hash
+    @commit_hash ||= begin
+      ENV['HEROKU_SLUG_COMMIT'] || `git show --pretty=%H -q`&.chomp
+    end
+
+    @commit_hash
+  end
 end

@@ -1,5 +1,6 @@
 module ApplicationHelper
   include ActionView::Helpers
+
   def render_money(amount, unit = '$')
     number_to_currency(BigDecimal.new(amount || 0) / 100, unit: unit)
   end
@@ -139,6 +140,7 @@ module ApplicationHelper
     content_for :title, text
   end
 
+  # also in lib/util.rb for backend use
   def commit_hash
     @commit_hash ||= begin
       hash = ENV['HEROKU_SLUG_COMMIT'] || `git show --pretty=%H -q`&.chomp
