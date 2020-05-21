@@ -144,6 +144,8 @@ thead {
 th,
 td {
   padding: 0.5rem;
+  -webkit-text-size-adjust: 100%;
+
   &:first-child {
     padding-left: 1rem;
     white-space: nowrap;
