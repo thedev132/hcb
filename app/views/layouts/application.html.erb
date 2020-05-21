@@ -21,8 +21,7 @@
     <%= yield(:head) if content_for?(:head) %>
   </head>
   <body class="bg-snow <%= content_for :page_class %>">
-    <% if @event&.is_public && !organizer_signed_in? %>
-      <div class="container container--sm">
+    <% if @event&.is_public && !organizer_signed_in? && !params[:action].end_with?('_donation') %>
       <div class="container container--sm" data-behavior="hide_iframe">
         <p class="bold center">
           This Hack Club Bank project has been made public so you can see all its finances.
