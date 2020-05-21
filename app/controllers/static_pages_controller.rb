@@ -7,7 +7,7 @@ class StaticPagesController < ApplicationController
 
   def index
     if signed_in?
-      @events = current_user.events
+      @events = current_user.events.includes(organizer_positions: :user)
       @invites = current_user.organizer_position_invites.pending
 
       if @events.size == 1 && @invites.size == 0 && !admin_signed_in?
