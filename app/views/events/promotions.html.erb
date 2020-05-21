@@ -41,8 +41,10 @@
   </table>
 </div>
 
-<div class="card card--hover mb3">
-  <div class="card__banner card__banner--top flex justify-between items-center" style="background-color:#1a375a;border:1px solid #0068ad;">
+<div class="card mb3">
+  <div
+    class="card__banner card__banner--top flex justify-between items-center"
+    style="background-color: #1a375a; border: 1px solid #0068ad;">
     <%= image_tag 'replit.png', width: 170, class: 'ml1' %>
     <%= link_to 'Apply',
       current_user ? "https://hack.af/replpromo?prefill_Project%20Name=#{@event.name}&prefill_Bank%20URL=#{event_url(@event)}&prefill_Your%20name=#{current_user.full_name}&prefill_Organizer%20team%20size=#{@event.organizer_positions.size}" : root_path,
@@ -50,11 +52,12 @@
     %>
   </div>
 
-  <p>
-  Repl.it is giving free Hacker Plans to organizers of all Hack Club Bank events
+  <p class="mb0">
+    Repl.it is giving <strong>free Hacker Plans</strong> to organizers of all Hack Club Bank projects,
+    for 1 year. Repl.it is an amazing web IDE, where you can get basically any programming language
+    running in your web browser in just a few seconds—regardless of what kind of computer you have.
+    The Hacker plan, normally $84, gives you private projects, unlimited collaborators, & unlimited storage.
   </p>
-
-  <h3 class="mb0">Some details here or something</h3>
 </div>
 
 <div class="card card--hover mb3">
