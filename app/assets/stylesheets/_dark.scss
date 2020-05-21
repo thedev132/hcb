@@ -174,9 +174,11 @@ html[data-dark='true'] {
   }
 
   .filterbar__item:active,
-  .filterbar__item[aria-selected='true'],
-  .badge {
+  .filterbar__item[aria-selected='true'] {
     color: map-get($palette, primary);
+  }
+  .badge {
+    color: map-get($palette, muted);
   }
   .badge.bg-info {
     color: map-get($palette, info);
@@ -200,8 +202,7 @@ html[data-dark='true'] {
   }
 
   .filterbar__item:active,
-  .filterbar__item[aria-selected='true'],
-  .badge {
+  .filterbar__item[aria-selected='true'] {
     background-color: rgba(map-get($palette, primary), 0.125);
   }
   .menu__action:hover,
@@ -229,6 +230,7 @@ html[data-dark='true'] {
     background-color: rgba(map-get($palette, warning), 0.125);
   }
   .flash.muted,
+  .badge,
   .badge.bg-muted,
   .pop.muted {
     background-color: rgba(map-get($palette, muted), 0.125);
