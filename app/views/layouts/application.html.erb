@@ -23,6 +23,7 @@
   <body class="bg-snow <%= content_for :page_class %>">
     <% if @event&.is_public && !organizer_signed_in? %>
       <div class="container container--sm">
+      <div class="container container--sm" data-behavior="hide_iframe">
         <p class="bold center">
           This Hack Club Bank project has been made public so you can see all its finances.
           Hey, <%= link_to 'what’s Bank?', 'https://hackclub.com/bank/', target: '_blank', class: 'primary' %>
@@ -77,6 +78,7 @@
         </div>
       </header>
     <% end %>
+
     <main class="container <%= content_for :container_class %>">
       <% flash.each do |key, value| %>
         <article role="alertdialog" class="flash flex items-center mt3 mb2 mx-auto <%= key %>" data-behavior="flash">

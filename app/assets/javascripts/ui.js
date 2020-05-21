@@ -11,6 +11,10 @@ $(document).ready(function () {
 $(document).on('turbolinks:load', function () {
   $('[data-behavior~=toggle_theme]').on('click', () => BK.toggleDark())
 
+  if (window.location !== window.parent.location) {
+    $('[data-behavior~=hide_iframe]').hide()
+  }
+
   $('[data-behavior~=select_content]').on('click', e => e.target.select())
 
   let hankIndex = 0
