@@ -2,6 +2,21 @@
 <% page_sm %>
 <% no_app_shell %>
 
+<% content_for :head do %>
+  <% img = "https://workshop-cards.hackclub.com/Donate%20to%20#{URI.encode @event.name}.png?theme=light&fontSize=225px&brand=Bank" %>
+  <meta name="twitter:card" content="summary_large_image">
+  <meta property="og:image" content="<%= img %>"/>
+  <meta name="twitter:image" content="<%= img %>">
+  <meta property="og:site_name" content="Hack Club Bank" />
+  <meta property="og:url" content="<%= start_donation_donations_url @event %>">
+  <meta property="og:title" content="Donate to <%= @event.name %>">
+  <meta name="twitter:title" content="Donate to <%= @event.name %>">
+  <% description = "Donate to #{@event.name} via Hack Club Bank. Your contribution will be tax-deductible." %>
+  <meta property="og:description" content="<%= description %>">
+  <meta name="twitter:description" content="<%= description %>">
+  <meta name="description" content="<%= description %>">
+<% end %>
+
 <a href="<%= start_donation_donations_path(@event.slug) %>" class="black text-decoration-none">
   <h1 class="border-none center mt3 mb2">
     <div class="h2">Give to</div>
