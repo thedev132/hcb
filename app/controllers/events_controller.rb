@@ -42,7 +42,7 @@ class EventsController < ApplicationController
   def show
     authorize @event
     @organizers = @event.organizer_positions.includes(:user)
-    @transactions = @event.transactions.includes(:fee_relationship)
+    @transactions = @event.transactions.includes(:fee_relationship, :comments)
 
     @invoices_being_deposited = (@event.invoices.where(payout_id: nil, status: 'paid')
       .where
