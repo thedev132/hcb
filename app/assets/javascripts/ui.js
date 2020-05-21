@@ -119,6 +119,15 @@ $(document).on('turbolinks:load', function () {
     $(this).val(removeExtraCents)
   })
 
+  $('input[data-behavior~=prevent_whitespace]').on({
+    keydown: function (e) {
+      if (e.which === 32) return false
+    },
+    change: function () {
+      this.value = this.value.replace(/\s/g, '')
+    }
+  })
+
   $(document).on('change', '[name="invoice[sponsor]"]', function (e) {
     let sponsor = $(e.target).children('option:selected').data('json')
     if (!sponsor) {
