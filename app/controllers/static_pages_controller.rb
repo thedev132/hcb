@@ -148,21 +148,19 @@ class StaticPagesController < ApplicationController
 
   private
 
-  def pending_hackathon_listings
-    res = HTTParty.get 'https://api2.hackclub.com/v0/hackathons.hackclub.com/applications', query: { select: '{"filterByFormula":"AND(Approved=0,Rejected=0)"}'}
-    JSON.parse res.body
+  def link_to_airtable_task(task_name)
+    airtable_info[task_name][:destination]
   end
-
-  def pending_grant_listings
-    res = HTTParty.get 'https://api2.hackclub.com/v0/Bank%20Promotions/Github%20Grant', query: { select: "{\"filterByFormula\":\"Status='Pending'\"}"}
-    JSON.parse res.body
-  end
+  helper_method :link_to_airtable_task
 
   def pending_tasks
     # This method could take upwards of 10 seconds. USE IT SPARINGLY
     @pending_tasks ||= {
-      pending_grant_listings: pending_grant_listings.size,
-      pending_hackathon_listings: pending_hackathon_listings.size,
+      pending_hackathons_airtable: airtable_task_size(:hackathons),
+      pending_grant_airtable: airtable_task_size(:grant),
+      pending_stickermule_airtable: airtable_task_size(:stickermule),
+      pending_replit_airtable: airtable_task_size(:replit),
+      pending_sendy_airtable: airtable_task_size(:sendy),
       card_requests: CardRequest.under_review.size,
       # These don't need to be merged, as they are mutually exclusive sets
       checks: Check.pending.size + Check.unfinished_void.size,
@@ -180,5 +178,47 @@ class StaticPagesController < ApplicationController
     }
 
     @pending_tasks
+  end
+
+  def airtable_task_size(task_name)
+    info = airtable_info[task_name]
+    res = HTTParty.get info[:url], query: { select: info[:query].to_json }
+    case res.code
+    when 200..399
+      tasks = JSON.parse res.body
+      tasks.size
+    else # not successful
+      return 9999 # return something invalidly high to get the ops team to report it
+    end
+  end
+
+  def airtable_info
+    {
+      hackathons: {
+        url: "https://api2.hackclub.com/v0.1/hackathons.hackclub.com/applications",
+        query: { filterByFormula: "AND(Approved=0,Rejected=0)", fields: [] } ,
+        destination: "https://airtable.com/tblYVTFLwY378YZa4/viwpJOp6ZmMDfcbgb"
+      },
+      grant: {
+        url: "https://api2.hackclub.com/v0.1/Bank%20Promotions/Github%20Grant",
+        query: { filterByFormula: "Status='Pending'", fields: [] },
+        destination: "https://airtable.com/tblsYQ54Rg1Pjz1xP/viwjETKo05TouqYev"
+      },
+      stickermule: {
+        url: "https://api2.hackclub.com/v0.1/Bank%20Promotions/StickerMule",
+        query: { filterByFormula: "Status='Pending'", fields: [] },
+        destination: "https://airtable.com/tblwYTdp2fiBv7JqA/viwET9tCYBwaZ3NIq"
+      },
+      replit: {
+        url: "https://api2.hackclub.com/v0.1/Bank%20Promotions/Repl.it%20Hacker%20Plan",
+        query: {filterByFormula: "Status='Pending'", fields: [] },
+        destination: "https://airtable.com/tbl6cbpdId4iA96mD/viw2T8d98ZhhacHCf"
+      },
+      sendy: {
+        url: "https://api2.hackclub.com/v0.1/Bank%20Promotions/Sendy",
+        query: {filterByFormula: "Status='Pending'", fields: [] },
+        destination: "https://airtable.com/tbl1MRaNpF4KphbOd/viwdGjjDdtsS7bjlP"
+      },
+    }
   end
 end

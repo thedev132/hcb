@@ -27,8 +27,11 @@
       <%= card_to 'Emburse Transactions', emburse_transactions_path, { badge: @active[:emburse_transactions] } %>
       <%= card_to 'Pending Fees', pending_fees_path, { badge: @active[:pending_fees] } %>
       <%= card_to 'Pending disbursements', pending_disbursements_path, { badge: @active[:disbursements] } %>
-      <%= card_to 'Pending hack listings', pending_hackathon_listings_path, { badge: @active[:pending_hackathon_listings] } %>
-      <%= card_to 'Grant Requests', pending_grant_listings_path, { badge: @active[:pending_grant_listings] } %>
+      <%= card_to 'Pending hackathons', link_to_airtable_task(:hackathons), { badge: @active[:pending_hackathons_airtable] } %>
+      <%= card_to 'Pending grants', link_to_airtable_task(:grant), { badge: @active[:pending_grant_airtable] } %>
+      <%= card_to 'Pending StickerMule', link_to_airtable_task(:stickermule), { badge: @active[:pending_stickermule_airtable] } %>
+      <%= card_to 'Pending repl.it accounts', link_to_airtable_task(:replit), { badge: @active[:pending_replit_airtable] } %>
+      <%= card_to 'Pending Sendy accounts', link_to_airtable_task(:sendy), { badge: @active[:pending_sendy_airtable] } %>
     </ul>
   <% else %>
     <h3>It’s <%= Time.now.strftime("%A") %>. There are no more pending tasks. <%= @blankslate_message %></h3>
