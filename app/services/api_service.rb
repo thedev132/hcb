@@ -5,7 +5,7 @@ class ApiService
   class UnauthorizedError < StandardError; end
 
   def self.req(method, path, params, access_token = nil, raise_on_unauthorized: true)
-    ua = "Hack Club Bank (#{Util.commit_hash})"
+    ua = "Hack Club Bank (#{Util.commit_hash rescue ''})"
     conn = Faraday.new(url: BASE_URL, headers: { user_agent: ua })
 
     resp = conn.send(method) do |req|
