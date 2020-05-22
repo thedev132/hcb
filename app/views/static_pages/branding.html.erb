@@ -1,4 +1,4 @@
-<% title 'Hack Club Bank Brand Guidelines' %>
+<% title 'Brand Guidelines' %>
 
 <div class="container container--md">
   <h1>
@@ -12,17 +12,17 @@
     Badges
   </h2>
 
-  <div class="grid grid--wide">
+  <div class="grid grid--wide grid--spacious mt3 mb3 md-mb4">
     <% @logos.each do |logo| %>
-      <div class="card w-100">
+      <div class="card w-100 pb0">
         <div class="card__banner card__banner--top center bg-<%= logo[:background] %>" aria-label="<%= logo[:criteria] %>">
           <img src="/brand/hcb-logo-<%= logo[:name].parameterize %>.svg">
         </div>
         <h3 class="mb0"><%= logo[:name] %></h3>
-        <p><%= logo[:criteria] %></p>
-        <div class="center">
-          <%= link_to 'Download SVG', "/brand/hcb-logo-#{logo[:name].parameterize}.svg", class: 'btn bg-info mb1 w-auto', target: :_blank %>
-          <%= link_to 'Download PNG', "/brand/hcb-logo-#{logo[:name].parameterize}.png", class: 'btn bg-info', target: :_blank %>
+        <p class="mt0 muted"><%= logo[:criteria] %></p>
+        <div class="card__banner card__banner--bottom card__darker mb0">
+          <%= link_to 'SVG', "/brand/hcb-logo-#{logo[:name].parameterize}.svg", class: 'btn bg-info mr2 w-auto', target: :_blank %>
+          <%= link_to 'PNG', "/brand/hcb-logo-#{logo[:name].parameterize}.png", class: 'btn bg-accent', target: :_blank %>
         </div>
       </div>
     <% end %>
