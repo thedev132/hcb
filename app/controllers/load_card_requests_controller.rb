@@ -66,7 +66,7 @@ class LoadCardRequestsController < ApplicationController
     load_amount = @load_card_request.load_amount
 
     if load_amount > @event.balance_available
-       flash[:error] = "You can’t load more money than you have onto your card."
+      flash[:error] = "You can’t load more money than you have onto your card."
       render :new
       return
     end

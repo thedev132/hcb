@@ -107,5 +107,4 @@ class AchTransfer < ApplicationRecord
     end
     update(rejected_at: DateTime.now)
   end
-
 end

@@ -1,5 +1,4 @@
 class InvoicePolicy < ApplicationPolicy
-
   def all_index?
     user&.admin?
   end

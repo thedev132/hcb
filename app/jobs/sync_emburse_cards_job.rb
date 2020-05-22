@@ -10,7 +10,7 @@ class SyncEmburseCardsJob < ApplicationJob
       # (max) if the card doesn't exist on emburse, just mark it as
       # 'terminated' and skip. figuring out how these exist in the first place
       # (hypothetically they shouldn't) is a quest for another day
-      card.emburse_state = 'terminated' 
+      card.emburse_state = 'terminated'
       card.save!
     end
 

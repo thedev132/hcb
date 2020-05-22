@@ -7,7 +7,7 @@ class InvoicesController < ApplicationController
 
     authorize Invoice
   end
-  
+
   def index
     @invoices = @event.invoices.order(created_at: :desc)
     authorize @invoices

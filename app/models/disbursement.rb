@@ -16,8 +16,8 @@ class Disbursement < ApplicationRecord
   # or, if not accepted...
   # 4. Rejected
   scope :pending, -> { where(fulfilled_at: nil, rejected_at: nil) }
-  scope :processing, -> { where.not(fulfilled_at: nil).select {|d| d.processed?} }
-  scope :fulfilled, -> { where.not(fulfilled_at: nil).select {|d| d.fulfilled?} }
+  scope :processing, -> { where.not(fulfilled_at: nil).select { |d| d.processed? } }
+  scope :fulfilled, -> { where.not(fulfilled_at: nil).select { |d| d.fulfilled? } }
   scope :rejected, -> { where.not(rejected_at: nil) }
 
   def pending?

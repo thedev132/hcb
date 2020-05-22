@@ -3,7 +3,6 @@ class SyncInvoicesJob < ApplicationJob
 
   def perform(repeat = false)
     Invoice.find_each do |i|
-
       if i.livemode && !Rails.env.production?
         puts "(Development) Skipping invoice ##{i.id}: accessing production invoices with development keys will fail"
         next

@@ -41,7 +41,6 @@ class OrganizerPositionInvite < ApplicationRecord
   validates :accepted_at, absence: true, if: -> { rejected_at.present? }
   validates :rejected_at, absence: true, if: -> { accepted_at.present? }
 
-
   after_create :send_email
   before_save :normalize_email
 

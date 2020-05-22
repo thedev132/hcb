@@ -95,7 +95,7 @@ class FeeReimbursement < ApplicationRecord
       end
     else
       if invoice.present?
-        return amount * self.invoice.event.sponsorship_fee 
+        return amount * self.invoice.event.sponsorship_fee
       else
         return amount * self.donation.event.sponsorship_fee
       end

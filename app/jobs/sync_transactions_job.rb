@@ -38,6 +38,7 @@ class SyncTransactionsJob < ApplicationJob
         # now that we have the transactions, do the sync
         plaid_transactions.each do |t|
           next if t.pending
+
           tr = bank_account.transactions.with_deleted.find_or_initialize_by(plaid_id: t.transaction_id)
 
           transactions_sync_state[tr.id] = :on_plaid

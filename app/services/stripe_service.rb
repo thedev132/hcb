@@ -1,5 +1,4 @@
 module StripeService
-
   # stripe enforces that statement descriptors are limited to this long
   StatementDescriptorCharLimit = 22
 

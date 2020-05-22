@@ -84,7 +84,7 @@ class StaticPagesController < ApplicationController
   def search
     # allows the same URL to easily be used for form and GET
     return if request.method == 'GET'
-    
+
     # removing dashes to deal with phone number
     query = params[:q].gsub('-', '').strip
 

@@ -4,7 +4,6 @@ class OrganizerPositionsController < ApplicationController
     authorize @organizer_position
     @organizer_position.destroy
 
-
     # also remove all organizer invites from the organizer that are still pending
     invites = @organizer_position.event.organizer_position_invites.pending.where(sender: @organizer_position.user)
     invites.each do |ivt|

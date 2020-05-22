@@ -35,7 +35,6 @@ class FeeReimbursementsController < ApplicationController
 
   # GET /fee_reimbursements/1
   def show
-
     if @fee_reimbursement.invoice
       @event = @fee_reimbursement.event
     else

@@ -89,8 +89,7 @@ class CardsController < ApplicationController
     if @card.active?
       @card.deactivate!
       flash[:success] = 'Card deactivated.'
-    elsif
-      @card.reactivate!
+    elsif @card.reactivate!
       flash[:success] = 'Card reactivated.'
     end
 

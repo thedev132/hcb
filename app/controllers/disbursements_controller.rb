@@ -66,7 +66,7 @@ class DisbursementsController < ApplicationController
   end
 
   private
-  
+
   # Only allow a trusted parameter "white list" through.
   def disbursement_params
     params.require(:disbursement).permit(

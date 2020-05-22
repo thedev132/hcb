@@ -14,7 +14,7 @@ class Transaction < ApplicationRecord
   # but includes FeeReimbursements that have been unpaired for a long time.
   scope :needs_action, -> {
     where(is_event_related: true, fee_relationship_id: nil)
-      .select {|t| !t.potential_fee_reimbursement? || t.date < 3.weeks.ago }
+      .select { |t| !t.potential_fee_reimbursement? || t.date < 3.weeks.ago }
   }
 
   belongs_to :bank_account
@@ -62,7 +62,7 @@ class Transaction < ApplicationRecord
   def self.during(start_time, end_time)
     # all transactions between time period except for HQ's (because we don't want them incl. in stats)
     self.includes(:fee_relationship).where.not(fee_relationships: { event_id: HQ_EVENT_ID })
-      .where(["transactions.date > ? and transactions.date < ?", start_time, end_time])
+        .where(["transactions.date > ? and transactions.date < ?", start_time, end_time])
   end
 
   def self.volume_during(start_time, end_time)
@@ -280,6 +280,7 @@ class Transaction < ApplicationRecord
       .select { |t| self.name.start_with?(t.name) }
 
     return unless matching_deleted_tx.count == 1
+
     previous = matching_deleted_tx[0]
 
     # if for some reason we've found the transaction itself,
@@ -333,7 +334,6 @@ class Transaction < ApplicationRecord
       previous.check = nil
     end
 
-
     self.save
     previous.save
   end
@@ -374,6 +374,7 @@ class Transaction < ApplicationRecord
 
     # if there's exactly one match, pick that one
     return unless payouts_matching_prefix.count == 1
+
     payout = payouts_matching_prefix[0]
 
     # pair the transaction
@@ -421,6 +422,7 @@ class Transaction < ApplicationRecord
 
     # if there's exactly one match, pick that one
     return unless payouts_matching_prefix.count == 1
+
     payout = payouts_matching_prefix[0]
 
     # pair the transaction
@@ -465,11 +467,13 @@ class Transaction < ApplicationRecord
     event_id = match ? match[1].to_i : 0
 
     return if event_id == 0
+
     # we don't use Event.find here because it will raise
     # an exception if the ID doesn't exist.
     matching_events = Event.where(id: event_id)
 
     return unless matching_events.count == 1
+
     event = matching_events[0]
 
     self.fee_relationship = FeeRelationship.new(
@@ -490,6 +494,7 @@ class Transaction < ApplicationRecord
       .order(accepted_at: :desc)
 
     return unless unpaired_matching_amount.count == 1
+
     lcr = unpaired_matching_amount[0]
 
     self.load_card_request = lcr
@@ -510,6 +515,7 @@ class Transaction < ApplicationRecord
     matching_events = Event.where(name: potential_event_name)
 
     return unless matching_events.count == 1
+
     event = matching_events[0]
 
     self.fee_relationship = FeeRelationship.new(
@@ -532,6 +538,7 @@ class Transaction < ApplicationRecord
       .in_transit
 
     return unless unpaired_matching_amount.count > 0
+
     matched_ach = unpaired_matching_amount[0]
 
     self.ach_transfer = matched_ach
@@ -577,11 +584,13 @@ class Transaction < ApplicationRecord
     disbursement_id = match ? match[1].to_i : 0
 
     return if disbursement_id == 0
+
     # we don't use Event.find here because it will raise
     # an exception if the ID doesn't exist.
     matching_disbursements = Disbursement.where(id: disbursement_id)
 
     return unless matching_disbursements.count == 1
+
     disbursement = matching_disbursements[0]
     # if money coming in, it's for destination event. otherwise,
     # it's for source event
@@ -605,5 +614,4 @@ class Transaction < ApplicationRecord
   def filter_for(text)
     name&.downcase&.include? text
   end
-
 end

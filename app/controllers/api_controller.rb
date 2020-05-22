@@ -18,7 +18,7 @@ class ApiController < ApplicationController
       return
     end
 
-    render json: { 
+    render json: {
       name: e.name,
       organizer_emails: e.users.pluck(:email),
       total_balance: e.balance / 100
@@ -76,7 +76,6 @@ class ApiController < ApplicationController
       return
     end
 
-
     source_event_slug = params[:source_event_slug]
     destination_event_slug = params[:destination_event_slug]
     amount = params[:amount].to_f * 100
@@ -95,7 +94,7 @@ class ApiController < ApplicationController
       amount: amount,
       name: name
     )
-    
+
     if !d.save
       render json: { error: "Disbursement couldn't be created!" + d.errors.full_messages }, status: 500
       return
@@ -114,7 +113,7 @@ class ApiController < ApplicationController
   def check_token
     attempt_api_token = request.headers['Authorization']&.split(' ')&.last
     if attempt_api_token != Rails.application.credentials.api_token
-      render json: {error: 'Unauthorized'}, status: 401
+      render json: { error: 'Unauthorized' }, status: 401
       return
     end
   end

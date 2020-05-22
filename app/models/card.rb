@@ -27,7 +27,6 @@ class Card < ApplicationRecord
             presence: true
   validates :last_four, numericality: { only_integer: true }
 
-
   validates :expiration_month, numericality: {
     only_integer: true,
     less_than_or_equal_to: 12,
@@ -74,7 +73,7 @@ class Card < ApplicationRecord
   def formatted_card_number
     "•••• •••• •••• #{last_four}"
   end
-      
+
   def deactivate!
     self.deactivated_at = DateTime.now
     self.save

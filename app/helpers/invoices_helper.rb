@@ -113,7 +113,7 @@ def invoice_card_country_mention(invoice = @invoice)
   country_code = invoice&.payment_method_card_country
 
   return nil unless country_code
-  
+
   # Hack to turn country code into the country's flag
   # https://stackoverflow.com/a/50859942
   emoji = country_code.tr('A-Z', "\u{1F1E6}-\u{1F1FF}")

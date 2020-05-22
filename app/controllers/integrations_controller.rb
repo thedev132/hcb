@@ -47,7 +47,7 @@ class IntegrationsController < ApplicationController
   private
 
   def render_invalid_authorization
-    render json: {error: 'Unauthorized'}, status: 401
+    render json: { error: 'Unauthorized' }, status: 401
   end
 
   def set_event
@@ -56,8 +56,10 @@ class IntegrationsController < ApplicationController
       api_key = bearer_token.split('|')[0]
       slug = bearer_token.split('|')[1]
       return render_invalid_authorization unless api_key and slug
+
       @event = Event.find_by slug: slug
       return render_invalid_authorization if @event.nil?
+
       ActiveSupport::SecurityUtils.secure_compare(api_key, token)
     end
   end
