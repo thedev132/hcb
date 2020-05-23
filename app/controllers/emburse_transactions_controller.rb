@@ -1,5 +1,5 @@
 class EmburseTransactionsController < ApplicationController
-  before_action :set_emburse_transaction, only: [:edit, :update, :show]
+  before_action :set_emburse_transaction, only: [:edit, :update]
   skip_before_action :signed_in_user
 
   def index
@@ -37,10 +37,11 @@ class EmburseTransactionsController < ApplicationController
   end
 
   def show
+    @emburse_transaction = EmburseTransaction.find(params[:id]).includes(card: :user, :event)
     authorize @emburse_transaction
 
     @commentable = @emburse_transaction
-    @comments = @commentable.comments
+    @comments = @commentable.comments.includes(:user)
     @comment = Comment.new
 
     @card = @emburse_transaction.card
