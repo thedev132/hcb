@@ -132,7 +132,7 @@ class EventsController < ApplicationController
     @event = Event.includes([
       { cards: :user },
       { load_card_requests: [:t_transaction, :creator] }
-      ]).find(params[:event_id])
+    ]).find(params[:event_id])
     authorize @event
     @cards = @event.cards.includes(user: [:profile_picture_attachment])
     @card_requests = @event.card_requests.includes(creator: :profile_picture_attachment)
@@ -143,12 +143,12 @@ class EventsController < ApplicationController
   end
 
   def g_suite_overview
-    @event = Event.find(params[:event_id])
+    @event = Event.find(params[:event_id]).includes([{ g_suite: :accounts }, :g_suite_application])
     authorize @event
-    @status = @event.g_suite_status
     @g_suite = @event.g_suite
     @g_suite_application = @event.g_suite_application
-    @g_suite_status = @event.g_suite_status
+    @status = @event.g_suite_status
+    @g_suite_status = @status
   end
 
   def donation_overview
