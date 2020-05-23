@@ -15,11 +15,11 @@ class InvoicePolicy < ApplicationPolicy
   end
 
   def new?
-    is_public || admin_or_user
+    !is_spend_only && ( is_public || admin_or_user )
   end
 
   def create?
-    admin_or_user
+    !is_spend_only && admin_or_user
   end
 
   def show?
@@ -50,5 +50,9 @@ class InvoicePolicy < ApplicationPolicy
 
   def is_public
     record&.sponsor&.event&.is_public?
+  end
+
+  def is_spend_only
+    record&.sponsor&.event&.is_spend_only
   end
 end
