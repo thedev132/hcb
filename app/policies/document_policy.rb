@@ -41,6 +41,6 @@ class DocumentPolicy < ApplicationPolicy
   end
 
   def fiscal_sponsorship_letter?
-    return true if record.users.include?(user) || user.admin?
+    !record&.is_spend_only && ( record.users.include?(user) || user.admin? )
   end
 end
