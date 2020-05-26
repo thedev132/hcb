@@ -143,12 +143,14 @@ class EventsController < ApplicationController
   end
 
   def g_suite_overview
-    @event = Event.find(params[:event_id]).includes([{ g_suite: :accounts }, :g_suite_application])
+    @event = Event.includes([
+      { g_suite: :accounts },
+      :g_suite_application
+    ]).find(params[:event_id])
     authorize @event
     @g_suite = @event.g_suite
     @g_suite_application = @event.g_suite_application
     @status = @event.g_suite_status
-    @g_suite_status = @status
   end
 
   def donation_overview
