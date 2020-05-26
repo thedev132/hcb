@@ -37,7 +37,7 @@ class EmburseTransactionsController < ApplicationController
   end
 
   def show
-    @emburse_transaction = EmburseTransaction.find(params[:id]).includes(card: :user, :event)
+    @emburse_transaction = EmburseTransaction.includes(:event, card: :user).find(params[:id])
     authorize @emburse_transaction
 
     @commentable = @emburse_transaction
