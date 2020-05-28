@@ -73,7 +73,7 @@ class FeeReimbursement < ApplicationRecord
   end
 
   def default_values
-    self.transaction_memo ||= "PROCESSING FEE REFUND #{SecureRandom.hex(6)}"
+    self.transaction_memo ||= "FEE REFUND #{SecureRandom.hex(6)}"
     if invoice
       self.amount ||= self.invoice.item_amount - self.invoice.payout_creation_balance_net
     else
