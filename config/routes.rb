@@ -138,6 +138,7 @@ Rails.application.routes.draw do
   end
 
   get 'pending_fees', to: 'static_pages#pending_fees'
+  get 'export_pending_fees', to: 'static_pages#export_pending_fees'
   get 'pending_disbursements', to: 'static_pages#pending_disbursements'
   get 'export_pending_disbursements', to: 'static_pages#export_pending_disbursements'
 
