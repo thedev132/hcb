@@ -37,6 +37,14 @@ class StaticPagesController < ApplicationController
     ].sample
   end
 
+  def admin_task_size
+    starting = Process.clock_gettime(Process::CLOCK_MONOTONIC)
+    size = pending_task params[:task_name].to_sym
+    ending = Process.clock_gettime(Process::CLOCK_MONOTONIC)
+    elapsed = ending - starting
+    render json: { elapsed: elapsed, size: size }, status: 200
+  end
+
   def pending_fees
     @pending_fees = Event.pending_fees.sort_by { |event| (DateTime.now - event.transactions.first.date) }.reverse
   end
@@ -166,29 +174,71 @@ class StaticPagesController < ApplicationController
   end
   helper_method :link_to_airtable_task
 
+  def pending_task(task_name)
+    @pending_tasks ||= {}
+    @pending_tasks[task_name] ||= begin
+      case task_name
+      when :pending_hackathons_airtable
+        airtable_task_size :hackathons
+      when :pending_grant_airtable
+        airtable_task_size :grant
+      when :pending_stickermule_airtable
+        airtable_task_size :stickermule
+      when :pending_replit_airtable
+        airtable_task_size :replit
+      when :pending_sendy_airtable
+        airtable_task_size :sendy
+      when :card_requests
+        CardRequest.under_review.size
+      when :checks
+        Check.pending.size + Check.unfinished_void.size
+      when :ach_transfers
+        AchTransfer.pending.size
+      when :pending_fees
+        Event.pending_fees.size
+      when :negative_events
+        Event.negatives.size
+      when :fee_reimbursements
+        FeeReimbursement.unprocessed.size
+      when :load_card_requests
+        LoadCardRequest.under_review.size
+      when :g_suite_applications
+        GSuiteApplication.under_review.size
+      when :g_suite_accounts
+        GSuiteAccount.under_review.size
+      when :transactions
+        Transaction.needs_action.size
+      when :disbursements
+        Disbursement.pending.size
+      when :organizer_position_deletion_requests
+        OrganizerPositionDeletionRequest.under_review.size
+      else
+        # failed to get task size
+      end
+    end
+
+    @pending_tasks[task_name]
+  end
+
   def pending_tasks
     # This method could take upwards of 10 seconds. USE IT SPARINGLY
-    @pending_tasks ||= {
-      pending_hackathons_airtable: airtable_task_size(:hackathons),
-      pending_grant_airtable: airtable_task_size(:grant),
-      pending_stickermule_airtable: airtable_task_size(:stickermule),
-      pending_replit_airtable: airtable_task_size(:replit),
-      pending_sendy_airtable: airtable_task_size(:sendy),
-      card_requests: CardRequest.under_review.size,
-      # These don't need to be merged, as they are mutually exclusive sets
-      checks: Check.pending.size + Check.unfinished_void.size,
-      ach_transfers: AchTransfer.pending.size,
-      pending_fees: Event.pending_fees.size,
-      negative_events: Event.negatives.size,
-      fee_reimbursements: FeeReimbursement.unprocessed.size,
-      load_card_requests: LoadCardRequest.under_review.size,
-      g_suite_applications: GSuiteApplication.under_review.size,
-      g_suite_accounts: GSuiteAccount.under_review.size,
-      transactions: Transaction.needs_action.size,
-      emburse_transactions: EmburseTransaction.under_review.size,
-      disbursements: Disbursement.pending.size,
-      organizer_position_deletion_requests: OrganizerPositionDeletionRequest.under_review.size,
-    }
+    pending_task :pending_hackathons_airtable
+    pending_task :pending_grant_airtable
+    pending_task :pending_stickermule_airtable
+    pending_task :pending_replit_airtable
+    pending_task :pending_sendy_airtable
+    pending_task :card_requests
+    pending_task :checks
+    pending_task :ach_transfers
+    pending_task :pending_fees
+    pending_task :negative_events
+    pending_task :fee_reimbursements
+    pending_task :load_card_requests
+    pending_task :g_suite_applications
+    pending_task :g_suite_accounts
+    pending_task :transactions
+    pending_task :disbursements
+    pending_task :organizer_position_deletion_requests
 
     @pending_tasks
   end
