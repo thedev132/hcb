@@ -1,13 +1,11 @@
 <% page_md %>
 
 <h1 class="heading">
-  <div class="flex flex-row items-center justify-between w-100">
-    <div class="flex flex-row items-center">
-      Disbursements
-      <%= badge_for @disbursements.size, class: 'bg-muted' %>
-    </div>
-    <%= link_to 'New disbursement', new_disbursement_path, class: 'btn bg-success' %>
+  <div class="flex flex-row items-center">
+    Disbursements
+    <%= badge_for @disbursements.size, class: 'bg-muted' %>
   </div>
+  <%= link_to 'New disbursement', new_disbursement_path, class: 'btn bg-success' %>
 </h1>
 
 <% if @disbursements.any? %>
