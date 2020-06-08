@@ -9,7 +9,9 @@ class TransactionPolicy < ApplicationPolicy
   end
 
   def show?
-    is_public || admin_or_teammember
+    # removing is_public check due to https://github.com/hackclub/bank/issues/675
+    # is_public || admin_or_teammember
+    admin_or_teammember
   end
 
   def edit?

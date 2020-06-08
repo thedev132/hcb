@@ -128,23 +128,7 @@
         </tr>
       </thead>
       <tbody data-behavior="transactions">
-      <% @transactions.each do |t| %>
-        <% if t.name.include? 'Hack Club Bank Gift' %>
-          <%= render 'transactions/fancy_transaction', transaction: t %>
-          <% next %>
-        <% end %>
-        <% if t.name.include? 'GitHub Grant' %>
-          <%= render 'transactions/github_transaction', transaction: t %>
-          <% next %>
-        <% end %>
-        <% if t&.invoice_payout&.invoice %>
-          <%= render t&.invoice_payout&.invoice %>
-        <% elsif t&.donation_payout&.donation %>
-          <%= render t&.donation_payout&.donation %>
-        <% elsif !t&.fee_reimbursement %>
-          <%= render t %>
-        <% end %>
-      <% end %>
+        <%= render partial: 'transactions/event_list', collection: @transactions, as: :t %>
       </tbody>
     </table>
   </div>

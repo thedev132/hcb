@@ -25,7 +25,7 @@
     <% if refund %>
       <span class="underline pointer no-select" data-id="<%= transaction.id %>" data-expanded="false" data-behavior="row_expand_trigger">Expand</span>
     <% else %>
-      <%= link_to 'Details', transaction, class: 'underline' %>
+      <%= link_to 'Details', transaction, class: 'underline' if organizer_signed_in? %>
     <% end %>
   </td>
 </tr>
@@ -46,7 +46,7 @@ data-filter="<%= transaction.filter_data.to_json %>"
     <%= render_money transaction.amount %>
   </td>
   <td>
-    <%= link_to 'Details', transaction, class: 'underline' %>
+    <%= link_to 'Details', transaction, class: 'underline' if organizer_signed_in? %>
   </td>
 </tr>
 <tr class="transaction--positive invoice--expanded<%= ' muted italic' unless refund_t %>"
@@ -66,7 +66,7 @@ data-filter="<%= transaction.filter_data.to_json %>"
   </td>
   <td>
     <% if refund_t %>
-      <%= link_to 'Details', refund_t, class: 'underline' %>
+      <%= link_to 'Details', refund_t, class: 'underline' if organizer_signed_in? %>
     <% else %>
       –
     <% end %>

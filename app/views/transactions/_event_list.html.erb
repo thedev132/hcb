@@ -1,0 +1,11 @@
+<% if t.name.include? 'Hack Club Bank Gift' %>
+  <%= render 'transactions/fancy_transaction', transaction: t %>
+<% elsif t.name.include? 'GitHub Grant' %>
+  <%= render 'transactions/github_transaction', transaction: t %>
+<% elsif t&.invoice_payout&.invoice %>
+  <%= render t&.invoice_payout&.invoice %>
+<% elsif t&.donation_payout&.donation %>
+  <%= render t&.donation_payout&.donation %>
+<% elsif !t&.fee_reimbursement %>
+  <%= render t %>
+<% end %>
