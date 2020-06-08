@@ -9,7 +9,7 @@ Bundler.require(*Rails.groups)
 module Bank
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 5.2
+    config.load_defaults 6.0
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration can go into files in config/initializers
@@ -26,23 +26,5 @@ module Bank
 
     config.autoload_paths << "#{config.root}/lib"
     config.eager_load_paths << "#{config.root}/lib"
-
-    # Allow whitelist of origins through CORS
-    config.middleware.insert_before 0, Rack::Cors do
-      DOMAINS = %w{https://hackclub.com localhost}
-
-      allow do
-        origins do |source, _env|
-          DOMAINS.each do |domain|
-            parsed = URI.parse(source)
-            domain == source || domain == parsed.host
-          end
-        end
-
-        resource '*',
-                 headers: :any,
-                 methods: %i[get post put patch delete options head]
-      end
-    end
   end
 end

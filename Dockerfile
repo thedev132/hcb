@@ -5,7 +5,7 @@ WORKDIR /usr/src/app
 
 # Install latest version of pg_restore for easy importing of production
 # database & vim for easy editing of credentials.
-RUN apt-get -y update && apt-get -y install postgresql-client vim
+RUN apt-get -y update && apt-get -y install postgresql-client vim nodejs
 ENV EDITOR=vim
 
 ADD Gemfile /usr/src/app/Gemfile
