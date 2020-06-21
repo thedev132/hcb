@@ -37,7 +37,7 @@
   <div class="field">
     <%= form.label :full_name, 'Full name (as will appear on card)' %>
     <%= form.text_field :full_name,
-      value: card_request.full_name || current_user&.full_name,
+      value: card_request.full_name || current_user&.safe_name,
       readonly: !current_user&.admin? %>
   </div>
 

@@ -65,6 +65,17 @@ class User < ApplicationRecord
     full_name&.split(" ")&.first
   end
 
+  def initial_name
+    first_name + " " + last_name[0,1]
+  end
+
+  def safe_name
+    # emburse requires names to be 21 chars or less, and must include a last name
+    return full_name unless full_name.length > 21
+
+    initial_name
+  end
+
   def name
     full_name || email
   end
