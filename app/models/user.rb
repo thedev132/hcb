@@ -62,7 +62,7 @@ class User < ApplicationRecord
 
   def last_name
     # beware– not all users will have their full_name set
-    full_name&.split(" ")&.first
+    full_name&.split(" ")&.last
   end
 
   def initial_name
