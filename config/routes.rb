@@ -170,6 +170,7 @@ Rails.application.routes.draw do
 
   resources :donations, only: [:show] do
     collection do
+      get '', to: 'donations#all_index', as: :all
       get 'start/:event_name', to: 'donations#start_donation', as: 'start_donation'
       post 'start/:event_name', to: 'donations#make_donation', as: 'make_donation'
       get 'qr/:event_name.png', to: 'donations#qr_code', as: 'qr_code'

@@ -18,6 +18,11 @@ class DonationsController < ApplicationController
     @donation = Donation.new
   end
 
+  # GET /donations
+  def all_index
+    authorize Donation
+  end
+
   def make_donation
     d_params = public_donation_params
     d_params[:amount] = (public_donation_params[:amount].to_f * 100.to_i)
