@@ -5,6 +5,7 @@
 
 <% admin_tools('mt3') do %>
   <%= link_to 'View on Stripe', @donation.stripe_dashboard_url, class: 'btn bg-accent' %>
+  <div class="details">
   <p>
     <strong>Name:</strong>
     <%= @donation.name %>
@@ -25,12 +26,13 @@
     <strong>Status:</strong>
     <%= @donation.status %>
   </p>
+  </div>
 <% end %>
 
 <article class="card pb0 mt3 mb3">
   <h2 class="h2 sans mt0 border-none">
     <%= @donation.name %>
-    <span class="regular muted"> paid </span>
+    <span class="regular muted"> donated </span>
     <span class="regular"><%= render_money @donation.amount_received %></span>
   </h2>
   <section class="card__banner card__darker details-horiz border-top border-bottom">
