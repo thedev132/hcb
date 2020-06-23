@@ -10,6 +10,8 @@ class InvoicesController < ApplicationController
 
   def index
     @invoices = @event.invoices.order(created_at: :desc)
+    @sponsor = Sponsor.new(event: @event)
+    @invoice = Invoice.new(sponsor: @sponsor)
     authorize @invoices
 
     # from events controller
