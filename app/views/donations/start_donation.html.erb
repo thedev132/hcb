@@ -17,10 +17,19 @@
   <meta name="description" content="<%= description %>">
 <% end %>
 
+<action
+  role="button"
+  data-behavior="toggle_theme"
+  class="muted absolute top-0 right-0 m2 pointer no-select tooltipped tooltipped--l"
+  aria-label="Toggle dark mode" tabindex="0">
+  <%= inline_icon 'moon', size: home_action_size %>
+  <%= inline_icon 'moon-fill', size: home_action_size, style: 'display: none;' %>
+</action>
+
 <a href="<%= start_donation_donations_path(@event.slug) %>" class="black text-decoration-none">
-  <h1 class="border-none center mt3 mb2">
-    <div class="h2">Give to</div>
-    <div class="h1"><%= @event.name %></div>
+  <h1 class="mt4 mb2 border-none center">
+    <span class="h3 caps slate block">Donate to</span>
+    <span class=""><%= @event.name %></span>
   </h1>
 </a>
 
