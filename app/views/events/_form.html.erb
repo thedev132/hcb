@@ -41,47 +41,39 @@
       <div class="field">
         <%= form.label :donation_page_message, "Message to show on donation page" %>
         <%= form.text_area :donation_page_message, class: 'w-100 fit' %>
-      </div>
-      <% if event.donation_page_enabled %>
-        <p>
-          <%= link_to 'Click here to go to your donation page', start_donation_donations_path(event.slug), target: '_blank' %>
-          or
-          share the <%= link_to 'QR code', qr_code_donations_path(event.slug), target: '_blank' %>
-        </p>
-      <% end %>
-      <div class="actions">
-        <%= form.submit nil, value: "Update" %>
-      </div>
-    </div>
-  <% end %>
-
-    <h3 class="mb1">Transparency Mode</h3>
-
-    <div class="card mb3">
-      <ul class="mt0 pl2 mb2">
-        <li><strong>Only use this if you know what you’re doing.</strong></li>
-        <li>Unauthenticated users will be able to access a <strong>read-only</strong> version of your account.</li>
-        <li>None of Hack Club Bank’s pages will change for signed in team members.</li>
-        <li>We’ll do our best effort to redact contact info, but we can’t guarantee it doesn't show up in these fields:
-        <ul>
-          <li>Transaction display names</li>
-          <li>Sponsor company names</li>
-          <li>ACH transfer recipients</li>
-          <li>Check recipients</li>
-        </ul>
-        </li>
-      </ul>
-      <div class="field field--checkbox">
-        <%= form.check_box :is_public %>
-        <%= form.label :is_public, "Enable Transparency Mode" %>
-      </div>
-      <div class="field">
-        <%= form.label :public_message, 'Message to show visitors' %>
-        <%= form.text_area :public_message, class: 'w-100 fit' %>
-        <%= inline_icon 'markdown-fill', size: 32, class: 'muted float-right' %>
+        <%= inline_icon 'markdown-fill', size: 32, class: 'muted right' %>
       </div>
       <%= form.submit nil, value: "Update" %>
     </div>
+  <% end %>
+
+  <h3 class="mb1">Transparency Mode</h3>
+
+  <div class="card mb3">
+    <ul class="mt0 pl2 mb2">
+      <li><strong>Only use this if you know what you’re doing.</strong></li>
+      <li>Unauthenticated users will be able to access a <strong>read-only</strong> version of your account.</li>
+      <li>None of Hack Club Bank’s pages will change for signed in team members.</li>
+      <li>We’ll do our best effort to redact contact info, but we can’t guarantee it doesn't show up in these fields:
+      <ul>
+        <li>Transaction display names</li>
+        <li>Sponsor company names</li>
+        <li>ACH transfer recipients</li>
+        <li>Check recipients</li>
+      </ul>
+      </li>
+    </ul>
+    <div class="field field--checkbox">
+      <%= form.check_box :is_public %>
+      <%= form.label :is_public, "Enable Transparency Mode" %>
+    </div>
+    <div class="field">
+      <%= form.label :public_message, 'Message to show visitors' %>
+      <%= form.text_area :public_message, class: 'w-100 fit' %>
+      <%= inline_icon 'markdown-fill', size: 32, class: 'muted right' %>
+    </div>
+    <%= form.submit nil, value: "Update" %>
+  </div>
 
   <h3 class="mb1">Danger Zone</h3>
   <div class="card border b--warning mb3">

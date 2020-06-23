@@ -3,14 +3,18 @@
 
 <h1 class="heading">
   Donations
-  <%= link_to 'Accept a donation',
-    start_donation_donations_path(@event),
-    class: 'btn bg-success' if @event.donation_page_enabled %>
+  <% if @event.donation_page_enabled %>
+    <%= link_to 'Open donation page',
+      start_donation_donations_path(@event),
+      class: 'btn' %>
+    <%= link_to 'QR code',
+      qr_code_donations_path(@event.slug),
+      target: '_blank',
+      class: 'btn bg-accent' %>
+  <% end %>
 </h1>
 
-
-
-<div class="table-container">
+<article class="table-container">
 
 <% unless @event.donation_page_enabled %>
 <p>You can start accepting donations once you enable it in your project's <%= link_to "settings", edit_event_path(@event, anchor: "donation-section") %>.</p>
@@ -72,10 +76,10 @@
         <% end %>
       </td>
       <td>
-        <%= link_to 'More', donation_path(d) %>
+        <%= link_to 'Details', donation_path(d) %>
       </td>
     </tr>
   <% end %>
   </tbody>
 </table>
-</div>
+</article>
