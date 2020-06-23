@@ -11,6 +11,7 @@ $yellow: #f1c40f;
 $green: #33d6a6;
 $cyan: #5bc0de;
 $blue: #338eda;
+$purple: #a633d6;
 
 $dark: #17171d;
 $darker: #121217;
@@ -21,9 +22,10 @@ $palette: (
   accent: $cyan,
   info: $blue,
   success: $green,
-  error: darken($red, 10%),
+  error: darken($red, 15%),
   warning: $orange,
   pending: $yellow,
+  purple: $purple,
   black: $black,
   slate: $slate,
   muted: $muted,
@@ -31,3 +33,12 @@ $palette: (
   snow: $snow,
   white: $white
 );
+
+@mixin gradient($color) {
+  background-color: map-get($palette, $color);
+  background-image: radial-gradient(
+    ellipse farthest-corner at top left,
+    lighten(saturate(map-get($palette, $color), 15%), 15%),
+    saturate(map-get($palette, $color), 15%)
+  );
+}

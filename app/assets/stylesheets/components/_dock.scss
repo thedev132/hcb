@@ -36,8 +36,6 @@
 }
 
 .dock__card {
-  @extend .card;
-  box-shadow: 2px 4px 12px rgba(0, 0, 0, 0.125);
   font-weight: bold;
   font-size: 0.875rem;
   text-decoration: none;
@@ -62,9 +60,6 @@
   }
 
   @media (min-width: 32em) {
-    background-color: $white;
-    box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.0625),
-      0 4px 8px 0 rgba(0, 0, 0, 0.125);
     padding: 1rem;
     border-radius: 0.5rem;
     overflow: hidden;

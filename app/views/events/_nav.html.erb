@@ -10,31 +10,30 @@
 <%= render 'events/public_message' %>
 
 <nav class="dock">
-  <% if !@event.is_spend_only %>
-    <%= dock_card 'Invoices',
-      'Collect payment from event sponsors.',
-      'payment-docs', 'warning',
-      event_invoices_path(event_id: @event.slug) %>
-  <% end %>
+  <%= dock_card 'Invoices',
+    'Collect payment from event sponsors.',
+    'payment-docs', 'accent',
+    event_invoices_path(event_id: @event.slug) if !@event.is_spend_only %>
   <%= dock_card 'Cards',
     'Request and manage cards for your team.',
-    'card', 'pending',
+    'card', 'purple',
     event_cards_overview_path(event_id: @event.slug) %>
   <%= dock_card 'Send',
     'Send money from Hack Club Bank.',
     'transactions', 'success',
     event_transfers_path(event_id: @event.slug) %>
+  <%= dock_card 'Donations',
+    'Receive donations online.',
+    'support', 'warning',
+    event_donation_overview_path(event_id: @event.slug) if @event.donation_page_enabled %>
   <div class="md-pl1">
     <action type="button" class="pop menu__toggle" data-behavior="menu_toggle" aria-expanded="false" tabindex="0">
     <%= inline_icon 'more' %>
     <div class="menu__content" data-behavior="menu_content">
       <%= link_to 'G Suite', event_g_suite_overview_path(event_id: @event.slug) %>
       <%= link_to 'Promotions & perks', event_promotions_path(event_id: @event.slug) %>
-      <%= link_to 'Reimbursements', event_reimbursements_path(event_id: @event.slug) %>
       <%= link_to 'Documents', event_documents_path(event_id: @event.slug) %>
-      <% if @event.donation_page_enabled %>
-        <%= link_to 'Donations', event_donation_overview_path(event_id: @event.slug) %>
-      <% end %>
+      <%= link_to 'Settings', edit_event_path(@event) %>
     </div>
     </action>
   </div>

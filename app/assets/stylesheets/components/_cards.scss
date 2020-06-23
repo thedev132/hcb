@@ -1,6 +1,6 @@
 .card {
   background-color: $white;
-  box-shadow: 3px 6px 12px rgba(0, 0, 0, 0.125);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.125);
   padding: 1rem;
   border-radius: 0.5rem;
   overflow: hidden;
@@ -19,7 +19,7 @@
   &.card--hover:hover,
   &.card--hover:focus {
     transform: translateY(-3px);
-    box-shadow: 4px 8px 16px rgba(0, 0, 0, 0.1875);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1875);
   }
 
   &.card--hover:active {
@@ -100,7 +100,7 @@ a.card {
 }
 
 .flash {
-  @extend .card; 
+  @extend .card;
   border: 1px solid currentColor;
   font-weight: 500;
   max-width: 24rem;

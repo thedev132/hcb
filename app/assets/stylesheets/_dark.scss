@@ -56,26 +56,17 @@ html[data-dark='true'] {
     border-color: map-get($palette, black);
   }
 
-  label {
+  label,
+  .menu__content > a,
+  .menu__action {
     color: map-get($palette, smoke);
   }
+  tr a,
   .details > p strong,
   .details > div strong,
   .details__row strong,
   .details-horiz strong {
     color: map-get($palette, muted);
-  }
-  .menu__content,
-  .menu__content > a,
-  .menu__action {
-    background: $darkless;
-    border-color: $darker;
-    color: map-get($palette, smoke);
-    
-    &:hover,
-    &:focus {
-      color: map-get($palette, info);
-    }
   }
   .menu__content hr {
     border-color: $dark;
@@ -90,6 +81,7 @@ html[data-dark='true'] {
 
   .retrofees,
   .card,
+  .menu__content,
   .modal {
     background-color: $darkless;
   }
@@ -107,10 +99,12 @@ html[data-dark='true'] {
   .modal,
   .card,
   .menu__content {
-    box-shadow: -2px -4px 8px rgba(0, 0, 0, 0.125), 4px 8px 16px rgba(0, 0, 0, 0.25);
+    box-shadow: -2px -4px 8px rgba(0, 0, 0, 0.125),
+      4px 8px 16px rgba(0, 0, 0, 0.25);
   }
   .dock__card {
-    box-shadow: -2px -4px 6px rgba(0, 0, 0, 0.125), 3px 6px 12px rgba(0, 0, 0, 0.25);
+    box-shadow: -2px -4px 6px rgba(0, 0, 0, 0.125),
+      3px 6px 12px rgba(0, 0, 0, 0.25);
   }
 
   .card {
@@ -146,7 +140,7 @@ html[data-dark='true'] {
   .btn,
   .dock__card span,
   a > .card {
-    color: map-get($palette, smoke) !important;
+    color: map-get($palette, smoke);
   }
 
   .card__darker {
@@ -193,10 +187,6 @@ html[data-dark='true'] {
     background-color: rgba(map-get($palette, error), 0.75);
   }
 
-  .filterbar__item:active,
-  .filterbar__item[aria-selected='true'] {
-    color: map-get($palette, primary);
-  }
   .badge {
     color: map-get($palette, muted);
   }
@@ -225,10 +215,6 @@ html[data-dark='true'] {
   .filterbar__item[aria-selected='true'] {
     background-color: rgba(map-get($palette, primary), 0.125);
   }
-  .menu__action:hover,
-  .menu__action:focus,
-  .menu__content > a:hover,
-  .menu__content > a:focus,
   .badge.bg-info,
   .flash.info,
   .pop,

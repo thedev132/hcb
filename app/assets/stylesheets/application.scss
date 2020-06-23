@@ -91,7 +91,7 @@ pre {
 
 a {
   color: map-get($palette, muted);
-  transition: color .125s ease-in-out;
+  transition: color 0.125s ease-in-out;
 
   &:hover,
   &:focus {
@@ -110,12 +110,14 @@ h1 {
   font-size: 3rem;
   padding-bottom: 0.5rem;
   border-bottom: 1px solid map-get($palette, smoke);
+  border-bottom-width: 0.5px;
   margin-bottom: 1rem;
 }
 h2 {
   font-size: 1.75rem;
   padding-bottom: 0.25rem;
   border-bottom: 1px solid map-get($palette, smoke);
+  border-bottom-width: 0.5px;
   margin-bottom: 0.5rem;
 }
 h3 {
@@ -134,7 +136,8 @@ table {
   width: 100%;
 }
 tr {
-  border-bottom: 1px solid map-get($palette, smoke);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.0625);
+  border-bottom-width: 0.5px;
   a {
     color: map-get($palette, slate);
     display: block;

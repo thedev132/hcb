@@ -23,14 +23,19 @@
     margin-bottom: 4px;
   }
 }
+
 h2.heading,
 h3.heading {
   margin-bottom: 0;
+
   .btn {
-    font-size: 0.75rem;
-    line-height: 1.25;
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.75;
+    padding: 0.25rem 1rem;
   }
 }
+
 @media (min-width: 32em) {
   .heading {
     flex-direction: row;

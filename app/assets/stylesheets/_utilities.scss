@@ -107,10 +107,6 @@ $shades: (
 .transaction--negative {
   @extend .shade-red;
 }
-tr.transaction--positive,
-tr.transaction--negative {
-  border-bottom-color: rgba(map-get($palette, smoke), 0.5);
-}
 
 @each $name, $value in $palette {
   .#{'' + $name} {
