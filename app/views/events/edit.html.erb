@@ -1,7 +1,7 @@
-<% title "#{@event.name.html_safe}" %>
+<% title "#{@event.name.html_safe} Settings" %>
 <% page_sm %>
 <%= render 'nav' %>
 
-<h1><%= @event.name %></h1>
+<h1>Settings</h1>
 
 <%= render 'form', event: @event %>

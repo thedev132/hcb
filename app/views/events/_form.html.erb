@@ -18,21 +18,17 @@
     </div>
   <% end %>
 
+  <!--
   <div class="field">
     <%= form.label :address, class: 'bold' %>
     <%= form.text_area :address, value: event.address || '42 Placeholder Ave.' %>
   </div>
 
-  <div class="actions">
-    <%= form.submit nil, value: "Update" %>
+  <div class="field field--checkbox">
+    <%= form.check_box :hidden, checked: event.hidden_at.present? %>
+    <%= form.label :hidden, "Hide #{event.name} from home page for everyone" %>
   </div>
-
-  <% if current_user.events.size > 1 && event.persisted?%>
-    <div class="field field--checkbox">
-      <%= form.check_box :hidden, checked: event.hidden_at.present? %>
-      <%= form.label :hidden, "Hide #{event.name} from home page for everyone" %>
-    </div>
-  <% end %>
+  -->
 
   <% if !@event.is_spend_only %>
     <h3 class="mb1" id="donation-section">Donations</h3>
