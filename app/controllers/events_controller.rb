@@ -31,7 +31,7 @@ class EventsController < ApplicationController
     authorize @event
 
     if @event.save
-      flash[:success] = 'Event successfully created.'
+      flash[:success] = 'Project successfully created.'
       redirect_to @event
     else
       render :new
@@ -112,7 +112,7 @@ class EventsController < ApplicationController
     fixed_user_event_params.delete(:hidden)
 
     if @event.update(current_user.admin? ? fixed_event_params : fixed_user_event_params)
-      flash[:success] = 'Event successfully updated.'
+      flash[:success] = 'Project successfully updated.'
       redirect_to edit_event_path(@event.slug)
     else
       render :edit
@@ -124,7 +124,7 @@ class EventsController < ApplicationController
     authorize @event
 
     @event.destroy
-    flash[:success] = 'Event successfully destroyed.'
+    flash[:success] = 'Project successfully destroyed.'
     redirect_to events_url
   end
 
