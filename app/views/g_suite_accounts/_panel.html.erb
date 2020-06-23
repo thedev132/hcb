@@ -29,41 +29,35 @@
             <span>Backup email: <%= content_tag :code, account.backup_email %></span>
           <% end %>
           </p>
-          <% if account.accepted? && organizer_signed_in? %>
-            <%= link_to 'Reset password', g_suite_account_reset_password_path(account.id), method: :put,
-                data: { confirm: "Reset the account password for #{account.address}? We'll email a new password to the backup email." },
-                class: 'h5 muted underline'
-              %>
-            &middot;
+        </div>
+        <action type="button" class="pop menu__toggle" data-behavior="menu_toggle" aria-expanded="false" tabindex="0">
+          <%= inline_icon 'more' %>
+          <div class="menu__content" data-behavior="menu_content">
+            <% if account.accepted? && organizer_signed_in? %>
+            <%= link_to 'Reset password',
+                g_suite_account_reset_password_path(account.id),
+                method: :put,
+                'data-confirm': 'Reset the account password for #{account.address}? We’ll email a new password to the backup email.'
+            %>
             <%= link_to (account.suspended? ? 'Re-activate' : 'Suspend'),
                 g_suite_account_toggle_suspension_path(account.id),
                 method: :put,
-                data: { confirm: "Do you really want to #{account.suspended? ? 're-activate' : 'suspend'} #{account.address}?"},
-                class: 'h5 muted underline'
-              %>
-          <% end %>
-        </div>
-        <div class="tools flex items-center">
-          <% admin_tools('flex items-center') do %>
-            <%= link_to 'Delete', account, method: :delete,
-              data: { confirm: "Deleting #{account.address} is *permanent, irreversible, and does not back up any data*. Think carefully before you click ok." },
-              class: 'h5 muted underline'
+                'data-confirm': "Do you really want to #{account.suspended? ? 're-activate' : 'suspend'} #{account.address}?"
             %>
-          <% end %>
-        </div>
+            <% end %>
+            <% if admin_signed_in? %>
+            <%= link_to 'Delete',
+              account,
+              method: :delete,
+              'data-confirm': "Deleting #{account.address} is *permanent, irreversible, and does not back up any data*. Think carefully before you click ok.",
+              class: 'admin-tools'
+            %>
+            <% end %>
+          </div>
+        </action>
       </li>
     <% end %>
   </ul>
-
-  <% if one_has_password? @g_suite.accounts %>
-    <div class="flex items-center info">
-      <%= inline_icon 'important', size: 32, class: 'mr1' %>
-      <p class="info mt0 mb0">
-        Need to deactivate G Suite accounts? Talk to your point of contact,
-        <%= @g_suite.event.point_of_contact.full_name %>.
-      </p>
-    </div>
-  <% end %>
 <% end %>
 
 <%= render 'g_suite_accounts/new', g_suite_account: GSuiteAccount.new(g_suite: @g_suite) %>
