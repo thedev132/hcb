@@ -14,8 +14,6 @@
     <tr>
       <th>Donor</th>
       <th>Date</th>
-      <th>Status</th>
-      <th>Expected arrival</th>
       <th>Amount</th>
       <th>Message</th>
       <th></th>
@@ -38,13 +36,37 @@
   </div>
   <% @donations.each do |d| %>
     <tr data-behavior="filterbar_row" data-filter="<%= d.filter_data.to_json %>">
-      <td><%= d.name %></td>
-      <td><%= format_date d.created_at %></td>
-      <td><%= d.status_text %></td>
-      <td><%= format_date d.arrival_date %></td>
-      <td><%= render_money d.amount %></td>
-      <td><%= d.message.present? ? d.message : 'No message' %></td>
-      <td><%= mail_to d.email, "Email #{d.name}" if organizer_signed_in? %>
+      <td>
+        <% if organizer_signed_in? %>
+          <%= d.name %>
+          <span class="muted h6 block">
+          &lt;<%= link_to d.email, "mailto:#{d.name} <#{d.email}>", class: 'inline' %>&gt;
+          </span>
+        <% else %>
+          <span class="muted">Sign in to view contact info</span>
+        <% end %>
+      </td>
+      <td>
+        <%= format_date d.created_at %>
+        <% unless d.deposited? %>
+          <span class="muted block">expected on <%= format_date d.arrival_date %></span>
+        <% end %>
+      </td>
+      <td>
+        <span class="mr1 tooltipped tooltipped--e" aria-label="<%= d.status_text %>">
+          <%= status_badge d.status_color %>
+        </span>
+        <%= render_money d.amount %>
+      </td>
+      <td>
+        <% if organizer_signed_in? %>
+          <%= d.message.present? ? d.message : '–' %>
+        <% else %>
+          <span class="muted">Sign in to view</span>
+        <% end %>
+      </td>
+      <td>
+        <%= link_to 'More', donation_path(d) %>
       </td>
     </tr>
   <% end %>

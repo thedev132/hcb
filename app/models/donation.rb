@@ -40,7 +40,7 @@ class Donation < ApplicationRecord
     self.save!
   end
 
-  def stripe_url
+  def stripe_dashboard_url
     "https://dashboard.stripe.com/payments/#{self.stripe_payment_intent_id}"
   end
 

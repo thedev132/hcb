@@ -40,7 +40,7 @@
           <%= status_badge donation.status_color %>
         </span>
           <%= donation.status %>
-          <span class="muted h6 block"><%= link_to donation.stripe_payment_intent_id, donation.stripe_url, target: '_blank' %></status>
+          <span class="muted h6 block"><%= link_to donation.stripe_payment_intent_id, donation.stripe_dashboard_url, target: '_blank' %></status>
         </td>
         <td><%= link_to 'Show', donation %></td>
       </tr>

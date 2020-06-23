@@ -8,6 +8,7 @@ class DonationsController < ApplicationController
   # GET /donations/1
   def show
     authorize @donation
+    @event = @donation.event
   end
 
   def start_donation
