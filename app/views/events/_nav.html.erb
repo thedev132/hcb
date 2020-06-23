@@ -10,7 +10,7 @@
 <%= render 'events/public_message' %>
 
 <nav class="dock">
-  <% if !@event.is_spend_only %>
+  <% unless @event.is_spend_only %>
     <%= dock_card 'Invoices',
       'Collect payment from event sponsors.',
       'payment-docs', 'warning',
@@ -32,7 +32,7 @@
       <%= link_to 'Promotions & perks', event_promotions_path(event_id: @event.slug) %>
       <%= link_to 'Reimbursements', event_reimbursements_path(event_id: @event.slug) %>
       <%= link_to 'Documents', event_documents_path(event_id: @event.slug) %>
-      <% if @event.donation_page_enabled %>
+      <% unless @event.is_spend_only %>
         <%= link_to 'Donations', event_donation_overview_path(event_id: @event.slug) %>
       <% end %>
     </div>

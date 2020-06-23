@@ -5,10 +5,16 @@
   Donations
   <%= link_to 'Accept a donation',
     start_donation_donations_path(@event),
-    class: 'btn bg-success' %>
+    class: 'btn bg-success' if @event.donation_page_enabled %>
 </h1>
 
+
+
 <div class="table-container">
+
+<% unless @event.donation_page_enabled %>
+<p>You can start accepting donations once you enable it in your project's <%= link_to "settings", edit_event_path(@event, anchor: "donation-section") %>.</p>
+<% end %>
 <table>
   <thead>
     <tr>
