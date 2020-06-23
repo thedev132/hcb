@@ -57,12 +57,8 @@
 
     <h3 class="mb1">Transparency Mode</h3>
 
-    <div class="card border b--warning mb3">
-      <div class="flex items-center warning">
-        <%= inline_icon 'important', size: 32, class: 'mr1' %>
-        <p class="bold mt0 mb0">Experimental feature</p>
-      </div>
-      <ul class="mt1 mb2">
+    <div class="card mb3">
+      <ul class="mt0 pl2 mb2">
         <li><strong>Only use this if you know what you’re doing.</strong></li>
         <li>Unauthenticated users will be able to access a <strong>read-only</strong> version of your account.</li>
         <li>None of Hack Club Bank’s pages will change for signed in team members.</li>
@@ -80,15 +76,11 @@
         <%= form.label :is_public, "Enable Transparency Mode" %>
       </div>
       <div class="field">
-        <%= form.label :public_message, "Message to show guest users" %>
+        <%= form.label :public_message, 'Message to show visitors' %>
         <%= form.text_area :public_message, class: 'w-100 fit' %>
-        <%= link_to 'https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet#table-of-contents', class: 'muted flex items-center justify-end h6', target: '_blank' do %>
-          <%= inline_icon 'markdown-fill', size: 32 %> Styling with Markdown is supported
-        <% end %>
+        <%= inline_icon 'markdown-fill', size: 32, class: 'muted float-right' %>
       </div>
-      <div class="actions">
-        <%= form.submit nil, value: "Update" %>
-      </div>
+      <%= form.submit nil, value: "Update" %>
     </div>
 
   <h3 class="mb1">Danger Zone</h3>
