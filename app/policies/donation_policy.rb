@@ -3,7 +3,7 @@ class DonationPolicy < ApplicationPolicy
     user&.admin?
   end
 
-  def index?
+  def all_index?
     user&.admin?
   end
 end
