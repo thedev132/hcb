@@ -60,7 +60,7 @@
             <%= link_to edit_user_path(current_user),
               class: 'muted tooltipped tooltipped--s mr2',
               'aria-label': 'Profile settings' do %>
-              <%= inline_icon 'settings', size: home_action_size %>
+              <%= inline_icon 'profile', size: home_action_size %>
             <% end %>
             <%= link_to logout_users_path, method: :delete,
                 class: 'muted tooltipped tooltipped--s',
@@ -86,7 +86,7 @@
         </article>
       <% end %>
       <%= yield %>
-      <%= render 'footer' unless @no_app_shell %>
+      <%= render 'footer' unless @no_app_shell || @hide_footer %>
     </main>
 
     <script type="text/javascript">
