@@ -185,7 +185,7 @@
 <%= render 'promo_modal' %>
 
 <div class="modal modal--wide modal--scroll bg-snow" data-behavior="modal" role="dialog" id="incoming_deposits">
-  <%= modal_header 'Incoming Deposits' %>
+  <%= modal_header 'Incoming deposits' %>
   <% if @invoices_being_deposited.any? || @donations_being_deposited.any? %>
     <div class="incoming_deposits flex-auto">
       <% @invoices_being_deposited.each do |invoice| %>

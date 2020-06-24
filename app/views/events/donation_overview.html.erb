@@ -4,23 +4,32 @@
 <h1 class="heading">
   Donations
   <% if @event.donation_page_enabled %>
-    <%= link_to 'Open donation page',
-      start_donation_donations_path(@event),
-      class: 'btn' %>
-    <%= link_to 'QR code',
-      qr_code_donations_path(@event.slug),
-      target: '_blank',
-      class: 'btn bg-accent' %>
+    <%= link_to start_donation_donations_path(@event), target: '_blank', class: 'btn btn--icon pl3' do %>
+      <%= inline_icon 'view' %>
+      Donate page
+    <% end %>
+    <%= link_to qr_code_donations_path(@event.slug),
+      class: 'btn btn--icon bg-accent',
+      data: { behavior: 'modal_trigger', modal: 'qr_code' } do %>
+      <%= inline_icon 'link' %>
+      QR code
+    <% end %>
   <% end %>
 </h1>
 
-<article class="table-container">
-
 <% if @event.donation_page_enabled %>
-  <img src="<%= qr_code_donations_path @event %>" />
+  <section class="modal" data-behavior="modal" role="dialog" id="qr_code">
+    <%= modal_header 'QR code to donate' %>
+    <img alt="QR code" src="<%= qr_code_donations_path @event %>" />
+  </section>
 <% else %>
   <p>You can start accepting donations once you enable it in your project's <%= link_to "settings", edit_event_path(@event, anchor: "donation-section") %>.</p>
 <% end %>
+
+<% if @donations.none? %>
+  <%= blankslate 'No donations received yet.' %>
+<% else %>
+<article class="table-container">
 <table>
   <thead>
     <tr>
@@ -37,7 +46,7 @@
       type="search"
       data-behavior="filterbar_search"
       placeholder="Search…"
-      aria-label="Filter invoices"
+      aria-label="Filter donations"
       class="flex-auto md-mr2"
       style="width: auto; max-width: none;">
     <div data-behavior="filterbar" role="tablist" class="filterbar__filters flex mt1 lg-mt0">
@@ -50,10 +59,8 @@
     <tr data-behavior="filterbar_row" data-filter="<%= d.filter_data.to_json %>">
       <td>
         <% if organizer_signed_in? %>
-          <%= d.name %>
-          <span class="muted h6 block">
-          &lt;<%= link_to d.email, "mailto:#{d.name} <#{d.email}>", class: 'inline' %>&gt;
-          </span>
+          <strong><%= d.name %></strong>
+          <%= link_to d.email, "mailto:#{d.name} <#{d.email}>", class: 'muted h6 block' %>
         <% else %>
           <span class="muted">Sign in to view contact info</span>
         <% end %>
@@ -85,3 +92,4 @@
   </tbody>
 </table>
 </article>
+<% end %>

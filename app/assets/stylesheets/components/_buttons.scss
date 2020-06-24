@@ -45,6 +45,10 @@ input[type='submit'],
     pointer-events: none;
   }
 
+  &.btn--icon {
+    padding-left: 32px;
+  }
+
   &.bg-success {
     @include gradient(success);
     color: darken(map-get($palette, success), 33.3%) !important;

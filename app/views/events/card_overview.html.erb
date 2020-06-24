@@ -19,15 +19,18 @@
     </div>
     <div class="stat md-w-50 muted mb2 tooltipped tooltipped--s" aria-label="The available amount stored in your bank–you need to transfer it to your card balance before spending it">
       <span class="stat__label flex items-center">
-      Available Bank balance
-      <%= inline_icon 'info', size: 24, class: 'muted ml1', 'aria-label': 'Info icon' %>
+        Available Bank balance
+        <%= inline_icon 'info', size: 24, class: 'muted ml1', 'aria-label': 'Info icon' %>
       </span>
       <span class="stat__value"><%= render_money @event.available_balance, '' %></span>
     </div>
   </div>
 
   <div class="flex flex-wrap items-center">
-    <%= link_to 'Transfer to card balance', new_event_load_card_request_path(event_id: @event.slug), class: 'btn bg-success mr2' %>
+    <%= link_to new_event_load_card_request_path(event_id: @event.slug), class: 'btn btn--icon bg-success mr2' do %>
+      <%= inline_icon 'payment-transfer' %>
+      Transfer to card balance
+    <% end %>
     <span class="h5 mt1 mb1">
     </span>
   </div>
@@ -51,9 +54,10 @@ West Hollywood, CA 90069</pre>
 
 <h2 class="heading">
   Issued cards
-  <%= link_to 'Issue a card',
-    new_card_request_path(event_id: @event.id),
-    class: 'btn bg-success' %>
+  <%= link_to new_card_request_path(event_id: @event.id), class: 'btn btn--icon bg-success' do %>
+    <%= inline_icon 'card-add' %>
+    Issue a card
+  <% end %>
 </h2>
 <% if @event.cards.any? %>
   <section class="mixed-grid grid--spacious mt2">
@@ -115,8 +119,13 @@ West Hollywood, CA 90069</pre>
 <% end %>
 
 <% if @event.load_card_requests %>
-  <h2 class="heading">Transfers to card balance
-  <button class="btn bg-info" id="show_lcrs">Show all</button></h2>
+  <h2 class="heading">
+    Transfers to card balance
+    <button class="btn btn--icon bg-info" id="show_lcrs">
+      <%= inline_icon 'view' %>
+      Show all
+    </button>
+  </h2>
   <div class="table-container">
     <table id="lcr_table">
       <thead>
