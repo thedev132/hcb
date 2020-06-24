@@ -22,7 +22,7 @@ class TransactionsController < ApplicationController
 
     respond_to do |format|
       format.csv { send_data generate_csv, filename: "#{name}.csv" }
-      format.json { send_data @transactions.to_json, filename: "#{name}.json" }
+      format.json { send_data generate_json, filename: "#{name}.json" }
      end
   end
 
@@ -123,6 +123,34 @@ class TransactionsController < ApplicationController
         :is_fee_payment
       ]
     )
+  end
+
+  def generate_json
+    account_balance = @event.balance
+    results = @transactions.map do |transaction|
+      t = {}
+      @attributes.each do |attr|
+        t[attr] = case attr
+        when 'account_balance'
+          prev_account_balance = account_balance
+          account_balance -= transaction.amount
+
+          account_balance.to_i
+        when 'fee_balance'
+          previous_transactions = @transactions.select { |t| t.date <= transaction.date }
+
+          fees_occured = previous_transactions.map { |t| t.fee_relationship.fee_applies ? t.fee_relationship.fee_amount : 0 }.sum
+          fee_paid = previous_transactions.map { |t| t.fee_relationship.is_fee_payment ? t.amount : 0 }.sum
+
+          fee_balance = fees_occured + fee_paid
+        else
+          transaction.send attr
+        end
+      end
+      t
+    end
+
+    results.to_json
   end
 
   def generate_csv
