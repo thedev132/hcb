@@ -18,12 +18,28 @@
   cursor: pointer;
   display: inline-block;
   flex-shrink: 0;
-  font-weight: 500;
+  font-size: 0.875rem;
+  font-weight: 600;
   line-height: 1.75;
   outline: 0;
-  padding: 0.125rem 0.75rem;
+  padding: 0.25rem 0.75rem;
+  position: relative;
   text-decoration: none;
-  transition: color .125s ease-in-out, background-color .125s ease-in-out;
+  transition: color 0.125s ease-in-out, background-image 0.125s ease-in-out;
+
+  &:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+    @include gradient(primary);
+    border-radius: 1rem;
+    transform: scale(0);
+    transition: transform 250ms ease-in-out;
+  }
 
   &:focus {
     color: map-get($palette, info);
@@ -31,7 +47,9 @@
 
   &:active,
   &[aria-selected='true'] {
-    background-color: map-get($palette, primary);
     color: $white;
+    &:before {
+      transform: scale(1);
+    }
   }
 }

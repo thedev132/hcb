@@ -56,12 +56,20 @@ html[data-dark='true'] {
     border-color: map-get($palette, black);
   }
 
-  .menu__content,
+  label,
   .menu__content > a,
   .menu__action {
-    background: $darkless;
-    border-color: $darker;
     color: map-get($palette, smoke);
+  }
+  tr a,
+  .details > p strong,
+  .details > div strong,
+  .details__row strong,
+  .details-horiz strong {
+    color: map-get($palette, muted);
+  }
+  .menu__content hr {
+    border-color: $dark;
   }
   .menu__toggle[aria-expanded='true']:before {
     border-bottom-color: $darker;
@@ -74,6 +82,7 @@ html[data-dark='true'] {
   .retrofees,
   .card,
   .dock__card,
+  .menu__content,
   .modal {
     background-color: $darkless;
   }
@@ -91,7 +100,12 @@ html[data-dark='true'] {
   .modal,
   .card,
   .menu__content {
-    box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.125), 0 4px 8px 0 rgba(0, 0, 0, 0.25);
+    box-shadow: -2px -4px 8px rgba(0, 0, 0, 0.125),
+      4px 8px 16px rgba(0, 0, 0, 0.25);
+  }
+  .dock__card {
+    box-shadow: -2px -4px 6px rgba(0, 0, 0, 0.125),
+      3px 6px 12px rgba(0, 0, 0, 0.25);
   }
 
   .card {
@@ -127,7 +141,7 @@ html[data-dark='true'] {
   .btn,
   .dock__card span,
   a > .card {
-    color: map-get($palette, smoke) !important;
+    color: map-get($palette, smoke);
   }
 
   .card__darker {
@@ -151,7 +165,7 @@ html[data-dark='true'] {
     background: $darkless;
   }
   .shade-yellow {
-    background-color: rgba($yellow4, 0.125);
+    background-color: rgba(map-get($palette, pending), 0.125);
   }
 
   input[type='submit'],
@@ -174,10 +188,6 @@ html[data-dark='true'] {
     background-color: rgba(map-get($palette, error), 0.75);
   }
 
-  .filterbar__item:active,
-  .filterbar__item[aria-selected='true'] {
-    color: map-get($palette, primary);
-  }
   .badge {
     color: map-get($palette, muted);
   }
@@ -197,19 +207,16 @@ html[data-dark='true'] {
     color: map-get($palette, error);
   }
   .badge.archived {
-    background-color: rgba($yellow8, 0.625);
+    background-color: rgba(map-get($palette, pending), 0.625);
     border: none;
-    color: $yellow3;
+    color: map-get($palette, pending);
   }
 
   .filterbar__item:active,
   .filterbar__item[aria-selected='true'] {
     background-color: rgba(map-get($palette, primary), 0.125);
   }
-  .menu__action:hover,
-  .menu__action:focus,
-  .menu__content > a:hover,
-  .menu__content > a:focus,
+  .badge.bg-info,
   .flash.info,
   .pop,
   .pop.info {
@@ -245,9 +252,9 @@ html[data-dark='true'] {
   }
 
   .banner--archived {
-    background-color: rgba($yellow1, 0.125);
-    border-color: rgba($yellow8, 0.625);
-    color: $yellow3;
+    background-color: rgba(map-get($palette, pending), 0.125);
+    border-color: rgba(map-get($palette, pending), 0.625);
+    color: map-get($palette, smoke);
   }
 
   .check,

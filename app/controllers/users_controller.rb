@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
   skip_before_action :signed_in_user, only: [:auth, :login_code, :exchange_login_code]
   skip_after_action :verify_authorized, except: [:edit, :update]
+  before_action :hide_footer
 
   # view to log in
   def auth

@@ -31,10 +31,11 @@ $(document).on('turbolinks:load', function () {
   })
 
   $(document).on('click', '[data-behavior~=flash]', function () {
-    return $(this).fadeOut('medium')
+    $(this).fadeOut('medium')
   })
 
-  $(document).on('click', '[data-behavior~=modal_trigger]', function () {
+  $(document).on('click', '[data-behavior~=modal_trigger]', function (e) {
+    if ($(this).attr('href')) e.preventDefault()
     BK.s('modal', '#' + $(this).data('modal')).modal()
     return this.blur()
   })
@@ -269,4 +270,3 @@ $(document).on('turbolinks:load', function () {
     .matchMedia('(prefers-reduced-motion: reduce)')
     .addListener(() => setTilt())
 })
-

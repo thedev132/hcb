@@ -30,10 +30,10 @@ module UsersHelper
       bolt = inline_icon 'admin-badge', size: 20
       content_tag :span,
                   avi + bolt + name,
-                  class: "mention mention--admin inline-flex items-center tooltipped tooltipped--n #{options[:class]}",
+                  class: "mention mention--admin tooltipped tooltipped--n #{options[:class]}",
                   'aria-label': "#{user.name.split(' ').first} is an admin"
     else
-      content_tag :span, avi + name, class: "mention inline-flex #{options[:class]}"
+      content_tag :span, avi + name, class: "mention #{options[:class]}"
     end
   end
 
@@ -57,7 +57,7 @@ module UsersHelper
 
   def get_user_color(id)
     alphabet = ('A'..'Z').to_a
-    colors = ['2d9ee4', '2d42e4', '732de4', 'cf2de4', 'e42d9e', 'e42d42', 'e4732d', 'e9d858', '2de473', '2de4cf']
+    colors = ['ec3750', 'ff8c37', 'f1c40f', '33d6a6', '5bc0de', '338eda']
     colors[id.to_i % colors.length] || colors.last
   end
 end

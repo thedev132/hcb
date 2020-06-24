@@ -4,7 +4,7 @@ input.fit {
 
 .donation--payment-info {
   /* copied from components/_form.scss */
-  background-color: $gray1;
+  background-color: map-get($palette, snow);
   border-radius: 4px;
   border: 1px solid transparent;
   color: inherit;
@@ -18,6 +18,6 @@ input.fit {
   width: 100%;
 
   &:focus {
-    border-color: $base;
+    border-color: map-get($palette, info);
   }
 }

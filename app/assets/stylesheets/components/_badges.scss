@@ -14,25 +14,25 @@
   padding: 0.25rem 0.625rem;
   width: min-intrinsic;
 
-  &.bg-success {
-    color: $teal9;
-    background-color: $teal1;
+  &.success {
+    background-color: rgba(map-get($palette, success), 0.125);
+    color: map-get($palette, success);
   }
-  &.bg-info {
-    color: $blue9;
-    background-color: $blue1;
+  &.pending {
+    background-color: rgba(map-get($palette, pending), 0.125);
+    color: map-get($palette, pending);
   }
-  &.bg-pending {
-    color: $yellow9;
-    background-color: $yellow1;
+  &.warning {
+    background-color: rgba(map-get($palette, warning), 0.125);
+    color: map-get($palette, warning);
   }
-  &.bg-warning {
-    color: $orange9;
-    background-color: $orange1;
+  &.error {
+    background-color: rgba(map-get($palette, error), 0.125);
+    color: map-get($palette, error);
   }
-  &.bg-error {
-    color: $red9;
-    background-color: $red1;
+  &.info {
+    background-color: rgba(map-get($palette, info), 0.125);
+    color: map-get($palette, info);
   }
 
   svg:last-child {
@@ -43,8 +43,8 @@
 // Circular button
 .pop {
   border-radius: 18px;
-  color: $blue6;
-  background-color: $blue0;
+  color: map-get($palette, info);
+  background-color: rgba(map-get($palette, info), 0.125);
   flex-shrink: 0;
   text-decoration: none;
   display: inline-flex;
@@ -58,21 +58,26 @@
     opacity: 0.5;
     pointer-events: none;
   }
+  
+  &:hover,
+  &:focus {
+    color: darken(map-get($palette, info), 10%);
+  }
 
   &.success {
-    background-color: $teal0;
+    background-color: rgba(map-get($palette, success), 0.125);
   }
   &.pending {
-    background-color: $yellow0;
+    background-color: rgba(map-get($palette, pending), 0.125);
   }
   &.warning {
-    background-color: $orange0;
+    background-color: rgba(map-get($palette, warning), 0.125);
   }
   &.error {
-    background-color: $red0;
+    background-color: rgba(map-get($palette, error), 0.125);
   }
   &.muted {
-    background-color: $gray1;
+    background-color: rgba(map-get($palette, muted), 0.125);
   }
 }
 summary.pop::-webkit-details-marker {
@@ -132,6 +137,6 @@ summary.pop::-webkit-details-marker {
   }
 
   svg {
-    margin: 0.125rem -0.125rem 0 -0.5rem;
+    margin: -0.25rem -0.5rem 0 -0.625rem;
   }
 }
