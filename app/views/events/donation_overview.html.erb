@@ -16,8 +16,10 @@
 
 <article class="table-container">
 
-<% unless @event.donation_page_enabled %>
-<p>You can start accepting donations once you enable it in your project's <%= link_to "settings", edit_event_path(@event, anchor: "donation-section") %>.</p>
+<% if @event.donation_page_enabled %>
+  <img src="<%= qr_code_donations_path @event %>" />
+<% else %>
+  <p>You can start accepting donations once you enable it in your project's <%= link_to "settings", edit_event_path(@event, anchor: "donation-section") %>.</p>
 <% end %>
 <table>
   <thead>
