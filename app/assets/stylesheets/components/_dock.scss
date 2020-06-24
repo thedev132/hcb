@@ -14,7 +14,7 @@
     position: fixed;
     z-index: 10;
     bottom: 0;
-    padding: 1rem;
+    padding: 0 1rem;
     background-color: rgba(255, 255, 255, 0.98);
     @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
       background-color: rgba(255, 255, 255, 0.75);
@@ -60,6 +60,9 @@
   }
 
   @media (min-width: 32em) {
+    background-color: $white;
+    box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.0625),
+      0 4px 8px 0 rgba(0, 0, 0, 0.125);
     padding: 1rem;
     border-radius: 0.5rem;
     overflow: hidden;
