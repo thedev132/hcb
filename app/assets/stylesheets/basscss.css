@@ -201,6 +201,21 @@
     display: -ms-flexbox;
     display: flex;
   }
+  .md-flex-column {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+  }
+  .md-flex-row {
+    /* added as override */
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+  }
 }
 @media (min-width: 64em) {
   .lg-flex {

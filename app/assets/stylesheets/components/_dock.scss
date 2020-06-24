@@ -51,6 +51,7 @@
   transition: 0.125s transform ease-in-out;
 
   @media screen and (max-width: 32em) {
+    box-shadow: none !important;
     flex-direction: column;
     padding: 0.5rem;
 
