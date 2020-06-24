@@ -4,12 +4,12 @@
 <h1 class="heading">
   Donations
   <% if @event.donation_page_enabled %>
-    <%= link_to start_donation_donations_path(@event), target: '_blank', class: 'btn btn--icon pl3' do %>
+    <%= link_to start_donation_donations_path(@event), target: '_blank', class: 'btn' do %>
       <%= inline_icon 'view' %>
       Donate page
     <% end %>
     <%= link_to qr_code_donations_path(@event.slug),
-      class: 'btn btn--icon bg-accent',
+      class: 'btn bg-accent',
       data: { behavior: 'modal_trigger', modal: 'qr_code' } do %>
       <%= inline_icon 'link' %>
       QR code
@@ -62,7 +62,7 @@
           <strong><%= d.name %></strong>
           <%= link_to d.email, "mailto:#{d.name} <#{d.email}>", class: 'muted h6 block' %>
         <% else %>
-          <span class="muted">Sign in to view contact info</span>
+          <span class="muted">Sign in to view</span>
         <% end %>
       </td>
       <td>

@@ -2,10 +2,12 @@
 <% page_md %>
 <%= render 'events/nav' %>
 
-
 <h1 class="heading">
   Reimbursements
-  <%= link_to 'Open Expensify', 'https://app.expensify.com/', class: 'btn', target: '_blank' %>
+  <%= link_to 'https://app.expensify.com/', class: 'btn', target: '_blank' do %>
+    <%= inline_icon 'external' %>
+    Open Expensify
+  <% end %>
 </h1>
 
 <div class="mb4">
