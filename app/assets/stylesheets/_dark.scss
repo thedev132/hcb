@@ -140,6 +140,7 @@ html[data-dark='true'] {
   .black,
   .btn,
   .dock__card span,
+  label,
   a > .card {
     color: map-get($palette, smoke);
   }

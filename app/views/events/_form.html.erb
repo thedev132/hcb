@@ -2,8 +2,13 @@
   <%= form_errors event, 'account info' %>
 
   <div class="field">
-    <label class="bold">Plan</label>
-    <p class="mt0"><%= event.name %> is on the <strong><%= event.plan_name %></strong> plan.</p>
+    <p class="mt0"><%= event.name %> is on the <strong><%= event.plan_name %></strong> plan. You can:</p>
+    <ul>
+      <li>Order virtual/plastic cards</li>
+      <li>Apply for grants and promotions</li>
+      <li>Account money through invoices & donations</li>
+      <%# TODO %>
+    </ul>
   </div>
 
   <% if !event.is_spend_only %>
@@ -13,72 +18,62 @@
     </div>
   <% end %>
 
+  <!--
   <div class="field">
     <%= form.label :address, class: 'bold' %>
     <%= form.text_area :address, value: event.address || '42 Placeholder Ave.' %>
   </div>
 
-  <% if current_user.events.size > 1 && event.persisted?%>
-    <div class="field field--checkbox">
-      <%= form.check_box :hidden, checked: event.hidden_at.present? %>
-      <%= form.label :hidden, "Hide #{event.name} from home page for everyone" %>
-    </div>
-  <% end %>
+  <div class="field field--checkbox">
+    <%= form.check_box :hidden, checked: event.hidden_at.present? %>
+    <%= form.label :hidden, "Hide #{event.name} from home page for everyone" %>
+  </div>
+  -->
 
   <% if !@event.is_spend_only %>
-    <h3 class="mb1">Donations</h3>
+    <h3 class="mb1" id="donation-section">Donations</h3>
 
     <div class="card">
       <div class="field field--checkbox">
         <%= form.check_box :donation_page_enabled %>
         <%= form.label :donation_page_enabled, "Enable donation page" %>
       </div>
-      <% if event.donation_page_enabled %>
-        <div class="field">
-          <%= form.label :donation_page_message, "Message to show on donation page" %>
-          <%= form.text_area :donation_page_message, class: 'w-100 fit' %>
-        </div>
-        <p>
-          <%= link_to 'Click here to go to your donation page', start_donation_donations_path(event.slug), target: '_blank' %>
-          or
-          share the <%= link_to 'QR code', qr_code_donations_path(event.slug), target: '_blank' %>
-        </p>
-      <% end %>
+      <div class="field">
+        <%= form.label :donation_page_message, "Message to show on donation page" %>
+        <%= form.text_area :donation_page_message, class: 'w-100 fit' %>
+        <%= inline_icon 'markdown-fill', size: 32, class: 'muted right' %>
+      </div>
+      <%= form.submit nil, value: "Update" %>
     </div>
   <% end %>
 
-    <h3 class="mb1">Transparency Mode</h3>
+  <h3 class="mb1">Transparency Mode</h3>
 
-    <div class="card border b--warning mb3">
-      <div class="flex items-center warning">
-        <%= inline_icon 'important', size: 32, class: 'mr1' %>
-        <p class="bold mt0 mb0">Experimental feature</p>
-      </div>
-      <ul class="mt1 mb2">
-        <li><strong>Only use this if you know what you’re doing.</strong></li>
-        <li>Unauthenticated users will be able to access a <strong>read-only</strong> version of your account.</li>
-        <li>None of Hack Club Bank’s pages will change for signed in team members.</li>
-        <li>We’ll do our best effort to redact contact info, but we can’t guarantee it doesn't show up in these fields:
-        <ul>
-          <li>Transaction display names</li>
-          <li>Sponsor company names</li>
-          <li>ACH transfer recipients</li>
-          <li>Check recipients</li>
-        </ul>
-        </li>
+  <div class="card mb3">
+    <ul class="mt0 pl2 mb2">
+      <li><strong>Only use this if you know what you’re doing.</strong></li>
+      <li>Unauthenticated users will be able to access a <strong>read-only</strong> version of your account.</li>
+      <li>None of Hack Club Bank’s pages will change for signed in team members.</li>
+      <li>We’ll do our best effort to redact contact info, but we can’t guarantee it doesn't show up in these fields:
+      <ul>
+        <li>Transaction display names</li>
+        <li>Sponsor company names</li>
+        <li>ACH transfer recipients</li>
+        <li>Check recipients</li>
       </ul>
-      <div class="field field--checkbox">
-        <%= form.check_box :is_public %>
-        <%= form.label :is_public, "Enable Transparency Mode" %>
-      </div>
-      <div class="field">
-        <%= form.label :public_message, "(optional) Message to show guest users" %>
-        <%= form.text_area :public_message, class: 'w-100 fit' %>
-        <%= link_to 'https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet#table-of-contents', class: 'muted flex items-center justify-end h6', target: '_blank' do %>
-          <%= inline_icon 'markdown-fill', size: 32 %> Styling with Markdown is supported
-        <% end %>
-      </div>
+      </li>
+    </ul>
+    <div class="field field--checkbox">
+      <%= form.check_box :is_public %>
+      <%= form.label :is_public, "Enable Transparency Mode" %>
     </div>
+    <div class="field">
+      <%= form.label :public_message, 'Message to show visitors' %>
+      <%= form.text_area :public_message, class: 'w-100 fit' %>
+      <%= inline_icon 'markdown-fill', size: 32, class: 'muted right' %>
+    </div>
+    <%= form.submit nil, value: "Update" %>
+  </div>
 
   <h3 class="mb1">Danger Zone</h3>
   <div class="card border b--warning mb3">
@@ -88,13 +83,16 @@
     </div>
     <ul class="mt1 mb2">
       <li>Another project may claim your current URL and you could be <span class="bold">unable to get it back</span></li>
-      <li>All bookmarks to this event’s Bank will <span class="bold">break</span></li>
+      <li>All bookmarks to this project will <span class="bold">break</span></li>
       <li>Your team members currently using Bank will be bumped to the home page</li>
     </ul>   
     <%= form.label :slug, 'Bank URL', class: 'bold' %> 
     <div class="flex items-center">
       <span class="slate">bank.hackclub.com/</span>
       <%= form.text_field :slug, placeholder: event.persisted? ? event.name.parameterize : nil %>
+    </div>
+    <div class="actions">
+      <%= form.submit nil, value: "Update" %>
     </div>
   </div>
 
@@ -144,8 +142,4 @@
       <%= form.label :beta_features_enabled, 'Turn on beta (features in development) for this event?' %>
     </div>
   <% end %>
-
-  <div class="actions">
-    <%= form.submit %>
-  </div>
 <% end %>

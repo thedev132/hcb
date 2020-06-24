@@ -13,7 +13,7 @@
   <%= dock_card 'Invoices',
     'Collect payment from event sponsors.',
     'payment-docs', 'accent',
-    event_invoices_path(event_id: @event.slug) if !@event.is_spend_only %>
+    event_invoices_path(event_id: @event.slug) unless @event.is_spend_only %>
   <%= dock_card 'Cards',
     'Request and manage cards for your team.',
     'card', 'purple',

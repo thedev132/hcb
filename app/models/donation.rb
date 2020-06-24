@@ -40,14 +40,34 @@ class Donation < ApplicationRecord
     self.save!
   end
 
-  def status_text
-    if status == 'succeeded' && self&.payout&.t_transaction.present?
-      return 'Deposited'
-    elsif status == 'succeeded' && payout_id == nil
-      return 'In transit'
-    end
+  def stripe_dashboard_url
+    "https://dashboard.stripe.com/payments/#{self.stripe_payment_intent_id}"
+  end
 
-    'Contact your POC'
+  def status_color
+    return 'success' if deposited?
+    return 'info' if pending?
+
+    'error'
+  end
+
+  def status_text
+    return 'Deposited' if deposited?
+    return 'Pending' if pending?
+
+    'Contact your point of contact'
+  end
+
+  def deposited?
+    status == 'succeeded' && self&.payout&.t_transaction.present?
+  end
+
+  def pending?
+    status == 'succeeded' && !deposited?
+  end
+
+  def unpaid?
+    status == 'requires_payment_method'
   end
 
   def filter_data
