@@ -1,6 +1,6 @@
 module CardsHelper
   def card_mention(card)
-    icon = inline_icon 'card', size: 24, class: 'accent'
+    icon = inline_icon 'card', size: 24, class: 'purple'
     if organizer_signed_in?
       text = content_tag :span, card.last_four
       return link_to(card, class: 'mention') { icon + text }
