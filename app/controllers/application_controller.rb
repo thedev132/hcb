@@ -17,6 +17,10 @@ class ApplicationController < ActionController::Base
   rescue_from ApiService::UnauthorizedError, with: :user_not_authenticated
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
+  def hide_footer
+    @hide_footer = true
+  end
+
   private
 
   # This being called probably means that the User's access token has expired.

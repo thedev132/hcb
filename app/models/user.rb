@@ -62,7 +62,18 @@ class User < ApplicationRecord
 
   def last_name
     # beware– not all users will have their full_name set
-    full_name&.split(" ")&.first
+    full_name&.split(" ")&.last
+  end
+
+  def initial_name
+    first_name + " " + last_name[0,1]
+  end
+
+  def safe_name
+    # emburse requires names to be 21 chars or less, and must include a last name
+    return full_name unless full_name.length > 21
+
+    initial_name
   end
 
   def name

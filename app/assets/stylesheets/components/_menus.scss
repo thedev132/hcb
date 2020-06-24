@@ -5,7 +5,6 @@
   &[aria-expanded='true'] {
     outline: none;
 
-    &:before,
     &:after {
       bottom: -1px;
       left: 50%;
@@ -21,14 +20,9 @@
       }
     }
 
-    &:before {
-      border-bottom-color: map-get($palette, smoke);
-      border-width: 10px;
-    }
-
     &:after {
       border-bottom-color: map-get($palette, white);
-      border-width: 9px;
+      border-width: 10px;
     }
   }
 }
@@ -40,13 +34,17 @@
   top: 100%;
   background-color: map-get($palette, white);
   border-radius: 0.5rem;
-  border: 1px solid map-get($palette, smoke);
-  box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.0625), 0 4px 8px 0 rgba(0, 0, 0, 0.125);
+  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.0625), 0 6px 12px rgba(0, 0, 0, 0.125);
   overflow: hidden;
   z-index: 4;
 
   @media (min-width: 32em) {
     width: 16rem;
+    padding: 8px;
+
+    .card & {
+      right: 0;
+    }
   }
 
   @media screen and (max-width: 32em) {
@@ -59,8 +57,10 @@
     right: 0;
     margin: 0;
     border: 0;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.25), 0 0 0 100vh rgba(0, 0, 0, 0.375);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.25),
+      0 0 0 100vh rgba(0, 0, 0, 0.375);
     font-size: 1rem;
+    z-index: 999;
 
     @supports (padding: calc(env(safe-area-inset-bottom))) {
       padding-bottom: calc(1rem + env(safe-area-inset-bottom));
@@ -80,20 +80,34 @@
   align-items: center;
   font-weight: 500;
   line-height: 1.5;
-  padding: 12px 16px;
+  padding: 0.75rem 0.5rem;
+  color: map-get($palette, black);
+  position: relative;
   text-decoration: none;
   letter-spacing: 0;
   background-color: transparent;
-  transition: 0.125s ease-in-out background-color;
+  transition: 0.125s ease-in-out background-color, 0.125s ease-in-out color;
 
-  &,
-  &:hover {
-    color: map-get($palette, black);
+  &:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+    @include gradient(info);
+    border-radius: 6px;
+    opacity: 0;
+    transition: opacity 125ms ease-in-out;
   }
 
   &:hover,
   &:focus {
-    background-color: $blue0;
+    color: $white;
+    &:before {
+      opacity: 1;
+    }
   }
 
   svg {

@@ -1,31 +1,21 @@
-<% title "Sending money for #{@event.name}" %>
+<% title "Transfers for #{@event.name}" %>
 <% page_md %>
 <%= render 'events/nav' %>
 
 <h1 class="heading">
-  Send money
-
-  <div class="flex items-center justify-center ml0 md-ml-auto mt1 md-mt0">
-    <div class="flex items-center justify-center">
-      <%= link_to 'Send a check', new_event_check_path(@event), class: 'btn bg-success mr1' %>
-      <%= link_to 'Send direct deposit', new_event_ach_transfer_path(@event), class: 'btn bg-info' %>
-    </div>
-  </div>
+  Transfers
 </h1>
 
-<div class="flex items-center info mb2">
-  <%= inline_icon 'important', size: 32, class: 'mr1' %>
-  <div class="info">
-    Making a reimbursement to someone? Checks and deposits aren't for reimbursements, but visit the
-    <%= link_to 'reimbursements page', event_reimbursements_path(@event), class: 'info' %>
-    to learn how.
+<section class="flex items-center justify-center pt2 pb3">
+  <span class="h3 muted pr2">Send a</span>
+  <div class="flex items-center justify-center btn-group">
+    <%= link_to 'Check', new_event_check_path(@event), class: 'btn bg-success' %>
+    <%= link_to 'Direct deposit', new_event_ach_transfer_path(@event), class: 'btn bg-accent' %>
+    <%= link_to 'Reimbursement', event_reimbursements_path(@event), class: 'btn' %>
   </div>
-</div>
+</section>
 
 <ul class="grid grid--spacious">
-  <% if @transfers.size == 0 %>
-    <%= blankslate 'You haven’t sent any money yet—get started with the buttons above.' %>
-  <% end %>
   <% @transfers.each do |transfer| %>
     <%= link_to transfer do %>
       <li>

@@ -1,14 +1,14 @@
 .card {
   background-color: $white;
-  box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.0625), 0 4px 8px 0 rgba(0, 0, 0, 0.125);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.125);
   padding: 1rem;
   border-radius: 0.5rem;
   overflow: hidden;
   transition: transform 0.2s;
 
   &.b--warning {
-    box-shadow: 0 0 2px 0 rgba($orange6, 0.0625),
-      0 4px 8px 0 rgba($orange7, 0.125);
+    box-shadow: 0 0 2px 0 rgba(map-get($palette, warning), 0.0625),
+      0 4px 8px 0 rgba(map-get($palette, warning), 0.125);
   }
 
   &.b--info {
@@ -16,8 +16,10 @@
       0 4px 8px 0 rgba(map-get($palette, info), 0.125);
   }
 
-  &.card--hover:hover {
+  &.card--hover:hover,
+  &.card--hover:focus {
     transform: translateY(-3px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1875);
   }
 
   &.card--hover:active {
@@ -48,18 +50,22 @@ a.card {
   margin-top: -1rem;
   margin-bottom: 1rem;
 }
+.card__banner--bottom {
+  margin-top: 1rem;
+  margin-bottom: -1rem;
+}
 
 .error-card {
   @extend .card;
   max-width: 32rem;
-  border: 1px solid $red7;
+  border: 1px solid map-get($palette, error);
   margin-bottom: 1.5rem;
-  background-color: $red0;
-  box-shadow: 0 0 2px 0 rgba($red6, 0.025), 0 4px 8px 0 rgba($red7, 0.125);
+  box-shadow: 0 0 2px 0 rgba(map-get($palette, error), 0.025),
+    0 4px 8px 0 rgba(map-get($palette, error), 0.125);
 
   h2 {
-    color: $red7;
-    border-bottom-color: $red3;
+    color: map-get($palette, error);
+    border-bottom-color: map-get($palette, primary);
     margin-top: 0;
     font-size: 1.25rem;
   }
@@ -80,9 +86,9 @@ a.card {
   line-height: 1.25;
 }
 .banner--archived {
-  background-color: $yellow1;
-  border: 1px solid $yellow3;
-  color: $yellow9;
+  background-color: lighten(map-get($palette, pending), 40%);
+  border: 1px solid map-get($palette, pending);
+  color: map-get($palette, slate);
   a {
     color: inherit;
   }
@@ -90,5 +96,26 @@ a.card {
     margin: 0 0.125rem;
     color: inherit;
     font-weight: inherit;
+  }
+}
+
+.flash {
+  @extend .card;
+  border: 1px solid currentColor;
+  font-weight: 500;
+  max-width: 24rem;
+  padding: 0.5rem 0.75rem 0.5rem 1rem;
+
+  &.success {
+    color: map-get($palette, success);
+    background-color: rgba(map-get($palette, success), 0.125);
+  }
+  &.info {
+    color: map-get($palette, info);
+    background-color: rgba(map-get($palette, info), 0.125);
+  }
+  &.error {
+    color: map-get($palette, error);
+    background-color: rgba(map-get($palette, error), 0.125);
   }
 }

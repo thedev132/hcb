@@ -5,7 +5,7 @@
 
 <article class="center mt3">
   <h1 class="mt2">
-    <span class="h3 caps slate block">Sign in to Bank</span>
+    <span class="h3 caps muted block">Sign in to Bank</span>
     <span class="black">Enter login code</span>
   </h1>
   <p>We just sent a login code to <%= @email %></p>
@@ -14,7 +14,7 @@
     <%= telephone_field_tag :login_code, '', placeholder: 'Login code', autofocus: true, autocomplete: 'off', class: 'left-align mb2' %>
     <%= hidden_field_tag :email, @email %>
     <%= hidden_field_tag :user_id, @user_id %>
-    <p><em>Make sure to check your spam folder</em></p>
+    <p class="h5 muted"><em>Make sure to check your spam folder</em></p>
     <%= submit_tag 'Submit' %>
   <% end %>
 </article>

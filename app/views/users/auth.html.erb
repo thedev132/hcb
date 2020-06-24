@@ -5,16 +5,16 @@
 
 <article class="center mt3">
   <h1 class="mt2">
-    <span class="h3 caps slate block">Sign in to</span>
+    <span class="h3 caps muted block">Sign in to</span>
     <span class="primary">Hack Club Bank</span>
   </h1>
   <%= form_tag login_code_users_path, 'data-behavior': 'login' do %>
     <%= label_tag :email, 'Enter your email…', class: 'left-align' %>
     <%= email_field_tag :email, '', placeholder: 'Email address', autofocus: true, autocomplete: 'username', class: 'left-align mb2' %>
-    <div class="flex justify-between">
-      <p class="h5"><a href="https://hackclub.com/bank?ref=bank_auth">Get a HCB account</a></p>
+    <div class="flex justify-center">
       <%= submit_tag 'Get login code' %>
     </div>
   <% end %>
-  <p class="h6 mt5">Issues logging in? Contact the team at <a href="mailto:bank@hackclub.com">bank@hackclub.com</a>.</p>
+  <p class="h5 muted mt5">Need help? <a href="mailto:bank@hackclub.com">bank@hackclub.com</a></p>
+  <p class="h5 mt2"><a href="https://hackclub.com/bank?ref=bank_auth">What’s Bank?</a></p>
 </article>

@@ -58,7 +58,7 @@ module ApplicationHelper
 
     content_tag :div, class: 'error-card' do
       content_tag(:h2, "#{prefix} #{name} because of #{pluralize(model.errors.size, 'error')}.") +
-        errors_list
+      errors_list
     end
   end
 
@@ -67,7 +67,10 @@ module ApplicationHelper
   end
 
   def modal_header(text)
-    content_tag :header, modal_close + content_tag(:h2, text.html_safe, class: 'h1 mt0 mb0 pb0 border-none'), class: 'pb2'
+    content_tag :header, class: 'pb2' do
+      modal_close +
+      content_tag(:h2, text.html_safe, class: 'h0 mt0 mb0 pb0 border-none')
+    end
   end
 
   # jQuery plugins are buggy when navigating between pages with Turbolinks.
