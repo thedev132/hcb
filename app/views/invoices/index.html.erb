@@ -7,8 +7,7 @@
     Invoices
     <%= badge_for @invoices.size, class: 'bg-muted' %>
   </span>
-  <%= link_to 'Send an invoice',
-      new_event_invoice_path(event_id: @event.slug),
+  <%= link_to new_event_invoice_path(event_id: @event.slug),
       class: 'btn btn--icon bg-success',
       data: { behavior: 'modal_trigger', modal: 'new_invoice' } do %>
     <%= inline_icon 'send' %>
