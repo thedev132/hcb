@@ -15,44 +15,15 @@ class TransactionsController < ApplicationController
     @transactions = @event.transactions
     authorize @transactions
 
-    attributes = %w{date display_name name amount account_balance fee fee_balance link}
-    attributes_to_currency = %w{amount fee}
+    @attributes = %w{date display_name name amount account_balance fee fee_balance link}
+    @attributes_to_currency = %w{amount fee}
 
-    result = CSV.generate(headers: true) do |csv|
-      csv << attributes.map do |k|
-        next 'Raw Name' if k == 'name'
-        next 'Fiscal Sponsorship Fee' if k == 'fee'
-        next 'Fiscal Sponsorship Fee Balance' if k == 'fee_balance'
+    name = "#{Date.today}_#{@event.name.to_param}_transactions"
 
-        k.sub('_', ' ').gsub(/\S+/, &:capitalize)
-      end
-
-      account_balance = @event.balance
-
-      @transactions.each do |transaction|
-        csv << attributes.map do |attr|
-          if attributes_to_currency.include? attr
-            view_context.render_money transaction.send(attr)
-          elsif attr == 'fee_balance'
-            previous_transactions = @transactions.select { |t| t.date <= transaction.date }
-
-            fees_occured = previous_transactions.map { |t| t.fee_relationship.fee_applies ? t.fee_relationship.fee_amount : 0 }.sum
-            fee_paid = previous_transactions.map { |t| t.fee_relationship.is_fee_payment ? t.amount : 0 }.sum
-
-            view_context.render_money (fees_occured + fee_paid)
-          elsif attr == 'account_balance'
-            prev_account_balance = account_balance
-            account_balance -= transaction.amount
-
-            view_context.render_money prev_account_balance
-          else
-            transaction.send(attr)
-          end
-        end
-      end
-    end
-
-    send_data result, filename: "#{@event.name} transactions #{Date.today}.csv"
+    respond_to do |format|
+      format.csv { send_data generate_csv, filename: "#{name}.csv" }
+      format.json { send_data @transactions.to_json, filename: "#{name}.json" }
+     end
   end
 
   def show
@@ -152,5 +123,41 @@ class TransactionsController < ApplicationController
         :is_fee_payment
       ]
     )
+  end
+
+  def generate_csv
+    CSV.generate(headers: true) do |csv|
+      csv << @attributes.map do |k|
+        next 'Raw Name' if k == 'name'
+        next 'Fiscal Sponsorship Fee' if k == 'fee'
+        next 'Fiscal Sponsorship Fee Balance' if k == 'fee_balance'
+
+        k.sub('_', ' ').gsub(/\S+/, &:capitalize)
+      end
+
+      account_balance = @event.balance
+
+      @transactions.each do |transaction|
+        csv << @attributes.map do |attr|
+          if @attributes_to_currency.include? attr
+            view_context.render_money transaction.send(attr)
+          elsif attr == 'fee_balance'
+            previous_transactions = @transactions.select { |t| t.date <= transaction.date }
+
+            fees_occured = previous_transactions.map { |t| t.fee_relationship.fee_applies ? t.fee_relationship.fee_amount : 0 }.sum
+            fee_paid = previous_transactions.map { |t| t.fee_relationship.is_fee_payment ? t.amount : 0 }.sum
+
+            view_context.render_money (fees_occured + fee_paid)
+          elsif attr == 'account_balance'
+            prev_account_balance = account_balance
+            account_balance -= transaction.amount
+
+            view_context.render_money prev_account_balance
+          else
+            transaction.send(attr)
+          end
+        end
+      end
+    end
   end
 end

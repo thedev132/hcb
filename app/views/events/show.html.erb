@@ -93,11 +93,19 @@
 
 <h2 class="heading">
   Transactions
-  <%= link_to 'Export CSV',
-    export_transactions_path(event: @event),
-    disabled: !organizer_signed_in?,
-    class: 'btn bg-info',
-    target: :_blank %>
+  <button
+    type="button"
+    <%= organizer_signed_in? ? 'data-behavior=menu_toggle aria-expanded=false tabindex=0' : 'disabled=disabled' %>
+    class="btn bg-info menu__toggle overflow-visible pl3">
+    <%= inline_icon 'download', size: 16 %>
+    Export…
+    <% if organizer_signed_in? %>
+      <div class="menu__content h5" data-behavior="menu_content">
+        <%= link_to 'CSV', export_transactions_path(event: @event, format: :csv), target: :_blank %>
+        <%= link_to 'JSON', export_transactions_path(event: @event, format: :json), target: :_blank %>
+      </div>
+    <% end %>
+  </button>
 </h2>
 
 <div class="filterbar flex flex-wrap items-center width-100">

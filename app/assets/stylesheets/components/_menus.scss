@@ -42,6 +42,10 @@
     width: 16rem;
     padding: 8px;
 
+    .heading .btn & {
+      left: -75%;
+    }
+
     .card & {
       right: 0;
     }
