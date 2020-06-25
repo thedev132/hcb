@@ -51,7 +51,7 @@ class StaticPagesController < ApplicationController
       end
     end
 
-    send_data result, filename: "Pending Fees #{Date.today}.csv"
+    send_data result, filename: "#{Date.today}_pending_fees.csv"
   end
 
   def pending_disbursements
