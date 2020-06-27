@@ -12,7 +12,7 @@ class OrganizerPositionInvitePolicy < ApplicationPolicy
   end
 
   def show?
-    record.user == user || user.admin?
+    record.email == user.email || user.admin?
   end
 
   def new?
