@@ -3,8 +3,14 @@
 
   <div class="field">
     <%= form.label :memo %>
-    <%= form.text_field :memo, maxlength: 40, placeholder: 'for venue payment', required: true, data: { behavior: 'check_memo_field'} %>
-    <span class="muted" data-behavior="check_characters_update">This will appear on the physical check. You have 40 characters remaining.</span>
+    <%= form.text_field :memo,
+        maxlength: 30,
+        placeholder: 'for venue payment',
+        required: true,
+        'data-behavior': 'check_memo_field' %>
+    <span class="muted" data-behavior="check_characters_update">
+      This will appear on the physical check. You have 30 characters remaining.
+    </span>
   </div>
 
   <%= form.label :amount, 'Amount' %>
