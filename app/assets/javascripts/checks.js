@@ -66,7 +66,7 @@ $(document).on('turbolinks:load', function() {
       let characters = $(event.currentTarget).val().length
 
       $('[data-behavior~="check_characters_update"').text(
-        `This will appear on the physical check. You have ${40 -
+        `This will appear on the physical check. You have ${30 -
           characters} characters remaining.`
       )
     }
