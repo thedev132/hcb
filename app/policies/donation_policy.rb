@@ -1,6 +1,6 @@
 class DonationPolicy < ApplicationPolicy
   def show?
-    user&.admin?
+    admin_or_teammember
   end
 
   def all_index?
