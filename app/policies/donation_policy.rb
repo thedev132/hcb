@@ -1,6 +1,6 @@
 class DonationPolicy < ApplicationPolicy
   def show?
-    admin_or_teammember
+    record.event.users.include?(user) || user&.admin?
   end
 
   def all_index?
