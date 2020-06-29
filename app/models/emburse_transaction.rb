@@ -11,6 +11,7 @@ class EmburseTransaction < ApplicationRecord
   scope :undeclined, -> { where.not(state: 'declined') }
   scope :declined, -> { where(state: 'declined') }
   scope :under_review, -> { where(event_id: nil).undeclined }
+  scope :missing_receipt, -> { where.not(event_id: nil).where(receipt_url: nil, state: 'completed') }
 
   belongs_to :event, required: false
   belongs_to :card, required: false

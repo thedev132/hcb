@@ -12,13 +12,9 @@
   <%= link_to 'All cards', cards_path, class: 'breadcrumb' %>
 <% end %>
 
-<% if @card %>
-  <%# if we don't limit width of the card, it looks weird
-    on larger screens %>
-  <div style="max-width: 400px; margin: 0 auto">
-    <%= render 'cards/card', card: @card %>
-  </div>
-<% end %>
+<div style="max-width: 400px; margin: 0 auto">
+  <%= render @card %>
+</div>
 
 <% if @card.is_virtual %>
   <div style="text-align: center;">
@@ -26,12 +22,19 @@
       class: "btn bg-info mt3" %>
   </div>
 <% end %>
-<article class="card max-width-2 mx-auto mt3">
+<article class="card max-width-2 mx-auto mt3 <%= "border b--warning" if @card.transactions_missing_receipts.any? %>">
   <section class="mb2">
     <h2 class="mt0 mb0 heading">
       <span class="flex-auto">Card for <%= @card.full_name %></span>
       <span class="h3"><%= card_mention @card %></span>
     </h2>
+
+    <% if @card.transactions_missing_receipts.any? %>
+    <div class="flex items-center warning">
+      <%= inline_icon 'important', size: 32, class: 'mr1' %>
+      <p class="bold mt0 mb0">This card has <%= pluralize @card.transactions_missing_receipts.size, "missing receipts" %></p>
+    </div>
+    <% end %>
 
     <section class="details">
       <div>

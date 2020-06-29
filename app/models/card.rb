@@ -13,6 +13,7 @@ class Card < ApplicationRecord
   has_one :card_request
   has_many :load_card_requests
   has_many :emburse_transactions
+  has_many :transactions_missing_receipts, -> { where(receipt_url: nil, state: 'completed').where("created_at <= ?", 1.week.ago.utc)}, foreign_key: :card_id, class_name: "EmburseTransaction"
 
   # general validations
   validates :full_name,
@@ -72,6 +73,10 @@ class Card < ApplicationRecord
 
   def formatted_card_number
     "•••• •••• •••• #{last_four}"
+  end
+
+  def hidden_card_number
+    "•••• •••• •••• ••••"
   end
 
   def deactivate!

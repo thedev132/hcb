@@ -7,7 +7,7 @@
 <%= render 'events/nav' if @event %>
 
 <% if @card %>
-  <%= render 'cards/card', card: @card %>
+  <%= render @card %>
 <% end %>
 
 <% admin_tools('mt3 mb0') do %>

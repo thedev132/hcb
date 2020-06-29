@@ -64,6 +64,15 @@
   }
 }
 
+.emburse-card__warning {
+  position: absolute;
+  background: map-get($palette, warning);
+  color: white;
+  border-radius: 1rem;
+  right: 1rem;
+  bottom: 1rem;
+}
+
 .emburse-card__status {
   position: absolute;
   right: 0rem;

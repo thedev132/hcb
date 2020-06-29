@@ -61,13 +61,13 @@ West Hollywood, CA 90069</pre>
 </h2>
 <% if @event.cards.any? %>
   <section class="mixed-grid grid--spacious mt2">
-    <%= render partial: 'cards/card', collection: @event.cards.active %>
+    <%= render @event.cards.active %>
   </section>
   <% if @event.cards.deactivated.size > 0 %>
     <details class="w-100 left-align">
       <summary><h3 class="inline-block pb0 border-none">Deactivated cards</h3></summary>
       <section class="mixed-grid grid--spacious mt2">
-      <%= render partial: 'cards/card', collection: @event.cards.deactivated %>
+      <%= render @event.cards.deactivated %>
       </section>
     </details>
   <% end %>
