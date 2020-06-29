@@ -25,7 +25,7 @@ module UsersHelper
 
   def user_mention(user, options = {})
     avi = avatar_for user
-    name = content_tag :span, user.name
+    name = content_tag :span, user.initial_name
     if user.admin?
       bolt = inline_icon 'admin-badge', size: 20
       content_tag :span,
