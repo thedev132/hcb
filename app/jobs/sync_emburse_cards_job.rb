@@ -1,9 +1,10 @@
 class SyncEmburseCardsJob < ApplicationJob
-  RUN_EVERY = 5.minutes
+  RUN_EVERY = 30.seconds
+  CHUNK_SIZE = 50
 
-  def perform(repeat = false)
-    Card.all.each do |card|
-      puts card.emburse_id
+  def perform(repeat = false, update_all = false, offset_index = 0)
+    cards_to_update = update_all ? Card.all : Card.limit(CHUNK_SIZE).offset(offset_index)
+    cards_to_update.each do |card|
       card.sync_from_emburse!
       card.save!
     rescue EmburseClient::NotFoundError
@@ -14,6 +15,6 @@ class SyncEmburseCardsJob < ApplicationJob
       card.save!
     end
 
-    self.class.set(wait: RUN_EVERY).perform_later(true) if repeat
+    self.class.set(wait: RUN_EVERY).perform_later(true, false, CHUNK_SIZE + offset_index) if repeat
   end
 end
