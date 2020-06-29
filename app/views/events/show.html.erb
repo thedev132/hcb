@@ -19,6 +19,9 @@
 
 <div class="flex flex-wrap items-center justify-center mb2 md-mb3">
   <% if @organizers.any? %>
+    <%= pop_icon_to 'email',
+      "mailto:#{@organizers.map(&:user).map(&:email).join(',')}",
+      class: 'mr2' if admin_signed_in? %>
     <% @organizers.each do |position| %>
       <div class="avatar-grow tooltipped tooltipped--s mr1" aria-label="<%= position.user.full_name %>">
         <%= avatar_for position.user, 48 %>
