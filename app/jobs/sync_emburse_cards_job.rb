@@ -3,7 +3,16 @@ class SyncEmburseCardsJob < ApplicationJob
   CHUNK_SIZE = 50
 
   def perform(repeat = false, update_all = false, offset_index = 0)
-    cards_to_update = update_all ? Card.all : Card.limit(CHUNK_SIZE).offset(offset_index)
+    cards_to_update = if update_all 
+      Card.all
+    else
+      offset_index_wrapped = if offset_index >= Card.all.size
+        0
+      else
+        offset_index
+      end
+      Card.limit(CHUNK_SIZE).offset(offset_index_wrapped)
+    end
     puts "Syncing cards #{cards_to_update.pluck :id}"
     cards_to_update.each do |card|
       card.sync_from_emburse!
