@@ -11,7 +11,7 @@ class GSuiteAccount < ApplicationRecord
   validates_presence_of :address, :backup_email, :first_name, :last_name
 
   validate :status_accepted_or_rejected
-  validates :address, uniqueness: { scope: :g_suite }
+  validates :address, uniqueness: { scope: :g_suite }, message: 'is taken by another user'
 
   before_create :sync_create_to_gsuite
   after_create :send_email_notification
