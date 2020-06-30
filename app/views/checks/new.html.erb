@@ -34,7 +34,7 @@
     <link href="https://fonts.googleapis.com/css?family=Space+Mono" rel="stylesheet">
     <div class="card border b--warning pb0 mb2 max-width-2">
         <div class="flex items-center warning">
-          <%= inline_icon 'important', size: 32, class: 'mr1' %>
+          <%= inline_icon 'info', size: 32, class: 'mr1' %>
           <p class="bold mt0 mb0">Important info about checks:</p>
         </div>
         <ul class="mt1 mb2">
@@ -42,12 +42,10 @@
           <li>This check will be valid for 30 days, until <%= format_date DateTime.now + 1.month %></li>
           <li>Your point of contact needs to approve your check before it's sent out. This usually takes 1 business day.</li>
         </ul>
-        <div class="border-top card__banner card__darker slate">
+        <div class="border-top card__banner card__darker secondary">
           <strong>Questions?</strong>
           Talk to your point of contact,
-          <%= mail_to @event.point_of_contact.email do %>
-            <%= @event.point_of_contact.name %>
-          <% end %>
+          <%= mail_to @event.point_of_contact.name, @event.point_of_contact.email %>.
         </div>
     </div>
   </aside>

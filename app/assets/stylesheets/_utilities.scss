@@ -122,6 +122,10 @@ $shades: (
   }
 }
 
+.secondary {
+  color: map-get($palette, slate);
+}
+
 .b--warning {
   border-color: map-get($palette, warning);
 }

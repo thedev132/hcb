@@ -37,9 +37,9 @@ when :start %>
       <ol class="steps">
         <li>Sign in to your domain’s account at your domain host.</li>
         <li>Go to the settings section where you can update your domain’s MX records.
-          <p class="slate mt1 mb0">It might be called something like “Manage DNS,” “Email Settings,” or “Advanced Settings.”</p></li>
+          <p class="secondary mt1 mb0">It might be called something like “Manage DNS,” “Email Settings,” or “Advanced Settings.”</p></li>
         <li>Delete any existing MX records.<br>
-          <p class="slate mt1 mb0">If you can’t delete the existing records, change their priority number to 20 or higher.</p></li>
+          <p class="secondary mt1 mb0">If you can’t delete the existing records, change their priority number to 20 or higher.</p></li>
         <li>
           <% if @g_suite %>
           <strong>Add your G Suite’s verification record</strong>. This is specific to your G Suite. Make it a <strong>TXT record</strong>, and set the value to this:
@@ -124,7 +124,7 @@ when :start %>
           <p><strong>Note:</strong> Some domain hosts use different labels for the name and value fields, and some hosts also require a trailing period at the end of the server name.</p>
         </li>
         <li>Save your changes.
-          <p class="slate mt1 mb0">Typically, you can send and receive messages at your new G Suite email address in less than 6 hours. However, it may take 48–72 hours before you receive email at your new address. It’s no fun to wait, but the time for MX records to take effect depends on your domain host. We have no control over this.</p>
+          <p class="secondary mt1 mb0">Typically, you can send and receive messages at your new G Suite email address in less than 6 hours. However, it may take 48–72 hours before you receive email at your new address. It’s no fun to wait, but the time for MX records to take effect depends on your domain host. We have no control over this.</p>
         </li>
         <li>Add your accounts above!</li>
       </ol>
