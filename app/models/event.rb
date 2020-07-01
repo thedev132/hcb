@@ -37,7 +37,7 @@ class Event < ApplicationRecord
 
   validate :point_of_contact_is_admin
 
-  validates :name, :start, :end, :address, :sponsorship_fee, presence: true
+  validates :name, :sponsorship_fee, presence: true
   validates :slug, uniqueness: true, presence: true, format: { without: /\s/ }
 
   before_create :default_values
