@@ -87,7 +87,7 @@ class AchTransfersController < ApplicationController
   end
 
   def set_event
-    @event = Event.find(params[:event_id])
+    @event = Event.friendly.find(params[:event_id])
   end
 
   def ach_transfer_params

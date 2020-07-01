@@ -11,7 +11,7 @@ class TransactionsController < ApplicationController
   end
 
   def export
-    @event = Event.find(params[:event])
+    @event = Event.friendly.find(params[:event])
     @transactions = @event.transactions
     authorize @transactions
 

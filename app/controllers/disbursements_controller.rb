@@ -11,7 +11,7 @@ class DisbursementsController < ApplicationController
   end
 
   def new
-    @event = Event.find(params[:event_id]) if params[:event_id]
+    @event = Event.friendly.find(params[:event_id]) if params[:event_id]
     @disbursement = Disbursement.new(event: @event)
 
     authorize @disbursement
@@ -22,7 +22,7 @@ class DisbursementsController < ApplicationController
     result_params[:amount] = result_params[:amount].gsub(',', '').to_f * 100
 
     @disbursement = Disbursement.new(result_params)
-    @event = Event.find(params[:disbursement][:event_id])
+    @event = Event.friendly.find(params[:disbursement][:event_id])
 
     authorize @disbursement
 

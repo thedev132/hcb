@@ -215,7 +215,7 @@ class ChecksController < ApplicationController
   end
 
   def set_event
-    @event = Event.find(params[:event_id])
+    @event = Event.friendly.find(params[:event_id])
   end
 
   def filtered_params

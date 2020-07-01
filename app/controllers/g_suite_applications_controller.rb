@@ -93,7 +93,7 @@ class GSuiteApplicationsController < ApplicationController
 
   def set_event
     # TODO: needs security for if event isnt yours
-    @event = @g_suite_application&.event || Event.find(params[:id] || params[:event_id])
+    @event = @g_suite_application&.event || Event.friendly.find(params[:id] || params[:event_id])
   end
 
   # Only allow a trusted parameter "white list" through.

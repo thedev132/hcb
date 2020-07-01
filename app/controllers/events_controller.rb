@@ -73,7 +73,7 @@ class EventsController < ApplicationController
   end
 
   def team
-    @event = Event.find(params[:event_id])
+    @event = Event.friendly.find(params[:event_id])
     @positions = @event.organizer_positions.includes(:user)
     @pending = @event.organizer_position_invites.pending.includes(:sender)
     authorize @event
@@ -154,13 +154,13 @@ class EventsController < ApplicationController
   end
 
   def donation_overview
-    @event = Event.find(params[:event_id])
+    @event = Event.friendly.find(params[:event_id])
     authorize @event
     @donations = @event.donations.where(status: 'succeeded').sort_by {|d| d.created_at }.reverse
   end
 
   def transfers
-    @event = Event.find(params[:event_id])
+    @event = Event.friendly.find(params[:event_id])
     authorize @event
 
     @checks = @event.checks.includes(:creator)
@@ -170,12 +170,12 @@ class EventsController < ApplicationController
   end
 
   def promotions
-    @event = Event.find(params[:event_id])
+    @event = Event.friendly.find(params[:event_id])
     authorize @event
   end
 
   def reimbursements
-    @event = Event.find(params[:event_id])
+    @event = Event.friendly.find(params[:event_id])
     authorize @event
   end
 
@@ -183,7 +183,7 @@ class EventsController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_event
-    @event = Event.find(params[:id])
+    @event = Event.friendly.find(params[:id])
   rescue ActiveRecord::RecordNotFound
     flash[:error] = 'We couldn’t find that event!'
     redirect_to root_path

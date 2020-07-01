@@ -33,7 +33,7 @@ class InvoicesController < ApplicationController
   end
 
   def new
-    @event = Event.find(params[:event_id])
+    @event = Event.friendly.find(params[:event_id])
     @sponsor = Sponsor.new(event: @event)
     @invoice = Invoice.new(sponsor: @sponsor)
 
@@ -44,10 +44,10 @@ class InvoicesController < ApplicationController
     invoice_params = filtered_params.except(:action, :controller, :sponsor_attributes)
     invoice_params[:item_amount] = (filtered_params[:item_amount].gsub(',', '').to_f * 100.to_i)
 
-    @event = Event.find params[:event_id]
+    @event = Event.friendly.find params[:event_id]
     sponsor_attributes = filtered_params[:sponsor_attributes].merge(event: @event)
 
-    @sponsor = Sponsor.find_or_initialize_by(id: sponsor_attributes[:id], event: @event)
+    @sponsor = Sponsor.friendly.find_or_initialize_by(id: sponsor_attributes[:id], event: @event)
     @invoice = Invoice.new(invoice_params)
     @invoice.sponsor = @sponsor
     @invoice.creator = current_user
@@ -148,6 +148,6 @@ class InvoicesController < ApplicationController
   end
 
   def set_event
-    @event = Event.find(params[:id] || params[:event_id])
+    @event = Event.friendly.find(params[:id] || params[:event_id])
   end
 end

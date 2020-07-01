@@ -50,12 +50,12 @@ class UsersController < ApplicationController
   end
 
   def edit
-    @user = User.find(params[:id])
+    @user = User.friendly.find(params[:id])
     authorize @user
   end
 
   def update
-    @user = User.find(params[:id])
+    @user = User.friendly.find(params[:id])
     authorize @user
 
     if @user.update(user_params)
@@ -67,7 +67,7 @@ class UsersController < ApplicationController
   end
 
   def delete_profile_picture
-    @user = User.find(params[:user_id])
+    @user = User.friendly.find(params[:user_id])
     authorize @user
 
     @user.profile_picture.purge_later

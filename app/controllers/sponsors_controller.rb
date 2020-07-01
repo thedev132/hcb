@@ -57,7 +57,7 @@ class SponsorsController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_sponsor
-    @sponsor = Sponsor.find(params[:id])
+    @sponsor = Sponsor.friendly.find(params[:id])
     @event = @sponsor.event
   end
 

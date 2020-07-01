@@ -1,12 +1,14 @@
 class OrganizerPositionInvitesController < ApplicationController
+  before_action :set_opi, only: [:show, :accept, :reject, :cancel]
+
   def new
     @invite = OrganizerPositionInvite.new
-    @invite.event = Event.find(params[:event_id])
+    @invite.event = Event.friendly.find(params[:event_id])
     authorize @invite
   end
 
   def create
-    event = Event.find(params[:event_id])
+    event = Event.friendly.find(params[:event_id])
 
     @invite = OrganizerPositionInvite.new(invite_params)
     @invite.event = event
@@ -26,7 +28,6 @@ class OrganizerPositionInvitesController < ApplicationController
   end
 
   def show
-    @invite = OrganizerPositionInvite.find(params[:id])
     authorize @invite
     @organizers = @invite.event.organizer_positions.includes(:user)
     if @invite.cancelled?
@@ -36,7 +37,6 @@ class OrganizerPositionInvitesController < ApplicationController
   end
 
   def accept
-    @invite = OrganizerPositionInvite.find(params[:organizer_position_invite_id])
     authorize @invite
 
     if @invite.accept
@@ -48,7 +48,6 @@ class OrganizerPositionInvitesController < ApplicationController
   end
 
   def reject
-    @invite = OrganizerPositionInvite.find(params[:organizer_position_invite_id])
     authorize @invite
 
     if @invite.reject
@@ -61,7 +60,6 @@ class OrganizerPositionInvitesController < ApplicationController
   end
 
   def cancel
-    @invite = OrganizerPositionInvite.find(params[:organizer_position_invite_id])
     authorize @invite
 
     if @invite.cancel
@@ -74,6 +72,10 @@ class OrganizerPositionInvitesController < ApplicationController
   end
 
   private
+
+  def set_opi
+    @invite = OrganizerPositionInvite.friendly.find(params[:organizer_position_invite_id] || params[:id])
+  end
 
   def invite_params
     params.require(:organizer_position_invite).permit(:email)

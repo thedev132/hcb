@@ -97,7 +97,7 @@ class CardsController < ApplicationController
   end
 
   def status
-    @event = Event.find(params[:event_id])
+    @event = Event.friendly.find(params[:event_id])
     @card_requests = @event.card_requests.under_review
     @load_card_requests = @event.load_card_requests
   end
@@ -106,7 +106,7 @@ class CardsController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_card
-    @card = Card.find(params[:id] || params[:card_id])
+    @card = Card.friendly.friendly.find(params[:id] || params[:card_id])
     @event = @card.event
   end
 
