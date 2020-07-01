@@ -8,7 +8,7 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload', defer: true %>
     <meta name="format-detection" content="telephone=no">
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
@@ -18,6 +18,8 @@
     <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#ec3750">
     <meta name="msapplication-TileColor" content="#ec3750">
     <meta name="theme-color" content="#ec3750">
+    <link rel="preload" href="https://assets.hackclub.com/fonts/Phantom_Sans_0.7/Regular.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="https://assets.hackclub.com/fonts/Phantom_Sans_0.7/Bold.woff2" as="font" type="font/woff2" crossorigin>
     <%= yield(:head) if content_for?(:head) %>
   </head>
   <body class="bg-snow <%= content_for :page_class %>">
@@ -51,7 +53,6 @@
         <div class="header-center flex items-center justify-start <%= Rails.env.development? && 'tooltipped tooltipped--s' %>" aria-label="You're in development mode. <%= development_mode_flavor %>">
           <%= link_to root_path, class: 'pl2 pr2' do %>
             <%= image_tag Rails.env.development? ? 'logo-dev.png' : @home_size ? 'logo-512.png' : 'logo.png', name: 'header-logo', width: @home_size || 48, height: @home_size || 48, alt: 'Bank logo' %>
-            <%= image_tag 'hank.png', name: 'alternative-logo', style: 'display: none;', width: @home_size || 48, height: @home_size || 48, alt: 'Hank logo' %>
           <% end %>
         </div>
 

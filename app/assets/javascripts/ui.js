@@ -17,19 +17,6 @@ $(document).on('turbolinks:load', function () {
 
   $('[data-behavior~=select_content]').on('click', e => e.target.select())
 
-  let hankIndex = 0
-  $(document).on('keydown', function (e) {
-    if (e.originalEvent.key === 'hank'[hankIndex]) {
-      hankIndex++
-      if (hankIndex === 4) {
-        $('[name="header-logo"]').hide()
-        return $('[name="alternative-logo"]').show()
-      }
-    } else {
-      return (hankIndex = 0)
-    }
-  })
-
   $(document).on('click', '[data-behavior~=flash]', function () {
     $(this).fadeOut('medium')
   })

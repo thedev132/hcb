@@ -20,7 +20,7 @@ module UsersHelper
       src = gravatar_url(user.email, user.initials, user.id, size * 2)
     end
 
-    image_tag(src, options.merge({ alt: user.name, width: size, height: size, class: "circle #{options[:class]}" }))
+    image_tag(src, options.merge({ loading: 'lazy', alt: user.name, width: size, height: size, class: "circle #{options[:class]}" }))
   end
 
   def user_mention(user, options = {})

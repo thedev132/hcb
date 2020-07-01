@@ -15,7 +15,6 @@ gem 'sass-rails', '~> 5.0'
 gem 'coffee-rails'
 # Include jQuery
 gem 'jquery-rails'
-gem 'jquery-ui-rails'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
 # See https://github.com/rails/execjs#readme for more supported runtimes
@@ -134,3 +133,6 @@ group :test do
   # Easy installation and use of chromedriver to run system tests with Chrome
   gem 'chromedriver-helper'
 end
+
+# Enable compression in production
+gem 'heroku-deflater', group: :production
