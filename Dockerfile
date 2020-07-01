@@ -3,9 +3,13 @@ FROM ruby:2.5.5
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
-# Install latest version of pg_restore for easy importing of production
-# database & vim for easy editing of credentials.
-RUN apt-get -y update && apt-get -y install postgresql-client vim nodejs
+RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
+RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
+RUN apt-get -y update -qq
+RUN apt-get -y install yarn nodejs \
+  postgresql-client vim
+  # install postgresql-client for easy importing of production database & vim
+  # for easy editing of credentials
 ENV EDITOR=vim
 
 ADD Gemfile /usr/src/app/Gemfile
@@ -16,5 +20,6 @@ ENV BUNDLE_GEMFILE=Gemfile \
   BUNDLE_PATH=/bundle
 
 RUN bundle install
+RUN yarn install --check-files
 
 ADD . /usr/src/app
