@@ -80,14 +80,14 @@ class InvoicesController < ApplicationController
 
   # form for manually marking invoices as paid
   def manual_payment
-    @invoice = Invoice.find(params[:invoice_id])
+    @invoice = Invoice.friendly.find(params[:invoice_id])
 
     authorize @invoice
   end
 
   # actual action for manually marking invoices as paid
   def manually_mark_as_paid
-    @invoice = Invoice.find(params[:invoice_id])
+    @invoice = Invoice.friendly.find(params[:invoice_id])
 
     authorize @invoice
 
@@ -103,7 +103,7 @@ class InvoicesController < ApplicationController
   end
 
   def archive
-    @invoice = Invoice.find(params[:invoice_id])
+    @invoice = Invoice.friendly.find(params[:invoice_id])
 
     authorize @invoice
 
@@ -119,7 +119,7 @@ class InvoicesController < ApplicationController
   end
 
   def unarchive
-    @invoice = Invoice.find(params[:invoice_id])
+    @invoice = Invoice.friendly.find(params[:invoice_id])
 
     authorize @invoice
 
