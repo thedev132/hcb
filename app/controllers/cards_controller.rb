@@ -106,7 +106,7 @@ class CardsController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_card
-    @card = Card.friendly.friendly.find(params[:id] || params[:card_id])
+    @card = Card.friendly.find(params[:id] || params[:card_id])
     @event = @card.event
   end
 
