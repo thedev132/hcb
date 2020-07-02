@@ -119,8 +119,7 @@
       </thead>
       <tbody>
       <% @emburse_transactions.each do |et| %>
-        <%= render 'emburse_transactions/transaction',
-          et: et, show_running_sum: false, hide_card: true %>
+        <%= render 'emburse_transactions/transaction', et: et, show_running_sum: false %>
       <% end %>
       </tbody>
     </table>

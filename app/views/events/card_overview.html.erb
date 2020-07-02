@@ -174,7 +174,7 @@ West Hollywood, CA 90069</pre>
     <%= render partial: 'emburse_transactions/transaction',
                collection: @emburse_transactions,
                as: :et,
-               locals: { show_running_sum: true } %>
+               locals: { show_running_sum: true, show_card: true } %>
     </tbody>
   </table>
   </div>

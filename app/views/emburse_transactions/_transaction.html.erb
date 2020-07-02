@@ -34,7 +34,7 @@
     <td class="nowrap"><%= render_money @sum %></td>
     <% @sum -= et.amount if et.undeclined? %>
   <% end %>
-  <% if defined? hide_card %>
+  <% if defined? show_card %>
   <td>
     <%= et.card.nil? ? '—' : card_mention(et.card) %>
     <%= "(#{et.card.full_name})" if et.card %>
