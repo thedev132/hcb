@@ -63,7 +63,7 @@ class InvoicesController < ApplicationController
   end
 
   def show
-    @invoice = Invoice.find(params[:id])
+    @invoice = Invoice.friendly.find(params[:id])
     @sponsor = @invoice.sponsor
     @event = @sponsor.event
     @payout = @invoice&.payout
