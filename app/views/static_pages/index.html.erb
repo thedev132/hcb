@@ -10,6 +10,10 @@
   </h1>
 
   <% admin_tools('w-100 mt3') do %>
+    <%= react_component("HelloWorld", { greeting: "Hello from a react component." }) %>
+  <% end %>
+
+  <% admin_tools('w-100 mt3') do %>
     <%= OpsCheckin.streak %> days since last incident
   <% end %>
 

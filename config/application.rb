@@ -21,6 +21,8 @@ module Bank
       g.test_framework false
     end
 
+    config.add_autoload_paths_to_load_path
+
     # Use Sidekiq
     config.active_job.queue_adapter = :sidekiq
 
