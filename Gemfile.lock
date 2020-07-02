@@ -62,8 +62,6 @@ GEM
     addressable (2.7.0)
       public_suffix (>= 2.0.2, < 5.0)
     api-pagination (4.8.2)
-    archive-zip (0.12.0)
-      io-like (~> 0.3.0)
     aws-eventstream (1.1.0)
     aws-partitions (1.337.0)
     aws-sdk-core (3.102.1)
@@ -90,14 +88,6 @@ GEM
       activesupport (>= 3.2.0)
       tzinfo
     byebug (11.1.3)
-    capybara (3.33.0)
-      addressable
-      mini_mime (>= 0.1.3)
-      nokogiri (~> 1.8)
-      rack (>= 1.6.0)
-      rack-test (>= 0.6.3)
-      regexp_parser (~> 1.5)
-      xpath (~> 3.2)
     caxlsx (3.0.1)
       htmlentities (~> 4.3, >= 4.3.4)
       mimemagic (~> 0.3)
@@ -106,10 +96,6 @@ GEM
     caxlsx_rails (0.6.2)
       actionpack (>= 3.1)
       caxlsx (>= 3.0)
-    childprocess (3.0.0)
-    chromedriver-helper (2.1.1)
-      archive-zip (~> 0.10)
-      nokogiri (~> 1.8)
     chunky_png (1.3.11)
     concurrent-ruby (1.1.6)
     connection_pool (2.2.3)
@@ -157,7 +143,6 @@ GEM
     httpclient (2.8.3)
     i18n (1.8.3)
       concurrent-ruby (~> 1.0)
-    io-like (0.3.1)
     jmespath (1.4.0)
     jquery-rails (4.4.0)
       rails-dom-testing (>= 1, < 3)
@@ -181,10 +166,9 @@ GEM
     kramdown-parser-gfm (1.1.0)
       kramdown (~> 2.0)
     libv8 (7.3.492.27.1)
-    listen (3.1.5)
-      rb-fsevent (~> 0.9, >= 0.9.4)
-      rb-inotify (~> 0.9, >= 0.9.7)
-      ruby_dep (~> 1.2)
+    listen (3.2.1)
+      rb-fsevent (~> 0.10, >= 0.10.3)
+      rb-inotify (~> 0.9, >= 0.9.10)
     lob (5.1.1)
       rest-client (>= 2.0.1, < 3.0)
     local_time (2.1.0)
@@ -226,7 +210,8 @@ GEM
       faraday_middleware
       hashie (>= 3.4.3)
     public_suffix (4.0.5)
-    puma (3.12.6)
+    puma (4.3.5)
+      nio4r (~> 2.0)
     pundit (2.1.0)
       activesupport (>= 3.0.0)
     rack (2.2.3)
@@ -268,7 +253,6 @@ GEM
       ffi (~> 1.0)
     redcarpet (3.5.0)
     redis (4.2.1)
-    regexp_parser (1.7.1)
     representable (3.0.4)
       declarative (< 0.1.0)
       declarative-option (< 0.2.0)
@@ -286,7 +270,6 @@ GEM
       chunky_png (~> 1.0)
       rqrcode_core (~> 0.1)
     rqrcode_core (0.1.2)
-    ruby_dep (1.5.0)
     rubyzip (2.3.0)
     sassc (2.4.0)
       ffi (~> 1.9)
@@ -296,9 +279,6 @@ GEM
       sprockets (> 3.0)
       sprockets-rails
       tilt
-    selenium-webdriver (3.142.7)
-      childprocess (>= 0.5, < 4.0)
-      rubyzip (>= 1.2.2)
     sidekiq (6.1.0)
       connection_pool (>= 2.2.2)
       rack (~> 2.0)
@@ -355,8 +335,6 @@ GEM
     wicked_pdf (2.1.0)
       activesupport
     wkhtmltopdf-binary (0.12.6.2)
-    xpath (3.2.0)
-      nokogiri (~> 1.8)
     zeitwerk (2.3.1)
 
 PLATFORMS
@@ -366,14 +344,12 @@ DEPENDENCIES
   acts_as_paranoid (~> 0.6.0)
   api-pagination
   aws-sdk-s3
-  bootsnap (>= 1.1.0)
+  bootsnap (>= 1.4.4)
   bugsnag
   business_time
   byebug
-  capybara (>= 2.15, < 4.0)
   caxlsx
   caxlsx_rails
-  chromedriver-helper
   faraday
   friendly_id (~> 5.2.0)
   google-api-client
@@ -381,7 +357,7 @@ DEPENDENCIES
   httparty
   jquery-rails
   kaminari
-  listen (>= 3.0.5, < 3.2)
+  listen (~> 3.2)
   lob
   local_time
   maildown
@@ -390,17 +366,16 @@ DEPENDENCIES
   pg (>= 0.18, < 2.0)
   phonelib
   plaid (~> 6.0)
-  puma (~> 3.12)
+  puma (~> 4.1)
   pundit
   rack-cors
-  rails (~> 6.0)
+  rails (~> 6.0.3, >= 6.0.3.2)
   redcarpet
   rinku
   rounding
   rqrcode
   rubyzip (>= 1.2.1)
   sassc-rails
-  selenium-webdriver
   sidekiq
   skylight
   spring
