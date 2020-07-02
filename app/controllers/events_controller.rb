@@ -146,7 +146,7 @@ class EventsController < ApplicationController
     @event = Event.includes([
       { g_suite: :accounts },
       :g_suite_application
-    ]).find(params[:event_id])
+    ]).friendly.find(params[:event_id])
     authorize @event
     @g_suite = @event.g_suite
     @g_suite_application = @event.g_suite_application
