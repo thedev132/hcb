@@ -44,6 +44,14 @@ input[type='submit'],
     margin-right: 6px;
   }
 
+  &.bg-muted {
+    @include gradient(muted);
+  }
+
+  &.bg-purple {
+    @include gradient(purple);
+  }
+
   &.bg-success {
     @include gradient(success);
     color: darken(map-get($palette, success), 33.3%) !important;
@@ -54,9 +62,9 @@ input[type='submit'],
     color: darken(map-get($palette, accent), 33.3%) !important;
   }
 
+  &.bg-error,
   &.btn--destroy {
     @include gradient(error);
-    color: darken(map-get($palette, error), 33.3%) !important;
   }
 }
 

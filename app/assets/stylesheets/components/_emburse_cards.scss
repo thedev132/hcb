@@ -10,17 +10,19 @@
   position: relative;
   background-color: #54d;
   background-image: radial-gradient(ellipse at top right, #867ae7, transparent);
-  background-image: #{image-url('emburse-swoosh-plastic.svg')}, radial-gradient(ellipse at top right, #867ae7, transparent);
+  background-image: #{image-url('emburse-swoosh-plastic.svg')},
+    radial-gradient(ellipse at top right, #867ae7, transparent);
   &.deactivated {
     -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
     filter: grayscale(100%);
   }
   background-repeat: no-repeat;
   /* 120% to account for z-axis perspective */
-  background-size:120%;
+  background-size: 120%;
   font-family: $mono;
   font-size: 1.25rem;
   color: $white;
+  text-align: left;
   border-radius: 12px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.25);
   transition: 0.25s ease-out transform;
@@ -45,7 +47,8 @@
   }
 
   &.virtual {
-    background-image: #{image-url('emburse-swoosh-digital.svg')}, radial-gradient(ellipse at top right, #867ae7, transparent);
+    background-image: #{image-url('emburse-swoosh-digital.svg')},
+      radial-gradient(ellipse at top right, #867ae7, transparent);
     &:before {
       background: #{image-url('emburse-logo-digital.svg')};
     }
@@ -66,11 +69,12 @@
 
 .emburse-card__warning {
   position: absolute;
-  background: map-get($palette, warning);
-  color: white;
-  border-radius: 1rem;
   right: 1rem;
   bottom: 1rem;
+  background-color: map-get($palette, warning);
+  line-height: 0;
+  color: white;
+  border-radius: 1rem;
 }
 
 .emburse-card__status {

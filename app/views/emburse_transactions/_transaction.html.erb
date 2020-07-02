@@ -34,11 +34,13 @@
     <td class="nowrap"><%= render_money @sum %></td>
     <% @sum -= et.amount if et.undeclined? %>
   <% end %>
+  <% if defined? hide_card %>
   <td>
     <%= et.card.nil? ? '—' : card_mention(et.card) %>
     <%= "(#{et.card.full_name})" if et.card %>
   </td>
+  <% end %>
   <td>
-    <%= link_to "More", et %>
+    <%= link_to 'More', et, class: 'secondary' %>
   </td>
 </tr>
