@@ -10,10 +10,6 @@
   </h1>
 
   <% admin_tools('w-100 mt3') do %>
-    <%= react_component("HelloWorld", { greeting: "Hello from a react component." }) %>
-  <% end %>
-
-  <% admin_tools('w-100 mt3') do %>
     <%= OpsCheckin.streak %> days since last incident
   <% end %>
 
@@ -80,39 +76,47 @@
       <%= card_to 'Pending tasks', admin_tasks_path %>
     </ul>
     <ul class="grid grid--narrow left-align w-100 mt0">
-      <%= card_to 'Card Requests', card_requests_path %>
-      <%= card_to 'Transfer Requests', load_card_requests_path %>
-      <%= card_to 'Checks', checks_path %>
-      <%= card_to 'ACH Transfers', ach_transfers_path %>
-      <%= card_to 'Fee Refunds', fee_reimbursements_path %>
-      <%= card_to 'G Suite Applications', g_suite_applications_path %>
-      <%= card_to 'Account Deletion Requests', organizer_position_deletion_requests_path %>
-      <%= card_to 'Transactions', transactions_path %>
-      <%= card_to 'Emburse Transactions', emburse_transactions_path %>
-      <%= card_to 'Pending Fees', pending_fees_path %>
-      <%= card_to 'Pending disbursements', pending_disbursements_path %>
+      <%= react_component "admin_task/Card", human_name: "Card Requests", task_name: :card_requests, task_path: card_requests_path %>
+      <%= react_component "admin_task/Card", human_name: "Transfer Requests", task_name: :load_card_requests, task_path: load_card_requests_path %>
+      <%= react_component "admin_task/Card", human_name: "Checks", task_name: :checks, task_path: checks_path %>
+      <%= react_component "admin_task/Card", human_name: "ACH Transfers", task_name: :ach_transfers, task_path: ach_transfers_path %>
+      <%= react_component "admin_task/Card", human_name: "Fee Refunds", task_name: :fee_reimbursements, task_path: fee_reimbursements_path %>
+      <%= react_component "admin_task/Card", human_name: "G Applications", task_name: :g_suite_applications, task_path: g_suite_applications_path %>
+      <%= react_component "admin_task/Card", human_name: "Deletion Requests", task_name: :organizer_position_deletion_requests, task_path: organizer_position_deletion_requests_path %>
+      <%= react_component "admin_task/Card", human_name: "Transactions", task_name: :transactions, task_path: transactions_path %>
+      <%= react_component "admin_task/Card", human_name: "Fees", task_name: :pending_fees, task_path: pending_fees_path %>
+      <%= react_component "admin_task/Card", human_name: "Disbursements", task_name: :disbursements, task_path: pending_disbursements_path %>
+      <%= react_component "admin_task/Card", human_name: "Hackathons", task_name: :pending_hackathons_airtable, task_path: link_to_airtable_task(:hackathons) %>
+      <%= react_component "admin_task/Card", human_name: "Grants", task_name: :pending_grant_airtable, task_path: link_to_airtable_task(:grant) %>
+      <%= react_component "admin_task/Card", human_name: "StickerMule", task_name: :pending_stickermule_airtable, task_path: link_to_airtable_task(:stickermule) %>
+      <%= react_component "admin_task/Card", human_name: "repl.it", task_name: :pending_replit_airtable, task_path: link_to_airtable_task(:replit) %>
+      <%= react_component "admin_task/Card", human_name: "Sendy", task_name: :pending_sendy_airtable, task_path: link_to_airtable_task(:sendy) %>
+      <%= react_component "admin_task/Card", human_name: "ACH Transfers", task_name: :ach_transfers, task_path: ach_transfers_path %>
+      <%= react_component "admin_task/Card", human_name: "Fee Refunds", task_name: :fee_reimbursements, task_path: fee_reimbursements_path %>
+      <%= react_component "admin_task/Card", human_name: "Emburse Transactions", task_path: emburse_transactions_path %>
     </ul>
 
     <h2>Information</h2>
     <ul class="grid grid--narrow left-align w-100 mt0">
-      <%= card_to 'Events', events_path %>
-      <%= card_to 'Sponsors', sponsors_path %>
-      <%= card_to 'Invoices', all_invoices_path %>
-      <%= card_to 'Donations', all_donations_path %>
-      <%= card_to 'Disbursements', disbursements_path %>
-      <%= card_to 'Cards', cards_path %>
-      <%= card_to 'G Suites', g_suites_path %>
-      <%= card_to 'G Suite Accounts', g_suite_accounts_path, { badge: @active[:g_suite_accounts] } %>
-      <%= card_to 'Negative Events', negative_events_path %>
-      <%= card_to 'Search by User', admin_search_path %>
-      <%= card_to 'Knowledgebase', 'https://hack.af/hcb-knowledgebase', target: '_blank' %>
+      <%= react_component "admin_task/Card", human_name: "Events", task_path: events_path %>
+      <%= react_component "admin_task/Card", human_name: "Sponsors", task_path: sponsors_path %>
+      <%= react_component "admin_task/Card", human_name: "Invoices", task_path: all_invoices_path %>
+      <%= react_component "admin_task/Card", human_name: "Donations", task_path: all_donations_path %>
+      <%= react_component "admin_task/Card", human_name: "Disbursements", task_path: disbursements_path %>
+      <%= react_component "admin_task/Card", human_name: "Cards", task_path: cards_path %>
+      <%= react_component "admin_task/Card", human_name: "G Suites", task_path: g_suites_path%>
+      <%= react_component "admin_task/Card", human_name: "G Suite Accounts", task_name: :g_suite_accounts, task_path: g_suite_accounts_path%>
+      <%= react_component "admin_task/Card", human_name: "G Suite Applications", task_name: :g_suite_applications, task_path: g_suite_applications_path%>
+      <%= react_component "admin_task/Card", human_name: "Negative Events", task_name: :negative_events, task_path: negative_events_path %>
+      <%= react_component "admin_task/Card", human_name: "Search by User", task_path: admin_search_path %>
+      <%= react_component "admin_task/Card", human_name: "Knowledgebase", task_path: 'https://hack.af/hcb-knowledgebase' %>
     </ul>
 
     <h2>Other Tools</h2>
     <ul class="grid grid--narrow left-align w-100 mt0">
-      <%= card_to 'Bank Accounts', bank_accounts_path %>
-      <%= card_to 'Common Docs', common_documents_path %>
-      <%= card_to 'Setup HCB', new_bank_account_path %>
+      <%= react_component "admin_task/Card", human_name: "Bank Accounts", task_path: bank_accounts_path %>
+      <%= react_component "admin_task/Card", human_name: "Common Docs", task_path: common_documents_path %>
+      <%= react_component "admin_task/Card", human_name: "Setup HCB", task_path: new_bank_account_path %>
       <%= card_to 'Export Finances', export_finances_path, { method: :post } %>
     </ul>
     <p>

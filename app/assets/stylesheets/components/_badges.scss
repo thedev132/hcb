@@ -13,6 +13,7 @@
   margin-left: 1rem;
   padding: 0.25rem 0.625rem;
   width: min-intrinsic;
+  transition-duration: 1s;
 
   &.success {
     background-color: rgba(map-get($palette, success), 0.125);
