@@ -89,7 +89,7 @@ class DocumentsController < ApplicationController
   end
 
   def set_document
-    @document = Document.find(params[:id] || params[:document_id])
+    @document = Document.friendly.find(params[:id] || params[:document_id])
     @event = @document.event
   end
 
@@ -97,7 +97,7 @@ class DocumentsController < ApplicationController
     event_id = params[:id] || params[:event_id]
 
     if event_id
-      @event = Event.find(event_id)
+      @event = Event.friendly.find(event_id)
     else
       # this happens for common documents, shared across all events
       nil
