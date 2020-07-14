@@ -128,6 +128,11 @@
     </div>
 
     <div class="field field--checkbox">
+      <%= form.check_box :omit_from_volume %>
+      <%= form.label :omit_from_volume, 'Omit from total TX volume?' %>
+    </div>
+
+    <div class="field field--checkbox">
       <%= form.check_box :has_fiscal_sponsorship_document %>
       <%= form.label :has_fiscal_sponsorship_document, 'Display Fiscal Sponsorship Confirmation in Documents tab?' %>
     </div>

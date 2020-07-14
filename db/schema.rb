@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_04_061011) do
+ActiveRecord::Schema.define(version: 2020_07_14_002411) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
@@ -295,6 +295,7 @@ ActiveRecord::Schema.define(version: 2020_06_04_061011) do
     t.boolean "is_spend_only"
     t.boolean "is_public", default: false
     t.text "public_message"
+    t.boolean "omit_from_volume", default: false
     t.index ["club_airtable_id"], name: "index_events_on_club_airtable_id", unique: true
     t.index ["point_of_contact_id"], name: "index_events_on_point_of_contact_id"
   end
