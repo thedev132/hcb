@@ -199,7 +199,7 @@ class EventsController < ApplicationController
       :sponsorship_fee,
       :expected_budget,
       :has_fiscal_sponsorship_document,
-      :omit_from_volume,
+      :omit_stats,
       :emburse_department_id,
       :partner_logo_url,
       :club_airtable_id,

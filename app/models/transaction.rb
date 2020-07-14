@@ -53,11 +53,11 @@ class Transaction < ApplicationRecord
   end
 
   def self.total_volume
-    self.includes(fee_relationship: :event).where(events: {omit_from_volume: false}).sum('@amount').to_i
+    self.includes(fee_relationship: :event).where(events: {omit_stats: false}).sum('@amount').to_i
   end
 
   def self.during(start_time, end_time)
-    self.includes(fee_relationship: :event).where(events: {omit_from_volume: false})
+    self.includes(fee_relationship: :event).where(events: {omit_stats: false})
         .where(["transactions.date > ? and transactions.date < ?", start_time, end_time])
   end
 

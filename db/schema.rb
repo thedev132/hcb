@@ -295,7 +295,7 @@ ActiveRecord::Schema.define(version: 2020_07_14_002411) do
     t.boolean "is_spend_only"
     t.boolean "is_public", default: false
     t.text "public_message"
-    t.boolean "omit_from_volume", default: false
+    t.boolean "omit_stats", default: false
     t.index ["club_airtable_id"], name: "index_events_on_club_airtable_id", unique: true
     t.index ["point_of_contact_id"], name: "index_events_on_point_of_contact_id"
   end
