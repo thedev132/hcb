@@ -193,8 +193,8 @@ class Event < ApplicationRecord
   def filter_data
     {
       exists: true,
-      transparent: self.is_public?,
-      omitted: self.omit_stats?,
+      transparent: is_public?,
+      omitted: omit_stats?,
       hidden: hidden?
     }
   end
