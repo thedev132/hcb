@@ -53,18 +53,16 @@ class Transaction < ApplicationRecord
   end
 
   def self.total_volume
-    # all transactions between time period except for HQ's (because we don't want them incl. in stats)
-    self.includes(fee_relationship: :event).where(events: {omit_from_volume: false}).sum(:amount).to_i
+    self.includes(fee_relationship: :event).where(events: {omit_from_volume: false}).sum('@amount').to_i
   end
 
   def self.during(start_time, end_time)
-    # all transactions between time period except for HQ's (because we don't want them incl. in stats)
     self.includes(fee_relationship: :event).where(events: {omit_from_volume: false})
         .where(["transactions.date > ? and transactions.date < ?", start_time, end_time])
   end
 
   def self.volume_during(start_time, end_time)
-    self.during(start_time, end_time).sum(:amount).to_i
+    self.during(start_time, end_time).sum('@amount').to_i
   end
 
   def self.raised_during(start_time, end_time)
