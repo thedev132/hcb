@@ -186,14 +186,6 @@ class Event < ApplicationRecord
     end
   end
 
-  def past?
-    self.end < Time.current
-  end
-
-  def future?
-    self.start > Time.current
-  end
-
   def hidden?
     hidden_at.present?
   end
@@ -201,8 +193,8 @@ class Event < ApplicationRecord
   def filter_data
     {
       exists: true,
-      past: past?,
-      future: future?,
+      transparent: self.is_public?,
+      omitted: self.omit_stats?,
       hidden: hidden?
     }
   end
