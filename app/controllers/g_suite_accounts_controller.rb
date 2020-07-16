@@ -72,7 +72,7 @@ class GSuiteAccountsController < ApplicationController
     @g_suite_account = GSuiteAccount.select { |account| account.full_email_address == email }
     @g_suite_account.verified_at = Time.now
     if @g_suite_account.save
-      GSuiteAccountMailer.verify(recipient: @g_suite_account.full_email_address).send_later
+      GSuiteAccountMailer.verify(recipient: @g_suite_account.address).deliver_later
       flash[:success] = 'Email verified!'
       redirect_to @g_suite_account.g_suite.event
     else
