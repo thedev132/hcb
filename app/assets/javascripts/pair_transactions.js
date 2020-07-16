@@ -2,7 +2,7 @@
 
 // This script is a pretty hacky tool to reduce a step in bank admin
 // dashboard work when pairing common transactions with Invoice Payouts
-// or Load Card Requests. It attempts to parse out the event name from a
+// or Emburse Transfers. It attempts to parse out the event name from a
 // selected option and select the event automatically in the events drop-down
 // on behalf of the admin user.
 //
@@ -10,7 +10,7 @@
 // to fail gracefully if it fails.
 //
 // An alternative approach may have been to modify the Rails form itself
-// to embed Event IDs within InvoicePayout or LoadCardRequest <select> options,
+// to embed Event IDs within InvoicePayout or EmburseTransfer <select> options,
 // but that turned out to be overly complicated in Rails code, so instead I moved
 // the mess into this script, where maintainability is less important.
 

@@ -14,7 +14,7 @@ class EmburseTransaction < ApplicationRecord
   scope :missing_receipt, -> { where.not(event_id: nil).where(receipt_url: nil, state: 'completed') }
 
   belongs_to :event, required: false
-  belongs_to :card, required: false
+  belongs_to :emburse_card, required: false
 
   has_many :comments, as: :commentable
 
@@ -56,11 +56,11 @@ class EmburseTransaction < ApplicationRecord
     'Pending'
   end
 
-  def self.total_card_transaction_volume
+  def self.total_emburse_card_transaction_volume
     -self.where('amount < 0').completed.sum(:amount)
   end
 
-  def self.total_card_transaction_count
+  def self.total_emburse_card_transaction_count
     self.where('amount < 0').completed.size
   end
 end

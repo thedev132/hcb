@@ -1,0 +1,127 @@
+<% title "Card #{@emburse_card.last_four}" %>
+<%= render 'events/nav' %>
+
+<% if @emburse_card.created_at > 1.hour.ago %>
+  <%# if the card was created in the last hour, let's give a link back to the card requests list %>
+  <% admin_tools('mt3 mb0') do %>
+    <%= link_to 'All card requests', emburse_card_requests_path, class: 'breadcrumb' %>
+  <% end %>
+<% end %>
+<% admin_tools('mt3 mb0') do %>
+  <%= link_to 'All cards', emburse_cards_path, class: 'breadcrumb' %>
+<% end %>
+
+<article class="check--form flex align-start justify-center mt2">
+  <section class="center mt0 mx-auto" style="width: 400px; max-width: 100%;">
+    <%= render @emburse_card %>
+    <%= link_to @emburse_card.emburse_path, target: '_blank', class: 'btn bg-info mt2 md-mt3' do %>
+      <%= inline_icon 'external' %>
+      View on Emburse
+    <% end if @emburse_card.is_virtual %>
+  </section>
+
+  <article class="card max-width-2 mx-auto mt3">
+    <section class="mb2">
+      <h2 class="mt0 heading">
+        <span class="flex-auto">Card for <%= @emburse_card.full_name %></span>
+        <span class="h3"><%= emburse_card_mention @emburse_card %></span>
+      </h2>
+
+      <section class="details mt2">
+        <div>
+          <strong>Card number</strong>
+          <% unless @emburse_card.is_virtual %>
+            <%= @emburse_card.formatted_card_number %>
+              <div class="right tooltipped tooltipped--w" aria-label="Full number hidden to protect security">
+                <%= inline_icon 'private', size: 32, class: 'smoke' %>
+              </div>
+          <% else %>
+            <% if @emburse_card.user == current_user || current_user.admin? %>
+              <%= link_to 'View on Emburse', @emburse_card.emburse_path, target: '_blank' %>
+            <% else %>
+              <%= @emburse_card.formatted_card_number %>
+              <div class="right tooltipped tooltipped--w" aria-label="Full number hidden to protect security">
+                <%= inline_icon 'private', size: 32, class: 'smoke' %>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+
+        <p>
+          <strong>Ordered by</strong>
+          <%= user_mention @emburse_card.user %>
+        </p>
+
+        <p>
+          <strong>Email address</strong>
+          <%= mail_to @emburse_card.user.email %>
+        </p>
+
+        <p>
+          <strong>Activation status</strong>
+          <%= @emburse_card.status_text %>
+        </p>
+      </section>
+
+      <% if @emburse_card.transactions_missing_receipts.any? %>
+        <section class="md-flex items-center flex-wrap mt2 mb2">
+          <%= link_to @emburse_card.emburse_path, target: '_blank', class: 'btn bg-purple' do %>
+            <%= inline_icon 'plus' %>
+            Add receipts
+          <% end %>
+          <div class="flex items-center warning mt1 md-mt0 md-ml2">
+            <%= inline_icon 'important', size: 32, class: 'mr1' %>
+            <p class="bold mt0 mb0">This card has <%= pluralize @emburse_card.transactions_missing_receipts.size, 'missing receipt' %></p>
+          </div>
+        </section>
+      <% end %>
+
+      <% admin_tools do %>
+        <strong>Emburse ID</strong>
+        <%= link_to @emburse_card.emburse_id, @emburse_card.emburse_path %>
+      <% end %>
+    </section>
+
+    <% admin_tools do %>
+      <%= link_to 'Edit', edit_emburse_card_path(@emburse_card), class: 'btn bg-info' %>
+    <% end %>
+
+    <section class="card__banner card__banner--bottom card__darker pt2 pb2">
+      <p class="muted mt0 mb2">
+        If there are fradulent or incorrect charges on your card,
+        please let your point of contact,
+        <%= mail_to @emburse_card.event.point_of_contact.email, @emburse_card.event.point_of_contact.full_name %>
+        know.
+      </p>
+
+      <% if !@emburse_card.requires_activation? %>
+        <%= link_to "#{@emburse_card.active? ? 'Deactivate' : 'Activate'}", emburse_card_toggle_active_path(@emburse_card.id),
+          method: :post,
+          class: "btn #{@emburse_card.active? ? 'bg-error' : 'bg-success'}" %>
+      <% end %>
+    </section>
+  </article>
+</article>
+
+<% if @emburse_transactions.any? %>
+  <h2 class="mt3">
+    Transactions made on this card
+  </h2>
+  <div class="table-container mb4">
+    <table>
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Name</th>
+          <th>Amount</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+      <% @emburse_transactions.each do |et| %>
+        <%= render 'emburse_transactions/transaction', et: et, show_running_sum: false %>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+<% end %>

@@ -106,7 +106,7 @@ class TransactionsController < ApplicationController
   def transaction_params
     params.require(:transaction).permit(
       :is_event_related,
-      :load_card_request_id,
+      :emburse_transfer_id,
       :invoice_payout_id,
       :display_name,
       :fee_reimbursement_id,

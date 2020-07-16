@@ -1,0 +1,100 @@
+<%= form_with(model: emburse_card_request, local: true) do |form| %>
+  <%= form_errors emburse_card_request %>
+
+  <% admin_tools('mb2') do %>
+    <div class="field">
+      <%= form.label :event_id %>
+      <%= form.collection_select(:event_id, Event.all, :id, :name, prompt: 'Select event…') %>
+    </div>
+
+    <div class="field">
+      <%= form.label :notes, 'Notes (admin-only)' %>
+      <%= form.text_area :notes, 'data-behavior': 'autosize' %>
+    </div>
+
+    <div class="field">
+      <%= form.label :email %>
+      <%= form.email_field :email %>
+    </div>
+
+    <div class="field">
+      <%= form.label :creator_id, 'Card holder' %>
+      <%= form.collection_select(
+        :creator_id,
+        ([current_user] + @event.users.reorder(email: :asc)).compact.uniq,
+        :id,
+        :email,
+        selected: current_user,
+      ) %>
+    </div>
+  <% end %>
+
+  <% unless admin_signed_in? %>
+    <%= form.hidden_field :event_id, value: params[:event_id] %>
+    <%= form.hidden_field :email, value: current_user&.email %>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :full_name, 'Full name (as will appear on card)' %>
+    <%= form.text_field :full_name,
+      value: emburse_card_request.full_name || current_user&.safe_name,
+      readonly: !current_user&.admin? %>
+  </div>
+
+  <p>
+    Issuing a card for another team member?
+    <%= link_to 'Invite them to Hack Club Bank', event_team_path(emburse_card_request.event) %>,
+    and ask them to issue a card from their account.
+  </p>
+
+  <div class="field field--checkbox">
+    <%= form.check_box :is_virtual %>
+    <%= form.label :is_virtual, 'Make this a virtual card' %>
+  </div>
+
+  <hr/>
+
+  <div class="shipping_address_inputs">
+    <h3 class="mb1">Shipping address</h3>
+
+    <p>We'll send your physical card to this address, addressed to "<%= emburse_card_request.full_name || current_user&.full_name %> C/O Hack Club".</p>
+
+    <div class="field">
+      <%= form.label :shipping_address_street_one, 'Address line 1' %>
+      <%= form.text_field :shipping_address_street_one, placeholder: "1600 Pennsylvania Ave NW" %>
+    </div>
+
+    <div class="field">
+      <%= form.label :shipping_address_street_two, 'Address line 2' %>
+      <%= form.text_field :shipping_address_street_two,  placeholder: "Suite 39" %>
+    </div>
+
+    <div class="field">
+      <%= form.label :shipping_address_city, 'City' %>
+      <%= form.text_field :shipping_address_city, placeholder: "Washington" %>
+    </div>
+
+    <div class="flex">
+      <div class="field w-50">
+        <%= form.label :shipping_address_state, 'State / Region' %>
+        <%= form.select :shipping_address_state, options_for_select(['AL','AK','AZ','AR','CA','CO','CT','DE','DC','FL','GA','HI','ID','IL','IN','IA','KS','KY','LA','ME','MD','MA','MI','MN','MS','MO','MT','NE','NV','NH','NJ','NM','NY','NC','ND','OH','OK','OR','PA','RI','SC','SD','TN','TX','UT','VT','VA','WA','WV','WI','WY']),
+          { prompt: "Select state" }
+        %>
+      </div>
+
+      <div class="field ml1 w-50">
+        <%= form.label :shipping_address_zip, 'Postal code' %>
+        <%= form.text_field :shipping_address_zip, placeholder: "20500" %>
+      </div>
+    </div>
+  </div>
+
+  <div class="virtual_card_inputs">
+    <h3 class="mb1">Virtual card</h3>
+    <p>You'll receive your virtual card's payment info when your request is processed. This usually takes a day.</p>
+  </div>
+
+  <div class="actions">
+    <%= form.submit 'Request this card', disabled: !organizer_signed_in? %>
+  </div>
+<% end %>

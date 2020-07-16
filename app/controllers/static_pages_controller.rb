@@ -188,8 +188,8 @@ class StaticPagesController < ApplicationController
         airtable_task_size :replit
       when :pending_sendy_airtable
         airtable_task_size :sendy
-      when :card_requests
-        CardRequest.under_review.size
+      when :emburse_card_requests
+        EmburseCardRequest.under_review.size
       when :checks
         Check.pending.size + Check.unfinished_void.size
       when :ach_transfers
@@ -200,8 +200,8 @@ class StaticPagesController < ApplicationController
         Event.negatives.size
       when :fee_reimbursements
         FeeReimbursement.unprocessed.size
-      when :load_card_requests
-        LoadCardRequest.under_review.size
+      when :emburse_transfers
+        EmburseTransfer.under_review.size
       when :g_suite_applications
         GSuiteApplication.under_review.size
       when :g_suite_accounts
@@ -227,13 +227,13 @@ class StaticPagesController < ApplicationController
     pending_task :pending_stickermule_airtable
     pending_task :pending_replit_airtable
     pending_task :pending_sendy_airtable
-    pending_task :card_requests
+    pending_task :emburse_card_requests
     pending_task :checks
     pending_task :ach_transfers
     pending_task :pending_fees
     pending_task :negative_events
     pending_task :fee_reimbursements
-    pending_task :load_card_requests
+    pending_task :emburse_transfers
     pending_task :g_suite_applications
     pending_task :g_suite_accounts
     pending_task :transactions

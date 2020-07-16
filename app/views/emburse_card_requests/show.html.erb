@@ -1,0 +1,35 @@
+<% page_sm %>
+<%= render 'events/nav' %>
+
+<h1 class="heading">
+  <%= @emburse_card_request.full_name %>’s card request
+  <%= link_to 'Edit', edit_emburse_card_request_path(@emburse_card_request), class: 'btn bg-info' %>
+</h1>
+
+<section class="details">
+<p>
+  <strong>Status</strong>
+  <%= @emburse_card_request.status %>
+</p>
+
+<p>
+  <strong>Name on card</strong>
+  <%= @emburse_card_request.full_name %>
+</p>
+</section>
+
+<% if admin_signed_in? %>
+  <p>
+    <%= link_to 'Reject request', emburse_card_request_reject_path(@emburse_card_request), method: :post, class: 'btn bg-error' %>
+  </p>
+  <p>
+    <%= link_to 'Accept request', new_emburse_card_path(emburse_card_request_id: @emburse_card_request), class: 'btn bg-success' %>
+  </p>
+<% else %>
+  <p>
+    <%= link_to 'Cancel request', emburse_card_request_path(@emburse_card_request), method: :delete, class: 'btn btn--destroy' %>
+  </p>
+<% end %>
+
+<h2>Comments</h2>
+<%= render 'comments/comments' %>

@@ -75,7 +75,7 @@ Rails.application.routes.draw do
     resources :comments
   end
 
-  resources :cards do
+  resources :emburse_cards do
     post 'toggle_active'
   end
 
@@ -145,7 +145,7 @@ Rails.application.routes.draw do
   get 'branding', to: 'static_pages#branding'
   get 'faq', to: 'static_pages#faq'
 
-  resources :card_requests, path: 'card_requests' do
+  resources :emburse_card_requests, path: 'emburse_card_requests' do
     collection do
       get 'export'
     end
@@ -155,7 +155,7 @@ Rails.application.routes.draw do
     resources :comments
   end
 
-  resources :load_card_requests, except: [:new] do
+  resources :emburse_transfers, except: [:new] do
     collection do
       get 'export'
     end
@@ -204,7 +204,7 @@ Rails.application.routes.draw do
   resources :events, path: '/' do
     get 'team', to: 'events#team', as: :team
     get 'g_suite', to: 'events#g_suite_overview', as: :g_suite_overview
-    get 'cards', to: 'events#card_overview', as: :cards_overview
+    get 'emburse_cards', to: 'events#emburse_card_overview', as: :emburse_cards_overview
     get 'transfers', to: 'events#transfers', as: :transfers
     get 'promotions', to: 'events#promotions', as: :promotions
     get 'reimbursements', to: 'events#reimbursements', as: :reimbursements
@@ -216,7 +216,7 @@ Rails.application.routes.draw do
               path: 'invites'
     resources :g_suites, only: [:new, :create, :edit, :update]
     resources :g_suite_applications, only: [:new, :create, :edit, :update]
-    resources :load_card_requests, only: [:new]
+    resources :emburse_transfers, only: [:new]
     resources :documents, only: [:index]
     get 'fiscal_sponsorship_letter', to: 'documents#fiscal_sponsorship_letter'
     resources :invoices, only: [:new, :create, :index]

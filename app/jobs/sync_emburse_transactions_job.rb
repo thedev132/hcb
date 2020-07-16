@@ -32,7 +32,7 @@ class SyncEmburseTransactionsJob < ApplicationJob
         # to figure out whether a transaction is a personal expense.
         #
         # My (Zach)'s best attempt after trial and error is to check whether
-        # the transaction has an associated card, but no associated department
+        # the transaction has an associated emburse_card, but no associated department
         # (bc personal expenses don't have associated departments). I've tested
         # this as a filter for all transactions and the only ones returned are
         # personal expenses, so I'm going to go with this method for now.
@@ -48,12 +48,12 @@ class SyncEmburseTransactionsJob < ApplicationJob
         # Transaction is above 0.0 and exists, so we want to keep it around
         deleted_transactions.delete(trn[:id])
 
-        # find the card and associated event
-        card = Card.find_by(emburse_id: trn.dig(:card, :id))
-        related_event = card.event if card
+        # find the emburse_card and associated event
+        emburse_card = EmburseCard.find_by(emburse_id: trn.dig(:card, :id))
+        related_event = emburse_card.event if emburse_card
 
         department_id = trn.dig(:department, :id)
-        department_id = card.department_id if department_id.nil? and card
+        department_id = emburse_card.department_id if department_id.nil? and emburse_card
 
         amount = trn[:amount] * 100
 
@@ -62,8 +62,8 @@ class SyncEmburseTransactionsJob < ApplicationJob
           state: trn[:state],
           emburse_department_id: department_id,
           event: related_event || et.event,
-          emburse_card_id: trn.dig(:card, :id),
-          card: card,
+          emburse_card_uuid: trn.dig(:card, :id),
+          emburse_card: emburse_card,
           merchant_mid: trn.dig(:merchant, :mid),
           merchant_mcc: trn.dig(:merchant, :mcc),
           merchant_name: trn.dig(:merchant, :name),

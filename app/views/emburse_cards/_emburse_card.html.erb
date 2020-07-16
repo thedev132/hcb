@@ -1,0 +1,15 @@
+<%= link_to organizer_signed_in? ? emburse_card : root_path, class: 'text-decoration-none' do %>
+  <%= creator_bar emburse_card, prefix: 'issued ' %>
+  <div class="emburse-card <%= emburse_card.is_virtual ? 'virtual' : '' %> <%= emburse_card.suspended? || emburse_card.canceled? ? 'deactivated' : '' %>" data-behavior="hover_tilt">
+    <span class="emburse-card__status"><%= emburse_card.status_text %></span>
+    <p class="emburse-card__number">
+      <span><%= organizer_signed_in? ? emburse_card.formatted_card_number : emburse_card.hidden_card_number %></span>
+    </p>
+    <p class="emburse-card__name"><%= emburse_card.full_name %></p>
+    <% if emburse_card.transactions_missing_receipts.any? %>
+      <div class="emburse-card__warning">
+        <%= inline_icon 'important', size: 32 %>
+      </div>
+    <% end %>
+  </div>
+<% end %>

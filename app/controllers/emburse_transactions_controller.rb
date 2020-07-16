@@ -12,9 +12,9 @@ class EmburseTransactionsController < ApplicationController
     @amount = @emburse_transaction.amount / 100.0
 
     # when pairing positive Emburse transactions, it's sometimes useful to be
-    # able to cross check with the latest LCRs because most positive Emburse TXs
-    # are load card requests. Shown to admins on amount > 0 only.
-    @load_card_requests = LoadCardRequest.accepted.order(created_at: :desc).limit(10)
+    # able to cross check with the latest emburse_transfers because most positive Emburse TXs
+    # are emburse transfers. Shown to admins on amount > 0 only.
+    @emburse_transfers = EmburseTransfer.accepted.order(created_at: :desc).limit(10)
   end
 
   def update
@@ -22,12 +22,12 @@ class EmburseTransactionsController < ApplicationController
     result_params[:amount] = result_params[:amount].to_f * 100.0
     if @emburse_transaction.update(result_params)
       if result_params[:amount] > 0 && @emburse_transaction.event.present?
-        # it's generally a LCR
+        # it's generally a emburse_transfer
         flash[:success] = 'Emburse Transaction updated.'
         flash[:error] = 'You should update the Emburse budget now.'
-        redirect_to event_cards_overview_path(@emburse_transaction.event.slug)
+        redirect_to event_emburse_cards_overview_path(@emburse_transaction.event.slug)
       else
-        # it's generally a card transaction
+        # it's generally a emburse_card transaction
         flash[:success] = 'Emburse Transaction successfully updated.'
         redirect_to emburse_transactions_path
       end
@@ -37,14 +37,14 @@ class EmburseTransactionsController < ApplicationController
   end
 
   def show
-    @emburse_transaction = EmburseTransaction.includes(:event, card: :user).find(params[:id])
+    @emburse_transaction = EmburseTransaction.includes(:event, emburse_card: :user).find(params[:id])
     authorize @emburse_transaction
 
     @commentable = @emburse_transaction
     @comments = @commentable.comments.includes(:user)
     @comment = Comment.new
 
-    @card = @emburse_transaction.card
+    @emburse_card = @emburse_transaction.emburse_card
     @event = @emburse_transaction.event
   end
 

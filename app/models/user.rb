@@ -15,9 +15,9 @@ class User < ApplicationRecord
   has_many :g_suite_accounts, inverse_of: :creator
   has_many :organizer_position_deletion_requests, inverse_of: :submitted_by
   has_many :organizer_position_deletion_requests, inverse_of: :closed_by
-  has_many :load_card_requests
-  has_many :card_requests
-  has_many :cards
+  has_many :emburse_transfers
+  has_many :emburse_card_requests
+  has_many :emburse_cards
   has_many :checks, inverse_of: :creator
   has_many :comments, as: :commentable
 

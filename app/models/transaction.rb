@@ -22,7 +22,7 @@ class Transaction < ApplicationRecord
   belongs_to :fee_relationship, inverse_of: :t_transaction, required: false
   has_one :event, through: :fee_relationship
 
-  belongs_to :load_card_request, inverse_of: :t_transaction, required: false
+  belongs_to :emburse_transfer, inverse_of: :t_transaction, required: false
   belongs_to :invoice_payout, inverse_of: :t_transaction, required: false
 
   belongs_to :fee_reimbursement, inverse_of: :t_transaction, required: false
@@ -153,9 +153,9 @@ class Transaction < ApplicationRecord
       errors.add(:base, "Paired invoice payout's event must match transaction's event")
     end
 
-    # if LCR linked, check that LCR's event is transaction's event
-    if !load_card_request.nil? && load_card_request.event != fee_relationship&.event
-      errors.add(:base, "Paired load card request's event must match transaction's event")
+    # if emburse_transfer linked, check that emburse_transfer's event is transaction's event
+    if !emburse_transfer.nil? && emburse_transfer.event != fee_relationship&.event
+      errors.add(:base, "Paired emburse transfers's event must match transaction's event")
       return 3
     end
   end
@@ -315,9 +315,9 @@ class Transaction < ApplicationRecord
       previous.donation_payout = nil
     end
 
-    if self.load_card_request.nil? && previous.load_card_request
-      self.load_card_request = previous.load_card_request
-      previous.load_card_request = nil
+    if self.emburse_transfer.nil? && previous.emburse_transfer
+      self.emburse_transfer = previous.emburse_transfer
+      previous.emburse_transfer = nil
     end
 
     if self.fee_reimbursement.nil? && previous.fee_reimbursement
@@ -484,19 +484,19 @@ class Transaction < ApplicationRecord
   def try_pair_emburse
     return unless potential_emburse?
 
-    # load card requests will be negative on the account balance
-    unpaired_matching_amount = LoadCardRequest
+    # emburse transfers will be negative on the account balance
+    unpaired_matching_amount = EmburseTransfer
       .unpaired.where(load_amount: -self.amount)
       .order(accepted_at: :desc)
 
     return unless unpaired_matching_amount.count == 1
 
-    lcr = unpaired_matching_amount[0]
+    emburse_transfer = unpaired_matching_amount[0]
 
-    self.load_card_request = lcr
+    self.emburse_transfer = emburse_transfer
 
     self.fee_relationship = FeeRelationship.new(
-      event_id: lcr.event.id,
+      event_id: emburse_transfer.event.id,
       fee_applies: false
     )
 

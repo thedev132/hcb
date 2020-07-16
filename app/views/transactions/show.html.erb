@@ -85,10 +85,10 @@
       </p>
     <% end %>
 
-    <% if @transaction.load_card_request %>
+    <% if @transaction.emburse_transfer %>
       <p>
         <strong>Transfer Request</strong>
-        <%= link_to 'View', load_card_request_path(@transaction.load_card_request) %>
+        <%= link_to 'View', emburse_transfer_path(@transaction.emburse_transfer) %>
       </p>
     <% end %>
   </section>

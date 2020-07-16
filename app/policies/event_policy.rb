@@ -35,7 +35,7 @@ class EventPolicy < ApplicationPolicy
     is_public || user_or_admin
   end
 
-  def card_overview?
+  def emburse_card_overview?
     is_public || user_or_admin
   end
 

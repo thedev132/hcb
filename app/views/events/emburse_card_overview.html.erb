@@ -1,0 +1,181 @@
+<% title "Cards for #{@event.name.html_safe}" %>
+<% page_md %>
+<%= render 'nav'%>
+
+<h1>
+  Cards
+</h1>
+
+<article class="card overflow-visible">
+  <h2 class="mt0 mb2">Summary</h2>
+
+  <div class="flex flex-wrap">
+    <div class="stat md-w-50 mb2 tooltipped tooltipped--s" aria-label="The amount available to spend on your cards">
+      <span class="stat__label flex items-center">
+      Card balance
+      <%= inline_icon 'info', size: 24, class: 'ml1', 'aria-label': 'Info icon' %>
+      </span>
+      <span class="stat__value mr2"><%= render_money @event.emburse_balance, '' %></span>
+    </div>
+    <div class="stat md-w-50 muted mb2 tooltipped tooltipped--s" aria-label="The available amount stored in your bank–you need to transfer it to your card balance before spending it">
+      <span class="stat__label flex items-center">
+        Available Bank balance
+        <%= inline_icon 'info', size: 24, class: 'muted ml1', 'aria-label': 'Info icon' %>
+      </span>
+      <span class="stat__value"><%= render_money @event.available_balance, '' %></span>
+    </div>
+  </div>
+
+  <div class="flex flex-wrap items-center">
+    <%= link_to new_event_emburse_transfer_path(event_id: @event.slug), class: 'btn btn--icon bg-success mr2' do %>
+      <%= inline_icon 'payment-transfer' %>
+      Transfer to card balance
+    <% end %>
+    <span class="h5 mt1 mb1">
+    </span>
+  </div>
+
+  <p class="bold mt2 mb1">Your billing address for purchases</p>
+  <pre class="inline-block mt0 mb0">The Hack Foundation
+8605 Santa Monica Blvd #86294
+West Hollywood, CA 90069</pre>
+
+  <% admin_tools('flex items-center mt2') do %>
+    <% if @event.emburse_department_path.nil? %>
+      <%= link_to 'Set Emburse Department ID', edit_event_path(@event), class: 'btn bg-accent mr2' %>
+    <% else %>
+      <%= link_to 'Set Emburse Budget', @event.emburse_department_path, class: 'btn bg-accent mr2' %>
+    <% end %>
+    <span class="h5 mt1 mb1">
+      (Current: <strong>$<%= render_money @event.emburse_budget_limit, '' %></strong>)
+    </span>
+  <% end %>
+</article>
+
+<h2 class="heading">
+  Issued cards
+  <%= link_to new_emburse_card_request_path(event_id: @event.id), class: 'btn btn--icon bg-success' do %>
+    <%= inline_icon 'card-add' %>
+    Issue a card
+  <% end %>
+</h2>
+<% if @event.emburse_cards.any? %>
+  <section class="mixed-grid grid--spacious mt2">
+    <%= render @event.emburse_cards.active %>
+  </section>
+  <% if @event.emburse_cards.deactivated.size > 0 %>
+    <details class="w-100 left-align">
+      <summary><h3 class="inline-block pb0 border-none">Deactivated cards</h3></summary>
+      <section class="mixed-grid grid--spacious mt2">
+      <%= render @event.emburse_cards.deactivated %>
+      </section>
+    </details>
+  <% end %>
+<% elsif @emburse_card_requests.any? %>
+  <%= blankslate 'No cards have been issued yet.' %>
+<% elsif @cards.blank? %>
+  <%= blankslate 'You haven’t requested any physical cards yet.' %>
+<% end %>
+
+<% if @emburse_card_requests.outstanding.any? %>
+<h2 class="mt3 mb1">Card requests</h2>
+  <% @emburse_card_requests.outstanding.each do |request| %>
+    <% # Rails has link_to_if but that doesn't support blocks. I feel like there should be a better way to do this but couldn't find one. -Theo %>
+    <% if current_user&.admin? %>
+      <%= link_to request, class: 'text-decoration-none mb2' do %>
+        <%= creator_bar request, prefix: 'requested ' %>
+        <div class="card">
+          <span class="tooltipped tooltipped--e" aria-label="<%= request.status.capitalize %>">
+            <%= status_badge request.status_badge_type %>
+          </span>
+          <strong class="h3"><%= request.full_name %>’s card</strong>
+        </div>
+      <% end %>
+    <% else %>
+      <div>
+        <%= creator_bar request, prefix: 'requested ' %>
+        <div class="card">
+          <span class="tooltipped tooltipped--e" aria-label="<%= request.status.capitalize %>">
+            <%= status_badge request.status_badge_type %>
+          </span>
+          <strong class="h3"><%= request.full_name %>’s card</strong>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+<% end %>
+<% if @emburse_card_requests.accepted.any? %>
+  <% admin_tools('mt3') do %>
+    <h2 class="mt0 mb1">Accepted card requests</h2>
+    <% @emburse_card_requests.accepted.each do |request| %>
+      <%= link_to request, class: 'text-decoration-none mb2' do %>
+        <%= creator_bar request %>
+        <div class="card">
+          <strong class="h3"><%= request.full_name %>’s card</strong>
+        </div>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>
+
+<% if @event.emburse_transfers %>
+  <h2 class="heading">
+    Transfers to card balance
+    <button class="btn btn--icon bg-info" id="show_lcrs">
+      <%= inline_icon 'view' %>
+      Show all
+    </button>
+  </h2>
+  <div class="table-container">
+    <table id="lcr_table">
+      <thead>
+        <tr>
+          <th>Requested at</th>
+          <th>Requested by</th>
+          <th>Status</th>
+          <th>Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @event.emburse_transfers.each do |lcr| %>
+          <tr <%= "under-review" if lcr.under_review? or lcr.pending? %> id="lcr_row">
+            <td><%= format_datetime(lcr.created_at) %></td>
+            <td><%= user_mention lcr.creator %></td>
+            <td><%= status_badge lcr.status_badge_type %>  <%= lcr.status %></td>
+            <td><%= render_money lcr.load_amount %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <%= blankslate 'You don’t have any pending transfers.', id: 'lcr_blank' %>
+  </div>
+<% end %>
+
+<% if @emburse_transactions.any? %>
+</main>
+<main class="container">
+  <h2 class="mt3 mb2">
+    Card transactions
+  </h2>
+  <div class="table-container">
+  <table>
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Name</th>
+        <th>Amount</th>
+        <th>Running total</th>
+        <th>On</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+
+    <%= render partial: 'emburse_transactions/transaction',
+               collection: @emburse_transactions,
+               as: :et,
+               locals: { show_running_sum: true, show_card: true } %>
+    </tbody>
+  </table>
+  </div>
+<% end %>

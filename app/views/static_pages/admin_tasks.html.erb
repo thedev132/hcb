@@ -16,8 +16,8 @@
   <h2>Pending Tasks</h2>
     <% if @pending_actions %>
     <ul class="grid grid--narrow left-align w-100 mt0">
-      <%= card_to 'Card Requests', card_requests_path, { badge: @active[:card_requests] } %>
-      <%= card_to 'Transfer Requests', load_card_requests_path, { badge: @active[:load_card_requests] } %>
+      <%= card_to 'Card Requests', emburse_card_requests_path, { badge: @active[:emburse_card_requests] } %>
+      <%= card_to 'Transfer Requests', emburse_transfers_path, { badge: @active[:emburse_transfers] } %>
       <%= card_to 'Checks', checks_path, { badge: @active[:checks] } %>
       <%= card_to 'ACH Transfers', ach_transfers_path, { badge: @active[:ach_transfers] } %>
       <%= card_to 'Fee Refunds', fee_reimbursements_path, { badge: @active[:fee_reimbursements] } %>

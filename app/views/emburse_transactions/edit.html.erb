@@ -43,13 +43,13 @@
         </thead>
 
         <tbody>
-          <% @load_card_requests.each do |request| %>
+          <% @emburse_transfers.each do |emburse_transfer| %>
             <tr>
-              <td><%= "##{request.id}" %></td>
-              <td><%= link_to request.event.name, request.event %></td>
-              <td><%= user_mention request.creator %></td>
-              <td><%= render_money request.load_amount %></td>
-              <td><%= request.status %></td>
+              <td><%= "##{emburse_transfer.id}" %></td>
+              <td><%= link_to emburse_transfer.event.name, emburse_transfer.event %></td>
+              <td><%= user_mention emburse_transfer.creator %></td>
+              <td><%= render_money emburse_transfer.load_amount %></td>
+              <td><%= emburse_transfer.status %></td>
             </tr>
           <% end %>
         </tbody>

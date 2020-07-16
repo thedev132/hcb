@@ -19,9 +19,9 @@ class Event < ApplicationRecord
   has_many :fee_relationships
   has_many :transactions, through: :fee_relationships, source: :t_transaction
 
-  has_many :cards
-  has_many :card_requests
-  has_many :load_card_requests
+  has_many :emburse_cards
+  has_many :emburse_card_requests
+  has_many :emburse_transfers
   has_many :ach_transfers
   has_many :donations
 
@@ -99,12 +99,12 @@ class Event < ApplicationRecord
     # because pending TXs will silently switch to complete and the admin will not
     # be notified to update the Emburse budget for this event later when that happens.
     # See also PR #317.
-    self.emburse_transactions.undeclined.where(emburse_card_id: nil).sum(:amount)
+    self.emburse_transactions.undeclined.where(emburse_card_uuid: nil).sum(:amount)
   end
 
   def emburse_balance
     completed_t = self.emburse_transactions.completed.sum(:amount)
-    # We're including only pending charges on cards so organizers have a conservative estimate of their balance
+    # We're including only pending charges on emburse_cards so organizers have a conservative estimate of their balance
     pending_t = self.emburse_transactions.pending.where('amount < 0').sum(:amount)
     completed_t + pending_t
   end
@@ -113,10 +113,12 @@ class Event < ApplicationRecord
     transactions.sum(:amount)
   end
 
-  # used for load card requests, this is the amount of money available that isn't being transferred out by an LCR or isn't going to be pulled out via fee -tmb@hackclub
+  # used for emburse transfers, this is the amount of money available that
+  # isn't being transferred out by an emburse_transfer or isn't going to be
+  # pulled out via fee -tmb@hackclub
   def balance_available
-    lcr_pending = (load_card_requests.under_review + load_card_requests.pending).sum(&:load_amount)
-    balance - lcr_pending - fee_balance
+    emburse_transfer_pending = (emburse_transfers.under_review + emburse_transfers.pending).sum(&:load_amount)
+    balance - emburse_transfer_pending - fee_balance
   end
   alias available_balance balance_available
 

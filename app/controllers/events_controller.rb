@@ -128,16 +128,16 @@ class EventsController < ApplicationController
     redirect_to events_url
   end
 
-  def card_overview
+  def emburse_card_overview
     @event = Event.includes([
-      { cards: :user },
-      { load_card_requests: [:t_transaction, :creator] }
+      { emburse_cards: :user },
+      { emburse_transfers: [:t_transaction, :creator] }
     ]).find(params[:event_id])
     authorize @event
-    @cards = @event.cards.includes(user: [:profile_picture_attachment])
-    @card_requests = @event.card_requests.includes(creator: :profile_picture_attachment)
-    @load_card_requests = @event.load_card_requests
-    @emburse_transactions = @event.emburse_transactions.order(transaction_time: :desc).where.not(transaction_time: nil).includes(:card)
+    @emburse_cards = @event.emburse_cards.includes(user: [:profile_picture_attachment])
+    @emburse_card_requests = @event.emburse_card_requests.includes(creator: :profile_picture_attachment)
+    @emburse_transfers = @event.emburse_transfers
+    @emburse_transactions = @event.emburse_transactions.order(transaction_time: :desc).where.not(transaction_time: nil).includes(:emburse_card)
 
     @sum = @event.emburse_balance
   end

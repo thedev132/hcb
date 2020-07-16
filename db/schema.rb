@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_14_002411) do
+ActiveRecord::Schema.define(version: 2020_07_15_055547) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
@@ -29,8 +29,8 @@ ActiveRecord::Schema.define(version: 2020_07_14_002411) do
     t.datetime "updated_at", null: false
     t.string "recipient_tel"
     t.datetime "rejected_at"
-    t.text "payment_for"
     t.datetime "scheduled_arrival_date"
+    t.text "payment_for"
     t.index ["creator_id"], name: "index_ach_transfers_on_creator_id"
     t.index ["event_id"], name: "index_ach_transfers_on_event_id"
   end
@@ -65,54 +65,6 @@ ActiveRecord::Schema.define(version: 2020_07_14_002411) do
     t.datetime "updated_at", null: false
     t.boolean "should_sync", default: true
     t.boolean "is_positive_pay"
-  end
-
-  create_table "card_requests", force: :cascade do |t|
-    t.bigint "creator_id"
-    t.bigint "event_id"
-    t.bigint "fulfilled_by_id"
-    t.datetime "fulfilled_at"
-    t.bigint "daily_limit"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.text "shipping_address"
-    t.string "full_name"
-    t.datetime "rejected_at"
-    t.datetime "accepted_at"
-    t.datetime "canceled_at"
-    t.text "notes"
-    t.bigint "card_id"
-    t.string "shipping_address_street_one"
-    t.string "shipping_address_street_two"
-    t.string "shipping_address_city"
-    t.string "shipping_address_state"
-    t.string "shipping_address_zip"
-    t.boolean "is_virtual"
-    t.index ["card_id"], name: "index_card_requests_on_card_id"
-    t.index ["creator_id"], name: "index_card_requests_on_creator_id"
-    t.index ["event_id"], name: "index_card_requests_on_event_id"
-    t.index ["fulfilled_by_id"], name: "index_card_requests_on_fulfilled_by_id"
-  end
-
-  create_table "cards", force: :cascade do |t|
-    t.bigint "user_id"
-    t.bigint "event_id"
-    t.bigint "daily_limit"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "last_four"
-    t.string "full_name"
-    t.text "address"
-    t.integer "expiration_month"
-    t.integer "expiration_year"
-    t.text "emburse_id"
-    t.text "slug"
-    t.datetime "deactivated_at"
-    t.boolean "is_virtual"
-    t.string "emburse_state"
-    t.index ["event_id"], name: "index_cards_on_event_id"
-    t.index ["slug"], name: "index_cards_on_slug", unique: true
-    t.index ["user_id"], name: "index_cards_on_user_id"
   end
 
   create_table "checks", force: :cascade do |t|
@@ -238,6 +190,54 @@ ActiveRecord::Schema.define(version: 2020_07_14_002411) do
     t.index ["payout_id"], name: "index_donations_on_payout_id"
   end
 
+  create_table "emburse_card_requests", force: :cascade do |t|
+    t.bigint "creator_id"
+    t.bigint "event_id"
+    t.bigint "fulfilled_by_id"
+    t.datetime "fulfilled_at"
+    t.bigint "daily_limit"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.text "shipping_address"
+    t.string "full_name"
+    t.datetime "rejected_at"
+    t.datetime "accepted_at"
+    t.datetime "canceled_at"
+    t.text "notes"
+    t.bigint "emburse_card_id"
+    t.string "shipping_address_street_one"
+    t.string "shipping_address_street_two"
+    t.string "shipping_address_city"
+    t.string "shipping_address_state"
+    t.string "shipping_address_zip"
+    t.boolean "is_virtual"
+    t.index ["creator_id"], name: "index_emburse_card_requests_on_creator_id"
+    t.index ["emburse_card_id"], name: "index_emburse_card_requests_on_emburse_card_id"
+    t.index ["event_id"], name: "index_emburse_card_requests_on_event_id"
+    t.index ["fulfilled_by_id"], name: "index_emburse_card_requests_on_fulfilled_by_id"
+  end
+
+  create_table "emburse_cards", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "event_id"
+    t.bigint "daily_limit"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "last_four"
+    t.string "full_name"
+    t.text "address"
+    t.integer "expiration_month"
+    t.integer "expiration_year"
+    t.text "emburse_id"
+    t.text "slug"
+    t.datetime "deactivated_at"
+    t.boolean "is_virtual"
+    t.string "emburse_state"
+    t.index ["event_id"], name: "index_emburse_cards_on_event_id"
+    t.index ["slug"], name: "index_emburse_cards_on_slug", unique: true
+    t.index ["user_id"], name: "index_emburse_cards_on_user_id"
+  end
+
   create_table "emburse_transactions", force: :cascade do |t|
     t.string "emburse_id"
     t.integer "amount"
@@ -247,8 +247,8 @@ ActiveRecord::Schema.define(version: 2020_07_14_002411) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "notified_admin_at"
-    t.string "emburse_card_id"
-    t.bigint "card_id"
+    t.string "emburse_card_uuid"
+    t.bigint "emburse_card_id"
     t.bigint "merchant_mid"
     t.integer "merchant_mcc"
     t.text "merchant_name"
@@ -268,9 +268,27 @@ ActiveRecord::Schema.define(version: 2020_07_14_002411) do
     t.text "receipt_filename"
     t.datetime "transaction_time"
     t.datetime "deleted_at"
-    t.index ["card_id"], name: "index_emburse_transactions_on_card_id"
     t.index ["deleted_at"], name: "index_emburse_transactions_on_deleted_at"
+    t.index ["emburse_card_id"], name: "index_emburse_transactions_on_emburse_card_id"
     t.index ["event_id"], name: "index_emburse_transactions_on_event_id"
+  end
+
+  create_table "emburse_transfers", force: :cascade do |t|
+    t.bigint "emburse_card_id"
+    t.bigint "creator_id"
+    t.bigint "fulfilled_by_id"
+    t.bigint "load_amount"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "accepted_at"
+    t.datetime "rejected_at"
+    t.datetime "canceled_at"
+    t.string "emburse_transaction_id"
+    t.bigint "event_id"
+    t.index ["creator_id"], name: "index_emburse_transfers_on_creator_id"
+    t.index ["emburse_card_id"], name: "index_emburse_transfers_on_emburse_card_id"
+    t.index ["event_id"], name: "index_emburse_transfers_on_event_id"
+    t.index ["fulfilled_by_id"], name: "index_emburse_transfers_on_fulfilled_by_id"
   end
 
   create_table "events", force: :cascade do |t|
@@ -485,24 +503,6 @@ ActiveRecord::Schema.define(version: 2020_07_14_002411) do
     t.index ["stripe_invoice_id"], name: "index_invoices_on_stripe_invoice_id", unique: true
   end
 
-  create_table "load_card_requests", force: :cascade do |t|
-    t.bigint "card_id"
-    t.bigint "creator_id"
-    t.bigint "fulfilled_by_id"
-    t.bigint "load_amount"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.datetime "accepted_at"
-    t.datetime "rejected_at"
-    t.datetime "canceled_at"
-    t.string "emburse_transaction_id"
-    t.bigint "event_id"
-    t.index ["card_id"], name: "index_load_card_requests_on_card_id"
-    t.index ["creator_id"], name: "index_load_card_requests_on_creator_id"
-    t.index ["event_id"], name: "index_load_card_requests_on_event_id"
-    t.index ["fulfilled_by_id"], name: "index_load_card_requests_on_fulfilled_by_id"
-  end
-
   create_table "lob_addresses", force: :cascade do |t|
     t.bigint "event_id"
     t.text "description"
@@ -617,7 +617,7 @@ ActiveRecord::Schema.define(version: 2020_07_14_002411) do
     t.bigint "fee_relationship_id"
     t.datetime "deleted_at"
     t.boolean "is_event_related"
-    t.bigint "load_card_request_id"
+    t.bigint "emburse_transfer_id"
     t.bigint "invoice_payout_id"
     t.text "slug"
     t.text "display_name"
@@ -632,10 +632,10 @@ ActiveRecord::Schema.define(version: 2020_07_14_002411) do
     t.index ["deleted_at"], name: "index_transactions_on_deleted_at"
     t.index ["disbursement_id"], name: "index_transactions_on_disbursement_id"
     t.index ["donation_payout_id"], name: "index_transactions_on_donation_payout_id"
+    t.index ["emburse_transfer_id"], name: "index_transactions_on_emburse_transfer_id"
     t.index ["fee_reimbursement_id"], name: "index_transactions_on_fee_reimbursement_id"
     t.index ["fee_relationship_id"], name: "index_transactions_on_fee_relationship_id"
     t.index ["invoice_payout_id"], name: "index_transactions_on_invoice_payout_id"
-    t.index ["load_card_request_id"], name: "index_transactions_on_load_card_request_id"
     t.index ["plaid_id"], name: "index_transactions_on_plaid_id", unique: true
     t.index ["slug"], name: "index_transactions_on_slug", unique: true
   end
@@ -661,12 +661,6 @@ ActiveRecord::Schema.define(version: 2020_07_14_002411) do
   add_foreign_key "ach_transfers", "events"
   add_foreign_key "ach_transfers", "users", column: "creator_id"
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "card_requests", "cards"
-  add_foreign_key "card_requests", "events"
-  add_foreign_key "card_requests", "users", column: "creator_id"
-  add_foreign_key "card_requests", "users", column: "fulfilled_by_id"
-  add_foreign_key "cards", "events"
-  add_foreign_key "cards", "users"
   add_foreign_key "checks", "lob_addresses"
   add_foreign_key "checks", "users", column: "creator_id"
   add_foreign_key "disbursements", "events"
@@ -678,8 +672,18 @@ ActiveRecord::Schema.define(version: 2020_07_14_002411) do
   add_foreign_key "donations", "donation_payouts", column: "payout_id"
   add_foreign_key "donations", "events"
   add_foreign_key "donations", "fee_reimbursements"
-  add_foreign_key "emburse_transactions", "cards"
+  add_foreign_key "emburse_card_requests", "emburse_cards"
+  add_foreign_key "emburse_card_requests", "events"
+  add_foreign_key "emburse_card_requests", "users", column: "creator_id"
+  add_foreign_key "emburse_card_requests", "users", column: "fulfilled_by_id"
+  add_foreign_key "emburse_cards", "events"
+  add_foreign_key "emburse_cards", "users"
+  add_foreign_key "emburse_transactions", "emburse_cards"
   add_foreign_key "emburse_transactions", "events"
+  add_foreign_key "emburse_transfers", "emburse_cards"
+  add_foreign_key "emburse_transfers", "events"
+  add_foreign_key "emburse_transfers", "users", column: "creator_id"
+  add_foreign_key "emburse_transfers", "users", column: "fulfilled_by_id"
   add_foreign_key "events", "users", column: "point_of_contact_id"
   add_foreign_key "exports", "users"
   add_foreign_key "fee_relationships", "events"
@@ -696,10 +700,6 @@ ActiveRecord::Schema.define(version: 2020_07_14_002411) do
   add_foreign_key "invoices", "users", column: "archived_by_id"
   add_foreign_key "invoices", "users", column: "creator_id"
   add_foreign_key "invoices", "users", column: "manually_marked_as_paid_user_id"
-  add_foreign_key "load_card_requests", "cards"
-  add_foreign_key "load_card_requests", "events"
-  add_foreign_key "load_card_requests", "users", column: "creator_id"
-  add_foreign_key "load_card_requests", "users", column: "fulfilled_by_id"
   add_foreign_key "lob_addresses", "events"
   add_foreign_key "ops_checkins", "users", column: "point_of_contact_id"
   add_foreign_key "organizer_position_deletion_requests", "organizer_positions"
@@ -717,8 +717,8 @@ ActiveRecord::Schema.define(version: 2020_07_14_002411) do
   add_foreign_key "transactions", "checks"
   add_foreign_key "transactions", "disbursements"
   add_foreign_key "transactions", "donation_payouts"
+  add_foreign_key "transactions", "emburse_transfers"
   add_foreign_key "transactions", "fee_reimbursements"
   add_foreign_key "transactions", "fee_relationships"
   add_foreign_key "transactions", "invoice_payouts"
-  add_foreign_key "transactions", "load_card_requests"
 end
