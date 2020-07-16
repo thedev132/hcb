@@ -190,6 +190,8 @@ class StaticPagesController < ApplicationController
         airtable_task_size :sendy
       when :emburse_card_requests
         EmburseCardRequest.under_review.size
+      when :emburse_tractions
+        EmburseTransaction.under_review.size
       when :checks
         Check.pending.size + Check.unfinished_void.size
       when :ach_transfers
