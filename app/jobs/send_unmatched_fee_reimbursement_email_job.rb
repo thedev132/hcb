@@ -3,6 +3,6 @@ class SendUnmatchedFeeReimbursementEmailJob < ApplicationJob
     # if it's been matched, this job no longer needs to happen
     return if fr.completed?
 
-    FeeReimbursementMailer.admin_notification(fee_reimbursement: fr).deliver_later
+    FeeReimbursementMailer.with(fee_reimbursement: fr).admin_notification.deliver_later
   end
 end
