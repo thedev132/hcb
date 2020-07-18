@@ -271,8 +271,27 @@ action {
   .home,
   .dock,
   .heading .btn,
-  input[type='search'] {
+  input[type='search'],
+  .hide-print {
     display: none !important;
+  }
+
+  body {
+    background-color: $white !important;
+  }
+
+  main {
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+
+  * {
+    background: transparent;
+    box-shadow: none !important;
+    text-shadow: none !important;
+    color: #000 !important;
+    max-width: 100%;
+    word-wrap: break-word;
   }
 }
 
