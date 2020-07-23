@@ -126,27 +126,28 @@ class StaticPagesController < ApplicationController
   end
 
   def stats
+    now = params[:date].present? ? Date.parse(params[:date]) : DateTime.current
+    year_ago = now - 1.year
+    qtr_ago = now - 3.month
+    month_ago = now - 1.month
+
     events_list = []
-    Event.order(created_at: :desc).limit(10).each { |event|
+    Event.where('created_at <= ?', now).order(created_at: :desc).limit(10).each { |event|
       events_list.push({
         created_at: event.created_at.to_i, # unix timestamp
       })
     }
 
-    now = DateTime.current
-    year_ago = now - 1.year
-    qtr_ago = now - 3.month
-    month_ago = now - 1.month
-
     # NOTE: These stats are consumed by the hackclub/goblin
     # slack bot, and modifying the JSON schema without updating the bot
     # MAY BREAK THE BOT. - @thesephist
     render json: {
-      transactions_volume: Transaction.total_volume,
-      transactions_count: Transaction.all.size,
-      events_count: Event.all.size,
+      date: now,
+      transactions_volume: Transaction.where('transactions.created_at <= ?', now).total_volume,
+      transactions_count: Transaction.where('created_at <= ?', now).size,
+      events_count: Event.where('created_at <= ?', now).size,
       # Transactions are sorted by date DESC by default, so first one is... chronologically last
-      last_transaction_date: Transaction.first.created_at.to_i,
+      last_transaction_date: Transaction.where('created_at <= ?', now).first.created_at.to_i,
       raised: Transaction.raised_during(DateTime.strptime('0', '%s'), now),
       last_year: {
         transactions_volume: Transaction.volume_during(year_ago, now),
