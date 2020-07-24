@@ -19,6 +19,8 @@ class Event < ApplicationRecord
   has_many :fee_relationships
   has_many :transactions, through: :fee_relationships, source: :t_transaction
 
+  has_many :stripe_cards
+
   has_many :emburse_cards
   has_many :emburse_card_requests
   has_many :emburse_transfers

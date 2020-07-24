@@ -1,0 +1,3 @@
+<% @cards.each do |card| %>
+  <%= link_to card.last4, stripe_card_path(card) %>
+<% end %>

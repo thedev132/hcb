@@ -142,6 +142,14 @@ class EventsController < ApplicationController
     @sum = @event.emburse_balance
   end
 
+  def card_overview
+    @event = Event.find params[:event_id]
+    @stripe_cards = @event.stripe_cards.includes(user: [:profile_picture_attachment])
+    @emburse_cards= @event.emburse_cards.includes(user: [:profile_picture_attachment])
+    @cards = @stripe_cards + @emburse_cards
+    authorize @event
+  end
+
   def g_suite_overview
     @event = Event.includes([
       { g_suite: :accounts },

@@ -39,6 +39,10 @@ class EventPolicy < ApplicationPolicy
     is_public || user_or_admin
   end
 
+  def card_overview?
+    is_public || user_or_admin
+  end
+
   def g_suite_overview?
     is_public || user_or_admin
   end

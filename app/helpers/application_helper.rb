@@ -191,4 +191,9 @@ module ApplicationHelper
       "AKA a world of pure imagination"
     ].sample
   end
+
+  require 'json'
+  def json(obj)
+    JSON.pretty_generate(obj.as_json)
+  end
 end

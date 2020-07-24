@@ -18,8 +18,11 @@ class User < ApplicationRecord
   has_many :emburse_transfers
   has_many :emburse_card_requests
   has_many :emburse_cards
+  has_many :stripe_cards, through: :stripe_cardholder
   has_many :checks, inverse_of: :creator
   has_many :comments, as: :commentable
+
+  has_one :stripe_cardholder
 
   has_one_attached :profile_picture
 
@@ -56,16 +59,17 @@ class User < ApplicationRecord
   end
 
   def first_name
-    # beware– not all users will have their full_name set
+    # beware– not all users will have their first_name set
     full_name&.split(" ")&.first
   end
 
   def last_name
-    # beware– not all users will have their full_name set
+    # beware– not all users will have their last name set
     full_name&.split(" ")&.last
   end
 
   def initial_name
+    # beware– not all users will have their initial name set
     first_name + " " + last_name[0,1]
   end
 

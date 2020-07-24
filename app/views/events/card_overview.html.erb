@@ -1,0 +1,35 @@
+<% title "Cards for #{@event.name.html_safe}" %>
+<% page_md %>
+<%= render 'nav'%>
+
+<h1 class="heading">
+  Cards
+  <% if organizer_signed_in? %>
+    <% if current_user.stripe_cardholder %>
+      <%= link_to new_stripe_card_path(event_id: @event.id), class: 'btn btn--icon bg-success' do %>
+        <%= inline_icon 'card-add' %>
+        Issue new card
+      <% end %>
+    <% else %>
+      <%= link_to event_stripe_cardholder_new_path, class: 'btn btn--icon bg-success' do %>
+        <%= inline_icon 'card-add' %>
+        Issue new card
+      <% end %>
+    <% end %>
+  <% end %>
+</h1>
+<% if @cards.any? %>
+  <section class="mixed-grid grid--spacious mt2">
+    <%= render @cards.select(&:active?) %>
+  </section>
+  <% if @emburse_cards.deactivated.size > 0 %>
+    <details class="w-100 left-align">
+      <summary><h3 class="inline-block pb0 border-none">Deactivated cards</h3></summary>
+      <section class="mixed-grid grid--spacious mt2">
+      <%= render @emburse_cards.deactivated %>
+      </section>
+    </details>
+  <% end %>
+<% elsif @cards.blank? %>
+  <%= blankslate 'You haven’t requested any cards yet.' %>
+<% end %>

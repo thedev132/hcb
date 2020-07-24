@@ -1,0 +1,38 @@
+<%= form_with(model: stripe_card, local: true) do |form| %>
+  <%= form_errors stripe_card%>
+
+  <%= form.hidden_field :event_id, value: params[:event_id] %>
+  <%= form.hidden_field :stripe_cardholder_id, value: current_user&.stripe_cardholder&.id %>
+
+  <div class="field">
+    <%= form.label :stripe_shipping_name %>
+    <%= form.text_field :stripe_shipping_name, placeholder: current_user&.full_name %>
+  </div>
+  <div class="field">
+    <%= form.label :stripe_shipping_address_line1 %>
+    <%= form.text_field :stripe_shipping_address_line1, value: suggested(:line1) %>
+  </div>
+  <div class="field">
+    <%= form.label :stripe_shipping_address_line2 %>
+    <%= form.text_field :stripe_shipping_address_line2, value: suggested(:line2) %>
+  </div>
+  <div class="field">
+    <%= form.label :stripe_shipping_address_city %>
+    <%= form.text_field :stripe_shipping_address_city, value: suggested(:city) %>
+  </div>
+  <div class="field">
+    <%= form.label :stripe_shipping_address_state %>
+    <%= form.text_field :stripe_shipping_address_state, value: suggested(:state) %>
+  </div>
+  <div class="field">
+    <%= form.label :stripe_shipping_address_postal_code %>
+    <%= form.text_field :stripe_shipping_address_postal_code, value: suggested(:postal_code) %>
+  </div>
+  <div class="field">
+    <%= form.label :stripe_shipping_address_country %>
+    <%= form.text_field :stripe_shipping_address_country, value: suggested(:country) %>
+  </div>
+
+  <%= form.submit %>
+
+<% end %>

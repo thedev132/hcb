@@ -75,6 +75,8 @@ Rails.application.routes.draw do
     resources :comments
   end
 
+  resources :stripe_cardholders
+  resources :stripe_cards
   resources :emburse_cards do
     post 'toggle_active'
   end
@@ -205,6 +207,9 @@ Rails.application.routes.draw do
     get 'team', to: 'events#team', as: :team
     get 'g_suite', to: 'events#g_suite_overview', as: :g_suite_overview
     get 'emburse_cards', to: 'events#emburse_card_overview', as: :emburse_cards_overview
+    get 'cards', to: 'events#card_overview', as: :cards_overview
+    get 'stripe_cards/new', to: 'stripe_cards#new'
+    get 'stripe_cardholder/new', to: 'stripe_cardholders#new'
     get 'transfers', to: 'events#transfers', as: :transfers
     get 'promotions', to: 'events#promotions', as: :promotions
     get 'reimbursements', to: 'events#reimbursements', as: :reimbursements

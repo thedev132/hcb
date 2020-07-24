@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_15_055547) do
+ActiveRecord::Schema.define(version: 2020_07_23_223814) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
@@ -588,6 +588,47 @@ ActiveRecord::Schema.define(version: 2020_07_15_055547) do
     t.index ["slug"], name: "index_sponsors_on_slug", unique: true
   end
 
+  create_table "stripe_cardholders", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.text "stripe_id"
+    t.text "stripe_billing_address_line1"
+    t.text "stripe_billing_address_line2"
+    t.text "stripe_billing_address_city"
+    t.text "stripe_billing_address_country"
+    t.text "stripe_billing_address_postal_code"
+    t.text "stripe_billing_address_state"
+    t.text "stripe_name"
+    t.text "stripe_email"
+    t.text "stripe_phone_number"
+    t.integer "cardholder_type", default: 0, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_stripe_cardholders_on_user_id"
+  end
+
+  create_table "stripe_cards", force: :cascade do |t|
+    t.bigint "event_id", null: false
+    t.bigint "stripe_cardholder_id", null: false
+    t.text "stripe_id"
+    t.text "stripe_brand"
+    t.integer "stripe_exp_month"
+    t.integer "stripe_exp_year"
+    t.text "last4"
+    t.integer "card_type", default: 0, null: false
+    t.text "stripe_status"
+    t.text "stripe_shipping_address_city"
+    t.text "stripe_shipping_address_country"
+    t.text "stripe_shipping_address_line1"
+    t.text "stripe_shipping_address_postal_code"
+    t.text "stripe_shipping_address_line2"
+    t.text "stripe_shipping_address_state"
+    t.text "stripe_shipping_name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["event_id"], name: "index_stripe_cards_on_event_id"
+    t.index ["stripe_cardholder_id"], name: "index_stripe_cards_on_stripe_cardholder_id"
+  end
+
   create_table "transactions", force: :cascade do |t|
     t.text "plaid_id"
     t.text "transaction_type"
@@ -712,6 +753,9 @@ ActiveRecord::Schema.define(version: 2020_07_15_055547) do
   add_foreign_key "organizer_positions", "events"
   add_foreign_key "organizer_positions", "users"
   add_foreign_key "sponsors", "events"
+  add_foreign_key "stripe_cardholders", "users"
+  add_foreign_key "stripe_cards", "events"
+  add_foreign_key "stripe_cards", "stripe_cardholders"
   add_foreign_key "transactions", "ach_transfers"
   add_foreign_key "transactions", "bank_accounts"
   add_foreign_key "transactions", "checks"
