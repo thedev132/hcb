@@ -7,7 +7,7 @@
   </td>
   <td class="flex justify-between">
     <span><%= transaction.display_name %></span>
-    <span><%= "💬#{transaction.comments.size}" if transaction.comments.size > 0 %></span>
+    <span><%= "💬#{transaction.comments.size}" if organizer_signed_in? && transaction.comments.size > 0 %></span>
   </td>
   <td></td>
   <td class="nowrap">
