@@ -40,7 +40,7 @@ class EmburseCard < ApplicationRecord
   before_validation :sync_from_emburse!, unless: :persisted?
 
   def emburse_path
-    "https://app.emburse.com/emburse_cards/#{emburse_id}"
+    "https://app.emburse.com/cards/#{emburse_id}"
   end
 
   def amount_spent
