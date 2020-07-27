@@ -17,6 +17,10 @@ class OrganizerPositionDeletionRequest < ApplicationRecord
     under_review? ? :under_review : :closed
   end
 
+  def status_badge_type
+    under_review? ? :pending : :success
+  end
+
   def close(closed_by)
     raise StandardError.new('Already closed') unless self.closed_at.nil?
 

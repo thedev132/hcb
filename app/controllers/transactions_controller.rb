@@ -7,7 +7,7 @@ class TransactionsController < ApplicationController
     authorize Transaction
 
     @needs_action = Transaction.needs_action
-    @transactions = Transaction.order(:date).page params[:page]
+    @transactions = Transaction.order(:date).includes(:bank_account).page params[:page]
   end
 
   def export

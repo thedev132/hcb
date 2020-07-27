@@ -1,10 +1,8 @@
 <h1>Bank Accounts</h1>
-<section class="event-summary my2">
-  <div class="event-summary__panel rounded bg-accent white p1">
-    <div class="stat">
-      <span class="stat__label">Net Balance</span>
-      <span class="stat__value"><%= render_money BankAccount.all.map(&:balance).sum, '' %></span>
-    </div>
+<section class="event-summary mt3 mb3">
+  <div class="stat">
+    <span class="stat__label">Net Balance</span>
+    <span class="stat__value"><%= render_money BankAccount.all.map(&:balance).sum, '' %></span>
   </div>
 </section>
 <table>

@@ -1,10 +1,7 @@
+<% page_xl %>
 <h1>Transactions</h1>
 
-<h2>Uncategorized transactions</h2>
-
-<p>
-  <strong><%= pluralize(@needs_action.size, 'uncategorized transaction') %></strong>
-</p>
+<h2><%= pluralize(@needs_action.size, 'uncategorized transaction') %></h2>
 
 <table>
 <tr>
@@ -12,11 +9,11 @@
   <th>Name</th>
   <th>Amount</th>
   <th>Account</th>
-  <th>Event</th>
-  <th colspan="2">Full Info</th>
+  <th colspan="4">Event</th>
+  <th colspan="2"></th>
 </tr>
 <% @needs_action.each do |t| %>
-  <tr class="<%= 'shade-yellow' if !t.event && t.is_event_related %>">
+  <tr class="shade-yellow">
     <td>
       <%= t.date %>
     </td>
@@ -30,7 +27,7 @@
       <%= link_to t.bank_account.name, t.bank_account %>
     </td>
     <td>
-      <%= link_to 'Set Event', edit_transaction_path(t), class: 'btn bg-info' %>
+      <%= link_to 'Set', edit_transaction_path(t), class: 'btn bg-info' %>
     </td>
     <td>
       <%= link_to 'View', t %>
@@ -50,7 +47,7 @@
   <th>Amount</th>
   <th>Account</th>
   <th>Event</th>
-  <th colspan="2">Full Info</th>
+  <th colspan="2"></th>
 </tr>
 <% @transactions.each do |t| %>
   <tr class="<%= 'shade-yellow' if !t.event && t.is_event_related %>">

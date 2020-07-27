@@ -31,7 +31,10 @@
         <% end %>
         <td><%= "#{reimbursement.transaction_memo}" %></td>
         <td><%= render_money reimbursement.amount %></td>
-        <td><%= reimbursement.status %></td>
+        <td class="flex items-center">
+          <%= status_badge reimbursement.status_color %> 
+          <%= reimbursement.status.capitalize %>
+        </td>
         <td><%= link_to 'Edit', edit_fee_reimbursement_path(reimbursement) %></td>
         <td>
           <% if reimbursement.unprocessed? %>

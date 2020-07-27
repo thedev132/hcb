@@ -7,7 +7,7 @@
       <tr>
         <th>Event</th>
         <th>Submitted by</th>
-        <th>Target Organizer</th>
+        <th>Target organizer</th>
         <th>Status</th>
         <th colspan="3"></th>
       </tr>
@@ -17,10 +17,13 @@
       <% @opdrs.each do |opdr| %>
         <tr class="<%= 'shade-yellow' if opdr.under_review? %>">
           <td><%= opdr.organizer_position.event.name %></td>
-          <td><%= opdr.submitted_by.name %></td>
-          <td><%= opdr.organizer_position.user.name %></td>
-          <td><%= opdr.status.to_s.humanize %></td>
-          <td><%= link_to (opdr.under_review? ? 'Process' : 'View'), opdr, class: 'btn' %></td>
+          <td><%= user_mention opdr.submitted_by %></td>
+          <td><%= user_mention opdr.organizer_position.user %></td>
+          <td class="flex items-center">
+            <%= status_badge opdr.status_badge_type %>
+            <%= opdr.status.to_s.humanize %>
+          </td>
+          <td><%= link_to (opdr.under_review? ? 'Process' : 'View'), opdr, class: opdr.under_review? ? 'btn' : '' %></td>
         </tr>
       <% end %>
     </tbody>
