@@ -125,6 +125,10 @@ module ApplicationHelper
     @home_size.to_i > 48 ? 36 : 28
   end
 
+  def page_xl
+    content_for(:container_class) { 'container--xl' }
+  end
+
   def page_md
     content_for(:container_class) { 'container--md' }
   end

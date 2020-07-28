@@ -9,7 +9,7 @@
       <th>Bank name</th>
       <th>Recipient</th>
       <th>Status</th>
-      <th colspan="3"></th>
+      <th></th>
     </tr>
   </thead>
 
@@ -21,10 +21,9 @@
         <td><%= ach_transfer.account_number %></td>
         <td><%= ach_transfer.bank_name %></td>
         <td><%= ach_transfer.recipient_name %></td>
-        <td>
+        <td class="flex items-center">
           <%= status_badge ach_transfer.state %> <%= ach_transfer.status_text %>
         </td>
-        <td>
         <td><%= (link_to 'Process', ach_transfer_start_approval_path(ach_transfer)) if ach_transfer.pending? %></td>
       </tr>
     <% end %>

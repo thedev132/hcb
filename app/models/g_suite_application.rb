@@ -25,6 +25,14 @@ class GSuiteApplication < ApplicationRecord
     'under review'
   end
 
+  def status_badge_type
+    return :error if rejected_at.present?
+    return :canceled if canceled_at.present?
+    return :success if accepted_at.present?
+
+    :pending
+  end
+
   def under_review?
     rejected_at.nil? && canceled_at.nil? && accepted_at.nil?
   end

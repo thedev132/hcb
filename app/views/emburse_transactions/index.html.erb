@@ -19,7 +19,10 @@
         <td><%= format_datetime emburse_transaction.created_at %></td>
         <td><%= link_to emburse_transaction.emburse_id, emburse_transaction.emburse_path %></td>
         <td><%= render_money emburse_transaction.amount %></td>
-        <td><%= emburse_transaction.state %></td>
+        <td class="flex items-center">
+          <%= status_badge emburse_transaction.status_badge_type %>
+          <%= emburse_transaction.state.to_s.humanize %>
+        </td>
         <% if emburse_transaction.event.nil? %>
           <td>Unset</td>
         <% else %>

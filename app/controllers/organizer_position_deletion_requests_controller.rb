@@ -3,7 +3,9 @@ class OrganizerPositionDeletionRequestsController < ApplicationController
 
   def index
     authorize OrganizerPositionDeletionRequest
-    @opdrs = OrganizerPositionDeletionRequest.order(created_at: :desc)
+    @opdrs = OrganizerPositionDeletionRequest
+      .order(created_at: :desc)
+      .includes(:submitted_by, organizer_position: :event)
   end
 
   def show

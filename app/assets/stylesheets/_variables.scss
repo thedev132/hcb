@@ -22,7 +22,7 @@ $palette: (
   accent: $cyan,
   info: $blue,
   success: $green,
-  error: darken($red, 15%),
+  error: desaturate(darken($red, 25%), 15%),
   warning: $orange,
   pending: $yellow,
   purple: $purple,
