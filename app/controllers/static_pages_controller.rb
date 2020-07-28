@@ -188,6 +188,8 @@ class StaticPagesController < ApplicationController
         airtable_task_size :replit
       when :pending_sendy_airtable
         airtable_task_size :sendy
+      when :wire_transfers
+        airtable_task_size :wire_transfers
       when :emburse_card_requests
         EmburseCardRequest.under_review.size
       when :emburse_transactions
@@ -229,6 +231,7 @@ class StaticPagesController < ApplicationController
     pending_task :pending_stickermule_airtable
     pending_task :pending_replit_airtable
     pending_task :pending_sendy_airtable
+    pending_task :wire_transfers
     pending_task :emburse_card_requests
     pending_task :checks
     pending_task :ach_transfers
@@ -284,6 +287,11 @@ class StaticPagesController < ApplicationController
         url: "https://api2.hackclub.com/v0.1/Bank%20Promotions/Sendy",
         query: {filterByFormula: "Status='Pending'", fields: [] },
         destination: "https://airtable.com/tbl1MRaNpF4KphbOd/viwdGjjDdtsS7bjlP"
+      },
+      wire_transfers: {
+        url: "https://api2.hackclub.com/v0.1/Bank%20Promotions/Wire%20Transfers",
+        query: {filterByFormula: "Status='Pending'", fields: [] },
+        destination: "https://airtable.com/tbloFbH16HI7t3mfG/viwzgt8VLHOC82m8n"
       },
     }
   end
