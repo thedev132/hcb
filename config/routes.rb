@@ -186,6 +186,8 @@ Rails.application.routes.draw do
   post 'api/v1/events', to: 'api#event_new'
   post 'api/v1/disbursements', to: 'api#disbursement_new'
 
+  post 'stripe/webhook', to: 'stripe#webhook'
+
   post 'export/finances', to: 'exports#financial_export'
 
   get 'pending_fees', to: 'static_pages#pending_fees'
