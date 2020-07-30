@@ -6,23 +6,27 @@ class User < ApplicationRecord
 
   has_many :organizer_position_invites
   has_many :organizer_positions
+  has_many :organizer_position_deletion_requests, inverse_of: :submitted_by
+  has_many :organizer_position_deletion_requests, inverse_of: :closed_by
+
   has_many :events, through: :organizer_positions
+
   has_many :ops_checkins, inverse_of: :point_of_contact
   has_many :managed_events, inverse_of: :point_of_contact
+
   has_many :g_suite_applications, inverse_of: :creator
   has_many :g_suite_applications, inverse_of: :fulfilled_by
   has_many :g_suite_accounts, inverse_of: :fulfilled_by
   has_many :g_suite_accounts, inverse_of: :creator
-  has_many :organizer_position_deletion_requests, inverse_of: :submitted_by
-  has_many :organizer_position_deletion_requests, inverse_of: :closed_by
+
   has_many :emburse_transfers
   has_many :emburse_card_requests
   has_many :emburse_cards
   has_many :stripe_cards, through: :stripe_cardholder
+  has_one :stripe_cardholder
+
   has_many :checks, inverse_of: :creator
   has_many :comments, as: :commentable
-
-  has_one :stripe_cardholder
 
   has_one_attached :profile_picture
 

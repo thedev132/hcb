@@ -6,4 +6,12 @@ class StripeCardholderPolicy < ApplicationPolicy
   def create?
     user&.admin? || record&.user = user
   end
+
+  def update?
+    user&.admin? || record&.event&.users&.include?(user)
+  end
+
+  def update_profile?
+    user&.admin? || record == user
+  end
 end

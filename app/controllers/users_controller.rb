@@ -59,6 +59,7 @@ class UsersController < ApplicationController
 
   def edit
     @user = User.friendly.find(params[:id])
+    @onboarding = @user.full_name.blank?
     authorize @user
   end
 

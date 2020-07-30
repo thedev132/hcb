@@ -20,16 +20,9 @@
 <h1 class="heading">
   Cards
   <% if organizer_signed_in? %>
-    <% if current_user.stripe_cardholder %>
-      <%= link_to new_stripe_card_path(event_id: @event.id), class: 'btn btn--icon bg-success' do %>
-        <%= inline_icon 'card-add' %>
-        Issue new card
-      <% end %>
-    <% else %>
-      <%= link_to event_stripe_cardholder_new_path, class: 'btn btn--icon bg-success' do %>
-        <%= inline_icon 'card-add' %>
-        Issue new card
-      <% end %>
+    <%= link_to new_stripe_card_path(event_id: @event.id), class: 'btn btn--icon bg-success' do %>
+      <%= inline_icon 'card-add' %>
+      Issue new card
     <% end %>
   <% end %>
 </h1>

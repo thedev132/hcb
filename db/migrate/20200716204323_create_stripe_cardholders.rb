@@ -1,6 +1,6 @@
 class CreateStripeCardholders < ActiveRecord::Migration[6.0]
   def change
-    create_table :stripe_cardholders do |t|
+    create_table :stripe_cardholders, if_not_exists: true do |t|
       t.belongs_to :user, null: false, foreign_key: true
 
       t.text :stripe_id

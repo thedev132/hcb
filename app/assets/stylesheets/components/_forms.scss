@@ -142,3 +142,16 @@ textarea.card {
       0 0 2px 0 rgba(0, 0, 0, 0.0625), 0 4px 8px 0 rgba(0, 0, 0, 0.125);
   }
 }
+
+form.grid--split {
+  gird-template-columns: repeat(2, 1fr);
+  grid-gap: 0.75rem !important;
+
+  .field {
+    grid-column: span 2;
+    margin-bottom: 0;
+  }
+}
+.grid__half {
+  grid-column: span 1 !important;
+}

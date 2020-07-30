@@ -1,11 +1,16 @@
-<% page_sm %>
+<% page_sm if @onboarding %>
 
-<h1>
-  <%= @user.full_name.present? ? 'Update your profile' : 'Welcome to Bank!' %>
+<main class="<%= !@onboarding && 'grid grid--spacious grid--split' %>" style="grid-row-gap: 0;">
+
+<h1 class="grid__fill">
+  <%= @onboarding ? 'Welcome to Bank!' : 'Settings' %>
 </h1>
 
-<% if @user.full_name.blank? %>
+<section>
+<% if @onboarding %>
   <p>Complete your profile to get started.</p>
+<% else %>
+  <h2>Account settings</h2>
 <% end %>
 
 <%= form_with(model: @user, local: true) do |form| %>
@@ -52,3 +57,15 @@
     <%= form.submit @user.full_name.present? ? 'Save profile' : 'Start using Bank' %>
   </div>
 <% end %>
+</section>
+
+<% unless @onboarding %>
+<section>
+  <h2>Card billing settings</h2>
+
+  <%= render 'stripe_cardholders/form',
+      stripe_cardholder: @user.stripe_cardholder || StripeCardholder.new(user: @user) %>
+
+</section>
+<% end %>
+</main>

@@ -18,6 +18,28 @@ class StripeCardholdersController < ApplicationController
     end
   end
 
+  def update
+    @stripe_cardholder = current_user.stripe_cardholder
+
+    authorize @stripe_cardholder
+    if @stripe_cardholder.save
+      redirect_to 
+    else
+      render 
+    end
+  end
+
+  def update_profile
+    @stripe_cardholder = current_user.stripe_cardholder || StripeCardholder.new(user: current_user)
+
+    authorize @stripe_cardholder
+    if @stripe_cardholder.save
+      redirect_back(fallback_location: root_path)
+    else
+      render 'users/edit'
+    end
+  end
+
   private
 
   # Only allow a trusted parameter "white list" through.
