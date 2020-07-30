@@ -73,7 +73,7 @@ class Card extends React.Component {
 
   render () {
     return (
-      <a href={this.props.taskPath}>
+      <a href={this.props.taskPath} target="_blank">
         <li className="card card--item card--hover relative overflow-visible line-height-3">
           <strong>{this.props.humanName}</strong>
           {this.props.taskName && (
