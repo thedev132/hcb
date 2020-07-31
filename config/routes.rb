@@ -23,7 +23,7 @@ Rails.application.routes.draw do
       get 'login_code', to: redirect('/users/auth', status: 301)
     end
     post 'delete_profile_picture', to: 'users#delete_profile_picture'
-    post 'stripe_cardholder_profile', to: 'stripe_cardholders#update_profile'
+    patch 'stripe_cardholder_profile', to: 'stripe_cardholders#update_profile'
   end
 
   # webhooks
@@ -80,7 +80,7 @@ Rails.application.routes.draw do
   end
 
   resources :stripe_cardholders, only: [:new, :create, :update]
-  resources :stripe_cards
+  resources :stripe_cards, only: %i[create new index show]
   resources :emburse_cards do
     post 'toggle_active'
   end

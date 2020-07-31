@@ -1,4 +1,7 @@
-<%= form_with(model: stripe_cardholder, url: user_stripe_cardholder_profile_path(user_id: current_user.slug), class: 'grid grid--split', local: true) do |form| %>
+<%= form_with(model: stripe_cardholder,
+              url: user_stripe_cardholder_profile_path(user_id: current_user.slug),
+              method: :patch,
+              class: 'grid grid--split', local: true) do |form| %>
   <%= form_errors stripe_cardholder %>
 
   <%= form.hidden_field :id, value: stripe_cardholder.id %>

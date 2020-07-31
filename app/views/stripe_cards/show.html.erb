@@ -1,3 +1,66 @@
-<pre>
-<%= json @card %>
-</pre>
+<% title "Card #{@card.last_four}" %>
+<%= render 'events/nav' %>
+
+<article class="check--form flex align-start justify-center mt2">
+  <section class="center mt0 mx-auto" style="width: 400px; max-width: 100%;">
+    <%= render @card %>
+    <%= link_to @card, class: 'btn bg-info mt2 md-mt3' do %>
+      <%= inline_icon 'view' %>
+      Reveal card number
+    <% end if @card.virtual? %>
+  </section>
+
+  <article class="card max-width-2 mx-auto mt3">
+    <section class="mb2">
+      <h2 class="mt0 heading">
+        <span class="flex-auto">Card for <%= user_mention @card.user %></span>
+        <span class="h3"><%#= card_mention @card %></span>
+      </h2>
+
+      <section class="details mt2">
+        <% if @card.virtual? %>
+          <div>
+            <strong>Billing address</strong>
+            <%= render_address @card %>
+          </div>
+
+          <div>
+            <strong>CVC</strong>
+            <%= @card.cvc %>
+          </div>
+
+          <div>
+            <strong>Expiration date</strong>
+            <%= render_exp_date %>
+          </div>
+        <% end %>
+
+        <div>
+          <strong>Spending limit</strong>
+          <%= render_money @event.available_balance %>
+        </div>
+
+        <p>
+          <strong>Ordered by</strong>
+          <%= user_mention @card.user %>
+        </p>
+
+        <p>
+          <strong>Activation status</strong>
+          <span class="flex items-baseline">
+            <%= status_badge @card.status_badge_type %>
+            <%= @card.status_text %>
+          </span>
+        </p>
+      </section>
+    </section>
+
+    <section class="card__banner card__banner--bottom card__darker pt2 pb2">
+      <p class="muted mt0 mb0">
+        If there are fradulent or incorrect charges on your card,
+        please let your point of contact,
+        <%= user_mention @card.event&.point_of_contact %> know.
+      </p>
+    </section>
+  </article>
+</article>

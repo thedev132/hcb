@@ -1,4 +1,8 @@
 module StripeCardsHelper
+  def render_exp_date(card = @card)
+    "#{card.stripe_exp_month.to_s.rjust(2, '0')}/#{card.stripe_exp_year}"
+  end
+
   def suggested(field)
     return nil unless current_user
 

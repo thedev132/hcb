@@ -14,6 +14,14 @@ module ApplicationHelper
     number_to_percentage(decimal * 100, precision: precision)
   end
 
+  def render_address(obj)
+    content = []
+    content << obj.address_line1 + tag(:br)
+    content << obj.address_line2 + tag(:br) if obj.address_line2.present?
+    content << [obj.address_city, obj.address_state, obj.address_postal_code].join(', ')
+    content_tag(:span, content.join.html_safe)
+  end
+
   def blankslate(text, options = {})
     other_options = options.except(:class)
     content_tag(:p, text, class: "center mt0 mb0 pt2 pb2 slate bold h3 mx-auto max-width-2 #{options[:class]}", **other_options)

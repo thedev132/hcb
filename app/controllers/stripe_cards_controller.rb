@@ -1,13 +1,14 @@
 class StripeCardsController < ApplicationController
-  def show
-    @card = StripeCard.find params[:id]
-    
-    authorize @card
-  end
-
   def index
     @cards = StripeCard.all
     authorize @cards
+  end
+
+  def show
+    @card = StripeCard.includes(:event).find(params[:id]) # .includes(:user)
+    @event = @card.event
+    
+    authorize @card
   end
 
   def new
@@ -72,6 +73,7 @@ class StripeCardsController < ApplicationController
   def stripe_card_params
     params.require(:stripe_card).permit(
       :event_id,
+      :card_type,
       :stripe_cardholder_id,
       :stripe_shipping_name,
       :stripe_shipping_address_city,

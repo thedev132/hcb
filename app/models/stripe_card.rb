@@ -5,7 +5,9 @@ class StripeCard < ApplicationRecord
   belongs_to :stripe_cardholder
   has_one :user, through: :stripe_cardholder
 
-  enum card_type: { virtual: 0, plastic: 1 }
+  alias_attribute :last_four, :last4
+
+  enum card_type: { virtual: 0, physical: 1 }
 
   validates_presence_of :stripe_shipping_address_city,
                         :stripe_shipping_address_country,
@@ -48,8 +50,27 @@ class StripeCard < ApplicationRecord
   end
 
   def stripe_name
-    self.stripe_cardholder.stripe_name
+    stripe_cardholder.stripe_name
   end
+
+  def status_text
+    stripe_status.humanize.capitalize
+  end
+
+  def status_badge_type
+    s = stripe_status.to_sym
+    return :success if s == :active
+
+    :info
+  end
+
+  include ActiveModel::AttributeMethods
+  alias_attribute :address_line1, :stripe_shipping_address_line1
+  alias_attribute :address_line2, :stripe_shipping_address_line2
+  alias_attribute :address_city, :stripe_shipping_address_city
+  alias_attribute :address_state, :stripe_shipping_address_state
+  alias_attribute :address_country, :stripe_shipping_address_country
+  alias_attribute :address_postal_code, :stripe_shipping_address_postal_code
 
   private
 
@@ -97,17 +118,16 @@ class StripeCard < ApplicationRecord
     }
 
     unless virtual?
+      card_options[:shipping] = {}
       card_options[:shipping][:name] = stripe_shipping_name
       card_options[:shipping][:address] = {
         city: stripe_shipping_address_city,
         country: stripe_shipping_address_country,
         line1: stripe_shipping_address_line1,
-        line2: stripe_shipping_address_line2,
-        postal_code: stripe_shipping_address_postal_code,
-        state: stripe_shipping_address_state
+        postal_code: stripe_shipping_address_postal_code
       }
-      card_options[:shipping][:address].delete(state) if stripe_shipping_address_state.nil?
-      card_options[:shipping][:address].delete(line2) if stripe_shipping_address_line2.nil?
+      card_options[:shipping][:address][:line2] = stripe_shipping_address_line2 unless stripe_shipping_address_line2.blank?
+      card_options[:shipping][:address][:state] = stripe_shipping_address_state unless stripe_shipping_address_state.blank?
     end
 
     card = StripeService::Issuing::Card.create(card_options)
