@@ -40,6 +40,12 @@ $ rails db:migrate:status
 $ rails db:migrate
 ```
 
+### Running tests
+
+```
+$ bundle exec rspec
+```
+
 ### Log into the Rails console in production
 
 ```
