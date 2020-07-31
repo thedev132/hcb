@@ -12,7 +12,13 @@ Bank is a tool for hackers to hack on the real world, like GitHub, but for build
 4. ```sh
     docker-compose build
     docker-compose run web bundle exec rails db:create db:migrate
-    docker-compose up
+    docker-compose run --service-ports web bundle exec rails s -b 0.0.0.0 -p 3000
+
+    # Warning: `docker-compose up` will also spin up a background job worker to
+    # work on jobs in your database. If you've restored a production database
+    # dump, your local version may start sending emails/running jobs that were
+    # queued in production. You can see your database's jobs at
+    # http://localhost:3000/sidekiq
    ```
 5. Open [localhost:3000](http://localhost:3000)
 
