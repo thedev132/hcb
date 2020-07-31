@@ -12,6 +12,8 @@ RUN apt-get -y install yarn nodejs \
   # for easy editing of credentials
 ENV EDITOR=vim
 
+ADD yarn.lock /usr/src/app/yarn.lock
+ADD package.json /usr/src/app/package.json
 ADD Gemfile /usr/src/app/Gemfile
 ADD Gemfile.lock /usr/src/app/Gemfile.lock
 
