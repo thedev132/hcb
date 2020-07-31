@@ -13,8 +13,12 @@ class TopupStripeJob < ApplicationJob
     pending = balances[:issuing][:pending][0][:amount]
     available = balances[:issuing][:available][0][:amount]
 
-    # stripe TXs can get created up to 48 hours after approval, so let's count
-    # amount of approvals without TXs in the past 2 days
+    # amount of money already enroute to stripe through existing topups
+    topups = Stripe::Topup.list(status: :pending)
+    enroute_sum = topups[:data].sum(&:amount)
+
+    # stripe TXs can get created 1 to 30 days after approval, so let's grab any
+    # authorization that's pending
     expected_tx_sum = 0
     authorizations = StripeService::Issuing::Authorization.list(status: :pending)
     authorizations[:data].each do |auth|
@@ -22,7 +26,7 @@ class TopupStripeJob < ApplicationJob
                                           auth[:transactions].empty?
     end
 
-    topup_amount = buffer - pending - available + expected_tx_sum
+    topup_amount = buffer - pending - available + expected_tx_sum - enroute_sum
 
     return unless topup_amount > 0
 
