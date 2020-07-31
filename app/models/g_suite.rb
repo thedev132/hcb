@@ -29,7 +29,7 @@ class GSuite < ApplicationRecord
   end
 
   def domain_without_protocol
-    bad = ['http', ':', '/'].any? { |s| domain.include? s }
+    bad = ['http', ':', '/'].any? { |s| domain.to_s.include? s }
     errors.add(:domain, 'shouldn’t include http(s):// or ending /') if bad
   end
 end

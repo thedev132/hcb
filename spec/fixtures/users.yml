@@ -1,0 +1,6 @@
+user1:
+  api_id: 1
+  api_access_token: "token"
+  email: "user1@mailinator.com"
+  admin_at: <%= Time.now %>
+  created_at: <%= Time.now %>
