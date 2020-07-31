@@ -12,14 +12,8 @@ class TopupStripeJob < ApplicationJob
 
     # stripe TXs can get created up to 48 hours after approval, so let's count
     # amount of approvals without TXs in the past 2 days
-    filter = {
-      status: 'closed',
-      created: {
-        gte: (Time.now - 2.days).to_i
-      }
-    }
-    authorizations = StripeService::Issuing::Authorization.list(filter)
     expected_tx_sum = 0
+    authorizations = StripeService::Issuing::Authorization.list(status: :pending)
     authorizations[:data].each do |auth|
       expected_tx_sum += auth[:amount] if auth[:approved] &&
                                           auth[:transactions].empty?
