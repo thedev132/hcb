@@ -3,6 +3,9 @@ class TopupStripeJob < ApplicationJob
 
   def perform
     # amount of floating money that should be in stripe at any given time
+    # (msw) note this number is arbitrary at the time of writing– we have no
+    # clue how much buffer we'll need so I'll be manually updating this while
+    # we find our footing on stripe issuing
     buffer = 1000 * 100
 
     # amount of money currently in stripe
