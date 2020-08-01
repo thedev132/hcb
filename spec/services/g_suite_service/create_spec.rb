@@ -32,6 +32,15 @@ RSpec.describe GSuiteService::Create, type: :model do
     end.to change(GSuite, :count).by(1)
   end
 
+  it "sends a mailer" do
+    service.run
+
+    mail = ActionMailer::Base.deliveries.last
+
+    expect(mail.to).to eql([current_user.email])
+    expect(mail.subject).to include(domain)
+  end
+
   it "changes the application values" do
     expect do
       service.run

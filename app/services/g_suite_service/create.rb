@@ -14,12 +14,20 @@ module GSuiteService
       @g_suite_application.accepted_at = Time.now
       @g_suite_application.fulfilled_by = @current_user
 
-      @g_suite_application.save && g_suite.save
+      notify_of_creation if @g_suite_application.save && g_suite.save
 
       @g_suite
     end
 
     private
+
+    def recipient
+      @g_suite_application.creator.try(:email) || @current_user.email
+    end
+
+    def notify_of_creation
+      GSuiteMailer.with(recipient: recipient, g_suite_id: g_suite.reload.id).notify_of_creation.deliver_now
+    end
 
     def g_suite_attrs
       {

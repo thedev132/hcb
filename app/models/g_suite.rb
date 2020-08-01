@@ -1,5 +1,5 @@
 class GSuite < ApplicationRecord
-	include Shared::Domain
+  include Shared::Domain
 
   has_one :application, class_name: 'GSuiteApplication', required: true
   has_many :accounts, class_name: 'GSuiteAccount'
@@ -11,20 +11,12 @@ class GSuite < ApplicationRecord
   validate :domain_without_protocol
 
   after_initialize :set_application
-  after_create :notify_of_creation
 
   def verified?
     self.accounts.any? { |account| !account.verified_at.null? }
   end
 
   private
-
-  def notify_of_creation
-    GSuiteMailer.notify_of_creation(
-      recipient: self.application.creator.email,
-      g_suite: self
-    )
-  end
 
   def set_application
     self.application = GSuiteApplication.find_by(domain: domain)

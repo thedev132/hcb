@@ -1,10 +1,9 @@
 class GSuiteMailer < ApplicationMailer
-  def notify_of_creation(params)
-    @g_suite = params[:g_suite]
-    @domain = @g_suite.domain
+  def notify_of_creation
     @recipient = params[:recipient]
+    @g_suite = GSuite.find(params[:g_suite_id])
 
     mail to: @recipient,
-         subject: "[Action Requested] Your G Suite for #{@domain} was just created"
+      subject: "[Action Requested] Your G Suite for #{@g_suite.domain} was just created"
   end
 end
