@@ -3,6 +3,14 @@ class UsersController < ApplicationController
   skip_after_action :verify_authorized, except: [:edit, :update]
   before_action :hide_footer
 
+  def impersonate
+    authorize current_user
+
+    sign_in(User.find(params[:user_id]))
+
+    redirect_to root_path
+  end
+
   # view to log in
   def auth
   end
