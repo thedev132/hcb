@@ -27,6 +27,6 @@ class GSuite < ApplicationRecord
   end
 
   def set_application
-    self.application = GSuiteApplication.find_by(domain: self.domain)
+    self.application = GSuiteApplication.find_by(domain: domain)
   end
 end

@@ -36,19 +36,23 @@ class GSuitesController < ApplicationController
 
   # POST /g_suites
   def create
-    @g_suite = GSuite.new(
-      domain: g_suite_params[:domain],
+    authorize GSuite
+
+    @g_suite_application = GSuiteApplication.find(g_suite_params[:g_suite_application_id])
+
+    attrs = {
+      current_user: current_user,
+      g_suite_application: @g_suite_application,
+
       event_id: g_suite_params[:event_id],
+      domain: g_suite_params[:domain],
       verification_key: g_suite_params[:verification_key],
       dkim_key: g_suite_params[:dkim_key]
-    )
+    }
 
-    authorize @g_suite
-    @g_suite_application = GSuiteApplication.find(g_suite_params[:g_suite_application_id])
-    @g_suite_application.accepted_at = Time.now
-    @g_suite_application.fulfilled_by = current_user
+    @g_suite = GSuiteService::Create.new(attrs).run
 
-    if @g_suite_application.save && @g_suite.save
+    if @g_suite.persisted?
       flash[:success] = "G Suite application accepted for #{@g_suite.event.name}. Domain: #{@g_suite.domain}"
       redirect_to @g_suite
     else
