@@ -1,8 +1,4 @@
 class GsuiteService
-  require "google/apis/admin_directory_v1"
-  require "googleauth"
-  require "googleauth/stores/file_token_store"
-
   include Singleton
 
   OOB_URI = "urn:ietf:wg:oauth:2.0:oob".freeze
@@ -13,8 +9,6 @@ class GsuiteService
   TOKEN_FILE << Rails.application.credentials.gsuite[:token]
   TOKEN_FILE.rewind
   TOKEN_FILE.close
-
-  Google::Apis.logger.level = Rails.env.production? ? Logger::FATAL : Logger::DEBUG
 
   def authorize
     client_id = Google::Auth::ClientId.from_hash JSON.parse(Rails.application.credentials.gsuite[:client_id_json])

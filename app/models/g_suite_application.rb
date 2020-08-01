@@ -1,5 +1,5 @@
 class GSuiteApplication < ApplicationRecord
-	include Shared::Domain
+  include Shared::Domain
   include Rejectable
 
   paginates_per 50

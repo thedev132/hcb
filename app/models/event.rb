@@ -176,7 +176,7 @@ class Event < ApplicationRecord
     return :under_review if g_suite_application.under_review?
     return :app_accepted if g_suite_application.accepted? && g_suite.present?
     return :app_rejected if g_suite_application.rejected?
-    return :verify_setup unless g_suite.verified?
+    return :verify_setup unless g_suite.verified? # TODO: I think it is impossible to ever arrive here, correct? since 2 lines above app_accepted will intercept it.
     return :done if g_suite.verified?
 
     :start

@@ -19,8 +19,7 @@ module PopulateService
           attrs = {
             api_id: 999_999_999,
             api_access_token: "token",
-            email: email,
-            admin_at: Time.now
+            email: email
           }
           user = User.create!(attrs)
 
