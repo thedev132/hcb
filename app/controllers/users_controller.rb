@@ -6,9 +6,9 @@ class UsersController < ApplicationController
   def impersonate
     authorize current_user
 
-    sign_in(User.find(params[:user_id]))
+    impersonate_user(User.find(params[:user_id]))
 
-    redirect_to root_path
+    redirect_to root_path, status: 302
   end
 
   # view to log in
