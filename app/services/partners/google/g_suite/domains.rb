@@ -1,15 +1,11 @@
 module Partners
   module Google
     module GSuite
-      class User
+      class Domains
         include Partners::Google::GSuite::Shared::DirectoryClient
 
-        def initialize(email:)
-          @email = email
-        end
-
         def run
-          directory_client.get_user(@email, projection: 'full')
+          directory_client.list_domains(gsuite_customer_id)
         end
       end
     end

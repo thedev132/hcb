@@ -18,6 +18,10 @@ module Partners
           def authorization
             ::GsuiteService.instance.authorize
           end
+
+          def gsuite_customer_id
+            Rails.application.credentials.gsuite[:customer_id]
+          end
         end
       end
     end
