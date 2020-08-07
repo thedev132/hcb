@@ -18,5 +18,13 @@ RSpec.describe GSuite, type: :model do
       expect(g_suite).to_not be_valid
     end
   end
+
+  describe "#verification_url" do
+    it "generates it" do
+      result = g_suite.verification_url
+
+      expect(result).to eql("https://www.google.com/webmasters/verification/verification?siteUrl=http://event1.example.com")
+    end
+  end
 end
 
