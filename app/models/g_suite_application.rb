@@ -37,4 +37,8 @@ class GSuiteApplication < ApplicationRecord
   def under_review?
     rejected_at.nil? && canceled_at.nil? && accepted_at.nil?
   end
+
+  def verification_url
+    "https://www.google.com/webmasters/verification/verification?siteUrl=http://#{domain}"
+  end
 end

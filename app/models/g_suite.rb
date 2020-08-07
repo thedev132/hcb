@@ -16,6 +16,10 @@ class GSuite < ApplicationRecord
     self.accounts.any? { |account| !account.verified_at.null? }
   end
 
+  def verification_url
+    "https://www.google.com/webmasters/verification/verification?siteUrl=http://#{domain}"
+  end
+
   private
 
   def set_application
