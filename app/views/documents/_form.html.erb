@@ -1,19 +1,21 @@
-<%= form_with(model: document, local: true) do |form| %>
-  <%= form_errors document %>
+<div data-controller="new-document">
+  <%= form_with(model: document, local: true) do |form| %>
+    <%= form_errors document %>
 
-  <%= form.hidden_field :event_id, value: document.event_id || params[:event_id] %>
+    <%= form.hidden_field :event_id, value: document.event_id || params[:event_id] %>
 
-  <div class="field">
-    <%= form.label :name %>
-    <%= form.text_field :name, required: true %>
-  </div>
+    <div class="field">
+      <%= form.label :file %>
+      <%= form.file_field :file, required: true, data: { target: "new-document.file", action: "change->new-document#fileChanged" } %>
+    </div>
 
-  <div class="field">
-    <%= form.label :file %>
-    <%= form.file_field :file, required: true %>
-  </div>
+    <div class="field">
+      <%= form.label :name %>
+      <%= form.text_field :name, required: true, data: { target: "new-document.name" } %>
+    </div>
 
-  <div class="actions">
-    <%= form.submit %>
-  </div>
-<% end %>
+    <div class="actions">
+      <%= form.submit %>
+    </div>
+  <% end %>
+</div>

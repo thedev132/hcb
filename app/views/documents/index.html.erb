@@ -14,23 +14,20 @@
 </h1>
 
 <ul class="grid">
-  <% if @documents.any? %>
-    <% @documents.each do |d| %>
-      <%= link_to admin_signed_in? ? d : document_download_path(d) do %>
-        <li class="card">
-          <strong class="h3 block"><%= d.name %></strong>
-          <%= user_mention d.user %>
-        </li>
-      <% end %>
+  <% @documents.each do |d| %>
+    <%= link_to admin_signed_in? ? d : document_download_path(d) do %>
+      <li class="card">
+        <strong class="h3 block"><%= d.name %></strong>
+        <%= user_mention d.user %>
+      </li>
     <% end %>
-  <% else %>
-    <% Document.common.each do |d| %>
-      <%= link_to admin_signed_in? ? d : document_download_path(d) do %>
-        <li class="card">
-          <strong class="h3 block"><%= d.name %></strong>
-          <%= user_mention d.user %>
-        </li>
-      <% end %>
+  <% end %>
+  <% Document.common.each do |d| %>
+    <%= link_to admin_signed_in? ? d : document_download_path(d) do %>
+      <li class="card">
+        <strong class="h3 block"><%= d.name %></strong>
+        <%= user_mention d.user %>
+      </li>
     <% end %>
   <% end %>
 
