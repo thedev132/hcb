@@ -1,9 +1,5 @@
 module SessionsHelper
-  def impersonate_user(user)
-    sign_in(user, true)
-  end
-
-  def sign_in(user, impersonate = false)
+  def sign_in(user)
     session_token = User.new_session_token
     cookies.permanent[:session_token] = session_token
     user.update_attribute(:session_token, User.digest(session_token))
@@ -14,13 +10,7 @@ module SessionsHelper
       invite.update(user: user)
     end
 
-    if impersonate
-      @current_user = user
-      cache_api_authorized(true)
-      @current_user
-    else
-      self.current_user = user
-    end
+    self.current_user = user
   end
 
   def signed_in?
@@ -48,7 +38,9 @@ module SessionsHelper
       # ensure that our auth token is valid. this will throw
       # ApiService::UnauthorizedError if we get an authorization error, which
       # will be caught by ApplicationController and sign out the user
-      cache_api_authorized
+      Rails.cache.fetch("#{@current_user.cache_key_with_version}/authed", expires_in: 1.hour) do
+        @current_user.api_record.present?
+      end
     end
 
     @current_user
@@ -81,13 +73,5 @@ module SessionsHelper
 
   def store_location
     session[:return_to] = request.url if request.get?
-  end
-
-  private
-
-  def cache_api_authorized(override_for_impersonate = false)
-    Rails.cache.fetch("#{@current_user.cache_key_with_version}/authed", expires_in: 1.hour) do
-      override_for_impersonate || @current_user.api_record.present?
-    end
   end
 end
