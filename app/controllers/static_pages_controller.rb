@@ -7,6 +7,26 @@ class StaticPagesController < ApplicationController
 
   def index
     if signed_in?
+      attrs = {
+        current_user: current_user
+      }
+      @service = StaticPageService::Index.new(attrs)
+
+      redirect_to @service.events.first and return if @service.redirect_to_first_event?
+
+      @events = @service.events
+      @invites = @service.invites
+      @active = {
+        g_suite_accounts: GSuiteAccount.under_review.size,
+      }
+    end
+    if admin_signed_in?
+      @transaction_volume = Transaction.total_volume
+    end
+  end
+
+  def deprecated
+    if signed_in?
       @events = current_user.events.includes(organizer_positions: :user)
       @invites = current_user.organizer_position_invites.pending
 

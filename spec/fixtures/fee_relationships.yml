@@ -1,0 +1,11 @@
+fee_relationship1:
+  event: event1
+  fee_amount: 10010
+  fee_applies: true
+  created_at: <%= Time.now %>
+
+fee_relationship2:
+  event: event1
+  fee_amount: -10
+  is_fee_payment: true
+  created_at: <%= Time.now %>

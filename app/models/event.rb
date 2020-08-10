@@ -4,6 +4,38 @@ class Event < ApplicationRecord
   default_scope { order(id: :asc) }
   scope :hidden, -> { where.not(hidden_at: nil) }
   scope :not_hidden, -> { where(hidden_at: nil) }
+  scope :event_ids_with_pending_fees_greater_than_100, -> do
+    query = <<~SQL
+      ;select event_id, fee_balance from (
+        select q1.event_id, COALESCE(q1.sum, 0) as total_fees, COALESCE(q2.sum, 0) as total_fee_payments, COALESCE(q1.sum, 0) + COALESCE(q2.sum, 0) as fee_balance from (
+
+        -- step 1: calculate total_fees per event
+        select fr.event_id, sum(fr.fee_amount) from fee_relationships fr
+        inner join transactions t on t.fee_relationship_id = fr.id
+        where fr.fee_applies is true and t.deleted_at is null
+        group by fr.event_id
+
+        ) q1 
+
+        left outer join (
+        -- step 2: calculate total_fee_payments per event
+        select fr.event_id, sum(t.amount) from fee_relationships fr
+        inner join transactions t on t.fee_relationship_id = fr.id
+        where fr.is_fee_payment is true and t.deleted_at is null
+        group by fr.event_id
+        ) q2
+
+        on q1.event_id = q2.event_id
+      ) q3
+      where fee_balance > 100
+    SQL
+
+    ActiveRecord::Base.connection.execute(query)
+  end
+
+  scope :pending_fees, -> do
+    where(id: Event.event_ids_with_pending_fees_greater_than_100.to_a.map {|a| a["event_id"] })
+  end
 
   friendly_id :name, use: :slugged
 
@@ -77,11 +109,6 @@ class Event < ApplicationRecord
     end
   end
 
-  def self.pending_fees
-    # minimum that you can move with SVB is $1
-    select { |event| event.fee_balance > 100 }
-  end
-
   # When a fee payment is collected from this event, what will the TX memo be?
   def fee_payment_memo
     "#{self.name} Bank Fee"
@@ -124,29 +151,8 @@ class Event < ApplicationRecord
   end
   alias available_balance balance_available
 
-  def billed_transactions
-    transactions
-      .joins(:fee_relationship)
-      .where(fee_relationships: { fee_applies: true })
-  end
-
-  def fee_payments
-    transactions
-      .joins(:fee_relationship)
-      .where(fee_relationships: { is_fee_payment: true })
-  end
-
-  # total amount over all time paid agains the fee
-  def fee_paid
-    # fee payments are withdrawals, so negate value
-    -self.fee_payments.sum(:amount)
-  end
-
   def fee_balance
-    total_fees = self.billed_transactions.sum('fee_relationships.fee_amount')
-    total_payments = self.fee_paid
-
-    total_fees - total_payments
+    @fee_balance ||= total_fees - total_fee_payments
   end
 
   # amount of balance that fees haven't been pulled out for
@@ -176,7 +182,7 @@ class Event < ApplicationRecord
     return :under_review if g_suite_application.under_review?
     return :app_accepted if g_suite_application.accepted? && g_suite.present?
     return :app_rejected if g_suite_application.rejected?
-    return :verify_setup unless g_suite.verified? # TODO: I think it is impossible to ever arrive here, correct? since 2 lines above app_accepted will intercept it.
+    return :verify_setup unless g_suite.verified?
     return :done if g_suite.verified?
 
     :start
@@ -213,5 +219,14 @@ class Event < ApplicationRecord
     return if self.point_of_contact&.admin?
 
     errors.add(:point_of_contact, 'must be an admin')
+  end
+
+  def total_fees
+    @total_fees ||= transactions.joins(:fee_relationship).where(fee_relationships: { fee_applies: true }).sum("fee_relationships.fee_amount")
+  end
+
+  # fee payments are withdrawals, so negate value
+  def total_fee_payments
+    @total_fee_payments ||= -transactions.joins(:fee_relationship).where(fee_relationships: { is_fee_payment: true }).sum(:amount)
   end
 end

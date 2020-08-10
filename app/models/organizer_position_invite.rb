@@ -55,17 +55,17 @@ class OrganizerPositionInvite < ApplicationRecord
   end
 
   def accept
-    unless self.user.present?
+    unless user.present?
       self.errors.add(:user, 'must be present to accept invite')
       return false
     end
 
-    if self.cancelled?
+    if cancelled?
       self.errors.add(:base, 'was canceled!')
       return false
     end
 
-    if self.accepted?
+    if accepted?
       self.errors.add(:base, 'already accepted!')
       return false
     end
@@ -81,21 +81,21 @@ class OrganizerPositionInvite < ApplicationRecord
   end
 
   def accepted?
-    self.accepted_at.present?
+    accepted_at.present?
   end
 
   def reject
-    unless self.user.present?
+    unless user.present?
       self.errors.add(:user, 'must be present to reject invite')
       return false
     end
 
-    if self.cancelled?
+    if cancelled?
       self.errors.add(:base, 'was canceled!')
       return false
     end
 
-    if self.rejected?
+    if rejected?
       self.errors.add(:base, 'already rejected!')
       return false
     end
@@ -106,16 +106,16 @@ class OrganizerPositionInvite < ApplicationRecord
   end
 
   def rejected?
-    self.rejected_at.present?
+    rejected_at.present?
   end
 
   def cancel
-    if self.accepted?
+    if accepted?
       self.errors.add(:user, 'has already accepted this invite!')
       return false
     end
 
-    if self.rejected?
+    if rejected?
       self.errors.add(:user, 'has already rejected this invite!')
       return false
     end
@@ -126,11 +126,11 @@ class OrganizerPositionInvite < ApplicationRecord
   end
 
   def cancelled?
-    self.cancelled_at.present?
+    cancelled_at.present?
   end
 
   def slug_candidates
-    slug = normalize_friendly_id("#{self.event.name} #{self.email}")
+    slug = normalize_friendly_id("#{event.try(:name)} #{email}")
     # https://github.com/norman/friendly_id/issues/480
     sequence = OrganizerPositionInvite.where("slug LIKE ?", "#{slug}-%").size + 2
     [slug, "#{slug} #{sequence}"]
@@ -139,13 +139,13 @@ class OrganizerPositionInvite < ApplicationRecord
   private
 
   def not_already_organizer
-    if self.event.users.pluck(:email).include? self.email
+    if event && event.users.pluck(:email).include?(email)
       self.errors.add(:user, 'is already an organizer of this event!')
     end
   end
 
   def not_already_invited
-    if self.event.organizer_position_invites.pending.pluck(:email).include? self.email
+    if event && event.organizer_position_invites.pending.pluck(:email).include?(email)
       self.errors.add(:user, 'already has a pending invite!')
     end
   end

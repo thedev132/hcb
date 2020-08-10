@@ -1,0 +1,12 @@
+organizer_position_invite1:
+  sender: user1
+  event: event1
+  email: "organizerPositionInvite1@mailinator.com"
+  created_at: <%= Time.now %>
+
+organizer_position_invite2:
+  sender: user1
+  event: event1
+  email: user2.email
+  user: user2
+  created_at: <%= Time.now %>
