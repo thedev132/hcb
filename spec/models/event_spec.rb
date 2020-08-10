@@ -3,12 +3,43 @@
 require "rails_helper"
 
 RSpec.describe Event, type: :model do
-  fixtures "events"
+  fixtures "events", "transactions", "fee_relationships"
 
   let(:event) { events(:event1) }
 
   it "is valid" do
     expect(event).to be_valid
   end
-end
 
+  describe "#fee_balance" do
+    it "calculates a value" do
+      result = event.fee_balance
+
+      expect(result).to eql(10020.0)
+    end
+
+    context "when paid fees exist" do
+      it "calculates a different value" do
+
+      end
+    end
+  end
+
+  describe "private" do
+    describe "#total_fees" do
+      it "calculates" do
+        result = event.send(:total_fees)
+
+        expect(result).to eql(10010.0)
+      end
+    end
+
+    describe "#total_fee_payments" do
+      it "calculates" do
+        result = event.send(:total_fee_payments)
+
+        expect(result).to eql(-10.0)
+      end
+    end
+  end
+end

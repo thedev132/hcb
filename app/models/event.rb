@@ -79,7 +79,7 @@ class Event < ApplicationRecord
 
   def self.pending_fees
     # minimum that you can move with SVB is $1
-    select { |event| event.fee_balance > 100 }
+    select { |event| event.fee_balance > 100 } # TODO: move to sql query. expensive in ruby.
   end
 
   # When a fee payment is collected from this event, what will the TX memo be?
@@ -124,29 +124,8 @@ class Event < ApplicationRecord
   end
   alias available_balance balance_available
 
-  def billed_transactions
-    transactions
-      .joins(:fee_relationship)
-      .where(fee_relationships: { fee_applies: true })
-  end
-
-  def fee_payments
-    transactions
-      .joins(:fee_relationship)
-      .where(fee_relationships: { is_fee_payment: true })
-  end
-
-  # total amount over all time paid agains the fee
-  def fee_paid
-    # fee payments are withdrawals, so negate value
-    -self.fee_payments.sum(:amount)
-  end
-
   def fee_balance
-    total_fees = self.billed_transactions.sum('fee_relationships.fee_amount')
-    total_payments = self.fee_paid
-
-    total_fees - total_payments
+    @fee_balance ||= total_fees - total_fee_payments # TODO: why is this minus if the minus has already been handled in #total_fee_payments ? won't this just increase the fee balance over time?
   end
 
   # amount of balance that fees haven't been pulled out for
@@ -176,7 +155,7 @@ class Event < ApplicationRecord
     return :under_review if g_suite_application.under_review?
     return :app_accepted if g_suite_application.accepted? && g_suite.present?
     return :app_rejected if g_suite_application.rejected?
-    return :verify_setup unless g_suite.verified? # TODO: I think it is impossible to ever arrive here, correct? since 2 lines above app_accepted will intercept it.
+    return :verify_setup unless g_suite.verified?
     return :done if g_suite.verified?
 
     :start
@@ -213,5 +192,14 @@ class Event < ApplicationRecord
     return if self.point_of_contact&.admin?
 
     errors.add(:point_of_contact, 'must be an admin')
+  end
+
+  def total_fees
+    @total_fees ||= transactions.joins(:fee_relationship).where(fee_relationships: { fee_applies: true }).sum("fee_relationships.fee_amount")
+  end
+
+  # fee payments are withdrawals, so negate value
+  def total_fee_payments
+    @total_fee_payments ||= -transactions.joins(:fee_relationship).where(fee_relationships: { is_fee_payment: true }).sum(:amount)
   end
 end
