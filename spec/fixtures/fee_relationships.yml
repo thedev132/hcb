@@ -6,6 +6,6 @@ fee_relationship1:
 
 fee_relationship2:
   event: event1
-  fee_amount: 10
+  fee_amount: -10
   is_fee_payment: true
   created_at: <%= Time.now %>

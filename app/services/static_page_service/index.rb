@@ -55,15 +55,11 @@ module StaticPageService
     end
 
     def pending_fees_count
-      0 # TODO
-      #Event.pending_fees.count
+      Event.pending_fees_v2.count
     end
 
     def disbursements
       Disbursement.pending.count
-    end
-
-    def pending_hackathons_airtable_count
     end
 
     private

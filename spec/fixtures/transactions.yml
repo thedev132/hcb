@@ -10,6 +10,6 @@ transaction2:
   plaid_id: "plaidid2"
   bank_account: bank_account1
   fee_relationship: fee_relationship2
-  amount: 10
+  amount: -10
   name: "Transaction 2"
   created_at: <%= Time.now %>
