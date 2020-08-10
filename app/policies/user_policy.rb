@@ -1,4 +1,8 @@
 class UserPolicy < ApplicationPolicy
+  def impersonate?
+    user.admin?
+  end
+
   def edit?
     user.admin? || record == user
   end

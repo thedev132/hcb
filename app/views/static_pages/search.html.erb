@@ -38,6 +38,10 @@
           <% end %>
         </p>
       <% end %>
+      <hr/>
+      <p>
+        <%= link_to "Impersonate this user", impersonate_users_path(user_id: r.id) %>
+      </p>
     </div>
   <% end %>
 <% end %>

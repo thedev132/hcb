@@ -10,6 +10,7 @@ Rails.application.routes.draw do
 
   resources :users, only: [:edit, :update] do
     collection do
+      get 'impersonate', to: 'users#impersonate'
       get 'auth', to: 'users#auth'
       post 'login_code', to: 'users#login_code'
       post 'exchange_login_code', to: 'users#exchange_login_code'
