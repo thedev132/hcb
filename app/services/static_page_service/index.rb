@@ -55,7 +55,7 @@ module StaticPageService
     end
 
     def pending_fees_count
-      Event.pending_fees_v2.count
+      Event.pending_fees.count
     end
 
     def disbursements

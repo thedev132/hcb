@@ -12,7 +12,7 @@ class Event < ApplicationRecord
         -- step 1: calculate total_fees per event
         select fr.event_id, sum(fr.fee_amount) from fee_relationships fr
         inner join transactions t on t.fee_relationship_id = fr.id
-        where fr.fee_applies is true
+        where fr.fee_applies is true and t.deleted_at is null
         group by fr.event_id
 
         ) q1 
@@ -21,7 +21,7 @@ class Event < ApplicationRecord
         -- step 2: calculate total_fee_payments per event
         select fr.event_id, sum(t.amount) from fee_relationships fr
         inner join transactions t on t.fee_relationship_id = fr.id
-        where fr.is_fee_payment is true
+        where fr.is_fee_payment is true and t.deleted_at is null
         group by fr.event_id
         ) q2
 
@@ -33,7 +33,7 @@ class Event < ApplicationRecord
     ActiveRecord::Base.connection.execute(query)
   end
 
-  scope :pending_fees_v2, -> do
+  scope :pending_fees, -> do
     where(id: Event.event_ids_with_pending_fees_greater_than_100.to_a.map {|a| a["event_id"] })
   end
 
@@ -107,11 +107,6 @@ class Event < ApplicationRecord
 
       event
     end
-  end
-
-  def self.pending_fees
-    # minimum that you can move with SVB is $1
-    select { |event| event.fee_balance > 100 } # TODO: move to sql query. expensive in ruby.
   end
 
   # When a fee payment is collected from this event, what will the TX memo be?
