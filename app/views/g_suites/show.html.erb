@@ -13,7 +13,10 @@
 
 <p>
   <strong>Domain</strong>
-  <%= @g_suite.domain %>
+  <span>
+    <%= @g_suite.domain %>
+    <small><%= link_to "verify ⧉", @g_suite.verification_url, target: :blank %></small>
+  </span>
 </p>
 
 <p>

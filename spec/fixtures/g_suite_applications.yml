@@ -1,0 +1,12 @@
+g_suite_application1:
+  creator: user1
+  event: event1
+  domain: event1.example.com
+  fulfilled_by: user1
+  created_at: <%= Time.now %>
+
+g_suite_application2:
+  creator: user1
+  event: event1
+  domain: event2.example.com
+  created_at: <%= Time.now %>

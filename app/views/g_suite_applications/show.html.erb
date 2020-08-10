@@ -15,8 +15,14 @@
 
 <p>
   <strong>Domain</strong>
-  <%= @g_suite_application.domain %>
+  <span>
+    <%= @g_suite_application.domain %>
+    <small><%= link_to "verify ⧉", @g_suite_application.verification_url, target: :blank %></small>
+  </span>
 </p>
+
+<p>
+  <strong>
 
 <% if @g_suite_application.under_review? %>
 <p>
