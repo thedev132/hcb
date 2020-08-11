@@ -3,6 +3,7 @@ require 'admin_constraint'
 
 Rails.application.routes.draw do
   mount Sidekiq::Web => '/sidekiq', constraints: AdminConstraint.new
+  mount Blazer::Engine, at: "blazer", constraints: AdminConstraint.new
   get '/sidekiq', to: 'users#auth' # fallback if adminconstraint fails, meaning user is not signed in
 
   root to: 'static_pages#index'
