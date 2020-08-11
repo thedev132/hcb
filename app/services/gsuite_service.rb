@@ -4,8 +4,8 @@ class GsuiteService
   OOB_URI = "urn:ietf:wg:oauth:2.0:oob".freeze
   SCOPE = [
     Google::Apis::AdminDirectoryV1::AUTH_ADMIN_DIRECTORY_USER,
-    Google::Apis::AdminDirectoryV1::AUTH_ADMIN_DIRECTORY_ORGUNIT
-    #Google::Apis::AdminDirectoryV1::AUTH_ADMIN_DIRECTORY_DOMAIN
+    Google::Apis::AdminDirectoryV1::AUTH_ADMIN_DIRECTORY_ORGUNIT,
+    Google::Apis::AdminDirectoryV1::AUTH_ADMIN_DIRECTORY_DOMAIN
   ]
 
   # this is a hack to work with the google library's requirement that tokens must be in files
@@ -15,10 +15,6 @@ class GsuiteService
   TOKEN_FILE.close
 
   def authorize
-    client_id = Google::Auth::ClientId.from_hash JSON.parse(Rails.application.credentials.gsuite[:client_id_json])
-    token_store = Google::Auth::Stores::FileTokenStore.new file: TOKEN_FILE.path
-    authorizer = Google::Auth::UserAuthorizer.new client_id, SCOPE, token_store
-    user_id = "default"
     credentials = authorizer.get_credentials user_id
     if credentials.nil?
       url = authorizer.get_authorization_url base_url: OOB_URI
@@ -134,5 +130,23 @@ class GsuiteService
       suspended: suspend
     )
     client.update_user(email, update_user_struct)
+  end
+
+  private
+
+  def client_id
+    @client_id ||= Google::Auth::ClientId.from_hash JSON.parse(Rails.application.credentials.gsuite[:client_id_json])
+  end
+
+  def token_store
+    @token_store ||= Google::Auth::Stores::FileTokenStore.new file: TOKEN_FILE.path
+  end
+
+  def authorizer
+    @authorizer ||= Google::Auth::UserAuthorizer.new client_id, SCOPE, token_store
+  end
+
+  def user_id
+    "default"
   end
 end
