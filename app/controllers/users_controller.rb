@@ -48,7 +48,7 @@ class UsersController < ApplicationController
     if u.full_name.blank? || u.phone_number.blank?
       redirect_to edit_user_path(u.slug)
     else
-      redirect_back_or root_path
+      redirect_to root_path
     end
   end
 
