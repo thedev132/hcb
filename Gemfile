@@ -139,3 +139,4 @@ end
 gem 'heroku-deflater', group: :production
 
 gem 'blazer'
+gem 'strong_migrations'
