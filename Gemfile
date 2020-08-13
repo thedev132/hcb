@@ -136,4 +136,5 @@ end
 # Enable compression in production
 gem 'heroku-deflater', group: :production
 
+gem 'airbrake'
 gem 'blazer'
