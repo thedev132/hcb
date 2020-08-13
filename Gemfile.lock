@@ -90,8 +90,6 @@ GEM
       safely_block (>= 0.1.1)
     bootsnap (1.4.6)
       msgpack (~> 1.0)
-    bugsnag (6.13.1)
-      concurrent-ruby (~> 1.0)
     builder (3.2.4)
     business_time (0.9.3)
       activesupport (>= 3.2.0)
@@ -383,7 +381,6 @@ DEPENDENCIES
   aws-sdk-s3
   blazer
   bootsnap (>= 1.4.4)
-  bugsnag
   business_time
   byebug
   caxlsx

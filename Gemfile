@@ -34,8 +34,6 @@ gem 'turbolinks', '~> 5.2.0'
 
 gem 'httparty'
 
-# Track bugs
-gem 'bugsnag'
 # Performance tracking
 gem 'skylight'
 
