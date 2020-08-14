@@ -34,7 +34,7 @@ class Event < ApplicationRecord
   end
 
   scope :pending_fees, -> do
-    where(id: Event.event_ids_with_pending_fees_greater_than_100.to_a.map {|a| a["event_id"] })
+    where(id: self.event_ids_with_pending_fees_greater_than_100.to_a.map {|a| a["event_id"] })
   end
 
   friendly_id :name, use: :slugged
