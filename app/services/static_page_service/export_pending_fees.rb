@@ -24,7 +24,7 @@ module StaticPageService
     def attributes
       [
         "amount",
-        "transaction_name"
+        "transaction_memo"
       ]
     end
   end
