@@ -66,20 +66,13 @@ class StaticPagesController < ApplicationController
   end
 
   def pending_fees
-    @pending_fees = Event.pending_fees.sort_by { |event| (DateTime.now - event.transactions.first.date) }.reverse
+    @pending_fees = Event.pending_fees
   end
 
   def export_pending_fees
-    attributes = %w{amount transaction_memo}
+    csv = StaticPageService::ExportPendingFees.new.run
 
-    result = CSV.generate(headers: true) do |csv|
-      csv << attributes
-      Event.pending_fees.each do |pf|
-        csv << attributes.map { |a| pf.send a }
-      end
-    end
-
-    send_data result, filename: "#{Date.today}_pending_fees.csv"
+    send_data csv, filename: "#{Date.today}_pending_fees.csv"
   end
 
   def pending_disbursements
