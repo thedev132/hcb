@@ -34,8 +34,6 @@ gem 'turbolinks', '~> 5.2.0'
 
 gem 'httparty'
 
-# Track bugs
-gem 'bugsnag'
 # Performance tracking
 gem 'skylight'
 
@@ -138,4 +136,5 @@ end
 # Enable compression in production
 gem 'heroku-deflater', group: :production
 
+gem 'airbrake'
 gem 'blazer'

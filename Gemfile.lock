@@ -61,6 +61,10 @@ GEM
       activesupport (>= 4.2, < 7.0)
     addressable (2.7.0)
       public_suffix (>= 2.0.2, < 5.0)
+    airbrake (10.0.5)
+      airbrake-ruby (~> 4.13)
+    airbrake-ruby (4.15.0)
+      rbtree3 (~> 0.5)
     api-pagination (4.8.2)
     aws-eventstream (1.1.0)
     aws-partitions (1.337.0)
@@ -90,8 +94,6 @@ GEM
       safely_block (>= 0.1.1)
     bootsnap (1.4.6)
       msgpack (~> 1.0)
-    bugsnag (6.13.1)
-      concurrent-ruby (~> 1.0)
     builder (3.2.4)
     business_time (0.9.3)
       activesupport (>= 3.2.0)
@@ -263,6 +265,7 @@ GEM
     rb-fsevent (0.10.4)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
+    rbtree3 (0.6.0)
     react-rails (2.6.1)
       babel-transpiler (>= 0.7.0)
       connection_pool
@@ -379,11 +382,11 @@ PLATFORMS
 
 DEPENDENCIES
   acts_as_paranoid (~> 0.6.0)
+  airbrake
   api-pagination
   aws-sdk-s3
   blazer
   bootsnap (>= 1.4.4)
-  bugsnag
   business_time
   byebug
   caxlsx
