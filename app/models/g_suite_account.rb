@@ -123,7 +123,7 @@ class GSuiteAccount < ApplicationRecord
       address,
       backup_email,
       password,
-      GsuiteService.instance.get_ou_name_from_event(g_suite.event)
+      g_suite.ou_name
     )
     # this means that the domain doesn't exist
     if account == nil

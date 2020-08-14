@@ -37,10 +37,6 @@ class GsuiteService
     service
   end
 
-  def get_ou_name_from_event(event)
-    "##{event.id} #{event.name}"
-  end
-
   def get_gsuite_user(email)
     begin
       client.get_user(
