@@ -13,7 +13,7 @@ RSpec.describe StaticPageService::ExportPendingFees, type: :model do
 
       csv = <<~CSV
         amount,transaction_name
-        10000.0,#{Event.first.id} Hack Club Bank Fee
+        100.0,#{Event.first.id} Hack Club Bank Fee
       CSV
 
       expect(result).to eql(csv)
