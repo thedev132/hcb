@@ -26,5 +26,24 @@ RSpec.describe GSuite, type: :model do
       expect(result).to eql("https://www.google.com/webmasters/verification/verification?siteUrl=http://event1.example.com")
     end
   end
+
+  describe "#ou_name" do
+    let(:event) { g_suite.event }
+
+    it "generates it" do
+      expect(g_suite.ou_name).to eql("##{event.id} #{event.name}")
+    end
+
+    context "when event name has a + in it" do
+      before do
+        event.name = "Tech+Me"
+        event.save!
+      end
+
+      it "removes the +" do
+        expect(g_suite.ou_name).to eql("##{event.id} TechMe")
+      end
+    end
+  end
 end
 
