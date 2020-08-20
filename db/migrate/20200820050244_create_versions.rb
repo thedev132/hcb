@@ -1,6 +1,6 @@
 # This migration creates the `versions` table, the only schema PT requires.
 # All other migrations PT provides are optional.
-class CreateVersions < ActiveRecord::Migration[5.2]
+class CreateVersions < ActiveRecord::Migration[6.0]
 
   # The largest text column available in all supported RDBMS is
   # 1024^3 - 1 bytes, roughly one gibibyte.  We specify a size
@@ -11,7 +11,7 @@ class CreateVersions < ActiveRecord::Migration[5.2]
   def change
     create_table :versions do |t|
       t.string   :item_type, {:null=>false}
-      t.integer  :item_id,   null: false
+      t.integer  :item_id,   null: false, limit: 8
       t.string   :event,     null: false
       t.string   :whodunnit
       t.text     :object, limit: TEXT_BYTES
@@ -25,7 +25,7 @@ class CreateVersions < ActiveRecord::Migration[5.2]
       # the `created_at` column.
       # (https://dev.mysql.com/doc/refman/5.6/en/fractional-seconds.html)
       #
-      # MySQL users should also upgrade to rails 4.2, which is the first
+      # MySQL users should also upgrade to at least rails 4.2, which is the first
       # version of ActiveRecord with support for fractional seconds in MySQL.
       # (https://github.com/rails/rails/pull/14359)
       #

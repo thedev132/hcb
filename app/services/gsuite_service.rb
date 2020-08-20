@@ -59,9 +59,9 @@ class GsuiteService
 
   # makes a new GSuite user & also makes a new org unit for the event if it doesn't exist
   # returns nil if the domain isn't found, throws an error otherwise
-  def create_event_gsuite_user(first_name, last_name, email, recovery_email, temp_password, org_unit_name)
-    if get_organizational_unit("Events/#{org_unit_name}") == nil
-      create_organizational_unit(org_unit_name, '/Events')
+  def create_event_gsuite_user(first_name, last_name, email, recovery_email, temp_password, ou_name)
+    if get_organizational_unit("Events/#{ou_name}") == nil
+      create_organizational_unit(ou_name, '/Events')
     end
 
     user_struct = Google::Apis::AdminDirectoryV1::User.new(
@@ -73,7 +73,7 @@ class GsuiteService
         password: temp_password,
         primary_email: email,
         recovery_email: recovery_email,
-        org_unit_path: "/Events/#{org_unit_name}",
+        org_unit_path: "/Events/#{ou_name}",
         change_password_at_next_login: true
       }
     )

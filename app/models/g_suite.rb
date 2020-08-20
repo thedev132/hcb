@@ -1,4 +1,6 @@
 class GSuite < ApplicationRecord
+  has_paper_trail
+
   include Shared::Domain
 
   has_one :application, class_name: 'GSuiteApplication', required: true
@@ -11,6 +13,10 @@ class GSuite < ApplicationRecord
   validate :domain_without_protocol
 
   after_initialize :set_application
+
+  def verified_on_google?
+    @verified_on_google ||= ::Partners::Google::GSuite::Domain.new(domain: domain).run.verified # TODO: move to a background job checking every 5-15 minutes for the latest verified domains
+  end
 
   def verified?
     self.accounts.any? { |account| !account.verified_at.null? }
