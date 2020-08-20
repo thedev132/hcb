@@ -119,6 +119,7 @@
       <%= render partial: "static_pages/card", locals: { task_path: common_documents_path, human_name: "Common Docs" } %>
       <%= render partial: "static_pages/card", locals: { task_path: new_bank_account_path, human_name: "Setup HCB" } %>
       <%= card_to 'Export Finances', export_finances_path, { method: :post } %>
+      <%= render partial: "static_pages/card", locals: { task_path: blazer_path, human_name: "BI Tool" } %>
     </ul>
     <p>
       <%= content_tag :strong, render_money(@transaction_volume) %>
