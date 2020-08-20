@@ -158,7 +158,6 @@ class EventsController < ApplicationController
     authorize @event
     @g_suite = @event.g_suite
     @g_suite_application = @event.g_suite_application
-    @status = @event.g_suite_status
   end
 
   def donation_overview
