@@ -148,6 +148,7 @@ html[data-dark='true'] {
     color: map-get($palette, smoke);
   }
 
+  pre,
   .card__darker {
     background: $dark;
     color: map-get($palette, muted) !important;
