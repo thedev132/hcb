@@ -22,6 +22,8 @@ class GSuiteAccountsController < ApplicationController
     if @g_suite_account.save
       flash[:success] = 'G Suite account application submitted.'
     else
+      Airbrake.notify(@g_suite_account.errors.full_messages.to_sentence)
+
       if @g_suite_account.errors.messages[:domain].present?
         flash[:error] = "Your domain setup is not complete yet."
       else

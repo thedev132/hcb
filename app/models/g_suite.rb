@@ -1,4 +1,6 @@
 class GSuite < ApplicationRecord
+  has_paper_trail
+
   include Shared::Domain
 
   has_one :application, class_name: 'GSuiteApplication', required: true

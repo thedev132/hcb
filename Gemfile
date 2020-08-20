@@ -138,4 +138,5 @@ gem 'heroku-deflater', group: :production
 
 gem 'airbrake'
 gem 'blazer'
+gem 'paper_trail'
 gem 'strong_migrations'
