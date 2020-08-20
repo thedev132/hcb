@@ -17,7 +17,7 @@
   <% @documents.each do |d| %>
     <%= link_to admin_signed_in? ? d : document_download_path(d) do %>
       <li class="card">
-        <strong class="h3 block"><%= d.name %></strong>
+        <strong class="brand-sans h3 block line-height-2"><%= d.name %></strong>
         <%= user_mention d.user %>
       </li>
     <% end %>
@@ -25,7 +25,7 @@
   <% Document.common.each do |d| %>
     <%= link_to admin_signed_in? ? d : document_download_path(d) do %>
       <li class="card">
-        <strong class="h3 block"><%= d.name %></strong>
+        <strong class="brand-sans h3 block line-height-2"><%= d.name %></strong>
         <%= user_mention d.user %>
       </li>
     <% end %>
@@ -34,7 +34,7 @@
   <% if @event.has_fiscal_sponsorship_document %>
     <%= link_to event_fiscal_sponsorship_letter_path(event_id: @event.slug, format: "pdf") do %>
       <li class="card">
-        <strong class="h3 block">Fiscal Sponsorship Confirmation</strong>
+        <strong class="brand-sans h3 block line-height-2"><%= d.name %></strong>
         <%= user_mention @event.point_of_contact %>
       </li>
     <% end %>

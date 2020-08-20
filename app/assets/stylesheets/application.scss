@@ -1,28 +1,8 @@
 @import 'variables';
 
-@font-face {
-  font-family: 'Phantom Sans';
-  src: url('https://assets.hackclub.com/fonts/Phantom_Sans_0.7/Regular.woff')
-      format('woff'),
-    url('https://assets.hackclub.com/fonts/Phantom_Sans_0.7/Regular.woff2')
-      format('woff2');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Phantom Sans';
-  src: url('https://assets.hackclub.com/fonts/Phantom_Sans_0.7/Bold.woff')
-      format('woff'),
-    url('https://assets.hackclub.com/fonts/Phantom_Sans_0.7/Bold.woff2')
-      format('woff2');
-  font-weight: bold;
-  font-style: normal;
-  font-display: swap;
-}
-
 $font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-  sans-serif;
+  'Fira Sans', Oxygen, Ubuntu, 'Helvetica Neue', sans-serif;
+$brand-font-family: ui-rounded, $font-family;
 $mono: 'SFMono-Regular', 'Roboto Mono', Menlo, Consolas, monospace;
 
 * {
@@ -57,7 +37,7 @@ h3,
 .heading,
 .stat__value,
 .brand-sans {
-  font-family: 'Phantom Sans', $font-family;
+  font-family: $brand-font-family;
 }
 .sans {
   font-family: $font-family;
@@ -104,8 +84,9 @@ h1,
 h2,
 h3,
 h4 {
-  font-weight: bold;
+  font-weight: 800;
   line-height: 1.125;
+  letter-spacing: -0.02em;
 }
 h1 {
   font-size: 3rem;

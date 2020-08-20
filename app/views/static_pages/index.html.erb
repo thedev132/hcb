@@ -19,7 +19,7 @@
         <% @events.not_hidden.each do |event| %>
           <%= link_to event do %>
             <li class="card card--tall flex flex-column justify-between">
-              <strong class="h3 line-height-2 mb1"><%= event.name %></strong>
+              <strong class="brand-sans h3 line-height-2 mb1"><%= event.name %></strong>
               <div class="avatar-row">
                 <% event.organizer_positions.each do |position| %>
                   <%= avatar_for position.user, 24 %>
