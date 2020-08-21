@@ -1,6 +1,7 @@
 <h2 class="mt0 mb0">Your accounts</h2>
 
 <% if @g_suite.accounts.any? %>
+<% if organizer_signed_in? %>
   <ul class="list list--row list--unlinked mt0 mb2">
     <% @g_suite.accounts.order(:address).each do |account| %>
       <li class="flex items-center justify-between">
@@ -8,11 +9,7 @@
           <p class="m0">
             <strong><%= account.first_name %> <%= account.last_name %></strong>
             &middot;
-            <% if organizer_signed_in? %>
-              <span><%= account.username %></span><span class="muted"><%= account.at_domain %></span>
-            <% else %>
-              <span class="muted">You can’t see or edit G Suite accounts in Transparency Mode</span>
-            <% end %>
+            <span><%= account.username %></span><span class="muted"><%= account.at_domain %></span>
           </p>
           <p class="slate m0">
           <% if account.suspended? %>
@@ -45,19 +42,20 @@
                 'data-confirm': "Do you really want to #{account.suspended? ? 're-activate' : 'suspend'} #{account.address}?"
             %>
             <% end %>
-            <% if admin_signed_in? %>
             <%= link_to 'Delete',
               account,
               method: :delete,
               'data-confirm': "Deleting #{account.address} is *permanent, irreversible, and does not back up any data*. Think carefully before you click ok.",
-              class: 'admin-tools'
+              class: 'admin-tools' if admin_signed_in?
             %>
-            <% end %>
           </div>
         </action>
       </li>
     <% end %>
   </ul>
+<% else %>
+  <p class="secondary">You can’t see or edit G Suite accounts in Transparency Mode.</p>
+<% end %>
 <% end %>
 
 <%= render 'g_suite_accounts/new', g_suite_account: GSuiteAccount.new(g_suite: @g_suite) %>

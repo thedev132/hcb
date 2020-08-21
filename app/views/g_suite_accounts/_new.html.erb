@@ -25,7 +25,7 @@
   <div class="field">
     <%= form.label :backup_email %>
     <%= form.email_field :backup_email, value: current_user&.email %>
-    <span class="block muted h5">(To sign into your account for the first time, you'll receive your initial password to this email.)</span>
+    <span class="block muted h5">(To sign into your account for the first time, you’ll receive your initial password to this email.)</span>
   </div>
   <div class="actions">
     <%= form.submit 'Create', disabled: !organizer_signed_in? %>
