@@ -9,7 +9,8 @@ Bank is a tool for hackers to hack on the real world, like GitHub, but for build
 1. Install Docker.
 2. Clone this repo.
 3. Get a copy of the encrypted credentials key from a team member (`config/master.key`)
-4. ```sh
+4. Create a `.env` file & add `APP_PORT=3000` or whatever floats your boat in the port
+5. ```sh
     docker-compose build
     docker-compose run web bundle exec rails db:create db:migrate
     docker-compose run --service-ports web bundle exec rails s -b 0.0.0.0 -p 3000
@@ -20,7 +21,8 @@ Bank is a tool for hackers to hack on the real world, like GitHub, but for build
     # queued in production. You can see your database's jobs at
     # http://localhost:3000/sidekiq
    ```
-5. Open [localhost:3000](http://localhost:3000)
+
+6. Open [localhost:3000](http://localhost:3000)
 
 Alternatively, you can run `docker-compose run --service-ports web /bin/bash` to open a shell into the container with the right ports bound, and then manually start the Rails app, or just run `docker-compose run web bundle exec rails s -b 0.0.0.0` to start the rails server directly from Docker.
 
@@ -73,11 +75,11 @@ SyncTransactionsJob.perform_now(repeat: true)
 These APIs are not public, but have a reasonable expectation of stability because the Hack Club clubs team integrates with various Bank facilities through these JSON endpoints. They're oriented around three use cases:
 
 1. Send money to a student to spend on a project
-    - Student either specifies a Bank event, or we create one for them
-    - We disburse funds to that event
+   - Student either specifies a Bank event, or we create one for them
+   - We disburse funds to that event
 2. Send money to a club or event
-    - We find out their bank event slug (probably referencing Slack / Airtable, which happens outside of Bank)
-    - We disburse funds to that event
+   - We find out their bank event slug (probably referencing Slack / Airtable, which happens outside of Bank)
+   - We disburse funds to that event
 
 So to make this possible, the Bank API currently supports three actions:
 

@@ -38,5 +38,3 @@ latest.dump
 /yarn-error.log
 yarn-debug.log*
 .yarn-integrity
-
-docker-compose.yml
