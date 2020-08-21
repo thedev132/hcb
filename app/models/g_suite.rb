@@ -16,6 +16,10 @@ class GSuite < ApplicationRecord
 
   def verified_on_google?
     @verified_on_google ||= ::Partners::Google::GSuite::Domain.new(domain: domain).run.verified # TODO: move to a background job checking every 5-15 minutes for the latest verified domains
+  rescue => e
+    Airbrake.notify(e)
+
+    false
   end
 
   def verified?
