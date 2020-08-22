@@ -9,7 +9,7 @@ Bank is a tool for hackers to hack on the real world, like GitHub, but for build
 1. Install Docker.
 2. Clone this repo.
 3. Get a copy of the encrypted credentials key from a team member (`config/master.key`)
-4. Create a `.env` file & add `APP_PORT=3000` or whatever floats your boat in the port
+4. Copy `.env.example` to `.env` (`cp .env.example .env`) & edit `APP_PORT=3000` or whatever floats your boat in the port
 5. ```sh
     docker-compose build
     docker-compose run web bundle exec rails db:create db:migrate
