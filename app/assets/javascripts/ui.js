@@ -59,8 +59,12 @@ $(document).on('turbolinks:load', function () {
 
   if (BK.thereIs('login')) {
     let email
-    if ((email = localStorage.getItem('login_email'))) {
-      BK.s('login').find('input[type=email]').val(email)
+    const val = $('input[name=email]').val()
+
+    if (val === '' || val === undefined) {
+      if ((email = localStorage.getItem('login_email'))) {
+        BK.s('login').find('input[type=email]').val(email)
+      }
     }
   }
 
