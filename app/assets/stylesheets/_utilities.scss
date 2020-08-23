@@ -25,6 +25,10 @@
   display: inline-flex;
 }
 
+.shrink-none {
+  flex-shrink: 0;
+}
+
 .link-reset {
   color: inherit;
   text-decoration: none;

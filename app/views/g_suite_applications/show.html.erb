@@ -2,10 +2,10 @@
 <%= link_to 'G Suite Applications', g_suite_applications_path, class: 'breadcrumb' %>
 <h1>Application for <%= @g_suite_application.event.name %></h1>
 
-<section class="details">
+<section class="details mb2">
 <p>
   <strong>Submitted by</strong>
-  <%= @g_suite_application.creator.email %>
+  <%= user_mention @g_suite_application.creator %>
 </p>
 
 <p>
@@ -20,9 +20,6 @@
     <small><%= link_to "verify ⧉", @g_suite_application.verification_url, target: :blank %></small>
   </span>
 </p>
-
-<p>
-  <strong>
 
 <% if @g_suite_application.under_review? %>
 <p>
@@ -48,16 +45,13 @@
 </section>
 
 <% if @g_suite_application.under_review? %>
-  <p>
-    <%= link_to 'Reject request', g_suite_application_reject_path(@g_suite_application), method: :post, data: { confirm: 'Are you sure you want to reject it?' }, class: 'btn bg-error' %>
-  </p>
-  <p>
+  <div class="btn-group">
     <%= link_to 'Accept request', g_suite_application_accept_path(@g_suite_application), method: :post, class: 'btn bg-success' %>
-  </p>
+    <%= link_to 'Reject request', g_suite_application_reject_path(@g_suite_application), method: :post, data: { confirm: 'Are you sure you want to reject it?' }, class: 'btn bg-error' %>
 <% end %>
-<p>
   <%= link_to 'Cancel request', g_suite_application_path(@g_suite_application), method: :delete, data: { confirm: 'Are you sure you want to cancel?' }, class: 'btn bg-muted' %>
-</p>
+<% if @g_suite_application.under_review? %>
+  </div>
+<% end %>
 
-<h2>Notes</h2>
-<%= render "comments/comments" %>
+<%= render 'comments/comments' %>

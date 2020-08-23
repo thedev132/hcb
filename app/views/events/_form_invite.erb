@@ -1,10 +1,10 @@
-<p class="muted mb1">This person will have full access to your event finances.</p>
+<p class="muted mb1">This person will have full access to your project finances.</p>
 
 <%= form_with(model: invite, local: true, url: event_organizer_position_invites_path) do |form| %>
   <%= form_errors invite %>
 
   <div class="field flex items-end">
-    <div class="mr2 flex-auto">
+    <div class="mr2 mb0 flex-auto">
       <%= form.label :email %>
       <%= form.email_field :email %>
     </div>

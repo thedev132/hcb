@@ -36,14 +36,14 @@
     <div class="card">
       <div class="field field--checkbox">
         <%= form.check_box :donation_page_enabled %>
-        <%= form.label :donation_page_enabled, "Enable donation page" %>
+        <%= form.label :donation_page_enabled, 'Enable donation page' %>
       </div>
       <div class="field">
-        <%= form.label :donation_page_message, "Message to show on donation page" %>
+        <%= form.label :donation_page_message, 'Message to show on donation page' %>
         <%= form.text_area :donation_page_message, class: 'w-100 fit' %>
         <%= inline_icon 'markdown-fill', size: 32, class: 'muted right' %>
       </div>
-      <%= form.submit nil, value: "Update" %>
+      <%= form.submit nil, value: 'Update' %>
     </div>
   <% end %>
 
@@ -65,7 +65,7 @@
     </ul>
     <div class="field field--checkbox">
       <%= form.check_box :is_public %>
-      <%= form.label :is_public, "Enable Transparency Mode" %>
+      <%= form.label :is_public, 'Enable Transparency Mode' %>
     </div>
     <div class="field">
       <%= form.label :public_message, 'Message to show visitors' %>

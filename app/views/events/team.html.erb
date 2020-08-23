@@ -3,20 +3,20 @@
 <%= render 'nav' %>
 
 <h1 class="flex items-center">
-  Team members
+  Team
   <%= badge_for @positions.size, class: 'bg-muted' %>
 </h1>
 
 <% if @positions.any? %>
   <% @positions.each do |position| %>
+    <%= creator_bar position.organizer_position_invite, prefix: 'invited ' %>
     <div class="card flex items-center pt0 pb0 mb2">
       <%= avatar_for position.user, 48, class: 'mr2' %>
       <p class="flex-auto">
         <strong class="h3 block"><%= position.user.full_name || 'Unnamed' %></strong>
         <%= organizer_signed_in? ? position.user.email : 'Sign in to view email'  %>
-        <span class="muted h5 block">(added <span title="<%= position.created_at %>"><%= time_ago_in_words position.created_at %> ago</span> by <%= position.organizer_position_invite.sender.full_name %>)</span>
         <% if admin_signed_in? %>
-          <span class="admin-tools inline-block p1 h5">
+          <span class="admin-tools inline-block h5">
           phone: <%= position.user.phone_number %>
           </span>
         <% end %>

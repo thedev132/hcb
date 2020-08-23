@@ -1,4 +1,4 @@
-<% title "Check – #{@check.memo}" %>
+<% title "Check for #{@check.memo.html_safe}" %>
 <% page_md %>
 <%= render 'events/nav' %>
 
@@ -37,7 +37,7 @@
 </div>
 
 <article class="card pb0 mt3 mb3">
-  <h2 class="h2 sans mt0 border-none">
+  <h2 class="h2 mt0 border-none">
     <div class="flex items-start">
       <span class="flex-auto mr1">
         <span class="regular muted"><%= @check.deposited? ? 'Sent' : 'Sending' %> </span>
@@ -70,7 +70,7 @@
       <div>
         <strong>Delivery expected between</strong>
         <div>
-          <%= format_date @check.expected_delivery_date %> - <%= format_date 7.business_days.after(@check.expected_delivery_date) %>
+          <%= format_date @check.expected_delivery_date %>–<%= format_date 7.business_days.after(@check.expected_delivery_date) %>
         </div>
       </div>
     <% end %>
@@ -128,6 +128,4 @@
   </section>
 </article>
 
-
-<h2>Notes</h2>
 <%= render 'comments/comments' %>
