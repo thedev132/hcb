@@ -6,7 +6,7 @@
   G Suite <% "for #{@g_suite_application.domain}" if @g_suite_application %>
 </h1>
 
-<% case @event.g_suite_status
+<% case @event.g_suite_status_deprecated
 when :start %>
   <p>Your event gets complementary G Suite through Hack Club Bank, at no extra cost.</p>
   <%= link_to 'Get started', new_event_g_suite_application_path(event_id: @event.slug), class: 'btn bg-success mt2' %>

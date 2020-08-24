@@ -177,7 +177,7 @@ class Event < ApplicationRecord
     a_fee_balance
   end
 
-  def g_suite_status
+  def g_suite_status_deprecated
     return :start if g_suite_application.nil? || g_suite.nil?
     return :under_review if g_suite_application.under_review?
     return :app_accepted if g_suite_application.accepted? && g_suite.present?
