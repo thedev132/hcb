@@ -17,7 +17,7 @@ when :start %>
     <% if @g_suite.verified_on_google? %>
       <%= render 'g_suite_accounts/panel' %>
     <% else %>
-      Your domain <%= @g_suite.domain %> has not yet been verified. Follow the setup instructions below and return to this page about 1 hour after doing so - at which time you will be able to add email accounts.
+      Your domain <%= @g_suite.domain %> has not yet been verified. Follow the setup instructions below and return to this page to add email accounts. However, it may take 48-72 hours before your domain is fully verified.
     <% end %>
   </article>
   <details <%= @g_suite.accounts.any? ? nil : "open" %>>
