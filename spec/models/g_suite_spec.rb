@@ -11,11 +11,21 @@ RSpec.describe GSuite, type: :model do
     expect(g_suite).to be_valid
   end
 
-  context "when domain is nil" do
-    it "is not valid" do
-      g_suite.domain = nil
+  describe "#domain" do
+    context "when domain is nil" do
+      it "is not valid" do
+        g_suite.domain = nil
 
-      expect(g_suite).to_not be_valid
+        expect(g_suite).to_not be_valid
+      end
+    end
+
+    context "when domain is missing extension" do
+      it "is not valid" do
+        g_suite.domain = "example"
+
+        expect(g_suite).to_not be_valid
+      end
     end
   end
 

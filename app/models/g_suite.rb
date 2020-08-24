@@ -1,7 +1,8 @@
 class GSuite < ApplicationRecord
+  VALID_DOMAIN = /[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?\z/ix
   has_paper_trail
 
-  include Shared::Domain
+  include AASM
 
   has_one :application, class_name: 'GSuiteApplication', required: true
   has_many :accounts, class_name: 'GSuiteAccount'
@@ -10,7 +11,7 @@ class GSuite < ApplicationRecord
 
   validates_presence_of :domain, :verification_key
   validates_uniqueness_of :domain
-  validate :domain_without_protocol
+  validates_format_of :domain, with: VALID_DOMAIN
 
   after_initialize :set_application
 
