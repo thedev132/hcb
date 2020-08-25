@@ -136,8 +136,8 @@ end
 # Enable compression in production
 gem 'heroku-deflater', group: :production
 
-gem 'aasm'
-gem 'airbrake'
-gem 'blazer'
-gem 'paper_trail'
-gem 'strong_migrations'
+gem 'aasm' # state machine
+gem 'airbrake' # exception tracking
+gem 'blazer' # business intelligence tool/dashboard
+gem 'paper_trail' # track changes on models
+gem 'strong_migrations' # protects against risky migrations that could cause application harm on deploy
