@@ -9,6 +9,20 @@ class GSuite < ApplicationRecord
   belongs_to :event
   has_many :comments, as: :commentable
 
+  aasm do
+    state :configuring, initial: true
+    state :verifying
+    state :verified
+
+    event :mark_verifying do
+      transitions from: :configuring, to: :verifying
+    end
+
+    event :mark_verified do
+      transitions from: :verifying, to: :verified
+    end
+  end
+
   validates_presence_of :domain, :verification_key
   validates_uniqueness_of :domain
   validates_format_of :domain, with: VALID_DOMAIN
@@ -23,7 +37,7 @@ class GSuite < ApplicationRecord
     false
   end
 
-  def verified?
+  def verified_deprecated?
     self.accounts.any? { |account| !account.verified_at.null? }
   end
 

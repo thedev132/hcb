@@ -55,5 +55,39 @@ RSpec.describe GSuite, type: :model do
       end
     end
   end
+
+  describe "#aasm_state" do
+    it "defaults to configuring" do
+      expect(g_suite).to be_configuring
+    end
+
+    context "when attempting to mark verifying" do
+      it "transitions" do
+        expect do
+          g_suite.mark_verifying!
+        end.to change(g_suite, :verifying?).to(true)
+      end
+
+      context "when attempting to mark verified" do
+        before do
+          g_suite.mark_verifying!
+        end
+
+        it "transitions" do
+          expect do
+            g_suite.mark_verified!
+          end.to change(g_suite, :verified?).to(true)
+        end
+
+        context "when attempting to go back to configuring" do
+          it "fails transition" do
+            expect do
+              g_suite.mark_verifying!
+            end.to raise_error(AASM::InvalidTransition)
+          end
+        end
+      end
+    end
+  end
 end
 
