@@ -13,13 +13,13 @@ when :start %>
 <% when :under_review %>
   <p>Your G Suite is being configured for <strong><%= @g_suite_application.domain %></strong>. You’ll get an email within a day letting you know the next steps.</p>
 <% when :app_accepted %>
-  <article class="card mb3">
-    <% if @g_suite.verified_on_google? %>
+
+  <% if @g_suite.verified_on_google? %>
+    <article class="card mb3">
       <%= render 'g_suite_accounts/panel' %>
-    <% else %>
-      Your domain <%= @g_suite.domain %> has not yet been verified. Follow the setup instructions below and return to this page to add email accounts. However, it may take 48-72 hours before your domain is fully verified.
-    <% end %>
-  </article>
+    </article>
+  <% end %>
+
   <details <%= @g_suite.accounts.any? ? nil : "open" %>>
   <summary><h2 class="inline-block pb0 border-none mt0">Setup Instructions</h2></summary>
   <article class="card overflow-visible p0">
@@ -58,7 +58,7 @@ when :start %>
             <thead>
               <tr class="bold">
                 <th>Name/Host/Alias</th>
-                <th>Time to Live (TTL*)</th>
+                <th>TTL</th>
                 <th>Record Type</th>
                 <th>Priority</th>
                 <th>Value/Answer/Destination</th>
@@ -127,10 +127,17 @@ when :start %>
           </table>
           <p><strong>Note:</strong> Some domain hosts use different labels for the name and value fields, and some hosts also require a trailing period at the end of the server name.</p>
         </li>
-        <li>Save your changes.
+        <li>
+          <% if @g_suite.configuring? %>
+            <%= link_to "Verify", event_g_suite_verify_path(event_id: @event.id), method: :put, class: "btn bg-error" %>
+          <% end %>
+
+          <% if @g_suite.verifying? %>
+            <span class="h4 badge">Verifying..</span>
+          <% end %>
+
           <p class="secondary mt1 mb0">Typically, you can send and receive messages at your new G Suite email address in less than 6 hours. However, it may take 48–72 hours before you receive email at your new address. It’s no fun to wait, but the time for MX records to take effect depends on your domain host. We have no control over this.</p>
         </li>
-        <li>Add your accounts above!</li>
       </ol>
     </div>
   </article>

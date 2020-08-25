@@ -160,6 +160,15 @@ class EventsController < ApplicationController
     @g_suite_application = @event.g_suite_application
   end
 
+  def g_suite_verify
+    @event = Event.friendly.find(params[:event_id])
+    authorize @event
+
+    GSuiteService::MarkVerifying.new(g_suite_id: @event.g_suite.id).run
+
+    redirect_to event_g_suite_overview_path(event_id: @event.slug)
+  end
+
   def donation_overview
     @event = Event.friendly.find(params[:event_id])
     authorize @event
