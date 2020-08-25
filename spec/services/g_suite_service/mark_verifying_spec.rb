@@ -23,13 +23,13 @@ RSpec.describe GSuiteService::MarkVerifying, type: :model do
     expect(g_suite.reload).to be_verifying
   end
 
-  xit "sends a mailer" do # TODO
+  it "sends a mailer" do # TODO
     service.run
 
     mail = ActionMailer::Base.deliveries.last
 
-    #expect(mail.to).to eql([current_user.email])
-    #expect(mail.subject).to include(domain)
+    expect(mail.to).to eql(["bank-alerts@hackclub.com"])
+    expect(mail.subject).to include("[OPS] [ACTION] [GSuite]")
   end
 end
 
