@@ -1,5 +1,6 @@
 class GSuite < ApplicationRecord
   VALID_DOMAIN = /[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?\z/ix
+
   has_paper_trail
 
   include AASM
@@ -23,9 +24,8 @@ class GSuite < ApplicationRecord
     end
   end
 
-  validates_presence_of :domain, :verification_key
-  validates_uniqueness_of :domain
-  validates_format_of :domain, with: VALID_DOMAIN
+  validates :verification_key, presence: true
+  validates :domain, presence: true, uniqueness: { case_sensitive: false }, format: { with: VALID_DOMAIN }
 
   after_initialize :set_application
 

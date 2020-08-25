@@ -10,9 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_25_035853) do
+ActiveRecord::Schema.define(version: 2020_08_25_042055) do
 
   # These are extensions that must be enabled in order to support this database
+  enable_extension "citext"
   enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
 
@@ -450,7 +451,7 @@ ActiveRecord::Schema.define(version: 2020_08_25_035853) do
   end
 
   create_table "g_suites", force: :cascade do |t|
-    t.text "domain"
+    t.citext "domain"
     t.bigint "event_id"
     t.text "verification_key"
     t.datetime "deleted_at"
@@ -458,6 +459,7 @@ ActiveRecord::Schema.define(version: 2020_08_25_035853) do
     t.datetime "updated_at", null: false
     t.text "dkim_key"
     t.string "aasm_state"
+    t.index ["domain"], name: "index_g_suites_on_domain", unique: true
     t.index ["event_id"], name: "index_g_suites_on_event_id"
   end
 

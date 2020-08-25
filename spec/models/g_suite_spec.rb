@@ -12,10 +12,12 @@ RSpec.describe GSuite, type: :model do
   end
 
   describe "#domain" do
-    context "when domain is nil" do
+    context "when domain is missing" do
       it "is not valid" do
         g_suite.domain = nil
+        expect(g_suite).to_not be_valid
 
+        g_suite.domain = " "
         expect(g_suite).to_not be_valid
       end
     end
