@@ -7,7 +7,13 @@ module GSuiteService
     end
 
     def run
-      g_suite.mark_verifying!
+      ActiveRecord::Base.transaction do
+        g_suite.mark_verifying!
+
+        OperationsMailer.with(g_suite_id: g_suite.id).g_suite_entering_verifying_state.deliver_now
+
+        g_suite
+      end
     end
 
     private

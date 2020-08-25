@@ -1,6 +1,6 @@
 class OperationsMailer < ApplicationMailer
-  def g_suite_entering_verifying_state(g_suite_id)
-    @g_suite = GSuite.find(g_suite_id)
+  def g_suite_entering_verifying_state
+    @g_suite = GSuite.find(params[:g_suite_id])
 
     attrs = {
       to: ::ApplicationMailer::OPERATIONS_EMAIL,
