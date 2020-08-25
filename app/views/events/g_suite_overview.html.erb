@@ -14,7 +14,7 @@ when :start %>
   <p>Your G Suite is being configured for <strong><%= @g_suite_application.domain %></strong>. You’ll get an email within a day letting you know the next steps.</p>
 <% when :app_accepted %>
 
-  <% if @g_suite.verified_on_google? %>
+  <% if @g_suite.verified? %>
     <article class="card mb3">
       <%= render 'g_suite_accounts/panel' %>
     </article>
@@ -135,6 +135,11 @@ when :start %>
           <% if @g_suite.verifying? %>
             <span class="h4 badge">Verifying..</span>
           <% end %>
+
+          <% if @g_suite.verified? %>
+            <span class="h4 badge bg-success">Verified.</span>
+          <% end %>
+
 
           <p class="secondary mt1 mb0">Typically, you can send and receive messages at your new G Suite email address in less than 6 hours. However, it may take 48–72 hours before you receive email at your new address. It’s no fun to wait, but the time for MX records to take effect depends on your domain host. We have no control over this.</p>
         </li>
