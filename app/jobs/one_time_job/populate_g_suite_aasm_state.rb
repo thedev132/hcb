@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module OneTimeJob
-  class PopulateGSuiteAasmStateJob < ApplicationJob
+  class PopulateGSuiteAasmState < ApplicationJob
     def perform
       OneTimeService::PopulateGSuiteAasmState.new.run
     end

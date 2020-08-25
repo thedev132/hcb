@@ -5,7 +5,7 @@ module GSuiteJob
     def perform
       GSuite.verifying.pluck(:id).each do |g_suite_id|
         begin
-          GSuiteService::MarkVerified.new(g_suite_id: g_suite_id).run
+          ::GSuiteService::MarkVerified.new(g_suite_id: g_suite_id).run
         rescue => e
           Airbrake.notify(e)
         end

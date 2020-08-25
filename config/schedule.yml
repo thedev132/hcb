@@ -1,0 +1,4 @@
+g_suite_mark_verifieds_job:
+  cron: "*/5 * * * *" # run every 5 minutes
+  class: "GSuiteJob::MarkVerifieds"
+  queue: "default"

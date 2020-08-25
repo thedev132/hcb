@@ -1,4 +1,5 @@
 require 'sidekiq/web'
+require 'sidekiq/cron/web'
 require 'admin_constraint'
 
 Rails.application.routes.draw do
