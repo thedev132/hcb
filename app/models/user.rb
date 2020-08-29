@@ -63,7 +63,7 @@ class User < ApplicationRecord
   end
 
   def api_record
-    ApiService.get_user(self.api_id, self.api_access_token)
+    ::Partners::HackclubApi::GetUser.new(user_id: api_id, access_token: api_access_token).run
   end
 
   def first_name

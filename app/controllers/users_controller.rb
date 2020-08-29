@@ -19,7 +19,7 @@ class UsersController < ApplicationController
   def login_code
     @email = params[:email].downcase
 
-    resp = ApiService.request_login_code(@email)
+    resp = ::Partners::HackclubApi::RequestLoginCode.new(email: @email).run
 
     @user_id = resp[:id]
   end
@@ -30,17 +30,21 @@ class UsersController < ApplicationController
     @email = params[:email]
     login_code = params[:login_code].to_s.gsub('-', '').gsub(/\s+/, '')
 
-    resp = ApiService.exchange_login_code(@user_id, login_code)
+    resp = ::Partners::HackclubApi::ExchangeLoginCode.new(user_id: @user_id, login_code: login_code).run
 
     if resp[:errors].present?
       flash[:error] = 'Invalid login code'
       return render :login_code
     end
 
-    u = User.find_or_initialize_by(api_id: @user_id)
-    u.api_access_token = resp[:auth_token]
-    u.email = u.api_record[:email]
-    u.admin_at = u.api_record[:admin_at]
+    access_token = resp[:auth_token]
+
+    resp2 = ::Partners::HackclubApi::GetUser.new(user_id: @user_id, access_token: access_token).run
+
+    u = User.find_or_initialize_by(email: resp2[:email])
+    u.api_access_token = access_token 
+    u.email = resp2[:email]
+    u.admin_at = resp2[:admin_at] # TODO: remove admin_at as necessary from a 3rd party auth service
 
     u.save
 
