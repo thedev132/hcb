@@ -50,7 +50,7 @@ class GSuitesController < ApplicationController
       dkim_key: g_suite_params[:dkim_key]
     }
 
-    @g_suite = GSuiteService::Create.new(attrs).run
+    @g_suite = GSuiteService::CreateDeprecated.new(attrs).run
 
     if @g_suite.persisted?
       flash[:success] = "G Suite application accepted for #{@g_suite.event.name}. Domain: #{@g_suite.domain}"

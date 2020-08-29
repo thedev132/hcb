@@ -5,7 +5,7 @@ class GSuite < ApplicationRecord
 
   include AASM
 
-  has_one :application, class_name: 'GSuiteApplication', required: true
+  has_one :application, class_name: 'GSuiteApplication', required: false
   has_many :accounts, class_name: 'GSuiteAccount'
   belongs_to :event
   has_many :comments, as: :commentable
@@ -24,7 +24,6 @@ class GSuite < ApplicationRecord
     end
   end
 
-  validates :verification_key, presence: true
   validates :domain, presence: true, uniqueness: { case_sensitive: false }, format: { with: VALID_DOMAIN }
 
   after_initialize :set_application
@@ -52,6 +51,6 @@ class GSuite < ApplicationRecord
   private
 
   def set_application
-    self.application = GSuiteApplication.find_by(domain: domain)
+    self.application = GSuiteApplication.find_by(domain: domain) # DEPRECATED
   end
 end

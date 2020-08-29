@@ -32,6 +32,12 @@ module PopulateService
           }
           event = Event.create!(attrs)
 
+          attrs = {
+            user: user,
+            event: event
+          }
+          organizer_position = OrganizerPosition.create!(attrs)
+
           event
         end
       end

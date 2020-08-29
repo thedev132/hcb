@@ -1,49 +1,47 @@
 module GSuiteService
   class Create
-    def initialize(current_user:, g_suite_application:, event_id:,
-                   domain:, verification_key:, dkim_key:)
+    def initialize(current_user:, event_id:, domain:)
       @current_user = current_user
       @event_id = event_id
-      @g_suite_application = g_suite_application
       @domain = domain
-      @verification_key = verification_key
-      @dkim_key = dkim_key
     end
 
     def run
-      @g_suite_application.accepted_at = Time.now
-      @g_suite_application.fulfilled_by = @current_user
+      raise ArgumentError, error_message if event.g_suite.present?
 
-      notify_of_creation if @g_suite_application.save && g_suite.save
+      ActiveRecord::Base.transaction do
+        g_suite.save!
+        g_suite.reload
 
-      @g_suite
+        notify_of_creation
+
+        g_suite
+      end
     end
 
     private
 
-    def recipient
-      @g_suite_application.creator.try(:email) || @current_user.email
-    end
-
     def notify_of_creation
-      GSuiteMailer.with(recipient: recipient, g_suite_id: g_suite.reload.id).notify_of_creation.deliver_now
+      GSuiteMailer.with(recipient: @current_user.email, g_suite_id: g_suite.id).notify_of_creation.deliver_now if @current_user.email.present?
     end
 
-    def g_suite_attrs
+    def attrs
       {
         event_id: event.id,
-        domain: @domain,
-        verification_key: @verification_key,
-        dkim_key: @dkim_key
+        domain: @domain
       }
     end
 
     def g_suite
-      @g_suite ||= GSuite.new(g_suite_attrs)
+      @g_suite ||= GSuite.new(attrs)
     end
 
     def event
       @event ||= Event.find(@event_id)
+    end
+
+    def error_message
+      "You already have a GSuite account for this event"
     end
   end
 end
