@@ -218,6 +218,7 @@ Rails.application.routes.draw do
   resources :events, path: '/' do
     get 'team', to: 'events#team', as: :team
     get 'g_suite', to: 'events#g_suite_overview', as: :g_suite_overview
+    post 'g_suite_create', to: 'events#g_suite_create', as: :g_suite_create
     put 'g_suite_verify', to: 'events#g_suite_verify', as: :g_suite_verify
     get 'emburse_cards', to: 'events#emburse_card_overview', as: :emburse_cards_overview
     get 'cards', to: 'events#card_overview', as: :cards_overview
