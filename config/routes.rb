@@ -183,6 +183,7 @@ Rails.application.routes.draw do
       get 'qr/:event_name.png', to: 'donations#qr_code', as: 'qr_code'
       get ':event_name/:donation', to: 'donations#finish_donation', as: 'finish_donation'
     end
+    resources :comments
   end
 
   # api

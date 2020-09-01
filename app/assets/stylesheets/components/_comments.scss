@@ -14,3 +14,7 @@
 .comments img {
   max-height: 200px;
 }
+
+.comments .card p:first-child {
+  margin-top: 0;
+}
