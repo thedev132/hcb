@@ -1,36 +1,43 @@
 Hey there,
 
-I'm writing you because you have active cards from Hack Club Bank for the following projects:
+I’m writing you because you have active debit cards from <%= link_to 'Hack Club Bank', 'https://bank.hackclub.com' %> for the following projects:
 <ul>
 <% @events_with_cards.each do |event| %>
   <li><%= event.name %></li>
 <% end %>
 </ul>
 
-Hack Club Bank is changing card providers soon and our old cards provided by Emburse (the purple ones that say "emburse") will stop working on Sept 15th.
-By Sept 15th, you'll be able to issue cards from our new provider (Stripe Issuing) on bank.hackclub.com, but physical cards take time to ship.
-We're issuing cards from our new provider now, so they arrive *before* your old cards turn off.
+Hack Club Bank is changing card providers soon since the old cards provided by Emburse (the purple ones) will stop working on Sept 15th.
+By Sept 15th, you’ll be able to order cards from our new provider (Stripe Issuing) on bank.hackclub.com,
+but since physical cards take time to ship, we’re issuing new cards now so they arrive before your old cards turn off.
 
 Here are your options:
 
-<ul>
-<li>If you need a new physical card so you can keep spending money when your Emburse card shuts off, click this link to get your new card issued early:
+<ol>
+<li>
+  If you need a new physical card so you can keep spending money when your Emburse card shuts off, go get your new card issued early:
   <ul>
   <% @form_links.each do |form_link| %>
     <li>
     <%= link_to form_link[:url] do%>
-      Issue a physical card for <strong><%= form_link[:name] %></strong>
-    <%end %>
+      Order a physical card for <strong><%= form_link[:name] %></strong>
+    <% end %>
     </li>
   <% end %>
   </ul>
 </li>
-<li>If you don't need to spend money on a physical card by Oct 1st, you don't need to do anything. By Sept 15th, your Emburse cards will be automatically suspended (you can throw them out) and you can issue yourself new cards in your account.</li>
-</ul>
+<li>
+  If you don’t need to spend money via physical card by Oct 1st, you don’t need to do anything.
+  On Sept 15th, your Emburse cards will be automatically suspended (you can throw them out)
+  and if you’d like to replace them, you can issue yourself new cards in your account.
+</li>
+</ol>
 
-Shipping takes a variable amount of time and we can only guarantee your new card will before your old card shuts off if you click the link <strong>on or before Friday</strong> (Sept 4th).
+Shipping takes a variable amount of time, so we can only guarantee your new card will before your old card shuts off
+if you order the card <strong>on or before this Friday</strong> (Sept 4th).
 
-I'm keeping this email focused on the actions you can take. If you're curious about why we're switching off Emburse and the benefits of our new cards you can <%= link_to 'read about the change here', 'https://headwayapp.co/bank-changelog/moving-to-a-new-card-provider-166871' %>.
+The new cards will draw directly from your account balance—no separate card balances—and be simpler in a bunch of other ways.
+If you’re curious about why we’re switching off Emburse and the benefits of our new cards, <%= link_to 'read about the change here', 'https://headwayapp.co/bank-changelog/moving-to-a-new-card-provider-166871' %>.
 <br />
 <br />
 - Max Wofford
