@@ -41,7 +41,8 @@ Rails.application.configure do
   }
 
   # SMTP config
-  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.delivery_method = :letter_opener_web
+  # config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
     user_name: Rails.application.credentials.smtp[:username],
     password: Rails.application.credentials.smtp[:password],
