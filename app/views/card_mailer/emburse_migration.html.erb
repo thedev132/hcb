@@ -1,0 +1,19 @@
+Hey there,
+
+I'm writing you because you have active cards from Hack Club Bank for the following events:
+<ul>
+<% @events_with_cards.each do |event| %>
+  <li><%= event.name %></li>
+<% end %>
+</ul>
+
+Hack Club Bank is changing card providers soon and our old cards provided by Emburse (the purple ones that say "emburse" on it) will stop working on Sept 15th.
+By Sept 15th, you'll be able to issue cards from our new provider (Stripe Issuing) on bank.hackclub.com, but physical cards take time to ship.
+We're issuing cards from our new provider now, so they arrive *before* your old cards turn off.
+
+Here are your options:
+
+<ul>
+<li>If you need to spend money on a physical card before Oct 1st, just click this link to get your new card issued early: <%= link_to @form_link, "this link" %> </li>
+<li>If you don't need to spend money on a physical card by Oct 1st, you don't need to do anything.</li>
+</ul>
