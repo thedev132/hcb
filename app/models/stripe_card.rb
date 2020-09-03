@@ -147,6 +147,8 @@ class StripeCard < ApplicationRecord
 
     card = StripeService::Issuing::Card.create(card_options)
 
+    StripeCardMailer.with(card: self).physical_card_ordered.deliver_later unless virtual?
+
     @stripe_card_obj = card
     sync_from_stripe!
   end
