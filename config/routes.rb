@@ -224,7 +224,8 @@ Rails.application.routes.draw do
     get 'promotions', to: 'events#promotions', as: :promotions
     get 'reimbursements', to: 'events#reimbursements', as: :reimbursements
     get 'donations', to: 'events#donation_overview', as: :donation_overview
-    resources :checks, only: [:new, :create]
+    # suspend this while check processing is on hold
+    # resources :checks, only: [:new, :create]
     resources :ach_transfers, only: [:new, :create]
     resources :organizer_position_invites,
               only: [:new, :create],
