@@ -13,7 +13,7 @@
   <div class="btn-group center">
     <%= link_to 'Send a check', 
         nil, #new_event_check_path(@event) 
-        class: 'btn bg-accent mr1', 
+        class: 'btn bg-accent', 
         disabled: true %>
     <%= link_to 'Direct deposit', new_event_ach_transfer_path(@event), class: 'btn bg-accent' %>
     <%= link_to 'Reimbursement', event_reimbursements_path(@event), class: 'btn' %>
