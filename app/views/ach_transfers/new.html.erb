@@ -16,7 +16,7 @@
   </ul>
   <div class="border-top card__banner card__darker secondary">
     <strong class="warning">Questions?</strong> Talk to your point of contact,
-    <%= mail_to @event.point_of_contact.name, @event.point_of_contact.email %>.
+        <%= link_to @event.point_of_contact.name, "mailto:#{@event.point_of_contact.email}" %>.
   </div>
 </div>
 
