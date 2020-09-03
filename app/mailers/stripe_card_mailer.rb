@@ -5,6 +5,6 @@ class StripeCardMailer < ApplicationMailer
     @event = @card.event
     @recipient = @user.email
     mail to: @recipient,
-         subject: "Your new Hack Club Bank card for #{@event.name} is on it's way"
+         subject: "Your new Hack Club Bank card for #{@event.name} is on its way"
   end
 end
