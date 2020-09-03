@@ -1,5 +1,5 @@
 class StripeAuthorization < ApplicationRecord
-  scope :awaiting_receipt, -> { includes(:receipts).where(approved: true, receipts: { id: nil }).not(stripe_status: :reversed). }
+  scope :awaiting_receipt, -> { includes(:receipts).where(approved: true, receipts: { id: nil }).not(stripe_status: :reversed) }
 
   belongs_to :stripe_card, class_name: 'StripeCard'
   alias_attribute :card, :stripe_card
