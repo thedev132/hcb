@@ -11,7 +11,10 @@
 <section class="flex items-center justify-center flex-wrap pb2 md-pt2 md-pb3">
   <strong class="h3 muted md-pr2">Send a</strong>
   <div class="btn-group center">
-    <%= link_to 'Check', new_event_check_path(@event), class: 'btn bg-accent mr1', disabled: true %>
+    <%= link_to 'Send a check', 
+        nil, #new_event_check_path(@event) 
+        class: 'btn bg-accent mr1', 
+        disabled: true %>
     <%= link_to 'Direct deposit', new_event_ach_transfer_path(@event), class: 'btn bg-accent' %>
     <%= link_to 'Reimbursement', event_reimbursements_path(@event), class: 'btn' %>
   </div>
