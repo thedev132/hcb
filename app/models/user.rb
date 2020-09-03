@@ -22,10 +22,14 @@ class User < ApplicationRecord
   has_many :emburse_transfers
   has_many :emburse_card_requests
   has_many :emburse_cards
+
+  has_one :stripe_cardholder
   has_many :stripe_cards, through: :stripe_cardholder
   has_one :stripe_cardholder
+  has_many :receipts
 
   has_many :checks, inverse_of: :creator
+
   has_many :comments, as: :commentable
 
   has_one_attached :profile_picture

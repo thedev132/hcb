@@ -5,6 +5,12 @@ class StripeCardholder < ApplicationRecord
 
   belongs_to :user
   has_many :stripe_cards
+  alias_attribute :cards, :stripe_cards
+  has_many :stripe_authorizations, through: :stripe_cards
+  alias_attribute :authorizations, :stripe_authorizations
+  alias_attribute :transactions, :stripe_authorizations
+
+  validates_uniqueness_of :stripe_id
 
   # validates_presence_of :stripe_id,
   #                       :stripe_billing_address_line1,

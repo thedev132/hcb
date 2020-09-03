@@ -82,6 +82,7 @@ Rails.application.routes.draw do
     resources :comments
   end
 
+  resources :stripe_authorizations, only: [:show, :index]
   resources :stripe_cardholders, only: [:new, :create, :update]
   resources :stripe_cards, only: %i[create new index show]
   resources :emburse_cards do

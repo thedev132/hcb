@@ -100,6 +100,7 @@
 
     <h2>Information</h2>
     <ul class="grid grid--narrow left-align w-100 mt0">
+      <%= react_component "admin_task/Card", human_name: "Stripe TXs", task_path: stripe_authorizations_path %>
       <%= render partial: 'static_pages/card', locals: { task_path: events_path, human_name: 'Projects' } %>
       <%= render partial: 'static_pages/card', locals: { task_path: sponsors_path, human_name: 'Sponsors' } %>
       <%= render partial: 'static_pages/card', locals: { task_path: all_invoices_path, human_name: 'Invoices' } %>

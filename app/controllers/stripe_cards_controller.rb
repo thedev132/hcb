@@ -13,8 +13,9 @@ class StripeCardsController < ApplicationController
 
   def new
     @event = Event.friendly.find(params[:event_id])
+    @cardholder = StripeCardholder.find_by(user: current_user)
 
-    @stripe_card = StripeCard.new
+    @stripe_card = StripeCard.new(stripe_cardholder: @cardholder, event: @event)
 
     authorize @stripe_card
   end
