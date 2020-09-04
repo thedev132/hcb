@@ -15,7 +15,7 @@ module Partners
         private
 
         def plaid_transactions
-          @plaid_transactions ||= fetch_transactions['transactions']
+          @plaid_transactions ||= fetch_transactions["transactions"]
         end
 
         def fetch_transactions
@@ -30,7 +30,7 @@ module Partners
 
             # mark_plaid_item_failed! # TODO
 
-            { 'accounts' => [], 'transactions' => [] }
+            { "accounts" => [], "transactions" => [] }
           end
         end
 
@@ -47,7 +47,7 @@ module Partners
         end
 
         def strftime_format
-          '%Y-%m-%d'
+          "%Y-%m-%d"
         end
 
         def mark_plaid_item_failed!
