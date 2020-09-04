@@ -103,5 +103,9 @@ class SyncTransactionsJob < ApplicationJob
     end
 
     transactions
+  rescue ::Plaid::ItemError, ::Plaid::InvalidInputError => error
+    Airbrake.notify("plaid_client.transactions.get failed for bank_account #{account.id} with access token #{account.plaid_access_token}. #{error.message}")
+
+    raise error
   end
 end
