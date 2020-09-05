@@ -129,15 +129,15 @@ when :start %>
         </li>
         <li>
           <% if @g_suite.configuring? %>
-            <%= link_to "Verify", event_g_suite_verify_path(event_id: @event.id), method: :put, class: "btn bg-error" %>
+            <%= link_to 'Verify', event_g_suite_verify_path(event_id: @event.id), method: :put, class: 'btn' %>
           <% end %>
 
           <% if @g_suite.verifying? %>
-            <span class="h4 badge">Verifying..</span>
+            <span class="h4 ml0 pending badge">Verifying..</span>
           <% end %>
 
           <% if @g_suite.verified? %>
-            <span class="h4 badge bg-success">Verified.</span>
+            <span class="h4 ml0 badge bg-success">Verified.</span>
           <% end %>
 
 
