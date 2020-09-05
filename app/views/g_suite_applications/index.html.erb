@@ -1,30 +1,27 @@
-<% title 'G Suite Applications' %>
-<h1>G Suite Applications</h1>
+<% title 'G Suite (Applications)' %>
 
-<%= paginate @g_suite_applications %>
+<h1>G Suite (Applications)</h1>
 
 <table>
   <thead>
     <tr>
-      <th>Creator</th>
       <th>Event</th>
       <th>Domain</th>
+      <th>Verification Key</th>
       <th>Status</th>
-      <th colspan="3"></th>
+      <th colspan="2"></th>
     </tr>
   </thead>
 
   <tbody>
-    <% @g_suite_applications.each do |g_suite_application| %>
-      <tr class="<%= 'shade-yellow' if g_suite_application.under_review? %>">
-        <td><%= g_suite_application.creator&.email %> (#<%= g_suite_application.creator&.id %>)</td>
-        <td><%= link_to g_suite_application.event&.name, g_suite_application.event if g_suite_application.event %></td>
-        <td><%= g_suite_application.domain %></td>
-        <td class="flex items-center" aria-label="<%= g_suite_application.created_at %>" class="tooltipped tooltipped--e">
-          <%= status_badge g_suite_application.status_badge_type %>
-          <%= g_suite_application.status %>
-        </td>
-        <td><%= link_to 'Show', g_suite_application_path(g_suite_application) %></td>
+    <% @g_suites.each do |g_suite| %>
+      <tr class="<%= 'shade-yellow' if g_suite.creating? || g_suite.verifying? %>">
+        <td><%= link_to g_suite.event.name, g_suite.event %></td>
+        <td><%= g_suite.domain %></td>
+        <td><%= g_suite.verification_key %></td>
+        <td><%= g_suite.aasm_state %></td>
+        <td><%= link_to 'Edit', edit_event_g_suite_path(g_suite, event_id: g_suite.event.slug) %></td>
+        <td><%= link_to 'Verify', g_suite.verification_url, target: :blank %></td>
       </tr>
     <% end %>
   </tbody>

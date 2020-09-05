@@ -4,8 +4,8 @@ class GSuiteApplicationsController < ApplicationController
 
   # GET /g_suite_applications
   def index
-    @g_suite_applications = GSuiteApplication.all.order(created_at: :desc).page params[:page]
-    authorize @g_suite_applications
+    @g_suites = GSuite.all.order(created_at: :desc)
+    authorize GSuiteApplication
   end
 
   # GET /g_suite_applications/1

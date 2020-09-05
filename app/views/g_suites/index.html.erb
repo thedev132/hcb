@@ -18,8 +18,8 @@
   <tbody>
     <% @g_suites.each do |g_suite| %>
       <tr>
-        <td><%= g_suite.domain %></td>
         <td><%= link_to g_suite.event.name, g_suite.event %></td>
+        <td><%= g_suite.domain %></td>
         <td><%= g_suite.verification_key %></td>
         <td><%= g_suite.aasm_state %></td>
         <td><%= g_suite.deleted_at %></td>
