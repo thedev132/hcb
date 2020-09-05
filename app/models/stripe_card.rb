@@ -3,11 +3,17 @@ class StripeCard < ApplicationRecord
 
   belongs_to :event
   belongs_to :stripe_cardholder
+  alias_attribute :cardholder, :stripe_cardholder
   has_one :user, through: :stripe_cardholder
+  has_many :stripe_authorizations
+  alias_attribute :authorizations, :stripe_authorizations
+  alias_attribute :transactions, :stripe_authorizations
 
   alias_attribute :last_four, :last4
 
   enum card_type: { virtual: 0, physical: 1 }
+
+  validates_uniqueness_of :stripe_id
 
   validates_presence_of :stripe_shipping_address_city,
                         :stripe_shipping_address_country,
@@ -72,6 +78,14 @@ class StripeCard < ApplicationRecord
   alias_attribute :address_country, :stripe_shipping_address_country
   alias_attribute :address_postal_code, :stripe_shipping_address_postal_code
 
+  def stripe_obj
+    @stripe_card_obj ||= begin
+      StripeService::Issuing::Card.retrieve(stripe_id)
+    end
+
+    @stripe_card_obj
+  end
+
   private
 
   def secret_details
@@ -120,6 +134,7 @@ class StripeCard < ApplicationRecord
     unless virtual?
       card_options[:shipping] = {}
       card_options[:shipping][:name] = stripe_shipping_name
+      card_options[:shipping][:service] = 'priority'
       card_options[:shipping][:address] = {
         city: stripe_shipping_address_city,
         country: stripe_shipping_address_country,
@@ -132,15 +147,28 @@ class StripeCard < ApplicationRecord
 
     card = StripeService::Issuing::Card.create(card_options)
 
+    StripeCardMailer.with(card: self).physical_card_ordered.deliver_later unless virtual?
+
     @stripe_card_obj = card
     sync_from_stripe!
   end
 
-  def stripe_obj
-    @stripe_card_obj ||= begin
-      StripeService::Issuing::Card.retrieve(stripe_id)
+  def authorizations_from_stripe
+    @auths ||= begin
+      result = []
+      auths = StripeService::Issuing::Authorization.list(card: stripe_id)
+      auths.auto_paging_each {|auth| result << auth}
+      result
     end
 
-    @stripe_card_obj
+    @auths
+  end
+
+  def sync_authorizations
+    authorizations_from_stripe.each do |stripe_auth|
+      sa = StripeAuthorization.find_or_initialize_by(stripe_id: stripe_auth[:id])
+      sa.sync_from_stripe!
+      sa.save
+    end
   end
 end

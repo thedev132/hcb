@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_25_053922) do
+ActiveRecord::Schema.define(version: 2020_09_04_235817) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -629,6 +629,25 @@ ActiveRecord::Schema.define(version: 2020_08_25_053922) do
     t.index ["user_id"], name: "index_organizer_positions_on_user_id"
   end
 
+  create_table "plaid_transactions", force: :cascade do |t|
+    t.text "plaid_account_id"
+    t.text "plaid_item_id"
+    t.text "plaid_transaction_id"
+    t.jsonb "plaid_transaction"
+    t.integer "amount_cents"
+    t.date "date_posted"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "receipts", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.datetime "attempted_match_at"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_receipts_on_user_id"
+  end
+
   create_table "sponsors", force: :cascade do |t|
     t.bigint "event_id"
     t.text "name"
@@ -644,6 +663,18 @@ ActiveRecord::Schema.define(version: 2020_08_25_053922) do
     t.text "slug"
     t.index ["event_id"], name: "index_sponsors_on_event_id"
     t.index ["slug"], name: "index_sponsors_on_slug", unique: true
+  end
+
+  create_table "stripe_authorizations", force: :cascade do |t|
+    t.text "stripe_id"
+    t.integer "stripe_status"
+    t.integer "authorization_method"
+    t.boolean "approved", default: false, null: false
+    t.bigint "stripe_card_id", null: false
+    t.integer "amount"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["stripe_card_id"], name: "index_stripe_authorizations_on_stripe_card_id"
   end
 
   create_table "stripe_cardholders", force: :cascade do |t|
@@ -821,7 +852,9 @@ ActiveRecord::Schema.define(version: 2020_08_25_053922) do
   add_foreign_key "organizer_position_invites", "users", column: "sender_id"
   add_foreign_key "organizer_positions", "events"
   add_foreign_key "organizer_positions", "users"
+  add_foreign_key "receipts", "users"
   add_foreign_key "sponsors", "events"
+  add_foreign_key "stripe_authorizations", "stripe_cards"
   add_foreign_key "stripe_cardholders", "users"
   add_foreign_key "stripe_cards", "events"
   add_foreign_key "stripe_cards", "stripe_cardholders"

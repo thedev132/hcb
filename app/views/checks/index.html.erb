@@ -25,7 +25,7 @@
       <tr>
         <td>
           <%= link_to check do %>
-            <%= check.check_number || 'n/a' %>
+            <%= link_to check.check_number || 'n/a', check %>
             <% unless check.valid? %>
               <span class="tooltipped tooltipped--s" aria-label="<%= check.errors.keys.map {|k| check.errors[k] }.join(". \n") %>">⚠️</span>
             <% end %>

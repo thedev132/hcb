@@ -44,7 +44,7 @@ West Hollywood, CA 90069</pre>
     <% if @event.emburse_department_path.nil? %>
       <%= link_to 'Set Emburse Department ID', edit_event_path(@event), class: 'btn bg-accent mr2' %>
     <% else %>
-      <%= link_to 'Set Emburse Budget', @event.emburse_department_path, class: 'btn bg-accent mr2' %>
+      <%= link_to 'Set Emburse budget', @event.emburse_department_path, class: 'btn bg-accent mr2' %>
     <% end %>
     <span class="h5 mt1 mb1">
       (Current: <strong>$<%= render_money @event.emburse_budget_limit, '' %></strong>)
@@ -147,7 +147,7 @@ West Hollywood, CA 90069</pre>
         <% end %>
       </tbody>
     </table>
-    <%= blankslate 'You don’t have any pending transfers.', id: 'lcr_blank' %>
+    <%= blankslate 'You don’t have any pending transfers.', id: 'lcr_blank' if @event.emburse_transfers.pending.none? %>
   </div>
 <% end %>
 

@@ -6,6 +6,9 @@ Rails.application.routes.draw do
   mount Sidekiq::Web => '/sidekiq', constraints: AdminConstraint.new
   mount Blazer::Engine, at: "blazer", constraints: AdminConstraint.new
   get '/sidekiq', to: 'users#auth' # fallback if adminconstraint fails, meaning user is not signed in
+  if Rails.env.development?
+    mount LetterOpenerWeb::Engine, at: "/letter_opener"
+  end
 
   root to: 'static_pages#index'
   get 'stats', to: 'static_pages#stats'
@@ -80,6 +83,7 @@ Rails.application.routes.draw do
     resources :comments
   end
 
+  resources :stripe_authorizations, only: [:show, :index]
   resources :stripe_cardholders, only: [:new, :create, :update]
   resources :stripe_cards, only: %i[create new index show]
   resources :emburse_cards do
@@ -184,6 +188,7 @@ Rails.application.routes.draw do
       get 'qr/:event_name.png', to: 'donations#qr_code', as: 'qr_code'
       get ':event_name/:donation', to: 'donations#finish_donation', as: 'finish_donation'
     end
+    resources :comments
   end
 
   # api
@@ -222,7 +227,8 @@ Rails.application.routes.draw do
     get 'promotions', to: 'events#promotions', as: :promotions
     get 'reimbursements', to: 'events#reimbursements', as: :reimbursements
     get 'donations', to: 'events#donation_overview', as: :donation_overview
-    resources :checks, only: [:new, :create]
+    # suspend this while check processing is on hold
+    # resources :checks, only: [:new, :create]
     resources :ach_transfers, only: [:new, :create]
     resources :organizer_position_invites,
               only: [:new, :create],

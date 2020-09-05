@@ -110,6 +110,9 @@ gem 'api-pagination'
 # Google (GSuite)
 gem 'google-api-client'
 
+# Calculate business days for stripe card shipping
+gem 'business_time'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
@@ -123,6 +126,8 @@ group :development do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
+  # Preview emails
+  gem 'letter_opener_web'
 end
 
 group :test do
@@ -139,6 +144,7 @@ gem 'heroku-deflater', group: :production
 gem 'aasm' # state machine
 gem 'airbrake' # exception tracking
 gem 'blazer' # business intelligence tool/dashboard
+gem 'money-rails' # back cent fields as money objects 
 gem 'paper_trail' # track changes on models
 gem 'sidekiq-cron', '~> 1.1' # run sidekiq scheduled tasks
 gem 'strong_migrations' # protects against risky migrations that could cause application harm on deploy

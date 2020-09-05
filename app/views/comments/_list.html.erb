@@ -1,4 +1,4 @@
-<div class="comments">
+<section class="comments">
   <% @comments.order(created_at: :asc).each do |comment| %>
     <% if comment.admin_only %>
       <% admin_tools do %>
@@ -8,4 +8,4 @@
       <%= render 'comments/item', comment: comment %>
     <% end %>
   <% end %>
-</div>
+</section>

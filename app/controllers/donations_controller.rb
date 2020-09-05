@@ -9,6 +9,10 @@ class DonationsController < ApplicationController
   def show
     authorize @donation
     @event = @donation.event
+
+    @commentable = @donation
+    @comments = @commentable.comments.includes(:user)
+    @comment = Comment.new
   end
 
   def start_donation

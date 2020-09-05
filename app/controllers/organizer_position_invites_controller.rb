@@ -1,6 +1,9 @@
 class OrganizerPositionInvitesController < ApplicationController
   before_action :set_opi, only: [:show, :accept, :reject, :cancel]
 
+  skip_before_action :signed_in_user, only: [:show]
+  skip_after_action :verify_authorized, only: [:show], if: -> { @skip_verfiy_authorized }
+
   def new
     @invite = OrganizerPositionInvite.new
     @invite.event = Event.friendly.find(params[:event_id])
@@ -28,11 +31,19 @@ class OrganizerPositionInvitesController < ApplicationController
   end
 
   def show
-    authorize @invite
-    @organizers = @invite.event.organizer_positions.includes(:user)
-    if @invite.cancelled?
-      flash[:error] = 'That invite was canceled!'
-      redirect_to root_path
+    if signed_in?
+      authorize @invite
+      @organizers = @invite.event.organizer_positions.includes(:user)
+      if @invite.cancelled?
+        flash[:error] = 'That invite was canceled!'
+        redirect_to root_path
+      end
+    else
+      hide_footer
+      @skip_verfiy_authorized = true
+      @prefill_email = @invite.email
+
+      render "users/auth" 
     end
   end
 

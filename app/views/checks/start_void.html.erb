@@ -3,28 +3,35 @@
 
 <h1>Void a check to <%= @check.lob_address.name %></h1>
 
+<%= render 'checks/suspended' %>
+<%# put this back when check sending is online %>
+<% if false %>
 <div class="card border b--warning pb0 mt3 mb3">
-  <div class="flex items-center warning">
-    <%= inline_icon 'important', size: 32, class: 'mr1' %>
-    <p class="bold mt0 mb0">Voiding should be used as a last resort, read ahead and proceed with caution</p>
-  </div>
-  <% if @check.approved? %>
-    <ul class="mt1 mb2">
-      <li>We can't void this check if it has already been deposited.</li>
-      <li>A void will <strong>stop the payee from cashing the check</strong>, and probably <strong>charge them a bounce fee</strong>.</li>
-      <li><strong>If it hasn’t been deposited, you’ll get your money back in the next few business days.</strong></li>
-    </ul>
-  <% else %>
-    <ul class="mt1 mb2">
-      <li>This will stop the check from being sent.</li>
-      <li>No money will leave your account.</li>
-    </ul>
-  <% end %>
+  #<div class="flex items-center warning">
+    #<%= inline_icon 'important', size: 32, class: 'mr1' %>
+    #<p class="bold mt0 mb0">Voiding should be used as a last resort, read ahead and proceed with caution</p>
+  #</div>
+  #<% if @check.approved? %>
+    #<ul class="mt1 mb2">
+      #<li>We can't void this check if it has already been deposited.</li>
+      #<li>A void will <strong>stop the payee from cashing the check</strong>, and probably <strong>charge them a bounce fee</strong>.</li>
+      #<li><strong>If it hasn’t been deposited, you’ll get your money back in the next few business days.</strong></li>
+    #</ul>
+  #<% else %>
+    #<ul class="mt1 mb2">
+      #<li>This will stop the check from being sent.</li>
+      #<li>No money will leave your account.</li>
+    #</ul>
+  #<% end %>
+  
+  #<div class="border-top card__banner card__darker">
+    #<strong class="warning">Questions?</strong> Talk to your point of contact.
+  #</div>
+  #</div>
+<% end %>
 
-  <div class="border-top card__banner card__darker">
-    <strong class="warning">Questions?</strong> Talk to your point of contact.
-  </div>
-</div>
-
-<%= link_to "Void this #{render_money_short @check.amount} check", check_void_path(@check), method: :post, class: 'btn bg-error right' %>
+<%#= link_to "Void this #{render_money_short @check.amount} check", check_void_path(@check), method: :post, class: 'btn bg-error right' %>
+<%= link_to "Email about voiding #{render_money_short @check.amount} check",
+  "mailto:#{@event.point_of_contact.email}?cc=bank@hackclub.com&subject=[URGENT] void check ##{@check.check_number}",
+  class: 'btn bg-error right' %>
 <%= link_to 'Cancel', check_path(@check), class: 'btn bg-muted' %>

@@ -6,7 +6,7 @@ class TopupStripeJob < ApplicationJob
     # (msw) note this number is arbitrary at the time of writing– we have no
     # clue how much buffer we'll need so I'll be manually updating this while
     # we find our footing on stripe issuing
-    buffer = 1000 * 100
+    buffer = 20000 * 100
 
     # amount of money currently in stripe
     balances = StripeService::Balance.retrieve
@@ -21,13 +21,14 @@ class TopupStripeJob < ApplicationJob
     # authorization that's pending
     expected_tx_sum = 0
     authorizations = StripeService::Issuing::Authorization.list(status: :pending)
-    authorizations[:data].each do |auth|
+    authorizations.auto_paging_each do |auth|
       expected_tx_sum += auth[:amount] if auth[:approved] &&
                                           auth[:transactions].empty?
     end
 
     topup_amount = buffer - pending - available + expected_tx_sum - enroute_sum
 
+    puts "topup amount == #{topup_amount}"
     return unless topup_amount > 0
 
     StripeService::Topup.create({
