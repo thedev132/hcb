@@ -20,7 +20,7 @@
       <section class="details mt2">
         <div>
           <strong>Billing address</strong>
-          <%= render_address @cardholder %>
+          <%= render_address @card.cardholder %>
         </div>
 
         <% if @card.virtual? %>
