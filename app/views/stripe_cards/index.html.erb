@@ -1,5 +1,28 @@
 <h1>Stripe cards</h1>
 
-<% @cards.each do |card| %>
-  <%= link_to card.last4, stripe_card_path(card) %>
-<% end %>
+<table>
+  <thead>
+    <tr>
+      <th>Last 4</th>
+      <th>User</th>
+      <th>Event</th>
+      <th>Type</th>
+      <th>Created at</th>
+      <th>Available balance</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @cards.each do |card| %>
+      <tr>
+        <td><%= link_to card.last4, card %></td>
+        <td><%= user_mention card.user %></td>
+        <td><%= link_to card.event.name, card.event %></td>
+        <td><%= card.virtual? ? 'Virtual' : 'Physical' %></td>
+        <td><%= format_datetime card.created_at %></td>
+        <td><%= render_money card.event.available_balance %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
