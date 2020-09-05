@@ -20,6 +20,11 @@ RSpec.describe GSuiteService::Create, type: :model do
 
   let(:service) { GSuiteService::Create.new(attrs) }
 
+  before do
+    allow_any_instance_of(::Partners::Google::GSuite::CreateDomain).to receive(:run).and_return(true)
+    allow_any_instance_of(::Partners::Google::GSuite::DeleteDomain).to receive(:run).and_return(true)
+  end
+
   it "does not create a gsuite if already created" do
     expect do
       service.run
@@ -38,13 +43,16 @@ RSpec.describe GSuiteService::Create, type: :model do
       end.to change(GSuite, :count).by(1)
     end
 
-    it "sends a mailer" do
+    it "sends 2 mailers" do
       service.run
 
-      mail = ActionMailer::Base.deliveries.last
+      mails = ActionMailer::Base.deliveries.last(2)
 
-      expect(mail.to).to eql([current_user.email])
-      expect(mail.subject).to include(domain)
+      expect(mails[0].to).to eql([current_user.email])
+      expect(mails[0].subject).to include(domain)
+
+      expect(mails[1].to).to eql(["bank-alert@hackclub.com"])
+      expect(mails[1].subject).to include(domain)
     end
   end
 end

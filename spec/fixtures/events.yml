@@ -11,3 +11,10 @@ event2:
   sponsorship_fee: "100.10"
   slug: "event2"
   created_at: <%= Time.now %>
+
+event3:
+  point_of_contact: user1
+  name: "Event3"
+  sponsorship_fee: "100.10"
+  slug: "event3"
+  created_at: <%= Time.now %>

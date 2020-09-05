@@ -6,7 +6,7 @@ RSpec.describe GSuiteService::CreateDeprecated, type: :model do
   fixtures  "users", "events",  "g_suites", "g_suite_applications"
   
   let(:event1) { events(:event1) }
-  let(:g_suite_application) { g_suite_applications(:g_suite_application3) }
+  let(:g_suite_application) { g_suite_applications(:g_suite_application4) }
   let(:current_user) { users(:user1) }
   let(:event_id) { event1.id }
   let(:domain) { g_suite_application.domain } # MATCH REQUIRED. TODO: unravel domain as the linkage mechanism.
