@@ -142,4 +142,5 @@ gem 'airbrake'
 gem 'blazer'
 gem 'money-rails' # back cent fields as money objects 
 gem 'paper_trail'
+gem 'sidekiq-cron', '~> 1.1' # run sidekiq scheduled tasks
 gem 'strong_migrations'

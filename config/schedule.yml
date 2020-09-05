@@ -1,0 +1,4 @@
+plaid_transaction_imports_job:
+  cron: "*/5 * * * *" # run every 5 minutes
+  class: "PlaidTransactionJob::Imports"
+  queue: "default"
