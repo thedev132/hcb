@@ -18,12 +18,12 @@
       </h2>
 
       <section class="details mt2">
-        <% if @card.virtual? %>
-          <div>
-            <strong>Billing address</strong>
-            <%= render_address @card %>
-          </div>
+        <div>
+          <strong>Billing address</strong>
+          <%= render_address @cardholder %>
+        </div>
 
+        <% if @card.virtual? %>
           <div>
             <strong>CVC</strong>
             <%= @card.cvc %>
@@ -32,6 +32,11 @@
           <div>
             <strong>Expiration date</strong>
             <%= render_exp_date %>
+          </div>
+        <% else %>
+          <div>
+            <strong>Shipping address</strong>
+            <%= render_address @card %>
           </div>
         <% end %>
 
@@ -44,6 +49,18 @@
           <strong>Ordered by</strong>
           <%= user_mention @card.user %>
         </p>
+
+        <p>
+          <strong>Ordered on</strong>
+          <%= Time.ad(@card.stripe_obj[:created]).strftime('%m/%d/%y') %>
+        </p>
+
+        <% if @card.stripe_obj[:eta] %>
+          <p>
+            <strong>Expected on</strong>
+            <%= Time.ad(@card.stripe_obj[:eta]).strftime('%m/%d/%y') %>
+          </p>
+        <% end %>
 
         <p>
           <strong>Activation status</strong>

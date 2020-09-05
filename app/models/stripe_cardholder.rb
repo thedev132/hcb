@@ -23,6 +23,13 @@ class StripeCardholder < ApplicationRecord
   #                       :stripe_email,
   #                       :stripe_phone_number
 
+  alias_attribute :address_line1, :stripe_billing_address_line1
+  alias_attribute :address_line2, :stripe_billing_address_line2
+  alias_attribute :address_city, :stripe_billing_address_city
+  alias_attribute :address_state, :stripe_billing_address_state
+  alias_attribute :address_country, :stripe_billing_address_country
+  alias_attribute :address_postal_code, :stripe_billing_address_postal_code
+
   private
 
   def issue_cardholder_profile
