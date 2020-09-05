@@ -78,6 +78,14 @@ class StripeCard < ApplicationRecord
   alias_attribute :address_country, :stripe_shipping_address_country
   alias_attribute :address_postal_code, :stripe_shipping_address_postal_code
 
+  def stripe_obj
+    @stripe_card_obj ||= begin
+      StripeService::Issuing::Card.retrieve(stripe_id)
+    end
+
+    @stripe_card_obj
+  end
+
   private
 
   def secret_details
@@ -160,13 +168,5 @@ class StripeCard < ApplicationRecord
       sa.sync_from_stripe!
       sa.save
     end
-  end
-
-  def stripe_obj
-    @stripe_card_obj ||= begin
-      StripeService::Issuing::Card.retrieve(stripe_id)
-    end
-
-    @stripe_card_obj
   end
 end
