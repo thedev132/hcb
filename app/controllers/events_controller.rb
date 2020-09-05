@@ -151,13 +151,10 @@ class EventsController < ApplicationController
   end
 
   def g_suite_overview
-    @event = Event.includes([
-      { g_suite: :accounts },
-      :g_suite_application
-    ]).friendly.find(params[:event_id])
+    @event = Event.friendly.find(params[:event_id])
     authorize @event
+
     @g_suite = @event.g_suite
-    @g_suite_application = @event.g_suite_application
   end
 
   def g_suite_create

@@ -13,7 +13,15 @@ module GSuiteService
         g_suite.save!
         g_suite.reload
 
-        notify_of_creation
+        ::Partners::Google::GSuite::CreateDomain.new(domain: @domain).run
+
+        begin
+          notify_of_creation
+        rescue => e
+          ::Partners::Google::GSuite::DeleteDomain.new(domain: @domain).run # roll back g suite domain if email fails for any reason
+
+          raise e
+        end
 
         g_suite
       end
