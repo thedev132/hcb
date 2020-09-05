@@ -37,10 +37,6 @@ class GSuite < ApplicationRecord
     false
   end
 
-  def verified_deprecated?
-    self.accounts.any? { |account| !account.verified_at.null? }
-  end
-
   def verification_url
     "https://www.google.com/webmasters/verification/verification?siteUrl=http://#{domain}&priorities=vdns,vmeta,vfile,vanalytics"
   end
