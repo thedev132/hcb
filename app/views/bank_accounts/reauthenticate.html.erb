@@ -25,3 +25,10 @@ document.getElementById('linkButton').onclick = function() {
   linkHandler.open();
 };
 </script>
+
+<ul>
+  <li>env: <%= @link_env %></li>
+  <li>clientName: <%= @client_name %></li>
+  <li>product: <%= @product %></li>
+  <li>token: <%= @public_token %></li>
+</ul>
