@@ -140,5 +140,6 @@ gem 'heroku-deflater', group: :production
 
 gem 'airbrake'
 gem 'blazer'
+gem 'money-rails' # back cent fields as money objects 
 gem 'paper_trail'
 gem 'strong_migrations'
