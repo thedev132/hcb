@@ -42,7 +42,7 @@ class GSuite < ApplicationRecord
   end
 
   def verification_url
-    "https://www.google.com/webmasters/verification/verification?siteUrl=http://#{domain}"
+    "https://www.google.com/webmasters/verification/verification?siteUrl=http://#{domain}&priorities=vdns,vmeta,vfile,vanalytics"
   end
 
   def ou_name

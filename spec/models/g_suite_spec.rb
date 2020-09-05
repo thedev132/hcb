@@ -35,7 +35,7 @@ RSpec.describe GSuite, type: :model do
     it "generates it" do
       result = g_suite.verification_url
 
-      expect(result).to eql("https://www.google.com/webmasters/verification/verification?siteUrl=http://event1.example.com")
+      expect(result).to eql("https://www.google.com/webmasters/verification/verification?siteUrl=http://event1.example.com&priorities=vdns,vmeta,vfile,vanalytics")
     end
   end
 
