@@ -11,7 +11,8 @@ class GSuite < ApplicationRecord
   has_many :comments, as: :commentable
 
   aasm do
-    state :configuring, initial: true
+    state :creating, initial: true
+    state :configuring
     state :verifying
     state :verified
 

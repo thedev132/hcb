@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_04_235817) do
+ActiveRecord::Schema.define(version: 2020_09_05_231243) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -458,7 +458,7 @@ ActiveRecord::Schema.define(version: 2020_09_04_235817) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "dkim_key"
-    t.string "aasm_state", default: "configuring"
+    t.string "aasm_state", default: "creating"
     t.index ["domain"], name: "index_g_suites_on_domain", unique: true
     t.index ["event_id"], name: "index_g_suites_on_event_id"
   end
