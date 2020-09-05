@@ -22,7 +22,11 @@ module PlaidTransactionService
       private
 
       def plaid_transactions
-        @plaid_transactions ||= ::Partners::Plaid::Transactions::Get.new(bank_account_id: @bank_account_id).run
+        @plaid_transactions ||= ::Partners::Plaid::Transactions::Get.new(bank_account_id: @bank_account_id, start_date: start_date).run
+      end
+
+      def start_date
+        (Time.now.utc - 5.years).strftime(::Partners::Plaid::Transactions::Get::DATE_FORMAT)
       end
     end
   end
