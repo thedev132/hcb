@@ -14,6 +14,6 @@ g_suite2:
 g_suite3:
   event: event3
   domain: event3.example.com
-  verification_key: "verification_key2"
+  verification_key: "verification_key3"
   aasm_state: "configuring"
   created_at: <%= Time.now %>
