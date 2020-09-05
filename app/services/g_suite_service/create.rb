@@ -17,6 +17,7 @@ module GSuiteService
 
         begin
           notify_of_creation
+          notify_operations
         rescue => e
           ::Partners::Google::GSuite::DeleteDomain.new(domain: @domain).run # roll back g suite domain if email fails for any reason
 
@@ -31,6 +32,10 @@ module GSuiteService
 
     def notify_of_creation
       GSuiteMailer.with(recipient: @current_user.email, g_suite_id: g_suite.id).notify_of_creation.deliver_now if @current_user.email.present?
+    end
+
+    def notify_operations
+      OperationsMailer.with(g_suite_id: g_suite.id).g_suite_entering_created_state.deliver_now
     end
 
     def attrs
