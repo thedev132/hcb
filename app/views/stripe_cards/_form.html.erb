@@ -1,9 +1,6 @@
 <%= form_with(model: stripe_card, local: true, class: 'grid grid--split') do |form| %>
   <%= form_errors stripe_card%>
 
-  <%= form.hidden_field :event_id, value: params[:event_id] %>
-  <%= form.hidden_field :stripe_cardholder_id, value: current_user&.stripe_cardholder&.id %>
-
   <fieldset>
     <legend>Card type</legend>
     <div class="field field--radiobox">
@@ -42,6 +39,9 @@
     <%= form.label :stripe_shipping_address_country, 'Country' %>
     <%= form.text_field :stripe_shipping_address_country, value: suggested(:country) %>
   </div>
+
+  <%= form.hidden_field :stripe_cardholder_id, value: current_user&.stripe_cardholder&.id %>
+  <%= form.hidden_field :event_id, value: params[:event_id] %>
 
   <div class="actions">
     <%= form.submit %>

@@ -1,4 +1,5 @@
 class StripeCardholder < ApplicationRecord
+  after_initialize :default_values
   before_create :issue_cardholder_profile
 
   enum cardholder_type: { individual: 0, company: 1 }
@@ -31,6 +32,14 @@ class StripeCardholder < ApplicationRecord
   alias_attribute :address_postal_code, :stripe_billing_address_postal_code
 
   private
+
+  def default_values
+    self.address_line1 ||= '8605 Santa Monica Blvd #86294'
+    self.address_city ||= 'West Hollywood'
+    self.address_state ||= 'CA'
+    self.address_postal_code ||= '90069'
+    self.address_country ||= 'US'
+  end
 
   def issue_cardholder_profile
     address = {

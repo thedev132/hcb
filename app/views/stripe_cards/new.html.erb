@@ -4,13 +4,13 @@
 <h1 class="grid__fill">Issue a card</h1>
 
 <section>
-<h2>1. Personal info</h2>
-<%= render 'stripe_cardholders/form',
+<%# <h2>1. Personal info</h2> %>
+<%# render 'stripe_cardholders/form',
   stripe_cardholder: current_user.stripe_cardholder || StripeCardholder.new(user: current_user) %>
-</section>
+<%# </section> %>
 
-<section>
-<h2>2. Card info</h2>
+<%# <section> %>
+<h2>Card info</h2>
 
 <%= render 'form', stripe_card: @stripe_card %>
 </section>

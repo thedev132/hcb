@@ -1,6 +1,6 @@
 class StripeCardMailer < ApplicationMailer
   def physical_card_ordered
-    @card = params[:card]
+    @card = Card.find params[:card_id]
     @user = @card.user
     @event = @card.event
     @has_multiple_events = @user.events.size > 1

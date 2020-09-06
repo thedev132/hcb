@@ -1,5 +1,6 @@
 class StripeCard < ApplicationRecord
   before_create :issue_stripe_card # issue the card if we're creating it for the first time
+  after_create :notify_user
 
   belongs_to :event
   belongs_to :stripe_cardholder
@@ -121,6 +122,15 @@ class StripeCard < ApplicationRecord
     self
   end
 
+  def notify_user
+    if virtual?
+      # TODO
+      # StripeCardMailer.with(card_id: self.id).virtual_card_ordered.deliver_later unless virtual?
+    else
+      StripeCardMailer.with(card_id: self.id).physical_card_ordered.deliver_later unless virtual?
+    end
+  end
+
   def issue_stripe_card
     return self if persisted?
 
@@ -146,8 +156,6 @@ class StripeCard < ApplicationRecord
     end
 
     card = StripeService::Issuing::Card.create(card_options)
-
-    StripeCardMailer.with(card: self).physical_card_ordered.deliver_later unless virtual?
 
     @stripe_card_obj = card
     sync_from_stripe!
