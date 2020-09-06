@@ -34,7 +34,7 @@
             <%= link_to 'Reset password',
                 g_suite_account_reset_password_path(account.id),
                 method: :put,
-                'data-confirm': 'Reset the account password for #{account.address}? We’ll email a new password to the backup email.'
+                'data-confirm': "Reset the account password for #{account.address}? We’ll email a new password to the backup email."
             %>
             <%= link_to (account.suspended? ? 'Re-activate' : 'Suspend'),
                 g_suite_account_toggle_suspension_path(account.id),
