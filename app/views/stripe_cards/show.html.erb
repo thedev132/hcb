@@ -56,10 +56,10 @@
           <%= format_datetime Time.at(@card.stripe_obj[:created]) %>
         </p>
 
-        <% if @card.stripe_obj[:eta] %>
+        <% if @card.stripe_obj[:shipping][:eta] %>
           <p>
             <strong>Expected on</strong>
-            <%= format_datetime Time.at(@card.stripe_obj[:eta]) %>
+            <%= format_datetime Time.at(@card.stripe_obj[:shipping][:eta]) %>
           </p>
         <% end %>
 
