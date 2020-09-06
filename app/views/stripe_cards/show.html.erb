@@ -7,7 +7,13 @@
     <%= link_to @card, class: 'btn bg-info mt2 md-mt3' do %>
       <%= inline_icon 'view' %>
       Reveal card number
-    <% end if @card.virtual? %>
+    <% end if false && @card.virtual? %>
+
+
+      <p class="bold mt2 mb1">Your billing address for purchases</p>
+      <pre class="inline-block mt0 mb0">
+<%= render_address @card.cardholder %>
+      </pre>
   </section>
 
   <article class="card max-width-2 mx-auto mt3">
@@ -18,11 +24,6 @@
       </h2>
 
       <section class="details mt2">
-        <div>
-          <strong>Billing address</strong>
-          <%= render_address @card.cardholder %>
-        </div>
-
         <% if @card.virtual? %>
           <div>
             <strong>CVC</strong>
