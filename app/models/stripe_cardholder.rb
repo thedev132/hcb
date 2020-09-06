@@ -62,15 +62,15 @@ class StripeCardholder < ApplicationRecord
 
   def sync_from_stripe!
     self.stripe_id = stripe_obj[:id]
-    self.stripe_billing_address_line1 = stripe_obj[:stripe_billing_address_line1]
-    self.stripe_billing_address_line2 = stripe_obj[:stripe_billing_address_line2]
-    self.stripe_billing_address_city = stripe_obj[:stripe_billing_address_city]
-    self.stripe_billing_address_country = stripe_obj[:stripe_billing_address_country]
-    self.stripe_billing_address_postal_code = stripe_obj[:stripe_billing_address_postal_code]
-    self.stripe_billing_address_state = stripe_obj[:stripe_billing_address_state]
-    self.stripe_name = stripe_obj[:stripe_name]
-    self.stripe_email = stripe_obj[:stripe_email]
-    self.stripe_phone_number = stripe_obj[:stripe_phone_number]
+    self.stripe_billing_address_line1 = stripe_obj[:billing][:address][:line1]
+    self.stripe_billing_address_line2 = stripe_obj[:billing][:address][:line2]
+    self.stripe_billing_address_city = stripe_obj[:billing][:address][:city]
+    self.stripe_billing_address_country = stripe_obj[:billing][:address][:country]
+    self.stripe_billing_address_postal_code = stripe_obj[:billing][:address][:postal_code]
+    self.stripe_billing_address_state = stripe_obj[:billing][:address][:state]
+    self.stripe_name = stripe_obj[:billing][:name]
+    self.stripe_email = stripe_obj[:email]
+    self.stripe_phone_number = stripe_obj[:phone_number]
     self.cardholder_type = stripe_obj[:type]
 
     self

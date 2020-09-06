@@ -52,13 +52,13 @@
 
         <p>
           <strong>Ordered on</strong>
-          <%= Time.ad(@card.stripe_obj[:created]).strftime('%m/%d/%y') %>
+          <%= format_date Time.at(@card.stripe_obj[:created]) %>
         </p>
 
         <% if @card.stripe_obj[:eta] %>
           <p>
             <strong>Expected on</strong>
-            <%= Time.ad(@card.stripe_obj[:eta]).strftime('%m/%d/%y') %>
+            <%= format_date Time.at(@card.stripe_obj[:eta]) %>
           </p>
         <% end %>
 
