@@ -184,6 +184,10 @@ class Event < ApplicationRecord
     end
   end
 
+  def migrated_to_stripe?
+    stripe_cards.any?
+  end
+
   def hidden?
     hidden_at.present?
   end
