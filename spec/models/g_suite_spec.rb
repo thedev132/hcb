@@ -31,6 +31,16 @@ RSpec.describe GSuite, type: :model do
     end
   end
 
+  describe "#verification_key" do
+    it "strips out the google verification key for only the value (bit of a misnomer at this point)" do
+      g_suite.verification_key = "google-site-verification=Cb-_ZL"
+
+      g_suite.save!
+
+      expect(g_suite.reload.verification_key).to eql("Cb-_ZL")
+    end
+  end
+
   describe "#verification_url" do
     it "generates it" do
       result = g_suite.verification_url

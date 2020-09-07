@@ -35,7 +35,10 @@ class GSuite < ApplicationRecord
 
   validates :domain, presence: true, uniqueness: { case_sensitive: false }, format: { with: VALID_DOMAIN }
 
+
   after_initialize :set_application
+
+  before_validation :clean_up_verification_key
 
   def verified_on_google?
     @verified_on_google ||= ::Partners::Google::GSuite::Domain.new(domain: domain).run.verified # TODO: move to a background job checking every 5-15 minutes for the latest verified domains
@@ -57,5 +60,9 @@ class GSuite < ApplicationRecord
 
   def set_application
     self.application = GSuiteApplication.find_by(domain: domain) # DEPRECATED
+  end
+
+  def clean_up_verification_key
+    self.verification_key = verification_key.gsub("google-site-verification=", "") if verification_key.present?
   end
 end
