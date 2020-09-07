@@ -13,7 +13,7 @@ module GSuiteService
         domain_changing?
 
         g_suite.domain = @domain
-        g_suite.verification_key = @verification_key
+        g_suite.verification_key = smart_verification_key
         g_suite.dkim_key = @dkim_key
         g_suite.save!
 
@@ -40,6 +40,10 @@ module GSuiteService
 
     def domain_changing?
       @domain_changing ||= g_suite.domain != @domain
+    end
+
+    def smart_verification_key
+      @smart_verification_key ||= domain_changing? ? nil : @verification_key
     end
   end
 end

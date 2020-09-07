@@ -56,6 +56,15 @@ RSpec.describe GSuiteService::Update, type: :model do
       expect(mail.to).to eql(["bank-alert@hackclub.com"])
       expect(mail.subject).to include(domain)
     end
+
+    it "changes status back to creating and sets verification key to nil (even though it was attempted to be set)" do
+      original_verification_key = g_suite.verification_key
+
+      g_suite_result = service.run
+
+      expect(g_suite_result.verification_key).not_to eql(original_verification_key)
+      expect(g_suite_result.verification_key).to eql(nil)
+    end
   end
 
   it "sends 0 mailers" do
