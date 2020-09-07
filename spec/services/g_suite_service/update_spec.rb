@@ -37,6 +37,10 @@ RSpec.describe GSuiteService::Update, type: :model do
   context "when domain is changed" do
     let(:domain) { "newdomain.com" }
 
+    before do
+      g_suite.mark_configuring!
+    end
+
     it "changes domain and makes call to delete domain and create domain" do
       original_domain = g_suite.domain
 
@@ -58,10 +62,13 @@ RSpec.describe GSuiteService::Update, type: :model do
     end
 
     it "changes status back to creating and sets verification key to nil (even though it was attempted to be set)" do
+      original_aasm_state = g_suite.aasm_state
       original_verification_key = g_suite.verification_key
 
       g_suite_result = service.run
 
+      expect(g_suite_result.aasm_state).not_to eql(original_aasm_state)
+      expect(g_suite_result.aasm_state).to eql("creating")
       expect(g_suite_result.verification_key).not_to eql(original_verification_key)
       expect(g_suite_result.verification_key).to eql(nil)
     end

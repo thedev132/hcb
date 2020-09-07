@@ -18,13 +18,15 @@ module GSuiteService
         g_suite.save!
 
         if domain_changing?
+          g_suite.mark_creating!
+
           ::Partners::Google::GSuite::DeleteDomain.new(domain: @domain).run
           ::Partners::Google::GSuite::CreateDomain.new(domain: @domain).run
 
           notify_operations
         end
 
-        g_suite
+        g_suite.reload
       end
     end
 

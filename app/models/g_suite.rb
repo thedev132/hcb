@@ -16,6 +16,10 @@ class GSuite < ApplicationRecord
     state :verifying
     state :verified
 
+    event :mark_creating do
+      transitions to: :creating
+    end
+
     event :mark_configuring do
       transitions from: :creating, to: :configuring
     end
