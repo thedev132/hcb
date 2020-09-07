@@ -62,10 +62,18 @@ class GSuitesController < ApplicationController
 
   # PATCH/PUT /g_suites/1
   def update
-    authorize @g_suite
+    authorize GSuite
 
-    if @g_suite.update(g_suite_params)
-      flash[:success] = 'G Suite was successfully updated.'
+    attrs = {
+      event_id: g_suite_params[:event_id],
+      domain: g_suite_params[:domain],
+      verification_key: g_suite_params[:verification_key],
+      dkim_key: g_suite_params[:dkim_key],
+    }
+    @g_suite = GSuiteService::Update.new(attrs).run
+
+    if @g_suite.persisted?
+      flash[:success] = "G Suite was successfully updated."
       redirect_to @g_suite
     else
       render :edit
