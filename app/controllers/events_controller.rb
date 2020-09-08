@@ -169,7 +169,7 @@ class EventsController < ApplicationController
     GSuiteService::Create.new(attrs).run
 
     redirect_to event_g_suite_overview_path(event_id: @event.slug)
-  rescue ActiveRecord::RecordInvalid => e
+  rescue => e
     redirect_to event_g_suite_overview_path(event_id: @event.slug), flash: { error: e.message }
   end
 
