@@ -25,24 +25,6 @@ class StaticPagesController < ApplicationController
     end
   end
 
-  def deprecated
-    if signed_in?
-      @events = current_user.events.includes(organizer_positions: :user)
-      @invites = current_user.organizer_position_invites.pending
-
-      if @events.size == 1 && @invites.size == 0 && !admin_signed_in?
-        redirect_to current_user.events.first
-      end
-
-      @active = {
-        g_suite_accounts: GSuiteAccount.under_review.size,
-      }
-    end
-    if admin_signed_in?
-      @transaction_volume = Transaction.total_volume
-    end
-  end
-
   def admin_tasks
     @active = pending_tasks
     @pending_actions = @active.values.any? { |e| e.nonzero? }

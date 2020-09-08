@@ -12,7 +12,6 @@ Rails.application.routes.draw do
 
   root to: 'static_pages#index'
   get 'stats', to: 'static_pages#stats'
-  get 'deprecated', to: 'static_pages#deprecated' # deprecated index page
 
   resources :users, only: [:edit, :update] do
     collection do
