@@ -1,10 +1,6 @@
 <%= form_with(model: g_suite, local: true, url: event_g_suites_path) do |form| %>
   <%= form_errors g_suite, 'G Suite' %>
 
-  <% if @g_suite_application %>
-    <%= form.hidden_field :g_suite_application_id, value: @g_suite_application.id %>
-  <% end %>
-
   <div class="field">
     <%= form.label :event_id, 'Event' %>
     <%= form.collection_select(:event_id, Event.all, :id, :name, prompt: 'Select event…', selected: @g_suite.event.id ) %>

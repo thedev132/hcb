@@ -14,8 +14,6 @@ class User < ApplicationRecord
   has_many :ops_checkins, inverse_of: :point_of_contact
   has_many :managed_events, inverse_of: :point_of_contact
 
-  has_many :g_suite_applications, inverse_of: :creator
-  has_many :g_suite_applications, inverse_of: :fulfilled_by
   has_many :g_suite_accounts, inverse_of: :fulfilled_by
   has_many :g_suite_accounts, inverse_of: :creator
 

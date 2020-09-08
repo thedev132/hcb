@@ -33,6 +33,8 @@ class GSuite < ApplicationRecord
     end
   end
 
+  scope :needs_human_review, -> { where("aasm_state in (?)", ["creating", "verifying"]) }
+
   validates :domain, presence: true, uniqueness: { case_sensitive: false }, format: { with: VALID_DOMAIN }
 
 

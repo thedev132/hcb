@@ -202,8 +202,6 @@ class StaticPagesController < ApplicationController
         FeeReimbursement.unprocessed.size
       when :emburse_transfers
         EmburseTransfer.under_review.size
-      when :g_suite_applications
-        GSuiteApplication.under_review.size
       when :g_suite_accounts
         GSuiteAccount.under_review.size
       when :transactions
@@ -236,7 +234,6 @@ class StaticPagesController < ApplicationController
     pending_task :fee_reimbursements
     pending_task :emburse_transfers
     pending_task :emburse_transactions
-    pending_task :g_suite_applications
     pending_task :g_suite_accounts
     pending_task :transactions
     pending_task :disbursements
