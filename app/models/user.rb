@@ -14,8 +14,6 @@ class User < ApplicationRecord
   has_many :ops_checkins, inverse_of: :point_of_contact
   has_many :managed_events, inverse_of: :point_of_contact
 
-  has_many :g_suite_applications, inverse_of: :creator
-  has_many :g_suite_applications, inverse_of: :fulfilled_by
   has_many :g_suite_accounts, inverse_of: :fulfilled_by
   has_many :g_suite_accounts, inverse_of: :creator
 
@@ -63,7 +61,7 @@ class User < ApplicationRecord
   end
 
   def api_record
-    ApiService.get_user(self.api_id, self.api_access_token)
+    ::Partners::HackclubApi::GetUser.new(user_id: api_id, access_token: api_access_token).run
   end
 
   def first_name

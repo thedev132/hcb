@@ -19,37 +19,26 @@ class UsersController < ApplicationController
   def login_code
     @email = params[:email].downcase
 
-    resp = ApiService.request_login_code(@email)
+    resp = ::Partners::HackclubApi::RequestLoginCode.new(email: @email).run
 
     @user_id = resp[:id]
   end
 
   # post to exchange auth token for access token
   def exchange_login_code
-    @user_id = params[:user_id]
-    @email = params[:email]
-    login_code = params[:login_code].to_s.gsub('-', '').gsub(/\s+/, '')
+    user = UserService::ExchangeLoginCodeForUser.new(user_id: params[:user_id], login_code: params[:login_code]).run
 
-    resp = ApiService.exchange_login_code(@user_id, login_code)
+    sign_in(user)
 
-    if resp[:errors].present?
-      flash[:error] = 'Invalid login code'
-      return render :login_code
-    end
-
-    u = User.find_or_initialize_by(api_id: @user_id)
-    u.api_access_token = resp[:auth_token]
-    u.email = u.api_record[:email]
-    u.admin_at = u.api_record[:admin_at]
-
-    u.save
-
-    sign_in u
-    if u.full_name.blank? || u.phone_number.blank?
-      redirect_to edit_user_path(u.slug)
+    if user.full_name.blank? || user.phone_number.blank?
+      redirect_to edit_user_path(user.slug)
     else
       redirect_to root_path
     end
+  rescue Errors::InvalidLoginCode => e
+    flash[:error] = e.message
+
+    return render :login_code
   end
 
   def logout

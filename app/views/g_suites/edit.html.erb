@@ -3,6 +3,23 @@
 
 <%= link_to 'All G Suites', g_suites_path, class: 'breadcrumb' %>
 <%= link_to 'This G Suite', @g_suite, class: 'breadcrumb' %>
+
 <h1>Editing G Suite</h1>
 
-<%= render 'form', g_suite: @g_suite %>
+<%= form_with(model: @g_suite, local: true, url: event_g_suite_path(@g_suite)) do |form| %>
+  <%= form_errors @g_suite, 'G Suite' %>
+
+  <div class="field">
+    <%= form.label :domain %>
+    <%= form.text_field :domain, value: @g_suite.domain %>
+  </div>
+
+  <div class="field">
+    <%= form.label :verification_key %>
+    <%= form.text_field :verification_key, value: @g_suite.verification_key %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

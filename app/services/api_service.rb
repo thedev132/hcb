@@ -25,21 +25,4 @@ class ApiService
       JSON.parse(resp.body, symbolize_names: true)
     end
   end
-
-  def self.request_login_code(email)
-    req(:post, '/v1/users/auth', { email: email })
-  end
-
-  def self.exchange_login_code(user_id, login_code)
-    req(
-      :post,
-      "/v1/users/#{user_id}/exchange_login_code",
-      { login_code: login_code },
-      raise_on_unauthorized: false # 401 just means invalid login code in our case
-    )
-  end
-
-  def self.get_user(user_id, access_token)
-    req(:get, "/v1/users/#{user_id}", nil, access_token)
-  end
 end

@@ -5,15 +5,25 @@ class GSuite < ApplicationRecord
 
   include AASM
 
-  has_one :application, class_name: 'GSuiteApplication', required: true
-  has_many :accounts, class_name: 'GSuiteAccount'
   belongs_to :event
+  belongs_to :created_by, class_name: "User", foreign_key: "created_by_id", optional: true
+  has_one :application, class_name: "GSuiteApplication", required: false # DEPRECATED
+  has_many :accounts, class_name: "GSuiteAccount"
   has_many :comments, as: :commentable
 
   aasm do
-    state :configuring, initial: true
+    state :creating, initial: true
+    state :configuring
     state :verifying
     state :verified
+
+    event :mark_creating do
+      transitions to: :creating
+    end
+
+    event :mark_configuring do
+      transitions to: :configuring
+    end
 
     event :mark_verifying do
       transitions from: :configuring, to: :verifying
@@ -24,10 +34,11 @@ class GSuite < ApplicationRecord
     end
   end
 
-  validates :verification_key, presence: true
+  scope :needs_human_review, -> { where("aasm_state in (?)", ["creating", "verifying"]) }
+
   validates :domain, presence: true, uniqueness: { case_sensitive: false }, format: { with: VALID_DOMAIN }
 
-  after_initialize :set_application
+  before_validation :clean_up_verification_key
 
   def verified_on_google?
     @verified_on_google ||= ::Partners::Google::GSuite::Domain.new(domain: domain).run.verified # TODO: move to a background job checking every 5-15 minutes for the latest verified domains
@@ -35,10 +46,6 @@ class GSuite < ApplicationRecord
     Airbrake.notify(e)
 
     false
-  end
-
-  def verified_deprecated?
-    self.accounts.any? { |account| !account.verified_at.null? }
   end
 
   def verification_url
@@ -51,7 +58,7 @@ class GSuite < ApplicationRecord
 
   private
 
-  def set_application
-    self.application = GSuiteApplication.find_by(domain: domain)
+  def clean_up_verification_key
+    self.verification_key = verification_key.gsub("google-site-verification=", "") if verification_key.present?
   end
 end

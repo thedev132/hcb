@@ -151,13 +151,26 @@ class EventsController < ApplicationController
   end
 
   def g_suite_overview
-    @event = Event.includes([
-      { g_suite: :accounts },
-      :g_suite_application
-    ]).friendly.find(params[:event_id])
+    @event = Event.friendly.find(params[:event_id])
     authorize @event
+
     @g_suite = @event.g_suite
-    @g_suite_application = @event.g_suite_application
+  end
+
+  def g_suite_create
+    @event = Event.friendly.find(params[:event_id])
+    authorize @event
+
+    attrs = {
+      current_user: current_user,
+      event_id: @event.id,
+      domain: params[:domain]
+    }
+    GSuiteService::Create.new(attrs).run
+
+    redirect_to event_g_suite_overview_path(event_id: @event.slug)
+  rescue => e
+    redirect_to event_g_suite_overview_path(event_id: @event.slug), flash: { error: e.message }
   end
 
   def g_suite_verify

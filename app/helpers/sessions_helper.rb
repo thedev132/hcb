@@ -6,6 +6,7 @@ module SessionsHelper
   def sign_in(user, impersonate = false)
     session_token = User.new_session_token
     cookies.permanent[:session_token] = session_token
+
     user.update_attribute(:session_token, User.digest(session_token))
 
     # probably a better place to do this, but we gotta assign any pending

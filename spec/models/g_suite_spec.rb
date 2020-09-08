@@ -31,6 +31,16 @@ RSpec.describe GSuite, type: :model do
     end
   end
 
+  describe "#verification_key" do
+    it "strips out the google verification key for only the value (bit of a misnomer at this point)" do
+      g_suite.verification_key = "google-site-verification=Cb-_ZL"
+
+      g_suite.save!
+
+      expect(g_suite.reload.verification_key).to eql("Cb-_ZL")
+    end
+  end
+
   describe "#verification_url" do
     it "generates it" do
       result = g_suite.verification_url
@@ -60,32 +70,44 @@ RSpec.describe GSuite, type: :model do
 
   describe "#aasm_state" do
     it "defaults to configuring" do
-      expect(g_suite).to be_configuring
+      expect(g_suite).to be_creating
     end
 
-    context "when attempting to mark verifying" do
+    context "when attempting to mark configuring" do
       it "transitions" do
         expect do
-          g_suite.mark_verifying!
-        end.to change(g_suite, :verifying?).to(true)
+          g_suite.mark_configuring!
+        end.to change(g_suite, :configuring?).to(true)
       end
 
-      context "when attempting to mark verified" do
+      context "when attempting to mark verifying" do
         before do
-          g_suite.mark_verifying!
+          g_suite.mark_configuring!
         end
 
         it "transitions" do
           expect do
-            g_suite.mark_verified!
-          end.to change(g_suite, :verified?).to(true)
+            g_suite.mark_verifying!
+          end.to change(g_suite, :verifying?).to(true)
         end
 
-        context "when attempting to go back to configuring" do
-          it "fails transition" do
+        context "when attempting to mark verified" do
+          before do
+            g_suite.mark_verifying!
+          end
+
+          it "transitions" do
             expect do
-              g_suite.mark_verifying!
-            end.to raise_error(AASM::InvalidTransition)
+              g_suite.mark_verified!
+            end.to change(g_suite, :verified?).to(true)
+          end
+
+          context "when attempting to go back to configuring" do
+            it "fails transition" do
+              expect do
+                g_suite.mark_verifying!
+              end.to raise_error(AASM::InvalidTransition)
+            end
           end
         end
       end

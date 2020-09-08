@@ -12,4 +12,3 @@ Process docs overview:
   - [Creating Emburse event budgets](processes/emburse_event_budgets.md)
 - Operating
   - [Processing card requests](processes/processing_card_requests.md)
-  - [Accepting G Suite Applications](processes/accepting_g_suite_applications.md)

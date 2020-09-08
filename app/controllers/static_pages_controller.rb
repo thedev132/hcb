@@ -25,24 +25,6 @@ class StaticPagesController < ApplicationController
     end
   end
 
-  def deprecated
-    if signed_in?
-      @events = current_user.events.includes(organizer_positions: :user)
-      @invites = current_user.organizer_position_invites.pending
-
-      if @events.size == 1 && @invites.size == 0 && !admin_signed_in?
-        redirect_to current_user.events.first
-      end
-
-      @active = {
-        g_suite_accounts: GSuiteAccount.under_review.size,
-      }
-    end
-    if admin_signed_in?
-      @transaction_volume = Transaction.total_volume
-    end
-  end
-
   def admin_tasks
     @active = pending_tasks
     @pending_actions = @active.values.any? { |e| e.nonzero? }
@@ -220,8 +202,6 @@ class StaticPagesController < ApplicationController
         FeeReimbursement.unprocessed.size
       when :emburse_transfers
         EmburseTransfer.under_review.size
-      when :g_suite_applications
-        GSuiteApplication.under_review.size
       when :g_suite_accounts
         GSuiteAccount.under_review.size
       when :transactions
@@ -254,7 +234,6 @@ class StaticPagesController < ApplicationController
     pending_task :fee_reimbursements
     pending_task :emburse_transfers
     pending_task :emburse_transactions
-    pending_task :g_suite_applications
     pending_task :g_suite_accounts
     pending_task :transactions
     pending_task :disbursements

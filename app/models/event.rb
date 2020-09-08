@@ -44,7 +44,6 @@ class Event < ApplicationRecord
   has_many :organizer_position_invites
   has_many :organizer_positions
   has_many :users, through: :organizer_positions
-  has_one :g_suite_application, required: false
   has_one :g_suite, required: false
   has_many :g_suite_accounts, through: :g_suite
 
@@ -175,17 +174,6 @@ class Event < ApplicationRecord
     end
 
     a_fee_balance
-  end
-
-  def g_suite_status_deprecated
-    return :start if g_suite_application.nil? || g_suite.nil?
-    return :under_review if g_suite_application.under_review?
-    return :app_accepted if g_suite_application.accepted? && g_suite.present?
-    return :app_rejected if g_suite_application.rejected?
-    return :verify_setup unless g_suite.verified_deprecated?
-    return :done if g_suite.verified_deprecated?
-
-    :start
   end
 
   def plan_name

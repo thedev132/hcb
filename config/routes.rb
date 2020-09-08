@@ -12,7 +12,6 @@ Rails.application.routes.draw do
 
   root to: 'static_pages#index'
   get 'stats', to: 'static_pages#stats'
-  get 'deprecated', to: 'static_pages#deprecated' # deprecated index page
 
   resources :users, only: [:edit, :update] do
     collection do
@@ -46,13 +45,6 @@ Rails.application.routes.draw do
   resources :organizer_position_deletion_requests, only: [:index, :show, :create] do
     post 'close'
     post 'open'
-
-    resources :comments
-  end
-
-  resources :g_suite_applications, except: [:new, :create, :edit, :update] do
-    post 'accept'
-    post 'reject'
 
     resources :comments
   end
@@ -218,6 +210,7 @@ Rails.application.routes.draw do
   resources :events, path: '/' do
     get 'team', to: 'events#team', as: :team
     get 'g_suite', to: 'events#g_suite_overview', as: :g_suite_overview
+    post 'g_suite_create', to: 'events#g_suite_create', as: :g_suite_create
     put 'g_suite_verify', to: 'events#g_suite_verify', as: :g_suite_verify
     get 'emburse_cards', to: 'events#emburse_card_overview', as: :emburse_cards_overview
     get 'cards', to: 'events#card_overview', as: :cards_overview
@@ -234,7 +227,6 @@ Rails.application.routes.draw do
               only: [:new, :create],
               path: 'invites'
     resources :g_suites, only: [:new, :create, :edit, :update]
-    resources :g_suite_applications, only: [:new, :create, :edit, :update]
     resources :emburse_transfers, only: [:new]
     resources :documents, only: [:index]
     get 'fiscal_sponsorship_letter', to: 'documents#fiscal_sponsorship_letter'
