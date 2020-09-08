@@ -33,7 +33,6 @@ RSpec.describe GSuiteService::Create, type: :model do
 
   context "when g suite does not exist" do
     before do
-      event.g_suite.application.destroy!
       event.g_suite.destroy!
     end
 
@@ -43,16 +42,19 @@ RSpec.describe GSuiteService::Create, type: :model do
       end.to change(GSuite, :count).by(1)
     end
 
-    it "sends 2 mailers" do
+    it "sets the created_by user" do
+      g_suite = service.run
+
+      expect(g_suite.created_by).to eql(current_user)
+    end
+
+    it "sends 1 mailer" do
       service.run
 
-      mails = ActionMailer::Base.deliveries.last(2)
+      mail = ActionMailer::Base.deliveries.last
 
-      expect(mails[0].to).to eql([current_user.email])
-      expect(mails[0].subject).to include(domain)
-
-      expect(mails[1].to).to eql(["bank-alert@hackclub.com"])
-      expect(mails[1].subject).to include(domain)
+      expect(mail.to).to eql(["bank-alert@hackclub.com"])
+      expect(mail.subject).to include(domain)
     end
   end
 end

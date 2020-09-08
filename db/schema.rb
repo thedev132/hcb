@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_05_231243) do
+ActiveRecord::Schema.define(version: 2020_09_08_160217) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -459,6 +459,8 @@ ActiveRecord::Schema.define(version: 2020_09_05_231243) do
     t.datetime "updated_at", null: false
     t.text "dkim_key"
     t.string "aasm_state", default: "creating"
+    t.bigint "created_by_id"
+    t.index ["created_by_id"], name: "index_g_suites_on_created_by_id"
     t.index ["domain"], name: "index_g_suites_on_domain", unique: true
     t.index ["event_id"], name: "index_g_suites_on_event_id"
   end
@@ -835,6 +837,7 @@ ActiveRecord::Schema.define(version: 2020_09_05_231243) do
   add_foreign_key "g_suite_applications", "users", column: "creator_id"
   add_foreign_key "g_suite_applications", "users", column: "fulfilled_by_id"
   add_foreign_key "g_suites", "events"
+  add_foreign_key "g_suites", "users", column: "created_by_id"
   add_foreign_key "invoices", "fee_reimbursements"
   add_foreign_key "invoices", "invoice_payouts", column: "payout_id"
   add_foreign_key "invoices", "sponsors"

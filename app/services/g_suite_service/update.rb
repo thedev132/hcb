@@ -18,10 +18,6 @@ module GSuiteService
         g_suite.dkim_key = @dkim_key
         g_suite.save!
 
-        if verification_key_changing?
-          GSuiteService::MarkConfiguring.new(g_suite_id: g_suite.id).run
-        end
-
         if domain_changing?
           g_suite.mark_creating!
 
@@ -29,9 +25,13 @@ module GSuiteService
           ::Partners::Google::GSuite::CreateDomain.new(domain: @domain).run
 
           notify_operations
+        elsif verification_key_changing?
+          g_suite.mark_configuring!
+
+          notify_of_configuring
         end
 
-        g_suite.reload
+        g_suite
       end
     end
 
@@ -39,6 +39,10 @@ module GSuiteService
 
     def notify_operations
       OperationsMailer.with(g_suite_id: g_suite.id).g_suite_entering_created_state.deliver_now
+    end
+
+    def notify_of_configuring
+      GSuiteMailer.with(recipient: g_suite.created_by.email, g_suite_id: g_suite.id).notify_of_configuring.deliver_now if g_suite.created_by.present?
     end
 
     def g_suite

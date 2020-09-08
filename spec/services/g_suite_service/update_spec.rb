@@ -3,8 +3,9 @@
 require "rails_helper"
 
 RSpec.describe GSuiteService::Update, type: :model do
-  fixtures  "g_suites"
+  fixtures   "users", "g_suites"
   
+  let(:user) { users(:user1) }
   let(:g_suite) { g_suites(:g_suite1) }
   let(:g_suite_id) { g_suite.id }
   let(:domain) { g_suite.domain }
@@ -28,9 +29,12 @@ RSpec.describe GSuiteService::Update, type: :model do
 
   context "when verification key is changed" do
     it "puts it into configuring state" do
-      expect do
-        service.run
-      end.to change(g_suite, :aasm_state).to("configuring")
+      original_aasm_state = g_suite.aasm_state
+
+      g_suite_result = service.run
+
+      expect(g_suite_result.aasm_state).to_not eql(original_aasm_state)
+      expect(g_suite_result.aasm_state).to eql("configuring")
     end
 
     it "updates g suite" do
@@ -39,6 +43,30 @@ RSpec.describe GSuiteService::Update, type: :model do
       g_suite_result = service.run
 
       expect(g_suite_result.verification_key).not_to eql(original_verification_key)
+    end
+
+    it "does not send a mailer" do
+      expect do
+        service.run
+      end.to_not change(ActionMailer::Base.deliveries, :count)
+    end
+
+    context "when g_suite has created_by" do
+      before do
+        g_suite.created_by = user
+        g_suite.save!
+      end
+
+      it "does send 1 mailer" do
+        expect do
+          service.run
+        end.to change(ActionMailer::Base.deliveries, :count).by(1)
+
+        mail = ActionMailer::Base.deliveries.last
+
+        expect(mail.to).to eql([user.email])
+        expect(mail.subject).to include(domain)
+      end
     end
   end
 

@@ -5,9 +5,10 @@ class GSuite < ApplicationRecord
 
   include AASM
 
-  has_one :application, class_name: 'GSuiteApplication', required: false
-  has_many :accounts, class_name: 'GSuiteAccount'
   belongs_to :event
+  belongs_to :created_by, class_name: "User", foreign_key: "created_by_id", optional: true
+  has_one :application, class_name: "GSuiteApplication", required: false # DEPRECATED
+  has_many :accounts, class_name: "GSuiteAccount"
   has_many :comments, as: :commentable
 
   aasm do
@@ -37,9 +38,6 @@ class GSuite < ApplicationRecord
 
   validates :domain, presence: true, uniqueness: { case_sensitive: false }, format: { with: VALID_DOMAIN }
 
-
-  after_initialize :set_application
-
   before_validation :clean_up_verification_key
 
   def verified_on_google?
@@ -59,10 +57,6 @@ class GSuite < ApplicationRecord
   end
 
   private
-
-  def set_application
-    self.application = GSuiteApplication.find_by(domain: domain) # DEPRECATED
-  end
 
   def clean_up_verification_key
     self.verification_key = verification_key.gsub("google-site-verification=", "") if verification_key.present?
