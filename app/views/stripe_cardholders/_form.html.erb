@@ -28,7 +28,7 @@
     <%= form.text_field :stripe_billing_address_postal_code, value: suggested(:postal_code) %>
   </div>
   <div class="field grid__half">
-    <%= form.label :stripe_billing_address_country, 'Country' %>
+    <%= form.label :stripe_billing_address_country, 'Country (2-character code)' %>
     <%= form.text_field :stripe_billing_address_country, value: suggested(:country) %>
   </div>
 
