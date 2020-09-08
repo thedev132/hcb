@@ -11,11 +11,16 @@ module GSuiteService
     def run
       ActiveRecord::Base.transaction do
         domain_changing?
+        verification_key_changing?
 
         g_suite.domain = @domain
         g_suite.verification_key = smart_verification_key
         g_suite.dkim_key = @dkim_key
         g_suite.save!
+
+        if verification_key_changing?
+          GSuiteService::MarkConfiguring.new(g_suite_id: g_suite.id).run
+        end
 
         if domain_changing?
           g_suite.mark_creating!
@@ -42,6 +47,10 @@ module GSuiteService
 
     def domain_changing?
       @domain_changing ||= g_suite.domain != @domain
+    end
+
+    def verification_key_changing?
+      @verification_key_changing ||= g_suite.verification_key != @verification_key
     end
 
     def smart_verification_key

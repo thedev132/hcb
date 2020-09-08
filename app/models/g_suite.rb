@@ -21,7 +21,7 @@ class GSuite < ApplicationRecord
     end
 
     event :mark_configuring do
-      transitions from: :creating, to: :configuring
+      transitions to: :configuring
     end
 
     event :mark_verifying do

@@ -26,12 +26,20 @@ RSpec.describe GSuiteService::Update, type: :model do
     allow_any_instance_of(::Partners::Google::GSuite::CreateDomain).to receive(:run).and_return(true)
   end
 
-  it "updates g suite" do
-    original_verification_key = g_suite.verification_key
+  context "when verification key is changed" do
+    it "puts it into configuring state" do
+      expect do
+        service.run
+      end.to change(g_suite, :aasm_state).to("configuring")
+    end
 
-    g_suite_result = service.run
+    it "updates g suite" do
+      original_verification_key = g_suite.verification_key
 
-    expect(g_suite_result.verification_key).not_to eql(original_verification_key)
+      g_suite_result = service.run
+
+      expect(g_suite_result.verification_key).not_to eql(original_verification_key)
+    end
   end
 
   context "when domain is changed" do

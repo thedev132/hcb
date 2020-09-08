@@ -49,13 +49,6 @@ Rails.application.routes.draw do
     resources :comments
   end
 
-  resources :g_suite_applications, except: [:new, :create, :edit, :update] do
-    post 'accept'
-    post 'reject'
-
-    resources :comments
-  end
-
   resources :g_suite_accounts, only: [:index, :create, :update, :edit, :destroy], path: 'g_suite_accounts' do
     put 'reset_password'
     put 'toggle_suspension'
@@ -234,7 +227,6 @@ Rails.application.routes.draw do
               only: [:new, :create],
               path: 'invites'
     resources :g_suites, only: [:new, :create, :edit, :update]
-    resources :g_suite_applications, only: [:new, :create, :edit, :update]
     resources :emburse_transfers, only: [:new]
     resources :documents, only: [:index]
     get 'fiscal_sponsorship_letter', to: 'documents#fiscal_sponsorship_letter'

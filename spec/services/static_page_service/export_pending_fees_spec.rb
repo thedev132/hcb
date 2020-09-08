@@ -3,7 +3,7 @@
 require "rails_helper"
 
 RSpec.describe StaticPageService::ExportPendingFees, type: :model do
-  fixtures  "users", "events",  "g_suites", "g_suite_applications", "organizer_positions"
+  fixtures  "users", "events",  "g_suites", "organizer_positions"
 
   let(:service) { StaticPageService::ExportPendingFees.new }
 
