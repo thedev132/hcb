@@ -20,7 +20,7 @@
         <td><%= g_suite_application.creator&.email %> (#<%= g_suite_application.creator&.id %>)</td>
         <td><%= link_to g_suite_application.event&.name, g_suite_application.event if g_suite_application.event %></td>
         <td><%= g_suite_application.domain %></td>
-        <td class="flex items-center">
+        <td class="flex items-center" aria-label="<%= g_suite_application.created_at %>" class="tooltipped tooltipped--e">
           <%= status_badge g_suite_application.status_badge_type %>
           <%= g_suite_application.status %>
         </td>

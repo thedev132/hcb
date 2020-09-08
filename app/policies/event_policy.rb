@@ -47,6 +47,10 @@ class EventPolicy < ApplicationPolicy
     is_public || user_or_admin
   end
 
+  def g_suite_verify?
+    user_or_admin
+  end
+
   def transfers?
     is_public || user_or_admin
   end

@@ -1,16 +1,31 @@
 class GSuite < ApplicationRecord
+  VALID_DOMAIN = /[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?\z/ix
+
   has_paper_trail
 
-  include Shared::Domain
+  include AASM
 
   has_one :application, class_name: 'GSuiteApplication', required: true
   has_many :accounts, class_name: 'GSuiteAccount'
   belongs_to :event
   has_many :comments, as: :commentable
 
-  validates_presence_of :domain, :verification_key
-  validates_uniqueness_of :domain
-  validate :domain_without_protocol
+  aasm do
+    state :configuring, initial: true
+    state :verifying
+    state :verified
+
+    event :mark_verifying do
+      transitions from: :configuring, to: :verifying
+    end
+
+    event :mark_verified do
+      transitions from: :verifying, to: :verified
+    end
+  end
+
+  validates :verification_key, presence: true
+  validates :domain, presence: true, uniqueness: { case_sensitive: false }, format: { with: VALID_DOMAIN }
 
   after_initialize :set_application
 
@@ -22,12 +37,12 @@ class GSuite < ApplicationRecord
     false
   end
 
-  def verified?
+  def verified_deprecated?
     self.accounts.any? { |account| !account.verified_at.null? }
   end
 
   def verification_url
-    "https://www.google.com/webmasters/verification/verification?siteUrl=http://#{domain}"
+    "https://www.google.com/webmasters/verification/verification?siteUrl=http://#{domain}&priorities=vdns,vmeta,vfile,vanalytics"
   end
 
   def ou_name

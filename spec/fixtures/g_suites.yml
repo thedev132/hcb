@@ -3,3 +3,10 @@ g_suite1:
   domain: event1.example.com
   verification_key: "verification_key1"
   created_at: <%= Time.now %>
+
+g_suite2:
+  event: event2
+  domain: event2.example.com
+  verification_key: "verification_key2"
+  aasm_state: "verifying"
+  created_at: <%= Time.now %>

@@ -451,13 +451,15 @@ ActiveRecord::Schema.define(version: 2020_09_04_235817) do
   end
 
   create_table "g_suites", force: :cascade do |t|
-    t.text "domain"
+    t.citext "domain"
     t.bigint "event_id"
     t.text "verification_key"
     t.datetime "deleted_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "dkim_key"
+    t.string "aasm_state", default: "configuring"
+    t.index ["domain"], name: "index_g_suites_on_domain", unique: true
     t.index ["event_id"], name: "index_g_suites_on_event_id"
   end
 
