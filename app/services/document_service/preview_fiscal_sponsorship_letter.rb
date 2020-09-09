@@ -5,13 +5,7 @@ module DocumentService
     end
 
     def run
-      output = Tempfile.new
-      IO.popen(cmd, err: File::NULL) do |stdout|
-        IO.copy_stream(stdout, output)
-      end
-      output.rewind
-
-      output.read
+      IO.popen(cmd, err: File::NULL).read
     end
 
     private
