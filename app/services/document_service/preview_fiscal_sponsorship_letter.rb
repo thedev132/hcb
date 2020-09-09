@@ -26,7 +26,7 @@ module DocumentService
     end
 
     def cmd
-      ['mutool', 'draw', '-F', 'png', '-o', '-', input.path, '1']
+      ['pdftoppm', '-singlefile', '-r', '72', '-png', input.path]
     end
   end
 end
