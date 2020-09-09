@@ -29,7 +29,7 @@
 .env*
 !.env.example
 
-latest.dump
+latest.dump*
 
 .DS_Store
 

@@ -79,6 +79,10 @@ class DocumentsController < ApplicationController
       format.pdf do
         render pdf: 'fiscal_sponsorship_letter', page_height: '11in', page_width: '8.5in'
       end
+
+      format.png do
+        send_data ::DocumentService::PreviewFiscalSponsorshipLetter.new(event: @event).run, filename: 'fiscal_sponsorship_letter.png'
+      end
     end
   end
 
