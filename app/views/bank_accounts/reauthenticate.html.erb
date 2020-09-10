@@ -15,7 +15,9 @@ var linkHandler = Plaid.create({
   },
   onExit: function(err, metadata) {
     if (err != null) {
-      alert('Ran into an error while authenticating! Please try again.')
+      console.log('error metadata:', metadata)
+
+      alert('Ran into an error while authenticating! Please try again. Check console for metadata like request_id or link_session_id and report to Plaid.')
     }
   },
 });
