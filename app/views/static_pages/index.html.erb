@@ -81,7 +81,7 @@
       <%= render partial: 'static_pages/card', locals: { task_path: checks_path, task_name: :checks, human_name: 'Checks', count: @service.checks_count } %>
       <%= render partial: 'static_pages/card', locals: { task_path: ach_transfers_path, task_name: :ach_transfers, human_name: 'ACH transfers', count: @service.ach_transfers_count } %>
       <%= render partial: 'static_pages/card', locals: { task_path: fee_reimbursements_path, task_name: :fee_reimbursements, human_name: 'Fee refunds', count: @service.fee_reimbursements_count } %>
-      <%= render partial: 'static_pages/card', locals: { task_path: g_suites_path, task_name: :g_suites, human_name: 'G Suites', count: @service.g_suites_needs_human_review_count } %>
+      <%= render partial: 'static_pages/card', locals: { task_path: g_suites_path, task_name: :g_suites, human_name: 'G Suites', count: @service.g_suites_needs_ops_review_count } %>
       <%= render partial: 'static_pages/card', locals: { task_path: organizer_position_deletion_requests_path, task_name: :organizer_position_deletion_requests, human_name: 'Deletion requests', count: @service.organizer_position_deletion_requests_count } %>
       <%= render partial: 'static_pages/card', locals: { task_path: transactions_path, task_name: :transactions, human_name: 'Transactions', count: @service.transactions_count } %>
       <%#= react_component 'admin_task/Card', human_name: 'Transactions', task_name: :transactions, task_path: transactions_path %>
