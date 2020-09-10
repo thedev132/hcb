@@ -42,8 +42,8 @@ module StaticPageService
       FeeReimbursement.unprocessed.count
     end
 
-    def g_suites_needs_human_review_count
-      GSuite.needs_human_review.count
+    def g_suites_needs_ops_review_count
+      GSuite.needs_ops_review.count
     end
 
     def organizer_position_deletion_requests_count

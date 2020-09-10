@@ -6,9 +6,9 @@ class GSuite < ApplicationRecord
   include AASM
 
   belongs_to :event
-  belongs_to :created_by, class_name: "User", foreign_key: "created_by_id", optional: true
-  has_one :application, class_name: "GSuiteApplication", required: false # DEPRECATED
-  has_many :accounts, class_name: "GSuiteAccount"
+  belongs_to :created_by, class_name: 'User', foreign_key: 'created_by_id', optional: true
+  has_one :application, class_name: 'GSuiteApplication', required: false # DEPRECATED
+  has_many :accounts, class_name: 'GSuiteAccount'
   has_many :comments, as: :commentable
 
   aasm do
@@ -34,11 +34,15 @@ class GSuite < ApplicationRecord
     end
   end
 
-  scope :needs_human_review, -> { where("aasm_state in (?)", ["creating", "verifying"]) }
+  scope :needs_ops_review, -> { where('deleted_at is not null and aasm_state in (?)', ['creating', 'verifying']) }
 
   validates :domain, presence: true, uniqueness: { case_sensitive: false }, format: { with: VALID_DOMAIN }
 
   before_validation :clean_up_verification_key
+
+  def needs_ops_review?
+    @needs_ops_review ||= deleted_at.blank? && (creating? || verifying?)
+  end
 
   def verified_on_google?
     @verified_on_google ||= ::Partners::Google::GSuite::Domain.new(domain: domain).run.verified # TODO: move to a background job checking every 5-15 minutes for the latest verified domains
@@ -59,6 +63,6 @@ class GSuite < ApplicationRecord
   private
 
   def clean_up_verification_key
-    self.verification_key = verification_key.gsub("google-site-verification=", "") if verification_key.present?
+    self.verification_key = verification_key.gsub('google-site-verification=', '') if verification_key.present?
   end
 end
