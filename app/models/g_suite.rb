@@ -7,7 +7,6 @@ class GSuite < ApplicationRecord
 
   belongs_to :event
   belongs_to :created_by, class_name: 'User', foreign_key: 'created_by_id', optional: true
-  has_one :application, class_name: 'GSuiteApplication', required: false # DEPRECATED
   has_many :accounts, class_name: 'GSuiteAccount'
   has_many :comments, as: :commentable
 
