@@ -623,6 +623,7 @@ ActiveRecord::Schema.define(version: 2020_09_22_192222) do
     t.date "date_posted"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.boolean "pending", default: false
   end
 
   create_table "receipts", force: :cascade do |t|

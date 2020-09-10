@@ -7,6 +7,8 @@ module PlaidTransactionService
 
       def run
         plaid_transactions.each do |plaid_transaction|
+          next unless plaid_transaction['pending'] == false
+
           ::PlaidTransaction.find_or_initialize_by(plaid_transaction_id: plaid_transaction['transaction_id']).tap do |pt|
             pt.plaid_account_id = plaid_transaction['account_id']
             pt.plaid_item_id = plaid_transaction['item_id']
@@ -15,6 +17,7 @@ module PlaidTransactionService
 
             pt.amount = plaid_transaction['amount']
             pt.date_posted = plaid_transaction['date']
+            pt.pending = plaid_transaction['pending']
           end.save!
         end
       end
