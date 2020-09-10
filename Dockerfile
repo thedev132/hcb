@@ -6,8 +6,7 @@ WORKDIR /usr/src/app
 RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
 RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
 RUN apt-get -y update -qq
-RUN apt-get -y install yarn nodejs \
-  postgresql-client vim
+RUN apt-get -y install yarn nodejs postgresql-client vim poppler-utils
   # install postgresql-client for easy importing of production database & vim
   # for easy editing of credentials
 ENV EDITOR=vim

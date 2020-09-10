@@ -17,6 +17,8 @@
   <% @documents.each do |d| %>
     <%= link_to admin_signed_in? ? d : document_download_path(d) do %>
       <li class="card">
+        <%= image_tag(d.preview_url, width: 330) if d.preview_url %>
+
         <strong class="brand-sans h3 block line-height-2"><%= d.name %></strong>
         <%= user_mention d.user %>
       </li>
@@ -25,6 +27,8 @@
   <% Document.common.each do |d| %>
     <%= link_to admin_signed_in? ? d : document_download_path(d) do %>
       <li class="card">
+        <%= image_tag(d.preview_url, width: 330) if d.preview_url %>
+
         <strong class="brand-sans h3 block line-height-2"><%= d.name %></strong>
         <%= user_mention d.user %>
       </li>
@@ -32,8 +36,10 @@
   <% end %>
 
   <% if @event.has_fiscal_sponsorship_document %>
-    <%= link_to event_fiscal_sponsorship_letter_path(event_id: @event.slug, format: "pdf") do %>
+    <%= link_to event_fiscal_sponsorship_letter_path(event_id: @event.slug, format: 'pdf') do %>
       <li class="card">
+        <%= image_tag event_fiscal_sponsorship_letter_url(event_id: @event.slug, format: 'png'), width: 330 %>
+
         <strong class="brand-sans h3 block line-height-2">Fiscal Sponsorship Confirmation</strong>
         <%= user_mention @event.point_of_contact %>
       </li>

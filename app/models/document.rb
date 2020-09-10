@@ -14,6 +14,16 @@ class Document < ApplicationRecord
 
   scope :common, -> { where(event_id: nil) }
 
+  def preview_url(resize: '500x500')
+    return nil unless file
+
+    case file.content_type
+    when 'application/pdf'
+      file.preview(resize: resize)
+    else
+    end
+  end
+
   private
 
   # ActiveStorage doesn't yet support attachment validation (how dumb... see
