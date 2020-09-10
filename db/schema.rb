@@ -448,6 +448,15 @@ ActiveRecord::Schema.define(version: 2020_09_22_192222) do
     t.index ["event_id"], name: "index_g_suites_on_event_id"
   end
 
+  create_table "hashed_transactions", force: :cascade do |t|
+    t.text "primary_hash"
+    t.text "secondary_hash"
+    t.bigint "plaid_transaction_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["plaid_transaction_id"], name: "index_hashed_transactions_on_plaid_transaction_id"
+  end
+
   create_table "invoice_payouts", force: :cascade do |t|
     t.text "stripe_payout_id"
     t.bigint "amount"
@@ -823,6 +832,7 @@ ActiveRecord::Schema.define(version: 2020_09_22_192222) do
   add_foreign_key "g_suite_accounts", "users", column: "creator_id"
   add_foreign_key "g_suites", "events"
   add_foreign_key "g_suites", "users", column: "created_by_id"
+  add_foreign_key "hashed_transactions", "plaid_transactions"
   add_foreign_key "invoices", "fee_reimbursements"
   add_foreign_key "invoices", "invoice_payouts", column: "payout_id"
   add_foreign_key "invoices", "sponsors"

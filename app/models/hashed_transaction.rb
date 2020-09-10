@@ -1,0 +1,2 @@
+class HashedTransaction < ApplicationRecord
+end
