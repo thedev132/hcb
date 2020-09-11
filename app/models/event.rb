@@ -188,6 +188,10 @@ class Event < ApplicationRecord
     emburse_cards.active.any?
   end
 
+  def used_emburse?
+    emburse_cards.any?
+  end
+
   def hidden?
     hidden_at.present?
   end
