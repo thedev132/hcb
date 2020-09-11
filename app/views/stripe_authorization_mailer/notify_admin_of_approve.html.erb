@@ -1,0 +1,6 @@
+A transaction was approved on the card <%= link_to @card %>
+
+Here is the Stripe authorization:
+<code>
+  <%= auth_obj.to_json %>
+</code>
