@@ -4,7 +4,7 @@ class StripeAuthorizationMailer < ApplicationMailer
     @card = StripeCard.find_by(stripe_id: @auth_obj[:card][:id])
     @user = @card.user
 
-    mail to: admin_email,
+    mail to: 'bank+papertrail@hackclub.com',
          subject: "✅ Purchase approved"
   end
 
@@ -13,7 +13,7 @@ class StripeAuthorizationMailer < ApplicationMailer
     @card = StripeCard.find_by(stripe_id: @auth_obj[:card][:id])
     @user = @card.user
 
-    mail to: admin_email,
+    mail to: 'bank+papertrail@hackclub.com',
          subject: "❌ Purchase declined"
   end
 
