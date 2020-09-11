@@ -1,4 +1,4 @@
-A transaction was declined on the card <%= url_for @card %>
+A transaction was declined on the card <%= @card&.last4 %>
 
 Here is the Stripe authorization:
 <code>
