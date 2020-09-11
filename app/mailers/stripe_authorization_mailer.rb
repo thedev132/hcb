@@ -5,7 +5,7 @@ class StripeAuthorizationMailer < ApplicationMailer
     @user = @card.user
 
     mail to: admin_email,
-         subject: "✅ Purchase approved for $#{@stripe_authorization.amount}"
+         subject: "✅ Purchase approved"
   end
 
   def notify_admin_of_decline
@@ -14,7 +14,7 @@ class StripeAuthorizationMailer < ApplicationMailer
     @user = @card.user
 
     mail to: admin_email,
-         subject: "❌ Purchase declined for $#{@stripe_authorization.amount}"
+         subject: "❌ Purchase declined"
   end
 
   def notify_user_of_decline
@@ -23,6 +23,6 @@ class StripeAuthorizationMailer < ApplicationMailer
     @user = @card.user
 
     mail to: admin_email,
-         subject: "❌ Purchase declined for $#{@stripe_authorization.amount}"
+         subject: "❌ Purchase declined"
   end
 end
