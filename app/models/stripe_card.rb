@@ -2,6 +2,9 @@ class StripeCard < ApplicationRecord
   before_create :issue_stripe_card # issue the card if we're creating it for the first time
   after_create :notify_user
 
+  scope :deactivated, -> { where.not(stripe_status: 'active') }
+  scope :active, -> { where(stripe_status: 'active') }
+
   belongs_to :event
   belongs_to :stripe_cardholder
   alias_attribute :cardholder, :stripe_cardholder
@@ -34,10 +37,6 @@ class StripeCard < ApplicationRecord
                         :last4,
                         :stripe_status,
                         if: -> { self.stripe_id.present? }
-
-  def active?
-    stripe_status == 'active'
-  end
 
   def full_card_number
     secret_details[:number]

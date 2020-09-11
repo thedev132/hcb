@@ -1,8 +1,8 @@
 class EmburseCard < ApplicationRecord
   extend FriendlyId
 
-  scope :deactivated, -> { where.not(deactivated_at: nil) }
-  scope :active, -> { where(deactivated_at: nil) }
+  scope :deactivated, -> { where.not(emburse_state: 'active') }
+  scope :active, -> { where(deactivated_at: nil, emburse_state: 'active') }
 
   paginates_per 100
 

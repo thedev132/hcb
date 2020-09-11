@@ -147,6 +147,8 @@ class EventsController < ApplicationController
     @stripe_cards = @event.stripe_cards.includes(user: [:profile_picture_attachment])
     @emburse_cards= @event.emburse_cards.includes(user: [:profile_picture_attachment])
     @cards = @stripe_cards + @emburse_cards
+    @active = @stripe_cards.active + @emburse_cards.active
+    @deactivated = @stripe_cards.deactivated + @emburse_cards.deactivated
     authorize @event
   end
 

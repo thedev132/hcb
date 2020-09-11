@@ -15,13 +15,13 @@
 </h1>
 <% if @cards.any? %>
   <section class="mixed-grid grid--spacious mt2">
-    <%= render @cards.select(&:active?) %>
+    <%= render @active %>
   </section>
-  <% if @emburse_cards.deactivated.size > 0 %>
+  <% if @deactivated.size > 0 %>
     <details class="w-100 left-align">
       <summary><h3 class="inline-block pb0 border-none">Deactivated cards</h3></summary>
       <section class="mixed-grid grid--spacious mt2">
-      <%= render @emburse_cards.deactivated %>
+      <%= render @deactivated %>
       </section>
     </details>
   <% end %>

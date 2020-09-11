@@ -184,8 +184,8 @@ class Event < ApplicationRecord
     end
   end
 
-  def migrated_to_stripe?
-    stripe_cards.any?
+  def has_active_emburse?
+    emburse_cards.active.any?
   end
 
   def hidden?
