@@ -35,33 +35,11 @@
 </div>
 <%= render 'nav', hide_name: true %>
 
-<p class="muted flex flex-wrap items-center justify-center center mt2">
-  Your point of contact is <%= user_mention @event.point_of_contact, class: 'ml1 mr0' %><span class="xs-hide mr1">.</span>
-  Text / call at
-  <span class="flex items-center medium ml1">
-    <%= inline_icon 'message', size: 24, class: 'muted', style: 'margin-right: 0.125rem;' %>
-    <% if organizer_signed_in? %>
-      <%= @event.point_of_contact.pretty_phone_number %>
-    <% else %>
-      <%= link_to root_path, class: 'flex items-center medium' do %>
-        (sign in to view)
-      <% end %>
-    <% end %>
-  </span>
-  <span class="ml1 mr1">or email at</span>
-  <% if organizer_signed_in? %>
-    <%= mail_to @event.point_of_contact.email, class: 'flex items-center medium' do %>
-      <%= inline_icon 'email', size: 24, class: 'muted', style: 'margin-right: 0.125rem;' %>
-      <%= @event.point_of_contact.email %>
-    <% end %>
-  <% else %>
-    <%= link_to root_path, class: 'flex items-center medium' do %>
-      <%= inline_icon 'email', size: 24, class: 'muted', style: 'margin-right: 0.125rem;' %>
-      (sign in to view)
-    <% end %>
-  <% end %>
-  <span class="xs-hide">.</span>
-</p>
+<% if organizer_signed_in? %>
+  <p class="muted center mt2">
+    <strong>We’re standing by to help.</strong> <%= help_message %>
+  </p>
+<% end %>
 
 <h2 class="mb2">
   Financials
@@ -185,10 +163,7 @@
   <% end %>
   <% if organizer_signed_in? %>
     <span class="h6 inline-block mt2">
-      Questions? Your point of contact (<%= @event.point_of_contact.name %>) is
-      happy to help. You can reach them at
-      <%= link_to @event.point_of_contact.pretty_phone_number, "tel:#{@event.point_of_contact.pretty_phone_number}" %>
-      or <%= mail_to @event.point_of_contact.email %>.
+      Questions? <%= help_message %>
     </span>
   <% end %>
 </div>
