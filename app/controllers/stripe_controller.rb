@@ -35,16 +35,13 @@ class StripeController < ApplicationController
 
     if should_approve
       puts "#{card.event.name} has enough money (#{card.event.balance_available}) for the charge of #{tx_amount}"
-      StripeService::Issuing::Authorization.approve(auth[:id])
-
-      StripeAuthorizationMailer.with(auth_obj: auth.to_hash).notify_admin_of_approve.deliver_later
+      auth_result = StripeService::Issuing::Authorization.approve(auth[:id])
     else
       puts "#{card.event.name} does not have enough (#{card.event.balance_available}) for the charge of #{tx_amount}"
-      StripeService::Issuing::Authorization.decline(auth[:id])
-
-      # StripeAuthorization.with(auth_obj: auth).notify_user_of_decline.deliver_now
-      StripeAuthorizationMailer.with(auth_obj: auth.to_hash).notify_admin_of_decline.deliver_later
+      auth_result = StripeService::Issuing::Authorization.decline(auth[:id])
     end
+
+    StripeAuthorization.create(stripe_id: auth[:id])
   end
 
   def handle_issuing_transaction_created(event)
