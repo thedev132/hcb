@@ -1,5 +1,5 @@
 class StripeCard < ApplicationRecord
-  before_create :issue_stripe_card # issue the card if we're creating it for the first time
+  before_create :issue_stripe_card, unless: :issued? # issue the card if we're creating it for the first time
   after_create :notify_user
 
   scope :deactivated, -> { where.not(stripe_status: 'active') }
@@ -86,7 +86,20 @@ class StripeCard < ApplicationRecord
     @stripe_card_obj
   end
 
+  def self.new_from_stripe_id(params)
+    raise ArgumentError.new("Only numbers are allowed") unless params[:stripe_id].is_a?(String)
+
+    card = self.new(params)
+    card.sync_from_stripe!
+
+    card
+  end
+
   private
+
+  def issued?
+    !stripe_id.blank?
+  end
 
   def secret_details
     # (msw) We do not want to store card info in our database, so this private
