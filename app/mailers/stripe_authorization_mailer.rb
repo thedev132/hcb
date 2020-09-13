@@ -20,4 +20,15 @@ class StripeAuthorizationMailer < ApplicationMailer
     mail to: @user.email,
          subject: "#{@auth.status_emoji} Purchase #{@auth.status_text}"
   end
+
+  def notify_user_of_approve
+    auth_id = params[:auth_id]
+    @auth = StripeAuthorization.find(auth_id)
+    @card = @auth.card
+    @user = @card.user
+    @event = @card.event
+
+    mail to: @user.email,
+         subject: "Upload a receipt for your #{@auth.stripe_obj.authorization_method.humanize.downcase} card transaction"
+  end
 end

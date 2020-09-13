@@ -67,8 +67,11 @@ class StripeAuthorization < ApplicationRecord
     # Notify the admins
     StripeAuthorizationMailer.with(auth_id: id).notify_admin_of_authorization.deliver_now
 
-    # Notify users on anything but approved
-    return if approved
-    StripeAuthorizationMailer.with(auth_id: id).notify_user_of_decline.deliver_now
+    # Notify the card user
+    if approved?
+      StripeAuthorizationMailer.with(auth_id: id).notify_user_of_approve.deliver_now
+    else
+      StripeAuthorizationMailer.with(auth_id: id).notify_user_of_decline.deliver_now
+    end
   end
 end
