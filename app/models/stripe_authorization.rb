@@ -3,13 +3,14 @@ class StripeAuthorization < ApplicationRecord
   after_create :notify_of_creation
 
   # TODO: remove reversed TXs from this list
-  scope :awaiting_receipt, -> { includes(:receipts).where(approved: true, receipts: { id: nil }) }
+  scope :awaiting_receipt, -> { joins(:receipts_attachments).where(approved: true, active_storage_attachments: { id: nil }) }
 
   belongs_to :stripe_card, class_name: 'StripeCard'
   alias_attribute :card, :stripe_card
   has_one :stripe_cardholder, through: :stripe_card, as: :cardholder
   alias_attribute :cardholder, :stripe_cardholder
   has_one :event, through: :stripe_card
+  has_many_attached :receipts
 
   enum stripe_status: { pending: 0, closed: 1, reversed: 2 }
   enum authorization_method: { keyed_in: 0, swipe: 1, chip: 2, contactless: 3, online: 4 }
