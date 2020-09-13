@@ -83,6 +83,14 @@
   </article>
 </article>
 
+<ul>
+<% @card.stripe_authorizations.awaiting_receipt.each do |auth| %>
+  <li>
+  <%= link_to "Upload receipt for #{render_money auth.amount} at \"#{auth.merchant_name}\"", stripe_authorization_url(id: auth.id, stripe_id: auth.stripe_id) %>
+  </li>
+<% end %>
+</ul>
+
 <% admin_tools do %>
   <pre>
     <%= json card: @card, stripe_obj: @card.stripe_obj %>

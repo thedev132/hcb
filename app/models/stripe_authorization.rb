@@ -41,6 +41,10 @@ class StripeAuthorization < ApplicationRecord
     :accent
   end
 
+  def merchant_name
+    stripe_obj[:merchant_data][:name]
+  end
+
   def sync_from_stripe!
     puts "syncing from stripe"
     self.stripe_id = stripe_obj[:id]
