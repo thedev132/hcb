@@ -28,7 +28,7 @@ class StripeCard < ApplicationRecord
                         :stripe_shipping_name,
                         unless: -> { self.virtual? }
 
-  validates_presence_of :cardholder_id,
+  validates_presence_of :stripe_cardholder_id,
                         :card_type,
                         :stripe_id,
                         :stripe_brand,
