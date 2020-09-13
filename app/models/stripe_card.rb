@@ -95,20 +95,6 @@ class StripeCard < ApplicationRecord
     card
   end
 
-  private
-
-  def issued?
-    !stripe_id.blank?
-  end
-
-  def secret_details
-    # (msw) We do not want to store card info in our database, so this private
-    # method is the only way to get this info
-    @secret_details ||= Stripe::Issuing::Card.details(stripe_id)
-
-    @secret_details
-  end
-
   def sync_from_stripe!
     if stripe_obj[:deleted]
       self.stripe_status = 'deleted'
@@ -132,6 +118,20 @@ class StripeCard < ApplicationRecord
     end
 
     self
+  end
+
+  private
+
+  def issued?
+    !stripe_id.blank?
+  end
+
+  def secret_details
+    # (msw) We do not want to store card info in our database, so this private
+    # method is the only way to get this info
+    @secret_details ||= Stripe::Issuing::Card.details(stripe_id)
+
+    @secret_details
   end
 
   def notify_user
