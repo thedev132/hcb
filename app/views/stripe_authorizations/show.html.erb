@@ -1,3 +1,5 @@
-<pre>
-  <%= json @stripe_authorization %>
-</pre>
+<% admin_tools do %>
+  <pre>
+    <%= json stripe_authorization: @stripe_authorization, stripe_obj: @stripe_authorization.stripe_obj %>
+  </pre>
+<% end %>
