@@ -63,7 +63,7 @@ RSpec.describe User, type: :model do
       end
 
       it 'returns' do
-        expect(user.initial_name).to eql(' ')
+        expect(user.initial_name).to eql('user1@mailinator.com u')
       end
     end
   end
