@@ -23,7 +23,7 @@ RSpec.describe User, type: :model do
       end
 
       it 'returns initials from email' do
-        expect(user.initials).to eql('UMC') # strange behavior. TODO: grab name out front of email and then initialize on that.
+        expect(user.initials).to eql('U')
       end
     end
   end
@@ -63,7 +63,7 @@ RSpec.describe User, type: :model do
       end
 
       it 'returns' do
-        expect(user.initial_name).to eql('user1@mailinator.com u')
+        expect(user.initial_name).to eql('user1 u')
       end
     end
   end
