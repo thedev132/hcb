@@ -22,6 +22,20 @@ class StripeAuthorization < ApplicationRecord
 
   validates_presence_of :stripe_id, :stripe_status, :authorization_method, :amount
 
+  def name
+    stripe_obj[:merchant_data][:name]
+  end
+
+  def filter_data
+    {
+      exists: true,
+      fee_applies: false,
+      fee_payment: false,
+      emburse: false,
+      expensify: false,
+    }
+  end
+
   def status_emoji
     return '✔️' if approved?
 

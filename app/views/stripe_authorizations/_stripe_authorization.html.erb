@@ -1,0 +1,19 @@
+<tr
+  class="transaction--<%= stripe_authorization.amount.negative? ? 'negative' : 'positive' %>"
+  data-behavior="filterbar_row"
+  data-filter="<%= stripe_authorization.filter_data.to_json %>">
+  <td>
+    <%= stripe_authorization.created_at.to_date %>
+  </td>
+  <td class="flex justify-between">
+    <span><%= stripe_authorization.name %></span>
+  </td>
+  <td></td>
+  <td class="nowrap">
+    <%= render_money stripe_authorization.amount %>
+  </td>
+  <td>
+    <%= link_to 'Details', stripe_authorization if organizer_signed_in? %>
+  </td>
+</tr>
+  
