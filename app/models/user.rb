@@ -64,15 +64,23 @@ class User < ApplicationRecord
   end
 
   def first_name
-    name&.split(" ")&.first || ''
+    @first_name ||= begin
+      return nil unless namae.given || namae.particle
+
+      (namae.given || namae.particle).split(' ').first
+    end
   end
 
   def last_name
-    name&.split(" ")&.last || ''
+    @last_name ||= begin
+      return nil unless namae.family
+
+      namae.family.split(' ').last
+    end
   end
 
   def initial_name
-    first_name[0..17] + " " + last_name[0,1]
+    @initial_name ||= "#{(first_name || last_name)[0..17]} #{(last_name || first_name)[0,1]}"
   end
 
   def safe_name
@@ -97,8 +105,8 @@ class User < ApplicationRecord
 
   private
 
-  def namae_name
-    @namee_name ||= Namae.parse(name)
+  def namae
+    @namae ||= Namae.parse(name).first
   end
 
   def email_handle
