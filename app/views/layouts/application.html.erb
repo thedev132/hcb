@@ -59,7 +59,7 @@
 
         <div class="header-right flex items-center justify-left">
           <% if signed_in? %>
-            <%= link_to edit_user_path(current_user),
+            <%= link_to my_settings_path,
               class: 'muted tooltipped tooltipped--s mr2',
               'aria-label': 'Profile settings' do %>
               <%= inline_icon 'profile', size: home_action_size %>

@@ -47,7 +47,7 @@ class UsersController < ApplicationController
   end
 
   def edit
-    @user = User.friendly.find(params[:id])
+    @user = params[:id] ? User.friendly.find(params[:id]) : current_user
     @onboarding = @user.full_name.blank?
     authorize @user
   end
@@ -70,7 +70,7 @@ class UsersController < ApplicationController
 
     @user.profile_picture.purge_later
 
-    flash[:success] = "Switched back to Gravatar!"
+    flash[:success] = 'Switched back to your Gravatar.'
     redirect_to edit_user_path(@user.slug)
   end
 

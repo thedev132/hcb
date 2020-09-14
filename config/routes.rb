@@ -29,6 +29,12 @@ Rails.application.routes.draw do
     patch 'stripe_cardholder_profile', to: 'stripe_cardholders#update_profile'
   end
 
+  scope '/my' do
+    get '/', to: redirect('/'), as: :my
+    get '/cards', to: 'static_pages#my_cards', as: :my_cards
+    get '/settings', to: 'users#edit', as: :my_settings
+  end
+
   # webhooks
   post 'webhooks/donations', to: 'donations#accept_donation_hook'
 

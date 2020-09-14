@@ -1,0 +1,16 @@
+  <h1 class="flex center items-center justify-center border-none h1 mt0 mb0 pt3 pb2">
+    <%= avatar_for current_user, 36, class: 'mr1' %>
+    <%= current_user.initial_name %>
+  </h1>
+</main>
+
+<nav class="dock">
+  <%= dock_card 'Cards',
+    'See all your cards.',
+    'card', 'purple', my_cards_path %>
+  <%= dock_card 'Settings',
+    'Edit account settings.',
+    'settings', 'muted', my_settings_path %>
+</nav>
+
+<main class="container <%= content_for :container_class %>">

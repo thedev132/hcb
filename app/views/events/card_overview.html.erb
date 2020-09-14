@@ -2,7 +2,7 @@
 <% page_md %>
 <%= render 'nav'%>
 
-<%= render 'cards/ordering_suspended'%>
+<%= render 'cards/ordering_suspended' %>
 
 <h1 class="heading">
   Cards
@@ -27,4 +27,26 @@
   <% end %>
 <% elsif @cards.blank? %>
   <%= blankslate 'You haven’t requested any cards yet.' %>
+<% end %>
+
+<% if @event.used_emburse? %>
+<section class="grid grid--split pt4 pb4">
+  <%= link_to event_emburse_cards_overview_path(event_id: @event.slug),
+    class: 'card card--hover block pt4 pb4 card--promo',
+    style: 'background-image: url(https://cloud-awvmmj0xe.vercel.app/grey_card.png);' do %>
+    <h3 class="mt0 mb0">Previous Emburse data →</h3>
+  <% end %>
+  <%= link_to my_cards_path,
+    class: 'card card--hover block pt4 pb4 card--promo',
+    style: 'background-image: url(https://cloud-awvmmj0xe.vercel.app/sunset_card.png);' do %>
+    <h3 class="mt0 mb0">See all your cards →</h3>
+  <% end %>
+<style>
+.card--promo {
+  background-size: cover;
+  background-position: center center;
+  color: white !important;
+}
+</style>
+</section>
 <% end %>

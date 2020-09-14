@@ -23,7 +23,6 @@ class User < ApplicationRecord
 
   has_one :stripe_cardholder
   has_many :stripe_cards, through: :stripe_cardholder
-  has_one :stripe_cardholder
   has_many :receipts
 
   has_many :checks, inverse_of: :creator
