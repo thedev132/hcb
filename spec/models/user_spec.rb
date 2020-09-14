@@ -19,11 +19,23 @@ RSpec.describe User, type: :model do
     context 'when missing name' do
       before do
         user.full_name = nil
-        user.save!
       end
 
       it 'returns initials from email' do
         expect(user.initials).to eql('U')
+      end
+    end
+  end
+
+  describe '#safe_name' do
+    context 'when initial name is really long' do
+      before do
+        user.full_name = 'thisisareallyreallylongfirstnamethatembursewillnotlike last'
+      end
+
+      it 'returns safe_name max of 20 chars' do
+        expect(user.safe_name).to eql('thisisareallyreall l')
+        expect(user.safe_name.length).to eql(20)
       end
     end
   end

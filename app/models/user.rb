@@ -72,7 +72,7 @@ class User < ApplicationRecord
   end
 
   def initial_name
-    first_name + " " + last_name[0,1]
+    first_name[0..17] + " " + last_name[0,1]
   end
 
   def safe_name
@@ -96,6 +96,10 @@ class User < ApplicationRecord
   end
 
   private
+
+  def namae_name
+    @namee_name ||= Namae.parse(name)
+  end
 
   def email_handle
     @email_handle ||= email.split('@').first
