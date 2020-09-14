@@ -7,7 +7,6 @@ class GSuite < ApplicationRecord
 
   belongs_to :event
   belongs_to :created_by, class_name: 'User', foreign_key: 'created_by_id', optional: true
-  has_one :application, class_name: 'GSuiteApplication', required: false # DEPRECATED
   has_many :accounts, class_name: 'GSuiteAccount'
   has_many :comments, as: :commentable
 
@@ -45,7 +44,7 @@ class GSuite < ApplicationRecord
   end
 
   def verified_on_google?
-    @verified_on_google ||= ::Partners::Google::GSuite::Domain.new(domain: domain).run.verified # TODO: move to a background job checking every 5-15 minutes for the latest verified domains
+    @verified_on_google ||= ::Partners::Google::GSuite::Domain.new(domain: domain).run.verified
   rescue => e
     Airbrake.notify(e)
 
