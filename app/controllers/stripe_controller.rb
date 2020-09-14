@@ -44,6 +44,15 @@ class StripeController < ApplicationController
     StripeAuthorization.create(stripe_id: auth[:id])
   end
 
+  def handle_issuing_authorization_updated(event)
+    # This is to listen for edge-cases like multi-capture TXs
+    # https://stripe.com/docs/issuing/purchases/transactions
+    auth = event[:data][:object]
+    sa = StripeAuthorization.find_or_initialize_by(stripe_id: auth[:id])
+    sa.sync_from_stripe!
+    sa.save
+  end
+
   def handle_issuing_transaction_created(event)
     tx = event[:data][:object]
     amount = tx[:amount]
