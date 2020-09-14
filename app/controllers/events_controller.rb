@@ -43,7 +43,7 @@ class EventsController < ApplicationController
     authorize @event
     @organizers = @event.organizer_positions.includes(:user)
 
-    @transactions = @event.transactions.includes(:fee_relationship, :comments) + @event.stripe_authorizations
+    @transactions = (@event.transactions.includes(:fee_relationship, :comments) + @event.stripe_authorizations).sort_by(&:created_at).reverse
 
     @invoices_being_deposited = (@event.invoices.where(payout_id: nil, status: 'paid')
       .where
