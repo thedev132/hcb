@@ -238,6 +238,7 @@ GEM
     multi_json (1.14.1)
     multi_xml (0.6.0)
     multipart-post (2.1.1)
+    namae (1.0.1)
     netrc (0.11.0)
     nio4r (2.5.2)
     nokogiri (1.10.9)
@@ -445,6 +446,7 @@ DEPENDENCIES
   mini_magick
   mini_racer
   money-rails
+  namae
   paper_trail
   pg (>= 0.18, < 2.0)
   phonelib

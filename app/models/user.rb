@@ -64,18 +64,23 @@ class User < ApplicationRecord
   end
 
   def first_name
-    # beware– not all users will have their first_name set
-    full_name&.split(" ")&.first
+    @first_name ||= begin
+      return nil unless namae.given || namae.particle
+
+      (namae.given || namae.particle).split(' ').first
+    end
   end
 
   def last_name
-    # beware– not all users will have their last name set
-    full_name&.split(" ")&.last
+    @last_name ||= begin
+      return nil unless namae.family
+
+      namae.family.split(' ').last
+    end
   end
 
   def initial_name
-    # beware– not all users will have their initial name set
-    first_name + " " + last_name[0,1]
+    @initial_name ||= "#{(first_name || last_name)[0..17]} #{(last_name || first_name)[0,1]}"
   end
 
   def safe_name
@@ -86,7 +91,7 @@ class User < ApplicationRecord
   end
 
   def name
-    full_name || email
+    full_name || email_handle
   end
 
   def initials
@@ -99,6 +104,14 @@ class User < ApplicationRecord
   end
 
   private
+
+  def namae
+    @namae ||= Namae.parse(name).first
+  end
+
+  def email_handle
+    @email_handle ||= email.split('@').first
+  end
 
   def create_session_token
     self.session_token = User.digest(User.new_session_token)
