@@ -1,0 +1,14 @@
+<% receipt ||= @receipt %>
+<% receipt ||= Receipt.new %>
+<%= form_with(model: receipt,
+              url: receipts_upload_path(stripe_authorization_id: stripe_authorization.id),
+              method: :post,
+              class: 'card center flex flex-column justify-center items-center',
+              local: true) do |form| %>
+  <h3 class="center h3">Add a receipt</h3>
+  <%= form_errors receipt %>
+  <%= form.hidden_field :stripe_authorization_id, value: stripe_authorization.id %>
+  <%= form.hidden_field :uploader_id, value: current_user&.id %>
+  <%= form.file_field :file, direct_upload: true, class: 'center' %>
+  <%= form.submit 'Upload' %>
+<% end %>

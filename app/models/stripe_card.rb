@@ -129,7 +129,7 @@ class StripeCard < ApplicationRecord
   def secret_details
     # (msw) We do not want to store card info in our database, so this private
     # method is the only way to get this info
-    @secret_details ||= Stripe::Issuing::Card.details(stripe_id)
+    @secret_details ||= StripeService::Issuing::Card.details(stripe_id)
 
     @secret_details
   end

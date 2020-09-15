@@ -7,13 +7,16 @@ class StripeAuthorization < ApplicationRecord
   scope :pending, -> { where(stripe_status: :pending) }
   scope :declined, -> { where(stripe_status: :declined) }
   scope :successful, -> { where(stripe_status: :closed, approved: true) }
+  
+  has_paper_trail
 
   belongs_to :stripe_card, class_name: 'StripeCard'
   alias_attribute :card, :stripe_card
   has_one :stripe_cardholder, through: :stripe_card, as: :cardholder
   alias_attribute :cardholder, :stripe_cardholder
   has_one :event, through: :stripe_card
-  has_many_attached :receipts
+  has_many :receipts
+  has_many :comments, as: :commentable
 
   enum stripe_status: { pending: 0, closed: 1, reversed: 2 }
   enum authorization_method: { keyed_in: 0, swipe: 1, chip: 2, contactless: 3, online: 4 }

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_10_181319) do
+ActiveRecord::Schema.define(version: 2020_09_14_164433) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -630,6 +630,8 @@ ActiveRecord::Schema.define(version: 2020_09_10_181319) do
     t.datetime "attempted_match_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "stripe_authorization_id"
+    t.index ["stripe_authorization_id"], name: "index_receipts_on_stripe_authorization_id"
     t.index ["user_id"], name: "index_receipts_on_user_id"
   end
 
@@ -834,6 +836,7 @@ ActiveRecord::Schema.define(version: 2020_09_10_181319) do
   add_foreign_key "organizer_position_invites", "users", column: "sender_id"
   add_foreign_key "organizer_positions", "events"
   add_foreign_key "organizer_positions", "users"
+  add_foreign_key "receipts", "stripe_authorizations"
   add_foreign_key "receipts", "users"
   add_foreign_key "sponsors", "events"
   add_foreign_key "stripe_authorizations", "stripe_cards"
