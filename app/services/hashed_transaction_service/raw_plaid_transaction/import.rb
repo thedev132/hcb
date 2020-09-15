@@ -1,8 +1,8 @@
 module HashedTransactionService
-  module PlaidTransaction
+  module RawPlaidTransaction
     class Import
       def run
-        ::PlaidTransaction.find_each do |pt|
+        ::RawPlaidTransaction.find_each do |pt|
           attrs = {
             primary_hash: primary_hash(pt),
             plaid_transaction_id: pt.id

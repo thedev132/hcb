@@ -1,4 +1,4 @@
-module PlaidTransactionService
+module RawPlaidTransactionService
   module Plaid
     class Import
       def initialize(bank_account_id:)
@@ -9,7 +9,7 @@ module PlaidTransactionService
         plaid_transactions.each do |plaid_transaction|
           next unless plaid_transaction['pending'] == false
 
-          ::PlaidTransaction.find_or_initialize_by(plaid_transaction_id: plaid_transaction['transaction_id']).tap do |pt|
+          ::RawPlaidTransaction.find_or_initialize_by(plaid_transaction_id: plaid_transaction['transaction_id']).tap do |pt|
             pt.plaid_account_id = plaid_transaction['account_id']
             pt.plaid_item_id = plaid_transaction['item_id']
 

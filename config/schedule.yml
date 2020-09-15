@@ -3,9 +3,9 @@ g_suite_mark_verifieds_job:
   class: "GSuiteJob::MarkVerifieds"
   queue: "default"
   
-plaid_transaction_imports_job:
+raw_plaid_transaction_imports_job:
   cron: "0 * * * *" # run every 1 hour
-  class: "PlaidTransactionJob::Imports"
+  class: "RawPlaidTransactionJob::Imports"
   queue: "default"
 
 hashed_transaction_imports_job:

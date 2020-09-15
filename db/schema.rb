@@ -623,7 +623,7 @@ ActiveRecord::Schema.define(version: 2020_09_22_192222) do
     t.index ["user_id"], name: "index_organizer_positions_on_user_id"
   end
 
-  create_table "plaid_transactions", force: :cascade do |t|
+  create_table "raw_plaid_transactions", force: :cascade do |t|
     t.text "plaid_account_id"
     t.text "plaid_item_id"
     t.text "plaid_transaction_id"
@@ -832,7 +832,7 @@ ActiveRecord::Schema.define(version: 2020_09_22_192222) do
   add_foreign_key "g_suite_accounts", "users", column: "creator_id"
   add_foreign_key "g_suites", "events"
   add_foreign_key "g_suites", "users", column: "created_by_id"
-  add_foreign_key "hashed_transactions", "plaid_transactions"
+  add_foreign_key "hashed_transactions", "raw_plaid_transactions", column: "plaid_transaction_id"
   add_foreign_key "invoices", "fee_reimbursements"
   add_foreign_key "invoices", "invoice_payouts", column: "payout_id"
   add_foreign_key "invoices", "sponsors"

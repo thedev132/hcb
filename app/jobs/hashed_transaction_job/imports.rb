@@ -3,7 +3,7 @@
 module HashedTransactionJob
   class Imports < ApplicationJob
     def perform
-      ::HashedTransactionService::PlaidTransaction::Import.new.run
+      ::HashedTransactionService::RawPlaidTransaction::Import.new.run
     end
   end
 end
