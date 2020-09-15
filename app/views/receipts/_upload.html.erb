@@ -9,6 +9,6 @@
   <%= form_errors receipt %>
   <%= form.hidden_field :stripe_authorization_id, value: stripe_authorization.id %>
   <%= form.hidden_field :uploader_id, value: current_user&.id %>
-  <%= form.file_field :file, direct_upload: true, class: 'center' %>
+  <%= form.file_field :file, class: 'center' %>
   <%= form.submit 'Upload' %>
 <% end %>
