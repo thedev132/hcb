@@ -31,10 +31,12 @@
         <strong class="h4"><%= event.name %></strong>
       </div>
       <span class="muted block">
-        <%= event.start.to_date %> – <%= event.end.to_date %>,
+        <%= @event_ids_with_transactions_cache.include?(event.id) ? 'Funded' : '$0' %>
+        –
+        <%= event.is_public? ? 'transparent' : 'private' %>
+        –
         <%= render_percentage event.sponsorship_fee %> fee
       </span>
-      <%= user_mention event.point_of_contact %>
     </li>
   <% end %>
 <% end %>

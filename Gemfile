@@ -110,9 +110,6 @@ gem 'api-pagination'
 # Google (GSuite)
 gem 'google-api-client'
 
-# Calculate business days for stripe card shipping
-gem 'business_time'
-
 # Validations on receipt files
 gem 'active_storage_validations'
 
