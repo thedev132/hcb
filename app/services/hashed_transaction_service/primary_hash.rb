@@ -3,7 +3,7 @@ module HashedTransactionService
     def initialize(date:, amount_cents:, memo:)
       @date = date
       @amount_cents = amount_cents
-      @memo = memo
+      @memo = memo.to_s.delete(' ')
     end
 
     def run
@@ -17,10 +17,6 @@ module HashedTransactionService
     end
 
     private
-
-    def input
-      "#{@date} |  / #{@memo.upcase} / #{@amount_cents} / #{}"
-    end
 
     def csv
       CSV.generate(force_quotes: true) { |csv| csv << input_array }
