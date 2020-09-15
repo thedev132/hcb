@@ -7,3 +7,8 @@ plaid_transaction_imports_job:
   cron: "0 * * * *" # run every 1 hour
   class: "PlaidTransactionJob::Imports"
   queue: "default"
+
+hashed_transaction_imports_job:
+  cron: "10 * * * *" # run every 1 hour - at minute 10 (to space things out behind the plaid transaction import job)
+  class: "HashedTransactionJob::Imports"
+  queue: "default"
