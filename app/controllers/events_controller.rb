@@ -6,6 +6,7 @@ class EventsController < ApplicationController
   def index
     authorize Event
 
+    @event_ids_with_transactions_cache = FeeRelationship.distinct.pluck(:event_id) # for performance reasons - until we build proper counter caching and modify schemas a bit for easier calculations
     @events = Event.all.includes(:point_of_contact)
   end
 
