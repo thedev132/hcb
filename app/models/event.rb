@@ -140,7 +140,7 @@ class Event < ApplicationRecord
 
   def balance
     bank_balance = transactions.sum(:amount)
-    stripe_balance = stripe_authorizations.approved.sum(:amount)
+    stripe_balance = -stripe_authorizations.approved.sum(:amount)
 
     bank_balance + stripe_balance
   end

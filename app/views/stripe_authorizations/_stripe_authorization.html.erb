@@ -1,5 +1,5 @@
 <tr
-  class="transaction--<%= stripe_authorization.amount.negative? ? 'negative' : 'positive' %><%= ' muted italic' if stripe_authorization.pending? %>"
+  class="transaction--<%= stripe_authorization.amount.positive? ? 'negative' : 'positive' %><%= ' muted italic' if stripe_authorization.pending? %>"
   data-behavior="filterbar_row"
   data-filter="<%= stripe_authorization.filter_data.to_json %>">
   <td>
@@ -10,7 +10,7 @@
   </td>
   <td></td>
   <td class="nowrap">
-    <%= render_money stripe_authorization.amount %>
+    <%= render_money -stripe_authorization.amount %>
   </td>
   <td>
     <%= link_to 'Details', stripe_authorization if organizer_signed_in? %>
