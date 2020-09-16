@@ -1,18 +1,17 @@
-<% page_sm %>
-<% @home_size = 128 %>
-<% content_for(:page_class) { 'bg-snow pt4' } %>
+<% title 'Home' %>
+<% page_md %>
 
-<main class="flex flex-column items-center center pt3 pb3">
-  <h1 class="heading flex-column items-center justify-center mt2 w-100">
+<%= render 'users/nav' if signed_in? %>
+
+<h1 class="heading items-center md-items-baseline justify-center md-justify-between center md-left-align w-100">
+  <div>
     <span class="h3 caps secondary block">Welcome to</span>
-    <span class="primary">Hack Club Bank</span>
-    <span class="badge h5 caps"><%= random_nickname %></span>
-  </h1>
+    <span class="primary">Hack&nbsp;Club Bank</span>
+  </div>
+  <span class="badge ml0 h5 caps"><%= random_nickname %></span>
+</h1>
 
-  <% admin_tools('w-100 mt2 mb3') do %>
-    <%= OpsCheckin.streak %> days since last incident
-  <% end %>
-
+<main class="flex flex-column items-center center pb3">
   <% if signed_in? %>
     <% if @events.any? %>
       <ul class="grid grid--narrow left-align w-100 mt0">
@@ -70,7 +69,7 @@
     <% end %>
   <% end %>
 
-  <% admin_tools('w-100 mt3') do %>
+  <% admin_tools('w-100 center mt3') do %>
     <h2>Daily tasks</h2>
     <ul class="grid grid--narrow left-align mt0">
       <%= card_to 'Pending tasks', admin_tasks_path %>
@@ -93,7 +92,7 @@
       <%= react_component 'admin_task/Card', human_name: 'StickerMule', task_name: :pending_stickermule_airtable, task_path: link_to_airtable_task(:stickermule) %>
       <%= react_component 'admin_task/Card', human_name: 'repl.it', task_name: :pending_replit_airtable, task_path: link_to_airtable_task(:replit) %>
       <%= react_component 'admin_task/Card', human_name: 'Sendy', task_name: :pending_sendy_airtable, task_path: link_to_airtable_task(:sendy) %>
-      <%= render partial: 'static_pages/card', locals: { task_path: emburse_transactions_path, task_name: :emburse_transaction, human_name: 'Emburse Transactions', count: @service.emburse_transactions_count } %>
+      <%= render partial: 'static_pages/card', locals: { task_path: emburse_transactions_path, task_name: :emburse_transaction, human_name: 'Emburse transactions', count: @service.emburse_transactions_count } %>
       <%= react_component 'admin_task/Card', human_name: 'Wires', task_name: :wire_transfers, task_path: link_to_airtable_task(:wire_transfers) %> 
     </ul>
 

@@ -1,10 +1,13 @@
-  <h1 class="flex center items-center justify-center border-none h1 mt0 mb0 pt3 pb2">
+  <h1 class="flex center items-center justify-center xs-hide border-none h1 mt0 mb0 pt3 pb2">
     <%= avatar_for current_user, 36, class: 'mr1' %>
     <%= current_user.initial_name %>
   </h1>
 </main>
 
 <nav class="dock">
+  <%= dock_card 'Home',
+    'See all your organizations.',
+    'home', 'primary', root_path %>
   <%= dock_card 'Cards',
     'See all your cards.',
     'card', 'purple', my_cards_path %>
