@@ -4,6 +4,7 @@ module HashedTransactionService
       def run
         ::RawEmburseTransaction.find_each do |et|
           next if et.amount_cents == 0
+          next unless et.state == 'completed' # only permit completed transactions
 
           ph = primary_hash(et)
 
@@ -23,18 +24,10 @@ module HashedTransactionService
         attrs = {
           date: et.date_posted.strftime('%Y-%m-%d'),
           amount_cents: et.amount_cents,
-          memo: memo(et)
+          memo: et.memo.upcase
         }
 
         ::HashedTransactionService::PrimaryHash.new(attrs).run
-      end
-
-      def memo(et)
-        if et.amount_cents < 0
-          "#{et.emburse_transaction.dig('merchant', 'name')}, Card: #{et.emburse_transaction.dig('card', 'description')}, Member: #{et.emburse_transaction.dig('member', 'first_name')} #{et.emburse_transaction.dig('member', 'last_name')}".upcase
-        else
-          "Transfer from #{et.emburse_transaction.dig('bank_account', 'description')}".upcase
-        end
       end
     end
   end

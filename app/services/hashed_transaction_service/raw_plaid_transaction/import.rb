@@ -21,7 +21,7 @@ module HashedTransactionService
         attrs = {
           date: pt.date_posted.strftime('%Y-%m-%d'),
           amount_cents: pt.amount_cents,
-          memo: pt.plaid_transaction['name'].upcase
+          memo: pt.memo.upcase
         }
         ::HashedTransactionService::PrimaryHash.new(attrs).run
       end
