@@ -4,11 +4,16 @@ g_suite_mark_verifieds_job:
   queue: "default"
   
 raw_plaid_transaction_imports_job:
-  cron: "0 * * * *" # run every 1 hour
+  cron: "0 6 * * *" # run at 6am UTC each morning
   class: "RawPlaidTransactionJob::Imports"
   queue: "default"
 
+raw_emburse_transaction_imports_job:
+  cron: "0 7 * * *" # run at 7am UTC each morning
+  class: "RawEmburseTransactionJob::Imports"
+  queue: "default"
+
 hashed_transaction_imports_job:
-  cron: "10 * * * *" # run every 1 hour - at minute 10 (to space things out behind the plaid transaction import job)
+  cron: "0 8 * * *" # run after the raw import jobs
   class: "HashedTransactionJob::Imports"
   queue: "default"

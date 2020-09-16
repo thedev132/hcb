@@ -5,7 +5,7 @@ module HashedTransactionService
         ::RawPlaidTransaction.find_each do |pt|
           attrs = {
             primary_hash: primary_hash(pt),
-            plaid_transaction_id: pt.id
+            raw_plaid_transaction_id: pt.id
           }
           ::HashedTransaction.find_or_initialize_by(attrs).tap do |ht|
             # set other details here

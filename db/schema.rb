@@ -451,10 +451,10 @@ ActiveRecord::Schema.define(version: 2020_09_22_192222) do
   create_table "hashed_transactions", force: :cascade do |t|
     t.text "primary_hash"
     t.text "secondary_hash"
-    t.bigint "plaid_transaction_id"
+    t.bigint "raw_plaid_transaction_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["plaid_transaction_id"], name: "index_hashed_transactions_on_plaid_transaction_id"
+    t.index ["raw_plaid_transaction_id"], name: "index_hashed_transactions_on_raw_plaid_transaction_id"
   end
 
   create_table "invoice_payouts", force: :cascade do |t|
@@ -621,6 +621,16 @@ ActiveRecord::Schema.define(version: 2020_09_22_192222) do
     t.datetime "deleted_at"
     t.index ["event_id"], name: "index_organizer_positions_on_event_id"
     t.index ["user_id"], name: "index_organizer_positions_on_user_id"
+  end
+
+  create_table "raw_emburse_transactions", force: :cascade do |t|
+    t.text "emburse_transaction_id"
+    t.jsonb "emburse_transaction"
+    t.integer "amount_cents"
+    t.date "date_posted"
+    t.string "state"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "raw_plaid_transactions", force: :cascade do |t|
@@ -832,7 +842,7 @@ ActiveRecord::Schema.define(version: 2020_09_22_192222) do
   add_foreign_key "g_suite_accounts", "users", column: "creator_id"
   add_foreign_key "g_suites", "events"
   add_foreign_key "g_suites", "users", column: "created_by_id"
-  add_foreign_key "hashed_transactions", "raw_plaid_transactions", column: "plaid_transaction_id"
+  add_foreign_key "hashed_transactions", "raw_plaid_transactions"
   add_foreign_key "invoices", "fee_reimbursements"
   add_foreign_key "invoices", "invoice_payouts", column: "payout_id"
   add_foreign_key "invoices", "sponsors"
