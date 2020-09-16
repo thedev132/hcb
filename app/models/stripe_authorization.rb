@@ -34,8 +34,7 @@ class StripeAuthorization < ApplicationRecord
       exists: true,
       fee_applies: false,
       fee_payment: false,
-      emburse: false,
-      expensify: false,
+      card: true
     }
   end
 

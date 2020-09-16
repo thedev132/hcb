@@ -3,6 +3,9 @@
   id="retrofees__transaction"
   data-behavior="filterbar_row"
   data-filter="<%= transaction.filter_data.to_json %>">
+  <td class="transaction__icon tooltipped tooltipped--e" aria-label="Free money!">
+    <%= inline_icon 'rep' %>
+  </td>
   <td>
     <%= transaction.date %>
   </td>

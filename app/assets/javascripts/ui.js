@@ -27,25 +27,6 @@ $(document).on('turbolinks:load', function () {
     return this.blur()
   })
 
-  $(document).on('click', '[data-behavior~=row_expand_trigger]', function () {
-    const button = $(this)
-    const id = button.data('id')
-    const targets = BK.s('expandable_row').filter(`[data-id=${id}]`)
-    const parent = BK.s('parent_expandable_row').filter(`[data-id=${id}]`)
-    const expanded = button.data('expanded')
-    if (expanded) {
-      targets.removeClass('is-expanded')
-      parent.removeClass('is-expanded')
-      button.text('Expand')
-      return button.data('expanded', false)
-    } else {
-      targets.addClass('is-expanded')
-      parent.addClass('is-expanded')
-      button.text('Retract')
-      return button.data('expanded', true)
-    }
-  })
-
   $(document).on('keyup', 'action', function (e) {
     if (e.keyCode === 13) {
       return $(e.target).click()

@@ -1,4 +1,5 @@
 class EventsController < ApplicationController
+  include Rails::Pagination
   before_action :set_event, only: [:show, :edit, :update, :destroy]
   skip_before_action :signed_in_user
 
@@ -44,7 +45,11 @@ class EventsController < ApplicationController
     authorize @event
     @organizers = @event.organizer_positions.includes(:user)
 
-    @transactions = (@event.transactions.includes(:fee_relationship, :comments) + @event.stripe_authorizations.approved).sort_by(&:created_at).reverse
+    @transactions = paginate((
+      @event.transactions.unified_list.includes(:fee_relationship, :comments) +
+      @event.stripe_authorizations.approved +
+      @event.emburse_transactions)
+      .sort_by(&:created_at).reverse, per_page: 100)
 
     @invoices_being_deposited = (@event.invoices.where(payout_id: nil, status: 'paid')
       .where

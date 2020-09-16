@@ -110,8 +110,7 @@
     <%= filterbar_item 'All', :exists, true %>
     <%= filterbar_item 'Revenue', :fee_applies %>
     <%= filterbar_item 'Fees', :fee_payment %>
-    <%= filterbar_item 'Card transfers', :emburse %>
-    <%= filterbar_item 'Expensify', :expensify if transactions_have_expensify? %>
+    <%= filterbar_item 'Card', :card %>
   </div>
 </div>
 
@@ -120,6 +119,7 @@
     <table class="table-container">
       <thead>
         <tr>
+          <th></th>
           <th>Date</th>
           <th colspan="2">Description</th>
           <th colspan="2">Amount</th>
@@ -131,6 +131,7 @@
     </table>
   </div>
   <%= filterbar_blankslate 'No transactions match this filter' %>
+  <%= paginate @transactions %>
 <% else %>
   <%= blankslate 'No transactions yet' %>
 <% end %>
