@@ -454,6 +454,7 @@ ActiveRecord::Schema.define(version: 2020_09_22_192222) do
     t.bigint "raw_plaid_transaction_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "raw_emburse_transaction_id"
     t.index ["raw_plaid_transaction_id"], name: "index_hashed_transactions_on_raw_plaid_transaction_id"
   end
 
