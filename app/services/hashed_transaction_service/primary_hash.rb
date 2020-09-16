@@ -13,13 +13,13 @@ module HashedTransactionService
       raise ArgumentError if memo_is_empty?
       raise ArgumentError unless date_formatted_correctly?
 
-      XXhash.xxh64(csv)
+      [XXhash.xxh64(csv), csv]
     end
 
     private
 
     def csv
-      CSV.generate(force_quotes: true) { |csv| csv << input_array }
+      @csv ||= CSV.generate(force_quotes: true) { |csv| csv << input_array }
     end
 
     def input_array

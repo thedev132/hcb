@@ -123,6 +123,14 @@ ActiveRecord::Schema.define(version: 2020_09_22_192222) do
     t.index ["creator_id"], name: "index_blazer_queries_on_creator_id"
   end
 
+  create_table "canonical_transactions", force: :cascade do |t|
+    t.date "date", null: false
+    t.text "memo", null: false
+    t.integer "amount_cents", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "checks", force: :cascade do |t|
     t.bigint "creator_id"
     t.bigint "lob_address_id"
@@ -455,6 +463,7 @@ ActiveRecord::Schema.define(version: 2020_09_22_192222) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "raw_emburse_transaction_id"
+    t.text "primary_hash_input"
     t.index ["raw_plaid_transaction_id"], name: "index_hashed_transactions_on_raw_plaid_transaction_id"
   end
 
@@ -622,6 +631,18 @@ ActiveRecord::Schema.define(version: 2020_09_22_192222) do
     t.datetime "deleted_at"
     t.index ["event_id"], name: "index_organizer_positions_on_event_id"
     t.index ["user_id"], name: "index_organizer_positions_on_user_id"
+  end
+
+  create_table "plaid_transactions", force: :cascade do |t|
+    t.text "plaid_account_id"
+    t.text "plaid_item_id"
+    t.text "plaid_transaction_id"
+    t.jsonb "plaid_transaction"
+    t.integer "amount_cents"
+    t.date "date_posted"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.boolean "pending", default: false
   end
 
   create_table "raw_emburse_transactions", force: :cascade do |t|

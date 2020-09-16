@@ -5,12 +5,14 @@ module HashedTransactionService
         ::RawEmburseTransaction.find_each do |et|
           next if et.amount_cents == 0
 
+          ph = primary_hash(et)
+
           attrs = {
-            primary_hash: primary_hash(et),
+            primary_hash: ph[0],
             raw_emburse_transaction_id: et.id
           }
           ::HashedTransaction.find_or_initialize_by(attrs).tap do |ht|
-            # set other details here
+            ht.primary_hash_input = ph[1]
           end.save!
         end
       end

@@ -3,12 +3,14 @@ module HashedTransactionService
     class Import
       def run
         ::RawPlaidTransaction.find_each do |pt|
+          ph = primary_hash(pt)
+
           attrs = {
-            primary_hash: primary_hash(pt),
+            primary_hash: ph[0],
             raw_plaid_transaction_id: pt.id
           }
           ::HashedTransaction.find_or_initialize_by(attrs).tap do |ht|
-            # set other details here
+            ht.primary_hash_input = ph[1]
           end.save!
         end
       end
