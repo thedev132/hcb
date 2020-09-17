@@ -21,7 +21,7 @@
         <td><%= link_to card.event.name, card.event %></td>
         <td><%= card.virtual? ? 'Virtual' : 'Physical' %></td>
         <td><%= format_datetime card.created_at %></td>
-        <td><%= render_money card.event.available_balance %></td>
+        <td><%= render_money card.event.balance %></td>
       </tr>
     <% end %>
   </tbody>

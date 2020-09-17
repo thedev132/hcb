@@ -10,10 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_08_164452) do
+ActiveRecord::Schema.define(version: 2020_09_14_164433) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
+  enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
 
   create_table "ach_transfers", force: :cascade do |t|
@@ -29,8 +30,8 @@ ActiveRecord::Schema.define(version: 2020_09_08_164452) do
     t.datetime "updated_at", null: false
     t.string "recipient_tel"
     t.datetime "rejected_at"
-    t.text "payment_for"
     t.datetime "scheduled_arrival_date"
+    t.text "payment_for"
     t.index ["creator_id"], name: "index_ach_transfers_on_creator_id"
     t.index ["event_id"], name: "index_ach_transfers_on_event_id"
   end
@@ -432,23 +433,6 @@ ActiveRecord::Schema.define(version: 2020_09_08_164452) do
     t.index ["g_suite_id"], name: "index_g_suite_accounts_on_g_suite_id"
   end
 
-  create_table "g_suite_applications", force: :cascade do |t|
-    t.bigint "creator_id"
-    t.bigint "event_id"
-    t.bigint "fulfilled_by_id"
-    t.text "domain"
-    t.datetime "rejected_at"
-    t.datetime "accepted_at"
-    t.datetime "canceled_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.bigint "g_suite_id"
-    t.index ["creator_id"], name: "index_g_suite_applications_on_creator_id"
-    t.index ["event_id"], name: "index_g_suite_applications_on_event_id"
-    t.index ["fulfilled_by_id"], name: "index_g_suite_applications_on_fulfilled_by_id"
-    t.index ["g_suite_id"], name: "index_g_suite_applications_on_g_suite_id"
-  end
-
   create_table "g_suites", force: :cascade do |t|
     t.citext "domain"
     t.bigint "event_id"
@@ -646,6 +630,8 @@ ActiveRecord::Schema.define(version: 2020_09_08_164452) do
     t.datetime "attempted_match_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "stripe_authorization_id"
+    t.index ["stripe_authorization_id"], name: "index_receipts_on_stripe_authorization_id"
     t.index ["user_id"], name: "index_receipts_on_user_id"
   end
 
@@ -831,10 +817,6 @@ ActiveRecord::Schema.define(version: 2020_09_08_164452) do
   add_foreign_key "fee_relationships", "events"
   add_foreign_key "g_suite_accounts", "g_suites"
   add_foreign_key "g_suite_accounts", "users", column: "creator_id"
-  add_foreign_key "g_suite_applications", "events"
-  add_foreign_key "g_suite_applications", "g_suites"
-  add_foreign_key "g_suite_applications", "users", column: "creator_id"
-  add_foreign_key "g_suite_applications", "users", column: "fulfilled_by_id"
   add_foreign_key "g_suites", "events"
   add_foreign_key "g_suites", "users", column: "created_by_id"
   add_foreign_key "invoices", "fee_reimbursements"
@@ -854,6 +836,7 @@ ActiveRecord::Schema.define(version: 2020_09_08_164452) do
   add_foreign_key "organizer_position_invites", "users", column: "sender_id"
   add_foreign_key "organizer_positions", "events"
   add_foreign_key "organizer_positions", "users"
+  add_foreign_key "receipts", "stripe_authorizations"
   add_foreign_key "receipts", "users"
   add_foreign_key "sponsors", "events"
   add_foreign_key "stripe_authorizations", "stripe_cards"

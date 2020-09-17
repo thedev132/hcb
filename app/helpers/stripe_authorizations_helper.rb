@@ -1,0 +1,2 @@
+module StripeAuthorizationsHelper
+end

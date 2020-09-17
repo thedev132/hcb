@@ -1,28 +1,15 @@
+<% title 'Order a card' %>
+<% page_sm %>
 <%= render 'events/nav' %>
 
-<article class="grid grid--split">
-<h1 class="grid__fill">Issue a card</h1>
+<h1>Order yourself a card</h1>
 
-<section>
 <%# <h2>1. Personal info</h2> %>
 <%# render 'stripe_cardholders/form',
   stripe_cardholder: current_user.stripe_cardholder || StripeCardholder.new(user: current_user) %>
 <%# </section> %>
 
 <%# <section> %>
-<h2>Card info</h2>
-
+<h2>Shipping info</h2>
 <%= render 'form', stripe_card: @stripe_card %>
-</section>
-
-<section>
-<h2>3. Delivery</h2>
-
-<p>Shipping address & Apple Wallet info go here.</p>
-
-<a href="shoebox://" class="btn bg-info">
-  <%= inline_icon 'card' %>
-  Open Apple Wallet (iOS)
-</a>
-</section>
-</article>
+<%# </section> %>

@@ -23,7 +23,7 @@
     <link rel="preload" href="https://assets.hackclub.com/fonts/Phantom_Sans_0.7/Bold.woff2" as="font" type="font/woff2" crossorigin>
     <%= yield(:head) if content_for?(:head) %>
   </head>
-  <body class="bg-snow <%= content_for :page_class %>">
+  <body <%= yield(:body_attributes) if content_for?(:body_attributes) %> class="bg-snow <%= content_for :page_class %>">
     <% if @event&.is_public && !organizer_signed_in? && !@no_app_shell %>
       <div class="container container--sm" data-behavior="hide_iframe">
         <p class="bold center">
@@ -59,7 +59,7 @@
 
         <div class="header-right flex items-center justify-left">
           <% if signed_in? %>
-            <%= link_to edit_user_path(current_user),
+            <%= link_to my_settings_path,
               class: 'muted tooltipped tooltipped--s mr2',
               'aria-label': 'Profile settings' do %>
               <%= inline_icon 'profile', size: home_action_size %>

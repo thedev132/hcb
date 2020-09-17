@@ -20,10 +20,9 @@
   </p>
 
   <p>
-    Get in touch with your point of contact
-    <strong><%= @event.point_of_contact.full_name %></strong> at
+    Get in touch with the Bank team
     <% if organizer_signed_in? %>
-      <%= mail_to @event.point_of_contact.email, nil, class: 'inline' %>
+      <%= help_message %>
     <% else %>
       <span class="muted">(sign in to view)</span>
     <% end%>

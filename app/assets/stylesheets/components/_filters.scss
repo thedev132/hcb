@@ -1,3 +1,7 @@
+.pagination {
+}
+
+.pagination,
 .filterbar {
   font-family: $brand-font-family;
   padding: 1rem 0;
@@ -15,11 +19,13 @@
   }
 }
 
+.pagination a,
 .filterbar__item {
   border-radius: 1rem;
   cursor: pointer;
   display: inline-block;
   flex-shrink: 0;
+  font-family: inherit;
   font-size: 0.875rem;
   font-weight: 600;
   line-height: 1.75;
@@ -27,7 +33,8 @@
   padding: 0.25rem 0.75rem;
   position: relative;
   text-decoration: none;
-  transition: color 0.125s ease-in-out, background-image 0.125s ease-in-out;
+  transition: color 0.125s ease-in-out, background-image 0.125s ease-in-out,
+    box-shadow 0.125s ease-in-out, transform 0.125s ease-in-out;
 
   &:before {
     content: '';
@@ -48,6 +55,7 @@
   }
 
   &:active,
+  &.active,
   &[aria-selected='true'] {
     color: $white;
     &:before {

@@ -3,7 +3,7 @@ require 'net/http'
 class StaticPagesController < ApplicationController
   skip_after_action :verify_authorized # do not force pundit
   skip_before_action :signed_in_user, only: [:stats, :branding, :faq]
-  before_action :signed_in_admin, except: [:stats, :branding, :faq, :index]
+  before_action :signed_in_admin, except: [:stats, :branding, :faq, :index, :my_cards]
 
   def index
     if signed_in?
@@ -118,6 +118,12 @@ class StaticPagesController < ApplicationController
 
   def negative_events
     @negative_events = Event.negatives
+  end
+
+  def my_cards
+    flash[:success] = 'Card activated!' if params[:activate]
+    @stripe_cards = current_user.stripe_cards.includes(:event)
+    @emburse_cards = current_user.emburse_cards.includes(:event)
   end
 
   def stats
