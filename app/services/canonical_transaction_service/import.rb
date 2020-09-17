@@ -1,8 +1,15 @@
 module CanonicalTransactionService
-  class Process
+  class Import
     def run
       hashed_transactions_ready_for_processing.find_each do |ht|
-        # create
+
+        attrs = {
+          date: ht.date,
+          memo: ht.memo,
+          amount_cents: ht.amount_cents
+        }
+        ::CanonicalTransaction.create!(attrs)
+
       end
     end
 
