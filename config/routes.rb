@@ -22,6 +22,8 @@ Rails.application.routes.draw do
     resources :stripe_authorizations, only: [:index, :show], path: 'transactions' do
       resources :comments
     end
+    get 'receipts', to: redirect('/my/cards')
+    get 'receipts/:id', to: 'stripe_authorizations#receipt', as: :my_receipt
   end
   post 'receipts/upload', to: 'receipts#upload'
   delete 'receipts/destroy', to: 'receipts#destroy'

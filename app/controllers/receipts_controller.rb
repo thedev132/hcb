@@ -9,8 +9,12 @@ class ReceiptsController < ApplicationController
     @receipt.user_id = current_user&.id || @stripe_authorization.card.user.id
 
     if @receipt.save
-      flash[:success] = "Receipts uploaded!"
-      redirect_to @stripe_authorization
+      flash[:success] = 'Added receipt!'
+      if current_user
+        redirect_to @stripe_authorization
+      else
+        redirect_to my_receipt_path(id: @stripe_authorization.stripe_id)
+      end
     else
       flash[:error] = "Failed to upload receipt"
       redirect_to stripe_authorization_path(@stripe_authorization)

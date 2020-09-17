@@ -1,0 +1,45 @@
+<% title "Transaction for #{render_money @stripe_authorization.amount}" %>
+<% page_md %>
+
+<%= link_to @event do %>
+  <h1 class="center border-none h1 mt0 mb0 pt3 pb1 underline primary">
+    <%= @event.name %>
+  </h1>
+<% end %>
+
+<% admin_tools('mt3 mb0') do %>
+  <%= link_to 'All stripe authorizations', stripe_authorizations_path, class: 'breadcrumb' %>
+<% end %>
+
+<article class="card pb0 mt2 mb3">
+  <h1 class="heading h1 mt0 mb0 border-none">
+    Transaction for
+    <%= render_money @stripe_authorization.amount %>
+  </h1>
+  <section class="card__banner card__darker details-horiz border-top border-bottom">
+    <p>
+      <strong>Card</strong>
+      <%= link_to @stripe_authorization.stripe_card do %>
+        <%= user_mention @stripe_authorization.stripe_card.user %>
+      <% end %>
+    </p>
+    <p>
+      <strong>Spent at</strong>
+      <%= format_datetime @stripe_authorization.created_at %>
+    </p>
+  </section>
+  <% if @stripe_authorization.receipts.any? %>
+    <p class="card__banner bg-success white bold flex items-center mt0 mb0">
+      <%= inline_icon 'checkmark', size: 24, class: 'mr2' %>
+      <%= pluralize @stripe_authorization.receipts.count, 'receipt' %>
+      added
+    </p>
+  <% else %>
+    <p class="card__banner bg-pending slate bold flex items-center mt0 mb0">
+      <%= inline_icon 'important', size: 24, class: 'mr2' %>
+      This transaction is missing a receipt
+    </p>
+  <% end %>
+</article>
+
+<%= render 'receipts/upload', stripe_authorization: @stripe_authorization %>
