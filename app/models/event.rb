@@ -51,7 +51,6 @@ class Event < ApplicationRecord
   has_many :transactions, through: :fee_relationships, source: :t_transaction
 
   has_many :stripe_cards
-  has_many :stripe_authorizations, through: :stripe_cards
 
   has_many :emburse_cards
   has_many :emburse_card_requests
@@ -139,10 +138,7 @@ class Event < ApplicationRecord
   end
 
   def balance
-    bank_balance = transactions.sum(:amount)
-    stripe_balance = -stripe_authorizations.approved.sum(:amount)
-
-    bank_balance + stripe_balance
+    transactions.sum(:amount)
   end
 
   # used for emburse transfers, this is the amount of money available that
@@ -186,14 +182,6 @@ class Event < ApplicationRecord
     else
       "full fiscal sponsorship"
     end
-  end
-
-  def has_active_emburse?
-    emburse_cards.active.any?
-  end
-
-  def used_emburse?
-    emburse_cards.any?
   end
 
   def hidden?

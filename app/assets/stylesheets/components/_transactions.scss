@@ -1,3 +1,25 @@
+.transaction__explanation {
+  border-bottom-width: 0;
+
+  td {
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+  }
+
+  &.transaction__explanation--last {
+    border-bottom-width: 1px;
+
+    td {
+      padding-bottom: 0.75rem;
+    }
+  }
+}
+
+.row-expander {
+  transform: rotate(180deg);
+  transition: transform 0.125s ease-in-out;
+}
+
 .table-container {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
@@ -15,16 +37,32 @@
   }
 }
 
-.transaction__icon {
-  padding-top: 0;
-  padding-bottom: 0;
-  line-height: 0;
-
-  img,
-  svg {
-    width: 24px;
-    height: 24px;
-    fill: map-get($palette, muted);
-    margin: 0;
+.invoice--expanded-parent.is-expanded,
+.invoice--expanded-parent + .is-expanded {
+  border-bottom-width: 0;
+}
+.invoice--expanded-parent.is-expanded > td:nth-child(4) {
+  @extend .bold;
+}
+.invoice--expanded.is-expanded {
+  > td:nth-child(-n + 2) {
+    transform: translateX(2em);
   }
+}
+
+.invoice--expanded:not(.is-expanded) {
+  display: none !important;
+}
+
+.transaction__github_grant {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.transaction__github_icon {
+  height: 1em;
+  margin-left: 12px;
+  transform: scale(1.4);
 }

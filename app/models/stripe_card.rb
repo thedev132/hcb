@@ -1,9 +1,6 @@
 class StripeCard < ApplicationRecord
-  before_create :issue_stripe_card, unless: :issued? # issue the card if we're creating it for the first time
+  before_create :issue_stripe_card # issue the card if we're creating it for the first time
   after_create :notify_user
-
-  scope :deactivated, -> { where.not(stripe_status: 'active') }
-  scope :active, -> { where(stripe_status: 'active') }
 
   belongs_to :event
   belongs_to :stripe_cardholder
@@ -28,7 +25,7 @@ class StripeCard < ApplicationRecord
                         :stripe_shipping_name,
                         unless: -> { self.virtual? }
 
-  validates_presence_of :stripe_cardholder_id,
+  validates_presence_of :cardholder_id,
                         :card_type,
                         :stripe_id,
                         :stripe_brand,
@@ -37,6 +34,10 @@ class StripeCard < ApplicationRecord
                         :last4,
                         :stripe_status,
                         if: -> { self.stripe_id.present? }
+
+  def active?
+    stripe_status == 'active'
+  end
 
   def full_card_number
     secret_details[:number]
@@ -86,13 +87,14 @@ class StripeCard < ApplicationRecord
     @stripe_card_obj
   end
 
-  def self.new_from_stripe_id(params)
-    raise ArgumentError.new("Only numbers are allowed") unless params[:stripe_id].is_a?(String)
+  private
 
-    card = self.new(params)
-    card.sync_from_stripe!
+  def secret_details
+    # (msw) We do not want to store card info in our database, so this private
+    # method is the only way to get this info
+    @secret_details ||= Stripe::Issuing::Card.details(stripe_id)
 
-    card
+    @secret_details
   end
 
   def sync_from_stripe!
@@ -118,20 +120,6 @@ class StripeCard < ApplicationRecord
     end
 
     self
-  end
-
-  private
-
-  def issued?
-    !stripe_id.blank?
-  end
-
-  def secret_details
-    # (msw) We do not want to store card info in our database, so this private
-    # method is the only way to get this info
-    @secret_details ||= StripeService::Issuing::Card.details(stripe_id)
-
-    @secret_details
   end
 
   def notify_user

@@ -89,8 +89,9 @@
     <section class="card__banner card__banner--bottom card__darker pt2 pb2">
       <p class="muted mt0 mb2">
         If there are fradulent or incorrect charges on your card,
-        please let the Bank team know.
-        <%= help_message %>
+        please let your point of contact,
+        <%= mail_to @emburse_card.event.point_of_contact.email, @emburse_card.event.point_of_contact.full_name %>
+        know.
       </p>
 
       <% if !@emburse_card.requires_activation? %>

@@ -13,19 +13,6 @@ Rails.application.routes.draw do
   root to: 'static_pages#index'
   get 'stats', to: 'static_pages#stats'
 
-  scope '/my' do
-    get '/', to: redirect('/'), as: :my
-    get '/cards', to: 'static_pages#my_cards', as: :my_cards
-    get '/settings', to: 'users#edit', as: :my_settings
-  end
-  scope :my do
-    resources :stripe_authorizations, only: [:index, :show], path: 'transactions' do
-      resources :comments
-    end
-  end
-  post 'receipts/upload', to: 'receipts#upload'
-  delete 'receipts/destroy', to: 'receipts#destroy'
-
   resources :users, only: [:edit, :update] do
     collection do
       get 'impersonate', to: 'users#impersonate'
@@ -88,9 +75,7 @@ Rails.application.routes.draw do
     resources :comments
   end
 
-  resources :stripe_authorizations, only: [:show, :index] do
-    resources :comments
-  end
+  resources :stripe_authorizations, only: [:show, :index]
   resources :stripe_cardholders, only: [:new, :create, :update]
   resources :stripe_cards, only: %i[create new index show]
   resources :emburse_cards do

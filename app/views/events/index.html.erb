@@ -26,17 +26,15 @@
 <% @events.each do |event| %>
   <%= link_to event, data: { behavior: 'filterbar_row', filter: event.filter_data.to_json } do %>
     <li class="card card--hover">
-      <div class="card__banner card__banner--top <%= event.omit_stats? ? 'bg-warning white' : @event_ids_with_transactions_cache.include?(event.id) ? (event.is_public? ? 'bg-accent white' : 'bg-info white') : 'card__darker' %>">
+      <div class="card__banner card__banner--top <%= event.omit_stats? ? 'bg-warning white' : event.transactions.any? ? (event.is_public? ? 'bg-accent white' : 'bg-info white') : 'card__darker' %>">
         <span class="block mr1">#<%= event.id %></span>
         <strong class="h4"><%= event.name %></strong>
       </div>
       <span class="muted block">
-        <%= @event_ids_with_transactions_cache.include?(event.id) ? 'Funded' : '$0' %>
-        –
-        <%= event.is_public? ? 'transparent' : 'private' %>
-        –
+        <%= event.start.to_date %> – <%= event.end.to_date %>,
         <%= render_percentage event.sponsorship_fee %> fee
       </span>
+      <%= user_mention event.point_of_contact %>
     </li>
   <% end %>
 <% end %>

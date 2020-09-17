@@ -16,13 +16,6 @@ class Transaction < ApplicationRecord
     where(is_event_related: true, fee_relationship_id: nil)
       .select { |t| !t.potential_fee_reimbursement? || t.date < 3.weeks.ago }
   }
-  # used by the unified transaction list shown on the event show page
-   scope :unified_list, -> {
-     where(donation_payout_id: nil,
-           invoice_payout_id: nil,
-           fee_reimbursement_id: nil,
-           emburse_transfer_id: nil
-          ) }
 
   belongs_to :bank_account
 
@@ -140,9 +133,10 @@ class Transaction < ApplicationRecord
   def filter_data
     {
       exists: true,
-      fee_applies: fee_applies?,
-      fee_payment: fee_payment?,
-      card: false
+      fee_applies: self.fee_applies?,
+      fee_payment: self.fee_payment?,
+      emburse: self.potential_emburse?,
+      expensify: self.potential_expensify?,
     }
   end
 

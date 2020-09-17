@@ -39,8 +39,6 @@ GEM
       erubi (~> 1.4)
       rails-dom-testing (~> 2.0)
       rails-html-sanitizer (~> 1.1, >= 1.2.0)
-    active_storage_validations (0.9.0)
-      rails (>= 5.2.0)
     activejob (6.0.3.2)
       activesupport (= 6.0.3.2)
       globalid (>= 0.3.6)
@@ -238,7 +236,6 @@ GEM
     multi_json (1.14.1)
     multi_xml (0.6.0)
     multipart-post (2.1.1)
-    namae (1.0.1)
     netrc (0.11.0)
     nio4r (2.5.2)
     nokogiri (1.10.9)
@@ -420,7 +417,6 @@ PLATFORMS
 
 DEPENDENCIES
   aasm
-  active_storage_validations
   acts_as_paranoid (~> 0.6.0)
   airbrake
   api-pagination
@@ -446,7 +442,6 @@ DEPENDENCIES
   mini_magick
   mini_racer
   money-rails
-  namae
   paper_trail
   pg (>= 0.18, < 2.0)
   phonelib

@@ -1,7 +1,6 @@
 <%= form_with(model: stripe_card, local: true, class: 'grid grid--split') do |form| %>
   <%= form_errors stripe_card%>
 
-  <!--
   <fieldset>
     <legend>Card type</legend>
     <div class="field field--radiobox">
@@ -11,8 +10,6 @@
       <%= form.label :card_type, 'Plastic', value: 'physical' %>
     </div>
   </fieldset>
-  -->
-  <%= form.hidden_field :card_type, value: 'physical' %>
 
   <div class="field">
     <%= form.label :stripe_shipping_name, 'Shipping name' %>

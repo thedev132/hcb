@@ -8,6 +8,6 @@
     We're working with our check provider to fix this and will update with a specific date once we know more.
   </p>
   <div class="border-top card__banner card__darker slate">
-    <strong class="warning">Questions?</strong> <%= help_message %>
+    <strong class="warning">Questions?</strong> Talk to your point of contact, <%= link_to @event.point_of_contact.name, "mailto:#{@event.point_of_contact.email}" %>
   </div>
 </div>

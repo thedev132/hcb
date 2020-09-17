@@ -1,5 +1,4 @@
 class EventsController < ApplicationController
-  include Rails::Pagination
   before_action :set_event, only: [:show, :edit, :update, :destroy]
   skip_before_action :signed_in_user
 
@@ -7,8 +6,7 @@ class EventsController < ApplicationController
   def index
     authorize Event
 
-    @event_ids_with_transactions_cache = FeeRelationship.distinct.pluck(:event_id) # for performance reasons - until we build proper counter caching and modify schemas a bit for easier calculations
-    @events = Event.all
+    @events = Event.all.includes(:point_of_contact)
   end
 
   # GET /events/new
@@ -44,12 +42,7 @@ class EventsController < ApplicationController
   def show
     authorize @event
     @organizers = @event.organizer_positions.includes(:user)
-
-    @transactions = paginate((
-      @event.transactions.unified_list.includes(:fee_relationship, :comments) +
-      @event.stripe_authorizations.approved +
-      @event.emburse_transactions)
-      .sort_by(&:created_at).reverse, per_page: 100)
+    @transactions = @event.transactions.includes(:fee_relationship, :comments)
 
     @invoices_being_deposited = (@event.invoices.where(payout_id: nil, status: 'paid')
       .where
@@ -154,8 +147,6 @@ class EventsController < ApplicationController
     @stripe_cards = @event.stripe_cards.includes(user: [:profile_picture_attachment])
     @emburse_cards= @event.emburse_cards.includes(user: [:profile_picture_attachment])
     @cards = @stripe_cards + @emburse_cards
-    @active = @stripe_cards.active + @emburse_cards.active
-    @deactivated = @stripe_cards.deactivated + @emburse_cards.deactivated
     authorize @event
   end
 

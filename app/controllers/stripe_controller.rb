@@ -35,22 +35,11 @@ class StripeController < ApplicationController
 
     if should_approve
       puts "#{card.event.name} has enough money (#{card.event.balance_available}) for the charge of #{tx_amount}"
-      auth_result = StripeService::Issuing::Authorization.approve(auth[:id])
+      StripeService::Issuing::Authorization.approve(auth[:id])
     else
       puts "#{card.event.name} does not have enough (#{card.event.balance_available}) for the charge of #{tx_amount}"
-      auth_result = StripeService::Issuing::Authorization.decline(auth[:id])
+      StripeService::Issuing::Authorization.decline(auth[:id])
     end
-
-    StripeAuthorization.create(stripe_id: auth[:id])
-  end
-
-  def handle_issuing_authorization_updated(event)
-    # This is to listen for edge-cases like multi-capture TXs
-    # https://stripe.com/docs/issuing/purchases/transactions
-    auth = event[:data][:object]
-    sa = StripeAuthorization.find_or_initialize_by(stripe_id: auth[:id])
-    sa.sync_from_stripe!
-    sa.save
   end
 
   def handle_issuing_transaction_created(event)

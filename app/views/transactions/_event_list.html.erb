@@ -1,10 +1,6 @@
-<% if t.is_a? StripeAuthorization %>
-  <%= render t %>
-<% elsif t.is_a? EmburseTransaction %>
-  <%= render t %>
-<% elsif t&.name&.include? 'Hack Club Bank Gift' %>
+<% if t.name.include? 'Hack Club Bank Gift' %>
   <%= render 'transactions/fancy_transaction', transaction: t %>
-<% elsif t&.name&.include? 'GitHub Grant' %>
+<% elsif t.name.include? 'GitHub Grant' %>
   <%= render 'transactions/github_transaction', transaction: t %>
 <% elsif t&.invoice_payout&.invoice %>
   <%= render t&.invoice_payout&.invoice %>

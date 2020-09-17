@@ -121,10 +121,6 @@ module ApplicationHelper
                            data: { name: name.to_s, behavior: 'filterbar_item' }
   end
 
-  def help_message
-    content_tag :span, "Contact the Bank team at #{mail_to 'bank@hackclub.com'} or +1-360-502-2935.".html_safe
-  end
-
   def format_date(date)
     local_time(date, '%b %e, %Y')
   end

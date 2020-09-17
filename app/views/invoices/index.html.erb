@@ -27,8 +27,9 @@
   <% else %>
     <p class="h5 line-height-3 muted mt0 mb2">
       If the sponsor wants to pay via a mailed check or direct deposit instead of
-      the online invoice, let the Bank team know
-      <%= help_message %>
+      the online invoice, let your point of contact
+      <%= mail_to @event.point_of_contact.name, @event.point_of_contact.email %>
+      know.
     </p>
   <% end %>
   <%= render 'form', invoice: @invoice, sponsor: @sponsor %>

@@ -23,7 +23,7 @@
       <tr class="shade-yellow">
         <td class="underline"><%= link_to "#{dsb.source_event.name}", dsb.source_event %></td>
         <td class="underline"><%= link_to "#{dsb.event.name}", dsb.event %></td>
-        <td class="underline"><%= dsb.transaction_memo %></td>
+        <td class="underline"><%= link_to dsb.transaction_memo, dsb %></td>
         <td><%= render_money dsb.amount %></td>
         <td><%= link_to 'Mark fulfilled', disbursement_mark_fulfilled_path(dsb), method: :post, class: 'btn bg-success' %></td>
       </tr>

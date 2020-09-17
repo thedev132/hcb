@@ -1,22 +1,16 @@
-<% if @onboarding %>
-  <% page_sm %>
-<% else %>
-  <% page_md %>
-  <%= render 'users/nav' %>
-<% end %>
+<% page_sm if @onboarding %>
 
-<!--
 <main class="<%= !@onboarding && 'grid grid--spacious grid--split' %>" style="grid-row-gap: 0;">
 
 <h1 class="grid__fill">
--->
-<h1>
   <%= @onboarding ? 'Welcome to Bank!' : 'Settings' %>
 </h1>
 
 <section>
 <% if @onboarding %>
   <p>Complete your profile to get started.</p>
+<% else %>
+  <h2>Account settings</h2>
 <% end %>
 
 <%= form_with(model: @user, local: true) do |form| %>
@@ -65,8 +59,6 @@
 <% end %>
 </section>
 
-<% if false %>
-<!--
 <% unless @onboarding %>
 <section>
   <h2>Card billing settings</h2>
@@ -77,5 +69,3 @@
 </section>
 <% end %>
 </main>
--->
-<% end %>

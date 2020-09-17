@@ -35,11 +35,33 @@
 </div>
 <%= render 'nav', hide_name: true %>
 
-<% if organizer_signed_in? %>
-  <p class="muted center mt2">
-    <strong>We’re standing by to help.</strong> <%= help_message %>
-  </p>
-<% end %>
+<p class="muted flex flex-wrap items-center justify-center center mt2">
+  Your point of contact is <%= user_mention @event.point_of_contact, class: 'ml1 mr0' %><span class="xs-hide mr1">.</span>
+  Text / call at
+  <span class="flex items-center medium ml1">
+    <%= inline_icon 'message', size: 24, class: 'muted', style: 'margin-right: 0.125rem;' %>
+    <% if organizer_signed_in? %>
+      <%= @event.point_of_contact.pretty_phone_number %>
+    <% else %>
+      <%= link_to root_path, class: 'flex items-center medium' do %>
+        (sign in to view)
+      <% end %>
+    <% end %>
+  </span>
+  <span class="ml1 mr1">or email at</span>
+  <% if organizer_signed_in? %>
+    <%= mail_to @event.point_of_contact.email, class: 'flex items-center medium' do %>
+      <%= inline_icon 'email', size: 24, class: 'muted', style: 'margin-right: 0.125rem;' %>
+      <%= @event.point_of_contact.email %>
+    <% end %>
+  <% else %>
+    <%= link_to root_path, class: 'flex items-center medium' do %>
+      <%= inline_icon 'email', size: 24, class: 'muted', style: 'margin-right: 0.125rem;' %>
+      (sign in to view)
+    <% end %>
+  <% end %>
+  <span class="xs-hide">.</span>
+</p>
 
 <h2 class="mb2">
   Financials
@@ -63,21 +85,12 @@
     </span>
     <span class="stat__value"><%= render_money @invoices_being_deposited.sum(&:amount_paid) + @donations_being_deposited.sum(&:amount), '' %></span>
   </action>
-  <% if @event.used_emburse? %>
-    <%= link_to new_event_emburse_transfer_path(event_id: @event.slug), class: 'stat statset__wide link-reset' do %>
-      <span class="stat__label flex items-center">
-        Emburse balance
-        <%= inline_icon 'plus', size: 24, class: 'muted ml1', 'aria-label': 'Info icon' %>
-      </span>
-      <span class="stat__value"><%= render_money @event.emburse_balance, '' %></span>
-    <% end %>
-  <% else %>
-      <div class="stat statset__wide">
-        <span class="stat__label flex items-center">
-          Emburse balance
-        </span>
-        <span class="stat__value"><%= render_money @event.emburse_balance, '' %></span>
-    </div>
+  <%= link_to new_event_emburse_transfer_path(event_id: @event.slug), class: 'stat statset__wide link-reset' do %>
+    <span class="stat__label flex items-center">
+      Card balance
+      <%= inline_icon 'plus', size: 24, class: 'muted ml1', 'aria-label': 'Info icon' %>
+    </span>
+    <span class="stat__value"><%= render_money @event.emburse_balance, '' %></span>
   <% end %>
 </div>
 
@@ -110,7 +123,8 @@
     <%= filterbar_item 'All', :exists, true %>
     <%= filterbar_item 'Revenue', :fee_applies %>
     <%= filterbar_item 'Fees', :fee_payment %>
-    <%= filterbar_item 'Card', :card %>
+    <%= filterbar_item 'Card transfers', :emburse %>
+    <%= filterbar_item 'Expensify', :expensify if transactions_have_expensify? %>
   </div>
 </div>
 
@@ -119,7 +133,6 @@
     <table class="table-container">
       <thead>
         <tr>
-          <th></th>
           <th>Date</th>
           <th colspan="2">Description</th>
           <th colspan="2">Amount</th>
@@ -131,7 +144,6 @@
     </table>
   </div>
   <%= filterbar_blankslate 'No transactions match this filter' %>
-  <%= paginate @transactions %>
 <% else %>
   <%= blankslate 'No transactions yet' %>
 <% end %>
@@ -173,7 +185,10 @@
   <% end %>
   <% if organizer_signed_in? %>
     <span class="h6 inline-block mt2">
-      Questions? <%= help_message %>
+      Questions? Your point of contact (<%= @event.point_of_contact.name %>) is
+      happy to help. You can reach them at
+      <%= link_to @event.point_of_contact.pretty_phone_number, "tel:#{@event.point_of_contact.pretty_phone_number}" %>
+      or <%= mail_to @event.point_of_contact.email %>.
     </span>
   <% end %>
 </div>

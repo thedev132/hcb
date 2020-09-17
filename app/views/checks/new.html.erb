@@ -44,7 +44,8 @@
         </ul>
         <div class="border-top card__banner card__darker secondary">
           <strong>Questions?</strong>
-            <%= help_message %>
+          Talk to your point of contact,
+              <%= link_to @event.point_of_contact.name, "mailto:#{@event.point_of_contact.email}" %>.
         </div>
     </div>
   </aside>
@@ -53,7 +54,7 @@
   <div class="container--xs">
     <h1 class="mt0">Send a check</h1>
     <%= render 'new_form', check: @check, lob_address: @lob_address %>
-    <div class="actions tooltipped tooltipped--n inline-block mt1" aria-label="Your check will be submitted for approval by the Bank team">
+    <div class="actions tooltipped tooltipped--n inline-block mt1" aria-label="Your check will be submitted for approval by <%= @event.point_of_contact.name.split[0] %>">
       <input type="submit" value="Send check for approval" data-behavior="modal_trigger send_check_modal_trigger" data-modal="confirm_dialog" <%= "disabled" unless organizer_signed_in? %>></input>
     </div>
   </div>
