@@ -48,8 +48,9 @@ module UsersHelper
   def creator_bar(object, options = {})
     creator = defined?(object.creator) ? object.creator :
       defined?(object.sender) ? object.sender : object.user
+    mention = creator ? user_mention(creator) : content_tag(:strong, 'Anonymous')
     content_tag :div, class: 'comment__name' do
-      user_mention(creator) + relative_timestamp(object.created_at, prefix: options[:prefix], class: 'h5 muted')
+      mention + relative_timestamp(object.created_at, prefix: options[:prefix], class: 'h5 muted')
     end
   end
 

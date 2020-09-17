@@ -1,73 +1,27 @@
 <% transaction = donation.payout.t_transaction %>
-<% refund = donation&.fee_reimbursement %>
-<% refund_t = refund&.t_transaction %>
 <% @donation = donation %>
 <tr
   class="transaction--positive invoice--expanded-parent"
   data-behavior="filterbar_row parent_expandable_row"
   data-filter="<%= transaction.filter_data.to_json %>"
   data-id="<%= transaction.id %>"
-  aria-expanded="false"
 >
+  <td class="transaction__icon tooltipped tooltipped--e" aria-label="Donation payment">
+    <%= inline_icon 'support' %>
+  </td>
   <td>
     <%= transaction.date %>
   </td>
   <td>
     Donation from <%= donation.name %> for <%= render_money donation.amount %>
   </td>
-  <td></td>
+  <td>
+    <%= link_to 'See Donation', donation, class: 'underline' %>
+  </td>
   <td>
     <%= render_money donation.amount %>
   </td>
   <td>
-    <% if refund %>
-      <span class="underline pointer no-select" data-id="<%= transaction.id %>" data-expanded="false" data-behavior="row_expand_trigger">Expand</span>
-    <% else %>
-      <%= link_to 'Details', transaction, class: 'underline' if organizer_signed_in? %>
-    <% end %>
+    <%= link_to 'Details', transaction, class: 'underline' if organizer_signed_in? %>
   </td>
 </tr>
-<% if refund %>
-  <tr class="transaction--positive invoice--expanded"
-  data-behavior="expandable_row filterbar_row"
-  data-id="<%= transaction.id %>"
-  data-filter="<%= transaction.filter_data.to_json %>"
-  >
-    <td>
-      <%= transaction.date %>
-    </td>
-    <td>
-      <%= transaction.display_name %>
-    </td>
-    <td></td>
-    <td>
-      <%= render_money transaction.amount %>
-    </td>
-    <td>
-      <%= link_to 'Details', transaction, class: 'underline' if organizer_signed_in? %>
-    </td>
-  </tr>
-  <tr class="transaction--positive invoice--expanded<%= ' muted italic' unless refund_t %>"
-  data-behavior="expandable_row filterbar_row"
-  data-id="<%= transaction.id %>"
-  data-filter="<%= transaction.filter_data.to_json %>"
-  >
-    <td>
-      <%= refund_t ? refund_t.date : '(pending)' %>
-    </td>
-    <td>
-      <%= refund_t ? refund_t.display_name : 'Processing fee refund' %>
-    </td>
-    <td></td>
-    <td>
-      <%= render_money donation.payout_creation_balance_stripe_fee %>
-    </td>
-    <td>
-      <% if refund_t %>
-        <%= link_to 'Details', refund_t, class: 'underline' if organizer_signed_in? %>
-      <% else %>
-        –
-      <% end %>
-    </td>
-  </tr>
-<% end %>

@@ -20,7 +20,6 @@
     <section class="mb2">
       <h2 class="mt0 heading">
         <span class="flex-auto">Card for <%= user_mention @card.user %></span>
-        <span class="h3"><%#= card_mention @card %></span>
       </h2>
 
       <section class="details mt2">
@@ -33,6 +32,11 @@
           <div>
             <strong>Expiration date</strong>
             <%= render_exp_date %>
+          </div>
+
+          <div>
+            <strong>ZIP/Postal code</strong>
+            <%= @card.stripe_cardholder.address_postal_code %>
           </div>
         <% else %>
           <div>
@@ -52,7 +56,7 @@
         </p>
 
         <p>
-          <strong>Created</strong>
+          <strong>Ordered at</strong>
           <%= format_datetime Time.at(@card.stripe_obj[:created]) %>
         </p>
 
@@ -82,6 +86,14 @@
     </section>
   </article>
 </article>
+
+<ul>
+<% @card.stripe_authorizations.awaiting_receipt.each do |auth| %>
+  <li>
+  <%= link_to "Upload receipt for #{render_money auth.amount} at \"#{auth.merchant_name}\"", stripe_authorization_url(id: auth.id, stripe_id: auth.stripe_id) %>
+  </li>
+<% end %>
+</ul>
 
 <% admin_tools do %>
   <pre>

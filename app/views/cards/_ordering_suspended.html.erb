@@ -1,0 +1,17 @@
+<div class="card border b--warning pb0 mt3 mb3">
+  <div class="flex items-center warning">
+    <%= inline_icon 'card', size: 32, class: 'mr1' %>
+    <p class="bold mt0 mb0">Emburse cards are going away</p>
+  </div>
+  <p class="mt1 mb2">
+    If you need a new physical card to keep spending money once your Emburse card shuts off, order your new card early
+    <% prefill ={prefill_Account: "#{current_user&.email}|#{current_user&.id}", prefill_Events: "#{@event.id}-#{@event.name}"} %>
+    <%= link_to 'with this form', "https://hack.af/emburse-migration?#{prefill.to_query}", class: 'warning' %>.
+    <% if @event.used_emburse? %>
+      The Emburse cards page will <%= link_to 'remain available', event_emburse_cards_overview_path(event_id: @event.slug) %>.
+    <% end %>
+  </p>
+  <div class="border-top card__banner card__darker slate">
+    <strong class="warning">Questions?</strong> Talk to your point of contact, <%= link_to @event.point_of_contact.name, "mailto:#{@event.point_of_contact.email}" %>
+  </div>
+</div>

@@ -1,4 +1,11 @@
 <p class="center mt4 muted">
+<% if current_user %>
+    <%= help_message %>
+  </p>
+
+  <p class="center muted">
+<% end %>
+
   <%= link_to current_user ? 'Bank FAQs' : 'Hack Club Bank FAQs', faq_path, class: 'muted' %>
   <span class="inline-block pl1 pr1">&middot;</span>
   <%= link_to 'Brand Guidelines', branding_path, class: 'muted' %>

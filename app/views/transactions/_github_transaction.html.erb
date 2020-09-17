@@ -2,12 +2,14 @@
   class="transaction--<%= transaction.amount.negative? ? 'negative' : 'positive' %>"
   data-behavior="filterbar_row"
   data-filter="<%= transaction.filter_data.to_json %>">
+  <td class="transaction__icon tooltipped tooltipped--e" aria-label="GitHub Grant">
+    <%= inline_icon 'github' %>
+  </td>
   <td>
     <%= transaction.date %>
   </td>
-  <td class="bold transaction__github_grant">
+  <td class="bold">
     🚀 GitHub Grant
-    <%= image_tag 'github-icon.png', class: 'transaction__github_icon', alt: 'GitHub Grant' %>
   </td>
   <td></td>
   <td>

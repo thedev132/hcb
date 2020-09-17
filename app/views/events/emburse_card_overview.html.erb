@@ -6,6 +6,8 @@
   Cards
 </h1>
 
+<%= render 'cards/ordering_suspended'%>
+
 <article class="card overflow-visible">
   <h2 class="mt0 mb2">Summary</h2>
 
@@ -54,7 +56,7 @@ West Hollywood, CA 90069</pre>
 
 <h2 class="heading">
   Issued cards
-  <%= link_to new_emburse_card_request_path(event_id: @event.id), class: 'btn btn--icon bg-success' do %>
+  <%= link_to new_emburse_card_request_path(event_id: @event.id), class: 'btn btn--icon bg-success', disabled: true do %>
     <%= inline_icon 'card-add' %>
     Issue a card
   <% end %>

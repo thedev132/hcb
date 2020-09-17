@@ -5,12 +5,13 @@
   Stripe TXs
 </h1>
 
+
 <ul class="list list--row">
   <% @stripe_authorizations.each do |auth| %>
     <%= link_to auth do %>
       <li class="tooltipped tooltipped--w" aria-label="<%= auth.status_text %>">
         <%= status_badge auth.status_color %>
-        <strong class="ml1"><%= "#{auth.event.name}: " if auth.event %><%= auth.amount %></strong>
+        <strong class="ml1"><%= "#{auth.event.name}: " if auth.event %><%= render_money auth.amount %></strong>
       </li>
     <% end %>
   <% end %>

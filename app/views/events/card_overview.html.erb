@@ -2,25 +2,12 @@
 <% page_md %>
 <%= render 'nav'%>
 
-<div class="card border b--warning pb0 mt3 mb3">
-  <div class="mt1 mb2 center">
-    <em class="h3">The booming voice: OH, IT'S NOT A PROBLEM AT ALL</em><br/>
-    you feel relief wash over you as your breath in<br/>
-    the anxiety flows out as you exhale<br/>
-    you wonder silently: <em>where am i?</em><br/>
-    <em class="h3">YOU'LL FIND US AGAIN ONCE WE'RE READY FOR YOU</em><br/>
-    you ponder your next steps: <em>what do i do now?</em><br/>
-    <em class="h3">ALL YOU HAVE TO DO IS WAKE UP...</em><br/>
-    suddenly you realize what you have to do.<br/>
-  </div>
-  <div class="border-top card__banner card__darker secondary center">
-    <%= link_to 'WAKE UP', event_emburse_cards_overview_path(@event), class: 'h1 bold' %>
-  </div>
-</div>
+<%= render 'cards/ordering_suspended' %>
+
 <h1 class="heading">
   Cards
   <% if organizer_signed_in? %>
-    <%= link_to new_stripe_card_path(event_id: @event.id), class: 'btn btn--icon bg-success' do %>
+    <%= link_to new_stripe_card_path(event_id: @event.id), class: 'btn btn--icon bg-success disabled' do %>
       <%= inline_icon 'card-add' %>
       Issue new card
     <% end %>
@@ -28,16 +15,38 @@
 </h1>
 <% if @cards.any? %>
   <section class="mixed-grid grid--spacious mt2">
-    <%= render @cards.select(&:active?) %>
+    <%= render @active %>
   </section>
-  <% if @emburse_cards.deactivated.size > 0 %>
+  <% if @deactivated.size > 0 %>
     <details class="w-100 left-align">
       <summary><h3 class="inline-block pb0 border-none">Deactivated cards</h3></summary>
       <section class="mixed-grid grid--spacious mt2">
-      <%= render @emburse_cards.deactivated %>
+      <%= render @deactivated %>
       </section>
     </details>
   <% end %>
 <% elsif @cards.blank? %>
   <%= blankslate 'You haven’t requested any cards yet.' %>
+<% end %>
+
+<% if @event.used_emburse? %>
+<section class="grid grid--split pt4 pb4">
+  <%= link_to event_emburse_cards_overview_path(event_id: @event.slug),
+    class: 'card card--hover block pt4 pb4 card--promo',
+    style: 'background-image: url(https://cloud-awvmmj0xe.vercel.app/grey_card.png);' do %>
+    <h3 class="mt0 mb0">Previous Emburse data →</h3>
+  <% end %>
+  <%= link_to my_cards_path,
+    class: 'card card--hover block pt4 pb4 card--promo',
+    style: 'background-image: url(https://cloud-awvmmj0xe.vercel.app/sunset_card.png);' do %>
+    <h3 class="mt0 mb0">See all your cards →</h3>
+  <% end %>
+<style>
+.card--promo {
+  background-size: cover;
+  background-position: center center;
+  color: white !important;
+}
+</style>
+</section>
 <% end %>

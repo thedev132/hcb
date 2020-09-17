@@ -1,0 +1,11 @@
+A <%= render_money @auth.amount %> <%= @auth.stripe_obj.authorization_method.humanize.downcase %> charge to your card ending in <%= @card.last4 %> was <%= @auth.status_text.downcase %>.
+
+<%= link_to 'Upload your receipt for this charge.', stripe_authorization_url(id: @auth.id, stripe_id: @auth.stripe_id) %>
+
+<% if Rails.env.development? %>
+  <hr />
+  <p>Development mode metadata:</p>
+  <pre>
+    <%= json auth: @auth.stripe_obj %>
+  </pre>
+<% end %>

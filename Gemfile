@@ -110,8 +110,8 @@ gem 'api-pagination'
 # Google (GSuite)
 gem 'google-api-client'
 
-# Calculate business days for stripe card shipping
-gem 'business_time'
+# Validations on receipt files
+gem 'active_storage_validations'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -145,6 +145,7 @@ gem 'aasm' # state machine
 gem 'airbrake' # exception tracking
 gem 'blazer' # business intelligence tool/dashboard
 gem 'money-rails' # back cent fields as money objects 
+gem 'namae' # multi-cultural human name parser
 gem 'paper_trail' # track changes on models
 gem 'sidekiq-cron', '~> 1.1' # run sidekiq scheduled tasks
 gem 'strong_migrations' # protects against risky migrations that could cause application harm on deploy
