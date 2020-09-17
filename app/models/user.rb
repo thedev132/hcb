@@ -65,13 +65,19 @@ class User < ApplicationRecord
   end
 
   def first_name
-    # beware– not all users will have their first_name set
-    full_name&.split(" ")&.first
+    @first_name ||= begin
+      return '' unless namae&.given || namae&.particle
+
+      (namae.given || namae.particle).split(' ').first
+    end
   end
 
   def last_name
-    # beware– not all users will have their last name set
-    full_name&.split(" ")&.last
+    @last_name ||= begin
+      return '' unless namae&.family
+
+      namae.family.split(' ').last
+    end
   end
 
   def initial_name
