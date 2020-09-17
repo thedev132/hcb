@@ -106,7 +106,11 @@ class User < ApplicationRecord
   private
 
   def namae
-    @namae ||= Namae.parse(name).first
+    @namae ||= Namae.parse(name).first || Namae.parse(name_simplified).first || Namae::Name.new(given: name_simplified)
+  end
+
+  def name_simplified
+    name.split(/[^[[:word:]]]+/).join(' ')
   end
 
   def email_handle
