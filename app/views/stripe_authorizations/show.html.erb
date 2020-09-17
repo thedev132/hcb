@@ -1,7 +1,7 @@
 <% title "Transaction for #{render_money @stripe_authorization.amount}" %>
 <% page_md %>
 
-<%= render 'events/nav' if @event %>
+<%= render 'events/nav' %>
 
 <% admin_tools('mt3 mb0') do %>
   <%= link_to 'All stripe authorizations', stripe_authorizations_path, class: 'breadcrumb' %>

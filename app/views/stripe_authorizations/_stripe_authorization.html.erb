@@ -22,7 +22,7 @@
     <%= render_money -stripe_authorization.amount %>
   </td>
   <td>
-    <%= link_to 'Details', stripe_authorization if organizer_signed_in? %>
+    <%= link_to 'Details', defined?(@event) ? event_stripe_authorization_path(@event, stripe_authorization) : stripe_authorization if organizer_signed_in? %>
   </td>
 </tr>
   

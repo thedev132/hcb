@@ -9,8 +9,9 @@ class StripeAuthorizationsController < ApplicationController
   end
 
   def show
-    @stripe_authorization = StripeAuthorization.includes(stripe_card: :user, receipts: :user).find(params[:id])
+    @stripe_authorization = StripeAuthorization.includes(stripe_card: [:user, :event], receipts: :user).find(params[:id])
     authorize @stripe_authorization
+    @event = @stripe_authorization.card.event
 
     @commentable = @stripe_authorization
     @comments = @commentable.comments.includes(:user)

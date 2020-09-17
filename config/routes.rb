@@ -248,6 +248,9 @@ Rails.application.routes.draw do
     resources :documents, only: [:index]
     get 'fiscal_sponsorship_letter', to: 'documents#fiscal_sponsorship_letter'
     resources :invoices, only: [:new, :create, :index]
+    resources :stripe_authorizations, only: [:show] do
+      resources :comments
+    end
   end
 
   # rewrite old event urls to the new ones not prefixed by /events/
