@@ -50,3 +50,8 @@
 </style>
 </section>
 <% end %>
+
+<% if @stripe_authorizations.any? %>
+  <h2 class="mt3">Transactions</h2>
+  <%= render 'stripe_authorizations/list' %>
+<% end %>

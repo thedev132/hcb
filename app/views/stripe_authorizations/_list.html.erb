@@ -1,0 +1,19 @@
+<% if @stripe_authorizations.any? %>
+<div class="table-container mt2">
+  <table class="table-container">
+    <thead>
+      <tr>
+        <th></th>
+        <th>Date</th>
+        <th colspan="2">Description</th>
+        <th colspan="2">Amount</th>
+      </tr>
+    </thead>
+    <tbody data-behavior="transactions">
+      <% @stripe_authorizations.each do |t| %>
+        <%= render t %>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+<% end %>
