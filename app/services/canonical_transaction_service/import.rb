@@ -23,7 +23,6 @@ module CanonicalTransactionService
 
     private
 
-    # TODO: additionally remove already processed canonical transactions
     def hashed_transactions_ready_for_processing
       ::HashedTransaction.where('id not in (?)', duplicate_hashed_transaction_ids + previously_processed_hashed_transaction_ids)
     end

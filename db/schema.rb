@@ -123,6 +123,15 @@ ActiveRecord::Schema.define(version: 2020_09_22_192222) do
     t.index ["creator_id"], name: "index_blazer_queries_on_creator_id"
   end
 
+  create_table "canonical_event_mappings", force: :cascade do |t|
+    t.bigint "canonical_transaction_id", null: false
+    t.bigint "event_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["canonical_transaction_id"], name: "index_canonical_event_mappings_on_canonical_transaction_id"
+    t.index ["event_id"], name: "index_canonical_event_mappings_on_event_id"
+  end
+
   create_table "canonical_hashed_mappings", force: :cascade do |t|
     t.bigint "canonical_transaction_id", null: false
     t.bigint "hashed_transaction_id", null: false
@@ -843,6 +852,8 @@ ActiveRecord::Schema.define(version: 2020_09_22_192222) do
   add_foreign_key "ach_transfers", "events"
   add_foreign_key "ach_transfers", "users", column: "creator_id"
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "canonical_event_mappings", "canonical_transactions"
+  add_foreign_key "canonical_event_mappings", "events"
   add_foreign_key "canonical_hashed_mappings", "canonical_transactions"
   add_foreign_key "canonical_hashed_mappings", "hashed_transactions"
   add_foreign_key "checks", "lob_addresses"
