@@ -1,10 +1,10 @@
 module CanonicalTransactionService
-  module AssignToEvent
+  module MapToEvent
     class Process
       def run
         likely_githubs.find_each do |ct|
 
-          ::CanonicalTransactionService::AssignToEvent::Github.new(canonical_transaction: ct).run
+          ::CanonicalTransactionService::MapToEvent::Github.new(canonical_transaction: ct).run
 
         end
       end

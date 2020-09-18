@@ -1,5 +1,5 @@
 module CanonicalTransactionService
-  module AssignToEvent
+  module MapToEvent
     class Github
       def initialize(canonical_transaction:)
         @canonical_transaction = canonical_transaction
