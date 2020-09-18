@@ -59,4 +59,10 @@ class StripeController < ApplicationController
     return unless amount < 0
     TopupStripeJob.perform_later
   end
+
+  def handle_issuing_card_updated(event)
+    card = StripeCard.find_by(stripe_id: event[:data][:object][:id])
+    card.sync_from_stripe!
+    card.save
+  end
 end
