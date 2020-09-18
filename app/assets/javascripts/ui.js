@@ -33,6 +33,12 @@ $(document).on('turbolinks:load', function () {
     }
   })
 
+  $.each(BK.s('async_frame'), (i, frame) => {
+    $.get($(frame).data('src'), data => {
+      $(frame).replaceWith(data)
+    })
+  })
+
   $(document).on('submit', '[data-behavior~=login]', function () {
     const val = $('input[name=email]').val()
     return localStorage.setItem('login_email', val)

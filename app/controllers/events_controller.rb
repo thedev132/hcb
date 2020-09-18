@@ -1,6 +1,6 @@
 class EventsController < ApplicationController
   include Rails::Pagination
-  before_action :set_event, only: [:show, :edit, :update, :destroy]
+  before_action :set_event, except: [:index, :new, :create, :by_airtable_id]
   skip_before_action :signed_in_user
 
   # GET /events
@@ -50,6 +50,11 @@ class EventsController < ApplicationController
       @event.stripe_authorizations.approved.includes(stripe_card: :user) +
       @event.emburse_transactions.unified_list)
       .sort_by(&:created_at).reverse, per_page: 100)
+  end
+
+  # async frame for incoming money
+  def dashboard_stats
+    authorize @event
 
     @invoices_being_deposited = (@event.invoices.where(payout_id: nil, status: 'paid')
       .where
@@ -64,6 +69,8 @@ class EventsController < ApplicationController
       @event.donations.joins(:payout)
       .where(donation_payouts: { status: ('in_transit') })
       .or(@event.donations.joins(:payout).where(donation_payouts: { status: ('pending') }))).sort_by { |d| d.arrival_date }
+
+    render :dashboard_stats, layout: false
   end
 
   # GET /event_by_airtable_id/recABC
@@ -80,10 +87,9 @@ class EventsController < ApplicationController
   end
 
   def team
-    @event = Event.friendly.find(params[:event_id])
+    authorize @event
     @positions = @event.organizer_positions.includes(:user)
     @pending = @event.organizer_position_invites.pending.includes(:sender)
-    authorize @event
   end
 
   # GET /events/1/edit
@@ -150,7 +156,6 @@ class EventsController < ApplicationController
   end
 
   def card_overview
-    @event = Event.find params[:event_id]
     @stripe_cards = @event.stripe_cards.includes(user: [:profile_picture_attachment])
     @stripe_authorizations = @event.stripe_authorizations.includes(stripe_card: :user)
     @emburse_cards = @event.emburse_cards.includes(user: [:profile_picture_attachment])
@@ -161,14 +166,12 @@ class EventsController < ApplicationController
   end
 
   def g_suite_overview
-    @event = Event.friendly.find(params[:event_id])
     authorize @event
 
     @g_suite = @event.g_suite
   end
 
   def g_suite_create
-    @event = Event.friendly.find(params[:event_id])
     authorize @event
 
     attrs = {
@@ -184,7 +187,6 @@ class EventsController < ApplicationController
   end
 
   def g_suite_verify
-    @event = Event.friendly.find(params[:event_id])
     authorize @event
 
     GSuiteService::MarkVerifying.new(g_suite_id: @event.g_suite.id).run
@@ -193,13 +195,11 @@ class EventsController < ApplicationController
   end
 
   def donation_overview
-    @event = Event.friendly.find(params[:event_id])
     authorize @event
     @donations = @event.donations.where(status: 'succeeded').sort_by {|d| d.created_at }.reverse
   end
 
   def transfers
-    @event = Event.friendly.find(params[:event_id])
     authorize @event
 
     @checks = @event.checks.includes(:creator)
@@ -209,12 +209,10 @@ class EventsController < ApplicationController
   end
 
   def promotions
-    @event = Event.friendly.find(params[:event_id])
     authorize @event
   end
 
   def reimbursements
-    @event = Event.friendly.find(params[:event_id])
     authorize @event
   end
 
@@ -222,7 +220,7 @@ class EventsController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_event
-    @event = Event.friendly.find(params[:id])
+    @event = Event.friendly.find(params[:event_id] || params[:id])
   rescue ActiveRecord::RecordNotFound
     flash[:error] = 'We couldn’t find that event!'
     redirect_to root_path

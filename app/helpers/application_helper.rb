@@ -21,6 +21,13 @@ module ApplicationHelper
     content << [obj.address_city, obj.address_state, obj.address_postal_code].join(', ')
     content_tag(:span, content.join.html_safe)
   end
+  
+  def async_frame_to(url, options = { as: :div }, &block)
+    content_tag options[:as].to_sym, capture(&block), data: {
+      src: url,
+      behavior: 'async_frame'
+    }, **options
+  end
 
   def blankslate(text, options = {})
     other_options = options.except(:class)

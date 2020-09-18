@@ -15,6 +15,10 @@ class EventPolicy < ApplicationPolicy
     is_public || user_or_admin
   end
 
+  def dashboard_stats?
+    is_public || user_or_admin
+  end
+
   def by_airtable_id?
     user&.admin?
   end

@@ -225,6 +225,8 @@ Rails.application.routes.draw do
   get '/events' => 'events#index'
   get '/event_by_airtable_id/:airtable_id' => 'events#by_airtable_id'
   resources :events, path: '/' do
+    get 'dashboard_stats', to: 'events#dashboard_stats', as: :dashboard_stats
+
     get 'team', to: 'events#team', as: :team
     get 'g_suite', to: 'events#g_suite_overview', as: :g_suite_overview
     post 'g_suite_create', to: 'events#g_suite_create', as: :g_suite_create
