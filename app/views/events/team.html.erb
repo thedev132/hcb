@@ -19,6 +19,9 @@
           <span class="admin-tools inline-block h5">
           phone: <%= position.user.phone_number %>
           </span>
+          <span class="admin-tools inline-block h5">
+          <%= link_to "Impersonate this user", impersonate_users_path(user_id: position.user.id) %>
+          </span>
         <% end %>
       </p>
       <% admin_tools('mr2') do %>
