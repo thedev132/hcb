@@ -144,6 +144,7 @@ gem 'heroku-deflater', group: :production
 gem 'aasm' # state machine
 gem 'airbrake' # exception tracking
 gem 'blazer' # business intelligence tool/dashboard
+gem 'geocoder' # lookup lat/lng for Stripe Cards shipment tracking
 gem 'money-rails' # back cent fields as money objects 
 gem 'namae' # multi-cultural human name parser
 gem 'paper_trail' # track changes on models

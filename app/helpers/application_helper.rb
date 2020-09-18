@@ -23,10 +23,13 @@ module ApplicationHelper
   end
   
   def async_frame_to(url, options = { as: :div }, &block)
-    content_tag options[:as].to_sym, capture(&block), data: {
-      src: url,
-      behavior: 'async_frame'
-    }, **options
+    content_tag options[:as].to_sym,
+      block_given? ? capture(&block) : nil,
+      data: {
+        src: url,
+        behavior: 'async_frame'
+      },
+      **options
   end
 
   def blankslate(text, options = {})

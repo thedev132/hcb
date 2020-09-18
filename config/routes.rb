@@ -13,17 +13,18 @@ Rails.application.routes.draw do
   root to: 'static_pages#index'
   get 'stats', to: 'static_pages#stats'
 
-  scope '/my' do
-    get '/', to: redirect('/'), as: :my
-    get '/cards', to: 'static_pages#my_cards', as: :my_cards
-    get '/settings', to: 'users#edit', as: :my_settings
-  end
   scope :my do
+    get '/', to: redirect('/'), as: :my
+    get 'settings', to: 'users#edit', as: :my_settings
+
     resources :stripe_authorizations, only: [:index, :show], path: 'transactions' do
       resources :comments
     end
     get 'receipts', to: redirect('/my/cards')
     get 'receipts/:id', to: 'stripe_authorizations#receipt', as: :my_receipt
+
+    get 'cards', to: 'static_pages#my_cards', as: :my_cards
+    get 'cards/shipping', to: 'stripe_cards#shipping', as: :my_cards_shipping
   end
   post 'receipts/upload', to: 'receipts#upload'
   delete 'receipts/destroy', to: 'receipts#destroy'
@@ -234,6 +235,7 @@ Rails.application.routes.draw do
     get 'emburse_cards', to: 'events#emburse_card_overview', as: :emburse_cards_overview
     get 'cards', to: 'events#card_overview', as: :cards_overview
     get 'stripe_cards/new', to: 'stripe_cards#new'
+    get 'stripe_cards/shipping', to: 'stripe_cards#shipping', as: :stripe_cards_shipping
 
     get 'transfers', to: 'events#transfers', as: :transfers
     get 'promotions', to: 'events#promotions', as: :promotions

@@ -1,0 +1,55 @@
+<% if @stripe_cards.any? %>
+<div class="banner bg-pending slate flex items-center mt2 mb2">
+  <%= inline_icon 'card-pin', size: 32 %>
+  <strong class="ml2"><%= pluralize cards.size, 'card' %> <%= cards.size == 1 ? 'is' : 'are' %> on the way!</strong>
+</div>
+<section class="grid grid--split mb3">
+<% @stripe_cards.each do |card| %>
+  <% @map_url = card_shipping_map_url(card) %>
+  <div class="card p0 flex flex-column">
+    <div class="">
+      <h3 class="border-none m0 p2">
+        Card for
+        <% if @event %>
+          <%= user_mention card.user %>
+        <% else %>
+          <%= link_to card.event.name, card.event %>
+        <% end %>
+      </h3>
+      <% if card.shipping_has_tracking? %>
+      <section class="card__banner card__darker details-horiz border-top border-bottom m0">
+        <p>
+          <strong>Carrier</strong>
+          <%= card.stripe_obj[:shipping][:carrier].capitalize %>
+        </p>
+        <p>
+          <strong>ETA</strong>
+          <%= format_date Time.at(card.stripe_obj[:shipping][:eta]).to_date %>
+        </p>
+        <p>
+          <strong>Tracking #</strong>
+          <%= card.stripe_obj[:shipping][:tracking_number] %>
+        </p>
+      </section>
+      <% else %>
+        <section class="pl2 muted pb2 mb1">
+          Estimated to arrive
+          <%= format_date Time.at(card.stripe_obj[:shipping][:eta]).to_date %>
+        </section>
+      <% end %>
+      <footer class="flex flex-wrap items-center p2 relative" style="bottom: -75px; margin-top: -75px;">
+        <%= image_tag "https://logo.clearbit.com/#{card.stripe_obj[:shipping][:carrier]}.com", width: 64, height: 64, style: 'height: auto; object-fit: contain;', class: 'rounded bg-white mr2' %>
+        <% if card.shipping_has_tracking? %>
+          <%= link_to card.stripe_obj[:shipping][:tracking_url], class: 'btn' do %>
+            <%= inline_icon 'external' %>
+            Track shipment
+          <% end %>
+        <% end %>
+      </footer>
+    </div>
+    <%= image_tag @map_url, style: 'width: 100%; max-width: 512px; height: auto; object-fit: cover;', width: 256, height: 128 if @map_url %>
+  </div>
+  <% @map_url = nil %>
+<% end %>
+</section>
+<% end %>

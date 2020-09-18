@@ -4,6 +4,9 @@ class StripeCard < ApplicationRecord
 
   scope :deactivated, -> { where.not(stripe_status: 'active') }
   scope :active, -> { where(stripe_status: 'active') }
+  scope :active, -> { where(stripe_status: 'active') }
+  scope :physical, -> { where(card_type: 1) }
+  scope :physical_shipping, -> { physical.includes(:user, :event).select { |c| c.stripe_obj[:shipping][:status] != 'delivered' } }
 
   belongs_to :event
   belongs_to :stripe_cardholder
@@ -84,6 +87,10 @@ class StripeCard < ApplicationRecord
     end
 
     @stripe_card_obj
+  end
+
+  def shipping_has_tracking?
+    stripe_obj[:shipping][:tracking_number].present?
   end
 
   def self.new_from_stripe_id(params)

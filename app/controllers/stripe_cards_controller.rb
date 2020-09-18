@@ -4,6 +4,19 @@ class StripeCardsController < ApplicationController
     authorize @cards
   end
 
+  # async frame for shipment tracking
+  def shipping
+    if params[:event_id] # event card overview page
+      @event = Event.friendly.find(params[:event_id])
+      authorize @event
+      @stripe_cards = @event.stripe_cards.physical_shipping
+    else # my cards page
+      @stripe_cards = current_user.stripe_cards.physical_shipping
+      skip_after_action :verify_authorized # do not force pundit
+    end
+    render :shipping, layout: false
+  end
+
   def show
     @card = StripeCard.includes(:event).find(params[:id]) # .includes(:user)
     @event = @card.event

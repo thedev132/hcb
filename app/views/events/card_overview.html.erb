@@ -1,6 +1,6 @@
 <% title "Cards for #{@event.name.html_safe}" %>
 <% page_md %>
-<%= render 'nav'%>
+<%= render 'nav' %>
 
 <%= render 'cards/ordering_suspended' %>
 
@@ -14,6 +14,7 @@
   <% end %>
 </h1>
 <% if @cards.any? %>
+  <%= async_frame_to event_stripe_cards_shipping_path(@event) %>
   <section class="mixed-grid grid--spacious mt2">
     <%= render @active %>
   </section>

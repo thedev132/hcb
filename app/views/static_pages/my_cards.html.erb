@@ -3,6 +3,9 @@
 <%= render 'users/nav' %>
 
 <h1>Cards</h1>
+
+<%= async_frame_to my_stripe_cards_shipping_path %>
+
 <article class="grid">
 <% @stripe_cards.each do |card| %>
   <%= link_to card, class: 'card card--hover' do %>
