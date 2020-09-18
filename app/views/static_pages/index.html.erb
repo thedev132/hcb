@@ -86,7 +86,7 @@
       <%#= react_component 'admin_task/Card', human_name: 'Transactions', task_name: :transactions, task_path: transactions_path %>
 
       <%= render partial: 'static_pages/card', locals: { task_path: pending_fees_path, task_name: :pending_fees, human_name: 'Fees', count: @service.pending_fees_count } %>
-      <%= render partial: 'static_pages/card', locals: { task_path: pending_disbursements_path, task_name: :disbursements, human_name: 'Disbursements', count: @service.pending_fees_count } %>
+      <%= render partial: 'static_pages/card', locals: { task_path: pending_disbursements_path, task_name: :disbursements, human_name: 'Disbursements', count: @service.disbursements_count } %>
       <%= react_component 'admin_task/Card', human_name: 'Hackathons', task_name: :pending_hackathons_airtable, task_path: link_to_airtable_task(:hackathons) %>
       <%= react_component 'admin_task/Card', human_name: 'Grants', task_name: :pending_grant_airtable, task_path: link_to_airtable_task(:grant) %>
       <%= react_component 'admin_task/Card', human_name: 'StickerMule', task_name: :pending_stickermule_airtable, task_path: link_to_airtable_task(:stickermule) %>
