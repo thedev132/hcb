@@ -136,8 +136,7 @@ class StripeCard < ApplicationRecord
 
   def notify_user
     if virtual?
-      # TODO
-      # StripeCardMailer.with(card_id: self.id).virtual_card_ordered.deliver_later unless virtual?
+      StripeCardMailer.with(card_id: self.id).virtual_card_ordered.deliver_later unless virtual?
     else
       StripeCardMailer.with(card_id: self.id).physical_card_ordered.deliver_later unless virtual?
     end
