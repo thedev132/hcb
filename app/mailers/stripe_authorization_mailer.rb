@@ -6,7 +6,7 @@ class StripeAuthorizationMailer < ApplicationMailer
     @user = @card.user
     @event = @card.event
 
-    mail to: 'bank@hackclub.com',
+    mail to: 'bank-alerts@hackclub.com',
          subject: "#{@auth.status_emoji} Stripe authorization #{@auth.status_text.downcase} for card ##{@card.last4} (#{@event.name} | #{@user.full_name})"
   end
 
