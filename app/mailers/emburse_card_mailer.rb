@@ -12,7 +12,7 @@ class EmburseCardMailer < ApplicationMailer
     @has_subscriptions = @cards_with_subscriptions.any?
 
     mail to: @user.email,
-         subject: "[Notice] Emburse cards are suspending in the next 2 weeks",
+         subject: "[Notice] Emburse cards are suspending in the next week",
          reply_to: 'max@hackclub.com'
   end
 
