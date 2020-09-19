@@ -1,0 +1,62 @@
+<p>Hey <%= @user.first_name %>, this is an <strong>important, but automated</strong>, email. If you have any questions, please reply and I'll personally get back to you.</p>
+<p>Hack Club Bank is transitioning card providers from Emburse to Stripe Issuing. On September 26th, all Emburse cards will be deactivated (their timeline, not ours!).</p>
+<ol>
+  <li>
+  If you haven't ordered replacement cards for projects you're going to spend money for, you should do that ASAP.
+  <ul>
+    <% @events.each do |event| %>
+      <li>
+        <%= event.name %>– you
+        <% if @user.emburse_cards.active.where(event: event).size == 0 %>
+          don't have any Emburse cards, but you can <strong><%= link_to 'order a new card if you need it', "https://hack.af/emburse-migration?prefill_Account=#{@user.email}|#{@user.id}&prefill_Events=#{event.id}-#{event.name}" %></strong>.
+        <% else %>
+          have <%= pluralize(@user.emburse_cards.active.where(event: event).size, 'Emburse card') %><% if @user.stripe_cards.where(event: event).size == 0 %>
+          <%=' ' %>you haven't replaced. <strong><%= link_to 'Order a replacement', "https://hack.af/emburse-migration?prefill_Account=#{@user.email}|#{@user.id}&prefill_Events=#{event.id}-#{event.name}" %></strong>.
+          <% else %>
+          , and you've already ordered a replacement card.
+          <% end %>
+        <% end %>
+      </li>
+    <% end %>
+  </ul>
+  </li>
+  <li>
+  If you have subscriptions on any Emburse cards, switch them before Sept 26th.
+  <% if @has_subscriptions%>
+    Based on recurring merchants we found, here are some transactions that could be subscriptions:
+    <ul>
+      <% @cards_with_subscriptions.each do |card| %>
+        <li>Card <%= card.last_four %> for <%= card.event.name %>
+          <ul>
+            <% card.suspected_subscriptions.each do |subscription| %>
+            <li><%= subscription.humanize %></li>
+            <% end %>
+          </ul>
+        </li>
+      <% end %>
+    </ul>
+  <% end %>
+  </li>
+  <li>
+    <% if @events_with_emburse_budget.any? %>
+      Your Emburse balance will automatically transfer to your project balance
+      Sept 26, but if you need to spend money on your new cards before then,
+      you can request an early transfer. Keep in mind this is a project wide
+      change– when you transfer the funds your teammembers won't have money
+      available on their cards.
+      <ul>
+        <% @events_with_emburse_budget.each do |event| %>
+          <li><strong><%= link_to "Transfer for #{event.name}", "https://hack.af/emburse-budget-migration?prefill_Name=#{event.id}|#{event.slug}" %></strong></li>
+        <% end %>
+      </ul>
+    <% else %>
+      Your Emburse balance will automatically transfer to your project blance
+      Sept 26. Because none of your events have money in Emburse, you don't
+      need to take any actions around this.
+    <% end %>
+  </li>
+</ol>
+
+<p>In the last week we've been working on the new interface for new cards, as well as migrating data from your previous cards to Bank so you don't lose anything. First, we've added unified transactions, so your Emburse, new card, transfers, donations, invoices, and fees all show up in the main transaction list on your project homepage. Second, we've added a way to upload receipts to Bank for transactions on your new cards. We'll migrate over your receipts from Emburse soon.</p>
+
+<p>We first notified you about the card transition 2 weeks ago, and we're sending this as a final email about the transition. If you have any questions about the process, about the new cards, or just generally want to say hi, reply directly to this email and I'm all yours! best, Max</p>

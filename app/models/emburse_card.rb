@@ -54,6 +54,10 @@ class EmburseCard < ApplicationRecord
     emburse_obj&.department&.id
   end
 
+  def suspected_subscriptions
+    emburse_transactions.group(:merchant_name).having('COUNT(*)>3').count.keys
+  end
+
   # Emburse emburse_cards have three activation states:
   # 1. "unactivated", when emburse_card first ships. Must be activated by user
   #   at emburse.com/activate to be active, cannot be activated by Bank
