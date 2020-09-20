@@ -1,0 +1,14 @@
+<p>Good news!</p>
+
+<p>
+  Your G Suite for <strong><%= @g_suite.domain %></strong> is verified! You can now start adding accounts for you and your members. 
+</p>
+
+<p>
+  Do so <%= link_to 'here on your G Suite page', event_g_suite_overview_url(event_id: @g_suite.event.slug) %>. Message your Bank point of contact with any questions.
+</p>
+
+<p>
+  Best,<br/>
+  The Hack Club Team
+</p>
