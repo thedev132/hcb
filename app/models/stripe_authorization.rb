@@ -63,7 +63,7 @@ class StripeAuthorization < ApplicationRecord
   end
 
   def merchant_name
-    stripe_obj[:merchant_data][:name]
+    name || stripe_obj[:merchant_data][:name]
   end
 
   def sync_from_stripe!
@@ -73,6 +73,7 @@ class StripeAuthorization < ApplicationRecord
     self.authorization_method = stripe_obj[:authorization_method]
     self.approved = stripe_obj[:approved]
     self.amount = stripe_obj[:amount]
+    self.name = stripe_obj[:merchant_data][:name]
 
     stripe_card_id = stripe_obj[:card][:id]
     self.stripe_card = StripeCard.find_by(stripe_id: stripe_card_id)
