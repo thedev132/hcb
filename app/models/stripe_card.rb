@@ -62,6 +62,10 @@ class StripeCard < ApplicationRecord
     stripe_cardholder.stripe_name
   end
 
+  def total_spent
+    stripe_authorizations.approved.sum(:amount)
+  end
+
   def status_text
     stripe_status.humanize.capitalize
   end

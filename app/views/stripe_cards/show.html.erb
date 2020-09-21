@@ -46,6 +46,11 @@
         <% end %>
 
         <div>
+          <strong>Total spent</strong>
+          <%= render_money @card.total_spent %>
+        </div>
+
+        <div>
           <strong>Spending limit</strong>
           <%= render_money @event.available_balance %>
         </div>
