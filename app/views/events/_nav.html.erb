@@ -16,11 +16,7 @@
     event_invoices_path(event_id: @event.slug) unless @event.is_spend_only %>
   <%= dock_card 'Cards',
     'Request and manage cards for your team.',
-    'card', 'purple',
-    @event.has_active_emburse? ?
-      event_emburse_cards_overview_path(event_id: @event.slug) :
-      event_cards_overview_path(event_id: @event.slug)
-     %>
+    'card', 'purple', event_cards_overview_path(event_id: @event.slug) %>
   <%= dock_card 'Send',
     'Send money from Hack Club Bank.',
     'transactions', 'success',
@@ -28,7 +24,7 @@
   <%= dock_card 'Donations',
     'Receive donations online.',
     'support', 'warning',
-    event_donation_overview_path(event_id: @event.slug) if @event.donation_page_enabled %>
+    event_donation_overview_path(event_id: @event.slug) if @event.donation_page_enabled && !@event.is_spend_only %>
   <div class="md-pl1">
     <action type="button" class="pop menu__toggle" data-behavior="menu_toggle" aria-expanded="false" tabindex="0">
     <%= inline_icon 'more' %>

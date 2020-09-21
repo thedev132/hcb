@@ -1,17 +1,21 @@
-<div class="card border b--warning pb0 mt3 mb3">
-  <div class="flex items-center warning">
+<div class="card border b--primary pb0 mt3 mb3">
+  <div class="flex items-center primary">
     <%= inline_icon 'card', size: 32, class: 'mr1' %>
-    <p class="bold mt0 mb0">Emburse cards are going away</p>
+    <p class="bold mt0 mb0">It’s Emburse migration week</p>
   </div>
-  <p class="mt1 mb2">
-    If you need a new physical card to keep spending money once your Emburse card shuts off, order your new card early
+  <p class="mt1 mb1">
+  This Saturday, <strong>Sept 26th</strong>, Emburse will be shutting down the purple cards. You can 
     <% prefill ={prefill_Account: "#{current_user&.email}|#{current_user&.id}", prefill_Events: "#{@event.id}-#{@event.name}"} %>
-    <%= link_to 'with this form', "https://hack.af/emburse-migration?#{prefill.to_query}", class: 'warning' %>.
-    <% if @event.used_emburse? %>
-      The Emburse cards page will <%= link_to 'remain available', event_emburse_cards_overview_path(event_id: @event.slug) %>.
-    <% end %>
+    <%= link_to 'order yourself a new card here', "https://hack.af/emburse-migration?#{prefill.to_query}", class: 'primary' %>.
+  <% if @event.used_emburse? %>
+     The new cards spend from your account balance, so your Emburse balance will be transferred back automatically this weekend.
+    </p>
+    <p class="muted">
+      All your
+      <%= link_to 'Emburse data will remain available', event_emburse_cards_overview_path(event_id: @event.slug) %>.
+  <% end %>
   </p>
-  <div class="border-top card__banner card__darker slate">
-    <strong class="warning">Questions?</strong> Talk to your point of contact, <%= link_to @event.point_of_contact.name, "mailto:#{@event.point_of_contact.email}" %>
+  <div class="border-top card__banner card__darker slate mt2">
+    <strong class="primary">Questions?</strong> <%= help_message %>
   </div>
 </div>

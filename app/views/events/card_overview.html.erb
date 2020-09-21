@@ -6,12 +6,10 @@
 
 <h1 class="heading">
   Cards
-  <% if organizer_signed_in? %>
-    <%= link_to new_stripe_card_path(event_id: @event.id), class: 'btn btn--icon bg-success disabled' do %>
-      <%= inline_icon 'card-add' %>
-      Issue new card
-    <% end %>
-  <% end %>
+  <%= link_to new_stripe_card_path(event_id: @event.id), class: 'btn btn--icon bg-success disabled' do %>
+    <%= inline_icon 'card-add' %>
+    Issue new card
+  <% end if organizer_signed_in? %>
 </h1>
 <% if @cards.any? %>
   <%= async_frame_to event_stripe_cards_shipping_path(@event) %>
