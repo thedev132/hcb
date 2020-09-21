@@ -9,17 +9,15 @@
       Reveal card number
     <% end if false && @card.virtual? %>
 
-
-      <p class="bold mt2 mb1">Your billing address for purchases</p>
-      <pre class="inline-block mt0 mb0">
-<%= render_address @card.cardholder %>
-      </pre>
   </section>
 
   <article class="card max-width-2 mx-auto mt3">
     <section class="mb2">
       <h2 class="mt0 heading">
-        <span class="flex-auto">Card for <%= user_mention @card.user %></span>
+        <span class="flex-auto">
+          <%= @card.virtual? ? 'Virtual card' : 'Card' %>
+          for <%= user_mention @card.user %>
+        </span>
       </h2>
 
       <section class="details mt2">
@@ -38,67 +36,63 @@
             <strong>ZIP/Postal code</strong>
             <%= @card.stripe_cardholder.address_postal_code %>
           </div>
-        <% else %>
-          <div>
-            <strong>Shipping address</strong>
-            <%= render_address @card %>
-          </div>
         <% end %>
 
+        <p>
+          <strong>Billing address</strong>
+          <%= render_address @card.cardholder %>
+        </p>
+
         <div>
-          <strong>Total spent</strong>
+          <strong>Lifetime total spent</strong>
           <%= render_money @card.total_spent %>
         </div>
 
-        <div>
+        <div class="tooltipped tooltipped--s" aria-label="This is your account balance">
           <strong>Spending limit</strong>
           <%= render_money @event.available_balance %>
         </div>
 
-        <p>
-          <strong>Ordered by</strong>
-          <%= user_mention @card.user %>
-        </p>
-
-        <p>
-          <strong>Ordered at</strong>
-          <%= format_datetime Time.at(@card.stripe_obj[:created]) %>
-        </p>
-
-        <% if @card.stripe_obj.to_hash.dig(:shipping, :eta) %>
+        <% eta = @card.stripe_obj.to_hash.dig(:shipping, :eta) %>
+        <% if eta && Time.at(eta) < 3.days.ago %>
           <p>
             <strong>Expected on</strong>
             <%= format_datetime Time.at(@card.stripe_obj.to_hash.dig(:shipping, :eta)) %>
           </p>
+        <% else %>
+          <p>
+            <strong>Activation status</strong>
+            <span class="flex items-baseline">
+              <%= status_badge @card.status_badge_type %>
+              <%= @card.status_text %>
+            </span>
+          </p>
         <% end %>
 
-        <p>
-          <strong>Activation status</strong>
-          <span class="flex items-baseline">
-            <%= status_badge @card.status_badge_type %>
-            <%= @card.status_text %>
-          </span>
-        </p>
+        <% admin_tools do %>
+          <strong>Ordered at</strong>
+          <%= format_datetime Time.at(@card.stripe_obj[:created]) %>
+        <% end %>
       </section>
     </section>
 
     <section class="card__banner card__banner--bottom card__darker pt2 pb2">
       <p class="muted mt0 mb0">
-        If there are fradulent or incorrect charges on your card,
-        please let your point of contact,
-        <%= user_mention @card.event&.point_of_contact %> know.
+      Alert us if there are fradulent or incorrect charges on your card. <%= help_message %>
       </p>
     </section>
   </article>
 </article>
 
-<ul>
-<% @card.stripe_authorizations.awaiting_receipt.each do |auth| %>
-  <li>
-  <%= link_to "Upload receipt for #{render_money auth.amount} at \"#{auth.merchant_name}\"", stripe_authorization_url(id: auth.id, stripe_id: auth.stripe_id) %>
-  </li>
+<% @authorizations = @card.stripe_authorizations.awaiting_receipt %>
+<% if @authorizations.any? %>
+  <section class="card p0 mt3 mb3">
+    <h2 class="heading h2 line-height-3 mt0 pt1 pb1 pl2 pr2">
+      Transactions missing receipts
+    </h2>
+    <%= render 'stripe_authorizations/list', stripe_authorizations: @authorizations, headless: true %>
+  </section>
 <% end %>
-</ul>
 
 <% admin_tools do %>
   <pre>

@@ -18,6 +18,10 @@
       <%= inline_icon 'external' %>
       View on Emburse
     <% end if @emburse_card.is_virtual %>
+    <p class="bold mt2 mb1">Your billing address for purchases</p>
+  <pre class="inline-block mt0 mb0">The Hack Foundation
+8605 Santa Monica Blvd #86294
+West Hollywood, CA 90069</pre>
   </section>
 
   <article class="card max-width-2 mx-auto mt3">
@@ -61,6 +65,11 @@
           <strong>Activation status</strong>
           <%= @emburse_card.status_text %>
         </p>
+
+      <% admin_tools do %>
+        <strong>Emburse ID</strong>
+        <%= link_to @emburse_card.emburse_id, @emburse_card.emburse_path %>
+      <% end %>
       </section>
 
       <% if @emburse_card.transactions_missing_receipts.any? %>
@@ -74,11 +83,6 @@
             <p class="bold mt0 mb0">This card has <%= pluralize @emburse_card.transactions_missing_receipts.size, 'missing receipt' %></p>
           </div>
         </section>
-      <% end %>
-
-      <% admin_tools do %>
-        <strong>Emburse ID</strong>
-        <%= link_to @emburse_card.emburse_id, @emburse_card.emburse_path %>
       <% end %>
     </section>
 

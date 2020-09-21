@@ -1,5 +1,5 @@
-<% stripe_authorizations = @stripe_authorizations unless defined? stripe_authorizations %>
-<% if stripe_authorizations.any? %>
+<% stripe_authorizations ||= @stripe_authorizations %>
+<% if stripe_authorizations %>
 <div class="table-container">
   <table class="table-container">
     <% unless defined? headless %>
