@@ -10,7 +10,7 @@
 <% @stripe_cards.each do |card| %>
   <%= link_to card, class: 'card card--hover' do %>
     <strong class="flex items-center black h3">
-      <%= inline_icon 'card', size: 32, class: 'muted pr1' %>
+      <%= inline_icon 'card', size: 32, class: 'black pr1' %>
       <%= card.last_four %>
     </strong>
     <span class="block muted h4">
@@ -19,6 +19,8 @@
   <% end %>
 <% end %>
 </article>
+
+<%= async_frame_to my_stripe_authorizations_list_path %>
 
 <% if @emburse_cards.any? %>
   <h2 class="grid__fill mt3 mb2">Emburse cards</h2>

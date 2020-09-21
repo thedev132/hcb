@@ -2,11 +2,17 @@
   class="transaction--<%= stripe_authorization.amount.negative? ? 'positive' : 'negative' %><%= ' muted' if stripe_authorization.pending? %>"
   data-behavior="filterbar_row"
   data-filter="<%= stripe_authorization.filter_data.to_json %>">
-  <td
-    class="transaction__icon tooltipped tooltipped--e"
-    aria-label="Card transaction by <%= stripe_authorization.card.user.initial_name %>">
-    <%= avatar_for stripe_authorization.card.user, 24 %>
-  </td>
+  <% if defined? @event %>
+    <td
+      class="transaction__icon tooltipped tooltipped--e"
+      aria-label="Card transaction by <%= stripe_authorization.card.user.initial_name %>">
+      <%= avatar_for stripe_authorization.card.user, 24 %>
+    </td>
+  <% else %>
+    <td>
+      <%= stripe_card_mention stripe_authorization.card %>
+    </td>
+  <% end %>
   <td>
     <%= stripe_authorization.created_at.to_date %>
   </td>

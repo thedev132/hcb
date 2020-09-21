@@ -3,7 +3,7 @@ require 'net/http'
 class StaticPagesController < ApplicationController
   skip_after_action :verify_authorized # do not force pundit
   skip_before_action :signed_in_user, only: [:stats, :branding, :faq]
-  before_action :signed_in_admin, except: [:stats, :branding, :faq, :index, :my_cards]
+  before_action :signed_in_admin, except: [:stats, :branding, :faq, :index, :my_cards, :my_inbox, :my_stripe_authorizations_list]
 
   def index
     if signed_in?
@@ -124,6 +124,18 @@ class StaticPagesController < ApplicationController
     flash[:success] = 'Card activated!' if params[:activate]
     @stripe_cards = current_user.stripe_cards.includes(:event)
     @emburse_cards = current_user.emburse_cards.includes(:event)
+  end
+
+  # async frame
+  def my_stripe_authorizations_list
+    @stripe_cards = current_user.stripe_cards.includes(:event, stripe_authorizations: :receipts)
+    @authorizations = current_user.stripe_authorizations.includes(stripe_card: :event).limit(5)
+    render :my_stripe_authorizations_list, layout: false
+  end
+
+  def my_inbox
+    @authorizations = current_user.stripe_authorizations.includes(stripe_card: :event)
+    @count = @authorizations.size
   end
 
   def stats

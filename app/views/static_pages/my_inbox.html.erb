@@ -1,0 +1,22 @@
+<% title 'My inbox' %>
+<% page_md %>
+<%= render 'users/nav' %>
+
+<h1 class="heading">
+  Inbox
+  <%= badge_for @count %>
+</h1>
+<p class="muted h3">
+  <% if @count == 0 %>
+    None of your card transactions are missing receipts. :)
+  <% else %>
+    These are your card transactions missing receipts.
+  <% end %>
+</p>
+
+<% @authorizations.group_by(&:stripe_card).each do |card, authorizations| %>
+  <h2 class="heading mt3 pb1">
+    <%= card.event.name %>
+  </h2>
+  <%= render 'stripe_authorizations/list', stripe_authorizations: card.authorizations, headless: true %>
+<% end %>

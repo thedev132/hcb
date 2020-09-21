@@ -12,7 +12,7 @@ class StripeCardsController < ApplicationController
       @stripe_cards = @event.stripe_cards.physical_shipping
     else # my cards page
       @stripe_cards = current_user.stripe_cards.physical_shipping
-      skip_after_action :verify_authorized # do not force pundit
+      skip_authorization # do not force pundit
     end
     render :shipping, layout: false
   end

@@ -1,0 +1,12 @@
+<% if @authorizations %>
+  <section class="card p0 mt3 mb3">
+    <h2 class="heading h2 line-height-3 mt0 pt1 pb1 pl2 pr2">
+      Transactions missing receipts
+      <%= link_to my_inbox_path, class: 'btn' do %>
+        <%= inline_icon 'view' %>
+        See all
+      <% end %>
+    </h2>
+    <%= render 'stripe_authorizations/list', stripe_authorizations: @authorizations, headless: true %>
+  </section>
+<% end %>
