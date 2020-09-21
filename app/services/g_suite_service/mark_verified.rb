@@ -8,9 +8,11 @@ module GSuiteService
 
     def run
       ActiveRecord::Base.transaction do
-        g_suite.mark_verified! if verified_on_google?
+        if verified_on_google?
+          g_suite.mark_verified! 
 
-        notify_of_verified
+          notify_of_verified
+        end
 
         g_suite
       end
