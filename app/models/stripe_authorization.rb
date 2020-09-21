@@ -23,7 +23,7 @@ class StripeAuthorization < ApplicationRecord
 
   validates_uniqueness_of :stripe_id
 
-  validates_presence_of :stripe_id, :stripe_status, :authorization_method, :amount
+  validates_presence_of :stripe_id, :stripe_status, :authorization_method, :amount, :name
 
   def filter_data
     {
