@@ -9,16 +9,16 @@
   data-id="<%= transaction.id %>"
 >
   <td class="transaction__icon tooltipped tooltipped--e" aria-label="Invoice payment">
-    <%= inline_icon 'payment-docs' %>
+    <%= inline_icon 'briefcase' %>
   </td>
   <td>
     <%= transaction.date %>
   </td>
   <td>
-    Invoice to <%= invoice.sponsor.name %> for <%= render_money invoice.item_amount %>
+    <%= link_to "Invoice to #{invoice.sponsor.name}", invoice %> for <%= render_money invoice.item_amount %>
   </td>
   <td>
-    <%= link_to 'See Invoice', invoice, class: 'underline' %>
+    <%= list_badge_for invoice.comments.size, 'note', 'post', optional: true %>
   </td>
   <td>
     <%= render_money transaction.amount + refund_t&.amount.to_i %>

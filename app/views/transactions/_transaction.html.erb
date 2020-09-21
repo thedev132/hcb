@@ -8,11 +8,12 @@
   <td>
     <%= transaction.date %>
   </td>
-  <td class="flex justify-between">
-    <span><%= transaction.display_name %></span>
-    <span><%= "💬#{transaction.comments.size}" if organizer_signed_in? && transaction.comments.size > 0 %></span>
+  <td class="nowrap">
+    <%= transaction.display_name %>
   </td>
-  <td></td>
+  <td>
+    <%= list_badge_for transaction.comments.size, 'note', 'post', optional: true %>
+  </td>
   <td class="nowrap">
     <%= render_money transaction.amount %>
   </td>

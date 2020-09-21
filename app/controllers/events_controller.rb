@@ -47,8 +47,8 @@ class EventsController < ApplicationController
 
     @transactions = paginate((
       @event.transactions.unified_list.includes(:fee_relationship, :comments) +
-      @event.stripe_authorizations.approved.includes(stripe_card: :user) +
-      @event.emburse_transactions.unified_list)
+      @event.stripe_authorizations.approved.includes(:receipts, stripe_card: :user) +
+      @event.emburse_transactions.unified_list.includes(:comments))
       .sort_by(&:created_at).reverse, per_page: 100)
   end
 

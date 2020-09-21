@@ -11,15 +11,15 @@
 
 <nav class="dock">
   <%= dock_card 'Invoices',
-    'Collect payment from event sponsors.',
-    'payment-docs', 'accent',
+    'Collect payment from sponsors.',
+    'briefcase', 'accent',
     event_invoices_path(event_id: @event.slug) unless @event.is_spend_only %>
   <%= dock_card 'Cards',
     'Request and manage cards for your team.',
     'card', 'purple', event_cards_overview_path(event_id: @event.slug) %>
   <%= dock_card 'Send',
     'Send money from Hack Club Bank.',
-    'transactions', 'success',
+    'send', 'success',
     event_transfers_path(event_id: @event.slug) %>
   <%= dock_card 'Donations',
     'Receive donations online.',

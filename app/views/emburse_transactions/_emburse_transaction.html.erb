@@ -20,7 +20,9 @@
       <%= et.merchant_name %>
     <% end %>
   </td>
-  <td></td>
+  <td>
+    <%= list_badge_for et.comments.size, 'note', 'post', optional: true %>
+  </td>
   <td class="nowrap">
     <%= render_money et.amount %>
   </td>

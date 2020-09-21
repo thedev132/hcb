@@ -216,6 +216,9 @@ html[data-dark='true'] {
     border: none;
     color: map-get($palette, pending);
   }
+  .list-badge {
+    background-color: rgba(0, 0, 0, 0.125);
+  }
 
   .filterbar__item:active,
   .filterbar__item[aria-selected='true'] {

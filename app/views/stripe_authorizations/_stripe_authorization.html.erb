@@ -6,7 +6,9 @@
     <td
       class="transaction__icon tooltipped tooltipped--e"
       aria-label="Card transaction by <%= stripe_authorization.card.user.initial_name %>">
-      <%= avatar_for stripe_authorization.card.user, 24 %>
+      <%= link_to stripe_authorization.card do %>
+        <%= avatar_for stripe_authorization.card.user, 24 %>
+      <% end %>
     </td>
   <% else %>
     <td>
@@ -16,14 +18,16 @@
   <td>
     <%= stripe_authorization.created_at.to_date %>
   </td>
-  <td class="flex justify-between">
+  <td>
     <% if stripe_authorization.pending? %>
       <i><%= stripe_authorization.name %> (pending)</i>
     <% else %>
       <%= stripe_authorization.name %>
     <% end %>
   </td>
-  <td></td>
+  <td>
+    <%= list_badge_for stripe_authorization.receipts.size, 'receipt', 'payment-docs', required: true unless stripe_authorization.pending?  %>
+  </td>
   <td class="nowrap">
     <%= render_money -stripe_authorization.amount %>
   </td>

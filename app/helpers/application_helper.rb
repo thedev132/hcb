@@ -41,6 +41,15 @@ module ApplicationHelper
     blankslate(text, 'data-behavior': 'filterbar_blankslate', class: 'mt2 mb2', **options)
   end
 
+  def list_badge_for(count, item, glyph, options = { optional: false, required: false })
+    icon = inline_icon(glyph, size: 20, 'aria-hidden': true)
+    return nil if options.dig(:optional) && count == 0
+    content_tag(:span,
+                icon + count.to_s,
+                'aria-label': pluralize(count, item),
+                class: "list-badge tooltipped tooltipped--w #{options.dig(:required) && count == 0 ? 'b--warning warning' : ''} #{options.dig(:class)}")
+  end
+
   def badge_for(count, options = {})
     content_tag :span, count, class: "badge #{options[:class]} #{'bg-muted' if count == 0} #{options[:class]}"
   end
