@@ -3,7 +3,7 @@ class DonationPolicy < ApplicationPolicy
     record.event.users.include?(user) || user&.admin?
   end
 
-  def all_index?
+  def index?
     user&.admin?
   end
 end

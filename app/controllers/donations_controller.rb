@@ -1,9 +1,10 @@
 class DonationsController < ApplicationController
+  include Rails::Pagination
   before_action :set_donation, only: [:show, :edit, :update, :destroy]
   skip_after_action :verify_authorized, except: [:show]
   skip_before_action :signed_in_user, except: [:show]
   before_action :set_event, only: [:start_donation, :make_donation, :finish_donation, :qr_code]
-  before_action :allow_iframe, except: [:show, :all_index]
+  before_action :allow_iframe, except: [:show, :index]
 
   # GET /donations/1
   def show
@@ -24,9 +25,9 @@ class DonationsController < ApplicationController
   end
 
   # GET /donations
-  def all_index
+  def index
     authorize Donation
-    @donations = Donation.all
+    @donations = paginate(Donation.all)
   end
 
   def make_donation
