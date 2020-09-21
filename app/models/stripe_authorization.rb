@@ -25,10 +25,6 @@ class StripeAuthorization < ApplicationRecord
 
   validates_presence_of :stripe_id, :stripe_status, :authorization_method, :amount
 
-  def name
-    stripe_obj[:merchant_data][:name]
-  end
-
   def filter_data
     {
       exists: true,
