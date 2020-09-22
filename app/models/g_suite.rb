@@ -33,6 +33,7 @@ class GSuite < ApplicationRecord
     end
   end
 
+  scope :not_deleted, -> { where('deleted_at is null') }
   scope :needs_ops_review, -> { where('deleted_at is null and aasm_state in (?)', ['creating', 'verifying']) }
 
   validates :domain, presence: true, uniqueness: { case_sensitive: false }, format: { with: VALID_DOMAIN }

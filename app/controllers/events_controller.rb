@@ -168,7 +168,7 @@ class EventsController < ApplicationController
   def g_suite_overview
     authorize @event
 
-    @g_suite = @event.g_suite
+    @g_suite = @event.g_suites.not_deleted.first
   end
 
   def g_suite_create
@@ -189,7 +189,7 @@ class EventsController < ApplicationController
   def g_suite_verify
     authorize @event
 
-    GSuiteService::MarkVerifying.new(g_suite_id: @event.g_suite.id).run
+    GSuiteService::MarkVerifying.new(g_suite_id: @event.g_suites.not_deleted.first.id).run
 
     redirect_to event_g_suite_overview_path(event_id: @event.slug)
   end

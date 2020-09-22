@@ -52,7 +52,7 @@ class GSuiteAccount < ApplicationRecord
   end
 
   def event
-    self.g_suite.event
+    g_suite.event
   end
 
   def reset_password!
