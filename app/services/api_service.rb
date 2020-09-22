@@ -22,7 +22,11 @@ class ApiService
     if resp.status == 401 && raise_on_unauthorized
       raise UnauthorizedError.new
     else
-      JSON.parse(resp.body, symbolize_names: true)
+      begin
+        JSON.parse(resp.body, symbolize_names: true)
+      rescue JSON::ParserError
+        raise UnauthorizedError.new
+      end
     end
   end
 end

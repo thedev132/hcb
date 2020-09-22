@@ -3,7 +3,7 @@ class GSuitesController < ApplicationController
 
   # GET /g_suites
   def index
-    @g_suites = GSuite.all.order(created_at: :desc)
+    @g_suites = GSuite.all.includes(:event).order(created_at: :desc)
     authorize @g_suites
   end
 

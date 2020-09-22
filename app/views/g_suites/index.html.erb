@@ -18,7 +18,7 @@
 
   <tbody>
     <% @g_suites.each do |g_suite| %>
-      <tr class="<%= 'shade-yellow' if g_suite.needs_ops_review? %>">
+      <tr class="<%= 'shade-yellow' if g_suite.needs_ops_review? %> <%= 'shade-red' if g_suite.deleted_at %>">
         <td><%= link_to g_suite.event.name, g_suite.event %></td>
         <td><%= g_suite.domain %></td>
         <td><%= g_suite.verification_key %></td>

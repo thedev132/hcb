@@ -33,7 +33,7 @@ RSpec.describe GSuiteService::Create, type: :model do
 
   context "when g suite does not exist" do
     before do
-      event.g_suite.destroy!
+      event.g_suites.first.destroy!
     end
 
     it "creates a g suite" do
