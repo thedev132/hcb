@@ -25,6 +25,10 @@
       border-bottom-color: map-get($palette, white);
       border-width: 10px;
     }
+
+    &.tooltipped:after {
+      content: initial;
+    }
   }
 }
 
