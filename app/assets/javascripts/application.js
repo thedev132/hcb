@@ -10,7 +10,6 @@
 
 //= require global
 //= require ui
-//= require fee_retro_promo
 //= require filterbar
 //= require checks
-//= require emburse_card_requests
+// require emburse_card_requests

@@ -17,6 +17,23 @@
     <%= render_money transaction.amount %>
   </td>
   <td>
-    <%= link_to 'Details', transaction, id: 'promo-modal' if organizer_signed_in? %>
+    <%= link_to 'Details', transaction, data: { behavior: 'modal_trigger', modal: 'retrofees' } if organizer_signed_in? %>
   </td>
 </tr>
+<section class="modal" data-behavior="modal" role="dialog" id="retrofees">
+  <%= modal_header 'Surprise! Free money.' %>
+  <p>
+    Awhile ago, <a href="https://changelog.bank.hackclub.com/we're-making-payment-processing-fees-disappear-101088">we announced the
+    abolishment of credit card processing fees on Hack Club
+    Bank.</a>
+  </p>
+  <p id="retrofees__moneyFieldHere">
+    Well, there’s more good news—we also reimbursed all of
+    your previous processing fees from before the change.
+    This project got <%= render_money transaction.amount %>.
+  </p>
+  <p>
+    With ❤️,<br />
+    &mdash;Hack Club Bank
+  </p>
+</section>
