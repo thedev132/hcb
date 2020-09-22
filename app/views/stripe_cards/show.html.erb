@@ -1,7 +1,7 @@
 <% title "Card #{@card.last_four}" %>
 <%= render 'events/nav' %>
 
-<article class="check--form flex align-start justify-center mt2">
+<article class="check--form flex align-start justify-center mt2 mb3">
   <section class="center mt0 mx-auto" style="width: 400px; max-width: 100%;">
     <%= render @card %>
     <%= link_to @card, class: 'btn bg-info mt2 md-mt3' do %>
@@ -83,14 +83,16 @@
   </article>
 </article>
 
-<% @authorizations = @card.stripe_authorizations.awaiting_receipt %>
+<% @authorizations = @card.stripe_authorizations %>
 <% if @authorizations.any? %>
   <section class="card p0 mt3 mb3">
     <h2 class="heading h2 line-height-3 mt0 pt1 pb1 pl2 pr2">
-      Transactions missing receipts
+      Transactions on this card
     </h2>
     <%= render 'stripe_authorizations/list', stripe_authorizations: @authorizations, headless: true %>
   </section>
+<% else %>
+  <%= blankslate 'No transactions made on this card yet.' %>
 <% end %>
 
 <% admin_tools do %>
