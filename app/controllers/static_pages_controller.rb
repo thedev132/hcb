@@ -129,12 +129,12 @@ class StaticPagesController < ApplicationController
   # async frame
   def my_stripe_authorizations_list
     @stripe_cards = current_user.stripe_cards.includes(:event, stripe_authorizations: :receipts)
-    @authorizations = current_user.stripe_authorizations.includes(stripe_card: :event).limit(5)
+    @authorizations = current_user.stripe_authorizations.includes(stripe_card: :event).awaiting_receipt.limit(5)
     render :my_stripe_authorizations_list, layout: false
   end
 
   def my_inbox
-    @authorizations = current_user.stripe_authorizations.includes(stripe_card: :event)
+    @authorizations = current_user.stripe_authorizations.includes(stripe_card: :event).awaiting_receipt
     @count = @authorizations.size
   end
 
