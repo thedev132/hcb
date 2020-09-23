@@ -2,7 +2,7 @@ class DisbursementsController < ApplicationController
   before_action :set_disbursement, only: [:show, :edit, :update]
 
   def index
-    @disbursements = Disbursement.all.order(created_at: :desc)
+    @disbursements = Disbursement.all.order(created_at: :desc).includes(:t_transactions, :event, :source_event)
     authorize @disbursements
   end
 
