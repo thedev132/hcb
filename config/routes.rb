@@ -97,7 +97,7 @@ Rails.application.routes.draw do
     resources :comments
   end
   resources :stripe_cardholders, only: [:new, :create, :update]
-  resources :stripe_cards, only: %i[create index]
+  resources :stripe_cards, only: %i[create index show]
   resources :emburse_cards do
     post 'toggle_active'
   end
