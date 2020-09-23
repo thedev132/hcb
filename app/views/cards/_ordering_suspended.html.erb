@@ -4,9 +4,7 @@
     <p class="bold mt0 mb0">It’s Emburse migration week</p>
   </div>
   <p class="mt1 mb1">
-  This Saturday, <strong>Sept 26th</strong>, Emburse will be shutting down the purple cards. You can 
-    <% prefill ={prefill_Account: "#{current_user&.email}|#{current_user&.id}", prefill_Events: "#{@event.id}-#{@event.name}"} %>
-    <%= link_to 'order yourself a new card here', "https://hack.af/emburse-migration?#{prefill.to_query}", class: 'primary' %>.
+  This Saturday, <strong>Sept 26th</strong>, Emburse will be shutting down the purple cards. You can issue yourself a new card.
   <% if @event.used_emburse? %>
      The new cards spend from your account balance, so your Emburse balance will be transferred back automatically this weekend.
     </p>

@@ -1,16 +1,25 @@
 <% title "Cards for #{@event.name.html_safe}" %>
 <% page_md %>
+<% include_modals %>
 <%= render 'nav' %>
 
 <%= render 'cards/ordering_suspended' %>
 
 <h1 class="heading">
   Cards
-  <%= link_to new_stripe_card_path(event_id: @event.id), class: 'btn btn--icon bg-success disabled' do %>
+  <%= link_to event_cards_new_path(event_id: @event.slug),
+      class: 'btn bg-success',
+      data: { behavior: 'modal_trigger', modal: 'order_card' } do %>
     <%= inline_icon 'card-add' %>
-    Issue new card
+    Order a card
   <% end if organizer_signed_in? %>
 </h1>
+
+<section class="modal modal--scroll bg-snow" data-behavior="modal" role="dialog" id="order_card">
+  <%= modal_header 'Order a card' %>
+  <%= render 'stripe_cards/form', stripe_card: StripeCard.new %>
+</section>
+
 <% if @cards.any? %>
   <%= async_frame_to event_stripe_cards_shipping_path(@event) %>
   <section class="mixed-grid grid--spacious mt2">

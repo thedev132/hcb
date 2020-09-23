@@ -12,4 +12,3 @@
 //= require ui
 //= require filterbar
 //= require checks
-// require emburse_card_requests

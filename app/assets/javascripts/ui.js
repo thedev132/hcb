@@ -17,6 +17,8 @@ $(document).on('turbolinks:load', function () {
 
   $('[data-behavior~=select_content]').on('click', e => e.target.select())
 
+  BK.s('autohide').hide()
+
   $(document).on('click', '[data-behavior~=flash]', function () {
     $(this).fadeOut('medium')
   })
@@ -224,6 +226,18 @@ $(document).on('turbolinks:load', function () {
       return BK.toggleMenu($(BK.openMenuSelector))
     }
   })
+
+  if (BK.thereIs('shipping_address_inputs')) {
+    const shippingInputs = BK.s('shipping_address_inputs')
+    const physicalInput = $('#stripe_card_card_type_physical')
+    const virtualInput = $('#stripe_card_card_type_virtual')
+    $(physicalInput).on('change', e => {
+      if (e.target.checked) shippingInputs.slideDown()
+    })
+    $(virtualInput).on('change', e => {
+      if (e.target.checked) shippingInputs.hide()
+    })
+  }
 
   const tiltElement = $('[data-behavior~=hover_tilt]')
   const enableTilt = () =>

@@ -43,7 +43,7 @@
     background-repeat: no-repeat !important;
     background-size: 100% !important;
     flex: 1 1 auto;
-    transform: translateZ(20px);
+    // transform: translateZ(20px);
   }
 
   &.virtual {
@@ -63,7 +63,7 @@
     width: 3.5rem;
     background: #{image-url('emburse-chip.svg')} no-repeat;
     background-size: contain;
-    transform: translateZ(10px);
+    // transform: translateZ(10px);
   }
 }
 
@@ -85,19 +85,19 @@
   padding: 1rem;
   border-bottom-left-radius: 12px;
   border-top-right-radius: 12px;
-  transform: translateZ(10px);
+  // transform: translateZ(10px);
 }
 
 .emburse-card__name {
   text-transform: uppercase;
   font-weight: bold;
-  transform: translateZ(20px);
+  // transform: translateZ(20px);
   margin-top: 0px;
   margin-bottom: 0px;
 }
 
 .emburse-card__number {
-  transform: translateZ(20px);
+  // transform: translateZ(20px);
   margin-top: 0px;
   margin-bottom: 0px;
 }

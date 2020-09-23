@@ -1,22 +1,30 @@
-<%= form_with(model: stripe_card, local: true, class: 'grid grid--split') do |form| %>
-  <%= form_errors stripe_card%>
+<%= form_with(model: stripe_card, local: true) do |form| %>
+  <%= form_errors stripe_card %>
 
-  <!--
   <fieldset>
-    <legend>Card type</legend>
-    <div class="field field--radiobox">
+    <legend class="heading h2 pt2 pb2">What type of card?</legend>
+    <div class="field field--options">
       <%= form.radio_button :card_type, 'virtual' %>
-      <%= form.label :card_type, 'Virtual', value: 'virtual' %>
+      <%= form.label :card_type, value: 'virtual' do %>
+        <%= inline_icon 'rep', size: 28 %>
+        <strong>Virtual</strong>
+        <small>(online only, instant)</small>
+      <% end %>
       <%= form.radio_button :card_type, 'physical' %>
-      <%= form.label :card_type, 'Plastic', value: 'physical' %>
+      <%= form.label :card_type, value: 'physical' do %>
+        <%= inline_icon 'card', size: 28 %>
+        <strong>Plastic</strong>
+        <small>(mailed, 5–7 biz. days)</small>
+      <% end %>
     </div>
   </fieldset>
-  -->
-  <%= form.hidden_field :card_type, value: 'physical' %>
+  <p class="h5 muted mt0">Plastic cards are only available to ship to the US.</p>
 
+  <section class="grid grid--split" data-behavior="shipping_address_inputs autohide">
+  <h2 class="grid__fill">Shipping info</h2>
   <div class="field">
     <%= form.label :stripe_shipping_name, 'Shipping name' %>
-    <%= form.text_field :stripe_shipping_name, placeholder: current_user&.full_name %>
+    <%= form.text_field :stripe_shipping_name, value: stripe_card.stripe_shipping_name || current_user&.full_name %>
   </div>
   <div class="field">
     <%= form.label :stripe_shipping_address_line1, 'Address (line 1)' %>
@@ -40,13 +48,14 @@
   </div>
   <div class="field grid__half">
     <%= form.label :stripe_shipping_address_country, 'Country' %>
-    <%= form.text_field :stripe_shipping_address_country, value: suggested(:country) %>
+    <%= form.text_field :stripe_shipping_address_country, value: suggested(:country), disabled: true %>
   </div>
+  </section>
 
   <%= form.hidden_field :stripe_cardholder_id, value: current_user&.stripe_cardholder&.id %>
-  <%= form.hidden_field :event_id, value: params[:event_id] %>
+  <%= form.hidden_field :event_id, value: defined?(@event) ? @event.id : params[:event_id] %>
 
   <div class="actions">
-    <%= form.submit %>
+    <%= form.submit 'Issue my card' %>
   </div>
 <% end %>

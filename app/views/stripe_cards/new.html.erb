@@ -4,12 +4,4 @@
 
 <h1>Order yourself a card</h1>
 
-<%# <h2>1. Personal info</h2> %>
-<%# render 'stripe_cardholders/form',
-  stripe_cardholder: current_user.stripe_cardholder || StripeCardholder.new(user: current_user) %>
-<%# </section> %>
-
-<%# <section> %>
-<h2>Shipping info</h2>
 <%= render 'form', stripe_card: @stripe_card %>
-<%# </section> %>

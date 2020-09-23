@@ -97,7 +97,7 @@ Rails.application.routes.draw do
     resources :comments
   end
   resources :stripe_cardholders, only: [:new, :create, :update]
-  resources :stripe_cards, only: %i[create new index show]
+  resources :stripe_cards, only: %i[create index]
   resources :emburse_cards do
     post 'toggle_active'
   end
@@ -235,7 +235,7 @@ Rails.application.routes.draw do
     put 'g_suite_verify', to: 'events#g_suite_verify', as: :g_suite_verify
     get 'emburse_cards', to: 'events#emburse_card_overview', as: :emburse_cards_overview
     get 'cards', to: 'events#card_overview', as: :cards_overview
-    get 'stripe_cards/new', to: 'stripe_cards#new'
+    get 'cards/new', to: 'stripe_cards#new'
     get 'stripe_cards/shipping', to: 'stripe_cards#shipping', as: :stripe_cards_shipping
 
     get 'transfers', to: 'events#transfers', as: :transfers
