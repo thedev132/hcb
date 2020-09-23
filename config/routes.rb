@@ -157,6 +157,7 @@ Rails.application.routes.draw do
       get 'export'
     end
     post 'mark_as_processed'
+    post 'mark_as_unprocessed'
     resources :comments
   end
 

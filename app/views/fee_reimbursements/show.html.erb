@@ -52,6 +52,8 @@
       <% if @fee_reimbursement.unprocessed? %>
         <%= link_to 'Process on SVB', 'https://www.svbconnect.com/booktransfer/bookTransfer.do?cmdBookTransfer=1&mode=new', target: '_blank', class: 'btn bg-accent' %>
         <%= link_to 'Marked as processed', fee_reimbursement_mark_as_processed_path(@fee_reimbursement), method: :post, class: 'btn bg-warning' %>
+      <% else %>
+        <%= link_to 'Marked as unprocessed', fee_reimbursement_mark_as_unprocessed_path(@fee_reimbursement), method: :post, class: 'btn bg-accent' %>
       <% end %>
     <% end %>
   </section>

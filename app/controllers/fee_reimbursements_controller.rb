@@ -1,5 +1,5 @@
 class FeeReimbursementsController < ApplicationController
-  before_action :set_fee_reimbursement, only: [:show, :edit, :update, :destroy, :mark_as_processed]
+  before_action :set_fee_reimbursement, only: [:show, :edit, :update, :destroy, :mark_as_processed, :mark_as_unprocessed]
 
   def export
     authorize FeeReimbursement
@@ -67,6 +67,19 @@ class FeeReimbursementsController < ApplicationController
     else
       render :edit
     end
+  end
+
+  def mark_as_unprocessed
+    @fee_reimbursement.processed_at = nil
+
+    authorize @fee_reimbursement
+
+    if @fee_reimbursement.save
+      flash[:success] = 'Marked as unprocessed.'
+    else
+      flash[:error] = 'Something went wrong.'
+    end
+    redirect_to @fee_reimbursement
   end
 
   def mark_as_processed

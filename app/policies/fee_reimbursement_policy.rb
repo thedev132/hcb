@@ -15,6 +15,10 @@ class FeeReimbursementPolicy < ApplicationPolicy
     user.admin?
   end
 
+  def mark_as_unprocessed?
+    user.admin?
+  end
+
   def mark_as_processed?
     user.admin?
   end
