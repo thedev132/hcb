@@ -2,7 +2,7 @@
 <% page_md %>
 <%= render 'events/nav' %>
 
-<%= render 'checks/suspended' %>
+<%= render 'checks/suspended' if current_user %>
 
 <h1 class="heading">
   Transfers
@@ -11,7 +11,7 @@
 <section class="flex items-center justify-center flex-wrap pb2 md-pt2 md-pb3">
   <strong class="h3 muted md-pr2">Send a</strong>
   <div class="btn-group center">
-    <%= link_to 'Send a check', 
+    <%= link_to 'Check', 
         nil, #new_event_check_path(@event) 
         class: 'btn bg-accent', 
         disabled: true %>
