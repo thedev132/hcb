@@ -1,7 +1,11 @@
 <%= form_with(model: fee_reimbursement, local: true) do |form| %>
   <%= form_errors fee_reimbursement %>
 
-  <p>Reimbursement amount is calculated: <%= render_money fee_reimbursement.invoice.item_amount %> - <%= render_money fee_reimbursement.invoice.payout_creation_balance_net %> = <strong><%= render_money fee_reimbursement.amount %></strong></p>
+  <% if fee_reimbursement.invoice.present? %>
+    <p>Invoice fee refund amount is calculated: <%= render_money fee_reimbursement.invoice.item_amount %> - <%= render_money fee_reimbursement.invoice.payout_creation_balance_net %> = <strong><%= render_money fee_reimbursement.amount %></strong></p>
+  <% elsif fee_reimbursement.donation.present? %>
+    <p>Donation fee refund amount is calculated: <%= render_money fee_reimbursement.donation.amount%> - <%= render_money fee_reimbursement.donation.payout_creation_balance_net %> = <strong><%= render_money fee_reimbursement.amount %></strong></p>
+  <% end %>
 
   <div class="field">
     <%= form.label :amount, 'Amount to reimburse' %>
