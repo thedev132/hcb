@@ -18,5 +18,5 @@
   <h2 class="heading mt3 pb1">
     <%= card.event.name %>
   </h2>
-  <%= render 'stripe_authorizations/list', stripe_authorizations: card.authorizations, headless: true %>
+  <%= render 'stripe_authorizations/list', stripe_authorizations: authorizations, headless: true %>
 <% end %>
