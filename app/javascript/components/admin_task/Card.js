@@ -51,12 +51,12 @@ class Card extends React.Component {
       console.error(err)
       this.setState({ status: 'error' })
     })
-    const duration = Date.now() - start
-    const minTimeout = 30000
-    const maxTimeout = 120000
-    const timeout = Math.max(Math.min(maxTimeout, duration), minTimeout)
-    const timeoutID = setTimeout(this.updateCount, timeout)
-    this.setState({ timeoutID })
+    // const duration = Date.now() - start
+    // const minTimeout = 30000
+    // const maxTimeout = 120000
+    // const timeout = Math.max(Math.min(maxTimeout, duration), minTimeout)
+    // // const timeoutID = setTimeout(this.updateCount, timeout)
+    // this.setState({ timeoutID })
   }
 
   componentDidMount () {
