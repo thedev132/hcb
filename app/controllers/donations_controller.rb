@@ -27,7 +27,7 @@ class DonationsController < ApplicationController
   # GET /donations
   def index
     authorize Donation
-    @donations = paginate(Donation.all)
+    @donations = paginate(Donation.all.order(created_at: :desc))
   end
 
   def make_donation
