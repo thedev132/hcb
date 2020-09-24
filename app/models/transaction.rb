@@ -185,11 +185,19 @@ class Transaction < ApplicationRecord
   # should probably be a part of the Donation class, not Transaction.
 
   def potential_invoice_payout?
-    (self.name.start_with?('HACKC PAYOUT') || self.name.start_with?('HACK CLUB EVENT')) && amount > 0
+    amount.positive? && (
+      self.name.start_with?('Hack Club Bank PAYOUT') ||
+      self.name.start_with?('HACKC PAYOUT') ||
+      self.name.start_with?('HACK CLUB EVENT')
+    )
   end
 
   def potential_donation_payout?
-    (self.name.start_with?('HACKC DONATE ') || self.name.start_with?('HACK CLUB EVENT')) && amount > 0
+    amount.positive? && (
+      self.name.start_with?('Hack Club Bank DONATE') ||
+      self.name.start_with?('HACKC DONATE ') ||
+      self.name.start_with?('HACK CLUB EVENT')
+    )
   end
 
   # We used to also use 'FEE REIMBURSEMENT' as prefix
@@ -362,11 +370,11 @@ class Transaction < ApplicationRecord
     # InvoicePayouts, and match it.
 
     # case 1
-    match = /HACKC PAYOUT (.*) ST-.*/.match(self.name)
+    match = /(?:HACKC|Hack Club Bank) PAYOUT (.*) ST-.*/.match(self.name)
     prefix = match ? match[1] : false
     if !prefix
       # case 2
-      match = /HACKC PAYOUT (.*)/.match(self.name)
+      match = /(?:HACKC|Hack Club Bank) PAYOUT (.*)/.match(self.name)
       prefix = match ? match[1] : false
     end
 
@@ -410,11 +418,11 @@ class Transaction < ApplicationRecord
     # DonationPayouts, and match it.
 
     # case 1
-    match = /HACKC DONATE (.*) ST-.*/.match(self.name)
+    match = /(?:HACKC|Hack Club Bank) DONATE (.*) ST-.*/.match(self.name)
     prefix = match ? match[1] : false
     if !prefix
       # case 2
-      match = /HACKC DONATE (.*)/.match(self.name)
+      match = /(?:HACKC|Hack Club Bank) DONATE (.*)/.match(self.name)
       prefix = match ? match[1] : false
     end
 
@@ -470,7 +478,7 @@ class Transaction < ApplicationRecord
   def try_pair_fee_payment
     return unless potential_fee_payment?
 
-    match = /Event (.*) Bank Fee.*/.match(self.name)
+    match = /(?!Event )(.*) Bank Fee.*/.match(self.name)
     event_id = match ? match[1].to_i : 0
 
     return if event_id == 0
