@@ -113,6 +113,10 @@ class Event < ApplicationRecord
   def fee_payment_memo
     "#{self.name} Bank Fee"
   end
+  
+  def admin_dropdown_description
+    "#{name} - #{id}"
+  end
 
   # displayed on /negative_events
   def self.negatives
