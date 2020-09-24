@@ -54,6 +54,10 @@ class Transaction < ApplicationRecord
   validate :ensure_paired_correctly
 
   after_initialize :default_values
+  
+  def admin_dropdown_description
+    "#{name} - #{id}"
+  end
 
   def short_plaid_id
     plaid_id[0...4] + "…" + plaid_id[-4..-1]
