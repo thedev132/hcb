@@ -98,7 +98,7 @@ module StaticPagesHelper
         'it protec, and attac, but most imporantly it secures the bag',
         'Protec but also attac',
         'As seen on bank.hackclub.com',
-        'As seen onn hackclub.com',
+        'As seen on hackclub.com',
         '2 cool 4 scool',
         'Now running in production!',
         "Don't touch your face!",
