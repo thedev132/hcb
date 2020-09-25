@@ -15,8 +15,10 @@
 </p>
 
 <% @authorizations.group_by(&:stripe_card).each do |card, authorizations| %>
-  <h2 class="heading mt3 pb1">
-    <%= card.event.name %>
-  </h2>
-  <%= render 'stripe_authorizations/list', stripe_authorizations: authorizations, headless: true %>
+  <section class="mt3 card p0">
+    <h2 class="heading p1 pl2 mt0 ml0">
+      <%= card.event.name %>
+    </h2>
+    <%= render 'stripe_authorizations/list', stripe_authorizations: authorizations, headless: true %>
+  </section>
 <% end %>
