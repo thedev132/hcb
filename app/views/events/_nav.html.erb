@@ -30,7 +30,7 @@
     <%= inline_icon 'more' %>
     <div class="menu__content" data-behavior="menu_content">
       <%= link_to 'G Suite', event_g_suite_overview_path(event_id: @event.slug) %>
-      <%= link_to 'Promotions & perks', event_promotions_path(event_id: @event.slug) %>
+      <%= link_to 'Promotions & perks', event_promotions_path(event_id: @event.slug) unless @event.is_spend_only %>
       <%= link_to 'Documents', event_documents_path(event_id: @event.slug) %>
       <%= link_to 'Settings', edit_event_path(@event) %>
     </div>
