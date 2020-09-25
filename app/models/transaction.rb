@@ -247,16 +247,16 @@ class Transaction < ApplicationRecord
   def try_pair_automatically!
     return if categorized?
 
-    if potential_invoice_payout?
-      try_pair_invoice
+    if potential_fee_reimbursement?
+      try_pair_fee_reimbursement
     # (msw) I'm testing an ops-team feature for manually categorizing fee
     # payments & donation payouts, so I'm disabling the auto-pairing
     # elsif potential_donation_payout?
     #   try_pair_donation
     # elsif potential_fee_payment?
     #   try_pair_fee_payment
-    elsif potential_fee_reimbursement?
-      try_pair_fee_reimbursement
+    # elsif potential_invoice_payout?
+    #   try_pair_invoice
     elsif potential_emburse?
       try_pair_emburse
     elsif potential_github?
