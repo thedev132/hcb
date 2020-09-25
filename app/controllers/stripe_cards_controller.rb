@@ -38,6 +38,8 @@ class StripeCardsController < ApplicationController
 
     @stripe_card = StripeCard.new(stripe_card_params)
     @stripe_card.event = @event
+    # We find or create a cardholder for users submitting through the modal (which doesn't touch the "new" method)
+    @stripe_card.stripe_cardholder ||= StripeCardholder.find_or_create_by(user: current_user
 
     authorize @stripe_card
 
