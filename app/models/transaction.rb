@@ -1,4 +1,5 @@
 class Transaction < ApplicationRecord
+  include Receiptable
   extend FriendlyId
 
   paginates_per 250

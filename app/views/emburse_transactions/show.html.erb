@@ -1,4 +1,4 @@
-<% if @card %>
+<% if @emburse_card %>
   <% title "#{render_money @emburse_transaction.amount.abs} #{@emburse_transaction.amount > 0 ? 'credited from' : 'spent at' } #{@emburse_transaction.merchant_name}" %>
 <% else %>
   <% title "Transfer of #{render_money @emburse_transaction.amount}" %>
@@ -6,8 +6,8 @@
 <% page_sm %>
 <%= render 'events/nav' if @event %>
 
-<% if @card %>
-  <%= render @card %>
+<% if @emburse_card %>
+  <%= render @emburse_card %>
 <% end %>
 
 <% admin_tools('mt3 mb0') do %>
@@ -20,7 +20,7 @@
 <article class="card max-width-2 mx-auto mt3">
   <section class="mb2">
     <h2 class="mt0 mb0 heading">
-      <% if @card %>
+      <% if @emburse_card %>
         <span class="flex-auto mb1"><%= "#{render_money @emburse_transaction.amount.abs} #{@emburse_transaction.amount > 0 ? 'credited from' : 'spent at' } #{@emburse_transaction.merchant_name}" %></span>
       <% else %>
         <span class="flex-auto mb1">Transfer of <%= render_money @emburse_transaction.amount %></span>
@@ -36,7 +36,7 @@
         <%= render_money @emburse_transaction.amount.abs %>
       </p>
 
-      <% if @card %>
+      <% if @emburse_card %>
         <p>
           <strong>Category</strong>
           <%= @emburse_transaction.category_name.nil? ? "Uncategorized" : @emburse_transaction.category_name %>
@@ -44,29 +44,39 @@
 
         <p>
           <strong>Spent by</strong>
-          <% if @emburse_transaction.card.nil? %>
+          <% if @emburse_transaction.emburse_card.nil? %>
             -
           <% else %>
-            <%= "#{@emburse_transaction.card.full_name}"%>
-          <% end %>
-        </p>
-
-        <p>
-          <strong>Receipt</strong>
-          <% if @emburse_transaction.receipt_url %>
-            <% if organizer_signed_in? %>
-                <a href="<%= @emburse_transaction.receipt_url %>">See attachment</a>
-              <% else %>
-                <strong>Sign in to view</strong>
-              <% end %>
-          <% else %>
-            Not uploaded yet
+            <%= "#{@emburse_transaction.emburse_card.full_name}"%>
           <% end %>
         </p>
       <% end %>
     </section>
-
   </section>
+  <% unless @emburse_transaction.is_transfer? %>
+    <% if @emburse_transaction.receipts.any? %>
+      <p class="card__banner bg-success white bold flex items-center mt0 mb0">
+        <%= inline_icon 'checkmark', size: 24, class: 'mr2' %>
+        <%= pluralize @emburse_transaction.receipts.count, 'receipt' %>
+        added
+      </p>
+    <% else %>
+      <p class="card__banner bg-pending slate bold flex items-center mt0 mb0">
+        <%= inline_icon 'important', size: 24, class: 'mr2' %>
+        This transaction is missing a receipt
+      </p>
+    <% end %>
+  <% end %>
 </article>
+
+<% if @emburse_transaction.receipts.any? && organizer_signed_in? %>
+  <h2>Receipts</h2>
+  <section class="grid grid--split mt2 mb3">
+    <%= render @emburse_transaction.receipts %>
+    <%= render 'receipts/upload', receiptable: @emburse_transaction %>
+  </section>
+<% else %>
+  <%= render 'receipts/upload', receiptable: @emburse_transaction %>
+<% end %>
 
 <%= render 'comments/comments' %>

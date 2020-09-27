@@ -1,5 +1,5 @@
 class SyncEmburseTransactionsJob < ApplicationJob
-  RUN_EVERY = 5.minutes
+  RUN_EVERY = 1.hour
 
   def perform(repeat = false)
     ActiveRecord::Base.transaction do
@@ -13,12 +13,12 @@ class SyncEmburseTransactionsJob < ApplicationJob
       # assuming that transactions will not disappear after that time.
       # We query Emburse for TXs for the last 90 days, as a precaution, so
       # we do not accidentally delete valid transactions
-      deleted_transactions = EmburseTransaction.during(30.days.ago, DateTime.now).pluck :emburse_id
+      deleted_transactions = EmburseTransaction.all.pluck :emburse_id
 
       # We query for such a long time back because users may upload receipts or change categories on these
       # transactions, and we want to know about them. In an ideal world, we'd sync them back
       # in real time for all of history, but this is the best we do for now.
-      EmburseClient::Transaction.search({ after: 90.days.ago.iso8601() }).each do |trn|
+      EmburseClient::Transaction.list.each do |trn|
         et = EmburseTransaction.find_by(emburse_id: trn[:id])
         et ||= EmburseTransaction.new(emburse_id: trn[:id])
 
@@ -83,6 +83,13 @@ class SyncEmburseTransactionsJob < ApplicationJob
           receipt_filename: trn.dig(:receipt, :filename),
           transaction_time: trn[:time]
         )
+
+        next if et.receipts.exists?
+        next unless trn.dig(:receipt, :url) && et&.emburse_card&.user
+        downloaded_receipt = open(trn.dig(:receipt, :url))
+        receipt = Receipt.new(receiptable: et, uploader: et.emburse_card.user)
+        receipt.file.attach(io: downloaded_receipt, filename: trn.dig(:receipt, :filename))
+        receipt.save!
       end
 
       deleted_transactions.each { |emburse_id| EmburseTransaction.find_by(emburse_id: emburse_id).destroy }

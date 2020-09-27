@@ -1,8 +1,9 @@
 class Receipt < ApplicationRecord
+  belongs_to :receiptable, polymorphic: true
+
   belongs_to :user, class_name: 'User', required: false
   alias_attribute :uploader, :user
-  belongs_to :stripe_authorization, required: false
-  alias_attribute :transaction, :stripe_authorization
+  alias_attribute :transaction, :receiptable
 
   has_one_attached :file
 

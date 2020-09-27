@@ -1,4 +1,6 @@
 class EmburseTransaction < ApplicationRecord
+  include Receiptable
+
   enum state: %w{pending completed declined}
 
   acts_as_paranoid
@@ -11,7 +13,7 @@ class EmburseTransaction < ApplicationRecord
   scope :undeclined, -> { where.not(state: 'declined') }
   scope :declined, -> { where(state: 'declined') }
   scope :under_review, -> { where(event_id: nil).undeclined }
-  scope :missing_receipt, -> { where.not(event_id: nil).where(receipt_url: nil, state: 'completed') }
+  scope :missing_receipt, -> { includes(:receipts).where.not(event_id: nil).where(receipts: { receiptable_id: nil }, state: 'completed') }
   scope :unified_list, -> { where.not(state: 'declined') }
 
   belongs_to :event, required: false
@@ -64,6 +66,10 @@ class EmburseTransaction < ApplicationRecord
     return 'Declined' if s == :declined
 
     'Pending'
+  end
+
+  def is_transfer?
+    amount > 0 && merchant_name.nil?
   end
 
   def self.total_emburse_card_transaction_volume

@@ -1,4 +1,6 @@
 class StripeAuthorization < ApplicationRecord
+  include Receiptable
+
   before_validation :sync_from_stripe! # pull details from stripe if we're creating it for the first time
   after_create :notify_of_creation
 
@@ -15,7 +17,6 @@ class StripeAuthorization < ApplicationRecord
   has_one :stripe_cardholder, through: :stripe_card, as: :cardholder
   alias_attribute :cardholder, :stripe_cardholder
   has_one :event, through: :stripe_card
-  has_many :receipts
   has_many :comments, as: :commentable
 
   enum stripe_status: { pending: 0, closed: 1, reversed: 2 }
@@ -24,6 +25,10 @@ class StripeAuthorization < ApplicationRecord
   validates_uniqueness_of :stripe_id
 
   validates_presence_of :stripe_id, :stripe_status, :authorization_method, :amount, :name
+
+  def user
+    cardholder.user
+  end
 
   def filter_data
     {

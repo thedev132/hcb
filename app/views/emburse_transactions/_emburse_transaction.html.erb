@@ -22,6 +22,9 @@
   </td>
   <td>
     <%= list_badge_for et.comments.size, 'note', 'post', optional: true %>
+    <% unless et.is_transfer? %>
+      <%= list_badge_for et.receipts.size, 'receipt', 'payment-docs', required: true  %>
+    <% end %>
   </td>
   <td class="nowrap">
     <%= render_money et.amount %>

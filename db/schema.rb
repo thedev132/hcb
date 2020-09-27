@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_21_183213) do
+ActiveRecord::Schema.define(version: 2020_09_22_192222) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -30,8 +30,8 @@ ActiveRecord::Schema.define(version: 2020_09_21_183213) do
     t.datetime "updated_at", null: false
     t.string "recipient_tel"
     t.datetime "rejected_at"
-    t.text "payment_for"
     t.datetime "scheduled_arrival_date"
+    t.text "payment_for"
     t.index ["creator_id"], name: "index_ach_transfers_on_creator_id"
     t.index ["event_id"], name: "index_ach_transfers_on_event_id"
   end
@@ -630,8 +630,9 @@ ActiveRecord::Schema.define(version: 2020_09_21_183213) do
     t.datetime "attempted_match_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.bigint "stripe_authorization_id"
-    t.index ["stripe_authorization_id"], name: "index_receipts_on_stripe_authorization_id"
+    t.string "receiptable_type"
+    t.bigint "receiptable_id"
+    t.index ["receiptable_type", "receiptable_id"], name: "index_receipts_on_receiptable_type_and_receiptable_id"
     t.index ["user_id"], name: "index_receipts_on_user_id"
   end
 
@@ -838,7 +839,6 @@ ActiveRecord::Schema.define(version: 2020_09_21_183213) do
   add_foreign_key "organizer_position_invites", "users", column: "sender_id"
   add_foreign_key "organizer_positions", "events"
   add_foreign_key "organizer_positions", "users"
-  add_foreign_key "receipts", "stripe_authorizations"
   add_foreign_key "receipts", "users"
   add_foreign_key "sponsors", "events"
   add_foreign_key "stripe_authorizations", "stripe_cards"
