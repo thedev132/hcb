@@ -106,7 +106,8 @@ module StaticPagesHelper
         '2 cool 4 scool',
         'Now running in production!',
         "Don't touch your face!",
-        'put money in computer'
+        'put money in computer',
+        'TODO: get that bread'
       ].sample
     end
   end
