@@ -216,6 +216,27 @@ class EventsController < ApplicationController
     authorize @event
   end
 
+  def toggle_hidden
+    authorize @event
+
+    if @event.hidden?
+      flash[:success] = 'Event un-hidden'
+      @event.update(hidden_at: nil)
+    else
+      @event.update(hidden_at: Time.now)
+      file_redirects = [
+        'https://cloud-b01qqxaux.vercel.app/barking_dog_turned_into_wood_meme.mp4',
+        'https://cloud-b01qqxaux.vercel.app/dog_transforms_after_seeing_chair.mp4',
+        'https://cloud-b01qqxaux.vercel.app/dog_turns_into_bread__but_it_s_in_hd.mp4',
+        'https://cloud-b01qqxaux.vercel.app/run_now_meme.mp4',
+        'https://cloud-3qup26j81.vercel.app/bonk_sound_effect.mp4',
+        'https://cloud-is6jebpbb.vercel.app/disappearing_doge_meme.mp4'
+      ].sample
+
+      redirect_to file_redirects
+    end
+  end
+
   private
 
   # Use callbacks to share common setup or constraints between actions.

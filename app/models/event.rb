@@ -1,7 +1,7 @@
 class Event < ApplicationRecord
   extend FriendlyId
 
-  default_scope { order(id: :asc) }
+  default_scope { order(id: :asc).not_hidden }
   scope :hidden, -> { where.not(hidden_at: nil) }
   scope :not_hidden, -> { where(hidden_at: nil) }
   scope :event_ids_with_pending_fees_greater_than_100, -> do

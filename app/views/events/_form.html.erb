@@ -95,6 +95,14 @@
       <%= form.submit nil, value: "Update" %>
     </div>
   </div>
+  <% admin_tools do %>
+    <%= link_to (event.hidden? ? 'Un-hide project' : 'Hide project'),
+        event_toggle_hidden_path(event),
+        method: :put,
+        'data-confirm': "Do you really want to #{event.hidden? ? 'un-hide' : 'hide'} #{event.name}?",
+        class: "btn bg-success"
+    %>
+  <% end %>
 
   <% admin_tools do %>
     <div class="field">
