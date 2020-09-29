@@ -70,6 +70,7 @@ class SyncTransactionsJob < ApplicationJob
           # first, try to see if it was previously paired.
           # if it wasn't, then try to auto-pair it.
           tr.try_recover_pending_tx_details!
+          next unless tr.uncategorized?
           tr.try_pair_automatically!
         end
 

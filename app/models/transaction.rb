@@ -142,6 +142,10 @@ class Transaction < ApplicationRecord
     is_event_related && fee_relationship_id
   end
 
+  def uncategorized?
+    is_event_related && fee_relationship_id.nil?
+  end
+
   def filter_data
     {
       exists: true,
@@ -249,14 +253,12 @@ class Transaction < ApplicationRecord
 
     if potential_fee_reimbursement?
       try_pair_fee_reimbursement
-    # (msw) I'm testing an ops-team feature for manually categorizing fee
-    # payments & donation payouts, so I'm disabling the auto-pairing
-    # elsif potential_donation_payout?
-    #   try_pair_donation
-    # elsif potential_fee_payment?
-    #   try_pair_fee_payment
-    # elsif potential_invoice_payout?
-    #   try_pair_invoice
+    elsif potential_donation_payout?
+      try_pair_donation
+    elsif potential_fee_payment?
+      try_pair_fee_payment
+    elsif potential_invoice_payout?
+      try_pair_invoice
     elsif potential_emburse?
       try_pair_emburse
     elsif potential_github?
