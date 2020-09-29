@@ -24,6 +24,8 @@ class FeeReimbursementsController < ApplicationController
       end
     end
 
+    fee_reimbursements.update(processed_at: Time.now)
+
     send_data result, filename: "Pending FRs #{Date.today}.csv"
   end
 
