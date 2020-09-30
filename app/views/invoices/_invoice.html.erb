@@ -4,7 +4,6 @@
 <% @invoice = invoice %>
 <tr
   class="transaction--positive"
-  data-behavior="filterbar_row"
   data-filter="<%= transaction.filter_data.to_json %>"
   data-id="<%= transaction.id %>"
 >
@@ -24,6 +23,6 @@
     <%= render_money transaction.amount + refund_t&.amount.to_i %>
   </td>
   <td>
-    <%= link_to 'Details', transaction, class: 'underline' if organizer_signed_in? %>
+    <%= link_to 'Details', invoice, class: 'underline' if organizer_signed_in? %>
   </td>
 </tr>

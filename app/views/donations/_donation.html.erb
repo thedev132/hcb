@@ -1,8 +1,9 @@
 <% transaction = donation.payout.t_transaction %>
 <% @donation = donation %>
+<% refund = donation&.fee_reimbursement %>
+<% refund_t = refund&.t_transaction %>
 <tr
   class="transaction--positive invoice--expanded-parent"
-  data-behavior="filterbar_row parent_expandable_row"
   data-filter="<%= transaction.filter_data.to_json %>"
   data-id="<%= transaction.id %>"
 >
@@ -19,9 +20,14 @@
     <%= list_badge_for donation.comments.size, 'note', 'post', optional: true %>
   </td>
   <td>
-    <%= render_money donation.amount %>
+    <% if refund_t %>
+      <%= render_money donation.payout.amount + refund_t&.amount %>
+    <% else %>
+    <i><%= render_money donation.payout.amount %></i>
+    <span class="muted">+<%= render_money refund.amount %> in transit</span>
+    <% end %>
   </td>
   <td>
-    <%= link_to 'Details', transaction, class: 'underline' if organizer_signed_in? %>
+    <%= link_to 'Details', donation, class: 'underline' if organizer_signed_in? %>
   </td>
 </tr>
