@@ -8,8 +8,8 @@
 <% end %>
 
 <% admin_tools do %>
-  <%= link_to "#{render_money @donation.payout.t_transaction.amount} payout TX", @donation.payout.t_transaction if @donation.payout.t_transaction %>
-  <%= link_to "#{render_money @donation.fee_reimbursement.t_transaction.amount} fee refund TX", @donation.fee_reimbursement.t_transaction if @donation.fee_reimbursement.t_transaction %>
+  <%= link_to "#{render_money @donation.payout.t_transaction.amount} payout TX", @donation.payout.t_transaction if @donation&.payout&.t_transaction %>
+  <%= link_to "#{render_money @donation.fee_reimbursement.t_transaction.amount} fee refund TX", @donation.fee_reimbursement.t_transaction if @donation&.fee_reimbursement&.t_transaction %>
 <% end %>
 
 <article class="card pb0 mt3 mb3">
