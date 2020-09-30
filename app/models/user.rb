@@ -20,6 +20,7 @@ class User < ApplicationRecord
   has_many :emburse_transfers
   has_many :emburse_card_requests
   has_many :emburse_cards
+  has_many :emburse_transactions, through: :emburse_cards
 
   has_one :stripe_cardholder
   has_many :stripe_cards, through: :stripe_cardholder

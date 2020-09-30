@@ -18,6 +18,7 @@ class EmburseTransaction < ApplicationRecord
 
   belongs_to :event, required: false
   belongs_to :emburse_card, required: false
+  alias_attribute :card, :emburse_card
 
   has_many :comments, as: :commentable
 

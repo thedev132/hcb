@@ -3,21 +3,27 @@
   class="transaction--<%= et.amount.positive? ? 'positive' : 'negative'  %><%= ' muted' if !et.completed? %>"
   data-behavior="filterbar_row"
   data-filter="<%= et.filter_data.to_json %>">
-  <td class="transaction__icon tooltipped tooltipped--e" aria-label="Emburse card transaction">
-    <%= inline_icon et.amount > 0 || et.merchant_name.nil? ? 'payment-transfer' : 'card' %>
-  </td>
+  <% if et.card %>
+    <td
+      class="transaction__icon tooltipped tooltipped--e"
+      aria-label="Card transaction by <%= et.card.user.initial_name %>">
+      <%= link_to et.card do %>
+        <%= avatar_for et.card.user, 24 %>
+      <% end %>
+    </td>
+  <% else %>
+    <td class="transaction__icon tooltipped tooltipped--e" aria-label="Emburse card transaction">
+      <%= inline_icon et.amount > 0 || et.merchant_name.nil? ? 'payment-transfer' : 'card' %>
+    </td>
+  <% end %>
   <td>
     <%= et.transaction_time.nil? ? '–' : et.transaction_time.to_date %>
   </td>
   <td class="flex justify-between">
-    <% if et.amount > 0 %>
-      <i>Transfer from bank account</i>
-    <% elsif et.merchant_name.nil? %>
-      <i>Transfer back to bank account</i>
-    <% elsif !et.completed? %>
-      <i><%= et.merchant_name %></i>
-    <% else %>
+    <% if et.completed? %>
       <%= et.merchant_name %>
+    <% else %>
+      <i><%= et.merchant_name %></i>
     <% end %>
   </td>
   <td>
@@ -29,8 +35,10 @@
   <td class="nowrap">
     <%= render_money et.amount %>
   </td>
-  <td>
-    <%= link_to 'Details', et if organizer_signed_in? %>
-  </td>
+  <% if organizer_signed_in? || !@event %>
+    <td>
+      <%= link_to 'Details', et %>
+    </td>
+  <% end %>
 </tr>
   
