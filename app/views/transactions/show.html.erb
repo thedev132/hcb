@@ -50,7 +50,7 @@
     <p>
       <strong>For</strong>
       <span>
-      <%= link_to "Fees from an invoice of #{render_money @transaction.fee_reimbursement.invoice.item_amount}", @transaction.fee_reimbursement.invoice %>
+      <%= link_to "Refunding fees from an invoice of #{render_money @transaction.fee_reimbursement.invoice.item_amount}", @transaction.fee_reimbursement.invoice %>
       </span>
     </p>
     <% end %>
@@ -69,6 +69,15 @@
       <strong>For</strong>
       <span>
        <%= "A donation of #{render_money @transaction.donation_payout.donation.amount} from #{@transaction.donation_payout.donation.name}" %>
+      </span>
+    </p>
+    <% end %>
+
+    <% if @transaction.fee_reimbursement&.donation %>
+    <p>
+      <strong>For</strong>
+      <span>
+      <%= link_to "Refunding fees from a donation of #{render_money @transaction.fee_reimbursement.donation.amount}", @transaction.fee_reimbursement.donation %>
       </span>
     </p>
     <% end %>
