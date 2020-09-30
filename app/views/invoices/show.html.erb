@@ -8,6 +8,11 @@
   <%= link_to 'View on Stripe', @invoice.stripe_dashboard_url, class: 'btn bg-accent' %>
 <% end %>
 
+<% admin_tools do %>
+  <%= link_to "#{render_money @invoice.payout.t_transaction.amount} payout TX", @invoice.payout.t_transaction if @invoice&.payout&.t_transaction %>
+  <%= link_to "#{render_money @invoice.fee_reimbursement.t_transaction.amount} fee refund TX", @invoice.fee_reimbursement.t_transaction if @invoice&.fee_reimbursement&.t_transaction %>
+<% end %>
+
 <% if @invoice.archived? %>
   <div class="banner banner--archived mt3">
     <span class="bold block mb1">This invoice was archived by <%= user_mention @invoice.archived_by %> on <%= format_date @invoice.archived_at %>.</span>
