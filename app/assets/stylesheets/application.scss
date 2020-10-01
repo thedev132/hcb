@@ -176,9 +176,6 @@ action {
 @import 'components/comments';
 @import 'components/details';
 @import 'components/dock';
-@import 'components/donations';
-@import 'components/emburse_cards';
-@import 'components/stripe_cards';
 @import 'components/filters';
 @import 'components/forms';
 @import 'components/header';
@@ -188,6 +185,7 @@ action {
 @import 'components/lists';
 @import 'components/menus';
 @import 'components/modals';
+@import 'components/physical_cards';
 @import 'components/public_message';
 @import 'components/stats';
 @import 'components/steps';
@@ -198,13 +196,6 @@ action {
 .turbolinks-progress-bar {
   height: 0.125rem;
   background-color: map-get($palette, primary);
-}
-
-.home {
-  line-height: 0;
-  text-align: center;
-  text-decoration: none;
-  margin-bottom: -0.5rem;
 }
 
 .admin-tools {

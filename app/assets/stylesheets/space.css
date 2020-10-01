@@ -364,6 +364,10 @@
   .lg-m0 {
     margin: 0px;
   }
+  .lg-mt0 {
+    margin-top: 0px;
+  }
+  /*
   .lg-m1 {
     margin: 8px;
   }
@@ -451,6 +455,7 @@
   .lg-ml5 {
     margin-left: 64px;
   }
+  */
   .lg-p0 {
     padding: 0px;
   }
@@ -466,6 +471,7 @@
   .lg-p4 {
     padding: 48px;
   }
+  /*
   .lg-p5 {
     padding: 64px;
   }
@@ -541,4 +547,5 @@
   .lg-pl5 {
     padding-left: 64px;
   }
+  */
 }

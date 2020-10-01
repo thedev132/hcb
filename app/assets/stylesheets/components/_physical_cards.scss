@@ -1,3 +1,4 @@
+.stripe-card,
 .emburse-card {
   margin: 0 auto;
   display: flex;
@@ -8,14 +9,6 @@
   height: #{8 * 1.75}rem;
   padding: 1.5rem;
   position: relative;
-  background-color: #54d;
-  background-image: radial-gradient(ellipse at top right, #867ae7, transparent);
-  background-image: #{image-url('emburse-swoosh-plastic.svg')},
-    radial-gradient(ellipse at top right, #867ae7, transparent);
-  &.deactivated {
-    -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
-    filter: grayscale(100%);
-  }
   background-repeat: no-repeat;
   /* 120% to account for z-axis perspective */
   background-size: 120%;
@@ -29,12 +22,23 @@
   transform: scale(1);
   transform-style: preserve-3d;
 
+  &.deactivated {
+    -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
+    filter: grayscale(100%);
+  }
+
   &:focus,
   &:hover {
     box-shadow: 0 6px 12px 0 rgba(0, 0, 0, 0.25),
       0 18px 36px 0 rgba(0, 0, 0, 0.25);
   }
+}
 
+.emburse-card {
+  background-color: #54d;
+  background-image: radial-gradient(ellipse at top right, #867ae7, transparent);
+  background-image: #{image-url('emburse-swoosh-plastic.svg')},
+    radial-gradient(ellipse at top right, #867ae7, transparent);
   &:before {
     content: '';
     width: 10rem;
@@ -77,10 +81,51 @@
   border-radius: 1rem;
 }
 
-.emburse-card__status {
+.stripe-card {
+  background-color: #123;
+  background-image: radial-gradient(ellipse at top left, #867ae7, transparent);
+  &:focus,
+  &:hover {
+    box-shadow: 0 6px 12px 0 rgba(0, 0, 0, 0.25),
+      0 18px 36px 0 rgba(0, 0, 0, 0.25);
+  }
+
+  &:before {
+    content: '';
+    width: 10rem;
+    height: 3rem;
+    background-repeat: no-repeat !important;
+    background-size: 100% !important;
+    flex: 1 1 auto;
+    // transform: translateZ(20px);
+  }
+
+  &.virtual {
+    background-image: radial-gradient(
+      ellipse at top left,
+      #33323d,
+      transparent
+    );
+  }
+
+  &:not(.virtual):after {
+    content: '';
+    position: absolute;
+    left: 2rem;
+    top: 35%;
+    height: 3.5rem;
+    width: 3.5rem;
+    background: #{image-url('emburse-chip.svg')} no-repeat;
+    background-size: contain;
+    // transform: translateZ(10px);
+  }
+}
+
+.emburse-card__status,
+.stripe-card__status {
   position: absolute;
-  right: 0rem;
-  top: 0rem;
+  right: 0;
+  top: 0;
   background: rgba(255, 255, 255, 0.25);
   padding: 1rem;
   border-bottom-left-radius: 12px;
@@ -88,16 +133,17 @@
   // transform: translateZ(10px);
 }
 
-.emburse-card__name {
+.emburse-card__name,
+.stripe-card__name {
   text-transform: uppercase;
   font-weight: bold;
   // transform: translateZ(20px);
-  margin-top: 0px;
-  margin-bottom: 0px;
 }
 
-.emburse-card__number {
-  // transform: translateZ(20px);
-  margin-top: 0px;
-  margin-bottom: 0px;
+.emburse-card__name,
+.stripe-card__name,
+.emburse-card__number,
+.stripe-card__number {
+  margin-top: 0;
+  margin-bottom: 0;
 }

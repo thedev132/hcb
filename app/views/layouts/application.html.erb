@@ -19,8 +19,6 @@
     <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#ec3750">
     <meta name="msapplication-TileColor" content="#ec3750">
     <meta name="theme-color" content="#ec3750">
-    <link rel="preload" href="https://assets.hackclub.com/fonts/Phantom_Sans_0.7/Regular.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="https://assets.hackclub.com/fonts/Phantom_Sans_0.7/Bold.woff2" as="font" type="font/woff2" crossorigin>
     <%= yield(:head) if content_for?(:head) %>
   </head>
   <body <%= yield(:body_attributes) if content_for?(:body_attributes) %> class="bg-snow <%= content_for :page_class %>">
@@ -33,7 +31,7 @@
       </div>
     <% end %>
     <% unless @no_app_shell %>
-      <header class="home flex items-center justify-center pt1 md-pt2">
+      <header class="center flex items-center justify-center pt1 md-pt2">
         <div class="header-left flex items-center justify-end">
           <action role="button" data-behavior="toggle_theme" class="muted pointer no-select tooltipped tooltipped--s" aria-label="Toggle dark mode" tabindex="0">
             <%= inline_icon 'moon', size: home_action_size %>

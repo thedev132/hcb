@@ -6,6 +6,7 @@ input[type='search'],
 input[type='tel'],
 input[type='text'],
 input[type='url'],
+.input,
 select,
 textarea {
   -webkit-appearance: none;
@@ -181,6 +182,10 @@ textarea.card {
     box-shadow: inset 0 0 0 1px map-get($palette, info),
       0 0 2px 0 rgba(0, 0, 0, 0.0625), 0 4px 8px 0 rgba(0, 0, 0, 0.125);
   }
+}
+
+input.fit {
+  max-width: 100% !important;
 }
 
 form.grid--split,
