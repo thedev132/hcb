@@ -4,8 +4,7 @@ class StripeCard < ApplicationRecord
 
   scope :deactivated, -> { where.not(stripe_status: 'active') }
   scope :active, -> { where(stripe_status: 'active') }
-  scope :active, -> { where(stripe_status: 'active') }
-  scope :physical, -> { where(card_type: 1) }
+  scope :physical, -> { where(card_type: :physical) }
   scope :physical_shipping, -> { physical.includes(:user, :event).select { |c| c.stripe_obj[:shipping][:status] != 'delivered' } }
 
   belongs_to :event
