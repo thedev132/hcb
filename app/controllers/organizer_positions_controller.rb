@@ -10,7 +10,7 @@ class OrganizerPositionsController < ApplicationController
       ivt.cancel
     end
 
-    flash[:success] = "Removed #{@organizer_position.user.email} from the team!"
-    redirect_to event_team_path(@organizer_position.event)
+    flash[:success] = "Removed #{@organizer_position.user.email} from the team."
+    redirect_back(fallback_location: event_team_path(@organizer_position.event))
   end
 end
