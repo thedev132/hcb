@@ -169,7 +169,7 @@ class StripeCard < ApplicationRecord
       card_options[:shipping][:service] = 'priority'
       card_options[:shipping][:address] = {
         city: stripe_shipping_address_city,
-        country: stripe_shipping_address_country,
+        country: 'US', # This is hard-coded for now because Stripe doesn't support card issuing for other countries yet
         line1: stripe_shipping_address_line1,
         postal_code: stripe_shipping_address_postal_code
       }
