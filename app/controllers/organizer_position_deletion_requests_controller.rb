@@ -46,13 +46,13 @@ class OrganizerPositionDeletionRequestsController < ApplicationController
     authorize OrganizerPositionDeletionRequest
     @opdr.close current_user
     flash[:success] = 'Removal request closed.'
-    redirect_to @opdr
+    redirect_to organizer_position_deletion_requests_path
   end
 
   def open
     authorize OrganizerPositionDeletionRequest
     @opdr.open
-    flash[:success] = 'Removal request opened.'
+    flash[:success] = 'Removal request re-opened.'
     redirect_to @opdr
   end
 
