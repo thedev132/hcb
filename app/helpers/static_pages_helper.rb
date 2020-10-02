@@ -94,11 +94,10 @@ module StaticPagesHelper
         'Operating at a loss since 2018!',
         'The sum of its parts!',
         'Wash your hands!',
-        'Try the new promotion: free puppies!',
         'Does anyone actually read this?',
         'Like and subscribe!',
         'Like that smash button!',
-        'he protec, and also attac, but most importantly he pay fees back',
+        'it protec, and also attac, but most importantly it pay fees back',
         'it secures the bag',
         'Protec but also attac',
         'As seen on bank.hackclub.com',
@@ -107,7 +106,16 @@ module StaticPagesHelper
         'Now running in production!',
         "Don't touch your face!",
         'put money in computer',
-        'TODO: get that bread'
+        'TODO: get that bread',
+        'Coming soon to a screen near your face',
+        'Coming soon to a screen year you',
+        'As seen on the internet',
+        "Operating at a loss so you don't have to",
+        'Made by a non-profit for non-profits',
+        'By hackers, for hackers',
+        'It holds money!',
+        'uwu',
+        'Red acting kinda sus'
       ].sample
     end
   end
