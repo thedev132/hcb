@@ -28,6 +28,12 @@ class EmburseTransaction < ApplicationRecord
     self.where(["emburse_transactions.transaction_time >= ? and emburse_transactions.transaction_time <= ?", start_time, end_time])
   end
 
+  def memo
+    return 'Transfer from bank account' if amount > 0
+
+    merchant_name || 'Transfer back to bank account'
+  end
+
   def under_review?
     self.event_id.nil? && undeclined?
   end
