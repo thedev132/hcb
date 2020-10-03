@@ -34,6 +34,10 @@ class EmburseTransaction < ApplicationRecord
     merchant_name || 'Transfer back to bank account'
   end
 
+  def transfer?
+    amount > 0 || merchant_name.nil?
+  end
+
   def under_review?
     self.event_id.nil? && undeclined?
   end

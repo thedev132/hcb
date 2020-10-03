@@ -5,26 +5,25 @@
       <span class="tooltipped tooltipped--w mr1" aria-label="<%= et.state.capitalize %>">
         <%= status_badge et.status_badge_type %>
       </span>
-      <% if et.amount > 0 %>
-        <strong>Transfer from bank account</strong>
-      <% elsif et.merchant_name.nil? %>
-        <strong>Transfer back to bank account</strong>
+      <% if et.transfer? %>
+        <strong><%= et.memo %></strong>
       <% else %>
-        <%= et.merchant_name %>
+        <%= et.memo %>
       <% end %>
+
       <% if et.receipt_url.present? %>
-      <% if organizer_signed_in? %>
-        <span class="tooltipped tooltipped--e" aria-label="<%= et.category_name.present? ? et.category_name : 'Not categorized' %>">
-          <%= link_to et.receipt_url, target: '_blank', class: 'text-decoration-none' do %>
-            <%= inline_icon 'receipt', size: 16, class: 'ml1' %>
-          <% end %>
-        </span>
+        <% if organizer_signed_in? %>
+          <span class="tooltipped tooltipped--e" aria-label="<%= et.category_name.present? ? et.category_name : 'Not categorized' %>">
+            <%= link_to et.receipt_url, target: '_blank', class: 'text-decoration-none' do %>
+              <%= inline_icon 'receipt', size: 16, class: 'ml1' %>
+            <% end %>
+          </span>
         <% else %>
-        <span class="tooltipped tooltipped--e" aria-label="Sign in to view receipts">
-          <%= link_to root_path, target: '_blank', class: 'text-decoration-none' do %>
-            <%= inline_icon 'receipt', size: 16, class: 'ml1' %>
-          <% end %>
-        </span>
+          <span class="tooltipped tooltipped--e" aria-label="Sign in to view receipts">
+            <%= link_to root_path, target: '_blank', class: 'text-decoration-none' do %>
+              <%= inline_icon 'receipt', size: 16, class: 'ml1' %>
+            <% end %>
+          </span>
         <% end %>
       <% end %>
     </div>

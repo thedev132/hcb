@@ -13,7 +13,7 @@
     </td>
   <% else %>
     <td class="transaction__icon tooltipped tooltipped--e" aria-label="Emburse card transaction">
-      <%= inline_icon et.amount > 0 || et.merchant_name.nil? ? 'payment-transfer' : 'card' %>
+      <%= inline_icon et.transfer? ? 'payment-transfer' : 'card' %>
     </td>
   <% end %>
   <td>
@@ -21,9 +21,9 @@
   </td>
   <td class="flex justify-between">
     <% if et.completed? %>
-      <%= et.merchant_name %>
+      <%= et.memo %>
     <% else %>
-      <i><%= et.merchant_name %></i>
+      <i><%= et.memo %></i>
     <% end %>
   </td>
   <td>

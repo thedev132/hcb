@@ -49,4 +49,44 @@ RSpec.describe EmburseTransaction, type: :model do
       end
     end
   end
+
+  describe '#transfer?' do
+    context 'amount is negative and merchant name is null' do
+      it 'is a transfer' do
+        expect(emburse_transaction).to be_transfer
+      end
+    end
+
+    context 'amount is postitive and merchant name is null' do
+      before do
+        allow(emburse_transaction).to receive(:amount).and_return(100)
+      end
+
+      it 'is a transfer from bank account' do
+        expect(emburse_transaction).to be_transfer
+      end
+    end
+
+    context 'amount is positive and merchant name is somehow present' do
+      before do
+        allow(emburse_transaction).to receive(:merchant_name).and_return('Some merchant name')
+        allow(emburse_transaction).to receive(:amount).and_return(100)
+      end
+
+      it 'is still a transfer from bank account' do
+        expect(emburse_transaction).to be_transfer
+      end
+    end
+
+    context 'amount is negative and merchant name is present' do
+      before do
+        allow(emburse_transaction).to receive(:merchant_name).and_return('Some merchant name')
+      end
+
+      it 'is not a transfer' do
+        expect(emburse_transaction).to_not be_transfer
+      end
+    end
+  end
+
 end
