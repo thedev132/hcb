@@ -29,13 +29,15 @@ class EmburseTransaction < ApplicationRecord
   end
 
   def memo
-    return 'Transfer from bank account' if amount > 0
+    @memo ||= begin
+      return 'Transfer from bank account' if amount > 0
 
-    merchant_name || 'Transfer back to bank account'
+      merchant_name || 'Transfer back to bank account'
+    end
   end
 
   def transfer?
-    amount > 0 || merchant_name.nil?
+    @transfer ||= amount > 0 || merchant_name.nil?
   end
 
   def under_review?
