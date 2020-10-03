@@ -1,0 +1,5 @@
+emburse_transaction1:
+  emburse_id: "9321acfd-14a6-49cc-9b98-d888ac7bf4f2"
+  amount: -100
+  state: "completed"
+  created_at: <%= Time.now %>
