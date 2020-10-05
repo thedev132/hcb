@@ -1,12 +1,12 @@
-<div class="card border b--primary pb0 mt3 mb3">
-  <div class="flex items-center primary">
+<div class="card pb0 mt3 mb3">
+  <div class="flex items-center info">
     <%= inline_icon 'card', size: 32, class: 'mr1' %>
-    <p class="bold mt0 mb0">It’s Emburse migration week</p>
+    <p class="bold mt0 mb0">We’ve migrated to a new card provider</p>
   </div>
   <p class="mt1 mb1">
-  This Saturday, <strong>Sept 26th</strong>, Emburse will be shutting down the purple cards. You can issue yourself a new card.
+    Hack Club Bank has moved off Emburse (the purple cards). All your transactions & receipts have been migrated to the new system. You can issue yourself a new card below.
   <% if @event.used_emburse? %>
-     The new cards spend from your account balance, so your Emburse balance will be transferred back automatically this weekend.
+     The new cards spend from your account balance, so your Emburse balance has been transferred back for you.
     </p>
     <p class="muted">
       All your
@@ -14,6 +14,6 @@
   <% end %>
   </p>
   <div class="border-top card__banner card__darker slate mt2">
-    <strong class="primary">Questions?</strong> <%= help_message %>
+    <strong class="info">Questions?</strong> <%= help_message %>
   </div>
 </div>
