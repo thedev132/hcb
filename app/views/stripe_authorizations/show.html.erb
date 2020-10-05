@@ -7,25 +7,34 @@
   <%= link_to 'All stripe authorizations', stripe_authorizations_path, class: 'breadcrumb' %>
 <% end %>
 
-<article class="card pb0 mt2 mb3">
-  <h1 class="heading h1 mt0 mb0 border-none">
-    Transaction for
-    <%= render_money @stripe_authorization.amount %>
+<%= creator_bar @stripe_authorization, prefix: 'spent ' %>
+<article class="card pb0 mb3">
+  <h1 class="h1 border-none mt0 mb0">
+    <%= @stripe_authorization.name %>
   </h1>
-  <section class="card__banner card__darker details-horiz border-top border-bottom">
-    <p>
-      <strong>Card</strong>
-      <%= link_to @stripe_authorization.stripe_card do %>
-        <%= user_mention @stripe_authorization.stripe_card.user %>
-      <% end %>
-    </p>
+  <p class="h5 muted flex items-center mt0 mb2">
+    <%= inline_icon 'map-app', size: 24, class: 'mr1' %>
+    <%= @stripe_authorization.merchant_data[:city].capitalize + ', ' if @stripe_authorization.merchant_data[:city].present? %>
+    <%= @stripe_authorization.merchant_data.to_hash.slice(:state, :country, :postal_code).values.join(', ') %>
+  </p>
+  <section class="card__banner card__darker statset border-top border-bottom">
+    <div class="stat">
+      <span class="stat__label">Amount</span>
+      <span class="stat__value"><%= render_money_amount @stripe_authorization.amount %></span>
+    </div>
+    <div class="stat stat--small stat--plain">
+      <span class="stat__label">Card</span>
+      <span class="stat__value">
+        <%= stripe_card_mention @stripe_authorization.stripe_card, size: 32 %>
+      </span>
+    </div>
+  </section>
+  <section class="details pt2 pb2">
     <p>
       <strong>Spent at</strong>
       <%= format_datetime @stripe_authorization.created_at %>
     </p>
-  </section>
-  <section class="details pt2 pb2">
-    <% @stripe_authorization.stripe_obj.to_hash.slice(:authorization_method, :currency, :status, :wallet).each do |key, value| %>
+    <% @stripe_authorization.stripe_obj.to_hash.slice(:status, :authorization_method, :currency, :wallet).each do |key, value| %>
       <p>
         <strong><%= key.to_s.humanize %></strong>
         <% if value == 'usd' %>

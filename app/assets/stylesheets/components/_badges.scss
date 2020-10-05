@@ -142,7 +142,7 @@ summary.pop::-webkit-details-marker {
   white-space: nowrap;
 
   img,
-  svg {
+  img + svg {
     width: 1.5rem;
     vertical-align: middle;
     border-radius: 50%;
@@ -155,9 +155,13 @@ summary.pop::-webkit-details-marker {
 
   img {
     margin-right: 0.5rem;
+
+    + svg {
+      margin: -0.25rem -0.5rem 0 -0.625rem;
+    }
   }
 
-  svg {
-    margin: -0.25rem -0.5rem 0 -0.625rem;
+  svg:first-child {
+    vertical-align: bottom;
   }
 }

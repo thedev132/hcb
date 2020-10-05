@@ -64,7 +64,11 @@ class StripeAuthorization < ApplicationRecord
   end
 
   def merchant_name
-    name || stripe_obj[:merchant_data][:name]
+    @merchant_name ||= name || stripe_obj[:merchant_data][:name]
+  end
+
+  def merchant_data
+    @merchant_data ||= stripe_obj[:merchant_data]
   end
 
   def sync_from_stripe!

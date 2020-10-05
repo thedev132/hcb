@@ -3,8 +3,10 @@ module StripeCardsHelper
     "#{card.stripe_exp_month.to_s.rjust(2, '0')}/#{card.stripe_exp_year}"
   end
 
-  def stripe_card_mention(stripe_card)
-    icon = inline_icon 'card', size: 24, class: 'purple pr1'
+  def stripe_card_mention(stripe_card, options = { size: 24 })
+    icon = inline_icon 'card',
+      size: options[:size],
+      class: "purple #{options[:size] <= 24 ? 'pr1' : ''}"
     if organizer_signed_in? || stripe_card.user == current_user
       text = content_tag :span, stripe_card.last_four
       return link_to(stripe_card, class: 'mention') { icon + text }

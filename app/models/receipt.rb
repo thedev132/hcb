@@ -19,5 +19,7 @@ class Receipt < ApplicationRecord
     elsif file.variable?
       Rails.application.routes.url_helpers.rails_representation_url(file.variant(resize: resize).processed, only_path: true)
     end
+  rescue ActiveStorage::FileNotFoundError
+    nil
   end
 end

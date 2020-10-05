@@ -8,7 +8,7 @@
   margin-bottom: 0.25rem;
   text-transform: uppercase;
 }
-.stat:not(.stat--numerical) .stat__value:before {
+.stat:not(.stat--plain) .stat__value:before {
   content: '$';
   color: map-get($palette, muted);
   font-size: 1.5rem;

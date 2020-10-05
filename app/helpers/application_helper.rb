@@ -9,6 +9,10 @@ module ApplicationHelper
     render_money(amount, unit).remove('.00')
   end
 
+  def render_money_amount(amount, unit = '$')
+    render_money(amount, unit).remove(unit)
+  end
+
   def render_percentage(decimal, params = {})
     precision = params[:precision] || 2
     number_to_percentage(decimal * 100, precision: precision)
