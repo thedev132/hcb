@@ -3,7 +3,7 @@
 <% include_modals %>
 <%= render 'nav' %>
 
-<%= render 'cards/ordering_suspended' %>
+<%= render 'cards/ordering_suspended' if current_user %>
 
 <h1 class="heading">
   Cards
