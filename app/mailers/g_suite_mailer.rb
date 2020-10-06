@@ -4,7 +4,7 @@ class GSuiteMailer < ApplicationMailer
     @g_suite = GSuite.find(params[:g_suite_id])
 
     mail to: @recipient,
-         subject: "[Action Requested] Your G Suite for #{@g_suite.domain} needs configuration"
+         subject: "[Action Requested] Your Google Workspace for #{@g_suite.domain} needs configuration"
   end
 
   def notify_of_verified
@@ -12,7 +12,7 @@ class GSuiteMailer < ApplicationMailer
     @g_suite = GSuite.find(params[:g_suite_id])
 
     mail to: @recipient,
-         subject: "[G Suite Verified] Your G Suite for #{@g_suite.domain} has been verified"
+         subject: "[Google Workspace Verified] Your Google Workspace for #{@g_suite.domain} has been verified"
   end
 
 end

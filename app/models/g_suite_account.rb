@@ -32,7 +32,11 @@ class GSuiteAccount < ApplicationRecord
   end
 
   def suspended?
-    self.suspended_at.present?
+    suspended_at.present?
+  end
+
+  def rejected?
+    rejected_at.present?
   end
 
   def under_review?

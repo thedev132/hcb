@@ -20,7 +20,7 @@ class GSuiteAccountsController < ApplicationController
     authorize @g_suite_account
 
     if @g_suite_account.save
-      flash[:success] = 'G Suite account application submitted.'
+      flash[:success] = 'Google Workspace account application submitted.'
     else
       Airbrake.notify(@g_suite_account.errors.full_messages.to_sentence)
 
@@ -47,7 +47,7 @@ class GSuiteAccountsController < ApplicationController
         @g_suite_account.update(accepted_at: Time.now)
         flash[:info] = 'Accepted!'
       end
-      flash[:success] = 'Saved changes to G Suite account.'
+      flash[:success] = 'Saved changes to Google Workspace account.'
       redirect_to g_suite_accounts_path
     else
       render :edit
@@ -61,9 +61,9 @@ class GSuiteAccountsController < ApplicationController
     authorize @g_suite_account
 
     if @g_suite_account.destroy
-      flash[:success] = 'G Suite account deleted successfully.'
+      flash[:success] = 'Google Workspace account deleted successfully.'
     else
-      flash[:error] = `Error while trying to delete G Suite account. Please check G Suite dashboard for more information.`
+      flash[:error] = `Error while trying to delete Google Workspace account. Please check Google Workspace dashboard for more information.`
     end
 
     redirect_to event_g_suite_overview_path(event_id: @event.slug)
@@ -82,7 +82,7 @@ class GSuiteAccountsController < ApplicationController
     end
   end
 
-  # Deprecated: we automatically handle G Suite requests so no applications
+  # Deprecated: we automatically handle Google Workspace requests so no applications
   # are rejected.
   def reject
     authorize @g_suite_account
@@ -90,7 +90,7 @@ class GSuiteAccountsController < ApplicationController
     @g_suite_account.rejected_at = Time.now
 
     if @g_suite_account.save
-      flash[:success] = 'G Suite Account rejected.'
+      flash[:success] = 'Google Workspace account rejected.'
     else
       flash[:error] = 'Something went wrong.'
     end

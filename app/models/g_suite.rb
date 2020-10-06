@@ -56,6 +56,10 @@ class GSuite < ApplicationRecord
     "https://www.google.com/webmasters/verification/verification?siteUrl=http://#{domain}&priorities=vdns,vmeta,vfile,vanalytics"
   end
 
+  def deleted?
+    deleted_at.present?
+  end
+
   def ou_name
     "##{event.id} #{event.name.to_s.gsub("+", "")}" # TODO: fix this brittleness. our ou's have been tied to Event.name but that has multiple issues - a user could change their event name, an event name might have non-permitted characters in it for an ou name. we should just use event.id. probably requires migration of all old ous
   end

@@ -3,7 +3,7 @@ class GSuiteAccountMailer < ApplicationMailer
     @recipient = params[:recipient]
 
     mail to: @recipient,
-         subject: '[Action Requested] Verify your Bank G Suite account'
+         subject: '[Action Requested] Verify your Bank Google Workspace account'
   end
 
   def notify_user_of_activation(params)
@@ -13,7 +13,7 @@ class GSuiteAccountMailer < ApplicationMailer
     @event = params[:event]
 
     mail to: @recipient,
-         subject: 'Your Bank G Suite account is ready for you!'
+         subject: 'Your Google Workspace account via Bank is ready!'
   end
 
   def notify_user_of_reset(params)
@@ -22,6 +22,6 @@ class GSuiteAccountMailer < ApplicationMailer
     @password = params[:password]
 
     mail to: @recipient,
-         subject: 'Your Bank G Suite password was reset'
+         subject: 'Your Bank Google Workspace password was reset'
   end
 end

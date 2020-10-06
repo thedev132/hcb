@@ -1,17 +1,16 @@
-<% title 'G Suites' %>
+<% title 'Google Workspaces' %>
 
 <h1 class="heading">
-  G Suites
+  Google Workspaces
 </h1>
 
 <table>
   <thead>
     <tr>
-      <th>Event</th>
+      <th>Project</th>
       <th>Domain</th>
       <th>Verification key</th>
       <th>Status</th>
-      <th>Deleted at</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -23,11 +22,9 @@
         <td><%= g_suite.domain %></td>
         <td><%= g_suite.verification_key %></td>
         <td><%= g_suite.aasm_state %></td>
-        <td><%= g_suite.deleted_at %></td>
         <td><%= link_to 'Verify', g_suite.verification_url, target: :blank %></td>
         <td><%= link_to 'Show', g_suite_path(g_suite, event_id: g_suite.event.slug) %></td>
         <td><%= link_to 'Edit', edit_event_g_suite_path(g_suite, event_id: g_suite.event.slug) %></td>
-        <td><%= link_to 'Destroy', g_suite_path(g_suite, event_id: g_suite.event.slug), method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>

@@ -34,7 +34,7 @@ class GSuitesController < ApplicationController
     @g_suite = GSuiteService::Update.new(attrs).run
 
     if @g_suite.persisted?
-      flash[:success] = "G Suite was successfully updated."
+      flash[:success] = 'Google Workspace changes saved.'
       redirect_to @g_suite
     else
       render :edit
@@ -48,7 +48,7 @@ class GSuitesController < ApplicationController
     authorize @g_suite
 
     if @g_suite.update(deleted_at: Time.now)
-      flash[:success] = 'G Suite was successfully destroyed.'
+      flash[:success] = 'Google Workspace was successfully destroyed.'
       redirect_to g_suites_url
     else
       render :index
