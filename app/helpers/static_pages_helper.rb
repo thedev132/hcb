@@ -115,7 +115,18 @@ module StaticPagesHelper
         'By hackers, for hackers',
         'It holds money!',
         'uwu',
-        'Red acting kinda sus'
+        'Red acting kinda sus',
+        'An important part of this nutritional breakfast',
+        'By people with money, for people with money',
+        'Made using "money"',
+        'Chosen #1 by dinosaurs everywhere',
+        'Accountants HATE him',
+        'Eat fresh!',
+        'Taste the rainbow',
+        'Think different',
+        'Congradulations, you are the 10,000th visitor!',
+        "It's more likely than you think",
+        "All the finance that's fit to print"
       ].sample
     end
   end
