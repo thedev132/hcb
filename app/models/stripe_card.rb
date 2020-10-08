@@ -1,6 +1,6 @@
 class StripeCard < ApplicationRecord
   before_create :issue_stripe_card, unless: :issued? # issue the card if we're creating it for the first time
-  after_create :notify_user
+  after_create :notify_user, :pay_for_issuing
 
   scope :deactivated, -> { where.not(stripe_status: 'active') }
   scope :active, -> { where(stripe_status: 'active') }
@@ -174,6 +174,10 @@ class StripeCard < ApplicationRecord
     @secret_details
   end
 
+  def pay_for_issuing
+    PayForIssuedCardJob.perform_later(self)
+  end
+
   def notify_user
     if virtual?
       StripeCardMailer.with(card_id: self.id).virtual_card_ordered.deliver_later
@@ -210,8 +214,6 @@ class StripeCard < ApplicationRecord
 
     @stripe_card_obj = card
     sync_from_stripe!
-
-    PayForIssuedCardJob.perform_later(self)
   end
 
   def authorizations_from_stripe
