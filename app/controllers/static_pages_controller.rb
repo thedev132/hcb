@@ -12,8 +12,6 @@ class StaticPagesController < ApplicationController
       }
       @service = StaticPageService::Index.new(attrs)
 
-      redirect_to @service.events.first and return if @service.redirect_to_first_event?
-
       @events = @service.events
       @invites = @service.invites
     end

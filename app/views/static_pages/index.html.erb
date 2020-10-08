@@ -17,7 +17,7 @@
       <ul class="grid grid--narrow left-align w-100 mt0">
         <% @events.not_hidden.each do |event| %>
           <%= link_to event do %>
-            <li class="card card--tall flex flex-column justify-between">
+            <li class="card card--hover flex flex-column justify-between">
               <strong class="brand-sans h3 line-height-2 mb1"><%= event.name %></strong>
               <div class="avatar-row">
                 <% event.organizer_positions.each do |position| %>
@@ -27,6 +27,14 @@
             </li>
           <% end %>
         <% end %>
+        <a href="https://airtable.com/shrp79oRXlWT025j8?prefill_First+Name=<%= current_user.first_name %>&prefill_Last+Name=<%= current_user.last_name %>&prefill_Email+Address=<%= current_user.email %>">
+          <li class="card card--hover bold brand-sans flex items-center align-center">
+            <span class="pop success mr1">
+              <%= inline_icon 'plus', size: 28 %>
+            </span>
+            New project
+          </li>
+        </a>
       </ul>
 
       <% if @events.hidden.any? %>
@@ -35,7 +43,7 @@
           <ul class="grid grid--narrow left-align mt0">
             <% @events.hidden.each do |event| %>
               <%= link_to event do %>
-                <li class="card card--tall flex flex-column justify-between">
+                <li class="card card--hover flex flex-column justify-between">
                   <strong class="h3 line-height-2 mb1"><%= event.name %></strong>
                   <div class="avatar-row">
                     <% event.organizer_positions.each do |position| %>
@@ -64,8 +72,11 @@
       </ul>
     <% end %>
     <% if @events.empty? && @invites.empty? && !current_user.admin? %>
-      <%= blankslate 'No projects associated with your account.' %>
-      <%= blankslate 'Perhaps reach out to a co-organizer to get added?' %>
+      <%= blankslate 'No projects associated with your account yet.' %>
+      <a href="https://airtable.com/shrW33gWaPnSDBhYj?prefill_First+Name=<%= current_user.first_name %>&prefill_Last+Name=<%= current_user.last_name %>&prefill_Email+Address=<%= current_user.email %>" class="btn bg-success">
+        <%= inline_icon 'plus' %>
+        New project
+      </a>
     <% end %>
   <% end %>
 

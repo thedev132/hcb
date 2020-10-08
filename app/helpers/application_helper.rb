@@ -66,7 +66,7 @@ module ApplicationHelper
     status_badge(type) if condition
   end
 
-  def pop_icon_to(icon, url, options = {})
+  def pop_icon_to(icon, url, options = { class: 'info' })
     link_to url, options.merge({ class: "pop #{options[:class]}" }) do
       inline_icon icon, size: 28
     end
