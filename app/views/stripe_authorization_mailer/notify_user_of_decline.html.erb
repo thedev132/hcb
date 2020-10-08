@@ -1,4 +1,4 @@
-A <%= render_money @auth.amount %> <%= @auth.stripe_obj.authorization_method.humanize.downcase %> charge to your card ending in <%= @card.last4 %> was <%= @auth.status_text.downcase %>.
+A <%= render_money @auth.amount %> <%= @auth.stripe_obj.authorization_method.humanize.downcase %> charge to your card ending in <%= @card.last4 %> at '<i><%= @auth.stripe_obj.merchant_data.name %></i>' was <%= @auth.status_text.downcase %>.
 
 The account budget for <%= @event.name %> is <%= render_money @event.balance %>.
 
