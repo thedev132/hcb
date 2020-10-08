@@ -17,18 +17,6 @@ module StaticPageService
     end
     
     # Counts
-    #
-    def emburse_card_requests_count
-      EmburseCardRequest.under_review.count
-    end
-
-    def emburse_transfers_count
-      EmburseTransfer.under_review.count
-    end
-
-    def emburse_transactions_count
-      EmburseTransaction.under_review.count
-    end
 
     def checks_count
       # While check sending isn't working, we don't want to show tasks in the

@@ -16,9 +16,6 @@ class StaticPagesController < ApplicationController
 
       @events = @service.events
       @invites = @service.invites
-      @active = {
-        g_suite_accounts: GSuiteAccount.under_review.size,
-      }
     end
     if admin_signed_in?
       @transaction_volume = Transaction.total_volume

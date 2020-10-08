@@ -42,41 +42,8 @@ class EmburseTransfersController < ApplicationController
     @comment = Comment.new
   end
 
-  def new
-    @event = Event.friendly.find(params[:event_id])
-    @emburse_transfer = EmburseTransfer.new(event: @event)
-
-    authorize @emburse_transfer
-  end
-
   def edit
     authorize @emburse_transfer
-  end
-
-  def create
-    # Load amount is in cents on the backend, but dollars on the frontend
-    result_params = emburse_transfer_params
-    result_params[:load_amount] = result_params[:load_amount].gsub(',', '').to_f * 100
-
-    @emburse_transfer = EmburseTransfer.new(result_params)
-    @event = Event.friendly.find(params[:emburse_transfer][:event_id])
-
-    authorize @emburse_transfer
-
-    load_amount = @emburse_transfer.load_amount
-
-    if load_amount > @event.balance_available
-      flash[:error] = "You can’t load more money than you have onto your card."
-      render :new
-      return
-    end
-
-    if @emburse_transfer.save
-      flash[:success] = 'Successfully requested transfer to cards.'
-      redirect_to event_emburse_cards_overview_path(@event)
-    else
-      render :new
-    end
   end
 
   def update

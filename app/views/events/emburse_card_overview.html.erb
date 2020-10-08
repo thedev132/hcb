@@ -1,15 +1,21 @@
-<% title "Cards for #{@event.name.html_safe}" %>
+<% title "Emburse cards for #{@event.name.html_safe}" %>
 <% page_md %>
 <%= render 'nav'%>
 
 <h1>
-  Cards
+  Emburse cards
 </h1>
 
-<%= render 'cards/ordering_suspended'%>
+<%= render 'cards/ordering_suspended' %>
 
-<article class="card overflow-visible">
-  <h2 class="mt0 mb2">Summary</h2>
+<article class="card overflow-visible pt0">
+  <section class="card__banner pt2 pb2 mb2 bg-purple rounded-top">
+    <p class="bold white mt0 mb1">You can no longer use Emburse cards—this page is for historical purposes.</p>
+    <p class="h5 white m0">
+      Need help or have questions?
+      <%= help_message %>
+    </p>
+  </section>
 
   <div class="flex flex-wrap">
     <div class="stat md-w-50 mb2 tooltipped tooltipped--s" aria-label="The amount available to spend on your cards">
@@ -19,22 +25,13 @@
       </span>
       <span class="stat__value mr2"><%= render_money @event.emburse_balance, '' %></span>
     </div>
-    <div class="stat md-w-50 muted mb2 tooltipped tooltipped--s" aria-label="The available amount stored in your bank–you need to transfer it to your card balance before spending it">
+    <div class="stat md-w-50 muted mb2">
       <span class="stat__label flex items-center">
         Available Bank balance
         <%= inline_icon 'info', size: 24, class: 'muted ml1', 'aria-label': 'Info icon' %>
       </span>
       <span class="stat__value"><%= render_money @event.available_balance, '' %></span>
     </div>
-  </div>
-
-  <div class="flex flex-wrap items-center">
-    <%= link_to new_event_emburse_transfer_path(event_id: @event.slug), class: 'btn btn--icon bg-success mr2' do %>
-      <%= inline_icon 'payment-transfer' %>
-      Transfer to card balance
-    <% end %>
-    <span class="h5 mt1 mb1">
-    </span>
   </div>
 
   <p class="bold mt2 mb1">Your billing address for purchases</p>
@@ -56,10 +53,6 @@ West Hollywood, CA 90069</pre>
 
 <h2 class="heading">
   Issued cards
-  <%= link_to new_emburse_card_request_path(event_id: @event.id), class: 'btn btn--icon bg-success', disabled: true do %>
-    <%= inline_icon 'card-add' %>
-    Issue a card
-  <% end %>
 </h2>
 <% if @event.emburse_cards.any? %>
   <section class="mixed-grid grid--spacious mt2">
@@ -76,7 +69,7 @@ West Hollywood, CA 90069</pre>
 <% elsif @emburse_card_requests.any? %>
   <%= blankslate 'No cards have been issued yet.' %>
 <% elsif @cards.blank? %>
-  <%= blankslate 'You haven’t requested any physical cards yet.' %>
+  <%= blankslate 'You haven’t requested any cards yet.' %>
 <% end %>
 
 <% if @emburse_card_requests.outstanding.any? %>
@@ -122,14 +115,10 @@ West Hollywood, CA 90069</pre>
 
 <% if @event.emburse_transfers %>
   <h2 class="heading">
-    Transfers to card balance
-    <button class="btn btn--icon bg-info" id="show_lcrs">
-      <%= inline_icon 'view' %>
-      Show all
-    </button>
+    Transfers to Emburse balance
   </h2>
   <div class="table-container">
-    <table id="lcr_table">
+    <table>
       <thead>
         <tr>
           <th>Requested at</th>
@@ -149,7 +138,6 @@ West Hollywood, CA 90069</pre>
         <% end %>
       </tbody>
     </table>
-    <%= blankslate 'You don’t have any pending transfers.', id: 'lcr_blank' if @event.emburse_transfers.pending.none? %>
   </div>
 <% end %>
 
@@ -157,7 +145,7 @@ West Hollywood, CA 90069</pre>
 </main>
 <main class="container">
   <h2 class="mt3 mb2">
-    Card transactions
+    Emburse card transactions
   </h2>
   <div class="table-container">
   <table>

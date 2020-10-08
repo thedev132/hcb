@@ -179,7 +179,7 @@ Rails.application.routes.draw do
     resources :comments
   end
 
-  resources :emburse_transfers, except: [:new] do
+  resources :emburse_transfers, except: [:new, :create] do
     collection do
       get 'export'
     end
@@ -251,7 +251,6 @@ Rails.application.routes.draw do
               only: [:new, :create],
               path: 'invites'
     resources :g_suites, only: [:new, :create, :edit, :update]
-    resources :emburse_transfers, only: [:new]
     resources :documents, only: [:index]
     get 'fiscal_sponsorship_letter', to: 'documents#fiscal_sponsorship_letter'
     resources :invoices, only: [:new, :create, :index]
