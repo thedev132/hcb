@@ -9,7 +9,7 @@ class PayForIssuedCardJob < ApplicationJob
     StripeService::Topup.create({
       amount: card.issuing_cost,
       currency: 'usd',
-      statement_descriptor: `Issued card #{card.id}`
+      statement_descriptor: "Issued card #{card.id}"
       # (@msw) destination_balance is empty, because issuing a new stripe card
       # charges the main balance
     })
