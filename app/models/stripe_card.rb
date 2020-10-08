@@ -165,7 +165,7 @@ class StripeCard < ApplicationRecord
     unless virtual?
       card_options[:shipping] = {}
       card_options[:shipping][:name] = stripe_shipping_name
-      card_options[:shipping][:service] = 'priority'
+      card_options[:shipping][:service] = 'standard'
       card_options[:shipping][:address] = {
         city: stripe_shipping_address_city,
         country: 'US', # This is hard-coded for now because Stripe doesn't support card issuing for other countries yet
