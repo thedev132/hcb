@@ -4,7 +4,6 @@ class StripeCard < ApplicationRecord
 
   scope :deactivated, -> { where.not(stripe_status: 'active') }
   scope :active, -> { where(stripe_status: 'active') }
-  scope :physical, -> { where(card_type: :physical) }
   scope :physical_shipping, -> { physical.includes(:user, :event).select { |c| c.stripe_obj[:shipping][:status] != 'delivered' } }
 
   belongs_to :event
@@ -130,6 +129,37 @@ class StripeCard < ApplicationRecord
     self
   end
 
+  def issuing_cost
+    # (@msw) Stripe's API doesn't provide issuing + shipping costs, so this
+    # method computes the cost of issuing a card based on Stripe's
+    # docs:
+    # https://stripe.com/docs/issuing/cards/physical#costs
+    # https://stripe.com/docs/issuing/cards/virtual#costs
+
+    # *all amounts in cents*
+
+    return 10 if virtual?
+
+    cost = 300
+    cost_type = stripe_obj['shipping']['type'] + '|' + stripe_obj['shipping']['service']
+    case cost_type
+    when 'individual|standard'
+      cost += 50
+    when 'individual|express'
+      cost += 1600
+    when 'individual|priority'
+      cost += 2200
+    when 'bulk|standard'
+      cost += 2500
+    when 'bulk|express'
+      cost += 3000
+    when 'bulk|priority'
+      cost += 4800
+    end
+
+    cost
+  end
+
   private
 
   def issued?
@@ -180,6 +210,8 @@ class StripeCard < ApplicationRecord
 
     @stripe_card_obj = card
     sync_from_stripe!
+
+    PayForIssuedCardJob.perform_later(self)
   end
 
   def authorizations_from_stripe
