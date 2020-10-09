@@ -13,7 +13,7 @@ class EmburseTransaction < ApplicationRecord
   scope :undeclined, -> { where.not(state: 'declined') }
   scope :declined, -> { where(state: 'declined') }
   scope :under_review, -> { where(event_id: nil).undeclined }
-  scope :missing_receipt, -> { includes(:receipts).where.not(event_id: nil).where(receipts: { receiptable_id: nil }, state: 'completed') }
+  scope :missing_receipt, -> { includes(:receipts).where.not(event_id: nil).where.not(amount: 0).where(receipts: { receiptable_id: nil }, state: 'completed') }
   scope :unified_list, -> { where.not(state: 'declined') }
 
   belongs_to :event, required: false
