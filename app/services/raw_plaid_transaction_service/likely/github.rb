@@ -1,9 +1,0 @@
-module RawPlaidTransactionService
-  module Likely
-    class Github
-      def run
-        ::RawPlaidTransaction.where("plaid_transaction->>'name' ilike '%github grant%'")
-      end
-    end
-  end
-end

@@ -651,18 +651,6 @@ ActiveRecord::Schema.define(version: 2020_09_22_192222) do
     t.index ["user_id"], name: "index_organizer_positions_on_user_id"
   end
 
-  create_table "plaid_transactions", force: :cascade do |t|
-    t.text "plaid_account_id"
-    t.text "plaid_item_id"
-    t.text "plaid_transaction_id"
-    t.jsonb "plaid_transaction"
-    t.integer "amount_cents"
-    t.date "date_posted"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.boolean "pending", default: false
-  end
-
   create_table "raw_emburse_transactions", force: :cascade do |t|
     t.text "emburse_transaction_id"
     t.jsonb "emburse_transaction"
