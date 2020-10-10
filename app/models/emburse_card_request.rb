@@ -53,12 +53,4 @@ class EmburseCardRequest < ApplicationRecord
   def under_review?
     rejected_at.nil? && canceled_at.nil? && accepted_at.nil?
   end
-
-  def send_accept_email
-    if is_virtual
-      EmburseCardRequestMailer.with(emburse_card_request: self).accepted_virtual.deliver_later
-    else
-      EmburseCardRequestMailer.with(emburse_card_request: self).accepted_physical.deliver_later
-    end
-  end
 end

@@ -98,9 +98,7 @@ Rails.application.routes.draw do
   end
   resources :stripe_cardholders, only: [:new, :create, :update]
   resources :stripe_cards, only: %i[create index show]
-  resources :emburse_cards do
-    post 'toggle_active'
-  end
+  resources :emburse_cards, except: %i[new create]
 
   resources :checks, only: [:show, :index, :edit, :update] do
     collection do
@@ -169,7 +167,7 @@ Rails.application.routes.draw do
   get 'branding', to: 'static_pages#branding'
   get 'faq', to: 'static_pages#faq'
 
-  resources :emburse_card_requests, path: 'emburse_card_requests' do
+  resources :emburse_card_requests, path: 'emburse_card_requests', except: [:new, :create] do
     collection do
       get 'export'
     end

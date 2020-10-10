@@ -3,19 +3,7 @@ class EmburseCardPolicy < ApplicationPolicy
     user&.admin?
   end
 
-  def new?
-    user&.admin?
-  end
-
-  def create?
-    user&.admin?
-  end
-
   def show?
-    record.event.users.include?(user) || user&.admin?
-  end
-
-  def toggle_active?
     record.event.users.include?(user) || user&.admin?
   end
 

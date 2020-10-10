@@ -3,14 +3,6 @@ class EmburseCardRequestPolicy < ApplicationPolicy
     user&.admin?
   end
 
-  def new?
-    is_public || admin_or_user
-  end
-
-  def create?
-    admin_or_user
-  end
-
   def show?
     user&.admin?
   end
