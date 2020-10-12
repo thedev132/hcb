@@ -71,8 +71,13 @@ class StripeCard < ApplicationRecord
   def status_badge_type
     s = stripe_status.to_sym
     return :success if s == :active
+    return :error if s == :deleted
 
-    :info
+    :muted
+  end
+
+  def deactivated?
+    stripe_status != 'active'
   end
 
   include ActiveModel::AttributeMethods
