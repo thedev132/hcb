@@ -4,11 +4,15 @@ class StripeAuthorization < ApplicationRecord
   before_validation :sync_from_stripe! # pull details from stripe if we're creating it for the first time
   after_create :notify_of_creation
 
-  scope :awaiting_receipt, -> { includes(:receipts).where.not(amount: 0).where(approved: true, receipts: { receiptable_id: nil}) } # TODO: remove reversed TXs from this list
+  scope :awaiting_receipt, -> { includes(:receipts).where.not(amount: 0).where(approved: true, receipts: { receiptable_id: nil}) }
   scope :approved, -> { where(approved: true) }
   scope :pending, -> { where(stripe_status: :pending) }
   scope :declined, -> { where(stripe_status: :declined) }
   scope :successful, -> { where(stripe_status: :closed, approved: true) }
+
+  def awaiting_receipt?
+    !amount.zero? && approved && receipts.size.zero?
+  end
   
   has_paper_trail
 

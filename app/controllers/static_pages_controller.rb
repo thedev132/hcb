@@ -130,7 +130,7 @@ class StaticPagesController < ApplicationController
 
   def my_inbox
     @authorizations = current_user.stripe_authorizations.includes(stripe_card: :event).awaiting_receipt
-    @transactions = current_user.emburse_transactions.includes(emburse_card: :event).missing_receipt
+    @transactions = current_user.emburse_transactions.includes(emburse_card: :event).awaiting_receipt
     @txs = @authorizations + @transactions
     @count = @txs.size
   end

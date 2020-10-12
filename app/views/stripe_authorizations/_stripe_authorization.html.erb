@@ -26,7 +26,9 @@
     <% end %>
   </td>
   <td>
-    <%= list_badge_for stripe_authorization.receipts.size, 'receipt', 'payment-docs', required: true %>
+    <% if stripe_authorization.awaiting_receipt? %>
+      <%= list_badge_for stripe_authorization.receipts.size, 'receipt', 'payment-docs', required: true %>
+    <% end %>
   </td>
   <td class="nowrap">
     <%= render_money -stripe_authorization.amount %>

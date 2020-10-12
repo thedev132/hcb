@@ -8,13 +8,10 @@ class EmburseTransaction < ApplicationRecord
 
   paginates_per 100
 
-  scope :pending, -> { where(state: 'pending') }
-  scope :completed, -> { where(state: 'completed') }
   scope :undeclined, -> { where.not(state: 'declined') }
-  scope :declined, -> { where(state: 'declined') }
   scope :under_review, -> { where(event_id: nil).undeclined }
-  scope :missing_receipt, -> { includes(:receipts).where.not(event_id: nil).where.not(amount: 0).where(receipts: { receiptable_id: nil }, state: 'completed') }
-  scope :unified_list, -> { where.not(state: 'declined') }
+  scope :awaiting_receipt, -> { includes(:receipts).completed.where.not(amount: 0).where(receipts: { receiptable_id: nil}) }
+  scope :unified_list, -> { undeclined }
 
   belongs_to :event, required: false
   belongs_to :emburse_card, required: false
@@ -23,6 +20,10 @@ class EmburseTransaction < ApplicationRecord
   has_many :comments, as: :commentable
 
   validates_uniqueness_of_without_deleted :emburse_id
+
+  def awaiting_receipt?
+    !amount.zero? && approved && receipts.size.zero?
+  end
 
   def self.during(start_time, end_time)
     self.where(["emburse_transactions.transaction_time >= ? and emburse_transactions.transaction_time <= ?", start_time, end_time])
