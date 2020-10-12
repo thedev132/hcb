@@ -3,11 +3,11 @@ module EventMappingEngine
     class Historical
       def run
         likely_historicals.find_each do |ct|
-          historical_transactions = Transaction.where(
-            amount: ct.amount_cents,
-            name: ct.memo,
-            date: ct.date
-          )
+          raw_plaid_ids = ct.hashed_transactions.pluck(:raw_plaid).compact
+
+          historical_transactions = raw_plaid_ids.map do |rpid|
+            Transaction.find_by(plaid_id: rpid)
+          end
 
           return unless historical_transactions.size == 1
 
