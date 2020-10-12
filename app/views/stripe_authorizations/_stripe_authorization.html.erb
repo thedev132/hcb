@@ -2,7 +2,7 @@
   class="transaction--<%= stripe_authorization.amount.negative? ? 'positive' : 'negative' %><%= ' muted' if stripe_authorization.pending? %>"
   data-behavior="filterbar_row"
   data-filter="<%= stripe_authorization.filter_data.to_json %>">
-  <% unless authorless %>
+  <% unless defined? authorless %>
   <% if defined? @event %>
     <td
       class="transaction__icon tooltipped tooltipped--e"
