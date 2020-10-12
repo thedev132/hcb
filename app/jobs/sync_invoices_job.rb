@@ -1,7 +1,5 @@
 class SyncInvoicesJob < ApplicationJob
-  RUN_EVERY = 20.minutes
-
-  def perform(repeat = false)
+  def perform
     Invoice.find_each do |i|
       if i.livemode && !Rails.env.production?
         puts "(Development) Skipping invoice ##{i.id}: accessing production invoices with development keys will fail"
@@ -34,10 +32,6 @@ class SyncInvoicesJob < ApplicationJob
           end
         end
       end
-    end
-
-    if repeat
-      self.class.set(wait: RUN_EVERY).perform_later(true)
     end
   end
 end
