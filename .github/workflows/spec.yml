@@ -13,5 +13,7 @@ jobs:
         run: |
           docker-compose up -d web
       - name: Run test
+        env:
+          APP_PORT: 3000
         run: |
           docker-compose run -e RAILS_ENV=test --service-ports web /bin/bundle exec rails run tests
