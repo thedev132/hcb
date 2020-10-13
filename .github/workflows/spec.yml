@@ -10,11 +10,12 @@ jobs:
         ports:
           - 5432:5432
     steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-ruby@v1
+      - uses: actions/checkout@v2
+      - name: Set up Ruby 2.5
+        uses: actions/setup-ruby@v1
         with:
-          ruby-version: 2.5.5
-      - name: Install postgres client
+          ruby-version: 2.5
+      - name: Install PG client
         run: sudo apt-get install libpq-dev
       - name: Install dependencies
         run: |
@@ -25,7 +26,7 @@ jobs:
           bundler exec rails db:create RAILS_ENV=test
           bundler exec rails db:migrate RAILS_ENV=test
       - name: Run tests
-        run: bundler exec spec
+        run: bundler exec rails test
       - name: Upload coverage results    
         uses: actions/upload-artifact@master
         if: always()
