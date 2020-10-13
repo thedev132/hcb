@@ -8,6 +8,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Build docker-compose stack
+        env:
+          APP_PORT: 3000
         run: |
           docker-compose up -d web
       - name: Run test
