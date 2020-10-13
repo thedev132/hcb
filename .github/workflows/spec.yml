@@ -1,5 +1,5 @@
 name: Rails tests
-on: [push, pull_request]
+on: [push]
 jobs:
   rspec-test:
     name: RSpec
@@ -12,7 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Set up Ruby 2.5
-        uses: actions/setup-ruby@v1
+        uses: ruby/setup-ruby@v1
         with:
           ruby-version: "2.5.5"
       - name: Install PG client
