@@ -75,6 +75,7 @@
   height: 36px;
   width: 36px;
   transition: box-shadow 0.125s ease-in-out;
+  outline: none;
 
   &[disabled] {
     opacity: 0.5;
