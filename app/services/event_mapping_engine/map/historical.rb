@@ -16,7 +16,7 @@ module EventMappingEngine
           return unless guessed_event_id
 
           attrs = {
-            canonical_transaction_id: ct.id
+            canonical_transaction_id: ct.id,
             event_id: guessed_event_id
           }
           ::CanonicalEventMapping.create!(attrs)
