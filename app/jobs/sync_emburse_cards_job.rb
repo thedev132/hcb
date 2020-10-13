@@ -1,6 +1,6 @@
 class SyncEmburseCardsJob < ApplicationJob
   def perform
-    EmburseCards.find_each do |emburse_card|
+    EmburseCard.find_each do |emburse_card|
       emburse_card.sync_from_emburse!
       emburse_card.save!
     rescue EmburseClient::NotFoundError
