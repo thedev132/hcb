@@ -4,75 +4,94 @@
 <article class="check--form flex align-start justify-center mt2 mb3">
   <section class="center mt0 mx-auto" style="width: 400px; max-width: 100%;">
     <%= render @card %>
-    <%= link_to @card, class: 'btn bg-info mt2 md-mt3' do %>
-      <%= inline_icon 'view' %>
-      Reveal card number
-    <% end if false && @card.virtual? %>
   </section>
 
   <article class="card max-width-2 mx-auto mt3">
-    <section class="mb2">
-      <h2 class="mt0 heading">
-        <span class="flex-auto">
-          <%= @card.virtual? ? 'Virtual card' : 'Card' %>
-          for <%= user_mention @card.user %>
-        </span>
-      </h2>
+    <h2 class="mt0 heading">
+      <span class="flex-auto">
+        <%= @card.virtual? ? 'Virtual card' : 'Card' %>
+        for <%= user_mention @card.user %>
+      </span>
+    </h2>
 
-      <section class="details mt2">
-        <% if @card.virtual? %>
-          <div>
-            <strong>CVC</strong>
-            <%= @card.cvc %>
-          </div>
+    <section class="details mt2">
+      <% eta = @card.stripe_obj.to_hash.dig(:shipping, :eta) %>
+      <% if eta && Time.now.before?(Time.at(eta) + 3.days) %>
+        <p>
+          <strong>Expected arrival</strong>
+          <%= format_date Time.at(eta).to_date %>
+        </p>
+      <% else %>
+        <p>
+          <strong>Activation status</strong>
+          <span class="flex items-baseline">
+            <%= status_badge @card.status_badge_type %>
+            <%= @card.status_text %>
+          </span>
+        </p>
+      <% end %>
 
+      <% if @card.virtual? %>
+        <% if @card.user == current_user %>
           <div>
-            <strong>Expiration date</strong>
-            <%= render_exp_date %>
-          </div>
-
-          <div>
-            <strong>ZIP/Postal code</strong>
-            <%= @card.stripe_cardholder.address_postal_code %>
+            <strong>
+              Card number
+            </strong>
+            <%= @card.formatted_card_number %>
           </div>
         <% end %>
-
-        <p>
-          <strong>Billing address</strong>
-          <%= render_address @card.cardholder %>
-        </p>
 
         <div>
-          <strong>Lifetime total spent</strong>
-          <%= render_money @card.total_spent %>
+          <strong>CVC</strong>
+          <%= @card.cvc %>
         </div>
 
-        <div class="tooltipped tooltipped--s" aria-label="This is your account balance">
-          <strong>Spending limit</strong>
-          <%= render_money @event.available_balance %>
+        <div>
+          <strong>Expiration date</strong>
+          <%= render_exp_date %>
         </div>
 
-        <% eta = @card.stripe_obj.to_hash.dig(:shipping, :eta) %>
-        <% if eta && Time.at(eta) < 3.days.ago %>
-          <p>
-            <strong>Expected on</strong>
-            <%= format_datetime Time.at(@card.stripe_obj.to_hash.dig(:shipping, :eta)) %>
-          </p>
-        <% else %>
-          <p>
-            <strong>Activation status</strong>
-            <span class="flex items-baseline">
-              <%= status_badge @card.status_badge_type %>
-              <%= @card.status_text %>
-            </span>
-          </p>
-        <% end %>
+        <div>
+          <strong>ZIP/Postal code</strong>
+          <%= @card.stripe_cardholder.address_postal_code %>
+        </div>
+      <% else %>
+        <div>
+          <strong>
+            Card number
+          </strong>
+          <%= @card.formatted_card_number %>
+          <div class="right tooltipped tooltipped--w" aria-label="Full number hidden to protect security">
+            <%= inline_icon 'private', size: 32, class: 'smoke' %>
+          </div>
+        </div>
+      <% end %>
 
-        <% admin_tools do %>
-          <strong>Ordered at</strong>
-          <%= format_datetime Time.at(@card.stripe_obj[:created]) %>
-        <% end %>
-      </section>
+      <p>
+        <strong>Billing address</strong>
+        <%= render_address @card.cardholder %>
+      </p>
+    </section>
+    <% admin_tools 'details' do %>
+      <div>
+        <strong>Ordered at</strong>
+        <%= format_datetime Time.at(@card.stripe_obj[:created]) %>
+      </div>
+    <% end %>
+
+    <section class="grid grid--split items-end pt2">
+      <div class="stat">
+        <strong class="stat__label">Lifetime spent</strong>
+        <span class="stat__value">
+          <%= render_money_amount @card.total_spent %>
+        </span>
+      </div>
+      <div class="stat stat--small tooltipped tooltipped--s" aria-label="This is your account balance">
+        <strong class="stat__label">Spending limit</strong>
+        <span class="stat__value">
+          <%= render_money_amount @event.available_balance %>
+        </span>
+      </div>
     </section>
 
     <section class="card__banner card__banner--bottom card__darker pt2 pb2">
@@ -86,10 +105,10 @@
 <% @authorizations = @card.stripe_authorizations %>
 <% if @authorizations.any? %>
   <section class="card p0 mt3 mb3">
-    <h2 class="heading h2 line-height-3 mt0 pt1 pb1 pl2 pr2">
+    <h2 class="heading h2 line-height-3 mt0 ml0 pt1 pb1 pl2 pr2">
       Transactions on this card
     </h2>
-    <%= render 'stripe_authorizations/list', stripe_authorizations: @authorizations, headless: true %>
+    <%= render 'stripe_authorizations/list', stripe_authorizations: @authorizations, headless: true, authorless: true %>
   </section>
 <% else %>
   <%= blankslate 'No transactions made on this card yet.' %>

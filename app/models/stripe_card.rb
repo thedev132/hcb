@@ -1,11 +1,9 @@
 class StripeCard < ApplicationRecord
   before_create :issue_stripe_card, unless: :issued? # issue the card if we're creating it for the first time
-  after_create :notify_user
+  after_create :notify_user, :pay_for_issuing
 
   scope :deactivated, -> { where.not(stripe_status: 'active') }
   scope :active, -> { where(stripe_status: 'active') }
-  scope :active, -> { where(stripe_status: 'active') }
-  scope :physical, -> { where(card_type: 1) }
   scope :physical_shipping, -> { physical.includes(:user, :event).select { |c| c.stripe_obj[:shipping][:status] != 'delivered' } }
 
   belongs_to :event
@@ -73,8 +71,13 @@ class StripeCard < ApplicationRecord
   def status_badge_type
     s = stripe_status.to_sym
     return :success if s == :active
+    return :error if s == :deleted
 
-    :info
+    :muted
+  end
+
+  def deactivated?
+    stripe_status != 'active'
   end
 
   include ActiveModel::AttributeMethods
@@ -131,6 +134,37 @@ class StripeCard < ApplicationRecord
     self
   end
 
+  def issuing_cost
+    # (@msw) Stripe's API doesn't provide issuing + shipping costs, so this
+    # method computes the cost of issuing a card based on Stripe's
+    # docs:
+    # https://stripe.com/docs/issuing/cards/physical#costs
+    # https://stripe.com/docs/issuing/cards/virtual#costs
+
+    # *all amounts in cents*
+
+    return 10 if virtual?
+
+    cost = 300
+    cost_type = stripe_obj['shipping']['type'] + '|' + stripe_obj['shipping']['service']
+    case cost_type
+    when 'individual|standard'
+      cost += 50
+    when 'individual|express'
+      cost += 1600
+    when 'individual|priority'
+      cost += 2200
+    when 'bulk|standard'
+      cost += 2500
+    when 'bulk|express'
+      cost += 3000
+    when 'bulk|priority'
+      cost += 4800
+    end
+
+    cost
+  end
+
   private
 
   def issued?
@@ -143,6 +177,10 @@ class StripeCard < ApplicationRecord
     @secret_details ||= StripeService::Issuing::Card.details(stripe_id)
 
     @secret_details
+  end
+
+  def pay_for_issuing
+    PayForIssuedCardJob.perform_later(self)
   end
 
   def notify_user
@@ -166,7 +204,7 @@ class StripeCard < ApplicationRecord
     unless virtual?
       card_options[:shipping] = {}
       card_options[:shipping][:name] = stripe_shipping_name
-      card_options[:shipping][:service] = 'priority'
+      card_options[:shipping][:service] = 'standard'
       card_options[:shipping][:address] = {
         city: stripe_shipping_address_city,
         country: 'US', # This is hard-coded for now because Stripe doesn't support card issuing for other countries yet

@@ -3,7 +3,7 @@
 <% include_modals %>
 <%= render 'nav' %>
 
-<%= render 'cards/ordering_suspended' %>
+<%= render 'cards/ordering_suspended' if current_user %>
 
 <h1 class="heading">
   Cards
@@ -21,7 +21,7 @@
 </section>
 
 <% if @cards.any? %>
-  <%= async_frame_to event_stripe_cards_shipping_path(@event) %>
+  <%= async_frame_to event_stripe_cards_shipping_path(@event) if organizer_signed_in? %>
   <section class="mixed-grid grid--spacious mt2">
     <%= render @active %>
   </section>

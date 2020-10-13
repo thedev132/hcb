@@ -156,7 +156,7 @@ class EventsController < ApplicationController
   end
 
   def card_overview
-    @stripe_cards = @event.stripe_cards.includes(user: [:profile_picture_attachment])
+    @stripe_cards = @event.stripe_cards.includes(:stripe_cardholder, user: [:profile_picture_attachment])
     @stripe_authorizations = @event.stripe_authorizations.includes(stripe_card: :user)
     @emburse_cards = @event.emburse_cards.includes(user: [:profile_picture_attachment])
     @cards = @stripe_cards + @emburse_cards

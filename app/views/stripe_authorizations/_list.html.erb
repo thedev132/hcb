@@ -5,7 +5,9 @@
     <% unless defined? headless %>
       <thead>
         <tr>
-          <th></th>
+          <% unless defined? authorless %>
+            <th></th>
+          <% end %>
           <th>Date</th>
           <th colspan="2">Description</th>
           <th colspan="2">Amount</th>
@@ -14,7 +16,7 @@
     <% end %>
     <tbody data-behavior="transactions">
       <% stripe_authorizations.each do |t| %>
-        <%= render t %>
+        <%= render t, authorless: defined?(authorless) %>
       <% end %>
     </tbody>
   </table>

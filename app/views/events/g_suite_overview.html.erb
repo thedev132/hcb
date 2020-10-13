@@ -1,9 +1,12 @@
-<% title "G Suite for #{@event.name.html_safe}" %>
+<% title "Google Workspace for #{@event.name.html_safe}" %>
 <% page_md %>
 <%= render 'nav'%>
 
-<h1>
-  G Suite <%= "for #{@g_suite.domain}" if @g_suite %>
+<h1 class="heading">
+  <span class="flex-auto pr2">
+    Google Workspace
+  </span>
+  <%= content_tag :span, @g_suite.domain, class: 'badge info h3 ml0' if @g_suite %>
 </h1>
 
 <% if @g_suite.present? %>
@@ -14,136 +17,139 @@
   <% end %>
 
   <% if @g_suite.creating? %>
-    <p>Awesome! We are compiling next steps for <strong><%= @g_suite.domain %></strong>. We'll email you when that is ready.</p>
+    <section class="card center mt3 mb3 bg-pending pt3">
+      <%= inline_icon 'email', size: 32 %>
+      <h3 class="mt0 mb0">We’re compiling next steps for <%= @g_suite.domain %>.</h3>
+      <p class="mt0">We’ll email you as soon as it’s ready.</p>
+    </section>
   <% end %>
 
   <% unless @g_suite.creating? %>
-
-    <details <%= @g_suite.verified? ? nil : "open" %>>
+    <section class="card center mt3 mb3 bg-success white pt3">
+      <%= inline_icon 'rep', size: 32 %>
+      <h3 class="mt0 mb0">Your application was accepted!</h3>
+      <p class="mt0">It’s time to set up your servers.</p>
+    </section>
+    
+    <details <%= @g_suite.verified? ? nil : 'open' %>>
     <summary><h2 class="inline-block pb0 border-none mt0">Setup Instructions</h2></summary>
-    <article class="card overflow-visible p0">
-      <div class="p2 bg-success white center rounded-top">
-        <%= inline_icon 'rep', size: 32 %>
-        <h3 class="mt0 mb0">Your application was accepted!</h3>
-        <p class="mt0">It’s time to set up your servers.</p>
-      </div>
-      <div class="p2 md-pl3">
-        <h2 class="mt0 ml1 md-ml3">Instructions</h2>
-        <style>
-          table {
-            max-width: 100%;
-            display: block;
-            overflow-x: auto;
-            white-space: nowrap;
-          }
-        </style>
-        <ol class="steps">
-          <li>Sign in to your domain’s account at your domain host.</li>
-          <li>Go to the settings section where you can update your domain’s MX records.
-            <p class="secondary mt1 mb0">It might be called something like “Manage DNS,” “Email Settings,” or “Advanced Settings.”</p></li>
-          <li>Delete any existing MX records.<br>
-            <p class="secondary mt1 mb0">If you can’t delete the existing records, change their priority number to 20 or higher.</p></li>
-          <li>
-            <% if @g_suite %>
-            <strong>Add your G Suite’s verification record</strong>. This is specific to your G Suite. Make it a <strong>TXT record</strong>, and set the value to this:
-            <pre><%= organizer_signed_in? ? "google-site-verification=#{@g_suite.verification_key}" : 'REDACTED– SIGN IN TO VIEW' %></pre>
-            <% else %>
-            Continue to #5, but you’ll need to <strong>refresh this page later for this step</strong>.
-            <% end %>
-          </li>
-          <li><strong>Add new DNS records</strong> for the Google mail servers.
-            <p>If your domain host limits the number of MX records, just add the first 2 MX records in this table.</p>
-            <table summary="This table displays server addresses for use in DNS records configured for G Suite">
-              <thead>
-                <tr class="bold">
-                  <th>Name/Host/Alias</th>
-                  <th>TTL</th>
-                  <th>Record Type</th>
-                  <th>Priority</th>
-                  <th>Value/Answer/Destination</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr class="shade-neutral">
-                  <td>@ <span class="muted">or leave blank</span></td>
-                  <td>3600</td>
-                  <td>TXT</td>
-                  <td>1</td>
-                  <td>v=spf1 include:_spf.google.com ~all</td>
-                </tr>
-                <% unless @g_suite.dkim_key.blank? %>
-                <tr class="shade-neutral">
-                  <td>google._domainkey.<%= @g_suite.domain %></td>
-                  <td>3600</td>
-                  <td>TXT</td>
-                  <td>1</td>
-                  <td><%= @g_suite.dkim_key %></td>
-                </tr>
-                <tr class="shade-neutral">
-                  <td>_DMARC.<%= @g_suite.domain %></td>
-                  <td>3600</td>
-                  <td>TXT</td>
-                  <td>1</td>
-                  <td>v=DMARC1; p=none; rua=mailto:dmarc_report@hackclub.com; ruf=mailto:dmarc_report@hackclub.com; fo=1</td>
-                </tr>
-                <% end %>
-                <tr class="shade-neutral">
-                  <td>@ <span class="muted">or leave blank</span></td>
-                  <td>3600</td>
-                  <td>MX</td>
-                  <td>1</td>
-                  <td>ASPMX.L.GOOGLE.COM.</td>
-                </tr>
-                <tr>
-                  <td>@ <span class="muted">or leave blank</span></td>
-                  <td>3600</td>
-                  <td>MX</td>
-                  <td>5</td>
-                  <td>ALT1.ASPMX.L.GOOGLE.COM.</td>
-                </tr>
-                <tr class="shade-neutral">
-                  <td>@ <span class="muted">or leave blank</span></td>
-                  <td>3600</td>
-                  <td>MX</td>
-                  <td>5</td>
-                  <td>ALT2.ASPMX.L.GOOGLE.COM.</td>
-                </tr>
-                <tr>
-                  <td>@ <span class="muted">or leave blank</span></td>
-                  <td>3600</td>
-                  <td>MX</td>
-                  <td>10</td>
-                  <td>ALT3.ASPMX.L.GOOGLE.COM.</td>
-                </tr>
-                <tr class="shade-neutral">
-                  <td>@ <span class="muted">or leave blank</span></td>
-                  <td>3600</td>
-                  <td>MX</td>
-                  <td>10</td>
-                  <td>ALT4.ASPMX.L.GOOGLE.COM.</td>
-                </tr>
-              </tbody>
-            </table>
-            <p><strong>Note:</strong> Some domain hosts use different labels for the name and value fields, and some hosts also require a trailing period at the end of the server name.</p>
-          </li>
-          <li>
-            <% if @g_suite.configuring? %>
-              <%= link_to 'Verify', event_g_suite_verify_path(event_id: @event.id), method: :put, class: 'btn' %>
-            <% end %>
+    <article class="card overflow-visible md-pl3">
+      <style>
+        table {
+          max-width: 100%;
+          display: block;
+          overflow-x: auto;
+          white-space: nowrap;
+        }
+      </style>
+      <ol class="steps">
+        <li>Sign in to your domain’s account at your domain host.</li>
+        <li>Go to the settings section where you can update your domain’s MX records.
+          <p class="secondary mt1 mb0">It might be called something like “Manage DNS,” “Email Settings,” or “Advanced Settings.”</p></li>
+        <li>Delete any existing MX records.<br>
+          <p class="secondary mt1 mb0">If you can’t delete the existing records, change their priority number to 20 or higher.</p></li>
+        <li>
+          <% if @g_suite %>
+          <strong>Add your Google Workspace’s verification record</strong>. This is specific to your Google Workspace. Make it a <strong>TXT record</strong>, and set the value to this:
+          <pre><%= organizer_signed_in? ? "google-site-verification=#{@g_suite.verification_key}" : 'REDACTED– SIGN IN TO VIEW' %></pre>
+          <% else %>
+          Continue to #5, but you’ll need to <strong>refresh this page later for this step</strong>.
+          <% end %>
+        </li>
+        <li><strong>Add new DNS records</strong> for the Google mail servers.
+          <p>If your domain host limits the number of MX records, just add the first 2 MX records in this table.</p>
+          <table summary="Server addresses for use in DNS records configured for Google Workspace">
+            <thead>
+              <tr class="bold">
+                <th>Name/Host/Alias</th>
+                <th>TTL</th>
+                <th>Record Type</th>
+                <th>Priority</th>
+                <th>Value/Answer/Destination</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="shade-neutral">
+                <td>@ <span class="muted">or leave blank</span></td>
+                <td>3600</td>
+                <td>TXT</td>
+                <td>1</td>
+                <td>v=spf1 include:_spf.google.com ~all</td>
+              </tr>
+              <% unless @g_suite.dkim_key.blank? %>
+              <tr class="shade-neutral">
+                <td>google._domainkey.<%= @g_suite.domain %></td>
+                <td>3600</td>
+                <td>TXT</td>
+                <td>1</td>
+                <td><%= @g_suite.dkim_key %></td>
+              </tr>
+              <tr class="shade-neutral">
+                <td>_DMARC.<%= @g_suite.domain %></td>
+                <td>3600</td>
+                <td>TXT</td>
+                <td>1</td>
+                <td>v=DMARC1; p=none; rua=mailto:dmarc_report@hackclub.com; ruf=mailto:dmarc_report@hackclub.com; fo=1</td>
+              </tr>
+              <% end %>
+              <tr class="shade-neutral">
+                <td>@ <span class="muted">or leave blank</span></td>
+                <td>3600</td>
+                <td>MX</td>
+                <td>1</td>
+                <td>ASPMX.L.GOOGLE.COM.</td>
+              </tr>
+              <tr>
+                <td>@ <span class="muted">or leave blank</span></td>
+                <td>3600</td>
+                <td>MX</td>
+                <td>5</td>
+                <td>ALT1.ASPMX.L.GOOGLE.COM.</td>
+              </tr>
+              <tr class="shade-neutral">
+                <td>@ <span class="muted">or leave blank</span></td>
+                <td>3600</td>
+                <td>MX</td>
+                <td>5</td>
+                <td>ALT2.ASPMX.L.GOOGLE.COM.</td>
+              </tr>
+              <tr>
+                <td>@ <span class="muted">or leave blank</span></td>
+                <td>3600</td>
+                <td>MX</td>
+                <td>10</td>
+                <td>ALT3.ASPMX.L.GOOGLE.COM.</td>
+              </tr>
+              <tr class="shade-neutral">
+                <td>@ <span class="muted">or leave blank</span></td>
+                <td>3600</td>
+                <td>MX</td>
+                <td>10</td>
+                <td>ALT4.ASPMX.L.GOOGLE.COM.</td>
+              </tr>
+            </tbody>
+          </table>
+          <p><strong>Note:</strong> Some domain hosts use different labels for the name and value fields, and some hosts also require a trailing period at the end of the server name.</p>
+        </li>
+        <li>
+          <% if @g_suite.configuring? %>
+            <%= link_to 'Verify', event_g_suite_verify_path(event_id: @event.id), method: :put, class: 'btn' %>
+          <% end %>
 
-            <% if @g_suite.verifying? %>
-              <span class="h4 ml0 pending badge">Verifying..</span>
-            <% end %>
+          <% if @g_suite.verifying? %>
+            <span class="h4 ml0 pending badge">Verifying…</span>
+          <% end %>
 
-            <% if @g_suite.verified? %>
-              <span class="h4 ml0 badge bg-success">Verified.</span>
-            <% end %>
+          <% if @g_suite.verified? %>
+            <span class="h4 ml0 badge success">
+              <%= inline_icon 'checkmark', size: 20, class: 'mr1' %>
+              Verified
+            </span>
+          <% end %>
 
-
-            <p class="secondary mt1 mb0">Typically, you can send and receive messages at your new G Suite email address in less than 6 hours. However, it may take 48–72 hours before you receive email at your new address. It’s no fun to wait, but the time for MX records to take effect depends on your domain host. We have no control over this.</p>
-          </li>
-        </ol>
-      </div>
+          <p class="secondary mt1 mb0">Typically, you can send and receive messages at your new Gmail address in less than 6 hours. However, it may take 48–72 hours before you receive email at your new address. It’s no fun to wait, but the time for MX records to take effect depends on your domain host. We have no control over this.</p>
+        </li>
+      </ol>
     </article>
     </details>
 
@@ -152,26 +158,26 @@
 <% else %>
 
   <p>
-    Your event gets complementary G Suite through Hack Club Bank, at no extra cost! G Suite gives you Gmail, Google Drive, Hangouts, Calendar, and more, all for free, including domain email addresses like <strong>yourdomain.com</strong>.
+    Your event gets complementary Google Workspace (formerly G Suite) through Hack Club Bank! Google Workspace gives you Gmail, Google Drive, Hangouts, Calendar, and more, all for free, including domain email addresses like <strong>yourdomain.com</strong>.
   </p>
 
   <p>
-    Be sure to first <strong>buy and register the domain you're using</strong> so you can connect it to G Suite.
+    Be sure to first <strong>buy and register the domain you're using</strong> so you can connect it to Google Workspace.
   </p>
 
-  <hr/>
+  <hr>
 
   <%= form_with(local: true, url: event_g_suite_create_path(event_id: @event.id), method: :post) do %>
     <%= hidden_field_tag :event_id, @event.id %>
     <%= hidden_field_tag :creator_id, current_user.id %>
 
     <div class="field">
-      <%= label_tag :domain, "Your domain" %>
-      <%= text_field_tag :domain, nil, placeholder: "yourdomain.com", "data-behavior": "prevent_whitespace", required: true %>
+      <%= label_tag :domain, 'Your domain' %>
+      <%= text_field_tag :domain, nil, placeholder: 'yourdomain.com', 'data-behavior': 'prevent_whitespace', required: true %>
     </div>
 
     <div class="actions">
-      <%= submit_tag "Configure" %>
+      <%= submit_tag 'Configure' %>
     </div>
   <% end %>
 

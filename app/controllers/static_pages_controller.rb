@@ -12,13 +12,8 @@ class StaticPagesController < ApplicationController
       }
       @service = StaticPageService::Index.new(attrs)
 
-      redirect_to @service.events.first and return if @service.redirect_to_first_event?
-
       @events = @service.events
       @invites = @service.invites
-      @active = {
-        g_suite_accounts: GSuiteAccount.under_review.size,
-      }
     end
     if admin_signed_in?
       @transaction_volume = Transaction.total_volume
@@ -135,7 +130,7 @@ class StaticPagesController < ApplicationController
 
   def my_inbox
     @authorizations = current_user.stripe_authorizations.includes(stripe_card: :event).awaiting_receipt
-    @transactions = current_user.emburse_transactions.includes(emburse_card: :event).missing_receipt
+    @transactions = current_user.emburse_transactions.includes(emburse_card: :event).awaiting_receipt
     @txs = @authorizations + @transactions
     @count = @txs.size
   end

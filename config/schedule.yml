@@ -7,3 +7,28 @@ transaction_engine_nightly_job:
   cron: "0 6 * * *" # run at 6am UTC each morning
   class: "TransactionEngineJob::Nightly"
   queue: "default"
+  
+plaid_transaction_imports_job:
+  cron: "0 * * * *" # run every 1 hour
+  class: "PlaidTransactionJob::Imports"
+  queue: "default"
+
+sync_payouts_job:
+  cron: "0/30 * * * *" # run every 30 minutes
+  class: "SyncPayoutsJob"
+  queue: "default"
+
+sync_emburse_cards_job:
+  cron: "0 0 * * *" # run every 1 day
+  class: "SyncEmburseCardsJob"
+  queue: "default"
+
+sync_emburse_transactions_job:
+  cron: "0 0 * * *" # run every 1 day
+  class: "SyncEmburseTransactionsJob"
+  queue: "default"
+
+sync_invoices_job:
+  cron: "*/30 * * * *" # run every 30 minutes
+  class: "SyncInvoicesJob"
+  queue: "default"

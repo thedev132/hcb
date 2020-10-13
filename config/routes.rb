@@ -98,9 +98,7 @@ Rails.application.routes.draw do
   end
   resources :stripe_cardholders, only: [:new, :create, :update]
   resources :stripe_cards, only: %i[create index show]
-  resources :emburse_cards do
-    post 'toggle_active'
-  end
+  resources :emburse_cards, except: %i[new create]
 
   resources :checks, only: [:show, :index, :edit, :update] do
     collection do
@@ -169,7 +167,7 @@ Rails.application.routes.draw do
   get 'branding', to: 'static_pages#branding'
   get 'faq', to: 'static_pages#faq'
 
-  resources :emburse_card_requests, path: 'emburse_card_requests' do
+  resources :emburse_card_requests, path: 'emburse_card_requests', except: [:new, :create] do
     collection do
       get 'export'
     end
@@ -179,7 +177,7 @@ Rails.application.routes.draw do
     resources :comments
   end
 
-  resources :emburse_transfers, except: [:new] do
+  resources :emburse_transfers, except: [:new, :create] do
     collection do
       get 'export'
     end
@@ -232,7 +230,7 @@ Rails.application.routes.draw do
     put 'toggle_hidden', to: 'events#toggle_hidden'
 
     get 'team', to: 'events#team', as: :team
-    get 'g_suite', to: 'events#g_suite_overview', as: :g_suite_overview
+    get 'google_workspace', to: 'events#g_suite_overview', as: :g_suite_overview
     post 'g_suite_create', to: 'events#g_suite_create', as: :g_suite_create
     put 'g_suite_verify', to: 'events#g_suite_verify', as: :g_suite_verify
     get 'emburse_cards', to: 'events#emburse_card_overview', as: :emburse_cards_overview
@@ -251,7 +249,6 @@ Rails.application.routes.draw do
               only: [:new, :create],
               path: 'invites'
     resources :g_suites, only: [:new, :create, :edit, :update]
-    resources :emburse_transfers, only: [:new]
     resources :documents, only: [:index]
     get 'fiscal_sponsorship_letter', to: 'documents#fiscal_sponsorship_letter'
     resources :invoices, only: [:new, :create, :index]

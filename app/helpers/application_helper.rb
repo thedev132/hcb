@@ -9,6 +9,10 @@ module ApplicationHelper
     render_money(amount, unit).remove('.00')
   end
 
+  def render_money_amount(amount, unit = '$')
+    render_money(amount, unit).remove(unit)
+  end
+
   def render_percentage(decimal, params = {})
     precision = params[:precision] || 2
     number_to_percentage(decimal * 100, precision: precision)
@@ -62,7 +66,7 @@ module ApplicationHelper
     status_badge(type) if condition
   end
 
-  def pop_icon_to(icon, url, options = {})
+  def pop_icon_to(icon, url, options = { class: 'info' })
     link_to url, options.merge({ class: "pop #{options[:class]}" }) do
       inline_icon icon, size: 28
     end

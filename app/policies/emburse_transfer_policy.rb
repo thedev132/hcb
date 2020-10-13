@@ -3,14 +3,6 @@ class EmburseTransferPolicy < ApplicationPolicy
     user&.admin?
   end
 
-  def new?
-    is_public || record.event.users.include?(user) || user&.admin?
-  end
-
-  def create?
-    (record.creator == user && record.event.users.include?(user)) || user&.admin?
-  end
-
   def show?
     user&.admin?
   end

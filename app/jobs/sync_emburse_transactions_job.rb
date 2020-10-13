@@ -1,7 +1,5 @@
 class SyncEmburseTransactionsJob < ApplicationJob
-  RUN_EVERY = 1.hour
-
-  def perform(repeat = false)
+  def perform
     ActiveRecord::Base.transaction do
       # When Emburse gets a 'test' transaction (ie. AWS charges a card to make
       # sure it's valid, but removes the charge later), it will later remove the
@@ -94,7 +92,5 @@ class SyncEmburseTransactionsJob < ApplicationJob
 
       deleted_transactions.each { |emburse_id| EmburseTransaction.find_by(emburse_id: emburse_id).destroy }
     end
-
-    self.class.set(wait: RUN_EVERY).perform_later(true) if repeat
   end
 end

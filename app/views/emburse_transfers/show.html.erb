@@ -8,12 +8,12 @@
 
 <article class="card mt3">
   <h1 class="heading h2 mt0 mb0">
-    Transfer Request
+    Emburse transfer request
   </h1>
 
   <section class="details">
   <p>
-    <strong>Event</strong>
+    <strong>Project</strong>
     <%= link_to @emburse_transfer.event.name, @emburse_transfer.event %>
   </p>
 
@@ -32,24 +32,23 @@
     <%= render_money @emburse_transfer.load_amount %>
   </p>
 
-
   <p>
     <strong>Outstanding balance transfers</strong>
     <%= render_money @emburse_transfer.event.emburse_transfers.pending.sum(:load_amount) %>
   </p>
 
   <p>
-    <strong>Event account balance</strong>
+    <strong>Project account balance</strong>
     <%= render_money @emburse_transfer.event.balance %>
   </p>
 
   <p>
-    <strong>Event Emburse balance</strong>
+    <strong>Project Emburse balance</strong>
     <%= render_money @emburse_transfer.event.emburse_balance %>
   </p>
 
   <p class="<%= 'shade-yellow ' unless @emburse_transfer.emburse_transaction_id.blank? %>">
-    <strong>Event Emburse budget</strong>
+    <strong>Project Emburse budget</strong>
     <%= render_money @emburse_transfer.event.emburse_budget_limit %>
   </p>
 
@@ -77,5 +76,4 @@
   <% end %>
 </article>
 
-<h2>Notes</h2>
-<%= render "comments/comments" %>
+<%= render 'comments/comments' %>

@@ -13,7 +13,7 @@
     <%= @event.name %>
   </span>
   <% if organizer_signed_in? %>
-    <%= pop_icon_to 'settings', edit_event_path(@event), class: 'ml2' %>
+    <%= pop_icon_to 'settings', edit_event_path(@event), class: 'info ml2 mr2' %>
   <% end %>
 </h1>
 
@@ -21,7 +21,7 @@
   <% if @organizers.any? %>
     <%= pop_icon_to 'email',
       "mailto:#{@organizers.map(&:user).map(&:email).join(',')}",
-      class: 'mr2' if admin_signed_in? %>
+      class: 'info mr2' if admin_signed_in? %>
     <% @organizers.each do |position| %>
       <div class="avatar-grow tooltipped tooltipped--s mr1" aria-label="<%= position.user.full_name %>">
         <%= avatar_for position.user, 48 %>

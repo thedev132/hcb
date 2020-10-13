@@ -1,10 +1,16 @@
 <%= link_to organizer_signed_in? ? stripe_card : root_path, class: 'text-decoration-none' do %>
-  <%= creator_bar stripe_card, prefix: 'issued ' %>
-  <div class="stripe-card <%= stripe_card.virtual? ? 'virtual' : '' %>" data-behavior="hover_tilt">
-    <span class="stripe-card__status"><%= stripe_card.stripe_status.capitalize %></span>
+  <%= creator_bar stripe_card, prefix: 'issued ' unless defined? headless %>
+  <div class="stripe-card <%= stripe_card.deactivated? ? 'deactivated' : '' %> <%= stripe_card.virtual? ? 'virtual' : '' %>" data-behavior="hover_tilt">
     <p class="stripe-card__number">
-      <span><%= organizer_signed_in? ? stripe_card.formatted_card_number : stripe_card.hidden_card_number %></span>
+      <%= stripe_card.user == current_user ? stripe_card.formatted_card_number : stripe_card.hidden_card_number %>
     </p>
-    <p class="stripe-card__name"><%= stripe_card.stripe_name %></p>
+    <p class="stripe-card__name flex justify-between items-end">
+      <span>
+        <%= defined?(@event) ? stripe_card.stripe_name : stripe_card.event.name %>
+      </span>
+      <span class="ml2 badge h6" style="background-color: rgba(255,255,255,0.125);">
+        <%= stripe_card.status_text %>
+      </span>
+    </p>
   </div>
 <% end %>

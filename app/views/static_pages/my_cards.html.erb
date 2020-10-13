@@ -7,36 +7,16 @@
 <%= async_frame_to my_cards_shipping_path %>
 
 <article class="grid">
-<% @stripe_cards.each do |card| %>
-  <%= link_to card, class: 'card card--hover' do %>
-    <strong class="flex items-center black h3">
-      <%= inline_icon 'card', size: 32, class: 'black pr1' %>
-      <%= card.last_four %>
-    </strong>
-    <span class="block muted h4">
-      <%= card.event.name %>
-    </span>
-  <% end %>
-<% end %>
+  <%= render @stripe_cards, headless: true %>
 </article>
 
 <%= async_frame_to my_stripe_authorizations_list_path %>
 
 <% if @emburse_cards.any? %>
-  <h2 class="grid__fill mt3 mb2">Emburse cards</h2>
-  <article class="grid">
-  <% @emburse_cards.each do |card| %>
-    <%= link_to card, class: 'card card--hover' do %>
-      <strong class="flex items-center black h3">
-        <%= inline_icon 'card', size: 32, class: 'purple pr1' %>
-        <%= card.last_four %>
-      </strong>
-      <span class="block muted h4">
-        <%= card.status_text %>
-        –
-        <%= card.event.name %>
-      </span>
-    <% end %>
-  <% end %>
-  </article>
+  <details class="mt3">
+    <summary><h2 class="inline-block mt0">Emburse cards</h2></summary>
+    <article class="grid">
+      <%= render @emburse_cards, headless: true %>
+    </article>
+  </details>
 <% end %>

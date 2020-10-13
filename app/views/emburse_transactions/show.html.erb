@@ -80,3 +80,9 @@
 <% end %>
 
 <%= render 'comments/comments' %>
+
+<% admin_tools do %>
+  <pre>
+    <%= json @emburse_transaction %>
+  </pre>
+<% end %>

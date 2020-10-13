@@ -74,6 +74,8 @@
   font-size: 0.875rem;
   height: 36px;
   width: 36px;
+  transition: box-shadow 0.125s ease-in-out;
+  outline: none;
 
   &[disabled] {
     opacity: 0.5;
@@ -82,7 +84,7 @@
 
   &:hover,
   &:focus {
-    color: darken(map-get($palette, info), 10%);
+    box-shadow: 0 0 0 2px currentColor;
   }
 
   &.success {
@@ -103,21 +105,6 @@
 }
 summary.pop::-webkit-details-marker {
   display: none;
-}
-.card > .pop:first-child {
-  position: relative;
-  left: 50%;
-  transform: translateX(-50%);
-  margin-bottom: 1rem;
-
-  @media (min-width: 32em) {
-    position: absolute;
-    margin: 1rem;
-    transform: none;
-    left: auto;
-    right: 0;
-    top: 0;
-  }
 }
 
 // Small dots for indicating row status
@@ -142,7 +129,7 @@ summary.pop::-webkit-details-marker {
   white-space: nowrap;
 
   img,
-  svg {
+  img + svg {
     width: 1.5rem;
     vertical-align: middle;
     border-radius: 50%;
@@ -155,9 +142,13 @@ summary.pop::-webkit-details-marker {
 
   img {
     margin-right: 0.5rem;
+
+    + svg {
+      margin: -0.25rem -0.5rem 0 -0.625rem;
+    }
   }
 
-  svg {
-    margin: -0.25rem -0.5rem 0 -0.625rem;
+  svg:first-child {
+    vertical-align: bottom;
   }
 }

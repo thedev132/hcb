@@ -13,7 +13,7 @@ class EmburseCard < ApplicationRecord
   has_one :emburse_card_request
   has_many :emburse_transfers
   has_many :emburse_transactions
-  has_many :transactions_missing_receipts, -> { where(receipt_url: nil, state: 'completed').where("created_at <= ?", 1.week.ago.utc)}, foreign_key: :emburse_card_id, class_name: "EmburseTransaction"
+  has_many :transactions_missing_receipts, -> { awaiting_receipt }, foreign_key: :emburse_card_id, class_name: "EmburseTransaction"
 
   # general validations
   validates :full_name,
