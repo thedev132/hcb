@@ -7,10 +7,11 @@ module Partners
 
         include ::Partners::Plaid::Shared::Client
 
-        def initialize(bank_account_id:, start_date: (Time.now.utc - 15.days).strftime(DATE_FORMAT))
+        def initialize(bank_account_id:, start_date:, end_date:)
           @bank_account_id = bank_account_id
 
-          @start_date = start_date
+          @start_date = start_date || (Date.today - 5.years).strftime(::Partners::Plaid::Transactions::Get::DATE_FORMAT)
+          @end_date = end_date || (Date.today + 2.days).strftime(::Partners::Plaid::Transactions::Get::DATE_FORMAT)
         end
 
         def run
@@ -34,13 +35,13 @@ module Partners
         def fetch_transactions(offset: 0)
           begin
             results = plaid_client.transactions.get(access_token,
-                                                    start_date,
-                                                    end_date,
+                                                    @start_date,
+                                                    @end_date,
                                                     offset: offset,
                                                     count: COUNT,
                                                     account_ids: account_ids)
 
-            Rails.logger.info "plaid_client.transaction.get start_date=#{start_date} end_date=#{end_date} offset=#{offset} count=#{COUNT} account_ids=#{account_ids} total_transactions=#{results["total_transactions"]}"
+            Rails.logger.info "plaid_client.transaction.get start_date=#{@start_date} end_date=#{@end_date} offset=#{offset} count=#{COUNT} account_ids=#{account_ids} total_transactions=#{results["total_transactions"]}"
 
             # mark_plaid_item_success! # TODO
 
@@ -56,14 +57,6 @@ module Partners
 
         def access_token
           @access_token ||= bank_account.plaid_access_token
-        end
-
-        def start_date
-          @start_date
-        end
-
-        def end_date
-          (Time.now.utc + 2.days).strftime(DATE_FORMAT)
         end
 
         def mark_plaid_item_failed!
