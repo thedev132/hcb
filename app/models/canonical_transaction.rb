@@ -1,9 +1,12 @@
 class CanonicalTransaction < ApplicationRecord
-  scope :exclude, -> (ids) { where('id not in (?)', ids.blank? ? [0] : ids) }
   scope :likely_github, -> { where("memo ilike '%github grant%'") }
+
+  scope :awaiting_match, -> { includes(:canonical_event_mapping).where(canonical_event_mappings: {canonical_transaction_id: nil}) }
 
   monetize :amount_cents
 
   has_many :canonical_hashed_mappings
   has_many :hashed_transactions, through: :canonical_hashed_mappings
+  has_one :canonical_event_mapping
+  has_one :event, through: :canonical_event_mapping
 end

@@ -18,11 +18,7 @@ module EventMappingEngine
       private
 
       def likely_githubs
-        ::CanonicalTransaction.exclude(excluded_ids).likely_github
-      end
-
-      def excluded_ids
-        @excluded_ids ||= ::CanonicalEventMapping.pluck(:canonical_transaction_id)
+        ::CanonicalTransaction.awaiting_match.likely_github
       end
 
     end
