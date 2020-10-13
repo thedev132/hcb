@@ -123,6 +123,32 @@ ActiveRecord::Schema.define(version: 2020_10_08_215137) do
     t.index ["creator_id"], name: "index_blazer_queries_on_creator_id"
   end
 
+  create_table "canonical_event_mappings", force: :cascade do |t|
+    t.bigint "canonical_transaction_id", null: false
+    t.bigint "event_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["canonical_transaction_id"], name: "index_canonical_event_mappings_on_canonical_transaction_id"
+    t.index ["event_id"], name: "index_canonical_event_mappings_on_event_id"
+  end
+
+  create_table "canonical_hashed_mappings", force: :cascade do |t|
+    t.bigint "canonical_transaction_id", null: false
+    t.bigint "hashed_transaction_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["canonical_transaction_id"], name: "index_canonical_hashed_mappings_on_canonical_transaction_id"
+    t.index ["hashed_transaction_id"], name: "index_canonical_hashed_mappings_on_hashed_transaction_id"
+  end
+
+  create_table "canonical_transactions", force: :cascade do |t|
+    t.date "date", null: false
+    t.text "memo", null: false
+    t.integer "amount_cents", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "checks", force: :cascade do |t|
     t.bigint "creator_id"
     t.bigint "lob_address_id"
@@ -448,6 +474,17 @@ ActiveRecord::Schema.define(version: 2020_10_08_215137) do
     t.index ["event_id"], name: "index_g_suites_on_event_id"
   end
 
+  create_table "hashed_transactions", force: :cascade do |t|
+    t.text "primary_hash"
+    t.text "secondary_hash"
+    t.bigint "raw_plaid_transaction_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "raw_emburse_transaction_id"
+    t.text "primary_hash_input"
+    t.index ["raw_plaid_transaction_id"], name: "index_hashed_transactions_on_raw_plaid_transaction_id"
+  end
+
   create_table "invoice_payouts", force: :cascade do |t|
     t.text "stripe_payout_id"
     t.bigint "amount"
@@ -614,7 +651,17 @@ ActiveRecord::Schema.define(version: 2020_10_08_215137) do
     t.index ["user_id"], name: "index_organizer_positions_on_user_id"
   end
 
-  create_table "plaid_transactions", force: :cascade do |t|
+  create_table "raw_emburse_transactions", force: :cascade do |t|
+    t.text "emburse_transaction_id"
+    t.jsonb "emburse_transaction"
+    t.integer "amount_cents"
+    t.date "date_posted"
+    t.string "state"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "raw_plaid_transactions", force: :cascade do |t|
     t.text "plaid_account_id"
     t.text "plaid_item_id"
     t.text "plaid_transaction_id"
@@ -623,6 +670,7 @@ ActiveRecord::Schema.define(version: 2020_10_08_215137) do
     t.date "date_posted"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.boolean "pending", default: false
   end
 
   create_table "receipts", force: :cascade do |t|
@@ -793,6 +841,10 @@ ActiveRecord::Schema.define(version: 2020_10_08_215137) do
   add_foreign_key "ach_transfers", "events"
   add_foreign_key "ach_transfers", "users", column: "creator_id"
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "canonical_event_mappings", "canonical_transactions"
+  add_foreign_key "canonical_event_mappings", "events"
+  add_foreign_key "canonical_hashed_mappings", "canonical_transactions"
+  add_foreign_key "canonical_hashed_mappings", "hashed_transactions"
   add_foreign_key "checks", "lob_addresses"
   add_foreign_key "checks", "users", column: "creator_id"
   add_foreign_key "disbursements", "events"
@@ -823,6 +875,7 @@ ActiveRecord::Schema.define(version: 2020_10_08_215137) do
   add_foreign_key "g_suite_accounts", "users", column: "creator_id"
   add_foreign_key "g_suites", "events"
   add_foreign_key "g_suites", "users", column: "created_by_id"
+  add_foreign_key "hashed_transactions", "raw_plaid_transactions"
   add_foreign_key "invoices", "fee_reimbursements"
   add_foreign_key "invoices", "invoice_payouts", column: "payout_id"
   add_foreign_key "invoices", "sponsors"

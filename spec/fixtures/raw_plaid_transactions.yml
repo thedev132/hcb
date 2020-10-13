@@ -1,4 +1,4 @@
-plaid_transaction1:
+raw_plaid_transaction1:
   plaid_account_id: "plaid_account_id1"
   plaid_item_id: "plaid_item_id1"
   plaid_transaction_id: "plaid_transaction_id1"
