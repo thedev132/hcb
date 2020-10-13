@@ -41,18 +41,18 @@ jobs:
       - name: Install JS packages
         run: |
           yarn install --pure-lockfile
-#       - name: Create database
-#         env:
-#           RAILS_ENV: test
-#           PGHOST: localhost
-#           PGUSER: postgres
-#         run: |
-#           bundler exec rails db:setup
-#       - name: Run tests
-#         run: bundle exec rake test
-#       - name: Upload coverage results    
-#         uses: actions/upload-artifact@master
-#         if: always()
-#         with:
-#           name: coverage-report
-#           path: coverage
+      - name: Create database
+        env:
+          RAILS_ENV: test
+          PGHOST: localhost
+          PGUSER: postgres
+        run: |
+          bundler exec rails db:setup
+      - name: Run tests
+        run: bundle exec rake test
+      - name: Upload coverage results    
+        uses: actions/upload-artifact@master
+        if: always()
+        with:
+          name: coverage-report
+          path: coverage
