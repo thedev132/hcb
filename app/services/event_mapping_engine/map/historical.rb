@@ -26,11 +26,7 @@ module EventMappingEngine
       private
 
       def likely_historicals
-        ::CanonicalTransaction.awaiting_match.where('created_at <= ?', last_historical_transaction_date)
-      end
-
-      def last_historical_transaction_date
-        Transaction.order('date DESC').first.date
+        ::CanonicalTransaction.awaiting_match
       end
     end
   end
