@@ -18,8 +18,8 @@ jobs:
           APP_PORT: 3000
         run: |
           docker-compose up --detach --no-recreate
-          docker-compose exec bank_web bin/rails db:setup
+          docker-compose exec bank_web_1 bin/rails db:setup
       - name: Run RSpec
-        run: docker-compose exec bank_web bundle exec rspec
+        run: docker-compose exec bank_web_1 bundle exec rspec
       - name: Docker push
         run: docker tag $GITHUB_REPOSITORY:${GITHUB_REF##*/} docker.pkg.github.com/$GITHUB_REPOSITORY/build-cache && docker push docker.pkg.github.com/$GITHUB_REPOSITORY/build-cache || true
