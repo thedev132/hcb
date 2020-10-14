@@ -13,6 +13,7 @@ jobs:
         run: docker pull docker.pkg.github.com/$GITHUB_REPOSITORY/build-cache || true
       - name: Docker build
         run: docker build . -t $GITHUB_REPOSITORY:${GITHUB_REF##*/} --cache-from=docker.pkg.github.com/$GITHUB_REPOSITORY/build-cache
+      - name: Run RSpec
+        run: docker-compose --service-ports exec web bundle exec rspec
       - name: Docker push
         run: docker tag $GITHUB_REPOSITORY:${GITHUB_REF##*/} docker.pkg.github.com/$GITHUB_REPOSITORY/build-cache && docker push docker.pkg.github.com/$GITHUB_REPOSITORY/build-cache || true
-# test commit to check if build pulls from gpr cache
