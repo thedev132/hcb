@@ -7,13 +7,16 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+      - name: Config docker cache
+        uses: satackey/action-docker-layer-caching@v0.0.8
+        continue-on-error: true
       - name: Build docker-compose stack
         env:
           APP_PORT: 3000
         run: |
           docker-compose up -d
-      - name: Run test
-        env:
-          APP_PORT: 3000
-        run: |
-          docker-compose exec web bundle exec rspec
+#       - name: Run test
+#         env:
+#           APP_PORT: 3000
+#         run: |
+#           docker-compose exec web bundle exec rspec
