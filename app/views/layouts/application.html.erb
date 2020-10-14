@@ -57,10 +57,10 @@
 
         <div class="header-right flex items-center justify-left">
           <% if signed_in? %>
-            <%= link_to my_settings_path,
+            <%= link_to my_inbox_path,
               class: 'muted tooltipped tooltipped--s mr2',
-              'aria-label': 'Profile settings' do %>
-              <%= inline_icon 'profile', size: home_action_size %>
+              'aria-label': 'Inbox' do %>
+              <%= inline_icon 'notification', size: home_action_size %>
             <% end %>
             <%= link_to logout_users_path, method: :delete,
                 class: 'muted tooltipped tooltipped--s',
