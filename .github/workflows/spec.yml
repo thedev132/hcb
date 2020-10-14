@@ -15,8 +15,8 @@ jobs:
           APP_PORT: 3000
         run: |
           docker-compose up -d
-#       - name: Run test
-#         env:
-#           APP_PORT: 3000
-#         run: |
-#           docker-compose exec web bundle exec rspec
+      - name: Run test
+        env:
+          APP_PORT: 3000
+        run: |
+          docker-compose exec web bundle exec rspec
