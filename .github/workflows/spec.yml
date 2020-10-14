@@ -14,6 +14,8 @@ jobs:
       - name: Docker build
         run: docker build . -t $GITHUB_REPOSITORY:${GITHUB_REF##*/} --cache-from=docker.pkg.github.com/$GITHUB_REPOSITORY/build-cache
       - name: Docker setup
+        env:
+          APP_PORT: 3000
         run: |
           docker-compose up -d
           docker-compose exec web bin/rails db:setup
