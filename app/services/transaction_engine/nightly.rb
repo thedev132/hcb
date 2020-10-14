@@ -28,6 +28,7 @@ module TransactionEngine
     end
 
     def import_raw_emburse_transactions!
+      # Check for TXs in 1 month blocks over the past 5 years
       60.times do |n|
         from = Date.today - n.months
         to = from + 1.months
