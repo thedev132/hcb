@@ -10,8 +10,14 @@ jobs:
       - name: Docker login
         run: echo ${{ secrets.GITHUB_TOKEN }} | docker login docker.pkg.github.com -u $GITHUB_ACTOR --password-stdin
       - name: Docker pull
+        env:
+          APP_PORT: 3000
+          RAILS_ENV: test
         run: docker-compose pull docker.pkg.github.com/$GITHUB_REPOSITORY/build-cache || true
       - name: Docker build
+        env:
+          APP_PORT: 3000
+          RAILS_ENV: test
         run: docker-compose build . -t $GITHUB_REPOSITORY:${GITHUB_REF##*/} --cache-from=docker.pkg.github.com/$GITHUB_REPOSITORY/build-cache
       - name: Docker setup
         env:
