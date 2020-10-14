@@ -2,8 +2,9 @@ module TransactionEngine
   module RawEmburseTransactionService
     module Emburse
       class Import
-        def initialize(from: nil)
-          @from = from
+        def initialize(start_date: Time.now - 15.days, end_date: Time.now)
+          @start_date = fmt_date start_date
+          @end_date = fmt_date end_date
         end
 
         def run
@@ -22,19 +23,17 @@ module TransactionEngine
         private
 
         def emburse_transactions
-          @emburse_transactions ||= ::Partners::Emburse::Transactions::List.new(before: before, after: after).run
+          @emburse_transactions ||= ::Partners::Emburse::Transactions::List.new(
+                                                        start_date: @start_date,
+                                                        end_date:   @end_date
+                                                      ).run
         end
 
-        def after
-          from.iso8601
-        end
-
-        def before
-          (from + 10.days).iso8601
-        end
-
-        def from
-          @from ||= 10.days.ago
+        def fmt_date(date)
+          unless date.methods.include? :iso8601
+            raise ArgumentError.new("Only datetimes are allowed")
+          end
+          date.iso8601
         end
       end
     end

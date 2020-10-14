@@ -19,16 +19,17 @@ module EmburseClient
   def self.request_paginated(path)
     next_url = path
     result = []
-    while next_url != nil do
+    while !next_url.nil? do
       resp = self.request next_url
-      result += resp[:results]
+      result += resp[:results] unless resp[:results].blank?
       if resp[:next].nil?
         next_url = nil
       else
         next_url = resp[:next].sub('https://api.emburse.com/', '')
       end
     end
-    return result
+
+    result
   end
 
   private

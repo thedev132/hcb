@@ -2,7 +2,7 @@ module TransactionEngine
   module RawPlaidTransactionService
     module Plaid
       class Import
-        def initialize(bank_account_id:, start_date: Date.today - 15.days, end_date: nil)
+        def initialize(bank_account_id:, start_date: Date.today - 15.days, end_date: Date.today)
           @bank_account_id = bank_account_id
           @start_date = fmt_date start_date
           @end_date = fmt_date end_date
@@ -37,7 +37,9 @@ module TransactionEngine
         end
 
         def fmt_date(date)
-          return nil unless date.methods.include? :strftime
+          unless date.methods.include? :strftime
+            raise ArgumentError.new("Only dates are allowed")
+          end
           date.strftime(::Partners::Plaid::Transactions::Get::DATE_FORMAT)
         end
       end
