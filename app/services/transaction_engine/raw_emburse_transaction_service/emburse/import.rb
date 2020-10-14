@@ -33,6 +33,7 @@ module TransactionEngine
           unless date.methods.include? :iso8601
             raise ArgumentError.new("Only datetimes are allowed")
           end
+          date = date.to_time if date.instance_of? Date
           date.iso8601
         end
       end
