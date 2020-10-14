@@ -15,6 +15,9 @@ module TransactionEngine
 
       # 3 canonical
       ::TransactionEngine::CanonicalTransactionService::Import.new.run
+
+    ensure
+      EventMappingEngineJob::Nightly.perform_now
     end
 
     private
