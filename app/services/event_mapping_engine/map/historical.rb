@@ -3,7 +3,7 @@ module EventMappingEngine
     class Historical
       def run
         likely_historicals.find_each do |ct|
-          raw_plaid_ids = ct.hashed_transactions.pluck(:raw_plaid).compact
+          raw_plaid_ids = ct.hashed_transactions.pluck(:raw_plaid_transaction_id).compact
 
           historical_transactions = raw_plaid_ids.map do |rpid|
             Transaction.find_by(plaid_id: rpid)
