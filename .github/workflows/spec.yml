@@ -7,16 +7,11 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Config docker cache
-        uses: satackey/action-docker-layer-caching@v0.0.8
-        continue-on-error: true
-      - name: Build docker-compose stack
-        env:
-          APP_PORT: 3000
-        run: |
-          docker-compose up -d
-      - name: Run test
-        env:
-          APP_PORT: 3000
-        run: |
-          docker-compose exec web bundle exec rspec
+      - name: Docker login
+        run: echo ${{ secrets.GITHUB_TOKEN }} | docker login docker.pkg.github.com -u $GITHUB_ACTOR --password-stdin
+      - name: Docker pull
+        run: docker pull docker.pkg.github.com/$GITHUB_REPOSITORY/build-cache || true
+      - name: Docker build
+        run: docker build . -t $GITHUB_REPOSITORY:${GITHUB_REF##*/} --cache-from=docker.pkg.github.com/$GITHUB_REPOSITORY/build-cache
+      - name: Docker push
+        run: docker tag $GITHUB_REPOSITORY:${GITHUB_REF##*/} docker.pkg.github.com/$GITHUB_REPOSITORY/build-cache && docker push docker.pkg.github.com/$GITHUB_REPOSITORY/build-cache || true
