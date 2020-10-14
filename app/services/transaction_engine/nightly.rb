@@ -28,12 +28,13 @@ module TransactionEngine
     end
 
     def import_raw_emburse_transactions!
-      200.times do |n|
-        from = (n * 10).days.ago
+      60.times do |n|
+        from = Date.today - n.months
+        to = from + 1.months
 
-        puts "raw_emburse_transactions: #{from}"
+        puts "raw_emburse_transactions: #{from} - #{to}"
 
-        ::TransactionEngine::RawEmburseTransactionService::Emburse::Import.new(from: from).run
+        ::TransactionEngine::RawEmburseTransactionService::Emburse::Import.new(start_date: from, end_date: to).run
       end
     end
 
