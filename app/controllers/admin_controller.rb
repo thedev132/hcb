@@ -84,6 +84,27 @@ class AdminController < ApplicationController
     @negative_events = Event.negatives
   end
 
+  def transaction_dedupe
+    # This is all the demo data, please replace
+    windy = Event.where(name: 'Windy City Hacks').first
+    penn = Event.where(name: 'Hack Pennsylvania').first
+    hq = Event.where(name: 'Hack Club HQ').includes(organizer_positions: :user).first
+    @groups = [
+      OpenStruct.new(
+        event: windy,
+        txs: windy.transactions.limit(3)
+      ),
+      OpenStruct.new(
+        event: hq,
+        txs: hq.stripe_authorizations.limit(3)
+      ),
+      OpenStruct.new(
+        event: penn,
+        txs: penn.emburse_transactions.limit(3)
+      )
+    ]
+  end
+
   private
 
   include StaticPagesHelper # for airtable_info

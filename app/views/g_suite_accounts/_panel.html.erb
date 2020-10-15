@@ -5,7 +5,7 @@
   <ul class="list list--row list--unlinked mt0 mb2">
     <% @g_suite.accounts.order(:address).each do |account| %>
       <li class="flex items-center justify-between">
-        <div class="description">
+        <div>
           <p class="m0">
             <strong><%= account.first_name %> <%= account.last_name %></strong>
             &middot;
