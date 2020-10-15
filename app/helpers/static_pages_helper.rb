@@ -9,14 +9,6 @@ module StaticPagesHelper
                         path, method: options[:method]
   end
 
-  def pending_hackathon_listings_path
-    'https://airtable.com/tblYVTFLwY378YZa4/viwpJOp6ZmMDfcbgb?blocks=hide'
-  end
-
-  def pending_grant_listings_path
-    'https://airtable.com/tblsYQ54Rg1Pjz1xP/viwjETKo05TouqYev?blocks=hide'
-  end
-
   def random_nickname
     if Rails.env.development?
       'Development Mode'
@@ -129,5 +121,44 @@ module StaticPagesHelper
         "All the finance that's fit to print"
       ].sample
     end
+  end
+
+  def link_to_airtable_task(task_name)
+    airtable_info[task_name][:destination]
+  end
+
+  def airtable_info
+    {
+      hackathons: {
+        url: "https://airbridge.hackclub.com/v0.1/hackathons.hackclub.com/applications",
+        query: { filterByFormula: "AND(Approved=0,Rejected=0)", fields: [] } ,
+        destination: "https://airtable.com/tblYVTFLwY378YZa4/viwpJOp6ZmMDfcbgb"
+      },
+      grant: {
+        url: "https://airbridge.hackclub.com/v0.1/Bank%20Promotions/Github%20Grant",
+        query: { filterByFormula: "Status='Pending'", fields: [] },
+        destination: "https://airtable.com/tblsYQ54Rg1Pjz1xP/viwjETKo05TouqYev"
+      },
+      stickermule: {
+        url: "https://airbridge.hackclub.com/v0.1/Bank%20Promotions/StickerMule",
+        query: { filterByFormula: "Status='Pending'", fields: [] },
+        destination: "https://airtable.com/tblwYTdp2fiBv7JqA/viwET9tCYBwaZ3NIq"
+      },
+      replit: {
+        url: "https://airbridge.hackclub.com/v0.1/Bank%20Promotions/Repl.it%20Hacker%20Plan",
+        query: {filterByFormula: "Status='Pending'", fields: [] },
+        destination: "https://airtable.com/tbl6cbpdId4iA96mD/viw2T8d98ZhhacHCf"
+      },
+      sendy: {
+        url: "https://airbridge.hackclub.com/v0.1/Bank%20Promotions/Sendy",
+        query: {filterByFormula: "Status='Pending'", fields: [] },
+        destination: "https://airtable.com/tbl1MRaNpF4KphbOd/viwdGjjDdtsS7bjlP"
+      },
+      wire_transfers: {
+        url: "https://airbridge.hackclub.com/v0.1/Bank%20Promotions/Wire%20Transfers",
+        query: {filterByFormula: "Status='Pending'", fields: [] },
+        destination: "https://airtable.com/tbloFbH16HI7t3mfG/viwzgt8VLHOC82m8n"
+      },
+    }
   end
 end

@@ -31,17 +31,16 @@
         </p>
       </section>
       <% if r.events.any? %>
-        <p class="mb1 slate">Associated events</p>
-        <p>
+        <p class="mb0 brand-sans bold">Associated projects</p>
+        <ul class="mt1 list-reset">
           <% r.events.each do |e| %>
-            <a href="<%= e.slug %>"><%= e.name %></a>
+            <li><%= link_to e.name, e.slug %></li>
           <% end %>
-        </p>
+        </ul>
       <% end %>
-      <hr/>
-      <p>
-        <%= link_to "Impersonate this user", impersonate_users_path(user_id: r.id) %>
-      </p>
+      <div class="card__banner card__banner--bottom card__darker">
+        <%= link_to 'Impersonate', impersonate_users_path(user_id: r.id), class: 'btn' %>
+      </div>
     </div>
   <% end %>
 <% end %>

@@ -159,13 +159,13 @@ Rails.application.routes.draw do
     resources :comments
   end
 
-  get 'pending_fees', to: 'static_pages#pending_fees'
-  get 'export_pending_fees', to: 'static_pages#export_pending_fees'
-  get 'pending_disbursements', to: 'static_pages#pending_disbursements'
-  get 'export_pending_disbursements', to: 'static_pages#export_pending_disbursements'
-
   get 'branding', to: 'static_pages#branding'
   get 'faq', to: 'static_pages#faq'
+
+  get 'pending_fees', to: 'admin#pending_fees'
+  get 'export_pending_fees', to: 'admin#export_pending_fees'
+  get 'pending_disbursements', to: 'admin#pending_disbursements'
+  get 'export_pending_disbursements', to: 'admin#export_pending_disbursements'
 
   resources :emburse_card_requests, path: 'emburse_card_requests', except: [:new, :create] do
     collection do
@@ -210,13 +210,13 @@ Rails.application.routes.draw do
 
   post 'export/finances', to: 'exports#financial_export'
 
-  get 'pending_fees', to: 'static_pages#pending_fees'
-  get 'negative_events', to: 'static_pages#negative_events'
+  get 'pending_fees', to: 'admin#pending_fees'
+  get 'negative_events', to: 'admin#negative_events'
 
-  get 'admin_tasks', to: 'static_pages#admin_tasks'
-  get 'admin_task_size', to: 'static_pages#admin_task_size'
-  get 'admin_search', to: 'static_pages#search'
-  post 'admin_search', to: 'static_pages#search'
+  get 'admin_tasks', to: 'admin#tasks'
+  get 'admin_task_size', to: 'admin#task_size'
+  get 'admin_search', to: 'admin#search'
+  post 'admin_search', to: 'admin#search'
 
   resources :ops_checkins, only: [:create]
 
