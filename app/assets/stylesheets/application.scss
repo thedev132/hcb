@@ -123,7 +123,6 @@ tr {
   border-bottom-width: 0.5px;
   a {
     color: map-get($palette, slate);
-    display: block;
   }
 }
 thead {
@@ -132,11 +131,11 @@ thead {
 th,
 td {
   padding: 0.5rem;
+  white-space: nowrap;
   -webkit-text-size-adjust: 100%;
 
   &:first-child {
     padding-left: 1rem;
-    white-space: nowrap;
   }
 }
 th {
@@ -207,7 +206,8 @@ action {
 
 // Make mobile views nice. Full-bleed separator lines
 @media screen and (max-width: 32em) {
-  table,
+  table:not(.table-container > table),
+  .table-container,
   .list,
   .heading,
   .details,
@@ -218,15 +218,13 @@ action {
     margin-left: -1rem;
     margin-right: -1rem;
   }
-  table {
-    td,
-    th {
-      &:first-child {
-        padding-left: 1rem;
-      }
-      &:last-child {
-        padding-right: 1rem;
-      }
+  td,
+  th {
+    &:first-child {
+      padding-left: 1rem;
+    }
+    &:last-child {
+      padding-right: 1rem;
     }
   }
   .list > a > li,
@@ -246,6 +244,9 @@ action {
   .home,
   .dock,
   .heading .btn,
+  .pop,
+  .filterbar,
+  .pagination,
   input[type='search'],
   .hide-print {
     display: none !important;

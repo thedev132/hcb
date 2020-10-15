@@ -15,7 +15,7 @@
   <p class="h5 muted flex items-center mt0 mb2">
     <%= inline_icon 'map-app', size: 24, class: 'mr1' %>
     <%= @stripe_authorization.merchant_data[:city].capitalize + ', ' if @stripe_authorization.merchant_data[:city].present? %>
-    <%= @stripe_authorization.merchant_data.to_hash.slice(:state, :country, :postal_code).values.join(', ') %>
+    <%= @stripe_authorization.merchant_data.to_hash.slice(:state, :country, :postal_code).values.reject(&:blank?).join(', ') %>
   </p>
   <section class="card__banner card__darker statset border-top border-bottom">
     <div class="stat">

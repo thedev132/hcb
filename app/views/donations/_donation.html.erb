@@ -13,10 +13,8 @@
   <td>
     <%= transaction.date %>
   </td>
-  <td>
-    <%= link_to "Donation from #{donation.name}", donation %> for <%= render_money donation.amount %>
-  </td>
-  <td>
+  <td class="transaction__memo">
+    <%= link_to "Donation from #{donation.name}", donation %>
     <%= list_badge_for donation.comments.size, 'note', 'post', optional: true %>
   </td>
   <td>

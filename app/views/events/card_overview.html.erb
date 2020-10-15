@@ -27,7 +27,7 @@
   </section>
   <% if @deactivated.size > 0 %>
     <details class="w-100 left-align">
-      <summary><h3 class="inline-block pb0 border-none">Deactivated cards</h3></summary>
+      <summary><h3 class="inline-block w-auto pb0 border-none">Deactivated cards</h3></summary>
       <section class="mixed-grid grid--spacious mt2">
       <%= render @deactivated %>
       </section>
@@ -48,7 +48,7 @@
     class: 'card card--hover block pt4 pb4 card--promo',
     style: 'background-image: url(https://cloud-awvmmj0xe.vercel.app/sunset_card.png);' do %>
     <h3 class="mt0 mb0">See all your cards →</h3>
-  <% end %>
+  <% end if signed_in? %>
 <style>
 .card--promo {
   background-size: cover;
@@ -60,6 +60,10 @@
 <% end %>
 
 <% if @stripe_authorizations.any? %>
-  <h2 class="mt3">Transactions</h2>
-  <%= render 'stripe_authorizations/list' %>
+  <section class="card p0 mb3">
+    <h2 class="heading h2 line-height-4 mt0 ml0 pt1 pb1 pl2 pr2">
+      Card transactions 
+    </h2>
+    <%= render 'stripe_authorizations/list', stripe_authorizations: @authorizations, headless: true %>
+  </section>
 <% end %>

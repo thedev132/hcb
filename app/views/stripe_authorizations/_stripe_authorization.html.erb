@@ -2,7 +2,8 @@
   class="transaction--<%= stripe_authorization.amount.negative? ? 'positive' : 'negative' %><%= ' muted' if stripe_authorization.pending? %>"
   data-behavior="filterbar_row"
   data-filter="<%= stripe_authorization.filter_data.to_json %>">
-  <% unless defined? authorless %>
+  <% if defined? authorless %>
+  <% else %>
   <% if defined? @event %>
     <td
       class="transaction__icon tooltipped tooltipped--e"
@@ -20,14 +21,14 @@
   <td>
     <%= stripe_authorization.created_at.to_date %>
   </td>
-  <td>
+  <td class="transaction__memo">
+    <span>
     <% if stripe_authorization.pending? %>
       <i><%= stripe_authorization.name %> (pending)</i>
     <% else %>
       <%= stripe_authorization.name %>
     <% end %>
-  </td>
-  <td>
+    </span>
     <%= list_badge_for stripe_authorization.receipts.size, 'receipt', 'payment-docs', required: true %>
   </td>
   <td class="nowrap">

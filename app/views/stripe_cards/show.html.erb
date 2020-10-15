@@ -105,7 +105,7 @@
 <% @authorizations = @card.stripe_authorizations %>
 <% if @authorizations.any? %>
   <section class="card p0 mt3 mb3">
-    <h2 class="heading h2 line-height-3 mt0 ml0 pt1 pb1 pl2 pr2">
+    <h2 class="heading h2 line-height-4 mt0 ml0 pt1 pb1 pl2 pr2">
       Transactions on this card
     </h2>
     <%= render 'stripe_authorizations/list', stripe_authorizations: @authorizations, headless: true, authorless: true %>

@@ -8,10 +8,10 @@
   <td>
     <%= transaction.date %>
   </td>
-  <td class="nowrap">
-    <%= transaction.display_name %>
-  </td>
-  <td>
+  <td class="transaction__memo">
+    <span>
+      <%= transaction.display_name %>
+    </span>
     <%= list_badge_for transaction.comments.size, 'note', 'post', optional: true %>
   </td>
   <td class="nowrap">

@@ -3,34 +3,41 @@
   class="transaction--<%= et.amount.positive? ? 'positive' : 'negative'  %><%= ' muted' if !et.completed? %>"
   data-behavior="filterbar_row"
   data-filter="<%= et.filter_data.to_json %>">
+  <% if defined? authorless %>
+  <% else %>
   <% if et.card %>
-    <td
-      class="transaction__icon tooltipped tooltipped--e"
-      aria-label="Card transaction by <%= et.card.user.initial_name %>">
-      <%= link_to et.card do %>
-        <%= avatar_for et.card.user, 24 %>
-      <% end %>
-    </td>
+    <% if defined? @event %>
+      <td
+        class="transaction__icon tooltipped tooltipped--e"
+        aria-label="Card transaction by <%= et.card.user.initial_name %>">
+        <%= link_to et.card do %>
+          <%= avatar_for et.card.user, 24 %>
+        <% end %>
+      </td>
+    <% else %>
+      <td>
+        <%= emburse_card_mention et.card %>
+      </td>
+    <% end %>
   <% else %>
     <td class="transaction__icon tooltipped tooltipped--e" aria-label="Emburse card transaction">
       <%= inline_icon et.transfer? ? 'payment-transfer' : 'card' %>
     </td>
   <% end %>
+  <% end %>
   <td>
     <%= et.transaction_time.nil? ? '–' : et.transaction_time.to_date %>
   </td>
-  <td class="flex justify-between">
+  <td class="transaction__memo">
+    <span>
     <% if et.completed? %>
-      <%= et.memo %>
+      <span><%= et.memo %></span>
     <% else %>
-      <i><%= et.memo %></i>
+      <i><%= et.memo %> (pending)</i>
     <% end %>
-  </td>
-  <td>
+    </span>
     <%= list_badge_for et.comments.size, 'note', 'post', optional: true %>
-    <% unless et.is_transfer? %>
-      <%= list_badge_for et.receipts.size, 'receipt', 'payment-docs', required: true  %>
-    <% end %>
+    <%= list_badge_for et.receipts.size, 'receipt', 'payment-docs', required: true unless et.is_transfer? %>
   </td>
   <td class="nowrap">
     <%= render_money et.amount %>

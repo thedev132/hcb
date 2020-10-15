@@ -113,13 +113,14 @@
 
 <% if @transactions.any? %>
   <div class="table-container">
-    <table class="table-container">
+    <table>
       <thead>
         <tr>
           <th></th>
           <th>Date</th>
-          <th colspan="2">Description</th>
-          <th colspan="2">Amount</th>
+          <th>Description</th>
+          <th class="right-align">Amount</th>
+          <th></th>
         </tr>
       </thead>
       <tbody data-behavior="transactions">

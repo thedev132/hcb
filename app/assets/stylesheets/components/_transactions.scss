@@ -1,17 +1,25 @@
 .table-container {
   overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
 }
-@media screen and (max-width: 48em) {
-  .table-container {
-    margin-left: -1rem;
-    margin-right: -1rem;
-  }
-  .table-container {
-    margin: 0 !important;
-    td {
-      white-space: nowrap;
+
+.transaction__memo {
+  width: 99.99%; // make description column span available space
+  display: inline-flex;
+
+  a:first-child,
+  span:first-child {
+    flex: 1 1 auto;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    @media screen and (max-width: 32em) {
+      max-width: 32ch; // reduce character count on mobile
     }
+  }
+
+  + td {
+    text-align: right; // right-align amount
   }
 }
 

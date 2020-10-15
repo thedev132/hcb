@@ -15,8 +15,10 @@
       </thead>
     <% end %>
     <tbody data-behavior="transactions">
-      <% stripe_authorizations.each do |t| %>
-        <%= render t, authorless: defined?(authorless) %>
+      <% if defined?(authorless) %>
+        <%= render stripe_authorizations, authorless: authorless %>
+      <% else %>
+        <%= render stripe_authorizations %>
       <% end %>
     </tbody>
   </table>

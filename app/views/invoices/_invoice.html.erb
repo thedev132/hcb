@@ -13,10 +13,8 @@
   <td>
     <%= transaction.date %>
   </td>
-  <td>
-    <%= link_to "Invoice to #{invoice.sponsor.name}", invoice %> for <%= render_money invoice.item_amount %>
-  </td>
-  <td>
+  <td class="transaction__memo">
+    <%= link_to "Invoice to #{invoice.sponsor.name}", invoice %>
     <%= list_badge_for invoice.comments.size, 'note', 'post', optional: true %>
   </td>
   <td>

@@ -14,11 +14,11 @@
   <% end %>
 </p>
 
-<% @txs.group_by{ |tx| tx.card }.each do |card, card_txs| %>
+<% @txs.group_by(&:card).each do |card, card_txs| %>
   <section class="mt3 card p0">
-    <h2 class="heading p1 pl2 mt0 ml0">
+    <h2 class="heading line-height-4 p1 pl2 mt0 ml0">
       <%= card.event.name %>
     </h2>
-    <%= render 'stripe_authorizations/list', stripe_authorizations: card_txs, headless: true %>
+    <%= render 'stripe_authorizations/list', stripe_authorizations: card_txs, headless: true, authorless: true %>
   </section>
 <% end %>
