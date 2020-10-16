@@ -1,0 +1,40 @@
+<% title 'De-duplicate transactions' %>
+
+<h1>De-duplicate transactions</h1>
+
+<% @groups.each do |group| %>
+  <section class="mt3 card p0">
+    <% if defined? group.event %>
+      <h2 class="heading line-height-4 p1 pl2 pr0 mt0 ml0">
+        <%= link_to group.event.name, group.event, class: 'flex-auto link-reset' %>
+        <div class="avatar-row pr2">
+          <% group.event.organizer_positions.each do |position| %>
+            <%= avatar_for position.user, 24 %>
+          <% end %>
+        </div>
+      </h2>
+    <% end %>
+    <div class="table-container card__darker">
+    <table>
+      <thead class="pr1">
+        <tr>
+          <th>Canon</th>
+          <th>Date</th>
+          <th>Memo</th>
+          <th class="right-align pr2">Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+      <% group.txs.each do |t| %>
+        <tr>
+          <td class="right-align" style="width: 1%;"><%= rand(0..1) == 0 ? inline_icon('checkmark', size: 24, class: 'success transaction__icon') : nil %></td>
+          <td style="width: 1%;"><%= t.created_at.to_date %></td>
+          <td class="transaction__memo"><%= defined?(t.memo) ? t.memo : t.name %></td>
+          <td class="right-align pr2"><%= render_money t.amount %></td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+  </section>
+<% end %>
