@@ -17,8 +17,10 @@
   <td class="nowrap">
     <%= render_money transaction.amount %>
   </td>
+  <% if organizer_signed_in? %>
   <td>
-    <%= link_to 'Details', transaction if organizer_signed_in? %>
+    <%= link_to 'Details', transaction %>
   </td>
+  <% end %>
 </tr>
   
