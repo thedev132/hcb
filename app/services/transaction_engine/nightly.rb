@@ -14,7 +14,7 @@ module TransactionEngine
       ::TransactionEngine::HashedTransactionService::RawEmburseTransaction::Import.new.run
 
       # 3 canonical
-      ::TransactionEngine::CanonicalTransactionService::Import.new.run
+      ::TransactionEngine::CanonicalTransactionService::Import::All.new.run
 
     ensure
       EventMappingEngineJob::Nightly.perform_now
