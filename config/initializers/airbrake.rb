@@ -27,7 +27,7 @@ Airbrake.configure do |c|
   # By default, Airbrake Ruby outputs to STDOUT. In Rails apps it makes sense to
   # use the Rails' logger.
   # https://github.com/airbrake/airbrake-ruby#logger
-  c.logger = Airbrake::Rails.logger
+  c.logger = nil # Airbrake::Rails.logger
 
   # Configures the environment the application is running in. Helps the Airbrake
   # dashboard to distinguish between exceptions occurring in different

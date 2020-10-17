@@ -18,11 +18,11 @@ RSpec.describe GSuiteMailer, type: :mailer do
     end
 
     it 'renders subject' do
-      expect(mailer.subject).to eql('[Action Requested] Your G Suite for event1.example.com needs configuration')
+      expect(mailer.subject).to eql('[Action Requested] Your Google Workspace for event1.example.com needs configuration')
     end
 
     it 'includes g suite overview url in body' do
-      expect(mailer.body).to include('http://example.com/event1/g_suite')
+      expect(mailer.body).to include('http://example.com/event1/google_workspace')
     end
   end
 
@@ -34,11 +34,11 @@ RSpec.describe GSuiteMailer, type: :mailer do
     end
 
     it 'renders subject' do
-      expect(mailer.subject).to eql('[G Suite Verified] Your G Suite for event1.example.com has been verified')
+      expect(mailer.subject).to eql('[Google Workspace Verified] Your Google Workspace for event1.example.com has been verified')
     end
 
     it 'includes g suite overview url in body' do
-      expect(mailer.body).to include('http://example.com/event1/g_suite')
+      expect(mailer.body).to include('http://example.com/event1/google_workspace')
     end
   end
 end
