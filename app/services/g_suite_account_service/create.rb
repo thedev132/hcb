@@ -18,8 +18,9 @@ module GSuiteAccountService
 
         raise ArgumentError, "☣️  Cannot create Google Workspace account in development mode" if Rails.env.development?
 
-        # 2. Create remote org unit if does not exist already and assign identifier locally
+        # 2. Create remote org unit if does not exist already and assign identifiers locally
         @g_suite.update_column(:remote_org_unit_id, remote_org_unit_id)
+        @g_suite.update_column(:remote_org_unit_path, remote_org_unit_path)
 
         # 3. create remote user under org unit
         Partners::Google::GSuite::CreateUser.new(remote_account_attrs).run
@@ -70,6 +71,10 @@ module GSuiteAccountService
       remote_org_unit.org_unit_id
     end
 
+    def remote_org_unit_path
+      remote_org_unit.org_unit_path
+    end
+
     def remote_account_attrs
       {
         given_name: @first_name,
@@ -78,7 +83,7 @@ module GSuiteAccountService
         primary_email: full_email_address,
         recovery_email: @backup_email,
 
-        org_unit_path: remote_org_unit_id
+        org_unit_path: remote_org_unit_path
       }
     end
 
