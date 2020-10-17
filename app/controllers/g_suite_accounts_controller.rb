@@ -11,24 +11,25 @@ class GSuiteAccountsController < ApplicationController
   def create
     @g_suite = GSuite.find(params[:g_suite_id])
     @event = @g_suite.event
-    @g_suite_account = GSuiteAccount.new(g_suite_account_params.merge(
-      address: full_email_address(params[:g_suite_account][:address], @g_suite),
-      creator: current_user,
-      g_suite: @g_suite
-    ))
 
-    authorize @g_suite_account
+    authorize @g_suite, policy_class: GSuiteAccountPolicy
 
-    if @g_suite_account.save
+    attrs = {
+      g_suite: @g_suite,
+      current_user: current_user,
+      backup_email: g_suite_account_params[:backup_email],
+      address: g_suite_account_params[:address],
+      first_name: g_suite_account_params[:first_name],
+      last_name: g_suite_account_params[:last_name]
+    }
+    begin
+      GSuiteAccountService::Create.new(attrs).run
+
       flash[:success] = 'Google Workspace account application submitted.'
-    else
-      Airbrake.notify(@g_suite_account.errors.full_messages.to_sentence)
+    rescue => e
+      Airbrake.notify(e)
 
-      if @g_suite_account.errors.messages[:domain].present?
-        flash[:error] = "Your domain setup is not complete yet."
-      else
-        flash[:error] = 'That email address is already in use.'
-      end
+      flash[:error] = e.message
     end
 
     redirect_to event_g_suite_overview_path(event_id: @event.slug)

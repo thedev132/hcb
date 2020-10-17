@@ -13,9 +13,6 @@ class GSuiteAccount < ApplicationRecord
   validate :status_accepted_or_rejected
   validates :address, uniqueness: { scope: :g_suite }
 
-  before_create :sync_create_to_gsuite
-  after_create :send_email_notification
-
   before_update :sync_update_to_gsuite
 
   before_destroy :sync_delete_to_gsuite
@@ -107,36 +104,6 @@ class GSuiteAccount < ApplicationRecord
     else
       GSuiteAccountMailer.notify_user_of_reset(email_params).deliver_later
     end
-  end
-
-  def send_email_notification
-    notify_user_of_password_change(true)
-  end
-
-  def sync_create_to_gsuite
-    if Rails.env.development?
-      puts "☣️ In production, we would currently be syncing the GSuite account creation ☣️"
-      return
-    end
-
-    # new 12-character password
-    password = SecureRandom.hex(6)
-    account = GsuiteService.instance.create_event_gsuite_user(
-      first_name,
-      last_name,
-      address,
-      backup_email,
-      password,
-      g_suite.ou_name
-    )
-    # this means that the domain doesn't exist
-    if account == nil
-      errors.add(:domain, "hasn't been setup yet!")
-      return throw :abort
-    end
-
-    self.initial_password = password
-    self.accepted_at = DateTime.now
   end
 
   def sync_delete_to_gsuite
