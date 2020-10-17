@@ -64,6 +64,18 @@ RSpec.describe GSuiteAccountService::Create, type: :model do
         service.run
       end.to change(GSuiteAccount, :count).by(1)
     end
+
+    it 'assigns remote_org_unit_id' do
+      expect do
+        service.run
+      end.to change(g_suite.reload, :remote_org_unit_id).to('id:1234')
+    end
+    
+    it 'assigns remote_org_unit_path' do
+      expect do
+        service.run
+      end.to change(g_suite.reload, :remote_org_unit_path).to("/Events/#{g_suite.ou_name}")
+    end
   end
 
   context 'when remote create user fails' do
