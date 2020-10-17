@@ -16,10 +16,10 @@ module Partners
         private
 
         def org_unit_object
-          {
+          ::Google::Apis::AdminDirectoryV1::OrgUnit.new({
             org_unit_path: @org_unit_path,
             name: @name
-          }
+          })
         end
       end
     end
