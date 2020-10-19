@@ -25,7 +25,9 @@
     <span class="muted">+<%= render_money refund.amount %> in transit</span>
     <% end %>
   </td>
+  <% if organizer_signed_in? %>
   <td>
-    <%= link_to 'Details', donation, class: 'underline' if organizer_signed_in? %>
+    <%= link_to 'Details', donation, class: 'underline' %>
   </td>
+  <% end %>
 </tr>
