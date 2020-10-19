@@ -40,9 +40,12 @@ class StaticPagesController < ApplicationController
 
   # async frame
   def my_stripe_authorizations_list
-    @stripe_cards = current_user.stripe_cards.includes(:event, stripe_authorizations: :receipts)
     @authorizations = current_user.stripe_authorizations.includes(stripe_card: :event).awaiting_receipt.limit(5)
-    render :my_stripe_authorizations_list, layout: false
+    if @authorizations.any?
+      render :my_stripe_authorizations_list, layout: !request.xhr?
+    else
+      head :ok
+    end
   end
 
   def my_inbox
