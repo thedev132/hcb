@@ -196,6 +196,16 @@ $(document).on('turbolinks:load', function () {
     updateAmountPreview()
   )
 
+  $(document).on(
+    'click',
+    '[data-behavior~=transaction_dedupe_info_trigger]',
+    e => {
+      const raw = $(e.target).closest('tr').data('json')
+      const json = JSON.stringify(raw, null, 2)
+      BK.s('transaction_dedupe_info_target').html(json)
+    }
+  )
+
   $(document).on('keydown', '[data-behavior~=autosize]', function () {
     const t = this
     return setTimeout(function () {
