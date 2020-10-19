@@ -1,5 +1,7 @@
 module GSuiteService
   class FindOrCreateRemoteOrgUnit
+    PARENT_ORG_UNIT_PATH = '/Events'
+
     def initialize(g_suite:)
       @g_suite = g_suite
     end
@@ -15,12 +17,12 @@ module GSuiteService
     end
 
     def org_unit_path
-      "/Events/#{org_unit_name}" # TODO: make path different than name - use a random hex id or something or the g suite id itself
+      "#{PARENT_ORG_UNIT_PATH}/#{org_unit_name}" # TODO: make path different than name - use a random hex id or something or the g suite id itself
     end
 
     def create_attrs
       {
-        org_unit_path: org_unit_path,
+        parent_org_unit_path: PARENT_ORG_UNIT_PATH,
         name: org_unit_name
       }
     end

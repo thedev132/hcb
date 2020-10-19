@@ -4,8 +4,8 @@ module Partners
       class CreateOrgUnit
         include Partners::Google::GSuite::Shared::DirectoryClient
 
-        def initialize(org_unit_path:, name:)
-          @org_unit_path = org_unit_path
+        def initialize(parent_org_unit_path:, name:)
+          @parent_org_unit_path = parent_org_unit_path
           @name = name
         end
 
@@ -17,7 +17,7 @@ module Partners
 
         def org_unit_object
           ::Google::Apis::AdminDirectoryV1::OrgUnit.new({
-            org_unit_path: @org_unit_path,
+            parent_org_unit_path: @parent_org_unit_path,
             name: @name
           })
         end
