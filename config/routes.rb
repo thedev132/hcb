@@ -50,6 +50,12 @@ Rails.application.routes.draw do
   # webhooks
   post 'webhooks/donations', to: 'donations#accept_donation_hook'
 
+  get 'pending_fees', to: 'admin#pending_fees'
+  get 'export_pending_fees', to: 'admin#export_pending_fees'
+  get 'pending_disbursements', to: 'admin#pending_disbursements'
+  get 'export_pending_disbursements', to: 'admin#export_pending_disbursements'
+  get 'transactions/dedupe', to: 'admin#transaction_dedupe'
+
   resources :organizer_position_invites, only: [:index, :show], path: 'invites' do
     post 'accept'
     post 'reject'
@@ -161,12 +167,6 @@ Rails.application.routes.draw do
 
   get 'branding', to: 'static_pages#branding'
   get 'faq', to: 'static_pages#faq'
-
-  get 'pending_fees', to: 'admin#pending_fees'
-  get 'export_pending_fees', to: 'admin#export_pending_fees'
-  get 'pending_disbursements', to: 'admin#pending_disbursements'
-  get 'export_pending_disbursements', to: 'admin#export_pending_disbursements'
-  get 'transaction_dedupe', to: 'admin#transaction_dedupe'
 
   resources :emburse_card_requests, path: 'emburse_card_requests', except: [:new, :create] do
     collection do
