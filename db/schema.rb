@@ -823,6 +823,7 @@ ActiveRecord::Schema.define(version: 2020_10_17_215448) do
     t.datetime "admin_at"
     t.string "slug"
     t.boolean "pretend_is_not_admin", default: false, null: false
+    t.boolean "sessions_reported", default: true, null: false
     t.index ["api_access_token"], name: "index_users_on_api_access_token", unique: true
     t.index ["api_id"], name: "index_users_on_api_id", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true

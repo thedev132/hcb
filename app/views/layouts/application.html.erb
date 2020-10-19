@@ -89,6 +89,9 @@
       <%= render 'application/footer' unless (@no_app_shell || @hide_footer) %>
     </main>
 
-    <script src="https://aardvark.hackclub.com/script.js" site="ZKMSNQTW" defer></script>
+    <% if Rails.env.production? %>
+      <script src="https://aardvark.hackclub.com/script.js" site="ZKMSNQTW" defer></script>
+      <%= render 'application/fullstory' if current_user&.sessions_reported %>
+    <% end %>
   </body>
 </html>
