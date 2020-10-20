@@ -484,6 +484,8 @@ ActiveRecord::Schema.define(version: 2020_10_17_215448) do
     t.datetime "updated_at", precision: 6, null: false
     t.integer "raw_emburse_transaction_id"
     t.text "primary_hash_input"
+    t.bigint "duplicate_of_hashed_transaction_id"
+    t.index ["duplicate_of_hashed_transaction_id"], name: "index_hashed_transactions_on_duplicate_of_hashed_transaction_id"
     t.index ["raw_plaid_transaction_id"], name: "index_hashed_transactions_on_raw_plaid_transaction_id"
   end
 
