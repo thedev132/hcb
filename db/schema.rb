@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_17_215448) do
+ActiveRecord::Schema.define(version: 2020_10_20_180340) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -653,6 +653,15 @@ ActiveRecord::Schema.define(version: 2020_10_17_215448) do
     t.datetime "deleted_at"
     t.index ["event_id"], name: "index_organizer_positions_on_event_id"
     t.index ["user_id"], name: "index_organizer_positions_on_user_id"
+  end
+
+  create_table "raw_csv_transactions", force: :cascade do |t|
+    t.integer "amount_cents"
+    t.date "date_posted"
+    t.text "memo"
+    t.jsonb "raw_data"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "raw_emburse_transactions", force: :cascade do |t|
