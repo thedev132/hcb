@@ -34,9 +34,6 @@ gem 'turbolinks', '~> 5.2.0'
 
 gem 'httparty'
 
-# Performance tracking
-gem 'skylight'
-
 # For Plaid integration
 gem 'plaid', '~> 6.0'
 # And Stripe...
@@ -138,8 +135,13 @@ group :test do
   # gem 'chromedriver-helper'
 end
 
-# Enable compression in production
-gem 'heroku-deflater', group: :production
+group :production do
+  # Performance tracking
+  gem 'skylight'
+
+  # Enable compression in production
+  gem 'heroku-deflater'
+end
 
 gem 'aasm' # state machine
 gem 'airbrake' # exception tracking
