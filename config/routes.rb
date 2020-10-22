@@ -54,7 +54,7 @@ Rails.application.routes.draw do
   get 'export_pending_fees', to: 'admin#export_pending_fees'
   get 'pending_disbursements', to: 'admin#pending_disbursements'
   get 'export_pending_disbursements', to: 'admin#export_pending_disbursements'
-  get 'transactions/dedupe', to: 'admin#transaction_dedupe'
+  get 'transactions/dedupe', to: 'admin#transaction_dedupe', as: :transaction_dedupe
 
   resources :organizer_position_invites, only: [:index, :show], path: 'invites' do
     post 'accept'
