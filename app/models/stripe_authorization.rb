@@ -4,6 +4,7 @@ class StripeAuthorization < ApplicationRecord
   before_validation :sync_from_stripe! # pull details from stripe if we're creating it for the first time
   after_create :notify_of_creation
 
+  default_scope { order(created_at: :desc) }
   scope :awaiting_receipt, -> { includes(:receipts).where.not(amount: 0).where(approved: true, receipts: { receiptable_id: nil}) }
   scope :approved, -> { where(approved: true) }
   scope :pending, -> { where(stripe_status: :pending) }
