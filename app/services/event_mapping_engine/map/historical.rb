@@ -3,16 +3,15 @@ module EventMappingEngine
     class Historical
       def run
         unmapped.find_each do |ct|
-          raw_plaid_ids = ct.hashed_transactions.pluck(:raw_plaid_transaction_id).compact
+          raise ArgumentError unless ct.hashed_transactions.count == 1
 
-          historical_transactions = raw_plaid_ids.map do |rpid|
-            Transaction.find_by(plaid_id: rpid)
-          end
+          raw_plaid_transaction = ct.hashed_transactions.first.raw_plaid_transaction
+          next unless raw_plaid_transaction # TODO: support stripe and emburse as well historically
 
-          return unless historical_transactions.size == 1
+          historical_transaction = Transaction.find_by(plaid_id: raw_plaid_transaction.plaid_transaction_id)
+          return unless historical_transaction
 
-          guessed_event_id = historical_transactions.first&.event&.id
-
+          guessed_event_id = historical_transaction.event&.id
           return unless guessed_event_id
 
           attrs = {
