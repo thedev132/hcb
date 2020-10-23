@@ -1,0 +1,5 @@
+raw_csv_transaction1:
+  amount_cents: 100
+  memo: "Raw Csv Transaction 1 Memo"
+  date_posted: "2020-09-02"
+  created_at: <%= Time.now %>
