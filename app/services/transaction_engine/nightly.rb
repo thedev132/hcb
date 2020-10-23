@@ -10,12 +10,13 @@ module TransactionEngine
       import_raw_stripe_transactions!
 
       # 2 hashed 
-      ::TransactionEngine::HashedTransactionService::RawPlaidTransaction::Import.new.run
-      ::TransactionEngine::HashedTransactionService::RawEmburseTransaction::Import.new.run
+      hash_raw_plaid_transactions!
+      hash_raw_emburse_transactions!
+      hash_raw_stripe_transactions!
+      hash_raw_csv_transactions!
 
       # 3 canonical
-      ::TransactionEngine::CanonicalTransactionService::Import::All.new.run
-
+      canonize_hashed_transactions!
     ensure
       EventMappingEngineJob::Nightly.perform_now
     end
@@ -44,6 +45,26 @@ module TransactionEngine
 
     def import_raw_stripe_transactions!
       # IMPLEMENT
+    end
+
+    def hash_raw_plaid_transactions!
+      ::TransactionEngine::HashedTransactionService::RawPlaidTransaction::Import.new.run
+    end
+
+    def hash_raw_emburse_transactions!
+      ::TransactionEngine::HashedTransactionService::RawEmburseTransaction::Import.new.run
+    end
+
+    def hash_raw_stripe_transactions!
+      # IMPLEMENT
+    end
+
+    def hash_raw_csv_transactions!
+      ::TransactionEngine::HashedTransactionService::RawCsvTransaction::Import.new.run
+    end
+
+    def canonize_hashed_transactions!
+      ::TransactionEngine::CanonicalTransactionService::Import::All.new.run
     end
   end
 end
