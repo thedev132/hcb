@@ -10,7 +10,7 @@ module TransactionEngine
 
         def run
           plaid_transactions.each do |plaid_transaction|
-            next if plaid_transaction['pending'] == false
+            next unless plaid_transaction['pending'] == false
 
             ::RawPlaidTransaction.find_or_initialize_by(plaid_transaction_id: plaid_transaction['transaction_id'])
                                  .tap do |pt|

@@ -27,7 +27,7 @@ module TransactionEngine
       BankAccount.syncing.pluck(:id).each do |bank_account_id|
         puts "raw_plaid_transactions: #{bank_account_id}"
 
-        ::TransactionEngine::RawPlaidTransactionService::Plaid::Import.new(bank_account_id: bank_account_id).run
+        ::TransactionEngine::RawPlaidTransactionService::Plaid::Import.new(bank_account_id: bank_account_id, start_date: start_date).run
       end
     end
 
@@ -65,6 +65,10 @@ module TransactionEngine
 
     def canonize_hashed_transactions!
       ::TransactionEngine::CanonicalTransactionService::Import::All.new.run
+    end
+
+    def start_date
+      Time.now.utc - 5.years
     end
   end
 end
