@@ -1,0 +1,5 @@
+canonical_transaction1:
+  amount_cents: 100
+  memo: "Raw Plaid Transaction 1 Memo"
+  date: "2020-09-02"
+  created_at: <%= Time.now %>

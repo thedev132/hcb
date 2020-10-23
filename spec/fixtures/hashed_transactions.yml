@@ -1,0 +1,4 @@
+hashed_transaction1:
+  primary_hash: 12453807878254288125
+  raw_plaid_transaction: raw_plaid_transaction1
+  created_at: <%= Time.now %>

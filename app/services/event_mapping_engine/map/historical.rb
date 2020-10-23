@@ -2,7 +2,7 @@ module EventMappingEngine
   module Map
     class Historical
       def run
-        likely_historicals.find_each do |ct|
+        unmapped.find_each do |ct|
           raw_plaid_ids = ct.hashed_transactions.pluck(:raw_plaid_transaction_id).compact
 
           historical_transactions = raw_plaid_ids.map do |rpid|
@@ -25,8 +25,8 @@ module EventMappingEngine
 
       private
 
-      def likely_historicals
-        ::CanonicalTransaction.awaiting_match
+      def unmapped
+        ::CanonicalTransaction.unmapped
       end
     end
   end
