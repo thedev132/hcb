@@ -84,6 +84,10 @@ class AdminController < ApplicationController
     @negative_events = Event.negatives
   end
 
+  def audit
+    @topups = StripeService::Topup.list[:data]
+  end
+
   private
 
   include StaticPagesHelper # for airtable_info

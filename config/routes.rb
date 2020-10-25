@@ -166,6 +166,7 @@ Rails.application.routes.draw do
   get 'export_pending_fees', to: 'admin#export_pending_fees'
   get 'pending_disbursements', to: 'admin#pending_disbursements'
   get 'export_pending_disbursements', to: 'admin#export_pending_disbursements'
+  get 'audit', to: 'admin#audit'
 
   resources :emburse_card_requests, path: 'emburse_card_requests', except: [:new, :create] do
     collection do
