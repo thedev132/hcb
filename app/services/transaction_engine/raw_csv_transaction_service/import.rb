@@ -15,7 +15,7 @@ module TransactionEngine
           mapping = {
             amount_cents: "Amount",
             date_posted: "Date",
-            memo: "Detail",
+            memo: "Description",
           }
           csv_text = open('https://gist.githubusercontent.com/maxwofford/ab0e5fd29cf2dad02c56444029b38abd/raw/a2434362ef2c3ea1605d61bf74130d75b0fe58a9/IRE1015202009343020704689603593.CSV')
           csv_data = CSV.parse(csv_text, headers: true)
