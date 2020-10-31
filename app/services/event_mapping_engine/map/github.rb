@@ -18,7 +18,7 @@ module EventMappingEngine
       private
 
       def likely_githubs
-        ::CanonicalTransaction.awaiting_match.likely_github
+        ::CanonicalTransaction.unmapped.likely_github
       end
 
     end
