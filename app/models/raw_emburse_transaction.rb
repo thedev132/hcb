@@ -2,9 +2,18 @@ class RawEmburseTransaction < ApplicationRecord
   monetize :amount_cents
 
   def memo
-    return "#{merchant_name}, Card: #{card_description}, Member: #{member_full_name}" if amount_cents < 0
+    return merchant_description if amount_cents < 0
 
     "Transfer from #{bank_account_description}"
+  end
+
+  def merchant_description
+    str = ''
+    str += merchant_name if merchant_name.present?
+    str += ", Card: #{card_description}" if card_description.present?
+    str += ", Member: #{member_full_name}" if member_full_name.present?
+
+    str
   end
 
   def bank_account_description
