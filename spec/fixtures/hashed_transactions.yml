@@ -2,3 +2,8 @@ hashed_transaction1:
   primary_hash: 12453807878254288125
   raw_plaid_transaction: raw_plaid_transaction1
   created_at: <%= Time.now %>
+
+hashed_transaction2:
+  primary_hash: 12345
+  raw_emburse_transaction: raw_emburse_transaction1
+  created_at: <%= Time.now %>

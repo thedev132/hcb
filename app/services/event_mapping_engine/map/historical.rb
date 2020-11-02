@@ -27,6 +27,10 @@ module EventMappingEngine
       def unmapped
         ::CanonicalTransaction.unmapped
       end
+
+      def deprecated_transaction_plaid_ids
+        @deprecated_transaction_plaid_ids ||= Transaction.pluck(:plaid_id)
+      end
     end
   end
 end
