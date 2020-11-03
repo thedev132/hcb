@@ -22,6 +22,9 @@ module EventMappingEngine
         end
       end
 
+      def run
+      end
+
       private
 
       def unmapped
@@ -29,7 +32,15 @@ module EventMappingEngine
       end
 
       def deprecated_transaction_plaid_ids
-        @deprecated_transaction_plaid_ids ||= Transaction.pluck(:plaid_id)
+        @deprecated_transaction_plaid_ids ||= Transaction.with_deleted.pluck(:plaid_id)
+      end
+
+      def raw_plaid_transaction_ids
+        @raw_plaid_transaction_ids ||= RawPlaidTransaction.pluck(:plaid_transaction_id)
+      end
+
+      def shared_plaid_transaction_ids
+        @shared_plaid_transaction_ids ||= deprecated_transaction_plaid_ids && raw_plaid_transaction_ids
       end
     end
   end
