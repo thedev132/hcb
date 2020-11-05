@@ -2,8 +2,6 @@ module EventMappingEngine
   module Map
     class Historical
       def run
-        event_ids = Set.new
-
         RawPlaidTransaction.where(plaid_transaction_id: in_common_plaid_transaction_ids).find_each do |raw_plaid_transaction|
 
           raise ArgumentError, 'There was not 1 hashed transaction relationship' unless raw_plaid_transaction.hashed_transactions.count == 1
