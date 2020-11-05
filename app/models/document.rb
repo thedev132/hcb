@@ -19,6 +19,8 @@ class Document < ApplicationRecord
 
     case file.content_type
     when 'application/pdf'
+      return nil unless file.previewable?
+
       file.preview(resize: resize)
     else
     end
