@@ -20,7 +20,7 @@
   <section class="card__banner card__darker statset border-top border-bottom">
     <div class="stat">
       <span class="stat__label">Amount</span>
-      <span class="stat__value"><%= render_money_amount @stripe_authorization.amount %></span>
+      <span class="stat__value<%= ' strikethrough' unless @stripe_authorization.approved? %>"><%= render_money_amount @stripe_authorization.amount %></span>
     </div>
     <div class="stat stat--small stat--plain">
       <span class="stat__label">Card</span>
@@ -34,16 +34,14 @@
       <strong>Spent at</strong>
       <%= format_datetime @stripe_authorization.created_at %>
     </p>
-    <% @stripe_authorization.stripe_obj.to_hash.slice(:status, :authorization_method, :currency, :wallet).each do |key, value| %>
-      <p>
-        <strong><%= key.to_s.humanize %></strong>
-        <% if value == 'usd' %>
-          USD
-        <% else %>
-          <%= value ? value.to_s.humanize.sub('pay', 'Pay') : '–' %>
-        <% end %>
-      </p>
-    <% end %>
+    <p>
+      <strong>Status</strong>
+      <%= @stripe_authorization.status_text %>
+    </p>
+    <p>
+      <strong>Type</strong>
+      <%= @stripe_authorization.authorization_method_text %>
+    </p>
   </section>
   <% if @stripe_authorization.receipts.any? %>
     <p class="card__banner bg-success white bold flex items-center mt0 mb0">

@@ -31,9 +31,9 @@
   <td class="transaction__memo">
     <span>
     <% if et.completed? %>
-      <span><%= et.memo %></span>
+      <span><%= et.memo.humanize %></span>
     <% else %>
-      <i><%= et.memo %> (pending)</i>
+      <i><%= et.memo.humanize %> (pending)</i>
     <% end %>
     </span>
     <%= list_badge_for et.comments.size, 'note', 'post', optional: true %>
