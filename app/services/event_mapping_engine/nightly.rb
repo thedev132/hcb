@@ -4,7 +4,8 @@ module EventMappingEngine
     end
 
     def run
-      map_historical!
+      map_historical_plaid!
+      map_historical_emburse!
       map_github!
 
       true
@@ -12,8 +13,12 @@ module EventMappingEngine
 
     private
 
-    def map_historical!
-      ::EventMappingEngine::Map::Historical.new.run
+    def map_historical_plaid!
+      ::EventMappingEngine::Map::HistoricalPlaid.new.run
+    end
+
+    def map_historical_emburse!
+      ::EventMappingEngine::Map::HistoricalEmburse.new.run
     end
 
     def map_github!

@@ -1,6 +1,6 @@
 module EventMappingEngine
   module Map
-    class Historical
+    class HistoricalPlaid
       def run
         RawPlaidTransaction.where(plaid_transaction_id: in_common_plaid_transaction_ids).find_each do |raw_plaid_transaction|
 
@@ -18,7 +18,7 @@ module EventMappingEngine
           current_canonical_event_mapping = ::CanonicalEventMapping.find_by(canonical_transaction_id: canonical_transaction_id)
 
           # raise error if discrepancy in event that was being set
-          raise ArgumentError, "CanonicalTransaction #{canonical_transaction_id} already has an event mapping but as event #{event_id} (attempted to otherwise set event #{event_id})" if current_canonical_event_mapping.try(:event_id) && current_canonical_event_mapping.event_id != event_id
+          raise ArgumentError, "CanonicalTransaction #{canonical_transaction_id} already has an event mapping but as event #{current_canonical_event_mapping.event_id} (attempted to otherwise set event #{event_id})" if current_canonical_event_mapping.try(:event_id) && current_canonical_event_mapping.event_id != event_id
 
           next if current_canonical_event_mapping
 
@@ -32,10 +32,6 @@ module EventMappingEngine
       end
 
       private
-
-      def unmapped
-        ::CanonicalTransaction.unmapped
-      end
 
       def deprecated_transaction_plaid_ids
         @deprecated_transaction_plaid_ids ||= Transaction.with_deleted.pluck(:plaid_id)

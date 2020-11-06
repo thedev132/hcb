@@ -17,8 +17,6 @@ module TransactionEngine
 
       # 3 canonical
       canonize_hashed_transactions!
-    ensure
-      EventMappingEngineJob::Nightly.perform_now
     end
 
     private
