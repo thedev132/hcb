@@ -30,14 +30,18 @@ module TransactionEngine
     end
 
     def import_raw_emburse_transactions!
-      # Check for TXs in 1 month blocks over the past 5 years
-      60.times do |n|
-        from = Date.today - n.months
-        to = from + 1.months
+      # Check for TXs in 1 month blocks over the past 5 years at increments of 15 days
+      120.times do |n|
+        from = Date.today - (n * 15).days
+        to = from + 15.days
 
         puts "raw_emburse_transactions: #{from} - #{to}"
 
-        ::TransactionEngine::RawEmburseTransactionService::Emburse::Import.new(start_date: from, end_date: to).run
+        begin
+          ::TransactionEngine::RawEmburseTransactionService::Emburse::Import.new(start_date: from, end_date: to).run
+        rescue => e
+          puts e
+        end
       end
     end
 

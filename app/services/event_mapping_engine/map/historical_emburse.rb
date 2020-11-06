@@ -4,11 +4,17 @@ module EventMappingEngine
       def run
         RawEmburseTransaction.where(emburse_transaction_id: in_common_emburse_transaction_ids).find_each do |raw_emburse_transaction|
 
-          raise ArgumentError, 'There was not 1 hashed transaction relationship' unless raw_emburse_transaction.hashed_transactions.length == 1 # use length here rather than count
+          raise ArgumentError, "There was more than 1 hashed transaction for raw_emburse_transaction: #{raw_emburse_transaction.id}" if raw_emburse_transaction.hashed_transactions.length > 1
 
-          canonical_transaction_id = raw_emburse_transaction.hashed_transactions.first.canonical_transaction.id
+          next if raw_emburse_transaction.hashed_transactions.length < 1 # skip. these are raw transactions that haven't yet been hashed for some reason. TODO. surface these somehow elsewhere
+
+          canonical_transaction_id = raw_emburse_transaction.hashed_transactions.first.canonical_transaction.try(:id)
+
+          next unless canonical_transaction_id # TODO: surface why canonical transaction is not set for this hashed transaction
 
           historical_emburse_transaction = EmburseTransaction.with_deleted.find_by(emburse_id: raw_emburse_transaction.emburse_transaction_id)
+
+          next unless historical_emburse_transaction # TODO: surface this data somewhere. if missing this means historical data is missing in the old transaction system
 
           event_id = historical_emburse_transaction.event.try(:id)
 
@@ -28,10 +34,6 @@ module EventMappingEngine
           }
 
           ::CanonicalEventMapping.create!(attrs)
-        rescue => e
-          byebug
-
-          raise e
         end
       end
 
