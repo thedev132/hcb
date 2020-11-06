@@ -2,10 +2,10 @@
 
 require 'rails_helper'
 
-RSpec.describe EventMappingEngine::Map::Historical do
+RSpec.describe EventMappingEngine::Map::HistoricalPlaid do
   fixtures :canonical_transactions, :hashed_transactions, :raw_plaid_transactions, :canonical_hashed_mappings, :transactions
 
-  let(:service) { EventMappingEngine::Map::Historical.new }
+  let(:service) { EventMappingEngine::Map::HistoricalPlaid.new }
 
   it 'maps historical canonical transaction to an event' do
     expect do

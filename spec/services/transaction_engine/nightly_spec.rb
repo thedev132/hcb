@@ -14,7 +14,6 @@ RSpec.describe TransactionEngine::Nightly do
     expect(service).to receive(:hash_raw_stripe_transactions!).and_return(true)
     expect(service).to receive(:hash_raw_csv_transactions!).and_return(true)
     expect(service).to receive(:canonize_hashed_transactions!).and_return(true)
-    expect(EventMappingEngineJob::Nightly).to receive(:perform_now).and_return(true)
 
     service.run
   end
