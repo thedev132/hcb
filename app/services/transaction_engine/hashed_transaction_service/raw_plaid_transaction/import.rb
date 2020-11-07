@@ -4,15 +4,22 @@ module TransactionEngine
       class Import
         def run
           ::RawPlaidTransaction.find_each do |pt|
-            ph = primary_hash(pt)
+            begin
+              ph = primary_hash(pt)
 
-            attrs = {
-              primary_hash: ph[0],
-              raw_plaid_transaction_id: pt.id
-            }
-            ::HashedTransaction.find_or_initialize_by(attrs).tap do |ht|
-              ht.primary_hash_input = ph[1]
-            end.save!
+              attrs = {
+                primary_hash: ph[0],
+                raw_plaid_transaction_id: pt.id
+              }
+
+              ::HashedTransaction.find_or_initialize_by(attrs).tap do |ht|
+                ht.primary_hash_input = ph[1]
+              end.save!
+            rescue ArgumentError => e
+              puts "RawPlaidTransaction #{pt.id}: #{e}"
+
+              raise e
+            end
           end
         end
 
