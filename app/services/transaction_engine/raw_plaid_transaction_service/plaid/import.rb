@@ -19,7 +19,7 @@ module TransactionEngine
 
               pt.plaid_transaction = plaid_transaction
 
-              pt.amount = plaid_transaction['amount']
+              pt.amount_cents = plaid_transaction['amount'] # amount from plaid is already in cents
               pt.date_posted = plaid_transaction['date']
               pt.pending = plaid_transaction['pending']
             end.save!
