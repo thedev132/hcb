@@ -8,10 +8,10 @@ module TransactionEngine
       end
 
       def run
-        raise ArgumentError unless memo_is_upcased?
-        raise ArgumentError unless amount_cents_is_integer?
-        raise ArgumentError if amount_cents_is_zero?
-        raise ArgumentError unless date_formatted_correctly?
+        raise ArgumentError, 'memo must be upcased' unless memo_is_upcased?
+        raise ArgumentError, 'amount cents is not an integer' unless amount_cents_is_integer?
+        raise ArgumentError, 'amount cents cannot be zero' if amount_cents_is_zero?
+        raise ArgumentError, 'date must be formatted correctly' unless date_formatted_correctly?
 
         [XXhash.xxh64(csv), csv]
       end
