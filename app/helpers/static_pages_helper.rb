@@ -57,8 +57,8 @@ module StaticPagesHelper
         'Coming to a browser near you',
         'Hand-crafted by our resident byte-smiths',
         'B O N K',
-        '80% bug free!',
-        '20% less bugs!',
+        "#{rand 4..9}0% bug free!",
+        "#{rand 1..4}0% less bugs!",
         'Ask your doctor if Hack Club Bank is right for you',
         'Now with "code"',
         'Closed source!',
@@ -83,6 +83,7 @@ module StaticPagesHelper
         "The bee's knees!",
         'Greater than the sum of its transactions!',
         'Greater than the sum of its donations!',
+        'Greater than the sum of its invoices!',
         'Operating at a loss since 2018!',
         'The sum of its parts!',
         'Wash your hands!',
@@ -107,18 +108,18 @@ module StaticPagesHelper
         'By hackers, for hackers',
         'It holds money!',
         'uwu',
+        'owo',
         'Red acting kinda sus',
         'An important part of this nutritional breakfast',
         'By people with money, for people with money',
         'Made using "money"',
         'Chosen #1 by dinosaurs everywhere',
         'Accountants HATE him',
-        'Eat fresh!',
-        'Taste the rainbow',
-        'Think different',
+        'paid for by steve',
         'Congradulations, you are the 10,000th visitor!',
-        "It's more likely than you think",
-        "All the finance that's fit to print"
+        "All the finance that's fit to print",
+        "You've got this",
+        "Don't forget to drink water!"
       ].sample
     end
   end
