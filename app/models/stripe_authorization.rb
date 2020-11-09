@@ -9,7 +9,6 @@ class StripeAuthorization < ApplicationRecord
   scope :awaiting_receipt, -> { includes(:receipts).approved.where.not(amount: 0).where(receipts: { receiptable_id: nil}) }
   scope :unified_list, -> { approved.where.not(stripe_status: :reversed) }
   scope :approved, -> { where(approved: true) }
-  scope :pending, -> { where(stripe_status: :pending) }
   scope :declined, -> { where(approved: false) }
   scope :successful, -> { where(stripe_status: :closed, approved: true) }
 
@@ -58,7 +57,7 @@ class StripeAuthorization < ApplicationRecord
   def status_text
     return 'Declined' unless approved?
     return 'Pending' if pending?
-    return 'Reversed' if reversed?
+    return 'Refunded' if reversed?
     return 'Approved' if approved?
 
     '–'
@@ -96,6 +95,17 @@ class StripeAuthorization < ApplicationRecord
 
     stripe_card_id = stripe_obj[:card][:id]
     self.stripe_card = StripeCard.find_by(stripe_id: stripe_card_id)
+
+    # (max@maxwofford.com) https://github.com/hackclub/bank/issues/1031
+    # This is a chaotic way of solving #1031 (tl;dr, stripe doesn't
+    # consistently tell us if a tx was refunded). We're going to deviate from
+    # the status stripe is telling us and mark it as 'refunded' if all the
+    # authorization's transactions sum to 0.
+    if (stripe_obj[:status] == 'closed' && stripe_obj[:transactions].size > 1)
+      net_amount = stripe_obj[:transactions].pluck(:amount).sum
+      self.amount = net_amount
+      self.stripe_status = 'reversed' if net_amount.zero?
+    end
   end
 
   def stripe_obj
