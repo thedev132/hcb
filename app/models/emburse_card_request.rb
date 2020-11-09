@@ -1,11 +1,11 @@
 class EmburseCardRequest < ApplicationRecord
   include Rejectable
+  include Commentable
 
   belongs_to :creator, class_name: 'User'
   belongs_to :fulfilled_by, class_name: 'User', required: false
   belongs_to :event
   belongs_to :emburse_card, required: false
-  has_many :comments, as: :commentable
 
   validates :full_name, presence: true
   validates :full_name, length: { maximum: 21 }

@@ -1,4 +1,5 @@
 class User < ApplicationRecord
+  include Commentable
   extend FriendlyId
 
   friendly_id :slug_candidates, use: :slugged
@@ -28,8 +29,6 @@ class User < ApplicationRecord
   has_many :receipts
 
   has_many :checks, inverse_of: :creator
-
-  has_many :comments, as: :commentable
 
   has_one_attached :profile_picture
 

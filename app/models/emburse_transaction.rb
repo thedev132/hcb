@@ -1,5 +1,6 @@
 class EmburseTransaction < ApplicationRecord
   include Receiptable
+  include Commentable
 
   enum state: %w{pending completed declined}
 
@@ -16,8 +17,6 @@ class EmburseTransaction < ApplicationRecord
   belongs_to :event, required: false
   belongs_to :emburse_card, required: false
   alias_attribute :card, :emburse_card
-
-  has_many :comments, as: :commentable
 
   validates_uniqueness_of_without_deleted :emburse_id
 

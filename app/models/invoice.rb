@@ -1,5 +1,6 @@
 class Invoice < ApplicationRecord
   extend FriendlyId
+  include Commentable
 
   scope :unarchived, -> { where(archived_at: nil) }
   scope :archived, -> { where.not(archived_at: nil) }
@@ -22,8 +23,6 @@ class Invoice < ApplicationRecord
   belongs_to :archived_by, class_name: 'User', required: false
 
   has_one_attached :manually_marked_as_paid_attachment
-
-  has_many :comments, as: :commentable
 
   enum status: {
     draft: 'draft',

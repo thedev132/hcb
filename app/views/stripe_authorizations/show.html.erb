@@ -67,8 +67,9 @@
   <%= render 'receipts/upload', receiptable: @stripe_authorization %>
 <% end %>
 
-<!--<h2>Notes</h2>-->
-<%# render 'comments/comments' %>
+<% if organizer_signed_in? %>
+  <%= render 'comments/comments', commentable: @stripe_authorization %>
+<% end %>
 
 <% admin_tools do %>
   <pre>
