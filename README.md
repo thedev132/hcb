@@ -4,6 +4,8 @@ Bank is a tool for hackers to hack on the real world, like GitHub, but for build
 
 ![Hack Club Bank](hack_club_bank_laser.gif)
 
+![Zeitwerk Check](https://github.com/hackclub/bank/workflows/Zeitwerk%20Check/badge.svg?branch=master)
+
 ## Getting Started
 
 1. Install Docker.
