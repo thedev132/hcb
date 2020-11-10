@@ -147,17 +147,18 @@ class Donation < ApplicationRecord
   def payment_method_card_checks_address_line1_check
     stripe_obj.dig(:payment_method, :card, :checks, :address_line1_check)
   end
+
   def payment_method_card_checks_address_postal_code_check
     stripe_obj.dig(:payment_method, :card, :checks, :address_postal_code_check)
   end
+
   def payment_method_card_checks_cvc_check
     stripe_obj.dig(:payment_method, :card, :checks, :cvc_check)
   end
 
   def stripe_obj
-    @stripe_donation_obj ||= begin
+    @stripe_donation_obj ||=
       StripeService::PaymentIntent.retrieve(id: stripe_payment_intent_id, expand: ['payment_method']).to_hash
-    end
   end
 
   private

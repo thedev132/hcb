@@ -76,8 +76,4 @@
   <%= render 'comments/comments', commentable: @stripe_authorization %>
 <% end %>
 
-<% admin_tools do %>
-  <pre>
-    <%= json stripe_authorization: @stripe_authorization, stripe_obj: @stripe_authorization.stripe_obj %>
-  </pre>
-<% end %>
+<%= render partial: 'admin_viewer', locals: { record: @stripe_authorization} %>

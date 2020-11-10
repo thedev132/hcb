@@ -121,8 +121,4 @@
 
 <%= render 'comments/comments' %>
 
-<% admin_tools do %>
-  <pre>
-    <%= json donation: @donation, stripe_obj: @donation.stripe_obj %>
-  </pre>
-<% end %>
+<%= render partial: 'admin_viewer', locals: { record: @donation } %>

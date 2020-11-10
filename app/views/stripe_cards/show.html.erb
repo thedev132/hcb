@@ -131,8 +131,4 @@
   <%= blankslate 'No transactions made on this card yet.' %>
 <% end %>
 
-<% admin_tools do %>
-  <pre>
-    <%= json card: @card, stripe_obj: @card.stripe_obj %>
-  </pre>
-<% end %>
+<%= render partial: 'admin_viewer', locals: { record: @card } %>
