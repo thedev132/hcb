@@ -116,6 +116,50 @@ class Donation < ApplicationRecord
     DateTime.now > self.arrival_date
   end
 
+  def payment_method_type
+    stripe_obj.dig(:payment_method, :type)
+  end
+
+  def payment_method_card_brand
+    stripe_obj.dig(:payment_method, :card, :brand)
+  end
+
+  def payment_method_card_last4
+    stripe_obj.dig(:payment_method, :card, :last4)
+  end
+
+  def payment_method_card_funding
+    stripe_obj.dig(:payment_method, :card, :funding)
+  end
+
+  def payment_method_card_exp_month
+    stripe_obj.dig(:payment_method, :card, :exp_month)
+  end
+
+  def payment_method_card_exp_year
+    stripe_obj.dig(:payment_method, :card, :exp_year)
+  end
+
+  def payment_method_card_country
+    stripe_obj.dig(:payment_method, :card, :country)
+  end
+
+  def payment_method_card_checks_address_line1_check
+    stripe_obj.dig(:payment_method, :card, :checks, :address_line1_check)
+  end
+  def payment_method_card_checks_address_postal_code_check
+    stripe_obj.dig(:payment_method, :card, :checks, :address_postal_code_check)
+  end
+  def payment_method_card_checks_cvc_check
+    stripe_obj.dig(:payment_method, :card, :checks, :cvc_check)
+  end
+
+  def stripe_obj
+    @stripe_donation_obj ||= begin
+      StripeService::PaymentIntent.retrieve(id: stripe_payment_intent_id, expand: ['payment_method']).to_hash
+    end
+  end
+
   private
 
   def send_payment_notification_if_needed

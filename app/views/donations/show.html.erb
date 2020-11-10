@@ -1,4 +1,4 @@
-<% title "Donation for #{render_money @donation.amount}" %>
+<% title "Donation from #{@donation.name} for #{render_money @donation.amount}" %>
 <% page_md %>
 <% include_modals %>
 <%= render 'events/nav' %>
@@ -19,7 +19,7 @@
     <span class="regular"><%= render_money @donation.amount_received %></span>
   </h2>
   <section class="card__banner card__darker details-horiz border-top border-bottom">
-    <% if @donation&.payout&.type == 'card' %>
+    <% if @donation.payment_method_type == 'card' %>
       <action data-behavior="modal_trigger" data-modal="payment_details" class="details-horiz__col pointer" tabindex="0">
         <strong>
           <%# Nested tag to avoid flexbox-induced full-width strong leading to icon on right edge on mobile %>
@@ -29,14 +29,14 @@
           </span>
         </strong>
         <span class="inline-flex">
-          <%# donation_payment_method_mention %>
+          <%= donation_payment_method_mention %>
         </span>
       </action>
     <% else %>
       <p>
         <strong>Payment method</strong>
         <span class="inline-flex">
-          <%# donation_payment_method_mention %>
+          <%= donation_payment_method_mention %>
         </span>
       </p>
     <% end %>
@@ -61,7 +61,7 @@
         +<%= render_money @donation.amount %>
       </p>
       <p>
-        <strong><%# invoice_fee_type %></strong>
+        <strong><%= donation_fee_type %></strong>
         -<%= donation_payment_processor_fee %>
       </p>
       <p>
@@ -78,4 +78,51 @@
   <% end %>
 </article>
 
+<% if @donation.payment_method_type == 'card' %>
+  <section class="modal modal--scroll bg-snow" data-behavior="modal" role="dialog" id="payment_details">
+    <%= modal_header 'Payment details' + content_tag(:span, '', class: 'pl2') + donation_payment_method_mention(@donation, class: 'h3 sans slate regular') %>
+
+    <article class="details-horiz">
+      <div class="details">
+        <p>
+          <strong>Payment type</strong>
+          <%= @donation.payment_method_card_funding.humanize.capitalize %>
+        </p>
+        <p>
+          <strong>Brand</strong>
+          <%= @donation.payment_method_card_brand.humanize.capitalize %>
+        </p>
+        <p>
+          <strong>Expiration</strong>
+          <% if organizer_signed_in? %>
+            <%= @donation.payment_method_card_exp_month.to_s.rjust(2, '0') %> / <%= @donation.payment_method_card_exp_year %>
+          <% else %>
+            MM / YYYY (Sign in to view)
+          <% end %>
+        </p>
+      </div>
+      <div class="mt1 md-mt0">
+        <p class="details__simulated">
+          <%= donation_card_country_mention %>
+          <span>Payment country</span>
+        </p>
+        <p class="details__simulated">
+          <%= donation_card_check_badge 'cvc' %>
+          <span>CVC check</span>
+        </p>
+        <p class="details__simulated">
+          <%= donation_card_check_badge 'address_postal_code' %>
+          <span>Zip check</span>
+        </p>
+      </div>
+    </article>
+  </section>
+<% end %>
+
 <%= render 'comments/comments' %>
+
+<% admin_tools do %>
+  <pre>
+    <%= json donation: @donation, stripe_obj: @donation.stripe_obj %>
+  </pre>
+<% end %>

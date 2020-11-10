@@ -122,7 +122,7 @@ def invoice_card_country_mention(invoice = @invoice)
 end
 
 def invoice_card_check_badge(check, invoice = @invoice)
-  case invoice["payment_method_card_checks_#{check}_check"]
+  case invoice.send("payment_method_card_checks_#{check}_check")
   when 'pass'
     background = 'success'
     icon_name = 'checkmark'
