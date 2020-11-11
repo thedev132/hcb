@@ -1,5 +1,10 @@
 <% admin_tools do %>
-  <pre>
-    <%= json admin_inspectable_attributes(record) %>
-  </pre>
+  <details>
+    <summary>
+      Inspect <%= record.class.name.humanize.downcase %> record
+    </summary>
+    <pre>
+      <%= json admin_inspectable_attributes(record) %>
+    </pre>
+  </details>
 <% end %>
