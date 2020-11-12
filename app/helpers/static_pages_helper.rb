@@ -119,7 +119,10 @@ module StaticPagesHelper
         'Congradulations, you are the 10,000th visitor!',
         "All the finance that's fit to print",
         "You've got this",
-        "Don't forget to drink water!"
+        "Don't forget to drink water!",
+        "Putting the 'fun' in 'refund'",
+        "Putting the 'fun' in 'fundraising'",
+        "Donation nation"
       ].sample
     end
   end
