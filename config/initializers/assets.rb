@@ -12,3 +12,7 @@ Rails.application.config.assets.paths << Rails.root.join('node_modules')
 # application.js, application.css, and all non-JS/CSS in the app/assets
 # folder are already added.
 # Rails.application.config.assets.precompile += %w( admin.js admin.css )
+
+# (msw) Load darkmode seperately so we can prevent flashing the user with a
+# bright screen onload
+Rails.application.config.assets.precompile += %w( dark.js )
