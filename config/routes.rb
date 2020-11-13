@@ -31,6 +31,8 @@ Rails.application.routes.draw do
   post 'receipts/upload', to: 'receipts#upload'
   delete 'receipts/destroy', to: 'receipts#destroy'
 
+  post 'receiptable/:receiptable_type/:receiptable_id/mark_no_or_lost', to: 'receiptables#mark_no_or_lost', as: :receiptable_mark_no_or_lost
+
   resources :users, only: [:edit, :update] do
     collection do
       get 'impersonate', to: 'users#impersonate'

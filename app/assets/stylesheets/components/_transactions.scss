@@ -12,6 +12,7 @@
     max-width: 100%;
     overflow: hidden;
     text-overflow: ellipsis;
+    max-width: 44ch;
 
     @media screen and (max-width: 32em) {
       max-width: 32ch; // reduce character count on mobile

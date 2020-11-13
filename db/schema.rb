@@ -350,6 +350,7 @@ ActiveRecord::Schema.define(version: 2020_10_23_175427) do
     t.text "receipt_filename"
     t.datetime "transaction_time"
     t.datetime "deleted_at"
+    t.datetime "marked_no_or_lost_receipt_at"
     t.index ["deleted_at"], name: "index_emburse_transactions_on_deleted_at"
     t.index ["emburse_card_id"], name: "index_emburse_transactions_on_emburse_card_id"
     t.index ["event_id"], name: "index_emburse_transactions_on_event_id"
@@ -727,6 +728,7 @@ ActiveRecord::Schema.define(version: 2020_10_23_175427) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "name"
     t.string "display_name"
+    t.datetime "marked_no_or_lost_receipt_at"
     t.index ["stripe_card_id"], name: "index_stripe_authorizations_on_stripe_card_id"
   end
 

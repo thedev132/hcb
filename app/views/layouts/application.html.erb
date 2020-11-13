@@ -23,71 +23,34 @@
   </head>
   <body <%= yield(:body_attributes) if content_for?(:body_attributes) %> class="bg-snow <%= content_for :page_class %>">
     <% if @event&.is_public && !organizer_signed_in? && !@no_app_shell %>
-      <div class="container container--sm" data-behavior="hide_iframe">
-        <p class="bold center">
+      <div class="w-100 px3 bg-white transparency-banner" data-behavior="hide_iframe">
+        <p class="h5 medium center mt1 mb1">
           This Hack Club Bank project has been made public so you can see all its finances.
           Hey, <%= link_to 'what’s Bank?', 'https://hackclub.com/bank/', target: '_blank', class: 'primary' %>
         </p>
       </div>
     <% end %>
-    <% unless @no_app_shell %>
-      <header class="center flex items-center justify-center pt1 md-pt2">
-        <div class="header-left flex items-center justify-end">
-          <action role="button" data-behavior="toggle_theme" class="muted pointer no-select tooltipped tooltipped--s" aria-label="Toggle dark mode" tabindex="0">
-            <%= inline_icon 'moon', size: home_action_size %>
-            <%= inline_icon 'moon-fill', size: home_action_size, style: 'display: none;' %>
-          </action>
-          <%= link_to 'https://changelog.bank.hackclub.com',
-            class: 'muted tooltipped tooltipped--s ml2',
-            'aria-label': 'See what’s new in Bank' do %>
-            <%= inline_icon 'rep', size: home_action_size %>
-          <% end if signed_in? %>
-          <% if @event and not @event.partner_logo_url.blank? %>
-            <div class="partner-logo ml2">
-              <%= image_tag @event.partner_logo_url, name: 'partner-logo', height: home_action_size, alt: 'Partner logo', style: 'box-sizing: border-box; padding: 5px;' %>
-            </div>
-          <% end %>
-        </div>
 
-        <div class="header-center flex items-center justify-start <%= Rails.env.development? && 'tooltipped tooltipped--s' %>" aria-label="You're in development mode. <%= development_mode_flavor %>">
-          <%= link_to root_path, class: 'pl2 pr2' do %>
-            <%= image_tag Rails.env.development? ? 'logo-dev.png' : @home_size ? 'logo-512.png' : 'logo.png', name: 'header-logo', width: @home_size || 48, height: @home_size || 48, alt: 'Bank logo' %>
-          <% end %>
-        </div>
-
-        <div class="header-right flex items-center justify-left">
-          <% if signed_in? %>
-            <%= link_to my_inbox_path,
-              class: 'muted tooltipped tooltipped--s mr2',
-              'aria-label': 'Inbox' do %>
-              <%= inline_icon 'notification', size: home_action_size %>
-            <% end %>
-            <%= link_to logout_users_path, method: :delete,
-                class: 'muted tooltipped tooltipped--s',
-                'aria-label': 'Sign out' do %>
-                <%= inline_icon 'door-leave', size: home_action_size %>
-            <% end %>
-          <% else %>
-            <%= link_to auth_users_path,
-                class: 'muted tooltipped tooltipped--s',
-                'aria-label': 'Sign in' do %>
-                <%= inline_icon 'door-enter', size: home_action_size %>
-            <% end %>
-          <% end %>
-        </div>
-      </header>
-    <% end %>
-
-    <main class="container <%= content_for :container_class %>">
-      <% flash.each do |key, value| %>
-        <article role="alertdialog" class="flash flex items-center mt3 mb2 mx-auto <%= key %>" data-behavior="flash">
-          <span class="flex-auto"><%= value %></span>
-          <%= inline_icon 'view-close', size: 32, class: 'pointer' %>
+    <% if content_for?(:nav) %>
+      <main class="container app">
+        <aside class="app__sidebar">
+          <%= render 'application/header' %>
+          <%= render 'application/flash' %>
+          <%= yield(:nav) %>
+        </aside>
+        <article class="container app__content <%= content_for :container_class %>">
+          <%= yield(:container) %>
+          <%= yield %>
         </article>
-      <% end %>
-      <%= yield %>
-      <%= render 'application/footer' unless (@no_app_shell || @hide_footer) %>
-    </main>
+      </main>
+    <% else %>
+      <%= render 'application/header' unless @no_app_shell %>
+      <main class="container <%= content_for :container_class %>">
+        <%= render 'application/flash' %>
+        <%= yield %>
+        <%= render 'application/footer' unless (@no_app_shell || @hide_footer) %>
+      </main>
+    <% end %>
 
     <% if Rails.env.production? %>
       <script src="https://aardvark.hackclub.com/script.js" site="ZKMSNQTW" defer></script>

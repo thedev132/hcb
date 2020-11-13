@@ -8,7 +8,7 @@
 <% end %>
 
 <%= creator_bar @stripe_authorization, prefix: 'spent ' %>
-<article class="card pb0 mb3">
+<article class="card mb3">
   <h1 class="h1 border-none mt0 mb0">
     <%= @stripe_authorization.name %>
   </h1>
@@ -29,7 +29,7 @@
       </span>
     </div>
   </section>
-  <section class="details pt2 pb2">
+  <section class="details pt2">
     <p>
       <strong>Spent at</strong>
       <%= format_datetime @stripe_authorization.created_at %>
@@ -44,13 +44,18 @@
     </p>
   </section>
   <% if @stripe_authorization.receipts.any? %>
-    <p class="card__banner bg-success white bold flex items-center mt0 mb0">
+    <p class="card__banner card__banner--bottom bg-success white bold flex items-center">
       <%= inline_icon 'checkmark', size: 24, class: 'mr2' %>
       <%= pluralize @stripe_authorization.receipts.count, 'receipt' %>
       added
     </p>
+  <% elsif @stripe_authorization.no_or_lost_receipt? %>
+    <p class="card__banner card__banner--bottom bg-muted white bold flex items-center">
+      <%= inline_icon 'view-close', size: 24, class: 'mr2' %>
+      Marked no/lost receipt
+    </p>
   <% else %>
-    <p class="card__banner bg-pending slate bold flex items-center mt0 mb0">
+    <p class="card__banner card__banner--bottom bg-pending slate bold flex items-center">
       <%= inline_icon 'important', size: 24, class: 'mr2' %>
       This transaction is missing a receipt
     </p>

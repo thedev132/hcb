@@ -1,0 +1,9 @@
+<% flash.each do |key, value| %>
+  <article
+    role="alertdialog"
+    class="flash flex items-center mt3 mb2 mx-auto <%= key %>"
+    data-behavior="flash">
+    <span class="flex-auto"><%= value %></span>
+    <%= inline_icon 'view-close', size: 32, class: 'pointer' %>
+  </article>
+<% end %>

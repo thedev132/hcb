@@ -1,11 +1,29 @@
-.header-center {
-  flex-grow: 0;
-  flex-shrink: 1;
+.header {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  grid-gap: 1rem;
+  align-items: center;
+  justify-content: center;
 }
 
 .header-left,
 .header-right {
-  flex-shrink: 1;
-  flex-grow: 1;
   width: 100%;
+}
+
+.app__sidebar {
+  .header-left {
+    grid-area: left;
+  }
+  .header-right {
+    grid-area: right;
+  }
+  .header-center {
+    grid-area: center;
+  }
+
+  .header {
+    grid-template-columns: 1fr auto auto;
+    grid-template-areas: 'center left right';
+  }
 }

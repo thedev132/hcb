@@ -1,0 +1,6 @@
+<%= link_to receiptable_mark_no_or_lost_path(receiptable_type: receiptable.class, receiptable_id: receiptable.id),
+            method: :post,
+            class: 'ml2 btn bg-muted' do %>
+  <%= inline_icon 'view-close' %>
+  Missing/lost receipt
+<% end %>
