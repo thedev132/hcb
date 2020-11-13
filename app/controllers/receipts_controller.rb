@@ -2,14 +2,16 @@ class ReceiptsController < ApplicationController
   skip_after_action :verify_authorized, only: :upload # do not force pundit
   skip_before_action :signed_in_user, only: :upload
   before_action :set_paper_trail_whodunnit, only: :upload
-  before_action :find_receiptable, only: :upload
+  before_action :find_receiptable, only: [:upload, :mark_no_or_lost]
 
   def upload
     @receipt = @receiptable.receipts.create(params[:receipts])
     @receipt = Receipt.new(receipt_params)
     @receipt.user_id = current_user&.id || @receiptable.user.id
 
-    if @receipt.save
+    @receipt.receiptable.marked_no_or_lost_receipt_at = nil
+
+    if @receipt.save && @receipt.receiptable.save
       flash[:success] = 'Added receipt!'
       if current_user
         redirect_to @receiptable

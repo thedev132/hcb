@@ -6,14 +6,14 @@ class StripeAuthorization < ApplicationRecord
   after_create :notify_of_creation
 
   default_scope { order(created_at: :desc) }
-  scope :awaiting_receipt, -> { includes(:receipts).approved.where.not(amount: 0).where(receipts: { receiptable_id: nil}) }
+  scope :awaiting_receipt, -> { without_receipt.where.not(amount: 0).where(approved: true) }
   scope :unified_list, -> { approved.where.not(stripe_status: :reversed) }
   scope :approved, -> { where(approved: true) }
   scope :declined, -> { where(approved: false) }
-  scope :successful, -> { where(stripe_status: :closed, approved: true) }
+  scope :successful, -> { approved.closed }
 
   def awaiting_receipt?
-    !amount.zero? && approved && receipts.size.zero?
+    !amount.zero? && approved && without_receipt?
   end
 
   def declined?
