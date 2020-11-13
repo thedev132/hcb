@@ -13,6 +13,6 @@
   <%= form.file_field :file, class: 'mb2' %>
   <footer class="flex flex-wrap justify-between align-center">
     <%= form.submit 'Upload' %>
-    <%= render 'receipts/no_or_missing_receipt', receiptable: receiptable if receiptable.without_receipt? && !receiptable.no_or_lost_receipt? %>
+    <%= render 'receipts/no_or_missing_receipt', receiptable: receiptable if receiptable.missing_receipt? && !receiptable.no_or_lost_receipt? %>
   </footer>
 <% end %>

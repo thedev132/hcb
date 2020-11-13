@@ -11,7 +11,7 @@ class EmburseTransaction < ApplicationRecord
 
   scope :undeclined, -> { where.not(state: 'declined') }
   scope :under_review, -> { where(event_id: nil).undeclined }
-  scope :awaiting_receipt, -> { without_receipt.completed.where.not(amount: 0) }
+  scope :awaiting_receipt, -> { missing_receipt.completed.where.not(amount: 0) }
   scope :unified_list, -> { undeclined }
 
   belongs_to :event, required: false
@@ -21,7 +21,7 @@ class EmburseTransaction < ApplicationRecord
   validates_uniqueness_of_without_deleted :emburse_id
 
   def awaiting_receipt?
-    !amount.zero? && approved && without_receipt?
+    !amount.zero? && approved && missing_receipt?
   end
 
   def self.during(start_time, end_time)

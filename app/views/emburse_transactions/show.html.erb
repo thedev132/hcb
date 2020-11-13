@@ -59,7 +59,7 @@
         <%= inline_icon 'view-close', size: 24, class: 'mr2' %>
         Marked no/lost receipt
       </p>
-    <% elsif @emburse_transaction.without_receipt? %>
+    <% elsif @emburse_transaction.missing_receipt? %>
       <p class="card__banner card__banner--bottom bg-pending slate bold flex items-center">
         <%= inline_icon 'important', size: 24, class: 'mr2' %>
         This transaction is missing a receipt
