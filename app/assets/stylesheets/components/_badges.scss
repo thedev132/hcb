@@ -14,7 +14,6 @@
   margin-left: 1rem;
   padding: 0.25rem 0.625rem;
   width: min-intrinsic;
-  transition-duration: 1s;
 
   &.success {
     background-color: rgba(map-get($palette, success), 0.125);
@@ -63,7 +62,7 @@
 
 // Circular button
 .pop {
-  border-radius: 18px;
+  border-radius: 9999px;
   color: map-get($palette, info);
   background-color: rgba(map-get($palette, info), 0.125);
   flex-shrink: 0;

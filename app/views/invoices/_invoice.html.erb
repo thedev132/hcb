@@ -20,7 +20,9 @@
   <td>
     <%= render_money transaction.amount + refund_t&.amount.to_i %>
   </td>
-  <td>
-    <%= link_to 'Details', invoice, class: 'underline' if organizer_signed_in? %>
-  </td>
+  <% if organizer_signed_in? %>
+    <td>
+      <%= link_to 'Details', invoice, class: 'underline' %>
+    </td>
+  <% end %>
 </tr>

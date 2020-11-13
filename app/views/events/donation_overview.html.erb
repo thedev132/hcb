@@ -53,8 +53,10 @@
       <th>Donor</th>
       <th>Date</th>
       <th>Amount</th>
-      <th>Message</th>
-      <th></th>
+      <% if organizer_signed_in? %>
+        <th>Message</th>
+        <th></th>
+      <% end %>
     </tr>
   </thead>
   <tbody>
@@ -80,13 +82,13 @@
           <span><%= " 💬#{d.comments.size}" if organizer_signed_in? && d.comments.size > 0 %></span>
           <%= link_to d.email, "mailto:#{d.name} <#{d.email}>", class: 'muted h6 block' %>
         <% else %>
-          <span class="muted">Sign in to view</span>
+          <span class="muted">(redacted)</span>
         <% end %>
       </td>
       <td>
         <%= format_date d.created_at %>
         <% unless d.deposited? %>
-          <span class="muted block">expected on <%= format_date d.arrival_date %></span>
+          <span class="muted block">expected <%= format_date d.arrival_date %></span>
         <% end %>
       </td>
       <td>
@@ -95,16 +97,14 @@
         </span>
         <%= render_money d.amount %>
       </td>
-      <td>
-        <% if organizer_signed_in? %>
+      <% if organizer_signed_in? %>
+        <td>
           <%= d.message.present? ? d.message : '–' %>
-        <% else %>
-          <span class="muted">Sign in to view</span>
-        <% end %>
-      </td>
-      <td>
-        <%= link_to 'Details', donation_path(d) %>
-      </td>
+        </td>
+        <td>
+          <%= link_to 'Details', donation_path(d) %>
+        </td>
+      <% end %>
     </tr>
   <% end %>
   </tbody>
