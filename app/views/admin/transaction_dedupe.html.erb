@@ -1,0 +1,63 @@
+<% title 'De-duplicate transactions' %>
+
+<h1>De-duplicate transactions</h1>
+
+<% @groups.each do |txs| %>
+  <section class="mt3 card p0">
+    <% if defined? event %>
+      <h2 class="heading line-height-4 p1 pl2 pr0 mt0 ml0">
+        <%= link_to event.name, event, class: 'flex-auto link-reset' %>
+        <div class="avatar-row pr2">
+          <% event.organizer_positions.each do |position| %>
+            <%= avatar_for position.user, 24 %>
+          <% end %>
+        </div>
+      </h2>
+    <% end %>
+    <div class="table-container card__darker">
+    <table>
+      <thead class="pr1">
+        <tr>
+          <th>Canon</th>
+          <th>Date</th>
+          <th>Memo</th>
+          <th class="right-align">Amount</th>
+          <th class="pr2"></th>
+        </tr>
+      </thead>
+      <tbody>
+      <% txs.each do |t| %>
+        <tr data-json="<%= t.to_json %>">
+          <td class="right-align" style="width: 1%;"><%= rand(0..1) == 0 ? inline_icon('checkmark', size: 24, class: 'success transaction__icon') : nil %></td>
+          <td style="width: 1%;"><%= t.created_at.to_date %></td>
+          <td class="transaction__memo"><%= defined?(t.memo) ? t.memo : t.name %></td>
+          <td class="right-align"><%= render_money t.amount_cents %></td>
+          <td class="pr2" style="width: 1%;">
+            <action data-behavior="modal_trigger transaction_dedupe_info_trigger" data-modal="transaction_info">
+              <%= inline_icon 'info', size: 24, class: 'muted transaction__icon' %>
+            </action>
+          </td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+  <div class="card__banner flex justify-center items-center flex-wrap">
+    <div class="btn-group">
+      <button class="btn">
+        <%= inline_icon 'expand' %>
+        Separate each
+      </button>
+      <button class="btn bg-accent">
+        <%= inline_icon 'enter' %>
+        Merge into one
+      </button
+    </div>
+  </div>
+  </section>
+<% end %>
+
+<section class="modal modal--scroll bg-snow" data-behavior="modal" role="dialog" id="transaction_info">
+  <%= modal_header 'Transaction info' %>
+  <pre class="p0" data-behavior="transaction_dedupe_info_target"></pre>
+</section>

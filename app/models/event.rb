@@ -56,13 +56,13 @@ class Event < ApplicationRecord
   has_many :emburse_cards
   has_many :emburse_card_requests
   has_many :emburse_transfers
+  has_many :emburse_transactions
+
   has_many :ach_transfers
   has_many :donations
 
   has_many :lob_addresses
   has_many :checks, through: :lob_addresses
-
-  has_many :emburse_transactions
 
   has_many :sponsors
   has_many :invoices, through: :sponsors
