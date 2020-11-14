@@ -1,4 +1,6 @@
-<% if t.is_a? StripeAuthorization %>
+<% if t.is_a? CanonicalTransaction %>
+  <%= render 'transactions/v2', transaction: t %>
+<% elsif t.is_a? StripeAuthorization %>
   <%= render t %>
 <% elsif t.is_a? EmburseTransaction %>
   <%= render t %>
