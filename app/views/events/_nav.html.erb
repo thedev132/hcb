@@ -1,41 +1,54 @@
-<% unless defined? hide_name %>
-  <%= link_to @event do %>
-    <h1 class="center border-none h1 mt0 mb0 pt3 pb1 underline primary">
+<% content_for(:nav) do %>
+  <%= link_to @event, class: 'text-decoration-none pt2' do %>
+    <h1 class="border-none h1 mt0 mb0 primary">
       <%= @event.name %>
     </h1>
   <% end %>
-<% end %>
-</main>
+  <!-- add project switcher here -->
 
-<%= render 'events/public_message' %>
-
-<nav class="dock">
-  <%= dock_card 'Invoices',
-    'Collect payment from sponsors.',
-    'briefcase', 'accent',
-    event_invoices_path(event_id: @event.slug) unless @event.is_spend_only %>
-  <%= dock_card 'Cards',
-    'Request and manage cards for your team.',
-    'card', 'purple', event_cards_overview_path(event_id: @event.slug) %>
-  <%= dock_card 'Send',
-    'Send money from Hack Club Bank.',
-    'send', 'success',
-    event_transfers_path(event_id: @event.slug) %>
-  <%= dock_card 'Donations',
-    'Receive donations online.',
-    'support', 'warning',
-    event_donation_overview_path(event_id: @event.slug) if @event.donation_page_enabled && !@event.is_spend_only %>
-  <div class="md-pl1">
-    <action type="button" class="pop menu__toggle" data-behavior="menu_toggle" aria-expanded="false" tabindex="0">
-    <%= inline_icon 'more' %>
-    <div class="menu__content" data-behavior="menu_content">
-      <%= link_to 'Google Workspace', event_g_suite_overview_path(event_id: @event.slug) %>
-      <%= link_to 'Promotions & perks', event_promotions_path(event_id: @event.slug) unless @event.is_spend_only %>
-      <%= link_to 'Documents', event_documents_path(event_id: @event.slug) %>
-      <%= link_to 'Settings', edit_event_path(@event) %>
+  <nav class="dock">
+    <%= dock_item 'Invoices',
+      'Collect sponsor payments',
+      'briefcase',
+      event_invoices_path(event_id: @event.slug) unless @event.is_spend_only %>
+    <%= dock_item 'Cards',
+      'Manage team debit cards',
+      'card',
+      event_cards_overview_path(event_id: @event.slug) %>
+    <%= dock_item 'Send',
+      'Send checks & wires',
+      'transactions',
+      event_transfers_path(event_id: @event.slug) %>
+    <%= dock_item 'Donations',
+      'Receive donations online',
+      'support',
+      event_donation_overview_path(event_id: @event.slug) unless @event.is_spend_only %>
+    <%= dock_item 'Promotions',
+      'Receive grants & discounts',
+      'shirt',
+       event_promotions_path(event_id: @event.slug), :lg unless @event.is_spend_only %>
+    <%= dock_item 'Documents',
+      'Download waivers & legal docs',
+      'docs',
+      event_documents_path(event_id: @event.slug), :lg %>
+    <%= dock_item "Google #{content_tag(:span, 'Workspace', class: 'sm-hide md-hide')}",
+      'Set up domain Gmail',
+      'google',
+       event_g_suite_overview_path(event_id: @event.slug), :lg %>
+    <div class="dock__overflow">
+      <action type="button" class="pop primary menu__toggle" data-behavior="menu_toggle" aria-expanded="false" tabindex="0">
+        <%= inline_icon 'more' %>
+        <div class="menu__content" data-behavior="menu_content">
+          <%= link_to 'Google Workspace', event_g_suite_overview_path(event_id: @event.slug) %>
+          <%= link_to 'Promotions & perks', event_promotions_path(event_id: @event.slug) unless @event.is_spend_only %>
+          <%= link_to 'Documents', event_documents_path(event_id: @event.slug) %>
+          <%= link_to 'Settings', edit_event_path(@event) %>
+        </div>
+      </action>
     </div>
-    </action>
-  </div>
-</nav>
+  </nav>
+  <%= render 'events/public_message' %>
+<% end %>
 
-<main class="container <%= content_for :container_class %>">
+<% content_for(:container) do %>
+<% end %>

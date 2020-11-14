@@ -1,5 +1,5 @@
 <tr
-  class="transaction--<%= stripe_authorization.amount.negative? ? 'positive' : 'negative' %><%= ' muted' if stripe_authorization.pending? %>"
+  class="transaction--<%= stripe_authorization.amount.negative? ? 'positive' : 'negative' %><%= ' muted' unless (stripe_authorization.status_text == 'Approved') %>"
   data-behavior="filterbar_row"
   data-filter="<%= stripe_authorization.filter_data.to_json %>">
   <% if defined? authorless %>
@@ -23,16 +23,18 @@
   </td>
   <td class="transaction__memo">
     <span>
-    <% if stripe_authorization.pending? %>
-      <i><%= stripe_authorization.name %> (pending)</i>
+    <% if stripe_authorization.status_text == 'Approved' %>
+      <%= stripe_authorization.name.humanize %>
     <% else %>
-      <%= stripe_authorization.name %>
+      <i><%= stripe_authorization.name.humanize %> (<%= stripe_authorization.status_text%>)</i>
     <% end %>
     </span>
-    <%= list_badge_for stripe_authorization.receipts.size, 'receipt', 'payment-docs', required: true %>
+    <%= list_badge_for stripe_authorization.receipts.size, 'receipt', 'payment-docs', required: stripe_authorization.awaiting_receipt? %>
   </td>
   <td class="nowrap">
-    <%= render_money -stripe_authorization.amount %>
+    <span class="<%= 'strikethrough' unless stripe_authorization.approved?%>">
+      <%= render_money -stripe_authorization.amount %>
+    </span>
   </td>
   <% if organizer_signed_in? || !@event %>
     <td>

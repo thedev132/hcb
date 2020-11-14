@@ -1,5 +1,6 @@
 class EmburseTransfer < ApplicationRecord
   include Rejectable
+  include Commentable
 
   before_save :normalize_blank_values
 
@@ -13,8 +14,6 @@ class EmburseTransfer < ApplicationRecord
   belongs_to :fulfilled_by, class_name: 'User', required: false
   belongs_to :creator, class_name: 'User'
   has_one :t_transaction, class_name: 'Transaction'
-
-  has_many :comments, as: :commentable
 
   validate :status_accepted_canceled_or_rejected
   validates :load_amount, numericality: { greater_than_or_equal_to: 1 }

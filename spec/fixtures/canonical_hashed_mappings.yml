@@ -1,0 +1,4 @@
+canonical_hashed_mapping1:
+  canonical_transaction: canonical_transaction1
+  hashed_transaction: hashed_transaction1
+  created_at: <%= Time.now %>

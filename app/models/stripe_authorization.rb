@@ -1,17 +1,23 @@
 class StripeAuthorization < ApplicationRecord
   include Receiptable
+  include Commentable
 
   before_validation :sync_from_stripe! # pull details from stripe if we're creating it for the first time
   after_create :notify_of_creation
 
-  scope :awaiting_receipt, -> { includes(:receipts).where.not(amount: 0).where(approved: true, receipts: { receiptable_id: nil}) }
+  default_scope { order(created_at: :desc) }
+  scope :awaiting_receipt, -> { missing_receipt.where.not(amount: 0).where(approved: true) }
+  scope :unified_list, -> { approved.where.not(stripe_status: :reversed) }
   scope :approved, -> { where(approved: true) }
-  scope :pending, -> { where(stripe_status: :pending) }
-  scope :declined, -> { where(stripe_status: :declined) }
-  scope :successful, -> { where(stripe_status: :closed, approved: true) }
+  scope :declined, -> { where(approved: false) }
+  scope :successful, -> { approved.closed }
 
   def awaiting_receipt?
-    !amount.zero? && approved && receipts.size.zero?
+    !amount.zero? && approved && missing_receipt?
+  end
+
+  def declined?
+    approved == false
   end
   
   has_paper_trail
@@ -21,7 +27,6 @@ class StripeAuthorization < ApplicationRecord
   has_one :stripe_cardholder, through: :stripe_card, as: :cardholder
   alias_attribute :cardholder, :stripe_cardholder
   has_one :event, through: :stripe_card
-  has_many :comments, as: :commentable
 
   enum stripe_status: { pending: 0, closed: 1, reversed: 2 }
   enum authorization_method: { keyed_in: 0, swipe: 1, chip: 2, contactless: 3, online: 4 }
@@ -52,7 +57,7 @@ class StripeAuthorization < ApplicationRecord
   def status_text
     return 'Declined' unless approved?
     return 'Pending' if pending?
-    return 'Reversed' if reversed?
+    return 'Refunded' if reversed?
     return 'Approved' if approved?
 
     '–'
@@ -65,6 +70,10 @@ class StripeAuthorization < ApplicationRecord
     return :success if approved?
 
     :accent
+  end
+
+  def authorization_method_text
+    (stripe_obj[:wallet] || authorization_method).humanize
   end
 
   def merchant_name
@@ -86,6 +95,17 @@ class StripeAuthorization < ApplicationRecord
 
     stripe_card_id = stripe_obj[:card][:id]
     self.stripe_card = StripeCard.find_by(stripe_id: stripe_card_id)
+
+    # (max@maxwofford.com) https://github.com/hackclub/bank/issues/1031
+    # This is a chaotic way of solving #1031 (tl;dr, stripe doesn't
+    # consistently tell us if a tx was refunded). We're going to deviate from
+    # the status stripe is telling us and mark it as 'refunded' if all the
+    # authorization's transactions sum to 0.
+    if (stripe_obj[:status] == 'closed' && stripe_obj[:transactions].size > 1)
+      net_amount = stripe_obj[:transactions].pluck(:amount).sum
+      self.amount = net_amount
+      self.stripe_status = 'reversed' if net_amount.zero?
+    end
   end
 
   def stripe_obj

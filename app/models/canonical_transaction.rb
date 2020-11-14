@@ -1,7 +1,7 @@
 class CanonicalTransaction < ApplicationRecord
   scope :likely_github, -> { where("memo ilike '%github grant%'") }
 
-  scope :awaiting_match, -> { includes(:canonical_event_mapping).where(canonical_event_mappings: {canonical_transaction_id: nil}) }
+  scope :unmapped, -> { includes(:canonical_event_mapping).where(canonical_event_mappings: {canonical_transaction_id: nil}) }
 
   monetize :amount_cents
 

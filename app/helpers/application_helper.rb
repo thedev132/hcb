@@ -145,7 +145,7 @@ module ApplicationHelper
   end
 
   def help_message
-    content_tag :span, "Contact the Bank team at #{mail_to 'bank@hackclub.com'} or +1-360-502-2935.".html_safe
+    content_tag :span, "Contact the Bank team at #{mail_to 'bank@hackclub.com'} or #{link_to '+1-360-502-2935', 'tel:+1-360-502-2935'}.".html_safe
   end
 
   def format_date(date)

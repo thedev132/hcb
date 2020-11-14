@@ -1,42 +1,36 @@
 <% title @event.name.html_safe %>
-<% content_for(:page_class) { 'bg-snow pt2' } %>
-<% @home_size = 72 %>
 <% include_modals %>
 
-<h1 class="heading flex-row center justify-center items-center mt2">
+<%= render 'nav' %>
+
+<h1 class="flex items-center">
+  Dashboard
   <% if admin_signed_in? %>
-    <span class="badge bg-primary ml0 mr2">
+    <span class="badge bg-muted">
       #<%= @event.id %>
     </span>
   <% end %>
-  <span class="line-height-1" style="font-size: 3rem;">
-    <%= @event.name %>
-  </span>
-  <% if organizer_signed_in? %>
-    <%= pop_icon_to 'settings', edit_event_path(@event), class: 'info ml2 mr2' %>
-  <% end %>
 </h1>
 
-<div class="flex flex-wrap items-center justify-center mb2 md-mb3">
+<div class="flex flex-wrap items-center mb1 md-mb2">
   <% if @organizers.any? %>
     <%= pop_icon_to 'email',
       "mailto:#{@organizers.map(&:user).map(&:email).join(',')}",
-      class: 'info mr2' if admin_signed_in? %>
+      class: 'info mb1 mr2' if admin_signed_in? %>
     <% @organizers.each do |position| %>
-      <div class="avatar-grow tooltipped tooltipped--s mr1" aria-label="<%= position.user.full_name %>">
-        <%= avatar_for position.user, 48 %>
+      <div class="avatar-grow line-height-0 tooltipped tooltipped--s mb1 mr1" aria-label="<%= position.user.full_name %>">
+        <%= avatar_for position.user, 36 %>
       </div>
     <% end %>
-    <%= pop_icon_to 'member-add', event_team_path(@event) %>
+    <%= pop_icon_to 'member-add', event_team_path(@event), class: 'mb1' %>
   <% else %>
     <p class="slate bold h3 mr2">No organizers invited yet</p>
     <%= pop_icon_to 'member-add', event_team_path(@event) %>
   <% end %>
 </div>
-<%= render 'nav', hide_name: true %>
 
 <% if organizer_signed_in? %>
-  <p class="muted center mt2">
+  <p class="muted mt2">
     <strong>We’re standing by to help.</strong> <%= help_message %>
   </p>
 <% end %>

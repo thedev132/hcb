@@ -1,5 +1,6 @@
 class Transaction < ApplicationRecord
   include Receiptable
+  include Commentable
   extend FriendlyId
 
   paginates_per 250
@@ -35,8 +36,6 @@ class Transaction < ApplicationRecord
   belongs_to :disbursement, inverse_of: :t_transactions, required: false
 
   belongs_to :donation_payout, inverse_of: :t_transaction, required: false
-
-  has_many :comments, as: :commentable
 
   accepts_nested_attributes_for :fee_relationship
 

@@ -56,6 +56,12 @@
     }
   }
 
+  @media (min-width: 32em) and (max-width: 64em) {
+    top: auto;
+    right: 0;
+    bottom: 0;
+  }
+
   @media screen and (max-width: 32em) {
     padding: 1rem 0.5rem 3rem;
     border-radius: 0.75rem 0.75rem 0 0;

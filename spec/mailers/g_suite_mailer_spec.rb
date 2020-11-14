@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe GSuiteMailer, type: :mailer do
-  fixtures  'g_suites'
+  fixtures  'events', 'users', 'g_suites'
   
   let(:g_suite) { g_suites(:g_suite1) }
   let(:g_suite_id) { g_suite.id }

@@ -4,6 +4,8 @@ Bank is a tool for hackers to hack on the real world, like GitHub, but for build
 
 ![Hack Club Bank](hack_club_bank_laser.gif)
 
+![Zeitwerk Check](https://github.com/hackclub/bank/workflows/Zeitwerk%20Check/badge.svg?branch=main)
+
 ## Getting Started
 
 1. Install Docker.
@@ -25,6 +27,21 @@ Bank is a tool for hackers to hack on the real world, like GitHub, but for build
 6. Open [localhost:3000](http://localhost:3000)
 
 Alternatively, you can run `docker-compose run --service-ports web /bin/bash` to open a shell into the container with the right ports bound, and then manually start the Rails app, or just run `docker-compose run web bundle exec rails s -b 0.0.0.0` to start the rails server directly from Docker.
+
+## Heroku tasks
+
+We currently have the following buildpacks:
+
+```
+❯ heroku buildpacks
+=== bank-hackclub Buildpack URLs
+1. https://github.com/heroku/heroku-buildpack-apt
+2. https://github.com/evantahler/heroku-buildpack-notify-slack-deploy.git
+3. heroku/nodejs
+4. heroku/ruby
+```
+
+The apt buildpack works in conjunction with the local Aptfile in order to install poppler-utils. Poppler-utils helps generate preview thumbnails of documents.
 
 ## Admin tasks
 

@@ -36,6 +36,12 @@
   transition: color 0.125s ease-in-out, background-image 0.125s ease-in-out,
     box-shadow 0.125s ease-in-out, transform 0.125s ease-in-out;
 
+  &:focus {
+    color: map-get($palette, info);
+  }
+}
+
+.filterbar__item {
   &:before {
     content: '';
     position: absolute;
@@ -44,14 +50,11 @@
     right: 0;
     bottom: 0;
     z-index: -1;
+    pointer-events: none;
     @include gradient(primary);
     border-radius: 1rem;
     transform: scale(0);
     transition: transform 250ms ease-in-out;
-  }
-
-  &:focus {
-    color: map-get($palette, info);
   }
 
   &:active,

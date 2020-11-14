@@ -87,6 +87,10 @@ class AdminController < ApplicationController
   def transaction_dedupe
     @groups = TransactionEngine::HashedTransactionService::GroupedDuplicates.new.run
   end
+  
+  def audit
+    @topups = StripeService::Topup.list[:data]
+  end
 
   private
 

@@ -12,12 +12,14 @@
   <td>
     🎉 Hack Club Bank Gift 🎉
   </td>
-  <td>
+  <td class="right-align">
     <%= render_money transaction.amount %>
   </td>
-  <td>
-    <%= link_to 'Details', transaction, data: { behavior: 'modal_trigger', modal: 'retrofees' } if organizer_signed_in? %>
-  </td>
+  <% if organizer_signed_in? %>
+    <td>
+      <%= link_to 'Details', transaction, data: { behavior: 'modal_trigger', modal: 'retrofees' } %>
+    </td>
+  <% end %>
 </tr>
 <section class="modal" data-behavior="modal" role="dialog" id="retrofees">
   <%= modal_header 'Surprise! Free money.' %>

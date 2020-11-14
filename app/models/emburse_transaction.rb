@@ -1,5 +1,6 @@
 class EmburseTransaction < ApplicationRecord
   include Receiptable
+  include Commentable
 
   enum state: %w{pending completed declined}
 
@@ -10,19 +11,17 @@ class EmburseTransaction < ApplicationRecord
 
   scope :undeclined, -> { where.not(state: 'declined') }
   scope :under_review, -> { where(event_id: nil).undeclined }
-  scope :awaiting_receipt, -> { includes(:receipts).completed.where.not(amount: 0).where(receipts: { receiptable_id: nil}) }
+  scope :awaiting_receipt, -> { missing_receipt.completed.where.not(amount: 0) }
   scope :unified_list, -> { undeclined }
 
   belongs_to :event, required: false
   belongs_to :emburse_card, required: false
   alias_attribute :card, :emburse_card
 
-  has_many :comments, as: :commentable
-
   validates_uniqueness_of_without_deleted :emburse_id
 
   def awaiting_receipt?
-    !amount.zero? && approved && receipts.size.zero?
+    !amount.zero? && approved && missing_receipt?
   end
 
   def self.during(start_time, end_time)

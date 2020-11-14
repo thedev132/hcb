@@ -30,7 +30,7 @@
       </span>
     </h2>
 
-    <section class="details">
+    <section class="details pt2">
       <p>
         <strong>Amount <%= @emburse_transaction.amount > 0 ? 'credited' : 'spent' %></strong>
         <%= render_money @emburse_transaction.amount.abs %>
@@ -54,29 +54,36 @@
     </section>
   </section>
   <% unless @emburse_transaction.is_transfer? %>
-    <% if @emburse_transaction.receipts.any? %>
-      <p class="card__banner bg-success white bold flex items-center mt0 mb0">
+    <% if @emburse_transaction.no_or_lost_receipt? %>
+      <p class="card__banner card__banner--bottom bg-muted white bold flex items-center">
+        <%= inline_icon 'view-close', size: 24, class: 'mr2' %>
+        Marked no/lost receipt
+      </p>
+    <% elsif @emburse_transaction.missing_receipt? %>
+      <p class="card__banner card__banner--bottom bg-pending slate bold flex items-center">
+        <%= inline_icon 'important', size: 24, class: 'mr2' %>
+        This transaction is missing a receipt
+      </p>
+    <% else %>
+      <p class="card__banner card__banner--bottom bg-success white bold flex items-center">
         <%= inline_icon 'checkmark', size: 24, class: 'mr2' %>
         <%= pluralize @emburse_transaction.receipts.count, 'receipt' %>
         added
-      </p>
-    <% else %>
-      <p class="card__banner bg-pending slate bold flex items-center mt0 mb0">
-        <%= inline_icon 'important', size: 24, class: 'mr2' %>
-        This transaction is missing a receipt
       </p>
     <% end %>
   <% end %>
 </article>
 
-<% if @emburse_transaction.receipts.any? && organizer_signed_in? %>
-  <h2>Receipts</h2>
-  <section class="grid grid--split mt2 mb3">
-    <%= render @emburse_transaction.receipts %>
+<% if organizer_signed_in? %>
+  <% if @emburse_transaction.receipts.any? %>
+    <h2>Receipts</h2>
+    <section class="grid grid--split mt2 mb3">
+      <%= render @emburse_transaction.receipts %>
+      <%= render 'receipts/upload', receiptable: @emburse_transaction %>
+    </section>
+  <% else %>
     <%= render 'receipts/upload', receiptable: @emburse_transaction %>
-  </section>
-<% else %>
-  <%= render 'receipts/upload', receiptable: @emburse_transaction %>
+  <% end %>
 <% end %>
 
 <%= render 'comments/comments' %>

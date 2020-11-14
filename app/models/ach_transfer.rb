@@ -1,8 +1,8 @@
 class AchTransfer < ApplicationRecord
+  include Commentable
+
   belongs_to :creator, class_name: 'User'
   belongs_to :event
-
-  has_many :comments, as: :commentable
 
   validates_length_of :routing_number, is: 9
 

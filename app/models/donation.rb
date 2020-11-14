@@ -1,9 +1,8 @@
 class Donation < ApplicationRecord
+  include Commentable
   belongs_to :event
   belongs_to :fee_reimbursement, required: false
   belongs_to :payout, class_name: 'DonationPayout', required: false
-
-  has_many :comments, as: :commentable
 
   before_create :create_stripe_payment_intent
   before_create :assign_unique_hash

@@ -31,6 +31,8 @@ Rails.application.routes.draw do
   post 'receipts/upload', to: 'receipts#upload'
   delete 'receipts/destroy', to: 'receipts#destroy'
 
+  post 'receiptable/:receiptable_type/:receiptable_id/mark_no_or_lost', to: 'receiptables#mark_no_or_lost', as: :receiptable_mark_no_or_lost
+
   resources :users, only: [:edit, :update] do
     collection do
       get 'impersonate', to: 'users#impersonate'
@@ -167,6 +169,12 @@ Rails.application.routes.draw do
 
   get 'branding', to: 'static_pages#branding'
   get 'faq', to: 'static_pages#faq'
+  
+  get 'pending_fees', to: 'admin#pending_fees'
+  get 'export_pending_fees', to: 'admin#export_pending_fees'
+  get 'pending_disbursements', to: 'admin#pending_disbursements'
+  get 'export_pending_disbursements', to: 'admin#export_pending_disbursements'
+  get 'audit', to: 'admin#audit'
 
   resources :emburse_card_requests, path: 'emburse_card_requests', except: [:new, :create] do
     collection do

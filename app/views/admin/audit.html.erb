@@ -1,0 +1,10 @@
+<% title 'Audit' %>
+
+<h1>Audit</h1>
+<ul class="list list--unlinked">
+<% @topups.each do |topup| %>
+  <li>
+    <%= render_money topup[:amount] %> – <%= topup[:status] %>
+  </li>
+<% end %>
+</ul>

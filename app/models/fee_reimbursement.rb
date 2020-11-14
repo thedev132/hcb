@@ -1,8 +1,9 @@
 class FeeReimbursement < ApplicationRecord
+  include Commentable
+
   has_one :invoice, required: false
   has_one :donation, required: false
   has_one :t_transaction, class_name: 'Transaction', inverse_of: :fee_reimbursement
-  has_many :comments, as: :commentable
 
   before_create :default_values
 

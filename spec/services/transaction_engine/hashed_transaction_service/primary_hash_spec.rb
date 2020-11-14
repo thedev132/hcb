@@ -99,13 +99,13 @@ RSpec.describe TransactionEngine::HashedTransactionService::PrimaryHash do
     end
   end
 
-  context 'when memo is empty' do
+  context 'when memo is nil' do
     let(:memo) { ' ' }
 
-    it 'raises an error' do
+    it 'does not raise an error' do
       expect do
         service.run
-      end.to raise_error(ArgumentError)
+      end.not_to raise_error
     end
   end
 end
