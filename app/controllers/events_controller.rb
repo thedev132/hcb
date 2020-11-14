@@ -47,7 +47,7 @@ class EventsController < ApplicationController
 
     if params[:v2]
       # some sort of super transaction here that gets data from canonical transactions
-      @transactions = TransactionEngine::Transaction::All.new(event_id: @event.id)
+      @transactions = paginate(TransactionEngine::Transaction::All.new(event_id: @event.id).run, per_page: 100)
     else
 
       @transactions = paginate((

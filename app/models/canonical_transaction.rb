@@ -9,4 +9,18 @@ class CanonicalTransaction < ApplicationRecord
   has_many :hashed_transactions, through: :canonical_hashed_mappings
   has_one :canonical_event_mapping
   has_one :event, through: :canonical_event_mapping
+
+
+  # DEPRECATED
+  def display_name
+    memo
+  end
+
+  def filter_data
+    {} # TODO
+  end
+
+  def comments
+    [] # TODO
+  end
 end

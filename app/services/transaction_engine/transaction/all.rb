@@ -5,28 +5,8 @@ module TransactionEngine
         @event_id = event_id
       end
 
-      def each(&block)
-        each_transactions.each(&block)
-      end
-
-      def any?
-        canonical_transactions.present?
-      end
-
-      def to_a
-        each_transactions.to_a
-      end
-
-      def total_pages
-        1
-      end
-
-      def current_page
-        1
-      end
-
-      def limit_value
-        1
+      def run
+        canonical_transactions
       end
 
       private
@@ -44,7 +24,7 @@ module TransactionEngine
       end
 
       def canonical_transactions
-        @canonical_transactions ||= CanonicalTransaction.where(id: canonical_event_mappings.pluck(:canonical_transaction_id))
+        @canonical_transactions ||= CanonicalTransaction.where(id: canonical_event_mappings.pluck(:canonical_transaction_id)).order('date desc')
       end
     end
   end
