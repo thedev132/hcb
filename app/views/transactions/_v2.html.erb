@@ -1,0 +1,26 @@
+<tr
+  class="transaction--<%= transaction.amount.negative? ? 'negative' : 'positive' %>"
+  data-behavior="filterbar_row"
+  data-filter="<%= transaction.filter_data.to_json %>">
+  <td class="transaction__icon tooltipped tooltipped--e" aria-label="Bank account transaction">
+    <%= inline_icon 'bank-account' %>
+  </td>
+  <td>
+    <%= transaction.date %>
+  </td>
+  <td class="transaction__memo">
+    <span>
+      <%= transaction.display_name %>
+    </span>
+    <%= list_badge_for transaction.comments.size, 'note', 'post', optional: true %>
+  </td>
+  <td class="nowrap">
+    <%= transaction.amount %>
+  </td>
+  <% if organizer_signed_in? %>
+  <td>
+    <%= link_to 'Details', '#implement' %>
+  </td>
+  <% end %>
+</tr>
+  

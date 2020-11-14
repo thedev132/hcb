@@ -45,11 +45,17 @@ class EventsController < ApplicationController
     authorize @event
     @organizers = @event.organizer_positions.includes(:user)
 
-    @transactions = paginate((
-      @event.transactions.unified_list.includes(:fee_relationship, :comments) +
-      @event.stripe_authorizations.unified_list.includes(:receipts, stripe_card: :user) +
-      @event.emburse_transactions.unified_list.includes(:comments))
-      .sort_by(&:created_at).reverse, per_page: 100)
+    if params[:v2]
+      # some sort of super transaction here that gets data from canonical transactions
+      @transactions = TransactionEngine::Transaction::All.new(event_id: @event.id)
+    else
+
+      @transactions = paginate((
+        @event.transactions.unified_list.includes(:fee_relationship, :comments) +
+        @event.stripe_authorizations.unified_list.includes(:receipts, stripe_card: :user) +
+        @event.emburse_transactions.unified_list.includes(:comments))
+        .sort_by(&:created_at).reverse, per_page: 100)
+    end
   end
 
   # async frame for incoming money
