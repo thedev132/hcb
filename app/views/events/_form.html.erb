@@ -100,7 +100,7 @@
         event_toggle_hidden_path(event),
         method: :put,
         'data-confirm': "Do you really want to #{event.hidden? ? 'un-hide' : 'hide'} #{event.name}?",
-        class: "btn bg-success"
+        class: "btn bg-success" if event.persisted?
     %>
   <% end %>
 
