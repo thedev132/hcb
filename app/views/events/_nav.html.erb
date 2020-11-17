@@ -35,6 +35,9 @@
       'Set up domain Gmail',
       'google',
        event_g_suite_overview_path(event_id: @event.slug), :lg %>
+    <%= dock_item 'Settings',
+      'Edit project settings.',
+      edit_event_path(@event) %>
     <div class="dock__overflow">
       <action type="button" class="pop primary menu__toggle" data-behavior="menu_toggle" aria-expanded="false" tabindex="0">
         <%= inline_icon 'more' %>
