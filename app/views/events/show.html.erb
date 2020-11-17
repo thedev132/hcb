@@ -4,7 +4,7 @@
 <%= render 'nav' %>
 
 <h1 class="flex items-center">
-  Dashboard
+  Financials
   <% if admin_signed_in? %>
     <span class="badge bg-muted">
       #<%= @event.id %>
@@ -35,9 +35,6 @@
   </p>
 <% end %>
 
-<h2 class="mb2">
-  Financials
-</h2>
 <div class="statset">
   <div class="stat statset__wide">
     <span class="stat__label">Account balance</span>
