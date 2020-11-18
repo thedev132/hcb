@@ -70,7 +70,7 @@ module SessionsHelper
   end
 
   def sign_out
-    current_user(false).update_attribute(:session_token, User.digest(User.new_session_token))
+    current_user(false).update_attribute(:session_token, User.digest(User.new_session_token)) if current_user(false)
     cookies.delete(:session_token)
     self.current_user = nil
   end
