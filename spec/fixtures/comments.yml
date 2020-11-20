@@ -1,0 +1,4 @@
+comment1:
+  user: user1
+  content: "comment 1"
+  created_at: <%= Time.now %>
