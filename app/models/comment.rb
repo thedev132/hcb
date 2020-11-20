@@ -4,8 +4,9 @@ class Comment < ApplicationRecord
 
   has_one_attached :file
 
-  validates_presence_of :content, :user
-
+  validates :user, presence: true
+  validates :content, presence: true, unless: :file_is_attached?
+  
   validate :commentable_includes_concern
 
   private
@@ -14,5 +15,9 @@ class Comment < ApplicationRecord
     unless commentable.class.included_modules.include?(Commentable)
       errors.add(:commentable_type, "is not commentable")
     end
+  end
+
+  def file_is_attached?
+    file.attached?
   end
 end
