@@ -1,0 +1,2 @@
+class RawStripeTransaction < ApplicationRecord
+end

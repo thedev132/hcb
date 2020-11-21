@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_23_175427) do
+ActiveRecord::Schema.define(version: 2020_11_21_165949) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -487,9 +487,11 @@ ActiveRecord::Schema.define(version: 2020_10_23_175427) do
     t.text "primary_hash_input"
     t.bigint "duplicate_of_hashed_transaction_id"
     t.bigint "raw_csv_transaction_id"
+    t.bigint "raw_stripe_transaction_id"
     t.index ["duplicate_of_hashed_transaction_id"], name: "index_hashed_transactions_on_duplicate_of_hashed_transaction_id"
     t.index ["raw_csv_transaction_id"], name: "index_hashed_transactions_on_raw_csv_transaction_id"
     t.index ["raw_plaid_transaction_id"], name: "index_hashed_transactions_on_raw_plaid_transaction_id"
+    t.index ["raw_stripe_transaction_id"], name: "index_hashed_transactions_on_raw_stripe_transaction_id"
   end
 
   create_table "invoice_payouts", force: :cascade do |t|
@@ -687,6 +689,15 @@ ActiveRecord::Schema.define(version: 2020_10_23_175427) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.boolean "pending", default: false
+  end
+
+  create_table "raw_stripe_transactions", force: :cascade do |t|
+    t.text "stripe_transaction_id"
+    t.jsonb "stripe_transaction"
+    t.integer "amount_cents"
+    t.date "date_posted"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "receipts", force: :cascade do |t|

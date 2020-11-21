@@ -10,6 +10,7 @@ module TransactionEngine
       RawCsvTransaction.delete_all
       RawPlaidTransaction.delete_all
       RawEmburseTransaction.delete_all
+      RawStripeTransaction.delete_all
 
       true
     end

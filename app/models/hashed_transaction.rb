@@ -1,6 +1,8 @@
 class HashedTransaction < ApplicationRecord
+  belongs_to :raw_csv_transaction, optional: true
   belongs_to :raw_plaid_transaction, optional: true
   belongs_to :raw_emburse_transaction, optional: true
+  belongs_to :raw_stripe_transaction, optional: true
 
   has_one :canonical_hashed_mapping
   has_one :canonical_transaction, through: :canonical_hashed_mapping
