@@ -53,7 +53,7 @@ class SyncEmburseTransactionsJob < ApplicationJob
         department_id = trn.dig(:department, :id)
         department_id = emburse_card.department_id if department_id.nil? and emburse_card
 
-        amount = trn[:amount] * 100
+        amount = (BigDecimal.new("#{trn[:amount]}") * 100).round
 
         et.update!(
           amount: amount,
