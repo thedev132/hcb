@@ -46,7 +46,7 @@ module TransactionEngine
     end
 
     def import_raw_stripe_transactions!
-      # IMPLEMENT
+      ::TransactionEngine::RawStripeTransactionService::Stripe::Import.new.run
     end
 
     def hash_raw_plaid_transactions!
