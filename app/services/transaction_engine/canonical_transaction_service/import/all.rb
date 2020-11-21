@@ -5,6 +5,7 @@ module TransactionEngine
         def run
           ::TransactionEngine::CanonicalTransactionService::Import::Simple.new.run
           ::TransactionEngine::CanonicalTransactionService::Import::PlaidThatLookLikeDuplicates.new.run
+          ::TransactionEngine::CanonicalTransactionService::Import::EmburseThatLookLikeDuplicates.new.run
         end
       end
     end
