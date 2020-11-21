@@ -18,7 +18,7 @@ module TransactionEngine
 
               pt.plaid_transaction = plaid_transaction
 
-              pt.amount = plaid_transaction['amount']
+              pt.amount = -plaid_transaction['amount'] # IMPORTANT: deprecated transaction engine used negatives so new must also (for Plaid only)
               pt.date_posted = plaid_transaction['date']
               pt.pending = plaid_transaction['pending']
             end.save!
