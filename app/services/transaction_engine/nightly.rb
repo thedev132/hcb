@@ -6,6 +6,7 @@ module TransactionEngine
     def run
       # 1 raw imports
       import_raw_plaid_transactions!
+      import_other_raw_plaid_transactions!
       import_raw_emburse_transactions!
       import_raw_stripe_transactions!
 
@@ -27,6 +28,11 @@ module TransactionEngine
 
         ::TransactionEngine::RawPlaidTransactionService::Plaid::Import.new(bank_account_id: bank_account_id, start_date: start_date).run
       end
+    end
+
+    def import_other_raw_plaid_transactions!
+      ::TransactionEngine::RawPlaidTransactionService::BankAccount1::Import.new.run
+      ::TransactionEngine::RawPlaidTransactionService::BankAccount9::Import.new.run
     end
 
     def import_raw_emburse_transactions!
