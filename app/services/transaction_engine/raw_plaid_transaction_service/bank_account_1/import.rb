@@ -22,7 +22,7 @@ module TransactionEngine
         private
 
         def deprecated_transactions
-          @deprecated_transactions ||= bank_account.transactions.where('pending is false and plaid_id is not null')
+          @deprecated_transactions ||= bank_account.transactions.where('pending is false and plaid_id is not null and amount != 0')
         end
 
         def bank_account
