@@ -42,7 +42,7 @@ class StripeCardsController < ApplicationController
   end
 
   def show
-    @card = StripeCard.includes(:event).find(params[:id]) # .includes(:user)
+    @card = StripeCard.includes(:event, :user).find(params[:id])
     @event = @card.event
     
     authorize @card
