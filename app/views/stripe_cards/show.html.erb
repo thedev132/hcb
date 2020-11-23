@@ -14,10 +14,11 @@
                   method: :post,
                   class: 'btn bg-accent mt3' %>
     <% elsif @card.stripe_status == 'active' %>
-      <%= link_to 'Freeze card',
-                  stripe_card_freeze_path(@card),
+      <%= link_to stripe_card_freeze_path(@card),
                   method: :post,
-                  class: 'btn bg-accent mt3' %>
+                  class: 'btn bg-accent mt3' do %>
+        <%= inline_icon 'freeze' %> Freeze card
+      <%end%>
       <p class="muted">You can instantly defrost your card at anytime</p>
     <% end %>
   </section>
