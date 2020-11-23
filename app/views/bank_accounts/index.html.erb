@@ -2,7 +2,7 @@
 <section class="event-summary mt3 mb3">
   <div class="stat">
     <span class="stat__label">Net Balance</span>
-    <span class="stat__value"><%= render_money BankAccount.all.map(&:balance).sum, '' %></span>
+    <span class="stat__value"><%= render_money_amount BankAccount.all.map(&:balance).sum %></span>
   </div>
 </section>
 <table>

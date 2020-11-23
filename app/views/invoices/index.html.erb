@@ -38,19 +38,19 @@
   <div class="statset mt3 mb2">
     <div class="stat tooltipped tooltipped--s" aria-label="Total amount sent in invoices to sponsors">
       <span class="stat__label">Total invoiced</span>
-      <span class="stat__value"><%= render_money @stats[:total], '' %></span>
+      <span class="stat__value"><%= render_money_amount @stats[:total] %></span>
     </div>
     <div class="stat stat--small tooltipped tooltipped--s" aria-label="Paid by sponsors and already received into your account">
       <span class="stat__label">Already received</span>
-      <span class="stat__value"><%= render_money @stats[:paid], '' %></span>
+      <span class="stat__value"><%= render_money_amount @stats[:paid] %></span>
     </div>
     <div class="stat stat--small tooltipped tooltipped--s" aria-label="Paid by sponsors and on the way to your bank account">
       <span class="stat__label">On the way</span>
-      <span class="stat__value"><%= render_money @stats[:pending], '' %></span>
+      <span class="stat__value"><%= render_money_amount @stats[:pending] %></span>
     </div>
     <div class="stat stat--small tooltipped tooltipped--s" aria-label="Not yet paid by sponsors">
       <span class="stat__label">Unpaid</span>
-      <span class="stat__value"><%= render_money @stats[:total] - @stats[:paid] - @stats[:pending], '' %></span>
+      <span class="stat__value"><%= render_money_amount @stats[:total] - @stats[:paid] - @stats[:pending] %></span>
     </div>
   </div>
 
