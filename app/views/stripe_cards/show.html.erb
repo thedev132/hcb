@@ -4,6 +4,18 @@
 <article class="check--form flex align-start justify-center mt2 mb3">
   <section class="center mt0 mx-auto" style="width: 400px; max-width: 100%;">
     <%= render @card %>
+    <% if @card.stripe_status == 'inactive' %>
+      <%= link_to 'Defrost card',
+                  stripe_card_defrost_path(@card),
+                  method: :post,
+                  class: 'btn bg-accent mt3' %>
+    <% elsif @card.stripe_status == 'active' %>
+      <%= link_to 'Freeze card',
+                  stripe_card_freeze_path(@card),
+                  method: :post,
+                  class: 'btn bg-accent mt3' %>
+      <p class="muted">You can instantly defrost your card at anytime</p>
+    <% end %>
   </section>
 
   <article class="card max-width-2 mx-auto mt3">

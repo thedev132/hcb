@@ -76,6 +76,22 @@ class StripeCard < ApplicationRecord
     :muted
   end
 
+  def stripe_dashboard_url
+    "https://dashboard.stripe.com/issuing/cards/#{self.stripe_id}"
+  end
+
+  def freeze!
+    StripeService::Issuing::Card.update(self.stripe_id, status: :inactive)
+    sync_from_stripe!
+    save!
+  end
+
+  def defrost!
+    StripeService::Issuing::Card.update(self.stripe_id, status: :active)
+    sync_from_stripe!
+    save!
+  end
+
   def deactivated?
     stripe_status != 'active'
   end

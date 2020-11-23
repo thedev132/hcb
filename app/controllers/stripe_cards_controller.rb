@@ -17,6 +17,30 @@ class StripeCardsController < ApplicationController
     render :shipping, layout: false
   end
 
+  def freeze
+    @card = StripeCard.find(params[:stripe_card_id])
+    authorize @card
+
+    if @card.freeze!
+      flash[:success] = 'Card frozen'
+      redirect_to @card
+    else
+      render :show
+    end
+  end
+
+  def defrost
+    @card = StripeCard.find(params[:stripe_card_id])
+    authorize @card
+
+    if @card.defrost!
+      flash[:success] = 'Card defrosted'
+      redirect_to @card
+    else
+      render :show
+    end
+  end
+
   def show
     @card = StripeCard.includes(:event).find(params[:id]) # .includes(:user)
     @event = @card.event
