@@ -1,6 +1,10 @@
 <% title "Card #{@card.last_four}" %>
 <%= render 'events/nav' %>
 
+<% admin_tools('mt3') do %>
+  <%= link_to 'View on Stripe', @card.stripe_dashboard_url, class: 'btn bg-accent' %>
+<% end %>
+
 <article class="check--form flex align-start justify-center mt2 mb3">
   <section class="center mt0 mx-auto" style="width: 400px; max-width: 100%;">
     <%= render @card %>
