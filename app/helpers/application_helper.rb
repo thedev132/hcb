@@ -10,9 +10,9 @@ module ApplicationHelper
       number_to_currency(num, unit: unit)
     else
       if num >= 1_000_000
-        number_to_currency(num / 1_000_000, precision: 1) + 'm'
+        number_to_currency(num / 1_000_000, precision: 1, unit: unit) + 'm'
       elsif num >= 1_000
-        number_to_currency(num / 1_000, precision: 1) + 'k'
+        number_to_currency(num / 1_000, precision: 1, unit: unit) + 'k'
       else
         number_to_currency(num, unit: unit)
       end
