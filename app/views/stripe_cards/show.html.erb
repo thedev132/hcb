@@ -99,13 +99,13 @@
       <div class="stat tooltipped tooltipped--s" aria-label="This is your account balance">
         <strong class="stat__label">Spending limit</strong>
         <span class="stat__value">
-          <%= render_money_amount @event.available_balance, trunc: true %>
+          <%= render_money_amount @event.available_balance %>
         </span>
       </div>
       <div class="stat stat--small">
         <strong class="stat__label">Lifetime spent</strong>
         <span class="stat__value">
-          <%= render_money_amount @card.total_spent, trunc: true %>
+          <%= render_money_amount @card.total_spent %>
         </span>
       </div>
     </section>
