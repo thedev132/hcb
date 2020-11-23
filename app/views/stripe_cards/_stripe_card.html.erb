@@ -1,6 +1,6 @@
 <%= link_to organizer_signed_in? ? stripe_card : root_path, class: 'text-decoration-none' do %>
   <%= creator_bar stripe_card, prefix: 'issued ' unless defined? headless %>
-  <div class="stripe-card <%= stripe_card.deactivated? ? 'deactivated' : '' %> <%= stripe_card.virtual? ? 'virtual' : '' %>" data-behavior="hover_tilt">
+  <div class="stripe-card <%= stripe_card.status_text %> <%= stripe_card.virtual? ? 'virtual' : '' %>" data-behavior="hover_tilt">
     <p class="stripe-card__number">
       <%= stripe_card.user == current_user ? stripe_card.formatted_card_number : stripe_card.hidden_card_number %>
     </p>

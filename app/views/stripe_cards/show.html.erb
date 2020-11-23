@@ -43,7 +43,7 @@
           <strong>Activation status</strong>
           <span class="flex items-baseline">
             <%= status_badge @card.status_badge_type %>
-            <%= @card.status_text %>
+            <%= @card.status_text.capitalize %>
           </span>
         </p>
       <% end %>

@@ -1,14 +1,41 @@
 <%= link_to organizer_signed_in? ? emburse_card : root_path, class: 'text-decoration-none' do %>
   <%= creator_bar emburse_card, prefix: 'issued ' unless defined? headless %>
-  <div class="emburse-card <%= emburse_card.is_virtual ? 'virtual' : '' %> <%= emburse_card.suspended? || emburse_card.canceled? ? 'deactivated' : '' %>" data-behavior="hover_tilt">
-    <p class="emburse-card__number">
-      <span><%= organizer_signed_in? ? emburse_card.formatted_card_number : emburse_card.hidden_card_number %></span>
-    </p>
-    <p class="emburse-card__name flex justify-between items-end">
-      <%= emburse_card.full_name %>
-      <span class="ml2 badge h6" style="background-color: rgba(255,255,255,0.125);">
-        <%= emburse_card.status_text %>
-      </span>
-    </p>
-  </div>
+  <% if emburse_card.canceled? %>
+    <div class="canceled-card-wrapper">
+    <div class="emburse-card <%= emburse_card.is_virtual ? 'virtual' : '' %>  deactivated canceled-right" data-behavior="hover_tilt">
+      <p class="emburse-card__number">
+        <span><%= organizer_signed_in? ? emburse_card.formatted_card_number : emburse_card.hidden_card_number %></span>
+      </p>
+      <p class="emburse-card__name flex justify-between items-end">
+        <%= emburse_card.full_name %>
+        <span class="ml2 badge h6" style="background-color: rgba(255,255,255,0.125);">
+          <%= emburse_card.status_text %>
+        </span>
+      </p>
+    </div>
+    <div class="emburse-card <%= emburse_card.is_virtual ? 'virtual' : '' %> deactivated canceled-left" data-behavior="hover_tilt">
+      <p class="emburse-card__number">
+        <span><%= organizer_signed_in? ? emburse_card.formatted_card_number : emburse_card.hidden_card_number %></span>
+      </p>
+      <p class="emburse-card__name flex justify-between items-end">
+        <%= emburse_card.full_name %>
+        <span class="ml2 badge h6" style="background-color: rgba(255,255,255,0.125);">
+          <%= emburse_card.status_text %>
+        </span>
+      </p>
+    </div>
+    </div>
+  <% else %>
+    <div class="emburse-card <%= emburse_card.is_virtual ? 'virtual' : '' %> <%= emburse_card.suspended? || emburse_card.canceled? ? 'deactivated' : '' %>" data-behavior="hover_tilt">
+      <p class="emburse-card__number">
+        <span><%= organizer_signed_in? ? emburse_card.formatted_card_number : emburse_card.hidden_card_number %></span>
+      </p>
+      <p class="emburse-card__name flex justify-between items-end">
+        <%= emburse_card.full_name %>
+        <span class="ml2 badge h6" style="background-color: rgba(255,255,255,0.125);">
+          <%= emburse_card.status_text %>
+        </span>
+      </p>
+    </div>
+  <% end %>
 <% end %>
