@@ -52,6 +52,9 @@ class StripeController < ApplicationController
     sa.sync_from_stripe!
     sa.save
   end
+  # This is to listen for declined authorizations before the 'issuing_authorization.request' hook.
+  # ex. An authorization for an inactive card
+  alias_method :handle_issuing_authorization_created, :handle_issuing_authorization_updated
 
   def handle_issuing_transaction_created(event)
     tx = event[:data][:object]
