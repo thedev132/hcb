@@ -6,6 +6,6 @@
         <% else%>
           <td></td>
         <% end %>
-        <td class="muted"><%= '+' if change > 0%><%= render_money change, '' %></td>
+        <td class="muted"><%= '+' if change > 0%><%= render_money_amount change %></td>
         <td class="pl3"><%= render_money balance %></td>
       </tr>

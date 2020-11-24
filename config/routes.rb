@@ -101,7 +101,10 @@ Rails.application.routes.draw do
     resources :comments
   end
   resources :stripe_cardholders, only: [:new, :create, :update]
-  resources :stripe_cards, only: %i[create index show]
+  resources :stripe_cards, only: %i[create index show] do
+    post 'freeze'
+    post 'defrost'
+  end
   resources :emburse_cards, except: %i[new create]
 
   resources :checks, only: [:show, :index, :edit, :update] do

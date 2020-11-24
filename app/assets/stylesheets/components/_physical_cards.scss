@@ -1,3 +1,9 @@
+.canceled-card-wrapper {
+  margin: 0 auto;
+  height: #{8 * 1.75}rem;
+  position: relative;
+}
+
 .stripe-card,
 .emburse-card {
   margin: 0 auto;
@@ -25,6 +31,26 @@
   &.deactivated {
     -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
     filter: grayscale(100%);
+  }
+
+  &.canceled-left {
+    @supports(clip-path: polygon(0 0, 20% 0, 80% 100%, 0% 100%)) {
+      position: absolute;
+      left: 0;
+      right: 0;
+      clip-path: polygon(0 0, 20% 0, 80% 100%, 0% 100%);
+    }
+  }
+
+  &.canceled-right {
+    display: none;
+    @supports(clip-path: polygon(20% 0, 100% 0, 100% 100%, 80% 100%)) {
+      position: absolute;
+      left: 0;
+      right: 0;
+      display: flex;
+      clip-path: polygon(20% 0, 100% 0, 100% 100%, 80% 100%);
+    }
   }
 
   &:focus,
@@ -78,6 +104,10 @@
   &:hover {
     box-shadow: 0 6px 12px 0 rgba(0, 0, 0, 0.25),
       0 18px 36px 0 rgba(0, 0, 0, 0.25);
+  }
+
+  &.frozen:before {
+    content: '❄️'
   }
 
   &:before {

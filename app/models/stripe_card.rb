@@ -3,6 +3,8 @@ class StripeCard < ApplicationRecord
   after_create :notify_user, :pay_for_issuing
 
   scope :deactivated, -> { where.not(stripe_status: 'active') }
+  scope :canceled, -> { where(stripe_status: 'canceled' )}
+  scope :frozen, -> { where(stripe_status: 'inactive' )}
   scope :active, -> { where(stripe_status: 'active') }
   scope :physical_shipping, -> { physical.includes(:user, :event).select { |c| c.stripe_obj[:shipping][:status] != 'delivered' } }
 
@@ -65,7 +67,8 @@ class StripeCard < ApplicationRecord
   end
 
   def status_text
-    stripe_status.humanize.capitalize
+    return 'frozen' if stripe_status == 'inactive'
+    stripe_status.humanize
   end
 
   def status_badge_type
@@ -76,8 +79,32 @@ class StripeCard < ApplicationRecord
     :muted
   end
 
+  def stripe_dashboard_url
+    "https://dashboard.stripe.com/issuing/cards/#{self.stripe_id}"
+  end
+
+  def freeze!
+    StripeService::Issuing::Card.update(self.stripe_id, status: :inactive)
+    sync_from_stripe!
+    save!
+  end
+
+  def defrost!
+    StripeService::Issuing::Card.update(self.stripe_id, status: :active)
+    sync_from_stripe!
+    save!
+  end
+
+  def frozen?
+    stripe_status == 'inactive'
+  end
+
   def deactivated?
     stripe_status != 'active'
+  end
+
+  def canceled?
+    stripe_status == 'canceled'
   end
 
   include ActiveModel::AttributeMethods

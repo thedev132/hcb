@@ -23,14 +23,14 @@
       Card balance
       <%= inline_icon 'info', size: 24, class: 'ml1', 'aria-label': 'Info icon' %>
       </span>
-      <span class="stat__value mr2"><%= render_money @event.emburse_balance, '' %></span>
+      <span class="stat__value mr2"><%= render_money_amount @event.emburse_balance %></span>
     </div>
     <div class="stat md-w-50 muted mb2">
       <span class="stat__label flex items-center">
         Available Bank balance
         <%= inline_icon 'info', size: 24, class: 'muted ml1', 'aria-label': 'Info icon' %>
       </span>
-      <span class="stat__value"><%= render_money @event.available_balance, '' %></span>
+      <span class="stat__value"><%= render_money_amount @event.available_balance %></span>
     </div>
   </div>
 
@@ -46,7 +46,7 @@ West Hollywood, CA 90069</pre>
       <%= link_to 'Set Emburse budget', @event.emburse_department_path, class: 'btn bg-accent mr2' %>
     <% end %>
     <span class="h5 mt1 mb1">
-      (Current: <strong>$<%= render_money @event.emburse_budget_limit, '' %></strong>)
+      (Current: <strong>$<%= render_money_amount @event.emburse_budget_limit %></strong>)
     </span>
   <% end %>
 </article>

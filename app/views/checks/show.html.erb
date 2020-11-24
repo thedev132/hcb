@@ -15,11 +15,11 @@
   <div class="check__row">
     <div class="check__field check__field--orderof" data-label="Pay to the order of"><%= @check.lob_address.name %></div>
     <div class="check__field check__field--num" data-label="$">
-      <%= render_money @check.amount, '' %>
+      <%= render_money_amount @check.amount %>
     </div>
   </div>
 
-  <div class="check__field check__field--dollars" data-label="Dollars" data-check-amount="<%= render_money @check.amount, '' %>" data-behavior="fill_check_words"></div>
+  <div class="check__field check__field--dollars" data-label="Dollars" data-check-amount="<%= render_money_amount @check.amount %>" data-behavior="fill_check_words"></div>
 
   <div class="check__row items-start">
     <div class="check__field check__field--memo" data-label="Memo"><%= organizer_signed_in? ? @check.memo : 'Sign in to view' %></div>

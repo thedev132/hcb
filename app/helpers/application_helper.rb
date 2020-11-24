@@ -1,16 +1,31 @@
 module ApplicationHelper
   include ActionView::Helpers
 
-  def render_money(amount, unit = '$')
-    number_to_currency(BigDecimal.new(amount || 0) / 100, unit: unit)
+  def render_money(amount, opts = {})
+    unit = opts[:unit] || '$'
+    trunc = opts[:trunc] || false
+
+    num = BigDecimal.new(amount || 0) / 100
+    unless trunc
+      number_to_currency(num, unit: unit)
+    else
+      if num >= 1_000_000
+        number_to_currency(num / 1_000_000, precision: 1, unit: unit) + 'm'
+      elsif num >= 1_000
+        number_to_currency(num / 1_000, precision: 1, unit: unit) + 'k'
+      else
+        number_to_currency(num, unit: unit)
+      end
+    end
   end
 
-  def render_money_short(amount, unit = '$')
-    render_money(amount, unit).remove('.00')
+  def render_money_short(amount, opts = {})
+    render_money(amount, opts).remove('.00')
   end
 
-  def render_money_amount(amount, unit = '$')
-    render_money(amount, unit).remove(unit)
+  def render_money_amount(amount, opts = {})
+    opts[:unit] = ''
+    render_money(amount, opts)
   end
 
   def render_percentage(decimal, params = {})

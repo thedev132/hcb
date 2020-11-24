@@ -1,9 +1,26 @@
 <% title "Card #{@card.last_four}" %>
 <%= render 'events/nav' %>
 
+<% admin_tools('mt3') do %>
+  <%= link_to 'View on Stripe', @card.stripe_dashboard_url, class: 'btn bg-accent' %>
+<% end %>
+
 <article class="check--form flex align-start justify-center mt2 mb3">
   <section class="center mt0 mx-auto" style="width: 400px; max-width: 100%;">
     <%= render @card %>
+    <% if @card.stripe_status == 'inactive' %>
+      <%= link_to 'Defrost card',
+                  stripe_card_defrost_path(@card),
+                  method: :post,
+                  class: 'btn bg-accent mt3' %>
+    <% elsif @card.stripe_status == 'active' %>
+      <%= link_to stripe_card_freeze_path(@card),
+                  method: :post,
+                  class: 'btn bg-accent mt3' do %>
+        <%= inline_icon 'freeze' %> Freeze card
+      <%end%>
+      <p class="muted">You can instantly defrost your card at anytime</p>
+    <% end %>
   </section>
 
   <article class="card max-width-2 mx-auto mt3">
@@ -26,7 +43,7 @@
           <strong>Activation status</strong>
           <span class="flex items-baseline">
             <%= status_badge @card.status_badge_type %>
-            <%= @card.status_text %>
+            <%= @card.status_text.capitalize %>
           </span>
         </p>
       <% end %>
@@ -80,16 +97,16 @@
     <% end %>
 
     <section class="grid grid--split items-end pt2">
-      <div class="stat">
-        <strong class="stat__label">Lifetime spent</strong>
-        <span class="stat__value">
-          <%= render_money_amount @card.total_spent %>
-        </span>
-      </div>
-      <div class="stat stat--small tooltipped tooltipped--s" aria-label="This is your account balance">
+      <div class="stat tooltipped tooltipped--s" aria-label="This is your account balance">
         <strong class="stat__label">Spending limit</strong>
         <span class="stat__value">
           <%= render_money_amount @event.available_balance %>
+        </span>
+      </div>
+      <div class="stat stat--small">
+        <strong class="stat__label">Lifetime spent</strong>
+        <span class="stat__value">
+          <%= render_money_amount @card.total_spent %>
         </span>
       </div>
     </section>
