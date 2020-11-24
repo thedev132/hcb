@@ -69,6 +69,9 @@ class Event < ApplicationRecord
 
   has_many :documents
 
+  has_many :canonical_event_mappings
+  has_many :canonical_transactions, through: :canonical_event_mappings
+
   validate :point_of_contact_is_admin
 
   validates :name, :sponsorship_fee, presence: true
@@ -140,6 +143,10 @@ class Event < ApplicationRecord
     # We're including only pending charges on emburse_cards so organizers have a conservative estimate of their balance
     pending_t = self.emburse_transactions.pending.where('amount < 0').sum(:amount)
     completed_t + pending_t
+  end
+
+  def balance_v2
+    @balance_v2 ||= canonical_transactions.sum(:amount_cents)
   end
 
   def balance
