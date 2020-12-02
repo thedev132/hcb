@@ -38,7 +38,11 @@
 <div class="statset">
   <div class="stat statset__wide">
     <span class="stat__label">Account balance</span>
+    <% if params[:v2] %>
+    <span class="stat__value"><%= @event.balance_v2 %></span>
+    <% else %>
     <span class="stat__value"><%= render_money_amount @event.balance %></span>
+    <% end %>
   </div>
   <%= async_frame_to event_dashboard_stats_path(@event), as: :div, class: 'grid grid--split', style: 'grid-column: span 2' do %>
     <action class="stat stat--small tooltipped tooltipped--s" aria-label="The amount that will be automatically deducted from your account balance">

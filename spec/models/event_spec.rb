@@ -3,12 +3,20 @@
 require "rails_helper"
 
 RSpec.describe Event, type: :model do
-  fixtures "events", "transactions", "fee_relationships"
+  fixtures "events", "transactions", "fee_relationships", "canonical_event_mappings", "canonical_transactions"
 
   let(:event) { events(:event1) }
 
   it "is valid" do
     expect(event).to be_valid
+  end
+
+  describe "#balance_v2" do
+    it "calculates a value from canonical transactions" do
+      result = event.balance_v2
+
+      expect(result).to eql(200)
+    end
   end
 
   describe "#fee_balance" do

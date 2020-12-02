@@ -1,0 +1,3 @@
+canonical_event_mapping1:
+  event: event1
+  canonical_transaction: canonical_transaction2
