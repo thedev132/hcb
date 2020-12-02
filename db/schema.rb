@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_21_165949) do
+ActiveRecord::Schema.define(version: 2020_12_02_230507) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -483,7 +483,7 @@ ActiveRecord::Schema.define(version: 2020_11_21_165949) do
     t.bigint "raw_plaid_transaction_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.integer "raw_emburse_transaction_id"
+    t.bigint "raw_emburse_transaction_id"
     t.text "primary_hash_input"
     t.bigint "duplicate_of_hashed_transaction_id"
     t.bigint "raw_csv_transaction_id"

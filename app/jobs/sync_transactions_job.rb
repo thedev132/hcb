@@ -1,12 +1,6 @@
 class SyncTransactionsJob < ApplicationJob
-  RUN_EVERY = 1.hour
-
   def perform(repeat = false)
     BankAccount.syncing.each { |bank_account| sync_account bank_account }
-
-    if repeat
-      self.class.set(wait: RUN_EVERY).perform_later(true)
-    end
   end
 
   def sync_account(bank_account)
