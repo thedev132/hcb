@@ -4,8 +4,9 @@ module EventMappingEngine
       def run
         RawPlaidTransaction.where(plaid_transaction_id: in_common_plaid_transaction_ids).find_each do |raw_plaid_transaction|
 
-          raise ArgumentError, "There was more than 1 hashed transaction for raw_plaid_transaction: #{raw_plaid_transaction.id}" if raw_plaid_transaction.hashed_transactions.length > 1
+          Airbrake.notify("There was more than 1 hashed transaction for raw_plaid_transaction: #{raw_plaid_transaction.id}") if raw_plaid_transaction.hashed_transactions.length > 1
 
+          next if raw_plaid_transaction.hashed_transactions.length > 1 # skip.
           next if raw_plaid_transaction.hashed_transactions.length < 1 # skip. these are raw transactions that haven't yet been hashed for some reason. TODO. surface these somehow elsewhere
 
           canonical_transaction_id = raw_plaid_transaction.hashed_transactions.first.canonical_transaction.id
