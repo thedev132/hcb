@@ -3,6 +3,11 @@ g_suite_mark_verifieds_job:
   class: "GSuiteJob::MarkVerifieds"
   queue: "default"
   
+pending_transaction_engine_nightly_job:
+  cron: "*/5 * * * *" # run every 5 minutes
+  class: "PendingTransactionEngineJob::Nightly"
+  queue: "default"
+ 
 transaction_engine_nightly_job:
   cron: "0 6 * * *" # run at 6am UTC each morning
   class: "TransactionEngineJob::Nightly"

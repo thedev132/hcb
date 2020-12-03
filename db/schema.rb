@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_02_230507) do
+ActiveRecord::Schema.define(version: 2020_12_03_215937) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -675,6 +675,15 @@ ActiveRecord::Schema.define(version: 2020_12_02_230507) do
     t.integer "amount_cents"
     t.date "date_posted"
     t.string "state"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "raw_pending_stripe_transactions", force: :cascade do |t|
+    t.text "stripe_transaction_id"
+    t.jsonb "stripe_transaction"
+    t.integer "amount_cents"
+    t.date "date_posted"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
