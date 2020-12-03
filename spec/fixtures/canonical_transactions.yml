@@ -3,3 +3,9 @@ canonical_transaction1:
   memo: "Raw Plaid Transaction 1 Memo"
   date: "2020-09-02"
   created_at: <%= Time.now %>
+
+canonical_transaction2:
+  amount_cents: 200
+  memo: "Raw Plaid Transaction 2 Memo"
+  date: "2020-09-03"
+  created_at: <%= Time.now %>
