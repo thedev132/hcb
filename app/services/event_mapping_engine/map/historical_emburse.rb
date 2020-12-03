@@ -12,7 +12,12 @@ module EventMappingEngine
 
           next unless canonical_transaction_id # TODO: surface why canonical transaction is not set for this hashed transaction
 
-          historical_emburse_transaction = EmburseTransaction.with_deleted.find_by(emburse_id: raw_emburse_transaction.emburse_transaction_id)
+          historical_emburse_transactions = EmburseTransaction.with_deleted.where(emburse_id: raw_emburse_transaction.emburse_transaction_id)
+          historical_emburse_transactions = historical_emburse_transactions.select { |het| het.deleted_at.nil? } if historical_emburse_transactions.length > 1
+
+          raise ArgumentError, "There was more than 1 historical non-deleted emburse transaction for raw_emburse_transaction: #{raw_emburse_transaction.id}" if historical_emburse_transactions.length > 1
+
+          historical_emburse_transaction = historical_emburse_transactions.first
 
           next unless historical_emburse_transaction # TODO: surface this data somewhere. if missing this means historical data is missing in the old transaction system
 
