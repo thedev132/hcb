@@ -1,0 +1,2 @@
+class RawPendingStripeTransaction < ApplicationRecord
+end
