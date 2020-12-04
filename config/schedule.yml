@@ -4,7 +4,7 @@ g_suite_mark_verifieds_job:
   queue: "default"
   
 pending_transaction_engine_nightly_job:
-  cron: "*/5 * * * *" # run every 5 minutes
+  cron: "*/30 * * * *" # run every 5 minutes
   class: "PendingTransactionEngineJob::Nightly"
   queue: "default"
  

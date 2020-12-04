@@ -3,22 +3,17 @@ module PendingTransactionEngine
     module Import
       class Simple
         def run
-          raw_pending_stripe_transactions_ready_for_processing.find_each do |ht|
+          raw_pending_stripe_transactions_ready_for_processing.find_each do |rpst|
 
-            #ActiveRecord::Base.transaction do
-            #  attrs = {
-            #    date: ht.date,
-            #    memo: ht.memo,
-            #    amount_cents: ht.amount_cents
-            #  }
-            #  ct = ::CanonicalTransaction.create!(attrs)
-
-            #  attrs = {
-            #    canonical_transaction_id: ct.id,
-            #    hashed_transaction_id: ht.id
-            #  }
-            #  ::CanonicalHashedMapping.create!(attrs)
-            #end
+            ActiveRecord::Base.transaction do
+              attrs = {
+                date: rpst.date,
+                memo: rpst.memo,
+                amount_cents: rpst.amount_cents,
+                raw_pending_stripe_transaction_id: rpst.id
+              }
+              ct = ::CanonicalPendingTransaction.create!(attrs)
+            end
 
           end
         end
@@ -26,20 +21,16 @@ module PendingTransactionEngine
         private
 
         def raw_pending_stripe_transactions_ready_for_processing
-          [] # TODO: implement
+          @raw_pending_stripe_transactions_ready_for_processing ||= begin
+            return RawPendingStripeTransaction.all if previously_processed_raw_pending_stripe_transactions_ids.length < 1
+
+            RawPendingStripeTransaction.where('id not in(?)', previously_processed_raw_pending_stripe_transactions_ids)
+          end
         end
 
-        #def hashed_transactions_ready_for_processing
-        #  ::HashedTransaction.where('id not in (?)', duplicate_hashed_transaction_ids + previously_processed_hashed_transaction_ids)
-        #end
-
-        #def duplicate_hashed_transaction_ids
-        #  @duplicate_hashed_transaction_ids ||= ::TransactionEngine::HashedTransactionService::Duplicates.new.run.pluck(:id)
-        #end
-
-        #def previously_processed_hashed_transaction_ids
-        #  @previously_processed_hashed_transaction_ids ||= ::CanonicalHashedMapping.pluck(:hashed_transaction_id)
-        #end
+        def previously_processed_raw_pending_stripe_transactions_ids
+          @previously_processed_raw_pending_stripe_transactions_ids ||= ::CanonicalPendingTransaction.pluck(:raw_pending_stripe_transaction_id)
+        end
       end
     end
   end

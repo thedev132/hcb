@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_03_215937) do
+ActiveRecord::Schema.define(version: 2020_12_04_011234) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -139,6 +139,16 @@ ActiveRecord::Schema.define(version: 2020_12_03_215937) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["canonical_transaction_id"], name: "index_canonical_hashed_mappings_on_canonical_transaction_id"
     t.index ["hashed_transaction_id"], name: "index_canonical_hashed_mappings_on_hashed_transaction_id"
+  end
+
+  create_table "canonical_pending_transactions", force: :cascade do |t|
+    t.date "date", null: false
+    t.text "memo", null: false
+    t.integer "amount_cents", null: false
+    t.bigint "raw_pending_stripe_transaction_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["raw_pending_stripe_transaction_id"], name: "index_canonical_pending_txs_on_raw_pending_stripe_tx_id"
   end
 
   create_table "canonical_transactions", force: :cascade do |t|
@@ -883,6 +893,7 @@ ActiveRecord::Schema.define(version: 2020_12_03_215937) do
   add_foreign_key "canonical_event_mappings", "events"
   add_foreign_key "canonical_hashed_mappings", "canonical_transactions"
   add_foreign_key "canonical_hashed_mappings", "hashed_transactions"
+  add_foreign_key "canonical_pending_transactions", "raw_pending_stripe_transactions"
   add_foreign_key "checks", "lob_addresses"
   add_foreign_key "checks", "users", column: "creator_id"
   add_foreign_key "disbursements", "events"
