@@ -3,8 +3,6 @@
 <% include_modals %>
 <%= render 'nav' %>
 
-<%= render 'cards/ordering_suspended' if current_user %>
-
 <h1 class="heading">
   Cards
   <%= link_to event_cards_new_path(event_id: @event.slug),
