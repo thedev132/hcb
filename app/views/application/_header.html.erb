@@ -28,18 +28,18 @@
             style: 'box-sizing: border-box; padding: 5px;' %>
       </div>
     <% end %>
-    <%= image_tag Rails.env.development? ? 'logo-dev.png' :
-        @home_size ? 'logo-512.png' : 'logo.png',
+    <%= image_tag "logo#{'-alt-1' if Rails.env.development?}-dark#{'-512' unless @home_size}.png",
         name: 'header-logo',
+        class: 'logo-dark',
         width: @home_size || 36,
         height: @home_size || 36,
         alt: 'Bank logo' %>
-    <%= image_tag 'hank.png',
-        name: 'alternative-logo',
-        style: 'display: none;',
+    <%= image_tag "logo#{'-alt-1' if Rails.env.development?}#{'-512' unless @home_size}.png",
+        name: 'header-logo',
+        class: 'logo',
         width: @home_size || 36,
         height: @home_size || 36,
-        alt: 'Hank logo' %>
+        alt: 'Bank logo' %>
   <% end %>
 
   <div class="header-right line-height-0 flex items-center">

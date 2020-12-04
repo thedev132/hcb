@@ -287,4 +287,12 @@ html[data-dark='true'] {
     background: $darkless;
     color: map-get($palette, white);
   }
+
+  .logo {
+    display: none;
+  }
+
+  .logo-dark {
+    display: block;
+  }
 }
