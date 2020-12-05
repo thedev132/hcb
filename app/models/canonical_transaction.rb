@@ -10,7 +10,6 @@ class CanonicalTransaction < ApplicationRecord
   has_one :canonical_event_mapping
   has_one :event, through: :canonical_event_mapping
 
-
   # DEPRECATED
   def display_name
     memo

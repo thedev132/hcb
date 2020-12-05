@@ -11,10 +11,6 @@ module TransactionEngine
 
       private
 
-      def each_transactions 
-        @each_transactions ||= canonical_transactions.map { |ct| ::TransactionEngine::Transaction::Single.new(canonical_transaction: ct) }
-      end
-
       def event
         @event ||= Event.find(@event_id)
       end
