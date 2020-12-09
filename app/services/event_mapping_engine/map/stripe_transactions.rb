@@ -9,23 +9,26 @@ module EventMappingEngine
           next if raw_stripe_transaction.hashed_transactions.length > 1 # skip.
           next if raw_stripe_transaction.hashed_transactions.length < 1 # skip. these are raw transactions that haven't yet been hashed for some reason. TODO. surface these somehow elsewhere
 
-          next unless raw_stripe_transaction.likely_event_id
+          event_id = raw_stripe_transaction.likely_event_id
 
-          #next if raw_stripe_transaction.hashed_transactions.first.canonical_transaction # if already mapped
+          next unless event_id # TODO: surface these somehow that have no likely event id
 
-          #current_canonical_event_mapping = ::CanonicalEventMapping.find_by(canonical_transaction_id: canonical_transaction_id)
+          canonical_transaction = raw_stripe_transaction.hashed_transactions.try(:first).try(:canonical_transaction)
+
+          next unless canonical_transaction # must be canon-ized already
+
+          current_canonical_event_mapping = ::CanonicalEventMapping.find_by(canonical_transaction_id: canonical_transaction.id)
 
           ## raise error if discrepancy in event that was being set
-          #raise ArgumentError, "CanonicalTransaction #{canonical_transaction_id} already has an event mapping but as event #{current_canonical_event_mapping.event_id} (attempted to otherwise set event #{event_id})" if current_canonical_event_mapping.try(:event_id) && current_canonical_event_mapping.event_id != event_id
+          raise ArgumentError, "CanonicalTransaction #{canonical_transaction.id} already has an event mapping but as event #{current_canonical_event_mapping.event_id} (attempted to otherwise set event #{event_id})" if current_canonical_event_mapping.try(:event_id) && current_canonical_event_mapping.event_id != event_id
 
-          #next if current_canonical_event_mapping
+          next if current_canonical_event_mapping
 
-          #attrs = {
-          #  canonical_transaction_id: canonical_transaction_id,
-          #  event_id: event_id
-          #}
-
-          #::CanonicalEventMapping.create!(attrs)
+          attrs = {
+            canonical_transaction_id: canonical_transaction.id,
+            event_id: event_id
+          }
+          ::CanonicalEventMapping.create!(attrs)
         end
       end
 
