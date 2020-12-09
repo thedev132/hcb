@@ -11,20 +11,21 @@ module EventMappingEngine
 
           next unless raw_stripe_transaction.likely_event_id
 
-          # check if current mapping
-          current_canonical_event_mapping = ::CanonicalEventMapping.find_by(canonical_transaction_id: canonical_transaction_id)
+          #next if raw_stripe_transaction.hashed_transactions.first.canonical_transaction # if already mapped
 
-          # raise error if discrepancy in event that was being set
-          raise ArgumentError, "CanonicalTransaction #{canonical_transaction_id} already has an event mapping but as event #{current_canonical_event_mapping.event_id} (attempted to otherwise set event #{event_id})" if current_canonical_event_mapping.try(:event_id) && current_canonical_event_mapping.event_id != event_id
+          #current_canonical_event_mapping = ::CanonicalEventMapping.find_by(canonical_transaction_id: canonical_transaction_id)
 
-          next if current_canonical_event_mapping
+          ## raise error if discrepancy in event that was being set
+          #raise ArgumentError, "CanonicalTransaction #{canonical_transaction_id} already has an event mapping but as event #{current_canonical_event_mapping.event_id} (attempted to otherwise set event #{event_id})" if current_canonical_event_mapping.try(:event_id) && current_canonical_event_mapping.event_id != event_id
 
-          attrs = {
-            canonical_transaction_id: canonical_transaction_id,
-            event_id: event_id
-          }
+          #next if current_canonical_event_mapping
 
-          ::CanonicalEventMapping.create!(attrs)
+          #attrs = {
+          #  canonical_transaction_id: canonical_transaction_id,
+          #  event_id: event_id
+          #}
+
+          #::CanonicalEventMapping.create!(attrs)
         end
       end
 
