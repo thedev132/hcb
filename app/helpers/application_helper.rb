@@ -230,6 +230,26 @@ module ApplicationHelper
     end
   end
 
+  def admin_inspectable_attributes(record)
+    stripe_obj = begin
+        record.stripe_obj
+      rescue Stripe::InvalidRequestError
+        puts "Can't access stripe object, skipping"
+      rescue NoMethodError
+        puts "Not a stripe object, skipping"
+      end
+
+    if stripe_obj.nil?
+      record
+    else
+      result = Hash.new
+      result[record.class] = record
+      result['stripe_obj'] = stripe_obj
+
+      result
+    end
+  end
+
   def development_mode_flavor
     [
       "Drop the tables for all I care.",
