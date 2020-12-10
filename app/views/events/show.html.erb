@@ -39,7 +39,7 @@
   <div class="stat statset__wide">
     <span class="stat__label">Account balance</span>
     <% if params[:v2] %>
-    <span class="stat__value"><%= @event.balance_v2 %></span>
+    <span class="stat__value"><%= render_money_amount @event.balance_v2_cents %></span>
     <% else %>
     <span class="stat__value"><%= render_money_amount @event.balance %></span>
     <% end %>

@@ -12,6 +12,9 @@ class StripeAuthorization < ApplicationRecord
   scope :declined, -> { where(approved: false) }
   scope :successful, -> { approved.closed }
 
+  def remote_stripe_transaction_amount_cents
+  end
+
   def awaiting_receipt?
     !amount.zero? && approved && missing_receipt?
   end
@@ -116,6 +119,10 @@ class StripeAuthorization < ApplicationRecord
     @stripe_auth_obj
   end
 
+  def remote_stripe_transaction_amount_cents
+    @remote_stripe_transaction_amount_cents ||= remote_stripe_transaction.try(:amount)
+  end
+  
   private
 
   def notify_of_creation
@@ -128,5 +135,19 @@ class StripeAuthorization < ApplicationRecord
     else
       StripeAuthorizationMailer.with(auth_id: id).notify_user_of_decline.deliver_later
     end
+  end
+
+  def remote_stripe_transaction
+    @remote_stripe_transaction ||= begin
+      remote_id = remote_stripe_authorization['transactions'].try(:first).try('id')
+
+      return nil unless remote_id
+
+      ::Partners::Stripe::Issuing::Transactions::Show.new(id: remote_id).run
+    end
+  end
+
+  def remote_stripe_authorization
+    @remote_stripe_authorization ||= ::Partners::Stripe::Issuing::Authorizations::Show.new(id: stripe_id).run
   end
 end
