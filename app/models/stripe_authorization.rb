@@ -12,9 +12,6 @@ class StripeAuthorization < ApplicationRecord
   scope :declined, -> { where(approved: false) }
   scope :successful, -> { approved.closed }
 
-  def remote_stripe_transaction_amount_cents
-  end
-
   def awaiting_receipt?
     !amount.zero? && approved && missing_receipt?
   end
