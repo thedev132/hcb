@@ -148,8 +148,8 @@ class Event < ApplicationRecord
     completed_t + pending_t
   end
 
-  def balance_v2
-    @balance_v2 ||= canonical_transactions.sum(:amount_cents)
+  def balance_v2_cents
+    @balance_v2_cents ||= canonical_transactions.sum(:amount_cents)
   end
 
   def balance

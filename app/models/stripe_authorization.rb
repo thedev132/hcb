@@ -116,6 +116,10 @@ class StripeAuthorization < ApplicationRecord
     @stripe_auth_obj
   end
 
+  def remote_stripe_transaction_amount_cents
+    @remote_stripe_transaction_amount_cents ||= remote_stripe_transactions.map(&:amount).sum
+  end
+  
   private
 
   def notify_of_creation
@@ -128,5 +132,17 @@ class StripeAuthorization < ApplicationRecord
     else
       StripeAuthorizationMailer.with(auth_id: id).notify_user_of_decline.deliver_later
     end
+  end
+
+  def remote_stripe_transactions
+    @remote_stripe_transactions ||= begin
+      remote_stripe_authorization['transactions'].map do |t|
+        ::Partners::Stripe::Issuing::Transactions::Show.new(id: t.id).run
+      end
+    end
+  end
+
+  def remote_stripe_authorization
+    @remote_stripe_authorization ||= ::Partners::Stripe::Issuing::Authorizations::Show.new(id: stripe_id).run
   end
 end
