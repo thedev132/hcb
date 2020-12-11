@@ -3,7 +3,6 @@ module StripeService
   StatementDescriptorCharLimit = 22
 
   def self.mode
-    return :live
     if Rails.env.production?
       :live
     else
