@@ -102,7 +102,7 @@ class StripeAuthorization < ApplicationRecord
     # the status stripe is telling us and mark it as 'refunded' if all the
     # authorization's transactions sum to 0.
     if (stripe_obj[:status] == 'closed' && stripe_obj[:transactions].size > 1)
-      net_amount = stripe_obj[:transactions].pluck(:amount).sum
+      net_amount = -stripe_obj[:transactions].pluck(:amount).sum # must be negated since the rest of stripe_authorizations is treating positives as negatives in the interface
       self.amount = net_amount
       self.stripe_status = 'reversed' if net_amount.zero?
     end
