@@ -90,7 +90,7 @@ class StripeAuthorization < ApplicationRecord
     self.stripe_status = stripe_obj[:status]
     self.authorization_method = stripe_obj[:authorization_method]
     self.approved = stripe_obj[:approved]
-    self.amount = remote_stripe_transaction_amount_cents
+    self.amount = stripe_obj[:amount]
     self.name = stripe_obj[:merchant_data][:name]
 
     stripe_card_id = stripe_obj[:card][:id]

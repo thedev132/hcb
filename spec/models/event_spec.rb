@@ -11,7 +11,7 @@ RSpec.describe Event, type: :model do
     expect(event).to be_valid
   end
 
-  describe "#balance_v2" do
+  describe "#balance_v2_cents" do
     it "calculates a value from canonical transactions" do
       result = event.balance_v2
 
