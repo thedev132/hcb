@@ -3,6 +3,11 @@ g_suite_mark_verifieds_job:
   class: "GSuiteJob::MarkVerifieds"
   queue: "default"
   
+temp_fix_stripe_authorizations_job:
+  cron: "0 0 1 9 *" # run september 1st
+  class: "TempFixStripeAuthorizationsJob::Nightly"
+  queue: "default"
+
 pending_transaction_engine_nightly_job:
   cron: "*/30 * * * *" # run every 30 minutes
   class: "PendingTransactionEngineJob::Nightly"
