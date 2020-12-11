@@ -13,7 +13,7 @@ module TempFixStripeAuthorizations
         # safe to change since it is just inverted - should be opposite
         if sa.remote_stripe_transaction_amount_cents == sa.amount
           sa.amount = -sa.amount
-          sa.save!
+          sa.save! # sync from stripe is overriding this
         end
       end
 
