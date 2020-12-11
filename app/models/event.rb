@@ -152,9 +152,6 @@ class Event < ApplicationRecord
     @balance_v2_cents ||= canonical_transactions.sum(:amount_cents)
   end
 
-  def balance_v2
-  end
-
   def balance
     bank_balance = transactions.sum(:amount)
     stripe_balance = -stripe_authorizations.approved.sum(:amount)
