@@ -120,7 +120,7 @@ class StripeAuthorization < ApplicationRecord
   end
 
   def remote_stripe_transaction_amount_cents
-    @remote_stripe_transaction_amount_cents ||= remote_stripe_transaction.try(:amount)
+    @remote_stripe_transaction_amount_cents ||= remote_stripe_transactions.map(&:amount).sum
   end
   
   private
@@ -137,13 +137,11 @@ class StripeAuthorization < ApplicationRecord
     end
   end
 
-  def remote_stripe_transaction
-    @remote_stripe_transaction ||= begin
-      remote_id = remote_stripe_authorization['transactions'].try(:first).try('id')
-
-      return nil unless remote_id
-
-      ::Partners::Stripe::Issuing::Transactions::Show.new(id: remote_id).run
+  def remote_stripe_transactions
+    @remote_stripe_transactions ||= begin
+      remote_stripe_authorization['transactions'].map do |t|
+        ::Partners::Stripe::Issuing::Transactions::Show.new(id: t.id).run
+      end
     end
   end
 

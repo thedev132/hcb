@@ -3,13 +3,18 @@ module TempFixStripeAuthorizations
     def run
       ids = Set.new
 
-      StripeAuthorization.find_each do |sa|
+      StripeAuthorization.approved.find_each do |sa|
         next if sa.remote_stripe_transaction_amount_cents.nil?
-
         next if sa.remote_stripe_transaction_amount_cents == -sa.amount
+        next if sa.remote_stripe_transaction_amount_cents == 0
+
         ids.add(sa.id)
 
-        pp ids
+        # safe to change since it is just inverted - should be opposite
+        if sa.remote_stripe_transaction_amount_cents == sa.amount
+          sa.amount = -sa.amount
+          sa.save!
+        end
       end
 
       ids
