@@ -27,7 +27,7 @@ class TransactionsController < ApplicationController
   end
 
   def show
-    @transaction = Transaction.find(params[:id])
+    @transaction = Transaction.with_deleted.find(params[:id])
     @event = @transaction.event
 
     @commentable = @transaction
