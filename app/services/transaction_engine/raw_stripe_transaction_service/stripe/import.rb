@@ -11,6 +11,7 @@ module TransactionEngine
               st.stripe_transaction = t
               st.amount_cents = t[:amount]
               st.date_posted = Time.at(t[:created])
+              st.stripe_authorization_id = t[:authorization]
             end.save!
           end
 

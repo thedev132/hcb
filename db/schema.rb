@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_05_171240) do
+ActiveRecord::Schema.define(version: 2020_12_14_024106) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -148,6 +148,15 @@ ActiveRecord::Schema.define(version: 2020_12_05_171240) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["canonical_pending_transaction_id"], name: "index_canonical_pending_event_map_on_canonical_pending_tx_id"
     t.index ["event_id"], name: "index_canonical_pending_event_mappings_on_event_id"
+  end
+
+  create_table "canonical_pending_settled_mappings", force: :cascade do |t|
+    t.bigint "canonical_pending_transaction_id", null: false
+    t.bigint "canonical_transaction_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["canonical_pending_transaction_id"], name: "index_canonical_pending_settled_map_on_canonical_pending_tx_id"
+    t.index ["canonical_transaction_id"], name: "index_canonical_pending_settled_mappings_on_canonical_tx_id"
   end
 
   create_table "canonical_pending_transactions", force: :cascade do |t|
@@ -726,6 +735,7 @@ ActiveRecord::Schema.define(version: 2020_12_05_171240) do
     t.date "date_posted"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.text "stripe_authorization_id"
   end
 
   create_table "receipts", force: :cascade do |t|
@@ -904,6 +914,8 @@ ActiveRecord::Schema.define(version: 2020_12_05_171240) do
   add_foreign_key "canonical_hashed_mappings", "hashed_transactions"
   add_foreign_key "canonical_pending_event_mappings", "canonical_pending_transactions"
   add_foreign_key "canonical_pending_event_mappings", "events"
+  add_foreign_key "canonical_pending_settled_mappings", "canonical_pending_transactions"
+  add_foreign_key "canonical_pending_settled_mappings", "canonical_transactions"
   add_foreign_key "canonical_pending_transactions", "raw_pending_stripe_transactions"
   add_foreign_key "checks", "lob_addresses"
   add_foreign_key "checks", "users", column: "creator_id"
