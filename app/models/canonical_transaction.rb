@@ -9,6 +9,8 @@ class CanonicalTransaction < ApplicationRecord
   has_many :hashed_transactions, through: :canonical_hashed_mappings
   has_one :canonical_event_mapping
   has_one :event, through: :canonical_event_mapping
+  has_one :canonical_pending_settled_mapping
+  has_one :canonical_pending_transaction, through: :canonical_pending_settled_mapping
 
   # DEPRECATED
   def display_name
