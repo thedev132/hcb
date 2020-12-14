@@ -3,19 +3,25 @@ module PendingEventMappingEngine
     class Stripe
       def run
         unsettled.find_each do |cpt|
-          #pp cpt.raw_pending_stripe_transaction.stripe_transaction_id
+          stripe_authorization_id = cpt.raw_pending_stripe_transaction.stripe_transaction_id
 
-          # TODO
-          # 1. use the above iauth stripe transaction id to identify a canonical transaction from stripe
-          # 2. lookup the raw_stripe_transaction with that iauth identifier
-          # 3. use it to then lookup the canonical transaction and map it
-          # 4. write to CanonicalPendingSettledMapping
+          raw_stripe_transactions = RawStripeTransaction.where(stripe_authorization_id: stripe_authorization_id)
 
-          #attrs = {
-          #  canonical_transaction_id: #cpt.raw_pending_stripe_transaction.likely_event_id,
-          #  canonical_pending_transaction_id: cpt.id
-          #}
-          #CanonicalPendingSettledMapping.create!(attrs)
+          raw_stripe_transactions.each do |rst|
+            # 1. lookup canonical
+            rst.hashed_transactions.each do |ht|
+              ct = ht.canonical_transaction
+
+              next unless ct
+
+              # 2. mark no longer pending
+              attrs = {
+                canonical_transaction_id: ct.id,
+                canonical_pending_transaction_id: cpt.id
+              }
+              CanonicalPendingSettledMapping.create!(attrs)
+            end
+          end
         end
       end
 
