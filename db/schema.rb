@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_14_024106) do
+ActiveRecord::Schema.define(version: 2020_12_14_232008) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -139,6 +139,13 @@ ActiveRecord::Schema.define(version: 2020_12_14_024106) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["canonical_transaction_id"], name: "index_canonical_hashed_mappings_on_canonical_transaction_id"
     t.index ["hashed_transaction_id"], name: "index_canonical_hashed_mappings_on_hashed_transaction_id"
+  end
+
+  create_table "canonical_pending_declined_mappings", force: :cascade do |t|
+    t.bigint "canonical_pending_transaction_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["canonical_pending_transaction_id"], name: "index_canonical_pending_declined_map_on_canonical_pending_tx_id"
   end
 
   create_table "canonical_pending_event_mappings", force: :cascade do |t|
@@ -912,6 +919,7 @@ ActiveRecord::Schema.define(version: 2020_12_14_024106) do
   add_foreign_key "canonical_event_mappings", "events"
   add_foreign_key "canonical_hashed_mappings", "canonical_transactions"
   add_foreign_key "canonical_hashed_mappings", "hashed_transactions"
+  add_foreign_key "canonical_pending_declined_mappings", "canonical_pending_transactions"
   add_foreign_key "canonical_pending_event_mappings", "canonical_pending_transactions"
   add_foreign_key "canonical_pending_event_mappings", "events"
   add_foreign_key "canonical_pending_settled_mappings", "canonical_pending_transactions"

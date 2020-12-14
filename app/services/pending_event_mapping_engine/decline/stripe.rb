@@ -8,9 +8,13 @@ module PendingEventMappingEngine
           status = st["status"]
           approved = st["approved"]
 
-          # 1. identify closed pending transactions (rejected)
+          # 1. identify declined (closed & not approved) transactions
           if status == "closed" && approved == false
-            # 2. mark this as no longer pending. shouldn't display. it was rejected.
+            # 2. mark this as decliend
+            attrs = {
+              canonical_pending_transaction_id: cpt.id
+            }
+            CanonicalPendingDeclinedMapping.create!(attrs)
           end
         end
       end
