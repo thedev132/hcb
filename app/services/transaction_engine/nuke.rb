@@ -1,6 +1,9 @@
 module TransactionEngine
   class Nuke
     def run
+      CanonicalPendingDeclinedMapping.delete_all
+      CanonicalPendingSettledMapping.delete_all
+
       CanonicalHashedMapping.delete_all
 
       CanonicalTransaction.delete_all
