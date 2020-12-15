@@ -22,7 +22,7 @@ module PendingEventMappingEngine
       private
 
       def unsettled
-        CanonicalPendingTransaction.unsettled.stripe.where('date <= ?', 2.weeks.ago)
+        CanonicalPendingTransaction.unsettled.stripe
       end
     end
   end
