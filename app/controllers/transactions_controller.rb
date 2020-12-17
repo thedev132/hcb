@@ -27,12 +27,8 @@ class TransactionsController < ApplicationController
   end
 
   def show
-    if using_transaction_engine_v2?
-      @transaction = TransactionEngine::Transaction::Show.new(canonical_transaction_id: params[:id]).run
-      @event = @transaction.event
-
-      authorize @transaction
-    else
+    begin
+      # DEPRECATED
       @transaction = Transaction.with_deleted.find(params[:id])
       @event = @transaction.event
 
@@ -43,6 +39,11 @@ class TransactionsController < ApplicationController
       authorize @transaction
 
       render :show_deprecated
+    rescue ActiveRecord::RecordNotFound => e
+      @transaction = TransactionEngine::Transaction::Show.new(canonical_transaction_id: params[:id]).run
+      @event = @transaction.event
+
+      authorize @transaction
     end
   end
 
