@@ -101,8 +101,9 @@ class StripeAuthorization < ApplicationRecord
     # consistently tell us if a tx was refunded). We're going to deviate from
     # the status stripe is telling us and mark it as 'refunded' if all the
     # authorization's transactions sum to 0.
-    if (stripe_obj[:status] == 'closed' && stripe_obj[:transactions].size > 1)
-      net_amount = stripe_obj[:transactions].pluck(:amount).sum
+    #if (stripe_obj[:status] == 'closed' && stripe_obj[:transactions].size >= 1)
+    if stripe_obj[:transactions].size >= 1
+      net_amount = -stripe_obj[:transactions].pluck(:amount).sum # must be negated since the rest of stripe_authorizations is treating positives as negatives in the interface
       self.amount = net_amount
       self.stripe_status = 'reversed' if net_amount.zero?
     end
@@ -116,6 +117,10 @@ class StripeAuthorization < ApplicationRecord
     @stripe_auth_obj
   end
 
+  def remote_stripe_transaction_amount_cents
+    @remote_stripe_transaction_amount_cents ||= remote_stripe_transactions.map(&:amount).sum
+  end
+  
   private
 
   def notify_of_creation
@@ -128,5 +133,17 @@ class StripeAuthorization < ApplicationRecord
     else
       StripeAuthorizationMailer.with(auth_id: id).notify_user_of_decline.deliver_later
     end
+  end
+
+  def remote_stripe_transactions
+    @remote_stripe_transactions ||= begin
+      remote_stripe_authorization['transactions'].map do |t|
+        ::Partners::Stripe::Issuing::Transactions::Show.new(id: t.id).run
+      end
+    end
+  end
+
+  def remote_stripe_authorization
+    @remote_stripe_authorization ||= ::Partners::Stripe::Issuing::Authorizations::Show.new(id: stripe_id).run
   end
 end

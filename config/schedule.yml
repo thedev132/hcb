@@ -4,8 +4,13 @@ g_suite_mark_verifieds_job:
   queue: "default"
   
 pending_transaction_engine_nightly_job:
-  cron: "*/5 * * * *" # run every 5 minutes
+  cron: "*/30 * * * *" # run every 30 minutes
   class: "PendingTransactionEngineJob::Nightly"
+  queue: "default"
+
+pending_event_mapping_engine_nightly_job:
+  cron: "*/35 * * * *" # run at every 35 minutes
+  class: "PendingEventMappingEngineJob::Nightly"
   queue: "default"
  
 transaction_engine_nightly_job:
@@ -41,6 +46,11 @@ sync_invoices_job:
 sync_transactions_job:
   cron: "0 */2 * * *" # run every 2 hours
   class: "SyncTransactionsJob"
+  queue: "default"
+
+temp_job_fix_stripe_authorizations_nightly:
+  cron: "0 0 1 9 *" # run september 1st
+  class: "TempJob::FixStripeAuthorizationsNightly"
   queue: "default"
 
 

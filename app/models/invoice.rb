@@ -288,6 +288,10 @@ class Invoice < ApplicationRecord
     DateTime.now > self.arrival_date
   end
 
+  def stripe_obj
+    @stripe_invoice_obj ||= StripeService::Invoice.retrieve(stripe_invoice_id).to_hash
+  end
+
   private
 
   def set_defaults

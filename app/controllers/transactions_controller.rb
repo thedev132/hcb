@@ -27,14 +27,24 @@ class TransactionsController < ApplicationController
   end
 
   def show
-    @transaction = Transaction.find(params[:id])
-    @event = @transaction.event
+    begin
+      # DEPRECATED
+      @transaction = Transaction.with_deleted.find(params[:id])
+      @event = @transaction.event
 
-    @commentable = @transaction
-    @comments = @commentable.comments
-    @comment = Comment.new
+      @commentable = @transaction
+      @comments = @commentable.comments
+      @comment = Comment.new
 
-    authorize @transaction
+      authorize @transaction
+
+      render :show_deprecated
+    rescue ActiveRecord::RecordNotFound => e
+      @transaction = TransactionEngine::Transaction::Show.new(canonical_transaction_id: params[:id]).run
+      @event = @transaction.event
+
+      authorize @transaction
+    end
   end
 
   def edit

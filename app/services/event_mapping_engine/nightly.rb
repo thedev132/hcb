@@ -6,6 +6,7 @@ module EventMappingEngine
     def run
       map_historical_plaid!
       map_historical_emburse!
+      map_stripe_transactions!
       map_github!
 
       true
@@ -19,6 +20,10 @@ module EventMappingEngine
 
     def map_historical_emburse!
       ::EventMappingEngine::Map::HistoricalEmburse.new.run
+    end
+
+    def map_stripe_transactions!
+      ::EventMappingEngine::Map::StripeTransactions.new.run
     end
 
     def map_github!

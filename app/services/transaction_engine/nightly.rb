@@ -64,7 +64,7 @@ module TransactionEngine
     end
 
     def hash_raw_stripe_transactions!
-      # IMPLEMENT
+      ::TransactionEngine::HashedTransactionService::RawStripeTransaction::Import.new.run
     end
 
     def hash_raw_csv_transactions!
