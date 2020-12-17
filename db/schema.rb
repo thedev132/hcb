@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_14_232008) do
+ActiveRecord::Schema.define(version: 2020_12_17_172958) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -432,6 +432,7 @@ ActiveRecord::Schema.define(version: 2020_12_14_232008) do
     t.boolean "is_public", default: false
     t.text "public_message"
     t.boolean "omit_stats", default: false
+    t.datetime "transaction_engine_v2_at"
     t.index ["club_airtable_id"], name: "index_events_on_club_airtable_id", unique: true
     t.index ["point_of_contact_id"], name: "index_events_on_point_of_contact_id"
   end
