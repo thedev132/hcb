@@ -27,14 +27,23 @@ class TransactionsController < ApplicationController
   end
 
   def show
-    @transaction = Transaction.with_deleted.find(params[:id])
-    @event = @transaction.event
+    if using_transaction_engine_v2?
+      @transaction = TransactionEngine::Transaction::Show.new(canonical_transaction_id: params[:id]).run
+      @event = @transaction.event
 
-    @commentable = @transaction
-    @comments = @commentable.comments
-    @comment = Comment.new
+      authorize @transaction
+    else
+      @transaction = Transaction.with_deleted.find(params[:id])
+      @event = @transaction.event
 
-    authorize @transaction
+      @commentable = @transaction
+      @comments = @commentable.comments
+      @comment = Comment.new
+
+      authorize @transaction
+
+      render :show_deprecated
+    end
   end
 
   def edit

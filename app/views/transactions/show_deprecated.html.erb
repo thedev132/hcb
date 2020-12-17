@@ -1,4 +1,4 @@
-<% title "Transaction for #{@transaction.amount}" %>
+<% title "Transaction for #{render_money @transaction.amount}" %>
 <% page_sm %>
 
 <%= render 'events/nav' if @event %>
@@ -15,7 +15,7 @@
       <%= @transaction.fee_payment? ? 'Fee payment' : 'Transaction' %>
     </span>
     <span class="h2 regular">
-      <%= @transaction.amount %>
+      <%= render_money @transaction.amount %>
     </span>
   </h1>
 
@@ -26,13 +26,10 @@
         <%= @transaction.display_name %>
       </span>
     </p>
-
-    <% unless using_transaction_engine_v2? %>
     <%= pop_icon_to 'edit',
       edit_transaction_path(@transaction),
       disabled: !organizer_signed_in?,
       class: 'right tooltipped tooltipped--w', 'aria-label': 'Rename transaction' %>
-    <% end %>
   </div>
 
   <strong>Imported transaction name</strong>
@@ -107,13 +104,11 @@
     <% end %>
   </section>
 
-  <% unless using_transaction_engine_v2? %>
   <% admin_tools('py0') do %>
       <p>
         Bank Account:
         <%= link_to "##{@transaction.bank_account.id} (#{@transaction.bank_account.name})", @transaction.bank_account %>
       </p>
-  <% end %>
   <% end %>
 
   <% if @transaction&.disbursement %>
@@ -129,4 +124,4 @@
 
 </article>
 
-<%= render 'comments/comments' unless using_transaction_engine_v2? %>
+<%= render 'comments/comments' %>

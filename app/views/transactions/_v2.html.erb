@@ -20,7 +20,7 @@
   </td>
   <% if organizer_signed_in? %>
   <td>
-    <%= link_to 'Details', '#implement' %>
+    <%= link_to 'Details', "/transactions/#{transaction.id}" %>
   </td>
   <% end %>
 </tr>
