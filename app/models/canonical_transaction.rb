@@ -13,7 +13,11 @@ class CanonicalTransaction < ApplicationRecord
   has_one :canonical_pending_transaction, through: :canonical_pending_settled_mapping
 
   # DEPRECATED
-  def display_name
+  def display_name # in deprecated system this is the renamed transaction name
+    memo
+  end
+
+  def name # in deprecated system this is the imported name
     memo
   end
 
@@ -23,5 +27,37 @@ class CanonicalTransaction < ApplicationRecord
 
   def comments
     [] # TODO
+  end
+
+  def fee_payment?
+    false # TODO
+  end
+
+  def invoice_payout
+    nil # TODO
+  end
+
+  def fee_reimbursement
+    nil # TODO
+  end
+
+  def check
+    nil # TODO
+  end
+
+  def donation_payout
+    nil # TODO
+  end
+
+  def fee_applies?
+    nil # TODO
+  end
+
+  def emburse_transfer
+    nil # TODO
+  end
+
+  def disbursement
+    nil # TODO
   end
 end

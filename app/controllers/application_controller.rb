@@ -35,4 +35,9 @@ class ApplicationController < ActionController::Base
   def not_found
     raise ActionController::RoutingError.new('Not Found')
   end
+
+  def using_transaction_engine_v2?
+    params[:v2] || @event.try(:transaction_engine_v2_at)
+  end
+  helper_method :using_transaction_engine_v2?
 end
