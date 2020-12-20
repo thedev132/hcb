@@ -9,7 +9,7 @@ class AdminController < ApplicationController
       "You look great today, #{current_user.first_name}.",
       "You’re a *credit* to your team, #{current_user.first_name}.",
       "Everybody thinks you’re amazing, #{current_user.first_name}.",
-      "You’re every organizer’s favorite point of contact.",
+      "You’re every organizer’s favorite team member.",
       "You’re so good at finances, even we think your balance is outstanding.",
       "You’re sweeter than a savings account.",
       "Though they don't show it off, those flowers sure are pretty."

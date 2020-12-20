@@ -160,8 +160,16 @@ module ApplicationHelper
   end
 
   def help_message
-    content_tag :span, "Contact the Bank team at #{mail_to 'bank@hackclub.com'} or #{link_to '+1-360-502-2935', 'tel:+1-360-502-2935'}.".html_safe
-  end
+    content_tag :span, "Contact the Bank team at #{help_email} or #{help_phone}.".html_safe
+	end
+	
+	def help_email
+		mail_to 'bank@hackclub.com'
+	end
+
+	def help_phone
+		link_to '+1-360-502-2935', 'tel:+1-360-502-2935'
+	end
 
   def format_date(date)
     local_time(date, '%b %e, %Y')

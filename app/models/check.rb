@@ -72,8 +72,8 @@ class Check < ApplicationRecord
     when :pending_void then 'Attempting to void'
     when :deposited then 'Deposited successfully'
     when :in_transit then 'In transit'
-    when :rejected then 'Rejected by your point of contact'
-    when :pending then 'Waiting approval from your point of contact'
+    when :rejected then 'Rejected by Hack Club Bank staff'
+    when :pending then 'Waiting approval from Hack Club Bank staff'
     end
   end
 
