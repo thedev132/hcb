@@ -109,6 +109,7 @@ module StaticPagesHelper
         'It holds money!',
         'uwu',
         'owo',
+        '(◕‿◕✿)',
         'Red acting kinda sus',
         'An important part of this nutritional breakfast',
         'By people with money, for people with money',
@@ -116,13 +117,20 @@ module StaticPagesHelper
         'Chosen #1 by dinosaurs everywhere',
         'Accountants HATE him',
         'paid for by steve',
-        'Congradulations, you are the 10,000th visitor!',
+        "Congradulations, you are the #{number_with_delimiter(10**rand(1..5))}th visitor!",
         "All the finance that's fit to print",
         "You've got this",
         "Don't forget to drink water!",
         "Putting the 'fun' in 'refund'",
         "Putting the 'fun' in 'fundraising'",
-        "Donation nation"
+        "Donation nation",
+        "To TCP, or UDP, that is the question",
+        "Now with 0 off-by-one errors!",
+        "Initial commit: get that bread",
+        "git commit -m 'cash money'",
+        "git commit --amend '$$$'",
+        "git add ./cash/money",
+        "https://hack.af/holiday-radio"
       ].sample
     end
   end
