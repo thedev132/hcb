@@ -3,6 +3,7 @@
 
   &:after {
     background-color: rgba(map-get($palette, black), 0.875);
+    backdrop-filter: blur(6px);
     border-radius: 0.5rem;
     bottom: 50%;
     box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.0625),
