@@ -130,7 +130,8 @@ module StaticPagesHelper
         "git commit -m 'cash money'",
         "git commit --amend '$$$'",
         "git add ./cash/money",
-        "https://hack.af/holiday-radio"
+        "https://hack.af/holiday-radio",
+        "Wireframed with real wire!"
       ].sample
     end
   end
