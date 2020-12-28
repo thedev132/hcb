@@ -172,6 +172,10 @@ class Event < ApplicationRecord
     @fee_balance ||= total_fees - total_fee_payments
   end
 
+  def fee_balance_v2_cents
+    @fee_balance_v2_cents ||= 0 # TODO
+  end
+
   # amount of balance that fees haven't been pulled out for
   def balance_not_feed
     a_fee_balance = self.fee_balance

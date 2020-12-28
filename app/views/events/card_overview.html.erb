@@ -3,7 +3,7 @@
 <% include_modals %>
 <%= render 'nav' %>
 
-<%= render 'cards/ordering_suspended' if current_user %>
+<%= render 'cards/ordering_suspended' if current_user && !using_transaction_engine_v2? %>
 
 <h1 class="heading">
   Cards
