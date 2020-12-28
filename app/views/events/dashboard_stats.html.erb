@@ -3,7 +3,11 @@
     Pending fees
     <%= inline_icon 'external', size: 24, class: 'muted ml1', 'aria-label': 'Icon indicating click for more' %>
   </span>
+  <% if using_transaction_engine_v2? %>
+  <span class="stat__value"><%= render_money_amount @event.fee_balance_v2_cents %></span>
+  <% else %>
   <span class="stat__value"><%= render_money_amount @event.fee_balance %></span>
+  <% end %>
 </action>
 <action class="stat stat--small" area="deposits" data-behavior="modal_trigger" data-modal="incoming_deposits" tabindex="0">
   <span class="stat__label flex items-center">
