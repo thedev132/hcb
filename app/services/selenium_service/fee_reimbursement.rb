@@ -81,10 +81,6 @@ module SeleniumService
       @driver ||= Selenium::WebDriver.for :chrome
     end
 
-    def agent
-      @agent ||= Mechanize.new
-    end
-
     def username
       Rails.application.credentials.svb[:username]
     end
