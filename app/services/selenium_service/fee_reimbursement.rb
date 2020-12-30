@@ -36,7 +36,9 @@ module SeleniumService
       # Go to auth url
       driver.navigate.to(transfers_url)
 
-      wait = Selenium::WebDriver::Wait.new(timeout: 5) # wait 5 seconds
+      # Wait until you see the transfer page
+      wait = Selenium::WebDriver::Wait.new(timeout: 65) # wait 5 seconds
+      wait.until { driver.find_element(:xpath, '//h1[text()="Make a Transfer"]') }
 
       # Configure the transfer
       el = driver.find_element(:xpath, '//select[@name="fromAccountId"]/child::option[contains(text(), "FS Operating")]')
