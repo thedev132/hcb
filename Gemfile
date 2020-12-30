@@ -110,8 +110,6 @@ gem 'google-api-client'
 gem 'active_storage_validations'
 
 group :development, :test do
-  # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'rspec-rails', '~> 4.0.1'
 end
 
@@ -145,6 +143,7 @@ end
 gem 'aasm' # state machine
 gem 'airbrake' # exception tracking
 gem 'blazer' # business intelligence tool/dashboard
+gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
 gem 'geocoder' # lookup lat/lng for Stripe Cards shipment tracking
 gem 'money-rails' # back cent fields as money objects 
 gem 'namae' # multi-cultural human name parser

@@ -31,14 +31,22 @@ module SeleniumService
       rescue Selenium::WebDriver::Error::TimeoutError => e
       end
 
-      wait = Selenium::WebDriver::Wait.new(timeout: 5) # wait 5 seconds
+      wait = Selenium::WebDriver::Wait.new(timeout: 10) # wait 5 seconds
 
       # Go to auth url
       driver.navigate.to(transfers_url)
 
-      # Wait until you see the transfer page
-      wait = Selenium::WebDriver::Wait.new(timeout: 65) # wait 5 seconds
-      wait.until { driver.find_element(:xpath, '//h1[text()="Make a Transfer"]') }
+      begin
+        # Wait until you see the transfer page
+        wait = Selenium::WebDriver::Wait.new(timeout: 10) # wait 5 seconds
+        wait.until { driver.find_element(:xpath, '//h1[text()="Make a Transfer"]') }
+      rescue => e
+        Airbrake.notify(driver.inspect)
+        Airbrake.notify(driver.page_source)
+        byebug
+
+        raise e
+      end
 
       # Configure the transfer
       el = driver.find_element(:xpath, '//select[@name="fromAccountId"]/child::option[contains(text(), "FS Operating")]')
