@@ -87,7 +87,6 @@ gem 'rack-cors'
 
 # Converting HTML to PDFs
 gem 'wicked_pdf'
-gem 'wkhtmltopdf-binary'
 
 # Markdown in Comments
 gem 'redcarpet'
