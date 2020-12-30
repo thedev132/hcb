@@ -9,19 +9,27 @@ module SeleniumService
       # Go to auth url
       driver.navigate.to(auth_url)
 
+      sleep 1
+
       # Click accept cookies modal
-      el = driver.find_element(id: "accept-cookies")
-      el.click
+      begin
+        el = driver.find_element(id: "accept-cookies")
+        el.click
+      rescue
+      end
 
       # Username
+      sleep 1
       el = driver.find_element(id: "userId")
       el.send_keys(username)
 
       # Password
+      sleep 1
       el = driver.find_element(id: "userPassword")
       el.send_keys(password)
 
       # Login
+      sleep 1
       el = driver.find_element(id: "loginButton")
       el.click
 
@@ -31,7 +39,7 @@ module SeleniumService
       rescue Selenium::WebDriver::Error::TimeoutError => e
       end
 
-      wait = Selenium::WebDriver::Wait.new(timeout: 10) # wait 5 seconds
+      sleep 10
 
       # Go to auth url
       driver.navigate.to(transfers_url)
@@ -43,22 +51,29 @@ module SeleniumService
       rescue => e
         Airbrake.notify(driver.inspect)
         Airbrake.notify(driver.page_source)
-        byebug
 
         raise e
       end
 
       # Configure the transfer
+      sleep 1
       el = driver.find_element(:xpath, '//select[@name="fromAccountId"]/child::option[contains(text(), "FS Operating")]')
       el.click
+
+      sleep 1
       el = driver.find_element(:xpath, '//select[@name="toAccountId"]/child::option[contains(text(), "FS Main")]')
       el.click
+
+      sleep 1
       el = driver.find_element(:xpath, '//input[@name="transferAmountStr"]')
       el.send_keys("#{@amount}")
+
+      sleep 1
       el = driver.find_element(:xpath, '//textarea[@id="description-field"]')
       el.send_keys(@memo)
 
       # Submit the transfer
+      sleep 1
       el = driver.find_element(:xpath, '//button[@type="submit"]')
       el.click
 
@@ -67,6 +82,7 @@ module SeleniumService
       wait.until { driver.find_element(:xpath, '//button[text()="Confirm Transfer"]') }
 
       # Confirm transfer
+      sleep 1
       el = driver.find_element(:xpath, '//button[text()="Confirm Transfer"]')
       el.click
 
@@ -74,6 +90,7 @@ module SeleniumService
       wait = Selenium::WebDriver::Wait.new(timeout: 65) # wait 65 seconds
       wait.until { driver.find_element(:xpath, '//h2[text()="Confirmation"]') }
 
+      sleep 1
       driver.quit
     end
 
@@ -124,14 +141,17 @@ module SeleniumService
       challenge_answer = challenge_answer_place if el.text.downcase.include?("visit")
 
       # Challenge question
+      sleep 1
       el = driver.find_element(id: "enteredChallengePhraseResponse")
       el.send_keys(challenge_answer)
       
       # Submit answer
+      sleep 1
       el = driver.find_element(class: "svb-confirm-identity-button")
       el.click
 
       # Continue on identify confirmed
+      sleep 1
       el = driver.find_element(class: "svb-continue-button")
       el.click
     end
