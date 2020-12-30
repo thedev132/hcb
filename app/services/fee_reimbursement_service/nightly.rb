@@ -1,9 +1,5 @@
 module FeeReimbursementService
   class Nightly
-    def initialize(fee_reimbursement_id:)
-      @fee_reimbursement_id = fee_reimbursement_id
-    end
-
     def run
       # 1. begin by navigating
       login_to_svb!
