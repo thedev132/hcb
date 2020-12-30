@@ -3,9 +3,7 @@
 module FeeReimbursementJob
   class Nightly < ApplicationJob
     def perform
-      FeeReimbursement.unprocessed.each do |fr|
-        FeeReimbursementJob::ProcessOnSvb.perform_later(fr.id)
-      end
+      FeeReimbursementService::Nightly.new.run
     end
   end
 end
