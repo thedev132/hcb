@@ -2,8 +2,14 @@ module TransactionEngine
   module HashedTransactionService
     module RawPlaidTransaction
       class Import
+        include ::TransactionEngine::Shared
+
+        def initialize(start_date: nil)
+          @start_date = start_date || last_1_month
+        end
+
         def run
-          ::RawPlaidTransaction.find_each do |pt|
+          ::RawPlaidTransaction.where("date_posted >= ?", @start_date).find_each do |pt|
             begin
               ph = primary_hash(pt)
 
