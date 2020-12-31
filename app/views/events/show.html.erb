@@ -89,7 +89,7 @@
         </tr>
       </thead>
       <tbody data-behavior="transactions">
-        <%= render partial: 'transactions/event_list', collection: @transactions, as: :t %>
+        <%= render partial: 'transactions/event_list', collection: @pending_transactions, as: :t %>
       </tbody>
     </table>
   </div>
