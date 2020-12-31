@@ -16,7 +16,8 @@ class Event < ApplicationRecord
         -- step 1: calculate total_fees per event
         select fr.event_id, sum(fr.fee_amount) from fee_relationships fr
         inner join transactions t on t.fee_relationship_id = fr.id
-        where fr.fee_applies is true and t.deleted_at is null
+        inner join events e on e.id = fr.event_id
+        where fr.fee_applies is true and t.deleted_at is null and e.transaction_engine_v2_at is null
         group by fr.event_id
 
         ) q1 
@@ -25,7 +26,8 @@ class Event < ApplicationRecord
         -- step 2: calculate total_fee_payments per event
         select fr.event_id, sum(t.amount) from fee_relationships fr
         inner join transactions t on t.fee_relationship_id = fr.id
-        where fr.is_fee_payment is true and t.deleted_at is null
+        inner join events e on e.id = fr.event_id
+        where fr.is_fee_payment is true and t.deleted_at is null and e.transaction_engine_v2_at is null
         group by fr.event_id
         ) q2
 
@@ -39,6 +41,43 @@ class Event < ApplicationRecord
 
   scope :pending_fees, -> do
     where(id: self.event_ids_with_pending_fees_greater_than_100.to_a.map {|a| a["event_id"] })
+  end
+
+  scope :event_ids_with_pending_fees_greater_than_100_v2, -> do
+    query = <<~SQL
+      ;select event_id, fee_balance from (
+        select q1.event_id, COALESCE(q1.sum, 0) as total_fees, COALESCE(q2.sum, 0) as total_fee_payments, COALESCE(q1.sum, 0) + COALESCE(q2.sum, 0) as fee_balance from (
+
+        -- step 1: calculate total_fees per event
+        select cem.event_id, sum(ct.amount_cents) from canonical_event_mappings cem
+        inner join canonical_transactions ct on ct.id = cem.canonical_transaction_id
+        inner join events e on cem.event_id = e.id
+        where ct.amount_cents > 0
+        and e.transaction_engine_v2_at is not null
+        group by cem.event_id
+
+        ) q1 
+
+        left outer join (
+        -- step 2: calculate total_fee_payments per event
+        select cem.event_id, sum(ct.amount_cents) from canonical_event_mappings cem
+        inner join canonical_transactions ct on ct.id = cem.canonical_transaction_id
+        inner join events e on cem.event_id = e.id
+        where ct.amount_cents > 0
+        and e.transaction_engine_v2_at is not null
+        group by cem.event_id
+        ) q2
+
+        on q1.event_id = q2.event_id
+      ) q3
+      where fee_balance > 100
+    SQL
+
+    ActiveRecord::Base.connection.execute(query)
+  end
+
+  scope :pending_fees_v2, -> do
+    where(id: self.event_ids_with_pending_fees_greater_than_100_v2.to_a.map {|a| a["event_id"] })
   end
 
   friendly_id :name, use: :slugged

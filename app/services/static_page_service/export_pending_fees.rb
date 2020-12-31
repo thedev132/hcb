@@ -9,7 +9,7 @@ module StaticPageService
       CSV.generate(headers: true) do |csv|
         csv << attributes
 
-        Event.v1.pending_fees.find_each do |event|
+        Event.pending_fees.find_each do |event|
           csv << [(event.fee_balance / 100.0), transaction_memo(event)]
         end
       end
