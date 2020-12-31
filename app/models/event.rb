@@ -4,6 +4,8 @@ class Event < ApplicationRecord
   BANK_FEE = BigDecimal("0.07")
 
   default_scope { order(id: :asc) }
+  scope :v1, -> { where(transaction_engine_v2_at: nil) }
+  scope :v2, -> { where.not(transaction_engine_v2_at: nil) }
   scope :hidden, -> { where.not(hidden_at: nil) }
   scope :not_hidden, -> { where(hidden_at: nil) }
   scope :event_ids_with_pending_fees_greater_than_100, -> do
