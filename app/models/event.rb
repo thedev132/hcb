@@ -49,7 +49,7 @@ class Event < ApplicationRecord
         select q1.event_id, COALESCE(q1.sum, 0) as total_fees, COALESCE(q2.sum, 0) as total_fee_payments, COALESCE(q1.sum, 0) + COALESCE(q2.sum, 0) as fee_balance from (
 
         -- step 1: calculate total_fees per event
-        select cem.event_id, sum(ct.amount_cents) from canonical_event_mappings cem
+        select cem.event_id, sum(ct.amount_cents * 0.07) from canonical_event_mappings cem -- 0.07 is embedded here. TODO: build parallel fee engine to assign canonical transactions varying fee %s if wanted. a revamped version of fee relationships which sort of operates this way.
         inner join canonical_transactions ct on ct.id = cem.canonical_transaction_id
         inner join events e on cem.event_id = e.id
         where ct.amount_cents > 0
@@ -63,7 +63,8 @@ class Event < ApplicationRecord
         select cem.event_id, sum(ct.amount_cents) from canonical_event_mappings cem
         inner join canonical_transactions ct on ct.id = cem.canonical_transaction_id
         inner join events e on cem.event_id = e.id
-        where ct.amount_cents > 0
+        where ct.amount_cents < 0
+        and ct.memo ilike '%Hack Club Bank Fee%'
         and e.transaction_engine_v2_at is not null
         group by cem.event_id
         ) q2
