@@ -2,8 +2,10 @@ module TransactionEngine
   module HashedTransactionService
     module RawStripeTransaction
       class Import
+        include ::TransactionEngine::Shared
+
         def initialize(start_date: nil)
-          @start_date = start_date || Time.now.utc - 1.month
+          @start_date = start_date || last_1_month
         end
 
         def run

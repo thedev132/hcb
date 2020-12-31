@@ -2,10 +2,12 @@ module TransactionEngine
   module RawPlaidTransactionService
     module BankAccount1
       class Import
+        include ::TransactionEngine::Shared
+
         BANK_ACCOUNT_ID = 1
 
         def initialize(start_date: nil)
-          @start_date = start_date || Time.now.utc - 1.month
+          @start_date = start_date || last_1_month
         end
 
         def run

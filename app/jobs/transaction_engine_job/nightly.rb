@@ -2,17 +2,13 @@
 
 module TransactionEngineJob
   class Nightly < ApplicationJob
+    include ::TransactionEngine::Shared
+
     def perform
       ::EventMappingEngine::Nuke.new.run
       #::TransactionEngine::Nuke.new.run
 
-      ::TransactionEngine::Nightly.new(start_date: last_month).run
-    end
-
-    private
-
-    def last_month
-      Time.now.utc - 1.months
+      ::TransactionEngine::Nightly.new(start_date: last_1_month).run
     end
   end
 end
