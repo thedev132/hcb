@@ -1,6 +1,8 @@
 class Event < ApplicationRecord
   extend FriendlyId
 
+  BANK_FEE = BigDecimal("0.07")
+
   default_scope { order(id: :asc) }
   scope :hidden, -> { where.not(hidden_at: nil) }
   scope :not_hidden, -> { where(hidden_at: nil) }
@@ -173,7 +175,7 @@ class Event < ApplicationRecord
   end
 
   def fee_balance_v2_cents
-    @fee_balance_v2_cents ||= 0 # TODO
+    @fee_balance_v2_cents ||= total_fees_v2_cents - total_fee_payments_v2_cents
   end
 
   # amount of balance that fees haven't been pulled out for
@@ -243,8 +245,16 @@ class Event < ApplicationRecord
     @total_fees ||= transactions.joins(:fee_relationship).where(fee_relationships: { fee_applies: true }).sum("fee_relationships.fee_amount")
   end
 
+  def total_fees_v2_cents
+    @total_fees_v2_cents ||= (canonical_transactions.revenue.sum(:amount_cents) * BANK_FEE).ceil # always round up
+  end
+
   # fee payments are withdrawals, so negate value
   def total_fee_payments
     @total_fee_payments ||= -transactions.joins(:fee_relationship).where(fee_relationships: { is_fee_payment: true }).sum(:amount)
+  end
+
+  def total_fee_payments_v2_cents
+    @total_fee_payments_v2_cents ||= -canonical_transactions.expense.likely_hack_club_fee.sum(:amount_cents)
   end
 end
