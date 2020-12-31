@@ -2,8 +2,12 @@ module TransactionEngine
   module HashedTransactionService
     module RawStripeTransaction
       class Import
+        def initialize(start_date: nil)
+          @start_date = start_date || Time.now.utc - 1.month
+        end
+
         def run
-          ::RawStripeTransaction.find_each do |rst|
+          ::RawStripeTransaction.where("date_posted >= ?", @start_date).find_each do |rst|
             begin
               ph = primary_hash(rst)
 

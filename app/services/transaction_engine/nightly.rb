@@ -1,6 +1,7 @@
 module TransactionEngine
   class Nightly
-    def initialize
+    def initialize(start_date: nil)
+      @start_date = start_date || Time.now.utc - 1.month
     end
 
     def run
@@ -26,18 +27,22 @@ module TransactionEngine
       BankAccount.syncing.pluck(:id).each do |bank_account_id|
         puts "raw_plaid_transactions: #{bank_account_id}"
 
-        ::TransactionEngine::RawPlaidTransactionService::Plaid::Import.new(bank_account_id: bank_account_id, start_date: start_date).run
+        ::TransactionEngine::RawPlaidTransactionService::Plaid::Import.new(bank_account_id: bank_account_id, start_date: @start_date).run
       end
     end
 
     def import_other_raw_plaid_transactions!
-      ::TransactionEngine::RawPlaidTransactionService::BankAccount1::Import.new.run
-      ::TransactionEngine::RawPlaidTransactionService::BankAccount9::Import.new.run
+      ::TransactionEngine::RawPlaidTransactionService::BankAccount1::Import.new(start_date: @start_date).run
+      ::TransactionEngine::RawPlaidTransactionService::BankAccount9::Import.new(start_date: @start_date).run
+    end
+
+    def calculate_n_times
+      (((Time.now.utc - @start_date) / 1.day).ceil / 15.0).ceil + 1 # number of 15 days periods plus add an additional day
     end
 
     def import_raw_emburse_transactions!
-      # Check for TXs in 1 month blocks over the past 5 years at increments of 15 days
-      120.times do |n|
+      # Check for TXs in 1 month blocks over the past n periods at increments of 15 days
+      calculate_n_times.times do |n|
         from = Date.today - (n * 15).days
         to = from + 15.days
 
@@ -52,19 +57,19 @@ module TransactionEngine
     end
 
     def import_raw_stripe_transactions!
-      ::TransactionEngine::RawStripeTransactionService::Stripe::Import.new.run
+      ::TransactionEngine::RawStripeTransactionService::Stripe::Import.new(start_date: @start_date).run
     end
 
     def hash_raw_plaid_transactions!
-      ::TransactionEngine::HashedTransactionService::RawPlaidTransaction::Import.new.run
+      ::TransactionEngine::HashedTransactionService::RawPlaidTransaction::Import.new(start_date: @start_date).run
     end
 
     def hash_raw_emburse_transactions!
-      ::TransactionEngine::HashedTransactionService::RawEmburseTransaction::Import.new.run
+      ::TransactionEngine::HashedTransactionService::RawEmburseTransaction::Import.new(start_date: @start_date).run
     end
 
     def hash_raw_stripe_transactions!
-      ::TransactionEngine::HashedTransactionService::RawStripeTransaction::Import.new.run
+      ::TransactionEngine::HashedTransactionService::RawStripeTransaction::Import.new(start_date: @start_date).run
     end
 
     def hash_raw_csv_transactions!
@@ -73,10 +78,6 @@ module TransactionEngine
 
     def canonize_hashed_transactions!
       ::TransactionEngine::CanonicalTransactionService::Import::All.new.run
-    end
-
-    def start_date
-      Time.now.utc - 5.years
     end
   end
 end

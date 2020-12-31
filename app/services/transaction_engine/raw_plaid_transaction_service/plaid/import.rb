@@ -2,9 +2,9 @@ module TransactionEngine
   module RawPlaidTransactionService
     module Plaid
       class Import
-        def initialize(bank_account_id:, start_date: Date.today - 15.days, end_date: Date.today)
+        def initialize(bank_account_id:, start_date: nil, end_date: Date.today)
           @bank_account_id = bank_account_id
-          @start_date = fmt_date start_date
+          @start_date = fmt_date((start_date || Time.now.utc - 1.month))
           @end_date = fmt_date end_date
         end
 

@@ -4,6 +4,10 @@ module TransactionEngine
       class Import
         BANK_ACCOUNT_ID = 1
 
+        def initialize(start_date: nil)
+          @start_date = start_date || Time.now.utc - 1.month
+        end
+
         def run
           deprecated_transactions.each do |transaction|
             ::RawPlaidTransaction.find_or_initialize_by(plaid_transaction_id: transaction.plaid_id).tap do |pt|
@@ -22,7 +26,7 @@ module TransactionEngine
         private
 
         def deprecated_transactions
-          @deprecated_transactions ||= bank_account.transactions.where('pending is false and plaid_id is not null and amount != 0')
+          @deprecated_transactions ||= bank_account.transactions.where('pending is false and plaid_id is not null and amount != 0 and date >= ?', @start_date)
         end
 
         def bank_account

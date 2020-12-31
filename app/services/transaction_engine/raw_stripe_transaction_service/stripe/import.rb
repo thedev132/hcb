@@ -2,7 +2,8 @@ module TransactionEngine
   module RawStripeTransactionService
     module Stripe
       class Import
-        def initialize
+        def initialize(start_date: nil)
+          @start_date = start_date || Time.now.utc - 1.month
         end
 
         def run
@@ -21,7 +22,7 @@ module TransactionEngine
         private
 
         def stripe_transactions
-          @stripe_transactions ||= ::Partners::Stripe::Issuing::Transactions::List.new.run
+          @stripe_transactions ||= ::Partners::Stripe::Issuing::Transactions::List.new(start_date: @start_date).run
         end
       end
     end

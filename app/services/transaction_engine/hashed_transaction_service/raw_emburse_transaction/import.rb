@@ -2,8 +2,12 @@ module TransactionEngine
   module HashedTransactionService
     module RawEmburseTransaction
       class Import
+        def initialize(start_date: nil)
+          @start_date = start_date || Time.now.utc - 1.month
+        end
+
         def run
-          ::RawEmburseTransaction.find_each do |et|
+          ::RawEmburseTransaction.where("date_posted >= ?", @start_date).find_each do |et|
             next if et.amount_cents == 0
             next unless et.state == 'completed' # only permit completed transactions
 
