@@ -1,8 +1,6 @@
 class Event < ApplicationRecord
   extend FriendlyId
 
-  BANK_FEE = BigDecimal("0.07")
-
   default_scope { order(id: :asc) }
   scope :v1, -> { where(transaction_engine_v2_at: nil) }
   scope :v2, -> { where.not(transaction_engine_v2_at: nil) }
@@ -233,6 +231,11 @@ class Event < ApplicationRecord
     (a_fee_balance * 100 / percent)
   end
 
+  def balance_not_feed_v2_cents
+    # shortcut to invert
+    BigDecimal("#{fee_balance_v2_cents}") / BigDecimal("#{sponsorship_fee}")
+  end
+
   def fee_balance_without_fee_reimbursement_reconcilliation
     a_fee_balance = self.fee_balance
     self.transactions.where.not(fee_reimbursement: nil).each do |t|
@@ -296,7 +299,7 @@ class Event < ApplicationRecord
   end
 
   def total_fees_v2_cents
-    @total_fees_v2_cents ||= (canonical_transactions.revenue.sum(:amount_cents) * BANK_FEE).ceil # always round up
+    @total_fees_v2_cents ||= (canonical_transactions.revenue.sum(:amount_cents) * BigDecimal("#{sponsorship_fee}")).ceil # always round up
   end
 
   # fee payments are withdrawals, so negate value
