@@ -73,29 +73,6 @@
   <% end %>
 </div>
 
-<% if @pending_transactions.any? %>
-  <h2 class="heading">
-    Transactions Pending
-  </h2>
-  <div class="table-container">
-    <table>
-      <thead>
-        <tr>
-          <th></th>
-          <th>Date</th>
-          <th>Description</th>
-          <th class="right-align">Amount</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody data-behavior="transactions">
-        <%= render partial: 'transactions/event_list', collection: @pending_transactions, as: :t %>
-      </tbody>
-    </table>
-  </div>
-  <%= paginate @transactions %>
-<% end %>
-
 <h2 class="heading">
   Transactions
 
@@ -135,7 +112,7 @@
 </div>
 -->
 
-<% if @transactions.any? %>
+<% if @pending_transactions.any? || @transactions.any? %>
   <div class="table-container">
     <table>
       <thead>
@@ -148,6 +125,7 @@
         </tr>
       </thead>
       <tbody data-behavior="transactions">
+        <%= render partial: 'transactions/event_list', collection: @pending_transactions, as: :t %>
         <%= render partial: 'transactions/event_list', collection: @transactions, as: :t %>
       </tbody>
     </table>
