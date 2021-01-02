@@ -38,7 +38,6 @@ module FeeService
         sleep 5 # helps simulate real clicking
       end
 
-
       driver.quit
     end
   end
