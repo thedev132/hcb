@@ -272,7 +272,7 @@ class Event < ApplicationRecord
   end
 
   def ready_for_fee?
-    event.last_fee_processed_at.nil? || event.last_fee_processed_at >= min_waiting_time_between_fees
+    last_fee_processed_at.nil? || last_fee_processed_at >= min_waiting_time_between_fees
   end
 
   private
