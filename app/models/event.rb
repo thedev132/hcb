@@ -40,7 +40,7 @@ class Event < ApplicationRecord
   end
 
   scope :pending_fees, -> do
-    where("(last_fee_processed_at is null or last_fee_processed_at >= ?) and id in (?)", 20.days.ago, self.event_ids_with_pending_fees_greater_than_100.to_a.map {|a| a["event_id"] })
+    where("(last_fee_processed_at is null or last_fee_processed_at <= ?) and id in (?)", 20.days.ago, self.event_ids_with_pending_fees_greater_than_100.to_a.map {|a| a["event_id"] })
   end
 
   scope :event_ids_with_pending_fees_greater_than_100_v2, -> do
@@ -78,7 +78,7 @@ class Event < ApplicationRecord
   end
 
   scope :pending_fees_v2, -> do
-    where("(last_fee_processed_at is null or last_fee_processed_at >= ?) and id in (?)", 20.days.ago, self.event_ids_with_pending_fees_greater_than_100_v2.to_a.map {|a| a["event_id"] })
+    where("(last_fee_processed_at is null or last_fee_processed_at <= ?) and id in (?)", 20.days.ago, self.event_ids_with_pending_fees_greater_than_100_v2.to_a.map {|a| a["event_id"] })
   end
 
   friendly_id :name, use: :slugged
@@ -272,7 +272,7 @@ class Event < ApplicationRecord
   end
 
   def ready_for_fee?
-    last_fee_processed_at.nil? || last_fee_processed_at >= min_waiting_time_between_fees
+    last_fee_processed_at.nil? || last_fee_processed_at <= min_waiting_time_between_fees
   end
 
   private
