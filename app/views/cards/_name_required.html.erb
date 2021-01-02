@@ -1,0 +1,17 @@
+<div class="card pb0 mt3 mb3">
+  <div class="flex items-center info">
+    <%= inline_icon 'card', size: 32, class: 'mr1' %>
+    <p class="bold mt0 mb0">You must fill out your name first.</p>
+  </div>
+  <p class="mt1 mb1">
+    Before you can create cards, you first need to enter your name on your <%= link_to "settings", my_settings_path %> page.
+  </p>
+
+  <p class="mt1 mb1">
+    <%= link_to "Go to your settings page", my_settings_path %>, update your name, and then come back to this page.
+  </p>
+
+  <div class="border-top card__banner card__darker slate mt2">
+    <strong class="info">Questions?</strong> <%= help_message %>
+  </div>
+</div>
