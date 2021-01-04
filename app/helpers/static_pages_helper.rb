@@ -117,7 +117,7 @@ module StaticPagesHelper
         'Chosen #1 by dinosaurs everywhere',
         'Accountants HATE him',
         'paid for by steve',
-        "Congradulations, you are the #{number_with_delimiter(10**rand(1..5))}th visitor!",
+        "Congratulations, you are the #{number_with_delimiter(10**rand(1..5))}th visitor!",
         "All the finance that's fit to print",
         "You've got this",
         "Don't forget to drink water!",
