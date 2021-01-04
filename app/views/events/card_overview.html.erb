@@ -4,7 +4,7 @@
 <%= render 'nav' %>
 
 <%= render 'cards/ordering_suspended' if current_user && !using_transaction_engine_v2? %>
-<%= render 'cards/name_required' if current_user.full_name.blank? %>
+<%= render 'cards/name_required' if current_user.try(:full_name).try(:blank?) %>
 
 <h1 class="heading">
   Cards
