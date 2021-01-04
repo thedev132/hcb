@@ -136,7 +136,7 @@ module StaticPagesHelper
         "Open on weekdays!",
         "Open on #{Date.today.strftime("%A")}s",
         "??? profit!",
-        "Did you see the price of #{%w[Ðogecoin ₿itcoin Ξtherium]}?!",
+        "Did you see the price of #{%w[Ðogecoin ₿itcoin Ξtherium].sample}?!",
         "Guess how much it costs to run this thing!",
         "Bytes served fresh daily by Heroku",
         "Running with Ruby on Rails 6",
