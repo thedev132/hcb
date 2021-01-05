@@ -9,7 +9,7 @@ module DisbursementService
       login_to_svb!
 
       Disbursement.pending.each do |disbursement|
-        raise ArgumentError, "must be a pending disbursement only" unless fee_reimbursement.unprocessed?
+        raise ArgumentError, "must be a pending disbursement only" unless disbursement.unprocessed?
 
         amount_cents = disbursement.amount
         memo = disbursement.transaction_memo
@@ -22,7 +22,7 @@ module DisbursementService
           # Make the transfer out from Fiscal Sponsorship
           transfer_from_fs_operating_to_fs_main!(amount_cents: amount_cents, memo: memo)
         rescue => e
-          # there was an error so mark this dibursement as in a bad/mixed state
+          # there was an error so mark this disbursement as in a bad/mixed state
           Airbrake.notify("Disbursement #{disbursement.id} in mixed/bad error state. Partially processed remotely. Investigate and fix by hand.")
           disbursement.update_column(:errored_at, Time.now)
           raise e
@@ -34,12 +34,6 @@ module DisbursementService
       end
 
       driver.quit
-    end
-
-    private
-
-    def fee_reimbursement
-      @fee_reimbursement ||= FeeReimbursement.find(@fee_reimbursement_id)
     end
   end
 end

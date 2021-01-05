@@ -23,11 +23,5 @@ module FeeReimbursementService
 
       driver.quit
     end
-
-    private
-
-    def fee_reimbursement
-      @fee_reimbursement ||= FeeReimbursement.find(@fee_reimbursement_id)
-    end
   end
 end
