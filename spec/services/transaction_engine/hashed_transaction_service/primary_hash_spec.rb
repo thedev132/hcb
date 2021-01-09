@@ -3,12 +3,14 @@
 require 'rails_helper'
 
 RSpec.describe TransactionEngine::HashedTransactionService::PrimaryHash do
+  let(:unique_bank_identifier) { "FSMAIN" }
   let(:date) { '2020-09-15' }
   let(:amount_cents) { 1_01 }
   let(:memo) { 'A PAYMENT MEMO OF $1.01' }
   
   let(:attrs) do
     {
+      unique_bank_identifier: unique_bank_identifier,
       date: date,
       amount_cents: amount_cents,
       memo: memo

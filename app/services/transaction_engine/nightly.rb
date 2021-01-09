@@ -17,7 +17,7 @@ module TransactionEngine
       hash_raw_plaid_transactions!
       hash_raw_emburse_transactions!
       hash_raw_stripe_transactions!
-      hash_raw_csv_transactions!
+      #hash_raw_csv_transactions! # turn off for now. was a test.
 
       # 3 canonical
       canonize_hashed_transactions!
@@ -75,7 +75,7 @@ module TransactionEngine
     end
 
     def hash_raw_csv_transactions!
-      ::TransactionEngine::HashedTransactionService::RawCsvTransaction::Import.new.run
+      #::TransactionEngine::HashedTransactionService::RawCsvTransaction::Import.new.run
     end
 
     def canonize_hashed_transactions!

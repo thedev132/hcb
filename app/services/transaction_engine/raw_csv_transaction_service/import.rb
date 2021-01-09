@@ -5,6 +5,8 @@ module TransactionEngine
   module RawCsvTransactionService
     class Import
       def run
+        raise NotImplementedError
+
         read_and_parse_frb
         read_and_parse_svb
       end
