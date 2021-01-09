@@ -2,6 +2,8 @@ module TransactionEngine
   module RawEmburseTransactionService
     module Emburse
       class Import
+        include ::TransactionEngine::Shared
+
         def initialize(start_date: Time.now - 15.days, end_date: Time.now)
           @start_date = fmt_date start_date
           @end_date = fmt_date end_date
