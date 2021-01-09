@@ -8,6 +8,8 @@ module TransactionEngine
 
         def initialize(start_date: nil)
           @start_date = start_date || last_1_month
+
+          @bank_account_id = BANK_ACCOUNT_ID
         end
 
         def run
@@ -21,6 +23,8 @@ module TransactionEngine
               pt.amount_cents = transaction.amount
               pt.date_posted = transaction.date
               pt.pending = transaction.pending
+
+              pt.unique_bank_identifier = unique_bank_identifier
             end.save!
           end
         end

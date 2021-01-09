@@ -6,6 +6,8 @@ module TransactionEngine
 
         def initialize(start_date: nil)
           @start_date = start_date || last_1_month
+
+          @bank_account_id = "STRIPEISSUING1"
         end
 
         def run
@@ -15,6 +17,8 @@ module TransactionEngine
               st.amount_cents = t[:amount]
               st.date_posted = Time.at(t[:created])
               st.stripe_authorization_id = t[:authorization]
+
+              st.unique_bank_identifier = unique_bank_identifier
             end.save!
           end
 

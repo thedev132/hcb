@@ -13,12 +13,8 @@ module TransactionEngine
             begin
               ph = primary_hash(rst)
 
-              attrs = {
-                primary_hash: ph[0],
-                raw_stripe_transaction_id: rst.id
-              }
-
-              ::HashedTransaction.find_or_initialize_by(attrs).tap do |ht|
+              ::HashedTransaction.find_or_initialize_by(raw_stripe_transaction_id: rst.id).tap do |ht|
+                ht.primary_hash = ph[0]
                 ht.primary_hash_input = ph[1]
               end.save!
             rescue ArgumentError => e
@@ -33,6 +29,7 @@ module TransactionEngine
 
         def primary_hash(rst)
           attrs = {
+            unique_bank_identifier: rst.unique_bank_identifier,
             date: rst.date_posted.strftime('%Y-%m-%d'),
             amount_cents: rst.amount_cents,
             memo: rst.memo.upcase
