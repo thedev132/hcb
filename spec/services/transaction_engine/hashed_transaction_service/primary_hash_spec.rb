@@ -20,14 +20,14 @@ RSpec.describe TransactionEngine::HashedTransactionService::PrimaryHash do
   let(:service) { TransactionEngine::HashedTransactionService::PrimaryHash.new(attrs) }
 
   it 'hashes the combination' do
-    expect(service.run[0]).to eql(7400998678639308911)
+    expect(service.run[0]).to eql(9686534373925407058)
   end
 
   context 'when memo just has extra padded spaces' do
     let(:memo) { " A PAYMENT MEMO OF $1.01 " }
 
     it 'produces the same hash' do
-      expect(service.run[0]).to eql(7400998678639308911)
+      expect(service.run[0]).to eql(9686534373925407058)
     end
   end
 
@@ -35,13 +35,13 @@ RSpec.describe TransactionEngine::HashedTransactionService::PrimaryHash do
     let(:memo) { "APAYMENTMEMOOF$1.01" }
 
     it 'produces the same hash' do
-      expect(service.run[0]).to eql(7400998678639308911)
+      expect(service.run[0]).to eql(9686534373925407058)
     end
   end
 
   context 'when date changes' do
     it 'changes the hash' do
-      expect(service.run[0]).to eql(7400998678639308911)
+      expect(service.run[0]).to eql(9686534373925407058)
     end
   end
 
@@ -49,7 +49,7 @@ RSpec.describe TransactionEngine::HashedTransactionService::PrimaryHash do
     let(:amount_cents) { 1_02 }
 
     it 'changes the hash' do
-      expect(service.run[0]).to eql(13343312625259921839)
+      expect(service.run[0]).to eql(333912527157692946)
     end
   end
 
@@ -77,7 +77,7 @@ RSpec.describe TransactionEngine::HashedTransactionService::PrimaryHash do
     let(:amount_cents) { -2_02 }
 
     it 'hashes' do
-      expect(service.run[0]).to eql(7600043190022159380)
+      expect(service.run[0]).to eql(8031277266291086396)
     end
   end
 
