@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_10_005022) do
+ActiveRecord::Schema.define(version: 2021_01_12_062455) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -66,6 +66,7 @@ ActiveRecord::Schema.define(version: 2021_01_10_005022) do
     t.datetime "updated_at", null: false
     t.boolean "should_sync", default: true
     t.boolean "is_positive_pay"
+    t.boolean "should_sync_v2", default: false
   end
 
   create_table "blazer_audits", force: :cascade do |t|

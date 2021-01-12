@@ -59,6 +59,8 @@ class ChecksController < ApplicationController
 
   # GET /checks/new
   def new
+    raise ActiveRecord::RecordNotFound unless using_transaction_engine_v2?
+
     @lob_address = LobAddress.new(event: @event)
     @check = Check.new(lob_address: @lob_address)
 
@@ -67,6 +69,8 @@ class ChecksController < ApplicationController
 
   # POST /checks
   def create
+    raise ActiveRecord::RecordNotFound unless using_transaction_engine_v2?
+
     # this pulls apart the lob address and check so they can be created separately
     check_params = filtered_params.except(:action, :controller, :lob_address_attributes)
     check_params[:amount] = filtered_params[:amount].to_f * 100.to_i
