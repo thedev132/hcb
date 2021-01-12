@@ -66,7 +66,7 @@ ActiveRecord::Schema.define(version: 2021_01_12_062455) do
     t.datetime "updated_at", null: false
     t.boolean "should_sync", default: true
     t.boolean "is_positive_pay"
-    t.boolean "should_sync_v2", default: true
+    t.boolean "should_sync_v2", default: false
   end
 
   create_table "blazer_audits", force: :cascade do |t|
