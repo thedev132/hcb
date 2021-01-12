@@ -26,7 +26,7 @@ module TransactionEngine
     private
 
     def import_raw_plaid_transactions!
-      BankAccount.syncing.pluck(:id).each do |bank_account_id|
+      BankAccount.syncing_v2.pluck(:id).each do |bank_account_id|
         puts "raw_plaid_transactions: #{bank_account_id}"
 
         ::TransactionEngine::RawPlaidTransactionService::Plaid::Import.new(bank_account_id: bank_account_id, start_date: @start_date).run
