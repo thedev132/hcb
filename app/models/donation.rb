@@ -56,7 +56,7 @@ class Donation < ApplicationRecord
     return 'Deposited' if deposited?
     return 'Pending' if pending?
 
-    'Contact your point of contact'
+    'Contact Hack Club Bank staff'
   end
 
   def deposited?
