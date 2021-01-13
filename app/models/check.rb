@@ -189,10 +189,10 @@ class Check < ApplicationRecord
       errors.add(:check, 'has already been approved!')
       return false
     end
-    #if update(approved_at: DateTime.now)
-      #RefundSentCheckJob.set(wait_until: send_date + 1.month).perform_later(self)
-      #return true
-    #end
+    if update(approved_at: DateTime.now)
+     #RefundSentCheckJob.set(wait_until: send_date + 1.month).perform_later(self) # TODO: move to nightly or monthly cron job for reliability
+     return true
+    end
     false
   end
 
