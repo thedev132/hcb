@@ -20,11 +20,47 @@ class CanonicalPendingTransaction < ApplicationRecord
     memo
   end
 
+  def name # in deprecated system this is the imported name
+    memo
+  end
+
   def filter_data
     {} # TODO
   end
 
   def comments
     [] # TODO
+  end
+
+  def fee_payment?
+    false # TODO
+  end
+
+  def invoice_payout
+    nil # TODO
+  end
+
+  def fee_reimbursement
+    nil # TODO
+  end
+
+  def check
+    nil # TODO
+  end
+
+  def donation_payout
+    nil # TODO
+  end
+
+  def fee_applies?
+    nil # TODO
+  end
+
+  def emburse_transfer
+    nil # TODO
+  end
+
+  def disbursement
+    nil # TODO
   end
 end

@@ -26,6 +26,7 @@ class AdminController < ApplicationController
 
   def pending_fees
     @pending_fees = Event.pending_fees
+    @pending_fees_v2 = Event.pending_fees_v2
   end
 
   def export_pending_fees

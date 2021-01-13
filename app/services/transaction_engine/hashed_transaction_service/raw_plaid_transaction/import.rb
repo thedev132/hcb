@@ -2,17 +2,20 @@ module TransactionEngine
   module HashedTransactionService
     module RawPlaidTransaction
       class Import
+        include ::TransactionEngine::Shared
+
+        def initialize(start_date: nil)
+          @start_date = start_date || last_1_month
+        end
+
         def run
-          ::RawPlaidTransaction.find_each do |pt|
+          ::RawPlaidTransaction.where("date_posted >= ?", @start_date).find_each do |pt|
             begin
               ph = primary_hash(pt)
 
-              attrs = {
-                primary_hash: ph[0],
-                raw_plaid_transaction_id: pt.id
-              }
-
-              ::HashedTransaction.find_or_initialize_by(attrs).tap do |ht|
+              # Option 1, instead of finding by primary hash here, I could find by raw_plaid_transction id ?
+              ::HashedTransaction.find_or_initialize_by(raw_plaid_transaction_id: pt.id).tap do |ht|
+                ht.primary_hash = ph[0]
                 ht.primary_hash_input = ph[1]
               end.save!
             rescue ArgumentError => e
@@ -27,6 +30,7 @@ module TransactionEngine
 
         def primary_hash(pt)
           attrs = {
+            unique_bank_identifier: pt.unique_bank_identifier,
             date: pt.date_posted.strftime('%Y-%m-%d'),
             amount_cents: pt.amount_cents,
             memo: pt.memo.upcase

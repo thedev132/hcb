@@ -6,11 +6,8 @@ module TransactionEngine
           ::RawCsvTransaction.find_each do |ct|
             ph = primary_hash(ct)
 
-            attrs = {
-              primary_hash: ph[0],
-              raw_csv_transaction_id: ct.id
-            }
-            ::HashedTransaction.find_or_initialize_by(attrs).tap do |ht|
+            ::HashedTransaction.find_or_initialize_by(raw_csv_transaction_id: ct.id).tap do |ht|
+              ht.primary_hash = ph[0]
               ht.primary_hash_input = ph[1]
             end.save!
           end
@@ -20,6 +17,7 @@ module TransactionEngine
 
         def primary_hash(ct)
           attrs = {
+            unique_bank_identifier: ct.unique_bank_identifier,
             date: ct.date_posted.strftime('%Y-%m-%d'),
             amount_cents: ct.amount_cents,
             memo: ct.memo.upcase

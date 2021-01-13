@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_17_172958) do
+ActiveRecord::Schema.define(version: 2021_01_12_062455) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -66,6 +66,7 @@ ActiveRecord::Schema.define(version: 2020_12_17_172958) do
     t.datetime "updated_at", null: false
     t.boolean "should_sync", default: true
     t.boolean "is_positive_pay"
+    t.boolean "should_sync_v2", default: false
   end
 
   create_table "blazer_audits", force: :cascade do |t|
@@ -229,6 +230,7 @@ ActiveRecord::Schema.define(version: 2020_12_17_172958) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "source_event_id"
+    t.datetime "errored_at"
     t.index ["event_id"], name: "index_disbursements_on_event_id"
     t.index ["source_event_id"], name: "index_disbursements_on_source_event_id"
   end
@@ -432,7 +434,8 @@ ActiveRecord::Schema.define(version: 2020_12_17_172958) do
     t.boolean "is_public", default: false
     t.text "public_message"
     t.boolean "omit_stats", default: false
-    t.datetime "transaction_engine_v2_at"
+    t.datetime "transaction_engine_v2_at", default: -> { "CURRENT_TIMESTAMP" }
+    t.datetime "last_fee_processed_at"
     t.index ["club_airtable_id"], name: "index_events_on_club_airtable_id", unique: true
     t.index ["point_of_contact_id"], name: "index_events_on_point_of_contact_id"
   end
@@ -703,6 +706,7 @@ ActiveRecord::Schema.define(version: 2020_12_17_172958) do
     t.jsonb "raw_data"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "unique_bank_identifier", null: false
   end
 
   create_table "raw_emburse_transactions", force: :cascade do |t|
@@ -713,6 +717,7 @@ ActiveRecord::Schema.define(version: 2020_12_17_172958) do
     t.string "state"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "unique_bank_identifier", null: false
   end
 
   create_table "raw_pending_stripe_transactions", force: :cascade do |t|
@@ -734,6 +739,7 @@ ActiveRecord::Schema.define(version: 2020_12_17_172958) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.boolean "pending", default: false
+    t.string "unique_bank_identifier", null: false
   end
 
   create_table "raw_stripe_transactions", force: :cascade do |t|
@@ -744,6 +750,7 @@ ActiveRecord::Schema.define(version: 2020_12_17_172958) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.text "stripe_authorization_id"
+    t.string "unique_bank_identifier", null: false
   end
 
   create_table "receipts", force: :cascade do |t|
