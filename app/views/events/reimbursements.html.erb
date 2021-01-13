@@ -16,17 +16,17 @@
     <a class="info" href="https://www.expensify.com" target="_blank">Expensify</a>
     to streamline your reimbursement process. Expensify allows
     you to upload receipts and receive reimbursements back
-    into their bank account 🏦.
+    into your bank account 🏦.
   </p>
 
   <p>
-    Get in touch with the Bank team
+    Get in touch with the Bank team 
     <% if organizer_signed_in? %>
-      <%= help_message %>
+      (<%= help_message %>)
     <% else %>
       <span class="muted">(sign in to view)</span>
     <% end%>
-    with the email of the person to be reimbursed, and they'll be invited
+     with the email of the person to be reimbursed, and they'll be invited
     to Expensify to upload their receipts.
   </p>
 </div>
@@ -41,18 +41,18 @@
       </summary>
       <article>
         <p>
-        We'll invite whoever needs to be reimbursed (let's call them "Max") to Expensify through their email.
+        We'll invite whoever needs to be reimbursed (let's call them "Max") to Expensify through their email address.
         When Max receives the email, they'll make an account or log into Expensify, where they can upload their
         receipts as "expenses," and submit their expenses in a "Report."
         </p>
         <p>
-        When Max submits a report, your point of contact will receive it, make sure that the numbers make sense,
+        When Max submits a report, Hack Club Bank will receive it, make sure that the numbers make sense,
         and approve the reimbursement. Max will get a couple of emails letting them know that the expense was approved,
-        and the reimbursement is on their way.
+        and the reimbursement is on their way!
         </p>
         <p>
         To receive the reimbursement, Max will need to connect their bank account with Expensify. They'll need to do it
-        only once, and for future reimbursements, the funds will arrive into their bank account within a few days.
+        only once, and for future reimbursements, the funds will arrive in their bank account within a few days.
         </p>
       </article>
     </details>
@@ -65,26 +65,17 @@
       </summary>
       <article>
         <p>
-        Usually, no. We ask that you make all reimbursements through Expensify on Hack Club Bank, because Expensify makes it
+        Usually, no. We ask that you make all reimbursements through Expensify on Hack Club Bank because Expensify makes it
         easy for us as a nonprofit to keep track of receipts and expenses in an auditable way.
         </p>
         <p>
         If you think you have an exceptional case where using Expensify isn't sensible, feel free to get in touch with
-        your point of contact!
-        </p>
-      </article>
-    </details>
-  </li>
-
-  <li class="mb3">
-    <details>
-      <summary class="inline-block cursor-pointer">
-        <strong>Does the reimbursement come out of my account balance, or my card balance?</strong>
-      </summary>
-      <article>
-        <p>
-        Reimbursements from Expensify draw money from your account balance, where you currently have
-        <strong><%= render_money @event.balance %></strong>.
+        us!
+				<% if organizer_signed_in? %>
+					<%= help_message %>
+				<% else %>
+					<span class="muted">(sign in to view)</span>
+				<% end%>
         </p>
       </article>
     </details>
@@ -111,8 +102,8 @@
       </summary>
       <article>
         <p>
-        Yep! When you submit your receipts to get reimbursed on Expensify, just make sure to make the expense amount the
-        partial reimbursement amount rather than the full expense, and add a note there that it's a partial reimbursement.
+        Yep! When you submit your receipts to get reimbursed on Expensify, just make sure the expense amount is the
+        partial reimbursement amount rather than the full expense. Also, add a note there that it's a partial reimbursement.
         </p>
       </article>
     </details>
