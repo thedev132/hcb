@@ -18,3 +18,19 @@
 .comments .card p:first-child {
   margin-top: 0;
 }
+
+.comments .card.hash-highlight {
+  animation: highlight 2s;
+  border: 1px solid rgba(map-get($palette, warning), 0.25);
+}
+
+@keyframes highlight {
+  from {
+    border: 1px solid map-get($palette, warning);
+    background-color: map-get($palette, warning);
+  }
+  to {
+    border: 1px solid rgba(map-get($palette, warning), 0.25);
+    background-color: unset;
+  }
+}
