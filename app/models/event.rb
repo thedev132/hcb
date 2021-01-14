@@ -117,6 +117,8 @@ class Event < ApplicationRecord
   has_many :canonical_event_mappings
   has_many :canonical_transactions, through: :canonical_event_mappings
 
+  has_many :fees, through: :canonical_event_mappings
+
   validate :point_of_contact_is_admin
 
   validates :name, :sponsorship_fee, presence: true
@@ -299,7 +301,7 @@ class Event < ApplicationRecord
   end
 
   def total_fees_v2_cents
-    @total_fees_v2_cents ||= (canonical_transactions.revenue.sum(:amount_cents) * BigDecimal("#{sponsorship_fee}")).ceil # always round up
+    @total_fess_v2_cents ||= fees.sum(:amount_cents_as_decimal).ceil
   end
 
   # fee payments are withdrawals, so negate value
