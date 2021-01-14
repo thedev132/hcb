@@ -70,5 +70,5 @@ disbursement_nightly_job:
 
 fee_engine_hourly_job:
   cron: "0 */1 * * *" # run every 1 hours
-  class: "FeeEngine::Hourly"
+  class: "FeeEngineJob::Hourly"
   queue: "default"
