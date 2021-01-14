@@ -16,7 +16,10 @@ class CanonicalTransaction < ApplicationRecord
   has_one :canonical_pending_settled_mapping
   has_one :canonical_pending_transaction, through: :canonical_pending_settled_mapping
 
-  
+  def likely_hack_club_fee?
+    memo.to_s.upcase.include?("HACK CLUB BANK FEE TO ACCOUNT")
+  end
+
   # DEPRECATED
   def display_name # in deprecated system this is the renamed transaction name
     memo

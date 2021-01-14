@@ -1,0 +1,6 @@
+fee1:
+  canonical_event_mapping: canonical_event_mapping1
+  reason: "revenue"
+  amount_cents_as_decimal: 7.0
+  event_sponsorship_fee: 0.07
+  created_at: <%= Time.now %>
