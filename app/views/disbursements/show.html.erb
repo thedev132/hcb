@@ -50,3 +50,14 @@
     <% end %>
   </section>
 </article>
+
+<% if @disbursement.fulfilled? %>
+<article class="card max-width-2 mx-auto mt3">
+  <h3 class="mt0 mb0 heading">Linked Transactions</h3>
+  <ul>
+  <% @disbursement.t_transactions.each do |tx| %>
+    <li><%= link_to "#{render_money tx.amount} on #{tx.event.name}", tx %></li>
+  <% end %>
+  </ul>
+</article>
+<% end %>
