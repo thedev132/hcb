@@ -1,7 +1,11 @@
 class CanonicalTransaction < ApplicationRecord
-  scope :likely_github, -> { where("memo ilike '%github grant%'") }
-
   scope :unmapped, -> { includes(:canonical_event_mapping).where(canonical_event_mappings: {canonical_transaction_id: nil}) }
+
+  scope :revenue, -> { where("amount_cents > 0") }
+  scope :expense, -> { where("amount_cents < 0") }
+
+  scope :likely_github, -> { where("memo ilike '%github grant%'") }
+  scope :likely_hack_club_fee, -> { where("memo ilike '%Hack Club Bank Fee TO ACCOUNT%'") }
 
   monetize :amount_cents
 
@@ -12,6 +16,7 @@ class CanonicalTransaction < ApplicationRecord
   has_one :canonical_pending_settled_mapping
   has_one :canonical_pending_transaction, through: :canonical_pending_settled_mapping
 
+  
   # DEPRECATED
   def display_name # in deprecated system this is the renamed transaction name
     memo

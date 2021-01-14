@@ -5,6 +5,10 @@ module Partners
         class List
           include StripeService
 
+          def initialize(start_date: nil)
+            @start_date = start_date || Time.now.utc - 1.month
+          end
+
           def run
             stripe_transactions
           end
@@ -33,6 +37,7 @@ module Partners
 
           def list_attrs(starting_after:)
             {
+              created: { gte: @start_date.to_i },
               starting_after: starting_after,
               limit: 100
             }

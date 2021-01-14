@@ -1,6 +1,9 @@
 module EventMappingEngine
   class Nightly
-    def initialize
+    include ::TransactionEngine::Shared
+
+    def initialize(start_date: nil)
+      @start_date = start_date || last_1_month
     end
 
     def run
@@ -15,15 +18,15 @@ module EventMappingEngine
     private
 
     def map_historical_plaid!
-      ::EventMappingEngine::Map::HistoricalPlaid.new.run
+      ::EventMappingEngine::Map::HistoricalPlaid.new(start_date: @start_date).run
     end
 
     def map_historical_emburse!
-      ::EventMappingEngine::Map::HistoricalEmburse.new.run
+      ::EventMappingEngine::Map::HistoricalEmburse.new(start_date: @start_date).run
     end
 
     def map_stripe_transactions!
-      ::EventMappingEngine::Map::StripeTransactions.new.run
+      ::EventMappingEngine::Map::StripeTransactions.new(start_date: @start_date).run
     end
 
     def map_github!

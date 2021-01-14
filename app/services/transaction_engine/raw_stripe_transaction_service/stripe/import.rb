@@ -2,7 +2,12 @@ module TransactionEngine
   module RawStripeTransactionService
     module Stripe
       class Import
-        def initialize
+        include ::TransactionEngine::Shared
+
+        def initialize(start_date: nil)
+          @start_date = start_date || last_1_month
+
+          @bank_account_id = "STRIPEISSUING1"
         end
 
         def run
@@ -12,6 +17,8 @@ module TransactionEngine
               st.amount_cents = t[:amount]
               st.date_posted = Time.at(t[:created])
               st.stripe_authorization_id = t[:authorization]
+
+              st.unique_bank_identifier = unique_bank_identifier
             end.save!
           end
 
@@ -21,7 +28,7 @@ module TransactionEngine
         private
 
         def stripe_transactions
-          @stripe_transactions ||= ::Partners::Stripe::Issuing::Transactions::List.new.run
+          @stripe_transactions ||= ::Partners::Stripe::Issuing::Transactions::List.new(start_date: @start_date).run
         end
       end
     end

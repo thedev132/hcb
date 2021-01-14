@@ -10,6 +10,7 @@
   <th>Name</th>
   <th>Balance</th>
   <th>Syncing</th>
+  <th>SyncingV2</th>
   <th colspan="2">Full Info</th>
 </tr>
 <% BankAccount.find_each do |ba| %>
@@ -22,6 +23,13 @@
     </td>
     <td>
       <% if ba.should_sync? %>
+        <%= status_badge 'success' %> Enabled
+      <% else %>
+        <%= status_badge 'muted' %> Paused
+      <% end %>
+    </td>
+    <td>
+      <% if ba.should_sync_v2? %>
         <%= status_badge 'success' %> Enabled
       <% else %>
         <%= status_badge 'muted' %> Paused

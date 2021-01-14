@@ -2,6 +2,8 @@ class Event < ApplicationRecord
   extend FriendlyId
 
   default_scope { order(id: :asc) }
+  scope :v1, -> { where(transaction_engine_v2_at: nil) }
+  scope :v2, -> { where.not(transaction_engine_v2_at: nil) }
   scope :hidden, -> { where.not(hidden_at: nil) }
   scope :not_hidden, -> { where(hidden_at: nil) }
   scope :event_ids_with_pending_fees_greater_than_100, -> do
@@ -12,7 +14,8 @@ class Event < ApplicationRecord
         -- step 1: calculate total_fees per event
         select fr.event_id, sum(fr.fee_amount) from fee_relationships fr
         inner join transactions t on t.fee_relationship_id = fr.id
-        where fr.fee_applies is true and t.deleted_at is null
+        inner join events e on e.id = fr.event_id
+        where fr.fee_applies is true and t.deleted_at is null and e.transaction_engine_v2_at is null
         group by fr.event_id
 
         ) q1 
@@ -21,7 +24,8 @@ class Event < ApplicationRecord
         -- step 2: calculate total_fee_payments per event
         select fr.event_id, sum(t.amount) from fee_relationships fr
         inner join transactions t on t.fee_relationship_id = fr.id
-        where fr.is_fee_payment is true and t.deleted_at is null
+        inner join events e on e.id = fr.event_id
+        where fr.is_fee_payment is true and t.deleted_at is null and e.transaction_engine_v2_at is null
         group by fr.event_id
         ) q2
 
@@ -34,7 +38,45 @@ class Event < ApplicationRecord
   end
 
   scope :pending_fees, -> do
-    where(id: self.event_ids_with_pending_fees_greater_than_100.to_a.map {|a| a["event_id"] })
+    where("(last_fee_processed_at is null or last_fee_processed_at <= ?) and id in (?)", 20.days.ago, self.event_ids_with_pending_fees_greater_than_100.to_a.map {|a| a["event_id"] })
+  end
+
+  scope :event_ids_with_pending_fees_greater_than_100_v2, -> do
+    query = <<~SQL
+      ;select event_id, fee_balance from (
+        select q1.event_id, COALESCE(q1.sum, 0) as total_fees, COALESCE(q2.sum, 0) as total_fee_payments, COALESCE(q1.sum, 0) + COALESCE(q2.sum, 0) as fee_balance from (
+
+        -- step 1: calculate total_fees per event
+        select cem.event_id, sum(ct.amount_cents * 0.07) from canonical_event_mappings cem -- 0.07 is embedded here. TODO: build parallel fee engine to assign canonical transactions varying fee %s if wanted. a revamped version of fee relationships which sort of operates this way.
+        inner join canonical_transactions ct on ct.id = cem.canonical_transaction_id
+        inner join events e on cem.event_id = e.id
+        where ct.amount_cents > 0
+        and e.transaction_engine_v2_at is not null
+        group by cem.event_id
+
+        ) q1 
+
+        left outer join (
+        -- step 2: calculate total_fee_payments per event
+        select cem.event_id, sum(ct.amount_cents) from canonical_event_mappings cem
+        inner join canonical_transactions ct on ct.id = cem.canonical_transaction_id
+        inner join events e on cem.event_id = e.id
+        where ct.amount_cents < 0
+        and ct.memo ilike '%Hack Club Bank Fee%'
+        and e.transaction_engine_v2_at is not null
+        group by cem.event_id
+        ) q2
+
+        on q1.event_id = q2.event_id
+      ) q3
+      where fee_balance > 100
+    SQL
+
+    ActiveRecord::Base.connection.execute(query)
+  end
+
+  scope :pending_fees_v2, -> do
+    where("(last_fee_processed_at is null or last_fee_processed_at <= ?) and id in (?)", 20.days.ago, self.event_ids_with_pending_fees_greater_than_100_v2.to_a.map {|a| a["event_id"] })
   end
 
   friendly_id :name, use: :slugged
@@ -172,6 +214,10 @@ class Event < ApplicationRecord
     @fee_balance ||= total_fees - total_fee_payments
   end
 
+  def fee_balance_v2_cents
+    @fee_balance_v2_cents ||= total_fees_v2_cents - total_fee_payments_v2_cents
+  end
+
   # amount of balance that fees haven't been pulled out for
   def balance_not_feed
     a_fee_balance = self.fee_balance
@@ -183,6 +229,11 @@ class Event < ApplicationRecord
     percent = self.sponsorship_fee * 100
 
     (a_fee_balance * 100 / percent)
+  end
+
+  def balance_not_feed_v2_cents
+    # shortcut to invert
+    BigDecimal("#{fee_balance_v2_cents}") / BigDecimal("#{sponsorship_fee}")
   end
 
   def fee_balance_without_fee_reimbursement_reconcilliation
@@ -223,7 +274,15 @@ class Event < ApplicationRecord
     }
   end
 
+  def ready_for_fee?
+    last_fee_processed_at.nil? || last_fee_processed_at <= min_waiting_time_between_fees
+  end
+
   private
+
+  def min_waiting_time_between_fees
+    20.days.ago
+  end
 
   def default_values
     self.has_fiscal_sponsorship_document ||= true
@@ -239,8 +298,16 @@ class Event < ApplicationRecord
     @total_fees ||= transactions.joins(:fee_relationship).where(fee_relationships: { fee_applies: true }).sum("fee_relationships.fee_amount")
   end
 
+  def total_fees_v2_cents
+    @total_fees_v2_cents ||= (canonical_transactions.revenue.sum(:amount_cents) * BigDecimal("#{sponsorship_fee}")).ceil # always round up
+  end
+
   # fee payments are withdrawals, so negate value
   def total_fee_payments
     @total_fee_payments ||= -transactions.joins(:fee_relationship).where(fee_relationships: { is_fee_payment: true }).sum(:amount)
+  end
+
+  def total_fee_payments_v2_cents
+    @total_fee_payments_v2_cents ||= -canonical_transactions.expense.likely_hack_club_fee.sum(:amount_cents)
   end
 end
