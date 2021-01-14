@@ -5,7 +5,7 @@ class CanonicalTransaction < ApplicationRecord
   scope :expense, -> { where("amount_cents < 0") }
 
   scope :likely_github, -> { where("memo ilike '%github grant%'") }
-  scope :likely_hack_club_fee, -> { where("memo ilike '%Hack Club Bank Fee%'") }
+  scope :likely_hack_club_fee, -> { where("memo ilike '%Hack Club Bank Fee TO ACCOUNT%'") }
 
   monetize :amount_cents
 
