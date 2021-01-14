@@ -12,7 +12,7 @@
         <% end %>
       <% end %>
       <%= link_to 'Edit', edit_comment_path(comment) if organizer_signed_in? %>
-      <%= link_to 'Hyperlink', "#comment-#{comment.created_at.to_i}" if organizer_signed_in? %>
+      <%= link_to 'Hyperlink', "#comment-#{comment.created_at.to_i}", target: '_blank' if organizer_signed_in? %>
     </p>
   </div>
 </div>
