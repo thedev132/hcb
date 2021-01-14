@@ -11,9 +11,19 @@ RSpec.describe Event, type: :model do
     expect(event).to be_valid
   end
 
+  describe "#transaction_engine_v2_at" do
+    it "has a value" do
+      event.save!
+
+      result = event.transaction_engine_v2_at
+
+      expect(result).to_not eql(nil)
+    end
+  end
+
   describe "#balance_v2_cents" do
     it "calculates a value from canonical transactions" do
-      result = event.balance_v2
+      result = event.balance_v2_cents
 
       expect(result).to eql(200)
     end

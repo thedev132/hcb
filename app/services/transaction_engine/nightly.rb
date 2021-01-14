@@ -17,7 +17,7 @@ module TransactionEngine
       hash_raw_plaid_transactions!
       hash_raw_emburse_transactions!
       hash_raw_stripe_transactions!
-      hash_raw_csv_transactions!
+      #hash_raw_csv_transactions! # turn off for now. was a test.
 
       # 3 canonical
       canonize_hashed_transactions!
@@ -26,7 +26,7 @@ module TransactionEngine
     private
 
     def import_raw_plaid_transactions!
-      BankAccount.syncing.pluck(:id).each do |bank_account_id|
+      BankAccount.syncing_v2.pluck(:id).each do |bank_account_id|
         puts "raw_plaid_transactions: #{bank_account_id}"
 
         ::TransactionEngine::RawPlaidTransactionService::Plaid::Import.new(bank_account_id: bank_account_id, start_date: @start_date).run
@@ -75,7 +75,7 @@ module TransactionEngine
     end
 
     def hash_raw_csv_transactions!
-      ::TransactionEngine::HashedTransactionService::RawCsvTransaction::Import.new.run
+      #::TransactionEngine::HashedTransactionService::RawCsvTransaction::Import.new.run
     end
 
     def canonize_hashed_transactions!

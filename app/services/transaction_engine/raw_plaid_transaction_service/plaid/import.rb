@@ -23,6 +23,8 @@ module TransactionEngine
               pt.amount = -plaid_transaction['amount'] # IMPORTANT: deprecated transaction engine used negatives so new must also (for Plaid only)
               pt.date_posted = plaid_transaction['date']
               pt.pending = plaid_transaction['pending']
+
+              pt.unique_bank_identifier = unique_bank_identifier
             end.save!
           end
         end

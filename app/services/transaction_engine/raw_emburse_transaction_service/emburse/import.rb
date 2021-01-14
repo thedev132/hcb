@@ -2,9 +2,13 @@ module TransactionEngine
   module RawEmburseTransactionService
     module Emburse
       class Import
+        include ::TransactionEngine::Shared
+
         def initialize(start_date: Time.now - 15.days, end_date: Time.now)
           @start_date = fmt_date start_date
           @end_date = fmt_date end_date
+
+          @bank_account_id = "EMBURSEISSUING1"
         end
 
         def run
@@ -14,6 +18,8 @@ module TransactionEngine
               et.amount = t[:amount]
               et.date_posted = t[:time]
               et.state = t[:state]
+
+              et.unique_bank_identifier = unique_bank_identifier
             end.save!
           end
 

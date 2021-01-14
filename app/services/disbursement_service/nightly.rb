@@ -9,7 +9,7 @@ module DisbursementService
       login_to_svb!
 
       Disbursement.pending.each do |disbursement|
-        raise ArgumentError, "must be a pending disbursement only" unless disbursement.unprocessed?
+        raise ArgumentError, "must be a pending disbursement only" unless disbursement.pending?
 
         amount_cents = disbursement.amount
         memo = disbursement.transaction_memo

@@ -1,13 +1,15 @@
 module TransactionEngine
   module HashedTransactionService
     class PrimaryHash
-      def initialize(date:, amount_cents:, memo:)
+      def initialize(unique_bank_identifier:, date:, amount_cents:, memo:)
+        @unique_bank_identifier = unique_bank_identifier
         @date = date
         @amount_cents = amount_cents
         @memo = memo.to_s.delete(' ')
       end
 
       def run
+        raise ArgumentError, 'unique bank identifier must be upcased' unless unique_bank_identifier_is_upcased?
         raise ArgumentError, 'memo must be upcased' unless memo_is_upcased?
         raise ArgumentError, 'amount cents is not an integer' unless amount_cents_is_integer?
         raise ArgumentError, 'amount cents cannot be zero' if amount_cents_is_zero?
@@ -24,6 +26,7 @@ module TransactionEngine
 
       def input_array
         [
+          @unique_bank_identifier,
           @date,
           @memo,
           @amount_cents
@@ -32,6 +35,10 @@ module TransactionEngine
 
       def seed
         0
+      end
+
+      def unique_bank_identifier_is_upcased?
+        @unique_bank_identifier.upcase == @unique_bank_identifier
       end
 
       def memo_is_upcased?

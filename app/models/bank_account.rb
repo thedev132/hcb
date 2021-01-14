@@ -2,6 +2,7 @@ class BankAccount < ApplicationRecord
   has_many :transactions
 
   scope :syncing, -> { where(should_sync: true) }
+  scope :syncing_v2, -> { where(should_sync_v2: true) }
 
   def balance
     self.transactions.sum(:amount)
