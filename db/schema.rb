@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_12_062455) do
+ActiveRecord::Schema.define(version: 2021_01_14_183257) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -467,6 +467,16 @@ ActiveRecord::Schema.define(version: 2021_01_12_062455) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["event_id"], name: "index_fee_relationships_on_event_id"
+  end
+
+  create_table "fees", force: :cascade do |t|
+    t.bigint "canonical_event_mapping_id", null: false
+    t.decimal "amount_cents_as_decimal"
+    t.decimal "event_sponsorship_fee"
+    t.text "reason"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["canonical_event_mapping_id"], name: "index_fees_on_canonical_event_mapping_id"
   end
 
   create_table "friendly_id_slugs", id: :serial, force: :cascade do |t|
@@ -959,6 +969,7 @@ ActiveRecord::Schema.define(version: 2021_01_12_062455) do
   add_foreign_key "events", "users", column: "point_of_contact_id"
   add_foreign_key "exports", "users"
   add_foreign_key "fee_relationships", "events"
+  add_foreign_key "fees", "canonical_event_mappings"
   add_foreign_key "g_suite_accounts", "g_suites"
   add_foreign_key "g_suite_accounts", "users", column: "creator_id"
   add_foreign_key "g_suites", "events"
