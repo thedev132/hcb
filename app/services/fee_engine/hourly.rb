@@ -1,8 +1,5 @@
 module FeeEngine
   class Hourly
-    def initialize
-    end
-
     def run
       CanonicalEventMapping.missing_fee.find_each do |cem|
         reason = determine_reason(cem)
@@ -26,6 +23,7 @@ module FeeEngine
       reason = "TBD"
 
       # TODO: add other reasons here like disbursements, github, etc
+      reason = "HACK CLUB FEE" if cem.canonical_transaction.likely_hack_club_fee?
 
       reason = "REVENUE" if cem.canonical_transaction.amount_cents > 0
 
