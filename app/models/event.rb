@@ -310,6 +310,14 @@ class Event < ApplicationRecord
   end
 
   def total_fee_payments_v2_cents
-    @total_fee_payments_v2_cents ||= -canonical_transactions.expense.likely_hack_club_fee.sum(:amount_cents)
+    @total_fee_payments_v2_cents ||= -canonical_transactions.where(id: canonical_transaction_ids_from_hack_club_fees).sum(:amount_cents)
+  end
+
+  def canonical_event_mapping_ids_from_hack_club_fees
+    @canonical_event_mapping_ids_from_hack_club_fees ||= fees.hack_club_fee.pluck(:canonical_event_mapping_id)
+  end
+
+  def canonical_transaction_ids_from_hack_club_fees
+    @canonical_transaction_ids_from_hack_club_fees ||= CanonicalEventMapping.find(canonical_event_mapping_ids_from_hack_club_fees).pluck(:canonical_transaction_id)
   end
 end
