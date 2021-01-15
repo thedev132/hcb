@@ -11,6 +11,7 @@ module FeeService
       # v2
       Event.pending_fees_v2.each do |event|
         raise ArgumentError, "must be an event that has not had a fee for more than 20 days" unless event.ready_for_fee?
+        raise ArgumentError, "must be an event that has a balance greater than 0" unless event.fee_balance_v2_cents > 0
 
         amount_cents = event.fee_balance_v2_cents
         memo = canonical_fee_memo(event: event)
