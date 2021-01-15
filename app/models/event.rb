@@ -41,42 +41,48 @@ class Event < ApplicationRecord
     where("(last_fee_processed_at is null or last_fee_processed_at <= ?) and id in (?)", 20.days.ago, self.event_ids_with_pending_fees_greater_than_100.to_a.map {|a| a["event_id"] })
   end
 
-  scope :event_ids_with_pending_fees_greater_than_100_v2, -> do
+  scope :event_ids_with_pending_fees_greater_than_0_v2, -> do
     query = <<~SQL
       ;select event_id, fee_balance from (
-        select q1.event_id, COALESCE(q1.sum, 0) as total_fees, COALESCE(q2.sum, 0) as total_fee_payments, COALESCE(q1.sum, 0) + COALESCE(q2.sum, 0) as fee_balance from (
+      select 
+      q1.event_id,
+      COALESCE(q1.sum, 0) as total_fees, 
+      COALESCE(q2.sum, 0) as total_fee_payments,
+      COALESCE(q1.sum, 0) + COALESCE(q2.sum, 0) as fee_balance 
 
-        -- step 1: calculate total_fees per event
-        select cem.event_id, sum(ct.amount_cents * 0.07) from canonical_event_mappings cem -- 0.07 is embedded here. TODO: build parallel fee engine to assign canonical transactions varying fee %s if wanted. a revamped version of fee relationships which sort of operates this way.
-        inner join canonical_transactions ct on ct.id = cem.canonical_transaction_id
-        inner join events e on cem.event_id = e.id
-        where ct.amount_cents > 0
-        and e.transaction_engine_v2_at is not null
-        group by cem.event_id
+      from (
+          select 
+          cem.event_id, 
+          COALESCE(sum(f.amount_cents_as_decimal), 0) as sum
+          from canonical_event_mappings cem
+          inner join fees f on cem.id = f.canonical_event_mapping_id
+          inner join events e on e.id = cem.event_id
+          where e.transaction_engine_v2_at is not null
+          group by cem.event_id
+      ) as q1 left outer join (
+          select 
+          cem.event_id, 
+          COALESCE(sum(ct.amount_cents), 0) as sum
+          from canonical_event_mappings cem
+          inner join fees f on cem.id = f.canonical_event_mapping_id
+          inner join canonical_transactions ct on cem.canonical_transaction_id = ct.id
+          inner join events e on e.id = cem.event_id
+          where e.transaction_engine_v2_at is not null
+          and f.reason = 'HACK CLUB FEE'
+          group by cem.event_id
+      ) q2
 
-        ) q1 
-
-        left outer join (
-        -- step 2: calculate total_fee_payments per event
-        select cem.event_id, sum(ct.amount_cents) from canonical_event_mappings cem
-        inner join canonical_transactions ct on ct.id = cem.canonical_transaction_id
-        inner join events e on cem.event_id = e.id
-        where ct.amount_cents < 0
-        and ct.memo ilike '%Hack Club Bank Fee%'
-        and e.transaction_engine_v2_at is not null
-        group by cem.event_id
-        ) q2
-
-        on q1.event_id = q2.event_id
+      on q1.event_id = q2.event_id
       ) q3
-      where fee_balance > 100
+      where fee_balance > 0
+      order by fee_balance desc
     SQL
 
     ActiveRecord::Base.connection.execute(query)
   end
 
   scope :pending_fees_v2, -> do
-    where("(last_fee_processed_at is null or last_fee_processed_at <= ?) and id in (?)", 20.days.ago, self.event_ids_with_pending_fees_greater_than_100_v2.to_a.map {|a| a["event_id"] })
+    where("(last_fee_processed_at is null or last_fee_processed_at <= ?) and id in (?)", 20.days.ago, self.event_ids_with_pending_fees_greater_than_0_v2.to_a.map {|a| a["event_id"] })
   end
 
   friendly_id :name, use: :slugged
