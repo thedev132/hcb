@@ -240,7 +240,7 @@ class Event < ApplicationRecord
   end
 
   def balance_not_feed_v2_cents
-    # shortcut to invert
+    # shortcut to invert - TODO: DEPRECATE. dangerous - causes incorrect calculations
     BigDecimal("#{fee_balance_v2_cents}") / BigDecimal("#{sponsorship_fee}")
   end
 
