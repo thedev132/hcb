@@ -42,7 +42,7 @@ html[data-dark='true'] {
   .details-horiz > div:not(:last-of-type),
   .details-horiz > .details-horiz__col,
   tr {
-    border-color: $darkless;
+    border-color: map-get($palette, smoke);
   }
   .menu__toggle[aria-expanded='true']:after {
     border-bottom-color: $darkless;
