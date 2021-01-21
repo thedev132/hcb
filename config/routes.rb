@@ -150,6 +150,9 @@ Rails.application.routes.draw do
     get 'reauthenticate'
   end
 
+  resources :canonical_transactions, only: [:show] do
+  end
+
   resources :transactions, only: [:index, :show, :edit, :update] do
     collection do
       get 'export'

@@ -23,6 +23,14 @@ class CanonicalTransaction < ApplicationRecord
   end
 
   # DEPRECATED
+  def marked_no_or_lost_receipt_at=(v)
+    v
+  end
+
+  def marked_no_or_lost_receipt_at
+    nil
+  end
+
   def display_name # in deprecated system this is the renamed transaction name
     memo
   end
