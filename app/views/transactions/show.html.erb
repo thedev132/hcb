@@ -129,4 +129,17 @@
 
 </article>
 
-<%= render 'comments/comments' unless using_transaction_engine_v2? %>
+<% if using_transaction_engine_v2? %>
+
+  <h2>Receipts</h2>
+  <section class="grid grid--split mt2 mb3">
+    <%= render @transaction.receipts %>
+    <%= render 'receipts/upload', receiptable: @transaction %>
+  </section>
+
+<% else %>
+
+  <%= render 'comments/comments' %>
+
+<% end %>
+
