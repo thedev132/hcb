@@ -10,9 +10,9 @@ class CanonicalTransactionsController < ApplicationController
   def waive_fee
     authorize CanonicalTransaction
 
-    @canonical_transaction = CanonicalTransaction.find(params[:id])
+    ct = CanonicalTransaction.find(params[:id])
 
-    fee = @canoical_transaction.canonical_event_mapping.fees.first
+    fee = ct.canonical_event_mapping.fees.first
     fee.amount_cents_as_decimal = 0
     fee.reason = "REVENUE WAIVED"
     fee.save!
