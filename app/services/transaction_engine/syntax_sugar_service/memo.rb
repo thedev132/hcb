@@ -73,7 +73,7 @@ module TransactionEngine
       end
 
       def invoice?
-        memo_upcase.include?("HACKC PAYOUT")
+        memo_upcase.include?("HACKC PAYOUT") || memo_upcase.include?("HACK CLUB BANK PAYOUT")
       end
 
       def disbursement?
