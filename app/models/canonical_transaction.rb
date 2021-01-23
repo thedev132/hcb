@@ -73,7 +73,7 @@ class CanonicalTransaction < ApplicationRecord
   end
 
   def fee_applies?
-    nil # TODO
+    @fee_applies ||= fees.greater_than_0.exists?
   end
 
   def emburse_transfer
