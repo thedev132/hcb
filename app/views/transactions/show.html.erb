@@ -92,6 +92,8 @@
         <p>
           <strong>Fee</strong>
           <%= render_money fee.amount_cents_as_decimal %> (<%= render_percentage fee.event_sponsorship_fee %>)
+
+          <%= link_to "waive fee", waive_fee_canonical_transaction(@transaction), method: :post if current_user&.admin? %>
         </p>
       <% end %>
     <% elsif @transaction.fee_payment? %>
