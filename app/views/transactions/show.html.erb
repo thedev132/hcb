@@ -88,10 +88,12 @@
     <% end %>
 
     <% if @transaction.fee_applies? %>
-      <p>
-        <strong>Fee</strong>
-        <%= render_money @transaction.fee_relationship.fee_amount %> (<%= render_percentage @transaction.fee_relationship.fee_percent %>)
-      </p>
+      <% @transaction.fees.each do |fee| %>
+        <p>
+          <strong>Fee</strong>
+          <%= render_money fee.amount_cents_as_decimal %> (<%= render_percentage fee.event_sponsorship_fee %>)
+        </p>
+      <% end %>
     <% elsif @transaction.fee_payment? %>
       <p>
         <strong>Note</strong>
