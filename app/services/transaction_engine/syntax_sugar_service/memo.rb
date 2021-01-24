@@ -61,7 +61,7 @@ module TransactionEngine
       end
 
       def emburse_transfer_from_account_to_card_balance?
-        memo_upcase.include?("EMBURSE.COM EMBURSE.CO")
+        memo_upcase.include?("EMBURSE.COM EMBURSE.CO") || memo_upcase.include?("EMBURSE.COM TRANSFER")
       end
 
       def emburse_transfer_from_fiscal_sponsorship?
