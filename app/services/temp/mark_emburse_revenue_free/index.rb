@@ -19,10 +19,14 @@ module Temp
 
           fee = ct.fees.first
 
-          # All emburse transactions are fee waived according to historical logic
-          fee.amount_cents_as_decimal = 0
-          fee.reason = "REVENUE WAIVED"
-          fee.save!
+          if fee.amount_cents_as_decimal > 0
+
+            # All emburse transactions revenue are fee waived according to historical logic
+            fee.amount_cents_as_decimal = 0
+            fee.reason = "REVENUE WAIVED"
+            fee.save!
+
+          end
         end
       end
 
