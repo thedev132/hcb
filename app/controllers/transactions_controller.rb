@@ -11,14 +11,15 @@ class TransactionsController < ApplicationController
   end
 
   def export
+    @event = Event.friendly.find(params[:event])
+
     if using_transaction_engine_v2?
-      @event = Event.friendly.find(params[:event])
+      authorize Transaction
 
       respond_to do |format|
-        format.csv send_data stream_transactions_csv
+        format.csv { stream_transactions_csv }
       end
     else
-      @event = Event.friendly.find(params[:event])
       @transactions = @event.transactions
       authorize @transactions
 

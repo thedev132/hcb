@@ -11,10 +11,10 @@ module CanonicalTransactionService
 
       def run
         Enumerator.new do |y|
-          y << header
+          y << header.to_s
 
           event.canonical_transactions.find_each(batch_size: BATCH_SIZE) do |ct|
-            y << row(ct)
+            y << row(ct).to_s
           end
         end
       end
