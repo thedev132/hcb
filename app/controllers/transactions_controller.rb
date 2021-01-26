@@ -11,19 +11,27 @@ class TransactionsController < ApplicationController
   end
 
   def export
-    @event = Event.friendly.find(params[:event])
-    @transactions = @event.transactions
-    authorize @transactions
+    if using_transaction_engine_v2?
+      @event = Event.friendly.find(params[:event])
 
-    @attributes = %w{date display_name name amount account_balance fee fee_balance link}
-    @attributes_to_currency = %w{amount fee}
+      respond_to do |format|
+        format.csv send_data stream_transactions_csv
+      end
+    else
+      @event = Event.friendly.find(params[:event])
+      @transactions = @event.transactions
+      authorize @transactions
 
-    name = "#{DateTime.now.strftime("%Y-%m-%d_%H:%M:%S")}_#{@event.name.to_param}_transactions"
+      @attributes = %w{date display_name name amount account_balance fee fee_balance link}
+      @attributes_to_currency = %w{amount fee}
 
-    respond_to do |format|
-      format.csv { send_data generate_csv, filename: "#{name}.csv" }
-      format.json { send_data generate_json, filename: "#{name}.json" }
-     end
+      name = "#{DateTime.now.strftime("%Y-%m-%d_%H:%M:%S")}_#{@event.name.to_param}_transactions"
+
+      respond_to do |format|
+        format.csv { send_data generate_csv, filename: "#{name}.csv" }
+        format.json { send_data generate_json, filename: "#{name}.json" }
+      end
+    end
   end
 
   def show
@@ -197,5 +205,29 @@ class TransactionsController < ApplicationController
         end
       end
     end
+  end
+
+  def stream_transactions_csv
+    set_file_headers
+    set_streaming_headers
+
+    response.status = 200
+
+    self.response_body = transactions_csv
+  end
+
+  def set_file_headers
+    headers["Content-Type"] = "text/csv"
+    headers["Content-disposition"] = "attachment; filename=transactions.csv"
+  end
+
+  def set_streaming_headers
+    headers["X-Accel-Buffering"] = "no"
+    headers["Cache-Control"] ||= "no-cache"
+    headers.delete("Content-Length")
+  end
+
+  def transactions_csv
+    ::CanonicalTransactionService::Export::Csv.new(event_id: @event.id).run
   end
 end

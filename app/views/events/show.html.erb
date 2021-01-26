@@ -76,7 +76,6 @@
 <h2 class="heading">
   Transactions
 
-  <% unless using_transaction_engine_v2? %>
   <button
     type="button"
     <%= organizer_signed_in? ? 'data-behavior=menu_toggle aria-expanded=false tabindex=0' : 'disabled=disabled' %>
@@ -87,11 +86,10 @@
       <% if organizer_signed_in? %>
         <div class="menu__content h5" data-behavior="menu_content">
           <%= link_to 'CSV', export_transactions_path(event: @event, format: :csv), target: :_blank %>
-          <%= link_to 'JSON', export_transactions_path(event: @event, format: :json), target: :_blank %>
+          <%= link_to 'JSON', export_transactions_path(event: @event, format: :json), target: :_blank unless using_transaction_engine_v2? %>
         </div>
       <% end %>
   </button>
-  <% end %>
 </h2>
 
 <!--
