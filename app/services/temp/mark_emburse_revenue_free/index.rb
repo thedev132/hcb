@@ -28,6 +28,12 @@ module Temp
 
           end
         end
+
+        # also deal with non-standard fee applications on plaid transactions - tends to effect older events
+        plaid_ids = event.transactions.select { |t| t.fee == false }.pluck(:plaid_id)
+        rpts = RawPlaidTransaction.where(plaid_transaction_id: plaid_ids)
+        fees = rpts.map { |rpt| rpt.hashed_transactions.first.canonical_transaction }.map { |ct| ct.canonical_event_mapping.fees.first }.select { |fee| fee.amount_cents_as_decimal > 0 }
+        fees.each { |fee| fee.amount_cents_as_decimal = 0; fee.reason = "REVENUE WAIVED"; fee.save!; }
       end
 
       private
