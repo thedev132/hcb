@@ -151,6 +151,10 @@ Rails.application.routes.draw do
   end
 
   resources :canonical_transactions, only: [:show] do
+    member do
+      post 'waive_fee'
+      post 'mark_bank_fee'
+    end
   end
 
   resources :transactions, only: [:index, :show, :edit, :update] do
