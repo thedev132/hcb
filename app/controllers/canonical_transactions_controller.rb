@@ -2,7 +2,9 @@ require 'csv'
 
 class CanonicalTransactionsController < ApplicationController
   def show
-    authorize CanonicalTransaction
+    @canonical_transaction = CanonicalTransaction.find(params[:id])
+
+    authorize @canonical_transaction
 
     redirect_to transaction_url(params[:id])
   end
