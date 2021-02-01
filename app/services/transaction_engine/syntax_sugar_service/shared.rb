@@ -5,6 +5,8 @@ module TransactionEngine
       OUTGOING_ACH_MEMO_PART = "BUSBILLPAY" # possibly not guaranteed from SVB bank
       INCOMING_INVOICE_MEMO_PART1 = "HACKC PAYOUT"
       INCOMING_INVOICE_MEMO_PART2 = "HACK CLUB BANK PAYOUT"
+      FEE_REFUND_MEMO_PART1 = "FEE REFUND"
+      FEE_REFUND_MEMO_PART2 = "FROM ACCOUNT"
 
       private
 
@@ -43,6 +45,15 @@ module TransactionEngine
       def likely_incoming_invoice_short_name
         memo_upcase.gsub(INCOMING_INVOICE_MEMO_PART1, "").gsub(INCOMING_INVOICE_MEMO_PART2, "").split(" ")[0]
       end
+
+      def likely_invoice_for_fee_refund_hex_random_id
+        memo_upcase.gsub(FEE_REFUND_MEMO_PART1, "").gsub(FEE_REFUND_MEMO_PART2, "").split(" ")[0]
+      end
+
+      def fee_refund?
+        memo_upcase.include?(FEE_REFUND_MEMO_PART1) && memo_upcase.include?(FEE_REFUND_MEMO_PART2)
+      end
+
     end
   end
 end
