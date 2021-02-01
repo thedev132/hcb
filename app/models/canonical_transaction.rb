@@ -27,7 +27,11 @@ class CanonicalTransaction < ApplicationRecord
     memo.to_s.upcase.include?("HACK CLUB BANK FEE TO ACCOUNT")
   end
 
-    # DEPRECATED
+  def linked_object
+    @linked_object ||= TransactionEngine::SyntaxSugarService::LinkedObject.new(canonical_transaction: self).run
+  end
+
+  # DEPRECATED
   def marked_no_or_lost_receipt_at=(v)
     v
   end
@@ -65,6 +69,8 @@ class CanonicalTransaction < ApplicationRecord
   end
 
   def check
+    return linked_object if linked_object.is_a?(Check)
+
     nil # TODO
   end
 
