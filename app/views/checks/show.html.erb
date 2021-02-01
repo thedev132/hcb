@@ -115,7 +115,7 @@
         class: 'btn bg-info right' %>
     <% end %>    
     <% if @check.voidable? %>
-      <%= link_to 'Void',
+      <%#= link_to 'Void',
         organizer_signed_in? ? check_start_void_path(@check) : root_path,
         disabled: !organizer_signed_in?,
         class: 'btn bg-error mr1 right' %>
