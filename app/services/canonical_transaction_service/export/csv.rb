@@ -13,7 +13,7 @@ module CanonicalTransactionService
         Enumerator.new do |y|
           y << header.to_s
 
-          event.canonical_transactions.find_each(batch_size: BATCH_SIZE) do |ct|
+          event.canonical_transactions.order("date desc").each do |ct|
             y << row(ct).to_s
           end
         end
