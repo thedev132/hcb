@@ -63,7 +63,7 @@ class CanonicalTransaction < ApplicationRecord
   def invoice_payout
     return linked_object.payout if linked_object.is_a?(Invoice)
 
-    nil # TODO
+    nil
   end
 
   def fee_reimbursement
@@ -83,6 +83,8 @@ class CanonicalTransaction < ApplicationRecord
   end
 
   def donation_payout
+    return linked_object.payout if linked_object.is_a?(Donation)
+
     nil # TODO
   end
 

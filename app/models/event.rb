@@ -108,6 +108,7 @@ class Event < ApplicationRecord
 
   has_many :ach_transfers
   has_many :donations
+  has_many :donation_payouts, through: :donations, source: :payout
 
   has_many :lob_addresses
   has_many :checks, through: :lob_addresses
