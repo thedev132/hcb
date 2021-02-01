@@ -1,7 +1,7 @@
 module TransactionEngine
   module SyntaxSugarService
     class LinkedObject
-      OUTGOING_CHECK_MEMO_PART = "CHECK TO ACCOUNT REDACTED"
+      include ::TransactionEngine::SyntaxSugarService::Shared
 
       def initialize(canonical_transaction:)
         @canonical_transaction = canonical_transaction
@@ -12,34 +12,20 @@ module TransactionEngine
 
           return likely_check if outgoing_check?
 
+          return likely_ach if outgoing_ach?
+
           nil
         end
       end
 
       private
 
-      def memo
-        @memo ||= @canonical_transaction.memo.to_s
-      end
-
-      def memo_upcase
-        @memo_upcase ||= memo.upcase
-      end
-
-      def amount_cents
-        @canonical_transaction.amount_cents
-      end
-
-      def outgoing_check?
-        memo_upcase.include?(OUTGOING_CHECK_MEMO_PART)
-      end
-
-      def likely_outgoing_check_number
-        memo_upcase.gsub(OUTGOING_CHECK_MEMO_PART, "").strip
-      end
-
       def likely_check
         event.checks.where(check_number: likely_outgoing_check_number).first
+      end
+
+      def likely_ach
+        event.ach_transfers.where("recipient_name ilike '%#{likely_outgoing_ach_name}%' and amount = #{-amount_cents}").first # TODO: add smarts where multiple ach transfers to same person with same value
       end
 
       def event

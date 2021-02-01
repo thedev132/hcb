@@ -71,7 +71,13 @@ class CanonicalTransaction < ApplicationRecord
   def check
     return linked_object if linked_object.is_a?(Check)
 
-    nil # TODO
+    nil
+  end
+
+  def ach_transfer
+    return linked_object if linked_object.is_a?(AchTransfer)
+
+    nil
   end
 
   def donation_payout
