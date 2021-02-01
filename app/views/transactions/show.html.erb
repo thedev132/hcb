@@ -69,6 +69,15 @@
     </p>
     <% end %>
 
+    <% if @transaction&.ach_transfer %>
+    <p>
+      <strong>For</strong>
+      <span>
+      <%= link_to "A transfer of #{render_money @transaction.ach_transfer.amount}", @transaction.ach_transfer %>
+      </span>
+    </p>
+    <% end %>
+
     <% if @transaction&.donation_payout %>
     <p>
       <strong>For</strong>

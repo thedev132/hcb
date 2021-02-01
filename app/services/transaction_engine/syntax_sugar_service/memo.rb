@@ -1,7 +1,7 @@
 module TransactionEngine
   module SyntaxSugarService
     class Memo
-      OUTGOING_CHECK_MEMO_PART = "CHECK TO ACCOUNT REDACTED"
+      include ::TransactionEngine::SyntaxSugarService::Shared
 
       def initialize(canonical_transaction:)
         @canonical_transaction = canonical_transaction
@@ -11,6 +11,8 @@ module TransactionEngine
         if memo.present?
 
           return "CHECK ##{likely_outgoing_check_number}" if outgoing_check?
+
+          return "ACH TRANSFER #{likely_outgoing_ach_name}" if outgoing_ach?
 
           return "HACK CLUB BANK FEE" if hack_club_fee?
 
@@ -41,28 +43,8 @@ module TransactionEngine
 
       private
 
-      def memo
-        @memo ||= @canonical_transaction.memo.to_s
-      end
-
-      def memo_upcase
-        @memo_upcase ||= memo.upcase
-      end
-
-      def amount_cents
-        @canonical_transaction.amount_cents
-      end
-
       def hack_club_fee?
         @canonical_transaction.fees.hack_club_fee.exists?
-      end
-
-      def outgoing_check?
-        memo_upcase.include?(OUTGOING_CHECK_MEMO_PART)
-      end
-
-      def likely_outgoing_check_number
-        memo_upcase.gsub(OUTGOING_CHECK_MEMO_PART, "").strip
       end
 
       def fee_refund?
