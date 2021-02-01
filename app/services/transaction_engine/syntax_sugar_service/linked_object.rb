@@ -16,6 +16,8 @@ module TransactionEngine
 
           return likely_invoice if incoming_invoice?
 
+          return likely_invoice_for_fee_refund if fee_refund?
+
           nil
         end
       end
@@ -36,6 +38,10 @@ module TransactionEngine
         return nil unless potential_payouts.present?
 
         potential_payouts.first.invoice # TODO: add smarts where multiple potential payouts to same person with same value
+      end
+
+      def likely_invoice_for_fee_refund
+        FeeReimbursement.where("transaction_memo ilike '%#{likely_invoice_for_fee_refund_hex_random_id}%'").first.try(:invoice)
       end
 
       def event

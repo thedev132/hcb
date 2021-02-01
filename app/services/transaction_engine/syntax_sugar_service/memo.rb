@@ -47,10 +47,6 @@ module TransactionEngine
         @canonical_transaction.fees.hack_club_fee.exists?
       end
 
-      def fee_refund?
-        memo_upcase.include?("FEE REFUND") && memo_upcase.include?("FROM ACCOUNT")
-      end
-
       def emburse_transfer_from_account_to_card_balance?
         memo_upcase.include?("EMBURSE.COM EMBURSE.CO") || memo_upcase.include?("EMBURSE.COM TRANSFER")
       end
