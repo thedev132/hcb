@@ -82,7 +82,7 @@
     <p>
       <strong>For</strong>
       <span>
-       <%= "A donation of #{render_money @transaction.donation_payout.donation.amount} from #{@transaction.donation_payout.donation.name}" %>
+       <%= link_to "A donation of #{render_money @transaction.donation_payout.donation.amount} from #{@transaction.donation_payout.donation.name}", @transaction.donation_payout.donation %>
       </span>
     </p>
     <% end %>

@@ -7,6 +7,8 @@ module TransactionEngine
       INCOMING_INVOICE_MEMO_PART2 = "HACK CLUB BANK PAYOUT"
       FEE_REFUND_MEMO_PART1 = "FEE REFUND"
       FEE_REFUND_MEMO_PART2 = "FROM ACCOUNT"
+      DONATION_MEMO_PART1 = "HACKC DONATE"
+      DONATION_MEMO_PART2 = "HACK CLUB BANK DONATE"
 
       private
 
@@ -54,6 +56,17 @@ module TransactionEngine
         memo_upcase.include?(FEE_REFUND_MEMO_PART1) && memo_upcase.include?(FEE_REFUND_MEMO_PART2)
       end
 
+      def donation?
+        memo_upcase.include?(DONATION_MEMO_PART1) || memo_upcase.include?(DONATION_MEMO_PART2)
+      end
+
+      def likely_donation_short_name
+        memo_upcase.gsub(DONATION_MEMO_PART1, "").gsub(DONATION_MEMO_PART2, "").split(" ")[0]
+      end
+
+      def likely_donation_for_fee_refund_hex_random_id
+        memo_upcase.gsub(FEE_REFUND_MEMO_PART1, "").gsub(FEE_REFUND_MEMO_PART2, "").split(" ")[0]
+      end
     end
   end
 end
