@@ -88,10 +88,14 @@
     <% end %>
 
     <% if @transaction.fee_applies? %>
-      <p>
-        <strong>Fee</strong>
-        <%= render_money @transaction.fee_relationship.fee_amount %> (<%= render_percentage @transaction.fee_relationship.fee_percent %>)
-      </p>
+      <% @transaction.fees.each do |fee| %>
+        <p>
+          <strong>Fee</strong>
+          <%= render_money fee.amount_cents_as_decimal %> (<%= render_percentage fee.event_sponsorship_fee %>)
+
+          <%= link_to "waive fee", waive_fee_canonical_transaction_url(@transaction), method: :post, class: "btn bg-accent" if current_user&.admin? %>
+        </p>
+      <% end %>
     <% elsif @transaction.fee_payment? %>
       <p>
         <strong>Note</strong>
@@ -129,4 +133,23 @@
 
 </article>
 
-<%= render 'comments/comments' unless using_transaction_engine_v2? %>
+<% if using_transaction_engine_v2? %>
+
+  <h2>Receipts</h2>
+  <section class="grid grid--split mt2 mb3">
+    <%= render @transaction.receipts %>
+    <%= render 'receipts/upload', receiptable: @transaction %>
+  </section>
+
+  <% admin_tools('py0') do %>
+    <p>
+      <%= link_to "mark bank fee", mark_bank_fee_canonical_transaction_url(@transaction), method: :post, class: "btn bg-accent" %>
+    </p>
+  <% end %>
+
+<% else %>
+
+  <%= render 'comments/comments' %>
+
+<% end %>
+

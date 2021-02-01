@@ -1,34 +1,23 @@
 class CanonicalTransactionPolicy < ApplicationPolicy
-  def index?
-    user&.admin?
+  def show?
+    admin_or_teammember
   end
 
   def export?
-    user&.admin? ||
-      record.all? { |r| r.event.users.include? user }
-  end
-
-  def show?
-    # removing is_public check due to https://github.com/hackclub/bank/issues/675
-    # is_public || admin_or_teammember
     admin_or_teammember
   end
 
-  def edit?
-    admin_or_teammember
+  def waive_fee?
+    user&.admin?
   end
 
-  def update?
-    admin_or_teammember
+  def mark_bank_fee?
+    user&.admin?
   end
 
   private
 
   def admin_or_teammember
     user&.admin? || record&.event&.users&.include?(user)
-  end
-
-  def is_public
-    record&.event&.is_public?
   end
 end

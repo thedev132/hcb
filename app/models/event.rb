@@ -202,7 +202,13 @@ class Event < ApplicationRecord
     @balance_v2_cents ||= canonical_transactions.sum(:amount_cents)
   end
 
+  def balance_available_v2_cents
+    @balance_available_v2_cents ||= balance_v2_cents - fee_balance_v2_cents
+  end
+
   def balance
+    return balance_v2_cents if transaction_engine_v2_at.present?
+
     bank_balance = transactions.sum(:amount)
     stripe_balance = -stripe_authorizations.approved.sum(:amount)
 
@@ -213,12 +219,16 @@ class Event < ApplicationRecord
   # isn't being transferred out by an emburse_transfer or isn't going to be
   # pulled out via fee -tmb@hackclub
   def balance_available
+    return balance_available_v2_cents if transaction_engine_v2_at.present?
+
     emburse_transfer_pending = (emburse_transfers.under_review + emburse_transfers.pending).sum(&:load_amount)
     balance - emburse_transfer_pending - fee_balance
   end
   alias available_balance balance_available
 
   def fee_balance
+    return fee_balance_v2_cents if transaction_engine_v2_at.present?
+
     @fee_balance ||= total_fees - total_fee_payments
   end
 
@@ -240,7 +250,7 @@ class Event < ApplicationRecord
   end
 
   def balance_not_feed_v2_cents
-    # shortcut to invert
+    # shortcut to invert - TODO: DEPRECATE. dangerous - causes incorrect calculations
     BigDecimal("#{fee_balance_v2_cents}") / BigDecimal("#{sponsorship_fee}")
   end
 

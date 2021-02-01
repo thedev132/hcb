@@ -17,18 +17,31 @@ class CanonicalTransaction < ApplicationRecord
   has_one :event, through: :canonical_event_mapping
   has_one :canonical_pending_settled_mapping
   has_one :canonical_pending_transaction, through: :canonical_pending_settled_mapping
+  has_many :fees, through: :canonical_event_mapping
+
+  def smart_memo
+    @smart_memo ||= ::TransactionEngine::SyntaxSugarService::Memo.new(canonical_transaction: self).run
+  end
 
   def likely_hack_club_fee?
     memo.to_s.upcase.include?("HACK CLUB BANK FEE TO ACCOUNT")
   end
 
-  # DEPRECATED
+    # DEPRECATED
+  def marked_no_or_lost_receipt_at=(v)
+    v
+  end
+
+  def marked_no_or_lost_receipt_at
+    nil
+  end
+
   def display_name # in deprecated system this is the renamed transaction name
-    memo
+    smart_memo
   end
 
   def name # in deprecated system this is the imported name
-    memo
+   smart_memo
   end
 
   def filter_data
@@ -60,7 +73,7 @@ class CanonicalTransaction < ApplicationRecord
   end
 
   def fee_applies?
-    nil # TODO
+    @fee_applies ||= fees.greater_than_0.exists?
   end
 
   def emburse_transfer
