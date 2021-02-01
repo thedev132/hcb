@@ -24,7 +24,7 @@ module TransactionEngine
 
           return "DONATION" if donation?
 
-          return "INVOICE" if invoice?
+          return "INVOICE #{likely_incoming_invoice_short_name}" if incoming_invoice?
 
           return "DISBURSEMENT" if disbursement?
 
@@ -61,10 +61,6 @@ module TransactionEngine
 
       def donation?
         memo_upcase.include?("HACKC DONATE") || memo_upcase.include?("HACK CLUB BANK DONATE")
-      end
-
-      def invoice?
-        memo_upcase.include?("HACKC PAYOUT") || memo_upcase.include?("HACK CLUB BANK PAYOUT")
       end
 
       def disbursement?

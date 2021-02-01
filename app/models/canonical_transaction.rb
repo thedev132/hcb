@@ -61,6 +61,8 @@ class CanonicalTransaction < ApplicationRecord
   end
 
   def invoice_payout
+    return linked_object.payout if linked_object.is_a?(Invoice)
+
     nil # TODO
   end
 
