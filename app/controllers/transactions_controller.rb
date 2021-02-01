@@ -14,7 +14,7 @@ class TransactionsController < ApplicationController
     @event = Event.friendly.find(params[:event])
 
     if using_transaction_engine_v2?
-      authorize Transaction
+      authorize CanonicalTransaction
 
       respond_to do |format|
         format.csv { stream_transactions_csv }

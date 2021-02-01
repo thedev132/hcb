@@ -3,6 +3,10 @@ class CanonicalTransactionPolicy < ApplicationPolicy
     admin_or_teammember
   end
 
+  def export?
+    admin_or_teammember
+  end
+
   def waive_fee?
     user&.admin?
   end
