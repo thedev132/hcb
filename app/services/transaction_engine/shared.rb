@@ -12,7 +12,9 @@ module TransactionEngine
       when 4
         "FSMAIN"
       when 9
-        "HACKFOUNDATION5667"
+        "HACKFOUNDATION5667" # FS CHECK ESCROW
+      when 11
+        "HACKFOUNDATION5667" # FS CHECK ESCROW - new plaid connection from scottm
       when "EMBURSEISSUING1"
         "EMBURSEISSUING1"
       when "STRIPEISSUING1"
