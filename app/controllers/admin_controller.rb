@@ -85,6 +85,10 @@ class AdminController < ApplicationController
     @negative_events = Event.negatives
   end
 
+  def transaction_unmapped
+    @canonical_transactions = CanonicalTransaction.unmapped.order("date desc")
+  end
+
   def transaction_dedupe
     @groups = TransactionEngine::HashedTransactionService::GroupedDuplicates.new.run
   end
