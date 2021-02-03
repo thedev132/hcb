@@ -52,6 +52,7 @@ Rails.application.routes.draw do
   # webhooks
   post 'webhooks/donations', to: 'donations#accept_donation_hook'
 
+  get 'transactions/unmapped', to: 'admin#transaction_unmapped', as: :transaction_unmapped
   get 'transactions/dedupe', to: 'admin#transaction_dedupe', as: :transaction_dedupe
 
   resources :organizer_position_invites, only: [:index, :show], path: 'invites' do

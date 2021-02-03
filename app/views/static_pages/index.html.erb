@@ -90,7 +90,6 @@
       <%= render partial: 'static_pages/card', locals: { task_path: organizer_position_deletion_requests_path, task_name: :organizer_position_deletion_requests, human_name: 'Deletion requests', count: @service.organizer_position_deletion_requests_count } %>
       <%= render partial: 'static_pages/card', locals: { task_path: transactions_path, task_name: :transactions, human_name: 'Transactions', count: @service.transactions_count } %>
       <%#= react_component 'admin_task/Card', human_name: 'Transactions', task_name: :transactions, task_path: transactions_path %>
-      <%= card_to 'De-duplicate transactions', transaction_dedupe_path %>
       <%= render partial: 'static_pages/card', locals: { task_path: pending_disbursements_path, task_name: :disbursements, human_name: 'Disbursements', count: @service.disbursements_count } %>
       <%= react_component 'admin_task/Card', human_name: 'Hackathons', task_name: :pending_hackathons_airtable, task_path: link_to_airtable_task(:hackathons) %>
       <%= react_component 'admin_task/Card', human_name: 'Grants', task_name: :pending_grant_airtable, task_path: link_to_airtable_task(:grant) %>
@@ -98,6 +97,12 @@
       <%= react_component 'admin_task/Card', human_name: 'repl.it', task_name: :pending_replit_airtable, task_path: link_to_airtable_task(:replit) %>
       <%= react_component 'admin_task/Card', human_name: 'Sendy', task_name: :pending_sendy_airtable, task_path: link_to_airtable_task(:sendy) %>
       <%= react_component 'admin_task/Card', human_name: 'Wires', task_name: :wire_transfers, task_path: link_to_airtable_task(:wire_transfers) %> 
+    </ul>
+
+    <h2>V2 Daily Tasks</h2>
+    <ul class="grid left-align w-100 mt0">
+      <%= card_to '1. De-duplicate transactions', transaction_dedupe_path %>
+      <%= card_to '2. Unmapped transactions', transaction_unmapped_path %>
     </ul>
 
     <h2>Information</h2>
