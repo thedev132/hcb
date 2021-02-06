@@ -1,6 +1,6 @@
 module TransactionEngine
-  module SyntaxSugarService
-    class Memo
+  module FriendlyMemoService
+    class GenerateSolelyFromMemo
       include ::TransactionEngine::SyntaxSugarService::Shared
 
       def initialize(canonical_transaction:)
@@ -13,8 +13,6 @@ module TransactionEngine
           return "CHECK ##{likely_outgoing_check_number}" if outgoing_check?
 
           return "ACH TRANSFER #{likely_outgoing_ach_name}" if outgoing_ach?
-
-          return "HACK CLUB BANK FEE" if hack_club_fee?
 
           return "FEE REFUND" if fee_refund?
 
@@ -42,10 +40,6 @@ module TransactionEngine
       end
 
       private
-
-      def hack_club_fee?
-        @canonical_transaction.fees.hack_club_fee.exists?
-      end
 
       def emburse_transfer_from_account_to_card_balance?
         memo_upcase.include?("EMBURSE.COM EMBURSE.CO") || memo_upcase.include?("EMBURSE.COM TRANSFER")
