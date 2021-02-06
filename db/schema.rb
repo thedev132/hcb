@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_14_183257) do
+ActiveRecord::Schema.define(version: 2021_02_06_180313) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -55,6 +55,12 @@ ActiveRecord::Schema.define(version: 2021_01_14_183257) do
     t.string "checksum", null: false
     t.datetime "created_at", null: false
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
+
+  create_table "announcements", id: :serial, force: :cascade do |t|
+    t.text "body"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "bank_accounts", force: :cascade do |t|
@@ -183,6 +189,7 @@ ActiveRecord::Schema.define(version: 2021_01_14_183257) do
     t.integer "amount_cents", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.text "friendly_memo"
   end
 
   create_table "checks", force: :cascade do |t|
