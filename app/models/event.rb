@@ -168,7 +168,7 @@ class Event < ApplicationRecord
   end
 
   def admin_formatted_name
-    "(#{id}) #{name}"
+    "#{name} (#{id})"
   end
 
   # When a fee payment is collected from this event, what will the TX memo be?
