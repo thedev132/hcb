@@ -14,6 +14,7 @@ th, td {
 <table style="width: 100%;font-size:12px;">
   <thead>
     <tr>
+      <th>EVENTID</th>
       <th>ID</th>
       <th>DATE</th>
       <th>MEMO</th>
@@ -26,6 +27,7 @@ th, td {
   <% @canonical_transactions.each do |ct| %>
     <tr>
       <td><%= ct.id %></td>
+      <td><%= ct.event ? link_to(ct.event.id, event_id: ct.event.id) : nil %></td>
       <td><%= ct.date %></td>
       <td style="max-width: 0;overflow:hidden;text-overflow:ellipsis;white-space:no-wrap; width:300px;"><%= ct.memo %></td>
       <td style="max-width: 0;overflow:hidden;text-overflow:ellipsis;white-space:no-wrap; width:300px;"><%= ct.friendly_memo %></td>
