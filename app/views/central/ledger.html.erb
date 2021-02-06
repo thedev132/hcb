@@ -11,6 +11,11 @@ th, td {
   <%= submit_tag "Filter", name: nil %>
 <% end %>
 
+<hr/>
+
+<p style="text-align: right;">Balance: <%= Money.new(@account_balance_cents).format %></p>
+<p style="text-align: right;">Absolute Sum: <%= Money.new(@account_absolute_balance_cents).format %></p>
+
 <table style="width: 100%;font-size:12px;">
   <thead>
     <tr>

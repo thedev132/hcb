@@ -13,9 +13,11 @@ class CentralController < ApplicationController
       @event = Event.find(event_id)
       @canonical_transactions = @event.canonical_transactions.order("date desc").page(page).per(250)
       @account_balance_cents = @event.canonical_transactions.sum(:amount_cents)
+      @account_absolute_balance_cents = @event.canonical_transactions.sum("abs(amount_cents)")
     else
       @canonical_transactions = CanonicalTransaction.order("date desc").page(page).per(250)
       @account_balance_cents = CanonicalTransaction.sum(:amount_cents)
+      @account_absolute_balance_cents = CanonicalTransaction.sum("abs(amount_cents)")
     end
   end
 end
