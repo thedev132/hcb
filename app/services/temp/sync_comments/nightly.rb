@@ -2,7 +2,7 @@ module Temp
   module SyncComments
     class Nightly
       def run
-        ["Transaction", "LoadCardRequest", "Invoice", "GSuiteApplication", "GSuite", "FeeReimbursement", "OrganizerPositionDeletionRequest", "AchTransfer", "Check", "EmburseTransaction", "EmburseCardRequest", "EmburseTransfer", "Donation", "StripeAuthorization"]
+        # ["Transaction", "LoadCardRequest", "Invoice", "GSuiteApplication", "GSuite", "FeeReimbursement", "OrganizerPositionDeletionRequest", "AchTransfer", "Check", "EmburseTransaction", "EmburseCardRequest", "EmburseTransfer", "Donation", "StripeAuthorization"]
 
         # StripeAuthorizations
         Comment.where(commentable_type: "StripeAuthorization").find_each do |comment|

@@ -73,7 +73,7 @@
   <% end %>
 </div>
 
-<%= render 'transactions/notice' if using_transaction_engine_v2? %>
+<%= render 'transactions/notice' if using_transaction_engine_v2? && organizer_signed_in? %>
 
 <h2 class="heading">
   Transactions
