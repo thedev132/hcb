@@ -72,3 +72,15 @@ fee_engine_hourly_job:
   cron: "0 */1 * * *" # run every 1 hours
   class: "FeeEngineJob::Hourly"
   queue: "default"
+
+temp_job_sync_receipts_nightly:
+  cron: "0 0 * * *" # run every 1 day
+  class: "TempJob::SyncReceiptsNightly"
+  queue: "default"
+
+temp_job_sync_comments_nightly:
+  cron: "0 0 * * *" # run every 1 day
+  class: "TempJob::SyncCommentsNightly"
+  queue: "default"
+
+
