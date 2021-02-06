@@ -50,15 +50,31 @@ class CanonicalTransaction < ApplicationRecord
   end
 
   def deprecated_linked_object
-    @related_deprecated_linked_object ||= begin
+    @deprecated_linked_object ||= begin
       obj = nil
 
       if raw_plaid_transaction
         ts = Transaction.where(plaid_id: raw_plaid_transaction.plaid_transaction_id)
 
-        raise ArgumentError unless ts.count == 1
+        Airbrake.notify("There was more (or less) than 1 transaction for raw_plaid_transaction: #{raw_plaid_transaction.id}") unless ts.count == 1
 
         obj = ts.first
+      end
+
+      if raw_emburse_transaction
+        ets = EmburseTransaction.where(emburse_id: raw_emburse_transaction.emburse_transaction_id)
+
+        Airbrake.notify("There was more (or less) than 1 emburse_transaction for raw_emburse_transaction: #{raw_emburse_transaction.id}") unless ets.count == 1
+
+        obj = ets.first
+      end
+
+      if raw_stripe_transaction
+        sas = StripeAuthorization.where(stripe_id: raw_stripe_transaction.stripe_transaction.dig("authorization"))
+
+        Airbrake.notify("There was more (or less) than 1 stripe_authorization for raw_stripe_transaction: #{raw_stripe_transaction.id}") unless sas.count == 1
+
+        obj = sas.first
       end
 
       obj
@@ -152,9 +168,13 @@ class CanonicalTransaction < ApplicationRecord
     hashed_transaction.raw_emburse_transaction
   end
 
+  def raw_stripe_transaction
+    hashed_transaction.raw_stripe_transaction
+  end
+
   def hashed_transaction
     @hashed_transaction ||= begin
-      raise ArgumentError if hashed_transactions.count != 1
+      Airbrake.notify("There was more (or less) than 1 hashed_transaction for canonical_transaction: #{canonical_transaction.id}") if hashed_transactions.count != 1
 
       hashed_transactions.first
     end
