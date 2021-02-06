@@ -1,4 +1,5 @@
 class CanonicalTransaction < ApplicationRecord
+  include Commentable
   include Receiptable
 
   scope :unmapped, -> { includes(:canonical_event_mapping).where(canonical_event_mappings: {canonical_transaction_id: nil}) }
