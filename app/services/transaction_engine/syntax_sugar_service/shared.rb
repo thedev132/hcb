@@ -9,6 +9,7 @@ module TransactionEngine
       FEE_REFUND_MEMO_PART2 = "FROM ACCOUNT"
       DONATION_MEMO_PART1 = "HACKC DONATE"
       DONATION_MEMO_PART2 = "HACK CLUB BANK DONATE"
+      DISBURSEMENT_MEMO_PART1 = "HCB DISBURSE"
 
       private
 
@@ -66,6 +67,14 @@ module TransactionEngine
 
       def likely_donation_for_fee_refund_hex_random_id
         memo_upcase.gsub(FEE_REFUND_MEMO_PART1, "").gsub(FEE_REFUND_MEMO_PART2, "").split(" ")[0]
+      end
+
+      def disbursement?
+        memo_upcase.include?(DISBURSEMENT_MEMO_PART1)
+      end
+
+      def likely_disbursement_id
+        memo_upcase.gsub(DISBURSEMENT_MEMO_PART1, "").split(" ")[0]
       end
     end
   end

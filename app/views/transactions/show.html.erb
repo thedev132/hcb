@@ -60,6 +60,15 @@
     </p>
     <% end %>
 
+    <% if @transaction&.disbursement %>
+    <p>
+      <strong>For</strong>
+      <span>
+      <%= link_to "A disbursement of #{render_money @transaction.disbursement.amount}", @transaction.disbursement %>
+      </span>
+    </p>
+    <% end %>
+
     <% if @transaction&.check %>
     <p>
       <strong>For</strong>

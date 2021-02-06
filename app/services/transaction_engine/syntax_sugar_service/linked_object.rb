@@ -20,6 +20,8 @@ module TransactionEngine
 
           return likely_donation if donation?
 
+          return likely_disbursement if disbursement?
+
           nil
         end
       end
@@ -56,6 +58,10 @@ module TransactionEngine
         return nil unless potential_donation_payouts.present?
 
         potential_donation_payouts.first.donation
+      end
+
+      def likely_disbursement
+        Disbursement.where(id: likely_disbursement_id).first
       end
 
       def event

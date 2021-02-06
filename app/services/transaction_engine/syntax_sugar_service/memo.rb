@@ -54,10 +54,6 @@ module TransactionEngine
       def emburse_transfer_from_fiscal_sponsorship?
         memo_upcase.include?("TRANSFER FROM FISCAL SPONSORSHIP (NEW) - 7027") || memo_upcase.include?("TRANSFER FROM FS MAIN - 7027")
       end
-
-      def disbursement?
-        memo_upcase.include?("HCB DISBURSE")
-      end
     end
   end
 end
