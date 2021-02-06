@@ -6,6 +6,8 @@ module Temp
 
         # StripeAuthorizations
         Comment.where(commentable_type: "StripeAuthorization").find_each do |comment|
+          next unless comment.commentable
+
           raw_stripe_transaction = identify_raw_stripe_transaction(stripe_authorization_id: comment.commentable.stripe_id)
           next unless raw_stripe_transaction
 
@@ -18,6 +20,8 @@ module Temp
 
         # EmburseTransactions
         Comment.where(commentable_type: "EmburseTransaction").find_each do |comment|
+          next unless comment.commentable
+
           raw_emburse_transaction = identify_raw_emburse_transaction(emburse_id: comment.commentable.emburse_id)
           next unless raw_emburse_transaction
 
@@ -29,6 +33,8 @@ module Temp
         end
 
         Comment.where(commentable_type: "Transaction").find_each do |comment|
+          next unless comment.commentable
+
           raw_plaid_transaction = identify_raw_plaid_transaction(plaid_id: comment.commentable.plaid_id)
           next unless raw_plaid_transaction
 
