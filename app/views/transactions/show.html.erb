@@ -60,6 +60,15 @@
     </p>
     <% end %>
 
+    <% if @transaction&.disbursement %>
+    <p>
+      <strong>For</strong>
+      <span>
+      <%= link_to "A disbursement of #{render_money @transaction.disbursement.amount}", @transaction.disbursement %>
+      </span>
+    </p>
+    <% end %>
+
     <% if @transaction&.check %>
     <p>
       <strong>For</strong>
@@ -118,6 +127,14 @@
         <%= link_to 'View', emburse_transfer_path(@transaction.emburse_transfer) %>
       </p>
     <% end %>
+
+    <% if @transaction.deprecated_linked_object %>
+      <p>
+        <strong>History</strong>
+        <%= link_to 'Metadata', @transaction.deprecated_linked_object %>
+      </p>
+    <% end %>
+
   </section>
 
   <% unless using_transaction_engine_v2? %>
