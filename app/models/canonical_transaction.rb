@@ -97,12 +97,8 @@ class CanonicalTransaction < ApplicationRecord
     {} # TODO
   end
 
-  def comments
-    [] # TODO
-  end
-
   def fee_payment?
-    false # TODO
+    @fee_payment ||= fees.hack_club_fee.exists?
   end
 
   def invoice

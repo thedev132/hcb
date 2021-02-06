@@ -53,6 +53,10 @@ class TransactionsController < ApplicationController
       @transaction = TransactionEngine::Transaction::Show.new(canonical_transaction_id: params[:id]).run
       @event = @transaction.event
 
+      @commentable = @transaction
+      @comments = @commentable.comments
+      @comment = Comment.new
+
       authorize @transaction
     end
   end

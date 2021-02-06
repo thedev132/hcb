@@ -156,6 +156,8 @@ Rails.application.routes.draw do
       post 'waive_fee'
       post 'mark_bank_fee'
     end
+
+    resources :comments
   end
 
   resources :transactions, only: [:index, :show, :edit, :update] do
