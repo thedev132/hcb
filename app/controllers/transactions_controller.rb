@@ -18,6 +18,7 @@ class TransactionsController < ApplicationController
 
       respond_to do |format|
         format.csv { stream_transactions_csv }
+        format.json { stream_transactions_json }
       end
     else
       @transactions = @event.transactions
@@ -209,7 +210,7 @@ class TransactionsController < ApplicationController
   end
 
   def stream_transactions_csv
-    set_file_headers
+    set_file_headers_csv
     set_streaming_headers
 
     response.status = 200
@@ -217,9 +218,23 @@ class TransactionsController < ApplicationController
     self.response_body = transactions_csv
   end
 
-  def set_file_headers
+  def stream_transactions_json
+    set_file_headers_json
+    set_streaming_headers
+
+    response.status = 200
+
+    self.response_body = transactions_json
+  end
+
+  def set_file_headers_csv
     headers["Content-Type"] = "text/csv"
     headers["Content-disposition"] = "attachment; filename=transactions.csv"
+  end
+
+  def set_file_headers_json
+    headers["Content-Type"] = "application/json"
+    headers["Content-disposition"] = "attachment; filename=transactions.json"
   end
 
   def set_streaming_headers
@@ -231,4 +246,9 @@ class TransactionsController < ApplicationController
   def transactions_csv
     ::CanonicalTransactionService::Export::Csv.new(event_id: @event.id).run
   end
+
+  def transactions_json
+    ::CanonicalTransactionService::Export::Json.new(event_id: @event.id).run
+  end
+
 end

@@ -88,7 +88,7 @@
       <% if organizer_signed_in? %>
         <div class="menu__content h5" data-behavior="menu_content">
           <%= link_to 'CSV', export_transactions_path(event: @event, format: :csv), target: :_blank %>
-          <%= link_to 'JSON', export_transactions_path(event: @event, format: :json), target: :_blank unless using_transaction_engine_v2? %>
+          <%= link_to 'JSON', export_transactions_path(event: @event, format: :json), target: :_blank %>
         </div>
       <% end %>
   </button>
