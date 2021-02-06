@@ -82,7 +82,9 @@ module Temp
           created_at: comment.created_at,
           commentable_type: 'CanonicalTransaction',
           commentable_id: canonical_transaction.id,
-          file: comment.file.blob
+          content: comment.content,
+          admin_only: comment.admin_only,
+          file: (comment.file.present? ? comment.file.blob : nil)
         }
         Comment.create!(attrs)
       end
