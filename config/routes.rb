@@ -12,6 +12,8 @@ Rails.application.routes.draw do
 
   root to: 'static_pages#index'
   get 'stats', to: 'static_pages#stats'
+  get 'bookkeeping', to: 'admin#bookkeeping'
+  get 'stripe_charge_lookup', to: 'static_pages#stripe_charge_lookup'
 
   scope :my do
     get '/', to: redirect('/'), as: :my

@@ -97,6 +97,9 @@ class AdminController < ApplicationController
     @topups = StripeService::Topup.list[:data]
   end
 
+  def bookkeeping
+  end
+
   private
 
   include StaticPagesHelper # for airtable_info

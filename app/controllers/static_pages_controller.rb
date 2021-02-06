@@ -94,4 +94,20 @@ class StaticPagesController < ApplicationController
       events: events_list,
     }
   end
+
+  def stripe_charge_lookup
+    id = params[:id]
+    payment_intent_id = StripeService::Charge.retrieve(id)['payment_intent']
+    @payment = Donation.find_by(stripe_payment_intent_id: payment_intent_id)
+    @payment ||= Invoice.find_by(stripe_payment_intent_id: payment_intent_id)
+    @event = @payment.event
+
+    render json: {
+      event_id: @event.id
+    }
+  rescue StripeService::InvalidRequestError => e
+    render json: {
+      event_id: nil
+    }
+  end
 end
