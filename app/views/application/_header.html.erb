@@ -28,13 +28,13 @@
             style: 'box-sizing: border-box; padding: 5px;' %>
       </div>
     <% end %>
-    <%= image_tag "logo#{'-alt-1' if Rails.env.development?}-dark#{'-512' unless @home_size}.png",
+    <%= image_tag "logo#{'-alt-1' if Rails.env.development?}-dark.svg",
         name: 'header-logo',
         class: 'logo-dark',
         width: @home_size || 36,
         height: @home_size || 36,
         alt: 'Bank logo' %>
-    <%= image_tag "logo#{'-alt-1' if Rails.env.development?}#{'-512' unless @home_size}.png",
+    <%= image_tag "logo#{'-alt-1' if Rails.env.development?}.svg",
         name: 'header-logo',
         class: 'logo',
         width: @home_size || 36,
