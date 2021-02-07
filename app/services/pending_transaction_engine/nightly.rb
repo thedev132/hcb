@@ -1,11 +1,14 @@
 module PendingTransactionEngine
   class Nightly
     def run
+      # 1. outgoing checks
+
+
       # 1 raw imports
-      import_raw_pending_stripe_transactions!
+      # import_raw_pending_stripe_transactions!
 
       # 2 canonical
-      canonize_raw_pending_stripe_transactions!
+      # canonize_raw_pending_stripe_transactions!
     end
 
     private

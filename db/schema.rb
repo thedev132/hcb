@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_06_180313) do
+ActiveRecord::Schema.define(version: 2021_02_06_233228) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -735,6 +735,16 @@ ActiveRecord::Schema.define(version: 2021_02_06_180313) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "unique_bank_identifier", null: false
+  end
+
+  create_table "raw_pending_outgoing_check_transactions", force: :cascade do |t|
+    t.text "lob_transaction_id"
+    t.jsonb "lob_transaction"
+    t.integer "amount_cents"
+    t.date "date_posted"
+    t.string "state"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "raw_pending_stripe_transactions", force: :cascade do |t|
