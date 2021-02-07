@@ -1,10 +1,8 @@
 module PendingTransactionEngine
   class Nightly
     def run
-      # 1. outgoing checks
-
-
       # 1 raw imports
+      import_raw_outgoing_check_transactions!
       # import_raw_pending_stripe_transactions!
 
       # 2 canonical
@@ -12,6 +10,10 @@ module PendingTransactionEngine
     end
 
     private
+
+    def import_raw_outgoing_check_transactions!
+      ::PendingTransactionEngine::RawPendingOutgoingCheckTransaction::Lob::Import.new.run
+    end
 
     def import_raw_pending_stripe_transactions!
       ::PendingTransactionEngine::RawPendingStripeTransactionService::Stripe::Import.new.run
