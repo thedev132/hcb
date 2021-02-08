@@ -13,11 +13,11 @@ class RawPendingOutgoingCheckTransaction < ApplicationRecord
     @likely_event_id ||= ::Check.find_by(lob_id: lob_transaction_id).try(:event).try(:id)
   end
 
-  private
-
   def check_number
     lob_transaction.dig("check_number")
   end
+ 
+  private
 
   def raw_memo
     lob_transaction.dig("memo")
