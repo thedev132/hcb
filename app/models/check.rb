@@ -1,4 +1,5 @@
 class Check < ApplicationRecord
+  include AASM
   include Commentable
 
   belongs_to :creator, class_name: 'User'
@@ -14,6 +15,40 @@ class Check < ApplicationRecord
   validates_uniqueness_of :transaction_memo
 
   validate :transaction_amount
+
+  aasm do
+    state :approved, initial: true
+    state :pending
+    state :refunded
+    state :voided
+    state :deposited
+    state :in_transit
+    state :rejected
+
+    event :mark_pending do
+      transitions to: :pending
+    end
+
+    event :mark_refunded do
+      transitions to: :refunded
+    end
+
+    event :mark_voided do
+      transitions to: :voided
+    end
+
+    event :mark_deposited do
+      transitions to: :deposited
+    end
+
+    event :mark_in_transit do
+      transitions to: :in_transit
+    end
+
+    event :mark_rejected do
+      transitions to: :rejected
+    end
+  end
 
   scope :pending, -> { where(approved_at: nil, rejected_at: nil, voided_at: nil) }
   scope :approved, -> { where.not(approved_at: nil) }
