@@ -17,13 +17,17 @@ class CanonicalPendingTransaction < ApplicationRecord
       .includes(:canonical_pending_declined_mappings).where(canonical_pending_declined_mappings: { canonical_pending_transaction_id: nil })
   }
 
+  def smart_memo
+    friendly_memo_in_memory_backup
+  end
+
   # DEPRECATED
   def display_name
-    memo
+    smart_memo
   end
 
   def name # in deprecated system this is the imported name
-    memo
+    smart_memo
   end
 
   def filter_data
@@ -65,4 +69,11 @@ class CanonicalPendingTransaction < ApplicationRecord
   def disbursement
     nil # TODO
   end
+
+  private
+
+  def friendly_memo_in_memory_backup
+    @friendly_memo_in_memory_backup ||= PendingTransactionEngine::FriendlyMemoService::Generate.new(pending_canonical_transaction: self).run
+  end
+
 end
