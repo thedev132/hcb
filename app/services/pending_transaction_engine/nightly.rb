@@ -12,7 +12,7 @@ module PendingTransactionEngine
     private
 
     def import_raw_outgoing_check_transactions!
-      ::PendingTransactionEngine::RawPendingOutgoingCheckTransaction::Lob::Import.new.run
+      ::PendingTransactionEngine::RawPendingOutgoingCheckTransactionService::Lob::Import.new.run
     end
 
     def import_raw_pending_stripe_transactions!
