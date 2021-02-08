@@ -1,5 +1,6 @@
 class CanonicalPendingTransaction < ApplicationRecord
   belongs_to :raw_pending_stripe_transaction, optional: true
+  belongs_to :raw_pending_outgoing_check_transaction, optional: true
   has_one :canonical_pending_event_mapping
   has_one :event, through: :canonical_pending_event_mapping
   has_many :canonical_pending_settled_mappings
@@ -9,6 +10,7 @@ class CanonicalPendingTransaction < ApplicationRecord
   monetize :amount_cents
 
   scope :stripe, -> { where('raw_pending_stripe_transaction_id is not null')}
+  scope :outgoing_check, -> { where('raw_pending_outgoing_check_transaction_id is not null')}
   scope :unmapped, -> { includes(:canonical_pending_event_mapping).where(canonical_pending_event_mappings: {canonical_pending_transaction_id: nil}) }
   scope :unsettled, -> { 
     includes(:canonical_pending_settled_mappings).where(canonical_pending_settled_mappings: {canonical_pending_transaction_id: nil})
