@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_06_233228) do
+ActiveRecord::Schema.define(version: 2021_02_08_193218) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -180,6 +180,8 @@ ActiveRecord::Schema.define(version: 2021_02_06_233228) do
     t.bigint "raw_pending_stripe_transaction_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "raw_pending_outgoing_check_transaction_id", null: false
+    t.index ["raw_pending_outgoing_check_transaction_id"], name: "index_canonical_pending_txs_on_raw_pending_outgoing_check_tx_id"
     t.index ["raw_pending_stripe_transaction_id"], name: "index_canonical_pending_txs_on_raw_pending_stripe_tx_id"
   end
 
@@ -443,6 +445,7 @@ ActiveRecord::Schema.define(version: 2021_02_06_233228) do
     t.boolean "omit_stats", default: false
     t.datetime "transaction_engine_v2_at", default: -> { "CURRENT_TIMESTAMP" }
     t.datetime "last_fee_processed_at"
+    t.datetime "pending_transaction_engine_at"
     t.index ["club_airtable_id"], name: "index_events_on_club_airtable_id", unique: true
     t.index ["point_of_contact_id"], name: "index_events_on_point_of_contact_id"
   end
