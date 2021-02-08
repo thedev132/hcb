@@ -10,7 +10,7 @@ class RawPendingOutgoingCheckTransaction < ApplicationRecord
   end
 
   def likely_event_id
-    @likely_event_id ||= ::Check.find_by(lob_id: lob_transaction_id).try(:event_id)
+    @likely_event_id ||= ::Check.find_by(lob_id: lob_transaction_id).try(:event).try(:id)
   end
 
   private
