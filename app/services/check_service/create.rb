@@ -2,12 +2,11 @@ module CheckService
   class Create
     def initialize(event_id:,
                    lob_address_id:,
-                   description:, memo:, amount_cents:,
+                   memo:, amount_cents:,
                    current_user:)
       @event_id = event_id
       @lob_address_id = lob_address_id
 
-      @description = description
       @memo = memo
       @amount_cents = amount_cents
 
@@ -33,7 +32,7 @@ module CheckService
         lob_address: lob_address,
         memo: @memo,
         amount: @amount_cents,
-        description: @description,
+        description: description,
         creator: @current_user
       }
     end
@@ -43,7 +42,7 @@ module CheckService
         to: lob_address.lob_id,
         memo: @memo,
         amount_cents: @amount_cents,
-        description: @description,
+        description: description,
         message: message
       }
     end
@@ -74,6 +73,10 @@ module CheckService
 
     def ample_balance?
       event.balance_available_v2_cents >= @amount_cents
+    end
+
+    def description
+      @description ||= "#{event.name} - #{lob_address.name}"[0..255]
     end
   end
 end

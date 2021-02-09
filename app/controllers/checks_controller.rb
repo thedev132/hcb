@@ -84,7 +84,6 @@ class ChecksController < ApplicationController
       event_id: @event.id,
       lob_address_id: @lob_address.id,
 
-      description: nil,
       memo: filtered_params[:memo],
       amount_cents: (filtered_params[:amount].to_f * 100).to_i,
 
