@@ -9,20 +9,14 @@ class Check < ApplicationRecord
 
   has_many :t_transactions, class_name: 'Transaction', inverse_of: :check
 
-  before_create :default_values
-
-  validates_length_of :transaction_memo, maximum: 30
-  validates_uniqueness_of :transaction_memo
-
-  validate :transaction_amount
-
   aasm do
-    state :approved, initial: true
-    state :pending
-    state :refunded
+    state :approved # deprecate
+    state :pending # deprecate
+    state :pending_void # deprecate
+    state :in_transit, initial: true
     state :voided
+    state :refunded
     state :deposited
-    state :in_transit
     state :rejected
 
     event :mark_pending do
@@ -50,42 +44,11 @@ class Check < ApplicationRecord
     end
   end
 
-  scope :pending, -> { where(approved_at: nil, rejected_at: nil, voided_at: nil) }
-  scope :approved, -> { where.not(approved_at: nil) }
-  scope :rejected, -> { where.not(rejected_at: nil) }
-
-  # Syncing with Lob
-  before_save :create_lob_check
-
   before_update :updatable?
   before_destroy :destroyable?
 
-  def set_fields_from_lob_check(check)
-    self.description = check['description']
-    self.memo = check['memo']
-    self.amount = BigDecimal(check['amount'].to_s) * 100
-    self.check_number = check['check_number']
-    self.expected_delivery_date = check['expected_delivery_date']
-    self.send_date = check['send_date']
-    self.lob_id = check['id']
-  end
-
   def status
-    if refunded?
-      :refunded
-    elsif voided?
-      :voided
-    elsif pending_void?
-      :pending_void
-    elsif deposited?
-      :deposited
-    elsif approved?
-      :in_transit
-    elsif rejected?
-      :rejected
-    else
-      :pending
-    end
+    aasm_state.to_sym
   end
 
   def status_text
@@ -124,37 +87,12 @@ class Check < ApplicationRecord
     end
   end
 
-  def self.deposited
-    select { |check| check.deposited? }
-  end
-
-  def self.in_transit
-    select { |check| check.in_transit? }
-  end
-
   def self.unfinished_void
     select { |check| check.unfinished_void? }
   end
 
   def self.refunded_but_needs_match
     select { |check| check.refunded_at.present? && check.t_transactions.size != 4 }
-  end
-
-  def pending?
-    approved_at.nil?
-  end
-
-  def approved?
-    approved_at.present?
-  end
-
-  def rejected?
-    rejected_at.present?
-  end
-
-  # A check is in transit if it's been approved & hasn't been voided
-  def in_transit?
-    approved? && !voided? && !pending_void? && !deposited?
   end
 
   # if a void was put in and the sum of transaction is neutral (no money lost or gained)
@@ -292,35 +230,6 @@ class Check < ApplicationRecord
   end
 
   private
-
-  def default_values
-    self.description = "#{event.name} - #{lob_address.name}"[0..255]
-    self.transaction_memo = "PENDING-#{SecureRandom.hex(6)}"[0..30]
-    self.exported_at = nil
-  end
-
-  def transaction_amount
-    self.t_transactions.each do |t|
-      unless t.amount.abs == self.amount.abs
-        errors.add :t_transactions, "Check and transaction amount don't match"
-      end
-    end
-  end
-
-  def create_lob_check
-    return unless approved_at_was.nil? && !approved_at.nil?
-
-    lob_check = LobService.instance.create_check(
-      description,
-      memo[0..40],
-      lob_address.lob_id,
-      amount.to_f / 100,
-      "This check was sent by The Hack Foundation on behalf of #{event.name}. #{event.name} is fiscally sponsored by the Hack Foundation (d.b.a Hack Club), a 501(c)(3) nonprofit with the EIN 81-2908499"
-    )
-
-    set_fields_from_lob_check(lob_check)
-    self.transaction_memo = "#{check_number} Check"[0..30]
-  end
 
   def updatable?
     approved_at.nil?

@@ -71,47 +71,30 @@ class ChecksController < ApplicationController
   def create
     raise ActiveRecord::RecordNotFound unless using_transaction_engine_v2?
 
-    # this pulls apart the lob address and check so they can be created separately
-    check_params = filtered_params.except(:action, :controller, :lob_address_attributes)
-    check_params[:amount] = filtered_params[:amount].to_f * 100.to_i
+    authorize @event, policy_class: CheckPolicy
 
+    # 1. Update/Create LobAddress
     lob_address_params = filtered_params[:lob_address_attributes].merge(event: @event)
     lob_address_params['country'] = 'US'
-
     @lob_address = LobAddress.find_or_initialize_by(id: lob_address_params[:id], event: @event)
+    @lob_address.update!(lob_address_params)
 
-    @check = Check.new(check_params)
+    # 2. Create Check
+    attrs = {
+      event_id: @event.id,
+      lob_address_id: @lob_address.id,
 
-    @check.lob_address = @lob_address
-    @check.creator = current_user
+      description: nil,
+      memo: filtered_params[:memo],
+      amount_cents: (filtered_params[:amount].to_f * 100).to_i,
 
-    authorize @check
+      current_user: current_user
+    }
+    CheckService::Create.new(attrs).run
 
-    # verify that a user has enough money to write a check
-    if @check.amount > @event.balance_available
-      flash[:error] = 'You don’t have enough money to write this check!'
-      render :new
-      return
-    end
+    flash[:success] = 'Your check is on its way!'
 
-    if @lob_address.update(lob_address_params) && @check.save
-      flash[:success] = 'Submitted your check for approval.'
-      redirect_to event_transfers_path(@event)
-    else
-      render :new
-    end
-  end
-
-  def edit
-    authorize @check
-
-    if @check.approved?
-      flash[:error] = "This check has already been issued."
-      redirect_to event_transfers_path(@event)
-      return
-    end
-
-    @event = @check.event
+    redirect_to event_transfers_path(@event)
   end
 
   def start_void
@@ -139,43 +122,6 @@ class ChecksController < ApplicationController
     else
       render :start_void
     end
-  end
-
-  def update
-    authorize @check
-
-    if @check.approved?
-      flash[:error] = "This check has already been issued!"
-      redirect_to event_transfers_path(@event)
-      return
-    end
-
-    @event = @check.event
-
-    lob_address_params = filtered_params[:lob_address_attributes].merge!(event: @event)
-    lob_address_params['country'] = 'US'
-
-    check_params = filtered_params.except(:action, :controller, :lob_address_attributes)
-    check_params[:amount] = filtered_params[:amount].to_f * 100.to_i
-
-    if @check.update(check_params) && @check.lob_address.update(lob_address_params)
-      flash[:success] = 'Check successfully updated.'
-      redirect_to event_transfers_path(@event)
-    else
-      redirect_to :edit
-    end
-  end
-
-  def approve
-    authorize @check
-
-    if @check.approved?
-      flash[:error] = 'This check has already been approved!'
-      redirect_to checks_path
-      return
-    end
-
-    @check.approve!
   end
 
   def reject
