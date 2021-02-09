@@ -53,8 +53,8 @@
   <div class="container--xs">
     <h1 class="mt0">Send a check</h1>
     <%= render 'new_form', check: @check, lob_address: @lob_address %>
-    <div class="actions tooltipped tooltipped--n inline-block mt1" aria-label="Your check will be submitted for approval by the Bank team">
-      <input type="submit" value="Send check for approval" data-behavior="modal_trigger send_check_modal_trigger" data-modal="confirm_dialog" <%= "disabled" unless organizer_signed_in? %>></input>
+    <div class="actions tooltipped tooltipped--n inline-block mt1" aria-label="Your check will be immediately mailed out by the Bank team">
+      <input type="submit" value="Send check" data-behavior="modal_trigger send_check_modal_trigger" data-modal="confirm_dialog" <%= "disabled" unless organizer_signed_in? %>></input>
     </div>
   </div>
 
@@ -64,6 +64,6 @@
 
     <p class="">Once you send this check, you can only cancel if you do so at least <strong>one day</strong> before it's deposited.</p>
     
-    <button class="btn bg-error" data-behavior="submit_check">I understand, send check for approval</button>
+    <button class="btn bg-error" data-behavior="submit_check">I understand, send check</button>
   </div>
 </article>

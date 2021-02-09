@@ -2,7 +2,7 @@ module Partners
   module Lob
     module Checks
       class List
-        include StripeService
+        include ::Partners::Lob::Shared
 
         def initialize(start_date: nil)
           @start_date = start_date || Time.now.utc - 1.month
@@ -13,20 +13,6 @@ module Partners
         end
 
         private
-
-        def api_version
-          "2018-06-05"
-        end
-
-        def api_key
-          return Rails.application.credentials.lob[:production][:api_key] if Rails.env.production?
-
-          Rails.application.credentials.lob[:development][:api_key]
-        end
-
-        def client
-          @client ||= ::Lob::Client.new(api_key: api_key, api_version: api_version)
-        end
 
         def lob_checks
           resp = fetch_checks

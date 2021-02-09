@@ -1,0 +1,48 @@
+module Partners
+  module Lob
+    module Checks
+      class Create
+        include ::Partners::Lob::Shared
+
+        def initialize(to:, memo:, amount_cents:, 
+                       description:, message:)
+          @to = to
+          @memo = memo
+          @amount_cents = amount_cents
+
+          @bank_account = bank_account
+          @message = message
+        end
+
+        def run
+          @run ||= client.checks.create(create_attrs)
+        end
+
+        private
+
+        def create_attrs
+          {
+            to: @to,
+            amount: amount,
+            memo: short_memo,
+
+            message: @message,
+            description: @description,
+
+            # from shared
+            bank_account: bank_account,
+            from: from_address
+          }
+        end
+
+        def short_memo
+          @memo[0..40]
+        end
+
+        def amount
+          @amount ||= @amount_cents / 100.0
+        end
+      end
+    end
+  end
+end

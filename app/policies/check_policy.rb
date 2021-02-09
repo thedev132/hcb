@@ -8,7 +8,7 @@ class CheckPolicy < ApplicationPolicy
   end
 
   def create?
-    admin_or_user
+    user&.admin? || record.event.users.include?(user) # dirty implementation here. record is event (temporary)
   end
 
   def show?
