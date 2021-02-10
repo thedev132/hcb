@@ -109,7 +109,7 @@
 
   <section class="card__banner card__darker border-top overflow-hidden">
     <% if @check.pending? %>
-      <%= link_to 'Edit',
+      <%#= link_to 'Edit',
         organizer_signed_in? ? edit_check_path(@check) : root_path,
         disabled: !organizer_signed_in?,
         class: 'btn bg-info right' %>
