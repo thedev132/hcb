@@ -13,30 +13,32 @@ class Check < ApplicationRecord
     state :approved # deprecate
     state :pending # deprecate
     state :pending_void # deprecate
+
     state :in_transit, initial: true
+    state :deposited
+
     state :voided
     state :refunded
-    state :deposited
     state :rejected
 
-    event :mark_pending do
+    event :mark_pending do # deprecate
       transitions to: :pending
     end
 
+    event :mark_in_transit do
+      transitions to: :in_transit
+    end
+    
+    event :mark_deposited do
+      transitions to: :deposited
+    end
+ 
     event :mark_refunded do
       transitions to: :refunded
     end
 
     event :mark_voided do
       transitions to: :voided
-    end
-
-    event :mark_deposited do
-      transitions to: :deposited
-    end
-
-    event :mark_in_transit do
-      transitions to: :in_transit
     end
 
     event :mark_rejected do
