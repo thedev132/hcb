@@ -46,7 +46,6 @@ class Check < ApplicationRecord
     end
   end
 
-  before_update :updatable?
   before_destroy :destroyable?
 
   def status
@@ -107,7 +106,7 @@ class Check < ApplicationRecord
 
   # Deposited
   def deposited?
-    approved_at && t_transactions.size == 3 && t_transactions.sum(&:amount) < 0 && !voided?
+    t_transactions.size == 3 && t_transactions.sum(&:amount) < 0 && !voided?
   end
 
   # Refunded (shown to user)
@@ -135,10 +134,6 @@ class Check < ApplicationRecord
     approved? && voided_at.present? && t_transactions.size == 3 && t_transactions.sum(&:amount) < 0
   end
 
-  def exported?
-    exported_at.present?
-  end
-
   def event
     lob_address.event
   end
@@ -159,18 +154,6 @@ class Check < ApplicationRecord
     send_date ? send_date.past? : false
   end
 
-  def approve!
-    if approved_at != nil
-      errors.add(:check, 'has already been approved!')
-      return false
-    end
-    if update(approved_at: DateTime.now)
-     #RefundSentCheckJob.set(wait_until: send_date + 1.month).perform_later(self) # TODO: move to nightly or monthly cron job for reliability
-     return true
-    end
-    false
-  end
-
   def reject!
     if rejectable? and update(rejected_at: DateTime.now)
       return true
@@ -180,24 +163,16 @@ class Check < ApplicationRecord
     end
   end
 
-  def export!
-    unless exported_at.nil?
-      errors.add(:check, 'has already been exported!')
-      return self
-    end
-    update(exported_at: DateTime.now)
-  end
-
   def void!
     if voided_at != nil
       errors.add(:check, 'has already been voided!')
       return self
     end
     if voidable?
-      return update(exported_at: nil, voided_at: DateTime.now) if approved?
+      return update(voided_at: DateTime.now) if approved?
 
       # if it hasn't been approved, no action required from Michael & no export needed
-      return update(exported_at: DateTime.now, voided_at: DateTime.now) if !approved?
+      return update(voided_at: DateTime.now) if !approved?
     else
       errors.add(:check, 'cannot be voided!')
       return self
@@ -233,15 +208,11 @@ class Check < ApplicationRecord
 
   private
 
-  def updatable?
-    approved_at.nil?
-  end
-
   def destroyable?
-    approved_at.nil?
+    false
   end
 
   def rejectable?
-    approved_at.nil?
+    false
   end
 end

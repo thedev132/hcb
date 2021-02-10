@@ -114,7 +114,6 @@ Rails.application.routes.draw do
     end
     get 'view_scan'
 
-    get 'start_approval'
     post 'reject'
     get 'start_void'
     post 'void'

@@ -39,17 +39,20 @@
         </td>
         <td><%= render_money check.amount %></td>
         <td>
-          <%= status_badge check.state %> <%= check.status.to_s.humanize %>
+          <%= check.aasm_state %>
+          <%#= status_badge check.state %> <%= check.status.to_s.humanize %>
         </td>
+
+        <!--
         <td>
           <% if check.rejected? %>
-            <!-- nothing -->
           <% elsif check.approved_at.nil? && !check.voided? %>
-            <%= link_to 'Process', check_start_approval_path(check)%>
+            <%#= link_to 'Process', check_start_approval_path(check)%>
           <% elsif check.unfinished_void? %>
             <%= link_to 'Refund Check', check_refund_path(check) %>
           <% end %>   
-          </td>
+        </td>
+        -->
       </tr>
     <% end %>
   </tbody>
