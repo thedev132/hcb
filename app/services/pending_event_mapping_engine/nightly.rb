@@ -21,7 +21,7 @@ module PendingEventMappingEngine
     end
 
     def settle_canonical_pending_outgoing_check!
-      #::PendingEventMappingEngine::Map::OutgoingCheck.new.run
+      ::PendingEventMappingEngine::Settle::OutgoingCheck.new.run
     end
 
     def decline_canonical_pending_outgoing_check!
