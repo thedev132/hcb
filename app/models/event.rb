@@ -205,7 +205,7 @@ class Event < ApplicationRecord
   end
 
   def balance_v2_cents
-    @balance_v2_cents ||= canonical_transactions.sum(:amount_cents)
+    @balance_v2_cents ||= canonical_transactions.sum(:amount_cents) + pending_balance_v2_cents
   end
 
   def pending_balance_v2_cents
@@ -213,7 +213,7 @@ class Event < ApplicationRecord
   end
 
   def balance_available_v2_cents
-    @balance_available_v2_cents ||= balance_v2_cents - fee_balance_v2_cents + pending_balance_v2_cents
+    @balance_available_v2_cents ||= balance_v2_cents - fee_balance_v2_cents
   end
 
   def balance
