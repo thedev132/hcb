@@ -9,38 +9,6 @@ class ChecksController < ApplicationController
     @checks = Check.all.order(created_at: :desc)
   end
 
-  def export
-    authorize Check
-    # find all checks that are approved & not exported
-    #checks = Check.select { |c| !c.exported? && c.approved? }
-    checks = Check.in_transit
-
-    attributes = %w{iv account_number check_number amount date}
-
-    result = CSV.generate(headers: true) do |csv|
-      csv << attributes.map
-
-      checks.each do |check|
-        csv << attributes.map do |attr|
-          if attr == 'account_number'
-            Rails.application.credentials.positive_pay_account_number
-          elsif attr == 'amount'
-            check.amount.to_f / 100
-          elsif attr == 'date'
-            check.approved_at.strftime('%m-%d-%Y')
-          elsif attr == 'iv'
-            # V tells FRB to void, I is issue
-            check.pending_void? || check.refunded? ? "V" : "I"
-          else
-            check.send(attr)
-          end
-        end
-      end
-    end
-
-    send_data result, filename: "Checks #{Date.today}.csv"
-  end
-
   # GET /checks/1
   def show
     authorize @check

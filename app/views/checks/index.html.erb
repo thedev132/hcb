@@ -1,17 +1,11 @@
 <h1 class="heading">
   Checks
-  <%= link_to 'Export I/V CSV for FRB', export_checks_path, class: 'btn bg-info', data: {confirm: 'Export checks CSV? This is a one-time operation.'} %>
 </h1>
-
-<p>After you're done approving checks:</p>
-<ol>
-  <li>Export the CSV from above.</li>
-  <li>Go to <strong>FRB &gt; Positive Pay &gt; Imports &gt; Run imports</strong> and upload the CSV under <strong>"Hack Club Positive Pay Import"</strong> format.</li>
-</ol>
 
 <table>
   <thead>
     <tr>
+      <th>ID</th>
       <th>Number</th>
       <th>Event</th>
       <th>Amount</th>
@@ -23,24 +17,22 @@
   <tbody>
     <% @checks.each do |check| %>
       <tr>
+        <td><%= link_to check.id, check %></td>
+        <td><%= check.check_number %></td>
         <td>
-          <%= link_to check do %>
-            <%= link_to check.check_number || 'n/a', check %>
-            <% unless check.valid? %>
-              <span class="tooltipped tooltipped--s" aria-label="<%= check.errors.keys.map {|k| check.errors[k] }.join(". \n") %>">⚠️</span>
-            <% end %>
-          <% end %>
-          </td>
-          <td>
           <%= link_to check.event.name, check.event %>
+
           <% check.t_transactions.each do |t| %>
+            <br/>
             <%= link_to "#{t.amount.positive? ? '📈' : '📉'} #{t.name}", t, class: 'h6 muted' %>
           <% end %>
         </td>
         <td><%= render_money check.amount %></td>
         <td>
           <%= check.aasm_state %>
-          <%#= status_badge check.state %> <%= check.status.to_s.humanize %>
+        </td>
+        <td>
+          <%= link_to "Process", check if check.in_transit? %>
         </td>
 
         <!--
