@@ -12,7 +12,8 @@ class ChecksController < ApplicationController
   def export
     authorize Check
     # find all checks that are approved & not exported
-    checks = Check.select { |c| !c.exported? && c.approved? }
+    #checks = Check.select { |c| !c.exported? && c.approved? }
+    checks = Check.in_transit
 
     attributes = %w{iv account_number check_number amount date}
 
@@ -34,7 +35,6 @@ class ChecksController < ApplicationController
             check.send(attr)
           end
         end
-        check.export!
       end
     end
 
@@ -135,10 +135,6 @@ class ChecksController < ApplicationController
     @check.reject!
 
     redirect_to checks_path
-  end
-
-  def start_approval
-    authorize @check
   end
 
   def refund_get

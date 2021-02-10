@@ -10,7 +10,7 @@ module Partners
           @memo = memo
           @amount_cents = amount_cents
 
-          @bank_account = bank_account
+          @description = description
           @message = message
         end
 
