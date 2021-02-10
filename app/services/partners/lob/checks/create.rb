@@ -5,13 +5,15 @@ module Partners
         include ::Partners::Lob::Shared
 
         def initialize(to:, memo:, amount_cents:, 
-                       description:, message:)
+                       description:, message:,
+                       send_date:)
           @to = to
           @memo = memo
           @amount_cents = amount_cents
 
           @description = description
           @message = message
+          @send_date = send_date
         end
 
         def run
@@ -29,7 +31,7 @@ module Partners
             message: @message,
             description: @description,
 
-            send_date: send_date,
+            send_date: @send_date.iso8601,
 
             # from shared
             bank_account: bank_account,
@@ -43,10 +45,6 @@ module Partners
 
         def amount
           @amount ||= @amount_cents / 100.0
-        end
-
-        def send_date
-          (Time.now.utc + 1.days).iso8601
         end
       end
     end

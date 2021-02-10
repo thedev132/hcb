@@ -2,13 +2,14 @@ module CheckService
   class Create
     def initialize(event_id:,
                    lob_address_id:,
-                   memo:, amount_cents:,
+                   memo:, amount_cents:, send_date:,
                    current_user:)
       @event_id = event_id
       @lob_address_id = lob_address_id
 
       @memo = memo
       @amount_cents = amount_cents
+      @send_date = send_date
 
       @current_user = current_user
     end
@@ -32,6 +33,7 @@ module CheckService
         lob_address: lob_address,
         memo: @memo,
         amount: @amount_cents,
+        send_date: @send_date,
         description: description,
         creator: @current_user
       }
@@ -42,6 +44,7 @@ module CheckService
         to: lob_address.lob_id,
         memo: @memo,
         amount_cents: @amount_cents,
+        send_date: @send_date,
         description: description,
         message: message
       }
@@ -52,7 +55,6 @@ module CheckService
 
       {
         lob_id: lob_check["id"],
-        send_date: lob_check["send_date"],
         check_number: lob_check["check_number"],
         transaction_memo: transaction_memo,
         expected_delivery_date: lob_check["expected_delivery_date"]

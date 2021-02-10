@@ -38,6 +38,7 @@ class ChecksController < ApplicationController
 
       memo: filtered_params[:memo],
       amount_cents: (filtered_params[:amount].to_f * 100).to_i,
+      send_date: Time.now.utc + 48.hours,
 
       current_user: current_user
     }
@@ -83,33 +84,6 @@ class ChecksController < ApplicationController
     @check.mark_in_transit!
 
     redirect_to @check
-  end
-
-  def start_void
-    authorize @check
-
-    if @check.voided?
-      flash[:info] = 'You already voided that check!'
-      redirect_to event_transfers_path(@check.event)
-      return
-    end
-  end
-
-  def void
-    authorize @check
-
-    if @check.voided?
-      flash[:success] = 'You already voided that check!'
-      redirect_to event_transfers_path(@check.event)
-      return false
-    end
-
-    if @check.void!
-      flash[:success] = 'Check successfully voided.'
-      redirect_to event_transfers_path(@check.event)
-    else
-      render :start_void
-    end
   end
 
   def refund_get

@@ -1,0 +1,6 @@
+check1:
+  creator: user1
+  lob_address: lob_address1
+  amount: 100
+  send_date: <%= Time.now + 48.hours %>
+  created_at: <%= Time.now %>
