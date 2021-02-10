@@ -1,3 +1,5 @@
+require "csv"
+
 module CheckService
   module PositivePay
     class Csv
@@ -6,9 +8,9 @@ module CheckService
       end
 
       def run
-        CSV.generate(headers: true) do |csv|
-          csv << headers.map
-          csv << values.map
+        Enumerator.new do |y|
+          y << header.to_s
+          y << row.to_s
         end
       end
 
@@ -18,8 +20,16 @@ module CheckService
         @check ||= Check.find(@check_id)
       end
 
+      def header
+        ::CSV::Row.new(headers, ["iv", "account_number", "check_number", "amount", "date"])
+      end
+
       def headers
-        @headers ||= %w{iv account_number check_number amount date}
+        [:iv, :account_number, :check_number, :amount, :date]
+      end
+
+      def row
+        ::CSV::Row.new(headers, values)
       end
 
       def values

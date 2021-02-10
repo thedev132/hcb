@@ -15,6 +15,14 @@ class CheckPolicy < ApplicationPolicy
     is_public || admin_or_user
   end
 
+  def positive_pay_csv?
+    user&.admin?
+  end
+
+  def mark_in_transit?
+    user&.admin?
+  end
+
   def view_scan?
     admin_or_user
   end

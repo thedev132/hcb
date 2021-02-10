@@ -10,20 +10,16 @@ class Check < ApplicationRecord
   has_many :t_transactions, class_name: 'Transaction', inverse_of: :check
 
   aasm do
+    state :created, initial: true
+    state :in_transit
+    state :deposited
+    state :voided
+    state :refunded
+
+    state :rejected # deprecate
     state :approved # deprecate
     state :pending # deprecate
     state :pending_void # deprecate
-
-    state :in_transit, initial: true
-    state :deposited
-
-    state :voided
-    state :refunded
-    state :rejected
-
-    event :mark_pending do # deprecate
-      transitions to: :pending
-    end
 
     event :mark_in_transit do
       transitions to: :in_transit
@@ -40,13 +36,7 @@ class Check < ApplicationRecord
     event :mark_voided do
       transitions to: :voided
     end
-
-    event :mark_rejected do
-      transitions to: :rejected
-    end
   end
-
-  before_destroy :destroyable?
 
   def status
     aasm_state.to_sym
@@ -154,15 +144,6 @@ class Check < ApplicationRecord
     send_date ? send_date.past? : false
   end
 
-  def reject!
-    if rejectable? and update(rejected_at: DateTime.now)
-      return true
-    else
-      errors.add(:check, 'is not able to be rejected!')
-      return false
-    end
-  end
-
   def void!
     if voided_at != nil
       errors.add(:check, 'has already been voided!')
@@ -204,15 +185,5 @@ class Check < ApplicationRecord
     end
 
     @lob_check_url
-  end
-
-  private
-
-  def destroyable?
-    false
-  end
-
-  def rejectable?
-    false
   end
 end
