@@ -45,10 +45,12 @@
         <span class="regular muted"> a&nbsp;check for </span>
         <span class="regular"><%= render_money @check.amount %></span>
       </span>
+      <!--
       <span class="badge h4 ml2 nowrap bg-<%= @check.state %>">
         <%= @check.status_text %>
         <%= inline_icon @check.state_icon, size: 20 if @check.state_icon %>
       </span>
+      -->
     </div>
   </h2>
   <section class="card__banner card__darker details-horiz border-top border-bottom">
@@ -77,10 +79,12 @@
   </section>
 
   <section class="details pt2 pb2">
+    <!--
     <p>
       <strong>Status</strong>
       <%= @check.status_text_long %>
     </p>
+    -->
     <p>
       <strong>Sent to</strong>
       <%= @check.lob_address.name %>
