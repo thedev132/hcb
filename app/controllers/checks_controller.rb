@@ -9,22 +9,6 @@ class ChecksController < ApplicationController
     @checks = Check.all.order(created_at: :desc)
   end
 
-  # GET /checks/1
-  def show
-    authorize @check
-
-    @commentable = @check
-    @comments = @commentable.comments
-    @comment = Comment.new
-  end
-
-  # GET /checks/1/scan
-  def view_scan
-    authorize @check
-
-    redirect_to @check.url
-  end
-
   # GET /checks/new
   def new
     raise ActiveRecord::RecordNotFound unless using_transaction_engine_v2?
@@ -64,6 +48,43 @@ class ChecksController < ApplicationController
     redirect_to event_transfers_path(@event)
   end
 
+  # GET /checks/1
+  def show
+    authorize @check
+
+    @commentable = @check
+    @comments = @commentable.comments
+    @comment = Comment.new
+  end
+
+  def positive_pay_csv
+    authorize @check
+
+    headers["Content-Type"] = "text/csv"
+    headers["Content-disposition"] = "attachment; filename=check-#{@check.id}-#{@check.check_number}.csv"
+    headers["X-Accel-Buffering"] = "no"
+    headers["Cache-Control"] ||= "no-cache"
+    headers.delete("Content-Length")
+
+    response.status = 200
+
+    self.response_body = ::CheckService::PositivePay::Csv.new(check_id: @check.id).run
+  end
+
+  def view_scan
+    authorize @check
+
+    redirect_to @check.url
+  end
+
+  def mark_in_transit
+    authorize @check
+
+    @check.mark_in_transit!
+
+    redirect_to @check
+  end
+
   def start_void
     authorize @check
 
@@ -89,20 +110,6 @@ class ChecksController < ApplicationController
     else
       render :start_void
     end
-  end
-
-  def reject
-    authorize @check
-
-    if @check.rejected?
-      flash[:error] = 'This check has already been rejected!'
-      redirect_to checks_path
-      return
-    end
-
-    @check.reject!
-
-    redirect_to checks_path
   end
 
   def refund_get

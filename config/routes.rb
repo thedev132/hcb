@@ -110,8 +110,9 @@ Rails.application.routes.draw do
 
   resources :checks, only: [:show, :index] do
     get 'view_scan'
+    get 'positive_pay_csv'
+    post 'mark_in_transit'
 
-    post 'reject'
     get 'start_void'
     post 'void'
     get 'refund', to: 'checks#refund_get'

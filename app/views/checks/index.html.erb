@@ -32,7 +32,7 @@
           <%= check.aasm_state %>
         </td>
         <td>
-          <%= link_to "Process", check if check.in_transit? %>
+          <%= link_to "Process", check unless check.deposited? %>
         </td>
 
         <!--
