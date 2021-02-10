@@ -109,9 +109,6 @@ Rails.application.routes.draw do
   resources :emburse_cards, except: %i[new create]
 
   resources :checks, only: [:show, :index] do
-    collection do
-      get 'export'
-    end
     get 'view_scan'
 
     post 'reject'
