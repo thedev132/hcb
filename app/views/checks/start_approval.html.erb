@@ -32,8 +32,8 @@
 <p><%= render_money @check.amount %></p>
 
 <% if @check.status == :pending %>
-  <%= link_to 'Reject', check_reject_path(@check), method: :post, class: 'btn bg-error', data: {confirm: 'Reject this check? You should contact the event team about the reason why.'} %>
-  <%= link_to 'Approve', check_approve_path(@check), method: :post, class: 'btn bg-success', data: {confirm: 'Approve this check?'} %>
+  <%#= link_to 'Reject', check_reject_path(@check), method: :post, class: 'btn bg-error', data: {confirm: 'Reject this check? You should contact the event team about the reason why.'} %>
+  <%#= link_to 'Approve', check_approve_path(@check), method: :post, class: 'btn bg-success', data: {confirm: 'Approve this check?'} %>
 <% else %>
   <p><strong>Check already processed -- cannot approve nor reject.</strong></p>
 <% end %>
