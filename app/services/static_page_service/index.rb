@@ -19,11 +19,7 @@ module StaticPageService
     # Counts
 
     def checks_count
-      # While check sending isn't working, we don't want to show tasks in the
-      # queue that Ops Team can't fulfill
-
-      # Check.pending.count + Check.unfinished_void.count
-      return 0
+      Check.in_transit.count
     end
 
     def ach_transfers_count
