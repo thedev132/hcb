@@ -70,6 +70,8 @@ class Check < ApplicationRecord
       "Scheduled"
     when :in_transit, :in_transit_and_processed
       "In Transit"
+    when :canceled, :rejected
+      "Canceled"
     else
       status
     end
@@ -83,7 +85,7 @@ class Check < ApplicationRecord
       "info"
     when :deposited
       "success"
-    when :canceled
+    when :canceled, :rejected
       "muted"
     else
       "info"
@@ -123,12 +125,8 @@ class Check < ApplicationRecord
     "#{check_number.present? ? check_number : 'No number'} | #{event.name} | #{lob_address.name} | #{status} - #{ApplicationController.helpers.render_money amount}"
   end
 
-  def voidable?
-    !deposited? && !pending_void? && !voided? && !rejected?
-  end
-
   def sent?
-    send_date ? send_date.past? : false
+    send_date.past?
   end
 
   def refund!

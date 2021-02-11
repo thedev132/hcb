@@ -57,16 +57,11 @@
       <%= user_mention @check.creator %>
     </p>
     <p>
-      <% if @check.sent? %>
-        <strong>Sent at</strong>
-        <%= format_datetime @check.send_date %>
-      <% else %>
-        <strong>Scheduled at</strong>
-        <%= format_datetime @check.send_date %>
-      <% end %>
+      <strong><%= @check.sent? ? "Scheduled at" : "Sent at" %></strong>
+      <%= format_datetime @check.send_date %>
     </p>
 
-    <% if @check.sent? %>
+    <% if @check.in_transit? || @check.in_transit_and_processed? %>
       <div>
         <strong>Delivery expected between</strong>
         <div>
