@@ -5,7 +5,7 @@ module PendingEventMappingEngine
         unsettled.find_each do |cpt|
           # 1. identify check number
           check = cpt.raw_pending_outgoing_check_transaction.check
-          Airbrake.notify("Check for check_number #{check_number} not found") unless check
+          Airbrake.notify("Check not found for canonical pending transaction #{cpt.id}") unless check
           next unless check
           event = check.event
 

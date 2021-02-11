@@ -25,7 +25,7 @@ module PendingEventMappingEngine
     end
 
     def decline_canonical_pending_outgoing_check!
-      #::PendingEventMappingEngine::Map::OutgoingCheck.new.run
+      ::PendingEventMappingEngine::Decline::OutgoingCheck.new.run
     end
 
     def map_canonical_pending_stripe!
