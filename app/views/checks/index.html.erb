@@ -10,44 +10,55 @@
       <th>Event</th>
       <th>Amount</th>
       <th>Status</th>
-      <th colspan="1"></th>
+      <th colspan="1">Actions</th>
     </tr>
   </thead>
 
   <tbody>
-    <% @checks.each do |check| %>
+    <tr>
+      <td colspan="6" style="text-align: center; font-weight: bold;">
+        SCHEDULED<br/><small>users have up to 48 hours to cancel these checks themselves</small>
+      </td>
+    </tr>
+    <% Check.scheduled.order(created_at: :desc).each do |check| %>
       <tr>
         <td><%= link_to check.id, check %></td>
         <td><%= check.check_number %></td>
-        <td>
-          <%= link_to check.event.name, check.event %>
-
-          <% check.t_transactions.each do |t| %>
-            <br/>
-            <%= link_to "#{t.amount.positive? ? '📈' : '📉'} #{t.name}", t, class: 'h6 muted' %>
-          <% end %>
-        </td>
+        <td><%= link_to check.event.name, check.event %></td>
         <td><%= render_money check.amount %></td>
-        <td>
-          <%= check.aasm_state %>
-        </td>
-        <td>
-          <%= link_to "Process", check unless check.deposited? %>
-        </td>
+        <td><%= check.aasm_state %></td>
+        <td></td>
+      </tr>
+    <% end %>
 
-        <!--
-        <td>
-          <% if check.rejected? %>
-          <% elsif check.approved_at.nil? && !check.voided? %>
-            <%#= link_to 'Process', check_start_approval_path(check)%>
-          <% elsif check.unfinished_void? %>
-            <%= link_to 'Refund Check', check_refund_path(check) %>
-          <% end %>   
-        </td>
-        -->
+    <td colspan="6" style="text-align: center; font-weight: bold;">
+      IN_TRANSIT<br/><small>needs manual processing by operations team</small>
+    </td>
+
+    <% Check.in_transit.order(created_at: :desc).each do |check| %>
+      <tr>
+        <td><%= link_to check.id, check %></td>
+        <td><%= check.check_number %></td>
+        <td><%= link_to check.event.name, check.event %></td>
+        <td><%= render_money check.amount %></td>
+        <td><%= check.aasm_state %></td>
+        <td><%= link_to "Process", check %></td>
+      </tr>
+    <% end %>
+
+    <td colspan="6" style="text-align: center; font-weight: bold;">
+      PROCESSED<br/><small>all other checks and their various states</small>
+    </td>
+
+    <% Check.where("aasm_state != 'scheduled' and aasm_state != 'in_transit'").order(created_at: :desc).each do |check| %>
+      <tr>
+        <td><%= link_to check.id, check %></td>
+        <td><%= check.check_number %></td>
+        <td><%= link_to check.event.name, check.event %></td>
+        <td><%= render_money check.amount %></td>
+        <td><%= check.aasm_state %></td>
+        <td></td>
       </tr>
     <% end %>
   </tbody>
 </table>
-
-
