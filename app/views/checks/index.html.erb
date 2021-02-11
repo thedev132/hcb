@@ -36,7 +36,7 @@
     </td>
 
     <% Check.in_transit.order(created_at: :desc).each do |check| %>
-      <tr>
+      <tr class="shade-yellow">
         <td><%= link_to check.id, check %></td>
         <td><%= check.check_number %></td>
         <td><%= link_to check.event.name, check.event %></td>
