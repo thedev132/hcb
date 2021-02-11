@@ -5,11 +5,9 @@ module CheckService
     end
 
     def run
-      ActiveRecord::Base.transaction do
-        check.mark_canceled!
+      check.mark_canceled!
 
-        # ::Partners::Lob::Checks::Cancel.new(id: check.lob_id).run # not supported/necessary on our plan
-      end
+      check
     end
 
     def check
