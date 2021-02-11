@@ -54,7 +54,13 @@
       <tr>
         <td><%= link_to check.id, check %></td>
         <td><%= check.check_number %></td>
-        <td><%= link_to check.event.name, check.event %></td>
+        <td>
+          <%= link_to check.event.name, check.event %>
+          <% check.t_transactions.each do |t| %>
+            <br/>
+            <small><%= link_to "#{t.amount.positive? ? '📈' : '📉'} #{t.name}", t, class: 'h6 muted' %></small>
+          <% end %>
+        </td>
         <td><%= render_money check.amount %></td>
         <td><%= check.aasm_state %></td>
         <td></td>
