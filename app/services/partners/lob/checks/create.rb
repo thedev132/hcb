@@ -6,7 +6,7 @@ module Partners
 
         def initialize(to:, memo:, amount_cents:, 
                        description:, message:,
-                       send_date:)
+                       send_date: nil)
           @to = to
           @memo = memo
           @amount_cents = amount_cents

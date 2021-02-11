@@ -10,12 +10,14 @@ class Check < ApplicationRecord
   has_many :t_transactions, class_name: 'Transaction', inverse_of: :check
 
   validates :send_date, presence: true
-  validate :send_date_must_be_in_future
+  validate :send_date_must_be_in_future, on: :create
 
   aasm do
-    state :created, initial: true
+    state :scheduled, initial: true
     state :in_transit
+    state :in_transit_and_processed
     state :deposited
+    state :canceled
     state :voided
     state :refunded
 
@@ -24,12 +26,20 @@ class Check < ApplicationRecord
     state :pending # deprecate
     state :pending_void # deprecate
 
+    event :mark_canceled do
+      transitions from: :scheduled, to: :canceled
+    end
+
     event :mark_in_transit do
-      transitions to: :in_transit
+      transitions from: :scheduled, to: :in_transit
+    end
+
+    event :mark_in_transit_and_processed do
+      transitions from: :in_transit, to: :in_transit_and_processed
     end
     
     event :mark_deposited do
-      transitions to: :deposited
+      transitions from: [:in_transit, :in_transit_and_processed], to: :deposited
     end
  
     event :mark_refunded do
@@ -45,22 +55,42 @@ class Check < ApplicationRecord
     lob_address.event
   end
 
+  def can_cancel?
+    scheduled? # only scheduled checks can be canceled (not yet created on lob)
+  end
+
+  # DEPRECATE
   def status
     aasm_state.to_sym
   end
 
   def status_text
-    aasm_state
-  end
-
-  def status_text_long
-    aasm_state
+    case status
+    when :scheduled, :created
+      "Scheduled"
+    when :in_transit, :in_transit_and_processed
+      "In Transit"
+    else
+      status
+    end
   end
 
   def state
-    aasm_state
+    case status
+    when :scheduled, :created
+      "pending"
+    when :in_transit, :in_transit_and_processed
+      "info"
+    when :deposited
+      "success"
+    when :canceled
+      "muted"
+    else
+      "info"
+    end
   end
 
+  
   def self.refunded_but_needs_match
     select { |check| check.refunded_at.present? && check.t_transactions.size != 4 }
   end
