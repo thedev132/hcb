@@ -9,8 +9,16 @@ class RawPendingOutgoingCheckTransaction < ApplicationRecord
     "CHECK TO #{raw_name} #{raw_memo}".strip.upcase
   end
 
+  def check_number
+    check.check_number || "-----"
+  end
+
   def likely_event_id
     @likely_event_id ||= check.event.id
+  end
+
+  def check
+    @check ||= ::Check.find_by(id: check_transaction_id)
   end
 
   private
@@ -21,9 +29,5 @@ class RawPendingOutgoingCheckTransaction < ApplicationRecord
 
   def raw_name
     check.lob_address.name
-  end
-
-  def check
-    @check ||= ::Check.find_by(id: check_transaction_id)
   end
 end
