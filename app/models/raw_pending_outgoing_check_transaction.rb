@@ -6,24 +6,24 @@ class RawPendingOutgoingCheckTransaction < ApplicationRecord
   end
 
   def memo
-    "CHECK #{check_number} TO #{raw_name} #{raw_memo}".strip.upcase
+    "CHECK TO #{raw_name} #{raw_memo}".strip.upcase
   end
 
   def likely_event_id
-    @likely_event_id ||= ::Check.find_by(lob_id: lob_transaction_id).try(:event).try(:id)
+    @likely_event_id ||= check.event.id
   end
 
-  def check_number
-    lob_transaction.dig("check_number")
-  end
- 
   private
 
   def raw_memo
-    lob_transaction.dig("memo")
+    check.memo
   end
 
   def raw_name
-    lob_transaction.dig("to", "name")
+    check.lob_address.name
+  end
+
+  def check
+    @check ||= ::Check.find_by(id: check_transaction_id)
   end
 end

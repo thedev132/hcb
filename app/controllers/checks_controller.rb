@@ -61,7 +61,7 @@ class ChecksController < ApplicationController
   def cancel
     authorize @check
 
-    @check.mark_canceled!
+    ::CheckService::Cancel.new(check_id: @check.id).run
 
     redirect_to @check
   end
