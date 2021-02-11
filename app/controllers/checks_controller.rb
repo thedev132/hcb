@@ -36,25 +36,34 @@ class ChecksController < ApplicationController
       event_id: @event.id,
       lob_address_id: @lob_address.id,
 
+      payment_for: filtered_params[:payment_for],
       memo: filtered_params[:memo],
       amount_cents: (filtered_params[:amount].to_f * 100).to_i,
+      send_date: Time.now.utc + 48.hours,
 
       current_user: current_user
     }
-    CheckService::Create.new(attrs).run
+    check = CheckService::Create.new(attrs).run
 
-    flash[:success] = 'Your check is on its way!'
+    flash[:success] = "Your check is scheduled to send on #{check.send_date.to_date}"
 
     redirect_to event_transfers_path(@event)
   end
 
-  # GET /checks/1
   def show
     authorize @check
 
     @commentable = @check
     @comments = @commentable.comments
     @comment = Comment.new
+  end
+
+  def cancel
+    authorize @check
+
+    @check.mark_canceled!
+
+    redirect_to @check
   end
 
   def positive_pay_csv
@@ -77,39 +86,12 @@ class ChecksController < ApplicationController
     redirect_to @check.url
   end
 
-  def mark_in_transit
+  def mark_in_transit_and_processed
     authorize @check
 
-    @check.mark_in_transit!
+    @check.mark_in_transit_and_processed!
 
     redirect_to @check
-  end
-
-  def start_void
-    authorize @check
-
-    if @check.voided?
-      flash[:info] = 'You already voided that check!'
-      redirect_to event_transfers_path(@check.event)
-      return
-    end
-  end
-
-  def void
-    authorize @check
-
-    if @check.voided?
-      flash[:success] = 'You already voided that check!'
-      redirect_to event_transfers_path(@check.event)
-      return false
-    end
-
-    if @check.void!
-      flash[:success] = 'Check successfully voided.'
-      redirect_to event_transfers_path(@check.event)
-    else
-      render :start_void
-    end
   end
 
   def refund_get

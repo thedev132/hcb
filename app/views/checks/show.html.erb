@@ -45,12 +45,10 @@
         <span class="regular muted"> a&nbsp;check for </span>
         <span class="regular"><%= render_money @check.amount %></span>
       </span>
-      <!--
       <span class="badge h4 ml2 nowrap bg-<%= @check.state %>">
         <%= @check.status_text %>
-        <%= inline_icon @check.state_icon, size: 20 if @check.state_icon %>
+        <%#= inline_icon @check.state_icon, size: 20 if @check.state_icon %>
       </span>
-      -->
     </div>
   </h2>
   <section class="card__banner card__darker details-horiz border-top border-bottom">
@@ -63,8 +61,8 @@
         <strong>Sent at</strong>
         <%= format_datetime @check.send_date %>
       <% else %>
-        <strong>Drafted at</strong>
-        <%= format_datetime @check.created_at %>
+        <strong>Scheduled at</strong>
+        <%= format_datetime @check.send_date %>
       <% end %>
     </p>
 
@@ -79,12 +77,6 @@
   </section>
 
   <section class="details pt2 pb2">
-    <!--
-    <p>
-      <strong>Status</strong>
-      <%= @check.status_text_long %>
-    </p>
-    -->
     <p>
       <strong>Sent to</strong>
       <%= @check.lob_address.name %>
@@ -112,18 +104,13 @@
   </section>
 
   <section class="card__banner card__darker border-top overflow-hidden">
-    <% if @check.pending? %>
-      <%#= link_to 'Edit',
-        organizer_signed_in? ? edit_check_path(@check) : root_path,
-        disabled: !organizer_signed_in?,
-        class: 'btn bg-info right' %>
-    <% end %>    
-    <% if @check.voidable? %>
-      <%#= link_to 'Void',
-        organizer_signed_in? ? check_start_void_path(@check) : root_path,
-        disabled: !organizer_signed_in?,
-        class: 'btn bg-error mr1 right' %>
-    <% end %>
+    <%= link_to 'Cancel',
+      organizer_signed_in? ? check_cancel_path(@check) : root_path,
+      disabled: !organizer_signed_in?,
+      class: 'btn bg-error mr1 right',
+      method: :post,
+      data: { confirm: "Cancel this check?" } if @check.can_cancel? %>
+
     <%= link_to 'View scan',
         organizer_signed_in? ? check_view_scan_path(@check) : root_path,
         disabled: !organizer_signed_in?,
@@ -134,7 +121,15 @@
 
 <%= render 'comments/comments' %>
 
-<% if @check.created? %>
+<% if @check.in_transit_and_processed? %>
+
+  <% admin_tools('mb2 mt2') do %>
+    <p>This check has been processed and is in transit.</p>
+  <% end %>
+
+<% end %>
+
+<% if @check.in_transit? %>
 
   <% admin_tools('mb2 mt2') do %>
     <h3>Process this Check</h3>
@@ -178,11 +173,11 @@
       <li>Upload this <%= link_to "CSV", check_positive_pay_csv_path(@check, format: :csv) %> under <strong>"Hack Club Positive Pay Import"</strong></li>
     </ol>
 
-    <h4>Step 4: Mark 'In Transit'</h5>
+    <h4>Step 4: Mark Processed</h5>
 
-    <p>Have you completed all the steps? Then mark the check 'in transit'.</p>
+    <p>Have you completed all the steps? Then mark the check 'processed'.</p>
 
-    <%= link_to "Mark in transit", check_mark_in_transit_path(@check), class: "btn", method: :post, data: {confirm: "Mark check as in transit?"} %>
+    <%= link_to "Mark processed", check_mark_in_transit_and_processed_path(@check), class: "btn", method: :post, data: {confirm: "Mark check as processed?"} %>
 
     <br/>
 

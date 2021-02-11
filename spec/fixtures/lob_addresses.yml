@@ -1,0 +1,3 @@
+lob_address1:
+  event: event1
+  created_at: <%= Time.now %>

@@ -9,10 +9,15 @@ class Check < ApplicationRecord
 
   has_many :t_transactions, class_name: 'Transaction', inverse_of: :check
 
+  validates :send_date, presence: true
+  validate :send_date_must_be_in_future, on: :create
+
   aasm do
-    state :created, initial: true
+    state :scheduled, initial: true
     state :in_transit
+    state :in_transit_and_processed
     state :deposited
+    state :canceled
     state :voided
     state :refunded
 
@@ -21,12 +26,20 @@ class Check < ApplicationRecord
     state :pending # deprecate
     state :pending_void # deprecate
 
+    event :mark_canceled do
+      transitions from: :scheduled, to: :canceled
+    end
+
     event :mark_in_transit do
-      transitions to: :in_transit
+      transitions from: :scheduled, to: :in_transit
+    end
+
+    event :mark_in_transit_and_processed do
+      transitions from: :in_transit, to: :in_transit_and_processed
     end
     
     event :mark_deposited do
-      transitions to: :deposited
+      transitions from: [:in_transit, :in_transit_and_processed], to: :deposited
     end
  
     event :mark_refunded do
@@ -38,70 +51,48 @@ class Check < ApplicationRecord
     end
   end
 
+  def event
+    lob_address.event
+  end
+
+  def can_cancel?
+    scheduled? # only scheduled checks can be canceled (not yet created on lob)
+  end
+
+  # DEPRECATE
   def status
     aasm_state.to_sym
   end
 
   def status_text
     case status
-    when :refunded then 'Refunded'
-    when :voided then 'Voided'
-    when :pending_void then 'Pending void'
-    when :deposited then 'Deposited'
-    when :in_transit then 'In transit'
-    when :rejected then 'Rejected'
-    when :pending then 'Pending approval'
-    end
-  end
-
-  def status_text_long
-    case status
-    when :refunded then 'Refunded'
-    when :voided then 'Voided'
-    when :pending_void then 'Attempting to void'
-    when :deposited then 'Deposited successfully'
-    when :in_transit then 'In transit'
-    when :rejected then 'Rejected by Hack Club Bank staff'
-    when :pending then 'Waiting approval from Hack Club Bank staff'
+    when :scheduled, :created
+      "Scheduled"
+    when :in_transit, :in_transit_and_processed
+      "In Transit"
+    else
+      status
     end
   end
 
   def state
     case status
-    when :refunded then :info
-    when :voided then :error
-    when :pending_void then :error
-    when :deposited then :success
-    when :in_transit then :info
-    when :rejected then :error
-    when :pending then :pending
+    when :scheduled, :created
+      "pending"
+    when :in_transit, :in_transit_and_processed
+      "info"
+    when :deposited
+      "success"
+    when :canceled
+      "muted"
+    else
+      "info"
     end
   end
 
-  def self.unfinished_void
-    select { |check| check.unfinished_void? }
-  end
-
+  
   def self.refunded_but_needs_match
     select { |check| check.refunded_at.present? && check.t_transactions.size != 4 }
-  end
-
-  # if a void was put in and the sum of transaction is neutral (no money lost or gained)
-  def voided?
-    voided_at.present? && (
-      approved? && t_transactions.size == 4 && t_transactions.sum(&:amount) == 0 ||
-      !approved?
-    )
-  end
-
-  # Deposited
-  def deposited?
-    t_transactions.size == 3 && t_transactions.sum(&:amount) < 0 && !voided?
-  end
-
-  # Refunded (shown to user)
-  def refunded?
-    refunded_at.present? && voided?
   end
 
   # Can be ready to refund
@@ -124,10 +115,6 @@ class Check < ApplicationRecord
     approved? && voided_at.present? && t_transactions.size == 3 && t_transactions.sum(&:amount) < 0
   end
 
-  def event
-    lob_address.event
-  end
-
   def state_icon
     'checkmark' if deposited?
   end
@@ -142,22 +129,6 @@ class Check < ApplicationRecord
 
   def sent?
     send_date ? send_date.past? : false
-  end
-
-  def void!
-    if voided_at != nil
-      errors.add(:check, 'has already been voided!')
-      return self
-    end
-    if voidable?
-      return update(voided_at: DateTime.now) if approved?
-
-      # if it hasn't been approved, no action required from Michael & no export needed
-      return update(voided_at: DateTime.now) if !approved?
-    else
-      errors.add(:check, 'cannot be voided!')
-      return self
-    end
   end
 
   def refund!
@@ -185,5 +156,11 @@ class Check < ApplicationRecord
     end
 
     @lob_check_url
+  end
+
+  private
+
+  def send_date_must_be_in_future
+    self.errors.add(:send_date, "must be at least 24 hours in the future") if send_date.nil? || send_date <= (Time.now.utc + 24.hours)
   end
 end
