@@ -13,7 +13,7 @@ module PendingTransactionEngine
     private
 
     def import_raw_pending_outgoing_check_transactions!
-      ::PendingTransactionEngine::RawPendingOutgoingCheckTransactionService::Lob::Import.new.run
+      ::PendingTransactionEngine::RawPendingOutgoingCheckTransactionService::OutgoingCheck::Import.new.run
     end
 
     def canonize_raw_pending_outgoing_check_transactions!
