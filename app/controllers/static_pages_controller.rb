@@ -96,14 +96,21 @@ class StaticPagesController < ApplicationController
   end
 
   def stripe_charge_lookup
-    id = params[:id]
-    payment_intent_id = StripeService::Charge.retrieve(id)['payment_intent']
-    @payment = Donation.find_by(stripe_payment_intent_id: payment_intent_id)
-    @payment ||= Invoice.find_by(stripe_payment_intent_id: payment_intent_id)
+    charge_id = params[:id]
+    @payment = Invoice.find_by(stripe_charge_id: charge_id)
+
+    # No invoice with that charge id? Maybe we can find a donation payment with that charge?
+    # Donations don't store charge id, but they store payment intent, and we can link it with the charge's payment intent on stripe
+    unless @payment
+      payment_intent_id = StripeService::Charge.retrieve(charge_id)['payment_intent']
+      @payment = Donation.find_by(stripe_payment_intent_id: payment_intent_id)
+    end
+
     @event = @payment.event
 
     render json: {
-      event_id: @event.id
+      event_id: @event.id,
+      event_name: @event.name
     }
   rescue StripeService::InvalidRequestError => e
     render json: {

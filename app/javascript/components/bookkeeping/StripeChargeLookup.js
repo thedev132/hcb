@@ -25,7 +25,7 @@ const StripeChargeLookup = _props => {
     }).catch(err => {
       const errorResults = {...results}
       errorResults[searchTerm] = 'not found!'
-      setResults(modifiedResults)
+      setResults(errorResults)
       console.log(err)
     })
   }
@@ -33,9 +33,9 @@ const StripeChargeLookup = _props => {
   return (
     <>
       <input type="text" onChange={handleChange} value={search} />
-      <p>
-        {JSON.stringify(results[search])}
-      </p>
+      <code><pre>
+        {JSON.stringify(results[search], null, 2)}
+      </pre></code>
     </>
   )
 }
