@@ -43,16 +43,15 @@ module PendingEventMappingEngine
     end
 
     def map_canonical_pending_stripe!
-      #::PendingEventMappingEngine::Map::Stripe.new.run
+      ::PendingEventMappingEngine::Map::Stripe.new.run
     end
 
     def settle_canonical_pending_stripe!
-      #::PendingEventMappingEngine::Settle::Stripe.new.run
+      ::PendingEventMappingEngine::Settle::Stripe.new.run
     end
 
     def decline_canonical_pending_stripe!
-      #::PendingEventMappingEngine::Decline::Stripe.new.run
+      ::PendingEventMappingEngine::Decline::Stripe.new.run
     end
-
   end
 end
