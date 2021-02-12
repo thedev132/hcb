@@ -26,28 +26,28 @@ class AchTransfersController < ApplicationController
 
   # POST /ach_transfers
   def create
-    ach_params = ach_transfer_params
-    ach_params[:amount] = ach_transfer_params[:amount].to_f * 100.to_i
+    authorize @event, policy_class: AchTransferPolicy
 
-    @ach_transfer = AchTransfer.new(ach_params)
+    attrs = {
+      event_id: @event.id,
+      routing_number: ach_transfer_params[:routing_number],
+      account_number: ach_transfer_params[:account_number],
+      bank_name: ach_transfer_params[:bank_name],
+      recipient_name: ach_transfer_params[:recipient_name],
+      recipient_tel: ach_transfer_params[:recipient_tel],
+      amount_cents: (ach_transfer_params[:amount].to_f * 100).to_i,
+      payment_for: ach_transfer_params[:payment_for],
+      current_user: current_user
+    }
+    ach_transfer = AchTransferService::Create.new(attrs).run
 
-    @ach_transfer.event = @event
-    @ach_transfer.creator = current_user
+    flash[:success] = 'ACH Transfer successfully submitted.'
 
-    authorize @ach_transfer
+    redirect_to event_transfers_path(@event)
+  rescue ArgumentError, ActiveRecord::RecordInvalid => e
+    flash[:error] = e.message
 
-    if @ach_transfer.amount > @event.balance_available
-      flash[:error] = 'You don’t have enough money to transfer this amount.'
-      render :new
-      return
-    end
-
-    if @ach_transfer.save
-      flash[:success] = 'ACH Transfer successfully submitted.'
-      redirect_to event_transfers_path(@event)
-    else
-      render :new
-    end
+    redirect_to new_event_ach_transfer_path(@event)
   end
 
   def approve

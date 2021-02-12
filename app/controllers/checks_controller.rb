@@ -47,6 +47,10 @@ class ChecksController < ApplicationController
     flash[:success] = "Your check is scheduled to send on #{check.send_date.to_date}"
 
     redirect_to event_transfers_path(@event)
+  rescue ArgumentError => e
+    flash[:error] = e.message
+
+    redirect_to new_event_check_path(@event)
   end
 
   def show

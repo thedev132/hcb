@@ -1,5 +1,7 @@
 module CheckService
   class Create
+    include ::Shared::AmpleBalance
+
     def initialize(event_id:,
                    lob_address_id:,
                    payment_for:, memo:, amount_cents:, send_date:,
@@ -41,10 +43,6 @@ module CheckService
 
     def lob_address
       @lob_address ||= event.lob_addresses.find(@lob_address_id)
-    end
-
-    def ample_balance?
-      event.balance_available_v2_cents >= @amount_cents
     end
 
     def description
