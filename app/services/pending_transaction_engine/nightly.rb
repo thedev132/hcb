@@ -3,10 +3,12 @@ module PendingTransactionEngine
     def run
       # 1 raw imports
       import_raw_pending_outgoing_check_transactions!
+      import_raw_pending_outgoing_ach_transactions!
       # import_raw_pending_stripe_transactions!
 
       # 2 canonical
       canonize_raw_pending_outgoing_check_transactions!
+      canonize_raw_pending_outgoing_ach_transactions!
       # canonize_raw_pending_stripe_transactions!
     end
 
@@ -18,6 +20,14 @@ module PendingTransactionEngine
 
     def canonize_raw_pending_outgoing_check_transactions!
       ::PendingTransactionEngine::CanonicalPendingTransactionService::Import::OutgoingCheck.new.run
+    end
+
+    def import_raw_pending_outgoing_ach_transactions!
+      ::PendingTransactionEngine::RawPendingOutgoingAchTransactionService::OutgoingAch::Import.new.run
+    end
+
+    def canonize_raw_pending_outgoing_ach_transactions!
+      ::PendingTransactionEngine::CanonicalPendingTransactionService::Import::OutgoingAch.new.run
     end
 
     def import_raw_pending_stripe_transactions!
