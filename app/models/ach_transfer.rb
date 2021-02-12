@@ -20,6 +20,11 @@ class AchTransfer < ApplicationRecord
     select { |a| a.t_transaction.present? }
   end
 
+  # TODO: move to aasm
+  def aasm_state
+    status
+  end
+
   def status
     if t_transaction
       :deposited

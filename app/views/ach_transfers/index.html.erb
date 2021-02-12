@@ -3,28 +3,46 @@
 <table>
   <thead>
     <tr>
-      <th>Event</th>
-      <th>Routing #</th>
-      <th>Account #</th>
-      <th>Bank name</th>
+      <th>ID</th>
       <th>Recipient</th>
+      <th>Event</th>
+      <th>Amount</th>
       <th>Status</th>
-      <th></th>
+      <th colspan="1">Actions</th>
     </tr>
   </thead>
 
   <tbody>
-    <% @ach_transfers.each do |ach_transfer| %>
-      <tr>
+    <tr>
+      <td colspan="6" style="text-align: center; font-weight: bold;">
+        PENDING<br/><small>needs manual processing by operations team</small>
+      </td>
+    </tr>
+
+    <% AchTransfer.pending.order(created_at: :desc).each do |ach_transfer| %>
+      <tr class="shade-yellow">
+        <td><%= link_to ach_transfer.id, ach_transfer %></td>
+        <td style="max-width: 0;overflow:hidden;text-overflow:ellipsis;white-space:no-wrap; width:300px;"><%= ach_transfer.recipient_name %></td>
         <td><%= link_to ach_transfer.event.name, ach_transfer.event %></td>
-        <td><%= ach_transfer.routing_number %></td>
-        <td><%= ach_transfer.account_number %></td>
-        <td><%= ach_transfer.bank_name %></td>
-        <td><%= ach_transfer.recipient_name %></td>
-        <td class="flex items-center">
-          <%= status_badge ach_transfer.state %> <%= ach_transfer.status_text %>
-        </td>
-        <td><%= (link_to 'Process', ach_transfer_start_approval_path(ach_transfer)) if ach_transfer.pending? %></td>
+        <td><%= render_money ach_transfer.amount %></td>
+        <td class="flex items-center"><%= status_badge ach_transfer.state %> <%= ach_transfer.aasm_state %></td>
+        <!--<td><%= link_to "Process", ach_transfer %></td>-->
+        <td><%= (link_to 'Process', ach_transfer_start_approval_path(ach_transfer)) %></td>
+      </tr>
+    <% end %>
+
+    <td colspan="6" style="text-align: center; font-weight: bold;">
+      PROCESSED<br/><small>all other ach transfers and their various states</small>
+    </td>
+
+    <% AchTransfer.where("approved_at is not null").order(created_at: :desc).each do |ach_transfer| %>
+      <tr>
+        <td><%= link_to ach_transfer.id, ach_transfer %></td>
+        <td style="max-width: 0;overflow:hidden;text-overflow:ellipsis;white-space:no-wrap; width:300px;"><%= ach_transfer.recipient_name %></td>
+        <td><%= link_to ach_transfer.event.name, ach_transfer.event %></td>
+        <td><%= render_money ach_transfer.amount %></td>
+        <td class="flex items-center"><%= status_badge ach_transfer.state %> <%= ach_transfer.aasm_state %></td>
+        <td></td>
       </tr>
     <% end %>
   </tbody>
