@@ -1,7 +1,7 @@
 module PendingTransactionEngine
   module CanonicalPendingTransactionService
     module Import
-      class Simple
+      class Stripe
         def run
           raw_pending_stripe_transactions_ready_for_processing.find_each do |rpst|
 
