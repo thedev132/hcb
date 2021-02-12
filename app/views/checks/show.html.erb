@@ -110,7 +110,7 @@
         organizer_signed_in? ? check_view_scan_path(@check) : root_path,
         disabled: !organizer_signed_in?,
         target: :_blank,
-        class: 'btn bg-info' if @check.sent? %>
+        class: 'btn bg-info' if @check.sent? && @check.url.present? %>
   </section>
 </article>
 
