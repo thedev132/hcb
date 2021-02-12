@@ -35,7 +35,7 @@ module PendingTransactionEngine
     end
 
     def canonize_raw_pending_stripe_transactions!
-      #::PendingTransactionEngine::CanonicalPendingTransactionService::Import::Stripe.new.run
+      ::PendingTransactionEngine::CanonicalPendingTransactionService::Import::Stripe.new.run
     end
   end
 end

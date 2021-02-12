@@ -29,7 +29,7 @@ module PendingTransactionEngine
         end
 
         def previously_processed_raw_pending_stripe_transactions_ids
-          @previously_processed_raw_pending_stripe_transactions_ids ||= ::CanonicalPendingTransaction.pluck(:raw_pending_stripe_transaction_id)
+          @previously_processed_raw_pending_stripe_transactions_ids ||= ::CanonicalPendingTransaction.stripe.pluck(:raw_pending_stripe_transaction_id)
         end
       end
     end
