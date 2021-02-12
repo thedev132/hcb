@@ -4,12 +4,12 @@ module PendingTransactionEngine
       # 1 raw imports
       import_raw_pending_outgoing_check_transactions!
       import_raw_pending_outgoing_ach_transactions!
-      # import_raw_pending_stripe_transactions!
+      import_raw_pending_stripe_transactions!
 
       # 2 canonical
       canonize_raw_pending_outgoing_check_transactions!
       canonize_raw_pending_outgoing_ach_transactions!
-      # canonize_raw_pending_stripe_transactions!
+      canonize_raw_pending_stripe_transactions!
     end
 
     private
@@ -31,11 +31,11 @@ module PendingTransactionEngine
     end
 
     def import_raw_pending_stripe_transactions!
-      #::PendingTransactionEngine::RawPendingStripeTransactionService::Stripe::Import.new.run
+      ::PendingTransactionEngine::RawPendingStripeTransactionService::Stripe::Import.new.run
     end
 
     def canonize_raw_pending_stripe_transactions!
-      #::PendingTransactionEngine::CanonicalPendingTransactionService::Import::All.new.run
+      #::PendingTransactionEngine::CanonicalPendingTransactionService::Import::Stripe.new.run
     end
   end
 end
