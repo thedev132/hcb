@@ -29,7 +29,7 @@ module PendingTransactionEngine
         end
 
         def previously_processed_raw_pending_outgoing_check_transactions_ids
-          @previously_processed_raw_pending_outgoing_check_transactions_ids ||= ::CanonicalPendingTransaction.pluck(:raw_pending_outgoing_check_transaction_id)
+          @previously_processed_raw_pending_outgoing_check_transactions_ids ||= ::CanonicalPendingTransaction.outgoing_check.pluck(:raw_pending_outgoing_check_transaction_id)
         end
       end
     end

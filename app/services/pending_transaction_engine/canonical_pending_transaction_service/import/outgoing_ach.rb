@@ -4,7 +4,6 @@ module PendingTransactionEngine
       class OutgoingAch
         def run
           raw_pending_outgoing_ach_transactions_ready_for_processing.find_each do |rpoct|
-
             ActiveRecord::Base.transaction do
               attrs = {
                 date: rpoct.date,
@@ -14,7 +13,6 @@ module PendingTransactionEngine
               }
               ct = ::CanonicalPendingTransaction.create!(attrs)
             end
-
           end
         end
 
@@ -29,7 +27,7 @@ module PendingTransactionEngine
         end
 
         def previously_processed_raw_pending_outgoing_ach_transactions_ids
-          @previously_processed_raw_pending_outgoing_ach_transactions_ids ||= ::CanonicalPendingTransaction.pluck(:raw_pending_outgoing_ach_transaction_id)
+          @previously_processed_raw_pending_outgoing_ach_transactions_ids ||= ::CanonicalPendingTransaction.outgoing_ach.pluck(:raw_pending_outgoing_ach_transaction_id)
         end
       end
     end
