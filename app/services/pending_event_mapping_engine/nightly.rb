@@ -5,10 +5,12 @@ module PendingEventMappingEngine
       settle_canonical_pending_outgoing_check!
       decline_canonical_pending_outgoing_check!
 
+      map_canonical_pending_outgoing_ach!
+      settle_canonical_pending_outgoing_ach!
+      decline_canonical_pending_outgoing_ach!
+
       #map_canonical_pending_stripe!
-
       #settle_canonical_pending_stripe!
-
       #decline_canonical_pending_stripe!
 
       true
@@ -26,6 +28,18 @@ module PendingEventMappingEngine
 
     def decline_canonical_pending_outgoing_check!
       ::PendingEventMappingEngine::Decline::OutgoingCheck.new.run
+    end
+
+    def map_canonical_pending_outgoing_ach!
+      ::PendingEventMappingEngine::Map::OutgoingAch.new.run
+    end
+
+    def settle_canonical_pending_outgoing_ach!
+      ::PendingEventMappingEngine::Settle::OutgoingAch.new.run
+    end
+
+    def decline_canonical_pending_outgoing_ach!
+      ::PendingEventMappingEngine::Decline::OutgoingAch.new.run
     end
 
     def map_canonical_pending_stripe!
