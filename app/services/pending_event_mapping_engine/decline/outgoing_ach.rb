@@ -1,13 +1,13 @@
 module PendingEventMappingEngine
   module Decline
-    class OutgoingCheck
+    class OutgoingAch
       def run
         unsettled.find_each do |cpt|
-          check = cpt.raw_pending_outgoing_check_transaction.check
-          next unless check
+          ach_transfer = cpt.raw_pending_outgoing_ach_transaction.ach_transfer
+          next unless ach_transfer
 
-          # 1. identify canceled/rejected check
-          if check.canceled? || check.rejected?
+          # 1. identify rejected ach_transfers
+          if ach_transfer.rejected?
             # 2. mark this as declined
             attrs = {
               canonical_pending_transaction_id: cpt.id
@@ -20,7 +20,7 @@ module PendingEventMappingEngine
       private
 
       def unsettled
-        CanonicalPendingTransaction.unsettled.outgoing_check
+        CanonicalPendingTransaction.unsettled.outgoing_ach
       end
     end
   end

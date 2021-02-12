@@ -39,7 +39,7 @@ module PendingEventMappingEngine
     end
 
     def decline_canonical_pending_outgoing_ach!
-      #::PendingEventMappingEngine::Decline::OutgoingAch.new.run
+      ::PendingEventMappingEngine::Decline::OutgoingAch.new.run
     end
 
     def map_canonical_pending_stripe!
