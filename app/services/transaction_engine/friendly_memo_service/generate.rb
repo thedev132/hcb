@@ -23,9 +23,11 @@ module TransactionEngine
       def handle_linked_object
         case linked_object.class.to_s
         when "Disbursement"
-          linked_object.name.to_s.upcase
+          "DISBURSEMENT #{linked_object.name.to_s.upcase}"
         when "Invoice"
-          linked_object.sponsor.name.to_s.upcase
+          "INVOICE #{linked_object.sponsor.name.to_s.upcase}"
+        when "Donation"
+          "DONATION #{linked_object.name.to_s.upcase}"
         else
           nil
         end
