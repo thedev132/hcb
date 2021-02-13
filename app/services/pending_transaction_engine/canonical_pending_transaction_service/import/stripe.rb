@@ -3,7 +3,7 @@ module PendingTransactionEngine
     module Import
       class Stripe
         def run
-          raw_pending_stripe_transactions_ready_for_processing.find_each do |rpst|
+          raw_pending_stripe_transactions_ready_for_processing.find_each(batch_size: 100) do |rpst|
 
             ActiveRecord::Base.transaction do
               attrs = {

@@ -3,7 +3,7 @@ module PendingTransactionEngine
     module Import
       class OutgoingAch
         def run
-          raw_pending_outgoing_ach_transactions_ready_for_processing.find_each do |rpoct|
+          raw_pending_outgoing_ach_transactions_ready_for_processing.find_each(batch_size: 100) do |rpoct|
             ActiveRecord::Base.transaction do
               attrs = {
                 date: rpoct.date,
