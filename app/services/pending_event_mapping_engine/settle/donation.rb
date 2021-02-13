@@ -9,8 +9,7 @@ module PendingEventMappingEngine
           next unless donation
 
           next unless donation.payout
-          prefix = donation.payout.statement_descriptor[0..2].upcase
-
+          prefix = donation.payout.statement_descriptor.gsub("DONATE", "").strip[0..2].upcase
           event = donation.event
 
           # 2. look up canonical - scoped to event for added accuracy
