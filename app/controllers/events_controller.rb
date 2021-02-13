@@ -301,6 +301,7 @@ class EventsController < ApplicationController
   end
 
   def _show_pending_transactions
+    return [] if params[:page] && params[:page] != "1"
     return [] unless using_transaction_engine_v2? && using_pending_transaction_engine?
 
     PendingTransactionEngine::PendingTransaction::All.new(event_id: @event.id).run
