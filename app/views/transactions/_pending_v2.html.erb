@@ -1,5 +1,5 @@
 <tr
-  class="transaction--<%= transaction.amount.negative? ? 'negative' : 'positive' %>"
+  class="muted transaction--<%= transaction.amount.negative? ? 'negative' : 'positive' %>"
   data-behavior="filterbar_row"
   data-filter="<%= transaction.filter_data.to_json %>">
   <td class="transaction__icon tooltipped tooltipped--e" aria-label="Bank account transaction">

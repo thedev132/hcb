@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_12_230832) do
+ActiveRecord::Schema.define(version: 2021_02_13_222744) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -450,7 +450,7 @@ ActiveRecord::Schema.define(version: 2021_02_12_230832) do
     t.boolean "omit_stats", default: false
     t.datetime "transaction_engine_v2_at", default: -> { "CURRENT_TIMESTAMP" }
     t.datetime "last_fee_processed_at"
-    t.datetime "pending_transaction_engine_at"
+    t.datetime "pending_transaction_engine_at", default: "2021-02-13 22:38:12"
     t.index ["club_airtable_id"], name: "index_events_on_club_airtable_id", unique: true
     t.index ["point_of_contact_id"], name: "index_events_on_point_of_contact_id"
   end
