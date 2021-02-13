@@ -8,7 +8,7 @@ module PendingTransactionEngine
         def run
           pending_donation_transactions.each do |podt|
             ::RawPendingDonationTransaction.find_or_initialize_by(donation_transaction_id: podt.id.to_s).tap do |t|
-              t.amount_cents = -podt.amount
+              t.amount_cents = podt.amount
               t.date_posted = podt.created_at
             end.save!
           end
