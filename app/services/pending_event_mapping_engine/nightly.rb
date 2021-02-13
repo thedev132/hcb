@@ -13,6 +13,10 @@ module PendingEventMappingEngine
       settle_canonical_pending_stripe!
       decline_canonical_pending_stripe!
 
+      map_canonical_pending_donation!
+      settle_canonical_pending_donation!
+      decline_canonical_pending_donation!
+
       true
     end
 
@@ -53,5 +57,18 @@ module PendingEventMappingEngine
     def decline_canonical_pending_stripe!
       ::PendingEventMappingEngine::Decline::Stripe.new.run
     end
+
+    def map_canonical_pending_donation!
+      ::PendingEventMappingEngine::Map::Donation.new.run
+    end
+
+    def settle_canonical_pending_donation!
+      ::PendingEventMappingEngine::Settle::Donation.new.run
+    end
+
+    def decline_canonical_pending_donation!
+      #::PendingEventMappingEngine::Decline::Donation.new.run
+    end
+
   end
 end
