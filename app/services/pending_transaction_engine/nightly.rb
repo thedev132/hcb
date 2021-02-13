@@ -5,11 +5,13 @@ module PendingTransactionEngine
       import_raw_pending_outgoing_check_transactions!
       import_raw_pending_outgoing_ach_transactions!
       import_raw_pending_stripe_transactions!
+      import_raw_pending_donation_transactions!
 
       # 2 canonical
       canonize_raw_pending_outgoing_check_transactions!
       canonize_raw_pending_outgoing_ach_transactions!
       canonize_raw_pending_stripe_transactions!
+      canonize_raw_pending_donation_transactions!
     end
 
     private
@@ -37,5 +39,14 @@ module PendingTransactionEngine
     def canonize_raw_pending_stripe_transactions!
       ::PendingTransactionEngine::CanonicalPendingTransactionService::Import::Stripe.new.run
     end
+
+    def import_raw_pending_donation_transactions!
+      ::PendingTransactionEngine::RawPendingDonationTransactionService::Donation::Import.new.run
+    end
+
+    def canonize_raw_pending_donation_transactions!
+      ::PendingTransactionEngine::CanonicalPendingTransactionService::Import::Donation.new.run
+    end
+
   end
 end
