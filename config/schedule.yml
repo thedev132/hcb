@@ -17,6 +17,11 @@ transaction_engine_nightly_job:
   cron: "0 6 * * *" # run at 6am UTC each morning
   class: "TransactionEngineJob::Nightly"
   queue: "default"
+
+transaction_engine_friendly_memo_nightly_job:
+  cron: "0 8 * * *" # run at 6am UTC each morning
+  class: "TransactionEngineJob::FriendlyMemo::Nightly"
+  queue: "default"
   
 event_mapping_engine_nightly_job:
   cron: "0 7 * * *" # run at 7am UTC each morning
