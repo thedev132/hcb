@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_13_222744) do
+ActiveRecord::Schema.define(version: 2021_02_15_174632) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -183,7 +183,9 @@ ActiveRecord::Schema.define(version: 2021_02_13_222744) do
     t.bigint "raw_pending_outgoing_check_transaction_id"
     t.bigint "raw_pending_outgoing_ach_transaction_id"
     t.bigint "raw_pending_donation_transaction_id"
+    t.bigint "raw_pending_invoice_transaction_id"
     t.index ["raw_pending_donation_transaction_id"], name: "index_canonical_pending_txs_on_raw_pending_donation_tx_id"
+    t.index ["raw_pending_invoice_transaction_id"], name: "index_canonical_pending_txs_on_raw_pending_invoice_tx_id"
     t.index ["raw_pending_outgoing_ach_transaction_id"], name: "index_canonical_pending_txs_on_raw_pending_outgoing_ach_tx_id"
     t.index ["raw_pending_outgoing_check_transaction_id"], name: "index_canonical_pending_txs_on_raw_pending_outgoing_check_tx_id"
     t.index ["raw_pending_stripe_transaction_id"], name: "index_canonical_pending_txs_on_raw_pending_stripe_tx_id"
@@ -750,6 +752,15 @@ ActiveRecord::Schema.define(version: 2021_02_13_222744) do
     t.date "date_posted"
     t.string "state"
     t.string "donation_transaction_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "raw_pending_invoice_transactions", force: :cascade do |t|
+    t.string "invoice_transaction_id"
+    t.integer "amount_cents"
+    t.date "date_posted"
+    t.string "state"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
