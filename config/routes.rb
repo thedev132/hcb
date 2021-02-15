@@ -56,6 +56,7 @@ Rails.application.routes.draw do
 
   get 'transactions/unmapped', to: 'admin#transaction_unmapped', as: :transaction_unmapped
   get 'transactions/dedupe', to: 'admin#transaction_dedupe', as: :transaction_dedupe
+  get 'transactions/pending_unsettled', to: 'admin#transaction_pending_unsettled', as: :transaction_pending_unsettled
 
   resources :organizer_position_invites, only: [:index, :show], path: 'invites' do
     post 'accept'

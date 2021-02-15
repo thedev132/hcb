@@ -92,6 +92,10 @@ class AdminController < ApplicationController
   def transaction_dedupe
     @groups = TransactionEngine::HashedTransactionService::GroupedDuplicates.new.run
   end
+
+  def transaction_pending_unsettled
+    @canonical_pending_transactions = CanonicalPendingTransaction.unsettled.order("date asc")
+  end
   
   def audit
     @topups = StripeService::Topup.list[:data]
