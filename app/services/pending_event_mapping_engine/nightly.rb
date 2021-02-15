@@ -17,6 +17,10 @@ module PendingEventMappingEngine
       settle_canonical_pending_donation!
       decline_canonical_pending_donation!
 
+      map_canonical_pending_invoice!
+      settle_canonical_pending_invoice!
+      decline_canonical_pending_invoice!
+
       true
     end
 
@@ -68,6 +72,18 @@ module PendingEventMappingEngine
 
     def decline_canonical_pending_donation!
       #::PendingEventMappingEngine::Decline::Donation.new.run
+    end
+
+    def map_canonical_pending_invoice!
+      ::PendingEventMappingEngine::Map::Invoice.new.run
+    end
+
+    def settle_canonical_pending_invoice!
+      ::PendingEventMappingEngine::Settle::Invoice.new.run
+    end
+
+    def decline_canonical_pending_invoice!
+      #::PendingEventMappingEngine::Decline::Invoice.new.run
     end
 
   end
