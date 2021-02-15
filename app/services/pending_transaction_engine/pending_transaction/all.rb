@@ -20,7 +20,7 @@ module PendingTransactionEngine
       end
 
       def canonical_pending_transactions
-        @canonical_pending_transactions ||= CanonicalPendingTransaction.unsettled.where(id: canonical_pending_event_mappings.pluck(:canonical_pending_transaction_id)).order('date desc')
+        @canonical_pending_transactions ||= CanonicalPendingTransaction.unsettled.safe.where(id: canonical_pending_event_mappings.pluck(:canonical_pending_transaction_id)).order('date desc')
       end
     end
   end
