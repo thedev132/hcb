@@ -8,27 +8,47 @@ module PendingEventMappingEngine
           Airbrake.notify("invoice not found for canonical pending transaction #{cpt.id}") unless invoice
           next unless invoice
 
-          next unless invoice.payout
           event = invoice.event
 
-          prefix = grab_prefix(invoice: invoice)
+          # standard case
+          if invoice.payout
+            prefix = grab_prefix(invoice: invoice)
 
-          # 2. look up canonical - scoped to event for added accuracy
-          cts = event.canonical_transactions.where("memo ilike '%PAYOUT% #{prefix}%'")
+            # 2. look up canonical - scoped to event for added accuracy
+            cts = event.canonical_transactions.where("memo ilike '%PAYOUT% #{prefix}%'")
 
-          # 2.b special case if invoice is quite old & now results
-          #cts = event.canonical_transactions.where("memo ilike '%DONAT% #{prefix[0]}%'") if cts.count < 1 && invoice.created_at < Time.utc(2020, 1, 1) # shorter prefix. see  id 1 for example.
+            # 2.b special case if invoice is quite old & now results
+            #cts = event.canonical_transactions.where("memo ilike '%DONAT% #{prefix[0]}%'") if cts.count < 1 && invoice.created_at < Time.utc(2020, 1, 1) # shorter prefix. see  id 1 for example.
 
-          next if cts.count < 1 # no match found yet. not processed.
-          Airbrake.notify("matched more than 1 canonical transaction for canonical pending transaction #{cpt.id}") if cts.count > 1
-          ct = cts.first
+            next if cts.count < 1 # no match found yet. not processed.
+            Airbrake.notify("matched more than 1 canonical transaction for canonical pending transaction #{cpt.id}") if cts.count > 1
+            ct = cts.first
 
-          # 3. mark no longer pending
-          attrs = {
-            canonical_transaction_id: ct.id,
-            canonical_pending_transaction_id: cpt.id
-          }
-          CanonicalPendingSettledMapping.create!(attrs)
+            # 3. mark no longer pending
+            attrs = {
+              canonical_transaction_id: ct.id,
+              canonical_pending_transaction_id: cpt.id
+            }
+            CanonicalPendingSettledMapping.create!(attrs)
+          else
+            # invoice.manually_marked_as_paid? as true typically
+            # special case for invoices that are marked paid but are missing a payout! these seem to be sent to bill.com
+            # these typically can match based on amount cents and nearest date as a result
+
+            cts = event.canonical_transactions.where("memo ilike '%bill.com%' and amount_cents = #{invoice.amount_due} and date > '#{invoice.created_at.strftime("%Y-%m-%d")}'")
+            cts = event.canonical_transactions.where("memo ilike 'DEPOSIT' and amount_cents = #{invoice.amount_due} and date > '#{invoice.created_at.strftime("%Y-%m-%d")}'") unless cts.present? # see sachacks examples
+
+            next if cts.count < 1 # no match found yet. not processed.
+            Airbrake.notify("matched more than 1 canonical transaction for canonical pending transaction #{cpt.id}") if cts.count > 1
+            ct = cts.first
+
+            # 3. mark no longer pending
+            attrs = {
+              canonical_transaction_id: ct.id,
+              canonical_pending_transaction_id: cpt.id
+            }
+            CanonicalPendingSettledMapping.create!(attrs)
+          end
         end
       end
 
@@ -54,6 +74,7 @@ module PendingEventMappingEngine
 
         cleanse = statement_descriptor.upcase.gsub("HACK CLUB BANK PAYOUT", "")
         cleanse = cleanse.gsub("HACKC PAYOUT", "")
+        cleanse = cleanse.gsub("PAYOUT", "")
         cleanse.split(" ")[0][0..2].upcase
       end
 
