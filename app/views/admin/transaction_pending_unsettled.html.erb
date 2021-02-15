@@ -20,7 +20,7 @@
       <td>PENDING: <%= t.memo %></td>
       <td class="right-align"><%= t.amount %></td>
       <td class="pr2" style="width: 1%;">
-        <%= link_to t.event.name, event_path(t.event) %>
+        <%= link_to t.event.name, event_path(t.event) if t.event %>
       </td>
     </tr>
   <% end %>
