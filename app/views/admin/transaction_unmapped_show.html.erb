@@ -33,7 +33,6 @@
 
 <% @canonical_transaction.hashed_transactions.each do |ht| %>
   <% if ht.raw_csv_transaction %>
-
     <p>RawCsvTransaction</p>
     <%= (ap ht.raw_csv_transaction).html_safe %>
   <% end %>
@@ -55,7 +54,7 @@
 
 <% end %>
 
-<h2>Likely Pending Transaction Map</h2>
+<h2>Potential Pending Transactions to Map to</h2>
 
 <table>
   <tbody>
@@ -65,6 +64,7 @@
         <td><%= cpt.date %></td>
         <td><%= cpt.memo %></td>
         <td><%= cpt.amount %></td>
+        <td><%= link_to cpt.event.name, cpt.event %></td>
         <td><%= link_to "Linked Object", cpt.linked_object %></td>
       </tr>
     <% end %>
