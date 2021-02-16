@@ -35,7 +35,7 @@
       PROCESSED<br/><small>all other ach transfers and their various states</small>
     </td>
 
-    <% AchTransfer.where("approved_at is not null").order(created_at: :desc).each do |ach_transfer| %>
+    <% AchTransfer.where("approved_at is not null or rejected_at is not null").order(created_at: :desc).each do |ach_transfer| %>
       <tr>
         <td><%= link_to ach_transfer.id, ach_transfer %></td>
         <td style="max-width: 0;overflow:hidden;text-overflow:ellipsis;white-space:no-wrap; width:300px;"><%= ach_transfer.recipient_name %></td>
