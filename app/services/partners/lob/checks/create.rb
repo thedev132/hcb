@@ -31,12 +31,12 @@ module Partners
             message: @message,
             description: @description,
 
-            send_date: @send_date.iso8601,
+            send_date: send_date,
 
             # from shared
             bank_account: bank_account,
             from: from_address
-          }
+          }.compact
         end
 
         def short_memo
@@ -45,6 +45,12 @@ module Partners
 
         def amount
           @amount ||= @amount_cents / 100.0
+        end
+
+        def send_date
+          return nil unless @send_date
+
+          @send_date.iso8601
         end
       end
     end
