@@ -89,6 +89,11 @@ class AdminController < ApplicationController
     @canonical_transactions = CanonicalTransaction.unmapped.order("date desc")
   end
 
+  def transaction_unmapped_show
+    @canonical_transaction = CanonicalTransaction.find(params[:id])
+    @canonical_pending_transactions = CanonicalPendingTransaction.mapped.where(amount_cents: @canonical_transaction.amount_cents)
+  end
+
   def transaction_dedupe
     @groups = TransactionEngine::HashedTransactionService::GroupedDuplicates.new.run
   end

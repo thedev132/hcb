@@ -20,6 +20,7 @@
       <td><%= t.memo %></td>
       <td class="right-align"><%= t.amount %></td>
       <td class="pr2" style="width: 1%;">
+        <%= link_to "Process", transaction_unmapped_show_path(t) %>
       </td>
     </tr>
   <% end %>

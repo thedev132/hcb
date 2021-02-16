@@ -55,6 +55,7 @@ Rails.application.routes.draw do
   post 'webhooks/donations', to: 'donations#accept_donation_hook'
 
   get 'transactions/unmapped', to: 'admin#transaction_unmapped', as: :transaction_unmapped
+  get 'transactions/unmapped/:id', to: 'admin#transaction_unmapped_show', as: :transaction_unmapped_show
   get 'transactions/dedupe', to: 'admin#transaction_dedupe', as: :transaction_dedupe
   get 'transactions/pending_unsettled', to: 'admin#transaction_pending_unsettled', as: :transaction_pending_unsettled
 
