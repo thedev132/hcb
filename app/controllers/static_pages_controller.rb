@@ -110,7 +110,9 @@ class StaticPagesController < ApplicationController
 
     render json: {
       event_id: @event.id,
-      event_name: @event.name
+      event_name: @event.name,
+      payment_type: @payment.class.name,
+      payment_id: @payment.id
     }
   rescue StripeService::InvalidRequestError => e
     render json: {
