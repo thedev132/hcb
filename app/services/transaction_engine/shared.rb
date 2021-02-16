@@ -11,7 +11,7 @@ module TransactionEngine
         "EVENTFISCALSPONSORSHIP"
       when 4
         "FSMAIN"
-      when "SVBFSOPERATING" # SVB FS OPERATING
+      when "SVBFSOPERATING" # SVB FS OPERATING - account ends in ***0703
         "SVBFSOPERATING" # used to handle special case of some ACH transfers going out under the wrong bank account
       when 9
         "HACKFOUNDATION5667" # FS CHECK ESCROW

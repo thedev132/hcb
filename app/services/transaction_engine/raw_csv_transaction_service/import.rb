@@ -5,58 +5,38 @@ module TransactionEngine
   module RawCsvTransactionService
     class Import
       def run
-        raise NotImplementedError
+        CSV.read(csv1, headers: true).each do |row|
+          next unless row.present? # skip empty rows
 
-        read_and_parse_frb
-        read_and_parse_svb
+          raise_any_argument_errors!(row: row)
+
+          ::RawCsvTransaction.find_or_initialize_by(csv_transaction_id: row["csv_transaction_id"]).tap do |rvt|
+            rvt.unique_bank_identifier = row["unique_bank_identifier"]
+            rvt.amount_cents = row["amount_cents"]
+            rvt.date_posted = row["date"]
+            rvt.memo = row["memo"]
+            rvt.raw_data = row
+          end.save!
+        end
       end
 
       private
 
-      def read_and_parse_frb
-        ActiveRecord::Base.transaction do
-          csv_text = open('https://gist.githubusercontent.com/maxwofford/ab0e5fd29cf2dad02c56444029b38abd/raw/a2434362ef2c3ea1605d61bf74130d75b0fe58a9/IRE1015202009343020704689603593.CSV')
-          csv_data = CSV.parse(csv_text, headers: true)
-          csv_data.each_with_index do |row, index|
-            next unless row.present? # skip empty rows
+      def raise_any_argument_errors!(row:)
+        csv_transaction_id = row["csv_transaction_id"]
 
-            raise ArgumentError, "amount_cents is required for row #{index}" unless row['Amount']
-            raise ArgumentError, "date is required for row #{index}" unless row['Date']
-            raise ArgumentError, "memo is required for row #{index}" unless row['Description']
-
-            attrs = {
-              amount_cents: row['Amount'],
-              date_posted: row['Date'],
-              memo: row['Description'],
-              raw_data: row,
-            }
-
-            RawCsvTransaction.create!(attrs)
-          end
-        end
+        raise ArgumentError, "unique_bank_identifier is required for row #{csv_transaction_id}" unless row["unique_bank_identifier"]
+        raise ArgumentError, "amount_cents is required for row #{csv_transaction_id}" unless row["amount_cents"]
+        raise ArgumentError, "date is required for row #{csv_transaction_id}" unless row["date"]
+        raise ArgumentError, "memo is required for row #{csv_transaction_id}" unless row["memo"]
       end
 
-      def read_and_parse_svb
-        ActiveRecord::Base.transaction do
-          csv_text = open('https://gist.githubusercontent.com/maxwofford/2ededb56799bd961e02fbe9613f08941/raw/f28bdff047aa69d25205da83431038164bfdb012/DDATransactions_1146778122101285346462810_10152020093705.csv')
-          csv_data = CSV.parse(csv_text, headers: true)
-          csv_data.each_with_index do |row, index|
-            next unless row.present? # skip empty rows
+      def csv1
+        "#{csvs_path}/ach_transfers_that_were_processed_under_wrong_svb_account.csv"
+      end
 
-            raise ArgumentError, "amount_cents is required for row #{index}" unless row['Amount']
-            raise ArgumentError, "date is required for row #{index}" unless row['Transaction Date']
-            raise ArgumentError, "memo is required for row #{index}" unless row['Text']
-
-            attrs = {
-              amount_cents: (row['Amount'] * 100).to_i,
-              date_posted: row['Transaction Date'],
-              memo: row['Text'],
-              raw_data: row,
-            }
-
-            RawCsvTransaction.create!(attrs)
-          end
-        end
+      def csvs_path
+        "#{Rails.root}/app/services/transaction_engine/csvs"
       end
     end
   end
