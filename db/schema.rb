@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_15_174632) do
+ActiveRecord::Schema.define(version: 2021_02_16_194919) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -185,7 +185,6 @@ ActiveRecord::Schema.define(version: 2021_02_15_174632) do
     t.bigint "raw_pending_donation_transaction_id"
     t.bigint "raw_pending_invoice_transaction_id"
     t.index ["raw_pending_donation_transaction_id"], name: "index_canonical_pending_txs_on_raw_pending_donation_tx_id"
-    t.index ["raw_pending_invoice_transaction_id"], name: "index_canonical_pending_txs_on_raw_pending_invoice_tx_id"
     t.index ["raw_pending_outgoing_ach_transaction_id"], name: "index_canonical_pending_txs_on_raw_pending_outgoing_ach_tx_id"
     t.index ["raw_pending_outgoing_check_transaction_id"], name: "index_canonical_pending_txs_on_raw_pending_outgoing_check_tx_id"
     t.index ["raw_pending_stripe_transaction_id"], name: "index_canonical_pending_txs_on_raw_pending_stripe_tx_id"
@@ -452,7 +451,7 @@ ActiveRecord::Schema.define(version: 2021_02_15_174632) do
     t.boolean "omit_stats", default: false
     t.datetime "transaction_engine_v2_at", default: -> { "CURRENT_TIMESTAMP" }
     t.datetime "last_fee_processed_at"
-    t.datetime "pending_transaction_engine_at", default: "2021-02-13 22:38:12"
+    t.datetime "pending_transaction_engine_at", default: "2021-02-13 22:49:40"
     t.index ["club_airtable_id"], name: "index_events_on_club_airtable_id", unique: true
     t.index ["point_of_contact_id"], name: "index_events_on_point_of_contact_id"
   end
@@ -734,6 +733,7 @@ ActiveRecord::Schema.define(version: 2021_02_15_174632) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "unique_bank_identifier", null: false
+    t.text "csv_transaction_id"
   end
 
   create_table "raw_emburse_transactions", force: :cascade do |t|

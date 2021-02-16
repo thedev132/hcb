@@ -139,6 +139,7 @@ end
 
 gem 'aasm' # state machine
 gem 'airbrake' # exception tracking
+gem 'awesome_print'
 gem 'blazer' # business intelligence tool/dashboard
 gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
 gem 'geocoder' # lookup lat/lng for Stripe Cards shipment tracking

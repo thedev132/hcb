@@ -12,12 +12,13 @@ module TransactionEngine
       import_other_raw_plaid_transactions!
       import_raw_emburse_transactions!
       import_raw_stripe_transactions!
+      import_raw_csv_transactions!
 
       # 2 hashed 
       hash_raw_plaid_transactions!
       hash_raw_emburse_transactions!
       hash_raw_stripe_transactions!
-      #hash_raw_csv_transactions! # turn off for now. was a test.
+      hash_raw_csv_transactions!
 
       # 3 canonical
       canonize_hashed_transactions!
@@ -62,6 +63,10 @@ module TransactionEngine
       ::TransactionEngine::RawStripeTransactionService::Stripe::Import.new(start_date: @start_date).run
     end
 
+    def import_raw_csv_transactions!
+      ::TransactionEngine::RawCsvTransactionService::Import.new.run
+    end
+
     def hash_raw_plaid_transactions!
       ::TransactionEngine::HashedTransactionService::RawPlaidTransaction::Import.new(start_date: @start_date).run
     end
@@ -75,7 +80,7 @@ module TransactionEngine
     end
 
     def hash_raw_csv_transactions!
-      #::TransactionEngine::HashedTransactionService::RawCsvTransaction::Import.new.run
+      ::TransactionEngine::HashedTransactionService::RawCsvTransaction::Import.new.run
     end
 
     def canonize_hashed_transactions!

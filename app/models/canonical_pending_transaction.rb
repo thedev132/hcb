@@ -20,6 +20,7 @@ class CanonicalPendingTransaction < ApplicationRecord
   scope :donation, -> { where('raw_pending_donation_transaction_id is not null')}
   scope :invoice, -> { where('raw_pending_invoice_transaction_id is not null')}
   scope :unmapped, -> { includes(:canonical_pending_event_mapping).where(canonical_pending_event_mappings: {canonical_pending_transaction_id: nil}) }
+  scope :mapped, -> { includes(:canonical_pending_event_mapping).where.not(canonical_pending_event_mappings: {canonical_pending_transaction_id: nil}) }
   scope :unsettled, -> { 
     includes(:canonical_pending_settled_mappings).where(canonical_pending_settled_mappings: {canonical_pending_transaction_id: nil})
       .includes(:canonical_pending_declined_mappings).where(canonical_pending_declined_mappings: { canonical_pending_transaction_id: nil })
@@ -28,6 +29,16 @@ class CanonicalPendingTransaction < ApplicationRecord
   def smart_memo
     friendly_memo_in_memory_backup
   end
+
+  def linked_object
+    return raw_pending_outgoing_check_transaction.check if raw_pending_outgoing_check_transaction
+    return raw_pending_outgoing_ach_transaction.ach_transfer if raw_pending_outgoing_ach_transaction
+    return raw_pending_donation_transaction.donation if raw_pending_outgoing_donation_transaction
+    return raw_pending_invoice_transaction.invoice if raw_pending_outgoing_invoice_transaction
+
+    nil
+  end
+
 
   # DEPRECATED
   def display_name

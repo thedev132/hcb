@@ -1,0 +1,74 @@
+<% title "Unmapped transactions #{@canonical_transaction.id}" %>
+
+<h1>Canonical Transaction <%= @canonical_transaction.id %></h1>
+
+<table>
+  <thead class="pr1">
+    <tr>
+      <th>ID</th>
+      <th>Date</th>
+      <th>Memo</th>
+      <th class="right-align">Amount</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="width: 1%;"><%= @canonical_transaction.id %></td>
+      <td><%= @canonical_transaction.date %></td>
+      <td><%= @canonical_transaction.memo %></td>
+      <td class="right-align"><%= @canonical_transaction.amount %></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>Journey</h2>
+
+<p>CanonicalTransaction</p>
+<%= (ap @canonical_transaction).html_safe %>
+<p>↓</p>
+
+<p>HashedTransaction</p>
+<%= (ap @canonical_transaction.hashed_transactions).html_safe %>
+<p style="text-align: center;">↓</p>
+
+<% @canonical_transaction.hashed_transactions.each do |ht| %>
+  <% if ht.raw_csv_transaction %>
+    <p>RawCsvTransaction</p>
+    <%= (ap ht.raw_csv_transaction).html_safe %>
+  <% end %>
+
+  <% if ht.raw_plaid_transaction %>
+    <p>RawPlaidTransaction</p>
+    <%= (ap ht.raw_plaid_transaction).html_safe %>
+  <% end %>
+
+  <% if ht.raw_emburse_transaction %>
+    <p>RawEmburseTransaction</p>
+    <%= (ap ht.raw_emburse_transaction).html_safe %>
+  <% end %>
+
+  <% if ht.raw_stripe_transaction %>
+    <p>RawStripeTransaction</p>
+    <%= (ap ht.raw_stripe_transaction).html_safe %>
+  <% end %>
+
+<% end %>
+
+<h2>Potential Pending Transactions to Map to</h2>
+
+<table>
+  <tbody>
+    <% @canonical_pending_transactions.each do |cpt| %>
+      <tr>
+        <td><%= cpt.id %></td>
+        <td><%= cpt.date %></td>
+        <td><%= cpt.memo %></td>
+        <td><%= cpt.amount %></td>
+        <td><%= link_to cpt.event.name, cpt.event %></td>
+        <td><%= link_to "Linked Object", cpt.linked_object %></td>
+      </tr>
+    <% end %>
+  </body>
+</table>
+
+
