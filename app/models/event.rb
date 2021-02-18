@@ -205,11 +205,15 @@ class Event < ApplicationRecord
   end
 
   def balance_v2_cents
-    @balance_v2_cents ||= canonical_transactions.sum(:amount_cents) + pending_balance_v2_cents
+    @balance_v2_cents ||= canonical_transactions.sum(:amount_cents) + pending_outgoing_balance_v2_cents
   end
 
-  def pending_balance_v2_cents
-    @pending_balance_v2_cents ||= canonical_pending_transactions.safe.unsettled.sum(:amount_cents)
+  def pending_incoming_balance_v2_cents
+    @pending_incoming_balance_v2_cents ||= canonical_pending_transactions.incoming.unsettled.sum(:amount_cents)
+  end
+
+  def pending_outgoing_balance_v2_cents
+    @pending_outgoing_balance_v2_cents ||= canonical_pending_transactions.outgoing.unsettled.sum(:amount_cents)
   end
 
   def balance_available_v2_cents
