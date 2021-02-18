@@ -33,7 +33,7 @@ class CanonicalPendingTransaction < ApplicationRecord
   def linked_object
     return raw_pending_outgoing_check_transaction.check if raw_pending_outgoing_check_transaction
     return raw_pending_outgoing_ach_transaction.ach_transfer if raw_pending_outgoing_ach_transaction
-    return raw_pending_donation_transaction.donation if raw_pending_outgoing_donation_transaction
+    return raw_pending_donation_transaction.donation if raw_pending_donation_transaction
     return raw_pending_invoice_transaction.invoice if raw_pending_outgoing_invoice_transaction
 
     nil
