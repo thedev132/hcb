@@ -37,6 +37,10 @@ module PendingEventMappingEngine
 
             cts = event.canonical_transactions.where("memo ilike '%bill.com%' and amount_cents = #{invoice.amount_due} and date > '#{invoice.created_at.strftime("%Y-%m-%d")}'")
             cts = event.canonical_transactions.where("memo ilike 'DEPOSIT' and amount_cents = #{invoice.amount_due} and date > '#{invoice.created_at.strftime("%Y-%m-%d")}'") unless cts.present? # see sachacks examples
+            unless cts.present?
+              prefix = grab_prefix_old(invoice: invoice)
+              cts = event.canonical_transactions.where("memo ilike 'HACK CLUB EVENT TRANSFER PAYOUT - #{prefix}%'and date > '#{invoice.created_at.strftime("%Y-%m-%d")}'")
+            end
 
             next if cts.count < 1 # no match found yet. not processed.
             Airbrake.notify("matched more than 1 canonical transaction for canonical pending transaction #{cpt.id}") if cts.count > 1
@@ -77,6 +81,16 @@ module PendingEventMappingEngine
         cleanse = cleanse.gsub("PAYOUT", "")
         cleanse.split(" ")[0][0..2].upcase
       end
+
+      def grab_prefix_old(invoice:)
+        statement_descriptor = invoice.sponsor.name.upcase
+
+        # example: HACK CLUB EVENT TRANSFER PAYOUT - BELVED X
+
+        cleanse = statement_descriptor
+        cleanse.split(" ")[0][0..5].upcase
+      end
+
 
     end
   end
