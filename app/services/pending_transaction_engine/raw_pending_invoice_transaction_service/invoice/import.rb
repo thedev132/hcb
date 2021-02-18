@@ -19,7 +19,7 @@ module PendingTransactionEngine
         private
 
         def pending_invoice_transactions
-          @pending_invoice_transactions ||= ::Invoice.paid
+          @pending_invoice_transactions ||= ::Invoice.paid.where("amount_due > 0")
         end
       end
     end
