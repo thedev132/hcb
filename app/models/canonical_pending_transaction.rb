@@ -15,6 +15,8 @@ class CanonicalPendingTransaction < ApplicationRecord
   scope :safe, -> { where("date >= '2021-01-01'") } # older pending transactions don't yet all map up because of older processes (especially around invoices)
 
   scope :stripe, -> { where('raw_pending_stripe_transaction_id is not null')}
+  scope :incoming, -> { where('amount_cents > 0') }
+  scope :outgoing, -> { where('amount_cents < 0') }
   scope :outgoing_ach, -> { where('raw_pending_outgoing_ach_transaction_id is not null')}
   scope :outgoing_check, -> { where('raw_pending_outgoing_check_transaction_id is not null')}
   scope :donation, -> { where('raw_pending_donation_transaction_id is not null')}
