@@ -53,7 +53,7 @@ class FeeReimbursement < ApplicationRecord
     if donation
       return donation.payout
     else
-      return invoice.payout
+      return invoice.try(:payout)
     end
   end
 
