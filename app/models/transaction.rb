@@ -267,6 +267,8 @@ class Transaction < ApplicationRecord
       try_pair_disbursement
     end
     # NOTE: we cannot curently auto-pair Expensify txs
+  rescue => e
+    Airbrake.notify(e)
   end
 
   # Tries to recover transaction data from a previously paired / modified
