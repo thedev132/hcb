@@ -21,7 +21,7 @@ class CanonicalTransaction < ApplicationRecord
   has_many :fees, through: :canonical_event_mapping
 
   def smart_memo
-    friendly_memo || friendly_memo_in_memory_backup
+    custom_memo || friendly_memo || friendly_memo_in_memory_backup
   end
 
   def likely_hack_club_fee?
@@ -90,7 +90,7 @@ class CanonicalTransaction < ApplicationRecord
   end
 
   def name # in deprecated system this is the imported name
-    smart_memo
+    memo
   end
 
   def filter_data
