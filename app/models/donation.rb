@@ -13,6 +13,7 @@ class Donation < ApplicationRecord
   validates :amount, numericality: { greater_than_or_equal_to: 100 }
 
   scope :succeeded, -> { where(status: "succeeded") }
+  scope :not_succeeded, -> { where("status != 'succeeded'") }
 
   def set_fields_from_stripe_payment_intent(payment_intent)
     self.amount = payment_intent.amount
