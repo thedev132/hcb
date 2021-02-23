@@ -11,6 +11,7 @@ class Donation < ApplicationRecord
 
   validates :name, :email, :amount, presence: true
   validates :amount, numericality: { greater_than_or_equal_to: 100 }
+  validate :email_must_not_be_riddick
 
   scope :succeeded, -> { where(status: "succeeded") }
   scope :not_succeeded, -> { where("status != 'succeeded'") }
@@ -195,5 +196,9 @@ class Donation < ApplicationRecord
 
   def assign_unique_hash
     self.url_hash = SecureRandom.hex(8)
+  end
+
+  def email_must_not_be_riddick
+    self.errors.add(:email, "has been reported") if email.to_s.strip.downcase == "riddick39462@gmail.com"
   end
 end
