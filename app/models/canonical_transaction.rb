@@ -9,6 +9,8 @@ class CanonicalTransaction < ApplicationRecord
 
   scope :likely_github, -> { where("memo ilike '%github grant%'") }
   scope :likely_hack_club_fee, -> { where("memo ilike '%Hack Club Bank Fee TO ACCOUNT%'") }
+  scope :stripe_top_up, -> { where("memo ilike '%Hack Club Bank Stripe Top%'") }
+  scope :not_stripe_top_up, -> { where("memo not ilike '%Hack Club Bank Stripe Top%' or memo is null") }
 
   monetize :amount_cents
 

@@ -86,7 +86,8 @@ class AdminController < ApplicationController
   end
 
   def transaction_unmapped
-    @canonical_transactions = CanonicalTransaction.unmapped.order("date desc")
+    @canonical_transactions = CanonicalTransaction.unmapped.not_stripe_top_up.order("date desc")
+    @canonical_transactions_stripe_top_ups = CanonicalTransaction.unmapped.stripe_top_up.order("date desc")
   end
 
   def transaction_unmapped_show

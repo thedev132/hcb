@@ -3,26 +3,48 @@
 <h1><%= @canonical_transactions.count %> Unmapped transactions</h1>
 
 <table>
-  <thead class="pr1">
+  <thead>
     <tr>
       <th>ID</th>
       <th>Date</th>
       <th>Memo</th>
       <th class="right-align">Amount</th>
-      <th class="pr2"></th>
+      <th colspan="1">Actions</th>
     </tr>
   </thead>
   <tbody>
-  <% @canonical_transactions.each do |t| %>
-    <tr data-json="<%= t.to_json %>">
-      <td style="width: 1%;"><%= t.id %></td>
-      <td><%= t.date %></td>
-      <td><%= t.memo %></td>
-      <td class="right-align"><%= t.amount %></td>
-      <td class="pr2" style="width: 1%;">
-        <%= link_to "Process", transaction_unmapped_show_path(t) %>
+    <tr>
+      <td colspan="6" style="text-align: center; font-weight: bold;">
+        UNMAPPED<br/><small>needs manual processing by operations team</small>
       </td>
     </tr>
-  <% end %>
+    <% @canonical_transactions.each do |t| %>
+      <tr>
+        <td><%= t.id %></td>
+        <td><%= t.date %></td>
+        <td><%= t.memo %></td>
+        <td><%= t.amount %></td>
+        <td class="pr2" style="width: 1%;">
+          <%= link_to "Process", transaction_unmapped_show_path(t) %>
+        </td>
+      </tr>
+    <% end %>
+
+    <tr>
+      <td colspan="6" style="text-align: center; font-weight: bold;">
+        STRIPE TOP UPS<br/><small>decide what to do with these at a later date</small>
+      </td>
+    </tr>
+    <% @canonical_transactions_stripe_top_ups.each do |t| %>
+      <tr>
+        <td><%= t.id %></td>
+        <td><%= t.date %></td>
+        <td><%= t.memo %></td>
+        <td><%= t.amount %></td>
+        <td class="pr2" style="width: 1%;">
+          <%= link_to "View", transaction_unmapped_show_path(t) %>
+        </td>
+      </tr>
+    <% end %>
   </tbody>
 </table>
