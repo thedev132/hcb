@@ -146,6 +146,7 @@ gem 'geocoder' # lookup lat/lng for Stripe Cards shipment tracking
 gem 'money-rails' # back cent fields as money objects 
 gem 'namae' # multi-cultural human name parser
 gem 'paper_trail' # track changes on models
+gem 'rack-attack'
 gem 'selenium-webdriver'
 gem 'sidekiq-cron', '~> 1.1' # run sidekiq scheduled tasks
 gem 'strong_migrations' # protects against risky migrations that could cause application harm on deploy
