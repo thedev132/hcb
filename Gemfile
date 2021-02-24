@@ -25,7 +25,7 @@ gem 'mini_racer', platforms: :ruby
 # Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
 gem 'turbolinks', '~> 5.2.0'
 # Use Redis adapter to run Action Cable in production
-# gem 'redis', '~> 4.0'
+gem 'redis', '~> 4.0'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
@@ -143,6 +143,7 @@ gem 'awesome_print'
 gem 'blazer' # business intelligence tool/dashboard
 gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
 gem 'geocoder' # lookup lat/lng for Stripe Cards shipment tracking
+gem 'hiredis'
 gem 'money-rails' # back cent fields as money objects 
 gem 'namae' # multi-cultural human name parser
 gem 'paper_trail' # track changes on models
