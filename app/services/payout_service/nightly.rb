@@ -9,7 +9,7 @@ module PayoutService
         available_on = payment_intent.charges.data.first.balance_transaction.available_on
 
         # 3. create payout if time is ready. TODO: move this into the scope (by later moving the available_on into its own field on the donation table)
-        donation.create_payout! if ready_for_payout?(available_on: available_on)
+        ::PayoutService::Donation::Create.new(donation_id: donation.id).run if ready_for_payout?(available_on: available_on)
       end
     end
 

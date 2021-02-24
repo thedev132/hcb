@@ -62,31 +62,6 @@ class Donation < ApplicationRecord
     }
   end
 
-  def create_payout!
-    pi = StripeService::PaymentIntent.retrieve(id: stripe_payment_intent_id, expand: ['charges.data.balance_transaction'])
-
-    raise StandardError, 'Funds not yet available' unless Time.current.to_i > pi.charges.data.first.balance_transaction.available_on
-
-    self.payout = DonationPayout.new(
-      donation: self
-    )
-
-    self.fee_reimbursement = FeeReimbursement.new(
-      donation: self
-    )
-
-    self.fee_reimbursement.save
-
-    # if a transfer takes longer than 5 days something is probably wrong. so send an email
-    fee_reimbursement_job = SendUnmatchedFeeReimbursementEmailJob.set(wait_until: DateTime.now + 5.days).perform_later(self.fee_reimbursement)
-    self.fee_reimbursement.mailer_queued_job_id = fee_reimbursement_job.provider_job_id
-
-    # saving a second time because we needed the fee reimbursement to exist in order to capture the job id
-    self.fee_reimbursement.save
-
-    save!
-  end
-
   def send_receipt!
     DonationMailer.with(donation: self).donor_receipt.deliver_later
   end
