@@ -66,8 +66,7 @@ class DonationsController < ApplicationController
     donation.set_fields_from_stripe_payment_intent(pi)
     donation.save
 
-    # create donation payout
-    donation.queue_payout!
+    DonationService::Queue.new(donation_id: donation.id).run # queues/crons payout. DEPRECATE. most is unnecessary if we just run in a cron
 
     donation.send_receipt!
 

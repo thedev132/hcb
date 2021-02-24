@@ -3,6 +3,8 @@
 # Invoice#queue_payout!.
 class CreatePayoutJob < ApplicationJob
   def perform(invoice_or_donation)
+    raise ArgumentError, "has been replaced with more reliable cron task"
+
     invoice_or_donation.create_payout!
   end
 end
