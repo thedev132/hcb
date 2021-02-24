@@ -80,7 +80,7 @@ class Rack::Attack
   #
   # Key: "rack::attack:#{Time.now.to_i/:period}:logins/ip:#{req.ip}"
   throttle('donations/start/ip', limit: 5, period: 20.seconds) do |req|
-    if req.path.start_with?('/donations/start') && req.post?
+    if req.path.start_with?('/donations/start')
       req.ip
     end
   end
