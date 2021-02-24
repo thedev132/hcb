@@ -309,7 +309,7 @@ GEM
       execjs
       railties (>= 3.2)
       tilt
-    redcarpet (3.5.0)
+    redcarpet (3.5.1)
     redis (4.2.1)
     representable (3.0.4)
       declarative (< 0.1.0)
