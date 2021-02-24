@@ -1,5 +1,6 @@
 <%= form_with(model: donation, local: true, url: make_donation_donations_path,
               class: 'card mx-auto max-width-1 mb3') do |form| %>
+  <%= form.invisible_captcha :subtitle %>
   <%= form_errors(donation, nil, "We couldn't start this") %>
 
   <div class="field mb2">
