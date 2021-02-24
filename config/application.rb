@@ -1,5 +1,6 @@
 require_relative 'boot'
 
+require 'rack/throttle'
 require 'rails/all'
 
 # Require the gems listed in Gemfile, including any gems
@@ -30,5 +31,8 @@ module Bank
 
     config.autoload_paths << "#{config.root}/lib"
     config.eager_load_paths << "#{config.root}/lib"
+
+    # Middleware
+    config.middleware.use Rack::Throttle::Interval
   end
 end
