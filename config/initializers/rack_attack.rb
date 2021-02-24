@@ -75,4 +75,21 @@ class Rack::Attack
   #    {},   # headers
   #    ['']] # body
   # end
+  #
+  # Throttle POST requests to /donations/start/hq by IP address
+  #
+  # Key: "rack::attack:#{Time.now.to_i/:period}:logins/ip:#{req.ip}"
+  throttle('donations/start/ip', limit: 5, period: 20.seconds) do |req|
+    if req.path.start_with?('/donations/start') && req.post?
+      req.ip
+    end
+  end
+
+  throttle('donations/hq/ip', limit: 5, period: 20.seconds) do |req|
+    if req.path.start_with?('/donations/hq')
+      req.ip
+    end
+  end
+
+
 end
