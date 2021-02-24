@@ -6,6 +6,8 @@ class DonationsController < ApplicationController
   before_action :set_event, only: [:start_donation, :make_donation, :finish_donation, :qr_code]
   before_action :allow_iframe, except: [:show, :index]
 
+  invisible_captcha only: [:make_donation], honeypot: :subtitle
+
   # GET /donations/1
   def show
     authorize @donation
