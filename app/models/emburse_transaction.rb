@@ -28,6 +28,10 @@ class EmburseTransaction < ApplicationRecord
     self.where(["emburse_transactions.transaction_time >= ? and emburse_transactions.transaction_time <= ?", start_time, end_time])
   end
 
+  def date
+    transaction_time
+  end
+
   def memo
     @memo ||= begin
       return 'Transfer from bank account' if amount > 0
