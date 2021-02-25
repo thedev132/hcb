@@ -22,6 +22,9 @@ module TransactionEngine
 
       # 3 canonical
       canonize_hashed_transactions!
+
+      # 4 plaid mistakes
+      fix_plaid_mistakes!
     end
 
     private
@@ -85,6 +88,12 @@ module TransactionEngine
 
     def canonize_hashed_transactions!
       ::TransactionEngine::CanonicalTransactionService::Import::All.new.run
+    end
+
+    def fix_plaid_mistakes!
+      BankAccount.syncing_v2.pluck(:id).each do |bank_account_id|
+        ::TransactionEngine::FixMistakes::Plaid.new.run(bank_account_id: bank_account_id, start_date: @start_date, end_date: nil)
+      end
     end
   end
 end
