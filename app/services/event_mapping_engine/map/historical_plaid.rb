@@ -8,7 +8,7 @@ module EventMappingEngine
       end
 
       def run
-        RawPlaidTransaction.where(plaid_transaction_id: in_common_plaid_transaction_ids).find_each do |raw_plaid_transaction|
+        RawPlaidTransaction.where(plaid_transaction_id: in_common_plaid_transaction_ids).find_each(batch_size: 100) do |raw_plaid_transaction|
 
           Airbrake.notify("There was more than 1 hashed transaction for raw_plaid_transaction: #{raw_plaid_transaction.id}") if raw_plaid_transaction.hashed_transactions.length > 1
 

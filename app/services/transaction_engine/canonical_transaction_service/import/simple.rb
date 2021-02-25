@@ -3,7 +3,7 @@ module TransactionEngine
     module Import
       class Simple
         def run
-          hashed_transactions_ready_for_processing.find_each do |ht|
+          hashed_transactions_ready_for_processing.find_each(batch_size: 100) do |ht|
 
             ActiveRecord::Base.transaction do
               attrs = {

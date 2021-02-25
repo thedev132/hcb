@@ -2,7 +2,7 @@ module EventMappingEngine
   module Map
     class Github
       def run
-        likely_githubs.find_each do |ct|
+        likely_githubs.find_each(batch_size: 100) do |ct|
           guessed_event_id = ::EventMappingEngine::GuessEventId::Github.new(canonical_transaction: ct).run
 
           next unless guessed_event_id

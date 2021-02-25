@@ -2,7 +2,7 @@ module PendingEventMappingEngine
   module Settle
     class OutgoingAch
       def run
-        unsettled.find_each do |cpt|
+        unsettled.find_each(batch_size: 100) do |cpt|
           # 1. identify ach number
           ach_transfer = cpt.raw_pending_outgoing_ach_transaction.ach_transfer
           Airbrake.notify("AchTransfer not found for canonical pending transaction #{cpt.id}") unless ach_transfer

@@ -3,7 +3,7 @@ module Temp
     class Nightly
       def run
         # StripeAuthorizations
-        Receipt.where(receiptable_type: "StripeAuthorization").find_each do |receipt|
+        Receipt.where(receiptable_type: "StripeAuthorization").find_each(batch_size: 100) do |receipt|
           raw_stripe_transaction = identify_raw_stripe_transaction(stripe_authorization_id: receipt.receiptable.stripe_id)
           next unless raw_stripe_transaction
 
@@ -15,7 +15,7 @@ module Temp
         end
 
         # EmburseTransactions
-        Receipt.where(receiptable_type: "EmburseTransaction").find_each do |receipt|
+        Receipt.where(receiptable_type: "EmburseTransaction").find_each(batch_size: 100) do |receipt|
           raw_emburse_transaction = identify_raw_emburse_transaction(emburse_id: receipt.receiptable.emburse_id)
           next unless raw_emburse_transaction
 
@@ -27,7 +27,7 @@ module Temp
         end
 
         # Transactions
-        Receipt.where(receiptable_type: "Transaction").find_each do |receipt|
+        Receipt.where(receiptable_type: "Transaction").find_each(batch_size: 100) do |receipt|
           raise NotImplementedError, "Syncing transaction receipts not yet codified"
         end
       end

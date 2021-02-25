@@ -14,7 +14,9 @@ module InvoiceService
         i.save!
 
         # 4. queue payout
-        i.queue_payout! if i.reload.paid? # now is paid
+        if i.reload.paid?
+          ::InvoiceService::Queue.new(invoice_id: i.id).run
+        end
       end
     end
   end

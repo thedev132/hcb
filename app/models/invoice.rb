@@ -161,44 +161,6 @@ class Invoice < ApplicationRecord
     end
   end
 
-  def queue_payout!
-    inv = StripeService::Invoice.retrieve(id: stripe_invoice_id, expand: ['charge.balance_transaction'])
-    raise NoAssociatedStripeCharge if inv.charge.nil?
-
-    b_tnx = inv.charge.balance_transaction
-
-    funds_available_at = Util.unixtime(b_tnx.available_on)
-    create_payout_at = funds_available_at + 1.day
-
-    job = CreatePayoutJob.set(wait_until: create_payout_at).perform_later(self)
-
-    self.payout_creation_queued_at = Time.current
-    self.payout_creation_queued_for = create_payout_at
-    self.payout_creation_queued_job_id = job.job_id
-    self.payout_creation_balance_net = b_tnx.net - hidden_fee(inv) # amount to pay out
-    self.payout_creation_balance_stripe_fee = b_tnx.fee + hidden_fee(inv)
-    self.payout_creation_balance_available_at = funds_available_at
-
-    self.save!
-  end
-
-  def hidden_fee(inv)
-    # stripe has hidden fees for ACH Credit TXs that don't show in the API at the moment:
-    # https://support.stripe.com/questions/pricing-of-payment-methods-in-the-us
-    c = inv.charge
-    if c.payment_method_details.type != 'ach_credit_transfer'
-      return 0
-    end
-
-    if c.amount < 1000 * 100
-      return 700
-    elsif c.amount < 100000 * 100
-      return 1450
-    else
-      return 2450
-    end
-  end
-
   def create_payout!
     inv = StripeService::Invoice.retrieve(id: stripe_invoice_id, expand: ['charge.balance_transaction'])
 

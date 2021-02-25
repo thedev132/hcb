@@ -3,7 +3,7 @@ module TransactionEngine
     module Import
       class EmburseThatLookLikeDuplicates
         def run
-          unprocessed_emburse_with_duplicate_hashes.find_each do |ht|
+          unprocessed_emburse_with_duplicate_hashes.find_each(batch_size: 100) do |ht|
             ActiveRecord::Base.transaction do
               attrs = {
                 date: ht.date,

@@ -1,6 +1,3 @@
-# Used for withdrawing sponsor payments from Stripe. Please see
-# Invoice#queue_payout! for more info. Contact Zach with any questions - this
-# flow is currently janky.
 class InvoicePayout < ApplicationRecord
   # Stripe provides a field called type, which is reserved in rails for STI.
   # This removes the Rails reservation on 'type' for this class.

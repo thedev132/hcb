@@ -2,7 +2,7 @@ module PendingEventMappingEngine
   module Settle
     class Invoice
       def run
-        unsettled.find_each do |cpt|
+        unsettled.find_each(batch_size: 100) do |cpt|
           # 1. identify invoice
           invoice = cpt.raw_pending_invoice_transaction.invoice
           Airbrake.notify("invoice not found for canonical pending transaction #{cpt.id}") unless invoice

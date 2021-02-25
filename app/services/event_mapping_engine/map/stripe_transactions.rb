@@ -8,7 +8,7 @@ module EventMappingEngine
       end
 
       def run
-        RawStripeTransaction.where("date_posted >= ?", @start_date).find_each do |raw_stripe_transaction|
+        RawStripeTransaction.where("date_posted >= ?", @start_date).find_each(batch_size: 100) do |raw_stripe_transaction|
 
           Airbrake.notify("There was more than 1 hashed transaction for raw_stripe_transaction: #{raw_stripe_transaction.id}") if raw_stripe_transaction.hashed_transactions.length > 1
 

@@ -43,11 +43,6 @@ sync_emburse_transactions_job:
   class: "SyncEmburseTransactionsJob"
   queue: "default"
 
-sync_invoices_job:
-  cron: "*/30 * * * *" # run every 30 minutes
-  class: "SyncInvoicesJob"
-  queue: "default"
-
 sync_transactions_job:
   cron: "0 */2 * * *" # run every 2 hours
   class: "SyncTransactionsJob"

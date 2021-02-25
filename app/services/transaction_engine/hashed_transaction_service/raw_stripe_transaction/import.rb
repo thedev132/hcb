@@ -9,7 +9,7 @@ module TransactionEngine
         end
 
         def run
-          ::RawStripeTransaction.where("date_posted >= ?", @start_date).find_each do |rst|
+          ::RawStripeTransaction.where("date_posted >= ?", @start_date).find_each(batch_size: 100) do |rst|
             begin
               ph = primary_hash(rst)
 

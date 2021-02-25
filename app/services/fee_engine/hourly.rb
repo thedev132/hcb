@@ -1,7 +1,7 @@
 module FeeEngine
   class Hourly
     def run
-      CanonicalEventMapping.missing_fee.find_each do |cem|
+      CanonicalEventMapping.missing_fee.find_each(batch_size: 100) do |cem|
         reason = determine_reason(cem)
 
         event_sponsorship_fee = cem.event.sponsorship_fee
