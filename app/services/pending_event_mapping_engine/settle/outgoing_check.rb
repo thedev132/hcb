@@ -2,7 +2,7 @@ module PendingEventMappingEngine
   module Settle
     class OutgoingCheck
       def run
-        unsettled.find_each do |cpt|
+        unsettled.find_each(batch_size: 100) do |cpt|
           # 1. identify check
           check = cpt.raw_pending_outgoing_check_transaction.check
           Airbrake.notify("Check not found for canonical pending transaction #{cpt.id}") unless check

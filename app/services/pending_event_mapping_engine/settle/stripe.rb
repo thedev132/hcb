@@ -2,7 +2,7 @@ module PendingEventMappingEngine
   module Settle
     class Stripe
       def run
-        unsettled.find_each do |cpt|
+        unsettled.find_each(batch_size: 100) do |cpt|
           stripe_authorization_id = cpt.raw_pending_stripe_transaction.stripe_transaction_id
 
           raw_stripe_transactions = RawStripeTransaction.where(stripe_authorization_id: stripe_authorization_id)

@@ -2,7 +2,7 @@ module PendingEventMappingEngine
   module Decline
     class Stripe
       def run
-        unsettled.find_each do |cpt|
+        unsettled.find_each(batch_size: 100) do |cpt|
           rpst = cpt.raw_pending_stripe_transaction
           st = rpst.stripe_transaction
 

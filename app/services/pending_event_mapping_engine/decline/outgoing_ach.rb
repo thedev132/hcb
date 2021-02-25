@@ -2,7 +2,7 @@ module PendingEventMappingEngine
   module Decline
     class OutgoingAch
       def run
-        unsettled.find_each do |cpt|
+        unsettled.find_each(batch_size: 100) do |cpt|
           ach_transfer = cpt.raw_pending_outgoing_ach_transaction.ach_transfer
           next unless ach_transfer
 

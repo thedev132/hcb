@@ -2,7 +2,7 @@ module PendingEventMappingEngine
   module Map
     class Invoice
       def run
-        unmapped.find_each do |cpt|
+        unmapped.find_each(batch_size: 100) do |cpt|
           next unless cpt.raw_pending_invoice_transaction.likely_event_id
 
           attrs = {
