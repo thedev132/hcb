@@ -51,6 +51,10 @@ class Transaction < ApplicationRecord
 
   after_initialize :default_values
   
+  def memo
+    name
+  end
+
   def admin_dropdown_description
     "#{name} - #{id}"
   end
