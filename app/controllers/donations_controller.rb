@@ -47,7 +47,7 @@ class DonationsController < ApplicationController
   end
 
   def finish_donation
-    @donation = Donation.find_by_url_hash(params['donation'])
+    @donation = Donation.find_by!(url_hash: params['donation'])
 
     if @donation.status == 'succeeded'
       flash[:info] = 'You tried to access the payment page for a donation that’s already been sent.'
