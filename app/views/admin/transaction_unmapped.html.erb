@@ -14,22 +14,24 @@
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <td colspan="6" style="text-align: center; font-weight: bold;">
-        UNMAPPED<br/><small>needs manual processing by operations team</small>
-      </td>
-    </tr>
-    <% @canonical_transactions.each do |t| %>
+    <% @canonical_transactions.group_by { |ct| ct.unique_bank_identifier }.each do |k, values| %>
       <tr>
-        <td><%= t.unique_bank_identifier %></td>
-        <td><%= t.id %></td>
-        <td><%= t.date %></td>
-        <td><%= t.memo %></td>
-        <td><%= t.amount %></td>
-        <td class="pr2" style="width: 1%;">
-          <%= link_to "Process", transaction_unmapped_show_path(t) %>
+        <td colspan="6" style="text-align: center; font-weight: bold;">
+          UNMAPPED <%= k %><br/><small>needs manual processing by operations team</small>
         </td>
       </tr>
+      <% values.each do |t| %>
+        <tr>
+          <td><%= t.unique_bank_identifier %></td>
+          <td><%= t.id %></td>
+          <td><%= t.date %></td>
+          <td><%= t.memo %></td>
+          <td><%= t.amount %></td>
+          <td class="pr2" style="width: 1%;">
+            <%= link_to "Process", transaction_unmapped_show_path(t) %>
+          </td>
+        </tr>
+      <% end %>
     <% end %>
 
     <tr>
