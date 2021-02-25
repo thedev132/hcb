@@ -10,7 +10,7 @@ module RawPlaidTransactionService
           ht.canonical_transaction.fees.map(&:destroy!)
           ht.canonical_transaction.canonical_event_mapping.try(:destroy!)
           ht.canonical_transaction.canonical_hashed_mappings.map(&:destroy!)
-
+          ht.canonical_transaction.destroy!
           ht.destroy!
         end
 
