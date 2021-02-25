@@ -325,7 +325,11 @@ class Invoice < ApplicationRecord
       description: self.memo,
       status: self.status,
       statement_descriptor: self.statement_descriptor,
-      tax_percent: self.tax_percent
+      tax_percent: self.tax_percent,
+      footer: "Need to pay by mailed paper check? You can mail checks to:\n\n"\
+              "#{self.sponsor.event.name} ( #{self.sponsor.event.id}) c/o The Hack Foundation\n"\
+              "8605 Santa Monica Blvd #86294\n"\
+              'West Hollywood, CA 90069'
     }
   end
 
