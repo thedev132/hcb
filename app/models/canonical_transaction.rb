@@ -151,6 +151,10 @@ class CanonicalTransaction < ApplicationRecord
     nil
   end
 
+  def unique_bank_identifier
+    @unique_bank_identifier ||= hashed_transactions.first.unique_bank_identifier
+  end
+
   private
 
   def hashed_transaction

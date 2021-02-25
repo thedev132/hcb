@@ -5,6 +5,7 @@
 <table>
   <thead>
     <tr>
+      <th>Bank</th>
       <th>ID</th>
       <th>Date</th>
       <th>Memo</th>
@@ -20,6 +21,7 @@
     </tr>
     <% @canonical_transactions.each do |t| %>
       <tr>
+        <td><%= t.unique_bank_identifier %></td>
         <td><%= t.id %></td>
         <td><%= t.date %></td>
         <td><%= t.memo %></td>
@@ -37,6 +39,7 @@
     </tr>
     <% @canonical_transactions_stripe_top_ups.each do |t| %>
       <tr>
+        <td><%= t.unique_bank_identifier %></td>
         <td><%= t.id %></td>
         <td><%= t.date %></td>
         <td><%= t.memo %></td>
