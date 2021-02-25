@@ -15,10 +15,10 @@ module TransactionEngine
         plaid_transaction_ids_that_were_deleted_remotely_by_plaid = local_plaid_transaction_ids - remote_plaid_transaction_ids
 
         # 2. iterate over
-        #RawPlaidTransaction.where(plaid_transaction_id: plaid_transaction_ids_that_were_deleted_remotely_by_plaid).find_each(batch_size: 100) do |rpt|
-        #  # 3. remove from our system
-        #  ::RawPlaidTransactionService::Delete.new(raw_plaid_transaction_id: rpt.id).run
-        #end
+        RawPlaidTransaction.where(plaid_transaction_id: plaid_transaction_ids_that_were_deleted_remotely_by_plaid).find_each(batch_size: 100) do |rpt|
+          # 3. remove from our system
+          ::RawPlaidTransactionService::Delete.new(raw_plaid_transaction_id: rpt.id).run
+        end
 
         Airbrake.notify("Plaid Mistakes: #{plaid_transaction_ids_that_were_deleted_remotely_by_plaid}")
 
