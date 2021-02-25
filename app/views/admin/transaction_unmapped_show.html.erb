@@ -71,4 +71,19 @@
   </body>
 </table>
 
+<h2>Potential Historical Transactions to Map from</h2>
+
+<table>
+  <tbody>
+    <% if @canonical_transaction.deprecated_linked_object %>
+      <tr>
+        <td><%= @canonical_transaction.deprecated_linked_object.id %></td>
+        <td><%= @canonical_transaction.deprecated_linked_object.date %></td>
+        <td><%= @canonical_transaction.deprecated_linked_object.memo %></td>
+        <td><%= @canonical_transaction.deprecated_linked_object.amount %></td>
+        <td><%= @canonical_transaction.deprecated_linked_object.deleted_at ? "Deleted at #{@canonical_transaction.deprecated_linked_object.deleted_at}" : "" %></td>
+      </tr>
+    <% end %>
+  </body>
+</table>
 

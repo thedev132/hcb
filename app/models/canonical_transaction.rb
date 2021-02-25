@@ -39,7 +39,7 @@ class CanonicalTransaction < ApplicationRecord
       obj = nil
 
       if raw_plaid_transaction
-        ts = Transaction.where(plaid_id: raw_plaid_transaction.plaid_transaction_id)
+        ts = Transaction.with_deleted.where(plaid_id: raw_plaid_transaction.plaid_transaction_id)
 
         Airbrake.notify("There was more (or less) than 1 transaction for raw_plaid_transaction: #{raw_plaid_transaction.id}") unless ts.count == 1
 
@@ -47,7 +47,7 @@ class CanonicalTransaction < ApplicationRecord
       end
 
       if raw_emburse_transaction
-        ets = EmburseTransaction.where(emburse_id: raw_emburse_transaction.emburse_transaction_id)
+        ets = EmburseTransaction.with_deleted.where(emburse_id: raw_emburse_transaction.emburse_transaction_id)
 
         Airbrake.notify("There was more (or less) than 1 emburse_transaction for raw_emburse_transaction: #{raw_emburse_transaction.id}") unless ets.count == 1
 
