@@ -9,6 +9,8 @@ module TransactionEngine
       end
 
       def run
+        raise ArgumentError, "BankAccount #{@bank_account_id} not found" unless bank_account
+
         # 1. identify the plaid transaction ids that plaid deleted from their api/infra
         plaid_transaction_ids_that_were_deleted_remotely_by_plaid = local_plaid_transaction_ids - remote_plaid_transaction_ids
 
@@ -26,7 +28,15 @@ module TransactionEngine
       private
 
       def local_plaid_transaction_ids
-        @local_plaid_transaction_ids ||= RawPlaidTransaction.where("plaid_transaction->>'date' >= ? and plaid_transaction->>'date' <= ?", @start_date, @end_date).pluck(:plaid_transaction_id)
+        @local_plaid_transaction_ids ||= RawPlaidTransaction.where("plaid_account_id = ? and plaid_transaction->>'date' >= ? and plaid_transaction->>'date' <= ?", plaid_account_id, @start_date, @end_date).pluck(:plaid_transaction_id)
+      end
+
+      def plaid_account_id
+        @plaid_account_id ||= bank_account.plaid_account_id
+      end
+
+      def bank_account
+        @bank_account ||= ::BankAccount.find(@bank_account_id)
       end
 
       def remote_plaid_transaction_ids
