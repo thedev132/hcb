@@ -1,7 +1,7 @@
 module PayoutService
   class Nightly
     def run
-      Donation.succeeded.where("payout_id is null").each do |donation|
+      ::Donation.succeeded.where("payout_id is null").each do |donation|
         # 1. fetch payment intent
         payment_intent = ::Partners::Stripe::PaymentIntents::Show.new(id: donation.stripe_payment_intent_id).run
 
