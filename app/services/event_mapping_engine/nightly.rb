@@ -11,6 +11,7 @@ module EventMappingEngine
       map_historical_emburse!
       map_stripe_transactions!
       map_github!
+      map_checks!
 
       true
     end
@@ -31,6 +32,10 @@ module EventMappingEngine
 
     def map_github!
       ::EventMappingEngine::Map::Github.new.run
+    end
+
+    def map_checks!
+      ::EventMappingEngine::Map::Checks.new.run
     end
   end
 end
