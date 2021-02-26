@@ -7,13 +7,7 @@
 //= require activestorage
 //= require local-time
 //= require tilt.jquery.min.js
-//= require clipboard
-$(document).ready(function () {
 
-    var clipboard = new Clipboard('.clipboard-btn');
-    console.log(clipboard);
-
-});
 //= require global
 //= require ui
 //= require filterbar

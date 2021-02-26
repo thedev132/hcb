@@ -22,52 +22,29 @@
 <hr/>
 
 <p class="bold mb0">Payee Name</p>
-<textarea id="payee-name"><%= @ach_transfer.recipient_name%></textarea>
-<button class="clipboard-btn" data-clipboard-action="copy" data-clipboard-target="#payee-name">
-    Copy to clipboard
-</button>
+<p><%= @ach_transfer.recipient_name%></p>
 
 <p class="bold mb0">Payee Nickname</p>
-<textarea id="payee-nickname">HCB ACH #<%= @ach_transfer.id %></textarea>
-<button class="clipboard-btn" data-clipboard-action="copy" data-clipboard-target="#payee-nickname">
-    Copy to clipboard
-</button>
+<p>HCB ACH #<%= @ach_transfer.id %></p>
 
 <p class="bold mb0">Payee Phone Number</p>
-<textarea id="payee-phone"><%= @ach_transfer.recipient_tel %></textarea>
-<button class="clipboard-btn" data-clipboard-action="copy" data-clipboard-target="#payee-phone">
-    Copy to clipboard
-</button>
+<p><%= @ach_transfer.recipient_tel %></p>
 
 <p class="bold mb0">Payment for</p>
-<textarea id="payment-purpose"><%= @ach_transfer.payment_for %></textarea>
-<button class="clipboard-btn" data-clipboard-action="copy" data-clipboard-target="#payment-purpose">
-    Copy to clipboard
-</button>
+<p><%= @ach_transfer.payment_for %></p>
 
 <p class="bold mb0">Bank Name</p>
-<textarea id="payee-bank"><%= @ach_transfer.bank_name %></textarea>
-<button class="clipboard-btn" data-clipboard-action="copy" data-clipboard-target="#payee-bank">
-    Copy to clipboard
-</button>
+<p><%= @ach_transfer.bank_name %></p>
 
 <p class="bold mb0">Account Number</p>
-<textarea id="payee-account"><%= @ach_transfer.account_number %></textarea>
-<button class="clipboard-btn" data-clipboard-action="copy" data-clipboard-target="#payee-account">
-    Copy to clipboard
-</button>
+<p><%= @ach_transfer.account_number %></p>
 
 <p class="bold mb0">Routing Number</p>
-<textarea id="payee-routing"><%= @ach_transfer.routing_number %></textarea>
-<button class="clipboard-btn" data-clipboard-action="copy" data-clipboard-target="#payee-routing">
-    Copy to clipboard
-</button>
+<p><%= @ach_transfer.routing_number %></p>
 
 <p class="bold mb0">Amount</p>
-<textarea id="payee-amount"><%= render_money @ach_transfer.amount %></textarea>
-<button class="clipboard-btn" data-clipboard-action="copy" data-clipboard-target="#payee-amount">
-    Copy to clipboard
-</button>
+<p><%= render_money @ach_transfer.amount %></p> 
+
 
 
 <%= render 'arrival_date_form', ach_transfer: @ach_transfer %>

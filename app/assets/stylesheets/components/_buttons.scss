@@ -69,32 +69,6 @@ input[type='submit'],
   }
 }
 
-.clipboard-btn {
-  -webkit-appearance: none;
-  align-items: center;
-  border: 0;
-  border-radius: 0.75rem;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.125);
-  @include gradient(info);
-  color: $white;
-  cursor: pointer;
-  display: inline-flex;
-  font-family: $brand-font-family;
-  font-size: 1.125rem;
-  font-weight: 600;
-  justify-content: center;
-  letter-spacing: 0;
-  line-height: 1.5;
-  overflow: hidden;
-  padding: 0.5rem 1.25rem;
-  position: relative;
-  text-align: center;
-  text-decoration: none;
-  transform: scale(1);
-  transition: transform 0.125s ease-in-out, box-shadow 0.25s ease-in-out;
-  user-select: none;
-}
-
 form .flex-auto + input[type='submit'] {
   height: 2.5rem;
 }
