@@ -14,9 +14,7 @@ module EventMappingEngine
             # b. up to 1 month in the past
             # c. memo contains 'FROM DDA#80007609524'
 
-            paired_canonical_transactions = ::CanonicalTransaction.unmapped.where("memo ilike '%FROM DDA#80007609524 ON%' and amount_cents = ? and date >= ? and date <= ?", -ct.amount_cents, ct.date - 1.month, ct.date).order("date asc")
-
-
+            paired_canonical_transactions = ::CanonicalTransaction.unmapped.where("memo ilike '%FROM DDA#80007609524 ON%' and amount_cents = ? and date <= ?", -ct.amount_cents, ct.date).order("date asc")
             paired_canonical_transaction = paired_canonical_transactions.first # make use of oldest match first
 
             next unless paired_canonical_transaction
