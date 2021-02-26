@@ -34,6 +34,8 @@ gem 'redis', '~> 4.0'
 
 gem 'httparty'
 
+gem 'clipboard-rails'
+
 # For Plaid integration
 gem 'plaid', '~> 6.0'
 # And Stripe...
