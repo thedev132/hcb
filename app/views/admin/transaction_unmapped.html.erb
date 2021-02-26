@@ -17,7 +17,7 @@
     <% @canonical_transactions.group_by { |ct| ct.unique_bank_identifier }.each do |k, values| %>
       <tr>
         <td colspan="6" style="text-align: center; font-weight: bold;">
-          UNMAPPED <%= k %><br/><small>needs manual processing by operations team</small>
+          <%= values.length %> UNMAPPED <%= k %><br/><small>needs manual processing by operations team</small>
         </td>
       </tr>
       <% values.each do |t| %>
@@ -36,7 +36,7 @@
 
     <tr>
       <td colspan="6" style="text-align: center; font-weight: bold;">
-        STRIPE TOP UPS<br/><small>decide what to do with these at a later date</small>
+        <%= @canonical_transactions_stripe_top_ups.count %> STRIPE TOP UPS<br/><small>decide what to do with these at a later date</small>
       </td>
     </tr>
     <% @canonical_transactions_stripe_top_ups.each do |t| %>
