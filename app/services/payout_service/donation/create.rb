@@ -20,7 +20,7 @@ module PayoutService
       private
 
       def payout
-        @payout ||= DonationPayout.new(donation: donation)
+        @payout ||= ::DonationPayout.new(donation: donation)
       end
 
       def fee_reimbursement
@@ -28,7 +28,7 @@ module PayoutService
       end
 
       def donation
-        @donation ||= Donation.find(@donation_id)
+        @donation ||= ::Donation.find(@donation_id)
       end
 
       def payment_intent
