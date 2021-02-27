@@ -13,6 +13,7 @@ module EventMappingEngine
       map_github!
       map_checks!
       map_fee_reimbursements!
+      map_hack_club_bank_issued_cards!
 
       true
     end
@@ -41,6 +42,10 @@ module EventMappingEngine
 
     def map_fee_reimbursements!
       ::EventMappingEngine::Map::FeeReimbursements.new.run
+    end
+
+    def map_hack_club_bank_issued_cards!
+      ::EventMappingEngine::Map::HackClubBankIssuedCards.new.run
     end
   end
 end
