@@ -52,7 +52,7 @@ class EventsController < ApplicationController
   def fees
     authorize @event
 
-    @fees = @event.fees.includes(canonical_event_mapping: :canonical_transaction).order("canonical_transactions.date desc")
+    @fees = @event.fees.includes(canonical_event_mapping: :canonical_transaction).order("canonical_transactions.date desc, canonical_transactions.id desc")
   end
 
   # async frame for incoming money

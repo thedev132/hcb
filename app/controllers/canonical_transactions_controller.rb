@@ -22,6 +22,22 @@ class CanonicalTransactionsController < ApplicationController
     redirect_to transaction_url(params[:id])
   end
 
+  def unwaive_fee
+    authorize CanonicalTransaction
+
+    ct = CanonicalTransaction.find(params[:id])
+
+    raise ArgumentError unless ct.amount_cents > 0
+
+    fee = ct.canonical_event_mapping.fees.first
+    fee.amount_cents_as_decimal = BigDecimal("#{ct.amount_cents}") * BigDecimal("#{ct.event.sponsorship_fee}")
+
+    fee.reason = "REVENUE"
+    fee.save!
+
+    redirect_to transaction_url(params[:id])
+  end
+
   def mark_bank_fee
     authorize CanonicalTransaction
 

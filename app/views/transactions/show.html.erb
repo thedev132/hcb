@@ -111,7 +111,10 @@
           <strong>Fee</strong>
           <%= render_money fee.amount_cents_as_decimal %> (<%= render_percentage fee.event_sponsorship_fee %>)
 
-          <%= link_to "waive fee", waive_fee_canonical_transaction_url(@transaction), method: :post, class: "btn bg-accent" if current_user&.admin? %>
+
+          <% admin_tools('py0') do %>
+            <%= link_to "[waive fee]", waive_fee_canonical_transaction_url(@transaction), method: :post if fee.amount_cents_as_decimal > 0 %>
+          <% end %>
         </p>
       <% end %>
     <% elsif @transaction.fee_payment? %>
@@ -119,6 +122,12 @@
         <strong>Note</strong>
         <strong>This is a fee payment</strong>
       </p>
+    <% else %>
+      <% @transaction.fees.each do |fee| %>
+        <% admin_tools('py0') do %>
+          <%= link_to "[unwaive fee]", unwaive_fee_canonical_transaction_url(@transaction), method: :post if fee.revenue_waived? %>
+        <% end %>
+      <% end %>
     <% end %>
 
     <% if @transaction.emburse_transfer %>
@@ -137,7 +146,7 @@
 
   </section>
 
-  <% unless using_transaction_engine_v2? %>
+  <% unless using_transaction_engine_v2? || @transaction.is_a?(CanonicalTransaction) %>
   <% admin_tools('py0') do %>
       <p>
         Bank Account:
