@@ -46,7 +46,7 @@ class EventsController < ApplicationController
 
     @organizers = @event.organizer_positions.includes(:user)
     @pending_transactions = _show_pending_transactions
-    @transactions = paginate(_show_transactions, per_page: 100)
+    @transactions = paginate(_show_transactions, per_page: 250)
   end
 
   def fees
