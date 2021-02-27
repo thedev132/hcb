@@ -3,6 +3,7 @@ class CanonicalTransaction < ApplicationRecord
   include Receiptable
 
   scope :unmapped, -> { includes(:canonical_event_mapping).where(canonical_event_mappings: {canonical_transaction_id: nil}) }
+  scope :mapped, -> { includes(:canonical_event_mapping).where.not(canonical_event_mappings: {canonical_transaction_id: nil}) }
 
   scope :revenue, -> { where("amount_cents > 0") }
   scope :expense, -> { where("amount_cents < 0") }
@@ -29,6 +30,10 @@ class CanonicalTransaction < ApplicationRecord
 
   def likely_hack_club_fee?
     memo.to_s.upcase.include?("HACK CLUB BANK FEE TO ACCOUNT")
+  end
+
+  def likely_check_clearing_dda?
+    memo.to_s.upcase.include?("FROM DDA#80007609524 ON")
   end
 
   def linked_object

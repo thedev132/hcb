@@ -24,6 +24,7 @@ module FeeEngine
 
       # TODO: add other reasons here like disbursements, github, etc
       reason = "HACK CLUB FEE" if cem.canonical_transaction.likely_hack_club_fee?
+      reason = "REVENUE WAIVED" if cem.canonical_transaction.likely_check_clearing_dda? # this typically has a negative balancing transaction with it
 
       #reason = "REVENUE WAIVED" # special case for transaction
 

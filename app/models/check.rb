@@ -85,7 +85,7 @@ class Check < ApplicationRecord
       "info"
     when :deposited
       "success"
-    when :canceled, :rejected
+    when :canceled, :rejected, :voided
       "muted"
     else
       "info"
