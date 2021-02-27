@@ -1,0 +1,48 @@
+<% title @event.name.html_safe %>
+
+<%= render 'nav' %>
+
+<h2 class="heading">
+  Fees
+</h2>
+
+<div class="table-container">
+  <table>
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Memo</th>
+        <th class="right-align">Amount ¢</th>
+        <th class="right-align">Fee %</th>
+        <th class="right-align">Fee ¢</th>
+        <th class="right-align">Paid ¢</th>
+        <th class="right-align">Owe ¢</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @fees.each do |fee| %>
+        <tr>
+          <td><%= fee.date %></td>
+          <td style="max-width: 0;overflow:hidden;text-overflow:ellipsis;white-space:no-wrap;width:300px;"><%= fee.smart_memo %></td>
+          <td class="right-align"><%= fee.amount_cents %></td>
+          <td class="right-align"><%= fee.event_sponsorship_fee %></td>
+          <td class="right-align"><%= fee.amount_cents_as_decimal %></td>
+          <td class="right-align"><%= fee.amount_cents if fee.hack_club_fee? %></td>
+          <td class="right-align"></td>
+        </tr>
+      <% end %>
+    </tbody>
+
+    <tfoot>
+      <tr>
+        <td></td>
+        <td></td>
+        <td class="right-align"><%= @fees.sum("canonical_transactions.amount_cents") %></td>
+        <td class="right-align"></td>
+        <td class="right-align"><%= @fees.sum("amount_cents_as_decimal") %></td>
+        <td class="right-align"><%= @fees.hack_club_fee.sum("canonical_transactions.amount_cents") %></td>
+        <td class="right-align"><%= @fees.sum("amount_cents_as_decimal") + @fees.hack_club_fee.sum("canonical_transactions.amount_cents")  %></td>
+      </tr>
+    </tfoot>
+  </table>
+</div>

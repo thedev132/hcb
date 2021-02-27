@@ -91,7 +91,7 @@
   <button
     type="button"
     <%= organizer_signed_in? ? 'data-behavior=menu_toggle aria-expanded=false tabindex=0' : 'disabled=disabled' %>
-    class="btn bg-info menu__toggle overflow-visible tooltipped tooltipped--n">
+    class="btn bg-info menu__toggle overflow-visible">
       <%= inline_icon 'download', size: 16 %>
       Export
       <% if organizer_signed_in? %>

@@ -49,6 +49,12 @@ class EventsController < ApplicationController
     @transactions = paginate(_show_transactions, per_page: 100)
   end
 
+  def fees
+    authorize @event
+
+    @fees = @event.fees.includes(canonical_event_mapping: :canonical_transaction).order("canonical_transactions.date desc")
+  end
+
   # async frame for incoming money
   def dashboard_stats
     authorize @event

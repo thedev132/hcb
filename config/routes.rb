@@ -251,6 +251,7 @@ Rails.application.routes.draw do
   get '/events' => 'events#index'
   get '/event_by_airtable_id/:airtable_id' => 'events#by_airtable_id'
   resources :events, path: '/' do
+    get 'fees', to: 'events#fees', as: :fees
     get 'dashboard_stats', to: 'events#dashboard_stats', as: :dashboard_stats
     put 'toggle_hidden', to: 'events#toggle_hidden'
 
