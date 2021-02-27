@@ -8,6 +8,7 @@ class CanonicalTransaction < ApplicationRecord
   scope :revenue, -> { where("amount_cents > 0") }
   scope :expense, -> { where("amount_cents < 0") }
 
+  scope :likely_fee_reimbursements, -> { where("memo ilike 'FEE REFUND%FROM ACCOUNT REDACTED'") }
   scope :likely_github, -> { where("memo ilike '%github grant%'") }
   scope :likely_clearing_checks, -> { where("memo ilike '%Withdrawal - Inclearing Check #%' or memo ilike '%Withdrawal - On-Us Deposited Ite #%'") }
   scope :likely_hack_club_fee, -> { where("memo ilike '%Hack Club Bank Fee TO ACCOUNT%'") }
