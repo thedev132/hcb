@@ -97,13 +97,3 @@ temp_job_sync_custom_memos_nightly:
   cron: "0 0 * * *" # run every 1 day
   class: "TempJob::SyncCustomMemosNightly"
   queue: "default"
-
-temp_job_fix_stripe_authorizations_nightly:
-  cron: "0 0 1 9 *" # run september 1st
-  class: "TempJob::FixStripeAuthorizationsNightly"
-  queue: "default"
-
-temp_job_fix_spam_donations:
-  cron: "0 0 1 9 *" # run september 1st
-  class: "TempJob::FixSpamDonations"
-  queue: "default"
