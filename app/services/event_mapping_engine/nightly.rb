@@ -14,6 +14,7 @@ module EventMappingEngine
       map_checks!
       map_fee_reimbursements!
       map_hack_club_bank_issued_cards!
+      map_stripe_top_ups!
 
       true
     end
@@ -46,6 +47,10 @@ module EventMappingEngine
 
     def map_hack_club_bank_issued_cards!
       ::EventMappingEngine::Map::HackClubBankIssuedCards.new.run
+    end
+
+    def map_stripe_top_ups!
+      ::EventMappingEngine::Map::StripeTopUps.new.run
     end
   end
 end
