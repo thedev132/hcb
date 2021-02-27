@@ -3,6 +3,7 @@ class CanonicalTransaction < ApplicationRecord
   include Receiptable
 
   scope :unmapped, -> { includes(:canonical_event_mapping).where(canonical_event_mappings: {canonical_transaction_id: nil}) }
+  scope :mapped, -> { includes(:canonical_event_mapping).where.not(canonical_event_mappings: {canonical_transaction_id: nil}) }
 
   scope :revenue, -> { where("amount_cents > 0") }
   scope :expense, -> { where("amount_cents < 0") }
