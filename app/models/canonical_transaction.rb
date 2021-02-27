@@ -32,6 +32,10 @@ class CanonicalTransaction < ApplicationRecord
     memo.to_s.upcase.include?("HACK CLUB BANK FEE TO ACCOUNT")
   end
 
+  def likely_check_clearing_dda?
+    memo.to_s.upcase.include?("FROM DDA#80007609524 ON")
+  end
+
   def linked_object
     @linked_object ||= TransactionEngine::SyntaxSugarService::LinkedObject.new(canonical_transaction: self).run
   end
