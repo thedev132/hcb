@@ -8,6 +8,10 @@ class Fee < ApplicationRecord
   scope :hack_club_fee, -> { where(reason: "HACK CLUB FEE") }
   scope :greater_than_0, -> { where("amount_cents_as_decimal > 0") }
 
+  def revenue_waived?
+    reason == "REVENUE WAIVED"
+  end
+
   def hack_club_fee?
     reason == "HACK CLUB FEE"
   end
@@ -35,8 +39,6 @@ class Fee < ApplicationRecord
   def amount_cents
     canonical_transaction.amount_cents
   end
-
-  private
 
   def canonical_transaction
     @canonical_transaction ||= canonical_event_mapping.canonical_transaction

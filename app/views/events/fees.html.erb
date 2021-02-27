@@ -10,6 +10,7 @@
   <table>
     <thead>
       <tr>
+        <th></th>
         <th>Date</th>
         <th>Memo</th>
         <th class="right-align">Amount ¢</th>
@@ -22,6 +23,10 @@
     <tbody>
       <% @fees.each do |fee| %>
         <tr>
+          <td>
+            <%= link_to "[w]", waive_fee_canonical_transaction_url(fee.canonical_transaction), method: :post, class: "" if current_user&.admin? && fee.amount_cents_as_decimal > 0 %>
+            <%= link_to "[u]", unwaive_fee_canonical_transaction_url(fee.canonical_transaction), method: :post, class: "" if current_user&.admin? && fee.revenue_waived? %>
+          </td>
           <td><%= fee.date %></td>
           <td style="max-width: 0;overflow:hidden;text-overflow:ellipsis;white-space:no-wrap;width:300px;"><%= fee.smart_memo %></td>
           <td class="right-align"><%= fee.amount_cents %></td>

@@ -11,6 +11,10 @@ class CanonicalTransactionPolicy < ApplicationPolicy
     user&.admin?
   end
 
+  def unwaive_fee?
+    user&.admin?
+  end
+
   def mark_bank_fee?
     user&.admin?
   end
