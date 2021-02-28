@@ -94,7 +94,10 @@ class AdminController < ApplicationController
 
   def transaction_unmapped_show
     @canonical_transaction = CanonicalTransaction.find(params[:id])
+
     @canonical_pending_transactions = CanonicalPendingTransaction.mapped.where(amount_cents: @canonical_transaction.amount_cents)
+
+    render layout: "admin"
   end
 
   def transaction_dedupe
@@ -132,6 +135,12 @@ class AdminController < ApplicationController
     @canonical_transactions = relation.page(@page).per(@per).order("date desc")
 
     render layout: "admin"
+  end
+
+  def set_event
+    @canonical_transaction = ::CanonicalTransactionService::SetEvent.new(canonical_transaction_id: params[:id], event_id: params[:event_id]).run
+
+    redirect_to transaction_unmapped_show_path(@canonical_transaction)
   end
   
   def audit

@@ -1,27 +1,59 @@
-<% title "Unmapped transactions #{@canonical_transaction.id}" %>
+<% title "Super Ledger > #{@canonical_transaction.id}" %>
 
-<h1>Canonical Transaction <%= @canonical_transaction.id %></h1>
+<h1>Super Ledger > <%= @canonical_transaction.id %></h1>
 
 <table>
-  <thead class="pr1">
+  <thead>
     <tr>
       <th>ID</th>
       <th>Date</th>
       <th>Memo</th>
-      <th class="right-align">Amount</th>
+      <th>FriendlyMemo</th>
+      <th>CustomMemo</th>
+      <th>Amount</th>
+      <th>Event</th>
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <td style="width: 1%;"><%= @canonical_transaction.id %></td>
+    <tr style="<%= "background: #ffffcc;" unless @canonical_transaction.canonical_event_mapping %>">
+      <td><%= @canonical_transaction.id %></td>
       <td><%= @canonical_transaction.date %></td>
       <td><%= @canonical_transaction.memo %></td>
-      <td class="right-align"><%= @canonical_transaction.amount %></td>
+      <td><%= @canonical_transaction.friendly_memo %></td>
+      <td><%= @canonical_transaction.custom_memo %></td>
+      <td><%= @canonical_transaction.amount %></td>
+      <td>
+        <%= form_with model: nil, url: set_event_path(@canonical_transaction), method: :post do |form| %>
+          <%= form.collection_select(:event_id, Event.reorder(:name), :id, :admin_dropdown_description, include_blank: true, selected: @canonical_transaction.event.try(:id)) %>
+          <%= form.submit "Set" %>
+        <% end %>
+      </td>
     </tr>
   </tbody>
 </table>
 
-<h2>Journey</h2>
+<br/><hr/>
+
+<h4>Potential Pending Transactions to Map to</h4>
+
+<table>
+  <tbody>
+    <% @canonical_pending_transactions.each do |cpt| %>
+      <tr>
+        <td><%= cpt.id %></td>
+        <td><%= cpt.date %></td>
+        <td><%= cpt.memo %></td>
+        <td><%= cpt.amount %></td>
+        <td><%= link_to cpt.event.name, cpt.event %></td>
+        <td><%= link_to "Linked Object", cpt.linked_object %></td>
+      </tr>
+    <% end %>
+  </body>
+</table>
+
+<br/><hr/>
+
+<h4>Journey</h4>
 
 <p>CanonicalTransaction</p>
 <%= (ap @canonical_transaction).html_safe %>
@@ -29,7 +61,7 @@
 
 <p>HashedTransaction</p>
 <%= (ap @canonical_transaction.hashed_transactions).html_safe %>
-<p style="text-align: center;">↓</p>
+<p>↓</p>
 
 <% @canonical_transaction.hashed_transactions.each do |ht| %>
   <% if ht.raw_csv_transaction %>
@@ -54,24 +86,8 @@
 
 <% end %>
 
-<h2>Potential Pending Transactions to Map to</h2>
-
-<table>
-  <tbody>
-    <% @canonical_pending_transactions.each do |cpt| %>
-      <tr>
-        <td><%= cpt.id %></td>
-        <td><%= cpt.date %></td>
-        <td><%= cpt.memo %></td>
-        <td><%= cpt.amount %></td>
-        <td><%= link_to cpt.event.name, cpt.event %></td>
-        <td><%= link_to "Linked Object", cpt.linked_object %></td>
-      </tr>
-    <% end %>
-  </body>
-</table>
-
-<h2>Potential Historical Transactions to Map from</h2>
+<!--
+<h4>Potential Historical Transactions to Map from</h4>
 
 <table>
   <tbody>
@@ -86,4 +102,5 @@
     <% end %>
   </body>
 </table>
+-->
 
