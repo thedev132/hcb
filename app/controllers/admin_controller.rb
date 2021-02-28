@@ -113,6 +113,7 @@ class AdminController < ApplicationController
     @per = params[:per] || 500
     @q = params[:q].present? ? params[:q] : nil
     @unmapped = params[:unmapped] == "1" ? true : nil
+    @exclude_top_ups = params[:exclude_top_ups] == "1" ? true : nil
 
     relation = CanonicalTransaction.includes(:canonical_event_mapping)
 
@@ -126,9 +127,8 @@ class AdminController < ApplicationController
       end
     end
 
-    if @unmapped
-      relation = relation.unmapped
-    end
+    relation = relation.unmapped if @unmapped
+    relation = relation.not_stripe_top_up if @exclude_top_ups
 
     @count = relation.count
 
