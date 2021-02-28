@@ -109,18 +109,27 @@ class AdminController < ApplicationController
     @page = params[:page] || 1
     @per = params[:per] || 500
     @q = params[:q].present? ? params[:q] : nil
+    @unmapped = params[:unmapped] == "1" ? true : nil
+
+    relation = CanonicalTransaction.includes(:canonical_event_mapping)
 
     if @q
       if @q.to_f != 0.0
         @q = (@q.to_f * 100).to_i 
 
-        @canonical_transactions = CanonicalTransaction.where("amount_cents = ? or amount_cents = ?", @q, -@q).page(@page).per(@per).order("date desc")
+        relation = relation.where("amount_cents = ? or amount_cents = ?", @q, -@q)
       else
-        @canonical_transactions = CanonicalTransaction.search_memo(@q).page(@page).per(@per).order("date desc")
+        relation = relation.search_memo(@q)
       end
-    else
-      @canonical_transactions = CanonicalTransaction.page(@page).per(@per).order("date desc")
     end
+
+    if @unmapped
+      relation = relation.unmapped
+    end
+
+    @count = relation.count
+
+    @canonical_transactions = relation.page(@page).per(@per).order("date desc")
 
     render layout: "admin"
   end

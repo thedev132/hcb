@@ -6,8 +6,15 @@
 
 <%= form_with url: "/super_ledger", method: :get do |form| %>
   <%= form.text_field :q, value: params[:q] %>
+  <%= form.label :unmapped do %>
+    <%= form.check_box :unmapped, checked: @unmapped %>
+    Unmapped
+  <% end %>
+  |
   <%= form.submit "Search" %>
 <% end %>
+
+<p><small><%= pluralize(@count, "result") %></small></p>
 
 <table>
   <thead>
@@ -16,16 +23,18 @@
       <th>Date</th>
       <th>Memo</th>
       <th>Amount</th>
+      <th>Event</th>
       <th>Actions</th>
     </tr>
   </thead>
   <tbody>
     <% @canonical_transactions.each do |ct| %>
-      <tr>
+      <tr style="<%= "background: #ffffcc;" unless ct.canonical_event_mapping %>">
         <td><%= ct.id %></td>
         <td><%= ct.date %></td>
         <td><%= ct.memo %></td>
         <td><%= ct.amount %></td>
+        <td><%= ct.canonical_event_mapping.try(:event_id) %></td>
         <td><%= link_to "Process", transaction_unmapped_show_path(ct) %></td>
       </tr>
     <% end %>
