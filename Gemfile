@@ -148,6 +148,7 @@ gem 'invisible_captcha'
 gem 'money-rails' # back cent fields as money objects 
 gem 'namae' # multi-cultural human name parser
 gem 'paper_trail' # track changes on models
+gem 'pg_search'
 gem 'rack-attack'
 gem 'selenium-webdriver'
 gem 'sidekiq-cron', '~> 1.1' # run sidekiq scheduled tasks

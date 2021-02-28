@@ -54,6 +54,7 @@ Rails.application.routes.draw do
   # webhooks
   post 'webhooks/donations', to: 'donations#accept_donation_hook'
 
+  get 'super_ledger', to: 'admin#super_ledger', as: :super_ledger
   get 'transactions/unmapped', to: 'admin#transaction_unmapped', as: :transaction_unmapped
   get 'transactions/unmapped/:id', to: 'admin#transaction_unmapped_show', as: :transaction_unmapped_show
   get 'transactions/dedupe', to: 'admin#transaction_dedupe', as: :transaction_dedupe
