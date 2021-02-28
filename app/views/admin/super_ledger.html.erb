@@ -1,0 +1,35 @@
+<% title 'Super Ledger' %>
+
+<h1>Super Ledger</h1>
+
+<%= paginate @canonical_transactions %>
+
+<%= form_with url: "/super_ledger", method: :get do |form| %>
+  <%= form.text_field :q, value: params[:q] %>
+  <%= form.submit "Search" %>
+<% end %>
+
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Date</th>
+      <th>Memo</th>
+      <th>Amount</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @canonical_transactions.each do |ct| %>
+      <tr>
+        <td><%= ct.id %></td>
+        <td><%= ct.date %></td>
+        <td><%= ct.memo %></td>
+        <td><%= ct.amount %></td>
+        <td><%= link_to "Process", transaction_unmapped_show_path(ct) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= paginate @canonical_transactions %>

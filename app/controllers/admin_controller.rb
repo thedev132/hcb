@@ -2,6 +2,8 @@ class AdminController < ApplicationController
   skip_after_action :verify_authorized # do not force pundit
   before_action :signed_in_admin
 
+  layout "application"
+
   def tasks
     @active = pending_tasks
     @pending_actions = @active.values.any? { |e| e.nonzero? }
@@ -100,7 +102,27 @@ class AdminController < ApplicationController
   end
 
   def transaction_pending_unsettled
-    @canonical_pending_transactions = CanonicalPendingTransaction.unsettled.order("date asc")
+    @canonical_pending_transactions = CanonicalPendingTransaction.unsettled.order("date desc")
+  end
+
+  def super_ledger
+    @page = params[:page] || 1
+    @per = params[:per] || 500
+    @q = params[:q].present? ? params[:q] : nil
+
+    if @q
+      if @q.to_f != 0.0
+        @q = (@q.to_f * 100).to_i 
+
+        @canonical_transactions = CanonicalTransaction.where("amount_cents = ? or amount_cents = ?", @q, -@q).page(@page).per(@per).order("date desc")
+      else
+        @canonical_transactions = CanonicalTransaction.search_memo(@q).page(@page).per(@per).order("date desc")
+      end
+    else
+      @canonical_transactions = CanonicalTransaction.page(@page).per(@per).order("date desc")
+    end
+
+    render layout: "admin"
   end
   
   def audit
