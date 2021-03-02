@@ -114,8 +114,15 @@ class AdminController < ApplicationController
     @q = params[:q].present? ? params[:q] : nil
     @unmapped = params[:unmapped] == "1" ? true : nil
     @exclude_top_ups = params[:exclude_top_ups] == "1" ? true : nil
+    @event_id = params[:event_id].present? ? params[:event_id] : nil
 
-    relation = CanonicalTransaction.includes(:canonical_event_mapping)
+    if @event_id
+      @event = Event.find(@event_id)
+
+      relation = @event.canonical_transactions.includes(:canonical_event_mapping)
+    else
+      relation = CanonicalTransaction.includes(:canonical_event_mapping)
+    end
 
     if @q
       if @q.to_f != 0.0
@@ -123,7 +130,14 @@ class AdminController < ApplicationController
 
         relation = relation.where("amount_cents = ? or amount_cents = ?", @q, -@q)
       else
-        relation = relation.search_memo(@q)
+        case @q.delete(" ")
+        when ">0", ">=0"
+          relation = relation.where("amount_cents >= 0")
+        when "<0", "<=0"
+          relation = relation.where("amount_cents <= 0")
+        else
+          relation = relation.search_memo(@q)
+        end
       end
     end
 
