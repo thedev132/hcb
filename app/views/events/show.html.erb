@@ -9,16 +9,14 @@
     <span class="badge bg-muted">
       #<%= @event.id %>
     </span>
-
-    <% if @event.transaction_engine_v2_at.nil? %>
-      <span class="badge bg-muted">
-        <% if params[:v2] %>
-          <%= link_to "view v1", url_for(only_path: false, v1: true), class: "white" %>
-        <% else %>
-          <%= link_to "view v2", url_for(only_path: false, v2: true), class: "white" %>
-        <% end %>
-      </span>
-    <% end %>
+    
+    <span class="badge bg-muted">
+      <% if params[:v1] %>
+        <%= link_to "view v2", url_for(only_path: false, v2: true), class: "white" %>
+      <% else %>
+        <%= link_to "view v1", url_for(only_path: false, v1: true), class: "white" %>
+      <% end %>
+    </span>
   <% end %>
 </h1>
 
