@@ -21,12 +21,6 @@
       <strong>Sent at</strong>
       <%= format_datetime @ach_transfer.created_at %>
     </p>
-    <% if @ach_transfer.scheduled_arrival_date %>
-      <p>
-        <strong>Estimated arrival date</strong>
-        <%= format_date @ach_transfer.scheduled_arrival_date %>
-      </p>
-    <% end %>
   </section>
 
   <section class="details pt2 pb2">

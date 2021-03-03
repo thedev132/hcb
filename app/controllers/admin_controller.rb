@@ -95,7 +95,7 @@ class AdminController < ApplicationController
   def transaction_unmapped_show
     @canonical_transaction = CanonicalTransaction.find(params[:id])
 
-    @canonical_pending_transactions = CanonicalPendingTransaction.mapped.where(amount_cents: @canonical_transaction.amount_cents)
+    @canonical_pending_transactions = CanonicalPendingTransaction.unmapped.where(amount_cents: @canonical_transaction.amount_cents)
 
     render layout: "admin"
   end
