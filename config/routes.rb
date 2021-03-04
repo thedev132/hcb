@@ -154,11 +154,12 @@ Rails.application.routes.draw do
     get 'reauthenticate'
   end
 
-  resources :canonical_transactions, only: [:show] do
+  resources :canonical_transactions, only: [:show, :edit] do
     member do
       post 'waive_fee'
       post 'unwaive_fee'
       post 'mark_bank_fee'
+      post 'set_custom_memo'
     end
 
     resources :comments

@@ -33,7 +33,11 @@ class CanonicalTransaction < ApplicationRecord
   validates :custom_memo, presence: true, allow_nil: true
 
   def smart_memo
-    custom_memo || friendly_memo || friendly_memo_in_memory_backup
+    custom_memo || less_smart_memo
+  end
+
+  def less_smart_memo
+    friendly_memo || friendly_memo_in_memory_backup
   end
 
   def likely_hack_club_fee?

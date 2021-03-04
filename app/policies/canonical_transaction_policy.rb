@@ -3,6 +3,14 @@ class CanonicalTransactionPolicy < ApplicationPolicy
     admin_or_teammember
   end
 
+  def edit?
+    admin_or_teammember
+  end
+
+  def set_custom_memo?
+    admin_or_teammember
+  end
+
   def export?
     admin_or_teammember
   end
