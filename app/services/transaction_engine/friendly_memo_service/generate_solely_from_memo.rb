@@ -34,8 +34,7 @@ module TransactionEngine
 
           return "TRANSFER BACK TO BANK ACCOUNT" if amount_cents < 0 # emburse transaction
 
-          "" # IMPLEMENT
-
+          nil
         end
       end
 
