@@ -86,7 +86,7 @@ class ChecksController < ApplicationController
   def view_scan
     authorize @check
 
-    redirect_to @check.url
+    redirect_to @check.lob_url
   end
 
   def mark_in_transit_and_processed
