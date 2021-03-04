@@ -9,6 +9,28 @@ class CanonicalTransactionsController < ApplicationController
     redirect_to transaction_url(params[:id])
   end
 
+  def edit
+    @canonical_transaction = CanonicalTransaction.find(params[:id])
+
+    authorize @canonical_transaction
+
+    @event = @canonical_transaction.event
+  end
+
+  def set_custom_memo
+    @canonical_transaction = CanonicalTransaction.find(params[:id])
+
+    authorize @canonical_transaction
+
+    attrs = {
+      canonical_transaction_id: @canonical_transaction.id,
+      custom_memo: params[:canonical_transaction][:custom_memo]
+    }
+    ::CanonicalTransactionService::SetCustomMemo.new(attrs).run
+
+    redirect_to transaction_url(params[:id])
+  end
+
   def waive_fee
     authorize CanonicalTransaction
 

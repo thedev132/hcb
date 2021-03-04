@@ -21,22 +21,17 @@
 
   <div class="flex items-center mb2">
     <p class="flex-auto mr1 mb0">
-      <strong class="block">Display name</strong>
+      <strong class="block">Memo</strong>
       <span>
         <%= @transaction.display_name %>
       </span>
     </p>
 
-    <% unless using_transaction_engine_v2? %>
     <%= pop_icon_to 'edit',
-      edit_transaction_path(@transaction),
+      edit_canonical_transaction_path(@transaction),
       disabled: !organizer_signed_in?,
       class: 'right tooltipped tooltipped--w', 'aria-label': 'Rename transaction' %>
-    <% end %>
   </div>
-
-  <strong>Imported transaction name</strong>
-  <pre class="bg-snow mt0"><%= organizer_signed_in? ? @transaction.name : 'REDACTED– SIGN IN TO REVEAL' %></pre>
 
   <section class="details">
     <p>
