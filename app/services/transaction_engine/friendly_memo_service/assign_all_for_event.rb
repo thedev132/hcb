@@ -11,7 +11,7 @@ module TransactionEngine
         event.canonical_transactions.find_each(batch_size: BATCH_SIZE).each do |ct|
           friendly_memo = generate_friendly_memo(ct)
 
-          ::CanonicalTransactionService::SetFriendlyMemo.new(canonical_transaction: ct, friendly_memo: friendly_memo).run
+          ::CanonicalTransactionService::SetFriendlyMemo.new(canonical_transaction_id: ct.id, friendly_memo: friendly_memo).run
         end
       end
 
