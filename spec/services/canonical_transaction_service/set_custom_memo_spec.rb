@@ -26,10 +26,10 @@ RSpec.describe CanonicalTransactionService::SetCustomMemo, type: :model do
   context "custom memo is empty string" do
     let(:custom_memo) { " " }
 
-    it "raises error if custom memo is blank" do
-      expect do
-        service.run
-      end.to raise_error(ActiveRecord::RecordInvalid)
+    it "sets custom memo nil" do
+      service.run
+
+      expect(canonical_transaction.reload.custom_memo).to eql(nil)
     end
   end
 

@@ -26,10 +26,10 @@ RSpec.describe CanonicalTransactionService::SetFriendlyMemo, type: :model do
   context "friendly memo is empty string" do
     let(:friendly_memo) { " " }
 
-    it "raises error if friendly memo is blank" do
-      expect do
-        service.run
-      end.to raise_error(ActiveRecord::RecordInvalid)
+    it "sets friendly memo nil" do
+      service.run
+
+      expect(canonical_transaction.reload.friendly_memo).to eql(nil)
     end
   end
 
