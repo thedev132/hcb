@@ -6,7 +6,7 @@ RSpec.describe CanonicalTransactionService::SetFriendlyMemo, type: :model do
   fixtures  "canonical_transactions"
   
   let(:canonical_transaction) { canonical_transactions(:canonical_transaction1) }
-  let(:friendly_memo) { "Friendly Memo" }
+  let(:friendly_memo) { " Friendly Memo " }
 
   let(:attrs) do
     {
@@ -20,7 +20,7 @@ RSpec.describe CanonicalTransactionService::SetFriendlyMemo, type: :model do
   it "sets friendly memo" do
     service.run
 
-    expect(canonical_transaction.reload.friendly_memo).to eql(friendly_memo)
+    expect(canonical_transaction.reload.friendly_memo).to eql("FRIENDLY MEMO")
   end
 
   context "friendly memo is empty string" do

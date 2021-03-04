@@ -16,7 +16,7 @@
 <%= form_with(model: @canonical_transaction, url: set_custom_memo_canonical_transaction_path(@canonical_transaction), method: :post, local: true) do |form| %>
   <div class="field">
     <%= form.label :custom_memo, 'Custom Memo' %>
-    <%= form.text_field :custom_memo, placeholder: @canonical_transaction.smart_memo, autofocus: true, style: 'max-width: none;' %>
+    <%= form.text_field :custom_memo, placeholder: @canonical_transaction.smart_memo, autofocus: true, style: 'max-width: none; text-transform: uppercase;' %>
     <span class="muted block h5">
       Give this transaction a more descriptive memo to improve your records.
     </span>
