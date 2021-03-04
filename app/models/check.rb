@@ -144,16 +144,7 @@ class Check < ApplicationRecord
   end
 
   def url
-    # lob URLs expire after 30 days https://lob.com/docs/ruby#urls
-    # so we'll regenerate this whenever we need it
-
-    @lob_check_url ||= begin
-      lob_check = LobService.instance.client.checks.find(self.lob_id)
-
-      lob_check["url"]
-    end
-
-    @lob_check_url
+    @url ||= ::CheckService::GenerateLobUrl.new(check: self).run
   end
 
   private
