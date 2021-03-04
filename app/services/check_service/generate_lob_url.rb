@@ -11,7 +11,7 @@ module CheckService
     private
 
     def remote_check
-      @remote_check ||= LobService.instance.client.checks.find(lob_id)
+      @remote_check ||= ::Partners::Lob::Checks::Show.new(id: lob_id).run
     end
 
     def lob_id
