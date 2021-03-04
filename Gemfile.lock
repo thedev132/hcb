@@ -246,6 +246,7 @@ GEM
     multipart-post (2.1.1)
     namae (1.0.1)
     netrc (0.11.0)
+    newrelic_rpm (6.15.0)
     nio4r (2.5.2)
     nokogiri (1.10.9)
       mini_portile2 (~> 2.4.0)
@@ -461,6 +462,7 @@ DEPENDENCIES
   mini_racer
   money-rails
   namae
+  newrelic_rpm
   paper_trail
   pg (>= 0.18, < 2.0)
   pg_search
