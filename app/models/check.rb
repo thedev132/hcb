@@ -144,7 +144,7 @@ class Check < ApplicationRecord
   end
 
   def url
-    @url ||= ::CheckService::GenerateLobUrl.new(check: self).run
+    @url ||= ::CheckService::LobUrl::Generate.new(check: self).run
   end
 
   private

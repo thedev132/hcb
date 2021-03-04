@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe CheckService::GenerateLobUrl, type: :model do
+RSpec.describe CheckService::LobUrl::Generate, type: :model do
   fixtures  "checks"
   
   let(:check) { checks(:check1) }
@@ -13,7 +13,7 @@ RSpec.describe CheckService::GenerateLobUrl, type: :model do
     }
   end
 
-  let(:service) { CheckService::GenerateLobUrl.new(attrs) }
+  let(:service) { CheckService::LobUrl::Generate.new(attrs) }
 
   let(:url) { "http://lob.com/some/url" }
   let(:resp) { { "url" => url } }
