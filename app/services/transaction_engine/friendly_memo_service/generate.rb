@@ -11,7 +11,9 @@ module TransactionEngine
           handle_emburse_refund || 
           handle_solely_from_memo
 
-        friendly_memo.to_s.upcase
+        return friendly_memo.to_s.upcase if friendly_memo
+
+        nil
       end
 
       private
