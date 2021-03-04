@@ -103,3 +103,5 @@ class Rack::Attack
     end
   end
 end
+
+Rack::Attack.enabled = Rails.env.production? # only enable in production
