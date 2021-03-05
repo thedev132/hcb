@@ -63,6 +63,11 @@ disbursement_nightly_job:
   class: "DisbursementJob::Nightly"
   queue: "default"
 
+ach_transfer_nightly_job:
+  cron: "*/30 * * * *" # run every 30 minutes
+  class: "AchTransferJob::Nightly"
+  queue: "default"
+
 check_nightly_job:
   cron: "0 0 * * *" # run every 1 day
   class: "CheckJob::Nightly"
