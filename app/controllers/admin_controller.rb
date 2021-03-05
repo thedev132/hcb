@@ -323,6 +323,7 @@ class AdminController < ApplicationController
     @per = params[:per] || 20
     @q = params[:q].present? ? params[:q] : nil
     @succeeded = params[:succeeded] == "1" ? true : nil
+    @exclude_requires_payment_method = params[:exclude_requires_payment_method] == "1" ? true : nil
 
     @event_id = params[:event_id].present? ? params[:event_id] : nil
 
@@ -345,6 +346,7 @@ class AdminController < ApplicationController
     end
 
     relation = relation.succeeded if @succeeded
+    relation = relation.exclude_requires_payment_method if @exclude_requires_payment_method
 
     @count = relation.count
     @donations = relation.page(@page).per(@per).order("created_at desc")

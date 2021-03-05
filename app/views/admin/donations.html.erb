@@ -11,6 +11,11 @@
     Succeeded
   <% end %>
   |
+  <%= form.label :exclude_requires_payment_method do %>
+    <%= form.check_box :exclude_requires_payment_method, checked: @exclude_requires_payment_method %>
+    Exclude REQUIRES_PAYMENT_METHOD
+  <% end %>
+  |
 
   <%= form.collection_select(:event_id, Event.reorder(:name), :id, :admin_dropdown_description, { include_blank: true, selected: @event_id }, { width: 150, style: "max-width: 150px" }) %>
   |
