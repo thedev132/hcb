@@ -1,5 +1,9 @@
 class Donation < ApplicationRecord
   include Commentable
+
+  include PgSearch::Model
+  pg_search_scope :search_name, against: [:name, :email]
+
   belongs_to :event
   belongs_to :fee_reimbursement, required: false
   belongs_to :payout, class_name: 'DonationPayout', required: false

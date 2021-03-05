@@ -60,6 +60,7 @@ Rails.application.routes.draw do
       get 'ach', to: 'admin#ach'
       get 'check', to: 'admin#check'
       get 'events', to: 'admin#events'
+      get 'donations', to: 'admin#donations'
     end
 
     member do

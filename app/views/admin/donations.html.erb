@@ -1,0 +1,54 @@
+<% title "DONATIONS" %>
+
+<h1>DONATIONS</h1>
+
+<%= paginate @donations %>
+
+<%= form_with local: true, url: donations_admin_index_path, method: :get do |form| %>
+  <%= form.text_field :q, value: params[:q] %>
+  <%= form.label :succeeded do %>
+    <%= form.check_box :succeeded, checked: @succeeded %>
+    Succeeded
+  <% end %>
+  |
+
+  <%= form.collection_select(:event_id, Event.reorder(:name), :id, :admin_dropdown_description, { include_blank: true, selected: @event_id }, { width: 150, style: "max-width: 150px" }) %>
+  |
+
+  <%= form.submit "Search" %>
+<% end %>
+
+
+<p><small><%= pluralize(@count, "result") %></small></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Date</th>
+      <th>Recipient</th>
+      <th>Amount</th>
+      <th>Status</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @donations.each do |donation| %>
+      <tr style="<%= "background: #ffffcc;" if donation.pending? %>">
+        <td><%= donation.id %></td>
+        <td><%= donation.created_at.strftime("%Y-%m-%d") %></td>
+        <td>
+          <%= link_to donation_path(donation) do %>
+            <%= donation.event.name.upcase %>: <%= donation.name %>
+          <% end %>
+        </td>
+        <td><%= render_money_amount(donation.amount) %></td>
+        <td><%= donation.status.upcase %></td>
+        <td>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= paginate @donations %>
