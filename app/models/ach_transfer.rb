@@ -40,6 +40,10 @@ class AchTransfer < ApplicationRecord
   end
 
   def status
+    aasm_state.to_sym
+  end
+
+  def status_deprecated
     if t_transaction
       :deposited
     elsif approved_at
