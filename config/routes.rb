@@ -54,9 +54,21 @@ Rails.application.routes.draw do
   # webhooks
   post 'webhooks/donations', to: 'donations#accept_donation_hook'
 
+  resources :admin, only: [] do
+    collection do
+      get 'ledger', to: 'admin#ledger'
+      get 'ach', to: 'admin#ach'
+    end
+
+    member do
+      get 'transaction', to: 'admin#transaction'
+      get 'ach_start_approval', to: 'admin#ach_start_approval'
+      post 'ach_approve', to: 'admin#ach_approve'
+      post 'ach_reject', to: 'admin#ach_reject'
+    end
+  end
+
   post 'set_event/:id', to: 'admin#set_event', as: :set_event
-  get 'super_ledger', to: 'admin#super_ledger', as: :super_ledger
-  get 'transactions/unmapped/:id', to: 'admin#transaction_unmapped_show', as: :transaction_unmapped_show
   get 'transactions/dedupe', to: 'admin#transaction_dedupe', as: :transaction_dedupe
   get 'transactions/pending_unsettled', to: 'admin#transaction_pending_unsettled', as: :transaction_pending_unsettled
 
@@ -127,11 +139,7 @@ Rails.application.routes.draw do
     resources :comments
   end
 
-  resources :ach_transfers, only: [:show, :index] do
-    get 'start_approval'
-    post 'approve'
-    post 'reject'
-
+  resources :ach_transfers, only: [:show] do
     resources :comments
   end
 

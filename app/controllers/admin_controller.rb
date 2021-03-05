@@ -103,7 +103,7 @@ class AdminController < ApplicationController
     @canonical_pending_transactions = CanonicalPendingTransaction.unsettled.order("date desc")
   end
 
-  def super_ledger
+  def ledger
     @page = params[:page] || 1
     @per = params[:per] || 500
     @q = params[:q].present? ? params[:q] : nil
@@ -146,12 +146,82 @@ class AdminController < ApplicationController
     render layout: "admin"
   end
 
+  def ach
+    @page = params[:page] || 1
+    @per = params[:per] || 20
+    @q = params[:q].present? ? params[:q] : nil
+    @pending = params[:pending] == "1" ? true : nil
+
+    @event_id = params[:event_id].present? ? params[:event_id] : nil
+
+    if @event_id
+      @event = Event.find(@event_id)
+
+      relation = @event.ach_transfers.includes(:event)
+    else
+      relation = AchTransfer.includes(:event)
+    end
+
+    if @q
+      if @q.to_f != 0.0
+        @q = (@q.to_f * 100).to_i 
+
+        relation = relation.where("amount = ? or amount = ?", @q, -@q)
+      else
+        case @q.delete(" ")
+        when ">0", ">=0"
+          relation = relation.where("amount >= 0")
+        when "<0", "<=0"
+          relation = relation.where("amount <= 0")
+        else
+          relation = relation.search_recipient(@q)
+        end
+      end
+    end
+
+    relation = relation.pending if @pending
+
+    @count = relation.count
+    @ach_transfers = relation.page(@page).per(@per).order("created_at desc")
+
+    render layout: "admin"
+  end
+
+  def ach_start_approval
+    @ach_transfer = AchTransfer.find(params[:id])
+
+    render layout: "admin"
+  end
+
+  def ach_approve
+    attrs = {
+      ach_transfer_id: params[:id],
+      scheduled_arrival_date: params[:scheduled_arrival_date]
+    }
+    ach_transfer = AchTransferService::Approve.new(attrs).run
+
+    redirect_to ach_start_approval_admin_path(ach_transfer), flash: { success: "Success" }
+  rescue => e
+    redirect_to ach_start_approval_admin_path(params[:id]), flash: { error: e.message }
+  end
+
+  def ach_reject
+    attrs = {
+      ach_transfer_id: params[:id],
+    }
+    ach_transfer = AchTransferService::Reject.new(attrs).run
+
+    redirect_to ach_start_approval_admin_path(ach_transfer), flash: { success: "Success" }
+  rescue => e
+    redirect_to ach_start_approval_admin_path(params[:id]), flash: { error: e.message }
+  end
+
   def set_event
     @canonical_transaction = ::CanonicalTransactionService::SetEvent.new(canonical_transaction_id: params[:id], event_id: params[:event_id]).run
 
     redirect_to transaction_unmapped_show_path(@canonical_transaction)
   end
-  
+
   def audit
     @topups = StripeService::Topup.list[:data]
   end

@@ -1,6 +1,6 @@
-<% title "Super Ledger > #{@canonical_transaction.id}" %>
+<% title "Transaction #{@canonical_transaction.id}" %>
 
-<h1>Super Ledger > <%= @canonical_transaction.id %></h1>
+<h1>Transaction <%= @canonical_transaction.id %></h1>
 
 <table>
   <thead>
@@ -23,7 +23,7 @@
       <td><%= @canonical_transaction.custom_memo %></td>
       <td><%= @canonical_transaction.amount %></td>
       <td>
-        <%= form_with model: nil, url: set_event_path(@canonical_transaction), method: :post do |form| %>
+        <%= form_with model: nil, local: true, url: set_event_path(@canonical_transaction), method: :post do |form| %>
           <%= form.collection_select(:event_id, Event.reorder(:name), :id, :admin_dropdown_description,  {  include_blank: true, selected: @canonical_transaction.event.try(:id) }, { width: 150, style: "max-width: 150px;" }) %>
           <%= form.submit "Set" %>
         <% end %>
