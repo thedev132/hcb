@@ -264,6 +264,8 @@ class AdminController < ApplicationController
   end
 
   def check_positive_pay_csv
+    @check = Check.find(params[:id])
+
     headers["Content-Type"] = "text/csv"
     headers["Content-disposition"] = "attachment; filename=check-#{@check.id}-#{@check.check_number}.csv"
     headers["X-Accel-Buffering"] = "no"
