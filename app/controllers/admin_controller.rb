@@ -103,6 +103,36 @@ class AdminController < ApplicationController
     @canonical_pending_transactions = CanonicalPendingTransaction.unsettled.order("date desc")
   end
 
+  def events
+    @page = params[:page] || 1
+    @per = params[:per] || 500
+    @q = params[:q].present? ? params[:q] : nil
+    @pending = params[:pending] == "1" ? true : nil
+    @transparent = params[:transparent] == "1" ? true : nil
+    @omitted = params[:omitted] == "1" ? true : nil
+    @hidden = params[:hidden] == "1" ? true : nil
+
+    relation = Event
+
+    relation = relation.search_name(@q) if @q
+    relation = relation.pending if @pending
+    relation = relation.transparent if @transparent
+    relation = relation.omitted if @omitted
+    relation = relation.hidden if @hidden
+
+    @count = relation.count
+
+    @events = relation.page(@page).per(@per).reorder("created_at desc")
+
+    render layout: "admin"
+  end
+
+  def event_process
+    @event = Event.find(params[:id])
+
+    render layout: "admin"
+  end
+
   def ledger
     @page = params[:page] || 1
     @per = params[:per] || 500

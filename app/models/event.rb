@@ -1,7 +1,16 @@
 class Event < ApplicationRecord
   extend FriendlyId
 
+  include PgSearch::Model
+  pg_search_scope :search_name, against: [:name, :slug]
+
+  monetize :total_fees_v2_cents
+
   default_scope { order(id: :asc) }
+  scope :pending, -> { where(has_fiscal_sponsorship_document: false) }
+  scope :transparent, -> { where(is_public: true) }
+  scope :omitted, -> { where(omit_stats: true) }
+  scope :hidden, -> { where("hidden_at is not null") }
   scope :v1, -> { where(transaction_engine_v2_at: nil) }
   scope :v2, -> { where.not(transaction_engine_v2_at: nil) }
   scope :hidden, -> { where.not(hidden_at: nil) }
@@ -314,6 +323,14 @@ class Event < ApplicationRecord
     last_fee_processed_at.nil? || last_fee_processed_at <= min_waiting_time_between_fees
   end
 
+  def total_fees_v2_cents
+    @total_fess_v2_cents ||= fees.sum(:amount_cents_as_decimal).ceil
+  end
+
+  def pending?
+    !has_fiscal_sponsorship_document
+  end
+
   private
 
   def min_waiting_time_between_fees
@@ -332,10 +349,6 @@ class Event < ApplicationRecord
 
   def total_fees
     @total_fees ||= transactions.joins(:fee_relationship).where(fee_relationships: { fee_applies: true }).sum("fee_relationships.fee_amount")
-  end
-
-  def total_fees_v2_cents
-    @total_fess_v2_cents ||= fees.sum(:amount_cents_as_decimal).ceil
   end
 
   # fee payments are withdrawals, so negate value
