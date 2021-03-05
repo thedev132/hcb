@@ -60,6 +60,7 @@ Rails.application.routes.draw do
       get 'ach', to: 'admin#ach'
       get 'check', to: 'admin#check'
       get 'events', to: 'admin#events'
+      get 'donations', to: 'admin#donations'
     end
 
     member do
@@ -232,7 +233,7 @@ Rails.application.routes.draw do
     resources :comments
   end
 
-  resources :donations, only: [:show, :index] do
+  resources :donations, only: [:show] do
     collection do
       get 'start/:event_name', to: 'donations#start_donation', as: 'start_donation'
       post 'start/:event_name', to: 'donations#make_donation', as: 'make_donation'

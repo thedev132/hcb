@@ -318,6 +318,42 @@ class AdminController < ApplicationController
     redirect_to check_process_admin_path(params[:id]), flash: { error: e.message }
   end
 
+  def donations
+    @page = params[:page] || 1
+    @per = params[:per] || 20
+    @q = params[:q].present? ? params[:q] : nil
+    @succeeded = params[:succeeded] == "1" ? true : nil
+    @exclude_requires_payment_method = params[:exclude_requires_payment_method] == "1" ? true : nil
+
+    @event_id = params[:event_id].present? ? params[:event_id] : nil
+
+    if @event_id
+      @event = Event.find(@event_id)
+
+      relation = @event.donations.includes(:event)
+    else
+      relation = Donation.includes(:event)
+    end
+
+    if @q
+      if @q.to_f != 0.0
+        @q = (@q.to_f * 100).to_i 
+
+        relation = relation.where("amount = ? or amount = ?", @q, -@q)
+      else
+        relation = relation.search_name(@q)
+      end
+    end
+
+    relation = relation.succeeded if @succeeded
+    relation = relation.exclude_requires_payment_method if @exclude_requires_payment_method
+
+    @count = relation.count
+    @donations = relation.page(@page).per(@per).order("created_at desc")
+
+    render layout: "admin"
+  end
+
   def set_event
     @canonical_transaction = ::CanonicalTransactionService::SetEvent.new(canonical_transaction_id: params[:id], event_id: params[:event_id]).run
 

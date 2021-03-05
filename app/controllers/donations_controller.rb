@@ -26,12 +26,6 @@ class DonationsController < ApplicationController
     @donation = Donation.new
   end
 
-  # GET /donations
-  def index
-    authorize Donation
-    @donations = paginate(Donation.all.order(created_at: :desc))
-  end
-
   def make_donation
     d_params = public_donation_params
     d_params[:amount] = (public_donation_params[:amount].to_f * 100.to_i)

@@ -87,6 +87,7 @@
       <%= card_to "Ledger (#{CanonicalTransaction.not_stripe_top_up.unmapped.count})", ledger_admin_index_path %>
       <%= card_to "ACH (#{AchTransfer.pending.count})", ach_admin_index_path %>
       <%= card_to "Check (#{Check.in_transit.count})", check_admin_index_path %>
+      <%= card_to "Donations", donations_admin_index_path %>
       <%= card_to '1. Duplicated', transaction_dedupe_path %>
       <%= card_to '2. Pending', transaction_pending_unsettled_path %>
     </ul>
@@ -114,7 +115,6 @@
       <%= react_component 'admin_task/Card', human_name: 'Stripe TXs', task_path: stripe_authorizations_path %>
       <%= render partial: 'static_pages/card', locals: { task_path: all_invoices_path, human_name: 'Invoices' } %>
       <%= render partial: 'static_pages/card', locals: { task_path: sponsors_path, human_name: 'Sponsors' } %>
-      <%= render partial: 'static_pages/card', locals: { task_path: donations_path, human_name: 'Donations' } %>
       <%= render partial: 'static_pages/card', locals: { task_path: disbursements_path, human_name: 'Disbursements' } %>
       <%= render partial: 'static_pages/card', locals: { task_path: g_suite_accounts_path, human_name: 'Google Workspace accounts' } %>
       <%= render partial: 'static_pages/card', locals: { task_path: fee_reimbursements_path, human_name: 'Fee refunds' } %>
