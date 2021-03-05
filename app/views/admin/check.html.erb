@@ -1,0 +1,56 @@
+<% title "CHECK" %>
+
+<h1>CHECK</h1>
+
+<%= paginate @checks %>
+
+<%= form_with local: true, url: check_admin_index_path, method: :get do |form| %>
+  <%= form.text_field :q, value: params[:q] %>
+  <%= form.label :in_transit do %>
+    <%= form.check_box :in_transit, checked: @in_transit %>
+    In Transit
+  <% end %>
+  |
+
+  <%= form.collection_select(:event_id, Event.reorder(:name), :id, :admin_dropdown_description, { include_blank: true, selected: @event_id }, { width: 150, style: "max-width: 150px" }) %>
+  |
+
+  <%= form.submit "Search" %>
+<% end %>
+
+
+<p><small><%= pluralize(@count, "result") %></small></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Date</th>
+      <th>Check Number</th>
+      <th>Amount</th>
+      <th>Status</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @checks.each do |check| %>
+      <tr style="<%= "background: #ffffcc;" if check.in_transit? %> <%= "background: #ccffff;" if check.in_transit_and_processed? %>">
+        <td><%= check.id %></td>
+        <td><%= check.created_at.strftime("%Y-%m-%d") %></td>
+        <td>
+          <%= link_to check_path(check) do %>
+            <%= check.event.name.upcase %>: #<%= check.check_number || "-----" %>
+          <% end %>
+        </td>
+        <td><%= render_money_amount(check.amount) %></td>
+        <td><%= check.aasm_state.upcase %></td>
+        <td>
+          <%= link_to "Process", check_process_admin_path(check) if check.in_transit? %>
+          <%= link_to "View", check_process_admin_path(check) unless check.in_transit? %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= paginate @checks %>

@@ -19,14 +19,6 @@ class CheckPolicy < ApplicationPolicy
     admin_or_user
   end
 
-  def positive_pay_csv?
-    user&.admin?
-  end
-
-  def mark_in_transit_and_processed?
-    user&.admin?
-  end
-
   def view_scan?
     admin_or_user
   end

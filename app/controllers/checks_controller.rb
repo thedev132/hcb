@@ -3,11 +3,6 @@ class ChecksController < ApplicationController
   before_action :set_event, only: %i[new create]
   skip_before_action :signed_in_user
 
-  # GET /checks
-  def index
-    authorize Check
-  end
-
   # GET /checks/new
   def new
     raise ActiveRecord::RecordNotFound unless using_transaction_engine_v2?
@@ -69,32 +64,10 @@ class ChecksController < ApplicationController
     redirect_to @check
   end
 
-  def positive_pay_csv
-    authorize @check
-
-    headers["Content-Type"] = "text/csv"
-    headers["Content-disposition"] = "attachment; filename=check-#{@check.id}-#{@check.check_number}.csv"
-    headers["X-Accel-Buffering"] = "no"
-    headers["Cache-Control"] ||= "no-cache"
-    headers.delete("Content-Length")
-
-    response.status = 200
-
-    self.response_body = ::CheckService::PositivePay::Csv.new(check_id: @check.id).run
-  end
-
   def view_scan
     authorize @check
 
     redirect_to @check.lob_url
-  end
-
-  def mark_in_transit_and_processed
-    authorize @check
-
-    @check.mark_in_transit_and_processed!
-
-    redirect_to @check
   end
 
   def refund_get
