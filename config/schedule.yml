@@ -69,7 +69,7 @@ ach_transfer_nightly_job:
   queue: "default"
 
 check_nightly_job:
-  cron: "0 0 * * *" # run every 1 day
+  cron: "*/30 0 * * *" # run every 30 minutes
   class: "CheckJob::Nightly"
   queue: "default"
 
