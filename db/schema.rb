@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_04_230611) do
+ActiveRecord::Schema.define(version: 2021_03_05_000917) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -32,6 +32,7 @@ ActiveRecord::Schema.define(version: 2021_03_04_230611) do
     t.datetime "rejected_at"
     t.datetime "scheduled_arrival_date"
     t.text "payment_for"
+    t.string "aasm_state"
     t.index ["creator_id"], name: "index_ach_transfers_on_creator_id"
     t.index ["event_id"], name: "index_ach_transfers_on_event_id"
   end
