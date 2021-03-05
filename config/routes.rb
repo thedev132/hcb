@@ -58,6 +58,7 @@ Rails.application.routes.draw do
     collection do
       get 'ledger', to: 'admin#ledger'
       get 'ach', to: 'admin#ach'
+      get 'check', to: 'admin#check'
     end
 
     member do
@@ -65,6 +66,9 @@ Rails.application.routes.draw do
       get 'ach_start_approval', to: 'admin#ach_start_approval'
       post 'ach_approve', to: 'admin#ach_approve'
       post 'ach_reject', to: 'admin#ach_reject'
+      get 'check_process', to: 'admin#check_process'
+      get 'check_positive_pay_csv', to: 'admin#check_positive_pay_csv'
+      post 'check_mark_in_transit_and_processed', to: 'admin#check_mark_in_transit_and_processed'
     end
   end
 
@@ -125,11 +129,10 @@ Rails.application.routes.draw do
   end
   resources :emburse_cards, except: %i[new create]
 
-  resources :checks, only: [:show, :index] do
+  resources :checks, only: [:show] do
     get 'view_scan'
     post 'cancel'
     get 'positive_pay_csv'
-    post 'mark_in_transit_and_processed'
 
     get 'start_void'
     post 'void'

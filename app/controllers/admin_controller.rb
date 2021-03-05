@@ -216,6 +216,78 @@ class AdminController < ApplicationController
     redirect_to ach_start_approval_admin_path(params[:id]), flash: { error: e.message }
   end
 
+  def check
+    @page = params[:page] || 1
+    @per = params[:per] || 20
+    @q = params[:q].present? ? params[:q] : nil
+    @in_transit = params[:in_transit] == "1" ? true : nil
+
+    @event_id = params[:event_id].present? ? params[:event_id] : nil
+
+    if @event_id
+      @event = Event.find(@event_id)
+
+      relation = @event.checks.includes(lob_address: :event)
+    else
+      relation = Check.includes(lob_address: :event)
+    end
+
+    if @q
+      if @q.to_f != 0.0
+        @q = (@q.to_f * 100).to_i 
+
+        relation = relation.where("amount = ? or amount = ?", @q, -@q)
+      else
+        case @q.delete(" ")
+        when ">0", ">=0"
+          relation = relation.where("amount >= 0")
+        when "<0", "<=0"
+          relation = relation.where("amount <= 0")
+        else
+          relation = relation.search_recipient(@q)
+        end
+      end
+    end
+
+    relation = relation.in_transit if @in_transit
+
+    @count = relation.count
+    @checks = relation.page(@page).per(@per).order("created_at desc")
+
+    render layout: "admin"
+  end
+
+  def check_process
+    @check = Check.find(params[:id])
+
+    render layout: "admin"
+  end
+
+  def check_positive_pay_csv
+    @check = Check.find(params[:id])
+
+    headers["Content-Type"] = "text/csv"
+    headers["Content-disposition"] = "attachment; filename=check-#{@check.id}-#{@check.check_number}.csv"
+    headers["X-Accel-Buffering"] = "no"
+    headers["Cache-Control"] ||= "no-cache"
+    headers.delete("Content-Length")
+
+    response.status = 200
+
+    self.response_body = ::CheckService::PositivePay::Csv.new(check_id: @check.id).run
+  end
+
+  def check_mark_in_transit_and_processed
+    attrs = {
+      check_id: params[:id]
+    }
+    check = CheckService::MarkInTransitAndProcessed.new(attrs).run
+
+    redirect_to check_process_admin_path(check), flash: { success: "Success" }
+  rescue => e
+    redirect_to check_process_admin_path(params[:id]), flash: { error: e.message }
+  end
+
   def set_event
     @canonical_transaction = ::CanonicalTransactionService::SetEvent.new(canonical_transaction_id: params[:id], event_id: params[:event_id]).run
 
