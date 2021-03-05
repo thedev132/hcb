@@ -21,6 +21,8 @@
     <p>
       <%= link_to "admin", root_path %>
       |
+      <%= link_to "events (#{Event.pending.count})", events_admin_index_path %>
+      |
       <%= link_to "ledger (#{CanonicalTransaction.not_stripe_top_up.unmapped.count})", ledger_admin_index_path %>
       |
       <%= link_to "ach (#{AchTransfer.pending.count})", ach_admin_index_path %>

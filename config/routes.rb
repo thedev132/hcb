@@ -59,9 +59,11 @@ Rails.application.routes.draw do
       get 'ledger', to: 'admin#ledger'
       get 'ach', to: 'admin#ach'
       get 'check', to: 'admin#check'
+      get 'events', to: 'admin#events'
     end
 
     member do
+      get 'event_process', to: 'admin#event_process'
       get 'transaction', to: 'admin#transaction'
       get 'ach_start_approval', to: 'admin#ach_start_approval'
       post 'ach_approve', to: 'admin#ach_approve'
