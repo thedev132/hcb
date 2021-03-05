@@ -3,7 +3,7 @@
 module AchTransferService
   class Nightly
     def run
-      # mark
+      # in_transit -> processed
       AchTransfer.in_transit.each do |ach_transfer|
         # 1. check if it has cleared the pending transaction
         id = ach_transfer.id
