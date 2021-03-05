@@ -2,6 +2,9 @@ class AchTransfer < ApplicationRecord
   include AASM
   include Commentable
 
+  include PgSearch::Model
+  pg_search_scope :search_recipient, against: [:recipient_name]
+
   belongs_to :creator, class_name: 'User'
   belongs_to :event
 
