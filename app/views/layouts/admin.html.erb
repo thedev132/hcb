@@ -27,6 +27,8 @@
       |
       <%= link_to "ledger (#{CanonicalTransaction.not_stripe_top_up.unmapped.count})", ledger_admin_index_path %>
       |
+      <%= link_to "pending ledger (#{CanonicalPendingTransaction.unsettled.count})", pending_ledger_admin_index_path %>
+      |
       <%= link_to "achs (#{AchTransfer.pending.count})", ach_admin_index_path %>
       |
       <%= link_to "checks (#{Check.in_transit.count})", check_admin_index_path %>
