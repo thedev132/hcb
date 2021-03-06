@@ -99,10 +99,6 @@ class AdminController < ApplicationController
     @groups = TransactionEngine::HashedTransactionService::GroupedDuplicates.new.run
   end
 
-  def transaction_pending_unsettled
-    @canonical_pending_transactions = CanonicalPendingTransaction.unsettled.order("date desc")
-  end
-
   def events
     @page = params[:page] || 1
     @per = params[:per] || 100

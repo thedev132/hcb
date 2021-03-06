@@ -83,7 +83,6 @@ Rails.application.routes.draw do
 
   post 'set_event/:id', to: 'admin#set_event', as: :set_event
   get 'transactions/dedupe', to: 'admin#transaction_dedupe', as: :transaction_dedupe
-  get 'transactions/pending_unsettled', to: 'admin#transaction_pending_unsettled', as: :transaction_pending_unsettled
 
   resources :organizer_position_invites, only: [:index, :show], path: 'invites' do
     post 'accept'

@@ -33,7 +33,7 @@
   </thead>
   <tbody>
     <% @canonical_pending_transactions.each do |cpt| %>
-      <tr style="<%= "background: #ffffcc;" unless cpt.unsettled? %>">
+      <tr style="<%= "background: #ffffcc;" if cpt.unsettled? %>">
         <td><%= cpt.id %></td>
         <td><%= cpt.date %></td>
         <td><%= link_to cpt.memo, event_path(cpt.event) %></td>

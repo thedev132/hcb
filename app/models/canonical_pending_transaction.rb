@@ -32,7 +32,7 @@ class CanonicalPendingTransaction < ApplicationRecord
   }
 
   def unsettled?
-    @unsettled ||= !canonical_pending_settled_mappings.exists? && canonical_pending_declined_mappings.exists?
+    @unsettled ||= !canonical_pending_settled_mappings.exists? && !canonical_pending_declined_mappings.exists?
   end
 
   def smart_memo
