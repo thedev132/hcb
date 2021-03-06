@@ -502,6 +502,30 @@ class AdminController < ApplicationController
     render layout: "admin"
   end
 
+  def sponsors
+    @page = params[:page] || 1
+    @per = params[:per] || 20
+    @q = params[:q].present? ? params[:q] : nil
+
+    @event_id = params[:event_id].present? ? params[:event_id] : nil
+
+    if @event_id
+      @event = Event.find(@event_id)
+
+      relation = @event.sponsors
+    else
+      relation = Sponsor
+    end
+
+    relation = relation.search_name(@q) if @q
+
+    @count = relation.count
+    @sponsors = relation.page(@page).per(@per).order("created_at desc")
+
+    render layout: "admin"
+  end
+
+
   def set_event
     @canonical_transaction = ::CanonicalTransactionService::SetEvent.new(canonical_transaction_id: params[:id], event_id: params[:event_id]).run
 

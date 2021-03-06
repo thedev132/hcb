@@ -1,0 +1,48 @@
+<% title "SPONSORS" %>
+
+<h1>SPONSORS</h1>
+
+<%= paginate @sponsors %>
+
+<%= form_with local: true, url: sponsors_admin_index_path, method: :get do |form| %>
+  <%= form.text_field :q, value: params[:q] %>
+  <%= form.label :open do %>
+    <%= form.check_box :open, checked: @open %>
+    Open
+  <% end %>
+
+  <%= form.collection_select(:event_id, Event.reorder(:name), :id, :admin_dropdown_description, { include_blank: true, selected: @event_id }, { width: 150, style: "max-width: 150px" }) %>
+  |
+
+  <%= form.submit "Search" %>
+<% end %>
+
+<p><small><%= pluralize(@count, "result") %></small></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Date</th>
+      <th>Name</th>
+      <th>Email</th>
+      <th>StripeCustomerId</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @sponsors.each do |sponsor| %>
+      <tr>
+        <td><%= sponsor.id %></td>
+        <td><%= sponsor.created_at.strftime("%Y-%m-%d") %></td>
+        <td><%= sponsor.event.name.upcase %>: <%= sponsor.name %></td>
+        <td><%= sponsor.email %></td>
+        <td><%= link_to sponsor.stripe_customer_id, sponsor.stripe_dashboard_url %></td>
+        <td>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= paginate @sponsors %>
