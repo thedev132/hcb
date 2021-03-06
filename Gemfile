@@ -142,6 +142,7 @@ gem 'airbrake' # exception tracking
 gem 'awesome_print'
 gem 'blazer' # business intelligence tool/dashboard
 gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+gem 'chronic'
 gem 'geocoder' # lookup lat/lng for Stripe Cards shipment tracking
 gem 'hiredis'
 gem 'invisible_captcha'

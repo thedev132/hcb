@@ -63,9 +63,19 @@ disbursement_nightly_job:
   class: "DisbursementJob::Nightly"
   queue: "default"
 
+ach_transfer_nightly_job:
+  cron: "*/30 * * * *" # run every 30 minutes
+  class: "AchTransferJob::Nightly"
+  queue: "default"
+
 check_nightly_job:
-  cron: "0 0 * * *" # run every 1 day
+  cron: "*/30 0 * * *" # run every 30 minutes
   class: "CheckJob::Nightly"
+  queue: "default"
+
+check_lob_url_assign_having_lob_id_job:
+  cron: "0 0 * * *" # run every 1 day
+  class: "CheckJob::LobUrl::AssignHavingLobId"
   queue: "default"
 
 invoice_nightly_job:

@@ -92,14 +92,16 @@ class Rack::Attack
   end
 
   # Lockout IP addresses that are hammering your donation page.
-  # After 20 requests in 1 minute, block all requests from that IP for 1 hour.
+  # After 5 requests in 30 seconds, block all requests from that IP for 3 hours.
   blocklist('allow2ban donation scrapers') do |req|
     # `filter` returns false value if request is to your donation page (but still
     # increments the count) so request below the limit are not blocked until
     # they hit the limit.  At that point, filter will return true and block.
-    Rack::Attack::Allow2Ban.filter(req.ip, maxretry: 20, findtime: 1.minute, bantime: 1.hour) do
+    Rack::Attack::Allow2Ban.filter(req.ip, maxretry: 5, findtime: 30.seconds, bantime: 3.hours) do
       # The count for the IP is incremented if the return value is truthy.
       req.path.start_with?('/donations/start') || req.path.start_with?('/donations/hq')
     end
   end
 end
+
+Rack::Attack.enabled = Rails.env.production? # only enable in production

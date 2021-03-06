@@ -1,5 +1,9 @@
 class Donation < ApplicationRecord
   include Commentable
+
+  include PgSearch::Model
+  pg_search_scope :search_name, against: [:name, :email]
+
   belongs_to :event
   belongs_to :fee_reimbursement, required: false
   belongs_to :payout, class_name: 'DonationPayout', required: false
@@ -16,6 +20,7 @@ class Donation < ApplicationRecord
   scope :succeeded, -> { where(status: "succeeded") }
   scope :not_succeeded, -> { where("status != 'succeeded'") }
   scope :not_riddick, -> { where("email ilike 'riddick39462@gmail.com'") }
+  scope :exclude_requires_payment_method, -> { where("status != 'requires_payment_method'") }
 
   def set_fields_from_stripe_payment_intent(payment_intent)
     self.amount = payment_intent.amount

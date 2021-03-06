@@ -13,8 +13,9 @@ module Temp
             ct = ht.canonical_transaction
 
             next unless ct
+            next if ct.custom_memo.present?
 
-            ct.update_column(:custom_memo, t.display_name.upcase) unless ct.custom_memo.present?
+            ::CanonicalTransactionService::SetCustomMemo.new(canonical_transaction_id: ct.id, custom_memo: t.display_name.upcase) if t.display_name.present?
           end
         end
 
@@ -29,8 +30,9 @@ module Temp
             ct = ht.canonical_transaction
 
             next unless ct
+            next if ct.custom_memo.present?
 
-            ct.update_column(:custom_memo, sa.display_name.upcase) unless ct.custom_memo.present?
+            ::CanonicalTransactionService::SetCustomMemo.new(canonical_transaction_id: ct.id, custom_memo: sa.display_name.upcase) if sa.display_name.present?
           end
         end
       end

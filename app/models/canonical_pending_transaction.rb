@@ -1,4 +1,7 @@
 class CanonicalPendingTransaction < ApplicationRecord
+  include PgSearch::Model
+  pg_search_scope :search_memo, against: [:memo]
+
   belongs_to :raw_pending_stripe_transaction, optional: true
   belongs_to :raw_pending_outgoing_check_transaction, optional: true
   belongs_to :raw_pending_outgoing_ach_transaction, optional: true
@@ -27,6 +30,10 @@ class CanonicalPendingTransaction < ApplicationRecord
     includes(:canonical_pending_settled_mappings).where(canonical_pending_settled_mappings: {canonical_pending_transaction_id: nil})
       .includes(:canonical_pending_declined_mappings).where(canonical_pending_declined_mappings: { canonical_pending_transaction_id: nil })
   }
+
+  def unsettled?
+    @unsettled ||= !canonical_pending_settled_mappings.exists? && canonical_pending_declined_mappings.exists?
+  end
 
   def smart_memo
     friendly_memo_in_memory_backup

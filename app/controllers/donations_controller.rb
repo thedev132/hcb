@@ -6,7 +6,7 @@ class DonationsController < ApplicationController
   before_action :set_event, only: [:start_donation, :make_donation, :finish_donation, :qr_code]
   before_action :allow_iframe, except: [:show, :index]
 
-  invisible_captcha only: [:make_donation], honeypot: :subtitle
+  invisible_captcha only: [:make_donation], honeypot: :subtitle, on_timestamp_spam: :redirect_to_404
 
   # GET /donations/1
   def show
@@ -24,12 +24,6 @@ class DonationsController < ApplicationController
     end
 
     @donation = Donation.new
-  end
-
-  # GET /donations
-  def index
-    authorize Donation
-    @donations = paginate(Donation.all.order(created_at: :desc))
   end
 
   def make_donation
@@ -114,5 +108,9 @@ class DonationsController < ApplicationController
 
   def allow_iframe
     response.headers.delete 'X-Frame-Options'
+  end
+
+  def redirect_to_404
+    raise ActionController::RoutingError.new('Not Found')
   end
 end

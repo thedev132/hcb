@@ -29,8 +29,15 @@ class CanonicalTransaction < ApplicationRecord
   has_one :canonical_pending_transaction, through: :canonical_pending_settled_mapping
   has_many :fees, through: :canonical_event_mapping
 
+  validates :friendly_memo, presence: true, allow_nil: true
+  validates :custom_memo, presence: true, allow_nil: true
+
   def smart_memo
-    custom_memo || friendly_memo || friendly_memo_in_memory_backup
+    custom_memo || less_smart_memo
+  end
+
+  def less_smart_memo
+    friendly_memo || friendly_memo_in_memory_backup
   end
 
   def likely_hack_club_fee?

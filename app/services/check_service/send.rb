@@ -33,6 +33,7 @@ module CheckService
 
       {
         lob_id: lob_check["id"],
+        lob_url: lob_check["url"],
         check_number: lob_check["check_number"],
         transaction_memo: transaction_memo,
         expected_delivery_date: lob_check["expected_delivery_date"]

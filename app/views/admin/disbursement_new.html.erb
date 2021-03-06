@@ -1,0 +1,38 @@
+<% title "Schedule a disbursement" %>
+
+<h1>Schedule a Disbursement</h1>
+
+<%= form_with(model: nil, local: true, url: disbursement_create_admin_index_path) do |form| %>
+  <fieldset>
+    <legend>Disbursement</legend>
+    <p>
+      <%= form.label :source_event_id, "Source event" %>
+      <br/>
+      <%= form.collection_select(:source_event_id, Event.reorder(:name), :id, :admin_dropdown_description, include_blank: "Select one…") %>
+    </p>
+
+    <p>
+      <%= form.label :event_id, "Destination event" %>
+      <br/>
+      <%= form.collection_select(:event_id, Event.reorder(:name), :id, :admin_dropdown_description, include_blank: "Select one…") %>
+    </p>
+
+    <p>
+      <%= form.label :name %>
+      <br/>
+      <%= form.text_field :name, placeholder: "ex. GitHub Grant", required: true %>
+    </p>
+
+    <p>
+      <%= form.label :amount, "Amount" %>
+      <br/>
+      <span class="bold muted" style="width: 1rem;">$</span>
+      <%= form.number_field :amount, placeholder: "500.00", step: 0.01, required: true %>
+    </p>
+  </fieldset>
+
+  <p>
+    <%= form.submit "Schedule disbursement" %>
+  </p>
+<% end %>
+
