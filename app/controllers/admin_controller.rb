@@ -354,6 +354,60 @@ class AdminController < ApplicationController
     render layout: "admin"
   end
 
+  def disbursements
+    @page = params[:page] || 1
+    @per = params[:per] || 20
+    @q = params[:q].present? ? params[:q] : nil
+    @pending = params[:pending] == "1" ? true : nil
+    @processing = params[:processing] == "1" ? true : nil
+
+    @event_id = params[:event_id].present? ? params[:event_id] : nil
+
+    if @event_id
+      @event = Event.find(@event_id)
+
+      relation = @event.disbursements.includes(:event)
+    else
+      relation = Disbursement.includes(:event)
+    end
+
+    if @q
+      if @q.to_f != 0.0
+        @q = (@q.to_f * 100).to_i 
+
+        relation = relation.where("amount = ? or amount = ?", @q, -@q)
+      else
+        relation = relation.search_name(@q)
+      end
+    end
+
+    relation = relation.pending if @pending
+    #relation = relation.processing if @processing # TODO: remove ruby logic from scope
+
+    @count = relation.count
+    @disbursements = relation.page(@page).per(@per).order("created_at desc")
+
+    render layout: "admin"
+  end
+
+  def disbursement_new
+    render layout: "admin"
+  end
+
+  def disbursement_create
+    attrs = {
+      source_event_id: params[:source_event_id],
+      destination_event_id: params[:event_id],
+      name: params[:name],
+      amount: params[:amount]
+    }
+    ::DisbursementService::Create.new(attrs).run
+
+    redirect_to disbursements_admin_index_path, flash: { success: "Success" }
+  rescue => e
+    redirect_to disbursement_new_admin_index_path, flash: { error: e.message }
+  end
+
   def set_event
     @canonical_transaction = ::CanonicalTransactionService::SetEvent.new(canonical_transaction_id: params[:id], event_id: params[:event_id]).run
 

@@ -116,6 +116,7 @@ class Event < ApplicationRecord
   has_many :emburse_transactions
 
   has_many :ach_transfers
+  has_many :disbursements
   has_many :donations
   has_many :donation_payouts, through: :donations, source: :payout
 

@@ -61,6 +61,9 @@ Rails.application.routes.draw do
       get 'check', to: 'admin#check'
       get 'events', to: 'admin#events'
       get 'donations', to: 'admin#donations'
+      get 'disbursements', to: 'admin#disbursements'
+      get 'disbursement_new', to: 'admin#disbursement_new'
+      post 'disbursement_create', to: 'admin#disbursement_create'
     end
 
     member do
