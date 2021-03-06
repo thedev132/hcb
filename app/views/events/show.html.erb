@@ -9,16 +9,14 @@
     <span class="badge bg-muted">
       #<%= @event.id %>
     </span>
-
-    <% if @event.transaction_engine_v2_at.nil? %>
-      <span class="badge bg-muted">
-        <% if params[:v2] %>
-          <%= link_to "view v1", url_for(only_path: false), class: "white" %>
-        <% else %>
-          <%= link_to "view v2", url_for(only_path: false, v2: true), class: "white" %>
-        <% end %>
-      </span>
-    <% end %>
+    
+    <span class="badge bg-muted">
+      <% if params[:v1] %>
+        <%= link_to "view v2", url_for(only_path: false, v2: true), class: "white" %>
+      <% else %>
+        <%= link_to "view v1", url_for(only_path: false, v1: true), class: "white" %>
+      <% end %>
+    </span>
   <% end %>
 </h1>
 
@@ -83,7 +81,7 @@
   <% end %>
 </div>
 
-<%= render 'transactions/notice' if using_transaction_engine_v2? && organizer_signed_in? && (@event.created_at < Time.utc(2020, 11, 1)) %>
+<%= render 'transactions/notice' if using_transaction_engine_v2? && organizer_signed_in? && (@event.created_at < Time.utc(2020, 4, 1)) %>
 
 <h2 class="heading">
   Transactions
@@ -91,8 +89,7 @@
   <button
     type="button"
     <%= organizer_signed_in? ? 'data-behavior=menu_toggle aria-expanded=false tabindex=0' : 'disabled=disabled' %>
-    class="btn bg-info menu__toggle overflow-visible tooltipped tooltipped--n"
-    aria-label="Export currently only processes bank transactions—let the Bank team know if you want card transactions.">
+    class="btn bg-info menu__toggle overflow-visible">
       <%= inline_icon 'download', size: 16 %>
       Export
       <% if organizer_signed_in? %>

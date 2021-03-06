@@ -2,15 +2,22 @@ class CanonicalTransaction < ApplicationRecord
   include Commentable
   include Receiptable
 
+  include PgSearch::Model
+  pg_search_scope :search_memo, against: [:memo, :friendly_memo, :custom_memo]
+
   scope :unmapped, -> { includes(:canonical_event_mapping).where(canonical_event_mappings: {canonical_transaction_id: nil}) }
+  scope :mapped, -> { includes(:canonical_event_mapping).where.not(canonical_event_mappings: {canonical_transaction_id: nil}) }
 
   scope :revenue, -> { where("amount_cents > 0") }
   scope :expense, -> { where("amount_cents < 0") }
 
+  scope :likely_hack_club_bank_issued_cards, -> { where("memo ilike 'Hack Club Bank Issued car'") }
+  scope :likely_fee_reimbursements, -> { where("memo ilike 'FEE REFUND%FROM ACCOUNT REDACTED'") }
   scope :likely_github, -> { where("memo ilike '%github grant%'") }
+  scope :likely_clearing_checks, -> { where("memo ilike '%Withdrawal - Inclearing Check #%' or memo ilike '%Withdrawal - On-Us Deposited Ite #%'") }
   scope :likely_hack_club_fee, -> { where("memo ilike '%Hack Club Bank Fee TO ACCOUNT%'") }
-  scope :stripe_top_up, -> { where("memo ilike '%Hack Club Bank Stripe Top%'") }
-  scope :not_stripe_top_up, -> { where("memo not ilike '%Hack Club Bank Stripe Top%' or memo is null") }
+  scope :stripe_top_up, -> { where("memo ilike '%Hack Club Bank Stripe Top%' or memo ilike '%HACKC Stripe Top%'") }
+  scope :not_stripe_top_up, -> { where("(memo not ilike '%Hack Club Bank Stripe Top%' and memo not ilike '%HACKC Stripe Top%') or memo is null") }
 
   monetize :amount_cents
 
@@ -22,12 +29,23 @@ class CanonicalTransaction < ApplicationRecord
   has_one :canonical_pending_transaction, through: :canonical_pending_settled_mapping
   has_many :fees, through: :canonical_event_mapping
 
+  validates :friendly_memo, presence: true, allow_nil: true
+  validates :custom_memo, presence: true, allow_nil: true
+
   def smart_memo
-    custom_memo || friendly_memo || friendly_memo_in_memory_backup
+    custom_memo || less_smart_memo
+  end
+
+  def less_smart_memo
+    friendly_memo || friendly_memo_in_memory_backup
   end
 
   def likely_hack_club_fee?
     memo.to_s.upcase.include?("HACK CLUB BANK FEE TO ACCOUNT")
+  end
+
+  def likely_check_clearing_dda?
+    memo.to_s.upcase.include?("FROM DDA#80007609524 ON")
   end
 
   def linked_object
@@ -39,7 +57,7 @@ class CanonicalTransaction < ApplicationRecord
       obj = nil
 
       if raw_plaid_transaction
-        ts = Transaction.where(plaid_id: raw_plaid_transaction.plaid_transaction_id)
+        ts = Transaction.with_deleted.where(plaid_id: raw_plaid_transaction.plaid_transaction_id)
 
         Airbrake.notify("There was more (or less) than 1 transaction for raw_plaid_transaction: #{raw_plaid_transaction.id}") unless ts.count == 1
 
@@ -47,7 +65,7 @@ class CanonicalTransaction < ApplicationRecord
       end
 
       if raw_emburse_transaction
-        ets = EmburseTransaction.where(emburse_id: raw_emburse_transaction.emburse_transaction_id)
+        ets = EmburseTransaction.with_deleted.where(emburse_id: raw_emburse_transaction.emburse_transaction_id)
 
         Airbrake.notify("There was more (or less) than 1 emburse_transaction for raw_emburse_transaction: #{raw_emburse_transaction.id}") unless ets.count == 1
 
@@ -149,6 +167,10 @@ class CanonicalTransaction < ApplicationRecord
     return linked_object if linked_object.is_a?(Disbursement)
 
     nil
+  end
+
+  def unique_bank_identifier
+    @unique_bank_identifier ||= hashed_transactions.first.unique_bank_identifier
   end
 
   private

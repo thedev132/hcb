@@ -1,4 +1,7 @@
 class Disbursement < ApplicationRecord
+  include PgSearch::Model
+  pg_search_scope :search_name, against: [:name]
+
   belongs_to :event
   belongs_to :source_event, class_name: 'Event'
 
@@ -51,6 +54,10 @@ class Disbursement < ApplicationRecord
       fulfilled: fulfilled?,
       rejected: rejected?,
     }
+  end
+
+  def status
+    state
   end
 
   def state

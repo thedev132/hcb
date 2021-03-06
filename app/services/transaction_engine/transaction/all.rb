@@ -20,7 +20,7 @@ module TransactionEngine
       end
 
       def canonical_transactions
-        @canonical_transactions ||= CanonicalTransaction.where(id: canonical_event_mappings.pluck(:canonical_transaction_id)).order("date desc")
+        @canonical_transactions ||= CanonicalTransaction.where(id: canonical_event_mappings.pluck(:canonical_transaction_id)).order("date desc, id desc")
       end
     end
   end

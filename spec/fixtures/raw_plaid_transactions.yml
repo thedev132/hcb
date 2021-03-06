@@ -1,17 +1,19 @@
 raw_plaid_transaction1:
-  plaid_account_id: 'plaid_account_id1'
-  plaid_item_id: 'plaid_item_id1'
-  plaid_transaction_id: 'plaid_transaction_id1'
-  plaid_transaction: {'name': 'Raw Plaid Transaction 1 Memo'}
+  unique_bank_identifier: "FSMAIN"
+  plaid_account_id: "plaid_account_id1"
+  plaid_item_id: "plaid_item_id1"
+  plaid_transaction_id: "plaid_transaction_id1"
+  plaid_transaction: {"name": "Raw Plaid Transaction 1 Memo"}
   amount_cents: 100
-  date_posted: '2020-09-02'
+  date_posted: "2020-09-02"
   created_at: <%= Time.now %>
 
 raw_plaid_transaction2:
-  plaid_account_id: 'plaid_account_id1'
-  plaid_item_id: 'plaid_item_id1'
-  plaid_transaction_id: 'plaid_transaction_id2'
-  plaid_transaction: {'name': 'Raw Plaid Transaction 2 Memo'}
+  unique_bank_identifier: "FSMAIN"
+  plaid_account_id: "plaid_account_id1"
+  plaid_item_id: "plaid_item_id1"
+  plaid_transaction_id: "plaid_transaction_id2"
+  plaid_transaction: {"name": "Raw Plaid Transaction 2 Memo"}
   amount_cents: 200
-  date_posted: '2020-09-02'
+  date_posted: "2020-09-02"
   created_at: <%= Time.now %>

@@ -37,7 +37,7 @@ class ApplicationController < ActionController::Base
   end
 
   def using_transaction_engine_v2?
-    params[:v2] || @event.try(:transaction_engine_v2_at)
+    params[:v1] != 'true' && (params[:v2] == 'true' || @event.try(:transaction_engine_v2_at))
   end
   helper_method :using_transaction_engine_v2?
 

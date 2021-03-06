@@ -5,7 +5,7 @@ module Temp
         # ["Transaction", "LoadCardRequest", "Invoice", "GSuiteApplication", "GSuite", "FeeReimbursement", "OrganizerPositionDeletionRequest", "AchTransfer", "Check", "EmburseTransaction", "EmburseCardRequest", "EmburseTransfer", "Donation", "StripeAuthorization"]
 
         # StripeAuthorizations
-        Comment.where(commentable_type: "StripeAuthorization").find_each do |comment|
+        Comment.where(commentable_type: "StripeAuthorization").find_each(batch_size: 100) do |comment|
           next unless comment.commentable
 
           raw_stripe_transaction = identify_raw_stripe_transaction(stripe_authorization_id: comment.commentable.stripe_id)
@@ -19,7 +19,7 @@ module Temp
         end
 
         # EmburseTransactions
-        Comment.where(commentable_type: "EmburseTransaction").find_each do |comment|
+        Comment.where(commentable_type: "EmburseTransaction").find_each(batch_size: 100) do |comment|
           next unless comment.commentable
 
           raw_emburse_transaction = identify_raw_emburse_transaction(emburse_id: comment.commentable.emburse_id)
@@ -32,7 +32,7 @@ module Temp
           create_comment!(comment: comment, canonical_transaction: canonical_transaction)
         end
 
-        Comment.where(commentable_type: "Transaction").find_each do |comment|
+        Comment.where(commentable_type: "Transaction").find_each(batch_size: 100) do |comment|
           next unless comment.commentable
 
           raw_plaid_transaction = identify_raw_plaid_transaction(plaid_id: comment.commentable.plaid_id)

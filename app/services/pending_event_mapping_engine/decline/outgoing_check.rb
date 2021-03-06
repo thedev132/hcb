@@ -2,7 +2,7 @@ module PendingEventMappingEngine
   module Decline
     class OutgoingCheck
       def run
-        unsettled.find_each do |cpt|
+        unsettled.find_each(batch_size: 100) do |cpt|
           check = cpt.raw_pending_outgoing_check_transaction.check
           next unless check
 

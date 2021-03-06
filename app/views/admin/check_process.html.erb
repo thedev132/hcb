@@ -1,0 +1,102 @@
+<h1>Process Check #<%= @check.id %></h1>
+<p><small>Current Status: <%= @check.aasm_state %></small></p>
+
+</hr>
+
+<h3>Check Details</h3>
+
+<table>
+  <tbody>
+    <tr>
+      <td style="text-align: right;">Check Number:</td>
+      <td><%= @check.check_number %></td>
+    </tr>
+    <tr>
+      <td style="text-align: right;">Send Date:</td>
+      <td><%= @check.send_date %></td>
+    </tr>
+    <tr>
+      <td style="text-align: right;">Sent To:</td>
+      <td><%= @check.lob_address.name %></td>
+    </tr>
+    <tr>
+      <td style="text-align: right;">Addressed To:</td>
+      <td><%= @check.lob_address.address_text %></td>
+    </tr>
+    <tr>
+      <td style="text-align: right;">Memo:</td>
+      <td><%= @check.memo %></td>
+    </tr>
+    <tr>
+      <td style="text-align: right;">Payment Purpose:</td>
+      <td><%= @check.payment_for %></td>
+    </tr>
+    <tr>
+      <td style="text-align: right;">Amount:</td>
+      <td><%= render_money_amount @check.amount %></td>
+    </tr>
+  </tbody>
+</table>
+
+<hr/>
+
+<h3>Instructions</h3>
+
+<% if @check.scheduled? %>
+  <p>WARNING: this check is not yet ready for processing. The user could still choose to cancel it.</p>
+<% end %>
+
+<% if !@check.in_transit? && !@check.scheduled? %>
+  <p>This check has already been processed.</p>
+<% end %>
+
+<p>Go to <%= link_to "this check", @check %>.</p>
+
+<p><strong>1. At Fiscal Sponsorship bank (Silicon Valley Bank)</strong></p>
+
+<table>
+  <tr>
+    <th>FROM</th>
+    <th>TO</th>
+    <th>MEMO</th>
+    <th>AMOUNT</th>
+  <tr>
+    <td><strong>FS Main (x7027)</strong></td>
+    <td><strong>FS Operating (x0703)</strong></td>
+    <td><%= @check.transaction_memo %></td>
+    <td><%= render_money @check.amount %></td>
+  </tr>
+</table>
+
+<p><strong>2. At Positive Pay bank (First Republic Bank)</strong></p>
+
+<table>
+  <tr>
+    <th>FROM</th>
+    <th>TO</th>
+    <th>MEMO</th>
+    <th>AMOUNT</th>
+  <tr>
+    <td><strong>FS Operating (x9524)</strong></td>
+    <td><strong>FS Check Escrow (x5667)</strong></td>
+    <td><%= @check.transaction_memo %></td>
+    <td><%= render_money @check.amount %></td>
+  </tr>
+</table>
+
+<p><strong>3. Process Positive Pay CSV</strong></p>
+
+<ol>
+  <li>Go to FRB &gt; Positive Pay &gt; Imports &gt; Run imports</li>
+  <li>Upload this <%= link_to "CSV", check_positive_pay_csv_admin_path(@check, format: :csv) %> under <strong>"Hack Club Positive Pay Import"</strong></li>
+</ol>
+
+<p><strong>4. Mark Processed</strong></p>
+
+<% if @check.in_transit? %>
+  <%= form_with(model: nil, local: true, url: check_mark_in_transit_and_processed_admin_path(@check), method: :post) do |form| %>
+    <%= form.submit "Mark processed", data: {confirm: "Mark check as processed?"} %>
+  <% end %>
+<% else %>
+  <p><strong>Check is not ready for processing or has already been processed.</strong></p>
+<% end %>

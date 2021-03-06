@@ -2,7 +2,7 @@ module PendingEventMappingEngine
   module Settle
     class Donation
       def run
-        unsettled.find_each do |cpt|
+        unsettled.find_each(batch_size: 100) do |cpt|
           # 1. identify donation
           donation = cpt.raw_pending_donation_transaction.donation
           Airbrake.notify("Donation not found for canonical pending transaction #{cpt.id}") unless donation

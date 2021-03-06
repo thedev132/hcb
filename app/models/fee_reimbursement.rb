@@ -45,7 +45,7 @@ class FeeReimbursement < ApplicationRecord
     if donation
       return donation.event
     else
-      return invoice.event
+      return invoice.try(:event)
     end
   end
 

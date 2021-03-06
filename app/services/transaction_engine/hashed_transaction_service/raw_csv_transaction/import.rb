@@ -3,7 +3,7 @@ module TransactionEngine
     module RawCsvTransaction
       class Import
         def run
-          ::RawCsvTransaction.find_each do |ct|
+          ::RawCsvTransaction.find_each(batch_size: 100) do |ct|
             ph = primary_hash(ct)
 
             ::HashedTransaction.find_or_initialize_by(raw_csv_transaction_id: ct.id).tap do |ht|

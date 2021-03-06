@@ -43,19 +43,9 @@ sync_emburse_transactions_job:
   class: "SyncEmburseTransactionsJob"
   queue: "default"
 
-sync_invoices_job:
-  cron: "*/30 * * * *" # run every 30 minutes
-  class: "SyncInvoicesJob"
-  queue: "default"
-
 sync_transactions_job:
   cron: "0 */2 * * *" # run every 2 hours
   class: "SyncTransactionsJob"
-  queue: "default"
-
-temp_job_fix_stripe_authorizations_nightly:
-  cron: "0 0 1 9 *" # run september 1st
-  class: "TempJob::FixStripeAuthorizationsNightly"
   queue: "default"
 
 fee_reimbursement_nightly_job:
@@ -73,9 +63,24 @@ disbursement_nightly_job:
   class: "DisbursementJob::Nightly"
   queue: "default"
 
+ach_transfer_nightly_job:
+  cron: "*/30 * * * *" # run every 30 minutes
+  class: "AchTransferJob::Nightly"
+  queue: "default"
+
 check_nightly_job:
-  cron: "0 0 * * *" # run every 1 day
+  cron: "*/30 0 * * *" # run every 30 minutes
   class: "CheckJob::Nightly"
+  queue: "default"
+
+check_lob_url_assign_having_lob_id_job:
+  cron: "0 0 * * *" # run every 1 day
+  class: "CheckJob::LobUrl::AssignHavingLobId"
+  queue: "default"
+
+invoice_nightly_job:
+  cron: "*/30 * * * *" # run every 30 minutes
+  class: "InvoiceJob::Nightly"
   queue: "default"
 
 payout_nightly_job:
@@ -102,6 +107,3 @@ temp_job_sync_custom_memos_nightly:
   cron: "0 0 * * *" # run every 1 day
   class: "TempJob::SyncCustomMemosNightly"
   queue: "default"
-
-
-

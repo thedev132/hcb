@@ -6,6 +6,8 @@ class DonationsController < ApplicationController
   before_action :set_event, only: [:start_donation, :make_donation, :finish_donation, :qr_code]
   before_action :allow_iframe, except: [:show, :index]
 
+  invisible_captcha only: [:make_donation], honeypot: :subtitle, on_timestamp_spam: :redirect_to_404
+
   # GET /donations/1
   def show
     authorize @donation
@@ -24,12 +26,6 @@ class DonationsController < ApplicationController
     @donation = Donation.new
   end
 
-  # GET /donations
-  def index
-    authorize Donation
-    @donations = paginate(Donation.all.order(created_at: :desc))
-  end
-
   def make_donation
     d_params = public_donation_params
     d_params[:amount] = (public_donation_params[:amount].to_f * 100.to_i)
@@ -45,7 +41,7 @@ class DonationsController < ApplicationController
   end
 
   def finish_donation
-    @donation = Donation.find_by_url_hash(params['donation'])
+    @donation = Donation.find_by!(url_hash: params['donation'])
 
     if @donation.status == 'succeeded'
       flash[:info] = 'You tried to access the payment page for a donation that’s already been sent.'
@@ -112,5 +108,9 @@ class DonationsController < ApplicationController
 
   def allow_iframe
     response.headers.delete 'X-Frame-Options'
+  end
+
+  def redirect_to_404
+    raise ActionController::RoutingError.new('Not Found')
   end
 end

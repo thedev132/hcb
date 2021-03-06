@@ -32,4 +32,8 @@ class HashedTransaction < ApplicationRecord
       raw_stripe_transaction.try(:amount_cents) ||
       raw_csv_transaction.try(:amount_cents)
   end
+
+  def unique_bank_identifier
+    @unique_bank_identifier ||= CSV.parse(primary_hash_input)[0][0]
+  end
 end

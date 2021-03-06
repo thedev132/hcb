@@ -54,8 +54,34 @@ Rails.application.routes.draw do
   # webhooks
   post 'webhooks/donations', to: 'donations#accept_donation_hook'
 
-  get 'transactions/unmapped', to: 'admin#transaction_unmapped', as: :transaction_unmapped
-  get 'transactions/unmapped/:id', to: 'admin#transaction_unmapped_show', as: :transaction_unmapped_show
+  resources :admin, only: [] do
+    collection do
+      get 'users', to: 'admin#users'
+      get 'ledger', to: 'admin#ledger'
+      get 'pending_ledger', to: 'admin#pending_ledger'
+      get 'ach', to: 'admin#ach'
+      get 'check', to: 'admin#check'
+      get 'events', to: 'admin#events'
+      get 'donations', to: 'admin#donations'
+      get 'disbursements', to: 'admin#disbursements'
+      get 'disbursement_new', to: 'admin#disbursement_new'
+      post 'disbursement_create', to: 'admin#disbursement_create'
+      get 'invoices', to: 'admin#invoices'
+    end
+
+    member do
+      get 'event_process', to: 'admin#event_process'
+      get 'transaction', to: 'admin#transaction'
+      get 'ach_start_approval', to: 'admin#ach_start_approval'
+      post 'ach_approve', to: 'admin#ach_approve'
+      post 'ach_reject', to: 'admin#ach_reject'
+      get 'check_process', to: 'admin#check_process'
+      get 'check_positive_pay_csv', to: 'admin#check_positive_pay_csv'
+      post 'check_mark_in_transit_and_processed', to: 'admin#check_mark_in_transit_and_processed'
+    end
+  end
+
+  post 'set_event/:id', to: 'admin#set_event', as: :set_event
   get 'transactions/dedupe', to: 'admin#transaction_dedupe', as: :transaction_dedupe
   get 'transactions/pending_unsettled', to: 'admin#transaction_pending_unsettled', as: :transaction_pending_unsettled
 
@@ -112,11 +138,10 @@ Rails.application.routes.draw do
   end
   resources :emburse_cards, except: %i[new create]
 
-  resources :checks, only: [:show, :index] do
+  resources :checks, only: [:show] do
     get 'view_scan'
     post 'cancel'
     get 'positive_pay_csv'
-    post 'mark_in_transit_and_processed'
 
     get 'start_void'
     post 'void'
@@ -126,11 +151,7 @@ Rails.application.routes.draw do
     resources :comments
   end
 
-  resources :ach_transfers, only: [:show, :index] do
-    get 'start_approval'
-    post 'approve'
-    post 'reject'
-
+  resources :ach_transfers, only: [:show] do
     resources :comments
   end
 
@@ -152,10 +173,12 @@ Rails.application.routes.draw do
     get 'reauthenticate'
   end
 
-  resources :canonical_transactions, only: [:show] do
+  resources :canonical_transactions, only: [:show, :edit] do
     member do
       post 'waive_fee'
+      post 'unwaive_fee'
       post 'mark_bank_fee'
+      post 'set_custom_memo'
     end
 
     resources :comments
@@ -216,7 +239,7 @@ Rails.application.routes.draw do
     resources :comments
   end
 
-  resources :donations, only: [:show, :index] do
+  resources :donations, only: [:show] do
     collection do
       get 'start/:event_name', to: 'donations#start_donation', as: 'start_donation'
       post 'start/:event_name', to: 'donations#make_donation', as: 'make_donation'
@@ -251,6 +274,7 @@ Rails.application.routes.draw do
   get '/events' => 'events#index'
   get '/event_by_airtable_id/:airtable_id' => 'events#by_airtable_id'
   resources :events, path: '/' do
+    get 'fees', to: 'events#fees', as: :fees
     get 'dashboard_stats', to: 'events#dashboard_stats', as: :dashboard_stats
     put 'toggle_hidden', to: 'events#toggle_hidden'
 

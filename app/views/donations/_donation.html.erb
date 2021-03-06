@@ -21,8 +21,10 @@
     <% if refund_t %>
       <%= render_money donation.payout.amount + refund_t&.amount %>
     <% else %>
-    <i><%= render_money donation.payout.amount %></i>
-    <span class="muted">+<%= render_money refund.amount %> in transit</span>
+      <i><%= render_money donation.payout.amount %></i>
+      <% if refund %>
+        <span class="muted">+<%= render_money refund.amount %> in transit</span>
+      <% end %>
     <% end %>
   </td>
   <% if organizer_signed_in? %>

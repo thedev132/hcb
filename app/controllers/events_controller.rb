@@ -46,7 +46,13 @@ class EventsController < ApplicationController
 
     @organizers = @event.organizer_positions.includes(:user)
     @pending_transactions = _show_pending_transactions
-    @transactions = paginate(_show_transactions, per_page: 100)
+    @transactions = paginate(_show_transactions, per_page: 250)
+  end
+
+  def fees
+    authorize @event
+
+    @fees = @event.fees.includes(canonical_event_mapping: :canonical_transaction).order("canonical_transactions.date desc, canonical_transactions.id desc")
   end
 
   # async frame for incoming money

@@ -9,7 +9,7 @@ module TransactionEngine
         end
 
         def run
-          ::RawEmburseTransaction.where("date_posted >= ?", @start_date).find_each do |et|
+          ::RawEmburseTransaction.where("date_posted >= ?", @start_date).find_each(batch_size: 100) do |et|
             next if et.amount_cents == 0
             next unless et.state == 'completed' # only permit completed transactions
 

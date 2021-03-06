@@ -19,6 +19,10 @@ class EventPolicy < ApplicationPolicy
     is_public || user_or_admin
   end
 
+  def fees?
+    user_or_admin
+  end
+
   def dashboard_stats?
     is_public || user_or_admin
   end
