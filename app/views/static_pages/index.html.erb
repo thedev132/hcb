@@ -90,6 +90,7 @@
       <%= card_to "Check (#{Check.in_transit.count})", check_admin_index_path %>
       <%= card_to "Donations", donations_admin_index_path %>
       <%= card_to "Disbursements (#{Disbursement.pending.count})", disbursements_admin_index_path %>
+      <%= card_to "Invoices", invoices_admin_index_path %>
       <%= card_to '1. Duplicated', transaction_dedupe_path %>
       <%= card_to '2. Pending', transaction_pending_unsettled_path %>
     </ul>
