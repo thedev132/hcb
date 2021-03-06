@@ -1,0 +1,54 @@
+<% title "INVOICES" %>
+
+<h1>INVOICES</h1>
+
+<%= paginate @invoices %>
+
+<%= form_with local: true, url: invoices_admin_index_path, method: :get do |form| %>
+  <%= form.text_field :q, value: params[:q] %>
+  <%= form.label :open do %>
+    <%= form.check_box :open, checked: @open %>
+    Open
+  <% end %>
+
+  <%= form.collection_select(:event_id, Event.reorder(:name), :id, :admin_dropdown_description, { include_blank: true, selected: @event_id }, { width: 150, style: "max-width: 150px" }) %>
+  |
+
+  <%= form.submit "Search" %>
+<% end %>
+
+<p><small><%= pluralize(@count, "result") %></small></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Date</th>
+      <th>Recipient</th>
+      <th>Description</th>
+      <th>Amount</th>
+      <th>Status</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @invoices.each do |invoice| %>
+      <tr style="<%= "background: #ffffcc;" if invoice.open? %>">
+        <td><%= invoice.id %></td>
+        <td><%= invoice.created_at.strftime("%Y-%m-%d") %></td>
+        <td>
+          <%= link_to invoice_path(invoice) do %>
+            <%= invoice.event.name.upcase %>: <%= invoice.sponsor.name %>
+          <% end %>
+        </td>
+        <td><%= invoice.item_description %></td>
+        <td><%= render_money_amount(invoice.amount_due) %></td>
+        <td><%= invoice.status.upcase %></td>
+        <td>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= paginate @invoices %>

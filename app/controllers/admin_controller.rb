@@ -431,6 +431,40 @@ class AdminController < ApplicationController
     redirect_to disbursement_new_admin_index_path, flash: { error: e.message }
   end
 
+  def invoices
+    @page = params[:page] || 1
+    @per = params[:per] || 20
+    @q = params[:q].present? ? params[:q] : nil
+    @open = params[:open] == "1" ? true : nil
+
+    @event_id = params[:event_id].present? ? params[:event_id] : nil
+
+    if @event_id
+      @event = Event.find(@event_id)
+
+      relation = @event.invoices
+    else
+      relation = Invoice
+    end
+
+    if @q
+      if @q.to_f != 0.0
+        @q = (@q.to_f * 100).to_i 
+
+        relation = relation.where("amount_due = ? or amount_due = ?", @q, -@q)
+      else
+        relation = relation.search_name(@q)
+      end
+    end
+
+    relation = relation.open if @open
+
+    @count = relation.count
+    @invoices = relation.page(@page).per(@per).order("created_at desc")
+
+    render layout: "admin"
+  end
+
   def set_event
     @canonical_transaction = ::CanonicalTransactionService::SetEvent.new(canonical_transaction_id: params[:id], event_id: params[:event_id]).run
 
