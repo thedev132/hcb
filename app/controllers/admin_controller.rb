@@ -133,6 +133,29 @@ class AdminController < ApplicationController
     render layout: "admin"
   end
 
+  def users
+    @page = params[:page] || 1
+    @per = params[:per] || 500
+    @q = params[:q].present? ? params[:q] : nil
+    @event_id = params[:event_id].present? ? params[:event_id] : nil
+
+    if @event_id
+      @event = Event.find(@event_id)
+
+      relation = @event.users.includes(:events)
+    else
+      relation = User.includes(:events)
+    end
+
+    relation = relation.search_name(@q) if @q
+
+    @count = relation.count
+
+    @users = relation.page(@page).per(@per).order("created_at desc")
+
+    render layout: "admin"
+  end
+
   def ledger
     @page = params[:page] || 1
     @per = params[:per] || 500

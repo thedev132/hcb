@@ -56,6 +56,7 @@ Rails.application.routes.draw do
 
   resources :admin, only: [] do
     collection do
+      get 'users', to: 'admin#users'
       get 'ledger', to: 'admin#ledger'
       get 'ach', to: 'admin#ach'
       get 'check', to: 'admin#check'
