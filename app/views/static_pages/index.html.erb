@@ -84,6 +84,7 @@
     <h2>Daily Tasks</h2>
     <ul class="grid left-align w-100 mt0">
       <%= card_to "Clubs/Events (#{Event.pending.count})", events_admin_index_path %>
+      <%= card_to "Users", users_admin_index_path %>
       <%= card_to "Ledger (#{CanonicalTransaction.not_stripe_top_up.unmapped.count})", ledger_admin_index_path %>
       <%= card_to "ACH (#{AchTransfer.pending.count})", ach_admin_index_path %>
       <%= card_to "Check (#{Check.in_transit.count})", check_admin_index_path %>
