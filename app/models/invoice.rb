@@ -2,6 +2,9 @@ class Invoice < ApplicationRecord
   extend FriendlyId
   include Commentable
 
+  include PgSearch::Model
+  pg_search_scope :search_description, against: [:item_description]
+
   scope :unarchived, -> { where(archived_at: nil) }
   scope :archived, -> { where.not(archived_at: nil) }
 

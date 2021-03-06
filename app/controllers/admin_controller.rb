@@ -453,7 +453,7 @@ class AdminController < ApplicationController
 
         relation = relation.where("amount_due = ? or amount_due = ?", @q, -@q)
       else
-        relation = relation.search_name(@q)
+        relation = relation.search_description(@q)
       end
     end
 
