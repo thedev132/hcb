@@ -37,7 +37,7 @@ module SessionsHelper
   end
 
   def organizer_signed_in?
-    (signed_in? && @event&.users&.include?(current_user)) || admin_signed_in?
+    @organizer_signed_in ||= ((signed_in? && @event&.users&.include?(current_user)) || admin_signed_in?)
   end
 
   def current_user(ensure_api_authorized = true)
