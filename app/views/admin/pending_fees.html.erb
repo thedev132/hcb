@@ -2,7 +2,7 @@
 
 <h1 class="heading">
   Pending fees
-  <%= link_to 'Export pending fees for Selenium', export_pending_fees_path, class: 'btn bg-info' %>
+  <%#= link_to 'Export pending fees for Selenium', export_pending_fees_path, class: 'btn bg-info' %>
 </h1>
 
 <table>
@@ -20,6 +20,30 @@
         <td class="underline"><%= link_to "#{event.name}", event %></td>
         <td><%= event.id %> Hack Club Bank Fee</td>
         <td><%= render_money event.fee_balance %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<h1 class="heading">
+  Pending fees (v2)
+</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Event</th>
+      <th>Suggested memo</th>
+      <th>Amount</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @pending_fees_v2.each do |event| %>
+      <tr class="shade-yellow">
+        <td class="underline"><%= link_to "#{event.name}", event %></td>
+        <td><%= event.id %> Hack Club Bank Fee</td>
+        <td><%= render_money event.fee_balance_v2_cents %></td>
       </tr>
     <% end %>
   </tbody>

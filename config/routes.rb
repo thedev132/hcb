@@ -12,6 +12,8 @@ Rails.application.routes.draw do
 
   root to: 'static_pages#index'
   get 'stats', to: 'static_pages#stats'
+  get 'bookkeeping', to: 'admin#bookkeeping'
+  get 'stripe_charge_lookup', to: 'static_pages#stripe_charge_lookup'
 
   scope :my do
     get '/', to: redirect('/'), as: :my
@@ -52,7 +54,36 @@ Rails.application.routes.draw do
   # webhooks
   post 'webhooks/donations', to: 'donations#accept_donation_hook'
 
+  resources :admin, only: [] do
+    collection do
+      get 'users', to: 'admin#users'
+      get 'ledger', to: 'admin#ledger'
+      get 'pending_ledger', to: 'admin#pending_ledger'
+      get 'ach', to: 'admin#ach'
+      get 'check', to: 'admin#check'
+      get 'events', to: 'admin#events'
+      get 'donations', to: 'admin#donations'
+      get 'disbursements', to: 'admin#disbursements'
+      get 'disbursement_new', to: 'admin#disbursement_new'
+      post 'disbursement_create', to: 'admin#disbursement_create'
+      get 'invoices', to: 'admin#invoices'
+    end
+
+    member do
+      get 'event_process', to: 'admin#event_process'
+      get 'transaction', to: 'admin#transaction'
+      get 'ach_start_approval', to: 'admin#ach_start_approval'
+      post 'ach_approve', to: 'admin#ach_approve'
+      post 'ach_reject', to: 'admin#ach_reject'
+      get 'check_process', to: 'admin#check_process'
+      get 'check_positive_pay_csv', to: 'admin#check_positive_pay_csv'
+      post 'check_mark_in_transit_and_processed', to: 'admin#check_mark_in_transit_and_processed'
+    end
+  end
+
+  post 'set_event/:id', to: 'admin#set_event', as: :set_event
   get 'transactions/dedupe', to: 'admin#transaction_dedupe', as: :transaction_dedupe
+  get 'transactions/pending_unsettled', to: 'admin#transaction_pending_unsettled', as: :transaction_pending_unsettled
 
   resources :organizer_position_invites, only: [:index, :show], path: 'invites' do
     post 'accept'
@@ -107,15 +138,11 @@ Rails.application.routes.draw do
   end
   resources :emburse_cards, except: %i[new create]
 
-  resources :checks, only: [:show, :index, :edit, :update] do
-    collection do
-      get 'export'
-    end
+  resources :checks, only: [:show] do
     get 'view_scan'
+    post 'cancel'
+    get 'positive_pay_csv'
 
-    get 'start_approval'
-    post 'approve'
-    post 'reject'
     get 'start_void'
     post 'void'
     get 'refund', to: 'checks#refund_get'
@@ -124,11 +151,7 @@ Rails.application.routes.draw do
     resources :comments
   end
 
-  resources :ach_transfers, only: [:show, :index] do
-    get 'start_approval'
-    post 'approve'
-    post 'reject'
-
+  resources :ach_transfers, only: [:show] do
     resources :comments
   end
 
@@ -148,6 +171,17 @@ Rails.application.routes.draw do
 
   resources :bank_accounts, only: [:new, :create, :update, :show, :index] do
     get 'reauthenticate'
+  end
+
+  resources :canonical_transactions, only: [:show, :edit] do
+    member do
+      post 'waive_fee'
+      post 'unwaive_fee'
+      post 'mark_bank_fee'
+      post 'set_custom_memo'
+    end
+
+    resources :comments
   end
 
   resources :transactions, only: [:index, :show, :edit, :update] do
@@ -175,6 +209,12 @@ Rails.application.routes.draw do
   get 'export_pending_disbursements', to: 'admin#export_pending_disbursements'
   get 'audit', to: 'admin#audit'
 
+  resources :central, only: [:index] do
+    collection do
+      get 'ledger'
+    end
+  end
+
   resources :emburse_card_requests, path: 'emburse_card_requests', except: [:new, :create] do
     collection do
       get 'export'
@@ -199,7 +239,7 @@ Rails.application.routes.draw do
     resources :comments
   end
 
-  resources :donations, only: [:show, :index] do
+  resources :donations, only: [:show] do
     collection do
       get 'start/:event_name', to: 'donations#start_donation', as: 'start_donation'
       post 'start/:event_name', to: 'donations#make_donation', as: 'make_donation'
@@ -234,6 +274,7 @@ Rails.application.routes.draw do
   get '/events' => 'events#index'
   get '/event_by_airtable_id/:airtable_id' => 'events#by_airtable_id'
   resources :events, path: '/' do
+    get 'fees', to: 'events#fees', as: :fees
     get 'dashboard_stats', to: 'events#dashboard_stats', as: :dashboard_stats
     put 'toggle_hidden', to: 'events#toggle_hidden'
 
@@ -251,7 +292,7 @@ Rails.application.routes.draw do
     get 'reimbursements', to: 'events#reimbursements', as: :reimbursements
     get 'donations', to: 'events#donation_overview', as: :donation_overview
     # suspend this while check processing is on hold
-    # resources :checks, only: [:new, :create]
+    resources :checks, only: [:new, :create]
     resources :ach_transfers, only: [:new, :create]
     resources :organizer_position_invites,
               only: [:new, :create],

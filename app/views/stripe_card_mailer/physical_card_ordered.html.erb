@@ -1,9 +1,4 @@
-<p>Hey! Your new card from Hack Club Bank is on the way. Here’s what’s different.</p>
-<p>One important change is <strong>new cards spend your account balance</strong>, instead of using a separate card balance you have to make transfers to &amp; wait for. However, this means this one time, <strong>you need to move your current card balance back into your main account</strong>. (If you have team members using Emburse cards, they’ll no longer be able to spend with their cards after the transfer starts.) <%= @has_multiple_events ? 'You’ll need to run the transfer on each of your projects separately. ' : '' %>The transfer takes about a day.</p>
-<%= link_to "https://hack.af/emburse-budget-migration?prefill_Name=#{@event.id}|#{@event.slug}" do %>
-  Transfer <strong><%= @event.name %></strong> card balance
-<% end %>
-<p>Since we’re no longer using Emburse, you’ll soon upload receipts directly to Hack Club Bank, instead of Emburse’s website. You &amp; your team mebers will attach image &amp; PDF receipts directly to transactions in the Bank app. You still need a receipt for every transaction, due to nonprofit law, and you’ll still be able to use your card with swipe, PIN, contactless, and Apple Pay or any other digital wallet, as you could with Emburse.</p>
-<p><strong>Your new card will probably arrive around <%= Time.at(@eta).strftime("%a") %> (<%= Time.at(@eta).strftime("%d").to_i.ordinalize %>).</strong> When you open the envelope, follow the included link to activate it.</p>
+<p>Hey! Your new card from Hack Club Bank is on the way 💳💸.</p>
+<p><strong>It will probably arrive around <%= Time.at(@eta).strftime("%A") %> (<%= Time.at(@eta).strftime("%d").to_i.ordinalize %>).</strong></p>
 <p>Enjoy! &amp; let us know if you have any questions.</p>
 <p>—Hack Club Bank team</p>

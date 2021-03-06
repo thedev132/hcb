@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_05_171240) do
+ActiveRecord::Schema.define(version: 2021_03_05_000917) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -32,6 +32,7 @@ ActiveRecord::Schema.define(version: 2020_12_05_171240) do
     t.datetime "rejected_at"
     t.datetime "scheduled_arrival_date"
     t.text "payment_for"
+    t.string "aasm_state"
     t.index ["creator_id"], name: "index_ach_transfers_on_creator_id"
     t.index ["event_id"], name: "index_ach_transfers_on_event_id"
   end
@@ -57,6 +58,12 @@ ActiveRecord::Schema.define(version: 2020_12_05_171240) do
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
+  create_table "announcements", id: :serial, force: :cascade do |t|
+    t.text "body"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "bank_accounts", force: :cascade do |t|
     t.text "plaid_access_token"
     t.text "plaid_item_id"
@@ -66,6 +73,7 @@ ActiveRecord::Schema.define(version: 2020_12_05_171240) do
     t.datetime "updated_at", null: false
     t.boolean "should_sync", default: true
     t.boolean "is_positive_pay"
+    t.boolean "should_sync_v2", default: false
   end
 
   create_table "blazer_audits", force: :cascade do |t|
@@ -141,6 +149,13 @@ ActiveRecord::Schema.define(version: 2020_12_05_171240) do
     t.index ["hashed_transaction_id"], name: "index_canonical_hashed_mappings_on_hashed_transaction_id"
   end
 
+  create_table "canonical_pending_declined_mappings", force: :cascade do |t|
+    t.bigint "canonical_pending_transaction_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["canonical_pending_transaction_id"], name: "index_canonical_pending_declined_map_on_canonical_pending_tx_id"
+  end
+
   create_table "canonical_pending_event_mappings", force: :cascade do |t|
     t.bigint "canonical_pending_transaction_id", null: false
     t.bigint "event_id", null: false
@@ -150,6 +165,15 @@ ActiveRecord::Schema.define(version: 2020_12_05_171240) do
     t.index ["event_id"], name: "index_canonical_pending_event_mappings_on_event_id"
   end
 
+  create_table "canonical_pending_settled_mappings", force: :cascade do |t|
+    t.bigint "canonical_pending_transaction_id", null: false
+    t.bigint "canonical_transaction_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["canonical_pending_transaction_id"], name: "index_canonical_pending_settled_map_on_canonical_pending_tx_id"
+    t.index ["canonical_transaction_id"], name: "index_canonical_pending_settled_mappings_on_canonical_tx_id"
+  end
+
   create_table "canonical_pending_transactions", force: :cascade do |t|
     t.date "date", null: false
     t.text "memo", null: false
@@ -157,6 +181,13 @@ ActiveRecord::Schema.define(version: 2020_12_05_171240) do
     t.bigint "raw_pending_stripe_transaction_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "raw_pending_outgoing_check_transaction_id"
+    t.bigint "raw_pending_outgoing_ach_transaction_id"
+    t.bigint "raw_pending_donation_transaction_id"
+    t.bigint "raw_pending_invoice_transaction_id"
+    t.index ["raw_pending_donation_transaction_id"], name: "index_canonical_pending_txs_on_raw_pending_donation_tx_id"
+    t.index ["raw_pending_outgoing_ach_transaction_id"], name: "index_canonical_pending_txs_on_raw_pending_outgoing_ach_tx_id"
+    t.index ["raw_pending_outgoing_check_transaction_id"], name: "index_canonical_pending_txs_on_raw_pending_outgoing_check_tx_id"
     t.index ["raw_pending_stripe_transaction_id"], name: "index_canonical_pending_txs_on_raw_pending_stripe_tx_id"
   end
 
@@ -166,6 +197,8 @@ ActiveRecord::Schema.define(version: 2020_12_05_171240) do
     t.integer "amount_cents", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.text "friendly_memo"
+    t.text "custom_memo"
   end
 
   create_table "checks", force: :cascade do |t|
@@ -187,6 +220,8 @@ ActiveRecord::Schema.define(version: 2020_12_05_171240) do
     t.datetime "updated_at", null: false
     t.datetime "rejected_at"
     t.text "payment_for"
+    t.string "aasm_state"
+    t.text "lob_url"
     t.index ["creator_id"], name: "index_checks_on_creator_id"
     t.index ["lob_address_id"], name: "index_checks_on_lob_address_id"
   end
@@ -213,6 +248,7 @@ ActiveRecord::Schema.define(version: 2020_12_05_171240) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "source_event_id"
+    t.datetime "errored_at"
     t.index ["event_id"], name: "index_disbursements_on_event_id"
     t.index ["source_event_id"], name: "index_disbursements_on_source_event_id"
   end
@@ -416,6 +452,9 @@ ActiveRecord::Schema.define(version: 2020_12_05_171240) do
     t.boolean "is_public", default: false
     t.text "public_message"
     t.boolean "omit_stats", default: false
+    t.datetime "transaction_engine_v2_at", default: -> { "CURRENT_TIMESTAMP" }
+    t.datetime "last_fee_processed_at"
+    t.datetime "pending_transaction_engine_at", default: "2021-02-13 22:49:40"
     t.index ["club_airtable_id"], name: "index_events_on_club_airtable_id", unique: true
     t.index ["point_of_contact_id"], name: "index_events_on_point_of_contact_id"
   end
@@ -447,6 +486,16 @@ ActiveRecord::Schema.define(version: 2020_12_05_171240) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["event_id"], name: "index_fee_relationships_on_event_id"
+  end
+
+  create_table "fees", force: :cascade do |t|
+    t.bigint "canonical_event_mapping_id", null: false
+    t.decimal "amount_cents_as_decimal"
+    t.decimal "event_sponsorship_fee"
+    t.text "reason"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["canonical_event_mapping_id"], name: "index_fees_on_canonical_event_mapping_id"
   end
 
   create_table "friendly_id_slugs", id: :serial, force: :cascade do |t|
@@ -686,6 +735,8 @@ ActiveRecord::Schema.define(version: 2020_12_05_171240) do
     t.jsonb "raw_data"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "unique_bank_identifier", null: false
+    t.text "csv_transaction_id"
   end
 
   create_table "raw_emburse_transactions", force: :cascade do |t|
@@ -696,6 +747,43 @@ ActiveRecord::Schema.define(version: 2020_12_05_171240) do
     t.string "state"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "unique_bank_identifier", null: false
+  end
+
+  create_table "raw_pending_donation_transactions", force: :cascade do |t|
+    t.integer "amount_cents"
+    t.date "date_posted"
+    t.string "state"
+    t.string "donation_transaction_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "raw_pending_invoice_transactions", force: :cascade do |t|
+    t.string "invoice_transaction_id"
+    t.integer "amount_cents"
+    t.date "date_posted"
+    t.string "state"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "raw_pending_outgoing_ach_transactions", force: :cascade do |t|
+    t.text "ach_transaction_id"
+    t.integer "amount_cents"
+    t.date "date_posted"
+    t.string "state"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "raw_pending_outgoing_check_transactions", force: :cascade do |t|
+    t.integer "amount_cents"
+    t.date "date_posted"
+    t.string "state"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "check_transaction_id"
   end
 
   create_table "raw_pending_stripe_transactions", force: :cascade do |t|
@@ -717,6 +805,7 @@ ActiveRecord::Schema.define(version: 2020_12_05_171240) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.boolean "pending", default: false
+    t.string "unique_bank_identifier", null: false
   end
 
   create_table "raw_stripe_transactions", force: :cascade do |t|
@@ -726,6 +815,8 @@ ActiveRecord::Schema.define(version: 2020_12_05_171240) do
     t.date "date_posted"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.text "stripe_authorization_id"
+    t.string "unique_bank_identifier", null: false
   end
 
   create_table "receipts", force: :cascade do |t|
@@ -902,8 +993,11 @@ ActiveRecord::Schema.define(version: 2020_12_05_171240) do
   add_foreign_key "canonical_event_mappings", "events"
   add_foreign_key "canonical_hashed_mappings", "canonical_transactions"
   add_foreign_key "canonical_hashed_mappings", "hashed_transactions"
+  add_foreign_key "canonical_pending_declined_mappings", "canonical_pending_transactions"
   add_foreign_key "canonical_pending_event_mappings", "canonical_pending_transactions"
   add_foreign_key "canonical_pending_event_mappings", "events"
+  add_foreign_key "canonical_pending_settled_mappings", "canonical_pending_transactions"
+  add_foreign_key "canonical_pending_settled_mappings", "canonical_transactions"
   add_foreign_key "canonical_pending_transactions", "raw_pending_stripe_transactions"
   add_foreign_key "checks", "lob_addresses"
   add_foreign_key "checks", "users", column: "creator_id"
@@ -931,6 +1025,7 @@ ActiveRecord::Schema.define(version: 2020_12_05_171240) do
   add_foreign_key "events", "users", column: "point_of_contact_id"
   add_foreign_key "exports", "users"
   add_foreign_key "fee_relationships", "events"
+  add_foreign_key "fees", "canonical_event_mappings"
   add_foreign_key "g_suite_accounts", "g_suites"
   add_foreign_key "g_suite_accounts", "users", column: "creator_id"
   add_foreign_key "g_suites", "events"

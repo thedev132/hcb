@@ -58,10 +58,12 @@
           </div>
         <% end %>
 
+        <% if @card.user == current_user %>
         <div>
           <strong>CVC</strong>
           <%= @card.cvc %>
         </div>
+        <% end %>
 
         <div>
           <strong>Expiration date</strong>
@@ -96,20 +98,37 @@
       </div>
     <% end %>
 
-    <section class="grid grid--split items-end pt2">
-      <div class="stat tooltipped tooltipped--s" aria-label="This is your account balance">
-        <strong class="stat__label">Spending limit</strong>
-        <span class="stat__value">
-          <%= render_money_amount @event.available_balance %>
-        </span>
-      </div>
-      <div class="stat stat--small">
-        <strong class="stat__label">Lifetime spent</strong>
-        <span class="stat__value">
-          <%= render_money_amount @card.total_spent %>
-        </span>
-      </div>
-    </section>
+    <% if using_transaction_engine_v2? %>
+      <section class="grid grid--split items-end pt2">
+        <div class="stat tooltipped tooltipped--s" aria-label="This is your account balance">
+          <strong class="stat__label">Spending limit</strong>
+          <span class="stat__value">
+            <%= render_money_amount @event.balance_v2_cents %>
+          </span>
+        </div>
+        <div class="stat stat--small">
+          <strong class="stat__label">Lifetime spent</strong>
+          <span class="stat__value">
+            <%= render_money_amount @card.total_spent %>
+          </span>
+        </div>
+      </section>
+    <% else %>
+      <section class="grid grid--split items-end pt2">
+        <div class="stat tooltipped tooltipped--s" aria-label="This is your account balance">
+          <strong class="stat__label">Spending limit</strong>
+          <span class="stat__value">
+            <%= render_money_amount @event.available_balance %>
+          </span>
+        </div>
+        <div class="stat stat--small">
+          <strong class="stat__label">Lifetime spent</strong>
+          <span class="stat__value">
+            <%= render_money_amount @card.total_spent %>
+          </span>
+        </div>
+      </section>
+    <% end %>
 
     <section class="card__banner card__banner--bottom card__darker pt2 pb2">
       <p class="muted mt0 mb0">

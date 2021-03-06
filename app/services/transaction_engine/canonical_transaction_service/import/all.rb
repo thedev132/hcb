@@ -6,6 +6,7 @@ module TransactionEngine
           ::TransactionEngine::CanonicalTransactionService::Import::Simple.new.run
           ::TransactionEngine::CanonicalTransactionService::Import::PlaidThatLookLikeDuplicates.new.run
           ::TransactionEngine::CanonicalTransactionService::Import::EmburseThatLookLikeDuplicates.new.run
+          ::TransactionEngine::CanonicalTransactionService::Import::StripeThatLookLikeDuplicates.new.run
         end
       end
     end

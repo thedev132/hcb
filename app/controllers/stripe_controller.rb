@@ -31,7 +31,10 @@ class StripeController < ApplicationController
     auth = event[:data][:object]
     tx_amount = auth[:pending_request][:amount]
     card = StripeCard.find_by(stripe_id: auth[:card][:id])
-    should_approve = card.event.balance_available >= tx_amount
+    event = card.event
+
+    should_approve = event.balance_available >= tx_amount
+    should_approve = event.balance_available_v2_cents >= tx_amount if event.transaction_engine_v2_at.present?
 
     if should_approve
       puts "#{card.event.name} has enough money (#{card.event.balance_available}) for the charge of #{tx_amount}"

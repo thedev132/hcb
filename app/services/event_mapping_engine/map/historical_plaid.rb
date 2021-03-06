@@ -1,8 +1,14 @@
 module EventMappingEngine
   module Map
     class HistoricalPlaid
+      include ::TransactionEngine::Shared
+
+      def initialize(start_date: nil)
+        @start_date = start_date || last_1_month
+      end
+
       def run
-        RawPlaidTransaction.where(plaid_transaction_id: in_common_plaid_transaction_ids).find_each do |raw_plaid_transaction|
+        RawPlaidTransaction.where(plaid_transaction_id: in_common_plaid_transaction_ids).find_each(batch_size: 100) do |raw_plaid_transaction|
 
           Airbrake.notify("There was more than 1 hashed transaction for raw_plaid_transaction: #{raw_plaid_transaction.id}") if raw_plaid_transaction.hashed_transactions.length > 1
 
@@ -39,11 +45,11 @@ module EventMappingEngine
       private
 
       def deprecated_transaction_plaid_ids
-        @deprecated_transaction_plaid_ids ||= Transaction.with_deleted.pluck(:plaid_id)
+        @deprecated_transaction_plaid_ids ||= Transaction.where("date >= ?", @start_date).with_deleted.pluck(:plaid_id)
       end
 
       def raw_plaid_transaction_ids
-        @raw_plaid_transaction_ids ||= RawPlaidTransaction.pluck(:plaid_transaction_id)
+        @raw_plaid_transaction_ids ||= RawPlaidTransaction.where("date_posted >= ?", @start_date).pluck(:plaid_transaction_id)
       end
 
       def in_common_plaid_transaction_ids

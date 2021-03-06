@@ -3,8 +3,8 @@
 
   &:after {
     background-color: rgba(map-get($palette, black), 0.875);
+    backdrop-filter: blur(2px);
     border-radius: 0.5rem;
-    bottom: 50%;
     box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.0625),
       0 4px 8px 0 rgba(0, 0, 0, 0.125);
     color: map-get($palette, white);
@@ -40,6 +40,7 @@
 
 .tooltipped--e:after {
   left: 100%;
+  bottom: 50%;
   right: 0;
   margin-left: 0.5rem;
   margin-right: 0;
@@ -48,6 +49,7 @@
 
 .tooltipped--w:after {
   right: 100%;
+  bottom: 50%;
   transform: translateY(50%);
 }
 

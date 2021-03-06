@@ -1,8 +1,14 @@
 module EventMappingEngine
   module Map
     class StripeTransactions
+      include ::TransactionEngine::Shared
+
+      def initialize(start_date: nil)
+        @start_date = start_date || last_1_month
+      end
+
       def run
-        RawStripeTransaction.find_each do |raw_stripe_transaction|
+        RawStripeTransaction.where("date_posted >= ?", @start_date).find_each(batch_size: 100) do |raw_stripe_transaction|
 
           Airbrake.notify("There was more than 1 hashed transaction for raw_stripe_transaction: #{raw_stripe_transaction.id}") if raw_stripe_transaction.hashed_transactions.length > 1
 
@@ -30,16 +36,6 @@ module EventMappingEngine
           }
           ::CanonicalEventMapping.create!(attrs)
         end
-      end
-
-      private
-
-      def raw_stripe_transaction_ids
-        @raw_stripe_transaction_ids ||= RawStripeTransaction.pluck(:stripe_transaction_id)
-      end
-
-      def in_common_stripe_transaction_ids
-        @in_common_stripe_transaction_ids ||= deprecated_transaction_stripe_ids && raw_stripe_transaction_ids
       end
     end
   end

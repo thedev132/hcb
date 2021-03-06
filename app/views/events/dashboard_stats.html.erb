@@ -3,7 +3,11 @@
     Pending fees
     <%= inline_icon 'external', size: 24, class: 'muted ml1', 'aria-label': 'Icon indicating click for more' %>
   </span>
+  <% if using_transaction_engine_v2? %>
+  <span class="stat__value"><%= render_money_amount @event.fee_balance_v2_cents %></span>
+  <% else %>
   <span class="stat__value"><%= render_money_amount @event.fee_balance %></span>
+  <% end %>
 </action>
 <action class="stat stat--small" area="deposits" data-behavior="modal_trigger" data-modal="incoming_deposits" tabindex="0">
   <span class="stat__label flex items-center">
@@ -14,44 +18,76 @@
 </action>
 
 <div class="modal" data-behavior="modal" role="dialog" id="pending_withdrawals">
-  <%= modal_header "Pending fees #{"(#{render_money @event.fee_balance})" if @event.fee_balance > 0}" %>
-  <% if @event.fee_balance != 0 %>
-    <h3 class="mb1 mt0">Bank fee</h3>
-    <div class="breakdown">
-      <div class="stat stat--small flex items-center">
-        <span class="stat__value"><%= render_money_amount @event.fee_balance_without_fee_reimbursement_reconcilliation %></span>
+  <% if using_transaction_engine_v2? %>
+    <%= modal_header "Pending fees #{"(#{render_money @event.fee_balance_v2_cents})" if @event.fee_balance_v2_cents > 0}" %>
+    <% if @event.fee_balance_v2_cents != 0 %>
+      <h3 class="mb1 mt0">Bank fee</h3>
+      <div class="breakdown">
+        <div class="stat stat--small flex items-center">
+          <span class="stat__value"><%= render_money_amount @event.fee_balance_v2_cents %></span>
+        </div>
+        <span class="breakdown__equals">&#61;</span>
+        <div>
+          <span class="breakdown__amount">
+            <%= render_money @event.balance_v2_cents %>
+          </span>
+          <span class="breakdown__sub">revenue without fee withdrawn</span>
+        </div>
+        <span class="breakdown__equals">&times;</span>
+        <div>
+          <span class="breakdown__amount"><%= @event.sponsorship_fee * 100 %>%</span>
+          <span class="breakdown__sub">our fee</span>
+        </div>
       </div>
-      <span class="breakdown__equals">&#61;</span>
-      <div>
-        <span class="breakdown__amount">
-          <%= render_money @event.balance_not_feed %>
-        </span>
-        <span class="breakdown__sub">revenue without fee withdrawn</span>
-      </div>
-      <span class="breakdown__equals">&times;</span>
-      <div>
-        <span class="breakdown__amount"><%= @event.sponsorship_fee * 100 %>%</span>
-        <span class="breakdown__sub">our fee</span>
-      </div>
-    </div>
-    <% if (@event.fee_balance - @event.fee_balance_without_fee_reimbursement_reconcilliation) != 0 %>
-      <hr class="mt2 mb2">
-
-      <h3 class="mb1">Micro-fee refunds</h3>
-      <div class="breakdown stat stat--small">
-        <span class="stat__value"><%= render_money_amount (@event.fee_balance - @event.fee_balance_without_fee_reimbursement_reconcilliation) %></span>
-      </div>
-      <span class="breakdown__sub mb1 line-height-3">
-        One of your recent invoices had a payment processing fee of less than a dollar. We cover all payment processing fees, however due to a quirk with our underlying bank, we can't easily credit under a dollar to your account. Instead, we gave you a dollar and are taking out the remainder so that you get refunded the exact amount of the processing fee.
+    <% else %>
+      <%= blankslate 'You have no pending withdrawals.' %>
+    <% end %>
+    <% if organizer_signed_in? %>
+      <span class="h5 muted block mt2">
+        Questions? <%= help_message %>
       </span>
     <% end %>
+
   <% else %>
-    <%= blankslate 'You have no pending withdrawals.' %>
-  <% end %>
-  <% if organizer_signed_in? %>
-    <span class="h5 muted block mt2">
-      Questions? <%= help_message %>
-    </span>
+    <%= modal_header "Pending fees #{"(#{render_money @event.fee_balance})" if @event.fee_balance > 0}" %>
+    <% if @event.fee_balance != 0 %>
+      <h3 class="mb1 mt0">Bank fee</h3>
+      <div class="breakdown">
+        <div class="stat stat--small flex items-center">
+          <span class="stat__value"><%= render_money_amount @event.fee_balance_without_fee_reimbursement_reconcilliation %></span>
+        </div>
+        <span class="breakdown__equals">&#61;</span>
+        <div>
+          <span class="breakdown__amount">
+            <%= render_money @event.balance_not_feed %>
+          </span>
+          <span class="breakdown__sub">revenue without fee withdrawn</span>
+        </div>
+        <span class="breakdown__equals">&times;</span>
+        <div>
+          <span class="breakdown__amount"><%= @event.sponsorship_fee * 100 %>%</span>
+          <span class="breakdown__sub">our fee</span>
+        </div>
+      </div>
+      <% if (@event.fee_balance - @event.fee_balance_without_fee_reimbursement_reconcilliation) != 0 %>
+        <hr class="mt2 mb2">
+
+        <h3 class="mb1">Micro-fee refunds</h3>
+        <div class="breakdown stat stat--small">
+          <span class="stat__value"><%= render_money_amount (@event.fee_balance - @event.fee_balance_without_fee_reimbursement_reconcilliation) %></span>
+        </div>
+        <span class="breakdown__sub mb1 line-height-3">
+          One of your recent invoices had a payment processing fee of less than a dollar. We cover all payment processing fees, however due to a quirk with our underlying bank, we can't easily credit under a dollar to your account. Instead, we gave you a dollar and are taking out the remainder so that you get refunded the exact amount of the processing fee.
+        </span>
+      <% end %>
+    <% else %>
+      <%= blankslate 'You have no pending withdrawals.' %>
+    <% end %>
+    <% if organizer_signed_in? %>
+      <span class="h5 muted block mt2">
+        Questions? <%= help_message %>
+      </span>
+    <% end %>
   <% end %>
 </div>
 

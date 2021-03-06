@@ -1,4 +1,7 @@
 class Disbursement < ApplicationRecord
+  include PgSearch::Model
+  pg_search_scope :search_name, against: [:name]
+
   belongs_to :event
   belongs_to :source_event, class_name: 'Event'
 
@@ -15,13 +18,14 @@ class Disbursement < ApplicationRecord
   # 3. Fulfilled
   # or, if not accepted...
   # 4. Rejected
-  scope :pending, -> { where(fulfilled_at: nil, rejected_at: nil) }
+  scope :pending, -> { where(fulfilled_at: nil, rejected_at: nil, errored_at: nil) }
   scope :processing, -> { where.not(fulfilled_at: nil).select { |d| d.processed? } }
   scope :fulfilled, -> { where.not(fulfilled_at: nil).select { |d| d.fulfilled? } }
   scope :rejected, -> { where.not(rejected_at: nil) }
+  scope :errored, -> { where.not(errored_at: nil) }
 
   def pending?
-    !processed? && !rejected?
+    !processed? && !rejected? && !errored?
   end
 
   def processed?
@@ -38,6 +42,10 @@ class Disbursement < ApplicationRecord
     rejected_at.present?
   end
 
+  def errored?
+    errored_at.present?
+  end
+
   def filter_data
     {
       exists: true,
@@ -48,12 +56,18 @@ class Disbursement < ApplicationRecord
     }
   end
 
+  def status
+    state
+  end
+
   def state
     if fulfilled?
       :success
     elsif processed?
       :info
     elsif rejected?
+      :error
+    elsif errored?
       :error
     else
       :pending
@@ -67,6 +81,8 @@ class Disbursement < ApplicationRecord
       'processing'
     elsif rejected?
       'rejected'
+    elsif errored?
+      'errored'
     else
       'pending'
     end

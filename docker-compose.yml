@@ -6,7 +6,7 @@ services:
     image: redis
   web:
     build: ./
-    command: bash -c 'rm /usr/src/app/tmp/pids/server.pid; bundle exec skylight disable_dev_warning; bundle exec rails s -p 3000 -b "0.0.0.0"'
+    command: bash -c 'rm /usr/src/app/tmp/pids/server.pid; bundle exec rails s -p 3000 -b "0.0.0.0"'
     volumes:
       - ./:/usr/src/app
     volumes_from:

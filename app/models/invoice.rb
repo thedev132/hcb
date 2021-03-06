@@ -2,6 +2,9 @@ class Invoice < ApplicationRecord
   extend FriendlyId
   include Commentable
 
+  include PgSearch::Model
+  pg_search_scope :search_description, against: [:item_description]
+
   scope :unarchived, -> { where(archived_at: nil) }
   scope :archived, -> { where.not(archived_at: nil) }
 
@@ -50,6 +53,8 @@ class Invoice < ApplicationRecord
                        if: -> { self.payout_creation_queued_at.nil? }
 
   validate :due_date_cannot_be_in_past, on: :create
+
+  validates :item_amount, numericality: { greater_than_or_equal_to: 100 }
 
   before_create :set_defaults
 
@@ -156,44 +161,6 @@ class Invoice < ApplicationRecord
       errors.add(:base, 'failed to save with vendor')
 
       false
-    end
-  end
-
-  def queue_payout!
-    inv = StripeService::Invoice.retrieve(id: stripe_invoice_id, expand: ['charge.balance_transaction'])
-    raise NoAssociatedStripeCharge if inv.charge.nil?
-
-    b_tnx = inv.charge.balance_transaction
-
-    funds_available_at = Util.unixtime(b_tnx.available_on)
-    create_payout_at = funds_available_at + 1.day
-
-    job = CreatePayoutJob.set(wait_until: create_payout_at).perform_later(self)
-
-    self.payout_creation_queued_at = Time.current
-    self.payout_creation_queued_for = create_payout_at
-    self.payout_creation_queued_job_id = job.job_id
-    self.payout_creation_balance_net = b_tnx.net - hidden_fee(inv) # amount to pay out
-    self.payout_creation_balance_stripe_fee = b_tnx.fee + hidden_fee(inv)
-    self.payout_creation_balance_available_at = funds_available_at
-
-    self.save!
-  end
-
-  def hidden_fee(inv)
-    # stripe has hidden fees for ACH Credit TXs that don't show in the API at the moment:
-    # https://support.stripe.com/questions/pricing-of-payment-methods-in-the-us
-    c = inv.charge
-    if c.payment_method_details.type != 'ach_credit_transfer'
-      return 0
-    end
-
-    if c.amount < 1000 * 100
-      return 700
-    elsif c.amount < 100000 * 100
-      return 1450
-    else
-      return 2450
     end
   end
 
@@ -361,7 +328,11 @@ class Invoice < ApplicationRecord
       description: self.memo,
       status: self.status,
       statement_descriptor: self.statement_descriptor,
-      tax_percent: self.tax_percent
+      tax_percent: self.tax_percent,
+      footer: "Need to pay by mailed paper check? You can mail checks to:\n\n"\
+              "#{self.sponsor.event.name} ( #{self.sponsor.event.id}) c/o The Hack Foundation\n"\
+              "8605 Santa Monica Blvd #86294\n"\
+              'West Hollywood, CA 90069'
     }
   end
 

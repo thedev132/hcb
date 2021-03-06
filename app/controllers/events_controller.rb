@@ -43,20 +43,16 @@ class EventsController < ApplicationController
   # GET /events/1
   def show
     authorize @event
+
     @organizers = @event.organizer_positions.includes(:user)
+    @pending_transactions = _show_pending_transactions
+    @transactions = paginate(_show_transactions, per_page: 250)
+  end
 
-    if params[:v2]
-      # some sort of super transaction here that gets data from canonical transactions
-      @pending_transactions = PendingTransactionEngine::PendingTransaction::All.new(event_id: @event.id).run
-      @transactions = paginate((@pending_transactions + TransactionEngine::Transaction::All.new(event_id: @event.id).run), per_page: 100)
-    else
+  def fees
+    authorize @event
 
-      @transactions = paginate((
-        @event.transactions.unified_list.includes(:fee_relationship, :comments) +
-        @event.stripe_authorizations.unified_list.includes(:receipts, stripe_card: :user) +
-        @event.emburse_transactions.unified_list.includes(:comments))
-        .sort_by(&:created_at).reverse, per_page: 100)
-    end
+    @fees = @event.fees.includes(canonical_event_mapping: :canonical_transaction).order("canonical_transactions.date desc, canonical_transactions.id desc")
   end
 
   # async frame for incoming money
@@ -302,5 +298,18 @@ class EventsController < ApplicationController
     result_params[:slug] = ActiveSupport::Inflector.parameterize(result_params[:slug])
 
     result_params
+  end
+
+  def _show_transactions
+    return TransactionEngine::Transaction::All.new(event_id: @event.id).run if using_transaction_engine_v2?
+
+    TransactionEngine::Transaction::AllDeprecated.new(event_id: @event.id).run
+  end
+
+  def _show_pending_transactions
+    return [] if params[:page] && params[:page] != "1"
+    return [] unless using_transaction_engine_v2? && using_pending_transaction_engine?
+
+    PendingTransactionEngine::PendingTransaction::All.new(event_id: @event.id).run
   end
 end

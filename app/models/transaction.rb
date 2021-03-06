@@ -20,6 +20,7 @@ class Transaction < ApplicationRecord
   }
   # used by the unified transaction list shown on the event show page
   scope :unified_list, -> { where( fee_reimbursement_id: nil ) }
+  scope :renamed, -> { where( "display_name != name" ) }
 
   belongs_to :bank_account
 
@@ -50,6 +51,10 @@ class Transaction < ApplicationRecord
 
   after_initialize :default_values
   
+  def memo
+    name
+  end
+
   def admin_dropdown_description
     "#{name} - #{id}"
   end
@@ -267,6 +272,8 @@ class Transaction < ApplicationRecord
       try_pair_disbursement
     end
     # NOTE: we cannot curently auto-pair Expensify txs
+  rescue => e
+    Airbrake.notify(e)
   end
 
   # Tries to recover transaction data from a previously paired / modified

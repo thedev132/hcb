@@ -1,8 +1,14 @@
 module EventMappingEngine
   module Map
     class HistoricalEmburse
+      include ::TransactionEngine::Shared
+
+      def initialize(start_date: nil)
+        @start_date = start_date || last_1_month
+      end
+
       def run
-        RawEmburseTransaction.where(emburse_transaction_id: in_common_emburse_transaction_ids).find_each do |raw_emburse_transaction|
+        RawEmburseTransaction.where(emburse_transaction_id: in_common_emburse_transaction_ids).find_each(batch_size: 100) do |raw_emburse_transaction|
 
           raise ArgumentError, "There was more than 1 hashed transaction for raw_emburse_transaction: #{raw_emburse_transaction.id}" if raw_emburse_transaction.hashed_transactions.length > 1
 
@@ -49,7 +55,7 @@ module EventMappingEngine
       end
 
       def raw_emburse_transaction_ids
-        @raw_emburse_transaction_ids ||= RawEmburseTransaction.pluck(:emburse_transaction_id)
+        @raw_emburse_transaction_ids ||= RawEmburseTransaction.where("date_posted >= ?", @start_date).pluck(:emburse_transaction_id)
       end
 
       def in_common_emburse_transaction_ids

@@ -3,7 +3,7 @@ module TransactionEngine
     module Import
       class PlaidThatLookLikeDuplicates
         def run
-          unprocessed_plaid_with_duplicate_hashes.find_each do |ht|
+          unprocessed_plaid_with_duplicate_hashes.find_each(batch_size: 100) do |ht|
             # For some reason we imported transactions from the same bank
             # account through 2 different plaid connections. All those
             # transactions would be actual duplicates (they'd each have 1

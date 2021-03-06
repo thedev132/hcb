@@ -40,15 +40,15 @@ module ApplicationHelper
     content << [obj.address_city, obj.address_state, obj.address_postal_code].join(', ')
     content_tag(:span, content.join.html_safe)
   end
-  
+
   def async_frame_to(url, options = { as: :div }, &block)
     content_tag options[:as].to_sym,
-      block_given? ? capture(&block) : nil,
-      data: {
-        src: url,
-        behavior: 'async_frame'
-      },
-      **options
+                block_given? ? capture(&block) : nil,
+                data: {
+                  src: url,
+                  behavior: 'async_frame'
+                },
+                **options
   end
 
   def blankslate(text, options = {})
@@ -104,7 +104,7 @@ module ApplicationHelper
 
     content_tag :div, class: 'error-card' do
       content_tag(:h2, "#{prefix} #{name} because of #{pluralize(model.errors.size, 'error')}.") +
-      errors_list
+        errors_list
     end
   end
 
@@ -115,7 +115,7 @@ module ApplicationHelper
   def modal_header(text)
     content_tag :header, class: 'pb2' do
       modal_close +
-      content_tag(:h2, text.html_safe, class: 'h0 mt0 mb0 pb0 border-none')
+        content_tag(:h2, text.html_safe, class: 'h0 mt0 mb0 pb0 border-none')
     end
   end
 
@@ -155,12 +155,16 @@ module ApplicationHelper
 
   def filterbar_item(label, name, selected = false)
     content_tag :a, label, class: 'filterbar__item',
-                           tabindex: 0, role: 'tab', 'aria-selected': selected,
-                           data: { name: name.to_s, behavior: 'filterbar_item' }
+                tabindex: 0, role: 'tab', 'aria-selected': selected,
+                data: { name: name.to_s, behavior: 'filterbar_item' }
   end
 
   def help_message
-    content_tag :span, "Contact the Bank team at #{mail_to 'bank@hackclub.com'} or #{link_to '+1-360-502-2935', 'tel:+1-360-502-2935'}.".html_safe
+    content_tag :span, "Contact the Bank team at #{help_email}".html_safe
+  end
+
+  def help_email
+    mail_to 'bank@hackclub.com'
   end
 
   def format_date(date)
@@ -186,11 +190,13 @@ module ApplicationHelper
   def page_sm
     content_for(:container_class) { 'container--sm' }
   end
+
   alias_method :page_narrow, :page_sm
 
   def page_xs
     content_for(:container_class) { 'container--xs' }
   end
+
   alias_method :page_extranarrow, :page_xs
 
   def title(text)
@@ -200,44 +206,43 @@ module ApplicationHelper
   # also in lib/util.rb for backend use
   def commit_hash
     @commit_hash ||= begin
-      hash = ENV['HEROKU_SLUG_COMMIT'] || `git show --pretty=%H -q`&.chomp
+                       hash = ENV['HEROKU_SLUG_COMMIT'] || `git show --pretty=%H -q`&.chomp
 
-      hash[0...7]
-    end
+                       hash[0...7]
+                     end
 
     @commit_hash
   end
 
   def commit_time
     @commit_time ||= begin
-      heroku_time = ENV['HEROKU_RELEASE_CREATED_AT']
-      git_time = `git log -1 --format=%at`&.chomp
+                       heroku_time = ENV['HEROKU_RELEASE_CREATED_AT']
+                       git_time = `git log -1 --format=%at`&.chomp
 
-      return nil if heroku_time.blank? && git_time.blank?
+                       return nil if heroku_time.blank? && git_time.blank?
 
-      heroku_time.blank? ? git_time.to_i : Time.parse(heroku_time)
-    end
+                       heroku_time.blank? ? git_time.to_i : Time.parse(heroku_time)
+                     end
 
     @commit_time
   end
 
-
   def commit_duration
     @commit_duration ||= begin
-      return '' if commit_time.nil?
+                           return '' if commit_time.nil?
 
-      distance_of_time_in_words Time.at(commit_time), Time.now
-    end
+                           distance_of_time_in_words Time.at(commit_time), Time.now
+                         end
   end
 
   def admin_inspectable_attributes(record)
     stripe_obj = begin
-        record.stripe_obj
-      rescue Stripe::InvalidRequestError
-        puts "Can't access stripe object, skipping"
-      rescue NoMethodError
-        puts "Not a stripe object, skipping"
-      end
+                   record.stripe_obj
+                 rescue Stripe::InvalidRequestError
+                   puts "Can't access stripe object, skipping"
+                 rescue NoMethodError
+                   puts "Not a stripe object, skipping"
+                 end
 
     if stripe_obj.nil?
       record
@@ -263,6 +268,7 @@ module ApplicationHelper
   end
 
   require 'json'
+
   def json(obj)
     JSON.pretty_generate(obj.as_json)
   end

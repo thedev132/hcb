@@ -1,5 +1,7 @@
-<% if (t.is_a?(CanonicalTransaction) || t.is_a?(CanonicalPendingTransaction)) %>
+<% if t.is_a?(CanonicalTransaction) %>
   <%= render 'transactions/v2', transaction: t %>
+<% elsif t.is_a? CanonicalPendingTransaction %>
+  <%= render 'transactions/pending_v2', transaction: t %>
 <% elsif t.is_a? StripeAuthorization %>
   <%= render t %>
 <% elsif t.is_a? EmburseTransaction %>

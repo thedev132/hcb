@@ -1,14 +1,14 @@
 <%= form_with(model: disbursement, local: true, url: disbursements_path(@event)) do |form| %>
   <%= form_errors(disbursement, 'Disbursements') %>
 
-  <div class="field">
+  <div class="field event-select-target">
     <%= form.label :source_event_id, 'Source event' %>
-    <%= form.collection_select(:source_event_id, Event.all.reorder(name: :asc), :id, :name, required: true, prompt: 'Select event…') %>
+    <%= form.collection_select(:source_event_id, Event.reorder(:name), :id, :admin_dropdown_description, include_blank: 'Select one…') %>
   </div>
 
-  <div class="field">
+  <div class="field event-select-target">
     <%= form.label :event_id, 'Destination event' %>
-    <%= form.collection_select(:event_id, Event.all.reorder(name: :asc), :id, :name, required: true, prompt: 'Select event…') %>
+    <%= form.collection_select(:event_id, Event.reorder(:name), :id, :admin_dropdown_description, include_blank: 'Select one…') %>
   </div>
 
   <div class="field">
@@ -27,7 +27,7 @@
     </div>
   </div>
 
-  <div class="actions tooltipped tooltipped--n inline-block" aria-label="The Bank point of contact will make the disbursement">
+  <div class="actions tooltipped tooltipped--n inline-block" aria-label="The Hack Club Bank staff will make the disbursement">
     <%= form.submit 'Schedule disbursement', class: 'btn' %>
   </div>
 <% end %>

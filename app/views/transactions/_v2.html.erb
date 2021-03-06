@@ -13,14 +13,15 @@
       <%= 'pending: ' if transaction.is_a? CanonicalPendingTransaction %>
       <%= transaction.display_name %>
     </span>
-    <%= list_badge_for transaction.comments.size, 'note', 'post', optional: true %>
+    <%#= list_badge_for transaction.comments.size, 'note', 'post', optional: true %>
+    <%= list_badge_for transaction.receipts.size, 'receipt', 'payment-docs', optional: true %>
   </td>
   <td class="nowrap">
     <%= transaction.amount %>
   </td>
   <% if organizer_signed_in? %>
   <td>
-    <%= link_to 'Details', '#implement' %>
+    <%= link_to 'Details', "/transactions/#{transaction.id}" %>
   </td>
   <% end %>
 </tr>

@@ -1,6 +1,6 @@
 <% title "Google Workspace for #{@event.name.html_safe}" %>
 <% page_md %>
-<%= render 'nav'%>
+<%= render 'nav' %>
 
 <h1 class="heading">
   <span class="flex-auto pr2">
@@ -30,36 +30,40 @@
       <h3 class="mt0 mb0">Your application was accepted!</h3>
       <p class="mt0">It’s time to set up your servers.</p>
     </section>
-    
+
     <details <%= @g_suite.verified? ? nil : 'open' %>>
-    <summary><h2 class="inline-block pb0 border-none mt0">Setup Instructions</h2></summary>
-    <article class="card overflow-visible md-pl3">
-      <style>
-        table {
-          max-width: 100%;
-          display: block;
-          overflow-x: auto;
-          white-space: nowrap;
-        }
-      </style>
-      <ol class="steps">
-        <li>Sign in to your domain’s account at your domain host.</li>
-        <li>Go to the settings section where you can update your domain’s MX records.
-          <p class="secondary mt1 mb0">It might be called something like “Manage DNS,” “Email Settings,” or “Advanced Settings.”</p></li>
-        <li>Delete any existing MX records.<br>
-          <p class="secondary mt1 mb0">If you can’t delete the existing records, change their priority number to 20 or higher.</p></li>
-        <li>
-          <% if @g_suite %>
-          <strong>Add your Google Workspace’s verification record</strong>. This is specific to your Google Workspace. Make it a <strong>TXT record</strong>, and set the value to this:
-          <pre><%= organizer_signed_in? ? "google-site-verification=#{@g_suite.verification_key}" : 'REDACTED– SIGN IN TO VIEW' %></pre>
-          <% else %>
-          Continue to #5, but you’ll need to <strong>refresh this page later for this step</strong>.
-          <% end %>
-        </li>
-        <li><strong>Add new DNS records</strong> for the Google mail servers.
-          <p>If your domain host limits the number of MX records, just add the first 2 MX records in this table.</p>
-          <table summary="Server addresses for use in DNS records configured for Google Workspace">
-            <thead>
+      <summary><h2 class="inline-block pb0 border-none mt0">Setup Instructions</h2></summary>
+      <article class="card overflow-visible md-pl3">
+        <style>
+            table {
+                max-width: 100%;
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+        </style>
+        <ol class="steps">
+          <li>Sign in to your domain’s account at your domain host.</li>
+          <li>Go to the settings section where you can update your domain’s DNS and MX records.
+            <p class="secondary mt1 mb0">It might be called something like “Manage DNS,” “Email Settings,” or “Advanced
+              Settings.”</p>
+          </li>
+          <li>
+            <% if @g_suite %>
+              <strong>Add your Google Workspace’s verification record</strong>. This is specific to your Google
+              Workspace. Make it a <strong>TXT record</strong> at your domain's root, and set the value to this:
+              <pre><%= organizer_signed_in? ? "google-site-verification=#{@g_suite.verification_key}" : 'REDACTED– SIGN IN TO VIEW' %></pre>
+            <% else %>
+              Continue to #4, but you’ll need to <strong>refresh this page later for this step</strong>.
+            <% end %>
+          </li>
+          <li>Delete any existing MX records.<br>
+            <p class="secondary mt1 mb0">If you can’t delete the existing records, change their priority number to 20 or
+              higher.</p></li>
+          <li><strong>Add new DNS records</strong> for the Google mail servers.
+            <p>If your domain host limits the number of MX records, just add the first 2 MX records in this table.</p>
+            <table summary="Server addresses for use in DNS records configured for Google Workspace">
+              <thead>
               <tr class="bold">
                 <th>Name/Host/Alias</th>
                 <th>TTL</th>
@@ -67,8 +71,8 @@
                 <th>Priority</th>
                 <th>Value/Answer/Destination</th>
               </tr>
-            </thead>
-            <tbody>
+              </thead>
+              <tbody>
               <tr class="shade-neutral">
                 <td>@ <span class="muted">or leave blank</span></td>
                 <td>3600</td>
@@ -77,20 +81,22 @@
                 <td>v=spf1 include:_spf.google.com ~all</td>
               </tr>
               <% unless @g_suite.dkim_key.blank? %>
-              <tr class="shade-neutral">
-                <td>google._domainkey.<%= @g_suite.domain %></td>
-                <td>3600</td>
-                <td>TXT</td>
-                <td>1</td>
-                <td><%= @g_suite.dkim_key %></td>
-              </tr>
-              <tr class="shade-neutral">
-                <td>_DMARC.<%= @g_suite.domain %></td>
-                <td>3600</td>
-                <td>TXT</td>
-                <td>1</td>
-                <td>v=DMARC1; p=none; rua=mailto:dmarc_report@hackclub.com; ruf=mailto:dmarc_report@hackclub.com; fo=1</td>
-              </tr>
+                <tr class="shade-neutral">
+                  <td>google._domainkey.<%= @g_suite.domain %></td>
+                  <td>3600</td>
+                  <td>TXT</td>
+                  <td>1</td>
+                  <td><%= @g_suite.dkim_key %></td>
+                </tr>
+                <tr class="shade-neutral">
+                  <td>_DMARC.<%= @g_suite.domain %></td>
+                  <td>3600</td>
+                  <td>TXT</td>
+                  <td>1</td>
+                  <td>v=DMARC1; p=none; rua=mailto:dmarc_report@hackclub.com; ruf=mailto:dmarc_report@hackclub.com;
+                    fo=1
+                  </td>
+                </tr>
               <% end %>
               <tr class="shade-neutral">
                 <td>@ <span class="muted">or leave blank</span></td>
@@ -127,30 +133,37 @@
                 <td>10</td>
                 <td>ALT4.ASPMX.L.GOOGLE.COM.</td>
               </tr>
-            </tbody>
-          </table>
-          <p><strong>Note:</strong> Some domain hosts use different labels for the name and value fields, and some hosts also require a trailing period at the end of the server name.</p>
-        </li>
-        <li>
-          <% if @g_suite.configuring? %>
-            <%= link_to 'Verify', event_g_suite_verify_path(event_id: @event.id), method: :put, class: 'btn' %>
-          <% end %>
+              </tbody>
+            </table>
+            <p><strong>Note:</strong> Some domain hosts use different labels for the name and value fields, and some
+              hosts also require a trailing period at the end of the server name.</p>
+          </li>
+          <li>
+            <% if @g_suite.configuring? %>
+              <%= link_to 'Verify', event_g_suite_verify_path(event_id: @event.id), method: :put, class: 'btn' %>
+            <% end %>
 
-          <% if @g_suite.verifying? %>
-            <span class="h4 ml0 pending badge">Verifying…</span>
-          <% end %>
+            <% if @g_suite.verifying? %>
+              <span class="h4 ml0 pending badge">Verifying…</span>
+            <% end %>
 
-          <% if @g_suite.verified? %>
+            <% if @g_suite.verified? %>
             <span class="h4 ml0 badge success">
               <%= inline_icon 'checkmark', size: 20, class: 'mr1' %>
               Verified
             </span>
-          <% end %>
+            <% end %>
 
-          <p class="secondary mt1 mb0">Typically, you can send and receive messages at your new Gmail address in less than 6 hours. However, it may take 48–72 hours before you receive email at your new address. It’s no fun to wait, but the time for MX records to take effect depends on your domain host. We have no control over this.</p>
-        </li>
-      </ol>
-    </article>
+            <p class="secondary mt1 mb0">After your domain and DNS settings are verified by Google and our team, you can
+              begin to create your Google Workspace accounts. Check back here tomorrow!</p>
+            <p class="secondary mt1 mb0">Once you are verified and your accounts are setup, you can typically send and
+              receive emails at your new Google Workspace email addresses in less than 6 hours of adding the new DNS
+              records. However, it may take 48–72 hours before you receive email at your new address. It’s no fun to
+              wait, but the time for MX records to take effect depends on your domain host. We have no control over
+              this.</p>
+          </li>
+        </ol>
+      </article>
     </details>
 
   <% end %>
@@ -158,11 +171,14 @@
 <% else %>
 
   <p>
-    Your event gets complementary Google Workspace (formerly G Suite) through Hack Club Bank! Google Workspace gives you Gmail, Google Drive, Hangouts, Calendar, and more, all for free, including domain email addresses like <strong>yourdomain.com</strong>.
+    Your event gets complementary Google Workspace (formerly G Suite) through Hack Club Bank! Google Workspace gives you
+    Gmail, Google Drive, Hangouts, Calendar, and more, all for free, including domain email addresses like
+    <strong>team@yourdomain.com</strong>.
   </p>
 
   <p>
-    Be sure to first <strong>buy and register the domain you're using</strong> so you can connect it to Google Workspace.
+    Be sure to first <strong>buy and register the domain you're using</strong> so you can connect it to Google
+    Workspace.
   </p>
 
   <hr>

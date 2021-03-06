@@ -3,16 +3,18 @@
 <% include_modals %>
 <%= render 'nav' %>
 
-<%= render 'cards/ordering_suspended' if current_user %>
+<%= render 'cards/name_required' if current_user.try(:full_name).try(:blank?) %>
 
 <h1 class="heading">
   Cards
+  <% unless current_user.try(:full_name).try(:blank?) %>
   <%= link_to event_cards_new_path(event_id: @event.slug),
       class: 'btn bg-success',
       data: { behavior: 'modal_trigger', modal: 'order_card' } do %>
     <%= inline_icon 'card-add' %>
     Order a card
   <% end if organizer_signed_in? %>
+  <% end %>
 </h1>
 
 <section class="modal modal--scroll bg-snow" data-behavior="modal" role="dialog" id="order_card">
@@ -33,9 +35,8 @@
       </section>
     </details>
   <% end %>
-<% elsif @cards.blank? %>
-  <%= blankslate 'You haven’t requested any cards yet.' %>
 <% end %>
+<%= blankslate 'You haven’t requested any cards yet.' if @cards.blank? %>
 
 <% if @event.used_emburse? %>
 <section class="grid grid--split pt4 pb4">

@@ -2,6 +2,8 @@ class AdminController < ApplicationController
   skip_after_action :verify_authorized # do not force pundit
   before_action :signed_in_admin
 
+  layout "application"
+
   def tasks
     @active = pending_tasks
     @pending_actions = @active.values.any? { |e| e.nonzero? }
@@ -9,7 +11,7 @@ class AdminController < ApplicationController
       "You look great today, #{current_user.first_name}.",
       "You’re a *credit* to your team, #{current_user.first_name}.",
       "Everybody thinks you’re amazing, #{current_user.first_name}.",
-      "You’re every organizer’s favorite point of contact.",
+      "You’re every organizer’s favorite team member.",
       "You’re so good at finances, even we think your balance is outstanding.",
       "You’re sweeter than a savings account.",
       "Though they don't show it off, those flowers sure are pretty."
@@ -26,6 +28,7 @@ class AdminController < ApplicationController
 
   def pending_fees
     @pending_fees = Event.pending_fees
+    @pending_fees_v2 = Event.pending_fees_v2
   end
 
   def export_pending_fees
@@ -84,12 +87,436 @@ class AdminController < ApplicationController
     @negative_events = Event.negatives
   end
 
+  def transaction_unmapped_show
+    @canonical_transaction = CanonicalTransaction.find(params[:id])
+
+    @canonical_pending_transactions = CanonicalPendingTransaction.unmapped.where(amount_cents: @canonical_transaction.amount_cents)
+
+    render layout: "admin"
+  end
+
   def transaction_dedupe
     @groups = TransactionEngine::HashedTransactionService::GroupedDuplicates.new.run
   end
-  
+
+  def transaction_pending_unsettled
+    @canonical_pending_transactions = CanonicalPendingTransaction.unsettled.order("date desc")
+  end
+
+  def events
+    @page = params[:page] || 1
+    @per = params[:per] || 100
+    @q = params[:q].present? ? params[:q] : nil
+    @pending = params[:pending] == "1" ? true : nil
+    @transparent = params[:transparent] == "1" ? true : nil
+    @omitted = params[:omitted] == "1" ? true : nil
+    @hidden = params[:hidden] == "1" ? true : nil
+
+    relation = Event
+
+    relation = relation.search_name(@q) if @q
+    relation = relation.pending if @pending
+    relation = relation.transparent if @transparent
+    relation = relation.omitted if @omitted
+    relation = relation.hidden if @hidden
+
+    @count = relation.count
+
+    @events = relation.page(@page).per(@per).reorder("created_at desc")
+
+    render layout: "admin"
+  end
+
+  def event_process
+    @event = Event.find(params[:id])
+
+    render layout: "admin"
+  end
+
+  def users
+    @page = params[:page] || 1
+    @per = params[:per] || 100
+    @q = params[:q].present? ? params[:q] : nil
+    @event_id = params[:event_id].present? ? params[:event_id] : nil
+
+    if @event_id
+      @event = Event.find(@event_id)
+
+      relation = @event.users.includes(:events)
+    else
+      relation = User.includes(:events)
+    end
+
+    relation = relation.search_name(@q) if @q
+
+    @count = relation.count
+
+    @users = relation.page(@page).per(@per).order("created_at desc")
+
+    render layout: "admin"
+  end
+
+  def ledger
+    @page = params[:page] || 1
+    @per = params[:per] || 100
+    @q = params[:q].present? ? params[:q] : nil
+    @unmapped = params[:unmapped] == "1" ? true : nil
+    @exclude_top_ups = params[:exclude_top_ups] == "1" ? true : nil
+    @event_id = params[:event_id].present? ? params[:event_id] : nil
+
+    if @event_id
+      @event = Event.find(@event_id)
+
+      relation = @event.canonical_transactions.includes(:canonical_event_mapping)
+    else
+      relation = CanonicalTransaction.includes(:canonical_event_mapping)
+    end
+
+    if @q
+      if @q.to_f != 0.0
+        @q = (@q.to_f * 100).to_i 
+
+        relation = relation.where("amount_cents = ? or amount_cents = ?", @q, -@q)
+      else
+        case @q.delete(" ")
+        when ">0", ">=0"
+          relation = relation.where("amount_cents >= 0")
+        when "<0", "<=0"
+          relation = relation.where("amount_cents <= 0")
+        else
+          relation = relation.search_memo(@q)
+        end
+      end
+    end
+
+    relation = relation.unmapped if @unmapped
+    relation = relation.not_stripe_top_up if @exclude_top_ups
+
+    @count = relation.count
+
+    @canonical_transactions = relation.page(@page).per(@per).order("date desc")
+
+    render layout: "admin"
+  end
+
+  def pending_ledger
+    @page = params[:page] || 1
+    @per = params[:per] || 100
+    @q = params[:q].present? ? params[:q] : nil
+    @unsettled = params[:unsettled] == "1" ? true : nil
+    @event_id = params[:event_id].present? ? params[:event_id] : nil
+
+    if @event_id
+      @event = Event.find(@event_id)
+
+      relation = @event.canonical_pending_transactions.includes(:canonical_pending_event_mapping)
+    else
+      relation = CanonicalPendingTransaction.includes(:canonical_pending_event_mapping)
+    end
+
+    if @q
+      if @q.to_f != 0.0
+        @q = (@q.to_f * 100).to_i 
+
+        relation = relation.where("amount_cents = ? or amount_cents = ?", @q, -@q)
+      else
+        case @q.delete(" ")
+        when ">0", ">=0"
+          relation = relation.where("amount_cents >= 0")
+        when "<0", "<=0"
+          relation = relation.where("amount_cents <= 0")
+        else
+          relation = relation.search_memo(@q)
+        end
+      end
+    end
+
+    relation = relation.unsettled if @unsettled
+
+    @count = relation.count
+
+    @canonical_pending_transactions = relation.page(@page).per(@per).order("date desc")
+
+    render layout: "admin"
+  end
+
+  def ach
+    @page = params[:page] || 1
+    @per = params[:per] || 20
+    @q = params[:q].present? ? params[:q] : nil
+    @pending = params[:pending] == "1" ? true : nil
+
+    @event_id = params[:event_id].present? ? params[:event_id] : nil
+
+    if @event_id
+      @event = Event.find(@event_id)
+
+      relation = @event.ach_transfers.includes(:event)
+    else
+      relation = AchTransfer.includes(:event)
+    end
+
+    if @q
+      if @q.to_f != 0.0
+        @q = (@q.to_f * 100).to_i 
+
+        relation = relation.where("amount = ? or amount = ?", @q, -@q)
+      else
+        case @q.delete(" ")
+        when ">0", ">=0"
+          relation = relation.where("amount >= 0")
+        when "<0", "<=0"
+          relation = relation.where("amount <= 0")
+        else
+          relation = relation.search_recipient(@q)
+        end
+      end
+    end
+
+    relation = relation.pending if @pending
+
+    @count = relation.count
+    @ach_transfers = relation.page(@page).per(@per).order("created_at desc")
+
+    render layout: "admin"
+  end
+
+  def ach_start_approval
+    @ach_transfer = AchTransfer.find(params[:id])
+
+    render layout: "admin"
+  end
+
+  def ach_approve
+    attrs = {
+      ach_transfer_id: params[:id],
+      scheduled_arrival_date: params[:scheduled_arrival_date]
+    }
+    ach_transfer = AchTransferService::Approve.new(attrs).run
+
+    redirect_to ach_start_approval_admin_path(ach_transfer), flash: { success: "Success" }
+  rescue => e
+    redirect_to ach_start_approval_admin_path(params[:id]), flash: { error: e.message }
+  end
+
+  def ach_reject
+    attrs = {
+      ach_transfer_id: params[:id],
+    }
+    ach_transfer = AchTransferService::Reject.new(attrs).run
+
+    redirect_to ach_start_approval_admin_path(ach_transfer), flash: { success: "Success" }
+  rescue => e
+    redirect_to ach_start_approval_admin_path(params[:id]), flash: { error: e.message }
+  end
+
+  def check
+    @page = params[:page] || 1
+    @per = params[:per] || 20
+    @q = params[:q].present? ? params[:q] : nil
+    @in_transit = params[:in_transit] == "1" ? true : nil
+
+    @event_id = params[:event_id].present? ? params[:event_id] : nil
+
+    if @event_id
+      @event = Event.find(@event_id)
+
+      relation = @event.checks.includes(lob_address: :event)
+    else
+      relation = Check.includes(lob_address: :event)
+    end
+
+    if @q
+      if @q.to_f != 0.0
+        @q = (@q.to_f * 100).to_i 
+
+        relation = relation.where("amount = ? or amount = ?", @q, -@q)
+      else
+        case @q.delete(" ")
+        when ">0", ">=0"
+          relation = relation.where("amount >= 0")
+        when "<0", "<=0"
+          relation = relation.where("amount <= 0")
+        else
+          relation = relation.search_recipient(@q)
+        end
+      end
+    end
+
+    relation = relation.in_transit if @in_transit
+
+    @count = relation.count
+    @checks = relation.page(@page).per(@per).order("created_at desc")
+
+    render layout: "admin"
+  end
+
+  def check_process
+    @check = Check.find(params[:id])
+
+    render layout: "admin"
+  end
+
+  def check_positive_pay_csv
+    @check = Check.find(params[:id])
+
+    headers["Content-Type"] = "text/csv"
+    headers["Content-disposition"] = "attachment; filename=check-#{@check.id}-#{@check.check_number}.csv"
+    headers["X-Accel-Buffering"] = "no"
+    headers["Cache-Control"] ||= "no-cache"
+    headers.delete("Content-Length")
+
+    response.status = 200
+
+    self.response_body = ::CheckService::PositivePay::Csv.new(check_id: @check.id).run
+  end
+
+  def check_mark_in_transit_and_processed
+    attrs = {
+      check_id: params[:id]
+    }
+    check = CheckService::MarkInTransitAndProcessed.new(attrs).run
+
+    redirect_to check_process_admin_path(check), flash: { success: "Success" }
+  rescue => e
+    redirect_to check_process_admin_path(params[:id]), flash: { error: e.message }
+  end
+
+  def donations
+    @page = params[:page] || 1
+    @per = params[:per] || 20
+    @q = params[:q].present? ? params[:q] : nil
+    @succeeded = params[:succeeded] == "1" ? true : nil
+    @exclude_requires_payment_method = params[:exclude_requires_payment_method] == "1" ? true : nil
+
+    @event_id = params[:event_id].present? ? params[:event_id] : nil
+
+    if @event_id
+      @event = Event.find(@event_id)
+
+      relation = @event.donations.includes(:event)
+    else
+      relation = Donation.includes(:event)
+    end
+
+    if @q
+      if @q.to_f != 0.0
+        @q = (@q.to_f * 100).to_i 
+
+        relation = relation.where("amount = ? or amount = ?", @q, -@q)
+      else
+        relation = relation.search_name(@q)
+      end
+    end
+
+    relation = relation.succeeded if @succeeded
+    relation = relation.exclude_requires_payment_method if @exclude_requires_payment_method
+
+    @count = relation.count
+    @donations = relation.page(@page).per(@per).order("created_at desc")
+
+    render layout: "admin"
+  end
+
+  def disbursements
+    @page = params[:page] || 1
+    @per = params[:per] || 20
+    @q = params[:q].present? ? params[:q] : nil
+    @pending = params[:pending] == "1" ? true : nil
+    @processing = params[:processing] == "1" ? true : nil
+
+    @event_id = params[:event_id].present? ? params[:event_id] : nil
+
+    if @event_id
+      @event = Event.find(@event_id)
+
+      relation = @event.disbursements.includes(:event)
+    else
+      relation = Disbursement.includes(:event)
+    end
+
+    if @q
+      if @q.to_f != 0.0
+        @q = (@q.to_f * 100).to_i 
+
+        relation = relation.where("amount = ? or amount = ?", @q, -@q)
+      else
+        relation = relation.search_name(@q)
+      end
+    end
+
+    relation = relation.pending if @pending
+    #relation = relation.processing if @processing # TODO: remove ruby logic from scope
+
+    @count = relation.count
+    @disbursements = relation.page(@page).per(@per).order("created_at desc")
+
+    render layout: "admin"
+  end
+
+  def disbursement_new
+    render layout: "admin"
+  end
+
+  def disbursement_create
+    attrs = {
+      source_event_id: params[:source_event_id],
+      destination_event_id: params[:event_id],
+      name: params[:name],
+      amount: params[:amount]
+    }
+    ::DisbursementService::Create.new(attrs).run
+
+    redirect_to disbursements_admin_index_path, flash: { success: "Success" }
+  rescue => e
+    redirect_to disbursement_new_admin_index_path, flash: { error: e.message }
+  end
+
+  def invoices
+    @page = params[:page] || 1
+    @per = params[:per] || 20
+    @q = params[:q].present? ? params[:q] : nil
+    @open = params[:open] == "1" ? true : nil
+
+    @event_id = params[:event_id].present? ? params[:event_id] : nil
+
+    if @event_id
+      @event = Event.find(@event_id)
+
+      relation = @event.invoices
+    else
+      relation = Invoice
+    end
+
+    if @q
+      if @q.to_f != 0.0
+        @q = (@q.to_f * 100).to_i 
+
+        relation = relation.where("amount_due = ? or amount_due = ?", @q, -@q)
+      else
+        relation = relation.search_description(@q)
+      end
+    end
+
+    relation = relation.open if @open
+
+    @count = relation.count
+    @invoices = relation.page(@page).per(@per).order("created_at desc")
+
+    render layout: "admin"
+  end
+
+  def set_event
+    @canonical_transaction = ::CanonicalTransactionService::SetEvent.new(canonical_transaction_id: params[:id], event_id: params[:event_id]).run
+
+    redirect_to transaction_unmapped_show_path(@canonical_transaction)
+  end
+
   def audit
     @topups = StripeService::Topup.list[:data]
+  end
+
+  def bookkeeping
   end
 
   private

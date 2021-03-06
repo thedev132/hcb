@@ -1,7 +1,18 @@
 class Event < ApplicationRecord
   extend FriendlyId
 
+  include PgSearch::Model
+  pg_search_scope :search_name, against: [:name, :slug]
+
+  monetize :total_fees_v2_cents
+
   default_scope { order(id: :asc) }
+  scope :pending, -> { where(has_fiscal_sponsorship_document: false) }
+  scope :transparent, -> { where(is_public: true) }
+  scope :omitted, -> { where(omit_stats: true) }
+  scope :hidden, -> { where("hidden_at is not null") }
+  scope :v1, -> { where(transaction_engine_v2_at: nil) }
+  scope :v2, -> { where.not(transaction_engine_v2_at: nil) }
   scope :hidden, -> { where.not(hidden_at: nil) }
   scope :not_hidden, -> { where(hidden_at: nil) }
   scope :event_ids_with_pending_fees_greater_than_100, -> do
@@ -12,7 +23,8 @@ class Event < ApplicationRecord
         -- step 1: calculate total_fees per event
         select fr.event_id, sum(fr.fee_amount) from fee_relationships fr
         inner join transactions t on t.fee_relationship_id = fr.id
-        where fr.fee_applies is true and t.deleted_at is null
+        inner join events e on e.id = fr.event_id
+        where fr.fee_applies is true and t.deleted_at is null and e.transaction_engine_v2_at is null
         group by fr.event_id
 
         ) q1 
@@ -21,7 +33,8 @@ class Event < ApplicationRecord
         -- step 2: calculate total_fee_payments per event
         select fr.event_id, sum(t.amount) from fee_relationships fr
         inner join transactions t on t.fee_relationship_id = fr.id
-        where fr.is_fee_payment is true and t.deleted_at is null
+        inner join events e on e.id = fr.event_id
+        where fr.is_fee_payment is true and t.deleted_at is null and e.transaction_engine_v2_at is null
         group by fr.event_id
         ) q2
 
@@ -34,7 +47,51 @@ class Event < ApplicationRecord
   end
 
   scope :pending_fees, -> do
-    where(id: self.event_ids_with_pending_fees_greater_than_100.to_a.map {|a| a["event_id"] })
+    where("(last_fee_processed_at is null or last_fee_processed_at <= ?) and id in (?)", 20.days.ago, self.event_ids_with_pending_fees_greater_than_100.to_a.map {|a| a["event_id"] })
+  end
+
+  scope :event_ids_with_pending_fees_greater_than_0_v2, -> do
+    query = <<~SQL
+      ;select event_id, fee_balance from (
+      select 
+      q1.event_id,
+      COALESCE(q1.sum, 0) as total_fees, 
+      COALESCE(q2.sum, 0) as total_fee_payments,
+      COALESCE(q1.sum, 0) + COALESCE(q2.sum, 0) as fee_balance 
+
+      from (
+          select 
+          cem.event_id, 
+          COALESCE(sum(f.amount_cents_as_decimal), 0) as sum
+          from canonical_event_mappings cem
+          inner join fees f on cem.id = f.canonical_event_mapping_id
+          inner join events e on e.id = cem.event_id
+          where e.transaction_engine_v2_at is not null
+          group by cem.event_id
+      ) as q1 left outer join (
+          select 
+          cem.event_id, 
+          COALESCE(sum(ct.amount_cents), 0) as sum
+          from canonical_event_mappings cem
+          inner join fees f on cem.id = f.canonical_event_mapping_id
+          inner join canonical_transactions ct on cem.canonical_transaction_id = ct.id
+          inner join events e on e.id = cem.event_id
+          where e.transaction_engine_v2_at is not null
+          and f.reason = 'HACK CLUB FEE'
+          group by cem.event_id
+      ) q2
+
+      on q1.event_id = q2.event_id
+      ) q3
+      where fee_balance > 0
+      order by fee_balance desc
+    SQL
+
+    ActiveRecord::Base.connection.execute(query)
+  end
+
+  scope :pending_fees_v2, -> do
+    where("(last_fee_processed_at is null or last_fee_processed_at <= ?) and id in (?)", 20.days.ago, self.event_ids_with_pending_fees_greater_than_0_v2.to_a.map {|a| a["event_id"] })
   end
 
   friendly_id :name, use: :slugged
@@ -59,13 +116,16 @@ class Event < ApplicationRecord
   has_many :emburse_transactions
 
   has_many :ach_transfers
+  has_many :disbursements
   has_many :donations
+  has_many :donation_payouts, through: :donations, source: :payout
 
   has_many :lob_addresses
   has_many :checks, through: :lob_addresses
 
   has_many :sponsors
   has_many :invoices, through: :sponsors
+  has_many :payouts, through: :invoices
 
   has_many :documents
 
@@ -74,6 +134,8 @@ class Event < ApplicationRecord
 
   has_many :canonical_event_mappings
   has_many :canonical_transactions, through: :canonical_event_mappings
+
+  has_many :fees, through: :canonical_event_mappings
 
   validate :point_of_contact_is_admin
 
@@ -115,6 +177,10 @@ class Event < ApplicationRecord
     end
   end
 
+  def admin_formatted_name
+    "#{name} (#{id})"
+  end
+
   # When a fee payment is collected from this event, what will the TX memo be?
   def fee_payment_memo
     "#{self.name} Bank Fee"
@@ -149,10 +215,28 @@ class Event < ApplicationRecord
   end
 
   def balance_v2_cents
-    @balance_v2_cents ||= canonical_transactions.sum(:amount_cents)
+    @balance_v2_cents ||= canonical_transactions.sum(:amount_cents) + pending_outgoing_balance_v2_cents
+  end
+
+  def pending_balance_v2_cents
+    @pending_balance_v2_cents ||= pending_incoming_balance_v2_cents + pending_outgoing_balance_v2_cents
+  end
+
+  def pending_incoming_balance_v2_cents
+    @pending_incoming_balance_v2_cents ||= canonical_pending_transactions.incoming.unsettled.sum(:amount_cents)
+  end
+
+  def pending_outgoing_balance_v2_cents
+    @pending_outgoing_balance_v2_cents ||= canonical_pending_transactions.outgoing.unsettled.sum(:amount_cents)
+  end
+
+  def balance_available_v2_cents
+    @balance_available_v2_cents ||= balance_v2_cents - fee_balance_v2_cents
   end
 
   def balance
+    return balance_v2_cents if transaction_engine_v2_at.present?
+
     bank_balance = transactions.sum(:amount)
     stripe_balance = -stripe_authorizations.approved.sum(:amount)
 
@@ -163,13 +247,21 @@ class Event < ApplicationRecord
   # isn't being transferred out by an emburse_transfer or isn't going to be
   # pulled out via fee -tmb@hackclub
   def balance_available
+    return balance_available_v2_cents if transaction_engine_v2_at.present?
+
     emburse_transfer_pending = (emburse_transfers.under_review + emburse_transfers.pending).sum(&:load_amount)
     balance - emburse_transfer_pending - fee_balance
   end
   alias available_balance balance_available
 
   def fee_balance
+    return fee_balance_v2_cents if transaction_engine_v2_at.present?
+
     @fee_balance ||= total_fees - total_fee_payments
+  end
+
+  def fee_balance_v2_cents
+    @fee_balance_v2_cents ||= total_fees_v2_cents - total_fee_payments_v2_cents
   end
 
   # amount of balance that fees haven't been pulled out for
@@ -183,6 +275,11 @@ class Event < ApplicationRecord
     percent = self.sponsorship_fee * 100
 
     (a_fee_balance * 100 / percent)
+  end
+
+  def balance_not_feed_v2_cents
+    # shortcut to invert - TODO: DEPRECATE. dangerous - causes incorrect calculations
+    BigDecimal("#{fee_balance_v2_cents}") / BigDecimal("#{sponsorship_fee}")
   end
 
   def fee_balance_without_fee_reimbursement_reconcilliation
@@ -223,7 +320,23 @@ class Event < ApplicationRecord
     }
   end
 
+  def ready_for_fee?
+    last_fee_processed_at.nil? || last_fee_processed_at <= min_waiting_time_between_fees
+  end
+
+  def total_fees_v2_cents
+    @total_fess_v2_cents ||= fees.sum(:amount_cents_as_decimal).ceil
+  end
+
+  def pending?
+    !has_fiscal_sponsorship_document
+  end
+
   private
+
+  def min_waiting_time_between_fees
+    20.days.ago
+  end
 
   def default_values
     self.has_fiscal_sponsorship_document ||= true
@@ -242,5 +355,17 @@ class Event < ApplicationRecord
   # fee payments are withdrawals, so negate value
   def total_fee_payments
     @total_fee_payments ||= -transactions.joins(:fee_relationship).where(fee_relationships: { is_fee_payment: true }).sum(:amount)
+  end
+
+  def total_fee_payments_v2_cents
+    @total_fee_payments_v2_cents ||= -canonical_transactions.where(id: canonical_transaction_ids_from_hack_club_fees).sum(:amount_cents)
+  end
+
+  def canonical_event_mapping_ids_from_hack_club_fees
+    @canonical_event_mapping_ids_from_hack_club_fees ||= fees.hack_club_fee.pluck(:canonical_event_mapping_id)
+  end
+
+  def canonical_transaction_ids_from_hack_club_fees
+    @canonical_transaction_ids_from_hack_club_fees ||= CanonicalEventMapping.find(canonical_event_mapping_ids_from_hack_club_fees).pluck(:canonical_transaction_id)
   end
 end

@@ -38,9 +38,9 @@
           <p class="bold mt0 mb0">Important info about checks:</p>
         </div>
         <ul class="mt1 mb2">
-          <li>Need to reimburse someone? Checks are not intended for that purpose. Ask your point of contact about using Expensify instead.</li>
+          <li>Need to reimburse someone? Checks are not intended for that purpose. Visit <%= link_to 'reimbursements', event_reimbursements_path(@event), class: 'info' %> to learn about using Expensify instead.</li>
           <li>This check will be valid for 30 days, until <%= format_date DateTime.now + 1.month %></li>
-          <li>Your point of contact needs to approve your check before it's sent out. This usually takes 1 business day.</li>
+          <!--<li>Hack Club Bank staff needs to approve your check before it's sent out. This usually takes 1 business day.</li>-->
         </ul>
         <div class="border-top card__banner card__darker secondary">
           <strong>Questions?</strong>
@@ -53,8 +53,8 @@
   <div class="container--xs">
     <h1 class="mt0">Send a check</h1>
     <%= render 'new_form', check: @check, lob_address: @lob_address %>
-    <div class="actions tooltipped tooltipped--n inline-block mt1" aria-label="Your check will be submitted for approval by the Bank team">
-      <input type="submit" value="Send check for approval" data-behavior="modal_trigger send_check_modal_trigger" data-modal="confirm_dialog" <%= "disabled" unless organizer_signed_in? %>></input>
+    <div class="actions tooltipped tooltipped--n inline-block mt1" aria-label="Your check will be immediately mailed out by the Bank team">
+      <input type="submit" value="Send check" data-behavior="modal_trigger send_check_modal_trigger" data-modal="confirm_dialog" <%= "disabled" unless organizer_signed_in? %>></input>
     </div>
   </div>
 
@@ -62,8 +62,8 @@
     <%= modal_header "Confirm Check" %>
     <p class="h3 mt0 mb1" data-behavior="modal_confirm_words">You are about to send a check to <span class="bold">%person%</span> for <span class="bold">%amount%</span>.</p>
 
-    <p class="">Once you send this check, you can only cancel if you do so at least <strong>one day</strong> before it's deposited.</p>
+    <p class="">Once you send this check, you can only cancel if you do so in the next 48 hours.</p>
     
-    <button class="btn bg-error" data-behavior="submit_check">I understand, send check for approval</button>
+    <button class="btn bg-error" data-behavior="submit_check">I understand, send check</button>
   </div>
 </article>

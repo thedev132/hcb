@@ -12,29 +12,53 @@ class TransactionsController < ApplicationController
 
   def export
     @event = Event.friendly.find(params[:event])
-    @transactions = @event.transactions
-    authorize @transactions
 
-    @attributes = %w{date display_name name amount account_balance fee fee_balance link}
-    @attributes_to_currency = %w{amount fee}
+    if using_transaction_engine_v2?
+      authorize @event.canonical_transactions.first # temporary hack for policies
 
-    name = "#{DateTime.now.strftime("%Y-%m-%d_%H:%M:%S")}_#{@event.name.to_param}_transactions"
+      respond_to do |format|
+        format.csv { stream_transactions_csv }
+        format.json { stream_transactions_json }
+      end
+    else
+      @transactions = @event.transactions
+      authorize @transactions
 
-    respond_to do |format|
-      format.csv { send_data generate_csv, filename: "#{name}.csv" }
-      format.json { send_data generate_json, filename: "#{name}.json" }
-     end
+      @attributes = %w{date display_name name amount account_balance fee fee_balance link}
+      @attributes_to_currency = %w{amount fee}
+
+      name = "#{DateTime.now.strftime("%Y-%m-%d_%H:%M:%S")}_#{@event.name.to_param}_transactions"
+
+      respond_to do |format|
+        format.csv { send_data generate_csv, filename: "#{name}.csv" }
+        format.json { send_data generate_json, filename: "#{name}.json" }
+      end
+    end
   end
 
   def show
-    @transaction = Transaction.find(params[:id])
-    @event = @transaction.event
+    begin
+      # DEPRECATED
+      @transaction = Transaction.with_deleted.find(params[:id])
+      @event = @transaction.event
 
-    @commentable = @transaction
-    @comments = @commentable.comments
-    @comment = Comment.new
+      @commentable = @transaction
+      @comments = @commentable.comments
+      @comment = Comment.new
 
-    authorize @transaction
+      authorize @transaction
+
+      render :show_deprecated
+    rescue ActiveRecord::RecordNotFound => e
+      @transaction = TransactionEngine::Transaction::Show.new(canonical_transaction_id: params[:id]).run
+      @event = @transaction.event
+
+      @commentable = @transaction
+      @comments = @commentable.comments
+      @comment = Comment.new
+
+      authorize @transaction
+    end
   end
 
   def edit
@@ -188,4 +212,47 @@ class TransactionsController < ApplicationController
       end
     end
   end
+
+  def stream_transactions_csv
+    set_file_headers_csv
+    set_streaming_headers
+
+    response.status = 200
+
+    self.response_body = transactions_csv
+  end
+
+  def stream_transactions_json
+    set_file_headers_json
+    set_streaming_headers
+
+    response.status = 200
+
+    self.response_body = transactions_json
+  end
+
+  def set_file_headers_csv
+    headers["Content-Type"] = "text/csv"
+    headers["Content-disposition"] = "attachment; filename=transactions.csv"
+  end
+
+  def set_file_headers_json
+    headers["Content-Type"] = "application/json"
+    headers["Content-disposition"] = "attachment; filename=transactions.json"
+  end
+
+  def set_streaming_headers
+    headers["X-Accel-Buffering"] = "no"
+    headers["Cache-Control"] ||= "no-cache"
+    headers.delete("Content-Length")
+  end
+
+  def transactions_csv
+    ::CanonicalTransactionService::Export::Csv.new(event_id: @event.id).run
+  end
+
+  def transactions_json
+    ::CanonicalTransactionService::Export::Json.new(event_id: @event.id).run
+  end
+
 end

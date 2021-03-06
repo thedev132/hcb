@@ -67,16 +67,4 @@ class LobService
   def delete_address(lob_id)
     client.addresses.destroy(lob_id)
   end
-
-  def create_check(description, memo, lob_to_id, amount, message)
-    client.checks.create(
-      description: description,
-      bank_account: bank_account,
-      to: lob_to_id,
-      from: from_address,
-      amount: amount,
-      memo: memo,
-      message: message,
-    )
-  end
 end
