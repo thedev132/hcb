@@ -65,7 +65,7 @@
     </tr>
     <tr>
       <td style="text-align: right;">Amount</td>
-      <td><%= @ach_transfer.amount/100.00 %></td>
+      <td><%= render_money_amount @ach_transfer.amount %></td>
     </tr>
   </tbody>
 </table>
