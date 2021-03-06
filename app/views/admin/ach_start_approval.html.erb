@@ -40,12 +40,12 @@
       <td><%= @ach_transfer.recipient_name %></td>
     </tr>
     <tr>
-      <td style="text-align: right;">Payee Nickname:</td>
-      <td>HCB ACH #<%= @ach_transfer.id %></td>
-    </tr>
-    <tr>
       <td style="text-align: right;">Payee Phone Number:</td>
       <td><%= @ach_transfer.recipient_tel %></td>
+    </tr>
+    <tr>
+      <td style="text-align: right;">Payee Nickname:</td>
+      <td>HCB ACH #<%= @ach_transfer.id %></td>
     </tr>
     <tr>
       <td style="text-align: right;">Payment for:</td>
@@ -79,7 +79,7 @@
   <%= form_with(model: nil, local: true, url: ach_approve_admin_path(@ach_transfer), method: :post) do |form| %>
     <%= form.label :scheduled_arrival_date, "Estimated arrival date:" %>
     <br/>
-    <%= form.text_field :scheduled_arrival_date, required: true, placeholder: "YYYY-MM-DD", pattern: '\d{4}-\d{2}-\d{2}' %>
+    <%= form.text_field :scheduled_arrival_date, required: true, placeholder: "MM/DD/YYYY", pattern: '\d{1,2}/\d{1,2}/\d{4}' %>
     <p><%= form.submit "Mark as approved and sent", data: {confirm: "Mark as approved and sent?"} %></p>
   <% end %>
 
@@ -91,4 +91,5 @@
   <% end %>
 <% else %>
   <p><strong>ACH Transfer already processed -- cannot approve nor reject.</strong></p>
+  <p>Estimated Arrival Date: <%= @ach_transfer.scheduled_arrival_date %></p>
 <% end %>
