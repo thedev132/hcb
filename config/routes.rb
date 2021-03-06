@@ -67,6 +67,7 @@ Rails.application.routes.draw do
       get 'disbursement_new', to: 'admin#disbursement_new'
       post 'disbursement_create', to: 'admin#disbursement_create'
       get 'invoices', to: 'admin#invoices'
+      get 'sponsors', to: 'admin#sponsors'
     end
 
     member do
