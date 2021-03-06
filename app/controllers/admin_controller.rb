@@ -105,7 +105,7 @@ class AdminController < ApplicationController
 
   def events
     @page = params[:page] || 1
-    @per = params[:per] || 500
+    @per = params[:per] || 100
     @q = params[:q].present? ? params[:q] : nil
     @pending = params[:pending] == "1" ? true : nil
     @transparent = params[:transparent] == "1" ? true : nil
@@ -135,7 +135,7 @@ class AdminController < ApplicationController
 
   def users
     @page = params[:page] || 1
-    @per = params[:per] || 500
+    @per = params[:per] || 100
     @q = params[:q].present? ? params[:q] : nil
     @event_id = params[:event_id].present? ? params[:event_id] : nil
 
@@ -158,7 +158,7 @@ class AdminController < ApplicationController
 
   def ledger
     @page = params[:page] || 1
-    @per = params[:per] || 500
+    @per = params[:per] || 100
     @q = params[:q].present? ? params[:q] : nil
     @unmapped = params[:unmapped] == "1" ? true : nil
     @exclude_top_ups = params[:exclude_top_ups] == "1" ? true : nil
@@ -195,6 +195,47 @@ class AdminController < ApplicationController
     @count = relation.count
 
     @canonical_transactions = relation.page(@page).per(@per).order("date desc")
+
+    render layout: "admin"
+  end
+
+  def pending_ledger
+    @page = params[:page] || 1
+    @per = params[:per] || 100
+    @q = params[:q].present? ? params[:q] : nil
+    @unsettled = params[:unsettled] == "1" ? true : nil
+    @event_id = params[:event_id].present? ? params[:event_id] : nil
+
+    if @event_id
+      @event = Event.find(@event_id)
+
+      relation = @event.canonical_pending_transactions.includes(:canonical_pending_event_mapping)
+    else
+      relation = CanonicalPendingTransaction.includes(:canonical_pending_event_mapping)
+    end
+
+    if @q
+      if @q.to_f != 0.0
+        @q = (@q.to_f * 100).to_i 
+
+        relation = relation.where("amount_cents = ? or amount_cents = ?", @q, -@q)
+      else
+        case @q.delete(" ")
+        when ">0", ">=0"
+          relation = relation.where("amount_cents >= 0")
+        when "<0", "<=0"
+          relation = relation.where("amount_cents <= 0")
+        else
+          relation = relation.search_memo(@q)
+        end
+      end
+    end
+
+    relation = relation.unsettled if @unsettled
+
+    @count = relation.count
+
+    @canonical_pending_transactions = relation.page(@page).per(@per).order("date desc")
 
     render layout: "admin"
   end

@@ -58,6 +58,7 @@ Rails.application.routes.draw do
     collection do
       get 'users', to: 'admin#users'
       get 'ledger', to: 'admin#ledger'
+      get 'pending_ledger', to: 'admin#pending_ledger'
       get 'ach', to: 'admin#ach'
       get 'check', to: 'admin#check'
       get 'events', to: 'admin#events'
