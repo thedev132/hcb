@@ -138,6 +138,7 @@ group :production do
 end
 
 gem 'aasm' # state machine
+gem 'ahoy_matey' # event engine
 gem 'airbrake' # exception tracking
 gem 'awesome_print'
 gem 'blazer' # business intelligence tool/dashboard
