@@ -31,6 +31,8 @@ class CanonicalPendingTransaction < ApplicationRecord
       .includes(:canonical_pending_declined_mappings).where(canonical_pending_declined_mappings: { canonical_pending_transaction_id: nil })
   }
 
+  after_create_commit :write_system_event
+
   def unsettled?
     @unsettled ||= !canonical_pending_settled_mappings.exists? && !canonical_pending_declined_mappings.exists?
   end
@@ -102,6 +104,12 @@ class CanonicalPendingTransaction < ApplicationRecord
 
   def friendly_memo_in_memory_backup
     @friendly_memo_in_memory_backup ||= PendingTransactionEngine::FriendlyMemoService::Generate.new(pending_canonical_transaction: self).run
+  end
+
+  def write_system_event
+    safely do
+      ::SystemEventService::Write::PendingTransactionCreated.new(canonical_pending_transaction: self).run
+    end
   end
 
 end

@@ -492,6 +492,7 @@ DEPENDENCIES
   rqrcode
   rspec-rails (~> 4.0.1)
   rubyzip (>= 1.2.1)
+  safely_block
   sassc-rails
   selenium-webdriver
   sidekiq
