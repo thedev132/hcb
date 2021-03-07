@@ -208,3 +208,10 @@ HTTP 400 - generic invalid input
 ```
 
 If a `201` response, all fields will always be present.
+
+## Events
+
+```
+settledTransactionCreated
+pendingTransactionCreated
+```

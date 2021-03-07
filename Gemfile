@@ -138,6 +138,7 @@ group :production do
 end
 
 gem 'aasm' # state machine
+gem 'ahoy_matey' # event engine
 gem 'airbrake' # exception tracking
 gem 'awesome_print'
 gem 'blazer' # business intelligence tool/dashboard
@@ -152,6 +153,7 @@ gem 'newrelic_rpm'
 gem 'paper_trail' # track changes on models
 gem 'pg_search'
 gem 'rack-attack'
+gem 'safely_block'
 gem 'selenium-webdriver'
 gem 'sidekiq-cron', '~> 1.1' # run sidekiq scheduled tasks
 gem 'strong_migrations' # protects against risky migrations that could cause application harm on deploy
