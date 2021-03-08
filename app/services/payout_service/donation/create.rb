@@ -12,6 +12,7 @@ module PayoutService
           payout.save!
           fee_reimbursement.save!
           donation.update_column(:payout_id, payout.id)
+          donation.update_column(:fee_reimbursement_id, fee_reimbursement.id)
 
           payout
         end

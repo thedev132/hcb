@@ -1,0 +1,9 @@
+sponsor1:
+  event: event1
+  name: "Sponsor One"
+  contact_email: "sponsor1@example.com"
+  address_line1: "123 Main St"
+  address_city: "Small Town"
+  address_state: "CA"
+  address_postal_code: "90404"
+  created_at: <%= Time.now %>
