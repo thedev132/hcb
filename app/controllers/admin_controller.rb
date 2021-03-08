@@ -529,7 +529,7 @@ class AdminController < ApplicationController
   def set_event
     @canonical_transaction = ::CanonicalTransactionService::SetEvent.new(canonical_transaction_id: params[:id], event_id: params[:event_id]).run
 
-    redirect_to transaction_unmapped_show_path(@canonical_transaction)
+    redirect_to transaction_admin_path(@canonical_transaction)
   end
 
   def audit
