@@ -1,0 +1,4 @@
+fee_reimbursement1:
+  amount: 3_00
+  transaction_memo: "FEE REFUND a5ddd1f5d3d6"
+  created_at: <%= Time.now %>

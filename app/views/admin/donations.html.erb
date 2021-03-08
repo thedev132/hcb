@@ -16,6 +16,10 @@
     Exclude REQUIRES_PAYMENT_METHOD
   <% end %>
   |
+  <%= form.label :missing_fee_reimbursement do %>
+    <%= form.check_box :missing_fee_reimbursement, checked: @missing_fee_reimbursement %>
+    Missing FeeReimbursement
+  <% end %>
 
   <%= form.collection_select(:event_id, Event.reorder(:name), :id, :admin_dropdown_description, { include_blank: true, selected: @event_id }, { width: 150, style: "max-width: 150px" }) %>
   |
@@ -34,6 +38,7 @@
       <th>Recipient</th>
       <th>Amount</th>
       <th>Status</th>
+      <th>FeeReimbursementId</th>
       <th>Actions</th>
     </tr>
   </thead>
@@ -49,6 +54,7 @@
         </td>
         <td><%= render_money_amount(donation.amount) %></td>
         <td><%= donation.status.upcase %></td>
+        <td><%= donation.fee_reimbursement_id %></td>
         <td>
         </td>
       </tr>

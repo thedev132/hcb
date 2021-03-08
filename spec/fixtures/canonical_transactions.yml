@@ -9,3 +9,9 @@ canonical_transaction2:
   memo: "Raw Plaid Transaction 2 Memo"
   date: "2020-09-03"
   created_at: <%= Time.now %>
+
+canonical_transaction3:
+  amount_cents: 300
+  memo: "FEE REFUND a5ddd1f5d3d6 FROM ACCOUNT REDACTED"
+  date: "2020-09-04"
+  created_at: <%= Time.now %>

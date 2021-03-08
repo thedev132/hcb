@@ -21,6 +21,7 @@ class Donation < ApplicationRecord
   scope :not_succeeded, -> { where("status != 'succeeded'") }
   scope :not_riddick, -> { where("email ilike 'riddick39462@gmail.com'") }
   scope :exclude_requires_payment_method, -> { where("status != 'requires_payment_method'") }
+  scope :missing_fee_reimbursement, -> { where(fee_reimbursement_id: nil) }
 
   def set_fields_from_stripe_payment_intent(payment_intent)
     self.amount = payment_intent.amount
