@@ -32,6 +32,8 @@ class CanonicalTransaction < ApplicationRecord
   validates :friendly_memo, presence: true, allow_nil: true
   validates :custom_memo, presence: true, allow_nil: true
 
+  after_create_commit :write_system_event
+
   def smart_memo
     custom_memo || less_smart_memo
   end
@@ -186,4 +188,11 @@ class CanonicalTransaction < ApplicationRecord
   def friendly_memo_in_memory_backup
     @friendly_memo_in_memory_backup ||= TransactionEngine::FriendlyMemoService::Generate.new(canonical_transaction: self).run
   end
+
+  def write_system_event
+    safely do
+      ::SystemEventService::Write::SettledTransactionCreated.new(canonical_transaction: self).run
+    end
+  end
+
 end
