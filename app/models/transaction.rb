@@ -251,7 +251,7 @@ class Transaction < ApplicationRecord
     return if categorized?
 
     if potential_fee_reimbursement?
-      try_pair_fee_reimbursement
+      #try_pair_fee_reimbursement
     elsif potential_donation_payout?
       try_pair_donation
     elsif potential_fee_payment?
