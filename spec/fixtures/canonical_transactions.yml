@@ -12,6 +12,12 @@ canonical_transaction2:
 
 canonical_transaction3:
   amount_cents: 300
-  memo: "FEE REFUND a5ddd1f5d3d6 FROM ACCOUNT REDACTED"
+  memo: "FEE REFUND abc FROM ACCOUNT REDACTED"
   date: "2020-09-04"
+  created_at: <%= Time.now %>
+
+canonical_transaction4:
+  amount_cents: 300
+  memo: "FEE REFUND xyz FROM ACCOUNT REDACTED"
+  date: "2020-09-05"
   created_at: <%= Time.now %>

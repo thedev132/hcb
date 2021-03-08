@@ -11,6 +11,17 @@ module PayoutService
         # 3. create payout if time is ready. TODO: move this into the scope (by later moving the available_on into its own field on the donation table)
         ::PayoutService::Donation::Create.new(donation_id: donation.id).run if ready_for_payout?(available_on: available_on)
       end
+
+      ::Invoice.paid.where("payout_id is null").each do |invoice|
+        # 1. fetch remote invoice
+        remote_invoice = ::Partners::Stripe::Invoices::Show.new(id: invoice.stripe_invoice_id).run
+
+        # 2. get remote available_on timestamp
+        available_on = remote_invoice.charge.balance_transaction.available_on
+
+        # 3. create payout if time is ready. TODO: move this into the scope (by later moving available_on into its own field on the invoice table)
+        ::PayoutService::Invoice::Create.new(invoice_id: invoice.id).run if ready_for_payout?(available_on: available_on)
+      end
     end
 
     private

@@ -1,0 +1,14 @@
+invoice1:
+  fee_reimbursement: fee_reimbursement2
+  sponsor: sponsor1
+  item_description: "Invoice With FeeReimbursement"
+  item_amount: 100_00
+  payout_creation_balance_net: 100_00
+  due_date: "2020-09-10"
+
+invoice2:
+  sponsor: sponsor1
+  item_description: "Invoice Without FeeReimbursement"
+  item_amount: 100_00
+  payout_creation_balance_net: 100_00
+  due_date: "2020-09-10"
