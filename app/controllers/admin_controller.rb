@@ -384,6 +384,7 @@ class AdminController < ApplicationController
     @q = params[:q].present? ? params[:q] : nil
     @succeeded = params[:succeeded] == "1" ? true : nil
     @exclude_requires_payment_method = params[:exclude_requires_payment_method] == "1" ? true : nil
+    @missing_fee_reimbursement = params[:missing_fee_reimbursement] == "1" ? true : nil
 
     @event_id = params[:event_id].present? ? params[:event_id] : nil
 
@@ -407,6 +408,7 @@ class AdminController < ApplicationController
 
     relation = relation.succeeded if @succeeded
     relation = relation.exclude_requires_payment_method if @exclude_requires_payment_method
+    relation = relation.missing_fee_reimbursement if @missing_fee_reimbursement
 
     @count = relation.count
     @donations = relation.page(@page).per(@per).order("created_at desc")
