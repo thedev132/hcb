@@ -3,8 +3,8 @@
 module SystemEventService
   class Create
     VALID_EVENT_NAMES = [
-      "settledTransactionCreated",
-      "pendingTransactionCreated"
+      SystemEventService::Write::PendingTransactionCreated::NAME,
+      SystemEventService::Write::SettledTransactionCreated::NAME
     ]
 
     def initialize(name:, properties:)

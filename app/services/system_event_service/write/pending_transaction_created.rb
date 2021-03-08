@@ -3,6 +3,8 @@
 module SystemEventService
   module Write
     class PendingTransactionCreated
+      NAME = "pendingTransactionCreated"
+
       def initialize(canonical_pending_transaction:)
         @canonical_pending_transaction = canonical_pending_transaction
       end
@@ -21,7 +23,7 @@ module SystemEventService
       end
 
       def name
-        "pendingTransactionCreated"
+        NAME
       end
 
       def properties
