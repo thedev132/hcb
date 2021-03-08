@@ -87,16 +87,16 @@ class AdminController < ApplicationController
     @negative_events = Event.negatives
   end
 
-  def transaction_unmapped_show
+  def transaction_dedupe
+    @groups = TransactionEngine::HashedTransactionService::GroupedDuplicates.new.run
+  end
+
+  def transaction
     @canonical_transaction = CanonicalTransaction.find(params[:id])
 
     @canonical_pending_transactions = CanonicalPendingTransaction.unmapped.where(amount_cents: @canonical_transaction.amount_cents)
 
     render layout: "admin"
-  end
-
-  def transaction_dedupe
-    @groups = TransactionEngine::HashedTransactionService::GroupedDuplicates.new.run
   end
 
   def events
