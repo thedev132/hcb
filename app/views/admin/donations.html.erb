@@ -37,8 +37,8 @@
       <th>Date</th>
       <th>Recipient</th>
       <th>Amount</th>
-      <th>FeeReimbursementId</th>
       <th>Status</th>
+      <th>FeeReimbursementId</th>
       <th>Actions</th>
     </tr>
   </thead>
@@ -53,8 +53,8 @@
           <% end %>
         </td>
         <td><%= render_money_amount(donation.amount) %></td>
-        <td><%= donation.fee_reimbursement_id %></td>
         <td><%= donation.status.upcase %></td>
+        <td><%= donation.fee_reimbursement_id %></td>
         <td>
         </td>
       </tr>

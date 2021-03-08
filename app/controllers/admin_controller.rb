@@ -475,6 +475,8 @@ class AdminController < ApplicationController
     @per = params[:per] || 20
     @q = params[:q].present? ? params[:q] : nil
     @open = params[:open] == "1" ? true : nil
+    @paid = params[:paid] == "1" ? true : nil
+    @missing_fee_reimbursement = params[:missing_fee_reimbursement] == "1" ? true : nil
 
     @event_id = params[:event_id].present? ? params[:event_id] : nil
 
@@ -497,6 +499,8 @@ class AdminController < ApplicationController
     end
 
     relation = relation.open if @open
+    relation = relation.paid if @paid
+    relation = relation.missing_fee_reimbursement if @missing_fee_reimbursement
 
     @count = relation.count
     @invoices = relation.page(@page).per(@per).order("created_at desc")

@@ -7,6 +7,7 @@ class Invoice < ApplicationRecord
 
   scope :unarchived, -> { where(archived_at: nil) }
   scope :archived, -> { where.not(archived_at: nil) }
+  scope :missing_fee_reimbursement, -> { where(fee_reimbursement_id: nil) }
 
   friendly_id :slug_text, use: :slugged
 
