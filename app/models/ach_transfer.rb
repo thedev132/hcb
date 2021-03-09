@@ -127,4 +127,23 @@ class AchTransfer < ApplicationRecord
     mark_rejected!
     update(rejected_at: DateTime.now)
   end
+
+  def canonical_pending_transaction
+    canonical_pending_transactions.first
+  end
+  
+  private
+
+  def canonical_pending_transactions
+    @canonical_pending_transactions ||= ::CanonicalPendingTransaction.where(raw_pending_outgoing_ach_transaction_id: raw_pending_outgoing_ach_transaction.id)
+  end
+
+  def raw_pending_outgoing_ach_transaction
+    raw_pending_outgoing_ach_transactions.first
+  end
+
+  def raw_pending_outgoing_ach_transactions
+    @raw_pending_outgoing_ach_transactions ||= ::RawPendingOutgoingAchTransaction.where(ach_transaction_id: id)
+  end
+
 end

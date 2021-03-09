@@ -33,8 +33,16 @@ class CanonicalPendingTransaction < ApplicationRecord
 
   after_create_commit :write_system_event
 
+  def settled?
+    @settled ||= canonical_pending_settled_mappings.exists?
+  end
+
+  def declined?
+    @declined ||= canonical_pending_declined_mappings.exists?
+  end
+
   def unsettled?
-    @unsettled ||= !canonical_pending_settled_mappings.exists? && !canonical_pending_declined_mappings.exists?
+    @unsettled ||= !settled? && !declined?
   end
 
   def smart_memo
