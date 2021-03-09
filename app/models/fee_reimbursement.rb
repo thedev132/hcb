@@ -74,6 +74,7 @@ class FeeReimbursement < ApplicationRecord
   end
 
   def default_values
+    # replace this with the donation's descriptor short code
     self.transaction_memo ||= "FEE REFUND #{SecureRandom.hex(6)}"
     if invoice
       self.amount ||= self.invoice.item_amount - self.invoice.payout_creation_balance_net

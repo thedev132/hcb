@@ -50,6 +50,7 @@ class DonationPayout < ApplicationRecord
   def default_values
     return unless donation
 
+    # TODO replace this with a short code per donation
     self.statement_descriptor ||= "DONATE #{SecureRandom.hex(6)}"[0...StripeService::StatementDescriptorCharLimit] # limit to 22 characters, the stripe limit
                                   .gsub(/[^0-9a-z ]/i, '') # alphanumeric only
                                   .upcase
