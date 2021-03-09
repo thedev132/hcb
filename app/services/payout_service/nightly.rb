@@ -12,7 +12,7 @@ module PayoutService
         ::PayoutService::Donation::Create.new(donation_id: donation.id).run if ready_for_payout?(available_on: available_on)
       end
 
-      ::Invoice.paid.where("payout_id is null").each do |invoice|
+      ::Invoice.paid.where("payout_id is null and payout_creation_balance_net is not null").each do |invoice|
         # 1. fetch remote invoice
         remote_invoice = ::Partners::Stripe::Invoices::Show.new(id: invoice.stripe_invoice_id).run
 
