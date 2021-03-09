@@ -17,7 +17,10 @@ module Partners
         def attrs
           {
             id: @id,
-            expand: ["charge.payment_method_details"]
+            expand: [
+              "charge.payment_method_details",
+              "charge.balance_transaction"
+            ]
           }
         end
       end
