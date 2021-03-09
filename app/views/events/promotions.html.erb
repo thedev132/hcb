@@ -12,8 +12,8 @@
     style="background-color: #0d101e; border: 1px solid #0068ad;">
     <%= image_tag 'replit.png', width: 170 %>
     <%= link_to 'Apply',
-                organizer_signed_in? ? "https://hack.af/replpromo?prefill_Project%20Name=#{@event.name}&prefill_Bank%20URL=#{event_url(@event)}&prefill_Your%20name=#{current_user.full_name}&prefill_Organizer%20team%20size=#{@event.organizer_positions.size}" : root_path,
-                class: 'btn bg-success mr1'
+      organizer_signed_in? ? "https://hack.af/replpromo?prefill_Project%20Name=#{@event.name}&prefill_Bank%20URL=#{event_url(@event)}&prefill_Your%20name=#{current_user.full_name}&prefill_Organizer%20team%20size=#{@event.organizer_positions.size}" : root_path,
+      class: 'btn bg-success mr1'
     %>
   </div>
 
@@ -26,39 +26,20 @@
 </div>
 
 <div class="card mb3">
-  <div class="card__banner card__banner--top flex justify-between items-center" style="background-color: #343a44;">
-    <h3 class="h1 white p2 my0">Sendy</h3>
-    <%= link_to 'Apply',
-                organizer_signed_in? ? "https://hack.af/sendypromo?prefill_Project%20Name=#{@event.name}&prefill_Bank%20URL=#{event_url(@event)}&prefill_Your%20name=#{current_user.full_name}&prefill_Domain%20URL=#{@event.g_suites.not_deleted.first&.domain}" : root_path,
-                class: 'btn bg-success mr1'
-    %>
-  </div>
-
-  <p class="mb0">
-    <%= link_to 'Sendy', 'https://sendy.co' %> is straightforward, reliable mass-emailing software for sending
-    newsletters. We use it at Hack Club HQ & provide it to all Bank projects.
-  </p>
-</div>
-
-<div class="card mb3">
   <div class="card__banner card__banner--top flex justify-between items-center" style="background-color:#4E2817">
     <%= image_tag 'stickermule.svg', width: 240 %>
-    <%= link_to 'Unavailable',
-                organizer_signed_in? ? "https://hack.af/stickermule?prefill_Event%20Name=#{@event.name}" : root_path,
-                class: 'btn bg-accent mr1',
-                disabled: true
+    <%= link_to 'Apply',
+      organizer_signed_in? ? "https://hack.af/stickermule?prefill_Event%20Name=#{@event.name}" : root_path,
+      class: 'btn bg-success mr1'
     %>
-    <%# We are currently dealing with an issue where promo codes are expired. Therefore we're closing applications. Airtable form has been password protected to prevent new submissions.%>
   </div>
 
-  <p><span class="italic">Sticker Mule credits are currently unavailable! Check back later</span> 👾</p>
-
-  <p class="muted">
+  <p>
     Hack Club Bank is working with Sticker Mule to make up to $400 of Sticker Mule credits
-    available to hackathons and clubs on Hack Club Bank, growing with attendance for hackathons.
+  available to hackathons and clubs on Hack Club Bank, growing with attendance for hackathons.
   </p>
 
-  <div class="grid grid-spacious muted">
+  <div class="grid grid-spacious">
     <div class="mr1">
       <h3 class="mb0">Hack Clubs</h3>
       <table>
@@ -103,7 +84,7 @@
     </div>
   </div>
 
-  <p class="muted">
+  <p>
     To qualify for these tiers, add the Sticker Mule logo to your club website
     that links back to <a href="https://www.stickermule.com" target="_blank">stickermule.com</a>,
     and to any other materials like hackathon T-shirts.
@@ -111,21 +92,34 @@
 </div>
 
 <div class="card mb3">
+  <div class="card__banner card__banner--top flex justify-between items-center" style="background-color: #343a44;">
+    <h3 class="h1 white p2 my0">Sendy</h3>
+    <%= link_to 'Apply',
+      organizer_signed_in? ? "https://hack.af/sendypromo?prefill_Project%20Name=#{@event.name}&prefill_Bank%20URL=#{event_url(@event)}&prefill_Your%20name=#{current_user.full_name}&prefill_Domain%20URL=#{@event.g_suites.not_deleted.first&.domain}" : root_path,
+      class: 'btn bg-success mr1'
+     %>
+  </div>
+
+  <p class="mb0">
+    <%= link_to 'Sendy', 'https://sendy.co' %> is straightforward, reliable mass-emailing software for sending newsletters. We use it at Hack Club HQ & provide it to all Bank projects.
+  </p>
+</div>
+
+<div class="card mb3">
   <div class="card__banner card__banner--top flex justify-between items-center" style="background-color:#eee">
     <%= image_tag 'github.png', width: 170 %>
     <%= link_to 'Expired',
-                organizer_signed_in? ? "https://hack.af/grant?prefill_Event%20Name=#{@event.name}" : root_path,
-                class: 'btn bg-accent mr1',
-                disabled: true
+      organizer_signed_in? ? "https://hack.af/grant?prefill_Event%20Name=#{@event.name}" : root_path,
+      class: 'btn bg-accent mr1',
+      disabled: true
     %>
   </div>
 
-  <p class="italic">We've given out all the money from GitHub's grant fund from the 2019-2020 school year. We're
-    currently talking to them about renewing the fund for next year, so check back later.</p>
+  <p class="italic">We've given out all the money from GitHub's grant fund from the 2019-2020 school year. We're currently talking to them about renewing the fund for next year, so check back later.</p>
 
   <p class="muted">
     GitHub is supporting high school hackathons on Hack Club Bank with up to $500 in grants, growing with attendance.
-    Be sure to include GitHub in your list of sponsors or sponsor logos for your event!
+  Be sure to include GitHub in your list of sponsors or sponsor logos for your event!
   </p>
 
   <h3 class="mb0 muted">High school hackathons</h3>
