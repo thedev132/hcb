@@ -1,4 +1,6 @@
 class Check < ApplicationRecord
+  has_paper_trail
+
   include AASM
   include Commentable
 

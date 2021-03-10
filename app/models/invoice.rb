@@ -1,4 +1,6 @@
 class Invoice < ApplicationRecord
+  has_paper_trail
+
   extend FriendlyId
   include Commentable
 
