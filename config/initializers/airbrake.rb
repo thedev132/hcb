@@ -70,3 +70,13 @@ end
 # integration with the Logger class from stdlib.
 # https://github.com/airbrake/airbrake#logger
 # Rails.logger = Airbrake::AirbrakeLogger.new(Rails.logger)
+#
+
+noisy_errors = [ActionController::RoutingError]
+
+Airbrake.add_filter do |notice|
+  next unless noisy_errors.include?(notice.stash[:exception].class)
+
+  # Ignore this error 90% of the time.
+  notice.ignore! if rand(1..10) <= 9
+end
