@@ -21,7 +21,7 @@ class AchTransfer < ApplicationRecord
     state :deposited
 
     event :mark_in_transit do
-      transitions from: :pending, to: :in_transit
+      transitions from: [:pending, :deposited], to: :in_transit
     end
 
     event :mark_rejected do
