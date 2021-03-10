@@ -10,7 +10,7 @@ module PendingEventMappingEngine
           event = ach_transfer.event
 
           # 2. look up canonical - scoped to event for added accuracy
-          cts = event.canonical_transactions.where("memo ilike '%#{::TransactionEngine::SyntaxSugarService::Shared::OUTGOING_ACH_MEMO_PART}%' and amount_cents = #{cpt.amount_cents} and date >= ?", cpt.date)
+          cts = event.canonical_transactions.where("memo ilike '%#{::TransactionEngine::SyntaxSugarService::Shared::OUTGOING_ACH_MEMO_PART}%' and amount_cents = #{cpt.amount_cents} and date >= ?", cpt.date).order("date asc")
 
           next if cts.count < 1 # no match found yet. not processed.
           Airbrake.notify("matched more than 1 canonical transaction for ach transfer #{ach_transfer.id}") if cts.count > 1
