@@ -95,7 +95,7 @@
 
   <%= form_with(model: nil, local: true, url: google_workspace_update_admin_path(@g_suite), method: :post) do |form| %>
     <%= form.label :verification_key do %>
-      <%= form.text_field :verification_key, @g_suite.verification_key %>
+      <%= form.text_field :verification_key, value: @g_suite.verification_key %>
     <% end %>
 
     <%= form.submit "Update verification key" %>
