@@ -72,7 +72,7 @@ end
 # Rails.logger = Airbrake::AirbrakeLogger.new(Rails.logger)
 #
 
-noisy_errors = [ActionController::RoutingError, Plaid::PlaidAPIError, Google::Apis::ClientError]
+noisy_errors = [ActionController::RoutingError, Plaid::PlaidAPIError]
 
 Airbrake.add_filter do |notice|
   next unless noisy_errors.include?(notice.stash[:exception].class)
