@@ -33,8 +33,16 @@ class CanonicalPendingTransaction < ApplicationRecord
 
   after_create_commit :write_system_event
 
+  def settled?
+    @settled ||= canonical_pending_settled_mappings.exists?
+  end
+
+  def declined?
+    @declined ||= canonical_pending_declined_mappings.exists?
+  end
+
   def unsettled?
-    @unsettled ||= !canonical_pending_settled_mappings.exists? && !canonical_pending_declined_mappings.exists?
+    @unsettled ||= !settled? && !declined?
   end
 
   def smart_memo
@@ -50,6 +58,29 @@ class CanonicalPendingTransaction < ApplicationRecord
     nil
   end
 
+  def ach_transfer
+    return linked_object if linked_object.is_a?(AchTransfer)
+
+    nil
+  end
+
+  def check
+    return linked_object if linked_object.is_a?(Check)
+
+    nil
+  end
+
+  def invoice
+    return linked_object if linked_object.is_a?(Invoice)
+
+    nil
+  end
+
+  def donation
+    return linked_object if linked_object.is_a?(Donation)
+
+    nil
+  end
 
   # DEPRECATED
   def display_name
@@ -77,10 +108,6 @@ class CanonicalPendingTransaction < ApplicationRecord
   end
 
   def fee_reimbursement
-    nil # TODO
-  end
-
-  def check
     nil # TODO
   end
 

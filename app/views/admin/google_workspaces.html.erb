@@ -1,0 +1,60 @@
+<% title "GOOGLE WORKSPACES" %>
+
+<h1>GOOGLE WORKSPACES</h1>
+
+<%= paginate @g_suites %>
+
+<%= form_with local: true, url: google_workspaces_admin_index_path, method: :get do |form| %>
+  <%= form.text_field :q, value: params[:q] %>
+  <%= form.label :needs_ops_review do %>
+    <%= form.check_box :needs_ops_review, checked: @needs_ops_review %>
+    Needs Ops Review
+  <% end %>
+  |
+
+  <%= form.label :configuring do %>
+    <%= form.check_box :configuring, checked: @configuring %>
+    Configuring
+  <% end %>
+  |
+
+  <%= form.collection_select(:event_id, Event.reorder(:name), :id, :admin_dropdown_description, { include_blank: true, selected: @event_id }, { width: 150, style: "max-width: 150px" }) %>
+  |
+
+  <%= form.submit "Search" %>
+<% end %>
+
+<p><small><%= pluralize(@count, "result") %></small></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Date</th>
+      <th>Name</th>
+      <th>OU ID</th>
+      <th>OU Path</th>
+      <th>VerificationKey</th>
+      <th>Status</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @g_suites.each do |g_suite| %>
+      <tr style="<%= "background: #ffcccc;" if g_suite.deleted_at.present? %> <%= "background: #ffffcc;" if g_suite.needs_ops_review? %>">
+        <td><%= g_suite.id %></td>
+        <td><%= g_suite.created_at.strftime("%Y-%m-%d") %></td>
+        <td><%= link_to "#{g_suite.event.name.upcase}: #{g_suite.domain}", event_g_suite_overview_path(event_id: g_suite.event.slug) %></td>
+        <td><%= g_suite.remote_org_unit_id %></td>
+        <td><%= g_suite.remote_org_unit_path %></td>
+        <td><%= g_suite.verification_key %></td>
+        <td><%= g_suite.aasm_state.upcase %></td>
+        <td>
+          <%= link_to("Process", google_workspace_process_admin_path(g_suite)) if g_suite.needs_ops_review? %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= paginate @g_suites %>

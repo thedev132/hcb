@@ -1,4 +1,6 @@
 class Donation < ApplicationRecord
+  has_paper_trail
+
   include Commentable
 
   include PgSearch::Model

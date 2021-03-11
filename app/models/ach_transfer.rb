@@ -1,4 +1,6 @@
 class AchTransfer < ApplicationRecord
+  has_paper_trail
+
   include AASM
   include Commentable
 
@@ -21,7 +23,7 @@ class AchTransfer < ApplicationRecord
     state :deposited
 
     event :mark_in_transit do
-      transitions from: :pending, to: :in_transit
+      transitions from: [:pending, :deposited], to: :in_transit
     end
 
     event :mark_rejected do
@@ -127,4 +129,23 @@ class AchTransfer < ApplicationRecord
     mark_rejected!
     update(rejected_at: DateTime.now)
   end
+
+  def canonical_pending_transaction
+    canonical_pending_transactions.first
+  end
+  
+  private
+
+  def canonical_pending_transactions
+    @canonical_pending_transactions ||= ::CanonicalPendingTransaction.where(raw_pending_outgoing_ach_transaction_id: raw_pending_outgoing_ach_transaction.id)
+  end
+
+  def raw_pending_outgoing_ach_transaction
+    raw_pending_outgoing_ach_transactions.first
+  end
+
+  def raw_pending_outgoing_ach_transactions
+    @raw_pending_outgoing_ach_transactions ||= ::RawPendingOutgoingAchTransaction.where(ach_transaction_id: id)
+  end
+
 end
