@@ -36,7 +36,11 @@
       <tr style="<%= "background: #ffffcc;" if cpt.unsettled? %>">
         <td><%= cpt.id %></td>
         <td><%= cpt.date %></td>
-        <td><%= link_to cpt.memo, event_path(cpt.event) %></td>
+        <% if cpt.event %>
+          <td><%= link_to cpt.memo, event_path(cpt.event) %></td>
+        <% else %>
+          <td><%= cpt.memo %></td>
+        <% end %>
         <td><%= cpt.amount %></td>
         <td><%= cpt.event.try(:id) %></td>
         <td>
