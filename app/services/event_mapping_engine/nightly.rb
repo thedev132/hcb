@@ -12,6 +12,7 @@ module EventMappingEngine
       map_stripe_transactions!
       map_github!
       map_checks!
+      map_achs!
       map_fee_reimbursements!
       map_hack_club_bank_issued_cards!
       # map_stripe_top_ups! # turn off for now. needs more discussion
@@ -39,6 +40,10 @@ module EventMappingEngine
 
     def map_checks!
       ::EventMappingEngine::Map::Checks.new.run
+    end
+
+    def map_achs!
+      ::EventMappingEngine::Map::Achs.new.run
     end
 
     def map_fee_reimbursements!
