@@ -531,6 +531,51 @@ class AdminController < ApplicationController
     render layout: "admin"
   end
 
+  def google_workspaces
+    @page = params[:page] || 1
+    @per = params[:per] || 20
+    @q = params[:q].present? ? params[:q] : nil
+    @needs_ops_review = params[:needs_ops_review].present? ? params[:needs_ops_review] : nil
+    @configuring = params[:configuring].present? ? params[:configuring] : nil
+
+    @event_id = params[:event_id].present? ? params[:event_id] : nil
+
+    if @event_id
+      @event = Event.find(@event_id)
+
+      relation = @event.g_suites
+    else
+      relation = GSuite.includes(:event)
+    end
+
+    relation = relation.search_domain(@q) if @q
+    relation = relation.needs_ops_review if @needs_ops_review
+    relation = relation.configuring if @configuring
+
+    @count = relation.count
+    @g_suites = relation.page(@page).per(@per).order("created_at desc")
+
+    render layout: "admin"
+  end
+
+  def google_workspace_process
+    @g_suite = GSuite.find(params[:id])
+
+    render layout: "admin"
+  end
+
+  def google_workspace_update
+    @g_suite = GSuite.find(params[:id])
+
+    attrs = {
+      g_suite_id: @g_suite.id,
+      domain: @g_suite.domain,
+      verification_key: params[:verification_key]
+    }
+    @g_suite = GSuiteService::Update.new(attrs).run
+
+    redirect_to google_workspace_process_admin_path(@g_suite), flash: { success: "Success" }
+  end
 
   def set_event
     @canonical_transaction = ::CanonicalTransactionService::SetEvent.new(canonical_transaction_id: params[:id], event_id: params[:event_id]).run
