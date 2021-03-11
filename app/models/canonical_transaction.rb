@@ -52,6 +52,14 @@ class CanonicalTransaction < ApplicationRecord
     memo.to_s.upcase.include?("FROM DDA#80007609524 ON")
   end
 
+  def likely_card_transaction_refund?
+    likely_stripe_card_transaction? && amount_cents > 0
+  end
+
+  def likely_stripe_card_transaction?
+    hashed_transactions.first.raw_stripe_transaction_id.present?
+  end
+
   def linked_object
     @linked_object ||= TransactionEngine::SyntaxSugarService::LinkedObject.new(canonical_transaction: self).run
   end
