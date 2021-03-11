@@ -13,18 +13,7 @@ module PayoutService
       end
 
       ::Invoice.paid.where("payout_id is null and payout_creation_balance_net is not null").each do |invoice|
-        # 1. fetch remote invoice
-        remote_invoice = ::Partners::Stripe::Invoices::Show.new(id: invoice.stripe_invoice_id).run
-
-        charge = remote_invoice.charge
-
-        next unless charge # only continue if a charge exists (invoice might have been paid via check)
-
-        # 2. get remote available_on timestamp
-        available_on = charge.balance_transaction.available_on
-
-        # 3. create payout if time is ready. TODO: move this into the scope (by later moving available_on into its own field on the invoice table)
-        ::PayoutService::Invoice::Create.new(invoice_id: invoice.id).run if ready_for_payout?(available_on: available_on)
+        ::PayoutService::Invoice::Create.new(invoice_id: invoice.id).run
       end
     end
 
