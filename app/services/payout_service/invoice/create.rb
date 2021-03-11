@@ -6,7 +6,8 @@ module PayoutService
       end
 
       def run
-        raise StandardError, "Funds not yet available" unless funds_available?
+        return nil unless charge # only continue if a charge exists (invoice might have been paid via check)
+        return nil unless funds_available?
 
         ActiveRecord::Base.transaction do
           payout.save!
@@ -34,6 +35,10 @@ module PayoutService
 
       def remote_invoice
         @remote_invoice ||= ::Partners::Stripe::Invoices::Show.new(id: invoice.stripe_invoice_id).run
+      end
+
+      def charge
+        @charge ||= remote_invoice.charge
       end
 
       def funds_available?
