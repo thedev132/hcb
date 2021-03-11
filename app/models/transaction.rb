@@ -263,11 +263,9 @@ class Transaction < ApplicationRecord
     elsif potential_github?
       try_pair_github
     elsif potential_ach_transfer?
-      try_pair_ach_transfer
-    # check matching temporarily disabled until
-    # some pairing bugs are ironed out.
-    # elsif potential_check?
-    #   try_pair_check
+      #try_pair_ach_transfer
+    elsif potential_check?
+      #try_pair_check
     elsif potential_disbursement?
       try_pair_disbursement
     end
