@@ -12,16 +12,19 @@ module EventMappingEngine
       private
 
       def check
-        @check ||= ::Check.find_by(check_number: check_number)
+        @check ||= ::Check.in_transit_and_processed.where(check_number: check_number, amount: -amount_cents).order("created_at asc").first
+      end
+
+      def amount_cents
+        @canonical_transaction.amount_cents
       end
 
       def memo
-        @memo ||= @canonical_transaction.memo
+        @canonical_transaction.memo
       end
 
       def check_number
-        @check_number ||= memo.upcase.gsub("WITHDRAWAL - INCLEARING CHECK #", "")
-                                      .gsub("WITHDRAWAL - ON-US DEPOSITED ITE #", "")
+        @check_number ||= memo.upcase.gsub("CHECK TO ACCOUNT REDACTED", "").strip
       end
     end
   end

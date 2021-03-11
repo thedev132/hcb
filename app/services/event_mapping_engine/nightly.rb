@@ -12,6 +12,7 @@ module EventMappingEngine
       map_stripe_transactions!
       map_github!
       map_checks!
+      map_clearing_checks!
       map_achs!
       map_fee_reimbursements!
       map_hack_club_bank_issued_cards!
@@ -40,6 +41,10 @@ module EventMappingEngine
 
     def map_checks!
       ::EventMappingEngine::Map::Checks.new.run
+    end
+
+    def map_clearing_checks!
+      ::EventMappingEngine::Map::ClearingChecks.new.run
     end
 
     def map_achs!
