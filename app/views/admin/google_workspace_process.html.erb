@@ -80,6 +80,27 @@
   <p><%= link_to "DNS Check", @g_suite.dns_check_url %></p>
 
   <p>If it does not match or is missing, make sure to notify the event owner and have them set it up on their DNS provider.</p>
+
+  <p...</p>
+
+  <p>Has it still been stuck on verifying after a few days? Try updating the verification key.</p>
+
+  <ol>
+    <li>Visit <%= link_to "Google Webmaster Central", @g_suite.verification_url %></li>
+    <li>Choose 'Other' from the drop down menu</li>
+    <li>Copy/Paste the TXT record into the form below</li>
+    <li>Click 'Verify' on Google Webmaster Central</li>
+    <li>Click 'Submit' below</li>
+  </ol>
+
+  <%= form_with(model: nil, local: true, url: google_workspace_update_admin_path(@g_suite), method: :post) do |form| %>
+    <%= form.label :verification_key do %>
+      <%= form.text_field :verification_key, @g_suite.verification_key %>
+    <% end %>
+
+    <%= form.submit "Update verification key" %>
+  <% end %>
+
 <% end %>
 
 <% if @g_suite.verified? %>
