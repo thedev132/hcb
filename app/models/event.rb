@@ -339,7 +339,7 @@ class Event < ApplicationRecord
   end
 
   def default_values
-    self.has_fiscal_sponsorship_document ||= true
+    self.has_fiscal_sponsorship_document ||= false
   end
 
   def point_of_contact_is_admin

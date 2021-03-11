@@ -7,7 +7,9 @@ module AchTransferService
     end
 
     def run
-      ach_transfer.mark_rejected!
+      ActiveRecord::Base.transaction do
+        ach_transfer.mark_rejected!
+      end
 
       ach_transfer
     end

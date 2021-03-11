@@ -4,10 +4,9 @@ module PendingEventMappingEngine
       def run
         unsettled.find_each(batch_size: 100) do |cpt|
           # 1. identify invoice
-          invoice = cpt.raw_pending_invoice_transaction.invoice
+          invoice = cpt.invoice
           Airbrake.notify("invoice not found for canonical pending transaction #{cpt.id}") unless invoice
           next unless invoice
-
           event = invoice.event
 
           # standard case
@@ -15,7 +14,7 @@ module PendingEventMappingEngine
             prefix = grab_prefix(invoice: invoice)
 
             # 2. look up canonical - scoped to event for added accuracy
-            cts = event.canonical_transactions.where("memo ilike '%PAYOUT% #{prefix}%'")
+            cts = event.canonical_transactions.where("memo ilike '%PAYOUT% #{prefix}%' and date >= ?", cpt.date).order("date asc")
 
             # 2.b special case if invoice is quite old & now results
             #cts = event.canonical_transactions.where("memo ilike '%DONAT% #{prefix[0]}%'") if cts.count < 1 && invoice.created_at < Time.utc(2020, 1, 1) # shorter prefix. see  id 1 for example.

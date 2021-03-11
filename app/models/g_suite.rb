@@ -3,6 +3,9 @@ class GSuite < ApplicationRecord
 
   has_paper_trail
 
+  include PgSearch::Model
+  pg_search_scope :search_domain, against: [:domain]
+
   include AASM
   include Commentable
 
@@ -54,6 +57,10 @@ class GSuite < ApplicationRecord
 
   def verification_url
     "https://www.google.com/webmasters/verification/verification?siteUrl=http://#{domain}&priorities=vdns,vmeta,vfile,vanalytics"
+  end
+
+  def dns_check_url
+    "https://dns-lookup.com/#{domain}"
   end
 
   def deleted?
