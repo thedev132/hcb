@@ -32,6 +32,7 @@
       <th>ID</th>
       <th>Date</th>
       <th>Name</th>
+      <th>OU Name</th>
       <th>VerificationKey</th>
       <th>Status</th>
       <th>Actions</th>
@@ -43,6 +44,7 @@
         <td><%= g_suite.id %></td>
         <td><%= g_suite.created_at.strftime("%Y-%m-%d") %></td>
         <td><%= link_to "#{g_suite.event.name.upcase}: #{g_suite.domain}", event_g_suite_overview_path(event_id: g_suite.event.slug) %></td>
+        <td><%= g_suite.ou_name %></td>
         <td><%= g_suite.verification_key %></td>
         <td><%= g_suite.aasm_state.upcase %></td>
         <td>
