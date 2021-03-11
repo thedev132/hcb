@@ -2,7 +2,7 @@ module EventMappingEngine
   module Map
     class Achs
       def run
-        likely_clearing_achs.find_each(batch_size: 100) do |ct|
+        likely_achs.find_each(batch_size: 100) do |ct|
           # 1 locate event id
           guessed_event_id = ::EventMappingEngine::GuessEventId::Ach.new(canonical_transaction: ct).run
 
@@ -18,8 +18,8 @@ module EventMappingEngine
 
       private
 
-      def likely_clearing_achs
-        ::CanonicalTransaction.unmapped.likely_clearing_achs.order("date asc")
+      def likely_achs
+        ::CanonicalTransaction.unmapped.likely_achs.order("date asc")
       end
 
     end
