@@ -35,7 +35,8 @@ module CanonicalTransactionService
     def attrs
       {
         canonical_transaction_id: canonical_transaction.id,
-        event_id: @event_id
+        event_id: event.try(:id),
+        user_id: @user.try(:id)
       }
     end
 

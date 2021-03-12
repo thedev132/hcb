@@ -138,35 +138,6 @@ class Invoice < ApplicationRecord
     }
   end
 
-  # Manually mark this invoice as paid (probably in the case of a physical
-  # check being sent to pay it). This marks the corresponding payment on Stripe
-  # as paid and stores some metadata about why it was marked as paid.
-  def manually_mark_as_paid(user_who_did_it, reason_for_manual_payment, attachment = nil)
-    self.manually_marked_as_paid_at = Time.current
-    self.manually_marked_as_paid_user = user_who_did_it
-    self.manually_marked_as_paid_reason = reason_for_manual_payment
-    self.manually_marked_as_paid_attachment = attachment
-
-    return false unless valid?
-
-    inv = StripeService::Invoice.retrieve(stripe_invoice_id)
-    inv.paid = true
-
-    if inv.save
-      self.set_fields_from_stripe_invoice(inv)
-
-      if self.save
-        true
-      else
-        false
-      end
-    else
-      errors.add(:base, 'failed to save with vendor')
-
-      false
-    end
-  end
-
   def set_fields_from_stripe_invoice(inv)
     self.amount_due = inv.amount_due
     self.amount_paid = inv.amount_paid

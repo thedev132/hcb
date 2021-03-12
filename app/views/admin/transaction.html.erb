@@ -11,6 +11,7 @@
       <th>FriendlyMemo</th>
       <th>CustomMemo</th>
       <th>Amount</th>
+      <th>MappedBy</th>
       <th>Event</th>
     </tr>
   </thead>
@@ -22,6 +23,7 @@
       <td><%= @canonical_transaction.friendly_memo %></td>
       <td><%= @canonical_transaction.custom_memo %></td>
       <td><%= @canonical_transaction.amount %></td>
+      <td><%= @canonical_transaction.canonical_event_mapping.try(:user).try(:email) %></td>
       <td>
         <%= form_with model: nil, local: true, url: set_event_path(@canonical_transaction), method: :post do |form| %>
           <%= form.collection_select(:event_id, Event.reorder(:name), :id, :admin_dropdown_description,  {  include_blank: true, selected: @canonical_transaction.event.try(:id) }, { width: 150, style: "max-width: 150px;" }) %>
@@ -34,6 +36,43 @@
 
 <br/><hr/>
 
+<% unless @canonical_transaction.linked_object %>
+  <% if @potential_invoices.exists? %>
+    <h4>Potential Invoices</h4>
+    <p>NOTE: If you find the invoice in this list, then please process the invoice after processing the transaction.</p>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Date</th>
+          <th>Recipient</th>
+          <th>Amount</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @potential_invoices.each do |invoice| %>
+          <tr>
+            <td><%= invoice.id %></td>
+            <td><%= invoice.created_at.strftime("%Y-%m-%d") %></td>
+            <td>
+              <%= link_to invoice_path(invoice) do %>
+                <%= invoice.event.name.upcase %>: <%= invoice.sponsor.name %>
+              <% end %>
+            </td>
+            <td><%= render_money_amount(invoice.amount_due) %></td>
+            <td><%= invoice.status.upcase %></td>
+            <td><%= link_to "Process", invoice_process_admin_path(invoice.id) %>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <br/><hr/>
+  <% end %>
+<% end %>
+
+<!--
 <h4>Potential Pending Transactions to Map to</h4>
 
 <table>
@@ -52,6 +91,8 @@
 </table>
 
 <br/><hr/>
+-->
+
 
 <h4>Journey</h4>
 

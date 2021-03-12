@@ -35,7 +35,7 @@
       <th>ID</th>
       <th>Date</th>
       <th>Recipient</th>
-      <th>Description</th>
+      <th>StripeInvoiceId</th>
       <th>Amount</th>
       <th>Status</th>
       <th>FeeReimbursementId</th>
@@ -52,11 +52,12 @@
             <%= invoice.event.name.upcase %>: <%= invoice.sponsor.name %>
           <% end %>
         </td>
-        <td><%= invoice.item_description %></td>
+        <td><%= link_to invoice.stripe_invoice_id, invoice.stripe_dashboard_url %></td>
         <td><%= render_money_amount(invoice.amount_due) %></td>
         <td><%= invoice.status.upcase %></td>
         <td><%= invoice.fee_reimbursement_id %></td>
         <td>
+          <%= link_to "Process", invoice_process_admin_path(invoice.id) %>
         </td>
       </tr>
     <% end %>
