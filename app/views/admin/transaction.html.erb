@@ -36,6 +36,43 @@
 
 <br/><hr/>
 
+<% unless @canonical_transaction.linked_object %>
+  <% if @potential_invoices.exists? %>
+    <h4>Potential Invoices</h4>
+    <p>NOTE: If you find the invoice in this list, then please process the invoice after processing the transaction.</p>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Date</th>
+          <th>Recipient</th>
+          <th>Amount</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @potential_invoices.each do |invoice| %>
+          <tr>
+            <td><%= invoice.id %></td>
+            <td><%= invoice.created_at.strftime("%Y-%m-%d") %></td>
+            <td>
+              <%= link_to invoice_path(invoice) do %>
+                <%= invoice.event.name.upcase %>: <%= invoice.sponsor.name %>
+              <% end %>
+            </td>
+            <td><%= render_money_amount(invoice.amount_due) %></td>
+            <td><%= invoice.status.upcase %></td>
+            <td><%= link_to "Process", invoice_process_admin_path(invoice.id) %>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <br/><hr/>
+  <% end %>
+<% end %>
+
+<!--
 <h4>Potential Pending Transactions to Map to</h4>
 
 <table>
@@ -54,6 +91,8 @@
 </table>
 
 <br/><hr/>
+-->
+
 
 <h4>Journey</h4>
 

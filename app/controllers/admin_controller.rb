@@ -94,6 +94,8 @@ class AdminController < ApplicationController
   def transaction
     @canonical_transaction = CanonicalTransaction.find(params[:id])
 
+    @potential_invoices = Invoice.open.where("created_at <= ? and amount_due = ?", @canonical_transaction.date, @canonical_transaction.amount_cents).order("created_at desc")
+
     @canonical_pending_transactions = CanonicalPendingTransaction.unmapped.where(amount_cents: @canonical_transaction.amount_cents)
     @ahoy_events = Ahoy::Event.where("name in (?) and (properties->'canonical_transaction'->>'id')::int = ?", [::SystemEventService::Write::SettledTransactionMapped::NAME, ::SystemEventService::Write::SettledTransactionCreated::NAME], @canonical_transaction.id).order("time desc")
 
@@ -509,6 +511,26 @@ class AdminController < ApplicationController
     @invoices = relation.page(@page).per(@per).order("created_at desc")
 
     render layout: "admin"
+  end
+
+  def invoice_process
+    @invoice = Invoice.find(params[:id])
+
+    render layout: "admin"
+  end
+
+  def invoice_mark_paid
+    @invoice = Invoice.open.find(params[:id])
+
+    attrs = {
+      invoice_id: @invoice.id,
+      reason: params[:reason],
+      attachment: params[:attachment],
+      user: current_user
+    }
+    ::InvoiceService::MarkPaid.new(attrs).run
+
+    redirect_to invoices_admin_index_path(@invoice), flash: { success: "Success" }
   end
 
   def sponsors
