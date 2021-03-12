@@ -95,6 +95,7 @@ class AdminController < ApplicationController
     @canonical_transaction = CanonicalTransaction.find(params[:id])
 
     @canonical_pending_transactions = CanonicalPendingTransaction.unmapped.where(amount_cents: @canonical_transaction.amount_cents)
+    @ahoy_events = Ahoy::Event.where("name in (?) and (properties->'canonical_transaction'->>'id')::int = ?", [::SystemEventService::Write::SettledTransactionMapped::NAME, ::SystemEventService::Write::SettledTransactionCreated::NAME], @canonical_transaction.id).order("time desc")
 
     render layout: "admin"
   end
@@ -578,7 +579,7 @@ class AdminController < ApplicationController
   end
 
   def set_event
-    @canonical_transaction = ::CanonicalTransactionService::SetEvent.new(canonical_transaction_id: params[:id], event_id: params[:event_id]).run
+    @canonical_transaction = ::CanonicalTransactionService::SetEvent.new(canonical_transaction_id: params[:id], event_id: params[:event_id], user: current_user).run
 
     redirect_to transaction_admin_path(@canonical_transaction)
   end
