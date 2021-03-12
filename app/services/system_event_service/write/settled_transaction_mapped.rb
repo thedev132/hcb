@@ -39,9 +39,9 @@ module SystemEventService
             amount_cents: @canonical_transaction.amount_cents
           },
           canonical_event_mapping: {
-            id: @canonical_event_mapping.id,
-            canonical_transaction_id: @canonical_event_mapping.canonical_transaction_id,
-            event_id: @canonical_event_mapping.event_id
+            id: @canonical_event_mapping.try(:id),
+            canonical_transaction_id: @canonical_event_mapping.try(:canonical_transaction_id),
+            event_id: @canonical_event_mapping.try(:event_id)
           },
           user: {
             id: @user.id

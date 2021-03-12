@@ -86,6 +86,15 @@
 
 <% end %>
 
+<br/><hr/>
+
+<h4>System Events</h4>
+
+<% @ahoy_events.each do |ae| %>
+  <p><%= ae.name %> <small><%= ae.time %></small></p>
+  <%= (ap ae.properties).html_safe %>
+<% end %>
+
 <!--
 <h4>Potential Historical Transactions to Map from</h4>
 
