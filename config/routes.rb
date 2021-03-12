@@ -89,7 +89,7 @@ Rails.application.routes.draw do
       get 'google_workspace_process', to: 'admin#google_workspace_process'
       post 'google_workspace_update', to: 'admin#google_workspace_update'
       get 'invoice_process', to: 'admin#invoice_process'
-      post 'invoice_mark_paid', to: 'admin#invoice_process'
+      post 'invoice_mark_paid', to: 'admin#invoice_mark_paid'
     end
   end
 
