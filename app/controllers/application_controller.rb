@@ -46,4 +46,9 @@ class ApplicationController < ActionController::Base
   end
   helper_method :using_pending_transaction_engine?
 
+  def set_streaming_headers
+    headers["X-Accel-Buffering"] = "no"
+    headers["Cache-Control"] ||= "no-cache"
+    headers.delete("Content-Length")
+  end
 end
