@@ -129,7 +129,6 @@
             <th>Date</th>
             <th>Description</th>
             <th class="right-align">Amount</th>
-            <th class="right-align">Fee</th>
             <th></th>
           </tr>
         </thead>
@@ -151,9 +150,6 @@
               </td>
               <td class="nowrap">
                 <%= pt.amount %>
-              </td>
-              <td class="nowrap right-align">
-                -
               </td>
               <td>
                 <%= link_to 'Details', canonical_pending_transaction_path(pt) %>
@@ -179,9 +175,6 @@
               </td>
               <td class="nowrap">
                 <%= ct.amount %>
-              </td>
-              <td class="nowrap right-align">
-                <%= number_with_precision(ct.fees.sum(:amount_cents_as_decimal) / 100.0, precision: 4) %>
               </td>
               <% if organizer_signed_in? %>
               <td>
