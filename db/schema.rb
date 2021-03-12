@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_07_000828) do
+ActiveRecord::Schema.define(version: 2021_03_12_213927) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -178,8 +178,10 @@ ActiveRecord::Schema.define(version: 2021_03_07_000828) do
     t.bigint "event_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "user_id"
     t.index ["canonical_transaction_id"], name: "index_canonical_event_mappings_on_canonical_transaction_id"
     t.index ["event_id"], name: "index_canonical_event_mappings_on_event_id"
+    t.index ["user_id"], name: "index_canonical_event_mappings_on_user_id"
   end
 
   create_table "canonical_hashed_mappings", force: :cascade do |t|
@@ -364,6 +366,7 @@ ActiveRecord::Schema.define(version: 2021_03_07_000828) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "message"
+    t.text "hcb_code"
     t.index ["event_id"], name: "index_donations_on_event_id"
     t.index ["fee_reimbursement_id"], name: "index_donations_on_fee_reimbursement_id"
     t.index ["payout_id"], name: "index_donations_on_payout_id"
@@ -689,6 +692,7 @@ ActiveRecord::Schema.define(version: 2021_03_07_000828) do
     t.text "payment_method_ach_credit_transfer_swift_code"
     t.datetime "archived_at"
     t.bigint "archived_by_id"
+    t.text "hcb_code"
     t.index ["archived_by_id"], name: "index_invoices_on_archived_by_id"
     t.index ["creator_id"], name: "index_invoices_on_creator_id"
     t.index ["fee_reimbursement_id"], name: "index_invoices_on_fee_reimbursement_id"

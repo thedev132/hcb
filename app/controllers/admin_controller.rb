@@ -159,6 +159,7 @@ class AdminController < ApplicationController
     @q = params[:q].present? ? params[:q] : nil
     @unmapped = params[:unmapped] == "1" ? true : nil
     @exclude_top_ups = params[:exclude_top_ups] == "1" ? true : nil
+    @mapped_by_human = params[:mapped_by_human] == "1" ? true : nil
     @event_id = params[:event_id].present? ? params[:event_id] : nil
 
     if @event_id
@@ -188,6 +189,7 @@ class AdminController < ApplicationController
 
     relation = relation.unmapped if @unmapped
     relation = relation.not_stripe_top_up if @exclude_top_ups
+    relation = relation.mapped_by_human if @mapped_by_human
 
     @count = relation.count
 
