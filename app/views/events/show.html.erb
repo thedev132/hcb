@@ -119,26 +119,105 @@
 </div>
 -->
 
-<% if @pending_transactions.any? || @transactions.any? %>
-  <div class="table-container">
-    <table>
-      <thead>
-        <tr>
-          <th></th>
-          <th>Date</th>
-          <th>Description</th>
-          <th class="right-align">Amount</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody data-behavior="transactions">
-        <%= render partial: 'transactions/event_list', collection: @pending_transactions, as: :t %>
-        <%= render partial: 'transactions/event_list', collection: @transactions, as: :t %>
-      </tbody>
-    </table>
-  </div>
-  <%# filterbar_blankslate 'No transactions match this filter' %>
-  <%= paginate @transactions %>
+<% if using_transaction_engine_v2? %>
+  <% if @pending_transactions.any? || @transactions.any? %>
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            <th>Date</th>
+            <th>Description</th>
+            <th class="right-align">Amount</th>
+            <th class="right-align">Fee</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody data-behavior="transactions">
+          <% @pending_transactions.each do |pt| %>
+            <tr
+              class="muted transaction--<%= pt.amount.negative? ? 'negative' : 'positive' %>">
+              <td class="transaction__icon tooltipped tooltipped--e" aria-label="Bank account transaction">
+                <%= inline_icon 'bank-account' %>
+              </td>
+              <td>
+                <%= pt.date %>
+              </td>
+              <td class="transaction__memo">
+                <span>
+                  PENDING: <%= pt.display_name %>
+                </span>
+                <%= list_badge_for pt.comments.size, 'note', 'post', optional: true %>
+              </td>
+              <td class="nowrap">
+                <%= pt.amount %>
+              </td>
+              <td class="nowrap right-align">
+                -
+              </td>
+              <td>
+                <%= link_to 'Details', canonical_pending_transaction_path(pt) %>
+              </td>
+            </tr>
+          <% end %>
+
+          <% @transactions.each do |ct| %>
+            <tr
+              class="transaction--<%= ct.amount.negative? ? 'negative' : 'positive' %>">
+              <td class="transaction__icon tooltipped tooltipped--e" aria-label="Bank account transaction">
+                <%= inline_icon 'bank-account' %>
+              </td>
+              <td>
+                <%= ct.date %>
+              </td>
+              <td class="transaction__memo">
+                <span>
+                  <%= ct.display_name %>
+                </span>
+                <%#= list_badge_for transaction.comments.size, 'note', 'post', optional: true %>
+                <%= list_badge_for ct.receipts.size, 'receipt', 'payment-docs', optional: true %>
+              </td>
+              <td class="nowrap">
+                <%= ct.amount %>
+              </td>
+              <td class="nowrap right-align">
+                <%= number_with_precision(ct.fees.sum(:amount_cents_as_decimal) / 100.0, precision: 4) %>
+              </td>
+              <% if organizer_signed_in? %>
+              <td>
+                <%= link_to 'Details', "/transactions/#{ct.id}" %>
+              </td>
+              <% end %>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% else %>
+    <%= blankslate 'No transactions yet' %>
+  <% end %>
 <% else %>
-  <%= blankslate 'No transactions yet' %>
+  <!-- old transaction engine. remove soon -->
+  <% if @pending_transactions.any? || @transactions.any? %>
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            <th>Date</th>
+            <th>Description</th>
+            <th class="right-align">Amount</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody data-behavior="transactions">
+          <%= render partial: 'transactions/event_list', collection: @pending_transactions, as: :t %>
+          <%= render partial: 'transactions/event_list', collection: @transactions, as: :t %>
+        </tbody>
+      </table>
+    </div>
+    <%= paginate @transactions %>
+  <% else %>
+    <%= blankslate 'No transactions yet' %>
+  <% end %>
 <% end %>
