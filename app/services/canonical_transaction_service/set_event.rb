@@ -1,8 +1,9 @@
 module CanonicalTransactionService
   class SetEvent
-    def initialize(canonical_transaction_id:, event_id:)
+    def initialize(canonical_transaction_id:, event_id:, user:)
       @canonical_transaction_id = canonical_transaction_id
       @event_id = event_id
+      @user = user
     end
 
     def run
@@ -12,7 +13,14 @@ module CanonicalTransactionService
           canonical_transaction.canonical_event_mapping.destroy! 
         end
 
-        CanonicalEventMapping.create!(attrs) if event
+        canonical_event_mapping = CanonicalEventMapping.create!(attrs) if event
+
+        attrs = {
+          canonical_transaction: canonical_transaction,
+          canonical_event_mapping: canonical_event_mapping,
+          user: @user
+        }
+        ::SystemEventService::Write::SettledTransactionMapped.new(attrs).run
       end
 
       canonical_transaction

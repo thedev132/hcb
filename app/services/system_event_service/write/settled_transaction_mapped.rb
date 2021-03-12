@@ -2,11 +2,15 @@
 
 module SystemEventService
   module Write
-    class SettledTransactionCreated
-      NAME = "settledTransactionCreated"
+    class SettledTransactionMapped
+      NAME = "settledTransactionMapped"
 
-      def initialize(canonical_transaction:)
+      def initialize(canonical_transaction:,
+                     canonical_event_mapping:,
+                     user:)
         @canonical_transaction = canonical_transaction
+        @canonical_event_mapping = canonical_event_mapping
+        @user = user
       end
 
       def run
@@ -33,6 +37,14 @@ module SystemEventService
             date: @canonical_transaction.date,
             memo: @canonical_transaction.memo,
             amount_cents: @canonical_transaction.amount_cents
+          },
+          canonical_event_mapping: {
+            id: @canonical_event_mapping.id,
+            canonical_transaction_id: @canonical_event_mapping.canonical_transaction_id,
+            event_id: @canonical_event_mapping.event_id
+          },
+          user: {
+            id: @user.id
           }
         }
       end
