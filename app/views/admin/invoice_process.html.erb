@@ -58,7 +58,7 @@
 
   <%= form_with(model: nil, local: true, url: invoice_mark_paid_admin_path(@invoice.id), method: :post) do |form| %>
     <fieldset>
-      <legend>Manually Mark Piad</legend>
+      <legend>Manually Mark Paid</legend>
       <p>
         <%= form.label :reason, "Reason for manually marking as paid:" %>
         <%= form.text_field :reason %>

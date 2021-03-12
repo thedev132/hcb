@@ -530,7 +530,7 @@ class AdminController < ApplicationController
     }
     ::InvoiceService::MarkPaid.new(attrs).run
 
-    redirect_to invoices_admin_index_path(@invoice), flash: { success: "Success" }
+    redirect_to invoices_admin_index_path, flash: { success: "Success" }
   end
 
   def sponsors
