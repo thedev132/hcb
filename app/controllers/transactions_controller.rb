@@ -241,12 +241,6 @@ class TransactionsController < ApplicationController
     headers["Content-disposition"] = "attachment; filename=transactions.json"
   end
 
-  def set_streaming_headers
-    headers["X-Accel-Buffering"] = "no"
-    headers["Cache-Control"] ||= "no-cache"
-    headers.delete("Content-Length")
-  end
-
   def transactions_csv
     ::CanonicalTransactionService::Export::Csv.new(event_id: @event.id).run
   end
