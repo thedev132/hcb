@@ -13,12 +13,12 @@ module FeeService
 
       def run
         Enumerator.new do |y|
-          y << header.to_s
-
           event.fees.includes(canonical_event_mapping: :canonical_transaction).order("canonical_transactions.date asc, canonical_transactions.id asc").each do |f|
             y << row(f).to_s
           end
-        end
+
+          y << header.to_s
+        end.reverse_each
       end
 
       private
@@ -42,7 +42,7 @@ module FeeService
           :amount,
           :fee_percentage,
           :fee_amount,
-          :running_fee
+          :fee_tally
         ]
       end
 
@@ -53,7 +53,7 @@ module FeeService
           "amount",
           "fee_percentage",
           "fee_amount",
-          "running_fee"
+          "fee_tally"
         ], true)
       end
 
