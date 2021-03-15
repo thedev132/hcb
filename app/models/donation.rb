@@ -1,6 +1,7 @@
 class Donation < ApplicationRecord
   has_paper_trail
 
+  include AASM
   include Commentable
 
   include PgSearch::Model
@@ -17,19 +18,32 @@ class Donation < ApplicationRecord
 
   validates :name, :email, :amount, presence: true
   validates :amount, numericality: { greater_than_or_equal_to: 100 }
-  validate :email_must_not_be_riddick
 
   scope :succeeded, -> { where(status: "succeeded") }
-  scope :not_succeeded, -> { where("status != 'succeeded'") }
-  scope :not_riddick, -> { where("email ilike 'riddick39462@gmail.com'") }
-  scope :exclude_requires_payment_method, -> { where("status != 'requires_payment_method'") }
+  scope :missing_payout, -> { where(payout_id: nil) }
   scope :missing_fee_reimbursement, -> { where(fee_reimbursement_id: nil) }
+
+  aasm do
+    state :pending, initial: true
+    state :in_transit
+    state :deposited
+
+    event :mark_in_transit do
+      transitions from: :pending, to: :in_transit
+    end
+
+    event :mark_deposited do
+      transitions from: :in_transit, to: :deposited
+    end
+  end
 
   def set_fields_from_stripe_payment_intent(payment_intent)
     self.amount = payment_intent.amount
     self.amount_received = payment_intent.amount_received
     self.status = payment_intent.status
     self.stripe_client_secret = payment_intent.client_secret
+
+    self.aasm_state = "in_transit" if aasm_state == "pending" && status == "succeeded" # hacky
   end
 
   def stripe_dashboard_url
@@ -37,35 +51,43 @@ class Donation < ApplicationRecord
   end
 
   def status_color
-    return 'success' if deposited?
-    return 'info' if pending?
+    return 'success' if deposited_deprecated?
+    return 'info' if pending_deprecated?
 
     'error'
   end
 
   def status_text
-    return 'Deposited' if deposited?
-    return 'Pending' if pending?
+    return 'Deposited' if deposited_deprecated?
+    return 'Pending' if pending_deprecated?
 
     'Contact Hack Club Bank staff'
   end
 
-  def deposited?
+  def deposited_deprecated?
     status == 'succeeded' && self&.payout&.t_transaction.present?
   end
 
-  def pending?
-    status == 'succeeded' && !deposited?
+  def pending_deprecated?
+    status == 'succeeded' && !deposited_deprecated?
+  end
+
+  def in_transit_deprecated?
+    status == 'succeeded' && payout_id == nil
+  end
+
+  def unpaid_deprecated?
+    status == 'requires_payment_method'
   end
 
   def unpaid?
-    status == 'requires_payment_method'
+    pending?
   end
 
   def filter_data
     {
-      in_transit: (status == 'succeeded' && payout_id == nil),
-      deposited: (status == 'succeeded' && self&.payout&.t_transaction.present?),
+      in_transit: in_transit?,
+      deposited: deposited?,
       exists: true
     }
   end
@@ -158,9 +180,5 @@ class Donation < ApplicationRecord
 
   def assign_unique_hash
     self.url_hash = SecureRandom.hex(8)
-  end
-
-  def email_must_not_be_riddick
-    self.errors.add(:email, "has been reported") if email.to_s.strip.downcase == "riddick39462@gmail.com"
   end
 end

@@ -6,7 +6,9 @@ module PayoutService
       end
 
       def run
-        raise StandardError, "Funds not yet available" unless funds_available?
+        return nil unless donation.payout_id.nil?
+        return nil unless donation.in_transit?
+        return nil unless funds_available?
 
         ActiveRecord::Base.transaction do
           payout.save!

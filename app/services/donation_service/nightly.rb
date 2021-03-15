@@ -5,7 +5,7 @@ module DonationService
 
     def run
       ids = []
-      Donation.not_succeeded.find_each(batch_size: 100) do |d|
+      Donation.pending.find_each(batch_size: 100) do |d|
         status = fetch_status(donation: d)
 
         if d.status != status
