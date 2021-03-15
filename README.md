@@ -8,6 +8,57 @@ Bank is a tool for hackers to hack on the real world, like GitHub, but for build
 
 ## Getting Started
 
+Install [rbenv](https://github.com/rbenv/rbenv)
+
+```bash
+brew install rbenv
+```
+
+Install [bundler](https://bundler.io/)
+
+```bash
+gem install bundler
+```
+
+Run bundler
+
+```bash
+bundle install
+```
+
+Create and migrate database
+
+```bash
+bundle exec rake db:drop db:create db:migrate
+```
+
+Populate the database
+
+```bash
+heroku git:remote -a bank-hackclub # if your repo isn't attached to the heroku app
+heroku pg:backups:capture
+heroku pg:backups:download # will save as latest.dump, double check to make sure that file is created
+pg_restore --verbose --clean --no-acl --no-owner -d bank_development latest.dump
+```
+
+Run the application
+
+```bash
+bin/rails s
+```
+
+## Additional Installs
+
+Install wkhtmltopdf
+
+```bash
+brew install wkhtmltopdf
+```
+
+Browse to [localhost:3000](http://localhost:3000)
+
+## Getting Started (deprecated)
+
 1. Install Docker.
 2. Clone this repo.
 3. Get a copy of the encrypted credentials key from a team member (`config/master.key`)
