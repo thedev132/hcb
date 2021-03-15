@@ -16,6 +16,11 @@
     In Transit
   <% end %>
   |
+  <%= form.label :missing_payout do %>
+    <%= form.check_box :missing_payout, checked: @missing_payout %>
+    Missing Payout
+  <% end %>
+  |
   <%= form.label :missing_fee_reimbursement do %>
     <%= form.check_box :missing_fee_reimbursement, checked: @missing_fee_reimbursement %>
     Missing FeeReimbursement
@@ -38,6 +43,7 @@
       <th>Recipient</th>
       <th>Amount</th>
       <th>Status</th>
+      <th>PayoutId</th>
       <th>FeeReimbursementId</th>
       <th>Actions</th>
     </tr>
@@ -54,6 +60,7 @@
         </td>
         <td><%= render_money_amount(donation.amount) %></td>
         <td><%= donation.aasm_state.upcase %></td>
+        <td><%= donation.payout_id %></td>
         <td><%= donation.fee_reimbursement_id %></td>
         <td>
         </td>

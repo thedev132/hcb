@@ -20,7 +20,7 @@ class Donation < ApplicationRecord
   validates :amount, numericality: { greater_than_or_equal_to: 100 }
 
   scope :succeeded, -> { where(status: "succeeded") }
-  scope :exclude_requires_payment_method, -> { where("status != 'requires_payment_method'") }
+  scope :missing_payout, -> { where(payout_id: nil) }
   scope :missing_fee_reimbursement, -> { where(fee_reimbursement_id: nil) }
 
   aasm do
@@ -42,6 +42,8 @@ class Donation < ApplicationRecord
     self.amount_received = payment_intent.amount_received
     self.status = payment_intent.status
     self.stripe_client_secret = payment_intent.client_secret
+
+    self.aasm_state = "in_transit" if aasm_state == "pending" && status == "succeeded" # hacky
   end
 
   def stripe_dashboard_url
