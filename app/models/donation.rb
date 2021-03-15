@@ -20,7 +20,6 @@ class Donation < ApplicationRecord
   validates :amount, numericality: { greater_than_or_equal_to: 100 }
 
   scope :succeeded, -> { where(status: "succeeded") }
-  scope :not_succeeded, -> { where("status != 'succeeded'") }
   scope :exclude_requires_payment_method, -> { where("status != 'requires_payment_method'") }
   scope :missing_fee_reimbursement, -> { where(fee_reimbursement_id: nil) }
 
