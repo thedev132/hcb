@@ -28,6 +28,8 @@
 /config/master.key
 .env*
 !.env.example
+!.env.docker
+!.env.docker.example
 
 latest.dump*
 
