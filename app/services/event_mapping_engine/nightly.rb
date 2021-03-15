@@ -16,7 +16,7 @@ module EventMappingEngine
       map_achs!
       map_fee_reimbursements!
       map_hack_club_bank_issued_cards!
-      # map_stripe_top_ups! # turn off for now. needs more discussion
+      map_stripe_top_ups!
 
       true
     end

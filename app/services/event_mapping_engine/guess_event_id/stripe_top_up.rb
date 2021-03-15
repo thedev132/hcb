@@ -6,7 +6,7 @@ module EventMappingEngine
       end
 
       def run
-        183 # Hack Club HQ
+        999 # Hack Club NoEvent
       end
     end
   end
