@@ -5,7 +5,7 @@ module ApplicationHelper
     unit = opts[:unit] || '$'
     trunc = opts[:trunc] || false
 
-    num = BigDecimal.new(amount || 0) / 100
+    num = BigDecimal(amount || 0) / 100
     unless trunc
       number_to_currency(num, unit: unit)
     else
