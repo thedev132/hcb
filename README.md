@@ -57,12 +57,27 @@ brew install wkhtmltopdf
 
 Browse to [localhost:3000](http://localhost:3000)
 
+## Alternative with Docker
+
+Copy .env file
+
+```bash
+cp .env.docker.example .env.docker
+```
+
+Run Docker
+
+```bash
+docker-compose build
+```
+
+
 ## Getting Started (deprecated)
 
 1. Install Docker.
 2. Clone this repo.
 3. Get a copy of the encrypted credentials key from a team member (`config/master.key`)
-4. Copy `.env.example` to `.env` (`cp .env.example .env`) & edit `APP_PORT=3000` or whatever floats your boat in the port
+4. Copy `.env.example` to `.env` (`cp .env.example .env`) & edit `PORT=3000` or whatever floats your boat in the port
 5. ```sh
     docker-compose build
     docker-compose run web bundle exec rails db:create db:migrate
