@@ -171,6 +171,12 @@
     <%= render 'receipts/upload', receiptable: @transaction %>
   </section>
 
+  <% admin_tools('py0') do %>
+    <p>
+      <%= link_to "mark bank fee", mark_bank_fee_canonical_transaction_url(@transaction), method: :post, class: "btn bg-accent" %>
+    </p>
+  <% end %>
+
   <h2>Comments</h2>
   <%= render 'comments/comments' %>
 
