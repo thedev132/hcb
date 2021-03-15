@@ -493,7 +493,7 @@ ActiveRecord::Schema.define(version: 2021_03_12_213927) do
     t.boolean "omit_stats", default: false
     t.datetime "transaction_engine_v2_at", default: -> { "CURRENT_TIMESTAMP" }
     t.datetime "last_fee_processed_at"
-    t.datetime "pending_transaction_engine_at", default: "2021-03-15 18:13:44"
+    t.datetime "pending_transaction_engine_at", default: "2021-03-15 21:18:09"
     t.index ["club_airtable_id"], name: "index_events_on_club_airtable_id", unique: true
     t.index ["point_of_contact_id"], name: "index_events_on_point_of_contact_id"
   end

@@ -69,6 +69,10 @@ Run Docker
 
 ```bash
 docker-compose build
+docker-compose run web bundle install
+docker-compose run web yarn install --check-files
+docker-compose run web bundle exec rails db:create db:migrate
+docker-compose run --service-ports web bundle exec rails s -b 0.0.0.0 -p 3000
 ```
 
 
@@ -80,14 +84,9 @@ docker-compose build
 4. Copy `.env.example` to `.env` (`cp .env.example .env`) & edit `PORT=3000` or whatever floats your boat in the port
 5. ```sh
     docker-compose build
+    docker-compose run web bundle install
     docker-compose run web bundle exec rails db:create db:migrate
     docker-compose run --service-ports web bundle exec rails s -b 0.0.0.0 -p 3000
-
-    # Warning: `docker-compose up` will also spin up a background job worker to
-    # work on jobs in your database. If you've restored a production database
-    # dump, your local version may start sending emails/running jobs that were
-    # queued in production. You can see your database's jobs at
-    # http://localhost:3000/sidekiq
    ```
 
 6. Open [localhost:3000](http://localhost:3000)
