@@ -17,7 +17,7 @@ brew install rbenv
 Install [bundler](https://bundler.io/)
 
 ```bash
-gem install bundler
+gem install bundler -v 1.17.3
 ```
 
 Run bundler
