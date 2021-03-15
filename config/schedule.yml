@@ -44,7 +44,7 @@ sync_emburse_transactions_job:
   queue: "default"
 
 sync_transactions_job:
-  cron: "0 */2 * * *" # run every 2 hours
+  cron: "0 */6 * * *" # run every 6 hours
   class: "SyncTransactionsJob"
   queue: "default"
 
@@ -91,6 +91,11 @@ payout_nightly_job:
 fee_engine_hourly_job:
   cron: "0 */1 * * *" # run every 1 hours
   class: "FeeEngineJob::Hourly"
+  queue: "default"
+
+temp_job_sync_donations_aasm:
+  cron: "0 0 * * *" # run every 1 day
+  class: "TempJob::SyncDonationsAasm"
   queue: "default"
 
 temp_job_sync_receipts_nightly:
