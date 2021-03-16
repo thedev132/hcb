@@ -9,26 +9,34 @@ module Partners
         end
 
         def run
-          stripe_charges
-        end
-
-        private
-
-        def stripe_charges
           resp = fetch_charges
 
           ts = resp.data
+
+          ts.each do |t|
+            yield t
+          end
 
           while resp.has_more
             starting_after = ts.last.id
 
             resp = fetch_charges(starting_after: starting_after)
 
-            ts += resp.data
+            ts = resp.data
+
+            ts.each do |t|
+              yield t
+            end
           end
 
-          ts
+          ts.each do |t|
+            yield t
+          end
+
+          nil
         end
+
+        private
 
         def fetch_charges(starting_after: nil)
           ::StripeService::Charge.list(list_attrs(starting_after: starting_after))
