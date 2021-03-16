@@ -18,7 +18,7 @@ module EventMappingEngine
       end
 
       def donation_payout
-        @donation_payout ||= DonationPayout.where("amount = #{amount_cents} and statement_descriptor ilike 'DONATE #{prefix}' and created_at >= '#{filter_date}'").order("created_at asc").first
+        @donation_payout ||= DonationPayout.where("amount = #{amount_cents} and statement_descriptor ilike 'DONATE #{prefix}%' and created_at >= '#{filter_date}'").order("created_at asc").first
       end
 
       def prefix

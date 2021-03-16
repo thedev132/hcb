@@ -8,14 +8,11 @@ module EventMappingEngine
 
           next unless guessed_event_id
 
-          puts "-" * 50
-          puts guessed_event_id
-
-          #attrs = {
-          #  canonical_transaction_id: ct.id,
-          #  event_id: guessed_event_id
-          #}
-          #::CanonicalEventMapping.create!(attrs)
+          attrs = {
+            canonical_transaction_id: ct.id,
+            event_id: guessed_event_id
+          }
+          ::CanonicalEventMapping.create!(attrs)
         end
       end
 
