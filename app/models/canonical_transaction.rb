@@ -17,6 +17,7 @@ class CanonicalTransaction < ApplicationRecord
   scope :likely_clearing_checks, -> { where("memo ilike '%Withdrawal - Inclearing Check #%' or memo ilike '%Withdrawal - On-Us Deposited Ite #%'") }
   scope :likely_checks, -> { where("memo ilike '%Check TO ACCOUNT REDACTED'") }
   scope :likely_achs, -> { where("memo ilike '%BUSBILLPAY%'") }
+  scope :likely_donations, -> { where("memo ilike '%Hack Club Bank Donate%' or memo ilike '%HACKC DONATE%'") }
   scope :likely_hack_club_fee, -> { where("memo ilike '%Hack Club Bank Fee TO ACCOUNT%'") }
   scope :stripe_top_up, -> { where("memo ilike '%Hack Club Bank Stripe Top%' or memo ilike '%HACKC Stripe Top%'") }
   scope :not_stripe_top_up, -> { where("(memo not ilike '%Hack Club Bank Stripe Top%' and memo not ilike '%HACKC Stripe Top%') or memo is null") }
