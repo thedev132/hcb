@@ -46,6 +46,10 @@ class CanonicalTransaction < ApplicationRecord
     friendly_memo || friendly_memo_in_memory_backup
   end
 
+  def likely_disbursement?
+    memo.to_s.upcase.include?("HCB DISBURSE")
+  end
+
   def likely_hack_club_fee?
     memo.to_s.upcase.include?("HACK CLUB BANK FEE TO ACCOUNT")
   end
