@@ -122,7 +122,18 @@
             <tr
               class="muted transaction--<%= pt.amount.negative? ? 'negative' : 'positive' %>">
               <td class="transaction__icon tooltipped tooltipped--e" aria-label="Bank account transaction">
-                <%= inline_icon 'send' %>
+                <% if pt.raw_pending_outgoing_check_transaction_id %>
+                  <%= inline_icon 'payment-transfer' %>
+                <% elsif pt.raw_pending_outgoing_ach_transaction_id %>
+                  <%= inline_icon 'payment-transfer' %>
+                <% elsif pt.raw_pending_invoice_transaction_id %>
+                  <%= inline_icon 'briefcase' %>
+                <% elsif pt.raw_pending_donation_transaction_id %>
+                  <%= inline_icon 'support' %>
+                <% elsif pt.raw_pending_stripe_transaction_id %>
+                  <%= inline_icon 'card' %>
+                <% else %>
+                <% end %>
               </td>
               <td>
                 <%= pt.date %>
@@ -155,9 +166,9 @@
                 <% elsif ct.raw_stripe_transaction %>
                   <%= inline_icon 'card' %>
                 <% elsif ct.invoice %>
-                  <%= inline_icon 'payment' %>
+                  <%= inline_icon 'briefcase' %>
                 <% elsif ct.donation %>
-                  <%= inline_icon 'payment' %>
+                  <%= inline_icon 'support' %>
                 <% elsif ct.disbursement %>
                   <% if ct.amount.negative? %>
                     <%= inline_icon 'door-leave' %>
