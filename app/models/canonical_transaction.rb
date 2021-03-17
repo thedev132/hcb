@@ -114,6 +114,12 @@ class CanonicalTransaction < ApplicationRecord
     hashed_transaction.raw_stripe_transaction
   end
 
+  def likely_waveable_for_fee?
+    likely_check_clearing_dda? ||
+      likely_card_transaction_refund? ||
+      likely_disbursement?
+  end
+
   # DEPRECATED
   def marked_no_or_lost_receipt_at=(v)
     v

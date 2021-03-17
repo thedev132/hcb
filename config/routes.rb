@@ -62,6 +62,7 @@ Rails.application.routes.draw do
 
   resources :admin, only: [] do
     collection do
+      get 'fees', to: 'admin#fees'
       get 'users', to: 'admin#users'
       get 'ledger', to: 'admin#ledger'
       get 'pending_ledger', to: 'admin#pending_ledger'
