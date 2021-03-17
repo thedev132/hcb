@@ -149,7 +149,23 @@ class Donation < ApplicationRecord
       StripeService::PaymentIntent.retrieve(id: stripe_payment_intent_id, expand: ['payment_method']).to_hash
   end
 
+  def canonical_pending_transaction
+    canonical_pending_transactions.first
+  end
+
   private
+
+  def canonical_pending_transactions
+    @canonical_pending_transactions ||= ::CanonicalPendingTransaction.where(raw_pending_donation_transaction_id: raw_pending_donation_transaction.id)
+  end
+
+  def raw_pending_donation_transaction
+    raw_pending_donation_transactions.first
+  end
+
+  def raw_pending_donation_transactions
+    @raw_pending_donation_transactions ||= ::RawPendingDonationTransaction.where(donation_transaction_id: id)
+  end
 
   def send_payment_notification_if_needed
     return unless saved_changes[:status].present?
