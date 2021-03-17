@@ -389,6 +389,7 @@ class AdminController < ApplicationController
     @q = params[:q].present? ? params[:q] : nil
     @deposited = params[:deposited] == "1" ? true : nil
     @in_transit = params[:in_transit] == "1" ? true : nil
+    @failed = params[:failed] == "1" ? true : nil
     @missing_payout = params[:missing_payout] == "1" ? true : nil
     @missing_fee_reimbursement = params[:missing_fee_reimbursement] == "1" ? true : nil
 
@@ -414,6 +415,7 @@ class AdminController < ApplicationController
 
     relation = relation.deposited if @deposited
     relation = relation.in_transit if @in_transit
+    relation = relation.failed if @failed
     relation = relation.missing_payout if @missing_payout
     relation = relation.missing_fee_reimbursement if @missing_fee_reimbursement
 

@@ -16,6 +16,11 @@
     In Transit
   <% end %>
   |
+  <%= form.label :failed do %>
+    <%= form.check_box :failed, checked: @failed %>
+    Failed
+  <% end %>
+  |
   <%= form.label :missing_payout do %>
     <%= form.check_box :missing_payout, checked: @missing_payout %>
     Missing Payout
