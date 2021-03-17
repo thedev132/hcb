@@ -38,7 +38,7 @@ class Donation < ApplicationRecord
     end
 
     event :mark_failed do
-      transitions from: :pending, to: :failed
+      transitions from: [:pending, :in_transit], to: :failed
     end
   end
 
