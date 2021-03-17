@@ -155,9 +155,9 @@
                 <% elsif ct.raw_stripe_transaction %>
                   <%= inline_icon 'card' %>
                 <% elsif ct.invoice %>
-                  <%= inline_icon 'docs' %>
+                  <%= inline_icon 'payment' %>
                 <% elsif ct.donation %>
-                  <%= inline_icon 'payment-docs' %>
+                  <%= inline_icon 'payment' %>
                 <% elsif ct.disbursement %>
                   <% if ct.amount.negative? %>
                     <%= inline_icon 'door-leave' %>
@@ -179,7 +179,7 @@
                 <%= list_badge_for ct.receipts.size, 'receipt', 'payment-docs', optional: true %>
               </td>
               <td class="nowrap">
-                <%= ct.amount %>
+                <span title="Fee <%= render_money ct.fees.sum(:amount_cents_as_decimal) %>"><%= ct.amount %></span>
               </td>
               <% if organizer_signed_in? %>
               <td>
