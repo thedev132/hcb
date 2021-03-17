@@ -27,6 +27,7 @@ class Donation < ApplicationRecord
     state :pending, initial: true
     state :in_transit
     state :deposited
+    state :failed
 
     event :mark_in_transit do
       transitions from: :pending, to: :in_transit
@@ -34,6 +35,10 @@ class Donation < ApplicationRecord
 
     event :mark_deposited do
       transitions from: :in_transit, to: :deposited
+    end
+
+    event :mark_failed do
+      transitions from: :pending, to: :failed
     end
   end
 
