@@ -65,7 +65,7 @@ class Donation < ApplicationRecord
   end
 
   def deposited_deprecated?
-    status == 'succeeded' && self&.payout&.t_transaction.present?
+    status == 'succeeded' && payout_id != nil #self&.payout&.t_transaction.present?
   end
 
   def pending_deprecated?
