@@ -186,6 +186,7 @@
         </tbody>
       </table>
     </div>
+    <%= paginate @transactions %>
   <% else %>
     <%= blankslate 'No transactions yet' %>
   <% end %>
