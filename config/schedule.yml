@@ -117,3 +117,9 @@ temp_job_sync_custom_memos_nightly:
   cron: "0 0 * * *" # run every 1 day
   class: "TempJob::SyncCustomMemosNightly"
   queue: "default"
+
+temp_mark_failed_donations:
+  cron: "0 0 1 1 *" # run January 1st
+  class: "TempJob::MarkFailedDonations"
+  queue: "default"
+
