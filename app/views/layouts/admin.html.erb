@@ -23,6 +23,8 @@
       |
       <%= link_to "events (#{Event.pending.count})", events_admin_index_path %>
       |
+      <%= link_to "fees", fees_admin_index_path %>
+      |
       <%= link_to "users", users_admin_index_path %>
       |
       <%= link_to "ledger (#{CanonicalTransaction.not_stripe_top_up.unmapped.count})", ledger_admin_index_path %>
