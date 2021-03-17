@@ -46,11 +46,7 @@
 <div class="statset">
   <div class="stat statset__wide">
     <span class="stat__label">Account balance</span>
-    <% if using_transaction_engine_v2? %>
     <span class="stat__value"><%= render_money_amount @event.balance_v2_cents %></span>
-    <% else %>
-    <span class="stat__value"><%= render_money_amount @event.balance %></span>
-    <% end %>
   </div>
   <%= async_frame_to event_dashboard_stats_path(@event), as: :div, class: 'grid grid--split', style: 'grid-column: span 2' do %>
     <action class="stat stat--small tooltipped tooltipped--s" aria-label="The amount that will be automatically deducted from your account balance">
@@ -67,17 +63,6 @@
       </span>
       <span class="stat__value">—</span>
     </action>
-  <% end %>
-
-  <% unless using_transaction_engine_v2? %>
-    <% admin_tools do %>
-    <div class="stat stat--small statset__wide">
-      <span class="stat__label flex items-center">
-        Emburse balance
-      </span>
-      <span class="stat__value"><%= render_money_amount @event.emburse_balance %></span>
-    </div>
-    <% end %>
   <% end %>
 </div>
 
@@ -137,7 +122,7 @@
             <tr
               class="muted transaction--<%= pt.amount.negative? ? 'negative' : 'positive' %>">
               <td class="transaction__icon tooltipped tooltipped--e" aria-label="Bank account transaction">
-                <%= inline_icon 'bank-account' %>
+                <%= inline_icon 'send' %>
               </td>
               <td>
                 <%= pt.date %>
@@ -161,7 +146,27 @@
             <tr
               class="transaction--<%= ct.amount.negative? ? 'negative' : 'positive' %>">
               <td class="transaction__icon tooltipped tooltipped--e" aria-label="Bank account transaction">
-                <%= inline_icon 'bank-account' %>
+                <% if ct.fee_payment? %>
+                  <%= inline_icon 'minue' %>
+                <% elsif ct.check %>
+                  <%= inline_icon 'payment-transfer' %>
+                <% elsif ct.ach_transfer %>
+                  <%= inline_icon 'payment-transfer' %>
+                <% elsif ct.raw_stripe_transaction %>
+                  <%= inline_icon 'card' %>
+                <% elsif ct.invoice %>
+                  <%= inline_icon 'docs' %>
+                <% elsif ct.donation %>
+                  <%= inline_icon 'payment-docs' %>
+                <% elsif ct.disbursement %>
+                  <% if ct.amount.negative? %>
+                    <%= inline_icon 'door-leave' %>
+                  <% else %>
+                    <%= inline_icon 'door-enter' %>
+                  <% end %>
+                <% else %>
+                  <%= inline_icon 'bank-account' %>
+                <% end %>
               </td>
               <td>
                 <%= ct.date %>

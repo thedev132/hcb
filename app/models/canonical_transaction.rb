@@ -167,6 +167,10 @@ class CanonicalTransaction < ApplicationRecord
     nil
   end
 
+  def donation
+    donation_payout.try(:donation)
+  end
+
   def donation_payout
     return linked_object.payout if linked_object.is_a?(Donation)
 
