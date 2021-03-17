@@ -6,7 +6,7 @@ module CanonicalTransactionService
     end
 
     def run
-      canonical_transaction.custom_memo = @custom_memo.blank? ? nil : @custom_memo.upcase.strip
+      canonical_transaction.custom_memo = @custom_memo.blank? ? nil : @custom_memo.strip
       canonical_transaction.save!
     end
 

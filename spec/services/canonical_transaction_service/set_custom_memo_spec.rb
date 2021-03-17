@@ -17,10 +17,10 @@ RSpec.describe CanonicalTransactionService::SetCustomMemo, type: :model do
 
   let(:service) { CanonicalTransactionService::SetCustomMemo.new(attrs) }
 
-  it "sets custom memo (as upcase)" do
+  it "sets custom memo" do
     service.run
 
-    expect(canonical_transaction.reload.custom_memo).to eql("CUSTOM MEMO")
+    expect(canonical_transaction.reload.custom_memo).to eql("Custom Memo")
   end
 
   context "custom memo is empty string" do
