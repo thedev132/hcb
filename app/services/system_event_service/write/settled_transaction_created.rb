@@ -28,10 +28,12 @@ module SystemEventService
 
       def properties
         {
-          id: @canonical_transaction.id,
-          date: @canonical_transaction.date,
-          memo: @canonical_transaction.memo,
-          amount_cents: @canonical_transaction.amount_cents
+          canonical_transaction: {
+            id: @canonical_transaction.id,
+            date: @canonical_transaction.date,
+            memo: @canonical_transaction.memo,
+            amount_cents: @canonical_transaction.amount_cents
+          }
         }
       end
     end

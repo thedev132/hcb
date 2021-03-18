@@ -62,6 +62,7 @@ Rails.application.routes.draw do
 
   resources :admin, only: [] do
     collection do
+      get 'fees', to: 'admin#fees'
       get 'users', to: 'admin#users'
       get 'ledger', to: 'admin#ledger'
       get 'pending_ledger', to: 'admin#pending_ledger'
@@ -88,6 +89,8 @@ Rails.application.routes.draw do
       post 'check_mark_in_transit_and_processed', to: 'admin#check_mark_in_transit_and_processed'
       get 'google_workspace_process', to: 'admin#google_workspace_process'
       post 'google_workspace_update', to: 'admin#google_workspace_update'
+      get 'invoice_process', to: 'admin#invoice_process'
+      post 'invoice_mark_paid', to: 'admin#invoice_mark_paid'
     end
   end
 

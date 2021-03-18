@@ -253,7 +253,7 @@ class Transaction < ApplicationRecord
     if potential_fee_reimbursement?
       #try_pair_fee_reimbursement
     elsif potential_donation_payout?
-      try_pair_donation
+      #try_pair_donation
     elsif potential_fee_payment?
       try_pair_fee_payment
     elsif potential_invoice_payout?

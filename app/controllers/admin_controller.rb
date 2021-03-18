@@ -94,7 +94,10 @@ class AdminController < ApplicationController
   def transaction
     @canonical_transaction = CanonicalTransaction.find(params[:id])
 
+    @potential_invoices = Invoice.open.where("created_at <= ? and amount_due = ?", @canonical_transaction.date, @canonical_transaction.amount_cents).order("created_at desc")
+
     @canonical_pending_transactions = CanonicalPendingTransaction.unmapped.where(amount_cents: @canonical_transaction.amount_cents)
+    @ahoy_events = Ahoy::Event.where("name in (?) and (properties->'canonical_transaction'->>'id')::int = ?", [::SystemEventService::Write::SettledTransactionMapped::NAME, ::SystemEventService::Write::SettledTransactionCreated::NAME], @canonical_transaction.id).order("time desc")
 
     render layout: "admin"
   end
@@ -129,6 +132,34 @@ class AdminController < ApplicationController
     render layout: "admin"
   end
 
+  def fees
+    @page = params[:page] || 1
+    @per = params[:per] || 100
+    @hack_club_fee = params[:hack_club_fee] == "1" ? true : nil
+    @exclude_free_events = params[:exclude_free_events] == "1" ? true : nil
+    @exclude_outflows = params[:exclude_outflows] == "1" ? true : nil
+    @event_id = params[:event_id].present? ? params[:event_id] : nil
+
+    if @event_id
+      @event = Event.find(@event_id)
+
+      relation = @event.fees.includes(canonical_event_mapping: :canonical_transaction)
+    else
+      relation = Fee.includes(canonical_event_mapping: :canonical_transaction)
+    end
+
+    relation = relation.hack_club_fee if @hack_club_fee
+    relation = relation.exclude_free_events if @exclude_free_events
+    relation = relation.exclude_outflows if @exclude_outflows
+
+    @count = relation.count
+    @sum = relation.sum(:amount_cents_as_decimal)
+
+    @fees = relation.page(@page).per(@per).order("canonical_transactions.date desc, canonical_transactions.id desc")
+
+    render layout: "admin"
+  end
+
   def users
     @page = params[:page] || 1
     @per = params[:per] || 100
@@ -158,6 +189,7 @@ class AdminController < ApplicationController
     @q = params[:q].present? ? params[:q] : nil
     @unmapped = params[:unmapped] == "1" ? true : nil
     @exclude_top_ups = params[:exclude_top_ups] == "1" ? true : nil
+    @mapped_by_human = params[:mapped_by_human] == "1" ? true : nil
     @event_id = params[:event_id].present? ? params[:event_id] : nil
 
     if @event_id
@@ -187,6 +219,7 @@ class AdminController < ApplicationController
 
     relation = relation.unmapped if @unmapped
     relation = relation.not_stripe_top_up if @exclude_top_ups
+    relation = relation.mapped_by_human if @mapped_by_human
 
     @count = relation.count
 
@@ -382,8 +415,10 @@ class AdminController < ApplicationController
     @page = params[:page] || 1
     @per = params[:per] || 20
     @q = params[:q].present? ? params[:q] : nil
-    @succeeded = params[:succeeded] == "1" ? true : nil
-    @exclude_requires_payment_method = params[:exclude_requires_payment_method] == "1" ? true : nil
+    @deposited = params[:deposited] == "1" ? true : nil
+    @in_transit = params[:in_transit] == "1" ? true : nil
+    @failed = params[:failed] == "1" ? true : nil
+    @missing_payout = params[:missing_payout] == "1" ? true : nil
     @missing_fee_reimbursement = params[:missing_fee_reimbursement] == "1" ? true : nil
 
     @event_id = params[:event_id].present? ? params[:event_id] : nil
@@ -406,8 +441,10 @@ class AdminController < ApplicationController
       end
     end
 
-    relation = relation.succeeded if @succeeded
-    relation = relation.exclude_requires_payment_method if @exclude_requires_payment_method
+    relation = relation.deposited if @deposited
+    relation = relation.in_transit if @in_transit
+    relation = relation.failed if @failed
+    relation = relation.missing_payout if @missing_payout
     relation = relation.missing_fee_reimbursement if @missing_fee_reimbursement
 
     @count = relation.count
@@ -508,6 +545,26 @@ class AdminController < ApplicationController
     render layout: "admin"
   end
 
+  def invoice_process
+    @invoice = Invoice.find(params[:id])
+
+    render layout: "admin"
+  end
+
+  def invoice_mark_paid
+    @invoice = Invoice.open.find(params[:id])
+
+    attrs = {
+      invoice_id: @invoice.id,
+      reason: params[:reason],
+      attachment: params[:attachment],
+      user: current_user
+    }
+    ::InvoiceService::MarkPaid.new(attrs).run
+
+    redirect_to invoices_admin_index_path, flash: { success: "Success" }
+  end
+
   def sponsors
     @page = params[:page] || 1
     @per = params[:per] || 20
@@ -578,7 +635,7 @@ class AdminController < ApplicationController
   end
 
   def set_event
-    @canonical_transaction = ::CanonicalTransactionService::SetEvent.new(canonical_transaction_id: params[:id], event_id: params[:event_id]).run
+    @canonical_transaction = ::CanonicalTransactionService::SetEvent.new(canonical_transaction_id: params[:id], event_id: params[:event_id], user: current_user).run
 
     redirect_to transaction_admin_path(@canonical_transaction)
   end

@@ -4,7 +4,6 @@
 <%= render 'events/nav' %>
 
 <% admin_tools('mt3') do %>
-  <%= link_to 'Manually mark as paid', invoice_manual_payment_path(@invoice), class: 'btn bg-success mr2' unless @invoice.paid? %>
   <%= link_to 'View on Stripe', @invoice.stripe_dashboard_url, class: 'btn bg-accent' %>
 <% end %>
 

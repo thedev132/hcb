@@ -78,30 +78,6 @@ class InvoicesController < ApplicationController
     authorize @invoice
   end
 
-  # form for manually marking invoices as paid
-  def manual_payment
-    @invoice = Invoice.friendly.find(params[:invoice_id])
-
-    authorize @invoice
-  end
-
-  # actual action for manually marking invoices as paid
-  def manually_mark_as_paid
-    @invoice = Invoice.friendly.find(params[:invoice_id])
-
-    authorize @invoice
-
-    reason = params[:manually_marked_as_paid_reason]
-    attachment = params[:manually_marked_as_paid_attachment]
-
-    if @invoice.manually_mark_as_paid(current_user, reason, attachment)
-      flash[:success] = 'Manually marked invoice as paid'
-      redirect_to @invoice
-    else
-      render :manual_payment
-    end
-  end
-
   def archive
     @invoice = Invoice.friendly.find(params[:invoice_id])
 

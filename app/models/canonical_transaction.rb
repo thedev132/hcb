@@ -7,19 +7,23 @@ class CanonicalTransaction < ApplicationRecord
 
   scope :unmapped, -> { includes(:canonical_event_mapping).where(canonical_event_mappings: {canonical_transaction_id: nil}) }
   scope :mapped, -> { includes(:canonical_event_mapping).where.not(canonical_event_mappings: {canonical_transaction_id: nil}) }
+  scope :missing_pending, -> { includes(:canonical_pending_settled_mapping).where(canonical_pending_settled_mappings: {canonical_transaction_id: nil}) }
+  scope :has_pending, -> { includes(:canonical_pending_settled_mapping).where.not(canonical_pending_settled_mappings: {canonical_transaction_id: nil}) }
 
   scope :revenue, -> { where("amount_cents > 0") }
   scope :expense, -> { where("amount_cents < 0") }
 
-  scope :likely_hack_club_bank_issued_cards, -> { where("memo ilike 'Hack Club Bank Issued car'") }
+  scope :likely_hack_club_bank_issued_cards, -> { where("memo ilike 'Hack Club Bank Issued car%'") }
   scope :likely_fee_reimbursements, -> { where("memo ilike 'FEE REFUND%FROM ACCOUNT REDACTED'") }
   scope :likely_github, -> { where("memo ilike '%github grant%'") }
   scope :likely_clearing_checks, -> { where("memo ilike '%Withdrawal - Inclearing Check #%' or memo ilike '%Withdrawal - On-Us Deposited Ite #%'") }
   scope :likely_checks, -> { where("memo ilike '%Check TO ACCOUNT REDACTED'") }
   scope :likely_achs, -> { where("memo ilike '%BUSBILLPAY%'") }
+  scope :likely_donations, -> { where("memo ilike '%Hack Club Bank Donate%' or memo ilike '%HACKC DONATE%'") }
   scope :likely_hack_club_fee, -> { where("memo ilike '%Hack Club Bank Fee TO ACCOUNT%'") }
   scope :stripe_top_up, -> { where("memo ilike '%Hack Club Bank Stripe Top%' or memo ilike '%HACKC Stripe Top%'") }
   scope :not_stripe_top_up, -> { where("(memo not ilike '%Hack Club Bank Stripe Top%' and memo not ilike '%HACKC Stripe Top%') or memo is null") }
+  scope :mapped_by_human, -> { includes(:canonical_event_mapping).where("canonical_event_mappings.user_id is not null").references(:canonical_event_mapping) }
 
   monetize :amount_cents
 
@@ -42,6 +46,10 @@ class CanonicalTransaction < ApplicationRecord
 
   def less_smart_memo
     friendly_memo || friendly_memo_in_memory_backup
+  end
+
+  def likely_disbursement?
+    memo.to_s.upcase.include?("HCB DISBURSE")
   end
 
   def likely_hack_club_fee?
@@ -108,6 +116,12 @@ class CanonicalTransaction < ApplicationRecord
     hashed_transaction.raw_stripe_transaction
   end
 
+  def likely_waveable_for_fee?
+    likely_check_clearing_dda? ||
+      likely_card_transaction_refund? ||
+      likely_disbursement?
+  end
+
   # DEPRECATED
   def marked_no_or_lost_receipt_at=(v)
     v
@@ -159,6 +173,10 @@ class CanonicalTransaction < ApplicationRecord
     return linked_object if linked_object.is_a?(AchTransfer)
 
     nil
+  end
+
+  def donation
+    donation_payout.try(:donation)
   end
 
   def donation_payout

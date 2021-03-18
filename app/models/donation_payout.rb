@@ -7,6 +7,8 @@ class DonationPayout < ApplicationRecord
 
   # find donation payouts that don't yet have an associated transaction
   scope :lacking_transaction, -> { includes(:t_transaction).where(transactions: { donation_payout_id: nil }) }
+  scope :in_transit, -> { where(status: "in_transit") }
+  scope :paid, -> { where(status: "paid") }
 
   # although it normally doesn't make sense for a paynot not to be linked to an donation,
   # Stripe's schema makes this possible, and when that happens, requiring donation<>payout breaks bank

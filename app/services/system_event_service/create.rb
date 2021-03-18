@@ -4,7 +4,8 @@ module SystemEventService
   class Create
     VALID_EVENT_NAMES = [
       SystemEventService::Write::PendingTransactionCreated::NAME,
-      SystemEventService::Write::SettledTransactionCreated::NAME
+      SystemEventService::Write::SettledTransactionCreated::NAME,
+      SystemEventService::Write::SettledTransactionMapped::NAME
     ]
 
     def initialize(name:, properties:)
@@ -23,7 +24,8 @@ module SystemEventService
     def attrs
       {
         name: @name,
-        properties: @properties
+        properties: @properties,
+        time: Time.now
       }
     end
 

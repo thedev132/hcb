@@ -41,7 +41,7 @@ class SyncTransactionsJob < ApplicationJob
             bank_account: bank_account,
             plaid_category_id: t.category_id,
             name: t.name,
-            amount: -BigDecimal.new(t.amount.to_s) * 100, # convert to cents & reverse negativity
+            amount: -BigDecimal(t.amount.to_s) * 100, # convert to cents & reverse negativity
             date: t.date,
             location_address: t.location&.address,
             location_city: t.location&.city,

@@ -1,32 +1,27 @@
 module DonationService
   class Nightly
-    def initialize
-    end
-
     def run
-      ids = []
-      Donation.not_succeeded.find_each(batch_size: 100) do |d|
-        status = fetch_status(donation: d)
+      # TODO: 
+      Donation.succeeded.each do |donation|
+        next unless donation.deposited? # temporary until aasm fully worked out and can settle on in_transit
 
-        if d.status != status
-          puts "=" * 50
-          puts d.id
+        cpt = donation.canonical_pending_transaction
 
-          ids.push(d.id)
+        next unless cpt
+        next unless cpt.settled?
+
+        raise ArgumentError, "anomaly detected when attempting to mark deposited donation #{donation.id}" if anomaly_detected?(donation: donation)
+
+        begin
+          donation.mark_deposited!
+        rescue => e
+          Airbrake.notify(e)
         end
       end
-
-      ids
     end
 
-    private
-
-    def fetch_status(donation:)
-      remote_payment_intent(donation: donation).status
-    end
-
-    def remote_payment_intent(donation:)
-      ::Partners::Stripe::PaymentIntents::Show.new(id: donation.stripe_payment_intent_id).run
+    def anomaly_detected?(donation:)
+      ::PendingEventMappingEngine::AnomalyDetection::BadSettledMapping.new(canonical_pending_transaction: donation.canonical_pending_transaction).run
     end
   end
 end

@@ -30,6 +30,6 @@ class FeeRelationship < ApplicationRecord
   def fee_percent
     return nil unless self.fee_applies
 
-    self.fee_amount / BigDecimal.new(self.t_transaction.amount)
+    self.fee_amount / BigDecimal(self.t_transaction.amount)
   end
 end

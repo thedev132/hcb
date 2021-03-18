@@ -47,14 +47,6 @@ class Invoice < ApplicationRecord
   validates_absence_of :manually_marked_as_paid_user, :manually_marked_as_paid_reason,
                        if: -> { self.manually_marked_as_paid_at.nil? }
 
-  # all payout_creation... fields must be present all together or not at all
-  validates_presence_of :payout_creation_queued_for,
-                        :payout_creation_queued_job_id, :payout_creation_balance_available_at,
-                        if: -> { !self.payout_creation_queued_at.nil? }
-  validates_absence_of :payout_creation_queued_for,
-                       :payout_creation_queued_job_id, :payout_creation_balance_available_at,
-                       if: -> { self.payout_creation_queued_at.nil? }
-
   validate :due_date_cannot_be_in_past, on: :create
 
   validates :item_amount, numericality: { greater_than_or_equal_to: 100 }
@@ -138,35 +130,6 @@ class Invoice < ApplicationRecord
     }
   end
 
-  # Manually mark this invoice as paid (probably in the case of a physical
-  # check being sent to pay it). This marks the corresponding payment on Stripe
-  # as paid and stores some metadata about why it was marked as paid.
-  def manually_mark_as_paid(user_who_did_it, reason_for_manual_payment, attachment = nil)
-    self.manually_marked_as_paid_at = Time.current
-    self.manually_marked_as_paid_user = user_who_did_it
-    self.manually_marked_as_paid_reason = reason_for_manual_payment
-    self.manually_marked_as_paid_attachment = attachment
-
-    return false unless valid?
-
-    inv = StripeService::Invoice.retrieve(stripe_invoice_id)
-    inv.paid = true
-
-    if inv.save
-      self.set_fields_from_stripe_invoice(inv)
-
-      if self.save
-        true
-      else
-        false
-      end
-    else
-      errors.add(:base, 'failed to save with vendor')
-
-      false
-    end
-  end
-
   def set_fields_from_stripe_invoice(inv)
     self.amount_due = inv.amount_due
     self.amount_paid = inv.amount_paid
@@ -235,6 +198,10 @@ class Invoice < ApplicationRecord
 
   def stripe_obj
     @stripe_invoice_obj ||= StripeService::Invoice.retrieve(stripe_invoice_id).to_hash
+  end
+
+  def remote_invoice
+    @remote_invoice ||= ::Partners::Stripe::Invoices::Show.new(id: stripe_invoice_id).run
   end
 
   private

@@ -7,6 +7,9 @@ class Fee < ApplicationRecord
 
   scope :hack_club_fee, -> { where(reason: "HACK CLUB FEE") }
   scope :greater_than_0, -> { where("amount_cents_as_decimal > 0") }
+  scope :exclude_free_events, -> { where("event_sponsorship_fee > 0") }
+  scope :exclude_outflows, -> { where("canonical_transactions.amount_cents > 0") }
+  scope :exclude_outflows, -> { includes(canonical_event_mapping: :canonical_transaction).where("canonical_transactions.amount_cents > 0").references(canonical_event_mapping: :canonical_transaction) }
 
   def revenue_waived?
     reason == "REVENUE WAIVED"
@@ -42,5 +45,9 @@ class Fee < ApplicationRecord
 
   def canonical_transaction
     @canonical_transaction ||= canonical_event_mapping.canonical_transaction
+  end
+
+  def anomaly?
+    amount_cents_as_decimal > 0 && canonical_transaction.likely_waveable_for_fee?
   end
 end

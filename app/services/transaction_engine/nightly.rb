@@ -25,6 +25,9 @@ module TransactionEngine
 
       # 4 plaid mistakes
       fix_plaid_mistakes!
+
+      # 5 fix memo mistakes
+      fix_memo_mistakes!
     end
 
     private
@@ -94,6 +97,10 @@ module TransactionEngine
       BankAccount.syncing_v2.pluck(:id).each do |bank_account_id|
         ::TransactionEngine::FixMistakes::Plaid.new(bank_account_id: bank_account_id, start_date: @start_date, end_date: nil).run
       end
+    end
+
+    def fix_memo_mistakes!
+      ::TransactionEngine::FixMistakes::Memos.new(start_date: @start_date).run
     end
   end
 end

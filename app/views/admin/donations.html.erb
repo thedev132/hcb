@@ -6,14 +6,24 @@
 
 <%= form_with local: true, url: donations_admin_index_path, method: :get do |form| %>
   <%= form.text_field :q, value: params[:q] %>
-  <%= form.label :succeeded do %>
-    <%= form.check_box :succeeded, checked: @succeeded %>
-    Succeeded
+  <%= form.label :deposited do %>
+    <%= form.check_box :deposited, checked: @deposited %>
+    Deposited
   <% end %>
   |
-  <%= form.label :exclude_requires_payment_method do %>
-    <%= form.check_box :exclude_requires_payment_method, checked: @exclude_requires_payment_method %>
-    Exclude REQUIRES_PAYMENT_METHOD
+  <%= form.label :in_transit do %>
+    <%= form.check_box :in_transit, checked: @in_transit %>
+    In Transit
+  <% end %>
+  |
+  <%= form.label :failed do %>
+    <%= form.check_box :failed, checked: @failed %>
+    Failed
+  <% end %>
+  |
+  <%= form.label :missing_payout do %>
+    <%= form.check_box :missing_payout, checked: @missing_payout %>
+    Missing Payout
   <% end %>
   |
   <%= form.label :missing_fee_reimbursement do %>
@@ -38,13 +48,14 @@
       <th>Recipient</th>
       <th>Amount</th>
       <th>Status</th>
+      <th>PayoutId</th>
       <th>FeeReimbursementId</th>
       <th>Actions</th>
     </tr>
   </thead>
   <tbody>
     <% @donations.each do |donation| %>
-      <tr style="<%= "background: #ffffcc;" if donation.pending? %>">
+      <tr style="<%= "background: #ccccff;" if donation.in_transit? %>">
         <td><%= donation.id %></td>
         <td><%= donation.created_at.strftime("%Y-%m-%d") %></td>
         <td>
@@ -53,7 +64,8 @@
           <% end %>
         </td>
         <td><%= render_money_amount(donation.amount) %></td>
-        <td><%= donation.status.upcase %></td>
+        <td><%= donation.aasm_state.upcase %></td>
+        <td><%= donation.payout_id %></td>
         <td><%= donation.fee_reimbursement_id %></td>
         <td>
         </td>

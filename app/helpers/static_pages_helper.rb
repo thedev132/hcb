@@ -142,7 +142,7 @@ module StaticPagesHelper
         "Running with Ruby on Rails 6",
         "Running on Rails on Ruby",
         "Try saying that 5 times fast!",
-        "Try saying it bakwards 3 times fast!",
+        "Try saying it backwards 3 times fast!",
         "Now with 0% interest!",
         "0% interest, but we still think you're interesting",
         "Your project is interesting, even if it gets 0% interest",
