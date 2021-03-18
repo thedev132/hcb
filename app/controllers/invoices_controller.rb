@@ -24,10 +24,10 @@ class InvoicesController < ApplicationController
     amount_in_transit = @invoices_in_transit.sum(&:amount_paid)
 
     @stats = {
-      total: @invoices.unarchived.sum(:item_amount),
+      total: @invoices.sum(:item_amount),
       # "paid" status invoices include manually paid invoices and
       # Stripe invoices that are paid, but for which the funds are in transit
-      paid: @invoices.unarchived.paid.sum(:item_amount) - amount_in_transit,
+      paid: @invoices.paid.sum(:item_amount) - amount_in_transit,
       pending: amount_in_transit,
     }
   end
