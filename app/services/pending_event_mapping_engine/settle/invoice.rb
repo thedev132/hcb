@@ -41,6 +41,8 @@ module PendingEventMappingEngine
               cts = event.canonical_transactions.where("memo ilike 'HACK CLUB EVENT TRANSFER PAYOUT - #{prefix}%'and date > '#{invoice.created_at.strftime("%Y-%m-%d")}'")
             end
 
+            cts = event.canonical_transactions.missing_pending.where("amount_cents = ? and date > ?", cpt.amount_cents, cpt.date) unless cts.present? # see example canonical transaction 198588
+
             next if cts.count < 1 # no match found yet. not processed.
             Airbrake.notify("matched more than 1 canonical transaction for canonical pending transaction #{cpt.id}") if cts.count > 1
             ct = cts.first

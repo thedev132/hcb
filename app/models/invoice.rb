@@ -200,6 +200,10 @@ class Invoice < ApplicationRecord
     @stripe_invoice_obj ||= StripeService::Invoice.retrieve(stripe_invoice_id).to_hash
   end
 
+  def remote_invoice
+    @remote_invoice ||= ::Partners::Stripe::Invoices::Show.new(id: stripe_invoice_id).run
+  end
+
   private
 
   def set_defaults
