@@ -47,14 +47,6 @@ class Invoice < ApplicationRecord
   validates_absence_of :manually_marked_as_paid_user, :manually_marked_as_paid_reason,
                        if: -> { self.manually_marked_as_paid_at.nil? }
 
-  # all payout_creation... fields must be present all together or not at all
-  validates_presence_of :payout_creation_queued_for,
-                        :payout_creation_queued_job_id, :payout_creation_balance_available_at,
-                        if: -> { !self.payout_creation_queued_at.nil? }
-  validates_absence_of :payout_creation_queued_for,
-                       :payout_creation_queued_job_id, :payout_creation_balance_available_at,
-                       if: -> { self.payout_creation_queued_at.nil? }
-
   validate :due_date_cannot_be_in_past, on: :create
 
   validates :item_amount, numericality: { greater_than_or_equal_to: 100 }
