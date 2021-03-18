@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_07_000828) do
+ActiveRecord::Schema.define(version: 2021_03_18_184259) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -1010,7 +1010,7 @@ ActiveRecord::Schema.define(version: 2021_03_07_000828) do
     t.datetime "admin_at"
     t.string "slug"
     t.boolean "pretend_is_not_admin", default: false, null: false
-    t.boolean "sessions_reported", default: true, null: false
+    t.boolean "sessions_reported", default: false, null: false
     t.index ["api_access_token"], name: "index_users_on_api_access_token", unique: true
     t.index ["api_id"], name: "index_users_on_api_id", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
