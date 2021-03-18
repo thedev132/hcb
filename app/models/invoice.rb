@@ -2,6 +2,7 @@ class Invoice < ApplicationRecord
   has_paper_trail
 
   extend FriendlyId
+  include AASM
   include Commentable
 
   include PgSearch::Model
@@ -30,22 +31,33 @@ class Invoice < ApplicationRecord
 
   has_one_attached :manually_marked_as_paid_attachment
 
+  aasm do
+    state :draft_v2, initial: true
+    state :open_v2
+    state :paid_v2
+    state :void_v2
+
+    event :mark_open do
+      transitions from: :draft_v2, to: :open_v2
+    end
+
+    event :mark_paid do
+      transitions from: :open_v2, to: :paid_v2
+    end
+
+    event :mark_void do
+      transitions from: :open_v2, to: :void_v2
+    end
+  end
+
   enum status: {
     draft: 'draft',
     open: 'open',
     paid: 'paid',
-    void: 'void',
-    uncollectible: 'uncollectible'
+    void: 'void'
   }
 
   validates_presence_of :item_description, :item_amount, :due_date
-
-  # all manually_marked_as_paid_... fields must be present all together or not
-  # present at all
-  validates_presence_of :manually_marked_as_paid_user, :manually_marked_as_paid_reason,
-                        if: -> { !self.manually_marked_as_paid_at.nil? }
-  validates_absence_of :manually_marked_as_paid_user, :manually_marked_as_paid_reason,
-                       if: -> { self.manually_marked_as_paid_at.nil? }
 
   validate :due_date_cannot_be_in_past, on: :create
 
@@ -57,7 +69,7 @@ class Invoice < ApplicationRecord
   before_create :create_stripe_invoice
   before_destroy :close_stripe_invoice
 
-  after_update :send_payment_notification_if_needed
+  #after_update :send_payment_notification_if_needed # turn off temporarily
 
   def event
     sponsor.event
