@@ -41,25 +41,48 @@ class InvoicesController < ApplicationController
   end
 
   def create
-    invoice_params = filtered_params.except(:action, :controller, :sponsor_attributes)
-    invoice_params[:item_amount] = (filtered_params[:item_amount].gsub(',', '').to_f * 100.to_i)
+    sponsor_attrs = filtered_params[:sponsor_attributes]
 
-    @event = Event.friendly.find params[:event_id]
-    sponsor_attributes = filtered_params[:sponsor_attributes].merge(event: @event)
+    due_date = Date::civil(filtered_params["due_date(1i)"].to_i, 
+                           filtered_params["due_date(2i)"].to_i, 
+                           filtered_params["due_date(3i)"].to_i)
 
-    @sponsor = Sponsor.friendly.find_or_initialize_by(id: sponsor_attributes[:id], event: @event)
-    @invoice = Invoice.new(invoice_params)
-    @invoice.sponsor = @sponsor
-    @invoice.creator = current_user
+    byebug
 
-    authorize @invoice
+    attrs = {
+      event_id: params[:event_id],
+      sponsor_id: sponsor_attrs[:id],
+      due_date: due_date,
+      item_description: filtered_params[:item_description],
+      item_amount: filtered_params[:item_amount],
+      current_user: current_user
+    }
+    @invoice = ::InvoiceService::Create.new(attrs).run
 
-    if @sponsor.update(sponsor_attributes) && @invoice.save
-      flash[:success] = "Invoice successfully created and emailed to #{@invoice.sponsor.contact_email}."
-      redirect_to @invoice
-    else
-      render :new
-    end
+    flash[:success] = "Invoice successfully created and emailed to #{@invoice.sponsor.contact_email}."
+
+    redirect_to @invoice
+  rescue => e
+    # TODO: flash error
+
+    raise e
+
+    #deprecated
+    #invoice_params = filtered_params.except(:action, :controller, :sponsor_attributes)
+    #invoice_params[:item_amount] = (filtered_params[:item_amount].gsub(',', '').to_f * 100.to_i)
+    #@event = Event.friendly.find params[:event_id]
+    #sponsor_attributes = filtered_params[:sponsor_attributes].merge(event: @event)
+    #@sponsor = Sponsor.friendly.find_or_initialize_by(id: sponsor_attributes[:id], event: @event)
+    #@invoice = Invoice.new(invoice_params)
+    #@invoice.sponsor = @sponsor
+    #@invoice.creator = current_user
+    #authorize @invoice
+    #if @sponsor.update(sponsor_attributes) && @invoice.save
+    #  flash[:success] = "Invoice successfully created and emailed to #{@invoice.sponsor.contact_email}."
+    #  redirect_to @invoice
+    #else
+    #  render :new
+    #end
   end
 
   def show
