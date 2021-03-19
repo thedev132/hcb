@@ -163,6 +163,7 @@ module StaticPagesHelper
         "Financially positive!",
         "Condemned by Wall Street",
         "Condemned by the finance pope",
+        "Condemned by the Space Pope",
         "Condemned by the sheriff of money",
         "Checkmate, Capitalists!",
         "all your bank are belong to us",
