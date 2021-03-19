@@ -156,7 +156,7 @@ module StaticPagesHelper
         "If you can read this, the page has loaded",
         "Now go and buy yourself something nice",
         "[Insert splash text here]",
-        "<script>alert(1);</script>"
+        "<img src='https://cloud-cno1f4man-hack-club-bot.vercel.app/0zcbx5dwld8161.png' style='transform:translateX(-1rem);width:2rem;height:auto;margin-right:-1.4em;'>"
       ].sample
     end
   end
