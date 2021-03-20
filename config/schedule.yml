@@ -78,9 +78,9 @@ check_lob_url_assign_having_lob_id_job:
   class: "CheckJob::LobUrl::AssignHavingLobId"
   queue: "default"
 
-invoice_nightly_job:
-  cron: "*/30 * * * *" # run every 30 minutes
-  class: "InvoiceJob::Nightly"
+invoice_opens_to_paids_job:
+  cron: "*/10 * * * *" # run every 10 minutes
+  class: "InvoiceJob::OpensToPaids"
   queue: "default"
 
 donation_nightly_job:

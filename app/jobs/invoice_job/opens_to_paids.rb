@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 module InvoiceJob
-  class Nightly < ApplicationJob
+  class OpensToPaids < ApplicationJob
     def perform
-      ::InvoiceService::Nightly.new.run
+      ::InvoiceService::OpensToPaids.new.run
     end
   end
 end
