@@ -535,8 +535,8 @@ class AdminController < ApplicationController
       end
     end
 
-    relation = relation.open if @open
-    relation = relation.paid if @paid
+    relation = relation.open_v2 if @open
+    relation = relation.paid_v2 if @paid
     relation = relation.missing_fee_reimbursement if @missing_fee_reimbursement
 
     @count = relation.count

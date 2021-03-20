@@ -13,7 +13,7 @@ module InvoiceService
         ActiveRecord::Base.connection do
           i.sync_from_remote!
 
-          if i.reload.paid?
+          if i.reload.paid_v2?
             raise NoAssociatedStripeCharge if i.remote_invoice.charge.nil?
 
             b_tnx = i.remote_invoice.charge.balance_transaction

@@ -5,7 +5,7 @@ module PayoutService
         ::PayoutService::Donation::Create.new(donation_id: donation.id).run
       end
 
-      ::Invoice.paid.where("payout_id is null and payout_creation_balance_net is not null").each do |invoice|
+      ::Invoice.paid_v2.missing_payout.each do |invoice|
         ::PayoutService::Invoice::Create.new(invoice_id: invoice.id).run
       end
     end
