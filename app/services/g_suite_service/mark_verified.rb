@@ -23,9 +23,7 @@ module GSuiteService
     def verified_on_google?
       ::Partners::Google::GSuite::Domain.new(domain: g_suite.domain).run.verified
     rescue ::Google::Apis::ClientError => e
-      Airbrake.notify("g_suite_id: #{g_suite.id} errored on remote GSuite Domain verification. #{e.message}")
-
-      raise e
+      false
     end
 
     def g_suite
