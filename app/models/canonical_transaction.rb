@@ -9,6 +9,7 @@ class CanonicalTransaction < ApplicationRecord
   scope :mapped, -> { includes(:canonical_event_mapping).where.not(canonical_event_mappings: {canonical_transaction_id: nil}) }
   scope :missing_pending, -> { includes(:canonical_pending_settled_mapping).where(canonical_pending_settled_mappings: {canonical_transaction_id: nil}) }
   scope :has_pending, -> { includes(:canonical_pending_settled_mapping).where.not(canonical_pending_settled_mappings: {canonical_transaction_id: nil}) }
+  scope :missing_hcb_code, -> { where(hcb_code: nil) }
 
   scope :revenue, -> { where("amount_cents > 0") }
   scope :expense, -> { where("amount_cents < 0") }
