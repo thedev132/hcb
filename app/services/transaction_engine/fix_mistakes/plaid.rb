@@ -20,8 +20,6 @@ module TransactionEngine
           ::RawPlaidTransactionService::Delete.new(raw_plaid_transaction_id: rpt.id).run
         end
 
-        Airbrake.notify("Plaid Mistakes: #{plaid_transaction_ids_that_were_deleted_remotely_by_plaid}")
-
         plaid_transaction_ids_that_were_deleted_remotely_by_plaid
       end
 
