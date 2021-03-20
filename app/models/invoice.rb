@@ -230,6 +230,10 @@ class Invoice < ApplicationRecord
     fee_reimbursement.try(:canonical_transaction)
   end
 
+  def memo
+    sponsor.name.upcase
+  end
+
   private
 
   def canonical_pending_transactions

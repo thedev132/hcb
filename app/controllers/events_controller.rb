@@ -46,7 +46,8 @@ class EventsController < ApplicationController
 
     @organizers = @event.organizer_positions.includes(:user)
     @pending_transactions = _show_pending_transactions
-    @transactions = paginate(_show_transactions, per_page: 100)
+    @transactions_flat = [] #paginate(_show_transactions, per_page: 100)
+    @transactions = paginate(TransactionGroupingEngine::Transaction::All.new(event_id: @event.id).run, per_page: 20)
   end
 
   def fees

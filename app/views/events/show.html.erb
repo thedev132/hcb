@@ -165,6 +165,54 @@
                   <%= inline_icon 'payment-transfer' %>
                 <% elsif ct.raw_stripe_transaction %>
                   <%= inline_icon 'card' %>
+                <% elsif ct.invoice? %>
+                  <%= inline_icon 'briefcase' %>
+                <% elsif ct.donation %>
+                  <%= inline_icon 'support' %>
+                <% elsif ct.disbursement %>
+                  <% if ct.amount.negative? %>
+                    <%= inline_icon 'door-leave' %>
+                  <% else %>
+                    <%= inline_icon 'door-enter' %>
+                  <% end %>
+                <% else %>
+                  <%= inline_icon 'bank-account' %>
+                <% end %>
+              </td>
+              <td>
+                <%= ct.date %>
+              </td>
+              <td class="transaction__memo">
+                <span>
+                  <%= ct.memo %>
+                </span>
+
+                <%= list_badge_for ct.send(:ct).receipts.size, 'receipt', 'payment-docs', optional: true %>
+              </td>
+              <td class="nowrap">
+                <span><%= ct.amount %></span>
+              </td>
+              <% if organizer_signed_in? %>
+              <td>
+                <%= link_to 'Details', ct.url %>
+              </td>
+              <% end %>
+            </tr>
+
+          <% end %>
+
+          <% @transactions_flat.each do |ct| %>
+            <tr
+              class="transaction--<%= ct.amount.negative? ? 'negative' : 'positive' %>">
+              <td class="transaction__icon tooltipped tooltipped--e" aria-label="Bank account transaction">
+                <% if ct.fee_payment? %>
+                  <%= inline_icon 'minue' %>
+                <% elsif ct.check %>
+                  <%= inline_icon 'payment-transfer' %>
+                <% elsif ct.ach_transfer %>
+                  <%= inline_icon 'payment-transfer' %>
+                <% elsif ct.raw_stripe_transaction %>
+                  <%= inline_icon 'card' %>
                 <% elsif ct.invoice %>
                   <%= inline_icon 'briefcase' %>
                 <% elsif ct.donation %>
