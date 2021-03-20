@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module InvoiceService
-  class Nightly
+  class OpensToPaids
     def run
       # 1. iterate over open invoices
       Invoice.open.each do |i|
