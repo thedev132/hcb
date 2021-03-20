@@ -16,6 +16,11 @@
     Paid
   <% end %>
   |
+  <%= form.label :missing_payout do %>
+    <%= form.check_box :missing_payout, checked: @missing_payout %>
+    Missing Payout
+  <% end %>
+  |
   <%= form.label :missing_fee_reimbursement do %>
     <%= form.check_box :missing_fee_reimbursement, checked: @missing_fee_reimbursement %>
     Missing FeeReimbursement
