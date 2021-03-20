@@ -32,14 +32,9 @@ class Invoice < ApplicationRecord
   has_one_attached :manually_marked_as_paid_attachment
 
   aasm do
-    state :draft_v2, initial: true
-    state :open_v2
+    state :open_v2, initial: true
     state :paid_v2
     state :void_v2
-
-    event :mark_open do
-      transitions from: :draft_v2, to: :open_v2
-    end
 
     event :mark_paid do
       transitions from: :open_v2, to: :paid_v2
@@ -51,7 +46,7 @@ class Invoice < ApplicationRecord
   end
 
   enum status: {
-    draft: 'draft',
+    draft: 'draft', # only 3 invoices [203, 204, 128] leftover from when drafts existed
     open: 'open',
     paid: 'paid',
     void: 'void'
