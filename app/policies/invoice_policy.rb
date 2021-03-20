@@ -19,7 +19,7 @@ class InvoicePolicy < ApplicationPolicy
   end
 
   def create?
-    !is_spend_only && admin_or_user
+    !record.is_spend_only && (user&.admin? || record.users.include?(user))
   end
 
   def show?
