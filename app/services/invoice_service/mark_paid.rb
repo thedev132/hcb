@@ -20,6 +20,7 @@ module InvoiceService
         invoice.manually_marked_as_paid_reason = @reason
         invoice.manually_marked_as_paid_attachment = @attachment
         invoice.save!
+        invoice.mark_paid! # aasm
 
         remote_invoice.paid = true
         remote_invoice.save

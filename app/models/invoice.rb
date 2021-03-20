@@ -214,6 +214,7 @@ class Invoice < ApplicationRecord
   def sync_from_remote!
     self.set_fields_from_stripe_invoice(remote_invoice)
     self.save!
+    self.mark_paid!
   end
 
   private
