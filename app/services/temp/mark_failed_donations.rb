@@ -5,7 +5,7 @@ module Temp
         if sc.status == "failed" && sc.payment_intent.present?
           d = Donation.where(stripe_payment_intent_id: sc.payment_intent).first
 
-          d.mark_failed! if d && !d.failed?
+          d.mark_failed! if d && !d.failed? && !d.deposited?
         end
       end
     end
