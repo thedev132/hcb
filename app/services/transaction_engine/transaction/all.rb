@@ -30,26 +30,57 @@ module TransactionEngine
       end
 
       def canonical_transactions_grouped
-        q = <<-SQL
+        group_sql = <<-SQL
           select 
-            COALESCE(ct.hcb_code, CAST(ct.id AS text)) as hcb_code
-            ,array_to_string(array_agg(ct.date), ', ') as date
-            ,array_to_string(array_agg(ct.memo), ', ') as memo
+            array_agg(ct.id) as ids
+            ,coalesce(ct.hcb_code, cast(ct.id as text)) as hcb_code
             ,sum(ct.amount_cents) as amount_cents
-            ,(sum(ct.amount_cents) / 100.0) as amount
-          from 
+            ,sum(ct.amount_cents / 100.0)::float as amount
+          from
             canonical_transactions ct
-          where ct.id in (
-            select
-              cem.canonical_transaction_id
-            from
-              canonical_event_mappings cem
-            where
-              cem.event_id = #{event.id}
-          )
+          where
+            ct.id in (
+              select
+                cem.canonical_transaction_id
+              from
+                canonical_event_mappings cem
+              where
+                cem.event_id = #{event.id}
+            )
           group by
-            COALESCE(ct.hcb_code, CAST(ct.id AS text))
+            coalesce(ct.hcb_code, cast(ct.id as text)) -- handle edge case when hcb_code is null
         SQL
+        
+        date_select = <<-SQL
+          ( 
+            select date
+            from (
+              select date from canonical_transactions where id = any(q1.ids) order by date desc, id desc limit 1
+            ) raw
+          )
+        SQL
+
+        canonical_transactions_select = <<-SQL
+          ( 
+            select json_agg(raw) 
+            from (
+              select *, (amount_cents / 100.0) as amount from canonical_transactions where id = any(q1.ids) order by date desc, id desc
+            ) raw
+          )
+        SQL
+
+        q = <<-SQL
+          select
+            q1.hcb_code
+            ,q1.amount_cents
+            ,q1.amount::float
+            ,(#{date_select}) as date
+            ,(#{canonical_transactions_select}) as canonical_transactions
+          from (
+            #{group_sql}
+          ) q1
+        SQL
+
         ActiveRecord::Base.connection.execute(q)
       end
     end
