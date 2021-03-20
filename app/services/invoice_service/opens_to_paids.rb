@@ -2,21 +2,17 @@
 
 module InvoiceService
   class OpensToPaids
+    def initialize(since_date: nil)
+      @since_date = Time.now.utc - 6.months # only look back last 6 months
+    end
+
     def run
       # 1. iterate over open invoices
-      Invoice.open.each do |i|
+      Invoice.open.where("created_at >= ?", @since_date).each do |i|
         ActiveRecord::Base.connection do
-          # 2. grab remote invoice
-          remote_invoice = ::Partners::Stripe::Invoices::Show.new(id: i.stripe_invoice_id).run
+          i.sync_from_remote!
 
-          # 3. update invoice field values
-          i.set_fields_from_stripe_invoice(remote_invoice)
-          i.save!
-
-          # 4. queue payout
-          if i.reload.paid?
-            ::InvoiceService::Queue.new(invoice_id: i.id).run
-          end
+          ::InvoiceService::Queue.new(invoice_id: i.id).run if i.reload.paid?
         end
       end
     end

@@ -216,6 +216,11 @@ class Invoice < ApplicationRecord
     @remote_invoice ||= ::Partners::Stripe::Invoices::Show.new(id: stripe_invoice_id).run
   end
 
+  def sync_from_remote!
+    self.set_fields_from_stripe_invoice(remote_invoice)
+    self.save!
+  end
+
   private
 
   def set_defaults
