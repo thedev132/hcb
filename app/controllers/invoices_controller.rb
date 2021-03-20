@@ -41,25 +41,43 @@ class InvoicesController < ApplicationController
   end
 
   def create
-    invoice_params = filtered_params.except(:action, :controller, :sponsor_attributes)
-    invoice_params[:item_amount] = (filtered_params[:item_amount].gsub(',', '').to_f * 100.to_i)
+    @event = Event.friendly.find(params[:event_id])
 
-    @event = Event.friendly.find params[:event_id]
-    sponsor_attributes = filtered_params[:sponsor_attributes].merge(event: @event)
+    authorize @event, policy_class: InvoicePolicy
 
-    @sponsor = Sponsor.friendly.find_or_initialize_by(id: sponsor_attributes[:id], event: @event)
-    @invoice = Invoice.new(invoice_params)
-    @invoice.sponsor = @sponsor
-    @invoice.creator = current_user
+    sponsor_attrs = filtered_params[:sponsor_attributes]
 
-    authorize @invoice
+    due_date = Date::civil(filtered_params["due_date(1i)"].to_i, 
+                           filtered_params["due_date(2i)"].to_i, 
+                           filtered_params["due_date(3i)"].to_i)
 
-    if @sponsor.update(sponsor_attributes) && @invoice.save
-      flash[:success] = "Invoice successfully created and emailed to #{@invoice.sponsor.contact_email}."
-      redirect_to @invoice
-    else
-      render :new
-    end
+    attrs = {
+      event_id: params[:event_id],
+      due_date: due_date,
+      item_description: filtered_params[:item_description],
+      item_amount: filtered_params[:item_amount],
+      current_user: current_user,
+
+      sponsor_id: sponsor_attrs[:id],
+      sponsor_name: sponsor_attrs[:name],
+      sponsor_email: sponsor_attrs[:contact_email],
+      sponsor_address_line1: sponsor_attrs[:address_line1],
+      sponsor_address_line2: sponsor_attrs[:address_line2],
+      sponsor_address_city: sponsor_attrs[:address_city],
+      sponsor_address_state: sponsor_attrs[:address_state],
+      sponsor_address_postal_code: sponsor_attrs[:address_postal_code]
+    }
+    @invoice = ::InvoiceService::Create.new(attrs).run
+
+    flash[:success] = "Invoice successfully created and emailed to #{@invoice.sponsor.contact_email}."
+
+    redirect_to @invoice
+  rescue => e
+    @event = Event.friendly.find(params[:event_id])
+    @sponsor = Sponsor.new(event: @event)
+    @invoice = Invoice.new(sponsor: @sponsor)
+
+    redirect_to new_event_invoice_path(@event), flash: { error: e.message }
   end
 
   def show

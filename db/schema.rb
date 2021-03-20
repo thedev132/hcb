@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_18_184259) do
+ActiveRecord::Schema.define(version: 2021_03_18_213133) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -688,6 +688,7 @@ ActiveRecord::Schema.define(version: 2021_03_18_184259) do
     t.datetime "archived_at"
     t.bigint "archived_by_id"
     t.text "hcb_code"
+    t.string "aasm_state"
     t.index ["archived_by_id"], name: "index_invoices_on_archived_by_id"
     t.index ["creator_id"], name: "index_invoices_on_creator_id"
     t.index ["fee_reimbursement_id"], name: "index_invoices_on_fee_reimbursement_id"
