@@ -13,7 +13,7 @@ module DonationService
         raise ArgumentError, "anomaly detected when attempting to mark deposited donation #{donation.id}" if anomaly_detected?(donation: donation)
 
         begin
-          donation.mark_deposited!
+          donation.mark_deposited! unless donation.deposited?
         rescue => e
           Airbrake.notify(e)
         end
