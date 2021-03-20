@@ -230,7 +230,7 @@ class Invoice < ApplicationRecord
     fee_reimbursement.try(:canonical_transaction)
   end
 
-  def memo
+  def smart_memo
     sponsor.name.upcase
   end
 

@@ -114,10 +114,13 @@
             <th>Date</th>
             <th>Description</th>
             <th class="right-align">Amount</th>
-            <th></th>
+            <% if organizer_signed_in? %>
+              <th></th>
+            <% end %>
           </tr>
         </thead>
         <tbody data-behavior="transactions">
+          <% if organizer_signed_in? %>
           <% @pending_transactions.each do |pt| %>
             <tr
               class="muted transaction--<%= pt.amount.negative? ? 'negative' : 'positive' %>">
@@ -152,6 +155,7 @@
               </td>
             </tr>
           <% end %>
+          <% end %>
 
           <% @transactions.each do |ct| %>
             <tr
@@ -159,17 +163,17 @@
               <td class="transaction__icon tooltipped tooltipped--e" aria-label="Bank account transaction">
                 <% if ct.fee_payment? %>
                   <%= inline_icon 'minue' %>
-                <% elsif ct.check %>
+                <% elsif ct.check? %>
                   <%= inline_icon 'payment-transfer' %>
-                <% elsif ct.ach_transfer %>
+                <% elsif ct.ach_transfer? %>
                   <%= inline_icon 'payment-transfer' %>
                 <% elsif ct.raw_stripe_transaction %>
                   <%= inline_icon 'card' %>
                 <% elsif ct.invoice? %>
                   <%= inline_icon 'briefcase' %>
-                <% elsif ct.donation %>
+                <% elsif ct.donation? %>
                   <%= inline_icon 'support' %>
-                <% elsif ct.disbursement %>
+                <% elsif ct.disbursement? %>
                   <% if ct.amount.negative? %>
                     <%= inline_icon 'door-leave' %>
                   <% else %>
@@ -183,7 +187,7 @@
                 <%= ct.date %>
               </td>
               <td class="transaction__memo">
-                <span>
+                <span title="<%= ct.hcb_code %>">
                   <%= ct.memo %>
                 </span>
 

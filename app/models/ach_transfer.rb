@@ -133,6 +133,10 @@ class AchTransfer < ApplicationRecord
   def canonical_pending_transaction
     canonical_pending_transactions.first
   end
+
+  def smart_memo
+    recipient_name.to_s.upcase
+  end
   
   private
 

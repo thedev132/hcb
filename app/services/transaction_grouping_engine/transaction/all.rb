@@ -8,11 +8,11 @@ module TransactionGroupingEngine
       end
 
       def run
-        Kaminari.paginate_array(all)
+        all
       end
 
       def all
-        @all ||= canonical_transactions_grouped.map do |ctg|
+        canonical_transactions_grouped.map do |ctg|
           build(ctg)
         end
       end
@@ -45,7 +45,7 @@ module TransactionGroupingEngine
         @canonical_transaction_ids ||= canonical_event_mappings.pluck(:canonical_transaction_id)
       end
 
-      def canonical_transactions_grouped(page: 1)
+      def canonical_transactions_grouped
         group_sql = <<~SQL
           select 
             array_agg(ct.id) as ids
@@ -71,7 +71,7 @@ module TransactionGroupingEngine
           ( 
             select date
             from (
-              select date from canonical_transactions where id = any(q1.ids) order by date desc, id desc limit 1
+              select date from canonical_transactions where id = any(q1.ids) order by date asc, id asc limit 1
             ) raw
           )
         SQL
@@ -105,6 +105,7 @@ module TransactionGroupingEngine
           from (
             #{group_sql}
           ) q1
+          order by date desc
         SQL
 
         ActiveRecord::Base.connection.execute(q)

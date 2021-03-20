@@ -148,6 +148,10 @@ class Check < ApplicationRecord
   def url
     lob_url || ::CheckService::LobUrl::Generate.new(check: self).run
   end
+  
+  def smart_memo
+    lob_address.try(:name).try(:upcase)
+  end
 
   private
 

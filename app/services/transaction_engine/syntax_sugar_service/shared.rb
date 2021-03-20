@@ -10,6 +10,10 @@ module TransactionEngine
       DONATION_MEMO_PART1 = "HACKC DONATE"
       DONATION_MEMO_PART2 = "HACK CLUB BANK DONATE"
       DISBURSEMENT_MEMO_PART1 = "HCB DISBURSE"
+      CLEARING_CHECK_MEMO_PART1 = "WITHDRAWAL - INCLEARING CHECK #"
+      CLEARING_CHECK_MEMO_PART2 = "WITHDRAWAL - ON-US DEPOSITED ITE #"
+      DDA_CHECK_MEMO_PART1 = "FROM DDA#80007609524 ON"
+      DDA_CHECK_MEMO_PART2 = "AT"
 
       private
 
@@ -29,8 +33,20 @@ module TransactionEngine
         memo_upcase.include?(OUTGOING_CHECK_MEMO_PART)
       end
 
+      def clearing_check?
+        memo_upcase.include?(CLEARING_CHECK_MEMO_PART1) || memo_upcase.include?(CLEARING_CHECK_MEMO_PART2)
+      end
+
+      def dda_check?
+        memo_upcase.include?(DDA_CHECK_MEMO_PART1)
+      end
+
       def likely_outgoing_check_number
         memo_upcase.gsub(OUTGOING_CHECK_MEMO_PART, "").strip
+      end
+
+      def likely_clearing_check_number
+        memo_upcase.gsub(CLEARING_CHECK_MEMO_PART1, "").gsub(CLEARING_CHECK_MEMO_PART2, "").strip
       end
 
       def outgoing_ach?
