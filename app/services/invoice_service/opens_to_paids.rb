@@ -16,7 +16,7 @@ module InvoiceService
           if i.reload.paid?
             raise NoAssociatedStripeCharge if i.remote_invoice.charge.nil?
 
-            b_tnx = i.charge.balance_transaction
+            b_tnx = i.remote_invoice.charge.balance_transaction
 
             funds_available_at = Util.unixtime(b_tnx.available_on)
             create_payout_at = funds_available_at + 1.day
