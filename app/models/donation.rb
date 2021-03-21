@@ -152,10 +152,20 @@ class Donation < ApplicationRecord
   def stripe_obj
     @stripe_donation_obj ||=
       StripeService::PaymentIntent.retrieve(id: stripe_payment_intent_id, expand: ['payment_method']).to_hash
+  rescue => e
+    {}
   end
 
   def canonical_pending_transaction
     canonical_pending_transactions.first
+  end
+
+  def payout_canonical_transaction
+    canonical_pending_transaction.try(:canonical_transactions).try(:first)
+  end
+
+  def fee_refund_canonical_transaction
+    fee_reimbursement.try(:canonical_transaction)
   end
 
   def smart_memo

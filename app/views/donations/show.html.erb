@@ -5,11 +5,35 @@
 
 <% admin_tools('mt3') do %>
   <%= link_to 'View on Stripe', @donation.stripe_dashboard_url, class: 'btn bg-accent' %>
+
 <% end %>
 
 <% admin_tools do %>
-  <%= link_to "#{render_money @donation.payout.t_transaction.amount} payout TX", @donation.payout.t_transaction if @donation&.payout&.t_transaction %>
-  <%= link_to "#{render_money @donation.fee_reimbursement.t_transaction.amount} fee refund TX", @donation.fee_reimbursement.t_transaction if @donation&.fee_reimbursement&.t_transaction %>
+  <ul>
+    <li>
+      v2
+
+      <ul>
+        <li>
+          <%= link_to @donation.payout_canonical_transaction.amount, "/transactions/#{@donation.payout_canonical_transaction.id}" if @donation.payout_canonical_transaction %>
+        </li>
+        <li>
+          <%#= link_to @donation.fee_refund_canonical_transaction.amount, "/transactions/#{@invoice.fee_refund_canonical_transaction.id}" if @invoice.fee_refund_canonical_transaction %>
+        </li>
+      </ul>
+    </li>
+    <li>
+      v1
+
+      <ul>
+        <li>
+          <%= link_to "#{render_money @donation.payout.t_transaction.amount} payout TX", @donation.payout.t_transaction if @donation&.payout&.t_transaction %>
+        </li>
+        <li>
+          <%= link_to "#{render_money @donation.fee_reimbursement.t_transaction.amount} fee refund TX", @donation.fee_reimbursement.t_transaction if @donation&.fee_reimbursement&.t_transaction %>
+        </li>
+    </li>
+  </ul>
 <% end %>
 
 <article class="card pb0 mt3 mb3">
