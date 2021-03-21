@@ -14,12 +14,11 @@
       v2
 
       <ul>
-        <li>
-          <%= link_to @donation.payout_canonical_transaction.amount, "/transactions/#{@donation.payout_canonical_transaction.id}" if @donation.payout_canonical_transaction %>
-        </li>
-        <li>
-          <%#= link_to @donation.fee_refund_canonical_transaction.amount, "/transactions/#{@invoice.fee_refund_canonical_transaction.id}" if @invoice.fee_refund_canonical_transaction %>
-        </li>
+        <% @donation.canonical_transactions.each do |ct| %>
+          <li>
+            <%= link_to ct.amount, "/transactions/#{ct.id}" %>
+          </li>
+        <% end %>
       </ul>
     </li>
     <li>
