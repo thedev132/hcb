@@ -6,10 +6,10 @@ class CanonicalTransactionGrouped
   attr_accessor :hcb_code, :date, :amount_cents, :raw_canonical_transaction_ids
 
   def memo
-    return "INVOICE TO #{invoice.smart_memo}" if invoice?
-    return "DONATION FROM #{donation.smart_memo}" if donation?
-    return "ACH TO #{ach_transfer.smart_memo}" if ach_transfer?
-    return "CHECK TO #{check.smart_memo}" if check?
+    return invoice_memo if invoice?
+    return donation_memo if donation?
+    return ach_transfer_memo if ach_transfer?
+    return check_memo if check?
     return ct.smart_memo if stripe_card?
 
     ct.smart_memo
@@ -29,7 +29,7 @@ class CanonicalTransactionGrouped
   end
 
   def canonical_transactions
-    @canonical_transactions ||= CanonicalTransaction.where(id: canonical_transaction_ids)
+    @canonical_transactions ||= CanonicalTransaction.where(id: canonical_transaction_ids).order("date desc, id desc")
   end
 
   def fee_payment?
@@ -70,16 +70,32 @@ class CanonicalTransactionGrouped
     Invoice.find(hcb_i2)
   end
 
+  def invoice_memo
+    smartish_custom_memo || "INVOICE TO #{invoice.smart_memo}"
+  end
+
   def donation
     Donation.find(hcb_i2)
+  end
+
+  def donation_memo
+    smartish_custom_memo || "DONATION FROM #{donation.smart_memo}"
   end
 
   def ach_transfer
     AchTransfer.find(hcb_i2)
   end
 
+  def ach_transfer_memo
+    smartish_custom_memo || "ACH TO #{ach_transfer.smart_memo}"
+  end
+
   def check
     Check.find(hcb_i2)
+  end
+
+  def check_memo
+    smartish_custom_memo || "CHECK TO #{check.smart_memo}"
   end
 
   def disbursement
@@ -112,5 +128,16 @@ class CanonicalTransactionGrouped
 
   def ct
     canonical_transactions.first
+  end
+
+  def ct2
+    canonical_transactions.last
+  end
+
+  def smartish_custom_memo
+    return nil unless ct.custom_memo
+    return ct.custom_memo unless ct.custom_memo.include?("FEE REFUND")
+
+    ct2.custom_memo
   end
 end
