@@ -218,7 +218,35 @@ class Invoice < ApplicationRecord
     self.mark_paid!
   end
 
+  def canonical_pending_transaction
+    canonical_pending_transactions.first
+  end
+
+  def payout_canonical_transaction
+    canonical_pending_transaction.try(:canonical_transactions).try(:first)
+  end
+
+  def fee_refund_canonical_transaction
+    fee_reimbursement.try(:canonical_transaction)
+  end
+
+  def smart_memo
+    sponsor.name.upcase
+  end
+
   private
+
+  def canonical_pending_transactions
+    @canonical_pending_transactions ||= ::CanonicalPendingTransaction.where(raw_pending_invoice_transaction_id: raw_pending_invoice_transaction.id)
+  end
+
+  def raw_pending_invoice_transaction
+    raw_pending_invoice_transactions.first
+  end
+
+  def raw_pending_invoice_transactions
+    @raw_pending_invoice_transactions ||= ::RawPendingInvoiceTransaction.where(invoice_transaction_id: id)
+  end
 
   def set_defaults
     event = sponsor.event.name

@@ -11,6 +11,8 @@ module TransactionEngine
         if memo.present?
 
           return likely_check if outgoing_check?
+          return likely_clearing_check if clearing_check?
+          return likely_dda_check if dda_check?
 
           return likely_ach if outgoing_ach?
 
@@ -32,6 +34,18 @@ module TransactionEngine
         return nil unless event
 
         event.checks.where(check_number: likely_outgoing_check_number).first
+      end
+
+      def likely_clearing_check
+        return nil unless event
+
+        event.checks.where(check_number: likely_clearing_check_number).first
+      end
+
+      def likely_dda_check
+        return nil unless event
+
+        event.canonical_transactions.likely_checks.where(amount_cents: -@canonical_transaction.amount_cents, date: @canonical_transaction.date).first.try(:check)
       end
 
       def likely_ach

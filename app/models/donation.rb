@@ -158,6 +158,10 @@ class Donation < ApplicationRecord
     canonical_pending_transactions.first
   end
 
+  def smart_memo
+    name.to_s.upcase
+  end
+
   private
 
   def canonical_pending_transactions

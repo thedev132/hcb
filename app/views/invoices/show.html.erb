@@ -8,8 +8,30 @@
 <% end %>
 
 <% admin_tools do %>
-  <%= link_to "#{render_money @invoice.payout.t_transaction.amount} payout TX", @invoice.payout.t_transaction if @invoice&.payout&.t_transaction %>
-  <%= link_to "#{render_money @invoice.fee_reimbursement.t_transaction.amount} fee refund TX", @invoice.fee_reimbursement.t_transaction if @invoice&.fee_reimbursement&.t_transaction %>
+  <ul>
+    <li>
+      v2
+
+      <ul>
+        <li>
+          <%= link_to @invoice.payout_canonical_transaction.amount, "/transactions/#{@invoice.payout_canonical_transaction.id}" if @invoice.payout_canonical_transaction %>
+        </li>
+        <li>
+          <%= link_to @invoice.fee_refund_canonical_transaction.amount, "/transactions/#{@invoice.fee_refund_canonical_transaction.id}" if @invoice.fee_refund_canonical_transaction %>
+        </li>
+      </ul>
+    </li>
+    <li>
+      v1
+
+      <ul>
+        <li>
+          <%= link_to "#{render_money @invoice.payout.t_transaction.amount} payout TX", @invoice.payout.t_transaction if @invoice&.payout&.t_transaction %>
+        </li>
+        <li>
+          <%= link_to "#{render_money @invoice.fee_reimbursement.t_transaction.amount} fee refund TX", @invoice.fee_reimbursement.t_transaction if @invoice&.fee_reimbursement&.t_transaction %>
+        </li>
+    </li>
 <% end %>
 
 <% if @invoice.archived? %>

@@ -513,6 +513,7 @@ class AdminController < ApplicationController
     @q = params[:q].present? ? params[:q] : nil
     @open = params[:open] == "1" ? true : nil
     @paid = params[:paid] == "1" ? true : nil
+    @missing_payout = params[:missing_payout] == "1" ? true : nil
     @missing_fee_reimbursement = params[:missing_fee_reimbursement] == "1" ? true : nil
 
     @event_id = params[:event_id].present? ? params[:event_id] : nil
@@ -537,6 +538,7 @@ class AdminController < ApplicationController
 
     relation = relation.open_v2 if @open
     relation = relation.paid_v2 if @paid
+    relation = relation.missing_payout if @missing_payout
     relation = relation.missing_fee_reimbursement if @missing_fee_reimbursement
 
     @count = relation.count
