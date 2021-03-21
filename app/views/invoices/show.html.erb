@@ -13,12 +13,11 @@
       v2
 
       <ul>
-        <li>
-          <%= link_to @invoice.payout_canonical_transaction.amount, "/transactions/#{@invoice.payout_canonical_transaction.id}" if @invoice.payout_canonical_transaction %>
-        </li>
-        <li>
-          <%= link_to @invoice.fee_refund_canonical_transaction.amount, "/transactions/#{@invoice.fee_refund_canonical_transaction.id}" if @invoice.fee_refund_canonical_transaction %>
-        </li>
+        <% @invoice.canonical_transactions.each do |ct| %>
+          <li>
+            <%= link_to ct.amount, "/transactions/#{ct.id}" %>
+          </li>
+        <% end %>
       </ul>
     </li>
     <li>

@@ -222,16 +222,16 @@ class Invoice < ApplicationRecord
     canonical_pending_transactions.first
   end
 
-  def payout_canonical_transaction
-    canonical_pending_transaction.try(:canonical_transactions).try(:first)
-  end
-
-  def fee_refund_canonical_transaction
-    fee_reimbursement.try(:canonical_transaction)
-  end
-
   def smart_memo
     sponsor.name.upcase
+  end
+
+  def hcb_code
+    "HCB-#{TransactionGroupingEngine::Calculate::HcbCode::INVOICE_CODE}-#{id}"
+  end
+
+  def canonical_transactions
+    @canonical_transactions ||= CanonicalTransaction.where(hcb_code: hcb_code)
   end
 
   private
