@@ -1,4 +1,4 @@
-<% title "Invoices for #{@event.name}" %>
+<% title "Invoices for #{@event.name.html_safe}" %>
 <% page_md %>
 <% include_modals %>
 <%= render 'events/nav' %>
@@ -18,6 +18,7 @@
 
 <section class="modal modal--scroll bg-snow" data-behavior="modal" role="dialog" id="new_invoice">
   <%= modal_header 'Send an invoice' %>
+
   <% if @event.invoices.none? %>
     <p class="flex items-center info line-height-3">
       <%= inline_icon 'important', size: 32, class: 'mr1' %>
@@ -34,63 +35,109 @@
   <%= render 'form', invoice: @invoice, sponsor: @sponsor %>
 </section>
 
-<% if @invoices.any? %>
-  <div class="statset mt3 mb2">
-    <div class="stat tooltipped tooltipped--s" aria-label="Total amount sent in invoices to sponsors">
-      <span class="stat__label">Total invoiced</span>
-      <span class="stat__value"><%= render_money_amount @stats[:total] %></span>
-    </div>
-    <div class="stat stat--small tooltipped tooltipped--s" aria-label="Paid by sponsors and already received into your account">
-      <span class="stat__label">Already received</span>
-      <span class="stat__value"><%= render_money_amount @stats[:paid] %></span>
-    </div>
-    <div class="stat stat--small tooltipped tooltipped--s" aria-label="Paid by sponsors and on the way to your bank account">
-      <span class="stat__label">On the way</span>
-      <span class="stat__value"><%= render_money_amount @stats[:pending] %></span>
-    </div>
-    <div class="stat stat--small tooltipped tooltipped--s" aria-label="Not yet paid by sponsors">
-      <span class="stat__label">Unpaid</span>
-      <span class="stat__value"><%= render_money_amount @stats[:total] - @stats[:paid] - @stats[:pending] %></span>
-    </div>
+<div class="statset mt3 mb2">
+  <div class="stat tooltipped tooltipped--s" aria-label="Total amount sent in invoices to sponsors">
+    <span class="stat__label">Total invoiced</span>
+    <span class="stat__value"><%= render_money_amount @stats[:total] %></span>
   </div>
-
-  <div class="filterbar flex flex-wrap items-center width-100">
-    <input
-      type="search"
-      data-behavior="filterbar_search"
-      placeholder="Search…"
-      aria-label="Filter invoices"
-      class="flex-auto md-mr2"
-      style="width: auto; max-width: none;">
-    <div data-behavior="filterbar" role="tablist" class="filterbar__filters flex mt1 lg-mt0">
-      <%= filterbar_item 'All', :exists, true %>
-      <%= filterbar_item 'Paid', :paid %>
-      <%= filterbar_item 'Unpaid', :unpaid %>
-      <%= filterbar_item 'Upcoming', :upcoming %>
-      <%= filterbar_item 'Overdue', :overdue %>
-      <%= filterbar_item 'Archived', :archived %>
-    </div>
+  <div class="stat stat--small tooltipped tooltipped--s" aria-label="Paid by sponsors and already received into your account">
+    <span class="stat__label">Already received</span>
+    <span class="stat__value"><%= render_money_amount @stats[:paid] %></span>
   </div>
+  <div class="stat stat--small tooltipped tooltipped--s" aria-label="Paid by sponsors and on the way to your bank account">
+    <span class="stat__label">On the way</span>
+    <span class="stat__value"><%= render_money_amount @stats[:pending] %></span>
+  </div>
+  <div class="stat stat--small tooltipped tooltipped--s" aria-label="Not yet paid by sponsors">
+    <span class="stat__label">Unpaid</span>
+    <span class="stat__value"><%= render_money_amount @stats[:total] - @stats[:paid] - @stats[:pending] %></span>
+  </div>
+</div>
 
-  <ul class="grid grid--spacious">
+<!--
+<div class="filterbar flex flex-wrap items-center width-100">
+  <input
+    type="search"
+    data-behavior="filterbar_search"
+    placeholder="Search…"
+    aria-label="Filter invoices"
+    class="flex-auto md-mr2"
+    style="width: auto; max-width: none;">
+  <div data-behavior="filterbar" role="tablist" class="filterbar__filters flex mt1 lg-mt0">
+    <%= filterbar_item 'All', :exists, true %>
+    <%= filterbar_item 'Paid', :paid %>
+    <%= filterbar_item 'Unpaid', :unpaid %>
+    <%= filterbar_item 'Upcoming', :upcoming %>
+    <%= filterbar_item 'Overdue', :overdue %>
+    <%= filterbar_item 'Archived', :archived %>
+  </div>
+</div>
+-->
+
+<!--<a class="filterbar__item" tabindex="0" role="tab" aria-selected="true" data-name="exists" data-behavior="filterbar_item">All</a>-->
+
+<hr/>
+
+<div style="text-align: center;">
+  <%= link_to "All", "?filter=all", class: "filterbar__item", "aria-selected": !["paid", "unpaid", "overdue", "archived"].include?(params[:filter]), role: "tab" %>
+  <%= link_to "Paid", "?filter=paid", class: "filterbar__item", "aria-selected": params[:filter] == "paid", role: "tab" %>
+  <%= link_to "Unpaid", "?filter=unpaid", class: "filterbar__item", "aria-selected": params[:filter] == "unpaid", role: "tab" %>
+  <%= link_to "Archived", "?filter=archived", class: "filterbar__item", "aria-selected": params[:filter] == "archived", role: "tab" %>
+</div>
+
+<article class="table-container">
+<table>
+  <thead>
+    <tr>
+      <th>STATUS</th>
+      <th>DATE</th>
+      <th>TO</th>
+      <th style="text-align: right;">AMOUNT</th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
     <% @invoices.each do |i| %>
-      <%= link_to i, data: { behavior: 'filterbar_row', filter: i.filter_data.to_json } do %>
-        <%= creator_bar i %>
-        <li class="card card--hover">
-          <div class="flex">
-            <strong class="flex-auto h3 line-height-3 mb1">
-              <%= i.sponsor.name %>
-            </strong>
-            <span class="block h1 black line-height-1 <%= i.state %>"><%= render_money_short i.item_amount %></span>
-          </div>
-          <span class="ml0 badge bg-<%= i.state %>">
-            <%= i.state_text %>
-          </span>
-        </li>
-      <% end %>
+      <tr>
+        <td>
+          <span class="ml0 badge bg-<%= i.state %>"><%= i.state_text %></span>
+        </td>
+        <td>
+          <%= format_date i.created_at %>
+        </td>
+        <td>
+          <%= i.sponsor.name %>
+        </td>
+        <td style="text-align: right;">
+          <%= render_money(i.item_amount) %>
+        </td>
+        <td>
+          <%= link_to "Details", i %>
+        </td>
+      </tr>
     <% end %>
-  </ul>
-  <%= filterbar_blankslate 'No invoices match this filter' %>
-<% else %>
-  <%= blankslate 'Send invoices to sponsors to collect payment' %>
-<% end %>
+  </tbody>
+</table>
+</article>
+
+<!--
+<ul class="grid grid--spacious">
+  <% @invoices.each do |i| %>
+    <%= link_to i, data: { behavior: 'filterbar_row', filter: i.filter_data.to_json } do %>
+      <%= creator_bar i %>
+      <li class="card card--hover">
+        <div class="flex">
+          <strong class="flex-auto h3 line-height-3 mb1">
+            <%= i.sponsor.name %>
+          </strong>
+          <span class="block h1 black line-height-1 <%= i.state %>"><%= render_money_short i.item_amount %></span>
+        </div>
+        <span class="ml0 badge bg-<%= i.state %>">
+          <%= i.state_text %>
+        </span>
+      </li>
+    <% end %>
+  <% end %>
+</ul>
+-->

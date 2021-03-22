@@ -54,7 +54,6 @@
     <% end %>
 
     <% if Rails.env.production? %>
-      <script src="https://aardvark.hackclub.com/script.js" site="ZKMSNQTW" defer></script>
       <%= render 'application/fullstory' if current_user&.sessions_reported %>
     <% end %>
   </body>

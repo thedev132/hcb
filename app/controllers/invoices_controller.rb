@@ -9,7 +9,13 @@ class InvoicesController < ApplicationController
   end
 
   def index
-    @invoices = @event.invoices.order(created_at: :desc)
+    relation = @event.invoices
+    relation = relation.paid_v2 if params[:filter] == "paid"
+    relation = relation.unpaid if params[:filter] == "unpaid"
+    relation = relation.archived if params[:filter] == "archived"
+
+    @invoices = relation.order(created_at: :desc)
+
     @sponsor = Sponsor.new(event: @event)
     @invoice = Invoice.new(sponsor: @sponsor)
     authorize @invoices

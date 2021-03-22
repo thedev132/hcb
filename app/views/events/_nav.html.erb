@@ -14,7 +14,7 @@
     <%= dock_item 'Cards',
       'Manage team debit cards',
       'card',
-      event_cards_overview_path(event_id: @event.slug) %>
+      event_cards_overview_path(event_id: @event.slug) unless @event.is_spend_only %>
     <%= dock_item 'Send',
       'Send checks & wires',
       'transactions',

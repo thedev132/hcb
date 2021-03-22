@@ -1,5 +1,4 @@
 class StripeCard < ApplicationRecord
-  before_create :issue_stripe_card, unless: :issued? # issue the card if we're creating it for the first time
   after_create :notify_user, :pay_for_issuing
 
   scope :deactivated, -> { where.not(stripe_status: 'active') }
@@ -25,8 +24,6 @@ class StripeCard < ApplicationRecord
   validates_presence_of :stripe_shipping_address_city,
                         :stripe_shipping_address_country,
                         :stripe_shipping_address_line1,
-                        # :stripe_shipping_address_line2, # optional
-                        # :stripe_shipping_address_state, # optional
                         :stripe_shipping_address_postal_code,
                         :stripe_shipping_name,
                         unless: -> { self.virtual? }
@@ -116,11 +113,11 @@ class StripeCard < ApplicationRecord
   alias_attribute :address_postal_code, :stripe_shipping_address_postal_code
 
   def stripe_obj
-    @stripe_card_obj ||= begin
-      StripeService::Issuing::Card.retrieve(stripe_id)
-    end
+    @stripe_card_obj ||= ::Partners::Stripe::Issuing::Cards::Show.new(id: stripe_id).run
+  end
 
-    @stripe_card_obj
+  def secret_details
+    @secret_details ||= ::Partners::Stripe::Issuing::Cards::Show.new(id: stripe_id, expand: ["cvc", "number"]).run
   end
 
   def shipping_has_tracking?
@@ -198,14 +195,6 @@ class StripeCard < ApplicationRecord
     !stripe_id.blank?
   end
 
-  def secret_details
-    # (msw) We do not want to store card info in our database, so this private
-    # method is the only way to get this info
-    @secret_details ||= StripeService::Issuing::Card.details(stripe_id)
-
-    @secret_details
-  end
-
   def pay_for_issuing
     PayForIssuedCardJob.perform_later(self)
   end
@@ -216,36 +205,6 @@ class StripeCard < ApplicationRecord
     else
       StripeCardMailer.with(card_id: self.id).physical_card_ordered.deliver_later
     end
-  end
-
-  def issue_stripe_card
-    return self if persisted?
-
-    card_options = {
-      cardholder: stripe_cardholder.stripe_id,
-      type: card_type,
-      currency: 'usd',
-      status: 'active'
-    }
-
-    unless virtual?
-      card_options[:shipping] = {}
-      card_options[:shipping][:name] = stripe_shipping_name
-      card_options[:shipping][:service] = 'standard'
-      card_options[:shipping][:address] = {
-        city: stripe_shipping_address_city,
-        country: 'US', # This is hard-coded for now because Stripe doesn't support card issuing for other countries yet
-        line1: stripe_shipping_address_line1,
-        postal_code: stripe_shipping_address_postal_code
-      }
-      card_options[:shipping][:address][:line2] = stripe_shipping_address_line2 unless stripe_shipping_address_line2.blank?
-      card_options[:shipping][:address][:state] = stripe_shipping_address_state unless stripe_shipping_address_state.blank?
-    end
-
-    card = StripeService::Issuing::Card.create(card_options)
-
-    @stripe_card_obj = card
-    sync_from_stripe!
   end
 
   def authorizations_from_stripe

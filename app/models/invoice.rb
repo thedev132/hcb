@@ -12,6 +12,8 @@ class Invoice < ApplicationRecord
   scope :archived, -> { where.not(archived_at: nil) }
   scope :missing_fee_reimbursement, -> { where(fee_reimbursement_id: nil) }
   scope :missing_payout, -> { where("payout_id is null and payout_creation_balance_net is not null") } # some invoices are missing a payout but it is ok because they were paid by check. that is why we additionally check on payout_creation_balance_net
+  scope :unpaid, -> { where("aasm_state != 'paid_v2'") }
+  scope :past_due_date, -> { where("due_date < ?", Time.current) }
 
   friendly_id :slug_text, use: :slugged
 
@@ -83,7 +85,7 @@ class Invoice < ApplicationRecord
     self&.payout&.t_transaction
   end
 
-  def completed?
+  def completed_deprecated?
     (payout_transaction && !self&.fee_reimbursement) || (payout_transaction && self&.fee_reimbursement&.t_transaction) || manually_marked_as_paid?
   end
 
@@ -91,8 +93,32 @@ class Invoice < ApplicationRecord
     archived_at.present?
   end
 
+  def deposited? # TODO move to aasm
+    canonical_transactions.count >= 2 || manually_marked_as_paid? || completed_deprecated?
+  end
+
   def state
-    if completed?
+    return :success if paid_v2? && deposited?
+    return :info if paid_v2?
+    return :error if void_v2?
+    return :error if due_date < Time.current
+    return :warning if due_date < 3.days.from_now
+
+    :muted
+  end
+
+  def state_text
+    return "Deposited" if paid_v2? && deposited?
+    return "Paid & Depositing" if paid_v2?
+    return "Voided" if void_v2?
+    return "Overdue" if due_date < Time.current
+    return "Due soon" if due_date < 3.days.from_now
+
+    "Sent"
+  end
+
+  def state_deprecated
+    if completed_deprecated?
       :success
     elsif paid?
       :info
@@ -107,8 +133,8 @@ class Invoice < ApplicationRecord
     end
   end
 
-  def state_text
-    if completed?
+  def state_text_deprecated
+    if completed_deprecated?
       'Paid'
     elsif paid?
       'Pending'

@@ -8,6 +8,7 @@ module PayoutService
       def run
         return nil unless charge # only continue if a charge exists (invoice might have been paid via check)
         return nil unless funds_available?
+        return nil if invoice.payout_id.present?
 
         ActiveRecord::Base.transaction do
           payout.save!

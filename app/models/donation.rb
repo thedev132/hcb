@@ -164,6 +164,10 @@ class Donation < ApplicationRecord
     "HCB-#{TransactionGroupingEngine::Calculate::HcbCode::DONATION_CODE}-#{id}"
   end
 
+  def canonical_pending_transaction
+    canonical_pending_transactions.first
+  end
+
   def canonical_transactions
     @canonical_transactions ||= CanonicalTransaction.where(hcb_code: hcb_code)
   end

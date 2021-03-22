@@ -59,12 +59,3 @@
 </style>
 </section>
 <% end %>
-
-<% if @stripe_authorizations.any? %>
-  <section class="card p0 mb3">
-    <h2 class="heading h2 line-height-4 mt0 ml0 pt1 pb1 pl2 pr2">
-      Card transactions 
-    </h2>
-    <%= render 'stripe_authorizations/list', stripe_authorizations: @authorizations, headless: true %>
-  </section>
-<% end %>
