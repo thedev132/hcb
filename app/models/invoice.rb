@@ -12,6 +12,8 @@ class Invoice < ApplicationRecord
   scope :archived, -> { where.not(archived_at: nil) }
   scope :missing_fee_reimbursement, -> { where(fee_reimbursement_id: nil) }
   scope :missing_payout, -> { where("payout_id is null and payout_creation_balance_net is not null") } # some invoices are missing a payout but it is ok because they were paid by check. that is why we additionally check on payout_creation_balance_net
+  scope :unpaid, -> { where("aasm_state != 'paid_v2'") }
+  scope :past_due_date, -> { where("due_date < ?", 3.days.from_now) }
 
   friendly_id :slug_text, use: :slugged
 
