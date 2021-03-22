@@ -84,12 +84,12 @@ class User < ApplicationRecord
   end
 
   def initial_name
-    @initial_name ||= "#{(first_name || last_name)[0..17]} #{(last_name || first_name)[0,1]}"
+    @initial_name ||= "#{(first_name || last_name)[0..20]} #{(last_name || first_name)[0,1]}"
   end
 
   def safe_name
-    # emburse requires names to be 21 chars or less, and must include a last name
-    return full_name unless full_name.length > 21
+    # stripe requires names to be 24 chars or less, and must include a last name
+    return full_name unless full_name.length > 24
 
     initial_name
   end
