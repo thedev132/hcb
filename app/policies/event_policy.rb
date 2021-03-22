@@ -1,4 +1,8 @@
 class EventPolicy < ApplicationPolicy
+  def user_or_admin?
+    user_or_admin
+  end
+
   def index?
     user&.admin?
   end
