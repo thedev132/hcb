@@ -85,7 +85,7 @@ class Invoice < ApplicationRecord
     self&.payout&.t_transaction
   end
 
-  def completed?
+  def completed_deprecated?
     (payout_transaction && !self&.fee_reimbursement) || (payout_transaction && self&.fee_reimbursement&.t_transaction) || manually_marked_as_paid?
   end
 
@@ -94,7 +94,7 @@ class Invoice < ApplicationRecord
   end
 
   def deposited? # TODO move to aasm
-    canonical_transactions.count >= 2 || manually_marked_as_paid? || (created_at < Time.utc(2021, 1, 1) && payout_id.present?)
+    canonical_transactions.count >= 2 || manually_marked_as_paid? || completed_deprecated?
   end
 
   def state
@@ -118,7 +118,7 @@ class Invoice < ApplicationRecord
   end
 
   def state_deprecated
-    if completed?
+    if completed_deprecated?
       :success
     elsif paid?
       :info
@@ -134,7 +134,7 @@ class Invoice < ApplicationRecord
   end
 
   def state_text_deprecated
-    if completed?
+    if completed_deprecated?
       'Paid'
     elsif paid?
       'Pending'
