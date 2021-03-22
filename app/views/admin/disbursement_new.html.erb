@@ -8,13 +8,13 @@
     <p>
       <%= form.label :source_event_id, "Source event" %>
       <br/>
-      <%= form.collection_select(:source_event_id, Event.reorder(:name), :id, :admin_dropdown_description, include_blank: "Select one…") %>
+      <%= form.collection_select(:source_event_id, Event.reorder(CUSTOM_SORT), :id, :admin_dropdown_description, include_blank: "Select one…") %>
     </p>
 
     <p>
       <%= form.label :event_id, "Destination event" %>
       <br/>
-      <%= form.collection_select(:event_id, Event.reorder(:name), :id, :admin_dropdown_description, include_blank: "Select one…") %>
+      <%= form.collection_select(:event_id, Event.reorder(CUSTOM_SORT), :id, :admin_dropdown_description, include_blank: "Select one…") %>
     </p>
 
     <p>
