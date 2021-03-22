@@ -20,6 +20,8 @@ module StripeCardService
     end
 
     def run
+      raise ArgumentError, "not permitted under spend only plan" if event.is_spend_only
+
       ActiveRecord::Base.transaction do
         card = event.stripe_cards.create!(attrs)
 
