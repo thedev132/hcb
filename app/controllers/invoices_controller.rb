@@ -12,7 +12,6 @@ class InvoicesController < ApplicationController
     relation = @event.invoices
     relation = relation.paid_v2 if params[:filter] == "paid"
     relation = relation.unpaid if params[:filter] == "unpaid"
-    relation = relation.unpaid.past_due_date if params[:filter] == "overdue"
     relation = relation.archived if params[:filter] == "archived"
 
     @invoices = relation.order(created_at: :desc)

@@ -82,7 +82,6 @@
   <%= link_to "All", "?filter=all", class: "filterbar__item", "aria-selected": !["paid", "unpaid", "overdue", "archived"].include?(params[:filter]), role: "tab" %>
   <%= link_to "Paid", "?filter=paid", class: "filterbar__item", "aria-selected": params[:filter] == "paid", role: "tab" %>
   <%= link_to "Unpaid", "?filter=unpaid", class: "filterbar__item", "aria-selected": params[:filter] == "unpaid", role: "tab" %>
-  <%= link_to "Overdue", "?filter=overdue", class: "filterbar__item", "aria-selected": params[:filter] == "overdue", role: "tab" %>
   <%= link_to "Archived", "?filter=archived", class: "filterbar__item", "aria-selected": params[:filter] == "archived", role: "tab" %>
 </div>
 
