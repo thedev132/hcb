@@ -121,7 +121,15 @@ class StripeAuthorization < ApplicationRecord
   def remote_stripe_transaction_amount_cents
     @remote_stripe_transaction_amount_cents ||= remote_stripe_transactions.map(&:amount).sum
   end
-  
+
+  def date
+    created_at
+  end
+
+  def memo
+    name
+  end
+
   private
 
   def notify_of_creation
