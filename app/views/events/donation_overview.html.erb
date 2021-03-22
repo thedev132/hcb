@@ -1,13 +1,19 @@
 <% title "Donations to #{@event.name.html_safe}" %>
-<%= render 'nav'%>
+<% page_md %>
+<%= render 'events/nav'%>
 
 <h1 class="heading">
-  Donations
+  <span class="flex items-center">
+    Donations
+    <%= badge_for @donations.size, class: 'bg-muted' %>
+  </span>
+
   <% if @event.donation_page_enabled %>
     <%= link_to start_donation_donations_path(@event), target: '_blank', class: 'btn' do %>
       <%= inline_icon 'external' %>
       Donate page
     <% end %>
+
     <div class="md-pl1">
       <action type="button" class="pop menu__toggle" data-behavior="menu_toggle" aria-expanded="false" tabindex="0">
         <%= inline_icon 'share' %>
@@ -50,11 +56,16 @@
 <table>
   <thead>
     <tr>
-      <th>Donor</th>
-      <th>Date</th>
-      <th>Amount</th>
+      <th>STATUS</th>
+      <th>DATE</th>
+      <th>DONOR</th>
       <% if organizer_signed_in? %>
-        <th>Message</th>
+        <th>MESSAGE</th>
+      <% end %>
+
+      <th style="text-align: right;">AMOUNT</th>
+
+      <% if organizer_signed_in? %>
         <th></th>
       <% end %>
     </tr>
@@ -77,13 +88,7 @@
   <% @donations.each do |d| %>
     <tr data-behavior="filterbar_row" data-filter="<%= d.filter_data.to_json %>">
       <td>
-        <% if organizer_signed_in? %>
-          <strong><%= d.name %></strong>
-          <span><%= " 💬#{d.comments.size}" if organizer_signed_in? && d.comments.size > 0 %></span>
-          <%= link_to d.email, "mailto:#{d.name} <#{d.email}>", class: 'muted h6 block' %>
-        <% else %>
-          <span class="muted">(redacted)</span>
-        <% end %>
+        <span class="ml0 badge bg-<%= d.status_color %>"><%= d.status_text %></span>
       </td>
       <td>
         <%= format_date d.created_at %>
@@ -91,19 +96,28 @@
           <span class="muted block">expected <%= format_date d.arrival_date %></span>
         <% end %>
       </td>
+
       <td>
-        <span class="mr1 tooltipped tooltipped--e" aria-label="<%= d.status_text %>">
-          <%= status_badge d.status_color %>
-        </span>
-        <%= render_money d.amount %>
+        <% if organizer_signed_in? %>
+          <%= d.name %>
+          <span><%= " 💬#{d.comments.size}" if organizer_signed_in? && d.comments.size > 0 %></span>
+          <%#= link_to d.email, "mailto:#{d.name} <#{d.email}>", class: 'muted h6 block' %>
+        <% else %>
+          <span class="muted">(redacted)</span>
+        <% end %>
       </td>
       <% if organizer_signed_in? %>
         <td>
           <%= d.message.present? ? d.message : '–' %>
         </td>
-        <td>
-          <%= link_to 'Details', donation_path(d) %>
-        </td>
+      <% end %>
+      <td style="text-align: right;">
+                <%= render_money d.amount %>
+      </td>
+      <% if organizer_signed_in? %>
+      <td>
+        <%= link_to 'Details', donation_path(d) %>
+      </td>
       <% end %>
     </tr>
   <% end %>
