@@ -53,7 +53,7 @@ class StripeCardholder < ApplicationRecord
     address.delete(:line2) if stripe_billing_address_line2 == ''
     address.delete(:state) if stripe_billing_address_state == ''
     cardholder = StripeService::Issuing::Cardholder.create(
-      name: user.full_name,
+      name: user.safe_name,
       email: user.email,
       phone_number: user.phone_number,
       type: cardholder_type,
