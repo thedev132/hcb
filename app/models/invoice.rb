@@ -94,7 +94,7 @@ class Invoice < ApplicationRecord
   end
 
   def deposited? # TODO move to aasm
-    canonical_transactions.count >= 2 || manually_marked_as_paid?
+    canonical_transactions.count >= 2 || manually_marked_as_paid? || (created_at < Time.utc(2021, 1, 1) && payout_id.present?)
   end
 
   def state
