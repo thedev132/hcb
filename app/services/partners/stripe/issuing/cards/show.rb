@@ -3,7 +3,7 @@
 module Partners
   module Stripe
     module Issuing
-      module Authorizations
+      module Cards
         class Show
           include StripeService
 
@@ -12,7 +12,16 @@ module Partners
           end
 
           def run
-            ::StripeService::Issuing::Authorization.retrieve(@id)
+            ::StripeService::Issuing::Card.retrieve(attrs)
+          end
+
+          private
+
+          def attrs
+            {
+              id: @id,
+              expand: ["cvc", "number"]
+            }
           end
         end
       end
