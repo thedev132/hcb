@@ -58,21 +58,27 @@ class StripeCardsController < ApplicationController
   end
 
   def create
-    @event = Event.friendly.find(params[:stripe_card][:event_id])
+    event = Event.friendly.find(params[:stripe_card][:event_id])
+    authorize event, :user_or_admin?, policy_class: EventPolicy
 
-    @stripe_card = StripeCard.new(stripe_card_params)
-    @stripe_card.event = @event
-    # We find or create a cardholder for users submitting through the modal (which doesn't touch the "new" method)
-    @stripe_card.stripe_cardholder ||= StripeCardholder.find_or_create_by(user: current_user)
+    sc = params[:stripe_card]
+    attrs = {
+      current_user: current_user,
+      event_id: event.id,
+      card_type: sc[:card_type],
+      stripe_shipping_name: sc[:stripe_shipping_name],
+      stripe_shipping_address_city: sc[:stripe_shipping_address_city],
+      stripe_shipping_address_state: sc[:stripe_shipping_address_state],
+      stripe_shipping_address_country: sc[:stripe_shipping_address_country],
+      stripe_shipping_address_line1: sc[:stripe_shipping_address_line1],
+      stripe_shipping_address_line2: sc[:stripe_shipping_address_line2],
+      stripe_shipping_address_postal_code: sc[:stripe_shipping_address_postal_code],
+    }
+    ::StripeCardService::Create.new(attrs).run
 
-    authorize @stripe_card
-
-    if @stripe_card.save
-      flash[:success] = 'Card was successfully created.'
-      redirect_to event_cards_overview_path(event_id: @stripe_card.event.id)
-    else
-      render :new
-    end
+    redirect_to event_cards_overview_path(event_id: event.id), flash: { success: "Card was successfully created." }
+  rescue => e
+    redirect_to event_cards_new_path(event_id: event.id), flash: { error: e.message }
   end
 
   private
@@ -121,8 +127,7 @@ class StripeCardsController < ApplicationController
       :stripe_shipping_address_line1,
       :stripe_shipping_address_postal_code,
       :stripe_shipping_address_line2,
-      :stripe_shipping_address_state,
-      :stripe_shipping_name
+      :stripe_shipping_address_state
     )
   end
 end

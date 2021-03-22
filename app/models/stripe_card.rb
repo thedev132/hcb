@@ -25,8 +25,6 @@ class StripeCard < ApplicationRecord
   validates_presence_of :stripe_shipping_address_city,
                         :stripe_shipping_address_country,
                         :stripe_shipping_address_line1,
-                        # :stripe_shipping_address_line2, # optional
-                        # :stripe_shipping_address_state, # optional
                         :stripe_shipping_address_postal_code,
                         :stripe_shipping_name,
                         unless: -> { self.virtual? }
