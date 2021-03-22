@@ -21,7 +21,13 @@ module StripeCardService
 
     def run
       ActiveRecord::Base.transaction do
-        event.stripe_cards.create!(attrs)
+        card = event.stripe_cards.create!(attrs)
+
+        remote_stripe_card = create_remote_stripe_card!
+
+        card.stripe_id = remote_stripe_card.id # necessary because of design of sync_from_stripe
+        card.sync_from_stripe!
+        card.save!
       end
     end
 
@@ -41,12 +47,50 @@ module StripeCardService
       }.compact
     end
 
+    def create_remote_stripe_card!
+      ::StripeService::Issuing::Card.create(remote_card_attrs)
+    end
+
+    def remote_card_attrs
+      attrs = {
+        cardholder: stripe_cardholder.stripe_id,
+        type: @card_type,
+        currency: "usd",
+        status: "active"
+      }
+
+      if physical?
+        attrs[:shipping] = {
+          name: @stripe_shipping_name,
+          service: "standard",
+          address: {
+            line1: @stripe_shipping_address_line1,
+            line2: @stripe_shipping_address_line2,
+            city: @stripe_shipping_address_city,
+            state: @stripe_shipping_address_state,
+            country: @stripe_shipping_address_country,
+            postal_code: @stripe_shipping_address_postal_code
+          }.compact
+        }.compact
+      end
+
+      attrs
+    end
+
     def stripe_cardholder
       @stripe_cardholder ||= ::StripeCardholder.find_or_create_by(user: @current_user)
     end
 
     def event
       @event ||= Event.friendly.find(@event_id)
+    end
+
+    def virtual?
+      @card_type == "virtual" || @card_type == 0 || @card_type == "0"
+    end
+
+    def physical?
+      !virtual?
     end
   end
 end
