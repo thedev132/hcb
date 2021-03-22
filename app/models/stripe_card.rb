@@ -39,11 +39,11 @@ class StripeCard < ApplicationRecord
                         if: -> { self.stripe_id.present? }
 
   def full_card_number
-    stripe_obj[:number]
+    secret_details[:number]
   end
 
   def cvc
-    stripe_obj[:cvc]
+    secret_details[:cvc]
   end
 
   def formatted_card_number
@@ -113,11 +113,11 @@ class StripeCard < ApplicationRecord
   alias_attribute :address_postal_code, :stripe_shipping_address_postal_code
 
   def stripe_obj
-    @stripe_card_obj ||= begin
-      ::Partners::Stripe::Issuing::Cards::Show.new(id: stripe_id).run
-    end
+    @stripe_card_obj ||= ::Partners::Stripe::Issuing::Cards::Show.new(id: stripe_id).run
+  end
 
-    @stripe_card_obj
+  def secret_details
+    @secret_details ||= ::Partners::Stripe::Issuing::Cards::Show.new(id: stripe_id, expand: ["cvc", "number"]).run
   end
 
   def shipping_has_tracking?

@@ -7,8 +7,9 @@ module Partners
         class Show
           include StripeService
 
-          def initialize(id:)
+          def initialize(id:, expand: [])
             @id = id
+            @expand = expand
           end
 
           def run
@@ -20,7 +21,7 @@ module Partners
           def attrs
             {
               id: @id,
-              expand: ["cvc", "number"]
+              expand: @expand
             }
           end
         end
