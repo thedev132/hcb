@@ -39,11 +39,11 @@ class StripeCard < ApplicationRecord
                         if: -> { self.stripe_id.present? }
 
   def full_card_number
-    secret_details[:number]
+    stripe_obj[:number]
   end
 
   def cvc
-    secret_details[:cvc]
+    stripe_obj[:cvc]
   end
 
   def formatted_card_number
@@ -114,7 +114,7 @@ class StripeCard < ApplicationRecord
 
   def stripe_obj
     @stripe_card_obj ||= begin
-      StripeService::Issuing::Card.retrieve(stripe_id)
+      ::Partners::Stripe::Issuing::Cards::Show.new(id: stripe_id).run
     end
 
     @stripe_card_obj
@@ -193,14 +193,6 @@ class StripeCard < ApplicationRecord
 
   def issued?
     !stripe_id.blank?
-  end
-
-  def secret_details
-    # (msw) We do not want to store card info in our database, so this private
-    # method is the only way to get this info
-    @secret_details ||= StripeService::Issuing::Card.details(stripe_id)
-
-    @secret_details
   end
 
   def pay_for_issuing
