@@ -96,7 +96,8 @@ module TransactionGroupingEngine
 
         q = <<~SQL
           select
-            q1.hcb_code
+            q1.ids
+            ,q1.hcb_code
             ,q1.amount_cents
             ,q1.amount::float
             ,(#{date_select}) as date
@@ -105,7 +106,7 @@ module TransactionGroupingEngine
           from (
             #{group_sql}
           ) q1
-          order by date desc
+          order by date desc, ids[0] desc
         SQL
 
         ActiveRecord::Base.connection.execute(q)
