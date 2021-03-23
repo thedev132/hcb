@@ -90,16 +90,16 @@ West Hollywood, CA 90069
           <p>
           If your card is lost or stolen, we can deactivate the card. Please
           get in touch with the Bank team
-					<% if organizer_signed_in? %>
-						(<%= help_message %>)
-					<% else %>
-						<span class="muted">(sign in to view)</span>
-					<% end%>
-					as soon as possible. In the meantime, please freeze your
-					card within the Hack Club Bank dashboard. If your card
-					expires, you can freeze the card and issue yourself a new
-					card through the Hack Club Bank dashboard—Hack Club Bank
-					cards do not auto-renew when they pass their expiry date.
+          <% if organizer_signed_in? %>
+            (<%= help_message %>)
+          <% else %>
+            <span class="muted">(sign in to view)</span>
+          <% end%>
+          as soon as possible. In the meantime, please freeze your
+          card within the Hack Club Bank dashboard. If your card
+          expires, you can freeze the card and issue yourself a new
+          card through the Hack Club Bank dashboard—Hack Club Bank
+          cards do not auto-renew when they pass their expiry date.
           </p>
         </article>
       </details>
@@ -141,12 +141,12 @@ West Hollywood, CA 90069
           proprietary "supplier systems" that larger companies may use to pay their bills.
           These methods usually require that they connect and pay directly to Hack Club Bank’s
           underlying bank account (not Stripe’s invoicing system), so please contact the Bank team
-					<% if organizer_signed_in? %>
-						(<%= help_message %>)
-					<% else %>
-						<span class="muted">(sign in to view)</span>
-					<% end%>
-					to start this process.
+          <% if organizer_signed_in? %>
+            (<%= help_message %>)
+          <% else %>
+            <span class="muted">(sign in to view)</span>
+          <% end%>
+          to start this process.
           </p>
         </article>
       </details>
@@ -170,7 +170,7 @@ West Hollywood, CA 90069
       </details>
     </li>
 
-		<li class="mb3">
+    <li class="mb3">
       <details open>
         <summary class="cursor-pointer">
           <h3 class="inline mb1">
@@ -183,9 +183,9 @@ West Hollywood, CA 90069
           We are currently in the process of building out our support for
           international projects. As a result, we do not have a definitive
           answer. If you are interested, we would love for you to
-					<%= link_to 'http://hackclub.com/bank/', target: '_blank' do %>apply<% end %>
-					so we can hear what you're working on and whether we can
-					possibly help.
+          <%= link_to 'http://hackclub.com/bank/', target: '_blank' do %>apply<% end %>
+          so we can hear what you're working on and whether we can
+          possibly help.
           </p>
         </article>
       </details>
