@@ -118,6 +118,8 @@ class StripeCard < ApplicationRecord
 
   def secret_details
     @secret_details ||= ::Partners::Stripe::Issuing::Cards::Show.new(id: stripe_id, expand: ["cvc", "number"]).run
+  rescue => e
+    { number: "XXXX", cvc: "XXX" }
   end
 
   def shipping_has_tracking?

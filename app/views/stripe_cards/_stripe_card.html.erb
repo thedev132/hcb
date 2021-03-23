@@ -1,4 +1,5 @@
-<%= link_to organizer_signed_in? ? stripe_card : root_path, class: 'text-decoration-none' do %>
+<a class="text-decoration-none" href="<%= stripe_card_path(stripe_card) %>">
+
   <%= creator_bar stripe_card, prefix: 'issued ' unless defined? headless %>
   <div class="stripe-card <%= stripe_card.status_text %> <%= stripe_card.virtual? ? 'virtual' : '' %>" data-behavior="hover_tilt">
     <p class="stripe-card__number">
@@ -13,4 +14,5 @@
       </span>
     </p>
   </div>
-<% end %>
+
+</a>
