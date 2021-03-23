@@ -12,13 +12,14 @@
     <li class="mb3">
       <details open>
         <summary class="cursor-pointer">
-          <h3 class="inline mb1">I’m working on something that’s not a hackathon. Can I use Hack Club Bank?</h3>
+          <h3 class="inline mb1">I’m working on something that’s not a hackathon. Can I partner with Hack Club Bank?</h3>
         </summary>
         <article>
           <p>
-          Yes! Hack Club Bank started as a tool for hackathon organizers, but today, we support
-          a spectrum of events and projects related to science, technology, and entrepreneurship education. Chances are,
-          you’ll be eligble to use Hack Club Bank!
+          Yes! Hack Club Bank started as a tool for hackathon organizers, but
+          today we work with a spectrum of events, projects, and
+          organizations related to science, technology, entrepreneurship, and
+          education. Chances are, you’ll be eligble to use Bank!
           </p>
         </article>
       </details>
@@ -27,18 +28,37 @@
     <li class="mb3">
       <details open>
         <summary class="cursor-pointer">
-          <h3 class="inline mb1">I need to deposit a paper check to my Hack Club Bank account. What should I do?</h3>
+          <h3 class="inline mb1">I need to deposit a paper check. What should I do?</h3>
         </summary>
         <article>
           <p>
-          Hack Club Bank accepts paper checks! Just mail the check to our billing address:
-          <code><pre>
-  The Hack Foundation
-  8605 Santa Monica Blvd #86294
-  West Hollywood, CA 90069</pre></code>
-	  Be sure to label the envelope or the check’s memo with the name of your event or organization, so we can make sure
-          that you receive the funds. However, the check itself <strong>must be addressed to "The Hack Foundation"</strong> for us to
-          be able to deposit checks to Hack Club Bank.
+            Hack Club Bank accepts paper checks! Just mail the check to our
+            billing address:
+          </p>
+          <code>
+<pre>
+The Hack Foundation
+8605 Santa Monica Blvd #86294
+West Hollywood, CA 90069
+</pre>
+          </code>
+          <p>
+            Be sure that your organization's name is included either on the
+            check's memo or somewhere else in or on the envelope sent.
+            Without it, we can't properly route received funds.
+          </p>
+
+          <p>
+            <strong>Checks must be made out to either "The Hack Foundation"
+            or "Hack Club".</strong> Silicon Valley Bank, our banking
+            partner, unfortunately rejects checks made out to any name
+            besides those two.
+          </p>
+
+          <p>
+            Please <a href="https://cloud-82tb02emf-hack-club-bot.vercel.app/0img_0601.jpg">see here</a>
+            for an example of how to write a check to be deposited into your
+            organization's fund with Hack Club Bank.
           </p>
         </article>
       </details>
@@ -47,12 +67,15 @@
     <li class="mb3">
       <details open>
         <summary class="cursor-pointer">
-          <h3 class="inline mb1">A sponsor is asking for our tax ID or employer number. Where can I find it?</h3>
+          <h3 class="inline mb1">A supporter is asking for our tax ID or employer number (EIN). Where can I find it?</h3>
         </summary>
         <article>
           <p>
-          Hack Club Bank’s nonprofit status comes from Hack Club, also known as The Hack Foundation. Our EIN, which is
-          the same as our tax ID, is <code>81-2908499</code>.
+          Hack Club Bank’s 501(c)(3) nonprofit status comes from <a
+          href="https://hackclub.com">Hack Club</a>, which is legally
+          registered as The Hack Foundation. Our EIN, which is the same as
+          our tax ID, is <code>81-2908499</code>. It is also available at the
+          bottom of <a href="https://hackclub.com">https://hackclub.com</a>.
           </p>
         </article>
       </details>
@@ -61,19 +84,22 @@
     <li class="mb3">
       <details open>
         <summary class="cursor-pointer">
-          <h3 class="inline mb1">What do I do if I lost my Hack Club Bank card, it got stolen, or it expires?</h3>
+          <h3 class="inline mb1">What do I do if I lost my Hack Club Bank card, if it got stolen, or if it expires?</h3>
         </summary>
         <article>
           <p>
-          If your card is lost or stolen, we can deactivate the card. Please get in touch with the Bank team
-					<% if organizer_signed_in? %>
-						(<%= help_message %>)
-					<% else %>
-						<span class="muted">(sign in to view)</span>
-					<% end%>
-					as soon as possible. In the
-					meantime, please freeze your card within the Hack Club Bank dashboard. If your card expires, you can freeze the card and issue
-					yourself a new card through the Hack Club Bank dashboard—Hack Club Bank cards do not auto-renew when they pass their expiry date.
+          If your card is lost or stolen, we can deactivate the card. Please
+          get in touch with the Bank team
+          <% if organizer_signed_in? %>
+            (<%= help_message %>)
+          <% else %>
+            <span class="muted">(sign in to view)</span>
+          <% end%>
+          as soon as possible. In the meantime, please freeze your
+          card within the Hack Club Bank dashboard. If your card
+          expires, you can freeze the card and issue yourself a new
+          card through the Hack Club Bank dashboard—Hack Club Bank
+          cards do not auto-renew when they pass their expiry date.
           </p>
         </article>
       </details>
@@ -86,10 +112,16 @@
         </summary>
         <article>
           <p>
-          Yes, please. One of the parts of being a legally responsible nonprofit is keeping a good record of our expenses
-          and where our funds are spent for ourselves, and for the government in case of audits. Your receipts serve
-          as proof of the purchases you’ve made on behalf of your project, event, or Hack Club, and helps Hack Club Bank
-          stay compliant and continue helping support all our customers.
+          Yes. The IRS requires all nonprofits to keep receipts for
+          transactions on file. Additionally, nonprofits following best
+          practices hire auditors to ensure their books are compliant.
+          Missing receipts lead to failed audits.
+          </p>
+          <p>
+          Continually not uploading receipts for purchases is grounds for
+          termination of fiscal sponsorship, as it puts the 501(c)(3) status
+          of Hack Club and everyone else partnering with Hack Club Bank at
+          risk.
           </p>
         </article>
       </details>
@@ -99,22 +131,24 @@
       <details open>
         <summary class="cursor-pointer">
           <h3 class="inline mb1">
-            Our sponsor wants to pay through Bill.com or something other than invoices through Stripe.
-            / Our sponsor has an employee donation matching program, and they use their own system to give.
+            Our supporter wants to pay through Bill.com or something other than invoices through Stripe
+            / Our supporter has an employee donation matching program, and they use their own system to give.
           </h3>
         </summary>
         <article>
           <p>
-          We can accommodate whichever method the sponsor would like to use, including
-          proprietary "supplier systems" that larger companies may use to pay their bills.
-          These methods usually require that they connect and pay directly to Hack Club Bank’s
-          underlying bank account (not Stripe’s invoicing system), so please contact the Bank team
-					<% if organizer_signed_in? %>
-						(<%= help_message %>)
-					<% else %>
-						<span class="muted">(sign in to view)</span>
-					<% end%>
-					to start this process.
+          We can accommodate whichever method the supporter would like to
+          use, including proprietary "supplier systems" that larger companies
+          may use to pay their bills. These methods usually require that they
+          connect and pay directly to Hack Club Bank’s underlying bank
+          account (not Stripe’s invoicing system), so please contact the Bank
+          team
+          <% if organizer_signed_in? %>
+            (<%= help_message %>)
+          <% else %>
+            <span class="muted">(sign in to view)</span>
+          <% end%>
+          to start this process.
           </p>
         </article>
       </details>
@@ -123,32 +157,37 @@
     <li class="mb3">
       <details open>
         <summary class="cursor-pointer">
-          <h3 class="inline mb1">Can we change the name or G Suite domain of our event/project?</h3>
+          <h3 class="inline mb1">Can we change the name or Google Workspace domain of our event/project?</h3>
         </summary>
         <article>
           <p>
-          Yes, you’re not locked into the name or G Suite domain you used to set up your Hack Club Bank account.
-          However, currently, changing your project name is a fairly involved process on our backend,
-          so you’re only able to change your name up to twice every year. If you need to change your name or domain
-          more frequently, please contact the Bank team.
+          Yes, you’re not locked into the name or Google Workspace domain you
+          used to set up your Hack Club Bank account. However, currently,
+          changing your project name is a fairly involved process on our
+          backend, so you’re only able to change your name up to twice every
+          year. If you need to change your name or domain more frequently,
+          please contact the Bank team.
           </p>
         </article>
       </details>
     </li>
 
-		<li class="mb3">
+    <li class="mb3">
       <details open>
         <summary class="cursor-pointer">
           <h3 class="inline mb1">
-            Are international projects, events, and clubs (outside of the US) eligible to use Hack Club Bank?
+            Are international projects, events, and clubs (outside of the US)
+            eligible to use Hack Club Bank?
           </h3>
         </summary>
         <article>
           <p>
-          We are currently in the process of building out our support for international projects. As a result, we do not
-					have a definitive answer. If you are interested, we would love for you to
-					<%= link_to 'http://hackclub.com/bank/', target: '_blank' do %>apply<% end %>
-					so we can hear what you're working on and whether we can possibly help.
+          We are currently in the process of building out our support for
+          international projects. As a result, we do not have a definitive
+          answer. If you are interested, we would love for you to
+          <%= link_to 'http://hackclub.com/bank/', target: '_blank' do %>apply<% end %>
+          so we can hear what you're working on and whether we can
+          possibly work together.
           </p>
         </article>
       </details>
@@ -161,10 +200,9 @@
         </summary>
         <article>
           <p>
-          You can email
-          <%= help_email %>
-          with all your unanswered questions about Hack Club Bank. If we get it often, we’ll also
-          add your question to this FAQ page!
+          You can email <%= help_email %> with all your unanswered questions
+          about Hack Club Bank. If we get it often, we’ll also add your
+          question to this FAQ page!
           </p>
         </article>
       </details>
