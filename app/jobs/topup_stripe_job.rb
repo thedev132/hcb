@@ -10,7 +10,7 @@ class TopupStripeJob < ApplicationJob
 
     # amount of money currently in stripe
     balances = StripeService::Balance.retrieve
-    pending = balances[:issuing][:pending][0][:amount]
+    pending = balances[:issuing].try(:[], :pending).try(:[], 0).try(:[], :amount) || 0 # new API changed this - it is not included when 0
     available = balances[:issuing][:available][0][:amount]
 
     # amount of money already enroute to stripe through existing topups
