@@ -33,6 +33,10 @@ class CanonicalPendingTransaction < ApplicationRecord
 
   after_create_commit :write_system_event
 
+  def mapped?
+    @mapped ||= canonical_pending_event_mapping.present?
+  end
+  
   def settled?
     @settled ||= canonical_pending_settled_mappings.exists?
   end
