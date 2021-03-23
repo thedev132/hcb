@@ -7,11 +7,7 @@ module PendingTransactionEngine
 
         def run
           pending_stripe_transactions.each do |t|
-            ::RawPendingStripeTransaction.find_or_initialize_by(stripe_transaction_id: t[:id]).tap do |st|
-              st.stripe_transaction = t
-              st.amount_cents = -t[:amount] # it's a transaction card swipe so it is always negative (but Stripe returns it as a positive value)
-              st.date_posted = Time.at(t[:created])
-            end.save!
+            ::PendingTransactionEngine::RawPendingStripeTransactionService::Stripe::ImportSingle.new(remote_stripe_transaction: t).run
           end
 
           nil

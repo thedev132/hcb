@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module StripeAuthorizationService
   class Missing
     def run

@@ -18,8 +18,8 @@ module StripeAuthorizationService
         # 2. create stripe authorization (v1 engine)
         ::StripeAuthorization.create!(stripe_id: auth_id) # TODO: move to background job
 
-        # 3. 
-        # TODO: run v2 engine
+        # 3. put the transaction on the pending ledger in almost realtime
+        ::StripeAuthorizationJob::CreateFromWebhook.perform_later(auth_id) # 
       end
 
       private

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module PendingTransactionEngine
   module CanonicalPendingTransactionService
     module Import
@@ -5,15 +7,7 @@ module PendingTransactionEngine
         def run
           raw_pending_stripe_transactions_ready_for_processing.find_each(batch_size: 100) do |rpst|
 
-            ActiveRecord::Base.transaction do
-              attrs = {
-                date: rpst.date,
-                memo: rpst.memo,
-                amount_cents: rpst.amount_cents,
-                raw_pending_stripe_transaction_id: rpst.id
-              }
-              ct = ::CanonicalPendingTransaction.create!(attrs)
-            end
+            ::PendingTransactionEngine::CanonicalPendingTransactionService::ImportSingle::Stripe.new(raw_pending_stripe_transaction: rpst).run
 
           end
         end
