@@ -11,10 +11,10 @@ module PendingTransactionEngine
 
           ActiveRecord::Base.transaction do
             attrs = {
-              date: @raw_pending_stripe_transaction_id.date,
-              memo: @raw_pending_stripe_transaction_id.memo,
-              amount_cents: @raw_pending_stripe_transaction_id.amount_cents,
-              raw_pending_stripe_transaction_id: @raw_pending_stripe_transaction_id.id
+              date: @raw_pending_stripe_transaction.date,
+              memo: @raw_pending_stripe_transaction.memo,
+              amount_cents: @raw_pending_stripe_transaction.amount_cents,
+              raw_pending_stripe_transaction_id: @raw_pending_stripe_transaction.id
             }
             ::CanonicalPendingTransaction.create!(attrs)
           end
@@ -23,7 +23,7 @@ module PendingTransactionEngine
         private
 
         def existing_canonical_pending_transaction
-          @existing_canonical_pending_transaction ||= ::CanonicalPendingTransaction.where(raw_pending_stripe_transaction_id: @raw_pending_stripe_transaction_id.id).first
+          @existing_canonical_pending_transaction ||= ::CanonicalPendingTransaction.where(raw_pending_stripe_transaction_id: @raw_pending_stripe_transaction.id).first
         end
       end
     end
