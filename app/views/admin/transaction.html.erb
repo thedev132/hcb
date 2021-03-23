@@ -26,7 +26,7 @@
       <td><%= @canonical_transaction.canonical_event_mapping.try(:user).try(:email) %></td>
       <td>
         <%= form_with model: nil, local: true, url: set_event_path(@canonical_transaction), method: :post do |form| %>
-          <%= form.collection_select(:event_id, Event.reorder(:name), :id, :admin_dropdown_description,  {  include_blank: true, selected: @canonical_transaction.event.try(:id) }, { width: 150, style: "max-width: 150px;" }) %>
+          <%= form.collection_select(:event_id, Event.reorder(Event::CUSTOM_SORT), :id, :admin_dropdown_description,  {  include_blank: true, selected: @canonical_transaction.event.try(:id) }, { width: 150, style: "max-width: 150px;" }) %>
           <%= form.submit "Set" %>
         <% end %>
       </td>

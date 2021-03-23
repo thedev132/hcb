@@ -148,7 +148,7 @@ class Event < ApplicationRecord
                       WHEN id = 999 THEN '2'
                       WHEN id = 689 THEN '3'
                       WHEN id = 636 THEN '4'
-                      ELSE name END ASC"
+                      ELSE 'z' || name END ASC"
 
   # Used by the api's '/event' POST route
   def self.create_send_only(event_name, user_emails)
