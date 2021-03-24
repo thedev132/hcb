@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class HcbCodes < ApplicationRecord
+class HcbCode < ApplicationRecord
   include Commentable
   include Receiptable
 end
