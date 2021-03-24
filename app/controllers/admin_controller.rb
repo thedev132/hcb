@@ -514,7 +514,7 @@ class AdminController < ApplicationController
 
     relation = HcbCode
 
-    relation = relation.where("hcb_code ilike '%#{q}%'") if @q
+    relation = relation.where("hcb_code ilike '%#{@q}%'") if @q
 
     @count = relation.count
     @hcb_codes = relation.page(@page).per(@per).order("created_at desc")
