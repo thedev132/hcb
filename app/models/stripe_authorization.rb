@@ -130,6 +130,10 @@ class StripeAuthorization < ApplicationRecord
     name
   end
 
+  def deleted_at
+    nil
+  end
+
   private
 
   def notify_of_creation
