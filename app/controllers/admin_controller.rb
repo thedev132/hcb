@@ -507,6 +507,21 @@ class AdminController < ApplicationController
     redirect_to disbursement_new_admin_index_path, flash: { error: e.message }
   end
 
+  def hcb_codes
+    @page = params[:page] || 1
+    @per = params[:per] || 20
+    @q = params[:q].present? ? params[:q] : nil
+
+    relation = HcbCode
+
+    relation = relation.where("hcb_code ilike '%#{@q}%'") if @q
+
+    @count = relation.count
+    @hcb_codes = relation.page(@page).per(@per).order("created_at desc")
+
+    render layout: "admin"
+  end
+
   def invoices
     @page = params[:page] || 1
     @per = params[:per] || 20
