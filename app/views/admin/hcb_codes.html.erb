@@ -1,0 +1,66 @@
+<% title "HCB CODES" %>
+
+<h1>HCB CODES</h1>
+
+<%= paginate @hcb_codes %>
+
+<%= form_with local: true, url: hcb_codes_admin_index_path, method: :get do |form| %>
+  <%= form.text_field :q, value: params[:q] %>
+  |
+
+  <%= form.submit "Search" %>
+<% end %>
+
+<p><small><%= pluralize(@count, "result") %></small></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>HCB Code</th>
+      <th>Pending TXs</th>
+      <th>Canonical TXs</th>
+      <th>Comments</th>
+      <th>Receipts</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @hcb_codes.each do |hcb_code| %>
+      <tr>
+        <td><%= hcb_code.hcb_code %></td>
+        <td>
+          <% hcb_code.canonical_pending_transactions.each do |cpt| %>
+            <% if cpt.event %>
+              <%= link_to cpt.id, event_path(cpt.event) %>
+            <% else %>
+              <%= cpt.id %>
+            <% end %>
+          <% end %>
+        </td>
+        <td>
+          <% hcb_code.canonical_transactions.each do |ct| %>
+            <% if ct.event.present? %>
+              <%= link_to ct.id, transaction_admin_path(ct) %>
+            <% else %>
+              <%= ct.id %>
+            <% end %>
+          <% end %>
+        </td>
+        <td>
+          <% hcb_code.comments.each do |c| %>
+            <%= c.id %>
+          <% end %>
+        </td>
+        <td>
+          <% hcb_code.receipts.each do |r| %>
+            <%= r.id %>
+          <% end %>
+        </td>
+        <td>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= paginate @hcb_codes %>
