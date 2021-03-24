@@ -36,7 +36,11 @@
 <% end %>
 
 <h2 class="mt3">Invite a team member</h2>
-<%= render 'form_invite', invite: OrganizerPositionInvite.new %>
+<% if organizer_signed_in? %>
+  <%= render 'form_invite', invite: OrganizerPositionInvite.new %>
+<% else %>
+  <p>Disabled in transparency mode</p>
+<% end %>
 
 <% if @pending.any? %>
   <h2 class="flex items-center mt3 mb0">
