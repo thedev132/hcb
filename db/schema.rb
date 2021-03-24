@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_23_234340) do
+ActiveRecord::Schema.define(version: 2021_03_24_200519) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -601,6 +601,12 @@ ActiveRecord::Schema.define(version: 2021_03_23_234340) do
     t.index ["raw_csv_transaction_id"], name: "index_hashed_transactions_on_raw_csv_transaction_id"
     t.index ["raw_plaid_transaction_id"], name: "index_hashed_transactions_on_raw_plaid_transaction_id"
     t.index ["raw_stripe_transaction_id"], name: "index_hashed_transactions_on_raw_stripe_transaction_id"
+  end
+
+  create_table "hcb_codes", force: :cascade do |t|
+    t.text "hcb_code", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "invoice_payouts", force: :cascade do |t|
