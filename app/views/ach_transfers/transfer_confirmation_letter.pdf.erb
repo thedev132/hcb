@@ -1,0 +1,98 @@
+<head>
+  <title>Hack Club Bank - ACH Transfer Confirmation Letter</title>
+  <style>
+
+    .container {
+      font-size: 13.5pt;
+      line-height: 1.15;
+      position: relative;
+      padding-left: 40pt;
+      padding-right: 40pt;
+      display: block;
+    }
+
+    .centerImage {
+      position: relative;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+    
+    .bold {
+      font-weight: bold;
+    }
+
+    body {
+      margin: 8px;
+      font-family: 'Arial';
+    }
+
+    a {
+      color: #1155cc;
+    }
+
+    .auto-page-break { 
+      page-break-before: auto;  
+      page-break-inside: avoid;
+    }
+  </style>
+</head>
+<body>
+  <br />
+  <div class="container">
+    <br />
+    <div style="height: 80px;">
+        <p style="margin: 0; float: right; font-size: 11pt; line-height: 1.5">
+          <span class="bold">Hack Club</span><br />
+          <span style="white-space: nowrap;">8605 Santa Monica Boulevard #86294</span><br />
+          West Hollywood, CA 90069<br />
+          team@hackclub.com
+        </p>
+      <%= image_tag(wicked_pdf_asset_base64('hack_club_logo.png'), width: 156.6, height: 26.88, class: 'centerImage')%>
+    </div>
+    <br />
+    <br />
+    <br />
+    <p style="margin-top: 2rem;"><%= Time.now.strftime("%B #{Time.now.day.ordinalize}, %Y") %></p>
+    <br />
+    <br />
+    <p style="font-size: 12.5pt;"><span class="bold"><%= @event.name %> ACH Transfer to <%= @ach_transfer.recipient_name %></span></p>
+    <br />
+
+    <div style="line-height: 1.5;">
+      <p>To whom it may concern,</p>
+      <p><%= @ach_transfer.creator %></p>
+      <p><%= @ach_transfer.payment_for %></p>
+      <p><%= @ach_transfer.amount %></p>
+      <p><%= @ach_transfer.status %></p>
+      <p>
+        This letter is to verify that EVENT NAME blah blah is acting as the nonprofit <a href="https://en.wikipedia.org/wiki/Fiscal_sponsorship">fiscal sponsor</a> for <%= @event.name %>.
+      </p>
+      <p>
+        We have established a restricted fund within our foundation to support their event and are
+receiving funds on their behalf. The Hack Foundation is a 501(c)(3) public charity with the EIN 81-2908499.
+      </p>
+      <p>
+        Please don't hesitate to contact me with any additional questions. I can be reached at <a href="mailto:michael@hackclub.com">michael@hackclub.com</a>
+      </p>
+    </div>
+
+    <br />
+    <p>
+      Best,
+    </p>
+    <%= image_tag(wicked_pdf_asset_base64('michael_signature.png'), width: 300, height: 73, dpi: 96) %>
+    <p style="line-height: 1.5">
+      Michael Destefanis<br />
+      Director of Hack Club Bank<br />
+      Hack Club
+    </p>
+    <br />
+    <br />
+    <p style="font-size: 12pt; font-weight: bold; color: #434343; position: fixed; bottom: 12px; width: 100%; white-space: nowrap;">
+      By the students, for the students.
+    </p>
+    <p style="font-size: 10pt; color: #999999; position: fixed; bottom: 0px;">
+      Hack Club is a 501(c)(3) public charity. Our nonprofit EIN is 81-2908499.
+    </p>
+  </div>
+</body>
