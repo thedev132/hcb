@@ -115,7 +115,7 @@ class CanonicalTransactionGrouped
   end
 
   def smart_hcb_code
-    hcb_code || ::TransactionGroupingEngine::Calculate::HcbCode.new(canonical_transaction: canonical_transactions.first)
+    hcb_code || ::TransactionGroupingEngine::Calculate::HcbCode.new(canonical_transaction_or_canonical_pending_transaction: canonical_transactions.first)
   end
 
   def split_code
