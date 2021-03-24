@@ -125,6 +125,14 @@ class CanonicalTransaction < ApplicationRecord
     hashed_transaction.raw_stripe_transaction
   end
 
+  def raw_pending_stripe_transaction 
+    nil
+  end
+
+  def remote_stripe_iauth_id
+    raw_stripe_transaction.stripe_transaction["authorization"]
+  end
+
   def likely_waveable_for_fee?
     likely_check_clearing_dda? ||
       likely_card_transaction_refund? ||

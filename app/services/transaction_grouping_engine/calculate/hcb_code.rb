@@ -15,8 +15,8 @@ module TransactionGroupingEngine
       DISBURSEMENT_CODE = "500"
       STRIPE_CARD_CODE = "600"
 
-      def initialize(canonical_transaction:)
-        @canonical_transaction = canonical_transaction
+      def initialize(canonical_transaction_or_canonical_pending_transaction:)
+        @ct_or_cp = canonical_transaction_or_canonical_pending_transaction
       end
 
       def run
@@ -26,6 +26,7 @@ module TransactionGroupingEngine
         return check_hcb_code if check
         return disbursement_hcb_code if disbursement
         return stripe_card_hcb_code if raw_stripe_transaction
+        return stripe_card_hcb_code_pending if raw_pending_stripe_transaction
 
         unknown_hcb_code
       end
@@ -41,7 +42,7 @@ module TransactionGroupingEngine
       end
 
       def invoice
-        @invoice ||= @canonical_transaction.invoice
+        @invoice ||= @ct_or_cp.invoice
       end
 
       def donation_hcb_code
@@ -53,7 +54,7 @@ module TransactionGroupingEngine
       end
 
       def donation
-        @donation ||= @canonical_transaction.donation
+        @donation ||= @ct_or_cp.donation
       end
 
       def ach_transfer_hcb_code
@@ -65,7 +66,7 @@ module TransactionGroupingEngine
       end
 
       def ach_transfer
-        @ach_transfer ||= @canonical_transaction.ach_transfer
+        @ach_transfer ||= @ct_or_cp.ach_transfer
       end
 
       def check_hcb_code
@@ -77,7 +78,7 @@ module TransactionGroupingEngine
       end
 
       def check
-        @check ||= @canonical_transaction.check
+        @check ||= @ct_or_cp.check
       end
 
       def disbursement_hcb_code
@@ -89,26 +90,38 @@ module TransactionGroupingEngine
       end
 
       def disbursement
-        @disbursement ||= @canonical_transaction.disbursement
+        @disbursement ||= @ct_or_cp.disbursement
       end
 
       def stripe_card_hcb_code
         [
           HCB_CODE,
           STRIPE_CARD_CODE,
-          @canonical_transaction.id
+          @ct_or_cp.remote_stripe_iauth_id
         ].join(SEPARATOR)
       end
 
       def raw_stripe_transaction
-        @raw_stripe_transaction ||= @canonical_transaction.raw_stripe_transaction
+        @raw_stripe_transaction ||= @ct_or_cp.raw_stripe_transaction
+      end
+
+      def stripe_card_hcb_code_pending
+        [
+          HCB_CODE,
+          STRIPE_CARD_CODE,
+          @ct_or_cp.remote_stripe_iauth_id
+        ].join(SEPARATOR)
+      end
+
+      def raw_pending_stripe_transaction
+        @raw_pending_stripe_transaction ||= @ct_or_cp.raw_pending_stripe_transaction
       end
 
       def unknown_hcb_code
         [
           HCB_CODE,
           UNKNOWN_CODE,
-          @canonical_transaction.id
+          @ct_or_cp.id
         ].join(SEPARATOR)
       end
     end
