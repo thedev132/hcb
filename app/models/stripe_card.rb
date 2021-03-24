@@ -1,5 +1,5 @@
 class StripeCard < ApplicationRecord
-  after_create :notify_user, :pay_for_issuing
+  after_create_commit :notify_user, :pay_for_issuing
 
   scope :deactivated, -> { where.not(stripe_status: 'active') }
   scope :canceled, -> { where(stripe_status: 'canceled' )}
