@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_24_200519) do
+ActiveRecord::Schema.define(version: 2021_03_24_213548) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -607,6 +607,7 @@ ActiveRecord::Schema.define(version: 2021_03_24_200519) do
     t.text "hcb_code", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["hcb_code"], name: "index_hcb_codes_on_hcb_code", unique: true
   end
 
   create_table "invoice_payouts", force: :cascade do |t|

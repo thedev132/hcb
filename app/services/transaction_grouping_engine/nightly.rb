@@ -13,12 +13,16 @@ module TransactionGroupingEngine
         hcb_code = ::TransactionGroupingEngine::Calculate::HcbCode.new(canonical_transaction_or_canonical_pending_transaction: ct).run
 
         ct.update_column(:hcb_code, hcb_code)
+
+        HcbCode.find_or_create_by!(hcb_code: hcb_code)
       end
 
       canonical_pending_transactions.find_each(batch_size: 100) do |cpt|
         hcb_code = ::TransactionGroupingEngine::Calculate::HcbCode.new(canonical_transaction_or_canonical_pending_transaction: cpt).run
 
         cpt.update_column(:hcb_code, hcb_code)
+
+        HcbCode.find_or_create_by!(hcb_code: hcb_code)
       end
     end
 

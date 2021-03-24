@@ -141,7 +141,7 @@ class AchTransfer < ApplicationRecord
   private
 
   def canonical_pending_transactions
-    @canonical_pending_transactions ||= ::CanonicalPendingTransaction.where(raw_pending_outgoing_ach_transaction_id: raw_pending_outgoing_ach_transaction.id)
+    @canonical_pending_transactions ||= ::CanonicalPendingTransaction.where(raw_pending_outgoing_ach_transaction_id: raw_pending_outgoing_ach_transaction.try(:id))
   end
 
   def raw_pending_outgoing_ach_transaction
