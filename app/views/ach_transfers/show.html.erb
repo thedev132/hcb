@@ -89,4 +89,7 @@
   </section>
 </article>
 
-<%= render 'comments/comments' %>
+<% if @hcb_code %>
+  <%= render "comments/list_v2" %>
+  <%= render "comments/form_v2" %>
+<% end %>

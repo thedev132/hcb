@@ -7,9 +7,8 @@ class AchTransfersController < ApplicationController
   def show
     authorize @ach_transfer
 
-    @commentable = @ach_transfer
-    @comments = @commentable.comments
-    @comment = Comment.new
+    # Comments
+    @hcb_code = HcbCode.find_by(hcb_code: @ach_transfer.hcb_code)
   end
 
   # GET /ach_transfers/new
