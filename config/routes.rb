@@ -186,6 +186,10 @@ Rails.application.routes.draw do
     get 'reauthenticate'
   end
 
+  resources :hcb_codes, only: [:show] do
+    resources :comments
+  end
+  
   resources :canonical_pending_transactions, only: [:show] do
   end
 

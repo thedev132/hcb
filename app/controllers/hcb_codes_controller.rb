@@ -1,0 +1,2 @@
+class HcbCodesController < ApplicationController
+end
