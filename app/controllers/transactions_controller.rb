@@ -53,9 +53,8 @@ class TransactionsController < ApplicationController
       @transaction = TransactionEngine::Transaction::Show.new(canonical_transaction_id: params[:id]).run
       @event = @transaction.event
 
-      @commentable = @transaction
-      @comments = @commentable.comments
-      @comment = Comment.new
+      # Comments
+      @hcb_code = HcbCode.find_by(hcb_code: @transaction.hcb_code)
 
       authorize @transaction
     end
