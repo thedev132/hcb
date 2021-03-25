@@ -64,6 +64,8 @@
 
 </article>
 
-<h2>Comments</h2>
-<%= render "comments/list_v2" %>
-<%= render "comments/form_v2" %>
+<% if @hcb_code %>
+  <h2>Comments</h2>
+  <%= render "comments/list_v2" %>
+  <%= render "comments/form_v2" %>
+<% end %>
