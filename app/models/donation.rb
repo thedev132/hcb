@@ -172,11 +172,11 @@ class Donation < ApplicationRecord
     @canonical_transactions ||= CanonicalTransaction.where(hcb_code: hcb_code)
   end
 
-  private
-
   def canonical_pending_transactions
     @canonical_pending_transactions ||= ::CanonicalPendingTransaction.where(raw_pending_donation_transaction_id: raw_pending_donation_transaction.id)
   end
+
+  private
 
   def raw_pending_donation_transaction
     raw_pending_donation_transactions.first

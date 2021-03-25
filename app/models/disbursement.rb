@@ -24,6 +24,18 @@ class Disbursement < ApplicationRecord
   scope :rejected, -> { where.not(rejected_at: nil) }
   scope :errored, -> { where.not(errored_at: nil) }
 
+  def hcb_code
+    "HCB-#{TransactionGroupingEngine::Calculate::HcbCode::DISBURSEMENT_CODE}-#{id}"
+  end
+
+  def canonical_transactions
+    @canonical_transactions ||= CanonicalTransaction.where(hcb_code: hcb_code)
+  end
+
+  def canonical_pending_transactions
+    @canonical_pending_transactions ||= ::CanonicalPendingTransaction.where(hcb_code: hcb_code)
+  end
+
   def pending?
     !processed? && !rejected? && !errored?
   end

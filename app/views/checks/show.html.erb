@@ -5,6 +5,28 @@
 <link href="https://fonts.googleapis.com/css?family=Damion" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=Space+Mono" rel="stylesheet">
 
+<% admin_tools do %>
+  <ul>
+    <li>
+      v2
+
+      <ul>
+        <% @check.canonical_pending_transactions.each do |ct| %>
+          <li>
+            <%= ct.hcb_code %>: <%= link_to ct.amount, "/canonical_pending_transactions/#{ct.id}" %>
+          </li>
+        <% end %>
+
+        <% @check.canonical_transactions.each do |ct| %>
+          <li>
+            <%= ct.hcb_code %>: <%= link_to ct.amount, "/transactions/#{ct.id}" %>
+          </li>
+        <% end %>
+      </ul>
+    </li>
+  </ul>
+<% end %>
+
 <div class="check xs-hide w-100 mt3 mb3" data-behavior="hover_tilt">
   <div class="check__number"><%= @check.check_number %></div>
 
@@ -114,4 +136,7 @@
   </section>
 </article>
 
-<%= render 'comments/comments' %>
+<% if @hcb_code %>
+  <%= render "comments/list_v2" %>
+  <%= render "comments/form_v2" %>
+<% end %>

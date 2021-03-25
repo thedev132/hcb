@@ -50,10 +50,9 @@ class ChecksController < ApplicationController
 
   def show
     authorize @check
-
-    @commentable = @check
-    @comments = @commentable.comments
-    @comment = Comment.new
+      
+    # Comments
+    @hcb_code = HcbCode.find_by(hcb_code: @check.hcb_code)
   end
 
   def cancel

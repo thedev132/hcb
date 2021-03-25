@@ -153,6 +153,18 @@ class Check < ApplicationRecord
     lob_address.try(:name).try(:upcase)
   end
 
+  def hcb_code
+    "HCB-#{TransactionGroupingEngine::Calculate::HcbCode::CHECK_CODE}-#{id}"
+  end
+
+  def canonical_transactions
+    @canonical_transactions ||= CanonicalTransaction.where(hcb_code: hcb_code)
+  end
+
+  def canonical_pending_transactions
+    @canonical_pending_transactions ||= ::CanonicalPendingTransaction.where(hcb_code: hcb_code)
+  end
+
   private
 
   def send_date_must_be_in_future
