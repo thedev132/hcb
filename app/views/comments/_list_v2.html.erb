@@ -1,0 +1,11 @@
+<section class="comments">
+  <% @hcb_code.comments.order(created_at: :asc).each do |comment| %>
+    <% if comment.admin_only %>
+      <% admin_tools do %>
+        <%= render "comments/item_v2", comment: comment %>
+      <% end %>
+    <% else %>
+      <%= render "comments/item_v2", comment: comment %>
+    <% end %>
+  <% end %>
+</section>

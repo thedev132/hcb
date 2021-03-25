@@ -187,7 +187,9 @@ Rails.application.routes.draw do
   end
 
   resources :hcb_codes, only: [:show] do
-    resources :comments
+    member do
+      post 'comment'
+    end
   end
   
   resources :canonical_pending_transactions, only: [:show] do
