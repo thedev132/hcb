@@ -44,9 +44,13 @@ module StripeCardService
         stripe_shipping_address_state: @stripe_shipping_address_state,
         stripe_shipping_address_country: @stripe_shipping_address_country,
         stripe_shipping_address_line1: @stripe_shipping_address_line1,
-        stripe_shipping_address_line2: @stripe_shipping_address_line2,
+        stripe_shipping_address_line2: formatted_stripe_shipping_address_line2,
         stripe_shipping_address_postal_code: @stripe_shipping_address_postal_code
       }.compact
+    end
+
+    def formatted_stripe_shipping_address_line2
+      @stripe_shipping_address_line2.present? ? @stripe_shipping_address_line2 : nil
     end
 
     def create_remote_stripe_card!
@@ -67,7 +71,7 @@ module StripeCardService
           service: "standard",
           address: {
             line1: @stripe_shipping_address_line1,
-            line2: @stripe_shipping_address_line2,
+            line2: formatted_stripe_shipping_address_line2,
             city: @stripe_shipping_address_city,
             state: @stripe_shipping_address_state,
             country: @stripe_shipping_address_country,
