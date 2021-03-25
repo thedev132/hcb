@@ -260,11 +260,11 @@ class Invoice < ApplicationRecord
     @canonical_transactions ||= CanonicalTransaction.where(hcb_code: hcb_code)
   end
 
-  private
-
   def canonical_pending_transactions
     @canonical_pending_transactions ||= ::CanonicalPendingTransaction.where(raw_pending_invoice_transaction_id: raw_pending_invoice_transaction.id)
   end
+
+  private
 
   def raw_pending_invoice_transaction
     raw_pending_invoice_transactions.first
