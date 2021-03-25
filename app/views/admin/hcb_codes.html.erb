@@ -31,7 +31,7 @@
         <td>
           <% hcb_code.canonical_pending_transactions.each do |cpt| %>
             <% if cpt.event %>
-              <%= link_to cpt.id, event_path(cpt.event) %>
+              <%= link_to cpt.id, canonical_pending_transaction_path(cpt) %>
             <% else %>
               <%= cpt.id %>
             <% end %>
@@ -40,7 +40,7 @@
         <td>
           <% hcb_code.canonical_transactions.each do |ct| %>
             <% if ct.event.present? %>
-              <%= link_to ct.id, transaction_admin_path(ct) %>
+              <%= link_to ct.id, canonical_transaction_path(ct) %>
             <% else %>
               <%= ct.id %>
             <% end %>
