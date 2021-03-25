@@ -88,6 +88,8 @@ class InvoicesController < ApplicationController
 
   def show
     @invoice = Invoice.friendly.find(params[:id])
+    authorize @invoice
+
     @sponsor = @invoice.sponsor
     @event = @sponsor.event
     @payout = @invoice&.payout
@@ -95,11 +97,8 @@ class InvoicesController < ApplicationController
     @payout_t = @payout&.t_transaction
     @refund_t = @refund&.t_transaction
 
-    @commentable = @invoice
-    @comment = Comment.new
-    @comments = @invoice.comments.includes(:user)
-
-    authorize @invoice
+    # Comments
+    @hcb_code = HcbCode.find_by(hcb_code: @invoice.hcb_code)
   end
 
   def archive
