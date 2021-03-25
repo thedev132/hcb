@@ -13,9 +13,8 @@ class DonationsController < ApplicationController
     authorize @donation
     @event = @donation.event
 
-    @commentable = @donation
-    @comments = @commentable.comments.includes(:user)
-    @comment = Comment.new
+    # Comments
+    @hcb_code = HcbCode.find_by(hcb_code: @donation.hcb_code)
   end
 
   def start_donation

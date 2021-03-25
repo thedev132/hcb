@@ -6,6 +6,38 @@
   <%= link_to 'All disbursements', disbursements_path, class: 'breadcrumb' %>
 <% end %>
 
+<% admin_tools do %>
+  <ul>
+    <li>
+      v2
+
+      <ul>
+        <% @disbursement.canonical_pending_transactions.each do |ct| %>
+          <li>
+            <%= ct.hcb_code %>: <%= link_to ct.amount, "/canonical_pending_transactions/#{ct.id}" %>
+          </li>
+        <% end %>
+
+        <% @disbursement.canonical_transactions.each do |ct| %>
+          <li>
+            <%= ct.hcb_code %>: <%= link_to ct.amount, "/transactions/#{ct.id}" %>
+          </li>
+        <% end %>
+      </ul>
+    </li>
+    <li>
+      v1
+
+      <ul>
+        <% @disbursement.t_transactions.each do |tx| %>
+          <li><%= link_to "#{render_money tx.amount} on #{tx.event.name}", tx %></li>
+        <% end %>
+      </ul>
+    </li>
+  </ul>
+<% end %>
+
+
 <article class="card max-width-2 mx-auto mt3">
   <section class="mb2">
     <h2 class="mt0 mb0 heading">
@@ -51,13 +83,7 @@
   </section>
 </article>
 
-<% if @disbursement.fulfilled? %>
-<article class="card max-width-2 mx-auto mt3">
-  <h3 class="mt0 mb0 heading">Linked Transactions</h3>
-  <ul>
-  <% @disbursement.t_transactions.each do |tx| %>
-    <li><%= link_to "#{render_money tx.amount} on #{tx.event.name}", tx %></li>
-  <% end %>
-  </ul>
-</article>
+<% if @hcb_code %>
+  <%= render "comments/list_v2" %>
+  <%= render "comments/form_v2" %>
 <% end %>
