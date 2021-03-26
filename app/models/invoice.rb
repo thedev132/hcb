@@ -261,7 +261,9 @@ class Invoice < ApplicationRecord
   end
 
   def canonical_pending_transactions
-    @canonical_pending_transactions ||= ::CanonicalPendingTransaction.where(raw_pending_invoice_transaction_id: raw_pending_invoice_transaction.id)
+    return [] unless raw_pending_invoice_transaction
+
+    @canonical_pending_transactions ||= ::CanonicalPendingTransaction.where(raw_pending_invoice_transaction_id: raw_pending_invoice_transaction)
   end
 
   private
