@@ -145,6 +145,7 @@ gem 'blazer' # business intelligence tool/dashboard
 gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
 gem 'chronic'
 gem 'geocoder' # lookup lat/lng for Stripe Cards shipment tracking
+gem 'hashid-rails', '~> 1.0'
 gem 'hiredis'
 gem 'invisible_captcha'
 gem 'money-rails' # back cent fields as money objects 

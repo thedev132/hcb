@@ -191,6 +191,7 @@ Rails.application.routes.draw do
       post 'comment'
     end
   end
+  get '/tx/:id' => 'hcb_codes#show'
   
   resources :canonical_pending_transactions, only: [:show] do
   end

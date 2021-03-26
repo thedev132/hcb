@@ -25,7 +25,9 @@ class CanonicalTransactionGrouped
     return "/ach_transfers/#{ach_transfer.id}" if ach_transfer?
     return "/checks/#{check.id}" if check?
 
-    "/transactions/#{ct.id}" # TODO: replace with hcb_code to provide dynamic smart transaction page
+    return "/tx/#{local_hcb_code.hashid}" if local_hcb_code
+
+    "/transactions/#{ct.id}"
   end
 
   def canonical_transactions
@@ -65,6 +67,10 @@ class CanonicalTransactionGrouped
   end
 
   private
+
+  def local_hcb_code
+    @local_hcb_code ||= HcbCode.find_by(hcb_code: hcb_code)
+  end
 
   def invoice
     Invoice.find(hcb_i2)
