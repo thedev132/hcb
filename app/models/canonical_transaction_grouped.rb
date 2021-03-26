@@ -25,7 +25,7 @@ class CanonicalTransactionGrouped
     return "/ach_transfers/#{ach_transfer.id}" if ach_transfer?
     return "/checks/#{check.id}" if check?
 
-    return "/tx/#{local_hcb_code.hashid}" if local_hcb_code
+    return "/hcb/#{local_hcb_code.hashid}" if local_hcb_code
 
     "/transactions/#{ct.id}"
   end

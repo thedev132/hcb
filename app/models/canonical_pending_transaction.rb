@@ -152,7 +152,7 @@ class CanonicalPendingTransaction < ApplicationRecord
   end
 
   def url
-    return "/hcb_codes/#{local_hcb_code.hashid}" if local_hcb_code
+    return "/hcb/#{local_hcb_code.hashid}" if local_hcb_code
 
     "/canonical_pending_transactions/#{id}"
   end

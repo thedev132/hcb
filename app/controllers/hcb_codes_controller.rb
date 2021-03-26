@@ -25,4 +25,22 @@ class HcbCodesController < ApplicationController
   rescue => e
     redirect_to params[:redirect_url], flash: { error: e.message }
   end
+
+  def receipt
+    @hcb_code = HcbCode.find(params[:id])
+
+    authorize @hcb_code
+
+    attrs = {
+      hcb_code_id: @hcb_code.id,
+      file: params[:file],
+      current_user: current_user
+    }
+    ::HcbCodeService::Receipt::Create.new(attrs).run
+
+    redirect_to params[:redirect_url]
+  rescue => e
+    redirect_to params[:redirect_url], flash: { error: e.message }
+  end
+
 end
