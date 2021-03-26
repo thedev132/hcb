@@ -1,0 +1,16 @@
+<% title "Transaction for #{@hcb_code.amount}" %>
+<% page_sm %>
+
+<%= render "events/nav" if @event %>
+
+<article class="card mt2">
+  <%= render partial: "hcb_codes/cards/settled_transaction", collection: @hcb_code.canonical_transactions, as: :ct %>
+</article>
+
+<article class="card mt2">
+  <%= render partial: "hcb_codes/cards/pending_transaction", collection: @hcb_code.canonical_pending_transactions, as: :pt %>
+</article>
+
+<h2>Comments</h2>
+<%= render "comments/list_v2" %>
+<%= render "comments/form_v2" %>

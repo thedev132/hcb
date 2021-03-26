@@ -1,4 +1,12 @@
 class HcbCodesController < ApplicationController
+  def show
+    @hcb_code = HcbCode.find(params[:id])
+
+    authorize @hcb_code
+
+    @event = @hcb_code.event
+  end
+
   def comment
     @hcb_code = HcbCode.find(params[:id])
 
