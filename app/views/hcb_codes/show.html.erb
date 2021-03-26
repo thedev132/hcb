@@ -3,13 +3,21 @@
 
 <%= render "events/nav" if @event %>
 
-<article class="card mt2">
-  <%= render partial: "hcb_codes/cards/settled_transaction", collection: @hcb_code.canonical_transactions, as: :ct %>
-</article>
+<% @hcb_code.canonical_transactions.each do |ct| %>
+  <% if ct.event == @event %>
+    <article class="card mt2">
+      <%= render partial: "hcb_codes/cards/settled_transaction", locals: { ct: ct } %>
+    </article>
+  <% end %>
+<% end %>
 
-<article class="card mt2">
-  <%= render partial: "hcb_codes/cards/pending_transaction", collection: @hcb_code.canonical_pending_transactions, as: :pt %>
-</article>
+<% @hcb_code.canonical_pending_transactions.each do |pt| %>
+  <% if pt.event == @event %>
+    <article class="card mt2">
+      <%= render partial: "hcb_codes/cards/pending_transaction", locals: { pt: pt } %>
+    </article>
+  <% end %>
+<% end %>
 
 <h2>Receipts</h2>
 <%= render "receipts/list_v2" %>
