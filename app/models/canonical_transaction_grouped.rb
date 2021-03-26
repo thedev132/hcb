@@ -66,11 +66,11 @@ class CanonicalTransactionGrouped
     hcb_i1 == ::TransactionGroupingEngine::Calculate::HcbCode::STRIPE_CARD_CODE
   end
 
-  private
-
   def local_hcb_code
     @local_hcb_code ||= HcbCode.find_by(hcb_code: hcb_code)
   end
+  
+  private
 
   def invoice
     Invoice.find(hcb_i2)

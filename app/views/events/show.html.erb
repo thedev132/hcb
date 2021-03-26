@@ -145,7 +145,11 @@
                 <span>
                   PENDING: <%= pt.display_name %>
                 </span>
-                <%= list_badge_for pt.comments.size, 'note', 'post', optional: true %>
+
+                <% if pt.local_hcb_code %>
+                  <%= list_badge_for pt.local_hcb_code.receipts.size, 'receipt', 'payment-docs', optional: true %>
+                  <%= list_badge_for pt.local_hcb_code.comments.size, 'note', 'post', optional: true %>
+                <% end %>
               </td>
               <td class="nowrap">
                 <%= pt.amount %>
@@ -191,7 +195,10 @@
                   <%= ct.memo %>
                 </span>
 
-                <%= list_badge_for ct.send(:ct).receipts.size, 'receipt', 'payment-docs', optional: true %>
+                <% if ct.local_hcb_code %>
+                  <%= list_badge_for ct.local_hcb_code.receipts.size, 'receipt', 'payment-docs', optional: true %>
+                  <%= list_badge_for ct.local_hcb_code.comments.size, 'note', 'post', optional: true %>
+                <% end %>
               </td>
               <td class="nowrap">
                 <span><%= ct.amount %></span>
