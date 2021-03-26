@@ -102,10 +102,6 @@ class CanonicalPendingTransaction < ApplicationRecord
     raw_pending_stripe_transaction.stripe_transaction_id
   end
 
-  def local_hcb_code
-    @local_hcb_code ||= HcbCode.find_by(hcb_code: hcb_code)
-  end
-
   # DEPRECATED
   def display_name
     smart_memo
@@ -152,9 +148,13 @@ class CanonicalPendingTransaction < ApplicationRecord
   end
 
   def url
-    return "/hcb_codes/#{local_hcb_code.hashid}" if local_hcb_code
+    return "/hcb/#{local_hcb_code.hashid}" if local_hcb_code
 
     "/canonical_pending_transactions/#{id}"
+  end
+
+  def local_hcb_code
+    @local_hcb_code ||= HcbCode.find_by(hcb_code: hcb_code)
   end
 
   private

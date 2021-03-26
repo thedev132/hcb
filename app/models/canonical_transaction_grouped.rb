@@ -25,7 +25,7 @@ class CanonicalTransactionGrouped
     return "/ach_transfers/#{ach_transfer.id}" if ach_transfer?
     return "/checks/#{check.id}" if check?
 
-    return "/tx/#{local_hcb_code.hashid}" if local_hcb_code
+    return "/hcb/#{local_hcb_code.hashid}" if local_hcb_code
 
     "/transactions/#{ct.id}"
   end
@@ -66,11 +66,11 @@ class CanonicalTransactionGrouped
     hcb_i1 == ::TransactionGroupingEngine::Calculate::HcbCode::STRIPE_CARD_CODE
   end
 
-  private
-
   def local_hcb_code
     @local_hcb_code ||= HcbCode.find_by(hcb_code: hcb_code)
   end
+  
+  private
 
   def invoice
     Invoice.find(hcb_i2)
