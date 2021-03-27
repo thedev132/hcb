@@ -21,6 +21,8 @@ module StripeAuthorizationService
         # 4. idempotent map to event
         ::PendingEventMappingEngine::Map::Single::Stripe.new(canonical_pending_transaction: cpt).run
       end
+
+      # send cpt mailer(s)
     end
   end
 end
