@@ -22,7 +22,7 @@ module StripeAuthorizationService
         ::PendingEventMappingEngine::Map::Single::Stripe.new(canonical_pending_transaction: cpt).run
       end
 
-      # send cpt mailer(s)
+      CanonicalPendingTransactionMailer.with(canonical_pending_transaction_id: cpt.id).notify_bank_alerts.deliver_later
     end
   end
 end
