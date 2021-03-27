@@ -24,7 +24,10 @@ module StripeAuthorizationService
         ::PendingEventMappingEngine::Map::Single::Stripe.new(canonical_pending_transaction: cpt).run
       end
 
-      CanonicalPendingTransactionMailer.with(canonical_pending_transaction_id: cpt.id).notify_bank_alerts.deliver_later if cpt
+      if cpt
+        CanonicalPendingTransactionMailer.with(canonical_pending_transaction_id: cpt.id).notify_bank_alerts.deliver_later
+        CanonicalPendingTransactionMailer.with(canonical_pending_transaction_id: cpt.id).notify_approved.deliver_later
+      end
     end
   end
 end

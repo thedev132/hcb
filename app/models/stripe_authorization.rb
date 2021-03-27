@@ -139,7 +139,6 @@ class StripeAuthorization < ApplicationRecord
   def notify_of_creation
     # Notify the card user
     if approved?
-      StripeAuthorizationMailer.with(auth_id: id).notify_user_of_approve.deliver_later
     else
       StripeAuthorizationMailer.with(auth_id: id).notify_user_of_decline.deliver_later
     end

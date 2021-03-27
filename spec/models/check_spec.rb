@@ -13,9 +13,10 @@ RSpec.describe Check, type: :model do
 
   describe "#send_date" do
     it "must be at least 12 hours in the future" do
-      check.send_date = Time.now + 1.hour
+      check2 = Check.new(check.attributes)
+      check2.send_date = Time.now.utc + 1.hour
 
-      expect(check).to_not be_valid
+      expect(check2).to_not be_valid
     end
   end
 end

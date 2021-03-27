@@ -2,4 +2,5 @@ canonical_pending_transaction1:
   amount_cents: 100
   memo: "Raw Stripe Transaction 1"
   date: "2020-09-02"
+  raw_pending_stripe_transaction: raw_pending_stripe_transaction1
   created_at: <%= Time.now %>
