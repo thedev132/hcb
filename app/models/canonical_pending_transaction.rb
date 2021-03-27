@@ -166,7 +166,11 @@ class CanonicalPendingTransaction < ApplicationRecord
 
   def write_hcb_code
     safely do
-      self.update_column(:hcb_code, ::TransactionGroupingEngine::Calculate::HcbCode.new(canonical_transaction_or_canonical_pending_transaction: self).run)
+      code = ::TransactionGroupingEngine::Calculate::HcbCode.new(canonical_transaction_or_canonical_pending_transaction: self).run
+
+      self.update_column(:hcb_code, code)
+
+      ::HcbCodeService::FindOrCreate.new(hcb_code: code).run
     end
   end
 
