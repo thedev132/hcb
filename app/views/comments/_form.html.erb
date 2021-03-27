@@ -1,36 +1,38 @@
-<%= form_with model: [@commentable, @comment] do |form| %>
-  <%= form_errors @comment, 'note' %>
+<% if @commentable && @comment %>
+  <%= form_with model: [@commentable, @comment] do |form| %>
+    <%= form_errors @comment, 'note' %>
 
-  <div class="comment__name mt2">
-    <%= user_mention current_user if organizer_signed_in? %>
-    <%= link_to 'https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet#table-of-contents', class: 'muted flex items-center justify-end h6', target: '_blank' do %>
-      <%= inline_icon 'markdown-fill', size: 32 %> Styling with Markdown is supported
-    <% end %>
-  </div>
-  <%= form.text_area :content, class: 'card mb2 overflow-visible', placeholder: 'Add a note…', 'data-behavior': 'autosize',
-    style: 'min-height: 100px' %>
+    <div class="comment__name mt2">
+      <%= user_mention current_user if organizer_signed_in? %>
+      <%= link_to 'https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet#table-of-contents', class: 'muted flex items-center justify-end h6', target: '_blank' do %>
+        <%= inline_icon 'markdown-fill', size: 32 %> Styling with Markdown is supported
+      <% end %>
+    </div>
+    <%= form.text_area :content, class: 'card mb2 overflow-visible', placeholder: 'Add a note…', 'data-behavior': 'autosize',
+      style: 'min-height: 100px' %>
 
-  <% if @comment.persisted? %>
-    <% if comment.file.attached? %>
+    <% if @comment.persisted? %>
+      <% if comment.file.attached? %>
+        <div class="field">
+          <%= link_to '📎 1 attachment', url_for(comment.file), target: '_blank' %>
+        </div>
+      <% end %>
+    <% else %>
       <div class="field">
-        <%= link_to '📎 1 attachment', url_for(comment.file), target: '_blank' %>
+        <%= form.file_field :file %>
       </div>
     <% end %>
-  <% else %>
-    <div class="field">
-      <%= form.file_field :file %>
-    </div>
+
+    <%= form.hidden_field :commentable_type, value: @commentable.class %>
+    <%= form.hidden_field :commentable_id, value: @commentable.id %>
+
+    <% admin_tools('pb0 mb2') do %>
+      <div class="field field--checkbox">
+        <%= form.check_box :admin_only, {}, true, false %>
+        <%= form.label :admin_only, 'Only show this note to admins' %>
+      </div>
+    <% end %>
+
+    <%= form.submit @comment.persisted? ? 'Save note' : 'Add note', disabled: !organizer_signed_in? %>
   <% end %>
-
-  <%= form.hidden_field :commentable_type, value: @commentable.class %>
-  <%= form.hidden_field :commentable_id, value: @commentable.id %>
-
-  <% admin_tools('pb0 mb2') do %>
-    <div class="field field--checkbox">
-      <%= form.check_box :admin_only, {}, true, false %>
-      <%= form.label :admin_only, 'Only show this note to admins' %>
-    </div>
-  <% end %>
-
-  <%= form.submit @comment.persisted? ? 'Save note' : 'Add note', disabled: !organizer_signed_in? %>
 <% end %>
