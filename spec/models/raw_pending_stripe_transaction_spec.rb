@@ -10,4 +10,10 @@ RSpec.describe RawPendingStripeTransaction, type: :model do
   it "is valid" do
     expect(raw_pending_stripe_transaction).to be_valid
   end
+
+  describe "#authorization_method" do
+    it "returns it in human friendly form" do
+      expect(raw_pending_stripe_transaction.authorization_method).to eql("online")
+    end
+  end
 end
