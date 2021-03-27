@@ -7,6 +7,8 @@ module StripeAuthorizationService
     end
 
     def run
+      cpt = nil
+
       ActiveRecord::Base.transaction do
         # 1. fetch remote stripe transaction (authorization)
         remote_stripe_transaction = ::Partners::Stripe::Issuing::Authorizations::Show.new(id: @stripe_transaction_id).run
@@ -22,7 +24,7 @@ module StripeAuthorizationService
         ::PendingEventMappingEngine::Map::Single::Stripe.new(canonical_pending_transaction: cpt).run
       end
 
-      CanonicalPendingTransactionMailer.with(canonical_pending_transaction_id: cpt.id).notify_bank_alerts.deliver_later
+      CanonicalPendingTransactionMailer.with(canonical_pending_transaction_id: cpt.id).notify_bank_alerts.deliver_later if cpt
     end
   end
 end
