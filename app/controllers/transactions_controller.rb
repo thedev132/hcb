@@ -54,7 +54,7 @@ class TransactionsController < ApplicationController
       @event = @transaction.event
 
       # Comments
-      @hcb_code = HcbCode.find_by(hcb_code: @transaction.hcb_code)
+      @hcb_code = HcbCode.find_or_create_by(hcb_code: @transaction.hcb_code)
 
       authorize @transaction
     end

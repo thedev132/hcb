@@ -52,7 +52,7 @@ class ChecksController < ApplicationController
     authorize @check
       
     # Comments
-    @hcb_code = HcbCode.find_by(hcb_code: @check.hcb_code)
+    @hcb_code = HcbCode.find_or_create_by(hcb_code: @check.hcb_code)
   end
 
   def cancel

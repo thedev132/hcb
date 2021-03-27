@@ -8,7 +8,7 @@ class AchTransfersController < ApplicationController
     authorize @ach_transfer
 
     # Comments
-    @hcb_code = HcbCode.find_by(hcb_code: @ach_transfer.hcb_code)
+    @hcb_code = HcbCode.find_or_create_by(hcb_code: @ach_transfer.hcb_code)
   end
 
   # GET /ach_transfers/new

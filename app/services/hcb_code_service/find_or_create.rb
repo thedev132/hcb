@@ -7,8 +7,7 @@ module HcbCodeService
     end
 
     def run
-      ::HcbCode.find_or_initialize_by(hcb_code: @hcb_code).tap do |hc|
-      end.save!
+      ::HcbCode.find_or_create_by(hcb_code: @hcb_code)
     end
   end
 end

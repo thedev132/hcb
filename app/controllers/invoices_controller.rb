@@ -98,7 +98,7 @@ class InvoicesController < ApplicationController
     @refund_t = @refund&.t_transaction
 
     # Comments
-    @hcb_code = HcbCode.find_by(hcb_code: @invoice.hcb_code)
+    @hcb_code = HcbCode.find_or_create_by(hcb_code: @invoice.hcb_code)
   end
 
   def archive
