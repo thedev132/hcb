@@ -21,6 +21,8 @@ module StripeAuthorizationService
         # 4. idempotent map to event
         ::PendingEventMappingEngine::Map::Single::Stripe.new(canonical_pending_transaction: cpt).run
       end
+
+      CanonicalPendingTransactionMailer.with(canonical_pending_transaction_id: cpt.id).notify_bank_alerts.deliver_later
     end
   end
 end

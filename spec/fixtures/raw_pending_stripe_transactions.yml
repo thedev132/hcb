@@ -1,0 +1,6 @@
+raw_pending_stripe_transaction1:
+  stripe_transaction_id: "iauth_12345"
+  stripe_transaction: {}
+  amount_cents: -100
+  date_posted: "2020-09-02"
+  created_at: <%= Time.now %>

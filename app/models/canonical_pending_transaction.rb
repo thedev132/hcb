@@ -39,6 +39,7 @@ class CanonicalPendingTransaction < ApplicationRecord
   scope :disbursement_hcb_code, -> { where("hcb_code ilike 'HCB-#{::TransactionGroupingEngine::Calculate::HcbCode::DISBURSEMENT_CODE}%'") }
   scope :stripe_card_hcb_code, -> { where("hcb_code ilike 'HCB-#{::TransactionGroupingEngine::Calculate::HcbCode::STRIPE_CARD_CODE}%'") }
 
+  after_create_commit :write_hcb_code
   after_create_commit :write_system_event
 
   def mapped?
@@ -158,6 +159,12 @@ class CanonicalPendingTransaction < ApplicationRecord
   end
 
   private
+
+  def write_hcb_code
+    safely do
+      self.update_column(:hcb_code, ::TransactionGroupingEngine::Calculate::HcbCode.new(canonical_transaction_or_canonical_pending_transaction: self).run)
+    end
+  end
 
   def friendly_memo_in_memory_backup
     @friendly_memo_in_memory_backup ||= PendingTransactionEngine::FriendlyMemoService::Generate.new(pending_canonical_transaction: self).run
