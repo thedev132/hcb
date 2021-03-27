@@ -107,10 +107,6 @@ class CanonicalPendingTransaction < ApplicationRecord
     @stripe_card ||= raw_pending_stripe_transaction.stripe_card
   end
 
-  def stripe_authorization_method
-    raw_pending_stripe_transaction.authorization_method
-  end
-
   # DEPRECATED
   def display_name
     smart_memo
