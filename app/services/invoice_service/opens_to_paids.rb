@@ -8,8 +8,8 @@ module InvoiceService
 
     def run
       # 1. iterate over open invoices
-      ::Invoice.open_v2.where("created_at >= ?", @since_date).each do |i|
-        ::InvoiceJob::OpenToPaid.perform_later(self)
+      ::Invoice.open_v2.where("created_at >= ?", @since_date).pluck(:id).each do |invoice_id|
+        ::InvoiceJob::OpenToPaid.perform_later(invoice_id)
       end
     end
   end
