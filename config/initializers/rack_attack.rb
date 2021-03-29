@@ -97,7 +97,7 @@ class Rack::Attack
     # `filter` returns false value if request is to your donation page (but still
     # increments the count) so request below the limit are not blocked until
     # they hit the limit.  At that point, filter will return true and block.
-    Rack::Attack::Allow2Ban.filter(req.ip, maxretry: 100, findtime: 30.seconds, bantime: 3.hours) do
+    Rack::Attack::Allow2Ban.filter(req.ip, maxretry: 100, findtime: 30.seconds, bantime: 3.minutes) do
       # The count for the IP is incremented if the return value is truthy.
       req.path.start_with?('/donations/start') || req.path.start_with?('/donations/hq')
     end
