@@ -11,7 +11,7 @@ module InvoiceService
         invoice.sync_from_remote!
 
         if invoice.reload.paid_v2?
-          raise NoAssociatedStripeCharge if invoice.remote_invoice.charge.nil?
+          raise Invoice::NoAssociatedStripeCharge if invoice.remote_invoice.charge.nil?
 
           b_tnx = invoice.remote_invoice.charge.balance_transaction
 
