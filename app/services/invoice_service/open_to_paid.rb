@@ -7,7 +7,7 @@ module InvoiceService
     end
 
     def run
-      next unless invoice.remote_paid? && invoice.remote_charge.present? # only process if invoice was paid and was paid with a remote charge. check paid invoices are handled differently
+      return unless invoice.remote_paid? && invoice.remote_charge.present? # only process if invoice was paid and was paid with a remote charge. check paid invoices are handled differently
 
       ::ActiveRecord::Base.transaction do
         invoice.sync_remote!
