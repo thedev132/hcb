@@ -238,10 +238,12 @@ class Invoice < ApplicationRecord
     @remote_invoice ||= ::Partners::Stripe::Invoices::Show.new(id: stripe_invoice_id).run
   end
 
-  def sync_from_remote!
-    self.set_fields_from_stripe_invoice(remote_invoice)
-    self.save!
-    self.mark_paid!
+  def remote_status
+    remote_invoice.status
+  end
+
+  def remote_paid?
+    remote_status == "paid"
   end
 
   def canonical_pending_transaction
@@ -264,6 +266,11 @@ class Invoice < ApplicationRecord
     return [] unless raw_pending_invoice_transaction
 
     @canonical_pending_transactions ||= ::CanonicalPendingTransaction.where(raw_pending_invoice_transaction_id: raw_pending_invoice_transaction)
+  end
+
+  def sync_remote!
+    self.set_fields_from_stripe_invoice(remote_invoice)
+    self.save!
   end
 
   private
