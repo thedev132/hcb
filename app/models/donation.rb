@@ -173,7 +173,11 @@ class Donation < ApplicationRecord
   end
 
   def canonical_pending_transactions
-    @canonical_pending_transactions ||= ::CanonicalPendingTransaction.where(raw_pending_donation_transaction_id: raw_pending_donation_transaction.id)
+    @canonical_pending_transactions ||= begin
+      return [] unless raw_pending_donation_transaction.present?
+
+      ::CanonicalPendingTransaction.where(raw_pending_donation_transaction_id: raw_pending_donation_transaction.id)
+    end
   end
 
   private
