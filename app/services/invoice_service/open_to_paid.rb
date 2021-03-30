@@ -7,25 +7,24 @@ module InvoiceService
     end
 
     def run
+      next unless invoice.remote_paid? && invoice.remote_charge.present? # only process if invoice was paid and was paid with a remote charge. check paid invoices are handled differently
+
       ::ActiveRecord::Base.transaction do
-        invoice.sync_from_remote!
+        invoice.sync_remote!
+        invoice.mark_paid!
 
-        if invoice.reload.paid_v2?
-          raise Invoice::NoAssociatedStripeCharge if invoice.remote_invoice.charge.nil?
+        b_tnx = invoice.remote_invoice.charge.balance_transaction
 
-          b_tnx = invoice.remote_invoice.charge.balance_transaction
+        funds_available_at = Util.unixtime(b_tnx.available_on)
+        create_payout_at = funds_available_at + 1.day
 
-          funds_available_at = Util.unixtime(b_tnx.available_on)
-          create_payout_at = funds_available_at + 1.day
+        invoice.payout_creation_queued_at = Time.current
+        invoice.payout_creation_queued_for = create_payout_at
+        invoice.payout_creation_balance_net = b_tnx.net - hidden_fee(invoice.remote_invoice) # amount to pay out
+        invoice.payout_creation_balance_stripe_fee = b_tnx.fee + hidden_fee(invoice.remote_invoice)
+        invoice.payout_creation_balance_available_at = funds_available_at
 
-          invoice.payout_creation_queued_at = Time.current
-          invoice.payout_creation_queued_for = create_payout_at
-          invoice.payout_creation_balance_net = b_tnx.net - hidden_fee(invoice.remote_invoice) # amount to pay out
-          invoice.payout_creation_balance_stripe_fee = b_tnx.fee + hidden_fee(invoice.remote_invoice)
-          invoice.payout_creation_balance_available_at = funds_available_at
-
-          invoice.save!
-        end
+        invoice.save!
       end
     end
 
