@@ -14,7 +14,7 @@ module InvoiceService
     def run
       raise ArgumentError, "reason is required" if @reason.blank?
 
-      ActiveRecord::Base.connection do
+      ActiveRecord::Base.transaction do
         invoice.manually_marked_as_paid_at = Time.current
         invoice.manually_marked_as_paid_user = @user
         invoice.manually_marked_as_paid_reason = @reason

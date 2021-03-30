@@ -7,7 +7,7 @@ module InvoiceService
     end
 
     def run
-      ::ActiveRecord::Base.connection do
+      ::ActiveRecord::Base.transaction do
         invoice.sync_from_remote!
 
         if invoice.reload.paid_v2?
