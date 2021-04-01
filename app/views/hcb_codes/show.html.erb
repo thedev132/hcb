@@ -38,6 +38,12 @@
   <%= render partial: "hcb_codes/check", locals: {} %>
 <% end %>
 
+<!-- stripe card -->
+<% if @hcb_code.stripe_card? %>
+  <%= render partial: "hcb_codes/stripe_card", locals: {} %>
+<% end %>
+
+
 <!-- transaction history -->
 <h2>Transaction History</h2>
 
