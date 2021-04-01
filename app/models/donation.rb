@@ -186,7 +186,7 @@ class Donation < ApplicationRecord
   end
 
   def remote_donation
-    @remote_donation ||= ::Partners::Stripe
+    @remote_donation ||= ::Partners::Stripe::PaymentIntents::Show.new(id: stripe_payment_intent_id).run
   end
 
   def remote_refunded?
