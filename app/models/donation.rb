@@ -190,6 +190,10 @@ class Donation < ApplicationRecord
     "HCB-#{TransactionGroupingEngine::Calculate::HcbCode::DONATION_CODE}-#{id}"
   end
 
+  def local_hcb_code
+    @local_hcb_code ||= HcbCode.find_or_create_by(hcb_code: hcb_code)
+  end
+
   def canonical_pending_transaction
     canonical_pending_transactions.first
   end

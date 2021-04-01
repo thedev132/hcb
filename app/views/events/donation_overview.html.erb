@@ -102,7 +102,7 @@
             <%= render_money(d.amount) %>
           </td>
           <td>
-            <%= link_to "Details", d %>
+            <%= link_to "Details", hcb_code_url(d.local_hcb_code.hashid) if organizer_signed_in? %>
           </td>
         </tr>
       <% end %>
