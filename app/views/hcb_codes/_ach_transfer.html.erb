@@ -1,0 +1,64 @@
+<article class="card pb0 mt3 mb3">
+  <h2 class="h2 mt0 border-none">
+    <span class="regular muted"><%= @hcb_code.ach_transfer.deposited? ? 'Transferred' : 'Transferring' %> </span>
+    <%= @hcb_code.ach_transfer.recipient_name %>
+    <span class="regular"><%= render_money @hcb_code.ach_transfer.amount %></span>
+    <span class="badge h4 md-right ml0 bg-<%= @hcb_code.ach_transfer.state %>">
+      <%= @hcb_code.ach_transfer.status_text %>
+      <%= inline_icon @hcb_code.ach_transfer.state_icon, size: 20 if @hcb_code.ach_transfer.state_icon %>
+    </span>
+  </h2>
+  <section class="card__banner card__darker details-horiz border-top border-bottom">
+    <p>
+      <strong>Sent by</strong>
+      <%= user_mention @hcb_code.ach_transfer.creator %>
+    </p>
+    <p>
+      <strong>Sent at</strong>
+      <%= format_datetime @hcb_code.ach_transfer.created_at %>
+    </p>
+  </section>
+
+  <section class="details pt2 pb2">
+    <p>
+      <strong>Recipient name</strong>
+      <%= @hcb_code.ach_transfer.recipient_name %>
+    </p>
+
+    <p>
+      <strong>Recipient phone</strong>
+      <%= organizer_signed_in? ? @hcb_code.ach_transfer.recipient_tel : 'Sign in to view'  %>
+    </p>
+
+    <p>
+      <strong>Payment purpose</strong>
+      <%= @hcb_code.ach_transfer.payment_for %>
+    </p>
+
+    <p>
+      <strong>Bank name</strong>
+      <%= organizer_signed_in? ? @hcb_code.ach_transfer.bank_name : 'Sign in to view' %>
+    </p>
+
+    <p>
+      <strong>Routing number</strong>
+      <%= organizer_signed_in? ? @hcb_code.ach_transfer.routing_number : 'Sign in to view'  %>
+    </p>
+
+    <p>
+      <strong>Account number</strong>
+      <%= organizer_signed_in? ? @hcb_code.ach_transfer.account_number : 'Sign in to view' %>
+    </p>
+
+    <p>
+      <strong>Amount</strong>
+      <%= render_money @hcb_code.ach_transfer.amount %>
+    </p>
+
+    <p>
+      <strong>Status</strong>
+      <%= @hcb_code.ach_transfer.status_text_long %>
+    </p>
+  </section>
+</article>
+

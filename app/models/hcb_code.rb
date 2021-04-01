@@ -9,12 +9,9 @@ class HcbCode < ApplicationRecord
   monetize :amount_cents
 
   def url
-    return "/ach_transfers/#{ach_transfer.id}" if ach_transfer?
     return "/checks/#{check.id}" if check?
 
-    return "/hcb/#{local_hcb_code.hashid}" if local_hcb_code
-
-    "/transactions/#{ct.id}"
+    "/hcb/#{hashid}"
   end
 
   def date
@@ -83,10 +80,6 @@ class HcbCode < ApplicationRecord
     hcb_i1 == ::TransactionGroupingEngine::Calculate::HcbCode::STRIPE_CARD_CODE
   end
 
-  def local_hcb_code
-    @local_hcb_code ||= HcbCode.find_or_create_by(hcb_code: hcb_code)
-  end
-  
   def invoice
     Invoice.find_by(id: hcb_i2)
   end

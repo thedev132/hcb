@@ -28,6 +28,12 @@
   <%= render partial: "hcb_codes/invoice", locals: {} %>
 <% end %>
 
+<!-- donation -->
+<% if @hcb_code.ach_transfer? && @hcb_code.ach_transfer.present? %>
+  <%= render partial: "hcb_codes/ach_transfer", locals: {} %>
+<% end %>
+
+
 <!-- transaction history -->
 <h2>Transaction History</h2>
 
