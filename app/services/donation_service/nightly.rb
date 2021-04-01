@@ -1,7 +1,6 @@
 module DonationService
   class Nightly
     def run
-      # TODO: 
       Donation.succeeded.each do |donation|
         next unless donation.deposited? # temporary until aasm fully worked out and can settle on in_transit
 

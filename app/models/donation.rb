@@ -28,6 +28,7 @@ class Donation < ApplicationRecord
     state :in_transit
     state :deposited
     state :failed
+    state :refunded
 
     event :mark_in_transit do
       transitions from: :pending, to: :in_transit
@@ -35,6 +36,10 @@ class Donation < ApplicationRecord
 
     event :mark_deposited do
       transitions from: :in_transit, to: :deposited
+    end
+
+    event :mark_refunded do
+      transitions from: :deposited, to: :refunded
     end
 
     event :mark_failed do
@@ -178,6 +183,14 @@ class Donation < ApplicationRecord
 
       ::CanonicalPendingTransaction.where(raw_pending_donation_transaction_id: raw_pending_donation_transaction.id)
     end
+  end
+
+  def remote_donation
+    @remote_donation ||= ::Partners::Stripe
+  end
+
+  def remote_refunded?
+    remote_donation[:charges][:data][0][:refunded]
   end
 
   private
