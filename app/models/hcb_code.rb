@@ -27,4 +27,36 @@ class HcbCode < ApplicationRecord
   def event
     @event ||= canonical_pending_transactions.try(:first).try(:event) || canonical_transactions.try(:first).try(:event)
   end
+
+  # categories
+  def donation?
+    hcb_category == ::TransactionGroupingEngine::Calculate::HcbCode::DONATION_CODE
+  end
+  
+  def invoice?
+    hcb_category == ::TransactionGroupingEngine::Calculate::HcbCode::INVOICE_CODE
+  end
+
+  # relationships
+  def donation
+    @donation ||= Donation.find_by(id: hcb_identifier)
+  end
+
+  def invoice
+    @invoice ||= Invoice.find_by(id: hcb_identifier)
+  end
+
+  private
+
+  def hcb_category
+    @hcb_catgegory ||= code_parts[1]
+  end
+
+  def hcb_identifier
+    @hcb_identifier ||= code_parts[2]
+  end
+
+  def code_parts
+    @code_parts ||= hcb_code.split("-")
+  end
 end

@@ -50,15 +50,15 @@
 <% end %>
 
 <div class="statset mt3 mb2">
-  <div class="stat stat--small tooltipped tooltipped--s" aria-label="">
+  <div class="stat stat--small">
     <span class="stat__label">Total</span>
     <span class="stat__value"><%= render_money_amount @stats[:deposited] %></span>
   </div>
-  <div class="stat stat--small tooltipped tooltipped--s" aria-label="">
+  <div class="stat stat--small">
     <span class="stat__label">On the way</span>
     <span class="stat__value"><%= render_money_amount @stats[:in_transit] %></span>
   </div>
-  <div class="stat stat--small tooltipped tooltipped--s" aria-label="">
+  <div class="stat stat--small">
     <span class="stat__label">Refunded</span>
     <span class="stat__value"><%= render_money_amount @stats[:refunded] %></span>
   </div>
