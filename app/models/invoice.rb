@@ -13,7 +13,7 @@ class Invoice < ApplicationRecord
   scope :missing_fee_reimbursement, -> { where(fee_reimbursement_id: nil) }
   scope :missing_payout, -> { where("payout_id is null and payout_creation_balance_net is not null") } # some invoices are missing a payout but it is ok because they were paid by check. that is why we additionally check on payout_creation_balance_net
   scope :unpaid, -> { where("aasm_state != 'paid_v2'") }
-  scope :past_due_date, -> { where("due_date < ?", Time.current) }
+  scope :past_due, -> { where("due_date < ?", Time.current) }
 
   friendly_id :slug_text, use: :slugged
 
@@ -256,6 +256,10 @@ class Invoice < ApplicationRecord
 
   def hcb_code
     "HCB-#{TransactionGroupingEngine::Calculate::HcbCode::INVOICE_CODE}-#{id}"
+  end
+
+  def local_hcb_code
+    @local_hcb_code ||= HcbCode.find_or_create_by(hcb_code: hcb_code)
   end
 
   def canonical_transactions

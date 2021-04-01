@@ -138,16 +138,20 @@
   </article>
 </article>
 
-<% @authorizations = @card.stripe_authorizations %>
-<% if @authorizations.any? %>
-  <section class="card p0 mt3 mb3">
-    <h2 class="heading h2 line-height-4 mt0 ml0 pt1 pb1 pl2 pr2">
-      Transactions on this card
-    </h2>
-    <%= render 'stripe_authorizations/list', stripe_authorizations: @authorizations, headless: true, authorless: true %>
-  </section>
-<% else %>
-  <%= blankslate 'No transactions made on this card yet.' %>
-<% end %>
+<% if @card.canonical_transactions.exists? %>
+  <h2 class="heading h2 line-height-4 mt0 ml0 pt1 pb1 pl2 pr2">Transactions on this card</h2>
 
-<%= render partial: 'admin_viewer', locals: { record: @card } %>
+  <div class="table-container">
+    <table>
+      <tbody data-behavior="transactions">
+        <% @card.hcb_codes.each do |ct| %>
+          <%= render partial: "canonical_transactions/canonical_transaction", locals: { ct: ct } %>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+
+  <%#= render 'stripe_authorizations/list', stripe_authorizations: @authorizations, headless: true, authorless: true %>
+<% else %>
+  <%= blankslate "No transactions made on this card yet." %>
+<% end %>

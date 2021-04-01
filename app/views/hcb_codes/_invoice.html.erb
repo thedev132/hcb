@@ -1,0 +1,139 @@
+<% admin_tools('mt3') do %>
+  <%= link_to 'View on Stripe', @hcb_code.invoice.stripe_dashboard_url, class: 'btn bg-accent' %>
+<% end %>
+
+<% if @hcb_code.invoice.archived? %>
+  <div class="banner banner--archived mt3">
+    <span class="bold block mb1">This invoice was archived by <%= user_mention @hcb_code.invoice.archived_by %> on <%= format_date @hcb_code.invoice.archived_at %>.</span>
+    <span class="block">It will only display in the Archived tab<span class="xs-hide"> on the Invoices page</span>.</span>
+    <span>You can <%= link_to 'un-archive it', invoice_unarchive_path(@hcb_code.invoice), method: :post %>.</span>
+  </div>
+<% end %>
+
+
+<article class="card pb0 mt3 mb3">
+  <h2 class="h2 mt0 mx0 border-none flex items-center justify-between">
+    <span>
+      <%= @hcb_code.invoice.sponsor.name %>
+      <span class="regular muted"> invoiced for </span>
+      <span class="regular"><%= render_money @hcb_code.invoice.item_amount %></span>
+    </span>
+    <span class="badge h4 md-right bg-<%= @hcb_code.invoice.state %>">
+      <%= @hcb_code.invoice.state_text %>
+      <%= inline_icon @hcb_code.invoice.state_icon, size: 20 if @hcb_code.invoice.state_icon %>
+    </span>
+  </h2>
+  <section class="card__banner card__darker details-horiz border-top border-bottom">
+    <p>
+      <strong>Sent by</strong>
+      <%= user_mention @hcb_code.invoice.creator %>
+    </p>
+    <p>
+      <strong>Sent at</strong>
+      <%= invoice_sent_at(@hcb_code.invoice) %>
+    </p>
+  </section>
+  <!-- recipient info -->
+  <section class="details details--wide pt2 pb2 details--tall">
+    <% unless %w[Paid Pending].include? @hcb_code.invoice.state_text %>
+      <p>
+        <strong>Due date</strong>
+        <span>
+          <%= format_date @hcb_code.invoice.due_date %>
+          <span class="muted">
+            <% if @hcb_code.invoice.due_date > Time.now %>
+              (in <%= distance_of_time_in_words @hcb_code.invoice.due_date, Time.now %>)
+            <% else %>
+              (<%= distance_of_time_in_words @hcb_code.invoice.due_date, Time.now %> ago)
+            <% end %>
+          </span>
+        </span>
+      </p>
+    <% end %>
+    <p>
+      <strong>Billed to</strong>
+      <% if organizer_signed_in? %>
+        <span><%= mail_to @hcb_code.invoice.sponsor.contact_email.downcase %></span>
+      <% else %>
+        <span><strong>Sign in to view</strong></span>
+      <% end %>
+    </p>
+    <p>
+      <strong>Payment methods</strong>
+      <span class="flex">
+        <span class="bg-smoke slate tooltipped tooltipped--s inline-flex rounded mr2" aria-label="Credit or debit cards" style="padding: 4px;">
+          <%= inline_icon 'card', size: 24 %>
+        </span>
+        <span class="bg-smoke slate tooltipped tooltipped--s inline-flex rounded" aria-label="ACH credit transfers and domestic wires">
+          <%= inline_icon 'bank-account', size: 32 %>
+        </span>
+      </span>
+    </p>
+    <p>
+      <strong>Address</strong>
+      <% if organizer_signed_in? %>
+        <span>
+        <%= @hcb_code.invoice.sponsor.address_line1 %><br />
+        <% if @hcb_code.invoice.sponsor.address_line2.present? %>
+          <%= @hcb_code.invoice.sponsor.address_line2 %><br />
+        <% end %>
+        <%= @hcb_code.invoice.sponsor.address_city %>, <%= @hcb_code.invoice.sponsor.address_state %> <%= @hcb_code.invoice.sponsor.address_postal_code %>
+        </span>
+      <% else %>
+        <span><strong>Sign in to view</strong></span>
+      <% end %>
+    </p>
+    <p>
+      <strong>Memo</strong>
+      <span><%= @hcb_code.invoice.memo %></span>
+    </p>
+  </section>
+  <section class="card__banner card__darker details details--wide border-top md-pl0 md-pr0">
+    <table>
+    <thead>
+      <tr>
+        <td>Description</td>
+        <td>Amount</td>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="white-space: normal"><%= @hcb_code.invoice.item_description %></td>
+        <td><%= render_money @hcb_code.invoice.item_amount %></td>
+      </tr>
+      <tr class="border-none">
+        <td class="right-align pr1"><strong>Total</strong></td>
+        <td><strong><%= render_money @hcb_code.invoice.item_amount %></strong></td>
+      </tr>
+    </tbody>
+    </table>
+  </section>
+
+  <section class="card__banner border-top flex flex-wrap">
+    <div class="btn-group mr-auto">
+    <%= link_to organizer_signed_in? ? @hcb_code.invoice.hosted_invoice_url : root_path,
+      disabled: !organizer_signed_in?,
+      class: 'btn bg-accent mr1',
+      target: '_blank' do %>
+      <%= inline_icon 'external' %>
+      View sent invoice
+    <% end %>
+    <%= link_to organizer_signed_in? ? @hcb_code.invoice.invoice_pdf : root_path,
+      disabled: !organizer_signed_in?,
+      class: 'btn bg-info mr1',
+      target: '_blank' do %>
+      <%= inline_icon 'download' %>
+      PDF
+    <% end %>
+    </div>
+    <%= link_to "#{@hcb_code.invoice.archived? ? 'Un-archive' : 'Archive'}",
+      (@hcb_code.invoice.archived? ? invoice_unarchive_path(@hcb_code.invoice) : invoice_archive_path(@hcb_code.invoice)),
+      disabled: !organizer_signed_in?,
+      method: :post,
+      class: 'btn bg-muted'
+    %>
+  </section>
+</article>
+
+
+
