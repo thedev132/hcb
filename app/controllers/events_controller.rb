@@ -206,8 +206,6 @@ class EventsController < ApplicationController
   def donation_overview
     authorize @event
 
-    @donationsv1 = @event.donations.where(status: 'succeeded').sort_by {|d| d.created_at }.reverse
-
     relation = @event.donations.not_pending
     relation = relation.in_transit if params[:filter] == "in_transit"
     relation = relation.deposited if params[:filter] == "deposited"
