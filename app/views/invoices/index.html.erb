@@ -41,45 +41,23 @@
 <% end %>
 
 <div class="statset mt3 mb2">
-  <div class="stat tooltipped tooltipped--s" aria-label="Total amount sent in invoices to sponsors">
+  <div class="stat">
     <span class="stat__label">Total invoiced</span>
     <span class="stat__value"><%= render_money_amount @stats[:total] %></span>
   </div>
-  <div class="stat stat--small tooltipped tooltipped--s" aria-label="Paid by sponsors and already received into your account">
+  <div class="stat stat--small">
     <span class="stat__label">Already received</span>
     <span class="stat__value"><%= render_money_amount @stats[:paid] %></span>
   </div>
-  <div class="stat stat--small tooltipped tooltipped--s" aria-label="Paid by sponsors and on the way to your bank account">
+  <div class="stat stat--small">
     <span class="stat__label">On the way</span>
     <span class="stat__value"><%= render_money_amount @stats[:pending] %></span>
   </div>
-  <div class="stat stat--small tooltipped tooltipped--s" aria-label="Not yet paid by sponsors">
+  <div class="stat stat--small">
     <span class="stat__label">Unpaid</span>
     <span class="stat__value"><%= render_money_amount @stats[:total] - @stats[:paid] - @stats[:pending] %></span>
   </div>
 </div>
-
-<!--
-<div class="filterbar flex flex-wrap items-center width-100">
-  <input
-    type="search"
-    data-behavior="filterbar_search"
-    placeholder="Search…"
-    aria-label="Filter invoices"
-    class="flex-auto md-mr2"
-    style="width: auto; max-width: none;">
-  <div data-behavior="filterbar" role="tablist" class="filterbar__filters flex mt1 lg-mt0">
-    <%= filterbar_item 'All', :exists, true %>
-    <%= filterbar_item 'Paid', :paid %>
-    <%= filterbar_item 'Unpaid', :unpaid %>
-    <%= filterbar_item 'Upcoming', :upcoming %>
-    <%= filterbar_item 'Overdue', :overdue %>
-    <%= filterbar_item 'Archived', :archived %>
-  </div>
-</div>
--->
-
-<!--<a class="filterbar__item" tabindex="0" role="tab" aria-selected="true" data-name="exists" data-behavior="filterbar_item">All</a>-->
 
 <hr/>
 
