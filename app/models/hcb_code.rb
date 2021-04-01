@@ -13,7 +13,7 @@ class HcbCode < ApplicationRecord
   end
 
   def date
-    @date ||= canonical_transactions.first.date
+    @date ||= ct.try(:date) || pt.try(:date)
   end
 
   def memo
