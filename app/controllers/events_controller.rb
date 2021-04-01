@@ -205,7 +205,19 @@ class EventsController < ApplicationController
 
   def donation_overview
     authorize @event
-    @donations = @event.donations.where(status: 'succeeded').sort_by {|d| d.created_at }.reverse
+
+    relation = @event.donations.not_pending
+    relation = relation.in_transit if params[:filter] == "in_transit"
+    relation = relation.deposited if params[:filter] == "deposited"
+    relation = relation.refunded if params[:filter] == "refunded"
+
+    @donations = relation.order(created_at: :desc)
+
+    @stats = {
+      deposited: @donations.deposited.sum(:amount),
+      in_transit: @donations.in_transit.sum(:amount),
+      refunded: @donations.refunded.sum(:amount)
+    }
   end
 
   def transfers

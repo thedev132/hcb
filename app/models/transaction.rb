@@ -261,7 +261,7 @@ class Transaction < ApplicationRecord
     elsif potential_emburse?
       try_pair_emburse
     elsif potential_github?
-      try_pair_github
+      #try_pair_github
     elsif potential_ach_transfer?
       #try_pair_ach_transfer
     elsif potential_check?

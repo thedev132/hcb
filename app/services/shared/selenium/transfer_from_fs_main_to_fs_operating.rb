@@ -43,12 +43,14 @@ module Shared
         el.click
 
         # Wait for confirmation
+        sleep 1
+
         wait = ::Selenium::WebDriver::Wait.new(timeout: 65) # wait 65 seconds
-        wait.until { driver.find_element(:xpath, '//button[text()="Confirm Transfer"]') }
+        wait.until { driver.find_element(:xpath, '//button[text()[.="Confirm Transfer" or contains(.,"Confirm Transfer")]]') }
 
         # Confirm transfer
         sleep 1
-        el = driver.find_element(:xpath, '//button[text()="Confirm Transfer"]')
+        el = driver.find_element(:xpath, '//button[text()[.="Confirm Transfer" or contains(.,"Confirm Transfer")]]')
         el.click
 
         # Wait for final confirmation

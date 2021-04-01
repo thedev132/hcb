@@ -9,8 +9,6 @@ class HcbCode < ApplicationRecord
   monetize :amount_cents
 
   def url
-    return "/invoices/#{invoice.id}" if invoice?
-    return "/donations/#{donation.id}" if donation?
     return "/ach_transfers/#{ach_transfer.id}" if ach_transfer?
     return "/checks/#{check.id}" if check?
 
@@ -89,10 +87,8 @@ class HcbCode < ApplicationRecord
     @local_hcb_code ||= HcbCode.find_or_create_by(hcb_code: hcb_code)
   end
   
-  private
-
   def invoice
-    Invoice.find(hcb_i2)
+    Invoice.find_by(id: hcb_i2)
   end
 
   def invoice_memo
@@ -100,7 +96,7 @@ class HcbCode < ApplicationRecord
   end
 
   def donation
-    Donation.find(hcb_i2)
+    Donation.find_by(id: hcb_i2)
   end
 
   def donation_memo
@@ -165,5 +161,4 @@ class HcbCode < ApplicationRecord
 
     ct2.custom_memo
   end
-
 end
