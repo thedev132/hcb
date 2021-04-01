@@ -13,7 +13,7 @@ class Invoice < ApplicationRecord
   scope :missing_fee_reimbursement, -> { where(fee_reimbursement_id: nil) }
   scope :missing_payout, -> { where("payout_id is null and payout_creation_balance_net is not null") } # some invoices are missing a payout but it is ok because they were paid by check. that is why we additionally check on payout_creation_balance_net
   scope :unpaid, -> { where("aasm_state != 'paid_v2'") }
-  scope :past_due_date, -> { where("due_date < ?", Time.current) }
+  scope :past_due, -> { where("due_date < ?", Time.current) }
 
   friendly_id :slug_text, use: :slugged
 
@@ -238,10 +238,12 @@ class Invoice < ApplicationRecord
     @remote_invoice ||= ::Partners::Stripe::Invoices::Show.new(id: stripe_invoice_id).run
   end
 
-  def sync_from_remote!
-    self.set_fields_from_stripe_invoice(remote_invoice)
-    self.save!
-    self.mark_paid!
+  def remote_status
+    remote_invoice.status
+  end
+
+  def remote_paid?
+    remote_status == "paid"
   end
 
   def canonical_pending_transaction
@@ -264,6 +266,11 @@ class Invoice < ApplicationRecord
     return [] unless raw_pending_invoice_transaction
 
     @canonical_pending_transactions ||= ::CanonicalPendingTransaction.where(raw_pending_invoice_transaction_id: raw_pending_invoice_transaction)
+  end
+
+  def sync_remote!
+    self.set_fields_from_stripe_invoice(remote_invoice)
+    self.save!
   end
 
   private
