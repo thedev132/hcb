@@ -22,6 +22,7 @@ class Donation < ApplicationRecord
   scope :succeeded, -> { where(status: "succeeded") }
   scope :missing_payout, -> { where(payout_id: nil) }
   scope :missing_fee_reimbursement, -> { where(fee_reimbursement_id: nil) }
+  scope :not_pending, -> { where.not(aasm_state: "pending") }
 
   aasm do
     state :pending, initial: true
@@ -60,6 +61,25 @@ class Donation < ApplicationRecord
     "https://dashboard.stripe.com/payments/#{self.stripe_payment_intent_id}"
   end
 
+  def state
+    return :success if deposited?
+    return :info if in_transit?
+    return :warning if refunded?
+    return :error if failed?
+
+    :muted
+  end
+
+  def state_text
+    return "Deposited" if deposited?
+    return "Paid & Depositing" if in_transit?
+    return "Refunded" if refunded?
+    return "Failed" if failed?
+
+    "Pending"
+  end
+
+  # DEPRECATE
   def status_color
     return 'success' if deposited_deprecated?
     return 'info' if pending_deprecated?
@@ -67,6 +87,7 @@ class Donation < ApplicationRecord
     'error'
   end
 
+  # DEPRECATE
   def status_text
     return 'Deposited' if deposited_deprecated?
     return 'Pending' if pending_deprecated?
@@ -167,6 +188,10 @@ class Donation < ApplicationRecord
 
   def hcb_code
     "HCB-#{TransactionGroupingEngine::Calculate::HcbCode::DONATION_CODE}-#{id}"
+  end
+
+  def local_hcb_code
+    @local_hcb_code ||= HcbCode.find_or_create_by(hcb_code: hcb_code)
   end
 
   def canonical_pending_transaction
