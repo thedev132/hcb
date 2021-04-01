@@ -9,8 +9,6 @@ class HcbCode < ApplicationRecord
   monetize :amount_cents
 
   def url
-    return "/checks/#{check.id}" if check?
-
     "/hcb/#{hashid}"
   end
 

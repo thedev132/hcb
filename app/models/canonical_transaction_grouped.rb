@@ -20,7 +20,6 @@ class CanonicalTransactionGrouped
   end
 
   def url
-    return "/checks/#{check.id}" if check?
     return "/hcb/#{local_hcb_code.hashid}" if local_hcb_code
 
     "/transactions/#{ct.id}"
