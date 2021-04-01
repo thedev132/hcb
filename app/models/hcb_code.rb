@@ -21,9 +21,9 @@ class HcbCode < ApplicationRecord
     return donation_memo if donation?
     return ach_transfer_memo if ach_transfer?
     return check_memo if check?
-    return ct.smart_memo if stripe_card?
+    return ct.try(:smart_memo) || pt.try(:smart_memo) if stripe_card?
 
-    ct.smart_memo
+    ct.try(:smart_memo) || pt.try(:smart_memo) || ""
   end
 
   def amount_cents
@@ -136,6 +136,10 @@ class HcbCode < ApplicationRecord
 
   def canonical_transaction_ids
     JSON.parse(raw_canonical_transaction_ids)
+  end
+
+  def pt
+    canonical_pending_transactions.first
   end
 
   def ct
