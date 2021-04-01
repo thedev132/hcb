@@ -8,32 +8,37 @@
     Invoices
     <%= badge_for @invoices.size, class: 'bg-muted' %>
   </span>
-  <%= link_to new_event_invoice_path(event_id: @event.slug),
-      class: 'btn btn--icon bg-success',
-      data: { behavior: 'modal_trigger', modal: 'new_invoice' } do %>
-    <%= inline_icon 'send' %>
-    Send an invoice
+
+  <% if organizer_signed_in? %>
+    <%= link_to new_event_invoice_path(event_id: @event.slug),
+        class: 'btn btn--icon bg-success',
+        data: { behavior: 'modal_trigger', modal: 'new_invoice' } do %>
+      <%= inline_icon 'send' %>
+      Send an invoice
+    <% end %>
   <% end %>
 </h1>
 
-<section class="modal modal--scroll bg-snow" data-behavior="modal" role="dialog" id="new_invoice">
-  <%= modal_header 'Send an invoice' %>
+<% if organizer_signed_in? %>
+  <section class="modal modal--scroll bg-snow" data-behavior="modal" role="dialog" id="new_invoice">
+    <%= modal_header 'Send an invoice' %>
 
-  <% if @event.invoices.none? %>
-    <p class="flex items-center info line-height-3">
-      <%= inline_icon 'important', size: 32, class: 'mr1' %>
-      We recommend sending yourself an invoice for $1 to understand what your
-      sponsors will see.
-    </p>
-  <% else %>
-    <p class="h5 line-height-3 muted mt0 mb2">
-      If the sponsor wants to pay via a mailed check or direct deposit instead of
-      the online invoice, let the Bank team know.
-      <%= help_message %>
-    </p>
-  <% end %>
-  <%= render 'form', invoice: @invoice, sponsor: @sponsor %>
-</section>
+    <% if @event.invoices.none? %>
+      <p class="flex items-center info line-height-3">
+        <%= inline_icon 'important', size: 32, class: 'mr1' %>
+        We recommend sending yourself an invoice for $1 to understand what your
+        sponsors will see.
+      </p>
+    <% else %>
+      <p class="h5 line-height-3 muted mt0 mb2">
+        If the sponsor wants to pay via a mailed check or direct deposit instead of
+        the online invoice, let the Bank team know.
+        <%= help_message %>
+      </p>
+    <% end %>
+    <%= render 'form', invoice: @invoice, sponsor: @sponsor %>
+  </section>
+<% end %>
 
 <div class="statset mt3 mb2">
   <div class="stat tooltipped tooltipped--s" aria-label="Total amount sent in invoices to sponsors">
@@ -107,37 +112,17 @@
           <%= format_date i.created_at %>
         </td>
         <td>
-          <%= i.sponsor.name %>
+          <%= i.sponsor.name if organizer_signed_in? %>
+          <%= "(redacted)" unless organizer_signed_in? %>
         </td>
         <td style="text-align: right;">
           <%= render_money(i.item_amount) %>
         </td>
         <td>
-          <%= link_to "Details", i %>
+          <%= link_to "Details", hcb_code_url(i.local_hcb_code.hashid) if organizer_signed_in? %>
         </td>
       </tr>
     <% end %>
   </tbody>
 </table>
 </article>
-
-<!--
-<ul class="grid grid--spacious">
-  <% @invoices.each do |i| %>
-    <%= link_to i, data: { behavior: 'filterbar_row', filter: i.filter_data.to_json } do %>
-      <%= creator_bar i %>
-      <li class="card card--hover">
-        <div class="flex">
-          <strong class="flex-auto h3 line-height-3 mb1">
-            <%= i.sponsor.name %>
-          </strong>
-          <span class="block h1 black line-height-1 <%= i.state %>"><%= render_money_short i.item_amount %></span>
-        </div>
-        <span class="ml0 badge bg-<%= i.state %>">
-          <%= i.state_text %>
-        </span>
-      </li>
-    <% end %>
-  <% end %>
-</ul>
--->

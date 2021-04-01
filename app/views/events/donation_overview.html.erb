@@ -97,6 +97,7 @@
           </td>
           <td>
             <%= d.name if organizer_signed_in? %>
+            <%= "(redacted)" unless organizer_signed_in? %>
           </td>
           <td style="text-align: right;">
             <%= render_money(d.amount) %>
