@@ -319,7 +319,8 @@ class AdminController < ApplicationController
   def ach_approve
     attrs = {
       ach_transfer_id: params[:id],
-      scheduled_arrival_date: params[:scheduled_arrival_date]
+      scheduled_arrival_date: params[:scheduled_arrival_date],
+      confirmation_number: params[:confirmation_number]
     }
     ach_transfer = AchTransferService::Approve.new(attrs).run
 
@@ -530,6 +531,7 @@ class AdminController < ApplicationController
     @paid = params[:paid] == "1" ? true : nil
     @missing_payout = params[:missing_payout] == "1" ? true : nil
     @missing_fee_reimbursement = params[:missing_fee_reimbursement] == "1" ? true : nil
+    @past_due = params[:past_due] == "1" ? true : nil
 
     @event_id = params[:event_id].present? ? params[:event_id] : nil
 
@@ -555,6 +557,7 @@ class AdminController < ApplicationController
     relation = relation.paid_v2 if @paid
     relation = relation.missing_payout if @missing_payout
     relation = relation.missing_fee_reimbursement if @missing_fee_reimbursement
+    relation = relation.past_due if @past_due
 
     @count = relation.count
     @invoices = relation.page(@page).per(@per).order("created_at desc")

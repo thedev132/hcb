@@ -1,22 +1,105 @@
 <% title "Transaction for #{@hcb_code.amount}" %>
-<% page_sm %>
+<% page_md %>
 
 <%= render "events/nav" if @event %>
 
-<% @hcb_code.canonical_transactions.each do |ct| %>
-  <% if ct.event == @event %>
-    <article class="card mt2">
-      <%= render partial: "hcb_codes/cards/settled_transaction", locals: { ct: ct } %>
-    </article>
-  <% end %>
+<!-- admin -->
+<% admin_tools do %>
+  <p><%= @hcb_code.hcb_code %></p>
+
+  <ul>
+    <% @hcb_code.canonical_pending_transactions.each do |ct| %>
+      <li><%= link_to ct.amount, "/canonical_pending_transactions/#{ct.id}" %></li>
+    <% end %>
+
+    <% @hcb_code.canonical_transactions.each do |ct| %>
+      <li><%= link_to ct.amount, "/transactions/#{ct.id}" %></li>
+    <% end %>
+  </ul>
 <% end %>
 
-<% @hcb_code.canonical_pending_transactions.each do |pt| %>
-  <% if pt.event == @event %>
-    <article class="card mt2">
-      <%= render partial: "hcb_codes/cards/pending_transaction", locals: { pt: pt } %>
-    </article>
-  <% end %>
+<!-- donation -->
+<% if @hcb_code.donation? && @hcb_code.donation.present? %>
+  <%= render partial: "hcb_codes/donation", locals: {} %>
+<% end %>
+
+<!-- invoice -->
+<% if @hcb_code.invoice? && @hcb_code.invoice.present? %>
+  <%= render partial: "hcb_codes/invoice", locals: {} %>
+<% end %>
+
+<!-- ach_transfer -->
+<% if @hcb_code.ach_transfer? && @hcb_code.ach_transfer.present? %>
+  <%= render partial: "hcb_codes/ach_transfer", locals: {} %>
+<% end %>
+
+<!-- check -->
+<% if @hcb_code.check? && @hcb_code.check.present? %>
+  <%= render partial: "hcb_codes/check", locals: {} %>
+<% end %>
+
+<!-- stripe card -->
+<% if @hcb_code.stripe_card? %>
+  <%= render partial: "hcb_codes/stripe_card", locals: {} %>
+<% end %>
+
+
+<!-- transaction history -->
+<h2>Transaction History</h2>
+
+<article class="table-container">
+  <table>
+    <thead>
+      <tr>
+        <th>DATE</th>
+        <th>MEMO</th>
+        <th style="text-align: right;">AMOUNT</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @hcb_code.canonical_transactions.each do |ct| %>
+        <tr>
+          <td><%= ct.date %></td>
+          <td><%= ct.smart_memo %></td>
+          <td style="text-align: right;"><%= number_to_currency(ct.amount) %></td>
+          <td>
+            <%= pop_icon_to "edit",
+                edit_canonical_transaction_path(ct),
+                class: "right tooltipped tooltipped--w", "aria-label": "Rename transaction" if organizer_signed_in? %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</article>
+
+<% if @hcb_code.canonical_pending_transactions.exists? %>
+  <h2>Pending Transaction History</h2>
+
+  <article class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>DATE</th>
+          <th>MEMO</th>
+          <th style="text-align: right;">AMOUNT</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @hcb_code.canonical_pending_transactions.each do |ct| %>
+          <tr>
+            <td><%= ct.date %></td>
+            <td><%= ct.smart_memo %></td>
+            <td style="text-align: right;"><%= number_to_currency(ct.amount) %></td>
+            <td>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </article>
 <% end %>
 
 <h2>Receipts</h2>

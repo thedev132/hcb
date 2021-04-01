@@ -80,6 +80,12 @@
     <%= form.label :scheduled_arrival_date, "Estimated arrival date:" %>
     <br/>
     <%= form.text_field :scheduled_arrival_date, required: true, placeholder: "MM/DD/YYYY", pattern: '\d{1,2}/\d{1,2}/\d{4}' %>
+
+    <br/>
+    <%= form.label :confirmation_number, "Confirmation number:" %>
+    <br/>
+    <%= form.text_field :confirmation_number, required: true %>
+
     <p><%= form.submit "Mark as approved and sent", data: {confirm: "Mark as approved and sent?"} %></p>
   <% end %>
 
@@ -92,4 +98,5 @@
 <% else %>
   <p><strong>ACH Transfer already processed -- cannot approve nor reject.</strong></p>
   <p>Estimated Arrival Date: <%= @ach_transfer.scheduled_arrival_date %></p>
+  <p>Confirmation Number: <%= @ach_transfer.confirmation_number || "NONE" %></p>
 <% end %>

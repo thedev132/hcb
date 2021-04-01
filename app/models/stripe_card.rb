@@ -113,7 +113,9 @@ class StripeCard < ApplicationRecord
   alias_attribute :address_postal_code, :stripe_shipping_address_postal_code
 
   def stripe_obj
-    @stripe_card_obj ||= ::Partners::Stripe::Issuing::Cards::Show.new(id: stripe_id).run
+    @stripe_obj ||= ::Partners::Stripe::Issuing::Cards::Show.new(id: stripe_id).run
+  rescue => e
+    { number: "XXXX", cvc: "XXX", created: Time.now.utc.to_i }
   end
 
   def secret_details
@@ -191,7 +193,31 @@ class StripeCard < ApplicationRecord
     cost
   end
 
+  def canonical_transactions
+    @canonical_transactions ||= CanonicalTransaction.where(id: canonical_transaction_ids)
+  end
+
+  def hcb_codes
+    @hcb_codes ||= ::HcbCode.where(hcb_code: canonical_transaction_hcb_codes)
+  end
+
   private
+
+  def canonical_transaction_hcb_codes
+    @canonical_transaction_hcb_codes ||= canonical_transactions.pluck(:hcb_code)
+  end
+
+  def canonical_transaction_ids
+    @canonical_transaction_ids ||= CanonicalHashedMapping.where(hashed_transaction_id: hashed_transaction_ids).pluck(:canonical_transaction_id)
+  end
+
+  def hashed_transaction_ids
+    @hashed_transaction_ids ||= HashedTransaction.where(raw_stripe_transaction_id: raw_stripe_transaction_ids).pluck(:id)
+  end
+
+  def raw_stripe_transaction_ids
+    @raw_stripe_transaction_ids ||= RawStripeTransaction.where("stripe_transaction->>'card' = ?", stripe_id).pluck(:id)
+  end
 
   def issued?
     !stripe_id.blank?

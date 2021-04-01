@@ -1,0 +1,19 @@
+<article class="card mb3">
+
+  <h1 class="h1 border-none mt0 mb0"><%= @hcb_code.memo %></h1>
+
+  <section class="card__banner card__darker statset border-top border-bottom">
+    <div class="stat">
+      <span class="stat__label">Amount</span>
+      <span class="stat__value<%#= ' strikethrough' unless @stripe_authorization.approved? %>"><%= @hcb_code.amount %></span>
+    </div>
+  </section>
+
+  <section class="details pt2">
+    <p>
+      <strong>Spent on</strong>
+      <%= @hcb_code.date %>
+    </p>
+  </section>
+
+</article>

@@ -111,11 +111,13 @@ class StripeAuthorization < ApplicationRecord
   end
 
   def stripe_obj
-    @stripe_auth_obj ||= begin
-      StripeService::Issuing::Authorization.retrieve(stripe_id)
-    end
-
-    @stripe_auth_obj
+    @stripe_auth_obj ||= StripeService::Issuing::Authorization.retrieve(stripe_id)
+  rescue => e
+    { number: "XXXX", cvc: "XXX", created: Time.now.utc.to_i,
+      merchant_data: {
+        name: "XXX"
+      }
+    }
   end
 
   def remote_stripe_transaction_amount_cents
