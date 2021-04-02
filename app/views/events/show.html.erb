@@ -121,44 +121,9 @@
         </thead>
         <tbody data-behavior="transactions">
           <% if organizer_signed_in? %>
-          <% @pending_transactions.each do |pt| %>
-            <tr
-              class="muted transaction--<%= pt.amount.negative? ? 'negative' : 'positive' %>">
-              <td class="transaction__icon tooltipped tooltipped--e" aria-label="Bank account transaction">
-                <% if pt.raw_pending_outgoing_check_transaction_id %>
-                  <%= inline_icon 'payment-transfer' %>
-                <% elsif pt.raw_pending_outgoing_ach_transaction_id %>
-                  <%= inline_icon 'payment-transfer' %>
-                <% elsif pt.raw_pending_invoice_transaction_id %>
-                  <%= inline_icon 'briefcase' %>
-                <% elsif pt.raw_pending_donation_transaction_id %>
-                  <%= inline_icon 'support' %>
-                <% elsif pt.raw_pending_stripe_transaction_id %>
-                  <%= inline_icon 'card' %>
-                <% else %>
-                <% end %>
-              </td>
-              <td>
-                <%= pt.date %>
-              </td>
-              <td class="transaction__memo">
-                <span>
-                  PENDING: <%= pt.display_name %>
-                </span>
-
-                <% if pt.local_hcb_code %>
-                  <%= list_badge_for pt.local_hcb_code.receipts.size, 'receipt', 'payment-docs', optional: true %>
-                  <%= list_badge_for pt.local_hcb_code.comments.size, 'note', 'post', optional: true %>
-                <% end %>
-              </td>
-              <td class="nowrap">
-                <%= pt.amount %>
-              </td>
-              <td>
-                <%= link_to 'Details', pt.url %>
-              </td>
-            </tr>
-          <% end %>
+            <% @pending_transactions.each do |pt| %>
+              <%= render partial: "canonical_pending_transactions/canonical_pending_transaction", locals: { pt: pt } %>
+            <% end %>
           <% end %>
 
           <% @transactions.each do |ct| %>
