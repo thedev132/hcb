@@ -1,4 +1,6 @@
 class HcbCodesController < ApplicationController
+  skip_before_action :signed_in_user, only: [:receipt, :attach_receipt]
+
   def show
     @hcb_code = HcbCode.find(params[:id])
 
@@ -43,4 +45,9 @@ class HcbCodesController < ApplicationController
     redirect_to params[:redirect_url], flash: { error: e.message }
   end
 
+  def attach_receipt
+    @hcb_code = HcbCode.find(params[:id])
+
+    authorize @hcb_code
+  end
 end

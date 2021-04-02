@@ -190,6 +190,7 @@ Rails.application.routes.draw do
     member do
       post 'comment'
       post 'receipt'
+      get 'attach_receipt'
     end
   end
   

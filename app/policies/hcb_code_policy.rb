@@ -8,6 +8,10 @@ class HcbCodePolicy < ApplicationPolicy
   end
 
   def receipt?
-    user&.admin? || record.event.try(:users).try(:include?, user)
+    record.date > 10.days.ago || user&.admin? || record.event.try(:users).try(:include?, user)
+  end
+
+  def attach_receipt?
+    record.date > 10.days.ago || user&.admin? || record.event.try(:users).try(:include?, user)
   end
 end
