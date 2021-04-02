@@ -4,8 +4,8 @@ module HcbCodeService
   module Receipt
     class Create
       def initialize(hcb_code_id:,
-                     file: nil,
-                     current_user:)
+                     file:,
+                     current_user: nil)
         @hcb_code_id = hcb_code_id
         @file = file
         @current_user = current_user
@@ -21,7 +21,7 @@ module HcbCodeService
         {
           file: @file,
           user: @current_user
-        }
+        }.compact
       end
 
       def hcb_code

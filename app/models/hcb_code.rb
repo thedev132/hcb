@@ -55,7 +55,7 @@ class HcbCode < ApplicationRecord
   end
 
   def stripe_cardholder
-    ct.stripe_cardholder
+    pt.try(:stripe_cardholder) || ct.try(:stripe_cardholder)
   end
 
   def invoice?
