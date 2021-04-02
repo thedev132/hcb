@@ -54,6 +54,10 @@ class HcbCode < ApplicationRecord
     ct.raw_stripe_transaction
   end
 
+  def stripe_cardholder
+    ct.stripe_cardholder
+  end
+
   def invoice?
     hcb_i1 == ::TransactionGroupingEngine::Calculate::HcbCode::INVOICE_CODE
   end
