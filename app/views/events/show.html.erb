@@ -116,9 +116,7 @@
             <th>Date</th>
             <th>Description</th>
             <th class="right-align">Amount</th>
-            <% if organizer_signed_in? %>
-              <th></th>
-            <% end %>
+            <th></th>
           </tr>
         </thead>
         <tbody data-behavior="transactions">
@@ -206,11 +204,9 @@
               <td class="nowrap">
                 <span title="Fee <%= render_money ct.fees.sum(:amount_cents_as_decimal) %>"><%= ct.amount %></span>
               </td>
-              <% if organizer_signed_in? %>
               <td>
-                <%= link_to 'Details', "/transactions/#{ct.id}" %>
+                <%= link_to 'Details', "/transactions/#{ct.id}" if organizer_signed_in? %>
               </td>
-              <% end %>
             </tr>
           <% end %>
         </tbody>

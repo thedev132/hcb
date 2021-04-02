@@ -7,7 +7,11 @@
     <% elsif ct.ach_transfer? %>
       <%= inline_icon "payment-transfer" %>
     <% elsif ct.raw_stripe_transaction %>
-      <%= inline_icon "card" %>
+      <% if ct.stripe_cardholder %>
+        <%= avatar_for ct.stripe_cardholder.user, 24 %>
+      <% else %>
+        <%= inline_icon "card" %>
+      <% end %>
     <% elsif ct.invoice? %>
       <%= inline_icon "briefcase" %>
     <% elsif ct.donation? %>
@@ -38,10 +42,8 @@
   <td class="nowrap">
     <span><%= ct.amount %></span>
   </td>
-  <% if organizer_signed_in? %>
   <td>
-    <%= link_to "Details", ct.url %>
+    <%= link_to "Details", ct.url if organizer_signed_in? %>
   </td>
-  <% end %>
 </tr>
 
