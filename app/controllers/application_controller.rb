@@ -29,8 +29,7 @@ class ApplicationController < ActionController::Base
 
   def user_not_authorized
     flash[:error] = 'You are not authorized to perform this action.'
-    self.response_body = nil
-    redirect_to(root_path) and return
+    redirect_to(root_path)
   end
 
   def not_found
