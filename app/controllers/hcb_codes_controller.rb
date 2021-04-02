@@ -50,11 +50,4 @@ class HcbCodesController < ApplicationController
 
     authorize @hcb_code
   end
-
-  private
-
-  def redirect_unless_in_grace_window!
-    redirect_to hcb_code_path(@hcb_code.hashid) and return if @hcb_code.date < Time.now.utc - 10.days # grace window
-  end
-
 end
