@@ -1,0 +1,11 @@
+<% title "Transaction for #{@hcb_code.amount}" %>
+<% page_md %>
+
+<% if @hcb_code.event %>
+  <%= link_to @hcb_code.event do %>
+    <h1 class="center border-none h1 mt0 mb0 pt3 pb1 underline primary"><%= @hcb_code.event.name %></h1>
+  <% end %>
+<% end %>
+
+<%= render partial: "hcb_codes/rich_metadata" %>
+<%= render "receipts/form_v2" %>

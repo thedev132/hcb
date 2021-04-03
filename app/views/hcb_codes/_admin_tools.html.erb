@@ -1,0 +1,14 @@
+<% admin_tools do %>
+  <p><%= @hcb_code.hcb_code %></p>
+
+  <ul>
+    <% @hcb_code.canonical_pending_transactions.each do |ct| %>
+      <li><%= link_to ct.amount, "/canonical_pending_transactions/#{ct.id}" %></li>
+    <% end %>
+
+    <% @hcb_code.canonical_transactions.each do |ct| %>
+      <li><%= link_to ct.amount, "/transactions/#{ct.id}" %></li>
+    <% end %>
+  </ul>
+<% end %>
+
