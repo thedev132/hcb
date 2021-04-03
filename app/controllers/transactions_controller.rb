@@ -51,12 +51,11 @@ class TransactionsController < ApplicationController
       render :show_deprecated
     rescue ActiveRecord::RecordNotFound => e
       @transaction = TransactionEngine::Transaction::Show.new(canonical_transaction_id: params[:id]).run
-      @event = @transaction.event
-
-      # Comments
-      @hcb_code = HcbCode.find_or_create_by(hcb_code: @transaction.hcb_code)
 
       authorize @transaction
+
+      @event = @transaction.event
+      @hcb_code = @transaction.local_hcb_code
     end
   end
 

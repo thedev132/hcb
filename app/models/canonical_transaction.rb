@@ -228,6 +228,10 @@ class CanonicalTransaction < ApplicationRecord
     @unique_bank_identifier ||= hashed_transactions.first.unique_bank_identifier
   end
 
+  def local_hcb_code
+    @local_hcb_code ||= HcbCode.find_or_create_by(hcb_code: hcb_code)
+  end
+
   private
 
   def hashed_transaction
