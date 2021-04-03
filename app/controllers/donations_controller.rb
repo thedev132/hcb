@@ -106,7 +106,7 @@ class DonationsController < ApplicationController
   end
 
   def allow_iframe
-    response.headers.delete 'X-Frame-Options'
+    response.headers["X-Frame-Options"] = "ALLOWALL"
   end
 
   def redirect_to_404
