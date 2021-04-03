@@ -13,16 +13,18 @@
     </thead>
     <tbody>
       <% @hcb_code.canonical_transactions.each do |ct| %>
-        <tr>
-          <td><%= ct.date %></td>
-          <td><%= ct.smart_memo %></td>
-          <td style="text-align: right;"><%= number_to_currency(ct.amount) %></td>
-          <td>
-            <%= pop_icon_to "edit",
-                edit_canonical_transaction_path(ct),
-                class: "right tooltipped tooltipped--w", "aria-label": "Rename transaction" if organizer_signed_in? %>
-          </td>
-        </tr>
+        <% if current_user.admin? || ct.event.try(:users).try(:include?, current_user) %>
+          <tr>
+            <td><%= ct.date %></td>
+            <td><%= ct.smart_memo %></td>
+            <td style="text-align: right;"><%= number_to_currency(ct.amount) %></td>
+            <td>
+              <%= pop_icon_to "edit",
+                  edit_canonical_transaction_path(ct),
+                  class: "right tooltipped tooltipped--w", "aria-label": "Rename transaction" if organizer_signed_in? %>
+            </td>
+          </tr>
+        <% end %>
       <% end %>
     </tbody>
   </table>
