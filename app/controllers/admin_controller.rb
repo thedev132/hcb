@@ -93,6 +93,7 @@ class AdminController < ApplicationController
 
   def transaction
     @canonical_transaction = CanonicalTransaction.find(params[:id])
+    @hcb_code = @canonical_transaction.local_hcb_code
 
     @potential_invoices = Invoice.open.where("created_at <= ? and amount_due = ?", @canonical_transaction.date, @canonical_transaction.amount_cents).order("created_at desc")
 
