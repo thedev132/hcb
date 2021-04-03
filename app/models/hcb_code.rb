@@ -43,7 +43,11 @@ class HcbCode < ApplicationRecord
   end
 
   def event
-    @event ||= canonical_pending_transactions.try(:first).try(:event) || canonical_transactions.try(:first).try(:event)
+    events.first
+  end
+
+  def events
+    @events ||= Event.where(id: canonical_pending_transactions.map { |cpt| cpt.event.id } + canonical_transactions.map { |ct| ct.event.id })
   end
 
   def fee_payment?
