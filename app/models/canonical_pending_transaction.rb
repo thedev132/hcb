@@ -162,6 +162,14 @@ class CanonicalPendingTransaction < ApplicationRecord
     @local_hcb_code ||= HcbCode.find_or_create_by(hcb_code: hcb_code)
   end
 
+  def stripe_cardholder
+    @stripe_cardholder ||= begin
+      return nil unless raw_pending_stripe_transaction
+
+      ::StripeCardholder.find_by(stripe_id: raw_pending_stripe_transaction.stripe_transaction["cardholder"])
+    end
+  end
+
   private
 
   def write_hcb_code
