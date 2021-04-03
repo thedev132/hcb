@@ -1,18 +1,12 @@
 <% title "Transaction for #{@transaction.amount}" %>
 <% page_sm %>
 
-<%= render 'events/nav' if @event %>
-
-<% unless using_transaction_engine_v2? %>
-<% admin_tools('mt3 mb0') do %>
-  <%= link_to 'All transactions', transactions_path, class: 'breadcrumb' %>
-<% end %>
-<% end %>
+<%= render "events/nav" if @event %>
 
 <article class="card mt2">
   <h1 class="heading h1 mt0 mb0">
     <span class="flex-auto">
-      <%= @transaction.fee_payment? ? 'Fee payment' : 'Transaction' %>
+      <%= @transaction.fee_payment? ? "Fee payment" : "Transaction" %>
     </span>
     <span class="h2 regular">
       <%= number_to_currency @transaction.amount %>
@@ -27,10 +21,10 @@
       </span>
     </p>
 
-    <%= pop_icon_to 'edit',
+    <%= pop_icon_to "edit",
       edit_canonical_transaction_path(@transaction),
       disabled: !organizer_signed_in?,
-      class: 'right tooltipped tooltipped--w', 'aria-label': 'Rename transaction' %>
+      class: "right tooltipped tooltipped--w", "aria-label": "Rename transaction" %>
   </div>
 
   <section class="details">
@@ -107,7 +101,7 @@
           <%= render_money fee.amount_cents_as_decimal %> (<%= render_percentage fee.event_sponsorship_fee %>)
 
 
-          <% admin_tools('py0') do %>
+          <% admin_tools("py0") do %>
             <%= link_to "[waive fee]", waive_fee_canonical_transaction_url(@transaction), method: :post if fee.amount_cents_as_decimal > 0 %>
           <% end %>
         </p>
@@ -119,7 +113,7 @@
       </p>
     <% else %>
       <% @transaction.fees.each do |fee| %>
-        <% admin_tools('py0') do %>
+        <% admin_tools("py0") do %>
           <%= link_to "[unwaive fee]", unwaive_fee_canonical_transaction_url(@transaction), method: :post if fee.revenue_waived? %>
         <% end %>
       <% end %>
@@ -128,21 +122,21 @@
     <% if @transaction.emburse_transfer %>
       <p>
         <strong>Transfer Request</strong>
-        <%= link_to 'View', emburse_transfer_path(@transaction.emburse_transfer) %>
+        <%= link_to "View", emburse_transfer_path(@transaction.emburse_transfer) %>
       </p>
     <% end %>
 
     <% if @transaction.deprecated_linked_object %>
       <p>
         <strong>History</strong>
-        <%= link_to 'Metadata', @transaction.deprecated_linked_object %>
+        <%= link_to "Metadata", @transaction.deprecated_linked_object %>
       </p>
     <% end %>
 
   </section>
 
   <% unless using_transaction_engine_v2? || @transaction.is_a?(CanonicalTransaction) %>
-  <% admin_tools('py0') do %>
+  <% admin_tools("py0") do %>
       <p>
         Bank Account:
         <%= link_to "##{@transaction.bank_account.id} (#{@transaction.bank_account.name})", @transaction.bank_account %>
@@ -151,7 +145,7 @@
   <% end %>
 
   <% if @transaction&.disbursement %>
-    <% admin_tools('py0') do %>
+    <% admin_tools("py0") do %>
       <%# admin tools because disbursements are not designed
         to be end-user visible %>
       <p>
@@ -163,21 +157,12 @@
 
 </article>
 
-<% if using_transaction_engine_v2? %>
+<% if @hcb_code %>
+  <h2>Receipts</h2>
+  <%= render "receipts/list_v2" %>
+  <%= render "receipts/form_v2" %>
 
-  <% if @hcb_code %>
-    <h2>Receipts</h2>
-    <%= render "receipts/list_v2" %>
-    <%= render "receipts/form_v2" %>
-
-    <h2>Comments</h2>
-    <%= render "comments/list_v2" %>
-    <%= render "comments/form_v2" %>
-  <% end %>
-
-<% else %>
-
-  <%= render 'comments/comments' %>
-
+  <h2>Comments</h2>
+  <%= render "comments/list_v2" %>
+  <%= render "comments/form_v2" %>
 <% end %>
-
