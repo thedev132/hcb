@@ -2,11 +2,7 @@ module DonationService
   class Refunds
     def run
       ::Donation.deposited.each do |donation|
-        if donation.remote_refunded?
-
-          ::DonationService::Refund.new(donation: donation).run
-
-        end
+        ::DonationJob::Refund.perform_later(donation.id) if donation.remote_refunded?
       end
     end
   end
