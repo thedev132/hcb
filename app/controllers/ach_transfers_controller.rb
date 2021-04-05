@@ -25,13 +25,22 @@ class AchTransfersController < ApplicationController
       end
 
       format.pdf do
-        render pdf: 'transfer_confirmation_letter', page_height: '11in', page_width: '8.5in'
+        if @ach_transfer.deposited?
+          render pdf: 'transfer_confirmation_letter', page_height: '11in', page_width: '8.5in'
+        else
+          redirect_to @ach_transfer
+        end
       end
 
       # works, but not being used at the moment
       format.png do
-        send_data ::AchTransferService::PreviewTransferConfirmationLetter.new(ach_transfer: @ach_transfer, event: @event).run, filename: 'transfer_confirmation_letter.png'
+        if @ach_transfer.deposited?
+          send_data ::AchTransferService::PreviewTransferConfirmationLetter.new(ach_transfer: @ach_transfer, event: @event).run, filename: 'transfer_confirmation_letter.png'
+        else
+          redirect_to @ach_transfer
+        end
       end
+
     end
   end
 

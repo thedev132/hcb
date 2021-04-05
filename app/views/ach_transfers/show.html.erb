@@ -66,7 +66,7 @@
         <% if @ach_transfer.deposited? %>
           <span class="muted">
             <a href="/ach_transfers/<%= @ach_transfer.id %>/confirmation.pdf" target="_blank">
-            (view confirmation letter)
+            (<%= organizer_signed_in? ? 'view confirmation letter' : 'sign in to view'  %>)
             </a>
           </span>
         <% end %>
