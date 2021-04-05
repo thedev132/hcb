@@ -1,7 +1,8 @@
 module AchTransferService
   class PreviewTransferConfirmationLetter
-    def initialize(ach_transfer:)
+    def initialize(ach_transfer:, event:)
       @ach_transfer = ach_transfer
+      @event = event
     end
 
     def run
@@ -11,12 +12,12 @@ module AchTransferService
     private
 
     def pdf_string
-      @pdf_string ||= ActionController::Base.new.render_to_string pdf: 'transfer_confirmation_letter', template: 'ach_transfers/transfer_confirmation_letter.pdf.erb', encoding: 'UTF-8', locals: { :@ach_transfer => @ach_transfer }
+      @pdf_string ||= ActionController::Base.new.render_to_string pdf: 'transfer_confirmation_letter', template: 'ach_transfers/transfer_confirmation_letter.pdf.erb', encoding: 'UTF-8', locals: { :@ach_transfer => @ach_transfer, :@event => @event }
     end
 
     def input
       @input ||= begin
-        input = Tempfile.new(['fiscal_sponsorship_letter_preview', '.pdf'])
+        input = Tempfile.new(['transfer_confirmation_letter_preview', '.pdf'])
         input.binmode
         input.write(pdf_string)
         input.rewind
