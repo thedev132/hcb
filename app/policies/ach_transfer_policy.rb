@@ -15,6 +15,10 @@ class AchTransferPolicy < ApplicationPolicy
     is_public || admin_or_user
   end
 
+  def transfer_confirmation_letter?
+    admin_or_user
+  end
+
   def start_approval?
     user&.admin?
   end
