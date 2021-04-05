@@ -26,7 +26,7 @@ class AchTransfersController < ApplicationController
 
       format.pdf do
         if @ach_transfer.deposited?
-          render pdf: 'transfer_confirmation_letter', page_height: '11in', page_width: '8.5in'
+          render pdf: "ACH Transfer ##{@ach_transfer.id} Confirmation Letter (#{@event.name} to #{@ach_transfer.recipient_name} on #{@ach_transfer.canonical_pending_transaction.date.strftime("%B #{@ach_transfer.canonical_pending_transaction.date.day.ordinalize}, %Y")})", page_height: '11in', page_width: '8.5in'
         else
           redirect_to @ach_transfer
         end
