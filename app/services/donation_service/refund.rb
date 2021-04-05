@@ -15,6 +15,8 @@ module DonationService
         # 1. Mark refunded
         donation.mark_refunded!
 
+        raise ArgumentError, "production only" unless Rails.env.production?
+
         # 2. Process remotely
         ::Partners::Stripe::Refunds::Create.new(payment_intent_id: payment_intent_id).run
 
