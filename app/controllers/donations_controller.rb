@@ -85,6 +85,15 @@ class DonationsController < ApplicationController
       type: 'image/png', disposition: 'inline'
   end
 
+  def refund
+    @donation = Donation.find(params[:id])
+    @hcb_code = @donation.local_hcb_code
+
+    ::DonationJob::Refund.perform_later(@donation.id)
+
+    redirect_to hcb_code_path(@hcb_code.hashid), flash: { success: "The refund process has been queued for this donation." }
+  end
+
   private
 
   def set_event

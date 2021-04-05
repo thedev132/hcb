@@ -273,7 +273,13 @@ Rails.application.routes.draw do
       post 'start/:event_name', to: 'donations#make_donation', as: 'make_donation'
       get 'qr/:event_name.png', to: 'donations#qr_code', as: 'qr_code'
       get ':event_name/:donation', to: 'donations#finish_donation', as: 'finish_donation'
+
     end
+
+    member do
+      post 'refund', to: 'donations#refund'
+    end
+
     resources :comments
   end
 
