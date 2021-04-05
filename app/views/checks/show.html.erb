@@ -137,11 +137,13 @@
 </article>
 
 <% if @hcb_code %>
-  <h2>Receipts</h2>
-  <%= render "receipts/list_v2" %>
-  <%= render "receipts/form_v2" %>
+  <% if organizer_signed_in? %>
+    <h2>Receipts</h2>
+    <%= render "receipts/list_v2" %>
+    <%= render "receipts/form_v2" %>
+  <% end %>
 
   <h2>Comments</h2>
   <%= render "comments/list_v2" %>
-  <%= render "comments/form_v2" %>
+  <%= render "comments/form_v2" if organizer_signed_in? %>
 <% end %>
