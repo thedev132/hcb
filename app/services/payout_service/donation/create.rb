@@ -34,12 +34,8 @@ module PayoutService
         @donation ||= ::Donation.find(@donation_id)
       end
 
-      def payment_intent
-        @payment_intent ||= ::Partners::Stripe::PaymentIntents::Show.new(id: donation.stripe_payment_intent_id).run
-      end
-
       def funds_available?
-        Time.current.to_i > payment_intent.charges.data.first.balance_transaction.available_on
+        Time.current.to_i > donation.remote_donation.charges.data.first.balance_transaction.available_on
       end
     end
   end
