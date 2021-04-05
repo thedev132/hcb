@@ -20,12 +20,9 @@ class CanonicalTransactionGrouped
   end
 
   def url
-    return "/invoices/#{invoice.id}" if invoice?
-    return "/donations/#{donation.id}" if donation?
-    return "/ach_transfers/#{ach_transfer.id}" if ach_transfer?
-    return "/checks/#{check.id}" if check?
+    return "/hcb/#{local_hcb_code.hashid}" if local_hcb_code
 
-    "/transactions/#{ct.id}" # TODO: replace with hcb_code to provide dynamic smart transaction page
+    "/transactions/#{ct.id}"
   end
 
   def canonical_transactions
@@ -38,6 +35,10 @@ class CanonicalTransactionGrouped
 
   def raw_stripe_transaction
     ct.raw_stripe_transaction
+  end
+
+  def stripe_cardholder
+    ct.stripe_cardholder
   end
 
   def invoice?
@@ -64,6 +65,10 @@ class CanonicalTransactionGrouped
     hcb_i1 == ::TransactionGroupingEngine::Calculate::HcbCode::STRIPE_CARD_CODE
   end
 
+  def local_hcb_code
+    @local_hcb_code ||= HcbCode.find_or_create_by(hcb_code: hcb_code)
+  end
+  
   private
 
   def invoice
@@ -115,7 +120,7 @@ class CanonicalTransactionGrouped
   end
 
   def smart_hcb_code
-    hcb_code || ::TransactionGroupingEngine::Calculate::HcbCode.new(canonical_transaction: canonical_transactions.first)
+    hcb_code || ::TransactionGroupingEngine::Calculate::HcbCode.new(canonical_transaction_or_canonical_pending_transaction: canonical_transactions.first)
   end
 
   def split_code

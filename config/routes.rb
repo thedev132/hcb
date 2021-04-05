@@ -62,6 +62,7 @@ Rails.application.routes.draw do
 
   resources :admin, only: [] do
     collection do
+      get 'hcb_codes', to: 'admin#hcb_codes'
       get 'fees', to: 'admin#fees'
       get 'users', to: 'admin#users'
       get 'ledger', to: 'admin#ledger'
@@ -189,6 +190,14 @@ Rails.application.routes.draw do
     get 'reauthenticate'
   end
 
+  resources :hcb_codes, path: '/hcb', only: [:show] do
+    member do
+      post 'comment'
+      post 'receipt'
+      get 'attach_receipt'
+    end
+  end
+  
   resources :canonical_pending_transactions, only: [:show] do
   end
 

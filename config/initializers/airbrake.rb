@@ -72,7 +72,7 @@ end
 # Rails.logger = Airbrake::AirbrakeLogger.new(Rails.logger)
 #
 
-noisy_errors = [ActionController::RoutingError]
+noisy_errors = [ActionController::RoutingError, ActiveRecord::RecordNotFound]
 
 Airbrake.add_filter do |notice|
   next unless noisy_errors.include?(notice.stash[:exception].class)
@@ -81,7 +81,7 @@ Airbrake.add_filter do |notice|
   notice.ignore! if rand(1..10) <= 9
 end
 
-ignorable_errors = [SignalException, Sidekiq::Shutdown, Plaid::PlaidAPIError, ActiveRecord::ConnectionTimeoutError]
+ignorable_errors = [SignalException, Sidekiq::Shutdown, Plaid::PlaidAPIError, ActiveRecord::ConnectionTimeoutError, ::ApiService::UnauthorizedError]
 
 Airbrake.add_filter do |notice|
   next unless ignorable_errors.include?(notice.stash[:exception].class)

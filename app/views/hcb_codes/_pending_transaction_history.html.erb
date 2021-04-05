@@ -1,0 +1,29 @@
+<% if @hcb_code.canonical_pending_transactions.exists? %>
+  <h2>Pending Transaction History</h2>
+
+  <article class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>DATE</th>
+          <th>MEMO</th>
+          <th style="text-align: right;">AMOUNT</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @hcb_code.canonical_pending_transactions.each do |ct| %>
+          <tr>
+            <td><%= ct.date %></td>
+            <td><%= ct.smart_memo %></td>
+            <td style="text-align: right;"><%= number_to_currency(ct.amount) %></td>
+            <td>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </article>
+<% end %>
+
+

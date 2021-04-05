@@ -30,7 +30,16 @@ class CanonicalPendingTransaction < ApplicationRecord
     includes(:canonical_pending_settled_mappings).where(canonical_pending_settled_mappings: {canonical_pending_transaction_id: nil})
       .includes(:canonical_pending_declined_mappings).where(canonical_pending_declined_mappings: { canonical_pending_transaction_id: nil })
   }
+  scope :missing_hcb_code, -> { where(hcb_code: nil) }
+  scope :missing_or_unknown_hcb_code, -> { where("hcb_code is null or hcb_code ilike 'HCB-000%'") }
+  scope :invoice_hcb_code, -> { where("hcb_code ilike 'HCB-#{::TransactionGroupingEngine::Calculate::HcbCode::INVOICE_CODE}%'") }
+  scope :donation_hcb_code, -> { where("hcb_code ilike 'HCB-#{::TransactionGroupingEngine::Calculate::HcbCode::DONATION_CODE}%'") }
+  scope :ach_transfer_hcb_code, -> { where("hcb_code ilike 'HCB-#{::TransactionGroupingEngine::Calculate::HcbCode::ACH_TRANSFER_CODE}%'") }
+  scope :check_hcb_code, -> { where("hcb_code ilike 'HCB-#{::TransactionGroupingEngine::Calculate::HcbCode::CHECK_CODE}%'") }
+  scope :disbursement_hcb_code, -> { where("hcb_code ilike 'HCB-#{::TransactionGroupingEngine::Calculate::HcbCode::DISBURSEMENT_CODE}%'") }
+  scope :stripe_card_hcb_code, -> { where("hcb_code ilike 'HCB-#{::TransactionGroupingEngine::Calculate::HcbCode::STRIPE_CARD_CODE}%'") }
 
+  after_create_commit :write_hcb_code
   after_create_commit :write_system_event
 
   def mapped?
@@ -86,6 +95,18 @@ class CanonicalPendingTransaction < ApplicationRecord
     nil
   end
 
+  def raw_stripe_transaction
+    nil # used by canonical_transaction. necessary to implement as nil given hcb code generation
+  end
+
+  def remote_stripe_iauth_id
+    raw_pending_stripe_transaction.stripe_transaction_id
+  end
+
+  def stripe_card
+    @stripe_card ||= raw_pending_stripe_transaction.stripe_card
+  end
+
   # DEPRECATED
   def display_name
     smart_memo
@@ -131,7 +152,35 @@ class CanonicalPendingTransaction < ApplicationRecord
     nil # TODO
   end
 
+  def url
+    return "/hcb/#{local_hcb_code.hashid}" if local_hcb_code
+
+    "/canonical_pending_transactions/#{id}"
+  end
+
+  def local_hcb_code
+    @local_hcb_code ||= HcbCode.find_or_create_by(hcb_code: hcb_code)
+  end
+
+  def stripe_cardholder
+    @stripe_cardholder ||= begin
+      return nil unless raw_pending_stripe_transaction
+
+      ::StripeCardholder.find_by(stripe_id: raw_pending_stripe_transaction.stripe_transaction["cardholder"])
+    end
+  end
+
   private
+
+  def write_hcb_code
+    safely do
+      code = ::TransactionGroupingEngine::Calculate::HcbCode.new(canonical_transaction_or_canonical_pending_transaction: self).run
+
+      self.update_column(:hcb_code, code)
+
+      ::HcbCodeService::FindOrCreate.new(hcb_code: code).run
+    end
+  end
 
   def friendly_memo_in_memory_backup
     @friendly_memo_in_memory_backup ||= PendingTransactionEngine::FriendlyMemoService::Generate.new(pending_canonical_transaction: self).run

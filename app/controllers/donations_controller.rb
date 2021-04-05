@@ -13,9 +13,8 @@ class DonationsController < ApplicationController
     authorize @donation
     @event = @donation.event
 
-    @commentable = @donation
-    @comments = @commentable.comments.includes(:user)
-    @comment = Comment.new
+    # Comments
+    @hcb_code = HcbCode.find_or_create_by(hcb_code: @donation.hcb_code)
   end
 
   def start_donation
@@ -107,7 +106,7 @@ class DonationsController < ApplicationController
   end
 
   def allow_iframe
-    response.headers.delete 'X-Frame-Options'
+    response.headers["X-Frame-Options"] = "ALLOWALL"
   end
 
   def redirect_to_404

@@ -93,6 +93,7 @@ class AdminController < ApplicationController
 
   def transaction
     @canonical_transaction = CanonicalTransaction.find(params[:id])
+    @hcb_code = @canonical_transaction.local_hcb_code
 
     @potential_invoices = Invoice.open.where("created_at <= ? and amount_due = ?", @canonical_transaction.date, @canonical_transaction.amount_cents).order("created_at desc")
 
@@ -319,7 +320,8 @@ class AdminController < ApplicationController
   def ach_approve
     attrs = {
       ach_transfer_id: params[:id],
-      scheduled_arrival_date: params[:scheduled_arrival_date]
+      scheduled_arrival_date: params[:scheduled_arrival_date],
+      confirmation_number: params[:confirmation_number]
     }
     ach_transfer = AchTransferService::Approve.new(attrs).run
 
@@ -507,6 +509,21 @@ class AdminController < ApplicationController
     redirect_to disbursement_new_admin_index_path, flash: { error: e.message }
   end
 
+  def hcb_codes
+    @page = params[:page] || 1
+    @per = params[:per] || 20
+    @q = params[:q].present? ? params[:q] : nil
+
+    relation = HcbCode
+
+    relation = relation.where("hcb_code ilike '%#{@q}%'") if @q
+
+    @count = relation.count
+    @hcb_codes = relation.page(@page).per(@per).order("created_at desc")
+
+    render layout: "admin"
+  end
+
   def invoices
     @page = params[:page] || 1
     @per = params[:per] || 20
@@ -515,6 +532,7 @@ class AdminController < ApplicationController
     @paid = params[:paid] == "1" ? true : nil
     @missing_payout = params[:missing_payout] == "1" ? true : nil
     @missing_fee_reimbursement = params[:missing_fee_reimbursement] == "1" ? true : nil
+    @past_due = params[:past_due] == "1" ? true : nil
 
     @event_id = params[:event_id].present? ? params[:event_id] : nil
 
@@ -540,6 +558,7 @@ class AdminController < ApplicationController
     relation = relation.paid_v2 if @paid
     relation = relation.missing_payout if @missing_payout
     relation = relation.missing_fee_reimbursement if @missing_fee_reimbursement
+    relation = relation.past_due if @past_due
 
     @count = relation.count
     @invoices = relation.page(@page).per(@per).order("created_at desc")

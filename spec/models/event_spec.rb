@@ -33,7 +33,7 @@ RSpec.describe Event, type: :model do
     it "calculates a value" do
       result = event.fee_balance
 
-      expect(result).to eql(10000.0)
+      expect(result).to eql(7)
     end
 
     context "when paid fees exist" do

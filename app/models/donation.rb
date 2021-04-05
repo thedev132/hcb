@@ -22,12 +22,14 @@ class Donation < ApplicationRecord
   scope :succeeded, -> { where(status: "succeeded") }
   scope :missing_payout, -> { where(payout_id: nil) }
   scope :missing_fee_reimbursement, -> { where(fee_reimbursement_id: nil) }
+  scope :not_pending, -> { where.not(aasm_state: "pending") }
 
   aasm do
     state :pending, initial: true
     state :in_transit
     state :deposited
     state :failed
+    state :refunded
 
     event :mark_in_transit do
       transitions from: :pending, to: :in_transit
@@ -35,6 +37,10 @@ class Donation < ApplicationRecord
 
     event :mark_deposited do
       transitions from: :in_transit, to: :deposited
+    end
+
+    event :mark_refunded do
+      transitions from: :deposited, to: :refunded
     end
 
     event :mark_failed do
@@ -55,6 +61,25 @@ class Donation < ApplicationRecord
     "https://dashboard.stripe.com/payments/#{self.stripe_payment_intent_id}"
   end
 
+  def state
+    return :success if deposited?
+    return :info if in_transit?
+    return :warning if refunded?
+    return :error if failed?
+
+    :muted
+  end
+
+  def state_text
+    return "Deposited" if deposited?
+    return "Paid & Depositing" if in_transit?
+    return "Refunded" if refunded?
+    return "Failed" if failed?
+
+    "Pending"
+  end
+
+  # DEPRECATE
   def status_color
     return 'success' if deposited_deprecated?
     return 'info' if pending_deprecated?
@@ -62,6 +87,7 @@ class Donation < ApplicationRecord
     'error'
   end
 
+  # DEPRECATE
   def status_text
     return 'Deposited' if deposited_deprecated?
     return 'Pending' if pending_deprecated?
@@ -164,6 +190,10 @@ class Donation < ApplicationRecord
     "HCB-#{TransactionGroupingEngine::Calculate::HcbCode::DONATION_CODE}-#{id}"
   end
 
+  def local_hcb_code
+    @local_hcb_code ||= HcbCode.find_or_create_by(hcb_code: hcb_code)
+  end
+
   def canonical_pending_transaction
     canonical_pending_transactions.first
   end
@@ -172,11 +202,23 @@ class Donation < ApplicationRecord
     @canonical_transactions ||= CanonicalTransaction.where(hcb_code: hcb_code)
   end
 
-  private
-
   def canonical_pending_transactions
-    @canonical_pending_transactions ||= ::CanonicalPendingTransaction.where(raw_pending_donation_transaction_id: raw_pending_donation_transaction.id)
+    @canonical_pending_transactions ||= begin
+      return [] unless raw_pending_donation_transaction.present?
+
+      ::CanonicalPendingTransaction.where(raw_pending_donation_transaction_id: raw_pending_donation_transaction.id)
+    end
   end
+
+  def remote_donation
+    @remote_donation ||= ::Partners::Stripe::PaymentIntents::Show.new(id: stripe_payment_intent_id).run
+  end
+
+  def remote_refunded?
+    remote_donation[:charges][:data][0][:refunded]
+  end
+
+  private
 
   def raw_pending_donation_transaction
     raw_pending_donation_transactions.first

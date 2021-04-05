@@ -125,6 +125,22 @@ class CanonicalTransaction < ApplicationRecord
     hashed_transaction.raw_stripe_transaction
   end
 
+  def stripe_cardholder
+    @stripe_cardholder ||= begin
+      return nil unless raw_stripe_transaction
+
+      ::StripeCardholder.find_by(stripe_id: raw_stripe_transaction.stripe_transaction["cardholder"])
+    end
+  end
+
+  def raw_pending_stripe_transaction 
+    nil
+  end
+
+  def remote_stripe_iauth_id
+    raw_stripe_transaction.stripe_transaction["authorization"]
+  end
+
   def likely_waveable_for_fee?
     likely_check_clearing_dda? ||
       likely_card_transaction_refund? ||
@@ -210,6 +226,10 @@ class CanonicalTransaction < ApplicationRecord
 
   def unique_bank_identifier
     @unique_bank_identifier ||= hashed_transactions.first.unique_bank_identifier
+  end
+
+  def local_hcb_code
+    @local_hcb_code ||= HcbCode.find_or_create_by(hcb_code: hcb_code)
   end
 
   private

@@ -137,12 +137,20 @@ class AchTransfer < ApplicationRecord
   def smart_memo
     recipient_name.to_s.upcase
   end
-  
-  private
 
   def canonical_pending_transactions
-    @canonical_pending_transactions ||= ::CanonicalPendingTransaction.where(raw_pending_outgoing_ach_transaction_id: raw_pending_outgoing_ach_transaction.id)
+    @canonical_pending_transactions ||= CanonicalPendingTransaction.where(hcb_code: hcb_code)
   end
+
+  def canonical_transactions
+    @canonical_transactions ||= CanonicalTransaction.where(hcb_code: hcb_code)
+  end
+
+  def hcb_code
+    "HCB-#{TransactionGroupingEngine::Calculate::HcbCode::ACH_TRANSFER_CODE}-#{id}"
+  end
+  
+  private
 
   def raw_pending_outgoing_ach_transaction
     raw_pending_outgoing_ach_transactions.first

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_20_071948) do
+ActiveRecord::Schema.define(version: 2021_04_02_222955) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -33,6 +33,7 @@ ActiveRecord::Schema.define(version: 2021_03_20_071948) do
     t.datetime "scheduled_arrival_date"
     t.text "payment_for"
     t.string "aasm_state"
+    t.text "confirmation_number"
     t.index ["creator_id"], name: "index_ach_transfers_on_creator_id"
     t.index ["event_id"], name: "index_ach_transfers_on_event_id"
   end
@@ -223,6 +224,7 @@ ActiveRecord::Schema.define(version: 2021_03_20_071948) do
     t.bigint "raw_pending_outgoing_ach_transaction_id"
     t.bigint "raw_pending_donation_transaction_id"
     t.bigint "raw_pending_invoice_transaction_id"
+    t.text "hcb_code"
     t.index ["raw_pending_donation_transaction_id"], name: "index_canonical_pending_txs_on_raw_pending_donation_tx_id"
     t.index ["raw_pending_outgoing_ach_transaction_id"], name: "index_canonical_pending_txs_on_raw_pending_outgoing_ach_tx_id"
     t.index ["raw_pending_outgoing_check_transaction_id"], name: "index_canonical_pending_txs_on_raw_pending_outgoing_check_tx_id"
@@ -602,6 +604,13 @@ ActiveRecord::Schema.define(version: 2021_03_20_071948) do
     t.index ["raw_stripe_transaction_id"], name: "index_hashed_transactions_on_raw_stripe_transaction_id"
   end
 
+  create_table "hcb_codes", force: :cascade do |t|
+    t.text "hcb_code", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["hcb_code"], name: "index_hcb_codes_on_hcb_code", unique: true
+  end
+
   create_table "invoice_payouts", force: :cascade do |t|
     t.text "stripe_payout_id"
     t.bigint "amount"
@@ -862,7 +871,7 @@ ActiveRecord::Schema.define(version: 2021_03_20_071948) do
   end
 
   create_table "receipts", force: :cascade do |t|
-    t.bigint "user_id", null: false
+    t.bigint "user_id"
     t.datetime "attempted_match_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false

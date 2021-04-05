@@ -71,19 +71,21 @@
 <h2 class="heading">
   Transactions
 
-  <button
-    type="button"
-    <%= organizer_signed_in? ? 'data-behavior=menu_toggle aria-expanded=false tabindex=0' : 'disabled=disabled' %>
-    class="btn bg-info menu__toggle overflow-visible">
-      <%= inline_icon 'download', size: 16 %>
-      Export
-      <% if organizer_signed_in? %>
-        <div class="menu__content h5" data-behavior="menu_content">
-          <%= link_to 'CSV', export_transactions_path(event: @event, format: :csv), target: :_blank %>
-          <%= link_to 'JSON', export_transactions_path(event: @event, format: :json), target: :_blank %>
-        </div>
-      <% end %>
-  </button>
+  <% if @event.canonical_transactions.exists? %>
+    <button
+      type="button"
+      <%= organizer_signed_in? ? 'data-behavior=menu_toggle aria-expanded=false tabindex=0' : 'disabled=disabled' %>
+      class="btn bg-info menu__toggle overflow-visible">
+        <%= inline_icon 'download', size: 16 %>
+        Export
+        <% if organizer_signed_in? %>
+          <div class="menu__content h5" data-behavior="menu_content">
+            <%= link_to 'CSV', export_transactions_path(event: @event, format: :csv), target: :_blank %>
+            <%= link_to 'JSON', export_transactions_path(event: @event, format: :json), target: :_blank %>
+          </div>
+        <% end %>
+    </button>
+  <% end %>
 </h2>
 
 <!--
@@ -114,95 +116,18 @@
             <th>Date</th>
             <th>Description</th>
             <th class="right-align">Amount</th>
-            <% if organizer_signed_in? %>
-              <th></th>
-            <% end %>
+            <th></th>
           </tr>
         </thead>
         <tbody data-behavior="transactions">
           <% if organizer_signed_in? %>
-          <% @pending_transactions.each do |pt| %>
-            <tr
-              class="muted transaction--<%= pt.amount.negative? ? 'negative' : 'positive' %>">
-              <td class="transaction__icon tooltipped tooltipped--e" aria-label="Bank account transaction">
-                <% if pt.raw_pending_outgoing_check_transaction_id %>
-                  <%= inline_icon 'payment-transfer' %>
-                <% elsif pt.raw_pending_outgoing_ach_transaction_id %>
-                  <%= inline_icon 'payment-transfer' %>
-                <% elsif pt.raw_pending_invoice_transaction_id %>
-                  <%= inline_icon 'briefcase' %>
-                <% elsif pt.raw_pending_donation_transaction_id %>
-                  <%= inline_icon 'support' %>
-                <% elsif pt.raw_pending_stripe_transaction_id %>
-                  <%= inline_icon 'card' %>
-                <% else %>
-                <% end %>
-              </td>
-              <td>
-                <%= pt.date %>
-              </td>
-              <td class="transaction__memo">
-                <span>
-                  PENDING: <%= pt.display_name %>
-                </span>
-                <%= list_badge_for pt.comments.size, 'note', 'post', optional: true %>
-              </td>
-              <td class="nowrap">
-                <%= pt.amount %>
-              </td>
-              <td>
-                <%= link_to 'Details', canonical_pending_transaction_path(pt) %>
-              </td>
-            </tr>
-          <% end %>
+            <% @pending_transactions.each do |pt| %>
+              <%= render partial: "canonical_pending_transactions/canonical_pending_transaction", locals: { pt: pt } %>
+            <% end %>
           <% end %>
 
           <% @transactions.each do |ct| %>
-            <tr
-              class="transaction--<%= ct.amount.negative? ? 'negative' : 'positive' %>">
-              <td class="transaction__icon tooltipped tooltipped--e" aria-label="Bank account transaction">
-                <% if ct.fee_payment? %>
-                  <%= inline_icon 'minue' %>
-                <% elsif ct.check? %>
-                  <%= inline_icon 'payment-transfer' %>
-                <% elsif ct.ach_transfer? %>
-                  <%= inline_icon 'payment-transfer' %>
-                <% elsif ct.raw_stripe_transaction %>
-                  <%= inline_icon 'card' %>
-                <% elsif ct.invoice? %>
-                  <%= inline_icon 'briefcase' %>
-                <% elsif ct.donation? %>
-                  <%= inline_icon 'support' %>
-                <% elsif ct.disbursement? %>
-                  <% if ct.amount.negative? %>
-                    <%= inline_icon 'door-leave' %>
-                  <% else %>
-                    <%= inline_icon 'door-enter' %>
-                  <% end %>
-                <% else %>
-                  <%= inline_icon 'bank-account' %>
-                <% end %>
-              </td>
-              <td>
-                <%= ct.date %>
-              </td>
-              <td class="transaction__memo">
-                <span title="<%= ct.hcb_code %>">
-                  <%= ct.memo %>
-                </span>
-
-                <%= list_badge_for ct.send(:ct).receipts.size, 'receipt', 'payment-docs', optional: true %>
-              </td>
-              <td class="nowrap">
-                <span><%= ct.amount %></span>
-              </td>
-              <% if organizer_signed_in? %>
-              <td>
-                <%= link_to 'Details', ct.url %>
-              </td>
-              <% end %>
-            </tr>
-
+            <%= render partial: "canonical_transactions/canonical_transaction", locals: { ct: ct } %>
           <% end %>
 
           <% @transactions_flat.each do |ct| %>
@@ -244,11 +169,9 @@
               <td class="nowrap">
                 <span title="Fee <%= render_money ct.fees.sum(:amount_cents_as_decimal) %>"><%= ct.amount %></span>
               </td>
-              <% if organizer_signed_in? %>
               <td>
-                <%= link_to 'Details', "/transactions/#{ct.id}" %>
+                <%= link_to 'Details', "/transactions/#{ct.id}" if organizer_signed_in? %>
               </td>
-              <% end %>
             </tr>
           <% end %>
         </tbody>

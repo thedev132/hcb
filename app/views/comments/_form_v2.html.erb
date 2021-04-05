@@ -1,0 +1,25 @@
+<%= form_with model: nil, url: comment_hcb_code_path(@hcb_code) do |form| %>
+  <%= form.hidden_field :redirect_url, value: url_for(only_path: false) %>
+
+  <div class="comment__name mt2">
+    <%= user_mention current_user if organizer_signed_in? %>
+    <%= link_to "https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet#table-of-contents", class: "muted flex items-center justify-end h6", target: "_blank" do %>
+      <%= inline_icon "markdown-fill", size: 32 %> Styling with Markdown is supported
+    <% end %>
+  </div>
+
+  <%= form.text_area :content, class: "card mb2 overflow-visible", placeholder: "Add a note…", "data-behavior": "autosize", style: "min-height: 100px" %>
+
+  <div class="field">
+    <%= form.file_field :file %>
+  </div>
+
+  <% admin_tools("pb0 mb2") do %>
+    <div class="field field--checkbox">
+      <%= form.check_box :admin_only, {}, true, false %>
+      <%= form.label :admin_only, "Only show this note to admins" %>
+    </div>
+  <% end %>
+
+  <%= form.submit "Add note", disabled: !organizer_signed_in? %>
+<% end %>

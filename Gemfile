@@ -6,7 +6,7 @@ ruby '2.6.6'
 # gem 'sassc-rails' # required for rails 6
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 6.0.3', '>= 6.0.3.2'
+gem 'rails', '6.0.3.6'
 # Use postgresql as the database for Active Record
 gem 'pg', '>= 0.18', '< 2.0'
 # Use Puma as the app server
@@ -146,6 +146,7 @@ gem 'blazer' # business intelligence tool/dashboard
 gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
 gem 'chronic'
 gem 'geocoder' # lookup lat/lng for Stripe Cards shipment tracking
+gem 'hashid-rails', '~> 1.0'
 gem 'hiredis'
 gem 'invisible_captcha'
 gem 'money-rails' # back cent fields as money objects 

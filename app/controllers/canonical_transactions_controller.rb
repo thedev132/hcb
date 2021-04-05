@@ -1,4 +1,4 @@
-require 'csv'
+require "csv"
 
 class CanonicalTransactionsController < ApplicationController
   def show

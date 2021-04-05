@@ -1,0 +1,26 @@
+<!-- donation -->
+<% if @hcb_code.donation? && @hcb_code.donation.present? %>
+  <%= render partial: "hcb_codes/donation", locals: {} %>
+<% end %>
+
+<!-- invoice -->
+<% if @hcb_code.invoice? && @hcb_code.invoice.present? %>
+  <%= render partial: "hcb_codes/invoice", locals: {} %>
+<% end %>
+
+<!-- ach_transfer -->
+<% if @hcb_code.ach_transfer? && @hcb_code.ach_transfer.present? %>
+  <%= render partial: "hcb_codes/ach_transfer", locals: {} %>
+<% end %>
+
+<!-- check -->
+<% if @hcb_code.check? && @hcb_code.check.present? %>
+  <%= render partial: "hcb_codes/check", locals: {} %>
+<% end %>
+
+<!-- stripe card -->
+<% if @hcb_code.stripe_card? %>
+  <%= render partial: "hcb_codes/stripe_card", locals: {} %>
+<% end %>
+
+
