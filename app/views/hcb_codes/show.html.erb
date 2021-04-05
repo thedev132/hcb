@@ -1,4 +1,4 @@
-<% title "Transaction for #{@hcb_code.amount}" %>
+<% title "Transaction for #{number_to_currency(@hcb_code.amount)}" %>
 <% page_md %>
 
 <%= render "events/nav" if @event %>
