@@ -10,15 +10,28 @@ class AchTransfersController < ApplicationController
     @commentable = @ach_transfer
     @comments = @commentable.comments
     @comment = Comment.new
+  end
 
-    respond_to do #|format|
-      # format.pdf do
+  def transfer_confirmation_letter
+    authorize @ach_transfer
+
+    @commentable = @ach_transfer
+    @comments = @commentable.comments
+    @comment = Comment.new
+
+    respond_to do |format|
+      format.html do
+        redirect_to @ach_transfer
+      end
+
+      format.pdf do
         render pdf: 'transfer_confirmation_letter', page_height: '11in', page_width: '8.5in'
-      # end
+      end
 
-      # format.png do
-      #   send_data ::AchTransferService::PreviewTransferConfirmationLetter.new(ach_transfer: @ach_transfer).run, filename: 'transfer_confirmation_letter.png'
-      # end
+      # works, but not being used at the moment
+      format.png do
+        send_data ::AchTransferService::PreviewTransferConfirmationLetter.new(ach_transfer: @ach_transfer, event: @event).run, filename: 'transfer_confirmation_letter.png'
+      end
     end
   end
 

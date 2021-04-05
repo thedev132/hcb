@@ -61,7 +61,17 @@
 
     <p>
       <strong>Status</strong>
-      <%= @ach_transfer.status_text_long %>
+      <span>
+        <%= @ach_transfer.status_text_long %>
+        <% if @ach_transfer.deposited? %>
+          <span class="muted">
+            <a href="/ach_transfers/<%= @ach_transfer.id %>/confirmation.pdf" target="_blank">
+            (view confirmation letter)
+            </a>
+          </span>
+        <% end %>
+        
+      </span>
     </p>
   </section>
 </article>

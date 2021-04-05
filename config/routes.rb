@@ -167,6 +167,10 @@ Rails.application.routes.draw do
     resources :comments
   end
 
+  resources :ach_transfers do
+    get 'confirmation', to: 'ach_transfers#transfer_confirmation_letter'
+  end
+
   resources :disbursements, only: [:index, :new, :create, :show, :edit, :update] do
     post 'mark_fulfilled'
     post 'reject'
