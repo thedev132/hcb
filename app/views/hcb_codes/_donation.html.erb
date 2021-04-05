@@ -1,5 +1,6 @@
 <% admin_tools('mt3') do %>
   <%= link_to 'View on Stripe', @hcb_code.donation.stripe_dashboard_url, class: 'btn bg-accent' %>
+  <%= link_to 'Issue refund', refund_donation_path(@hcb_code.donation), method: :post, class: 'btn bg-error' if @hcb_code.donation.deposited? %>
 <% end %>
 
 <article class="card pb0 mt3 mb3">
