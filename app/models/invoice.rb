@@ -357,7 +357,7 @@ class Invoice < ApplicationRecord
       tax_percent: self.tax_percent,
       footer: "\n\n\n\n\n"\
               "Need to pay by mailed paper check?\n\n"\
-              "Please the amount to the order of The Hack Foundation, and include '#{self.sponsor.event.name} (##{self.sponsor.event.id})' in the memo. Checks can be mailed to:\n\n"\
+              "Please pay the amount to the order of The Hack Foundation, and include '#{self.sponsor.event.name} (##{self.sponsor.event.id})' in the memo. Checks can be mailed to:\n\n"\
               "#{self.sponsor.event.name} (##{self.sponsor.event.id}) c/o The Hack Foundation\n"\
               "8605 Santa Monica Blvd #86294\n"\
               'West Hollywood, CA 90069'
