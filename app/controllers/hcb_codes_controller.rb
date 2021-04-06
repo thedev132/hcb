@@ -42,6 +42,8 @@ class HcbCodesController < ApplicationController
 
     redirect_to params[:redirect_url]
   rescue => e
+    Airbrake.notify(e)
+
     redirect_to params[:redirect_url], flash: { error: e.message }
   end
 

@@ -8,11 +8,11 @@ class HcbCodePolicy < ApplicationPolicy
   end
 
   def receipt?
-    record.date > 10.days.ago || user&.admin? || present_in_events?
+    user&.admin? || present_in_events? || record.date > 10.days.ago
   end
 
   def attach_receipt?
-    record.date > 10.days.ago || user&.admin? || present_in_events?
+    user&.admin? || present_in_events? || record.date > 10.days.ago
   end
 
   private
