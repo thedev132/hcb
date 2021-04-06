@@ -38,12 +38,13 @@
       width: 100%;
       table-layout: fixed;
       border-collapse: collapse;
+      font-size: 10pt;
     }
     table, th, td {
       border: 1px solid gray;
     }
     td {
-      padding: 0.5rem;
+      padding: 5pt;
     }
   </style>
 </head>
@@ -71,7 +72,7 @@
       <p>
         This letter is to confirm that Hack Club<% if !@event.omit_stats? %>, on behalf of <%= @event.name %>,<% end %> has transfered <%= render_money @ach_transfer.amount %> to <%= @ach_transfer.recipient_name %> for the reason of "<%= @ach_transfer.payment_for %>".
       </p>
-      <br />
+      
       <table>
         <thead>
           <tr>
@@ -122,8 +123,8 @@
       <p>
         Best,
       </p>
-      <%= image_tag(wicked_pdf_asset_base64('melanie_signature.png'), width: 300, height: 73, dpi: 96) %>
-      <p style="line-height: 1.5">
+      <%= image_tag(wicked_pdf_asset_base64('melanie_signature.png'), width: 200, height: 118, dpi: 96) %>
+      <p style="line-height: 1.25">
         Melanie Smith<br />
         Director of Hack Club Bank<br />
         Hack Club
