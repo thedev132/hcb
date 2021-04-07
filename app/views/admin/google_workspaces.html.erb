@@ -50,7 +50,11 @@
         <td><%= g_suite.verification_key %></td>
         <td><%= g_suite.aasm_state.upcase %></td>
         <td>
-          <%= link_to("Process", google_workspace_process_admin_path(g_suite)) if g_suite.needs_ops_review? %>
+          <% if g_suite.needs_ops_review? %>
+            <%= link_to("Process", google_workspace_process_admin_path(g_suite)) %>
+          <% elsif g_suite.dkim_key.nil? %>
+            <%= link_to("DKIM", google_workspace_process_admin_path(g_suite)) %>
+          <% end %>
         </td>
       </tr>
     <% end %>
