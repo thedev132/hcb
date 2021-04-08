@@ -33,7 +33,7 @@ class UsersController < ApplicationController
     if user.full_name.blank? || user.phone_number.blank?
       redirect_to edit_user_path(user.slug)
     else
-      redirect_to root_path
+      redirect_back_or root_path
     end
   rescue Errors::InvalidLoginCode => e
     flash[:error] = e.message

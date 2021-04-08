@@ -2,7 +2,7 @@ require 'net/http'
 
 class StaticPagesController < ApplicationController
   skip_after_action :verify_authorized # do not force pundit
-  skip_before_action :signed_in_user, only: [:stats, :branding, :faq]
+  skip_before_action :signed_in_user, only: [:stats, :project_stats, :branding, :faq]
 
   def index
     if signed_in?
@@ -53,6 +53,28 @@ class StaticPagesController < ApplicationController
     @transactions = current_user.emburse_transactions.includes(emburse_card: :event).awaiting_receipt
     @txs = @authorizations + @transactions
     @count = @txs.size
+  end
+
+  def project_stats
+    slug = params[:slug]
+
+    event = Event.find_by(is_public: true, slug: slug)
+
+    return render plain: "404 Not found", status: 404 unless event
+
+    income_tx = Transaction.includes(:fee_relationship)
+      .where("amount > ?", 0)
+      .where(
+        is_event_related: true,
+        fee_relationships: {
+          event_id: event.id,
+        }
+      )
+    raised = income_tx.sum(:amount).to_i
+
+    render json: {
+      raised: raised
+    }
   end
 
   def stats
