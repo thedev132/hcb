@@ -20,7 +20,7 @@ module PendingEventMappingEngine
 
       map_canonical_pending_invoice!
       settle_canonical_pending_invoice!
-      settle_canonical_pending_invoice_by_hcb_code!
+      settle_canonical_pending_invoice_hcb_code!
       decline_canonical_pending_invoice!
 
       true
@@ -88,8 +88,8 @@ module PendingEventMappingEngine
       ::PendingEventMappingEngine::Settle::Invoice.new.run
     end
 
-    def settle_canonical_pending_invoice_by_hcb_code!
-      ::PendingEventMappingEngine::Settle::InvoiceByHcbCode.new.run
+    def settle_canonical_pending_invoice_hcb_code!
+      ::PendingEventMappingEngine::Settle::InvoiceHcbCode.new.run
     end
 
     def decline_canonical_pending_invoice!
