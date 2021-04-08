@@ -31,8 +31,6 @@ module InvoiceService
 
       ActiveRecord::Base.transaction do
         sponsor
-        byebug
-
         invoice = Invoice.create!(attrs)
       end
 
