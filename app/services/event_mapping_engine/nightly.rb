@@ -19,6 +19,7 @@ module EventMappingEngine
       map_hack_club_bank_issued_cards!
       map_stripe_top_ups!
 
+      map_hcb_codes_invoice!
       map_hcb_codes_donation!
 
       true
@@ -68,6 +69,10 @@ module EventMappingEngine
 
     def map_stripe_top_ups!
       ::EventMappingEngine::Map::StripeTopUps.new.run
+    end
+
+    def map_hcb_codes_invoice!
+      ::EventMappingEngine::Map::HcbCodes::Invoice.new.run
     end
 
     def map_hcb_codes_donation!
