@@ -243,12 +243,17 @@ class Donation < ApplicationRecord
     end
   end
 
+  def create_payment_intent_attrs
+    {
+      amount: amount,
+      currency: "usd",
+      statement_descriptor: "HACK CLUB BANK",
+      metadata: { 'donation': true }
+    }
+  end
+
   def create_stripe_payment_intent
-    payment_intent = StripeService::PaymentIntent.create({
-                                                           amount: self.amount,
-                                                           currency: 'usd',
-                                                           metadata: { 'donation': true }
-                                                         })
+    payment_intent = StripeService::PaymentIntent.create(create_payment_intent_attrs)
 
     self.stripe_payment_intent_id = payment_intent.id
 
