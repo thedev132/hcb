@@ -223,8 +223,23 @@ class EventsController < ApplicationController
   def transfers
     authorize @event
 
-    @checks = @event.checks.includes(:creator)
-    @ach_transfers = @event.ach_transfers.includes(:creator)
+    relation1 = @event.ach_transfers
+    relation1 = relation1.in_transit if params[:filter] == "in_transit"
+    relation1 = relation1.deposited if params[:filter] == "deposited"
+    relation1 = relation1.rejected if params[:filter] == "canceled"
+    @ach_transfers = relation1
+
+    relation2 = @event.checks
+    relation2 = relation2.in_transit_or_in_transit_and_processed if params[:filter] == "in_transit"
+    relation2 = relation2.deposited if params[:filter] == "deposited"
+    relation2 = relation2.canceled if params[:filter] == "canceled"
+    @checks = relation2
+
+    @stats = {
+      deposited: @ach_transfers.deposited.sum(:amount) + @checks.deposited.sum(:amount),
+      in_transit: @ach_transfers.in_transit.sum(:amount) + @checks.in_transit_or_in_transit_and_processed.sum(:amount),
+      canceled: @ach_transfers.rejected.sum(:amount) + @checks.canceled.sum(:amount)
+    }
 
     @transfers = (@checks + @ach_transfers).sort_by { |o| o.created_at }.reverse
   end
