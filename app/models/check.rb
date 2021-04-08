@@ -14,6 +14,8 @@ class Check < ApplicationRecord
   validates :send_date, presence: true
   validate :send_date_must_be_in_future, on: :create
 
+  scope :in_transit_or_in_transit_and_processed, -> { where("aasm_state in (?)", ["in_transit", "in_transit_and_processed"]) }
+
   aasm do
     state :scheduled, initial: true
     state :in_transit
@@ -59,6 +61,14 @@ class Check < ApplicationRecord
 
   def can_cancel?
     scheduled? # only scheduled checks can be canceled (not yet created on lob)
+  end
+
+  def state_text
+    status.to_s.humanize
+  end
+
+  def name
+    @name ||= lob_address.name
   end
 
   # DEPRECATE
@@ -155,6 +165,10 @@ class Check < ApplicationRecord
 
   def hcb_code
     "HCB-#{TransactionGroupingEngine::Calculate::HcbCode::CHECK_CODE}-#{id}"
+  end
+
+  def local_hcb_code
+    @local_hcb_code ||= HcbCode.find_or_create_by(hcb_code: hcb_code)
   end
 
   def canonical_transactions

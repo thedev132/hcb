@@ -23,7 +23,7 @@ module EventMappingEngine
 
       def prefix
         @prefix ||= memo.upcase.gsub("HACK CLUB BANK DONATE", "")
-          .gsub("HACKC DONATE", "").strip.upcase
+          .gsub("HACKC DONATE", "").strip.upcase.split(" ")[0]
       end
 
       def memo

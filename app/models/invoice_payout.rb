@@ -41,14 +41,20 @@ class InvoicePayout < ApplicationRecord
     "##{self.id} (#{render_money self.amount}, #{self.invoice&.sponsor&.event&.name}, inv ##{self.invoice&.id} for #{self.invoice&.sponsor&.name})"
   end
 
+  def hcb_code
+    invoice.hcb_code
+  end
+
   private
 
   def default_values
     return unless invoice
 
-    self.statement_descriptor ||= "Payout #{self.invoice.sponsor.name}"[0...StripeService::StatementDescriptorCharLimit]
-                                  .gsub(/[^0-9a-z ]/i, '') # alphanumeric only
-                                  .upcase
+    self.statement_descriptor ||= hcb_code
+
+    #self.statement_descriptor ||= "Payout #{self.invoice.sponsor.name}"[0...StripeService::StatementDescriptorCharLimit]
+    #                              .gsub(/[^0-9a-z ]/i, '') # alphanumeric only
+    #                              .upcase
   end
 
   def create_stripe_payout

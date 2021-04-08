@@ -48,6 +48,14 @@ class AchTransfer < ApplicationRecord
     aasm_state.to_sym
   end
 
+  def state_text
+    status_text
+  end
+
+  def name
+    recipient_name
+  end
+
   def status_deprecated
     if t_transaction
       :deposited
@@ -149,7 +157,11 @@ class AchTransfer < ApplicationRecord
   def hcb_code
     "HCB-#{TransactionGroupingEngine::Calculate::HcbCode::ACH_TRANSFER_CODE}-#{id}"
   end
-  
+
+  def local_hcb_code
+    @local_hcb_code ||= HcbCode.find_or_create_by(hcb_code: hcb_code)
+  end
+
   private
 
   def raw_pending_outgoing_ach_transaction

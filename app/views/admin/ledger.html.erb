@@ -40,6 +40,7 @@
       <th>Date</th>
       <th>Memo</th>
       <th>Amount</th>
+      <th>HCB Code</th>
       <th>Event</th>
       <th>Actions</th>
     </tr>
@@ -51,6 +52,7 @@
         <td><%= ct.date %></td>
         <td><%= link_to ct.memo, transaction_path(ct) %></td>
         <td><%= ct.amount %></td>
+        <td><%= ct.hcb_code %></td>
         <td><%= ct.canonical_event_mapping.try(:event_id) %></td>
         <td>
           <%= link_to "Process", transaction_admin_path(ct) unless ct.event.present? %>

@@ -79,6 +79,8 @@ class InvoicesController < ApplicationController
 
     redirect_to @invoice
   rescue => e
+    Airbrake.notify(e)
+
     @event = Event.friendly.find(params[:event_id])
     @sponsor = Sponsor.new(event: @event)
     @invoice = Invoice.new(sponsor: @sponsor)
