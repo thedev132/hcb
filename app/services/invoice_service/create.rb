@@ -31,6 +31,8 @@ module InvoiceService
 
       ActiveRecord::Base.transaction do
         sponsor
+        byebug
+
         invoice = Invoice.create!(attrs)
       end
 
@@ -62,7 +64,18 @@ module InvoiceService
     end
 
     def sponsor
-      @sponsor ||= (event.sponsors.find_by(id: @sponsor_id) || event.sponsors.find_by(slug: @sponsor_id)).try(:update, sponsor_attrs) || event.sponsors.create!(sponsor_attrs)
+      @sponsor ||= begin
+        if existing_sponsor
+          existing_sponsor.update!(sponsor_attrs)
+          existing_sponsor
+        else
+          event.sponsors.create!(sponsor_attrs)
+        end
+      end
+    end
+
+    def existing_sponsor
+      @existing_sponsor ||= event.sponsors.find_by(id: @sponsor_id) || event.sponsors.find_by(slug: @sponsor_id)
     end
 
     def event
