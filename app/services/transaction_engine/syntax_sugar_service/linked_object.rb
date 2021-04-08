@@ -51,7 +51,11 @@ module TransactionEngine
       def likely_ach
         return nil unless event
 
-        event.ach_transfers.where("recipient_name ilike '%#{likely_outgoing_ach_name}%' and amount = #{-amount_cents}").first # TODO: add smarts where multiple ach transfers to same person with same value
+        possible_ach = event.ach_transfers.where("recipient_name ilike '%#{likely_outgoing_ach_name}%' and amount = #{-amount_cents}").first
+
+        return possible_ach if possible_ach.canonical_transactions.blank? || possible_ach.canonical_transactions.where(id: @canonical_transaction.id).exists?
+
+        nil # was an older ach_transfer with same recipient name and amount
       end
 
       def likely_invoice
