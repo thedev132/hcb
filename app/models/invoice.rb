@@ -353,7 +353,7 @@ class Invoice < ApplicationRecord
       due_date: self.due_date.to_i, # convert to unixtime
       description: self.memo,
       status: self.status,
-      statement_descriptor: self.statement_descriptor,
+      statement_descriptor: self.statement_descriptor || "HACK CLUB BANK",
       tax_percent: self.tax_percent,
       footer: "\n\n\n\n\n"\
               "Need to pay by mailed paper check?\n\n"\
