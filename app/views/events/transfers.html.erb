@@ -7,6 +7,12 @@
     Transfers
     <%= badge_for @transfers.count, class: "bg-muted" %>
   </span>
+
+  <% if organizer_signed_in? %>
+    <%= link_to "Send Check", new_event_check_path(@event), class: "btn bg-accent" %>
+    <%= link_to "Send ACH Transfer", new_event_ach_transfer_path(@event), class: "btn bg-accent" %>
+    <%= link_to "Reimbursement", event_reimbursements_path(@event), class: "btn" %>
+  <% end %>
 </h1>
 
 <div class="statset mt3 mb2">
@@ -76,19 +82,3 @@
 
 </article>
 
-<section class="flex items-center justify-center flex-wrap pb2 md-pt2 md-pb3">
-  <strong class="h3 muted md-pr2">Send a</strong>
-  <div class="btn-group center">
-    <% if using_transaction_engine_v2? %>
-      <%= link_to "Check", new_event_check_path(@event),
-          class: "btn bg-accent" %>
-    <% else %>
-      <%= link_to "Check", 
-          nil, #new_event_check_path(@event) 
-          class: "btn bg-accent", 
-          disabled: true %>
-    <% end %>
-    <%= link_to "Direct deposit", new_event_ach_transfer_path(@event), class: "btn bg-accent" %>
-    <%= link_to "Reimbursement", event_reimbursements_path(@event), class: "btn" %>
-  </div>
-</section>
