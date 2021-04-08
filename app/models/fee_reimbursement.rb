@@ -75,8 +75,7 @@ class FeeReimbursement < ApplicationRecord
 
   def default_values
     if invoice
-      # TODO: switch transaction memo to use HCB Codes
-      self.transaction_memo ||= "FEE REFUND #{SecureRandom.hex(6)}"
+      self.transaction_memo ||= invoice.hcb_code
       self.amount ||= invoice.item_amount - invoice.payout_creation_balance_net
     else
       # HCB CODE for donation only right now
