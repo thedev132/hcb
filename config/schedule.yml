@@ -93,11 +93,6 @@ fee_engine_hourly_job:
   class: "FeeEngineJob::Hourly"
   queue: "default"
 
-temp_job_sync_donations_aasm:
-  cron: "0 0 * * *" # run every 1 day
-  class: "TempJob::SyncDonationsAasm"
-  queue: "default"
-
 temp_job_sync_receipts_nightly:
   cron: "0 0 * * *" # run every 1 day
   class: "TempJob::SyncReceiptsNightly"
