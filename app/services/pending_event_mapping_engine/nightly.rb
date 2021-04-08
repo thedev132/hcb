@@ -15,6 +15,7 @@ module PendingEventMappingEngine
 
       map_canonical_pending_donation!
       settle_canonical_pending_donation!
+      settle_canonical_pending_donation_hcb_code!
       decline_canonical_pending_donation!
 
       map_canonical_pending_invoice!
@@ -69,6 +70,10 @@ module PendingEventMappingEngine
 
     def settle_canonical_pending_donation!
       ::PendingEventMappingEngine::Settle::Donation.new.run
+    end
+
+    def settle_canonical_pending_donation_hcb_code!
+      ::PendingEventMappingEngine::Settle::DonationHcbCode.new.run
     end
 
     def decline_canonical_pending_donation!
