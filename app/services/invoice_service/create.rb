@@ -62,7 +62,7 @@ module InvoiceService
     end
 
     def sponsor
-      @sponsor ||= event.sponsors.friendly.find_by(id: @sponsor_id).try(:update_attributes!, sponsor_attrs) || event.sponsors.create!(sponsor_attrs)
+      @sponsor ||= (event.sponsors.find_by(id: @sponsor_id) || event.sponsors.find_by(slug: @sponsor_id)).try(:update_attributes!, sponsor_attrs) || event.sponsors.create!(sponsor_attrs)
     end
 
     def event
