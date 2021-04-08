@@ -27,6 +27,7 @@
       <th>Date</th>
       <th>Memo</th>
       <th>Amount</th>
+      <th>HCB Code</th>
       <th>Event</th>
       <th>Actions</th>
     </tr>
@@ -42,6 +43,7 @@
           <td><%= cpt.memo %></td>
         <% end %>
         <td><%= cpt.amount %></td>
+        <td><%= cpt.hcb_code %></td>
         <td><%= cpt.event.try(:id) %></td>
         <td>
           <%#= link_to "Process", transaction_admin_path(cpt) unless cpt.event.present? %>
