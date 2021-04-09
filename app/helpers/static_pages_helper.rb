@@ -122,7 +122,6 @@ module StaticPagesHelper
         "Putting the 'fun' in 'refund'",
         "Putting the 'fun' in 'fundraising'",
         "Putting the 'do' in 'donate'",
-        "Putting the 'fee' in 'free'",
         "Donation nation",
         "To TCP, or UDP, that is the question",
         "Now with 0 off-by-one errors!",

@@ -88,25 +88,24 @@
   <% end %>
 </h2>
 
-<!--
-<div class="filterbar flex flex-wrap items-center width-100">
-  <input
-    type="search"
-    data-behavior="filterbar_search"
-    placeholder="Search…"
-    aria-label="Filter transactions"
-    class="flex-auto md-mr2"
-    style="width: auto; max-width: none;">
-  <div data-behavior="filterbar" role="tablist" class="filterbar__filters flex mt1 lg-mt0">
-    <%= filterbar_item 'All', :exists, true %>
-    <%= filterbar_item 'Revenue', :fee_applies %>
-    <%= filterbar_item 'Fees', :fee_payment %>
-    <%= filterbar_item 'Card', :card %>
-  </div>
-</div>
--->
-
 <% if using_transaction_engine_v2? %>
+  <%= form_with(model: nil, local: true, method: :get) do |form| %>
+    <div class="filterbar flex flex-wrap items-center width-100">
+
+      <%= form.text_field :search, placeholder: "Search…", class: "flex-auto md-mr2", style: "width auto; max-width: none;", value: params[:search] %>
+
+      <!--
+      <div data-behavior="filterbar" role="tablist" class="filterbar__filters flex mt1 lg-mt0">
+        <%= filterbar_item 'All', :exists, true %>
+        <%= filterbar_item 'Revenue', :fee_applies %>
+        <%#= filterbar_item 'Fees', :fee_payment %>
+        <%#= filterbar_item 'Card', :card %>
+      </div>
+      -->
+
+    </div>
+  <% end %>
+
   <% if @pending_transactions.any? || @transactions.any? %>
     <div class="table-container">
       <table>

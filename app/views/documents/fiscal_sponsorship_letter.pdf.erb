@@ -3,7 +3,7 @@
   <style>
 
     .container {
-      font-size: 13.5pt;
+      font-size: 13pt;
       line-height: 1.15;
       position: relative;
       padding-left: 40pt;
@@ -51,9 +51,7 @@
     </div>
     <br />
     <br />
-    <br />
     <p style="margin-top: 2rem;"><%= Time.now.strftime("%B #{Time.now.day.ordinalize}, %Y") %></p>
-    <br />
     <br />
     <p style="font-size: 12.5pt;"><span class="bold"><%= @event.name %> Subsidiary Confirmation</span></p>
     <br />
@@ -76,8 +74,8 @@ receiving funds on their behalf. The Hack Foundation is a 501(c)(3) public chari
     <p>
       Best,
     </p>
-    <%= image_tag(wicked_pdf_asset_base64('melanie_signature.png'), width: 300, height: 73, dpi: 96) %>
-    <p style="line-height: 1.5">
+    <%= image_tag(wicked_pdf_asset_base64('melanie_signature.png'), width: 200, height: 118, dpi: 96) %>
+    <p style="line-height: 1.25">
       Melanie Smith<br />
       Director of Hack Club Bank<br />
       Hack Club
@@ -87,7 +85,7 @@ receiving funds on their behalf. The Hack Foundation is a 501(c)(3) public chari
     <p style="font-size: 12pt; font-weight: bold; color: #434343; position: fixed; bottom: 12px; width: 100%; white-space: nowrap;">
       By the students, for the students.
     </p>
-    <p style="font-size: 10pt; color: #999999; position: fixed; bottom: 0px;">
+    <p style="font-size: 10pt; color: #999999; position: fixed; bottom: 0px; width: 100%; white-space: nowrap;">
       Hack Club is a 501(c)(3) public charity. Our nonprofit EIN is 81-2908499.
     </p>
   </div>
