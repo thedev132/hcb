@@ -5,7 +5,7 @@ class AchTransfer < ApplicationRecord
   include Commentable
 
   include PgSearch::Model
-  pg_search_scope :search_recipient, against: [:recipient_name]
+  pg_search_scope :search_recipient, against: [:recipient_name], using: { tsearch: { prefix: true, dictionary: "english" } }, ranked_by: "ach_transfers.created_at"
 
   belongs_to :creator, class_name: 'User'
   belongs_to :event

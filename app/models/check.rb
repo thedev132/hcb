@@ -4,8 +4,12 @@ class Check < ApplicationRecord
   include AASM
   include Commentable
 
+  include PgSearch::Model
+  pg_search_scope :search_recipient, associated_against: { lob_address: :name, event: :name }, against: [:memo], using: { tsearch: { prefix: true, dictionary: "english" } }, ranked_by: "checks.created_at"
+
   belongs_to :creator, class_name: 'User'
   belongs_to :lob_address, required: true
+  has_one :event, through: :lob_address
 
   accepts_nested_attributes_for :lob_address
 
@@ -53,10 +57,6 @@ class Check < ApplicationRecord
     event :mark_voided do
       transitions to: :voided
     end
-  end
-
-  def event
-    lob_address.event
   end
 
   def can_cancel?
@@ -177,6 +177,10 @@ class Check < ApplicationRecord
 
   def canonical_pending_transactions
     @canonical_pending_transactions ||= ::CanonicalPendingTransaction.where(hcb_code: hcb_code)
+  end
+  
+  def recipient_name
+    lob_address.name
   end
 
   private
