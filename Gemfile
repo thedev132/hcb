@@ -122,7 +122,8 @@ group :development do
   gem 'spring-watcher-listen', '~> 2.0.0'
   # Preview emails
   gem 'letter_opener_web'
-  gem 'wkhtmltopdf-binary'
+  # Generate PDFs from HTML. Version must match the wkhtmltopdf Heroku buildpack version (0.12.3 by default)
+  gem 'wkhtmltopdf-binary', '0.12.3'
 end
 
 group :test do
