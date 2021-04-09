@@ -648,7 +648,8 @@ class AdminController < ApplicationController
     attrs = {
       g_suite_id: @g_suite.id,
       domain: @g_suite.domain,
-      verification_key: params[:verification_key]
+      verification_key: params[:verification_key],
+      dkim_key: params[:dkim_key]
     }
     @g_suite = GSuiteService::Update.new(attrs).run
 

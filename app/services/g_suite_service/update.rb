@@ -4,8 +4,8 @@ module GSuiteService
       @g_suite_id = g_suite_id
 
       @domain = domain
-      @verification_key = verification_key
-      @dkim_key = dkim_key
+      @verification_key = verification_key.nil? ? g_suite.verification_key : verification_key
+      @dkim_key = dkim_key.nil? ? g_suite.dkim_key : dkim_key
     end
 
     def run
