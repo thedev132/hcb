@@ -10,6 +10,7 @@
   </h1>
   <%= form_tag login_code_users_path, 'data-behavior': 'login' do %>
     <%= label_tag :email, 'Enter your email…', class: 'left-align' %>
+    <%= hidden_field_tag :return_to, @return_to if @return_to %>
     <%= email_field_tag :email, @prefill_email, placeholder: 'Email address', autofocus: true, autocomplete: 'username', class: 'left-align mb2' %>
     <div class="flex justify-center">
       <%= submit_tag 'Get login code' %>

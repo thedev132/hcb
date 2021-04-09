@@ -24,12 +24,20 @@ class ApplicationController < ActionController::Base
   def user_not_authenticated
     sign_out
     flash[:error] = 'You were signed out. Please re-login.'
-    redirect_to root_path
+    if request.get?
+      redirect_to auth_users_path(return_to: request.url)
+    else
+      redirect_to auth_users_path
+    end
   end
 
   def user_not_authorized
     flash[:error] = 'You are not authorized to perform this action.'
-    redirect_to(root_path)
+    if current_user || !request.get?
+      redirect_to root_path
+    else
+      redirect_to auth_users_path(return_to: request.url)
+    end
   end
 
   def not_found
