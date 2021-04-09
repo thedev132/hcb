@@ -3,8 +3,9 @@
 module TransactionGroupingEngine
   module Transaction
     class All
-      def initialize(event_id:)
+      def initialize(event_id:, search: nil)
         @event_id = event_id
+        @search = search
       end
 
       def run
@@ -45,6 +46,12 @@ module TransactionGroupingEngine
         @canonical_transaction_ids ||= canonical_event_mappings.pluck(:canonical_transaction_id)
       end
 
+      def search_modifier
+        return "" unless @search.present?
+
+        "and (ct.memo ilike '%#{@search}%' or ct.friendly_memo ilike '%#{@search}%' or ct.custom_memo ilike '%#{@search}')"
+      end
+
       def canonical_transactions_grouped
         group_sql = <<~SQL
           select 
@@ -62,6 +69,7 @@ module TransactionGroupingEngine
                 canonical_event_mappings cem
               where
                 cem.event_id = #{event.id}
+                #{search_modifier}
             )
           group by
             coalesce(ct.hcb_code, cast(ct.id as text)) -- handle edge case when hcb_code is null

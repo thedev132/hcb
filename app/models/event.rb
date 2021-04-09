@@ -2,7 +2,7 @@ class Event < ApplicationRecord
   extend FriendlyId
 
   include PgSearch::Model
-  pg_search_scope :search_name, against: [:name, :slug]
+  pg_search_scope :search_name, against: [:name, :slug], using: { tsearch: { prefix: true, dictionary: "english" } }
 
   monetize :total_fees_v2_cents
 
