@@ -3,7 +3,7 @@ class User < ApplicationRecord
   extend FriendlyId
 
   include PgSearch::Model
-  pg_search_scope :search_name, against: [:full_name, :email, :phone_number]
+  pg_search_scope :search_name, against: [:full_name, :email, :phone_number], using: { tsearch: { prefix: true, dictionary: "english" } }
 
   friendly_id :slug_candidates, use: :slugged
   scope :admin, -> { where.not(admin_at: nil) }

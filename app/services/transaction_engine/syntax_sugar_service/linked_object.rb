@@ -53,7 +53,7 @@ module TransactionEngine
 
         possible_achs = event.ach_transfers.where("recipient_name ilike '%#{likely_outgoing_ach_name}%' and amount = #{-amount_cents}")
 
-        possible_achs.first { |possible_ach| possible_ach.canonical_transactions.blank? || possible_ach.canonical_transactions.where(id: @canonical_transaction.id).exists? }
+        possible_achs.find { |possible_ach| possible_ach.canonical_transactions.blank? || possible_ach.canonical_transactions.where(id: @canonical_transaction.id).exists? }
       end
 
       def likely_invoice
