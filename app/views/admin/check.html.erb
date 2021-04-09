@@ -26,6 +26,8 @@
     <tr>
       <th>ID</th>
       <th>Date</th>
+      <th>Event</th>
+      <th>Recipient</th>
       <th>Check Number</th>
       <th>Amount</th>
       <th>Status</th>
@@ -37,9 +39,11 @@
       <tr style="<%= "background: #ffffcc;" if check.in_transit? %> <%= "background: #ccffff;" if check.in_transit_and_processed? %>">
         <td><%= check.id %></td>
         <td><%= check.created_at.strftime("%Y-%m-%d") %></td>
+        <td><%= check.event.name.upcase %></td>
+        <td><%= check.recipient_name %></td>
         <td>
           <%= link_to check_path(check) do %>
-            <%= check.event.name.upcase %>: #<%= check.check_number || "-----" %>
+            <%= check.check_number || "-----" %>
           <% end %>
         </td>
         <td><%= render_money_amount(check.amount) %></td>
