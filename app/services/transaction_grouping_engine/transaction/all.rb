@@ -49,7 +49,7 @@ module TransactionGroupingEngine
       def search_modifier
         return "" unless @search.present?
 
-        "and ct.memo ilike '%#{@search}%'"
+        "and (ct.memo ilike '%#{@search}%' or ct.friendly_memo ilike '%#{@search}%' or ct.custom_memo ilike '%#{@search}')"
       end
 
       def canonical_transactions_grouped
