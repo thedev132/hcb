@@ -94,6 +94,8 @@ module TransactionGroupingEngine
       end
 
       def stripe_card_hcb_code
+        raise ArgumentError, "stripe_card_hcb_code requires remote stripe iauth id" unless @ct_or_cp.remote_stripe_iauth_id.present?
+
         [
           HCB_CODE,
           STRIPE_CARD_CODE,
