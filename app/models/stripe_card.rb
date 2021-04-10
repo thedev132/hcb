@@ -5,7 +5,7 @@ class StripeCard < ApplicationRecord
   scope :canceled, -> { where(stripe_status: 'canceled' )}
   scope :frozen, -> { where(stripe_status: 'inactive' )}
   scope :active, -> { where(stripe_status: 'active') }
-  scope :physical_shipping, -> { physical.includes(:user, :event).select { |c| c.stripe_obj[:shipping][:status] != 'delivered' } }
+  scope :physical_shipping, -> { physical.includes(:user, :event).select { |c| c.stripe_obj[:shipping][:status] != "delivered" } }
 
   belongs_to :event
   belongs_to :stripe_cardholder
@@ -127,7 +127,7 @@ class StripeCard < ApplicationRecord
   def stripe_obj
     @stripe_obj ||= ::Partners::Stripe::Issuing::Cards::Show.new(id: stripe_id).run
   rescue => e
-    { number: "XXXX", cvc: "XXX", created: Time.now.utc.to_i }
+    { number: "XXXX", cvc: "XXX", created: Time.now.utc.to_i, shipping: { status: "delivered" } }
   end
 
   def secret_details
@@ -211,6 +211,12 @@ class StripeCard < ApplicationRecord
 
   def hcb_codes
     @hcb_codes ||= ::HcbCode.where(hcb_code: canonical_transaction_hcb_codes)
+  end
+
+  def remote_shipping_status
+    return nil if virtual?
+
+    stripe_obj[:shipping][:status]
   end
 
   private

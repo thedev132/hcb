@@ -45,6 +45,7 @@
         <thead>
           <tr>
             <th>TYPE</th>
+            <th>SHIPPING</th>
             <th>STATUS</th>
             <th>DATE</th>
             <th>NAME</th>
@@ -58,6 +59,10 @@
             <tr>
               <td>
                 <%= d.virtual? ? "VIRTUAL" : "PHYSICAL" %>
+              </td>
+              <td>
+                <%= "-" if d.virtual? %>
+                <%= d.remote_shipping_status.upcase if d.physical? %>
               </td>
               <td>
                 <span class="ml0 badge bg-<%= d.state %>"><%= d.state_text %></span>
