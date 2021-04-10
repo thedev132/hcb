@@ -1,61 +1,154 @@
 <% title "Cards for #{@event.name.html_safe}" %>
 <% page_md %>
 <% include_modals %>
-<%= render 'nav' %>
+<%= render "nav" %>
 
-<%= render 'cards/name_required' if current_user.try(:full_name).try(:blank?) %>
+<% if current_user.try(:full_name).try(:blank?) %>
 
-<h1 class="heading">
-  Cards
-  <% unless current_user.try(:full_name).try(:blank?) %>
-  <%= link_to event_cards_new_path(event_id: @event.slug),
-      class: 'btn bg-success',
-      data: { behavior: 'modal_trigger', modal: 'order_card' } do %>
-    <%= inline_icon 'card-add' %>
-    Order a card
-  <% end if organizer_signed_in? %>
-  <% end %>
-</h1>
+  <h1 class="heading">
+    <span class="flex items-center">
+      Cards
+    </span>
+  </h1>
 
-<section class="modal modal--scroll bg-snow" data-behavior="modal" role="dialog" id="order_card">
-  <%= modal_header 'Order a card' %>
-  <%= render 'stripe_cards/form', stripe_card: StripeCard.new %>
-</section>
+  <%= render "cards/name_required" %>
 
-<% if @cards.any? %>
-  <%= async_frame_to event_stripe_cards_shipping_path(@event) if organizer_signed_in? %>
-  <section class="mixed-grid grid--spacious mt2">
-    <%= render @active %>
+<% else %>
+
+  <h1 class="heading">
+    <span class="flex items-center">
+      Cards
+      <%= badge_for @stripe_cards.count, class: "bg-muted" %>
+    </span>
+
+    <% if organizer_signed_in? %>
+      <%= link_to event_cards_new_path(event_id: @event.slug), class: "btn bg-success", data: { behavior: "modal_trigger", modal: "order_card" } do %>
+        <%= inline_icon "card-add" %>
+        Order a card
+      <% end %>
+    <% end %>
+  </h1>
+
+  <section class="modal modal--scroll bg-snow" data-behavior="modal" role="dialog" id="order_card">
+    <%= modal_header "Order a card" %>
+    <%= render "stripe_cards/form", stripe_card: StripeCard.new %>
   </section>
-  <% if @deactivated.size > 0 %>
-    <details class="w-100 left-align">
-      <summary><h3 class="inline-block w-auto pb0 border-none">Deactivated cards</h3></summary>
-      <section class="mixed-grid grid--spacious mt2">
-      <%= render @deactivated %>
-      </section>
-    </details>
-  <% end %>
-<% end %>
-<%= blankslate 'You haven’t requested any cards yet.' if @cards.blank? %>
 
-<% if @event.used_emburse? %>
-<section class="grid grid--split pt4 pb4">
-  <%= link_to event_emburse_cards_overview_path(event_id: @event.slug),
-    class: 'card card--hover block pt4 pb4 card--promo',
-    style: 'background-image: url(https://cloud-awvmmj0xe.vercel.app/grey_card.png);' do %>
-    <h3 class="mt0 mb0">Previous Emburse data →</h3>
+  <% if @stripe_cards.blank? %>
+
+    <%= blankslate "You haven’t requested any cards yet." %>
+
+  <% else %>
+    <article class="table-container">
+
+      <table>
+        <thead>
+          <tr>
+            <th>TYPE</th>
+            <th>STATUS</th>
+            <th>DATE</th>
+            <th>NAME</th>
+            <th>NUMBER</th>
+            <th></th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% @stripe_cards.each do |d| %>
+            <tr>
+              <td>
+                <%= d.virtual? ? "VIRTUAL" : "PHYSICAL" %>
+              </td>
+              <td>
+                <span class="ml0 badge bg-<%= d.state %>"><%= d.state_text %></span>
+              </td>
+              <td>
+                <%= format_date d.created_at %>
+              </td>
+              <td>
+                <%= d.name || d.user.full_name if organizer_signed_in? %>
+                <%= "(redacted)" unless organizer_signed_in? %>
+              </td>
+              <td>
+                <%= d.formatted_card_number if d.user == current_user %>
+                <%= d.hidden_card_number if d.user != current_user %>
+              </td>
+              <td>
+                <%= link_to "Details", stripe_card_path(d) if organizer_signed_in? %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+
+    </article>
+
   <% end %>
-  <%= link_to my_cards_path,
-    class: 'card card--hover block pt4 pb4 card--promo',
-    style: 'background-image: url(https://cloud-awvmmj0xe.vercel.app/sunset_card.png);' do %>
-    <h3 class="mt0 mb0">See all your cards →</h3>
-  <% end if signed_in? %>
-<style>
-.card--promo {
-  background-size: cover;
-  background-position: center center;
-  color: white !important;
-}
-</style>
-</section>
+
+  <section class="grid grid--split pt4 pb4">
+    <% if signed_in? %>
+      <%= link_to my_cards_path,
+          class: "card card--hover block pt4 pb4 card--promo",
+          style: "background-image: url(https://cloud-awvmmj0xe.vercel.app/sunset_card.png);" do %>
+          <h3 class="mt0 mb0">See all your cards →</h3>
+      <% end %>
+    <% end %>
+
+    <% if @event.used_emburse? %>
+      <%= link_to event_emburse_cards_overview_path(event_id: @event.slug),
+        class: "card card--hover block pt4 pb4 card--promo",
+        style: "background-image: url(https://cloud-awvmmj0xe.vercel.app/grey_card.png);" do %>
+        <h3 class="mt0 mb0">Previous Emburse cards →</h3>
+      <% end %>
+    <% end %>
+
+    <style>
+      .card--promo {
+        background-size: cover;
+        background-position: center center;
+        color: white !important;
+      }
+    </style>
+  </section>
+
+  <h4>Cardholders</h4>
+
+  <article class="table-container">
+
+    <table>
+      <thead>
+        <tr>
+          <th>TYPE</th>
+          <th>STATUS</th>
+          <th>DATE</th>
+          <th>NAME</th>
+          <th></th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @stripe_cardholders.each do |d| %>
+          <tr>
+            <td>
+              <%= d.cardholder_type.upcase %>
+            </td>
+            <td>
+              <span class="ml0 badge bg-<%= d.state %>"><%= d.state_text %></span>
+            </td>
+            <td>
+              <%= format_date d.created_at %>
+            </td>
+            <td>
+              <%= d.user.full_name if organizer_signed_in? %>
+              <%= "(redacted)" unless organizer_signed_in? %>
+            </td>
+            <td>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+  </article>
+
 <% end %>

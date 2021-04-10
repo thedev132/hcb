@@ -59,6 +59,10 @@ class StripeCard < ApplicationRecord
     stripe_cardholder.stripe_name
   end
 
+  def name
+    stripe_name
+  end
+
   def total_spent
     stripe_authorizations.approved.sum(:amount)
   end
@@ -68,12 +72,20 @@ class StripeCard < ApplicationRecord
     stripe_status.humanize
   end
 
+  def state_text
+    status_text
+  end
+
   def status_badge_type
     s = stripe_status.to_sym
     return :success if s == :active
     return :error if s == :deleted
 
     :muted
+  end
+
+  def state
+    status_badge_type
   end
 
   def stripe_dashboard_url

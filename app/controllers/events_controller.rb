@@ -165,12 +165,9 @@ class EventsController < ApplicationController
   end
 
   def card_overview
-    @stripe_cards = @event.stripe_cards.includes(:stripe_cardholder, user: [:profile_picture_attachment])
-    @stripe_authorizations = @event.stripe_authorizations.includes(stripe_card: :user).sort_by(&:created_at).reverse
-    @emburse_cards = @event.emburse_cards.includes(user: [:profile_picture_attachment])
-    @cards = @stripe_cards + @emburse_cards
-    @active = @stripe_cards.active + @emburse_cards.active
-    @deactivated = @stripe_cards.deactivated + @emburse_cards.deactivated
+    @stripe_cards = @event.stripe_cards.includes(:stripe_cardholder, :user).order("created_at desc")
+    @stripe_cardholders = StripeCardholder.where(user_id: @event.users.pluck(:id)).order("created_at desc")
+
     authorize @event
   end
 
