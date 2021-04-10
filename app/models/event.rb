@@ -155,8 +155,9 @@ class Event < ApplicationRecord
     ActiveRecord::Base.transaction do
       # most common POC will be the POC for this event
       point_of_contact_id = Event.all.pluck(:point_of_contact_id).max_by {|i| Event.all.count(i) }
+      sender = User.find_by_id(point_of_contact_id)
 
-      event = Event.create(
+      event = Event.create!(
         name: event_name,
         start: Date.current,
         end: Date.current,
@@ -168,11 +169,9 @@ class Event < ApplicationRecord
         is_spend_only: true,
       )
 
-      sender = User.find_by_id point_of_contact_id
-
       user_emails ||= []
       user_emails.each do |email|
-        OrganizerPositionInvite.create(
+        OrganizerPositionInvite.create!(
           sender: sender,
           event: event,
           email: email
