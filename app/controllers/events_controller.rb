@@ -210,6 +210,7 @@ class EventsController < ApplicationController
     relation = relation.in_transit if params[:filter] == "in_transit"
     relation = relation.deposited if params[:filter] == "deposited"
     relation = relation.refunded if params[:filter] == "refunded"
+    relation = relation.search_name(params[:search]) if params[:search].present?
 
     @donations = relation.order(created_at: :desc)
 

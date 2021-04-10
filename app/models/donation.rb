@@ -5,7 +5,7 @@ class Donation < ApplicationRecord
   include Commentable
 
   include PgSearch::Model
-  pg_search_scope :search_name, against: [:name, :email]
+  pg_search_scope :search_name, against: [:name, :email], using: { tsearch: { prefix: true, dictionary: "english" } }, ranked_by: "donations.created_at"
 
   belongs_to :event
   belongs_to :fee_reimbursement, required: false

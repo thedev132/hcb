@@ -68,6 +68,14 @@
   <%= link_to "Archived", "?filter=archived", class: "filterbar__item", "aria-selected": params[:filter] == "archived", role: "tab" %>
 </div>
 
+<%= form_with(model: nil, local: true, method: :get) do |form| %>
+  <div class="filterbar flex flex-wrap items-center width-100">
+
+    <%= form.text_field :search, placeholder: "Search…", class: "flex-auto md-mr2", style: "width auto; max-width: none;", value: params[:search] %>
+
+  </div>
+<% end %>
+
 <article class="table-container">
 <table>
   <thead>

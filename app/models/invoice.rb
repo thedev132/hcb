@@ -6,7 +6,7 @@ class Invoice < ApplicationRecord
   include Commentable
 
   include PgSearch::Model
-  pg_search_scope :search_description, against: [:item_description]
+  pg_search_scope :search_description, associated_against: { sponsor: :name }, against: [:item_description], using: { tsearch: { prefix: true, dictionary: "english" } }, ranked_by: "invoices.created_at"
 
   scope :unarchived, -> { where(archived_at: nil) }
   scope :archived, -> { where.not(archived_at: nil) }
