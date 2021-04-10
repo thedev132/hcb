@@ -227,12 +227,15 @@ class EventsController < ApplicationController
     relation1 = relation1.in_transit if params[:filter] == "in_transit"
     relation1 = relation1.deposited if params[:filter] == "deposited"
     relation1 = relation1.rejected if params[:filter] == "canceled"
+    relation1 = relation1.search_recipient(params[:search]) if params[:search].present?
+
     @ach_transfers = relation1
 
     relation2 = @event.checks
     relation2 = relation2.in_transit_or_in_transit_and_processed if params[:filter] == "in_transit"
     relation2 = relation2.deposited if params[:filter] == "deposited"
     relation2 = relation2.canceled if params[:filter] == "canceled"
+    relation2 = relation2.search_recipient(params[:search]) if params[:search].present?
     @checks = relation2
 
     @stats = {
