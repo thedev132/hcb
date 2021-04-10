@@ -31,14 +31,39 @@ class StripeCardholder < ApplicationRecord
   alias_attribute :address_country, :stripe_billing_address_country
   alias_attribute :address_postal_code, :stripe_billing_address_postal_code
 
+  def state
+    return :success if remote_status == "active"
+    return :error if remote_status == "blocked"
+
+    :muted
+  end
+
+  def state_text
+    remote_status.to_s.humanize
+  end
+
+  def full_address
+    [
+      stripe_billing_address_line1,
+      stripe_billing_address_line2,
+      stripe_billing_address_city,
+      stripe_billing_address_state,
+      stripe_billing_address_postal_code
+    ].join(" ")
+  end
+
+  def remote_status
+    stripe_obj[:status]
+  end
+
   private
 
   def default_values
-    self.address_line1 ||= '8605 Santa Monica Blvd #86294'
-    self.address_city ||= 'West Hollywood'
-    self.address_state ||= 'CA'
-    self.address_postal_code ||= '90069'
-    self.address_country ||= 'US'
+    self.address_line1 ||= "8605 Santa Monica Blvd #86294"
+    self.address_city ||= "West Hollywood"
+    self.address_state ||= "CA"
+    self.address_postal_code ||= "90069"
+    self.address_country ||= "US"
   end
 
   def issue_cardholder_profile
@@ -50,8 +75,8 @@ class StripeCardholder < ApplicationRecord
       postal_code: stripe_billing_address_postal_code,
       country: stripe_billing_address_country,
     }
-    address.delete(:line2) if stripe_billing_address_line2 == ''
-    address.delete(:state) if stripe_billing_address_state == ''
+    address.delete(:line2) if stripe_billing_address_line2 == ""
+    address.delete(:state) if stripe_billing_address_state == ""
     cardholder = StripeService::Issuing::Cardholder.create(
       name: user.safe_name,
       email: user.email,
@@ -86,10 +111,8 @@ class StripeCardholder < ApplicationRecord
   end
 
   def stripe_obj
-    @stripe_cardholder_obj ||= begin
-      StripeService::Issuing::Cardholder.retrieve(stripe_id)
-    end
-
-    @stripe_cardholder_obj
+    @stripe_obj ||= StripeService::Issuing::Cardholder.retrieve(stripe_id)
+  rescue => e
+    { status: "active" }
   end
 end

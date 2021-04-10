@@ -110,4 +110,45 @@
       }
     </style>
   </section>
+
+  <h4>Cardholders</h4>
+
+  <article class="table-container">
+
+    <table>
+      <thead>
+        <tr>
+          <th>TYPE</th>
+          <th>STATUS</th>
+          <th>DATE</th>
+          <th>NAME</th>
+          <th></th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @stripe_cardholders.each do |d| %>
+          <tr>
+            <td>
+              <%= d.cardholder_type.upcase %>
+            </td>
+            <td>
+              <span class="ml0 badge bg-<%= d.state %>"><%= d.state_text %></span>
+            </td>
+            <td>
+              <%= format_date d.created_at %>
+            </td>
+            <td>
+              <%= d.user.full_name if organizer_signed_in? %>
+              <%= "(redacted)" unless organizer_signed_in? %>
+            </td>
+            <td>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+  </article>
+
 <% end %>
