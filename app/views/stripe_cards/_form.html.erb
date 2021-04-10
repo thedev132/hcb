@@ -4,15 +4,15 @@
   <fieldset>
     <legend class="heading h2 pt2 pb2">What type of card?</legend>
     <div class="field field--options">
-      <%= form.radio_button :card_type, 'virtual' %>
-      <%= form.label :card_type, value: 'virtual' do %>
-        <%= inline_icon 'rep', size: 28 %>
+      <%= form.radio_button :card_type, "virtual" %>
+      <%= form.label :card_type, value: "virtual" do %>
+        <%= inline_icon "rep", size: 28 %>
         <strong>Virtual</strong>
         <small>(online-only, instant)</small>
       <% end %>
-      <%= form.radio_button :card_type, 'physical' %>
-      <%= form.label :card_type, value: 'physical' do %>
-        <%= inline_icon 'card', size: 28 %>
+      <%= form.radio_button :card_type, "physical" %>
+      <%= form.label :card_type, value: "physical" do %>
+        <%= inline_icon "card", size: 28 %>
         <strong>Plastic</strong>
         <small>(mailed, 5-7 biz. days)</small>
       <% end %>
@@ -23,32 +23,33 @@
   <section class="grid grid--split" data-behavior="shipping_address_inputs autohide">
   <h2 class="grid__fill">Shipping info</h2>
   <div class="field">
-    <%= form.label :stripe_shipping_name, 'Shipping name' %>
+    <%= form.label :stripe_shipping_name, "Shipping name" %>
     <%= form.text_field :stripe_shipping_name, value: stripe_card.stripe_shipping_name || current_user&.full_name %>
   </div>
   <div class="field">
-    <%= form.label :stripe_shipping_address_line1, 'Address (line 1)' %>
+    <%= form.label :stripe_shipping_address_line1, "Address (line 1)" %>
     <%= form.text_field :stripe_shipping_address_line1, value: suggested(:line1) %>
   </div>
   <div class="field">
-    <%= form.label :stripe_shipping_address_line2, 'Address (line 2)' %>
+    <%= form.label :stripe_shipping_address_line2, "Address (line 2)" %>
     <%= form.text_field :stripe_shipping_address_line2, value: suggested(:line2) %>
   </div>
   <div class="field grid__half">
-    <%= form.label :stripe_shipping_address_city, 'City' %>
+    <%= form.label :stripe_shipping_address_city, "City" %>
     <%= form.text_field :stripe_shipping_address_city, value: suggested(:city) %>
   </div>
   <div class="field grid__half">
-    <%= form.label :stripe_shipping_address_state, 'State' %>
+    <%= form.label :stripe_shipping_address_state, "State" %>
     <%= form.text_field :stripe_shipping_address_state, value: suggested(:state) %>
   </div>
   <div class="field grid__half">
-    <%= form.label :stripe_shipping_address_postal_code, 'ZIP code' %>
+    <%= form.label :stripe_shipping_address_postal_code, "ZIP code" %>
     <%= form.text_field :stripe_shipping_address_postal_code, value: suggested(:postal_code) %>
   </div>
   <div class="field grid__half">
-    <%= form.label :stripe_shipping_address_country, 'Country' %>
-    <%= form.text_field :stripe_shipping_address_country, value: suggested(:country) %>
+    <%= form.label :stripe_shipping_address_country, "Country" %>
+    <%= form.text_field :stripe_shipping_address_country, value: "US", disabled: true %>
+    <small>Currently only shipping within the US</small>
   </div>
   </section>
 
@@ -56,6 +57,6 @@
   <%= form.hidden_field :event_id, value: defined?(@event) ? @event.id : params[:event_id] %>
 
   <div class="actions">
-    <%= form.submit 'Issue my card' %>
+    <%= form.submit "Issue my card" %>
   </div>
 <% end %>
