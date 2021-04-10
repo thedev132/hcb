@@ -13,6 +13,7 @@ class InvoicesController < ApplicationController
     relation = relation.paid_v2 if params[:filter] == "paid"
     relation = relation.unpaid if params[:filter] == "unpaid"
     relation = relation.archived if params[:filter] == "archived"
+    relation = relation.search_description(params[:search]) if params[:search].present?
 
     @invoices = relation.order(created_at: :desc)
 
