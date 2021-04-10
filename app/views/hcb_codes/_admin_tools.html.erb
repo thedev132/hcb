@@ -10,9 +10,9 @@
       <% if @hcb_code.ach_transfer? && @hcb_code.ach_transfer.present? %>
         <td><%= link_to "ACH TRANSFER #{@hcb_code.ach_transfer.id}", @hcb_code.ach_transfer %></td>
       <% end %>
+
     </tr>
   </table>
-
   <table>
     <tr>
       <th>TYPE</th>
@@ -59,6 +59,25 @@
           <%= link_to "view", "/transactions/#{ct.id}" %>
         </td>
       </tr>
+    <% end %>
+
+
+    <% if @hcb_code.ach_transfer? && @hcb_code.ach_transfer.present? && @hcb_code.ach_transfer.t_transaction.present? %>
+      <td>
+        OLD
+      </td>
+      <td>
+        <%= @hcb_code.ach_transfer.t_transaction.date %>
+      </td>
+      <td>
+        <%= @hcb_code.ach_transfer.t_transaction.memo %>
+      </td>
+      <td>
+        <%= render_money_amount @hcb_code.ach_transfer.t_transaction.amount %>
+      </td>
+      <td>
+        <%= link_to "view", @hcb_code.ach_transfer.t_transaction %>
+      </td>
     <% end %>
 
   </table>
