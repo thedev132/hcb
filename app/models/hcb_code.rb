@@ -58,6 +58,10 @@ class HcbCode < ApplicationRecord
     ct.raw_stripe_transaction
   end
 
+  def stripe_card
+    pt.try(:stripe_card) || ct.try(:stripe_card)
+  end
+
   def stripe_cardholder
     pt.try(:stripe_cardholder) || ct.try(:stripe_cardholder)
   end

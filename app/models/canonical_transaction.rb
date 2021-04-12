@@ -133,6 +133,14 @@ class CanonicalTransaction < ApplicationRecord
     end
   end
 
+  def stripe_card
+    @stripe_card ||= begin
+      return nil unless raw_stripe_transaction
+
+      ::StripeCard.find_by(stripe_id: raw_stripe_transaction.stripe_transaction["card"])
+    end
+  end
+
   def raw_pending_stripe_transaction 
     nil
   end
