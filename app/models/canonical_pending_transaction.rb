@@ -170,6 +170,14 @@ class CanonicalPendingTransaction < ApplicationRecord
     end
   end
 
+  def stripe_card
+    @stripe_card ||= begin
+      return nil unless raw_pending_stripe_transaction
+
+      ::StripeCard.find_by(stripe_id: raw_pending_stripe_transaction.stripe_transaction["card"]["id"])
+    end
+  end
+
   private
 
   def write_hcb_code
