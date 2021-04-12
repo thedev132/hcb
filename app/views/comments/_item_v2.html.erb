@@ -11,6 +11,8 @@
           <%= link_to "📎 sign in to download attachment", root_path, target: "_blank" %>
         <% end %>
       <% end %>
+
+      <%= link_to "Edit", edit_comment_path(comment) if organizer_signed_in? %>
     </p>
   </div>
 </div>
