@@ -33,9 +33,9 @@ RSpec.describe User, type: :model do
         user.full_name = 'Thisisareallyreallylongfirstnamethatembursewillnotlike Last'
       end
 
-      it 'returns safe_name max of 20 chars' do
-        expect(user.safe_name).to eql('Thisisareallyreall L')
-        expect(user.safe_name.length).to eql(20)
+      it 'returns safe_name max of 24 chars' do
+        expect(user.safe_name).to eql('Thisisareallyreallylo L')
+        expect(user.safe_name.length).to eql(23)
       end
     end
   end

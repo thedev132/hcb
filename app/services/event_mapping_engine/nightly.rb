@@ -11,6 +11,16 @@ module EventMappingEngine
       map_historical_emburse!
       map_stripe_transactions!
       map_github!
+      map_checks!
+      map_clearing_checks!
+      map_achs!
+      map_donations!
+      map_fee_reimbursements!
+      map_hack_club_bank_issued_cards!
+      map_stripe_top_ups!
+
+      map_hcb_codes_invoice!
+      map_hcb_codes_donation!
 
       true
     end
@@ -31,6 +41,42 @@ module EventMappingEngine
 
     def map_github!
       ::EventMappingEngine::Map::Github.new.run
+    end
+
+    def map_checks!
+      ::EventMappingEngine::Map::Checks.new.run
+    end
+
+    def map_clearing_checks!
+      ::EventMappingEngine::Map::ClearingChecks.new.run
+    end
+
+    def map_achs!
+      ::EventMappingEngine::Map::Achs.new.run
+    end
+
+    def map_donations!
+      ::EventMappingEngine::Map::Donations.new.run
+    end
+
+    def map_fee_reimbursements!
+      ::EventMappingEngine::Map::FeeReimbursements.new.run
+    end
+
+    def map_hack_club_bank_issued_cards!
+      ::EventMappingEngine::Map::HackClubBankIssuedCards.new.run
+    end
+
+    def map_stripe_top_ups!
+      ::EventMappingEngine::Map::StripeTopUps.new.run
+    end
+
+    def map_hcb_codes_invoice!
+      ::EventMappingEngine::Map::HcbCodes::Invoice.new.run
+    end
+
+    def map_hcb_codes_donation!
+      ::EventMappingEngine::Map::HcbCodes::Donation.new.run
     end
   end
 end

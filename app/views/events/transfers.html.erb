@@ -1,65 +1,92 @@
-<% title "Transfers for #{@event.name}" %>
+<% title "Transfers for #{@event.name.html_safe}" %>
 <% page_md %>
-<%= render 'events/nav' %>
-
-<%= render 'checks/suspended' if current_user %>
+<%= render "events/nav" %>
 
 <h1 class="heading">
-  Transfers
+  <span class="flex items-center">
+    Transfers
+    <%= badge_for @transfers.count, class: "bg-muted" %>
+  </span>
+
+  <% if organizer_signed_in? %>
+    <%= link_to "Send Check", new_event_check_path(@event), class: "btn bg-accent" %>
+    <%= link_to "Send ACH Transfer", new_event_ach_transfer_path(@event), class: "btn bg-accent" %>
+    <%= link_to "Reimbursement", event_reimbursements_path(@event), class: "btn" %>
+  <% end %>
 </h1>
 
-<section class="flex items-center justify-center flex-wrap pb2 md-pt2 md-pb3">
-  <strong class="h3 muted md-pr2">Send a</strong>
-  <div class="btn-group center">
-    <% if using_transaction_engine_v2? %>
-      <%= link_to 'Check', new_event_check_path(@event),
-          class: 'btn bg-accent' %>
-    <% else %>
-      <%= link_to 'Check', 
-          nil, #new_event_check_path(@event) 
-          class: 'btn bg-accent', 
-          disabled: true %>
-    <% end %>
-    <%= link_to 'Direct deposit', new_event_ach_transfer_path(@event), class: 'btn bg-accent' %>
-    <%= link_to 'Reimbursement', event_reimbursements_path(@event), class: 'btn' %>
+<div class="statset mt3 mb2">
+  <div class="stat stat--small">
+    <span class="stat__label">Total</span>
+    <span class="stat__value"><%= render_money_amount @stats[:deposited] %></span>
   </div>
-</section>
+  <div class="stat stat--small">
+    <span class="stat__label">On the way</span>
+    <span class="stat__value"><%= render_money_amount @stats[:in_transit] %></span>
+  </div>
+  <div class="stat stat--small">
+    <span class="stat__label">Canceled</span>
+    <span class="stat__value"><%= render_money_amount @stats[:canceled] %></span>
+  </div>
+</div>
 
-<ul class="grid grid--spacious">
-  <% @transfers.each do |transfer| %>
-    <%= link_to transfer do %>
-      <li>
-        <%= creator_bar transfer %>
-        <% if transfer.is_a? Check %>
-          <div class="transfer-preview transfer-preview--check">
-            <p class="mt0 mb1 flex items-start">
-              <span class="h5 caps secondary bold">Check #<%= transfer.check_number %></span>
-              <span class="ml-auto badge bg-<%= transfer.state %>"><%= transfer.status_text %></span>
-            </p>
-            <div class="flex items-start mt2 mb1">
-              <strong class="flex-auto h3 line-height-3">
-                <%= transfer.lob_address.name %>
-              </strong>
-              <span class="block h1 line-height-1"><%= render_money_short transfer.amount %></span>
-            </div>
-            <p class="h5 secondary mt0 mb0"><%= organizer_signed_in? ? transfer.memo : 'Sign in full details' %></p>
-          </div>
-        <% elsif transfer.is_a? AchTransfer %>
-          <div class="card transfer-preview">
-            <p class="mt0 mb1 flex items-start">
-              <span class="h5 caps secondary bold">ACH Transfer</span>
-              <span class="ml-auto badge bg-<%= transfer.state %>"><%= transfer.status_text %></span>
-            </p>
-            <div class="flex items-start mt2 mb1">
-              <strong class="flex-auto h3 line-height-3">
-                <%= transfer.recipient_name %>
-              </strong>
-              <span class="block h1 line-height-1"><%= render_money_short transfer.amount %></span>
-            </div>
-            <p class="h5 secondary mt0 mb0"><%= organizer_signed_in? ? transfer.bank_name : 'Sign in to full details' %></p>
-          </div>
-        <% end %>
-      </li>
-    <% end %>
-  <% end %>
-</ul>
+<hr/>
+
+<div style="text-align: center;">
+  <%= link_to "All", "?filter=all", class: "filterbar__item", "aria-selected": !["deposited", "in_transit", "canceled"].include?(params[:filter]), role: "tab" %>
+  <%= link_to "Deposited", "?filter=deposited", class: "filterbar__item", "aria-selected": params[:filter] == "deposited", role: "tab" %>
+  <%= link_to "In Transit", "?filter=in_transit", class: "filterbar__item", "aria-selected": params[:filter] == "in_transit", role: "tab" %>
+  <%= link_to "Canceled", "?filter=canceled", class: "filterbar__item", "aria-selected": params[:filter] == "canceled", role: "tab" %>
+</div>
+
+<%= form_with(model: nil, local: true, method: :get) do |form| %>
+  <div class="filterbar flex flex-wrap items-center width-100">
+
+    <%= form.text_field :search, placeholder: "Search…", class: "flex-auto md-mr2", style: "width auto; max-width: none;", value: params[:search] %>
+
+  </div>
+<% end %>
+
+<article class="table-container">
+
+  <table>
+    <thead>
+      <tr>
+        <th>TYPE</th>
+        <th>STATUS</th>
+        <th>DATE</th>
+        <th>TO</th>
+        <th style="text-align: right;">AMOUNT</th>
+        <th></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @transfers.each do |d| %>
+        <tr>
+          <td>
+            <%= d.is_a?(Check) ? "CHECK" : "ACH" %>
+          </td>
+          <td>
+            <span class="ml0 badge bg-<%= d.state %>"><%= d.state_text %></span>
+          </td>
+          <td>
+            <%= format_date d.created_at %>
+          </td>
+          <td>
+            <%= d.name if organizer_signed_in? %>
+            <%= "(redacted)" unless organizer_signed_in? %>
+          </td>
+          <td style="text-align: right;">
+            <%= render_money(d.amount) %>
+          </td>
+          <td>
+            <%= link_to "Details", hcb_code_url(d.local_hcb_code.hashid) if organizer_signed_in? %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+</article>
+

@@ -2,8 +2,8 @@ class StripeAuthorization < ApplicationRecord
   include Receiptable
   include Commentable
 
-  before_validation :sync_from_stripe! # pull details from stripe if we're creating it for the first time
-  after_create :notify_of_creation
+  before_validation :sync_from_stripe! # pull details from stripe if we're creating it for the first time. expensive in the webhook. TODO: adjust - ideally async after authorization approved or not
+  after_create :notify_of_creation # TODO: move to v2 engine
 
   default_scope { order(created_at: :desc) }
   scope :awaiting_receipt, -> { missing_receipt.where.not(amount: 0).where(approved: true) }
@@ -11,6 +11,7 @@ class StripeAuthorization < ApplicationRecord
   scope :approved, -> { where(approved: true) }
   scope :declined, -> { where(approved: false) }
   scope :successful, -> { approved.closed }
+  scope :renamed, -> { where( "display_name != name" ) }
 
   def awaiting_receipt?
     !amount.zero? && approved && missing_receipt?
@@ -110,26 +111,36 @@ class StripeAuthorization < ApplicationRecord
   end
 
   def stripe_obj
-    @stripe_auth_obj ||= begin
-      StripeService::Issuing::Authorization.retrieve(stripe_id)
-    end
-
-    @stripe_auth_obj
+    @stripe_auth_obj ||= StripeService::Issuing::Authorization.retrieve(stripe_id)
+  rescue => e
+    { number: "XXXX", cvc: "XXX", created: Time.now.utc.to_i,
+      merchant_data: {
+        name: "XXX"
+      }
+    }
   end
 
   def remote_stripe_transaction_amount_cents
     @remote_stripe_transaction_amount_cents ||= remote_stripe_transactions.map(&:amount).sum
   end
-  
+
+  def date
+    created_at
+  end
+
+  def memo
+    name
+  end
+
+  def deleted_at
+    nil
+  end
+
   private
 
   def notify_of_creation
-    # Notify the admins
-    StripeAuthorizationMailer.with(auth_id: id).notify_admin_of_authorization.deliver_later
-
     # Notify the card user
     if approved?
-      StripeAuthorizationMailer.with(auth_id: id).notify_user_of_approve.deliver_later
     else
       StripeAuthorizationMailer.with(auth_id: id).notify_user_of_decline.deliver_later
     end

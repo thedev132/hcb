@@ -12,6 +12,6 @@ class MarkdownService
   end
 
   def renderer
-    Redcarpet::Markdown.new(MarkdownRenderer.new(hard_wrap: true, filter_html: true), tables: true, autolink: true)
+    Redcarpet::Markdown.new(MarkdownRenderer.new(hard_wrap: true, filter_html: true), strikethrough: true, tables: true, autolink: true)
   end
 end

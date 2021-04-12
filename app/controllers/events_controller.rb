@@ -46,7 +46,19 @@ class EventsController < ApplicationController
 
     @organizers = @event.organizer_positions.includes(:user)
     @pending_transactions = _show_pending_transactions
-    @transactions = paginate(_show_transactions, per_page: 100)
+
+    if using_transaction_engine_v2?
+      @transactions_flat = [] #paginate(_show_transactions, per_page: 100) # v2. placeholder for flat history.
+      @transactions = Kaminari.paginate_array(TransactionGroupingEngine::Transaction::All.new(event_id: @event.id, search: params[:search]).run).page(params[:page]).per(20)
+    else
+      @transactions = paginate(TransactionEngine::Transaction::AllDeprecated.new(event_id: @event.id).run, per_page: 100)
+    end
+  end
+
+  def fees
+    authorize @event
+
+    @fees = @event.fees.includes(canonical_event_mapping: :canonical_transaction).order("canonical_transactions.date desc, canonical_transactions.id desc")
   end
 
   # async frame for incoming money
@@ -153,12 +165,9 @@ class EventsController < ApplicationController
   end
 
   def card_overview
-    @stripe_cards = @event.stripe_cards.includes(:stripe_cardholder, user: [:profile_picture_attachment])
-    @stripe_authorizations = @event.stripe_authorizations.includes(stripe_card: :user).sort_by(&:created_at).reverse
-    @emburse_cards = @event.emburse_cards.includes(user: [:profile_picture_attachment])
-    @cards = @stripe_cards + @emburse_cards
-    @active = @stripe_cards.active + @emburse_cards.active
-    @deactivated = @stripe_cards.deactivated + @emburse_cards.deactivated
+    @stripe_cards = @event.stripe_cards.includes(:stripe_cardholder, :user).order("created_at desc")
+    @stripe_cardholders = StripeCardholder.where(user_id: @event.users.pluck(:id)).order("created_at desc")
+
     authorize @event
   end
 
@@ -193,14 +202,45 @@ class EventsController < ApplicationController
 
   def donation_overview
     authorize @event
-    @donations = @event.donations.where(status: 'succeeded').sort_by {|d| d.created_at }.reverse
+
+    relation = @event.donations.not_pending
+    relation = relation.in_transit if params[:filter] == "in_transit"
+    relation = relation.deposited if params[:filter] == "deposited"
+    relation = relation.refunded if params[:filter] == "refunded"
+    relation = relation.search_name(params[:search]) if params[:search].present?
+
+    @donations = relation.order(created_at: :desc)
+
+    @stats = {
+      deposited: @donations.deposited.sum(:amount),
+      in_transit: @donations.in_transit.sum(:amount),
+      refunded: @donations.refunded.sum(:amount)
+    }
   end
 
   def transfers
     authorize @event
 
-    @checks = @event.checks.includes(:creator)
-    @ach_transfers = @event.ach_transfers.includes(:creator)
+    relation1 = @event.ach_transfers
+    relation1 = relation1.in_transit if params[:filter] == "in_transit"
+    relation1 = relation1.deposited if params[:filter] == "deposited"
+    relation1 = relation1.rejected if params[:filter] == "canceled"
+    relation1 = relation1.search_recipient(params[:search]) if params[:search].present?
+
+    @ach_transfers = relation1
+
+    relation2 = @event.checks
+    relation2 = relation2.in_transit_or_in_transit_and_processed if params[:filter] == "in_transit"
+    relation2 = relation2.deposited if params[:filter] == "deposited"
+    relation2 = relation2.canceled if params[:filter] == "canceled"
+    relation2 = relation2.search_recipient(params[:search]) if params[:search].present?
+    @checks = relation2
+
+    @stats = {
+      deposited: @ach_transfers.deposited.sum(:amount) + @checks.deposited.sum(:amount),
+      in_transit: @ach_transfers.in_transit.sum(:amount) + @checks.in_transit_or_in_transit_and_processed.sum(:amount),
+      canceled: @ach_transfers.rejected.sum(:amount) + @checks.canceled.sum(:amount)
+    }
 
     @transfers = (@checks + @ach_transfers).sort_by { |o| o.created_at }.reverse
   end
@@ -294,15 +334,10 @@ class EventsController < ApplicationController
     result_params
   end
 
-  def _show_transactions
-    return TransactionEngine::Transaction::All.new(event_id: @event.id).run if using_transaction_engine_v2?
-
-    TransactionEngine::Transaction::AllDeprecated.new(event_id: @event.id).run
-  end
-
   def _show_pending_transactions
-    return [] unless using_transaction_engine_v2?
+    return [] if params[:page] && params[:page] != "1"
+    return [] unless using_transaction_engine_v2? && using_pending_transaction_engine?
 
-    PendingTransactionEngine::PendingTransaction::All.new(event_id: @event.id).run
+    PendingTransactionEngine::PendingTransaction::All.new(event_id: @event.id, search: params[:search]).run
   end
 end

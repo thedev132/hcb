@@ -14,10 +14,11 @@ class TransactionsController < ApplicationController
     @event = Event.friendly.find(params[:event])
 
     if using_transaction_engine_v2?
-      authorize CanonicalTransaction
+      authorize @event.canonical_transactions.first # temporary hack for policies
 
       respond_to do |format|
         format.csv { stream_transactions_csv }
+        format.json { stream_transactions_json }
       end
     else
       @transactions = @event.transactions
@@ -50,9 +51,11 @@ class TransactionsController < ApplicationController
       render :show_deprecated
     rescue ActiveRecord::RecordNotFound => e
       @transaction = TransactionEngine::Transaction::Show.new(canonical_transaction_id: params[:id]).run
-      @event = @transaction.event
 
       authorize @transaction
+
+      @event = @transaction.event
+      @hcb_code = @transaction.local_hcb_code
     end
   end
 
@@ -209,7 +212,7 @@ class TransactionsController < ApplicationController
   end
 
   def stream_transactions_csv
-    set_file_headers
+    set_file_headers_csv
     set_streaming_headers
 
     response.status = 200
@@ -217,18 +220,31 @@ class TransactionsController < ApplicationController
     self.response_body = transactions_csv
   end
 
-  def set_file_headers
+  def stream_transactions_json
+    set_file_headers_json
+    set_streaming_headers
+
+    response.status = 200
+
+    self.response_body = transactions_json
+  end
+
+  def set_file_headers_csv
     headers["Content-Type"] = "text/csv"
     headers["Content-disposition"] = "attachment; filename=transactions.csv"
   end
 
-  def set_streaming_headers
-    headers["X-Accel-Buffering"] = "no"
-    headers["Cache-Control"] ||= "no-cache"
-    headers.delete("Content-Length")
+  def set_file_headers_json
+    headers["Content-Type"] = "application/json"
+    headers["Content-disposition"] = "attachment; filename=transactions.json"
   end
 
   def transactions_csv
     ::CanonicalTransactionService::Export::Csv.new(event_id: @event.id).run
   end
+
+  def transactions_json
+    ::CanonicalTransactionService::Export::Json.new(event_id: @event.id).run
+  end
+
 end

@@ -1,0 +1,62 @@
+<% title "DISBURSEMENTS" %>
+
+<h1>DISBURSEMENTS <small><%= link_to "New Disbursement", disbursement_new_admin_index_path %></small></h1>
+
+<%= paginate @disbursements %>
+
+<%= form_with local: true, url: disbursements_admin_index_path, method: :get do |form| %>
+  <%= form.text_field :q, value: params[:q] %>
+  <%= form.label :pending do %>
+    <%= form.check_box :pending, checked: @pending %>
+    Pending
+  <% end %>
+  |
+  <%= form.label :processing do %>
+    <%= form.check_box :processing, checked: @processing %>
+    Processing
+  <% end %>
+  |
+
+  <%= form.collection_select(:event_id, Event.reorder(Event::CUSTOM_SORT), :id, :admin_dropdown_description, { include_blank: true, selected: @event_id }, { width: 150, style: "max-width: 150px" }) %>
+  |
+
+  <%= form.submit "Search" %>
+<% end %>
+
+
+<p><small><%= pluralize(@count, "result") %></small></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Date</th>
+      <th>Recipient</th>
+      <th>Memo</th>
+      <th>Amount</th>
+      <th>Status</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @disbursements.each do |disbursement| %>
+      <tr style="<%= "background: #ffffcc;" if disbursement.pending? %>">
+        <td><%= disbursement.id %></td>
+        <td><%= disbursement.created_at.strftime("%Y-%m-%d") %></td>
+        <td>
+          <%= link_to disbursement_path(disbursement) do %>
+            <%= disbursement.event.name.upcase %>: <%= disbursement.name %>
+          <% end %>
+        </td>
+        <td><%= disbursement.transaction_memo %></td>
+        <td><%= render_money_amount(disbursement.amount) %></td>
+        <td><%= disbursement.status.upcase %></td>
+        <td>
+          <%= "AUTOMATED" if disbursement.pending? %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= paginate @disbursements %>

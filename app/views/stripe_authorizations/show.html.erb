@@ -20,7 +20,7 @@
   <section class="card__banner card__darker statset border-top border-bottom">
     <div class="stat">
       <span class="stat__label">Amount</span>
-      <span class="stat__value<%= ' strikethrough' unless @stripe_authorization.approved? %>"><%= render_money_amount -@stripe_authorization.amount %></span>
+      <span class="stat__value<%= ' strikethrough' unless @stripe_authorization.approved? %>"><%= render_money_amount @stripe_authorization.amount %></span>
     </div>
     <div class="stat stat--small stat--plain">
       <span class="stat__label">Card</span>

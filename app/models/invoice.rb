@@ -1,9 +1,19 @@
 class Invoice < ApplicationRecord
+  has_paper_trail
+
   extend FriendlyId
+  include AASM
   include Commentable
+
+  include PgSearch::Model
+  pg_search_scope :search_description, associated_against: { sponsor: :name }, against: [:item_description], using: { tsearch: { prefix: true, dictionary: "english" } }, ranked_by: "invoices.created_at"
 
   scope :unarchived, -> { where(archived_at: nil) }
   scope :archived, -> { where.not(archived_at: nil) }
+  scope :missing_fee_reimbursement, -> { where(fee_reimbursement_id: nil) }
+  scope :missing_payout, -> { where("payout_id is null and payout_creation_balance_net is not null") } # some invoices are missing a payout but it is ok because they were paid by check. that is why we additionally check on payout_creation_balance_net
+  scope :unpaid, -> { where("aasm_state != 'paid_v2'") }
+  scope :past_due, -> { where("due_date < ?", Time.current) }
 
   friendly_id :slug_text, use: :slugged
 
@@ -24,32 +34,32 @@ class Invoice < ApplicationRecord
 
   has_one_attached :manually_marked_as_paid_attachment
 
+  aasm do
+    state :open_v2, initial: true
+    state :paid_v2
+    state :void_v2
+
+    event :mark_paid do
+      transitions from: :open_v2, to: :paid_v2
+    end
+
+    event :mark_void do
+      transitions from: :open_v2, to: :void_v2
+    end
+  end
+
   enum status: {
-    draft: 'draft',
+    draft: 'draft', # only 3 invoices [203, 204, 128] leftover from when drafts existed
     open: 'open',
     paid: 'paid',
-    void: 'void',
-    uncollectible: 'uncollectible'
+    void: 'void'
   }
 
   validates_presence_of :item_description, :item_amount, :due_date
 
-  # all manually_marked_as_paid_... fields must be present all together or not
-  # present at all
-  validates_presence_of :manually_marked_as_paid_user, :manually_marked_as_paid_reason,
-                        if: -> { !self.manually_marked_as_paid_at.nil? }
-  validates_absence_of :manually_marked_as_paid_user, :manually_marked_as_paid_reason,
-                       if: -> { self.manually_marked_as_paid_at.nil? }
-
-  # all payout_creation... fields must be present all together or not at all
-  validates_presence_of :payout_creation_queued_for,
-                        :payout_creation_queued_job_id, :payout_creation_balance_available_at,
-                        if: -> { !self.payout_creation_queued_at.nil? }
-  validates_absence_of :payout_creation_queued_for,
-                       :payout_creation_queued_job_id, :payout_creation_balance_available_at,
-                       if: -> { self.payout_creation_queued_at.nil? }
-
   validate :due_date_cannot_be_in_past, on: :create
+
+  validates :item_amount, numericality: { greater_than_or_equal_to: 100 }
 
   before_create :set_defaults
 
@@ -57,7 +67,7 @@ class Invoice < ApplicationRecord
   before_create :create_stripe_invoice
   before_destroy :close_stripe_invoice
 
-  after_update :send_payment_notification_if_needed
+  #after_update :send_payment_notification_if_needed # turn off temporarily
 
   def event
     sponsor.event
@@ -75,7 +85,7 @@ class Invoice < ApplicationRecord
     self&.payout&.t_transaction
   end
 
-  def completed?
+  def completed_deprecated?
     (payout_transaction && !self&.fee_reimbursement) || (payout_transaction && self&.fee_reimbursement&.t_transaction) || manually_marked_as_paid?
   end
 
@@ -83,8 +93,32 @@ class Invoice < ApplicationRecord
     archived_at.present?
   end
 
+  def deposited? # TODO move to aasm
+    canonical_transactions.count >= 2 || manually_marked_as_paid? || completed_deprecated?
+  end
+
   def state
-    if completed?
+    return :success if paid_v2? && deposited?
+    return :info if paid_v2?
+    return :error if void_v2?
+    return :error if due_date < Time.current
+    return :warning if due_date < 3.days.from_now
+
+    :muted
+  end
+
+  def state_text
+    return "Deposited" if paid_v2? && deposited?
+    return "Paid & Depositing" if paid_v2?
+    return "Voided" if void_v2?
+    return "Overdue" if due_date < Time.current
+    return "Due soon" if due_date < 3.days.from_now
+
+    "Sent"
+  end
+
+  def state_deprecated
+    if completed_deprecated?
       :success
     elsif paid?
       :info
@@ -99,8 +133,8 @@ class Invoice < ApplicationRecord
     end
   end
 
-  def state_text
-    if completed?
+  def state_text_deprecated
+    if completed_deprecated?
       'Paid'
     elsif paid?
       'Pending'
@@ -128,98 +162,6 @@ class Invoice < ApplicationRecord
       overdue: due_date < 3.days.from_now && !paid?,
       archived: archived?
     }
-  end
-
-  # Manually mark this invoice as paid (probably in the case of a physical
-  # check being sent to pay it). This marks the corresponding payment on Stripe
-  # as paid and stores some metadata about why it was marked as paid.
-  def manually_mark_as_paid(user_who_did_it, reason_for_manual_payment, attachment = nil)
-    self.manually_marked_as_paid_at = Time.current
-    self.manually_marked_as_paid_user = user_who_did_it
-    self.manually_marked_as_paid_reason = reason_for_manual_payment
-    self.manually_marked_as_paid_attachment = attachment
-
-    return false unless valid?
-
-    inv = StripeService::Invoice.retrieve(stripe_invoice_id)
-    inv.paid = true
-
-    if inv.save
-      self.set_fields_from_stripe_invoice(inv)
-
-      if self.save
-        true
-      else
-        false
-      end
-    else
-      errors.add(:base, 'failed to save with vendor')
-
-      false
-    end
-  end
-
-  def queue_payout!
-    inv = StripeService::Invoice.retrieve(id: stripe_invoice_id, expand: ['charge.balance_transaction'])
-    raise NoAssociatedStripeCharge if inv.charge.nil?
-
-    b_tnx = inv.charge.balance_transaction
-
-    funds_available_at = Util.unixtime(b_tnx.available_on)
-    create_payout_at = funds_available_at + 1.day
-
-    job = CreatePayoutJob.set(wait_until: create_payout_at).perform_later(self)
-
-    self.payout_creation_queued_at = Time.current
-    self.payout_creation_queued_for = create_payout_at
-    self.payout_creation_queued_job_id = job.job_id
-    self.payout_creation_balance_net = b_tnx.net - hidden_fee(inv) # amount to pay out
-    self.payout_creation_balance_stripe_fee = b_tnx.fee + hidden_fee(inv)
-    self.payout_creation_balance_available_at = funds_available_at
-
-    self.save!
-  end
-
-  def hidden_fee(inv)
-    # stripe has hidden fees for ACH Credit TXs that don't show in the API at the moment:
-    # https://support.stripe.com/questions/pricing-of-payment-methods-in-the-us
-    c = inv.charge
-    if c.payment_method_details.type != 'ach_credit_transfer'
-      return 0
-    end
-
-    if c.amount < 1000 * 100
-      return 700
-    elsif c.amount < 100000 * 100
-      return 1450
-    else
-      return 2450
-    end
-  end
-
-  def create_payout!
-    inv = StripeService::Invoice.retrieve(id: stripe_invoice_id, expand: ['charge.balance_transaction'])
-
-    raise StandardError, 'Funds not yet available' unless Time.current.to_i > inv.charge.balance_transaction.available_on
-
-    self.payout = InvoicePayout.new(
-      amount: payout_creation_balance_net,
-      invoice: self
-    )
-
-    self.fee_reimbursement = FeeReimbursement.new(
-      invoice: self
-    )
-
-    self.fee_reimbursement.save
-
-    # if a transfer takes longer than 5 days something is probably wrong. so send an email
-    fee_reimbursement_job = SendUnmatchedFeeReimbursementEmailJob.set(wait_until: DateTime.now + 5.days).perform_later(self.fee_reimbursement)
-    self.fee_reimbursement.mailer_queued_job_id = fee_reimbursement_job.provider_job_id
-
-    self.fee_reimbursement.save
-
-    save!
   end
 
   def set_fields_from_stripe_invoice(inv)
@@ -292,7 +234,58 @@ class Invoice < ApplicationRecord
     @stripe_invoice_obj ||= StripeService::Invoice.retrieve(stripe_invoice_id).to_hash
   end
 
+  def remote_invoice
+    @remote_invoice ||= ::Partners::Stripe::Invoices::Show.new(id: stripe_invoice_id).run
+  end
+
+  def remote_status
+    remote_invoice.status
+  end
+
+  def remote_paid?
+    remote_status == "paid"
+  end
+
+  def canonical_pending_transaction
+    canonical_pending_transactions.first
+  end
+
+  def smart_memo
+    sponsor.name.upcase
+  end
+
+  def hcb_code
+    "HCB-#{TransactionGroupingEngine::Calculate::HcbCode::INVOICE_CODE}-#{id}"
+  end
+
+  def local_hcb_code
+    @local_hcb_code ||= HcbCode.find_or_create_by(hcb_code: hcb_code)
+  end
+
+  def canonical_transactions
+    @canonical_transactions ||= CanonicalTransaction.where(hcb_code: hcb_code)
+  end
+
+  def canonical_pending_transactions
+    return [] unless raw_pending_invoice_transaction
+
+    @canonical_pending_transactions ||= ::CanonicalPendingTransaction.where(raw_pending_invoice_transaction_id: raw_pending_invoice_transaction)
+  end
+
+  def sync_remote!
+    self.set_fields_from_stripe_invoice(remote_invoice)
+    self.save!
+  end
+
   private
+
+  def raw_pending_invoice_transaction
+    raw_pending_invoice_transactions.first
+  end
+
+  def raw_pending_invoice_transactions
+    @raw_pending_invoice_transactions ||= ::RawPendingInvoiceTransaction.where(invoice_transaction_id: id)
+  end
 
   def set_defaults
     event = sponsor.event.name
@@ -360,8 +353,14 @@ class Invoice < ApplicationRecord
       due_date: self.due_date.to_i, # convert to unixtime
       description: self.memo,
       status: self.status,
-      statement_descriptor: self.statement_descriptor,
-      tax_percent: self.tax_percent
+      statement_descriptor: self.statement_descriptor || "HACK CLUB BANK",
+      tax_percent: self.tax_percent,
+      footer: "\n\n\n\n\n"\
+              "Need to pay by mailed paper check?\n\n"\
+              "Please pay the amount to the order of The Hack Foundation, and include '#{self.sponsor.event.name} (##{self.sponsor.event.id})' in the memo. Checks can be mailed to:\n\n"\
+              "#{self.sponsor.event.name} (##{self.sponsor.event.id}) c/o The Hack Foundation\n"\
+              "8605 Santa Monica Blvd #86294\n"\
+              'West Hollywood, CA 90069'
     }
   end
 

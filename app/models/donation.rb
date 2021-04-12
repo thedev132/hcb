@@ -1,5 +1,12 @@
 class Donation < ApplicationRecord
+  has_paper_trail
+
+  include AASM
   include Commentable
+
+  include PgSearch::Model
+  pg_search_scope :search_name, against: [:name, :email], using: { tsearch: { prefix: true, dictionary: "english" } }, ranked_by: "donations.created_at"
+
   belongs_to :event
   belongs_to :fee_reimbursement, required: false
   belongs_to :payout, class_name: 'DonationPayout', required: false
@@ -12,96 +19,108 @@ class Donation < ApplicationRecord
   validates :name, :email, :amount, presence: true
   validates :amount, numericality: { greater_than_or_equal_to: 100 }
 
+  scope :succeeded, -> { where(status: "succeeded") }
+  scope :missing_payout, -> { where(payout_id: nil) }
+  scope :missing_fee_reimbursement, -> { where(fee_reimbursement_id: nil) }
+  scope :not_pending, -> { where.not(aasm_state: "pending") }
+
+  aasm do
+    state :pending, initial: true
+    state :in_transit
+    state :deposited
+    state :failed
+    state :refunded
+
+    event :mark_in_transit do
+      transitions from: :pending, to: :in_transit
+    end
+
+    event :mark_deposited do
+      transitions from: :in_transit, to: :deposited
+    end
+
+    event :mark_refunded do
+      transitions from: :deposited, to: :refunded
+    end
+
+    event :mark_failed do
+      transitions from: [:pending, :in_transit], to: :failed
+    end
+  end
+
   def set_fields_from_stripe_payment_intent(payment_intent)
     self.amount = payment_intent.amount
     self.amount_received = payment_intent.amount_received
     self.status = payment_intent.status
     self.stripe_client_secret = payment_intent.client_secret
-  end
 
-  def queue_payout!
-    pi = StripeService::PaymentIntent.retrieve(id: stripe_payment_intent_id, expand: ['charges.data.balance_transaction'])
-    raise NoAssociatedStripeCharge if pi.charges.nil?
-
-    # get the balance transaction of the first (and only) charge
-    b_tnx = pi.charges.data.first.balance_transaction
-
-    funds_available_at = Util.unixtime(b_tnx.available_on)
-    create_payout_at = funds_available_at + 1.day
-
-    job = CreatePayoutJob.set(wait_until: create_payout_at).perform_later(self)
-
-    self.payout_creation_queued_at = DateTime.current
-    self.payout_creation_queued_for = create_payout_at
-    self.payout_creation_queued_job_id = job.job_id
-    self.payout_creation_balance_net = b_tnx.net # amount to pay out
-    self.payout_creation_balance_stripe_fee = b_tnx.fee
-    self.payout_creation_balance_available_at = funds_available_at
-
-    self.save!
+    self.aasm_state = "in_transit" if aasm_state == "pending" && status == "succeeded" # hacky
   end
 
   def stripe_dashboard_url
     "https://dashboard.stripe.com/payments/#{self.stripe_payment_intent_id}"
   end
 
+  def state
+    return :success if deposited?
+    return :info if in_transit?
+    return :warning if refunded?
+    return :error if failed?
+
+    :muted
+  end
+
+  def state_text
+    return "Deposited" if deposited?
+    return "Paid & Depositing" if in_transit?
+    return "Refunded" if refunded?
+    return "Failed" if failed?
+
+    "Pending"
+  end
+
+  # DEPRECATE
   def status_color
-    return 'success' if deposited?
-    return 'info' if pending?
+    return 'success' if deposited_deprecated?
+    return 'info' if pending_deprecated?
 
     'error'
   end
 
+  # DEPRECATE
   def status_text
-    return 'Deposited' if deposited?
-    return 'Pending' if pending?
+    return 'Deposited' if deposited_deprecated?
+    return 'Pending' if pending_deprecated?
 
     'Contact Hack Club Bank staff'
   end
 
-  def deposited?
-    status == 'succeeded' && self&.payout&.t_transaction.present?
+  def deposited_deprecated?
+    status == 'succeeded' && payout_id != nil #self&.payout&.t_transaction.present?
   end
 
-  def pending?
-    status == 'succeeded' && !deposited?
+  def pending_deprecated?
+    status == 'succeeded' && !deposited_deprecated?
+  end
+
+  def in_transit_deprecated?
+    status == 'succeeded' && payout_id == nil
+  end
+
+  def unpaid_deprecated?
+    status == 'requires_payment_method'
   end
 
   def unpaid?
-    status == 'requires_payment_method'
+    pending?
   end
 
   def filter_data
     {
-      in_transit: (status == 'succeeded' && payout_id == nil),
-      deposited: (status == 'succeeded' && self&.payout&.t_transaction.present?),
+      in_transit: in_transit?,
+      deposited: deposited?,
       exists: true
     }
-  end
-
-  def create_payout!
-    pi = StripeService::PaymentIntent.retrieve(id: stripe_payment_intent_id, expand: ['charges.data.balance_transaction'])
-
-    raise StandardError, 'Funds not yet available' unless Time.current.to_i > pi.charges.data.first.balance_transaction.available_on
-
-    self.payout = DonationPayout.new(
-      donation: self
-    )
-
-    self.fee_reimbursement = FeeReimbursement.new(
-      donation: self
-    )
-
-    self.fee_reimbursement.save
-
-    # if a transfer takes longer than 5 days something is probably wrong. so send an email
-    fee_reimbursement_job = SendUnmatchedFeeReimbursementEmailJob.set(wait_until: DateTime.now + 5.days).perform_later(self.fee_reimbursement)
-    self.fee_reimbursement.mailer_queued_job_id = fee_reimbursement_job.provider_job_id
-
-    # saving a second time because we needed the fee reimbursement to exist in order to capture the job id
-    self.fee_reimbursement.save
-
-    save!
   end
 
   def send_receipt!
@@ -159,9 +178,55 @@ class Donation < ApplicationRecord
   def stripe_obj
     @stripe_donation_obj ||=
       StripeService::PaymentIntent.retrieve(id: stripe_payment_intent_id, expand: ['payment_method']).to_hash
+  rescue => e
+    {}
+  end
+
+  def smart_memo
+    name.to_s.upcase
+  end
+
+  def hcb_code
+    "HCB-#{TransactionGroupingEngine::Calculate::HcbCode::DONATION_CODE}-#{id}"
+  end
+
+  def local_hcb_code
+    @local_hcb_code ||= HcbCode.find_or_create_by(hcb_code: hcb_code)
+  end
+
+  def canonical_pending_transaction
+    canonical_pending_transactions.first
+  end
+
+  def canonical_transactions
+    @canonical_transactions ||= CanonicalTransaction.where(hcb_code: hcb_code)
+  end
+
+  def canonical_pending_transactions
+    @canonical_pending_transactions ||= begin
+      return [] unless raw_pending_donation_transaction.present?
+
+      ::CanonicalPendingTransaction.where(raw_pending_donation_transaction_id: raw_pending_donation_transaction.id)
+    end
+  end
+
+  def remote_donation
+    @remote_donation ||= ::Partners::Stripe::PaymentIntents::Show.new(id: stripe_payment_intent_id).run
+  end
+
+  def remote_refunded?
+    remote_donation[:charges][:data][0][:refunded]
   end
 
   private
+
+  def raw_pending_donation_transaction
+    raw_pending_donation_transactions.first
+  end
+
+  def raw_pending_donation_transactions
+    @raw_pending_donation_transactions ||= ::RawPendingDonationTransaction.where(donation_transaction_id: id)
+  end
 
   def send_payment_notification_if_needed
     return unless saved_changes[:status].present?
@@ -178,12 +243,17 @@ class Donation < ApplicationRecord
     end
   end
 
+  def create_payment_intent_attrs
+    {
+      amount: amount,
+      currency: "usd",
+      statement_descriptor: "HACK CLUB BANK",
+      metadata: { 'donation': true }
+    }
+  end
+
   def create_stripe_payment_intent
-    payment_intent = StripeService::PaymentIntent.create({
-                                                           amount: self.amount,
-                                                           currency: 'usd',
-                                                           metadata: { 'donation': true }
-                                                         })
+    payment_intent = StripeService::PaymentIntent.create(create_payment_intent_attrs)
 
     self.stripe_payment_intent_id = payment_intent.id
 

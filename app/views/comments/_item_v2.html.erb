@@ -1,0 +1,18 @@
+<div class="mt2 mb2">
+  <%= creator_bar comment %>
+  <div class="card" id="comment-<%= comment.created_at.to_i%>">
+    <%== MarkdownService.instance.renderer.render comment.content %>
+    <p class="mb0 h5">
+      <% if comment.file.attached? %>
+        <% if organizer_signed_in? %>
+          <%= link_to "📎 attachment", url_for(comment.file), target: "_blank" %>
+          &middot;
+        <% else %>
+          <%= link_to "📎 sign in to download attachment", root_path, target: "_blank" %>
+        <% end %>
+      <% end %>
+
+      <%= link_to "Edit", edit_comment_path(comment) if organizer_signed_in? %>
+    </p>
+  </div>
+</div>

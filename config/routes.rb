@@ -12,6 +12,9 @@ Rails.application.routes.draw do
 
   root to: 'static_pages#index'
   get 'stats', to: 'static_pages#stats'
+  get 'project_stats', to: 'static_pages#project_stats'
+  get 'bookkeeping', to: 'admin#bookkeeping'
+  get 'stripe_charge_lookup', to: 'static_pages#stripe_charge_lookup'
 
   scope :my do
     get '/', to: redirect('/'), as: :my
@@ -33,6 +36,12 @@ Rails.application.routes.draw do
 
   post 'receiptable/:receiptable_type/:receiptable_id/mark_no_or_lost', to: 'receiptables#mark_no_or_lost', as: :receiptable_mark_no_or_lost
 
+  resources :reports, only: [] do
+    member do
+      get 'fees', to: 'reports#fees'
+    end
+  end
+
   resources :users, only: [:edit, :update] do
     collection do
       get 'impersonate', to: 'users#impersonate'
@@ -52,6 +61,42 @@ Rails.application.routes.draw do
   # webhooks
   post 'webhooks/donations', to: 'donations#accept_donation_hook'
 
+  resources :admin, only: [] do
+    collection do
+      get 'hcb_codes', to: 'admin#hcb_codes'
+      get 'fees', to: 'admin#fees'
+      get 'users', to: 'admin#users'
+      get 'ledger', to: 'admin#ledger'
+      get 'pending_ledger', to: 'admin#pending_ledger'
+      get 'ach', to: 'admin#ach'
+      get 'check', to: 'admin#check'
+      get 'events', to: 'admin#events'
+      get 'donations', to: 'admin#donations'
+      get 'disbursements', to: 'admin#disbursements'
+      get 'disbursement_new', to: 'admin#disbursement_new'
+      post 'disbursement_create', to: 'admin#disbursement_create'
+      get 'invoices', to: 'admin#invoices'
+      get 'sponsors', to: 'admin#sponsors'
+      get 'google_workspaces', to: 'admin#google_workspaces'
+    end
+
+    member do
+      get 'transaction', to: 'admin#transaction'
+      get 'event_process', to: 'admin#event_process'
+      get 'ach_start_approval', to: 'admin#ach_start_approval'
+      post 'ach_approve', to: 'admin#ach_approve'
+      post 'ach_reject', to: 'admin#ach_reject'
+      get 'check_process', to: 'admin#check_process'
+      get 'check_positive_pay_csv', to: 'admin#check_positive_pay_csv'
+      post 'check_mark_in_transit_and_processed', to: 'admin#check_mark_in_transit_and_processed'
+      get 'google_workspace_process', to: 'admin#google_workspace_process'
+      post 'google_workspace_update', to: 'admin#google_workspace_update'
+      get 'invoice_process', to: 'admin#invoice_process'
+      post 'invoice_mark_paid', to: 'admin#invoice_mark_paid'
+    end
+  end
+
+  post 'set_event/:id', to: 'admin#set_event', as: :set_event
   get 'transactions/dedupe', to: 'admin#transaction_dedupe', as: :transaction_dedupe
 
   resources :organizer_position_invites, only: [:index, :show], path: 'invites' do
@@ -107,15 +152,11 @@ Rails.application.routes.draw do
   end
   resources :emburse_cards, except: %i[new create]
 
-  resources :checks, only: [:show, :index, :edit, :update] do
-    collection do
-      get 'export'
-    end
+  resources :checks, only: [:show] do
     get 'view_scan'
+    post 'cancel'
+    get 'positive_pay_csv'
 
-    get 'start_approval'
-    post 'approve'
-    post 'reject'
     get 'start_void'
     post 'void'
     get 'refund', to: 'checks#refund_get'
@@ -124,12 +165,12 @@ Rails.application.routes.draw do
     resources :comments
   end
 
-  resources :ach_transfers, only: [:show, :index] do
-    get 'start_approval'
-    post 'approve'
-    post 'reject'
-
+  resources :ach_transfers, only: [:show] do
     resources :comments
+  end
+
+  resources :ach_transfers do
+    get 'confirmation', to: 'ach_transfers#transfer_confirmation_letter'
   end
 
   resources :disbursements, only: [:index, :new, :create, :show, :edit, :update] do
@@ -150,11 +191,28 @@ Rails.application.routes.draw do
     get 'reauthenticate'
   end
 
-  resources :canonical_transactions, only: [:show] do
+  resources :hcb_codes, path: '/hcb', only: [:show] do
+    member do
+      post 'comment'
+      post 'receipt'
+      get 'attach_receipt'
+    end
+
+    resources :comments
+  end
+  
+  resources :canonical_pending_transactions, only: [:show] do
+  end
+
+  resources :canonical_transactions, only: [:show, :edit] do
     member do
       post 'waive_fee'
+      post 'unwaive_fee'
       post 'mark_bank_fee'
+      post 'set_custom_memo'
     end
+
+    resources :comments
   end
 
   resources :transactions, only: [:index, :show, :edit, :update] do
@@ -182,6 +240,12 @@ Rails.application.routes.draw do
   get 'export_pending_disbursements', to: 'admin#export_pending_disbursements'
   get 'audit', to: 'admin#audit'
 
+  resources :central, only: [:index] do
+    collection do
+      get 'ledger'
+    end
+  end
+
   resources :emburse_card_requests, path: 'emburse_card_requests', except: [:new, :create] do
     collection do
       get 'export'
@@ -206,13 +270,19 @@ Rails.application.routes.draw do
     resources :comments
   end
 
-  resources :donations, only: [:show, :index] do
+  resources :donations, only: [:show] do
     collection do
       get 'start/:event_name', to: 'donations#start_donation', as: 'start_donation'
       post 'start/:event_name', to: 'donations#make_donation', as: 'make_donation'
       get 'qr/:event_name.png', to: 'donations#qr_code', as: 'qr_code'
       get ':event_name/:donation', to: 'donations#finish_donation', as: 'finish_donation'
+
     end
+
+    member do
+      post 'refund', to: 'donations#refund'
+    end
+
     resources :comments
   end
 
@@ -241,6 +311,7 @@ Rails.application.routes.draw do
   get '/events' => 'events#index'
   get '/event_by_airtable_id/:airtable_id' => 'events#by_airtable_id'
   resources :events, path: '/' do
+    get 'fees', to: 'events#fees', as: :fees
     get 'dashboard_stats', to: 'events#dashboard_stats', as: :dashboard_stats
     put 'toggle_hidden', to: 'events#toggle_hidden'
 

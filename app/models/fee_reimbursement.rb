@@ -45,7 +45,7 @@ class FeeReimbursement < ApplicationRecord
     if donation
       return donation.event
     else
-      return invoice.event
+      return invoice.try(:event)
     end
   end
 
@@ -53,7 +53,7 @@ class FeeReimbursement < ApplicationRecord
     if donation
       return donation.payout
     else
-      return invoice.payout
+      return invoice.try(:payout)
     end
   end
 
@@ -74,11 +74,13 @@ class FeeReimbursement < ApplicationRecord
   end
 
   def default_values
-    self.transaction_memo ||= "FEE REFUND #{SecureRandom.hex(6)}"
     if invoice
-      self.amount ||= self.invoice.item_amount - self.invoice.payout_creation_balance_net
+      self.transaction_memo ||= invoice.hcb_code
+      self.amount ||= invoice.item_amount - invoice.payout_creation_balance_net
     else
-      self.amount ||= self.donation.payout_creation_balance_stripe_fee
+      # HCB CODE for donation only right now
+      self.transaction_memo ||= donation.hcb_code
+      self.amount ||= donation.payout_creation_balance_stripe_fee
     end
   end
 
@@ -101,5 +103,9 @@ class FeeReimbursement < ApplicationRecord
         return amount * self.donation.event.sponsorship_fee
       end
     end
+  end
+
+  def canonical_transaction
+    @canonical_transaction ||= event.canonical_transactions.where("memo ilike '#{transaction_memo}%' and date >= ?", created_at - 1.day).first
   end
 end

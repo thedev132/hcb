@@ -51,6 +51,7 @@ module StripeCardsHelper
   def card_shipping_map_url(card, options = {})
     address = "#{card.address_line1} #{card.address_line2}, #{card.address_city} #{card.address_state} #{card.address_country} #{card.address_postal_code}"
     geo = Geocoder.search(address)&.first 
+    return nil unless geo
     lat = geo.data['lat']
     return nil unless lat
     lng = geo.data['lon']

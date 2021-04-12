@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_14_183257) do
+ActiveRecord::Schema.define(version: 2021_04_12_180234) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -32,6 +32,8 @@ ActiveRecord::Schema.define(version: 2021_01_14_183257) do
     t.datetime "rejected_at"
     t.datetime "scheduled_arrival_date"
     t.text "payment_for"
+    t.string "aasm_state"
+    t.text "confirmation_number"
     t.index ["creator_id"], name: "index_ach_transfers_on_creator_id"
     t.index ["event_id"], name: "index_ach_transfers_on_event_id"
   end
@@ -55,6 +57,48 @@ ActiveRecord::Schema.define(version: 2021_01_14_183257) do
     t.string "checksum", null: false
     t.datetime "created_at", null: false
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
+
+  create_table "ahoy_events", force: :cascade do |t|
+    t.bigint "visit_id"
+    t.bigint "user_id"
+    t.string "name"
+    t.jsonb "properties"
+    t.datetime "time"
+    t.index ["name", "time"], name: "index_ahoy_events_on_name_and_time"
+    t.index ["properties"], name: "index_ahoy_events_on_properties", opclass: :jsonb_path_ops, using: :gin
+    t.index ["user_id"], name: "index_ahoy_events_on_user_id"
+    t.index ["visit_id"], name: "index_ahoy_events_on_visit_id"
+  end
+
+  create_table "ahoy_visits", force: :cascade do |t|
+    t.string "visit_token"
+    t.string "visitor_token"
+    t.bigint "user_id"
+    t.string "ip"
+    t.text "user_agent"
+    t.text "referrer"
+    t.string "referring_domain"
+    t.text "landing_page"
+    t.string "browser"
+    t.string "os"
+    t.string "device_type"
+    t.string "country"
+    t.string "region"
+    t.string "city"
+    t.float "latitude"
+    t.float "longitude"
+    t.string "utm_source"
+    t.string "utm_medium"
+    t.string "utm_term"
+    t.string "utm_content"
+    t.string "utm_campaign"
+    t.string "app_version"
+    t.string "os_version"
+    t.string "platform"
+    t.datetime "started_at"
+    t.index ["user_id"], name: "index_ahoy_visits_on_user_id"
+    t.index ["visit_token"], name: "index_ahoy_visits_on_visit_token", unique: true
   end
 
   create_table "bank_accounts", force: :cascade do |t|
@@ -129,8 +173,10 @@ ActiveRecord::Schema.define(version: 2021_01_14_183257) do
     t.bigint "event_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "user_id"
     t.index ["canonical_transaction_id"], name: "index_canonical_event_mappings_on_canonical_transaction_id"
     t.index ["event_id"], name: "index_canonical_event_mappings_on_event_id"
+    t.index ["user_id"], name: "index_canonical_event_mappings_on_user_id"
   end
 
   create_table "canonical_hashed_mappings", force: :cascade do |t|
@@ -174,6 +220,14 @@ ActiveRecord::Schema.define(version: 2021_01_14_183257) do
     t.bigint "raw_pending_stripe_transaction_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "raw_pending_outgoing_check_transaction_id"
+    t.bigint "raw_pending_outgoing_ach_transaction_id"
+    t.bigint "raw_pending_donation_transaction_id"
+    t.bigint "raw_pending_invoice_transaction_id"
+    t.text "hcb_code"
+    t.index ["raw_pending_donation_transaction_id"], name: "index_canonical_pending_txs_on_raw_pending_donation_tx_id"
+    t.index ["raw_pending_outgoing_ach_transaction_id"], name: "index_canonical_pending_txs_on_raw_pending_outgoing_ach_tx_id"
+    t.index ["raw_pending_outgoing_check_transaction_id"], name: "index_canonical_pending_txs_on_raw_pending_outgoing_check_tx_id"
     t.index ["raw_pending_stripe_transaction_id"], name: "index_canonical_pending_txs_on_raw_pending_stripe_tx_id"
   end
 
@@ -183,6 +237,9 @@ ActiveRecord::Schema.define(version: 2021_01_14_183257) do
     t.integer "amount_cents", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.text "friendly_memo"
+    t.text "custom_memo"
+    t.text "hcb_code"
   end
 
   create_table "checks", force: :cascade do |t|
@@ -204,6 +261,8 @@ ActiveRecord::Schema.define(version: 2021_01_14_183257) do
     t.datetime "updated_at", null: false
     t.datetime "rejected_at"
     t.text "payment_for"
+    t.string "aasm_state"
+    t.text "lob_url"
     t.index ["creator_id"], name: "index_checks_on_creator_id"
     t.index ["lob_address_id"], name: "index_checks_on_lob_address_id"
   end
@@ -304,6 +363,8 @@ ActiveRecord::Schema.define(version: 2021_01_14_183257) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "message"
+    t.text "hcb_code"
+    t.string "aasm_state"
     t.index ["event_id"], name: "index_donations_on_event_id"
     t.index ["fee_reimbursement_id"], name: "index_donations_on_fee_reimbursement_id"
     t.index ["payout_id"], name: "index_donations_on_payout_id"
@@ -436,6 +497,7 @@ ActiveRecord::Schema.define(version: 2021_01_14_183257) do
     t.boolean "omit_stats", default: false
     t.datetime "transaction_engine_v2_at", default: -> { "CURRENT_TIMESTAMP" }
     t.datetime "last_fee_processed_at"
+    t.datetime "pending_transaction_engine_at", default: "2021-02-13 22:49:40"
     t.index ["club_airtable_id"], name: "index_events_on_club_airtable_id", unique: true
     t.index ["point_of_contact_id"], name: "index_events_on_point_of_contact_id"
   end
@@ -455,7 +517,6 @@ ActiveRecord::Schema.define(version: 2021_01_14_183257) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "processed_at"
-    t.string "mailer_queued_job_id"
     t.index ["transaction_memo"], name: "index_fee_reimbursements_on_transaction_memo", unique: true
   end
 
@@ -543,6 +604,14 @@ ActiveRecord::Schema.define(version: 2021_01_14_183257) do
     t.index ["raw_stripe_transaction_id"], name: "index_hashed_transactions_on_raw_stripe_transaction_id"
   end
 
+  create_table "hcb_codes", force: :cascade do |t|
+    t.text "hcb_code", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "marked_no_or_lost_receipt_at"
+    t.index ["hcb_code"], name: "index_hcb_codes_on_hcb_code", unique: true
+  end
+
   create_table "invoice_payouts", force: :cascade do |t|
     t.text "stripe_payout_id"
     t.bigint "amount"
@@ -628,6 +697,8 @@ ActiveRecord::Schema.define(version: 2021_01_14_183257) do
     t.text "payment_method_ach_credit_transfer_swift_code"
     t.datetime "archived_at"
     t.bigint "archived_by_id"
+    t.text "hcb_code"
+    t.string "aasm_state"
     t.index ["archived_by_id"], name: "index_invoices_on_archived_by_id"
     t.index ["creator_id"], name: "index_invoices_on_creator_id"
     t.index ["fee_reimbursement_id"], name: "index_invoices_on_fee_reimbursement_id"
@@ -717,6 +788,7 @@ ActiveRecord::Schema.define(version: 2021_01_14_183257) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "unique_bank_identifier", null: false
+    t.text "csv_transaction_id"
   end
 
   create_table "raw_emburse_transactions", force: :cascade do |t|
@@ -728,6 +800,42 @@ ActiveRecord::Schema.define(version: 2021_01_14_183257) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "unique_bank_identifier", null: false
+  end
+
+  create_table "raw_pending_donation_transactions", force: :cascade do |t|
+    t.integer "amount_cents"
+    t.date "date_posted"
+    t.string "state"
+    t.string "donation_transaction_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "raw_pending_invoice_transactions", force: :cascade do |t|
+    t.string "invoice_transaction_id"
+    t.integer "amount_cents"
+    t.date "date_posted"
+    t.string "state"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "raw_pending_outgoing_ach_transactions", force: :cascade do |t|
+    t.text "ach_transaction_id"
+    t.integer "amount_cents"
+    t.date "date_posted"
+    t.string "state"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "raw_pending_outgoing_check_transactions", force: :cascade do |t|
+    t.integer "amount_cents"
+    t.date "date_posted"
+    t.string "state"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "check_transaction_id"
   end
 
   create_table "raw_pending_stripe_transactions", force: :cascade do |t|
@@ -764,7 +872,7 @@ ActiveRecord::Schema.define(version: 2021_01_14_183257) do
   end
 
   create_table "receipts", force: :cascade do |t|
-    t.bigint "user_id", null: false
+    t.bigint "user_id"
     t.datetime "attempted_match_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -912,7 +1020,7 @@ ActiveRecord::Schema.define(version: 2021_01_14_183257) do
     t.datetime "admin_at"
     t.string "slug"
     t.boolean "pretend_is_not_admin", default: false, null: false
-    t.boolean "sessions_reported", default: true, null: false
+    t.boolean "sessions_reported", default: false, null: false
     t.index ["api_access_token"], name: "index_users_on_api_access_token", unique: true
     t.index ["api_id"], name: "index_users_on_api_id", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true

@@ -6,4 +6,8 @@ class DonationPolicy < ApplicationPolicy
   def index?
     user&.admin?
   end
+
+  def refund?
+    user&.admin?
+  end
 end

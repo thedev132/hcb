@@ -1,0 +1,142 @@
+<head>
+  <title>Hack Club Bank - ACH Transfer Confirmation Letter</title>
+  <style>
+    .container {
+      font-size: 12pt;
+      line-height: 1.15;
+      position: relative;
+      padding-left: 40pt;
+      padding-right: 40pt;
+      display: block;
+    }
+    
+    .centerImage {
+      position: relative;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+    
+    .bold {
+      font-weight: bold;
+    }
+    
+    body {
+      margin: 8px;
+      font-family: 'Arial';
+    }
+    
+    a {
+      color: #1155cc;
+    }
+    
+    .auto-page-break {
+      page-break-before: auto;
+      page-break-inside: avoid;
+    }
+    
+    table {
+      width: 100%;
+      table-layout: fixed;
+      border-collapse: collapse;
+      font-size: 9pt;
+    }
+    table, th, td {
+      border: 1px solid gray;
+    }
+    td {
+      padding: 4pt;
+    }
+
+    .letter-body {
+      font-size: 
+    }
+  </style>
+</head>
+<body>
+  <br />
+  <div class="container">
+    <br />
+    <div style="height: 80px;">
+      <p style="margin: 0; float: right; font-size: 11pt; line-height: 1.5">
+        <span class="bold">Hack Club</span><br />
+        <span style="white-space: nowrap;">8605 Santa Monica Boulevard #86294</span><br />
+        West Hollywood, CA 90069<br />
+        team@hackclub.com
+      </p>
+      <%= image_tag(wicked_pdf_asset_base64('hack_club_logo.png'), width: 156.6, height: 26.88, class: 'centerImage')%>
+    </div>
+    <br />
+    <br />
+    <p style="margin-top: 2rem; margin-bottom: 0.5rem;"><%= @ach_transfer.canonical_pending_transaction.date.strftime("%B #{@ach_transfer.canonical_pending_transaction.date.day.ordinalize}, %Y") %></p>
+    <p style="font-size: 12.5pt;"><span class="bold"><%= @event.name %> ACH Transfer to <%= @ach_transfer.recipient_name %></span></p>
+    <br />
+    <div style="line-height: 1.25;">
+      <p>To whom it may concern,</p>
+      <p>
+        This letter serves as a confirmation that Hack Club<% if !@event.omit_stats? %>, on behalf of <%= @event.name %>,<% end %> has transfered <%= render_money @ach_transfer.amount %> to <%= @ach_transfer.recipient_name %> for the reason of <em>"<%= @ach_transfer.payment_for %>"</em>.
+      </p>
+      
+      <table style="line-height: 1.15">
+        <thead>
+          <tr>
+            <td colspan="2" style="text-align: right"><strong>ACH Transfer ID:</td>
+            <td style="width: 10%"><%= @ach_transfer.id %></td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="bold">Sent by</td>
+            <td colspan="2"><%= @ach_transfer.creator.name %></td>
+          </tr>
+          <tr>
+            <td class="bold">Recipient name</td>
+            <td colspan="2"><%= @ach_transfer.recipient_name %></td>
+          </tr>
+          <tr>
+            <td class="bold">Recipient phone</td>
+            <td colspan="2"><%= @ach_transfer.recipient_tel %></td>
+          </tr>
+          <tr>
+            <td class="bold">Payment purpose</td>
+            <td colspan="2"><%= @ach_transfer.payment_for %></td>
+          </tr>
+          <tr>
+            <td class="bold">Routing number</td>
+            <td colspan="2"><%= @ach_transfer.routing_number %></td>
+          </tr>
+          <tr>
+            <td class="bold">Account number</td>
+            <td colspan="2"><%= @ach_transfer.account_number %></td>
+          </tr>
+          <tr>
+            <td class="bold">Amount</td>
+            <td colspan="2"><%= render_money @ach_transfer.amount %></td>
+          </tr>
+        </tbody>
+      </table>
+      <p>
+        Please don't hesitate to contact me with any additional questions. I can be reached at <a href="mailto:melanie@hackclub.com">melanie@hackclub.com</a>
+      </p>
+    </div>
+    <br />
+    <p>
+      Best,
+    </p>
+    <div style="margin-top: -5pt; margin-bottom: -10pt">
+      <%= image_tag(wicked_pdf_asset_base64('melanie_signature.png'), width: 160, height: 95, dpi: 96) %>
+    </div>
+    <p style="line-height: 1.15">
+      Melanie Smith<br />
+      Director of Hack Club Bank<br />
+      Hack Club
+    </p>
+    <br />
+    <br />
+    <p style="font-size: 12pt; font-weight: bold; color: #434343; position: fixed; bottom: 12px; width: 100%; white-space: nowrap;">
+      By the students, for the students.
+    </p>
+    <p style="font-size: 10pt; color: #999999; position: fixed; bottom: 0px; width: 100%; white-space: nowrap;">
+      Hack Club is a 501(c)(3) public charity. Our nonprofit EIN is 81-2908499.
+    </p>
+  </div>
+</body>

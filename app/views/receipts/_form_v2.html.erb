@@ -1,0 +1,20 @@
+<%= form_with model: nil, url: receipt_hcb_code_path(@hcb_code), class: "card flex flex-column justify-center mt2 mb3" do |form| %>
+  <h3 class="h2 mt0 mb1">Add a receipt</h3>
+
+  <%= form.hidden_field :redirect_url, value: url_for(only_path: false) %>
+
+  <%= form.file_field :file, class: "mb2" %>
+
+  <footer class="flex flex-wrap justify-between align-center">
+    <%= form.submit "Upload" %>
+
+    <% if @hcb_code.missing_receipt? %>
+      <%= link_to receiptable_mark_no_or_lost_path(receiptable_type: @hcb_code.class, receiptable_id: @hcb_code.id),
+                  method: :post,
+                  class: "ml2 btn bg-muted" do %>
+        <%= inline_icon "view-close" %>
+        Missing/lost receipt
+      <% end %>
+    <% end %>
+  </footer>
+<% end %>

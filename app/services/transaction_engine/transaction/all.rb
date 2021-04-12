@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TransactionEngine
   module Transaction
     class All
@@ -20,7 +22,11 @@ module TransactionEngine
       end
 
       def canonical_transactions
-        @canonical_transactions ||= CanonicalTransaction.where(id: canonical_event_mappings.pluck(:canonical_transaction_id)).order('date desc')
+        @canonical_transactions ||= CanonicalTransaction.includes(:receipts).where(id: canonical_event_mappings.pluck(:canonical_transaction_id)).order("date desc, id desc")
+      end
+
+      def canonical_transaction_ids
+        @canonical_transaction_ids ||= canonical_event_mappings.pluck(:canonical_transaction_id)
       end
     end
   end

@@ -6,14 +6,15 @@ class DonationsController < ApplicationController
   before_action :set_event, only: [:start_donation, :make_donation, :finish_donation, :qr_code]
   before_action :allow_iframe, except: [:show, :index]
 
+  invisible_captcha only: [:make_donation], honeypot: :subtitle, on_timestamp_spam: :redirect_to_404
+
   # GET /donations/1
   def show
     authorize @donation
     @event = @donation.event
 
-    @commentable = @donation
-    @comments = @commentable.comments.includes(:user)
-    @comment = Comment.new
+    # Comments
+    @hcb_code = HcbCode.find_or_create_by(hcb_code: @donation.hcb_code)
   end
 
   def start_donation
@@ -22,12 +23,6 @@ class DonationsController < ApplicationController
     end
 
     @donation = Donation.new
-  end
-
-  # GET /donations
-  def index
-    authorize Donation
-    @donations = paginate(Donation.all.order(created_at: :desc))
   end
 
   def make_donation
@@ -45,7 +40,7 @@ class DonationsController < ApplicationController
   end
 
   def finish_donation
-    @donation = Donation.find_by_url_hash(params['donation'])
+    @donation = Donation.find_by!(url_hash: params['donation'])
 
     if @donation.status == 'succeeded'
       flash[:info] = 'You tried to access the payment page for a donation that’s already been sent.'
@@ -64,10 +59,9 @@ class DonationsController < ApplicationController
       id: donation.stripe_payment_intent_id,
       expand: ['charges.data.balance_transaction'])
     donation.set_fields_from_stripe_payment_intent(pi)
-    donation.save
+    donation.save!
 
-    # create donation payout
-    donation.queue_payout!
+    DonationService::Queue.new(donation_id: donation.id).run # queues/crons payout. DEPRECATE. most is unnecessary if we just run in a cron
 
     donation.send_receipt!
 
@@ -91,6 +85,15 @@ class DonationsController < ApplicationController
       type: 'image/png', disposition: 'inline'
   end
 
+  def refund
+    @donation = Donation.find(params[:id])
+    @hcb_code = @donation.local_hcb_code
+
+    ::DonationJob::Refund.perform_later(@donation.id)
+
+    redirect_to hcb_code_path(@hcb_code.hashid), flash: { success: "The refund process has been queued for this donation." }
+  end
+
   private
 
   def set_event
@@ -112,6 +115,10 @@ class DonationsController < ApplicationController
   end
 
   def allow_iframe
-    response.headers.delete 'X-Frame-Options'
+    response.headers["X-Frame-Options"] = "ALLOWALL"
+  end
+
+  def redirect_to_404
+    raise ActionController::RoutingError.new('Not Found')
   end
 end

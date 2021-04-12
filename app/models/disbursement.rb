@@ -1,4 +1,7 @@
 class Disbursement < ApplicationRecord
+  include PgSearch::Model
+  pg_search_scope :search_name, against: [:name]
+
   belongs_to :event
   belongs_to :source_event, class_name: 'Event'
 
@@ -20,6 +23,18 @@ class Disbursement < ApplicationRecord
   scope :fulfilled, -> { where.not(fulfilled_at: nil).select { |d| d.fulfilled? } }
   scope :rejected, -> { where.not(rejected_at: nil) }
   scope :errored, -> { where.not(errored_at: nil) }
+
+  def hcb_code
+    "HCB-#{TransactionGroupingEngine::Calculate::HcbCode::DISBURSEMENT_CODE}-#{id}"
+  end
+
+  def canonical_transactions
+    @canonical_transactions ||= CanonicalTransaction.where(hcb_code: hcb_code)
+  end
+
+  def canonical_pending_transactions
+    @canonical_pending_transactions ||= ::CanonicalPendingTransaction.where(hcb_code: hcb_code)
+  end
 
   def pending?
     !processed? && !rejected? && !errored?
@@ -51,6 +66,10 @@ class Disbursement < ApplicationRecord
       fulfilled: fulfilled?,
       rejected: rejected?,
     }
+  end
+
+  def status
+    state
   end
 
   def state

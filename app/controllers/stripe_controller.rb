@@ -28,20 +28,7 @@ class StripeController < ApplicationController
   private
 
   def handle_issuing_authorization_request(event)
-    auth = event[:data][:object]
-    tx_amount = auth[:pending_request][:amount]
-    card = StripeCard.find_by(stripe_id: auth[:card][:id])
-    should_approve = card.event.balance_available >= tx_amount
-
-    if should_approve
-      puts "#{card.event.name} has enough money (#{card.event.balance_available}) for the charge of #{tx_amount}"
-      auth_result = StripeService::Issuing::Authorization.approve(auth[:id])
-    else
-      puts "#{card.event.name} does not have enough (#{card.event.balance_available}) for the charge of #{tx_amount}"
-      auth_result = StripeService::Issuing::Authorization.decline(auth[:id])
-    end
-
-    StripeAuthorization.create(stripe_id: auth[:id])
+    ::StripeAuthorizationService::Webhook::HandleIssuingAuthorizationRequest.new(stripe_event: event).run
   end
 
   def handle_issuing_authorization_updated(event)

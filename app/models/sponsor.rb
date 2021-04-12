@@ -1,6 +1,9 @@
 class Sponsor < ApplicationRecord
   extend FriendlyId
 
+  include PgSearch::Model
+  pg_search_scope :search_name, against: [:name, :contact_email]
+
   friendly_id :slug_candidates, use: :slugged
 
   belongs_to :event
@@ -18,7 +21,7 @@ class Sponsor < ApplicationRecord
     i = invoices.last
     if i.nil?
       :muted
-    elsif i.paid?
+    elsif i.paid_v2?
       :success
     elsif i.due_date < Time.current
       :error
@@ -33,7 +36,7 @@ class Sponsor < ApplicationRecord
     i = invoices.last
     if i.nil?
       'No invoices yet'
-    elsif i.paid?
+    elsif i.paid_v2?
       'Last invoice paid'
     elsif i.due_date < Time.current
       'Last invoice overdue + unpaid'

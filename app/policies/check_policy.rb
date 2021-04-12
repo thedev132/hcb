@@ -8,11 +8,15 @@ class CheckPolicy < ApplicationPolicy
   end
 
   def create?
-    admin_or_user
+    user&.admin? || record.users.include?(user) # dirty implementation here. record is event (temporary)
   end
 
   def show?
     is_public || admin_or_user
+  end
+
+  def cancel?
+    admin_or_user
   end
 
   def view_scan?

@@ -1,5 +1,11 @@
 class AchTransfer < ApplicationRecord
+  has_paper_trail
+
+  include AASM
   include Commentable
+
+  include PgSearch::Model
+  pg_search_scope :search_recipient, against: [:recipient_name], using: { tsearch: { prefix: true, dictionary: "english" } }, ranked_by: "ach_transfers.created_at"
 
   belongs_to :creator, class_name: 'User'
   belongs_to :event
@@ -8,19 +14,49 @@ class AchTransfer < ApplicationRecord
 
   has_one :t_transaction, class_name: 'Transaction', inverse_of: :ach_transfer
 
-  scope :pending, -> { where(approved_at: nil, rejected_at: nil) }
   scope :approved, -> { where.not(approved_at: nil) }
-  scope :rejected, -> { where.not(rejected_at: nil) }
 
-  def self.in_transit
-    select { |a| a.approved_at.present? && a.t_transaction.nil? }
+  aasm do
+    state :pending, initial: true
+    state :in_transit
+    state :rejected
+    state :deposited
+
+    event :mark_in_transit do
+      transitions from: [:pending, :deposited], to: :in_transit
+    end
+
+    event :mark_rejected do
+      transitions from: :pending, to: :rejected
+    end
+
+    event :mark_deposited do
+      transitions from: :in_transit, to: :deposited
+    end
   end
 
+  scope :pending_deprecated, -> { where(approved_at: nil, rejected_at: nil) }
+  def self.in_transit_deprecated
+    select { |a| a.approved_at.present? && a.t_transaction.nil? }
+  end
+  scope :rejected_deprecated, -> { where.not(rejected_at: nil) }
   def self.delivered
     select { |a| a.t_transaction.present? }
   end
 
   def status
+    aasm_state.to_sym
+  end
+
+  def state_text
+    status_text
+  end
+
+  def name
+    recipient_name
+  end
+
+  def status_deprecated
     if t_transaction
       :deposited
     elsif approved_at
@@ -68,7 +104,7 @@ class AchTransfer < ApplicationRecord
     'checkmark' if deposited?
   end
 
-  def pending?
+  def pending_deprecated?
     approved_at.nil? && rejected_at.nil?
   end
 
@@ -76,15 +112,15 @@ class AchTransfer < ApplicationRecord
     !pending?
   end
 
-  def rejected?
+  def rejected_deprecated?
     rejected_at.present?
   end
 
-  def in_transit?
+  def in_transit_deprecated?
     approved_at.present?
   end
 
-  def deposited?
+  def deposited_deprecated?
     t_transaction.present?
   end
 
@@ -93,18 +129,47 @@ class AchTransfer < ApplicationRecord
   end
 
   def approve!
-    if !pending?
-      errors.add(:ach_transfer, 'has already been approved or rejected!')
-      return false
-    end
+    mark_in_transit!
     update(approved_at: DateTime.now)
   end
 
   def reject!
-    if !pending?
-      errors.add(:ach_transfer, 'has already been approved or rejected!')
-      return false
-    end
+    mark_rejected!
     update(rejected_at: DateTime.now)
   end
+
+  def canonical_pending_transaction
+    canonical_pending_transactions.first
+  end
+
+  def smart_memo
+    recipient_name.to_s.upcase
+  end
+
+  def canonical_pending_transactions
+    @canonical_pending_transactions ||= CanonicalPendingTransaction.where(hcb_code: hcb_code)
+  end
+
+  def canonical_transactions
+    @canonical_transactions ||= CanonicalTransaction.where(hcb_code: hcb_code)
+  end
+
+  def hcb_code
+    "HCB-#{TransactionGroupingEngine::Calculate::HcbCode::ACH_TRANSFER_CODE}-#{id}"
+  end
+
+  def local_hcb_code
+    @local_hcb_code ||= HcbCode.find_or_create_by(hcb_code: hcb_code)
+  end
+
+  private
+
+  def raw_pending_outgoing_ach_transaction
+    raw_pending_outgoing_ach_transactions.first
+  end
+
+  def raw_pending_outgoing_ach_transactions
+    @raw_pending_outgoing_ach_transactions ||= ::RawPendingOutgoingAchTransaction.where(ach_transaction_id: id)
+  end
+
 end

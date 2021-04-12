@@ -1,0 +1,162 @@
+<% title "Transaction #{@canonical_transaction.id}" %>
+
+<h1>Transaction <%= @canonical_transaction.id %></h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Date</th>
+      <th>Memo</th>
+      <th>FriendlyMemo</th>
+      <th>CustomMemo</th>
+      <th>Amount</th>
+      <th>MappedBy</th>
+      <th>Event</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr style="<%= "background: #ffffcc;" unless @canonical_transaction.canonical_event_mapping %>">
+      <td><%= @canonical_transaction.id %></td>
+      <td><%= @canonical_transaction.date %></td>
+      <td><%= @canonical_transaction.memo %></td>
+      <td><%= @canonical_transaction.friendly_memo %></td>
+      <td><%= @canonical_transaction.custom_memo %></td>
+      <td><%= @canonical_transaction.amount %></td>
+      <td><%= @canonical_transaction.canonical_event_mapping.try(:user).try(:email) %></td>
+      <td>
+        <%= form_with model: nil, local: true, url: set_event_path(@canonical_transaction), method: :post do |form| %>
+          <%= form.collection_select(:event_id, Event.reorder(Event::CUSTOM_SORT), :id, :admin_dropdown_description,  {  include_blank: true, selected: @canonical_transaction.event.try(:id) }, { width: 150, style: "max-width: 150px;" }) %>
+          <%= form.submit "Set" %>
+        <% end %>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<br/><hr/>
+
+<% unless @canonical_transaction.linked_object %>
+  <% if @potential_invoices.exists? %>
+    <h4>Potential Invoices</h4>
+    <p>NOTE: If you find the invoice in this list, then please process the invoice after processing the transaction.</p>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Date</th>
+          <th>Recipient</th>
+          <th>Amount</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @potential_invoices.each do |invoice| %>
+          <tr>
+            <td><%= invoice.id %></td>
+            <td><%= invoice.created_at.strftime("%Y-%m-%d") %></td>
+            <td>
+              <%= link_to invoice_path(invoice) do %>
+                <%= invoice.event.name.upcase %>: <%= invoice.sponsor.name %>
+              <% end %>
+            </td>
+            <td><%= render_money_amount(invoice.amount_due) %></td>
+            <td><%= invoice.status.upcase %></td>
+            <td><%= link_to "Process", invoice_process_admin_path(invoice.id) %>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <br/><hr/>
+  <% end %>
+<% end %>
+
+<!--
+<h4>Potential Pending Transactions to Map to</h4>
+
+<table>
+  <tbody>
+    <% @canonical_pending_transactions.each do |cpt| %>
+      <tr>
+        <td><%= cpt.id %></td>
+        <td><%= cpt.date %></td>
+        <td><%= cpt.memo %></td>
+        <td><%= cpt.amount %></td>
+        <td><%= link_to cpt.event.name, cpt.event %></td>
+        <td><%= link_to "Linked Object", cpt.linked_object %></td>
+      </tr>
+    <% end %>
+  </body>
+</table>
+
+<br/><hr/>
+-->
+
+
+<h4>Journey</h4>
+
+<p>CanonicalTransaction</p>
+<%= (ap @canonical_transaction).html_safe %>
+<p>↓</p>
+
+<p>HashedTransaction</p>
+<%= (ap @canonical_transaction.hashed_transactions).html_safe %>
+<p>↓</p>
+
+<% @canonical_transaction.hashed_transactions.each do |ht| %>
+  <% if ht.raw_csv_transaction %>
+    <p>RawCsvTransaction</p>
+    <%= (ap ht.raw_csv_transaction).html_safe %>
+  <% end %>
+
+  <% if ht.raw_plaid_transaction %>
+    <p>RawPlaidTransaction</p>
+    <%= (ap ht.raw_plaid_transaction).html_safe %>
+  <% end %>
+
+  <% if ht.raw_emburse_transaction %>
+    <p>RawEmburseTransaction</p>
+    <%= (ap ht.raw_emburse_transaction).html_safe %>
+  <% end %>
+
+  <% if ht.raw_stripe_transaction %>
+    <p>RawStripeTransaction</p>
+    <%= (ap ht.raw_stripe_transaction).html_safe %>
+  <% end %>
+
+<% end %>
+
+<br/><hr/>
+
+<h4>System Events</h4>
+
+<% @ahoy_events.each do |ae| %>
+  <p><%= ae.name %> <small><%= ae.time %></small></p>
+  <%= (ap ae.properties).html_safe %>
+<% end %>
+
+<!--
+<h4>Potential Historical Transactions to Map from</h4>
+
+<table>
+  <tbody>
+    <% if @canonical_transaction.deprecated_linked_object %>
+      <tr>
+        <td><%= @canonical_transaction.deprecated_linked_object.id %></td>
+        <td><%= @canonical_transaction.deprecated_linked_object.date %></td>
+        <td><%= @canonical_transaction.deprecated_linked_object.memo %></td>
+        <td><%= @canonical_transaction.deprecated_linked_object.amount %></td>
+        <td><%= @canonical_transaction.deprecated_linked_object.deleted_at ? "Deleted at #{@canonical_transaction.deprecated_linked_object.deleted_at}" : "" %></td>
+      </tr>
+    <% end %>
+  </body>
+</table>
+-->
+
+<br/><hr/>
+
+<h4>Comments</h4>
+
+<%= render "comments/list_v2" %>
+

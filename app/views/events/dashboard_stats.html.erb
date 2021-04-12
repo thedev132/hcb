@@ -20,30 +20,13 @@
 <div class="modal" data-behavior="modal" role="dialog" id="pending_withdrawals">
   <% if using_transaction_engine_v2? %>
     <%= modal_header "Pending fees #{"(#{render_money @event.fee_balance_v2_cents})" if @event.fee_balance_v2_cents > 0}" %>
-    <% if @event.fee_balance_v2_cents != 0 %>
-      <h3 class="mb1 mt0">Bank fee</h3>
-      <div class="breakdown">
-        <div class="stat stat--small flex items-center">
-          <span class="stat__value"><%= render_money_amount @event.fee_balance_v2_cents %></span>
-        </div>
-        <span class="breakdown__equals">&#61;</span>
-        <div>
-          <span class="breakdown__amount">
-            <%= render_money @event.balance_v2_cents %>
-          </span>
-          <span class="breakdown__sub">revenue without fee withdrawn</span>
-        </div>
-        <span class="breakdown__equals">&times;</span>
-        <div>
-          <span class="breakdown__amount"><%= @event.sponsorship_fee * 100 %>%</span>
-          <span class="breakdown__sub">our fee</span>
-        </div>
-      </div>
-    <% else %>
-      <%= blankslate 'You have no pending withdrawals.' %>
-    <% end %>
+    <p class="center mt0 mb0 pt2 pb2 slate bold h3 mx-auto max-width-2">
+      <%= link_to fees_report_path(@event, format: :csv) do %>
+        Download Fee Schedule (fees.csv)
+      <% end %>
+    </p>
     <% if organizer_signed_in? %>
-      <span class="h5 muted block mt2">
+      <span class="h5 muted block mt2 center">
         Questions? <%= help_message %>
       </span>
     <% end %>

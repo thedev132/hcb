@@ -8,7 +8,7 @@
     <span class="h3 caps secondary block">Welcome to</span>
     <span class="primary">Hack&nbsp;Club Bank</span>
   </div>
-  <span class="badge ml0 h5 caps"><%= random_nickname %></span>
+  <span class="badge ml0 h5 caps"><%= random_nickname.html_safe %></span>
 </h1>
 
 <main class="flex flex-column items-center center pb3">
@@ -27,7 +27,7 @@
             </li>
           <% end %>
         <% end %>
-        <a href="https://airtable.com/shrp79oRXlWT025j8?prefill_First+Name=<%= current_user.first_name %>&prefill_Last+Name=<%= current_user.last_name %>&prefill_Email+Address=<%= current_user.email %>">
+        <a href="https://airtable.com/shrp79oRXlWT025j8?prefill_Have%20you%20used%20Hack%20Club%20Bank%20for%20any%20previous%20projects?=Yes,%20I%20have%20used%20Hack%20Club%20Bank%20before&prefill_First+Name=<%= current_user.first_name %>&prefill_Last+Name=<%= current_user.last_name %>&prefill_Email+Address=<%= current_user.email %>">
           <li class="card card--hover bold brand-sans flex items-center align-center">
             <span class="pop success mr1">
               <%= inline_icon 'plus', size: 28 %>
@@ -73,7 +73,7 @@
     <% end %>
     <% if @events.empty? && @invites.empty? && !current_user.admin? %>
       <%= blankslate 'No projects associated with your account yet.' %>
-      <a href="https://airtable.com/shrW33gWaPnSDBhYj?prefill_First+Name=<%= current_user.first_name %>&prefill_Last+Name=<%= current_user.last_name %>&prefill_Email+Address=<%= current_user.email %>" class="btn bg-success">
+      <a href="https://airtable.com/shrW33gWaPnSDBhYj?prefill_Have%20you%20used%20Hack%20Club%20Bank%20for%20any%20previous%20projects?=No,%20first%20time!&prefill_First+Name=<%= current_user.first_name %>&prefill_Last+Name=<%= current_user.last_name %>&prefill_Email+Address=<%= current_user.email %>" class="btn bg-success">
         <%= inline_icon 'plus' %>
         New project
       </a>
@@ -81,17 +81,31 @@
   <% end %>
 
   <% admin_tools('w-100 center mt3') do %>
-    <h2>Daily tasks</h2>
+    <h2>Daily Tasks</h2>
+    <ul class="grid left-align w-100 mt0">
+      <%= card_to "Clubs/Events (#{Event.pending.count})", events_admin_index_path %>
+      <%= card_to "Fees", fees_admin_index_path %>
+      <%= card_to "Users", users_admin_index_path %>
+      <%= card_to "Ledger (#{CanonicalTransaction.not_stripe_top_up.unmapped.count})", ledger_admin_index_path %>
+      <%= card_to "Pending Ledger (#{CanonicalPendingTransaction.unsettled.count})", pending_ledger_admin_index_path %>
+      <%= card_to "ACH (#{AchTransfer.pending.count})", ach_admin_index_path %>
+      <%= card_to "Check (#{Check.in_transit.count})", check_admin_index_path %>
+      <%= card_to "Donations", donations_admin_index_path %>
+      <%= card_to "Disbursements (#{Disbursement.pending.count})", disbursements_admin_index_path %>
+      <%= card_to "Invoices", invoices_admin_index_path %>
+      <%= card_to "Sponsors", sponsors_admin_index_path %>
+      <%= card_to "Google Workspaces (#{GSuite.needs_ops_review.count})", google_workspaces_admin_index_path %>
+      <%= card_to "HCB Codes", hcb_codes_admin_index_path %>
+      <%= card_to 'Duplicated (WIP)', transaction_dedupe_path %>
+    </ul>
+
+    <h2>Daily tasks (v1)</h2>
     <ul class="grid left-align w-100 mt0">
       <%= card_to 'Pending tasks', admin_tasks_path %>
-      <%= render partial: 'static_pages/card', locals: { task_path: checks_path, task_name: :checks, human_name: 'Checks', count: @service.checks_count } %>
-      <%= render partial: 'static_pages/card', locals: { task_path: ach_transfers_path, task_name: :ach_transfers, human_name: 'ACH transfers', count: @service.ach_transfers_count } %>
       <%= render partial: 'static_pages/card', locals: { task_path: g_suites_path, task_name: :g_suites, human_name: 'Google Workspaces', count: @service.g_suites_needs_ops_review_count } %>
       <%= render partial: 'static_pages/card', locals: { task_path: organizer_position_deletion_requests_path, task_name: :organizer_position_deletion_requests, human_name: 'Deletion requests', count: @service.organizer_position_deletion_requests_count } %>
       <%= render partial: 'static_pages/card', locals: { task_path: transactions_path, task_name: :transactions, human_name: 'Transactions', count: @service.transactions_count } %>
       <%#= react_component 'admin_task/Card', human_name: 'Transactions', task_name: :transactions, task_path: transactions_path %>
-      <%= card_to 'De-duplicate transactions', transaction_dedupe_path %>
-      <%= render partial: 'static_pages/card', locals: { task_path: pending_disbursements_path, task_name: :disbursements, human_name: 'Disbursements', count: @service.disbursements_count } %>
       <%= react_component 'admin_task/Card', human_name: 'Hackathons', task_name: :pending_hackathons_airtable, task_path: link_to_airtable_task(:hackathons) %>
       <%= react_component 'admin_task/Card', human_name: 'Grants', task_name: :pending_grant_airtable, task_path: link_to_airtable_task(:grant) %>
       <%= react_component 'admin_task/Card', human_name: 'StickerMule', task_name: :pending_stickermule_airtable, task_path: link_to_airtable_task(:stickermule) %>
@@ -107,11 +121,10 @@
       <%= react_component 'admin_task/Card', human_name: 'Stripe TXs', task_path: stripe_authorizations_path %>
       <%= render partial: 'static_pages/card', locals: { task_path: all_invoices_path, human_name: 'Invoices' } %>
       <%= render partial: 'static_pages/card', locals: { task_path: sponsors_path, human_name: 'Sponsors' } %>
-      <%= render partial: 'static_pages/card', locals: { task_path: donations_path, human_name: 'Donations' } %>
-      <%= render partial: 'static_pages/card', locals: { task_path: disbursements_path, human_name: 'Disbursements' } %>
       <%= render partial: 'static_pages/card', locals: { task_path: g_suite_accounts_path, human_name: 'Google Workspace accounts' } %>
       <%= render partial: 'static_pages/card', locals: { task_path: fee_reimbursements_path, human_name: 'Fee refunds' } %>
       <%= render partial: 'static_pages/card', locals: { task_path: pending_fees_path, human_name: 'Fees' } %>
+      <%= react_component 'admin_task/Card', human_name: :bookkeeping, task_path: bookkeeping_path %>
       <%= card_to 'Emburse cards', emburse_cards_path %>
       <%= card_to 'Emburse card requests', emburse_card_requests_path %>
       <%= card_to 'Emburse transfers', emburse_transfers_path %>

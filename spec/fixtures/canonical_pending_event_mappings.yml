@@ -1,0 +1,3 @@
+canonical_pending_event_mapping1:
+  event: event1
+  canonical_pending_transaction: canonical_pending_transaction1

@@ -1,0 +1,49 @@
+<tr class="transaction--<%= ct.amount.negative? ? "negative" : "positive" %>">
+  <td class="transaction__icon tooltipped tooltipped--e" aria-label="Bank account transaction">
+    <% if ct.fee_payment? %>
+      <%= inline_icon "minue" %>
+    <% elsif ct.check? %>
+      <%= inline_icon "payment-transfer" %>
+    <% elsif ct.ach_transfer? %>
+      <%= inline_icon "payment-transfer" %>
+    <% elsif ct.raw_stripe_transaction %>
+      <% if ct.stripe_cardholder %>
+        <%= avatar_for ct.stripe_cardholder.user, 24 %>
+      <% else %>
+        <%= inline_icon "card" %>
+      <% end %>
+    <% elsif ct.invoice? %>
+      <%= inline_icon "briefcase" %>
+    <% elsif ct.donation? %>
+      <%= inline_icon "support" %>
+    <% elsif ct.disbursement? %>
+      <% if ct.amount.negative? %>
+        <%= inline_icon "door-leave" %>
+      <% else %>
+        <%= inline_icon "door-enter" %>
+      <% end %>
+    <% else %>
+      <%= inline_icon "bank-account" %>
+    <% end %>
+  </td>
+  <td>
+    <%= ct.date %>
+  </td>
+  <td class="transaction__memo">
+    <span title="<%= ct.hcb_code %>">
+      <%= ct.memo %>
+    </span>
+
+    <% if ct.local_hcb_code %>
+      <%= list_badge_for ct.local_hcb_code.receipts.size, "receipt", "payment-docs", optional: true %>
+      <%= list_badge_for ct.local_hcb_code.comments.size, "note", "post", optional: true %>
+    <% end %>
+  </td>
+  <td class="nowrap">
+    <span><%= ct.amount %></span>
+  </td>
+  <td>
+    <%= link_to "Details", ct.url if organizer_signed_in? %>
+  </td>
+</tr>
+

@@ -12,15 +12,22 @@ module TransactionEngine
       import_other_raw_plaid_transactions!
       import_raw_emburse_transactions!
       import_raw_stripe_transactions!
+      import_raw_csv_transactions!
 
       # 2 hashed 
       hash_raw_plaid_transactions!
       hash_raw_emburse_transactions!
       hash_raw_stripe_transactions!
-      #hash_raw_csv_transactions! # turn off for now. was a test.
+      hash_raw_csv_transactions!
 
       # 3 canonical
       canonize_hashed_transactions!
+
+      # 4 plaid mistakes
+      fix_plaid_mistakes!
+
+      # 5 fix memo mistakes
+      fix_memo_mistakes!
     end
 
     private
@@ -62,6 +69,10 @@ module TransactionEngine
       ::TransactionEngine::RawStripeTransactionService::Stripe::Import.new(start_date: @start_date).run
     end
 
+    def import_raw_csv_transactions!
+      ::TransactionEngine::RawCsvTransactionService::Import.new.run
+    end
+
     def hash_raw_plaid_transactions!
       ::TransactionEngine::HashedTransactionService::RawPlaidTransaction::Import.new(start_date: @start_date).run
     end
@@ -75,11 +86,21 @@ module TransactionEngine
     end
 
     def hash_raw_csv_transactions!
-      #::TransactionEngine::HashedTransactionService::RawCsvTransaction::Import.new.run
+      ::TransactionEngine::HashedTransactionService::RawCsvTransaction::Import.new.run
     end
 
     def canonize_hashed_transactions!
       ::TransactionEngine::CanonicalTransactionService::Import::All.new.run
+    end
+
+    def fix_plaid_mistakes!
+      BankAccount.syncing_v2.pluck(:id).each do |bank_account_id|
+        ::TransactionEngine::FixMistakes::Plaid.new(bank_account_id: bank_account_id, start_date: @start_date, end_date: nil).run
+      end
+    end
+
+    def fix_memo_mistakes!
+      ::TransactionEngine::FixMistakes::Memos.new(start_date: @start_date).run
     end
   end
 end

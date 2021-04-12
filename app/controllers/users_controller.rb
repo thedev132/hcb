@@ -8,15 +8,17 @@ class UsersController < ApplicationController
 
     impersonate_user(User.find(params[:user_id]))
 
-    redirect_to root_path, status: 302
+    redirect_to(params[:return_to] || root_path)
   end
 
   # view to log in
   def auth
+    @return_to = params[:return_to]
   end
 
   # post to request login code
   def login_code
+    @return_to = params[:return_to]
     @email = params[:email].downcase
 
     resp = ::Partners::HackclubApi::RequestLoginCode.new(email: @email).run
@@ -33,7 +35,7 @@ class UsersController < ApplicationController
     if user.full_name.blank? || user.phone_number.blank?
       redirect_to edit_user_path(user.slug)
     else
-      redirect_to root_path
+      redirect_to(params[:return_to] || root_path)
     end
   rescue Errors::InvalidLoginCode => e
     flash[:error] = e.message

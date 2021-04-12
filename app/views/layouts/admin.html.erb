@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Bank Admin</title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= stylesheet_link_tag "admin", media: "all", "data-turbolinks-track": "reload" %>
+    <%= javascript_include_tag "admin", "data-turbolinks-track": "reload", defer: true %>
+    <%= yield(:head) if content_for?(:head) %>
+  </head>
+  <body>
+    <% flash.each do |key, value| %>
+      <% if key == "error" %>
+        <p style="text-align:center;background:red;color:white;"><%= value %></p>
+      <% else %>
+        <p style="text-align:center;background:green;color:white;"><%= value %></p>
+      <% end %>
+      <hr/>
+    <% end %>
+
+    <p>
+      <%= link_to "admin", root_path %>
+      |
+      <%= link_to "events (#{Event.pending.count})", events_admin_index_path %>
+      |
+      <%= link_to "fees", fees_admin_index_path %>
+      |
+      <%= link_to "users", users_admin_index_path %>
+      |
+      <%= link_to "ledger (#{CanonicalTransaction.not_stripe_top_up.unmapped.count})", ledger_admin_index_path %>
+      |
+      <%= link_to "pending ledger (#{CanonicalPendingTransaction.unsettled.count})", pending_ledger_admin_index_path %>
+      |
+      <%= link_to "achs (#{AchTransfer.pending.count})", ach_admin_index_path %>
+      |
+      <%= link_to "checks (#{Check.in_transit.count})", check_admin_index_path %>
+      |
+      <%= link_to "donations", donations_admin_index_path %>
+      |
+      <%= link_to "disbursements (#{Disbursement.pending.count})", disbursements_admin_index_path %>
+      |
+      <%= link_to "invoices", invoices_admin_index_path %>
+      |
+      <%= link_to "sponsors", sponsors_admin_index_path %>
+      |
+      <%= link_to "google workspaces (#{GSuite.needs_ops_review.count})", google_workspaces_admin_index_path %>
+      |
+      <%= link_to "hcb codes", hcb_codes_admin_index_path %>
+
+    </p>
+
+    <hr/>
+
+    <%= yield %>
+  </body>
+</html>

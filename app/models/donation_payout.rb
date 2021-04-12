@@ -7,6 +7,8 @@ class DonationPayout < ApplicationRecord
 
   # find donation payouts that don't yet have an associated transaction
   scope :lacking_transaction, -> { includes(:t_transaction).where(transactions: { donation_payout_id: nil }) }
+  scope :in_transit, -> { where(status: "in_transit") }
+  scope :paid, -> { where(status: "paid") }
 
   # although it normally doesn't make sense for a paynot not to be linked to an donation,
   # Stripe's schema makes this possible, and when that happens, requiring donation<>payout breaks bank
@@ -45,14 +47,20 @@ class DonationPayout < ApplicationRecord
     "##{self.id} | #{render_money self.amount} (#{self.donation.event.name}, #{self.donation.name})"
   end
 
+  def hcb_code
+    donation.hcb_code
+  end
+
   private
 
   def default_values
     return unless donation
 
-    self.statement_descriptor ||= "DONATE #{SecureRandom.hex(6)}"[0...StripeService::StatementDescriptorCharLimit] # limit to 22 characters, the stripe limit
-                                  .gsub(/[^0-9a-z ]/i, '') # alphanumeric only
-                                  .upcase
+    self.statement_descriptor ||= hcb_code
+
+    #self.statement_descriptor ||= "DONATE #{SecureRandom.hex(6)}"[0...StripeService::StatementDescriptorCharLimit] # limit to 22 characters, the stripe limit
+    #                              .gsub(/[^0-9a-z ]/i, '') # alphanumeric only
+    #                              .upcase
   end
 
   def create_stripe_payout

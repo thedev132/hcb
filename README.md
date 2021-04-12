@@ -8,20 +8,85 @@ Bank is a tool for hackers to hack on the real world, like GitHub, but for build
 
 ## Getting Started
 
+Install [rbenv](https://github.com/rbenv/rbenv)
+
+```bash
+brew install rbenv
+```
+
+Install [bundler](https://bundler.io/)
+
+```bash
+gem install bundler -v 1.17.3
+```
+
+Run bundler
+
+```bash
+bundle install
+```
+
+Create and migrate database
+
+```bash
+bundle exec rake db:drop db:create db:migrate
+```
+
+Populate the database
+
+```bash
+heroku git:remote -a bank-hackclub # if your repo isn't attached to the heroku app
+heroku pg:backups:capture
+heroku pg:backups:download # will save as latest.dump, double check to make sure that file is created
+pg_restore --verbose --clean --no-acl --no-owner -d bank_development latest.dump
+```
+
+Run the application
+
+```bash
+bin/rails s
+```
+
+## Additional Installs
+
+Install wkhtmltopdf
+
+```bash
+brew install wkhtmltopdf
+```
+
+Browse to [localhost:3000](http://localhost:3000)
+
+## Alternative with Docker
+
+Copy .env file
+
+```bash
+cp .env.docker.example .env.docker
+```
+
+Run Docker
+
+```bash
+docker-compose build
+docker-compose run web bundle install
+docker-compose run web yarn install --check-files
+docker-compose run web bundle exec rails db:create db:migrate
+docker-compose run --service-ports web bundle exec rails s -b 0.0.0.0 -p 3000
+```
+
+
+## Getting Started (deprecated)
+
 1. Install Docker.
 2. Clone this repo.
 3. Get a copy of the encrypted credentials key from a team member (`config/master.key`)
-4. Copy `.env.example` to `.env` (`cp .env.example .env`) & edit `APP_PORT=3000` or whatever floats your boat in the port
+4. Copy `.env.example` to `.env` (`cp .env.example .env`) & edit `PORT=3000` or whatever floats your boat in the port
 5. ```sh
     docker-compose build
+    docker-compose run web bundle install
     docker-compose run web bundle exec rails db:create db:migrate
     docker-compose run --service-ports web bundle exec rails s -b 0.0.0.0 -p 3000
-
-    # Warning: `docker-compose up` will also spin up a background job worker to
-    # work on jobs in your database. If you've restored a production database
-    # dump, your local version may start sending emails/running jobs that were
-    # queued in production. You can see your database's jobs at
-    # http://localhost:3000/sidekiq
    ```
 
 6. Open [localhost:3000](http://localhost:3000)
@@ -208,3 +273,10 @@ HTTP 400 - generic invalid input
 ```
 
 If a `201` response, all fields will always be present.
+
+## Events
+
+```
+settledTransactionCreated
+pendingTransactionCreated
+```

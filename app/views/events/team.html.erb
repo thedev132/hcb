@@ -20,7 +20,7 @@
           phone: <%= position.user.phone_number %>
           </span>
           <span class="admin-tools inline-block h5">
-          <%= link_to "Impersonate this user", impersonate_users_path(user_id: position.user.id) %>
+          <%= link_to "Impersonate this user", impersonate_users_path(user_id: position.user.id, return_to: request.url) %>
           </span>
         <% end %>
       </p>
@@ -36,7 +36,11 @@
 <% end %>
 
 <h2 class="mt3">Invite a team member</h2>
-<%= render 'form_invite', invite: OrganizerPositionInvite.new %>
+<% if organizer_signed_in? %>
+  <%= render 'form_invite', invite: OrganizerPositionInvite.new %>
+<% else %>
+  <p>Disabled in transparency mode</p>
+<% end %>
 
 <% if @pending.any? %>
   <h2 class="flex items-center mt3 mb0">

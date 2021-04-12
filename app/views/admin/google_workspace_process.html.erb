@@ -1,0 +1,107 @@
+<h1>Process Google Workspace #<%= @g_suite.id %></h1>
+<p><small>Current Status: <%= @g_suite.aasm_state %></small></p>
+
+<h3>Google Workspace Details</h3>
+<table>
+  <tbody>
+    <tr>
+      <td style="text-align: right;">Event:</td>
+      <td><%= @g_suite.event.name %></td>
+    </tr>
+    <tr>
+      <td style="text-align: right;">Domain:</td>
+      <td><%= @g_suite.domain %></td>
+    </tr>
+    <tr>
+      <td style="text-align: right;">Verification Key:</td>
+      <td><%= @g_suite.verification_key %></td>
+    </tr>
+    <tr>
+      <td style="text-align: right;">OU ID:</td>
+      <td><%= @g_suite.remote_org_unit_id %></td>
+    </tr>
+    <tr>
+      <td style="text-align: right;">OU Path:</td>
+      <td><%= @g_suite.remote_org_unit_path %></td>
+    </tr>
+    <tr>
+      <td style="text-align: right;">DKIM Key:</td>
+      <td><%= @g_suite.dkim_key %></td>
+    </tr>
+  </tbody>
+</table>
+<br/>
+<hr/>
+<h3>Instructions</h3>
+<p>Context: <%= link_to "see what the user sees", event_g_suite_overview_path(event_id: @g_suite.event.slug) %>.</p>
+<% if @g_suite.creating? %>
+  <p>Is this a valid/reasonable domain name? If so:</p>
+  <ol>
+    <li>Visit <%= link_to "Google Webmaster Central", @g_suite.verification_url %></li>
+    <li>Choose 'Other' from the drop down menu</li>
+    <li>Copy/Paste the TXT record into the form below</li>
+    <li>Click 'Verify' on Google Webmaster Central</li>
+    <li>Click 'Submit' below</li>
+  </ol>
+  <%= form_with(model: nil, local: true, url: google_workspace_update_admin_path(@g_suite), method: :post) do |form| %>
+    <%= form.label :verification_key do %>
+      <%= form.text_field :verification_key %>
+    <% end %>
+    <%= form.submit "Set verification key" %>
+  <% end %>
+<% end %>
+<% if @g_suite.configuring? %>
+  <p>Nothing to do at the moment. The user now needs to configure their MX records.
+<% end %>
+<% if @g_suite.verifying? %>
+  <p>Hack Club Bank is now trying to automatically verify if the user has configured their domain correctly with the TXT record.</p>
+  <p>If you would like to check yourself:</p>
+  <ol>
+    <li>Visit <%= link_to "Google Webmaster Central", @g_suite.verification_url %></li>
+    <li>Choose 'Other' from the drop down menu</li>
+    <li>Click 'Verify' on Google Webmaster Central</li>
+  </ol>
+  <p>You can additionally verify that the TXT record they have matches the verification key we have on file:</p>
+  <p><code>google-site-verification=<%= @g_suite.verification_key %></code></p>
+  <p><%= link_to "DNS Check", @g_suite.dns_check_url %></p>
+  <p>If it does not match or is missing, make sure to notify the event owner and have them set it up on their DNS provider.</p>
+  <p>Has it still been stuck on verifying after a few days? Try updating the verification key.</p>
+  <ol>
+    <li>Visit <%= link_to "Google Webmaster Central", @g_suite.verification_url %></li>
+    <li>Choose 'Other' from the drop down menu</li>
+    <li>Copy/Paste the TXT record into the form below</li>
+    <li>Click 'Verify' on Google Webmaster Central</li>
+    <li>Click 'Submit' below</li>
+  </ol>
+  <%= form_with(model: nil, local: true, url: google_workspace_update_admin_path(@g_suite), method: :post) do |v_key_form| %>
+    <%= v_key_form.label :verification_key do %>
+      <%= v_key_form.text_field :verification_key, value: @g_suite.verification_key %>
+    <% end %>
+    <%= v_key_form.submit "Update verification key" %>
+  <% end %>
+<% end %>
+<% if @g_suite.verified? %>
+  <p>Nothing more to do. This was setup, configured, and verified successfully.<br />
+  However, if the user is having issues with email delivery or would like to setup DKIM, please see the DKIM key instructions below.</p>
+<% end %>
+
+<hr />
+<h5>DKIM Key</h5>
+<div>
+  <small><a href="https://support.google.com/a/answer/174124?hl=en">What is DKIM?</a></small>
+  <p>Instructions:</p>
+  <ul>
+    <li>Visit the <a href="https://admin.google.com/ac/apps/gmail/authenticateemail">DKIM authentication page</a> on Google Admin.</li>
+    <li>Select <code><%= @g_suite.domain %></code> in the domain dropdown</li>
+    <li>Click "Generate new record". Use default settings</li>
+    <li>Copy and paste the <strong>TXT record value</strong> into the box below and hit the button!</li>
+    <li>The DKIM key will now show up in the event's <%= link_to "Google Workspace setup instructions", event_g_suite_overview_path(event_id: @g_suite.event.slug) %></li>
+    <li>Once the DKIM key has been added to the domain's DNS by the organizer, go back to the Google Admin page above, select the domain, and click "Start Authentication"</li>
+  </ul>
+</div>
+<%= form_with(model: nil, local: true, url: google_workspace_update_admin_path(@g_suite), method: :post) do |dkim_key_form| %>
+  <%= dkim_key_form.label :dkim_key do %>
+    <%= dkim_key_form.text_field :dkim_key, value: @g_suite.dkim_key %>
+  <% end %>
+  <%= dkim_key_form.submit "Update DKIM key" %>
+<% end %>

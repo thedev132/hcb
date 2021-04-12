@@ -1,4 +1,8 @@
 class EventPolicy < ApplicationPolicy
+  def user_or_admin?
+    user_or_admin
+  end
+
   def index?
     user&.admin?
   end
@@ -17,6 +21,10 @@ class EventPolicy < ApplicationPolicy
 
   def show?
     is_public || user_or_admin
+  end
+
+  def fees?
+    user_or_admin
   end
 
   def dashboard_stats?

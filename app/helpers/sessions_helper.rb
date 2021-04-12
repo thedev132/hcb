@@ -37,7 +37,7 @@ module SessionsHelper
   end
 
   def organizer_signed_in?
-    (signed_in? && @event&.users&.include?(current_user)) || admin_signed_in?
+    @organizer_signed_in ||= ((signed_in? && @event&.users&.include?(current_user)) || admin_signed_in?)
   end
 
   def current_user(ensure_api_authorized = true)
@@ -57,14 +57,12 @@ module SessionsHelper
 
   def signed_in_user
     unless signed_in?
-      store_location
       redirect_to auth_users_path
     end
   end
 
   def signed_in_admin
     unless admin_signed_in?
-      store_location
       redirect_to auth_users_path, flash: { error: 'You’ll need to sign in as an admin.' }
     end
   end
@@ -73,15 +71,6 @@ module SessionsHelper
     current_user(false).update_attribute(:session_token, User.digest(User.new_session_token)) if current_user(false)
     cookies.delete(:session_token)
     self.current_user = nil
-  end
-
-  def redirect_back_or(default)
-    redirect_to(session[:return_to] || default)
-    session.delete(:return_to)
-  end
-
-  def store_location
-    session[:return_to] = request.url if request.get?
   end
 
   private

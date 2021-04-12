@@ -1,13 +1,11 @@
+# frozen_string_literal: true
+
 module PendingEventMappingEngine
   module Map
     class Stripe
       def run
-        unmapped.find_each do |cpt|
-          attrs = {
-            event_id: cpt.raw_pending_stripe_transaction.likely_event_id,
-            canonical_pending_transaction_id: cpt.id
-          }
-          CanonicalPendingEventMapping.create!(attrs)
+        unmapped.find_each(batch_size: 100) do |cpt|
+          ::PendingEventMappingEngine::Map::Single::Stripe.new(canonical_pending_transaction: cpt).run
         end
       end
 

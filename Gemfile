@@ -1,12 +1,12 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '2.5.5'
+ruby '2.6.6'
 
 # gem 'sassc-rails' # required for rails 6
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 6.0.3', '>= 6.0.3.2'
+gem 'rails', '6.0.3.6'
 # Use postgresql as the database for Active Record
 gem 'pg', '>= 0.18', '< 2.0'
 # Use Puma as the app server
@@ -25,7 +25,7 @@ gem 'mini_racer', platforms: :ruby
 # Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
 gem 'turbolinks', '~> 5.2.0'
 # Use Redis adapter to run Action Cable in production
-# gem 'redis', '~> 4.0'
+gem 'redis', '~> 4.0'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
@@ -122,6 +122,8 @@ group :development do
   gem 'spring-watcher-listen', '~> 2.0.0'
   # Preview emails
   gem 'letter_opener_web'
+  # Generate PDFs from HTML. Version must match the wkhtmltopdf Heroku buildpack version (0.12.3 by default)
+  gem 'wkhtmltopdf-binary', '0.12.3'
 end
 
 group :test do
@@ -133,21 +135,28 @@ group :test do
 end
 
 group :production do
-  # Performance tracking
-  gem 'skylight'
-
   # Enable compression in production
   gem 'heroku-deflater'
 end
 
 gem 'aasm' # state machine
+gem 'ahoy_matey' # event engine
 gem 'airbrake' # exception tracking
+gem 'awesome_print'
 gem 'blazer' # business intelligence tool/dashboard
 gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+gem 'chronic'
 gem 'geocoder' # lookup lat/lng for Stripe Cards shipment tracking
+gem 'hashid-rails', '~> 1.0'
+gem 'hiredis'
+gem 'invisible_captcha'
 gem 'money-rails' # back cent fields as money objects 
 gem 'namae' # multi-cultural human name parser
+gem 'newrelic_rpm'
 gem 'paper_trail' # track changes on models
+gem 'pg_search'
+gem 'rack-attack'
+gem 'safely_block'
 gem 'selenium-webdriver'
 gem 'sidekiq-cron', '~> 1.1' # run sidekiq scheduled tasks
 gem 'strong_migrations' # protects against risky migrations that could cause application harm on deploy

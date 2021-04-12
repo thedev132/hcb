@@ -1,0 +1,69 @@
+<% title "FEES" %>
+
+<h1>FEES</h1>
+
+<%= paginate @fees %>
+
+<%= form_with local: true, url: fees_admin_index_path, method: :get do |form| %>
+  <%= form.label :exclude_free_events do %>
+    <%= form.check_box :exclude_free_events, checked: @exclude_free_events %>
+    Exclude Free Events
+  <% end %>
+  |
+  <%= form.label :exclude_outflows do %>
+    <%= form.check_box :exclude_outflows, checked: @exclude_outflows %>
+    Exclude Outflows
+  <% end %>
+  |
+
+  <%= form.label :hack_club_fee do %>
+    <%= form.check_box :hack_club_fee, checked: @hack_club_fee %>
+    Hack Club Fee
+  <% end %>
+  |
+
+  <%= form.collection_select(:event_id, Event.reorder(Event::CUSTOM_SORT), :id, :admin_dropdown_description, { include_blank: true, selected: @event_id }, { width: 150, style: "max-width: 150px" }) %>
+  |
+
+  <%= form.submit "Search" %>
+<% end %>
+
+<p><small><%= pluralize(@count, "result") %></small></p>
+<p><small><%= render_money @sum %></small></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Date</th>
+      <th>Memo</th>
+      <th>Amount</th>
+      <th>Reason</th>
+      <th>%</th>
+      <th>Fee</th>
+      <th>Event</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @fees.each do |fee| %>
+      <tr style="
+        <%= "background: #ffffcc;" unless fee.canonical_event_mapping %>
+        <%= "background: #ffcccc;" if fee.anomaly? %>
+      ">
+        <td><%= fee.id %></td>
+        <td><%= fee.date %></td>
+        <td><%= fee.smart_memo %></td>
+        <td><%= fee.amount %></td>
+        <td><%= fee.reason %></td>
+        <td><%= fee.event_sponsorship_fee %></td>
+        <td><%= number_with_precision fee.amount_cents_as_decimal / 100.0, precision: 4 %></td>
+        <td><%= fee.canonical_event_mapping.try(:event_id) %></td>
+        <td>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= paginate @fees %>

@@ -20,6 +20,7 @@ class Transaction < ApplicationRecord
   }
   # used by the unified transaction list shown on the event show page
   scope :unified_list, -> { where( fee_reimbursement_id: nil ) }
+  scope :renamed, -> { where( "display_name != name" ) }
 
   belongs_to :bank_account
 
@@ -50,6 +51,10 @@ class Transaction < ApplicationRecord
 
   after_initialize :default_values
   
+  def memo
+    name
+  end
+
   def admin_dropdown_description
     "#{name} - #{id}"
   end
@@ -246,9 +251,9 @@ class Transaction < ApplicationRecord
     return if categorized?
 
     if potential_fee_reimbursement?
-      try_pair_fee_reimbursement
+      #try_pair_fee_reimbursement
     elsif potential_donation_payout?
-      try_pair_donation
+      #try_pair_donation
     elsif potential_fee_payment?
       try_pair_fee_payment
     elsif potential_invoice_payout?
@@ -256,17 +261,17 @@ class Transaction < ApplicationRecord
     elsif potential_emburse?
       try_pair_emburse
     elsif potential_github?
-      try_pair_github
+      #try_pair_github
     elsif potential_ach_transfer?
-      try_pair_ach_transfer
-    # check matching temporarily disabled until
-    # some pairing bugs are ironed out.
-    # elsif potential_check?
-    #   try_pair_check
+      #try_pair_ach_transfer
+    elsif potential_check?
+      #try_pair_check
     elsif potential_disbursement?
       try_pair_disbursement
     end
     # NOTE: we cannot curently auto-pair Expensify txs
+  rescue => e
+    Airbrake.notify(e)
   end
 
   # Tries to recover transaction data from a previously paired / modified

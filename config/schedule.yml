@@ -17,7 +17,17 @@ transaction_engine_nightly_job:
   cron: "0 6 * * *" # run at 6am UTC each morning
   class: "TransactionEngineJob::Nightly"
   queue: "default"
+
+transaction_engine_friendly_memo_nightly_job:
+  cron: "0 8 * * *" # run at 6am UTC each morning
+  class: "TransactionEngineJob::FriendlyMemo::Nightly"
+  queue: "default"
   
+transaction_grouping_engine_nightly_job:
+  cron: "0 7 * * *" # run at 7am UTC each morning
+  class: "TransactionGroupingEngineJob::Nightly"
+  queue: "default"
+
 event_mapping_engine_nightly_job:
   cron: "0 7 * * *" # run at 7am UTC each morning
   class: "EventMappingEngineJob::Nightly"
@@ -28,29 +38,9 @@ sync_payouts_job:
   class: "SyncPayoutsJob"
   queue: "default"
 
-sync_emburse_cards_job:
-  cron: "0 0 * * *" # run every 1 day
-  class: "SyncEmburseCardsJob"
-  queue: "default"
-
-sync_emburse_transactions_job:
-  cron: "0 0 * * *" # run every 1 day
-  class: "SyncEmburseTransactionsJob"
-  queue: "default"
-
-sync_invoices_job:
-  cron: "*/30 * * * *" # run every 30 minutes
-  class: "SyncInvoicesJob"
-  queue: "default"
-
 sync_transactions_job:
-  cron: "0 */2 * * *" # run every 2 hours
+  cron: "0 */6 * * *" # run every 6 hours
   class: "SyncTransactionsJob"
-  queue: "default"
-
-temp_job_fix_stripe_authorizations_nightly:
-  cron: "0 0 1 9 *" # run september 1st
-  class: "TempJob::FixStripeAuthorizationsNightly"
   queue: "default"
 
 fee_reimbursement_nightly_job:
@@ -66,6 +56,36 @@ fee_monthly_job:
 disbursement_nightly_job:
   cron: "0 0 * * *" # run every 1 day
   class: "DisbursementJob::Nightly"
+  queue: "default"
+
+ach_transfer_nightly_job:
+  cron: "*/30 * * * *" # run every 30 minutes
+  class: "AchTransferJob::Nightly"
+  queue: "default"
+
+check_nightly_job:
+  cron: "*/30 0 * * *" # run every 30 minutes
+  class: "CheckJob::Nightly"
+  queue: "default"
+
+check_lob_url_assign_having_lob_id_job:
+  cron: "0 0 * * *" # run every 1 day
+  class: "CheckJob::LobUrl::AssignHavingLobId"
+  queue: "default"
+
+invoice_opens_to_paids_job:
+  cron: "*/10 * * * *" # run every 10 minutes
+  class: "InvoiceJob::OpensToPaids"
+  queue: "default"
+
+donation_nightly_job:
+  cron: "*/30 * * * *" # run every 30 minutes
+  class: "DonationJob::Nightly"
+  queue: "default"
+
+payout_nightly_job:
+  cron: "0 0 * * *" # run every 1 day
+  class: "PayoutJob::Nightly"
   queue: "default"
 
 fee_engine_hourly_job:

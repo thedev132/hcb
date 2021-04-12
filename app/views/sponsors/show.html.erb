@@ -37,10 +37,10 @@
   <ul class="list">
     <% @sponsor.invoices.each do |invoice| %>
       <%= link_to invoice_path(invoice) do %>
-        <li class="transaction--<%= invoice.paid? ? 'positive' : 'negative' %>">
+        <li class="transaction--<%= invoice.paid_v2? ? 'positive' : 'negative' %>">
           <strong>
-            <%= render_money invoice.total %> – <span class="<%= invoice.paid? ? 'success' : 'error' %>">
-              <%= invoice.paid? ? 'PAID' : 'UNPAID' %>
+            <%= render_money invoice.total %> – <span class="<%= invoice.paid_v2? ? 'success' : 'error' %>">
+              <%= invoice.paid_v2? ? 'PAID' : 'UNPAID' %>
             </span>
           </strong>
           <span class="muted">Due <%= invoice.due_date.to_date %></span>

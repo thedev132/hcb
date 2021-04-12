@@ -3,60 +3,6 @@ class ChecksController < ApplicationController
   before_action :set_event, only: %i[new create]
   skip_before_action :signed_in_user
 
-  # GET /checks
-  def index
-    authorize Check
-    @checks = Check.all.order(created_at: :desc)
-  end
-
-  def export
-    authorize Check
-    # find all checks that are approved & not exported
-    checks = Check.select { |c| !c.exported? && c.approved? }
-
-    attributes = %w{iv account_number check_number amount date}
-
-    result = CSV.generate(headers: true) do |csv|
-      csv << attributes.map
-
-      checks.each do |check|
-        csv << attributes.map do |attr|
-          if attr == 'account_number'
-            Rails.application.credentials.positive_pay_account_number
-          elsif attr == 'amount'
-            check.amount.to_f / 100
-          elsif attr == 'date'
-            check.approved_at.strftime('%m-%d-%Y')
-          elsif attr == 'iv'
-            # V tells FRB to void, I is issue
-            check.pending_void? || check.refunded? ? "V" : "I"
-          else
-            check.send(attr)
-          end
-        end
-        check.export!
-      end
-    end
-
-    send_data result, filename: "Checks #{Date.today}.csv"
-  end
-
-  # GET /checks/1
-  def show
-    authorize @check
-
-    @commentable = @check
-    @comments = @commentable.comments
-    @comment = Comment.new
-  end
-
-  # GET /checks/1/scan
-  def view_scan
-    authorize @check
-
-    redirect_to @check.url
-  end
-
   # GET /checks/new
   def new
     raise ActiveRecord::RecordNotFound unless using_transaction_engine_v2?
@@ -71,129 +17,56 @@ class ChecksController < ApplicationController
   def create
     raise ActiveRecord::RecordNotFound unless using_transaction_engine_v2?
 
-    # this pulls apart the lob address and check so they can be created separately
-    check_params = filtered_params.except(:action, :controller, :lob_address_attributes)
-    check_params[:amount] = filtered_params[:amount].to_f * 100.to_i
+    authorize @event, policy_class: CheckPolicy
 
+    # 1. Update/Create LobAddress
     lob_address_params = filtered_params[:lob_address_attributes].merge(event: @event)
     lob_address_params['country'] = 'US'
-
     @lob_address = LobAddress.find_or_initialize_by(id: lob_address_params[:id], event: @event)
+    @lob_address.update!(lob_address_params)
 
-    @check = Check.new(check_params)
+    # 2. Create Check
+    attrs = {
+      event_id: @event.id,
+      lob_address_id: @lob_address.id,
 
-    @check.lob_address = @lob_address
-    @check.creator = current_user
+      payment_for: filtered_params[:payment_for],
+      memo: filtered_params[:memo],
+      amount_cents: (filtered_params[:amount].to_f * 100).to_i,
+      send_date: Time.now.utc + 48.hours,
 
-    authorize @check
+      current_user: current_user
+    }
+    check = CheckService::Create.new(attrs).run
 
-    # verify that a user has enough money to write a check
-    if @check.amount > @event.balance_available
-      flash[:error] = 'You don’t have enough money to write this check!'
-      render :new
-      return
-    end
+    flash[:success] = "Your check is scheduled to send on #{check.send_date.to_date}"
 
-    if @lob_address.update(lob_address_params) && @check.save
-      flash[:success] = 'Submitted your check for approval.'
-      redirect_to event_transfers_path(@event)
-    else
-      render :new
-    end
+    redirect_to event_transfers_path(@event)
+  rescue ArgumentError, ::Lob::InvalidRequestError => e
+    flash[:error] = e.message
+
+    redirect_to new_event_check_path(@event)
   end
 
-  def edit
+  def show
     authorize @check
-
-    if @check.approved?
-      flash[:error] = "This check has already been issued."
-      redirect_to event_transfers_path(@event)
-      return
-    end
-
-    @event = @check.event
+      
+    # Comments
+    @hcb_code = HcbCode.find_or_create_by(hcb_code: @check.hcb_code)
   end
 
-  def start_void
+  def cancel
     authorize @check
 
-    if @check.voided?
-      flash[:info] = 'You already voided that check!'
-      redirect_to event_transfers_path(@check.event)
-      return
-    end
+    ::CheckService::Cancel.new(check_id: @check.id).run
+
+    redirect_to @check
   end
 
-  def void
+  def view_scan
     authorize @check
 
-    if @check.voided?
-      flash[:success] = 'You already voided that check!'
-      redirect_to event_transfers_path(@check.event)
-      return false
-    end
-
-    if @check.void!
-      flash[:success] = 'Check successfully voided.'
-      redirect_to event_transfers_path(@check.event)
-    else
-      render :start_void
-    end
-  end
-
-  def update
-    authorize @check
-
-    if @check.approved?
-      flash[:error] = "This check has already been issued!"
-      redirect_to event_transfers_path(@event)
-      return
-    end
-
-    @event = @check.event
-
-    lob_address_params = filtered_params[:lob_address_attributes].merge!(event: @event)
-    lob_address_params['country'] = 'US'
-
-    check_params = filtered_params.except(:action, :controller, :lob_address_attributes)
-    check_params[:amount] = filtered_params[:amount].to_f * 100.to_i
-
-    if @check.update(check_params) && @check.lob_address.update(lob_address_params)
-      flash[:success] = 'Check successfully updated.'
-      redirect_to event_transfers_path(@event)
-    else
-      redirect_to :edit
-    end
-  end
-
-  def approve
-    authorize @check
-
-    if @check.approved?
-      flash[:error] = 'This check has already been approved!'
-      redirect_to checks_path
-      return
-    end
-
-    @check.approve!
-  end
-
-  def reject
-    authorize @check
-
-    if @check.rejected?
-      flash[:error] = 'This check has already been rejected!'
-      redirect_to checks_path
-      return
-    end
-
-    @check.reject!
-
-    redirect_to checks_path
-  end
-
-  def start_approval
-    authorize @check
+    redirect_to @check.lob_url
   end
 
   def refund_get

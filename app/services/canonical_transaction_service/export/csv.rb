@@ -13,7 +13,7 @@ module CanonicalTransactionService
         Enumerator.new do |y|
           y << header.to_s
 
-          event.canonical_transactions.find_each(batch_size: BATCH_SIZE) do |ct|
+          event.canonical_transactions.order("date desc").each do |ct|
             y << row(ct).to_s
           end
         end
@@ -30,7 +30,7 @@ module CanonicalTransactionService
       end
 
       def row(ct)
-        ::CSV::Row.new(headers, [ct.date, ct.memo, ct.amount_cents])
+        ::CSV::Row.new(headers, [ct.date, ct.smart_memo, ct.amount_cents])
       end
 
       def headers

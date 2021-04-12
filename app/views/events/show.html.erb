@@ -9,6 +9,14 @@
     <span class="badge bg-muted">
       #<%= @event.id %>
     </span>
+    
+    <span class="badge bg-muted">
+      <% if params[:v1] %>
+        <%= link_to "view v2", url_for(only_path: false, v2: true), class: "white" %>
+      <% else %>
+        <%= link_to "view v1", url_for(only_path: false, v1: true), class: "white" %>
+      <% end %>
+    </span>
   <% end %>
 </h1>
 
@@ -38,11 +46,7 @@
 <div class="statset">
   <div class="stat statset__wide">
     <span class="stat__label">Account balance</span>
-    <% if using_transaction_engine_v2? %>
     <span class="stat__value"><%= render_money_amount @event.balance_v2_cents %></span>
-    <% else %>
-    <span class="stat__value"><%= render_money_amount @event.balance %></span>
-    <% end %>
   </div>
   <%= async_frame_to event_dashboard_stats_path(@event), as: :div, class: 'grid grid--split', style: 'grid-column: span 2' do %>
     <action class="stat stat--small tooltipped tooltipped--s" aria-label="The amount that will be automatically deducted from your account balance">
@@ -60,76 +64,144 @@
       <span class="stat__value">—</span>
     </action>
   <% end %>
-
-  <% unless using_transaction_engine_v2? %>
-    <% admin_tools do %>
-    <div class="stat stat--small statset__wide">
-      <span class="stat__label flex items-center">
-        Emburse balance
-      </span>
-      <span class="stat__value"><%= render_money_amount @event.emburse_balance %></span>
-    </div>
-    <% end %>
-  <% end %>
 </div>
+
+<%= render 'transactions/notice' if using_transaction_engine_v2? && organizer_signed_in? && (@event.created_at < Time.utc(2019, 6, 1)) %>
 
 <h2 class="heading">
   Transactions
 
-  <button
-    type="button"
-    <%= organizer_signed_in? ? 'data-behavior=menu_toggle aria-expanded=false tabindex=0' : 'disabled=disabled' %>
-    class="btn bg-info menu__toggle overflow-visible tooltipped tooltipped--n"
-    aria-label="Export currently only processes bank transactions—let the Bank team know if you want card transactions.">
-      <%= inline_icon 'download', size: 16 %>
-      Export
-      <% if organizer_signed_in? %>
-        <div class="menu__content h5" data-behavior="menu_content">
-          <%= link_to 'CSV', export_transactions_path(event: @event, format: :csv), target: :_blank %>
-          <%= link_to 'JSON', export_transactions_path(event: @event, format: :json), target: :_blank unless using_transaction_engine_v2? %>
-        </div>
-      <% end %>
-  </button>
+  <% if organizer_signed_in? && @event.canonical_transactions.exists? %>
+    <button
+      type="button"
+      <%= organizer_signed_in? ? 'data-behavior=menu_toggle aria-expanded=false tabindex=0' : 'disabled=disabled' %>
+      class="btn bg-info menu__toggle overflow-visible">
+        <%= inline_icon 'download', size: 16 %>
+        Export
+        <% if organizer_signed_in? %>
+          <div class="menu__content h5" data-behavior="menu_content">
+            <%= link_to 'CSV', export_transactions_path(event: @event, format: :csv), target: :_blank %>
+            <%= link_to 'JSON', export_transactions_path(event: @event, format: :json), target: :_blank %>
+          </div>
+        <% end %>
+    </button>
+  <% end %>
 </h2>
 
-<!--
-<div class="filterbar flex flex-wrap items-center width-100">
-  <input
-    type="search"
-    data-behavior="filterbar_search"
-    placeholder="Search…"
-    aria-label="Filter transactions"
-    class="flex-auto md-mr2"
-    style="width: auto; max-width: none;">
-  <div data-behavior="filterbar" role="tablist" class="filterbar__filters flex mt1 lg-mt0">
-    <%= filterbar_item 'All', :exists, true %>
-    <%= filterbar_item 'Revenue', :fee_applies %>
-    <%= filterbar_item 'Fees', :fee_payment %>
-    <%= filterbar_item 'Card', :card %>
-  </div>
-</div>
--->
+<% if using_transaction_engine_v2? %>
+  <%= form_with(model: nil, local: true, method: :get) do |form| %>
+    <div class="filterbar flex flex-wrap items-center width-100">
 
-<% if @pending_transactions.any? || @transactions.any? %>
-  <div class="table-container">
-    <table>
-      <thead>
-        <tr>
-          <th></th>
-          <th>Date</th>
-          <th>Description</th>
-          <th class="right-align">Amount</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody data-behavior="transactions">
-        <%= render partial: 'transactions/event_list', collection: @pending_transactions, as: :t %>
-        <%= render partial: 'transactions/event_list', collection: @transactions, as: :t %>
-      </tbody>
-    </table>
-  </div>
-  <%# filterbar_blankslate 'No transactions match this filter' %>
-  <%= paginate @transactions %>
+      <%= form.text_field :search, placeholder: "Search…", class: "flex-auto md-mr2", style: "width auto; max-width: none;", value: params[:search] %>
+
+      <!--
+      <div data-behavior="filterbar" role="tablist" class="filterbar__filters flex mt1 lg-mt0">
+        <%= filterbar_item 'All', :exists, true %>
+        <%= filterbar_item 'Revenue', :fee_applies %>
+        <%#= filterbar_item 'Fees', :fee_payment %>
+        <%#= filterbar_item 'Card', :card %>
+      </div>
+      -->
+
+    </div>
+  <% end %>
+
+  <% if @pending_transactions.any? || @transactions.any? %>
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            <th>Date</th>
+            <th>Description</th>
+            <th class="right-align">Amount</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody data-behavior="transactions">
+          <% if organizer_signed_in? %>
+            <% @pending_transactions.each do |pt| %>
+              <%= render partial: "canonical_pending_transactions/canonical_pending_transaction", locals: { pt: pt } %>
+            <% end %>
+          <% end %>
+
+          <% @transactions.each do |ct| %>
+            <%= render partial: "canonical_transactions/canonical_transaction", locals: { ct: ct } %>
+          <% end %>
+
+          <% @transactions_flat.each do |ct| %>
+            <tr
+              class="transaction--<%= ct.amount.negative? ? 'negative' : 'positive' %>">
+              <td class="transaction__icon tooltipped tooltipped--e" aria-label="Bank account transaction">
+                <% if ct.fee_payment? %>
+                  <%= inline_icon 'minue' %>
+                <% elsif ct.check %>
+                  <%= inline_icon 'payment-transfer' %>
+                <% elsif ct.ach_transfer %>
+                  <%= inline_icon 'payment-transfer' %>
+                <% elsif ct.raw_stripe_transaction %>
+                  <%= inline_icon 'card' %>
+                <% elsif ct.invoice %>
+                  <%= inline_icon 'briefcase' %>
+                <% elsif ct.donation %>
+                  <%= inline_icon 'support' %>
+                <% elsif ct.disbursement %>
+                  <% if ct.amount.negative? %>
+                    <%= inline_icon 'door-leave' %>
+                  <% else %>
+                    <%= inline_icon 'door-enter' %>
+                  <% end %>
+                <% else %>
+                  <%= inline_icon 'bank-account' %>
+                <% end %>
+              </td>
+              <td>
+                <%= ct.date %>
+              </td>
+              <td class="transaction__memo">
+                <span>
+                  <%= ct.display_name %>
+                </span>
+                <%#= list_badge_for transaction.comments.size, 'note', 'post', optional: true %>
+                <%= list_badge_for ct.receipts.size, 'receipt', 'payment-docs', optional: true %>
+              </td>
+              <td class="nowrap">
+                <span title="Fee <%= render_money ct.fees.sum(:amount_cents_as_decimal) %>"><%= ct.amount %></span>
+              </td>
+              <td>
+                <%= link_to 'Details', "/transactions/#{ct.id}" if organizer_signed_in? %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+    <%= paginate @transactions %>
+  <% else %>
+    <%= blankslate 'No transactions yet' %>
+  <% end %>
 <% else %>
-  <%= blankslate 'No transactions yet' %>
+  <!-- old transaction engine. remove soon -->
+  <% if @pending_transactions.any? || @transactions.any? %>
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            <th>Date</th>
+            <th>Description</th>
+            <th class="right-align">Amount</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody data-behavior="transactions">
+          <%= render partial: 'transactions/event_list', collection: @pending_transactions, as: :t %>
+          <%= render partial: 'transactions/event_list', collection: @transactions, as: :t %>
+        </tbody>
+      </table>
+    </div>
+    <%= paginate @transactions %>
+  <% else %>
+    <%= blankslate 'No transactions yet' %>
+  <% end %>
 <% end %>

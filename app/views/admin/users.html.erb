@@ -1,0 +1,54 @@
+<% title "USERS" %>
+
+<h1>USERS</h1>
+
+<%= paginate @users %>
+
+<%= form_with local: true, url: users_admin_index_path, method: :get do |form| %>
+  <%= form.text_field :q, value: params[:q] %>
+
+  <%= form.collection_select(:event_id, Event.reorder(Event::CUSTOM_SORT), :id, :admin_dropdown_description, { include_blank: true, selected: @event_id }, { width: 150, style: "max-width: 150px" }) %>
+  |
+
+  <%= form.submit "Search" %>
+<% end %>
+
+
+<p><small><%= pluralize(@count, "result") %></small></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Created</th>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Events</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @users.each do |user| %>
+      <tr style="<%= "background: #ff8c38;" if user.admin_at.present? %>">
+        <td><%= user.id %></td>
+        <td><%= user.created_at.strftime("%Y-%m-%d") %></td>
+        <td>
+          <%= link_to edit_user_path(user) do %>
+            <%= user.name %>
+          <% end %>
+        </td>
+        <td><%= user.email %></td>
+        <td>
+          <% user.events.each do |e| %>
+            <%= link_to e.id, e %>
+          <% end %>
+        </td>
+        <td>
+          <%= link_to 'Impersonate', impersonate_users_path(user_id: user.id), data: { confirm: "Are you sure?" } %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= paginate @users %>
