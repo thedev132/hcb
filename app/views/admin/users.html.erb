@@ -38,7 +38,11 @@
           <% end %>
         </td>
         <td><%= user.email %></td>
-        <td><%= user.events.pluck(:id).join(",") %></td>
+        <td>
+          <% user.events.each do |e| %>
+            <%= link_to e.id, e %>
+          <% end %>
+        </td>
         <td>
           <%= link_to 'Impersonate', impersonate_users_path(user_id: user.id), data: { confirm: "Are you sure?" } %>
         </td>
