@@ -26,7 +26,7 @@ module GSuiteAccountService
         Partners::Google::GSuite::CreateUser.new(remote_account_attrs).run
 
         # 4. Send notification
-        GSuiteAccountMailer.notify_user_of_activation(email_params).deliver_now
+        GSuiteAccountMailer.notify_user_of_activation(email_params).deliver_later
 
         # 5. return g_suite_account
         g_suite_account
