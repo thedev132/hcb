@@ -67,7 +67,7 @@ module StripeCardService
       if physical?
         attrs[:shipping] = {
           name: @stripe_shipping_name,
-          service: "standard",
+          service: event.id === 945 ? "priority" : "standard", # Athul needs a physical card ASAP (from "Athul Withholding", event 945). He has agreed to pay for the extra shipping cost ($22)
           address: {
             line1: @stripe_shipping_address_line1,
             line2: formatted_stripe_shipping_address_line2,
