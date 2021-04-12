@@ -21,11 +21,12 @@ module Receiptable
 
     def no_or_lost_receipt!
       self.marked_no_or_lost_receipt_at = Time.now
-      self.save
+      self.save!
       self
     rescue NoMethodError => e
-      puts "Add a boolean 'lost_or_no_receipt' column to #{self.class.name} for this to work"
-      print_exception(e, true)
+      puts "Add a datetime 'mark_no_or_lost_receipt_at' column to #{self.class.name} for this to work"
+
+      raise e
     end
   end
 end
