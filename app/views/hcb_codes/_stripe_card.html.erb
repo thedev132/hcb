@@ -21,6 +21,11 @@
       <%= pluralize @hcb_code.receipts.count, "receipt" %>
       added
     </p>
+  <% elsif @hcb_code.no_or_lost_receipt? %>
+    <p class="card__banner bg-muted white bold flex items-center mt0 mb0">
+      <%= inline_icon "view-close", size: 24, class: "mr2" %>
+      Marked no/lost receipt
+    </p>
   <% else %>
     <p class="card__banner bg-pending slate bold flex items-center mt0 mb0">
       <%= inline_icon "important", size: 24, class: "mr2" %>

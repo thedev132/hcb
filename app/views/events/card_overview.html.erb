@@ -148,6 +148,9 @@
               <%= "(redacted)" unless organizer_signed_in? %>
             </td>
             <td>
+              <% if d.remote_status == "disabled" %>
+                Please <%= link_to "contact us", "mailto:bank@hackclub.com" %> to fix this.
+              <% end %>
             </td>
           </tr>
         <% end %>

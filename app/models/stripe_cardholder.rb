@@ -34,8 +34,7 @@ class StripeCardholder < ApplicationRecord
   def state
     return :success if remote_status == "active"
     return :error if remote_status == "blocked"
-    return :error if remote_status == "listed"
-    return :error if remote_status == "rejected.listed"
+    return :error if remote_status == "disabled"
 
     :muted
   end
@@ -55,7 +54,7 @@ class StripeCardholder < ApplicationRecord
   end
 
   def remote_status
-    return remote_requirements_disabled_reason if remote_requirements_disabled_reason.present?
+    return "disabled" if remote_requirements_disabled_reason.present?
 
     stripe_obj[:status]
   end
