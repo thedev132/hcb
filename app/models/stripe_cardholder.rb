@@ -34,6 +34,8 @@ class StripeCardholder < ApplicationRecord
   def state
     return :success if remote_status == "active"
     return :error if remote_status == "blocked"
+    return :error if remote_status == "listed"
+    return :error if remote_status == "rejected.listed"
 
     :muted
   end
@@ -53,7 +55,13 @@ class StripeCardholder < ApplicationRecord
   end
 
   def remote_status
+    return remote_requirements_disabled_reason if remote_requirements_disabled_reason.present?
+
     stripe_obj[:status]
+  end
+
+  def remote_requirements_disabled_reason
+    stripe_obj[:requirements].try(:[], :disabled_reason)
   end
 
   private
@@ -113,6 +121,6 @@ class StripeCardholder < ApplicationRecord
   def stripe_obj
     @stripe_obj ||= StripeService::Issuing::Cardholder.retrieve(stripe_id)
   rescue => e
-    { status: "active" }
+    { status: "active", requirements: { } } # https://stripe.com/docs/api/issuing/cardholders/object
   end
 end
