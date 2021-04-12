@@ -197,6 +197,8 @@ Rails.application.routes.draw do
       post 'receipt'
       get 'attach_receipt'
     end
+
+    resources :comments
   end
   
   resources :canonical_pending_transactions, only: [:show] do
