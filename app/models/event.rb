@@ -150,38 +150,6 @@ class Event < ApplicationRecord
                       WHEN id = 636 THEN '4'
                       ELSE 'z' || name END ASC"
 
-  # Used by the api's '/event' POST route
-  def self.create_send_only(event_name, user_emails)
-    ActiveRecord::Base.transaction do
-      # most common POC will be the POC for this event
-      point_of_contact_id = 2046 # Melanie #Event.all.pluck(:point_of_contact_id).max_by {|i| Event.all.count(i) }
-      sender = User.find_by_id(point_of_contact_id)
-
-      event = Event.create!(
-        name: event_name,
-        start: Date.current,
-        end: Date.current,
-        address: 'N/A',
-        sponsorship_fee: 0.07,
-        expected_budget: 100.0,
-        has_fiscal_sponsorship_document: false,
-        point_of_contact_id: point_of_contact_id,
-        is_spend_only: true,
-      )
-
-      user_emails ||= []
-      user_emails.each do |email|
-        OrganizerPositionInvite.create!(
-          sender: sender,
-          event: event,
-          email: email
-        )
-      end
-
-      event
-    end
-  end
-
   def admin_formatted_name
     "#{name} (#{id})"
   end
