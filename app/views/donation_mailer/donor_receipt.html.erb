@@ -1,15 +1,14 @@
 <p>Hi <%= @donation.name %>,</p>
 
 <p>
-  This email will serve as an official record of your donation of <%= render_money @donation.amount %>
-  to <%= @donation.event.name %>, which is fiscally sponsored by The Hack Foundation d.b.a Hack Club (EIN: 81-2908499).
+  Thank you for your generous donation of <%= render_money @donation.amount %> to <%= @donation.event.name %>. Please consider this email a receipt for your gift.
 </p>
 
-<p>Please note that no goods or services were provided in return for this gift.</p>
+<p><%= @donation.event.name %> is fiscally sponsored by Hack Club, a 501(c)(3) nonprofit. Our EIN is 81-2908499. Per IRS guidelines, you agree that no goods or services will be provided in return for this gift.</p>
 
-<p>Thank you for supporting student-led organizations.</p>
+<p>If you have any questions or concerns, please reply directly to this email and our financial operations team will assist.</p>
 
 <p>
-  Best,<br/>
-  The Hack Club Team
+  Best regards,<br/>
+  The Hack Club Bank Team
 </p>
