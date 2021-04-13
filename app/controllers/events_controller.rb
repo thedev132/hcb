@@ -11,14 +11,17 @@ class EventsController < ApplicationController
     @events = Event.all
   end
 
-  # GET /events/new
   def new
     @event = Event.new
     authorize @event
+
+    redirect_to event_new_admin_index_path and return
   end
 
   # POST /events
   def create
+    raise ArgumentError, "deprecated"
+
     # have to use `fixed_event_params` because `event_params` seems to be a constant
     fixed_event_params = event_params
 
