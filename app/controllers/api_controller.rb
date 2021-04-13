@@ -27,33 +27,13 @@ class ApiController < ApplicationController
 
   # create a spend only event
   def event_new
-    name = @params['name']
-    organizer_emails = @params['organizer_emails']
+    ::EventJob::Create.perform_later(@params["name"], @params["organizer_emails"])
 
-    if name.blank?
-      render json: { error: "Missing name" }, status: 422
-      return
-    end
-    if organizer_emails.blank?
-      render json: { error: "Missing organizer_emails" }, status: 422
-      return
-    end
-    if organizer_emails.size < 1
-      render json: { error: "Can't create an event with no organizer_emails" }, status: 422
-      return
-    end
+    render json: { success: true }
+  rescue => e
+    Airbrake.notify(e)
 
-    event = Event.create_send_only(name, organizer_emails)
-
-    if event.save!
-      render json: {
-        event: event,
-        event_url: event_url(event),
-        organizers: event.organizer_position_invites
-      }
-    else
-      render event.errors
-    end
+    render json: { error: e.message }, status: 422
   end
 
   def disbursement_new
