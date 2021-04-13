@@ -27,15 +27,9 @@ class ApiController < ApplicationController
 
   # create a spend only event
   def event_new
-    attrs = {
-      name: @params["name"],
-      emails: @params["organizer_emails"],
-      spend_only: true
-    }
+    ::EventJob::Create.perform_later(@params["name"], @params["organizer_emails"])
 
-    event = ::EventService::Create.new(attrs).run
-
-    render json: { event: event, event_url: event_url(event), organizers: event.organizer_position_invites }
+    render json: { success: true }
   rescue => e
     Airbrake.notify(e)
 
