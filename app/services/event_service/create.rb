@@ -1,14 +1,18 @@
 module EventService
   class Create
-    def initialize(name:, emails:[], spend_only: false)
+    def initialize(name:, emails:[], has_fiscal_sponsorship_document: false, spend_only: false, sponsorship_fee: 0.07)
       @name = name
       @emails = emails
       @spend_only = spend_only || false
+      @has_fiscal_sponsorship_document = has_fiscal_sponsorship_document || false
+      @sponsorship_fee = sponsorship_fee ? sponsorship_fee.to_f : 0.07
     end
 
     def run
       raise ArgumentError, "name required" unless @name.present?
+      raise ArgumentError, "has_fiscal_sponsorship_document must be true or false" unless (@has_fiscal_sponsorship_document === true || @has_fiscal_sponsorship_document === false)
       raise ArgumentError, "spend_only must be true or false" unless (@spend_only === true || @spend_only === false)
+      raise ArgumentError, "sponsorship_fee must be 0 to 0.5" unless (@sponsorship_fee >= 0.0 && @sponsorship_fee <= 0.5)
 
       ActiveRecord::Base.transaction do
         event = ::Event.create!(attrs)
@@ -34,9 +38,9 @@ module EventService
         start: Date.current,
         end: Date.current,
         address: "N/A",
-        sponsorship_fee: 0.07,
+        sponsorship_fee: @sponsorship_fee,
         expected_budget: 100.0,
-        has_fiscal_sponsorship_document: true,
+        has_fiscal_sponsorship_document: @has_fiscal_sponsorship_document,
         point_of_contact_id: point_of_contact.id,
         is_spend_only: @spend_only
       }

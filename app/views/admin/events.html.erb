@@ -40,6 +40,7 @@
       <th>Date</th>
       <th>Name</th>
       <th>Fee</th>
+      <th>Spend Only</th>
       <th>Status</th>
       <th>Actions</th>
     </tr>
@@ -56,6 +57,9 @@
         </td>
         <td>
           <%= render_percentage event.sponsorship_fee %>
+        </td>
+        <td>
+          <%= event.is_spend_only.to_s.upcase %>
         </td>
         <td>
           <%= "🏦" if event.omit_stats? %>

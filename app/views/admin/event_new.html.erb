@@ -18,10 +18,20 @@
     </p>
 
     <p>
+      <%= form.check_box :has_fiscal_sponsorship_document %>
+      <%= form.label :has_fiscal_sponsorship_document, "Signed fiscal sponsorship document?" %>
+    </p>
+
+    <p>
       <%= form.check_box :spend_only %>
       <%= form.label :spend_only, "Spend only?" %>
     </p>
 
+    <p>
+      <%= form.label :sponsorship_fee, "Sponsorship fee (decimal)" %>
+      <br/>
+      <%= form.number_field :sponsorship_fee, placeholder: "0.07", value: "0.07", required: true, step: "any" %>
+    </p>
   </fieldset>
 
   <p>
