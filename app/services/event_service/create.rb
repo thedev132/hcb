@@ -8,10 +8,10 @@ module EventService
 
     def run
       raise ArgumentError, "name required" unless @name.present?
-      raise ArgumentError, "emails required" unless @emails.present?
+      raise ArgumentError, "spend_only must be true or false" unless (@spend_only === true || @spend_only === false)
 
       ActiveRecord::Base.transaction do
-        ::Event.create!(attrs)
+        event = ::Event.create!(attrs)
 
         @emails.each do |email|
           event.organizer_position_invites.create!(organizer_attrs(email: email))
