@@ -6,7 +6,7 @@
   <fieldset>
     <legend>Event</legend>
     <p>
-      <%= form.label :name %>
+      <%= form.label :name, "Name (required)" %>
       <br/>
       <%= form.text_field :name, placeholder: "Event Name", required: true %>
     </p>
@@ -28,7 +28,7 @@
     </p>
 
     <p>
-      <%= form.label :sponsorship_fee, "Sponsorship fee (decimal)" %>
+      <%= form.label :sponsorship_fee, "Sponsorship fee (required)" %>
       <br/>
       <%= form.number_field :sponsorship_fee, placeholder: "0.07", value: "0.07", required: true, step: "any" %>
     </p>
