@@ -133,6 +133,25 @@ class AdminController < ApplicationController
     render layout: "admin"
   end
 
+  def event_new
+    render layout: "admin"
+  end
+
+  def event_create
+    emails = [params[:organizer_email]].compact
+
+    attrs = {
+      name: params[:name],
+      emails: emails,
+      spend_only: params[:spend_only] === 1 ? true : false
+    }
+    ::EventService::Create.new(attrs).run
+
+    redirect_to events_admin_index_path, flash: { success: "Success" }
+  rescue => e
+    redirect_to event_new_admin_index_path, flash: { error: e.message }
+  end
+
   def fees
     @page = params[:page] || 1
     @per = params[:per] || 100

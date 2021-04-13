@@ -1,0 +1,31 @@
+<% title "Create an event" %>
+
+<h1>Create an event</h1>
+
+<%= form_with(model: nil, local: true, url: event_create_admin_index_path) do |form| %>
+  <fieldset>
+    <legend>Event</legend>
+    <p>
+      <%= form.label :name %>
+      <br/>
+      <%= form.text_field :name, placeholder: "Event Name", required: true %>
+    </p>
+
+    <p>
+      <%= form.label :organizer_email, "Organizer's Email Address" %>
+      <br/>
+      <%= form.email_field :organizer_email, placeholder: "Email Address", required: false %>
+    </p>
+
+    <p>
+      <%= form.check_box :spend_only %>
+      <%= form.label :spend_only, "Spend only?" %>
+    </p>
+
+  </fieldset>
+
+  <p>
+    <%= form.submit "Create event" %>
+  </p>
+<% end %>
+
