@@ -154,7 +154,7 @@ class Event < ApplicationRecord
   def self.create_send_only(event_name, user_emails)
     ActiveRecord::Base.transaction do
       # most common POC will be the POC for this event
-      point_of_contact_id = Event.all.pluck(:point_of_contact_id).max_by {|i| Event.all.count(i) }
+      point_of_contact_id = 2046 # Melanie #Event.all.pluck(:point_of_contact_id).max_by {|i| Event.all.count(i) }
       sender = User.find_by_id(point_of_contact_id)
 
       event = Event.create!(
