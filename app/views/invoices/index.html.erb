@@ -98,8 +98,7 @@
           <%= format_date i.created_at %>
         </td>
         <td>
-          <%= i.sponsor.name if organizer_signed_in? %>
-          <%= "(redacted)" unless organizer_signed_in? %>
+          <%= i.sponsor.name %>
         </td>
         <td style="text-align: right;">
           <%= render_money(i.item_amount) %>

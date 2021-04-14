@@ -117,7 +117,7 @@
           <div class="card__banner card__banner--top bg-<%= donation.arriving_late? ? :error : :success %> flex items-center">
             <span class="white mr1 incoming_deposits__sponsor">
               Donation from
-              <strong class="block"><%= organizer_signed_in? ? donation.name : '(redacted)' %></strong>
+              <strong class="block"><%= donation.name %></strong>
             </span>
             <span class="badge ml-auto center shrink-none bg-<%= donation.arriving_late? ? :error : :success %>">
               <%= donation.arriving_late? ? 'Late' : 'On Time' %>

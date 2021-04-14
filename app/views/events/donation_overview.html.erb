@@ -104,8 +104,7 @@
             <%= format_date d.created_at %>
           </td>
           <td>
-            <%= d.name if organizer_signed_in? %>
-            <%= "(redacted)" unless organizer_signed_in? %>
+            <%= d.name %>
           </td>
           <td style="text-align: right;">
             <%= render_money(d.amount) %>
