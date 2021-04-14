@@ -67,7 +67,7 @@ class EventPolicy < ApplicationPolicy
   end
 
   def g_suite_overview?
-    is_public || user_or_admin
+    user_or_admin
   end
 
   def g_suite_create?
