@@ -23,8 +23,8 @@
       'Receive donations online',
       'support',
       event_donation_overview_path(event_id: @event.slug) unless @event.is_spend_only %>
-    <%= dock_item 'Promotions',
-      'Receive grants & discounts',
+    <%= dock_item 'Perks',
+      'Receive promos & discounts',
       'shirt',
        event_promotions_path(event_id: @event.slug), :lg unless @event.is_spend_only %>
     <%= dock_item 'Documents',
