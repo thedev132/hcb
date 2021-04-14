@@ -230,6 +230,11 @@ module StaticPagesHelper
         query: {filterByFormula: "Status='Pending'", fields: [] },
         destination: "https://airtable.com/tbl1MRaNpF4KphbOd/viwdGjjDdtsS7bjlP"
       },
+      pvsa: {
+        url: "https://airbridge.hackclub.com/v0.1/Bank%20Promotions/PVSA%20Order",
+        query: {filterByFormula: "Status='Pending'", fields: []},
+        destination: "https://airtable.com/tbl4ffIbyaEa2fIYW/viw2OPTziXEqOpaLA"
+      },
       wire_transfers: {
         url: "https://airbridge.hackclub.com/v0.1/Bank%20Promotions/Wire%20Transfers",
         query: {filterByFormula: "Status='Pending'", fields: [] },

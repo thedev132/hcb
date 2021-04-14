@@ -1,10 +1,84 @@
-<% title "Promotions for #{@event.name}" %>
+<% title "Perks for #{@event.name}" %>
 <% page_md %>
 <%= render 'events/nav' %>
 
 <h1>
   Promotions &amp; perks
 </h1>
+
+<% if @event.beta_features_enabled? %>
+<article class="card pb0 mb3">
+  <div class="card__banner card__banner--top flex justify-between items-center" style="background: repeating-linear-gradient(
+    135deg,
+    #eee 0%,
+    white 40%,
+    #3C3B6E 40%,
+    #3C3B6E 65%,
+    #B22234 65%,
+    #B22234 70%,
+    white 70%,
+    white 75%,
+    #B22234 75%,
+    #B22234 80%,
+    white 80%,
+    white 85%,
+    #B22234 85%,
+    #B22234 90%,
+    white 90%,
+    #eee 100%
+  );">
+    <%= image_tag 'https://cloud-q7i8htyv7-hack-club-bot.vercel.app/0pvsa-logo-2x.png', width: 60 %>
+    <%= link_to 'Apply',
+      organizer_signed_in? ? "https://hack.af/pvsa-order?prefill_Event%20Name=#{@event.name}&prefill_Submitter%20Email=#{current_user.email}" : root_path,
+      class: 'btn bg-success mr1'
+    %>
+  </div>
+
+  <p>
+    As a fiscally sponsored project, you can issue <a href="https://en.wikipedia.org/wiki/President%27s_Volunteer_Service_Award" target="_blank">Presidential Volunteer Service Awards</a> to volunteers (including yourself and team members).
+    When applying you'll be asked to certify the volunteer's hours (instructions and examples are provided on the application form).
+    While we provide access to the certifying authority, purchasing certificates or medals will cost money. You'll be provided a cost estimate when filling out the volunteer hour spreadsheet.
+  </p>
+
+  <p>
+    Certificates and medals are all shipped together to you, and you'll distribute them to your volunteers.
+  </p>
+
+  <h3 class="mb0">Pricing</h3>
+  <table>
+    <tr>
+      <th>Attendees</th>
+      <th>Credit</th>
+    </tr>
+    <tr>
+      <td>Estimated shipping (per order, unlimited volunteers)</td>
+      <td>$23.00</td>
+    </tr>
+    <tr>
+      <td>Certificate only</td>
+      <td>$5.00</td>
+    </tr>
+    <tr>
+      <td>Certificate + Pin</td>
+      <td>$6.50</td>
+    </tr>
+    <tr>
+      <td>Certificate + Coin</td>
+      <td>$10.50</td>
+    </tr>
+    <tr>
+      <td>Certificate + Medallion</td>
+      <td>$10.50</td>
+    </tr>
+  </table>
+
+  <section class="card__banner card__darker secondary border-top">
+  <p class="my0">
+    Only 🇺🇸 US citizens who currently reside within the US are eligible to recieve the award. You can see all the <a href="https://www.presidentialserviceawards.gov/eligibility#volunteers" target="_blank">volunteer eligibility details</a> if you have any questions.
+  </p>
+  </section>
+</article>
+<% end %>
 
 <div class="card mb3">
   <div

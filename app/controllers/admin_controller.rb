@@ -722,6 +722,8 @@ class AdminController < ApplicationController
         airtable_task_size :replit
       when :pending_sendy_airtable
         airtable_task_size :sendy
+      when :pending_pvsa_airtable
+        airtable_task_size :pvsa
       when :wire_transfers
         airtable_task_size :wire_transfers
       when :emburse_card_requests
@@ -764,6 +766,7 @@ class AdminController < ApplicationController
     pending_task :pending_stickermule_airtable
     pending_task :pending_replit_airtable
     pending_task :pending_sendy_airtable
+    pending_task :pending_pvsa_airtable
     pending_task :wire_transfers
     pending_task :emburse_card_requests
     pending_task :checks
