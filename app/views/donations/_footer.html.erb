@@ -1,8 +1,8 @@
 <footer data-behavior="hide_iframe">
   <p class="muted max-width-1 mx-auto h5 mb1 center">
-    Powered by
-    <%= link_to 'Hack Club Bank', 'https://hackclub.com/bank?ref=donation', target: '_blank' %>,
-    a financial platform for hackathons & nonprofits.
+    <%= @event.name %> is fiscally sponsored by
+    <%= link_to 'Hack Club', 'https://hackclub.com/bank?ref=donation', target: '_blank' %>,
+    <span class="nowrap">a 501(c)(3)</span>&nbsp;nonprofit. Our registered EIN is 81-2908499.
   </p>
   <p class="muted h5 center">
     Questions? Get in touch at <%= help_email %>.
