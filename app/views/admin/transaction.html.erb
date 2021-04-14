@@ -36,29 +36,44 @@
 
 <br/><hr/>
 
-
 <% if @potential_donation_payouts.present? %>
   <h4>Potential DonationPayouts to Map to</h4>
 
   <table>
     <tbody>
-      <% @canonical_pending_transactions.each do |cpt| %>
+      <% @potential_donation_payouts.each do |pdp| %>
         <tr>
-          <td><%= cpt.id %></td>
-          <td><%= cpt.date %></td>
-          <td><%= cpt.memo %></td>
-          <td><%= cpt.amount %></td>
-          <td><%= link_to cpt.event.name, cpt.event %></td>
-          <td><%= link_to "Linked Object", cpt.linked_object %></td>
+          <td><%= pdp.id %></td>
+          <td><%= pdp.statement_descriptor %></td>
+          <td><%= render_money pdp.amount %></td>
+          <td><%= link_to pdp.event.admin_formatted_name, pdp.event %></td>
         </tr>
       <% end %>
     </body>
   </table>
 
   <br/><hr/>
-
-
 <% end %>
+
+<% if @potential_invoice_payouts.present? %>
+  <h4>Potential InvoicePayouts to Map to</h4>
+
+  <table>
+    <tbody>
+      <% @potential_invoice_payouts.each do |pdp| %>
+        <tr>
+          <td><%= pdp.id %></td>
+          <td><%= pdp.statement_descriptor %></td>
+          <td><%= render_money pdp.amount %></td>
+          <td><%= link_to pdp.event.admin_formatted_name, pdp.event %></td>
+        </tr>
+      <% end %>
+    </body>
+  </table>
+
+  <br/><hr/>
+<% end %>
+
 
 <% if @canonical_pending_transactions.present? %>
   <h4>Potential Pending Transactions to Map to</h4>

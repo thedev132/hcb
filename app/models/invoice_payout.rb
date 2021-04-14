@@ -5,6 +5,7 @@ class InvoicePayout < ApplicationRecord
 
   # find invoice payouts that don't yet have an associated transaction
   scope :lacking_transaction, -> { includes(:t_transaction).where(transactions: { invoice_payout_id: nil }) }
+  scope :invoice_hcb_code, -> { where("statement_descriptor ilike 'HCB-#{::TransactionGroupingEngine::Calculate::HcbCode::INVOICE_CODE}%'") }
 
   # although it normally doesn't make sense for a paynot not to be linked to an invoice,
   # Stripe's schema makes this possible, and when that happens, requiring invoice<>payout breaks bank
@@ -43,6 +44,10 @@ class InvoicePayout < ApplicationRecord
 
   def hcb_code
     invoice.hcb_code
+  end
+
+  def event
+    invoice.event
   end
 
   private

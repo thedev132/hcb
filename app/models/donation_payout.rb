@@ -52,6 +52,10 @@ class DonationPayout < ApplicationRecord
     donation.hcb_code
   end
 
+  def event
+    donation.event
+  end
+
   private
 
   def default_values
