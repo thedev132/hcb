@@ -11,38 +11,6 @@ class EventsController < ApplicationController
     @events = Event.all
   end
 
-  def new
-    @event = Event.new
-    authorize @event
-
-    redirect_to event_new_admin_index_path and return
-  end
-
-  # POST /events
-  def create
-    raise ArgumentError, "deprecated"
-
-    # have to use `fixed_event_params` because `event_params` seems to be a constant
-    fixed_event_params = event_params
-
-    fixed_event_params[:club_airtable_id] = nil if event_params.key?(:club_airtable_id) && event_params[:club_airtable_id].empty?
-    fixed_event_params[:partner_logo_url] = nil if event_params.key?(:partner_logo_url) && event_params[:partner_logo_url].empty?
-
-    # all new events should be un-hidden, so no need to worry about setting it here
-    # just delete the auxiliary param.
-    fixed_event_params.delete(:hidden)
-
-    @event = Event.new(fixed_event_params)
-    authorize @event
-
-    if @event.save
-      flash[:success] = 'Project successfully created.'
-      redirect_to @event
-    else
-      render :new
-    end
-  end
-
   # GET /events/1
   def show
     authorize @event

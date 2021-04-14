@@ -2,50 +2,8 @@
   <%= form_errors event, 'account info' %>
 
   <div class="field">
-    <p class="mt0"><%= event.name %> is on the <strong><%= event.plan_name %></strong> plan. You can:</p>
-    <ul>
-      <li>Order virtual/plastic debit cards</li>
-      <li>Send money via checks, direct deposits, and reimbursements</li>
-      <% if !event.is_spend_only %>
-        <li>Account money through invoices & donations</li>
-        <li>Benefit from our 501(c)(3) nonprofit tax status</li>
-        <li>Experience worry free tax filings (990 % end-of-year), fully taken care of by our expert CPAs</li>
-      <% end %>
-      <li>Get free Google Workspace accounts for your team</li>
-      <li>Activate Transparency Mode to show your finances on public pages</li>
-      <li>Apply for grants and promotions</li>
-      <li>Reach out to our dedicate support team (best-effort 24 hour response times)</li>
-    </ul>
-    <% if event.is_spend_only %>
-      <p class="mt0">Sign a contract to access the features of a full account:</p>
-      <ul>
-        <li>Accept money through invoices & donations</li>
-        <li>Benefit from our 501(c)(3) nonprofit tax status</li>
-        <li>Experience worry free tax filings (990 and all other end-of-year work), fully taken care of by our expert CPAs</li>
-      </ul>
-      <p class="mt0 muted">Reach out to us at bank@hackclub.com to unlock all the features of your account.</p>
-    <% end %>
+    <p class="mt0"><%= event.name %> is on the <strong><%= event.plan_name %></strong> plan and charging <strong><%= number_to_percentage(event.sponsorship_fee * 100, significant: true, strip_insignificant_zeros: true) %></strong> of your revenue.</p>
   </div>
-
-  <% if !event.is_spend_only %>
-    <div class="field">
-      <label class="bold">Fee</label>
-      <p class="mt0">Bank is charging <%= event.sponsorship_fee.blank? ? "" : event.sponsorship_fee * 100 %>% of
-        your revenue</p>
-    </div>
-  <% end %>
-
-  <!--
-  <div class="field">
-    <%= form.label :address, class: 'bold' %>
-  <%= form.text_area :address, value: event.address || '42 Placeholder Ave.' %>
-  </div>
-
-  <div class="field field--checkbox">
-    <%= form.check_box :hidden, checked: event.hidden_at.present? %>
-  <%= form.label :hidden, "Hide #{event.name} from home page for everyone" %>
-  </div>
-  -->
 
   <% if !@event.is_spend_only %>
     <h3 class="mb1">Donations</h3>
