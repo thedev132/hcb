@@ -47,7 +47,19 @@ class HcbCode < ApplicationRecord
   end
 
   def events
-    @events ||= Event.where(id: canonical_pending_transactions.map { |cpt| cpt.event.id } + canonical_transactions.map { |ct| ct.event.id })
+    @events ||= begin
+      ids = [
+        canonical_pending_transactions.map { |cpt| cpt.event.id },
+        canonical_transactions.map { |ct| ct.event.id },
+        invoice.try(:event).try(:id),
+        donation.try(:event).try(:id),
+        ach_transfer.try(:event).try(:id),
+        check.try(:event).try(:id),
+        disbursement.try(:event).try(:id)
+      ].compact.flatten.uniq
+
+      Event.where(id: ids)
+    end
   end
 
   def fee_payment?
