@@ -10,6 +10,7 @@
       <th>Memo</th>
       <th>FriendlyMemo</th>
       <th>CustomMemo</th>
+      <th>HCB Code</th>
       <th>Amount</th>
       <th>MappedBy</th>
       <th>Event</th>
@@ -23,6 +24,7 @@
       <td><%= @canonical_transaction.friendly_memo %></td>
       <td><%= @canonical_transaction.custom_memo %></td>
       <td><%= @canonical_transaction.amount %></td>
+      <td><%= @canonical_transaction.hcb_code %></td>
       <td><%= @canonical_transaction.canonical_event_mapping.try(:user).try(:email) %></td>
       <td>
         <%= form_with model: nil, local: true, url: set_event_path(@canonical_transaction), method: :post do |form| %>
