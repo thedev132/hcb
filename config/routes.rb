@@ -290,7 +290,6 @@ Rails.application.routes.draw do
 
   # api
   get  'api/v1/events/find', to: 'api#event_find'
-  post 'api/v1/events', to: 'api#event_new'
   post 'api/v1/disbursements', to: 'api#disbursement_new'
 
   post 'stripe/webhook', to: 'stripe#webhook'
