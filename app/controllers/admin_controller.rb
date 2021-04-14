@@ -144,7 +144,6 @@ class AdminController < ApplicationController
       name: params[:name],
       emails: emails,
       has_fiscal_sponsorship_document: params[:has_fiscal_sponsorship_document].to_i === 1 ? true : false,
-      spend_only: params[:spend_only].to_i === 1 ? true : false,
       sponsorship_fee: params[:sponsorship_fee]
     }
     ::EventService::Create.new(attrs).run

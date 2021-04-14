@@ -25,17 +25,6 @@ class ApiController < ApplicationController
     }
   end
 
-  # create a spend only event
-  def event_new
-    ::EventJob::Create.perform_later(@params["name"], @params["organizer_emails"])
-
-    render json: { success: true }
-  rescue => e
-    Airbrake.notify(e)
-
-    render json: { error: e.message }, status: 422
-  end
-
   def disbursement_new
     expecting = ['source_event_slug', 'destination_event_slug', 'amount', 'name']
     got = params.keys

@@ -290,7 +290,6 @@ Rails.application.routes.draw do
 
   # api
   get  'api/v1/events/find', to: 'api#event_find'
-  post 'api/v1/events', to: 'api#event_new'
   post 'api/v1/disbursements', to: 'api#disbursement_new'
 
   post 'stripe/webhook', to: 'stripe#webhook'
@@ -309,10 +308,9 @@ Rails.application.routes.draw do
 
   get '/integrations/frankly' => 'integrations#frankly'
 
-  post '/events' => 'events#create'
   get '/events' => 'events#index'
   get '/event_by_airtable_id/:airtable_id' => 'events#by_airtable_id'
-  resources :events, path: '/' do
+  resources :events, except: [:new, :create], path: '/' do
     get 'fees', to: 'events#fees', as: :fees
     get 'dashboard_stats', to: 'events#dashboard_stats', as: :dashboard_stats
     put 'toggle_hidden', to: 'events#toggle_hidden'
