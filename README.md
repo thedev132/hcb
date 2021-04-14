@@ -26,6 +26,12 @@ Run bundler
 bundle install
 ```
 
+Install yarn dependencies
+
+```bash
+yarn install
+```
+
 Create and migrate database
 
 ```bash
