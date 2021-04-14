@@ -1,5 +1,5 @@
-<%= form_with(model: event, local: true, class: 'mb3') do |form| %>
-  <%= form_errors event, 'account info' %>
+<%= form_with(model: event, local: true, class: "mb3") do |form| %>
+  <%= form_errors event, "account info" %>
 
   <div class="field">
     <p class="mt0"><%= event.name %> is on the <strong><%= event.plan_name %></strong> plan and charging <strong><%= number_to_percentage(event.sponsorship_fee * 100, significant: true, strip_insignificant_zeros: true) %></strong> of your revenue.</p>
@@ -11,14 +11,14 @@
     <div class="card">
       <div class="field field--checkbox">
         <%= form.check_box :donation_page_enabled %>
-        <%= form.label :donation_page_enabled, 'Enable donation page' %>
+        <%= form.label :donation_page_enabled, "Enable donation page" %>
       </div>
       <div class="field">
-        <%= form.label :donation_page_message, 'Message to show on donation page' %>
-        <%= form.text_area :donation_page_message, class: 'w-100 fit' %>
-        <%= inline_icon 'markdown-fill', size: 32, class: 'muted right' %>
+        <%= form.label :donation_page_message, "Message to show on donation page" %>
+        <%= form.text_area :donation_page_message, class: "w-100 fit" %>
+        <%= inline_icon "markdown-fill", size: 32, class: "muted right" %>
       </div>
-      <%= form.submit nil, value: 'Update' %>
+      <%= form.submit nil, value: "Update" %>
     </div>
   <% end %>
 
@@ -41,12 +41,12 @@
     </ul>
     <div class="field field--checkbox">
       <%= form.check_box :is_public %>
-      <%= form.label :is_public, 'Enable Transparency Mode' %>
+      <%= form.label :is_public, "Enable Transparency Mode" %>
     </div>
     <div class="field">
-      <%= form.label :public_message, 'Message to show visitors' %>
-      <%= form.text_area :public_message, class: 'w-100 fit' %>
-      <%= inline_icon 'markdown-fill', size: 32, class: 'muted right' %>
+      <%= form.label :public_message, "Message to show visitors" %>
+      <%= form.text_area :public_message, class: "w-100 fit" %>
+      <%= inline_icon "markdown-fill", size: 32, class: "muted right" %>
     </div>
     <%= form.submit nil, value: "Update" %>
   </div>
@@ -54,7 +54,7 @@
   <h3 class="mb1">Danger Zone</h3>
   <div class="card border b--warning mb3">
     <div class="flex items-center warning">
-      <%= inline_icon 'important', size: 32, class: 'mr1' %>
+      <%= inline_icon "important", size: 32, class: "mr1" %>
       <p class="bold mt0 mb0">If you change your URL, beware:</p>
     </div>
     <ul class="mt1 mb2">
@@ -64,7 +64,7 @@
       <li>All bookmarks to this project will <span class="bold">break</span></li>
       <li>Your team members currently using Bank will be bumped to the home page</li>
     </ul>
-    <%= form.label :slug, 'Bank URL', class: 'bold' %>
+    <%= form.label :slug, "Bank URL", class: "bold" %>
     <div class="flex items-center">
       <span class="secondary">bank.hackclub.com/</span>
       <%= form.text_field :slug, placeholder: event.persisted? ? event.name.parameterize : nil %>
@@ -74,17 +74,17 @@
     </div>
   </div>
   <% admin_tools do %>
-    <%= link_to (event.hidden? ? 'Un-hide project' : 'Hide project'),
+    <%= link_to (event.hidden? ? "Un-hide project" : "Hide project"),
                 event_toggle_hidden_path(event),
                 method: :put,
-                'data-confirm': "Do you really want to #{event.hidden? ? 'un-hide' : 'hide'} #{event.name}?",
+                "data-confirm": "Do you really want to #{event.hidden? ? "un-hide" : "hide"} #{event.name}?",
                 class: "btn bg-success" if event.persisted?
     %>
   <% end %>
 
   <% admin_tools do %>
     <div class="field">
-      <%= form.label :name, 'Name (if changed, also change in G Suite)' %>
+      <%= form.label :name, "Name (if changed, also change in G Suite)" %>
       <%= form.text_field :name %>
     </div>
 
@@ -100,7 +100,7 @@
 
     <div class="field">
       <%= form.label :sponsorship_fee, "Sponsorship fee (as fraction of revenue)" %>
-      <%= form.text_field :sponsorship_fee, value: event.sponsorship_fee || 0.07, placeholder: '0.07' %>
+      <%= form.text_field :sponsorship_fee, value: event.sponsorship_fee || 0.07, placeholder: "0.07" %>
     </div>
 
     <div class="field">
@@ -109,28 +109,28 @@
     </div>
 
     <div class="field">
-      <%= form.label :point_of_contact_id, 'Point of contact (deprecated)' %>
+      <%= form.label :point_of_contact_id, "Point of contact (deprecated)" %>
       <%= form.collection_select :point_of_contact_id, User.admin.all, :id, :email %>
     </div>
 
     <div class="field field--checkbox">
       <%= form.check_box :omit_stats %>
-      <%= form.label :omit_stats, 'Omit from public stats?' %>
+      <%= form.label :omit_stats, "Omit from public stats?" %>
     </div>
 
     <div class="field field--checkbox">
       <%= form.check_box :has_fiscal_sponsorship_document %>
-      <%= form.label :has_fiscal_sponsorship_document, 'Display Fiscal Sponsorship Confirmation in Documents tab?' %>
+      <%= form.label :has_fiscal_sponsorship_document, "Display Fiscal Sponsorship Confirmation in Documents tab?" %>
     </div>
 
     <div class="field field--checkbox">
       <%= form.check_box :is_spend_only %>
-      <%= form.label :is_spend_only, 'Make this a spend-only account?' %>
+      <%= form.label :is_spend_only, "Make this a spend-only account?" %>
     </div>
 
     <div class="field field--checkbox">
       <%= form.check_box :beta_features_enabled %>
-      <%= form.label :beta_features_enabled, 'Turn on beta (features in development) for this event?' %>
+      <%= form.label :beta_features_enabled, "Turn on beta (features in development) for this event?" %>
     </div>
   <% end %>
 <% end %>
