@@ -40,7 +40,7 @@
     <% end %>
   </td>
   <td class="nowrap">
-    <span><%= ct.amount %></span>
+    <span><%= number_to_currency ct.amount %></span>
   </td>
   <td>
     <%= link_to "Details", ct.url if organizer_signed_in? %>

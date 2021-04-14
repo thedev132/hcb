@@ -26,14 +26,14 @@
     </span>
 
     <% if pt.local_hcb_code %>
-      <%= list_badge_for pt.local_hcb_code.receipts.size, 'receipt', 'payment-docs', optional: true %>
-      <%= list_badge_for pt.local_hcb_code.comments.size, 'note', 'post', optional: true %>
+      <%= list_badge_for pt.local_hcb_code.receipts.size, "receipt", "payment-docs", optional: true %>
+      <%= list_badge_for pt.local_hcb_code.comments.size, "note", "post", optional: true %>
     <% end %>
   </td>
   <td class="nowrap">
-    <%= pt.amount %>
+    <%= number_to_currency pt.amount %>
   </td>
   <td>
-    <%= link_to 'Details', pt.url %>
+    <%= link_to "Details", pt.url %>
   </td>
 </tr>
