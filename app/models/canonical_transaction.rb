@@ -240,6 +240,14 @@ class CanonicalTransaction < ApplicationRecord
     @local_hcb_code ||= HcbCode.find_or_create_by(hcb_code: hcb_code)
   end
 
+  def memo_hcb_code_likely_donation?
+    memo.include?("HCB-#{::TransactionGroupingEngine::Calculate::HcbCode::DONATION_CODE}")
+  end
+
+  def memo_hcb_code_likely_invoice?
+    memo.include?("HCB-#{::TransactionGroupingEngine::Calculate::HcbCode::INVOICE_CODE}")
+  end
+
   private
 
   def hashed_transaction

@@ -9,6 +9,7 @@ class DonationPayout < ApplicationRecord
   scope :lacking_transaction, -> { includes(:t_transaction).where(transactions: { donation_payout_id: nil }) }
   scope :in_transit, -> { where(status: "in_transit") }
   scope :paid, -> { where(status: "paid") }
+  scope :donation_hcb_code, -> { where("statement_descriptor ilike 'HCB-#{::TransactionGroupingEngine::Calculate::HcbCode::DONATION_CODE}%'") }
 
   # although it normally doesn't make sense for a paynot not to be linked to an donation,
   # Stripe's schema makes this possible, and when that happens, requiring donation<>payout breaks bank
@@ -49,6 +50,10 @@ class DonationPayout < ApplicationRecord
 
   def hcb_code
     donation.hcb_code
+  end
+
+  def event
+    donation.event
   end
 
   private
