@@ -2,7 +2,7 @@ class HcbCodesController < ApplicationController
   skip_before_action :signed_in_user, only: [:receipt, :attach_receipt]
 
   def show
-    @hcb_code = HcbCode.find(params[:id])
+    @hcb_code = HcbCode.find_by(hcb_code: params[:id]) || HcbCode.find(params[:id])
 
     authorize @hcb_code
 
