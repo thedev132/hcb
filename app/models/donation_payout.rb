@@ -62,10 +62,6 @@ class DonationPayout < ApplicationRecord
     return unless donation
 
     self.statement_descriptor ||= hcb_code
-
-    #self.statement_descriptor ||= "DONATE #{SecureRandom.hex(6)}"[0...StripeService::StatementDescriptorCharLimit] # limit to 22 characters, the stripe limit
-    #                              .gsub(/[^0-9a-z ]/i, '') # alphanumeric only
-    #                              .upcase
   end
 
   def create_stripe_payout

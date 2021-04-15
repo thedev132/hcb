@@ -14,7 +14,6 @@ module EventMappingEngine
       map_checks!
       map_clearing_checks!
       map_achs!
-      map_donations!
       map_hack_club_bank_issued_cards!
       map_stripe_top_ups!
 
@@ -52,10 +51,6 @@ module EventMappingEngine
 
     def map_achs!
       ::EventMappingEngine::Map::Achs.new.run
-    end
-
-    def map_donations!
-      ::EventMappingEngine::Map::Donations.new.run
     end
 
     def map_hack_club_bank_issued_cards!
