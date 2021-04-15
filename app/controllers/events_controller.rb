@@ -48,7 +48,7 @@ class EventsController < ApplicationController
       .not(payout_creation_queued_for: nil) +
       @event.donations.joins(:payout)
       .where(donation_payouts: { status: ('in_transit') })
-      .or(@event.donations.joins(:payout).where(donation_payouts: { status: ('pending') }))).sort_by { |d| d.arrival_date }
+      .or(@event.donations.joins(:payout).where(donation_payouts: { status: ('pending') }))).sort_by { |d| [d.arrival_date, d.created_at] }
 
     render :dashboard_stats, layout: false
   end
