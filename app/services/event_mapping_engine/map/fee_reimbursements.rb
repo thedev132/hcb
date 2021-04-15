@@ -18,7 +18,7 @@ module EventMappingEngine
       private
 
       def likely_fee_reimbursements
-        ::CanonicalTransaction.unmapped.likely_fee_reimbursements.order("date asc")
+        ::CanonicalTransaction.unmapped.likely_fee_reimbursements.where("date >= '2021-01-01'").order("date asc")
       end
 
     end
