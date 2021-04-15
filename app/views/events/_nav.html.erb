@@ -4,6 +4,13 @@
       <%= @event.name %>
     </h1>
   <% end %>
+  <div>
+    <% admin_tools('m0 p0 badge mb2', 'span') do %>
+      <span class="m0 badge bg-muted pointer" onClick="navigator.clipboard.writeText('<%= @event.name %>');">
+      copy event name
+      </span>
+    <% end %>
+  </div>
   <!-- add project switcher here -->
 
   <nav class="dock">

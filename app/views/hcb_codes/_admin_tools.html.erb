@@ -1,5 +1,5 @@
-<% admin_tools do %>
-  <table>
+<% admin_tools("mt3") do %>
+  <table class="mb2">
     <tr>
       <th>HCB CODE</th>
       <th>OBJECT</th>
@@ -7,9 +7,13 @@
     <tr>
       <td><%= @hcb_code.hcb_code %></td>
 
-      <% if @hcb_code.ach_transfer? && @hcb_code.ach_transfer.present? %>
-        <td><%= link_to "ACH TRANSFER #{@hcb_code.ach_transfer.id}", @hcb_code.ach_transfer %></td>
-      <% end %>
+      <td>
+        <% if @hcb_code.ach_transfer? && @hcb_code.ach_transfer.present? %>
+          <%= link_to "ACH TRANSFER #{@hcb_code.ach_transfer.id}", @hcb_code.ach_transfer %>
+        <% else %>
+          N/A
+        <% end %>
+      </td>
 
     </tr>
   </table>

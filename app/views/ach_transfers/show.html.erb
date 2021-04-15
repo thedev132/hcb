@@ -2,21 +2,20 @@
 <% page_md %>
 <%= render 'events/nav' %>
 
-<% admin_tools do %>
+<% admin_tools("mt3") do %>
   <ul>
     <li>
       v2
-
       <ul>
         <% @ach_transfer.canonical_pending_transactions.each do |ct| %>
           <li>
-            <%= ct.hcb_code %>: <%= link_to ct.amount, "/canonical_pending_transactions/#{ct.id}" %>
+            <strong><%= link_to ct.hcb_code, hcb_code_path(ct.local_hcb_code) %></strong>: <%= link_to ct.amount, canonical_pending_transaction_path(ct) %>
           </li>
         <% end %>
 
         <% @ach_transfer.canonical_transactions.each do |ct| %>
           <li>
-            <%= ct.hcb_code %>: <%= link_to ct.amount, "/transactions/#{ct.id}" %>
+            <strong><%= link_to ct.hcb_code, hcb_code_path(ct.local_hcb_code) %></strong>: <%= link_to ct.amount, canonical_transaction_path(ct) %>
           </li>
         <% end %>
       </ul>
