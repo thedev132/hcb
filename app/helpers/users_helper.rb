@@ -37,12 +37,12 @@ module UsersHelper
     end
   end
 
-  def admin_tools(class_name = '', &block)
+  def admin_tools(class_name = '', element = 'div', &block)
     return unless current_user&.admin?
 
-    concat("<div class='admin-tools #{class_name}'>".html_safe)
+    concat("<#{element} class='admin-tools #{class_name}'>".html_safe)
     yield
-    concat('</div>'.html_safe)
+    concat("</#{element}>".html_safe)
   end
 
   def creator_bar(object, options = {})

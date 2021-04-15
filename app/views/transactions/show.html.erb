@@ -3,6 +3,18 @@
 
 <%= render "events/nav" if @event %>
 
+
+<% if @transaction&.local_hcb_code %>
+  <% admin_tools("mt3") do %>
+    <p>
+      <strong>HCB Code:</strong>
+      <span>
+        <%= link_to @transaction.hcb_code , @transaction.local_hcb_code %>
+      </span>
+    </p>
+  <% end %>
+<% end %>
+
 <article class="card mt2">
   <h1 class="heading h1 mt0 mb0">
     <span class="flex-auto">
@@ -98,12 +110,12 @@
       <% @transaction.fees.each do |fee| %>
         <p>
           <strong>Fee</strong>
-          <%= render_money fee.amount_cents_as_decimal %> (<%= render_percentage fee.event_sponsorship_fee %>)
-
-
-          <% admin_tools("py0") do %>
-            <%= link_to "[waive fee]", waive_fee_canonical_transaction_url(@transaction), method: :post if fee.amount_cents_as_decimal > 0 %>
-          <% end %>
+          <span>
+            <%= render_money fee.amount_cents_as_decimal %> (<%= render_percentage fee.event_sponsorship_fee %>)
+            <% admin_tools('py0 ml1', 'span') do %>
+              <%= link_to "[waive fee]", waive_fee_canonical_transaction_url(@transaction), method: :post if fee.amount_cents_as_decimal > 0 %>
+            <% end %>
+          </span>
         </p>
       <% end %>
     <% elsif @transaction.fee_payment? %>
