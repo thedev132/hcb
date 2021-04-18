@@ -44,7 +44,7 @@ html[data-dark='true'] {
   .details-horiz > div:not(:last-of-type),
   .details-horiz > .details-horiz__col,
   tr {
-    border-color: map-get($palette, muted);
+    border-color: map-get($palette, slate);
   }
   .menu__toggle[aria-expanded='true']:after {
     border-bottom-color: $darkless;
