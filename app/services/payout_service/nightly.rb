@@ -2,11 +2,11 @@ module PayoutService
   class Nightly
     def run
       ::Donation.in_transit.missing_payout.each do |donation|
-        ::PayoutService::Donation::Create.new(donation_id: donation.id).run
+        ::PayoutJob::Donation.perform_later(donation.id)
       end
 
       ::Invoice.paid_v2.missing_payout.each do |invoice|
-        ::PayoutService::Invoice::Create.new(invoice_id: invoice.id).run
+        ::PayoutJob::Invoice.perform_later(invoice.id)
       end
     end
   end
