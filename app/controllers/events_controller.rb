@@ -43,7 +43,7 @@ class EventsController < ApplicationController
       .where(invoice_payouts: { status: ('in_transit') })
       .or(@event.invoices.joins(:payout).where(invoice_payouts: { status: ('pending') }))).sort_by { |i| i.arrival_date }
 
-    @donations_being_deposited = (@event.donations.where(payout_id: nil, status: 'succeeded')
+    @donations_being_deposited = (@event.donations.incoming_deposits
       .where
       .not(payout_creation_queued_for: nil) +
       @event.donations.joins(:payout)
