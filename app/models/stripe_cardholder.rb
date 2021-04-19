@@ -120,6 +120,8 @@ class StripeCardholder < ApplicationRecord
   def stripe_obj
     @stripe_obj ||= StripeService::Issuing::Cardholder.retrieve(stripe_id)
   rescue => e
+    Airbrake.notify(e)
+
     { status: "active", requirements: { } } # https://stripe.com/docs/api/issuing/cardholders/object
   end
 end
