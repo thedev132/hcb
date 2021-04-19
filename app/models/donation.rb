@@ -23,6 +23,7 @@ class Donation < ApplicationRecord
   scope :missing_payout, -> { where(payout_id: nil) }
   scope :missing_fee_reimbursement, -> { where(fee_reimbursement_id: nil) }
   scope :not_pending, -> { where.not(aasm_state: "pending") }
+  scope :incoming_deposits, -> { where("aasm_state in (?)", ["in_transit"]) }
 
   aasm do
     state :pending, initial: true

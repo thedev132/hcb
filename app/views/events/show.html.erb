@@ -123,10 +123,8 @@
           </tr>
         </thead>
         <tbody data-behavior="transactions">
-          <% if organizer_signed_in? %>
-            <% @pending_transactions.each do |pt| %>
-              <%= render partial: "canonical_pending_transactions/canonical_pending_transaction", locals: { pt: pt } %>
-            <% end %>
+          <% @pending_transactions.each do |pt| %>
+            <%= render partial: "canonical_pending_transactions/canonical_pending_transaction", locals: { pt: pt } %>
           <% end %>
 
           <% @transactions.each do |ct| %>
