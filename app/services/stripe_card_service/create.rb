@@ -85,7 +85,14 @@ module StripeCardService
     end
 
     def stripe_cardholder
-      @stripe_cardholder ||= ::StripeCardholder.find_or_create_by(user: @current_user)
+      @stripe_cardholder ||= ::StripeCardholder.find_by(user: @current_user) || ::StripeCardholderService::Create.new(cardholder_attrs).run
+    end
+
+    def cardholder_attrs
+      {
+        user: @current_user,
+        event_id: event.id
+      }
     end
 
     def event
