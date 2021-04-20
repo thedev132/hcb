@@ -75,6 +75,8 @@ class StripeCardsController < ApplicationController
 
     redirect_to event_cards_overview_path(event_id: event.id), flash: { success: "Card was successfully created." }
   rescue => e
+    Airbrake.notify(e)
+
     redirect_to event_cards_new_path(event_id: event.id), flash: { error: e.message }
   end
 

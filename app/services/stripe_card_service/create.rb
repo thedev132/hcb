@@ -90,7 +90,7 @@ module StripeCardService
 
     def cardholder_attrs
       {
-        user: @current_user,
+        current_user: @current_user,
         event_id: event.id
       }
     end
