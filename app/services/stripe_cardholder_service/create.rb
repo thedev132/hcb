@@ -11,8 +11,11 @@ module StripeCardholderService
       raise ArgumentError, "not permitted under spend only plan" if event.is_spend_only
 
       ActiveRecord::Base.transaction do
-        ::StripeCardholder.create!(attrs)
-        ::StripeService::Issuing::Cardholder.create(remote_attrs)
+        stripe_cardholder = ::StripeCardholder.create!(attrs)
+
+        remote_cardholder = ::StripeService::Issuing::Cardholder.create(remote_attrs)
+
+        stripe_cardholder.update_column(:stripe_id, remote_cardholder.id)
       end
     end
 
