@@ -81,7 +81,7 @@ module StripeCardholderService
       @current_user.phone_number
     end
 
-    def safe_name
+    def name
       @current_user.safe_name
     end
 
