@@ -10,6 +10,13 @@ Rails.application.routes.draw do
     mount LetterOpenerWeb::Engine, at: "/letter_opener"
   end
 
+  resources :docs, only: [] do
+    collection do
+      get :api
+      get :swagger
+    end
+  end
+
   root to: 'static_pages#index'
   get 'stats', to: 'static_pages#stats'
   get 'project_stats', to: 'static_pages#project_stats'
