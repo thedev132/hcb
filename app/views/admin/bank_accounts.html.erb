@@ -10,7 +10,9 @@
       <th>ID</th>
       <th>Name</th>
       <th>Balance</th>
-      <th>Syncing</th>
+      <th>Syncing On</th>
+      <th>Failed At</th>
+      <th>Failure Count</th>
       <th>Actions</th>
     </tr>
   </thead>
@@ -21,6 +23,8 @@
         <td><%= ba.name %></td>
         <td><%= render_money ba.balance %></td>
         <td><%= ba.should_sync_v2 %></td>
+        <td><%= ba.failed_at %></td>
+        <td><%= ba.failure_count %></td>
         <td>
           <%= link_to "View", ba %>
         </td>
