@@ -3,6 +3,7 @@ class BankAccount < ApplicationRecord
 
   scope :syncing, -> { where(should_sync: true) }
   scope :syncing_v2, -> { where(should_sync_v2: true) }
+  scope :failing, -> { where("failed_at is not null") }
 
   def balance
     self.transactions.sum(:amount)

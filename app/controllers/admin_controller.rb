@@ -207,6 +207,16 @@ class AdminController < ApplicationController
     render layout: "admin"
   end
 
+  def bank_accounts
+    relation = BankAccount
+
+    @count = relation.count
+
+    @bank_accounts = relation.all.order("id asc")
+
+    render layout: "admin"
+  end
+
   def ledger
     @page = params[:page] || 1
     @per = params[:per] || 100

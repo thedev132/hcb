@@ -21,6 +21,8 @@
     <p>
       <%= link_to "admin", root_path %>
       |
+      <%= link_to "bank accounts (#{BankAccount.failing.count})", bank_accounts_admin_index_path %>
+      |
       <%= link_to "events (#{Event.pending.count})", events_admin_index_path %>
       |
       <%= link_to "fees", fees_admin_index_path %>
