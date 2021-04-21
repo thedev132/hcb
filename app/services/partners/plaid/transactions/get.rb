@@ -43,13 +43,13 @@ module Partners
 
             Rails.logger.info "plaid_client.transaction.get start_date=#{@start_date} end_date=#{@end_date} offset=#{offset} count=#{COUNT} account_ids=#{account_ids} total_transactions=#{results["total_transactions"]}"
 
-            # mark_plaid_item_success! # TODO
+            mark_plaid_item_success!
 
             results
           rescue ::Plaid::ItemError, ::Plaid::InvalidInputError => error
             Airbrake.notify("plaid_client.transactions.get failed for bank_account #{bank_account.id} with access token #{access_token}. #{error.message}")
 
-            # mark_plaid_item_failed! # TODO
+            mark_plaid_item_failed!
 
             { "accounts" => [], "transactions" => [], "total_transactions" => 0 }
           end
@@ -65,7 +65,8 @@ module Partners
         end
 
         def mark_plaid_item_success!
-          bank_account.update_attribute(:failed_at, nil)
+          bank_account.update_column(:failed_at, nil)
+          bank_account.update_column(:failure_count, 0)
         end
 
         def account_ids
