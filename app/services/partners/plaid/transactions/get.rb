@@ -61,7 +61,7 @@ module Partners
 
         def mark_plaid_item_failed!
           bank_account.touch(:failed_at) # mark plaid item failed
-          BankAccount.increment_counter(:failure_count, bank_account.id)
+          bank_account.increment!(:failure_count)
         end
 
         def mark_plaid_item_success!
