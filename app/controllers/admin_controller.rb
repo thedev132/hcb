@@ -217,6 +217,39 @@ class AdminController < ApplicationController
     render layout: "admin"
   end
 
+  def raw_transactions
+    @page = params[:page] || 1
+    @per = params[:per] || 100
+    @unique_bank_identifier = params[:unique_bank_identifier].present? ? params[:unique_bank_identifier] : nil
+
+    relation = RawCsvTransaction
+    relation = relation.where(unique_bank_identifier: @unique_bank_identifier) if @unique_bank_identifier
+
+    @count = relation.count
+
+    @raw_transactions = relation.page(@page).per(@per).order("date_posted desc")
+
+    render layout: "admin"
+  end
+
+  def raw_transaction_new
+    render layout: "admin"
+  end
+
+  def raw_transaction_create
+    attrs = {
+      unique_bank_identifier: params[:unique_bank_identifier],
+      date: params[:date],
+      memo: params[:memo],
+      amount: params[:amount]
+    }
+    ::RawCsvTransactionService::Create.new(attrs).run
+
+    redirect_to raw_transactions_admin_index_path, flash: { success: "Success" }
+  rescue => e
+    redirect_to raw_transaction_new_admin_index_path, flash: { error: e.message }
+  end
+
   def hashed_transactions
     @page = params[:page] || 1
     @per = params[:per] || 100
