@@ -28,9 +28,9 @@
     #eee 100%
   );">
     <%= image_tag 'https://cloud-q7i8htyv7-hack-club-bot.vercel.app/0pvsa-logo-2x.png', width: 60 %>
-    <%= link_to 'Apply',
+    <%= link_to 'Give',
       organizer_signed_in? ? "https://hack.af/pvsa-order?prefill_Event%20Name=#{@event.name}&prefill_Submitter%20Email=#{current_user.email}" : root_path,
-      class: 'btn bg-success mr1'
+      class: 'btn bg-accent mr1'
     %>
   </div>
 
@@ -44,7 +44,7 @@
     Certificates and medals are all shipped together to you, and you'll distribute them to your volunteers.
   </p>
 
-  <h3 class="mb0">Pricing</h3>
+  <h3 class="mb0">PVSA Pricing <span class="italic muted h5 medium">All costs are from PVSA directly– we don't charge you a fee on top.</span></h3>
   <table class="mb2">
     <tr>
       <td>Estimated shipping (per order)</td>
