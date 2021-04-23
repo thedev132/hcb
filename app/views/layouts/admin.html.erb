@@ -29,6 +29,8 @@
       |
       <%= link_to "users", users_admin_index_path %>
       |
+      <%= link_to "hashed transactions (#{HashedTransaction.uncanonized.count})", hashed_transactions_admin_index_path %>
+      |
       <%= link_to "ledger (#{CanonicalTransaction.not_stripe_top_up.unmapped.count})", ledger_admin_index_path %>
       |
       <%= link_to "pending ledger (#{CanonicalPendingTransaction.unsettled.count})", pending_ledger_admin_index_path %>

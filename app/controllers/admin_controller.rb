@@ -217,6 +217,25 @@ class AdminController < ApplicationController
     render layout: "admin"
   end
 
+  def hashed_transactions
+    @page = params[:page] || 1
+    @per = params[:per] || 100
+    @possible_duplicates = params[:possible_duplicates] == "1" ? true : nil
+    @uncanonized = params[:uncanonized] == "1" ? true : nil
+    @unique_bank_identifier = params[:unique_bank_identifier].present? ? params[:unique_bank_identifier] : nil
+
+    relation = HashedTransaction
+    relation = relation.possible_duplicates if @possible_duplicates
+    relation = relation.uncanonized if @uncanonized
+    relation = relation.where(unique_bank_identifier: @unique_bank_identifier) if @unique_bank_identifier
+
+    @count = relation.count
+
+    @hashed_transactions = relation.page(@page).per(@per).order("date desc, primary_hash asc")
+
+    render layout: "admin"
+  end
+
   def ledger
     @page = params[:page] || 1
     @per = params[:per] || 100

@@ -1,0 +1,66 @@
+<% title "HASHED TRANSACTIONS" %>
+
+<h1>HASHED TRANSACTIONS</h1>
+
+<%= paginate @hashed_transactions %>
+
+<%= form_with local: true, url: hashed_transactions_admin_index_path, method: :get do |form| %>
+  <%#= form.text_field :q, value: params[:q] %>
+  <%= form.label :possible_duplicates do %>
+    <%= form.check_box :possible_duplicates, checked: @possible_duplicates %>
+    Possible Duplicates
+  <% end %>
+  |
+  <%= form.label :uncanonized do %>
+    <%= form.check_box :uncanonized, checked: @uncanonized %>
+    Un-canonized
+  <% end %>
+  |
+
+  <%= form.collection_select(:unique_bank_identifier, HashedTransaction.distinct(:unique_bank_identifier).where("unique_bank_identifier is not null").order("unique_bank_identifier asc").pluck(:unique_bank_identifier), :to_s, :to_s, { include_blank: true, selected: @unique_bank_identifier }, { width: 150, style: "max-width: 150px" }) %>
+  |
+
+  <%= form.submit "Search" %>
+<% end %>
+
+<p><small><%= pluralize(@count, "result") %></small></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Hash</th>
+      <th>BankIdentifier</th>
+      <th>Date</th>
+      <th>Memo</th>
+      <th>Amount</th>
+      <th>CanonicalTransaction</th>
+      <!--
+      <th>HashInput</th>
+      -->
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @hashed_transactions.each do |ht| %>
+      <tr style="<%= "background: #ffffcc;" unless ht.canonical_hashed_mapping %>">
+        <td><%= ht.id %></td>
+        <td><%= ht.primary_hash %></td>
+        <td><%= ht.unique_bank_identifier %></td>
+        <td><%= ht.date %></td>
+        <td><%= ht.memo %></td>
+        <td><%= ht.amount %></td>
+        <td>
+          <%= link_to ht.canonical_transaction.id, transaction_admin_path(ht.canonical_transaction) if ht.canonical_transaction.present? %>
+        </td>
+        <!--
+        <td><%= ht.primary_hash_input %></td>
+        -->
+        <td>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= paginate @hashed_transactions %>
