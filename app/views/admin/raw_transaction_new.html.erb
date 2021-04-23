@@ -1,0 +1,38 @@
+<% title "Add a Raw Transaction" %>
+
+<h1>Add a Raw (by hand) Transaction</h1>
+
+<%= form_with(model: nil, local: true, url: raw_transaction_create_admin_index_path) do |form| %>
+  <fieldset>
+    <legend>Raw Transaction</legend>
+    <p>
+      <%= form.label :unique_bank_identifier, "Bank Identifier" %>
+      <br/>
+      <%= form.collection_select(:unique_bank_identifier, HashedTransaction.distinct(:unique_bank_identifier).where("unique_bank_identifier is not null").order("unique_bank_identifier asc").pluck(:unique_bank_identifier), :to_s, :to_s, { selected: "FSMAIN", include_blank: true }, { }) %>
+    </p>
+
+    <p>
+      <%= form.label :date, "Date" %>
+      <br/>
+      <%= form.text_field :date, placeholder: "2021-03-01", required: true %>
+    </p>
+
+    <p>
+      <%= form.label :memo %>
+      <br/>
+      <%= form.text_field :memo, placeholder: "Transaction memo", required: true %>
+    </p>
+
+    <p>
+      <%= form.label :amount, "Amount" %>
+      <br/>
+      <span class="bold muted" style="width: 1rem;">$</span>
+      <%= form.number_field :amount, placeholder: "500.00", step: 0.01, required: true %>
+    </p>
+  </fieldset>
+
+  <p>
+    <%= form.submit "Add raw transaction" %>
+  </p>
+<% end %>
+

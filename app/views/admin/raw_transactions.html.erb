@@ -1,0 +1,42 @@
+<% title "RAW TRANSACTIONS" %>
+
+<h1>RAW TRANSACTIONS <small><%= link_to "New Raw Transaction", raw_transaction_new_admin_index_path %></small></h1>
+
+<%= paginate @raw_transactions %>
+
+<%= form_with local: true, url: raw_transactions_admin_index_path, method: :get do |form| %>
+  <%= form.collection_select(:unique_bank_identifier, HashedTransaction.distinct(:unique_bank_identifier).where("unique_bank_identifier is not null").order("unique_bank_identifier asc").pluck(:unique_bank_identifier), :to_s, :to_s, { include_blank: true, selected: @unique_bank_identifier }, { width: 150, style: "max-width: 150px" }) %>
+  |
+
+  <%= form.submit "Search" %>
+<% end %>
+
+<p><small><%= pluralize(@count, "result") %></small></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Bank Identifier</th>
+      <th>Date</th>
+      <th>Memo</th>
+      <th>Amount</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @raw_transactions.each do |rt| %>
+      <tr style="<%= "background: #ffffcc;" unless rt.hashed_transactions.present? %>">
+        <td><%= rt.id %></td>
+        <td><%= rt.unique_bank_identifier %></td>
+        <td><%= rt.date_posted %></td>
+        <td><%= rt.memo %></td>
+        <td><%= rt.amount %></td>
+        <td>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= paginate @raw_transactions %>

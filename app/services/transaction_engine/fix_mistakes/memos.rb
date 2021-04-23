@@ -9,7 +9,7 @@ module TransactionEngine
 
       def run
         ::CanonicalTransaction.where("date >= ?", @start_date).find_each(batch_size: 100) do |ct|
-          if ct.memo != ct.hashed_transactions.first.memo
+          if ct.hashed_transactions.present? && ct.memo != ct.hashed_transactions.first.memo
             ct.update_column(:memo, ct.hashed_transactions.first.memo)
           end
         end

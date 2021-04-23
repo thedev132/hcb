@@ -87,6 +87,7 @@
       <%= card_to "Clubs/Events (#{Event.pending.count})", events_admin_index_path %>
       <%= card_to "Fees", fees_admin_index_path %>
       <%= card_to "Users", users_admin_index_path %>
+      <%= card_to "Raw Transactions (#{RawCsvTransaction.unhashed.count})", raw_transactions_admin_index_path %>
       <%= card_to "Hashed Transactions (#{HashedTransaction.uncanonized.count})", hashed_transactions_admin_index_path %>
       <%= card_to "Ledger (#{CanonicalTransaction.not_stripe_top_up.unmapped.count})", ledger_admin_index_path %>
       <%= card_to "Pending Ledger (#{CanonicalPendingTransaction.unsettled.count})", pending_ledger_admin_index_path %>
