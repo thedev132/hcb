@@ -74,6 +74,7 @@ Rails.application.routes.draw do
       get 'hcb_codes', to: 'admin#hcb_codes'
       get 'fees', to: 'admin#fees'
       get 'users', to: 'admin#users'
+      get 'hashed_transactions', to: 'admin#hashed_transactions'
       get 'ledger', to: 'admin#ledger'
       get 'pending_ledger', to: 'admin#pending_ledger'
       get 'ach', to: 'admin#ach'
