@@ -220,15 +220,13 @@ class AdminController < ApplicationController
   def hashed_transactions
     @page = params[:page] || 1
     @per = params[:per] || 100
-    @duplicates = params[:duplicates] == "1" ? true : nil
+    @possible_duplicates = params[:possible_duplicates] == "1" ? true : nil
+    @uncanonized = params[:uncanonized] == "1" ? true : nil
     @unique_bank_identifier = params[:unique_bank_identifier].present? ? params[:unique_bank_identifier] : nil
 
     relation = HashedTransaction
-
-    if @duplicates
-      duplicate_hashes = HashedTransaction.select(:primary_hash).group(:primary_hash).having('count(primary_hash) > 1').pluck(:primary_hash)
-      relation = relation.where(primary_hash: duplicate_hashes)
-    end
+    relation = relation.possible_duplicates if @possible_duplicates
+    relation = relation.uncanonized if @uncanonized
     relation = relation.where(unique_bank_identifier: @unique_bank_identifier) if @unique_bank_identifier
 
     @count = relation.count

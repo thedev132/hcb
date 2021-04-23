@@ -6,9 +6,14 @@
 
 <%= form_with local: true, url: hashed_transactions_admin_index_path, method: :get do |form| %>
   <%#= form.text_field :q, value: params[:q] %>
-  <%= form.label :duplicates do %>
-    <%= form.check_box :duplicates, checked: @duplicates %>
-    Duplicates
+  <%= form.label :possible_duplicates do %>
+    <%= form.check_box :possible_duplicates, checked: @possible_duplicates %>
+    Possible Duplicates
+  <% end %>
+  |
+  <%= form.label :uncanonized do %>
+    <%= form.check_box :uncanonized, checked: @uncanonized %>
+    Un-canonized
   <% end %>
   |
 
