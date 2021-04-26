@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
-class DonationsV1Documentation < ApplicationDocumentation
-  swagger_path "/api/donations/v1/start" do
+class V1DonationsDocumentation < ApplicationDocumentation
+  swagger_path "/api/v1/donations/start" do
     operation :post do
       key :summary, "Start a donation backed by Bank"
       key :description, "Start a donation backed by Bank"
       key :tags, ["Donations"]
-      key :operationId, "connectV1Webhook"
+      key :operationId, "v1DonationsStart"
 
       parameter do
         key :name, :organizationIdentifier

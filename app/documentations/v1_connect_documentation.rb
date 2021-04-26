@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
-class ConnectV1Documentation < ApplicationDocumentation
-  swagger_path "/api/connect/v1/start" do
+class V1ConnectDocumentation < ApplicationDocumentation
+  swagger_path "/api/v1/connect/start" do
     operation :get do
       key :summary, "Send user through Bank Connect flow"
       key :description, "Send user through Bank Connect flow"
       key :tags, ["Connect"]
-      key :operationId, "connectV1Start"
+      key :operationId, "v1ConnectStart"
 
       parameter do
         key :name, :organizationIdentifier
@@ -124,12 +124,12 @@ class ConnectV1Documentation < ApplicationDocumentation
     end
   end
 
-  swagger_path "/api/connect/v1/webhook" do
+  swagger_path "/api/v1/connect/webhook" do
     operation :post do
       key :summary, "Receive webhook payload from Bank Connect"
       key :description, "Receive webhook payload from Bank Connect"
       key :tags, ["Connect"]
-      key :operationId, "connectV1Webhook"
+      key :operationId, "v1ConnectWebhook"
 
       response 200 do
         key :description, "Parse this data in order to update the user's Bank Connect status"
@@ -146,32 +146,4 @@ class ConnectV1Documentation < ApplicationDocumentation
       end
     end
   end
-
-  swagger_path "/api/connect/v1/organizations" do
-    operation :get do
-      key :summary, "Return status information on all your organizations"
-      key :description, "Return status information on all your organizations"
-      key :tags, ["Connect"]
-      key :operationId, "connectV1Organizations"
-
-      response 200 do
-        key :description, "Parse this data in order to update the user's Bank Connect status"
-        content :"application/json" do
-          key :example, {
-            data: [
-              {
-                organizationIdentifier: "org_1234",
-                status: "approved"
-              },
-              {
-                organizationIdentifier: "org_4567",
-                status: "pending"
-              }
-            ]
-          }
-        end
-      end
-    end
-  end
-
 end
