@@ -49,6 +49,7 @@
           <td><%= pdp.statement_descriptor %></td>
           <td><%= render_money pdp.amount %></td>
           <td><%= link_to pdp.event.admin_formatted_name, pdp.event %></td>
+          <td><%= link_to "stripe #{pdp.stripe_payout_id}", "https://dashboard.stripe.com/payouts/#{pdp.stripe_payout_id}" %></td> 
         </tr>
       <% end %>
     </body>
