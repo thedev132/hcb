@@ -5,7 +5,7 @@ class ConnectV1Documentation < ApplicationDocumentation
     operation :get do
       key :summary, "Send user through Bank Connect flow"
       key :description, "Send user through Bank Connect flow"
-      key :tags, ["connect"]
+      key :tags, ["Connect"]
       key :operationId, "connectV1Start"
 
       parameter do
@@ -128,7 +128,7 @@ class ConnectV1Documentation < ApplicationDocumentation
     operation :post do
       key :summary, "Receive webhook payload from Bank Connect"
       key :description, "Receive webhook payload from Bank Connect"
-      key :tags, ["connect"]
+      key :tags, ["Connect"]
       key :operationId, "connectV1Webhook"
 
       response 200 do
@@ -151,7 +151,7 @@ class ConnectV1Documentation < ApplicationDocumentation
     operation :get do
       key :summary, "Return status information on all your organizations"
       key :description, "Return status information on all your organizations"
-      key :tags, ["connect"]
+      key :tags, ["Connect"]
       key :operationId, "connectV1Organizations"
 
       response 200 do

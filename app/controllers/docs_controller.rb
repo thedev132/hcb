@@ -29,6 +29,7 @@ class DocsController < ActionController::Base
   SWAGGERED_CLASSES = [
     ApplicationDocumentation,
     ConnectV1Documentation,
+    DonationsV1Documentation,
 		self
   ].freeze
 
