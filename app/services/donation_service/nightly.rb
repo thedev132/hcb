@@ -2,8 +2,6 @@ module DonationService
   class Nightly
     def run
       Donation.succeeded.each do |donation|
-        next unless donation.deposited? # temporary until aasm fully worked out and can settle on in_transit
-
         cpt = donation.canonical_pending_transaction
 
         next unless cpt
