@@ -28,27 +28,29 @@
     #eee 100%
   );">
     <%= image_tag 'https://cloud-q7i8htyv7-hack-club-bot.vercel.app/0pvsa-logo-2x.png', width: 60 %>
-    <%= link_to 'Give',
+    <%= link_to 'Purchase',
       organizer_signed_in? ? "https://hack.af/pvsa-order?prefill_Event%20Name=#{@event.name}&prefill_Submitter%20Email=#{current_user.email}" : root_path,
       class: 'btn bg-accent mr1'
     %>
   </div>
 
   <p>
-    As a fiscally sponsored org, you can issue <a href="https://www.presidentialserviceawards.gov" target="_blank">Presidential Volunteer Service Awards</a> to volunteers (including yourself and team members).
+    Since you run on Hack Club Bank, you can issue <a href="https://www.presidentialserviceawards.gov" target="_blank">Presidential Volunteer Service Awards</a> to volunteers (including to yourself and team members).
     When applying you'll be asked to certify the volunteer's hours (instructions and examples are provided on the application form).
-    While we provide access to the certifying authority, you'll be purchasing certificates or medals from your own budget. You'll be provided a cost estimate when filling out the volunteer hour spreadsheet.
+    <br />
+    While we're registered with PVSA, you'll be purchasing certificates or medals from your own budget.
   </p>
 
   <p>
-    Certificates and medals are all shipped together to you, and you'll distribute them to your volunteers.
+    Certificates and medals are shipped to one address and you'll distribute them from there.
   </p>
 
-  <h3 class="mb0">PVSA Pricing <span class="italic muted h5 medium">All costs are from PVSA directly– we don't charge you a fee on top.</span></h3>
+  <h3 class="mb1">PVSA Cost Summary</h3>
+  <p class="italic muted">All costs are from PVSA directly– we don't charge you a fee on top.</p>
   <table class="mb2">
     <tr>
-      <td>Estimated shipping (per order)</td>
-      <td><em>Up to</em> $23.00</td>
+      <td>Shipping (per order)</td>
+      <td>Varies <span class="italic">(up to $23.00)</span></td>
     </tr>
     <tr>
       <td>Certificate only</td>
