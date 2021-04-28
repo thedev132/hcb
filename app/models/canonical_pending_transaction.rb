@@ -1,6 +1,6 @@
 class CanonicalPendingTransaction < ApplicationRecord
   include PgSearch::Model
-  pg_search_scope :search_memo, against: [:memo], using: { tsearch: { prefix: true, dictionary: "english" } }, ranked_by: "canonical_pending_transactions.date"
+  pg_search_scope :search_memo, against: [:memo, :hcb_code], using: { tsearch: { prefix: true, dictionary: "english" } }, ranked_by: "canonical_pending_transactions.date"
 
   belongs_to :raw_pending_stripe_transaction, optional: true
   belongs_to :raw_pending_outgoing_check_transaction, optional: true
