@@ -52,6 +52,10 @@ class DonationPayout < ApplicationRecord
     donation.hcb_code
   end
 
+  def local_hcb_code
+    donation.local_hcb_code
+  end
+
   def event
     donation.event
   end
@@ -61,7 +65,7 @@ class DonationPayout < ApplicationRecord
   def default_values
     return unless donation
 
-    self.statement_descriptor ||= hcb_code
+    self.statement_descriptor ||= "HCB-#{local_hcb_code.short_code}"
   end
 
   def create_stripe_payout
