@@ -8,6 +8,8 @@ class HcbCode < ApplicationRecord
 
   monetize :amount_cents
 
+  before_create :generate_and_set_short_code
+
   def url
     "/hcb/#{hashid}"
   end
@@ -185,4 +187,7 @@ class HcbCode < ApplicationRecord
     @local_hcb_code ||= HcbCode.find_or_create_by(hcb_code: hcb_code)
   end
 
+  def generate_and_set_short_code
+    self.short_code = ::HcbCodeService::Generate::ShortCode.new.run
+  end
 end
