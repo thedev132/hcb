@@ -220,7 +220,7 @@ Request should be of shape:
 }
 ```
 
-`slug` is optional. If no `slug` is provided, we'll take the name and attempt to sluggify it. Events created this way will be `spend_only`.
+`slug` is optional. If no `slug` is provided, we'll take the name and attempt to sluggify it. Events created this way will be `unapproved`.
 
 Response will be of shape:
 
