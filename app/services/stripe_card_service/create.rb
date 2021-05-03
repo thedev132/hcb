@@ -19,7 +19,7 @@ module StripeCardService
     end
 
     def run
-      raise ArgumentError, "not permitted under spend only plan" if event.is_spend_only
+      raise ArgumentError, "not permitted under spend only plan" if event.unapproved?
 
       stripe_cardholder
 

@@ -228,7 +228,6 @@ Response will be of shape:
 HTTP 201
 {
     name: <string>,
-    is_spend_only: <boolean>,
     slug: <string>,
     organizer_emails: Array<string>,
 }

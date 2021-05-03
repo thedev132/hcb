@@ -40,8 +40,7 @@ module EventService
         sponsorship_fee: @sponsorship_fee,
         expected_budget: 100.0,
         has_fiscal_sponsorship_document: @has_fiscal_sponsorship_document,
-        point_of_contact_id: point_of_contact.id,
-        is_spend_only: false
+        point_of_contact_id: point_of_contact.id
       }
     end
 

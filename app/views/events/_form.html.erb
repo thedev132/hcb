@@ -5,7 +5,7 @@
     <p class="mt0"><%= event.name %> is on the <strong><%= event.plan_name %></strong> plan and charging <strong><%= number_to_percentage(event.sponsorship_fee * 100, significant: true, strip_insignificant_zeros: true) %></strong> of your revenue.</p>
   </div>
 
-  <% if !@event.is_spend_only %>
+  <% if !@event.unapproved? %>
     <h3 class="mb1">Donations</h3>
 
     <div class="card">
@@ -121,11 +121,6 @@
     <div class="field field--checkbox">
       <%= form.check_box :has_fiscal_sponsorship_document %>
       <%= form.label :has_fiscal_sponsorship_document, "Display Fiscal Sponsorship Confirmation in Documents tab?" %>
-    </div>
-
-    <div class="field field--checkbox">
-      <%= form.check_box :is_spend_only %>
-      <%= form.label :is_spend_only, "Make this a spend-only account?" %>
     </div>
 
     <div class="field field--checkbox">
