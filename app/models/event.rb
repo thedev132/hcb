@@ -275,7 +275,7 @@ class Event < ApplicationRecord
   end
 
   def plan_name
-    if is_spend_only
+    if unapproved?
       "pending approval"
     else
       "full fiscal sponsorship"
