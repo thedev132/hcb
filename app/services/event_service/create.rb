@@ -14,6 +14,7 @@ module EventService
 
       ActiveRecord::Base.transaction do
         event = ::Event.create!(attrs)
+        event.mark_approved!
 
         @emails.each do |email|
           event.organizer_position_invites.create!(organizer_attrs(email: email))
