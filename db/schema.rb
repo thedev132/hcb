@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_03_184255) do
+ActiveRecord::Schema.define(version: 2021_05_03_205519) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -493,7 +493,6 @@ ActiveRecord::Schema.define(version: 2021_05_03_184255) do
     t.datetime "hidden_at"
     t.boolean "donation_page_enabled"
     t.text "donation_page_message"
-    t.boolean "is_spend_only"
     t.boolean "is_public", default: false
     t.text "public_message"
     t.boolean "omit_stats", default: false
