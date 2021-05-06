@@ -105,7 +105,7 @@ class HcbCode < ApplicationRecord
   end
 
   def invoice
-    @invoice ||= Invoice.find_by(id: hcb_i2)
+    @invoice ||= Invoice.find_by(id: hcb_i2) if invoice?
   end
 
   def invoice_memo
@@ -113,7 +113,7 @@ class HcbCode < ApplicationRecord
   end
 
   def donation
-    @donation ||= Donation.find_by(id: hcb_i2)
+    @donation ||= Donation.find_by(id: hcb_i2) if donation?
   end
 
   def donation_memo
@@ -121,7 +121,7 @@ class HcbCode < ApplicationRecord
   end
 
   def ach_transfer
-    @ach_transfer ||= AchTransfer.find_by(id: hcb_i2)
+    @ach_transfer ||= AchTransfer.find_by(id: hcb_i2) if ach_transfer?
   end
 
   def ach_transfer_memo
@@ -129,7 +129,7 @@ class HcbCode < ApplicationRecord
   end
 
   def check
-    @check ||= Check.find_by(id: hcb_i2)
+    @check ||= Check.find_by(id: hcb_i2) if check?
   end
 
   def check_memo
@@ -137,7 +137,7 @@ class HcbCode < ApplicationRecord
   end
 
   def disbursement
-    @disbursement ||= Disbursement.find_by(id: hcb_i2)
+    @disbursement ||= Disbursement.find_by(id: hcb_i2) if disbursement?
   end
 
   def unknown?
