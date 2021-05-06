@@ -6,7 +6,7 @@ module EventMappingEngine
       end
 
       def run
-        ach.event.id
+        ach.try(:event).try(:id)
       end
 
       private
