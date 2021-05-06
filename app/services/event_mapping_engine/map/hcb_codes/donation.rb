@@ -35,7 +35,7 @@ module EventMappingEngine
         end
 
         def code
-          "HCKCLB HCB-#{::TransactionGroupingEngine::Calculate::HcbCode::DONATION_CODE}-"
+          "HCB-#{::TransactionGroupingEngine::Calculate::HcbCode::DONATION_CODE}-"
         end
 
       end

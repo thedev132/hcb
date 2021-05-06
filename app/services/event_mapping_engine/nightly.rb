@@ -21,6 +21,8 @@ module EventMappingEngine
       map_hcb_codes_invoice!
       map_hcb_codes_donation!
 
+      map_hcb_codes_short!
+
       true
     end
 
@@ -72,6 +74,10 @@ module EventMappingEngine
 
     def map_hcb_codes_donation!
       ::EventMappingEngine::Map::HcbCodes::Donation.new.run
+    end
+
+    def map_hcb_codes_short!
+      ::EventMappingEngine::Map::HcbCodes::Short.new.run
     end
   end
 end
