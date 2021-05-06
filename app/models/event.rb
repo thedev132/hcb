@@ -140,12 +140,12 @@ class Event < ApplicationRecord
   has_many :documents
 
   has_many :canonical_pending_event_mappings
-  has_many :canonical_pending_transactions, through: :canonical_pending_event_mappings
+  has_many :canonical_pending_transactions, -> { distinct }, through: :canonical_pending_event_mappings
 
   has_many :canonical_event_mappings
-  has_many :canonical_transactions, through: :canonical_event_mappings
+  has_many :canonical_transactions, -> { distinct }, through: :canonical_event_mappings
 
-  has_many :fees, through: :canonical_event_mappings
+  has_many :fees, -> { distinct }, through: :canonical_event_mappings
 
   validate :point_of_contact_is_admin
 
