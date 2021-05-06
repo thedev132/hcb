@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_28_164603) do
+ActiveRecord::Schema.define(version: 2021_05_03_205519) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -493,13 +493,13 @@ ActiveRecord::Schema.define(version: 2021_04_28_164603) do
     t.datetime "hidden_at"
     t.boolean "donation_page_enabled"
     t.text "donation_page_message"
-    t.boolean "is_spend_only"
     t.boolean "is_public", default: false
     t.text "public_message"
     t.boolean "omit_stats", default: false
     t.datetime "transaction_engine_v2_at", default: -> { "CURRENT_TIMESTAMP" }
     t.datetime "last_fee_processed_at"
     t.datetime "pending_transaction_engine_at", default: "2021-02-13 22:49:40"
+    t.string "aasm_state"
     t.index ["club_airtable_id"], name: "index_events_on_club_airtable_id", unique: true
     t.index ["point_of_contact_id"], name: "index_events_on_point_of_contact_id"
   end
