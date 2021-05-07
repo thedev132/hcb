@@ -7,8 +7,8 @@ module EventMappingEngine
     end
 
     def run
-      map_historical_plaid!
-      map_historical_emburse!
+      #map_historical_plaid! # DEPRECATED - 2021-05-07
+      #map_historical_emburse! # DEPRECATED - 2021-05-07
       map_stripe_transactions!
       map_github!
       map_checks!
