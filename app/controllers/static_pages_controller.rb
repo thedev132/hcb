@@ -62,15 +62,7 @@ class StaticPagesController < ApplicationController
 
     return render plain: "404 Not found", status: 404 unless event
 
-    income_tx = Transaction.includes(:fee_relationship)
-      .where("amount > ?", 0)
-      .where(
-        is_event_related: true,
-        fee_relationships: {
-          event_id: event.id,
-        }
-      )
-    raised = income_tx.sum(:amount).to_i
+    raised = Event.canonical_transactions.revenue.sum(:amount)
 
     render json: {
       raised: raised
@@ -83,21 +75,25 @@ class StaticPagesController < ApplicationController
     qtr_ago = now - 3.month
     month_ago = now - 1.month
 
-    events_list = []
-    Event.where('created_at <= ?', now).order(created_at: :desc).limit(10).each { |event|
-      events_list.push({
-        created_at: event.created_at.to_i, # unix timestamp
-      })
-    }
+    events_list = Event.not_omitted
+                       .where('created_at <= ?', now)
+                       .order(created_at: :desc)
+                       .limit(10)
+                       .pluck(:created_at)
+                       .map(&:to_i)
+
+    tx_all        = CanonicalTransaction.included_in_stats.where('date <= ?', now)
+    tx_last_year  = CanonicalTransaction.included_in_stats.where(date: year_ago..now)
+    tx_last_qtr   = CanonicalTransaction.included_in_stats.where(date: qtr_ago..now)
+    tx_last_month = CanonicalTransaction.included_in_stats.where(date: month_ago..now)
 
     render json: {
       date: now,
-      transactions_volume: Transaction.where('transactions.created_at <= ?', now).total_volume,
-      transactions_count: Transaction.where('created_at <= ?', now).size,
-      events_count: Event.where('created_at <= ?', now).size,
-      # Transactions are sorted by date DESC by default, so first one is... chronologically last
-      last_transaction_date: Transaction.where('created_at <= ?', now).first.created_at.to_i,
-      raised: Transaction.raised_during(DateTime.strptime('0', '%s'), now),
+      events_count: Event.not_omitted.where('created_at <= ?', now).size,
+      last_transaction_date: tx_all.order(:date).last.date.to_time.to_i,
+      raised: tx_all.revenue.sum(:amount_cents),
+      transactions_count: tx_all.size,
+      transactions_volume: tx_all.sum('@amount_cents'),
       last_year: {
         expenses: tx_last_year.expense.sum(:amount_cents),
         raised: tx_last_year.revenue.sum(:amount_cents),
