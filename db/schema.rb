@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_03_205519) do
+ActiveRecord::Schema.define(version: 2021_05_09_021606) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -177,6 +177,7 @@ ActiveRecord::Schema.define(version: 2021_05_03_205519) do
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "user_id"
     t.index ["canonical_transaction_id"], name: "index_canonical_event_mappings_on_canonical_transaction_id"
+    t.index ["event_id", "canonical_transaction_id"], name: "index_cem_event_id_canonical_transaction_id_uniqueness", unique: true
     t.index ["event_id"], name: "index_canonical_event_mappings_on_event_id"
     t.index ["user_id"], name: "index_canonical_event_mappings_on_user_id"
   end
@@ -783,6 +784,13 @@ ActiveRecord::Schema.define(version: 2021_05_03_205519) do
     t.datetime "deleted_at"
     t.index ["event_id"], name: "index_organizer_positions_on_event_id"
     t.index ["user_id"], name: "index_organizer_positions_on_user_id"
+  end
+
+  create_table "partners", force: :cascade do |t|
+    t.string "slug", null: false
+    t.text "api_key"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "raw_csv_transactions", force: :cascade do |t|
