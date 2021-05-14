@@ -96,7 +96,8 @@ class Event < ApplicationRecord
   end
 
   aasm do
-    state :unapproved, initial: true
+    state :pending, initial: true
+    state :unapproved # old spend only events
     state :approved
 
     event :mark_approved do
@@ -106,7 +107,8 @@ class Event < ApplicationRecord
 
   friendly_id :name, use: :slugged
 
-  belongs_to :point_of_contact, class_name: 'User'
+  belongs_to :point_of_contact, class_name: 'User', optional: true
+  belongs_to :partner, optional: true
 
   has_many :organizer_position_invites
   has_many :organizer_positions
@@ -326,8 +328,9 @@ class Event < ApplicationRecord
   end
 
   def point_of_contact_is_admin
-    return if self.point_of_contact&.admin?
-
+    return unless point_of_contact # for remote partner created events
+    return if point_of_contact&.admin?
+    
     errors.add(:point_of_contact, 'must be an admin')
   end
 

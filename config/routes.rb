@@ -300,9 +300,18 @@ Rails.application.routes.draw do
     resources :comments
   end
 
-  # api
-  get  'api/v1/events/find', to: 'api#event_find'
-  post 'api/v1/disbursements', to: 'api#disbursement_new'
+  scope :api, module: "api" do
+    resources "v1", as: :api_v1, only: [:index] do
+      collection do
+        match "connect/start", action: :connect_start, as: :api_connect_start, via: [:post]
+      end
+    end
+
+    match "/", to: "v1#index", module: :api_v1, as: :api_root, via: :all
+  end
+
+  get  'api/v1/events/find', to: 'api#event_find' # to be deprecated
+  post 'api/v1/disbursements', to: 'api#disbursement_new' # to be deprecated
 
   post 'stripe/webhook', to: 'stripe#webhook'
 

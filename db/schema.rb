@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_09_021606) do
+ActiveRecord::Schema.define(version: 2021_05_14_203302) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -501,7 +501,11 @@ ActiveRecord::Schema.define(version: 2021_05_09_021606) do
     t.datetime "last_fee_processed_at"
     t.datetime "pending_transaction_engine_at", default: "2021-02-13 22:49:40"
     t.string "aasm_state"
+    t.string "organization_identifier"
+    t.string "redirect_url"
+    t.bigint "partner_id"
     t.index ["club_airtable_id"], name: "index_events_on_club_airtable_id", unique: true
+    t.index ["partner_id"], name: "index_events_on_partner_id"
     t.index ["point_of_contact_id"], name: "index_events_on_point_of_contact_id"
   end
 
@@ -1087,6 +1091,7 @@ ActiveRecord::Schema.define(version: 2021_05_09_021606) do
   add_foreign_key "emburse_transfers", "events"
   add_foreign_key "emburse_transfers", "users", column: "creator_id"
   add_foreign_key "emburse_transfers", "users", column: "fulfilled_by_id"
+  add_foreign_key "events", "partners"
   add_foreign_key "events", "users", column: "point_of_contact_id"
   add_foreign_key "exports", "users"
   add_foreign_key "fee_relationships", "events"
