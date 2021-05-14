@@ -13,7 +13,14 @@ module Api
       contract = Api::V1::ConnectStartContract.new.call(params.permit!.to_h)
       render json: json_error(contract), status: 400 and return unless contract.success?
 
+      attrs = {
+        organization_identifier: contract[:organizationIdentifier],
+        redirect_url: contract[:redirectUrl],
+        webhook_url: contract[:webhookUrl]
+      }
+      event = ::ApiService::V1::ConnectStart.new(attrs).run
 
+      render json: Api::V1::ConnectStartSerializer.new(event: event).run
     end
   end
 end

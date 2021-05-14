@@ -47,7 +47,7 @@ module SessionsHelper
 
     if ensure_api_authorized
       # ensure that our auth token is valid. this will throw
-      # ApiService::UnauthorizedError if we get an authorization error, which
+      # BankApiService::UnauthorizedError if we get an authorization error, which
       # will be caught by ApplicationController and sign out the user
       cache_api_authorized
     end

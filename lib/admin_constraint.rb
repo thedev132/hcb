@@ -10,7 +10,7 @@ class AdminConstraint
 
     user = User.find_by(session_token: digest)
     user && user.admin?
-  rescue ApiService::UnauthorizedError
+  rescue BankApiService::UnauthorizedError
     false # user is not logged in
   end
 end

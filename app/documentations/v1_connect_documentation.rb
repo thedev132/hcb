@@ -115,6 +115,22 @@ class V1ConnectDocumentation < ApplicationDocumentation
         end
       end
 
+      response 200 do
+        key :description, "Parse this data in order to redirect the user through Bank Connect"
+        content :"application/json" do
+          key :example, {
+            data: [
+              {
+                organizationIdentifier: "org_1234",
+                status: "pending",
+                redirectUrl: "http://yoursite.com/redirect/to",
+                connectUrl: "https://bank.hackclub.com/api/v1/connect/follow?followIdentifier=con_1234"
+              }
+            ]
+          }
+        end
+      end
+
       response 302 do
         key :description, "Following completion of html page, Bank Connect redirects to the redirectUrl you specified"
         content :"url" do

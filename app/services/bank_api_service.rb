@@ -1,4 +1,4 @@
-class ApiService
+class BankApiService
   BASE_URL = 'https://api.hackclub.com'
   include Util
 
