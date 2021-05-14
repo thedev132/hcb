@@ -108,7 +108,7 @@ class Event < ApplicationRecord
   friendly_id :name, use: :slugged
 
   belongs_to :point_of_contact, class_name: 'User', optional: true
-  belongs_to :partner, optional: true
+  belongs_to :partner
 
   has_many :organizer_position_invites
   has_many :organizer_positions
@@ -151,7 +151,7 @@ class Event < ApplicationRecord
 
   validate :point_of_contact_is_admin
 
-  validates :name, :sponsorship_fee, presence: true
+  validates :name, :sponsorship_fee, :organization_identifier, presence: true
   validates :slug, uniqueness: true, presence: true, format: { without: /\s/ }
 
   before_create :default_values

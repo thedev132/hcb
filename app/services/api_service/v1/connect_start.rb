@@ -10,13 +10,13 @@ module ApiService
       end
 
       def run
-        ::Event.create!(attrs)
+        ::Event.find_by(organization_identifier: clean_organization_identifier) || ::Event.create!(attrs)
       end
 
       def attrs
         {
           partner: partner,
-          organization_identifier: @organization_identifier,
+          organization_identifier: clean_organization_identifier,
           name: smart_name,
           slug: smart_slug,
           sponsorship_fee: sponsorship_fee,
@@ -39,6 +39,10 @@ module ApiService
 
       def partner
         @partner ||= Partner.find_by!(slug: "bank") # TODO: contextual to who is using the API
+      end
+
+      def clean_organization_identifier
+        @organization_identifier.to_s.strip
       end
     end
   end

@@ -30,4 +30,12 @@ RSpec.describe ApiService::V1::ConnectStart, type: :model do
 
     expect(event.redirect_url).to eql(redirect_url)
   end
+
+  it "idempotently creates" do
+    service.run
+
+    expect do
+      service.run
+    end.to_not raise_error
+  end
 end
