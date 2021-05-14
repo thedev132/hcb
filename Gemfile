@@ -162,3 +162,4 @@ gem 'sidekiq-cron', '~> 1.1' # run sidekiq scheduled tasks
 gem 'strong_migrations' # protects against risky migrations that could cause application harm on deploy
 gem 'xxhash' # fast hashing
 gem 'swagger-blocks'
+gem 'dry-validation'

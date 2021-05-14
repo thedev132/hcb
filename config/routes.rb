@@ -303,6 +303,8 @@ Rails.application.routes.draw do
   scope :api, module: "api" do
     resources "v1", as: :api_v1, only: [:index] do
     end
+
+    match "/", to: "v1#index", module: :api_v1, as: :api_root, via: :all
   end
 
   get  'api/v1/events/find', to: 'api#event_find' # to be deprecated

@@ -3,7 +3,9 @@
 module Api
   class V1Controller < Api::ApplicationController
     def index
-      render json: {}
+      contract = Api::V1::IndexContract.new.call(params.permit!.to_h)
+
+      render json: Api::V1::IndexSerializer.new.run
     end
   end
 end
