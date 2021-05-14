@@ -2,7 +2,7 @@
 
 class V1ConnectDocumentation < ApplicationDocumentation
   swagger_path "/api/v1/connect/start" do
-    operation :get do
+    operation :post do
       key :summary, "Send user through Bank Connect flow"
       key :description, "Send user through Bank Connect flow"
       key :tags, ["Connect"]

@@ -303,7 +303,7 @@ Rails.application.routes.draw do
   scope :api, module: "api" do
     resources "v1", as: :api_v1, only: [:index] do
       collection do
-        match "connect/start", action: :connect_start, as: :api_connect_start, via: [:get]
+        match "connect/start", action: :connect_start, as: :api_connect_start, via: [:post]
       end
     end
 

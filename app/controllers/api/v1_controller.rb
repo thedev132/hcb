@@ -13,7 +13,7 @@ module Api
       contract = Api::V1::ConnectStartContract.new.call(params.permit!.to_h)
       render json: json_error(contract), status: 400 and return unless contract.success?
 
-      render json: {}
+
     end
   end
 end
