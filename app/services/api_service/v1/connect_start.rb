@@ -15,6 +15,7 @@ module ApiService
 
       def attrs
         {
+          partner: partner,
           organization_identifier: @organization_identifier,
           name: smart_name,
           slug: smart_slug,
@@ -34,6 +35,10 @@ module ApiService
 
       def sponsorship_fee
         0.10 # 10% percent
+      end
+
+      def partner
+        @partner ||= Partner.find_by!(slug: "bank") # TODO: contextual to who is using the API
       end
     end
   end

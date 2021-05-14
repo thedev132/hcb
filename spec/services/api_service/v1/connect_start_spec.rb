@@ -3,6 +3,8 @@
 require "rails_helper"
 
 RSpec.describe ApiService::V1::ConnectStart, type: :model do
+  fixtures "partners"
+
   let(:organization_identifier) { "org_1234" }
   let(:redirect_url) { "http://example.com/redirect" }
   let(:webhook_url) { "http://example.com/webhook" }

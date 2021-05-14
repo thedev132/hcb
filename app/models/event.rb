@@ -108,6 +108,7 @@ class Event < ApplicationRecord
   friendly_id :name, use: :slugged
 
   belongs_to :point_of_contact, class_name: 'User', optional: true
+  belongs_to :partner, optional: true
 
   has_many :organizer_position_invites
   has_many :organizer_positions

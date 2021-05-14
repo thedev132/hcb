@@ -1,0 +1,10 @@
+partner1:
+  slug: "bank"
+  api_key: "hcb_1111"
+  created_at: <%= Time.now %>
+
+partner2:
+  slug: "givebutter"
+  api_key: "hcb_2222"
+  slug: "event2"
+  created_at: <%= Time.now %>
