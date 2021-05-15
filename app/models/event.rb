@@ -101,7 +101,7 @@ class Event < ApplicationRecord
     state :approved
 
     event :mark_approved do
-      transitions from: :unapproved, to: :approved
+      transitions from: [:pending, :unapproved], to: :approved
     end
   end
 
