@@ -14,6 +14,7 @@ module Api
       render json: json_error(contract), status: 400 and return unless contract.success?
 
       attrs = {
+        partner_id: current_partner.id,
         organization_identifier: contract[:organizationIdentifier],
         redirect_url: contract[:redirectUrl],
         webhook_url: contract[:webhookUrl]
