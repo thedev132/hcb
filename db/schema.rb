@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_14_203302) do
+ActiveRecord::Schema.define(version: 2021_05_15_190926) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -505,6 +505,7 @@ ActiveRecord::Schema.define(version: 2021_05_14_203302) do
     t.string "redirect_url"
     t.bigint "partner_id"
     t.index ["club_airtable_id"], name: "index_events_on_club_airtable_id", unique: true
+    t.index ["partner_id", "organization_identifier"], name: "index_events_on_partner_id_and_organization_identifier", unique: true
     t.index ["partner_id"], name: "index_events_on_partner_id"
     t.index ["point_of_contact_id"], name: "index_events_on_point_of_contact_id"
   end
