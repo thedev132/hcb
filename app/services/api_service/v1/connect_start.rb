@@ -3,14 +3,16 @@
 module ApiService
   module V1
     class ConnectStart
-      def initialize(organization_identifier:, redirect_url:, webhook_url:)
+      def initialize(partner_id:,
+                     organization_identifier:, redirect_url:, webhook_url:)
+        @partner_id = partner_id
         @organization_identifier = organization_identifier
         @redirect_url = redirect_url
         @webhook_url = webhook_url
       end
 
       def run
-        ::Event.find_by(organization_identifier: clean_organization_identifier) || ::Event.create!(attrs)
+        partner.events.find_by(organization_identifier: clean_organization_identifier) || ::Event.create!(attrs)
       end
 
       def attrs
@@ -30,7 +32,13 @@ module ApiService
       end
 
       def smart_slug
-        @organization_identifier
+        @smart_slug ||= begin
+          count = ::Event.where(slug: @organization_identifier).count
+
+          return "#{@organization_identifier}#{count + 1}" if count > 0
+
+          @organization_identifier
+        end
       end
 
       def sponsorship_fee
@@ -38,7 +46,7 @@ module ApiService
       end
 
       def partner
-        @partner ||= Partner.find_by!(slug: "bank") # TODO: contextual to who is using the API
+        @partner ||= Partner.find(@partner_id)
       end
 
       def clean_organization_identifier
