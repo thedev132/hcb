@@ -1,4 +1,5 @@
 class Event < ApplicationRecord
+  include Hashid::Rails
   extend FriendlyId
 
   include AASM

@@ -69,6 +69,7 @@ Rails.application.configure do
   config.action_mailer.default_url_options = {
     host: Rails.application.credentials.default_url_host[:live]
   }
+  config.default_url_options[:host] = Rails.application.credentials.default_url_host[:live]
 
   # SMTP config
   config.action_mailer.delivery_method = :smtp

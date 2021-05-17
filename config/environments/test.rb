@@ -44,6 +44,7 @@ Rails.application.configure do
   }
   config.action_mailer.delivery_method = :test
   config.active_job.queue_adapter = :test
+  config.default_url_options[:host] = "example.com"
 
   # Print deprecation notices to the stderr.
   config.active_support.deprecation = :stderr

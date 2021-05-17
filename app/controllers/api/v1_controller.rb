@@ -23,5 +23,10 @@ module Api
 
       render json: Api::V1::ConnectStartSerializer.new(event: event).run
     end
+
+    def connect_continue
+      contract = Api::V1::ConnectContinueContract.new.call(params.permit!.to_h)
+      render json: json_error(contract), status: 400 and return unless contract.success?
+    end
   end
 end
