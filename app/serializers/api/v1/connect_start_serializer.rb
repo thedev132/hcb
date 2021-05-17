@@ -20,11 +20,11 @@ module Api
           organizationIdentifier: @event.organization_identifier,
           redirect_url: @event.redirect_url,
           status: @event.aasm_state,
-          continueUrl: continue_url
+          connectUrl: connect_url
         }
       end
 
-      def continue_url
+      def connect_url
         Rails.application.routes.url_helpers.api_connect_continue_api_v1_index_url(hashid: @event.hashid)
       end
     end
