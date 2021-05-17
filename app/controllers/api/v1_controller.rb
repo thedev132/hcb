@@ -2,6 +2,8 @@
 
 module Api
   class V1Controller < Api::ApplicationController
+    skip_before_action :authenticate, only: [:connect_continue]
+
     def index
       contract = Api::V1::IndexContract.new.call(params.permit!.to_h)
       render json: json_error(contract), status: 400 and return unless contract.success?
