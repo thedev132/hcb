@@ -124,7 +124,7 @@ class V1ConnectDocumentation < ApplicationDocumentation
                 organizationIdentifier: "org_1234",
                 status: "pending",
                 redirectUrl: "http://yoursite.com/redirect/to",
-                connectUrl: "https://bank.hackclub.com/api/v1/connect/follow?followIdentifier=con_1234"
+                connectUrl: "https://bank.hackclub.com/api/v1/connect/continue/axOudk"
               }
             ]
           }
