@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_15_192807) do
+ActiveRecord::Schema.define(version: 2021_05_18_171608) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -368,6 +368,7 @@ ActiveRecord::Schema.define(version: 2021_05_15_192807) do
     t.text "message"
     t.text "hcb_code"
     t.string "aasm_state"
+    t.string "donation_identifier"
     t.index ["event_id"], name: "index_donations_on_event_id"
     t.index ["fee_reimbursement_id"], name: "index_donations_on_fee_reimbursement_id"
     t.index ["payout_id"], name: "index_donations_on_payout_id"
