@@ -49,7 +49,7 @@ module Api
       }
       event = ::ApiService::V1::ConnectFinish.new(attrs).run
 
-      redirect_to event.redirect_url
+      redirect_to "#{event.redirect_url}?organizationIdentifier=#{event.organization_identifier}&status=#{event.aasm_state}"
     end
   end
 end
