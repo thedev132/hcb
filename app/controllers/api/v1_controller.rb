@@ -51,5 +51,10 @@ module Api
 
       redirect_to "#{event.redirect_url}?organizationIdentifier=#{event.organization_identifier}&status=#{event.aasm_state}"
     end
+
+    def donations_start
+      contract = Api::V1::DonationsStartContract.new.call(params.permit!.to_h)
+      render json: json_error(contract), status: 400 and return unless contract.success?
+    end
   end
 end

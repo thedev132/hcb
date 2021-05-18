@@ -306,6 +306,7 @@ Rails.application.routes.draw do
         match "connect/start", action: :connect_start, as: :api_connect_start, via: [:post]
         match "connect/continue/:hashid", action: :connect_continue, as: :api_connect_continue, via: [:get]
         match "connect/finish/:hashid", action: :connect_finish, as: :api_connect_finish, via: [:post]
+        match "donations/start", action: :donations_start, as: :api_donations_start, via: [:post]
       end
     end
 
