@@ -97,22 +97,25 @@ class StaticPagesController < ApplicationController
       last_year: {
         expenses: tx_last_year.expense.sum(:amount_cents),
         raised: tx_last_year.revenue.sum(:amount_cents),
+        revenue: tx_last_year.includes(:fees).sum('amount_cents_as_decimal').to_i,
         size: tx_last_year.revenue.size,
         transactions_volume: tx_last_year.sum('@amount_cents'),
       },
       last_qtr: {
         expenses: tx_last_qtr.expense.sum(:amount_cents),
         revenue: tx_last_qtr.revenue.sum(:amount_cents),
+        revenue: tx_last_qtr.includes(:fees).sum('amount_cents_as_decimal').to_i,
         size: tx_last_qtr.revenue.size,
         transactions_volume: tx_last_qtr.sum('@amount_cents'),
       },
       last_month: {
         expenses: tx_last_month.expense.sum(:amount_cents),
         revenue: tx_last_month.revenue.sum(:amount_cents),
+        revenue: tx_last_month.includes(:fees).sum('amount_cents_as_decimal').to_i,
         size: tx_last_month.revenue.size,
         transactions_volume: tx_last_month.sum('@amount_cents'),
       },
-      events: events_list,
+      events: events_list.map { |time| {created_at: time} },
     }
   end
 
