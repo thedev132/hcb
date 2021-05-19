@@ -35,8 +35,8 @@ module ApplicationHelper
 
   def render_address(obj)
     content = []
-    content << obj.address_line1 + tag(:br)
-    content << obj.address_line2 + tag(:br) if obj.address_line2.present?
+    content << [obj.address_line1, tag(:br)].join('')
+    content << [obj.address_line2 + tag(:br)].join('') if obj.address_line2.present?
     content << [obj.address_city, obj.address_state, obj.address_postal_code].join(', ')
     content_tag(:span, content.join.html_safe)
   end

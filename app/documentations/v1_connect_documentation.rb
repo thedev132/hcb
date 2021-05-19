@@ -2,7 +2,7 @@
 
 class V1ConnectDocumentation < ApplicationDocumentation
   swagger_path "/api/v1/connect/start" do
-    operation :get do
+    operation :post do
       key :summary, "Send user through Bank Connect flow"
       key :description, "Send user through Bank Connect flow"
       key :tags, ["Connect"]
@@ -112,6 +112,22 @@ class V1ConnectDocumentation < ApplicationDocumentation
         key :description, "Take user to html page(s) on Bank Connect"
         content :"text/html" do
           key :example, "<html><!-- Bank Connect HTML --></html>"
+        end
+      end
+
+      response 200 do
+        key :description, "Parse this data in order to redirect the user through Bank Connect"
+        content :"application/json" do
+          key :example, {
+            data: [
+              {
+                organizationIdentifier: "org_1234",
+                status: "pending",
+                redirectUrl: "http://yoursite.com/redirect/to",
+                connectUrl: "https://bank.hackclub.com/api/v1/connect/continue/axOudk"
+              }
+            ]
+          }
         end
       end
 

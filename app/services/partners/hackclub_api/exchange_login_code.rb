@@ -7,7 +7,7 @@ module Partners
       end
 
       def run
-        ::ApiService.req(:post, url, attrs, raise_on_unauthorized: false)
+        ::BankApiService.req(:post, url, attrs, raise_on_unauthorized: false)
       end
 
       private

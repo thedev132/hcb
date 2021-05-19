@@ -1,0 +1,58 @@
+# frozen_string_literal: true
+
+module ApiService
+  module V1
+    class ConnectStart
+      def initialize(partner_id:,
+                     organization_identifier:, redirect_url:, webhook_url:)
+        @partner_id = partner_id
+        @organization_identifier = organization_identifier
+        @redirect_url = redirect_url
+        @webhook_url = webhook_url
+      end
+
+      def run
+        partner.events.find_by(organization_identifier: clean_organization_identifier) || ::Event.create!(attrs)
+      end
+
+      def attrs
+        {
+          partner: partner,
+          organization_identifier: clean_organization_identifier,
+          name: smart_name,
+          slug: smart_slug,
+          sponsorship_fee: sponsorship_fee,
+
+          redirect_url: @redirect_url
+        }
+      end
+
+      def smart_name
+        @organization_identifier
+      end
+
+      def smart_slug
+        @smart_slug ||= begin
+          count = ::Event.where(slug: @organization_identifier).count
+
+          return "#{@organization_identifier}#{count + 1}" if count > 0
+
+          @organization_identifier
+        end
+      end
+
+      def sponsorship_fee
+        0.10 # 10% percent
+      end
+
+      def partner
+        @partner ||= Partner.find(@partner_id)
+      end
+
+      def clean_organization_identifier
+        @organization_identifier.to_s.strip
+      end
+    end
+  end
+end
+

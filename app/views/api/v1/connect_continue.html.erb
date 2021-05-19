@@ -1,0 +1,40 @@
+<%= form_with local: true, url: api_connect_finish_api_v1_index_path(hashid: @event.hashid), method: :post do |form| %>
+  <h2>Your organization</h2>
+
+  <p>
+    <%= form.label :organization_name %>
+    <%= form.text_field :organization_name %>
+  </p>
+
+  <hr/>
+
+  <h2>Your information</h2>
+
+  <p>
+    <%= form.label :name %>
+    <%= form.text_field :name %>
+  </p>
+
+  <p>
+    <%= form.label :email %>
+    <%= form.text_field :email %>
+  </p>
+
+  <p>
+    <%= form.label :phone %>
+    <%= form.text_field :phone %>
+  </p>
+
+  <p>
+    <%= form.label :address %>
+    <%= form.text_field :address %>
+  </p>
+
+  <p>
+    <%= form.label :birthdate %>
+    <%= form.date_field :birthdate %>
+  </p>
+
+  <%= form.submit %>
+
+<% end %>
