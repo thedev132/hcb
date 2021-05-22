@@ -15,7 +15,7 @@ class StaticPagesController < ApplicationController
       @invites = @service.invites
     end
     if admin_signed_in?
-      @transaction_volume = CanonicalTransaction.included_in_stats.sum('@amount_cents')
+      @transaction_volume = Transaction.total_volume
     end
   end
 
@@ -99,27 +99,21 @@ class StaticPagesController < ApplicationController
       last_transaction_date: Transaction.where('created_at <= ?', now).first.created_at.to_i,
       raised: Transaction.raised_during(DateTime.strptime('0', '%s'), now),
       last_year: {
-        expenses: tx_last_year.expense.sum(:amount_cents),
-        raised: tx_last_year.revenue.sum(:amount_cents),
-        revenue: tx_last_year.includes(:fees).sum('amount_cents_as_decimal').to_i,
-        size: tx_last_year.revenue.size,
-        transactions_volume: tx_last_year.sum('@amount_cents'),
+        transactions_volume: Transaction.volume_during(year_ago, now),
+        revenue: Transaction.revenue_during(year_ago, now),
+        raised: Transaction.raised_during(year_ago, now),
       },
       last_qtr: {
-        expenses: tx_last_qtr.expense.sum(:amount_cents),
-        revenue: tx_last_qtr.revenue.sum(:amount_cents),
-        revenue: tx_last_qtr.includes(:fees).sum('amount_cents_as_decimal').to_i,
-        size: tx_last_qtr.revenue.size,
-        transactions_volume: tx_last_qtr.sum('@amount_cents'),
+        transactions_volume: Transaction.volume_during(qtr_ago, now),
+        revenue: Transaction.revenue_during(qtr_ago, now),
+        raised: Transaction.raised_during(qtr_ago, now),
       },
       last_month: {
-        expenses: tx_last_month.expense.sum(:amount_cents),
-        revenue: tx_last_month.revenue.sum(:amount_cents),
-        revenue: tx_last_month.includes(:fees).sum('amount_cents_as_decimal').to_i,
-        size: tx_last_month.revenue.size,
-        transactions_volume: tx_last_month.sum('@amount_cents'),
+        transactions_volume: Transaction.volume_during(month_ago, now),
+        revenue: Transaction.revenue_during(month_ago, now),
+        raised: Transaction.raised_during(month_ago, now),
       },
-      events: events_list.map { |time| {created_at: time} },
+      events: events_list,
     }
   end
 
