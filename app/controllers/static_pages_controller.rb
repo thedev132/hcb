@@ -81,41 +81,28 @@ class StaticPagesController < ApplicationController
                        .limit(10)
                        .pluck(:created_at)
                        .map(&:to_i)
+                       .map { |time| {created_at: time} }
 
-    tx_all        = CanonicalTransaction.included_in_stats.where('date <= ?', now)
-    tx_last_year  = CanonicalTransaction.included_in_stats.where(date: year_ago..now)
-    tx_last_qtr   = CanonicalTransaction.included_in_stats.where(date: qtr_ago..now)
-    tx_last_month = CanonicalTransaction.included_in_stats.where(date: month_ago..now)
+    tx_all = CanonicalTransaction.included_in_stats.where('date <= ?', now)
 
     render json: {
       date: now,
       events_count: Event.not_omitted.where('created_at <= ?', now).size,
       last_transaction_date: tx_all.order(:date).last.date.to_time.to_i,
+
+      # entire time period. this remains to prevent breaking changes to existing systems that use this endpoint
       raised: tx_all.revenue.sum(:amount_cents),
       transactions_count: tx_all.size,
       transactions_volume: tx_all.sum('@amount_cents'),
-      last_year: {
-        expenses: tx_last_year.expense.sum(:amount_cents),
-        raised: tx_last_year.revenue.sum(:amount_cents),
-        revenue: tx_last_year.includes(:fees).sum('amount_cents_as_decimal').to_i,
-        size: tx_last_year.revenue.size,
-        transactions_volume: tx_last_year.sum('@amount_cents'),
-      },
-      last_qtr: {
-        expenses: tx_last_qtr.expense.sum(:amount_cents),
-        revenue: tx_last_qtr.revenue.sum(:amount_cents),
-        revenue: tx_last_qtr.includes(:fees).sum('amount_cents_as_decimal').to_i,
-        size: tx_last_qtr.revenue.size,
-        transactions_volume: tx_last_qtr.sum('@amount_cents'),
-      },
-      last_month: {
-        expenses: tx_last_month.expense.sum(:amount_cents),
-        revenue: tx_last_month.revenue.sum(:amount_cents),
-        revenue: tx_last_month.includes(:fees).sum('amount_cents_as_decimal').to_i,
-        size: tx_last_month.revenue.size,
-        transactions_volume: tx_last_month.sum('@amount_cents'),
-      },
-      events: events_list.map { |time| {created_at: time} },
+
+      # entire (all), year, quarter, and month time periods
+      all: CanonicalTransactionService::Stats::During.new(end_time: now).run,
+      last_year: CanonicalTransactionService::Stats::During.new(start_time: year_ago, end_time: now).run,
+      last_qtr: CanonicalTransactionService::Stats::During.new(start_time: qtr_ago, end_time: now).run,
+      last_month: CanonicalTransactionService::Stats::During.new(start_time: month_ago, end_time: now).run,
+
+      # events
+      events: events_list,
     }
   end
 
