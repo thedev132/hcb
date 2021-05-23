@@ -15,7 +15,7 @@ class StaticPagesController < ApplicationController
       @invites = @service.invites
     end
     if admin_signed_in?
-      @transaction_volume = CanonicalTransaction.included_in_stats.sum('@amount_cents')
+      @transaction_volume = Transaction.total_volume
     end
   end
 
