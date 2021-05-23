@@ -35,6 +35,14 @@ class V1OrganizationsDocumentation < ApplicationDocumentation
       key :tags, ["Organizations"]
       key :operationId, "v1OrganizationsShow"
 
+      parameter do
+        key :name, :organizationIdentifier
+        key :in, :path
+        key :description, 'Identifier of one organization'
+        key :required, true
+        key :type, :string
+      end
+
       response 200 do
         key :description, ""
         content :"application/json" do
