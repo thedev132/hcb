@@ -38,7 +38,7 @@ class V1OrganizationsDocumentation < ApplicationDocumentation
       parameter do
         key :name, :organizationIdentifier
         key :in, :path
-        key :description, "Identifier of one organization"
+        key :description, "Identifier of an organization"
         key :required, true
         schema do
           key :type, :string
