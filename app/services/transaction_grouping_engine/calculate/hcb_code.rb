@@ -10,6 +10,7 @@ module TransactionGroupingEngine
       UNKNOWN_CODE = "000"
       INVOICE_CODE = "100"
       DONATION_CODE = "200"
+      PARTNER_DONATION_CODE = "201"
       ACH_TRANSFER_CODE = "300"
       CHECK_CODE = "400"
       DISBURSEMENT_CODE = "500"

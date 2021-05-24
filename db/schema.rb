@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_18_171608) do
+ActiveRecord::Schema.define(version: 2021_05_24_205518) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -792,6 +792,15 @@ ActiveRecord::Schema.define(version: 2021_05_18_171608) do
     t.index ["user_id"], name: "index_organizer_positions_on_user_id"
   end
 
+  create_table "partner_donations", force: :cascade do |t|
+    t.bigint "event_id", null: false
+    t.string "hcb_code", null: false
+    t.string "donation_identifier", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["event_id"], name: "index_partner_donations_on_event_id"
+  end
+
   create_table "partners", force: :cascade do |t|
     t.string "slug", null: false
     t.text "api_key"
@@ -1120,6 +1129,7 @@ ActiveRecord::Schema.define(version: 2021_05_18_171608) do
   add_foreign_key "organizer_position_invites", "users", column: "sender_id"
   add_foreign_key "organizer_positions", "events"
   add_foreign_key "organizer_positions", "users"
+  add_foreign_key "partner_donations", "events"
   add_foreign_key "receipts", "users"
   add_foreign_key "sponsors", "events"
   add_foreign_key "stripe_authorizations", "stripe_cards"
