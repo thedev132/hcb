@@ -12,6 +12,7 @@ class Event < ApplicationRecord
   scope :pending, -> { where(has_fiscal_sponsorship_document: false) }
   scope :transparent, -> { where(is_public: true) }
   scope :omitted, -> { where(omit_stats: true) }
+  scope :not_omitted, -> { where(omit_stats: false) }
   scope :hidden, -> { where("hidden_at is not null") }
   scope :v1, -> { where(transaction_engine_v2_at: nil) }
   scope :v2, -> { where.not(transaction_engine_v2_at: nil) }
