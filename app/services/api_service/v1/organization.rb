@@ -16,11 +16,10 @@ module ApiService
         @partner ||= Partner.find(@partner_id)
       end
 
-			def clean_organization_identifier
+      def clean_organization_identifier
         @organization_identifier.to_s.strip
       end
-			
+      
     end
   end
 end
-

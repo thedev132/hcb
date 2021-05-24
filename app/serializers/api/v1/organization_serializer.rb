@@ -14,10 +14,10 @@ module Api
       end
 
       def data # this method is also used by Api::V1::OrganizationSerializer
-				{
-					organizationIdentifier: @event.organization_identifier,
-					status: @event.aasm_state,
-				}
+        {
+          organizationIdentifier: @event.organization_identifier,
+          status: @event.aasm_state,
+        }
       end
 
       private

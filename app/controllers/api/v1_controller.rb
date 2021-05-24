@@ -88,7 +88,7 @@ module Api
       event = ::ApiService::V1::Organization.new(attrs).run
 
       # if event does not exist, throw not found error
-      raise NotFoundError.new("organization_identifier '#{contract[:organizationIdentifier]}' not found.") and return unless event
+      raise ActiveRecord::RecordNotFound and return unless event
 
       render json: Api::V1::OrganizationSerializer.new(event: event).run
     end

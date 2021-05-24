@@ -14,7 +14,7 @@ module ApiService
       def partner
         @partner ||= Partner.find(@partner_id)
       end
-			
+      
     end
   end
 end
