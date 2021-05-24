@@ -1,5 +1,5 @@
 class PartnerDonation < ApplicationRecord
-  belongs_to :partner
+  belongs_to :event
 
   before_create :set_hcb_code
 

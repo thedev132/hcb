@@ -20,9 +20,9 @@ RSpec.describe ApiService::V1::DonationStart, type: :model do
 
   let(:service) { ApiService::V1::DonationStart.new(attrs) }
 
-  it "creates a donation" do
+  it "creates a partner donation" do
     expect do
       service.run
-    end.to change(Donation, :count).by(1)
+    end.to change(PartnerDonation, :count).by(1)
   end
 end

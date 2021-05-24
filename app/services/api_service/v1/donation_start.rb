@@ -10,7 +10,7 @@ module ApiService
       end
 
       def run
-        event.donations.create!(attrs)
+        event.partner_donations.create!(attrs)
       end
 
       private

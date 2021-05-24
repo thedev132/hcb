@@ -793,11 +793,11 @@ ActiveRecord::Schema.define(version: 2021_05_24_205518) do
   end
 
   create_table "partner_donations", force: :cascade do |t|
-    t.bigint "partner_id", null: false
+    t.bigint "event_id", null: false
     t.string "hcb_code"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["partner_id"], name: "index_partner_donations_on_partner_id"
+    t.index ["event_id"], name: "index_partner_donations_on_event_id"
   end
 
   create_table "partners", force: :cascade do |t|
@@ -1128,7 +1128,7 @@ ActiveRecord::Schema.define(version: 2021_05_24_205518) do
   add_foreign_key "organizer_position_invites", "users", column: "sender_id"
   add_foreign_key "organizer_positions", "events"
   add_foreign_key "organizer_positions", "users"
-  add_foreign_key "partner_donations", "partners"
+  add_foreign_key "partner_donations", "events"
   add_foreign_key "receipts", "users"
   add_foreign_key "sponsors", "events"
   add_foreign_key "stripe_authorizations", "stripe_cards"
