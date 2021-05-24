@@ -82,38 +82,6 @@ class CanonicalTransaction < ApplicationRecord
     @linked_object ||= TransactionEngine::SyntaxSugarService::LinkedObject.new(canonical_transaction: self).run
   end
 
-  def deprecated_linked_object
-    @deprecated_linked_object ||= begin
-      obj = nil
-
-      if raw_plaid_transaction
-        ts = Transaction.with_deleted.where(plaid_id: raw_plaid_transaction.plaid_transaction_id)
-
-        Airbrake.notify("There was more (or less) than 1 transaction for raw_plaid_transaction: #{raw_plaid_transaction.id}") unless ts.count == 1
-
-        obj = ts.first
-      end
-
-      if raw_emburse_transaction
-        ets = EmburseTransaction.with_deleted.where(emburse_id: raw_emburse_transaction.emburse_transaction_id)
-
-        Airbrake.notify("There was more (or less) than 1 emburse_transaction for raw_emburse_transaction: #{raw_emburse_transaction.id}") unless ets.count == 1
-
-        obj = ets.first
-      end
-
-      if raw_stripe_transaction
-        sas = StripeAuthorization.where(stripe_id: raw_stripe_transaction.stripe_transaction.dig("authorization"))
-
-        Airbrake.notify("There was more (or less) than 1 stripe_authorization for raw_stripe_transaction: #{raw_stripe_transaction.id}") unless sas.count == 1
-
-        obj = sas.first
-      end
-
-      obj
-    end
-  end
-
   def raw_plaid_transaction
     hashed_transaction.raw_plaid_transaction
   end
