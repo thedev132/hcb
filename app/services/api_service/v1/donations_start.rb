@@ -2,7 +2,7 @@
 
 module ApiService
   module V1
-    class DonationStart
+    class DonationsStart
       def initialize(partner_id:,
                      organization_identifier:)
         @partner_id = partner_id
@@ -10,15 +10,10 @@ module ApiService
       end
 
       def run
-        event.partner_donations.create!(attrs)
+        event.partner_donations.create!
       end
 
       private
-
-      def attrs
-        {
-        }
-      end
 
       def partner
         @partner ||= Partner.find(@partner_id)

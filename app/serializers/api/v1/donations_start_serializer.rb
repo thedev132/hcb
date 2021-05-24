@@ -2,9 +2,9 @@
 
 module Api
   module V1
-    class DonationStartSerializer
-      def initialize(donation:)
-        @donation = donation
+    class DonationsStartSerializer
+      def initialize(partner_donation:)
+        @partner_donation = partner_donation
       end
 
       def run
@@ -18,12 +18,12 @@ module Api
       def data
         {
           organizationIdentifier: event.organization_identifier,
-          donationIdentifier: donation.donation_identifier
+          donationIdentifier: @partner_donation.donation_identifier
         }
       end
 
       def event
-        @donation.event
+        @partner_donation.event
       end
     end
   end

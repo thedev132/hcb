@@ -14,10 +14,20 @@ RSpec.describe PartnerDonation, type: :model do
   context "hcb code" do
     let(:event) { events(:event1) }
 
-    it "generates an hcb code" do
+    it "generates a hcb code" do
       pd = event.partner_donations.create!
 
       expect(pd.hcb_code).to_not be_nil
+    end
+  end
+
+  context "donation_identifier" do
+    let(:event) { events(:event1) }
+
+    it "generates a donation identifier" do
+      pd = event.partner_donations.create!
+
+      expect(pd.donation_identifier).to_not be_nil
     end
   end
 end

@@ -794,7 +794,8 @@ ActiveRecord::Schema.define(version: 2021_05_24_205518) do
 
   create_table "partner_donations", force: :cascade do |t|
     t.bigint "event_id", null: false
-    t.string "hcb_code"
+    t.string "hcb_code", null: false
+    t.string "donation_identifier", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["event_id"], name: "index_partner_donations_on_event_id"
