@@ -22,27 +22,27 @@
   <h2 class="grid__fill">Shipping info</h2>
   <div class="field">
     <%= form.label :stripe_shipping_name, "Shipping name" %>
-    <%= form.text_field :stripe_shipping_name, value: current_user&.full_name %>
+    <%= form.text_field :stripe_shipping_name, placeholder: current_user&.full_name %>
   </div>
   <div class="field">
     <%= form.label :stripe_shipping_address_line1, "Address (line 1)" %>
-    <%= form.text_field :stripe_shipping_address_line1, value: suggested(:line1) %>
+    <%= form.text_field :stripe_shipping_address_line1, placeholder: suggested(:line1) %>
   </div>
   <div class="field">
     <%= form.label :stripe_shipping_address_line2, "Address (line 2)" %>
-    <%= form.text_field :stripe_shipping_address_line2, value: suggested(:line2) %>
+    <%= form.text_field :stripe_shipping_address_line2, placeholder: suggested(:line2) %>
   </div>
   <div class="field grid__half">
     <%= form.label :stripe_shipping_address_city, "City" %>
-    <%= form.text_field :stripe_shipping_address_city, value: suggested(:city) %>
+    <%= form.text_field :stripe_shipping_address_city, placeholder: suggested(:city) %>
   </div>
   <div class="field grid__half">
     <%= form.label :stripe_shipping_address_state, "State" %>
-    <%= form.text_field :stripe_shipping_address_state, value: suggested(:state) %>
+    <%= form.text_field :stripe_shipping_address_state, placeholder: suggested(:state) %>
   </div>
   <div class="field grid__half">
     <%= form.label :stripe_shipping_address_postal_code, "ZIP code" %>
-    <%= form.text_field :stripe_shipping_address_postal_code, value: suggested(:postal_code) %>
+    <%= form.text_field :stripe_shipping_address_postal_code, placeholder: suggested(:postal_code) %>
   </div>
   <div class="field grid__half">
     <%= form.label :stripe_shipping_address_country, "Country" %>
