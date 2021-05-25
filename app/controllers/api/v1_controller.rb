@@ -64,5 +64,33 @@ module Api
 
       render json: Api::V1::DonationsStartSerializer.new(partner_donation: partner_donation).run
     end
+
+    def organizations
+      contract = Api::V1::OrganizationsContract.new.call(params.permit!.to_h)
+      render json: json_error(contract), status: 400 and return unless contract.success?
+
+      attrs = {
+        partner_id: current_partner.id,
+      }
+      organizations = ::ApiService::V1::Organizations.new(attrs).run
+
+      render json: Api::V1::OrganizationsSerializer.new(organizations: organizations).run
+    end
+
+    def organization
+      contract = Api::V1::OrganizationContract.new.call(params.permit!.to_h)
+      render json: json_error(contract), status: 400 and return unless contract.success?
+
+      attrs = {
+        partner_id: current_partner.id,
+        organization_identifier: contract[:organizationIdentifier]
+      }
+      event = ::ApiService::V1::Organization.new(attrs).run
+
+      # if event does not exist, throw not found error
+      raise ActiveRecord::RecordNotFound and return unless event
+
+      render json: Api::V1::OrganizationSerializer.new(event: event).run
+    end
   end
 end
