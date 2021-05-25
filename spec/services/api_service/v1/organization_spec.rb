@@ -47,7 +47,6 @@ RSpec.describe ApiService::V1::Organization, type: :model do
     it "returns an organization" do
       result = service.run
 
-      # expect(result).to have_attributes(:organization_identifier => organization_identifier, :aasm_state => status)
       expect(result).to be_instance_of(Event)
     end
   end
