@@ -88,6 +88,10 @@ class HcbCode < ApplicationRecord
     hcb_i1 == ::TransactionGroupingEngine::Calculate::HcbCode::DONATION_CODE
   end
 
+  def partner_donation?
+    hcb_i1 == ::TransactionGroupingEngine::Calculate::HcbCode::PARTNER_DONATION_CODE
+  end
+
   def ach_transfer?
     hcb_i1 == ::TransactionGroupingEngine::Calculate::HcbCode::ACH_TRANSFER_CODE
   end
@@ -118,6 +122,10 @@ class HcbCode < ApplicationRecord
 
   def donation_memo
     smartish_custom_memo || "DONATION FROM #{donation.smart_memo}"
+  end
+
+  def partner_donation
+    @partner_donation ||= PartnerDonation.find_by(id: hcb_i2) if partner_donation?
   end
 
   def ach_transfer

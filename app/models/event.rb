@@ -151,6 +151,8 @@ class Event < ApplicationRecord
 
   has_many :fees, through: :canonical_event_mappings
 
+  has_many :partner_donations
+
   validate :point_of_contact_is_admin
 
   validates :name, :sponsorship_fee, :organization_identifier, presence: true

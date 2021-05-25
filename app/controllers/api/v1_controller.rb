@@ -60,9 +60,9 @@ module Api
         partner_id: current_partner.id,
         organization_identifier: contract[:organizationIdentifier]
       }
-      donation = ::ApiService::V1::DonationStart.new(attrs).run
+      partner_donation = ::ApiService::V1::DonationsStart.new(attrs).run
 
-      render json: Api::V1::DonationStartSerializer.new(donation: donation).run
+      render json: Api::V1::DonationsStartSerializer.new(partner_donation: partner_donation).run
     end
 
     def organizations
