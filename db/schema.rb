@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_24_205518) do
+ActiveRecord::Schema.define(version: 2021_05_26_155902) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -113,6 +113,16 @@ ActiveRecord::Schema.define(version: 2021_05_24_205518) do
     t.boolean "should_sync_v2", default: false
     t.datetime "failed_at"
     t.integer "failure_count", default: 0
+  end
+
+  create_table "bank_fees", force: :cascade do |t|
+    t.bigint "event_id", null: false
+    t.string "hcb_code"
+    t.string "aasm_state"
+    t.integer "amount_cents"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["event_id"], name: "index_bank_fees_on_event_id"
   end
 
   create_table "blazer_audits", force: :cascade do |t|
@@ -1069,6 +1079,7 @@ ActiveRecord::Schema.define(version: 2021_05_24_205518) do
   add_foreign_key "ach_transfers", "events"
   add_foreign_key "ach_transfers", "users", column: "creator_id"
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "bank_fees", "events"
   add_foreign_key "canonical_event_mappings", "canonical_transactions"
   add_foreign_key "canonical_event_mappings", "events"
   add_foreign_key "canonical_hashed_mappings", "canonical_transactions"
