@@ -189,6 +189,17 @@ class EventsController < ApplicationController
     }
   end
 
+  def bank_fees
+    authorize @event
+
+    relation1 = @event.bank_fees
+
+    relation1 = relation1.in_transit if params[:filter] == "in_transit"
+    relation1 = relation1.settled if params[:filter] == "settled"
+
+    @bank_fees = relation1
+  end
+
   def transfers
     authorize @event
 
