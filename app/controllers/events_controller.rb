@@ -197,7 +197,7 @@ class EventsController < ApplicationController
     relation1 = relation1.in_transit if params[:filter] == "in_transit"
     relation1 = relation1.settled if params[:filter] == "settled"
 
-    @bank_fees = relation1
+    @bank_fees = relation1.order("created_at desc")
   end
 
   def transfers
