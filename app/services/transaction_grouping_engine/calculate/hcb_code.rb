@@ -15,6 +15,7 @@ module TransactionGroupingEngine
       CHECK_CODE = "400"
       DISBURSEMENT_CODE = "500"
       STRIPE_CARD_CODE = "600"
+      BANK_FEE_CODE = "700"
 
       def initialize(canonical_transaction_or_canonical_pending_transaction:)
         @ct_or_cp = canonical_transaction_or_canonical_pending_transaction
