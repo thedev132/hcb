@@ -24,6 +24,8 @@ class Event < ApplicationRecord
   scope :partner, -> { where.not(partner_id: 1) }
   scope :hidden, -> { where.not(hidden_at: nil) }
   scope :not_hidden, -> { where(hidden_at: nil) }
+  scope :funded, -> { select { |e| e.balance_v2_cents > 0 } }
+  scope :not_funded, -> { select { |e| e.balance_v2_cents <= 0 } }
   scope :event_ids_with_pending_fees_greater_than_100, -> do
     query = <<~SQL
       ;select event_id, fee_balance from (
