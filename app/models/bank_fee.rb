@@ -5,6 +5,8 @@ class BankFee < ApplicationRecord
 
   monetize :amount_cents
 
+  before_create :set_hcb_code
+
   aasm do
     state :pending, initial: true
     state :in_transit
@@ -31,5 +33,9 @@ class BankFee < ApplicationRecord
     return "Paid & Settling" if in_transit?
 
     "Pending"
+  end
+
+  def set_hcb_code
+    self.hcb_code = "HCB-#{::TransactionGroupingEngine::Calculate::HcbCode::BANK_FEE_CODE}-#{id}"
   end
 end
