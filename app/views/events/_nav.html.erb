@@ -42,6 +42,10 @@
       'Set up domain Gmail',
       'google',
        event_g_suite_overview_path(event_id: @event.slug), :lg %>
+    <%= dock_item 'Bank Fees',
+      'View fee history',
+      'minue',
+      event_bank_fees_path(@event) if @event.bank_fees.exists? %>
     <%= dock_item 'Settings',
       'Edit project settings',
       'project-settings',
