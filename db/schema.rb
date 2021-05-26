@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_26_161153) do
+ActiveRecord::Schema.define(version: 2021_05_26_162736) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -238,6 +238,8 @@ ActiveRecord::Schema.define(version: 2021_05_26_161153) do
     t.bigint "raw_pending_donation_transaction_id"
     t.bigint "raw_pending_invoice_transaction_id"
     t.text "hcb_code"
+    t.bigint "raw_pending_bank_fee_transaction_id"
+    t.index ["raw_pending_bank_fee_transaction_id"], name: "index_canonical_pending_txs_on_raw_pending_bank_fee_tx_id"
     t.index ["raw_pending_donation_transaction_id"], name: "index_canonical_pending_txs_on_raw_pending_donation_tx_id"
     t.index ["raw_pending_outgoing_ach_transaction_id"], name: "index_canonical_pending_txs_on_raw_pending_outgoing_ach_tx_id"
     t.index ["raw_pending_outgoing_check_transaction_id"], name: "index_canonical_pending_txs_on_raw_pending_outgoing_check_tx_id"
