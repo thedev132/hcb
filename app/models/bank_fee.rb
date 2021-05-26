@@ -35,6 +35,12 @@ class BankFee < ApplicationRecord
     "Pending"
   end
 
+  def local_hcb_code
+    @local_hcb_code ||= HcbCode.find_or_create_by(hcb_code: hcb_code)
+  end
+
+  private
+
   def set_hcb_code
     self.hcb_code = "HCB-#{::TransactionGroupingEngine::Calculate::HcbCode::BANK_FEE_CODE}-#{id}"
   end
