@@ -12,11 +12,8 @@ module Temp
           # 1. create bank fee
           bank_fee = event.bank_fees.create!(attrs(ct))
 
-          hcb_code = "HCB-700-#{bank_fee.id}"
-          bank_fee.update_column(:hcb_code, hcb_code)
-
           # 2. update ct
-          ct.update_column(:hcb_code, hcb_code)
+          ct.update_column(:hcb_code, bank_fee.hcb_code)
         end
       end
 
