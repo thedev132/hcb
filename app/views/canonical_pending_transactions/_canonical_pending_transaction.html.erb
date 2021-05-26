@@ -48,6 +48,6 @@
     <%= number_to_currency pt.amount %>
   </td>
   <td>
-    <%= link_to "Details", pt.url %>
+    <%= link_to "Details", pt.url if organizer_signed_in? %>
   </td>
 </tr>
