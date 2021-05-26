@@ -12,11 +12,15 @@ module BankFeeService
     def run
       raise ArgumentError, "must be a pending bank fee only" unless bank_fee.pending?
 
-      # 1. begin by navigating
-      login_to_svb! unless @already_logged_in
+      ActiveRecord::Base.transaction do
+        bank_fee.mark_in_transit!
 
-      # Make the transfer on remote bank
-      transfer_from_fs_main_to_fs_operating!(amount_cents: amount_cents, memo: memo)
+        # 1. begin by navigating
+        login_to_svb! unless @already_logged_in
+
+        # Make the transfer on remote bank
+        transfer_from_fs_main_to_fs_operating!(amount_cents: amount_cents, memo: memo)
+      end
 
       sleep 5
 
