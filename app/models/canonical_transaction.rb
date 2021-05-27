@@ -31,6 +31,7 @@ class CanonicalTransaction < ApplicationRecord
   scope :likely_disbursements, -> { where("memo ilike 'HCB DISBURSE%'") }
   scope :likely_achs, -> { where("memo ilike '%BUSBILLPAY%'") }
   scope :likely_hack_club_fee, -> { where("memo ilike '%Hack Club Bank Fee TO ACCOUNT%'") }
+  scope :old_likely_hack_club_fee, -> { where("memo ilike 'Event % Bank Fee TO ACCOUNT%'") }
   scope :stripe_top_up, -> { where("memo ilike '%Hack Club Bank Stripe Top%' or memo ilike '%HACKC Stripe Top%' or memo ilike '%HCKCLB Stripe Top%'") }
   scope :not_stripe_top_up, -> { where("(memo not ilike '%Hack Club Bank Stripe Top%' and memo not ilike '%HACKC Stripe Top%' and memo not ilike '%HCKCLB Stripe Top%') or memo is null") }
   scope :mapped_by_human, -> { includes(:canonical_event_mapping).where("canonical_event_mappings.user_id is not null").references(:canonical_event_mapping) }
