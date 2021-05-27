@@ -16,6 +16,8 @@ module FeeService
       raise ArgumentError, "must be an event that has not had a fee for more than 20 days" unless event.ready_for_fee?
       raise ArgumentError, "must be an event that has a balance greater than 0" unless event.fee_balance_v2_cents > 0
 
+      # TODO - instead create bank_fee, then separate job will process those
+
       amount_cents = event.fee_balance_v2_cents
       memo = canonical_fee_memo(event: event)
 
