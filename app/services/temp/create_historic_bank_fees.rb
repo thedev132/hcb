@@ -31,7 +31,7 @@ module Temp
         bank_fee = event.bank_fees.create!(attrs(ct))
 
         # 2. update ct
-        ct.update_column(:hcb_code, bank_fee.hcb_code)
+        ct.update_column(:hcb_code, bank_fee.reload.hcb_code)
       end
     end
 

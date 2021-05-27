@@ -5,7 +5,7 @@ class BankFee < ApplicationRecord
 
   monetize :amount_cents
 
-  before_create :set_hcb_code
+  after_create :set_hcb_code
 
   scope :since_feature_launch, -> { where("created_at > ?", Time.utc(2021, 05, 20)) }
   scope :in_transit_or_pending, -> { where("aasm_state in (?)", ["pending", "in_transit"]) }
@@ -45,6 +45,6 @@ class BankFee < ApplicationRecord
   private
 
   def set_hcb_code
-    self.hcb_code = "HCB-#{::TransactionGroupingEngine::Calculate::HcbCode::BANK_FEE_CODE}-#{id}"
+    self.update_column(:hcb_code, "HCB-#{::TransactionGroupingEngine::Calculate::HcbCode::BANK_FEE_CODE}-#{id}")
   end
 end
