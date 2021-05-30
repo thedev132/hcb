@@ -49,7 +49,7 @@ module CheckService
     end
 
     def message
-      "This check was sent by The Hack Foundation on behalf of #{event.name}. #{event.name} is fiscally sponsored by the Hack Foundation (d.b.a Hack Club), a 501(c)(3) nonprofit with the EIN 81-2908499"
+      "This check was sent by The Hack Foundation on behalf of #{event.name}. #{event.name} is fiscally sponsored by The Hack Foundation (d.b.a Hack Club), a 501(c)(3) nonprofit with the EIN 81-2908499. For any inquiries, please email bank@hackclub.com, which our financial operations team monitors daily on weekdays."
     end
 
     def description
