@@ -236,7 +236,7 @@ Rails.application.routes.draw do
     resources :comments
   end
 
-  resources :fee_reimbursements, only: [:index, :show, :edit, :update] do
+  resources :fee_reimbursements, only: [:show, :edit, :update] do
     collection do
       get 'export'
     end
@@ -248,8 +248,6 @@ Rails.application.routes.draw do
   get 'branding', to: 'static_pages#branding'
   get 'faq', to: 'static_pages#faq'
   
-  get 'pending_fees', to: 'admin#pending_fees'
-  get 'pending_disbursements', to: 'admin#pending_disbursements'
   get 'audit', to: 'admin#audit'
 
   resources :central, only: [:index] do
@@ -320,7 +318,6 @@ Rails.application.routes.draw do
 
   post 'export/finances', to: 'exports#financial_export'
 
-  get 'pending_fees', to: 'admin#pending_fees'
   get 'negative_events', to: 'admin#negative_events'
 
   get 'admin_tasks', to: 'admin#tasks'

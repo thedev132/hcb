@@ -26,11 +26,6 @@ class AdminController < ApplicationController
     render json: { elapsed: elapsed, size: size }, status: 200
   end
 
-  def pending_fees
-    @pending_fees = Event.pending_fees
-    @pending_fees_v2 = Event.pending_fees_v2
-  end
-
   def search
     # allows the same URL to easily be used for form and GET
     return if request.method == 'GET'
