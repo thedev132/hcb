@@ -189,6 +189,25 @@ class EventsController < ApplicationController
     }
   end
 
+  def temp_generate_historical_bank_fees
+    authorize @event
+
+    ::Temp::CreateHistoricBankFees.new(event_id: @event.id).run
+
+    redirect_to event_bank_fees_path(@event)
+  end
+
+  def bank_fees
+    authorize @event
+
+    relation1 = @event.bank_fees
+
+    relation1 = relation1.in_transit if params[:filter] == "in_transit"
+    relation1 = relation1.settled if params[:filter] == "settled"
+
+    @bank_fees = relation1.order("created_at desc")
+  end
+
   def transfers
     authorize @event
 

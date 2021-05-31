@@ -1,14 +1,14 @@
-<% title "Create an event" %>
+<% title "Create an organization" %>
 
-<h1>Create an event</h1>
+<h1>Create an organization</h1>
 
 <%= form_with(model: nil, local: true, url: event_create_admin_index_path) do |form| %>
   <fieldset>
-    <legend>Event</legend>
+    <legend>Organization</legend>
     <p>
       <%= form.label :name, "Name (required)" %>
       <br/>
-      <%= form.text_field :name, placeholder: "Event Name", required: true %>
+      <%= form.text_field :name, placeholder: "Organization Name", required: true %>
     </p>
 
     <p>
@@ -30,7 +30,7 @@
   </fieldset>
 
   <p>
-    <%= form.submit "Create event" %>
+    <%= form.submit "Create organization" %>
   </p>
 <% end %>
 

@@ -40,7 +40,9 @@ module EventService
         sponsorship_fee: @sponsorship_fee,
         expected_budget: 100.0,
         has_fiscal_sponsorship_document: @has_fiscal_sponsorship_document,
-        point_of_contact_id: point_of_contact.id
+        point_of_contact_id: point_of_contact.id,
+        partner_id: partner.id,
+        organization_identifier: organization_identifier
       }
     end
 
@@ -50,6 +52,14 @@ module EventService
 
     def point_of_contact
       @point_of_contact ||= ::User.find(melanie_smith_user_id)
+    end
+
+    def partner
+      @partner ||= ::Partner.find_by!(slug: "bank")
+    end
+
+    def organization_identifier
+      @organization_identifier ||= "bank_#{SecureRandom.hex}"
     end
   end
 end

@@ -42,6 +42,20 @@
       'Set up domain Gmail',
       'google',
        event_g_suite_overview_path(event_id: @event.slug), :lg %>
+    <% if @event.bank_fees.exists? %>
+      <%= dock_item 'Bank Fees',
+        'View fee history',
+        'minue',
+        event_bank_fees_path(@event) %>
+    <% else %>
+
+      <% if @event.canonical_transactions.likely_hack_club_fee.exists? %>
+        <% admin_tools('m0 p0 badge mb2', 'span') do %>
+          <%= link_to "generate historic bank fees", event_temp_generate_historical_bank_fees_path(@event), method: :post %>
+        <% end %>
+      <% end %>
+
+    <% end %>
     <%= dock_item 'Settings',
       'Edit project settings',
       'project-settings',

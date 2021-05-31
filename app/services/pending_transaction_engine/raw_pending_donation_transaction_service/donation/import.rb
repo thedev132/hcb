@@ -19,7 +19,7 @@ module PendingTransactionEngine
         private
 
         def pending_donation_transactions
-          @pending_donation_transactions ||= ::Donation.succeeded
+          @pending_donation_transactions ||= ::Donation.succeeded # TODO: deprecate succeeded
         end
       end
     end

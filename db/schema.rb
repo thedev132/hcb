@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_09_021606) do
+ActiveRecord::Schema.define(version: 2021_05_26_162736) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -113,6 +113,16 @@ ActiveRecord::Schema.define(version: 2021_05_09_021606) do
     t.boolean "should_sync_v2", default: false
     t.datetime "failed_at"
     t.integer "failure_count", default: 0
+  end
+
+  create_table "bank_fees", force: :cascade do |t|
+    t.bigint "event_id", null: false
+    t.string "hcb_code"
+    t.string "aasm_state"
+    t.integer "amount_cents"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["event_id"], name: "index_bank_fees_on_event_id"
   end
 
   create_table "blazer_audits", force: :cascade do |t|
@@ -228,6 +238,8 @@ ActiveRecord::Schema.define(version: 2021_05_09_021606) do
     t.bigint "raw_pending_donation_transaction_id"
     t.bigint "raw_pending_invoice_transaction_id"
     t.text "hcb_code"
+    t.bigint "raw_pending_bank_fee_transaction_id"
+    t.index ["raw_pending_bank_fee_transaction_id"], name: "index_canonical_pending_txs_on_raw_pending_bank_fee_tx_id"
     t.index ["raw_pending_donation_transaction_id"], name: "index_canonical_pending_txs_on_raw_pending_donation_tx_id"
     t.index ["raw_pending_outgoing_ach_transaction_id"], name: "index_canonical_pending_txs_on_raw_pending_outgoing_ach_tx_id"
     t.index ["raw_pending_outgoing_check_transaction_id"], name: "index_canonical_pending_txs_on_raw_pending_outgoing_check_tx_id"
@@ -368,6 +380,7 @@ ActiveRecord::Schema.define(version: 2021_05_09_021606) do
     t.text "message"
     t.text "hcb_code"
     t.string "aasm_state"
+    t.string "donation_identifier"
     t.index ["event_id"], name: "index_donations_on_event_id"
     t.index ["fee_reimbursement_id"], name: "index_donations_on_fee_reimbursement_id"
     t.index ["payout_id"], name: "index_donations_on_payout_id"
@@ -501,7 +514,12 @@ ActiveRecord::Schema.define(version: 2021_05_09_021606) do
     t.datetime "last_fee_processed_at"
     t.datetime "pending_transaction_engine_at", default: "2021-02-13 22:49:40"
     t.string "aasm_state"
+    t.string "organization_identifier", null: false
+    t.string "redirect_url"
+    t.bigint "partner_id", null: false
     t.index ["club_airtable_id"], name: "index_events_on_club_airtable_id", unique: true
+    t.index ["partner_id", "organization_identifier"], name: "index_events_on_partner_id_and_organization_identifier", unique: true
+    t.index ["partner_id"], name: "index_events_on_partner_id"
     t.index ["point_of_contact_id"], name: "index_events_on_point_of_contact_id"
   end
 
@@ -786,6 +804,15 @@ ActiveRecord::Schema.define(version: 2021_05_09_021606) do
     t.index ["user_id"], name: "index_organizer_positions_on_user_id"
   end
 
+  create_table "partner_donations", force: :cascade do |t|
+    t.bigint "event_id", null: false
+    t.string "hcb_code", null: false
+    t.string "donation_identifier", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["event_id"], name: "index_partner_donations_on_event_id"
+  end
+
   create_table "partners", force: :cascade do |t|
     t.string "slug", null: false
     t.text "api_key"
@@ -813,6 +840,15 @@ ActiveRecord::Schema.define(version: 2021_05_09_021606) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "unique_bank_identifier", null: false
+  end
+
+  create_table "raw_pending_bank_fee_transactions", force: :cascade do |t|
+    t.string "bank_fee_transaction_id"
+    t.integer "amount_cents"
+    t.date "date_posted"
+    t.string "state"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "raw_pending_donation_transactions", force: :cascade do |t|
@@ -1054,6 +1090,7 @@ ActiveRecord::Schema.define(version: 2021_05_09_021606) do
   add_foreign_key "ach_transfers", "events"
   add_foreign_key "ach_transfers", "users", column: "creator_id"
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "bank_fees", "events"
   add_foreign_key "canonical_event_mappings", "canonical_transactions"
   add_foreign_key "canonical_event_mappings", "events"
   add_foreign_key "canonical_hashed_mappings", "canonical_transactions"
@@ -1087,6 +1124,7 @@ ActiveRecord::Schema.define(version: 2021_05_09_021606) do
   add_foreign_key "emburse_transfers", "events"
   add_foreign_key "emburse_transfers", "users", column: "creator_id"
   add_foreign_key "emburse_transfers", "users", column: "fulfilled_by_id"
+  add_foreign_key "events", "partners"
   add_foreign_key "events", "users", column: "point_of_contact_id"
   add_foreign_key "exports", "users"
   add_foreign_key "fee_relationships", "events"
@@ -1113,6 +1151,7 @@ ActiveRecord::Schema.define(version: 2021_05_09_021606) do
   add_foreign_key "organizer_position_invites", "users", column: "sender_id"
   add_foreign_key "organizer_positions", "events"
   add_foreign_key "organizer_positions", "users"
+  add_foreign_key "partner_donations", "events"
   add_foreign_key "receipts", "users"
   add_foreign_key "sponsors", "events"
   add_foreign_key "stripe_authorizations", "stripe_cards"

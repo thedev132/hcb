@@ -39,15 +39,6 @@ module TransactionEngine
         return (raw_emburse_transaction.bank_account_description || raw_emburse_transaction.merchant_description).to_s.upcase if amount_cents > 0 && raw_emburse_transaction.present?
       end
 
-      def handle_deprecated_linked_object
-        case deprecated_linked_object.class.to_s
-        when "Transaction"
-          deprecated_linked_object.display_name.to_s.upcase
-        else
-          nil
-        end
-      end
-
       def handle_solely_from_memo
         @smart_memo ||= ::TransactionEngine::FriendlyMemoService::GenerateSolelyFromMemo.new(canonical_transaction: @canonical_transaction).run
       end
@@ -58,10 +49,6 @@ module TransactionEngine
 
       def linked_object
         @canonical_transaction.linked_object
-      end
-
-      def deprecated_linked_object
-        @canonical_transaction.deprecated_linked_object
       end
 
       def raw_emburse_transaction

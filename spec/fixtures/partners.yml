@@ -1,0 +1,14 @@
+partner1:
+  slug: "partner1"
+  api_key: "hcb_1111"
+  created_at: <%= Time.now %>
+
+partner2:
+  slug: "partner2"
+  api_key: "hcb_2222"
+  created_at: <%= Time.now %>
+
+partnerWithNoOrganizations: # should have no organizations assigned to it
+  slug: "partner3"
+  api_key: "hcb_3333"
+  created_at: <%= Time.now %>
