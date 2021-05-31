@@ -65,7 +65,7 @@ class CanonicalTransaction < ApplicationRecord
   end
 
   def likely_hack_club_fee?
-    hcb_code.stars_with?("HCB-700-") || memo.to_s.upcase.include?("HACK CLUB BANK FEE TO ACCOUNT")
+    hcb_code.starts_with?("HCB-700-") || memo.to_s.upcase.include?("HACK CLUB BANK FEE TO ACCOUNT")
   end
 
   def likely_check_clearing_dda?
