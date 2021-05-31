@@ -80,38 +80,6 @@ class Donation < ApplicationRecord
     "Pending"
   end
 
-  # DEPRECATE
-  def status_color
-    return 'success' if deposited_deprecated?
-    return 'info' if pending_deprecated?
-
-    'error'
-  end
-
-  # DEPRECATE
-  def status_text
-    return 'Deposited' if deposited_deprecated?
-    return 'Pending' if pending_deprecated?
-
-    'Contact Hack Club Bank staff'
-  end
-
-  def deposited_deprecated?
-    status == 'succeeded' && payout_id != nil #self&.payout&.t_transaction.present?
-  end
-
-  def pending_deprecated?
-    status == 'succeeded' && !deposited_deprecated?
-  end
-
-  def in_transit_deprecated?
-    status == 'succeeded' && payout_id == nil
-  end
-
-  def unpaid_deprecated?
-    status == 'requires_payment_method'
-  end
-
   def unpaid?
     pending?
   end
