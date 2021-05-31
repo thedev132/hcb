@@ -6,13 +6,15 @@ module BankFeeService
     include ::Shared::Selenium::TransferFromFsMainToFsOperating
 
     def run
-      # login_to_svb!
+      if BankFee.pending.present?
+        login_to_svb!
 
-      # BankFee.pending.each do |bank_fee|
-      #   ::BankFeeService::ProcessSingle.new(bank_fee_id: bank_fee.id, already_logged_in: true)
-      # end
+        BankFee.pending.each do |bank_fee|
+          ::BankFeeService::ProcessSingle.new(bank_fee_id: bank_fee.id, driver: driver).run
+        end
 
-      # driver.quit
+        driver.quit
+      end
 
       BankFee.in_transit.each do |bank_fee|
         cpt = bank_fee.canonical_pending_transaction

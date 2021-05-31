@@ -3,9 +3,10 @@ module BankFeeService
     include ::Shared::Selenium::LoginToSvb
     include ::Shared::Selenium::TransferFromFsMainToFsOperating
 
-    def initialize(bank_fee_id:, already_logged_in: false)
+    def initialize(bank_fee_id:, driver: nil)
       @bank_fee_id = bank_fee_id
-      @already_logged_in = already_logged_in
+      @driver = driver
+      @already_logged_in = @driver.present?
     end
 
     def run
