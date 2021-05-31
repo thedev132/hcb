@@ -98,10 +98,6 @@ class EventPolicy < ApplicationPolicy
     user_or_admin
   end
 
-  def temp_generate_historical_bank_fees?
-    user&.admin?
-  end
-
   def user_or_admin
     user&.admin? || record.users.include?(user)
   end
