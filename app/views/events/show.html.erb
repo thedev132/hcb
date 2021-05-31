@@ -70,8 +70,6 @@
   <% end %>
 </div>
 
-<%= render 'transactions/notice' if using_transaction_engine_v2? && organizer_signed_in? && (@event.created_at < Time.utc(2019, 6, 1)) %>
-
 <h2 class="heading">
   Transactions
 

@@ -15,6 +15,7 @@ module TransactionGroupingEngine
       CHECK_CODE = "400"
       DISBURSEMENT_CODE = "500"
       STRIPE_CARD_CODE = "600"
+      BANK_FEE_CODE = "700"
 
       def initialize(canonical_transaction_or_canonical_pending_transaction:)
         @ct_or_cp = canonical_transaction_or_canonical_pending_transaction
@@ -22,6 +23,7 @@ module TransactionGroupingEngine
 
       def run
         return invoice_hcb_code if invoice
+        return bank_fee_hcb_code if bank_fee
         return donation_hcb_code if donation
         return ach_transfer_hcb_code if ach_transfer
         return check_hcb_code if check
@@ -44,6 +46,18 @@ module TransactionGroupingEngine
 
       def invoice
         @invoice ||= @ct_or_cp.invoice
+      end
+
+      def bank_fee_hcb_code
+        [
+          HCB_CODE,
+          BANK_FEE_CODE,
+          bank_fee.id
+        ].join(SEPARATOR)
+      end
+
+      def bank_fee
+        @bank_fee ||= @ct_or_cp.bank_fee
       end
 
       def donation_hcb_code

@@ -150,6 +150,7 @@ class Event < ApplicationRecord
   has_many :canonical_transactions, through: :canonical_event_mappings
 
   has_many :fees, through: :canonical_event_mappings
+  has_many :bank_fees
 
   has_many :partner_donations
 

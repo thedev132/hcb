@@ -4,6 +4,10 @@ module Api
   class V1Controller < Api::ApplicationController
     skip_before_action :authenticate, only: [:connect_continue, :connect_finish]
 
+    def hide_footer
+      @hide_footer = true
+    end
+
     def index
       contract = Api::V1::IndexContract.new.call(params.permit!.to_h)
       render json: json_error(contract), status: 400 and return unless contract.success?
@@ -31,6 +35,11 @@ module Api
       render json: json_error(contract), status: 400 and return unless contract.success?
 
       @event = Event.find(params[:hashid])
+      @partner = @event.partner
+
+      hide_footer
+
+      render layout: "application"
     end
 
     def connect_finish
