@@ -5,20 +5,12 @@ module Temp
     end
 
     def run
-      event.canonical_transactions.likely_hack_club_fee.each do |ct|
+      event.canonical_transactions.each do |ct|
         next if ct.bank_fee.present? || ct.hcb_code.starts_with?("HCB-700-")
         next unless ct.fee_payment?
 
         process(ct)
       end
-
-      event.canonical_transactions.old_likely_hack_club_fee.each do |ct|
-        next if ct.bank_fee.present? || ct.hcb_code.starts_with?("HCB-700-")
-        next unless ct.fee_payment?
-
-        process(ct)
-      end
-
 
       nil
     end
