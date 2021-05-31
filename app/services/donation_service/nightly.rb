@@ -1,7 +1,7 @@
 module DonationService
   class Nightly
     def run
-      Donation.succeeded.each do |donation|
+      Donation.in_transit.each do |donation|
         cpt = donation.canonical_pending_transaction
 
         next unless cpt
@@ -10,7 +10,7 @@ module DonationService
         raise ArgumentError, "anomaly detected when attempting to mark deposited donation #{donation.id}" if anomaly_detected?(donation: donation)
 
         begin
-          donation.mark_deposited! unless donation.deposited?
+          donation.mark_deposited!
         rescue => e
           Airbrake.notify(e)
         end

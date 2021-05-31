@@ -7,7 +7,7 @@ module Partners
       end
 
       def run
-        ::ApiService.req(:get, url, attrs, @access_token)
+        ::BankApiService.req(:get, url, attrs, @access_token)
       end
 
       private

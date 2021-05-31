@@ -12,6 +12,7 @@ class CanonicalTransaction < ApplicationRecord
   scope :missing_hcb_code, -> { where(hcb_code: nil) }
   scope :missing_or_unknown_hcb_code, -> { where("hcb_code is null or hcb_code ilike 'HCB-000%'") }
   scope :invoice_hcb_code, -> { where("hcb_code ilike 'HCB-#{::TransactionGroupingEngine::Calculate::HcbCode::INVOICE_CODE}%'") }
+  scope :bank_fee_hcb_code, -> { where("hcb_code ilike 'HCB-#{::TransactionGroupingEngine::Calculate::HcbCode::BANK_FEE_CODE}%'") }
   scope :donation_hcb_code, -> { where("hcb_code ilike 'HCB-#{::TransactionGroupingEngine::Calculate::HcbCode::DONATION_CODE}%'") }
   scope :ach_transfer_hcb_code, -> { where("hcb_code ilike 'HCB-#{::TransactionGroupingEngine::Calculate::HcbCode::ACH_TRANSFER_CODE}%'") }
   scope :check_hcb_code, -> { where("hcb_code ilike 'HCB-#{::TransactionGroupingEngine::Calculate::HcbCode::CHECK_CODE}%'") }
@@ -30,9 +31,11 @@ class CanonicalTransaction < ApplicationRecord
   scope :likely_disbursements, -> { where("memo ilike 'HCB DISBURSE%'") }
   scope :likely_achs, -> { where("memo ilike '%BUSBILLPAY%'") }
   scope :likely_hack_club_fee, -> { where("memo ilike '%Hack Club Bank Fee TO ACCOUNT%'") }
+  scope :old_likely_hack_club_fee, -> { where("memo ilike '% Fee TO ACCOUNT REDACTED%'") }
   scope :stripe_top_up, -> { where("memo ilike '%Hack Club Bank Stripe Top%' or memo ilike '%HACKC Stripe Top%' or memo ilike '%HCKCLB Stripe Top%'") }
   scope :not_stripe_top_up, -> { where("(memo not ilike '%Hack Club Bank Stripe Top%' and memo not ilike '%HACKC Stripe Top%' and memo not ilike '%HCKCLB Stripe Top%') or memo is null") }
   scope :mapped_by_human, -> { includes(:canonical_event_mapping).where("canonical_event_mappings.user_id is not null").references(:canonical_event_mapping) }
+  scope :included_in_stats, -> { includes(canonical_event_mapping: :event).where(events: {omit_stats: false}) }
 
   monetize :amount_cents
 
@@ -79,38 +82,6 @@ class CanonicalTransaction < ApplicationRecord
 
   def linked_object
     @linked_object ||= TransactionEngine::SyntaxSugarService::LinkedObject.new(canonical_transaction: self).run
-  end
-
-  def deprecated_linked_object
-    @deprecated_linked_object ||= begin
-      obj = nil
-
-      if raw_plaid_transaction
-        ts = Transaction.with_deleted.where(plaid_id: raw_plaid_transaction.plaid_transaction_id)
-
-        Airbrake.notify("There was more (or less) than 1 transaction for raw_plaid_transaction: #{raw_plaid_transaction.id}") unless ts.count == 1
-
-        obj = ts.first
-      end
-
-      if raw_emburse_transaction
-        ets = EmburseTransaction.with_deleted.where(emburse_id: raw_emburse_transaction.emburse_transaction_id)
-
-        Airbrake.notify("There was more (or less) than 1 emburse_transaction for raw_emburse_transaction: #{raw_emburse_transaction.id}") unless ets.count == 1
-
-        obj = ets.first
-      end
-
-      if raw_stripe_transaction
-        sas = StripeAuthorization.where(stripe_id: raw_stripe_transaction.stripe_transaction.dig("authorization"))
-
-        Airbrake.notify("There was more (or less) than 1 stripe_authorization for raw_stripe_transaction: #{raw_stripe_transaction.id}") unless sas.count == 1
-
-        obj = sas.first
-      end
-
-      obj
-    end
   end
 
   def raw_plaid_transaction
@@ -182,6 +153,12 @@ class CanonicalTransaction < ApplicationRecord
 
   def invoice
     return linked_object if linked_object.is_a?(Invoice)
+
+    nil
+  end
+
+  def bank_fee
+    return linked_object if linked_object.is_a?(BankFee)
 
     nil
   end

@@ -110,18 +110,27 @@ class AdminController < ApplicationController
     @page = params[:page] || 1
     @per = params[:per] || 100
     @q = params[:q].present? ? params[:q] : nil
-    @pending = params[:pending] == "1" ? true : nil
+    @pending = params[:pending] == "0" ? nil : true # checked by default
+    @unapproved = params[:unapproved] == "0" ? nil : true # checked by default
+    @approved = params[:approved] == "0" ? nil : true # checked by default
     @transparent = params[:transparent] == "1" ? true : nil
     @omitted = params[:omitted] == "1" ? true : nil
-    @hidden = params[:hidden] == "1" ? true : nil
+    @hidden = params[:hidden].present? ? params[:hidden] : nil
 
     relation = Event
 
     relation = relation.search_name(@q) if @q
-    relation = relation.pending if @pending
     relation = relation.transparent if @transparent
     relation = relation.omitted if @omitted
-    relation = relation.hidden if @hidden
+    relation = relation.hidden if @hidden == 'hidden'
+    relation = relation.not_hidden if @hidden == 'not_hidden'
+
+    states = [];
+    states << 'pending' if @pending
+    states << 'unapproved' if @unapproved
+    states << 'approved' if @approved
+    relation = relation.where('aasm_state in (?)', states)
+
 
     @count = relation.count
 

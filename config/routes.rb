@@ -300,9 +300,23 @@ Rails.application.routes.draw do
     resources :comments
   end
 
-  # api
-  get  'api/v1/events/find', to: 'api#event_find'
-  post 'api/v1/disbursements', to: 'api#disbursement_new'
+  scope :api, module: "api" do
+    resources "v1", as: :api_v1, only: [:index] do
+      collection do
+        match "connect/start", action: :connect_start, as: :api_connect_start, via: [:post]
+        match "connect/continue/:hashid", action: :connect_continue, as: :api_connect_continue, via: [:get]
+        match "connect/finish/:hashid", action: :connect_finish, as: :api_connect_finish, via: [:post]
+        match "donations/start", action: :donations_start, as: :api_donations_start, via: [:post]
+        match "organizations", action: :organizations, as: :api_organizations, via: [:get]
+        match "organizations/:organizationIdentifier", action: :organization, as: :api_organization, via: [:get]
+      end
+    end
+
+    match "/", to: "v1#index", module: :api_v1, as: :api_root, via: :all
+  end
+
+  get  'api/v1/events/find', to: 'api#event_find' # to be deprecated
+  post 'api/v1/disbursements', to: 'api#disbursement_new' # to be deprecated
 
   post 'stripe/webhook', to: 'stripe#webhook'
 
@@ -340,6 +354,8 @@ Rails.application.routes.draw do
     get 'promotions', to: 'events#promotions', as: :promotions
     get 'reimbursements', to: 'events#reimbursements', as: :reimbursements
     get 'donations', to: 'events#donation_overview', as: :donation_overview
+    get 'bank_fees', to: 'events#bank_fees', as: :bank_fees
+    post 'temp_generate_historical_bank_fees', to: 'events#temp_generate_historical_bank_fees', as: :temp_generate_historical_bank_fees
     # suspend this while check processing is on hold
     resources :checks, only: [:new, :create]
     resources :ach_transfers, only: [:new, :create]

@@ -24,11 +24,19 @@ module TransactionEngine
 
           return likely_disbursement if disbursement?
 
+          return likely_bank_fee if outgoing_bank_fee?
+
           nil
         end
       end
 
       private
+
+      def likely_bank_fee
+        return nil unless event
+
+        event.bank_fees.where(amount_cents: @canonical_transaction.amount_cents).first
+      end
 
       def likely_check
         return nil unless event
