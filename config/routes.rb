@@ -249,9 +249,7 @@ Rails.application.routes.draw do
   get 'faq', to: 'static_pages#faq'
   
   get 'pending_fees', to: 'admin#pending_fees'
-  get 'export_pending_fees', to: 'admin#export_pending_fees'
   get 'pending_disbursements', to: 'admin#pending_disbursements'
-  get 'export_pending_disbursements', to: 'admin#export_pending_disbursements'
   get 'audit', to: 'admin#audit'
 
   resources :central, only: [:index] do

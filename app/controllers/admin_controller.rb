@@ -31,42 +31,6 @@ class AdminController < ApplicationController
     @pending_fees_v2 = Event.pending_fees_v2
   end
 
-  def export_pending_fees
-    csv = StaticPageService::ExportPendingFees.new.run
-
-    send_data csv, filename: "#{Date.today}_pending_fees.csv"
-  end
-
-  def pending_disbursements
-    @pending_disbursements = Disbursement.pending
-
-    authorize @pending_disbursements
-  end
-
-  def export_pending_disbursements
-    authorize Disbursement
-
-    disbursements = Disbursement.pending
-
-    attributes = %w{memo amount}
-
-    result = CSV.generate(headers: true) do |csv|
-      csv << attributes.map
-
-      disbursements.each do |dsb|
-        csv << attributes.map do |attr|
-          if attr == 'memo'
-            dsb.transaction_memo
-          else
-            dsb.amount.to_f / 100
-          end
-        end
-      end
-    end
-
-    send_data result, filename: "Pending Disbursements #{Date.today}.csv"
-  end
-
   def search
     # allows the same URL to easily be used for form and GET
     return if request.method == 'GET'

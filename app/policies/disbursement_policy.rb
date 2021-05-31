@@ -34,8 +34,4 @@ class DisbursementPolicy < ApplicationPolicy
   def pending_disbursements?
     user.admin?
   end
-
-  def export_pending_disbursements?
-    user.admin?
-  end
 end
