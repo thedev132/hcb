@@ -18,6 +18,8 @@ module EventMappingEngine
       map_hack_club_bank_issued_cards!
       map_stripe_top_ups!
 
+      map_bank_fees! # TODO: move to using hcb short codes
+
       map_hcb_codes_invoice!
       map_hcb_codes_donation!
 
@@ -54,6 +56,10 @@ module EventMappingEngine
 
     def map_achs!
       ::EventMappingEngine::Map::Achs.new.run
+    end
+
+    def map_bank_fees!
+      ::EventMappingEngine::Map::BankFees.new.run
     end
 
     def map_disbursements!

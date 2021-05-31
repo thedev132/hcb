@@ -42,9 +42,34 @@ class BankFee < ApplicationRecord
     @local_hcb_code ||= HcbCode.find_or_create_by(hcb_code: hcb_code)
   end
 
+  def canonical_pending_transaction
+    canonical_pending_transactions.first
+  end
+
+  def canonical_transactions
+    @canonical_transactions ||= CanonicalTransaction.where(hcb_code: hcb_code)
+  end
+
+  def canonical_pending_transactions
+    @canonical_pending_transactions ||= begin
+      return [] unless raw_pending_bank_fee_transaction.present?
+
+      ::CanonicalPendingTransaction.where(raw_pending_bank_fee_transaction_id: raw_pending_bank_fee_transaction.id)
+    end
+  end
+
   private
 
   def set_hcb_code
     self.update_column(:hcb_code, "HCB-#{::TransactionGroupingEngine::Calculate::HcbCode::BANK_FEE_CODE}-#{id}")
   end
+
+  def raw_pending_bank_fee_transaction
+    raw_pending_bank_fee_transactions.first
+  end
+
+  def raw_pending_bank_fee_transactions
+    @raw_pending_bank_fee_transactions ||= ::RawPendingBankFeeTransaction.where(bank_fee_transaction_id: id)
+  end
+
 end
