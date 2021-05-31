@@ -124,30 +124,23 @@ class AdminController < ApplicationController
     redirect_to event_new_admin_index_path, flash: { error: e.message }
   end
 
-  def fees
+  def bank_fees
     @page = params[:page] || 1
     @per = params[:per] || 100
-    @hack_club_fee = params[:hack_club_fee] == "1" ? true : nil
-    @exclude_free_events = params[:exclude_free_events] == "1" ? true : nil
-    @exclude_outflows = params[:exclude_outflows] == "1" ? true : nil
     @event_id = params[:event_id].present? ? params[:event_id] : nil
 
     if @event_id
       @event = Event.find(@event_id)
 
-      relation = @event.fees.includes(canonical_event_mapping: :canonical_transaction)
+      relation = @event.bank_fees
     else
-      relation = Fee.includes(canonical_event_mapping: :canonical_transaction)
+      relation = BankFee
     end
 
-    relation = relation.hack_club_fee if @hack_club_fee
-    relation = relation.exclude_free_events if @exclude_free_events
-    relation = relation.exclude_outflows if @exclude_outflows
-
     @count = relation.count
-    @sum = relation.sum(:amount_cents_as_decimal)
+    @sum = relation.sum(:amount_cents)
 
-    @fees = relation.page(@page).per(@per).order("canonical_transactions.date desc, canonical_transactions.id desc")
+    @bank_fees = relation.page(@page).per(@per).order("bank_fees.created_at desc")
 
     render layout: "admin"
   end

@@ -72,7 +72,7 @@ Rails.application.routes.draw do
     collection do
       get 'bank_accounts', to: 'admin#bank_accounts'
       get 'hcb_codes', to: 'admin#hcb_codes'
-      get 'fees', to: 'admin#fees'
+      get 'bank_fees', to: 'admin#bank_fees'
       get 'users', to: 'admin#users'
       get 'raw_transactions', to: 'admin#raw_transactions'
       get 'raw_transaction_new', to: 'admin#raw_transaction_new'
