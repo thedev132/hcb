@@ -24,7 +24,7 @@ transaction_engine_friendly_memo_nightly_job:
   queue: "default"
   
 transaction_grouping_engine_nightly_job:
-  cron: "0 7 * * *" # run at 7am UTC each morning
+  cron: "*/5 * * * *" # run every 5 minutes
   class: "TransactionGroupingEngineJob::Nightly"
   queue: "default"
 
