@@ -2,7 +2,6 @@ module BankFeeService
   class ProcessSingle
     include ::Shared::Selenium::LoginToSvb
     include ::Shared::Selenium::TransferFromFsMainToFsOperating
-    include ::Shared::Fee::CanonicalFeeMemo
 
     def initialize(bank_fee_id:, already_logged_in: false)
       @bank_fee_id = bank_fee_id

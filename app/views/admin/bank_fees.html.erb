@@ -1,0 +1,48 @@
+<% title "BANK FEES" %>
+
+<h1>BANK FEES</h1>
+
+<%= paginate @bank_fees %>
+
+<%= form_with local: true, url: bank_fees_admin_index_path, method: :get do |form| %>
+  <%= form.collection_select(:event_id, Event.reorder(Event::CUSTOM_SORT), :id, :admin_dropdown_description, { include_blank: true, selected: @event_id }, { width: 150, style: "max-width: 150px" }) %>
+  |
+
+  <%= form.submit "Search" %>
+<% end %>
+
+<p><small><%= pluralize(@count, "result") %></small></p>
+<p><small><%= render_money @sum %></small></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Date</th>
+      <th>Status</th>
+      <th>HCB Code</th>
+      <th>Memo</th>
+      <th>Amount</th>
+      <th>Event</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @bank_fees.each do |bank_fee| %>
+      <tr style="
+      ">
+        <td><%= bank_fee.id %></td>
+        <td><%= bank_fee.created_at.strftime("%Y-%m-%d") %></td>
+        <td><%= bank_fee.aasm_state %></td>
+        <td><%= bank_fee.hcb_code %></td>
+        <td></td>
+        <td><%= bank_fee.amount %></td>
+        <td><%= bank_fee.event_id %></td>
+        <td>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= paginate @bank_fees %>
