@@ -18,11 +18,6 @@ transaction_engine_nightly_job:
   class: "TransactionEngineJob::Nightly"
   queue: "default"
 
-transaction_engine_friendly_memo_nightly_job:
-  cron: "0 8 * * *" # run at 6am UTC each morning
-  class: "TransactionEngineJob::FriendlyMemo::Nightly"
-  queue: "default"
-  
 transaction_grouping_engine_nightly_job:
   cron: "*/5 * * * *" # run every 5 minutes
   class: "TransactionGroupingEngineJob::Nightly"
