@@ -4,6 +4,10 @@ module Api
   class V1Controller < Api::ApplicationController
     skip_before_action :authenticate, only: [:connect_continue, :connect_finish]
 
+    def hide_footer
+      @hide_footer = true
+    end
+
     def index
       contract = Api::V1::IndexContract.new.call(params.permit!.to_h)
       render json: json_error(contract), status: 400 and return unless contract.success?
@@ -31,6 +35,11 @@ module Api
       render json: json_error(contract), status: 400 and return unless contract.success?
 
       @event = Event.find(params[:hashid])
+      @partner = @event.partner
+
+      hide_footer
+
+      render layout: "application"
     end
 
     def connect_finish
@@ -60,9 +69,37 @@ module Api
         partner_id: current_partner.id,
         organization_identifier: contract[:organizationIdentifier]
       }
-      donation = ::ApiService::V1::DonationStart.new(attrs).run
+      partner_donation = ::ApiService::V1::DonationsStart.new(attrs).run
 
-      render json: Api::V1::DonationStartSerializer.new(donation: donation).run
+      render json: Api::V1::DonationsStartSerializer.new(partner_donation: partner_donation).run
+    end
+
+    def organizations
+      contract = Api::V1::OrganizationsContract.new.call(params.permit!.to_h)
+      render json: json_error(contract), status: 400 and return unless contract.success?
+
+      attrs = {
+        partner_id: current_partner.id,
+      }
+      organizations = ::ApiService::V1::Organizations.new(attrs).run
+
+      render json: Api::V1::OrganizationsSerializer.new(organizations: organizations).run
+    end
+
+    def organization
+      contract = Api::V1::OrganizationContract.new.call(params.permit!.to_h)
+      render json: json_error(contract), status: 400 and return unless contract.success?
+
+      attrs = {
+        partner_id: current_partner.id,
+        organization_identifier: contract[:organizationIdentifier]
+      }
+      event = ::ApiService::V1::Organization.new(attrs).run
+
+      # if event does not exist, throw not found error
+      raise ActiveRecord::RecordNotFound and return unless event
+
+      render json: Api::V1::OrganizationSerializer.new(event: event).run
     end
   end
 end

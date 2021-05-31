@@ -137,14 +137,7 @@
         <%= link_to "View", emburse_transfer_path(@transaction.emburse_transfer) %>
       </p>
     <% end %>
-
-    <% if @transaction.deprecated_linked_object %>
-      <p>
-        <strong>History</strong>
-        <%= link_to "Metadata", @transaction.deprecated_linked_object %>
-      </p>
-    <% end %>
-
+    
   </section>
 
   <% unless using_transaction_engine_v2? || @transaction.is_a?(CanonicalTransaction) %>

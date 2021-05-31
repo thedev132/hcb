@@ -6,10 +6,23 @@
 
 <%= form_with local: true, url: events_admin_index_path, method: :get do |form| %>
   <%= form.text_field :q, value: params[:q] %>
-  <%= form.label :pending do %>
-    <%= form.check_box :pending, checked: @pending %>
-    Pending
-  <% end %>
+  <div style='display: inline; border: 1px lightgray solid; border-radius: 0.2rem; padding: 0.2rem; margin-right: 0.5rem;'>
+    State: |
+    <%= form.label :pending do %>
+      <%= form.check_box :pending, checked: @pending %>
+      Pending
+    <% end %>
+    |
+    <%= form.label :unapproved do %>
+      <%= form.check_box :unapproved, checked: @unapproved %>
+      Unapproved
+    <% end %>
+    |
+    <%= form.label :approved do %>
+      <%= form.check_box :approved, checked: @approved %>
+      Approved
+    <% end %>
+  </div>
   |
   <%= form.label :transparent do %>
     <%= form.check_box :transparent, checked: @transparent %>
@@ -22,8 +35,8 @@
   <% end %>
   |
   <%= form.label :hidden do %>
-    <%= form.check_box :hidden, checked: @hidden %>
     Hidden
+    <%= form.select :hidden, [["Not Hidden", 'not_hidden'], ['Hidden', 'hidden'], ['Both', 'both']], :selected => @hidden %>
   <% end %>
   |
 
@@ -40,6 +53,7 @@
       <th>Partner</th>
       <th>Date</th>
       <th>Name</th>
+      <th>Balance</th>
       <th>Fee</th>
       <th>Status</th>
       <th>Actions</th>
@@ -55,6 +69,9 @@
           <%= link_to event_path(event) do %>
             <%= event.name.upcase %>
           <% end %>
+        </td>
+        <td style="<%= 'color: lightgray;' if event.balance === 0 %>">
+          <%= render_money event.balance %>
         </td>
         <td>
           <%= render_percentage event.sponsorship_fee %>

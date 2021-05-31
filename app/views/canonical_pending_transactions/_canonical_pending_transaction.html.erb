@@ -14,6 +14,7 @@
   <% elsif pt.raw_pending_donation_transaction_id %>
     <td class="transaction__icon tooltipped tooltipped--e" aria-label="Donation">
       <%= inline_icon "support" %>
+    </td>
   <% elsif pt.raw_pending_stripe_transaction_id %>
     <td class="transaction__icon tooltipped tooltipped--e" aria-label="Card transaction">
       <% if pt.stripe_cardholder %>
@@ -22,7 +23,13 @@
         <%= inline_icon "card" %>
       <% end %>
     </td>
+  <% elsif pt.raw_pending_bank_fee_transaction_id %>
+    <td class="transaction__icon tooltipped tooltipped--e" aria-label="Hack Club Bank Fee payment">
+      <%= inline_icon "minue" %>
+    </td>
   <% else %>
+    <td class="transaction__icon tooltipped tooltipped--e" aria-label="Other">
+    </td>
   <% end %>
   <td>
     <%= pt.date %>
@@ -41,6 +48,6 @@
     <%= number_to_currency pt.amount %>
   </td>
   <td>
-    <%= link_to "Details", pt.url %>
+    <%= link_to "Details", pt.url if organizer_signed_in? %>
   </td>
 </tr>
