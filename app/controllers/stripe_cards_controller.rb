@@ -51,11 +51,8 @@ class StripeCardsController < ApplicationController
 
   def new
     @event = Event.friendly.find(params[:event_id])
-    @cardholder = StripeCardholder.find_or_create_by(user: current_user)
 
-    @stripe_card = StripeCard.new(stripe_cardholder: @cardholder, event: @event)
-
-    authorize @stripe_card
+    authorize @event, :user_or_admin?, policy_class: EventPolicy
   end
 
   def create
@@ -78,6 +75,8 @@ class StripeCardsController < ApplicationController
 
     redirect_to event_cards_overview_path(event_id: event.id), flash: { success: "Card was successfully created." }
   rescue => e
+    Airbrake.notify(e)
+
     redirect_to event_cards_new_path(event_id: event.id), flash: { error: e.message }
   end
 

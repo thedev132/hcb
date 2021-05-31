@@ -8,6 +8,8 @@ class HcbCode < ApplicationRecord
 
   monetize :amount_cents
 
+  before_create :generate_and_set_short_code
+
   def url
     "/hcb/#{hashid}"
   end
@@ -58,7 +60,7 @@ class HcbCode < ApplicationRecord
         disbursement.try(:event).try(:id)
       ].compact.flatten.uniq
 
-      Event.where(id: ids)
+      Event.where(id: ids[0])
     end
   end
 
@@ -86,6 +88,10 @@ class HcbCode < ApplicationRecord
     hcb_i1 == ::TransactionGroupingEngine::Calculate::HcbCode::DONATION_CODE
   end
 
+  def partner_donation?
+    hcb_i1 == ::TransactionGroupingEngine::Calculate::HcbCode::PARTNER_DONATION_CODE
+  end
+
   def ach_transfer?
     hcb_i1 == ::TransactionGroupingEngine::Calculate::HcbCode::ACH_TRANSFER_CODE
   end
@@ -103,7 +109,7 @@ class HcbCode < ApplicationRecord
   end
 
   def invoice
-    @invoice ||= Invoice.find_by(id: hcb_i2)
+    @invoice ||= Invoice.find_by(id: hcb_i2) if invoice?
   end
 
   def invoice_memo
@@ -111,15 +117,19 @@ class HcbCode < ApplicationRecord
   end
 
   def donation
-    @donation ||= Donation.find_by(id: hcb_i2)
+    @donation ||= Donation.find_by(id: hcb_i2) if donation?
   end
 
   def donation_memo
     smartish_custom_memo || "DONATION FROM #{donation.smart_memo}"
   end
 
+  def partner_donation
+    @partner_donation ||= PartnerDonation.find_by(id: hcb_i2) if partner_donation?
+  end
+
   def ach_transfer
-    @ach_transfer ||= AchTransfer.find_by(id: hcb_i2)
+    @ach_transfer ||= AchTransfer.find_by(id: hcb_i2) if ach_transfer?
   end
 
   def ach_transfer_memo
@@ -127,7 +137,7 @@ class HcbCode < ApplicationRecord
   end
 
   def check
-    @check ||= Check.find_by(id: hcb_i2)
+    @check ||= Check.find_by(id: hcb_i2) if check?
   end
 
   def check_memo
@@ -135,7 +145,7 @@ class HcbCode < ApplicationRecord
   end
 
   def disbursement
-    @disbursement ||= Disbursement.find_by(id: hcb_i2)
+    @disbursement ||= Disbursement.find_by(id: hcb_i2) if disbursement?
   end
 
   def unknown?
@@ -185,4 +195,7 @@ class HcbCode < ApplicationRecord
     @local_hcb_code ||= HcbCode.find_or_create_by(hcb_code: hcb_code)
   end
 
+  def generate_and_set_short_code
+    self.short_code = ::HcbCodeService::Generate::ShortCode.new.run
+  end
 end

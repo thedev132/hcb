@@ -10,7 +10,7 @@ gem 'rails', '6.0.3.6'
 # Use postgresql as the database for Active Record
 gem 'pg', '>= 0.18', '< 2.0'
 # Use Puma as the app server
-gem 'puma', '~> 4.1'
+gem 'puma', '~> 4.3'
 # Use SCSS for stylesheets
 gem 'sassc-rails'
 # Include jQuery
@@ -161,3 +161,5 @@ gem 'selenium-webdriver', '4.0.0.beta3'
 gem 'sidekiq-cron', '~> 1.1' # run sidekiq scheduled tasks
 gem 'strong_migrations' # protects against risky migrations that could cause application harm on deploy
 gem 'xxhash' # fast hashing
+gem 'swagger-blocks'
+gem 'dry-validation'

@@ -267,7 +267,7 @@ class Transaction < ApplicationRecord
     elsif potential_check?
       #try_pair_check
     elsif potential_disbursement?
-      try_pair_disbursement
+      #try_pair_disbursement
     end
     # NOTE: we cannot curently auto-pair Expensify txs
   rescue => e

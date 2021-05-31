@@ -19,7 +19,7 @@ module StripeCardService
     end
 
     def run
-      raise ArgumentError, "not permitted under spend only plan" if event.is_spend_only
+      raise ArgumentError, "not permitted under spend only plan" if event.unapproved?
 
       stripe_cardholder
 
@@ -85,7 +85,14 @@ module StripeCardService
     end
 
     def stripe_cardholder
-      @stripe_cardholder ||= ::StripeCardholder.find_or_create_by(user: @current_user)
+      @stripe_cardholder ||= ::StripeCardholder.find_by(user: @current_user) || ::StripeCardholderService::Create.new(cardholder_attrs).run
+    end
+
+    def cardholder_attrs
+      {
+        current_user: @current_user,
+        event_id: event.id
+      }
     end
 
     def event

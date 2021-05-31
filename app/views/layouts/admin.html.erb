@@ -6,6 +6,8 @@
     <%= csp_meta_tag %>
     <%= stylesheet_link_tag "admin", media: "all", "data-turbolinks-track": "reload" %>
     <%= javascript_include_tag "admin", "data-turbolinks-track": "reload", defer: true %>
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon<%='-alt' if Rails.env.development?%>-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon<%='-alt' if Rails.env.development?%>-16x16.png">
     <%= yield(:head) if content_for?(:head) %>
   </head>
   <body>
@@ -21,11 +23,17 @@
     <p>
       <%= link_to "admin", root_path %>
       |
+      <%= link_to "bank accounts (#{BankAccount.failing.count})", bank_accounts_admin_index_path %>
+      |
       <%= link_to "events (#{Event.pending.count})", events_admin_index_path %>
       |
       <%= link_to "fees", fees_admin_index_path %>
       |
       <%= link_to "users", users_admin_index_path %>
+      |
+      <%= link_to "raw transactions (#{RawCsvTransaction.unhashed.count})", raw_transactions_admin_index_path %>
+      |
+      <%= link_to "hashed transactions (#{HashedTransaction.uncanonized.count})", hashed_transactions_admin_index_path %>
       |
       <%= link_to "ledger (#{CanonicalTransaction.not_stripe_top_up.unmapped.count})", ledger_admin_index_path %>
       |

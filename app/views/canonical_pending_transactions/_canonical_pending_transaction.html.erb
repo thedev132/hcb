@@ -1,22 +1,36 @@
 <tr class="muted transaction--<%= pt.amount.negative? ? "negative" : "positive" %>">
-  <td class="transaction__icon tooltipped tooltipped--e" aria-label="Bank account transaction">
-    <% if pt.raw_pending_outgoing_check_transaction_id %>
+  <% if pt.raw_pending_outgoing_check_transaction_id %>
+    <td class="transaction__icon tooltipped tooltipped--e" aria-label="Outgoing check">
       <%= inline_icon "payment-transfer" %>
-    <% elsif pt.raw_pending_outgoing_ach_transaction_id %>
+    </td>
+  <% elsif pt.raw_pending_outgoing_ach_transaction_id %>
+    <td class="transaction__icon tooltipped tooltipped--e" aria-label="Outgoing ACH">
       <%= inline_icon "payment-transfer" %>
-    <% elsif pt.raw_pending_invoice_transaction_id %>
+    </td>
+  <% elsif pt.raw_pending_invoice_transaction_id %>
+    <td class="transaction__icon tooltipped tooltipped--e" aria-label="Invoice">
       <%= inline_icon "briefcase" %>
-    <% elsif pt.raw_pending_donation_transaction_id %>
+    </td>
+  <% elsif pt.raw_pending_donation_transaction_id %>
+    <td class="transaction__icon tooltipped tooltipped--e" aria-label="Donation">
       <%= inline_icon "support" %>
-    <% elsif pt.raw_pending_stripe_transaction_id %>
+    </td>
+  <% elsif pt.raw_pending_stripe_transaction_id %>
+    <td class="transaction__icon tooltipped tooltipped--e" aria-label="Card transaction">
       <% if pt.stripe_cardholder %>
         <%= avatar_for pt.stripe_cardholder.user, 24 %>
       <% else %>
         <%= inline_icon "card" %>
       <% end %>
-    <% else %>
-    <% end %>
-  </td>
+    </td>
+  <% elsif pt.raw_pending_bank_fee_transaction_id %>
+    <td class="transaction__icon tooltipped tooltipped--e" aria-label="Hack Club Bank Fee payment">
+      <%= inline_icon "minue" %>
+    </td>
+  <% else %>
+    <td class="transaction__icon tooltipped tooltipped--e" aria-label="Other">
+    </td>
+  <% end %>
   <td>
     <%= pt.date %>
   </td>
@@ -34,6 +48,6 @@
     <%= number_to_currency pt.amount %>
   </td>
   <td>
-    <%= link_to "Details", pt.url %>
+    <%= link_to "Details", pt.url if organizer_signed_in? %>
   </td>
 </tr>

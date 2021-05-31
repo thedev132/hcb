@@ -81,7 +81,7 @@ Airbrake.add_filter do |notice|
   notice.ignore! if rand(1..10) <= 9
 end
 
-ignorable_errors = [SignalException, Sidekiq::Shutdown, Plaid::PlaidAPIError, ActiveRecord::ConnectionTimeoutError, ::ApiService::UnauthorizedError]
+ignorable_errors = [SignalException, Sidekiq::Shutdown, Plaid::PlaidAPIError, ActiveRecord::ConnectionTimeoutError, ::BankApiService::UnauthorizedError]
 
 Airbrake.add_filter do |notice|
   next unless ignorable_errors.include?(notice.stash[:exception].class)

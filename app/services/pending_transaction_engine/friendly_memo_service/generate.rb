@@ -8,6 +8,7 @@ module PendingTransactionEngine
       def run
         return "CHECK ##{check_number}" if outgoing_check?
         return "INVOICE #{invoice_name}" if invoice?
+        return "DONATION #{donation_name}" if donation?
 
         memo
       end
@@ -30,6 +31,10 @@ module PendingTransactionEngine
         @invoice ||= raw_pending_invoice_transaction.present?
       end
 
+      def donation?
+        @donation ||= raw_pending_donation_transaction.present?
+      end
+
       def raw_pending_outgoing_check_transaction
         @raw_pending_outgoing_check_transaction ||= @pending_canonical_transaction.raw_pending_outgoing_check_transaction
       end
@@ -44,6 +49,14 @@ module PendingTransactionEngine
 
       def invoice_name
         raw_pending_invoice_transaction.invoice.sponsor.name.to_s.upcase
+      end
+
+      def raw_pending_donation_transaction
+        @raw_pending_donation_transaction ||= @pending_canonical_transaction.raw_pending_donation_transaction
+      end
+
+      def donation_name
+        raw_pending_donation_transaction.donation.name.to_s.upcase
       end
     end
   end

@@ -1,6 +1,8 @@
 class Event < ApplicationRecord
+  include Hashid::Rails
   extend FriendlyId
 
+  include AASM
   include PgSearch::Model
   pg_search_scope :search_name, against: [:name, :slug], using: { tsearch: { prefix: true, dictionary: "english" } }
 
@@ -10,6 +12,7 @@ class Event < ApplicationRecord
   scope :pending, -> { where(has_fiscal_sponsorship_document: false) }
   scope :transparent, -> { where(is_public: true) }
   scope :omitted, -> { where(omit_stats: true) }
+  scope :not_omitted, -> { where(omit_stats: false) }
   scope :hidden, -> { where("hidden_at is not null") }
   scope :v1, -> { where(transaction_engine_v2_at: nil) }
   scope :v2, -> { where.not(transaction_engine_v2_at: nil) }
@@ -94,9 +97,20 @@ class Event < ApplicationRecord
     where("(last_fee_processed_at is null or last_fee_processed_at <= ?) and id in (?)", 20.days.ago, self.event_ids_with_pending_fees_greater_than_0_v2.to_a.map {|a| a["event_id"] })
   end
 
+  aasm do
+    state :pending, initial: true
+    state :unapproved # old spend only events
+    state :approved
+
+    event :mark_approved do
+      transitions from: [:pending, :unapproved], to: :approved
+    end
+  end
+
   friendly_id :name, use: :slugged
 
-  belongs_to :point_of_contact, class_name: 'User'
+  belongs_to :point_of_contact, class_name: 'User', optional: true
+  belongs_to :partner
 
   has_many :organizer_position_invites
   has_many :organizer_positions
@@ -136,10 +150,13 @@ class Event < ApplicationRecord
   has_many :canonical_transactions, through: :canonical_event_mappings
 
   has_many :fees, through: :canonical_event_mappings
+  has_many :bank_fees
+
+  has_many :partner_donations
 
   validate :point_of_contact_is_admin
 
-  validates :name, :sponsorship_fee, presence: true
+  validates :name, :sponsorship_fee, :organization_identifier, presence: true
   validates :slug, uniqueness: true, presence: true, format: { without: /\s/ }
 
   before_create :default_values
@@ -265,7 +282,7 @@ class Event < ApplicationRecord
   end
 
   def plan_name
-    if is_spend_only
+    if unapproved?
       "pending approval"
     else
       "full fiscal sponsorship"
@@ -316,8 +333,9 @@ class Event < ApplicationRecord
   end
 
   def point_of_contact_is_admin
-    return if self.point_of_contact&.admin?
-
+    return unless point_of_contact # for remote partner created events
+    return if point_of_contact&.admin?
+    
     errors.add(:point_of_contact, 'must be an admin')
   end
 

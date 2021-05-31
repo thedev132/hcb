@@ -9,17 +9,17 @@ class InvoicePolicy < ApplicationPolicy
 
     event_ids = record.map(&:sponsor).map(&:event).pluck(:id)
     same_event = event_ids.uniq.size == 1 # same_event is a sanity check that all the records are from the same event
-    return false if same_event && Event.find(event_ids.first).is_spend_only
+    return false if same_event && Event.find(event_ids.first).unapproved?
     return true if Event.find(event_ids.first).is_public?
     return true if same_event && user&.events&.pluck(:id)&.include?(event_ids.first)
   end
 
   def new?
-    !is_spend_only && ( is_public || admin_or_user )
+    !unapproved? && ( is_public || admin_or_user )
   end
 
   def create?
-    !record.is_spend_only && (user&.admin? || record.users.include?(user))
+    !record.unapproved? && (user&.admin? || record.users.include?(user))
   end
 
   def show?
@@ -52,7 +52,7 @@ class InvoicePolicy < ApplicationPolicy
     record&.sponsor&.event&.is_public?
   end
 
-  def is_spend_only
-    record&.sponsor&.event&.is_spend_only
+  def unapproved?
+    record&.sponsor&.event&.unapproved?
   end
 end

@@ -1,12 +1,13 @@
 class CanonicalPendingTransaction < ApplicationRecord
   include PgSearch::Model
-  pg_search_scope :search_memo, against: [:memo], using: { tsearch: { prefix: true, dictionary: "english" } }, ranked_by: "canonical_pending_transactions.date"
+  pg_search_scope :search_memo, against: [:memo, :hcb_code], using: { tsearch: { prefix: true, dictionary: "english" } }, ranked_by: "canonical_pending_transactions.date"
 
   belongs_to :raw_pending_stripe_transaction, optional: true
   belongs_to :raw_pending_outgoing_check_transaction, optional: true
   belongs_to :raw_pending_outgoing_ach_transaction, optional: true
   belongs_to :raw_pending_donation_transaction, optional: true
   belongs_to :raw_pending_invoice_transaction, optional: true
+  belongs_to :raw_pending_bank_fee_transaction, optional: true
   has_one :canonical_pending_event_mapping
   has_one :event, through: :canonical_pending_event_mapping
   has_many :canonical_pending_settled_mappings
@@ -24,6 +25,7 @@ class CanonicalPendingTransaction < ApplicationRecord
   scope :outgoing_check, -> { where('raw_pending_outgoing_check_transaction_id is not null')}
   scope :donation, -> { where('raw_pending_donation_transaction_id is not null')}
   scope :invoice, -> { where('raw_pending_invoice_transaction_id is not null')}
+  scope :bank_fee, -> { where('raw_pending_bank_fee_transaction_id is not null')}
   scope :unmapped, -> { includes(:canonical_pending_event_mapping).where(canonical_pending_event_mappings: {canonical_pending_transaction_id: nil}) }
   scope :mapped, -> { includes(:canonical_pending_event_mapping).where.not(canonical_pending_event_mappings: {canonical_pending_transaction_id: nil}) }
   scope :unsettled, -> { 
@@ -38,6 +40,7 @@ class CanonicalPendingTransaction < ApplicationRecord
   scope :check_hcb_code, -> { where("hcb_code ilike 'HCB-#{::TransactionGroupingEngine::Calculate::HcbCode::CHECK_CODE}%'") }
   scope :disbursement_hcb_code, -> { where("hcb_code ilike 'HCB-#{::TransactionGroupingEngine::Calculate::HcbCode::DISBURSEMENT_CODE}%'") }
   scope :stripe_card_hcb_code, -> { where("hcb_code ilike 'HCB-#{::TransactionGroupingEngine::Calculate::HcbCode::STRIPE_CARD_CODE}%'") }
+  scope :bank_fee_hcb_code, -> { where("hcb_code ilike 'HCB-#{::TransactionGroupingEngine::Calculate::HcbCode::BANK_FEE_CODE}%'") }
 
   after_create_commit :write_hcb_code
   after_create_commit :write_system_event
@@ -67,6 +70,7 @@ class CanonicalPendingTransaction < ApplicationRecord
     return raw_pending_outgoing_ach_transaction.ach_transfer if raw_pending_outgoing_ach_transaction
     return raw_pending_donation_transaction.donation if raw_pending_donation_transaction
     return raw_pending_invoice_transaction.invoice if raw_pending_invoice_transaction
+    return raw_pending_bank_fee_transaction.bank_fee if raw_pending_bank_fee_transaction
 
     nil
   end
@@ -85,6 +89,12 @@ class CanonicalPendingTransaction < ApplicationRecord
 
   def invoice
     return linked_object if linked_object.is_a?(Invoice)
+
+    nil
+  end
+
+  def bank_fee
+    return linked_object if linked_object.is_a?(BankFee)
 
     nil
   end

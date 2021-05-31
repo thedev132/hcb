@@ -31,7 +31,6 @@ class StripeCardholdersController < ApplicationController
 
   def update_profile
     @stripe_cardholder = StripeCardholder.find_or_initialize_by(user: current_user)
-    # @stripe_cardholder = current_user.stripe_cardholder || StripeCardholder.new(user: current_user)
 
     authorize @stripe_cardholder
     if @stripe_cardholder.update(stripe_cardholder_params)

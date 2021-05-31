@@ -1,0 +1,61 @@
+<% title "Connect to Hack Club Bank" %>
+<% page_sm %>
+<% @home_size = 128 %>
+<% content_for(:page_class) { 'bg-snow pt4' } %>
+
+<article class="mt3">
+  <h1 class="center mt2">
+    <span class="h3 caps secondary block">Connect to</span>
+    <span class="primary">Hack Club Bank</span>
+  </h1>
+
+  <div class="mb3">
+    <p>
+      <strong><%= @partner.slug.capitalize %></strong><%# TODO: add a 'name' column to the partners table %> has partnered with Hack Club Bank to
+      bring you a seamless <%= link_to 'fiscal sponsorship', 'https://en.wikipedia.org/wiki/Fiscal_sponsorship' %> for your organization.
+    </p>
+  </div>
+
+  <%= form_with local: true, url: api_connect_finish_api_v1_index_path(hashid: @event.hashid), method: :post do |form| %>
+    <h2>Your organization</h2>
+
+    <p>
+      <%= form.label :organization_name %>
+      <%= form.text_field :organization_name, class: 'fit', placeholder: 'ACME Organization' %>
+    </p>
+
+    <h2>Your information</h2>
+
+    <p>
+      <%= form.label :name %>
+      <%= form.text_field :name, class: 'fit', value: current_user ? current_user.name : nil, placeholder: 'Fiona Hackworth' %>
+    </p>
+
+    <p>
+      <%= form.label :email %>
+      <%= form.text_field :email, class: 'fit', value: current_user ? current_user.email : nil, placeholder: 'fionah@gmail.com' %>
+    </p>
+
+    <p>
+      <%= form.label :phone %>
+      <%= form.text_field :phone, class: 'fit', value: current_user ? current_user.phone_number : nil, placeholder: '8556254225' %>
+    </p>
+
+    <p>
+      <%= form.label :address %>
+      <%= form.text_field :address, class: 'fit', placeholder: '8605 Santa Monica Blvd #86294 West Hollywood, CA 90069' %>
+    </p>
+
+    <p>
+      <%= form.label :birthdate %>
+      <%= form.date_field :birthdate, class: 'fit' %>
+    </p>
+
+      <%= form.submit 'Connect' %>
+  <% end %>
+
+  <div class="center">
+    <p class="h5 muted mt5">Need help? <%= help_email %></p>
+    <p class="h5 mt2"><a href="https://hackclub.com/bank?ref=bank_auth">What’s Bank?</a></p>
+  </div>
+</article>

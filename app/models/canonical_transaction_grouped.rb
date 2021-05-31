@@ -20,6 +20,8 @@ class CanonicalTransactionGrouped
   end
 
   def url
+    return "/transactions/#{ct.id}" if disbursement? # because disbursements go across 2 events
+
     return "/hcb/#{local_hcb_code.hashid}" if local_hcb_code
 
     "/transactions/#{ct.id}"

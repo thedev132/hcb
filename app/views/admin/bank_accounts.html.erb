@@ -1,0 +1,34 @@
+<% title "BANK ACCOUNTS" %>
+
+<h1>BANK ACCOUNTS</h1>
+
+<p><small><%= pluralize(@count, "result") %></small></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Balance</th>
+      <th>Syncing On</th>
+      <th>Failed At</th>
+      <th>Failure Count</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @bank_accounts.each do |ba| %>
+      <tr style="<%= "background: #ffcccc;" if ba.failed_at.present? %>">
+        <td><%= ba.id %></td>
+        <td><%= ba.name %></td>
+        <td><%= render_money ba.balance %></td>
+        <td><%= ba.should_sync_v2 %></td>
+        <td><%= ba.failed_at %></td>
+        <td><%= ba.failure_count %></td>
+        <td>
+          <%= link_to "View", ba %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

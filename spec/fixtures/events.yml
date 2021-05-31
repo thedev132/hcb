@@ -3,6 +3,8 @@ event1:
   name: "Event1"
   sponsorship_fee: "100.10"
   slug: "event1"
+  organization_identifier: "event1"
+  partner: partner1
   created_at: <%= Time.now %>
 
 event2:
@@ -10,6 +12,8 @@ event2:
   name: "Event2"
   sponsorship_fee: "100.10"
   slug: "event2"
+  organization_identifier: "event2"
+  partner: partner1
   created_at: <%= Time.now %>
 
 event3:
@@ -17,4 +21,6 @@ event3:
   name: "Event3"
   sponsorship_fee: "100.10"
   slug: "event3"
+  organization_identifier: "event3"
+  partner: partner1
   created_at: <%= Time.now %>

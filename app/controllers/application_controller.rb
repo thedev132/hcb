@@ -11,7 +11,7 @@ class ApplicationController < ActionController::Base
   # Force usage of Pundit on actions
   after_action :verify_authorized
 
-  rescue_from ApiService::UnauthorizedError, with: :user_not_authenticated
+  rescue_from BankApiService::UnauthorizedError, with: :user_not_authenticated
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   def hide_footer

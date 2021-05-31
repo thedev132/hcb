@@ -110,18 +110,27 @@ class AdminController < ApplicationController
     @page = params[:page] || 1
     @per = params[:per] || 100
     @q = params[:q].present? ? params[:q] : nil
-    @pending = params[:pending] == "1" ? true : nil
+    @pending = params[:pending] == "0" ? nil : true # checked by default
+    @unapproved = params[:unapproved] == "0" ? nil : true # checked by default
+    @approved = params[:approved] == "0" ? nil : true # checked by default
     @transparent = params[:transparent] == "1" ? true : nil
     @omitted = params[:omitted] == "1" ? true : nil
-    @hidden = params[:hidden] == "1" ? true : nil
+    @hidden = params[:hidden].present? ? params[:hidden] : nil
 
     relation = Event
 
     relation = relation.search_name(@q) if @q
-    relation = relation.pending if @pending
     relation = relation.transparent if @transparent
     relation = relation.omitted if @omitted
-    relation = relation.hidden if @hidden
+    relation = relation.hidden if @hidden == 'hidden'
+    relation = relation.not_hidden if @hidden == 'not_hidden'
+
+    states = [];
+    states << 'pending' if @pending
+    states << 'unapproved' if @unapproved
+    states << 'approved' if @approved
+    relation = relation.where('aasm_state in (?)', states)
+
 
     @count = relation.count
 
@@ -203,6 +212,68 @@ class AdminController < ApplicationController
     @count = relation.count
 
     @users = relation.page(@page).per(@per).order("created_at desc")
+
+    render layout: "admin"
+  end
+
+  def bank_accounts
+    relation = BankAccount
+
+    @count = relation.count
+
+    @bank_accounts = relation.all.order("id asc")
+
+    render layout: "admin"
+  end
+
+  def raw_transactions
+    @page = params[:page] || 1
+    @per = params[:per] || 100
+    @unique_bank_identifier = params[:unique_bank_identifier].present? ? params[:unique_bank_identifier] : nil
+
+    relation = RawCsvTransaction
+    relation = relation.where(unique_bank_identifier: @unique_bank_identifier) if @unique_bank_identifier
+
+    @count = relation.count
+
+    @raw_transactions = relation.page(@page).per(@per).order("date_posted desc")
+
+    render layout: "admin"
+  end
+
+  def raw_transaction_new
+    render layout: "admin"
+  end
+
+  def raw_transaction_create
+    attrs = {
+      unique_bank_identifier: params[:unique_bank_identifier],
+      date: params[:date],
+      memo: params[:memo],
+      amount: params[:amount]
+    }
+    ::RawCsvTransactionService::Create.new(attrs).run
+
+    redirect_to raw_transactions_admin_index_path, flash: { success: "Success" }
+  rescue => e
+    redirect_to raw_transaction_new_admin_index_path, flash: { error: e.message }
+  end
+
+  def hashed_transactions
+    @page = params[:page] || 1
+    @per = params[:per] || 100
+    @possible_duplicates = params[:possible_duplicates] == "1" ? true : nil
+    @uncanonized = params[:uncanonized] == "1" ? true : nil
+    @unique_bank_identifier = params[:unique_bank_identifier].present? ? params[:unique_bank_identifier] : nil
+
+    relation = HashedTransaction
+    relation = relation.possible_duplicates if @possible_duplicates
+    relation = relation.uncanonized if @uncanonized
+    relation = relation.where(unique_bank_identifier: @unique_bank_identifier) if @unique_bank_identifier
+
+    @count = relation.count
+
+    @hashed_transactions = relation.page(@page).per(@per).order("date desc, primary_hash asc")
 
     render layout: "admin"
   end

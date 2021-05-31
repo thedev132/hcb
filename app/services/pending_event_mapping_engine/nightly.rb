@@ -23,6 +23,8 @@ module PendingEventMappingEngine
       settle_canonical_pending_invoice_hcb_code!
       decline_canonical_pending_invoice!
 
+      map_canonical_pending_bank_fee!
+
       true
     end
 
@@ -94,6 +96,10 @@ module PendingEventMappingEngine
 
     def decline_canonical_pending_invoice!
       #::PendingEventMappingEngine::Decline::Invoice.new.run
+    end
+
+    def map_canonical_pending_bank_fee!
+      ::PendingEventMappingEngine::Map::BankFee.new.run
     end
 
   end

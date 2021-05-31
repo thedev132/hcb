@@ -11,6 +11,10 @@ RSpec.describe Event, type: :model do
     expect(event).to be_valid
   end
 
+  it "defaults to unapproved" do
+    expect(event).to be_unapproved
+  end
+
   describe "#transaction_engine_v2_at" do
     it "has a value" do
       event.save!

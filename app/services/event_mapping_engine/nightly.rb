@@ -7,18 +7,21 @@ module EventMappingEngine
     end
 
     def run
-      map_historical_plaid!
-      map_historical_emburse!
+      #map_historical_plaid! # DEPRECATED - 2021-05-07
+      #map_historical_emburse! # DEPRECATED - 2021-05-07
       map_stripe_transactions!
       map_github!
       map_checks!
       map_clearing_checks!
       map_achs!
+      map_disbursements!
       map_hack_club_bank_issued_cards!
       map_stripe_top_ups!
 
       map_hcb_codes_invoice!
       map_hcb_codes_donation!
+
+      map_hcb_codes_short!
 
       true
     end
@@ -53,6 +56,10 @@ module EventMappingEngine
       ::EventMappingEngine::Map::Achs.new.run
     end
 
+    def map_disbursements!
+      ::EventMappingEngine::Map::Disbursements.new.run
+    end
+
     def map_hack_club_bank_issued_cards!
       ::EventMappingEngine::Map::HackClubBankIssuedCards.new.run
     end
@@ -67,6 +74,10 @@ module EventMappingEngine
 
     def map_hcb_codes_donation!
       ::EventMappingEngine::Map::HcbCodes::Donation.new.run
+    end
+
+    def map_hcb_codes_short!
+      ::EventMappingEngine::Map::HcbCodes::Short.new.run
     end
   end
 end

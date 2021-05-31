@@ -17,11 +17,11 @@
     <%= dock_item 'Invoices',
       'Collect sponsor payments',
       'briefcase',
-      event_invoices_path(event_id: @event.slug) unless @event.is_spend_only %>
+      event_invoices_path(event_id: @event.slug) unless @event.unapproved? %>
     <%= dock_item 'Cards',
       'Manage team debit cards',
       'card',
-      event_cards_overview_path(event_id: @event.slug) unless @event.is_spend_only %>
+      event_cards_overview_path(event_id: @event.slug) unless @event.unapproved? %>
     <%= dock_item 'Send',
       'Send checks & wires',
       'transactions',
@@ -29,11 +29,11 @@
     <%= dock_item 'Donations',
       'Receive donations online',
       'support',
-      event_donation_overview_path(event_id: @event.slug) unless @event.is_spend_only %>
+      event_donation_overview_path(event_id: @event.slug) unless @event.unapproved? %>
     <%= dock_item 'Perks',
       'Receive promos & discounts',
       'shirt',
-       event_promotions_path(event_id: @event.slug), :lg unless @event.is_spend_only %>
+       event_promotions_path(event_id: @event.slug), :lg unless @event.unapproved? %>
     <%= dock_item 'Documents',
       'Download waivers & legal docs',
       'docs',
@@ -42,6 +42,20 @@
       'Set up domain Gmail',
       'google',
        event_g_suite_overview_path(event_id: @event.slug), :lg %>
+    <% if @event.bank_fees.exists? %>
+      <%= dock_item 'Bank Fees',
+        'View fee history',
+        'minue',
+        event_bank_fees_path(@event) %>
+    <% else %>
+
+      <% if @event.canonical_transactions.likely_hack_club_fee.exists? %>
+        <% admin_tools('m0 p0 badge mb2', 'span') do %>
+          <%= link_to "generate historic bank fees", event_temp_generate_historical_bank_fees_path(@event), method: :post %>
+        <% end %>
+      <% end %>
+
+    <% end %>
     <%= dock_item 'Settings',
       'Edit project settings',
       'project-settings',
@@ -51,7 +65,7 @@
         <%= inline_icon 'more' %>
         <div class="menu__content" data-behavior="menu_content">
           <%= link_to 'Google Workspace', event_g_suite_overview_path(event_id: @event.slug) %>
-          <%= link_to 'Promotions & perks', event_promotions_path(event_id: @event.slug) unless @event.is_spend_only %>
+          <%= link_to 'Promotions & perks', event_promotions_path(event_id: @event.slug) unless @event.unapproved? %>
           <%= link_to 'Documents', event_documents_path(event_id: @event.slug) %>
           <%= link_to 'Settings', edit_event_path(@event) %>
         </div>
