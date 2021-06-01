@@ -448,6 +448,15 @@ class AdminController < ApplicationController
     self.response_body = ::CheckService::PositivePay::Csv.new(check_id: @check.id).run
   end
 
+  def check_send
+    attrs = {
+      check_id: params[:id]
+    }
+    check = ::CheckService::Send.new(attrs).run
+
+    redirect_to check_process_admin_path(check), flash: { success: "Success" }
+  end
+
   def check_mark_in_transit_and_processed
     attrs = {
       check_id: params[:id]
