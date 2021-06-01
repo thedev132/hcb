@@ -17,15 +17,24 @@ module ApiService
       end
 
       def run
-        event.update_column(:name, @organization_name)
-        event.update_column(:point_of_contact_id, point_of_contact.id)
-
-        event.organizer_position_invites.create!(organizer_attrs)
+        event.update_columns(attrs)
 
         event
       end
 
       private
+
+      def attrs
+        {
+          name: @organization_name,
+          point_of_contact_id: point_of_contact.id,
+          owner_name: @name,
+          owner_email: @email,
+          owner_phone: @phone,
+          owner_address: @address,
+          owner_birthdate: @birthdate
+        }
+      end
 
       def event
         @event ||= Event.find(@event_id)
@@ -37,13 +46,6 @@ module ApiService
 
       def point_of_contact
         @point_of_contact ||= ::User.find(melanie_smith_user_id)
-      end
-
-      def organizer_attrs
-        {
-          sender: point_of_contact,
-          email: @email
-        }
       end
     end
   end
