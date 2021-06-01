@@ -17,7 +17,7 @@ RSpec.describe PartnerDonation, type: :model do
     it "generates a hcb code" do
       pd = event.partner_donations.create!
 
-      expect(pd.hcb_code).to_not be_nil
+      expect(pd.reload.hcb_code).to_not be_nil
     end
   end
 
