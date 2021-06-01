@@ -20,6 +20,7 @@ class AchTransfer < ApplicationRecord
     state :pending, initial: true
     state :in_transit
     state :rejected
+    state :failed
     state :deposited
 
     event :mark_in_transit do
@@ -28,6 +29,10 @@ class AchTransfer < ApplicationRecord
 
     event :mark_rejected do
       transitions from: :pending, to: :rejected
+    end
+
+    event :mark_failed do
+      transitions from: :in_transit, to: :failed
     end
 
     event :mark_deposited do
