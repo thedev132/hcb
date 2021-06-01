@@ -14,7 +14,9 @@ module Partners
           ts = resp.data
 
           ts.each do |t|
-            yield t
+            if t.metadata["donationIdentifier"].present?
+              yield t
+            end
           end
 
           while resp.has_more
@@ -25,12 +27,16 @@ module Partners
             ts = resp.data
 
             ts.each do |t|
-              yield t
+              if t.metadata["donationIdentifier"].present?
+                yield t
+              end
             end
           end
 
           ts.each do |t|
-            yield t
+            if t.metadata["donationIdentifier"].present?
+              yield t
+            end
           end
 
           nil

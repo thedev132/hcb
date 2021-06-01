@@ -1,8 +1,8 @@
-module DonationService
+module PartnerDonationService
   class Import
     def run
       stripe_charges.each do |sc|
-        puts sc.payment_intent
+        # TODO: import into a process to generate payouts somehow
       end
     end
 
