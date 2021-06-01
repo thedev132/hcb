@@ -1,13 +1,13 @@
 class PartnerDonation < ApplicationRecord
   belongs_to :event
 
-  before_create :set_hcb_code
   before_create :set_donation_identifier
+  after_create :set_hcb_code
 
   private
 
   def set_hcb_code
-    self.hcb_code = "HCB-#{::TransactionGroupingEngine::Calculate::HcbCode::PARTNER_DONATION_CODE}-#{id}"
+    self.update_column(:hcb_code, "HCB-#{::TransactionGroupingEngine::Calculate::HcbCode::PARTNER_DONATION_CODE}-#{id}")
   end
 
   def set_donation_identifier
