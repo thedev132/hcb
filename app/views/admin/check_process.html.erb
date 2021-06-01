@@ -44,6 +44,10 @@
 
 <% if @check.scheduled? %>
   <p>WARNING: this check is not yet ready for processing. The user could still choose to cancel it.</p>
+
+  <%= form_with(model: nil, local: true, url: check_send_admin_path(@check), method: :post) do |form| %>
+    <%= form.submit "Expedite this check", data: {confirm: "Expedite sending this check?"} %>
+  <% end %>
 <% end %>
 
 <% if !@check.in_transit? && !@check.scheduled? %>

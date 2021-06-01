@@ -102,6 +102,7 @@ Rails.application.routes.draw do
       post 'ach_reject', to: 'admin#ach_reject'
       get 'check_process', to: 'admin#check_process'
       get 'check_positive_pay_csv', to: 'admin#check_positive_pay_csv'
+      post 'check_send', to: 'admin#check_send'
       post 'check_mark_in_transit_and_processed', to: 'admin#check_mark_in_transit_and_processed'
       get 'google_workspace_process', to: 'admin#google_workspace_process'
       post 'google_workspace_update', to: 'admin#google_workspace_update'
