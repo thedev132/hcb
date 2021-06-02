@@ -2,11 +2,16 @@ module PartnerDonationService
   class Import
     def run
       stripe_charges.each do |sc|
-        # TODO: import into a process to generate payouts somehow
+        ::PartnerDonationService::CreateRemotePayout.new(stripe_charge_id: sc.id).run
       end
+
+      true
     end
 
     private
+
+    def attrs
+    end
 
     def stripe_charges
       ::Partners::Stripe::Charges::List.new(list_attrs).run

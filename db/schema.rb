@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_01_222136) do
+ActiveRecord::Schema.define(version: 2021_06_02_024854) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -815,6 +815,8 @@ ActiveRecord::Schema.define(version: 2021_06_01_222136) do
     t.string "donation_identifier", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "aasm_state"
+    t.integer "payout_amount_cents"
     t.index ["event_id"], name: "index_partner_donations_on_event_id"
   end
 
