@@ -10,9 +10,6 @@ module PartnerDonationService
 
     private
 
-    def attrs
-    end
-
     def stripe_charges
       ::Partners::Stripe::Charges::List.new(list_attrs).run
     end
