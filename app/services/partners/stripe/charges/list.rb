@@ -2,9 +2,10 @@ module Partners
   module Stripe
     module Charges
       class List
-        include StripeService
+        include ::Partners::Stripe::Shared::Opts
 
-        def initialize(start_date: nil)
+        def initialize(stripe_api_key:, start_date: nil)
+          @stripe_api_key = stripe_api_key
           @start_date = start_date || Time.now.utc - 1.month
         end
 
@@ -14,7 +15,9 @@ module Partners
           ts = resp.data
 
           ts.each do |t|
-            yield t
+            if t.metadata["donationIdentifier"].present?
+              yield t
+            end
           end
 
           while resp.has_more
@@ -25,12 +28,16 @@ module Partners
             ts = resp.data
 
             ts.each do |t|
-              yield t
+              if t.metadata["donationIdentifier"].present?
+                yield t
+              end
             end
           end
 
           ts.each do |t|
-            yield t
+            if t.metadata["donationIdentifier"].present?
+              yield t
+            end
           end
 
           nil
@@ -39,7 +46,7 @@ module Partners
         private
 
         def fetch_charges(starting_after: nil)
-          ::StripeService::Charge.list(list_attrs(starting_after: starting_after))
+          ::Stripe::Charge.list(list_attrs(starting_after: starting_after), opts)
         end
 
         def list_attrs(starting_after:)
