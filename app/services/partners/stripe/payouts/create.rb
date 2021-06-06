@@ -2,16 +2,17 @@ module Partners
   module Stripe
     module Payouts
       class Create
-        include StripeService
+        include ::Partners::Stripe::Shared::Opts
 
-        def initialize(amount_cents:, statement_descriptor:, donation_identifier:)
+        def initialize(stripe_api_key:, amount_cents:, statement_descriptor:, donation_identifier:)
+          @stripe_api_key = stripe_api_key
           @amount_cents = amount_cents
           @statement_descriptor = statement_descriptor
           @donation_identifier = donation_identifier
         end
 
         def run
-          ::StripeService::Payout.create(attrs)
+          ::Stripe::Payout.create(attrs, opts)
         end
 
         private
@@ -28,7 +29,7 @@ module Partners
 
         def metadata
           {
-            donationIdentifier: donation_identifier
+            donationIdentifier: @donation_identifier
           }
         end
       end

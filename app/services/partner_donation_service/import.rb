@@ -1,8 +1,14 @@
 module PartnerDonationService
   class Import
+    def initialize(partner_id:)
+      @partner_id = partner_id
+    end
+
     def run
-      stripe_charges.each do |sc|
-        ::PartnerDonationService::CreateRemotePayout.new(stripe_charge_id: sc.id).run
+      ::Partners::Stripe::Charges::List.new(list_attrs).run do |sc|
+        next if already_processed?(sc)
+
+        ::PartnerDonationJob::CreateRemotePayout.perform_later(partner.id, sc.id)
       end
 
       true
@@ -10,14 +16,19 @@ module PartnerDonationService
 
     private
 
-    def stripe_charges
-      ::Partners::Stripe::Charges::List.new(list_attrs).run
-    end
-
     def list_attrs
       {
+        stripe_api_key: partner.stripe_api_key,
         start_date: Time.now.utc - 3.years
       }
+    end
+
+    def partner
+      @partner ||= ::Partner.find(@partner_id)
+    end
+
+    def already_processed?(sc)
+      ::PartnerDonation.where(stripe_charge_id: sc.id).exists?
     end
   end
 end

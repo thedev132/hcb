@@ -2,14 +2,15 @@ module Partners
   module Stripe
     module Charges
       class Show
-        include StripeService
+        include ::Partners::Stripe::Shared::Opts
 
-        def initialize(id:)
+        def initialize(stripe_api_key:, id:)
+          @stripe_api_key = stripe_api_key
           @id = id
         end
 
         def run
-          ::StripeService::Charge.retrieve(attrs)
+          ::Stripe::Charge.retrieve(attrs, opts)
         end
 
         private
