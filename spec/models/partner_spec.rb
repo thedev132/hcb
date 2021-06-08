@@ -10,4 +10,8 @@ RSpec.describe Partner, type: :model do
   it "is valid" do
     expect(partner).to be_valid
   end
+
+  it "defaults to external" do
+    expect(partner).to be_external
+  end
 end
