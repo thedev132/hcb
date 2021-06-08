@@ -97,6 +97,7 @@ Rails.application.routes.draw do
     member do
       get 'transaction', to: 'admin#transaction'
       get 'event_process', to: 'admin#event_process'
+      put 'event_toggle_approved', to: 'admin#event_toggle_approved'
       get 'ach_start_approval', to: 'admin#ach_start_approval'
       post 'ach_approve', to: 'admin#ach_approve'
       post 'ach_reject', to: 'admin#ach_reject'

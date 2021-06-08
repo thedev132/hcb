@@ -105,6 +105,10 @@ class Event < ApplicationRecord
     event :mark_approved do
       transitions from: [:pending, :unapproved], to: :approved
     end
+
+    event :mark_pending do
+      transitions from: :approved, to: :pending
+    end
   end
 
   friendly_id :name, use: :slugged
