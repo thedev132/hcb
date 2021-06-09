@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_07_030039) do
+ActiveRecord::Schema.define(version: 2021_06_09_201742) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -828,6 +828,8 @@ ActiveRecord::Schema.define(version: 2021_06_07_030039) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "stripe_api_key"
     t.boolean "external", default: true, null: false
+    t.text "name"
+    t.text "logo"
   end
 
   create_table "raw_csv_transactions", force: :cascade do |t|
