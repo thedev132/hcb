@@ -11,14 +11,10 @@
       #<%= @event.id %>
       </span>
     <% end %>
-    
+
     <% admin_tools('p0 badge', 'span') do %>
       <span class="m0 badge bg-muted">
-        <% if params[:v1] %>
-          <%= link_to "view v2", url_for(only_path: false, v2: true), class: "white" %>
-        <% else %>
-          <%= link_to "view v1", url_for(only_path: false, v1: true), class: "white" %>
-        <% end %>
+        <%= @event.partner.slug.capitalize %>
       </span>
     <% end %>
   <% end %>

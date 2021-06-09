@@ -17,6 +17,7 @@ module Api
         {
           organizationIdentifier: @event.organization_identifier,
           status: @event.aasm_state,
+          balance: @event.balance_v2_cents,
         }
       end
 
