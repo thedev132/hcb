@@ -829,6 +829,7 @@ ActiveRecord::Schema.define(version: 2021_06_09_201742) do
     t.string "stripe_api_key"
     t.boolean "external", default: true, null: false
     t.text "name"
+    t.text "logo"
   end
 
   create_table "raw_csv_transactions", force: :cascade do |t|
