@@ -25,7 +25,7 @@ module Api
       end
 
       def connect_url
-        Rails.application.routes.url_helpers.api_connect_continue_api_v1_index_url(hashid: @event.hashid)
+        Rails.application.routes.url_helpers.api_connect_continue_api_v1_index_url(hashid: @event.hashid, partner_slug: @event.partner.slug)
       end
     end
   end
