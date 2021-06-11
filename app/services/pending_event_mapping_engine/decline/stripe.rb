@@ -18,12 +18,21 @@ module PendingEventMappingEngine
           end
 
           # 2. identify authed (0 amount and a considerable amount of time has passed)
-          if rpst.amount_cents == 0 && rpst.date_posted < Time.now.utc + 10.days
+          if rpst.amount_cents == 0 && rpst.date_posted < Time.now.utc - 10.days
             attrs = {
               canonical_pending_transaction_id: cpt.id
             }
             CanonicalPendingDeclinedMapping.create!(attrs)
           end
+
+          # 3. identify reversed (0 amount and a considerable amount of time has passed)
+          if status == "reversed" && rpst.amount_cents < 0 && rpst.date_posted < Time.now.utc - 10.days
+            attrs = {
+              canonical_pending_transaction_id: cpt.id
+            }
+            CanonicalPendingDeclinedMapping.create!(attrs)
+          end
+
         end
       end
 
