@@ -14,6 +14,7 @@ module ApiService
       def run
         if existing_event
           existing_event.redirect_url = @redirect_url
+          existing_event.webhook_url = @webhook_url
           existing_event.save!
           existing_event.reload
         else
@@ -34,8 +35,8 @@ module ApiService
           name: smart_name,
           slug: smart_slug,
           sponsorship_fee: sponsorship_fee,
-
-          redirect_url: @redirect_url
+          redirect_url: @redirect_url,
+          webhook_url: @webhook_url
         }
       end
 
