@@ -11,12 +11,10 @@ module EventService
         @event.mark_approved!
       end
 
-      state = @event.aasm.current_state
-
       # deliver a webhook to let our Partner know the organization's status has updated
       ::EventJob::DeliverWebhook.perform_later(@event.id)
 
-      state
+      @event.aasm.current_state
     end
 
     private
