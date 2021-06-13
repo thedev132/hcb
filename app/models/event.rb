@@ -11,6 +11,7 @@ class Event < ApplicationRecord
   default_scope { order(id: :asc) }
   scope :pending, -> { where(has_fiscal_sponsorship_document: false) }
   scope :transparent, -> { where(is_public: true) }
+  scope :not_transparent, -> { where(is_public: false) }
   scope :omitted, -> { where(omit_stats: true) }
   scope :not_omitted, -> { where(omit_stats: false) }
   scope :hidden, -> { where("hidden_at is not null") }
