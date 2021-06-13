@@ -72,7 +72,7 @@ Rails.application.routes.draw do
     collection do
       get 'bank_accounts', to: 'admin#bank_accounts'
       get 'hcb_codes', to: 'admin#hcb_codes'
-      get 'fees', to: 'admin#fees'
+      get 'bank_fees', to: 'admin#bank_fees'
       get 'users', to: 'admin#users'
       get 'raw_transactions', to: 'admin#raw_transactions'
       get 'raw_transaction_new', to: 'admin#raw_transaction_new'
@@ -102,6 +102,7 @@ Rails.application.routes.draw do
       post 'ach_reject', to: 'admin#ach_reject'
       get 'check_process', to: 'admin#check_process'
       get 'check_positive_pay_csv', to: 'admin#check_positive_pay_csv'
+      post 'check_send', to: 'admin#check_send'
       post 'check_mark_in_transit_and_processed', to: 'admin#check_mark_in_transit_and_processed'
       get 'google_workspace_process', to: 'admin#google_workspace_process'
       post 'google_workspace_update', to: 'admin#google_workspace_update'
@@ -236,7 +237,7 @@ Rails.application.routes.draw do
     resources :comments
   end
 
-  resources :fee_reimbursements, only: [:index, :show, :edit, :update] do
+  resources :fee_reimbursements, only: [:show, :edit, :update] do
     collection do
       get 'export'
     end
@@ -248,10 +249,6 @@ Rails.application.routes.draw do
   get 'branding', to: 'static_pages#branding'
   get 'faq', to: 'static_pages#faq'
   
-  get 'pending_fees', to: 'admin#pending_fees'
-  get 'export_pending_fees', to: 'admin#export_pending_fees'
-  get 'pending_disbursements', to: 'admin#pending_disbursements'
-  get 'export_pending_disbursements', to: 'admin#export_pending_disbursements'
   get 'audit', to: 'admin#audit'
 
   resources :central, only: [:index] do
@@ -303,12 +300,13 @@ Rails.application.routes.draw do
   scope :api, module: "api" do
     resources "v1", as: :api_v1, only: [:index] do
       collection do
-        match "connect/start", action: :connect_start, as: :api_connect_start, via: [:post]
-        match "connect/continue/:hashid", action: :connect_continue, as: :api_connect_continue, via: [:get]
-        match "connect/finish/:hashid", action: :connect_finish, as: :api_connect_finish, via: [:post]
         match "donations/start", action: :donations_start, as: :api_donations_start, via: [:post]
         match "organizations", action: :organizations, as: :api_organizations, via: [:get]
         match "organizations/:organizationIdentifier", action: :organization, as: :api_organization, via: [:get]
+
+        match ":partner_slug/start", action: :connect_start, as: :api_connect_start, via: [:post]
+        match ":partner_slug/continue/:hashid", action: :connect_continue, as: :api_connect_continue, via: [:get]
+        match ":partner_slug/finish/:hashid", action: :connect_finish, as: :api_connect_finish, via: [:post]
       end
     end
 
@@ -322,7 +320,6 @@ Rails.application.routes.draw do
 
   post 'export/finances', to: 'exports#financial_export'
 
-  get 'pending_fees', to: 'admin#pending_fees'
   get 'negative_events', to: 'admin#negative_events'
 
   get 'admin_tasks', to: 'admin#tasks'
@@ -355,7 +352,6 @@ Rails.application.routes.draw do
     get 'reimbursements', to: 'events#reimbursements', as: :reimbursements
     get 'donations', to: 'events#donation_overview', as: :donation_overview
     get 'bank_fees', to: 'events#bank_fees', as: :bank_fees
-    post 'temp_generate_historical_bank_fees', to: 'events#temp_generate_historical_bank_fees', as: :temp_generate_historical_bank_fees
     # suspend this while check processing is on hold
     resources :checks, only: [:new, :create]
     resources :ach_transfers, only: [:new, :create]

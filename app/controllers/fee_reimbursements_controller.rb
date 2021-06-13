@@ -1,12 +1,6 @@
 class FeeReimbursementsController < ApplicationController
   before_action :set_fee_reimbursement, only: [:show, :edit, :update, :destroy, :mark_as_processed, :mark_as_unprocessed]
 
-  # GET /fee_reimbursements
-  def index
-    @fee_reimbursements = FeeReimbursement.all.page params[:page]
-    authorize @fee_reimbursements
-  end
-
   # GET /fee_reimbursements/1
   def show
     if @fee_reimbursement.invoice

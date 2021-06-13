@@ -189,14 +189,6 @@ class EventsController < ApplicationController
     }
   end
 
-  def temp_generate_historical_bank_fees
-    authorize @event
-
-    ::Temp::CreateHistoricBankFees.new(event_id: @event.id).run
-
-    redirect_to event_bank_fees_path(@event)
-  end
-
   def bank_fees
     authorize @event
 

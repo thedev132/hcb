@@ -44,6 +44,10 @@
 
 <% if @check.scheduled? %>
   <p>WARNING: this check is not yet ready for processing. The user could still choose to cancel it.</p>
+
+  <%= form_with(model: nil, local: true, url: check_send_admin_path(@check), method: :post) do |form| %>
+    <%= form.submit "Expedite this check", data: {confirm: "Expedite sending this check?"} %>
+  <% end %>
 <% end %>
 
 <% if !@check.in_transit? && !@check.scheduled? %>
@@ -91,7 +95,15 @@
   <li>Upload this <%= link_to "CSV", check_positive_pay_csv_admin_path(@check, format: :csv) %> under <strong>"Hack Club Positive Pay Import"</strong></li>
 </ol>
 
-<p><strong>4. Mark Processed</strong></p>
+<p><strong>4. ACH Transfer from SVB (Silicon Valley Bank) FS Operating to FRB (First Republic Bank) FS Operating</strong></p>
+
+<ol>
+  <li>Go to SVB</li>
+  <li>Initiate a transfer for the amount of the check from SVB FS Operating to FRB FS Operating</li>
+  <li>Give that transfer a memo you will recognize. You will later have to map it by hand (for now)</li>
+</ol>
+
+<p><strong>5. Mark Processed</strong></p>
 
 <% if @check.in_transit? %>
   <%= form_with(model: nil, local: true, url: check_mark_in_transit_and_processed_admin_path(@check), method: :post) do |form| %>

@@ -19,7 +19,7 @@ module PendingTransactionEngine
         private
 
         def pending_bank_fee_transactions
-          @pending_bank_fee_transactions ||= ::BankFee.where("amount_cents < 0")
+          @pending_bank_fee_transactions ||= ::BankFee.since_feature_launch.in_transit_or_pending.where("amount_cents < 0")
         end
       end
     end

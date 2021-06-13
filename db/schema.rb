@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_26_162736) do
+ActiveRecord::Schema.define(version: 2021_06_09_201742) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -517,6 +517,11 @@ ActiveRecord::Schema.define(version: 2021_05_26_162736) do
     t.string "organization_identifier", null: false
     t.string "redirect_url"
     t.bigint "partner_id", null: false
+    t.string "owner_name"
+    t.string "owner_email"
+    t.string "owner_phone"
+    t.string "owner_address"
+    t.date "owner_birthdate"
     t.index ["club_airtable_id"], name: "index_events_on_club_airtable_id", unique: true
     t.index ["partner_id", "organization_identifier"], name: "index_events_on_partner_id_and_organization_identifier", unique: true
     t.index ["partner_id"], name: "index_events_on_partner_id"
@@ -806,10 +811,13 @@ ActiveRecord::Schema.define(version: 2021_05_26_162736) do
 
   create_table "partner_donations", force: :cascade do |t|
     t.bigint "event_id", null: false
-    t.string "hcb_code", null: false
+    t.string "hcb_code"
     t.string "donation_identifier", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "aasm_state"
+    t.integer "payout_amount_cents"
+    t.string "stripe_charge_id"
     t.index ["event_id"], name: "index_partner_donations_on_event_id"
   end
 
@@ -818,6 +826,10 @@ ActiveRecord::Schema.define(version: 2021_05_26_162736) do
     t.text "api_key"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "stripe_api_key"
+    t.boolean "external", default: true, null: false
+    t.text "name"
+    t.text "logo"
   end
 
   create_table "raw_csv_transactions", force: :cascade do |t|

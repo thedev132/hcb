@@ -12,7 +12,19 @@ module ApiService
       end
 
       def run
-        partner.events.find_by(organization_identifier: clean_organization_identifier) || ::Event.create!(attrs)
+        if existing_event
+          existing_event.redirect_url = @redirect_url
+          existing_event.save!
+          existing_event.reload
+        else
+          ::Event.create!(attrs)
+        end
+      end
+
+      private
+
+      def existing_event
+        @existing_event ||= partner.events.find_by(organization_identifier: clean_organization_identifier)
       end
 
       def attrs

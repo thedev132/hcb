@@ -30,9 +30,6 @@ module TransactionGroupingEngine
 
     def canonical_transactions
       CanonicalTransaction.missing_or_unknown_hcb_code.where("date >= ?", @start_date)
-
-      #CanonicalTransaction.missing_or_unknown_hcb_code.where("date >= ?", @start_date)
-      #CanonicalTransaction
     end
 
     def canonical_pending_transactions

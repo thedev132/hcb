@@ -27,7 +27,7 @@
       |
       <%= link_to "events (#{Event.pending.count})", events_admin_index_path %>
       |
-      <%= link_to "fees", fees_admin_index_path %>
+      <%= link_to "bank fees (#{BankFee.in_transit_or_pending.count})", bank_fees_admin_index_path %>
       |
       <%= link_to "users", users_admin_index_path %>
       |

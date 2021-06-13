@@ -1,13 +1,33 @@
 class PartnerDonation < ApplicationRecord
+  include AASM
+
   belongs_to :event
 
-  before_create :set_hcb_code
   before_create :set_donation_identifier
+  after_create :set_hcb_code
+
+  aasm do
+    state :pending, initial: true # once created
+    state :in_transit # when imported and marked as paid on Stripe::Charge
+    state :deposited # when fully deposited to canonical transaction
+
+    event :mark_in_transit do
+      transitions from: :pending, to: :in_transit
+    end
+
+    event :mark_deposited do
+      transitions from: :deposited, to: :deposited
+    end
+  end
+
+  def local_hcb_code
+    @local_hcb_code ||= HcbCode.find_or_create_by(hcb_code: hcb_code)
+  end
 
   private
 
   def set_hcb_code
-    self.hcb_code = "HCB-#{::TransactionGroupingEngine::Calculate::HcbCode::PARTNER_DONATION_CODE}-#{id}"
+    self.update_column(:hcb_code, "HCB-#{::TransactionGroupingEngine::Calculate::HcbCode::PARTNER_DONATION_CODE}-#{id}")
   end
 
   def set_donation_identifier
