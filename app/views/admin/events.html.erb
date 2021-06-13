@@ -25,18 +25,18 @@
   </div>
   |
   <%= form.label :transparent do %>
-    <%= form.check_box :transparent, checked: @transparent %>
     Transparent
+    <%= form.select :transparent, [['Both', 'both'], ["Not Transparent", 'not_transparent'], ['Transparent', 'transparent']], :selected => @transparent %>
   <% end %>
   |
   <%= form.label :omitted do %>
-    <%= form.check_box :omitted, checked: @omitted %>
     Omitted
+    <%= form.select :omitted, [['Both', 'both'], ["Not Omitted", 'not_omitted'], ['Omitted', 'omitted']], :selected => @omitted %>
   <% end %>
   |
   <%= form.label :hidden do %>
     Hidden
-    <%= form.select :hidden, [["Not Hidden", 'not_hidden'], ['Hidden', 'hidden'], ['Both', 'both']], :selected => @hidden %>
+    <%= form.select :hidden, [['Both', 'both'], ["Not Hidden", 'not_hidden'], ['Hidden', 'hidden']], :selected => @hidden %>
   <% end %>
   |
 
