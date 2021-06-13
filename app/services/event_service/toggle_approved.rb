@@ -7,7 +7,8 @@ module EventService
     def run
       state = toggle
 
-      # TODO: notify webhook (job)
+      # deliver a webhook to let our Partner know the organization's status has updated
+      ::EventJob::DeliverWebhook.perform_later(@event.id)
 
       state
     end
