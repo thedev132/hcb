@@ -1,5 +1,3 @@
-require 'net/http'
-
 module EventService
   class DeliverWebhook
     def initialize(event_id:)
@@ -7,14 +5,13 @@ module EventService
     end
 
     def run
-      # Don't attempt webhook delivery if no webhook url exists
-      return unless event.webhook_url.present?
+      raise ArgumentError, 'webhook_url missing' unless event.webhook_url.present?
 
-      req = Net::HTTP::Post.new(uri, 'Content-Type' => 'application/json')
-      req.body = Api::V1::OrganizationSerializer.new(event: event).run.to_json
+      res = Faraday.post(event.webhook_url, Api::V1::OrganizationSerializer.new(event: event).run.to_json, 'Content-Type' => 'application/json')
 
-      res = http.request(req) # this doesn't support http redirects (since redirects are 3XX, it'll error)
-      # non 2XX will throw a Net error. don't rescue to let sidekiq reattempt webhook delivery after failure
+      if !res.success?
+        raise ArgumentError, "Error delivering webhook. HTTP status: #{res.status}"
+      end
 
       res
     end
@@ -23,14 +20,6 @@ module EventService
 
     def event
       Event.find(@event_id)
-    end
-
-    def http
-      Net::HTTP.new(uri.host, uri.port)
-    end
-
-    def uri
-      URI.parse(event.webhook_url)
     end
 
   end

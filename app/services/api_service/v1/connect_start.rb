@@ -14,6 +14,7 @@ module ApiService
       def run
         if existing_event
           existing_event.redirect_url = @redirect_url
+          existing_event.webhook_url = @webhook_url
           existing_event.save!
           existing_event.reload
         else
