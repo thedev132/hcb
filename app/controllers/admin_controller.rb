@@ -126,6 +126,16 @@ class AdminController < ApplicationController
     redirect_to event_new_admin_index_path, flash: { error: e.message }
   end
 
+  def event_toggle_approved
+    @event = Event.find(params[:id])
+
+    state = ::EventService::ToggleApproved.new(@event).run
+
+    redirect_to event_process_admin_path(@event), flash: { success: "Successfully marked as #{state}" }
+  rescue => e
+    redirect_to event_process_admin_path(@event), flash: { error: e.message }
+  end
+
   def bank_fees
     @page = params[:page] || 1
     @per = params[:per] || 100

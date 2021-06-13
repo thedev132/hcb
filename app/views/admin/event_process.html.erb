@@ -1,5 +1,14 @@
-<h1>Process Event #<%= @event.id %></h1>
+<h1>Process <%= link_to @event.name, event_path(@event) %> <small>(<%= "##{@event.id}" %>)</small></h1>
 
-<%= link_to "Go to event", event_path(@event) %>
+<%= form_with(model: nil, local: true, url: event_toggle_approved_admin_path(@event), method: :put) do |form| %>
+  <% if @event.approved? %>
+    <p>This event is already <strong>approved</strong>.</p>
 
-</hr>
+    <%= form.submit 'Mark as pending',
+      data: { confirm: "This event was previously approved. Are you sure you want to undo that and mark it as pending? This will notify '#{@event.partner.slug.capitalize}'." } %>
+  <% else %>
+    <p>This event is currently <strong>pending</strong>.</p>
+
+    <%= form.submit 'Mark as approved' %>
+  <% end %>
+<% end %>
