@@ -106,6 +106,7 @@ Rails.application.routes.draw do
       post 'check_send', to: 'admin#check_send'
       post 'check_mark_in_transit_and_processed', to: 'admin#check_mark_in_transit_and_processed'
       get 'google_workspace_process', to: 'admin#google_workspace_process'
+      post 'google_workspace_approve', to: 'admin#google_workspace_approve'
       post 'google_workspace_update', to: 'admin#google_workspace_update'
       get 'invoice_process', to: 'admin#invoice_process'
       post 'invoice_mark_paid', to: 'admin#invoice_mark_paid'

@@ -709,6 +709,17 @@ class AdminController < ApplicationController
     render layout: "admin"
   end
 
+  
+  def google_workspace_approve
+    @g_suite = GSuite.find(params[:id])
+    
+    has_existing_key = @g_suite.verification_key.present?
+
+    GSuiteJob::SetVerificationKey.perform_later(@g_suite.id)
+
+    redirect_to google_workspace_process_admin_path(@g_suite), flash: { success: "#{has_existing_key ? 'Updated verification key' : 'Approved'} (it may take a few seconds for the dashboard to reflect this change)" }
+  end
+
   def google_workspace_update
     @g_suite = GSuite.find(params[:id])
 
