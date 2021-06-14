@@ -65,11 +65,11 @@ module Api
       contract = Api::V1::DonationsStartContract.new.call(params.permit!.to_h)
       render json: json_error(contract), status: 400 and return unless contract.success?
 
-      donation_attrs = {
+      attrs = {
         partner_id: current_partner.id,
         organization_identifier: contract[:organizationIdentifier]
       }
-      partner_donation = ::ApiService::V1::DonationsStart.new(donation_attrs).run
+      partner_donation = ::ApiService::V1::DonationsStart.new(attrs).run
 
       render json: Api::V1::DonationsStartSerializer.new(partner_donation: partner_donation).run
     end
