@@ -14,6 +14,7 @@ module PartnerDonationService
         partner_donation.mark_in_transit!
         partner_donation.update_column(:payout_amount_cents, amount_cents)
         partner_donation.update_column(:stripe_charge_id, @stripe_charge_id)
+        partner_donation.update_column(:stripe_charge_created_at, stripe_charge.created)
 
         ::Partners::Stripe::Payouts::Create.new(attrs).run
       end

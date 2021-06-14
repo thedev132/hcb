@@ -24,6 +24,19 @@ class PartnerDonation < ApplicationRecord
     @local_hcb_code ||= HcbCode.find_or_create_by(hcb_code: hcb_code)
   end
 
+  def stripe_dashboard_url
+    "https://dashboard.stripe.com/payments/#{self.stripe_charge_id}"
+  end
+
+  def paid_at
+    timestamp = self.stripe_charge_created_at
+    timestamp ? format_datetime(timestamp) : '–'
+  end
+
+  def paid?
+    self.amount_received != 0
+  end
+
   private
 
   def set_hcb_code
