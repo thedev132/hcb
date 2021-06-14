@@ -10,6 +10,8 @@ module ApiService
       end
 
       def run
+        raise ArgumentError, "Organization '#{clean_organization_identifier}' is unapproved and can not take donations at this time." unless event.approved?
+
         event.partner_donations.create!
       end
 
