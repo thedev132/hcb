@@ -65,11 +65,18 @@ module Api
       contract = Api::V1::DonationsStartContract.new.call(params.permit!.to_h)
       render json: json_error(contract), status: 400 and return unless contract.success?
 
-      attrs = {
+      event_attrs = {
         partner_id: current_partner.id,
         organization_identifier: contract[:organizationIdentifier]
       }
-      partner_donation = ::ApiService::V1::DonationsStart.new(attrs).run
+      event = ::ApiService::V1::Organization.new(event_attrs).run
+      raise ArgumentError, "Organization '#{contract[:organizationIdentifier]}' is unapproved and can not take donations at this time." unless event.approved?
+
+      donation_attrs = {
+        partner_id: current_partner.id,
+        organization_identifier: contract[:organizationIdentifier]
+      }
+      partner_donation = ::ApiService::V1::DonationsStart.new(donation_attrs).run
 
       render json: Api::V1::DonationsStartSerializer.new(partner_donation: partner_donation).run
     end
