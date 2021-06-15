@@ -1,44 +1,43 @@
 <% admin_tools('mt3') do %>
-  <%= link_to 'View on Stripe', @hcb_code.partner_donation.stripe_dashboard_url, class: 'btn bg-accent' %>
+  <%= link_to 'View on Stripe', @hcb_code.partner_donation.stripe_dashboard_url, class: "btn bg-accent #{@hcb_code.partner_donation.paid? ? '' : 'disabled'}" %>
 <% end %>
 
 <article class="card pb0 mt3 mb3">
   <h2 class="h2 mt0 border-none">
-    <span class="regular">Donation of <%= render_money @hcb_code.donation.amount %></span>
+    <span class="regular">
+      Donation
+      <% if @hcb_code.partner_donation.paid? %>
+        for <%= render_money @hcb_code.partner_donation.payout_amount_cents %>
+      <% end %>
+    </span>
+    <span class="badge h4 md-right bg-<%= @hcb_code.partner_donation.state_color %>">
+      <%= @hcb_code.partner_donation.state_text %>
+    </span>
   </h2>
 
   <section class="card__banner card__darker details-horiz border-top border-bottom">
-    <p>
-      <strong>Donated at</strong>
-      <%= @hcb_code.partner_donation.paid_at %>
-    </p>
-  </section>
-  <section class="pt2 pb2 details">
     <% if @hcb_code.partner_donation.paid? %>
       <p>
-        <strong>Amount Received</strong>
-        +<%= render_money @hcb_code.partner_donation.amount_received %>
+        <strong>Donated at</strong>
+        <%= partner_donation_paid_at(@hcb_code.partner_donation) %>
       </p>
-
-      <% if false %>
-      <p>
-        <strong><%= donation_fee_type(@hcb_code.donation) %></strong>
-        -<%= donation_payment_processor_fee(true, @hcb_code.donation) %>
-      </p>
-      <p>
-        <strong>Processing fee refund</strong>
-        <span>
-          +<%= donation_payment_processor_fee(true, @hcb_code.donation) %>
-          <span class="muted">
-            <% 'Pending ' unless @hcb_code.donation&.fee_reimbursement&.t_transaction %>
-            (<%= link_to 'learn more', "https://changelog.bank.hackclub.com/we're-making-payment-processing-fees-disappear-101088" %>)
-          </span>
-        </span>
-      </p>
-      <% end %>
-      
     <% else %>
-      <p><strong>Donation has not been paid.</strong></p>
+      <p>
+        <strong>Donation initiated at</strong>
+        <%= partner_donation_initiated_at(@hcb_code.partner_donation) %>
+      </p>
+    <% end %>
+  </section>
+  <section class="pt2 pb2 details">
+    <% admin_tools() do %>
+      <strong>Partner</strong>
+      <%= @hcb_code.partner_donation.partner.name || @hcb_code.partner_donation.partner.slug.capitalize %>
+    <% end %>
+    <% if @hcb_code.partner_donation.paid? %>
+      <p>
+        <strong>Amount</strong>
+        +<%= render_money @hcb_code.partner_donation.payout_amount_cents %>
+      </p>
     <% end %>
   </section>
 

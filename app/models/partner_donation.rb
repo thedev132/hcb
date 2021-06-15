@@ -12,11 +12,15 @@ class PartnerDonation < ApplicationRecord
     state :deposited # when fully deposited to canonical transaction
 
     event :mark_in_transit do
+      before do
+        local_hcb_code # lazy create hcb code object
+      end
+
       transitions from: :pending, to: :in_transit
     end
 
     event :mark_deposited do
-      transitions from: :deposited, to: :deposited
+      transitions from: :in_transit, to: :deposited
     end
   end
 
@@ -28,13 +32,42 @@ class PartnerDonation < ApplicationRecord
     "https://dashboard.stripe.com/payments/#{self.stripe_charge_id}"
   end
 
-  def paid_at
-    timestamp = self.stripe_charge_created_at
-    timestamp ? format_datetime(timestamp) : '–'
+  def paid?
+    self.stripe_charge_id.present?
   end
 
-  def paid?
-    self.amount_received != 0
+  def partner
+    Partner.find(self.event.partner_id)
+  end
+
+  def state
+    self.aasm.current_state
+  end
+
+  def state_text
+    case state
+    when :pending
+      "Pending"
+    when :in_transit
+      "In transit"
+    when :deposited
+      "Deposited"
+    else
+      "Unknown State"
+    end
+  end
+
+  def state_color
+    case state
+    when :pending
+      "muted"
+    when :in_transit
+      "info"
+    when :deposited
+      "success"
+    else
+      "error"
+    end
   end
 
   private
