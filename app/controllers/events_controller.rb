@@ -175,18 +175,35 @@ class EventsController < ApplicationController
     authorize @event
 
     relation = @event.donations.not_pending
+
+    @stats = {
+      deposited: relation.deposited.sum(:amount),
+      in_transit: relation.in_transit.sum(:amount),
+      refunded: relation.refunded.sum(:amount)
+    }
+
     relation = relation.in_transit if params[:filter] == "in_transit"
     relation = relation.deposited if params[:filter] == "deposited"
     relation = relation.refunded if params[:filter] == "refunded"
     relation = relation.search_name(params[:search]) if params[:search].present?
 
     @donations = relation.order(created_at: :desc)
+  end
 
+  def partner_donation_overview
+    authorize @event
+
+    relation = @event.partner_donations.not_pending
+    
     @stats = {
-      deposited: @donations.deposited.sum(:amount),
-      in_transit: @donations.in_transit.sum(:amount),
-      refunded: @donations.refunded.sum(:amount)
+      deposited: relation.deposited.sum(:payout_amount_cents),
+      in_transit: relation.in_transit.sum(:payout_amount_cents),
     }
+
+    relation = relation.in_transit if params[:filter] == "in_transit"
+    relation = relation.deposited if params[:filter] == "deposited"
+
+    @partner_donations = relation.order(created_at: :desc)
   end
 
   def bank_fees

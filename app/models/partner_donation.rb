@@ -1,11 +1,19 @@
 class PartnerDonation < ApplicationRecord
   include AASM
+  include Commentable
 
   belongs_to :event
 
   before_create :set_donation_identifier
   after_create :set_hcb_code
 
+  scope :pending, -> { where(aasm_state: "pending") }
+  scope :not_pending, -> { where.not(aasm_state: "pending") }
+  scope :in_transit, -> { where(aasm_state: "in_transit") }
+  scope :not_in_transit, -> { where.not(aasm_state: "in_transit") }
+  scope :deposited, -> { where(aasm_state: "deposited") }
+  scope :not_deposited, -> { where.not(aasm_state: "deposited") }
+  
   aasm do
     state :pending, initial: true # once created
     state :in_transit # when imported and marked as paid on Stripe::Charge

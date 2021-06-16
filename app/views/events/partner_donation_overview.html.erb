@@ -1,0 +1,63 @@
+<% title "Donations to #{@event.name.html_safe}" %>
+<% page_md %>
+<%= render "events/nav" %>
+
+<h1 class="heading">
+  <span class="flex items-center">
+    Donations
+    <%= badge_for @partner_donations.count, class: "bg-muted" %>
+  </span>
+</h1>
+
+<div class="statset mt3 mb2">
+  <div class="stat stat--small">
+    <span class="stat__label">Total</span>
+    <span class="stat__value"><%= render_money_amount @stats[:deposited] %></span>
+  </div>
+  <div class="stat stat--small">
+    <span class="stat__label">On the way</span>
+    <span class="stat__value"><%= render_money_amount @stats[:in_transit] %></span>
+  </div>
+</div>
+
+<hr/>
+
+<div style="text-align: center;">
+  <%= link_to "All", "?filter=all", class: "filterbar__item", "aria-selected": !["deposited", "in_transit", "refunded"].include?(params[:filter]), role: "tab" %>
+  <%= link_to "Deposited", "?filter=deposited", class: "filterbar__item", "aria-selected": params[:filter] == "deposited", role: "tab" %>
+  <%= link_to "In Transit", "?filter=in_transit", class: "filterbar__item", "aria-selected": params[:filter] == "in_transit", role: "tab" %>
+</div>
+
+<article class="table-container">
+
+  <table>
+    <thead>
+      <tr>
+        <th>STATUS</th>
+        <th>DATE</th>
+        <th style="text-align: right;">AMOUNT</th>
+        <th></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @partner_donations.each do |d| %>
+        <tr>
+          <td>
+            <span class="ml0 badge bg-<%= d.state_color %>"><%= d.state_text %></span>
+          </td>
+          <td>
+            <%= format_date d.created_at %>
+          </td>
+          <td style="text-align: right;">
+            <%= render_money(d.payout_amount_cents) %>
+          </td>
+          <td>
+            <%= link_to "Details", hcb_code_url(d.local_hcb_code.hashid) if organizer_signed_in? %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+</article>
