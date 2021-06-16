@@ -29,6 +29,7 @@
     <%= dock_item 'Donations',
       'Receive donations online',
       'support',
+      @event.partner.external? ? event_partner_donation_overview_path(event_id: @event.slug) :
       event_donation_overview_path(event_id: @event.slug) unless @event.unapproved? %>
     <%= dock_item 'Perks',
       'Receive promos & discounts',
