@@ -185,6 +185,10 @@ class CanonicalTransaction < ApplicationRecord
     nil
   end
 
+  def partner_donation
+    nil # TODO: implement
+  end
+
   def donation
     donation_payout.try(:donation)
   end
