@@ -353,6 +353,7 @@ Rails.application.routes.draw do
     get 'promotions', to: 'events#promotions', as: :promotions
     get 'reimbursements', to: 'events#reimbursements', as: :reimbursements
     get 'donations', to: 'events#donation_overview', as: :donation_overview
+    get 'partner_donations', to: 'events#partner_donation_overview', as: :partner_donation_overview
     get 'bank_fees', to: 'events#bank_fees', as: :bank_fees
     # suspend this while check processing is on hold
     resources :checks, only: [:new, :create]

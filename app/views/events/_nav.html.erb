@@ -7,21 +7,20 @@
   <div>
     <% admin_tools('m0 p0 badge mb2', 'span') do %>
       <span class="m0 badge bg-muted pointer" onClick="navigator.clipboard.writeText('<%= @event.name %>');">
-      copy event name
+        copy event name
       </span>
     <% end %>
   </div>
   <!-- add project switcher here -->
-
   <nav class="dock">
     <%= dock_item 'Invoices',
       'Collect sponsor payments',
       'briefcase',
-      event_invoices_path(event_id: @event.slug) unless @event.unapproved? %>
+      event_invoices_path(event_id: @event.slug) unless !@event.approved? %>
     <%= dock_item 'Cards',
       'Manage team debit cards',
       'card',
-      event_cards_overview_path(event_id: @event.slug) unless @event.unapproved? %>
+      event_cards_overview_path(event_id: @event.slug) unless !@event.approved? %>
     <%= dock_item 'Send',
       'Send checks & wires',
       'transactions',
@@ -29,11 +28,12 @@
     <%= dock_item 'Donations',
       'Receive donations online',
       'support',
-      event_donation_overview_path(event_id: @event.slug) unless @event.unapproved? %>
+      @event.partner.external? ? event_partner_donation_overview_path(event_id: @event.slug) :
+      event_donation_overview_path(event_id: @event.slug) unless !@event.approved? %>
     <%= dock_item 'Perks',
       'Receive promos & discounts',
       'shirt',
-       event_promotions_path(event_id: @event.slug), :lg unless @event.unapproved? %>
+       event_promotions_path(event_id: @event.slug), :lg unless !@event.approved? %>
     <%= dock_item 'Documents',
       'Download waivers & legal docs',
       'docs',
@@ -57,7 +57,7 @@
         <%= inline_icon 'more' %>
         <div class="menu__content" data-behavior="menu_content">
           <%= link_to 'Google Workspace', event_g_suite_overview_path(event_id: @event.slug) %>
-          <%= link_to 'Promotions & perks', event_promotions_path(event_id: @event.slug) unless @event.unapproved? %>
+          <%= link_to 'Promotions & perks', event_promotions_path(event_id: @event.slug) unless !@event.approved? %>
           <%= link_to 'Documents', event_documents_path(event_id: @event.slug) %>
           <%= link_to 'Settings', edit_event_path(@event) %>
         </div>
@@ -66,6 +66,5 @@
   </nav>
   <%= render 'events/public_message' %>
 <% end %>
-
 <% content_for(:container) do %>
 <% end %>

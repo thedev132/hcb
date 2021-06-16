@@ -94,6 +94,10 @@ class EventPolicy < ApplicationPolicy
     is_public || user_or_admin
   end
 
+  def partner_donation_overview?
+    is_public || user_or_admin
+  end
+
   def bank_fees?
     user_or_admin
   end
