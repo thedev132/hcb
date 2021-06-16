@@ -25,6 +25,7 @@ module TransactionGroupingEngine
         return invoice_hcb_code if invoice
         return bank_fee_hcb_code if bank_fee
         return donation_hcb_code if donation
+        return partner_donation_hcb_code if partner_donation
         return ach_transfer_hcb_code if ach_transfer
         return check_hcb_code if check
         return disbursement_hcb_code if disbursement
@@ -70,6 +71,18 @@ module TransactionGroupingEngine
 
       def donation
         @donation ||= @ct_or_cp.donation
+      end
+
+      def partner_donation_hcb_code
+        [
+          HCB_CODE,
+          PARNTER_DONATION_CODE,
+          partner_donation.id
+        ].join(SEPARATOR)
+      end
+
+      def partner_donation
+        @partner_donation ||= @ct_or_cp.partner_donation
       end
 
       def ach_transfer_hcb_code
