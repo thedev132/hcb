@@ -99,6 +99,10 @@ class CanonicalPendingTransaction < ApplicationRecord
     nil
   end
 
+  def partner_donation
+    nil # Implement
+  end
+
   def donation
     return linked_object if linked_object.is_a?(Donation)
 
