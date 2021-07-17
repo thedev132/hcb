@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_09_201742) do
+ActiveRecord::Schema.define(version: 2021_07_17_045214) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -522,6 +522,7 @@ ActiveRecord::Schema.define(version: 2021_06_09_201742) do
     t.string "owner_phone"
     t.string "owner_address"
     t.date "owner_birthdate"
+    t.string "webhook_url"
     t.index ["club_airtable_id"], name: "index_events_on_club_airtable_id", unique: true
     t.index ["partner_id", "organization_identifier"], name: "index_events_on_partner_id_and_organization_identifier", unique: true
     t.index ["partner_id"], name: "index_events_on_partner_id"
@@ -757,6 +758,16 @@ ActiveRecord::Schema.define(version: 2021_06_09_201742) do
     t.index ["event_id"], name: "index_lob_addresses_on_event_id"
   end
 
+  create_table "login_tokens", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.text "token", null: false
+    t.datetime "expiration_at", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["token"], name: "index_login_tokens_on_token", unique: true
+    t.index ["user_id"], name: "index_login_tokens_on_user_id"
+  end
+
   create_table "ops_checkins", force: :cascade do |t|
     t.bigint "point_of_contact_id"
     t.datetime "created_at", null: false
@@ -818,6 +829,7 @@ ActiveRecord::Schema.define(version: 2021_06_09_201742) do
     t.string "aasm_state"
     t.integer "payout_amount_cents"
     t.string "stripe_charge_id"
+    t.datetime "stripe_charge_created_at"
     t.index ["event_id"], name: "index_partner_donations_on_event_id"
   end
 
@@ -1153,6 +1165,7 @@ ActiveRecord::Schema.define(version: 2021_06_09_201742) do
   add_foreign_key "invoices", "users", column: "creator_id"
   add_foreign_key "invoices", "users", column: "manually_marked_as_paid_user_id"
   add_foreign_key "lob_addresses", "events"
+  add_foreign_key "login_tokens", "users"
   add_foreign_key "ops_checkins", "users", column: "point_of_contact_id"
   add_foreign_key "organizer_position_deletion_requests", "organizer_positions"
   add_foreign_key "organizer_position_deletion_requests", "users", column: "closed_by_id"
