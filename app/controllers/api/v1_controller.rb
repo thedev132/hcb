@@ -22,7 +22,7 @@ module Api
       attrs = {
         token: contract[:loginToken]
       }
-      user = AuthService::Token.new(attrs)
+      user = AuthService::Token.new(attrs).run
 
       sign_in_and_set_cookie!(user)
 

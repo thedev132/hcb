@@ -18,7 +18,6 @@ module SessionsHelper
 
     if impersonate
       @current_user = user
-      cache_api_authorized(true)
       @current_user
     else
       self.current_user = user
@@ -41,17 +40,11 @@ module SessionsHelper
     @organizer_signed_in ||= ((signed_in? && @event&.users&.include?(current_user)) || admin_signed_in?)
   end
 
-  def current_user(ensure_api_authorized = true)
+  # Ensure api authorized when fetching current user is removed
+  def current_user(_ensure_api_authorized = true)
     session_token = User.digest(cookies[:session_token])
     @current_user ||= User.find_by(session_token: session_token)
     return nil unless @current_user
-
-    if ensure_api_authorized
-      # ensure that our auth token is valid. this will throw
-      # BankApiService::UnauthorizedError if we get an authorization error, which
-      # will be caught by ApplicationController and sign out the user
-      cache_api_authorized
-    end
 
     @current_user
   end
@@ -72,13 +65,5 @@ module SessionsHelper
     current_user(false).update_attribute(:session_token, User.digest(User.new_session_token)) if current_user(false)
     cookies.delete(:session_token)
     self.current_user = nil
-  end
-
-  private
-
-  def cache_api_authorized(override_for_impersonate = false)
-    Rails.cache.fetch("#{@current_user.cache_key_with_version}/authed", expires_in: 1.hour) do
-      override_for_impersonate || @current_user.api_record.present?
-    end
   end
 end
