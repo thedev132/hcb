@@ -302,6 +302,8 @@ Rails.application.routes.draw do
   scope :api, module: "api" do
     resources "v1", as: :api_v1, only: [:index] do
       collection do
+        match "login", action: :login, as: :api_login, via: [:get]
+
         match "donations/start", action: :donations_start, as: :api_donations_start, via: [:post]
         match "organizations", action: :organizations, as: :api_organizations, via: [:get]
         match "organizations/:organizationIdentifier", action: :organization, as: :api_organization, via: [:get]
@@ -309,6 +311,7 @@ Rails.application.routes.draw do
         match ":partner_slug/start", action: :connect_start, as: :api_connect_start, via: [:post]
         match ":partner_slug/continue/:hashid", action: :connect_continue, as: :api_connect_continue, via: [:get]
         match ":partner_slug/finish/:hashid", action: :connect_finish, as: :api_connect_finish, via: [:post]
+
       end
     end
 

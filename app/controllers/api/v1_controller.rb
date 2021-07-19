@@ -15,6 +15,13 @@ module Api
       render json: Api::V1::IndexSerializer.new.run
     end
 
+    def login
+      contract = Api::V1::LoginContract.new.call(params.permit!.to_h)
+      render json: json_error(contract), status: 400 and return unless contract.success?
+
+      
+    end
+
     def connect_start
       contract = Api::V1::ConnectStartContract.new.call(params.permit!.to_h)
       render json: json_error(contract), status: 400 and return unless contract.success?
