@@ -13,6 +13,8 @@ module Api
         }
       end
 
+      private
+
       def data # this method is also used by Api::V1::OrganizationSerializer
         {
           organizationIdentifier: @event.organization_identifier,
@@ -20,8 +22,6 @@ module Api
           balance: @event.balance_v2_cents,
         }
       end
-
-      private
     end
   end
 end
