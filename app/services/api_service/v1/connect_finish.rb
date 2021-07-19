@@ -17,12 +17,25 @@ module ApiService
       end
 
       def run
-        event.update_columns(attrs)
+        ActiveRecord::Base.transaction do
+          event.update_columns(attrs)
+
+          ::UserService::Create.new(user_attrs).run
+        end
 
         event
       end
 
       private
+
+      def user_attrs
+        {
+          event_id: event.id,
+          email: @email,
+          full_name: @name,
+          phone_number: @phone
+        }
+      end
 
       def attrs
         {

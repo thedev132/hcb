@@ -20,9 +20,21 @@ RSpec.describe ApiService::V1::DonationsStart, type: :model do
 
   let(:service) { ApiService::V1::DonationsStart.new(attrs) }
 
-  it "creates a partner donation" do
+  it "does not create partner donation" do
     expect do
       service.run
-    end.to change(PartnerDonation, :count).by(1)
+    end.to raise_error(ArgumentError)
+  end
+
+  context "when event is approved" do
+    before do
+      event.mark_approved!
+    end
+
+    it "creates a partner donation" do
+      expect do
+        service.run
+      end.to change(PartnerDonation, :count).by(1)
+    end
   end
 end
