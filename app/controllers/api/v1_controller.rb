@@ -2,7 +2,7 @@
 
 module Api
   class V1Controller < Api::ApplicationController
-    skip_before_action :authenticate, only: [:connect_continue, :connect_finish]
+    skip_before_action :authenticate, only: [:connect_continue, :connect_finish, :login]
 
     def hide_footer
       @hide_footer = true
@@ -19,7 +19,14 @@ module Api
       contract = Api::V1::LoginContract.new.call(params.permit!.to_h)
       render json: json_error(contract), status: 400 and return unless contract.success?
 
-      
+      attrs = {
+        token: contract[:loginToken]
+      }
+      user = AuthService::Token.new(attrs)
+
+      sign_in_and_set_cookie!(user)
+
+      redirect_to root_path
     end
 
     def connect_start

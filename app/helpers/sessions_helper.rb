@@ -3,6 +3,7 @@ module SessionsHelper
     sign_in(user, true)
   end
 
+  # DEPRECATED - begin to start deprecating and ultimately replace with sign_in_and_set_cookie
   def sign_in(user, impersonate = false)
     session_token = User.new_session_token
     cookies.permanent[:session_token] = session_token
