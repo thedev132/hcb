@@ -61,4 +61,38 @@ class V1OrganizationsDocumentation < ApplicationDocumentation
     end
   end
 
+  swagger_path "/api/v1/organizations/{organizationIdentifier}/generateLoginUrl" do
+    operation :get do
+      key :summary, "Generate an automatic login url for an organization"
+      key :description, "Generate an automatic login url for an organization"
+      key :tags, ["Organizations"]
+      key :operationId, "v1OrganizationsGenerateLoginUrl"
+
+      parameter do
+        key :name, :organizationIdentifier
+        key :in, :path
+        key :description, "Identifier of an organization"
+        key :required, true
+        schema do
+          key :type, :string
+        end
+      end
+
+      response 200 do
+        key :description, ""
+        content :"application/json" do
+          key :example, {
+            data: [
+              {
+                organizationIdentifier: "org_1234",
+                loginUrl: "http://bank.hackclub.com/api/v1/login?loginToken=tok_1234"
+              }
+            ]
+          }
+        end
+      end
+    end
+  end
+
+
 end

@@ -29,6 +29,19 @@ module Api
       redirect_to root_path
     end
 
+    def generate_login_url
+      contract = Api::V1::GenerateLoginUrlContract.new.call(params.permit!.to_h)
+      render json: json_error(contract), status: 400 and return unless contract.success?
+
+      attrs = {
+        partner_id: current_partner.id,
+        organization_identifier: contract[:organizationIdentifier]
+      }
+      login_url = ApiService::V1::GenerateLoginUrl.new(attrs).run
+
+      render json: Api::V1::GenerateLoginUrlSerializer.new(login_url: login_url).run
+    end
+
     def connect_start
       contract = Api::V1::ConnectStartContract.new.call(params.permit!.to_h)
       render json: json_error(contract), status: 400 and return unless contract.success?
