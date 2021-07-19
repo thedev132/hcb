@@ -8,3 +8,9 @@ user2:
   api_access_token: "token2"
   email: "user2@mailinator.com"
   created_at: <%= Time.now %>
+
+user_melanie:
+  id: 2046
+  api_access_token: "tokenMelanie"
+  email: "melanie@mailinator.com"
+  created_at: <%= Time.now %>
