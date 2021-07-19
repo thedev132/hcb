@@ -16,6 +16,17 @@ module Api
 
     private
 
+    # replaces SessionsHelper::sign_in
+    def sign_in_and_set_cookie!(user)
+      session_token = SecureRandom.urlsafe_base64
+      digest_token = Digest::SHA1.hexdigest(session_token)
+
+      cookies.permanent[:session_token] = session_token
+      user.update_column(:session_token, digest_token)
+
+      @current_user ||= user
+    end
+
     def current_partner
       @current_partner
     end
