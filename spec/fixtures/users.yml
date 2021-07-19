@@ -1,12 +1,10 @@
 user1:
-  api_id: 1
   api_access_token: "token1"
   email: "user1@mailinator.com"
   admin_at: <%= Time.now %>
   created_at: <%= Time.now %>
 
 user2:
-  api_id: 2
   api_access_token: "token2"
   email: "user2@mailinator.com"
   created_at: <%= Time.now %>

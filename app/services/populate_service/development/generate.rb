@@ -16,7 +16,6 @@ module PopulateService
 
         ActiveRecord::Base.transaction do
           attrs = {
-            api_id: 888_888_888,
             api_access_token: "token-developmentuser1",
             email: email,
             admin_at: Time.now.utc

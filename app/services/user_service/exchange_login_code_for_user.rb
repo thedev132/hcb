@@ -9,7 +9,6 @@ module UserService
       raise ::Errors::InvalidLoginCode, error_message if exchange_login_code_resp[:errors].present?
 
       user = User.find_or_initialize_by(email: remote_email)
-      user.api_id = @user_id # TODO: remove user_id. it is unnecessary for login and couples us to the 3rd party auth service
       user.api_access_token = remote_access_token 
       user.admin_at = remote_admin_at # TODO: remove admin_at as necessary from a 3rd party auth service
       user.save!
