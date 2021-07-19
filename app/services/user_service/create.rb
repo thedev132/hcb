@@ -31,6 +31,7 @@ module UserService
 
     def attrs
       {
+        api_access_token: SecureRandom.hex, # TODO: deprecate to decouple from remote auth api
         email: @email,
         full_name: @full_name,
         phone_number: @phone_number

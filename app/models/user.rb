@@ -39,8 +39,8 @@ class User < ApplicationRecord
   before_create :create_session_token
   before_create :format_number
 
-  validates_presence_of :api_id, :api_access_token, :email
-  validates_uniqueness_of :api_id, :api_access_token, :email
+  validates_presence_of :api_access_token, :email
+  validates_uniqueness_of :api_access_token, :email
   validates :phone_number, phone: { allow_blank: true }
   validate :profile_picture_format
 
@@ -62,10 +62,6 @@ class User < ApplicationRecord
   # preference to pretend not to be an admin.
   def admin_override_pretend?
     self.admin_at.present?
-  end
-
-  def api_record
-    ::Partners::HackclubApi::GetUser.new(user_id: api_id, access_token: api_access_token).run
   end
 
   def first_name
