@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module PartnerDonationService
   class Import
     def initialize(partner_id:)
@@ -19,7 +21,7 @@ module PartnerDonationService
     def list_attrs
       {
         stripe_api_key: partner.stripe_api_key,
-        start_date: Time.now.utc - 3.years
+        start_date: Time.now.utc - 100.days
       }
     end
 
