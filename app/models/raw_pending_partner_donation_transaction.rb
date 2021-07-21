@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class RawPendingPartnerDonationTransaction < ApplicationRecord
   monetize :amount_cents
 
@@ -14,6 +16,6 @@ class RawPendingPartnerDonationTransaction < ApplicationRecord
   end
 
   def partner_donation
-    @partner_donation ||= ::PartnerDonation.find_by(id: partner_donation_id)
+    @partner_donation ||= ::PartnerDonation.find_by(id: partner_donation_transaction_id)
   end
 end

@@ -9,5 +9,5 @@ partner_donation2:
   event: event1
   hcb_code: "HCB-201-2"
   donation_identifier: "dnt_2"
-  state: "in_transit"
+  aasm_state: "in_transit"
   payout_amount_cents: 100
