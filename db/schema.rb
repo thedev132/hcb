@@ -912,7 +912,7 @@ ActiveRecord::Schema.define(version: 2021_07_21_050500) do
   end
 
   create_table "raw_pending_partner_donation_transactions", force: :cascade do |t|
-    t.text "partner_donation_id"
+    t.text "partner_donation_transaction_id"
     t.integer "amount_cents"
     t.date "date_posted"
     t.string "state"
