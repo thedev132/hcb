@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_19_224926) do
+ActiveRecord::Schema.define(version: 2021_07_21_050500) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -909,6 +909,15 @@ ActiveRecord::Schema.define(version: 2021_07_19_224926) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "check_transaction_id"
+  end
+
+  create_table "raw_pending_partner_donation_transactions", force: :cascade do |t|
+    t.text "partner_donation_id"
+    t.integer "amount_cents"
+    t.date "date_posted"
+    t.string "state"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "raw_pending_stripe_transactions", force: :cascade do |t|
