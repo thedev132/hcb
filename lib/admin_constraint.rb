@@ -3,12 +3,12 @@ class AdminConstraint
   include Rails.application.routes.url_helpers
 
   def matches?(request)
-    token = request.cookie_jar['session_token']
-    return false unless token.present?
+    cookies = ActionDispatch::Cookies::CookieJar.build(request, request.cookies)
+    session_token = cookies.encrypted[:session_token]
 
-    digest = User.digest(token)
+    return false unless session_token.present?
 
-    user = User.find_by(session_token: digest)
+    user = User.find_by(session_token: session_token)
     user && user.admin?
   rescue BankApiService::UnauthorizedError
     false # user is not logged in
