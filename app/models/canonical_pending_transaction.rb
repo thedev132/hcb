@@ -25,6 +25,7 @@ class CanonicalPendingTransaction < ApplicationRecord
   scope :outgoing_check, -> { where('raw_pending_outgoing_check_transaction_id is not null')}
   scope :donation, -> { where('raw_pending_donation_transaction_id is not null')}
   scope :invoice, -> { where('raw_pending_invoice_transaction_id is not null')}
+  scope :partner_donation, -> { where('raw_pending_partner_donation_transaction_id is not null')}
   scope :bank_fee, -> { where('raw_pending_bank_fee_transaction_id is not null')}
   scope :unmapped, -> { includes(:canonical_pending_event_mapping).where(canonical_pending_event_mappings: {canonical_pending_transaction_id: nil}) }
   scope :mapped, -> { includes(:canonical_pending_event_mapping).where.not(canonical_pending_event_mappings: {canonical_pending_transaction_id: nil}) }
@@ -35,6 +36,7 @@ class CanonicalPendingTransaction < ApplicationRecord
   scope :missing_hcb_code, -> { where(hcb_code: nil) }
   scope :missing_or_unknown_hcb_code, -> { where("hcb_code is null or hcb_code ilike 'HCB-000%'") }
   scope :invoice_hcb_code, -> { where("hcb_code ilike 'HCB-#{::TransactionGroupingEngine::Calculate::HcbCode::INVOICE_CODE}%'") }
+  scope :partner_donation_hcb_code, -> { where("hcb_code ilike 'HCB-#{::TransactionGroupingEngine::Calculate::HcbCode::PARTNER_DONATION_CODE}%'") }
   scope :donation_hcb_code, -> { where("hcb_code ilike 'HCB-#{::TransactionGroupingEngine::Calculate::HcbCode::DONATION_CODE}%'") }
   scope :ach_transfer_hcb_code, -> { where("hcb_code ilike 'HCB-#{::TransactionGroupingEngine::Calculate::HcbCode::ACH_TRANSFER_CODE}%'") }
   scope :check_hcb_code, -> { where("hcb_code ilike 'HCB-#{::TransactionGroupingEngine::Calculate::HcbCode::CHECK_CODE}%'") }
@@ -71,6 +73,7 @@ class CanonicalPendingTransaction < ApplicationRecord
     return raw_pending_donation_transaction.donation if raw_pending_donation_transaction
     return raw_pending_invoice_transaction.invoice if raw_pending_invoice_transaction
     return raw_pending_bank_fee_transaction.bank_fee if raw_pending_bank_fee_transaction
+    return raw_pending_partner_donation_transaction.partner_donation if raw_pending_partner_donation_transaction
 
     nil
   end
@@ -100,7 +103,9 @@ class CanonicalPendingTransaction < ApplicationRecord
   end
 
   def partner_donation
-    nil # Implement
+    return linked_object if linked_object.is_a?(PartnerDonation)
+
+    nil
   end
 
   def donation
