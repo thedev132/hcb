@@ -8,7 +8,7 @@ class AdminConstraint
 
     return false unless session_token.present?
 
-    user = User.find_by(session_token: session_token)
+    user = User.has_session_token.find_by(session_token: session_token)
     user && user.admin?
   rescue BankApiService::UnauthorizedError
     false # user is not logged in

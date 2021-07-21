@@ -42,7 +42,7 @@ module SessionsHelper
 
   # Ensure api authorized when fetching current user is removed
   def current_user(_ensure_api_authorized = true)
-    @current_user ||= User.find_by(session_token: cookies.encrypted[:session_token])
+    @current_user ||= User.has_session_token.find_by(session_token: cookies.encrypted[:session_token])
     return nil unless @current_user
 
     @current_user
