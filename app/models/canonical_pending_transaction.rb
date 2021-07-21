@@ -8,6 +8,7 @@ class CanonicalPendingTransaction < ApplicationRecord
   belongs_to :raw_pending_donation_transaction, optional: true
   belongs_to :raw_pending_invoice_transaction, optional: true
   belongs_to :raw_pending_bank_fee_transaction, optional: true
+  belongs_to :raw_pending_partner_donation_transaction, optional: true
   has_one :canonical_pending_event_mapping
   has_one :event, through: :canonical_pending_event_mapping
   has_many :canonical_pending_settled_mappings
