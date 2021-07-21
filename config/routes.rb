@@ -74,6 +74,7 @@ Rails.application.routes.draw do
       get 'hcb_codes', to: 'admin#hcb_codes'
       get 'bank_fees', to: 'admin#bank_fees'
       get 'users', to: 'admin#users'
+      get 'partners', to: 'admin#partners'
       get 'raw_transactions', to: 'admin#raw_transactions'
       get 'raw_transaction_new', to: 'admin#raw_transaction_new'
       post 'raw_transaction_create', to: 'admin#raw_transaction_create'

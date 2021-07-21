@@ -1,0 +1,33 @@
+<% title "PARTNERS" %>
+
+<h1>PARTNERS</h1>
+
+<p><small><%= pluralize(@count, "result") %></small></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Slug</th>
+      <th>Name</th>
+      <th>ApiKey</th>
+      <th>StripeApiKey</th>
+      <th>External</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @partners.each do |partner| %>
+      <tr>
+        <td><%= partner.id %></td>
+        <td><%= partner.slug %></td>
+        <td><%= partner.name %></td>
+        <td><%= partner.api_key %></td>
+        <td><%= partner.stripe_api_key %></td>
+        <td><%= partner.external %></td>
+        <td>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

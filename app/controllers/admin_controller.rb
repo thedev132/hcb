@@ -65,6 +65,16 @@ class AdminController < ApplicationController
     render layout: "admin"
   end
 
+  def partners
+    relation = Partner
+
+    @partners = relation.all
+
+    @count = relation.count
+
+    render layout: "admin"
+  end
+
   def events
     @page = params[:page] || 1
     @per = params[:per] || 100
@@ -91,7 +101,6 @@ class AdminController < ApplicationController
     states << 'unapproved' if @unapproved
     states << 'approved' if @approved
     relation = relation.where('aasm_state in (?)', states)
-
 
     @count = relation.count
 
