@@ -5,10 +5,10 @@ module SessionsHelper
 
   # DEPRECATED - begin to start deprecating and ultimately replace with sign_in_and_set_cookie
   def sign_in(user, impersonate = false)
-    session_token = SecureRandom.urlsafe_base64
-
+    session_token = User.new_session_token
     cookies.encrypted[:session_token] = { value: session_token, expires: 1.day.from_now }
-    user.update_attribute(:session_token, session_token)
+
+    user.update_attribute(:session_token, User.digest(session_token))
 
     # probably a better place to do this, but we gotta assign any pending
     # organizer position invites - see that class for details
@@ -42,7 +42,8 @@ module SessionsHelper
 
   # Ensure api authorized when fetching current user is removed
   def current_user(_ensure_api_authorized = true)
-    @current_user ||= User.find_by(session_token: cookies.encrypted[:session_token])
+    session_token = User.digest(cookies.encrypted[:session_token])
+    @current_user ||= User.find_by(session_token: session_token)
     return nil unless @current_user
 
     @current_user
@@ -61,7 +62,7 @@ module SessionsHelper
   end
 
   def sign_out
-    current_user(false).update_attribute(:session_token, SecureRandom.urlsafe_base64) if current_user(false)
+    current_user(false).update_attribute(:session_token, User.digest(User.new_session_token)) if current_user(false)
     cookies.delete(:session_token)
     self.current_user = nil
   end

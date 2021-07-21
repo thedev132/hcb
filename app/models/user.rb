@@ -44,6 +44,14 @@ class User < ApplicationRecord
   validates :phone_number, phone: { allow_blank: true }
   validate :profile_picture_format
 
+  def self.new_session_token
+    SecureRandom.urlsafe_base64
+  end
+
+  def self.digest(token)
+    Digest::SHA1.hexdigest(token.to_s)
+  end
+
   # admin? takes into account an admin user's preference
   # to pretend to be a non-admin, normal user
   def admin?
@@ -111,7 +119,7 @@ class User < ApplicationRecord
   end
 
   def create_session_token
-    self.session_token = SecureRandom.urlsafe_base64
+    self.session_token = User.digest(User.new_session_token)
   end
 
   def slug_candidates
