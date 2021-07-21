@@ -83,6 +83,7 @@ Rails.application.routes.draw do
       get 'pending_ledger', to: 'admin#pending_ledger'
       get 'ach', to: 'admin#ach'
       get 'check', to: 'admin#check'
+      get 'partner_organizations', to: 'admin#partner_organizations'
       get 'events', to: 'admin#events'
       get 'event_new', to: 'admin#event_new'
       post 'event_create', to: 'admin#event_create'

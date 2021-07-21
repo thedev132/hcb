@@ -50,7 +50,6 @@
   <thead>
     <tr>
       <th>ID</th>
-      <th>Partner</th>
       <th>Date</th>
       <th>Name</th>
       <th>Balance</th>
@@ -63,7 +62,6 @@
     <% @events.each do |event| %>
       <tr style="<%= "background: #ffffcc;" if event.pending? %> <%= "background: #ff8c38;" if event.omit_stats? %>">
         <td><%= event.id %></td>
-        <td><%= event.partner.slug %></td>
         <td><%= event.created_at.strftime("%Y-%m-%d") %></td>
         <td>
           <%= link_to event_path(event) do %>

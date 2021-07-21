@@ -27,7 +27,9 @@
       |
       <%= link_to "partners (#{Partner.count})", partners_admin_index_path %>
       |
-      <%= link_to "organizations (#{Event.pending.count})", events_admin_index_path %>
+      <%= link_to "partner organizations (#{Event.partner.count})", partner_organizations_admin_index_path %>
+      |
+      <%= link_to "organizations (#{Event.not_partner.pending.count})", events_admin_index_path %>
       |
       <%= link_to "bank fees (#{BankFee.in_transit_or_pending.count})", bank_fees_admin_index_path %>
       |
