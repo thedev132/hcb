@@ -75,7 +75,7 @@ module PendingTransactionEngine
     end
 
     def canonize_raw_pending_partner_donation_transactions!
-      # TODO
+      ::PendingTransactionEngine::CanonicalPendingTransactionService::Import::PartnerDonation.new.run
     end
   end
 end
