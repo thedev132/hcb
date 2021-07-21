@@ -1,4 +1,13 @@
 partner_donation1:
+  id: 1
   event: event1
   hcb_code: "HCB-201-1"
   donation_identifier: "dnt_1"
+
+partner_donation2:
+  id: 2
+  event: event1
+  hcb_code: "HCB-201-2"
+  donation_identifier: "dnt_2"
+  aasm_state: "in_transit"
+  payout_amount_cents: 100

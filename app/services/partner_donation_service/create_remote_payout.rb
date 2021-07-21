@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module PartnerDonationService
   class CreateRemotePayout
     def initialize(partner_id:, stripe_charge_id:)
