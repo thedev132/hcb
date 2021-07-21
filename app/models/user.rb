@@ -7,6 +7,7 @@ class User < ApplicationRecord
 
   friendly_id :slug_candidates, use: :slugged
   scope :admin, -> { where.not(admin_at: nil) }
+  scope :has_session_token, -> { where.not(session_token: nil) }
 
   has_many :login_tokens
   has_many :organizer_position_invites
@@ -43,14 +44,6 @@ class User < ApplicationRecord
   validates_uniqueness_of :api_access_token, :email
   validates :phone_number, phone: { allow_blank: true }
   validate :profile_picture_format
-
-  def self.new_session_token
-    SecureRandom.urlsafe_base64
-  end
-
-  def self.digest(token)
-    Digest::SHA1.hexdigest(token.to_s)
-  end
 
   # admin? takes into account an admin user's preference
   # to pretend to be a non-admin, normal user
@@ -119,7 +112,7 @@ class User < ApplicationRecord
   end
 
   def create_session_token
-    self.session_token = User.digest(User.new_session_token)
+    self.session_token = SecureRandom.urlsafe_base64
   end
 
   def slug_candidates

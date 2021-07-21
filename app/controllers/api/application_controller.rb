@@ -19,10 +19,9 @@ module Api
     # replaces SessionsHelper::sign_in
     def sign_in_and_set_cookie!(user)
       session_token = SecureRandom.urlsafe_base64
-      digest_token = Digest::SHA1.hexdigest(session_token)
 
-      cookies.permanent[:session_token] = session_token
-      user.update_column(:session_token, digest_token)
+      cookies.encrypted[:session_token] = { value: session_token, expires: 1.day.from_now }
+      user.update_column(:session_token, session_token)
 
       @current_user ||= user
     end
