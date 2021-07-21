@@ -1,0 +1,50 @@
+<% title "PARTNER ORGANIZATIONS" %>
+
+<h1>PARTNER ORGANIZATIONS</h1>
+
+<%= paginate @partner_organizations %>
+
+<p><small><%= pluralize(@count, "result") %></small></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Partner</th>
+      <th>Date</th>
+      <th>Name</th>
+      <th>Balance</th>
+      <th>Fee</th>
+      <th>Status</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @partner_organizations.each do |event| %>
+      <tr style="<%= "background: #ffffcc;" if event.pending? %> <%= "background: #ff8c38;" if event.omit_stats? %>">
+        <td><%= event.id %></td>
+        <td><%= event.partner.slug %></td>
+        <td><%= event.created_at.strftime("%Y-%m-%d") %></td>
+        <td>
+          <%= link_to event_path(event) do %>
+            <%= event.name.upcase %>
+          <% end %>
+        </td>
+        <td style="<%= 'color: lightgray;' if event.balance === 0 %>">
+          <%= render_money event.balance %>
+        </td>
+        <td>
+          <%= render_percentage event.sponsorship_fee %>
+        </td>
+        <td>
+        </td>
+        <td>
+          <%= link_to "Process", event_process_admin_path(event) if event.pending? %>
+          <%= link_to "View", event_process_admin_path(event) unless event.pending? %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= paginate @partner_organizations %>

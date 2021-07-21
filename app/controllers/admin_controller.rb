@@ -65,6 +65,29 @@ class AdminController < ApplicationController
     render layout: "admin"
   end
 
+  def partners
+    relation = Partner
+
+    @partners = relation.all
+
+    @count = relation.count
+
+    render layout: "admin"
+  end
+
+  def partner_organizations
+    @page = params[:page] || 1
+    @per = params[:per] || 100
+
+    relation = Event.partner
+
+    @count = relation.count
+
+    @partner_organizations = relation.page(@page).per(@per).reorder("created_at desc")
+
+    render layout: "admin"
+  end
+
   def events
     @page = params[:page] || 1
     @per = params[:per] || 100
@@ -76,7 +99,7 @@ class AdminController < ApplicationController
     @omitted = params[:omitted].present? ? params[:omitted] : nil
     @hidden = params[:hidden].present? ? params[:hidden] : nil
 
-    relation = Event
+    relation = Event.not_partner
 
     relation = relation.search_name(@q) if @q
     relation = relation.transparent if @transparent == 'transparent'
@@ -91,7 +114,6 @@ class AdminController < ApplicationController
     states << 'unapproved' if @unapproved
     states << 'approved' if @approved
     relation = relation.where('aasm_state in (?)', states)
-
 
     @count = relation.count
 

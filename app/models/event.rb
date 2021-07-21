@@ -17,6 +17,8 @@ class Event < ApplicationRecord
   scope :hidden, -> { where("hidden_at is not null") }
   scope :v1, -> { where(transaction_engine_v2_at: nil) }
   scope :v2, -> { where.not(transaction_engine_v2_at: nil) }
+  scope :not_partner, -> { where(partner_id: 1) }
+  scope :partner, -> { where.not(partner_id: 1) }
   scope :hidden, -> { where.not(hidden_at: nil) }
   scope :not_hidden, -> { where(hidden_at: nil) }
   scope :event_ids_with_pending_fees_greater_than_100, -> do
