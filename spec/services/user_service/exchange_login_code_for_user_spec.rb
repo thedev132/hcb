@@ -52,12 +52,6 @@ RSpec.describe UserService::ExchangeLoginCodeForUser, type: :model do
     expect(user.id).to eql(user.id)
   end
 
-  it "should set api_id" do
-    user = service.run
-
-    expect(user.api_id).to eql(user_id)
-  end
-
   context "when login code response has errors" do
     before do
       allow(service).to receive(:exchange_login_code_resp).and_return(exchange_login_code_error_resp)
