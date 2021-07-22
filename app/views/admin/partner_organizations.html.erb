@@ -39,6 +39,7 @@
           <%= render_percentage event.sponsorship_fee %>
         </td>
         <td>
+          <%= event.aasm_state %>
         </td>
         <td>
           <%= link_to "Process", event_process_admin_path(event) if event.pending? %>
