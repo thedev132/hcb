@@ -2,7 +2,7 @@
 
 module PartnerService
   class TopUp
-    def initialize(partne_id:, amount_cents:)
+    def initialize(partner_id:, amount_cents:)
       @partner_id = partner_id
       @amount_cents = amount_cents
     end
