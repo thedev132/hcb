@@ -17,7 +17,7 @@ module PartnerService
       {
         stripe_api_key: stripe_api_key,
         amount_cents: @amount_cents,
-        statement_description: statement_description
+        statement_descriptor: statement_descriptor
       }
     end
 
@@ -25,7 +25,7 @@ module PartnerService
       partner.stripe_api_key
     end
 
-    def statement_description
+    def statement_descriptor
       "Stripe Top-up #{partner.id}"
     end
 
