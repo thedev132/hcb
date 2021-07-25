@@ -111,6 +111,8 @@ gem 'active_storage_validations'
 
 group :development, :test do
   gem 'rspec-rails', '~> 4.0.1'
+  gem "rubocop", "0.74.0"
+  gem "rubocop-github", "0.13.0"
 end
 
 group :development do
@@ -163,3 +165,4 @@ gem 'strong_migrations' # protects against risky migrations that could cause app
 gem 'xxhash' # fast hashing
 gem 'swagger-blocks'
 gem 'dry-validation'
+
