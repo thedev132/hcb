@@ -7,11 +7,11 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-			- name: Set up Ruby
+      - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: "2.7.3"
-					bundler-cache: true
+          bundler-cache: true
       - name: Install Rubocop
         run: gem install rubocop
       - name: Run Rubocop
