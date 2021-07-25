@@ -3,7 +3,7 @@ on: [push]
 jobs:
   rubocop:
     name: Rubocop
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -18,10 +18,18 @@ jobs:
         run: bundle exec rubocop
   rspec:
     name: RSpec
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     services:
       postgres:
         image: postgres:latest
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
         ports:
         - 5432:5432
     steps:
@@ -34,6 +42,13 @@ jobs:
           bundler-cache: true
       - name: Install postgres client
         run: sudo apt-get install libpq-dev
+      - name: Build App
+        env:
+          DATABASE_URL: postgres://postgres:postgres@localhost:5432/bank_test
+          PGHOST: localhost
+          PGUSER: postgres
+          PGPASSWORD: postgres
+          RAILS_ENV: test
       - name: Run migrations
         run: bundler exec rails db:create db:migrate RAILS_ENV=test
       - name: Run RSpec
