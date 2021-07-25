@@ -1,5 +1,5 @@
 name: Rails tests
-on: [push, pull_request]
+on: [push]
 jobs:
   rubocop-test:
     name: Rubocop
