@@ -5,13 +5,14 @@ module BankFeeService
     end
 
     def run
-      raise ArgumentError, "must be an event that has not had a fee for more than 20 days" unless event.ready_for_fee?
+      raise ArgumentError, "must be an event that has not had a fee for more than 5 days" unless event.ready_for_fee?
       raise ArgumentError, "must be an event that has a balance greater than 0" unless event.fee_balance_v2_cents > 0
 
       ActiveRecord::Base.transaction do
         bank_fee = event.bank_fees.create!(attrs)
 
         event.update_column(:last_fee_processed_at, Time.now)
+        # TODO: mark individual fees that have already been processed here as processed - this can then replace `last_fee_processed_at` brittleness
 
         bank_fee
       end

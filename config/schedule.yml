@@ -43,9 +43,9 @@ fee_reimbursement_nightly_job:
   class: "FeeReimbursementJob::Nightly"
   queue: "default"
 
-bank_fee_monthly_job:
-  cron: "0 0 1 * *" # run first day of each month
-  class: "BankFeeJob::Monthly"
+bank_fee_weekly_job:
+  cron: "0 0 * * MON" # run first day of each week
+  class: "BankFeeJob::Weekly"
   queue: "default"
 
 disbursement_nightly_job:
