@@ -19,6 +19,11 @@ jobs:
   rspec:
     name: RSpec
     runs-on: ubuntu-18.04
+    services:
+      postgres:
+        image: postgres:latest
+        ports:
+        - 5432:5432
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
