@@ -140,7 +140,7 @@ class AdminController < ApplicationController
     attrs = {
       name: params[:name],
       emails: emails,
-      has_fiscal_sponsorship_document: params[:has_fiscal_sponsorship_document].to_i === 1 ? true : false,
+      has_fiscal_sponsorship_document: params[:has_fiscal_sponsorship_document].to_i == 1 ? true : false,
       sponsorship_fee: params[:sponsorship_fee]
     }
     ::EventService::Create.new(attrs).run

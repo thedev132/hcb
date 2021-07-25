@@ -13,7 +13,7 @@ module EmburseClient
       req.headers["Authorization"] = "Token #{access_token}"
     end
 
-    raise NotFoundError if resp.status === 404
+    raise NotFoundError if resp.status == 404
 
     JSON.parse(resp.body, symbolize_names: true)
   end

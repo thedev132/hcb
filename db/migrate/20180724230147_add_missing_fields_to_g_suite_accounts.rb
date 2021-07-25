@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class AddMissingFieldsToGSuiteAccounts < ActiveRecord::Migration[5.2]
-  class GSuiteAccount < ActiveRecord::Base; end
-  class User < ActiveRecord::Base; end
+  class GSuiteAccount < ApplicationRecord; end
+  class User < ApplicationRecord; end
 
   def change
     add_column :g_suite_accounts, :first_name, :string

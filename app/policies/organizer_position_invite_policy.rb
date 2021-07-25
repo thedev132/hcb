@@ -17,10 +17,6 @@ class OrganizerPositionInvitePolicy < ApplicationPolicy
     record.email == user.email || user.admin?
   end
 
-  def new?
-    record.event&.users&.include?(user) || user.admin?
-  end
-
   def accept?
     record.user == user
   end

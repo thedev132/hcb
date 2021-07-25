@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 class AddEventToLoadCardRequests < ActiveRecord::Migration[5.2]
-  class MigrationLoadCardRequest < ActiveRecord::Base
+  class MigrationLoadCardRequest < ApplicationRecord
     self.table_name = :load_card_requests
   end
-  class MigrationCard < ActiveRecord::Base
+  class MigrationCard < ApplicationRecord
     self.table_name = :cards
   end
   def change

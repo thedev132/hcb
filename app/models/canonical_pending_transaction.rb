@@ -125,10 +125,6 @@ class CanonicalPendingTransaction < ApplicationRecord
     raw_pending_stripe_transaction.stripe_transaction_id
   end
 
-  def stripe_card
-    @stripe_card ||= raw_pending_stripe_transaction.stripe_card
-  end
-
   # DEPRECATED
   def display_name
     smart_memo

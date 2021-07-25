@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class ConvertClosedToAutoAdvanceOnInvoices < ActiveRecord::Migration[5.2]
-  class Invoice < ActiveRecord::Base; end
+  class Invoice < ApplicationRecord; end
 
   def up
     rename_column :invoices, :closed, :auto_advance

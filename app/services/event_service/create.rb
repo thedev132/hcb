@@ -11,7 +11,7 @@ module EventService
 
     def run
       raise ArgumentError, "name required" unless @name.present?
-      raise ArgumentError, "has_fiscal_sponsorship_document must be true or false" unless (@has_fiscal_sponsorship_document === true || @has_fiscal_sponsorship_document === false)
+      raise ArgumentError, "has_fiscal_sponsorship_document must be true or false" unless (@has_fiscal_sponsorship_document == true || @has_fiscal_sponsorship_document == false)
       raise ArgumentError, "sponsorship_fee must be 0 to 0.5" unless (@sponsorship_fee >= 0.0 && @sponsorship_fee <= 0.5)
 
       ActiveRecord::Base.transaction do

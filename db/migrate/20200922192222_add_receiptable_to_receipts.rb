@@ -3,7 +3,7 @@
 class AddReceiptableToReceipts < ActiveRecord::Migration[6.0]
   disable_ddl_transaction!
 
-  class Receipt < ActiveRecord::Base
+  class Receipt < ApplicationRecord
     self.ignored_columns = ["stripe_authorization_id"]
   end
 
