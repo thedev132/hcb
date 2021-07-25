@@ -12,7 +12,7 @@ jobs:
         with:
           ruby-version: "2.7.3"
           bundler-cache: true
-      - name: Install Rubocop
-        run: gem install rubocop
       - name: Run Rubocop
-        run: rubocop
+        env:
+          RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+        run: bundle exec rubocop
