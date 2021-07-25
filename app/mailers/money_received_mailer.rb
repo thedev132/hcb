@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class MoneyReceivedMailer < ApplicationMailer
   def money_received
     @transaction = params[:transaction]

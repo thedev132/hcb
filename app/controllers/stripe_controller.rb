@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class StripeController < ApplicationController
   protect_from_forgery except: :webhook # ignore csrf checks
   skip_after_action :verify_authorized # do not force pundit
@@ -6,12 +8,12 @@ class StripeController < ApplicationController
   def webhook
     payload = request.body.read
     event = nil
-    
+
     begin
       event = StripeService::Event.construct_from(
         JSON.parse(payload, symbolize_names: true)
       )
-      method = "handle_" + event['type'].tr('.', '_')
+      method = "handle_" + event["type"].tr(".", "_")
       self.send method, event
     rescue JSON::ParserError => e
       head 400

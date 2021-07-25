@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class InvoicesController < ApplicationController
   before_action :set_event, only: [:index]
   skip_before_action :signed_in_user
@@ -26,8 +28,8 @@ class InvoicesController < ApplicationController
       .where
       .not(payout_creation_queued_for: nil) +
       @event.invoices.joins(:payout)
-      .where(invoice_payouts: { status: ('in_transit') })
-      .or(@event.invoices.joins(:payout).where(invoice_payouts: { status: ('pending') })))
+      .where(invoice_payouts: { status: ("in_transit") })
+      .or(@event.invoices.joins(:payout).where(invoice_payouts: { status: ("pending") })))
     amount_in_transit = @invoices_in_transit.sum(&:amount_paid)
 
     @stats = {
@@ -54,8 +56,8 @@ class InvoicesController < ApplicationController
 
     sponsor_attrs = filtered_params[:sponsor_attributes]
 
-    due_date = Date::civil(filtered_params["due_date(1i)"].to_i, 
-                           filtered_params["due_date(2i)"].to_i, 
+    due_date = Date::civil(filtered_params["due_date(1i)"].to_i,
+                           filtered_params["due_date(2i)"].to_i,
                            filtered_params["due_date(3i)"].to_i)
 
     attrs = {
@@ -115,7 +117,7 @@ class InvoicesController < ApplicationController
     if @invoice.save
       redirect_to @invoice
     else
-      flash[:error] = 'Something went wrong while trying to archive this invoice!'
+      flash[:error] = "Something went wrong while trying to archive this invoice!"
       redirect_to @invoice
     end
   end
@@ -129,10 +131,10 @@ class InvoicesController < ApplicationController
     @invoice.archived_by = nil
 
     if @invoice.save
-      flash[:success] = 'Invoice has been un-archived.'
+      flash[:success] = "Invoice has been un-archived."
       redirect_to @invoice
     else
-      flash[:error] = 'Something went wrong while trying to archive this invoice!'
+      flash[:error] = "Something went wrong while trying to archive this invoice!"
       redirect_to @invoice
     end
   end

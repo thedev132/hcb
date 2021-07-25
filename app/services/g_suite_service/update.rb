@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module GSuiteService
   class Update
     def initialize(g_suite_id:, domain:, verification_key:, dkim_key: nil)

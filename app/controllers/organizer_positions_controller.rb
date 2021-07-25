@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class OrganizerPositionsController < ApplicationController
   def destroy
     @organizer_position = OrganizerPosition.find(params[:id])

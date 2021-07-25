@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module CanonicalPendingTransactionService
   class Unsettle
     def initialize(canonical_pending_transaction:)

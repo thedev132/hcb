@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class GSuiteAccount < ApplicationRecord
   include Rejectable
 
@@ -6,7 +8,7 @@ class GSuiteAccount < ApplicationRecord
   paginates_per 50
 
   belongs_to :g_suite
-  belongs_to :creator, class_name: 'User'
+  belongs_to :creator, class_name: "User"
 
   validates_presence_of :address, :backup_email, :first_name, :last_name
 
@@ -20,12 +22,12 @@ class GSuiteAccount < ApplicationRecord
   scope :under_review, -> { where(rejected_at: nil, accepted_at: nil) }
 
   def status
-    return 'rejected' if rejected_at.present?
-    return 'suspended' if suspended_at.present?
-    return 'accepted' if accepted_at.present?
-    return 'verified' if verified_at.present?
+    return "rejected" if rejected_at.present?
+    return "suspended" if suspended_at.present?
+    return "accepted" if accepted_at.present?
+    return "verified" if verified_at.present?
 
-    'pending'
+    "pending"
   end
 
   def suspended?
@@ -45,7 +47,7 @@ class GSuiteAccount < ApplicationRecord
   end
 
   def username
-    address.to_s.split('@').first
+    address.to_s.split("@").first
   end
 
   def at_domain

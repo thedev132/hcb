@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateEmburseTransactions < ActiveRecord::Migration[5.2]
   def change
     create_table :emburse_transactions do |t|

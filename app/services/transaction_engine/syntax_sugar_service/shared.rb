@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TransactionEngine
   module SyntaxSugarService
     module Shared
@@ -33,7 +35,7 @@ module TransactionEngine
       def outgoing_bank_fee?
         memo_upcase.include?(OUTGOING_BANK_FEE_MEMO)
       end
-      
+
       def outgoing_check?
         memo_upcase.include?(OUTGOING_CHECK_MEMO_PART)
       end
@@ -57,7 +59,7 @@ module TransactionEngine
       def outgoing_ach?
         memo_upcase.include?(OUTGOING_ACH_MEMO_PART)
       end
-      
+
       def likely_outgoing_ach_name
         memo_upcase.split(OUTGOING_ACH_MEMO_PART)[0].strip
       end
@@ -100,4 +102,3 @@ module TransactionEngine
     end
   end
 end
-

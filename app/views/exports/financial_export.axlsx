@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 def money(cents)
   cents.to_f / 100
 end
@@ -6,7 +8,7 @@ date = Time.now.strftime("%Y-%m-%d")
 
 wb = xlsx_package.workbook
 wb.add_worksheet(name: "HC Bank Export - #{date}") do |sheet|
-  currency = wb.styles.add_style :format_code => '$#,##0.00_);[Red]($#,##0.00)'
+  currency = wb.styles.add_style format_code: "$#,##0.00_);[Red]($#,##0.00)"
   sheet.add_row
 
   @events.each do |event|

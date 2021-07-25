@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateCanonicalPendingDeclinedMappings < ActiveRecord::Migration[6.0]
   def change
     create_table :canonical_pending_declined_mappings do |t|

@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 class EmburseCard < ApplicationRecord
   extend FriendlyId
 
-  scope :deactivated, -> { where.not(emburse_state: 'active') }
-  scope :active, -> { where(deactivated_at: nil, emburse_state: 'active') }
+  scope :deactivated, -> { where.not(emburse_state: "active") }
+  scope :active, -> { where(deactivated_at: nil, emburse_state: "active") }
 
   paginates_per 100
 
@@ -55,7 +57,7 @@ class EmburseCard < ApplicationRecord
   end
 
   def suspected_subscriptions
-    emburse_transactions.group(:merchant_name).having('COUNT(*)>3').count.keys
+    emburse_transactions.group(:merchant_name).having("COUNT(*)>3").count.keys
   end
 
   # Emburse emburse_cards have three activation states:
@@ -65,13 +67,13 @@ class EmburseCard < ApplicationRecord
   # 3. "suspended", deactivated by user and can be activated again thru Bank.
   def status_text
     if requires_activation?
-      'Shipping'
+      "Shipping"
     elsif active?
-      'Active'
+      "Active"
     elsif suspended?
-      'Suspended'
+      "Suspended"
     elsif canceled?
-      'Canceled'
+      "Canceled"
     end
   end
 
@@ -95,22 +97,22 @@ class EmburseCard < ApplicationRecord
 
   def requires_activation?
     sync_from_emburse! && self.save if self.emburse_state.blank?
-    self.emburse_state == 'unactivated'
+    self.emburse_state == "unactivated"
   end
 
   def active?
     sync_from_emburse! && self.save if self.emburse_state.blank?
-    self.emburse_state == 'active'
+    self.emburse_state == "active"
   end
 
   def suspended?
     sync_from_emburse! && self.save if self.emburse_state.blank?
-    self.emburse_state == 'suspended'
+    self.emburse_state == "suspended"
   end
 
   def canceled?
     sync_from_emburse! && self.save if self.emburse_state.blank?
-    self.emburse_state == 'terminated'
+    self.emburse_state == "terminated"
   end
 
   def sync_from_emburse!
@@ -136,7 +138,7 @@ class EmburseCard < ApplicationRecord
       address << sa[:address_2] unless sa[:address_2].blank?
       address << "#{sa[:city]}, #{sa[:state]} #{sa[:zip_code]}"
 
-      self.address = address.join('/n').strip
+      self.address = address.join("/n").strip
     end
   end
 
@@ -156,15 +158,15 @@ class EmburseCard < ApplicationRecord
 
   def sync_to_emburse!
     if self.deactivated_at_changed?
-      if emburse_obj[:state] == 'unactive'
-        errors.add(:emburse_card, 'cannot be deactivated until it is first activated')
+      if emburse_obj[:state] == "unactive"
+        errors.add(:emburse_card, "cannot be deactivated until it is first activated")
         return
       end
 
       if self.deactivated_at.nil?
-        ::EmburseClient::Card.update(self.emburse_id, state: 'active')
+        ::EmburseClient::Card.update(self.emburse_id, state: "active")
       else
-        ::EmburseClient::Card.update(self.emburse_id, state: 'suspended')
+        ::EmburseClient::Card.update(self.emburse_id, state: "suspended")
       end
     end
   end

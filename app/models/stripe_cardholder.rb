@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class StripeCardholder < ApplicationRecord
   enum cardholder_type: { individual: 0, company: 1 }
 

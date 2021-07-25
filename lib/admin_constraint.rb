@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Used to restrict access of Sidekiq to admins. See routes.rbfor more info.
 class AdminConstraint
   include Rails.application.routes.url_helpers

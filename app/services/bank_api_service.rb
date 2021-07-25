@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class BankApiService
-  BASE_URL = 'https://api.hackclub.com'
+  BASE_URL = "https://api.hackclub.com"
   include Util
 
   class UnauthorizedError < StandardError; end
@@ -10,10 +12,10 @@ class BankApiService
 
     resp = conn.send(method) do |req|
       req.url path
-      req.headers['Content-Type'] = 'application/json'
+      req.headers["Content-Type"] = "application/json"
 
       if access_token
-        req.headers['Authorization'] = "Bearer #{access_token}"
+        req.headers["Authorization"] = "Bearer #{access_token}"
       end
 
       req.body = params.to_json

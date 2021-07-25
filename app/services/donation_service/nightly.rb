@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module DonationService
   class Nightly
     def run
@@ -16,7 +18,7 @@ module DonationService
         end
       end
     end
-    
+
     private
 
     def anomaly_detected?(donation:)

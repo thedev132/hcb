@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class PartnerDonation < ApplicationRecord
   include AASM
   include Commentable
@@ -13,7 +15,7 @@ class PartnerDonation < ApplicationRecord
   scope :not_in_transit, -> { where.not(aasm_state: "in_transit") }
   scope :deposited, -> { where(aasm_state: "deposited") }
   scope :not_deposited, -> { where.not(aasm_state: "deposited") }
-  
+
   aasm do
     state :pending, initial: true # once created
     state :in_transit # when imported and marked as paid on Stripe::Charge

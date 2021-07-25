@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module InvoicesHelper
   def invoice_sent_at(invoice = @invoice)
     format_datetime invoice.created_at
@@ -5,12 +7,12 @@ module InvoicesHelper
 
   def invoice_paid_at(invoice = @invoice)
     timestamp = invoice.manually_marked_as_paid_at || invoice&.payout&.created_at
-    timestamp ? format_datetime(timestamp) : '–'
+    timestamp ? format_datetime(timestamp) : "–"
   end
 
   def invoice_payment_method(invoice = @invoice)
     if invoice.manually_marked_as_paid?
-      return '–'
+      return "–"
     elsif invoice&.payout
       return invoice.payout.source_type.humanize
     end
@@ -74,38 +76,38 @@ module InvoicesHelper
 end
 
 def invoice_payment_method_mention(invoice = @invoice, options = {})
-  return '–' unless invoice.manually_marked_as_paid? || invoice&.payment_method_type
+  return "–" unless invoice.manually_marked_as_paid? || invoice&.payment_method_type
 
   if invoice.manually_marked_as_paid?
     size = 20
-    icon_name = 'post-fill'
-    description_text = 'Manually marked as paid'
+    icon_name = "post-fill"
+    description_text = "Manually marked as paid"
   elsif invoice&.payment_method_card_brand
     brand = invoice&.payment_method_card_brand
     last4 = invoice&.payment_method_card_last4
 
     icon_name = {
-      'amex' => 'card-amex',
-      'mastercard' => 'card-mastercard',
-      'visa' => 'card-visa'
-    }[brand] || 'card-other'
+      "amex" => "card-amex",
+      "mastercard" => "card-mastercard",
+      "visa" => "card-visa"
+    }[brand] || "card-other"
     tooltip = {
-      'amex' => 'American Express',
-      'mastercard' => 'Mastercard',
-      'visa' => 'Visa',
-      'discover' => 'Discover'
-    }[brand] || 'Card'
+      "amex" => "American Express",
+      "mastercard" => "Mastercard",
+      "visa" => "Visa",
+      "discover" => "Discover"
+    }[brand] || "Card"
     tooltip += " ending in #{last4}" if last4 && organizer_signed_in?
     description_text = organizer_signed_in? ? "••••#{last4}" : "••••"
-    icon = inline_icon icon_name, width: 32, height: 20, class: 'slate'
+    icon = inline_icon icon_name, width: 32, height: 20, class: "slate"
   else
-    icon_name = 'bank-account'
+    icon_name = "bank-account"
     size = 20
     description_text = invoice.payment_method_type.humanize
   end
 
-  description = content_tag :span, description_text, class: 'ml1'
-  icon ||= inline_icon icon_name, width: size, height: size, class: 'slate'
+  description = content_tag :span, description_text, class: "ml1"
+  icon ||= inline_icon icon_name, width: size, height: size, class: "slate"
   content_tag(:span, class: "inline-flex items-center #{options[:class]}") { icon + description }
 end
 
@@ -116,29 +118,29 @@ def invoice_card_country_mention(invoice = @invoice)
 
   # Hack to turn country code into the country's flag
   # https://stackoverflow.com/a/50859942
-  emoji = country_code.tr('A-Z', "\u{1F1E6}-\u{1F1FF}")
+  emoji = country_code.tr("A-Z", "\u{1F1E6}-\u{1F1FF}")
 
-  content_tag :span, emoji, class: 'tooltipped tooltipped--w pr1', 'aria-label': country_code
+  content_tag :span, emoji, class: "tooltipped tooltipped--w pr1", 'aria-label': country_code
 end
 
 def invoice_card_check_badge(check, invoice = @invoice)
   case invoice.send("payment_method_card_checks_#{check}_check")
-  when 'pass'
-    background = 'success'
-    icon_name = 'checkmark'
-    text = 'Passed'
-  when 'failed'
-    background = 'warning'
-    icon_name = 'view-close'
-    text = 'Failed'
-  when 'unchecked'
-    background = 'info'
-    icon_name = 'checkbox'
-    text = 'Unchecked'
+  when "pass"
+    background = "success"
+    icon_name = "checkmark"
+    text = "Passed"
+  when "failed"
+    background = "warning"
+    icon_name = "view-close"
+    text = "Failed"
+  when "unchecked"
+    background = "info"
+    icon_name = "checkbox"
+    text = "Unchecked"
   else
-    background = 'smoke'
-    icon_name = 'checkbox'
-    text = 'Unavailable'
+    background = "smoke"
+    icon_name = "checkbox"
+    text = "Unavailable"
   end
 
   tag = inline_icon icon_name, size: 24
@@ -147,16 +149,16 @@ end
 
 def invoice_payout_datetime(invoice = @invoice)
   if @payout_t && @refund_t
-    title = 'Funds available since'
+    title = "Funds available since"
     datetime = [@payout_t.created_at, @refund_t.created_at].max
   elsif @payout_t && !@refund
-    title = 'Funds available since'
+    title = "Funds available since"
     datetime = @payout_t.created_at
   elsif @invoice.payout_creation_queued_at && @invoice.payout.nil?
-    title = 'Transfer scheduled'
+    title = "Transfer scheduled"
     datetime = @invoice.payout_creation_queued_for
   elsif @invoice.payout_creation_queued_at && @invoice.payout.present?
-    title = 'Funds should be available'
+    title = "Funds should be available"
     datetime = @invoice.payout.arrival_date
   else
     return
@@ -169,13 +171,13 @@ def invoice_payout_datetime(invoice = @invoice)
 end
 
 def invoice_fee_type(invoice = @invoice)
-  if @invoice.payment_method_type == 'card'
+  if @invoice.payment_method_type == "card"
     brand = @invoice.payment_method_card_brand.humanize.capitalize
     funding = @invoice.payment_method_card_funding.humanize.downcase
     return "#{brand} #{funding} card fee"
-  elsif @invoice.payment_method_type == 'ach_credit_transfer'
-    'ACH / wire fee'
+  elsif @invoice.payment_method_type == "ach_credit_transfer"
+    "ACH / wire fee"
   else
-    'Transfer fee'
+    "Transfer fee"
   end
 end

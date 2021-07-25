@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateOrganizerPositions < ActiveRecord::Migration[5.2]
   def change
     create_table :organizer_positions do |t|

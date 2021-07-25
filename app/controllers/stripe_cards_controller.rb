@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class StripeCardsController < ApplicationController
   def index
     @cards = StripeCard.all
@@ -22,10 +24,10 @@ class StripeCardsController < ApplicationController
     authorize @card
 
     if @card.freeze!
-      flash[:success] = 'Card frozen'
+      flash[:success] = "Card frozen"
       redirect_to @card
     else
-      render :show
+      render "show"
     end
   end
 
@@ -34,10 +36,10 @@ class StripeCardsController < ApplicationController
     authorize @card
 
     if @card.defrost!
-      flash[:success] = 'Card defrosted'
+      flash[:success] = "Card defrosted"
       redirect_to @card
     else
-      render :show
+      render "show"
     end
   end
 
@@ -86,7 +88,7 @@ class StripeCardsController < ApplicationController
     return nil unless current_user
 
     ecr = EmburseCardRequest.where(creator_id: current_user&.id)
-    case field 
+    case field
     when :phone_number
       current_user.phone_number
     when :name
@@ -108,7 +110,7 @@ class StripeCardsController < ApplicationController
       ecr&.last&.shipping_address_zip
     when :country
       current_user&.stripe_cardholder&.stripe_billing_address_country ||
-      ('US' if ecr.any?)
+      ("US" if ecr.any?)
     else
       nil
     end

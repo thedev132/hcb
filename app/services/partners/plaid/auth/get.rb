@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Partners
   module Plaid
     module Auth
@@ -15,4 +17,3 @@ module Partners
     end
   end
 end
-

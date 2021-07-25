@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module EmburseClient
   module Allowance
     def self.get(id)

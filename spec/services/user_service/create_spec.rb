@@ -4,14 +4,14 @@ require "rails_helper"
 
 RSpec.describe UserService::Create, type: :model do
   fixtures  "users", "events", "organizer_positions"
-  
+
   let(:event) { events(:event1) }
 
   let(:event_id) { event.id }
   let(:email) { "newuser@example.com" }
   let(:full_name) { "New User" }
   let(:phone_number) { "+13105551234" }
-  
+
   let(:attrs) do
     {
       event_id: event_id,

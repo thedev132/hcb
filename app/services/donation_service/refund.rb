@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module DonationService
   class Refund
     include ::Shared::Selenium::LoginToSvb

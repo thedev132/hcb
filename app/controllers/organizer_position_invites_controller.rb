@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class OrganizerPositionInvitesController < ApplicationController
   before_action :set_opi, only: [:show, :accept, :reject, :cancel]
 
@@ -26,7 +28,7 @@ class OrganizerPositionInvitesController < ApplicationController
       flash[:success] = "Invite successfully sent to #{invite_params[:email]}"
       redirect_to event_team_path @invite.event
     else
-      render :new
+      render "new"
     end
   end
 
@@ -35,7 +37,7 @@ class OrganizerPositionInvitesController < ApplicationController
       authorize @invite
       @organizers = @invite.event.organizer_positions.includes(:user)
       if @invite.cancelled?
-        flash[:error] = 'That invite was canceled!'
+        flash[:error] = "That invite was canceled!"
         redirect_to root_path
       end
     else
@@ -43,7 +45,7 @@ class OrganizerPositionInvitesController < ApplicationController
       @skip_verfiy_authorized = true
       @prefill_email = @invite.email
 
-      render "users/auth" 
+      render "users/auth"
     end
   end
 
@@ -53,7 +55,7 @@ class OrganizerPositionInvitesController < ApplicationController
     if @invite.accept
       redirect_to @invite.event
     else
-      flash[:error] = 'Failed to accept'
+      flash[:error] = "Failed to accept"
       redirect_to @invite
     end
   end
@@ -62,10 +64,10 @@ class OrganizerPositionInvitesController < ApplicationController
     authorize @invite
 
     if @invite.reject
-      flash[:success] = 'You’ve rejected your invitation.'
+      flash[:success] = "You’ve rejected your invitation."
       redirect_to root_path
     else
-      flash[:error] = 'Failed to reject the invitation.'
+      flash[:error] = "Failed to reject the invitation."
       redirect_to @invite
     end
   end
@@ -77,7 +79,7 @@ class OrganizerPositionInvitesController < ApplicationController
       flash[:success] = "#{@invite.email}\'s invitation has been canceled."
       redirect_to event_team_path(@invite.event)
     else
-      flash[:error] = 'Failed to cancel the invitation.'
+      flash[:error] = "Failed to cancel the invitation."
       redirect_to @invite.event
     end
   end

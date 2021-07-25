@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateGSuiteAccounts < ActiveRecord::Migration[5.2]
   def change
     create_table :g_suite_accounts do |t|

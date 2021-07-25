@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateStripeCards < ActiveRecord::Migration[6.0]
   def change
     create_table :stripe_cards, if_not_exists: true do |t|

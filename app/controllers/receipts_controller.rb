@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ReceiptsController < ApplicationController
   skip_after_action :verify_authorized, only: :upload # do not force pundit
   skip_before_action :signed_in_user, only: :upload
@@ -12,7 +14,7 @@ class ReceiptsController < ApplicationController
     @receipt.receiptable.marked_no_or_lost_receipt_at = nil
 
     if @receipt.save && @receipt.receiptable.save
-      flash[:success] = 'Added receipt!'
+      flash[:success] = "Added receipt!"
       if current_user
         redirect_to @receiptable
       else

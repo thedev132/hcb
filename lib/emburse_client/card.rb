@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 module EmburseClient
   module Card
     def self.list
-      EmburseClient.request_paginated('v1/cards')
+      EmburseClient.request_paginated("v1/cards")
     end
 
     def self.get(id)

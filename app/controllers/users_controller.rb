@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class UsersController < ApplicationController
   skip_before_action :signed_in_user, only: [:auth, :login_code, :exchange_login_code]
   skip_after_action :verify_authorized, except: [:edit, :update]
@@ -40,7 +42,7 @@ class UsersController < ApplicationController
   rescue Errors::InvalidLoginCode => e
     flash[:error] = e.message
 
-    return render :login_code
+    return render "login_code"
   end
 
   def logout
@@ -59,10 +61,10 @@ class UsersController < ApplicationController
     authorize @user
 
     if @user.update(user_params)
-      flash[:success] = 'Updated your profile!'
+      flash[:success] = "Updated your profile!"
       redirect_to root_path
     else
-      render :edit
+      render "edit"
     end
   end
 
@@ -72,7 +74,7 @@ class UsersController < ApplicationController
 
     @user.profile_picture.purge_later
 
-    flash[:success] = 'Switched back to your Gravatar.'
+    flash[:success] = "Switched back to your Gravatar."
     redirect_to edit_user_path(@user.slug)
   end
 

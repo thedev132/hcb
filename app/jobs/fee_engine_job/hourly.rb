@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module FeeEngineJob
   class Hourly < ApplicationJob
     def perform

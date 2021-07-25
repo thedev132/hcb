@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class OpsCheckinsController < ApplicationController
   skip_after_action :verify_authorized # do not force pundit
 
@@ -7,7 +9,7 @@ class OpsCheckinsController < ApplicationController
     # authorize @ops_checkin
 
     if @ops_checkin.save
-      flash[:success] = 'Checkin recorded'
+      flash[:success] = "Checkin recorded"
       redirect_to root_path
     else
       flash[:error] = @ops_checkin.errors

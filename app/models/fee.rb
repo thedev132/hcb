@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Fee < ApplicationRecord
   belongs_to :canonical_event_mapping
 

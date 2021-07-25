@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateCanonicalHashedMappings < ActiveRecord::Migration[6.0]
   def change
     create_table :canonical_hashed_mappings do |t|

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class EventsController < ApplicationController
   include Rails::Pagination
   before_action :set_event, except: [:index, :new, :create, :by_airtable_id]
@@ -36,19 +38,19 @@ class EventsController < ApplicationController
   def dashboard_stats
     authorize @event
 
-    @invoices_being_deposited = (@event.invoices.where(payout_id: nil, status: 'paid')
+    @invoices_being_deposited = (@event.invoices.where(payout_id: nil, status: "paid")
       .where
       .not(payout_creation_queued_for: nil) +
       @event.invoices.joins(:payout)
-      .where(invoice_payouts: { status: ('in_transit') })
-      .or(@event.invoices.joins(:payout).where(invoice_payouts: { status: ('pending') }))).sort_by { |i| i.arrival_date }
+      .where(invoice_payouts: { status: ("in_transit") })
+      .or(@event.invoices.joins(:payout).where(invoice_payouts: { status: ("pending") }))).sort_by { |i| i.arrival_date }
 
     @donations_being_deposited = (@event.donations.incoming_deposits
       .where
       .not(payout_creation_queued_for: nil) +
       @event.donations.joins(:payout)
-      .where(donation_payouts: { status: ('in_transit') })
-      .or(@event.donations.joins(:payout).where(donation_payouts: { status: ('pending') }))).sort_by { |d| [d.arrival_date, d.created_at] }
+      .where(donation_payouts: { status: ("in_transit") })
+      .or(@event.donations.joins(:payout).where(donation_payouts: { status: ("pending") }))).sort_by { |d| [d.arrival_date, d.created_at] }
 
     render :dashboard_stats, layout: false
   end
@@ -59,7 +61,7 @@ class EventsController < ApplicationController
     @event = Event.find_by(club_airtable_id: params[:airtable_id])
 
     if @event.nil?
-      flash[:error] = 'We couldn’t find that event!'
+      flash[:error] = "We couldn’t find that event!"
       redirect_to root_path
     else
       redirect_to @event
@@ -105,10 +107,10 @@ class EventsController < ApplicationController
     fixed_user_event_params.delete(:hidden)
 
     if @event.update(current_user.admin? ? fixed_event_params : fixed_user_event_params)
-      flash[:success] = 'Project successfully updated.'
+      flash[:success] = "Project successfully updated."
       redirect_to edit_event_path(@event.slug)
     else
-      render :edit
+      render "edit"
     end
   end
 
@@ -117,7 +119,7 @@ class EventsController < ApplicationController
     authorize @event
 
     @event.destroy
-    flash[:success] = 'Project successfully destroyed.'
+    flash[:success] = "Project successfully destroyed."
     redirect_to events_url
   end
 
@@ -194,7 +196,7 @@ class EventsController < ApplicationController
     authorize @event
 
     relation = @event.partner_donations.not_pending
-    
+
     @stats = {
       deposited: relation.deposited.sum(:payout_amount_cents),
       in_transit: relation.in_transit.sum(:payout_amount_cents),
@@ -256,17 +258,17 @@ class EventsController < ApplicationController
     authorize @event
 
     if @event.hidden?
-      flash[:success] = 'Event un-hidden'
+      flash[:success] = "Event un-hidden"
       @event.update(hidden_at: nil)
     else
       @event.update(hidden_at: Time.now)
       file_redirects = [
-        'https://cloud-b01qqxaux.vercel.app/barking_dog_turned_into_wood_meme.mp4',
-        'https://cloud-b01qqxaux.vercel.app/dog_transforms_after_seeing_chair.mp4',
-        'https://cloud-b01qqxaux.vercel.app/dog_turns_into_bread__but_it_s_in_hd.mp4',
-        'https://cloud-b01qqxaux.vercel.app/run_now_meme.mp4',
-        'https://cloud-3qup26j81.vercel.app/bonk_sound_effect.mp4',
-        'https://cloud-is6jebpbb.vercel.app/disappearing_doge_meme.mp4'
+        "https://cloud-b01qqxaux.vercel.app/barking_dog_turned_into_wood_meme.mp4",
+        "https://cloud-b01qqxaux.vercel.app/dog_transforms_after_seeing_chair.mp4",
+        "https://cloud-b01qqxaux.vercel.app/dog_turns_into_bread__but_it_s_in_hd.mp4",
+        "https://cloud-b01qqxaux.vercel.app/run_now_meme.mp4",
+        "https://cloud-3qup26j81.vercel.app/bonk_sound_effect.mp4",
+        "https://cloud-is6jebpbb.vercel.app/disappearing_doge_meme.mp4"
       ].sample
 
       redirect_to file_redirects
@@ -279,7 +281,7 @@ class EventsController < ApplicationController
   def set_event
     @event = Event.friendly.find(params[:event_id] || params[:id])
   rescue ActiveRecord::RecordNotFound
-    flash[:error] = 'We couldn’t find that event!'
+    flash[:error] = "We couldn’t find that event!"
     redirect_to root_path
   end
 

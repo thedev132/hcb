@@ -5,7 +5,7 @@ module Api
     class IndexSerializer
       def run
         {
-          data: [ data ]
+          data: [data]
         }
       end
 

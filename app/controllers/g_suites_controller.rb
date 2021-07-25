@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 class GSuitesController < ApplicationController
   before_action :set_g_suite, only: [:show, :edit, :update, :destroy]
 
   # GET /g_suites
   def index
-    @g_suites = GSuite.all.includes(:event).where('deleted_at is null and aasm_state in (?)', ['creating', 'verifying'])
+    @g_suites = GSuite.all.includes(:event).where("deleted_at is null and aasm_state in (?)", ["creating", "verifying"])
     authorize @g_suites
   end
 
@@ -34,10 +36,10 @@ class GSuitesController < ApplicationController
     @g_suite = GSuiteService::Update.new(attrs).run
 
     if @g_suite.persisted?
-      flash[:success] = 'Google Workspace changes saved.'
+      flash[:success] = "Google Workspace changes saved."
       redirect_to @g_suite
     else
-      render :edit
+      render "edit"
     end
   rescue => e
     redirect_to edit_event_g_suite_path(@g_suite, event_id: @g_suite.event.slug), flash: { error: e.message }
@@ -48,10 +50,10 @@ class GSuitesController < ApplicationController
     authorize @g_suite
 
     if @g_suite.update(deleted_at: Time.now)
-      flash[:success] = 'Google Workspace was successfully destroyed.'
+      flash[:success] = "Google Workspace was successfully destroyed."
       redirect_to g_suites_url
     else
-      render :index
+      render "index"
     end
   end
 

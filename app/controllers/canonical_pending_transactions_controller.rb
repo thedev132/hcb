@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CanonicalPendingTransactionsController < ApplicationController
   def show
     @canonical_pending_transaction = CanonicalPendingTransaction.find(params[:id])

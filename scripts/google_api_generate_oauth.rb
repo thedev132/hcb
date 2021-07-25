@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "google/apis/admin_directory_v1"
 require "googleauth"
 require "googleauth/stores/file_token_store"
@@ -30,7 +32,7 @@ token = File.read(TOKEN_PATH)
 
 puts "------ COPY AND PASTE THE EXACT TEXT BELOW INTO RAILS CREDENTIALS (replace the current GSuite content that's there if needed) ------"
 
-puts "gsuite: 
+puts "gsuite:
   client_id_json: '#{APP_DATA}'
   token: #{token.gsub("\'", "").sub("---\ndefault: ", "'---\n    \n    default: ''").sub("}\n", "}")}'''"
 

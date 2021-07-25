@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class LobAddress < ApplicationRecord
   has_many :checks
   belongs_to :event, required: true
@@ -8,15 +10,15 @@ class LobAddress < ApplicationRecord
   before_destroy :destroy_lob_address
 
   def set_fields_from_lob_address(lob_address)
-    self.description = lob_address['description']
-    self.name = lob_address['name']
-    self.address1 = lob_address['address_line1']
-    self.address2 = lob_address['address_line2']
-    self.city = lob_address['address_city']
-    self.state = lob_address['address_state']
-    self.zip = lob_address['address_zip']
-    self.country = lob_address['address_country']
-    self.lob_id = lob_address['id']
+    self.description = lob_address["description"]
+    self.name = lob_address["name"]
+    self.address1 = lob_address["address_line1"]
+    self.address2 = lob_address["address_line2"]
+    self.city = lob_address["address_city"]
+    self.state = lob_address["address_state"]
+    self.zip = lob_address["address_zip"]
+    self.country = lob_address["address_country"]
+    self.lob_id = lob_address["id"]
   end
 
   def address_text
@@ -26,7 +28,7 @@ class LobAddress < ApplicationRecord
   private
 
   def default_values
-    self.country = 'US'
+    self.country = "US"
     self.description = "#{name} - #{address1}"
   end
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Transaction < ApplicationRecord
   include Receiptable
   include Commentable
@@ -19,8 +21,8 @@ class Transaction < ApplicationRecord
       .select { |t| !t.potential_fee_reimbursement? || t.date < 3.weeks.ago }
   }
   # used by the unified transaction list shown on the event show page
-  scope :unified_list, -> { where( fee_reimbursement_id: nil ) }
-  scope :renamed, -> { where( "display_name != name" ) }
+  scope :unified_list, -> { where(fee_reimbursement_id: nil) }
+  scope :renamed, -> { where("display_name != name") }
 
   belongs_to :bank_account
 
@@ -50,7 +52,7 @@ class Transaction < ApplicationRecord
   validate :ensure_paired_correctly
 
   after_initialize :default_values
-  
+
   def memo
     name
   end
@@ -64,7 +66,7 @@ class Transaction < ApplicationRecord
   end
 
   def self.total_volume
-    self.includes(fee_relationship: :event).where(events: {omit_stats: false}).sum('@amount').to_i
+    self.includes(fee_relationship: :event).where(events: {omit_stats: false}).sum("@amount").to_i
   end
 
   def self.during(start_time, end_time)
@@ -73,7 +75,7 @@ class Transaction < ApplicationRecord
   end
 
   def self.volume_during(start_time, end_time)
-    self.during(start_time, end_time).sum('@amount').to_i
+    self.during(start_time, end_time).sum("@amount").to_i
   end
 
   def self.raised_during(start_time, end_time)
@@ -103,7 +105,7 @@ class Transaction < ApplicationRecord
     -fees_during.sum(:amount).to_i
   end
 
-  delegate :url_helpers, to: 'Rails.application.routes'
+  delegate :url_helpers, to: "Rails.application.routes"
   def link
     host = Rails.application.config.action_mailer.default_url_options[:host]
     host + url_helpers.transaction_path(self)
@@ -189,56 +191,52 @@ class Transaction < ApplicationRecord
 
   def potential_invoice_payout?
     amount.positive? && (
-      self.name.start_with?('Hack Club Bank PAYOUT') ||
-      self.name.start_with?('HACKC PAYOUT') ||
-      self.name.start_with?('HACK CLUB EVENT')
+      self.name.start_with?("Hack Club Bank PAYOUT", "HACKC PAYOUT", "HACK CLUB EVENT")
     )
   end
 
   def potential_donation_payout?
     amount.positive? && (
-      self.name.start_with?('Hack Club Bank DONATE') ||
-      self.name.start_with?('HACKC DONATE ') ||
-      self.name.start_with?('HACK CLUB EVENT')
+      self.name.start_with?("Hack Club Bank DONATE", "HACKC DONATE ", "HACK CLUB EVENT")
     )
   end
 
   # We used to also use 'FEE REIMBURSEMENT' as prefix
   # but is deprecated, so don't look for it anymore.
   def potential_fee_reimbursement?
-    self.name.start_with?('FEE REFUND')
+    self.name.start_with?("FEE REFUND")
   end
 
   def potential_fee_payment?
-    self.name.include?('Bank Fee')
+    self.name.include?("Bank Fee")
   end
 
   def potential_emburse?
-    self.name.include?('emburse.com')
+    self.name.include?("emburse.com")
   end
 
   # GitHub Grants
   def potential_github?
-    self.name.include?('GitHub Grant')
+    self.name.include?("GitHub Grant")
   end
 
   def potential_expensify?
-    self.name.include?('Expensify')
+    self.name.include?("Expensify")
   end
 
   def potential_ach_transfer?
     # Based on observations, SVB does not guarantee this TX memo
-    self.name.include?('BUSBILLPAY')
+    self.name.include?("BUSBILLPAY")
   end
 
   def potential_check?
     # This is a guess from observation, but may not cover 100%
     # of the cases. FRB's transaction memos are weird.
-    self.name.include?('DDA#') || self.name.include?('Check')
+    self.name.include?("DDA#") || self.name.include?("Check")
   end
 
   def potential_disbursement?
-    self.name.start_with?('HCB DISBURSE')
+    self.name.start_with?("HCB DISBURSE")
   end
 
   # Tries to fully pair this transaction successfully
@@ -387,7 +385,7 @@ class Transaction < ApplicationRecord
     # find all payouts that match both amount and statement_descriptor
     payouts_matching_amount = InvoicePayout.lacking_transaction.where(amount: self.amount)
     payouts_matching_prefix = payouts_matching_amount.select { |po|
-      po.statement_descriptor.start_with?('PAYOUT ' + prefix)
+      po.statement_descriptor.start_with?("PAYOUT " + prefix)
     }
 
     # if there's exactly one match, pick that one
@@ -435,7 +433,7 @@ class Transaction < ApplicationRecord
     # find all payouts that match both amount and statement_descriptor
     payouts_matching_amount = DonationPayout.lacking_transaction.where(amount: self.amount)
     payouts_matching_prefix = payouts_matching_amount.select { |po|
-      po.statement_descriptor.start_with?('DONATE ' + prefix)
+      po.statement_descriptor.start_with?("DONATE " + prefix)
     }
 
     # if there's exactly one match, pick that one

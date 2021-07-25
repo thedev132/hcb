@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class EmburseTransfersController < ApplicationController
   before_action :set_emburse_transfer, only: [:show, :edit, :update, :reject, :cancel, :accept]
   skip_before_action :signed_in_user
@@ -14,9 +16,9 @@ class EmburseTransfersController < ApplicationController
 
       emburse_transfers.each do |emburse_transfer|
         csv << attributes.map do |attr|
-          if attr == 'load_amount'
+          if attr == "load_amount"
             emburse_transfer.load_amount.to_f / 100
-          elsif attr == 'emburse_memo'
+          elsif attr == "emburse_memo"
             "Transfer request ID##{emburse_transfer.id}"
           else
             cr.send(attr)
@@ -54,10 +56,10 @@ class EmburseTransfersController < ApplicationController
     result_params[:load_amount] = result_params[:load_amount].to_f * 100
 
     if @emburse_transfer.update(result_params)
-      flash[:success] = 'Transfer request was successfully updated.'
+      flash[:success] = "Transfer request was successfully updated."
       redirect_to @emburse_transfer
     else
-      render :edit
+      render "edit"
     end
   end
 
@@ -68,9 +70,9 @@ class EmburseTransfersController < ApplicationController
     authorize @emburse_transfer
 
     if @emburse_transfer.save
-      flash[:success] = 'Transfer accepted.'
+      flash[:success] = "Transfer accepted."
     else
-      flash[:error] = 'Something went wrong.'
+      flash[:error] = "Something went wrong."
     end
     redirect_to emburse_transfers_path
   end
@@ -80,7 +82,7 @@ class EmburseTransfersController < ApplicationController
 
     @emburse_transfer.rejected_at = Time.now
     if @emburse_transfer.save
-      flash[:success] = 'Transfer rejected.'
+      flash[:success] = "Transfer rejected."
       redirect_to @emburse_transfer.event
     else
       redirect_to emburse_transfers_path
@@ -93,12 +95,12 @@ class EmburseTransfersController < ApplicationController
     if @emburse_transfer.under_review?
       @emburse_transfer.canceled_at = Time.now
       if @emburse_transfer.save
-        flash[:success] = 'Transfer canceled.'
+        flash[:success] = "Transfer canceled."
       else
-        flash[:error] = 'Failed to cancel transfer.'
+        flash[:error] = "Failed to cancel transfer."
       end
     else
-      flash[:error] = 'Transfer cannot be canceled.'
+      flash[:error] = "Transfer cannot be canceled."
     end
 
     redirect_to event_emburse_cards_overview_path(@emburse_transfer.event)

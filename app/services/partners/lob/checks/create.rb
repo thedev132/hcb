@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 module Partners
   module Lob
     module Checks
       class Create
         include ::Partners::Lob::Shared
 
-        def initialize(to:, memo:, amount_cents:, 
+        def initialize(to:, memo:, amount_cents:,
                        description:, message:,
                        send_date: nil)
           @to = to

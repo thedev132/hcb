@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CommentPolicy < ApplicationPolicy
   def new?
     user.admin? || record.commentable.event.users.include?(user)

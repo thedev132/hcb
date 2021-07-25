@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 module GSuiteService
   class FindOrCreateRemoteOrgUnit
-    PARENT_ORG_UNIT_PATH = '/Events'
+    PARENT_ORG_UNIT_PATH = "/Events"
 
     def initialize(g_suite:)
       @g_suite = g_suite

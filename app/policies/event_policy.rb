@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class EventPolicy < ApplicationPolicy
   def user_or_admin?
     user_or_admin

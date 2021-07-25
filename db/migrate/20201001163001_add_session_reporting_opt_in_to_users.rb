@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddSessionReportingOptInToUsers < ActiveRecord::Migration[6.0]
   def up
     # Create the new column with "false" default so existing users aren't

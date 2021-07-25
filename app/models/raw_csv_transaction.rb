@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class RawCsvTransaction < ApplicationRecord
   has_many :hashed_transactions
 

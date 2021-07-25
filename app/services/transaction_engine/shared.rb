@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TransactionEngine
   module Shared
     def last_1_month

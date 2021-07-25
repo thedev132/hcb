@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module PendingTransactionEngine
   module CanonicalPendingTransactionService
     module Import
@@ -24,7 +26,7 @@ module PendingTransactionEngine
           @raw_pending_donation_transactions_ready_for_processing ||= begin
             return RawPendingDonationTransaction.all if previously_processed_raw_pending_donation_transactions_ids.length < 1
 
-            RawPendingDonationTransaction.where('id not in(?)', previously_processed_raw_pending_donation_transactions_ids)
+            RawPendingDonationTransaction.where("id not in(?)", previously_processed_raw_pending_donation_transactions_ids)
           end
         end
 

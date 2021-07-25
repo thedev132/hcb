@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddMissingFieldsToTransactions < ActiveRecord::Migration[5.2]
   def change
     add_column :transactions, :payment_meta_by_order_of, :text

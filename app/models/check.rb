@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Check < ApplicationRecord
   has_paper_trail
 
@@ -7,13 +9,13 @@ class Check < ApplicationRecord
   include PgSearch::Model
   pg_search_scope :search_recipient, associated_against: { lob_address: :name, event: :name }, against: [:memo], using: { tsearch: { prefix: true, dictionary: "english" } }, ranked_by: "checks.created_at"
 
-  belongs_to :creator, class_name: 'User'
+  belongs_to :creator, class_name: "User"
   belongs_to :lob_address, required: true
   has_one :event, through: :lob_address
 
   accepts_nested_attributes_for :lob_address
 
-  has_many :t_transactions, class_name: 'Transaction', inverse_of: :check
+  has_many :t_transactions, class_name: "Transaction", inverse_of: :check
 
   validates :send_date, presence: true
   validate :send_date_must_be_in_future, on: :create
@@ -45,11 +47,11 @@ class Check < ApplicationRecord
     event :mark_in_transit_and_processed do
       transitions from: :in_transit, to: :in_transit_and_processed
     end
-    
+
     event :mark_deposited do
       transitions from: [:in_transit, :in_transit_and_processed], to: :deposited
     end
- 
+
     event :mark_refunded do
       transitions to: :refunded
     end
@@ -104,7 +106,7 @@ class Check < ApplicationRecord
     end
   end
 
-  
+
   def self.refunded_but_needs_match
     select { |check| check.refunded_at.present? && check.t_transactions.size != 4 }
   end
@@ -130,7 +132,7 @@ class Check < ApplicationRecord
   end
 
   def state_icon
-    'checkmark' if deposited?
+    "checkmark" if deposited?
   end
 
   def admin_dropdown_description
@@ -143,14 +145,14 @@ class Check < ApplicationRecord
 
   def refund!
     unless refunded_at.nil?
-      errors.add(:check, 'has already been refunded')
+      errors.add(:check, "has already been refunded")
       return self
     end
 
     if pending_void? || voided?
       return update(refunded_at: DateTime.now)
     else
-      errors.add(:check, 'needs to be voided first')
+      errors.add(:check, "needs to be voided first")
       return self
     end
   end
@@ -158,7 +160,7 @@ class Check < ApplicationRecord
   def url
     lob_url || ::CheckService::LobUrl::Generate.new(check: self).run
   end
-  
+
   def smart_memo
     lob_address.try(:name).try(:upcase)
   end
@@ -178,7 +180,7 @@ class Check < ApplicationRecord
   def canonical_pending_transactions
     @canonical_pending_transactions ||= ::CanonicalPendingTransaction.where(hcb_code: hcb_code)
   end
-  
+
   def recipient_name
     lob_address.name
   end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class RawEmburseTransaction < ApplicationRecord
   has_many :hashed_transactions
 
@@ -10,7 +12,7 @@ class RawEmburseTransaction < ApplicationRecord
   end
 
   def merchant_description
-    str = ''
+    str = ""
     str += merchant_name if merchant_name.present?
     str += ", Card: #{card_description}" if card_description.present?
     str += ", Member: #{member_full_name}" if member_full_name.present?
@@ -19,23 +21,23 @@ class RawEmburseTransaction < ApplicationRecord
   end
 
   def bank_account_description
-    emburse_transaction.dig('bank_account', 'description')
+    emburse_transaction.dig("bank_account", "description")
   end
 
   def merchant_name
-    emburse_transaction.dig('merchant', 'name')
+    emburse_transaction.dig("merchant", "name")
   end
 
   def card_description
-    emburse_transaction.dig('card', 'description')
+    emburse_transaction.dig("card", "description")
   end
 
   def member_first_name
-    emburse_transaction.dig('member', 'first_name')
+    emburse_transaction.dig("member", "first_name")
   end
 
   def member_last_name
-    emburse_transaction.dig('member', 'last_name')
+    emburse_transaction.dig("member", "last_name")
   end
 
   def member_full_name

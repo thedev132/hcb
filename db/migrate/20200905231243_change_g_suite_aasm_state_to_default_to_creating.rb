@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ChangeGSuiteAasmStateToDefaultToCreating < ActiveRecord::Migration[6.0]
   def up
     change_column :g_suites, :aasm_state, :string, default: "creating"

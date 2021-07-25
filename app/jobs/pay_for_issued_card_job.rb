@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class PayForIssuedCardJob < ApplicationJob
   queue_as :default
 
@@ -8,7 +10,7 @@ class PayForIssuedCardJob < ApplicationJob
 
     StripeService::Topup.create({
       amount: card.issuing_cost,
-      currency: 'usd',
+      currency: "usd",
       statement_descriptor: "Issued card #{card.id}"
       # (@msw) destination_balance is empty, because issuing a new stripe card
       # charges the main balance

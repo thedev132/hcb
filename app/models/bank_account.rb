@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class BankAccount < ApplicationRecord
   has_many :transactions
 
@@ -32,7 +34,7 @@ class BankAccount < ApplicationRecord
         puts "Found synonyms: ##{original_t.id} written over by #{overwriting_t.id} (#{original_t.name})"
         plaid_id = original_t.plaid_id
         original_t.update_attributes!(
-          plaid_id: original_t.plaid_id + '-bak',
+          plaid_id: original_t.plaid_id + "-bak",
           name: "BACKUP TX: " + original_t.name
         )
         overwriting_t.update_attributes!(

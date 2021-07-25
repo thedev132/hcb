@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddDefaultTransactionEngineV2AtTimestamp < ActiveRecord::Migration[6.0]
   def up
     safety_assured do

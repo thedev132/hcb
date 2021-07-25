@@ -1,0 +1,13 @@
+inherit_gem:
+  rubocop-github:
+    - config/default.yml
+    - config/rails.yml
+
+GitHub/RailsControllerRenderLiteral:
+  Exclude:
+    - app/controllers/**/*
+
+GitHub/RailsControllerRenderPathsExist:
+  Exclude:
+    - app/controllers/**/*
+

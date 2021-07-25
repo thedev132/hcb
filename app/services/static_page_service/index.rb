@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module StaticPageService
   class Index
     def initialize(current_user:)
@@ -15,7 +17,7 @@ module StaticPageService
     def invites
       @current_user.organizer_position_invites.pending
     end
-    
+
     # Counts
 
     def checks_count

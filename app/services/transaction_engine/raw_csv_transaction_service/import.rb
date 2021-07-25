@@ -1,5 +1,7 @@
-require 'csv'
-require 'open-uri'
+# frozen_string_literal: true
+
+require "csv"
+require "open-uri"
 
 module TransactionEngine
   module RawCsvTransactionService

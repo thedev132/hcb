@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Partners
   module Google
     module GSuite
@@ -9,7 +11,7 @@ module Partners
         end
 
         def run
-          directory_client.get_user(@email, projection: 'full')
+          directory_client.get_user(@email, projection: "full")
         end
       end
     end

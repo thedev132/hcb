@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateRawPendingBankFeeTransactions < ActiveRecord::Migration[6.0]
   def change
     create_table :raw_pending_bank_fee_transactions do |t|

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class DocumentsController < ApplicationController
   before_action :set_event, only: [:index, :new, :fiscal_sponsorship_letter]
   before_action :set_document, except: [:common_index, :index, :new, :create, :fiscal_sponsorship_letter]
@@ -25,10 +27,10 @@ class DocumentsController < ApplicationController
     authorize @document
 
     if @document.save
-      flash[:success] = 'Document successfully added'
+      flash[:success] = "Document successfully added"
       redirect_to @document
     else
-      render :new
+      render "new"
     end
   end
 
@@ -45,10 +47,10 @@ class DocumentsController < ApplicationController
     authorize @document
 
     if @document.save
-      flash[:success] = 'Document successfully updated'
+      flash[:success] = "Document successfully updated"
       redirect_to @document
     else
-      render :edit
+      render "edit"
     end
   end
 
@@ -77,11 +79,11 @@ class DocumentsController < ApplicationController
 
     respond_to do |format|
       format.pdf do
-        render pdf: 'fiscal_sponsorship_letter', page_height: '11in', page_width: '8.5in'
+        render pdf: "fiscal_sponsorship_letter", page_height: "11in", page_width: "8.5in"
       end
 
       format.png do
-        send_data ::DocumentService::PreviewFiscalSponsorshipLetter.new(event: @event).run, filename: 'fiscal_sponsorship_letter.png'
+        send_data ::DocumentService::PreviewFiscalSponsorshipLetter.new(event: @event).run, filename: "fiscal_sponsorship_letter.png"
       end
     end
   end

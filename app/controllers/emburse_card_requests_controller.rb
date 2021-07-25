@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class EmburseCardRequestsController < ApplicationController
   before_action :set_emburse_card_request, only: [:show, :edit, :update, :destroy]
   before_action :ensure_pending_request, only: [:update, :edit]
@@ -15,9 +17,9 @@ class EmburseCardRequestsController < ApplicationController
 
       emburse_card_requests.each do |cr|
         csv << attributes.map do |attr|
-          if attr == 'user_email'
+          if attr == "user_email"
             cr.creator.email
-          elsif attr == 'event_name'
+          elsif attr == "event_name"
             "##{cr.event.id} #{cr.event.name}"
           else
             cr.send(attr)
@@ -64,7 +66,7 @@ class EmburseCardRequestsController < ApplicationController
 
     @emburse_card_request.rejected_at = Time.current
     if @emburse_card_request.save
-      flash[:success] = 'EmburseCard request rejected.'
+      flash[:success] = "EmburseCard request rejected."
       redirect_to emburse_card_requests_path
     end
   end
@@ -78,10 +80,10 @@ class EmburseCardRequestsController < ApplicationController
     authorize @emburse_card_request
 
     if @emburse_card_request.save
-      flash[:success] = 'EmburseCard successfully requested!'
+      flash[:success] = "EmburseCard successfully requested!"
       redirect_to event_emburse_cards_overview_path(@event)
     else
-      render :new
+      render "new"
     end
   end
 
@@ -89,10 +91,10 @@ class EmburseCardRequestsController < ApplicationController
   def update
     authorize @emburse_card_request
     if @emburse_card_request.update(emburse_card_request_params)
-      flash[:success] = 'Changes to emburse_card request saved.'
+      flash[:success] = "Changes to emburse_card request saved."
       redirect_to @emburse_card_request
     else
-      render :edit
+      render "edit"
     end
   end
 
@@ -103,9 +105,9 @@ class EmburseCardRequestsController < ApplicationController
 
     @emburse_card_request.canceled_at = Time.now
     if @emburse_card_request.save
-      flash[:success] = 'Canceled your emburse_card request.'
+      flash[:success] = "Canceled your emburse_card request."
     else
-      flash[:error] = 'Failed to cancel emburse_card request.'
+      flash[:error] = "Failed to cancel emburse_card request."
     end
 
     redirect_to event_emburse_cards_overview_path(@emburse_card_request.event)
@@ -114,9 +116,9 @@ class EmburseCardRequestsController < ApplicationController
   private
 
   def ensure_pending_request
-    raise 'Requests cannot be edited after they are accepted' if @emburse_card_request.accepted_at.present?
-    raise 'Requests cannot be edited after they are rejected' if @emburse_card_request.rejected_at.present?
-    raise 'Requests cannot be edited after they are canceled' if @emburse_card_request.canceled_at.present?
+    raise "Requests cannot be edited after they are accepted" if @emburse_card_request.accepted_at.present?
+    raise "Requests cannot be edited after they are rejected" if @emburse_card_request.rejected_at.present?
+    raise "Requests cannot be edited after they are canceled" if @emburse_card_request.canceled_at.present?
   end
 
   # Use callbacks to share common setup or constraints between actions.

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module InvoiceService
   class Create
     def initialize(event_id:,

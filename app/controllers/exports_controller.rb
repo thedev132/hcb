@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ExportsController < ApplicationController
   def financial_export
     f = FinancialExport.new(user: current_user)
@@ -6,9 +8,9 @@ class ExportsController < ApplicationController
     @events = Event.all.order(id: :asc)
 
     if f.save
-      render xlsx: 'financial_export'
+      render xlsx: "financial_export"
     else
-      render_text 'Error!'
+      render_text "Error!"
     end
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class HcbCodePolicy < ApplicationPolicy
   def show?
     user&.admin? || present_in_events?

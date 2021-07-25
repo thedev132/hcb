@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Document < ApplicationRecord
   include FriendlyId
 
@@ -7,18 +9,18 @@ class Document < ApplicationRecord
   belongs_to :user
 
   has_one_attached :file
-  has_many :downloads, class_name: 'DocumentDownload'
+  has_many :downloads, class_name: "DocumentDownload"
 
   validates_presence_of :user, :name
   validate :ensure_file_attached
 
   scope :common, -> { where(event_id: nil) }
 
-  def preview_url(resize: '500x500')
+  def preview_url(resize: "500x500")
     return nil unless file
 
     case file.content_type
-    when 'application/pdf'
+    when "application/pdf"
       return nil unless file.previewable?
 
       file.preview(resize: resize)
@@ -32,7 +34,7 @@ class Document < ApplicationRecord
   # https://github.com/rails/rails/issues/31656). This manually checks if a
   # file is attached for the time being.
   def ensure_file_attached
-    errors.add(:file, 'must be attached') unless file.attached?
+    errors.add(:file, "must be attached") unless file.attached?
   end
 
   def slug_text

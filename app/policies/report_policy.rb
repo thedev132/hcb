@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ReportPolicy < ApplicationPolicy
   def fees?
     admin_or_teammember

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class LobService
   include Singleton
 
@@ -26,7 +28,7 @@ class LobService
   end
 
   def api_version
-    '2018-06-05'
+    "2018-06-05"
   end
 
   def client

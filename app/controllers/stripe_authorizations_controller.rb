@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class StripeAuthorizationsController < ApplicationController
   before_action :set_paper_trail_whodunnit
   skip_before_action :signed_in_user, only: [:receipt]

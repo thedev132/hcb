@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class RenameLoadCardRequestsToEmburseTransfer < ActiveRecord::Migration[6.0]
   def change
     rename_table :load_card_requests, :emburse_transfers

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class InvoicePolicy < ApplicationPolicy
   def all_index?
     user&.admin?
@@ -15,7 +17,7 @@ class InvoicePolicy < ApplicationPolicy
   end
 
   def new?
-    !unapproved? && ( is_public || admin_or_user )
+    !unapproved? && (is_public || admin_or_user)
   end
 
   def create?

@@ -6,7 +6,7 @@ RSpec.describe TransactionEngine::FriendlyMemoService::Generate do
   fixtures "canonical_transactions", "hashed_transactions", "canonical_hashed_mappings", "raw_plaid_transactions", "raw_emburse_transactions"
 
   let(:canonical_transaction) { canonical_transactions(:canonical_transaction1) }
-  
+
   let(:attrs) do
     {
       canonical_transaction: canonical_transaction,

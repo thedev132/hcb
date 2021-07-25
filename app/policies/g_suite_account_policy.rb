@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class GSuiteAccountPolicy < ApplicationPolicy
   def index?
     user.admin?

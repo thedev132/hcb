@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "csv"
 
 module CheckService
@@ -38,7 +40,7 @@ module CheckService
           positive_pay_account_number,
           check.check_number,
           (check.amount.to_f / 100),
-          check.created_at.strftime('%m-%d-%Y')
+          check.created_at.strftime("%m-%d-%Y")
         ]
       end
 

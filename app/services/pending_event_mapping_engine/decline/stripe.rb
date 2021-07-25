@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module PendingEventMappingEngine
   module Decline
     class Stripe

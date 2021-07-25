@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class DonationPayout < ApplicationRecord
   # most of this was copied from models/invoice.rb
 
@@ -14,7 +16,7 @@ class DonationPayout < ApplicationRecord
   # although it normally doesn't make sense for a paynot not to be linked to an donation,
   # Stripe's schema makes this possible, and when that happens, requiring donation<>payout breaks bank
   has_one :donation, inverse_of: :payout, foreign_key: :payout_id
-  has_one :t_transaction, class_name: 'Transaction'
+  has_one :t_transaction, class_name: "Transaction"
 
   validates_length_of :statement_descriptor, maximum: 22
   validates_uniqueness_of :statement_descriptor
@@ -78,7 +80,7 @@ class DonationPayout < ApplicationRecord
   def stripe_payout_params
     {
       amount: self.donation.payout_creation_balance_net,
-      currency: 'usd',
+      currency: "usd",
       description: self.description,
       destination: self.stripe_destination_id,
       method: self.method,

@@ -4,7 +4,7 @@ require "rails_helper"
 
 RSpec.describe GSuiteService::MarkVerifying, type: :model do
   fixtures  "g_suites"
-  
+
   let(:g_suite) { g_suites(:g_suite3) }
 
   let(:attrs) do
@@ -46,4 +46,3 @@ RSpec.describe GSuiteService::MarkVerifying, type: :model do
     end
   end
 end
-

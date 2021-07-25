@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CanonicalTransaction < ApplicationRecord
   include Commentable
   include Receiptable
@@ -112,7 +114,7 @@ class CanonicalTransaction < ApplicationRecord
     end
   end
 
-  def raw_pending_stripe_transaction 
+  def raw_pending_stripe_transaction
     nil
   end
 

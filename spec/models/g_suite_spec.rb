@@ -3,7 +3,7 @@
 require "rails_helper"
 
 RSpec.describe GSuite, type: :model do
-  fixtures "g_suites"
+  fixtures "g_suites", "partners"
 
   let(:g_suite) { g_suites(:g_suite1) }
 
@@ -114,4 +114,3 @@ RSpec.describe GSuite, type: :model do
     end
   end
 end
-

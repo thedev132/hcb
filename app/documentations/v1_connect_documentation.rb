@@ -37,7 +37,7 @@ class V1ConnectDocumentation < ApplicationDocumentation
           key :type, :string
         end
       end
-      
+
       parameter do
         key :name, :name
         key :in, :query

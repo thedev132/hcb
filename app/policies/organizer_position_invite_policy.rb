@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class OrganizerPositionInvitePolicy < ApplicationPolicy
   def index?
     user.admin? || record.event&.users&.include?(user)
@@ -13,10 +15,6 @@ class OrganizerPositionInvitePolicy < ApplicationPolicy
 
   def show?
     record.email == user.email || user.admin?
-  end
-
-  def new?
-    record.event&.users&.include?(user) || user.admin?
   end
 
   def accept?

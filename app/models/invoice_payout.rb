@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class InvoicePayout < ApplicationRecord
   # Stripe provides a field called type, which is reserved in rails for STI.
   # This removes the Rails reservation on 'type' for this class.
@@ -10,7 +12,7 @@ class InvoicePayout < ApplicationRecord
   # although it normally doesn't make sense for a paynot not to be linked to an invoice,
   # Stripe's schema makes this possible, and when that happens, requiring invoice<>payout breaks bank
   has_one :invoice, inverse_of: :payout, foreign_key: :payout_id
-  has_one :t_transaction, class_name: 'Transaction'
+  has_one :t_transaction, class_name: "Transaction"
 
   after_initialize :default_values
   before_create :create_stripe_payout
@@ -76,7 +78,7 @@ class InvoicePayout < ApplicationRecord
   def stripe_payout_params
     {
       amount: self.amount,
-      currency: 'usd',
+      currency: "usd",
       description: self.description,
       destination: self.stripe_destination_id,
       method: self.method,

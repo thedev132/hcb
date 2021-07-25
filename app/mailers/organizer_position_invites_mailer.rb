@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class OrganizerPositionInvitesMailer < ApplicationMailer
   def notify
     @invite = params[:invite]

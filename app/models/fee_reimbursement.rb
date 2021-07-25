@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 class FeeReimbursement < ApplicationRecord
   include Commentable
 
   has_one :invoice, required: false
   has_one :donation, required: false
-  has_one :t_transaction, class_name: 'Transaction', inverse_of: :fee_reimbursement
+  has_one :t_transaction, class_name: "Transaction", inverse_of: :fee_reimbursement
 
   before_create :default_values
 
@@ -28,17 +30,17 @@ class FeeReimbursement < ApplicationRecord
   end
 
   def status
-    return 'completed' if completed?
-    return 'pending' if pending?
+    return "completed" if completed?
+    return "pending" if pending?
 
-    'unprocessed'
+    "unprocessed"
   end
 
   def status_color
-    return 'success' if completed?
-    return 'info' if pending?
+    return "success" if completed?
+    return "info" if pending?
 
-    'error'
+    "error"
   end
 
   def event

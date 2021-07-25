@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module CheckService
   class Cancel
     def initialize(check_id:)

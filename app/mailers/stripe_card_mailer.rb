@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class StripeCardMailer < ApplicationMailer
   def physical_card_ordered
     @card = StripeCard.find params[:card_id]

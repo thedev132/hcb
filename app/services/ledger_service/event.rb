@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module LedgerService
   class Event
     def initialize(event_id:)

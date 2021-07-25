@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class RawPendingOutgoingCheckTransaction < ApplicationRecord
   monetize :amount_cents
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AchTransfersController < ApplicationController
   before_action :set_ach_transfer, except: [:new, :create, :index]
   before_action :set_event, only: [:new, :create]
@@ -25,7 +27,7 @@ class AchTransfersController < ApplicationController
 
       format.pdf do
         if @ach_transfer.deposited?
-          render pdf: "ACH Transfer ##{@ach_transfer.id} Confirmation Letter (#{@event.name} to #{@ach_transfer.recipient_name} on #{@ach_transfer.canonical_pending_transaction.date.strftime("%B #{@ach_transfer.canonical_pending_transaction.date.day.ordinalize}, %Y")})", page_height: '11in', page_width: '8.5in'
+          render pdf: "ACH Transfer ##{@ach_transfer.id} Confirmation Letter (#{@event.name} to #{@ach_transfer.recipient_name} on #{@ach_transfer.canonical_pending_transaction.date.strftime("%B #{@ach_transfer.canonical_pending_transaction.date.day.ordinalize}, %Y")})", page_height: "11in", page_width: "8.5in"
         else
           redirect_to @ach_transfer
         end
@@ -34,7 +36,7 @@ class AchTransfersController < ApplicationController
       # works, but not being used at the moment
       format.png do
         if @ach_transfer.deposited?
-          send_data ::AchTransferService::PreviewTransferConfirmationLetter.new(ach_transfer: @ach_transfer, event: @event).run, filename: 'transfer_confirmation_letter.png'
+          send_data ::AchTransferService::PreviewTransferConfirmationLetter.new(ach_transfer: @ach_transfer, event: @event).run, filename: "transfer_confirmation_letter.png"
         else
           redirect_to @ach_transfer
         end
@@ -66,7 +68,7 @@ class AchTransfersController < ApplicationController
     }
     ach_transfer = AchTransferService::Create.new(attrs).run
 
-    flash[:success] = 'ACH Transfer successfully submitted.'
+    flash[:success] = "ACH Transfer successfully submitted."
 
     redirect_to event_transfers_path(@event)
   rescue ArgumentError, ActiveRecord::RecordInvalid => e

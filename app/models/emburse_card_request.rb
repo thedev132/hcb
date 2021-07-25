@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 class EmburseCardRequest < ApplicationRecord
   include Rejectable
   include Commentable
 
-  belongs_to :creator, class_name: 'User'
-  belongs_to :fulfilled_by, class_name: 'User', required: false
+  belongs_to :creator, class_name: "User"
+  belongs_to :fulfilled_by, class_name: "User", required: false
   belongs_to :event
   belongs_to :emburse_card, required: false
 
@@ -16,11 +18,11 @@ class EmburseCardRequest < ApplicationRecord
   scope :under_review, -> { where(rejected_at: nil, canceled_at: nil, accepted_at: nil) }
 
   def status
-    return 'rejected' if rejected_at.present?
-    return 'canceled' if canceled_at.present?
-    return 'accepted' if accepted_at.present?
+    return "rejected" if rejected_at.present?
+    return "canceled" if canceled_at.present?
+    return "accepted" if accepted_at.present?
 
-    'under review'
+    "under review"
   end
 
   def status_badge_type

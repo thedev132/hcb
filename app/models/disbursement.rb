@@ -1,11 +1,13 @@
+# frozen_string_literal: true
+
 class Disbursement < ApplicationRecord
   include PgSearch::Model
   pg_search_scope :search_name, against: [:name]
 
   belongs_to :event
-  belongs_to :source_event, class_name: 'Event'
+  belongs_to :source_event, class_name: "Event"
 
-  has_many :t_transactions, class_name: 'Transaction', inverse_of: :disbursement
+  has_many :t_transactions, class_name: "Transaction", inverse_of: :disbursement
 
   validates_presence_of :source_event_id,
                         :event_id,
@@ -88,15 +90,15 @@ class Disbursement < ApplicationRecord
 
   def state_text
     if fulfilled?
-      'fulfilled'
+      "fulfilled"
     elsif processed?
-      'processing'
+      "processing"
     elsif rejected?
-      'rejected'
+      "rejected"
     elsif errored?
-      'errored'
+      "errored"
     else
-      'pending'
+      "pending"
     end
   end
 

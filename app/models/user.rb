@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class User < ApplicationRecord
   include Commentable
   extend FriendlyId
@@ -61,7 +63,7 @@ class User < ApplicationRecord
     @first_name ||= begin
       return nil unless namae.given || namae.particle
 
-      (namae.given || namae.particle).split(' ').first
+      (namae.given || namae.particle).split(" ").first
     end
   end
 
@@ -69,12 +71,12 @@ class User < ApplicationRecord
     @last_name ||= begin
       return nil unless namae.family
 
-      namae.family.split(' ').last
+      namae.family.split(" ").last
     end
   end
 
   def initial_name
-    @initial_name ||= "#{(first_name || last_name)[0..20]} #{(last_name || first_name)[0,1]}"
+    @initial_name ||= "#{(first_name || last_name)[0..20]} #{(last_name || first_name)[0, 1]}"
   end
 
   def safe_name
@@ -104,11 +106,11 @@ class User < ApplicationRecord
   end
 
   def name_simplified
-    name.split(/[^[[:word:]]]+/).join(' ')
+    name.split(/[^[[:word:]]]+/).join(" ")
   end
 
   def email_handle
-    @email_handle ||= email.split('@').first
+    @email_handle ||= email.split("@").first
   end
 
   def create_session_token
@@ -124,10 +126,10 @@ class User < ApplicationRecord
 
   def profile_picture_format
     return unless profile_picture.attached?
-    return if profile_picture.blob.content_type.start_with? 'image/'
+    return if profile_picture.blob.content_type.start_with? "image/"
 
     profile_picture.purge_later
-    errors.add(:profile_picture, 'needs to be an image')
+    errors.add(:profile_picture, "needs to be an image")
   end
 
   def format_number

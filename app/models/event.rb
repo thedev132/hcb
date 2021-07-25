@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Event < ApplicationRecord
   include Hashid::Rails
   extend FriendlyId
@@ -33,7 +35,7 @@ class Event < ApplicationRecord
         where fr.fee_applies is true and t.deleted_at is null and e.transaction_engine_v2_at is null
         group by fr.event_id
 
-        ) q1 
+        ) q1
 
         left outer join (
         -- step 2: calculate total_fee_payments per event
@@ -53,21 +55,21 @@ class Event < ApplicationRecord
   end
 
   scope :pending_fees, -> do
-    where("(last_fee_processed_at is null or last_fee_processed_at <= ?) and id in (?)", 5.days.ago, self.event_ids_with_pending_fees_greater_than_100.to_a.map {|a| a["event_id"] })
+    where("(last_fee_processed_at is null or last_fee_processed_at <= ?) and id in (?)", 5.days.ago, self.event_ids_with_pending_fees_greater_than_100.to_a.map { |a| a["event_id"] })
   end
 
   scope :event_ids_with_pending_fees_greater_than_0_v2, -> do
     query = <<~SQL
       ;select event_id, fee_balance from (
-      select 
+      select
       q1.event_id,
-      COALESCE(q1.sum, 0) as total_fees, 
+      COALESCE(q1.sum, 0) as total_fees,
       COALESCE(q2.sum, 0) as total_fee_payments,
-      COALESCE(q1.sum, 0) + COALESCE(q2.sum, 0) as fee_balance 
+      COALESCE(q1.sum, 0) + COALESCE(q2.sum, 0) as fee_balance
 
       from (
-          select 
-          cem.event_id, 
+          select
+          cem.event_id,
           COALESCE(sum(f.amount_cents_as_decimal), 0) as sum
           from canonical_event_mappings cem
           inner join fees f on cem.id = f.canonical_event_mapping_id
@@ -75,8 +77,8 @@ class Event < ApplicationRecord
           where e.transaction_engine_v2_at is not null
           group by cem.event_id
       ) as q1 left outer join (
-          select 
-          cem.event_id, 
+          select
+          cem.event_id,
           COALESCE(sum(ct.amount_cents), 0) as sum
           from canonical_event_mappings cem
           inner join fees f on cem.id = f.canonical_event_mapping_id
@@ -97,7 +99,7 @@ class Event < ApplicationRecord
   end
 
   scope :pending_fees_v2, -> do
-    where("(last_fee_processed_at is null or last_fee_processed_at <= ?) and id in (?)", 5.days.ago, self.event_ids_with_pending_fees_greater_than_0_v2.to_a.map {|a| a["event_id"] })
+    where("(last_fee_processed_at is null or last_fee_processed_at <= ?) and id in (?)", 5.days.ago, self.event_ids_with_pending_fees_greater_than_0_v2.to_a.map { |a| a["event_id"] })
   end
 
   aasm do
@@ -116,7 +118,7 @@ class Event < ApplicationRecord
 
   friendly_id :name, use: :slugged
 
-  belongs_to :point_of_contact, class_name: 'User', optional: true
+  belongs_to :point_of_contact, class_name: "User", optional: true
   belongs_to :partner
 
   has_many :organizer_position_invites
@@ -182,7 +184,7 @@ class Event < ApplicationRecord
   def fee_payment_memo
     "#{self.name} Bank Fee"
   end
-  
+
   def admin_dropdown_description
     "#{name} - #{id}"
   end
@@ -207,7 +209,7 @@ class Event < ApplicationRecord
   def emburse_balance
     completed_t = self.emburse_transactions.completed.sum(:amount)
     # We're including only pending charges on emburse_cards so organizers have a conservative estimate of their balance
-    pending_t = self.emburse_transactions.pending.where('amount < 0').sum(:amount)
+    pending_t = self.emburse_transactions.pending.where("amount < 0").sum(:amount)
     completed_t + pending_t
   end
 
@@ -342,8 +344,8 @@ class Event < ApplicationRecord
   def point_of_contact_is_admin
     return unless point_of_contact # for remote partner created events
     return if point_of_contact&.admin?
-    
-    errors.add(:point_of_contact, 'must be an admin')
+
+    errors.add(:point_of_contact, "must be an admin")
   end
 
   def total_fees

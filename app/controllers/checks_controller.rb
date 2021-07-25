@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ChecksController < ApplicationController
   before_action :set_check, except: %i[index new create export]
   before_action :set_event, only: %i[new create]
@@ -21,7 +23,7 @@ class ChecksController < ApplicationController
 
     # 1. Update/Create LobAddress
     lob_address_params = filtered_params[:lob_address_attributes].merge(event: @event)
-    lob_address_params['country'] = 'US'
+    lob_address_params["country"] = "US"
     @lob_address = LobAddress.find_or_initialize_by(id: lob_address_params[:id], event: @event)
     @lob_address.update!(lob_address_params)
 
@@ -50,7 +52,7 @@ class ChecksController < ApplicationController
 
   def show
     authorize @check
-      
+
     # Comments
     @hcb_code = HcbCode.find_or_create_by(hcb_code: @check.hcb_code)
   end

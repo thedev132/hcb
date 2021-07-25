@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module GSuiteAccountService
   class Create
     def initialize(g_suite:, current_user:,

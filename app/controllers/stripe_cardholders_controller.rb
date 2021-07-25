@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class StripeCardholdersController < ApplicationController
   def new
     @event = Event.friendly.find params[:event_id]
@@ -14,7 +16,7 @@ class StripeCardholdersController < ApplicationController
     if @stripe_cardholder.save
       redirect_to event_stripe_cards_new_path(event_id: @event.slug, stripe_cardholder_id: @stripe_cardholder.id)
     else
-      render :new
+      render "new"
     end
   end
 
@@ -23,9 +25,9 @@ class StripeCardholdersController < ApplicationController
 
     authorize @stripe_cardholder
     if @stripe_cardholder.save
-      redirect_to 
+      redirect_to
     else
-      render 
+      render
     end
   end
 
@@ -36,7 +38,7 @@ class StripeCardholdersController < ApplicationController
     if @stripe_cardholder.update(stripe_cardholder_params)
       redirect_back(fallback_location: root_path)
     else
-      render 'users/edit'
+      render "users/edit"
     end
   end
 

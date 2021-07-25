@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module CheckService
   class MarkInTransitAndProcessed
     def initialize(check_id:)

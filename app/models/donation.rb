@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Donation < ApplicationRecord
   has_paper_trail
 
@@ -9,7 +11,7 @@ class Donation < ApplicationRecord
 
   belongs_to :event
   belongs_to :fee_reimbursement, required: false
-  belongs_to :payout, class_name: 'DonationPayout', required: false
+  belongs_to :payout, class_name: "DonationPayout", required: false
 
   before_create :create_stripe_payment_intent
   before_create :assign_unique_hash
@@ -146,7 +148,7 @@ class Donation < ApplicationRecord
 
   def stripe_obj
     @stripe_donation_obj ||=
-      StripeService::PaymentIntent.retrieve(id: stripe_payment_intent_id, expand: ['payment_method']).to_hash
+      StripeService::PaymentIntent.retrieve(id: stripe_payment_intent_id, expand: ["payment_method"]).to_hash
   rescue => e
     {}
   end
@@ -203,9 +205,9 @@ class Donation < ApplicationRecord
     was = saved_changes[:status][0] # old value of status
     now = saved_changes[:status][1] # new value of status
 
-    if was != 'succeeded' && now == 'succeeded'
+    if was != "succeeded" && now == "succeeded"
       # send special email on first donation paid
-      if self.event.donations.select { |d| d.status == 'succeeded' }.count == 1
+      if self.event.donations.select { |d| d.status == "succeeded" }.count == 1
         DonationMailer.with(donation: self).first_donation_notification.deliver_later
         return
       end

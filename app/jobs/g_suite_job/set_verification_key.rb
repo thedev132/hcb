@@ -6,7 +6,7 @@ module GSuiteJob
       @g_suite_id = g_suite_id
       key = GSuiteService::GetVerificationKey.new(g_suite_id: g_suite_id).run
 
-      GSuiteService::Update.new(g_suite_id:g_suite.id, domain: g_suite.domain, verification_key: key).run
+      GSuiteService::Update.new(g_suite_id: g_suite.id, domain: g_suite.domain, verification_key: key).run
     end
 
     def g_suite

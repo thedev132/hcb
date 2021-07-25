@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class RemoveColumnsFromRawPendingOutgoingCheckTransactions < ActiveRecord::Migration[6.0]
   disable_ddl_transaction!
 

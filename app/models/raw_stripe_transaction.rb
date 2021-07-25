@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 class RawStripeTransaction < ApplicationRecord
   has_many :hashed_transactions
 
   def memo
-    @memo ||= stripe_transaction.dig('merchant_data', 'name')
+    @memo ||= stripe_transaction.dig("merchant_data", "name")
   end
 
   def likely_event_id
@@ -12,6 +14,6 @@ class RawStripeTransaction < ApplicationRecord
   private
 
   def stripe_card_id
-    stripe_transaction.dig('card')
+    stripe_transaction.dig("card")
   end
 end

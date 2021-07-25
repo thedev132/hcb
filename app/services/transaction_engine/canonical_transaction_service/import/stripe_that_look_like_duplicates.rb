@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TransactionEngine
   module CanonicalTransactionService
     module Import
@@ -24,7 +26,7 @@ module TransactionEngine
         private
 
         def unprocessed_stripe_with_duplicate_hashes
-          stripe_hts.where('id in (?)', diff_ht_ids)
+          stripe_hts.where("id in (?)", diff_ht_ids)
         end
 
         def diff_ht_ids

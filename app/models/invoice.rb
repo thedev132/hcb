@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Invoice < ApplicationRecord
   has_paper_trail
 
@@ -26,11 +28,11 @@ class Invoice < ApplicationRecord
   belongs_to :sponsor
   accepts_nested_attributes_for :sponsor
 
-  belongs_to :creator, class_name: 'User'
-  belongs_to :manually_marked_as_paid_user, class_name: 'User', required: false
-  belongs_to :payout, class_name: 'InvoicePayout', required: false
+  belongs_to :creator, class_name: "User"
+  belongs_to :manually_marked_as_paid_user, class_name: "User", required: false
+  belongs_to :payout, class_name: "InvoicePayout", required: false
   belongs_to :fee_reimbursement, required: false
-  belongs_to :archived_by, class_name: 'User', required: false
+  belongs_to :archived_by, class_name: "User", required: false
 
   has_one_attached :manually_marked_as_paid_attachment
 
@@ -49,10 +51,10 @@ class Invoice < ApplicationRecord
   end
 
   enum status: {
-    draft: 'draft', # only 3 invoices [203, 204, 128] leftover from when drafts existed
-    open: 'open',
-    paid: 'paid',
-    void: 'void'
+    draft: "draft", # only 3 invoices [203, 204, 128] leftover from when drafts existed
+    open: "open",
+    paid: "paid",
+    void: "void"
   }
 
   validates_presence_of :item_description, :item_amount, :due_date
@@ -135,22 +137,22 @@ class Invoice < ApplicationRecord
 
   def state_text_deprecated
     if completed_deprecated?
-      'Paid'
+      "Paid"
     elsif paid?
-      'Pending'
+      "Pending"
     elsif archived?
-      'Archived'
+      "Archived"
     elsif due_date < Time.current
-      'Overdue'
+      "Overdue"
     elsif due_date < 3.days.from_now
-      'Due soon'
+      "Due soon"
     else
-      'Sent'
+      "Sent"
     end
   end
 
   def state_icon
-    'checkmark' if state_text == 'Paid'
+    "checkmark" if state_text == "Paid"
   end
 
   def filter_data
@@ -194,7 +196,7 @@ class Invoice < ApplicationRecord
     details = inv&.charge&.payment_method_details[self.payment_method_type]
     return unless details
 
-    if type == 'card'
+    if type == "card"
       self.payment_method_card_brand = details.brand
       self.payment_method_card_checks_address_line1_check = details.checks.address_line1_check
       self.payment_method_card_checks_address_postal_code_check = details.checks.address_postal_code_check
@@ -204,7 +206,7 @@ class Invoice < ApplicationRecord
       self.payment_method_card_exp_year = details.exp_year
       self.payment_method_card_funding = details.funding
       self.payment_method_card_last4 = details.last4
-    elsif type == 'ach_credit_transfer'
+    elsif type == "ach_credit_transfer"
       self.payment_method_ach_credit_transfer_bank_name = details.bank_name
       self.payment_method_ach_credit_transfer_routing_number = details.routing_number
       self.payment_method_ach_credit_transfer_account_number = details.account_number
@@ -213,9 +215,9 @@ class Invoice < ApplicationRecord
   end
 
   def stripe_dashboard_url
-    url = 'https://dashboard.stripe.com'
+    url = "https://dashboard.stripe.com"
 
-    url += '/test' if StripeService.mode == :test
+    url += "/test" if StripeService.mode == :test
 
     url += "/invoices/#{self.stripe_invoice_id}"
 
@@ -325,9 +327,9 @@ class Invoice < ApplicationRecord
     was = saved_changes[:status][0] # old value of status
     now = saved_changes[:status][1] # new value of status
 
-    if was != 'paid' && now == 'paid'
+    if was != "paid" && now == "paid"
       # send special email on first invoice paid
-      if self.sponsor.event.invoices.select { |i| i.status == 'paid' }.count == 1
+      if self.sponsor.event.invoices.select { |i| i.status == "paid" }.count == 1
         InvoiceMailer.with(invoice: self).first_payment_notification.deliver_later
         return
       end
@@ -339,7 +341,7 @@ class Invoice < ApplicationRecord
   def stripe_invoice_item_params
     {
       customer: self.sponsor.stripe_customer_id,
-      currency: 'usd',
+      currency: "usd",
       description: self.item_description,
       amount: self.item_amount
     }
@@ -349,7 +351,7 @@ class Invoice < ApplicationRecord
     {
       customer: self.sponsor.stripe_customer_id,
       auto_advance: self.auto_advance,
-      billing: 'send_invoice',
+      billing: "send_invoice",
       due_date: self.due_date.to_i, # convert to unixtime
       description: self.memo,
       status: self.status,
@@ -360,7 +362,7 @@ class Invoice < ApplicationRecord
               "Please pay the amount to the order of The Hack Foundation, and include '#{self.sponsor.event.name} (##{self.sponsor.event.id})' in the memo. Checks can be mailed to:\n\n"\
               "#{self.sponsor.event.name} (##{self.sponsor.event.id}) c/o The Hack Foundation\n"\
               "8605 Santa Monica Blvd #86294\n"\
-              'West Hollywood, CA 90069'
+              "West Hollywood, CA 90069"
     }
   end
 

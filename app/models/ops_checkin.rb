@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class OpsCheckin < ApplicationRecord
-  belongs_to :point_of_contact, class_name: 'User'
+  belongs_to :point_of_contact, class_name: "User"
   validates_presence_of :point_of_contact
 
   def self.streak

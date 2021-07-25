@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class DocumentDownload < ApplicationRecord
   belongs_to :document, inverse_of: :downloads
   belongs_to :user

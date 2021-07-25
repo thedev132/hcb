@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class EmburseTransaction < ApplicationRecord
   include Receiptable
   include Commentable
@@ -9,7 +11,7 @@ class EmburseTransaction < ApplicationRecord
 
   paginates_per 100
 
-  scope :undeclined, -> { where.not(state: 'declined') }
+  scope :undeclined, -> { where.not(state: "declined") }
   scope :under_review, -> { where(event_id: nil).undeclined }
   scope :awaiting_receipt, -> { missing_receipt.completed.where.not(amount: 0) }
   scope :unified_list, -> { undeclined }
@@ -34,9 +36,9 @@ class EmburseTransaction < ApplicationRecord
 
   def memo
     @memo ||= begin
-      return 'Transfer from bank account' if amount > 0
+      return "Transfer from bank account" if amount > 0
 
-      merchant_name || 'Transfer back to bank account'
+      merchant_name || "Transfer back to bank account"
     end
   end
 
@@ -49,11 +51,11 @@ class EmburseTransaction < ApplicationRecord
   end
 
   def undeclined?
-    state != 'declined'
+    state != "declined"
   end
 
   def completed?
-    state == 'completed'
+    state == "completed"
   end
 
   def emburse_path
@@ -79,10 +81,10 @@ class EmburseTransaction < ApplicationRecord
 
   def status_text
     s = state.to_sym
-    return 'Completed' if s == :completed
-    return 'Declined' if s == :declined
+    return "Completed" if s == :completed
+    return "Declined" if s == :declined
 
-    'Pending'
+    "Pending"
   end
 
   def is_transfer?
@@ -90,10 +92,10 @@ class EmburseTransaction < ApplicationRecord
   end
 
   def self.total_emburse_card_transaction_volume
-    -self.where('amount < 0').completed.sum(:amount)
+    -self.where("amount < 0").completed.sum(:amount)
   end
 
   def self.total_emburse_card_transaction_count
-    self.where('amount < 0').completed.size
+    self.where("amount < 0").completed.size
   end
 end

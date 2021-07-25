@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Partners
   module Lob
     module Checks
@@ -39,9 +41,9 @@ module Partners
 
         def list_attrs(after:)
           {
-            after: after,
-            date_created: { gte: date_created_gte },
-            limit: 100,
+            :after => after,
+            :date_created => { gte: date_created_gte },
+            :limit => 100,
             "include[]" => "total_count"
           }.compact
         end

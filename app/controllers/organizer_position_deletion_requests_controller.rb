@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class OrganizerPositionDeletionRequestsController < ApplicationController
   before_action :set_opdr, only: [:show, :close, :open]
 
@@ -35,24 +37,24 @@ class OrganizerPositionDeletionRequestsController < ApplicationController
     authorize @opdr
 
     if @opdr.save
-      flash[:success] = 'Removal request accepted. We’ll be in touch shortly.'
+      flash[:success] = "Removal request accepted. We’ll be in touch shortly."
       redirect_to @event
     else
-      render :new
+      render "new"
     end
   end
 
   def close
     authorize OrganizerPositionDeletionRequest
     @opdr.close current_user
-    flash[:success] = 'Removal request closed.'
+    flash[:success] = "Removal request closed."
     redirect_to organizer_position_deletion_requests_path
   end
 
   def open
     authorize OrganizerPositionDeletionRequest
     @opdr.open
-    flash[:success] = 'Removal request re-opened.'
+    flash[:success] = "Removal request re-opened."
     redirect_to @opdr
   end
 

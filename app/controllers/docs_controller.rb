@@ -31,7 +31,7 @@ class DocsController < ActionController::Base
     V1ConnectDocumentation,
     V1DonationsDocumentation,
     V1OrganizationsDocumentation,
-		self
+    self
   ].freeze
 
   def api

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "google/apis/admin_directory_v1"
 
 module Partners

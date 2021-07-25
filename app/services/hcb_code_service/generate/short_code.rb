@@ -21,7 +21,7 @@ module HcbCodeService
       private
 
       def generate_unique_short_code_candidate
-        (0...key_length).map{ charset[rand(charset.size)] }.join
+        (0...key_length).map { charset[rand(charset.size)] }.join
       end
 
       def key_length

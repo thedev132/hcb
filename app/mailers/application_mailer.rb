@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 class ApplicationMailer < ActionMailer::Base
   OPERATIONS_EMAIL = "bank-alert@hackclub.com"
 
-  default from: 'Hack Club Bank <bank@hackclub.com>'
-  layout 'mailer'
+  default from: "Hack Club Bank <bank@hackclub.com>"
+  layout "mailer"
 
   # allow usage of application helper
   helper :application

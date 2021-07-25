@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module GSuiteService
   class Create
     def initialize(current_user:, event_id:, domain:)

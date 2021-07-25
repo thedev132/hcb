@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CommentsController < ApplicationController
   before_action :set_comment, only: [:edit, :update]
   before_action :set_commentable, except: [:edit, :update]
@@ -14,10 +16,10 @@ class CommentsController < ApplicationController
     authorize @comment
 
     if @comment.save
-      flash[:success] = 'Note created.'
+      flash[:success] = "Note created."
       redirect_to @commentable
     else
-      render :new
+      render "new"
     end
   end
 
@@ -33,13 +35,13 @@ class CommentsController < ApplicationController
     authorize @comment
 
     if @comment.save
-      flash[:success] = 'Note successfully updated'
+      flash[:success] = "Note successfully updated"
       # @commentable is not guaranteed to have a #show,
       # but all commentables effectively have a #show
       # because that's the only place comments show up as a list.
       redirect_to @comment.commentable
     else
-      render :edit
+      render "edit"
     end
   end
 
@@ -52,8 +54,8 @@ class CommentsController < ApplicationController
   # Given a route "/transactions/25/comments", this method sets @commentable to
   # Transaction with ID 25
   def set_commentable
-    resource = params[:comment][:commentable_type] || request.path.split('/')[1]
-    id =       params[:comment][:commentable_id]   || request.path.split('/')[2]
+    resource = params[:comment][:commentable_type] || request.path.split("/")[1]
+    id =       params[:comment][:commentable_id]   || request.path.split("/")[2]
 
     @commentable = resource.singularize.classify.constantize.find(id)
   end

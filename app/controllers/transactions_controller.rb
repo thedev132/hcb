@@ -1,4 +1,6 @@
-require 'csv'
+# frozen_string_literal: true
+
+require "csv"
 
 class TransactionsController < ApplicationController
   skip_before_action :signed_in_user
@@ -48,7 +50,7 @@ class TransactionsController < ApplicationController
 
       authorize @transaction
 
-      render :show_deprecated
+      render "show_deprecated"
     rescue ActiveRecord::RecordNotFound => e
       @transaction = TransactionEngine::Transaction::Show.new(canonical_transaction_id: params[:id]).run
 
@@ -65,7 +67,7 @@ class TransactionsController < ApplicationController
     @event = @transaction.event
 
     # so the fee relationship fields render
-    if @transaction.fee_relationship == nil
+    if @transaction.fee_relationship.nil?
       @transaction.fee_relationship = FeeRelationship.new
 
       # If a new transaction is positive, we would probably charge a fee
@@ -118,7 +120,7 @@ class TransactionsController < ApplicationController
 
         redirect_to @transaction
       else
-        render :edit
+        render "edit"
       end
     end
   end
@@ -153,12 +155,12 @@ class TransactionsController < ApplicationController
       t = {}
       @attributes.each do |attr|
         t[attr] = case attr
-        when 'account_balance'
+        when "account_balance"
           prev_account_balance = account_balance
           account_balance -= transaction.amount
 
           account_balance.to_i
-        when 'fee_balance'
+        when "fee_balance"
           previous_transactions = @transactions.select { |t| t.date <= transaction.date }
 
           fees_occured = previous_transactions.map { |t| t.fee_relationship.fee_applies ? t.fee_relationship.fee_amount : 0 }.sum
@@ -178,11 +180,11 @@ class TransactionsController < ApplicationController
   def generate_csv
     CSV.generate(headers: true) do |csv|
       csv << @attributes.map do |k|
-        next 'Raw Name' if k == 'name'
-        next 'Fiscal Sponsorship Fee' if k == 'fee'
-        next 'Fiscal Sponsorship Fee Balance' if k == 'fee_balance'
+        next "Raw Name" if k == "name"
+        next "Fiscal Sponsorship Fee" if k == "fee"
+        next "Fiscal Sponsorship Fee Balance" if k == "fee_balance"
 
-        k.sub('_', ' ').gsub(/\S+/, &:capitalize)
+        k.sub("_", " ").gsub(/\S+/, &:capitalize)
       end
 
       account_balance = @event.balance
@@ -191,14 +193,14 @@ class TransactionsController < ApplicationController
         csv << @attributes.map do |attr|
           if @attributes_to_currency.include? attr
             view_context.render_money transaction.send(attr)
-          elsif attr == 'fee_balance'
+          elsif attr == "fee_balance"
             previous_transactions = @transactions.select { |t| t.date <= transaction.date }
 
             fees_occured = previous_transactions.map { |t| t.fee_relationship.fee_applies ? t.fee_relationship.fee_amount : 0 }.sum
             fee_paid = previous_transactions.map { |t| t.fee_relationship.is_fee_payment ? t.amount : 0 }.sum
 
             view_context.render_money (fees_occured + fee_paid)
-          elsif attr == 'account_balance'
+          elsif attr == "account_balance"
             prev_account_balance = account_balance
             account_balance -= transaction.amount
 
