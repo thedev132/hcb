@@ -1,7 +1,7 @@
 name: Zeitwerk Check
 on: [push]
 jobs:
-  zeitwerk-test:
+  zeitwerk:
     name: Zeitwerk Check
     runs-on: ubuntu-latest
     steps:
