@@ -1,0 +1,18 @@
+name: Rails tests
+on: [push, pull_request]
+jobs:
+  rubocop-test:
+    name: Rubocop
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+			- name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "2.7.3"
+					bundler-cache: true
+      - name: Install Rubocop
+        run: gem install rubocop
+      - name: Run Rubocop
+        run: rubocop
