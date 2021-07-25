@@ -53,7 +53,7 @@ class Event < ApplicationRecord
   end
 
   scope :pending_fees, -> do
-    where("(last_fee_processed_at is null or last_fee_processed_at <= ?) and id in (?)", 20.days.ago, self.event_ids_with_pending_fees_greater_than_100.to_a.map {|a| a["event_id"] })
+    where("(last_fee_processed_at is null or last_fee_processed_at <= ?) and id in (?)", 5.days.ago, self.event_ids_with_pending_fees_greater_than_100.to_a.map {|a| a["event_id"] })
   end
 
   scope :event_ids_with_pending_fees_greater_than_0_v2, -> do
@@ -332,7 +332,7 @@ class Event < ApplicationRecord
   private
 
   def min_waiting_time_between_fees
-    20.days.ago
+    5.days.ago
   end
 
   def default_values

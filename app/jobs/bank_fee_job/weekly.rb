@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 module BankFeeJob
-  class Monthly < ApplicationJob
+  class Weekly < ApplicationJob
     def perform
-      BankFeeService::Monthly.new.run
+      BankFeeService::Weekly.new.run
     end
   end
 end
