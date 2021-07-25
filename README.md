@@ -4,8 +4,6 @@ Bank is a tool for hackers to hack on the real world, like GitHub, but for build
 
 ![Hack Club Bank](hack_club_bank_laser.gif)
 
-[![Zeitwerk Check](https://github.com/hackclub/bank/workflows/Zeitwerk%20Check/badge.svg?branch=main)](https://github.com/hackclub/bank/actions/workflows/zeitwerk_check.yml)
-
 ## Getting Started
 
 Install [rbenv](https://github.com/rbenv/rbenv)
