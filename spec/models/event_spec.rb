@@ -11,8 +11,8 @@ RSpec.describe Event, type: :model do
     expect(event).to be_valid
   end
 
-  it "defaults to unapproved" do
-    expect(event).to be_unapproved
+  it "defaults to pending" do
+    expect(event).to be_pending
   end
 
   describe "#transaction_engine_v2_at" do
@@ -29,7 +29,7 @@ RSpec.describe Event, type: :model do
     it "calculates a value from canonical transactions" do
       result = event.balance_v2_cents
 
-      expect(result).to eql(200)
+      expect(result).to eql(100)
     end
   end
 
