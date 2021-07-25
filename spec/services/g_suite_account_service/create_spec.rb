@@ -43,7 +43,11 @@ RSpec.describe GSuiteAccountService::Create, type: :model do
   end
 
   it 'sends 1 mailer' do
-    g_suite_account = service.run
+    g_suite_account = nil
+
+    perform_enqueued_jobs do
+      g_suite_account = service.run
+    end
 
     mail = ActionMailer::Base.deliveries.last
 
