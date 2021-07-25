@@ -1,8 +1,38 @@
-name: Zeitwerk Check
+name: CI
 on: [push]
 jobs:
+  rubocop:
+    name: Rubocop
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "2.7.3"
+          bundler-cache: true
+      - name: Run Rubocop
+        env:
+          RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+        run: bundle exec rubocop
+  rspec:
+    name: Rubocop
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "2.7.3"
+          bundler-cache: true
+      - name: Run RSpec
+        env:
+          RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+        run: bundle exec rspec
   zeitwerk:
-    name: Zeitwerk Check
+    name: Zeitwerk
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
