@@ -19,7 +19,7 @@ module ApiService
       def clean_organization_identifier
         @organization_identifier.to_s.strip
       end
-      
+
     end
   end
 end

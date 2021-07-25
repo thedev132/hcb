@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module EventMappingEngine
   class Nuke
     def run

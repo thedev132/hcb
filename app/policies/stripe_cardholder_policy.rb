@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class StripeCardholderPolicy < ApplicationPolicy
   def new?
     user&.admin? || record&.user = user

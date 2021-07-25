@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module PendingTransactionEngine
   module FriendlyMemoService
     class Generate
@@ -61,4 +63,3 @@ module PendingTransactionEngine
     end
   end
 end
-

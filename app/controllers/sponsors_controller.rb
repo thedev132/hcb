@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class SponsorsController < ApplicationController
   before_action :set_sponsor, only: [:show, :edit, :update, :destroy]
 
@@ -24,10 +26,10 @@ class SponsorsController < ApplicationController
     authorize @sponsor
 
     if @sponsor.save
-      flash[:success] = 'Sponsor was successfully created.'
+      flash[:success] = "Sponsor was successfully created."
       redirect_to @sponsor
     else
-      render :new
+      render "new"
     end
   end
 
@@ -37,10 +39,10 @@ class SponsorsController < ApplicationController
     authorize @sponsor
 
     if @sponsor.save
-      flash[:success] = 'Sponsor was successfully updated.'
+      flash[:success] = "Sponsor was successfully updated."
       redirect_to @sponsor
     else
-      render :edit
+      render "edit"
     end
   end
 
@@ -49,7 +51,7 @@ class SponsorsController < ApplicationController
     authorize @sponsor
 
     @sponsor.destroy
-    flash[:success] = 'Sponsor was successfully destroyed.'
+    flash[:success] = "Sponsor was successfully destroyed."
     redirect_to sponsors_url
   end
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CheckMailer < ApplicationMailer
   def undeposited
     @check = params[:check]

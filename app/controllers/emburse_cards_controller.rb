@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class EmburseCardsController < ApplicationController
   before_action :set_emburse_card, only: [:show, :edit, :update, :destroy, :toggle_active]
   skip_before_action :signed_in_user
@@ -25,10 +27,10 @@ class EmburseCardsController < ApplicationController
     authorize @emburse_card
 
     if @emburse_card.update(emburse_card_params)
-      flash[:success] = 'Card was successfully updated.'
+      flash[:success] = "Card was successfully updated."
       redirect_to @emburse_card
     else
-      render :edit
+      render "edit"
     end
   end
 
@@ -37,7 +39,7 @@ class EmburseCardsController < ApplicationController
     authorize @emburse_card
 
     @emburse_card.deleted_at = Time.now
-    flash[:success] = 'Card was successfully destroyed.'
+    flash[:success] = "Card was successfully destroyed."
     redirect_to emburse_cards_url
   end
 

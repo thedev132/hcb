@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Partners
   module Plaid
     module Shared
@@ -38,4 +40,3 @@ module Partners
     end
   end
 end
-

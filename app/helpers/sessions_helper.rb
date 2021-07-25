@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SessionsHelper
   def impersonate_user(user)
     sign_in(user, true)
@@ -56,7 +58,7 @@ module SessionsHelper
 
   def signed_in_admin
     unless admin_signed_in?
-      redirect_to auth_users_path, flash: { error: 'You’ll need to sign in as an admin.' }
+      redirect_to auth_users_path, flash: { error: "You’ll need to sign in as an admin." }
     end
   end
 

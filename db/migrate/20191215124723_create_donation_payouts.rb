@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateDonationPayouts < ActiveRecord::Migration[5.2]
   def change
     create_table :donation_payouts do |t|
@@ -21,7 +23,7 @@ class CreateDonationPayouts < ActiveRecord::Migration[5.2]
 
       t.timestamps
     end
-    
+
     add_index :donation_payouts, :stripe_payout_id, unique: true
     add_index :donation_payouts, :stripe_balance_transaction_id, unique: true
     add_index :donation_payouts, :failure_stripe_balance_transaction_id, unique: true

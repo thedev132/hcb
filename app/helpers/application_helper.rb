@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 module ApplicationHelper
   include ActionView::Helpers
 
   def render_money(amount, opts = {})
-    unit = opts[:unit] || '$'
+    unit = opts[:unit] || "$"
     trunc = opts[:trunc] || false
 
     num = BigDecimal(amount || 0) / 100
@@ -10,9 +12,9 @@ module ApplicationHelper
       number_to_currency(num, unit: unit)
     else
       if num >= 1_000_000
-        number_to_currency(num / 1_000_000, precision: 1, unit: unit) + 'm'
+        number_to_currency(num / 1_000_000, precision: 1, unit: unit) + "m"
       elsif num >= 1_000
-        number_to_currency(num / 1_000, precision: 1, unit: unit) + 'k'
+        number_to_currency(num / 1_000, precision: 1, unit: unit) + "k"
       else
         number_to_currency(num, unit: unit)
       end
@@ -20,11 +22,11 @@ module ApplicationHelper
   end
 
   def render_money_short(amount, opts = {})
-    render_money(amount, opts).remove('.00')
+    render_money(amount, opts).remove(".00")
   end
 
   def render_money_amount(amount, opts = {})
-    opts[:unit] = ''
+    opts[:unit] = ""
     render_money(amount, opts)
   end
 
@@ -35,9 +37,9 @@ module ApplicationHelper
 
   def render_address(obj)
     content = []
-    content << [obj.address_line1, tag(:br)].join('')
-    content << [obj.address_line2 + tag(:br)].join('') if obj.address_line2.present?
-    content << [obj.address_city, obj.address_state, obj.address_postal_code].join(', ')
+    content << [obj.address_line1, tag(:br)].join("")
+    content << [obj.address_line2 + tag(:br)].join("") if obj.address_line2.present?
+    content << [obj.address_city, obj.address_state, obj.address_postal_code].join(", ")
     content_tag(:span, content.join.html_safe)
   end
 
@@ -46,7 +48,7 @@ module ApplicationHelper
                 block_given? ? capture(&block) : nil,
                 data: {
                   src: url,
-                  behavior: 'async_frame'
+                  behavior: "async_frame"
                 },
                 **options
   end
@@ -57,7 +59,7 @@ module ApplicationHelper
   end
 
   def filterbar_blankslate(text, options = {})
-    blankslate(text, 'data-behavior': 'filterbar_blankslate', class: 'mt2 mb2', **options)
+    blankslate(text, 'data-behavior': "filterbar_blankslate", class: "mt2 mb2", **options)
   end
 
   def list_badge_for(count, item, glyph, options = { optional: false, required: false })
@@ -74,14 +76,14 @@ module ApplicationHelper
   end
 
   def status_badge(type = :pending)
-    content_tag :span, '', class: "status bg-#{type}"
+    content_tag :span, "", class: "status bg-#{type}"
   end
 
   def status_if(type, condition)
     status_badge(type) if condition
   end
 
-  def pop_icon_to(icon, url, options = { class: 'info' })
+  def pop_icon_to(icon, url, options = { class: "info" })
     link_to url, options.merge({ class: "pop #{options[:class]}" }) do
       inline_icon icon, size: 28
     end
@@ -102,20 +104,20 @@ module ApplicationHelper
       end
     end
 
-    content_tag :div, class: 'error-card' do
+    content_tag :div, class: "error-card" do
       content_tag(:h2, "#{prefix} #{name} because of #{pluralize(model.errors.size, 'error')}.") +
         errors_list
     end
   end
 
   def modal_close
-    pop_icon_to 'view-close', '#close_modal', class: 'modal__close muted', rel: 'modal:close', tabindex: 0
+    pop_icon_to "view-close", "#close_modal", class: "modal__close muted", rel: "modal:close", tabindex: 0
   end
 
   def modal_header(text)
-    content_tag :header, class: 'pb2' do
+    content_tag :header, class: "pb2" do
       modal_close +
-        content_tag(:h2, text.html_safe, class: 'h0 mt0 mb0 pb0 border-none')
+        content_tag(:h2, text.html_safe, class: "h0 mt0 mb0 pb0 border-none")
     end
   end
 
@@ -123,7 +125,7 @@ module ApplicationHelper
   # This forces the page to reload when Turbolinks navigates to it
   def include_modals
     content_for :head do
-      tag(:meta, name: 'turbolinks-visit-control', content: 'reload')
+      tag(:meta, name: "turbolinks-visit-control", content: "reload")
     end
   end
 
@@ -132,7 +134,7 @@ module ApplicationHelper
   end
 
   def auto_link_new_tab(text)
-    auto_link(text, html: { target: '_blank' })
+    auto_link(text, html: { target: "_blank" })
   end
 
   def debug_obj(item)
@@ -140,10 +142,10 @@ module ApplicationHelper
   end
 
   def inline_icon(filename, options = {})
-    file = File.read(Rails.root.join('app', 'assets', 'images', 'icons', "#{filename}.svg"))
+    file = File.read(Rails.root.join("app", "assets", "images", "icons", "#{filename}.svg"))
     doc = Nokogiri::HTML::DocumentFragment.parse file
-    svg = doc.at_css 'svg'
-    options[:style] ||= ''
+    svg = doc.at_css "svg"
+    options[:style] ||= ""
     if options[:size]
       options[:width] ||= options[:size]
       options[:height] ||= options[:size]
@@ -154,9 +156,9 @@ module ApplicationHelper
   end
 
   def filterbar_item(label, name, selected = false)
-    content_tag :a, label, class: 'filterbar__item',
-                tabindex: 0, role: 'tab', 'aria-selected': selected,
-                data: { name: name.to_s, behavior: 'filterbar_item' }
+    content_tag :a, label, class: "filterbar__item",
+                tabindex: 0, role: "tab", 'aria-selected': selected,
+                data: { name: name.to_s, behavior: "filterbar_item" }
   end
 
   def help_message
@@ -164,15 +166,15 @@ module ApplicationHelper
   end
 
   def help_email
-    mail_to 'bank@hackclub.com'
+    mail_to "bank@hackclub.com"
   end
 
   def format_date(date)
-    local_time(date, '%b %e, %Y')
+    local_time(date, "%b %e, %Y")
   end
 
   def format_datetime(datetime)
-    local_time(datetime, '%b %e, %Y, %l:%M %p')
+    local_time(datetime, "%b %e, %Y, %l:%M %p")
   end
 
   def home_action_size
@@ -180,21 +182,21 @@ module ApplicationHelper
   end
 
   def page_xl
-    content_for(:container_class) { 'container--xl' }
+    content_for(:container_class) { "container--xl" }
   end
 
   def page_md
-    content_for(:container_class) { 'container--md' }
+    content_for(:container_class) { "container--md" }
   end
 
   def page_sm
-    content_for(:container_class) { 'container--sm' }
+    content_for(:container_class) { "container--sm" }
   end
 
   alias_method :page_narrow, :page_sm
 
   def page_xs
-    content_for(:container_class) { 'container--xs' }
+    content_for(:container_class) { "container--xs" }
   end
 
   alias_method :page_extranarrow, :page_xs
@@ -206,7 +208,7 @@ module ApplicationHelper
   # also in lib/util.rb for backend use
   def commit_hash
     @commit_hash ||= begin
-                       hash = ENV['HEROKU_SLUG_COMMIT'] || `git show --pretty=%H -q`&.chomp
+                       hash = ENV["HEROKU_SLUG_COMMIT"] || `git show --pretty=%H -q`&.chomp
 
                        hash[0...7]
                      end
@@ -216,7 +218,7 @@ module ApplicationHelper
 
   def commit_time
     @commit_time ||= begin
-                       heroku_time = ENV['HEROKU_RELEASE_CREATED_AT']
+                       heroku_time = ENV["HEROKU_RELEASE_CREATED_AT"]
                        git_time = `git log -1 --format=%at`&.chomp
 
                        return nil if heroku_time.blank? && git_time.blank?
@@ -229,7 +231,7 @@ module ApplicationHelper
 
   def commit_duration
     @commit_duration ||= begin
-                           return '' if commit_time.nil?
+                           return "" if commit_time.nil?
 
                            distance_of_time_in_words Time.at(commit_time), Time.now
                          end
@@ -249,7 +251,7 @@ module ApplicationHelper
     else
       result = Hash.new
       result[record.class] = record
-      result['stripe_obj'] = stripe_obj
+      result["stripe_obj"] = stripe_obj
 
       result
     end
@@ -267,7 +269,7 @@ module ApplicationHelper
     ].sample
   end
 
-  require 'json'
+  require "json"
 
   def json(obj)
     JSON.pretty_generate(obj.as_json)

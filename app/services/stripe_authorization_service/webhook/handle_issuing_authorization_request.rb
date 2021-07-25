@@ -15,11 +15,11 @@ module StripeAuthorizationService
           StripeService::Issuing::Authorization.decline(auth_id)
         end
 
-        # 2. DEPRECATED 
-        ::StripeAuthorizationJob::Deprecated::CreateFromWebhook.perform_later(auth_id) # 
+        # 2. DEPRECATED
+        ::StripeAuthorizationJob::Deprecated::CreateFromWebhook.perform_later(auth_id) #
 
         # 3. put the transaction on the pending ledger in almost realtime
-        ::StripeAuthorizationJob::CreateFromWebhook.perform_later(auth_id) # 
+        ::StripeAuthorizationJob::CreateFromWebhook.perform_later(auth_id) #
       end
 
       private

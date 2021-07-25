@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CanonicalPendingTransactionMailer < ApplicationMailer
   def notify_bank_alerts
     @cpt = CanonicalPendingTransaction.find(params[:canonical_pending_transaction_id])

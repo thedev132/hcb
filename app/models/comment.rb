@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Comment < ApplicationRecord
   include Hashid::Rails
 
@@ -8,7 +10,7 @@ class Comment < ApplicationRecord
 
   validates :user, presence: true
   validates :content, presence: true, unless: :file_is_attached?
-  
+
   validate :commentable_includes_concern
 
   private

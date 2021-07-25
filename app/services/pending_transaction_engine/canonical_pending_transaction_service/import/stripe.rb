@@ -18,7 +18,7 @@ module PendingTransactionEngine
           @raw_pending_stripe_transactions_ready_for_processing ||= begin
             return RawPendingStripeTransaction.all if previously_processed_raw_pending_stripe_transactions_ids.length < 1
 
-            RawPendingStripeTransaction.where('id not in(?)', previously_processed_raw_pending_stripe_transactions_ids)
+            RawPendingStripeTransaction.where("id not in(?)", previously_processed_raw_pending_stripe_transactions_ids)
           end
         end
 

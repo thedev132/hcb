@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module CanonicalTransactionService
   class SetEvent
     def initialize(canonical_transaction_id:, event_id:, user:)
@@ -10,7 +12,7 @@ module CanonicalTransactionService
       ActiveRecord::Base.transaction do
         if canonical_transaction.canonical_event_mapping
           canonical_transaction.canonical_event_mapping.fees.destroy_all
-          canonical_transaction.canonical_event_mapping.destroy! 
+          canonical_transaction.canonical_event_mapping.destroy!
         end
 
         canonical_event_mapping = CanonicalEventMapping.create!(attrs) if event

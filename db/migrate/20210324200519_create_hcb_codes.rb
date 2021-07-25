@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateHcbCodes < ActiveRecord::Migration[6.0]
   def change
     create_table :hcb_codes do |t|

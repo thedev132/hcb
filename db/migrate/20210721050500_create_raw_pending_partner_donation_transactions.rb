@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateRawPendingPartnerDonationTransactions < ActiveRecord::Migration[6.0]
   def change
     create_table :raw_pending_partner_donation_transactions do |t|

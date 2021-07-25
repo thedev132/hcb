@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CanonicalPendingTransaction < ApplicationRecord
   include PgSearch::Model
   pg_search_scope :search_memo, against: [:memo, :hcb_code], using: { tsearch: { prefix: true, dictionary: "english" } }, ranked_by: "canonical_pending_transactions.date"
@@ -19,18 +21,18 @@ class CanonicalPendingTransaction < ApplicationRecord
 
   scope :safe, -> { where("date >= '2021-01-01'") } # older pending transactions don't yet all map up because of older processes (especially around invoices)
 
-  scope :stripe, -> { where('raw_pending_stripe_transaction_id is not null')}
-  scope :incoming, -> { where('amount_cents > 0') }
-  scope :outgoing, -> { where('amount_cents < 0') }
-  scope :outgoing_ach, -> { where('raw_pending_outgoing_ach_transaction_id is not null')}
-  scope :outgoing_check, -> { where('raw_pending_outgoing_check_transaction_id is not null')}
-  scope :donation, -> { where('raw_pending_donation_transaction_id is not null')}
-  scope :invoice, -> { where('raw_pending_invoice_transaction_id is not null')}
-  scope :partner_donation, -> { where('raw_pending_partner_donation_transaction_id is not null')}
-  scope :bank_fee, -> { where('raw_pending_bank_fee_transaction_id is not null')}
+  scope :stripe, -> { where("raw_pending_stripe_transaction_id is not null") }
+  scope :incoming, -> { where("amount_cents > 0") }
+  scope :outgoing, -> { where("amount_cents < 0") }
+  scope :outgoing_ach, -> { where("raw_pending_outgoing_ach_transaction_id is not null") }
+  scope :outgoing_check, -> { where("raw_pending_outgoing_check_transaction_id is not null") }
+  scope :donation, -> { where("raw_pending_donation_transaction_id is not null") }
+  scope :invoice, -> { where("raw_pending_invoice_transaction_id is not null") }
+  scope :partner_donation, -> { where("raw_pending_partner_donation_transaction_id is not null") }
+  scope :bank_fee, -> { where("raw_pending_bank_fee_transaction_id is not null") }
   scope :unmapped, -> { includes(:canonical_pending_event_mapping).where(canonical_pending_event_mappings: {canonical_pending_transaction_id: nil}) }
   scope :mapped, -> { includes(:canonical_pending_event_mapping).where.not(canonical_pending_event_mappings: {canonical_pending_transaction_id: nil}) }
-  scope :unsettled, -> { 
+  scope :unsettled, -> {
     includes(:canonical_pending_settled_mappings).where(canonical_pending_settled_mappings: {canonical_pending_transaction_id: nil})
       .includes(:canonical_pending_declined_mappings).where(canonical_pending_declined_mappings: { canonical_pending_transaction_id: nil })
   }
@@ -51,7 +53,7 @@ class CanonicalPendingTransaction < ApplicationRecord
   def mapped?
     @mapped ||= canonical_pending_event_mapping.present?
   end
-  
+
   def settled?
     @settled ||= canonical_pending_settled_mappings.exists?
   end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class GSuiteMailer < ApplicationMailer
   def notify_of_configuring
     @recipient = params[:recipient]

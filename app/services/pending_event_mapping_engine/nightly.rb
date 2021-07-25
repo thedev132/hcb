@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module PendingEventMappingEngine
   class Nightly
     def run

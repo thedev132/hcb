@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class StripeAuthorization < ApplicationRecord
   include Receiptable
   include Commentable
@@ -11,7 +13,7 @@ class StripeAuthorization < ApplicationRecord
   scope :approved, -> { where(approved: true) }
   scope :declined, -> { where(approved: false) }
   scope :successful, -> { approved.closed }
-  scope :renamed, -> { where( "display_name != name" ) }
+  scope :renamed, -> { where("display_name != name") }
 
   def awaiting_receipt?
     !amount.zero? && approved && missing_receipt?
@@ -20,10 +22,10 @@ class StripeAuthorization < ApplicationRecord
   def declined?
     approved == false
   end
-  
+
   has_paper_trail
 
-  belongs_to :stripe_card, class_name: 'StripeCard'
+  belongs_to :stripe_card, class_name: "StripeCard"
   alias_attribute :card, :stripe_card
   has_one :stripe_cardholder, through: :stripe_card, as: :cardholder
   alias_attribute :cardholder, :stripe_cardholder
@@ -50,18 +52,18 @@ class StripeAuthorization < ApplicationRecord
   end
 
   def status_emoji
-    return '✔️' if approved?
+    return "✔️" if approved?
 
-    '✖️'
+    "✖️"
   end
 
   def status_text
-    return 'Declined' unless approved?
-    return 'Pending' if pending?
-    return 'Refunded' if reversed?
-    return 'Approved' if approved?
+    return "Declined" unless approved?
+    return "Pending" if pending?
+    return "Refunded" if reversed?
+    return "Approved" if approved?
 
-    '–'
+    "–"
   end
 
   def status_color
@@ -106,7 +108,7 @@ class StripeAuthorization < ApplicationRecord
     if stripe_obj[:transactions].size >= 1
       net_amount = -stripe_obj[:transactions].pluck(:amount).sum # must be negated since the rest of stripe_authorizations is treating positives as negatives in the interface
       self.amount = net_amount
-      self.stripe_status = 'reversed' if net_amount.zero?
+      self.stripe_status = "reversed" if net_amount.zero?
     end
   end
 
@@ -148,7 +150,7 @@ class StripeAuthorization < ApplicationRecord
 
   def remote_stripe_transactions
     @remote_stripe_transactions ||= begin
-      remote_stripe_authorization['transactions'].map do |t|
+      remote_stripe_authorization["transactions"].map do |t|
         ::Partners::Stripe::Issuing::Transactions::Show.new(id: t.id).run
       end
     end

@@ -6,7 +6,7 @@ RSpec.describe StaticPageService::Index, type: :model do
   fixtures  "users", "events",  "g_suites", "organizer_positions"
 
   let(:current_user) { users(:user1) }
-  
+
   let(:attrs) do
     {
       current_user: current_user

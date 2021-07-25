@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreatePartnerDonations < ActiveRecord::Migration[6.0]
   def change
     create_table :partner_donations do |t|

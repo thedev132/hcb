@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 module EventService
   class Create
-    def initialize(name:, emails:[], has_fiscal_sponsorship_document: false, sponsorship_fee: 0.07)
+    def initialize(name:, emails: [], has_fiscal_sponsorship_document: false, sponsorship_fee: 0.07)
       @name = name
       @emails = emails
       @has_fiscal_sponsorship_document = has_fiscal_sponsorship_document || false

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateStripeAuthorizations < ActiveRecord::Migration[6.0]
   def change
     create_table :stripe_authorizations do |t|

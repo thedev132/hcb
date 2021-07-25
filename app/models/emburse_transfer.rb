@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class EmburseTransfer < ApplicationRecord
   include Rejectable
   include Commentable
@@ -11,9 +13,9 @@ class EmburseTransfer < ApplicationRecord
   belongs_to :emburse_card, required: false
 
   belongs_to :event
-  belongs_to :fulfilled_by, class_name: 'User', required: false
-  belongs_to :creator, class_name: 'User'
-  has_one :t_transaction, class_name: 'Transaction'
+  belongs_to :fulfilled_by, class_name: "User", required: false
+  belongs_to :creator, class_name: "User"
+  has_one :t_transaction, class_name: "Transaction"
 
   validate :status_accepted_canceled_or_rejected
   validates :load_amount, numericality: { greater_than_or_equal_to: 1 }
@@ -48,21 +50,21 @@ class EmburseTransfer < ApplicationRecord
     processing_times = reqs.map { |r| (r.t_transaction.date.to_time - r.created_at) / 24.hours }
 
     # round up
-    processing_times.present? ? Util.average(processing_times).ceil : '?'
+    processing_times.present? ? Util.average(processing_times).ceil : "?"
   end
 
   def status
-    return 'transfer in progress' if EmburseTransfer.pending.include?(self)
-    return 'completed' if EmburseTransfer.completed.include?(self)
-    return 'canceled' if canceled_at.present?
-    return 'rejected' if rejected_at.present?
+    return "transfer in progress" if EmburseTransfer.pending.include?(self)
+    return "completed" if EmburseTransfer.completed.include?(self)
+    return "canceled" if canceled_at.present?
+    return "rejected" if rejected_at.present?
 
-    'under review'
+    "under review"
   end
 
   def status_badge_type
     s = status.to_sym
-    return :info if s == 'transfer in progress'.to_sym
+    return :info if s == "transfer in progress".to_sym
     return :success if s == :completed
     return :muted if s == :canceled
     return :error if s == :rejected

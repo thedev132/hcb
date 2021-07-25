@@ -10,14 +10,14 @@ module GSuiteService
       res = Faraday.get do |req|
         req.url url
         req.options.timeout = 60 # it may take heroku up to 30 seconds to cold start
-        req.headers['Authorization'] = Rails.application.credentials.g_verify_api_key
+        req.headers["Authorization"] = Rails.application.credentials.g_verify_api_key
       end
 
       if !res.success?
         raise ArgumentError, "Failed to get Google Workspace Verification Key for #{domain}"
       end
 
-      JSON.parse(res.body)['token'] # contains the verification key
+      JSON.parse(res.body)["token"] # contains the verification key
     end
 
     private

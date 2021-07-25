@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module CheckService
   class Send
     def initialize(check_id:)

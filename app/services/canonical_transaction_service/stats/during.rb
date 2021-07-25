@@ -1,17 +1,19 @@
+# frozen_string_literal: true
+
 module CanonicalTransactionService
   module Stats
     class During
-      def initialize(start_time: Date.parse('2015-01-01'), end_time: Date.today)
+      def initialize(start_time: Date.parse("2015-01-01"), end_time: Date.today)
         @start_time = start_time.to_datetime
         @end_time = end_time.to_datetime
       end
 
       def run
         {
-          transactions_volume: tx.sum('@amount_cents'),
+          transactions_volume: tx.sum("@amount_cents"),
           expenses: tx.expense.sum(:amount_cents),
           raised: tx.revenue.sum(:amount_cents),
-          revenue: tx.includes(:fees).sum('amount_cents_as_decimal').to_i,
+          revenue: tx.includes(:fees).sum("amount_cents_as_decimal").to_i,
           size: {
             total: tx.size,
             raised: tx.revenue.size,

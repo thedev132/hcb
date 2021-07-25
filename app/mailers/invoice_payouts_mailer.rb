@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class InvoicePayoutsMailer < ApplicationMailer
   def notify_organizers
     @payout = params[:payout]

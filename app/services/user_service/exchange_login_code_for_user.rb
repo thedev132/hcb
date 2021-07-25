@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module UserService
   class ExchangeLoginCodeForUser
     def initialize(user_id:, login_code:)
@@ -9,7 +11,7 @@ module UserService
       raise ::Errors::InvalidLoginCode, error_message if exchange_login_code_resp[:errors].present?
 
       user = User.find_or_initialize_by(email: remote_email)
-      user.api_access_token = remote_access_token 
+      user.api_access_token = remote_access_token
       user.admin_at = remote_admin_at # TODO: remove admin_at as necessary from a 3rd party auth service
       user.save!
 

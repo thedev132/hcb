@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class TopupStripeJob < ApplicationJob
   queue_as :default
 
@@ -32,10 +34,10 @@ class TopupStripeJob < ApplicationJob
     return unless topup_amount > 0
 
     StripeService::Topup.create({
-      destination_balance: 'issuing',
+      destination_balance: "issuing",
       amount: topup_amount,
-      currency: 'usd',
-      statement_descriptor: 'Stripe Top-up'
+      currency: "usd",
+      statement_descriptor: "Stripe Top-up"
     })
 
     puts "Just created a topup for #{topup_amount}"

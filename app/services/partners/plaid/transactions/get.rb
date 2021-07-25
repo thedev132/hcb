@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Partners
   module Plaid
     module Transactions
@@ -80,4 +82,3 @@ module Partners
     end
   end
 end
-

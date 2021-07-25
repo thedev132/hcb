@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module DisbursementService
   class Create
     def initialize(source_event_id:, destination_event_id:,

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Shared
   module Selenium
     module LoginToSvb
@@ -83,7 +85,7 @@ module Shared
         sleep 1
         el = driver.find_element(id: "enteredChallengePhraseResponse")
         el.send_keys(challenge_answer)
-        
+
         # Submit answer
         sleep 1
         el = driver.find_element(class: "svb-confirm-identity-button")

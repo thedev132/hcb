@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class DonationsController < ApplicationController
   include Rails::Pagination
   before_action :set_donation, only: [:show, :edit, :update, :destroy]
@@ -35,29 +37,29 @@ class DonationsController < ApplicationController
     if @donation.save
       redirect_to finish_donation_donations_path(@event, @donation.url_hash)
     else
-      render :start_donation
+      render "start_donation"
     end
   end
 
   def finish_donation
-    @donation = Donation.find_by!(url_hash: params['donation'])
+    @donation = Donation.find_by!(url_hash: params["donation"])
 
-    if @donation.status == 'succeeded'
-      flash[:info] = 'You tried to access the payment page for a donation that’s already been sent.'
+    if @donation.status == "succeeded"
+      flash[:info] = "You tried to access the payment page for a donation that’s already been sent."
       redirect_to start_donation_donations_path(@event)
     end
   end
 
   def accept_donation_hook
     # only proceed if payment intent is a donation and not an invoice
-    return unless request.params['data']['object']['metadata']['donation'].present?
+    return unless request.params["data"]["object"]["metadata"]["donation"].present?
 
     # get donation to process
-    donation = Donation.find_by_stripe_payment_intent_id(request.params['data']['object']['id'])
+    donation = Donation.find_by_stripe_payment_intent_id(request.params["data"]["object"]["id"])
 
     pi = StripeService::PaymentIntent.retrieve(
       id: donation.stripe_payment_intent_id,
-      expand: ['charges.data.balance_transaction'])
+      expand: ["charges.data.balance_transaction"])
     donation.set_fields_from_stripe_payment_intent(pi)
     donation.save!
 
@@ -75,14 +77,14 @@ class DonationsController < ApplicationController
       bit_depth: 1,
       border_modules: 2,
       color_mode: ChunkyPNG::COLOR_GRAYSCALE,
-      color: 'black',
-      fill: 'white',
+      color: "black",
+      fill: "white",
       module_px_size: 6,
       size: 300
     )
 
     send_data png, filename: "#{@event.name} Donate.png",
-      type: 'image/png', disposition: 'inline'
+      type: "image/png", disposition: "inline"
   end
 
   def refund
@@ -97,7 +99,7 @@ class DonationsController < ApplicationController
   private
 
   def set_event
-    @event = Event.find(params['event_name'])
+    @event = Event.find(params["event_name"])
   end
 
   # Use callbacks to share common setup or constraints between actions.
@@ -119,6 +121,6 @@ class DonationsController < ApplicationController
   end
 
   def redirect_to_404
-    raise ActionController::RoutingError.new('Not Found')
+    raise ActionController::RoutingError.new("Not Found")
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TransactionEngine
   module FriendlyMemoService
     class GenerateSolelyFromMemo

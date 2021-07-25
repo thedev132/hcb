@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module CanonicalTransactionService
   class SetCustomMemo
     def initialize(canonical_transaction_id:, custom_memo:)

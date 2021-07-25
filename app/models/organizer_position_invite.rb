@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # OrganizerPositionInvites are used to invite users - whether they already
 # exist or not - to manage an Event.
 #
@@ -30,7 +32,7 @@ class OrganizerPositionInvite < ApplicationRecord
 
   belongs_to :event
   belongs_to :user, required: false
-  belongs_to :sender, class_name: 'User'
+  belongs_to :sender, class_name: "User"
 
   belongs_to :organizer_position, required: false
 
@@ -56,17 +58,17 @@ class OrganizerPositionInvite < ApplicationRecord
 
   def accept
     unless user.present?
-      self.errors.add(:user, 'must be present to accept invite')
+      self.errors.add(:user, "must be present to accept invite")
       return false
     end
 
     if cancelled?
-      self.errors.add(:base, 'was canceled!')
+      self.errors.add(:base, "was canceled!")
       return false
     end
 
     if accepted?
-      self.errors.add(:base, 'already accepted!')
+      self.errors.add(:base, "already accepted!")
       return false
     end
 
@@ -86,17 +88,17 @@ class OrganizerPositionInvite < ApplicationRecord
 
   def reject
     unless user.present?
-      self.errors.add(:user, 'must be present to reject invite')
+      self.errors.add(:user, "must be present to reject invite")
       return false
     end
 
     if cancelled?
-      self.errors.add(:base, 'was canceled!')
+      self.errors.add(:base, "was canceled!")
       return false
     end
 
     if rejected?
-      self.errors.add(:base, 'already rejected!')
+      self.errors.add(:base, "already rejected!")
       return false
     end
 
@@ -111,12 +113,12 @@ class OrganizerPositionInvite < ApplicationRecord
 
   def cancel
     if accepted?
-      self.errors.add(:user, 'has already accepted this invite!')
+      self.errors.add(:user, "has already accepted this invite!")
       return false
     end
 
     if rejected?
-      self.errors.add(:user, 'has already rejected this invite!')
+      self.errors.add(:user, "has already rejected this invite!")
       return false
     end
 
@@ -140,13 +142,13 @@ class OrganizerPositionInvite < ApplicationRecord
 
   def not_already_organizer
     if event && event.users.pluck(:email).include?(email)
-      self.errors.add(:user, 'is already an organizer of this event!')
+      self.errors.add(:user, "is already an organizer of this event!")
     end
   end
 
   def not_already_invited
     if event && event.organizer_position_invites.pending.pluck(:email).include?(email)
-      self.errors.add(:user, 'already has a pending invite!')
+      self.errors.add(:user, "already has a pending invite!")
     end
   end
 end

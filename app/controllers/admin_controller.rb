@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AdminController < ApplicationController
   skip_after_action :verify_authorized # do not force pundit
   before_action :signed_in_admin
@@ -28,14 +30,14 @@ class AdminController < ApplicationController
 
   def search
     # allows the same URL to easily be used for form and GET
-    return if request.method == 'GET'
+    return if request.method == "GET"
 
     # removing dashes to deal with phone number
-    query = params[:q].gsub('-', '').strip
+    query = params[:q].gsub("-", "").strip
 
     users = []
 
-    users.push(User.where("full_name ilike ?", "%#{query.downcase}%").includes(:events) )
+    users.push(User.where("full_name ilike ?", "%#{query.downcase}%").includes(:events))
     users.push(User.where(email: query).includes(:events))
     users.push(User.where(phone_number: query).includes(:events))
 
@@ -102,18 +104,18 @@ class AdminController < ApplicationController
     relation = Event.not_partner
 
     relation = relation.search_name(@q) if @q
-    relation = relation.transparent if @transparent == 'transparent'
-    relation = relation.not_transparent if @transparent == 'not_transparent'
-    relation = relation.omitted if @omitted == 'omitted'
-    relation = relation.not_omitted if @omitted == 'not_omitted'
-    relation = relation.hidden if @hidden == 'hidden'
-    relation = relation.not_hidden if @hidden == 'not_hidden'
+    relation = relation.transparent if @transparent == "transparent"
+    relation = relation.not_transparent if @transparent == "not_transparent"
+    relation = relation.omitted if @omitted == "omitted"
+    relation = relation.not_omitted if @omitted == "not_omitted"
+    relation = relation.hidden if @hidden == "hidden"
+    relation = relation.not_hidden if @hidden == "not_hidden"
 
-    states = [];
-    states << 'pending' if @pending
-    states << 'unapproved' if @unapproved
-    states << 'approved' if @approved
-    relation = relation.where('aasm_state in (?)', states)
+    states = []
+    states << "pending" if @pending
+    states << "unapproved" if @unapproved
+    states << "approved" if @approved
+    relation = relation.where("aasm_state in (?)", states)
 
     @count = relation.count
 
@@ -283,7 +285,7 @@ class AdminController < ApplicationController
 
     if @q
       if @q.to_f != 0.0
-        @q = (@q.to_f * 100).to_i 
+        @q = (@q.to_f * 100).to_i
 
         relation = relation.where("amount_cents = ? or amount_cents = ?", @q, -@q)
       else
@@ -326,7 +328,7 @@ class AdminController < ApplicationController
 
     if @q
       if @q.to_f != 0.0
-        @q = (@q.to_f * 100).to_i 
+        @q = (@q.to_f * 100).to_i
 
         relation = relation.where("amount_cents = ? or amount_cents = ?", @q, -@q)
       else
@@ -368,7 +370,7 @@ class AdminController < ApplicationController
 
     if @q
       if @q.to_f != 0.0
-        @q = (@q.to_f * 100).to_i 
+        @q = (@q.to_f * 100).to_i
 
         relation = relation.where("amount = ? or amount = ?", @q, -@q)
       else
@@ -439,7 +441,7 @@ class AdminController < ApplicationController
 
     if @q
       if @q.to_f != 0.0
-        @q = (@q.to_f * 100).to_i 
+        @q = (@q.to_f * 100).to_i
 
         relation = relation.where("amount = ? or amount = ?", @q, -@q)
       else
@@ -524,7 +526,7 @@ class AdminController < ApplicationController
 
     if @q
       if @q.to_f != 0.0
-        @q = (@q.to_f * 100).to_i 
+        @q = (@q.to_f * 100).to_i
 
         relation = relation.where("amount = ? or amount = ?", @q, -@q)
       else
@@ -563,7 +565,7 @@ class AdminController < ApplicationController
 
     if @q
       if @q.to_f != 0.0
-        @q = (@q.to_f * 100).to_i 
+        @q = (@q.to_f * 100).to_i
 
         relation = relation.where("amount = ? or amount = ?", @q, -@q)
       else
@@ -635,7 +637,7 @@ class AdminController < ApplicationController
 
     if @q
       if @q.to_f != 0.0
-        @q = (@q.to_f * 100).to_i 
+        @q = (@q.to_f * 100).to_i
 
         relation = relation.where("amount_due = ? or amount_due = ?", @q, -@q)
       else
@@ -731,10 +733,10 @@ class AdminController < ApplicationController
     render layout: "admin"
   end
 
-  
+
   def google_workspace_approve
     @g_suite = GSuite.find(params[:id])
-    
+
     has_existing_key = @g_suite.verification_key.present?
 
     GSuiteJob::SetVerificationKey.perform_later(@g_suite.id)

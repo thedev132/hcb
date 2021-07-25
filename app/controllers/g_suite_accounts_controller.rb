@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class GSuiteAccountsController < ApplicationController
   before_action :set_g_suite_account, only: [:edit, :update, :reject, :reset_password, :toggle_suspension]
 
@@ -25,7 +27,7 @@ class GSuiteAccountsController < ApplicationController
     begin
       GSuiteAccountService::Create.new(attrs).run
 
-      flash[:success] = 'Google Workspace account application submitted.'
+      flash[:success] = "Google Workspace account application submitted."
     rescue => e
       Airbrake.notify(e)
 
@@ -46,12 +48,12 @@ class GSuiteAccountsController < ApplicationController
     if @g_suite_account.update(g_suite_account_params)
       if @g_suite_account.previous_changes[:initial_password]
         @g_suite_account.update(accepted_at: Time.now)
-        flash[:info] = 'Accepted!'
+        flash[:info] = "Accepted!"
       end
-      flash[:success] = 'Saved changes to Google Workspace account.'
+      flash[:success] = "Saved changes to Google Workspace account."
       redirect_to g_suite_accounts_path
     else
-      render :edit
+      render "edit"
     end
   end
 
@@ -62,7 +64,7 @@ class GSuiteAccountsController < ApplicationController
     authorize @g_suite_account
 
     if @g_suite_account.destroy
-      flash[:success] = 'Google Workspace account deleted successfully.'
+      flash[:success] = "Google Workspace account deleted successfully."
     else
       flash[:error] = `Error while trying to delete Google Workspace account. Please check Google Workspace dashboard for more information.`
     end
@@ -76,10 +78,10 @@ class GSuiteAccountsController < ApplicationController
     @g_suite_account.verified_at = Time.now
     if @g_suite_account.save
       GSuiteAccountMailer.verify(recipient: @g_suite_account.address).deliver_later
-      flash[:success] = 'Email verified!'
+      flash[:success] = "Email verified!"
       redirect_to @g_suite_account.g_suite.event
     else
-      flash[:error] = 'Email not found.'
+      flash[:error] = "Email not found."
     end
   end
 
@@ -91,9 +93,9 @@ class GSuiteAccountsController < ApplicationController
     @g_suite_account.rejected_at = Time.now
 
     if @g_suite_account.save
-      flash[:success] = 'Google Workspace account rejected.'
+      flash[:success] = "Google Workspace account rejected."
     else
-      flash[:error] = 'Something went wrong.'
+      flash[:error] = "Something went wrong."
     end
     redirect_to g_suite_accounts_path
   end

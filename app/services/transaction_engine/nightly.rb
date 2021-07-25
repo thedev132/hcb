@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TransactionEngine
   class Nightly
     include ::TransactionEngine::Shared
@@ -14,7 +16,7 @@ module TransactionEngine
       import_raw_stripe_transactions!
       import_raw_csv_transactions!
 
-      # 2 hashed 
+      # 2 hashed
       hash_raw_plaid_transactions!
       hash_raw_emburse_transactions!
       hash_raw_stripe_transactions!

@@ -4,11 +4,11 @@ require "rails_helper"
 
 RSpec.describe UserService::GenerateToken, type: :model do
   fixtures  "users"
-  
+
   let(:user) { users(:user1) }
 
   let(:user_id) { user.id }
-  
+
   let(:attrs) do
     {
       user_id: user_id

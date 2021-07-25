@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module UserService
   class GenerateToken
     def initialize(user_id:)

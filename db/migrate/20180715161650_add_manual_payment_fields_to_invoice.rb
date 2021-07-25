@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddManualPaymentFieldsToInvoice < ActiveRecord::Migration[5.2]
   def change
     add_column :invoices, :manually_marked_as_paid_at, :datetime

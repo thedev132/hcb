@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateOrganizerPositionDeletionRequests < ActiveRecord::Migration[5.2]
   def change
     create_table :organizer_position_deletion_requests do |t|

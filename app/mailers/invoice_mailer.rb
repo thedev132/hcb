@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class InvoiceMailer < ApplicationMailer
   def payment_notification
     @invoice = params[:invoice]

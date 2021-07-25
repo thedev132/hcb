@@ -54,7 +54,7 @@ module TransactionGroupingEngine
 
       def canonical_transactions_grouped
         group_sql = <<~SQL
-          select 
+          select
             array_agg(ct.id) as ids
             ,coalesce(ct.hcb_code, cast(ct.id as text)) as hcb_code
             ,sum(ct.amount_cents) as amount_cents
@@ -74,9 +74,9 @@ module TransactionGroupingEngine
           group by
             coalesce(ct.hcb_code, cast(ct.id as text)) -- handle edge case when hcb_code is null
         SQL
-        
+
         date_select = <<~SQL
-          ( 
+          (
             select date
             from (
               select date from canonical_transactions where id = any(q1.ids) order by date asc, id asc limit 1
@@ -85,8 +85,8 @@ module TransactionGroupingEngine
         SQL
 
         canonical_transactions_select = <<~SQL
-          ( 
-            select json_agg(raw) 
+          (
+            select json_agg(raw)
             from (
               select *, (amount_cents / 100.0) as amount from canonical_transactions where id = any(q1.ids) order by date desc, id desc
             ) raw
@@ -94,7 +94,7 @@ module TransactionGroupingEngine
         SQL
 
         canonical_transaction_ids_select = <<~SQL
-          ( 
+          (
             select array_to_json(array_agg(id))
             from (
               select id from canonical_transactions where id = any(q1.ids) order by date desc, id desc

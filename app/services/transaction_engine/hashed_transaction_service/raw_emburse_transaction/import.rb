@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TransactionEngine
   module HashedTransactionService
     module RawEmburseTransaction
@@ -11,7 +13,7 @@ module TransactionEngine
         def run
           ::RawEmburseTransaction.where("date_posted >= ?", @start_date).find_each(batch_size: 100) do |et|
             next if et.amount_cents == 0
-            next unless et.state == 'completed' # only permit completed transactions
+            next unless et.state == "completed" # only permit completed transactions
 
             ph = primary_hash(et)
 
@@ -27,7 +29,7 @@ module TransactionEngine
         def primary_hash(et)
           attrs = {
             unique_bank_identifier: et.unique_bank_identifier,
-            date: et.date_posted.strftime('%Y-%m-%d'),
+            date: et.date_posted.strftime("%Y-%m-%d"),
             amount_cents: et.amount_cents,
             memo: et.memo.upcase
           }

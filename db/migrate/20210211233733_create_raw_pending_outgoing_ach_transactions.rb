@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateRawPendingOutgoingAchTransactions < ActiveRecord::Migration[6.0]
   def change
     create_table :raw_pending_outgoing_ach_transactions do |t|

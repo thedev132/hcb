@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddShortCodeConstraintsToHcbCodes < ActiveRecord::Migration[6.0]
   def self.up
     safety_assured do

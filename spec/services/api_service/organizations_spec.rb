@@ -40,7 +40,7 @@ RSpec.describe ApiService::V1::Organizations, type: :model do
     it "returns an array of organizations" do
       result = service.run
 
-      expect(result).to include( be_instance_of(Event) )
+      expect(result).to include(be_instance_of(Event))
     end
   end
 end

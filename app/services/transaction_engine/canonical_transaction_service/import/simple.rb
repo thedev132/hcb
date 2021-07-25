@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TransactionEngine
   module CanonicalTransactionService
     module Import
@@ -26,7 +28,7 @@ module TransactionEngine
         private
 
         def hashed_transactions_ready_for_processing
-          ::HashedTransaction.where('id not in (?)', duplicate_hashed_transaction_ids + previously_processed_hashed_transaction_ids)
+          ::HashedTransaction.where("id not in (?)", duplicate_hashed_transaction_ids + previously_processed_hashed_transaction_ids)
         end
 
         def duplicate_hashed_transaction_ids

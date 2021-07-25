@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module DisbursementService
   class Nightly
     include ::Shared::Selenium::LoginToSvb

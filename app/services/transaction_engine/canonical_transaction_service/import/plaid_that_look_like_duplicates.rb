@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TransactionEngine
   module CanonicalTransactionService
     module Import
@@ -31,7 +33,7 @@ module TransactionEngine
         private
 
         def unprocessed_plaid_with_duplicate_hashes
-          plaid_hts.where('id in (?)', diff_ht_ids)
+          plaid_hts.where("id in (?)", diff_ht_ids)
         end
 
         def diff_ht_ids

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class BankAccountsController < ApplicationController
   before_action :set_link_vars, only: [:new, :reauthenticate]
 
@@ -40,7 +42,7 @@ class BankAccountsController < ApplicationController
       end
       redirect_to @bank_account
     else
-      render :show
+      render "show"
     end
   end
 
@@ -69,7 +71,7 @@ class BankAccountsController < ApplicationController
     @client_name = PlaidService.instance.client_name
     @link_env = PlaidService.instance.env
     @public_key = PlaidService.instance.public_key
-    @product = ['transactions'].to_json.html_safe
+    @product = ["transactions"].to_json.html_safe
   end
 
   def bank_account_update_params

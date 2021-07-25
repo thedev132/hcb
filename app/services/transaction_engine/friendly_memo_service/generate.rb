@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TransactionEngine
   module FriendlyMemoService
     class Generate
@@ -6,9 +8,9 @@ module TransactionEngine
       end
 
       def run
-        friendly_memo = handle_hack_club_bank_fee || 
-          handle_linked_object || 
-          handle_emburse_refund || 
+        friendly_memo = handle_hack_club_bank_fee ||
+          handle_linked_object ||
+          handle_emburse_refund ||
           handle_solely_from_memo
 
         return friendly_memo.to_s.upcase if friendly_memo
@@ -61,4 +63,3 @@ module TransactionEngine
     end
   end
 end
-

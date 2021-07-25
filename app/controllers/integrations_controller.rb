@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class IntegrationsController < ApplicationController
   include Rails::Pagination
 
@@ -19,7 +21,7 @@ class IntegrationsController < ApplicationController
       data = {
         amount: t.amount,
         created_at: t.created_at,
-        type: 'bank',
+        type: "bank",
         memo: t.display_name,
         uuid: "T#{t.id}"
       }
@@ -47,14 +49,14 @@ class IntegrationsController < ApplicationController
   private
 
   def render_invalid_authorization
-    render json: { error: 'Unauthorized' }, status: 401
+    render json: { error: "Unauthorized" }, status: 401
   end
 
   def set_event
     authenticate_or_request_with_http_token do |bearer_token, _options|
       token = Rails.application.credentials.dig(:mvp_frankly_token)
-      api_key = bearer_token.split('|')[0]
-      slug = bearer_token.split('|')[1]
+      api_key = bearer_token.split("|")[0]
+      slug = bearer_token.split("|")[1]
       return render_invalid_authorization unless api_key and slug
 
       @event = Event.find_by slug: slug

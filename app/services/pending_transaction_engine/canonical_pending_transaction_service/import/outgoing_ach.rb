@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module PendingTransactionEngine
   module CanonicalPendingTransactionService
     module Import
@@ -22,7 +24,7 @@ module PendingTransactionEngine
           @raw_pending_outgoing_ach_transactions_ready_for_processing ||= begin
             return RawPendingOutgoingAchTransaction.all if previously_processed_raw_pending_outgoing_ach_transactions_ids.length < 1
 
-            RawPendingOutgoingAchTransaction.where('id not in(?)', previously_processed_raw_pending_outgoing_ach_transactions_ids)
+            RawPendingOutgoingAchTransaction.where("id not in(?)", previously_processed_raw_pending_outgoing_ach_transactions_ids)
           end
         end
 

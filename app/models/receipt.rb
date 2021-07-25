@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 class Receipt < ApplicationRecord
   belongs_to :receiptable, polymorphic: true
 
-  belongs_to :user, class_name: 'User', required: false
+  belongs_to :user, class_name: "User", required: false
   alias_attribute :uploader, :user
   alias_attribute :transaction, :receiptable
 
@@ -13,7 +15,7 @@ class Receipt < ApplicationRecord
     Rails.application.routes.url_helpers.rails_blob_url(object)
   end
 
-  def preview(resize: '512x512')
+  def preview(resize: "512x512")
     if file.previewable?
       Rails.application.routes.url_helpers.rails_representation_url(file.preview(resize: resize).processed, only_path: true)
     elsif file.variable?

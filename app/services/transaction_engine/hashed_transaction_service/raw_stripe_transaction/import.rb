@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TransactionEngine
   module HashedTransactionService
     module RawStripeTransaction
@@ -30,7 +32,7 @@ module TransactionEngine
         def primary_hash(rst)
           attrs = {
             unique_bank_identifier: rst.unique_bank_identifier,
-            date: rst.date_posted.strftime('%Y-%m-%d'),
+            date: rst.date_posted.strftime("%Y-%m-%d"),
             amount_cents: rst.amount_cents,
             memo: rst.memo.upcase
           }

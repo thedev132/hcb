@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Sponsor < ApplicationRecord
   extend FriendlyId
 
@@ -35,15 +37,15 @@ class Sponsor < ApplicationRecord
   def status_description
     i = invoices.last
     if i.nil?
-      'No invoices yet'
+      "No invoices yet"
     elsif i.paid_v2?
-      'Last invoice paid'
+      "Last invoice paid"
     elsif i.due_date < Time.current
-      'Last invoice overdue + unpaid'
+      "Last invoice overdue + unpaid"
     elsif i.due_date < 5.days.from_now
-      'Last invoice due soon'
+      "Last invoice due soon"
     else
-      'Last invoice due further out'
+      "Last invoice due further out"
     end
   end
 
@@ -72,10 +74,10 @@ class Sponsor < ApplicationRecord
   end
 
   def stripe_dashboard_url
-    url = 'https://dashboard.stripe.com'
+    url = "https://dashboard.stripe.com"
 
     if StripeService.mode == :test
-      url += '/test'
+      url += "/test"
     end
 
     url += "/customers/#{self.stripe_customer_id}"

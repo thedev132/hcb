@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module CheckService
   class Create
     include ::Shared::AmpleBalance

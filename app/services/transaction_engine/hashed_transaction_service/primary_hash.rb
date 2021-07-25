@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TransactionEngine
   module HashedTransactionService
     class PrimaryHash
@@ -5,15 +7,15 @@ module TransactionEngine
         @unique_bank_identifier = unique_bank_identifier
         @date = date
         @amount_cents = amount_cents
-        @memo = memo.to_s.delete(' ')
+        @memo = memo.to_s.delete(" ")
       end
 
       def run
-        raise ArgumentError, 'unique bank identifier must be upcased' unless unique_bank_identifier_is_upcased?
-        raise ArgumentError, 'memo must be upcased' unless memo_is_upcased?
-        raise ArgumentError, 'amount cents is not an integer' unless amount_cents_is_integer?
-        raise ArgumentError, 'amount cents cannot be zero' if amount_cents_is_zero?
-        raise ArgumentError, 'date must be formatted correctly' unless date_formatted_correctly?
+        raise ArgumentError, "unique bank identifier must be upcased" unless unique_bank_identifier_is_upcased?
+        raise ArgumentError, "memo must be upcased" unless memo_is_upcased?
+        raise ArgumentError, "amount cents is not an integer" unless amount_cents_is_integer?
+        raise ArgumentError, "amount cents cannot be zero" if amount_cents_is_zero?
+        raise ArgumentError, "date must be formatted correctly" unless date_formatted_correctly?
 
         [XXhash.xxh64(csv), csv]
       end
@@ -54,7 +56,7 @@ module TransactionEngine
       end
 
       def date_formatted_correctly?
-        Date.parse(@date).strftime('%Y-%m-%d') == @date
+        Date.parse(@date).strftime("%Y-%m-%d") == @date
       end
     end
   end

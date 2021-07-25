@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CanonicalPendingTransactionPolicy < ApplicationPolicy
   def show?
     admin_or_teammember

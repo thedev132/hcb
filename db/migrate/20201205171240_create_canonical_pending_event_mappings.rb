@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateCanonicalPendingEventMappings < ActiveRecord::Migration[6.0]
   def change
     create_table :canonical_pending_event_mappings do |t|

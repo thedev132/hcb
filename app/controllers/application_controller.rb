@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ApplicationController < ActionController::Base
   include Pundit
   include SessionsHelper
@@ -23,7 +25,7 @@ class ApplicationController < ActionController::Base
   # This being called probably means that the User's access token has expired.
   def user_not_authenticated
     sign_out
-    flash[:error] = 'You were signed out. Please re-login.'
+    flash[:error] = "You were signed out. Please re-login."
     if request.get?
       redirect_to auth_users_path(return_to: request.url)
     else
@@ -32,7 +34,7 @@ class ApplicationController < ActionController::Base
   end
 
   def user_not_authorized
-    flash[:error] = 'You are not authorized to perform this action.'
+    flash[:error] = "You are not authorized to perform this action."
     if current_user || !request.get?
       redirect_to root_path
     else
@@ -41,11 +43,11 @@ class ApplicationController < ActionController::Base
   end
 
   def not_found
-    raise ActionController::RoutingError.new('Not Found')
+    raise ActionController::RoutingError.new("Not Found")
   end
 
   def using_transaction_engine_v2?
-    params[:v1] != 'true' && (params[:v2] == 'true' || @event.try(:transaction_engine_v2_at))
+    params[:v1] != "true" && (params[:v2] == "true" || @event.try(:transaction_engine_v2_at))
   end
   helper_method :using_transaction_engine_v2?
 

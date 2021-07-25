@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
@@ -22,7 +24,7 @@ Rails.application.configure do
 
   config.cache_store = :memory_store
   config.public_file_server.headers = {
-    'Cache-Control' => "public, max-age=#{2.days.to_i}"
+    "Cache-Control" => "public, max-age=#{2.days.to_i}"
   }
 
   config.action_mailer.show_previews = true

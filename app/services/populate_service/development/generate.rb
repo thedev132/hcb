@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module PopulateService
   module Development
     class Generate

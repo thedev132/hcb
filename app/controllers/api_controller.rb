@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ApiController < ApplicationController
   before_action :check_token
   before_action :set_params
@@ -13,8 +15,8 @@ class ApiController < ApplicationController
     e = Event.find_by_slug(slug)
 
     # event not found
-    if e == nil
-      render json: { error: 'Not Found' }, status: 404
+    if e.nil?
+      render json: { error: "Not Found" }, status: 404
       return
     end
 
@@ -26,7 +28,7 @@ class ApiController < ApplicationController
   end
 
   def disbursement_new
-    expecting = ['source_event_slug', 'destination_event_slug', 'amount', 'name']
+    expecting = ["source_event_slug", "destination_event_slug", "amount", "name"]
     got = params.keys
     missing = []
 
@@ -80,9 +82,9 @@ class ApiController < ApplicationController
   private
 
   def check_token
-    attempt_api_token = request.headers['Authorization']&.split(' ')&.last
+    attempt_api_token = request.headers["Authorization"]&.split(" ")&.last
     if attempt_api_token != Rails.application.credentials.api_token
-      render json: { error: 'Unauthorized' }, status: 401
+      render json: { error: "Unauthorized" }, status: 401
       return
     end
   end

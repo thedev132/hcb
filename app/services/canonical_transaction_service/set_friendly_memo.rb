@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module CanonicalTransactionService
   class SetFriendlyMemo
     def initialize(canonical_transaction_id:, friendly_memo:)

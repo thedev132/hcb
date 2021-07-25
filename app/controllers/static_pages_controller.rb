@@ -1,4 +1,6 @@
-require 'net/http'
+# frozen_string_literal: true
+
+require "net/http"
 
 class StaticPagesController < ApplicationController
   skip_after_action :verify_authorized # do not force pundit
@@ -15,25 +17,25 @@ class StaticPagesController < ApplicationController
       @invites = @service.invites
     end
     if admin_signed_in?
-      @transaction_volume = CanonicalTransaction.included_in_stats.sum('@amount_cents')
+      @transaction_volume = CanonicalTransaction.included_in_stats.sum("@amount_cents")
     end
   end
 
   def branding
     @logos = [
-      { name: 'Original Light', criteria: 'For white or light colored backgrounds.', background: 'smoke' },
-      { name: 'Original Dark', criteria: 'For black or dark colored backgrounds.', background: 'black' },
-      { name: 'Outlined Black', criteria: 'For white or light colored backgrounds.', background: 'snow' },
-      { name: 'Outlined White', criteria: 'For black or dark colored backgrounds.', background: 'black' }
+      { name: "Original Light", criteria: "For white or light colored backgrounds.", background: "smoke" },
+      { name: "Original Dark", criteria: "For black or dark colored backgrounds.", background: "black" },
+      { name: "Outlined Black", criteria: "For white or light colored backgrounds.", background: "snow" },
+      { name: "Outlined White", criteria: "For black or dark colored backgrounds.", background: "black" }
     ]
-    @event_name = signed_in? && current_user.events.first ? current_user.events.first.name : 'Hack Pennsylvania'
+    @event_name = signed_in? && current_user.events.first ? current_user.events.first.name : "Hack Pennsylvania"
   end
 
   def faq
   end
 
   def my_cards
-    flash[:success] = 'Card activated!' if params[:activate]
+    flash[:success] = "Card activated!" if params[:activate]
     @stripe_cards = current_user.stripe_cards.includes(:event)
     @emburse_cards = current_user.emburse_cards.includes(:event)
   end
@@ -76,24 +78,24 @@ class StaticPagesController < ApplicationController
     month_ago = now - 1.month
 
     events_list = Event.not_omitted
-                       .where('created_at <= ?', now)
+                       .where("created_at <= ?", now)
                        .order(created_at: :desc)
                        .limit(10)
                        .pluck(:created_at)
                        .map(&:to_i)
                        .map { |time| {created_at: time} }
 
-    tx_all = CanonicalTransaction.included_in_stats.where('date <= ?', now)
+    tx_all = CanonicalTransaction.included_in_stats.where("date <= ?", now)
 
     render json: {
       date: now,
-      events_count: Event.not_omitted.where('created_at <= ?', now).size,
+      events_count: Event.not_omitted.where("created_at <= ?", now).size,
       last_transaction_date: tx_all.order(:date).last.date.to_time.to_i,
 
       # entire time period. this remains to prevent breaking changes to existing systems that use this endpoint
       raised: tx_all.revenue.sum(:amount_cents),
       transactions_count: tx_all.size,
-      transactions_volume: tx_all.sum('@amount_cents'),
+      transactions_volume: tx_all.sum("@amount_cents"),
 
       # entire (all), year, quarter, and month time periods
       all: CanonicalTransactionService::Stats::During.new(end_time: now).run,
@@ -113,7 +115,7 @@ class StaticPagesController < ApplicationController
     # No invoice with that charge id? Maybe we can find a donation payment with that charge?
     # Donations don't store charge id, but they store payment intent, and we can link it with the charge's payment intent on stripe
     unless @payment
-      payment_intent_id = StripeService::Charge.retrieve(charge_id)['payment_intent']
+      payment_intent_id = StripeService::Charge.retrieve(charge_id)["payment_intent"]
       @payment = Donation.find_by(stripe_payment_intent_id: payment_intent_id)
     end
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AchTransferPolicy < ApplicationPolicy
   def index?
     user&.admin?

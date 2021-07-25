@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module CheckService
   class Nightly
     def run
@@ -19,7 +21,7 @@ module CheckService
         end
 
         if rpocts.count > 1
-          Airbrake.notify("check: #{id} had more than 1 match") 
+          Airbrake.notify("check: #{id} had more than 1 match")
           next
         end
 
@@ -28,12 +30,12 @@ module CheckService
         cpts = CanonicalPendingTransaction.where(raw_pending_outgoing_check_transaction_id: rpoct.id)
 
         if cpts.blank?
-          Airbrake.notify("check: #{id} missing a linked canonical pending transaction") 
+          Airbrake.notify("check: #{id} missing a linked canonical pending transaction")
           next
         end
 
         if cpts.count > 1
-          Airbrake.notify("check: #{id} had more than 1 match of canonical pending transactions") 
+          Airbrake.notify("check: #{id} had more than 1 match of canonical pending transactions")
           next
         end
 
@@ -44,7 +46,7 @@ module CheckService
         next unless cts.present?
 
         if cts.count > 1
-          Airbrake.notify("check: #{id} had more than 1 match of canonical transactions") 
+          Airbrake.notify("check: #{id} had more than 1 match of canonical transactions")
           next
         end
 
@@ -52,7 +54,7 @@ module CheckService
 
         # 2. if it is has, then mark deposited
         if ct.present?
-          check.mark_deposited! 
+          check.mark_deposited!
         end
       end
     end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddMissingFieldsToLoadCardRequests < ActiveRecord::Migration[5.2]
   def change
     add_column :load_card_requests, :accepted_at, :timestamp

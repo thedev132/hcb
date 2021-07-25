@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddSyncFieldsToEmburseTransactions < ActiveRecord::Migration[5.2]
   def change
     add_column :emburse_transactions, :merchant_mid, :bigint

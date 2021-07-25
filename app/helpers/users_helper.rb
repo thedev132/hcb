@@ -1,5 +1,7 @@
-require 'digest/md5'
-require 'uri'
+# frozen_string_literal: true
+
+require "digest/md5"
+require "uri"
 
 module UsersHelper
   def gravatar_url(email, name, id, size)
@@ -14,20 +16,20 @@ module UsersHelper
     if !Rails.env.development? && (user.is_a?(User) && user&.profile_picture.attached?)
       src = user.profile_picture.variant(combine_options: {
         thumbnail: "#{size * 2}x#{size * 2}^",
-        gravity: 'center',
+        gravity: "center",
         extent: "#{size * 2}x#{size * 2}" })
     else
       src = gravatar_url(user.email, user.initials, user.id, size * 2)
     end
 
-    image_tag(src, options.merge({ loading: 'lazy', alt: user.name, width: size, height: size, class: "circle shrink-none #{options[:class]}" }))
+    image_tag(src, options.merge({ loading: "lazy", alt: user.name, width: size, height: size, class: "circle shrink-none #{options[:class]}" }))
   end
 
   def user_mention(user, options = {})
     avi = avatar_for user
     name = content_tag :span, user.initial_name
     if user.admin?
-      bolt = inline_icon 'admin-badge', size: 20
+      bolt = inline_icon "admin-badge", size: 20
       content_tag :span,
                   avi + bolt + name,
                   class: "mention mention--admin tooltipped tooltipped--n #{options[:class]}",
@@ -37,7 +39,7 @@ module UsersHelper
     end
   end
 
-  def admin_tools(class_name = '', element = 'div', &block)
+  def admin_tools(class_name = "", element = "div", &block)
     return unless current_user&.admin?
 
     concat("<#{element} class='admin-tools #{class_name}'>".html_safe)
@@ -48,17 +50,17 @@ module UsersHelper
   def creator_bar(object, options = {})
     creator = defined?(object.creator) ? object.creator :
       defined?(object.sender) ? object.sender : object.user
-    mention = creator ? user_mention(creator) : content_tag(:strong, 'Anonymous')
-    content_tag :div, class: 'comment__name' do
-      mention + relative_timestamp(object.created_at, prefix: options[:prefix], class: 'h5 muted')
+    mention = creator ? user_mention(creator) : content_tag(:strong, "Anonymous")
+    content_tag :div, class: "comment__name" do
+      mention + relative_timestamp(object.created_at, prefix: options[:prefix], class: "h5 muted")
     end
   end
 
   private
 
   def get_user_color(id)
-    alphabet = ('A'..'Z').to_a
-    colors = ['ec3750', 'ff8c37', 'f1c40f', '33d6a6', '5bc0de', '338eda']
+    alphabet = ("A".."Z").to_a
+    colors = ["ec3750", "ff8c37", "f1c40f", "33d6a6", "5bc0de", "338eda"]
     colors[id.to_i % colors.length] || colors.last
   end
 end

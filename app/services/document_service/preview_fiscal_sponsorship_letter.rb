@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module DocumentService
   class PreviewFiscalSponsorshipLetter
     def initialize(event:)
@@ -11,12 +13,12 @@ module DocumentService
     private
 
     def pdf_string
-      @pdf_string ||= ActionController::Base.new.render_to_string pdf: 'fiscal_sponsorship_letter', template: 'documents/fiscal_sponsorship_letter.pdf.erb', encoding: 'UTF-8', locals: { :@event => @event }
+      @pdf_string ||= ActionController::Base.new.render_to_string pdf: "fiscal_sponsorship_letter", template: "documents/fiscal_sponsorship_letter.pdf.erb", encoding: "UTF-8", locals: { :@event => @event }
     end
 
     def input
       @input ||= begin
-        input = Tempfile.new(['fiscal_sponsorship_letter_preview', '.pdf'])
+        input = Tempfile.new(["fiscal_sponsorship_letter_preview", ".pdf"])
         input.binmode
         input.write(pdf_string)
         input.rewind
@@ -26,7 +28,7 @@ module DocumentService
     end
 
     def cmd
-      ['pdftoppm', '-singlefile', '-r', '72', '-png', input.path]
+      ["pdftoppm", "-singlefile", "-r", "72", "-png", input.path]
     end
   end
 end

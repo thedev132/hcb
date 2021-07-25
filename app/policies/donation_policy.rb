@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class DonationPolicy < ApplicationPolicy
   def show?
     record.event.users.include?(user) || user&.admin?

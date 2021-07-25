@@ -114,4 +114,3 @@ RSpec.describe GSuite, type: :model do
     end
   end
 end
-

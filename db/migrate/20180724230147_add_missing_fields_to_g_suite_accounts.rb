@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddMissingFieldsToGSuiteAccounts < ActiveRecord::Migration[5.2]
   class GSuiteAccount < ActiveRecord::Base; end
   class User < ActiveRecord::Base; end
@@ -8,8 +10,8 @@ class AddMissingFieldsToGSuiteAccounts < ActiveRecord::Migration[5.2]
 
     GSuiteAccount.all.each do |gsa|
       full_name = User.find(gsa.creator_id).full_name
-      gsa.first_name = full_name.split(' ').first || 'Unnamed'
-      gsa.last_name = full_name.split(' ').second || 'Unnamed'
+      gsa.first_name = full_name.split(" ").first || "Unnamed"
+      gsa.last_name = full_name.split(" ").second || "Unnamed"
       gsa.save!
     end
   end

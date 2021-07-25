@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class FeeReimbursementsController < ApplicationController
   before_action :set_fee_reimbursement, only: [:show, :edit, :update, :destroy, :mark_as_processed, :mark_as_unprocessed]
 
@@ -29,9 +31,9 @@ class FeeReimbursementsController < ApplicationController
     result_params[:amount] = result_params[:amount].to_f * 100
 
     if @fee_reimbursement.update(result_params)
-      redirect_to @fee_reimbursement, notice: 'Fee refund was successfully updated.'
+      redirect_to @fee_reimbursement, notice: "Fee refund was successfully updated."
     else
-      render :edit
+      render "edit"
     end
   end
 
@@ -41,9 +43,9 @@ class FeeReimbursementsController < ApplicationController
     authorize @fee_reimbursement
 
     if @fee_reimbursement.save
-      flash[:success] = 'Marked as unprocessed.'
+      flash[:success] = "Marked as unprocessed."
     else
-      flash[:error] = 'Something went wrong.'
+      flash[:error] = "Something went wrong."
     end
     redirect_to @fee_reimbursement
   end
@@ -54,9 +56,9 @@ class FeeReimbursementsController < ApplicationController
     authorize @fee_reimbursement
 
     if @fee_reimbursement.save
-      flash[:success] = 'Marked as processed.'
+      flash[:success] = "Marked as processed."
     else
-      flash[:error] = 'Something went wrong.'
+      flash[:error] = "Something went wrong."
     end
     redirect_to @fee_reimbursement
   end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module EventService
   class DeliverWebhook
     def initialize(event_id:)
@@ -5,7 +7,7 @@ module EventService
     end
 
     def run
-      raise ArgumentError, 'webhook_url missing' unless event.webhook_url.present?
+      raise ArgumentError, "webhook_url missing" unless event.webhook_url.present?
 
       res = conn.post(event.webhook_url) do |req|
         req.body = Api::V1::OrganizationSerializer.new(event: event).run.to_json
@@ -28,7 +30,7 @@ module EventService
 
     def new_attrs
       {
-        headers: {'Content-Type' => 'application/json'}
+        headers: {"Content-Type" => "application/json"}
       }
     end
 

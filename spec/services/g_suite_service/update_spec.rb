@@ -4,7 +4,7 @@ require "rails_helper"
 
 RSpec.describe GSuiteService::Update, type: :model do
   fixtures   "users", "g_suites"
-  
+
   let(:user) { users(:user1) }
   let(:g_suite) { g_suites(:g_suite1) }
   let(:g_suite_id) { g_suite.id }

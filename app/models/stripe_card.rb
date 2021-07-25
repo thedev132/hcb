@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 class StripeCard < ApplicationRecord
   after_create_commit :notify_user, :pay_for_issuing
 
-  scope :deactivated, -> { where.not(stripe_status: 'active') }
-  scope :canceled, -> { where(stripe_status: 'canceled' )}
-  scope :frozen, -> { where(stripe_status: 'inactive' )}
-  scope :active, -> { where(stripe_status: 'active') }
+  scope :deactivated, -> { where.not(stripe_status: "active") }
+  scope :canceled, -> { where(stripe_status: "canceled") }
+  scope :frozen, -> { where(stripe_status: "inactive") }
+  scope :active, -> { where(stripe_status: "active") }
   scope :physical_shipping, -> { physical.includes(:user, :event).select { |c| c.stripe_obj[:shipping][:status] != "delivered" } }
 
   belongs_to :event
@@ -48,7 +50,7 @@ class StripeCard < ApplicationRecord
 
   def formatted_card_number
     return "•••• •••• •••• #{last4}" unless virtual?
-    full_card_number.scan(/.{4}/).join(' ')
+    full_card_number.scan(/.{4}/).join(" ")
   end
 
   def hidden_card_number
@@ -68,7 +70,7 @@ class StripeCard < ApplicationRecord
   end
 
   def status_text
-    return 'frozen' if stripe_status == 'inactive'
+    return "frozen" if stripe_status == "inactive"
     stripe_status.humanize
   end
 
@@ -105,15 +107,15 @@ class StripeCard < ApplicationRecord
   end
 
   def frozen?
-    stripe_status == 'inactive'
+    stripe_status == "inactive"
   end
 
   def deactivated?
-    stripe_status != 'active'
+    stripe_status != "active"
   end
 
   def canceled?
-    stripe_status == 'canceled'
+    stripe_status == "canceled"
   end
 
   include ActiveModel::AttributeMethods
@@ -151,7 +153,7 @@ class StripeCard < ApplicationRecord
 
   def sync_from_stripe!
     if stripe_obj[:deleted]
-      self.stripe_status = 'deleted'
+      self.stripe_status = "deleted"
       return self
     end
     self.stripe_id = stripe_obj[:id]
@@ -186,19 +188,19 @@ class StripeCard < ApplicationRecord
     return 10 if virtual?
 
     cost = 300
-    cost_type = stripe_obj['shipping']['type'] + '|' + stripe_obj['shipping']['service']
+    cost_type = stripe_obj["shipping"]["type"] + "|" + stripe_obj["shipping"]["service"]
     case cost_type
-    when 'individual|standard'
+    when "individual|standard"
       cost += 50
-    when 'individual|express'
+    when "individual|express"
       cost += 1600
-    when 'individual|priority'
+    when "individual|priority"
       cost += 2200
-    when 'bulk|standard'
+    when "bulk|standard"
       cost += 2500
-    when 'bulk|express'
+    when "bulk|express"
       cost += 3000
-    when 'bulk|priority'
+    when "bulk|priority"
       cost += 4800
     end
 
@@ -257,7 +259,7 @@ class StripeCard < ApplicationRecord
     @auths ||= begin
       result = []
       auths = StripeService::Issuing::Authorization.list(card: stripe_id)
-      auths.auto_paging_each {|auth| result << auth}
+      auths.auto_paging_each { |auth| result << auth }
       result
     end
 

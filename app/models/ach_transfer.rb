@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AchTransfer < ApplicationRecord
   has_paper_trail
 
@@ -7,12 +9,12 @@ class AchTransfer < ApplicationRecord
   include PgSearch::Model
   pg_search_scope :search_recipient, against: [:recipient_name], using: { tsearch: { prefix: true, dictionary: "english" } }, ranked_by: "ach_transfers.created_at"
 
-  belongs_to :creator, class_name: 'User'
+  belongs_to :creator, class_name: "User"
   belongs_to :event
 
   validates_length_of :routing_number, is: 9
 
-  has_one :t_transaction, class_name: 'Transaction', inverse_of: :ach_transfer
+  has_one :t_transaction, class_name: "Transaction", inverse_of: :ach_transfer
 
   scope :approved, -> { where.not(approved_at: nil) }
 
@@ -79,10 +81,10 @@ class AchTransfer < ApplicationRecord
 
   def status_text_long
     case status
-    when :deposited then 'Deposited successfully'
-    when :in_transit then 'In transit'
-    when :pending then 'Waiting on Bank approval'
-    when :rejected then 'Rejected'
+    when :deposited then "Deposited successfully"
+    when :in_transit then "In transit"
+    when :pending then "Waiting on Bank approval"
+    when :rejected then "Rejected"
     end
   end
 
@@ -106,7 +108,7 @@ class AchTransfer < ApplicationRecord
   end
 
   def state_icon
-    'checkmark' if deposited?
+    "checkmark" if deposited?
   end
 
   def pending_deprecated?

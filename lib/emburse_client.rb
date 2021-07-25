@@ -1,14 +1,16 @@
+# frozen_string_literal: true
+
 module EmburseClient
   class NotFoundError < StandardError; end
 
   def self.request(path, method = :get, body = nil, headers = nil)
-    conn = Faraday.new(url: 'https://api.emburse.com/')
+    conn = Faraday.new(url: "https://api.emburse.com/")
 
     resp = conn.send(method) do |req|
       req.url(path)
       req.body = body.to_json if %i{post put}.include? method
-      req.headers['Content-Type'] = 'application/json'
-      req.headers['Authorization'] = "Token #{access_token}"
+      req.headers["Content-Type"] = "application/json"
+      req.headers["Authorization"] = "Token #{access_token}"
     end
 
     raise NotFoundError if resp.status === 404
@@ -25,7 +27,7 @@ module EmburseClient
       if resp[:next].nil?
         next_url = nil
       else
-        next_url = resp[:next].sub('https://api.emburse.com/', '')
+        next_url = resp[:next].sub("https://api.emburse.com/", "")
       end
     end
 

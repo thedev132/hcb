@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddCheckAndAchTransferReferencesToTransactions < ActiveRecord::Migration[5.2]
   def change
     add_reference :transactions, :check, foreign_key: true

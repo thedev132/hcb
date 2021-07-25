@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class DonationMailer < ApplicationMailer
   def donor_receipt
     @donation = params[:donation]

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class DocumentPolicy < ApplicationPolicy
   def common_index?
     user.admin?
@@ -41,6 +43,6 @@ class DocumentPolicy < ApplicationPolicy
   end
 
   def fiscal_sponsorship_letter?
-    !record&.unapproved? && ( record.users.include?(user) || user.admin? )
+    !record&.unapproved? && (record.users.include?(user) || user.admin?)
   end
 end

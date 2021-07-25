@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TransactionEngine
   module Transaction
     class AllDeprecated

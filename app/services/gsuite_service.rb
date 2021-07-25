@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class GsuiteService
   include Singleton
 
@@ -41,7 +43,7 @@ class GsuiteService
     begin
       client.get_user(
         email,
-        projection: 'full'
+        projection: "full"
       )
     rescue Google::Apis::ClientError
       nil

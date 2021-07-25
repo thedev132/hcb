@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module RawPlaidTransactionService
   class Delete
     def initialize(raw_plaid_transaction_id:)

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class HashedTransaction < ApplicationRecord
   monetize :amount_cents
 
@@ -23,7 +25,7 @@ class HashedTransaction < ApplicationRecord
   def memo
     raw_plaid_transaction.try(:memo) ||
       raw_emburse_transaction.try(:memo) ||
-      raw_stripe_transaction.try(:memo) || 
+      raw_stripe_transaction.try(:memo) ||
       raw_csv_transaction.try(:memo)
   end
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module PendingTransactionEngine
   module CanonicalPendingTransactionService
     module Import
@@ -24,7 +26,7 @@ module PendingTransactionEngine
           @raw_pending_bank_fee_transactions_ready_for_processing ||= begin
             return RawPendingBankFeeTransaction.all if previously_processed_raw_pending_bank_fee_transactions_ids.length < 1
 
-            RawPendingBankFeeTransaction.where('id not in(?)', previously_processed_raw_pending_bank_fee_transactions_ids)
+            RawPendingBankFeeTransaction.where("id not in(?)", previously_processed_raw_pending_bank_fee_transactions_ids)
           end
         end
 

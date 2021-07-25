@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class DisbursementsController < ApplicationController
   before_action :set_disbursement, only: [:show, :edit, :update]
 
@@ -22,7 +24,7 @@ class DisbursementsController < ApplicationController
 
   def create
     result_params = disbursement_params
-    result_params[:amount] = result_params[:amount].gsub(',', '').to_f * 100
+    result_params[:amount] = result_params[:amount].gsub(",", "").to_f * 100
 
     @disbursement = Disbursement.new(result_params)
     @event = Event.friendly.find(params[:disbursement][:event_id])
@@ -32,7 +34,7 @@ class DisbursementsController < ApplicationController
     if @disbursement.save
       redirect_to disbursements_path
     else
-      render :new
+      render "new"
     end
   end
 
@@ -49,7 +51,7 @@ class DisbursementsController < ApplicationController
     authorize @disbursement
 
     if @disbursement.update(fulfilled_at: DateTime.now)
-      flash[:success] = 'Disbursement marked as fulfilled'
+      flash[:success] = "Disbursement marked as fulfilled"
       if Disbursement.pending.any?
         redirect_to pending_disbursements_path
       else
@@ -63,7 +65,7 @@ class DisbursementsController < ApplicationController
     authorize @disbursement
 
     if @disbursement.update(rejected_at: DateTime.now)
-      flash[:error] = 'Disbursement rejected'
+      flash[:error] = "Disbursement rejected"
       redirect_to disbursements_path
     end
   end

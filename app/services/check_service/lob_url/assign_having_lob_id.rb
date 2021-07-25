@@ -7,7 +7,7 @@ module CheckService
         checks.each do |check|
           lob_url = ::CheckService::LobUrl::Generate.new(check: check).run
 
-          check.update_column(:lob_url, lob_url) 
+          check.update_column(:lob_url, lob_url)
         end
       end
 

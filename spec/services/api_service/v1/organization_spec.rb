@@ -7,7 +7,7 @@ RSpec.describe ApiService::V1::Organization, type: :model do
 
   let(:partner) { partners(:partner1) }
   let(:partner_id) { partner.id }
-  
+
   let(:event) { events(:event1) }
   let(:organization_identifier) { event.organization_identifier }
   let(:status) { event.aasm_state }

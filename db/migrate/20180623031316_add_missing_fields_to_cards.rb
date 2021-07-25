@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddMissingFieldsToCards < ActiveRecord::Migration[5.2]
   def change
     add_column :cards, :last_four, :string

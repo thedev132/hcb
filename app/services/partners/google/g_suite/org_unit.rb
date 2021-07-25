@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Partners
   module Google
     module GSuite
@@ -18,7 +20,7 @@ module Partners
         private
 
         def org_unit_path_without_leading_slash
-          @org_unit_path.split('/').reject { |c| c.empty? }.join('/')
+          @org_unit_path.split("/").reject { |c| c.empty? }.join("/")
         end
       end
     end

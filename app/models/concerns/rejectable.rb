@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # NOTE(@lachlanjc and @MaxWofford):
 # This concern exists to abstract the multiple statuses of various requests/
 # applications for things across the app. Not all models that include Rejectable
