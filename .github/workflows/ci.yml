@@ -17,7 +17,7 @@ jobs:
           RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
         run: bundle exec rubocop
   rspec:
-    name: Rubocop
+    name: RSpec
     runs-on: ubuntu-18.04
     steps:
       - name: Checkout code
@@ -27,6 +27,10 @@ jobs:
         with:
           ruby-version: "2.7.3"
           bundler-cache: true
+      - name: Install postgres client
+        run: sudo apt-get install libpq-dev
+      - name: Run migrations
+        run: bundler exec rails db:create db:migrate RAILS_ENV=test
       - name: Run RSpec
         env:
           RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
