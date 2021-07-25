@@ -3,7 +3,7 @@
 require "rails_helper"
 
 RSpec.describe HashedTransaction, type: :model do
-  fixtures "raw_emburse_transactions", "hashed_transactions"
+  fixtures "raw_plaid_transactions", "raw_emburse_transactions", "hashed_transactions"
 
   let(:hashed_transaction) { hashed_transactions(:hashed_transaction1) }
 

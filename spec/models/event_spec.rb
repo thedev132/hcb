@@ -3,7 +3,7 @@
 require "rails_helper"
 
 RSpec.describe Event, type: :model do
-  fixtures "events", "transactions", "fee_relationships", "canonical_event_mappings", "canonical_transactions"
+  fixtures "events", "transactions", "fee_relationships", "canonical_event_mappings", "canonical_transactions", "partners"
 
   let(:event) { events(:event1) }
 
@@ -30,20 +30,6 @@ RSpec.describe Event, type: :model do
       result = event.balance_v2_cents
 
       expect(result).to eql(100)
-    end
-  end
-
-  describe "#fee_balance" do
-    it "calculates a value" do
-      result = event.fee_balance
-
-      expect(result).to eql(7)
-    end
-
-    context "when paid fees exist" do
-      it "calculates a different value" do
-
-      end
     end
   end
 

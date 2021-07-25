@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -512,7 +514,7 @@ ActiveRecord::Schema.define(version: 2021_07_22_200239) do
     t.boolean "omit_stats", default: false
     t.datetime "transaction_engine_v2_at", default: -> { "CURRENT_TIMESTAMP" }
     t.datetime "last_fee_processed_at"
-    t.datetime "pending_transaction_engine_at", default: "2021-07-25 19:49:38"
+    t.datetime "pending_transaction_engine_at", default: "2021-07-25 19:53:10"
     t.string "aasm_state"
     t.string "organization_identifier", null: false
     t.string "redirect_url"

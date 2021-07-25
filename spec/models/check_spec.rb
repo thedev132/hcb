@@ -3,7 +3,7 @@
 require "rails_helper"
 
 RSpec.describe Check, type: :model do
-  fixtures "checks"
+  fixtures "checks", "users", "lob_addresses"
 
   let(:check) { checks(:check1) }
 
