@@ -45,17 +45,11 @@ jobs:
       - name: Build App
         env:
           DATABASE_URL: postgres://postgres:postgres@localhost:5432/bank_test
-          PGHOST: localhost
-          PGUSER: postgres
-          PGPASSWORD: postgres
           RAILS_ENV: test
         run: bundler exec rails db:create db:migrate RAILS_ENV=test
       - name: Run RSpec
         env:
           DATABASE_URL: postgres://postgres:postgres@localhost:5432/bank_test
-          PGHOST: localhost
-          PGUSER: postgres
-          PGPASSWORD: postgres
           RAILS_ENV: test
           RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
         run: bundle exec rspec
