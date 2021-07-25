@@ -97,7 +97,7 @@ class Event < ApplicationRecord
   end
 
   scope :pending_fees_v2, -> do
-    where("(last_fee_processed_at is null or last_fee_processed_at <= ?) and id in (?)", 20.days.ago, self.event_ids_with_pending_fees_greater_than_0_v2.to_a.map {|a| a["event_id"] })
+    where("(last_fee_processed_at is null or last_fee_processed_at <= ?) and id in (?)", 5.days.ago, self.event_ids_with_pending_fees_greater_than_0_v2.to_a.map {|a| a["event_id"] })
   end
 
   aasm do
