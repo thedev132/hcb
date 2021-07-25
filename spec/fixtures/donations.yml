@@ -9,4 +9,5 @@ donation2:
   event: event1
   name: "Donation Without FeeReimbursement"
   email: "donation2@example.com"
+  aasm_state: "in_transit"
   amount: 100_00

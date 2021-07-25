@@ -9,6 +9,14 @@ RSpec.describe TransactionEngine::HashedTransactionService::RawPlaidTransaction:
 
   let(:service) { TransactionEngine::HashedTransactionService::RawPlaidTransaction::Import.new }
 
+  before do
+    travel_to Time.local(2020, 9, 1)
+  end
+
+  after do
+    travel_back
+  end
+
   it 'creates hashed transactions' do
     expect do
       service.run

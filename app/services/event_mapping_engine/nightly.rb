@@ -7,8 +7,6 @@ module EventMappingEngine
     end
 
     def run
-      #map_historical_plaid! # DEPRECATED - 2021-05-07
-      #map_historical_emburse! # DEPRECATED - 2021-05-07
       map_stripe_transactions!
       map_github!
       map_checks!
@@ -29,14 +27,6 @@ module EventMappingEngine
     end
 
     private
-
-    def map_historical_plaid!
-      ::EventMappingEngine::Map::HistoricalPlaid.new(start_date: @start_date).run
-    end
-
-    def map_historical_emburse!
-      ::EventMappingEngine::Map::HistoricalEmburse.new(start_date: @start_date).run
-    end
 
     def map_stripe_transactions!
       ::EventMappingEngine::Map::StripeTransactions.new(start_date: @start_date).run

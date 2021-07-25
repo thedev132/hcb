@@ -10,7 +10,7 @@
 </pre>
 
 <p>
-  You can <a href="https://accounts.google.com/signin/v2/identifier?continue=https%3A%2F%2Fmail.google.com&Email=<%= URI.encode @address %>&passive=true">sign in to your account now</a>. After you do, it may be a good idea to change your password as well :)
+  You can <a href="https://accounts.google.com/signin/v2/identifier?continue=https%3A%2F%2Fmail.google.com&Email=<%= URI.encode_www_form_component @address %>&passive=true">sign in to your account now</a>. After you do, it may be a good idea to change your password as well :)
 </p>
 
 <p>

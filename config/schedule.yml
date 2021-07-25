@@ -33,11 +33,6 @@ sync_payouts_job:
   class: "SyncPayoutsJob"
   queue: "default"
 
-sync_transactions_job:
-  cron: "0 */6 * * *" # run every 6 hours
-  class: "SyncTransactionsJob"
-  queue: "default"
-
 fee_reimbursement_nightly_job:
   cron: "0 0 * * *" # run every 1 day
   class: "FeeReimbursementJob::Nightly"

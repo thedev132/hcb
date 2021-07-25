@@ -17,6 +17,7 @@ RSpec.describe PayoutService::Invoice::Create do
 
   before do
     allow(service).to receive(:funds_available?).and_return(true)
+    allow(service).to receive(:charge).and_return(true)
     allow_any_instance_of(InvoicePayout).to receive(:create_stripe_payout).and_return(true)
     allow_any_instance_of(Sponsor).to receive(:create_stripe_customer).and_return(true)
     allow_any_instance_of(Sponsor).to receive(:update_stripe_customer).and_return(true)
