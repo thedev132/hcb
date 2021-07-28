@@ -21,7 +21,7 @@ module ApiService
           event.update_columns(attrs)
 
           ::UserService::Create.new(user_attrs).run
-          
+
           event.mark_pending!
         end
 
