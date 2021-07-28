@@ -140,12 +140,12 @@ class AdminController < ApplicationController
     attrs = {
       name: params[:name],
       emails: emails,
-      approved: params[:approved].to_i == 1 ? true : false,
+      has_fiscal_sponsorship_document: params[:has_fiscal_sponsorship_document].to_i == 1 ? true : false,
       sponsorship_fee: params[:sponsorship_fee]
     }
     ::EventService::Create.new(attrs).run
 
-    redirect_to events_admin_index_path, flash: { success: "Successfully created #{params[:name]}" }
+    redirect_to events_admin_index_path, flash: { success: "Success" }
   rescue => e
     redirect_to event_new_admin_index_path, flash: { error: e.message }
   end

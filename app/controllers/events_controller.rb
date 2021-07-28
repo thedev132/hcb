@@ -294,6 +294,7 @@ class EventsController < ApplicationController
       :address,
       :sponsorship_fee,
       :expected_budget,
+      :has_fiscal_sponsorship_document,
       :omit_stats,
       :emburse_department_id,
       :partner_logo_url,
