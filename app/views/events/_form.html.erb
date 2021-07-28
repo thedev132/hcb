@@ -119,13 +119,11 @@
     </div>
 
     <div class="field field--checkbox">
-      <%= form.check_box :has_fiscal_sponsorship_document %>
-      <%= form.label :has_fiscal_sponsorship_document, "Display Fiscal Sponsorship Confirmation in Documents tab?" %>
-    </div>
-
-    <div class="field field--checkbox">
       <%= form.check_box :beta_features_enabled %>
       <%= form.label :beta_features_enabled, "Turn on beta (features in development) for this event?" %>
     </div>
+
+    <p class="mt3">To change an organization's status (Pending, Approved, Rejected, etc.),
+      use the <%= link_to "admin Organizations process page", event_process_admin_path(@event) %></p>
   <% end %>
 <% end %>
