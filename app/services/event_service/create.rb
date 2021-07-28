@@ -16,7 +16,7 @@ module EventService
 
       ActiveRecord::Base.transaction do
         event = ::Event.create!(attrs)
-        
+
         event.mark_approved! if @approved
 
         @emails.each do |email|
