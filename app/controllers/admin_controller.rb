@@ -97,6 +97,7 @@ class AdminController < ApplicationController
     @pending = params[:pending] == "0" ? nil : true # checked by default
     @unapproved = params[:unapproved] == "0" ? nil : true # checked by default
     @approved = params[:approved] == "0" ? nil : true # checked by default
+    @rejected = params[:rejected] == "0" ? nil : true # checked by default
     @transparent = params[:transparent].present? ? params[:transparent] : nil
     @omitted = params[:omitted].present? ? params[:omitted] : nil
     @hidden = params[:hidden].present? ? params[:hidden] : nil
@@ -115,6 +116,7 @@ class AdminController < ApplicationController
     states << "pending" if @pending
     states << "unapproved" if @unapproved
     states << "approved" if @approved
+    states << "rejected" if @rejected
     relation = relation.where("aasm_state in (?)", states)
 
     @count = relation.count
