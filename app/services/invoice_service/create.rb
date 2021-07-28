@@ -75,7 +75,7 @@ module InvoiceService
     end
 
     def existing_sponsor
-      @existing_sponsor ||= event.sponsors.find_by(id: @sponsor_id) || event.sponsors.find_by(slug: @sponsor_id)
+      @existing_sponsor ||= event.sponsors.find_by(id: @sponsor_id) || event.sponsors.not_null_slugs.find_by(slug: @sponsor_id)
     end
 
     def event

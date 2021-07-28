@@ -69,8 +69,6 @@ class Invoice < ApplicationRecord
   before_create :create_stripe_invoice
   before_destroy :close_stripe_invoice
 
-  #after_update :send_payment_notification_if_needed # turn off temporarily
-
   def event
     sponsor.event
   end
@@ -319,23 +317,6 @@ class Invoice < ApplicationRecord
     invoice.void_invoice
 
     self.set_fields_from_stripe_invoice invoice
-  end
-
-  def send_payment_notification_if_needed
-    return unless saved_changes[:status].present?
-
-    was = saved_changes[:status][0] # old value of status
-    now = saved_changes[:status][1] # new value of status
-
-    if was != "paid" && now == "paid"
-      # send special email on first invoice paid
-      if self.sponsor.event.invoices.select { |i| i.status == "paid" }.count == 1
-        InvoiceMailer.with(invoice: self).first_payment_notification.deliver_later
-        return
-      end
-
-      InvoiceMailer.with(invoice: self).payment_notification.deliver_later
-    end
   end
 
   def stripe_invoice_item_params
