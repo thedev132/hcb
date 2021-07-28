@@ -115,7 +115,7 @@ class Event < ApplicationRecord
     end
 
     event :mark_approved do
-      transitions from: [:pending, :unapproved], to: :approved
+      transitions from: [:awaiting_connect, :pending, :unapproved], to: :approved
     end
 
     event :mark_rejected do
