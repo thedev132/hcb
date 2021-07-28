@@ -60,7 +60,7 @@
   </thead>
   <tbody>
     <% @events.each do |event| %>
-      <tr style="<%= "background: #ffffcc;" if event.pending? %> <%= "background: #ff8c38;" if event.omit_stats? %>">
+      <tr style="<%= "background: #ffffcc;" if event.pending? || event.unapproved? %> <%= "background: #ff8c38;" if event.omit_stats? %>">
         <td><%= event.id %></td>
         <td><%= event.created_at.strftime("%Y-%m-%d") %></td>
         <td>
@@ -80,8 +80,8 @@
           <%= "🕵️‍♂️" if event.hidden_at %>
         </td>
         <td>
-          <%= link_to "Process", event_process_admin_path(event) if event.pending? %>
-          <%= link_to "View", event_process_admin_path(event) unless event.pending? %>
+          <%= link_to "Process", event_process_admin_path(event) if event.pending? || event.unapproved? %>
+          <%= link_to "View", event_process_admin_path(event) unless event.pending? || event.unapproved? %>
         </td>
       </tr>
     <% end %>

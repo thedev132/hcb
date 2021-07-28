@@ -103,16 +103,23 @@ class Event < ApplicationRecord
   end
 
   aasm do
-    state :pending, initial: true
-    state :unapproved # old spend only events
-    state :approved
+    state :awaiting_connect, initial: true # Initial state of partner events. Waiting for user to fill out Bank Connect form
+    state :pending # Awaiting Bank approval (after filling out Bank Connect form)
+    state :approved # Full fiscal sponsorship
+    state :rejected # Rejected from fiscal sponsorship
+
+    state :unapproved # Old spend only events. Deprecated, should not be granted to any new events
+
+    event :mark_pending do
+      transitions from: [:awaiting_connect, :approved], to: :pending
+    end
 
     event :mark_approved do
       transitions from: [:pending, :unapproved], to: :approved
     end
 
-    event :mark_pending do
-      transitions from: :approved, to: :pending
+    event :mark_rejected do
+      transitions to: :rejected # from any state
     end
   end
 
@@ -327,9 +334,10 @@ class Event < ApplicationRecord
     @total_fess_v2_cents ||= fees.sum(:amount_cents_as_decimal).ceil
   end
 
-  def pending?
-    !has_fiscal_sponsorship_document
-  end
+  # Deprecated. Use AASM state instead
+  # def pending?
+  #   !has_fiscal_sponsorship_document
+  # end
 
   private
 

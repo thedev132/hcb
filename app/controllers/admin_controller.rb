@@ -160,6 +160,16 @@ class AdminController < ApplicationController
     redirect_to event_process_admin_path(@event), flash: { error: e.message }
   end
 
+  def event_reject
+    @event = Event.find(params[:id])
+
+    state = ::EventService::Reject.new(@event).run
+
+    redirect_to event_process_admin_path(@event), flash: { success: "Event has been #{state}" }
+  rescue => e
+    redirect_to event_process_admin_path(@event), flash: { error: e.message }
+  end
+
   def bank_fees
     @page = params[:page] || 1
     @per = params[:per] || 100
