@@ -11,6 +11,8 @@ RUN apt-get -y install yarn nodejs postgresql-client vim poppler-utils
   # for easy editing of credentials
 ENV EDITOR=vim
 
+RUN gem install bundler -v 1.17.3
+
 ADD yarn.lock /usr/src/app/yarn.lock
 ADD package.json /usr/src/app/package.json
 ADD Gemfile /usr/src/app/Gemfile
