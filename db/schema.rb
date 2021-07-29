@@ -12,10 +12,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_22_200239) do
+ActiveRecord::Schema.define(version: 2021_07_29_015819) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
+  enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
 
   create_table "ach_transfers", force: :cascade do |t|
@@ -31,8 +32,8 @@ ActiveRecord::Schema.define(version: 2021_07_22_200239) do
     t.datetime "updated_at", null: false
     t.string "recipient_tel"
     t.datetime "rejected_at"
-    t.text "payment_for"
     t.datetime "scheduled_arrival_date"
+    t.text "payment_for"
     t.string "aasm_state"
     t.text "confirmation_number"
     t.index ["creator_id"], name: "index_ach_transfers_on_creator_id"
@@ -240,9 +241,9 @@ ActiveRecord::Schema.define(version: 2021_07_22_200239) do
     t.bigint "raw_pending_invoice_transaction_id"
     t.text "hcb_code"
     t.bigint "raw_pending_bank_fee_transaction_id"
+    t.bigint "raw_pending_partner_donation_transaction_id"
     t.index ["raw_pending_bank_fee_transaction_id"], name: "index_canonical_pending_txs_on_raw_pending_bank_fee_tx_id"
     t.index ["raw_pending_donation_transaction_id"], name: "index_canonical_pending_txs_on_raw_pending_donation_tx_id"
-    t.index ["raw_pending_invoice_transaction_id"], name: "index_canonical_pending_txs_on_raw_pending_invoice_tx_id"
     t.index ["raw_pending_outgoing_ach_transaction_id"], name: "index_canonical_pending_txs_on_raw_pending_outgoing_ach_tx_id"
     t.index ["raw_pending_outgoing_check_transaction_id"], name: "index_canonical_pending_txs_on_raw_pending_outgoing_check_tx_id"
     t.index ["raw_pending_stripe_transaction_id"], name: "index_canonical_pending_txs_on_raw_pending_stripe_tx_id"
@@ -514,7 +515,7 @@ ActiveRecord::Schema.define(version: 2021_07_22_200239) do
     t.boolean "omit_stats", default: false
     t.datetime "transaction_engine_v2_at", default: -> { "CURRENT_TIMESTAMP" }
     t.datetime "last_fee_processed_at"
-    t.datetime "pending_transaction_engine_at", default: "2021-07-25 19:53:10"
+    t.datetime "pending_transaction_engine_at", default: "2021-02-13 22:49:40"
     t.string "aasm_state"
     t.string "organization_identifier", null: false
     t.string "redirect_url"
@@ -845,6 +846,7 @@ ActiveRecord::Schema.define(version: 2021_07_22_200239) do
     t.text "name"
     t.text "logo"
     t.string "public_stripe_api_key"
+    t.text "stripe_api_key_ciphertext"
   end
 
   create_table "raw_csv_transactions", force: :cascade do |t|

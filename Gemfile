@@ -155,6 +155,7 @@ gem "geocoder" # lookup lat/lng for Stripe Cards shipment tracking
 gem "hashid-rails", "~> 1.0"
 gem "hiredis"
 gem "invisible_captcha"
+gem "lockbox" # encrypt partner stripe keys
 gem "money-rails" # back cent fields as money objects
 gem "namae" # multi-cultural human name parser
 gem "newrelic_rpm"
