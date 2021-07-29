@@ -41,7 +41,7 @@ RSpec.describe InvoiceService::Create, type: :model do
   end
 
   let(:service) { InvoiceService::Create.new(attrs) }
-  
+
   let(:stripe_invoice_item) { double("StripeInvoice", id: 1) }
   let(:stripe_invoice_values) do
     {
