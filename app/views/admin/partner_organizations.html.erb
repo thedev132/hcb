@@ -22,7 +22,9 @@
   </thead>
   <tbody>
     <% @partner_organizations.each do |event| %>
-      <tr style="<%= "background: #ffffcc;" if event.pending? %> <%= "background: #ff8c38;" if event.omit_stats? %>">
+      <tr style="<%= "background: #ffffcc;" if event.pending? %>
+                 <%= "color: #ff8c38;" if event.rejected? && !event.omit_stats? %>
+                 <%= "background: #ff8c38;" if event.omit_stats? %>">
         <td><%= event.id %></td>
         <td><%= event.partner.slug %></td>
         <td><%= event.organization_identifier %></td>
