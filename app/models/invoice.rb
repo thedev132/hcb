@@ -66,7 +66,6 @@ class Invoice < ApplicationRecord
   before_create :set_defaults
 
   # Stripe syncing…
-  before_create :create_stripe_invoice
   before_destroy :close_stripe_invoice
 
   def event
@@ -273,8 +272,7 @@ class Invoice < ApplicationRecord
   end
 
   def sync_remote!
-    self.set_fields_from_stripe_invoice(remote_invoice)
-    self.save!
+    ::InvoiceService::SyncRemoteToLocal.new(invoice_id: id).run
   end
 
   private
@@ -300,51 +298,10 @@ class Invoice < ApplicationRecord
     end
   end
 
-  def create_stripe_invoice
-    item = StripeService::InvoiceItem.create(stripe_invoice_item_params)
-    self.item_stripe_id = item.id
-
-    inv = StripeService::Invoice.create(stripe_invoice_params)
-    self.stripe_invoice_id = inv.id
-
-    inv.send_invoice
-
-    self.set_fields_from_stripe_invoice(inv)
-  end
-
   def close_stripe_invoice
-    invoice = StripeService::Invoice.retrieve(stripe_invoice_id)
-    invoice.void_invoice
+    remote_invoice.void_invoice
 
-    self.set_fields_from_stripe_invoice invoice
-  end
-
-  def stripe_invoice_item_params
-    {
-      customer: self.sponsor.stripe_customer_id,
-      currency: "usd",
-      description: self.item_description,
-      amount: self.item_amount
-    }
-  end
-
-  def stripe_invoice_params
-    {
-      customer: self.sponsor.stripe_customer_id,
-      auto_advance: self.auto_advance,
-      billing: "send_invoice",
-      due_date: self.due_date.to_i, # convert to unixtime
-      description: self.memo,
-      status: self.status,
-      statement_descriptor: self.statement_descriptor || "HACK CLUB BANK",
-      tax_percent: self.tax_percent,
-      footer: "\n\n\n\n\n"\
-              "Need to pay by mailed paper check?\n\n"\
-              "Please pay the amount to the order of The Hack Foundation, and include '#{self.sponsor.event.name} (##{self.sponsor.event.id})' in the memo. Checks can be mailed to:\n\n"\
-              "#{self.sponsor.event.name} (##{self.sponsor.event.id}) c/o The Hack Foundation\n"\
-              "8605 Santa Monica Blvd #86294\n"\
-              "West Hollywood, CA 90069"
-    }
+    sync_remote!
   end
 
   def slug_text

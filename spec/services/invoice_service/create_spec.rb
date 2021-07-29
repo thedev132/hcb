@@ -82,6 +82,7 @@ RSpec.describe InvoiceService::Create, type: :model do
   it "creates a stripe invoice item" do
     expect(::StripeService::InvoiceItem).to receive(:create).and_return(stripe_invoice_item)
     expect(::StripeService::Invoice).to receive(:create).and_return(stripe_invoice)
+    expect(::StripeService::Invoice).to receive(:retrieve).and_return(stripe_invoice)
 
     service.run
   end

@@ -33,7 +33,22 @@ module InvoiceService
 
       ActiveRecord::Base.transaction do
         sponsor
+
         invoice = Invoice.create!(attrs)
+
+        item = StripeService::InvoiceItem.create(remote_invoice_item_attrs)
+        remote_invoice = StripeService::Invoice.create(remote_invoice_attrs(invoice: invoice))
+
+        invoice.item_stripe_id = item.id
+        invoice.stripe_invoice_id = remote_invoice.id
+        invoice.save!
+
+        remote_invoice.send_invoice
+
+        attrs = {
+          invoice_id: invoice.id
+        }
+        ::InvoiceService::SyncRemoteToLocal.new(attrs).run
       end
 
       invoice
@@ -41,11 +56,43 @@ module InvoiceService
 
     private
 
+    def remote_invoice_item_attrs
+      {
+        customer: sponsor.stripe_customer_id,
+        currency: "usd",
+        description: @item_description,
+        amount: clean_item_amount
+      }
+    end
+
+    def remote_invoice_attrs(invoice:)
+      {
+        customer: sponsor.stripe_customer_id,
+        auto_advance: invoice.auto_advance,
+        billing: "send_invoice",
+        due_date: invoice.due_date.to_i, # convert to unixtime
+        description: invoice.memo,
+        status: invoice.status,
+        statement_descriptor: invoice.statement_descriptor || "HACK CLUB BANK",
+        tax_percent: invoice.tax_percent,
+        footer: footer
+      }
+    end
+
+    def footer
+      "\n\n\n\n\n"\
+        "Need to pay by mailed paper check?\n\n"\
+        "Please pay the amount to the order of The Hack Foundation, and include '#{sponsor.event.name} (##{sponsor.event.id})' in the memo. Checks can be mailed to:\n\n"\
+        "#{sponsor.event.name} (##{sponsor.event.id}) c/o The Hack Foundation\n"\
+        "8605 Santa Monica Blvd #86294\n"\
+        "West Hollywood, CA 90069"
+    end
+
     def attrs
       {
         due_date: @due_date,
         item_description: @item_description,
-        item_amount: cleanse(@item_amount),
+        item_amount: clean_item_amount,
         sponsor: sponsor,
         creator: @current_user
       }
@@ -61,6 +108,10 @@ module InvoiceService
         address_state: @sponsor_address_state,
         address_postal_code: @sponsor_address_postal_code
       }
+    end
+
+    def clean_item_amount
+      @clean_item_amount ||= cleanse(@item_amount)
     end
 
     def sponsor
@@ -83,7 +134,7 @@ module InvoiceService
     end
 
     def cleanse(item_amount)
-      @item_amount.gsub(",", "").to_f * 100.to_i
+      (@item_amount.gsub(",", "").to_f * 100.to_i).to_i
     end
   end
 end
