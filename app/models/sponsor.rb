@@ -6,6 +6,8 @@ class Sponsor < ApplicationRecord
   include PgSearch::Model
   pg_search_scope :search_name, against: [:name, :contact_email]
 
+  scope :not_null_slugs, -> { where.not(slug: nil) }
+
   friendly_id :slug_candidates, use: :slugged
 
   belongs_to :event
