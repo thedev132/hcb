@@ -116,38 +116,6 @@ class Invoice < ApplicationRecord
     "Sent"
   end
 
-  def state_deprecated
-    if completed_deprecated?
-      :success
-    elsif paid?
-      :info
-    elsif archived?
-      :pending
-    elsif due_date < Time.current
-      :error
-    elsif due_date < 3.days.from_now
-      :warning
-    else
-      :muted
-    end
-  end
-
-  def state_text_deprecated
-    if completed_deprecated?
-      "Paid"
-    elsif paid?
-      "Pending"
-    elsif archived?
-      "Archived"
-    elsif due_date < Time.current
-      "Overdue"
-    elsif due_date < 3.days.from_now
-      "Due soon"
-    else
-      "Sent"
-    end
-  end
-
   def state_icon
     "checkmark" if state_text == "Paid"
   end
