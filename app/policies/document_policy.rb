@@ -43,6 +43,6 @@ class DocumentPolicy < ApplicationPolicy
   end
 
   def fiscal_sponsorship_letter?
-    !record&.unapproved? && (record.users.include?(user) || user.admin?)
+    !(record&.unapproved? || record&.pending?) && (record.users.include?(user) || user.admin?)
   end
 end
