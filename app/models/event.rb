@@ -104,16 +104,23 @@ class Event < ApplicationRecord
   end
 
   aasm do
-    state :pending, initial: true
-    state :unapproved # old spend only events
-    state :approved
+    state :awaiting_connect, initial: true # Initial state of partner events. Waiting for user to fill out Bank Connect form
+    state :pending # Awaiting Bank approval (after filling out Bank Connect form)
+    state :approved # Full fiscal sponsorship
+    state :rejected # Rejected from fiscal sponsorship
 
-    event :mark_approved do
-      transitions from: [:pending, :unapproved], to: :approved
-    end
+    state :unapproved # Old spend only events. Deprecated, should not be granted to any new events
 
     event :mark_pending do
-      transitions from: :approved, to: :pending
+      transitions from: [:awaiting_connect, :approved], to: :pending
+    end
+
+    event :mark_approved do
+      transitions from: [:awaiting_connect, :pending, :unapproved], to: :approved
+    end
+
+    event :mark_rejected do
+      transitions to: :rejected # from any state
     end
   end
 

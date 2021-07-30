@@ -11,8 +11,8 @@ RSpec.describe Event, type: :model do
     expect(event).to be_valid
   end
 
-  it "defaults to pending" do
-    expect(event).to be_pending
+  it "defaults to awaiting_connect" do
+    expect(event).to be_awaiting_connect
   end
 
   describe "#transaction_engine_v2_at" do

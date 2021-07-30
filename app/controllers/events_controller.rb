@@ -222,26 +222,26 @@ class EventsController < ApplicationController
   def transfers
     authorize @event
 
-    relation1 = @event.ach_transfers
-    relation1 = relation1.in_transit if params[:filter] == "in_transit"
-    relation1 = relation1.deposited if params[:filter] == "deposited"
-    relation1 = relation1.rejected if params[:filter] == "canceled"
-    relation1 = relation1.search_recipient(params[:search]) if params[:search].present?
-
-    @ach_transfers = relation1
-
-    relation2 = @event.checks
-    relation2 = relation2.in_transit_or_in_transit_and_processed if params[:filter] == "in_transit"
-    relation2 = relation2.deposited if params[:filter] == "deposited"
-    relation2 = relation2.canceled if params[:filter] == "canceled"
-    relation2 = relation2.search_recipient(params[:search]) if params[:search].present?
-    @checks = relation2
+    ach_relation = @event.ach_transfers
+    checks_relation = @event.checks
 
     @stats = {
-      deposited: @ach_transfers.deposited.sum(:amount) + @checks.deposited.sum(:amount),
-      in_transit: @ach_transfers.in_transit.sum(:amount) + @checks.in_transit_or_in_transit_and_processed.sum(:amount),
-      canceled: @ach_transfers.rejected.sum(:amount) + @checks.canceled.sum(:amount)
+      deposited: ach_relation.deposited.sum(:amount) + checks_relation.deposited.sum(:amount),
+      in_transit: ach_relation.in_transit.sum(:amount) + checks_relation.in_transit_or_in_transit_and_processed.sum(:amount),
+      canceled: ach_relation.rejected.sum(:amount) + checks_relation.canceled.sum(:amount)
     }
+
+    ach_relation = ach_relation.in_transit if params[:filter] == "in_transit"
+    ach_relation = ach_relation.deposited if params[:filter] == "deposited"
+    ach_relation =ach_relation.rejected if params[:filter] == "canceled"
+    ach_relation = ach_relation.search_recipient(params[:search]) if params[:search].present?
+    @ach_transfers = ach_relation
+
+    checks_relation = checks_relation.in_transit_or_in_transit_and_processed if params[:filter] == "in_transit"
+    checks_relation = checks_relation.deposited if params[:filter] == "deposited"
+    checks_relation = checks_relation.canceled if params[:filter] == "canceled"
+    checks_relation = checks_relation.search_recipient(params[:search]) if params[:search].present?
+    @checks = checks_relation
 
     @transfers = (@checks + @ach_transfers).sort_by { |o| o.created_at }.reverse
   end

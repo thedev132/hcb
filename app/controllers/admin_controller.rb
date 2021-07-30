@@ -97,6 +97,7 @@ class AdminController < ApplicationController
     @pending = params[:pending] == "0" ? nil : true # checked by default
     @unapproved = params[:unapproved] == "0" ? nil : true # checked by default
     @approved = params[:approved] == "0" ? nil : true # checked by default
+    @rejected = params[:rejected] == "0" ? nil : true # checked by default
     @transparent = params[:transparent].present? ? params[:transparent] : nil
     @omitted = params[:omitted].present? ? params[:omitted] : nil
     @hidden = params[:hidden].present? ? params[:hidden] : nil
@@ -115,6 +116,7 @@ class AdminController < ApplicationController
     states << "pending" if @pending
     states << "unapproved" if @unapproved
     states << "approved" if @approved
+    states << "rejected" if @rejected
     relation = relation.where("aasm_state in (?)", states)
 
     @count = relation.count
@@ -156,6 +158,16 @@ class AdminController < ApplicationController
     state = ::EventService::ToggleApproved.new(@event).run
 
     redirect_to event_process_admin_path(@event), flash: { success: "Successfully marked as #{state}" }
+  rescue => e
+    redirect_to event_process_admin_path(@event), flash: { error: e.message }
+  end
+
+  def event_reject
+    @event = Event.find(params[:id])
+
+    state = ::EventService::Reject.new(@event).run
+
+    redirect_to event_process_admin_path(@event), flash: { success: "Event has been #{state}" }
   rescue => e
     redirect_to event_process_admin_path(@event), flash: { error: e.message }
   end
