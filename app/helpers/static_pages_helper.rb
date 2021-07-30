@@ -196,7 +196,18 @@ module StaticPagesHelper
         "Ya like jazz?",
         "no hack, only bank",
         "Insert token(s)",
-        "Receipts or it didn't happen"
+        "Receipts or it didn't happen",
+        "Carbon positive!",
+        "We put the 'dig it' in digital",
+        "Made in 🇺🇸",
+        "Your move IRS!",
+        "The buck stops here",
+        "Hack Club Moneybucks",
+        "If you know, you know",
+        "We put the 'ants' in pants",
+        "We used this <a href='https://zephyr.hackclub.com' target='_blank'>to buy a train</a>",
+        "Do Only Good Everyday",
+        "JavaScript brewed fresh daily"
       ].sample
     end
   end
