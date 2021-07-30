@@ -1,14 +1,30 @@
 <h1>Process <%= link_to @event.name, event_path(@event) %> <small>(<%= "##{@event.id}" %>)</small></h1>
 
-<%= form_with(model: nil, local: true, url: event_toggle_approved_admin_path(@event), method: :put) do |form| %>
-  <% if @event.approved? %>
-    <p>This event is already <strong>approved</strong>.</p>
+<% if @event.approved? %>
+  <p>Although this event was <strong>approved</strong>, you may still reject it or bring it back to pending.</p>
 
+  <%= form_with(model: nil, local: true, url: event_toggle_approved_admin_path(@event), method: :put) do |form| %>
     <%= form.submit 'Mark as pending',
       data: { confirm: "This event was previously approved. Are you sure you want to undo that and mark it as pending? This will notify '#{@event.partner.slug.capitalize}'." } %>
-  <% else %>
-    <p>This event is currently <strong>pending</strong>.</p>
-
-    <%= form.submit 'Mark as approved' %>
   <% end %>
+
+  <%= form_with(model: nil, local: true, url: event_reject_admin_path(@event), method: :put) do |form| %>
+    <%= form.submit 'Reject event',
+      data: { confirm: "Are you sure you want to reject this event? This can not be undone and will notify '#{@event.partner.slug.capitalize}'." } %>
+  <% end %>
+
+<% elsif !@event.rejected? %>
+  <p>This event is currently <strong>pending</strong> your review.</p>
+
+  <%= form_with(model: nil, local: true, url: event_toggle_approved_admin_path(@event), method: :put) do |form| %>
+    <%= form.submit 'Approve event' %>
+  <% end %>
+
+  <%= form_with(model: nil, local: true, url: event_reject_admin_path(@event), method: :put) do |form| %>
+    <%= form.submit 'Reject event',
+      data: { confirm: "Are you sure you want to reject this event? This can not be undone and will notify '#{@event.partner.slug.capitalize}'." } %>
+  <% end %>
+
+<% else %>
+  <p>This event was previously <strong>rejected</strong>. This can not be undone.</p>
 <% end %>

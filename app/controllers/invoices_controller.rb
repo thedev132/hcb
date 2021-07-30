@@ -12,6 +12,25 @@ class InvoicesController < ApplicationController
 
   def index
     relation = @event.invoices
+    authorize relation
+
+    # from events controller
+    @invoices_in_transit = (relation.paid_v2.where(payout_id: nil)
+      .where
+      .not(payout_creation_queued_for: nil) +
+      @event.invoices.joins(:payout)
+      .where(invoice_payouts: { status: ("in_transit") })
+      .or(@event.invoices.joins(:payout).where(invoice_payouts: { status: ("pending") })))
+    amount_in_transit = @invoices_in_transit.sum(&:amount_paid)
+
+    @stats = {
+      total: relation.sum(:item_amount),
+      # "paid" status invoices include manually paid invoices and
+      # Stripe invoices that are paid, but for which the funds are in transit
+      paid: relation.paid_v2.sum(:item_amount) - amount_in_transit,
+      pending: amount_in_transit,
+    }
+
     relation = relation.paid_v2 if params[:filter] == "paid"
     relation = relation.unpaid if params[:filter] == "unpaid"
     relation = relation.archived if params[:filter] == "archived"
@@ -21,24 +40,6 @@ class InvoicesController < ApplicationController
 
     @sponsor = Sponsor.new(event: @event)
     @invoice = Invoice.new(sponsor: @sponsor)
-    authorize @invoices
-
-    # from events controller
-    @invoices_in_transit = (@invoices.paid_v2.where(payout_id: nil)
-      .where
-      .not(payout_creation_queued_for: nil) +
-      @event.invoices.joins(:payout)
-      .where(invoice_payouts: { status: ("in_transit") })
-      .or(@event.invoices.joins(:payout).where(invoice_payouts: { status: ("pending") })))
-    amount_in_transit = @invoices_in_transit.sum(&:amount_paid)
-
-    @stats = {
-      total: @invoices.sum(:item_amount),
-      # "paid" status invoices include manually paid invoices and
-      # Stripe invoices that are paid, but for which the funds are in transit
-      paid: @invoices.paid_v2.sum(:item_amount) - amount_in_transit,
-      pending: amount_in_transit,
-    }
   end
 
   def new
