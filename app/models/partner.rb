@@ -8,9 +8,7 @@ class Partner < ApplicationRecord
 
   validates :slug, exclusion: { in: EXCLUDED_SLUGS }
 
-  encrypts :stripe_api_key, migrating: true
-  # encrypts :stripe_api_key, type: :string
+  encrypts :stripe_api_key
 
-  # remove this line after dropping stripe_api_key column
-  # self.ignored_columns = ["stripe_api_key"]
+  self.ignored_columns = ["stripe_api_key"]
 end
