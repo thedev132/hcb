@@ -7,7 +7,7 @@ class Partner < ApplicationRecord
   has_many :partner_donations, through: :events
 
   validates :slug, exclusion: { in: EXCLUDED_SLUGS }
-  
+
   encrypts :stripe_api_key, migrating: true
   # encrypts :stripe_api_key, type: :string
 
