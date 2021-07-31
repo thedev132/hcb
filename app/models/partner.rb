@@ -9,6 +9,4 @@ class Partner < ApplicationRecord
   validates :slug, exclusion: { in: EXCLUDED_SLUGS }
 
   encrypts :stripe_api_key
-
-  self.ignored_columns = ["stripe_api_key"]
 end
