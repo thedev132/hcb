@@ -11,7 +11,8 @@ class Event < ApplicationRecord
   monetize :total_fees_v2_cents
 
   default_scope { order(id: :asc) }
-  scope :pending, -> { where(has_fiscal_sponsorship_document: false) }
+  scope :pending, -> { where(aasm_state: :pending) }
+  scope :pending_or_unapproved, -> { where(aasm_state: [:pending, :unapproved]) }
   scope :transparent, -> { where(is_public: true) }
   scope :not_transparent, -> { where(is_public: false) }
   scope :omitted, -> { where(omit_stats: true) }
@@ -175,8 +176,6 @@ class Event < ApplicationRecord
   validates :name, :sponsorship_fee, :organization_identifier, presence: true
   validates :slug, uniqueness: true, presence: true, format: { without: /\s/ }
 
-  before_create :default_values
-
   CUSTOM_SORT = "CASE WHEN id = 183 THEN '1'
                       WHEN id = 999 THEN '2'
                       WHEN id = 689 THEN '3'
@@ -334,19 +333,10 @@ class Event < ApplicationRecord
     @total_fess_v2_cents ||= fees.sum(:amount_cents_as_decimal).ceil
   end
 
-  # Deprecated. Use AASM state instead
-  # def pending?
-  #   !has_fiscal_sponsorship_document
-  # end
-
   private
 
   def min_waiting_time_between_fees
     5.days.ago
-  end
-
-  def default_values
-    self.has_fiscal_sponsorship_document ||= false
   end
 
   def point_of_contact_is_admin
