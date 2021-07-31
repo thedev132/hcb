@@ -6,6 +6,18 @@ Bank is a tool for hackers to hack on the real world, like GitHub, but for build
 
 ## Getting Started
 
+Install [dotenv/cli](https://github.com/dotenv-org/cli)
+
+```bash
+npm install @dotenv/cli -g
+```
+
+And load the latest .env file to your local machine.
+
+```bash
+dotenv-cli pull
+```
+
 Install [rbenv](https://github.com/rbenv/rbenv)
 
 ```bash
@@ -78,24 +90,6 @@ docker-compose run web yarn install --check-files
 docker-compose run web bundle exec rails db:create db:migrate
 docker-compose run --service-ports web bundle exec rails s -b 0.0.0.0 -p 3000
 ```
-
-
-## Getting Started (deprecated)
-
-1. Install Docker.
-2. Clone this repo.
-3. Get a copy of the encrypted credentials key from a team member (`config/master.key`)
-4. Copy `.env.example` to `.env` (`cp .env.example .env`) & edit `PORT=3000` or whatever floats your boat in the port
-5. ```sh
-    docker-compose build
-    docker-compose run web bundle install
-    docker-compose run web bundle exec rails db:create db:migrate
-    docker-compose run --service-ports web bundle exec rails s -b 0.0.0.0 -p 3000
-   ```
-
-6. Open [localhost:3000](http://localhost:3000)
-
-Alternatively, you can run `docker-compose run --service-ports web /bin/bash` to open a shell into the container with the right ports bound, and then manually start the Rails app, or just run `docker-compose run web bundle exec rails s -b 0.0.0.0` to start the rails server directly from Docker.
 
 ## Heroku tasks
 

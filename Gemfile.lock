@@ -131,6 +131,10 @@ GEM
     diff-lcs (1.4.4)
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
+    dotenv (2.7.6)
+    dotenv-rails (2.7.6)
+      dotenv (= 2.7.6)
+      railties (>= 3.2)
     dry-configurable (0.12.1)
       concurrent-ruby (~> 1.0)
       dry-core (~> 0.5, >= 0.5.0)
@@ -519,6 +523,7 @@ DEPENDENCIES
   caxlsx
   caxlsx_rails
   chronic
+  dotenv-rails
   dry-validation
   faraday
   friendly_id (~> 5.2.0)
