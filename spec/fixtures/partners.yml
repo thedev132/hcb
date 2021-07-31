@@ -12,3 +12,9 @@ partnerWithNoOrganizations: # should have no organizations assigned to it
   slug: "partner3"
   api_key: "hcb_3333"
   created_at: <%= Time.now %>
+
+partner3:
+  slug: "partner4"
+  api_key: "hcb_4444"
+  stripe_api_key: <%= Partner.generate_stripe_api_key_ciphertext("sk_test_1111").inspect %>
+  created_at: <%= Time.now %>

@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_22_200239) do
+ActiveRecord::Schema.define(version: 2021_07_29_015819) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -514,7 +514,7 @@ ActiveRecord::Schema.define(version: 2021_07_22_200239) do
     t.boolean "omit_stats", default: false
     t.datetime "transaction_engine_v2_at", default: -> { "CURRENT_TIMESTAMP" }
     t.datetime "last_fee_processed_at"
-    t.datetime "pending_transaction_engine_at", default: "2021-07-25 19:53:10"
+    t.datetime "pending_transaction_engine_at", default: "2021-07-30 01:59:00"
     t.string "aasm_state"
     t.string "organization_identifier", null: false
     t.string "redirect_url"
@@ -845,6 +845,7 @@ ActiveRecord::Schema.define(version: 2021_07_22_200239) do
     t.text "name"
     t.text "logo"
     t.string "public_stripe_api_key"
+    t.text "stripe_api_key_ciphertext"
   end
 
   create_table "raw_csv_transactions", force: :cascade do |t|
