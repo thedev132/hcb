@@ -39,11 +39,19 @@ module EventMappingEngine
     end
 
     def map_checks!
-      ::EventMappingEngine::Map::Checks.new.run
+      begin
+        ::EventMappingEngine::Map::Checks.new.run
+      rescue => e
+        Airbrake.notify(e)
+      end
     end
 
     def map_clearing_checks!
-      ::EventMappingEngine::Map::ClearingChecks.new.run
+      begin
+        ::EventMappingEngine::Map::ClearingChecks.new.run
+      rescue => e
+        Airbrake.notify(e)
+      end
     end
 
     def map_achs!
