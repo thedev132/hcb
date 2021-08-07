@@ -58,7 +58,7 @@
     <span><%= number_to_currency ct.amount %></span>
   </td>
   <td>
-    <%= link_to "Details", ct.url if organizer_signed_in? %>
+    <%= link_to "Details", ct.url if organizer_signed_in? || defined?(force_display_details) %>
   </td>
 </tr>
 
