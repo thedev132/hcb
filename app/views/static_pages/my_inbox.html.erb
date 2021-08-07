@@ -19,6 +19,17 @@
     <h2 class="heading line-height-4 p1 pl2 mt0 ml0">
       <%= card.event.name %>
     </h2>
-    <%= render 'stripe_authorizations/list', stripe_authorizations: card_txs, headless: true, authorless: true %>
+
+    <div class="table-container">
+      <table>
+        <tbody data-behavior="transactions">
+          <% card.hcb_codes.each do |ct| %>
+            <%= render partial: "canonical_transactions/canonical_transaction", locals: { ct: ct } %>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+
+    <%#= render 'stripe_authorizations/list', stripe_authorizations: card_txs, headless: true, authorless: true %>
   </section>
 <% end %>
