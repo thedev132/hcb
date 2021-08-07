@@ -24,7 +24,7 @@
       <table>
         <tbody data-behavior="transactions">
           <% card.hcb_codes.each do |ct| %>
-            <%= render partial: "canonical_transactions/canonical_transaction", locals: { ct: ct } %>
+            <%= render partial: "canonical_transactions/canonical_transaction", locals: { ct: ct, force_display_details: true } %>
           <% end %>
         </tbody>
       </table>
