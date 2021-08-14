@@ -9,8 +9,8 @@ module PendingTransactionEngine
 
       def run
         return "CHECK ##{check_number}" if outgoing_check?
-        return "INVOICE #{invoice_name}" if invoice?
-        return "DONATION #{donation_name}" if donation?
+        return "INVOICE TO #{invoice_name}" if invoice?
+        return "DONATION FROM #{donation_name}" if donation?
 
         memo
       end
