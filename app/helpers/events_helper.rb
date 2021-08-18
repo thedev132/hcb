@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "cgi"
+
 module EventsHelper
   def dock_item(name, tooltip, icon,  url, lg = false)
     link_to url,
@@ -10,13 +12,14 @@ module EventsHelper
   end
 
   def transfers_airtable_form(embed: false, event: nil, user: nil)
+    # The airtable form is located within the Bank Promotions base
     embed_url = "https://airtable.com/embed/shrH9fMs5hof2HRup"
     url = "https://airtable.com/shrH9fMs5hof2HRup"
 
     prefill = []
-    prefill << "prefill_Event/Project+Name=#{event.name}" if event
-    prefill << "prefill_Submitter+Name=#{user.full_name}" if user
-    prefill << "prefill_Submitter+Email=#{user.email}" if user
+    prefill << "prefill_Event/Project+Name=#{CGI.escape(event.name)}" if event
+    prefill << "prefill_Submitter+Name=#{CGI.escape(user.full_name)}" if user
+    prefill << "prefill_Submitter+Email=#{CGI.escape(user.email)}" if user
 
     (embed ? embed_url : url) + "?" + prefill.join("&")
   end
