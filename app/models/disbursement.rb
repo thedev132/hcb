@@ -14,7 +14,7 @@ class Disbursement < ApplicationRecord
                         :amount,
                         :name
 
-  validates :amount, :numericality => { :greater_than => 0 }
+  validates :amount, numericality: { greater_than: 0 }
 
   # Disbursement goes through four stages:
   # 1. Pending
