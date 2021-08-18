@@ -30,12 +30,6 @@
     <%= link_to "open in a new tab", transfers_airtable_form_url(embed: false, event: @event, user: @current_user), target: "_blank" %>
   </section>
   <% end %>
-
-  <% if organizer_signed_in? && false %>
-    <%= link_to "Send Check", new_event_check_path(@event), class: "btn bg-accent" %>
-    <%= link_to "Send ACH Transfer", new_event_ach_transfer_path(@event), class: "btn bg-accent" %>
-    <%= link_to "Reimbursement", event_reimbursements_path(@event), class: "btn" %>
-  <% end %>
 </h1>
 
 <div class="statset mt3 mb2">
