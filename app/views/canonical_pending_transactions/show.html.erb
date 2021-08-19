@@ -3,6 +3,23 @@
 
 <%= render 'events/nav' if @event %>
 
+<% if @canonical_pending_transaction&.local_hcb_code %>
+  <% admin_tools("mt3") do %>
+    <p>
+      <strong>HCB Code:</strong>
+      <span>
+        <%= link_to @canonical_pending_transaction.hcb_code , @canonical_pending_transaction.local_hcb_code %>
+      </span>
+    </p>
+  <% end %>
+<% end %>
+
+<% if @canonical_pending_transaction.stripe_auth_dashboard_url %>
+  <% admin_tools('mt1') do %>
+    <%= link_to 'View on Stripe', @canonical_pending_transaction.stripe_auth_dashboard_url, class: 'btn bg-accent' %>
+  <% end %>
+<% end %>
+
 <article class="card mt2">
   <h1 class="heading h1 mt0 mb0">
     <span class="flex-auto">
