@@ -38,14 +38,6 @@ class EventsController < ApplicationController
   def dashboard_stats
     authorize @event
 
-    @invoices_being_deposited = @event.invoices.joins(:payout)
-      .where(invoice_payouts: { status: ("in_transit") })
-      .or(@event.invoices.joins(:payout).where(invoice_payouts: { status: ("pending") })).sort_by { |i| i.arrival_date }
-
-    @donations_being_deposited = @event.donations.joins(:payout)
-      .where(donation_payouts: { status: ("in_transit") })
-      .or(@event.donations.joins(:payout).where(donation_payouts: { status: ("pending") })).sort_by { |d| [d.arrival_date, d.created_at] }
-
     render :dashboard_stats, layout: false
   end
 
