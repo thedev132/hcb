@@ -12,13 +12,13 @@ module TransactionEngine
       # 1 raw imports
       import_raw_plaid_transactions!
       import_other_raw_plaid_transactions!
-      import_raw_emburse_transactions!
+      # import_raw_emburse_transactions! TODO: remove completely
       import_raw_stripe_transactions!
       import_raw_csv_transactions!
 
       # 2 hashed
       hash_raw_plaid_transactions!
-      hash_raw_emburse_transactions!
+      # hash_raw_emburse_transactions! TODO: remove completely
       hash_raw_stripe_transactions!
       hash_raw_csv_transactions!
 
