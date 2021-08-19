@@ -28,6 +28,8 @@ module PendingEventMappingEngine
       map_canonical_pending_bank_fee!
       settle_canonical_pending_bank_fee_hcb_code!
 
+      map_canonical_pending_partner_donation!
+
       true
     end
 
@@ -83,6 +85,10 @@ module PendingEventMappingEngine
 
     def decline_canonical_pending_donation!
       #::PendingEventMappingEngine::Decline::Donation.new.run
+    end
+
+    def map_canonical_pending_partner_donation!
+      ::PendingEventMappingEngine::Map::PartnerDonation.new.run
     end
 
     def map_canonical_pending_invoice!
