@@ -15,6 +15,13 @@
   <% end %>
 <% end %>
 
+<% if @transaction.stripe_auth_dashboard_url %>
+  <% admin_tools('mt1') do %>
+    <%= link_to 'View on Stripe', @transaction.stripe_auth_dashboard_url, class: 'btn bg-accent' %>
+  <% end %>
+<% end %>
+
+
 <article class="card mt2">
   <h1 class="heading h1 mt0 mb0">
     <span class="flex-auto">

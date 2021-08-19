@@ -119,7 +119,13 @@ class CanonicalTransaction < ApplicationRecord
   end
 
   def remote_stripe_iauth_id
+    return nil unless raw_stripe_transaction
     raw_stripe_transaction.stripe_transaction["authorization"]
+  end
+
+  def stripe_auth_dashboard_url
+    return nil unless remote_stripe_iauth_id
+    "https://dashboard.stripe.com/issuing/authorizations/#{remote_stripe_iauth_id}"
   end
 
   def likely_waveable_for_fee?
