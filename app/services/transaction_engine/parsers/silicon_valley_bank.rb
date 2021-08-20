@@ -16,7 +16,7 @@ module TransactionEngine
           csv.each do |row|
             insert(row: row)
           end
-          
+
         end
       end
 
@@ -43,7 +43,7 @@ module TransactionEngine
 
         amount_cents
       end
-      
+
       def csv_transaction_id(row)
         "svb_fsmain_#{row["Bank Ref #"]}"
       end
@@ -60,4 +60,3 @@ module TransactionEngine
     end
   end
 end
-
