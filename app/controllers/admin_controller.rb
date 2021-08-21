@@ -745,6 +745,29 @@ class AdminController < ApplicationController
     render layout: "admin"
   end
 
+  def transaction_csvs
+    @page = params[:page] || 1
+    @per = params[:per] || 20
+    @q = params[:q].present? ? params[:q] : nil
+
+    relation = TransactionCsv
+
+    @count = relation.count
+    @transaction_csvs = relation.page(@page).per(@per).order("created_at desc")
+
+    render layout: "admin"
+  end
+
+  def upload
+    attrs = {
+      file: params[:file]
+    }
+    transaction_csv = TransactionCsv.create!(attrs)
+
+    ::TransactionEngineJob::TransactionCsvUpload.perform_later(transaction_csv.id)
+
+    redirect_to transaction_csvs_admin_index_path, flash: { success: "CSV Uploaded" }
+  end
 
   def google_workspace_approve
     @g_suite = GSuite.find(params[:id])

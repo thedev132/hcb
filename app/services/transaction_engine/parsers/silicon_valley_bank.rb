@@ -33,7 +33,7 @@ module TransactionEngine
           csv_transaction_id: csv_transaction_id(row)
         }
         RawCsvTransaction.create!(attrs)
-      rescue ActiveRecord::RecordNotUnique => e
+      rescue ActiveRecord::RecordNotUnique, ArgumentError => e
         # rescue not unique
       end
 
@@ -45,6 +45,8 @@ module TransactionEngine
       end
 
       def csv_transaction_id(row)
+        raise ArgumentError, "Bank Ref # must be present" unless row["Bank Ref #"].present?
+
         "svb_fsmain_#{row["Bank Ref #"]}"
       end
 
