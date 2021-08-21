@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -12,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_19_232112) do
+ActiveRecord::Schema.define(version: 2021_08_20_233014) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -1041,6 +1039,12 @@ ActiveRecord::Schema.define(version: 2021_08_19_232112) do
     t.datetime "purchased_at"
     t.index ["event_id"], name: "index_stripe_cards_on_event_id"
     t.index ["stripe_cardholder_id"], name: "index_stripe_cards_on_stripe_cardholder_id"
+  end
+
+  create_table "transaction_csvs", force: :cascade do |t|
+    t.string "aasm_state"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "transactions", force: :cascade do |t|
