@@ -29,6 +29,7 @@ module PendingEventMappingEngine
       settle_canonical_pending_bank_fee_hcb_code!
 
       map_canonical_pending_partner_donation!
+      settle_canonical_pending_partner_donation_hcb_code!
 
       true
     end
@@ -114,5 +115,10 @@ module PendingEventMappingEngine
     def settle_canonical_pending_bank_fee_hcb_code!
       ::PendingEventMappingEngine::Settle::BankFeeHcbCode.new.run
     end
+
+    def settle_canonical_pending_partner_donation_hcb_code!
+      ::PendingEventMappingEngine::Settle::PartnerDonationHcbCode.new.run
+    end
+
   end
 end
