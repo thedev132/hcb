@@ -10,7 +10,7 @@
 </action>
 <div class="stat stat--small">
   <span class="stat__label flex items-center">Incoming deposits</span>
-  <span class="stat__value"><%= render_money_amount @event.canonical_pending_transactions.incoming.sum(:amount_cents) %></span>
+  <span class="stat__value"><%= render_money_amount @event.canonical_pending_transactions.incoming.unsettled.sum(:amount_cents) %></span>
 </div>
 
 <div class="modal" data-behavior="modal" role="dialog" id="pending_withdrawals">
