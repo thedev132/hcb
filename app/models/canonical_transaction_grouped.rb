@@ -8,6 +8,7 @@ class CanonicalTransactionGrouped
   def memo
     return invoice_memo if invoice?
     return donation_memo if donation?
+    return partner_donation_memo if partner_donation?
     return ach_transfer_memo if ach_transfer?
     return check_memo if check?
     return ct.smart_memo if stripe_card?
@@ -51,6 +52,10 @@ class CanonicalTransactionGrouped
     hcb_i1 == ::TransactionGroupingEngine::Calculate::HcbCode::DONATION_CODE
   end
 
+  def partner_donation?
+    hcb_i1 == ::TransactionGroupingEngine::Calculate::HcbCode::PARTNER_DONATION_CODE
+  end
+
   def ach_transfer?
     hcb_i1 == ::TransactionGroupingEngine::Calculate::HcbCode::ACH_TRANSFER_CODE
   end
@@ -87,6 +92,14 @@ class CanonicalTransactionGrouped
 
   def donation_memo
     smartish_custom_memo || "DONATION FROM #{donation.smart_memo}"
+  end
+
+  def partner_donation
+    PartnerDonation.find(hcb_i2)
+  end
+
+  def partner_donation_memo
+    smartish_custom_memo || "DONATION FROM #{partner_donation.smart_memo}"
   end
 
   def ach_transfer
