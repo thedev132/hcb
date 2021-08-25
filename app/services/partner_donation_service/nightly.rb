@@ -3,10 +3,12 @@
 module PartnerDonationService
   class Nightly
     def run
+      # 1. import partner donations
       ::Partner.all do |partner|
-        #::PartnerDonationService::Import.new(partner_id: partner.id).run
+        ::PartnerDonationService::Import.new(partner_id: partner.id).run
       end
 
+      # 2. mark anything in transit that now has a settled transaction as deposited
       PartnerDonation.in_transit.each do |partner_donation|
         cpt = partner_donation.canonical_pending_transaction
 
