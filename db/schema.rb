@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_31_214115) do
+ActiveRecord::Schema.define(version: 2021_08_20_233014) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -857,6 +857,7 @@ ActiveRecord::Schema.define(version: 2021_07_31_214115) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "unique_bank_identifier", null: false
     t.text "csv_transaction_id"
+    t.index ["csv_transaction_id"], name: "index_raw_csv_transactions_on_csv_transaction_id", unique: true
   end
 
   create_table "raw_emburse_transactions", force: :cascade do |t|
@@ -1042,6 +1043,12 @@ ActiveRecord::Schema.define(version: 2021_07_31_214115) do
     t.index ["stripe_cardholder_id"], name: "index_stripe_cards_on_stripe_cardholder_id"
   end
 
+  create_table "transaction_csvs", force: :cascade do |t|
+    t.string "aasm_state"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "transactions", force: :cascade do |t|
     t.text "plaid_id"
     t.text "transaction_type"
@@ -1111,8 +1118,7 @@ ActiveRecord::Schema.define(version: 2021_07_31_214115) do
     t.index ["slug"], name: "index_users_on_slug", unique: true
   end
 
-  create_table "versions", id: false, force: :cascade do |t|
-    t.bigserial "id", null: false
+  create_table "versions", force: :cascade do |t|
     t.string "item_type", null: false
     t.bigint "item_id", null: false
     t.string "event", null: false

@@ -34,24 +34,28 @@ class PartnerDonation < ApplicationRecord
     end
   end
 
+  def smart_memo
+    @smart_memo ||= remote_partner_donation.try(:[], :billing_details).try(:[], :name).to_s.upcase
+  end
+
   def local_hcb_code
     @local_hcb_code ||= HcbCode.find_or_create_by(hcb_code: hcb_code)
   end
 
   def stripe_dashboard_url
-    "https://dashboard.stripe.com/payments/#{self.stripe_charge_id}"
+    "https://dashboard.stripe.com/payments/#{stripe_charge_id}"
   end
 
   def paid?
-    self.stripe_charge_id.present?
+    stripe_charge_id.present?
   end
 
   def partner
-    Partner.find(self.event.partner_id)
+    Partner.find(event.partner_id)
   end
 
   def state
-    self.aasm.current_state
+    aasm.current_state
   end
 
   def state_text
@@ -80,7 +84,38 @@ class PartnerDonation < ApplicationRecord
     end
   end
 
+  def canonical_pending_transaction
+    canonical_pending_transactions.first
+  end
+
+  def canonical_transactions
+    @canonical_transactions ||= CanonicalTransaction.where(hcb_code: hcb_code)
+  end
+
+  def canonical_pending_transactions
+    @canonical_pending_transactions ||= begin
+      return [] unless raw_pending_partner_donation_transaction.present?
+
+      ::CanonicalPendingTransaction.where(raw_pending_partner_donation_transaction_id: raw_pending_partner_donation_transaction.id)
+    end
+  end
+
   private
+
+  def remote_partner_donation
+    @remote_partner_donation ||=
+      ::Partners::Stripe::Charges::Show.new(stripe_api_key: partner.stripe_api_key, id: stripe_charge_id).run.to_hash
+  rescue => e
+    {}
+  end
+
+  def raw_pending_partner_donation_transaction
+    raw_pending_partner_donation_transactions.first
+  end
+
+  def raw_pending_partner_donation_transactions
+    @raw_pending_partner_donation_transactions ||= ::RawPendingPartnerDonationTransaction.where(partner_donation_transaction_id: id)
+  end
 
   def set_hcb_code
     self.update_column(:hcb_code, "HCB-#{::TransactionGroupingEngine::Calculate::HcbCode::PARTNER_DONATION_CODE}-#{id}")

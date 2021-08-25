@@ -76,7 +76,7 @@ module TransactionGroupingEngine
       def partner_donation_hcb_code
         [
           HCB_CODE,
-          PARNTER_DONATION_CODE,
+          PARTNER_DONATION_CODE,
           partner_donation.id
         ].join(SEPARATOR)
       end

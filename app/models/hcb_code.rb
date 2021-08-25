@@ -80,6 +80,10 @@ class HcbCode < ApplicationRecord
     pt.try(:stripe_cardholder) || ct.try(:stripe_cardholder)
   end
 
+  def stripe_auth_dashboard_url
+    pt.try(:stripe_auth_dashboard_url) || ct.try(:stripe_auth_dashboard_url)
+  end
+
   def invoice?
     hcb_i1 == ::TransactionGroupingEngine::Calculate::HcbCode::INVOICE_CODE
   end
