@@ -46,6 +46,7 @@ class CanonicalPendingTransaction < ApplicationRecord
   scope :disbursement_hcb_code, -> { where("hcb_code ilike 'HCB-#{::TransactionGroupingEngine::Calculate::HcbCode::DISBURSEMENT_CODE}%'") }
   scope :stripe_card_hcb_code, -> { where("hcb_code ilike 'HCB-#{::TransactionGroupingEngine::Calculate::HcbCode::STRIPE_CARD_CODE}%'") }
   scope :bank_fee_hcb_code, -> { where("hcb_code ilike 'HCB-#{::TransactionGroupingEngine::Calculate::HcbCode::BANK_FEE_CODE}%'") }
+  scope :partner_donation_hcb_code, -> { where("hcb_code ilike 'HCB-#{::TransactionGroupingEngine::Calculate::HcbCode::PARTNER_DONATION_CODE}%'") }
 
   after_create_commit :write_hcb_code
   after_create_commit :write_system_event
@@ -122,7 +123,13 @@ class CanonicalPendingTransaction < ApplicationRecord
   end
 
   def remote_stripe_iauth_id
+    return nil unless raw_pending_stripe_transaction
     raw_pending_stripe_transaction.stripe_transaction_id
+  end
+
+  def stripe_auth_dashboard_url
+    return nil unless remote_stripe_iauth_id
+    "https://dashboard.stripe.com/issuing/authorizations/#{remote_stripe_iauth_id}"
   end
 
   # DEPRECATED
