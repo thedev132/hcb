@@ -11,7 +11,7 @@ module EventsHelper
     end
   end
 
-  def transfers_airtable_form_url(embed: false, event: nil, user: nil)
+  def paypal_transfers_airtable_form_url(embed: false, event: nil, user: nil)
     # The airtable form is located within the Bank Promotions base
     embed_url = "https://airtable.com/embed/shrH9fMs5hof2HRup"
     url = "https://airtable.com/shrH9fMs5hof2HRup"
