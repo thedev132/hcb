@@ -838,9 +838,9 @@ class AdminController < ApplicationController
         airtable_task_size :sendy
       when :pending_pvsa_airtable
         airtable_task_size :pvsa
-      when :wire_transfers
+      when :pending_wire_transfers_airtable
         airtable_task_size :wire_transfers
-      when :paypal_transfers
+      when :pending_paypal_transfers_airtable
         airtable_task_size :paypal_transfers
       when :emburse_card_requests
         EmburseCardRequest.under_review.size
