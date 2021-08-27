@@ -104,6 +104,10 @@ class Disbursement < ApplicationRecord
     end
   end
 
+  def state_icon
+    "checkmark" if fulfilled?
+  end
+
   def mark_fulfilled!
     update(fulfilled_at: DateTime.now)
   end

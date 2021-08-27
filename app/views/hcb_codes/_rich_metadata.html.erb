@@ -28,4 +28,9 @@
   <%= render partial: "hcb_codes/stripe_card", locals: {} %>
 <% end %>
 
+<!-- disbursement -->
+<% if @hcb_code.disbursement? %>
+  <%= render partial: "hcb_codes/disbursement", locals: {} %>
+<% end %>
+
 

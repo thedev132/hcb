@@ -208,8 +208,20 @@ action {
 .details .admin-tools {
   padding: 0.25rem 1rem;
   margin: 0 -1rem;
+
   border-radius: 0;
-  border: none;
+  border: 0;
+}
+
+.details-horiz .admin-tools {
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+  padding-right: 1rem;
+  margin-top: -0.75rem;
+  margin-bottom: -0.75rem;
+  
+  border-radius: 0;
+  border: 0;
 }
 
 // Make mobile views nice. Full-bleed separator lines

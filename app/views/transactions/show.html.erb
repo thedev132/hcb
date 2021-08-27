@@ -132,7 +132,8 @@
       </p>
     <% else %>
       <% @transaction.fees.each do |fee| %>
-        <% admin_tools("py0") do %>
+        <% admin_tools("py0", "p") do %>
+          <strong>Fee</strong>
           <%= link_to "[unwaive fee]", unwaive_fee_canonical_transaction_url(@transaction), method: :post if fee.revenue_waived? %>
         <% end %>
       <% end %>
@@ -157,7 +158,7 @@
   <% end %>
 
   <% if @transaction&.disbursement %>
-    <% admin_tools("py0") do %>
+    <% admin_tools("py0 mt2") do %>
       <%# admin tools because disbursements are not designed
         to be end-user visible %>
       <p>

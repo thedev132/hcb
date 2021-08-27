@@ -1,0 +1,54 @@
+<article class="card pb0 mt3 mb3">
+  <h2 class="h2 mt0 border-none">
+    <span class="regular muted">
+      <%= @hcb_code.disbursement.fulfilled? ? 'Disbursed' : (@hcb_code.disbursement.pending? ||
+        @hcb_code.disbursement.processed?) ? 'Disbursing' : 'Disbursement of' %>
+    </span>
+    <span class="regular"><%= render_money @hcb_code.disbursement.amount %></span>
+    <span class="regular muted">to</span>
+    <%= @hcb_code.disbursement.event.name %>
+    <span class="badge h4 md-right ml0 bg-<%= @hcb_code.disbursement.state %>">
+      <%= @hcb_code.disbursement.state_text %>
+      <%= inline_icon @hcb_code.disbursement.state_icon, size: 20 if @hcb_code.disbursement.state_icon %>
+    </span>
+  </h2>
+
+  <section class="card__banner card__darker details-horiz border-top border-bottom">
+    <p>
+      <strong>Requested at</strong>
+      <%= format_datetime @hcb_code.disbursement.created_at %>
+    </p>
+    <p>
+      <strong>Fulfilled at</strong>
+      <%= format_datetime @hcb_code.disbursement.fulfilled_at %>
+    </p>
+    <% admin_tools('', 'p') do %>
+      <strong>Disbursement ID</strong>
+      <%= link_to @hcb_code.disbursement.id, @hcb_code.disbursement %>
+    <% end %>
+  </section>
+
+  <section class="details pt2 pb2">
+    <p>
+      <strong>Destination event</strong>
+      <%= link_to @hcb_code.disbursement.event.name, @hcb_code.disbursement.event %>
+    </p>
+
+    <p>
+      <strong>Source event</strong>
+      <%= link_to @hcb_code.disbursement.source_event.name, @hcb_code.disbursement.source_event %>
+    </p>
+
+    <p>
+      <strong>Amount</strong>
+      <%= render_money @hcb_code.disbursement.amount %>
+    </p>
+
+    <p>
+      <strong>Name (reason)</strong>
+      <%= organizer_signed_in? ? @hcb_code.disbursement.name : 'Sign in to view' %>
+    </p>
+  </section>
+
+</article>
+

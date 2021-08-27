@@ -50,7 +50,7 @@
         </td>
         <td><%= disbursement.transaction_memo %></td>
         <td><%= render_money_amount(disbursement.amount) %></td>
-        <td><%= disbursement.status.upcase %></td>
+        <td><%= disbursement.state_text.upcase %></td>
         <td>
           <%= "AUTOMATED" if disbursement.pending? %>
         </td>

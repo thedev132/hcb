@@ -75,7 +75,7 @@
     </section>
 
     <% if @disbursement.pending? %>
-      <% admin_tools do %>
+      <% admin_tools('mt2') do %>
         <%= link_to 'Mark fulfilled', disbursement_mark_fulfilled_path(@disbursement), method: :post, class: 'btn bg-success' %>
         <%= link_to 'Reject', disbursement_reject_path(@disbursement), method: :post, class: 'btn bg-error' %>
       <% end %>
