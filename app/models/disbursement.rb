@@ -51,7 +51,7 @@ class Disbursement < ApplicationRecord
   def fulfilled?
     # two transactions, one coming out of source event and another
     # going into destination event
-    t_transactions.size == 2
+    canonical_transactions.size == 2
   end
 
   def rejected?
