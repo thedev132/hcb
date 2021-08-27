@@ -253,6 +253,11 @@ module StaticPagesHelper
         query: {filterByFormula: "Status='Pending'", fields: [] },
         destination: "https://airtable.com/tbloFbH16HI7t3mfG/viwzgt8VLHOC82m8n"
       },
+      paypal_transfers: {
+        url: "https://airbridge.hackclub.com/v0.1/Bank%20Promotions/PayPal%20Transfers",
+        query: {filterByFormula: "Status='Pending'", fields: [] },
+        destination: "https://airtable.com/tbloGiW2jhja8ivtV/viwzhAnWYhpFNhvmC"
+      },
     }
   end
 end
