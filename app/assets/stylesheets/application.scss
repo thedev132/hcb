@@ -260,6 +260,10 @@ action {
     display: none !important;
   }
 
+  .show-print {
+    display: initial !important;
+  }
+
   body {
     background-color: $white !important;
   }
