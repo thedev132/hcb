@@ -213,6 +213,8 @@ module StaticPagesHelper
         "It's our business doing finance with you",
         "Flash plugin failed to load",
         "Cash, checks, and cents, oh my!",
+        "ACH, checks, and credit, oh my!",
+        "Debit, she said",
         "U want sum bank?",
         "* not #{%w[banc banq].sample}",
         "Our ledger's thicker than a bowl of oatmeal",
@@ -220,6 +222,7 @@ module StaticPagesHelper
         "Reciepts? Receipts? Recepts?",
         "Receipts are kinda like a recipe for money",
         "Receipts are kinda like a recipe for a nonprofit",
+        "Receipts are kinda like a recipe for losing money",
         "Check the back of this page for an exclusive promo code!",
         "You've found the 5th easter egg on the site!",
         "Happiness > Wealthiness, but I didn't tell you that",
@@ -264,7 +267,7 @@ module StaticPagesHelper
         "TODO: come up with some actual jokes for this box",
         "asdgfhjdk I'm out of jokes",
         "asdgfhjdk I'm out of #{%w[money cash bank finance financial].sample} puns",
-        "Send your jokes to bank@hackclub.com!",
+        "Send your jokes to bank@hackclub.com",
         "Cha-ching!",
         "Hey there cutie!",
         "You're looking great today :)",
@@ -276,7 +279,7 @@ module StaticPagesHelper
         "<span class='hide-print'>Try printing this, I dare you</span><span class='display-none show-print'>YOU FOOL</span>",
         "<em>SUPREME</em>",
         "You need to wake up",
-        "The only bank brave enough to say 'sus'",
+        "The only bank brave enough to say '#{%w[sus poggers pog oops uwu].sample}'",
         "Fees lookin pretty sus",
         "Are you sure you aren't a robot?",
         "#{%w[laugh cry smile giggle smirk].sample} here if you aren't a robot",
@@ -296,7 +299,9 @@ module StaticPagesHelper
         "Do you have enough money? I'm positive!",
         "Putting the 'sus' in 'financial sustainability'",
         "Ever just wonder... why?",
-        "asljhdjhakshjdahkdshaksdhaks"
+        "asljhdjhakshjdahkdshaksdhaks",
+        "Birds aren't real!",
+        "Wahoo! 🐟"
       ].sample
     end
   end
