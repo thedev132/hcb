@@ -200,13 +200,13 @@ module StaticPagesHelper
         "Insert token(s)",
         "Receipts or it didn't happen",
         "Carbon positive!",
-        "We put the 'dig it' in digital",
+        "We put the 'dig it' in 'digital'",
         "Made in 🇺🇸",
         "Your move IRS!",
         "The buck stops here",
         "Hack Club Moneybucks",
         "If you know, you know",
-        "We put the 'ants' in pants",
+        "We put the 'ants' in 'pants'",
         "We used this <a href='https://zephyr.hackclub.com' target='_blank'>to buy a train</a>",
         "Do Only Good Everyday",
         "JavaScript brewed fresh daily",
@@ -281,7 +281,7 @@ module StaticPagesHelper
         "You need to wake up",
         "The only bank brave enough to say '#{%w[sus poggers pog oops uwu].sample}'",
         "Fees lookin pretty sus",
-        "Are you sure you aren't a robot?",
+        "Are you suuuuure you aren't a robot?",
         "#{%w[laugh cry smile giggle smirk].sample} here if you aren't a robot",
         "Show emotion here if you aren't a robot",
         "<a href='/robots.txt' target='_blank'>Click here if you are a robot</a>",
@@ -301,7 +301,15 @@ module StaticPagesHelper
         "Ever just wonder... why?",
         "asljhdjhakshjdahkdshaksdhaks",
         "Birds aren't real!",
-        "Wahoo! 🐟"
+        "Wahoo! 🐟",
+        "Redstone update out now!",
+        "financial edition",
+        "educational edition",
+        "non-profit edition",
+        "non-educational edition",
+        "Where's the money lebowski?!",
+        "We put the 'poggers' in 'taxes' (there isn't any)",
+        "We put the 'fun' in 'accrual-based accounting' (there isn't any)"
       ].sample
     end
   end
