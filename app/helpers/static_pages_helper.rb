@@ -276,7 +276,7 @@ module StaticPagesHelper
         "Please see attached #{%w[gif avi mp3 wav zip].sample}",
         "Cont. on page 42",
         "See fig. 42",
-        "<span class='hide-print'>Try printing this, I dare you</span><span class='display-none show-print'>YOU FOOL</span>",
+        "<span class='hide-print'>Try printing this, I dare you</span><span class='hide-non-print'>YOU FOOL</span>",
         "<em>SUPREME</em>",
         "You need to wake up",
         "The only bank brave enough to say '#{%w[sus poggers pog oops uwu].sample}'",

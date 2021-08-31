@@ -248,6 +248,12 @@ action {
   }
 }
 
+@media not print {
+  .hide-non-print {
+    display: none !important;
+  }
+}
+
 @media print {
   .home,
   .dock,
@@ -258,10 +264,6 @@ action {
   input[type='search'],
   .hide-print {
     display: none !important;
-  }
-
-  .show-print {
-    display: initial !important;
   }
 
   body {
