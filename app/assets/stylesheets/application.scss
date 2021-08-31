@@ -248,6 +248,12 @@ action {
   }
 }
 
+@media not print {
+  .hide-non-print {
+    display: none !important;
+  }
+}
+
 @media print {
   .home,
   .dock,
