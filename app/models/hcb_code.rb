@@ -23,9 +23,12 @@ class HcbCode < ApplicationRecord
     return donation_memo if donation?
     return ach_transfer_memo if ach_transfer?
     return check_memo if check?
-    return ct.try(:smart_memo) || pt.try(:smart_memo) if stripe_card?
 
-    ct.try(:smart_memo) || pt.try(:smart_memo) || ""
+    custom_memo || ct.try(:smart_memo) || pt.try(:smart_memo) || ""
+  end
+
+  def custom_memo
+    ct.try(:custom_memo) || pt.try(:custom_memo)
   end
 
   def amount_cents
@@ -189,8 +192,9 @@ class HcbCode < ApplicationRecord
   end
 
   def smartish_custom_memo
-    return nil unless ct.custom_memo
+    return nil unless ct&.custom_memo || pt&.custom_memo
     return ct.custom_memo unless ct.custom_memo.include?("FEE REFUND")
+    return pt.custom_memo unless pt&.custom_memo.blank?
 
     ct2.custom_memo
   end

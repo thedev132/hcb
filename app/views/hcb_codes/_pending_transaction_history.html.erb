@@ -18,6 +18,9 @@
             <td><%= ct.smart_memo %></td>
             <td style="text-align: right;"><%= number_to_currency(ct.amount) %></td>
             <td>
+              <%= pop_icon_to "edit",
+                  edit_canonical_pending_transaction_path(ct),
+                  class: "right tooltipped tooltipped--w", "aria-label": "Rename pending transaction" if organizer_signed_in? %>
             </td>
           </tr>
         <% end %>

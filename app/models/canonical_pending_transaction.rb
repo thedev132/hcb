@@ -2,7 +2,7 @@
 
 class CanonicalPendingTransaction < ApplicationRecord
   include PgSearch::Model
-  pg_search_scope :search_memo, against: [:memo, :hcb_code], using: { tsearch: { prefix: true, dictionary: "english" } }, ranked_by: "canonical_pending_transactions.date"
+  pg_search_scope :search_memo, against: [:memo, :custom_memo, :hcb_code], using: { tsearch: { prefix: true, dictionary: "english" } }, ranked_by: "canonical_pending_transactions.date"
 
   belongs_to :raw_pending_stripe_transaction, optional: true
   belongs_to :raw_pending_outgoing_check_transaction, optional: true
@@ -48,6 +48,8 @@ class CanonicalPendingTransaction < ApplicationRecord
   scope :bank_fee_hcb_code, -> { where("hcb_code ilike 'HCB-#{::TransactionGroupingEngine::Calculate::HcbCode::BANK_FEE_CODE}%'") }
   scope :partner_donation_hcb_code, -> { where("hcb_code ilike 'HCB-#{::TransactionGroupingEngine::Calculate::HcbCode::PARTNER_DONATION_CODE}%'") }
 
+  validates :custom_memo, presence: true, allow_nil: true
+
   after_create_commit :write_hcb_code
   after_create_commit :write_system_event
 
@@ -68,6 +70,10 @@ class CanonicalPendingTransaction < ApplicationRecord
   end
 
   def smart_memo
+    custom_memo || friendly_memo
+  end
+
+  def friendly_memo
     friendly_memo_in_memory_backup
   end
 
