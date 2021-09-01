@@ -9,9 +9,28 @@
   </span>
 
   <% if organizer_signed_in? %>
-    <%= link_to "Send Check", new_event_check_path(@event), class: "btn bg-accent" %>
-    <%= link_to "Send ACH Transfer", new_event_ach_transfer_path(@event), class: "btn bg-accent" %>
     <%= link_to "Reimbursement", event_reimbursements_path(@event), class: "btn" %>
+    <action type="button" class="btn bg-accent overflow-visible menu__toggle" data-behavior="menu_toggle" aria-expanded="false" tabindex="0">
+      Send
+      <div class="menu__content" data-behavior="menu_content">
+        <%= link_to "ACH", new_event_ach_transfer_path(@event) %>
+        <%= link_to "Check", new_event_check_path(@event) %>
+        <%= link_to paypal_transfers_airtable_form_url(embed: false, event: @event, user: @current_user),
+          data: { behavior: "modal_trigger", modal: "paypal_transfer" } do %>
+          PayPal
+        <% end %>
+      </div>
+    </action>
+
+    <%# Modal for PayPal transfers %>
+    <section class="modal" data-behavior="modal" role="dialog" id="paypal_transfer">
+      <%= modal_header "PayPal transfer" %>
+      <p class="mt0">PayPal may charge <%= link_to 'fees', 'https://www.paypal.com/us/webapps/mpp/paypal-fees', target: 'blank' %>
+        (eg. currency conversion) for transfers. These fees will be passed down to you. Need help? <%= help_message %>.
+      </p>
+      <iframe src='<%= paypal_transfers_airtable_form_url(embed: true, event: @event, user: @current_user) %>' style='border:none;' name='donateFrame' scrolling='yes' frameborder='0' marginheight='0px' marginwidth='0px' height='256px' width='512px' allowfullscreen style="width: 100%; max-width: 100%; max-height: 40vh;"></iframe>
+      <%= link_to "open in a new tab", paypal_transfers_airtable_form_url(embed: false, event: @event, user: @current_user), target: "_blank" %>
+    </section>
   <% end %>
 </h1>
 
