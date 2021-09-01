@@ -19,26 +19,44 @@ module Shared
         rescue
         end
 
-        # Username
-        sleep 1
-        el = driver.find_element(id: "userId")
-        el.send_keys(username)
+        # # Username
+        # sleep 1
+        # el = driver.find_element(id: "userId")
+        # el.send_keys(username)
 
-        # Password
-        sleep 1
-        el = driver.find_element(id: "userPassword")
-        el.send_keys(password)
+        # # Password
+        # sleep 1
+        # el = driver.find_element(id: "userPassword")
+        # el.send_keys(password)
 
-        # Login
-        sleep 1
-        el = driver.find_element(id: "loginButton")
-        el.click
+        # # Login
+        # sleep 1
+        # el = driver.find_element(id: "loginButton")
+        # el.click
 
-        # Potentially handle challenge question - otherwise continue
-        begin
-          handle_challenge_question
-        rescue ::Selenium::WebDriver::Error::TimeoutError => e
+        # # Potentially handle challenge question - otherwise continue
+        # begin
+        #   handle_challenge_question
+        # rescue ::Selenium::WebDriver::Error::TimeoutError => e
+        # end
+
+        sleep 1
+
+        selenium_session = ::SeleniumSession.active.last
+
+        raise ArgumentError, "No active selenium sessions" unless selenium_session
+
+        # Set logged in cookie
+        # https://stackoverflow.com/questions/28187331/set-cookie-using-watir-webdriver-or-selenium/28277564
+        #driver.cookies.add("SVB_OLB_TL_COOKIE","3b45dfb9-91b0-4f00-b967-160600e2fd4d", { domain: "*.svbconnect.com" })
+        cookies = selenium_session.cookies
+        cookies.each do |key, value|
+          driver.manage.add_cookie(name: key, value: value, path: "/", domain: "svbconnect.com")
         end
+
+        sleep 1
+
+        driver.navigate.to(banking_url)
       end
 
       def auth_url
@@ -97,6 +115,10 @@ module Shared
         el.click
 
         sleep 10
+      end
+
+      def banking_url
+        "https://banking.svbconnect.com"
       end
     end
   end

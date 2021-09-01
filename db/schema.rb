@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_20_233014) do
+ActiveRecord::Schema.define(version: 2021_09_01_161012) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -967,6 +967,13 @@ ActiveRecord::Schema.define(version: 2021_08_20_233014) do
     t.bigint "receiptable_id"
     t.index ["receiptable_type", "receiptable_id"], name: "index_receipts_on_receiptable_type_and_receiptable_id"
     t.index ["user_id"], name: "index_receipts_on_user_id"
+  end
+
+  create_table "selenium_sessions", force: :cascade do |t|
+    t.string "aasm_state"
+    t.jsonb "cookies"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "sponsors", force: :cascade do |t|

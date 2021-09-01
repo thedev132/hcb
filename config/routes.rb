@@ -72,6 +72,9 @@ Rails.application.routes.draw do
 
   resources :admin, only: [] do
     collection do
+      get "selenium_sessions", to: "admin#selenium_sessions"
+      get "selenium_sessions_new", to: "admin#selenium_sessions_new"
+      post "selenium_sessions_create", to: "admin#selenium_sessions_create"
       get "transaction_csvs", to: "admin#transaction_csvs"
       post "upload", to: "admin#upload"
       get "bank_accounts", to: "admin#bank_accounts"

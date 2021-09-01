@@ -745,6 +745,28 @@ class AdminController < ApplicationController
     render layout: "admin"
   end
 
+  def selenium_sessions
+    @page = params[:page] || 1
+    @per = params[:per] || 20
+
+    relation = SeleniumSession
+
+    @count = relation.count
+    @selenium_sessions = relation.page(@page).per(@per).order("created_at desc")
+
+    render layout: "admin"
+  end
+
+  def selenium_sessions_new
+    render layout: "admin"
+  end
+
+  def selenium_sessions_create
+    selenium_session = ::SeleniumService::Create.new(file: params[:file]).run
+
+    redirect_to selenium_sessions_admin_index_path, flash: { success: "Selenium session created" }
+  end
+
   def transaction_csvs
     @page = params[:page] || 1
     @per = params[:per] || 20

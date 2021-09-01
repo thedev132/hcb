@@ -117,6 +117,7 @@ group :development, :test do
   gem "rspec-rails", "~> 4.0.1"
   gem "rubocop", "0.74.0"
   gem "rubocop-github", "0.13.0"
+  gem "webdrivers"
 end
 
 group :development do
