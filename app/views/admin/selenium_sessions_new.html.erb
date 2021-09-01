@@ -1,0 +1,18 @@
+<% title "New Selenium Session" %>
+
+<h1>NEW SELENIUM SESSION</h1>
+
+<%= form_with(model: nil, local: true, url: selenium_sessions_create_admin_index_path, method: :post) do |form| %>
+  <fieldset>
+    <legend>Upload cookie file</legend>
+
+    <p>
+      <%= form.label :file, "Cookie file" %>
+      <%= form.file_field :file %>
+    </p>
+  </fieldset>
+
+  <p>
+    <%= form.submit "Create" %>
+  </p>
+<% end %>
