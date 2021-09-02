@@ -347,6 +347,8 @@ Rails.application.routes.draw do
 
   get "/integrations/frankly" => "integrations#frankly"
 
+  post "twilio/messaging", to: "mfa_code#messaging"
+
   get "/events" => "events#index"
   get "/event_by_airtable_id/:airtable_id" => "events#by_airtable_id"
   resources :events, except: [:new, :create], path: "/" do

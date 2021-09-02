@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -12,11 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_01_161012) do
+ActiveRecord::Schema.define(version: 2021_09_02_082708) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
-  enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
 
   create_table "ach_transfers", force: :cascade do |t|
@@ -32,8 +29,8 @@ ActiveRecord::Schema.define(version: 2021_09_01_161012) do
     t.datetime "updated_at", null: false
     t.string "recipient_tel"
     t.datetime "rejected_at"
-    t.datetime "scheduled_arrival_date"
     t.text "payment_for"
+    t.datetime "scheduled_arrival_date"
     t.string "aasm_state"
     t.text "confirmation_number"
     t.index ["creator_id"], name: "index_ach_transfers_on_creator_id"
@@ -241,9 +238,9 @@ ActiveRecord::Schema.define(version: 2021_09_01_161012) do
     t.bigint "raw_pending_invoice_transaction_id"
     t.text "hcb_code"
     t.bigint "raw_pending_bank_fee_transaction_id"
-    t.bigint "raw_pending_partner_donation_transaction_id"
     t.index ["raw_pending_bank_fee_transaction_id"], name: "index_canonical_pending_txs_on_raw_pending_bank_fee_tx_id"
     t.index ["raw_pending_donation_transaction_id"], name: "index_canonical_pending_txs_on_raw_pending_donation_tx_id"
+    t.index ["raw_pending_invoice_transaction_id"], name: "index_canonical_pending_txs_on_raw_pending_invoice_tx_id"
     t.index ["raw_pending_outgoing_ach_transaction_id"], name: "index_canonical_pending_txs_on_raw_pending_outgoing_ach_tx_id"
     t.index ["raw_pending_outgoing_check_transaction_id"], name: "index_canonical_pending_txs_on_raw_pending_outgoing_check_tx_id"
     t.index ["raw_pending_stripe_transaction_id"], name: "index_canonical_pending_txs_on_raw_pending_stripe_tx_id"
@@ -515,7 +512,7 @@ ActiveRecord::Schema.define(version: 2021_09_01_161012) do
     t.boolean "omit_stats", default: false
     t.datetime "transaction_engine_v2_at", default: -> { "CURRENT_TIMESTAMP" }
     t.datetime "last_fee_processed_at"
-    t.datetime "pending_transaction_engine_at", default: "2021-02-13 22:49:40"
+    t.datetime "pending_transaction_engine_at", default: "2021-09-02 08:58:53"
     t.string "aasm_state"
     t.string "organization_identifier", null: false
     t.string "redirect_url"
@@ -769,6 +766,23 @@ ActiveRecord::Schema.define(version: 2021_09_01_161012) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["token"], name: "index_login_tokens_on_token", unique: true
     t.index ["user_id"], name: "index_login_tokens_on_user_id"
+  end
+
+  create_table "mfa_codes", force: :cascade do |t|
+    t.text "message"
+    t.string "code"
+    t.string "provider"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "mfa_requests", force: :cascade do |t|
+    t.string "provider"
+    t.bigint "mfa_code_id"
+    t.string "aasm_state"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["mfa_code_id"], name: "index_mfa_requests_on_mfa_code_id"
   end
 
   create_table "ops_checkins", force: :cascade do |t|
@@ -1191,6 +1205,7 @@ ActiveRecord::Schema.define(version: 2021_09_01_161012) do
   add_foreign_key "invoices", "users", column: "manually_marked_as_paid_user_id"
   add_foreign_key "lob_addresses", "events"
   add_foreign_key "login_tokens", "users"
+  add_foreign_key "mfa_requests", "mfa_codes"
   add_foreign_key "ops_checkins", "users", column: "point_of_contact_id"
   add_foreign_key "organizer_position_deletion_requests", "organizer_positions"
   add_foreign_key "organizer_position_deletion_requests", "users", column: "closed_by_id"
