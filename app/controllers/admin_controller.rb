@@ -2,8 +2,9 @@
 
 class AdminController < ApplicationController
   skip_after_action :verify_authorized # do not force pundit
-  before_action :signed_in_admin, except: [:twilio_inbound]
-  skip_before_action :signed_in_user, only: [:twilio_inbound]
+  skip_before_action :signed_in_user, only: [:twilio_messaging]
+  skip_before_action :verify_authenticity_token, only: [:twilio_messaging] # do not use CSRF token checking for API routes
+  before_action :signed_in_admin, except: [:twilio_messaging]
 
   layout "application"
 

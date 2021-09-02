@@ -8,18 +8,19 @@ module MfaCodeService
 
     def run
       create_attr = {
-        message: @body,
+        message: @message,
         code: code,
         provider: provider
       }
 
       mfa_code = MfaCode.create!(create_attr)
 
-      next unless provider == "unknown"
+      return if provider == "unknown"
 
-      # After creating the code, we need to match it to a MfaRequest
-      mfa_request = MfaRequest.pending.where(provider: provider).order(created_at: :desc).last
-      next unless mfa_request.nil?
+      # After creating the code, we attempt to match it to a MfaRequest
+      mfa_request = MfaRequest.pending.where(provider: provider).order(created_at: :asc).last
+
+      return if mfa_request.nil?
 
       ActiveRecord::Base.transaction do
         mfa_request.update_column(:mfa_code_id, mfa_code.id)
@@ -38,17 +39,15 @@ module MfaCodeService
     end
 
     def likely_svb?
-      @body.to_s.include?("SVB code is")
+      @message.to_s.include?("SVB login code is")
     end
-
 
     def code
       if provider == "SVB"
-        return ::MfaCodeService::Parsers::Svb.new(@body).run
+        return ::MfaCodeService::Parsers::Svb.new(message: @message).run
       end
 
       nil
     end
-
   end
 end
