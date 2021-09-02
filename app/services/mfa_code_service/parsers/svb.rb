@@ -2,7 +2,7 @@
 
 module MfaCodeService
   module Parsers
-    class SVB
+    class Svb
       def initialize(message:)
         @message = message
       end

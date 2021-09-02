@@ -44,7 +44,7 @@ module MfaCodeService
 
     def code
       if provider == "SVB"
-        return ::MfaCodeService::Parsers::SVB.new(@body).run
+        return ::MfaCodeService::Parsers::Svb.new(@body).run
       end
 
       nil
