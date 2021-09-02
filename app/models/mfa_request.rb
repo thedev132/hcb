@@ -9,7 +9,7 @@ class MfaRequest < ApplicationRecord
     state :received
 
     event :mark_received do
-      transitions from :pending, to: :received
+      transitions from: :pending, to: :received
     end
   end
 
