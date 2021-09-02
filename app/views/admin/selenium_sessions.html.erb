@@ -12,6 +12,7 @@
       <th>ID</th>
       <th>Created</th>
       <th>Status</th>
+      <th>Data Hash</th>
       <th>Actions</th>
     </tr>
   </thead>
@@ -21,6 +22,7 @@
         <td><%= selenium_session.id %></td>
         <td><%= selenium_session.created_at.strftime("%Y-%m-%d") %></td>
         <td><%= selenium_session.aasm_state.upcase %></td>
+        <td><%= XXhash.xxh64(selenium_session.cookies.to_json) %></td>
         <td>
         </td>
       </tr>
