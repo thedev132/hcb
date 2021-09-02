@@ -8,7 +8,7 @@ module MfaCodeService
       end
 
       def run
-        code = @message.scan(/SVB code is (\d*)./).first&.first
+        code = @message.scan(/SVB code is (\d*)./).first&.first&.strip
 
         return code unless code.empty?
         nil
