@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 class MfaRequest < ApplicationRecord
   include AASM
 
   belongs_to :mfa_code, optional: true
-  scope :svb, -> { where(provider: 'SVB') }
+  scope :svb, -> { where(provider: "SVB") }
 
   aasm do
     state :pending, initial: true

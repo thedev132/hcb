@@ -3,7 +3,7 @@
 class MfaCodeController < ApplicationController
   skip_after_action :verify_authorized # do not force pundit
   skip_before_action :signed_in_user
-  
+
   # Twilio Messaging webhook
   # They give us 15 seconds to respond
   # https://www.twilio.com/docs/messaging/guides/webhook-request

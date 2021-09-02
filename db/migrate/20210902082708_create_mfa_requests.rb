@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateMfaRequests < ActiveRecord::Migration[6.0]
   def change
     create_table :mfa_requests do |t|

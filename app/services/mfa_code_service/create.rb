@@ -21,7 +21,7 @@ module MfaCodeService
       ActiveRecord::Base.transaction do
         mfa_request.update_column(:mfa_code_id, mfa_code.id)
         mfa_request.mark_received!
-        
+
         mfa_request
       end
     end
@@ -40,7 +40,7 @@ module MfaCodeService
 
 
     def code
-      if provider == 'SVB'
+      if provider == "SVB"
         return ::MfaCodeService::Parsers::SVB.new(@body).run
       end
 
