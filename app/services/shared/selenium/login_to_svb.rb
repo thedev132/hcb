@@ -45,9 +45,6 @@ module Shared
 
         # Continue to onlien banking
         handle_continue_to_online_banking
-
-        # Navigate to banking url
-        driver.navigate.to(banking_url)
       end
 
       def auth_url
@@ -106,7 +103,7 @@ module Shared
         wait.until { driver.find_element(:xpath, '//input[@class="svb-data-input svb-enter-authenticate-code-container-input-code"]') }
 
         # Fill mfa code
-        while true
+        loop do
           sleep 1
           puts "waiting for code"
 
