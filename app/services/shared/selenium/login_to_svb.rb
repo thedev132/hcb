@@ -47,7 +47,7 @@ module Shared
         handle_continue_to_online_banking
 
         # Navigate to banking url
-        driver.nagivate.to(banking_url)
+        driver.navigate.to(banking_url)
       end
 
       def auth_url
