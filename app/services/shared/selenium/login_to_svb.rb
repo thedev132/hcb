@@ -37,10 +37,9 @@ module Shared
         # Prep mfa request
         mfa_request = ::MfaRequestService::Create.new.run
 
-        # Click 'text me'
-        byebug
+        handle_click_text_me("Mobile")
 
-        driver.navigate.to(banking_url)
+        handle_fill_mfa_code
       end
 
       def auth_url
@@ -71,35 +70,48 @@ module Shared
         Rails.application.credentials.svb[:challenge_answer_place]
       end
 
-      def handle_challenge_question
+      def handle_click_text_me(phone_name)
         # Wait
         wait = ::Selenium::WebDriver::Wait.new(timeout: 65) # wait 65 seconds
-        wait.until { driver.find_element(id: "enteredChallengePhraseResponse") }
+        wait.until { driver.find_element(:xpath, '//p[text()[.="unreachable at any of the above numbers" or contains(.,"unreachable at any of the above")]]') }
 
-        # Handle challenge answer
-        el = driver.find_element(class: "svb-modal-confirm-identity-label-container")
-        challenge_answer = nil
-        challenge_answer = challenge_answer_architect if el.text.downcase.include?("architect")
-        challenge_answer = challenge_answer_car if el.text.downcase.include?("car")
-        challenge_answer = challenge_answer_place if el.text.downcase.include?("visit")
+        els = driver.find_elements(:xpath, '//div[@data-svb-class="svb-phone-number-container"]')
+        els.each do |el|
 
-        # Challenge question
-        sleep 1
-        el = driver.find_element(id: "enteredChallengePhraseResponse")
-        el.send_keys(challenge_answer)
+          text = el.text
+          name = text.split("\n")[0]
 
-        # Submit answer
-        sleep 1
-        el = driver.find_element(class: "svb-confirm-identity-button")
-        el.click
+          # Find 'Mobile' phone
+          if name == phone_name
+            sleep 1
+            driver.action.move_to(el).perform
+            sleep 1
 
-        # Continue on identify confirmed
-        sleep 1
-        el = driver.find_element(class: "svb-continue-button")
-        el.click
-
-        sleep 10
+            a = el.find_element(:xpath, 'div[@data-svb-class="svb-actions-wrapper"]/div/a')
+            a.click
+          end
+        end
       end
+
+      def handle_fill_mfa_code
+        # Wait
+        wait = ::Selenium::WebDriver::Wait.new(timeout: 65) # wait 65 seconds
+        wait.until { driver.find_element(:xpath, '//input[@class="svb-data-input svb-enter-authenticate-code-container-input-code"]') }
+
+        # Fill mfa code
+        el = driver.find_element(:xpath, '//input[@class="svb-data-input svb-enter-authenticate-code-container-input-code"]')
+        el.send_keys("123456")
+
+        # Confirm transfer
+        sleep 1
+        el = driver.find_element(:xpath, "//button[contains(concat(' ', normalize-space(@class),' '),' svb-enter-authenticate-code-authenticate ')]")
+        el.click
+      end
+
+      # handy methods
+      # driver.action.move_to(el).click(el).perform
+      # driver.execute_script("arguments[0].click();", a)
+      # driver.navigate.to(banking_url)
 
       def banking_url
         "https://banking.svbconnect.com"
