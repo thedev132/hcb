@@ -34,16 +34,36 @@ module Shared
         el = driver.find_element(id: "loginButton")
         el.click
 
-        # Prep mfa request
-        mfa_request = ::MfaRequestService::Create.new.run
+        # Make mfa request (to track and store code to be received)
+        make_mfa_request
 
+        # Click 'text me'
         handle_click_text_me("Mobile")
 
+        # Fill mfa code
         handle_fill_mfa_code
+
+        # Continue to onlien banking
+        handle_continue_to_online_banking
+
+        # Navigate to banking url
+        driver.nagivate.to(banking_url)
       end
 
       def auth_url
         "https://www.svbconnect.com/auth"
+      end
+
+      def banking_url
+        "https://banking.svbconnect.com"
+      end
+
+      def mfa_request
+        @mfa_request ||= ::MfaRequestService::Create.new.run
+      end
+
+      def make_mfa_request
+        mfa_request
       end
 
       def driver
@@ -58,18 +78,6 @@ module Shared
         Rails.application.credentials.svb[:password]
       end
 
-      def challenge_answer_architect
-        Rails.application.credentials.svb[:challenge_answer_architect]
-      end
-
-      def challenge_answer_car
-        Rails.application.credentials.svb[:challenge_answer_car]
-      end
-
-      def challenge_answer_place
-        Rails.application.credentials.svb[:challenge_answer_place]
-      end
-
       def handle_click_text_me(phone_name)
         # Wait
         wait = ::Selenium::WebDriver::Wait.new(timeout: 65) # wait 65 seconds
@@ -77,11 +85,10 @@ module Shared
 
         els = driver.find_elements(:xpath, '//div[@data-svb-class="svb-phone-number-container"]')
         els.each do |el|
-
           text = el.text
           name = text.split("\n")[0]
 
-          # Find 'Mobile' phone
+          # Identify correct phone number (in case of multiple) to send mfa to
           if name == phone_name
             sleep 1
             driver.action.move_to(el).perform
@@ -99,12 +106,32 @@ module Shared
         wait.until { driver.find_element(:xpath, '//input[@class="svb-data-input svb-enter-authenticate-code-container-input-code"]') }
 
         # Fill mfa code
-        el = driver.find_element(:xpath, '//input[@class="svb-data-input svb-enter-authenticate-code-container-input-code"]')
-        el.send_keys("123456")
+        while true
+          sleep 1
+          puts "waiting for code"
+
+          # Code received
+          if mfa_request.reload.received?
+            # Fill code
+            el = driver.find_element(:xpath, '//input[@class="svb-data-input svb-enter-authenticate-code-container-input-code"]')
+            el.send_keys(mfa_request.mfa_code.code)
+
+            # Confirm transfer
+            el = driver.find_element(:xpath, "//button[contains(concat(' ', normalize-space(@class),' '),' svb-enter-authenticate-code-authenticate ')]")
+            el.click
+
+            break
+          end
+        end
+      end
+
+      def handle_continue_to_online_banking
+        # Wait
+        wait = ::Selenium::WebDriver::Wait.new(timeout: 65) # wait 65 seconds
+        wait.until { driver.find_element(:xpath, "//button[contains(concat(' ', normalize-space(@class),' '),' svb-continue-button ')]") }
 
         # Confirm transfer
-        sleep 1
-        el = driver.find_element(:xpath, "//button[contains(concat(' ', normalize-space(@class),' '),' svb-enter-authenticate-code-authenticate ')]")
+        el = driver.find_element(:xpath, "//button[contains(concat(' ', normalize-space(@class),' '),' svb-continue-button ')]")
         el.click
       end
 
@@ -113,9 +140,6 @@ module Shared
       # driver.execute_script("arguments[0].click();", a)
       # driver.navigate.to(banking_url)
 
-      def banking_url
-        "https://banking.svbconnect.com"
-      end
     end
   end
 end
