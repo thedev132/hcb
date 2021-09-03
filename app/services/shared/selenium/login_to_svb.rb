@@ -43,8 +43,11 @@ module Shared
         # Fill mfa code
         handle_fill_mfa_code
 
-        # Continue to onlien banking
+        # Continue to online banking
         handle_continue_to_online_banking
+
+        # Wait for homepage
+        wait_for_homepage
       end
 
       def auth_url
@@ -130,6 +133,11 @@ module Shared
         # Confirm transfer
         el = driver.find_element(:xpath, "//button[contains(concat(' ', normalize-space(@class),' '),' svb-continue-button ')]")
         el.click
+      end
+
+      def wait_for_homepage
+        wait = ::Selenium::WebDriver::Wait.new(timeout: 65)
+        wait.until { driver.find_element(:xpath, '//h1[text()="Account Watch"]') }
       end
 
       # handy methods
