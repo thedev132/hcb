@@ -38,7 +38,7 @@ module Shared
         make_mfa_request
 
         # Click 'text me'
-        handle_click_text_me("Mobile")
+        handle_click_text_me("Bank Automation")
 
         # Fill mfa code
         handle_fill_mfa_code
