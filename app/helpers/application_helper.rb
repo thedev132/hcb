@@ -155,6 +155,12 @@ module ApplicationHelper
     doc.to_html.html_safe
   end
 
+  def anchor_link(id)
+    link_to "##{id}", class: "anchor-link" do
+      inline_icon "link", size: 28
+    end
+  end
+
   def filterbar_item(label, name, selected = false)
     content_tag :a, label, class: "filterbar__item",
                 tabindex: 0, role: "tab", 'aria-selected': selected,
