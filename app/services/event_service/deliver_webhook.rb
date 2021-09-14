@@ -7,7 +7,8 @@ module EventService
     end
 
     def run
-      raise ArgumentError, "webhook_url missing" unless event.webhook_url.present?
+      # no need to deliver webhook if it isn't present (events directly on Bank won't have a webhook URL)
+      return if event.webhook_url.blank?
 
       res = conn.post(event.webhook_url) do |req|
         req.body = Api::V1::OrganizationSerializer.new(event: event).run.to_json
