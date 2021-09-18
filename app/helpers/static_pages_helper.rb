@@ -208,7 +208,14 @@ module StaticPagesHelper
         "If you know, you know",
         "We put the 'ants' in 'pants'",
         "We used this&nbsp;<a href='https://zephyr.hackclub.com' target='_blank'>to buy a train</a>",
+        "🚂 choo choo!",
+        "To the moon! 🚀",
         "Do Only Good Everyday",
+        "Much #{%w[wow excite currency amaze fun cool hack].sample}",
+        "Very #{%w[internet bank currency amaze hack].sample}",
+        "Such #{%w[hip currency bank hack fascinate wow].sample}",        
+        "So #{%w[hip currency bank fascinate].sample}",        
+        "Many #{%w[currency bank hack amaze excite happy].sample}",        
         "JavaScript brewed fresh daily",
         "It's our business doing finance with you",
         "Flash plugin failed to load",
@@ -313,7 +320,10 @@ module StaticPagesHelper
         "<a href='https://hack.af/hcb-stickers?prefill_Recipient%20Name=#{current_user.full_name}&prefill_Login%20Email=#{current_user.email}' target='_blank' style='color: inherit'>Want stickers?</a>",
         "🐨 Koalaty banking",
         "🐨 Banking ekoalaty",
-        "🐨 Equality is about more than just caffeinated digital marsupials"
+        "🐨 Equality is about more than just caffeinated digital marsupials",
+        "If money doesn’t grow on trees, then why do banks have branches?",
+        "I was gonna tell a Bank joke, but ran out of interest",
+        "If money talks, why do we need bank tellers?"
       ].sample
     end
   end
