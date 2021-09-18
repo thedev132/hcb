@@ -311,6 +311,9 @@ module StaticPagesHelper
         "We put the 'poggers' in 'taxes' (there isn't any)",
         "We put the 'fun' in 'accrual-based accounting' (there isn't any)",
         "<a href='https://hack.af/hcb-stickers?prefill_Recipient%20Name=#{current_user.full_name}&prefill_Login%20Email=#{current_user.email}' target='_blank' style='color: inherit'>Want stickers?</a>",
+        "🐨 Koalaty banking",
+        "🐨 Banking ekoalaty",
+        "🐨 Equality is about more than just caffeinated digital marsupials"
       ].sample
     end
   end
