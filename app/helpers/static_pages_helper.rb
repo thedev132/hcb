@@ -310,7 +310,7 @@ module StaticPagesHelper
         "Where's the money lebowski?!",
         "We put the 'poggers' in 'taxes' (there isn't any)",
         "We put the 'fun' in 'accrual-based accounting' (there isn't any)",
-        "<a href='https://hack.af/hcb-stickers?prefill_Recipient%20Name=#{current_user.full_name}&prefill_Login%20Email=#{current_user.email}' target='_blank' style="color:white;">Want stickers?</a>",
+        "<a href='https://hack.af/hcb-stickers?prefill_Recipient%20Name=#{current_user.full_name}&prefill_Login%20Email=#{current_user.email}' target='_blank' style='color:white;'>Want stickers?</a>",
       ].sample
     end
   end
