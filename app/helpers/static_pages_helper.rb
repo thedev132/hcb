@@ -309,7 +309,8 @@ module StaticPagesHelper
         "non-educational edition",
         "Where's the money lebowski?!",
         "We put the 'poggers' in 'taxes' (there isn't any)",
-        "We put the 'fun' in 'accrual-based accounting' (there isn't any)"
+        "We put the 'fun' in 'accrual-based accounting' (there isn't any)",
+        "<a href='https://hack.af/hcb-stickers' target='_blank'>Want stickers?</a>",
       ].sample
     end
   end
@@ -329,6 +330,11 @@ module StaticPagesHelper
         url: "https://airbridge.hackclub.com/v0.1/Bank%20Promotions/Github%20Grant",
         query: { filterByFormula: "Status='Pending'", fields: [] },
         destination: "https://airtable.com/tblsYQ54Rg1Pjz1xP/viwjETKo05TouqYev"
+      },
+      stickers: {
+        url: "https://airbridge.hackclub.com/v0.1/Bank%20Promotions/Bank%20Stickers",
+        query: { filterByFormula: "Status='Pending'", fields: [] },
+        destination: "https://airtable.com/tblyhkntth4OyQxiO/viwHcxhOKMZnPXUUU"
       },
       stickermule: {
         url: "https://airbridge.hackclub.com/v0.1/Bank%20Promotions/StickerMule",
