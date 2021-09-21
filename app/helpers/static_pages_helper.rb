@@ -207,7 +207,7 @@ module StaticPagesHelper
         "Hack Club Moneybucks",
         "If you know, you know",
         "We put the 'ants' in 'pants'",
-        "We used this &nbsp; <a href='https://zephyr.hackclub.com' target='_blank'>to buy a train</a>",
+        "We used this&nbsp;<a href='https://zephyr.hackclub.com' target='_blank'>to buy a train</a>",
         "Do Only Good Everyday",
         "JavaScript brewed fresh daily",
         "It's our business doing finance with you",
