@@ -866,6 +866,8 @@ class AdminController < ApplicationController
         airtable_task_size :grant
       when :pending_stickermule_airtable
         airtable_task_size :stickermule
+      when :pending_stickers_airtable
+        airtable_task_size :stickers
       when :pending_replit_airtable
         airtable_task_size :replit
       when :pending_sendy_airtable
@@ -914,6 +916,7 @@ class AdminController < ApplicationController
     pending_task :pending_hackathons_airtable
     pending_task :pending_grant_airtable
     pending_task :pending_stickermule_airtable
+    pending_task :pending_stickers_airtable
     pending_task :pending_replit_airtable
     pending_task :pending_sendy_airtable
     pending_task :pending_pvsa_airtable

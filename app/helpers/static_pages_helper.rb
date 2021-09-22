@@ -207,8 +207,15 @@ module StaticPagesHelper
         "Hack Club Moneybucks",
         "If you know, you know",
         "We put the 'ants' in 'pants'",
-        "We used this <a href='https://zephyr.hackclub.com' target='_blank'>to buy a train</a>",
+        "We used this&nbsp;<a href='https://zephyr.hackclub.com' target='_blank'>to buy a train</a>",
+        "🚂 choo choo!",
+        "To the moon! 🚀",
         "Do Only Good Everyday",
+        "Much #{%w[happy cool fun].sample}. wow!",
+        "Very #{%w[bank currency].sample}. wow!",
+        "Such #{%w[internet fascinate bank hack].sample}. wow!",
+        "So #{%w[currency bank].sample}. wow!",
+        "Many #{%w[excite amaze].sample}. wow!",
         "JavaScript brewed fresh daily",
         "It's our business doing finance with you",
         "Flash plugin failed to load",
@@ -285,7 +292,7 @@ module StaticPagesHelper
         "#{%w[laugh cry smile giggle smirk].sample} here if you aren't a robot",
         "Show emotion here if you aren't a robot",
         "<a href='/robots.txt' target='_blank'>Click here if you are a robot</a>",
-        "Robot? <a href='/robots.txt' target='_blank'>Click here</a>",
+        "Robot?&nbsp;<a href='/robots.txt' target='_blank'>Click here</a>",
         "Your ad here!",
         "Make sure your homework is submitted and readable! 👀",
         "What the dollar doin?",
@@ -295,7 +302,7 @@ module StaticPagesHelper
         "Are you feeling lucky?",
         "Not our fault if it ain't in the vault!",
         "...and you can take that to the bank",
-        "Hello <span class='md-hide lg-hide'>tiny</span><span class='sm-hide xs-hide'>large</span>-screened person!",
+        "Hello&nbsp;<span class='md-hide lg-hide'>tiny</span><span class='sm-hide xs-hide'>large</span>-screened person!",
         "Do you have enough money? I'm positive!",
         "Putting the 'sus' in 'financial sustainability'",
         "Ever just wonder... why?",
@@ -309,7 +316,14 @@ module StaticPagesHelper
         "non-educational edition",
         "Where's the money lebowski?!",
         "We put the 'poggers' in 'taxes' (there isn't any)",
-        "We put the 'fun' in 'accrual-based accounting' (there isn't any)"
+        "We put the 'fun' in 'accrual-based accounting' (there isn't any)",
+        "<a href='https://hack.af/hcb-stickers?prefill_Recipient%20Name=#{current_user.full_name}&prefill_Login%20Email=#{current_user.email}' target='_blank' style='color: inherit'>Want stickers?</a>",
+        "🐨 Koalaty banking",
+        "🐨 Banking ekoalaty",
+        "🐨 Equality is about more than just caffeinated digital marsupials",
+        "If money doesn’t grow on trees, then why do banks have branches?",
+        "I was gonna tell a Bank joke, but ran out of interest",
+        "If money talks, why do we need bank tellers?"
       ].sample
     end
   end
@@ -329,6 +343,11 @@ module StaticPagesHelper
         url: "https://airbridge.hackclub.com/v0.1/Bank%20Promotions/Github%20Grant",
         query: { filterByFormula: "Status='Pending'", fields: [] },
         destination: "https://airtable.com/tblsYQ54Rg1Pjz1xP/viwjETKo05TouqYev"
+      },
+      stickers: {
+        url: "https://airbridge.hackclub.com/v0.1/Bank%20Promotions/Bank%20Stickers",
+        query: { filterByFormula: "Status='Pending'", fields: [] },
+        destination: "https://airtable.com/tblyhkntth4OyQxiO/viwHcxhOKMZnPXUUU"
       },
       stickermule: {
         url: "https://airbridge.hackclub.com/v0.1/Bank%20Promotions/StickerMule",
