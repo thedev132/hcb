@@ -6,6 +6,9 @@ module FeeReimbursementService
     include ::Shared::Selenium::TransferFromFsOperatingToFsMain
 
     def run
+      # Don't run job unless there are unprocessed FeeReimbursements
+      return unless FeeReimbursement.unprocessed.present?
+
       # 1. begin by navigating
       login_to_svb!
 

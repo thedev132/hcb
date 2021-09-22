@@ -7,6 +7,9 @@ module DisbursementService
     include ::Shared::Selenium::TransferFromFsMainToFsOperating
 
     def run
+      # Don't run job unless there are pending Disbursements
+      return unless Disbursement.pending.present?
+
       # 1. begin by navigating
       login_to_svb!
 
