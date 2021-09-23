@@ -45,7 +45,7 @@
     <% end %>
   </td>
   <td class="nowrap">
-    <%= render_money pt.amount %>
+    <%= number_to_currency pt.amount %>
   </td>
   <td>
     <%= link_to "Details", pt.url if organizer_signed_in? %>
