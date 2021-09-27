@@ -6,8 +6,8 @@
     <%= csp_meta_tag %>
     <%= stylesheet_link_tag "admin", media: "all", "data-turbolinks-track": "reload" %>
     <%= javascript_include_tag "admin", "data-turbolinks-track": "reload", defer: true %>
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon<%='-alt' if Rails.env.development?%>-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon<%='-alt' if Rails.env.development?%>-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-<%= Rails.env %>-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-<%= Rails.env %>-16x16.png">
     <%= yield(:head) if content_for?(:head) %>
   </head>
   <body>

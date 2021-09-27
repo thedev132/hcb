@@ -18,7 +18,7 @@
 
   <%= link_to root_path,
     class: "header-center text-decoration-none flex items-center #{!Rails.env.production? && 'tooltipped tooltipped--s'}",
-    'aria-label': "You’re in #{ENV['RAILS_ENV']} mode. #{development_mode_flavor}" do %>
+    'aria-label': "You’re in #{Rails.env} mode. #{development_mode_flavor}" do %>
     <% if @event and not @event.partner_logo_url.blank? %>
       <div class="partner-logo ml2">
         <%= image_tag @event.partner_logo_url,
@@ -28,13 +28,13 @@
             style: 'box-sizing: border-box; padding: 5px;' %>
       </div>
     <% end %>
-    <%= image_tag "logo-#{ENV['RAILS_ENV']}-dark.svg",
+    <%= image_tag "logo-#{Rails.env}-dark.svg",
         name: 'header-logo',
         class: 'logo-dark',
         width: @home_size || 36,
         height: @home_size || 36,
         alt: 'Bank logo' %>
-    <%= image_tag "logo-#{ENV['RAILS_ENV']}.svg",
+    <%= image_tag "logo-#{Rails.env}.svg",
         name: 'header-logo',
         class: 'logo',
         width: @home_size || 36,
