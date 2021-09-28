@@ -242,6 +242,7 @@ ActiveRecord::Schema.define(version: 2021_09_28_172236) do
     t.text "hcb_code"
     t.bigint "raw_pending_bank_fee_transaction_id"
     t.bigint "raw_pending_partner_donation_transaction_id"
+    t.text "custom_memo"
     t.index ["raw_pending_bank_fee_transaction_id"], name: "index_canonical_pending_txs_on_raw_pending_bank_fee_tx_id"
     t.index ["raw_pending_donation_transaction_id"], name: "index_canonical_pending_txs_on_raw_pending_donation_tx_id"
     t.index ["raw_pending_outgoing_ach_transaction_id"], name: "index_canonical_pending_txs_on_raw_pending_outgoing_ach_tx_id"
