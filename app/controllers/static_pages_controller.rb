@@ -103,7 +103,7 @@ class StaticPagesController < ApplicationController
       last_year:  CanonicalTransactionService::Stats::During.new(start_time: year_ago).run,
       last_qtr:   CanonicalTransactionService::Stats::During.new(start_time: qtr_ago).run,
       last_month: CanonicalTransactionService::Stats::During.new(start_time: month_ago).run,
-      last_week:  CanonicalTransactionService::Stats::During.new(start_time: month_ago).run,
+      last_week:  CanonicalTransactionService::Stats::During.new(start_time: week_ago).run,
 
       # events
       events: events_list,
