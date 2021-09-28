@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_02_082708) do
+ActiveRecord::Schema.define(version: 2021_09_28_172236) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -508,7 +508,7 @@ ActiveRecord::Schema.define(version: 2021_09_02_082708) do
     t.text "club_airtable_id"
     t.boolean "beta_features_enabled"
     t.datetime "hidden_at"
-    t.boolean "donation_page_enabled"
+    t.boolean "donation_page_enabled", default: true
     t.text "donation_page_message"
     t.boolean "is_public", default: false
     t.text "public_message"
