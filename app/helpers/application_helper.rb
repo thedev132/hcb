@@ -156,7 +156,7 @@ module ApplicationHelper
   end
 
   def anchor_link(id)
-    link_to "##{id}", class: "anchor-link" do
+    link_to "##{id}", class: "anchor-link tooltipped tooltipped--s", 'aria-label': "Copy link", 'data-anchor': id do
       inline_icon "link", size: 28
     end
   end

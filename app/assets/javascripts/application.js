@@ -13,3 +13,4 @@
 //= require filterbar
 //= require checks
 //= require comments
+//= require anchor_links
