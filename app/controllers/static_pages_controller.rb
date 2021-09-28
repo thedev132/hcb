@@ -100,10 +100,10 @@ class StaticPagesController < ApplicationController
 
       # entire (all), year, quarter, and month time periods
       all:        CanonicalTransactionService::Stats::During.new.run,
-      last_year:  CanonicalTransactionService::Stats::During.new(start_time: year_ago).run,
-      last_qtr:   CanonicalTransactionService::Stats::During.new(start_time: qtr_ago).run,
-      last_month: CanonicalTransactionService::Stats::During.new(start_time: month_ago).run,
-      last_week:  CanonicalTransactionService::Stats::During.new(start_time: week_ago).run,
+      last_year:  CanonicalTransactionService::Stats::During.new(start_time: year_ago, end_time: now).run,
+      last_qtr:   CanonicalTransactionService::Stats::During.new(start_time: qtr_ago, end_time: now).run,
+      last_month: CanonicalTransactionService::Stats::During.new(start_time: month_ago, end_time: now).run,
+      last_week:  CanonicalTransactionService::Stats::During.new(start_time: week_ago, end_time: now).run,
 
       # events
       events: events_list,
