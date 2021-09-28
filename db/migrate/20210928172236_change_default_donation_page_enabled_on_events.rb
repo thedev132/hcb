@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ChangeDefaultDonationPageEnabledOnEvents < ActiveRecord::Migration[6.0]
   def up
     change_column_default(:events, :donation_page_enabled, true)
