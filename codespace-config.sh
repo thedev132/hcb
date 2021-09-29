@@ -1,16 +1,8 @@
 #!/bin/bash
 echo "this script will help you install all the prereqs for using Hack Club Bank in a GitHub Codespace"
 
-# echo "checking ruby and bundler version"
-# ruby -v
-# bundle -v
-
-# echo "installing prereq versions"
-# rbenv install 2.7.3
-# gem install bundler:1.17.3
-
 echo "heroku and associated"
-curl https://cli-assets.heroku.com/install-ubuntu.sh | sh
+(curl https://cli-assets.heroku.com/install-ubuntu.sh | sh) > /dev/null 2>&1
 heroku login -i
 heroku git:remote -a bank-hackclub
 heroku pg:backups:capture
@@ -25,3 +17,6 @@ env $(cat .env.docker) docker-compose run --service-ports web bundle exec rails 
 env $(cat .env.docker) docker-compose run --service-ports web pg_restore --verbose --clean --no-acl --no-owner -h db -U postgres -d bank_development latest.dump
 
 echo "script finished"
+
+echo "run the below to start the docker container"
+echo "env $(cat .env.docker) docker-compose run --service-ports web bundle exec rails s -b 0.0.0.0 -p 3000"
