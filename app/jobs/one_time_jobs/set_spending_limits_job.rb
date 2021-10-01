@@ -2,7 +2,7 @@
 
 module OneTimeJobs
   class SetSpendingLimitsJob < ApplicationJob
-    def perform(card= nil)
+    def perform(card = nil)
       if card
         set_spending_limit card
       else
