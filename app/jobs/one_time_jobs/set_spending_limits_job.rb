@@ -2,8 +2,12 @@
 
 module OneTimeJobs
   class SetSpendingLimitsJob < ApplicationJob
-    def perform
-      StripeCard.all.map(&:set_spending_limit)
+    def perform(card)
+      if card
+        set_spending_limit card
+      else
+        StripeCard.all.map(&:set_spending_limit)
+      end
     end
 
     private
