@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module StripeCardService
   class SetSpending
     def initialize(card_id:, amount:, interval:)

@@ -10,7 +10,7 @@ module OneTimeJobs
 
     def set_spending_limit(card)
       ::StripeCardService::SetSpending.new(card_id: card.stripe_id,
-                                           interval: 'daily',
+                                           interval: "daily",
                                            amount: 500 * 100
                                           ).run
     end
