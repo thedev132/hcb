@@ -34,3 +34,7 @@
 <% end %>
 
 
+<!-- unknown (most likely a direct to bank account transaction) -->
+<% if @hcb_code.unknown? %>
+  <%= render partial: "hcb_codes/unknown", locals: {} %>
+<% end %>

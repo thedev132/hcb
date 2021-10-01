@@ -13,8 +13,9 @@ module EventsHelper
 
   def paypal_transfers_airtable_form_url(embed: false, event: nil, user: nil)
     # The airtable form is located within the Bank Promotions base
-    embed_url = "https://airtable.com/embed/shrH9fMs5hof2HRup"
-    url = "https://airtable.com/shrH9fMs5hof2HRup"
+    form_id = "shrH9fMs5hof2HRup"
+    embed_url = "https://airtable.com/embed/#{form_id}"
+    url = "https://airtable.com/#{form_id}"
 
     prefill = []
     prefill << "prefill_Event/Project+Name=#{CGI.escape(event.name)}" if event
