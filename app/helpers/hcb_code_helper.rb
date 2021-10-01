@@ -12,7 +12,7 @@ module HcbCodeHelper
     prefill = []
     prefill << "prefill_Your+Name=#{CGI.escape(user.full_name)}" if user
     prefill << "prefill_Login+Email=#{CGI.escape(user.email)}" if user
-    prefill << "prefill_Transaction+Url=#{CGI.escape(url_for(hcb_code))}" if hcb_code
+    prefill << "prefill_Transaction+Url=#{CGI.escape(url_for([hcb_code, { :only_path => false }]))}" if hcb_code
 
     (embed ? embed_url : url) + "?" + prefill.join("&")
   end
