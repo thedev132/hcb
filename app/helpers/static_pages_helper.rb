@@ -381,6 +381,11 @@ module StaticPagesHelper
         query: {filterByFormula: "Status='Pending'", fields: [] },
         destination: "https://airtable.com/tbloGiW2jhja8ivtV/viwzhAnWYhpFNhvmC"
       },
+      report_transactions: {
+        url: "https://airbridge.hackclub.com/v0.1/Bank%20Promotions/Report%20Transactions",
+        query: {filterByFormula: "Status='Pending'", fields: [] },
+        destination: "https://airtable.com/appEzv7w2IBMoxxHe/tblTqbwz5AUkzOcVb"
+      },
     }
   end
 end

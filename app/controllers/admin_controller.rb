@@ -879,6 +879,8 @@ class AdminController < ApplicationController
         airtable_task_size :wire_transfers
       when :pending_paypal_transfers_airtable
         airtable_task_size :paypal_transfers
+      when :pending_report_transactions_airtable
+        airtable_task_size :report_transactions
       when :emburse_card_requests
         EmburseCardRequest.under_review.size
       when :emburse_transactions
@@ -923,6 +925,7 @@ class AdminController < ApplicationController
     pending_task :pending_pvsa_airtable
     pending_task :wire_transfers
     pending_task :paypal_transfers
+    pending_task :report_transactions_airtable
     pending_task :emburse_card_requests
     pending_task :checks
     pending_task :ach_transfers

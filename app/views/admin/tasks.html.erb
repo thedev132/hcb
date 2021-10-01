@@ -32,6 +32,7 @@
       <%= card_to 'Pending repl.it accounts', link_to_airtable_task(:replit), { badge: @active[:pending_replit_airtable] } %>
       <%= card_to 'Pending Sendy accounts', link_to_airtable_task(:sendy), { badge: @active[:pending_sendy_airtable] } %>
       <%= card_to 'Pending PVSA orders', link_to_airtable_task(:pvsa), { badge: @active[:pending_pvsa_airtable] } %>
+      <%= card_to 'Pending Reported Transactions', link_to_airtable_task(:report_transactions), { badge: @active[:pending_report_transactions] } %>
     </ul>
   <% else %>
     <h3>It’s <%= Time.now.strftime("%A") %>. There are no more pending tasks. <%= @blankslate_message %></h3>
