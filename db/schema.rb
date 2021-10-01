@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_28_172236) do
+ActiveRecord::Schema.define(version: 2021_10_01_175007) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -1064,6 +1064,8 @@ ActiveRecord::Schema.define(version: 2021_09_28_172236) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.datetime "purchased_at"
+    t.integer "spending_limit_interval"
+    t.integer "spending_limit_amount"
     t.index ["event_id"], name: "index_stripe_cards_on_event_id"
     t.index ["stripe_cardholder_id"], name: "index_stripe_cards_on_stripe_cardholder_id"
   end

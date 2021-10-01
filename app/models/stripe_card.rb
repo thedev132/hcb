@@ -20,6 +20,7 @@ class StripeCard < ApplicationRecord
   alias_attribute :last_four, :last4
 
   enum card_type: { virtual: 0, physical: 1 }
+  enum spending_limit_interval: { daily: 0, weekly: 1, monthly: 2 }
 
   validates_uniqueness_of :stripe_id
 
@@ -163,6 +164,7 @@ class StripeCard < ApplicationRecord
     self.last4 = stripe_obj[:last4]
     self.stripe_status = stripe_obj[:status]
     self.card_type = stripe_obj[:type]
+
     if stripe_obj[:shipping]
       self.stripe_shipping_address_city = stripe_obj[:shipping][:address][:city]
       self.stripe_shipping_address_country = stripe_obj[:shipping][:address][:country]
@@ -171,6 +173,12 @@ class StripeCard < ApplicationRecord
       self.stripe_shipping_address_line2 = stripe_obj[:shipping][:address][:line2]
       self.stripe_shipping_address_state = stripe_obj[:shipping][:address][:state]
       self.stripe_shipping_name = stripe_obj[:shipping][:name]
+    end
+
+    spending_limits = stripe_obj[:spending_controls][:spending_limits]
+    if spending_limits.any?
+      self.spending_limit_interval = spending_limits.first[:interval]
+      self.spending_limit_amount = spending_limits.first[:amount]
     end
 
     self

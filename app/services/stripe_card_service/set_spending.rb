@@ -4,6 +4,7 @@ module StripeCardService
   class SetSpending
     def initialize(card_id:, amount:, interval:)
       @card_id = card_id
+      @card = Card.find_by(stripe_id: card_id)
       @spending_limit = {
         amount: amount,
         interval: interval,
@@ -11,10 +12,11 @@ module StripeCardService
     end
 
     def run
-      StripeService::Card.update(
+      StripeService::Issuing::Card.update(
         @card_id,
         spending_controls: { spending_limits: [@spending_limit] }
       )
+      @card.sync_from_stripe!
     end
   end
 end
