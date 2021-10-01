@@ -14,8 +14,12 @@
       Send
       <div class="menu__content" data-behavior="menu_content">
         <%= link_to "ACH", new_event_ach_transfer_path(@event) %>
+
         <%= link_to "Check", new_event_check_path(@event) %>
-        <%= link_to paypal_transfers_airtable_form_url(embed: false, event: @event, user: @current_user),
+
+        <%# We are temporarily disabiling new PayPal Transfer requests due to issues with our account. %>
+        <%# <%= link_to paypal_transfers_airtable_form_url(embed: false, event: @event, user: @current_user), %>
+        <%= link_to "#",
           data: { behavior: "modal_trigger", modal: "paypal_transfer" } do %>
           PayPal
         <% end %>
@@ -25,11 +29,21 @@
     <%# Modal for PayPal transfers %>
     <section class="modal" data-behavior="modal" role="dialog" id="paypal_transfer">
       <%= modal_header "PayPal transfer" %>
-      <p class="mt0">PayPal may charge <%= link_to 'fees', 'https://www.paypal.com/us/webapps/mpp/paypal-fees', target: 'blank' %>
-        (eg. currency conversion) for transfers. These fees will be passed down to you. Need help? <%= help_message %>.
+
+      <p>PayPal transfers are temporarily unavailable due to an upstream issue
+        with PayPal. Please use ACH and Checks instead. If you need to send
+        money internationally, please feel free to contact our team regarding
+        International Wires. <%= help_message %>
       </p>
-      <iframe src='<%= paypal_transfers_airtable_form_url(embed: true, event: @event, user: @current_user) %>' style='border:none;' name='donateFrame' scrolling='yes' frameborder='0' marginheight='0px' marginwidth='0px' height='256px' width='512px' allowfullscreen style="width: 100%; max-width: 100%; max-height: 40vh;"></iframe>
-      <%= link_to "open in a new tab", paypal_transfers_airtable_form_url(embed: false, event: @event, user: @current_user), target: "_blank" %>
+
+      <% if false && "we hate paypal very very very much  ( ︶︿︶)_╭∩╮" %>
+        <p class="mt0">PayPal may charge <%= link_to 'fees', 'https://www.paypal.com/us/webapps/mpp/paypal-fees', target: 'blank' %>
+          (eg. currency conversion) for transfers. These fees will be passed down to you. Need help? <%= help_message %>.
+        </p>
+
+        <iframe src='<%= paypal_transfers_airtable_form_url(embed: true, event: @event, user: @current_user) %>' style='border:none;' name='donateFrame' scrolling='yes' frameborder='0' marginheight='0px' marginwidth='0px' height='256px' width='512px' allowfullscreen style="width: 100%; max-width: 100%; max-height: 40vh;"></iframe>
+        <%= link_to "open in a new tab", paypal_transfers_airtable_form_url(embed: false, event: @event, user: @current_user), target: "_blank" %>
+      <% end %>
     </section>
   <% end %>
 </h1>
