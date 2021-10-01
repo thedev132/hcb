@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddSpendingLimitToStripeCards < ActiveRecord::Migration[6.0]
   def change
     add_column :stripe_cards, :spending_limit_interval, :integer
