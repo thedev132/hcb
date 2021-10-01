@@ -1,8 +1,12 @@
 # Hack Club Bank install on Codespaces
 
+GitHub Codebases come preinstalled with docker, so the following should work as long as you spin up a new codespace.
+
+After a bit of testing, I haven't seen a big difference between the different codespace options (2 cores vs 16 cores), so I recommend starting with the cheapest option and upgrading it if your instance is feeling slow.
+
 ## Prerequisites
 
-GitHub Codebases come preinstalled with docker, so the following should work as long as you spin up a new codespace.
+A modern browser & a good attitude.
 
 ## Steps
 
