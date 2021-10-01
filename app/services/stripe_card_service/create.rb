@@ -63,7 +63,14 @@ module StripeCardService
         cardholder: stripe_cardholder.stripe_id,
         type: @card_type,
         currency: "usd",
-        status: "active"
+        status: "active",
+        spending_controls: {
+          spending_limits: [
+            {
+              amount: 100_000, interval: "daily"
+            }
+          ]
+        }
       }
 
       if physical?
