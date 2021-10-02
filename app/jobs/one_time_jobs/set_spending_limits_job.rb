@@ -16,7 +16,7 @@ module OneTimeJobs
       return if card.stripe_status == "deleted"
       ::StripeCardService::SetSpending.new(card_id: card.stripe_id,
                                            interval: "daily",
-                                           amount: 500 * 100
+                                           amount: 20_000 * 100 # $20,000 in cents
                                           ).run
     end
   end
