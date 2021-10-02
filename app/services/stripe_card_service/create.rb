@@ -67,7 +67,8 @@ module StripeCardService
         spending_controls: {
           spending_limits: [
             {
-              amount: 100_000, interval: "daily"
+              interval: "daily",
+              amount: 20_000 * 100 # $20,000 in cents
             }
           ]
         }
