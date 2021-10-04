@@ -193,7 +193,7 @@ class HcbCode < ApplicationRecord
 
   def smartish_custom_memo
     return nil unless ct&.custom_memo || pt&.custom_memo
-    return ct.custom_memo unless ct.custom_memo.include?("FEE REFUND")
+    return ct.custom_memo unless ct&.custom_memo.blank? || ct&.custom_memo.include?("FEE REFUND")
     return pt.custom_memo unless pt&.custom_memo.blank?
 
     ct2.custom_memo
