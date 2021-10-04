@@ -27,7 +27,7 @@
             </li>
           <% end %>
         <% end %>
-        <a href="https://airtable.com/shrp79oRXlWT025j8?prefill_Have%20you%20used%20Hack%20Club%20Bank%20for%20any%20previous%20projects?=Yes,%20I%20have%20used%20Hack%20Club%20Bank%20before&prefill_First+Name=<%= current_user.first_name %>&prefill_Last+Name=<%= current_user.last_name %>&prefill_Email+Address=<%= current_user.email %>">
+        <a href="https://hack.af/bank-apply?prefill_Have%20you%20used%20Hack%20Club%20Bank%20for%20any%20previous%20projects?=Yes,%20I%20have%20used%20Hack%20Club%20Bank%20before&prefill_First+Name=<%= current_user.first_name %>&prefill_Last+Name=<%= current_user.last_name %>&prefill_Email+Address=<%= current_user.email %>">
           <li class="card card--hover bold brand-sans flex items-center align-center">
             <span class="pop success mr1">
               <%= inline_icon 'plus', size: 28 %>
@@ -73,7 +73,7 @@
     <% end %>
     <% if @events.empty? && @invites.empty? && !current_user.admin? %>
       <%= blankslate 'No projects associated with your account yet.' %>
-      <a href="https://airtable.com/shrW33gWaPnSDBhYj?prefill_Have%20you%20used%20Hack%20Club%20Bank%20for%20any%20previous%20projects?=No,%20first%20time!&prefill_First+Name=<%= current_user.first_name %>&prefill_Last+Name=<%= current_user.last_name %>&prefill_Email+Address=<%= current_user.email %>" class="btn bg-success">
+      <a href="https://hack.af/bank-apply?prefill_Have%20you%20used%20Hack%20Club%20Bank%20for%20any%20previous%20projects?=No,%20first%20time!&prefill_First+Name=<%= current_user.first_name %>&prefill_Last+Name=<%= current_user.last_name %>&prefill_Email+Address=<%= current_user.email %>" class="btn bg-success">
         <%= inline_icon 'plus' %>
         New project
       </a>
