@@ -10,9 +10,10 @@ A modern browser + internet & a good attitude.
 
 ## Steps
 
+0. Whip up a Codespace instance. [GitHub's docs](https://docs.github.com/en/codespaces/getting-started/quickstart) are kept up-to-date on this.
 1. Fill in the `config/master.key` file. If you don't have one, reach out to a Bank dev team member who can give you one.
 2. Run `codespace-config.sh`
-3. Login with Heroku username & password when prompted
+3. Login with Heroku username & password when prompted. You need to be added to the Heoku project, reach out to a Bank dev team member to be added.
 4. Go cook some pasta or something, this will load for a long time
 5. Enjoy my beautiful eye candy -kunal
 6. Profit
@@ -20,14 +21,12 @@ A modern browser + internet & a good attitude.
 
 ## Developing on Codespaces
 
+You can now spin up the server by running `codespace-start.sh` or with this command:
+`env $(cat .env.docker) docker-compose run --service-ports web bundle exec rails s -b 0.0.0.0 -p 3000`
 
-```sh
-# You can now spin up the server by running `codespace-start.sh` or with this command:
-env $(cat .env.docker) docker-compose run --service-ports web bundle exec rails s -b 0.0.0.0 -p 3000
-# Or, enter an interactive shell in the docker container:
-env $(cat .env.docker) docker-compose run --service-ports web /bin/bash
-```
+Or, enter an interactive shell in the docker container:
+`env $(cat .env.docker) docker-compose run --service-ports web /bin/bash`
 
 When you run the server, Codespaces should automatically notify you that port 3000 has been forwarded and give you a preview link. If it doesn't, you can forward a port in the codespace settings.
 
-Give any feedback, suggestions, improvements, or issues you have about this to Kunal (@kunal on Slack / kunal@hackclub.com).
+Give any feedback, suggestions, improvements, or issues you have about this to [@kunal](http://hackclub.slack.com/team/U013DC0KYC8) (kunal@hackclub.com).
