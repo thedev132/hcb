@@ -282,6 +282,7 @@ class EventsController < ApplicationController
       :expected_budget,
       :omit_stats,
       :emburse_department_id,
+      :country,
       :partner_logo_url,
       :club_airtable_id,
       :point_of_contact_id,

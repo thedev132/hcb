@@ -107,6 +107,11 @@
       <%= form.label :emburse_department_id %>
       <%= form.text_field :emburse_department_id %>
     </div>
+    
+    <div class="field">
+      <%= form.label :country %>
+      <%= form.collection_select :country, Event.countries, :first, :first %>
+    </div>
 
     <div class="field">
       <%= form.label :point_of_contact_id, "Point of contact (deprecated)" %>
