@@ -18,6 +18,12 @@
     </p>
 
     <p>
+      <%= form.label :country %>
+      <br />
+      <%= form.collection_select :country, Event.countries, :first, :first %>
+    </p>
+
+    <p>
       <%= form.check_box :approved, { checked: true } %>
       <%= form.label :approved, "Approved?" %>
     </p>

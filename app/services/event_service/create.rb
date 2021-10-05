@@ -2,9 +2,10 @@
 
 module EventService
   class Create
-    def initialize(name:, emails: [], approved: false, sponsorship_fee: 0.07)
+    def initialize(name:, emails: [], country: [], approved: false, sponsorship_fee: 0.07)
       @name = name
       @emails = emails
+      @country = country
       @approved = approved || false
       @sponsorship_fee = sponsorship_fee ? sponsorship_fee.to_f : 0.07
     end
@@ -40,6 +41,7 @@ module EventService
         start: Date.current,
         end: Date.current,
         address: "N/A",
+        country: @country,
         sponsorship_fee: @sponsorship_fee,
         expected_budget: 100.0,
         point_of_contact_id: point_of_contact.id,

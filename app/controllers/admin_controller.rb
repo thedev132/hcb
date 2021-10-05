@@ -150,10 +150,11 @@ class AdminController < ApplicationController
 
   def event_create
     emails = [params[:organizer_email]].reject(&:empty?)
-
+    
     attrs = {
       name: params[:name],
       emails: emails,
+      country: params[:country],
       approved: params[:approved].to_i == 1 ? true : false,
       sponsorship_fee: params[:sponsorship_fee]
     }
