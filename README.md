@@ -6,7 +6,7 @@ Bank is a tool for hackers to hack on the real world, like GitHub, but for build
 
 ## Getting Started with GitHub Codespaces
 
-We're currently test running the Hack Club Bank development environment in GitHub Codespaces. GitHub Codespaces allows for installation of packages without modifying your main system, allows for multiple instances, creates an overall streamlined and repeatable environment, and enables anyone with browser or VSCode access to contribute.
+We're currently test running the Hack Club Bank development environment in [GitHub Codespaces](https://docs.github.com/en/codespaces). GitHub Codespaces allows for installation of packages without modifying your main system, allows for multiple instances, creates an overall streamlined and repeatable environment, and enables anyone with browser or VSCode access to contribute.
 
 Assuming a successful testing phase, this will be the preferred method of running a development version of Bank.
 
