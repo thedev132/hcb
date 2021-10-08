@@ -21,8 +21,9 @@ class EventsController < ApplicationController
     @pending_transactions = _show_pending_transactions
 
     if using_transaction_engine_v2?
+      safe_search = params[:search].gsub(/[^0-9a-z\w]/i, '')
       @transactions_flat = [] #paginate(_show_transactions, per_page: 100) # v2. placeholder for flat history.
-      @transactions = Kaminari.paginate_array(TransactionGroupingEngine::Transaction::All.new(event_id: @event.id, search: params[:search]).run).page(params[:page]).per(100)
+      @transactions = Kaminari.paginate_array(TransactionGroupingEngine::Transaction::All.new(event_id: @event.id, search: safe_search).run).page(params[:page]).per(100)
     else
       @transactions = paginate(TransactionEngine::Transaction::AllDeprecated.new(event_id: @event.id).run, per_page: 100)
     end
