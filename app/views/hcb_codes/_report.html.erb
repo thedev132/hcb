@@ -1,27 +1,7 @@
 <% type = local_assigns[:type].nil? ? '' : local_assigns[:type] + ' ' %>
 
 <p class="muted m0" style="text-align: right;">
-  <%= link_to "#",
-      data: { behavior: "modal_trigger", modal: "report" } do %>
+  <%= link_to fraud_reports_airtable_form_url(embed: false, hcb_code: local_assigns[:hcb_code], user: @current_user), target: "_blank" do %>
     <small class="muted mt1">Report this transaction</small>
   <% end %>
 </p>
-
-<%# Report modal %>
-<section class="modal" data-behavior="modal" role="dialog" id="report">
-  <%= modal_header "Report #{type}transaction" %>
-  <p>
-    We understand there are situations where you need to report a transaction
-    (fraud, duplicate, etc.), and we’ve seen that many of these situations
-    require nuance and context that only humans can provide. Because of this,
-    your request will be sent to a Hack Club Bank staff who will reach out to
-    you within 48 business hours.
-  </p>
-  <p class="mb3">
-    Best,
-    <br/>
-    The Hack Club Bank Team
-  </p>
-
-  <%= link_to "Report Transaction Form", fraud_reports_airtable_form_url(embed: false, hcb_code: local_assigns[:hcb_code], user: @current_user), target: "_blank", class: "btn" %>
-</section>
