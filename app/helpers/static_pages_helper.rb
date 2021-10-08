@@ -325,7 +325,13 @@ module StaticPagesHelper
         "🐨 Equality is about more than just caffeinated digital marsupials",
         "If money doesn’t grow on trees, then why do banks have branches?",
         "I was gonna tell a Bank joke, but ran out of interest",
-        "If money talks, why do we need bank tellers?"
+        "If money talks, why do we need bank tellers?",
+        "We’ll be here all week",
+        "Honk club <img src='https://cloud-1kf8h2v89-hack-club-bot.vercel.app/1goose-honk-right-intensifies.gif'/>",
+        "Handle with care",
+        "This side up",
+        "if it makes sense it’ll make dollars",
+        "<a href='https://www.dinosaurbbq.org' target='_blank' style='color: inherit'>dinosaurbbq.org</a>"
       ].sample
     end
   end
