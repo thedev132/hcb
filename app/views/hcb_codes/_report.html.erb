@@ -23,5 +23,5 @@
     The Hack Club Bank Team
   </p>
 
-  <%= link_to "Report Transaction Form", report_transaction_airtable_form_url(embed: false, hcb_code: local_assigns[:hcb_code], user: @current_user), target: "_blank", class: "btn" %>
+  <%= link_to "Report Transaction Form", fraud_reports_airtable_form_url(embed: false, hcb_code: local_assigns[:hcb_code], user: @current_user), target: "_blank", class: "btn" %>
 </section>

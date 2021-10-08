@@ -3,7 +3,7 @@
 require "cgi"
 
 module HcbCodeHelper
-  def report_transaction_airtable_form_url(embed: false, hcb_code: nil, user: nil)
+  def fraud_reports_airtable_form_url(embed: false, hcb_code: nil, user: nil)
     # The airtable form is located within the Bank Promotions base
     form_id = "shrf05pqZMlRs3gYJ"
     embed_url = "https://airtable.com/embed/#{form_id}"
