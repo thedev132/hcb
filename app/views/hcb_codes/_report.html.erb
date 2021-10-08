@@ -1,7 +1,7 @@
 <% type = local_assigns[:type].nil? ? '' : local_assigns[:type] + ' ' %>
 
 <p class="muted m0" style="text-align: right;">
-  <%= link_to fraud_reports_airtable_form_url(embed: false, hcb_code: local_assigns[:hcb_code], user: @current_user), target: "_blank" do %>
+  <%= link_to disputed_transactions_airtable_form_url(embed: false, hcb_code: local_assigns[:hcb_code], user: @current_user), target: "_blank" do %>
     <small class="muted mt1">Report this transaction</small>
   <% end %>
 </p>
