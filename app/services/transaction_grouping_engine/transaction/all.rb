@@ -5,7 +5,7 @@ module TransactionGroupingEngine
     class All
       def initialize(event_id:, search: nil)
         @event_id = event_id
-        @search = ActiveRecord::Base.connection.quote_string(search)
+        @search = ActiveRecord::Base.connection.quote_string(search || "")
       end
 
       def run
