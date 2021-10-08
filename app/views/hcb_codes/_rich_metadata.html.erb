@@ -1,40 +1,40 @@
-<!-- donation -->
+<%# donation %>
 <% if @hcb_code.donation? && @hcb_code.donation.present? %>
   <%= render partial: "hcb_codes/donation", locals: {} %>
 <% end %>
 
-<!-- partner donation -->
+<%# partner donation %>
 <% if @hcb_code.partner_donation? && @hcb_code.partner_donation.present? %>
   <%= render partial: "hcb_codes/partner_donation", locals: {} %>
 <% end %>
 
-<!-- invoice -->
+<%# invoice %>
 <% if @hcb_code.invoice? && @hcb_code.invoice.present? %>
   <%= render partial: "hcb_codes/invoice", locals: {} %>
 <% end %>
 
-<!-- ach_transfer -->
+<%# ach_transfer %>
 <% if @hcb_code.ach_transfer? && @hcb_code.ach_transfer.present? %>
   <%= render partial: "hcb_codes/ach_transfer", locals: {} %>
 <% end %>
 
-<!-- check -->
+<%# check %>
 <% if @hcb_code.check? && @hcb_code.check.present? %>
   <%= render partial: "hcb_codes/check", locals: {} %>
 <% end %>
 
-<!-- stripe card -->
+<%# stripe card %>
 <% if @hcb_code.stripe_card? %>
   <%= render partial: "hcb_codes/stripe_card", locals: {} %>
 <% end %>
 
-<!-- disbursement -->
+<%# disbursement %>
 <% if @hcb_code.disbursement? %>
   <%= render partial: "hcb_codes/disbursement", locals: {} %>
 <% end %>
 
 
-<!-- unknown (most likely a direct to bank account transaction) -->
+<%# unknown (most likely a direct to bank account transaction) %>
 <% if @hcb_code.unknown? %>
   <%= render partial: "hcb_codes/unknown", locals: {} %>
 <% end %>
