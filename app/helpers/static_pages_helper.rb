@@ -15,6 +15,8 @@ module StaticPagesHelper
     if Rails.env.development?
       "Development Mode"
     else
+      return "<a href='https://hack.af/hcb-stickers?prefill_Recipient%20Name=#{current_user.full_name}&prefill_Login%20Email=#{current_user.email}' target='_blank' style='color: inherit'>Want stickers?</a>" if rand(100) <= 10 && DateTime.now <= Date.new(2021, 10, 23)
+
       [
         "The hivemind known as Bank",
         "A cloud full of money",
