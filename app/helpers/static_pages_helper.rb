@@ -382,7 +382,7 @@ module StaticPagesHelper
         destination: "https://airtable.com/tbloGiW2jhja8ivtV/viwzhAnWYhpFNhvmC"
       },
       disputed_transactions: {
-        url: "https://airbridge.hackclub.com/v0.1/Bank%20Promotions/Report%20Transactions",
+        url: "https://airbridge.hackclub.com/v0.1/Bank%20Promotions/Disputed%20Transactions",
         query: {filterByFormula: "Status='Pending'", fields: [] },
         destination: "https://airtable.com/appEzv7w2IBMoxxHe/tblTqbwz5AUkzOcVb"
       },
