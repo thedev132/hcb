@@ -1,7 +1,10 @@
 <% type = local_assigns[:type].nil? ? '' : local_assigns[:type] + ' ' %>
 
-<p class="muted m0" style="text-align: right;">
+<div class="flex muted justify-end" style="align-items:center;">
+  <%= inline_icon 'flag-fill', size: 20 %>
   <%= link_to disputed_transactions_airtable_form_url(embed: false, hcb_code: local_assigns[:hcb_code], user: @current_user), target: "_blank" do %>
-    <small class="muted mt1">Dispute this transaction</small>
+    <small class="mt0 mb0">
+      Dispute this transaction
+    </small>
   <% end %>
-</p>
+</div>
