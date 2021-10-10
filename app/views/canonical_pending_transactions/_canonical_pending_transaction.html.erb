@@ -31,11 +31,11 @@
     <td class="transaction__icon tooltipped tooltipped--e" aria-label="Other">
     </td>
   <% end %>
-  <td>
+  <td title="<%= pt.hcb_code %>">
     <%= pt.date %>
   </td>
   <td class="transaction__memo">
-    <span>
+    <span title="<%= pt.local_hcb_code.memo %>">
       PENDING: <%= pt.local_hcb_code.memo %>
     </span>
 

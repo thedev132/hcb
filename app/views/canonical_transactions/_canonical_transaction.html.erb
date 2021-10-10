@@ -41,11 +41,11 @@
       </td>
     <% end %>
   </td>
-  <td>
+  <td title="<%= ct.hcb_code %>">
     <%= ct.date %>
   </td>
   <td class="transaction__memo">
-    <span title="<%= ct.hcb_code %>">
+    <span title="<%= ct.local_hcb_code.memo %>">
       <%= ct.local_hcb_code.memo %>
     </span>
 
