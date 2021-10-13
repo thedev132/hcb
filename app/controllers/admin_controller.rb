@@ -112,26 +112,26 @@ class AdminController < ApplicationController
     @rejected = params[:rejected] == "0" ? nil : true # checked by default
     @transparent = params[:transparent] == "1" ? true : nil
     @omitted = params[:omitted] == "1" ? true : nil
-    @funded = params[:funded].present? ? params[:funded] : 'both' # both by default
-    @hidden = params[:hidden].present? ? params[:hidden] : 'both' # both by default
+    @funded = params[:funded].present? ? params[:funded] : "both" # both by default
+    @hidden = params[:hidden].present? ? params[:hidden] : "both" # both by default
 
     relation = Event.not_partner
 
     relation = relation.search_name(@q) if @q
     relation = relation.transparent if @transparent
     relation = relation.omitted if @omitted
-    relation = relation.hidden if @hidden == 'hidden'
-    relation = relation.not_hidden if @hidden == 'not_hidden'
-    relation = relation.where(id: relation.funded_array.pluck(:id)) if @funded == 'funded'
-    relation = relation.where(id: relation.not_funded_array.pluck(:id)) if @funded == 'not_funded'
+    relation = relation.hidden if @hidden == "hidden"
+    relation = relation.not_hidden if @hidden == "not_hidden"
+    relation = relation.where(id: relation.funded_array.pluck(:id)) if @funded == "funded"
+    relation = relation.where(id: relation.not_funded_array.pluck(:id)) if @funded == "not_funded"
 
 
-    states = [];
-    states << 'pending' if @pending
-    states << 'unapproved' if @unapproved
-    states << 'approved' if @approved
+    states = []
+    states << "pending" if @pending
+    states << "unapproved" if @unapproved
+    states << "approved" if @approved
     states << "rejected" if @rejected
-    relation = relation.where('aasm_state in (?)', states)
+    relation = relation.where("aasm_state in (?)", states)
 
     @count = relation.count
 
