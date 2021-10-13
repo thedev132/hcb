@@ -46,30 +46,12 @@
       Hidden
       <%= form.select :hidden, [['Both', 'both'], ["Not Hidden", 'not_hidden'], ['Hidden', 'hidden']], :selected => @hidden %>
     <% end %>
+    |
+    <%= form.label :funded do %>
+      Funded
+      <%= form.select :funded, [['Both', 'both'], ["Not Funded", 'not_funded'], ['Funded', 'funded']], :selected => @funded %>
+    <% end %>
   </div>
-  |
-  <%= form.label :transparent do %>
-    <%= form.check_box :transparent, checked: @transparent %>
-    Transparent
-  <% end %>
-  |
-  <%= form.label :omitted do %>
-    <%= form.check_box :omitted, checked: @omitted %>
-    Omitted
-  <% end %>
-  |
-  <%= form.label :funded do %>
-    Funded
-    <%= form.select :funded, [["Not Funded", 'not_funded'], ['Funded', 'funded'], ['Both', 'both']], :selected => @funded %>
-  <% end %>
-  |
-  <%= form.label :hidden do %>
-    Hidden
-    <%= form.select :hidden, [["Not Hidden", 'not_hidden'], ['Hidden', 'hidden'], ['Both', 'both']], :selected => @hidden %>
-  <% end %>
-  |
-
-  <%= form.submit "Search" %>
 <% end %>
 
 
