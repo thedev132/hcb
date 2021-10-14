@@ -53,10 +53,7 @@ class HcbCodesController < ApplicationController
     @hcb_code = HcbCode.find(params[:id])
 
     authorize @hcb_code
-
-    redirecto_to
   end
-
 
   include HcbCodeHelper # for disputed_transactions_airtable_form_url
   def dispute
