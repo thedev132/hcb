@@ -30,12 +30,12 @@ module HcbCodeService
       elsif @hcb_code.unknown?
         # Since these are direct to bank account transactions (such as Rippling
         # Payroll), we don't necessarily have a set way to disputing them. To
-        # simplify ops, we'll limit these types of disputes to 30 days after
+        # simplify ops, we'll limit these types of disputes to 90 days after
         # their posting to our underlying bank account.
-        if @hcb_code.date + 30.days >= Date.today
+        if @hcb_code.date + 90.days >= Date.today || @hcb_code.amount_cents >= 0
           [true, nil]
         else
-          [false, "Bank account transactions older than 30 days can not be disputed."]
+          [false, "Bank account transactions older than 90 days can not be disputed."]
         end
 
       else
