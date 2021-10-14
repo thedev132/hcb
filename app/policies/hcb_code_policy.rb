@@ -17,6 +17,10 @@ class HcbCodePolicy < ApplicationPolicy
     user&.admin? || present_in_events? || record.date > 10.days.ago
   end
 
+  def dispute?
+    user&.admin? || present_in_events?
+  end
+
   private
 
   def present_in_events?

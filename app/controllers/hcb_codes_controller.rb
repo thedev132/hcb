@@ -53,5 +53,23 @@ class HcbCodesController < ApplicationController
     @hcb_code = HcbCode.find(params[:id])
 
     authorize @hcb_code
+
+    redirecto_to
+  end
+
+
+  include HcbCodeHelper # for disputed_transactions_airtable_form_url
+  def dispute
+    @hcb_code = HcbCode.find(params[:id])
+
+    authorize @hcb_code
+
+    can_dispute, error_reason = ::HcbCodeService::CanDispute.new(hcb_code: @hcb_code).run
+
+    if can_dispute
+      redirect_to disputed_transactions_airtable_form_url(embed: false, hcb_code: @hcb_code, user: @current_user)
+    else
+      redirect_to @hcb_code, flash: { error: error_reason }
+    end
   end
 end

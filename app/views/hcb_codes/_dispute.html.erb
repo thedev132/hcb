@@ -2,7 +2,7 @@
 
 <div class="flex muted justify-end" style="align-items:center;">
   <%= inline_icon 'flag-fill', size: 20 %>
-  <%= link_to disputed_transactions_airtable_form_url(embed: false, hcb_code: local_assigns[:hcb_code], user: @current_user), target: "_blank" do %>
+  <%= link_to dispute_hcb_code_path(local_assigns[:hcb_code]), target: "#{can_dispute?(hcb_code: local_assigns[:hcb_code]) ? "_blank" : ""}" do %>
     <small class="mt0 mb0">
       Dispute this transaction
     </small>
