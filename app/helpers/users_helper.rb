@@ -13,7 +13,7 @@ module UsersHelper
   def avatar_for(user, size = 24, options = {})
     # avatar_for works with OpenStructs (used on the front end when a user isn't registered),
     # so this method shows Gravatars/intials for non-registered and allows showing of uploaded profile pictures for registered users.
-    if !Rails.env.development? && (user.is_a?(User) && user&.profile_picture.attached?)
+    if Rails.env.production? && (user.is_a?(User) && user&.profile_picture.attached?)
       src = user.profile_picture.variant(combine_options: {
         thumbnail: "#{size * 2}x#{size * 2}^",
         gravity: "center",
