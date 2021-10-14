@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
 require "digest/md5"
-require "uri"
+require "cgi"
 
 module UsersHelper
   def gravatar_url(email, name, id, size)
     name ||= email
     hex = Digest::MD5.hexdigest(email.downcase.strip)
-    "https://gravatar.com/avatar/#{hex}?s=#{size}&d=https%3A%2F%2Fui-avatars.com%2Fapi%2F/#{URI.encode(name)}/#{size}/#{get_user_color(id)}/fff"
+    "https://gravatar.com/avatar/#{hex}?s=#{size}&d=https%3A%2F%2Fui-avatars.com%2Fapi%2F/#{CGI.escape(name)}/#{size}/#{get_user_color(id)}/fff"
   end
 
   def avatar_for(user, size = 24, options = {})

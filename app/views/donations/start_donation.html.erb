@@ -3,7 +3,7 @@
 <% no_app_shell %>
 
 <% content_for :head do %>
-  <% img = "https://workshop-cards.hackclub.com/Donate%20to%20#{URI.encode @event.name}.png?theme=light&fontSize=225px&brand=Bank" %>
+  <% img = "https://workshop-cards.hackclub.com/Donate%20to%20#{CGI.escape(@event.name)}.png?theme=light&fontSize=225px&brand=Bank" %>
   <meta name="twitter:card" content="summary_large_image">
   <meta property="og:image" content="<%= img %>"/>
   <meta name="twitter:image" content="<%= img %>">
