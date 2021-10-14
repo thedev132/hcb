@@ -39,9 +39,9 @@ module HcbCodeService
         end
 
       else
-        error_message = 'Can not dispute this type of transaction'
+        error_message = "Can not dispute this type of transaction"
         Airbrake.notify(error_message)
-        
+
         [false, error_message]
       end
     end
