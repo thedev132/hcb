@@ -110,16 +110,18 @@ class AdminController < ApplicationController
     @unapproved = params[:unapproved] == "0" ? nil : true # checked by default
     @approved = params[:approved] == "0" ? nil : true # checked by default
     @rejected = params[:rejected] == "0" ? nil : true # checked by default
-    @transparent = params[:transparent] == "1" ? true : nil
-    @omitted = params[:omitted] == "1" ? true : nil
+    @transparent = params[:transparent].present? ? params[:transparent] : "both" # both by default
+    @omitted = params[:omitted].present? ? params[:omitted] : "both" # both by default
     @funded = params[:funded].present? ? params[:funded] : "both" # both by default
     @hidden = params[:hidden].present? ? params[:hidden] : "both" # both by default
 
     relation = Event.not_partner
 
     relation = relation.search_name(@q) if @q
-    relation = relation.transparent if @transparent
-    relation = relation.omitted if @omitted
+    relation = relation.transparent if @transparent == "transparent"
+    relation = relation.not_transparent if @transparent == "not_transparent"
+    relation = relation.omitted if @omitted == "omitted"
+    relation = relation.not_omitted if @omitted == "not_omitted"
     relation = relation.hidden if @hidden == "hidden"
     relation = relation.not_hidden if @hidden == "not_hidden"
     relation = relation.where(id: relation.funded_array.pluck(:id)) if @funded == "funded"
