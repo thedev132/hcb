@@ -26,7 +26,7 @@ class Event < ApplicationRecord
   scope :not_hidden, -> { where(hidden_at: nil) }
   scope :funded, -> {
     includes(canonical_event_mappings: :canonical_transaction)
-    .where('canonical_transactions.amount_cents > 0')
+    .where("canonical_transactions.amount_cents > 0")
     .references(:canonical_transaction)
   }
   scope :not_funded, -> { where.not(id: funded) }
