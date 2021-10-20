@@ -220,13 +220,19 @@ class StripeCard < ApplicationRecord
   end
 
   def hcb_codes
-    @hcb_codes ||= ::HcbCode.where(hcb_code: canonical_transaction_hcb_codes)
+    @hcb_codes ||= ::HcbCode.where(hcb_code: canonical_transaction_hcb_codes + canonical_pending_transaction_hcb_codes)
   end
 
   def remote_shipping_status
     return nil if virtual?
 
     stripe_obj[:shipping][:status]
+  end
+
+  def canonical_pending_transaction_hcb_codes
+    @raw_pending_stripe_transaction_ids = RawPendingStripeTransaction.where("stripe_transaction->'card'->>'id' = ?", stripe_id).pluck(:id)
+    @canonical_pending_transactions ||= CanonicalPendingTransaction.where(raw_pending_stripe_transaction_id: @raw_pending_stripe_transaction_ids)
+    @canonical_pending_transaction_hcb_codes ||= @canonical_pending_transactions.pluck(:hcb_code)
   end
 
   private
@@ -244,7 +250,7 @@ class StripeCard < ApplicationRecord
   end
 
   def raw_stripe_transaction_ids
-    @raw_stripe_transaction_ids ||= RawStripeTransaction.where("stripe_transaction->>'card' = ?", stripe_id).pluck(:id)
+    @raw_stripe_transaction_ids ||= RawStripeTransaction.where("stripe_transaction->'card'->>'id' = ?", stripe_id).pluck(:id)
   end
 
   def issued?
