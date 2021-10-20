@@ -24,8 +24,12 @@ class Event < ApplicationRecord
   scope :partner, -> { where.not(partner_id: 1) }
   scope :hidden, -> { where.not(hidden_at: nil) }
   scope :not_hidden, -> { where(hidden_at: nil) }
-  scope :funded_array, -> { select { |e| e.balance_v2_cents > 0 } }
-  scope :not_funded_array, -> { select { |e| e.balance_v2_cents <= 0 } }
+  scope :funded, -> {
+    includes(canonical_event_mappings: :canonical_transaction)
+    .where('canonical_transactions.amount_cents > 0')
+    .references(:canonical_transaction)
+  }
+  scope :not_funded, -> { where.not(id: funded) }
   scope :event_ids_with_pending_fees_greater_than_100, -> do
     query = <<~SQL
       ;select event_id, fee_balance from (

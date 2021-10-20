@@ -124,9 +124,8 @@ class AdminController < ApplicationController
     relation = relation.not_omitted if @omitted == "not_omitted"
     relation = relation.hidden if @hidden == "hidden"
     relation = relation.not_hidden if @hidden == "not_hidden"
-    relation = relation.where(id: relation.funded_array.pluck(:id)) if @funded == "funded"
-    relation = relation.where(id: relation.not_funded_array.pluck(:id)) if @funded == "not_funded"
-
+    relation = relation.funded if @funded == "funded"
+    relation = relation.not_funded if @funded == "not_funded"
 
     states = []
     states << "pending" if @pending
