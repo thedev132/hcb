@@ -10,7 +10,7 @@
   <%= render @stripe_cards, headless: true %>
 </article>
 
-<%= async_frame_to my_stripe_authorizations_list_path %>
+<%= async_frame_to my_missing_receipts_list_path %>
 
 <% if @emburse_cards.any? %>
   <details class="mt3">

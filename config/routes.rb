@@ -33,7 +33,7 @@ Rails.application.routes.draw do
       resources :comments
     end
     get "inbox", to: "static_pages#my_inbox", as: :my_inbox
-    get "stripe_authorizations_list", to: "static_pages#my_stripe_authorizations_list", as: :my_stripe_authorizations_list
+    get "missing_receipts", to: "static_pages#my_missing_receipts_list", as: :my_missing_receipts_list
     get "receipts", to: redirect("/my/inbox")
     get "receipts/:id", to: "stripe_authorizations#receipt", as: :my_receipt
 

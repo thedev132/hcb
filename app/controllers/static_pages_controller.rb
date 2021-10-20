@@ -41,10 +41,11 @@ class StaticPagesController < ApplicationController
   end
 
   # async frame
-  def my_stripe_authorizations_list
-    @authorizations = current_user.stripe_authorizations.includes(stripe_card: :event).awaiting_receipt.limit(5)
-    if @authorizations.any?
-      render :my_stripe_authorizations_list, layout: !request.xhr?
+  def my_missing_receipts_list
+    @missing_receipt_ids = current_user.stripe_cards.map { |card| card.hcb_codes.missing_receipt.pluck(:id) }.flatten
+    @missing = HcbCode.where(id: @missing_receipt_ids)
+    if @missing.any?
+      render :my_missing_receipts_list, layout: !request.xhr?
     else
       head :ok
     end
