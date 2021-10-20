@@ -136,7 +136,7 @@ class AdminController < ApplicationController
 
     @count = relation.count
 
-    @events = relation.page(@page).per(@per).reorder("created_at desc")
+    @events = relation.page(@page).per(@per).reorder("events.created_at desc")
 
     render layout: "admin"
   end
