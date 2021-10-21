@@ -13,7 +13,7 @@
       </td>
     <% elsif ct.raw_stripe_transaction %>
       <td class="transaction__icon tooltipped tooltipped--e" aria-label="Card transaction">
-        <% if ct.stripe_cardholder %>
+        <% unless defined?(authorless) || !ct.stripe_cardholder %>
           <%= avatar_for ct.stripe_cardholder.user, 24 %>
         <% else %>
           <%= inline_icon "card" %>
@@ -50,7 +50,7 @@
     </span>
 
     <% if ct.local_hcb_code %>
-      <%= list_badge_for ct.local_hcb_code.receipts.size, "receipt", "payment-docs", optional: true %>
+      <%= list_badge_for ct.local_hcb_code.receipts.size, "receipt", "payment-docs", optional: !ct.raw_stripe_transaction, required: ct.raw_stripe_transaction %>
       <%= list_badge_for ct.local_hcb_code.comments.size, "note", "post", optional: true %>
     <% end %>
   </td>

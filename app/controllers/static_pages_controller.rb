@@ -42,7 +42,14 @@ class StaticPagesController < ApplicationController
 
   # async frame
   def my_missing_receipts_list
-    @missing_receipt_ids = current_user.stripe_cards.map { |card| card.hcb_codes.missing_receipt.pluck(:id) }.flatten
+    @missing_receipt_ids = []
+    current_user.stripe_cards.map do |card|
+      break unless @missing_receipt_ids.size < 5
+      card.hcb_codes.missing_receipt.pluck(:id).each do |id|
+        @missing_receipt_ids << id
+        break unless @missing_receipt_ids.size < 5
+      end
+    end
     @missing = HcbCode.where(id: @missing_receipt_ids)
     if @missing.any?
       render :my_missing_receipts_list, layout: !request.xhr?
