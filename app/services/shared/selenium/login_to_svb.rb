@@ -79,9 +79,15 @@ module Shared
       end
 
       def handle_click_text_me(phone_name)
+        begin
         # Wait
-        wait = ::Selenium::WebDriver::Wait.new(timeout: 65) # wait 65 seconds
-        wait.until { driver.find_element(:xpath, '//p[text()[.="unreachable at any of the above numbers" or contains(.,"unreachable at any of the above")]]') }
+          wait = ::Selenium::WebDriver::Wait.new(timeout: 65) # wait 65 seconds
+          wait.until { driver.find_element(:xpath, '//p[text()[.="unreachable at any of the above numbers" or contains(.,"unreachable at any of the above")]]') }
+        rescue ::Selenium::WebDriver::Error::TimeOutError
+          # Login to SVB account was unsucessful. Attempt to collect errors and report to Airbrake
+          errors = driver.find_elements(:xpath, "//ul[contains(@class, 'svb-errors-list')]").map { |el| el.attribute("innerHTML") }.select { |innerHtml| !innerHtml.blank? }
+          Airbrake.notify("Error while logging into '#{username}' SVB account. (#{errors.join(" ")})")
+        end
 
         els = driver.find_elements(:xpath, '//div[@data-svb-class="svb-phone-number-container"]')
         els.each do |el|
