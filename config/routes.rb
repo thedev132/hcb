@@ -21,6 +21,7 @@ Rails.application.routes.draw do
 
   root to: "static_pages#index"
   get "stats", to: "static_pages#stats"
+  get "stats_custom_duration", to: "static_pages#stats_custom_duration"
   get "project_stats", to: "static_pages#project_stats"
   get "bookkeeping", to: "admin#bookkeeping"
   get "stripe_charge_lookup", to: "static_pages#stripe_charge_lookup"

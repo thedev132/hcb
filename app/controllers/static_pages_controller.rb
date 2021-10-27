@@ -4,7 +4,7 @@ require "net/http"
 
 class StaticPagesController < ApplicationController
   skip_after_action :verify_authorized # do not force pundit
-  skip_before_action :signed_in_user, only: [:stats, :project_stats, :branding, :faq]
+  skip_before_action :signed_in_user, only: [:stats, :stats_custom_duration, :project_stats, :branding, :faq]
 
   def index
     if signed_in?
@@ -77,6 +77,13 @@ class StaticPagesController < ApplicationController
     render json: {
       raised: raised
     }
+  end
+
+  def stats_custom_duration
+    start_date = params[:start_date].present? ? Date.parse(params[:start_date]) : DateTime.new(2015, 1, 1)
+    end_date = params[:end_date].present? ? Date.parse(params[:end_date]) : DateTime.current
+
+    render json: CanonicalTransactionService::Stats::During.new(start_time: start_date, end_time: end_date).run
   end
 
   def stats
