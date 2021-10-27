@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_27_035628) do
+ActiveRecord::Schema.define(version: 2021_10_27_043104) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -864,6 +864,7 @@ ActiveRecord::Schema.define(version: 2021_10_27_035628) do
     t.text "logo"
     t.string "public_stripe_api_key"
     t.text "stripe_api_key_ciphertext"
+    t.string "webhook_url"
   end
 
   create_table "raw_csv_transactions", force: :cascade do |t|
