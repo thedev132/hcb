@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class Event < ApplicationRecord
+  self.ignored_columns = ["partner_logo_url"]
   include Hashid::Rails
   extend FriendlyId
 

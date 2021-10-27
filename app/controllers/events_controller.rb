@@ -74,7 +74,6 @@ class EventsController < ApplicationController
     fixed_user_event_params = user_event_params
 
     fixed_event_params[:club_airtable_id] = nil if event_params.key?(:club_airtable_id) && event_params[:club_airtable_id].empty?
-    fixed_event_params[:partner_logo_url] = nil if event_params.key?(:partner_logo_url) && event_params[:partner_logo_url].empty?
 
     # processing hidden for admins
     if fixed_event_params[:hidden] == "1" && !@event.hidden_at.present?
@@ -283,7 +282,6 @@ class EventsController < ApplicationController
       :omit_stats,
       :emburse_department_id,
       :country,
-      :partner_logo_url,
       :club_airtable_id,
       :point_of_contact_id,
       :slug,

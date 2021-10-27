@@ -19,15 +19,6 @@
   <%= link_to root_path,
     class: "header-center text-decoration-none flex items-center #{!Rails.env.production? && 'tooltipped tooltipped--s'}",
     'aria-label': "You’re in #{Rails.env} mode. #{development_mode_flavor}" do %>
-    <% if @event and not @event.partner_logo_url.blank? %>
-      <div class="partner-logo ml2">
-        <%= image_tag @event.partner_logo_url,
-            name: 'partner-logo',
-            height: home_action_size,
-            alt: 'Partner logo',
-            style: 'box-sizing: border-box; padding: 5px;' %>
-      </div>
-    <% end %>
     <%= image_tag "logo-#{Rails.env}-dark.svg",
         name: 'header-logo',
         class: 'logo-dark',
