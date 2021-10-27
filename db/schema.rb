@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_05_200012) do
+ActiveRecord::Schema.define(version: 2021_10_27_035628) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -505,7 +505,6 @@ ActiveRecord::Schema.define(version: 2021_10_05_200012) do
     t.bigint "point_of_contact_id"
     t.integer "expected_budget"
     t.boolean "has_fiscal_sponsorship_document"
-    t.text "partner_logo_url"
     t.text "club_airtable_id"
     t.boolean "beta_features_enabled"
     t.datetime "hidden_at"
