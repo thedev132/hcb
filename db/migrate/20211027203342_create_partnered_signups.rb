@@ -10,6 +10,7 @@ class CreatePartneredSignups < ActiveRecord::Migration[6.0]
       t.string :redirect_url, null: false
       t.date :owner_birthdate
       t.integer :country
+      t.string :organization_name, null: false
       t.datetime :accepted_at
       t.datetime :rejected_at
       t.references :user, foreign_key: true

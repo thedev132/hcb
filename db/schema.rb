@@ -862,6 +862,7 @@ ActiveRecord::Schema.define(version: 2021_10_27_203342) do
     t.string "redirect_url", null: false
     t.date "owner_birthdate"
     t.integer "country"
+    t.string "organization_name", null: false
     t.datetime "accepted_at"
     t.datetime "rejected_at"
     t.bigint "user_id"
