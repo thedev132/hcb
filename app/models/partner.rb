@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Partner < ApplicationRecord
+  has_paper_trail
+
   EXCLUDED_SLUGS = %w(connect api donations donation connects organization organizations)
 
   attribute :api_key, :string, default: -> { new_api_key }

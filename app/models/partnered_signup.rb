@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class PartneredSignup < ApplicationRecord
+  has_paper_trail
   ## PublicIdentifiable as implemented in https://github.com/hackclub/bank/pull/1901
   # include PublicIdentifiable
   # set_public_id_prefix :sup
