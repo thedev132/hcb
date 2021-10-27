@@ -4,6 +4,9 @@ class Event < ApplicationRecord
   include Hashid::Rails
   extend FriendlyId
 
+  include PublicIdentifiable
+  set_public_id_prefix :org
+
   include AASM
   include PgSearch::Model
   pg_search_scope :search_name, against: [:name, :slug], using: { tsearch: { prefix: true, dictionary: "english" } }
@@ -429,8 +432,9 @@ class Event < ApplicationRecord
     ZM: 248,
   }
 
-
   validate :point_of_contact_is_admin
+
+  validates :public_id, presence: true, uniqueness: true
 
   validates :name, :sponsorship_fee, :organization_identifier, presence: true
   validates :slug, uniqueness: true, presence: true, format: { without: /\s/ }

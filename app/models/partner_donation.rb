@@ -4,6 +4,9 @@ class PartnerDonation < ApplicationRecord
   include AASM
   include Commentable
 
+  include PublicIdentifiable
+  set_public_id_prefix :pdn
+
   belongs_to :event
 
   before_create :set_donation_identifier
