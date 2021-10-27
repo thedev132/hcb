@@ -515,7 +515,7 @@ ActiveRecord::Schema.define(version: 2021_10_27_035628) do
     t.boolean "omit_stats", default: false
     t.datetime "transaction_engine_v2_at", default: -> { "CURRENT_TIMESTAMP" }
     t.datetime "last_fee_processed_at"
-    t.datetime "pending_transaction_engine_at", default: "2021-02-13 22:49:40"
+    t.datetime "pending_transaction_engine_at", default: "2021-02-13 22:27:44"
     t.string "aasm_state"
     t.string "organization_identifier", null: false
     t.string "redirect_url"
