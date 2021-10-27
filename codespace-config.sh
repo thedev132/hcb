@@ -21,7 +21,7 @@ echo "$(tput setaf 9)Hack Club Bank:$(tput sgr0) $(tput setaf 10)Done$(tput sgr0
 echo "
 $(tput setaf 9)Hack Club Bank:$(tput sgr0) Step 2/7: Login to Heroku (Input Needed)"
 (heroku auth:whoami) > /dev/null 2>&1
-if $?; then
+if [ $? -eq 0 ]; then
   echo "(tput setaf 9)Hack Club Bank:$(tput sgr0) Already signed in, skipping login..."
 else
   heroku login -i
