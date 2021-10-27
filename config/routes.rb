@@ -325,9 +325,9 @@ Rails.application.routes.draw do
         match "organizations/:organizationIdentifier", action: :organization, as: :api_organization, via: [:get]
         match "organizations/:organizationIdentifier/generateLoginUrl", action: :generate_login_url, as: :api_organization_generate_login_url, via: [:post]
 
-        match ":partner_slug/start", action: :connect_start, as: :api_connect_start, via: [:post]
-        match ":partner_slug/continue/:hashid", action: :connect_continue, as: :api_connect_continue, via: [:get]
-        match ":partner_slug/finish/:hashid", action: :connect_finish, as: :api_connect_finish, via: [:post]
+        post "connect/start", to: "partnered_signup#create"
+        get "connect/continue/:id", to: "partnered_signup#edit"
+        post "connect/finish/:id", to: "partnered_signup#update"
 
       end
     end

@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_27_043104) do
+ActiveRecord::Schema.define(version: 2021_10_27_203342) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -854,6 +854,26 @@ ActiveRecord::Schema.define(version: 2021_10_27_043104) do
     t.index ["event_id"], name: "index_partner_donations_on_event_id"
   end
 
+  create_table "partnered_signups", force: :cascade do |t|
+    t.string "owner_phone"
+    t.string "owner_email"
+    t.string "owner_name"
+    t.string "owner_address"
+    t.string "redirect_url", null: false
+    t.date "owner_birthdate"
+    t.integer "country"
+    t.datetime "accepted_at"
+    t.datetime "rejected_at"
+    t.bigint "user_id"
+    t.bigint "event_id"
+    t.bigint "partner_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["event_id"], name: "index_partnered_signups_on_event_id"
+    t.index ["partner_id"], name: "index_partnered_signups_on_partner_id"
+    t.index ["user_id"], name: "index_partnered_signups_on_user_id"
+  end
+
   create_table "partners", force: :cascade do |t|
     t.string "slug", null: false
     t.text "api_key"
@@ -1224,6 +1244,9 @@ ActiveRecord::Schema.define(version: 2021_10_27_043104) do
   add_foreign_key "organizer_positions", "events"
   add_foreign_key "organizer_positions", "users"
   add_foreign_key "partner_donations", "events"
+  add_foreign_key "partnered_signups", "events"
+  add_foreign_key "partnered_signups", "partners"
+  add_foreign_key "partnered_signups", "users"
   add_foreign_key "receipts", "users"
   add_foreign_key "sponsors", "events"
   add_foreign_key "stripe_authorizations", "stripe_cards"
