@@ -21,6 +21,6 @@ class Partner < ApplicationRecord
   private
 
   def set_api_key(force: false)
-    self.api_key = "hcbk_" + SecureRandom.hex(32) if self.private_api_key.nil? || force
+    self.api_key = "hcbk_" + SecureRandom.hex(32) if (self.private_api_key.nil? || force)
   end
 end
