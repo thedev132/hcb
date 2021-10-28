@@ -2,7 +2,7 @@
 
 class PartneredSignup < ApplicationRecord
   has_paper_trail
-  
+
   include PublicIdentifiable
   set_public_id_prefix :sup
 
