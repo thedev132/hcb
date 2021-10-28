@@ -2,9 +2,9 @@
 
 class PartneredSignup < ApplicationRecord
   has_paper_trail
-  ## PublicIdentifiable as implemented in https://github.com/hackclub/bank/pull/1901
-  # include PublicIdentifiable
-  # set_public_id_prefix :sup
+  
+  include PublicIdentifiable
+  set_public_id_prefix :sup
 
   belongs_to :partner, required: true
   belongs_to :event,   required: false
