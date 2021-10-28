@@ -434,8 +434,6 @@ class Event < ApplicationRecord
 
   validate :point_of_contact_is_admin
 
-  validates :public_id, presence: true, uniqueness: true
-
   validates :name, :sponsorship_fee, :organization_identifier, presence: true
   validates :slug, uniqueness: true, presence: true, format: { without: /\s/ }
 
