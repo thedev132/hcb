@@ -35,7 +35,7 @@ class PartneredSignupsController < ApplicationController
       render "edit"
     end
   end
-  
+
   private
 
   # Only allow a trusted parameter "white list" through.
