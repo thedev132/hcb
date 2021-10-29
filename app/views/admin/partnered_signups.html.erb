@@ -1,0 +1,32 @@
+<% title "Partnered Signups" %>
+
+<h1>Partnered Signups</h1>
+
+<p><small><%= pluralize(@count, "result") %></small></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Public ID</th>
+      <th>Organization Name</th>
+      <th>Owner Name</th>
+      <th>Owner Email</th>
+      <th>Owner Phone</th>
+      <th>Partner</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @partnered_signups.each do |partnered_signup| %>
+      <tr>
+        <td><%= partnered_signup.public_id %></td>
+        <td><%= partnered_signup.organization_name %></td>
+        <td><%= partnered_signup.owner_name %></td>
+        <td><%= partnered_signup.owner_email %></td>
+        <td><%= partnered_signup.owner_phone %></td>
+        <td><%= partnered_signup.partner.name %></td>
+        <td>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

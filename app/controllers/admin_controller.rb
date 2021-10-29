@@ -89,6 +89,16 @@ class AdminController < ApplicationController
     render layout: "admin"
   end
 
+  def partnered_signups
+    relation = PartneredSignup
+
+    @partnered_signups = relation.all
+
+    @count = relation.count
+
+    render layout: "admin"
+  end
+
   def partner_organizations
     @page = params[:page] || 1
     @per = params[:per] || 100

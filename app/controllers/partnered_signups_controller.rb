@@ -18,7 +18,6 @@ class PartneredSignupsController < ApplicationController
   end
 
   # POST /api/v1/connect/finish/:id
-  # NOTE TO SELF: THIS SHOULD BE JSON
   def update
     @partnered_signup.update_attributes(partnered_signup_params)
     @partnered_signup.submitted_at = Time.now
@@ -33,6 +32,7 @@ class PartneredSignupsController < ApplicationController
   end
 
   def admin_accept
+    raise NotImplementedError
     @partnered_signup.accepted_at = Time.now
     authorize @partnered_signup
 
@@ -45,6 +45,7 @@ class PartneredSignupsController < ApplicationController
   end
 
   def admin_reject
+    raise NotImplementedError
     @partnered_signup.rejected_at = Time.now
     authorize @partnered_signup
 
