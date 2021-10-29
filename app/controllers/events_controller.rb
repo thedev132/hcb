@@ -124,7 +124,7 @@ class EventsController < ApplicationController
 
   def card_overview
     @stripe_cards = @event.stripe_cards.includes(:stripe_cardholder, :user).order("created_at desc")
-    @stripe_cardholders = StripeCardholder.where(user_id: @event.users.pluck(:id)).order("created_at desc")
+    @stripe_cardholders = StripeCardholder.where(user_id: @event.users.pluck(:id)).includes(:user).order("created_at desc")
 
     authorize @event
   end
