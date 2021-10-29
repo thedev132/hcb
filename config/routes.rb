@@ -325,15 +325,16 @@ Rails.application.routes.draw do
         match "organizations/:organizationIdentifier", action: :organization, as: :api_organization, via: [:get]
         match "organizations/:organizationIdentifier/generateLoginUrl", action: :generate_login_url, as: :api_organization_generate_login_url, via: [:post]
 
-        post "connect/start", to: "partnered_signup#create"
-        get "connect/continue/:id", to: "partnered_signup#edit"
-        post "connect/finish/:id", to: "partnered_signup#update"
-
+        match "connect/start_v2", action: :connect_start_v2, as: :api_connect_start_v2, via: [:post]
+        get "connect/continue/:public_id", via: :get, action: :connect_continue, as: :api_connect_continue
       end
     end
 
     match "/", to: "v1#index", module: :api_v1, as: :api_root, via: :all
   end
+
+  get "partnered_signups/:public_id", to: "partnered_signups#edit", as: :edit_partnered_signups
+  patch "partnered_signups/:public_id", to: "partnered_signups#update", as: :update_partnered_signups
 
   get  "api/v1/events/find", to: "api#event_find" # to be deprecated
   post "api/v1/disbursements", to: "api#disbursement_new" # to be deprecated

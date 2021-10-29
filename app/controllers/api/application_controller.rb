@@ -9,6 +9,7 @@ module Api
 
     rescue_from ActiveRecord::RecordInvalid, with: :render_json_error_400
     rescue_from ActiveRecord::RecordNotUnique, with: :render_json_error_400
+    rescue_from ActiveRecord::NotNullViolation, with: :render_json_error_400
     rescue_from ArgumentError, with: :render_json_error_400
     rescue_from UnauthenticatedError, UnauthorizedError do |e|
       error_generic(e)

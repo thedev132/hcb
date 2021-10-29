@@ -1,31 +1,27 @@
 # frozen_string_literal: true
 
 class PartneredSignupsController < ApplicationController
-  # POST /api/v1/connect/start
-  # This is hit by the partner as part of the connect API
+  before_action :set_partnered_signup, only: [:edit, :update, :admin_accept, :admin_reject]
+  before_action :set_partner, only: [:edit, :update, :admin_accept, :admin_reject]
+  skip_after_action :verify_authorized, only: [:edit, :update]
+  skip_before_action :signed_in_user, only: [:edit, :update]
+
+  # POST /api/v1/connect/start ..... NOT!
   def start
-    # TODO
-    @partner = Partner.find_by(api_key: params[:api_key])
-
-    @partnered_signup = PartneredSignup.new(partner: @partner)
-
-    if @partnered_signup.save
-      render json: { "Error": "TODO: return partnered signup info" }
-    else
-      render json: { "Error": "TODO" }
-    end
+    # Are you looking for start? Psych! It's not here!
+    # This controller manages all the views for the partner signup process, but the v1_controller manages all the JSON API endpoints
   end
 
-  # GET /api/v1/connect/continue/:id
+  # GET /api/v1/connect/continue/:public_id
+  # GET /partnered_signups/:public_id
   def edit
-    # TODO
   end
 
   # POST /api/v1/connect/finish/:id
+  # NOTE TO SELF: THIS SHOULD BE JSON
   def update
-    # TODO
-    @partnered_signup = PartneredSignup.find(params[:id])
     @partnered_signup.update_attributes(partnered_signup_params)
+    @partnered_signup.submitted_at = Time.now
 
     authorize @partnered_signup
 
@@ -36,10 +32,49 @@ class PartneredSignupsController < ApplicationController
     end
   end
 
+  def admin_accept
+    @partnered_signup.accepted_at = Time.now
+    authorize @partnered_signup
+
+    if @partnered_signup.save
+      flash[:success] = "Partner signup accepted"
+      redirect_to @partnered_signup.redirect_url
+    else
+      render "edit"
+    end
+  end
+
+  def admin_reject
+    @partnered_signup.rejected_at = Time.now
+    authorize @partnered_signup
+
+    if @partnered_signup.save
+      flash[:success] = "Partner signup rejected"
+      redirect_to @partnered_signup.redirect_url
+    else
+      render "edit"
+    end
+  end
+
   private
+
+  def set_partnered_signup
+    @partnered_signup = PartneredSignup.find_by_public_id(params[:public_id])
+  end
+
+  def set_partner
+    @partner = @partnered_signup.partner
+  end
 
   # Only allow a trusted parameter "white list" through.
   def partnered_signup_params
-    # result_params = params.require(:partnered_signup).permit()
+    result_params = params.require(:partnered_signup).permit(
+      :organization_name,
+      :owner_name,
+      :owner_phone,
+      :owner_email,
+      :owner_address,
+      :owner_birthdate,
+    )
   end
 end

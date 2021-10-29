@@ -42,6 +42,21 @@ module Api
       render json: Api::V1::GenerateLoginUrlSerializer.new(login_url: login_url).run
     end
 
+    def connect_start_v2
+      @partner = current_partner
+      render json: json_error(contract), status: 400 and return unless @partner
+
+      contract = Api::V1::ConnectStartV2Contract.new.call(params.permit!.to_h)
+      render json: json_error(contract), status: 400 and return unless contract.success?
+
+      @partnered_signup = PartneredSignup.create!(partner_id: @partner.id,
+                                                  redirect_url: params[:redirect_url],
+                                                  organization_name: params[:organization_name],
+                                                )
+
+      render json: Api::V1::ConnectStartV2Serializer.new(partnered_signup: @partnered_signup).run
+    end
+
     def connect_start
       contract = Api::V1::ConnectStartContract.new.call(params.permit!.to_h)
       render json: json_error(contract), status: 400 and return unless contract.success?
@@ -58,15 +73,7 @@ module Api
     end
 
     def connect_continue
-      contract = Api::V1::ConnectContinueContract.new.call(params.permit!.to_h)
-      render json: json_error(contract), status: 400 and return unless contract.success?
-
-      @event = Event.find(params[:hashid])
-      @partner = @event.partner
-
-      hide_footer
-
-      render layout: "application"
+      redirect_to edit_partnered_signups_path(public_id: params[:public_id])
     end
 
     def connect_finish

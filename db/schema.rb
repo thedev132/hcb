@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_27_203342) do
+ActiveRecord::Schema.define(version: 2021_10_29_160311) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -870,6 +870,7 @@ ActiveRecord::Schema.define(version: 2021_10_27_203342) do
     t.bigint "partner_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.datetime "submitted_at"
     t.index ["event_id"], name: "index_partnered_signups_on_event_id"
     t.index ["partner_id"], name: "index_partnered_signups_on_partner_id"
     t.index ["user_id"], name: "index_partnered_signups_on_user_id"
