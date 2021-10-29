@@ -6,15 +6,15 @@ module Api
         def initialize(partnered_signup:)
           @partnered_signup = partnered_signup
         end
-  
+
         def run
           {
             data: data
           }
         end
-  
+
         private
-  
+
         def data
           {
             redirect_url: @partnered_signup.redirect_url,
