@@ -325,7 +325,7 @@ Rails.application.routes.draw do
         match "organizations/:organizationIdentifier", action: :organization, as: :api_organization, via: [:get]
         match "organizations/:organizationIdentifier/generateLoginUrl", action: :generate_login_url, as: :api_organization_generate_login_url, via: [:post]
 
-        match "connect/start_v2", action: :connect_start_v2, as: :api_connect_start_v2, via: [:post]
+        match "connect/start", action: :connect_start, as: :api_connect_start, via: [:post]
         get "connect/continue/:public_id", via: :get, action: :connect_continue, as: :api_connect_continue
       end
     end
