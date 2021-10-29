@@ -14,13 +14,13 @@
   </div>
 
   <h1 class="center mt2">
-    <span class="h3 caps secondary block">Connect to</span>
-    <span class=""><%= @partner.name || @partner.slug.capitalize %></span>
+    <span class="h3 caps secondary block">Open an account through</span>
+    <span class=""><%= @partner.name || @partner.slug.humanize %></span>
   </h1>
 
   <div class="mb3">
     <p>
-      <strong><%= @partner.name || @partner.slug.capitalize %></strong> has partnered with Hack Club Bank to
+      <%= @partner.name || @partner.slug.humanize %> has partnered with <strong>Hack Club Bank</strong> to
       bring you seamless <%= link_to 'fiscal sponsorship', 'https://en.wikipedia.org/wiki/Fiscal_sponsorship' %> for your organization.
     </p>
   </div>
