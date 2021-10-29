@@ -1,0 +1,50 @@
+<h4><%= title %></h4>
+<% if stripe_cards.blank? %>
+  <%= blankslate "No cards found!" %>
+<% else %>
+  <article class="table-container">
+    <table>
+      <thead>
+      <tr>
+        <th>TYPE</th>
+        <th>SHIPPING</th>
+        <th>STATUS</th>
+        <th>DATE</th>
+        <th>NAME</th>
+        <th>NUMBER</th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody>
+      <% stripe_cards.each do |d| %>
+        <tr>
+          <td>
+            <%= d.virtual? ? "VIRTUAL" : "PHYSICAL" %>
+          </td>
+          <td>
+            <%= "-" if d.virtual? %>
+            <%= d.remote_shipping_status.upcase if d.physical? %>
+          </td>
+          <td>
+            <span class="ml0 badge bg-<%= d.state %>"><%= d.state_text %></span>
+          </td>
+          <td>
+            <%= format_date d.created_at %>
+          </td>
+          <td>
+            <%= d.name || d.user.full_name if organizer_signed_in? %>
+            <%= "(redacted)" unless organizer_signed_in? %>
+          </td>
+          <td>
+            <%= d.formatted_card_number if d.user == current_user %>
+            <%= d.hidden_card_number if d.user != current_user %>
+          </td>
+          <td>
+            <%= link_to "Details", stripe_card_path(d) if organizer_signed_in? %>
+          </td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </article>
+<% end %>

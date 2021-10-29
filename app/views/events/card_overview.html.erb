@@ -2,7 +2,6 @@
 <% page_md %>
 <% include_modals %>
 <%= render "nav" %>
-
 <% if current_user.try(:full_name).try(:blank?) %>
 
   <h1 class="heading">
@@ -12,7 +11,6 @@
   </h1>
 
   <%= render "cards/name_required" %>
-
 <% else %>
 
   <h1 class="heading">
@@ -34,90 +32,39 @@
     <%= render "stripe_cards/form", stripe_card: StripeCard.new %>
   </section>
 
-  <% if @stripe_cards.blank? %>
-
+  <% if @session_user_stripe_cards.blank? and @stripe_cards.blank? %>
     <%= blankslate "You haven’t requested any cards yet." %>
-
-  <% else %>
-    <article class="table-container">
-
-      <table>
-        <thead>
-          <tr>
-            <th>TYPE</th>
-            <th>SHIPPING</th>
-            <th>STATUS</th>
-            <th>DATE</th>
-            <th>NAME</th>
-            <th>NUMBER</th>
-            <th></th>
-          </tr>
-        </thead>
-
-        <tbody>
-          <% @stripe_cards.each do |d| %>
-            <tr>
-              <td>
-                <%= d.virtual? ? "VIRTUAL" : "PHYSICAL" %>
-              </td>
-              <td>
-                <%= "-" if d.virtual? %>
-                <%= d.remote_shipping_status.upcase if d.physical? %>
-              </td>
-              <td>
-                <span class="ml0 badge bg-<%= d.state %>"><%= d.state_text %></span>
-              </td>
-              <td>
-                <%= format_date d.created_at %>
-              </td>
-              <td>
-                <%= d.name || d.user.full_name if organizer_signed_in? %>
-                <%= "(redacted)" unless organizer_signed_in? %>
-              </td>
-              <td>
-                <% if d.user == current_user %>
-                  <%= d.formatted_card_number %>
-                <% elsif organizer_signed_in? %>
-                  <%= d.hidden_card_number_with_last_four %>
-                <% else %>
-                  <%= d.hidden_card_number %>
-                <% end %>
-              </td>
-              <td>
-                <%= link_to "Details", stripe_card_path(d) if organizer_signed_in? %>
-              </td>
-            </tr>
-          <% end %>
-        </tbody>
-      </table>
-
-    </article>
-
   <% end %>
+
+  <% if signed_in? %>
+    <%=render 'event_cards_table', title: "Your Cards", stripe_cards: @session_user_stripe_cards %>
+  <% end %>
+  <%=render 'event_cards_table', title: "Organization Cards", stripe_cards: @stripe_cards %>
+
+  <%=render 'event_cards_table', title: "Organization Cards", stripe_cards: @stripe_cards %>
 
   <section class="grid grid--split pt4 pb4">
     <% if signed_in? %>
       <%= link_to my_cards_path,
-          class: "card card--hover block pt4 pb4 card--promo",
-          style: "background-image: url(https://cloud-awvmmj0xe.vercel.app/sunset_card.png);" do %>
-          <h3 class="mt0 mb0">See all your cards →</h3>
+                  class: "card card--hover block pt4 pb4 card--promo",
+                  style: "background-image: url(https://cloud-awvmmj0xe.vercel.app/sunset_card.png);" do %>
+        <h3 class="mt0 mb0">See all your cards →</h3>
       <% end %>
     <% end %>
-
     <% if @event.used_emburse? %>
       <%= link_to event_emburse_cards_overview_path(event_id: @event.slug),
-        class: "card card--hover block pt4 pb4 card--promo",
-        style: "background-image: url(https://cloud-awvmmj0xe.vercel.app/grey_card.png);" do %>
+                  class: "card card--hover block pt4 pb4 card--promo",
+                  style: "background-image: url(https://cloud-awvmmj0xe.vercel.app/grey_card.png);" do %>
         <h3 class="mt0 mb0">Previous Emburse cards →</h3>
       <% end %>
     <% end %>
 
     <style>
-      .card--promo {
-        background-size: cover;
-        background-position: center center;
-        color: white !important;
-      }
+        .card--promo {
+            background-size: cover;
+            background-position: center center;
+            color: white !important;
+        }
     </style>
   </section>
 
@@ -127,38 +74,38 @@
 
     <table>
       <thead>
-        <tr>
-          <th>TYPE</th>
-          <th>STATUS</th>
-          <th>DATE</th>
-          <th>NAME</th>
-          <th></th>
-        </tr>
+      <tr>
+        <th>TYPE</th>
+        <th>STATUS</th>
+        <th>DATE</th>
+        <th>NAME</th>
+        <th></th>
+      </tr>
       </thead>
 
       <tbody>
-        <% @stripe_cardholders.each do |d| %>
-          <tr>
-            <td>
-              <%= d.cardholder_type.upcase %>
-            </td>
-            <td>
-              <span class="ml0 badge bg-<%= d.state %>"><%= d.state_text %></span>
-            </td>
-            <td>
-              <%= format_date d.created_at %>
-            </td>
-            <td>
-              <%= d.user.full_name if organizer_signed_in? %>
-              <%= "(redacted)" unless organizer_signed_in? %>
-            </td>
-            <td>
-              <% if d.remote_status == "disabled" %>
-                Please <%= link_to "contact us", "mailto:bank@hackclub.com" %> to fix this.
-              <% end %>
-            </td>
-          </tr>
-        <% end %>
+      <% @stripe_cardholders.each do |d| %>
+        <tr>
+          <td>
+            <%= d.cardholder_type.upcase %>
+          </td>
+          <td>
+            <span class="ml0 badge bg-<%= d.state %>"><%= d.state_text %></span>
+          </td>
+          <td>
+            <%= format_date d.created_at %>
+          </td>
+          <td>
+            <%= d.user.full_name if organizer_signed_in? %>
+            <%= "(redacted)" unless organizer_signed_in? %>
+          </td>
+          <td>
+            <% if d.remote_status == "disabled" %>
+              Please <%= link_to "contact us", "mailto:bank@hackclub.com" %> to fix this.
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
       </tbody>
     </table>
 
