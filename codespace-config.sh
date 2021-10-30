@@ -43,9 +43,8 @@ env $(cat .env.docker) docker-compose build
 echo "$(tput setaf 9)Hack Club Bank:$(tput sgr0) $(tput setaf 10)Done$(tput sgr0)"
 echo "
 $(tput setaf 9)Hack Club Bank:$(tput sgr0) Step 7/7: Docker Database Setup"
-env $(cat .env.docker) docker-compose run --service-ports web bundle exec rails db:create \
-  pg_restore --verbose --clean --no-acl --no-owner -h db -U postgres -d bank_development latest.dump \
-  bundle exec rails db:migrate
+env $(cat .env.docker) docker-compose run --service-ports web bundle exec rails db:create db:migrate
+env $(cat .env.docker) docker-compose run --service-ports web pg_restore --verbose --clean --no-acl --no-owner -h db -U postgres -d bank_development latest.dump
 echo "$(tput setaf 9)Hack Club Bank:$(tput sgr0) $(tput setaf 10)Done$(tput sgr0)"
 
 echo "
