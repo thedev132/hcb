@@ -28,6 +28,10 @@ class StaticPagesController < ApplicationController
       { name: "Outlined Black", criteria: "For white or light colored backgrounds.", background: "snow" },
       { name: "Outlined White", criteria: "For black or dark colored backgrounds.", background: "black" }
     ]
+    @icons = [
+      { name: "Icon Dark", criteria: "Hack Club Bank logo in dark mode.", background: "black" },
+      { name: "Icon Original", criteria: "The original Hack Club Bank logo.", background: "smoke" }
+    ]
     @event_name = signed_in? && current_user.events.first ? current_user.events.first.name : "Hack Pennsylvania"
   end
 
