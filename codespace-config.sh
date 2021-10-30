@@ -22,7 +22,7 @@ echo "
 $(tput setaf 9)Hack Club Bank:$(tput sgr0) Step 2/7: Login to Heroku (Input Needed)"
 (heroku auth:whoami) > /dev/null 2>&1
 if $?; then
-  echo "(tput setaf 9)Hack Club Bank:$(tput sgr0) Already signed in, skipping login..."
+  echo "Already signed in, skipping..."
 else
   heroku login -i
 fi
