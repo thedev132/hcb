@@ -20,12 +20,7 @@ $(tput setaf 9)Hack Club Bank:$(tput sgr0) Step 1/7: Install Heroku (Quiet)"
 echo "$(tput setaf 9)Hack Club Bank:$(tput sgr0) $(tput setaf 10)Done$(tput sgr0)"
 echo "
 $(tput setaf 9)Hack Club Bank:$(tput sgr0) Step 2/7: Login to Heroku (Input Needed)"
-(heroku auth:whoami) > /dev/null 2>&1
-if $?; then
-  echo "Already signed in, skipping..."
-else
-  heroku login -i
-fi
+heroku login -i
 echo "$(tput setaf 9)Hack Club Bank:$(tput sgr0) $(tput setaf 10)Done$(tput sgr0)"
 echo "
 $(tput setaf 9)Hack Club Bank:$(tput sgr0) Step 3/7: Connect to the Heroku Project"
