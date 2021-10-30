@@ -75,8 +75,13 @@
                 <%= "(redacted)" unless organizer_signed_in? %>
               </td>
               <td>
-                <%= d.formatted_card_number if d.user == current_user %>
-                <%= d.hidden_card_number if d.user != current_user %>
+                <% if d.user == current_user %>
+                  <%= d.formatted_card_number %>
+                <% elsif organizer_signed_in? %>
+                  <%= d.hidden_card_number_with_last_four %>
+                <% else %>
+                  <%= d.hidden_card_number %>
+                <% end %>
               </td>
               <td>
                 <%= link_to "Details", stripe_card_path(d) if organizer_signed_in? %>

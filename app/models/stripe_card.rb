@@ -55,6 +55,10 @@ class StripeCard < ApplicationRecord
   end
 
   def hidden_card_number
+    "•••• •••• •••• ••••"
+  end
+
+  def hidden_card_number_with_last_four
     "•••• •••• •••• #{last4}"
   end
 
