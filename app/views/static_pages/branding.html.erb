@@ -13,16 +13,16 @@
   </h2>
 
   <div class="grid grid--wide grid--spacious mt3 mb3 md-mb4">
-    <% @icons.each do |icons| %>
+    <% @icons.each do |icon| %>
       <div class="card w-100 pb0">
-        <div class="card__banner card__banner--top center bg-<%= icons[:background] %>" aria-label="<%= logo[:criteria] %>">
+        <div class="card__banner card__banner--top center bg-<%= icon[:background] %>" aria-label="<%= icon[:criteria] %>">
           <img src="/brand/hcb-icon-<%= icons[:name].parameterize %>.svg">
         </div>
-        <h3 class="mb0"><%= icons[:name] %></h3>
-        <p class="mt0 muted"><%= icons[:criteria] %></p>
+        <h3 class="mb0"><%= icon[:name] %></h3>
+        <p class="mt0 muted"><%= icon[:criteria] %></p>
         <div class="card__banner card__banner--bottom card__darker mb0">
-          <%= link_to 'SVG', "/brand/hcb-icon-#{icons[:name].parameterize}.svg", class: 'btn bg-info mr2 w-auto', target: :_blank %>
-          <%= link_to 'PNG', "/brand/hcb-icon-#{icons[:name].parameterize}.png", class: 'btn bg-accent', target: :_blank %>
+          <%= link_to 'SVG', "/brand/hcb-icon-#{icon[:name].parameterize}.svg", class: 'btn bg-info mr2 w-auto', target: :_blank %>
+          <%= link_to 'PNG', "/brand/hcb-icon-#{icon[:name].parameterize}.png", class: 'btn bg-accent', target: :_blank %>
         </div>
       </div>
     <% end %>
