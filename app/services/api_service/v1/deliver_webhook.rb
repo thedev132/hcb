@@ -8,10 +8,10 @@ module ApiService
       ]
 
       # POST to `webhook_url`
-      def initialize(type:, webhook_url:, body:, secret:)
+      def initialize(type:, webhook_url:, data:, secret:)
         @type = type
         @webhook_url = webhook_url
-        @body = body
+        @data = data
         @secret = secret
 
         @timestamp = Time.now
@@ -25,7 +25,7 @@ module ApiService
 
         res = conn.post(@webhook_url) do |req|
           req.headers['HCB-Signature'] = signature_header
-          req.body = @body
+          req.body = body
         end
 
         raise ArgumentError, "Error delivering webhook. HTTP status: #{res.status}" unless res.success?
@@ -49,12 +49,19 @@ module ApiService
         }
       end
 
+      def body
+        body_and_type = @data
+        body_and_type["meta"] = { type: @type }
+
+        body_and_type.to_json
+      end
+
       # This signature uses Stripe's webhook verification system
       # https://stripe.com/docs/webhooks/signatures#verify-manually
       # https://github.com/stripe/stripe-ruby/issues/912
       # https://github.com/stripe/stripe-ruby/blob/master/lib/stripe/webhook.rb
       def signature
-        @signature ||= Stripe::Webhook::Signature.compute_signature(@timestamp, @body, @secret)
+        @signature ||= Stripe::Webhook::Signature.compute_signature(@timestamp, body, @secret)
       end
 
       def signature_header

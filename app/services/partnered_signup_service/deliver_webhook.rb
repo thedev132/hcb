@@ -12,7 +12,7 @@ module PartneredSignupService
       ::ApiService::V1::DeliverWebhook.new(
         type: TYPE,
         webhook_url: webhook_url,
-        body: body,
+        data: body,
         secret: partner.api_key
       ).run
     end
@@ -32,7 +32,7 @@ module PartneredSignupService
     end
 
     def body
-      ::Api::V1::PartneredSignupSerializer.new(partnered_signup: sup).run.to_json
+      ::Api::V1::PartneredSignupSerializer.new(partnered_signup: sup).run
     end
   end
 end
