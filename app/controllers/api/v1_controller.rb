@@ -77,10 +77,6 @@ module Api
       }
       event = ::ApiService::V1::ConnectFinish.new(attrs).run
 
-
-      # TODO: Send webhook
-      # ::PartneredSignupJob::DeliverWebhook.perform_later(@partnered_signup.id)
-
       redirect_to event.redirect_url
     end
 

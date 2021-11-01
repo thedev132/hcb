@@ -23,6 +23,9 @@ module ApiService
           ::UserService::Create.new(user_attrs).run
 
           event.mark_pending!
+
+          # Send webhook to let Partner know that the Connect from has been submitted
+          ::PartneredSignupJob::DeliverWebhook.perform_later(@partnered_signup.id)
         end
 
         event
