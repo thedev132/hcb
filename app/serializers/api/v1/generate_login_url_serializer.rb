@@ -3,9 +3,9 @@
 module Api
   module V1
     class GenerateLoginUrlSerializer
-      def initialize(login_url:, organization_identifier:)
+      def initialize(login_url:, organization_public_id:)
         @login_url = login_url
-        @organization_identifier = organization_identifier
+        @organization_public_id = organization_public_id
       end
 
       def run
@@ -18,7 +18,7 @@ module Api
 
       def data # this method is also used by Api::V1::OrganizationSerializer
         {
-          organizationIdentifier: @organization_identifier,
+          organization_id: @organization_public_id,
           loginUrl: @login_url
         }
       end

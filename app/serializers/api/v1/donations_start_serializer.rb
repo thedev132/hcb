@@ -17,12 +17,13 @@ module Api
 
       def data
         {
-          organizationIdentifier: event.organization_identifier,
-          donationIdentifier: @partner_donation.donation_identifier
+          organization_id: organization.public_id,
+          donation_identifier: @partner_donation.donation_identifier,
+          donation_id: @partner_donation.public_id,
         }
       end
 
-      def event
+      def organization
         @partner_donation.event
       end
     end

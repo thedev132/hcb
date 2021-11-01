@@ -3,9 +3,9 @@
 module ApiService
   module V1
     class GenerateLoginUrl
-      def initialize(partner_id:, organization_identifier:)
+      def initialize(partner_id:, organization_public_id:)
         @partner_id = partner_id
-        @organization_identifier = organization_identifier
+        @organization_public_id = organization_public_id
       end
 
       def run
@@ -21,11 +21,11 @@ module ApiService
       end
 
       def organization
-        @organization ||= partner.events.find_by!(organization_identifier: clean_organization_identifier)
+        @organization ||= partner.events.find_by_public_id(clean_organization_public_id)
       end
 
-      def clean_organization_identifier
-        @organization_identifier.to_s.strip
+      def clean_organization_public_id
+        @organization_public_id.to_s.strip
       end
 
       def partner

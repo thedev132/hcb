@@ -3,15 +3,12 @@
 module ApiService
   module V1
     class DonationsStart
-      def initialize(partner_id:,
-                     organization_identifier:)
+      def initialize(partner_id:, organization_public_id:)
         @partner_id = partner_id
-        @organization_identifier = organization_identifier
+        @organization_public_id = organization_public_id
       end
 
       def run
-        raise ArgumentError, "Organization '#{clean_organization_identifier}' is unapproved and can not take donations at this time." unless event.approved?
-
         event.partner_donations.create!
       end
 
@@ -22,11 +19,11 @@ module ApiService
       end
 
       def event
-        partner.events.find_by!(organization_identifier: clean_organization_identifier)
+        partner.events.find_by_public_id(organization_public_id)
       end
 
-      def clean_organization_identifier
-        @organization_identifier.to_s.strip
+      def clean_organization_public_id
+        @organization_public_id.to_s.strip
       end
     end
   end

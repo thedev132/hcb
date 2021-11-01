@@ -35,11 +35,11 @@ module Api
 
       attrs = {
         partner_id: current_partner.id,
-        organization_identifier: contract[:organizationIdentifier]
+        organization_public_id: contract[:public_id]
       }
       login_url = ApiService::V1::GenerateLoginUrl.new(attrs).run
 
-      render json: Api::V1::GenerateLoginUrlSerializer.new(login_url: login_url).run
+      render json: Api::V1::GenerateLoginUrlSerializer.new(login_url: login_url, organization_public_id: contract[:public_id]).run
     end
 
     def connect_start
@@ -87,7 +87,7 @@ module Api
 
       attrs = {
         partner_id: current_partner.id,
-        organization_identifier: contract[:organizationIdentifier]
+        organization_public_id: contract[:public_id]
       }
       partner_donation = ::ApiService::V1::DonationsStart.new(attrs).run
 
