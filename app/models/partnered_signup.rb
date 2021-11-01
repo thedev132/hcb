@@ -46,6 +46,10 @@ class PartneredSignup < ApplicationRecord
     !submitted?
   end
 
+  def pending?
+    !self.submitted_at.nil? and self.accepted_at.nil? and self.rejected_at.nil?
+  end
+
   def status
     if rejected?
       "rejected"
@@ -58,16 +62,6 @@ class PartneredSignup < ApplicationRecord
     else
       Airbrake.notify("SUP #{self.id} in unknown status")
     end
-  end
-  def rejected?
-    self.rejected_at.present?
-  end
-  def accepted?
-    self.accepted_at.present?
-  end
-
-  def pending?
-    !self.submitted_at.nil? and self.accepted_at.nil? and self.rejected_at.nil?
   end
 
   private
