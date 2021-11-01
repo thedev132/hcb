@@ -17,7 +17,7 @@ class PartneredSignupsController < ApplicationController
   def edit
   end
 
-  # POST /api/v1/connect/finish/:id
+  # PATCH /partnered_signups/:public_id
   def update
     @partnered_signup.update_attributes(partnered_signup_params)
     @partnered_signup.submitted_at = Time.now
