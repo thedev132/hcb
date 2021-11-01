@@ -130,6 +130,7 @@ class AdminController < ApplicationController
     authorize @partnered_signup
 
     if @partnered_signup.save!
+      ::PartneredSignupJob::DeliverWebhook.perform_later(@partnered_signup.id)
       flash[:success] = "Partner signup accepted"
       redirect_to partnered_signups_admin_index_path
     else
@@ -144,6 +145,7 @@ class AdminController < ApplicationController
     authorize @partnered_signup
 
     if @partnered_signup.save
+      ::PartneredSignupJob::DeliverWebhook.perform_later(@partnered_signup.id)
       flash[:success] = "Partner signup rejected"
       redirect_to partnered_signups_admin_index_path
     else
