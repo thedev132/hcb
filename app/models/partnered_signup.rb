@@ -30,20 +30,20 @@ class PartneredSignup < ApplicationRecord
     Rails.application.routes.url_helpers.api_connect_continue_api_v1_index_url(public_id: public_id)
   end
 
-  def accepted?
-    self.accepted_at.present?
-  end
-
-  def rejected?
-    self.rejected_at.present?
+  def unsubmitted?
+    !submitted?
   end
 
   def submitted?
     self.submitted_at.present?
   end
 
-  def unsubmitted?
-    !submitted?
+  def rejected?
+    self.rejected_at.present?
+  end
+
+  def accepted?
+    self.accepted_at.present?
   end
 
   def pending?
