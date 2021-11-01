@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe Api::V1::LoginContract, type: :model do
+RSpec.describe Api::V2::LoginContract, type: :model do
   let(:login_token) { "tok_1234" }
 
   let(:attrs) do
@@ -11,7 +11,7 @@ RSpec.describe Api::V1::LoginContract, type: :model do
     }
   end
 
-  let(:contract) { Api::V1::LoginContract.new.call(attrs) }
+  let(:contract) { Api::V2::LoginContract.new.call(attrs) }
 
   it "is successful" do
     expect(contract).to be_success

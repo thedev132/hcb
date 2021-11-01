@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe Api::V1::GenerateLoginUrlContract, type: :model do
+RSpec.describe Api::V2::GenerateLoginUrlContract, type: :model do
   let(:organization_identifier) { "org_1234" }
 
   let(:attrs) do
@@ -11,7 +11,7 @@ RSpec.describe Api::V1::GenerateLoginUrlContract, type: :model do
     }
   end
 
-  let(:contract) { Api::V1::GenerateLoginUrlContract.new.call(attrs) }
+  let(:contract) { Api::V2::GenerateLoginUrlContract.new.call(attrs) }
 
   it "is successful" do
     expect(contract).to be_success

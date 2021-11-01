@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe ApiService::V1::DonationsStart, type: :model do
+RSpec.describe ApiService::V2::DonationsStart, type: :model do
   fixtures "partners", "events"
 
   let(:partner) { partners(:partner1) }
@@ -18,7 +18,7 @@ RSpec.describe ApiService::V1::DonationsStart, type: :model do
     }
   end
 
-  let(:service) { ApiService::V1::DonationsStart.new(attrs) }
+  let(:service) { ApiService::V2::DonationsStart.new(attrs) }
 
   it "does not create partner donation" do
     expect do

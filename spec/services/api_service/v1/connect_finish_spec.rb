@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe ApiService::V1::ConnectFinish, type: :model do
+RSpec.describe ApiService::V2::ConnectFinish, type: :model do
   fixtures "events", "users", "organizer_positions"
 
   let(:event) { events(:event1) }
@@ -30,7 +30,7 @@ RSpec.describe ApiService::V1::ConnectFinish, type: :model do
     }
   end
 
-  let(:service) { ApiService::V1::ConnectFinish.new(attrs) }
+  let(:service) { ApiService::V2::ConnectFinish.new(attrs) }
 
   it "does not create event" do
     expect do
