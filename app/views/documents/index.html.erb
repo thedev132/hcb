@@ -16,7 +16,7 @@
 <ul class="grid">
   <% @documents.each do |d| %>
     <%= link_to admin_signed_in? ? d : document_download_path(d) do %>
-      <li class="card">
+      <li class="card card--hover">
         <%= image_tag(d.preview_url, width: 330) if d.preview_url %>
 
         <strong class="brand-sans h3 block line-height-2"><%= d.name %></strong>
@@ -26,7 +26,7 @@
   <% end %>
   <% Document.common.each do |d| %>
     <%= link_to admin_signed_in? ? d : document_download_path(d) do %>
-      <li class="card">
+      <li class="card card--hover">
         <%= image_tag(d.preview_url, width: 330) if d.preview_url %>
 
         <strong class="brand-sans h3 block line-height-2"><%= d.name %></strong>
@@ -37,7 +37,7 @@
 
   <% if @event.approved? %>
     <%= link_to event_fiscal_sponsorship_letter_path(event_id: @event.slug, format: 'pdf') do %>
-      <li class="card">
+      <li class="card card--hover">
         <%= image_tag event_fiscal_sponsorship_letter_url(event_id: @event.slug, format: 'png'), width: 330 %>
 
         <strong class="brand-sans h3 block line-height-2">Fiscal Sponsorship Confirmation</strong>
