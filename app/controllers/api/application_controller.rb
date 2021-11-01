@@ -21,7 +21,7 @@ module Api
     def sign_in_and_set_cookie!(user)
       session_token = SecureRandom.urlsafe_base64
 
-      cookies.encrypted[:session_token] = { value: session_token, expires: 1.day.from_now }
+      cookies.encrypted[:session_token] = { value: session_token, expires: 30.days.from_now }
       user.update_column(:session_token, session_token)
 
       @current_user ||= user
