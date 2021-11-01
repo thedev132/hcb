@@ -8,6 +8,12 @@
     </span>
   </h1>
 
+  <p>
+  If you'd like to list us on your site, you can use the logos below. Please
+  don't list us under a "sponsor" or "donor" list unless we've directly
+  transferred funds to your account before.
+  </p>
+
   <h2>
     Logos
   </h2>
@@ -16,7 +22,7 @@
     <% @icons.each do |icon| %>
       <div class="card w-100 pb0">
         <div class="card__banner card__banner--top center bg-<%= icon[:background] %>" aria-label="<%= icon[:criteria] %>" style="transform-style: preserve-3d;" data-behavior="hover_tilt" data-tilt-scale="1.2">
-          <img src="/brand/hcb-icon-<%= icon[:name].parameterize %>.svg" width="100" style="transform: translateZ(20px);">
+          <img src="/brand/hcb-icon-<%= icon[:name].parameterize %>.svg" width="100" style="transform: translateZ(20px); cursor: pointer;" class="logo-confetti">
         </div>
         <h3 class="mb0"><%= icon[:name] %></h3>
         <p class="mt0 muted"><%= icon[:criteria] %></p>
@@ -30,13 +36,16 @@
   
   <h2>
     Badges
+    <span class="muted h3 regular sans block">
+      For placing in a footer or details section.
+    </span>
   </h2>
 
   <div class="grid grid--wide grid--spacious mt3 mb3 md-mb4">
     <% @logos.each do |logo| %>
       <div class="card w-100 pb0">
         <div class="card__banner card__banner--top center bg-<%= logo[:background] %>" aria-label="<%= logo[:criteria] %>" style="transform-style: preserve-3d;" data-behavior="hover_tilt" data-tilt-scale="1.2">
-          <img src="/brand/hcb-logo-<%= logo[:name].parameterize %>.svg" style="transform: translateZ(20px);">
+          <img src="/brand/hcb-logo-<%= logo[:name].parameterize %>.svg" style="transform: translateZ(20px); cursor: pointer;" class="logo-confetti">
         </div>
         <h3 class="mb0"><%= logo[:name] %></h3>
         <p class="mt0 muted"><%= logo[:criteria] %></p>
@@ -67,3 +76,29 @@
   <%= link_to "footer", "https://www.hackthefog.com/" %>.
   </p>
 </div>
+
+<script>
+  window.onload = () => {
+    const jsConfetti = new JSConfetti()
+
+    const combinations = [
+      {
+        emojis: ['🦄'],
+        confettiNumber: 1,
+      },
+      {
+        emojis: ['💸', '💵', '💰'],
+      },
+      {
+        emojis: ['🏦', '🏧'],
+      },
+      {
+        emojis: ['🌈', '⚡️', '💥', '✨', '💫', '💸', '💵', '💰', '💲', '🪙', '🏦', '💴'],
+      }
+    ]
+
+    $('.logo-confetti').click(() => {
+      jsConfetti.addConfetti(combinations[Math.floor(Math.random() * combinations.length)])
+    })
+  }
+</script>
