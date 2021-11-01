@@ -4,7 +4,7 @@ module Api
   module V1
     class DonationsStartContract < Api::ApplicationContract
       params do
-        required(:public_id).filled(:string)
+        required(:organization_id).filled(:string)
       end
     end
   end

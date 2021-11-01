@@ -87,7 +87,7 @@ module Api
 
       attrs = {
         partner_id: current_partner.id,
-        organization_public_id: contract[:public_id]
+        organization_public_id: contract[:organization_id]
       }
       partner_donation = ::ApiService::V1::DonationsStart.new(attrs).run
 
