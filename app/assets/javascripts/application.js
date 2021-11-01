@@ -7,7 +7,6 @@
 //= require activestorage
 //= require local-time
 //= require tilt.jquery.min.js
-//= require js-confetti.browser.js
 
 //= require global
 //= require ui
