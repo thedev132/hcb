@@ -1,17 +1,17 @@
 # frozen_string_literal: true
 
 class V2DonationsDocumentation < ApplicationDocumentation
-  swagger_path "/api/v1/donations/start" do
+  swagger_path "/api/2/donations/start" do
     operation :post do
       key :summary, "Start a donation backed by Bank"
       key :description, "Start a donation backed by Bank"
       key :tags, ["Donations"]
-      key :operationId, "v1DonationsStart"
+      key :operationId, "v2DonationsStart"
 
       parameter do
-        key :name, :organizationIdentifier
+        key :name, :organization_id
         key :in, :query
-        key :description, "The unique organization identifier obtained during the Bank Connect process"
+        key :description, "The Bank Connect organization's id"
         key :required, true
         schema do
           key :type, :string
@@ -19,13 +19,14 @@ class V2DonationsDocumentation < ApplicationDocumentation
       end
 
       response 200 do
-        key :description, "Parse this data in order to inject the donationIdentifier into the Stripe Charge metadata"
+        key :description, "Parse this **Donation** object in order to inject the `donation_identifier` into the **Stripe Payment Intent** metadata"
         content :"application/json" do
           key :example, {
             data: [
               {
-                organizationIdentifier: "org_1234",
-                donationIdentifier: "dnt_1234"
+                organization_id: "org_s2cDsp",
+                donation_id: "pdn_Lsl39s",
+                donation_identifier: "dnt_1234",
               }
             ]
           }

@@ -4,8 +4,8 @@ class V2ConnectDocumentation < ApplicationDocumentation
   swagger_path "/api/v2/connect/start" do
     operation :post do
       key :summary, "Start the Bank Connect flow"
-      key :description, "Creates a PartneredSignup object which is used to track the onboarding and application progress"
-      key :tags, ["Connect"]
+      key :description, "Creates a **PartneredSignup** object which is used to track the onboarding and application progress"
+      key :tags, ["Bank Connect (PartneredSignups)"]
       key :operationId, "v2ConnectStart"
 
       parameter do
@@ -137,14 +137,14 @@ class V2ConnectDocumentation < ApplicationDocumentation
       key :description, "Receive **webhook payload** from Bank Connect.\n\n" \
                         "Webhooks from Bank Connect can be verified using [Stripe's webhook signature system](https://stripe.com/docs/webhooks/signatures). " \
                         "The verification signature is located in the `HCB-Signature` header and the `secret` is your Bank Connect api key."
-      key :tags, ["Connect"]
+      key :tags, ["Bank Connect (PartneredSignups)"]
       key :operationId, "v2ConnectWebhook"
 
       response 200 do
         key :description, "Parse this **PartneredSignup** object in order to update the organization's Bank Connect `status` in your database (in this example, it is 'submitted', " \
                           "indicating that the user has submitted the Bank Connect Form.\n\nAfter a user has submit the Bank Connect Form (`status` = 'submitted'), " \
                           "it will be reviewed by the Hack Club Bank team — resulting in either an approval or rejection.\n\n Once an **PartneredSignup** has been " \
-                          "approved, the `organization_id` will no longer be 'null'. Alternatively, a rejected **PartneredSignup** will have a 'rejected' `status` " \
+                          "approved, the `organization_id` will no longer be 'null' (such as 'org_s2cDsp'). Alternatively, a rejected **PartneredSignup** will have a 'rejected' `status` " \
                           "and the `organization_id` will remain 'null'."
         content :"application/json" do
           key :example, {
