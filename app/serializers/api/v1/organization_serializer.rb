@@ -17,9 +17,10 @@ module Api
 
       def data # this method is also used by Api::V1::OrganizationSerializer
         {
-          organizationIdentifier: @event.organization_identifier,
-          status: @event.aasm_state,
+          id: @event.public_id,
+          name: @event.name,
           balance: @event.balance_v2_cents,
+          sponsorship_fee: @event.sponsorship_fee
         }
       end
     end
