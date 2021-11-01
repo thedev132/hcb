@@ -51,13 +51,12 @@ class V2OrganizationsDocumentation < ApplicationDocumentation
         key :description, ""
         content :"application/json" do
           key :example, {
-            data: [
+            data:
               {
                 id: "org_Yvguja",
                 name: "My Org 1",
                 balance: 68605
               }
-            ]
           }
         end
       end
@@ -86,12 +85,11 @@ class V2OrganizationsDocumentation < ApplicationDocumentation
         key :description, ""
         content :"application/json" do
           key :example, {
-            data: [
+            data:
               {
                 organization_id: "org_Yvguja",
                 loginUrl: "https://bank.hackclub.com/api/v2/login?loginToken=tok_U2w2vzV2xNNkMFvNGbr9ckqfX7tsKpKh"
               }
-            ]
           }
         end
       end

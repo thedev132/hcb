@@ -22,13 +22,12 @@ class V2DonationsDocumentation < ApplicationDocumentation
         key :description, "Parse this **Donation** object in order to inject the `donation_identifier` into the **Stripe Payment Intent** metadata"
         content :"application/json" do
           key :example, {
-            data: [
+            data:
               {
                 organization_id: "org_s2cDsp",
                 donation_id: "pdn_Lsl39s",
                 donation_identifier: "dnt_1234",
               }
-            ]
           }
         end
       end

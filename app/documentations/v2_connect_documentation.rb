@@ -131,7 +131,7 @@ class V2ConnectDocumentation < ApplicationDocumentation
     end
   end
 
-  swagger_path "yoursite.com/api/bankConnect/webhook" do
+  swagger_path "https://yoursite.com/api/bankConnect/webhook" do
     operation :post do
       key :summary, "Receive webhook payload from Bank Connect to your site"
       key :description, "Receive **webhook payload** from Bank Connect.\n\n" \
@@ -149,6 +149,95 @@ class V2ConnectDocumentation < ApplicationDocumentation
         content :"application/json" do
           key :example, {
             data: {
+              id: "sup_l3mtZz",
+              status: "submitted",
+              redirect_url: "https://yoursite.com/organizations/1234/bankConnect/redirect",
+              connect_url: "https://bank.hackclub.com/api/v2/connect/continue/sup_l3mtZz",
+              owner_phone: "123456789",
+              owner_email: "user@gmail.com",
+              owner_name: "My Name",
+              owner_address: "1 street",
+              owner_birthdate: "2021-01-01",
+              country: 1,
+              organization_name: "My Organization's Name",
+              organization_id: nil
+            }
+          }
+        end
+      end
+    end
+  end
+
+  swagger_path "/api/v2/partnered_signups" do
+    operation :get do
+      key :summary, "Return information on all your PartneredSignups"
+      key :description, "Return information on all your PartneredSignups"
+      key :tags, ["Bank Connect (PartneredSignups)"]
+      key :operationId, "v2PartneredSignups"
+
+      response 200 do
+        key :description, ""
+        content :"application/json" do
+          key :example, {
+            data: [
+              {
+                id: "sup_lYntM4",
+                status: "accepted",
+                redirect_url: "https://yoursite.com/organizations/5154/bankConnect/redirect",
+                connect_url: "https://bank.hackclub.com/api/v2/connect/continue/sup_lYntM4",
+                owner_phone: "987654321",
+                owner_email: "hey@gmail.com",
+                owner_name: "Your Name",
+                owner_address: "2 road",
+                owner_birthdate: "2020-12-31",
+                country: nil,
+                organization_name: "Test org",
+                organization_id: "org_BJouPR"
+              },
+              {
+                id: "sup_l3mtZz",
+                status: "submitted",
+                redirect_url: "https://yoursite.com/organizations/1234/bankConnect/redirect",
+                connect_url: "https://bank.hackclub.com/api/v2/connect/continue/sup_l3mtZz",
+                owner_phone: "123456789",
+                owner_email: "user@gmail.com",
+                owner_name: "My Name",
+                owner_address: "1 street",
+                owner_birthdate: "2021-01-01",
+                country: 1,
+                organization_name: "My Organization's Name",
+                organization_id: nil
+              },
+            ]
+          }
+        end
+      end
+    end
+  end
+
+  swagger_path "/api/v2/partnered_signups/{partnered_signups_id}" do
+    operation :get do
+      key :summary, "Return information on single PartneredSignup"
+      key :description, "Return information on single PartneredSignup"
+      key :tags, ["Bank Connect (PartneredSignups)"]
+      key :operationId, "v2PartneredSignupShow"
+
+      parameter do
+        key :name, :partnered_signups_id
+        key :in, :path
+        key :description, "Bank Connect's `partnered_signups_id`"
+        key :required, true
+        schema do
+          key :type, :string
+        end
+      end
+
+      response 200 do
+        key :description, ""
+        content :"application/json" do
+          key :example, {
+            data: 
+            {
               id: "sup_l3mtZz",
               status: "submitted",
               redirect_url: "https://yoursite.com/organizations/1234/bankConnect/redirect",
