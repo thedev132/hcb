@@ -40,6 +40,7 @@
   flex-direction: column;
   max-height: 100vh;
   padding-top: 2rem;
+  z-index: 2;
 
   @media (min-width: 56em) {
     position: sticky;
@@ -50,6 +51,7 @@
 
 .app__content {
   padding-bottom: 2rem;
+  z-index: 1;
 
   h1:first-child {
     margin-top: 2rem;

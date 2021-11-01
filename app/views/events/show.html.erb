@@ -90,7 +90,7 @@
   <%= form_with(model: nil, local: true, method: :get) do |form| %>
     <div class="filterbar flex flex-wrap items-center width-100">
 
-      <%= form.text_field :search, placeholder: "Search…", class: "flex-auto md-mr2", style: "z-index: -1; width auto; max-width: none;", value: params[:search] %>
+      <%= form.text_field :search, placeholder: "Search…", class: "flex-auto md-mr2", style: "width auto; max-width: none;", value: params[:search] %>
 
       <!--
       <div data-behavior="filterbar" role="tablist" class="filterbar__filters flex mt1 lg-mt0">
