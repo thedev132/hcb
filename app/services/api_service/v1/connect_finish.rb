@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+# DEPRECATED
+
+
 module ApiService
   module V1
     class ConnectFinish

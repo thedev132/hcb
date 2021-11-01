@@ -26,6 +26,9 @@ class PartneredSignupsController < ApplicationController
 
     if @partnered_signup.save
       redirect_to @partnered_signup.redirect_url
+
+      # Send webhook to let Partner know that the Connect from has been submitted
+      ::PartneredSignupJob::DeliverWebhook.perform_later(@partnered_signup.id)
     else
       render "edit"
     end

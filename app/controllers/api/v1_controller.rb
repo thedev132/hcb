@@ -61,24 +61,25 @@ module Api
       redirect_to edit_partnered_signups_path(public_id: params[:public_id])
     end
 
-    def connect_finish
-      contract = Api::V1::ConnectFinishContract.new.call(params.permit!.to_h)
-      render json: json_error(contract), status: 400 and return unless contract.success?
+    # DEPRECATED. Connect finish now takes place within `PartneredSignup#edit`
+    # def connect_finish
+    #   contract = Api::V1::ConnectFinishContract.new.call(params.permit!.to_h)
+    #   render json: json_error(contract), status: 400 and return unless contract.success?
 
-      attrs = {
-        event_id: contract[:hashid],
-        organization_name: contract[:organization_name],
-        organization_url: contract[:organization_url],
-        name: contract[:name],
-        email: contract[:email],
-        phone: contract[:phone],
-        address: contract[:address],
-        birthdate: contract[:birthdate]
-      }
-      event = ::ApiService::V1::ConnectFinish.new(attrs).run
+    #   attrs = {
+    #     event_id: contract[:hashid],
+    #     organization_name: contract[:organization_name],
+    #     organization_url: contract[:organization_url],
+    #     name: contract[:name],
+    #     email: contract[:email],
+    #     phone: contract[:phone],
+    #     address: contract[:address],
+    #     birthdate: contract[:birthdate]
+    #   }
+    #   event = ::ApiService::V1::ConnectFinish.new(attrs).run
 
-      redirect_to event.redirect_url
-    end
+    #   redirect_to event.redirect_url
+    # end
 
     def donations_start
       contract = Api::V1::DonationsStartContract.new.call(params.permit!.to_h)
