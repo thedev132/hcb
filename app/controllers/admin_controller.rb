@@ -98,6 +98,7 @@ class AdminController < ApplicationController
 
     render layout: "admin"
   end
+
   def partnered_signups_accept
     @partnered_signup = PartneredSignup.find(params[:id])
     @partner = @partnered_signup.partner

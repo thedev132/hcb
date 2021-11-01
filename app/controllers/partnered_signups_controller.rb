@@ -15,6 +15,8 @@ class PartneredSignupsController < ApplicationController
   # GET /api/v1/connect/continue/:public_id
   # GET /partnered_signups/:public_id
   def edit
+    # Pass through to `redirect_url` if the form has already been submitted
+    redirect_to @partnered_signup.redirect_url if @partnered_signup.submitted?
   end
 
   # PATCH /partnered_signups/:public_id
