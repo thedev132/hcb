@@ -48,13 +48,13 @@ class PartneredSignup < ApplicationRecord
 
   def status
     if rejected?
-      'rejected'
+      "rejected"
     elsif accepted?
-      'accepted'
+      "accepted"
     elsif submitted?
-      'submitted'
+      "submitted"
     elsif unsubmitted?
-      'unsubmitted'
+      "unsubmitted"
     else
       Airbrake.notify("SUP #{self.id} in unknown status")
     end

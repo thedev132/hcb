@@ -24,7 +24,7 @@ module ApiService
         return if @webhook_url.blank?
 
         res = conn.post(@webhook_url) do |req|
-          req.headers['HCB-Signature'] = signature_header
+          req.headers["HCB-Signature"] = signature_header
           req.body = body
         end
 
