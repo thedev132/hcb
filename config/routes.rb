@@ -320,7 +320,7 @@ Rails.application.routes.draw do
   end
 
   scope :api, module: "api" do
-    resources "v1", as: :api_v1, only: [:index] do
+    resources "v2", as: :api_v2, only: [:index] do
       collection do
         match "login", action: :login, as: :api_login, via: [:get]
 
@@ -334,7 +334,7 @@ Rails.application.routes.draw do
       end
     end
 
-    match "/", to: "v1#index", module: :api_v1, as: :api_root, via: :all
+    match "/", to: "v2#index", module: :api_v2, as: :api_root, via: :all
   end
 
   get "partnered_signups/:public_id", to: "partnered_signups#edit", as: :edit_partnered_signups

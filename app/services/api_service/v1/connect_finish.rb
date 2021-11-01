@@ -4,7 +4,7 @@
 
 
 module ApiService
-  module V1
+  module V2
     class ConnectFinish
       def initialize(event_id:,
                      organization_name:, organization_url:,

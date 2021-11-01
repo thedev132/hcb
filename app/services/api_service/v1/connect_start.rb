@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module ApiService
-  module V1
+  module V2
     class ConnectStart
       def initialize(partner_id:,
                      organization_identifier:, redirect_url:, webhook_url:)

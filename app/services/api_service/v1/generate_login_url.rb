@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module ApiService
-  module V1
+  module V2
     class GenerateLoginUrl
       def initialize(partner_id:, organization_public_id:)
         @partner_id = partner_id
@@ -11,7 +11,7 @@ module ApiService
       def run
         token = ::UserService::GenerateToken.new(user_id: user.id).run
 
-        Rails.application.routes.url_helpers.api_login_api_v1_index_url(loginToken: token)
+        Rails.application.routes.url_helpers.api_login_api_v2_index_url(loginToken: token)
       end
 
       private

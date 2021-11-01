@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module ApiService
-  module V1
+  module V2
     class DeliverWebhook
       VALID_WEBHOOK_TYPES = [
         ::PartneredSignupService::DeliverWebhook::TYPE,

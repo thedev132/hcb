@@ -9,7 +9,7 @@ module PartneredSignupService
     end
 
     def run
-      ::ApiService::V1::DeliverWebhook.new(
+      ::ApiService::V2::DeliverWebhook.new(
         type: TYPE,
         webhook_url: webhook_url,
         data: body,
@@ -32,7 +32,7 @@ module PartneredSignupService
     end
 
     def body
-      ::Api::V1::PartneredSignupSerializer.new(partnered_signup: sup).run
+      ::Api::V2::PartneredSignupSerializer.new(partnered_signup: sup).run
     end
   end
 end
