@@ -19,8 +19,7 @@ module Api
         {
           id: @event.public_id,
           name: @event.name,
-          balance: @event.balance_v2_cents,
-          sponsorship_fee: @event.sponsorship_fee
+          balance: @event.balance_v2_cents
         }
       end
     end
