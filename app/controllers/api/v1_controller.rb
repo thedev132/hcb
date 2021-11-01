@@ -77,7 +77,7 @@ module Api
       }
       event = ::ApiService::V1::ConnectFinish.new(attrs).run
 
-      redirect_to "#{event.redirect_url}?organizationIdentifier=#{event.organization_identifier}&status=#{event.aasm_state}"
+      redirect_to event.redirect_url
     end
 
     def donations_start
