@@ -4,7 +4,7 @@ module Api
   module V1
     class OrganizationContract < Api::ApplicationContract
       params do
-        required(:organizationIdentifier).filled(:string)
+        required(:public_id).filled(:string)
       end
     end
   end

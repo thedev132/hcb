@@ -3,13 +3,13 @@
 module ApiService
   module V1
     class Organization
-      def initialize(partner_id:, organization_identifier:)
+      def initialize(partner_id:, organization_public_id:)
         @partner_id = partner_id
-        @organization_identifier = organization_identifier
+        @organization_public_id = organization_public_id
       end
 
       def run
-        partner.events.find_by!(organization_identifier: clean_organization_identifier)
+        partner.events.find_by_public_id(clean_organization_identifier)
       end
 
       def partner
@@ -17,7 +17,7 @@ module ApiService
       end
 
       def clean_organization_identifier
-        @organization_identifier.to_s.strip
+        @organization_public_id.to_s.strip
       end
 
     end

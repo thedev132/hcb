@@ -111,7 +111,7 @@ module Api
 
       attrs = {
         partner_id: current_partner.id,
-        organization_identifier: contract[:organizationIdentifier]
+        organization_public_id: contract[:public_id]
       }
       event = ::ApiService::V1::Organization.new(attrs).run
 
