@@ -41,8 +41,6 @@
   <% end %>
   <%=render 'event_cards_table', title: "Organization Cards", stripe_cards: @stripe_cards %>
 
-  <%=render 'event_cards_table', title: "Organization Cards", stripe_cards: @stripe_cards %>
-
   <section class="grid grid--split pt4 pb4">
     <% if signed_in? %>
       <%= link_to my_cards_path,
