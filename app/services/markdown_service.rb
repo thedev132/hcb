@@ -11,6 +11,10 @@ class MarkdownService
     def autolink(link, link_type)
       "<a target=\"_blank\" href=\"#{link}\">#{link}</a>"
     end
+
+    def image(link, title, alt_text)
+      "<img src=\"#{link}\" alt=\"#{alt_text}\" title=\"#{title}\" width=\"100%\" />"
+    end
   end
 
   def renderer

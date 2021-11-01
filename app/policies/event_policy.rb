@@ -68,6 +68,22 @@ class EventPolicy < ApplicationPolicy
     is_public || user_or_admin
   end
 
+  def documentation?
+    is_public || user_or_admin
+  end
+  # (@eilla1) these pages are for the wip resources page and should be moved later
+  def connect_gofundme?
+    is_public || user_or_admin
+  end
+
+  def receive_check?
+    is_public || user_or_admin
+  end
+
+  def sell_merch?
+    is_public || user_or_admin
+  end
+
   def g_suite_overview?
     user_or_admin
   end

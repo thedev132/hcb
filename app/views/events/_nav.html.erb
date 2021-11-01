@@ -34,20 +34,14 @@
       'Receive promos & discounts',
       'shirt',
        event_promotions_path(event_id: @event.slug), :lg unless !@event.approved? %>
-    <%= dock_item 'Documents',
-      'Download waivers & legal docs',
-      'docs',
-      event_documents_path(event_id: @event.slug), :lg %>
     <%= dock_item "Google #{content_tag(:span, 'Workspace', class: 'sm-hide md-hide')}",
       'Set up domain Gmail',
       'google',
        event_g_suite_overview_path(event_id: @event.slug), :lg %>
-    <% if @event.bank_fees.exists? %>
-      <%= dock_item 'Bank Fees',
-        'View fee history',
-        'minue',
-        event_bank_fees_path(@event) %>
-    <% end %>
+    <%= dock_item 'Documentation',
+      'Commonly asked questions and how-tos',
+      'info',
+      event_documentation_path(event_id: @event.slug), :lg %>
     <%= dock_item 'Settings',
       'Edit project settings',
       'project-settings',
@@ -58,7 +52,7 @@
         <div class="menu__content" data-behavior="menu_content">
           <%= link_to 'Google Workspace', event_g_suite_overview_path(event_id: @event.slug) %>
           <%= link_to 'Promotions & perks', event_promotions_path(event_id: @event.slug) unless !@event.approved? %>
-          <%= link_to 'Documents', event_documents_path(event_id: @event.slug) %>
+          <%= link_to 'Documentation', event_documentation_path(event_id: @event.slug) %>
           <%= link_to 'Settings', edit_event_path(@event) %>
         </div>
       </action>

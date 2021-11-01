@@ -1,0 +1,25 @@
+<% title "Documentation for #{@event.name}" %>
+<% page_md %>
+<%= render 'events/nav' %>
+
+<h1>
+  Documentation
+</h1>
+
+  <ul class="grid">
+  <%= link_to(branding_path) do %>
+    <li class="card" style="height: auto">
+      <h3 class="mt1 mb0">Branding</h3>
+      <p class="mb1 mt1">How and when to use our logo.</p>
+    </li>
+    <% end %>
+
+  <%= link_to(event_documents_path) do %>
+    <li class="card">
+      <h3 class="mt1 mb0">Legal Documents</h3>
+      <p class="mb1 mt1">EINs, W-9s, and paperwork oh my!</p>
+    </li>
+  <% end %>
+  </ul>
+
+<%= render partial: "faq" %>

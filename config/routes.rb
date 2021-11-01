@@ -378,6 +378,12 @@ Rails.application.routes.draw do
     get "cards/new", to: "stripe_cards#new"
     get "stripe_cards/shipping", to: "stripe_cards#shipping", as: :stripe_cards_shipping
 
+    # (@eilla1) these pages are for the wip resources page and will be moved later
+    get "connect_gofundme", to: "events#connect_gofundme", as: :connect_gofundme
+    get "receive_check", to: "events#receive_check", as: :receive_check
+    get "sell_merch", to: "events#sell_merch", as: :sell_merch
+
+    get "documentation", to: "events#documentation", as: :documentation
     get "transfers", to: "events#transfers", as: :transfers
     get "promotions", to: "events#promotions", as: :promotions
     get "reimbursements", to: "events#reimbursements", as: :reimbursements

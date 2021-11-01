@@ -1,0 +1,12 @@
+<% title "Connect GoFundMe" %>
+<% page_md %>
+<%= render 'events/nav' %>
+
+<div style="padding-top: 4rem;">
+  <div class="container container--md card">
+  <h1 class="mb0" style="border:none"><%= @document_title %></h1>
+  <h3 class="mt0 mb2" style="color: gray; font-weight: 500;"><%= @document_subtitle %></h3>
+  <%= image_tag @document_image, class: 'w-100' if @document_image %>
+  <%== MarkdownService.instance.renderer.render @document_content %>
+  </div>
+</div>
