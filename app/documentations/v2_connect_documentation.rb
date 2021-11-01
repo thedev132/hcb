@@ -236,8 +236,7 @@ class V2ConnectDocumentation < ApplicationDocumentation
         key :description, ""
         content :"application/json" do
           key :example, {
-            data: 
-            {
+            data: {
               id: "sup_l3mtZz",
               status: "submitted",
               redirect_url: "https://yoursite.com/organizations/1234/bankConnect/redirect",
