@@ -16,7 +16,7 @@ class DocsController < ActionController::Base
   swagger_root do
     key :openapi, "3.0.0"
     info do
-      key :version, "0.1.0"
+      key :version, "2.0.0"
       key :title, "bank-api"
       key :description, "🏛 Process payments on Bank via an API"
     end
@@ -28,9 +28,9 @@ class DocsController < ActionController::Base
 
   SWAGGERED_CLASSES = [
     ApplicationDocumentation,
-    V1ConnectDocumentation,
-    V1DonationsDocumentation,
-    V1OrganizationsDocumentation,
+    V2ConnectDocumentation,
+    V2DonationsDocumentation,
+    V2OrganizationsDocumentation,
     self
   ].freeze
 

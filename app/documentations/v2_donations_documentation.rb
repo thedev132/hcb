@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class V1DonationsDocumentation < ApplicationDocumentation
+class V2DonationsDocumentation < ApplicationDocumentation
   swagger_path "/api/v1/donations/start" do
     operation :post do
       key :summary, "Start a donation backed by Bank"

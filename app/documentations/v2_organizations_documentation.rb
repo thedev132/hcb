@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class V1OrganizationsDocumentation < ApplicationDocumentation
+class V2OrganizationsDocumentation < ApplicationDocumentation
   swagger_path "/api/v1/organizations" do
     operation :get do
       key :summary, "Return information on all your organizations"
