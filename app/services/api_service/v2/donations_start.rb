@@ -19,7 +19,7 @@ module ApiService
       end
 
       def event
-        partner.events.find_by_public_id(organization_public_id)
+        partner.events.find_by_public_id(clean_organization_public_id)
       end
 
       def clean_organization_public_id
