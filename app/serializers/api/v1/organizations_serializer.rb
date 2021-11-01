@@ -17,7 +17,7 @@ module Api
       private
 
       def data
-        @organizations.map { |o| Api::V1::OrganizationSerializer.new(event: o).data }
+        @organizations.map { |o| Api::V2::OrganizationSerializer.new(event: o).data }
       end
 
     end

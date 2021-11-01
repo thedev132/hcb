@@ -16,7 +16,7 @@ module Api
 
       private
 
-      def data # this method is also used by Api::V1::OrganizationSerializer
+      def data # this method is also used by Api::V2::OrganizationSerializer
         {
           organization_id: @organization_public_id,
           loginUrl: @login_url

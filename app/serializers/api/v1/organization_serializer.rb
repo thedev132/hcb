@@ -15,7 +15,7 @@ module Api
 
       private
 
-      def data # this method is also used by Api::V1::OrganizationSerializer
+      def data # this method is also used by Api::V2::OrganizationSerializer
         {
           id: @event.public_id,
           name: @event.name,
