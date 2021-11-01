@@ -30,8 +30,34 @@ class PartneredSignup < ApplicationRecord
     Rails.application.routes.url_helpers.api_connect_continue_api_v1_index_url(public_id: public_id)
   end
 
+  def accepted?
+    self.accepted_at.present?
+  end
+
+  def rejected?
+    self.rejected_at.present?
+  end
+
+  def submitted?
+    self.submitted_at.present?
+  end
+
   def unsubmitted?
-    self.submitted_at.nil?
+    !submitted?
+  end
+
+  def status
+    if rejected?
+      'rejected'
+    elsif accepted?
+      'accepted'
+    elsif submitted?
+      'submitted'
+    elsif unsubmitted?
+      'unsubmitted'
+    else
+      Airbrake.notify("SUP #{self.id} in unknown status")
+    end
   end
   def rejected?
     self.rejected_at.present?

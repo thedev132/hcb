@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module EventJob
+module PartneredSignupJob
   class DeliverWebhook < ApplicationJob
     WebhookFailed = Class.new(StandardError)
 
@@ -9,9 +9,9 @@ module EventJob
     # 16 attempts will take roughly 3 days to complete (following Stripe: https://stripe.com/docs/webhooks/best-practices#retry-logic)
     # ∑((n^4)+2) from n=1 to n=16 equals 243880 seconds which is 2.8 days
 
-    def perform(event_id)
+    def perform(partnered_signup_id)
       begin
-        ::EventService::DeliverWebhook.new(event_id: event_id).run # raises ArgumentError on failure
+        ::PartneredSignup::DeliverWebhook.new(partnered_signup_id: partnered_signup_id).run # raises ArgumentError on failure
       rescue
         raise WebhookFailed
       end

@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# TODO: DEPRECATED. DON'T USE. THIS LOGIC SHOULD BE LATER MOVED TO A PartneredSignupService
+
 module EventService
   class Reject
     def initialize(event)

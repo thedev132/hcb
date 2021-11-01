@@ -54,7 +54,7 @@ module Api
                                                   organization_name: params[:organization_name],
                                                 )
 
-      render json: Api::V1::ConnectStartSerializer.new(partnered_signup: @partnered_signup).run
+      render json: Api::V1::PartneredSignupSerializer.new(partnered_signup: @partnered_signup).run
     end
 
     def connect_continue
