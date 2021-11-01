@@ -161,6 +161,9 @@ class V2ConnectDocumentation < ApplicationDocumentation
               country: 1,
               organization_name: "My Organization's Name",
               organization_id: nil
+            },
+            meta: {
+              type: "partnered_signup.status"
             }
           }
         end
