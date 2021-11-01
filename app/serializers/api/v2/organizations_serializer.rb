@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Api
-  module V1
+  module V2
     class OrganizationsSerializer
       def initialize(organizations:)
         @organizations = organizations

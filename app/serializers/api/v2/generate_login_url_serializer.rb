@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Api
-  module V1
+  module V2
     class GenerateLoginUrlSerializer
       def initialize(login_url:, organization_public_id:)
         @login_url = login_url

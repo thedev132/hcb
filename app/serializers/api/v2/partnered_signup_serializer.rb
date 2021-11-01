@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Api
-  module V1
+  module V2
     class PartneredSignupSerializer
       def initialize(partnered_signup:)
         @partnered_signup = partnered_signup
