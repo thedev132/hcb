@@ -28,7 +28,7 @@ module Api
           owner_birthdate: @partnered_signup.owner_birthdate,
           country: @partnered_signup.country,
           organization_name: @partnered_signup.organization_name,
-          event_id: @partnered_signup.event&.public_id, # nil if event does not exist yet
+          organization_id: @partnered_signup.event&.public_id, # nil if event does not exist yet
         }
       end
     end
