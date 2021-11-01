@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe ApiService::V2::Organization, type: :model do
+RSpec.describe ApiService::V2::FindOrganization, type: :model do
   fixtures "partners", "events"
 
   let(:partner) { partners(:partner1) }
@@ -19,7 +19,7 @@ RSpec.describe ApiService::V2::Organization, type: :model do
     }
   end
 
-  let(:service) { ApiService::V2::Organization.new(attrs) }
+  let(:service) { ApiService::V2::FindOrganization.new(attrs) }
 
   context "when partner does not exist" do
     let(:partner_id) { "999999" }

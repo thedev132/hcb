@@ -5,7 +5,6 @@ module Api
     class OrganizationsSerializer
       def initialize(organizations:)
         @organizations = organizations
-        puts @organizations
       end
 
       def run

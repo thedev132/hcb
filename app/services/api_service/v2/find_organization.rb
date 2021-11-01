@@ -2,7 +2,7 @@
 
 module ApiService
   module V2
-    class Organization
+    class FindOrganization
       def initialize(partner_id:, organization_public_id:)
         @partner_id = partner_id
         @organization_public_id = organization_public_id

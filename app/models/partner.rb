@@ -8,6 +8,7 @@ class Partner < ApplicationRecord
   attribute :api_key, :string, default: -> { new_api_key }
 
   has_many :events
+  has_many :partnered_signups
   has_many :partner_donations, through: :events
 
   validates :slug, exclusion: { in: EXCLUDED_SLUGS }, uniqueness: true

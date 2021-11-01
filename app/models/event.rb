@@ -178,6 +178,7 @@ class Event < ApplicationRecord
   has_many :fees, through: :canonical_event_mappings
   has_many :bank_fees
 
+  has_many :partnered_signups
   has_many :partner_donations
 
   enum country: {

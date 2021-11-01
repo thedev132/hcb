@@ -328,6 +328,8 @@ Rails.application.routes.draw do
         match "organizations", action: :organizations, as: :api_organizations, via: [:get]
         match "organizations/:public_id", action: :organization, as: :api_organization, via: [:get]
         match "organizations/:public_id/generateLoginUrl", action: :generate_login_url, as: :api_organization_generate_login_url, via: [:post]
+        match "partnered_signups", action: :partnered_signups, as: :api_partnered_signups, via: [:get]
+        match "partnered_signups/:public_id", action: :partnered_signup, as: :api_partnered_signup, via: [:get]
 
         match "connect/start", action: :connect_start, as: :api_connect_start, via: [:post]
         get "connect/continue/:public_id", via: :get, action: :connect_continue, as: :api_connect_continue

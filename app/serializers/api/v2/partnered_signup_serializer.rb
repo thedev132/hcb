@@ -13,8 +13,6 @@ module Api
         }
       end
 
-      private
-
       def data
         {
           id: @partnered_signup.public_id,

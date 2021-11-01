@@ -81,6 +81,34 @@ module Api
     #   redirect_to event.redirect_url
     # end
 
+    def partnered_signups
+      contract = Api::V2::PartneredSignupsContract.new.call(params.permit!.to_h)
+      render json: json_error(contract), status: 400 and return unless contract.success?
+
+      attrs = {
+        partner_id: current_partner.id,
+      }
+      partnered_signups = ::ApiService::V2::FindPartneredSignups.new(attrs).run
+
+      render json: Api::V2::PartneredSignupsSerializer.new(partnered_signups: partnered_signups).run
+    end
+
+    def partnered_signup
+      contract = Api::V2::PartneredSignupContract.new.call(params.permit!.to_h)
+      render json: json_error(contract), status: 400 and return unless contract.success?
+
+      attrs = {
+        partner_id: current_partner.id,
+        partnered_signup_public_id: contract[:public_id]
+      }
+      partnered_signup = ::ApiService::V2::FindPartneredSignup.new(attrs).run
+
+      # if partnered_signup does not exist, throw not found error
+      raise ActiveRecord::RecordNotFound and return unless partnered_signup
+
+      render json: Api::V2::PartneredSignupSerializer.new(partnered_signup: partnered_signup).run
+    end
+
     def donations_start
       contract = Api::V2::DonationsStartContract.new.call(params.permit!.to_h)
       render json: json_error(contract), status: 400 and return unless contract.success?
@@ -101,7 +129,7 @@ module Api
       attrs = {
         partner_id: current_partner.id,
       }
-      organizations = ::ApiService::V2::Organizations.new(attrs).run
+      organizations = ::ApiService::V2::FindOrganizations.new(attrs).run
 
       render json: Api::V2::OrganizationsSerializer.new(organizations: organizations).run
     end
@@ -114,7 +142,7 @@ module Api
         partner_id: current_partner.id,
         organization_public_id: contract[:public_id]
       }
-      event = ::ApiService::V2::Organization.new(attrs).run
+      event = ::ApiService::V2::FindOrganization.new(attrs).run
 
       # if event does not exist, throw not found error
       raise ActiveRecord::RecordNotFound and return unless event

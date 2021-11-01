@@ -13,8 +13,6 @@ module Api
         }
       end
 
-      private
-
       def data # this method is also used by Api::V2::OrganizationSerializer
         {
           id: @event.public_id,
