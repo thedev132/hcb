@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class PartneredSignupsController < ApplicationController
-  before_action :set_partnered_signup, only: [:edit, :update, :admin_accept, :admin_reject]
-  before_action :set_partner, only: [:edit, :update, :admin_accept, :admin_reject]
+  before_action :set_partnered_signup, only: [:edit, :update]
+  before_action :set_partner, only: [:edit, :update]
   skip_after_action :verify_authorized, only: [:edit, :update]
   skip_before_action :signed_in_user, only: [:edit, :update]
 
@@ -25,32 +25,6 @@ class PartneredSignupsController < ApplicationController
     authorize @partnered_signup
 
     if @partnered_signup.save
-      redirect_to @partnered_signup.redirect_url
-    else
-      render "edit"
-    end
-  end
-
-  def admin_accept
-    raise NotImplementedError
-    @partnered_signup.accepted_at = Time.now
-    authorize @partnered_signup
-
-    if @partnered_signup.save
-      flash[:success] = "Partner signup accepted"
-      redirect_to @partnered_signup.redirect_url
-    else
-      render "edit"
-    end
-  end
-
-  def admin_reject
-    raise NotImplementedError
-    @partnered_signup.rejected_at = Time.now
-    authorize @partnered_signup
-
-    if @partnered_signup.save
-      flash[:success] = "Partner signup rejected"
       redirect_to @partnered_signup.redirect_url
     else
       render "edit"

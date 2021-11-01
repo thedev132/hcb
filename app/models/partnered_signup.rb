@@ -13,7 +13,7 @@ class PartneredSignup < ApplicationRecord
   scope :accepted, -> { where.not(accepted_at: nil) }
   scope :rejected, -> { where.not(rejected_at: nil) }
   scope :unsubmitted, -> { where(submitted_at: nil) }
-  scope :pending, -> { where(accepted_at: nil, rejected_at: nil) }
+  scope :pending, -> { where(accepted_at: nil, rejected_at: nil).where.not(submitted_at: nil) }
   scope :submitted, -> { where.not(submitted_at: nil) }
 
   validates :redirect_url, presence: true
@@ -32,6 +32,16 @@ class PartneredSignup < ApplicationRecord
 
   def unsubmitted?
     self.submitted_at.nil?
+  end
+  def rejected?
+    self.rejected_at.present?
+  end
+  def accepted?
+    self.accepted_at.present?
+  end
+
+  def pending?
+    !self.submitted_at.nil? and self.accepted_at.nil? and self.rejected_at.nil?
   end
 
   private

@@ -123,6 +123,9 @@ Rails.application.routes.draw do
       post "google_workspace_update", to: "admin#google_workspace_update"
       get "invoice_process", to: "admin#invoice_process"
       post "invoice_mark_paid", to: "admin#invoice_mark_paid"
+
+      post "partnered_signups_accept", to: "admin#partnered_signups_accept"
+      post "partnered_signups_reject", to: "admin#partnered_signups_reject"
     end
   end
 

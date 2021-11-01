@@ -1,11 +1,5 @@
 <%= form_with(model: partnered_signup, url: edit_partnered_signups_path(public_id: partnered_signup.public_id), local: true) do |form| %>
 
-  <%= admin_tools do %>
-    <p>Partner: <%= link_to @partner %></p>
-    <%= button_to "Accept", action: "admin_accept" %>
-    <%= button_to "Reject", action: "admin_reject" %>
-  <% end %>
-
   <%= form_errors partnered_signup %>
 
   <h2>Your organization</h2>

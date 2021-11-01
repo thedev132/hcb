@@ -13,6 +13,8 @@
       <th>Owner Email</th>
       <th>Owner Phone</th>
       <th>Partner</th>
+      <th>Status</th>
+      <th>Actions</th>
     </tr>
   </thead>
   <tbody>
@@ -25,6 +27,22 @@
         <td><%= partnered_signup.owner_phone %></td>
         <td><%= partnered_signup.partner.name %></td>
         <td>
+        <% if partnered_signup.pending? %>
+          <%= form_with(model: nil, local: true, url: partnered_signups_accept_admin_path(id: partnered_signup.id), method: :post) do |form| %>
+            <%= form.submit "Approve" %>
+          <% end %>
+
+          <%= form_with(model: nil, local: true, url: partnered_signups_reject_admin_path(id: partnered_signup.id), method: :post) do |form| %>
+            <%= form.submit "Reject" %>
+          <% end %>
+        <% elsif partnered_signup.unsubmitted? %>
+        Unsubmitted
+        <% elsif partnered_signup.rejected? %>
+        Rejected on <%= partnered_signup.rejected_at %>
+        <% elsif partnered_signup.accepted? %>
+        Accepted on <%= partnered_signup.accepted_at %>
+        <%= link_to partnered_signup.event&.name, partnered_signup.event %>
+        <% end %>
         </td>
       </tr>
     <% end %>

@@ -20,6 +20,10 @@ class Partner < ApplicationRecord
     self.save!
   end
 
+  def default_org_sponsorship_fee
+    0.10
+  end
+
   private
 
   def new_api_key

@@ -9,11 +9,11 @@ class PartneredSignupPolicy < ApplicationPolicy
     true
   end
 
-  def admin_accept?
+  def partnered_signups_accept?
     user&.admin?
   end
 
-  def admin_reject?
+  def partnered_signups_reject?
     user&.admin?
   end
 end
