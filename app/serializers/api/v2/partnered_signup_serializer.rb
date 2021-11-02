@@ -16,7 +16,6 @@ module Api
         result
       end
 
-      private
 
       def data
         @data ||= {
