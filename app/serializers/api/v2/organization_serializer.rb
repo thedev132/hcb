@@ -37,7 +37,7 @@ module Api
 
       def meta
         @meta ||= {
-          docs: 'https://bank.hackclub.com/docs/api#/Organizations/v2Organizations'
+          docs: "https://bank.hackclub.com/docs/api#/Organizations/v2Organizations"
         }
       end
     end

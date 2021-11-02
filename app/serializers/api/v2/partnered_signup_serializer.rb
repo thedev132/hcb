@@ -49,7 +49,7 @@ module Api
 
       def meta
         @meta ||= {
-          docs: 'https://bank.hackclub.com/docs/api#/Bank%20Connect%20(PartneredSignups)/v2PartneredSignups'
+          docs: "https://bank.hackclub.com/docs/api#/Bank%20Connect%20(PartneredSignups)/v2PartneredSignups"
         }
       end
     end
