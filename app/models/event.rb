@@ -138,8 +138,6 @@ class Event < ApplicationRecord
   friendly_id :name, use: :slugged
 
   belongs_to :point_of_contact, class_name: "User", optional: true
-  belongs_to :partner
-  has_one :partnered_signup, required: false
 
   has_many :organizer_position_invites
   has_many :organizer_positions
@@ -181,7 +179,8 @@ class Event < ApplicationRecord
   has_many :fees, through: :canonical_event_mappings
   has_many :bank_fees
 
-  has_many :partnered_signups
+  belongs_to :partner
+  has_one :partnered_signup, required: false
   has_many :partner_donations
 
   enum country: {
