@@ -18,7 +18,8 @@ module EventService
       ActiveRecord::Base.transaction do
         event = ::Event.create!(attrs)
 
-        event.mark_approved! if @approved
+        # Event aasm_state is already approved by default.
+        # event.mark_approved! if @approved
 
         @emails.each do |email|
           event.organizer_position_invites.create!(organizer_attrs(email: email))
