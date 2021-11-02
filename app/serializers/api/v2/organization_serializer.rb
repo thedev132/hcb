@@ -16,7 +16,6 @@ module Api
         result
       end
 
-      private
 
       def data # this method is also used by Api::V2::OrganizationsSerializer
         @data ||= {
