@@ -26,10 +26,10 @@ class Partner < ApplicationRecord
       User.create!(email: user_email)
     end
 
-    existing_position? = event.users.include?(user)
-    existing_invite? = event.organizer_position_invites.where(email: user_email).any?
+    position_exists = event.users.include?(user)
+    invite_exists= event.organizer_position_invites.where(email: user_email).any?
 
-    unless existing_position? or existing_invite?
+    unless position_exists or invite_exists
       partnered_email = "bank+#{event.partner.slug}@hackclub.com"
       invite_sender = User.find_by(email: partnered_email)
       invite_sender ||= User.create!(email: partnered_email)
