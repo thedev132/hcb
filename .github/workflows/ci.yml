@@ -16,44 +16,44 @@ jobs:
         env:
           RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
         run: bundle exec rubocop
-  rspec:
-    name: RSpec
-    runs-on: ubuntu-latest
-    services:
-      postgres:
-        image: postgres:latest
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-        - 5432:5432
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: "2.7.3"
-          bundler-cache: true
-      - name: Install postgres client
-        run: sudo apt-get install libpq-dev
-      - name: Build App
-        env:
-          DATABASE_URL: postgres://postgres:postgres@localhost:5432/bank_test
-          RAILS_ENV: test
-          RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
-        run: bundler exec rails db:create db:migrate RAILS_ENV=test
-      - name: Run RSpec
-        env:
-          DATABASE_URL: postgres://postgres:postgres@localhost:5432/bank_test
-          RAILS_ENV: test
-          RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
-        run: bundle exec rspec
+#   rspec:
+#     name: RSpec
+#     runs-on: ubuntu-latest
+#     services:
+#       postgres:
+#         image: postgres:latest
+#         env:
+#           POSTGRES_USER: postgres
+#           POSTGRES_PASSWORD: postgres
+#         options: >-
+#           --health-cmd pg_isready
+#           --health-interval 10s
+#           --health-timeout 5s
+#           --health-retries 5
+#         ports:
+#         - 5432:5432
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v2
+#       - name: Set up Ruby
+#         uses: ruby/setup-ruby@v1
+#         with:
+#           ruby-version: "2.7.3"
+#           bundler-cache: true
+#       - name: Install postgres client
+#         run: sudo apt-get install libpq-dev
+#       - name: Build App
+#         env:
+#           DATABASE_URL: postgres://postgres:postgres@localhost:5432/bank_test
+#           RAILS_ENV: test
+#           RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+#         run: bundler exec rails db:create db:migrate RAILS_ENV=test
+#       - name: Run RSpec
+#         env:
+#           DATABASE_URL: postgres://postgres:postgres@localhost:5432/bank_test
+#           RAILS_ENV: test
+#           RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+#         run: bundle exec rspec
   zeitwerk:
     name: Zeitwerk
     runs-on: ubuntu-latest
