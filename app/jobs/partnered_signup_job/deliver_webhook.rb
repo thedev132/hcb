@@ -11,7 +11,7 @@ module PartneredSignupJob
 
     def perform(partnered_signup_id)
       begin
-        ::PartneredSignup::DeliverWebhook.new(partnered_signup_id: partnered_signup_id).run # raises ArgumentError on failure
+        ::PartneredSignupService::DeliverWebhook.new(partnered_signup_id: partnered_signup_id).run # raises ArgumentError on failure
       rescue
         raise WebhookFailed
       end
