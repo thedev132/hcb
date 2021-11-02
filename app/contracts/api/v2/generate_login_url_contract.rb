@@ -4,7 +4,8 @@ module Api
   module V2
     class GenerateLoginUrlContract < Api::ApplicationContract
       params do
-        required(:public_id).filled(:string)
+        required(:organization_id).filled(:string)
+        required(:email).filled(:string)
       end
     end
   end

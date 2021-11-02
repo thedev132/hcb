@@ -34,12 +34,11 @@ module Api
       render json: json_error(contract), status: 400 and return unless contract.success?
 
       attrs = {
-        partner_id: current_partner.id,
-        organization_public_id: contract[:public_id]
+        email: contract[:email],
+        public_organization_id: contract[:organization_id]
       }
-      login_url = ApiService::V2::GenerateLoginUrl.new(attrs).run
 
-      render json: Api::V2::GenerateLoginUrlSerializer.new(login_url: login_url, organization_public_id: contract[:public_id]).run
+      render json: Api::V2::GenerateLoginUrlSerializer.new(attrs).run
     end
 
     def connect_start

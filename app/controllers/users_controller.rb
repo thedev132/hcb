@@ -15,6 +15,7 @@ class UsersController < ApplicationController
 
   # view to log in
   def auth
+    @prefill_email = params[:email] if params[:email].present?
     @return_to = params[:return_to]
   end
 

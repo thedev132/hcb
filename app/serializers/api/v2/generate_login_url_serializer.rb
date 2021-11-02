@@ -3,8 +3,8 @@
 module Api
   module V2
     class GenerateLoginUrlSerializer
-      def initialize(login_url:, organization_public_id:)
-        @login_url = login_url
+      def initialize(email:, organization_public_id:)
+        @email = email
         @organization_public_id = organization_public_id
       end
 
@@ -16,10 +16,10 @@ module Api
 
       private
 
-      def data # this method is also used by Api::V2::OrganizationSerializer
+      def data
         {
-          organization_id: @organization_public_id,
-          login_url: @login_url
+          # organization_id: @organization_public_id,
+          login_url: Rails.application.routes.url_helpers.auth_users_url(email: @email)
         }
       end
     end
