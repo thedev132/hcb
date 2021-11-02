@@ -63,7 +63,7 @@ class V2OrganizationsDocumentation < ApplicationDocumentation
     end
   end
 
-  swagger_path "/api/v2/organizations/{organization_id}/generateLoginUrl" do
+  swagger_path "/api/v2/organizations/{organization_id}/generate_login_url" do
     operation :get do
       key :summary, "Generate an automatic login url for an organization"
       key :description, "Redirect a user to this url, and they will be automatically logged into " \

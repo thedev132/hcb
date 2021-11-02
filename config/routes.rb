@@ -327,7 +327,7 @@ Rails.application.routes.draw do
         match "donations/start", action: :donations_start, as: :api_donations_start, via: [:post]
         match "organizations", action: :organizations, as: :api_organizations, via: [:get]
         match "organizations/:public_id", action: :organization, as: :api_organization, via: [:get]
-        match "organizations/:public_id/generateLoginUrl", action: :generate_login_url, as: :api_organization_generate_login_url, via: [:post]
+        match "organizations/:public_id/generate_login_url", action: :generate_login_url, as: :api_organization_generate_login_url, via: [:post]
         match "partnered_signups", action: :partnered_signups, as: :api_partnered_signups, via: [:get]
         match "partnered_signups/:public_id", action: :partnered_signup, as: :api_partnered_signup, via: [:get]
 
