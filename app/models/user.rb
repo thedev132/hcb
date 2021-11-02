@@ -42,8 +42,7 @@ class User < ApplicationRecord
   before_create :create_session_token
   before_create :format_number
 
-  # validates_presence_of :api_access_token, :email
-  # validates_uniqueness_of :api_access_token, :email
+  validates :email, uniqueness: true, presence: true
   validates :phone_number, phone: { allow_blank: true }
   validate :profile_picture_format
 
