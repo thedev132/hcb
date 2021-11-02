@@ -38,7 +38,7 @@ module Api
 
       attrs = {
         email: contract[:email],
-        public_organization_id: contract[:public_id]
+        organization_public_id: contract[:public_id]
       }
 
       render json: Api::V2::GenerateLoginUrlSerializer.new(attrs).run
