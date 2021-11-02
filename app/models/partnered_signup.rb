@@ -27,7 +27,7 @@ class PartneredSignup < ApplicationRecord
                         ], unless: :unsubmitted?
 
   def continue_url
-    Rails.application.routes.url_helpers.api_connect_continue_api_v2_index_url(public_id: public_id)
+    Rails.application.routes.url_helpers.edit_partnered_signups_url(public_id: public_id)
   end
 
   def unsubmitted?

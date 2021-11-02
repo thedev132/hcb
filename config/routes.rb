@@ -319,24 +319,19 @@ Rails.application.routes.draw do
     resources :comments
   end
 
-  scope :api, module: "api" do
-    resources "v2", as: :api_v2, only: [:index] do
-      collection do
-        match "login", action: :login, as: :api_login, via: [:get]
+  namespace :api do
+    get "v2/login", to: 'v2#login'
 
-        match "donations/start", action: :donations_start, as: :api_donations_start, via: [:post]
-        match "organizations", action: :organizations, as: :api_organizations, via: [:get]
-        match "organizations/:public_id", action: :organization, as: :api_organization, via: [:get]
-        match "organizations/:public_id/generate_login_url", action: :generate_login_url, as: :api_organization_generate_login_url, via: [:post]
-        match "partnered_signups", action: :partnered_signups, as: :api_partnered_signups, via: [:get]
-        match "partnered_signups/:public_id", action: :partnered_signup, as: :api_partnered_signup, via: [:get]
+    post "v2/donations/start", to: 'v2#donations_start'
 
-        match "connect/start", action: :connect_start, as: :api_connect_start, via: [:post]
-        get "connect/continue/:public_id", via: :get, action: :connect_continue, as: :api_connect_continue
-      end
-    end
+    get "v2/organizations", to: 'v2#organizations'
+    get "v2/organization/:public_id", to: 'v2#organization', as: 'v2_organization'
+    post "v2/organization/:public_id/generate_login_url", to: 'v2#generate_login_url'
 
-    match "/", to: "v2#index", module: :api_v2, as: :api_root, via: :all
+    get "v2/partnered_signups", to: 'v2#partnered_signups'
+    get "v2/partnered_signup/:public_id", to: 'v2#partnered_signup', as: 'v2_partnered_signup'
+
+    post "v2/connect/start", to: 'v2#connect_start'
   end
 
   get "partnered_signups/:public_id", to: "partnered_signups#edit", as: :edit_partnered_signups

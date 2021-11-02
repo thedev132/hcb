@@ -139,6 +139,7 @@ class Event < ApplicationRecord
 
   belongs_to :point_of_contact, class_name: "User", optional: true
   belongs_to :partner
+  has_one :partnered_signup, required: false
 
   has_many :organizer_position_invites
   has_many :organizer_positions
