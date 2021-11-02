@@ -19,7 +19,7 @@ module Api
       def data # this method is also used by Api::V2::OrganizationSerializer
         {
           organization_id: @organization_public_id,
-          loginUrl: @login_url
+          login_url: @login_url
         }
       end
     end
