@@ -102,8 +102,10 @@ class AdminController < ApplicationController
   def partnered_signups_accept
     @partnered_signup = PartneredSignup.find(params[:id])
     @partner = @partnered_signup.partner
+
     # Accept the form
     @partnered_signup.accepted_at = Time.now
+
     # Create an event
     @organization = Event.create!(
       partner: @partner,
@@ -111,21 +113,16 @@ class AdminController < ApplicationController
       sponsorship_fee: @partner.default_org_sponsorship_fee,
       organization_identifier: SecureRandom.hex(30) + @partnered_signup.organization_name,
     )
-    # Invite users to event
-    @partnered_email = "bank+#{@partner.slug}@hackclub.com"
-    @inviter = User.find_by(email: @partnered_email)
-    @inviter ||= User.create!(email: @partnered_email, full_name: @partner.name)
-    @invitee = User.find_by(email: @partnered_signup.owner_email)
-    @invitation = OrganizerPositionInvite.create!(
-      event: @organization,
-      email: @partnered_signup.owner_email,
-      user: @invitee,
-      sender: @inviter,
-    )
 
+    # Invite users to event
+    @partner.add_user_to_partnered_event!(user_email: @partnered_signup.owner_email,
+                                          event:      @organization)
+
+
+    # Record the org & user in the signup
     @partnered_signup.update(
       event: @organization,
-      user: @invitee,
+      user: User.find_by(email: @partnered_signup.owner_email),
     )
 
     authorize @partnered_signup

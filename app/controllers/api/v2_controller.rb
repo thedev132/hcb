@@ -33,6 +33,9 @@ module Api
       contract = Api::V2::GenerateLoginUrlContract.new.call(params.permit!.to_h)
       render json: json_error(contract), status: 400 and return unless contract.success?
 
+      event = current_partner.events.find_by_public_id(contract[:organization_id])
+      current_partner.add_user_to_partnered_event!(user_email: contract[:email], event: event)
+
       attrs = {
         email: contract[:email],
         public_organization_id: contract[:organization_id]

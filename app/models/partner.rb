@@ -16,6 +16,33 @@ class Partner < ApplicationRecord
 
   encrypts :stripe_api_key
 
+  def add_user_to_partnered_event!(user_email:, event:)
+    # @msw: I take full responsibility the aweful way this is being implemented.
+    # To my future self, or other devs: this should be moved to a service, and
+    # be given proper validations.
+
+    user = User.find_by(email: user_email)
+    unless user
+      User.create!(email: user_email)
+    end
+
+    existing_position? = event.users.include?(user)
+    existing_invite? = event.organizer_position_invites.where(email: user_email).any?
+
+    unless existing_position? or existing_invite?
+      partnered_email = "bank+#{event.partner.slug}@hackclub.com"
+      invite_sender = User.find_by(email: partnered_email)
+      invite_sender ||= User.create!(email: partnered_email)
+      OrganizerPositionInvite.create!(
+        event: event,
+        user: user,
+        sender: invite_sender
+      )
+    end
+
+    partner
+  end
+
   def regenerate_api_key!
     self.api_key = new_api_key
     self.save!
