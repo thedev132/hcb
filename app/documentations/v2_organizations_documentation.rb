@@ -88,7 +88,7 @@ class V2OrganizationsDocumentation < ApplicationDocumentation
             data:
               {
                 organization_id: "org_Yvguja",
-                login_url: "https://bank.hackclub.com/api/v2/login?loginToken=tok_U2w2vzV2xNNkMFvNGbr9ckqfX7tsKpKh"
+                login_url: "https://bank.hackclub.com/api/v2/login?login_token=tok_U2w2vzV2xNNkMFvNGbr9ckqfX7tsKpKh"
               }
           }
         end

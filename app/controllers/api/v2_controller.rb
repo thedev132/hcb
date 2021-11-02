@@ -20,7 +20,7 @@ module Api
       render json: json_error(contract), status: 400 and return unless contract.success?
 
       attrs = {
-        token: contract[:loginToken]
+        token: contract[:login_token]
       }
       user = AuthService::Token.new(attrs).run
 
