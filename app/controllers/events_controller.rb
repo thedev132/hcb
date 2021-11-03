@@ -144,50 +144,24 @@ class EventsController < ApplicationController
   # (@msw) these pages are for the WIP resources page.
   def connect_gofundme
     @event_name = @event.name
-
     @document_title = "Connect a GoFundMe Campaign"
     @document_subtitle = "Receive payouts from GoFundMe directly into Hack Club Bank"
     @document_image = "https://cloud-jl944nr65-hack-club-bot.vercel.app/004e072bbe1.png"
-    @document_content = "
-Hack Club Bank supports fundraiser payouts to your organization’s account on Bank! Here are the different ways to get your donations from your fundraiser into Hack Club Bank.
-
-- **Personal accounts.** You can use your personal account to cash out donations. Once you've received the funds, donate them directly to your organization on Hack Club Bank through your donation page or an invoice.
-
-- **Payout through PayPal.** To have your payouts sent directly to Hack Club Bank, your fundraising platform of choice must allow for payouts through PayPal. Due to security reasons, we are unable to share our account or routing numbers. To get started, reach out to the Bank team at [bank@hackclub.com](mailto:bank@hackclub.com).
-
-- **Using the PayPal Giving Fund.** If you are creating a fundraiser on GoFundMe, you can select that you work for a charity since your nonprofit is fiscally sponsored by Hack Club Bank. Just enter in our EIN or tax ID, 81-2908499. PayPal charges a lower fee for a charity fundraiser. Contact the Bank team once your fundraiser has been created.
-    "
     authorize @event
   end
 
   # (@msw) these pages are for the WIP resources page.
   def receive_check
     @event_name = @event.name
-
     @document_title = "Receive Checks"
     @document_subtitle = "Deposit checks into your Hack Club Bank account"
     @document_image = "https://cloud-9sk4no7es-hack-club-bot.vercel.app/0slaps-jpg-this-image-can-hold-so-many-pixels.avi.onion.gif.7zip.msw.jpg"
-    @document_content = "
-Once you know your donor is paying by check, please follow these steps:
-
-1. **Notify your donor.** Have them make the check out to \“The Hack Foundation\" or \"Hack Club\” with your organization in the memo section of the check.
-2. **Mail the check.** Make sure your donor mails the check to our mailing address.\n
-    > The Hack Foundation
-    > 8605 Santa Monica Blvd #86294
-    > West Hollywood, CA 90069
-3. **Notify the Bank team** ([bank@hackclub.com](mailto:bank@hackclub.com)). Let us know the name of the donor, donation amount, and the name of your organization.
-
-#### Below is an example of a properly filled out check:
-
-![Filled out check](https://cloud-1j9yaxrga-hack-club-bot.vercel.app/00img_0601.jpg)
-"
     authorize @event
   end
 
   # (@msw) these pages are for the WIP resources page.
   def sell_merch
     event_name = @event.name
-
     @document_title = "Sell Merch with Redbubble"
     @document_subtitle = "Connect your online merch shop to Hack Club Bank"
     @document_image = "https://cloud-fodxc88eu-hack-club-bot.vercel.app/0placeholder.png"
