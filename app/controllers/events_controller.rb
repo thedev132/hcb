@@ -191,20 +191,6 @@ Once you know your donor is paying by check, please follow these steps:
     @document_title = "Sell Merch with Redbubble"
     @document_subtitle = "Connect your online merch shop to Hack Club Bank"
     @document_image = "https://cloud-fodxc88eu-hack-club-bot.vercel.app/0placeholder.png"
-    @document_content = "
-If you raise funds by selling merchandise on online platforms such as Redbubble, Shopify, or Wix, you can deposit your funds into Hack Club Bank. Follow these steps to get started:
-
-1. **Verify** that the platform you’re using allows for PayPal as a payout option.
-2. **Get familiar with payouts.** Here's what you need to know:
-  - The frequency of payouts (once a month, twice a month, etc.)
-  - Any thresholds you need to reach in order to get a payout (ex. no payout until you hit a $20 minimum)
-3. **Get in touch with the Bank team.**
-  - Let us know at [bank@hackclub.com](mailto:bank@hackclub.com) that you'd like to connect an online merch shop to your Hack Club Bank account.
-  - We'll schedule a 15-minute call to get you setup. 
-
-It will be your responsibility to notify the Bank team of the amount of money you’re receiving for each payout. If you are expecting money, **you need to let us know**; otherwise we will not be able to move funds.
-"
-
     authorize @event
   end
 

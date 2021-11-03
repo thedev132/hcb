@@ -7,7 +7,27 @@
     <h1 class="mb0" style="border:none"><%= @document_title %></h1>
     <h3 class="mt0 mb2" style="color: gray; font-weight: 500;"><%= @document_subtitle %></h3>
     <%= image_tag @document_image, class: 'w-100' if @document_image %>
-    <%== MarkdownService.instance.renderer.render @document_content %>
+<%# content starts here %>
+    <p>If you raise funds by selling merchandise on online platforms such as Redbubble, Shopify, or Wix, you can deposit your funds into Hack Club Bank. Follow these steps to get started:</p>
+    <ol>
+      <li><strong>Verify</strong> that the platform you’re using allows for PayPal as a payout option.</li>
+      <li>
+      <strong>Get familiar with payouts.</strong> Here's what you need to know:
+      <ul>
+        <li>The frequency of payouts (once a month, twice a month, etc.)</li>
+        <li>Any thresholds you need to reach in order to get a payout (ex. no payout until you hit a $20 minimum)</li>
+      </ul>
+      </li>
+      <li><strong>Get in touch with the Bank team.</strong>
+        <ul>
+          <li>Let us know at bank@haccklub.com that you'd like to connect an online merch shop to your Hack Club Bank account.</li>
+          <li>We'll schedule a 15-minute call to get you setup.</li>
+        </ul>
+      </li>
+    </ol>
+    <p>
+      It will be your responsibility to notify the Bank team of the amount of money you’re receiving for each payout. If you are expecting money, <strong>you need to let us know</strong>; otherwise, we will not be able to move funds.
+    </p>
 
     <div class="card container--sm border b--warning pb0 mt3 mb3 mx-auto">
       <div class="flex items-center warning">
