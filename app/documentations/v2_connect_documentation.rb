@@ -28,6 +28,16 @@ class V2ConnectDocumentation < ApplicationDocumentation
         end
       end
 
+      parameter do
+        key :name, :email
+        key :in, :query
+        key :description, "Email address of the user setting up the Hack Club Bank account"
+        key :required, true
+        schema do
+          key :type, :string
+        end
+      end
+
       # parameter do
       #   key :name, :organizationIdentifier
       #   key :in, :query
