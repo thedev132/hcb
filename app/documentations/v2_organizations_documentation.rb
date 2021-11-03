@@ -64,7 +64,7 @@ class V2OrganizationsDocumentation < ApplicationDocumentation
   end
 
   swagger_path "/api/v2/organizations/{organization_id}/generate_login_url" do
-    operation :get do
+    operation :post do
       key :summary, "Generate an automatic login url for an organization"
       key :description, "Redirect a user to this url, and they will be automatically logged into " \
                         "their Hack Club Bank account"
@@ -75,6 +75,16 @@ class V2OrganizationsDocumentation < ApplicationDocumentation
         key :name, :organization_id
         key :in, :path
         key :description, "Bank Connect's `organization_id`"
+        key :required, true
+        schema do
+          key :type, :string
+        end
+      end
+
+      parameter do
+        key :name, :email
+        key :in, :query
+        key :description, "The user's email address (use the email associated with code's User object)"
         key :required, true
         schema do
           key :type, :string
