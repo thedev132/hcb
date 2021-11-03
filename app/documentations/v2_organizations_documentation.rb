@@ -86,7 +86,7 @@ class V2OrganizationsDocumentation < ApplicationDocumentation
       parameter do
         key :name, :email
         key :in, :query
-        key :description, "The user's email address (use the email associated with your's User object)"
+        key :description, "The user's email address (use the email associated with your User object)"
         key :required, true
         schema do
           key :type, :string
