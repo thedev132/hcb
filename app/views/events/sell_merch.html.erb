@@ -3,10 +3,25 @@
 <%= render 'events/nav' %>
 
 <div style="padding-top: 4rem;">
-  <div class="container container--md card">
-  <h1 class="mb0" style="border:none"><%= @document_title %></h1>
-  <h3 class="mt0 mb2" style="color: gray; font-weight: 500;"><%= @document_subtitle %></h3>
-  <%= image_tag @document_image, class: 'w-100' if @document_image %>
-  <%== MarkdownService.instance.renderer.render @document_content %>
+  <div class="container container--md">
+    <h1 class="mb0" style="border:none"><%= @document_title %></h1>
+    <h3 class="mt0 mb2" style="color: gray; font-weight: 500;"><%= @document_subtitle %></h3>
+    <%= image_tag @document_image, class: 'w-100' if @document_image %>
+    <%== MarkdownService.instance.renderer.render @document_content %>
+
+    <div class="card container--sm border b--warning pb0 mt3 mb3 mx-auto">
+      <div class="flex items-center warning">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" viewBox="0 0 32 32" class="mr1" style="--darkreader-inline-fill: currentColor;" data-darkreader-inline-fill=""><path fill-rule="evenodd" d="M26 16c0 5.523-4.477 10-10 10S6 21.523 6 16 10.477 6 16 6s10 4.477 10 10zm2 0c0 6.627-5.373 12-12 12S4 22.627 4 16 9.373 4 16 4s12 5.373 12 12z" clip-rule="evenodd"></path><path d="M16 12.75a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zM16 22.25c-.552 0-1-.392-1-.875v-6.25c0-.483.448-.875 1-.875s1 .392 1 .875v6.25c0 .483-.448.875-1 .875z"></path></svg>
+        <p class="bold mt0 mb0">Important info about payouts:</p>
+      </div>
+      <ul class="mt1 mb2">
+        <li><strong>Notify us when you make a deposit–</strong> we can't fund your account until you reach out.</li>
+        <li><strong>PayPal will charge an additional fee</strong> of around 4% or more, on top of the 7% Bank fee.</li>
+      </ul>
+      <div class="border-top card__banner card__darker secondary">
+        <strong class="warning">Questions?</strong> 
+          <span>Contact the Bank team at <a href="mailto:bank@hackclub.com">bank@hackclub.com</a></span>
+      </div>
+    </div>
   </div>
 </div>

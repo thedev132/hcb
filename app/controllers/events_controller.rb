@@ -146,32 +146,17 @@ class EventsController < ApplicationController
     @event_name = @event.name
 
     @document_title = "Connect a GoFundMe Campaign"
-    @document_subtitle = "Start a fundraising campaign with GoFundMe and pay out to your account on Hack Club Bank!"
+    @document_subtitle = "Receive payouts from GoFundMe directly into Hack Club Bank"
     @document_image = "https://cloud-jl944nr65-hack-club-bot.vercel.app/004e072bbe1.png"
     @document_content = "
-A great way to get the name of your organization out there is to create a fundraising campaign through a platform such as GoFundMe. However these platforms typically require you to cash out your donations through a bank account or PayPal
+Hack Club Bank supports fundraiser payouts to your organization’s account on Bank! Here are the different ways to get your donations from your fundraiser into Hack Club Bank.
 
-What happens if you don’t have your own PayPal or bank account? How do you get the money into Hack Club Bank?
+- **Personal accounts.** You can use your personal account to cash out donations. Once you've received the funds, donate them directly to your organization on Hack Club Bank through your donation page or an invoice.
 
-**Hack Club Bank supports fundraiser payouts to your organization’s fund on Bank!** Simply get in touch with the Bank team to get set up with the information you’ll need. Once your donations are ready to be cashed out, a member of the Bank team will move those funds directly to your account. You will be responsible for monitoring your fundraising campaign and keeping track of your payouts. The Bank team will notify you of the total amount being moved and provide you with a summary of your donations.
+- **Payout through PayPal.** To have your payouts sent directly to Hack Club Bank, your fundraising platform of choice must allow for payouts through PayPal. Due to security reasons, we are unable to share our account or routing numbers. To get started, reach out to the Bank team at [bank@hackclub.com](mailto:bank@hackclub.com).
 
-- **Personal accounts.** If you have your own personal accounts and would prefer to use those rather than Hack Club’s, you may cash out those donations to the account of your choice; then, donate them directly to your organization on Hack Club Bank through your donation page or an invoice.
-- **Payout to Hack Club Bank through PayPal.** To have your payouts sent directly to Hack Club Bank, your fundraising platform of choice must allow for payouts through PayPal. Due to security reasons, we are unable to share our account or routing numbers. Please keep in mind that PayPal will also charge a fee for your donations which will be cov _____.
-
-### Get Started with GoFundMe (or your platform of choice)
-
-1. Think of a catchy name for your campaign that fits with your organization’s objective for the fundraiser.
-2. Create an account with the platform you will be using. You can select that you work for a charity as your nonprofit is fiscally sponsored by Hack Club Bank. (Just enter in our EIN or tax ID, `81-2908499`).
-3. Then, reach out to the Bank team at bank@hackclub.com to let us know that you’re creating a fundraising campaign. We’ll help you get set up with payouts through Bank:
-    1. Set up a quick 15-minute call. During this call, we'll set you up with our PayPal info, so you'll be able to receive donations right into Hack Club Bank!
-    2. Next, you’ll need to send us an email; be sure to include the following information:
-        1. **The name of your fundraising campaign** - the name of your nonprofit org will NOT automatically show up during payouts - we need the specific name that you are calling your fundraiser.
-        2. **The duration of your campaign** - some are only set up for a month while others go on year round. Some also are only set up until they reach a goal - we need to know how long we’ll be mapping donations for you.
-        3. **The frequency of payout for your campaign** - This will vary depending on the platform you are using.
-        4. **Preferred email(s) for receiving notifications** - We will always fill you in on when we are moving money.
-4. You are all set! The Bank team will move funds into your account as they are paid out and will notify you via email when they arrive.
+- **Using the PayPal Giving Fund.** If you are creating a fundraiser on GoFundMe, you can select that you work for a charity since your nonprofit is fiscally sponsored by Hack Club Bank. Just enter in our EIN or tax ID, 81-2908499. PayPal charges a lower fee for a charity fundraiser. Contact the Bank team once your fundraiser has been created.
     "
-
     authorize @event
   end
 
@@ -183,27 +168,19 @@ What happens if you don’t have your own PayPal or bank account? How do you get
     @document_subtitle = "Deposit checks into your Hack Club Bank account"
     @document_image = "https://cloud-9sk4no7es-hack-club-bot.vercel.app/0slaps-jpg-this-image-can-hold-so-many-pixels.avi.onion.gif.7zip.msw.jpg"
     @document_content = "
-Hack Club Bank supports physical check donations! However please keep in mind that checks are a slower form of payment and may take up to 3 weeks to arrive. This is due to the nature of the postal system and is unfortunately out of our control.
-
-In order for your organization to recieve a check and have it deposited into your account on Hack Club Bank, your donor needs to make the check out to either \"Hack Club\" or \"The Hack Foundation.\" This is imperative as anything else in the \"Pay to the Order of\" field will cause the check to be reject by our bank, causing a significant delay in receiving the money. Below is an example of a properly filled out check:
-
-![](https://cloud-82tb02emf-hack-club-bot.vercel.app/0img_0601.jpg)
-
-Your organization name should also be included in the memo. This will help the Bank team correctly map the check as it arrives.
-
-Once you know you’re donor is paying by check, please follow these steps:
+Once you know your donor is paying by check, please follow these steps:
 
 1. **Notify your donor.** Have them make the check out to \“The Hack Foundation\" or \"Hack Club\” with your organization in the memo section of the check.
-2. **Mail the check.** Make sure your donor mails the check to our mailing address. This is also super important. If the check is sent any where else, there will be a significant delay in recieving your donation.
+2. **Mail the check.** Make sure your donor mails the check to our mailing address.\n
+    > The Hack Foundation
+    > 8605 Santa Monica Blvd #86294
+    > West Hollywood, CA 90069
+3. **Notify the Bank team** ([bank@hackclub.com](mailto:bank@hackclub.com)). Let us know the name of the donor, donation amount, and the name of your organization.
 
-Exactly how our mailing address should be written:
-> The Hack Foundation
-> 8605 Santa Monica Blvd #86294
-> West Hollywood, CA 90069
+#### Below is an example of a properly filled out check:
 
-Notify the Bank team (bank@hackclub.com) letting us know the name of the donor, donation amount, and the name of your organization. This is a failsafe in case they forget to put your organization name in the memo. The memo section isn’t always filled out, and it allows us to easily map the donation to the corresponding organization.
-    "
-
+![Filled out check](https://cloud-1j9yaxrga-hack-club-bot.vercel.app/00img_0601.jpg)
+"
     authorize @event
   end
 
@@ -211,21 +188,21 @@ Notify the Bank team (bank@hackclub.com) letting us know the name of the donor, 
   def sell_merch
     event_name = @event.name
 
-    @document_title = "Sell Merchandise"
-    @document_subtitle = "Start an online swag shop and pay out to Hack Club Bank"
+    @document_title = "Sell Merch with Redbubble"
+    @document_subtitle = "Connect your online merch shop to Hack Club Bank"
     @document_image = "https://cloud-fodxc88eu-hack-club-bot.vercel.app/0placeholder.png"
     @document_content = "
-Selling some neat merch online? Connect your shop to Hack Club Bank for easy
-financial management!  Follow these steps to have your funds go to your HCB
-account:
+If you raise funds by selling merchandise on online platforms such as Redbubble, Shopify, or Wix, you can deposit your funds into Hack Club Bank. Follow these steps to get started:
 
-1. **Verify** that the online shop you’re using allows for PayPal as a payout option.
-1. **Get familiar with payouts.** You need to know the frequency of payouts as well as any thresholds you need to hit in order to trigger a payout. (For example, Redbubble requires a minimum of $20 in your account before they'll pay out your balance. Should your balance be below the minimum, it'll be added to the payout for the following month.)
-1. **Get in touch with the Bank team** (bank@hackclub.com). A member of the Bank team will set up a call with you to set up your pay outs and gather necessary information (i.e. email preference, payout frequency, and point of contact).
+1. **Verify** that the platform you’re using allows for PayPal as a payout option.
+2. **Get familiar with payouts.** Here's what you need to know:
+  - The frequency of payouts (once a month, twice a month, etc.)
+  - Any thresholds you need to reach in order to get a payout (ex. no payout until you hit a $20 minimum)
+3. **Get in touch with the Bank team.**
+  - Let us know at [bank@hackclub.com](mailto:bank@hackclub.com) that you'd like to connect an online merch shop to your Hack Club Bank account.
+  - We'll schedule a 15-minute call to get you setup. 
 
-It will be your responsibility to notify the Bank team of the amount of money you’re receiving for each payout. For example, if your Redbubble payout this month is $35, you need to tell us so that we can keep an eye out for the incoming funds. Neither your name nor the name of your organization will be tied to the payout. If you are expecting money, you need to tell us otherwise we will not be able to move funds.
-
-Note: PayPal does charge a fee for using their platform; this fee is not from Hack Club Bank. Upon deposit in your organization's account, the 7% Hack Club Bank fee will still apply.
+It will be your responsibility to notify the Bank team of the amount of money you’re receiving for each payout. If you are expecting money, **you need to let us know**; otherwise we will not be able to move funds.
 "
 
     authorize @event
