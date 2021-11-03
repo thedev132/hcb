@@ -119,6 +119,9 @@ class V2ConnectDocumentation < ApplicationDocumentation
               owner_email: nil,
               organization_name: "My Organization's Name",
               organization_id: nil
+            },
+            links: {
+              self: "https://api.hackclub.com/v2/partnered_signups/sup_l3mtZz"
             }
           }
         end
@@ -151,6 +154,9 @@ class V2ConnectDocumentation < ApplicationDocumentation
               owner_email: "user@gmail.com",
               organization_name: "My Organization's Name",
               organization_id: nil
+            },,
+            links: {
+              self: "https://api.hackclub.com/v2/partnered_signups/sup_l3mtZz"
             },
             meta: {
               type: "partnered_signup.status"
@@ -227,6 +233,9 @@ class V2ConnectDocumentation < ApplicationDocumentation
               owner_email: "user@gmail.com",
               organization_name: "My Organization's Name",
               organization_id: nil
+            },
+            links: {
+              self: "https://api.hackclub.com/v2/partnered_signups/sup_l3mtZz"
             }
           }
         end

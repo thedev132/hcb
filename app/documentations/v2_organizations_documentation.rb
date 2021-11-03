@@ -51,12 +51,14 @@ class V2OrganizationsDocumentation < ApplicationDocumentation
         key :description, ""
         content :"application/json" do
           key :example, {
-            data:
-              {
-                id: "org_Yvguja",
-                name: "My Org 1",
-                balance: 68605
-              }
+            data: {
+              id: "org_Yvguja",
+              name: "My Org 1",
+              balance: 68605
+            },
+            links: {
+              self: "https://api.bankconnect.io/api/v2/organizations/org_Yvguja"
+            }
           }
         end
       end
