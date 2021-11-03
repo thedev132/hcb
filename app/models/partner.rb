@@ -35,12 +35,13 @@ class Partner < ApplicationRecord
       invite_sender ||= User.create!(email: partnered_email)
       OrganizerPositionInvite.create!(
         event: event,
-        user: user,
+        email: user_email,
+        # user: user,
         sender: invite_sender
       )
     end
 
-    partner
+    self
   end
 
   def regenerate_api_key!
