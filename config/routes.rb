@@ -325,11 +325,11 @@ Rails.application.routes.draw do
     post "v2/donations/start", to: "v2#donations_start"
 
     get "v2/organizations", to: "v2#organizations"
-    get "v2/organization/:public_id", to: "v2#organization", as: "v2_organization"
-    post "v2/organization/:public_id/generate_login_url", to: "v2#generate_login_url"
+    get "v2/organization/:public_id", to: "v2#organization", as: :v2_organization
+    post "v2/organization/:public_id/generate_login_url", to: "v2#generate_login_url", as: :v2_generate_login_url
 
     get "v2/partnered_signups", to: "v2#partnered_signups"
-    get "v2/partnered_signup/:public_id", to: "v2#partnered_signup", as: "v2_partnered_signup"
+    get "v2/partnered_signup/:public_id", to: "v2#partnered_signup", as: :v2_partnered_signup
 
     post "v2/connect/start", to: "v2#connect_start"
   end
