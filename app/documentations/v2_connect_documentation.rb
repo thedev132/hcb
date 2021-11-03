@@ -204,7 +204,7 @@ class V2ConnectDocumentation < ApplicationDocumentation
     end
   end
 
-  swagger_path "/api/v2/partnered_signups/{partnered_signups_id}" do
+  swagger_path "/api/v2/partnered_signup/{partnered_signups_id}" do
     operation :get do
       key :summary, "Return information on single PartneredSignup"
       key :description, "Return information on single PartneredSignup"

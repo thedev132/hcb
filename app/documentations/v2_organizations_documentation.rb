@@ -30,7 +30,7 @@ class V2OrganizationsDocumentation < ApplicationDocumentation
     end
   end
 
-  swagger_path "/api/v2/organizations/{organization_id}" do
+  swagger_path "/api/v2/organization/{organization_id}" do
     operation :get do
       key :summary, "Return information on single organization"
       key :description, "`balance` is in cents, similar to Stripe."
@@ -65,7 +65,7 @@ class V2OrganizationsDocumentation < ApplicationDocumentation
     end
   end
 
-  swagger_path "/api/v2/organizations/{organization_id}/generate_login_url" do
+  swagger_path "/api/v2/organization/{organization_id}/generate_login_url" do
     operation :post do
       key :summary, "Generate an automatic login url for an organization"
       key :description, "Redirect a user to this url, and they will be automatically logged into " \
