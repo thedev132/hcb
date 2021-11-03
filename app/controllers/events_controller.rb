@@ -127,8 +127,8 @@ class EventsController < ApplicationController
     @session_user_stripe_card = []
 
     unless current_user.nil?
-      @stripe_cards = @stripe_cards.filter { |card| !card.stripe_cardholder_id.eql?(current_user.id) }
-      @session_user_stripe_cards = @stripe_cards.filter { |card| card.stripe_cardholder_id.eql?(current_user.id) }
+      @session_user_stripe_cards = @stripe_cards.filter { |card| card.user.id.eql?(current_user.id) }
+      @stripe_cards = @stripe_cards.filter { |card| !card.user.id.eql?(current_user.id) }
     end
 
     @stripe_cardholders = StripeCardholder.where(user_id: @event.users.pluck(:id)).includes(:user).order("created_at desc")
