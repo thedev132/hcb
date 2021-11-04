@@ -16,7 +16,6 @@ class EventsController < ApplicationController
   # GET /events/1
   def show
     authorize @event
-
     @organizers = @event.organizer_positions.includes(:user)
     @pending_transactions = _show_pending_transactions
 
