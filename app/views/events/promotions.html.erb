@@ -78,6 +78,22 @@
 <div class="card mb3">
   <div
     class="card__banner card__banner--top flex justify-between items-center"
+    style="background-color: #ebdbee; border: 1px solid #0068ad;">
+    <h3 class="h1 white p2 my0">Domains</h3>
+    <%= link_to 'Apply',
+      organizer_signed_in? ? "https://hack.af/bank-domains?prefill_Project%20Name=#{@event.name}&prefill_Bank%20URL=#{event_url(@event)}&prefill_Your%20name=#{current_user.full_name}&prefill_Login%20email=#{current_user.email}" : root_path,
+      class: "btn bg-success mr1 #{'disabled' unless organizer_signed_in?}"
+    %>
+  </div>
+
+  <p class="mb0">
+    free domains ooo weee rick copy here
+  </p>
+</div>
+
+<div class="card mb3">
+  <div
+    class="card__banner card__banner--top flex justify-between items-center"
     style="background-color: #0d101e; border: 1px solid #0068ad;">
     <%= image_tag 'replit.png', width: 170 %>
     <%= link_to 'Apply',
