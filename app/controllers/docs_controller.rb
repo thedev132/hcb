@@ -28,7 +28,7 @@ class DocsController < ActionController::Base
 
   SWAGGERED_CLASSES = [
     ApplicationDocumentation,
-    V2ConnectDocumentation,
+    V2PartneredSignupsDocumentation,
     V2DonationsDocumentation,
     V2OrganizationsDocumentation,
     self

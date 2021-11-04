@@ -2,7 +2,7 @@
 
 module Api
   module V2
-    class DonationsStartContract < Api::ApplicationContract
+    class DonationsNewContract < Api::ApplicationContract
       params do
         required(:organization_id).filled(:string)
       end

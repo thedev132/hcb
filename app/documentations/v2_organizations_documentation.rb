@@ -57,7 +57,7 @@ class V2OrganizationsDocumentation < ApplicationDocumentation
               balance: 68605
             },
             links: {
-              self: "https://api.bankconnect.io/api/v2/organizations/org_Yvguja"
+              self: "https://bank.hackclub.com/api/v2/organizations/org_Yvguja"
             }
           }
         end

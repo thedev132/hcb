@@ -6,13 +6,13 @@ class PartneredSignupsController < ApplicationController
   skip_after_action :verify_authorized, only: [:edit, :update]
   skip_before_action :signed_in_user, only: [:edit, :update]
 
-  # POST /api/v1/connect/start ..... NOT!
+  # POST /api/v1/partnered_signups/new ..... NOT!
   def start
     # Are you looking for start? Psych! It's not here!
     # This controller manages all the views for the partner signup process, but the v1_controller manages all the JSON API endpoints
   end
 
-  # GET /api/v1/connect/continue/:public_id
+  # GET /api/v1/partnered_signups/continue/:public_id
   # GET /partnered_signups/:public_id
   def edit
     # Pass through to `redirect_url` if the form has already been submitted

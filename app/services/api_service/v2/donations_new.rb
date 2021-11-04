@@ -2,7 +2,7 @@
 
 module ApiService
   module V2
-    class DonationsStart
+    class DonationsNew
       def initialize(partner_id:, organization_public_id:)
         @partner_id = partner_id
         @organization_public_id = organization_public_id

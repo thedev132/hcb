@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe ApiService::V2::ConnectStart, type: :model do
+RSpec.describe ApiService::V2::PartneredSignupsNew, type: :model do
   fixtures "partners", "events"
 
   let(:partner) { partners(:partner1) }
@@ -21,7 +21,7 @@ RSpec.describe ApiService::V2::ConnectStart, type: :model do
     }
   end
 
-  let(:service) { ApiService::V2::ConnectStart.new(attrs) }
+  let(:service) { ApiService::V2::PartneredSignupsNew.new(attrs) }
 
   it "creates an organization" do
     expect do

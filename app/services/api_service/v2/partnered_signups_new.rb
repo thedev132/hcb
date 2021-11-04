@@ -2,7 +2,7 @@
 
 module ApiService
   module V2
-    class ConnectStart
+    class PartneredSignupsNew
       def initialize(partner_id:,
                      organization_identifier:, redirect_url:, webhook_url:)
         @partner_id = partner_id

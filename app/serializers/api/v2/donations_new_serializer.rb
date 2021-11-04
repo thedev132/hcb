@@ -2,7 +2,7 @@
 
 module Api
   module V2
-    class DonationsStartSerializer
+    class DonationsNewSerializer
       def initialize(partner_donation:)
         @partner_donation = partner_donation
       end

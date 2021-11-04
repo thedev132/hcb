@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
-class V2ConnectDocumentation < ApplicationDocumentation
-  swagger_path "/api/v2/connect/start" do
+class V2PartneredSignupsDocumentation < ApplicationDocumentation
+  swagger_path "/api/v2/partnered_signups/new" do
     operation :post do
       key :summary, "Start the Bank Connect flow"
       key :description, "Creates a **PartneredSignup** object which is used to track the onboarding and application progress"
-      key :tags, ["Bank Connect (PartneredSignups)"]
-      key :operationId, "v2ConnectStart"
+      key :tags, ["PartneredSignups"]
+      key :operationId, "v2PartneredSignupsNew"
 
       parameter do
         key :name, :organization_name
@@ -145,7 +145,7 @@ class V2ConnectDocumentation < ApplicationDocumentation
       key :description, "Receive **webhook payload** from Bank Connect.\n\n" \
                         "Webhooks from Bank Connect can be verified using [Stripe's webhook signature system](https://stripe.com/docs/webhooks/signatures). " \
                         "The verification signature is located in the `HCB-Signature` header and the `secret` is your Bank Connect api key."
-      key :tags, ["Bank Connect (PartneredSignups)"]
+      key :tags, ["PartneredSignups"]
       key :operationId, "v2ConnectWebhook"
 
       response 200 do
@@ -181,7 +181,7 @@ class V2ConnectDocumentation < ApplicationDocumentation
     operation :get do
       key :summary, "Return information on all your PartneredSignups"
       key :description, "Return information on all your PartneredSignups"
-      key :tags, ["Bank Connect (PartneredSignups)"]
+      key :tags, ["PartneredSignups"]
       key :operationId, "v2PartneredSignups"
 
       response 200 do
@@ -218,7 +218,7 @@ class V2ConnectDocumentation < ApplicationDocumentation
     operation :get do
       key :summary, "Return information on single PartneredSignup"
       key :description, "Return information on single PartneredSignup"
-      key :tags, ["Bank Connect (PartneredSignups)"]
+      key :tags, ["PartneredSignups"]
       key :operationId, "v2PartneredSignupShow"
 
       parameter do
