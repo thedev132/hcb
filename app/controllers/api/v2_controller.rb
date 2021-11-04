@@ -51,10 +51,18 @@ module Api
       contract = Api::V2::PartneredSignupsNewContract.new.call(params.permit!.to_h)
       render json: json_error(contract), status: 400 and return unless contract.success?
 
-      @partnered_signup = PartneredSignup.create!(partner_id: @partner.id,
-                                                  redirect_url: params[:redirect_url],
-                                                  organization_name: params[:organization_name],
-                                                )
+      attrs = {
+        partner_id: @partner.id,
+        redirect_url: params[:redirect_url],
+        organization_name: params[:organization_name],
+        owner_email: params[:owner_email,
+      }
+      attrs[:owner_name] = params[:owner_name] if params[:owner_name]
+      attrs[:owner_phone] = params[:owner_phone] if params[:owner_phone]
+      attrs[:owner_address] = params[:owner_address] if params[:owner_address]
+      attrs[:owner_birthdate] = params[:owner_birthdate] if params[:owner_birthdate]
+
+      @partnered_signup = PartneredSignup.create!(attrs)
 
       render json: Api::V2::PartneredSignupSerializer.new(partnered_signup: @partnered_signup).run
     end

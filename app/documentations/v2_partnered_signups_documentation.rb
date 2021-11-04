@@ -29,7 +29,7 @@ class V2PartneredSignupsDocumentation < ApplicationDocumentation
       end
 
       parameter do
-        key :name, :email
+        key :name, :owner_email
         key :in, :query
         key :description, "Email address of the user setting up the Hack Club Bank account"
         key :required, true
@@ -38,75 +38,45 @@ class V2PartneredSignupsDocumentation < ApplicationDocumentation
         end
       end
 
-      # parameter do
-      #   key :name, :organizationIdentifier
-      #   key :in, :query
-      #   key :description, "Uniquely identify the organization applying through Bank Connect"
-      #   key :required, true
-      #   schema do
-      #     key :type, :string
-      #   end
-      # end
+      parameter do
+        key :name, :owner_name
+        key :in, :query
+        key :description, "(optional) The user's full name"
+        key :required, false
+        schema do
+          key :type, :string
+        end
+      end
 
-      # parameter do
-      #   key :name, :name
-      #   key :in, :query
-      #   key :description, "(optional) The user's full name"
-      #   key :required, false
-      #   schema do
-      #     key :type, :string
-      #   end
-      # end
+      parameter do
+        key :name, :owner_phone
+        key :in, :query
+        key :description, "(optional) The user's phone number"
+        key :required, false
+        schema do
+          key :type, :string
+        end
+      end
 
-      # parameter do
-      #   key :name, :email
-      #   key :in, :query
-      #   key :description, "(optional) The user's email address"
-      #   key :required, false
-      #   schema do
-      #     key :type, :string
-      #   end
-      # end
+      parameter do
+        key :name, :owner_address
+        key :in, :query
+        key :description, "(optional) The user's address"
+        key :required, false
+        schema do
+          key :type, :string
+        end
+      end
 
-      # parameter do
-      #   key :name, :phone
-      #   key :in, :query
-      #   key :description, "(optional) The user's phone number"
-      #   key :required, false
-      #   schema do
-      #     key :type, :string
-      #   end
-      # end
-
-      # parameter do
-      #   key :name, :address
-      #   key :in, :query
-      #   key :description, "(optional) The user's address"
-      #   key :required, false
-      #   schema do
-      #     key :type, :string
-      #   end
-      # end
-
-      # parameter do
-      #   key :name, :birthdate
-      #   key :in, :query
-      #   key :description, "(optional) The user's birthdate"
-      #   key :required, false
-      #   schema do
-      #     key :type, :string
-      #   end
-      # end
-
-      # parameter do
-      #   key :name, :organizationUrl
-      #   key :in, :query
-      #   key :description, "(optional) The organization's website url"
-      #   key :required, false
-      #   schema do
-      #     key :type, :string
-      #   end
-      # end
+      parameter do
+        key :name, :owner_birthdate
+        key :in, :query
+        key :description, "(optional) The user's birthdate"
+        key :required, false
+        schema do
+          key :type, :string
+        end
+      end
 
       # response 200 do
       #   key :description, "Take user to html page(s) on Bank Connect"

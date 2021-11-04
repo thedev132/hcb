@@ -18,7 +18,7 @@
 
   <p>
     <%= form.label :owner_email %>
-    <%= form.text_field :owner_email, class: 'fit', value: @partnered_signup.owner_email, placeholder: 'fionah@gmail.com' %>
+    <%= form.text_field :owner_email, class: 'fit', value: @partnered_signup.owner_email, placeholder: 'fionah@gmail.com', disabled: @partnered_signup.owner_email.present? %>
   </p>
 
   <p>
@@ -28,7 +28,7 @@
 
   <p>
     <%= form.label :owner_address %>
-    <%= form.text_field :owner_address, class: 'fit', placeholder: '8605 Santa Monica Blvd #86294 West Hollywood, CA 90069', value: @partnered_signup.owner_address %>
+    <%= form.text_field :owner_address, class: 'fit', value: @partnered_signup.owner_address, placeholder: '8605 Santa Monica Blvd #86294 West Hollywood, CA 90069' %>
   </p>
 
   <p>
