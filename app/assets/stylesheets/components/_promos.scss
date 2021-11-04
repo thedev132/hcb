@@ -1,0 +1,56 @@
+@import 'variables';
+
+ .promo-pvsa {
+   background: repeating-linear-gradient(
+     135deg,
+     #eee 0%,
+     white 40%,
+     #3c3b6e 40%,
+     #3c3b6e 65%,
+     #b22234 65%,
+     #b22234 70%,
+     white 70%,
+     white 75%,
+     #b22234 75%,
+     #b22234 80%,
+     white 80%,
+     white 85%,
+     #b22234 85%,
+     #b22234 90%,
+     white 90%,
+     #eee 100%
+   );
+ }
+
+ .promo-domains {
+     background-color: #F5F5F5;
+ }
+
+ html[data-dark="true"] {
+   .promo-pvsa {
+     background: repeating-linear-gradient(
+       135deg,
+       #4f4f4f 0%,
+       #3d3d3d 40%,
+       #322a38 40%,
+       #322a38 65%,
+       #4b3134 65%,
+       #4b3134 70%,
+       #3d3d3d 70%,
+       #3d3d3d 75%,
+       #4b3134 75%,
+       #4b3134 80%,
+       #3d3d3d 80%,
+       #3d3d3d 85%,
+       #4b3134 85%,
+       #4b3134 90%,
+       #3d3d3d 90%,
+       #4f4f4f 100%
+     );
+   }
+   
+   .promo-domains {
+       background-color: #363A44;
+       color: white;
+   }
+ }
