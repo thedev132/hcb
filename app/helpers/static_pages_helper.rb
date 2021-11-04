@@ -372,6 +372,11 @@ module StaticPagesHelper
         query: {filterByFormula: "Status='Pending'", fields: [] },
         destination: "https://airtable.com/tbl1MRaNpF4KphbOd/viwdGjjDdtsS7bjlP"
       },
+      domains: {
+        url: "https://airbridge.hackclub.com/v0.1/Bank%20Promotions/Domains",
+        query: {filterByFormula: "Status='Pending'", fields: [] },
+        destination: "https://airtable.com/tbl22cXd3Bo9uo0wp/viwcnZyoctJTFGVY2"
+      },
       pvsa: {
         url: "https://airbridge.hackclub.com/v0.1/Bank%20Promotions/PVSA%20Order",
         query: {filterByFormula: "Status='Pending'", fields: []},

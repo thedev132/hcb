@@ -939,6 +939,8 @@ class AdminController < ApplicationController
         airtable_task_size :replit
       when :pending_sendy_airtable
         airtable_task_size :sendy
+      when :pending_domains_airtable
+        airtable_task_size :domains
       when :pending_pvsa_airtable
         airtable_task_size :pvsa
       when :pending_wire_transfers_airtable
@@ -988,6 +990,7 @@ class AdminController < ApplicationController
     pending_task :pending_stickers_airtable
     pending_task :pending_replit_airtable
     pending_task :pending_sendy_airtable
+    pending_task :pending_domains_airtable
     pending_task :pending_pvsa_airtable
     pending_task :wire_transfers
     pending_task :paypal_transfers
