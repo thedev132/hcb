@@ -1,7 +1,9 @@
 $(document).on("turbolinks:load", function () {
   $(".anchor-link").on("click", function (event) {
     navigator.clipboard.writeText(
-      `${window.location.origin}/faq#${$(this).data("anchor")}`
+      `${window.location.origin + window.location.pathname}#${$(this).data(
+        "anchor"
+      )}`
     );
 
     $(this).attr("aria-label", "Copied! 🎉");
