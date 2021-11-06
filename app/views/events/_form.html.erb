@@ -129,6 +129,11 @@
     </div>
 
     <p class="mt3">To change an organization's status (Pending, Approved, Rejected, etc.),
-      use the <%= link_to "admin Organizations process page", event_process_admin_path(@event) %></p>
+      use the <%= link_to "admin Organizations process page", event_process_admin_path(@event) %>
+    </p>
+
+    <div class="action">
+      <%= form.submit nil, value: "Update" %>
+    </div>
   <% end %>
 <% end %>
