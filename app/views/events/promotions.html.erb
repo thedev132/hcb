@@ -57,7 +57,7 @@
   </section>
 </div>
 
-<% if @event.beta_features_enabled? && current_user %>
+<% if @event.beta_features_enabled && organizer_signed_in? %>
   <div class="card mb3">
     <div
       class="card__banner card__banner--top flex justify-between items-center promo-domains">
