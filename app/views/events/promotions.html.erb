@@ -57,20 +57,22 @@
   </section>
 </div>
 
-<div class="card mb3">
-  <div
-    class="card__banner card__banner--top flex justify-between items-center promo-domains">
-    <h3 class="h1 p2 my0 color-black">Domains</h3>
-    <%= link_to 'Apply',
-      organizer_signed_in? ? "https://hack.af/bank-domains?prefill_Project%20Name=#{@event.name}&prefill_Bank%20URL=#{event_url(@event)}&prefill_Your%20name=#{current_user.full_name}&prefill_Login%20email=#{current_user.email}" : root_path,
-      class: "btn bg-success mr1 #{'disabled' unless organizer_signed_in?}"
-    %>
-  </div>
+<% if @event.beta_features_enabled? %>
+  <div class="card mb3">
+    <div
+      class="card__banner card__banner--top flex justify-between items-center promo-domains">
+      <h3 class="h1 p2 my0 color-black">Domains</h3>
+      <%= link_to 'Apply',
+        organizer_signed_in? ? "https://hack.af/bank-domains?prefill_Project%20Name=#{@event.name}&prefill_Bank%20URL=#{event_url(@event)}&prefill_Your%20name=#{current_user.full_name}&prefill_Login%20email=#{current_user.email}" : root_path,
+        class: "btn bg-success mr1 #{'disabled' unless organizer_signed_in?}"
+      %>
+    </div>
 
-  <p class="mb0">
-    Running a hackathon, nonprofit, or club? Hack Club Bank will purchase your project or event's domain and cover the cost for the first year. Checkout the full list of available TLDs (top-level domains) <%= link_to 'here', 'https://hack.af/bank-domain-tlds' %>. A top-level A TLD is the suffix or extension tied to a website url (ex: .com, .org, etc.).
-  </p>
-</div>
+    <p class="mb0">
+      Running a student-led hackathon, nonprofit, or club? Hack Club Bank will purchase your domain and cover the cost for the first year. Checkout the full list of available TLDs (top-level domains) <%= link_to 'here', 'https://hack.af/bank-domain-tlds' %>. A TLD is the suffix or extension tied to a website url (ex: .com, .org, etc.). For example, Hack Club's domain URL is hackclub.com; the domain name is hackclub; the TLD is .com.
+    </p>
+  </div>
+<% end %>
 
 <div class="card mb3">
   <div
