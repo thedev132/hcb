@@ -27,7 +27,7 @@ gem "webpacker", "~> 4.0"
 # See https://github.com/rails/execjs#readme for more supported runtimes
 gem "mini_racer", platforms: :ruby
 # Turbo makes navigating your web application faster. Read more: https://github.com/hotwired/turbo
-gem 'turbo-rails', '~> 0.8.3'
+gem "turbo-rails", "~> 0.8.3"
 # Use Redis adapter to run Action Cable in production
 gem "redis", "~> 4.0"
 # Use ActiveModel has_secure_password
