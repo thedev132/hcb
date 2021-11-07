@@ -13,7 +13,6 @@
   line-height: 1.125;
   margin-left: 1rem;
   padding: 0.25rem 0.625rem;
-  width: min-intrinsic;
 
   &.success {
     background-color: rgba(map-get($palette, success), 0.125);
@@ -57,7 +56,6 @@
   line-height: 1.125;
   padding: 0.125rem 0.375rem;
   margin-left: 0.5rem;
-  width: min-intrinsic;
 }
 
 // Circular button
