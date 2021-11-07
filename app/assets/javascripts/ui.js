@@ -227,6 +227,7 @@ $(document).on('turbo:load', function () {
     const c = $(e.target).closest('[data-behavior~=menu_toggle]')
     if (o.length > 0 || c.length > 0) {
       BK.toggleMenu(o.length > 0 ? o : c)
+      e.stopImmediatePropagation()
     }
   })
   $(document).keydown(function (e) {
