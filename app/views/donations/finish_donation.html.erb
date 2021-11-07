@@ -1,5 +1,5 @@
 <% content_for :body_attributes do %>
-  data-turbolinks="false"
+  data-turbo="false"
 <% end %>
 
 <% content_for :head do %>
@@ -20,7 +20,7 @@
     }
   </script>
   <script defer>
-    document.addEventListener('turbolinks:load', function() {
+    document.addEventListener('turbo:load', function() {
       const stripe = Stripe('<%= StripeService.publishable_key %>')
       const elements = stripe.elements()
       const clientSecret = '<%= @donation.stripe_client_secret %>'

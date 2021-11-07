@@ -121,11 +121,11 @@ module ApplicationHelper
     end
   end
 
-  # jQuery plugins are buggy when navigating between pages with Turbolinks.
-  # This forces the page to reload when Turbolinks navigates to it
+  # jQuery plugins are buggy when navigating between pages with Turbo.
+  # This forces the page to reload when Turbo navigates to it
   def include_modals
     content_for :head do
-      tag(:meta, name: "turbolinks-visit-control", content: "reload")
+      tag(:meta, name: "turbo-visit-control", content: "reload")
     end
   end
 

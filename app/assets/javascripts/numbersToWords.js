@@ -1,5 +1,5 @@
 // all borrowed from https://stackoverflow.com/a/30524915
-$(document).on("turbolinks:load", function() {
+$(document).on("turbo:load", function() {
   const arr = x => Array.from(x);
   const num = x => Number(x) || 0;
   const str = x => String(x);

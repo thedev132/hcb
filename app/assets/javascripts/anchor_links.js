@@ -1,4 +1,4 @@
-$(document).on("turbolinks:load", function () {
+$(document).on("turbo:load", function () {
   $(".anchor-link").on("click", function (event) {
     navigator.clipboard.writeText(
       `${window.location.origin + window.location.pathname}#${$(this).data(

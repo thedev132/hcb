@@ -4,8 +4,8 @@
     <title>Bank Admin</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-    <%= stylesheet_link_tag "admin", media: "all", "data-turbolinks-track": "reload" %>
-    <%= javascript_include_tag "admin", "data-turbolinks-track": "reload", defer: true %>
+    <%= stylesheet_link_tag "admin", media: "all", "data-turbo-track": "reload" %>
+    <%= javascript_include_tag "admin", "data-turbo-track": "reload", defer: true %>
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-<%= Rails.env %>-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-<%= Rails.env %>-16x16.png">
     <%= yield(:head) if content_for?(:head) %>

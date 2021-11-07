@@ -153,7 +153,7 @@
       },
 
       show: function() {
-        Turbolinks.clearCache()
+        Turbo.clearCache()
         this.$elm.trigger($.modal.BEFORE_OPEN, [this._ctx()])
         if (this.options.showClose) {
           this.closeButton = $(
