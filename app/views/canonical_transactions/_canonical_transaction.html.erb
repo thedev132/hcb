@@ -55,7 +55,11 @@
     <% end %>
   </td>
   <td class="nowrap">
-    <span><%= number_to_currency ct.amount %></span>
+    <%
+      # if it's a donation, we'll look at the donation amount
+      amount = ct.donation? ? ct.donation.amount / 100 : ct.amount
+    %>
+    <span><%= number_to_currency amount %></span>
   </td>
   <td>
     <%= link_to "Details", ct.url if organizer_signed_in? || defined?(force_display_details) %>

@@ -76,6 +76,10 @@ class CanonicalTransactionGrouped
     @local_hcb_code ||= HcbCode.find_or_create_by(hcb_code: hcb_code)
   end
 
+  def donation
+    Donation.find(hcb_i2)
+  end
+
   private
 
   def invoice
@@ -86,9 +90,6 @@ class CanonicalTransactionGrouped
     smartish_custom_memo || "INVOICE TO #{invoice.smart_memo}"
   end
 
-  def donation
-    Donation.find(hcb_i2)
-  end
 
   def donation_memo
     smartish_custom_memo || "DONATION FROM #{donation.smart_memo}"
