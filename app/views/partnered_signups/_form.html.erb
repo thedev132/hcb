@@ -13,7 +13,7 @@
 
   <p>
     <%= form.label :owner_name %>
-    <%= form.text_field :owner_name, class: 'fit', value: @partnered_signup.owner_name, placeholder: 'Fiona Hackworth' %>
+    <%= form.text_field :owner_name, class: 'fit', value: @partnered_signup.owner_name, placeholder: 'Fiona Hackworth', disabled: @partnered_signup.owner_name.present?  %>
   </p>
 
   <p>
