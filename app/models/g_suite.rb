@@ -62,7 +62,7 @@ class GSuite < ApplicationRecord
   end
 
   def dns_check_url
-    "https://dns-lookup.com/#{domain}"
+    "https://nslookup.io/dns-records/#{domain}"
   end
 
   def deleted?
