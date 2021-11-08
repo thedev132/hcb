@@ -43,6 +43,9 @@
   "addons": ["heroku-postgresql", "heroku-redis"],
   "buildpacks": [
     {
+      "url": "https://github.com/maxwofford/heroku-buildpack-sourceversion"
+    },
+    {
       "url": "https://github.com/heroku/heroku-buildpack-apt"
     },
     {
