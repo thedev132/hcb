@@ -214,10 +214,9 @@ module ApplicationHelper
   # also in lib/util.rb for backend use
   def commit_hash
     @commit_hash ||= begin
-                       hash = ENV["HEROKU_SLUG_COMMIT"] || `git show --pretty=%H -q`&.chomp
-
-                       hash[0...7]
-                     end
+      hash = ::Util.commit_hash || ""
+      hash[0...7]
+    end
 
     @commit_hash
   end
