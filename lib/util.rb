@@ -16,7 +16,7 @@ module Util
   # provided by https://github.com/maxwofford/heroku-buildpack-sourceversion
   def self.source_version
     file = File.open(".source_version")
-    result = file.read.trim
+    result = file.read.strip
     file.close
 
     result
