@@ -55,7 +55,7 @@ module Api
         partner_id: @partner.id,
         redirect_url: params[:redirect_url],
         organization_name: params[:organization_name],
-        owner_email: params[:owner_email,
+        owner_email: params[:owner_email],
       }
       attrs[:owner_name] = params[:owner_name] if params[:owner_name]
       attrs[:owner_phone] = params[:owner_phone] if params[:owner_phone]
