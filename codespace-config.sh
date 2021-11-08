@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # this script will help you install all the prereqs for using Hack Club Bank in a GitHub Codespace
+# reach out to kunal botla (kunal@hackclub.com) if you have any questions or issues.
 
 echo "
 $(tput setaf 9)Hack Club Bank:$(tput sgr0) Step 0/7: Checking for config/master.key"
@@ -24,6 +25,8 @@ $(tput setaf 9)Hack Club Bank:$(tput sgr0) Step 2/7: Login to Heroku (Input Need
 if [ $? -eq 0 ]; then
   echo "(tput setaf 9)Hack Club Bank:$(tput sgr0) Already signed in, skipping login..."
 else
+  $(tput setaf 9)Hack Club Bank:$(tput sgr0) Not signed in, sign in below"
+  $(tput setaf 9)Hack Club Bank:$(tput sgr0) Use an API key generated from the Heroku Dashboard if you're using MFA"
   heroku login -i
 fi
 echo "$(tput setaf 9)Hack Club Bank:$(tput sgr0) $(tput setaf 10)Done$(tput sgr0)"
@@ -60,7 +63,9 @@ echo "env \$(cat .env.docker) docker-compose run --service-ports web bundle exec
 
 echo "
 
-Thank you for developing Hack Club Bank!"
+Thank you for developing Hack Club Bank!
+
+Questions or issues with this script? Contact Kunal Botla (kunal@hackclub.com)"
 
 echo "
      @BANK@@@BANK@
