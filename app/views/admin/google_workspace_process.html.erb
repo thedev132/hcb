@@ -35,10 +35,9 @@
 <h3>Instructions</h3>
 <p>Context: <%= link_to "see what the user sees", event_g_suite_overview_path(event_id: @g_suite.event.slug) %>.</p>
 
-# maybe add a Hack Club verification token here to verify ownership before approving and creating workspaces?
-<% if @g_suite.creating? %> kdfas
-  <p>Is this a valid/reasonable domain name? If so, let's approve it!<br/>Check out the URL at <%= link_to @g_suite.domain, http://@g_suite.domain %> to see if it seems like they own the domain.<br/>This will generate a verification key for this domain and
-  email the organizer to let them know they can start setting up their domain's DNS records.</p> 
+<% if @g_suite.creating? %>
+  <p>Is this a valid/reasonable domain name? If so, let's approve it!<br/>Check out the URL to see if it seems like they own the domain.<br/>This will generate a verification key for this domain and
+  email the organizer to let them know they can start setting up their domain's DNS records.</p> # maybe add a Hack Club verification token here to verify ownership before approving and creating?
   <% if false %>
     <%# these are the manual instructions %>
     <ol>
