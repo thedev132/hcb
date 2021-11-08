@@ -60,6 +60,10 @@
 <% if @g_suite.verifying? %>
   <p>Hack Club Bank is now trying to automatically verify if the user has configured their domain correctly with the TXT record.</p>
   <p>If you would like to check yourself:</p>
+  <ul>
+    <li>Use the HCB Bank Ops Plugin to verify the TXT & MX records and see the current status.</li> # need to publish to Chrome Web Store for internal use
+  </ul>
+  <p>or</p>
   <ol>
     <li>Visit <%= link_to "Google Webmaster Central", @g_suite.verification_url %></li>
     <li>Choose 'Other' from the drop down menu</li>
