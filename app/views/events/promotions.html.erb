@@ -57,22 +57,20 @@
   </section>
 </div>
 
-<% if @event.beta_features_enabled && organizer_signed_in? %>
-  <div class="card mb3" id="domains">
-    <div
-      class="card__banner card__banner--top flex justify-between items-center promo-domains">
-      <h3 class="h1 p2 my0 color-black">Domains</h3>
-      <%= link_to 'Apply',
-        organizer_signed_in? ? "https://hack.af/bank-domains?prefill_Project%20Name=#{@event.name}&prefill_Bank%20URL=#{event_url(@event)}&prefill_Name=#{current_user.full_name}&prefill_Login%20email=#{current_user.email}" : root_path,
-        class: "btn bg-success mr1 #{'disabled' unless organizer_signed_in?}"
-      %>
-    </div>
-
-    <p class="mb0">
-    Running a high school student-led hackathon, nonprofit, or club? Hack Club Bank will purchase your domain and cover the cost for the first year. Check out the <%= link_to 'full list of available TLDs', 'https://hack.af/bank-domain-tlds' %> (ex: .com, .org, etc.). After the first year, your organization will be responsible for payment if you'd like to to keep your domain. You can also choose for us to setup < %= link_to '@g_suites', 'Google Workspace' %> for you once we've purchased your domain.
-    </p>
+<div class="card mb3" id="domains">
+  <div
+    class="card__banner card__banner--top flex justify-between items-center promo-domains">
+    <h3 class="h1 p2 my0 color-black">Domains</h3>
+    <%= link_to 'Apply',
+      organizer_signed_in? ? "https://hack.af/bank-domains?prefill_Project%20Name=#{@event.name}&prefill_Bank%20URL=#{event_url(@event)}&prefill_Name=#{current_user.full_name}&prefill_Login%20email=#{current_user.email}" : root_path,
+      class: "btn bg-success mr1 #{'disabled' unless organizer_signed_in?}"
+    %>
   </div>
-<% end %>
+
+  <p class="mb0">
+  Running a high school student-led hackathon, nonprofit, or club? Hack Club Bank will purchase your domain and cover the cost for the first year. Check out the <%= link_to 'full list of available TLDs', 'https://hack.af/bank-domain-tlds' %> (ex: .com, .org, etc.). After the first year, your organization will be responsible for payment if you'd like to to keep your domain. You can also choose for us to setup < %= link_to '@g_suites', 'Google Workspace' %> for you once we've purchased your domain.
+  </p>
+</div>
 
 <div class="card mb3" id="replit">
   <div
