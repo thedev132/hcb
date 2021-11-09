@@ -211,7 +211,6 @@ module ApplicationHelper
     content_for :title, text
   end
 
-  # also in lib/util.rb for backend use
   def commit_hash
     @commit_hash ||= begin
       hash = ::Util.commit_hash || ""

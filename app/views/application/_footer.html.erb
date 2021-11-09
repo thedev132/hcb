@@ -13,6 +13,10 @@
 
 <% unless commit_hash.blank? %>
   <p class="center muted h6">
-    Build <em><%= commit_hash %></em> from <%= commit_duration %> ago.
+    Build <em><%= commit_hash %></em>
+    <% if commit_duration %>
+      from <%= commit_duration %> ago
+    <% end %>
+    .
   </p>
 <% end %>
