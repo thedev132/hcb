@@ -235,7 +235,7 @@ module ApplicationHelper
 
   def commit_duration
     @commit_duration ||= begin
-                           return "" if commit_time.nil?
+                           return nil if commit_time.nil?
 
                            distance_of_time_in_words Time.at(commit_time), Time.now
                          end
