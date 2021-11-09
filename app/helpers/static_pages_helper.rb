@@ -327,7 +327,7 @@ module StaticPagesHelper
         "I was gonna tell a Bank joke, but ran out of interest",
         "If money talks, why do we need bank tellers?",
         "We’ll be here all week",
-        "Honk club <img src='https://cloud-1kf8h2v89-hack-club-bot.vercel.app/1goose-honk-right-intensifies.gif'/>",
+        "Honk club <img src='https://cloud-1kf8h2v89-hack-club-bot.vercel.app/1goose-honk-right-intensifies.gif' style='height:1.25em;margin-left:0.5em;'/>",
         "Handle with care",
         "This side up",
         "if it makes sense it’ll make dollars",
