@@ -110,7 +110,7 @@
 
     <div class="field">
       <%= form.label :country %>
-      <%= form.collection_select :country_name, Event.countries.map{|c| [c.first, get_country_name_from_alpha2(c.first)]}, :first, :last, { include_blank: 'Select a country'} %>
+      <%= form.collection_select :country, Event.countries.map{|c| [c.first, get_country_name_from_alpha2(c.first)]}, :first, :last, { include_blank: 'Select a country'} %>
     </div>
 
     <div class="field">
