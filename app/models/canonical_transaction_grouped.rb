@@ -36,6 +36,14 @@ class CanonicalTransactionGrouped
     ct.fee_payment?
   end
 
+  def fee_reimbursement?
+    ct.fee_reimbursement
+  end
+
+  def fee_reimbursement_completed?
+    ct.fee_reimbursement.completed?
+  end
+
   def raw_stripe_transaction
     ct.raw_stripe_transaction
   end
@@ -76,11 +84,11 @@ class CanonicalTransactionGrouped
     @local_hcb_code ||= HcbCode.find_or_create_by(hcb_code: hcb_code)
   end
 
+  private
+
   def donation
     Donation.find(hcb_i2)
   end
-
-  private
 
   def invoice
     Invoice.find(hcb_i2)
@@ -89,7 +97,6 @@ class CanonicalTransactionGrouped
   def invoice_memo
     smartish_custom_memo || "INVOICE TO #{invoice.smart_memo}"
   end
-
 
   def donation_memo
     smartish_custom_memo || "DONATION FROM #{donation.smart_memo}"

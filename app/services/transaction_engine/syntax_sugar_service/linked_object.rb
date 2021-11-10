@@ -28,8 +28,13 @@ module TransactionEngine
 
           return likely_bank_fee if outgoing_bank_fee?
 
-          nil
         end
+        hcb_code = HcbCodeService::FindOrCreate.new(hcb_code: @canonical_transaction.hcb_code).run
+        if hcb_code.donation?
+          return hcb_code.donation
+        end
+
+        nil
       end
 
       private

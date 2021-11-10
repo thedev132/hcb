@@ -178,6 +178,8 @@ class CanonicalTransaction < ApplicationRecord
   end
 
   def fee_reimbursement
+    return linked_object.fee_reimbursement if linked_object.is_a?(Donation)
+
     nil # TODO
   end
 
