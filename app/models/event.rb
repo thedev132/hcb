@@ -459,6 +459,10 @@ class Event < ApplicationRecord
     "#{name} - #{id}"
   end
 
+  def eligible_for_free_domain?
+    !g_suites.not_deleted.any? and @event.country == :US
+  end
+
   # displayed on /negative_events
   def self.negatives
     select { |event| event.balance < 0 || event.emburse_balance < 0 || event.fee_balance < 0 }
