@@ -272,6 +272,8 @@ class EventsController < ApplicationController
 
   def promotions
     authorize @event
+
+    @eligible_for_free_domain = !@event.g_suites.not_deleted.any? and @event.country == :US
   end
 
   def reimbursements
