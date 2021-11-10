@@ -460,7 +460,7 @@ class Event < ApplicationRecord
   end
 
   def eligible_for_free_domain?
-    !g_suites.not_deleted.any? and @event.country == "US"
+    !g_suites.not_deleted.any? and country == "US"
   end
 
   # displayed on /negative_events
