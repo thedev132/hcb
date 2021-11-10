@@ -6,45 +6,49 @@ module Shared
 
       private
 
+      SLEEP_DURATION = Rails.env.development? ? 2 : 1
+
       def login_to_svb!
         # Go to auth url
         driver.navigate.to(auth_url)
 
-        sleep 1
+        sleep SLEEP_DURATION
 
         # Click accept cookies modal
         begin
           el = driver.find_element(id: "accept-cookies")
           el.click
-        rescue
+        rescue ::Selenium::WebDriver::Error::NoSuchElementError
         end
 
         # Username
-        sleep 1
+        sleep SLEEP_DURATION
         el = driver.find_element(id: "userId")
         el.send_keys(username)
 
         # Password
-        sleep 1
+        sleep SLEEP_DURATION
         el = driver.find_element(id: "userPassword")
         el.send_keys(password)
 
         # Login
-        sleep 1
+        sleep SLEEP_DURATION * 2
         el = driver.find_element(id: "loginButton")
         el.click
 
-        # Make mfa request (to track and store code to be received)
-        make_mfa_request
+        # Multifactor Authentication (if needed)
+        handle_challenge_questions
 
-        # Click 'text me'
-        handle_click_text_me("Bank Automation")
+        # ===== SVB MFA LOGIN (unused at the moment) =====
+          # Make mfa request (to track and store code to be received)
+          # make_mfa_request
 
-        # Fill mfa code
-        handle_fill_mfa_code
+          # # Click 'text me'
+          # handle_click_text_me("Bank Automation")
 
-        # Continue to online banking
-        handle_continue_to_online_banking
+          # # Fill mfa code
+          # handle_fill_mfa_code
+        # ================================================
 
         # Wait for homepage
         wait_for_homepage
@@ -67,7 +71,11 @@ module Shared
       end
 
       def driver
-        @driver ||= ::Selenium::WebDriver.for :chrome
+        if Rails.env.development?
+          @driver ||= ::Selenium::WebDriver.for :remote, url: "http://host.docker.internal:9515"
+        else
+          @driver ||= ::Selenium::WebDriver.for :chrome
+        end
       end
 
       def username
@@ -76,6 +84,57 @@ module Shared
 
       def password
         Rails.application.credentials.svb[:password]
+      end
+
+      def challenge_answer_for(question)
+        key = ("challenge_answer_" + question).to_sym
+        Rails.application.credentials.svb[key]
+      end
+
+      def handle_challenge_questions
+        begin
+          # Wait until element is found... if element was not found, there are
+          # no Challenge Questions and it will timeout (error raised)
+          wait = ::Selenium::WebDriver::Wait.new(timeout: 65) # wait 65 seconds
+          wait.until { driver.find_element(id: "enteredChallengePhraseResponse") }
+
+          # Element was found!
+
+          sleep SLEEP_DURATION
+          el = driver.find_element(id: "enteredChallengePhraseResponse")
+
+          # Get question from form label
+          question = driver.find_element(class: "svb-modal-confirm-identity-label-container").text
+
+          # Attempt to match the question to a saved answer
+          answer = challenge_answer_for("actor") if question.include?("Who is your favorite actor or musician?")
+          answer = challenge_answer_for("hobby") if question.include?("What is your favorite hobby?")
+          answer = challenge_answer_for("dessert") if question.include?("What is your favorite dessert?")
+
+          # Error if we can't find an answer
+          if answer.nil?
+            Airbrake.notify("SVB Login, security challenge question without answer: #{question}")
+          end
+
+          # Fill in answer
+          el.send_keys(answer)
+
+          # Submit
+          sleep SLEEP_DURATION * 2
+          el = driver.find_element(class: "svb-confirm-identity-button")
+          el.click
+
+          # "Will you use this device to log in to Online Banking regularly?" defaults to "Yes"
+          # Click continue to online banking button
+          begin
+            sleep SLEEP_DURATION
+            el = driver.find_element(class: "svb-continue-button")
+            el.click
+          rescue ::Selenium::WebDriver::Error::NoSuchElementError
+          end
+
+        rescue
+        end
       end
 
       def handle_click_text_me(phone_name)
@@ -96,9 +155,9 @@ module Shared
 
           # Identify correct phone number (in case of multiple) to send mfa to
           if name == phone_name
-            sleep 1
+            sleep SLEEP_DURATION
             driver.action.move_to(el).perform
-            sleep 1
+            sleep SLEEP_DURATION
 
             a = el.find_element(:xpath, 'div[@data-svb-class="svb-actions-wrapper"]/div/a')
             a.click
@@ -113,7 +172,7 @@ module Shared
 
         # Fill mfa code
         loop do
-          sleep 1
+          sleep SLEEP_DURATION
           puts "waiting for code"
 
           # Code received
