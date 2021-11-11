@@ -30,6 +30,28 @@
  }
 
  html[data-dark="true"] {
+   .promo-pvsa {
+    background: repeating-linear-gradient(
+      135deg,
+      #8492a6 0%,
+      #8492a6 40%,
+      #3c3b6e 40%,
+      #3c3b6e 65%,
+      #b22234 65%,
+      #b22234 70%,
+      #8492a6 70%,
+      #8492a6 75%,
+      #b22234 75%,
+      #b22234 80%,
+      #8492a6 80%,
+      #8492a6 85%,
+      #b22234 85%,
+      #b22234 90%,
+      #8492a6 90%,
+      #8492a6 100%
+    );
+   }
+
    .promo-domains {
        background-color: #363A44;
        color: white;
