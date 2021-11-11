@@ -40,7 +40,7 @@ class CanonicalTransactionGrouped
     ct.fee_reimbursement
   end
 
-  def fee_reimbursement_completed?
+  def fee_reimbursed?
     ct.fee_reimbursement.completed?
   end
 
@@ -86,16 +86,16 @@ class CanonicalTransactionGrouped
 
   private
 
-  def donation
-    Donation.find(hcb_i2)
-  end
-
   def invoice
     Invoice.find(hcb_i2)
   end
 
   def invoice_memo
     smartish_custom_memo || "INVOICE TO #{invoice.smart_memo}"
+  end
+
+  def donation
+    Donation.find(hcb_i2)
   end
 
   def donation_memo

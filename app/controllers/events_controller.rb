@@ -203,8 +203,10 @@ class EventsController < ApplicationController
     relation = @event.donations.not_pending
 
     @stats = {
-      deposited: relation.deposited.sum(:amount),
-      in_transit: relation.in_transit.sum(:amount),
+      # Amount we already deposited + partial amount that was deposit for in transit transactions
+      deposited: relation.deposited.sum(:amount) + relation.in_transit.sum(&:amount_settled),
+      # Amount in transit minus the amount that is already settled
+      in_transit: relation.in_transit.sum(:amount) - relation.in_transit.sum(&:amount_settled),
       refunded: relation.refunded.sum(:amount)
     }
 
