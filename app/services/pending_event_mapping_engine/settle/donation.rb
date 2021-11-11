@@ -16,7 +16,7 @@ module PendingEventMappingEngine
           prefix = grab_prefix(donation: donation)
 
           # 2. look up canonical - using HCB short code
-          cts ||= event.canonical_transactions.where("memo ilike '%HCB-#{cpt.local_hcb_code.short_code}%'")
+          cts ||= event.canonical_transactions.where("memo ilike 'HCKCLB HCB-#{cpt.local_hcb_code.short_code}%'")
 
           # 2b. look up canonical - scoped to event for added accuracy
           cts ||= event.canonical_transactions.where("memo ilike '%DONAT% #{prefix}%'")
