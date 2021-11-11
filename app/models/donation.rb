@@ -194,7 +194,7 @@ class Donation < ApplicationRecord
   end
 
   def fee_reimbursed?
-    amount_settled == amount
+    fee_reimbursement.canonical_transaction.present?
   end
 
   private

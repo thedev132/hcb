@@ -7,6 +7,7 @@ module TransactionEngine
 
       def initialize(canonical_transaction:)
         @canonical_transaction = canonical_transaction
+        @hcb_code = HcbCodeService::FindOrCreate.new(hcb_code: @canonical_transaction.hcb_code).run
       end
 
       def run
@@ -28,13 +29,8 @@ module TransactionEngine
 
           return likely_bank_fee if outgoing_bank_fee?
 
+          nil
         end
-        hcb_code = HcbCodeService::FindOrCreate.new(hcb_code: @canonical_transaction.hcb_code).run
-        if hcb_code.donation?
-          return hcb_code.donation
-        end
-
-        nil
       end
 
       private
@@ -92,6 +88,7 @@ module TransactionEngine
       end
 
       def likely_donation
+        return @hcb_code.donation if @hcb_code.donation?
         return nil unless event
 
         potential_donation_payouts = event.donation_payouts.where("donation_payouts.statement_descriptor ilike 'DONATE #{likely_donation_short_name}%' and donation_payouts.amount = #{amount_cents}")
