@@ -2,9 +2,9 @@
 
 class DonationsController < ApplicationController
   include Rails::Pagination
-  before_action :set_donation, only: [:show, :edit, :update, :destroy]
-  skip_after_action :verify_authorized, except: [:show]
-  skip_before_action :signed_in_user, except: [:show]
+  skip_after_action :verify_authorized
+  skip_before_action :signed_in_user
+  before_action :set_donation, only: [:show]
   before_action :set_event, only: [:start_donation, :make_donation, :finish_donation, :qr_code]
   before_action :allow_iframe, except: [:show, :index]
 
@@ -13,10 +13,8 @@ class DonationsController < ApplicationController
   # GET /donations/1
   def show
     authorize @donation
-    @event = @donation.event
-
-    # Comments
     @hcb_code = HcbCode.find_or_create_by(hcb_code: @donation.hcb_code)
+    redirect_to hcb_code_path(@hcb_code.hashid)
   end
 
   def start_donation
@@ -102,7 +100,6 @@ class DonationsController < ApplicationController
     @event = Event.find(params["event_name"])
   end
 
-  # Use callbacks to share common setup or constraints between actions.
   def set_donation
     @donation = Donation.find(params[:id])
   end
