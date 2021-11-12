@@ -63,7 +63,8 @@ module DonationsHelper
       icon_name = {
         "amex" => "card-amex",
         "mastercard" => "card-mastercard",
-        "visa" => "card-visa"
+        "visa" => "card-visa",
+        "discover" => "card-discover"
       }[brand] || "card-other"
       tooltip = {
         "amex" => "American Express",
