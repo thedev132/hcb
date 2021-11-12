@@ -4,12 +4,6 @@ class InvoicesController < ApplicationController
   before_action :set_event, only: [:index]
   skip_before_action :signed_in_user
 
-  def all_index
-    @invoices = Invoice.all.order(created_at: :desc).includes(:creator)
-
-    authorize Invoice
-  end
-
   def index
     relation = @event.invoices
     authorize relation
@@ -95,16 +89,8 @@ class InvoicesController < ApplicationController
   def show
     @invoice = Invoice.friendly.find(params[:id])
     authorize @invoice
-
-    @sponsor = @invoice.sponsor
-    @event = @sponsor.event
-    @payout = @invoice&.payout
-    @refund = @invoice&.fee_reimbursement
-    @payout_t = @payout&.t_transaction
-    @refund_t = @refund&.t_transaction
-
-    # Comments
     @hcb_code = HcbCode.find_or_create_by(hcb_code: @invoice.hcb_code)
+    redirect_to hcb_code_path(@hcb_code.hashid)
   end
 
   def archive
