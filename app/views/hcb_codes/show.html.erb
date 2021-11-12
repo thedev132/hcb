@@ -1,4 +1,3 @@
-<% title "Transaction for #{number_to_currency(@hcb_code.amount)}" %>
 <% page_md %>
 
 <%= render "events/nav" if @event %>
@@ -15,3 +14,5 @@
 <h2>Comments</h2>
 <%= render "comments/list_v2" %>
 <%= render "comments/form_v2" %>
+
+<% title "Transaction for #{number_to_currency(@hcb_code.amount)}" unless content_for :title %>
