@@ -89,7 +89,8 @@ def invoice_payment_method_mention(invoice = @invoice, options = {})
     icon_name = {
       "amex" => "card-amex",
       "mastercard" => "card-mastercard",
-      "visa" => "card-visa"
+      "visa" => "card-visa",
+      "discover" => "card-discover"
     }[brand] || "card-other"
     tooltip = {
       "amex" => "American Express",
