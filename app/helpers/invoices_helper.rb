@@ -151,19 +151,19 @@ end
 def invoice_payout_datetime(invoice = @invoice)
   if (invoice.paid_v2? or invoice.deposited?) and invoice.payout.present?
     title = "Funds available since"
-    datetime = invoice.payout.created_at
+    date = @hcb_code.canonical_transactions.pluck(:date).min
   elsif invoice.payout_creation_queued_at && invoice.payout.nil?
     title = "Transfer scheduled"
-    datetime = invoice.payout_creation_queued_for
+    date = invoice.payout_creation_queued_for
   elsif invoice.payout_creation_queued_at && invoice.payout.present?
     title = "Funds should be available"
-    datetime = invoice.payout.arrival_date
+    date = invoice.payout.arrival_date
   else
     return
   end
 
   strong_tag = content_tag :strong, title
-  date_tag = format_datetime datetime
+  date_tag = format_date date
 
   content_tag(:p) { strong_tag + date_tag }
 end
