@@ -149,18 +149,15 @@ def invoice_card_check_badge(check, invoice = @invoice)
 end
 
 def invoice_payout_datetime(invoice = @invoice)
-  if @payout_t && @refund_t
+  if (invoice.paid_v2? or invoice.deposited?) and invoice.payout.present?
     title = "Funds available since"
-    datetime = [@payout_t.created_at, @refund_t.created_at].max
-  elsif @payout_t && !@refund
-    title = "Funds available since"
-    datetime = @payout_t.created_at
-  elsif @invoice.payout_creation_queued_at && @invoice.payout.nil?
+    datetime = invoice.payout.created_at
+  elsif invoice.payout_creation_queued_at && invoice.payout.nil?
     title = "Transfer scheduled"
-    datetime = @invoice.payout_creation_queued_for
-  elsif @invoice.payout_creation_queued_at && @invoice.payout.present?
+    datetime = invoice.payout_creation_queued_for
+  elsif invoice.payout_creation_queued_at && invoice.payout.present?
     title = "Funds should be available"
-    datetime = @invoice.payout.arrival_date
+    datetime = invoice.payout.arrival_date
   else
     return
   end
