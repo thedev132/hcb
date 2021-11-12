@@ -83,7 +83,7 @@ class Donation < ApplicationRecord
   end
 
   def state_icon
-    "checkmark" if deposited?
+    return "checkmark" if deposited?
     "clock" if in_transit?
   end
 
