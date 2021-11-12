@@ -75,11 +75,16 @@ class Donation < ApplicationRecord
 
   def state_text
     return "Deposited" if deposited?
-    return "Paid & Depositing" if in_transit?
+    return "In Transit" if in_transit?
     return "Refunded" if refunded?
     return "Failed" if failed?
 
     "Pending"
+  end
+
+  def state_icon
+    "checkmark" if deposited?
+    "clock" if in_transit?
   end
 
   def unpaid?

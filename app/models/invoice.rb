@@ -108,7 +108,7 @@ class Invoice < ApplicationRecord
 
   def state_text
     return "Deposited" if paid_v2? && deposited?
-    return "Paid & Depositing" if paid_v2?
+    return "In Transit" if paid_v2?
     return "Voided" if void_v2?
     return "Overdue" if due_date < Time.current
     return "Due soon" if due_date < 3.days.from_now
@@ -117,7 +117,8 @@ class Invoice < ApplicationRecord
   end
 
   def state_icon
-    "checkmark" if state_text == "Paid"
+    return "checkmark" if paid_v2? && deposited?
+    "clock" if paid_v2?
   end
 
   def filter_data
