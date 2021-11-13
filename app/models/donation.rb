@@ -189,6 +189,14 @@ class Donation < ApplicationRecord
     remote_donation[:charges][:data][0][:refunded]
   end
 
+  def amount_settled
+    canonical_transactions.sum(:amount_cents)
+  end
+
+  def fee_reimbursed?
+    fee_reimbursement.canonical_transaction.present?
+  end
+
   private
 
   def raw_pending_donation_transaction

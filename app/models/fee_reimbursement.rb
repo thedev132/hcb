@@ -26,7 +26,7 @@ class FeeReimbursement < ApplicationRecord
   end
 
   def completed?
-    !t_transaction.nil?
+    canonical_transaction.present?
   end
 
   def status

@@ -36,6 +36,14 @@ class CanonicalTransactionGrouped
     ct.fee_payment?
   end
 
+  def fee_reimbursement?
+    ct.fee_reimbursement
+  end
+
+  def fee_reimbursed?
+    ct.fee_reimbursement.completed?
+  end
+
   def raw_stripe_transaction
     ct.raw_stripe_transaction
   end
