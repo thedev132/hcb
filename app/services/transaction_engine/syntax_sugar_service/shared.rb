@@ -81,7 +81,7 @@ module TransactionEngine
       end
 
       def donation?
-        memo_upcase.include?(DONATION_MEMO_PART1) || memo_upcase.include?(DONATION_MEMO_PART2) || (@hcb_code.donation if @hcb_code.present?)
+        memo_upcase.include?(DONATION_MEMO_PART1) || memo_upcase.include?(DONATION_MEMO_PART2)
       end
 
       def likely_donation_short_name
