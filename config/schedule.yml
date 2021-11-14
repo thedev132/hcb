@@ -1,3 +1,6 @@
+# Jobs that perform SVB TRANSFERS can not be ran concurrently.
+# SVB internal transfer cut off is 8pm PST (4am UTC)
+
 g_suite_mark_verifieds_job:
   cron: "*/5 * * * *" # run every 5 minutes
   class: "GSuiteJob::MarkVerifieds"
@@ -33,8 +36,8 @@ sync_payouts_job:
   class: "SyncPayoutsJob"
   queue: "default"
 
-fee_reimbursement_nightly_job:
-  cron: "0 0 * * *" # run every 1 day
+fee_reimbursement_nightly_job: # PERFORMS SVB TRANSFERS
+  cron: "0 1 * * *" # run every 1 day
   class: "FeeReimbursementJob::Nightly"
   queue: "default"
 
@@ -43,8 +46,8 @@ bank_fee_weekly_job:
   class: "BankFeeJob::Weekly"
   queue: "default"
 
-disbursement_nightly_job:
-  cron: "0 0 * * *" # run every 1 day
+disbursement_nightly_job: # PERFORMS SVB TRANSFERS
+  cron: "0 0 * * *" # run every 1 day.
   class: "DisbursementJob::Nightly"
   queue: "default"
 
@@ -78,8 +81,8 @@ payout_nightly_job:
   class: "PayoutJob::Nightly"
   queue: "default"
 
-bank_fee_nightly_job:
-  cron: "*/30 * * * *" # run every 30 minutes
+bank_fee_nightly_job: # PERFORMS SVB TRANSFERS
+  cron: "*/30 2-23 * * *" # run every 30 minutes
   class: "BankFeeJob::Nightly"
   queue: "default"
 
