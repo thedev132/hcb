@@ -40,12 +40,12 @@
       <% if card.shipping_has_tracking? %>
         <footer class="flex flex-wrap items-center p2 relative">
           <%= image_tag "https://logo.clearbit.com/#{card.stripe_obj[:shipping][:carrier]}.com", width: 64, height: 64, style: 'height: auto; object-fit: contain;', class: 'rounded bg-white mr2' %>
-            <%= link_to card.stripe_obj[:shipping][:tracking_url], class: 'btn' do %>
-              <%= inline_icon 'external' %>
-                Track shipment
-            <% end %>
+          <%= link_to card.stripe_obj[:shipping][:tracking_url], class: 'btn' do %>
+            <%= inline_icon 'external' %>
+            Track shipment
+          <% end %>
         </footer>
-       <% end %>
+      <% end %>
     </div>
     <%= image_tag @map_url, style: 'width: 100%; max-width: 512px; height: auto; object-fit: cover;', width: 256, height: 128 if @map_url %>
   </div>
