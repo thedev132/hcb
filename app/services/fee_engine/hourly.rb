@@ -4,6 +4,10 @@ module FeeEngine
   class Hourly
     def run
       CanonicalEventMapping.missing_fee.find_each(batch_size: 100) do |cem|
+        # Require HCB Code to be present. Allows us to determine if other transactions in
+        # this HCB Code had their fees waived.
+        return if cem.canonical_transaction.hcb_code.nil?
+
         reason = determine_reason(cem)
 
         event_sponsorship_fee = cem.event.sponsorship_fee
@@ -32,6 +36,9 @@ module FeeEngine
       reason = "REVENUE WAIVED" if cem.canonical_transaction.likely_check_clearing_dda? # this typically has a negative balancing transaction with it
       reason = "REVENUE WAIVED" if cem.canonical_transaction.likely_card_transaction_refund? # sometimes a user is issued a refund on a transaction
       reason = "REVENUE WAIVED" if cem.canonical_transaction.likely_disbursement? # don't run fees on disbursements
+
+      # don't run fee if other transactions in it's HCB Code have fees waived
+      reason = "REVENUE WAIVED" if cem.canonical_transaction.local_hcb_code.canonical_transactions.map { |ct| ct.fees }.flatten.any? { |fee| fee.reason == "REVENUE WAIVED" }
 
       reason
     end
