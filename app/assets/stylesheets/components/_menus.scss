@@ -2,6 +2,7 @@
   cursor: pointer;
   position: relative;
   font-family: $font-family;
+  z-index: 5;
 
   &[aria-expanded='true'] {
     outline: none;
