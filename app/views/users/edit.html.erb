@@ -20,7 +20,7 @@
   <p>Complete your profile to get started.</p>
 <% end %>
 
-<%= form_with(model: @user, local: true) do |form| %>
+<%= form_with(model: @user, local: true, html:{ onsubmit: 'onSubmit()'}) do |form| %>
   <%= form_errors @user, 'user information' %>
 
   <div class="field">
@@ -30,7 +30,8 @@
 
   <div class="field">
     <%= form.label :phone_number, 'Mobile phone number (so we can contact you on short notice)' %>
-    <%= form.text_field :phone_number, required: true, placeholder: '555-555-5555' %>
+    <%= form.hidden_field :phone_number, required: true, placeholder: '555-555-5555', id: 'phone_number' %>
+    <input type="tel" id="phone_raw" value="<%= @user.phone_number || nil %>">
   </div>
 
   <div class="field">
@@ -89,4 +90,7 @@
     <%= form.submit @user.full_name.present? ? 'Save profile' : 'Start using Bank' %>
   </div>
 <% end %>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/intlTelInput.min.js" integrity="sha512-QMUqEPmhXq1f3DnAVdXvu40C8nbTgxvBGvNruP6RFacy3zWKbNTmx7rdQVVM2gkd2auCWhlPYtcW2tHwzso4SA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/css/intlTelInput.css" integrity="sha512-gxWow8Mo6q6pLa1XH/CcH8JyiSDEtiwJV78E+D+QP0EVasFs8wKXq16G8CLD4CJ2SnonHr4Lm/yY2fSI2+cbmw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <%= javascript_include_tag "phone_input.js" %>
 </section>

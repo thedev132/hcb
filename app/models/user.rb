@@ -44,6 +44,7 @@ class User < ApplicationRecord
 
   validates :email, uniqueness: true, presence: true
   validates :phone_number, phone: { allow_blank: true }
+
   validate :profile_picture_format
 
   # admin? takes into account an admin user's preference
