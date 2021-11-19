@@ -86,9 +86,15 @@
           <%= render_percentage event.sponsorship_fee %>
         </td>
         <td>
-          <%= "🏦" if event.omit_stats? %>
-          <%= "📈" if event.is_public? %>
-          <%= "🕵️‍♂️" if event.hidden_at %>
+          <% if event.omit_stats? %>
+            <span title="🏦 Omitted from stats">🏦</span>
+          <% end %>
+          <% if event.is_public? %>
+            <span title="📈 Transparency mode enabled">📈</span>
+          <% end %>
+          <% if event.hidden_at? %>
+            <span title="🕵️‍♂️ Hidden">🕵️‍♂️</span>
+          <% end %>
         </td>
         <td>
           <%= link_to "Process", event_process_admin_path(event) if event.pending? || event.unapproved? %>
