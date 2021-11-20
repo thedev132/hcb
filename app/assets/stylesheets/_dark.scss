@@ -297,4 +297,18 @@ html[data-dark='true'] {
   .logo-dark {
     display: block;
   }
+
+  /* Styles the auto-generated phone no. country code drop down on user edit page */
+  .iti__country {
+    background-color: $darkless;
+
+    &:hover {
+      background-color: $slate;
+    }
+  }
+
+  .iti__divider {
+    padding-bottom: 0;
+    margin-bottom: 0;
+  }
 }
