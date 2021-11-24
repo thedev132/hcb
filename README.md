@@ -144,12 +144,15 @@ $ pg_restore --verbose --clean --no-acl --no-owner -h db -U postgres -d bank_dev
 
 ### Running migrations
 
-Currently, migrations are decoupled from deployments. After deploying a patch with a new migration, run:
+Migrations are [automatically run on deployment to Heroku](https://github.com/hackclub/bank/commit/d8eefe44dc9b2503ae1c42805681ad338dc89de1).
+
+If for some reason you need to manually manage (or rollback) migrations, you can do so by running:
 
 ```
 $ heroku run /bin/bash -a bank-hackclub
 $ rails db:migrate:status
-$ rails db:migrate
+$ rails db:migrate # if you need to run migrations manually
+$ rails db:rollback # if you need to rollback in production
 ```
 
 ### Running tests
