@@ -8,14 +8,18 @@
     <span class="h3 caps secondary block">Sign in to Bank</span>
     <span class="black">Login code</span>
   </h1>
-  <p>We just sent a login code to <%= @email %></p>
+  <p>We just sent a login code to <%= @use_sms_auth ? 'your phone number ending in: ' + @phone_last_four : @email %></p>
   <%= form_tag exchange_login_code_users_path do %>
     <%= label_tag :login_code, "Enter your login code", class: 'left-align' %>
     <%= telephone_field_tag :login_code, '', placeholder: 'Login code', autofocus: true, autocomplete: 'off', class: 'left-align mb2' %>
     <%= hidden_field_tag :email, @email %>
     <%= hidden_field_tag :user_id, @user_id %>
     <%= hidden_field_tag :return_to, @return_to if @return_to %>
-    <p class="h5 muted"><em>Make sure to check your spam folder</em></p>
+    <% if @use_sms_auth %>
+      <%= hidden_field_tag :sms %>
+    <% else %>
+      <p class="h5 muted"><em>Make sure to check your spam folder</em></p>
+    <% end %>
     <%= submit_tag 'Submit' %>
   <% end %>
 </article>

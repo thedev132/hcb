@@ -41,6 +41,7 @@ class User < ApplicationRecord
 
   before_create :create_session_token
   before_create :format_number
+  before_save :on_phone_number_update
 
   validates :email, uniqueness: true, presence: true
   validates :phone_number, phone: { allow_blank: true }
@@ -135,4 +136,16 @@ class User < ApplicationRecord
   def format_number
     self.phone_number = Phonelib.parse(self.phone_number).sanitized
   end
+
+  def on_phone_number_update
+    # if we previously have a phone number and the phone number is not null
+    if phone_number_changed?
+      # turn all this stuff off until they reverify
+      self.phone_number_verified = false
+      self.use_sms_auth = false
+      # Update the Hackclub API as well
+      Partners::HackclubApi::UpdateUser.new(api_access_token, phone_number: phone_number).run
+    end
+  end
+
 end

@@ -23,26 +23,37 @@ class UsersController < ApplicationController
   def login_code
     @return_to = params[:return_to]
     @email = params[:email].downcase
+    initialize_sms_params(@email)
 
-    resp = ::Partners::HackclubApi::RequestLoginCode.new(email: @email).run
-
+    resp = ::Partners::HackclubApi::RequestLoginCode.new(email: @email, sms: @use_sms_auth).run
     @user_id = resp[:id]
   end
 
   # post to exchange auth token for access token
   def exchange_login_code
-    user = UserService::ExchangeLoginCodeForUser.new(user_id: params[:user_id], login_code: params[:login_code]).run
+    user = UserService::ExchangeLoginCodeForUser.new(
+      user_id: params[:user_id],
+      login_code: params[:login_code],
+      sms: params[:sms]
+    ).run
 
     sign_in(user)
+
+    # Clear the flash - this prevents the error message showing up after an unsuccessful -> successful login
+    flash.clear
 
     if user.full_name.blank? || user.phone_number.blank?
       redirect_to edit_user_path(user.slug)
     else
       redirect_to(params[:return_to] || root_path)
     end
+
   rescue Errors::InvalidLoginCode => e
     flash[:error] = e.message
-
+    # Propagate the to the login_code page on invalid code
+    @user_id = params[:user_id]
+    @email = params[:email]
+    initialize_sms_params(@email)
     return render "login_code", status: :unprocessable_entity
   end
 
@@ -79,6 +90,33 @@ class UsersController < ApplicationController
     redirect_to edit_user_path(@user.slug)
   end
 
+  def start_sms_auth_verification
+    authorize current_user
+    svc = UserService::EnrollSmsAuth.new(current_user)
+    svc.start_verification
+    render json: { message: "started verification successfully" }, status: :ok
+  end
+
+  def complete_sms_auth_verification
+    authorize current_user
+    params.require(:code)
+    svc = UserService::EnrollSmsAuth.new(current_user)
+    svc.complete_verification(params[:code])
+    render json: { message: "completed verification successfully" }, status: :ok
+  end
+
+  def toggle_sms_auth
+    user = current_user
+    authorize user
+    svc = UserService::EnrollSmsAuth.new(current_user)
+    if user.use_sms_auth
+      svc.disable_sms_auth
+    else
+      svc.enroll_sms_auth
+    end
+    render json: { useSmsAuth: user.use_sms_auth }, status: :ok
+  end
+
   private
 
   def user_params
@@ -89,5 +127,13 @@ class UsersController < ApplicationController
       :pretend_is_not_admin,
       :sessions_reported
     )
+  end
+
+  def initialize_sms_params(email)
+    user = User.find_by(email: email)
+    if user&.use_sms_auth
+      @use_sms_auth = true
+      @phone_last_four = user.phone_number.last(4)
+    end
   end
 end

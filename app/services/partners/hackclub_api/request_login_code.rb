@@ -3,8 +3,9 @@
 module Partners
   module HackclubApi
     class RequestLoginCode
-      def initialize(email:)
+      def initialize(email:, sms: false)
         @email = email
+        @sms = sms
       end
 
       def run
@@ -20,7 +21,7 @@ module Partners
       end
 
       def url
-        "/v1/users/auth"
+        "/v1/users/#{@sms ? 'sms_' : ''}auth"
       end
     end
   end

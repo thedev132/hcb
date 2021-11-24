@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_29_160311) do
+ActiveRecord::Schema.define(version: 2021_11_17_063118) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -32,8 +32,8 @@ ActiveRecord::Schema.define(version: 2021_10_29_160311) do
     t.datetime "updated_at", null: false
     t.string "recipient_tel"
     t.datetime "rejected_at"
-    t.text "payment_for"
     t.datetime "scheduled_arrival_date"
+    t.text "payment_for"
     t.string "aasm_state"
     t.text "confirmation_number"
     t.index ["creator_id"], name: "index_ach_transfers_on_creator_id"
@@ -515,7 +515,7 @@ ActiveRecord::Schema.define(version: 2021_10_29_160311) do
     t.boolean "omit_stats", default: false
     t.datetime "transaction_engine_v2_at", default: -> { "CURRENT_TIMESTAMP" }
     t.datetime "last_fee_processed_at"
-    t.datetime "pending_transaction_engine_at", default: "2021-02-13 22:27:44"
+    t.datetime "pending_transaction_engine_at", default: "2021-02-13 22:49:40"
     t.string "aasm_state"
     t.string "organization_identifier", null: false
     t.string "redirect_url"
@@ -1163,6 +1163,8 @@ ActiveRecord::Schema.define(version: 2021_10_29_160311) do
     t.string "slug"
     t.boolean "pretend_is_not_admin", default: false, null: false
     t.boolean "sessions_reported", default: false, null: false
+    t.boolean "phone_number_verified", default: false
+    t.boolean "use_sms_auth", default: false
     t.index ["api_access_token"], name: "index_users_on_api_access_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["slug"], name: "index_users_on_slug", unique: true

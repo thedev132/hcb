@@ -58,6 +58,12 @@ Rails.application.routes.draw do
       get "auth", to: "users#auth"
       post "login_code", to: "users#login_code"
       post "exchange_login_code", to: "users#exchange_login_code"
+
+      # SMS Auth
+      post "start_sms_auth_verification", to: "users#start_sms_auth_verification"
+      post "complete_sms_auth_verification", to: "users#complete_sms_auth_verification"
+      post "toggle_sms_auth", to: "users#toggle_sms_auth"
+
       delete "logout", to: "users#logout"
 
       # sometimes users refresh the login code page and get 404'd

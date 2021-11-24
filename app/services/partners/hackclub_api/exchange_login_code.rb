@@ -3,9 +3,10 @@
 module Partners
   module HackclubApi
     class ExchangeLoginCode
-      def initialize(user_id:, login_code:)
+      def initialize(user_id:, login_code:, sms: false)
         @user_id = user_id
         @login_code = login_code
+        @sms = sms
       end
 
       def run
@@ -21,7 +22,7 @@ module Partners
       end
 
       def url
-        "/v1/users/#{@user_id}/exchange_login_code"
+        "/v1/users/#{@user_id}/#{@sms ? 'sms_' : ''}exchange_login_code"
       end
 
       def clean_login_code

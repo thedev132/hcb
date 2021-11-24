@@ -2,9 +2,10 @@
 
 module UserService
   class ExchangeLoginCodeForUser
-    def initialize(user_id:, login_code:)
+    def initialize(user_id:, login_code:, sms: false)
       @user_id = user_id
       @login_code = login_code
+      @sms = sms
     end
 
     def run
@@ -21,7 +22,11 @@ module UserService
     private
 
     def exchange_login_code_resp
-      @exchange_login_code_resp ||= ::Partners::HackclubApi::ExchangeLoginCode.new(user_id: @user_id, login_code: @login_code).run
+      @exchange_login_code_resp ||= ::Partners::HackclubApi::ExchangeLoginCode.new(
+        user_id: @user_id,
+        login_code: @login_code,
+        sms: @sms
+      ).run
     end
 
     def get_user_resp
