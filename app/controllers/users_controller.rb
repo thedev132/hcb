@@ -27,6 +27,10 @@ class UsersController < ApplicationController
     initialize_sms_params(@email, force_use_email: @force_use_email)
 
     resp = ::Partners::HackclubApi::RequestLoginCode.new(email: @email, sms: @use_sms_auth).run
+    if resp[:error].present?
+      flash[:error] = resp[:error]
+      return redirect_to auth_users_path
+    end
     @user_id = resp[:id]
   end
 

@@ -9,7 +9,7 @@ module UserService
     end
 
     def run
-      raise ::Errors::InvalidLoginCode, error_message if exchange_login_code_resp[:errors].present?
+      raise ::Errors::InvalidLoginCode, error_message if exchange_login_code_resp[:errors].present? || exchange_login_code_resp[:error].present?
 
       user = User.find_or_initialize_by(email: remote_email)
       user.api_access_token = remote_access_token
