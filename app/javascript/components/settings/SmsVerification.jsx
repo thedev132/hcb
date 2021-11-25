@@ -1,7 +1,60 @@
 import React, { useState } from 'react';
 import HttpClient from '../../common/http';
 
-const SmsVerification = ({ useSmsAuth, phoneNumberVerified }) => {
+
+const SmsToggleButton = ({ smsAuthEnabled, smsSent, phoneNumber, handleDisable, handleEnable }) => {
+  const validPhoneNumber = phoneNumber && phoneNumber.startsWith("+")
+  return (
+    <div className="field">
+      <div hidden={!smsAuthEnabled}>
+        <button
+          className="btn bg-muted"
+          onClick={handleDisable}>
+          Disable SMS Login
+        </button>
+      </div>
+      <div hidden={smsAuthEnabled}>
+        <div hidden={validPhoneNumber}>
+            <span>
+              We've changed the way our phone number system works. Please use the new phone number input above to
+              update existing number with the correct country code.
+            </span>
+          <br/>
+          <br/>
+        </div>
+        <button
+          disabled={!validPhoneNumber || smsSent}
+          className={"btn" + (!validPhoneNumber || smsSent ? " bg-muted" : "")}
+          onClick={handleEnable}>
+          Enable SMS Login
+        </button>
+      </div>
+    </div>
+  );
+}
+
+const SmsValidationForm = ({ hidden, onSubmit, onInputChange }) => {
+  return <div hidden={hidden}>
+    <form onSubmit={onSubmit}>
+      <div className="field">
+        <label>
+          A text message has just been sent to your phone number provided above.
+          <br/>
+          Please enter the 6 digit code to validate your phone number.
+        </label>
+        <input
+          type="text"
+          placeholder="Verification Code"
+          onChange={onInputChange}
+        />
+      </div>
+
+      <button className="btn" type="submit">Submit</button>
+    </form>
+  </div>
+}
+
+const SmsVerification = ({ useSmsAuth, phoneNumberVerified, phoneNumber }) => {
   const [smsSent, setSmsSent] = useState(false);
   const [loginCode, setLoginCode] = useState("");
   const [error, setError] = useState(null);
@@ -66,49 +119,23 @@ const SmsVerification = ({ useSmsAuth, phoneNumberVerified }) => {
 
   return (
     <div>
-      <div className="field">
-        {smsAuthEnabled
-          ? <button
-            className="btn bg-muted"
-            onClick={() => handleDisable()}>
-            Disable SMS Login
-          </button>
-          : null
-        }
-        {!smsAuthEnabled
-          ?
-          <button
-            disabled={smsSent}
-            className={"btn" + (smsSent ? " bg-muted" : "")}
-            onClick={() => handleEnable(phoneNumberVerified, setSmsSent)}>
-            Enable SMS Login
-          </button>
-          : null
-        }
-      </div>
-      {smsSent && !smsAuthEnabled ? <div>
-        <form onSubmit={(e) => {
+      <SmsToggleButton
+        smsSent={smsSent}
+        smsAuthEnabled={smsAuthEnabled}
+        phoneNumber={phoneNumber}
+        handleDisable={() => handleDisable()}
+        handleEnable={() => handleEnable()}
+      />
+      <SmsValidationForm
+        hidden={!(smsSent && !smsAuthEnabled)}
+        onSubmit={(e) => {
           e.preventDefault()
           completePhoneNumberVerification()
-        }}>
-          <div className="field">
-            <label>
-              A text message has just been sent to your phone number provided above.
-              <br/>
-              Please enter the 6 digit code to validate your phone number.
-            </label>
-            <input
-              type="text"
-              placeholder="Verification Code"
-              onChange={(e) => setLoginCode(e.target.value)}
-            />
-          </div>
-
-          <button className="btn" type="submit">Submit</button>
-        </form>
-      </div> : null}
-      {showSuccessMessage ? <span>You've successfully enabled SMS login!</span> : null}
-      {error ? <span>{error}</span> : null}
+        }}
+        onInputChange={(e) => setLoginCode(e.target.value)}
+      />
+      <span hidden={!showSuccessMessage}>You've successfully enabled SMS login!</span>
+      <span hidden={!error}>{error}</span>
     </div>
   )
 }

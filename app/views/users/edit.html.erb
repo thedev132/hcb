@@ -95,7 +95,8 @@
   <h2>Login Preferences</h2>
   <%=  react_component 'settings/SmsVerification', {
       useSmsAuth: @user.use_sms_auth,
-      phoneNumberVerified: @user.phone_number_verified
+      phoneNumberVerified: @user.phone_number_verified,
+      phoneNumber: @user.phone_number
     }
   %>
 <% end %>

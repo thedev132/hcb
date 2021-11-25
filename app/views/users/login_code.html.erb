@@ -22,4 +22,11 @@
     <% end %>
     <%= submit_tag 'Submit' %>
   <% end %>
+  <% if @use_sms_auth %>
+    <p>Don't have access to your phone?
+      Click
+      <%= link_to 'here', login_code_users_path(email: @email, force_use_email: true), method: :post %>
+      to send a login code to your
+      email instead</p>
+  <% end %>
 </article>

@@ -23,7 +23,8 @@ class UsersController < ApplicationController
   def login_code
     @return_to = params[:return_to]
     @email = params[:email].downcase
-    initialize_sms_params(@email)
+    @force_use_email = params[:force_use_email]
+    initialize_sms_params(@email, force_use_email: @force_use_email)
 
     resp = ::Partners::HackclubApi::RequestLoginCode.new(email: @email, sms: @use_sms_auth).run
     @user_id = resp[:id]
@@ -129,7 +130,8 @@ class UsersController < ApplicationController
     )
   end
 
-  def initialize_sms_params(email)
+  def initialize_sms_params(email, force_use_email: false)
+    return if force_use_email
     user = User.find_by(email: email)
     if user&.use_sms_auth
       @use_sms_auth = true
