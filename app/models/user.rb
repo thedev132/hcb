@@ -12,6 +12,7 @@ class User < ApplicationRecord
   scope :has_session_token, -> { where.not(session_token: nil) }
 
   has_many :login_tokens
+  has_many :user_sessions, dependent: :destroy
   has_many :organizer_position_invites
   has_many :organizer_positions
   has_many :organizer_position_deletion_requests, inverse_of: :submitted_by
