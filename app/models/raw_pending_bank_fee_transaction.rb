@@ -8,7 +8,7 @@ class RawPendingBankFeeTransaction < ApplicationRecord
   end
 
   def memo
-    "BANK FEE".strip.upcase
+    "HACK CLUB BANK FEE".strip.upcase
   end
 
   def likely_event_id
