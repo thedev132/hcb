@@ -1,4 +1,4 @@
-<%= form_with(model: partnered_signup, url: edit_partnered_signups_path(public_id: partnered_signup.public_id), local: true) do |form| %>
+<%= form_with(model: partnered_signup, url: edit_partnered_signups_path(public_id: partnered_signup.public_id), local: true, html:{ onsubmit: 'onSubmit()'}) do |form| %>
 
   <%= form_errors partnered_signup %>
 
@@ -23,7 +23,8 @@
 
   <p>
     <%= form.label :owner_phone %>
-    <%= form.text_field :owner_phone, class: 'fit', value: @partnered_signup.owner_phone, placeholder: '8556254225' %>
+    <%= form.hidden_field :owner_phone, required: true, placeholder: '555-555-5555', id: 'phone_number' %>
+    <input type="tel" id="phone_raw" value="<%= @partnered_signup.owner_phone || nil %>">
   </p>
 
   <p>
@@ -39,3 +40,7 @@
   <%= form.submit 'Connect' %>
 
 <% end %>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/intlTelInput.min.js" integrity="sha512-QMUqEPmhXq1f3DnAVdXvu40C8nbTgxvBGvNruP6RFacy3zWKbNTmx7rdQVVM2gkd2auCWhlPYtcW2tHwzso4SA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/css/intlTelInput.css" integrity="sha512-gxWow8Mo6q6pLa1XH/CcH8JyiSDEtiwJV78E+D+QP0EVasFs8wKXq16G8CLD4CJ2SnonHr4Lm/yY2fSI2+cbmw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<%= javascript_include_tag "phone_input.js" %>
