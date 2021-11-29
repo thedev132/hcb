@@ -1,5 +1,9 @@
 # Jobs that perform SVB TRANSFERS can not be ran concurrently.
 # SVB internal transfer cut off is 8pm PST (4am UTC)
+#   - Transfer made before this cut off will be processed by SVB and posted on
+#     the SVB account ledger within 15 to 60 minutes.
+#   - Transfer made after this cut off will be posted by 10pm UTC the next
+#     business day.
 
 g_suite_mark_verifieds_job:
   cron: "*/5 * * * *" # run every 5 minutes
