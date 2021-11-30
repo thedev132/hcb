@@ -17,8 +17,10 @@ module Partners
           ts = resp.data
 
           ts.each do |t|
-            if t.metadata["donationIdentifier"].present?
+            if t.metadata["hcb_metadata_identifier"].present?
               yield t
+            else
+              Airbrake.notify("Stripe charge #{t.id} has no metadata identifier")
             end
           end
 
@@ -30,15 +32,19 @@ module Partners
             ts = resp.data
 
             ts.each do |t|
-              if t.metadata["donationIdentifier"].present?
+              if t.metadata["hcb_metadata_identifier"].present?
                 yield t
+              else
+                Airbrake.notify("Stripe charge #{t.id} has no metadata identifier")
               end
             end
           end
 
           ts.each do |t|
-            if t.metadata["donationIdentifier"].present?
+            if t.metadata["hcb_metadata_identifier"].present?
               yield t
+            else
+              Airbrake.notify("Stripe charge #{t.id} has no metadata identifier")
             end
           end
 

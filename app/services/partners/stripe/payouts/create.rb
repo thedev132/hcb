@@ -6,11 +6,11 @@ module Partners
       class Create
         include ::Partners::Stripe::Shared::Opts
 
-        def initialize(stripe_api_key:, amount_cents:, statement_descriptor:, donation_identifier:)
+        def initialize(stripe_api_key:, amount_cents:, statement_descriptor:, hcb_metadata_identifier:)
           @stripe_api_key = stripe_api_key
           @amount_cents = amount_cents
           @statement_descriptor = statement_descriptor
-          @donation_identifier = donation_identifier
+          @hcb_metadata_identifier = hcb_metadata_identifier
         end
 
         def run
@@ -31,7 +31,7 @@ module Partners
 
         def metadata
           {
-            donationIdentifier: @donation_identifier
+            hcb_metadata_identifier: @hcb_metadata_identifier
           }
         end
       end

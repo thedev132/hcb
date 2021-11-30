@@ -19,14 +19,13 @@ class V2DonationsDocumentation < ApplicationDocumentation
       end
 
       response 200 do
-        key :description, "Parse this **Donation** object in order to inject the `donation_identifier` into the **Stripe Payment Intent** metadata"
+        key :description, "Parse this **Donation** object in order to inject the `donation_id` into the **Stripe Payment Intent** metadata as `hcb_donation_id`"
         content :"application/json" do
           key :example, {
             data:
               {
                 organization_id: "org_s2cDsp",
                 donation_id: "pdn_Lsl39s",
-                donation_identifier: "dnt_1234",
               }
           }
         end

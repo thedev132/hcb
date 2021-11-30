@@ -21,13 +21,13 @@ RSpec.describe PartnerDonation, type: :model do
     end
   end
 
-  context "donation_identifier" do
+  context "hcb_metadata_identifier" do
     let(:event) { events(:event1) }
 
     it "generates a donation identifier" do
       pd = event.partner_donations.create!
 
-      expect(pd.donation_identifier).to_not be_nil
+      expect(pd.hcb_metadata_identifier).to_not be_nil
     end
   end
 end

@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_18_191151) do
+ActiveRecord::Schema.define(version: 2021_11_28_162759) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -384,7 +384,6 @@ ActiveRecord::Schema.define(version: 2021_11_18_191151) do
     t.text "message"
     t.text "hcb_code"
     t.string "aasm_state"
-    t.string "donation_identifier"
     t.index ["event_id"], name: "index_donations_on_event_id"
     t.index ["fee_reimbursement_id"], name: "index_donations_on_fee_reimbursement_id"
     t.index ["payout_id"], name: "index_donations_on_payout_id"
@@ -844,7 +843,6 @@ ActiveRecord::Schema.define(version: 2021_11_18_191151) do
   create_table "partner_donations", force: :cascade do |t|
     t.bigint "event_id", null: false
     t.string "hcb_code"
-    t.string "donation_identifier", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "aasm_state"

@@ -7,9 +7,10 @@ class PartnerDonation < ApplicationRecord
   include PublicIdentifiable
   set_public_id_prefix :pdn
 
+  self.ignored_columns = ["donation_identifier"]
+
   belongs_to :event
 
-  before_create :set_donation_identifier
   after_create :set_hcb_code
 
   scope :pending, -> { where(aasm_state: "pending") }
@@ -122,9 +123,5 @@ class PartnerDonation < ApplicationRecord
 
   def set_hcb_code
     self.update_column(:hcb_code, "HCB-#{::TransactionGroupingEngine::Calculate::HcbCode::PARTNER_DONATION_CODE}-#{id}")
-  end
-
-  def set_donation_identifier
-    self.donation_identifier = "dnt_#{SecureRandom.hex}"
   end
 end

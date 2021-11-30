@@ -29,7 +29,7 @@ module PartnerDonationService
         stripe_api_key: partner.stripe_api_key,
         amount_cents: amount_cents,
         statement_descriptor: statement_descriptor,
-        donation_identifier: donation_identifier
+        hcb_metadata_identifier: hcb_metadata_identifier
       }
     end
 
@@ -50,7 +50,7 @@ module PartnerDonationService
     end
 
     def partner_donation
-      @partner_donation ||= ::PartnerDonation.find_by!(donation_identifier: donation_identifier)
+      @partner_donation ||= ::PartnerDonation.find_by_public_id(hcb_metadata_identifier)
     end
 
     def partner
@@ -61,8 +61,8 @@ module PartnerDonationService
       @metadata ||= stripe_charge.metadata
     end
 
-    def donation_identifier
-      metadata["donationIdentifier"]
+    def hcb_metadata_identifier
+      metadata["hcb_metadata_identifier"]
     end
   end
 end

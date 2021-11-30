@@ -18,7 +18,6 @@ module Api
       def data
         {
           organization_id: organization.public_id,
-          donation_identifier: @partner_donation.donation_identifier,
           donation_id: @partner_donation.public_id,
         }
       end
