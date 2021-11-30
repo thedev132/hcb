@@ -54,8 +54,8 @@ class HcbCode < ApplicationRecord
   def events
     @events ||= begin
       ids = [
-        canonical_pending_transactions.map { |cpt| cpt.event.id },
-        canonical_transactions.map { |ct| ct.event.id },
+        canonical_pending_transactions.map { |cpt| cpt.event&.id },
+        canonical_transactions.map { |ct| ct.event&.id },
         invoice.try(:event).try(:id),
         donation.try(:event).try(:id),
         ach_transfer.try(:event).try(:id),
