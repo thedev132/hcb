@@ -17,10 +17,12 @@ class StripeController < ApplicationController
       self.send method, event
     rescue JSON::ParserError => e
       head 400
+      Airbrake.notify(e)
       return
     rescue NoMethodError => e
       puts e
-      head 400
+      Airbrake.notify(e)
+      head 200 # success so that stripe doesn't retry (method is unsupported by Bank)
       return
     end
 
