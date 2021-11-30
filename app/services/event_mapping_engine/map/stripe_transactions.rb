@@ -27,8 +27,10 @@ module EventMappingEngine
 
           current_canonical_event_mapping = ::CanonicalEventMapping.find_by(canonical_transaction_id: canonical_transaction.id)
 
-          ## raise error if discrepancy in event that was being set
-          raise ArgumentError, "CanonicalTransaction #{canonical_transaction.id} already has an event mapping but as event #{current_canonical_event_mapping.event_id} (attempted to otherwise set event #{event_id})" if current_canonical_event_mapping.try(:event_id) && current_canonical_event_mapping.event_id != event_id
+          ## Notify Airbrake if discrepancy in event that was being set
+          if current_canonical_event_mapping.try(:event_id) && current_canonical_event_mapping.event_id != event_id
+            Airbrake.notify("CanonicalTransaction #{canonical_transaction.id} already has an event mapping to event #{current_canonical_event_mapping.event_id} (but it seems like it should be mapped to event #{event_id})")
+          end
 
           next if current_canonical_event_mapping
 
