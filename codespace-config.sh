@@ -43,7 +43,6 @@ if ! test -f "./latest.dump"; then
   heroku pg:backups:download
 fi
 echo "$(tput setaf 9)Hack Club Bank:$(tput sgr0) $(tput setaf 10)Done$(tput sgr0)"
-exit
 
 echo "
 $(tput setaf 9)Hack Club Bank:$(tput sgr0) Step 5/7: Copy Dockerfile to Docker Container"
