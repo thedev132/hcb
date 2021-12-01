@@ -47,7 +47,7 @@
   </thead>
   <tbody>
     <% @canonical_transactions.each do |ct| %>
-      <tr style="<%= "background: #ffffcc;" unless ct.canonical_event_mapping %>">
+      <tr style="<%= "background: #ffffcc;" unless ct.canonical_event_mapping || !ct.local_hcb_code.unknown? %>">
         <td><%= ct.id %></td>
         <td><%= ct.date %></td>
         <td><%= link_to ct.memo, transaction_path(ct) %></td>
