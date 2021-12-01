@@ -21,7 +21,8 @@ module Partners
           {
             id: @id,
             expand: [
-              "balance_transaction"
+              "balance_transaction",
+              "payment_intent"
             ]
           }
         end

@@ -8,10 +8,20 @@ module PartnerDonationService
 
     def run
       ::Partners::Stripe::Charges::List.new(list_attrs).run do |sc|
-        next if already_processed?(sc)
-        next unless partner_donation_exist?(hcb_metadata_identifier(sc))
+        next unless partner_donation?(sc)
 
-        ::PartnerDonationJob::CreateRemotePayout.perform_later(partner.id, sc.id)
+        if partner_donation(sc).unpaid?
+          ActiveRecord::Base.transaction do
+            partner_donation(sc).mark_pending!
+            partner_donation(sc).update_column(:stripe_charge_id, sc.id)
+            partner_donation(sc).update_column(:stripe_charge_created_at, Time.at(sc.created))
+            partner_donation(sc).update_column(:payout_amount_cents, payout_amount_cents(sc))
+          end
+        end
+
+        if partner_donation(sc).pending?
+          ::PartnerDonationJob::CreateRemotePayout.perform_later(partner.id, sc.id)
+        end
       end
 
       true
@@ -30,12 +40,18 @@ module PartnerDonationService
       @partner ||= ::Partner.find(@partner_id)
     end
 
-    def already_processed?(sc)
-      ::PartnerDonation.where(stripe_charge_id: sc.id).exists?
+    def partner_donation?(public_id)
+      !partner_donation(public_id).nil?
     end
 
-    def partner_donation_exist?(public_id)
-      !::PartnerDonation.find_by_public_id(public_id).nil?
+    def partner_donation(sc)
+      PartnerDonation.find_by_public_id(hcb_metadata_identifier(sc))
+    end
+
+    def payout_amount_cents(sc)
+      @expanded_charge ||= ::Partners::Stripe::Charges::Show.new(stripe_api_key: partner_donation(sc).event.partner.stripe_api_key, id: sc.id).run
+
+      @expanded_charge.balance_transaction["net"].to_i # use net (after fee)
     end
 
     def hcb_metadata_identifier(sc)

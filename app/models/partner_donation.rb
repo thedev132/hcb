@@ -13,6 +13,8 @@ class PartnerDonation < ApplicationRecord
 
   after_create :set_hcb_code
 
+  scope :unpaid, -> { where(aasm_state: "unpaid") }
+  scope :not_unpaid, -> { where.not(aasm_state: "unpaid") }
   scope :pending, -> { where(aasm_state: "pending") }
   scope :not_pending, -> { where.not(aasm_state: "pending") }
   scope :in_transit, -> { where(aasm_state: "in_transit") }
@@ -21,15 +23,20 @@ class PartnerDonation < ApplicationRecord
   scope :not_deposited, -> { where.not(aasm_state: "deposited") }
 
   aasm do
-    state :pending, initial: true # once created
+    state :unpaid, initial: true # once created (PaymentIntent most likely exists on Stripe), but might not be paid
+    state :pending # Donation paid, but no payout created
     state :in_transit # when imported and marked as paid on Stripe::Charge
     state :deposited # when fully deposited to canonical transaction
 
-    event :mark_in_transit do
+    event :mark_pending do
       before do
         local_hcb_code # lazy create hcb code object
       end
 
+      transitions from: :unpaid, to: :pending
+    end
+
+    event :mark_in_transit do
       transitions from: :pending, to: :in_transit
     end
 
@@ -51,7 +58,11 @@ class PartnerDonation < ApplicationRecord
   end
 
   def paid?
-    stripe_charge_id.present?
+    pending? || in_transit? || deposited? || stripe_charge_id.present?
+  end
+
+  def amount
+    @amount ||= remote_partner_donation.try(:[], :amount).to_i
   end
 
   def partner
@@ -75,6 +86,19 @@ class PartnerDonation < ApplicationRecord
     end
   end
 
+  def state_icon
+    case state
+    when :pending
+      "clock"
+    when :in_transit
+      "clock"
+    when :deposited
+      "checkmark"
+    else
+      "error"
+    end
+  end
+
   def state_color
     case state
     when :pending
@@ -86,6 +110,66 @@ class PartnerDonation < ApplicationRecord
     else
       "error"
     end
+  end
+
+  def payment_method_type
+    stripe_obj[:payment_method_details][:type]
+  rescue
+    nil
+  end
+
+  def payment_method_card_brand
+    stripe_obj[:payment_method_details][:card][:brand]
+  rescue
+    nil
+  end
+
+  def payment_method_card_last4
+    stripe_obj[:payment_method_details][:card][:last4]
+  rescue
+    nil
+  end
+
+  def payment_method_card_funding
+    stripe_obj[:payment_method_details][:card][:funding]
+  rescue
+    nil
+  end
+
+  def payment_method_card_exp_month
+    stripe_obj[:payment_method_details][:card][:exp_month]
+  rescue
+    nil
+  end
+
+  def payment_method_card_exp_year
+    stripe_obj[:payment_method_details][:card][:exp_year]
+  rescue
+    nil
+  end
+
+  def payment_method_card_country
+    stripe_obj[:payment_method_details][:card][:country]
+  rescue
+    nil
+  end
+
+  def payment_method_card_checks_address_line1_check
+    stripe_obj[:payment_method_details][:card][:checks][:address_line1_check]
+  rescue
+    nil
+  end
+
+  def payment_method_card_checks_address_postal_code_check
+    stripe_obj[:payment_method_details][:card][:checks][:address_postal_code_check]
+  rescue
+    nil
+  end
+
+  def payment_method_card_checks_cvc_check
+    stripe_obj[:payment_method_details][:card][:checks][:cvc_check]
+  rescue
+    nil
   end
 
   def canonical_pending_transaction
@@ -102,6 +186,10 @@ class PartnerDonation < ApplicationRecord
 
       ::CanonicalPendingTransaction.where(raw_pending_partner_donation_transaction_id: raw_pending_partner_donation_transaction.id)
     end
+  end
+
+  def stripe_obj
+    remote_partner_donation
   end
 
   private

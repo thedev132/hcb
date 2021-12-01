@@ -1,3 +1,9 @@
+.details {
+  hr {
+    border-color: map-get($palette, smoke);
+  }
+}
+
 .details > p,
 .details > div,
 .details__row {

@@ -59,4 +59,9 @@ class StripeController < ApplicationController
     card.sync_from_stripe!
     card.save
   end
+
+  def handle_charge_succeeded(event)
+    charge = event[:data][:object]
+    ::PartnerDonationService::HandleWebhookChargeSucceeded.new(charge).run
+  end
 end

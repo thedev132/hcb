@@ -58,6 +58,12 @@ html[data-dark='true'] {
     border-color: map-get($palette, black);
   }
 
+  .details {
+    hr {
+      border-color: map-get($palette, slate);
+    }
+  }
+
   label,
   .menu__content > a,
   .menu__action {
