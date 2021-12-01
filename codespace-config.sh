@@ -13,17 +13,19 @@ fi
 
 echo "$(tput setaf 9)Hack Club Bank:$(tput sgr0) $(tput setaf 10)Done$(tput sgr0)"
 
-echo "Loading..."
-
 echo "
 $(tput setaf 9)Hack Club Bank:$(tput sgr0) Step 1/7: Install Heroku (Quiet)"
-(curl https://cli-assets.heroku.com/install-ubuntu.sh | sh) > /dev/null 2>&1
+if ! command -v heroku &> /dev/null
+then
+  echo "running|||"
+  (curl https://cli-assets.heroku.com/install-ubuntu.sh | sh) > /dev/null 2>&1
+fi
 echo "$(tput setaf 9)Hack Club Bank:$(tput sgr0) $(tput setaf 10)Done$(tput sgr0)"
 echo "
-$(tput setaf 9)Hack Club Bank:$(tput sgr0) Step 2/7: Login to Heroku (Input Needed)"
+$(tput setaf 9)Hack Club Bank:$(tput sgr0) Step 2/7: Login to Heroku"
 (heroku auth:whoami) > /dev/null 2>&1
 if [ $? -eq 0 ]; then
-  echo "(tput setaf 9)Hack Club Bank:$(tput sgr0) Already signed in, skipping login..."
+  echo "$(tput setaf 9)Hack Club Bank:$(tput sgr0) Already signed in, skipping login..."
 else
   $(tput setaf 9)Hack Club Bank:$(tput sgr0) Not signed in, sign in below"
   $(tput setaf 9)Hack Club Bank:$(tput sgr0) Use an API key generated from the Heroku Dashboard if you're using MFA"
@@ -32,13 +34,16 @@ fi
 echo "$(tput setaf 9)Hack Club Bank:$(tput sgr0) $(tput setaf 10)Done$(tput sgr0)"
 echo "
 $(tput setaf 9)Hack Club Bank:$(tput sgr0) Step 3/7: Connect to the Heroku Project"
-heroku git:remote -a bank-hackclub
+heroku git:remote -a bank-hackclub > /dev/null
 echo "$(tput setaf 9)Hack Club Bank:$(tput sgr0) $(tput setaf 10)Done$(tput sgr0)"
 echo "
 $(tput setaf 9)Hack Club Bank:$(tput sgr0) Step 4/7: Get Heroku Backups"
-heroku pg:backups:capture
-heroku pg:backups:download
+if ! test -f "./latest.dump"; then
+  heroku pg:backups:capture
+  heroku pg:backups:download
+fi
 echo "$(tput setaf 9)Hack Club Bank:$(tput sgr0) $(tput setaf 10)Done$(tput sgr0)"
+exit
 
 echo "
 $(tput setaf 9)Hack Club Bank:$(tput sgr0) Step 5/7: Copy Dockerfile to Docker Container"
