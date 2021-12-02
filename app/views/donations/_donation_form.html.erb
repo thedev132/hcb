@@ -30,8 +30,9 @@
   <p class="muted h5 mt2 mb1">
     Your contribution is tax-deductible
     <% if !@event.country_us? %>
-      in the US.
+      in the US
     <% end %>
+    .
   </p>
 
   <%= form.submit 'Continue →', class: 'w-100 bg-success', 'data-turbo': 'false' %>
