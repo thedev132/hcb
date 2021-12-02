@@ -446,6 +446,10 @@ class Event < ApplicationRecord
                       WHEN id = 636 THEN '4'
                       ELSE 'z' || name END ASC"
 
+  def country_us?
+    country == "US"
+  end
+
   def admin_formatted_name
     "#{name} (#{id})"
   end
