@@ -29,7 +29,7 @@
 
   <p class="muted h5 mt2 mb1">
     Your contribution is tax-deductible
-    <% if @event.country != "US" %>
+    <% if !@event.country_us? %>
       in the US.
     <% end %>
   </p>
