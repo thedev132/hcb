@@ -12,28 +12,28 @@
   <h2>Your information</h2>
 
   <p>
-    <%= form.label :owner_name %>
+    <%= form.label :owner_name, "Your name" %>
     <%= form.text_field :owner_name, class: 'fit', value: @partnered_signup.owner_name, placeholder: 'Fiona Hackworth', disabled: @partnered_signup.owner_name.present?  %>
   </p>
 
   <p>
-    <%= form.label :owner_email %>
+    <%= form.label :owner_email, "Your email" %>
     <%= form.text_field :owner_email, class: 'fit', value: @partnered_signup.owner_email, placeholder: 'fionah@gmail.com', disabled: @partnered_signup.owner_email.present? %>
   </p>
 
   <p>
-    <%= form.label :owner_phone %>
+    <%= form.label :owner_phone, "Your phone number" %>
     <%= form.hidden_field :owner_phone, required: true, placeholder: '555-555-5555', id: 'phone_number' %>
     <input type="tel" id="phone_raw" value="<%= @partnered_signup.owner_phone || nil %>">
   </p>
 
   <p>
-    <%= form.label :owner_address %>
+    <%= form.label :owner_address, "Your address" %>
     <%= form.text_area :owner_address, class: 'fit', value: @partnered_signup.owner_address, placeholder: '8605 Santa Monica Blvd\nSuite #86294&#10;West Hollywood, CA 90069', rows: 3 %>
   </p>
 
   <p>
-    <%= form.label :owner_birthdate %>
+    <%= form.label :owner_birthdate, "Date of birth" %>
     <%= form.date_field :owner_birthdate, class: 'fit', value: @partnered_signup.owner_birthdate %>
   </p>
 
