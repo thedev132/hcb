@@ -28,7 +28,10 @@
   </div>
 
   <p class="muted h5 mt2 mb1">
-    Your contribution is tax-deductible with the United States IRS.
+    Your contribution is tax-deductible
+    <% if @event.country != "US" %>
+      in the US.
+    <% end %>
   </p>
 
   <%= form.submit 'Continue →', class: 'w-100 bg-success', 'data-turbo': 'false' %>
