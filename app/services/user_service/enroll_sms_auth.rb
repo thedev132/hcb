@@ -25,11 +25,16 @@ module UserService
 
     # Completing the phone number verification by checking that exchanging code works
     def complete_verification(verification_code)
-      resp = ::BankApiService.req(
-        "post",
-        "/v1/users/#{current_user[:id]}/sms_exchange_login_code",
-        { login_code: verification_code }
-      )
+      begin
+        resp = ::BankApiService.req(
+          "post",
+          "/v1/users/#{current_user[:id]}/sms_exchange_login_code",
+          { login_code: verification_code }
+        )
+      rescue ::BankApiService::UnauthorizedError
+        raise ::Errors::InvalidLoginCode, "invalid login code"
+      end
+
       # Make sure we re-copy the api access token or else our Bank API is not gonna be happy
       @user.api_access_token = resp[:auth_token]
 

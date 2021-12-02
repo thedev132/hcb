@@ -89,15 +89,20 @@ const SmsVerification = ({ useSmsAuth, phoneNumberVerified, phoneNumber }) => {
         { code: loginCode },
       );
     } catch (e) {
-      setError("could not complete phone number verification")
+      setError("Something went wrong! Could not complete phone number verification")
       return
     }
 
     if (resp.status === 200) {
       setSmsAuthEnabled(true);
       setShowSuccessMessage(true);
+      setError("");
     } else {
-      setError("could not complete phone number verification")
+      if (resp.error === 'invalid login code') {
+        setError('invalid login code, please try again')
+      } else {
+        setError("Something went wrong! Could not complete phone number verification")
+      }
     }
   }
 

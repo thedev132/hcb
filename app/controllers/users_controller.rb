@@ -108,6 +108,8 @@ class UsersController < ApplicationController
     svc = UserService::EnrollSmsAuth.new(current_user)
     svc.complete_verification(params[:code])
     render json: { message: "completed verification successfully" }, status: :ok
+  rescue ::Errors::InvalidLoginCode
+    render json: { error: "invalid login code" }, status: :forbidden
   end
 
   def toggle_sms_auth
