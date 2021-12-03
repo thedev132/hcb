@@ -27,6 +27,7 @@ class PartnerDonation < ApplicationRecord
     state :pending # Donation paid, but no payout created
     state :in_transit # when imported and marked as paid on Stripe::Charge
     state :deposited # when fully deposited to canonical transaction
+    state :refunded # TODO: unimplemented at the moment!!! (there is no refund mechanism/detection)
 
     event :mark_pending do
       before do
