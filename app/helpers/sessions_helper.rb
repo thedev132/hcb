@@ -49,9 +49,9 @@ module SessionsHelper
 
       # check if the potential session is still valid
       if potential_session
-        # If the session is greater than 24 hours then the current user is no longer valid
+        # If the session is greater than 30 days then the current user is no longer valid
         # (.abs) is added for easier testing when fast-forwarding created_at times
-        if (Time.now - potential_session.created_at).abs > 24.hours
+        if (Time.now - potential_session.created_at).abs > 30.days
           potential_session.destroy
           return nil
         end
