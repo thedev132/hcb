@@ -65,6 +65,7 @@ Rails.application.routes.draw do
       post "toggle_sms_auth", to: "users#toggle_sms_auth"
 
       delete "logout", to: "users#logout"
+      delete "logout_all", to: "users#logout_all"
 
       # sometimes users refresh the login code page and get 404'd
       get "exchange_login_code", to: redirect("/users/auth", status: 301)

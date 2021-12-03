@@ -85,21 +85,30 @@
       <% end %>
     </div>
   </fieldset>
-
-  <div class="actions">
+  <div class="actions flex">
     <%= form.submit @user.full_name.present? ? 'Save profile' : 'Start using Bank' %>
   </div>
 <% end %>
 
-<% if @user.admin?  %>
-  <h2>Login Preferences</h2>
-  <%=  react_component 'settings/SmsVerification', {
-      useSmsAuth: @user.use_sms_auth,
-      phoneNumberVerified: @user.phone_number_verified,
-      phoneNumber: @user.phone_number
-    }
-  %>
-<% end %>
+<h2>Authentication</h2>
+  <fieldset>
+    <legend class="heading h2 pt2">Session Information</legend>
+     <%= link_to logout_all_users_path, method: :delete,
+        class: 'btn bg-error mt1 ' do %>
+        <%= inline_icon 'door-leave', size: home_action_size %>
+        Sign out of all sessions
+      <% end %>
+    <legend class="heading h2 pt2">Sms Information</legend>
+    <% if @user.admin?  %>
+      <%=  react_component 'settings/SmsVerification', {
+          useSmsAuth: @user.use_sms_auth,
+          phoneNumberVerified: @user.phone_number_verified,
+          phoneNumber: @user.phone_number
+        },
+        { prerender: true }
+      %>
+    <% end %>
+  </fieldset>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/intlTelInput.min.js" integrity="sha512-QMUqEPmhXq1f3DnAVdXvu40C8nbTgxvBGvNruP6RFacy3zWKbNTmx7rdQVVM2gkd2auCWhlPYtcW2tHwzso4SA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/css/intlTelInput.css" integrity="sha512-gxWow8Mo6q6pLa1XH/CcH8JyiSDEtiwJV78E+D+QP0EVasFs8wKXq16G8CLD4CJ2SnonHr4Lm/yY2fSI2+cbmw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <%= javascript_include_tag "phone_input.js" %>

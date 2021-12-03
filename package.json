@@ -2,14 +2,14 @@
   "name": "@hackclub/bank",
   "private": true,
   "dependencies": {
-    "@babel/preset-react": "^7.10.4",
+    "@babel/preset-react": "^7.16.0",
     "@hotwired/turbo-rails": "^7.0.1",
     "@rails/webpacker": "5.4.3",
     "axios": "^0.24.0",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
     "prop-types": "^15.7.2",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
     "react_ujs": "^2.6.1",
     "stimulus": "^1.1.1"
   },

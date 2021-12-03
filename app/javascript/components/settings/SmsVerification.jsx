@@ -19,12 +19,10 @@ const SmsToggleButton = ({ smsAuthEnabled, smsSent, phoneNumber, handleDisable, 
               We've changed the way our phone number system works. Please use the new phone number input above to
               update existing number with the correct country code.
             </span>
-          <br/>
-          <br/>
         </div>
         <button
           disabled={!validPhoneNumber || smsSent}
-          className={"btn" + (!validPhoneNumber || smsSent ? " bg-muted" : "")}
+          className={"mt1 btn" + (!validPhoneNumber || smsSent ? " bg-muted" : "")}
           onClick={handleEnable}>
           Enable SMS Login
         </button>

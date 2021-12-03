@@ -67,6 +67,11 @@ class UsersController < ApplicationController
     redirect_to root_path
   end
 
+  def logout_all
+    sign_out_of_all_sessions
+    redirect_to root_path
+  end
+
   def edit
     @user = params[:id] ? User.friendly.find(params[:id]) : current_user
     @onboarding = @user.full_name.blank?

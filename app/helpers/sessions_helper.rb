@@ -59,7 +59,7 @@ module SessionsHelper
         @current_user ||= potential_session.user
       end
     end
-    # @current_user ||= User.find_by(session_token: cookies.encrypted[:session_token])
+
     return nil unless @current_user
 
     @current_user
@@ -79,6 +79,13 @@ module SessionsHelper
 
   def sign_out
     current_user(false).user_sessions.find_by(session_token: cookies.encrypted[:session_token]).destroy if current_user(false)
+    cookies.delete(:session_token)
+    self.current_user = nil
+  end
+
+  def sign_out_of_all_sessions
+    # Destroy all the sessions
+    current_user(false).user_sessions.destroy_all if current_user(false)
     cookies.delete(:session_token)
     self.current_user = nil
   end
