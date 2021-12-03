@@ -21,7 +21,7 @@ class HcbCode < ApplicationRecord
   def memo
     return invoice_memo if invoice?
     return donation_memo if donation?
-    return partner_donation if partner_donation?
+    return partner_donation_memo if partner_donation?
     return ach_transfer_memo if ach_transfer?
     return check_memo if check?
 
