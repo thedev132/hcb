@@ -15,6 +15,9 @@
     <%= hidden_field_tag :email, @email %>
     <%= hidden_field_tag :user_id, @user_id %>
     <%= hidden_field_tag :return_to, @return_to if @return_to %>
+    <% if @force_use_email %>
+      <%= hidden_field_tag :force_use_email, true %>
+    <% end %>
     <% if @use_sms_auth %>
       <%= hidden_field_tag :sms %>
     <% else %>

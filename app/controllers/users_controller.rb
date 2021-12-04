@@ -24,7 +24,7 @@ class UsersController < ApplicationController
     @return_to = params[:return_to]
     @email = params[:email].downcase
     @force_use_email = params[:force_use_email]
-    initialize_sms_params(@email, force_use_email: @force_use_email)
+    initialize_sms_params
 
     resp = ::Partners::HackclubApi::RequestLoginCode.new(email: @email, sms: @use_sms_auth).run
     if resp[:error].present?
@@ -41,7 +41,6 @@ class UsersController < ApplicationController
       login_code: params[:login_code],
       sms: params[:sms]
     ).run
-
     sign_in(user)
 
     # Clear the flash - this prevents the error message showing up after an unsuccessful -> successful login
@@ -58,7 +57,8 @@ class UsersController < ApplicationController
     # Propagate the to the login_code page on invalid code
     @user_id = params[:user_id]
     @email = params[:email]
-    initialize_sms_params(@email)
+    @force_use_email = params[:force_use_email]
+    initialize_sms_params
     return render "login_code", status: :unprocessable_entity
   end
 
@@ -141,9 +141,9 @@ class UsersController < ApplicationController
     )
   end
 
-  def initialize_sms_params(email, force_use_email: false)
-    return if force_use_email
-    user = User.find_by(email: email)
+  def initialize_sms_params
+    return if @force_use_email
+    user = User.find_by(email: @email)
     if user&.use_sms_auth
       @use_sms_auth = true
       @phone_last_four = user.phone_number.last(4)
