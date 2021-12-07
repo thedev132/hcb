@@ -6,10 +6,17 @@ module SessionsHelper
   end
 
   # DEPRECATED - begin to start deprecating and ultimately replace with sign_in_and_set_cookie
-  def sign_in(user, impersonate = false)
+  def sign_in(user, fingerprint_info = {}, impersonate = false)
     session_token = SecureRandom.urlsafe_base64
     cookies.encrypted[:session_token] = { value: session_token, expires: 30.days.from_now  }
-    user.user_sessions.create(session_token: session_token)
+    user.user_sessions.create(
+      session_token: session_token,
+      fingerprint: fingerprint_info[:fingerprint],
+      device_info: fingerprint_info[:device_info],
+      os_info: fingerprint_info[:os_info],
+      timezone: fingerprint_info[:timezone],
+      ip: fingerprint_info[:ip]
+    )
 
     # probably a better place to do this, but we gotta assign any pending
     # organizer position invites - see that class for details

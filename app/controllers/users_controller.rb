@@ -36,12 +36,21 @@ class UsersController < ApplicationController
 
   # post to exchange auth token for access token
   def exchange_login_code
+    fingerprint_info = {
+      fingerprint: params[:fingerprint],
+      device_info: params[:device_info],
+      os_info: params[:os_info],
+      timezone: params[:timezone],
+      ip: request.remote_ip
+    }
+
     user = UserService::ExchangeLoginCodeForUser.new(
       user_id: params[:user_id],
       login_code: params[:login_code],
       sms: params[:sms]
     ).run
-    sign_in(user)
+
+    sign_in(user, fingerprint_info)
 
     # Clear the flash - this prevents the error message showing up after an unsuccessful -> successful login
     flash.clear

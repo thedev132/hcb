@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_28_162759) do
+ActiveRecord::Schema.define(version: 2021_12_05_051705) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -32,8 +32,8 @@ ActiveRecord::Schema.define(version: 2021_11_28_162759) do
     t.datetime "updated_at", null: false
     t.string "recipient_tel"
     t.datetime "rejected_at"
-    t.datetime "scheduled_arrival_date"
     t.text "payment_for"
+    t.datetime "scheduled_arrival_date"
     t.string "aasm_state"
     t.text "confirmation_number"
     t.index ["creator_id"], name: "index_ach_transfers_on_creator_id"
@@ -1154,6 +1154,12 @@ ActiveRecord::Schema.define(version: 2021_11_28_162759) do
     t.text "session_token"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "fingerprint"
+    t.string "device_info"
+    t.string "os_info"
+    t.string "timezone"
+    t.string "ip"
+    t.datetime "deleted_at"
     t.index ["user_id"], name: "index_user_sessions_on_user_id"
   end
 
