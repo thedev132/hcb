@@ -81,6 +81,23 @@ class UsersController < ApplicationController
     redirect_to root_path
   end
 
+  def logout_session
+    begin
+      session = UserSession.find(params[:id])
+      if session.user.id != current_user.id
+        Rail.logger.error "User id: #{user.id} tried to delete session #{session.id}"
+        flash[:error] = "Error deleting the session"
+        return
+      end
+
+      session.destroy
+      flash[:success] = "Deleted session!"
+    rescue ActiveRecord::RecordNotFound => e
+      flash[:error] = "Session is not found"
+    end
+    redirect_to root_path
+  end
+
   def edit
     @user = params[:id] ? User.friendly.find(params[:id]) : current_user
     @onboarding = @user.full_name.blank?

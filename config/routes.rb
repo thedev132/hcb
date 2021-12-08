@@ -66,6 +66,7 @@ Rails.application.routes.draw do
 
       delete "logout", to: "users#logout"
       delete "logout_all", to: "users#logout_all"
+      delete "logout_session", to: "users#logout_session"
 
       # sometimes users refresh the login code page and get 404'd
       get "exchange_login_code", to: redirect("/users/auth", status: 301)

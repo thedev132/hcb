@@ -98,6 +98,36 @@
         <%= inline_icon 'door-leave', size: home_action_size %>
         Sign out of all sessions
       <% end %>
+
+    <table class="mt2" style="width: 100%;">
+      <thead>
+        <tr>
+          <th>IP</th>
+          <th>OS Info</th>
+          <th>Device Info</th>
+          <th>Timezone</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+
+      <tbody>
+      <% @user.user_sessions.each do |session| %>
+        <tr>
+          <td><%= session.ip %></td>
+          <td><%= session.os_info %></td>
+          <td><%= session.device_info %></td>
+          <td><%= session.timezone %></td>
+          <td>
+            <%= link_to logout_session_users_path(user: @user, id: session.id), method: :delete,
+              class: 'btn bg-error' do %>
+                Sign out
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+
     <legend class="heading h2 pt2">Sms Information</legend>
     <% if @user.admin?  %>
       <%=  react_component 'settings/SmsVerification', {
