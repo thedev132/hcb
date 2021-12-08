@@ -61,7 +61,8 @@ module TransactionEngine
       def likely_ach
         return nil unless event
 
-        possible_achs = event.ach_transfers.where("recipient_name ilike '%#{likely_outgoing_ach_name}%' and amount = #{-amount_cents}")
+        safe_likely_name = ActiveRecord::Base.connection.quote_string likely_outgoing_ach_name
+        possible_achs = event.ach_transfers.where("recipient_name ilike '%#{safe_likely_name}%' and amount = #{-amount_cents}")
 
         possible_achs.find { |possible_ach| possible_ach.canonical_transactions.blank? || possible_ach.canonical_transactions.where(id: @canonical_transaction.id).exists? }
       end
