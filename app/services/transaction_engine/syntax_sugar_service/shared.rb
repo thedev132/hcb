@@ -61,7 +61,7 @@ module TransactionEngine
       end
 
       def likely_outgoing_ach_name
-        memo_upcase.split(OUTGOING_ACH_MEMO_PART)[0].strip
+        ActiveRecord::Base.connection.quote_string memo_upcase.split(OUTGOING_ACH_MEMO_PART)[0].strip
       end
 
       def incoming_invoice?
@@ -69,7 +69,7 @@ module TransactionEngine
       end
 
       def likely_incoming_invoice_short_name
-        memo_upcase.gsub(INCOMING_INVOICE_MEMO_PART1, "").gsub(INCOMING_INVOICE_MEMO_PART2, "").split(" ")[0]
+        ActiveRecord::Base.connection.quote_string memo_upcase.gsub(INCOMING_INVOICE_MEMO_PART1, "").gsub(INCOMING_INVOICE_MEMO_PART2, "").split(" ")[0]
       end
 
       def likely_invoice_for_fee_refund_hex_random_id
@@ -85,7 +85,7 @@ module TransactionEngine
       end
 
       def likely_donation_short_name
-        memo_upcase.gsub(DONATION_MEMO_PART1, "").gsub(DONATION_MEMO_PART2, "").split(" ")[0]
+        ActiveRecord::Base.connection.quote_string memo_upcase.gsub(DONATION_MEMO_PART1, "").gsub(DONATION_MEMO_PART2, "").split(" ")[0]
       end
 
       def likely_donation_for_fee_refund_hex_random_id
