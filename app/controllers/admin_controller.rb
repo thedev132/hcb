@@ -177,6 +177,7 @@ class AdminController < ApplicationController
     @omitted = params[:omitted].present? ? params[:omitted] : "both" # both by default
     @funded = params[:funded].present? ? params[:funded] : "both" # both by default
     @hidden = params[:hidden].present? ? params[:hidden] : "both" # both by default
+    @country = params[:country].present? ? params[:country] : "all" # all by default
 
     relation = Event.not_partner
 
@@ -189,6 +190,7 @@ class AdminController < ApplicationController
     relation = relation.not_hidden if @hidden == "not_hidden"
     relation = relation.funded if @funded == "funded"
     relation = relation.not_funded if @funded == "not_funded"
+    relation = relation.where(country: @country) if @country != "all"
 
     states = []
     states << "pending" if @pending

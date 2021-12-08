@@ -51,6 +51,11 @@
       Funded
       <%= form.select :funded, [['Both', 'both'], ["Not Funded", 'not_funded'], ['Funded', 'funded']], :selected => @funded %>
     <% end %>
+    |
+    <%= form.label :country do %>
+      Country
+      <%= form.select :country, Event.countries, { include_blank: 'all', :selected => @country} %>
+    <% end %>
   </div>
 <% end %>
 
@@ -65,6 +70,7 @@
       <th>Name</th>
       <th>Balance</th>
       <th>Fee</th>
+      <th>Country</th>
       <th>Status</th>
       <th>Actions</th>
     </tr>
@@ -84,6 +90,9 @@
         </td>
         <td>
           <%= render_percentage event.sponsorship_fee %>
+        </td>
+        <td>
+          <%= event.country %>
         </td>
         <td>
           <% if event.omit_stats? %>
