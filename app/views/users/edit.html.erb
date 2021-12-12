@@ -128,8 +128,8 @@
       </tbody>
     </table>
 
-    <legend class="heading h2 pt2">Sms Information</legend>
     <% if @user.admin?  %>
+      <legend class="heading h2 pt2">SMS Information</legend>
       <%=  react_component 'settings/SmsVerification', {
           useSmsAuth: @user.use_sms_auth,
           phoneNumberVerified: @user.phone_number_verified,
