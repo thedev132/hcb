@@ -62,7 +62,7 @@
   <% end %>
 
   <fieldset>
-    <legend class="heading h2 pt2">Share session data with us</legend>
+    <legend class="heading h2 pt2">Share usage data with us</legend>
   <p class="h5 muted mt1 mb2">
     Help us improve Hack Club Bank by sending usage data.
     <% if @onboarding %>
@@ -99,45 +99,50 @@
         Sign out of all sessions
       <% end %>
 
-    <table class="mt2" style="width: 100%;">
-      <thead>
-        <tr>
-          <th>IP</th>
-          <th>OS Info</th>
-          <th>Device Info</th>
-          <th>Timezone</th>
-          <th>Action</th>
-        </tr>
-      </thead>
+    <div class="overflow-x-auto">
+      <table class="mt2">
+        <thead>
+          <tr>
+            <th>IP</th>
+            <th>OS Info</th>
+            <th>Device Info</th>
+            <th>Timezone</th>
+            <th>Action</th>
+          </tr>
+        </thead>
 
-      <tbody>
-      <% @user.user_sessions.each do |session| %>
-        <tr>
-          <td><%= session.ip %></td>
-          <td><%= session.os_info %></td>
-          <td><%= session.device_info %></td>
-          <td><%= session.timezone %></td>
-          <td>
-            <%= link_to logout_session_users_path(user: @user, id: session.id), method: :delete,
-              class: 'btn bg-error' do %>
-                Sign out
-            <% end %>
-          </td>
-        </tr>
+        <tbody>
+        <% @user.user_sessions.each do |session| %>
+          <tr>
+            <td><%= session.ip %></td>
+            <td><%= session.os_info %></td>
+            <td><%= session.device_info %></td>
+            <td><%= session.timezone %></td>
+            <td>
+              <%= link_to logout_session_users_path(user: @user, id: session.id), method: :delete,
+                class: 'btn bg-error' do %>
+                  Sign out
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+    </div>
+
+      <% if @user.admin?  %>
+        <div class="admin-tools">
+          <legend class="heading h2 pt2">SMS Information</legend>
+          <%=  react_component 'settings/SmsVerification', {
+              useSmsAuth: @user.use_sms_auth,
+              phoneNumberVerified: @user.phone_number_verified,
+              phoneNumber: @user.phone_number
+            },
+            { prerender: true }
+          %>
+        </div>
       <% end %>
-      </tbody>
-    </table>
 
-    <% if @user.admin?  %>
-      <legend class="heading h2 pt2">SMS Information</legend>
-      <%=  react_component 'settings/SmsVerification', {
-          useSmsAuth: @user.use_sms_auth,
-          phoneNumberVerified: @user.phone_number_verified,
-          phoneNumber: @user.phone_number
-        },
-        { prerender: true }
-      %>
-    <% end %>
   </fieldset>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/intlTelInput.min.js" integrity="sha512-QMUqEPmhXq1f3DnAVdXvu40C8nbTgxvBGvNruP6RFacy3zWKbNTmx7rdQVVM2gkd2auCWhlPYtcW2tHwzso4SA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/css/intlTelInput.css" integrity="sha512-gxWow8Mo6q6pLa1XH/CcH8JyiSDEtiwJV78E+D+QP0EVasFs8wKXq16G8CLD4CJ2SnonHr4Lm/yY2fSI2+cbmw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
