@@ -2,6 +2,8 @@
 <% page_md %>
 <%= render 'events/nav' %>
 
+<% replit_disable = true %>
+
 <h1>
   Promotions &amp; perks
 </h1>
@@ -74,14 +76,14 @@
   </div>
 <% end %>
 
-<div class="card mb3" id="replit">
+<div class="card mb3 <%= replit_disable ? 'muted' : '' %>" id="replit">
   <div
     class="card__banner card__banner--top flex justify-between items-center"
     style="background-color: #0d101e; border: 1px solid #0068ad;">
     <%= image_tag 'replit.png', width: 170 %>
-    <%= link_to 'Apply',
-      organizer_signed_in? ? "https://hack.af/replpromo?prefill_Project%20Name=#{@event.name}&prefill_Bank%20URL=#{event_url(@event)}&prefill_Your%20name=#{current_user.full_name}&prefill_Organizer%20team%20size=#{@event.organizer_positions.size}" : root_path,
-      class: "btn bg-success mr1 #{'disabled' unless organizer_signed_in?}"
+    <%= link_to !replit_disable ? 'Apply' : 'Unavailable',
+      !replit_disable && organizer_signed_in? ? "https://hack.af/replpromo?prefill_Project%20Name=#{@event.name}&prefill_Bank%20URL=#{event_url(@event)}&prefill_Your%20name=#{current_user.full_name}&prefill_Organizer%20team%20size=#{@event.organizer_positions.size}" : root_path,
+      class: "btn bg-success mr1 #{'disabled' unless organizer_signed_in? && !replit_disable}"
     %>
   </div>
 
