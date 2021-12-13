@@ -50,7 +50,7 @@ class UsersController < ApplicationController
       sms: params[:sms]
     ).run
 
-    sign_in(user, fingerprint_info)
+    sign_in(user: user, fingerprint_info: fingerprint_info)
 
     # Clear the flash - this prevents the error message showing up after an unsuccessful -> successful login
     flash.clear

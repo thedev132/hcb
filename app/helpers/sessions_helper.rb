@@ -2,11 +2,11 @@
 
 module SessionsHelper
   def impersonate_user(user)
-    sign_in(user, true)
+    sign_in(user: user, impersonate: true)
   end
 
   # DEPRECATED - begin to start deprecating and ultimately replace with sign_in_and_set_cookie
-  def sign_in(user, fingerprint_info = {}, impersonate = false)
+  def sign_in(user:, fingerprint_info: {}, impersonate: false)
     session_token = SecureRandom.urlsafe_base64
     cookies.encrypted[:session_token] = { value: session_token, expires: 30.days.from_now  }
     user.user_sessions.create(
