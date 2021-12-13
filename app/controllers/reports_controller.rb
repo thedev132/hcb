@@ -24,10 +24,18 @@ class ReportsController < ApplicationController
 
   def set_file_headers_csv
     headers["Content-Type"] = "text/csv"
-    headers["Content-disposition"] = "attachment; filename=fees.csv"
+    headers["Content-disposition"] = "attachment; filename=#{clean_event_name}_Hack_Club_Bank_Fees_(#{current_time}).csv"
   end
 
   def fees_csv
     ::FeeService::Report::Csv.new(event_id: @event.id).run
+  end
+
+  def clean_event_name
+    @event.name.gsub!(/\s+/, "_").gsub!(/[^0-9A-Za-z_]/, "-")
+  end
+
+  def current_time
+    Time.now.strftime("%m_%d_%Y")
   end
 end
