@@ -3,11 +3,12 @@
 <%= form_with(model: invite, local: true, url: event_organizer_position_invites_path) do |form| %>
   <%= form_errors invite %>
 
-  <div class="field flex items-end">
-    <div class="mr2 mb0 flex-auto">
-      <%= form.label :email %>
-      <%= form.email_field :email %>
+  <div class="field">
+    <%= form.label :email, class: "mb1" %>
+
+    <div class="flex items-center">
+      <%= form.email_field :email, class: "mr2" %>
+      <%= form.submit 'Send', disabled: !organizer_signed_in? %>
     </div>
-    <%= form.submit 'Send', disabled: !organizer_signed_in? %>
   </div>
 <% end %>
