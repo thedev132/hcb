@@ -42,10 +42,11 @@ class PartneredSignupsController < ApplicationController
     unless @partner.docusign_template_id
       @partnered_signup.submitted_at = Time.now
       @partnered_signup.signed_contract = true
-      Airbrake.notify("Partner ##{@partner.id} is missing a 'docusign_template_id'. Error creating docusign contract for SUP ##{@partnered_signup.id}")
-      flash[:error] = "Something went wrong, please contact bank@hackclub.com for help"
-      render "edit"
-      return false
+      # Airbrake.notify("Partner ##{@partner.id} is missing a 'docusign_template_id'. Error creating docusign contract for SUP ##{@partnered_signup.id}")
+      # flash[:error] = "Something went wrong, please contact bank@hackclub.com for help"
+      # render "edit"
+      # TODO: error when there's no template ID, this is temporary until all partners have docusign templates
+      return true
     end
 
     service = Partners::Docusign::PartneredSignupContract.new(@partnered_signup)
