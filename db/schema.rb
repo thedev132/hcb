@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_05_051705) do
+ActiveRecord::Schema.define(version: 2021_12_09_215634) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -32,8 +32,8 @@ ActiveRecord::Schema.define(version: 2021_12_05_051705) do
     t.datetime "updated_at", null: false
     t.string "recipient_tel"
     t.datetime "rejected_at"
-    t.text "payment_for"
     t.datetime "scheduled_arrival_date"
+    t.text "payment_for"
     t.string "aasm_state"
     t.text "confirmation_number"
     t.index ["creator_id"], name: "index_ach_transfers_on_creator_id"
@@ -869,6 +869,8 @@ ActiveRecord::Schema.define(version: 2021_12_05_051705) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.datetime "submitted_at"
+    t.string "docusign_envelope_id"
+    t.boolean "signed_contract"
     t.index ["event_id"], name: "index_partnered_signups_on_event_id"
     t.index ["partner_id"], name: "index_partnered_signups_on_partner_id"
     t.index ["user_id"], name: "index_partnered_signups_on_user_id"
@@ -885,6 +887,7 @@ ActiveRecord::Schema.define(version: 2021_12_05_051705) do
     t.string "public_stripe_api_key"
     t.text "stripe_api_key_ciphertext"
     t.string "webhook_url"
+    t.string "docusign_template_id"
   end
 
   create_table "raw_csv_transactions", force: :cascade do |t|

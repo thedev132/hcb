@@ -341,10 +341,11 @@ Rails.application.routes.draw do
   get "partnered_signups/:public_id", to: "partnered_signups#edit", as: :edit_partnered_signups
   patch "partnered_signups/:public_id", to: "partnered_signups#update", as: :update_partnered_signups
 
-  get  "api/v1/events/find", to: "api#event_find" # to be deprecated
+  get "api/v1/events/find", to: "api#event_find" # to be deprecated
   post "api/v1/disbursements", to: "api#disbursement_new" # to be deprecated
 
   post "stripe/webhook", to: "stripe#webhook"
+  get "docusign/signing_complete_redirect", to: "docusign#signing_complete_redirect"
 
   post "export/finances", to: "exports#financial_export"
 

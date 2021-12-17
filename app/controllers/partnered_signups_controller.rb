@@ -22,9 +22,8 @@ class PartneredSignupsController < ApplicationController
   # PATCH /partnered_signups/:public_id
   def update
     @partnered_signup.update_attributes(partnered_signup_params)
-    @partnered_signup.submitted_at = Time.now
-
     authorize @partnered_signup
+    return unless signed_contract?
 
     if @partnered_signup.save
       redirect_to @partnered_signup.redirect_url
@@ -37,6 +36,39 @@ class PartneredSignupsController < ApplicationController
   end
 
   private
+
+  def signed_contract?
+    # Don't sign contract unless we have a docusign template id
+    unless @partner.docusign_template_id
+      @partnered_signup.submitted_at = Time.now
+      @partnered_signup.signed_contract = true
+      Airbrake.notify("Partner ##{@partner.id} is missing a 'docusign_template_id'. Error creating docusign contract for SUP ##{@partnered_signup.id}")
+      flash[:error] = "Something went wrong, please contact bank@hackclub.com for help"
+      render "edit"
+      return false
+    end
+
+    service = Partners::Docusign::PartneredSignupContract.new(@partnered_signup)
+
+    # if we don't have the contract, send it
+    unless @partnered_signup.docusign_envelope_id
+      data = service.create
+      @partnered_signup.docusign_envelope_id = data[:envelope].envelope_id
+      if @partnered_signup.save
+        redirect_to data[:signing_url]
+      else
+        flash[:error] = "Something went wrong, please contact bank@hackclub.com for help"
+        render "edit"
+      end
+      return false
+    end
+
+    # if the user didn't sign the contract yet, show it to them again
+    unless @partnered_signup.signed_contract
+      redirect_to service.get_signing_url(@partnered_signup.docusign_envelope_id)
+    end
+    false
+  end
 
   def set_partnered_signup
     @partnered_signup = PartneredSignup.find_by_public_id(params[:public_id])

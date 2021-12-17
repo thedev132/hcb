@@ -171,3 +171,5 @@ gem "sidekiq-cron", "~> 1.1" # run sidekiq scheduled tasks
 gem "strong_migrations" # protects against risky migrations that could cause application harm on deploy
 gem "swagger-blocks"
 gem "xxhash" # fast hashing
+
+gem "docusign_esign", "~> 3.13"
