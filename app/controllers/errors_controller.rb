@@ -5,7 +5,7 @@ class ErrorsController < ApplicationController
   skip_before_action :signed_in_user, only: [:internal_server_error]
 
   def not_found
-      render status: :not_found
+    render status: :not_found
   end
 
   def internal_server_error
