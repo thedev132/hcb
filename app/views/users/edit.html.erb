@@ -90,11 +90,11 @@
   </div>
 <% end %>
 
-<h2>Authentication</h2>
+<h2 class="mt4">Authentication</h2>
   <fieldset>
     <div class="session-header pb2">
       <legend class="heading flex flex-row justify-start items-center h2 pt2">
-        Session Information
+        Sessions
         <%= badge_for @user.user_sessions.count, class: 'bg-muted' %>
       </legend>
        <%= link_to logout_all_users_path, method: :delete,
