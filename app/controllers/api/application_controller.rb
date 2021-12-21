@@ -23,7 +23,7 @@ module Api
 
       cookies.encrypted[:session_token] = { value: session_token, expires: 30.days.from_now }
       user.user_sessions.create(session_token: session_token)
-
+      
       @current_user ||= user
     end
 

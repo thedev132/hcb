@@ -1,0 +1,14 @@
+.session-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+@media (max-width: 32em) {
+    .session-header {
+        display: flex;
+        flex-direction: column;
+        justify-content: start;
+        align-items: baseline;
+    }
+}

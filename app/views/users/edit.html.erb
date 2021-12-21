@@ -92,46 +92,34 @@
 
 <h2>Authentication</h2>
   <fieldset>
-    <legend class="heading h2 pt2">Session Information</legend>
-     <%= link_to logout_all_users_path, method: :delete,
-        class: 'btn bg-error mt1 ' do %>
-        <%= inline_icon 'door-leave', size: home_action_size %>
-        Sign out of all sessions
-      <% end %>
-
-    <div class="overflow-x-auto">
-      <table class="mt2">
-        <thead>
-          <tr>
-            <th>IP</th>
-            <th>OS Info</th>
-            <th>Device Info</th>
-            <th>Timezone</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-
-        <tbody>
-        <% @user.user_sessions.each do |session| %>
-          <tr>
-            <td><%= session.ip %></td>
-            <td><%= session.os_info %></td>
-            <td><%= session.device_info %></td>
-            <td><%= session.timezone %></td>
-            <td>
-              <%= link_to logout_session_users_path(user: @user, id: session.id), method: :delete,
-                class: 'btn bg-error' do %>
-                  Sign out
-              <% end %>
-            </td>
-          </tr>
+    <div class="session-header pb2">
+      <legend class="heading flex flex-row justify-start items-center h2 pt2">
+        Session Information
+        <%= badge_for @user.user_sessions.count, class: 'bg-muted' %>
+      </legend>
+       <%= link_to logout_all_users_path, method: :delete,
+          class: 'btn bg-error mt1' do %>
+          <%= inline_icon 'door-leave', size: home_action_size %>
+          Sign out of all sessions
         <% end %>
-        </tbody>
-      </table>
+    </div>
+
+    <div class="grid grid--split">
+      <% @user.user_sessions.each do |session| %>
+      <div class="card border">
+        <span class="flex items-center justify-between">
+          <span class="bold"><%= session.device_info %> on <%= session.os_info %></span>
+          <%= link_to logout_session_users_path(user: @user, id: session.id), method: :delete, class: 'muted tooltipped tooltipped--w z5', 'aria-label': 'Sign out of this session' do %>
+            <%= inline_icon 'door-leave', size: home_action_size %>
+          <% end %>
+        </span>
+        <span>IP: <code><%= session.ip %></code> • <%= session.timezone %></span>
+      </div>
+    <% end %>
     </div>
 
       <% if @user.admin?  %>
-        <div class="admin-tools">
+        <div class="admin-tools mt3">
           <legend class="heading h2 pt2">SMS Information</legend>
           <%=  react_component 'settings/SmsVerification', {
               useSmsAuth: @user.use_sms_auth,
