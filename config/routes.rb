@@ -362,6 +362,9 @@ Rails.application.routes.draw do
 
   post "twilio/messaging", to: "admin#twilio_messaging"
 
+  match "/404", to: "errors#not_found", via: :all
+  match "/500", to: "errors#internal_server_error", via: :all
+
   get "/events" => "events#index"
   get "/event_by_airtable_id/:airtable_id" => "events#by_airtable_id"
   resources :events, except: [:new, :create], path: "/" do
