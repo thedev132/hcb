@@ -90,15 +90,17 @@
   </div>
 <% end %>
 
-<h2 class="mt4">Authentication</h2>
+<h2 class="mt4">
+  Authentication
+</h2>
   <fieldset>
     <div class="session-header pb2">
-      <legend class="heading flex flex-row justify-start items-center h2 pt2">
-        Sessions
+      <legend class="heading flex flex-row justify-start items-center">
+        <span class="h2">Sessions</span>
         <%= badge_for @user.user_sessions.count, class: 'bg-muted' %>
       </legend>
        <%= link_to logout_all_users_path, method: :delete,
-          class: 'btn bg-error mt1' do %>
+          class: 'btn bg-error mt1 py1 px2 h4' do %>
           <%= inline_icon 'door-leave', size: home_action_size %>
           Sign out of all sessions
         <% end %>
@@ -116,7 +118,7 @@
                   <%= inline_icon 'door-leave', size: home_action_size %>
                 <% end %>
               </span>
-              <span>IP: <code><%= session.ip %></code> • <%= session.timezone %></span>
+              <span class="flex items-center"><%= inline_icon 'web', size: 20 %>&nbsp;<code class="mr1"><%= session.ip %></code> • <%= inline_icon 'clock', size: 20, class: 'ml1' %>&nbsp;<%= session.timezone %></span>
             <% end %>
           </div>
       <% end %>
