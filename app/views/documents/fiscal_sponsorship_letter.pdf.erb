@@ -1,3 +1,5 @@
+<% letter_date = @event.created_at %>
+
 <head>
   <title><%= @event.name %> Fiscal Sponsorship Confirmation</title>
   <style>
@@ -51,7 +53,7 @@
     </div>
     <br />
     <br />
-    <p style="margin-top: 2rem;"><%= Time.now.strftime("%B #{Time.now.day.ordinalize}, %Y") %></p>
+    <p style="margin-top: 2rem;"><%= letter_date.strftime("%B #{letter_date.day.ordinalize}, %Y") %></p>
     <br />
     <p style="font-size: 12.5pt;"><span class="bold"><%= @event.name %> Subsidiary Confirmation</span></p>
     <br />
