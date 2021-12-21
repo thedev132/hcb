@@ -50,26 +50,30 @@ module SessionsHelper
 
   # Ensure api authorized when fetching current user is removed
   def current_user(_ensure_api_authorized = true)
-    # Find a valid session token within all the ones currently in the table for this particular user
-    if !@current_user
-      potential_session = UserSession.find_by(session_token: cookies.encrypted[:session_token])
-
-      # check if the potential session is still valid
-      if potential_session
-        # If the session is greater than 30 days then the current user is no longer valid
-        # (.abs) is added for easier testing when fast-forwarding created_at times
-        if (Time.now - potential_session.created_at).abs > 30.days
-          potential_session.destroy
-          return nil
-        end
-
-        @current_user ||= potential_session.user
-      end
+    if !@current_user and current_session
+      @current_user ||= current_session.user
     end
 
     return nil unless @current_user
 
     @current_user
+  end
+
+  def current_session
+    # Find a valid session token within all the ones currently in the table for this particular user
+    potential_session = UserSession.find_by(session_token: cookies.encrypted[:session_token])
+
+    return nil unless potential_session
+
+    # check if the potential session is still valid
+    # If the session is greater than 30 days then the current user is no longer valid
+    # (.abs) is added for easier testing when fast-forwarding created_at times
+    if (Time.now - potential_session.created_at).abs > 30.days
+      potential_session.destroy
+      return nil
+    end
+
+    potential_session
   end
 
   def signed_in_user
