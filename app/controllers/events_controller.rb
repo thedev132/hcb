@@ -19,12 +19,7 @@ class EventsController < ApplicationController
     @organizers = @event.organizer_positions.includes(:user)
     @pending_transactions = _show_pending_transactions
 
-    if using_transaction_engine_v2?
-      @transactions_flat = [] #paginate(_show_transactions, per_page: 100) # v2. placeholder for flat history.
-      @transactions = Kaminari.paginate_array(TransactionGroupingEngine::Transaction::All.new(event_id: @event.id, search: params[:search]).run).page(params[:page]).per(100)
-    else
-      @transactions = paginate(TransactionEngine::Transaction::AllDeprecated.new(event_id: @event.id).run, per_page: 100)
-    end
+    @transactions = Kaminari.paginate_array(TransactionGroupingEngine::Transaction::All.new(event_id: @event.id, search: params[:search]).run).page(params[:page]).per(100)
   end
 
   def fees

@@ -86,118 +86,48 @@
   <% end %>
 </h2>
 
-<% if using_transaction_engine_v2? %>
-  <%= form_with(model: nil, local: true, method: :get) do |form| %>
-    <div class="filterbar flex flex-wrap items-center width-100">
 
-      <%= form.text_field :search, placeholder: "Search…", class: "flex-auto md-mr2", style: "width auto; max-width: none;", value: params[:search] %>
+<%= form_with(model: nil, local: true, method: :get) do |form| %>
+  <div class="filterbar flex flex-wrap items-center width-100">
 
-      <!--
-      <div data-behavior="filterbar" role="tablist" class="filterbar__filters flex mt1 lg-mt0">
-        <%= filterbar_item 'All', :exists, true %>
-        <%= filterbar_item 'Revenue', :fee_applies %>
-        <%#= filterbar_item 'Fees', :fee_payment %>
-        <%#= filterbar_item 'Card', :card %>
-      </div>
-      -->
+    <%= form.text_field :search, placeholder: "Search…", class: "flex-auto md-mr2", style: "width auto; max-width: none;", value: params[:search] %>
 
+    <!--
+    <div data-behavior="filterbar" role="tablist" class="filterbar__filters flex mt1 lg-mt0">
+      <%= filterbar_item 'All', :exists, true %>
+      <%= filterbar_item 'Revenue', :fee_applies %>
+      <%#= filterbar_item 'Fees', :fee_payment %>
+      <%#= filterbar_item 'Card', :card %>
     </div>
-  <% end %>
+    -->
 
-  <% if @pending_transactions.any? || @transactions.any? %>
-    <div class="table-container">
-      <table>
-        <thead>
-          <tr>
-            <th></th>
-            <th>Date</th>
-            <th>Description</th>
-            <th class="right-align">Amount</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody data-behavior="transactions">
-          <% @pending_transactions.each do |pt| %>
-            <%= render partial: "canonical_pending_transactions/canonical_pending_transaction", locals: { pt: pt } %>
-          <% end %>
+  </div>
+<% end %>
 
-          <% @transactions.each do |ct| %>
-            <%= render partial: "canonical_transactions/canonical_transaction", locals: { ct: ct } %>
-          <% end %>
+<% if @pending_transactions.any? || @transactions.any? %>
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th></th>
+          <th>Date</th>
+          <th>Description</th>
+          <th class="right-align">Amount</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody data-behavior="transactions">
+        <% @pending_transactions.each do |pt| %>
+          <%= render partial: "canonical_pending_transactions/canonical_pending_transaction", locals: { pt: pt } %>
+        <% end %>
 
-          <% @transactions_flat.each do |ct| %>
-            <tr
-              class="transaction--<%= ct.amount.negative? ? 'negative' : 'positive' %>">
-              <td class="transaction__icon tooltipped tooltipped--e" aria-label="Bank account transaction">
-                <% if ct.fee_payment? %>
-                  <%= inline_icon 'minue' %>
-                <% elsif ct.check %>
-                  <%= inline_icon 'payment-transfer' %>
-                <% elsif ct.ach_transfer %>
-                  <%= inline_icon 'payment-transfer' %>
-                <% elsif ct.raw_stripe_transaction %>
-                  <%= inline_icon 'card' %>
-                <% elsif ct.invoice %>
-                  <%= inline_icon 'briefcase' %>
-                <% elsif ct.donation %>
-                  <%= inline_icon 'support' %>
-                <% elsif ct.disbursement %>
-                  <% if ct.amount.negative? %>
-                    <%= inline_icon 'door-leave' %>
-                  <% else %>
-                    <%= inline_icon 'door-enter' %>
-                  <% end %>
-                <% else %>
-                  <%= inline_icon 'bank-account' %>
-                <% end %>
-              </td>
-              <td>
-                <%= ct.date %>
-              </td>
-              <td class="transaction__memo">
-                <span>
-                  <%= ct.display_name %>
-                </span>
-                <%#= list_badge_for transaction.comments.size, 'note', 'post', optional: true %>
-                <%= list_badge_for ct.receipts.size, 'receipt', 'payment-docs', optional: true %>
-              </td>
-              <td class="nowrap">
-                <span title="Fee <%= render_money ct.fees.sum(:amount_cents_as_decimal) %>"><%= ct.amount %></span>
-              </td>
-              <td>
-                <%= link_to 'Details', "/transactions/#{ct.id}" if organizer_signed_in? %>
-              </td>
-            </tr>
-          <% end %>
-        </tbody>
-      </table>
-    </div>
-    <%= paginate @transactions %>
-  <% else %>
-    <%= blankslate 'No transactions yet' %>
-  <% end %>
+        <% @transactions.each do |ct| %>
+          <%= render partial: "canonical_transactions/canonical_transaction", locals: { ct: ct } %>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+  <%= paginate @transactions %>
 <% else %>
-  <!-- old transaction engine. remove soon -->
-  <% if @pending_transactions.any? || @transactions.any? %>
-    <div class="table-container">
-      <table>
-        <thead>
-          <tr>
-            <th></th>
-            <th>Date</th>
-            <th>Description</th>
-            <th class="right-align">Amount</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody data-behavior="transactions">
-          <%= render partial: 'transactions/event_list', collection: @pending_transactions, as: :t %>
-          <%= render partial: 'transactions/event_list', collection: @transactions, as: :t %>
-        </tbody>
-      </table>
-    </div>
-    <%= paginate @transactions %>
-  <% else %>
-    <%= blankslate 'No transactions yet' %>
-  <% end %>
+  <%= blankslate 'No transactions yet' %>
 <% end %>

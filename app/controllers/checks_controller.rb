@@ -7,8 +7,6 @@ class ChecksController < ApplicationController
 
   # GET /checks/new
   def new
-    raise ActiveRecord::RecordNotFound unless using_transaction_engine_v2?
-
     @lob_address = LobAddress.new(event: @event)
     @check = Check.new(lob_address: @lob_address)
 
@@ -17,8 +15,6 @@ class ChecksController < ApplicationController
 
   # POST /checks
   def create
-    raise ActiveRecord::RecordNotFound unless using_transaction_engine_v2?
-
     authorize @event, policy_class: CheckPolicy
 
     # 1. Update/Create LobAddress
