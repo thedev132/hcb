@@ -1,19 +1,9 @@
 <%= render 'users/nav' if signed_in? %>
 
 <div style="text-align: center;">
-    <h1><%= @is_event_error ? "Event" : "Page" %> not found.</h1>
+    <h1>Page not found.</h1>
 
-    <% if @is_event_error %>
-        <p>You may have mistyped the event URL.</p>
-
-        <% if signed_in? %>
-            <p><a href="https://hack.af/bank-apply?prefill_Have%20you%20used%20Hack%20Club%20Bank%20for%20any%20previous%20projects?=Yes,%20I%20have%20used%20Hack%20Club%20Bank%20before&prefill_First+Name=<%= current_user.first_name %>&prefill_Last+Name=<%= current_user.last_name %>&prefill_Email+Address=<%= current_user.email %>&prefill_Phone+Number=<%= current_user.phone_number %>&prefill_Project+Name=<%= params[:id] %>">Apply to Hack Club Bank</a> to create this event!</p>
-        <% else %>
-            <p><a href="https://hackclub.com/bank#apply">Apply to Hack Club Bank</a> to create this event!</p>
-        <% end %>
-    <% else %>
-        <p>You may have mistyped the address or the page may have moved.</p>
-    <% end %>
+    <p>You may have mistyped the address or the page may have moved.</p>
 
     <img src="/dino_leaping_for_money.png" class="mt3 mx-auto w-100" style="max-width: 400px; display: block" />
 </div>
