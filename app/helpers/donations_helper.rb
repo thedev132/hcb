@@ -68,7 +68,12 @@ module DonationsHelper
     else
       icon_name = "bank-account"
       size = 20
-      description_text = donation.payment_method_type.humanize
+
+      if donation&.payment_method_type == "ach_credit_transfer"
+        description_text = "ACH Transfer"
+      else
+        description_text = donation.payment_method_type.humanize
+      end
     end
 
     description = content_tag :span, description_text, class: "ml1"

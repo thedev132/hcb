@@ -104,7 +104,12 @@ def invoice_payment_method_mention(invoice = @invoice, options = {})
   else
     icon_name = "bank-account"
     size = 20
-    description_text = invoice.payment_method_type.humanize
+
+    if invoice&.payment_method_type == "ach_credit_transfer"
+      description_text = "ACH Transfer"
+    else
+      description_text = invoice.payment_method_type.humanize
+    end
   end
 
   description = content_tag :span, description_text, class: "ml1"

@@ -36,7 +36,12 @@ module PartnerDonationsHelper
     else
       icon_name = "bank-account"
       size = 20
-      description_text = partner_donation.payment_method_type.humanize
+
+      if partner_donation&.payment_method_type == "ach_credit_transfer"
+        description_text = "ACH Transfer"
+      else
+        description_text = partner_donation.payment_method_type.humanize
+      end
     end
 
     description = content_tag :span, description_text, class: "ml1"
@@ -86,7 +91,7 @@ module PartnerDonationsHelper
       funding = partner_donation.payment_method_card_funding.humanize.capitalize
       return "#{brand} #{funding} card fee"
     elsif partner_donation.payment_method_type == "ach_credit_transfer"
-      "ACH / wire fee"
+      "ACH Transfer fee"
     else
       "Transfer fee"
     end
