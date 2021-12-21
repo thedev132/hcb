@@ -104,7 +104,10 @@ class Donation < ApplicationRecord
   end
 
   def arrival_date
-    self&.payout&.arrival_date || 3.business_days.after(payout_creation_queued_for)
+    arrival = self&.payout&.arrival_date || 3.business_days.after(payout_creation_queued_for)
+
+    # Add 1 day to account for plaid and Bank processing time
+    arrival + 1.day
   end
 
   def arriving_late?

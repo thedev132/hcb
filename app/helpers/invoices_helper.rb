@@ -157,7 +157,7 @@ def invoice_payout_datetime(invoice = @invoice)
     date = invoice.payout_creation_queued_for
   elsif invoice.payout_creation_queued_at && invoice.payout.present?
     title = "Funds should be available"
-    date = invoice.payout.arrival_date
+    date = invoice.arrival_date
   else
     return
   end

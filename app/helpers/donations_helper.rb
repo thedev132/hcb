@@ -25,7 +25,7 @@ module DonationsHelper
       title = "Funds available since"
       date = @hcb_code.canonical_transactions.pluck(:date).min
     elsif donation.payout_creation_queued_at && donation.payout.nil?
-      title = "Transfer arrives at"
+      title = "Transfer scheduled"
       date = donation.payout_creation_queued_for
     elsif donation.payout_creation_queued_at && donation.payout.present?
       title = "Funds should be available"
@@ -43,7 +43,6 @@ module DonationsHelper
   def donation_payment_method_mention(donation = @donation, options = {})
     payout = donation&.payout
     payout_t = donation&.payout&.t_transaction
-
 
     return "–" unless donation&.payment_method_type
 
