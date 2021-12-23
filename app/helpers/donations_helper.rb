@@ -23,7 +23,7 @@ module DonationsHelper
   def donation_payout_datetime(donation = @donation)
     if donation.deposited?
       title = "Funds available since"
-      date = @hcb_code.canonical_transactions.pluck(:date).min
+      date = @hcb_code.canonical_transactions.pluck(:date).max
     elsif donation.payout_creation_queued_at && donation.payout.nil?
       title = "Transfer scheduled"
       date = donation.payout_creation_queued_for
