@@ -1,7 +1,7 @@
 <tr class="transaction--<%= ct.amount.negative? ? "negative" : "positive" %>">
     <% if ct.fee_payment? %>
       <td class="transaction__icon tooltipped tooltipped--e" aria-label="Hack Club Bank Fee payment">
-        <%= inline_icon "minue" %>
+        <%= inline_icon "minus-fill" %>
       </td>
     <% elsif ct.check? %>
       <td class="transaction__icon tooltipped tooltipped--e" aria-label="Outgoing check">
