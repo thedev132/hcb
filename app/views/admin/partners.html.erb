@@ -10,10 +10,10 @@
       <th>ID</th>
       <th>Slug</th>
       <th>Name</th>
+      <th>External</th>
       <th>ApiKey</th>
       <th>StripeApiKey</th>
       <th>PublicStripeApiKey</th>
-      <th>External</th>
       <th>Docusign Template Id</th>
       <th>Actions</th>
     </tr>
@@ -24,11 +24,11 @@
         <td><%= partner.id %></td>
         <td><%= partner.slug %></td>
         <td><%= partner.name %></td>
-        <td><%= partner.api_key %></td>
-        <td><%= partner.stripe_api_key %></td>
-        <td><%= partner.public_stripe_api_key %></td>
         <td><%= partner.external %></td>
-        <td><%= partner.docusign_template_id %></td>
+        <td style="word-break: break-all"><%= partner.api_key %></td>
+        <td style="word-break: break-all"><%= partner.stripe_api_key %></td>
+        <td style="word-break: break-all"><%= partner.public_stripe_api_key %></td>
+        <td style="word-break: break-all"><%= partner.docusign_template_id %></td>
         <td>
         </td>
       </tr>
