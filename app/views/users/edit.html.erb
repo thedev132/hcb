@@ -107,7 +107,7 @@
     </div>
 
     <div class="grid grid--split">
-      <% @user.user_sessions.each do |session| %>
+      <% @user.user_sessions.order(created_at: :desc).each do |session| %>
           <div class="card border <% if current_session.id == session.id %>b--success<% end %>">
             <% if !session.device_info %>
               <p class="center">No data available for this session.</p>
@@ -115,7 +115,7 @@
               <span class="flex items-center justify-between">
                 <span class="bold flex items-center">
                   <span><%= session.device_info %> on <%= session.os_info %></span>
-                  <% if current_session.id == session.id %><span class="badge bg-success medium">current session</span><% end %>
+                  <% if current_session.id == session.id %><span class="badge bg-success medium">current&nbsp;session</span><% end %>
                 </span>
                 <%= link_to logout_session_users_path(user: @user, id: session.id), method: :delete, class: 'muted tooltipped tooltipped--w z5', 'aria-label': 'Sign out of this session' do %>
                   <%= inline_icon 'door-leave', size: home_action_size %>
