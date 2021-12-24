@@ -142,6 +142,9 @@ $shades: (
   border-color: map-get($palette, info);
 }
 
+.b--success {
+  border-color: map-get($palette, success);
+}
 .w-50 {
   width: 50%;
 }
