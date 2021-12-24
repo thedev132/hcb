@@ -69,7 +69,7 @@ class DonationsController < ApplicationController
   end
 
   def qr_code
-    qrcode = RQRCode::QRCode.new("https://bank.hackclub.com" + start_donation_donations_path(@event.slug))
+    qrcode = RQRCode::QRCode.new(start_donation_donations_url(@event))
 
     png = qrcode.as_png(
       bit_depth: 1,

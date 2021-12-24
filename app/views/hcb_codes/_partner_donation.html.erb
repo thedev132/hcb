@@ -10,15 +10,17 @@
 
 <div class="mt2 mb3">
   <article class="card pb0">
-    <h2 class="h2 mt0 border-none">
-      <% if @partner_donation.stripe_obj.try(:[], :billing_details).try(:[], :name) %>
-        <%= @partner_donation.stripe_obj.try(:[], :billing_details).try(:[], :name) %>
-        <span class="regular muted"> donated </span>
-        <span class="regular"><%= render_money @partner_donation.amount %></span>
-      <% else %>
-        Anonymous donation of <%= render_money @partner_donation.amount %>
-      <% end %>
-      <span class="badge h4 md-right bg-<%= @partner_donation.state_color %>">
+    <h2 class="h2 mt0 border-none flex items-start justify-between">
+      <span>
+        <% if @partner_donation.stripe_obj.try(:[], :billing_details).try(:[], :name) %>
+          <%= @partner_donation.stripe_obj.try(:[], :billing_details).try(:[], :name) %>
+          <span class="regular muted"> donated </span>
+          <span class="regular"><%= render_money @partner_donation.amount %></span>
+        <% else %>
+          Anonymous donation of <%= render_money @partner_donation.amount %>
+        <% end %>
+      </span>
+      <span class="badge h4 md-right bg-<%= @partner_donation.state_color %> nowrap">
         <%= @partner_donation.state_text %>
         <%= inline_icon @partner_donation.state_icon, size: 20 if @partner_donation.state_icon %>
       </span>

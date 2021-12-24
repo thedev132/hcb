@@ -47,4 +47,4 @@ sleep 0.5
 
 sleep 0.5
 
-env $(cat .env.docker) docker-compose run --service-ports web bundle exec rails s -b 0.0.0.0 -p 3000
+env $(cat .env.docker) docker-compose run --service-ports web
