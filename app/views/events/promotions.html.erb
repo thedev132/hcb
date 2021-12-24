@@ -13,7 +13,8 @@
     <%= image_tag 'https://cloud-q7i8htyv7-hack-club-bot.vercel.app/0pvsa-logo-2x.png', width: 60 %>
     <%= link_to 'Purchase',
       organizer_signed_in? ? "https://hack.af/pvsa-order?prefill_Event%20Name=#{@event.name}&prefill_Submitter%20Email=#{current_user.email}" : root_path,
-      class: "btn mr1 #{'disabled' unless organizer_signed_in?}"
+      class: "btn mr1 #{'disabled' unless organizer_signed_in?}",
+      target: :_blank
     %>
   </div>
 
@@ -66,7 +67,8 @@
       <h3 class="h1 p2 my0 color-black">Domains</h3>
       <%= link_to 'Apply',
         organizer_signed_in? ? "https://hack.af/bank-domains?prefill_Project%20Name=#{@event.name}&prefill_Bank%20URL=#{event_url(@event)}&prefill_Name=#{current_user.full_name}&prefill_Login%20email=#{current_user.email}" : root_path,
-        class: "btn bg-success mr1 #{'disabled' unless organizer_signed_in?}"
+        class: "btn bg-success mr1 #{'disabled' unless organizer_signed_in?}",
+        target: :_blank
       %>
     </div>
 
@@ -81,7 +83,8 @@
     <%= image_tag 'stickermule.svg', width: 240 %>
     <%= link_to 'Apply',
       organizer_signed_in? ? "https://hack.af/stickermule?prefill_Event%20Name=#{@event.name}" : root_path,
-      class: "btn bg-success mr1 #{'disabled' unless organizer_signed_in?}"
+      class: "btn bg-success mr1 #{'disabled' unless organizer_signed_in?}",
+      target: :_blank
     %>
   </div>
 
@@ -147,7 +150,8 @@
     <h3 class="h1 white p2 my0">Sendy</h3>
     <%= link_to 'Apply',
       organizer_signed_in? ? "https://hack.af/sendypromo?prefill_Project%20Name=#{@event.name}&prefill_Bank%20URL=#{event_url(@event)}&prefill_Your%20name=#{current_user.full_name}&prefill_Domain%20URL=#{@event.g_suites.not_deleted.first&.domain}" : root_path,
-      class: "btn bg-success mr1 #{'disabled' unless organizer_signed_in?}"
+      class: "btn bg-success mr1 #{'disabled' unless organizer_signed_in?}",
+      target: :_blank
      %>
   </div>
 
