@@ -350,6 +350,7 @@ module StaticPagesHelper
       "holiday edition",
       "santa edition",
       "🎅🏻",
+      "🦌🦌🦌🦌🦌🦌🦌🦌🛷🎅🎁",
       "fresh snow for $0.99!",
       "build me a snow castle",
       "build me a snow man",
