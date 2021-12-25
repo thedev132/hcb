@@ -19,6 +19,10 @@ class EventsController < ApplicationController
     @organizers = @event.organizer_positions.includes(:user)
     @pending_transactions = _show_pending_transactions
 
+    if !signed_in? and !@event.holiday_features
+      @hide_holiday_features = true
+    end
+
     @transactions = Kaminari.paginate_array(TransactionGroupingEngine::Transaction::All.new(event_id: @event.id, search: params[:search]).run).page(params[:page]).per(100)
   end
 
@@ -327,6 +331,7 @@ class EventsController < ApplicationController
       :donation_page_enabled,
       :donation_page_message,
       :is_public,
+      :holiday_features,
       :public_message
     )
 
@@ -346,6 +351,7 @@ class EventsController < ApplicationController
       :donation_page_enabled,
       :donation_page_message,
       :is_public,
+      :holiday_features,
       :public_message
     )
 

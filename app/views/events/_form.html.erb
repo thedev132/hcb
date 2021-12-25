@@ -43,6 +43,10 @@
       <%= form.check_box :is_public %>
       <%= form.label :is_public, "Enable Transparency Mode" %>
     </div>
+    <div class="field field--checkbox">
+      <%= form.check_box :holiday_features %>
+      <%= form.label :holiday_features, "Enable Holiday Features ⛄ for Transparency Mode" %>
+    </div>
     <div class="field">
       <%= form.label :public_message, "Message to show visitors" %>
       <%= form.text_area :public_message, class: "w-100 fit" %>

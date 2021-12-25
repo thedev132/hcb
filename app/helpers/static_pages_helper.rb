@@ -11,11 +11,12 @@ module StaticPagesHelper
                         path, method: options[:method]
   end
 
-  def random_nickname
+  def flavor_text
     if Rails.env.development?
       "Development Mode"
     else
-      return "<a href='https://hack.af/hcb-stickers?prefill_Recipient%20Name=#{current_user.full_name}&prefill_Login%20Email=#{current_user.email}' target='_blank' style='color: inherit'>Want stickers?</a>" if rand(100) <= 10 && DateTime.now <= Date.new(2021, 10, 23)
+      holiday = holiday_flavor_text
+      return holiday unless holiday.nil?
 
       [
         "The hivemind known as Bank",
@@ -334,6 +335,31 @@ module StaticPagesHelper
         "<a href='https://www.dinosaurbbq.org' target='_blank' style='color: inherit'>dinosaurbbq.org</a>"
       ].sample
     end
+  end
+
+  def holiday_flavor_text
+    return nil if rand(100) <= 5 || DateTime.now >= Date.new(2022, 2, 13)
+
+    [
+      "<a href='https://hack.af/hcb-stickers?prefill_Recipient%20Name=#{current_user.full_name}&prefill_Login%20Email=#{current_user.email}' target='_blank' style='color: inherit'>Want a gift?</a>",
+      "<a href='https://hack.af/hcb-stickers?prefill_Recipient%20Name=#{current_user.full_name}&prefill_Login%20Email=#{current_user.email}' target='_blank' style='color: inherit'>A present, from us to you</a>",
+      "Hacky Holidays",
+      "let there be snow",
+      "ho ho ho ho",
+      "where r my cookies?",
+      "holiday edition",
+      "santa edition",
+      "🎅🏻",
+      "fresh snow for $0.99!",
+      "build me a snow castle",
+      "build me a snow man",
+      "is that Olaf?",
+      "did you mean, 'hacky holidays!'",
+      "didja mean hacky new year?",
+      "<a href='https://santatracker.google.com/' target='_blank' style='color: inherit'>Santa's on the way!</a>",
+      "dashing through the snow",
+      "defrosting..."
+    ].sample
   end
 
   def link_to_airtable_task(task_name)
