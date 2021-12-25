@@ -354,12 +354,29 @@ module StaticPagesHelper
       "fresh snow for $0.99!",
       "build me a snow castle",
       "build me a snow man",
+      "bake me cookies",
+      "i want a candy cane",
       "is that Olaf?",
       "did you mean, 'hacky holidays!'",
       "didja mean hacky new year?",
       "<a href='https://santatracker.google.com/' target='_blank' style='color: inherit'>Santa's on the way!</a>",
       "dashing through the snow",
-      "defrosting..."
+      "defrosting...",
+      "send snow photos to <a href='mailto:bank@hackclub.com' target='_blank' style='color: inherit'>",
+      "Dasher, Dancer, Prancer, Vixen,<br/>Comet, Cupid, Donner, Blitzen",
+      "Recommended by Santa",
+      "Recommended by Santa's elves",
+      "Built by Santa's elves",
+      "Built by Santa's elves at Hack Club",
+      "Built by Santa's elves at the North Pole",
+      "Handcrafted by Santa's elves",
+      "feelin' the holiday spirit yet?",
+      "To the North Pole!",
+      "Hot choco waiting for ya",
+      "Built with Ruby on Rails, React, and holiday cheer",
+      "u seein' the snow outside?",
+      "Dear Santa...",
+      "where's my gingerbread house"
     ].sample
   end
 
