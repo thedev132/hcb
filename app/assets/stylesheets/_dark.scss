@@ -1,23 +1,23 @@
-@import 'variables';
+@import "variables";
 
 $dark: #17171d;
 $darker: #121217;
 $darkless: #252429;
 
-html[data-dark='true'] {
+html[data-dark="true"] {
   body {
     background-color: $dark;
     color: map-get($palette, smoke);
   }
 
-  input[type='date'],
-  input[type='email'],
-  input[type='number'],
-  input[type='password'],
-  input[type='search'],
-  input[type='tel'],
-  input[type='text'],
-  input[type='url'],
+  input[type="date"],
+  input[type="email"],
+  input[type="number"],
+  input[type="password"],
+  input[type="search"],
+  input[type="tel"],
+  input[type="text"],
+  input[type="url"],
   select,
   textarea {
     background: $darkless;
@@ -46,7 +46,7 @@ html[data-dark='true'] {
   tr {
     border-color: map-get($palette, slate);
   }
-  .menu__toggle[aria-expanded='true']:after {
+  .menu__toggle[aria-expanded="true"]:after {
     border-bottom-color: $darkless;
   }
   .list > a > li,
@@ -80,7 +80,7 @@ html[data-dark='true'] {
   .menu__content hr {
     border-color: $dark;
   }
-  .menu__toggle[aria-expanded='true']:before {
+  .menu__toggle[aria-expanded="true"]:before {
     border-bottom-color: $darker;
   }
 
@@ -108,8 +108,7 @@ html[data-dark='true'] {
   .modal,
   .card,
   .menu__content {
-    box-shadow: -2px -4px 8px rgba(0, 0, 0, 0.125),
-      4px 8px 16px rgba(0, 0, 0, 0.25);
+    box-shadow: -2px -4px 8px rgba(0, 0, 0, 0.125), 4px 8px 16px rgba(0, 0, 0, 0.25);
   }
 
   .card {
@@ -122,14 +121,14 @@ html[data-dark='true'] {
       border-color: map-get($palette, black);
     }
 
-    input[type='date'],
-    input[type='email'],
-    input[type='number'],
-    input[type='password'],
-    input[type='search'],
-    input[type='tel'],
-    input[type='text'],
-    input[type='url'],
+    input[type="date"],
+    input[type="email"],
+    input[type="number"],
+    input[type="password"],
+    input[type="search"],
+    input[type="tel"],
+    input[type="text"],
+    input[type="url"],
     select,
     textarea {
       background: $dark;
@@ -179,7 +178,7 @@ html[data-dark='true'] {
     background-color: rgba(map-get($palette, pending), 0.125);
   }
 
-  input[type='submit'],
+  input[type="submit"],
   .btn {
     background-color: rgba(map-get($palette, info), 0.75);
   }
@@ -227,7 +226,7 @@ html[data-dark='true'] {
   }
 
   .filterbar__item:active,
-  .filterbar__item[aria-selected='true'] {
+  .filterbar__item[aria-selected="true"] {
     background-color: rgba(map-get($palette, primary), 0.125);
   }
   .badge.bg-info,
@@ -316,5 +315,9 @@ html[data-dark='true'] {
   .iti__divider {
     padding-bottom: 0;
     margin-bottom: 0;
+  }
+
+  .loader {
+    background-color: $dark;
   }
 }
