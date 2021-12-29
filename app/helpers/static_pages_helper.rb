@@ -362,7 +362,7 @@ module StaticPagesHelper
       "<a href='https://santatracker.google.com/' target='_blank' style='color: inherit'>Santa's on the way!</a>",
       "dashing through the snow",
       "defrosting...",
-      "send snow photos to <a href='mailto:bank@hackclub.com' target='_blank' style='color: inherit'>",
+      "send snow photos to <a href='mailto:bank@hackclub.com' target='_blank' style='color: inherit'>bank@hackclub.com</a>",
       "Dasher, Dancer, Prancer, Vixen,<br/>Comet, Cupid, Donner, Blitzen",
       "Recommended by Santa",
       "Recommended by Santa's elves",
