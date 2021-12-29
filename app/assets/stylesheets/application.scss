@@ -1,7 +1,7 @@
 @import 'variables';
 
-$font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-  'Fira Sans', Oxygen, Ubuntu, 'Helvetica Neue', sans-serif;
+$font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Fira Sans', Oxygen, Ubuntu,
+  'Helvetica Neue', sans-serif;
 $brand-font-family: ui-rounded, $font-family;
 $mono: 'SFMono-Regular', 'Roboto Mono', Menlo, Consolas, monospace;
 
@@ -196,6 +196,8 @@ action {
 @import 'components/faq';
 @import 'components/promos';
 @import 'components/settings';
+@import 'components/loading';
+@import 'components/partner_signup';
 
 .turbo-progress-bar {
   height: 0.125rem;
@@ -223,7 +225,7 @@ action {
   padding-right: 1rem;
   margin-top: -0.75rem;
   margin-bottom: -0.75rem;
-  
+
   border-radius: 0;
   border: 0;
 }
