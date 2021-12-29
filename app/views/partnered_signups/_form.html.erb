@@ -24,12 +24,14 @@
   <p>
     <%= form.label :owner_phone, "Your phone number" %>
     <%= form.hidden_field :owner_phone, required: true, placeholder: '555-555-5555', id: 'phone_number' %>
-    <input type="tel" id="phone_raw" value="<%= @partnered_signup.owner_phone || nil %>">
+    <input type="tel" id="phone_raw" value="<%= @partnered_signup.owner_phone || nil %>"><br/>
+    <span class="muted">We'll only use this if we need to get in touch with you urgently.</span>
   </p>
 
   <p>
     <%= form.label :owner_address, "Your address" %>
-    <%= form.text_area :owner_address, class: 'fit', value: @partnered_signup.owner_address, placeholder: '8605 Santa Monica Blvd\nSuite #86294&#10;West Hollywood, CA 90069', rows: 3 %>
+    <%= form.text_area :owner_address, class: 'fit', value: @partnered_signup.owner_address, placeholder: '8605 Santa Monica Blvd Suite #86294, West Hollywood, CA 90069', rows: 3 %>
+    <span class="muted">This is so we can send you some swag and goodies if you ever request them!</span>
   </p>
 
   <p>
