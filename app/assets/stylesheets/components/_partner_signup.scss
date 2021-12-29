@@ -1,0 +1,61 @@
+.partner-logo-left {
+    animation-delay: 8s;
+    animation: fadeInLeft 8s;
+}
+
+.partner-logo-right {
+    animation-delay: 8s;
+    animation: fadeInRight 8s;
+}
+
+.bank-partner-header-text {
+    animation-delay: 8s;
+    animation: fadeInUp 8s;
+}
+@keyframes fadeInUp {
+    50% {
+        opacity: 0;
+        transform: translateY(60%);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInDown {
+    50% {
+        opacity: 0;
+        transform: translateY(-20%);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInLeft {
+    50% {
+        opacity: 0;
+        transform: translateX(-20%);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeInRight {
+    50% {
+        opacity: 0;
+        transform: translateX(20%);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
