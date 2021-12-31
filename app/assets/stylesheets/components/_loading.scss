@@ -16,19 +16,19 @@
 }
 
 .loader.hidden {
-    animation: fadeOut 6s;
+    animation: fadeOut 5s;
     animation-fill-mode: forwards;
 }
 
 #outline {
     stroke-dasharray: 319;
     stroke-dashoffset: 319;
-    animation: stroke 5s ease;
+    animation: stroke 4s ease;
     animation-fill-mode: forwards;
 }
 
 #bank-icon {
-    animation: fadeInUp 2s;
+    animation: fadeInUp 2s ease-out;
 }
 
 @keyframes stroke {
@@ -53,7 +53,7 @@
         opacity: 0;
         visibility: hidden;
     }
-    90% {
+    70% {
         opacity: 1;
     }
 }
