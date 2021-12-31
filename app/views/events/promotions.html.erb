@@ -12,7 +12,7 @@
   <div class="card__banner card__banner--top flex justify-between items-center promo-pvsa">
     <%= image_tag 'https://cloud-q7i8htyv7-hack-club-bot.vercel.app/0pvsa-logo-2x.png', width: 60 %>
     <%= link_to 'Purchase',
-      organizer_signed_in? ? "https://hack.af/pvsa-order?prefill_Event%20Name=#{@event.name}&prefill_Submitter%20Email=#{current_user.email}" : root_path,
+      organizer_signed_in? ? "https://hack.af/pvsa-order?prefill_Event%20Name=#{@event.name}&prefill_Bank%20URL=#{event_url(@event)}&prefill_Submitter%20Email=#{current_user.email}" : root_path,
       class: "btn mr1 #{'disabled' unless organizer_signed_in?}",
       target: :_blank
     %>
