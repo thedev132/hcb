@@ -249,6 +249,18 @@ $(document).on('turbo:load', function () {
     })
   }
 
+  if (BK.thereIs('holiday_features_transparency')) {
+    const holidayFeaturesTransparency = BK.s('holiday_features_transparency')
+    const transparencyToggle = $('#event_is_public')
+    $(transparencyToggle).on('change', e => {
+      if (e.target.checked) {
+        holidayFeaturesTransparency.slideDown()
+      } else {
+        holidayFeaturesTransparency.slideUp()
+      }
+    })
+  }
+
   const tiltElement = $('[data-behavior~=hover_tilt]')
   const enableTilt = () =>
     tiltElement.tilt({
