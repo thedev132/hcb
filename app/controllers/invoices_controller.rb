@@ -8,6 +8,10 @@ class InvoicesController < ApplicationController
     relation = @event.invoices
     authorize relation
 
+    # The search query name was historically `search`. It has since been renamed
+    # to `q`. This following line retains backwards compatibility.
+    params[:q] ||= params[:search]
+
     # from events controller
     @invoices_in_transit = (relation.paid_v2.where(payout_id: nil)
       .where
@@ -28,7 +32,7 @@ class InvoicesController < ApplicationController
     relation = relation.paid_v2 if params[:filter] == "paid"
     relation = relation.unpaid if params[:filter] == "unpaid"
     relation = relation.archived if params[:filter] == "archived"
-    relation = relation.search_description(params[:search]) if params[:search].present?
+    relation = relation.search_description(params[:q]) if params[:q].present?
 
     @invoices = relation.order(created_at: :desc)
 
