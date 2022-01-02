@@ -27,8 +27,8 @@ $(tput setaf 9)Hack Club Bank:$(tput sgr0) Step 2/7: Login to Heroku"
 if [ $? -eq 0 ]; then
   echo "$(tput setaf 9)Hack Club Bank:$(tput sgr0) Already signed in, skipping login..."
 else
-  $(tput setaf 9)Hack Club Bank:$(tput sgr0) Not signed in, sign in below"
-  $(tput setaf 9)Hack Club Bank:$(tput sgr0) Use an API key generated from the Heroku Dashboard if you're using MFA"
+  echo "$(tput setaf 9)Hack Club Bank:$(tput sgr0) Not signed in, sign in below"
+  echo "$(tput setaf 9)Hack Club Bank:$(tput sgr0) Use an API key generated from the Heroku Dashboard if you're using MFA"
   heroku login -i
 fi
 echo "$(tput setaf 9)Hack Club Bank:$(tput sgr0) $(tput setaf 10)Done$(tput sgr0)"
@@ -63,7 +63,7 @@ echo "
 $(tput setaf 9)Hack Club Bank:$(tput sgr0) 
 
 Run 'codespace-start.sh' or the below to start the docker container:"
-echo "env \$(cat .env.docker) docker-compose run --service-ports web bundle exec rails s -b 0.0.0.0 -p 3000"
+echo "env \$(cat .env.docker) docker-compose run --service-ports web"
 
 echo "
 
