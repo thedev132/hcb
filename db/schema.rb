@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_01_112545) do
+ActiveRecord::Schema.define(version: 2022_01_02_083755) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -614,7 +614,6 @@ ActiveRecord::Schema.define(version: 2022_01_01_112545) do
     t.text "remote_org_unit_id"
     t.text "remote_org_unit_path"
     t.index ["created_by_id"], name: "index_g_suites_on_created_by_id"
-    t.index ["domain"], name: "index_g_suites_on_domain", unique: true
     t.index ["event_id"], name: "index_g_suites_on_event_id"
   end
 
