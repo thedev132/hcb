@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_09_215634) do
+ActiveRecord::Schema.define(version: 2021_12_25_052441) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -526,6 +526,7 @@ ActiveRecord::Schema.define(version: 2021_12_09_215634) do
     t.date "owner_birthdate"
     t.string "webhook_url"
     t.integer "country"
+    t.boolean "holiday_features", default: true, null: false
     t.index ["club_airtable_id"], name: "index_events_on_club_airtable_id", unique: true
     t.index ["partner_id", "organization_identifier"], name: "index_events_on_partner_id_and_organization_identifier", unique: true
     t.index ["partner_id"], name: "index_events_on_partner_id"
