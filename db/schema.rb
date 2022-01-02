@@ -878,7 +878,7 @@ ActiveRecord::Schema.define(version: 2022_01_02_083755) do
     t.string "owner_address_city"
     t.string "owner_address_state"
     t.text "owner_address_postal_code"
-    t.string "owner_address_country"
+    t.integer "owner_address_country"
     t.index ["event_id"], name: "index_partnered_signups_on_event_id"
     t.index ["partner_id"], name: "index_partnered_signups_on_partner_id"
     t.index ["user_id"], name: "index_partnered_signups_on_user_id"
