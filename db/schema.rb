@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_25_052441) do
+ActiveRecord::Schema.define(version: 2022_01_01_112545) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -807,6 +807,8 @@ ActiveRecord::Schema.define(version: 2021_12_25_052441) do
     t.boolean "subject_emails_should_be_forwarded", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "subject_has_outstanding_transactions_stripe", default: false, null: false
+    t.boolean "subject_has_active_cards", default: false, null: false
     t.index ["closed_by_id"], name: "index_organizer_position_deletion_requests_on_closed_by_id"
     t.index ["organizer_position_id"], name: "index_organizer_deletion_requests_on_organizer_position_id"
     t.index ["submitted_by_id"], name: "index_organizer_position_deletion_requests_on_submitted_by_id"

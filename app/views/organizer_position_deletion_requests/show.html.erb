@@ -33,8 +33,13 @@
   </p>
 
   <p>
-    <%= @opdr.subject_has_outstanding_transactions_emburse ? '✅' : '❌' %>
+    <%= @opdr.subject_has_outstanding_transactions_stripe ? '✅' : '❌' %>
     <strong>Outstanding Stripe transactions?</strong>
+  </p>
+
+  <p>
+    <%= @opdr.subject_has_active_cards ? '✅' : '❌' %>
+    <strong>Active cards?</strong>
   </p>
 
   <p>
