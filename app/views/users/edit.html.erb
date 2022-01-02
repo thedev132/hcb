@@ -111,8 +111,10 @@
         <% @user.user_sessions.order(created_at: :desc).each do |session| %>
             <div class="card border <% if current_session.id == session.id %>b--success<% end %>">
               <% if !session.device_info %>
-                <p class="center">No data available for this session.</p>
-              <% else %>
+                <p class="center">
+                  No data is available for this session, but you can still <%= link_to 'sign out', logout_session_users_path(user: @user, id: session.id), method: :delete %>.
+                </p> 
+                <% else %>
                 <span class="flex items-center justify-between">
                   <span class="bold flex items-center">
                     <span><%= session.device_info %> on <%= session.os_info %></span>
