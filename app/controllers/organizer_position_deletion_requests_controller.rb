@@ -67,6 +67,6 @@ class OrganizerPositionDeletionRequestsController < ApplicationController
   end
 
   def filtered_params
-    params.require(:organizer_position_deletion_request).permit(:organizer_position_id, :reason, :subject_has_outstanding_expenses_expensify, :subject_has_outstanding_transactions_emburse, :subject_emails_should_be_forwarded)
+    params.require(:organizer_position_deletion_request).permit(:organizer_position_id, :reason, :subject_has_outstanding_expenses_expensify, :subject_has_outstanding_transactions_stripe, :subject_has_active_cards, :subject_emails_should_be_forwarded)
   end
 end
