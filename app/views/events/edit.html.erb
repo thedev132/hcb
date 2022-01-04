@@ -4,4 +4,6 @@
 
 <h1>Settings</h1>
 
+<%= render partial: 'admin_viewer', locals: { record: @event } %>
+
 <%= render "form", event: @event %>

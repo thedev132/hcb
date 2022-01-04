@@ -9,6 +9,8 @@
   <%= content_tag :span, @g_suite.domain, class: 'badge info h3 ml0' if @g_suite %>
 </h1>
 
+<%= render partial: 'admin_viewer', locals: { record: @g_suite } %>
+
 <% if @g_suite.present? %>
   <% if @g_suite.verified? %>
     <article class="card mb3">

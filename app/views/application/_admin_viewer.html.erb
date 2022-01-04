@@ -3,8 +3,52 @@
     <summary>
       Inspect <%= record.class.name.humanize.downcase %> record
     </summary>
-    <pre>
-      <%= json admin_inspectable_attributes(record) %>
-    </pre>
+
+    <%== ap admin_inspectable_attributes(record) %>
+
+    <div class="border-left ml1">
+
+      <!-- JSON -->
+      <details class="ml2" >
+        <summary>
+          View JSON
+        </summary>
+        <pre>
+          <%= json admin_inspectable_attributes(record) %>
+        </pre>
+      </details>
+
+      <!-- TABLE -->
+      <details class="ml2 mt2" >
+        <summary>
+          View Table
+        </summary>
+
+        <%# `.overflow-visible` lets the table overflow and expand as wide as it needs %>
+        <table class="overflow-visible">
+          <thead>
+            <tr>
+              <% record.attributes.each do |attr| %>
+                <th><%= attr[0] %></th>
+              <% end %>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <% record.attributes.each do |attr| %>
+                <td>
+                  <% unless attr[1].nil? %>
+                    <%= attr[1] %>
+                  <% else %>
+                    <em>nil</em>
+                  <% end %>
+                </td>
+              <% end %>
+            </tr>
+          </tbody>
+        </table>
+
+      </details>
+    </div>
   </details>
 <% end %>
