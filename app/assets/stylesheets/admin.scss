@@ -103,3 +103,29 @@ float: none;
 border: none;
 }
 }
+
+/* Skip to main navigation item */
+.skip-to-main {
+    left: -999px;
+    position: absolute;
+    top: auto;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    z-index: -999;
+}
+
+.skip-to-main:focus, 
+.skip-to-main:active {
+    color: #ffffff;
+    background-color: #e5e5e5;
+    left: auto;
+    top: auto;
+    width: 30%;
+    height: auto;
+    margin: 10px 35%;
+    padding:5px;
+    border-radius: 15px;
+    text-align: center;
+    z-index: 999;
+}
