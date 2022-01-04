@@ -1,4 +1,4 @@
-<% letter_date = @event.created_at %>
+<% fs_date = @event.created_at %>
 
 <head>
   <title><%= @event.name %> Fiscal Sponsorship Confirmation</title>
@@ -53,7 +53,7 @@
     </div>
     <br />
     <br />
-    <p style="margin-top: 2rem;"><%= letter_date.strftime("%B #{letter_date.day.ordinalize}, %Y") %></p>
+    <p style="margin-top: 2rem;"><%= Time.now.strftime("%B #{Time.now.day.ordinalize}, %Y") %></p>
     <br />
     <p style="font-size: 12.5pt;"><span class="bold"><%= @event.name %> Subsidiary Confirmation</span></p>
     <br />
@@ -61,7 +61,8 @@
     <div style="line-height: 1.5;">
       <p>To whom it may concern,</p>
       <p>
-        This letter is to verify that The Hack Foundation (d.b.a. Hack Club) is acting as the nonprofit <a href="https://en.wikipedia.org/wiki/Fiscal_sponsorship">fiscal sponsor</a> for <%= @event.name %>.
+        This letter is to verify that The Hack Foundation (d.b.a. Hack Club) is acting as the nonprofit <a href="https://en.wikipedia.org/wiki/Fiscal_sponsorship">fiscal sponsor</a> for <%= @event.name %>
+        since <%= fs_date.strftime("%B #{fs_date.day.ordinalize}, %Y") %>.
       </p>
       <p>
         We have established a restricted fund within our foundation to support their organization and are
