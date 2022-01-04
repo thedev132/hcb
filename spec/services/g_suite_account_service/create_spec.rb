@@ -14,7 +14,8 @@ RSpec.describe GSuiteAccountService::Create, type: :model do
   let(:last_name) { "Last" }
 
   let(:remote_org_unit) do
-    double("remoteOrgUnit", name: g_suite.ou_name, org_unit_id: "id:1234", org_unit_path: "/Events/#{g_suite.ou_name}")
+    ou_name = "##{event.id} G##{@g_suite.id}"
+    double("remoteOrgUnit", name: ou_name, org_unit_id: "id:1234", org_unit_path: "/Events/#{ou_name}")
   end
 
   let(:attrs) do
@@ -78,7 +79,7 @@ RSpec.describe GSuiteAccountService::Create, type: :model do
     it "assigns remote_org_unit_path" do
       expect do
         service.run
-      end.to change(g_suite.reload, :remote_org_unit_path).to("/Events/#{g_suite.ou_name}")
+      end.to change(g_suite.reload, :remote_org_unit_path).to("/Events/##{event.id} G##{@g_suite.id}")
     end
   end
 

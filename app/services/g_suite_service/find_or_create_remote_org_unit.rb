@@ -15,11 +15,20 @@ module GSuiteService
     private
 
     def org_unit_name
-      @g_suite.ou_name.strip # TODO: deprecate in model and move directly here
+      # Prefixing the G Suite id with `G` will it easier to search for them in
+      # the Google Admin Dashboard.
+      "##{event.id} G##{@g_suite.id}"
+
+      # The old OU name used to be in the format of:
+      #   "##{event.id} #{event.name.to_s.gsub("+", "")}".strip
+      #
+      # This was very brittle. Event names that contained special characters
+      # would fail with "invalid: Invalid Ou Id".
+      # See https://github.com/hackclub/bank/issues/1741
     end
 
     def org_unit_path
-      "#{PARENT_ORG_UNIT_PATH}/#{org_unit_name}" # TODO: make path different than name - use a random hex id or something or the g suite id itself
+      "#{PARENT_ORG_UNIT_PATH}/#{org_unit_name}"
     end
 
     def create_attrs
