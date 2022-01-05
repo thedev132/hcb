@@ -11,6 +11,11 @@ module GSuiteService
     end
 
     def run
+      unless Rails.env.production?
+        puts "☣️ In production, we would currently be updating the GSuite on Google Admin ☣️"
+        return
+      end
+
       ActiveRecord::Base.transaction do
         domain_changing?
         verification_key_changing?

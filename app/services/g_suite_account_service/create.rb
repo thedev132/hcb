@@ -14,11 +14,14 @@ module GSuiteAccountService
     end
 
     def run
+      unless Rails.env.production?
+        puts "☣️ In production, we would currently be creating the GSuite on Google Admin ☣️"
+        return
+      end
+
       ActiveRecord::Base.transaction do
         # 1. Create local account
         g_suite_account.save!
-
-        raise ArgumentError, "☣️  Cannot create Google Workspace account in development mode" if Rails.env.development?
 
         # 2. Create remote org unit if does not exist already and assign identifiers locally
         @g_suite.update_column(:remote_org_unit_id, remote_org_unit_id)

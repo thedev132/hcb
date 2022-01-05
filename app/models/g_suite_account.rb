@@ -59,7 +59,7 @@ class GSuiteAccount < ApplicationRecord
   end
 
   def reset_password!
-    if Rails.env.development?
+    unless Rails.env.production?
       puts "☣️ In production, we would currently be syncing the GSuite account password reset ☣️"
       return
     end
@@ -109,7 +109,7 @@ class GSuiteAccount < ApplicationRecord
   end
 
   def sync_delete_to_gsuite
-    if Rails.env.development?
+    unless Rails.env.production?
       puts "☣️ In production, we would currently be syncing the GSuite account deletion ☣️"
       return
     end
@@ -123,7 +123,7 @@ class GSuiteAccount < ApplicationRecord
   def sync_update_to_gsuite
     return unless suspended_at_changed?
 
-    if Rails.env.development?
+    unless Rails.env.production?
       puts "☣️ In production, we would currently be syncing the GSuite account suspension ☣️"
       return
     end
