@@ -4,51 +4,61 @@
       Inspect <%= record.class.name.humanize.downcase %> record
     </summary>
 
-    <%== ap admin_inspectable_attributes(record) %>
+    <% unless record.nil? %>
 
-    <div class="border-left ml1">
+      <%== ap admin_inspectable_attributes(record) %>
 
-      <!-- JSON -->
-      <details class="ml2" >
-        <summary>
-          View JSON
-        </summary>
-        <pre>
-          <%= json admin_inspectable_attributes(record) %>
-        </pre>
-      </details>
+      <div class="border-left ml1">
 
-      <!-- TABLE -->
-      <details class="ml2 mt2" >
-        <summary>
-          View Table
-        </summary>
+        <!-- JSON -->
+        <details class="ml2" >
+          <summary>
+            View JSON
+          </summary>
+          <pre>
+            <%= json admin_inspectable_attributes(record) %>
+          </pre>
+        </details>
 
-        <%# `.overflow-visible` lets the table overflow and expand as wide as it needs %>
-        <table class="overflow-visible">
-          <thead>
-            <tr>
-              <% record.attributes.each do |attr| %>
-                <th><%= attr[0] %></th>
-              <% end %>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <% record.attributes.each do |attr| %>
-                <td>
-                  <% unless attr[1].nil? %>
-                    <%= attr[1] %>
-                  <% else %>
-                    <em>nil</em>
-                  <% end %>
-                </td>
-              <% end %>
-            </tr>
-          </tbody>
-        </table>
+        <!-- TABLE -->
+        <details class="ml2 mt2" >
+          <summary>
+            View Table
+          </summary>
 
-      </details>
-    </div>
+          <%# `.overflow-visible` lets the table overflow and expand as wide as it needs %>
+          <table class="overflow-visible">
+            <thead>
+              <tr>
+                <% record.attributes.each do |attr| %>
+                  <th><%= attr[0] %></th>
+                <% end %>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <% record.attributes.each do |attr| %>
+                  <td>
+                    <% unless attr[1].nil? %>
+                      <%= attr[1] %>
+                    <% else %>
+                      <em>nil</em>
+                    <% end %>
+                  </td>
+                <% end %>
+              </tr>
+            </tbody>
+          </table>
+
+        </details>
+      </div>
+
+    <% else %>
+
+      <p>
+        <code>nil</code> (does not exist)
+      </p>
+
+    <% end %>
   </details>
 <% end %>
