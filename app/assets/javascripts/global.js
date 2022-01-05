@@ -25,6 +25,11 @@ BK.styleDark = theme => {
 }
 BK.toggleDark = () => {
   theme = !BK.isDark()
+  return BK.setDark(theme)
+}
+BK.setDark = (dark) => {
+  theme = !!dark
+
   // animate background color
   // not in base CSS because otherwise theme restore has background animation on load
   $('body').css({
@@ -33,6 +38,15 @@ BK.toggleDark = () => {
   BK.styleDark(theme)
   localStorage.setItem('dark', theme)
   return theme
+}
+
+// Listen for Browser dark mode preference changes (`prefers-color-scheme`)
+if (window.matchMedia) {
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+    // This will only be called on changes (not during initial page load)
+    const prefersDarkMode = e.matches
+    BK.setDark(prefersDarkMode)
+  });
 }
 
 // Attempt to load Fullstory

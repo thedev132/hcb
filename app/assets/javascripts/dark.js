@@ -4,7 +4,23 @@
 
 (
   function() {
-    const darkMode = localStorage.getItem('dark') == 'true'
+    const darkModeConfig = localStorage.getItem('dark')
+    let darkMode = darkModeConfig == 'true'
+
+    if(darkModeConfig === null) {
+      // Bank has not stored a dark mode preference. Fallback to the browser's
+      // `prefers-color-scheme` preference.
+      if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        // According to the browser, the user prefers dark mode
+        darkMode = true
+      }
+
+      // Asyncrhonously store the dark mode preference
+      (async () => {
+        localStorage.setItem('dark', darkMode)
+      })()
+    }
+
     if (darkMode) {
       document.querySelector('html').setAttribute('data-dark', darkMode)
     }
