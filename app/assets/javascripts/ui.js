@@ -50,28 +50,56 @@ $(document).on('turbo:load', function () {
     let email
     const val = $('input[name=email]').val()
 
+    // auto-fill email address from local storage
     if (val === '' || val === undefined) {
       if ((email = localStorage.getItem('login_email'))) {
         BK.s('login').find('input[type=email]').val(email)
       }
     }
+
+    // auto fill @hackclub.com email addresses on submit
+    BK.s('login').submit((e) => {
+      const val = $('input[name=email]').val()
+      // input must end with '@h'
+      if(val.endsWith("@h")) {
+        const fullEmail = val.match(/^(.*)@h$/)[1] + "@hackclub.com"
+        BK.s('login').find('input[type=email]').val(fullEmail)
+      }
+    })
   }
 
-  // login code sanitization
-  $("input[name='login_code']").keyup(function () {
+  // login code sanitization and auto-submit
+  $("input[name='login_code']").on('keyup change',function (event) {
     let currentVal = $(this)
       .val()
       .replace(/[^0-9]+/g, '')
 
+    // truncate if more than 6 digits
+    if (currentVal.length >= 6+6) {
+      currentVal = currentVal.slice(-6)
+    } else if (currentVal.length > 6) {
+      currentVal = currentVal.substring(0, 6)
+    }
+
+    // split code into two groups of three digits; separated with a dash
     if (currentVal.length > 3) {
       currentVal = currentVal.slice(0, 3) + '-' + currentVal.slice(3)
     }
 
-    if (currentVal.length > 7) {
-      currentVal = currentVal.slice(0, -1)
-    }
+    $(this).val(currentVal)
 
-    return $(this).val(currentVal)
+    // If code was pasted and is in valid format, then auto-submit
+    // This is a weird workaround because:
+    //   1. The `paste` event doesn't include the value
+    //   2. The `paste` event happens before the `keyup` event
+    const pastedAt = $(this).data('pastedAt');
+    const recentlyPasted = pastedAt && (new Date() - pastedAt) < 1000;
+    if (recentlyPasted && /^\d{3}-\d{3}$/.test(currentVal)) {
+      $(this).closest('form').submit()
+    }
+  })
+  $("input[name='login_code']").on('paste',function (event) {
+    $(this).data('pastedAt', new Date().getTime())
   })
 
   // if you add the money behavior to an input, it'll add commas, only allow two numbers for cents,
