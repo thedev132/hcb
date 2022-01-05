@@ -15,16 +15,16 @@
 // const imagePath = (name) => images(name, true)
 
 // Support component names relative to this directory:
-var componentRequireContext = require.context("components", true);
-import ReactRailsUJS from "react_ujs";
-ReactRailsUJS.useContext(componentRequireContext);
+var componentRequireContext = require.context('components', true)
+import ReactRailsUJS from 'react_ujs'
+ReactRailsUJS.useContext(componentRequireContext)
 
-ReactRailsUJS.handleEvent("turbo:load", ReactRailsUJS.handleMount);
-ReactRailsUJS.handleEvent("turbo:before-render", ReactRailsUJS.handleUnmount);
+ReactRailsUJS.handleEvent('turbo:load', ReactRailsUJS.handleMount)
+ReactRailsUJS.handleEvent('turbo:before-render', ReactRailsUJS.handleUnmount)
 
-import "controllers";
+import 'controllers'
 
-import { Turbo } from "@hotwired/turbo-rails";
+import { Turbo } from '@hotwired/turbo-rails'
 
-Turbo.setProgressBarDelay(0);
-Turbo.session.drive = false;
+Turbo.setProgressBarDelay(0)
+Turbo.session.drive = false

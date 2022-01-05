@@ -1,4 +1,4 @@
-$(document).on('turbo:load', function() {
+$(document).on('turbo:load', function () {
   const amountToCheckWords = amount => {
     let [dollarsString = '', centsString = ''] = amount.split('.')
 
@@ -41,7 +41,7 @@ $(document).on('turbo:load', function() {
     if (fieldName == 'amount') {
       let amount = $(event.currentTarget).val()
       if (amount.includes('.')) {
-        amount = amount.slice(0, amount.indexOf('.') + 3);
+        amount = amount.slice(0, amount.indexOf('.') + 3)
       }
       const words = amountToCheckWords(amount)
 
@@ -66,8 +66,9 @@ $(document).on('turbo:load', function() {
       let characters = $(event.currentTarget).val().length
 
       $('[data-behavior~="check_characters_update"').text(
-        `This will appear on the physical check. You have ${30 -
-          characters} characters remaining.`
+        `This will appear on the physical check. You have ${
+          30 - characters
+        } characters remaining.`
       )
     }
   )
@@ -75,11 +76,11 @@ $(document).on('turbo:load', function() {
   let currentPayeeVal = '%person%'
   let currentAmountVal = '%amount%'
 
-  $('[data-behavior~="send_check_modal_trigger"]').click(function(event) {
+  $('[data-behavior~="send_check_modal_trigger"]').click(function (event) {
     const payee = $('[data-behavior~="check_payee_name_field"]').val()
     const amount = $('[data-behavior~="check_amount_field"]').val()
 
-    $('[data-behavior~="modal_confirm_words"]').html(function() {
+    $('[data-behavior~="modal_confirm_words"]').html(function () {
       return $('[data-behavior~="modal_confirm_words"]')
         .html()
         .replace(currentAmountVal, '$' + amount)

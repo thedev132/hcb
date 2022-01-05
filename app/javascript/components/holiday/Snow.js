@@ -1,11 +1,11 @@
-import React from 'react';
-import Snowfall from 'react-snowfall';
+import React from 'react'
+import Snowfall from 'react-snowfall'
 
-import createPersistedState from 'use-persisted-state';
-const useSnow = createPersistedState('shallItSnow');
+import createPersistedState from 'use-persisted-state'
+const useSnow = createPersistedState('shallItSnow')
 
 export default function Snow() {
-	const [snow, setSnow] = useSnow(true);
+  const [snow, setSnow] = useSnow(true)
 
-	return <>{snow ? <Snowfall /> : null}</>;
+  return <>{snow ? <Snowfall /> : null}</>
 }

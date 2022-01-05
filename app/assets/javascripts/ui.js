@@ -58,24 +58,24 @@ $(document).on('turbo:load', function () {
     }
 
     // auto fill @hackclub.com email addresses on submit
-    BK.s('login').submit((e) => {
+    BK.s('login').submit(e => {
       const val = $('input[name=email]').val()
       // input must end with '@h'
-      if(val.endsWith("@h")) {
-        const fullEmail = val.match(/^(.*)@h$/)[1] + "@hackclub.com"
+      if (val.endsWith('@h')) {
+        const fullEmail = val.match(/^(.*)@h$/)[1] + '@hackclub.com'
         BK.s('login').find('input[type=email]').val(fullEmail)
       }
     })
   }
 
   // login code sanitization and auto-submit
-  $("input[name='login_code']").on('keyup change',function (event) {
+  $("input[name='login_code']").on('keyup change', function (event) {
     let currentVal = $(this)
       .val()
       .replace(/[^0-9]+/g, '')
 
     // truncate if more than 6 digits
-    if (currentVal.length >= 6+6) {
+    if (currentVal.length >= 6 + 6) {
       currentVal = currentVal.slice(-6)
     } else if (currentVal.length > 6) {
       currentVal = currentVal.substring(0, 6)
@@ -92,13 +92,13 @@ $(document).on('turbo:load', function () {
     // This is a weird workaround because:
     //   1. The `paste` event doesn't include the value
     //   2. The `paste` event happens before the `keyup` event
-    const pastedAt = $(this).data('pastedAt');
-    const recentlyPasted = pastedAt && (new Date() - pastedAt) < 1000;
+    const pastedAt = $(this).data('pastedAt')
+    const recentlyPasted = pastedAt && new Date() - pastedAt < 1000
     if (recentlyPasted && /^\d{3}-\d{3}$/.test(currentVal)) {
       $(this).closest('form').submit()
     }
   })
-  $("input[name='login_code']").on('paste',function (event) {
+  $("input[name='login_code']").on('paste', function (event) {
     $(this).data('pastedAt', new Date().getTime())
   })
 

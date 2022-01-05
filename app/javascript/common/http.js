@@ -1,18 +1,17 @@
-import axios from 'axios';
+import axios from 'axios'
 
-const HttpClient = axios.create();
+const HttpClient = axios.create()
 
 HttpClient.interceptors.request.use(
-  (request) => {
-    const csrfTokenSelector =
-      document.querySelector('[name=csrf-token]');
+  request => {
+    const csrfTokenSelector = document.querySelector('[name=csrf-token]')
     // injects CSRF token
     if (csrfTokenSelector && csrfTokenSelector.content) {
-      request.headers['X-CSRF-TOKEN'] = csrfTokenSelector.content;
+      request.headers['X-CSRF-TOKEN'] = csrfTokenSelector.content
     }
-    return request;
+    return request
   },
-  error => Promise.reject(error),
+  error => Promise.reject(error)
 )
 
-export default HttpClient;
+export default HttpClient

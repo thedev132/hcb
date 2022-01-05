@@ -1,8 +1,8 @@
-$(document).on('turbo:load', function() {
+$(document).on('turbo:load', function () {
   const currentFilter = () =>
     BK.s('filterbar_item', '[aria-selected=true]').data('name')
 
-  const activateFilterItem = function(name) {
+  const activateFilterItem = function (name) {
     BK.deselect('filterbar_item')
     return BK.select('filterbar_item', `[data-name=${name}]`)
   }
@@ -12,7 +12,7 @@ $(document).on('turbo:load', function() {
   }
 
   // pass in function for each record
-  const filterRecords = function(valid) {
+  const filterRecords = function (valid) {
     // get all table rows that aren't excluded
     const records = BK.s('filterbar_row').not(
       '[data-behavior~=filterbar_row_exclude]'
@@ -25,7 +25,7 @@ $(document).on('turbo:load', function() {
     BK.s('filterbar_blankslate').hide()
     // how many records have been found
     let acc = 0
-    records.each(function() {
+    records.each(function () {
       // if the record fits our search query (see below)
       if (valid(this)) {
         $(this).css('display', 'table-row')
@@ -44,20 +44,20 @@ $(document).on('turbo:load', function() {
   }
 
   // patch for keyboard accessibility: simulate click on enter key
-  $(document).on('keyup', '[data-behavior~=filterbar_item]', function(e) {
+  $(document).on('keyup', '[data-behavior~=filterbar_item]', function (e) {
     if (e.keyCode === 13) {
       $(e.target).click()
     }
   })
 
   // if a filter button is selected
-  $(document).on('click', '[data-behavior~=filterbar_item]', function() {
+  $(document).on('click', '[data-behavior~=filterbar_item]', function () {
     // the name of the filter is either whatever is in the data, or if it for some reason exists, use the catch-all filter
     const name = $(this).data('name') || 'exists'
     // make the just-clicked button look selected
     activateFilterItem(name)
     // run the filter records function
-    return filterRecords(function(record) {
+    return filterRecords(function (record) {
       // get the data from within the filter data attribute
       const data = $(record).data('filter')
       if (name !== 'archived' && data['archived']) {
@@ -72,27 +72,20 @@ $(document).on('turbo:load', function() {
     })
   }) // returns true/false from currentFilter record in data-filter
 
-  $(document).on('input', '[data-behavior~=filterbar_search]', function() {
+  $(document).on('input', '[data-behavior~=filterbar_search]', function () {
     if (currentFilter() !== 'exists') {
       activateFilterItem('exists')
     }
-    const value = $(this)
-      .val()
-      .toLowerCase()
+    const value = $(this).val().toLowerCase()
 
-    return filterRecords(function(record) {
+    return filterRecords(function (record) {
       $(record).attr('aria-expanded', 'false')
-      return (
-        $(record)
-          .text()
-          .toLowerCase()
-          .indexOf(value) > -1
-      )
+      return $(record).text().toLowerCase().indexOf(value) > -1
     })
   })
 
   // initial filtering out archived invoices
-  filterRecords(function(record) {
+  filterRecords(function (record) {
     const data = $(record).data('filter')
     if (data['archived']) {
       return false

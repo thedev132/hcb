@@ -1,10 +1,9 @@
-import { Controller } from "stimulus"
+import { Controller } from 'stimulus'
 
 export default class extends Controller {
-  static targets = [ "file", "name" ]
+  static targets = ['file', 'name']
 
-  connect() {
-  }
+  connect() {}
 
   fileChanged() {
     const element = this.fileTarget
