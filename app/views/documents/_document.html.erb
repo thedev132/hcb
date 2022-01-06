@@ -1,0 +1,8 @@
+<%= link_to admin_signed_in? ? document : document_download_path(document) do %>
+  <li class="card card--hover">
+    <%= image_tag(document.preview_url, width: 330, style: 'max-width: 100%;') if document.preview_url %>
+
+    <strong class="brand-sans h3 block line-height-2"><%= document.name %></strong>
+    <%= user_mention document.user %>
+  </li>
+<% end %>
