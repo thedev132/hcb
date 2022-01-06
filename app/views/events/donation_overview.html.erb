@@ -81,6 +81,7 @@
   </div>
 <% end %>
 
+<% if @donations.size > 0 %>
 <article class="table-container">
 
   <table>
@@ -118,3 +119,7 @@
   </table>
 
 </article>
+
+<% else %>
+  <%= blankslate 'No donations yet' %>
+<% end %>

@@ -76,6 +76,7 @@
   </div>
 <% end %>
 
+<% if @invoices.size > 0 %>
 <article class="table-container">
 <table>
   <thead>
@@ -111,3 +112,6 @@
   </tbody>
 </table>
 </article>
+<% else %>
+  <%= blankslate 'No invoices yet' %>
+<% end %>

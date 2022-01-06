@@ -22,7 +22,7 @@
       'card',
       event_cards_overview_path(event_id: @event.slug) unless !@event.approved? %>
     <%= dock_item 'Send',
-      'Send checks & wires',
+      'Transfer money',
       'transactions',
       event_transfers_path(event_id: @event.slug) %>
     <%= dock_item 'Donations',

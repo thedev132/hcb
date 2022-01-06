@@ -66,6 +66,7 @@
   </div>
 <% end %>
 
+<% if @transfers.size > 0 %>
 <article class="table-container">
 
   <table>
@@ -108,4 +109,8 @@
   </table>
 
 </article>
+<% else %>
+  <%= blankslate 'No transfers yet' %>
+<% end %>
+
 
