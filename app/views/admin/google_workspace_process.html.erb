@@ -28,6 +28,10 @@
       <td style="text-align: right;">DKIM Key:</td>
       <td><%= @g_suite.dkim_key %></td>
     </tr>
+    <tr>
+      <td style="text-align: right;">DNS Check:</td>
+      <td> <%= link_to @g_suite.domain, @g_suite.dns_check_url %></td>
+    </tr>
   </tbody>
 </table>
 <br/>
