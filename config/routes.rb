@@ -106,6 +106,7 @@ Rails.application.routes.draw do
       get "event_new", to: "admin#event_new"
       post "event_create", to: "admin#event_create"
       get "donations", to: "admin#donations"
+      get "partner_donations", to: "admin#partner_donations"
       get "disbursements", to: "admin#disbursements"
       get "disbursement_new", to: "admin#disbursement_new"
       post "disbursement_create", to: "admin#disbursement_create"

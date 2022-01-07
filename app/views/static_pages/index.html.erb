@@ -99,6 +99,7 @@
       <%= card_to "ACH (#{AchTransfer.pending.count})", ach_admin_index_path %>
       <%= card_to "Check (#{Check.in_transit.count})", check_admin_index_path %>
       <%= card_to "Donations", donations_admin_index_path %>
+      <%= card_to "Partner Donations (#{PartnerDonation.in_transit.count})", partner_donations_admin_index_path %>
       <%= card_to "Disbursements (#{Disbursement.pending.count})", disbursements_admin_index_path %>
       <%= card_to "Invoices", invoices_admin_index_path %>
       <%= card_to "Sponsors", sponsors_admin_index_path %>

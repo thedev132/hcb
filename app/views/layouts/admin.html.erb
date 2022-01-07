@@ -50,6 +50,8 @@
       |
       <%= link_to "checks (#{Check.in_transit.count})", check_admin_index_path %>
       |
+      <%= link_to "Partner donations", partner_donations_admin_index_path %>
+      |
       <%= link_to "donations", donations_admin_index_path %>
       |
       <%= link_to "disbursements (#{Disbursement.pending.count})", disbursements_admin_index_path %>

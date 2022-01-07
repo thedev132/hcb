@@ -7,6 +7,13 @@ class PartnerDonation < ApplicationRecord
   include PublicIdentifiable
   set_public_id_prefix :pdn
 
+  include PgSearch::Model
+  pg_search_scope :search_name, against: [:hcb_code], using: { tsearch: { prefix: true, dictionary: "english" } }, ranked_by: "partner_donations.created_at"
+  # @msw - ^ This only searches for hcb codes right now. regular donations
+  # search by name and email because we have that info on our donors, but
+  # partnered donations don't have those fields.
+  # TODO: Add more fields to partnered_donations & check if we can fill name/email/phone from Stripe
+
   self.ignored_columns = ["donation_identifier"]
 
   belongs_to :event

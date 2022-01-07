@@ -1,0 +1,62 @@
+<% title "PARTNER DONATIONS" %>
+
+<h1>Partner Donations</h1>
+
+<%= paginate @partner_donations %>
+
+<%= form_with local: true, url: partner_donations_admin_index_path, method: :get do |form| %>
+  <%= form.text_field :q, value: params[:q] %>
+  <%= form.label :deposited do %>
+    <%= form.check_box :deposited, checked: @deposited %>
+    Deposited
+  <% end %>
+  |
+  <%= form.label :in_transit do %>
+    <%= form.check_box :in_transit, checked: @in_transit %>
+    In transit
+  <% end %>
+  |
+  <%= form.label :pending do %>
+    <%= form.check_box :pending, checked: @pending %>
+    Pending
+  <% end %>
+  |
+  <%= form.label :not_unpaid do %>
+    <%= form.check_box :not_unpaid, checked: @not_unpaid %>
+    Not unpaid
+  <% end %>
+  |
+  <%= form.submit "Search" %>
+<% end %>
+
+<p><small><%= pluralize(@count, "result") %></small></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Date</th>
+      <th>Recipient</th>
+      <th>Amount</th>
+      <th>Status</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @partner_donations.each do |partner_donation| %>
+      <tr style="<%= "background: #ccccff;" if partner_donation.in_transit? %>">
+        <td><%= partner_donation.id %></td>
+        <td><%= partner_donation.created_at.strftime("%Y-%m-%d") %></td>
+        <td>
+          <%= link_to hcb_code_url(partner_donation.local_hcb_code.hashid) do %>
+            <%= partner_donation.event.name.upcase %>: <%= partner_donation.smart_memo %>
+          <% end %>
+        </td>
+        <td><%= render_money_amount(partner_donation.amount) %></td>
+        <td><%= partner_donation.state.upcase %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= paginate @partner_donations %>
