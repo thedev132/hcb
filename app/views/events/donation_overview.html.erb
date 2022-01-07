@@ -62,6 +62,23 @@
     <span class="stat__label">Refunded</span>
     <span class="stat__value"><%= render_money_amount @stats[:refunded] %></span>
   </div>
+  <div>
+  <% if organizer_signed_in? && @event.canonical_transactions.exists? %>
+    <button
+      type="button"
+      <%= organizer_signed_in? ? 'data-behavior=menu_toggle aria-expanded=false tabindex=0' : 'disabled=disabled' %>
+      class="btn bg-info menu__toggle overflow-visible right h5 z1" style="padding: 0.25rem 1rem;">
+        <%= inline_icon 'download', size: 16 %>
+        Export
+        <% if organizer_signed_in? %>
+          <div class="menu__content h5" data-behavior="menu_content">
+          <%= link_to 'Export donations (CSV)', export_donations_path(event: @event, format: :csv), target: :_blank %>
+          <%= link_to 'Export donations (JSON)', export_donations_path(event: @event, format: :json), target: :_blank %>
+          </div>
+        <% end %>
+    </button>
+  <% end %>
+  </div>
 </div>
 
 <hr/>
@@ -74,9 +91,9 @@
 </div>
 
 <%= form_with(model: nil, local: true, method: :get) do |form| %>
-  <div class="filterbar flex flex-wrap items-center width-100">
+  <div class="filterbar flex flex-wrap items-center w-100">
 
-    <%= form.text_field :q, placeholder: "Search…", class: "flex-auto md-mr2", style: "width auto; max-width: none;", value: params[:q] %>
+    <%= form.text_field :q, placeholder: "Search…", class: "flex-auto md-mr2 w-auto", style: "max-width: none;", value: params[:q] %>
 
   </div>
 <% end %>

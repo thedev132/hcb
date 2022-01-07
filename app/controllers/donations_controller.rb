@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "csv"
+
 class DonationsController < ApplicationController
   include Rails::Pagination
   skip_after_action :verify_authorized
@@ -94,7 +96,54 @@ class DonationsController < ApplicationController
     redirect_to hcb_code_path(@hcb_code.hashid), flash: { success: "The refund process has been queued for this donation." }
   end
 
+  def export
+    @event = Event.friendly.find(params[:event])
+
+    authorize @event.donations.first
+
+    respond_to do |format|
+      format.csv { stream_donations_csv }
+      format.json { stream_donations_json }
+    end
+  end
+
   private
+
+  def stream_donations_csv
+    set_file_headers_csv
+    set_streaming_headers
+
+    response.status = 200
+
+    self.response_body = donations_csv
+  end
+
+  def stream_donations_json
+    set_file_headers_json
+    set_streaming_headers
+
+    response.status = 200
+
+    self.response_body = donations_json
+  end
+
+  def set_file_headers_csv
+    headers["Content-Type"] = "text/csv"
+    headers["Content-disposition"] = "attachment; filename=donations.csv"
+  end
+
+  def set_file_headers_json
+    headers["Content-Type"] = "application/json"
+    headers["Content-disposition"] = "attachment; filename=donations.json"
+  end
+
+  def donations_csv
+    ::DonationService::Export::Csv.new(event_id: @event.id).run
+  end
+
+  def donations_json
+    ::DonationService::Export::Json.new(event_id: @event.id).run
+  end
 
   def set_event
     @event = Event.find(params["event_name"])
