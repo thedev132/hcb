@@ -20,7 +20,7 @@ module Partners
 
       INTEGRATION_KEY = Rails.application.credentials[:docusign][ENVIRONMENT_KEY][:integration_key]
       USER_ID = Rails.application.credentials[:docusign][ENVIRONMENT_KEY][:user_id]
-      PRIVATE_KEY = Base64.decode64(Rails.application.credentials[:docusign][ENVIRONMENT_KEY][:private_key])
+      PRIVATE_KEY = Rails.application.credentials[:docusign][ENVIRONMENT_KEY][:private_key]
       ACCOUNT_ID = Rails.application.credentials[:docusign][ENVIRONMENT_KEY][:account_id]
 
       def initialize
