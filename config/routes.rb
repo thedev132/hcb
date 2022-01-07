@@ -324,6 +324,12 @@ Rails.application.routes.draw do
     resources :comments
   end
 
+  resources :partner_donations, only: [:show] do
+    collection do
+      get "export"
+    end
+  end
+
   namespace :api do
     get "v2/login", to: "v2#login"
 

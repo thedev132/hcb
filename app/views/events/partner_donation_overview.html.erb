@@ -18,6 +18,22 @@
     <span class="stat__label">On the way</span>
     <span class="stat__value"><%= render_money_amount @stats[:in_transit] %></span>
   </div>
+
+  <div>
+  <% if @partner_donations.any? %>
+    <button
+      type="button"
+      <%= organizer_signed_in? ? 'data-behavior=menu_toggle aria-expanded=false tabindex=0' : 'disabled=disabled' %>
+      class="btn bg-info menu__toggle overflow-visible right h5 z1" style="padding: 0.25rem 1rem;">
+        <%= inline_icon 'download', size: 16 %>
+        Export
+          <div class="menu__content h5" data-behavior="menu_content">
+          <%= link_to 'Export donations (CSV)', organizer_signed_in? ? export_partner_donations_path(event: @event, format: :csv) : root_path, target: :_blank %>
+          <%= link_to 'Export donations (JSON)', organizer_signed_in? ? export_partner_donations_path(event: @event, format: :json) : root_path, target: :_blank %>
+          </div>
+    </button>
+  <% end %>
+  </div>
 </div>
 
 <hr/>
