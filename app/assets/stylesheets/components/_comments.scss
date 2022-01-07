@@ -11,12 +11,21 @@
   }
 }
 
+.comments .card {
+  transition: background-color 100ms linear;
+}
+
 .comments img {
   max-height: 200px;
 }
 
 .comments .card p:first-child {
   margin-top: 0;
+}
+
+.comments .card.current-user {
+  border: 1px solid rgba(map-get($palette, info), 0.25);
+  background-color: mix(map-get($palette, white), map-get($palette, info), 90%);
 }
 
 .comments .card.hash-highlight {

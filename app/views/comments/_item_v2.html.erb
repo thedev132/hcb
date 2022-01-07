@@ -1,6 +1,6 @@
 <div class="mt2 mb2">
   <%= creator_bar comment %>
-  <div class="card" id="comment-<%= comment.hashid %>">
+  <div class="card<%= ' current-user' if comment.user == current_user %>" id="comment-<%= comment.hashid %>">
     <%== MarkdownService.instance.renderer.render comment.content %>
     <p class="mb0 h5">
       <% if comment.file.attached? %>

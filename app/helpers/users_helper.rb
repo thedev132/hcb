@@ -22,21 +22,42 @@ module UsersHelper
       src = gravatar_url(user.email, user.initials, user.id, size * 2)
     end
 
-    image_tag(src, options.merge({ loading: "lazy", alt: user.name, width: size, height: size, class: "circle shrink-none #{options[:class]}" }))
+    klasses = ["circle", "shrink-none"]
+    klasses << "avatar--current-user" if user == current_user
+    klasses << options[:class] if options[:class]
+    klass = klasses.join(" ")
+
+    image_tag(src, options.merge({ loading: "lazy", alt: user.name, width: size, height: size, class: klass }))
   end
 
   def user_mention(user, options = {})
     avi = avatar_for user
     name = content_tag :span, user.initial_name
-    if user.admin?
-      bolt = inline_icon "admin-badge", size: 20
-      content_tag :span,
-                  avi + bolt + name,
-                  class: "mention mention--admin tooltipped tooltipped--n #{options[:class]}",
-                  'aria-label': "#{user.name.split(' ').first} is an admin"
-    else
-      content_tag :span, avi + name, class: "mention #{options[:class]}"
+
+    klasses = ["mention"]
+    klasses << %w[mention--admin tooltipped tooltipped--n] if user.admin?
+    klasses << "mention--current-user" if user == current_user
+    klasses << options[:class] if options[:class]
+    klass = klasses.join(" ")
+
+    aria = if user == current_user
+      [
+        "You!",
+        "Yourself!",
+        "It's you!"
+      ].sample
+    elsif user.admin?
+      "#{user.name.split(' ').first} is an admin"
     end
+
+    content = if user.admin?
+      bolt = inline_icon "admin-badge", size: 20
+      avi + bolt + name
+    else
+      avi + name
+    end
+
+    content_tag :span, content, class: klass, 'aria-label': aria
   end
 
   def admin_tools(class_name = "", element = "div", &block)

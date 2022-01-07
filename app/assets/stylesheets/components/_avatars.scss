@@ -9,6 +9,10 @@
   }
 }
 
+.avatar--current-user {
+  border: 1px solid rgba(map-get($palette, info), 0.5);
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .avatar-row {
     img {
