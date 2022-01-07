@@ -100,7 +100,7 @@ $shades: (
   red: rgba($red, 0.125),
   yellow: rgba($yellow, 0.125),
   green: rgba($green, 0.125),
-  neutral: rgba($muted, 0.125)
+  neutral: rgba($muted, 0.125),
 );
 
 @each $name, $value in $shades {
@@ -153,6 +153,18 @@ $shades: (
 }
 .w-auto {
   width: auto;
+}
+
+.w-max {
+  width: max-content;
+}
+
+.w-min {
+  width: min-content;
+}
+
+.w-fit {
+  width: fit-content;
 }
 
 @media screen and (min-width: 32em) {
