@@ -22,7 +22,12 @@ class PartneredSignup < ApplicationRecord
                          :owner_name,
                          :owner_email,
                          :owner_phone,
-                         :owner_address,
+                         :owner_address_line1,
+                         :owner_address_line2,
+                         :owner_address_city,
+                         :owner_address_state,
+                         :owner_address_postal_code,
+                         :owner_address_country,
                          :owner_birthdate
                         ], unless: :unsubmitted?
 
