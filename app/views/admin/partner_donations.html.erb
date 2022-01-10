@@ -44,7 +44,7 @@
   </thead>
   <tbody>
     <% @partner_donations.each do |partner_donation| %>
-      <tr style="<%= "background: #ccccff;" if partner_donation.in_transit? %>">
+      <tr class="<%= "admin-bg-transit" if partner_donation.in_transit? %>">
         <td><%= partner_donation.id %></td>
         <td><%= partner_donation.created_at.strftime("%Y-%m-%d") %></td>
         <td>

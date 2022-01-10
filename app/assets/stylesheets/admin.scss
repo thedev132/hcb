@@ -673,3 +673,10 @@ video {
 .w-8 {
   width: 2rem;
 }
+
+/* Autosize table on process pages */
+
+.table--autosize {
+  width: auto;
+  min-width: 0;
+}
