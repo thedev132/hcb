@@ -17,7 +17,7 @@
       <ul class="grid grid--narrow left-align w-100 mt0">
         <% @events.not_hidden.each do |event| %>
           <%= link_to event do %>
-            <li class="card card--hover flex flex-column justify-between card--height-100">
+            <li class="card card--hover flex flex-column justify-between h-100">
               <strong class="brand-sans h3 line-height-2 mb1"><%= event.name %></strong>
               <div class="avatar-row">
                 <% event.organizer_positions.each do |position| %>
@@ -28,7 +28,7 @@
           <% end %>
         <% end %>
         <a href="https://hack.af/bank-apply?prefill_Have%20you%20used%20Hack%20Club%20Bank%20for%20any%20previous%20projects?=Yes,%20I%20have%20used%20Hack%20Club%20Bank%20before&prefill_First+Name=<%= current_user.first_name %>&prefill_Last+Name=<%= current_user.last_name %>&prefill_Email+Address=<%= current_user.email %>&prefill_Phone+Number=<%= current_user.phone_number %>">
-          <li class="card card--hover bold brand-sans flex items-center justify-center align-center card--height-100">
+          <li class="card card--hover bold brand-sans flex items-center justify-center align-center h-100">
             <div class="center">
               <div class="pop success mx-auto" style="display: flex; margin-bottom: 4px;">
                 <%= inline_icon 'plus', size: 28 %>

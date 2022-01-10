@@ -8,13 +8,11 @@
   transition-property: transform box-shadow;
 
   &.b--warning {
-    box-shadow: 0 0 2px 0 rgba(map-get($palette, warning), 0.0625),
-      0 4px 8px 0 rgba(map-get($palette, warning), 0.125);
+    box-shadow: 0 0 2px 0 rgba(map-get($palette, warning), 0.0625), 0 4px 8px 0 rgba(map-get($palette, warning), 0.125);
   }
 
   &.b--info {
-    box-shadow: 0 0 2px 0 rgba(map-get($palette, info), 0.0625),
-      0 4px 8px 0 rgba(map-get($palette, info), 0.125);
+    box-shadow: 0 0 2px 0 rgba(map-get($palette, info), 0.0625), 0 4px 8px 0 rgba(map-get($palette, info), 0.125);
   }
 
   &.card--hover:hover,
@@ -61,8 +59,7 @@ a.card {
   max-width: 32rem;
   border: 1px solid map-get($palette, error);
   margin-bottom: 1.5rem;
-  box-shadow: 0 0 2px 0 rgba(map-get($palette, error), 0.025),
-    0 4px 8px 0 rgba(map-get($palette, error), 0.125);
+  box-shadow: 0 0 2px 0 rgba(map-get($palette, error), 0.025), 0 4px 8px 0 rgba(map-get($palette, error), 0.125);
 
   h2 {
     color: map-get($palette, error);
@@ -119,8 +116,4 @@ a.card {
     color: map-get($palette, error);
     background-color: rgba(map-get($palette, error), 0.125);
   }
-}
-
-.card--height-100{
-  height: 100%;
 }
