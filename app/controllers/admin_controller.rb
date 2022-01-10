@@ -92,9 +92,9 @@ class AdminController < ApplicationController
   def partnered_signups
     relation = PartneredSignup
 
-    @partnered_signups = relation.all
+    @partnered_signups = relation.pending + relation.not_pending
 
-    @count = relation.count
+    @count = @partnered_signups.count
 
     render layout: "admin"
   end
