@@ -18,7 +18,7 @@
   </thead>
   <tbody>
     <% @selenium_sessions.each do |selenium_session| %>
-      <tr style="<%= "background: #00ff00;" if selenium_session.active? %> <%= "background: #ccffff;" if selenium_session.expired? %>">
+      <tr class="<%= "admin-bg-active" if selenium_session.active? %> <%= "admin-bg-transit" if selenium_session.expired? %>">
         <td><%= selenium_session.id %></td>
         <td><%= selenium_session.created_at.strftime("%Y-%m-%d") %></td>
         <td><%= selenium_session.aasm_state.upcase %></td>

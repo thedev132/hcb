@@ -4,6 +4,7 @@
     <title>Bank Admin</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
+    <%= javascript_include_tag 'dark', 'data-turbo-track': 'reload' %>
     <%= stylesheet_link_tag "admin", media: "all", "data-turbo-track": "reload" %>
     <%= javascript_include_tag "admin", "data-turbo-track": "reload", defer: true %>
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-<%= Rails.env %>-32x32.png">
@@ -73,7 +74,7 @@
 
     <hr/>
 
-    <div id="main">
+    <div id="main" class="overflow-x-auto">
       <%= yield %>
     </div>
 

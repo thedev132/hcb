@@ -184,3 +184,19 @@ $shades: (
     margin-right: auto;
   }
 }
+
+.break-normal {
+  word-break: normal;
+}
+
+.break-all {
+  word-break: break-all;
+}
+
+.break-word {
+  word-break: break-word;
+}
+
+.break-none {
+  word-break: keep-all;
+}

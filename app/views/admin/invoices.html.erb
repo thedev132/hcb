@@ -5,7 +5,7 @@
 <%= paginate @invoices %>
 
 <%= form_with local: true, url: invoices_admin_index_path, method: :get do |form| %>
-  <%= form.text_field :q, value: params[:q] %>
+  <%= form.text_field :q, value: params[:q], placeholder: 'Search' %>
   <%= form.label :open do %>
     <%= form.check_box :open, checked: @open %>
     Open
@@ -43,19 +43,19 @@
 <table>
   <thead>
     <tr>
-      <th>ID</th>
-      <th>Date</th>
+      <th class="w-24">ID</th>
+      <th class="w-32">Date</th>
       <th>Recipient</th>
       <th>StripeInvoiceId</th>
-      <th>Amount</th>
-      <th>Status</th>
-      <th>FeeReimbursementId</th>
-      <th>Actions</th>
+      <th class="w-32">Amount</th>
+      <th class="w-24">Status</th>
+      <th class="w-32">FeeReimbursementId</th>
+      <th class="w-24">Actions</th>
     </tr>
   </thead>
   <tbody>
     <% @invoices.each do |invoice| %>
-      <tr style="<%= "background: #ffffcc;" if invoice.open? %>">
+      <tr class="<%= "admin-bg-pending" if invoice.open? %>">
         <td><%= invoice.id %></td>
         <td><%= invoice.created_at.strftime("%Y-%m-%d") %></td>
         <td>

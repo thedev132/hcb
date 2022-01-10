@@ -5,7 +5,7 @@
 <%= paginate @g_suites %>
 
 <%= form_with local: true, url: google_workspaces_admin_index_path, method: :get do |form| %>
-  <%= form.text_field :q, value: params[:q] %>
+  <%= form.text_field :q, value: params[:q], placeholder: 'Search' %>
   <%= form.label :needs_ops_review do %>
     <%= form.check_box :needs_ops_review, checked: @needs_ops_review %>
     Needs Ops Review
@@ -29,19 +29,19 @@
 <table>
   <thead>
     <tr>
-      <th>ID</th>
-      <th>Date</th>
+      <th class="w-12">ID</th>
+      <th class="w-32">Date</th>
       <th>Name</th>
-      <th>OU ID</th>
+      <th class="w-32">OU ID</th>
       <th>OU Path</th>
       <th>VerificationKey</th>
-      <th>Status</th>
-      <th>Actions</th>
+      <th class="w-32">Status</th>
+      <th class="w-24">Actions</th>
     </tr>
   </thead>
   <tbody>
     <% @g_suites.each do |g_suite| %>
-      <tr style="<%= "background: #ffcccc;" if g_suite.deleted_at.present? %> <%= "background: #ffffcc;" if g_suite.needs_ops_review? %>">
+      <tr class="<%= "admin-bg-red;" if g_suite.deleted_at.present? %> <%= "admin-bg-pending" if g_suite.needs_ops_review? %>">
         <td><%= g_suite.id %></td>
         <td><%= g_suite.created_at.strftime("%Y-%m-%d") %></td>
         <td><%= link_to "#{g_suite.event.name.upcase}: #{g_suite.domain}", event_g_suite_overview_path(event_id: g_suite.event.slug) %></td>

@@ -9,22 +9,22 @@
 <table>
   <thead>
     <tr>
-      <th>ID</th>
-      <th>Partner</th>
-      <th>OrgIdentifier</th>
-      <th>Date</th>
-      <th>Name</th>
-      <th>Balance</th>
-      <th>Fee</th>
-      <th>Status</th>
-      <th>Actions</th>
+      <th class="w-12">ID</th>
+      <th class="w-24">Partner</th>
+      <th class="w-48">OrgIdentifier</th>
+      <th class="w-24">Date</th>
+      <th class="w-48">Name</th>
+      <th class="w-24">Balance</th>
+      <th class="w-24">Fee</th>
+      <th class="w-24">Status</th>
+      <th class="w-24">Actions</th>
     </tr>
   </thead>
   <tbody>
     <% @partner_organizations.each do |event| %>
-      <tr style="<%= "background: #ffffcc;" if event.pending? %>
-                 <%= "color: #ff8c38;" if event.rejected? && !event.omit_stats? %>
-                 <%= "background: #ff8c38;" if event.omit_stats? %>">
+      <tr class="<%= "admin-bg-red" if event.pending? %>
+                 <%= "admin-bg-orange" if event.rejected? && !event.omit_stats? %>
+                 <%= "admin-bg-orange" if event.omit_stats? %>">
         <td><%= event.id %></td>
         <td><%= event.partner.slug %></td>
         <td><%= event.organization_identifier %></td>

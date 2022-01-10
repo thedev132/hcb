@@ -28,22 +28,22 @@
 <table>
   <thead>
     <tr>
-      <th>ID</th>
+      <th class="w-24">ID</th>
       <th>Hash</th>
       <th>BankIdentifier</th>
-      <th>Date</th>
+      <th class="w-48">Date</th>
       <th>Memo</th>
-      <th>Amount</th>
+      <th class="w-32">Amount</th>
       <th>CanonicalTransaction</th>
       <!--
       <th>HashInput</th>
       -->
-      <th>Actions</th>
+      <th class="w-24">Actions</th>
     </tr>
   </thead>
   <tbody>
     <% @hashed_transactions.each do |ht| %>
-      <tr style="<%= "background: #ffffcc;" unless ht.canonical_hashed_mapping %>">
+      <tr class="<%= "admin-bg-pending" unless ht.canonical_hashed_mapping %>">
         <td><%= ht.id %></td>
         <td><%= ht.primary_hash %></td>
         <td><%= ht.unique_bank_identifier %></td>

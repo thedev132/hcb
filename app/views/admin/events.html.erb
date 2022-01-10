@@ -5,8 +5,8 @@
 <%= paginate @events %>
 
 <%= form_with local: true, url: events_admin_index_path, method: :get do |form| %>
-  <%= form.text_field :q, value: params[:q], style: 'vertical-align: top;' %>
-  <div style='display: inline-block;'>
+  <%= form.text_field :q, value: params[:q], style: 'vertical-align: top;', placeholder: 'Search' %>
+  <div class="inline-block">
     <div style='display: inline; border: 1px lightgray solid; border-radius: 0.2rem; padding: 0.2rem; margin-right: 0.5rem;'>
       State: |
       <%= form.label :pending do %>
@@ -77,7 +77,7 @@
   </thead>
   <tbody>
     <% @events.each do |event| %>
-      <tr style="<%= "background: #ffffcc;" if event.pending? || event.unapproved? %> <%= "background: #ff8c38;" if event.omit_stats? %>">
+      <tr class="<%= "admin-bg-pending" if event.pending? || event.unapproved? %> <%= "admin-bg-orange" if event.omit_stats? %>">
         <td><%= event.id %></td>
         <td><%= event.created_at.strftime("%Y-%m-%d") %></td>
         <td>

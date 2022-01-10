@@ -5,7 +5,7 @@
 <%= paginate @donations %>
 
 <%= form_with local: true, url: donations_admin_index_path, method: :get do |form| %>
-  <%= form.text_field :q, value: params[:q] %>
+  <%= form.text_field :q, value: params[:q], placeholder: 'Search' %>
   <%= form.label :deposited do %>
     <%= form.check_box :deposited, checked: @deposited %>
     Deposited
@@ -55,7 +55,7 @@
   </thead>
   <tbody>
     <% @donations.each do |donation| %>
-      <tr style="<%= "background: #ccccff;" if donation.in_transit? %>">
+      <tr class="<%= "admin-bg-transit" if donation.in_transit? %>">
         <td><%= donation.id %></td>
         <td><%= donation.created_at.strftime("%Y-%m-%d") %></td>
         <td>

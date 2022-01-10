@@ -5,7 +5,7 @@
 <%= paginate @partner_donations %>
 
 <%= form_with local: true, url: partner_donations_admin_index_path, method: :get do |form| %>
-  <%= form.text_field :q, value: params[:q] %>
+  <%= form.text_field :q, value: params[:q], placeholder: 'Search' %>
   <%= form.label :deposited do %>
     <%= form.check_box :deposited, checked: @deposited %>
     Deposited

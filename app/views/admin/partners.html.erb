@@ -7,15 +7,15 @@
 <table>
   <thead>
     <tr>
-      <th>ID</th>
-      <th>Slug</th>
-      <th>Name</th>
-      <th>External</th>
-      <th>ApiKey</th>
-      <th>StripeApiKey</th>
-      <th>PublicStripeApiKey</th>
-      <th>Docusign Template Id</th>
-      <th>Actions</th>
+      <th class="w-12">ID</th>
+      <th class="w-32">Slug</th>
+      <th class="w-32">Name</th>
+      <th class="w-24">External</th>
+      <th class="w-64">ApiKey</th>
+      <th class="w-80">StripeApiKey</th>
+      <th class="w-80">PublicStripeApiKey</th>
+      <th class="w-48">Docusign Template Id</th>
+      <th class="w-32">Actions</th>
     </tr>
   </thead>
   <tbody>
@@ -25,10 +25,10 @@
         <td><%= partner.slug %></td>
         <td><%= partner.name %></td>
         <td><%= partner.external %></td>
-        <td style="word-break: break-all"><%= partner.api_key %></td>
-        <td style="word-break: break-all"><%= partner.stripe_api_key %></td>
-        <td style="word-break: break-all"><%= partner.public_stripe_api_key %></td>
-        <td style="word-break: break-all"><%= partner.docusign_template_id %></td>
+        <td class="break-all"><%= partner.api_key %></td>
+        <td class="break-all"><%= partner.stripe_api_key %></td>
+        <td class="break-all"><%= partner.public_stripe_api_key %></td>
+        <td class="break-all"><%= partner.docusign_template_id %></td>
         <td>
         </td>
       </tr>

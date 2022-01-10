@@ -18,7 +18,7 @@
   </thead>
   <tbody>
     <% @bank_accounts.each do |ba| %>
-      <tr style="<%= "background: #ffcccc;" if ba.failed_at.present? %>">
+      <tr class="<%= 'admin-bg-red' if ba.failed_at.present? %>">
         <td><%= ba.id %></td>
         <td><%= ba.name %></td>
         <td><%= render_money ba.balance %></td>
