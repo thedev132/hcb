@@ -6,4 +6,5 @@ class InvalidateSessions < ActiveRecord::Migration[5.2]
   def change
     User.update_all(session_token: nil)
   end
+
 end

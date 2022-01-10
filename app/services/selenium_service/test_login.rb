@@ -7,5 +7,6 @@ module SeleniumService
     def run
       login_to_svb!
     end
+
   end
 end

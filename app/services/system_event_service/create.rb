@@ -6,7 +6,7 @@ module SystemEventService
       SystemEventService::Write::PendingTransactionCreated::NAME,
       SystemEventService::Write::SettledTransactionCreated::NAME,
       SystemEventService::Write::SettledTransactionMapped::NAME
-    ]
+    ].freeze
 
     def initialize(name:, properties:)
       @name = name
@@ -32,5 +32,6 @@ module SystemEventService
     def valid_event_name?
       VALID_EVENT_NAMES.include?(@name)
     end
+
   end
 end

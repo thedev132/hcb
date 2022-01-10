@@ -58,6 +58,7 @@ class StripeCardholder < ApplicationRecord
   rescue => e
     Airbrake.notify(e)
 
-    { status: "active", requirements: { } } # https://stripe.com/docs/api/issuing/cardholders/object
+    { status: "active", requirements: {} } # https://stripe.com/docs/api/issuing/cardholders/object
   end
+
 end

@@ -43,6 +43,7 @@ module PendingEventMappingEngine
       def unsettled
         CanonicalPendingTransaction.unsettled.stripe
       end
+
     end
   end
 end

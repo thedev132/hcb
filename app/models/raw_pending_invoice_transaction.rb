@@ -18,4 +18,5 @@ class RawPendingInvoiceTransaction < ApplicationRecord
   def invoice
     @invoice ||= ::Invoice.find_by(id: invoice_transaction_id)
   end
+
 end

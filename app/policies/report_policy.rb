@@ -8,4 +8,5 @@ class ReportPolicy < ApplicationPolicy
   def admin_or_teammember
     user&.admin? || record&.users&.include?(user)
   end
+
 end

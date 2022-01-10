@@ -36,5 +36,6 @@ module Bank
     config.action_view.form_with_generates_remote_forms = false
 
     config.exceptions_app = routes
+
   end
 end

@@ -58,10 +58,9 @@ class UsersController < ApplicationController
     if user.full_name.blank? || user.phone_number.blank?
       redirect_to edit_user_path(user.slug)
     else
-      return_to = params[:return_to] if params[:return_to].present? and params[:return_to].start_with?(root_url)
+      return_to = params[:return_to] if params[:return_to].present? && params[:return_to].start_with?(root_url)
       redirect_to(return_to || root_path)
     end
-
   rescue Errors::InvalidLoginCode => e
     flash[:error] = e.message
     # Propagate the to the login_code page on invalid code
@@ -170,10 +169,12 @@ class UsersController < ApplicationController
 
   def initialize_sms_params
     return if @force_use_email
+
     user = User.find_by(email: @email)
     if user&.use_sms_auth
       @use_sms_auth = true
       @phone_last_four = user.phone_number.last(4)
     end
   end
+
 end

@@ -44,6 +44,7 @@ module TransactionEngine
         def previously_processed_ht_ids
           @previously_processed_ht_ids ||= ::CanonicalHashedMapping.pluck(:hashed_transaction_id)
         end
+
       end
     end
   end

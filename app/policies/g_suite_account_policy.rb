@@ -36,4 +36,5 @@ class GSuiteAccountPolicy < ApplicationPolicy
   def toggle_suspension?
     user.admin? || record.event.users.include?(user)
   end
+
 end

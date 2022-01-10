@@ -33,5 +33,6 @@ module RawCsvTransactionService
     def generate_unique_csv_transaction_id
       "manual_#{SecureRandom.hex}"
     end
+
   end
 end

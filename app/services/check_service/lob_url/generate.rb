@@ -20,6 +20,7 @@ module CheckService
       def lob_id
         @check.lob_id
       end
+
     end
   end
 end

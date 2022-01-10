@@ -3,7 +3,7 @@
 require "rails_helper"
 
 RSpec.describe GSuiteAccountService::Create, type: :model do
-  fixtures  "users", "events",  "g_suites"
+  fixtures "users", "events", "g_suites"
 
   let(:g_suite) { g_suites(:g_suite1) }
   let(:current_user) { users(:user1) }

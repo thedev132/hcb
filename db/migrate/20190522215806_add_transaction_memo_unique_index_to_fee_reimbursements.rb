@@ -4,4 +4,5 @@ class AddTransactionMemoUniqueIndexToFeeReimbursements < ActiveRecord::Migration
   def change
     add_index :fee_reimbursements, :transaction_memo, unique: true
   end
+
 end

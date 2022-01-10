@@ -76,7 +76,7 @@ module InvoicesHelper
 end
 
 def invoice_payment_method_mention(invoice = @invoice, options = {})
-  return "–" unless invoice.manually_marked_as_paid? || invoice&.payment_method_type
+  return "–" unless invoice&.manually_marked_as_paid? || invoice&.payment_method_type
 
   if invoice.manually_marked_as_paid?
     size = 20
@@ -87,16 +87,16 @@ def invoice_payment_method_mention(invoice = @invoice, options = {})
     last4 = invoice&.payment_method_card_last4
 
     icon_name = {
-      "amex" => "card-amex",
+      "amex"       => "card-amex",
       "mastercard" => "card-mastercard",
-      "visa" => "card-visa",
-      "discover" => "card-discover"
+      "visa"       => "card-visa",
+      "discover"   => "card-discover"
     }[brand] || "card-other"
     tooltip = {
-      "amex" => "American Express",
+      "amex"       => "American Express",
       "mastercard" => "Mastercard",
-      "visa" => "Visa",
-      "discover" => "Discover"
+      "visa"       => "Visa",
+      "discover"   => "Discover"
     }[brand] || "Card"
     tooltip += " ending in #{last4}" if last4 && organizer_signed_in?
     description_text = organizer_signed_in? ? "••••#{last4}" : "••••"
@@ -154,7 +154,7 @@ def invoice_card_check_badge(check, invoice = @invoice)
 end
 
 def invoice_payout_datetime(invoice = @invoice)
-  if (invoice.paid_v2? && invoice.deposited?) and invoice.payout.present?
+  if (invoice.paid_v2? && invoice.deposited?) && invoice.payout.present?
     title = "Funds available since"
     date = @hcb_code.canonical_transactions.pluck(:date).max
   elsif invoice.payout_creation_queued_at && invoice.payout.nil?

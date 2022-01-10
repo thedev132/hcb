@@ -14,4 +14,5 @@ class CheckMailer < ApplicationMailer
 
     mail to: @emails, subject: "Your check to #{@check.lob_address.name}"
   end
+
 end

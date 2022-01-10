@@ -74,4 +74,5 @@ class CheckPolicy < ApplicationPolicy
   def is_public
     record.lob_address.event.is_public?
   end
+
 end

@@ -48,5 +48,6 @@ module BankFeeService
     def bank_fee
       @bank_fee ||= BankFee.pending.find(@bank_fee_id)
     end
+
   end
 end

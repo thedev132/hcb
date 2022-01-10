@@ -23,8 +23,9 @@ module EventMappingEngine
 
       def check_number
         @check_number ||= memo.upcase.gsub("WITHDRAWAL - INCLEARING CHECK #", "")
-                                      .gsub("WITHDRAWAL - ON-US DEPOSITED ITE #", "")
+                              .gsub("WITHDRAWAL - ON-US DEPOSITED ITE #", "")
       end
+
     end
   end
 end

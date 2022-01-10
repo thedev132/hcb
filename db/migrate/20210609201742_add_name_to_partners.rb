@@ -5,4 +5,5 @@ class AddNameToPartners < ActiveRecord::Migration[6.0]
     add_column :partners, :name, :text
     add_column :partners, :logo, :text
   end
+
 end

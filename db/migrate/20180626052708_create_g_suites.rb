@@ -12,4 +12,5 @@ class CreateGSuites < ActiveRecord::Migration[5.2]
     end
     add_reference :g_suite_applications, :g_suites, foreign_key: true
   end
+
 end

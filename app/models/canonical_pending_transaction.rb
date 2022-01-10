@@ -30,11 +30,13 @@ class CanonicalPendingTransaction < ApplicationRecord
   scope :invoice, -> { where("raw_pending_invoice_transaction_id is not null") }
   scope :partner_donation, -> { where("raw_pending_partner_donation_transaction_id is not null") }
   scope :bank_fee, -> { where("raw_pending_bank_fee_transaction_id is not null") }
-  scope :unmapped, -> { includes(:canonical_pending_event_mapping).where(canonical_pending_event_mappings: {canonical_pending_transaction_id: nil}) }
-  scope :mapped, -> { includes(:canonical_pending_event_mapping).where.not(canonical_pending_event_mappings: {canonical_pending_transaction_id: nil}) }
+  scope :unmapped, -> { includes(:canonical_pending_event_mapping).where(canonical_pending_event_mappings: { canonical_pending_transaction_id: nil }) }
+  scope :mapped, -> { includes(:canonical_pending_event_mapping).where.not(canonical_pending_event_mappings: { canonical_pending_transaction_id: nil }) }
   scope :unsettled, -> {
-    includes(:canonical_pending_settled_mappings).where(canonical_pending_settled_mappings: {canonical_pending_transaction_id: nil})
-      .includes(:canonical_pending_declined_mappings).where(canonical_pending_declined_mappings: { canonical_pending_transaction_id: nil })
+    includes(:canonical_pending_settled_mappings)
+      .where(canonical_pending_settled_mappings: { canonical_pending_transaction_id: nil })
+      .includes(:canonical_pending_declined_mappings)
+      .where(canonical_pending_declined_mappings: { canonical_pending_transaction_id: nil })
   }
   scope :missing_hcb_code, -> { where(hcb_code: nil) }
   scope :missing_or_unknown_hcb_code, -> { where("hcb_code is null or hcb_code ilike 'HCB-000%'") }
@@ -130,11 +132,13 @@ class CanonicalPendingTransaction < ApplicationRecord
 
   def remote_stripe_iauth_id
     return nil unless raw_pending_stripe_transaction
+
     raw_pending_stripe_transaction.stripe_transaction_id
   end
 
   def stripe_auth_dashboard_url
     return nil unless remote_stripe_iauth_id
+
     "https://dashboard.stripe.com/issuing/authorizations/#{remote_stripe_iauth_id}"
   end
 

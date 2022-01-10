@@ -58,6 +58,7 @@ module TransactionEngine
           ::HashedTransaction.where(raw_plaid_transaction_id: hashed_transaction.raw_plaid_transaction_id,
                                     primary_hash: hashed_transaction.primary_hash).any?
         end
+
       end
     end
   end

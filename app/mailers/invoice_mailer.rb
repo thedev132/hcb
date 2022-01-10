@@ -14,4 +14,5 @@ class InvoiceMailer < ApplicationMailer
 
     mail to: @emails, subject: "Congrats! 🎉 Your invoice to #{@invoice.sponsor.name} was paid"
   end
+
 end

@@ -220,4 +220,5 @@ class PartnerDonation < ApplicationRecord
   def set_hcb_code
     self.update_column(:hcb_code, "HCB-#{::TransactionGroupingEngine::Calculate::HcbCode::PARTNER_DONATION_CODE}-#{id}")
   end
+
 end

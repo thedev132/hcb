@@ -9,4 +9,5 @@ class AddMissingFieldsToTransactions < ActiveRecord::Migration[5.2]
     add_column :transactions, :payment_meta_payment_processor, :text
     add_column :transactions, :payment_meta_reason, :text
   end
+
 end

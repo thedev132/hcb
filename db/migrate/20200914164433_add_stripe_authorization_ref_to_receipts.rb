@@ -6,4 +6,5 @@ class AddStripeAuthorizationRefToReceipts < ActiveRecord::Migration[6.0]
       add_reference :receipts, :stripe_authorization, foreign_key: true
     end
   end
+
 end

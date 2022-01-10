@@ -10,5 +10,6 @@ module PendingEventMappingEngineJob
     def perform
       ::PendingEventMappingEngine::Nightly.new.run
     end
+
   end
 end

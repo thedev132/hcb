@@ -57,6 +57,7 @@ module EventMappingEngine
       def in_common_plaid_transaction_ids
         @in_common_plaid_transaction_ids ||= deprecated_transaction_plaid_ids && raw_plaid_transaction_ids
       end
+
     end
   end
 end

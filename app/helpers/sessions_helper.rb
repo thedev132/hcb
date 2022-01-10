@@ -8,7 +8,7 @@ module SessionsHelper
   # DEPRECATED - begin to start deprecating and ultimately replace with sign_in_and_set_cookie
   def sign_in(user:, fingerprint_info: {}, impersonate: false)
     session_token = SecureRandom.urlsafe_base64
-    cookies.encrypted[:session_token] = { value: session_token, expires: 30.days.from_now  }
+    cookies.encrypted[:session_token] = { value: session_token, expires: 30.days.from_now }
     user.user_sessions.create(
       session_token: session_token,
       fingerprint: fingerprint_info[:fingerprint],
@@ -50,7 +50,7 @@ module SessionsHelper
 
   # Ensure api authorized when fetching current user is removed
   def current_user(_ensure_api_authorized = true)
-    if !@current_user and current_session
+    if !@current_user && current_session
       @current_user ||= current_session.user
     end
 
@@ -96,7 +96,7 @@ module SessionsHelper
 
   def sign_out_of_all_sessions
     # Destroy all the sessions
-    current_user(false).user_sessions.destroy_all if current_user(false)
+    current_user(false)&.user_sessions&.destroy_all
     cookies.delete(:session_token)
     self.current_user = nil
   end

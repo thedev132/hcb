@@ -136,5 +136,6 @@ module InvoiceService
     def cleanse(item_amount)
       (@item_amount.gsub(",", "").to_f * 100.to_i).to_i
     end
+
   end
 end

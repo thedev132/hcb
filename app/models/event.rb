@@ -29,8 +29,8 @@ class Event < ApplicationRecord
   scope :not_hidden, -> { where(hidden_at: nil) }
   scope :funded, -> {
     includes(canonical_event_mappings: :canonical_transaction)
-    .where("canonical_transactions.amount_cents > 0")
-    .references(:canonical_transaction)
+      .where("canonical_transactions.amount_cents > 0")
+      .references(:canonical_transaction)
   }
   scope :not_funded, -> { where.not(id: funded) }
   scope :event_ids_with_pending_fees_greater_than_100, -> do
@@ -466,7 +466,7 @@ class Event < ApplicationRecord
     # We're only launching this feature in the US for the first week while we
     # iron out the kinks
     passes_country_check = (country == "US" || Date.today > Date.new(2021, 11, 17))
-    does_not_have_gsuite = !g_suites.not_deleted.any?
+    does_not_have_gsuite = g_suites.not_deleted.none?
 
     does_not_have_gsuite and passes_country_check
   end
@@ -560,7 +560,7 @@ class Event < ApplicationRecord
 
   def balance_not_feed_v2_cents
     # shortcut to invert - TODO: DEPRECATE. dangerous - causes incorrect calculations
-    BigDecimal("#{fee_balance_v2_cents}") / BigDecimal("#{sponsorship_fee}")
+    BigDecimal(fee_balance_v2_cents.to_s) / BigDecimal(sponsorship_fee.to_s)
   end
 
   def fee_balance_without_fee_reimbursement_reconcilliation
@@ -642,4 +642,5 @@ class Event < ApplicationRecord
   def canonical_transaction_ids_from_hack_club_fees
     @canonical_transaction_ids_from_hack_club_fees ||= CanonicalEventMapping.find(canonical_event_mapping_ids_from_hack_club_fees).pluck(:canonical_transaction_id)
   end
+
 end

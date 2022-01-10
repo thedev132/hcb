@@ -8,4 +8,5 @@ class AddDisplayNamesToTransactions < ActiveRecord::Migration[5.2]
       dir.up { Transaction.find_each(&:set_default_display_name) }
     end
   end
+
 end

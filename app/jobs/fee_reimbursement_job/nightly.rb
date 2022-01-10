@@ -5,5 +5,6 @@ module FeeReimbursementJob
     def perform
       FeeReimbursementService::Nightly.new.run
     end
+
   end
 end

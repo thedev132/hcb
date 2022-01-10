@@ -78,6 +78,7 @@ module Partners
         # 2 minute buffer for token expiry
         @token_expiry = @token.expires_in.to_i.seconds.from_now.advance(minutes: -2)
       end
+
     end
   end
 end

@@ -14,6 +14,7 @@ module PendingEventMappingEngine
       def unmapped
         CanonicalPendingTransaction.unmapped.stripe
       end
+
     end
   end
 end

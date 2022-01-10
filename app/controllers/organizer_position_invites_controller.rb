@@ -93,4 +93,5 @@ class OrganizerPositionInvitesController < ApplicationController
   def invite_params
     params.require(:organizer_position_invite).permit(:email)
   end
+
 end

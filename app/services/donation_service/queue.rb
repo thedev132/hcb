@@ -33,5 +33,6 @@ module DonationService
     def remote_payment_intent
       @remote_payment_intent ||= ::Partners::Stripe::PaymentIntents::Show.new(id: donation.stripe_payment_intent_id).run
     end
+
   end
 end

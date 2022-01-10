@@ -7,4 +7,5 @@ class ChangeAFewNullColumnsToNotNull < ActiveRecord::Migration[6.0]
       change_column_null :events, :partner_id, false
     end
   end
+
 end

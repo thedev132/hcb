@@ -24,12 +24,14 @@ module PublicIdentifiable
       prefix = id.split("_").first.to_s.downcase
       hash = id.split("_").last
       raise ArgumentError, "Invalid model type: #{prefix}" unless prefix == self.get_public_id_prefix
+
       # ex. 'org_h1izp'
       find(hash)
     end
 
     def get_public_id_prefix
       return self.public_id_prefix.to_s.downcase if self.public_id_prefix.present?
+
       raise NotImplementedError, "The #{self.class.name} model includes PublicIdentifiable module, but set_public_id_prefix hasn't been called."
     end
   end

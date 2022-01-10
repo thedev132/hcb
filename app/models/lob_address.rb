@@ -66,4 +66,5 @@ class LobAddress < ApplicationRecord
   def destroy_lob_address
     LobService.instance.delete_address(lob_id)
   end
+
 end

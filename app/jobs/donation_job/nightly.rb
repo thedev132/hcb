@@ -5,5 +5,6 @@ module DonationJob
     def perform
       DonationService::Nightly.new.run
     end
+
   end
 end

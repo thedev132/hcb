@@ -30,6 +30,7 @@ module CanonicalTransactionService
         CanonicalTransaction.included_in_stats
                             .where(date: @start_time..@end_time)
       end
+
     end
   end
 end

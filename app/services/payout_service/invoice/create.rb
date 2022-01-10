@@ -47,6 +47,7 @@ module PayoutService
       def funds_available?
         Time.current.to_i > remote_invoice.charge.balance_transaction.available_on
       end
+
     end
   end
 end

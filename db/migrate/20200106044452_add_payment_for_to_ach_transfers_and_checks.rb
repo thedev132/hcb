@@ -5,4 +5,5 @@ class AddPaymentForToAchTransfersAndChecks < ActiveRecord::Migration[5.2]
     add_column :ach_transfers, :payment_for, :text
     add_column :checks, :payment_for, :text
   end
+
 end

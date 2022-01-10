@@ -8,4 +8,5 @@ class PartnerDonationPolicy < ApplicationPolicy
   def export?
     record.event.users.include?(user) || user&.admin?
   end
+
 end

@@ -50,4 +50,5 @@ class ReceiptsController < ApplicationController
     @klass = receipt_params[:receiptable_type].constantize
     @receiptable = @klass.find(receipt_params[:receiptable_id])
   end
+
 end

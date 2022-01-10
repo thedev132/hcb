@@ -55,4 +55,5 @@ class EmburseCardRequest < ApplicationRecord
   def under_review?
     rejected_at.nil? && canceled_at.nil? && accepted_at.nil?
   end
+
 end

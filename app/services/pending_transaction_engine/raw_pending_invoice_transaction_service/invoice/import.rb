@@ -23,6 +23,7 @@ module PendingTransactionEngine
         def pending_invoice_transactions
           @pending_invoice_transactions ||= ::Invoice.paid_v2.where("amount_due > 0")
         end
+
       end
     end
   end

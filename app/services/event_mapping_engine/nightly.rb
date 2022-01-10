@@ -85,5 +85,6 @@ module EventMappingEngine
     def map_hcb_codes_short!
       ::EventMappingEngine::Map::HcbCodes::Short.new.run
     end
+
   end
 end

@@ -25,6 +25,7 @@ module PendingEventMappingEngine
       def unsettled
         CanonicalPendingTransaction.unsettled.invoice
       end
+
     end
   end
 end

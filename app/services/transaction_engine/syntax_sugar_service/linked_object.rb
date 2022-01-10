@@ -106,6 +106,7 @@ module TransactionEngine
       def event
         @event ||= @canonical_transaction.event
       end
+
     end
   end
 end

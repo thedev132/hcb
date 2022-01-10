@@ -16,4 +16,5 @@ class DonationPolicy < ApplicationPolicy
   def refund?
     user&.admin?
   end
+
 end

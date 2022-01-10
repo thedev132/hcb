@@ -28,4 +28,5 @@ class CreateDonationPayouts < ActiveRecord::Migration[5.2]
     add_index :donation_payouts, :stripe_balance_transaction_id, unique: true
     add_index :donation_payouts, :failure_stripe_balance_transaction_id, unique: true
   end
+
 end

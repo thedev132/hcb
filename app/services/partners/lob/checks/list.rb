@@ -41,16 +41,17 @@ module Partners
 
         def list_attrs(after:)
           {
-            :after => after,
+            :after        => after,
             :date_created => { gte: date_created_gte },
-            :limit => 100,
-            "include[]" => "total_count"
+            :limit        => 100,
+            "include[]"   => "total_count"
           }.compact
         end
 
         def date_created_gte
           @start_date.to_date.to_s
         end
+
       end
     end
   end

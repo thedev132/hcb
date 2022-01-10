@@ -31,5 +31,6 @@ module AchTransferService
     def ach_transfer
       @ach_transfer ||= AchTransfer.find(@ach_transfer_id)
     end
+
   end
 end

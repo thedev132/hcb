@@ -11,20 +11,19 @@ class V2OrganizationsDocumentation < ApplicationDocumentation
       response 200 do
         key :description, ""
         content :"application/json" do
-          key :example, {
-            data: [
-              {
-                id: "org_Yvguja",
-                name: "My Org 1",
-                balance: 68605
-              },
-              {
-                id: "org_sKd2vc",
-                name: "My Org 2",
-                balance: 0
-              },
-            ]
-          }
+          key :example,
+              data: [
+                {
+                  id: "org_Yvguja",
+                  name: "My Org 1",
+                  balance: 68605
+                },
+                {
+                  id: "org_sKd2vc",
+                  name: "My Org 2",
+                  balance: 0
+                },
+              ]
         end
       end
     end
@@ -50,16 +49,15 @@ class V2OrganizationsDocumentation < ApplicationDocumentation
       response 200 do
         key :description, ""
         content :"application/json" do
-          key :example, {
-            data: {
-              id: "org_Yvguja",
-              name: "My Org 1",
-              balance: 68605
-            },
-            links: {
-              self: "https://bank.hackclub.com/api/v2/organizations/org_Yvguja"
-            }
-          }
+          key :example,
+              data: {
+                id: "org_Yvguja",
+                name: "My Org 1",
+                balance: 68605
+              },
+              links: {
+                self: "https://bank.hackclub.com/api/v2/organizations/org_Yvguja"
+              }
         end
       end
     end
@@ -96,13 +94,12 @@ class V2OrganizationsDocumentation < ApplicationDocumentation
       response 200 do
         key :description, ""
         content :"application/json" do
-          key :example, {
-            data:
-              {
-                organization_id: "org_Yvguja",
-                login_url: "https://bank.hackclub.com/api/v2/login?login_token=tok_U2w2vzV2xNNkMFvNGbr9ckqfX7tsKpKh"
-              }
-          }
+          key :example,
+              data:
+                    {
+                      organization_id: "org_Yvguja",
+                      login_url: "https://bank.hackclub.com/api/v2/login?login_token=tok_U2w2vzV2xNNkMFvNGbr9ckqfX7tsKpKh"
+                    }
         end
       end
     end

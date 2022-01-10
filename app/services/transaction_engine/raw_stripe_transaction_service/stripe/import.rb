@@ -32,6 +32,7 @@ module TransactionEngine
         def stripe_transactions
           @stripe_transactions ||= ::Partners::Stripe::Issuing::Transactions::List.new(start_date: @start_date).run
         end
+
       end
     end
   end

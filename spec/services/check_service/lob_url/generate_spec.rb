@@ -3,7 +3,7 @@
 require "rails_helper"
 
 RSpec.describe CheckService::LobUrl::Generate, type: :model do
-  fixtures  "checks"
+  fixtures "checks"
 
   let(:check) { checks(:check1) }
 

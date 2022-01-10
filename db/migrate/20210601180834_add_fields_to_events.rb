@@ -8,4 +8,5 @@ class AddFieldsToEvents < ActiveRecord::Migration[6.0]
     add_column :events, :owner_address, :string
     add_column :events, :owner_birthdate, :date
   end
+
 end

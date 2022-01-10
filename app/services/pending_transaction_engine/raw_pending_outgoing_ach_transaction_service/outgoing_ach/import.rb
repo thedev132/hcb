@@ -23,6 +23,7 @@ module PendingTransactionEngine
         def pending_outgoing_ach_transactions
           @pending_outgoing_ach_transactions ||= AchTransfer.all
         end
+
       end
     end
   end

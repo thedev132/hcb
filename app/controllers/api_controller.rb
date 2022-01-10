@@ -92,4 +92,5 @@ class ApiController < ApplicationController
   def set_params
     @params = ActiveSupport::JSON.decode(request.body.read)
   end
+
 end

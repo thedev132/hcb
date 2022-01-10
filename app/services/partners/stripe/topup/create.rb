@@ -26,6 +26,7 @@ module Partners
             destination_balance: nil # normal balance (rather than issuing) https://stripe.com/docs/api/topups/create#create_topup-destination_balance
           }
         end
+
       end
     end
   end

@@ -5,5 +5,6 @@ module DisbursementJob
     def perform
       DisbursementService::Nightly.new.run
     end
+
   end
 end

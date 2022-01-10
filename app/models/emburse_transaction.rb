@@ -98,4 +98,5 @@ class EmburseTransaction < ApplicationRecord
   def self.total_emburse_card_transaction_count
     self.where("amount < 0").completed.size
   end
+
 end

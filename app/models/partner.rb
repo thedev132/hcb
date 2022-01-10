@@ -3,7 +3,7 @@
 class Partner < ApplicationRecord
   has_paper_trail
 
-  EXCLUDED_SLUGS = %w(connect api donations donation connects organization organizations)
+  EXCLUDED_SLUGS = %w(connect api donations donation connects organization organizations).freeze
 
   attribute :api_key, :string, default: -> { new_api_key }
 
@@ -27,9 +27,9 @@ class Partner < ApplicationRecord
     end
 
     position_exists = event.users.include?(user)
-    invite_exists= event.organizer_position_invites.where(email: user_email).any?
+    invite_exists = event.organizer_position_invites.where(email: user_email).any?
 
-    unless position_exists or invite_exists
+    unless position_exists || invite_exists
       partnered_email = "bank+#{event.partner.slug}@hackclub.com"
       invite_sender = User.find_by(email: partnered_email)
       invite_sender ||= User.create!(email: partnered_email)
@@ -62,4 +62,5 @@ class Partner < ApplicationRecord
   def self.new_api_key
     self.new.send(:new_api_key)
   end
+
 end

@@ -174,4 +174,5 @@ class EmburseCard < ApplicationRecord
   def slug_text
     "#{self.full_name} #{self.last_four}"
   end
+
 end

@@ -26,6 +26,7 @@ module TransactionEngine
           }
           ::TransactionEngine::HashedTransactionService::PrimaryHash.new(attrs).run
         end
+
       end
     end
   end

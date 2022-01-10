@@ -20,5 +20,6 @@ module StripeAuthorizationService
     def pending_stripe_transactions
       @pending_stripe_transactions ||= ::Partners::Stripe::Issuing::Authorizations::List.new.run
     end
+
   end
 end

@@ -5,5 +5,6 @@ module AchTransferJob
     def perform
       AchTransferService::Nightly.new.run
     end
+
   end
 end

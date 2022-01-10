@@ -19,6 +19,7 @@ module Partners
         def org_unit_path_without_leading_slash
           @org_unit_path.split("/").reject { |c| c.empty? }.join("/")
         end
+
       end
     end
   end

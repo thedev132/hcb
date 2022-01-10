@@ -7,6 +7,7 @@ module Api
         required(:public_id).filled(:string)
         required(:email).filled(:string)
       end
+
     end
   end
 end

@@ -12,5 +12,6 @@ module InvoiceService
         ::InvoiceJob::OpenToPaid.perform_later(invoice_id)
       end
     end
+
   end
 end

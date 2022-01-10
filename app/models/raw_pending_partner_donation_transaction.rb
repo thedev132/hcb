@@ -18,4 +18,5 @@ class RawPendingPartnerDonationTransaction < ApplicationRecord
   def partner_donation
     @partner_donation ||= ::PartnerDonation.find_by(id: partner_donation_transaction_id)
   end
+
 end

@@ -8,7 +8,7 @@ TOKEN_FILE = Tempfile.new("token")
 TOKEN_PATH = TOKEN_FILE.path
 
 OOB_URI = "urn:ietf:wg:oauth:2.0:oob"
-SCOPE = [Google::Apis::AdminDirectoryV1::AUTH_ADMIN_DIRECTORY_USER, Google::Apis::AdminDirectoryV1::AUTH_ADMIN_DIRECTORY_ORGUNIT]
+SCOPE = [Google::Apis::AdminDirectoryV1::AUTH_ADMIN_DIRECTORY_USER, Google::Apis::AdminDirectoryV1::AUTH_ADMIN_DIRECTORY_ORGUNIT].freeze
 
 APP_DATA = 'REDACTED'
 

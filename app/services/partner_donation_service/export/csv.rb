@@ -28,6 +28,7 @@ module PartnerDonationService
       def row(pd)
         ::CSV::Row.new(keys, create_row(pd))
       end
+
     end
   end
 end

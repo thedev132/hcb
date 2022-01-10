@@ -24,6 +24,7 @@ module PendingEventMappingEngine
       def unsettled
         CanonicalPendingTransaction.unsettled.bank_fee
       end
+
     end
   end
 end

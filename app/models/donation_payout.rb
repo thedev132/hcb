@@ -88,4 +88,5 @@ class DonationPayout < ApplicationRecord
       statement_descriptor: self.statement_descriptor
     }
   end
+
 end

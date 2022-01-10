@@ -28,4 +28,5 @@ class UserPolicy < ApplicationPolicy
   def complete_sms_auth_verification?
     user.admin? || record == user
   end
+
 end

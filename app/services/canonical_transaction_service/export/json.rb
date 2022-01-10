@@ -29,6 +29,7 @@ module CanonicalTransactionService
           amount_cents: ct.amount_cents
         }
       end
+
     end
   end
 end

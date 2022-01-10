@@ -141,4 +141,5 @@ class GSuiteAccountsController < ApplicationController
   def full_email_address(address, g_suite)
     "#{address}@#{g_suite.domain}"
   end
+
 end

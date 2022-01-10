@@ -6,4 +6,5 @@ class AddPartnerToEvents < ActiveRecord::Migration[6.0]
       add_reference :events, :partner, null: true, foreign_key: true
     end
   end
+
 end

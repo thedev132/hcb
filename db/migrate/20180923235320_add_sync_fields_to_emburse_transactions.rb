@@ -21,4 +21,5 @@ class AddSyncFieldsToEmburseTransactions < ActiveRecord::Migration[5.2]
     add_column :emburse_transactions, :receipt_filename, :text
     add_column :emburse_transactions, :transaction_time, :datetime
   end
+
 end

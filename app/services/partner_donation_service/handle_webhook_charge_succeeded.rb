@@ -27,22 +27,20 @@ module PartnerDonationService
 
         # 2. CANONIZE. Create CanonicalPendingTransaction if it doesn't already exist
         return if ::CanonicalPendingTransaction.where(raw_pending_partner_donation_transaction_id: rppdt.id).any?
+
         cpt = ::CanonicalPendingTransaction.create!(
-          {
-            date: rppdt.date,
-            memo: rppdt.memo,
-            amount_cents: rppdt.amount_cents,
-            raw_pending_partner_donation_transaction_id: rppdt.id
-          }
+          date: rppdt.date,
+          memo: rppdt.memo,
+          amount_cents: rppdt.amount_cents,
+          raw_pending_partner_donation_transaction_id: rppdt.id
         )
 
         # 3. MAP TO EVENT
         return unless cpt.raw_pending_partner_donation_transaction.likely_event_id
+
         CanonicalPendingEventMapping.create!(
-          {
-            event_id: cpt.raw_pending_partner_donation_transaction.likely_event_id,
-            canonical_pending_transaction_id: cpt.id
-          }
+          event_id: cpt.raw_pending_partner_donation_transaction.likely_event_id,
+          canonical_pending_transaction_id: cpt.id
         )
       end
     end
@@ -70,5 +68,6 @@ module PartnerDonationService
     def partner_id
       partner_donation.event.partner.id
     end
+
   end
 end

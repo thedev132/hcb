@@ -34,5 +34,6 @@ module PartneredSignupService
     def body
       ::Api::V2::PartneredSignupSerializer.new(partnered_signup: sup).run
     end
+
   end
 end

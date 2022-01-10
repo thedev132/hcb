@@ -12,4 +12,5 @@ class CreateLoginTokens < ActiveRecord::Migration[6.0]
 
     add_index :login_tokens, :token, unique: true
   end
+
 end

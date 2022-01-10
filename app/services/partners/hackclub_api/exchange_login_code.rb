@@ -11,6 +11,7 @@ module Partners
 
       def run
         raise ::Errors::InvalidLoginCode, "Login Code must be 6 digits long" if clean_login_code.length != 6
+
         ::BankApiService.req(:post, url, attrs, raise_on_unauthorized: false)
       end
 
@@ -29,6 +30,7 @@ module Partners
       def clean_login_code
         @clean_login_code ||= @login_code.to_s.gsub("-", "").gsub(/\s+/, "")
       end
+
     end
   end
 end

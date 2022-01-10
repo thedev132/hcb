@@ -27,6 +27,7 @@ module PendingTransactionEngine
         def existing_canonical_pending_transaction
           @existing_canonical_pending_transaction ||= ::CanonicalPendingTransaction.where(raw_pending_stripe_transaction_id: @raw_pending_stripe_transaction.id).first
         end
+
       end
     end
   end

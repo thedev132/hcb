@@ -35,6 +35,7 @@ module EventMappingEngine
         def unmapped_short_codes
           ::CanonicalTransaction.unmapped.with_short_code.order("date asc")
         end
+
       end
     end
   end

@@ -37,6 +37,7 @@ module TransactionEngine
         def previously_processed_hashed_transaction_ids
           @previously_processed_hashed_transaction_ids ||= ::CanonicalHashedMapping.pluck(:hashed_transaction_id)
         end
+
       end
     end
   end

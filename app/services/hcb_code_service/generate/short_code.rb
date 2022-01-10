@@ -31,6 +31,7 @@ module HcbCodeService
       def charset
         ALPHANUMERIC_CHARSET
       end
+
     end
   end
 end

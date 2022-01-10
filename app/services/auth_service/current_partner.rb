@@ -11,5 +11,6 @@ module AuthService
     rescue ActiveRecord::RecordNotFound
       raise UnauthenticatedError
     end
+
   end
 end

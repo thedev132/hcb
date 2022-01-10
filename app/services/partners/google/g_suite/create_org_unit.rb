@@ -18,11 +18,12 @@ module Partners
         private
 
         def org_unit_object
-          ::Google::Apis::AdminDirectoryV1::OrgUnit.new({
+          ::Google::Apis::AdminDirectoryV1::OrgUnit.new(
             parent_org_unit_path: @parent_org_unit_path,
             name: @name
-          })
+          )
         end
+
       end
     end
   end

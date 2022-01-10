@@ -3,7 +3,7 @@
 require "rails_helper"
 
 RSpec.describe UserService::GenerateToken, type: :model do
-  fixtures  "users"
+  fixtures "users"
 
   let(:user) { users(:user1) }
 

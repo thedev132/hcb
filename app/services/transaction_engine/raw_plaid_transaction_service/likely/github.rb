@@ -7,6 +7,7 @@ module TransactionEngine
         def run
           ::RawPlaidTransaction.where("plaid_transaction->>'name' ilike '%github grant%'")
         end
+
       end
     end
   end

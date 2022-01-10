@@ -13,6 +13,7 @@ module Partners
         def run
           client.checks.find(@id)
         end
+
       end
     end
   end

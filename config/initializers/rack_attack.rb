@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class Rack::Attack
-
   ### Configure Cache ###
 
   # If you don't want to use Rails.cache (Rack::Attack's default), then
@@ -104,6 +103,7 @@ class Rack::Attack
       req.path.start_with?("/donations/start", "/donations/hq")
     end
   end
+
 end
 
 Rack::Attack.enabled = Rails.env.production? # only enable in production

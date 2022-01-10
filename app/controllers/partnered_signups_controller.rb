@@ -96,4 +96,5 @@ class PartneredSignupsController < ApplicationController
       :owner_birthdate,
     )
   end
+
 end

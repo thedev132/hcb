@@ -31,4 +31,5 @@ class StripeAuthorizationsController < ApplicationController
   def stripe_authorization_params
     params.require(:stripe_authorization).permit(receipts: [])
   end
+
 end

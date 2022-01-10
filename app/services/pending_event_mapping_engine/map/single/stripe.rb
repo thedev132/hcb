@@ -17,6 +17,7 @@ module PendingEventMappingEngine
           }
           CanonicalPendingEventMapping.create!(attrs)
         end
+
       end
     end
   end

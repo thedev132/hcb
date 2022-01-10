@@ -8,7 +8,7 @@ module StaticPagesHelper
     link_to content_tag(:li,
                         [content_tag(:strong, name), badge].join.html_safe,
                         class: "card card--item card--hover relative overflow-visible line-height-3"),
-                        path, method: options[:method]
+            path, method: options[:method]
   end
 
   def flavor_text
@@ -388,7 +388,7 @@ module StaticPagesHelper
     {
       hackathons: {
         url: "https://airbridge.hackclub.com/v0.1/hackathons.hackclub.com/applications",
-        query: { filterByFormula: "AND(Approved=0,Rejected=0)", fields: [] } ,
+        query: { filterByFormula: "AND(Approved=0,Rejected=0)", fields: [] },
         destination: "https://airtable.com/tblYVTFLwY378YZa4/viwpJOp6ZmMDfcbgb"
       },
       grant: {
@@ -408,37 +408,37 @@ module StaticPagesHelper
       },
       replit: {
         url: "https://airbridge.hackclub.com/v0.1/Bank%20Promotions/Repl.it%20Hacker%20Plan",
-        query: {filterByFormula: "Status='Pending'", fields: [] },
+        query: { filterByFormula: "Status='Pending'", fields: [] },
         destination: "https://airtable.com/tbl6cbpdId4iA96mD/viw2T8d98ZhhacHCf"
       },
       sendy: {
         url: "https://airbridge.hackclub.com/v0.1/Bank%20Promotions/Sendy",
-        query: {filterByFormula: "Status='Pending'", fields: [] },
+        query: { filterByFormula: "Status='Pending'", fields: [] },
         destination: "https://airtable.com/tbl1MRaNpF4KphbOd/viwdGjjDdtsS7bjlP"
       },
       domains: {
         url: "https://airbridge.hackclub.com/v0.1/Bank%20Promotions/Domains",
-        query: {filterByFormula: "Status='Pending'", fields: [] },
+        query: { filterByFormula: "Status='Pending'", fields: [] },
         destination: "https://airtable.com/tbl22cXd3Bo9uo0wp/viwcnZyoctJTFGVY2"
       },
       pvsa: {
         url: "https://airbridge.hackclub.com/v0.1/Bank%20Promotions/PVSA%20Order",
-        query: {filterByFormula: "Status='Pending'", fields: []},
+        query: { filterByFormula: "Status='Pending'", fields: [] },
         destination: "https://airtable.com/tbl4ffIbyaEa2fIYW/viw2OPTziXEqOpaLA"
       },
       wire_transfers: {
         url: "https://airbridge.hackclub.com/v0.1/Bank%20Promotions/Wire%20Transfers",
-        query: {filterByFormula: "Status='Pending'", fields: [] },
+        query: { filterByFormula: "Status='Pending'", fields: [] },
         destination: "https://airtable.com/tbloFbH16HI7t3mfG/viwzgt8VLHOC82m8n"
       },
       paypal_transfers: {
         url: "https://airbridge.hackclub.com/v0.1/Bank%20Promotions/PayPal%20Transfers",
-        query: {filterByFormula: "Status='Pending'", fields: [] },
+        query: { filterByFormula: "Status='Pending'", fields: [] },
         destination: "https://airtable.com/tbloGiW2jhja8ivtV/viwzhAnWYhpFNhvmC"
       },
       disputed_transactions: {
         url: "https://airbridge.hackclub.com/v0.1/Bank%20Promotions/Disputed%20Transactions",
-        query: {filterByFormula: "Status='Pending'", fields: [] },
+        query: { filterByFormula: "Status='Pending'", fields: [] },
         destination: "https://airtable.com/appEzv7w2IBMoxxHe/tblTqbwz5AUkzOcVb"
       },
     }

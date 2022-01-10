@@ -16,4 +16,5 @@ class StripeCardholderPolicy < ApplicationPolicy
   def update_profile?
     user&.admin? || record&.user == user
   end
+
 end

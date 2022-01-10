@@ -6,4 +6,5 @@ class AddMissingFieldsToLoadCardRequests < ActiveRecord::Migration[5.2]
     add_column :load_card_requests, :rejected_at, :timestamp
     add_column :load_card_requests, :canceled_at, :timestamp
   end
+
 end

@@ -7,7 +7,7 @@ class StripeCard < ApplicationRecord
   scope :canceled, -> { where(stripe_status: "canceled") }
   scope :frozen, -> { where(stripe_status: "inactive") }
   scope :active, -> { where(stripe_status: "active") }
-  scope :physical_shipping, -> { physical.includes(:user, :event).select { |c| c.stripe_obj[:shipping][:status] != "delivered" } }
+  scope :physical_shipping, -> { physical.includes(:user, :event).reject { |c| c.stripe_obj[:shipping][:status] == "delivered" } }
 
   belongs_to :event
   belongs_to :stripe_cardholder
@@ -51,6 +51,7 @@ class StripeCard < ApplicationRecord
 
   def formatted_card_number
     return "•••• •••• •••• #{last4}" unless virtual?
+
     full_card_number.scan(/.{4}/).join(" ")
   end
 
@@ -76,6 +77,7 @@ class StripeCard < ApplicationRecord
 
   def status_text
     return "frozen" if stripe_status == "inactive"
+
     stripe_status.humanize
   end
 
@@ -291,4 +293,5 @@ class StripeCard < ApplicationRecord
       sa.save
     end
   end
+
 end

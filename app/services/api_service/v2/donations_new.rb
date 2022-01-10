@@ -25,6 +25,7 @@ module ApiService
       def clean_organization_public_id
         @organization_public_id.to_s.strip
       end
+
     end
   end
 end

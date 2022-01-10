@@ -6,6 +6,7 @@ module CheckJob
       def perform
         CheckService::LobUrl::AssignHavingLobId.new.run
       end
+
     end
   end
 end

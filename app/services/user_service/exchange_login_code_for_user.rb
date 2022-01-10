@@ -48,5 +48,6 @@ module UserService
     def error_message
       "Invalid login code"
     end
+
   end
 end

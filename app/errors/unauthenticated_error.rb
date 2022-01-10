@@ -8,4 +8,5 @@ class UnauthenticatedError < ArgumentError
   def status
     401
   end
+
 end

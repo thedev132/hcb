@@ -68,4 +68,5 @@ class SponsorsController < ApplicationController
     # see pundit readme for details on permitted_attributes
     params.require(:sponsor).permit(policy(Sponsor).permitted_attributes)
   end
+
 end

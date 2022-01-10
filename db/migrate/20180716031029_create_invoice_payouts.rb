@@ -27,4 +27,5 @@ class CreateInvoicePayouts < ActiveRecord::Migration[5.2]
     add_index :invoice_payouts, :stripe_balance_transaction_id, unique: true
     add_index :invoice_payouts, :failure_stripe_balance_transaction_id, unique: true
   end
+
 end

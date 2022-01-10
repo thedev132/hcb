@@ -7,4 +7,5 @@ class InvoicePayoutsMailer < ApplicationMailer
 
     mail to: @emails, subject: "Payment from #{@payout.invoice.sponsor.name} is on the way 💵"
   end
+
 end

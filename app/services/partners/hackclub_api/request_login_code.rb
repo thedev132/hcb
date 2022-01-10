@@ -23,6 +23,7 @@ module Partners
       def url
         "/v1/users/#{@sms ? 'sms_' : ''}auth"
       end
+
     end
   end
 end

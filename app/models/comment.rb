@@ -27,4 +27,5 @@ class Comment < ApplicationRecord
   def file_is_attached?
     file.attached?
   end
+
 end

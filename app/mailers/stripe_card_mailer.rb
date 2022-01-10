@@ -22,4 +22,5 @@ class StripeCardMailer < ApplicationMailer
     mail to: @recipient,
          subject: "New virtual Hack Club Bank card (ending in #{@card.last4}) for #{@event.name}"
   end
+
 end

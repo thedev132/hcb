@@ -116,7 +116,7 @@ class AdminController < ApplicationController
 
     # Invite users to event
     @partner.add_user_to_partnered_event!(user_email: @partnered_signup.owner_email,
-                                          event:      @organization)
+                                          event: @organization)
 
 
     # Record the org & user in the signup
@@ -223,7 +223,7 @@ class AdminController < ApplicationController
       name: params[:name],
       emails: emails,
       country: params[:country],
-      approved: params[:approved].to_i == 1 ? true : false,
+      approved: params[:approved].to_i == 1,
       sponsorship_fee: params[:sponsorship_fee]
     }
     ::EventService::Create.new(attrs).run
@@ -705,7 +705,7 @@ class AdminController < ApplicationController
     end
 
     relation = relation.pending if @pending
-    #relation = relation.processing if @processing # TODO: remove ruby logic from scope
+    # relation = relation.processing if @processing # TODO: remove ruby logic from scope
 
     @count = relation.count
     @disbursements = relation.page(@page).per(@per).order("created_at desc")
@@ -1050,4 +1050,5 @@ class AdminController < ApplicationController
 
     @pending_tasks
   end
+
 end

@@ -20,4 +20,5 @@ class TransactionCsv < ApplicationRecord
       transitions from: :processing, to: :processed
     end
   end
+
 end

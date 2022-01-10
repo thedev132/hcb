@@ -3,12 +3,12 @@
 class GsuiteService
   include Singleton
 
-  OOB_URI = "urn:ietf:wg:oauth:2.0:oob".freeze
+  OOB_URI = "urn:ietf:wg:oauth:2.0:oob"
   SCOPE = [
     Google::Apis::AdminDirectoryV1::AUTH_ADMIN_DIRECTORY_USER,
     Google::Apis::AdminDirectoryV1::AUTH_ADMIN_DIRECTORY_ORGUNIT,
     Google::Apis::AdminDirectoryV1::AUTH_ADMIN_DIRECTORY_DOMAIN
-  ]
+  ].freeze
 
   # this is a hack to work with the google library's requirement that tokens must be in files
   TOKEN_FILE = Tempfile.new("token")
@@ -92,4 +92,5 @@ class GsuiteService
   def user_id
     "default"
   end
+
 end

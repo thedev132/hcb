@@ -50,13 +50,13 @@ module FeeService
 
       def header
         ::CSV::Row.new(headers, [
-          "date",
-          "memo",
-          "amount",
-          "fee_percentage",
-          "fee_amount",
-          "fee_tally"
-        ], true)
+                         "date",
+                         "memo",
+                         "amount",
+                         "fee_percentage",
+                         "fee_amount",
+                         "fee_tally"
+                       ], true)
       end
 
       def row(f)
@@ -65,14 +65,15 @@ module FeeService
         dec(-f.canonical_transaction.amount_cents) if f.hack_club_fee?
 
         ::CSV::Row.new(headers, [
-          f.canonical_transaction.date,
-          f.canonical_transaction.smart_memo,
-          f.canonical_transaction.amount,
-          ActionController::Base.helpers.number_to_percentage(f.event_sponsorship_fee * 100.0, precision: 1),
-          ActionController::Base.helpers.number_with_precision(f.amount_cents_as_decimal / 100.0, precision: 4),
-          ActionController::Base.helpers.number_with_precision(@tally / 100.0, precision: 4)
-        ])
+                         f.canonical_transaction.date,
+                         f.canonical_transaction.smart_memo,
+                         f.canonical_transaction.amount,
+                         ActionController::Base.helpers.number_to_percentage(f.event_sponsorship_fee * 100.0, precision: 1),
+                         ActionController::Base.helpers.number_with_precision(f.amount_cents_as_decimal / 100.0, precision: 4),
+                         ActionController::Base.helpers.number_with_precision(@tally / 100.0, precision: 4)
+                       ])
       end
+
     end
   end
 end

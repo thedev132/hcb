@@ -13,6 +13,7 @@ module Partners
         def run
           directory_client.list_org_units(gsuite_customer_id, org_unit_path: @org_unit_path)
         end
+
       end
     end
   end

@@ -34,6 +34,7 @@ module Partners
             hcb_metadata_identifier: @hcb_metadata_identifier
           }
         end
+
       end
     end
   end

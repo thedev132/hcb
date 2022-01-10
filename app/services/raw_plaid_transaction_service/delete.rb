@@ -25,5 +25,6 @@ module RawPlaidTransactionService
     def raw_plaid_transaction
       @raw_plaid_transaction ||= ::RawPlaidTransaction.find(@raw_plaid_transaction_id)
     end
+
   end
 end

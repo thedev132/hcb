@@ -30,6 +30,7 @@ module PendingEventMappingEngine
       def canonical_transaction_is_prior_to_the_pending_transaction?
         @canonical_pending_transaction.date >= canonical_transaction.date + 1.1.days # allow for slight time shift here given timezones
       end
+
     end
   end
 end

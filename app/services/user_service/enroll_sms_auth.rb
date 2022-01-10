@@ -20,7 +20,7 @@ module UserService
         @user.api_access_token
       )
 
-      ::BankApiService.req("post", "/v1/users/sms_auth", { email: @user.email })
+      ::BankApiService.req("post", "/v1/users/sms_auth", email: @user.email)
     end
 
     # Completing the phone number verification by checking that exchanging code works
@@ -29,7 +29,7 @@ module UserService
         resp = ::BankApiService.req(
           "post",
           "/v1/users/#{current_user[:id]}/sms_exchange_login_code",
-          { login_code: verification_code }
+          login_code: verification_code
         )
       rescue ::BankApiService::UnauthorizedError
         raise ::Errors::InvalidLoginCode, "invalid login code"
@@ -47,6 +47,7 @@ module UserService
     def enroll_sms_auth
       raise SMSEnrollmentError("user has no phone number") if @user.phone_number.blank?
       raise SMSEnrollmentError("user has not verified phone number") unless @user.phone_number_verified
+
       @user.use_sms_auth = true
       @user.save!
     end
@@ -69,5 +70,6 @@ module UserService
         @user.api_access_token
       )
     end
+
   end
 end

@@ -8,4 +8,5 @@ class AddPayoutFieldsToInvoice < ActiveRecord::Migration[5.2]
     add_index :invoices, :payout_creation_queued_job_id, unique: true
     add_column :invoices, :payout_creation_balance_available_at, :datetime
   end
+
 end

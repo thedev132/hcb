@@ -8,6 +8,7 @@ module StripeAuthorizationJob
         #
         ::StripeAuthorization.create!(stripe_id: stripe_transaction_id)
       end
+
     end
   end
 end

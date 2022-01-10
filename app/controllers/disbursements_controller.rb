@@ -87,4 +87,5 @@ class DisbursementsController < ApplicationController
     @disbursement = Disbursement.find(params[:id] || params[:disbursement_id])
     @event = @disbursement.event
   end
+
 end

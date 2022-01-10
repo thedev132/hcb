@@ -5,5 +5,6 @@ module PayoutJob
     def perform
       ::PayoutService::Nightly.new.run
     end
+
   end
 end

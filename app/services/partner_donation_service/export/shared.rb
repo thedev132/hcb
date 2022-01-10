@@ -19,11 +19,11 @@ module PartnerDonationService
 
       def data_to_export
         {
-          status: -> (pd) { pd.state },
-          date: -> (pd) { pd.created_at },
-          url: -> (pd) { Rails.application.routes.url_helpers.hcb_code_url(pd.local_hcb_code.hashid) },
-          name: -> (pd) { pd.smart_memo },
-          amount_cents: -> (pd) { pd.amount },
+          status: ->(pd) { pd.state },
+          date: ->(pd) { pd.created_at },
+          url: ->(pd) { Rails.application.routes.url_helpers.hcb_code_url(pd.local_hcb_code.hashid) },
+          name: ->(pd) { pd.smart_memo },
+          amount_cents: ->(pd) { pd.amount },
         }
       end
 

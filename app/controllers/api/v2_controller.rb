@@ -135,5 +135,6 @@ module Api
 
       render json: Api::V2::OrganizationSerializer.new(event: event).run
     end
+
   end
 end

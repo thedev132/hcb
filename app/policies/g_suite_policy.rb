@@ -28,4 +28,5 @@ class GSuitePolicy < ApplicationPolicy
   def status?
     user.admin? || record.event.users.include?(user)
   end
+
 end

@@ -5,4 +5,5 @@ class AddHostedFieldsToInvoices < ActiveRecord::Migration[5.2]
     add_column :invoices, :hosted_invoice_url, :text
     add_column :invoices, :invoice_pdf, :text
   end
+
 end

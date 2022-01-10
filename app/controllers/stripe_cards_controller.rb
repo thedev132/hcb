@@ -95,22 +95,22 @@ class StripeCardsController < ApplicationController
       current_user.full_name
     when :line1
       current_user&.stripe_cardholder&.stripe_billing_address_line1 ||
-      ecr&.last&.shipping_address_street_one
+        ecr&.last&.shipping_address_street_one
     when :line2
       current_user&.stripe_cardholder&.stripe_billing_address_line2 ||
-      ecr&.last&.shipping_address_street_two
+        ecr&.last&.shipping_address_street_two
     when :city
       current_user&.stripe_cardholder&.stripe_billing_address_city ||
-      ecr&.last&.shipping_address_city
+        ecr&.last&.shipping_address_city
     when :state
       current_user&.stripe_cardholder&.stripe_billing_address_state ||
-      ecr&.last&.shipping_address_state
+        ecr&.last&.shipping_address_state
     when :postal_code
       current_user&.stripe_cardholder&.stripe_billing_address_postal_code ||
-      ecr&.last&.shipping_address_zip
+        ecr&.last&.shipping_address_zip
     when :country
       current_user&.stripe_cardholder&.stripe_billing_address_country ||
-      ("US" if ecr.any?)
+        ("US" if ecr.any?)
     else
       nil
     end
@@ -130,4 +130,5 @@ class StripeCardsController < ApplicationController
       :stripe_shipping_address_state
     )
   end
+
 end

@@ -6,4 +6,5 @@ class OrganizerPositionInvitesMailer < ApplicationMailer
 
     mail to: @invite.email, subject: "You've been invited to join #{@invite.event.name} on Hack Club Bank 🚀"
   end
+
 end

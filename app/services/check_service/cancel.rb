@@ -15,5 +15,6 @@ module CheckService
     def check
       @check ||= Check.find(@check_id)
     end
+
   end
 end

@@ -53,4 +53,5 @@ class InvoicePolicy < ApplicationPolicy
   def unapproved?
     record&.sponsor&.event&.unapproved?
   end
+
 end

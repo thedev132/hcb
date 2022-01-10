@@ -146,4 +146,5 @@ class GSuiteAccount < ApplicationRecord
       end
     end
   end
+
 end

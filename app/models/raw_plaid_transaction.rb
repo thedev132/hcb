@@ -8,4 +8,5 @@ class RawPlaidTransaction < ApplicationRecord
   def memo
     @memo ||= plaid_transaction["name"]
   end
+
 end

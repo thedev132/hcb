@@ -7,10 +7,10 @@ class CanonicalTransaction < ApplicationRecord
   include PgSearch::Model
   pg_search_scope :search_memo, against: [:memo, :friendly_memo, :custom_memo, :hcb_code], using: { tsearch: { prefix: true, dictionary: "english" } }, ranked_by: "canonical_transactions.date"
 
-  scope :unmapped, -> { includes(:canonical_event_mapping).where(canonical_event_mappings: {canonical_transaction_id: nil}) }
-  scope :mapped, -> { includes(:canonical_event_mapping).where.not(canonical_event_mappings: {canonical_transaction_id: nil}) }
-  scope :missing_pending, -> { includes(:canonical_pending_settled_mapping).where(canonical_pending_settled_mappings: {canonical_transaction_id: nil}) }
-  scope :has_pending, -> { includes(:canonical_pending_settled_mapping).where.not(canonical_pending_settled_mappings: {canonical_transaction_id: nil}) }
+  scope :unmapped, -> { includes(:canonical_event_mapping).where(canonical_event_mappings: { canonical_transaction_id: nil }) }
+  scope :mapped, -> { includes(:canonical_event_mapping).where.not(canonical_event_mappings: { canonical_transaction_id: nil }) }
+  scope :missing_pending, -> { includes(:canonical_pending_settled_mapping).where(canonical_pending_settled_mappings: { canonical_transaction_id: nil }) }
+  scope :has_pending, -> { includes(:canonical_pending_settled_mapping).where.not(canonical_pending_settled_mappings: { canonical_transaction_id: nil }) }
   scope :missing_hcb_code, -> { where(hcb_code: nil) }
   scope :missing_or_unknown_hcb_code, -> { where("hcb_code is null or hcb_code ilike 'HCB-000%'") }
   scope :invoice_hcb_code, -> { where("hcb_code ilike 'HCB-#{::TransactionGroupingEngine::Calculate::HcbCode::INVOICE_CODE}%'") }
@@ -37,7 +37,7 @@ class CanonicalTransaction < ApplicationRecord
   scope :stripe_top_up, -> { where("memo ilike '%Hack Club Bank Stripe Top%' or memo ilike '%HACKC Stripe Top%' or memo ilike '%HCKCLB Stripe Top%'") }
   scope :not_stripe_top_up, -> { where("(memo not ilike '%Hack Club Bank Stripe Top%' and memo not ilike '%HACKC Stripe Top%' and memo not ilike '%HCKCLB Stripe Top%') or memo is null") }
   scope :mapped_by_human, -> { includes(:canonical_event_mapping).where("canonical_event_mappings.user_id is not null").references(:canonical_event_mapping) }
-  scope :included_in_stats, -> { includes(canonical_event_mapping: :event).where(events: {omit_stats: false}) }
+  scope :included_in_stats, -> { includes(canonical_event_mapping: :event).where(events: { omit_stats: false }) }
 
   monetize :amount_cents
 
@@ -120,11 +120,13 @@ class CanonicalTransaction < ApplicationRecord
 
   def remote_stripe_iauth_id
     return nil unless raw_stripe_transaction
+
     raw_stripe_transaction.stripe_transaction["authorization"]
   end
 
   def stripe_auth_dashboard_url
     return nil unless remote_stripe_iauth_id
+
     "https://dashboard.stripe.com/issuing/authorizations/#{remote_stripe_iauth_id}"
   end
 

@@ -20,6 +20,7 @@ module EventMappingEngine
       def amount_cents
         @canonical_transaction.amount_cents
       end
+
     end
   end
 end

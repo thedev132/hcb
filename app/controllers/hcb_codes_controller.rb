@@ -69,4 +69,5 @@ class HcbCodesController < ApplicationController
       redirect_to @hcb_code, flash: { error: error_reason }
     end
   end
+
 end

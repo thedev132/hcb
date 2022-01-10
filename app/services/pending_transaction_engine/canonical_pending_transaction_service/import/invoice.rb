@@ -33,6 +33,7 @@ module PendingTransactionEngine
         def previously_processed_raw_pending_invoice_transactions_ids
           @previously_processed_raw_pending_invoice_transactions_ids ||= ::CanonicalPendingTransaction.invoice.pluck(:raw_pending_invoice_transaction_id)
         end
+
       end
     end
   end

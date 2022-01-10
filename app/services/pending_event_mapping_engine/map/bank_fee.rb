@@ -20,6 +20,7 @@ module PendingEventMappingEngine
       def unmapped
         CanonicalPendingTransaction.unmapped.bank_fee
       end
+
     end
   end
 end

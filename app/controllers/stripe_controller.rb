@@ -51,6 +51,7 @@ class StripeController < ApplicationController
     tx = event[:data][:object]
     amount = tx[:amount]
     return unless amount < 0
+
     TopupStripeJob.perform_later
   end
 
@@ -64,4 +65,5 @@ class StripeController < ApplicationController
     charge = event[:data][:object]
     ::PartnerDonationService::HandleWebhookChargeSucceeded.new(charge).run
   end
+
 end

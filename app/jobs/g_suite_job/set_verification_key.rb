@@ -12,5 +12,6 @@ module GSuiteJob
     def g_suite
       GSuite.find(@g_suite_id)
     end
+
   end
 end

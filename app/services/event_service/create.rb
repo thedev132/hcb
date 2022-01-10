@@ -66,5 +66,6 @@ module EventService
     def organization_identifier
       @organization_identifier ||= "bank_#{SecureRandom.hex}"
     end
+
   end
 end

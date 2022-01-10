@@ -9,9 +9,9 @@ module TransactionEngine
 
       def run
         friendly_memo = handle_hack_club_bank_fee ||
-          handle_linked_object ||
-          handle_emburse_refund ||
-          handle_solely_from_memo
+                        handle_linked_object ||
+                        handle_emburse_refund ||
+                        handle_solely_from_memo
 
         return friendly_memo.to_s.upcase if friendly_memo
 
@@ -60,6 +60,7 @@ module TransactionEngine
       def hack_club_fee?
         @canonical_transaction.fees.hack_club_fee.exists?
       end
+
     end
   end
 end

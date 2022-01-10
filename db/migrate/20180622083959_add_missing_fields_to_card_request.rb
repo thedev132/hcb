@@ -9,4 +9,5 @@ class AddMissingFieldsToCardRequest < ActiveRecord::Migration[5.2]
     add_column :card_requests, :canceled_at, :timestamp
     add_column :card_requests, :notes, :text
   end
+
 end

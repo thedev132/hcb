@@ -28,6 +28,7 @@ module HcbCodeService
       def hcb_code
         @hcb_code ||= HcbCode.find(@hcb_code_id)
       end
+
     end
   end
 end

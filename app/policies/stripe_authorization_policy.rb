@@ -8,4 +8,5 @@ class StripeAuthorizationPolicy < ApplicationPolicy
   def show?
     user&.admin? || record&.event&.users&.include?(user)
   end
+
 end

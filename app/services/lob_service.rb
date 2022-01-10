@@ -69,4 +69,5 @@ class LobService
   def delete_address(lob_id)
     client.addresses.destroy(lob_id)
   end
+
 end

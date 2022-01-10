@@ -33,6 +33,7 @@ module PendingTransactionEngine
         def previously_processed_raw_pending_bank_fee_transactions_ids
           @previously_processed_raw_pending_bank_fee_transactions_ids ||= ::CanonicalPendingTransaction.bank_fee.pluck(:raw_pending_bank_fee_transaction_id)
         end
+
       end
     end
   end

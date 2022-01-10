@@ -37,5 +37,6 @@ module BankFeeService
     def anomaly_detected?(bank_fee:)
       ::PendingEventMappingEngine::AnomalyDetection::BadSettledMapping.new(canonical_pending_transaction: bank_fee.canonical_pending_transaction).run
     end
+
   end
 end

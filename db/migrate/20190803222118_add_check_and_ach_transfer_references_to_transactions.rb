@@ -5,4 +5,5 @@ class AddCheckAndAchTransferReferencesToTransactions < ActiveRecord::Migration[5
     add_reference :transactions, :check, foreign_key: true
     add_reference :transactions, :ach_transfer, foreign_key: true
   end
+
 end

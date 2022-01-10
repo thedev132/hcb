@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module PartnerDonationsHelper
 
   def partner_donation_paid_at(partner_donation = @partner_donation)
@@ -19,16 +20,16 @@ module PartnerDonationsHelper
       last4 = partner_donation&.payment_method_card_last4
 
       icon_name = {
-        "amex" => "card-amex",
+        "amex"       => "card-amex",
         "mastercard" => "card-mastercard",
-        "visa" => "card-visa",
-        "discover" => "card-discover"
+        "visa"       => "card-visa",
+        "discover"   => "card-discover"
       }[brand] || "card-other"
       tooltip = {
-        "amex" => "American Express",
+        "amex"       => "American Express",
         "mastercard" => "Mastercard",
-        "visa" => "Visa",
-        "discover" => "Discover"
+        "visa"       => "Visa",
+        "discover"   => "Discover"
       }[brand] || "Card"
       tooltip += " ending in #{last4}" if last4 && organizer_signed_in?
       description_text = organizer_signed_in? ? "••••#{last4}" : "••••"

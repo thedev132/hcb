@@ -33,13 +33,14 @@ class TopupStripeJob < ApplicationJob
     puts "topup amount == #{topup_amount}"
     return unless topup_amount > 0
 
-    StripeService::Topup.create({
+    StripeService::Topup.create(
       destination_balance: "issuing",
       amount: topup_amount,
       currency: "usd",
       statement_descriptor: "Stripe Top-up"
-    })
+    )
 
     puts "Just created a topup for #{topup_amount}"
   end
+
 end

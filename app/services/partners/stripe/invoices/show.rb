@@ -25,6 +25,7 @@ module Partners
             ]
           }
         end
+
       end
     end
   end

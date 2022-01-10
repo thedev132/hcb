@@ -13,6 +13,7 @@ module TransactionEngine
           next unless row.present? # skip empty rows
 
           raise ArgumentError, "csv_transaction_id #{row["csv_transaction_id"]} must be unique in the file" if s.include?(row["csv_transaction_id"])
+
           s.add(row["csv_transaction_id"])
 
           raise_any_argument_errors!(row: row)
@@ -45,6 +46,7 @@ module TransactionEngine
       def csvs_path
         "#{Rails.root}/app/services/transaction_engine/csvs"
       end
+
     end
   end
 end

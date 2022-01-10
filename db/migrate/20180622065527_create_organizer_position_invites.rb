@@ -14,7 +14,8 @@ class CreateOrganizerPositionInvites < ActiveRecord::Migration[5.2]
     # This is to ensure that events cannot have multiple invites out to the
     # same email / user at the same time.
     add_index :organizer_position_invites, [:event_id, :email, :user_id],
-      unique: true,
-      name: "index_organizer_position_invites_uniqueness"
+              unique: true,
+              name: "index_organizer_position_invites_uniqueness"
   end
+
 end

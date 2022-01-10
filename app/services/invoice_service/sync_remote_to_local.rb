@@ -65,5 +65,6 @@ module InvoiceService
     def remote_invoice
       @remote_invoice ||= invoice.remote_invoice
     end
+
   end
 end

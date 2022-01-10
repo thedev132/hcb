@@ -24,4 +24,5 @@ class Receipt < ApplicationRecord
   rescue ActiveStorage::FileNotFoundError
     nil
   end
+
 end

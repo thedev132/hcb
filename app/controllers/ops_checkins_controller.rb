@@ -16,4 +16,5 @@ class OpsCheckinsController < ApplicationController
       redirect_to admin_tasks_path
     end
   end
+
 end

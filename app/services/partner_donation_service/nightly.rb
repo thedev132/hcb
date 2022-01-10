@@ -30,5 +30,6 @@ module PartnerDonationService
     def anomaly_detected?(partner_donation:)
       ::PendingEventMappingEngine::AnomalyDetection::BadSettledMapping.new(canonical_pending_transaction: partner_donation.canonical_pending_transaction).run
     end
+
   end
 end

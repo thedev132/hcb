@@ -6,4 +6,5 @@ class RenameLoadCardRequestsToEmburseTransfer < ActiveRecord::Migration[6.0]
 
     rename_column :transactions, :load_card_request_id, :emburse_transfer_id
   end
+
 end

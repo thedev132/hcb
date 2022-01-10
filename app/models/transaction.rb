@@ -46,8 +46,8 @@ class Transaction < ApplicationRecord
   validates :is_event_related, inclusion: { in: [true, false] }
 
   validates :fee_relationship,
-    absence: true,
-    unless: -> { self.is_event_related }
+            absence: true,
+            unless: -> { self.is_event_related }
 
   validate :ensure_paired_correctly
 
@@ -66,11 +66,11 @@ class Transaction < ApplicationRecord
   end
 
   def self.total_volume
-    self.includes(fee_relationship: :event).where(events: {omit_stats: false}).sum("@amount").to_i
+    self.includes(fee_relationship: :event).where(events: { omit_stats: false }).sum("@amount").to_i
   end
 
   def self.during(start_time, end_time)
-    self.includes(fee_relationship: :event).where(events: {omit_stats: false})
+    self.includes(fee_relationship: :event).where(events: { omit_stats: false })
         .where(["transactions.date > ? and transactions.date < ?", start_time, end_time])
   end
 
@@ -80,26 +80,26 @@ class Transaction < ApplicationRecord
 
   def self.raised_during(start_time, end_time)
     raised_during = self.during(start_time, end_time)
-      .includes(:fee_relationship)
-      .where(
-        is_event_related: true,
-        fee_relationships: {
-          fee_applies: true,
-        },
-    )
+                        .includes(:fee_relationship)
+                        .where(
+                          is_event_related: true,
+                          fee_relationships: {
+                            fee_applies: true,
+                          },
+                        )
 
     raised_during.sum(:amount).to_i
   end
 
   def self.revenue_during(start_time, end_time)
     fees_during = self.during(start_time, end_time)
-      .includes(:fee_relationship)
-      .where(
-        is_event_related: true,
-        fee_relationships: {
-          is_fee_payment: true,
-        },
-    )
+                      .includes(:fee_relationship)
+                      .where(
+                        is_event_related: true,
+                        fee_relationships: {
+                          is_fee_payment: true,
+                        },
+                      )
 
     # revenue for Bank is expense for Events
     -fees_during.sum(:amount).to_i
@@ -190,15 +190,15 @@ class Transaction < ApplicationRecord
   # should probably be a part of the Donation class, not Transaction.
 
   def potential_invoice_payout?
-    amount.positive? && (
+    amount.positive? &&
       self.name.start_with?("Hack Club Bank PAYOUT", "HACKC PAYOUT", "HACK CLUB EVENT")
-    )
+
   end
 
   def potential_donation_payout?
-    amount.positive? && (
+    amount.positive? &&
       self.name.start_with?("Hack Club Bank DONATE", "HACKC DONATE ", "HACK CLUB EVENT")
-    )
+
   end
 
   # We used to also use 'FEE REIMBURSEMENT' as prefix
@@ -249,23 +249,23 @@ class Transaction < ApplicationRecord
     return if categorized?
 
     if potential_fee_reimbursement?
-      #try_pair_fee_reimbursement
+      # try_pair_fee_reimbursement
     elsif potential_donation_payout?
-      #try_pair_donation
+      # try_pair_donation
     elsif potential_fee_payment?
-      #try_pair_fee_payment
+      # try_pair_fee_payment
     elsif potential_invoice_payout?
       try_pair_invoice
     elsif potential_emburse?
       try_pair_emburse
     elsif potential_github?
-      #try_pair_github
+      # try_pair_github
     elsif potential_ach_transfer?
-      #try_pair_ach_transfer
+      # try_pair_ach_transfer
     elsif potential_check?
-      #try_pair_check
+      # try_pair_check
     elsif potential_disbursement?
-      #try_pair_disbursement
+      # try_pair_disbursement
     end
     # NOTE: we cannot curently auto-pair Expensify txs
   rescue => e
@@ -290,10 +290,10 @@ class Transaction < ApplicationRecord
     # and amount, are good candidates for a previously pending TX
     # that is now complete as `self`.
     matching_deleted_tx = Transaction.with_deleted
-      .where(date: self.date)
-      .where(amount: self.amount)
-      .where.not(deleted_at: nil)
-      .select { |t| self.name.start_with?(t.name) }
+                                     .where(date: self.date)
+                                     .where(amount: self.amount)
+                                     .where.not(deleted_at: nil)
+                                     .select { |t| self.name.start_with?(t.name) }
 
     return unless matching_deleted_tx.count == 1
 
@@ -456,23 +456,22 @@ class Transaction < ApplicationRecord
     return unless potential_fee_reimbursement?
 
     FeeReimbursement.pending.each do |reimbursement|
-      if (self.name.start_with? reimbursement.transaction_memo)
-        return unless reimbursement.payout&.t_transaction
-        return unless self.amount == reimbursement.amount || reimbursement.amount < 100 && self.amount == 100
+      next unless (self.name.start_with? reimbursement.transaction_memo)
+      return unless reimbursement.payout&.t_transaction
+      return unless self.amount == reimbursement.amount || reimbursement.amount < 100 && self.amount == 100
 
-        reimbursement.t_transaction = self
+      reimbursement.t_transaction = self
 
-        self.fee_relationship = FeeRelationship.new(
-          event_id: reimbursement.event.id,
-          fee_applies: true,
-          fee_amount: reimbursement.calculate_fee_amount
-        )
+      self.fee_relationship = FeeRelationship.new(
+        event_id: reimbursement.event.id,
+        fee_applies: true,
+        fee_amount: reimbursement.calculate_fee_amount
+      )
 
-        self.display_name = reimbursement.transaction_display_name
-        self.save
+      self.display_name = reimbursement.transaction_display_name
+      self.save
 
-        break
-      end
+      break
     end
   end
 
@@ -506,8 +505,8 @@ class Transaction < ApplicationRecord
 
     # emburse transfers will be negative on the account balance
     unpaired_matching_amount = EmburseTransfer
-      .unpaired.where(load_amount: -self.amount)
-      .order(accepted_at: :desc)
+                               .unpaired.where(load_amount: -self.amount)
+                               .order(accepted_at: :desc)
 
     return unless unpaired_matching_amount.count == 1
 
@@ -548,10 +547,10 @@ class Transaction < ApplicationRecord
 
     # ach transfers out will be negative on the account balance
     unpaired_matching_amount = AchTransfer
-      .approved
-      .where(amount: -self.amount)
-      .order(approved_at: :desc)
-      .in_transit
+                               .approved
+                               .where(amount: -self.amount)
+                               .order(approved_at: :desc)
+                               .in_transit
 
     return unless unpaired_matching_amount.count > 0
 
@@ -572,24 +571,24 @@ class Transaction < ApplicationRecord
     return unless potential_check?
 
     Check.in_transit.each do |check|
-      if self.amount.abs == check.amount.abs
-        self.check = check
+      next unless self.amount.abs == check.amount.abs
 
-        # if from a positive pay account, does not belong to any event
-        if self.bank_account.is_positive_pay?
-          self.is_event_related = false
-        else
-          self.fee_relationship = FeeRelationship.new(
-            event_id: check.event.id,
-            fee_applies: false
-          )
-        end
+      self.check = check
 
-        self.display_name = "Check to #{check.lob_address.name} - #{check.memo}"
-        self.save
-
-        break
+      # if from a positive pay account, does not belong to any event
+      if self.bank_account.is_positive_pay?
+        self.is_event_related = false
+      else
+        self.fee_relationship = FeeRelationship.new(
+          event_id: check.event.id,
+          fee_applies: false
+        )
       end
+
+      self.display_name = "Check to #{check.lob_address.name} - #{check.memo}"
+      self.save
+
+      break
     end
   end
 
@@ -630,4 +629,5 @@ class Transaction < ApplicationRecord
   def filter_for(text)
     name&.downcase&.include? text
   end
+
 end

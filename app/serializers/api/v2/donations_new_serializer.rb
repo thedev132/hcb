@@ -25,6 +25,7 @@ module Api
       def organization
         @partner_donation.event
       end
+
     end
   end
 end

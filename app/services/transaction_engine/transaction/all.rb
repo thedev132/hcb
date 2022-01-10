@@ -28,6 +28,7 @@ module TransactionEngine
       def canonical_transaction_ids
         @canonical_transaction_ids ||= canonical_event_mappings.pluck(:canonical_transaction_id)
       end
+
     end
   end
 end

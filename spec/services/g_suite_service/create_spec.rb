@@ -3,7 +3,7 @@
 require "rails_helper"
 
 RSpec.describe GSuiteService::Create, type: :model do
-  fixtures  "users", "events",  "g_suites"
+  fixtures "users", "events", "g_suites"
 
   let(:event) { events(:event1) }
   let(:current_user) { users(:user1) }

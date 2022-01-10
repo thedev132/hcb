@@ -114,5 +114,6 @@ module StripeCardService
     def physical?
       !virtual?
     end
+
   end
 end

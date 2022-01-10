@@ -6,6 +6,7 @@ module Api
       params do
         required(:public_id).filled(:string)
       end
+
     end
   end
 end

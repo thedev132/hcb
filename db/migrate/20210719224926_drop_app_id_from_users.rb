@@ -7,4 +7,5 @@ class DropAppIdFromUsers < ActiveRecord::Migration[6.0]
       remove_column :users, :api_id
     end
   end
+
 end

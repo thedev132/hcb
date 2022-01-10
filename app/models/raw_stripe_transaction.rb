@@ -16,4 +16,5 @@ class RawStripeTransaction < ApplicationRecord
   def stripe_card_id
     stripe_transaction.dig("card")
   end
+
 end

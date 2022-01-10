@@ -69,4 +69,5 @@ class GSuitesController < ApplicationController
   def g_suite_params
     params.require(:g_suite).permit(:event_id, :domain, :verification_key, :dkim_key, :deleted_at)
   end
+
 end

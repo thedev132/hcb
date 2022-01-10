@@ -6,4 +6,5 @@ class FeeReimbursementMailer < ApplicationMailer
 
     mail to: admin_email, subject: "Fee refund unmatched after 5 days"
   end
+
 end

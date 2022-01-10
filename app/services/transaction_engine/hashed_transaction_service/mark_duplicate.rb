@@ -15,6 +15,7 @@ module TransactionEngine
         @duplicate_tx.duplicate_of_hashed_transaction = @valid_tx
         @duplicate_tx.save!
       end
+
     end
   end
 end

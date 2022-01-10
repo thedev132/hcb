@@ -63,6 +63,7 @@ module EventMappingEngine
       def in_common_emburse_transaction_ids
         @in_common_emburse_transaction_ids ||= deprecated_transaction_emburse_ids && raw_emburse_transaction_ids
       end
+
     end
   end
 end

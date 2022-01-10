@@ -3,7 +3,7 @@
 require "rails_helper"
 
 RSpec.describe Comment, type: :model do
-  fixtures "users",  "transactions", "comments"
+  fixtures "users", "transactions", "comments"
 
   let(:transaction) { transactions(:transaction1) }
   let(:comment) { comments(:comment1) }

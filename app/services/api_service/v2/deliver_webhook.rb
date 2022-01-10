@@ -5,7 +5,7 @@ module ApiService
     class DeliverWebhook
       VALID_WEBHOOK_TYPES = [
         ::PartneredSignupService::DeliverWebhook::TYPE,
-      ]
+      ].freeze
 
       # POST to `webhook_url`
       def initialize(type:, webhook_url:, data:, secret:)
@@ -45,7 +45,7 @@ module ApiService
 
       def new_attrs
         {
-          headers: {"Content-Type" => "application/json"}
+          headers: { "Content-Type" => "application/json" }
         }
       end
 
@@ -71,6 +71,7 @@ module ApiService
       def valid_webhook_type?
         VALID_WEBHOOK_TYPES.include?(@type)
       end
+
     end
   end
 end

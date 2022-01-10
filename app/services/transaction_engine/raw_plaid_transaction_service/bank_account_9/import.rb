@@ -44,6 +44,7 @@ module TransactionEngine
         def plaid_account_id
           @plaid_account_id ||= bank_account.plaid_account_id
         end
+
       end
     end
   end

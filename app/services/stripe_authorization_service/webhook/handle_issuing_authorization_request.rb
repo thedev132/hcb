@@ -51,6 +51,7 @@ module StripeAuthorizationService
       def approve?
         event.balance_available_v2_cents >= amount_cents
       end
+
     end
   end
 end

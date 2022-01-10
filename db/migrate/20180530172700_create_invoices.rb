@@ -32,4 +32,5 @@ class CreateInvoices < ActiveRecord::Migration[5.2]
     add_index :invoices, :stripe_invoice_id, unique: true
     add_index :invoices, :item_stripe_id, unique: true
   end
+
 end

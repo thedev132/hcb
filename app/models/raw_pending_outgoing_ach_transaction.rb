@@ -24,4 +24,5 @@ class RawPendingOutgoingAchTransaction < ApplicationRecord
   def raw_name
     ach_transfer.recipient_name
   end
+
 end

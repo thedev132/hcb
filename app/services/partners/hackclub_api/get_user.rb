@@ -21,6 +21,7 @@ module Partners
       def url
         "/v1/users/#{@user_id}"
       end
+
     end
   end
 end

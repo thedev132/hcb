@@ -49,3 +49,10 @@ yarn-debug.log*
 
 # IntelliJ
 .idea
+
+# Yard docs
+.yardoc
+/doc
+
+# ctags
+/tags

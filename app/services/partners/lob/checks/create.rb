@@ -54,6 +54,7 @@ module Partners
 
           @send_date.iso8601
         end
+
       end
     end
   end

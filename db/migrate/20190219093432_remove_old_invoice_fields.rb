@@ -5,4 +5,5 @@ class RemoveOldInvoiceFields < ActiveRecord::Migration[5.2]
     remove_column :invoices, :paid
     remove_column :invoices, :forgiven
   end
+
 end

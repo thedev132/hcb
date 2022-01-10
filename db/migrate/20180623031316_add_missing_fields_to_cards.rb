@@ -9,4 +9,5 @@ class AddMissingFieldsToCards < ActiveRecord::Migration[5.2]
     add_column :cards, :expiration_year, :integer
     add_reference :cards, :card_request, index: true
   end
+
 end

@@ -21,6 +21,7 @@ module Partners
             payment_intent: @payment_intent_id,
           }
         end
+
       end
     end
   end

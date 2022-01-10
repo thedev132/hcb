@@ -20,6 +20,7 @@ module PendingEventMappingEngine
       def unmapped
         CanonicalPendingTransaction.unmapped.partner_donation
       end
+
     end
   end
 end

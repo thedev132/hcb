@@ -168,4 +168,5 @@ class CanonicalTransactionGrouped
 
     ct2.custom_memo
   end
+
 end

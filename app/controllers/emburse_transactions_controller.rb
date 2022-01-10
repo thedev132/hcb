@@ -60,4 +60,5 @@ class EmburseTransactionsController < ApplicationController
     @emburse_transaction = EmburseTransaction.find(params[:id])
     authorize @emburse_transaction
   end
+
 end

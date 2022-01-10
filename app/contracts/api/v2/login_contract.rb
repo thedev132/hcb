@@ -6,6 +6,7 @@ module Api
       params do
         required(:login_token).filled(:string)
       end
+
     end
   end
 end

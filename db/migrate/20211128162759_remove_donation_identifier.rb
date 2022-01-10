@@ -7,4 +7,5 @@ class RemoveDonationIdentifier < ActiveRecord::Migration[6.0]
       remove_column :donations, :donation_identifier, :text
     }
   end
+
 end

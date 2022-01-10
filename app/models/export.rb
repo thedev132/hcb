@@ -15,4 +15,5 @@ class Export < ApplicationRecord
 
     errors.add(:base, "Do not create intances of Export directly. Create instances of children instead.")
   end
+
 end

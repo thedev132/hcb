@@ -60,6 +60,7 @@ module PendingTransactionEngine
       def donation_name
         raw_pending_donation_transaction.donation.name.to_s.upcase
       end
+
     end
   end
 end

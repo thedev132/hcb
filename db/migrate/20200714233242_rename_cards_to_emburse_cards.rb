@@ -15,4 +15,5 @@ class RenameCardsToEmburseCards < ActiveRecord::Migration[6.0]
     rename_column :emburse_transactions, :emburse_card_id, :emburse_card_uuid
     rename_column :emburse_transactions, :card_id, :emburse_card_id
   end
+
 end

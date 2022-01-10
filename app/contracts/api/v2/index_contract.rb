@@ -5,6 +5,7 @@ module Api
     class IndexContract < Api::ApplicationContract
       params do
       end
+
     end
   end
 end

@@ -34,4 +34,5 @@ class FeeRelationship < ApplicationRecord
 
     self.fee_amount / BigDecimal(self.t_transaction.amount)
   end
+
 end

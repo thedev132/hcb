@@ -7,4 +7,5 @@ class AddFingerPrintColumnsToSessions < ActiveRecord::Migration[6.0]
     add_column :user_sessions, :os_info, :string
     add_column :user_sessions, :timezone, :string
   end
+
 end

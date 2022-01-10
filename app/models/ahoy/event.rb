@@ -7,4 +7,5 @@ class Ahoy::Event < ApplicationRecord
 
   belongs_to :visit, optional: true
   belongs_to :user, optional: true
+
 end

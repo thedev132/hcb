@@ -35,5 +35,6 @@ module BankFeeService
     def calculate_amount_cents
       event.fee_balance_v2_cents
     end
+
   end
 end

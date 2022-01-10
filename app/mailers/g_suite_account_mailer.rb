@@ -26,4 +26,5 @@ class GSuiteAccountMailer < ApplicationMailer
     mail to: @recipient,
          subject: "Your Bank Google Workspace password was reset"
   end
+
 end

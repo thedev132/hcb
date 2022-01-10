@@ -29,8 +29,10 @@ module Partners
         obj = {}
         obj[:phone_number] = @phone_number unless @phone_number.nil?
         raise ArgumentError.new("empty update hash, must provide at least one fields") if obj.empty?
+
         obj
       end
+
     end
   end
 end

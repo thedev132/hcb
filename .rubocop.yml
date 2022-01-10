@@ -1,13 +1,134 @@
+inherit_from: .rubocop_todo.yml
+
+# The "offical" rubocop style guide is indeed quite strict. So intead, we use
+# the Relaxed Ruby Style guide. https://relaxed.ruby.style/
+
 inherit_gem:
-  rubocop-github:
-    - config/default.yml
-    - config/rails.yml
+  relaxed-rubocop: .rubocop.yml
 
-GitHub/RailsControllerRenderLiteral:
-  Exclude:
-    - app/controllers/**/*
+Style/RedundantSelf:
+  Enabled: false
 
-GitHub/RailsControllerRenderPathsExist:
-  Exclude:
-    - app/controllers/**/*
+Style/RescueStandardError:
+  EnforcedStyle: implicit
 
+Lint/UselessAssignment:
+  Enabled: false
+
+Layout/EmptyLinesAroundClassBody:
+  EnforcedStyle: ending_only
+
+Layout/EmptyLinesAroundBlockBody:
+  Enabled: false
+
+Style/AndOr:
+  EnforcedStyle: conditionals
+
+Style/RedundantReturn:
+  Enabled: false
+
+Style/StringLiteralsInInterpolation:
+  Enabled: false
+
+Layout/AlignHash:
+  EnforcedHashRocketStyle: table
+
+Style/NumericLiterals:
+  Enabled: false
+
+Style/SymbolProc:
+  Enabled: false
+
+Naming/UncommunicativeMethodParamName:
+  Enabled: false
+
+Style/EmptyMethod:
+  Enabled: false
+
+Style/RedundantBegin:
+  Enabled: false
+
+Style/ZeroLengthPredicate:
+  Enabled: false
+
+Layout/EmptyLines:
+  Enabled: false
+
+Style/RaiseArgs:
+  Enabled: false
+
+Naming/PredicateName:
+  Enabled: false
+
+Style/ConditionalAssignment:
+  Enabled: false
+
+Lint/UnusedMethodArgument:
+  Enabled: false
+
+Style/EmptyElse:
+  Enabled: false
+
+Layout/EmptyLineBetweenDefs:
+  NumberOfEmptyLines: [1, 2, 3, 4, 5]
+
+Style/CommentedKeyword:
+  Enabled: false
+
+Lint/HandleExceptions:
+  Enabled: false
+
+Lint/UnusedBlockArgument:
+  Enabled: false
+
+Layout/EmptyLinesAroundMethodBody:
+  Enabled: false
+
+Layout/EmptyLinesAroundModuleBody:
+  Enabled: false
+
+Lint/UselessAccessModifier:
+  Enabled: false
+
+Style/ParenthesesAroundCondition:
+  Enabled: false
+
+Layout/EmptyLinesAroundExceptionHandlingKeywords:
+  Enabled: false
+
+Layout/MultilineHashBraceLayout:
+  EnforcedStyle: new_line
+
+Style/RescueModifier:
+  Enabled: false
+
+Layout/SpaceInsideStringInterpolation:
+  Enabled: false
+
+Naming/RescuedExceptionsVariableName:
+  Enabled: false
+
+Style/Encoding:
+  Enabled: false
+
+Style/IfInsideElse:
+  Enabled: false
+
+Style/MixinUsage:
+  Enabled: false
+
+Style/TrivialAccessors:
+  Enabled: false
+
+Style/RegexpLiteral:
+  EnforcedStyle: mixed
+  AllowInnerSlashes: true
+
+Layout/DotPosition:
+  Enabled: true
+
+# Layout/CommentIndentation:
+#   AllowForAlignment: true # this is erroring
+
+# Metrics/LineLength:
+#   Max: 80

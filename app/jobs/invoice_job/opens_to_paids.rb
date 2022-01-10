@@ -5,5 +5,6 @@ module InvoiceJob
     def perform
       ::InvoiceService::OpensToPaids.new.run
     end
+
   end
 end

@@ -21,5 +21,6 @@ module GSuiteService
     def g_suite
       @g_suite ||= GSuite.find(@g_suite_id)
     end
+
   end
 end

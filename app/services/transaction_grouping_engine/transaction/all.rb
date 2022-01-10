@@ -119,6 +119,7 @@ module TransactionGroupingEngine
 
         ActiveRecord::Base.connection.execute(q)
       end
+
     end
   end
 end

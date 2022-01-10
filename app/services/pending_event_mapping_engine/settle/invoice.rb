@@ -9,6 +9,7 @@ module PendingEventMappingEngine
           invoice = cpt.invoice
           Airbrake.notify("invoice not found for canonical pending transaction #{cpt.id}") unless invoice
           next unless invoice
+
           event = invoice.event
 
           # standard case
@@ -19,9 +20,10 @@ module PendingEventMappingEngine
             cts = event.canonical_transactions.where("memo ilike '%PAYOUT% #{prefix}%' and date >= ?", cpt.date).order("date asc")
 
             # 2.b special case if invoice is quite old & now results
-            #cts = event.canonical_transactions.where("memo ilike '%DONAT% #{prefix[0]}%'") if cts.count < 1 && invoice.created_at < Time.utc(2020, 1, 1) # shorter prefix. see  id 1 for example.
+            # cts = event.canonical_transactions.where("memo ilike '%DONAT% #{prefix[0]}%'") if cts.count < 1 && invoice.created_at < Time.utc(2020, 1, 1) # shorter prefix. see  id 1 for example.
 
             next if cts.count < 1 # no match found yet. not processed.
+
             Airbrake.notify("matched more than 1 canonical transaction for canonical pending transaction #{cpt.id}") if cts.count > 1
             ct = cts.first
 
@@ -46,6 +48,7 @@ module PendingEventMappingEngine
             cts = event.canonical_transactions.missing_pending.where("amount_cents = ? and date > ?", cpt.amount_cents, cpt.date) unless cts.present? # see example canonical transaction 198588
 
             next if cts.count < 1 # no match found yet. not processed.
+
             Airbrake.notify("matched more than 1 canonical transaction for canonical pending transaction #{cpt.id}") if cts.count > 1
             ct = cts.first
 

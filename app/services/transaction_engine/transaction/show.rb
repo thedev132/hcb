@@ -10,6 +10,7 @@ module TransactionEngine
       def run
         ::CanonicalTransaction.find(@canonical_transaction_id)
       end
+
     end
   end
 end

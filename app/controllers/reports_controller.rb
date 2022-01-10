@@ -38,4 +38,5 @@ class ReportsController < ApplicationController
   def current_time
     Time.now.strftime("%m_%d_%Y")
   end
+
 end

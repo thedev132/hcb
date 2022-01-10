@@ -39,5 +39,6 @@ module InvoiceService
     def remote_invoice
       @remote_invoice ||= ::Partners::Stripe::Invoices::Show.new(id: invoice.stripe_invoice_id).run
     end
+
   end
 end

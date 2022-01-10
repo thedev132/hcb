@@ -11,4 +11,5 @@ class SeleniumSession < ApplicationRecord
       transitions from: :active, to: :expired
     end
   end
+
 end

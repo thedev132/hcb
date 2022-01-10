@@ -5,4 +5,5 @@ class RemoveCardNumberAndCvvFromCards < ActiveRecord::Migration[5.2]
     remove_column :cards, :card_number, :string
     remove_column :cards, :cvv, :string
   end
+
 end

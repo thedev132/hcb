@@ -19,5 +19,6 @@ module SeleniumService
 
       cookies
     end
+
   end
 end

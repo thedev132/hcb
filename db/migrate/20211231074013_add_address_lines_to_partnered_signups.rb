@@ -9,4 +9,5 @@ class AddAddressLinesToPartneredSignups < ActiveRecord::Migration[6.0]
     add_column :partnered_signups, :owner_address_postal_code, :text
     add_column :partnered_signups, :owner_address_country, :integer
   end
+
 end

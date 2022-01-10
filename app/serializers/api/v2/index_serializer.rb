@@ -14,6 +14,7 @@ module Api
       def data
         {}
       end
+
     end
   end
 end

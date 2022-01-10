@@ -15,4 +15,5 @@ class ApplicationMailer < ActionMailer::Base
     env = Rails.env.production? ? :prod : :dev
     Rails.application.credentials.admin_email[env]
   end
+
 end

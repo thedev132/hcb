@@ -49,5 +49,6 @@ module InvoiceService
     def invoice
       @invoice ||= Invoice.find(@invoice_id)
     end
+
   end
 end

@@ -23,6 +23,7 @@ module PendingTransactionEngine
         def pending_outgoing_check_transactions
           @pending_outgoing_check_transactions ||= Check.all
         end
+
       end
     end
   end

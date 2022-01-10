@@ -4,4 +4,5 @@ class AddStripeAuthorizationIdToRawStripeTransactions < ActiveRecord::Migration[
   def change
     add_column :raw_stripe_transactions, :stripe_authorization_id, :text
   end
+
 end

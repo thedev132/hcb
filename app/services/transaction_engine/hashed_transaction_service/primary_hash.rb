@@ -58,6 +58,7 @@ module TransactionEngine
       def date_formatted_correctly?
         Date.parse(@date).strftime("%Y-%m-%d") == @date
       end
+
     end
   end
 end

@@ -5,4 +5,5 @@ class AddAcceptRejectFieldsToOrganizerPositionInvites < ActiveRecord::Migration[
     add_column :organizer_position_invites, :accepted_at, :datetime
     add_column :organizer_position_invites, :rejected_at, :datetime
   end
+
 end

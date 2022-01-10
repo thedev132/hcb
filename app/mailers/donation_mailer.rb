@@ -13,4 +13,5 @@ class DonationMailer < ApplicationMailer
 
     mail to: @emails, subject: "Congrats on receiving your first donation! 🎉"
   end
+
 end

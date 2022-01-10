@@ -14,6 +14,7 @@ module Partners
           def run
             ::StripeService::Issuing::Transaction.retrieve(@id)
           end
+
         end
       end
     end

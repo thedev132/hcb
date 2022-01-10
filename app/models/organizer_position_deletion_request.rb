@@ -36,4 +36,5 @@ class OrganizerPositionDeletionRequest < ApplicationRecord
     self.closed_at = nil
     self.save
   end
+
 end

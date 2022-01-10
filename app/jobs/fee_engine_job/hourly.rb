@@ -5,5 +5,6 @@ module FeeEngineJob
     def perform
       ::FeeEngine::Hourly.new.run
     end
+
   end
 end

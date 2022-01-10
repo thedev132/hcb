@@ -119,4 +119,5 @@ class Disbursement < ApplicationRecord
   def transaction_memo
     "HCB DISBURSE #{id}"
   end
+
 end

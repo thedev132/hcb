@@ -190,4 +190,5 @@ class Check < ApplicationRecord
   def send_date_must_be_in_future
     self.errors.add(:send_date, "must be at least 24 hours in the future") if send_date.nil? || send_date <= (Time.now.utc + 24.hours)
   end
+
 end

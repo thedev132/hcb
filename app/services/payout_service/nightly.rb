@@ -11,5 +11,6 @@ module PayoutService
         ::PayoutJob::Invoice.perform_later(invoice.id)
       end
     end
+
   end
 end

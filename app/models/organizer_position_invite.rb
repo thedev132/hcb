@@ -151,4 +151,5 @@ class OrganizerPositionInvite < ApplicationRecord
       self.errors.add(:user, "already has a pending invite!")
     end
   end
+
 end

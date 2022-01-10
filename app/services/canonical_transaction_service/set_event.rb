@@ -45,5 +45,6 @@ module CanonicalTransactionService
     def canonical_transaction
       @canonical_transaction ||= CanonicalTransaction.find(@canonical_transaction_id)
     end
+
   end
 end

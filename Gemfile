@@ -114,9 +114,9 @@ gem "google-api-client"
 gem "active_storage_validations"
 
 group :development, :test do
+  gem "relaxed-rubocop"
   gem "rspec-rails", "~> 4.0.1"
-  gem "rubocop", "0.74.0"
-  gem "rubocop-github", "0.13.0"
+  gem "rubocop"
   gem "webdrivers"
 end
 
@@ -131,6 +131,11 @@ group :development do
   gem "letter_opener_web"
   # Generate PDFs from HTML. Version must match the wkhtmltopdf Heroku buildpack version (0.12.3 by default)
   gem "wkhtmltopdf-binary", "0.12.3"
+  # Ruby language server
+  gem "solargraph", require: false
+  gem "solargraph-rails", "~> 0.2.0", require: false
+  # For https://marketplace.visualstudio.com/items?itemName=tomclose.format-erb
+  gem 'htmlbeautifier', require: false
 end
 
 group :test do

@@ -47,5 +47,6 @@ module AchTransferService
     def event
       @event ||= Event.find(@event_id)
     end
+
   end
 end

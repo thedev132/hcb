@@ -68,5 +68,6 @@ module CheckService
     def in_transit_and_processed_checks
       Check.in_transit_and_processed
     end
+
   end
 end

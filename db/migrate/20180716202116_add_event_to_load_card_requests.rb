@@ -3,9 +3,11 @@
 class AddEventToLoadCardRequests < ActiveRecord::Migration[5.2]
   class MigrationLoadCardRequest < ApplicationRecord
     self.table_name = :load_card_requests
+
   end
   class MigrationCard < ApplicationRecord
     self.table_name = :cards
+
   end
   def change
     add_reference :load_card_requests, :event, foreign_key: true
@@ -15,4 +17,5 @@ class AddEventToLoadCardRequests < ActiveRecord::Migration[5.2]
       lcr.update!(event_id: card.event_id)
     end
   end
+
 end

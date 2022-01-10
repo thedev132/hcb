@@ -9,5 +9,6 @@ module HcbCodeService
     def run
       ::HcbCode.find_or_create_by(hcb_code: @hcb_code)
     end
+
   end
 end

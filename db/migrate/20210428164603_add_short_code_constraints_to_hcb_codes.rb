@@ -12,4 +12,5 @@ class AddShortCodeConstraintsToHcbCodes < ActiveRecord::Migration[6.0]
       execute "ALTER TABLE hcb_codes DROP CONSTRAINT constraint_hcb_codes_on_short_code_to_uppercase"
     end
   end
+
 end

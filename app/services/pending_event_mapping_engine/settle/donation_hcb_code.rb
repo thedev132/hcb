@@ -25,6 +25,7 @@ module PendingEventMappingEngine
       def unsettled
         CanonicalPendingTransaction.unsettled.donation
       end
+
     end
   end
 end

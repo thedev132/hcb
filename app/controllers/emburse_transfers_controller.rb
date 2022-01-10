@@ -118,4 +118,5 @@ class EmburseTransfersController < ApplicationController
   def emburse_transfer_params
     params.require(:emburse_transfer).permit(:event_id, :creator_id, :load_amount, :emburse_transaction_id)
   end
+
 end

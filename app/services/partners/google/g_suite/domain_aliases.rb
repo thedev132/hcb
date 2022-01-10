@@ -9,6 +9,7 @@ module Partners
         def run
           directory_client.list_domain_aliases(gsuite_customer_id)
         end
+
       end
     end
   end

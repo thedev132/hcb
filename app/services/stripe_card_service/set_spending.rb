@@ -19,5 +19,6 @@ module StripeCardService
       @card.sync_from_stripe!
       @card.save!
     end
+
   end
 end

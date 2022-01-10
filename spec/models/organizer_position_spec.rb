@@ -3,7 +3,7 @@
 require "rails_helper"
 
 RSpec.describe OrganizerPosition, type: :model do
-  fixtures  "users", "events", "organizer_positions"
+  fixtures "users", "events", "organizer_positions"
 
   let(:organizer_position) { organizer_positions(:organizer_position1) }
 

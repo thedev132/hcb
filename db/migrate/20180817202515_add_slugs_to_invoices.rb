@@ -5,4 +5,5 @@ class AddSlugsToInvoices < ActiveRecord::Migration[5.2]
     add_column :invoices, :slug, :text
     add_index :invoices, :slug, unique: true
   end
+
 end

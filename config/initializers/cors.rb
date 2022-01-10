@@ -3,7 +3,7 @@
 # Allow whitelist of origins through CORS
 
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
-  DOMAINS = %w{https://hackclub.com localhost}
+  DOMAINS = %w{https://hackclub.com localhost}.freeze
 
   allow do
     origins do |source, _env|

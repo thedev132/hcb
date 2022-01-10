@@ -50,5 +50,6 @@ module CheckService
     def description
       @description ||= "#{event.name} - #{lob_address.name}"[0..255]
     end
+
   end
 end

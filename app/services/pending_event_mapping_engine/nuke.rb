@@ -5,5 +5,6 @@ module PendingEventMappingEngine
     def run
       CanonicalPendingEventMapping.delete_all
     end
+
   end
 end

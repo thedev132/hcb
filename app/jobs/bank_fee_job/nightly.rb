@@ -5,5 +5,6 @@ module BankFeeJob
     def perform
       BankFeeService::Nightly.new.run
     end
+
   end
 end

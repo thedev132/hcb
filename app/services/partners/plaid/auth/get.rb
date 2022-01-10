@@ -13,6 +13,7 @@ module Partners
         def run
           plaid_client.auth.get(@access_token)
         end
+
       end
     end
   end

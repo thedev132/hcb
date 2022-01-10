@@ -24,7 +24,7 @@ class EventsController < ApplicationController
     @organizers = @event.organizer_positions.includes(:user)
     @pending_transactions = _show_pending_transactions
 
-    if !signed_in? and !@event.holiday_features
+    if !signed_in? && !@event.holiday_features
       @hide_holiday_features = true
     end
 
@@ -113,9 +113,9 @@ class EventsController < ApplicationController
 
   def emburse_card_overview
     @event = Event.includes([
-      { emburse_cards: :user },
-      { emburse_transfers: [:t_transaction, :creator] }
-    ]).find(params[:event_id])
+                              { emburse_cards: :user },
+                              { emburse_transfers: [:t_transaction, :creator] }
+                            ]).find(params[:event_id])
     authorize @event
     @emburse_cards = @event.emburse_cards.includes(user: [:profile_picture_attachment])
     @emburse_card_requests = @event.emburse_card_requests.includes(creator: :profile_picture_attachment)
@@ -272,7 +272,7 @@ class EventsController < ApplicationController
 
     ach_relation = ach_relation.in_transit if params[:filter] == "in_transit"
     ach_relation = ach_relation.deposited if params[:filter] == "deposited"
-    ach_relation =ach_relation.rejected if params[:filter] == "canceled"
+    ach_relation = ach_relation.rejected if params[:filter] == "canceled"
     ach_relation = ach_relation.search_recipient(params[:q]) if params[:q].present?
     @ach_transfers = ach_relation
 
@@ -380,4 +380,5 @@ class EventsController < ApplicationController
 
     PendingTransactionEngine::PendingTransaction::All.new(event_id: @event.id, search: params[:q]).run
   end
+
 end

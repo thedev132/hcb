@@ -56,4 +56,5 @@ class StripeCardholdersController < ApplicationController
       :stripe_billing_address_country
     )
   end
+
 end

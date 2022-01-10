@@ -71,6 +71,7 @@ class EventPolicy < ApplicationPolicy
   def documentation?
     is_public || user_or_admin
   end
+
   # (@eilla1) these pages are for the wip resources page and should be moved later
   def connect_gofundme?
     is_public || user_or_admin
@@ -127,4 +128,5 @@ class EventPolicy < ApplicationPolicy
   def is_public
     record.is_public?
   end
+
 end

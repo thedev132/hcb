@@ -32,6 +32,7 @@ module EventMappingEngine
       def likely_events
         @likely_events ||= Event.where("name ilike '%#{likely_event_name}%'")
       end
+
     end
   end
 end

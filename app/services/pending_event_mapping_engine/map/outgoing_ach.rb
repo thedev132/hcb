@@ -20,6 +20,7 @@ module PendingEventMappingEngine
       def unmapped
         CanonicalPendingTransaction.unmapped.outgoing_ach
       end
+
     end
   end
 end

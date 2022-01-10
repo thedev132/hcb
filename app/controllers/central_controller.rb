@@ -22,4 +22,5 @@ class CentralController < ApplicationController
       @account_absolute_balance_cents = CanonicalTransaction.sum("abs(amount_cents)")
     end
   end
+
 end

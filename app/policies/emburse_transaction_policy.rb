@@ -22,4 +22,5 @@ class EmburseTransactionPolicy < ApplicationPolicy
   def is_public
     record.event.is_public?
   end
+
 end

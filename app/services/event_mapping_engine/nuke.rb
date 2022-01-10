@@ -5,5 +5,6 @@ module EventMappingEngine
     def run
       CanonicalEventMapping.delete_all
     end
+
   end
 end

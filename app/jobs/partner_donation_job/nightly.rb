@@ -5,5 +5,6 @@ module PartnerDonationJob
     def perform
       ::PartnerDonationService::Nightly.new.run
     end
+
   end
 end

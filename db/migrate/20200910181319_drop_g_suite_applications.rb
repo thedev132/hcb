@@ -7,4 +7,5 @@ class DropGSuiteApplications < ActiveRecord::Migration[6.0]
 
   def down
   end
+
 end

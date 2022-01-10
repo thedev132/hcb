@@ -11,4 +11,5 @@ class CreateComments < ActiveRecord::Migration[5.2]
     end
     add_index :comments, [:commentable_id, :commentable_type]
   end
+
 end

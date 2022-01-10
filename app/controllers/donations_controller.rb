@@ -59,7 +59,8 @@ class DonationsController < ApplicationController
 
     pi = StripeService::PaymentIntent.retrieve(
       id: donation.stripe_payment_intent_id,
-      expand: ["charges.data.balance_transaction"])
+      expand: ["charges.data.balance_transaction"]
+    )
     donation.set_fields_from_stripe_payment_intent(pi)
     donation.save!
 
@@ -169,4 +170,5 @@ class DonationsController < ApplicationController
   def redirect_to_404
     raise ActionController::RoutingError.new("Not Found")
   end
+
 end

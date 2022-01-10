@@ -40,14 +40,14 @@ module Shared
         handle_challenge_questions
 
         # ===== SVB MFA LOGIN (unused at the moment) =====
-          # Make mfa request (to track and store code to be received)
-          # make_mfa_request
+        # Make mfa request (to track and store code to be received)
+        # make_mfa_request
 
-          # # Click 'text me'
-          # handle_click_text_me("Bank Automation")
+        # # Click 'text me'
+        # handle_click_text_me("Bank Automation")
 
-          # # Fill mfa code
-          # handle_fill_mfa_code
+        # # Fill mfa code
+        # handle_fill_mfa_code
         # ================================================
 
         # Wait for homepage
@@ -132,19 +132,18 @@ module Shared
             el.click
           rescue ::Selenium::WebDriver::Error::NoSuchElementError
           end
-
         rescue
         end
       end
 
       def handle_click_text_me(phone_name)
         begin
-        # Wait
+          # Wait
           wait = ::Selenium::WebDriver::Wait.new(timeout: 65) # wait 65 seconds
           wait.until { driver.find_element(:xpath, '//p[text()[.="unreachable at any of the above numbers" or contains(.,"unreachable at any of the above")]]') }
         rescue ::Selenium::WebDriver::Error::TimeoutError
           # Login to SVB account was unsucessful. Attempt to collect errors and report to Airbrake
-          errors = driver.find_elements(:xpath, "//ul[contains(@class, 'svb-errors-list')]").map { |el| el.attribute("textContent").strip }.select { |innerHtml| !innerHtml.blank? }
+          errors = driver.find_elements(:xpath, "//ul[contains(@class, 'svb-errors-list')]").map { |el| el.attribute("textContent").strip }.reject { |inner_html| inner_html.blank? }
           Airbrake.notify("Error while logging into '#{username}' SVB account. (#{errors.join(" ")})")
         end
 
@@ -154,14 +153,14 @@ module Shared
           name = text.split("\n")[0]
 
           # Identify correct phone number (in case of multiple) to send mfa to
-          if name == phone_name
-            sleep SLEEP_DURATION
-            driver.action.move_to(el).perform
-            sleep SLEEP_DURATION
+          next unless name == phone_name
 
-            a = el.find_element(:xpath, 'div[@data-svb-class="svb-actions-wrapper"]/div/a')
-            a.click
-          end
+          sleep SLEEP_DURATION
+          driver.action.move_to(el).perform
+          sleep SLEEP_DURATION
+
+          a = el.find_element(:xpath, 'div[@data-svb-class="svb-actions-wrapper"]/div/a')
+          a.click
         end
       end
 
@@ -175,18 +174,18 @@ module Shared
           sleep SLEEP_DURATION
           puts "waiting for code"
 
+          next unless mfa_request.reload.received?
+
           # Code received
-          if mfa_request.reload.received?
-            # Fill code
-            el = driver.find_element(:xpath, '//input[@class="svb-data-input svb-enter-authenticate-code-container-input-code"]')
-            el.send_keys(mfa_request.mfa_code.code)
+          # Fill code
+          el = driver.find_element(:xpath, '//input[@class="svb-data-input svb-enter-authenticate-code-container-input-code"]')
+          el.send_keys(mfa_request.mfa_code.code)
 
-            # Confirm transfer
-            el = driver.find_element(:xpath, "//button[contains(concat(' ', normalize-space(@class),' '),' svb-enter-authenticate-code-authenticate ')]")
-            el.click
+          # Confirm transfer
+          el = driver.find_element(:xpath, "//button[contains(concat(' ', normalize-space(@class),' '),' svb-enter-authenticate-code-authenticate ')]")
+          el.click
 
-            break
-          end
+          break
         end
       end
 

@@ -30,7 +30,7 @@ module StripeCardholderService
         stripe_email: email,
         stripe_phone_number: phone_number,
         stripe_billing_address_line1: line1,
-        #stripe_billing_address_line2: line2,
+        # stripe_billing_address_line2: line2,
         stripe_billing_address_city: city,
         stripe_billing_address_state: state,
         stripe_billing_address_postal_code: postal_code,
@@ -47,7 +47,7 @@ module StripeCardholderService
         billing: {
           address: {
             line1: line1,
-            #line2: line2,
+            # line2: line2,
             city: city,
             state: state,
             postal_code: postal_code,
@@ -100,5 +100,6 @@ module StripeCardholderService
     def event
       @event ||= Event.friendly.find(@event_id)
     end
+
   end
 end

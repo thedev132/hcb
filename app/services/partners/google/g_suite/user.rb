@@ -13,6 +13,7 @@ module Partners
         def run
           directory_client.get_user(@email, projection: "full")
         end
+
       end
     end
   end

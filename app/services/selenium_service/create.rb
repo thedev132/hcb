@@ -25,5 +25,6 @@ module SeleniumService
     def cookie_txt
       @cookie_txt ||= @file.read
     end
+
   end
 end

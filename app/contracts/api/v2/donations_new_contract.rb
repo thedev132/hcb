@@ -6,6 +6,7 @@ module Api
       params do
         required(:organization_id).filled(:string)
       end
+
     end
   end
 end

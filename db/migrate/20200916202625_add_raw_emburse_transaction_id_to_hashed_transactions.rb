@@ -6,4 +6,5 @@ class AddRawEmburseTransactionIdToHashedTransactions < ActiveRecord::Migration[6
   def change
     add_column :hashed_transactions, :raw_emburse_transaction_id, :integer
   end
+
 end

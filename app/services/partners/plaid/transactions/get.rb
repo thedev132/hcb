@@ -78,6 +78,7 @@ module Partners
         def bank_account
           @bank_account ||= BankAccount.find(@bank_account_id)
         end
+
       end
     end
   end

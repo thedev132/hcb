@@ -67,5 +67,6 @@ module GSuiteService
     def smart_verification_key
       @smart_verification_key ||= domain_changing? ? nil : @verification_key
     end
+
   end
 end

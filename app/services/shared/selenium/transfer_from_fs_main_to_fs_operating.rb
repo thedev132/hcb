@@ -33,7 +33,7 @@ module Shared
 
         sleep 1
         el = driver.find_element(:xpath, '//input[@name="transferAmountStr"]')
-        el.send_keys("#{amount}")
+        el.send_keys(amount.to_s)
 
         sleep 1
         el = driver.find_element(:xpath, '//textarea[@id="description-field"]')

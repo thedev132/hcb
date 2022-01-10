@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class SyncPayoutsJob < ApplicationJob
-
   def perform
     ActiveRecord::Base.transaction do
       InvoicePayout.find_each(batch_size: 100) do |p|
@@ -17,4 +16,5 @@ class SyncPayoutsJob < ApplicationJob
       end
     end
   end
+
 end

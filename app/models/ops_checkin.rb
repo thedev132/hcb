@@ -20,4 +20,5 @@ class OpsCheckin < ApplicationRecord
     # if there was a checkin in the last hour, we're still in cooldown
     where(created_at: 1.hours.ago..Time.now).any?
   end
+
 end

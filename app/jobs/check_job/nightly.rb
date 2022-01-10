@@ -5,5 +5,6 @@ module CheckJob
     def perform
       CheckService::Nightly.new.run
     end
+
   end
 end

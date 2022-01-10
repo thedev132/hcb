@@ -15,9 +15,10 @@ module UsersHelper
     # so this method shows Gravatars/intials for non-registered and allows showing of uploaded profile pictures for registered users.
     if Rails.env.production? && (user.is_a?(User) && user&.profile_picture.attached?)
       src = user.profile_picture.variant(combine_options: {
-        thumbnail: "#{size * 2}x#{size * 2}^",
-        gravity: "center",
-        extent: "#{size * 2}x#{size * 2}" })
+                                           thumbnail: "#{size * 2}x#{size * 2}^",
+                                           gravity: "center",
+                                           extent: "#{size * 2}x#{size * 2}"
+                                         })
     else
       src = gravatar_url(user.email, user.initials, user.id, size * 2)
     end
@@ -27,7 +28,7 @@ module UsersHelper
     klasses << options[:class] if options[:class]
     klass = klasses.join(" ")
 
-    image_tag(src, options.merge({ loading: "lazy", alt: user.name, width: size, height: size, class: klass }))
+    image_tag(src, options.merge(loading: "lazy", alt: user.name, width: size, height: size, class: klass))
   end
 
   def user_mention(user, options = {})
@@ -41,21 +42,21 @@ module UsersHelper
     klass = klasses.join(" ")
 
     aria = if user == current_user
-      [
-        "You!",
-        "Yourself!",
-        "It's you!"
-      ].sample
-    elsif user.admin?
-      "#{user.name.split(' ').first} is an admin"
-    end
+             [
+               "You!",
+               "Yourself!",
+               "It's you!"
+             ].sample
+           elsif user.admin?
+             "#{user.name.split(' ').first} is an admin"
+           end
 
     content = if user.admin?
-      bolt = inline_icon "admin-badge", size: 20
-      avi + bolt + name
-    else
-      avi + name
-    end
+                bolt = inline_icon "admin-badge", size: 20
+                avi + bolt + name
+              else
+                avi + name
+              end
 
     content_tag :span, content, class: klass, 'aria-label': aria
   end
@@ -69,8 +70,13 @@ module UsersHelper
   end
 
   def creator_bar(object, options = {})
-    creator = defined?(object.creator) ? object.creator :
-      defined?(object.sender) ? object.sender : object.user
+    creator = if defined?(object.creator)
+                object.creator
+              elsif defined?(object.sender)
+                object.sender
+              else
+                object.user
+              end
     mention = creator ? user_mention(creator) : content_tag(:strong, "Anonymous")
     content_tag :div, class: "comment__name" do
       mention + relative_timestamp(object.created_at, prefix: options[:prefix], class: "h5 muted")

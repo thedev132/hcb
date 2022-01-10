@@ -25,6 +25,7 @@ module PendingTransactionEngine
         def t
           @t ||= @remote_stripe_transaction
         end
+
       end
     end
   end

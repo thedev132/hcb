@@ -21,4 +21,5 @@ class ReceiptablesController < ApplicationController
     # raise ArgumentError, "Class is not receiptable" unless @klass.included_modules.include?(Receiptable)?
     @receiptable = @klass.find(params[:receiptable_id])
   end
+
 end

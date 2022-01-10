@@ -104,5 +104,6 @@ module TransactionEngine
     def fix_memo_mistakes!
       ::TransactionEngine::FixMistakes::Memos.new(start_date: @start_date).run
     end
+
   end
 end

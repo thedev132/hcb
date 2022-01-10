@@ -35,18 +35,20 @@ module TransactionEngine
 
         def plaid_transactions
           @plaid_transactions ||= ::Partners::Plaid::Transactions::Get.new(
-                                            bank_account_id: @bank_account_id,
-                                            start_date:      @start_date,
-                                            end_date:        @end_date
-                                          ).run
+            bank_account_id: @bank_account_id,
+            start_date: @start_date,
+            end_date: @end_date
+          ).run
         end
 
         def fmt_date(date)
           unless date.methods.include? :strftime
             raise ArgumentError.new("Only dates are allowed")
           end
+
           date.strftime(::Partners::Plaid::Transactions::Get::DATE_FORMAT)
         end
+
       end
     end
   end

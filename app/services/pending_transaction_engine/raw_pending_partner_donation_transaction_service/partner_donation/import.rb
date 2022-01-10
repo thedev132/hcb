@@ -23,6 +23,7 @@ module PendingTransactionEngine
         def pending_partner_donation
           @pending_partner_donation ||= ::PartnerDonation.pending
         end
+
       end
     end
   end

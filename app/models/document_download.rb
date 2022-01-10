@@ -13,4 +13,5 @@ class DocumentDownload < ApplicationRecord
       **params
     )
   end
+
 end

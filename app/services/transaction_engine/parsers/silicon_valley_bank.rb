@@ -59,6 +59,7 @@ module TransactionEngine
 
         (100 * dollars.to_r).to_i
       end
+
     end
   end
 end

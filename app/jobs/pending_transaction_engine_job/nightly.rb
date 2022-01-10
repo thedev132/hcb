@@ -10,5 +10,6 @@ module PendingTransactionEngineJob
     def perform
       ::PendingTransactionEngine::Nightly.new.run
     end
+
   end
 end

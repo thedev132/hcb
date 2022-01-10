@@ -26,4 +26,5 @@ class HcbCodePolicy < ApplicationPolicy
   def present_in_events?
     record.events.select { |e| e.try(:users).try(:include?, user) }.present?
   end
+
 end

@@ -8,9 +8,7 @@ module ApplicationHelper
     trunc = opts[:trunc] || false
 
     num = BigDecimal(amount || 0) / 100
-    unless trunc
-      number_to_currency(num, unit: unit)
-    else
+    if trunc
       if num >= 1_000_000
         number_to_currency(num / 1_000_000, precision: 1, unit: unit) + "m"
       elsif num >= 1_000
@@ -18,6 +16,8 @@ module ApplicationHelper
       else
         number_to_currency(num, unit: unit)
       end
+    else
+      number_to_currency(num, unit: unit)
     end
   end
 
@@ -65,6 +65,7 @@ module ApplicationHelper
   def list_badge_for(count, item, glyph, options = { optional: false, required: false })
     icon = inline_icon(glyph, size: 20, 'aria-hidden': true)
     return nil if options.dig(:optional) && count == 0
+
     content_tag(:span,
                 icon + count.to_s,
                 'aria-label': pluralize(count, item),
@@ -84,7 +85,7 @@ module ApplicationHelper
   end
 
   def pop_icon_to(icon, url, options = { class: "info" })
-    link_to url, options.merge({ class: "pop #{options[:class]}" }) do
+    link_to url, options.merge(class: "pop #{options[:class]}") do
       inline_icon icon, size: 28
     end
   end
@@ -100,7 +101,7 @@ module ApplicationHelper
 
     errors_list = content_tag :ul do
       model.errors.full_messages.map do |message|
-        concat(content_tag :li, message)
+        concat(content_tag(:li, message))
       end
     end
 
@@ -130,7 +131,7 @@ module ApplicationHelper
   end
 
   def relative_timestamp(time, options = {})
-    content_tag :span, "#{options[:prefix]}#{time_ago_in_words time} ago", options.merge({ title: time })
+    content_tag :span, "#{options[:prefix]}#{time_ago_in_words time} ago", options.merge(title: time)
   end
 
   def auto_link_new_tab(text)
@@ -253,7 +254,7 @@ module ApplicationHelper
     if stripe_obj.nil?
       record
     else
-      result = Hash.new
+      result = {}
       result[record.class] = record
       result["stripe_obj"] = stripe_obj
 

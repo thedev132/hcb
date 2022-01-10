@@ -11,6 +11,7 @@ module PendingEventMappingEngine
           next unless donation
 
           next unless donation.payout
+
           event = donation.event
 
           prefix = grab_prefix(donation: donation)
@@ -25,6 +26,7 @@ module PendingEventMappingEngine
           cts ||= event.canonical_transactions.where("memo ilike '%DONAT% #{prefix[0]}%'") if cts.count < 1 && donation.created_at < Time.utc(2020, 1, 1) # shorter prefix. see Donation id 1 for example.
 
           next if cts.count < 1 # no match found yet. not processed.
+
           Airbrake.notify("matched more than 1 canonical transaction for canonical pending transaction #{cpt.id}") if cts.count > 1
           ct = cts.first
 
@@ -66,6 +68,7 @@ module PendingEventMappingEngine
         cleanse = cleanse.gsub("DONATION", "")
         cleanse.split(" ")[0][0..2].upcase
       end
+
     end
   end
 end

@@ -23,6 +23,7 @@ module PendingTransactionEngine
         def pending_donation_transactions
           @pending_donation_transactions ||= ::Donation.succeeded # TODO: deprecate succeeded
         end
+
       end
     end
   end

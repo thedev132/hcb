@@ -28,4 +28,5 @@ class OrganizerPositionDeletionRequestPolicy < ApplicationPolicy
   def open?
     user.admin?
   end
+
 end

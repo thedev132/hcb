@@ -5,7 +5,6 @@ require "json"
 module PartnerDonationService
   module Export
     class Json
-
       include PartnerDonationService::Export::Shared
 
       def run
@@ -19,6 +18,7 @@ module PartnerDonationService
       def row(pd)
         Hash[keys.zip(create_row(pd))]
       end
+
     end
   end
 end

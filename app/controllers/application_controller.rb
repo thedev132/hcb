@@ -61,4 +61,5 @@ class ApplicationController < ActionController::Base
     headers["Cache-Control"] ||= "no-cache"
     headers.delete("Content-Length")
   end
+
 end

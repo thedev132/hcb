@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class GSuite < ApplicationRecord
-  VALID_DOMAIN = /[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?\z/ix
+  VALID_DOMAIN = /[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?\z/ix.freeze
 
   has_paper_trail
 
@@ -75,4 +75,5 @@ class GSuite < ApplicationRecord
   def clean_up_verification_key
     self.verification_key = verification_key.gsub("google-site-verification=", "") if verification_key.present?
   end
+
 end

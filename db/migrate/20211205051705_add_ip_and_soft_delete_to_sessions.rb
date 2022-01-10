@@ -5,4 +5,5 @@ class AddIpAndSoftDeleteToSessions < ActiveRecord::Migration[6.0]
     add_column :user_sessions, :ip, :string
     add_column :user_sessions, :deleted_at, :datetime
   end
+
 end

@@ -37,12 +37,10 @@ module Partners
         envelope_definition.template_id = @partnered_signup.partner.docusign_template_id
         envelope_definition.template_roles = [
           DocuSign_eSign::TemplateRole.new(
-            {
-              email: @partnered_signup.owner_email,
-              name: @partnered_signup.owner_name,
-              roleName: "signer",
-              clientUserId: @partnered_signup.id,
-            }
+            email: @partnered_signup.owner_email,
+            name: @partnered_signup.owner_name,
+            roleName: "signer",
+            clientUserId: @partnered_signup.id,
           )
         ]
         envelope_definition

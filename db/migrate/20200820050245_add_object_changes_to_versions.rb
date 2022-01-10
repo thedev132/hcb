@@ -11,4 +11,5 @@ class AddObjectChangesToVersions < ActiveRecord::Migration[6.0]
   def change
     add_column :versions, :object_changes, :text, limit: TEXT_BYTES
   end
+
 end

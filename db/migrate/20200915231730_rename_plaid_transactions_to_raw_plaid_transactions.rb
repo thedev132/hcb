@@ -6,4 +6,5 @@ class RenamePlaidTransactionsToRawPlaidTransactions < ActiveRecord::Migration[6.
       rename_table :plaid_transactions, :raw_plaid_transactions
     end
   end
+
 end

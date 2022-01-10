@@ -19,6 +19,7 @@ module Partners
         def domains_object
           ::Google::Apis::AdminDirectoryV1::Domains.new(domain_name: @domain, is_primary: false)
         end
+
       end
     end
   end

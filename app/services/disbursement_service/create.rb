@@ -39,5 +39,6 @@ module DisbursementService
     def destination_event
       @destination_event ||= Event.find(@destination_event_id)
     end
+
   end
 end

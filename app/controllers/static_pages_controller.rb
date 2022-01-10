@@ -49,6 +49,7 @@ class StaticPagesController < ApplicationController
     @missing_receipt_ids = []
     current_user.stripe_cards.map do |card|
       break unless @missing_receipt_ids.size < 5
+
       card.hcb_codes.without_receipt.pluck(:id).each do |id|
         @missing_receipt_ids << id
         break unless @missing_receipt_ids.size < 5
@@ -103,26 +104,26 @@ class StaticPagesController < ApplicationController
                        .limit(10)
                        .pluck(:created_at)
                        .map(&:to_i)
-                       .map { |time| {created_at: time} }
+                       .map { |time| { created_at: time } }
 
     tx_all = CanonicalTransaction.included_in_stats.where("date <= ?", now)
 
     render json: {
-      date:                  now,
-      events_count:          Event.not_omitted.where("created_at <= ?", now).size,
+      date: now,
+      events_count: Event.not_omitted.where("created_at <= ?", now).size,
       last_transaction_date: tx_all.order(:date).last.date.to_time.to_i,
 
       # entire time period. this remains to prevent breaking changes to existing systems that use this endpoint
-      raised:              tx_all.revenue.sum(:amount_cents),
-      transactions_count:  tx_all.size,
+      raised: tx_all.revenue.sum(:amount_cents),
+      transactions_count: tx_all.size,
       transactions_volume: tx_all.sum("@amount_cents"),
 
       # entire (all), year, quarter, and month time periods
-      all:        CanonicalTransactionService::Stats::During.new.run,
-      last_year:  CanonicalTransactionService::Stats::During.new(start_time: year_ago, end_time: now).run,
-      last_qtr:   CanonicalTransactionService::Stats::During.new(start_time: qtr_ago, end_time: now).run,
+      all: CanonicalTransactionService::Stats::During.new.run,
+      last_year: CanonicalTransactionService::Stats::During.new(start_time: year_ago, end_time: now).run,
+      last_qtr: CanonicalTransactionService::Stats::During.new(start_time: qtr_ago, end_time: now).run,
       last_month: CanonicalTransactionService::Stats::During.new(start_time: month_ago, end_time: now).run,
-      last_week:  CanonicalTransactionService::Stats::During.new(start_time: week_ago, end_time: now).run,
+      last_week: CanonicalTransactionService::Stats::During.new(start_time: week_ago, end_time: now).run,
 
       # events
       events: events_list,
@@ -153,4 +154,5 @@ class StaticPagesController < ApplicationController
       event_id: nil
     }
   end
+
 end

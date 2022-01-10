@@ -12,4 +12,5 @@ class AddDefaultTransactionEngineV2AtTimestamp < ActiveRecord::Migration[6.0]
       execute "ALTER TABLE events ALTER COLUMN transaction_engine_v2_at DROP DEFAULT;"
     end
   end
+
 end

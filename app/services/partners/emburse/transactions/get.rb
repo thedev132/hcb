@@ -11,6 +11,7 @@ module Partners
         def run
           EmburseClient::Transaction.get(@emburse_id)
         end
+
       end
     end
   end

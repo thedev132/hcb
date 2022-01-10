@@ -211,4 +211,5 @@ class HcbCode < ApplicationRecord
   def generate_and_set_short_code
     self.short_code = ::HcbCodeService::Generate::ShortCode.new.run
   end
+
 end

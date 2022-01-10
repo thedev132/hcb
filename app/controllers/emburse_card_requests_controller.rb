@@ -144,4 +144,5 @@ class EmburseCardRequestsController < ApplicationController
       :creator_id,
     )
   end
+
 end

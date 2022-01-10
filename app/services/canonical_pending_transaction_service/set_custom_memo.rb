@@ -17,5 +17,6 @@ module CanonicalPendingTransactionService
     def canonical_pending_transaction
       @canonical_pending_transaction ||= CanonicalPendingTransaction.find(@canonical_pending_transaction_id)
     end
+
   end
 end

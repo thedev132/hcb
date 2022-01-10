@@ -16,4 +16,5 @@ class CommentPolicy < ApplicationPolicy
   def update?
     user.admin? || record.commentable.event.users.include?(user)
   end
+
 end

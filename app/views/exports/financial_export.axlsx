@@ -36,7 +36,7 @@ wb.add_worksheet(name: "HC Bank Export - #{date}") do |sheet|
                       t.amount
                     else
                       0
-      end
+                    end
 
       running_balance += t.amount
       running_fee_balance += fee_charged

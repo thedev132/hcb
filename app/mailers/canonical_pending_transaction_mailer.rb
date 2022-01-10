@@ -18,4 +18,5 @@ class CanonicalPendingTransactionMailer < ApplicationMailer
 
     mail to: to, subject: subject
   end
+
 end

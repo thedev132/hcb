@@ -8,4 +8,5 @@ class UnauthorizedError < ArgumentError
   def status
     403
   end
+
 end

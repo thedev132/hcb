@@ -17,8 +17,8 @@ class InvoicesController < ApplicationController
       .where
       .not(payout_creation_queued_for: nil) +
       @event.invoices.joins(:payout)
-      .where(invoice_payouts: { status: ("in_transit") })
-      .or(@event.invoices.joins(:payout).where(invoice_payouts: { status: ("pending") })))
+      .where(invoice_payouts: { status: "in_transit" })
+      .or(@event.invoices.joins(:payout).where(invoice_payouts: { status: "pending" })))
     amount_in_transit = @invoices_in_transit.sum(&:amount_paid)
 
     @stats = {
@@ -55,9 +55,9 @@ class InvoicesController < ApplicationController
 
     sponsor_attrs = filtered_params[:sponsor_attributes]
 
-    due_date = Date::civil(filtered_params["due_date(1i)"].to_i,
-                           filtered_params["due_date(2i)"].to_i,
-                           filtered_params["due_date(3i)"].to_i)
+    due_date = Date.civil(filtered_params["due_date(1i)"].to_i,
+                          filtered_params["due_date(2i)"].to_i,
+                          filtered_params["due_date(3i)"].to_i)
 
     attrs = {
       event_id: params[:event_id],
@@ -145,4 +145,5 @@ class InvoicesController < ApplicationController
   def set_event
     @event = Event.friendly.find(params[:id] || params[:event_id])
   end
+
 end

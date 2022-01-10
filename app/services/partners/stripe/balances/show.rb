@@ -21,6 +21,7 @@ module Partners
             id: @id
           }
         end
+
       end
     end
   end

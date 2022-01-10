@@ -15,4 +15,5 @@ class AddMissingFieldsToGSuiteAccounts < ActiveRecord::Migration[5.2]
       gsa.save!
     end
   end
+
 end

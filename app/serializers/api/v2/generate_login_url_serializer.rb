@@ -22,6 +22,7 @@ module Api
           login_url: Rails.application.routes.url_helpers.auth_users_url(email: @email)
         }
       end
+
     end
   end
 end

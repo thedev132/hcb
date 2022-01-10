@@ -32,4 +32,5 @@ class RawPendingOutgoingCheckTransaction < ApplicationRecord
   def raw_name
     check.lob_address.name
   end
+
 end

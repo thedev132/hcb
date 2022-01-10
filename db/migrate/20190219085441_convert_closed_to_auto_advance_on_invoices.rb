@@ -15,4 +15,5 @@ class ConvertClosedToAutoAdvanceOnInvoices < ActiveRecord::Migration[5.2]
     rename_column :invoices, :auto_advance, :closed
     Invoice.update_all("closed = NOT closed")
   end
+
 end

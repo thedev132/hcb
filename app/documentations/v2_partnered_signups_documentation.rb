@@ -90,20 +90,19 @@ class V2PartneredSignupsDocumentation < ApplicationDocumentation
                           "They will be greeted by a form.\n\nOnce the user fills out the \"Bank Connect Form\", they will be " \
                           "redirected to the `redirect_url`."
         content :"application/json" do
-          key :example, {
-            data: {
-              id: "sup_l3mtZz",
-              status: "unsubmitted",
-              redirect_url: "https://yoursite.com/organizations/1234/bankConnect/redirect",
-              connect_url: "https://bank.hackclub.com/api/v2/connect/continue/sup_l3mtZz",
-              owner_email: nil,
-              organization_name: "My Organization's Name",
-              organization_id: nil
-            },
-            links: {
-              self: "https://bank.hackclub.com/api/v2/partnered_signups/sup_l3mtZz"
-            }
-          }
+          key :example,
+              data: {
+                id: "sup_l3mtZz",
+                status: "unsubmitted",
+                redirect_url: "https://yoursite.com/organizations/1234/bankConnect/redirect",
+                connect_url: "https://bank.hackclub.com/api/v2/connect/continue/sup_l3mtZz",
+                owner_email: nil,
+                organization_name: "My Organization's Name",
+                organization_id: nil
+              },
+              links: {
+                self: "https://bank.hackclub.com/api/v2/partnered_signups/sup_l3mtZz"
+              }
         end
       end
     end
@@ -125,23 +124,22 @@ class V2PartneredSignupsDocumentation < ApplicationDocumentation
                           "approved, the `organization_id` will no longer be 'null' (such as 'org_s2cDsp'). Alternatively, a rejected **PartneredSignup** will have a 'rejected' `status` " \
                           "and the `organization_id` will remain 'null'."
         content :"application/json" do
-          key :example, {
-            data: {
-              id: "sup_l3mtZz",
-              status: "submitted",
-              redirect_url: "https://yoursite.com/organizations/1234/bankConnect/redirect",
-              connect_url: "https://bank.hackclub.com/api/v2/connect/continue/sup_l3mtZz",
-              owner_email: "user@gmail.com",
-              organization_name: "My Organization's Name",
-              organization_id: nil
-            },
-            links: {
-              self: "https://bank.hackclub.com/api/v2/partnered_signups/sup_l3mtZz"
-            },
-            meta: {
-              type: "partnered_signup.status"
-            }
-          }
+          key :example,
+              data: {
+                id: "sup_l3mtZz",
+                status: "submitted",
+                redirect_url: "https://yoursite.com/organizations/1234/bankConnect/redirect",
+                connect_url: "https://bank.hackclub.com/api/v2/connect/continue/sup_l3mtZz",
+                owner_email: "user@gmail.com",
+                organization_name: "My Organization's Name",
+                organization_id: nil
+              },
+              links: {
+                self: "https://bank.hackclub.com/api/v2/partnered_signups/sup_l3mtZz"
+              },
+              meta: {
+                type: "partnered_signup.status"
+              }
         end
       end
     end
@@ -157,28 +155,27 @@ class V2PartneredSignupsDocumentation < ApplicationDocumentation
       response 200 do
         key :description, ""
         content :"application/json" do
-          key :example, {
-            data: [
-              {
-                id: "sup_lYntM4",
-                status: "accepted",
-                redirect_url: "https://yoursite.com/organizations/5154/bankConnect/redirect",
-                connect_url: "https://bank.hackclub.com/api/v2/connect/continue/sup_lYntM4",
-                owner_email: "hey@gmail.com",
-                organization_name: "Test org",
-                organization_id: "org_BJouPR"
-              },
-              {
-                id: "sup_l3mtZz",
-                status: "submitted",
-                redirect_url: "https://yoursite.com/organizations/1234/bankConnect/redirect",
-                connect_url: "https://bank.hackclub.com/api/v2/connect/continue/sup_l3mtZz",
-                owner_email: "user@gmail.com",
-                organization_name: "My Organization's Name",
-                organization_id: nil
-              },
-            ]
-          }
+          key :example,
+              data: [
+                {
+                  id: "sup_lYntM4",
+                  status: "accepted",
+                  redirect_url: "https://yoursite.com/organizations/5154/bankConnect/redirect",
+                  connect_url: "https://bank.hackclub.com/api/v2/connect/continue/sup_lYntM4",
+                  owner_email: "hey@gmail.com",
+                  organization_name: "Test org",
+                  organization_id: "org_BJouPR"
+                },
+                {
+                  id: "sup_l3mtZz",
+                  status: "submitted",
+                  redirect_url: "https://yoursite.com/organizations/1234/bankConnect/redirect",
+                  connect_url: "https://bank.hackclub.com/api/v2/connect/continue/sup_l3mtZz",
+                  owner_email: "user@gmail.com",
+                  organization_name: "My Organization's Name",
+                  organization_id: nil
+                },
+              ]
         end
       end
     end
@@ -204,22 +201,22 @@ class V2PartneredSignupsDocumentation < ApplicationDocumentation
       response 200 do
         key :description, ""
         content :"application/json" do
-          key :example, {
-            data: {
-              id: "sup_l3mtZz",
-              status: "submitted",
-              redirect_url: "https://yoursite.com/organizations/1234/bankConnect/redirect",
-              connect_url: "https://bank.hackclub.com/api/v2/connect/continue/sup_l3mtZz",
-              owner_email: "user@gmail.com",
-              organization_name: "My Organization's Name",
-              organization_id: nil
-            },
-            links: {
-              self: "https://bank.hackclub.com/api/v2/partnered_signups/sup_l3mtZz"
-            }
-          }
+          key :example,
+              data: {
+                id: "sup_l3mtZz",
+                status: "submitted",
+                redirect_url: "https://yoursite.com/organizations/1234/bankConnect/redirect",
+                connect_url: "https://bank.hackclub.com/api/v2/connect/continue/sup_l3mtZz",
+                owner_email: "user@gmail.com",
+                organization_name: "My Organization's Name",
+                organization_id: nil
+              },
+              links: {
+                self: "https://bank.hackclub.com/api/v2/partnered_signups/sup_l3mtZz"
+              }
         end
       end
     end
   end
+
 end

@@ -8,4 +8,5 @@ class AddUniqueIndexToCanonicalEventMappings < ActiveRecord::Migration[6.0]
       add_index :canonical_event_mappings, [:event_id, :canonical_transaction_id], unique: true, name: "index_cem_event_id_canonical_transaction_id_uniqueness"
     end
   end
+
 end

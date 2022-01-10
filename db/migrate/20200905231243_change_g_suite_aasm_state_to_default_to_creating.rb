@@ -16,4 +16,5 @@ class ChangeGSuiteAasmStateToDefaultToCreating < ActiveRecord::Migration[6.0]
 
     change_column :g_suites, :aasm_state, :string, default: "configuring"
   end
+
 end

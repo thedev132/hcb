@@ -38,6 +38,7 @@ module CanonicalTransactionService
       def headers
         [:date, :memo, :amount_cents]
       end
+
     end
   end
 end

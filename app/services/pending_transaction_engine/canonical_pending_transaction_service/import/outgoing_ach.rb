@@ -31,6 +31,7 @@ module PendingTransactionEngine
         def previously_processed_raw_pending_outgoing_ach_transactions_ids
           @previously_processed_raw_pending_outgoing_ach_transactions_ids ||= ::CanonicalPendingTransaction.outgoing_ach.pluck(:raw_pending_outgoing_ach_transaction_id)
         end
+
       end
     end
   end

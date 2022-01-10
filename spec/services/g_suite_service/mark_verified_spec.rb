@@ -3,7 +3,7 @@
 require "rails_helper"
 
 RSpec.describe GSuiteService::MarkVerified, type: :model do
-  fixtures  "users", "g_suites"
+  fixtures "users", "g_suites"
 
   let(:g_suite) { g_suites(:g_suite2) }
 

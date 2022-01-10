@@ -112,4 +112,5 @@ class Sponsor < ApplicationRecord
       [:name, -> { self.event.name }]
     ]
   end
+
 end

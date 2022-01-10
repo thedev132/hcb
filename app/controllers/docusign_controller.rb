@@ -23,4 +23,5 @@ class DocusignController < ApplicationController
     # move to the redirect URL after submitting
     redirect_to partnered_signup.redirect_url
   end
+
 end

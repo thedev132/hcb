@@ -13,6 +13,7 @@ module Partners
         def run
           @run ||= client.checks.destroy(@id)
         end
+
       end
     end
   end

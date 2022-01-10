@@ -12,7 +12,7 @@ module FeeEngine
 
         event_sponsorship_fee = cem.event.sponsorship_fee
 
-        amount_cents_as_decimal = BigDecimal("#{cem.canonical_transaction.amount_cents}") * BigDecimal("#{event_sponsorship_fee}")
+        amount_cents_as_decimal = BigDecimal(cem.canonical_transaction.amount_cents.to_s) * BigDecimal(event_sponsorship_fee.to_s)
         amount_cents_as_decimal = 0 if reason != "REVENUE"
 
         attrs = {
@@ -42,5 +42,6 @@ module FeeEngine
 
       reason
     end
+
   end
 end

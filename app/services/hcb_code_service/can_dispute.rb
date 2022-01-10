@@ -45,5 +45,6 @@ module HcbCodeService
         [false, error_message]
       end
     end
+
   end
 end

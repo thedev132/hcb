@@ -7,5 +7,6 @@ module TransactionEngineJob
     def perform
       ::TransactionEngine::Nightly.new(start_date: last_1_month).run
     end
+
   end
 end

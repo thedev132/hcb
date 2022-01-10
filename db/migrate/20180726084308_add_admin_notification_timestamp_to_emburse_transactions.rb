@@ -4,4 +4,5 @@ class AddAdminNotificationTimestampToEmburseTransactions < ActiveRecord::Migrati
   def change
     add_column :emburse_transactions, :notified_admin_at, :timestamp
   end
+
 end

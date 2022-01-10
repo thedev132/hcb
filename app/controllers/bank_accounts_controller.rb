@@ -77,4 +77,5 @@ class BankAccountsController < ApplicationController
   def bank_account_update_params
     params.require(:bank_account).permit(:should_sync)
   end
+
 end

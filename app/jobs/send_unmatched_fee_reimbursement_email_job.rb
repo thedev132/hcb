@@ -7,4 +7,5 @@ class SendUnmatchedFeeReimbursementEmailJob < ApplicationJob
 
     FeeReimbursementMailer.with(fee_reimbursement: fr).admin_notification.deliver_later
   end
+
 end

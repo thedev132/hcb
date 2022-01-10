@@ -41,5 +41,6 @@ module UserService
     def user
       @user ||= ::User.find(@user_id)
     end
+
   end
 end

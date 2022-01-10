@@ -66,4 +66,5 @@ class EmburseCardsController < ApplicationController
       :emburse_id,
     )
   end
+
 end

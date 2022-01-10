@@ -10,4 +10,5 @@ class OrganizerPosition < ApplicationRecord
   has_many :organizer_position_deletion_requests
 
   validates :user, uniqueness: { scope: :event, conditions: -> { where(deleted_at: nil) } }
+
 end

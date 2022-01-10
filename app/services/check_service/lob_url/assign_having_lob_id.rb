@@ -16,6 +16,7 @@ module CheckService
       def checks
         @checks ||= Check.where("lob_id is not null")
       end
+
     end
   end
 end

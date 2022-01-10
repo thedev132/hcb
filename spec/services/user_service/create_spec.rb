@@ -3,7 +3,7 @@
 require "rails_helper"
 
 RSpec.describe UserService::Create, type: :model do
-  fixtures  "users", "events", "organizer_positions"
+  fixtures "users", "events", "organizer_positions"
 
   let(:event) { events(:event1) }
 

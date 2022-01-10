@@ -5,5 +5,6 @@ module DonationJob
     def perform(donation_id)
       ::DonationService::Refund.new(donation_id: donation_id).run
     end
+
   end
 end

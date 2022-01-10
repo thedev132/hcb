@@ -100,5 +100,6 @@ module GSuiteAccountService
         event: @g_suite.event.name
       }
     end
+
   end
 end

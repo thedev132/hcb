@@ -29,5 +29,6 @@ module StripeAuthorizationService
         CanonicalPendingTransactionMailer.with(canonical_pending_transaction_id: cpt.id).notify_approved.deliver_later
       end
     end
+
   end
 end

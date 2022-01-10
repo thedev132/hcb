@@ -7,4 +7,5 @@ class MoneyReceivedMailer < ApplicationMailer
 
     mail to: @emails, subject: "Money from #{@transaction.invoice_payout.invoice.sponsor.name} is in your Hack Club Bank account 💵"
   end
+
 end

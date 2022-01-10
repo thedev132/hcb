@@ -24,6 +24,7 @@ module PendingEventMappingEngine
       def unsettled
         CanonicalPendingTransaction.unsettled.outgoing_check
       end
+
     end
   end
 end

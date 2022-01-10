@@ -16,4 +16,5 @@ class AddUniqueIndexToDomainForGSuites < ActiveRecord::Migration[6.0]
       change_column :g_suites, :domain, :string
     end
   end
+
 end

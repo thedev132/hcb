@@ -49,4 +49,5 @@ class PlaidService
   def get_auth_info(access_token)
     client.auth.get(access_token)
   end
+
 end

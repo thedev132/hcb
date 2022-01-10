@@ -24,6 +24,7 @@ module EventMappingEngine
       def parsed_event_id
         @canonical_transaction.memo.upcase.gsub("HACK CLUB BANK FEE TO ACCOUNT REDACTED", "").strip
       end
+
     end
   end
 end

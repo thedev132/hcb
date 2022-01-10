@@ -5,5 +5,6 @@ module EventMappingEngineJob
     def perform
       ::EventMappingEngine::Nightly.new.run
     end
+
   end
 end

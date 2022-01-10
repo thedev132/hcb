@@ -6,4 +6,5 @@ class AddUniquenessToRawCsvTransactionsCsvTransactionId < ActiveRecord::Migratio
   def change
     add_index :raw_csv_transactions, :csv_transaction_id, unique: true, algorithm: :concurrently
   end
+
 end

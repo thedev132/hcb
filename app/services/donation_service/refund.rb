@@ -48,5 +48,6 @@ module DonationService
     def payment_intent_id
       donation.stripe_payment_intent_id
     end
+
   end
 end

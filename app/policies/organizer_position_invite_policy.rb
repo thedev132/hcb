@@ -28,4 +28,5 @@ class OrganizerPositionInvitePolicy < ApplicationPolicy
   def cancel?
     user.admin? || record.event.users.include?(user)
   end
+
 end

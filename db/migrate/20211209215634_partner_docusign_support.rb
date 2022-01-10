@@ -8,4 +8,5 @@ class PartnerDocusignSupport < ActiveRecord::Migration[6.0]
     # Template ID that we can use to do the partnered sign ups
     add_column :partners, :docusign_template_id, :string
   end
+
 end

@@ -7,5 +7,6 @@ module TransactionGroupingEngineJob
     def perform
       ::TransactionGroupingEngine::Nightly.new(start_date: last_1_month).run
     end
+
   end
 end

@@ -19,5 +19,6 @@ module AchTransferService
     def anomaly_detected?(ach_transfer:)
       ::PendingEventMappingEngine::AnomalyDetection::BadSettledMapping.new(canonical_pending_transaction: ach_transfer.canonical_pending_transaction).run
     end
+
   end
 end

@@ -5,6 +5,7 @@ module Api
     class PartneredSignupsContract < Api::ApplicationContract
       params do
       end
+
     end
   end
 end

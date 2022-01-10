@@ -10,4 +10,5 @@ class CreateExports < ActiveRecord::Migration[5.2]
     end
     add_index :exports, :type
   end
+
 end

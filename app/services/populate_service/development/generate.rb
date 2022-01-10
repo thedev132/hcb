@@ -41,6 +41,7 @@ module PopulateService
           event
         end
       end
+
     end
   end
 end

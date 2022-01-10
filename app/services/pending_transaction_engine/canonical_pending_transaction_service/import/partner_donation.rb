@@ -33,6 +33,7 @@ module PendingTransactionEngine
         def previously_processed_raw_pending_partner_donation_transactions_ids
           @previously_processed_raw_pending_partner_donation_transactions_ids ||= ::CanonicalPendingTransaction.partner_donation.pluck(:raw_pending_partner_donation_transaction_id)
         end
+
       end
     end
   end

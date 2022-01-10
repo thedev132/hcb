@@ -9,4 +9,5 @@ class RemoveColumnsFromRawPendingOutgoingCheckTransactions < ActiveRecord::Migra
       remove_column :raw_pending_outgoing_check_transactions, :lob_transaction, :jsonb
     }
   end
+
 end

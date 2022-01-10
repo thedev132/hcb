@@ -2,4 +2,5 @@
 
 class ApplicationDocumentation
   include Swagger::Blocks
+
 end

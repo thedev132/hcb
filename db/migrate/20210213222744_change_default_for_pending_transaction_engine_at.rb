@@ -6,4 +6,5 @@ class ChangeDefaultForPendingTransactionEngineAt < ActiveRecord::Migration[6.0]
   def change
     change_column_default :events, :pending_transaction_engine_at, DateTime.new(2021, 2, 13, 22, 27, 44)
   end
+
 end

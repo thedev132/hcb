@@ -5,4 +5,5 @@ class FixCardReferenceToCardRequest < ActiveRecord::Migration[5.2]
     remove_reference :cards, :card_request
     add_reference :card_requests, :card, foreign_key: true
   end
+
 end

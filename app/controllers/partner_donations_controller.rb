@@ -62,4 +62,5 @@ class PartnerDonationsController < ApplicationController
   def export_name(extension)
     "#{DateTime.now.strftime("%Y-%m-%d_%H:%M:%S")}_#{@event.name.to_param}_donations.#{extension}"
   end
+
 end

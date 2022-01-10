@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-#
+
 module CountriesHelper
   ALPHA2_TO_NAME_MAPPING = {
     "AF": "Afghanistan",

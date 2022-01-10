@@ -9,7 +9,7 @@ class BankFee < ApplicationRecord
 
   after_create :set_hcb_code
 
-  scope :since_feature_launch, -> { where("created_at > ?", Time.utc(2021, 05, 20)) }
+  scope :since_feature_launch, -> { where("created_at > ?", Time.utc(2021, 5, 20)) }
   scope :in_transit_or_pending, -> { where("aasm_state in (?)", ["pending", "in_transit"]) }
 
   aasm do

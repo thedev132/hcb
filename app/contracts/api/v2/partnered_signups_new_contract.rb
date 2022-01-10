@@ -13,6 +13,7 @@ module Api
         optional(:owner_address).filled(:string)
         optional(:owner_birthdate).filled(:string)
       end
+
     end
   end
 end

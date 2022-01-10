@@ -15,4 +15,5 @@ class OrganizerPositionsController < ApplicationController
     flash[:success] = "Removed #{@organizer_position.user.email} from the team."
     redirect_back(fallback_location: event_team_path(@organizer_position.event))
   end
+
 end

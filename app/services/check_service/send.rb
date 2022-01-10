@@ -61,5 +61,6 @@ module CheckService
     def event
       @event ||= check.event
     end
+
   end
 end

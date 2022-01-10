@@ -5,4 +5,5 @@ class AddStatusToInvoices < ActiveRecord::Migration[5.2]
     add_column :invoices, :status, :text
     add_index :invoices, :status
   end
+
 end

@@ -33,4 +33,5 @@ class StripeAuthorizationMailer < ApplicationMailer
     mail to: @user.email,
          subject: "Upload a receipt for your #{@auth.stripe_obj.authorization_method.humanize.downcase} transaction at #{@auth.stripe_obj.merchant_data.name}"
   end
+
 end

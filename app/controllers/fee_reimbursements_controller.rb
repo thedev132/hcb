@@ -74,4 +74,5 @@ class FeeReimbursementsController < ApplicationController
   def fee_reimbursement_params
     params.require(:fee_reimbursement).permit(:amount, :status, :transaction_memo)
   end
+
 end

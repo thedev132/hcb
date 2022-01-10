@@ -22,4 +22,5 @@ class OperationsMailer < ApplicationMailer
 
     mail attrs
   end
+
 end

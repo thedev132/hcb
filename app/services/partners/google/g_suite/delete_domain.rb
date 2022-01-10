@@ -13,6 +13,7 @@ module Partners
         def run
           directory_client.delete_domain(gsuite_customer_id, @domain)
         end
+
       end
     end
   end

@@ -41,6 +41,7 @@ module EventMappingEngine
           ::CanonicalEventMapping.create!(attrs)
         end
       end
+
     end
   end
 end

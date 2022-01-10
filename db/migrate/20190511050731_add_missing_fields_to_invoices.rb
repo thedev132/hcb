@@ -20,4 +20,5 @@ class AddMissingFieldsToInvoices < ActiveRecord::Migration[5.2]
     add_column :invoices, :payment_method_ach_credit_transfer_account_number, :text
     add_column :invoices, :payment_method_ach_credit_transfer_swift_code, :text
   end
+
 end

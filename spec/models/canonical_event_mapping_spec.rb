@@ -3,7 +3,7 @@
 require "rails_helper"
 
 RSpec.describe CanonicalEventMapping, type: :model do
-  fixtures  "events", "canonical_transactions", "canonical_event_mappings"
+  fixtures "events", "canonical_transactions", "canonical_event_mappings"
 
   let(:canonical_event_mapping) { canonical_event_mappings(:canonical_event_mapping1) }
 

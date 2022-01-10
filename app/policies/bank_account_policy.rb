@@ -24,4 +24,5 @@ class BankAccountPolicy < ApplicationPolicy
   def reauthenticate?
     user.admin?
   end
+
 end

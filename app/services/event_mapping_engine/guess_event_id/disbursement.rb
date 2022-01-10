@@ -34,6 +34,7 @@ module EventMappingEngine
       def disbursement_id
         memo.gsub("HCB DISBURSE ", "").split(" ")[0]
       end
+
     end
   end
 end

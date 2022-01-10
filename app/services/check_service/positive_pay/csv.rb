@@ -47,6 +47,7 @@ module CheckService
       def positive_pay_account_number
         Rails.application.credentials.positive_pay_account_number
       end
+
     end
   end
 end

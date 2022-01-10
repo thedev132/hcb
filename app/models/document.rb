@@ -40,4 +40,5 @@ class Document < ApplicationRecord
   def slug_text
     "#{self.event ? self.event.name : 'common'} #{self.name}"
   end
+
 end

@@ -18,4 +18,5 @@ class RawPendingBankFeeTransaction < ApplicationRecord
   def bank_fee
     @bank_fee ||= ::BankFee.find_by(id: bank_fee_transaction_id)
   end
+
 end

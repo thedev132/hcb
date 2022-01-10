@@ -47,5 +47,6 @@ module GSuiteService
         org_unit_path: org_unit_id_or_path
       }
     end
+
   end
 end

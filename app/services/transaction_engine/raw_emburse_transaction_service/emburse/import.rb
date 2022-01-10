@@ -32,18 +32,20 @@ module TransactionEngine
 
         def emburse_transactions
           @emburse_transactions ||= ::Partners::Emburse::Transactions::List.new(
-                                                        start_date: @start_date,
-                                                        end_date:   @end_date
-                                                      ).run
+            start_date: @start_date,
+            end_date: @end_date
+          ).run
         end
 
         def fmt_date(date)
           unless date.methods.include? :iso8601
             raise ArgumentError.new("Only datetimes are allowed")
           end
+
           date = date.to_time if date.instance_of? Date
           date.iso8601
         end
+
       end
     end
   end

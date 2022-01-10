@@ -14,6 +14,7 @@ module Partners
         def run
           directory_client.update_org_unit(gsuite_customer_id, org_unit_path: @org_unit_path)
         end
+
       end
     end
   end

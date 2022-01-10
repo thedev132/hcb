@@ -6,4 +6,5 @@ class RenameHashedTransactionsPlaidTransactionIdToRawPlaidTransactionId < Active
       rename_column :hashed_transactions, :plaid_transaction_id, :raw_plaid_transaction_id
     end
   end
+
 end

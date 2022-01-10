@@ -3,7 +3,6 @@
 module Partners
   module Docusign
     class SigningCompletionRedirect
-
       if Rails.env.production?
         ENVIRONMENT_KEY = :production
       else
@@ -17,11 +16,9 @@ module Partners
         partnered_signup_id = partnered_signup.id.to_s
         hmac = compute_hmac(partnered_signup_id, timestamp)
         Rails.application.routes.url_helpers.docusign_signing_complete_redirect_url(
-          {
-            timestamp: timestamp,
-            partnered_signup_id: partnered_signup_id,
-            hmac: hmac
-          }
+          timestamp: timestamp,
+          partnered_signup_id: partnered_signup_id,
+          hmac: hmac
         )
       end
 
@@ -38,6 +35,7 @@ module Partners
       def compute_hmac(partnered_signup_id, timestamp)
         OpenSSL::HMAC.hexdigest("SHA256", HMAC_KEY, partnered_signup_id + "#" + timestamp)
       end
+
     end
   end
 end

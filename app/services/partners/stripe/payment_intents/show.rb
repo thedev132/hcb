@@ -22,6 +22,7 @@ module Partners
             expand: ["charges.data.balance_transaction"]
           }
         end
+
       end
     end
   end

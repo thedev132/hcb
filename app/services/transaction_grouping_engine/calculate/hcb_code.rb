@@ -156,6 +156,7 @@ module TransactionGroupingEngine
           @ct_or_cp.id
         ].join(SEPARATOR)
       end
+
     end
   end
 end

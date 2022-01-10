@@ -22,6 +22,7 @@ module TransactionEngine
       def transaction_csv
         @transaction_csv ||= ::TransactionCsv.find(@transaction_csv_id)
       end
+
     end
   end
 end

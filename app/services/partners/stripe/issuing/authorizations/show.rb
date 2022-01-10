@@ -14,6 +14,7 @@ module Partners
           def run
             ::StripeService::Issuing::Authorization.retrieve(@id)
           end
+
         end
       end
     end

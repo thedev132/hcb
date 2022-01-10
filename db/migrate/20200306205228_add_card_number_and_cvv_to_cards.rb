@@ -5,4 +5,5 @@ class AddCardNumberAndCvvToCards < ActiveRecord::Migration[5.2]
     add_column :cards, :card_number, :string
     add_column :cards, :cvv, :string
   end
+
 end

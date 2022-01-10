@@ -9,4 +9,5 @@ class CanonicalEventMapping < ApplicationRecord
 
   scope :missing_fee, -> { includes(:fees).where(fees: { canonical_event_mapping_id: nil }) }
   scope :mapped_by_human, -> { where("user_id is not null") }
+
 end

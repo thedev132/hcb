@@ -51,4 +51,5 @@ class SponsorPolicy < ApplicationPolicy
   def user_has_position?
     record.event&.users&.include?(user)
   end
+
 end

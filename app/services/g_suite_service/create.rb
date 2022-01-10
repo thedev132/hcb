@@ -54,5 +54,6 @@ module GSuiteService
     def error_message
       "You already have a GSuite account for this event"
     end
+
   end
 end

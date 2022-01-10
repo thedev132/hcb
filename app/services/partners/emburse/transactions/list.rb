@@ -22,6 +22,7 @@ module Partners
             after: @start_date
           }.compact
         end
+
       end
     end
   end

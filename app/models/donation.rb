@@ -84,6 +84,7 @@ class Donation < ApplicationRecord
 
   def state_icon
     return "checkmark" if deposited?
+
     "clock" if in_transit?
   end
 
@@ -250,4 +251,5 @@ class Donation < ApplicationRecord
   def assign_unique_hash
     self.url_hash = SecureRandom.hex(8)
   end
+
 end

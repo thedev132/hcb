@@ -16,4 +16,5 @@ class PartneredSignupPolicy < ApplicationPolicy
   def partnered_signups_reject?
     user&.admin?
   end
+
 end

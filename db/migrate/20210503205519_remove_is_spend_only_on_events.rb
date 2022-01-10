@@ -8,4 +8,5 @@ class RemoveIsSpendOnlyOnEvents < ActiveRecord::Migration[6.0]
       remove_column :events, :is_spend_only, :boolean
     }
   end
+
 end

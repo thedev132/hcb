@@ -16,5 +16,6 @@ module PartneredSignupJob
         raise WebhookFailed
       end
     end
+
   end
 end

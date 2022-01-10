@@ -24,6 +24,7 @@ module Partners
               expand: @expand
             }
           end
+
         end
       end
     end
