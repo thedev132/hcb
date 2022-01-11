@@ -24,7 +24,8 @@ class PartneredSignup < ApplicationRecord
                          :owner_email,
                          :owner_phone,
                          :owner_address_line1,
-                         :owner_address_line2,
+                         # :owner_address_line2,
+                         # ^ intentionally blank, as this is optional
                          :owner_address_city,
                          :owner_address_state,
                          :owner_address_postal_code,
