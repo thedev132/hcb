@@ -30,6 +30,7 @@
         <td class="break-all"><%= partner.public_stripe_api_key %></td>
         <td class="break-all"><%= partner.docusign_template_id %></td>
         <td>
+          <%= link_to "Edit", partner_admin_index_url(partner) %>
         </td>
       </tr>
     <% end %>

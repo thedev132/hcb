@@ -89,6 +89,21 @@ class AdminController < ApplicationController
     render layout: "admin"
   end
 
+  def partner
+    @partner = Partner.find(params.require(:id))
+    render layout: "admin"
+  end
+
+  def partner_edit
+    @partner = Partner.find(params.require(:id))
+    edit_params = params.require(:partner).permit(
+      :docusign_template_id
+    )
+    @partner.update!(edit_params)
+    flash[:success] = "Partner updated"
+    redirect_to partners_admin_index_path
+  end
+
   def partnered_signups
     relation = PartneredSignup
 

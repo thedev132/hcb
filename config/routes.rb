@@ -92,6 +92,8 @@ Rails.application.routes.draw do
       get "bank_fees", to: "admin#bank_fees"
       get "users", to: "admin#users"
       get "partners", to: "admin#partners"
+      get "partner/:id", to: "admin#partner", as: "partner"
+      post "partner/:id", to: "admin#partner_edit"
       get "partnered_signups", to: "admin#partnered_signups"
       get "raw_transactions", to: "admin#raw_transactions"
       get "raw_transaction_new", to: "admin#raw_transaction_new"
