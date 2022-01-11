@@ -27,7 +27,7 @@ class GSuiteAccountsController < ApplicationController
     begin
       GSuiteAccountService::Create.new(attrs).run
 
-      flash[:success] = "Google Workspace account application submitted."
+      flash[:success] = "Google Workspace account submitted."
     rescue => e
       Airbrake.notify(e)
 
