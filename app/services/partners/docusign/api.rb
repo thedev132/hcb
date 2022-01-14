@@ -15,7 +15,7 @@ module Partners
       else
         BASE_PATH = "https://demo.docusign.net/restapi"
         ENVIRONMENT_KEY = :development
-        attr_reader :api_client
+        attr_reader :api_client, :token
       end
 
       INTEGRATION_KEY = Rails.application.credentials[:docusign][ENVIRONMENT_KEY][:integration_key]
@@ -63,6 +63,16 @@ module Partners
         view_request.user_name = signer_name
         view_request.client_user_id = signer_client_id
         envelopes_api.create_recipient_view(ACCOUNT_ID, envelope_id, view_request)
+      end
+
+      def create_sender_view(envelope_id, callback_url)
+        refresh_token
+        envelopes_api.create_sender_view(ACCOUNT_ID, envelope_id, url: callback_url)
+      end
+
+      def get_envelope(envelope_id)
+        refresh_token
+        envelopes_api.get_envelope(ACCOUNT_ID, envelope_id)
       end
 
       private

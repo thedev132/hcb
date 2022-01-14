@@ -95,6 +95,7 @@ Rails.application.routes.draw do
       get "partner/:id", to: "admin#partner", as: "partner"
       post "partner/:id", to: "admin#partner_edit"
       get "partnered_signups", to: "admin#partnered_signups"
+      post "partnered_signups/:id/sign", to: "admin#partnered_signup_sign_document", as: "partnered_signup_sign_document"
       get "raw_transactions", to: "admin#raw_transactions"
       get "raw_transaction_new", to: "admin#raw_transaction_new"
       post "raw_transaction_create", to: "admin#raw_transaction_create"

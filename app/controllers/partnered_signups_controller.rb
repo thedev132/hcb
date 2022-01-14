@@ -81,7 +81,7 @@ class PartneredSignupsController < ApplicationController
 
   # Only allow a trusted parameter "white list" through.
   def partnered_signup_params
-    result_params = params.require(:partnered_signup).permit(
+    params.require(:partnered_signup).permit(
       :organization_name,
       :owner_name,
       :owner_phone,

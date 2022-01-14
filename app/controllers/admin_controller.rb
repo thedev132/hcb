@@ -104,6 +104,12 @@ class AdminController < ApplicationController
     redirect_to partners_admin_index_path
   end
 
+  def partnered_signup_sign_document
+    partnered_signup = PartneredSignup.find(params.require(:id))
+    admin_contract_signing = Partners::Docusign::AdminContractSigning.new(partnered_signup)
+    redirect_to admin_contract_signing.admin_signing_link
+  end
+
   def partnered_signups
     relation = PartneredSignup
 
