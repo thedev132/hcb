@@ -10,6 +10,9 @@ class ApplicationController < ActionController::Base
   # that you want to be unauthenticated with skip_before_action.
   before_action :signed_in_user
 
+  # Track papertrail edits to specific users
+  before_action :set_paper_trail_whodunnit
+
   # Force usage of Pundit on actions
   after_action :verify_authorized
 

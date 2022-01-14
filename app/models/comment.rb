@@ -8,6 +8,8 @@ class Comment < ApplicationRecord
 
   has_one_attached :file
 
+  has_paper_trail
+
   validates :user, presence: true
   validates :content, presence: true, unless: :file_is_attached?
 
@@ -15,6 +17,11 @@ class Comment < ApplicationRecord
 
   scope :admin_only, -> { where(admin_only: true) }
   scope :not_admin_only, -> { where(admin_only: false) }
+  scope :edited, -> { joins(:versions).where("versions.event = 'update' OR versions.event = 'destroy'") }
+
+  def edited?
+    versions.where("event = 'update' OR event = 'destroy'").any?
+  end
 
   private
 

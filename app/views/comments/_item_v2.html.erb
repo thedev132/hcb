@@ -1,7 +1,9 @@
 <div class="mt2 mb2">
   <%= creator_bar comment %>
   <div class="card<%= ' current-user' if comment.user == current_user %>" id="comment-<%= comment.hashid %>">
-    <%== MarkdownService.instance.renderer.render comment.content %>
+    <div class="comment--container">
+      <%== MarkdownService.instance.renderer.render comment.content %>
+    </div>
     <p class="mb0 h5">
       <% if comment.file.attached? %>
         <% if organizer_signed_in? %>
@@ -14,6 +16,27 @@
 
       <%= link_to "Edit", edit_comment_path(comment) if organizer_signed_in? %>
       <%= link_to "Hyperlink", "#comment-#{comment.hashid}", target: "_blank" if organizer_signed_in? %>
+      <%# if comment.edited? %>
+        <!--action data-behavior="modal_trigger" data-turbolinks="false" data-modal="comment-modal-<%= comment.hashid %>" tabindex="0">
+          <a href="#">History</a>
+        </action-->
+      <%# end %>
     </p>
   </div>
 </div>
+
+<% if comment.edited? %>
+  <section class="modal" data-behavior="modal" role="dialog" id="comment-modal-<%= comment.hashid %>">
+    <%= modal_header 'Edit history' %>
+    <% comment.versions.order("created_at desc").filter { |v| v.event == 'update' }.each do |version| %>
+      <p>
+        <%= version.whodunnit.nil? ? 'Automatically ' : user_mention(User.find(version.whodunnit)) %>
+        updated <%= time_ago_in_words version.created_at %> ago
+      </p>
+    <% end %>
+    <p>
+      <%= user_mention comment.user %> created
+      <%= time_ago_in_words comment.created_at %> ago
+    </p>
+  </section>
+<% end %>

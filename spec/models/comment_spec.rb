@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe Comment, type: :model do
+RSpec.describe Comment, type: :model, versioning: true do
   fixtures "users", "transactions", "comments"
 
   let(:transaction) { transactions(:transaction1) }
@@ -15,6 +15,17 @@ RSpec.describe Comment, type: :model do
 
   it "is valid" do
     expect(comment).to be_valid
+  end
+
+  it "uses PaperTrail versioning in tests" do
+    expect(described_class.new).to be_versioned
+    expect(comment).to be_versioned
+  end
+
+  it "is versioned by PaperTrail on edit" do
+    expect(comment.versions.size).to eq(0)
+    comment.update(content: 'Edited content')
+    expect(comment.versions.size).to be >= 1
   end
 
   context "when missing content" do
