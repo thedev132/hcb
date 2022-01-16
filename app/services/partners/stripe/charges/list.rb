@@ -12,24 +12,13 @@ module Partners
         end
 
         def run
-          resp = fetch_charges
+          starting_after = nil
 
-          ts = resp.data
-
-          ts.each do |t|
-            if t.metadata["hcb_metadata_identifier"].present?
-              yield t
-            else
-              Airbrake.notify("Stripe charge #{t.id} has no metadata identifier")
-            end
-          end
-
-          while resp.has_more
-            starting_after = ts.last.id
-
+          loop do
             resp = fetch_charges(starting_after: starting_after)
 
             ts = resp.data
+            break if ts.empty?
 
             ts.each do |t|
               if t.metadata["hcb_metadata_identifier"].present?
@@ -38,17 +27,9 @@ module Partners
                 Airbrake.notify("Stripe charge #{t.id} has no metadata identifier")
               end
             end
-          end
 
-          ts.each do |t|
-            if t.metadata["hcb_metadata_identifier"].present?
-              yield t
-            else
-              Airbrake.notify("Stripe charge #{t.id} has no metadata identifier")
-            end
+            starting_after = ts.last.id
           end
-
-          nil
         end
 
         private
