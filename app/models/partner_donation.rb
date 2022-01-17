@@ -103,7 +103,7 @@ class PartnerDonation < ApplicationRecord
     when :deposited
       "checkmark"
     else
-      "error"
+      "forbidden"
     end
   end
 
