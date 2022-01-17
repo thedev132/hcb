@@ -36,7 +36,8 @@
     <tr>
       <th>ID</th>
       <th>Date</th>
-      <th>Recipient</th>
+      <th>Organization</th>
+      <th>Donor</th>
       <th>Amount</th>
       <th>Status</th>
       <th>Actions</th>
@@ -48,13 +49,18 @@
         <td><%= partner_donation.id %></td>
         <td><%= partner_donation.created_at.strftime("%Y-%m-%d") %></td>
         <td>
-          <%= link_to hcb_code_url(partner_donation.local_hcb_code.hashid) do %>
-            <%= partner_donation.event.name.upcase %>: <%= partner_donation.smart_memo %>
+          <%= link_to partner_donation.event do %>
+            <%= partner_donation.event.name %>
           <% end %>
+        </td>
+        <td>
+          <%= partner_donation.donor_name.present? ? partner_donation.donor_name : "—" %>
         </td>
         <td><%= render_money_amount(partner_donation.amount) %></td>
         <td><%= partner_donation.state.upcase %></td>
-        <td></td>
+        <td>
+          <%= link_to partner_donation do %>View<% end %>
+        </td>
       </tr>
     <% end %>
   </tbody>
