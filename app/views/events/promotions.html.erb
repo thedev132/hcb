@@ -145,6 +145,38 @@
   </p>
 </div>
 
+<div class="card mb3 pb0" id="stickers">
+  <div class="card__banner card__banner--top flex justify-between items-center promo-stickers">
+      <span class="flex flex-row items-center">
+        <h3 class="h1 white p2 my0 card-title z1">
+          <%= content_tag(:span, 'Hack Club Bank', class: 'xs-hide sm-hide md-hide') %> 
+          <%= content_tag(:span, 'HCB', class: 'xs-hide lg-hide') %>
+          Stickers
+        </h3>
+        <%= image_tag 'stickers/card-sticker.svg', width: 100, class: 'sticker z0', style: 'margin-left: -25px' %>
+        <%= image_tag 'stickers/wide-sticker-light.svg', width: 150, class: 'sticker wide sm-hide xs-hide ml2' %>
+        <%= image_tag 'stickers/icon-sticker-light.svg', width: 50, class: 'sticker ml2 xs-hide' %>
+      </span>
+    <%= link_to 'Apply',
+      organizer_signed_in? ? "https://hack.af/hcb-stickers?prefill_Recipient%20Name=#{current_user.full_name}&prefill_Login%20Email=#{current_user.email}" : root_path,
+      class: "btn bg-success mr1 #{'disabled' unless organizer_signed_in?}",
+      target: :_blank
+     %>
+  </div>
+
+  <div class="mb0">
+    <p><strong>Want some Hack Club Bank stickers?</strong> You can request an envelope full of them for yourself or your teammates! Every shipment request is manually sent out by the Bank team, and every envelope is personaly prepared, packed, and mailed, with the address handwritten.</p>
+    <p><em><strong>With great power comes great responsibility...</strong></em></p>
+    <p>Please enjoy responsibly. Hack Club Bank operates at a loss that donors pay for, and stickers are not cheap—every package costs real donor money.</p>
+  </div>
+
+  <section class="card__banner card__darker secondary border-top">
+  <p class="my0">
+    📦 If you need a full box of stickers for an event, please email the Bank team at <%= help_email %> with your attendance count and address. We’d be happy to check out your request.
+  </p>
+  </section>
+</div>
+
 <div class="card mb3" id="sendy">
   <div class="card__banner card__banner--top flex justify-between items-center" style="background-color: #343a44;">
     <h3 class="h1 white p2 my0">Sendy</h3>

@@ -1,36 +1,56 @@
 @import 'variables';
 
- .promo-pvsa {
-   background: repeating-linear-gradient(
-     135deg,
-     #eee 0%,
-     white 40%,
-     #3c3b6e 40%,
-     #3c3b6e 65%,
-     #b22234 65%,
-     #b22234 70%,
-     white 70%,
-     white 75%,
-     #b22234 75%,
-     #b22234 80%,
-     white 80%,
-     white 85%,
-     #b22234 85%,
-     #b22234 90%,
-     white 90%,
-     #eee 100%
-   );
- }
+.promo-pvsa {
+  background: repeating-linear-gradient(
+    135deg,
+    #eee 0%,
+    white 40%,
+    #3c3b6e 40%,
+    #3c3b6e 65%,
+    #b22234 65%,
+    #b22234 70%,
+    white 70%,
+    white 75%,
+    #b22234 75%,
+    #b22234 80%,
+    white 80%,
+    white 85%,
+    #b22234 85%,
+    #b22234 90%,
+    white 90%,
+    #eee 100%
+  );
+}
 
- .promo-domains {
-     background-color: #F5F5F5;
-     background-image: linear-gradient(to right, rgba(245, 246, 252, 0.25), rgba(248, 248, 248, 0.05)), url("https://cloud-hapajna0o-hack-club-bot.vercel.app/0frame_6-2.svg");
-     background-size: cover;
-     background-repeat: no-repeat;
- }
+.promo-domains {
+  background-color: #f5f5f5;
+  background-image: linear-gradient(to right, rgba(245, 246, 252, 0.25), rgba(248, 248, 248, 0.05)),
+    url('https://cloud-hapajna0o-hack-club-bot.vercel.app/0frame_6-2.svg');
+  background-size: cover;
+  background-repeat: no-repeat;
+}
 
- html[data-dark="true"] {
-   .promo-pvsa {
+.promo-stickers {
+  background-color: #ec3750;
+  border: 2px solid #ec3750;
+
+  .sticker {
+    transform: rotate(20deg);
+    transition-duration: 0.125s;
+
+    &.wide {
+      transform: rotate(-15deg);
+    }
+
+    &:hover {
+      transition: 0.2s ease-in-out;
+      transform: scale(1.3);
+    }
+  }
+}
+
+html[data-dark='true'] {
+  .promo-pvsa {
     background: repeating-linear-gradient(
       135deg,
       #8492a6 0%,
@@ -50,10 +70,15 @@
       #8492a6 90%,
       #8492a6 100%
     );
-   }
+  }
 
-   .promo-domains {
-       background-color: #363A44;
-       color: white;
-   }
- }
+  .promo-domains {
+    background-color: #363a44;
+    color: white;
+  }
+  .promo-stickers {
+    background-color: #343a44;
+    border: 2px solid #ec3750;
+    border-radius: 0.5rem 0.5rem 0 0;
+  }
+}
