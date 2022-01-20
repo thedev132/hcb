@@ -8,18 +8,36 @@ module PartnerDonationService
 
     def run
       ::Partners::Stripe::Charges::List.new(list_attrs).run do |sc|
-        next unless partner_donation?(sc)
+        pdn = partner_donation(sc)
 
-        if partner_donation(sc).unpaid?
+        # All Charges on Partner Stripe accounts should be associated with a
+        # PartnerDonation. If we can't find one, report and move on.
+        unless pdn
+          Airbrake.notify(
+            "Stripe charge #{sc.id} has no partner donation associated with it."\
+            "The HCB Metadata Identifier is #{hcb_metadata_identifier(sc) || "missing!"}"
+          )
+          next
+        end
+
+        # This PDN now has a Stripe Charge — meaning that it has been paid.
+        # If the current state of the PDN is "unpaid", then let's transition it
+        # to "pending" (paid, but not payout yet).
+        if pdn.unpaid?
           ActiveRecord::Base.transaction do
-            partner_donation(sc).mark_pending!
-            partner_donation(sc).update_column(:stripe_charge_id, sc.id)
-            partner_donation(sc).update_column(:stripe_charge_created_at, Time.at(sc.created))
-            partner_donation(sc).update_column(:payout_amount_cents, payout_amount_cents(sc))
+            pdn.mark_pending!
+            pdn.update_column(:stripe_charge_id, sc.id)
+            pdn.update_column(:stripe_charge_created_at, Time.at(sc.created))
+            pdn.update_column(:payout_amount_cents, payout_amount_cents(sc))
           end
         end
 
-        if partner_donation(sc).pending?
+        # If the PDN has been paid, let's create a payout on Stripe.
+        #
+        # Since we are not waiting until the funds from this stripe charge are
+        # available, there is a chance this may error. That should be okay since
+        # the payout will be created by this job once there are sufficient funds.
+        if pdn.pending?
           ::PartnerDonationJob::CreateRemotePayout.perform_later(partner.id, sc.id)
         end
       end
@@ -38,10 +56,6 @@ module PartnerDonationService
 
     def partner
       @partner ||= ::Partner.find(@partner_id)
-    end
-
-    def partner_donation?(public_id)
-      !partner_donation(public_id).nil?
     end
 
     def partner_donation(sc)

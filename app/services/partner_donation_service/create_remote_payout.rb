@@ -14,7 +14,6 @@ module PartnerDonationService
 
       ActiveRecord::Base.transaction do
         partner_donation.mark_in_transit!
-        partner_donation.update_column(:payout_amount_cents, amount_cents)
         ::Partners::Stripe::Payouts::Create.new(attrs).run
       end
     end

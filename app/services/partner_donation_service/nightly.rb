@@ -4,7 +4,7 @@ module PartnerDonationService
   class Nightly
     def run
       # 1. import partner donations
-      ::Partner.all do |partner|
+      ::Partner.all.each do |partner|
         ::PartnerDonationService::Import.new(partner_id: partner.id).run
       end
 
