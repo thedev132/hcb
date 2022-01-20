@@ -1172,6 +1172,8 @@ ActiveRecord::Schema.define(version: 2022_01_14_190026) do
     t.string "timezone"
     t.string "ip"
     t.datetime "deleted_at"
+    t.bigint "impersonated_by_id"
+    t.index ["impersonated_by_id"], name: "index_user_sessions_on_impersonated_by_id"
     t.index ["user_id"], name: "index_user_sessions_on_user_id"
   end
 
@@ -1291,4 +1293,5 @@ ActiveRecord::Schema.define(version: 2022_01_14_190026) do
   add_foreign_key "transactions", "fee_relationships"
   add_foreign_key "transactions", "invoice_payouts"
   add_foreign_key "user_sessions", "users"
+  add_foreign_key "user_sessions", "users", column: "impersonated_by_id"
 end

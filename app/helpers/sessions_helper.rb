@@ -9,7 +9,7 @@ module SessionsHelper
   def sign_in(user:, fingerprint_info: {}, impersonate: false)
     session_token = SecureRandom.urlsafe_base64
     cookies.encrypted[:session_token] = { value: session_token, expires: 30.days.from_now }
-    user.user_sessions.create(
+    user_session = user.user_sessions.create(
       session_token: session_token,
       fingerprint: fingerprint_info[:fingerprint],
       device_info: fingerprint_info[:device_info],
@@ -25,6 +25,8 @@ module SessionsHelper
     end
 
     if impersonate
+      user_session.impersonated_by = current_user
+      user_session.save
       @current_user = user
       @current_user
     else

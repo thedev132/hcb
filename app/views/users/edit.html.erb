@@ -4,7 +4,6 @@
   <% page_md %>
   <%= render 'users/nav' %>
 <% end %>
-
 <!--
 <main class="<%= !@onboarding && 'grid grid--spacious grid--split' %>" style="grid-row-gap: 0;">
 
@@ -13,137 +12,132 @@
 <h1>
   <%= @onboarding ? 'Welcome to Bank!' : 'Settings' %>
 </h1>
-
 <section>
   <h2>Account details</h2>
-<% if @onboarding %>
-  <p>Complete your profile to get started.</p>
-<% end %>
-
-<%= form_with(model: @user, local: true, html:{ onsubmit: 'onSubmit()'}) do |form| %>
-  <%= form_errors @user, 'user information' %>
-
-  <div class="field">
-    <%= form.label :full_name %>
-    <%= form.text_field :full_name, required: true %>
-  </div>
-
-  <div class="field">
-    <%= form.label :phone_number, 'Mobile phone number (so we can contact you on short notice)' %>
-    <%= form.hidden_field :phone_number, required: true, placeholder: '555-555-5555', id: 'phone_number' %>
-    <input type="tel" id="phone_raw" value="<%= @user.phone_number || nil %>">
-  </div>
-
-  <div class="field">
-    <%= form.label :email, class: 'muted' %>
-    <%= form.email_field :email, disabled: true %>
-  </div>
-
-  <%= form.label :profile_picture %>
-  <p class="flex items-center mt1">
-    <%= avatar_for @user, 48, class: 'mr2' %>
-    <span>
-      <% if @user.profile_picture.attached? %>
-        You're currently using an uploaded profile picture.<br>If you'd like to switch back to your Gravatar, <%= link_to 'click here', user_delete_profile_picture_path(@user), method: :post %>.
-      <% else %>
-        If you have a <a href="https://gravatar.com" target="_blank">Gravatar</a>, we’ll pull it in here.<br> Or, you can upload a profile picture below.<br>
-      <% end %>
-    </span>
-  </p>
-  <div class="field">
-    <%= form.file_field :profile_picture, accept: 'image/png, image/jpeg' %>
-  </div>
-
-  <% if @user.admin_override_pretend? %>
-    <div class="field field--checkbox admin-tools">
-      <%= form.check_box :pretend_is_not_admin %>
-      <%= form.label :pretend_is_not_admin, 'Pretend not to be an admin on Bank' %>
+  <% if @onboarding %>
+    <p>Complete your profile to get started.</p>
+  <% end %>
+  <%= form_with(model: @user, local: true, html:{ onsubmit: 'onSubmit()'}) do |form| %>
+    <%= form_errors @user, 'user information' %>
+    <div class="field">
+      <%= form.label :full_name %>
+      <%= form.text_field :full_name, required: true %>
+    </div>
+    <div class="field">
+      <%= form.label :phone_number, 'Mobile phone number (so we can contact you on short notice)' %>
+      <%= form.hidden_field :phone_number, required: true, placeholder: '555-555-5555', id: 'phone_number' %>
+      <input type="tel" id="phone_raw" value="<%= @user.phone_number || nil %>">
+    </div>
+    <div class="field">
+      <%= form.label :email, class: 'muted' %>
+      <%= form.email_field :email, disabled: true %>
+    </div>
+    <%= form.label :profile_picture %>
+    <p class="flex items-center mt1">
+      <%= avatar_for @user, 48, class: 'mr2' %>
+      <span>
+        <% if @user.profile_picture.attached? %>
+          You're currently using an uploaded profile picture.<br>
+          If you'd like to switch back to your Gravatar, <%= link_to 'click here', user_delete_profile_picture_path(@user), method: :post %>.
+        <% else %>
+          If you have a <a href="https://gravatar.com" target="_blank">Gravatar</a>, we’ll pull it in here.<br>
+           Or, you can upload a profile picture below.<br>
+        <% end %>
+      </span>
+    </p>
+    <div class="field">
+      <%= form.file_field :profile_picture, accept: 'image/png, image/jpeg' %>
+    </div>
+    <% if @user.admin_override_pretend? %>
+      <div class="field field--checkbox admin-tools">
+        <%= form.check_box :pretend_is_not_admin %>
+        <%= form.label :pretend_is_not_admin, 'Pretend not to be an admin on Bank' %>
+      </div>
+    <% end %>
+    <fieldset>
+      <legend class="heading h2 pt2">Share usage data with us</legend>
+      <p class="h5 muted mt1 mb2">
+        Help us improve Hack Club Bank by sending usage data.
+        <% if @onboarding %>
+          <br>
+          You can turn this off in your settings anytime.
+        <% else %>
+          Off by default.
+        <% end %>
+      </p>
+      <div class="field field--options">
+        <%= form.radio_button :sessions_reported, false %>
+        <%= form.label :sessions_reported, value: false do %>
+          <%= inline_icon 'thumbsdown', size: 28 %>
+          <strong>No thanks</strong>
+        <% end %>
+        <%= form.radio_button :sessions_reported, true %>
+        <%= form.label :sessions_reported, value: true do %>
+          <%= inline_icon 'support', size: 28 %>
+          <strong>Sure thing!</strong>
+        <% end %>
+      </div>
+    </fieldset>
+    <div class="actions flex">
+      <%= form.submit @user.full_name.present? ? 'Save profile' : 'Start using Bank' %>
     </div>
   <% end %>
-
-  <fieldset>
-    <legend class="heading h2 pt2">Share usage data with us</legend>
-  <p class="h5 muted mt1 mb2">
-    Help us improve Hack Club Bank by sending usage data.
-    <% if @onboarding %>
-      <br>
-      You can turn this off in your settings anytime.
-    <% else %>
-      Off by default.
-    <% end %>
-  </p>
-    <div class="field field--options">
-      <%= form.radio_button :sessions_reported, false %>
-      <%= form.label :sessions_reported, value: false do %>
-        <%= inline_icon 'thumbsdown', size: 28 %>
-        <strong>No thanks</strong>
-      <% end %>
-      <%= form.radio_button :sessions_reported, true %>
-      <%= form.label :sessions_reported, value: true do %>
-        <%= inline_icon 'support', size: 28 %>
-        <strong>Sure thing!</strong>
-      <% end %>
-    </div>
-  </fieldset>
-  <div class="actions flex">
-    <%= form.submit @user.full_name.present? ? 'Save profile' : 'Start using Bank' %>
-  </div>
-<% end %>
-
-<% unless @onboarding %>
-  <h2 class="mt4">
-    Authentication
-  </h2>
+  <% unless @onboarding %>
+    <h2 class="mt4">
+      Authentication
+    </h2>
     <fieldset>
       <div class="session-header pb2">
         <legend class="heading flex flex-row justify-start items-center">
           <span class="h2">Sessions</span>
-          <%= badge_for @user.user_sessions.count, class: 'bg-muted' %>
+          <%= badge_for @sessions.count, class: 'bg-muted' %>
         </legend>
         <%= link_to logout_all_users_path, method: :delete,
             class: 'btn bg-error mt1 py1 px2 h4' do %>
-            <%= inline_icon 'door-leave', size: home_action_size %>
-            Sign out of all sessions
-          <% end %>
-      </div>
-
-      <div class="grid grid--split">
-        <% @user.user_sessions.order(created_at: :desc).each do |session| %>
-            <div class="card border <% if current_session.id == session.id %>b--success<% end %>">
-                <span class="flex items-center justify-between">
-                  <span class="bold flex items-center">
-                    <% if !session.device_info %> 
-                      <span>No data is available for this session.</span>
-                    <% else %>
-                      <span><%= session.device_info %> on <%= session.os_info %></span>
-                    <% end %>
-                    <% if current_session.id == session.id %><span class="badge bg-success medium">current&nbsp;session</span><% end %>
-                  </span>
-                      <%= link_to logout_session_users_path(user: @user, id: session.id), method: :delete, class: 'muted tooltipped tooltipped--w z5', 'aria-label': 'Sign out of this session' do %>
-                      <%= inline_icon 'door-leave', size: home_action_size %>
-                    <% end %>
-                </span>
-                    <% if session.device_info %> 
-                      <span class="flex items-center"><%= inline_icon 'web', size: 20 %>&nbsp;<code class="mr1"><%= session.ip %></code> • <%= inline_icon 'clock', size: 20, class: 'ml1' %>&nbsp;<%= session.timezone %></span>
-                    <% end %>
-            </div>
+          <%= inline_icon 'door-leave', size: home_action_size %>
+          Sign out of all sessions
         <% end %>
       </div>
-
-        <% if @user.admin?  %>
-          <div class="admin-tools mt3">
-            <legend class="heading h2 pt2">SMS Information</legend>
-            <%=  react_component 'settings/SmsVerification', {
-                useSmsAuth: @user.use_sms_auth,
-                phoneNumberVerified: @user.phone_number_verified,
-                phoneNumber: @user.phone_number
-              },
-              { prerender: true }
-            %>
+      <div class="grid grid--split">
+        <% @sessions.order(created_at: :desc).each do |session| %>
+          <div class="card border<%= ' b--warning' if session.impersonated? %><%= ' b--success' if current_session.id == session.id %>">
+            <% if session.impersonated? %>
+              <span class="admin-tools">Impersonated by <%= user_mention session.impersonated_by %></span>
+            <% end %>
+            <span class="flex items-center justify-between">
+              <span class="bold flex items-center">
+                <% if session.device_info %>
+                  <span><%= session.device_info %> on <%= session.os_info %></span>
+                <% else %>
+                  <span>No data is available for this session.</span>
+                <% end %>
+                <% if current_session.id == session.id %>
+                  <span class="badge bg-success medium">current&nbsp;session</span>
+                <% end %>
+              </span>
+              <%= link_to logout_session_users_path(user: @user, id: session.id), method: :delete, class: 'muted tooltipped tooltipped--w z5', 'aria-label': 'Sign out of this session' do %>
+                <%= inline_icon 'door-leave', size: home_action_size %>
+              <% end %>
+            </span>
+            <% if session.device_info %>
+              <span class="flex items-center"><%= inline_icon 'web', size: 20 %>&nbsp;<code class="mr1"><%= session.ip %></code> • <%= inline_icon 'clock', size: 20, class: 'ml1' %>&nbsp;<%= session.timezone %></span>
+            <% end %>
           </div>
         <% end %>
-
-      </fieldset>
+      </div>
+      <% if @user.admin?  %>
+        <div class="admin-tools mt3">
+          <legend class="heading h2 pt2">SMS Information</legend>
+          <%=  react_component 'settings/SmsVerification', {
+              useSmsAuth: @user.use_sms_auth,
+              phoneNumberVerified: @user.phone_number_verified,
+              phoneNumber: @user.phone_number
+            },
+            { prerender: true }
+          %>
+        </div>
+      <% end %>
+    </fieldset>
   <% end %>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/intlTelInput.min.js" integrity="sha512-QMUqEPmhXq1f3DnAVdXvu40C8nbTgxvBGvNruP6RFacy3zWKbNTmx7rdQVVM2gkd2auCWhlPYtcW2tHwzso4SA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/css/intlTelInput.css" integrity="sha512-gxWow8Mo6q6pLa1XH/CcH8JyiSDEtiwJV78E+D+QP0EVasFs8wKXq16G8CLD4CJ2SnonHr4Lm/yY2fSI2+cbmw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
