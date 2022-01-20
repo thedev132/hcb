@@ -54,7 +54,7 @@ module PartnerDonationService
     end
 
     def metadata
-      @metadata ||= stripe_charge.metadata
+      @metadata ||= stripe_charge.payment_intent.metadata
     end
 
     def hcb_metadata_identifier
