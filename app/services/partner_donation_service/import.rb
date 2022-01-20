@@ -7,6 +7,8 @@ module PartnerDonationService
     end
 
     def run
+      return unless partner.stripe_api_key.present?
+
       ::Partners::Stripe::Charges::List.new(list_attrs).run do |sc|
         pdn = partner_donation(sc)
 
@@ -41,8 +43,6 @@ module PartnerDonationService
           ::PartnerDonationJob::CreateRemotePayout.perform_later(partner.id, sc.id)
         end
       end
-
-      true
     end
 
     private
