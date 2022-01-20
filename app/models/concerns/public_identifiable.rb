@@ -21,6 +21,8 @@ module PublicIdentifiable
     end
 
     def find_by_public_id(id)
+      return nil unless id.is_a? String
+
       prefix = id.split("_").first.to_s.downcase
       hash = id.split("_").last
       raise ArgumentError, "Invalid model type: #{prefix}" unless prefix == self.get_public_id_prefix

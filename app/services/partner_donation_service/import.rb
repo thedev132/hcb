@@ -69,7 +69,7 @@ module PartnerDonationService
     end
 
     def hcb_metadata_identifier(sc)
-      sc.metadata["hcb_metadata_identifier"]
+      sc.payment_intent.metadata["hcb_metadata_identifier"]
     end
 
   end

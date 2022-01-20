@@ -21,11 +21,7 @@ module Partners
             break if ts.empty?
 
             ts.each do |t|
-              if t.metadata["hcb_metadata_identifier"].present?
-                yield t
-              else
-                Airbrake.notify("Stripe charge #{t.id} has no metadata identifier")
-              end
+              yield t
             end
 
             starting_after = ts.last.id
@@ -42,7 +38,8 @@ module Partners
           {
             created: { gte: @start_date.to_i },
             starting_after: starting_after,
-            limit: 100
+            limit: 100,
+            expand: ["data.payment_intent"]
           }
         end
 
