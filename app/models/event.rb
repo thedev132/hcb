@@ -7,6 +7,8 @@ class Event < ApplicationRecord
   include PublicIdentifiable
   set_public_id_prefix :org
 
+  has_paper_trail
+
   include AASM
   include PgSearch::Model
   pg_search_scope :search_name, against: [:name, :slug, :id], using: { tsearch: { prefix: true, dictionary: "english" } }
