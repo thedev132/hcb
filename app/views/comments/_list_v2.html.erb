@@ -8,4 +8,8 @@
       <%= render "comments/item_v2", comment: comment %>
     <% end %>
   <% end %>
+
+  <% if local_assigns[:blankslate?] %>
+    <%= blankslate "No comments yet." %>
+  <% end %>
 </section>

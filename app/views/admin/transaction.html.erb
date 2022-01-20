@@ -38,6 +38,11 @@
 
 <br/><hr/>
 
+<h4>Comments</h4>
+
+<%= render "comments/list_v2", { :blankslate? => true } %>
+
+
 <% if @potential_donation_payouts.present? %>
   <h4>Potential DonationPayouts to Map to</h4>
 
@@ -49,7 +54,7 @@
           <td><%= pdp.statement_descriptor %></td>
           <td><%= render_money pdp.amount %></td>
           <td><%= link_to pdp.event.admin_formatted_name, pdp.event %></td>
-          <td><%= link_to "stripe #{pdp.stripe_payout_id}", "https://dashboard.stripe.com/payouts/#{pdp.stripe_payout_id}" %></td> 
+          <td><%= link_to "stripe #{pdp.stripe_payout_id}", "https://dashboard.stripe.com/payouts/#{pdp.stripe_payout_id}" %></td>
         </tr>
       <% end %>
     </body>
@@ -142,8 +147,3 @@
 <% end %>
 
 <br/><hr/>
-
-<h4>Comments</h4>
-
-<%= render "comments/list_v2" %>
-
