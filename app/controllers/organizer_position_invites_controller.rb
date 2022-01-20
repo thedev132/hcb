@@ -33,19 +33,20 @@ class OrganizerPositionInvitesController < ApplicationController
   end
 
   def show
-    if signed_in?
-      authorize @invite
-      @organizers = @invite.event.organizer_positions.includes(:user)
-      if @invite.cancelled?
-        flash[:error] = "That invite was canceled!"
-        redirect_to root_path
-      end
-    else
+    # If the user's not signed in, redirect them to login page
+    unless signed_in?
       hide_footer
       @skip_verfiy_authorized = true
       @prefill_email = @invite.email
 
-      render "users/auth"
+      render "users/auth" and return
+    end
+
+    authorize @invite
+    @organizers = @invite.event.organizer_positions.includes(:user)
+    if @invite.cancelled?
+      flash[:error] = "That invite was canceled!"
+      redirect_to root_path
     end
   end
 

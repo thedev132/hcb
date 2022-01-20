@@ -18,11 +18,11 @@ class OrganizerPositionInvitePolicy < ApplicationPolicy
   end
 
   def accept?
-    record.user == user
+    record.email == user.email || record.user == user
   end
 
   def reject?
-    record.user == user
+    record.email == user.email || record.user == user
   end
 
   def cancel?
