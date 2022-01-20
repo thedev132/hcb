@@ -65,6 +65,9 @@
     },
     {
       "url": "heroku/ruby"
+    },
+    {
+      "url": "heroku/metrics"
     }
   ],
   "stack": "heroku-18"

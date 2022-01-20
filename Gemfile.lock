@@ -98,6 +98,9 @@ GEM
       babel-source (>= 4.0, < 6)
       execjs (~> 2.0)
     backport (1.2.0)
+    barnes (0.0.9)
+      multi_json (~> 1)
+      statsd-ruby (~> 1.1)
     benchmark (0.2.0)
     bindex (0.8.1)
     blazer (2.2.6)
@@ -491,6 +494,7 @@ GEM
       actionpack (>= 4.0)
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
+    statsd-ruby (1.5.0)
     stripe (5.22.0)
     strong_migrations (0.7.1)
       activerecord (>= 5)
@@ -551,6 +555,7 @@ DEPENDENCIES
   api-pagination
   awesome_print
   aws-sdk-s3
+  barnes
   blazer
   bootsnap (>= 1.4.4)
   business_time

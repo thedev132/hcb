@@ -149,6 +149,10 @@ end
 group :production do
   # Enable compression in production
   gem "heroku-deflater"
+
+  # Heroku language runtime metrics
+  # https://devcenter.heroku.com/articles/language-runtime-metrics-ruby#add-the-barnes-gem-to-your-application
+  gem "barnes"
 end
 
 gem "aasm" # state machine
