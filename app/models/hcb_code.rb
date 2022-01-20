@@ -59,6 +59,7 @@ class HcbCode < ApplicationRecord
         canonical_transactions.map { |ct| ct.event&.id },
         invoice.try(:event).try(:id),
         donation.try(:event).try(:id),
+        partner_donation.try(:event).try(:id),
         ach_transfer.try(:event).try(:id),
         check.try(:event).try(:id),
         disbursement.try(:event).try(:id)
