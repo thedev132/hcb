@@ -117,18 +117,16 @@ env $(cat .env.docker) docker-compose run --service-ports web bundle exec rails 
 
 ## Heroku tasks
 
-We currently have the following buildpacks:
+Please check app.json for the buildpacks required to run Bank on Heroku.
 
-```
-❯ heroku buildpacks
-=== bank-hackclub Buildpack URLs
-1. https://github.com/heroku/heroku-buildpack-apt
-2. https://github.com/evantahler/heroku-buildpack-notify-slack-deploy.git
-3. heroku/nodejs
-4. heroku/ruby
-```
+The `heroku/metrics` buildpacks allow us to record in depth Ruby specific
+metrics about the application.
+See [PR #2236](https://github.com/hackclub/bank/pull/2236)
+for more information.
 
-The apt buildpack works in conjunction with the local Aptfile in order to install poppler-utils. Poppler-utils helps generate preview thumbnails of documents.
+The apt buildpack works in conjunction with the local Aptfile in order to
+install poppler-utils. Poppler-utils helps generate preview thumbnails of
+documents.
 
 ## Admin tasks
 
