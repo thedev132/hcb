@@ -26,7 +26,7 @@
   </thead>
   <tbody>
     <% @raw_transactions.each do |rt| %>
-      <tr style="<%= "background: #ffffcc;" unless rt.hashed_transactions.present? %>">
+      <tr class="<%= "admin-bg-pending" unless rt.hashed_transactions.present? %>">
         <td><%= rt.id %></td>
         <td><%= rt.unique_bank_identifier %></td>
         <td><%= rt.date_posted %></td>
