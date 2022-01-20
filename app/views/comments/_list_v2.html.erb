@@ -9,7 +9,7 @@
     <% end %>
   <% end %>
 
-  <% if local_assigns[:blankslate?] %>
+  <% if @hcb_code.comments.empty? && local_assigns[:blankslate?] %>
     <%= blankslate "No comments yet." %>
   <% end %>
 </section>
