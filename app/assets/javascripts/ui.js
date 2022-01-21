@@ -68,7 +68,7 @@ $(document).on('turbo:load', function () {
     })
   }
 
-  // login code sanitization and auto-submit
+  // login code sanitization
   const loginCodeInput = $("input[name='login_code']")
   loginCodeInput.on('keyup change', function(event) {
     const currentVal = $(this).val()
@@ -92,20 +92,8 @@ $(document).on('turbo:load', function () {
     }
 
     $(this).val(newVal)
-
-    // If code was pasted and is in valid format, then auto-submit
-    // This is a weird workaround because:
-    //   1. The `paste` event doesn't include the value
-    //   2. The `paste` event happens before the `keyup` event
-    const pastedAt = $(this).data('pastedAt')
-    const recentlyPasted = pastedAt && (new Date() - pastedAt) < 1000
-    if (recentlyPasted && /^\d{3}-\d{3}$/.test(newVal)) {
-      $(this).closest('form').submit()
-    }
   })
-  loginCodeInput.on('paste', function(event) {
-    $(this).data('pastedAt', new Date().getTime())
-  })
+  
   loginCodeInput.closest('form').on('submit', function(event) {
     // Ignore double submissions.
     // Since we are auto-submitting the form, the user may attempt to submit at
