@@ -18,7 +18,7 @@
         <%= form.text_area :donation_page_message, class: "w-100 fit" %>
         <%= inline_icon "markdown", size: 32, class: "muted right" %>
       </div>
-      <%= form.submit nil, value: "Update" %>
+      <%= form.submit "Update" %>
     </div>
   <% end %>
 
@@ -52,7 +52,7 @@
       <%= form.text_area :public_message, class: "w-100 fit" %>
       <%= inline_icon "markdown", size: 32, class: "muted right" %>
     </div>
-    <%= form.submit nil, value: "Update" %>
+    <%= form.submit "Update" %>
   </div>
 
   <h3 class="mb1">Danger Zone</h3>
@@ -75,7 +75,7 @@
       <%= form.text_field :slug, placeholder: event.persisted? ? event.name.parameterize : nil %>
     </div>
     <div class="actions">
-      <%= form.submit nil, value: "Update" %>
+      <%= form.submit "Update" %>
     </div>
   </div>
   <% admin_tools do %>
@@ -138,7 +138,7 @@
     </p>
 
     <div class="action">
-      <%= form.submit nil, value: "Update" %>
+      <%= form.submit "Update" %>
     </div>
   <% end %>
 <% end %>
