@@ -40,6 +40,10 @@ module PartnerDonationService
         # available, there is a chance this may error. That should be okay since
         # the payout will be created by this job once there are sufficient funds.
         if pdn.pending?
+          # ahhh sorry for this this mess, will remove soon.
+          # This PDN is in a weird state!! don't create a payout for it
+          next if pdn.id == 112
+
           ::PartnerDonationJob::CreateRemotePayout.perform_later(partner.id, sc.id)
         end
       end
