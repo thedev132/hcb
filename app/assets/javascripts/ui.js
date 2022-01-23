@@ -93,7 +93,7 @@ $(document).on('turbo:load', function () {
 
     $(this).val(newVal)
   })
-  
+
   loginCodeInput.closest('form').on('submit', function(event) {
     // Ignore double submissions.
     // Since we are auto-submitting the form, the user may attempt to submit at
@@ -325,4 +325,10 @@ $(document).on('turbo:load', function () {
   return window
     .matchMedia('(prefers-reduced-motion: reduce)')
     .addListener(() => setTilt())
+})
+
+$('[data-behavior~=ctrl_enter_submit]').keydown(function(event) {
+  if ((event.ctrlKey || event.metaKey) && event.keyCode === 13) {
+    $(this).closest('form').submit()
+  }
 })
