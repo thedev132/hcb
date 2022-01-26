@@ -65,14 +65,24 @@ module Partners
         envelopes_api.create_recipient_view(ACCOUNT_ID, envelope_id, view_request)
       end
 
-      def create_sender_view(envelope_id, callback_url)
+      def create_sender_view(envelope_id)
         refresh_token
-        envelopes_api.create_sender_view(ACCOUNT_ID, envelope_id, url: callback_url)
+        envelopes_api.create_sender_view(ACCOUNT_ID, envelope_id, {})
       end
 
       def get_envelope(envelope_id)
         refresh_token
         envelopes_api.get_envelope(ACCOUNT_ID, envelope_id)
+      end
+
+      def list_documents(envelope_id)
+        refresh_token
+        envelopes_api.list_documents(ACCOUNT_ID, envelope_id)
+      end
+
+      def get_document(envelope_id, document_id)
+        refresh_token
+        envelopes_api.get_document ACCOUNT_ID, document_id, envelope_id
       end
 
       private
