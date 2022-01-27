@@ -25,9 +25,9 @@ module Partners
       def initialize
         configuration = DocuSign_eSign::Configuration.new
         configuration.host = BASE_URI
-        unless Rails.env.production? || true
-          configuration.debugging = true
-        end
+        # unless Rails.env.production?
+        configuration.debugging = true
+        # end
 
         @api_client = DocuSign_eSign::ApiClient.new configuration
         @api_client.base_path = BASE_URI + "/restapi"
