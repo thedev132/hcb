@@ -25,7 +25,7 @@ module Partners
       def initialize
         configuration = DocuSign_eSign::Configuration.new
         configuration.host = BASE_URI
-        unless Rails.env.production?
+        unless Rails.env.production? || true
           configuration.debugging = true
         end
 
