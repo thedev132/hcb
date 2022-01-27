@@ -302,3 +302,20 @@ If a `201` response, all fields will always be present.
 settledTransactionCreated
 pendingTransactionCreated
 ```
+
+## Setting up Docusign
+
+These docs are WIP
+
+- it sucks
+- You'll need to a dev account at https://admindemo.docusign.com/apps-and-keys
+- Create an app & template
+- Put app keys into Rails credentials
+- Add template id to a Partner's id
+- Then do this: https://github.com/docusign/docusign-esign-ruby-client/issues/9#issuecomment-410609203
+  - CLIENT_ID is your integration key
+- Request an approval to "go-live" in order to get production keys
+  - This will transfer your app from your demo account to your production docusign account
+  - You'll need to update the keys in Rails credentials
+- Re-perform https://github.com/docusign/docusign-esign-ruby-client/issues/9#issuecomment-410609203
+
