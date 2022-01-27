@@ -18,6 +18,7 @@ module Partners
         attr_reader :api_client, :token
       end
 
+      BASE_URI = Rails.application.credentials[:docusign][ENVIRONMENT_KEY][:account_base_uri]
       INTEGRATION_KEY = Rails.application.credentials[:docusign][ENVIRONMENT_KEY][:integration_key]
       USER_ID = Rails.application.credentials[:docusign][ENVIRONMENT_KEY][:user_id]
       PRIVATE_KEY = Rails.application.credentials[:docusign][ENVIRONMENT_KEY][:private_key]
@@ -25,9 +26,9 @@ module Partners
 
       def initialize
         configuration = DocuSign_eSign::Configuration.new
+        configuration.host = BASE_URI
         unless Rails.env.production?
           configuration.debugging = true
-          configuration.host = "https://demo.docusign.net"
         end
 
         @api_client = DocuSign_eSign::ApiClient.new configuration

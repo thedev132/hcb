@@ -19,7 +19,6 @@ module Partners
         }
       end
 
-      # TODO: webhook to register signing completion
       def get_signing_url(envelope_id)
         @docusign_api.create_recipient_view(
           envelope_id,
