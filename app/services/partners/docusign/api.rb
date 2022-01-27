@@ -30,7 +30,7 @@ module Partners
         # end
 
         @api_client = DocuSign_eSign::ApiClient.new configuration
-        @api_client.base_path = BASE_URI + "/restapi"
+        @api_client.base_path = "https://docusign.net/restapi"
         refresh_token
       end
 
