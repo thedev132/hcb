@@ -10,10 +10,8 @@ module Partners
       include Singleton
 
       if Rails.env.production?
-        BASE_PATH = "https://docusign.net/restapi"
         ENVIRONMENT_KEY = :production
       else
-        BASE_PATH = "https://demo.docusign.net/restapi"
         ENVIRONMENT_KEY = :development
         attr_reader :api_client, :token
       end
@@ -32,7 +30,7 @@ module Partners
         end
 
         @api_client = DocuSign_eSign::ApiClient.new configuration
-        @api_client.base_path = BASE_PATH
+        @api_client.base_path = BASE_URI + "/restapi"
         refresh_token
       end
 
