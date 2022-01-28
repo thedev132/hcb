@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_14_190026) do
+ActiveRecord::Schema.define(version: 2022_01_27_213754) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -897,6 +897,8 @@ ActiveRecord::Schema.define(version: 2022_01_14_190026) do
     t.text "stripe_api_key_ciphertext"
     t.string "webhook_url"
     t.string "docusign_template_id"
+    t.bigint "representative_id"
+    t.index ["representative_id"], name: "index_partners_on_representative_id"
   end
 
   create_table "raw_csv_transactions", force: :cascade do |t|
@@ -1277,6 +1279,7 @@ ActiveRecord::Schema.define(version: 2022_01_14_190026) do
   add_foreign_key "partnered_signups", "events"
   add_foreign_key "partnered_signups", "partners"
   add_foreign_key "partnered_signups", "users"
+  add_foreign_key "partners", "users", column: "representative_id"
   add_foreign_key "receipts", "users"
   add_foreign_key "sponsors", "events"
   add_foreign_key "stripe_authorizations", "stripe_cards"

@@ -40,6 +40,8 @@ class User < ApplicationRecord
 
   has_one_attached :profile_picture
 
+  has_one :partner, inverse_of: :representative
+
   before_create :create_session_token
   before_create :format_number
   before_save :on_phone_number_update
@@ -99,6 +101,14 @@ class User < ApplicationRecord
 
   def pretty_phone_number
     Phonelib.parse(self.phone_number).national
+  end
+
+  def representative?
+    self.partner.present?
+  end
+
+  def represented_partner
+    self.partner
   end
 
   private

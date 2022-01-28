@@ -34,7 +34,13 @@ module Api
       render json: json_error(contract), status: 400 and return unless contract.success?
 
       event = current_partner.events.find_by_public_id(contract[:public_id])
-      current_partner.add_user_to_partnered_event!(user_email: contract[:email], event: event)
+
+      # Invite the user to the event
+      ::EventService::PartnerInviteUser.new(
+        partner: current_partner,
+        event: event,
+        user_email: contract[:email]
+      ).run
 
       attrs = {
         email: contract[:email],

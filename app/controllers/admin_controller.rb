@@ -136,9 +136,11 @@ class AdminController < ApplicationController
     )
 
     # Invite users to event
-    @partner.add_user_to_partnered_event!(user_email: @partnered_signup.owner_email,
-                                          event: @organization)
-
+    ::EventService::PartnerInviteUser.new(
+      partner: @partner,
+      event: @organization,
+      user_email: @partnered_signup.owner_email
+    ).run
 
     # Record the org & user in the signup
     @partnered_signup.update(
@@ -171,7 +173,6 @@ class AdminController < ApplicationController
       render "edit"
     end
   end
-
 
   def partner_organizations
     @page = params[:page] || 1

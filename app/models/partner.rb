@@ -11,6 +11,9 @@ class Partner < ApplicationRecord
   has_many :partnered_signups
   has_many :partner_donations, through: :events
 
+  # The default `representative` association accessor method is overridden below
+  belongs_to :representative, class_name: 'User'
+
   validates :slug, exclusion: { in: EXCLUDED_SLUGS }, uniqueness: true
   validates :api_key, presence: true, uniqueness: true
 
@@ -51,6 +54,44 @@ class Partner < ApplicationRecord
 
   def default_org_sponsorship_fee
     0.10
+  end
+
+  # Representatives are users that represent a Partner. There is only one
+  # representative per Partner. This is necessary because much of our UI relies
+  # on the existence of a user. For automated processes, this user
+  # representative stands in for a "real" user who should normally be performing
+  # that process.
+  #   Example:
+  #     A Partner has a representative user who invites initial users to
+  #     an organization.
+  #
+  # Overrides the default `representative` accessor association to create the
+  # representative user if it doesn't already exist.
+  def representative
+    return super unless super.nil?
+
+    representative_email = if external
+                             "bank+#{slug || "partner_#{id}"}@hackclub.com"
+                           else
+                             "bank@hackclub.com"
+                           end
+
+    transaction do
+      # Double check that the user doesn't exist. (It could exist and just not
+      # be associated)
+      user = User.find_by(email: representative_email)
+      if user.nil?
+        user = User.create!(email: representative_email, full_name: self.name)
+      end
+
+      self.representative = user
+      self.save!
+
+      user
+    end
+  rescue => e
+    Airbrake.notify("Failed to create representative user for partner #{self.id}", e)
+    nil
   end
 
   private
