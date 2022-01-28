@@ -6,13 +6,11 @@
   Inbox
   <%= badge_for @count %>
 </h1>
-<p class="muted h3">
-  <% if @count == 0 %>
-    None of your card transactions are missing receipts. :)
-  <% else %>
-    These are your card transactions missing receipts.
-  <% end %>
-</p>
+<% if @count == 0 %>
+  <%= blankslate "No missing receipts!" %>
+<% else %>
+  <p class="muted h3">These are your card transactions missing receipts.</p>
+<% end %>
 
 <% @txs.group_by(&:card).each do |card, card_txs| %>
   <% if not card.hcb_codes.missing_receipt.empty? %>
