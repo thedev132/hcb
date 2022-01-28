@@ -65,22 +65,26 @@ class User < ApplicationRecord
 
   def first_name
     @first_name ||= begin
-      return nil unless namae.given || namae.particle
+                      return nil unless namae.given || namae.particle
 
-      (namae.given || namae.particle).split(" ").first
-    end
+                      (namae.given || namae.particle).split(" ").first
+                    end
   end
 
   def last_name
     @last_name ||= begin
-      return nil unless namae.family
+                     return nil unless namae.family
 
-      namae.family.split(" ").last
-    end
+                     namae.family.split(" ").last
+                   end
   end
 
   def initial_name
-    @initial_name ||= "#{(first_name || last_name)[0..20]} #{(last_name || first_name)[0, 1]}"
+    @initial_name ||= if name.strip.split(" ").count == 1
+                        name
+                      else
+                        "#{(first_name || last_name)[0..20]} #{(last_name || first_name)[0, 1]}"
+                      end
   end
 
   def safe_name
