@@ -6,7 +6,7 @@ class GSuite < ApplicationRecord
   has_paper_trail
 
   include PgSearch::Model
-  pg_search_scope :search_domain, against: [:domain]
+  pg_search_scope :search_domain, against: [:domain, :event_id], using: { tsearch: { prefix: true, dictionary: "english" } }
 
   include AASM
   include Commentable
