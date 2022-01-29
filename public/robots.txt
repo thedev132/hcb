@@ -1,2 +1,6 @@
 User-agent: *
 Disallow: /
+Allow: /$
+Allow: /auth
+Allow: /faq
+Allow: /branding

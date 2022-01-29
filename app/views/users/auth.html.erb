@@ -3,6 +3,20 @@
 <% @home_size = 128 %>
 <% content_for(:page_class) { 'bg-snow pt4' } %>
 
+<% content_for :head do %>
+  <% img = "/brand/hcb-icon-icon-original.png" %>
+  <meta name="twitter:card" content="summary">
+  <meta property="og:image" content="<%= img %>"/>
+  <meta name="twitter:image" content="<%= img %>">
+  <meta property="og:site_name" content="Hack Club Bank" />
+  <meta property="og:url" content="https://bank.hackclub.com">
+  <meta property="og:title" content="Sign in">
+  <meta name="twitter:title" content="Sign in">
+  <meta property="og:description" content="Sign in to Hack Club Bank.">
+  <meta name="twitter:description" content="Sign in to Hack Club Bank.">
+  <meta name="description" content="Sign in to Hack Club Bank.">
+<% end %>
+
 <article class="center mt3" data-turbo="false">
   <h1 class="mt2">
     <span class="h3 caps secondary block">Sign in to</span>

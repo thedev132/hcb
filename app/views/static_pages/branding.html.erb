@@ -1,5 +1,20 @@
 <% title 'Brand Guidelines' %>
 
+<% content_for :head do %>
+	<% img = "https://workshop-cards.hackclub.com/Brand%20Guidelines.png?theme=light&fontSize=250px&brand=Bank" %>
+	<meta name="twitter:card" content="summary_large_image">
+	<meta property="og:image" content="<%= img %>"/>
+	<meta name="twitter:image" content="<%= img %>">
+	<meta property="og:site_name" content="Hack Club Bank" />
+	<meta property="og:url" content="https://bank.hackclub.com">
+	<meta property="og:title" content="Brand Guidelines">
+	<meta name="twitter:title" content="Hack Club Bank">
+	<% description = "How and when to refer to Hack Club Bank." %>
+	<meta property="og:description" content="<%= description %>">
+	<meta name="twitter:description" content="<%= description %>">
+	<meta name="description" content="<%= description %>">
+<% end %>
+
 <div class="container container--md card py3 md-p3 lg-p4 mt2 mt3 md-mt4 overflow-visible">
   <h1 class="mt2 md-mt0">
     Brand Guidelines
