@@ -2,6 +2,20 @@
 <% page_md %>
 <%= render 'events/nav' %>
 
+<% content_for :head do %>
+	<% img = "https://workshop-cards.hackclub.com/#{url_encode(@document_title)}.png?theme=light&fontSize=250px&caption=Documentation&brand=Bank" %>
+	<meta name="twitter:card" content="summary_large_image">
+	<meta property="og:image" content="<%= img %>"/>
+	<meta name="twitter:image" content="<%= img %>">
+	<meta property="og:site_name" content="Hack Club Bank" />
+	<meta property="og:url" content="https://bank.hackclub.com">
+	<meta property="og:title" content="<%= @document_title %>">
+	<meta name="twitter:title" content="<%= @document_title %>">
+	<meta property="og:description" content="<%= @document_subtitle %>">
+	<meta name="twitter:description" content="<%= @document_subtitle %>">
+	<meta name="description" content="<%= @document_subtitle %>">
+<% end %>
+
 <div style="padding-top: 2rem;">
   <div class="container container--md">
   <h1 class="mb0" style="border:none"><%= @document_title %></h1>
