@@ -2,8 +2,6 @@
 <% page_md %>
 <%= render 'events/nav' %>
 
-<% replit_disable = true %>
-
 <h1>
   Promotions &amp; perks
 </h1>
@@ -153,7 +151,7 @@
   <div class="card__banner card__banner--top flex justify-between items-center promo-stickers">
       <span class="flex flex-row items-center">
         <h3 class="h1 white p2 my0 card-title z1">
-          <%= content_tag(:span, 'Hack Club Bank', class: 'xs-hide sm-hide md-hide') %> 
+          <%= content_tag(:span, 'Hack Club Bank', class: 'xs-hide sm-hide md-hide') %>
           <%= content_tag(:span, 'HCB', class: 'xs-hide lg-hide') %>
           Stickers
         </h3>
@@ -235,15 +233,12 @@
     </table>
   </div>
 
-  <div class="card mb3 <%= replit_disable ? 'muted' : '' %>" id="replit">
+  <div class="card mb3 muted" id="replit">
     <div
       class="card__banner card__banner--top flex justify-between items-center"
       style="background-color: #0d101e; border: 1px solid #0068ad;">
       <%= image_tag 'replit.png', width: 170 %>
-      <%= link_to !replit_disable ? 'Apply' : 'Unavailable',
-        !replit_disable && organizer_signed_in? ? "https://hack.af/replpromo?prefill_Project%20Name=#{@event.name}&prefill_Bank%20URL=#{event_url(@event)}&prefill_Your%20name=#{current_user.full_name}&prefill_Organizer%20team%20size=#{@event.organizer_positions.size}" : root_path,
-        class: "btn bg-success mr1 #{'disabled' unless organizer_signed_in? && !replit_disable}"
-      %>
+      <%= link_to 'Expired', '#', class: "btn bg-success mr1 disabled" %>
     </div>
 
     <p class="mb0">
