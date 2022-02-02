@@ -464,15 +464,6 @@ class Event < ApplicationRecord
     "#{name} - #{id}"
   end
 
-  def eligible_for_free_domain?
-    # We're only launching this feature in the US for the first week while we
-    # iron out the kinks
-    passes_country_check = (country == "US" || Date.today > Date.new(2021, 11, 17))
-    does_not_have_gsuite = g_suites.not_deleted.none?
-
-    does_not_have_gsuite and passes_country_check
-  end
-
   # displayed on /negative_events
   def self.negatives
     select { |event| event.balance < 0 || event.emburse_balance < 0 || event.fee_balance < 0 }

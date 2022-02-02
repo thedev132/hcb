@@ -60,23 +60,27 @@
   </section>
 </div>
 
-<% if @event.eligible_for_free_domain? %>
   <div class="card mb3" id="domains">
     <div
       class="card__banner card__banner--top flex justify-between items-center promo-domains">
       <h3 class="h1 p2 my0 color-black">Domains</h3>
-      <%= link_to 'Apply',
-        organizer_signed_in? ? "https://hack.af/bank-domains?prefill_Project%20Name=#{@event.name}&prefill_Bank%20URL=#{event_url(@event)}&prefill_Name=#{current_user.first_name}&prefill_Login%20email=#{current_user.email}" : root_path,
-        class: "btn bg-success mr1 #{'disabled' unless organizer_signed_in?}",
-        target: :_blank
-      %>
+        <% if !@event.g_suites.not_deleted.none? && organizer_signed_in? %>
+          <div class="actions tooltipped tooltipped--w inline-block mt1" aria-label="You already own a domain!">
+            <span class="btn bg-success disabled">Apply</span>
+          </div>
+        <% else %>
+          <%= link_to 'Apply',
+            organizer_signed_in? ? "https://hack.af/bank-domains?prefill_Project%20Name=#{@event.name}&prefill_Bank%20URL=#{event_url(@event)}&prefill_Name=#{current_user.first_name}&prefill_Login%20email=#{current_user.email}" : root_path,
+            class: "btn bg-success mr1 #{'disabled' unless organizer_signed_in?}",
+            target: :_blank
+          %>
+        <% end %>
     </div>
 
     <p class="mb0">
-    Running a high school student-led hackathon, nonprofit, or club? Hack Club Bank will purchase your domain for under $20 and cover the cost for the first year. After the first year, you'll be responsible for paying to renew. You'll also have the option of setting up <%= link_to 'Google Workspace', event_g_suite_overview_path %> once we've purchased your domain.
+      Running a high school student-led hackathon, nonprofit, or club? Hack Club Bank will purchase your domain for under $20 and cover the cost for the first year. After the first year, you'll be responsible for paying to renew. You'll also have the option of setting up <%= link_to 'Google Workspace', event_g_suite_overview_path %> once we've purchased your domain.
     </p>
   </div>
-<% end %>
 
 <div class="card mb3" id="stickermule">
   <div class="card__banner card__banner--top flex justify-between items-center" style="background-color:#4E2817">
