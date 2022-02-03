@@ -177,6 +177,11 @@ module ApplicationHelper
   end
 
   def format_date(date)
+    if date.nil?
+      Airbrake.notify("Hey! date is nil here")
+      return nil
+    end
+
     local_time(date, "%b %e, %Y")
   end
 

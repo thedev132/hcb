@@ -21,6 +21,8 @@ module DonationsHelper
   end
 
   def donation_payout_datetime(donation = @donation)
+    date = nil
+    title = nil
     if donation.deposited?
       title = "Funds available since"
       date = @hcb_code.canonical_transactions.pluck(:date).max
@@ -30,9 +32,9 @@ module DonationsHelper
     elsif donation.payout_creation_queued_at && donation.payout.present?
       title = "Funds should be available"
       date = donation.payout.arrival_date
-    else
-      return
     end
+
+    return if date.nil? || title.nil?
 
     strong_tag = content_tag :strong, title
     date_tag = format_date date
