@@ -24,12 +24,12 @@
 <% end %>
 
 <%# stripe card %>
-<% if @hcb_code.stripe_card? %>
+<% if @hcb_code.stripe_card? && @hcb_code.stripe_card.present? %>
   <%= render partial: "hcb_codes/stripe_card", locals: {} %>
 <% end %>
 
 <%# disbursement %>
-<% if @hcb_code.disbursement? %>
+<% if @hcb_code.disbursement? && @hcb_code.disbursement.present? %>
   <%= render partial: "hcb_codes/disbursement", locals: {} %>
 <% end %>
 
