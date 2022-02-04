@@ -64,6 +64,7 @@ class PartneredSignup < ApplicationRecord
   end
 
   scope :not_unsubmitted, -> { where.not(aasm_state: :unsubmitted) }
+  scope :with_envelope, -> { where.not(docusign_envelope_id: nil) }
 
   def continue_url
     Rails.application.routes.url_helpers.edit_partnered_signups_url(public_id: public_id)
