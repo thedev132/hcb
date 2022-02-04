@@ -15,7 +15,7 @@
       <% end %>
 
       <%= link_to "Edit", edit_comment_path(comment) if organizer_signed_in? %>
-      <%= link_to "Hyperlink", "#comment-#{comment.hashid}", target: "_blank" if organizer_signed_in? %>
+      <%= link_to "Hyperlink", "#comment-#{comment.hashid}", class: "anchor-link", 'data-anchor': "comment-#{comment.hashid}" if organizer_signed_in? %>
       <%# if comment.edited? %>
         <!--action data-behavior="modal_trigger" data-turbolinks="false" data-modal="comment-modal-<%= comment.hashid %>" tabindex="0">
           <a href="#">History</a>
