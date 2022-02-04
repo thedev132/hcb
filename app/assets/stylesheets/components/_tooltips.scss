@@ -15,7 +15,6 @@
     height: min-content;
     letter-spacing: 0;
     line-height: 1.375;
-    margin-right: 0.5rem;
     max-width: 12rem;
     min-height: 1.25rem;
     opacity: 0;
@@ -43,26 +42,26 @@
   bottom: 50%;
   right: 0;
   margin-left: 0.5rem;
-  margin-right: 0;
   transform: translateY(50%);
 }
 
 .tooltipped--w:after {
   right: 100%;
   bottom: 50%;
+  margin-right: 0.5rem;
   transform: translateY(50%);
 }
 
 .tooltipped--n:after {
   right: 50%;
   bottom: 100%;
-  margin-right: 0;
+  margin-bottom: 0.5rem;
   transform: translateX(50%);
 }
 
 .tooltipped--s:after {
   right: 50%;
   top: 100%;
-  margin-right: 0;
+  margin-top: 0.5rem;
   transform: translateX(50%);
 }
