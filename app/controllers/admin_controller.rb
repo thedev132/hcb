@@ -105,15 +105,22 @@ class AdminController < ApplicationController
   end
 
   def partnered_signup_sign_document
-    partnered_signup = PartneredSignup.find(params.require(:id))
-    admin_contract_signing = Partners::Docusign::AdminContractSigning.new(partnered_signup)
+    @partnered_signup = PartneredSignup.find(params.require(:id))
+
+    # Do not allow admins to sign if the applicant has not already signec
+    unless @partnered_signup.applicant_signed?
+      flash[:error] = "Applicant has not signed yet!"
+      redirect_to partnered_signups_admin_index_path and return
+    end
+
+    admin_contract_signing = Partners::Docusign::AdminContractSigning.new(@partnered_signup)
     redirect_to admin_contract_signing.admin_signing_link
   end
 
   def partnered_signups
     relation = PartneredSignup
 
-    @partnered_signups = relation.pending + relation.not_pending
+    @partnered_signups = relation.not_unsubmitted
 
     @count = @partnered_signups.count
 
@@ -124,39 +131,45 @@ class AdminController < ApplicationController
     @partnered_signup = PartneredSignup.find(params[:id])
     @partner = @partnered_signup.partner
 
-    # Accept the form
-    @partnered_signup.accepted_at = Time.now
-
-    # Create an event
-    @organization = Event.create!(
-      partner: @partner,
-      name: @partnered_signup.organization_name,
-      sponsorship_fee: @partner.default_org_sponsorship_fee,
-      organization_identifier: SecureRandom.hex(30) + @partnered_signup.organization_name,
-    )
-
-    # Invite users to event
-    ::EventService::PartnerInviteUser.new(
-      partner: @partner,
-      event: @organization,
-      user_email: @partnered_signup.owner_email
-    ).run
-
-    # Record the org & user in the signup
-    @partnered_signup.update(
-      event: @organization,
-      user: User.find_by(email: @partnered_signup.owner_email),
-    )
-
     authorize @partnered_signup
 
-    if @partnered_signup.save!
+    PartneredSignup.transaction do
+      # Create an event
+      @organization = Event.create!(
+        partner: @partner,
+        name: @partnered_signup.organization_name,
+        sponsorship_fee: @partner.default_org_sponsorship_fee,
+        organization_identifier: SecureRandom.hex(30) + @partnered_signup.organization_name,
+      )
+
+      # Invite users to event
+      ::EventService::PartnerInviteUser.new(
+        partner: @partner,
+        event: @organization,
+        user_email: @partnered_signup.owner_email
+      ).run
+
+      # Record the org & user in the signup
+      @partnered_signup.update(
+        event: @organization,
+        user: User.find_by(email: @partnered_signup.owner_email),
+      )
+
+      # Mark the signup as completed
+      # TODO: remove bypass for unapproved (unsigned contracts by admin)
+      @partnered_signup.mark_accepted! if @partnered_signup.applicant_signed?
+      @partnered_signup.mark_completed!
+
       ::PartneredSignupJob::DeliverWebhook.perform_later(@partnered_signup.id)
       flash[:success] = "Partner signup accepted"
-      redirect_to partnered_signups_admin_index_path
-    else
-      render "edit"
+      redirect_to partnered_signups_admin_index_path and return
     end
+  rescue => e
+    Airbrake.notify(e)
+
+    # Something went wrong
+    flash[:error] = "Something went wrong. #{e}"
+    redirect_to partnered_signups_admin_index_path
   end
 
   def partnered_signups_reject

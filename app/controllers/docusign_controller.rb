@@ -24,18 +24,19 @@ class DocusignController < ApplicationController
 
   def handle_recipient_redirect(partnered_signup_id)
     partnered_signup = PartneredSignup.find(partnered_signup_id)
-    unless partnered_signup.signed_contract
-      partnered_signup.submitted_at = Time.now
-      partnered_signup.signed_contract = true
-    end
-    partnered_signup.save!
+    partnered_signup.mark_applicant_signed! unless partnered_signup.signed_contract?
 
+  ensure
     # move to the redirect URL after submitting
     redirect_to partnered_signup.redirect_url
   end
 
   def handle_admin_redirect(partnered_signup_id)
+    partnered_signup = PartneredSignup.find(partnered_signup_id)
+    partnered_signup.mark_accepted! unless partnered_signup.accepted?
+
     # TODO: download completed PDF + advance state-machine
+  ensure
     redirect_to partnered_signups_admin_index_url
   end
 

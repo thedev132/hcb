@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_27_213754) do
+ActiveRecord::Schema.define(version: 2022_02_04_035141) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -880,6 +880,9 @@ ActiveRecord::Schema.define(version: 2022_01_27_213754) do
     t.string "owner_address_state"
     t.text "owner_address_postal_code"
     t.integer "owner_address_country"
+    t.string "aasm_state"
+    t.datetime "applicant_signed_at"
+    t.datetime "completed_at"
     t.index ["event_id"], name: "index_partnered_signups_on_event_id"
     t.index ["partner_id"], name: "index_partnered_signups_on_partner_id"
     t.index ["user_id"], name: "index_partnered_signups_on_user_id"

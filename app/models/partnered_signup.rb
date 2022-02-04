@@ -10,16 +10,7 @@ class PartneredSignup < ApplicationRecord
   belongs_to :event,   required: false
   belongs_to :user,    required: false
 
-  scope :accepted, -> { where.not(accepted_at: nil) }
-  scope :rejected, -> { where.not(rejected_at: nil) }
-  scope :unsubmitted, -> { where(submitted_at: nil) }
-  scope :pending, -> { where(accepted_at: nil, rejected_at: nil).where.not(submitted_at: nil) }
-  scope :not_pending, -> { where("accepted_at IS NOT NULL OR rejected_at IS NOT NULL") }
-  scope :submitted, -> { where.not(submitted_at: nil) }
-  scope :with_envelope, -> { where.not(docusign_envelope_id: nil) }
-
   validates :redirect_url, presence: true
-  validate :not_accepted_and_rejected
   validates_presence_of [:organization_name,
                          :owner_name,
                          :owner_email,
@@ -33,50 +24,65 @@ class PartneredSignup < ApplicationRecord
                          :owner_address_country,
                          :owner_birthdate], unless: :unsubmitted?
 
+  include AASM
+
+  aasm timestamps: true do
+    state :unsubmitted, initial: true # Partner reaches out to create a signup
+    state :submitted # Owner filled out details on form
+    state :applicant_signed # Owner signed contract
+
+    state :rejected # Admin turned down contract
+
+    state :accepted # Admin signed contract
+    state :completed # Signed contract has been downloaded as PDF, org has been created, users have been invited
+
+    # The ending state of a SUP should be either `rejected` or `completed`
+
+    event :mark_submitted do
+      transitions from: :unsubmitted, to: :submitted
+    end
+
+    event :mark_applicant_signed do
+      transitions from: :submitted, to: :applicant_signed
+
+      after do
+        signed_contract = true;
+      end
+    end
+
+    event :mark_rejected do
+      transitions from: [:submitted, :applicant_signed], to: :rejected
+    end
+
+    event :mark_accepted do
+      transitions from: :applicant_signed, to: :accepted
+    end
+
+    event :mark_completed do
+      transitions from: :accepted, to: :completed
+    end
+  end
+
+  scope :not_unsubmitted, -> { where.not(aasm_state: :unsubmitted) }
+
   def continue_url
     Rails.application.routes.url_helpers.edit_partnered_signups_url(public_id: public_id)
   end
 
-  def unsubmitted?
-    !submitted?
+  def state_text
+    aasm.human_state
   end
 
-  def submitted?
-    self.submitted_at.present?
-  end
+  def api_status
+    return 'rejected' if rejected?
+    return 'approved' if completed?
 
-  def rejected?
-    self.rejected_at.present?
-  end
+    # Applicant needs to sign for the contract for the SUP to be considered
+    # fully submitted from the Partner's perspective.
+    return 'unsubmitted' if unsubmitted? || submitted?
+    return 'submitted' if applicant_signed?
 
-  def accepted?
-    self.accepted_at.present?
-  end
-
-  def pending?
-    !self.submitted_at.nil? and self.accepted_at.nil? and self.rejected_at.nil?
-  end
-
-  def status
-    if rejected?
-      "rejected"
-    elsif accepted?
-      "accepted"
-    elsif submitted?
-      "submitted"
-    elsif unsubmitted?
-      "unsubmitted"
-    else
-      Airbrake.notify("SUP #{self.id} in unknown status")
-    end
-  end
-
-  private
-
-  def not_accepted_and_rejected
-    if accepted_at && rejected_at
-      errors.add(:base, "Cannot be both accepted and rejected")
-    end
+    ''
   end
 
 end

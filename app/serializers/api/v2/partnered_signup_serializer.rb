@@ -16,11 +16,10 @@ module Api
         result
       end
 
-
       def data
         @data ||= {
           id: @partnered_signup.public_id,
-          status: @partnered_signup.status,
+          status: @partnered_signup.api_status,
           redirect_url: @partnered_signup.redirect_url,
           connect_url: @partnered_signup.continue_url,
           owner_email: @partnered_signup.owner_email,

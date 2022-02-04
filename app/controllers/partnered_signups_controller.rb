@@ -15,33 +15,40 @@ class PartneredSignupsController < ApplicationController
   # GET /api/v1/partnered_signups/continue/:public_id
   # GET /partnered_signups/:public_id
   def edit
-    # Pass through to `redirect_url` if the form has already been submitted
-    redirect_to @partnered_signup.redirect_url if @partnered_signup.submitted?
+    # TODO: Pass through to signing if the form has already been submitted, but
+    # contract has yet to be signed
+
+    # Pass through to `redirect_url` if the form has already been signed
+    redirect_to @partnered_signup.redirect_url if @partnered_signup.applicant_signed?
   end
 
   # PATCH /partnered_signups/:public_id
   def update
     @partnered_signup.update_attributes(partnered_signup_params)
     authorize @partnered_signup
+
+    @partnered_signup.mark_submitted! unless @partnered_signup.submitted?
+
     return unless signed_contract?
 
-    if @partnered_signup.save
-      redirect_to @partnered_signup.redirect_url
+    redirect_to @partnered_signup.redirect_url
 
-      # Send webhook to let Partner know that the Connect from has been submitted
-      ::PartneredSignupJob::DeliverWebhook.perform_later(@partnered_signup.id)
-    else
-      render "edit"
-    end
+    # Send webhook to let Partner know that the Connect from has been submitted
+    ::PartneredSignupJob::DeliverWebhook.perform_later(@partnered_signup.id)
+  rescue => e
+    Airbrake.notify(e)
+    render "edit"
   end
 
   private
 
+  # TODO: move some of this logic into the model and integrate the rest into the
+  # controller update method
   def signed_contract?
     # Don't sign contract unless we have a docusign template id
     unless @partner.docusign_template_id
-      @partnered_signup.submitted_at = Time.now
-      @partnered_signup.signed_contract = true
+      @partnered_signup.mark_applicant_signed!
+
       # Airbrake.notify("Partner ##{@partner.id} is missing a 'docusign_template_id'. Error creating docusign contract for SUP ##{@partnered_signup.id}")
       # flash[:error] = "Something went wrong, please contact bank@hackclub.com for help"
       # render "edit"

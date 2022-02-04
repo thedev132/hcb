@@ -20,32 +20,22 @@
   </thead>
   <tbody>
     <% @partnered_signups.each do |partnered_signup| %>
-      <tr class="<%= "admin-bg-pending" if partnered_signup.pending? %>">
+      <tr class="<%= "admin-bg-pending" if partnered_signup.applicant_signed? %>">
         <td><%= partnered_signup.public_id %></td>
         <td><%= partnered_signup.organization_name %></td>
         <td><%= partnered_signup.owner_name %></td>
         <td><%= partnered_signup.owner_email %></td>
         <td><%= partnered_signup.owner_phone %></td>
         <td><%= partnered_signup.partner.name %></td>
+        <td><%= partnered_signup.docusign_envelope_id %></td>
         <td>
-          <%= partnered_signup.docusign_envelope_id %>
-        </td>
-        <td>
-          <% if partnered_signup.pending? %>
-            Pending
-          <% elsif partnered_signup.unsubmitted? %>
-            Unsubmitted
-          <% elsif partnered_signup.rejected? %>
-            Rejected on <%= partnered_signup.rejected_at %>
-          <% elsif partnered_signup.accepted? %>
-            <%= link_to "Accepted on #{partnered_signup.accepted_at}", partnered_signup.event %>
-          <% end %>
+          <%= partnered_signup.state_text %>
         </td>
         <td>
           <% if partnered_signup.docusign_envelope_id %>
             <%=  button_to "Go to Docusign", partnered_signup_sign_document_admin_index_url(partnered_signup) %>
           <% end %>
-        <% if partnered_signup.pending? %>
+        <% if partnered_signup.applicant_signed? %>
           <%= form_with(model: nil, local: true, url: partnered_signups_accept_admin_path(id: partnered_signup.id), method: :post) do |form| %>
             <%= form.submit "Approve" %>
           <% end %>
