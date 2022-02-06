@@ -19,7 +19,7 @@ class Donation < ApplicationRecord
   after_update :send_payment_notification_if_needed
 
   validates :name, :email, :amount, presence: true
-  validates :amount, numericality: { greater_than_or_equal_to: 100 }
+  validates :amount, numericality: { greater_than_or_equal_to: 100, less_than_or_equal_to: 999_999_99 }
 
   scope :succeeded, -> { where(status: "succeeded") }
   scope :missing_payout, -> { where(payout_id: nil) }
