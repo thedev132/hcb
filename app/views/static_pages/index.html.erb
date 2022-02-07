@@ -108,20 +108,14 @@
       <%= card_to "Transaction CSVs", transaction_csvs_admin_index_path %>
       <%= card_to "Selenium Sessions", selenium_sessions_admin_index_path %>
       <%= card_to 'Duplicated (WIP)', transaction_dedupe_path %>
+      <%= card_to "Deletion Requests (#{OrganizerPositionDeletionRequest.under_review.count})", organizer_position_deletion_requests_path %>
     </ul>
 
-    <h2>Daily tasks (v1)</h2>
+    <h2>Perks</h2>
     <ul class="grid left-align w-100 mt0">
-      <%= card_to 'Pending tasks', admin_tasks_path %>
-      <%= render partial: 'static_pages/card', locals: { task_path: g_suites_path, task_name: :g_suites, human_name: 'Google Workspaces', count: @service.g_suites_needs_ops_review_count } %>
-      <%= render partial: 'static_pages/card', locals: { task_path: organizer_position_deletion_requests_path, task_name: :organizer_position_deletion_requests, human_name: 'Deletion requests', count: @service.organizer_position_deletion_requests_count } %>
-      <%= render partial: 'static_pages/card', locals: { task_path: transactions_path, task_name: :transactions, human_name: 'Transactions', count: @service.transactions_count } %>
-      <%#= react_component 'admin_task/Card', human_name: 'Transactions', task_name: :transactions, task_path: transactions_path %>
       <%= react_component 'admin_task/Card', human_name: 'Hackathons', task_name: :pending_hackathons_airtable, task_path: link_to_airtable_task(:hackathons) %>
-      <%= react_component 'admin_task/Card', human_name: 'Grants', task_name: :pending_grant_airtable, task_path: link_to_airtable_task(:grant) %>
       <%= react_component 'admin_task/Card', human_name: 'Sticker Mule', task_name: :pending_stickermule_airtable, task_path: link_to_airtable_task(:stickermule) %>
       <%= react_component 'admin_task/Card', human_name: 'Stickers', task_name: :pending_stickers_airtable, task_path: link_to_airtable_task(:stickers) %>
-      <%= react_component 'admin_task/Card', human_name: 'Replit', task_name: :pending_replit_airtable, task_path: link_to_airtable_task(:replit) %>
       <%= react_component 'admin_task/Card', human_name: 'Sendy', task_name: :pending_sendy_airtable, task_path: link_to_airtable_task(:sendy) %>
       <%= react_component 'admin_task/Card', human_name: 'Domains', task_name: :pending_domains_airtable, task_path: link_to_airtable_task(:domains) %>
       <%= react_component 'admin_task/Card', human_name: 'Wires', task_name: :pending_wire_transfers_airtable, task_path: link_to_airtable_task(:wire_transfers) %>
@@ -129,6 +123,17 @@
       <%= react_component 'admin_task/Card', human_name: 'PayPal', task_name: :pending_paypal_transfers_airtable, task_path: link_to_airtable_task(:paypal_transfers) %>
       <%= react_component 'admin_task/Card', human_name: 'Disputes', task_name: :pending_disputed_transactions_airtable, task_path: link_to_airtable_task(:disputed_transactions) %>
     </ul>
+
+    <details>
+      <summary class="mb2 left-align bold">Deprecated</summary>
+      <ul class="grid w-100 mt0 left-align">
+        <%= card_to 'Pending tasks', admin_tasks_path %>
+        <%= render partial: 'static_pages/card', locals: { task_path: g_suites_path, task_name: :g_suites, human_name: 'Google Workspaces', count: @service.g_suites_needs_ops_review_count } %>
+        <%= render partial: 'static_pages/card', locals: { task_path: transactions_path, task_name: :transactions, human_name: 'Transactions', count: @service.transactions_count } %>
+        <%= react_component 'admin_task/Card', human_name: 'Grants', task_name: :pending_grant_airtable, task_path: link_to_airtable_task(:grant) %>
+        <%= react_component 'admin_task/Card', human_name: 'Replit', task_name: :pending_replit_airtable, task_path: link_to_airtable_task(:replit) %>
+      </ul>
+    </details>
 
     <h2>Information</h2>
     <ul class="grid left-align w-100 mt0">
