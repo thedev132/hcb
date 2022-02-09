@@ -89,7 +89,7 @@
       <%= card_to "Partners (#{Partner.count})", partners_admin_index_path %>
       <%= card_to "Partnered Signups (#{PartneredSignup.applicant_signed.count})", partnered_signups_admin_index_path %>
       <%= card_to "Partner Organizations (#{Event.partner.count})", partner_organizations_admin_index_path %>
-      <%= card_to "Organizations (#{Event.not_partner.pending_or_unapproved.count})", events_admin_index_path %>
+      <%= card_to "Organizations (#{Event.approved.count})", events_admin_index_path %>
       <%= card_to "Bank Fees (#{BankFee.in_transit_or_pending.count})", bank_fees_admin_index_path %>
       <%= card_to "Users", users_admin_index_path %>
       <%= card_to "Raw Transactions (#{RawCsvTransaction.unhashed.count})", raw_transactions_admin_index_path %>
