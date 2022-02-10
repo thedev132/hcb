@@ -2,7 +2,7 @@
 <html data-dark="<%= !!@dark %>">
   <head>
     <title>
-      <%= "#{yield(:title)} – " if content_for?(:title) %>
+      <%= yield(:title).concat(" –") if content_for?(:title) %>
       Bank
     </title>
     <%= csrf_meta_tags %>
