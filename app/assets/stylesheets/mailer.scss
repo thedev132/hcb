@@ -1,0 +1,48 @@
+@import 'basscss';
+@import 'space';
+
+/* Yo! FYI, CSS declarations in this file (and in any mailer) MUST be a single
+   line... or else `premailer-rails` is gonna give you the silent treatment by
+   not rendering your CSS ٩◔̯◔۶ */
+
+.wrapper {
+  padding: 1rem;
+  margin: 0 auto;
+  max-width: 600px;
+  /* prettier-ignore */
+  font-family: 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Fira Sans', 'Oxygen', 'Ubuntu', 'Helvetica Neue', sans-serif;
+}
+
+.container {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  max-width: 100%;
+}
+
+a {
+  color: #8492a6;
+}
+
+.section {
+  padding: 0.5rem 1rem;
+}
+
+.footer {
+  font-size: 0.8rem;
+  line-height: 1.2rem;
+  color: #606a79;
+
+  background-position: center;
+  background-size: cover;
+  background-repeat: repeat-x;
+}
+
+.footer p {
+  margin-block-start: 0.5rem;
+  margin-block-end: 0.5rem;
+}
+
+.footer a {
+  color: #646464;
+}

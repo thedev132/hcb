@@ -173,6 +173,7 @@ gem "namae" # multi-cultural human name parser
 gem "newrelic_rpm"
 gem "paper_trail" # track changes on models
 gem "pg_search"
+gem 'premailer-rails' # css to inline styles for emails
 gem "rack-attack"
 gem "safely_block"
 gem "selenium-webdriver", "4.0.0.beta3"

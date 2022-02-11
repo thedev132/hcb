@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <%= stylesheet_link_tag "mailer" %>
+</head>
+<body>
+<div class="wrapper">
+  <div class="container">
+    <table>
+      <% if content_for?(:header) || content_for?(:default_header) %>
+        <thead>
+        <tr>
+          <th>
+            <%= content_for(:before_header) %>
+            <%= content_for(:header) || content_for(:default_header) %>
+            <%= content_for(:after_header) %>
+          </th>
+        </tr>
+        </thead>
+      <% end %>
+      <tbody>
+      <tr>
+        <td>
+          <div
+            class="section"
+          >
+            <%= yield %>
+          </div>
+        </td>
+      </tr>
+      <% if content_for?(:footer) || content_for?(:default_footer) %>
+        <tr>
+          <td>
+            <%= content_for(:before_footer) %>
+            <%= content_for(:footer) || content_for(:default_footer) %>
+            <%= content_for(:after_footer) %>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+</body>
+</html>
+
