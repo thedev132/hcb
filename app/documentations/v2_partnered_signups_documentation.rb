@@ -59,12 +59,62 @@ class V2PartneredSignupsDocumentation < ApplicationDocumentation
       end
 
       parameter do
-        key :name, :owner_address
+        key :name, :owner_address_line1
         key :in, :query
-        key :description, "(optional) The user's address"
+        key :description, "(optional) The first line (street) of the user's address"
         key :required, false
         schema do
           key :type, :string
+        end
+      end
+
+      parameter do
+        key :name, :owner_address_line2
+        key :in, :query
+        key :description, "(optional) The second line of the user's address"
+        key :required, false
+        schema do
+          key :type, :string
+        end
+      end
+
+      parameter do
+        key :name, :owner_address_city
+        key :in, :query
+        key :description, "(optional) The city of the user's address"
+        key :required, false
+        schema do
+          key :type, :string
+        end
+      end
+
+      parameter do
+        key :name, :owner_address_state
+        key :in, :query
+        key :description, "(optional) The state of the user's address"
+        key :required, false
+        schema do
+          key :type, :string
+        end
+      end
+
+      parameter do
+        key :name, :owner_address_postal_code
+        key :in, :query
+        key :description, "(optional) The 5-digit postal code of the user's address"
+        key :required, false
+        schema do
+          key :type, :string
+        end
+      end
+
+      parameter do
+        key :name, :owner_address_country
+        key :in, :query
+        key :description, "(optional) The 2-letter country code of the user's address"
+        key :required, false
+        schema do
+          key :type, :integer
         end
       end
 

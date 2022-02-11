@@ -93,7 +93,6 @@ class PartneredSignupsController < ApplicationController
       :owner_name,
       :owner_phone,
       :owner_email,
-      :owner_address,
       :owner_address_line1,
       :owner_address_line2,
       :owner_address_city,

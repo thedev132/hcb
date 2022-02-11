@@ -65,7 +65,12 @@ module Api
       }
       attrs[:owner_name] = params[:owner_name] if params[:owner_name]
       attrs[:owner_phone] = params[:owner_phone] if params[:owner_phone]
-      attrs[:owner_address] = params[:owner_address] if params[:owner_address]
+      attrs[:owner_address_line1] = params[:owner_address_line1] if params[:owner_address_line1]
+      attrs[:owner_address_line2] = params[:owner_address_line2] if params[:owner_address_line2]
+      attrs[:owner_address_city] = params[:owner_address_city] if params[:owner_address_city]
+      attrs[:owner_address_state] = params[:owner_address_state] if params[:owner_address_state]
+      attrs[:owner_address_postal_code] = params[:owner_address_postal_code] if params[:owner_address_postal_code]
+      attrs[:owner_address_country] = params[:owner_address_country] if params[:owner_address_country]
       attrs[:owner_birthdate] = params[:owner_birthdate] if params[:owner_birthdate]
 
       @partnered_signup = PartneredSignup.create!(attrs)
