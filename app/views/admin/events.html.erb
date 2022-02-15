@@ -104,6 +104,9 @@
           <% if event.hidden_at? %>
             <span title="🕵️‍♂️ Hidden">🕵️‍♂️</span>
           <% end %>
+          <% if event.organized_by_hack_clubbers? %>
+            <span title="🦕 Organized by Hack Clubbers">🦕</span>
+          <% end %>
         </td>
         <td>
           <%= link_to "Process", event_process_admin_path(event) if event.pending? || event.unapproved? %>
