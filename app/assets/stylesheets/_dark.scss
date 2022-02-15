@@ -129,6 +129,7 @@ html[data-dark='true'] {
     input[type='tel'],
     input[type='text'],
     input[type='url'],
+    .input,
     select,
     textarea {
       background: $dark;
