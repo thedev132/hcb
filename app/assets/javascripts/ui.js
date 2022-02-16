@@ -24,7 +24,7 @@ $(document).on('turbo:load', function () {
   })
 
   $(document).on('click', '[data-behavior~=modal_trigger]', function (e) {
-    if ($(this).attr('href')) e.preventDefault()
+    if ($(this).attr('href') || $(e.target).attr('href')) e.preventDefault()
     BK.s('modal', '#' + $(this).data('modal')).modal()
     return this.blur()
   })

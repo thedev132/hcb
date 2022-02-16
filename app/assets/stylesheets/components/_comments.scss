@@ -13,10 +13,15 @@
 
 .comments .card {
   transition: background-color 100ms linear;
+  overflow: visible;
 }
 
 .comments .comment--container {
   overflow: hidden;
+  border-radius: 0.5rem;
+  p:last-child {
+    margin-bottom: 0;
+  }
 }
 
 .comments img {
@@ -34,7 +39,11 @@
 
 .comments .card.hash-highlight {
   animation: highlight 2s;
-  border: 1px solid rgba(map-get($palette, warning), 0.25);
+  border: 1px solid;
+  border-color: rgba(map-get($palette, warning), 0.25);
+  .card__banner {
+    border-color: inherit;
+  }
 }
 
 @keyframes highlight {
