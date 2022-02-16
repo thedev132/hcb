@@ -51,11 +51,22 @@ class DonationsController < ApplicationController
   end
 
   def accept_donation_hook
+    payload = request.body.read
+    sig_header = request.headers['Stripe-Signature']
+    event = nil
+
+    begin
+      event = StripeService.construct_webhook_event(payload, sig_header)
+    rescue Stripe::SignatureVerificationError
+      head 400
+      return
+    end
+
     # only proceed if payment intent is a donation and not an invoice
-    return unless request.params["data"]["object"]["metadata"]["donation"].present?
+    return unless event.data.object.metadata[:donation].present?
 
     # get donation to process
-    donation = Donation.find_by_stripe_payment_intent_id(request.params["data"]["object"]["id"])
+    donation = Donation.find_by_stripe_payment_intent_id(event.data.object.id)
 
     pi = StripeService::PaymentIntent.retrieve(
       id: donation.stripe_payment_intent_id,

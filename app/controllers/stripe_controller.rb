@@ -7,12 +7,11 @@ class StripeController < ApplicationController
 
   def webhook
     payload = request.body.read
+    sig_header = request.headers['Stripe-Signature']
     event = nil
 
     begin
-      event = StripeService::Event.construct_from(
-        JSON.parse(payload, symbolize_names: true)
-      )
+      event = StripeService.construct_webhook_event(payload, sig_header)
       method = "handle_" + event["type"].tr(".", "_")
       self.send method, event
     rescue JSON::ParserError => e
@@ -23,6 +22,9 @@ class StripeController < ApplicationController
       puts e
       Airbrake.notify(e)
       head 200 # success so that stripe doesn't retry (method is unsupported by Bank)
+      return
+    rescue Stripe::SignatureVerificationError
+      head 400
       return
     end
 
