@@ -6,6 +6,9 @@ class PartneredSignup < ApplicationRecord
   include PublicIdentifiable
   set_public_id_prefix :sup
 
+  include CountryEnumable
+  has_country_enum :owner_address_country
+
   belongs_to :partner, required: true
   belongs_to :event,   required: false
   belongs_to :user,    required: false

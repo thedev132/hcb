@@ -55,7 +55,7 @@
   </div>
   <div class="field grid__half">
     <%= form.label :owner_address_country, "Country" %>
-    <%= form.collection_select :country, Event.countries.map{|c| [c.first, get_country_name_from_alpha2(c.first)]}, :first, :last, { include_blank: 'Select a country'} %>
+    <%= form.collection_select :owner_address_country, PartneredSignup.countries.map{|c| [c.first, get_country_name_from_alpha2(c.first)]}, :first, :last, { include_blank: 'Select a country'} %>
   </section>
   <span class="muted h5">This is so we can send you some swag and goodies if you ever request them!</span>
   </p>
