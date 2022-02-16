@@ -22,6 +22,8 @@
 #     creation.
 #
 class OrganizerPositionInvite < ApplicationRecord
+  has_paper_trail
+
   include FriendlyId
 
   friendly_id :slug_candidates, use: :slugged

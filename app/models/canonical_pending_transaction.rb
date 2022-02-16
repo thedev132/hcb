@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class CanonicalPendingTransaction < ApplicationRecord
+  has_paper_trail
+
   include PgSearch::Model
   pg_search_scope :search_memo, against: [:memo, :custom_memo, :hcb_code], using: { tsearch: { prefix: true, dictionary: "english" } }, ranked_by: "canonical_pending_transactions.date"
 

@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class PartnerDonation < ApplicationRecord
+  has_paper_trail
+
   include AASM
   include Commentable
 

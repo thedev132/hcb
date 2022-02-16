@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Sponsor < ApplicationRecord
+  has_paper_trail
+
   extend FriendlyId
 
   include PgSearch::Model

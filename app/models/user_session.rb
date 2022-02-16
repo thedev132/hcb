@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 class UserSession < ApplicationRecord
+  has_paper_trail
   acts_as_paranoid
+
   belongs_to :user
   belongs_to :impersonated_by, class_name: "User", required: false
 

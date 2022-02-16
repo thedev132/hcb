@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class HcbCode < ApplicationRecord
+  has_paper_trail
+
   include Hashid::Rails
 
   include Commentable

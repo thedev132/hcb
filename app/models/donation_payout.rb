@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class DonationPayout < ApplicationRecord
+  has_paper_trail
   # most of this was copied from models/invoice.rb
 
   # Stripe provides a field called type, which is reserved in rails for STI.

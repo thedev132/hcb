@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class FeeReimbursement < ApplicationRecord
+  has_paper_trail
+
   include Commentable
 
   has_one :invoice, required: false

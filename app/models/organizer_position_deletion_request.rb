@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class OrganizerPositionDeletionRequest < ApplicationRecord
+  has_paper_trail
+
   include Commentable
 
   belongs_to :submitted_by, class_name: "User"

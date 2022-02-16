@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class StripeCard < ApplicationRecord
+  has_paper_trail
+
   after_create_commit :notify_user, :pay_for_issuing
 
   scope :deactivated, -> { where.not(stripe_status: "active") }

@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class GSuiteAccount < ApplicationRecord
+  has_paper_trail
+
   include Rejectable
 
   after_update :attempt_notify_user_of_password_change

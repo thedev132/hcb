@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class InvoicePayout < ApplicationRecord
+  has_paper_trail
+
   # Stripe provides a field called type, which is reserved in rails for STI.
   # This removes the Rails reservation on 'type' for this class.
   self.inheritance_column = nil
