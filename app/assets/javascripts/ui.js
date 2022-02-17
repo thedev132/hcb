@@ -70,7 +70,7 @@ $(document).on('turbo:load', function () {
 
   // login code sanitization
   const loginCodeInput = $("input[name='login_code']")
-  loginCodeInput.on('keyup change', function(event) {
+  loginCodeInput.on('keyup change', function (event) {
     const currentVal = $(this).val()
     let newVal = currentVal.replace(/[^0-9]+/g, '')
 
@@ -94,7 +94,7 @@ $(document).on('turbo:load', function () {
     $(this).val(newVal)
   })
 
-  loginCodeInput.closest('form').on('submit', function(event) {
+  loginCodeInput.closest('form').on('submit', function (event) {
     // Ignore double submissions.
     // Since we are auto-submitting the form, the user may attempt to submit at
     // the same time. Let's prevent this.
@@ -104,7 +104,7 @@ $(document).on('turbo:load', function () {
     // will reset on submitting; meaning the `submittedAt` data will be cleared.
     // However, in the case of strange network issues, i'm not sure if that's
     // always the case.
-    const recentlySubmitted = submittedAt && (new Date() - submittedAt) < 5000
+    const recentlySubmitted = submittedAt && new Date() - submittedAt < 5000
     if (recentlySubmitted) {
       // The form was recently submitted. Don't submit form again
       event.preventDefault()
@@ -248,13 +248,16 @@ $(document).on('turbo:load', function () {
     }
   )
 
-  $(document).on('keydown', '[data-behavior~=autosize]', function () {
-    const t = this
-    return setTimeout(function () {
-      $(t).attr({ rows: Math.floor(t.scrollHeight / 28) })
-      return $(t).css({ height: 'auto' })
-    }, 0)
-  })
+  $('textarea')
+    .each(function () {
+      $(this).css({
+        height: `${this.scrollHeight + 1}px`
+      })
+    })
+    .on('input', function () {
+      this.style.height = 'auto'
+      this.style.height = this.scrollHeight + 1 + 'px'
+    })
 
   // Popover menus
   BK.openMenuSelector = '[data-behavior~=menu_toggle][aria-expanded=true]'
@@ -327,7 +330,7 @@ $(document).on('turbo:load', function () {
     .addListener(() => setTilt())
 })
 
-$('[data-behavior~=ctrl_enter_submit]').keydown(function(event) {
+$('[data-behavior~=ctrl_enter_submit]').keydown(function (event) {
   if ((event.ctrlKey || event.metaKey) && event.keyCode === 13) {
     $(this).closest('form').submit()
   }
