@@ -38,6 +38,8 @@ class Event < ApplicationRecord
       .references(:canonical_transaction)
   }
   scope :not_funded, -> { where.not(id: funded) }
+  scope :organized_by_hack_clubbers, -> { where(organized_by_hack_clubbers: true) }
+  scope :not_organized_by_hack_clubbers, -> { where.not(organized_by_hack_clubbers: true) }
   scope :event_ids_with_pending_fees_greater_than_100, -> do
     query = <<~SQL
       ;select event_id, fee_balance from (
