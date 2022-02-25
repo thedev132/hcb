@@ -114,7 +114,7 @@ class UsersController < ApplicationController
       flash[:success] = "Updated your profile!"
       redirect_to root_path
     else
-      render "edit"
+      redirect_to edit_user_path(@user)
     end
   end
 

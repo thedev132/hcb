@@ -21,7 +21,7 @@
     <%= form_errors @user, 'user information' %>
     <div class="field">
       <%= form.label :full_name %>
-      <%= form.text_field :full_name, required: true %>
+      <%= form.text_field :full_name, required: true, placeholder: "Fiona Hackworth", pattern: '^\S+.+' %>
     </div>
     <div class="field">
       <%= form.label :phone_number, 'Mobile phone number (so we can contact you on short notice)' %>
