@@ -18,12 +18,6 @@ module SessionsHelper
       ip: fingerprint_info[:ip]
     )
 
-    # probably a better place to do this, but we gotta assign any pending
-    # organizer position invites - see that class for details
-    OrganizerPositionInvite.pending_assign.where(email: user.email).find_each do |invite|
-      invite.update(user: user)
-    end
-
     if impersonate
       user_session.impersonated_by = current_user
       user_session.save
