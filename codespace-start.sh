@@ -47,4 +47,11 @@ sleep 0.5
 
 sleep 0.5
 
+if [[ $* == *--with-solargraph* ]]
+then
+  env $(cat .env.docker) docker-compose -f docker-compose.yml -f docker-compose.solargraph.yml up -d solargraph
+else
+  echo "To enable Solargraph, run codespace-start.sh with the --with-solargraph flag."
+fi
+
 env $(cat .env.docker) docker-compose run --service-ports web

@@ -115,6 +115,15 @@ env $(cat .env.docker) docker-compose run --service-ports web bundle exec rails 
 env $(cat .env.docker) docker-compose run --service-ports web bundle exec rails s -b 0.0.0.0 -p 3000
 ```
 
+(Optional) Run Solargraph in Docker
+
+[Solargraph](https://solargraph.org/demo) is a tool that provides IntelliSense, code completion, and inline documentation for Ruby. You may also need to install the [Solargraph extension](https://github.com/castwide/solargraph#using-solargraph) for your editor.
+
+```bash
+env $(cat .env.docker) docker-compose -f docker-compose.yml -f docker-compose.solargraph.yml build
+env $(cat .env.docker) docker-compose -f docker-compose.yml -f docker-compose.solargraph.yml up -d solargraph
+```
+
 ## Heroku tasks
 
 Please check app.json for the buildpacks required to run Bank on Heroku.

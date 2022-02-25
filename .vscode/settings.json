@@ -1,0 +1,32 @@
+{
+  "ruby.useLanguageServer": true,
+  "ruby.useBundler": true, //run non-lint commands with bundle exec
+  "ruby.format": "rubocop", // use rubocop for formatting
+  "ruby.lint": {
+    "rubocop": {
+      "useBundler": true // enable rubocop via bundler
+    }
+  },
+  "solargraph.useBundler": true,
+  "solargraph.diagnostics": true,
+  "solargraph.completion": true,
+  "solargraph.hover": true,
+  "solargraph.formatting": true,
+  "solargraph.symbols": true,
+  "solargraph.definitions": true,
+  "solargraph.rename": true,
+  "solargraph.references": true,
+  "solargraph.folding": true,
+  "solargraph.transport": "external",
+  "solargraph.externalServer": {
+		// external server is ran via docker-compose.solargraph.yml
+    "host": "localhost",
+    "port": 7658
+  },
+  "[ruby]": {
+    "editor.defaultFormatter": "castwide.solargraph"
+  },
+  "[gemfile]": {
+    "editor.defaultFormatter": "castwide.solargraph"
+  }
+}

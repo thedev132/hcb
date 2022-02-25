@@ -53,17 +53,23 @@ echo "
 $(tput setaf 9)Hack Club Bank:$(tput sgr0) Step 6/7: Docker CLI Build"
 env $(cat .env.docker) docker-compose build
 echo "$(tput setaf 9)Hack Club Bank:$(tput sgr0) $(tput setaf 10)Done$(tput sgr0)"
+
 echo "
 $(tput setaf 9)Hack Club Bank:$(tput sgr0) Step 7/7: Docker Database Setup"
 env $(cat .env.docker) docker-compose run --service-ports web bundle exec rails db:create db:migrate
 env $(cat .env.docker) docker-compose run --service-ports web pg_restore --verbose --clean --no-acl --no-owner -h db -U postgres -d bank_development latest.dump
 echo "$(tput setaf 9)Hack Club Bank:$(tput sgr0) $(tput setaf 10)Done$(tput sgr0)"
 
-echo "
-$(tput setaf 9)Hack Club Bank:$(tput sgr0) 
+if [[ $* == *--with-solargraph* ]]
+then
+  echo "$(tput setaf 9)Hack Club Bank:$(tput sgr0) Step 8/7: Solargraph"
+  env $(cat .env.docker) docker-compose -f docker-compose.yml -f docker-compose.solargraph.yml build
+  echo "$(tput setaf 9)Hack Club Bank:$(tput sgr0) $(tput setaf 10)Done$(tput sgr0)"
+fi
 
-Run 'codespace-start.sh' or the below to start the docker container:"
-echo "env \$(cat .env.docker) docker-compose run --service-ports web"
+echo "
+$(tput setaf 9)Hack Club Bank:$(tput sgr0)
+Run 'codespace-start.sh' to start the Docker container. You can run this command with the --with-solargraph flag to enable Solargraph."
 
 echo "
 
