@@ -1,9 +1,4 @@
 .faq--container {
-  li h3 {
-    padding-left: 3px;
-    padding-right: 3px;
-  }
-
   li:target h3 {
     background: linear-gradient( to right, rgba(250, 247, 133, 0.66), rgba(250, 247, 133, 0.1) );
     border-radius: 5px;
