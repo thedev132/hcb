@@ -6,6 +6,11 @@
 
   img {
     margin-right: -5px;
+    box-shadow: 0 0 0 2px $white;
+
+    html[data-dark="true"] & {
+      box-shadow: 0 0 0 2px $darkless;
+    }
   }
 }
 
