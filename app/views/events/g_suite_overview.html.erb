@@ -7,8 +7,10 @@
     Google Workspace
   </span>
   
-  <% admin_tools('mr1 p1 badge', 'span') do %>
-    <%= link_to "Process", google_workspace_process_admin_path(@g_suite) %>
+  <% if @g_suite %>
+    <% admin_tools('mr1 p1 badge', 'span') do %>
+      <%= link_to "Process", google_workspace_process_admin_path(@g_suite) %>
+    <% end %>
   <% end %>
 
   <%= content_tag :span, @g_suite.domain, class: 'badge info h3 ml0' if @g_suite %>
