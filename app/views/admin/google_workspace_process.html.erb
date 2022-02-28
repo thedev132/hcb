@@ -30,7 +30,7 @@
     </tr>
     <tr>
       <td style="text-align: right;">DNS Check:</td>
-      <td> <%= link_to @g_suite.domain, @g_suite.dns_check_url %></td>
+      <td> <%= link_to @g_suite.domain, @g_suite.dns_check_url, target: :_blank %></td>
     </tr>
   </tbody>
 </table>
@@ -99,7 +99,7 @@
 <% end %>
 
 <hr />
-<h5>DKIM Key</h5>
+<h3>DKIM Key</h3>
 <div>
   <small><a href="https://support.google.com/a/answer/174124?hl=en">What is DKIM?</a></small>
   <p>Instructions:</p>
@@ -118,3 +118,8 @@
   <% end %>
   <%= dkim_key_form.submit "Update DKIM key" %>
 <% end %>
+
+<hr />
+<h3>Delete</h3>
+<p>The following button will destroy the Google Workspace record.<br/>Before proceeding, make sure that there are no active Google Workspace accounts.</p>
+<%= link_to 'Delete', g_suite_path(@g_suite, event_id: @g_suite.event.slug), method: :delete, data: { confirm: 'Are you sure?' }, class: 'admin-bg-warning p1 rounded link-reset' %>

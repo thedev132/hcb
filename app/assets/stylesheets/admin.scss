@@ -644,6 +644,10 @@ video {
   background: var(--hcb-accent-active) !important;
 }
 
+.admin-bg-warning {
+  background: #ec3750;
+}
+
 /* Table column width utility classes adapted from Tailwind CSS https://tailwindcss.com/docs/width  */
 
 .w-96 {
