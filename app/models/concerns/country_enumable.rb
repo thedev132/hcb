@@ -4,9 +4,9 @@ module CountryEnumable
   extend ActiveSupport::Concern
 
   module ClassMethods
-    def has_country_enum(field_name = :country)
+    def has_country_enum(enum_name = :country)
       hash = {}
-      hash[field_name] = self.country_enum_list
+      hash[enum_name] = self.country_enum_list
       enum hash
     end
 
