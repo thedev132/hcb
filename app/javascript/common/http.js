@@ -11,7 +11,8 @@ HttpClient.interceptors.request.use(
     }
     return request
   },
-  error => Promise.reject(error)
+  error => error
+  // error => Promise.reject(error)
 )
 
 export default HttpClient

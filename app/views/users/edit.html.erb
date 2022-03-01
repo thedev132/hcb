@@ -24,9 +24,19 @@
       <%= form.text_field :full_name, required: true, placeholder: "Fiona Hackworth", pattern: '^\S+.+' %>
     </div>
     <div class="field">
-      <%= form.label :phone_number, 'Mobile phone number (so we can contact you on short notice)' %>
+      <%= form.label :phone_number, "Mobile phone number" %>
+      <% if @onboarding %>
+        <p class="h5 muted mt0 mb1">
+          To contact you on short notice.
+        </p>
+      <% end %>
+      <% if @user.use_sms_auth %>
+        <p class="h5 muted mt0 mb1">
+          Changing your number will turn off SMS login codes.
+        </p>
+      <% end %>
       <%= form.hidden_field :phone_number, required: true, placeholder: '555-555-5555', id: 'phone_number' %>
-      <input type="tel" id="phone_raw" value="<%= @user.phone_number || nil %>">
+      <input type="tel" id="phone_raw" value="<%= @user.phone_number || nil %>" required="required">
     </div>
     <div class="field">
       <%= form.label :email, class: 'muted' %>
@@ -79,14 +89,54 @@
       </div>
     </fieldset>
     <div class="actions flex">
-      <%= form.submit @user.full_name.present? ? 'Save profile' : 'Start using Bank' %>
+      <%= form.submit @onboarding ? 'Start using Bank' : 'Save profile' %>
     </div>
   <% end %>
   <% unless @onboarding %>
-    <h2 class="mt4">
-      Authentication
-    </h2>
+    <h2>Login details</h2>
     <fieldset>
+      <% unless @user.phone_number.blank? %>
+        <!-- for now, this is gated to users with a feature flag -->
+        <% if @user.beta_features_enabled? %>
+          <div class="session-header mt3 pb2">
+          <legend class="heading flex flex-row justify-start items-center">
+            <span class="h2">Login Codes</span>
+            <%= badge_for @user.use_sms_auth ? "SMS" : "Email", class: 'bg-muted' %>
+          </legend>
+          </div>
+          <div class="card border b--info mt1 mb3">
+            <div class="flex items-center info mb1">
+              <%= inline_icon "important", size: 32, class: "mr1" %>
+              <p class="bold mt0 mb0">Beta feature</p>
+            </div>
+            <% if @user.phone_number_verified %>
+              <% if @user.use_sms_auth %>
+                You are currently receiving login codes via SMS. Email codes can still be sent as a backup.
+                <%= link_to "Turn off SMS login codes.", toggle_sms_auth_users_path, method: :post %>
+              <% else %>
+                You are currently receiving login codes via email.
+                <%= link_to "Turn on SMS login codes.", toggle_sms_auth_users_path, method: :post %>
+              <% end %>
+            <% else %>
+              <p>Your login codes are sent to <span class="bold"><%= @user.email %></span>.</p>
+              <p>
+                To send login codes to your phone, first 
+                <action data-behavior="modal_trigger" data-modal="verify_phone">
+                  <a>
+                  verify your phone number.
+                  </a>
+                </action>
+              </p>
+              <section class="modal modal--scroll bg-snow" data-behavior="modal" role="dialog" id="verify_phone">
+                <%= modal_header 'Verify phone number' %>
+                <%= react_component 'settings/SmsVerification',
+                    phoneNumber: @user.phone_number
+                    %>
+              </section>
+            <% end %>
+          </div>
+        <% end %>
+      <% end %>
       <div class="session-header pb2">
         <legend class="heading flex flex-row justify-start items-center">
           <span class="h2">Sessions</span>
@@ -125,18 +175,6 @@
           </div>
         <% end %>
       </div>
-      <% if @user.admin?  %>
-        <div class="admin-tools mt3">
-          <legend class="heading h2 pt2">SMS Information</legend>
-          <%=  react_component 'settings/SmsVerification', {
-              useSmsAuth: @user.use_sms_auth,
-              phoneNumberVerified: @user.phone_number_verified,
-              phoneNumber: @user.phone_number
-            },
-            { prerender: true }
-          %>
-        </div>
-      <% end %>
     </fieldset>
   <% end %>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/intlTelInput.min.js" integrity="sha512-QMUqEPmhXq1f3DnAVdXvu40C8nbTgxvBGvNruP6RFacy3zWKbNTmx7rdQVVM2gkd2auCWhlPYtcW2tHwzso4SA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>

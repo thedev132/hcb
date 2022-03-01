@@ -4,6 +4,7 @@
   "dependencies": {
     "@babel/preset-react": "^7.16.0",
     "@fingerprintjs/fingerprintjs": "^3.3.0",
+    "@hackclub/icons": "^0.0.9",
     "@hotwired/turbo-rails": "^7.0.1",
     "@rails/webpacker": "5.4.3",
     "axios": "^0.24.0",

@@ -111,10 +111,18 @@ class UsersController < ApplicationController
     authorize @user
 
     if @user.update(user_params)
-      flash[:success] = "Updated your profile!"
-      redirect_to root_path
+      if @user.full_name_before_last_save.blank?
+        flash[:success] = "Profile created!"
+        redirect_to root_path
+      else
+        flash[:success] = "Updated your profile!"
+        redirect_to edit_user_path(@user)
+      end
     else
-      redirect_to edit_user_path(@user)
+      @onboarding = User.friendly.find(params[:id]).full_name.blank?
+      show_impersonated_sessions = admin_signed_in? || current_session.impersonated?
+      @sessions = show_impersonated_sessions ? @user.user_sessions : @user.user_sessions.not_impersonated
+      render :edit
     end
   end
 
@@ -132,6 +140,8 @@ class UsersController < ApplicationController
     authorize current_user
     svc = UserService::EnrollSmsAuth.new(current_user)
     svc.start_verification
+    # flash[:info] = "Verifying phone number"
+    # redirect_to edit_user_path(current_user)
     render json: { message: "started verification successfully" }, status: :ok
   end
 
@@ -140,21 +150,26 @@ class UsersController < ApplicationController
     params.require(:code)
     svc = UserService::EnrollSmsAuth.new(current_user)
     svc.complete_verification(params[:code])
+    # flash[:success] = "Completed verification"
+    # redirect_to edit_user_path(current_user)
     render json: { message: "completed verification successfully" }, status: :ok
   rescue ::Errors::InvalidLoginCode
+    # flash[:error] = "Invalid login code"
+    # redirect_to edit_user_path(current_user)
     render json: { error: "invalid login code" }, status: :forbidden
   end
 
   def toggle_sms_auth
-    user = current_user
-    authorize user
+    authorize current_user
     svc = UserService::EnrollSmsAuth.new(current_user)
-    if user.use_sms_auth
+    if current_user.use_sms_auth
       svc.disable_sms_auth
+      flash[:success] = "SMS sign-in turned off"
     else
       svc.enroll_sms_auth
+      flash[:success] = "SMS sign-in turned on"
     end
-    render json: { useSmsAuth: user.use_sms_auth }, status: :ok
+    redirect_to edit_user_path(current_user)
   end
 
   private
