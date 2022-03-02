@@ -28,7 +28,7 @@ RSpec.describe GSuiteService::MarkVerifying, type: :model do
 
     mail = ActionMailer::Base.deliveries.last
 
-    expect(mail.to).to eql(["bank-alert@hackclub.com"])
+    expect(mail.to).to eql(["bank@hackclub.com"])
     expect(mail.subject).to include("[OPS] [ACTION] [GSuite]")
   end
 

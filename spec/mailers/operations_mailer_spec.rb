@@ -11,7 +11,7 @@ RSpec.describe OperationsMailer, type: :mailer do
   let(:mailer) { OperationsMailer.with(g_suite_id: g_suite_id).g_suite_entering_verifying_state }
 
   it "renders to" do
-    expect(mailer.to).to eql(["bank-alert@hackclub.com"])
+    expect(mailer.to).to eql(["bank@hackclub.com"])
   end
 
   it "renders subject" do
