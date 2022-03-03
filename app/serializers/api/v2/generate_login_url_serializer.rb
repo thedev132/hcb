@@ -3,9 +3,10 @@
 module Api
   module V2
     class GenerateLoginUrlSerializer
-      def initialize(email:, organization_public_id:)
-        @email = email
-        @organization_public_id = organization_public_id
+      # @param [LoginToken] login_token
+      def initialize(organization_public_id:, login_token:)
+        @organization_public_id = organization_public_id.strip
+        @login_token = login_token
       end
 
       def run
@@ -18,8 +19,8 @@ module Api
 
       def data
         {
-          # organization_id: @organization_public_id,
-          login_url: Rails.application.routes.url_helpers.auth_users_url(email: @email)
+          organization_id: @organization_public_id,
+          login_url: @login_token.login_url
         }
       end
 

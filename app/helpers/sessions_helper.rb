@@ -1,14 +1,16 @@
 # frozen_string_literal: true
 
 module SessionsHelper
+  EXPIRATION_DURATION = 30.days
+
   def impersonate_user(user)
     sign_in(user: user, impersonate: true)
   end
 
   # DEPRECATED - begin to start deprecating and ultimately replace with sign_in_and_set_cookie
-  def sign_in(user:, fingerprint_info: {}, impersonate: false)
+  def sign_in(user:, fingerprint_info: {}, impersonate: false, duration: EXPIRATION_DURATION)
     session_token = SecureRandom.urlsafe_base64
-    cookies.encrypted[:session_token] = { value: session_token, expires: 30.days.from_now }
+    cookies.encrypted[:session_token] = { value: session_token, expires: Time.now + duration }
     user_session = user.user_sessions.create(
       session_token: session_token,
       fingerprint: fingerprint_info[:fingerprint],
@@ -62,9 +64,11 @@ module SessionsHelper
     return nil unless potential_session
 
     # check if the potential session is still valid
-    # If the session is greater than 30 days then the current user is no longer valid
+    # If the session is greater than the expiration duration then the current
+    # user is no longer valid.
     # (.abs) is added for easier testing when fast-forwarding created_at times
-    if (Time.now - potential_session.created_at).abs > 30.days
+    if (Time.now - potential_session.created_at).abs > EXPIRATION_DURATION
+      potential_session.set_as_peacefully_expired
       potential_session.destroy
       return nil
     end
@@ -85,7 +89,12 @@ module SessionsHelper
   end
 
   def sign_out
-    current_user(false).user_sessions.find_by(session_token: cookies.encrypted[:session_token]).destroy if current_user(false)
+    current_user(false)
+      &.user_sessions
+      &.find_by(session_token: cookies.encrypted[:session_token])
+      &.set_as_peacefully_expired
+      &.destroy
+
     cookies.delete(:session_token)
     self.current_user = nil
   end

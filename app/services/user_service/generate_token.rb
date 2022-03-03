@@ -2,13 +2,13 @@
 
 module UserService
   class GenerateToken
-    def initialize(user_id:)
+    def initialize(partner_id:, user_id:)
+      @partner_id = partner_id
       @user_id = user_id
     end
 
     def run
-      login_token = user.login_tokens.create!(attrs)
-      login_token.token
+      user.login_tokens.create!(attrs)
     end
 
     private
@@ -16,12 +16,14 @@ module UserService
     def attrs
       {
         token: token,
-        expiration_at: expiration_at
+        expiration_at: expiration_at,
+        partner: partner
       }
     end
 
     def expiration_at
-      1.minute.from_now
+      # Tokens (login urls) must be generated on demand
+      15.seconds.from_now
     end
 
     def token
@@ -40,6 +42,10 @@ module UserService
 
     def user
       @user ||= ::User.find(@user_id)
+    end
+
+    def partner
+      @partner ||= ::Partner.find(@partner_id)
     end
 
   end

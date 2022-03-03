@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe ApiService::V2::GenerateLoginUrl, type: :model do
+RSpec.describe ApiService::V2::GenerateLoginToken, type: :model do
   fixtures "partners", "events", "users", "organizer_positions"
 
   let(:partner) { partners(:partner1) }
@@ -18,7 +18,7 @@ RSpec.describe ApiService::V2::GenerateLoginUrl, type: :model do
     }
   end
 
-  let(:service) { ApiService::V2::GenerateLoginUrl.new(attrs) }
+  let(:service) { ApiService::V2::GenerateLoginToken.new(attrs) }
 
   it "creates a login token" do
     expect do

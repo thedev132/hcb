@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_15_034923) do
+ActiveRecord::Schema.define(version: 2022_02_25_053540) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -769,8 +769,16 @@ ActiveRecord::Schema.define(version: 2022_02_15_034923) do
     t.datetime "expiration_at", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "ip"
+    t.string "aasm_state"
+    t.bigint "user_session_id"
+    t.bigint "partner_id"
+    t.decimal "latitude"
+    t.decimal "longitude"
+    t.index ["partner_id"], name: "index_login_tokens_on_partner_id"
     t.index ["token"], name: "index_login_tokens_on_token", unique: true
     t.index ["user_id"], name: "index_login_tokens_on_user_id"
+    t.index ["user_session_id"], name: "index_login_tokens_on_user_session_id"
   end
 
   create_table "mfa_codes", force: :cascade do |t|
@@ -1180,6 +1188,9 @@ ActiveRecord::Schema.define(version: 2022_02_15_034923) do
     t.string "ip"
     t.datetime "deleted_at"
     t.bigint "impersonated_by_id"
+    t.boolean "peacefully_expired"
+    t.decimal "latitude"
+    t.decimal "longitude"
     t.index ["impersonated_by_id"], name: "index_user_sessions_on_impersonated_by_id"
     t.index ["user_id"], name: "index_user_sessions_on_user_id"
   end
@@ -1268,6 +1279,7 @@ ActiveRecord::Schema.define(version: 2022_02_15_034923) do
   add_foreign_key "invoices", "users", column: "creator_id"
   add_foreign_key "invoices", "users", column: "manually_marked_as_paid_user_id"
   add_foreign_key "lob_addresses", "events"
+  add_foreign_key "login_tokens", "user_sessions"
   add_foreign_key "login_tokens", "users"
   add_foreign_key "mfa_requests", "mfa_codes"
   add_foreign_key "ops_checkins", "users", column: "point_of_contact_id"
