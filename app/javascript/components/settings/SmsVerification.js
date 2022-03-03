@@ -61,7 +61,7 @@ const SmsVerification = ({ phoneNumber }) => {
   return (
     <>
       {(errors.length > 0) && (
-        <ul className="list-reset bg-error p1 rounded">
+        <ul className="list-reset bg-error p1 rounded" style={{ color: 'white' }}>
           {errors.map((e, i) => (
             <li key={i}>{e}</li>
           ))}
@@ -80,7 +80,7 @@ const SmsVerification = ({ phoneNumber }) => {
               <p>We've just sent a code to {phoneNumber}. It should arrive in the next 5 to 30 seconds depending on your connection.</p>
               <div className="flex">
                 <form onSubmit={handleSubmit}>
-                  <input type="tel" id="verification-code" autoComplete="off" onSubmit={handleSubmit} onInput={handleInput} placeholder="XXX-XXX" value={code} required />
+                  <input type="tel" id="verification-code" autoComplete="off" onSubmit={handleSubmit} onInput={handleInput} placeholder="XXX-XXX" value={code} className="mb1" required />
                   <input className={loading ? 'muted wait disabled' : 'pointer'} onSubmit={handleSubmit} type="submit" value="Verify" />
                 </form>
               </div>
