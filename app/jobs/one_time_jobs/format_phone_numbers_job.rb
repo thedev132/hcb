@@ -5,8 +5,8 @@ module OneTimeJobs
     def perform
       User.where.not(full_name: nil).map do |user|
         puts "Formatting user ##{user.id}"
-        user.send(:format_number)
-        user.save!
+        formatted_number = user.send(:format_number)
+        User.find(user.id).update_column(:phone_number, formatted_number)
       end
     end
 
