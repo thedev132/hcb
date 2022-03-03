@@ -3,7 +3,7 @@
 module Partners
   module Docusign
     # Api is a singleton service that abstracts away some of the complexities in creating
-    # a Docusign request
+    # a DocuSign request
     class Api
       # Service is a singleton because token refresh should be done sparingly.
       # We're going to use one instance per Server
