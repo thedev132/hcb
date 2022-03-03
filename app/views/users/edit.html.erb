@@ -96,46 +96,43 @@
     <h2>Login details</h2>
     <fieldset>
       <% unless @user.phone_number.blank? %>
-        <!-- for now, this is gated to users with a feature flag -->
-        <% if @user.beta_features_enabled? %>
-          <div class="session-header mt3 pb2">
-          <legend class="heading flex flex-row justify-start items-center">
-            <span class="h2">Login Codes</span>
-            <%= badge_for @user.use_sms_auth ? "SMS" : "Email", class: 'bg-muted' %>
-          </legend>
+        <div class="session-header mt3 pb2">
+        <legend class="heading flex flex-row justify-start items-center">
+          <span class="h2">Login Codes</span>
+          <%= badge_for @user.use_sms_auth ? "SMS" : "Email", class: 'bg-muted' %>
+        </legend>
+        </div>
+        <div class="card border b--info mt1 mb3">
+          <div class="flex items-center info mb1">
+            <%= inline_icon "important", size: 32, class: "mr1" %>
+            <p class="bold mt0 mb0">Beta feature</p>
           </div>
-          <div class="card border b--info mt1 mb3">
-            <div class="flex items-center info mb1">
-              <%= inline_icon "important", size: 32, class: "mr1" %>
-              <p class="bold mt0 mb0">Beta feature</p>
-            </div>
-            <% if @user.phone_number_verified %>
-              <% if @user.use_sms_auth %>
-                You are currently receiving login codes via SMS. Email codes can still be sent as a backup.
-                <%= link_to "Turn off SMS login codes.", toggle_sms_auth_users_path, method: :post %>
-              <% else %>
-                You are currently receiving login codes via email.
-                <%= link_to "Turn on SMS login codes.", toggle_sms_auth_users_path, method: :post %>
-              <% end %>
+          <% if @user.phone_number_verified %>
+            <% if @user.use_sms_auth %>
+              You are currently receiving login codes via SMS. Email codes can still be sent as a backup.
+              <%= link_to "Turn off SMS login codes.", toggle_sms_auth_users_path, method: :post %>
             <% else %>
-              <p>Your login codes are sent to <span class="bold"><%= @user.email %></span>.</p>
-              <p>
-                To send login codes to your phone, first 
-                <action data-behavior="modal_trigger" data-modal="verify_phone">
-                  <a>
-                  verify your phone number.
-                  </a>
-                </action>
-              </p>
-              <section class="modal modal--scroll bg-snow" data-behavior="modal" role="dialog" id="verify_phone">
-                <%= modal_header 'Verify phone number' %>
-                <%= react_component 'settings/SmsVerification',
-                    phoneNumber: @user.phone_number
-                    %>
-              </section>
+              You are currently receiving login codes via email.
+              <%= link_to "Turn on SMS login codes.", toggle_sms_auth_users_path, method: :post %>
             <% end %>
-          </div>
-        <% end %>
+          <% else %>
+            <p>Your login codes are sent to <span class="bold"><%= @user.email %></span>.</p>
+            <p>
+              To send login codes to your phone, first 
+              <action data-behavior="modal_trigger" data-modal="verify_phone">
+                <a>
+                verify your phone number.
+                </a>
+              </action>
+            </p>
+            <section class="modal modal--scroll bg-snow" data-behavior="modal" role="dialog" id="verify_phone">
+              <%= modal_header 'Verify phone number' %>
+              <%= react_component 'settings/SmsVerification',
+                  phoneNumber: @user.phone_number
+                  %>
+            </section>
+          <% end %>
+        </div>
       <% end %>
       <div class="session-header pb2">
         <legend class="heading flex flex-row justify-start items-center">
