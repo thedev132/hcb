@@ -25,7 +25,6 @@ module StripeAuthorizationService
       end
 
       if cpt
-        CanonicalPendingTransactionMailer.with(canonical_pending_transaction_id: cpt.id).notify_bank_alerts.deliver_later
         CanonicalPendingTransactionMailer.with(canonical_pending_transaction_id: cpt.id).notify_approved.deliver_later
       end
     end
