@@ -42,6 +42,12 @@ class PartneredSignup < ApplicationRecord
     # The ending state of a SUP should be either `rejected` or `completed`
 
     event :mark_submitted do
+      # Sync this Partnered Signup to Airtable when it is submitted
+      after do
+        puts self.id
+        ::PartneredSignupJob::SyncToAirtable.perform_later(partnered_signup_id: self.id)
+      end
+
       transitions from: :unsubmitted, to: :submitted
     end
 
