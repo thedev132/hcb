@@ -33,7 +33,7 @@
     <% end %>
 
     <%# LET THERE BE SNOW %>
-    <% if !@hide_holiday_features %>
+    <% unless @hide_holiday_features || true %> <%# Holiday features disabled site-wide %>
       <%= react_component 'holiday/SnowToggl', {}, {:style => "position:fixed;left:1rem;bottom:1rem;z-index:99"} %>
       <%= react_component 'holiday/Snow', {}, {:style => "height:100%"} %>
     <% end %>
