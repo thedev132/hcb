@@ -7,6 +7,7 @@ module OneTimeJobs
         puts "Formatting user ##{user.id}"
         formatted_number = Phonelib.parse(user.phone_number).full_e164
         next if formatted_number.blank?
+
         User.find(user.id).update_column(:phone_number, formatted_number)
       end
     end

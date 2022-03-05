@@ -4,7 +4,7 @@
 
 <p>
   The funds from <%= link_to "a recently paid invoice to #{@payout.invoice.sponsor.name}", @payout.invoice %>
-  are transferring into your <strong><%= @payout.invoice.sponsor.event %></strong> fund on Hack Club Bank.
+  are transferring into <%= link_to @payout.invoice.sponsor.event.name, @payout.invoice.sponsor.event %> on Hack Club Bank.
 </p>
 
 <p>
