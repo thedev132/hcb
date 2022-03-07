@@ -100,9 +100,10 @@ module SessionsHelper
   end
 
   def sign_out_of_all_sessions
-    # Destroy all the sessions
-    current_user(false)&.user_sessions&.destroy_all
-    cookies.delete(:session_token)
-    self.current_user = nil
+    # Destroy all the sessions except the current session
+    current_user(false)
+      &.user_sessions
+      &.where&.not(id: current_session.id)
+      &.destroy_all
   end
 end

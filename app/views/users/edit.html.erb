@@ -140,9 +140,9 @@
           <%= badge_for @sessions.count, class: 'bg-muted' %>
         </legend>
         <%= link_to logout_all_users_path, method: :delete,
-            class: 'btn bg-error mt1 py1 px2 h4' do %>
+            class: 'btn bg-error mt1 py1 px2 h4', disabled: @sessions.count <= 1 do %>
           <%= inline_icon 'door-leave', size: home_action_size %>
-          Sign out of all sessions
+          Sign out everywhere else
         <% end %>
       </div>
       <div class="grid grid--split">

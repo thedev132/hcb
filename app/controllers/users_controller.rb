@@ -78,7 +78,7 @@ class UsersController < ApplicationController
 
   def logout_all
     sign_out_of_all_sessions
-    redirect_to root_path
+    redirect_to edit_user_path(current_user), flash: { success: "Success" }
   end
 
   def logout_session
