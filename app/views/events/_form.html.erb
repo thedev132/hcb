@@ -43,10 +43,12 @@
       <%= form.check_box :is_public %>
       <%= form.label :is_public, "Enable Transparency Mode" %>
     </div>
-    <div class="field field--checkbox" data-behavior="holiday_features_transparency <% if !event.is_public? %>autohide<% end %>">
-      <%= form.check_box :holiday_features %>
-      <%= form.label :holiday_features, "Enable Holiday Features ⛄ for Transparency Mode" %>
-    </div>
+    <% if false %> <%# Holiday features disabled site-wide %>
+      <div class="field field--checkbox" data-behavior="holiday_features_transparency <% if !event.is_public? %>autohide<% end %>">
+        <%= form.check_box :holiday_features %>
+        <%= form.label :holiday_features, "Enable Holiday Features ⛄ for Transparency Mode" %>
+      </div>
+    <% end %>
     <div class="field">
       <%= form.label :public_message, "Message to show visitors" %>
       <%= form.text_area :public_message, class: "w-100 fit" %>
