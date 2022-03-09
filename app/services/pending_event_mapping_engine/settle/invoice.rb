@@ -17,7 +17,11 @@ module PendingEventMappingEngine
             prefix = grab_prefix(invoice: invoice)
 
             # 2. look up canonical - scoped to event for added accuracy
-            cts = event.canonical_transactions.where("memo ilike '%PAYOUT% #{prefix}%' and date >= ?", cpt.date).order("date asc")
+            cts = event.canonical_transactions.where(
+              "memo ilike ? and date >= ?",
+              "%PAYOUT% #{ActiveRecord::Base.sanitize_sql_like prefix}%",
+              cpt.date
+            ).order("date asc")
 
             # 2.b special case if invoice is quite old & now results
             # cts = event.canonical_transactions.where("memo ilike '%DONAT% #{prefix[0]}%'") if cts.count < 1 && invoice.created_at < Time.utc(2020, 1, 1) # shorter prefix. see  id 1 for example.
@@ -42,7 +46,11 @@ module PendingEventMappingEngine
             cts = event.canonical_transactions.where("memo ilike 'DEPOSIT' and amount_cents = #{invoice.amount_due} and date > '#{invoice.created_at.strftime("%Y-%m-%d")}'") unless cts.present? # see sachacks examples
             unless cts.present?
               prefix = grab_prefix_old(invoice: invoice)
-              cts = event.canonical_transactions.where("memo ilike 'HACK CLUB EVENT TRANSFER PAYOUT - #{prefix}%'and date > '#{invoice.created_at.strftime("%Y-%m-%d")}'")
+              cts = event.canonical_transactions.where(
+                "memo ilike ? and date > ?",
+                "HACK CLUB EVENT TRANSFER PAYOUT - #{ActiveRecord::Base.sanitize_sql_like prefix}%",
+                invoice.created_at.strftime("%Y-%m-%d").to_s
+              )
             end
 
             cts = event.canonical_transactions.missing_pending.where("amount_cents = ? and date > ?", cpt.amount_cents, cpt.date) unless cts.present? # see example canonical transaction 198588
@@ -86,8 +94,6 @@ module PendingEventMappingEngine
         cleanse = cleanse.gsub("HACKC PAYOUT", "")
         cleanse = cleanse.gsub("PAYOUT", "")
         cleanse.split(" ")[0][0..2].upcase
-
-        ActiveRecord::Base.connection.quote cleanse
       end
 
       def grab_prefix_old(invoice:)
@@ -97,10 +103,7 @@ module PendingEventMappingEngine
 
         cleanse = statement_descriptor
         cleanse.split(" ")[0][0..5].upcase
-
-        ActiveRecord::Base.connection.quote cleanse
       end
-
 
     end
   end
