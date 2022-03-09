@@ -86,6 +86,8 @@ module PendingEventMappingEngine
         cleanse = cleanse.gsub("HACKC PAYOUT", "")
         cleanse = cleanse.gsub("PAYOUT", "")
         cleanse.split(" ")[0][0..2].upcase
+
+        ActiveRecord::Base.connection.quote cleanse
       end
 
       def grab_prefix_old(invoice:)
@@ -95,6 +97,8 @@ module PendingEventMappingEngine
 
         cleanse = statement_descriptor
         cleanse.split(" ")[0][0..5].upcase
+
+        ActiveRecord::Base.connection.quote cleanse
       end
 
 
