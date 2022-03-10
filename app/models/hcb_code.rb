@@ -30,6 +30,26 @@ class HcbCode < ApplicationRecord
     custom_memo || ct.try(:smart_memo) || pt.try(:smart_memo) || ""
   end
 
+  def type
+    return :unknown if unknown?
+    return :invoice if invoice?
+    return :donation if donation?
+    return :partner_donation if partner_donation?
+    return :ach if ach_transfer?
+    return :check if check?
+    return :disbursement if disbursement?
+    return :card_charge if stripe_card?
+
+    nil
+  end
+
+  def humanized_type
+    t = type || :transaction
+    t = :transaction if unknown?
+
+    t.to_s.humanize
+  end
+
   def custom_memo
     ct.try(:custom_memo) || pt.try(:custom_memo)
   end

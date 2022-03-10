@@ -18,16 +18,13 @@
       <% end %>
       <% end %>
     </div>
-    <% if comment.content.blank? %>
     <div class="card__banner card__darker comment--container">
-      <span class="muted"><em>Comment left blank.</em></span>
-      <%== MarkdownService.instance.renderer.render comment.content %>
+      <% if comment.content.blank? %>
+        <span class="muted"><em>Comment left blank.</em></span>
+      <% else %>
+        <%== MarkdownService.instance.renderer.render comment.content %>
+      <% end %>
     </div>
-    <% else %>
-    <div class="card__banner card__darker comment--container">
-      <%== MarkdownService.instance.renderer.render comment.content %>
-    </div>
-    <% end %>
     <% if comment.has_attached_file? %>
       <div class="border-top card__banner">
       <% if organizer_signed_in? %>
