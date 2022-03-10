@@ -6,7 +6,7 @@ class OperationsMailer < ApplicationMailer
 
     attrs = {
       to: ::ApplicationMailer::OPERATIONS_EMAIL,
-      subject: "[OPS] [ACTION] [GSuite] Configure #{@g_suite.domain}"
+      subject: "[OPS] [ACTION] [Google Workspace] Process #{@g_suite.domain}"
     }
 
     mail attrs
@@ -17,7 +17,7 @@ class OperationsMailer < ApplicationMailer
 
     attrs = {
       to: ::ApplicationMailer::OPERATIONS_EMAIL,
-      subject: "[OPS] [ACTION] [GSuite] Verify #{@g_suite.domain}"
+      subject: "[OPS] [ACTION] [Google Workspace] Verify #{@g_suite.domain}"
     }
 
     mail attrs

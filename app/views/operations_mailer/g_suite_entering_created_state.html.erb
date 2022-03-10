@@ -1,7 +1,25 @@
+<p>Hi there 👋</p>
+
 <p>
-  ACTION: Please configure <%= @g_suite.domain %> TXT verification record so that the event can continue configuring their GSuite.
+  <strong>ACTION:</strong> Please process <strong><%= @g_suite.domain %></strong> so that the organization can continue configuring their Google Workspace.
 </p>
 
 <p>
-  <a href="<%= raw @g_suite.verification_url %>" target="_blank"><%= raw @g_suite.verification_url %></a>
+  <%= link_to "View #{@g_suite.domain} on the dashboard.", google_workspace_process_admin_url(@g_suite), target: :_blank %>
+</p>
+
+<p>
+  Best,<br/>
+  <%= [
+    'The hivemind known as Bank 🏦',
+    'A cloud full of money ☁️',
+    "Hack Club's pot of gold 🌈",
+    'A sentient stack of dollars 💵',
+    'The Hack Club Federal Reserve 🏛️',
+    'Hack Club Bank 💰',
+    'A money-crazed virus called Bank 🤑',
+    'A cloud raining money ⛈️',
+    'Wack Club Jank',
+    'Wack Club Bank'
+  ].sample %>
 </p>
