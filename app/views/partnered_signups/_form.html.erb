@@ -6,36 +6,36 @@
 
   <p>
     <%= form.label :organization_name %>
-    <%= form.text_field :organization_name, class: 'fit', placeholder: 'ACME Organization', value: @partnered_signup.organization_name %>
+    <%= form.text_field :organization_name, class: 'fit', placeholder: 'ACME Organization', value: @partnered_signup.organization_name, required: true %>
   </p>
 
   <h2>Your information</h2>
 
   <p>
     <%= form.label :owner_name, "Your name" %>
-    <%= form.text_field :owner_name, class: 'fit', value: @partnered_signup.owner_name, placeholder: 'Fiona Hackworth', disabled: @partnered_signup.owner_name.present?  %>
+    <%= form.text_field :owner_name, class: 'fit', value: @partnered_signup.owner_name, placeholder: 'Fiona Hackworth', disabled: @partnered_signup.owner_name.present?, required: true  %>
   </p>
 
   <p>
     <%= form.label :owner_email, "Your email" %>
-    <%= form.text_field :owner_email, class: 'fit', value: @partnered_signup.owner_email, placeholder: 'fionah@gmail.com', disabled: @partnered_signup.owner_email.present? %>
+    <%= form.text_field :owner_email, class: 'fit', value: @partnered_signup.owner_email, placeholder: 'fionah@gmail.com', disabled: @partnered_signup.owner_email.present?, required: true %>
   </p>
 
   <p>
     <%= form.label :owner_birthdate, "Date of birth" %>
-    <%= form.date_field :owner_birthdate, class: 'fit', style: 'width: min-content', value: @partnered_signup.owner_birthdate %>
+    <%= form.date_field :owner_birthdate, class: 'fit', style: 'width: min-content', value: @partnered_signup.owner_birthdate, required: true %>
   </p>
   <p>
     <%= form.label :owner_phone, "Your phone number" %>
     <%= form.hidden_field :owner_phone, required: true, placeholder: '555-555-5555', id: 'phone_number' %>
-    <input type="tel" id="phone_raw" value="<%= @partnered_signup.owner_phone || nil %>"><br/>
+    <input type="tel" id="phone_raw" value="<%= @partnered_signup.owner_phone || nil %>" required="true"><br/>
     <span class="muted h5">We'll only use this if we need to get in touch with you urgently.</span>
   </p>
  <p>
  <section class="grid grid--split">
   <p class="field">
     <%= form.label :owner_address_line1, "Address (line 1)" %>
-    <%= form.text_field :owner_address_line1, placeholder: "8605 Santa Monica Blvd" %>
+    <%= form.text_field :owner_address_line1, placeholder: "8605 Santa Monica Blvd", required: true %>
   </p>
   <p class="field">
     <%= form.label :owner_address_line2, "Address (line 2)" %>
@@ -43,19 +43,19 @@
   </p>
   <div class="field grid__half">
     <%= form.label :owner_address_city, "City" %>
-    <%= form.text_field :owner_address_city, placeholder: "West Hollywood" %>
+    <%= form.text_field :owner_address_city, placeholder: "West Hollywood", required: true %>
   </div>
   <div class="field grid__half">
     <%= form.label :owner_address_state, "State" %>
-    <%= form.text_field :owner_address_state, placeholder: "CA" %>
+    <%= form.text_field :owner_address_state, placeholder: "CA", required: true %>
   </div>
   <div class="field grid__half">
     <%= form.label :owner_address_postal_code, "ZIP code" %>
-    <%= form.text_field :owner_address_postal_code, placeholder: "90069" %>
+    <%= form.text_field :owner_address_postal_code, placeholder: "90069", required: true %>
   </div>
   <div class="field grid__half">
     <%= form.label :owner_address_country, "Country" %>
-    <%= form.collection_select :owner_address_country, PartneredSignup.countries.map{|c| [c.first, get_country_name_from_alpha2(c.first)]}, :first, :last, { include_blank: 'Select a country'} %>
+    <%= form.collection_select :owner_address_country, PartneredSignup.countries.map{|c| [c.first, get_country_name_from_alpha2(c.first)]}, :first, :last, { include_blank: 'Select a country'}, required: true %>
   </section>
   <span class="muted h5">This is so we can send you some swag and goodies if you ever request them!</span>
   </p>
