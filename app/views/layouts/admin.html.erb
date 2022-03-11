@@ -55,7 +55,7 @@
       |
       <%= link_to "donations", donations_admin_index_path %>
       |
-      <%= link_to "disbursements (#{Disbursement.pending.count})", disbursements_admin_index_path %>
+      <%= link_to "disbursements (#{Disbursement.reviewing.count})", disbursements_admin_index_path %>
       |
       <%= link_to "invoices", invoices_admin_index_path %>
       |

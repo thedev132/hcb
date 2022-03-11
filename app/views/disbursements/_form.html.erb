@@ -7,9 +7,8 @@
                                 @allowed_source_events,
                                 :id,
                                 current_user.admin? ? :admin_dropdown_description : :disbursement_dropdown_description,
-                                {prompt: 'Select one…', selected: @source_event.id},
-                                required: true,
-                                disabled: !current_user.admin?
+                                {selected: @source_event.id},
+                                required: true
                                 ) %>
   </div>
 

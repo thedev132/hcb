@@ -32,8 +32,8 @@ class Disbursement < ApplicationRecord
   # 4. Fulfilled
   # or, if not accepted...
   # 5. Rejected
-  scope :reviewing, -> { where(fulfilled_by_id: nil, fulfilled_at: nil, errored_at: nil, rejected_at: nil ) }
-  scope :pending, -> { where(fulfilled_at: nil, rejected_at: nil, errored_at: nil, fulfilled_by_id: nil) }
+  scope :reviewing, -> { where(fulfilled_at: nil, errored_at: nil, rejected_at: nil, fulfilled_by_id: nil).where.not(requested_by_id: nil) }
+  scope :pending, -> {   where(fulfilled_at: nil, errored_at: nil, rejected_at: nil).where.not(fulfilled_by_id: nil) }
   scope :processing, -> { where.not(fulfilled_at: nil) }
   scope :fulfilled, -> { where.not(fulfilled_at: nil).select { |d| d.fulfilled? } }
   scope :rejected, -> { where.not(rejected_at: nil) }

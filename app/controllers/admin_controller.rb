@@ -749,6 +749,7 @@ class AdminController < ApplicationController
     @page = params[:page] || 1
     @per = params[:per] || 20
     @q = params[:q].present? ? params[:q] : nil
+    @reviewing = params[:reviewing] == "1" ? true : nil
     @pending = params[:pending] == "1" ? true : nil
     @processing = params[:processing] == "1" ? true : nil
 
@@ -773,6 +774,7 @@ class AdminController < ApplicationController
     end
 
     relation = relation.pending if @pending
+    relation = relation.reviewing if @reviewing
     # relation = relation.processing if @processing # TODO: remove ruby logic from scope
 
     @count = relation.count
