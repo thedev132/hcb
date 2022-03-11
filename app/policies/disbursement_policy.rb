@@ -2,39 +2,45 @@
 
 class DisbursementPolicy < ApplicationPolicy
   def index?
-    user.admin? || record.event.users.include?(user)
+    user.admin?
   end
 
   def show?
-    user.admin? || record.event.users.include?(user)
+    user.admin?
   end
 
   def new?
-    user.admin? || record.event.users.include?(user)
+    user.admin? || user_associated_with_events?
   end
 
   def create?
-    user.admin? || record.event.users.include?(user)
+    user.admin? || user_associated_with_events?
   end
 
   def edit?
-    user.admin? || record.event.users.include?(user)
+    user.admin?
   end
 
   def update?
-    user.admin? || record.event.users.include?(user)
+    user.admin?
   end
 
   def mark_fulfilled?
-    user.admin? || record.event.users.include?(user)
+    user.admin?
   end
 
   def reject?
-    user.admin? || record.event.users.include?(user)
+    user.admin?
   end
 
   def pending_disbursements?
     user.admin?
+  end
+
+  private
+
+  def user_associated_with_events?
+    record.nil? or record.users.includes(user)
   end
 
 end

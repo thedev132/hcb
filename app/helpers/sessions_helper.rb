@@ -42,8 +42,8 @@ module SessionsHelper
     @current_user = user
   end
 
-  def organizer_signed_in?
-    @organizer_signed_in ||= ((signed_in? && @event&.users&.include?(current_user)) || admin_signed_in?)
+  def organizer_signed_in?(event = @event)
+    (signed_in? && event&.users&.include?(current_user)) || admin_signed_in?
   end
 
   # Ensure api authorized when fetching current user is removed

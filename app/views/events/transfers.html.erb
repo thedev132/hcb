@@ -9,6 +9,9 @@
   </span>
 
   <% if organizer_signed_in? %>
+    <% if @event.beta_features_enabled? %>
+      <%= link_to "New transfer", new_disbursement_path(source_event_id: @event), class: "btn bg-success" %>
+    <% end %>
     <%= link_to "Reimbursement", event_reimbursements_path(@event), class: "btn" %>
     <action type="button" class="btn bg-accent overflow-visible menu__toggle" data-behavior="menu_toggle" aria-expanded="false" tabindex="0">
       Send
@@ -19,10 +22,11 @@
           data: { behavior: "modal_trigger", modal: "paypal_transfer" } do %>
           PayPal
         <% end %>
+        <%= link_to "Transfer", new_disbursement_path(source_event_id: @event) if @event.beta_features_enabled? %>
       </div>
     </action>
 
-    <%# Modal for PayPal transfers %>
+    <!-- Modal for PayPal transfers -->
     <section class="modal" data-behavior="modal" role="dialog" id="paypal_transfer">
       <%= modal_header "PayPal transfer" %>
       <p class="mt0">PayPal may charge <%= link_to 'fees', 'https://www.paypal.com/us/webapps/mpp/paypal-fees', target: 'blank' %>
@@ -85,17 +89,30 @@
       <% @transfers.each do |d| %>
         <tr>
           <td>
-            <%= d.is_a?(Check) ? "CHECK" : "ACH" %>
+            <%= d.is_a?(Check) ? "CHECK" : d.is_a?(AchTransfer) ? "ACH" : "TRANSFER" %>
           </td>
           <td>
-            <span class="ml0 badge bg-<%= d.state %>"><%= d.state_text %></span>
+            <span class="ml0 badge bg-<%= d.state %>"><%= d.state_text.capitalize %></span>
           </td>
           <td>
             <%= format_date d.created_at %>
           </td>
           <td>
-            <%= d.name if organizer_signed_in? %>
-            <%= "(redacted)" unless organizer_signed_in? %>
+            <% if organizer_signed_in? %>
+              <% if d.is_a?(Disbursement) %>
+                <strong>
+                  <% if d.destination_event.is_public? || organizer_signed_in?(d.destination_event) %>
+                    <%= link_to d.destination_event.name, d.destination_event %>
+                  <% else %>
+                    <%= d.destination_event.name %>
+                  <% end %>
+                </strong>
+                for
+              <% end %>
+              <%= d.name %>
+            <% else %>
+              <span class="muted">(Sign in to view)</span>
+            <% end %>
           </td>
           <td style="text-align: right;">
             <%= render_money(d.amount) %>

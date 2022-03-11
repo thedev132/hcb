@@ -126,6 +126,9 @@ Rails.application.routes.draw do
       get "ach_start_approval", to: "admin#ach_start_approval"
       post "ach_approve", to: "admin#ach_approve"
       post "ach_reject", to: "admin#ach_reject"
+      get "disbursement_process", to: "admin#disbursement_process"
+      post "disbursement_approve", to: "admin#disbursement_approve"
+      post "disbursement_reject", to: "admin#disbursement_reject"
       get "check_process", to: "admin#check_process"
       get "check_positive_pay_csv", to: "admin#check_positive_pay_csv"
       post "check_send", to: "admin#check_send"
@@ -403,6 +406,7 @@ Rails.application.routes.draw do
     get "donations", to: "events#donation_overview", as: :donation_overview
     get "partner_donations", to: "events#partner_donation_overview", as: :partner_donation_overview
     get "bank_fees", to: "events#bank_fees", as: :bank_fees
+    resources :disbursements, only: [:new, :create]
     resources :checks, only: [:new, :create]
     resources :ach_transfers, only: [:new, :create]
     resources :organizer_position_invites,

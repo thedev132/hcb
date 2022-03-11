@@ -1,0 +1,60 @@
+<h1>Process Disbursement #<%= @disbursement.id %></h1>
+<p><small>Current Status: <%= @disbursement.state_text %></small></p>
+
+<h3>Disbursement Details</h3>
+<table class="table--autosize">
+  <tbody>
+    <tr>
+      <td style="text-align: right;">From:</td>
+      <td><%= link_to @disbursement.source_event.name, @disbursement.source_event %></td>
+    </tr>
+    <tr>
+      <td style="text-align: right;">To:</td>
+      <td><%= link_to @disbursement.destination_event.name, @disbursement.destination_event %></td>
+    </tr>
+    <tr>
+      <td style="text-align: right;">Amount:</td>
+      <td><%= render_money @disbursement.amount %></td>
+    </tr>
+    <tr>
+      <td style="text-align: right;">Memo:</td>
+      <td><%= @disbursement.name %></td>
+    </tr>
+    <tr>
+      <td style="text-align: right;">Requested by:</td>
+      <td><%= user_mention @disbursement.requested_by %></td>
+    </tr>
+    <tr>
+      <td style="text-align: right;">Fulfilled by:</td>
+      <td>
+        <% if @disbursement.fulfilled_by.nil? %>
+          N/A <span class="muted italic">(This could be you!✨)</span>
+        <% else %>
+        <div>
+          <%= user_mention @disbursement.fulfilled_by %>
+          </div>
+        <% end %>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br/>
+<hr/>
+<h3>Instructions</h3>
+
+<% if @disbursement.rejected? || @disbursement.pending? %>
+  <p>Nothing more to do here. ✨</p>
+<% else %>
+
+	  <p>This is a human review check.</p>
+	  
+	  <%= form_with(model: nil, local: true, url: disbursement_approve_admin_path(@disbursement), method: :post) do |form| %>
+	    <%= form.submit 'Approve disbursement' %>
+	  <% end %>
+	  
+	  <%= form_with(model: nil, local: true, url: disbursement_reject_admin_path(@disbursement), method: :post) do |form| %>
+	    <%= form.submit 'Reject disbursement',
+	      class: 'admin-bg-orange',
+	      data: { confirm: "Are you sure you want to reject this disbursement?" } %>
+	  <% end %>
+<% end %>

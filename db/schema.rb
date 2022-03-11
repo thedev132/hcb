@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_25_053540) do
+ActiveRecord::Schema.define(version: 2022_03_10_142025) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -32,8 +32,8 @@ ActiveRecord::Schema.define(version: 2022_02_25_053540) do
     t.datetime "updated_at", null: false
     t.string "recipient_tel"
     t.datetime "rejected_at"
-    t.datetime "scheduled_arrival_date"
     t.text "payment_for"
+    t.datetime "scheduled_arrival_date"
     t.string "aasm_state"
     t.text "confirmation_number"
     t.index ["creator_id"], name: "index_ach_transfers_on_creator_id"
@@ -241,10 +241,10 @@ ActiveRecord::Schema.define(version: 2022_02_25_053540) do
     t.bigint "raw_pending_invoice_transaction_id"
     t.text "hcb_code"
     t.bigint "raw_pending_bank_fee_transaction_id"
-    t.bigint "raw_pending_partner_donation_transaction_id"
     t.text "custom_memo"
     t.index ["raw_pending_bank_fee_transaction_id"], name: "index_canonical_pending_txs_on_raw_pending_bank_fee_tx_id"
     t.index ["raw_pending_donation_transaction_id"], name: "index_canonical_pending_txs_on_raw_pending_donation_tx_id"
+    t.index ["raw_pending_invoice_transaction_id"], name: "index_canonical_pending_txs_on_raw_pending_invoice_tx_id"
     t.index ["raw_pending_outgoing_ach_transaction_id"], name: "index_canonical_pending_txs_on_raw_pending_outgoing_ach_tx_id"
     t.index ["raw_pending_outgoing_check_transaction_id"], name: "index_canonical_pending_txs_on_raw_pending_outgoing_check_tx_id"
     t.index ["raw_pending_stripe_transaction_id"], name: "index_canonical_pending_txs_on_raw_pending_stripe_tx_id"
@@ -310,7 +310,11 @@ ActiveRecord::Schema.define(version: 2022_02_25_053540) do
     t.datetime "updated_at", null: false
     t.bigint "source_event_id"
     t.datetime "errored_at"
+    t.bigint "requested_by_id"
+    t.bigint "fulfilled_by_id"
     t.index ["event_id"], name: "index_disbursements_on_event_id"
+    t.index ["fulfilled_by_id"], name: "index_disbursements_on_fulfilled_by_id"
+    t.index ["requested_by_id"], name: "index_disbursements_on_requested_by_id"
     t.index ["source_event_id"], name: "index_disbursements_on_source_event_id"
   end
 
@@ -1243,6 +1247,8 @@ ActiveRecord::Schema.define(version: 2022_02_25_053540) do
   add_foreign_key "checks", "users", column: "creator_id"
   add_foreign_key "disbursements", "events"
   add_foreign_key "disbursements", "events", column: "source_event_id"
+  add_foreign_key "disbursements", "users", column: "fulfilled_by_id"
+  add_foreign_key "disbursements", "users", column: "requested_by_id"
   add_foreign_key "document_downloads", "documents"
   add_foreign_key "document_downloads", "users"
   add_foreign_key "documents", "events"

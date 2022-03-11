@@ -4,8 +4,16 @@ class Disbursement < ApplicationRecord
   include PgSearch::Model
   pg_search_scope :search_name, against: [:name]
 
+  include Commentable
+
+  has_paper_trail
+
+  belongs_to :fulfilled_by, class_name: "User", optional: true
+  belongs_to :requested_by, class_name: "User", optional: true
+
+  belongs_to :destination_event, foreign_key: 'event_id', class_name: "Event", inverse_of: 'incoming_disbursements'
+  belongs_to :source_event, class_name: "Event", inverse_of: 'outgoing_disbursements'
   belongs_to :event
-  belongs_to :source_event, class_name: "Event"
 
   has_many :t_transactions, class_name: "Transaction", inverse_of: :disbursement
 
@@ -15,21 +23,30 @@ class Disbursement < ApplicationRecord
                         :name
 
   validates :amount, numericality: { greater_than: 0 }
+  validate :events_are_different
 
-  # Disbursement goes through four stages:
-  # 1. Pending
-  # 2. Processing
-  # 3. Fulfilled
+  # Disbursement goes through 5 stages:
+  # 1. Reviewing (before human review)
+  # 2. Pending (before automated job tries to process the transfer)
+  # 3. Processing
+  # 4. Fulfilled
   # or, if not accepted...
-  # 4. Rejected
-  scope :pending, -> { where(fulfilled_at: nil, rejected_at: nil, errored_at: nil) }
-  scope :processing, -> { where.not(fulfilled_at: nil).select { |d| d.processed? } }
+  # 5. Rejected
+  scope :reviewing, -> { where(fulfilled_by_id: nil, fulfilled_at: nil, errored_at: nil, rejected_at: nil ) }
+  scope :pending, -> { where(fulfilled_at: nil, rejected_at: nil, errored_at: nil, fulfilled_by_id: nil) }
+  scope :processing, -> { where.not(fulfilled_at: nil) }
   scope :fulfilled, -> { where.not(fulfilled_at: nil).select { |d| d.fulfilled? } }
   scope :rejected, -> { where.not(rejected_at: nil) }
   scope :errored, -> { where.not(errored_at: nil) }
 
+  scope :reviewing_or_processing, -> { where(fulfilled_at: nil, rejected_at: nil, errored_at: nil).where.not(fulfilled_by_id: nil) }
+
   def hcb_code
     "HCB-#{TransactionGroupingEngine::Calculate::HcbCode::DISBURSEMENT_CODE}-#{id}"
+  end
+
+  def local_hcb_code
+    @local_hcb_code ||= HcbCode.find_or_create_by(hcb_code: hcb_code)
   end
 
   def canonical_transactions
@@ -40,8 +57,12 @@ class Disbursement < ApplicationRecord
     @canonical_pending_transactions ||= ::CanonicalPendingTransaction.where(hcb_code: hcb_code)
   end
 
+  def reviewing?
+    !requested_by.nil? && !processed? && !rejected? && !errored? && fulfilled_by.nil?
+  end
+
   def pending?
-    !processed? && !rejected? && !errored?
+    !reviewing? && !processed? && !rejected? && !errored?
   end
 
   def processed?
@@ -65,6 +86,7 @@ class Disbursement < ApplicationRecord
   def filter_data
     {
       exists: true,
+      reviewing: reviewing?,
       pending: pending?,
       processing: processed? && !fulfilled?,
       fulfilled: fulfilled?,
@@ -85,6 +107,8 @@ class Disbursement < ApplicationRecord
       :error
     elsif errored?
       :error
+    elsif reviewing?
+      :reviewing
     else
       :pending
     end
@@ -99,6 +123,8 @@ class Disbursement < ApplicationRecord
       "rejected"
     elsif errored?
       "errored"
+    elsif reviewing?
+      "under review"
     else
       "pending"
     end
@@ -118,6 +144,12 @@ class Disbursement < ApplicationRecord
 
   def transaction_memo
     "HCB DISBURSE #{id}"
+  end
+
+  private
+
+  def events_are_different
+    self.errors.add(:event, "must be different than source event") if event_id == source_event_id
   end
 
 end

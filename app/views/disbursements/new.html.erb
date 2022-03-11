@@ -1,6 +1,28 @@
 <% title 'Schedule a disbursement' %>
 <% page_sm %>
+<%= render 'events/nav' if @event %>
 
-<h1>Schedule a disbursement</h1>
+<h1>Transfer funds</h1>
+
+<p class="h5 muted mt0">You can transfer funds between any organizations you are a part of.</p>
+
+<div class="card border b--warning pb0 mt3 mb3">
+  <div class="flex items-center warning">
+    <%= inline_icon 'info', size: 32, class: 'mr1' %>
+    <p class="bold mt0 mb0">Important info about transfers:</p>
+  </div>
+  <ul class="mt1 mb2">
+    <li><strong>Transfers take 2-3 business days</strong>—they don't send over weekends.</li>
+    <li>Once a transfer is sent, it will leave your account balance but won't immediately be added to the recipient organization's balance.</li>
+  </ul>
+  <div class="border-top card__banner card__darker secondary">
+    <strong class="warning">Questions?</strong>
+      <%= help_message %>
+  </div>
+</div>
+
+<% unless @allowed_destination_events.any? %>
+  <p class="h5 muted">It looks like you don't have any organizations to transfer to. You can transfer funds between any organizations you're a part of as long as the destination organization has Transparency Mode enabled.</p>
+<% end %>
 
 <%= render 'form', disbursement: @disbursement %>

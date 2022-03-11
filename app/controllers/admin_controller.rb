@@ -554,6 +554,36 @@ class AdminController < ApplicationController
     redirect_to ach_start_approval_admin_path(params[:id]), flash: { error: e.message }
   end
 
+  def disbursement_process
+    @disbursement = Disbursement.find(params[:id])
+
+    render layout: "admin"
+  end
+
+  def disbursement_approve
+    attrs = {
+      disbursement_id: params[:id],
+      fulfilled_by_id: current_user.id
+    }
+    disbursement = DisbursementService::Approve.new(attrs).run
+
+    redirect_to disbursement_process_admin_path(disbursement), flash: { success: "Success" }
+  rescue => e
+    redirect_to disbursement_process_admin_path(params[:id]), flash: { error: e.message }
+  end
+
+  def disbursement_reject
+    attrs = {
+      disbursement_id: params[:id],
+      fulfilled_by_id: current_user.id
+    }
+    disbursement = DisbursementService::Reject.new(attrs).run
+
+    redirect_to disbursement_process_admin_path(disbursement), flash: { success: "Success" }
+  rescue => e
+    redirect_to disbursement_process_admin_path(params[:id]), flash: { error: e.message }
+  end
+
   def check
     @page = params[:page] || 1
     @per = params[:per] || 20
@@ -760,7 +790,8 @@ class AdminController < ApplicationController
       source_event_id: params[:source_event_id],
       destination_event_id: params[:event_id],
       name: params[:name],
-      amount: params[:amount]
+      amount: params[:amount],
+      requested_by_id: current_user.id
     }
     ::DisbursementService::Create.new(attrs).run
 
