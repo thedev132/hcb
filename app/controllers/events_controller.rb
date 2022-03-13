@@ -295,7 +295,7 @@ class EventsController < ApplicationController
       transfers_relation = transfers_relation.reviewing_or_processing if params[:filter] == "in_transit"
       transfers_relation = transfers_relation.fulfilled if params[:filter] == "deposited"
       transfers_relation = transfers_relation.rejected if params[:filter] == "canceled"
-      transfers_relation = transfers_relation.search_recipient(params[:q]) if params[:q].present?
+      transfers_relation = transfers_relation.search_name(params[:q]) if params[:q].present?
       @disbursements = transfers_relation
     else
       @disbursements = []
