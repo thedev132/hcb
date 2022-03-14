@@ -60,7 +60,7 @@ class DisbursementsController < ApplicationController
 
   rescue ArgumentError, ActiveRecord::RecordInvalid => e
     flash[:error] = e.message
-    redirect_to new_event_disbursement_path(event_id: @source_event&.slug)
+    redirect_to new_disbursement_path(source_event_id: @source_event)
   end
 
   def edit

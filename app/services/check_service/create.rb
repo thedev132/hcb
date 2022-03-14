@@ -20,7 +20,7 @@ module CheckService
     end
 
     def run
-      raise ArgumentError, "You don't have enough money to write this check." unless ample_balance?
+      raise ArgumentError, "You don't have enough money to write this check." unless ample_balance?(@amount_cents, event)
 
       Check.create!(create_attrs)
     end

@@ -21,7 +21,7 @@ module AchTransferService
     end
 
     def run
-      raise ArgumentError, "You don't have enough money to send this transfer." unless ample_balance?
+      raise ArgumentError, "You don't have enough money to send this transfer." unless ample_balance?(@amount_cents, event)
 
       AchTransfer.create!(create_attrs)
     end
