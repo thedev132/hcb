@@ -2,7 +2,7 @@
 
 module Shared
   module AmpleBalance
-    def ample_balance?(amount_cents = @amount_cents, event = @event)
+    def ample_balance?(amount_cents = @amount_cents)
       if ENV["EXCLUDE_PENDING_FEES_FROM_AMPLE_BALANCE"] == "true"
         event.balance_v2_cents >= amount_cents
       else
