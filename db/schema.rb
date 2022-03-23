@@ -1195,8 +1195,10 @@ ActiveRecord::Schema.define(version: 2022_03_10_142025) do
     t.boolean "peacefully_expired"
     t.decimal "latitude"
     t.decimal "longitude"
+    t.bigint "webauthn_credential_id"
     t.index ["impersonated_by_id"], name: "index_user_sessions_on_impersonated_by_id"
     t.index ["user_id"], name: "index_user_sessions_on_user_id"
+    t.index ["webauthn_credential_id"], name: "index_user_sessions_on_webauthn_credential_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -1213,6 +1215,7 @@ ActiveRecord::Schema.define(version: 2022_03_10_142025) do
     t.boolean "sessions_reported", default: false, null: false
     t.boolean "phone_number_verified", default: false
     t.boolean "use_sms_auth", default: false
+    t.string "webauthn_id"
     t.index ["api_access_token"], name: "index_users_on_api_access_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["slug"], name: "index_users_on_slug", unique: true
@@ -1227,6 +1230,18 @@ ActiveRecord::Schema.define(version: 2022_03_10_142025) do
     t.datetime "created_at"
     t.text "object_changes"
     t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
+  end
+
+  create_table "webauthn_credentials", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "name"
+    t.string "webauthn_id"
+    t.string "public_key"
+    t.integer "sign_count"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "authenticator_type"
+    t.index ["user_id"], name: "index_webauthn_credentials_on_user_id"
   end
 
   add_foreign_key "ach_transfers", "events"
@@ -1320,4 +1335,5 @@ ActiveRecord::Schema.define(version: 2022_03_10_142025) do
   add_foreign_key "transactions", "invoice_payouts"
   add_foreign_key "user_sessions", "users"
   add_foreign_key "user_sessions", "users", column: "impersonated_by_id"
+  add_foreign_key "webauthn_credentials", "users"
 end

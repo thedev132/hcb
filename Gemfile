@@ -183,3 +183,7 @@ gem "swagger-blocks"
 gem "xxhash" # fast hashing
 
 gem "docusign_esign", "~> 3.13"
+
+gem "webauthn", "~> 2.5"
+
+gem "browser", "~> 5.3"

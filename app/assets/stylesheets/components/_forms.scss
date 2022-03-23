@@ -173,6 +173,11 @@ legend {
     background-color: rgba(map-get($palette, accent), 0.25);
   }
 
+  input:disabled + label {
+    opacity: 0.5;
+    cursor: default;
+  }
+
   input:checked + label {
     box-shadow: 0 0 0 1px white, 0 0 0 3px map-get($palette, info);
   }

@@ -332,7 +332,8 @@ module StaticPagesHelper
         "Handle with care",
         "This side up",
         "if it makes sense it’ll make dollars",
-        "<a href='https://www.dinosaurbbq.org' target='_blank' style='color: inherit'>dinosaurbbq.org</a>"
+        "<a href='https://www.dinosaurbbq.org' target='_blank' style='color: inherit'>dinosaurbbq.org</a>",
+        "<a href='/my/settings#security-keys'>☝️ You can sign in with your fingerprint!</a>",
       ].sample
     end
   end

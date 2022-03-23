@@ -1,0 +1,34 @@
+<% title 'Sign in' %>
+<% page_xs %>
+<% @home_size = 128 %>
+<% content_for(:page_class) { 'bg-snow pt4' } %>
+
+<article class="center mt3" data-controller="webauthn-auth">
+  <h1 class="mt2">
+    <span class="h3 caps secondary block">Sign in to Bank</span>
+    <span class="black">Security key</span>
+  </h1>
+
+  <p class="display-none flash error" data-webauthn-auth-target="error">Something went wrong.</p>
+
+  <p>Authenticating as <%= @email %></p>
+
+  <button class="btn" data-action="webauthn-auth#auth" data-webauthn-auth-target="authButton">Authenticate</button>
+
+  <p><%= link_to "Get a login code instead", login_code_users_path, data: { behavior: "submit_form", form: "send_login_code_form" } %></p>
+
+  <%= form_with id: "send_login_code_form", url: login_code_users_path, class: "display-none" do |form| %>
+    <%= form.hidden_field :force_login_code, value: "yea" %>
+    <%= form.hidden_field :email, value: @email %>
+  <% end %>
+
+  <%= form_with class: "display-none", data: { "webauthn-auth-target" => "form" } do |form| %>
+    <%= form.hidden_field :credential, data: { "webauthn-auth-target" => "credentialInput" } %>
+    <%= form.hidden_field :fingerprint %>
+    <%= form.hidden_field :device_info %>
+    <%= form.hidden_field :os_info %>
+    <%= form.hidden_field :timezone %>
+  <% end %>
+</article>
+
+<%= javascript_include_tag "fingerprint.js" %>

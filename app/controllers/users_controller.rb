@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class UsersController < ApplicationController
-  skip_before_action :signed_in_user, only: [:auth, :login_code, :exchange_login_code]
+  skip_before_action :signed_in_user, only: [:auth, :webauthn, :webauthn_options, :webauthn_auth, :login_code, :exchange_login_code]
   skip_after_action :verify_authorized, except: [:edit, :update]
   before_action :hide_footer
 
@@ -24,6 +24,13 @@ class UsersController < ApplicationController
     @return_to = params[:return_to]
     @email = params[:email].downcase
     @force_use_email = params[:force_use_email]
+
+    if !params[:force_login_code] && User.find_by(email: @email)&.webauthn_credentials&.count&.positive?
+      session[:auth_email] = @email
+      redirect_to webauthn_users_path
+      return
+    end
+
     initialize_sms_params
 
     resp = ::Partners::HackclubApi::RequestLoginCode.new(email: @email, sms: @use_sms_auth).run
@@ -32,6 +39,67 @@ class UsersController < ApplicationController
       return redirect_to auth_users_path
     end
     @user_id = resp[:id]
+  end
+
+  def webauthn
+    @email = session[:auth_email]
+    return redirect_to auth_users_path if @email.blank?
+
+    @user = User.find_by(email: @email)
+    return redirect_to auth_users_path if !@user
+  end
+
+  def webauthn_options
+    user = User.find_by!(email: session[:auth_email])
+    options = WebAuthn::Credential.options_for_get(
+      allow: user.webauthn_credentials.pluck(:webauthn_id),
+      user_verification: "discouraged"
+    )
+
+    session[:webauthn_challenge] = options.challenge
+
+    render json: options
+  end
+
+  def webauthn_auth
+    user = User.find_by(email: session[:auth_email])
+
+    if !user
+      return redirect_to auth_users_path
+    end
+
+    webauthn_credential = WebAuthn::Credential.from_get(JSON.parse(params[:credential]))
+
+    stored_credential = user.webauthn_credentials.find_by!(webauthn_id: webauthn_credential.id)
+
+    begin
+      webauthn_credential.verify(
+        session[:webauthn_challenge],
+        public_key: stored_credential.public_key,
+        sign_count: stored_credential.sign_count
+      )
+
+      stored_credential.update!(sign_count: webauthn_credential.sign_count)
+
+      fingerprint_info = {
+        fingerprint: params[:fingerprint],
+        device_info: params[:device_info],
+        os_info: params[:os_info],
+        timezone: params[:timezone],
+        ip: request.remote_ip
+      }
+
+      sign_in(user: user, fingerprint_info: fingerprint_info, webauthn_credential: stored_credential)
+
+      session.delete(:auth_email)
+
+      redirect_to root_path
+
+    rescue WebAuthn::SignCountVerificationError => e
+      redirect_to webauthn_users_path, flash: { error: "Something went wrong." }
+    rescue WebAuthn::Error => e
+      redirect_to webauthn_users_path, flash: { error: "Something went wrong." }
+    end
   end
 
   # post to exchange auth token for access token

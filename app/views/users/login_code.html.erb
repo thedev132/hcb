@@ -33,10 +33,15 @@
   <% if @use_sms_auth %>
     <p>Don't have access to your phone?
       Click
-      <%= link_to 'here', login_code_users_path(email: @email, force_use_email: true), method: :post %>
+      <%= link_to 'here', login_code_users_path, data: { behavior: "submit_form", form: "use_email_form" } %>
       to send a login code to your
       email instead</p>
+
+    <%= form_with id: "use_email_form", url: login_code_users_path, class: "display-none" do |form| %>
+      <%= form.hidden_field :force_login_code, value: true %>
+      <%= form.hidden_field :force_use_email, value: true %>
+      <%= form.hidden_field :email, value: @email %>
+    <% end %>
   <% end %>
 </article>
 <%= javascript_include_tag "fingerprint.js" %>
-

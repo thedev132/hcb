@@ -99,14 +99,11 @@
         <div class="session-header mt3 pb2">
         <legend class="heading flex flex-row justify-start items-center">
           <span class="h2">Login Codes</span>
+          <%= badge_for "Beta", class: "bg-info" %>
           <%= badge_for @user.use_sms_auth ? "SMS" : "Email", class: 'bg-muted' %>
         </legend>
         </div>
         <div class="card border b--info mt1 mb3">
-          <div class="flex items-center info mb1">
-            <%= inline_icon "important", size: 32, class: "mr1" %>
-            <p class="bold mt0 mb0">Beta feature</p>
-          </div>
           <% if @user.phone_number_verified %>
             <% if @user.use_sms_auth %>
               You are currently receiving login codes via SMS. Email codes can still be sent as a backup.
@@ -134,6 +131,38 @@
           <% end %>
         </div>
       <% end %>
+
+      <% if current_user.beta_features_enabled? %>
+        <div class="session-header mt3 pb2" id="security-keys">
+          <legend class="heading flex flex-row justify-start items-center">
+            <span class="h2">Security keys</span>
+            <%= badge_for "Beta", class: "bg-info" %>
+            <%= badge_for @user.webauthn_credentials.count, class: 'bg-muted' %>
+          </legend>
+
+          <button class="btn px2 h4" data-behavior="modal_trigger" data-modal="webauthn_register">
+            <%= inline_icon 'plus', size: home_action_size %>
+            Set up
+          </button>
+
+          <%= render "webauthn_credentials/modal" %>
+        </div>
+
+        <% if @user.webauthn_credentials.length > 0 %>
+          <div class="grid grid--split mb3">
+            <% @user.webauthn_credentials.order(created_at: :desc).each do |credential| %>
+              <%= render credential %>
+            <% end %>
+          </div>
+        <% else %>
+          <div class="secondary center mb4">
+            <%= inline_icon "fingerprint", width: "40px", class: "secondary block mx-auto mb1" %>
+
+            Sign in to Bank using your fingerprint or a hardware security key.
+          </div>
+        <% end %>
+      <% end %>
+
       <div class="session-header pb2">
         <legend class="heading flex flex-row justify-start items-center">
           <span class="h2">Sessions</span>

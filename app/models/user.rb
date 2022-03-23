@@ -19,6 +19,7 @@ class User < ApplicationRecord
   has_many :organizer_positions
   has_many :organizer_position_deletion_requests, inverse_of: :submitted_by
   has_many :organizer_position_deletion_requests, inverse_of: :closed_by
+  has_many :webauthn_credentials
 
   has_many :events, through: :organizer_positions
 

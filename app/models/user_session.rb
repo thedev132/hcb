@@ -6,6 +6,7 @@ class UserSession < ApplicationRecord
 
   belongs_to :user
   belongs_to :impersonated_by, class_name: "User", required: false
+  belongs_to :webauthn_credential, optional: true
   has_one :login_token, required: false
 
   scope :impersonated, -> { where.not(impersonated_by_id: nil) }

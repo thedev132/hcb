@@ -27,7 +27,7 @@
     <%= hidden_field_tag :return_to, @return_to if @return_to %>
     <%= email_field_tag :email, @prefill_email, placeholder: 'Email address', autofocus: true, autocomplete: 'username', class: 'left-align mb2' %>
     <div class="flex justify-center">
-      <%= submit_tag 'Get login code' %>
+      <%= submit_tag 'Continue' %>
     </div>
   <% end %>
   <p class="h5 muted mt5">Need help? <%= help_email %></p>

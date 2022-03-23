@@ -8,7 +8,7 @@ module SessionsHelper
   end
 
   # DEPRECATED - begin to start deprecating and ultimately replace with sign_in_and_set_cookie
-  def sign_in(user:, fingerprint_info: {}, impersonate: false, duration: EXPIRATION_DURATION)
+  def sign_in(user:, fingerprint_info: {}, impersonate: false, duration: EXPIRATION_DURATION, webauthn_credential: nil)
     session_token = SecureRandom.urlsafe_base64
     cookies.encrypted[:session_token] = { value: session_token, expires: Time.now + duration }
     user_session = user.user_sessions.create(
@@ -17,7 +17,8 @@ module SessionsHelper
       device_info: fingerprint_info[:device_info],
       os_info: fingerprint_info[:os_info],
       timezone: fingerprint_info[:timezone],
-      ip: fingerprint_info[:ip]
+      ip: fingerprint_info[:ip],
+      webauthn_credential: webauthn_credential
     )
 
     if impersonate

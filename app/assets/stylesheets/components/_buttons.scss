@@ -32,7 +32,8 @@ input[type='submit'],
   }
 
   &.disabled,
-  &[disabled='disabled'] {
+  &[disabled='disabled'],
+  &:disabled {
     opacity: 0.5;
     cursor: not-allowed;
     pointer-events: none;

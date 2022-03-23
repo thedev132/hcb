@@ -56,6 +56,9 @@ Rails.application.routes.draw do
     collection do
       get "impersonate", to: "users#impersonate"
       get "auth", to: "users#auth"
+      get "webauthn", to: "users#webauthn"
+      post "webauthn", to: "users#webauthn_auth"
+      get "webauthn/auth_options", to: "users#webauthn_options"
       post "login_code", to: "users#login_code"
       post "exchange_login_code", to: "users#exchange_login_code"
 
@@ -74,6 +77,12 @@ Rails.application.routes.draw do
     end
     post "delete_profile_picture", to: "users#delete_profile_picture"
     patch "stripe_cardholder_profile", to: "stripe_cardholders#update_profile"
+
+    resources :webauthn_credentials, only: [:create, :destroy] do
+      collection do
+        get "register_options"
+      end
+    end
   end
 
   # webhooks
