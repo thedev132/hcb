@@ -49,7 +49,7 @@
       |
       <%= link_to "achs (#{AchTransfer.pending.count})", ach_admin_index_path %>
       |
-      <%= link_to "checks (#{Check.in_transit.count})", check_admin_index_path %>
+      <%= link_to "checks (#{Check.in_transit.count + Check.admin_count_offset})", check_admin_index_path %>
       |
       <%= link_to "Partner donations", partner_donations_admin_index_path %>
       |
