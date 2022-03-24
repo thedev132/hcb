@@ -77,7 +77,7 @@ class StaticPagesController < ApplicationController
 
     return render plain: "404 Not found", status: 404 unless event
 
-    raised = Event.canonical_transactions.revenue.sum(:amount)
+    raised = event.canonical_transactions.revenue.sum(:amount_cents)
 
     render json: {
       raised: raised
