@@ -17,6 +17,7 @@ class Check < ApplicationRecord
 
   has_many :t_transactions, class_name: "Transaction", inverse_of: :check
 
+  validates :amount, numericality: { greater_than: 0, message: "must be greater than 0" }
   validates :send_date, presence: true
   validate :send_date_must_be_in_future, on: :create
 
