@@ -15,7 +15,11 @@
   </div>
 
   <div class="field">
-    <%= form.label :amount, 'Donation amount' %>
+    <% if !@event.country_us? %> 
+      <%= form.label :amount, 'Donation amount (USD)' %> 
+    <% else %>
+      <%= form.label :amount, 'Donation amount' %> 
+    <% end %>
     <div class="flex items-center">
       <span class="bold muted" style="width: 1rem;">$</span>
       <%= form.number_field :amount,
