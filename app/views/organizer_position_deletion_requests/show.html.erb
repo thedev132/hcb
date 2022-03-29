@@ -22,6 +22,11 @@
     </p>
 
     <p>
+      <strong>Submitted at</strong>
+      <%= format_datetime @opdr.created_at %>
+    </p>
+
+    <p>
       <strong>Reason for deletion</strong>
       <%= @opdr.reason %>
     </p>
