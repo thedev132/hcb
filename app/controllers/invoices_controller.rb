@@ -20,13 +20,16 @@ class InvoicesController < ApplicationController
       .where(invoice_payouts: { status: "in_transit" })
       .or(@event.invoices.joins(:payout).where(invoice_payouts: { status: "pending" })))
     amount_in_transit = @invoices_in_transit.sum(&:amount_paid)
+    archived_unpaid = relation.unpaid.archived.sum(:item_amount)
 
     @stats = {
-      total: relation.sum(:item_amount),
+      # The calcluations for `total` and `unpaid` do not include archived invoices
+      total: relation.sum(:item_amount) - archived_unpaid,
       # "paid" status invoices include manually paid invoices and
       # Stripe invoices that are paid, but for which the funds are in transit
       paid: relation.paid_v2.sum(:item_amount) - amount_in_transit,
       pending: amount_in_transit,
+      unpaid: relation.unpaid.sum(:item_amount) - archived_unpaid,
     }
 
     relation = relation.paid_v2 if params[:filter] == "paid"

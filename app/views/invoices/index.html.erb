@@ -41,7 +41,7 @@
 <% end %>
 
 <div class="statset mt3 mb2">
-  <div class="stat">
+  <div class="stat tooltipped tooltipped--s pr3" aria-label="This excludes archived invoices">
     <span class="stat__label">Total invoiced</span>
     <span class="stat__value"><%= render_money_amount @stats[:total] %></span>
   </div>
@@ -53,9 +53,9 @@
     <span class="stat__label">On the way</span>
     <span class="stat__value"><%= render_money_amount @stats[:pending] %></span>
   </div>
-  <div class="stat stat--small">
+  <div class="stat stat--small tooltipped tooltipped--s" aria-label="This excludes archived invoices">
     <span class="stat__label">Unpaid</span>
-    <span class="stat__value"><%= render_money_amount @stats[:total] - @stats[:paid] - @stats[:pending] %></span>
+    <span class="stat__value"><%= render_money_amount @stats[:unpaid] %></span>
   </div>
 </div>
 

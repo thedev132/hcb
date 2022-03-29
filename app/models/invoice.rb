@@ -99,6 +99,7 @@ class Invoice < ApplicationRecord
   def state
     return :success if paid_v2? && deposited?
     return :info if paid_v2?
+    return :muted if archived?
     return :error if void_v2?
     return :error if due_date < Time.current
     return :warning if due_date < 3.days.from_now
@@ -109,6 +110,7 @@ class Invoice < ApplicationRecord
   def state_text
     return "Deposited" if paid_v2? && deposited?
     return "In Transit" if paid_v2?
+    return "Archived" if archived?
     return "Voided" if void_v2?
     return "Overdue" if due_date < Time.current
     return "Due soon" if due_date < 3.days.from_now
