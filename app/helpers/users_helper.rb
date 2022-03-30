@@ -45,7 +45,19 @@ module UsersHelper
              [
                "You!",
                "Yourself!",
-               "It's you!"
+               "It's you!",
+               "Someone you used to know!",
+               "You probably know them!",
+               "You’re currently looking in a mirror",
+               "it u!",
+               "Long time no see!",
+               "You look great!",
+               "Your best friend",
+               "Hey there, big spender!",
+               "Yes, you!",
+               "Who do you think you are?!",
+               "Who? You!",
+               "You who!"
              ].sample
            elsif user.admin?
              "#{user.name.split(' ').first} is an admin"
