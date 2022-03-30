@@ -20,7 +20,13 @@
             <td>
               <%= pop_icon_to "edit",
                   edit_canonical_pending_transaction_path(ct),
-                  class: "right tooltipped tooltipped--w", "aria-label": "Rename pending transaction" if organizer_signed_in? %>
+                  class: "right tooltipped tooltipped--w", 
+                  "aria-label": "Rename pending transaction" if organizer_signed_in? %>
+              <%= pop_icon_to "edit",
+                  edit_canonical_pending_transaction_path(ct),
+                  class: "right tooltipped tooltipped--w",
+                  disabled: true,
+                  "aria-label": "Sign in to rename pending transaction" if !organizer_signed_in? %>
             </td>
           </tr>
         <% end %>
