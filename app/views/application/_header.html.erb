@@ -37,7 +37,7 @@
     <% if signed_in? %>
       <%= link_to my_inbox_path,
         class: 'muted tooltipped tooltipped--s mr2',
-        'aria-label': 'Inbox' do %>
+        'aria-label': 'Receipts' do %>
         <%= inline_icon 'notification', size: home_action_size %>
       <% end %>
       <%= link_to logout_users_path, method: :delete,
