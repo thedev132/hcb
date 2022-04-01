@@ -35,12 +35,14 @@ class HcbCodesController < ApplicationController
 
     authorize @hcb_code
 
-    attrs = {
-      hcb_code_id: @hcb_code.id,
-      file: params[:file],
-      current_user: current_user
-    }
-    ::HcbCodeService::Receipt::Create.new(attrs).run
+    params[:file]&.each do |file|
+      attrs = {
+        hcb_code_id: @hcb_code.id,
+        file: file,
+        current_user: current_user
+      }
+      ::HcbCodeService::Receipt::Create.new(attrs).run
+    end
 
     redirect_to params[:redirect_url]
   rescue => e
