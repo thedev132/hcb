@@ -66,6 +66,9 @@ class EventsController < ApplicationController
   # GET /events/1/edit
   def edit
     authorize @event
+
+    @color = ["info", "success", "warning", "accent", "error"].sample
+    @flavor = ["jank", "janky", "wack", "wacky", "hack", "hacky"].sample
   end
 
   # PATCH/PUT /events/1
@@ -365,7 +368,8 @@ class EventsController < ApplicationController
       :donation_page_message,
       :is_public,
       :holiday_features,
-      :public_message
+      :public_message,
+      :custom_css_url
     )
 
     # Expected budget is in cents on the backend, but dollars on the frontend
@@ -385,7 +389,8 @@ class EventsController < ApplicationController
       :donation_page_message,
       :is_public,
       :holiday_features,
-      :public_message
+      :public_message,
+      :custom_css_url
     )
 
     # convert whatever the user inputted into something that is a legal slug

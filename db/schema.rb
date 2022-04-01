@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_10_142025) do
+ActiveRecord::Schema.define(version: 2022_04_01_001832) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -533,6 +533,7 @@ ActiveRecord::Schema.define(version: 2022_03_10_142025) do
     t.integer "country"
     t.boolean "holiday_features", default: true, null: false
     t.boolean "organized_by_hack_clubbers"
+    t.string "custom_css_url"
     t.index ["club_airtable_id"], name: "index_events_on_club_airtable_id", unique: true
     t.index ["partner_id", "organization_identifier"], name: "index_events_on_partner_id_and_organization_identifier", unique: true
     t.index ["partner_id"], name: "index_events_on_partner_id"

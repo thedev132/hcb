@@ -1,0 +1,152 @@
+.h1 {
+  animation: floating 5s infinite linear;
+}
+
+.list-badge:hover {
+  animation: spin 1s infinite linear;
+}
+
+.circle:hover {
+  animation: spin 1s infinite linear;
+}
+
+input:not(:focus) {
+  animation: cursor-party 3s infinite ease-in-out;
+}
+
+@keyframes floating {
+  0% {
+    transform: translate(0, 1px);
+  }
+  50% {
+    transform: translate(0, 2px);
+  }
+  100% {
+    transform: translate(0, 1px);
+  }
+}
+
+@keyframes cursor-party {
+  0% {
+    cursor: grabbing;
+  }
+  5% {
+    cursor: grab;
+  }
+  10% {
+    cursor: zoom-out;
+  }
+  15% {
+    cursor: all-scroll;
+  }
+  20% {
+    cursor: row-resize;
+  }
+  25% {
+    cursor: zoom-in;
+  }
+  30% {
+    cursor: text;
+  }
+  35% {
+    cursor: crosshair;
+  }
+  40% {
+    cursor: wait;
+  }
+  45% {
+    cursor: progress;
+  }
+  50% {
+    cursor: pointer;
+  }
+  55% {
+    cursor: context-menu;
+  }
+  60% {
+    cursor: none;
+  }
+  65% {
+    cursor: help;
+  }
+  70% {
+    cursor: vertical-text;
+  }
+  75% {
+    cursor: alias;
+  }
+  80% {
+    cursor: copy;
+  }
+  85% {
+    cursor: move;
+  }
+  90% {
+    cursor: no-drop;
+  }
+  95% {
+    cursor: not-allowed;
+  }
+  100% {
+    cursor: ew-resize;
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Account balance */
+body
+  > main
+  > article
+  > div.statset
+  > div.stat.statset__wide
+  > span.stat__value:hover {
+  animation: rainbow 2.5s infinite linear
+}
+
+@keyframes rainbow {
+  100%,
+  0% {
+    color: rgb(255, 0, 0);
+  }
+  8% {
+    color: rgb(255, 127, 0);
+  }
+  16% {
+    color: rgb(255, 255, 0);
+  }
+  25% {
+    color: rgb(127, 255, 0);
+  }
+  33% {
+    color: rgb(0, 255, 0);
+  }
+  41% {
+    color: rgb(0, 255, 127);
+  }
+  50% {
+    color: rgb(0, 255, 255);
+  }
+  58% {
+    color: rgb(0, 127, 255);
+  }
+  66% {
+    color: rgb(0, 0, 255);
+  }
+  75% {
+    color: rgb(127, 0, 255);
+  }
+  83% {
+    color: rgb(255, 0, 255);
+  }
+  91% {
+    color: rgb(255, 0, 127);
+  }
+}
