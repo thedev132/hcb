@@ -63,8 +63,8 @@
 <% content_for(:container) do %>
 <% end %>
 
-
-<% if params[:jank].present? || DateTime.now >= Time.new(2022, 4, 1, 9, 30, 00, "-04:00") %>
+<%# 2022 April Fools :p %>
+<% if params[:jank].present? || DateTime.now <= Time.new(2022, 4, 2, 9, 30, 00, "-04:00") %>
   <% if organizer_signed_in? and @event.custom_css_url.present? %>
     <%= stylesheet_link_tag "https://scrapbook.hackclub.com/api/css?url=#{@event.custom_css_url}" %>
   <% end %>

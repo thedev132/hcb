@@ -6,7 +6,7 @@
   </div>
 
   <% if !@event.unapproved? %>
-    <% if params[:jank].present? || DateTime.now >= Time.new(2022, 4, 1, 9, 30, 00, "-04:00") %>
+    <% if params[:jank].present? || DateTime.now <= Time.new(2022, 4, 2, 9, 30, 00, "-04:00") %>
       <h3 class="mb1 border-none flex flex-row items-center">
         <span>Custom CSS</span>
         <span class="badge nowrap bg-warning">Beta</span>
