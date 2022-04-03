@@ -25,7 +25,6 @@ module StaticPagesHelper
         "A sentient stack of dollars",
         "The Hack Club Federal Reserve",
         "money money money money money",
-        "A money-crazed virus 🤑",
         "A cloud raining money",
         "A pile of money in the cloud",
         "Hack Club Smoothmunny",
