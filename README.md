@@ -396,3 +396,10 @@ transferred from your developer account to your production account.
   machine. For some reason, the debug output from the DocuSign Ruby Client is
   different when running on production Rails (even when `debugging` is set to
   true on the DocuSign API instance's configurations)
+
+## Plaid
+
+Hack Club Bank uses Plaid to sync transactions from our Bank Accounts (e.g. SVB)
+into this app. Those transactions are saved as RawPlaidTransactions. Our main
+account (FS Main on SVB) is authenticated with Plaid through Max's SVB account
+(`max@hackclub.com`).
