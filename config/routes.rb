@@ -125,6 +125,7 @@ Rails.application.routes.draw do
       get "invoices", to: "admin#invoices"
       get "sponsors", to: "admin#sponsors"
       get "google_workspaces", to: "admin#google_workspaces"
+      get "balances", to: "admin#balances"
     end
 
     member do

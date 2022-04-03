@@ -19,10 +19,12 @@
     <% flash.each do |key, value| %>
       <% if key == "error" %>
         <p style="text-align:center;background:red;color:white;"><%= value %></p>
-      <% else %>
+      <% elsif key == "success" %>
         <p style="text-align:center;background:green;color:white;"><%= value %></p>
+      <% else %>
+        <p style="text-align:center;background:darkblue;color:white;"><%= value %></p>
       <% end %>
-      <hr/>
+      <hr />
     <% end %>
 
     <p>
@@ -38,6 +40,8 @@
       <%= link_to "partner organizations (#{Event.partner.count})", partner_organizations_admin_index_path %>
       |
       <%= link_to "organizations (#{Event.approved.count})", events_admin_index_path %>
+      |
+      <%= link_to "organization balances", balances_admin_index_path %>
       |
       <%= link_to "bank fees (#{BankFee.in_transit_or_pending.count})", bank_fees_admin_index_path %>
       |

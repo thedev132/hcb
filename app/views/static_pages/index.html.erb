@@ -143,6 +143,7 @@
       <%= render partial: 'static_pages/card', locals: { task_path: sponsors_path, human_name: 'Sponsors' } %>
       <%= render partial: 'static_pages/card', locals: { task_path: g_suite_accounts_path, human_name: 'Google Workspace accounts' } %>
       <%= react_component 'admin_task/Card', human_name: :bookkeeping, task_path: bookkeeping_path %>
+      <%= render partial: 'static_pages/card', locals: { task_path: balances_admin_index_path, human_name: 'Organization Balances' } %>
       <%= card_to 'Emburse cards', emburse_cards_path %>
       <%= card_to 'Emburse card requests', emburse_card_requests_path %>
       <%= card_to 'Emburse transfers', emburse_transfers_path %>

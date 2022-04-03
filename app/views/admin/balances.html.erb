@@ -1,0 +1,58 @@
+<% title "ORGANIZATION BALANCES" %>
+
+<h1>ORGANIZATION BALANCES</h1>
+
+<%= form_with local: true, action: :balances, method: :get do |form| %>
+  <%= form.text_field :q, value: params[:q], style: 'vertical-align: top;', placeholder: 'Search' %>
+  <div class="inline-block">
+    <%= render partial: "events_filter", locals: { form: form, submit_disable_with_false: true } %>
+    <br /><br />
+
+
+    <div style="display: flex; justify-content: space-between; align-items: center; column-gap: 0.5rem;">
+      <div>
+        <%= form.label :start_date do %>
+          Start Date
+          <%= form.date_field :start_date, class: 'fit', style: 'width: min-content', value: @start_date %>
+        <% end %>
+        |
+        <%= form.label :end_date do %>
+          End Date
+          <%= form.date_field :end_date, class: 'fit', style: 'width: min-content', value: @end_date %>
+        <% end %>
+      </div>
+
+      <div>
+        <span class='mr1'>EXPORT</span>
+        <%= button_tag('CSV', value: 'csv', name: 'format', disable_with: false) %>
+        <%= button_tag('JSON', value: 'json', name: 'format', disable_with: false, formtarget: '_blank') %>
+      </div>
+    </div>
+  </div>
+
+<% end %>
+
+<p><small><%= pluralize(@count, "result") %></small></p>
+
+<table>
+  <thead>
+  <tr>
+    <% @headers.each do |header| %>
+      <th><%= header %></th>
+    <% end %>
+  </tr>
+  </thead>
+  <tbody>
+  <% @rows.each do |row| %>
+    <tr>
+      <% row.each do |attr| %>
+        <td><%= attr %></td>
+      <% end %>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<% if @count.zero? %>
+  <%= blankslate "No events." %>
+<% end %>

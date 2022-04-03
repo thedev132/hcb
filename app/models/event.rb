@@ -248,20 +248,74 @@ class Event < ApplicationRecord
     completed_t + pending_t
   end
 
-  def balance_v2_cents
-    @balance_v2_cents ||= canonical_transactions.sum(:amount_cents) + pending_outgoing_balance_v2_cents
+  def balance_v2_cents(start_date: nil, end_date: nil)
+    @balance_v2_cents ||=
+      settled_balance_cents(start_date: start_date, end_date: end_date) +
+      pending_outgoing_balance_v2_cents(start_date: start_date, end_date: end_date)
   end
 
-  def pending_balance_v2_cents
-    @pending_balance_v2_cents ||= pending_incoming_balance_v2_cents + pending_outgoing_balance_v2_cents
+  # This calculates v2 cents of settled (Canonical Transactions)
+  # @return [Integer] Balance in cents (v2 transaction engine)
+  def settled_balance_cents(start_date: nil, end_date: nil)
+    @balance_settled ||=
+      settled_incoming_balance_cents(start_date: start_date, end_date: end_date) +
+      settled_outgoing_balance_cents(start_date: start_date, end_date: end_date)
   end
 
-  def pending_incoming_balance_v2_cents
-    @pending_incoming_balance_v2_cents ||= canonical_pending_transactions.incoming.unsettled.sum(:amount_cents)
+  # v2 cents (v2 transaction engine)
+  def settled_incoming_balance_cents(start_date: nil, end_date: nil)
+    @settled_incoming_balance_cents ||=
+      begin
+        ct = canonical_transactions.where("amount_cents > 0")
+
+        ct = ct.where("date >= ?", start_date) if start_date
+        ct = ct.where("date <= ?", end_date) if end_date
+
+        ct.sum(:amount_cents)
+      end
   end
 
-  def pending_outgoing_balance_v2_cents
-    @pending_outgoing_balance_v2_cents ||= canonical_pending_transactions.outgoing.unsettled.sum(:amount_cents)
+  # v2 cents (v2 transaction engine)
+  def settled_outgoing_balance_cents(start_date: nil, end_date: nil)
+    @settled_outgoing_balance_cents ||=
+      begin
+        ct = canonical_transactions.where("amount_cents < 0")
+
+        ct = ct.where("date >= ?", start_date) if start_date
+        ct = ct.where("date <= ?", end_date) if end_date
+
+        ct.sum(:amount_cents)
+      end
+  end
+
+  def pending_balance_v2_cents(start_date: nil, end_date: nil)
+    @pending_balance_v2_cents ||=
+      pending_incoming_balance_v2_cents(start_date: start_date, end_date: end_date) +
+      pending_outgoing_balance_v2_cents(start_date: start_date, end_date: end_date)
+  end
+
+  def pending_incoming_balance_v2_cents(start_date: nil, end_date: nil)
+    @pending_incoming_balance_v2_cents ||=
+      begin
+        cpt = canonical_pending_transactions.incoming.unsettled
+
+        cpt = cpt.where("date >= ?", start_date) if start_date
+        cpt = cpt.where("date <= ?", end_date) if end_date
+
+        cpt.sum(:amount_cents)
+      end
+  end
+
+  def pending_outgoing_balance_v2_cents(start_date: nil, end_date: nil)
+    @pending_outgoing_balance_v2_cents ||=
+      begin
+        cpt = canonical_pending_transactions.outgoing.unsettled
+
+        cpt = cpt.where("date >= ?", start_date) if start_date
+        cpt = cpt.where("date <= ?", end_date) if end_date
+
+        cpt.sum(:amount_cents)
+      end
   end
 
   def balance_available_v2_cents
@@ -286,6 +340,7 @@ class Event < ApplicationRecord
     emburse_transfer_pending = (emburse_transfers.under_review + emburse_transfers.pending).sum(&:load_amount)
     balance - emburse_transfer_pending - fee_balance
   end
+
   alias available_balance balance_available
 
   def fee_balance
