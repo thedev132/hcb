@@ -53,6 +53,7 @@ class HcbCodesController < ApplicationController
 
   def attach_receipt
     @hcb_code = HcbCode.find(params[:id])
+    @event = @hcb_code.event
 
     authorize @hcb_code
   end
