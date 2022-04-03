@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class BankAccount < ApplicationRecord
+  has_paper_trail
+
   has_many :transactions
 
   scope :syncing, -> { where(should_sync: true) }

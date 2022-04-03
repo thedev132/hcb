@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class BankFee < ApplicationRecord
+  has_paper_trail
+
   include AASM
 
   belongs_to :event
