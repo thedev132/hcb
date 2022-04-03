@@ -1,7 +1,11 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Bank Admin</title>
+    <title>
+      <%= yield(:title).concat(" –") if content_for?(:title) %>
+      Bank Admin
+    </title>
+
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <%= javascript_include_tag 'dark', 'data-turbo-track': 'reload' %>
