@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# this script will help you install all the prereqs for using Hack Club Bank in a GitHub Codespace
+# installs all the dependencies for using Hack Club Bank with Docker
 # reach out to kunal botla (kunal@hackclub.com) if you have any questions or issues.
 
 echo "
@@ -45,12 +45,12 @@ fi
 echo "$(tput setaf 9)Hack Club Bank:$(tput sgr0) $(tput setaf 10)Done$(tput sgr0)"
 
 echo "
-$(tput setaf 9)Hack Club Bank:$(tput sgr0) Step 5/7: Copy Dockerfile to Docker Container"
-cp .env.docker.example .env.docker
+$(tput setaf 9)Hack Club Bank:$(tput sgr0) Step 5/7: Copy .env file"
+cp -n .env.docker.example .env.docker
 echo "$(tput setaf 9)Hack Club Bank:$(tput sgr0) $(tput setaf 10)Done$(tput sgr0)"
 
 echo "
-$(tput setaf 9)Hack Club Bank:$(tput sgr0) Step 6/7: Docker CLI Build"
+$(tput setaf 9)Hack Club Bank:$(tput sgr0) Step 6/7: Build Docker Container"
 env $(cat .env.docker) docker-compose build
 echo "$(tput setaf 9)Hack Club Bank:$(tput sgr0) $(tput setaf 10)Done$(tput sgr0)"
 
@@ -69,7 +69,7 @@ fi
 
 echo "
 $(tput setaf 9)Hack Club Bank:$(tput sgr0)
-Run 'codespace-start.sh' to start the Docker container. You can run this command with the --with-solargraph flag to enable Solargraph."
+Run 'docker_start.sh' to start the dev server. You can run this command with the --with-solargraph flag to enable Solargraph."
 
 echo "
 
