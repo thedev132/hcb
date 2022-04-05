@@ -28,6 +28,10 @@ class Document < ApplicationRecord
     end
   end
 
+  def common?
+    event_id.nil?
+  end
+
   private
 
   # ActiveStorage doesn't yet support attachment validation (how dumb... see
