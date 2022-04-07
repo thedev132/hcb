@@ -1074,8 +1074,11 @@ class AdminController < ApplicationController
     @funded = params[:funded].present? ? params[:funded] : "both" # both by default
     @hidden = params[:hidden].present? ? params[:hidden] : "both" # both by default
     @organized_by_hack_clubbers = params[:organized_by_hack_clubbers].present? ? params[:organized_by_hack_clubbers] : "both" # both by default
-    @international = params[:international] == "1" ? true : nil # unchecked by default
-    @country = params[:country].present? ? params[:country] : "all" # all by default
+    if params[:country] == 9999.to_s
+      @country = 9999
+    else
+      @country = params[:country].present? ? params[:country] : "all"
+    end
 
     relation = events.not_partner
 
@@ -1090,8 +1093,11 @@ class AdminController < ApplicationController
     relation = relation.not_funded if @funded == "not_funded"
     relation = relation.organized_by_hack_clubbers if @organized_by_hack_clubbers == "organized_by_hack_clubbers"
     relation = relation.not_organized_by_hack_clubbers if @organized_by_hack_clubbers == "not_organized_by_hack_clubbers"
-    relation = relation.where.not(country: "US") if @international
-    relation = relation.where(country: @country) if @country != "all"
+    if @country == 9999
+      relation = relation.where.not(country: "US")
+    elsif @country != "all"
+      relation = relation.where(country: @country)
+    end
 
     states = []
     states << "pending" if @pending

@@ -56,10 +56,5 @@
 |
 <%= form.label :country do %>
   Country
-  <%= form.select :country, Event.countries, { include_blank: 'all', :selected => @country } %>
-<% end %>
-|
-<%= form.label :international do %>
-  International
-  <%= form.check_box :international, :checked => @international %>
+  <%= form.select :country, {'Outside US': 9999}.merge(Event.countries), { include_blank: 'all', :selected => @country } %>
 <% end %>

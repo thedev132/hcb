@@ -51,7 +51,7 @@ if [[ $* == *--with-solargraph* ]]
 then
   env $(cat .env.docker) docker-compose -f docker-compose.yml -f docker-compose.solargraph.yml up -d solargraph
 else
-  echo "To enable Solargraph, run codespace-start.sh with the --with-solargraph flag."
+  echo "To enable Solargraph, run docker_start.sh with the --with-solargraph flag."
 fi
 
 sleep 0.5
