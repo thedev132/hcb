@@ -673,7 +673,7 @@ DEPENDENCIES
   xxhash
 
 RUBY VERSION
-   ruby 2.7.3p183
+   ruby 2.7.5p203
 
 BUNDLED WITH
    1.17.3

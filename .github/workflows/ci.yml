@@ -10,7 +10,7 @@ jobs:
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: "2.7.3"
+          ruby-version: "2.7.5"
           bundler-cache: true
       - name: Run Rubocop
         env:
@@ -38,7 +38,7 @@ jobs:
   #       - name: Set up Ruby
   #         uses: ruby/setup-ruby@v1
   #         with:
-  #           ruby-version: "2.7.3"
+  #           ruby-version: "2.7.5"
   #           bundler-cache: true
   #       - name: Install postgres client
   #         run: sudo apt-get install libpq-dev
@@ -63,7 +63,7 @@ jobs:
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: "2.7.3"
+          ruby-version: "2.7.5"
           bundler-cache: true
       - name: Setup Node
         uses: actions/setup-node@v1
