@@ -49,7 +49,12 @@ class User < ApplicationRecord
   before_create :format_number
   before_save :on_phone_number_update
 
-  validates :full_name, presence: true, on: :update
+  validate on: :update do
+    if full_name.blank? && full_name_in_database.present?
+      errors.add(:full_name, "can't be blank")
+    end
+  end
+
   validates :email, uniqueness: true, presence: true
   validates :phone_number, phone: { allow_blank: true }
 
