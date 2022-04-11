@@ -55,19 +55,21 @@
 
 <hr/>
 
-<div style="text-align: center;">
-  <%= link_to "All", "?filter=all", class: "filterbar__item", "aria-selected": !["deposited", "in_transit", "canceled"].include?(params[:filter]), role: "tab" %>
-  <%= link_to "Deposited", "?filter=deposited", class: "filterbar__item", "aria-selected": params[:filter] == "deposited", role: "tab" %>
-  <%= link_to "In Transit", "?filter=in_transit", class: "filterbar__item", "aria-selected": params[:filter] == "in_transit", role: "tab" %>
-  <%= link_to "Canceled", "?filter=canceled", class: "filterbar__item", "aria-selected": params[:filter] == "canceled", role: "tab" %>
-</div>
-
-<%= form_with(model: nil, local: true, method: :get) do |form| %>
-  <div class="filterbar flex flex-wrap items-center width-100">
-
-    <%= form.text_field :q, placeholder: "Search…", class: "flex-auto md-mr2", style: "width auto; max-width: none;", value: params[:q] %>
-
+<% if organizer_signed_in? %>
+  <div style="text-align: center;">
+    <%= link_to "All", "?filter=all", class: "filterbar__item", "aria-selected": !["deposited", "in_transit", "canceled"].include?(params[:filter]), role: "tab" %>
+    <%= link_to "Deposited", "?filter=deposited", class: "filterbar__item", "aria-selected": params[:filter] == "deposited", role: "tab" %>
+    <%= link_to "In Transit", "?filter=in_transit", class: "filterbar__item", "aria-selected": params[:filter] == "in_transit", role: "tab" %>
+    <%= link_to "Canceled", "?filter=canceled", class: "filterbar__item", "aria-selected": params[:filter] == "canceled", role: "tab" %>
   </div>
+
+  <%= form_with(model: nil, local: true, method: :get) do |form| %>
+    <div class="filterbar flex flex-wrap items-center width-100">
+
+      <%= form.text_field :q, placeholder: "Search…", class: "flex-auto md-mr2", style: "width auto; max-width: none;", value: params[:q] %>
+
+    </div>
+  <% end %>
 <% end %>
 
 <% if @transfers.size > 0 %>
@@ -76,7 +78,7 @@
   <table>
     <thead>
       <tr>
-        <th>TYPE</th>
+        <th></th>
         <th>STATUS</th>
         <th>DATE</th>
         <th>TO</th>
@@ -88,8 +90,20 @@
     <tbody>
       <% @transfers.each do |d| %>
         <tr>
-          <td>
-            <%= d.is_a?(Check) ? "CHECK" : d.is_a?(AchTransfer) ? "ACH" : "TRANSFER" %>
+          <td class="transaction__icon">
+            <% if d.is_a?(Check) %>
+              <span class="tooltipped tooltipped--e" aria-label="Mailed check">
+                <%= inline_icon 'email' %>
+              </span>
+            <% elsif d.is_a?(AchTransfer) %>
+              <span class="tooltipped tooltipped--e" aria-label="ACH transfer">
+                <%= inline_icon 'bank-account' %>
+              </span>
+            <% else %>
+              <span class="tooltipped tooltipped--e" aria-label="Hack Club Bank transfer">
+                <%= inline_icon 'door-leave' %>
+              </span>
+            <% end %>
           </td>
           <td>
             <span class="ml0 badge bg-<%= d.state %>"><%= d.state_text.capitalize %></span>
@@ -97,7 +111,7 @@
           <td>
             <%= format_date d.created_at %>
           </td>
-          <td>
+          <td style="max-width: 40ch;" class="overflow-hidden truncate" title="<%= d.name if organizer_signed_in? %>">
             <% if organizer_signed_in? %>
               <% if d.is_a?(Disbursement) %>
                 <strong>
