@@ -29,6 +29,25 @@ class EventsController < ApplicationController
     end
 
     @transactions = Kaminari.paginate_array(TransactionGroupingEngine::Transaction::All.new(event_id: @event.id, search: params[:q]).run).page(params[:page]).per(100)
+
+    canonical_transaction_ids = @transactions.flat_map(&:canonical_transaction_ids)
+    canonical_transactions_by_id = CanonicalTransaction.where(id: canonical_transaction_ids).index_by(&:id)
+
+    @transactions.each do |t|
+      t.canonical_transactions = canonical_transactions_by_id.slice(*t.canonical_transaction_ids)
+                                                             .values
+                                                             .sort do |ct1, ct2|
+                                                               # date in descending order
+                                                               if ct2.date > ct1.date
+                                                                 1
+                                                               elsif ct2.date < ct1.date
+                                                                 -1
+                                                               else
+                                                                 # if dates are equal, id in descending order
+                                                                 ct2.id <=> ct1.id
+                                                               end
+                                                             end
+    end
   end
 
   def fees

@@ -4,6 +4,7 @@ class CanonicalTransactionGrouped
   include ActiveModel::Model
 
   attr_accessor :hcb_code, :date, :amount_cents, :raw_canonical_transaction_ids
+  attr_writer :canonical_transactions
 
   def memo
     return invoice_memo if invoice?
@@ -84,6 +85,10 @@ class CanonicalTransactionGrouped
     @local_hcb_code ||= HcbCode.find_or_create_by(hcb_code: hcb_code)
   end
 
+  def canonical_transaction_ids
+    JSON.parse(raw_canonical_transaction_ids)
+  end
+
   private
 
   def invoice
@@ -148,10 +153,6 @@ class CanonicalTransactionGrouped
 
   def split_code
     @split_code ||= smart_hcb_code.split(::TransactionGroupingEngine::Calculate::HcbCode::SEPARATOR)
-  end
-
-  def canonical_transaction_ids
-    JSON.parse(raw_canonical_transaction_ids)
   end
 
   def ct
