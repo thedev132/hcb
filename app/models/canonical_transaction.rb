@@ -52,6 +52,8 @@ class CanonicalTransaction < ApplicationRecord
   has_one :canonical_pending_transaction, through: :canonical_pending_settled_mapping
   has_many :fees, through: :canonical_event_mapping
 
+  attr_writer :fee_payment
+
   validates :friendly_memo, presence: true, allow_nil: true
   validates :custom_memo, presence: true, allow_nil: true
 
@@ -161,6 +163,8 @@ class CanonicalTransaction < ApplicationRecord
   end
 
   def fee_payment?
+    return @fee_payment if defined?(@fee_payment)
+
     @fee_payment ||= fees.hack_club_fee.exists?
   end
 

@@ -13,7 +13,8 @@ module TransactionGroupingEngine
 
       def preload_associations!
         canonical_transaction_ids = @transactions.flat_map(&:canonical_transaction_ids)
-        canonical_transactions_by_id = CanonicalTransaction.where(id: canonical_transaction_ids).index_by(&:id)
+        canonical_transactions = CanonicalTransaction.where(id: canonical_transaction_ids)
+        canonical_transactions_by_id = canonical_transactions.index_by(&:id)
 
         hcb_code_codes = @transactions.map(&:hcb_code)
         hcb_code_objects = HcbCode.where(hcb_code: hcb_code_codes)
@@ -26,6 +27,16 @@ module TransactionGroupingEngine
         hcb_code_objects.each do |hc|
           hc.canonical_transactions = canonical_transactions_by_hcb_code[hc.hcb_code]
                                       .sort { |ct1, ct2| compare_date_id_descending(ct1, ct2) }
+        end
+
+        hack_club_fees_by_canonical_transaction_id = Fee
+                                                     .includes(:canonical_event_mapping)
+                                                     .where(canonical_event_mappings: { canonical_transaction_id: canonical_transaction_ids })
+                                                     .hack_club_fee
+                                                     .index_by { |fee| fee.canonical_event_mapping.canonical_transaction_id }
+
+        canonical_transactions.each do |ct|
+          ct.fee_payment = hack_club_fees_by_canonical_transaction_id[ct.id].present?
         end
 
         @transactions.each do |t|
