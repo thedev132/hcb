@@ -136,6 +136,13 @@ group :development do
   gem "solargraph-rails", "~> 0.2.0", require: false
   # For https://marketplace.visualstudio.com/items?itemName=tomclose.format-erb
   gem 'htmlbeautifier', require: false
+
+  # Lets you set a breakpoint with a REPL using binding.pry
+  gem "pry-byebug"
+  gem "pry-rails"
+
+  # Prints out how many SQL queries were executed
+  gem 'query_count'
 end
 
 group :test do
