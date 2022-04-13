@@ -13,7 +13,10 @@
       'card', my_cards_path %>
     <%= dock_item 'Receipts',
       'See transactions awaiting receipts.',
-      'notification', my_inbox_path %>
+      'payment-docs', my_inbox_path %>
+    <%= dock_item 'Requests',
+      'Submit user suggestions.',
+      'message-new', "https://hack.af/bank-userfeedback" %>
     <%= dock_item 'Settings',
       'Edit account settings.',
       'settings', my_settings_path %>
