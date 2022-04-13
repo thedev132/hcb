@@ -1,7 +1,7 @@
 <% admin_tools do %>
   <details>
     <summary>
-      Inspect <%= record.class.name.humanize.downcase %> record
+      Inspect "<%= record.class.name.underscore %>" record
     </summary>
 
     <% unless record.nil? %>
