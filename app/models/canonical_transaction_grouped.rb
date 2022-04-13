@@ -4,7 +4,7 @@ class CanonicalTransactionGrouped
   include ActiveModel::Model
 
   attr_accessor :hcb_code, :date, :amount_cents, :raw_canonical_transaction_ids
-  attr_writer :canonical_transactions
+  attr_writer :canonical_transactions, :local_hcb_code
 
   def memo
     return invoice_memo if invoice?
