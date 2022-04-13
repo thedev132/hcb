@@ -64,10 +64,11 @@ class StaticPagesController < ApplicationController
   end
 
   def my_inbox
-    @authorizations = current_user.stripe_authorizations.includes(stripe_card: :event).awaiting_receipt
-    @transactions = current_user.emburse_transactions.includes(emburse_card: :event).awaiting_receipt
-    @txs = @authorizations + @transactions
-    @count = @txs.size
+    stripe_cards = current_user.stripe_cards.includes(:event)
+    emburse_cards = current_user.emburse_cards.includes(:event)
+
+    @cards = (stripe_cards + emburse_cards).filter { |card| card.hcb_codes.missing_receipt.length > 0 }
+    @count = @cards.sum { |card| card.hcb_codes.missing_receipt.length }
   end
 
   def project_stats
