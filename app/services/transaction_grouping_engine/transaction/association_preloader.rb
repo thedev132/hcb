@@ -24,9 +24,12 @@ module TransactionGroupingEngine
         # the canonical_transactions we got from the current page
         canonical_transactions_by_hcb_code = CanonicalTransaction.where(hcb_code: hcb_code_codes).group_by(&:hcb_code)
 
+        canonical_pending_transactions_by_hcb_code = CanonicalPendingTransaction.where(hcb_code: hcb_code_codes).group_by(&:hcb_code)
+
         hcb_code_objects.each do |hc|
           hc.canonical_transactions = canonical_transactions_by_hcb_code[hc.hcb_code]
                                       .sort { |ct1, ct2| compare_date_id_descending(ct1, ct2) }
+          hc.canonical_pending_transactions = canonical_pending_transactions_by_hcb_code[hc.hcb_code]
         end
 
         hack_club_fees_by_canonical_transaction_id = Fee

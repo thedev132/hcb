@@ -12,7 +12,7 @@ class HcbCode < ApplicationRecord
 
   before_create :generate_and_set_short_code
 
-  attr_writer :canonical_transactions
+  attr_writer :canonical_transactions, :canonical_pending_transactions
 
   def url
     "/hcb/#{hashid}"
