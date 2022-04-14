@@ -52,7 +52,7 @@ class CanonicalTransaction < ApplicationRecord
   has_one :canonical_pending_transaction, through: :canonical_pending_settled_mapping
   has_many :fees, through: :canonical_event_mapping
 
-  attr_writer :fee_payment
+  attr_writer :fee_payment, :hashed_transaction
 
   validates :friendly_memo, presence: true, allow_nil: true
   validates :custom_memo, presence: true, allow_nil: true

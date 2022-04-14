@@ -35,8 +35,17 @@ module TransactionGroupingEngine
                                                      .hack_club_fee
                                                      .index_by { |fee| fee.canonical_event_mapping.canonical_transaction_id }
 
+        hashed_transactions_by_canonical_transaction_id = HashedTransaction
+                                                          .includes(:canonical_hashed_mapping, :raw_stripe_transaction)
+                                                          .where(canonical_hashed_mappings: { canonical_transaction_id: canonical_transaction_ids })
+                                                          .group_by { |ht| ht.canonical_hashed_mapping.canonical_transaction_id }
+
         canonical_transactions.each do |ct|
           ct.fee_payment = hack_club_fees_by_canonical_transaction_id[ct.id].present?
+
+          hashed_transactions = hashed_transactions_by_canonical_transaction_id[ct.id]
+          Airbrake.notify("There was more (or less) than 1 hashed_transaction for canonical_transaction: #{ct.id}") if hashed_transactions.length != 1
+          ct.hashed_transaction = hashed_transactions.first
         end
 
         @transactions.each do |t|
