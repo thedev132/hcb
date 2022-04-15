@@ -59,22 +59,24 @@ module SessionsHelper
   end
 
   def current_session
-    # Find a valid session token within all the ones currently in the table for this particular user
-    potential_session = UserSession.find_by(session_token: cookies.encrypted[:session_token])
+    return @current_session if defined?(@potential_session)
 
-    return nil unless potential_session
+    # Find a valid session token within all the ones currently in the table for this particular user
+    @current_session = UserSession.find_by(session_token: cookies.encrypted[:session_token])
+
+    return nil unless @current_session
 
     # check if the potential session is still valid
     # If the session is greater than the expiration duration then the current
     # user is no longer valid.
     # (.abs) is added for easier testing when fast-forwarding created_at times
-    if (Time.now - potential_session.created_at).abs > EXPIRATION_DURATION
-      potential_session.set_as_peacefully_expired
-      potential_session.destroy
+    if (Time.now - @current_session.created_at).abs > EXPIRATION_DURATION
+      @current_session.set_as_peacefully_expired
+      @current_session.destroy
       return nil
     end
 
-    potential_session
+    @current_session
   end
 
   def signed_in_user
