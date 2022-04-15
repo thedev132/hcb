@@ -13,7 +13,9 @@ module UsersHelper
   def avatar_for(user, size = 24, options = {})
     # avatar_for works with OpenStructs (used on the front end when a user isn't registered),
     # so this method shows Gravatars/intials for non-registered and allows showing of uploaded profile pictures for registered users.
-    if Rails.env.production? && (user.is_a?(User) && user&.profile_picture.attached?)
+    if user.nil?
+      src = "https://cloud-80pd8aqua-hack-club-bot.vercel.app/0image-23.png"
+    elsif Rails.env.production? && (user.is_a?(User) && user&.profile_picture.attached?)
       src = user.profile_picture.variant(combine_options: {
                                            thumbnail: "#{size * 2}x#{size * 2}^",
                                            gravity: "center",
@@ -28,20 +30,27 @@ module UsersHelper
     klasses << options[:class] if options[:class]
     klass = klasses.join(" ")
 
-    image_tag(src, options.merge(loading: "lazy", alt: user.name, width: size, height: size, class: klass))
+    image_tag(src, options.merge(loading: "lazy", alt: user&.name || "Brown dog grinning and gazing off into the distance", width: size, height: size, class: klass))
   end
 
-  def user_mention(user, options = {})
+  def user_mention(user, options = {}, default_name = "No User")
+    if user.nil?
+      name = content_tag :span, default_name
+    else
+      name = content_tag :span, user.initial_name
+    end
+
     avi = avatar_for user
-    name = content_tag :span, user.initial_name
 
     klasses = ["mention"]
-    klasses << %w[mention--admin tooltipped tooltipped--n] if user.admin?
+    klasses << %w[mention--admin tooltipped tooltipped--n] if user&.admin?
     klasses << "mention--current-user" if user == current_user
     klasses << options[:class] if options[:class]
     klass = klasses.join(" ")
 
-    aria = if user == current_user
+    aria = if user.nil?
+             "No user found"
+           elsif user == current_user
              [
                "You!",
                "Yourself!",
@@ -59,11 +68,11 @@ module UsersHelper
                "Who? You!",
                "You who!"
              ].sample
-           elsif user.admin?
+           elsif user&.admin?
              "#{user.name.split(' ').first} is an admin"
            end
 
-    content = if user.admin?
+    content = if user&.admin?
                 bolt = inline_icon "admin-badge", size: 20
                 avi + bolt + name
               else
