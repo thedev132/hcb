@@ -98,7 +98,7 @@ module UsersHelper
               else
                 object.user
               end
-    mention = creator ? user_mention(creator) : content_tag(:strong, "Anonymous")
+    mention = user_mention(creator, options, default_name = "Anonymous User")
     content_tag :div, class: "comment__name" do
       mention + relative_timestamp(object.created_at, prefix: options[:prefix], class: "h5 muted")
     end
