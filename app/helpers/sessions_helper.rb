@@ -59,7 +59,7 @@ module SessionsHelper
   end
 
   def current_session
-    return @current_session if defined?(@potential_session)
+    return @current_session if defined?(@current_session)
 
     # Find a valid session token within all the ones currently in the table for this particular user
     @current_session = UserSession.find_by(session_token: cookies.encrypted[:session_token])
