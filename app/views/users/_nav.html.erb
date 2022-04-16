@@ -16,7 +16,7 @@
       'payment-docs', my_inbox_path %>
     <%= dock_item 'Feedback',
       'Submit user suggestions.',
-      'message-new', "https://hack.af/bank-userfeedback?prefill_Name=#{current_user.name}&prefill_Email=#{current_user.email}&prefill_Organization=#{current_user.events.first.name}" %>
+      'message-new', "https://hack.af/bank-userfeedback?prefill_Name=#{current_user.name}&prefill_Email=#{current_user.email}&prefill_Organization=#{current_user.events.first&.name}" %>
     <%= dock_item 'Settings',
       'Edit account settings.',
       'settings', my_settings_path %>
