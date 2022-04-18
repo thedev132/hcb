@@ -52,6 +52,21 @@ module TransactionGroupingEngine
           ct.hashed_transaction = hashed_transactions.first
         end
 
+        # We have to look up StripeCardholders after attaching HashedTransaction (which preloads raw_stripe_transaction)
+        # or we will trigger an N+1
+        stripe_ids = canonical_transactions.filter_map do |ct|
+          if ct.raw_stripe_transaction
+            ct.raw_stripe_transaction.stripe_transaction["cardholder"]
+          end
+        end
+        stripe_cardholders_by_stripe_id = ::StripeCardholder.includes(:user).where(stripe_id: stripe_ids).index_by(&:stripe_id)
+
+        canonical_transactions.each do |ct|
+          if ct.raw_stripe_transaction
+            ct.stripe_cardholder = stripe_cardholders_by_stripe_id[ct.raw_stripe_transaction.stripe_transaction["cardholder"]]
+          end
+        end
+
         @transactions.each do |t|
           t.canonical_transactions = canonical_transactions_by_id
                                      .slice(*t.canonical_transaction_ids)
