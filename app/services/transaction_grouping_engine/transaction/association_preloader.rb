@@ -17,7 +17,7 @@ module TransactionGroupingEngine
         canonical_transactions_by_id = canonical_transactions.index_by(&:id)
 
         hcb_code_codes = @transactions.map(&:hcb_code)
-        hcb_code_objects = HcbCode.where(hcb_code: hcb_code_codes)
+        hcb_code_objects = HcbCode.includes(:receipts, :comments).where(hcb_code: hcb_code_codes)
         hcb_code_by_code = hcb_code_objects.index_by(&:hcb_code)
 
         # query again for CanonicalTransactions associated with these hcb_codes, since this set could be greater than
@@ -30,6 +30,7 @@ module TransactionGroupingEngine
           hc.canonical_transactions = canonical_transactions_by_hcb_code[hc.hcb_code]
                                       .sort { |ct1, ct2| compare_date_id_descending(ct1, ct2) }
           hc.canonical_pending_transactions = canonical_pending_transactions_by_hcb_code[hc.hcb_code]
+          hc.not_admin_only_comments_count = hc.comments.count { |c| !c.admin_only }
         end
 
         hack_club_fees_by_canonical_transaction_id = Fee
