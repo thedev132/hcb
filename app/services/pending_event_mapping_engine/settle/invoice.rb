@@ -55,7 +55,10 @@ module PendingEventMappingEngine
 
             cts = event.canonical_transactions.missing_pending.where("amount_cents = ? and date > ?", cpt.amount_cents, cpt.date) unless cts.present? # see example canonical transaction 198588
 
-            next if cts.count < 1 # no match found yet. not processed.
+            if cts.empty? # no match found yet. not processed.
+              Airbrake.notify("Old manually marked as paid invoice #{invoice.id} still doesn't have a matching CT.") if invoice.manually_marked_as_paid_at > 2.weeks.ago
+              next
+            end
 
             Airbrake.notify("matched more than 1 canonical transaction for canonical pending transaction #{cpt.id}") if cts.count > 1
             ct = cts.first
