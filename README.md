@@ -1,3 +1,5 @@
+> _⚠️ GitHub & Heroku have turned off their integration while investigating a [breach](https://github.blog/2022-04-15-security-alert-stolen-oauth-user-tokens/), so changes will not automatically deploy after pushing to `main`. If you have access to do so, please [push your changes to the `main` branch of the Heroku git remote](https://devcenter.heroku.com/articles/git) once your PR is merged. Otherwise, please mention it in the PR and assign [@garyhtou](https://github.com/garyhtou) or [@maxwofford](https://github.com/maxwofford) for review._
+
 <div align="center">
   <img src="https://cloud-5yru8jas0-hack-club-bot.vercel.app/0logo-512.png" width="126" alt="Hack Club Bank logo">
   <h1>Hack Club Bank</h1>
