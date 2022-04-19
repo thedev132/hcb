@@ -29,10 +29,7 @@ class EventsController < ApplicationController
     end
 
     @transactions = Kaminari.paginate_array(TransactionGroupingEngine::Transaction::All.new(event_id: @event.id, search: params[:q]).run).page(params[:page]).per(100)
-
-    if params[:preload] == "true"
-      TransactionGroupingEngine::Transaction::AssociationPreloader.new(transactions: @transactions).run!
-    end
+    TransactionGroupingEngine::Transaction::AssociationPreloader.new(transactions: @transactions).run!
   end
 
   def fees
