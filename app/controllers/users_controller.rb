@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class UsersController < ApplicationController
-  skip_before_action :signed_in_user, only: [:auth, :webauthn, :webauthn_options, :webauthn_auth, :login_code, :exchange_login_code]
+  skip_before_action :signed_in_user, only: [:auth, :webauthn_options, :webauthn_auth, :login_code, :exchange_login_code]
   skip_after_action :verify_authorized, except: [:edit, :update]
   before_action :hide_footer
 
@@ -25,12 +25,6 @@ class UsersController < ApplicationController
     @email = params[:email].downcase
     @force_use_email = params[:force_use_email]
 
-    if !params[:force_login_code] && User.find_by(email: @email)&.webauthn_credentials&.count&.positive?
-      session[:auth_email] = @email
-      redirect_to webauthn_users_path
-      return
-    end
-
     initialize_sms_params
 
     resp = ::Partners::HackclubApi::RequestLoginCode.new(email: @email, sms: @use_sms_auth).run
@@ -41,16 +35,13 @@ class UsersController < ApplicationController
     @user_id = resp[:id]
   end
 
-  def webauthn
-    @email = session[:auth_email]
-    return redirect_to auth_users_path if @email.blank?
-
-    @user = User.find_by(email: @email)
-    return redirect_to auth_users_path if !@user
-  end
-
   def webauthn_options
-    user = User.find_by!(email: session[:auth_email])
+    return head :not_found if !params[:email]
+
+    user = User.find_by(email: params[:email])
+
+    return head :not_found if !user || user.webauthn_credentials.empty?
+
     options = WebAuthn::Credential.options_for_get(
       allow: user.webauthn_credentials.pluck(:webauthn_id),
       user_verification: "discouraged"
@@ -62,7 +53,7 @@ class UsersController < ApplicationController
   end
 
   def webauthn_auth
-    user = User.find_by(email: session[:auth_email])
+    user = User.find_by(email: params[:email])
 
     if !user
       return redirect_to auth_users_path
@@ -91,14 +82,12 @@ class UsersController < ApplicationController
 
       sign_in(user: user, fingerprint_info: fingerprint_info, webauthn_credential: stored_credential)
 
-      session.delete(:auth_email)
-
       redirect_to root_path
 
     rescue WebAuthn::SignCountVerificationError => e
-      redirect_to webauthn_users_path, flash: { error: "Something went wrong." }
+      redirect_to auth_users_path, flash: { error: "Something went wrong." }
     rescue WebAuthn::Error => e
-      redirect_to webauthn_users_path, flash: { error: "Something went wrong." }
+      redirect_to auth_users_path, flash: { error: "Something went wrong." }
     end
   end
 

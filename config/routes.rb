@@ -56,7 +56,6 @@ Rails.application.routes.draw do
     collection do
       get "impersonate", to: "users#impersonate"
       get "auth", to: "users#auth"
-      get "webauthn", to: "users#webauthn"
       post "webauthn", to: "users#webauthn_auth"
       get "webauthn/auth_options", to: "users#webauthn_options"
       post "login_code", to: "users#login_code"
@@ -74,6 +73,9 @@ Rails.application.routes.draw do
       # sometimes users refresh the login code page and get 404'd
       get "exchange_login_code", to: redirect("/users/auth", status: 301)
       get "login_code", to: redirect("/users/auth", status: 301)
+
+      # For compatibility with the previous WebAuthn login flow
+      get "webauthn", to: redirect("/users/auth")
     end
     post "delete_profile_picture", to: "users#delete_profile_picture"
     patch "stripe_cardholder_profile", to: "stripe_cardholders#update_profile"

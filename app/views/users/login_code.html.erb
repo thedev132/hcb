@@ -38,7 +38,6 @@
       email instead</p>
 
     <%= form_with id: "use_email_form", url: login_code_users_path, class: "display-none" do |form| %>
-      <%= form.hidden_field :force_login_code, value: true %>
       <%= form.hidden_field :force_use_email, value: true %>
       <%= form.hidden_field :email, value: @email %>
     <% end %>
