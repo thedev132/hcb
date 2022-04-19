@@ -63,8 +63,9 @@ module ApplicationHelper
   end
 
   def list_badge_for(count, item, glyph, options = { optional: false, required: false })
-    icon = inline_icon(glyph, size: 20, 'aria-hidden': true)
     return nil if options.dig(:optional) && count == 0
+
+    icon = inline_icon(glyph, size: 20, 'aria-hidden': true)
 
     content_tag(:span,
                 icon + count.to_s,
@@ -143,8 +144,14 @@ module ApplicationHelper
   end
 
   def inline_icon(filename, options = {})
-    file = File.read(Rails.root.join("app", "assets", "images", "icons", "#{filename}.svg"))
-    doc = Nokogiri::HTML::DocumentFragment.parse file
+    # cache parsed SVG files to reduce file I/O operations
+    @icon_svg_cache ||= {}
+    if !@icon_svg_cache.key?(filename)
+      file = File.read(Rails.root.join("app", "assets", "images", "icons", "#{filename}.svg"))
+      @icon_svg_cache[filename] = Nokogiri::HTML::DocumentFragment.parse file
+    end
+
+    doc = @icon_svg_cache[filename]
     svg = doc.at_css "svg"
     options[:style] ||= ""
     if options[:size]
