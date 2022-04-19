@@ -265,49 +265,41 @@ class EventsController < ApplicationController
     # to `q`. This following line retains backwards compatibility.
     params[:q] ||= params[:search]
 
-    ach_relation = @event.ach_transfers
-    checks_relation = @event.checks
-    transfers_relation = @event.outgoing_disbursements if @event.beta_features_enabled?
+    @ach_transfers = @event.ach_transfers
+    @checks = @event.checks
+    @disbursements = @event.beta_features_enabled? ? @event.outgoing_disbursements : []
 
     if @event.beta_features_enabled?
       @stats = {
-        deposited: ach_relation.deposited.sum(:amount) + checks_relation.deposited.sum(:amount) + transfers_relation.fulfilled.pluck(:amount).sum,
-        in_transit: ach_relation.in_transit.sum(:amount) + checks_relation.in_transit_or_in_transit_and_processed.sum(:amount) + transfers_relation.reviewing_or_processing.sum(:amount),
-        canceled: ach_relation.rejected.sum(:amount) + checks_relation.canceled.sum(:amount) + transfers_relation.rejected.sum(:amount)
+        deposited: @ach_transfers.deposited.sum(:amount) + @checks.deposited.sum(:amount) + @disbursements.fulfilled.pluck(:amount).sum,
+        in_transit: @ach_transfers.in_transit.sum(:amount) + @checks.in_transit_or_in_transit_and_processed.sum(:amount) + @disbursements.reviewing_or_processing.sum(:amount),
+        canceled: @ach_transfers.rejected.sum(:amount) + @checks.canceled.sum(:amount) + @disbursements.rejected.sum(:amount)
       }
     else
       @stats = {
-        deposited: ach_relation.deposited.sum(:amount) + checks_relation.deposited.sum(:amount),
-        in_transit: ach_relation.in_transit.sum(:amount) + checks_relation.in_transit_or_in_transit_and_processed.sum(:amount),
-        canceled: ach_relation.rejected.sum(:amount) + checks_relation.canceled.sum(:amount)
+        deposited: @ach_transfers.deposited.sum(:amount) + @checks.deposited.sum(:amount),
+        in_transit: @ach_transfers.in_transit.sum(:amount) + @checks.in_transit_or_in_transit_and_processed.sum(:amount),
+        canceled: @ach_transfers.rejected.sum(:amount) + @checks.canceled.sum(:amount)
       }
     end
 
     # only search/filter transfers if organizer is signed in
-    if !organizer_signed_in?
-      @transfers = ach_relation + checks_relation + transfers_relation
-      return @transfers
-    else
-      ach_relation = ach_relation.in_transit if params[:filter] == "in_transit"
-      ach_relation = ach_relation.deposited if params[:filter] == "deposited"
-      ach_relation = ach_relation.rejected if params[:filter] == "canceled"
-      ach_relation = ach_relation.search_recipient(params[:q]) if params[:q].present?
-      @ach_transfers = ach_relation
+    if organizer_signed_in?
+      @ach_transfers = @ach_transfers.in_transit if params[:filter] == "in_transit"
+      @ach_transfers = @ach_transfers.deposited if params[:filter] == "deposited"
+      @ach_transfers = @ach_transfers.rejected if params[:filter] == "canceled"
+      @ach_transfers = @ach_transfers.search_recipient(params[:q]) if params[:q].present?
 
-      checks_relation = checks_relation.in_transit_or_in_transit_and_processed if params[:filter] == "in_transit"
-      checks_relation = checks_relation.deposited if params[:filter] == "deposited"
-      checks_relation = checks_relation.canceled if params[:filter] == "canceled"
-      checks_relation = checks_relation.search_recipient(params[:q]) if params[:q].present?
-      @checks = checks_relation
+      @checks = @checks.in_transit_or_in_transit_and_processed if params[:filter] == "in_transit"
+      @checks = @checks.deposited if params[:filter] == "deposited"
+      @checks = @checks.canceled if params[:filter] == "canceled"
+      @checks = @checks.search_recipient(params[:q]) if params[:q].present?
 
       if @event.beta_features_enabled?
-        transfers_relation = transfers_relation.reviewing_or_processing if params[:filter] == "in_transit"
-        transfers_relation = transfers_relation.fulfilled if params[:filter] == "deposited"
-        transfers_relation = transfers_relation.rejected if params[:filter] == "canceled"
-        transfers_relation = transfers_relation.search_name(params[:q]) if params[:q].present?
-        @disbursements = transfers_relation
-      else
-        @disbursements = []
+        @disbursements = @disbursements.reviewing_or_processing if params[:filter] == "in_transit"
+        @disbursements = @disbursements.fulfilled if params[:filter] == "deposited"
+        @disbursements = @disbursements.rejected if params[:filter] == "canceled"
+        @disbursements = @disbursements.search_name(params[:q]) if params[:q].present?
       end
     end
 
