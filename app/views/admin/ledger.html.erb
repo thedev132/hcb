@@ -24,9 +24,16 @@
   <% end %>
   |
 
-
-  <%= form.collection_select(:event_id, Event.reorder(Event::CUSTOM_SORT), :id, :admin_dropdown_description, { include_blank: true, selected: @event_id }, { width: 150, style: "max-width: 150px" }) %>
+  <%= form.label :event do %>
+    Event
+    <%= form.collection_select(:event_id, Event.reorder(Event::CUSTOM_SORT), :id, :admin_dropdown_description, { include_blank: true, selected: @event_id }, { width: 150, style: "max-width: 150px" }) %>
+  <% end %>
   |
+
+  <%= form.label :user do %>
+    User (Card transactions only)
+    <%= form.collection_select(:user_id, User.all, :id, :admin_dropdown_description, { include_blank: true, selected: @user_id }, { width: 150, style: "max-width: 150px" }) %>
+  <% end %>
 
   <%= form.submit "Search" %>
 <% end %>

@@ -371,6 +371,7 @@ class AdminController < ApplicationController
     @exclude_top_ups = params[:exclude_top_ups] == "1" ? true : nil
     @mapped_by_human = params[:mapped_by_human] == "1" ? true : nil
     @event_id = params[:event_id].present? ? params[:event_id] : nil
+    @user_id = params[:user_id].present? ? params[:user_id] : nil
 
     if @event_id
       @event = Event.find(@event_id)
@@ -400,6 +401,15 @@ class AdminController < ApplicationController
     relation = relation.unmapped if @unmapped
     relation = relation.not_stripe_top_up if @exclude_top_ups
     relation = relation.mapped_by_human if @mapped_by_human
+
+    if @user_id
+      user = User.find(@user_id)
+      sch_sid = user&.stripe_cardholder&.stripe_id
+      if sch_sid
+        relation = relation.joins(hashed_transactions: :raw_stripe_transaction)
+                           .where("raw_stripe_transactions.stripe_transaction->>'cardholder' = ?", sch_sid)
+      end
+    end
 
     @count = relation.count
 

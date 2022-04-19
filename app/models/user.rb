@@ -128,6 +128,10 @@ class User < ApplicationRecord
     events.where(beta_features_enabled: true).any?
   end
 
+  def admin_dropdown_description
+    "#{name} (#{email})"
+  end
+
   private
 
   def namae
