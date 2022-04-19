@@ -405,10 +405,8 @@ class AdminController < ApplicationController
     if @user_id
       user = User.find(@user_id)
       sch_sid = user&.stripe_cardholder&.stripe_id
-      if sch_sid
-        relation = relation.joins(hashed_transactions: :raw_stripe_transaction)
-                           .where("raw_stripe_transactions.stripe_transaction->>'cardholder' = ?", sch_sid)
-      end
+      relation = relation.joins(hashed_transactions: :raw_stripe_transaction)
+                         .where("raw_stripe_transactions.stripe_transaction->>'cardholder' = ?", sch_sid)
     end
 
     @count = relation.count

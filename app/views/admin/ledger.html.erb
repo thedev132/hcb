@@ -75,4 +75,8 @@
   </tbody>
 </table>
 
+<% if @canonical_transactions.empty? %>
+  <%= blankslate 'No transaction match your search parameters' %>
+<% end %>
+
 <%= paginate @canonical_transactions %>
