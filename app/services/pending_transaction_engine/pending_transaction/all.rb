@@ -23,13 +23,15 @@ module PendingTransactionEngine
       end
 
       def canonical_pending_transactions
-        @canonical_pending_transactions ||= begin
-          if @search.present?
-            CanonicalPendingTransaction.unsettled_with_declined.where(id: canonical_pending_event_mappings.pluck(:canonical_pending_transaction_id)).search_memo(@search).order("date desc, canonical_pending_transactions.id desc")
-          else
-            CanonicalPendingTransaction.unsettled_with_declined.where(id: canonical_pending_event_mappings.pluck(:canonical_pending_transaction_id)).order("date desc, canonical_pending_transactions.id desc")
+        @canonical_pending_transactions ||=
+          begin
+            cpts = CanonicalPendingTransaction.unsettled
+                                              .where(id: canonical_pending_event_mappings.pluck(:canonical_pending_transaction_id))
+                                              .order("date desc, canonical_pending_transactions.id desc")
+
+            cpts = cpts.search_memo(@search) if @search.present?
+            cpts
           end
-        end
       end
 
     end
