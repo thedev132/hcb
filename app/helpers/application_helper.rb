@@ -151,7 +151,7 @@ module ApplicationHelper
       @icon_svg_cache[filename] = Nokogiri::HTML::DocumentFragment.parse file
     end
 
-    doc = @icon_svg_cache[filename]
+    doc = @icon_svg_cache[filename].dup
     svg = doc.at_css "svg"
     options[:style] ||= ""
     if options[:size]
