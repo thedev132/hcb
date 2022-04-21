@@ -204,6 +204,19 @@ action {
   background-color: map-get($palette, primary);
 }
 
+#HW_badge_cont {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+
+  width: auto;
+  height: auto;
+}
+
+#HW_badge {
+  position: static;
+}
+
 .admin-tools {
   padding: 0.5rem;
   border-radius: 0.5rem;

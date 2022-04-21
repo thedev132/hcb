@@ -9,11 +9,15 @@
       <%= inline_icon 'moon', size: home_action_size %>
       <%= inline_icon 'moon-fill', size: home_action_size, style: 'display: none;' %>
     </action>
-    <%= link_to 'https://changelog.bank.hackclub.com',
-      class: 'muted tooltipped tooltipped--s ml2',
-      'aria-label': 'See what’s new in Bank' do %>
-      <%= inline_icon 'rep', size: home_action_size %>
-    <% end if signed_in? %>
+    <% if signed_in? %>
+      <div class="ml2 relative" id="changelog-icon">
+        <%= link_to 'https://changelog.bank.hackclub.com',
+          class: 'muted tooltipped tooltipped--s',
+          'aria-label': 'See what’s new in Bank' do %>
+          <%= inline_icon 'rep', size: home_action_size %>
+        <% end %>
+      </div>
+    <% end %>
   </div>
 
   <%= link_to root_path,
