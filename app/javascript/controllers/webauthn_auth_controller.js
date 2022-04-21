@@ -5,7 +5,13 @@ import FingerprintJS from '@fingerprintjs/fingerprintjs'
 import submitForm from '../common/submitForm'
 
 export default class extends Controller {
-  static targets = ['authForm', 'loginEmailInput', 'error']
+  static targets = [
+    'authForm',
+    'loginEmailInput',
+    'error',
+    'loginCode',
+    'continueButton'
+  ]
 
   loginEmailInputTargetConnected() {
     this.loginEmailInputTarget.value = localStorage.getItem('login_email')
@@ -21,6 +27,9 @@ export default class extends Controller {
 
     try {
       const options = await this.fetchWebAuthnOptions(loginEmail)
+
+      this.loginCodeTarget.classList.remove('display-none')
+      this.continueButtonTarget.value = 'Waiting for security key... '
 
       const credential = await get({
         publicKey: options
@@ -42,6 +51,7 @@ export default class extends Controller {
       } else {
         // Show an error
         this.enableForm()
+        this.continueButtonTarget.value = 'Continue'
 
         this.errorTarget.classList.remove('display-none')
       }
