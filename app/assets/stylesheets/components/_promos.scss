@@ -49,6 +49,14 @@
   }
 }
 
+.promo-1password {
+  background-color: $blue;
+  background-image: url('https://cloud-p7r1i1ebz-hack-club-bot.vercel.app/0yeah.svg');
+  background-position-x: right;
+  background-size: 60%;
+  background-repeat: no-repeat;
+}
+
 html[data-dark='true'] {
   .promo-pvsa {
     background: repeating-linear-gradient(
@@ -80,5 +88,9 @@ html[data-dark='true'] {
     background-color: #343a44;
     border: 2px solid #ec3750;
     border-radius: 0.5rem 0.5rem 0 0;
+  }
+
+  .promo-1password {
+    background-color: $black;
   }
 }

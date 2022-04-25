@@ -194,6 +194,23 @@
   </p>
 </div>
 
+<div class="card mb3" id="1password">
+  <div class="card__banner card__banner--top flex justify-between items-center promo-1password">
+    <%= image_tag '1password.svg', width: 210, class: "p2" %>
+    <%= link_to 'Apply',
+      organizer_signed_in? ? "https://hack.af/1passpromo?prefill_Project%20Name=#{@event.name}&prefill_Bank%20URL=#{event_url(@event)}&prefill_Your%20Name=#{current_user.full_name}&prefill_Email=#{current_user.email}" : root_path,
+      class: "btn bg-success mr1 #{'disabled' unless organizer_signed_in?}",
+      target: :_blank
+     %>
+  </div>
+
+  <p class="mb0">
+    <%= link_to '1Password', 'https://1password.com' %> is providing $100 USD of credit to all organizations 
+    on Hack Club Bank. 1Password is a password manager that allows you to securely keep and share account logins
+    and credentials with your teammates; we use it ourselves at Hack Club HQ!
+  </p>
+</div>
+
 <details class="w-100 left-align">
   <summary><h3 class="inline-block pb0 border-none">Expired Promotions</h3></summary>
 

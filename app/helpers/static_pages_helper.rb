@@ -421,6 +421,11 @@ module StaticPagesHelper
         query: { filterByFormula: "Status='Pending'", fields: [] },
         destination: "https://airtable.com/tbl22cXd3Bo9uo0wp/viwcnZyoctJTFGVY2"
       },
+      onepassword: {
+        url: "https://airbridge.hackclub.com/v0.1/Bank%20Promotions/1Password",
+        query: { filterByFormula: "Status='Pending'", fields: [] },
+        destination: "https://airtable.com/tblcHEZyos3V9DoeI/viwSapKZ8C4ByBuqT"
+      },
       pvsa: {
         url: "https://airbridge.hackclub.com/v0.1/Bank%20Promotions/PVSA%20Order",
         query: { filterByFormula: "Status='Pending'", fields: [] },
