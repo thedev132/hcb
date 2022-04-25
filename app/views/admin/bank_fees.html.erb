@@ -11,7 +11,7 @@
   <%= form.submit "Search" %>
 <% end %>
 
-<p><small><%= pluralize(@count, "result") %></small></p>
+<%= page_entries_info @bank_fees, entry_name: 'Bank fees' %>
 <p><small><%= render_money @sum %></small></p>
 
 <table>

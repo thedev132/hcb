@@ -17,7 +17,7 @@
   <%= form.submit "Search" %>
 <% end %>
 
-<p><small><%= pluralize(@count, "result") %></small></p>
+<%= page_entries_info @sponsors, entry_name: 'sponsors' %>
 
 <table>
   <thead>
