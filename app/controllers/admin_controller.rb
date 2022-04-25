@@ -383,7 +383,7 @@ class AdminController < ApplicationController
 
     if @q
       if @q.to_f != 0.0
-        @q = (@q.to_f * 100).to_i
+        @q = Monetize.parse(@q).cents
 
         relation = relation.where("amount_cents = ? or amount_cents = ?", @q, -@q)
       else
