@@ -14,7 +14,7 @@ module AchTransferService
     private
 
     def pdf_string
-      @pdf_string ||= ActionController::Base.new.render_to_string pdf: "transfer_confirmation_letter", template: "ach_transfers/transfer_confirmation_letter.pdf.erb", encoding: "UTF-8", locals: { :@ach_transfer => @ach_transfer, :@event => @event }
+      @pdf_string ||= ApplicationController.new.render_to_string pdf: "transfer_confirmation_letter", template: "ach_transfers/transfer_confirmation_letter.pdf.erb", encoding: "UTF-8", locals: { :@ach_transfer => @ach_transfer, :@event => @event }
     end
 
     def input

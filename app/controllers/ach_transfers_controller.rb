@@ -16,30 +16,22 @@ class AchTransfersController < ApplicationController
   def transfer_confirmation_letter
     authorize @ach_transfer
 
-    @commentable = @ach_transfer
-    @comments = @commentable.comments
-    @comment = Comment.new
-
     respond_to do |format|
+      unless @ach_transfer.deposited?
+        redirect_to @ach_transfer and return
+      end
+
       format.html do
         redirect_to @ach_transfer
       end
 
       format.pdf do
-        if @ach_transfer.deposited?
-          render pdf: "ACH Transfer ##{@ach_transfer.id} Confirmation Letter (#{@event.name} to #{@ach_transfer.recipient_name} on #{@ach_transfer.canonical_pending_transaction.date.strftime("%B #{@ach_transfer.canonical_pending_transaction.date.day.ordinalize}, %Y")})", page_height: "11in", page_width: "8.5in"
-        else
-          redirect_to @ach_transfer
-        end
+        render pdf: "ACH Transfer ##{@ach_transfer.id} Confirmation Letter (#{@event.name} to #{@ach_transfer.recipient_name} on #{@ach_transfer.canonical_pending_transaction.date.strftime("%B #{@ach_transfer.canonical_pending_transaction.date.day.ordinalize}, %Y")})", page_height: "11in", page_width: "8.5in"
       end
 
       # works, but not being used at the moment
       format.png do
-        if @ach_transfer.deposited?
-          send_data ::AchTransferService::PreviewTransferConfirmationLetter.new(ach_transfer: @ach_transfer, event: @event).run, filename: "transfer_confirmation_letter.png"
-        else
-          redirect_to @ach_transfer
-        end
+        send_data ::AchTransferService::PreviewTransferConfirmationLetter.new(ach_transfer: @ach_transfer, event: @event).run, filename: "transfer_confirmation_letter.png"
       end
 
     end
