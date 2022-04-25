@@ -1,5 +1,5 @@
 <head>
-  <title>Hack Club Bank - ACH Transfer Confirmation Letter</title>
+  <title>Hack Club Bank - Transfer Confirmation Letter</title>
   <style>
     .container {
       font-size: 12pt;
@@ -63,50 +63,41 @@
     </div>
     <br />
     <br />
-    <p style="margin-top: 2rem; margin-bottom: 0.5rem;"><%= @ach_transfer.canonical_pending_transaction.date.strftime("%B #{@ach_transfer.canonical_pending_transaction.date.day.ordinalize}, %Y") %></p>
-    <p style="font-size: 12.5pt;"><span class="bold"><%= @event.name %> ACH Transfer to <%= @ach_transfer.recipient_name %></span></p>
+    <p style="margin-top: 2rem; margin-bottom: 0.5rem;"><%= format_date @disbursement.created_at %></p>
+    <p style="font-size: 12.5pt;"><span class="bold"><%= @disbursement.source_event.name %> Hack Club Bank Transfer to <%= @disbursement.destination_event.name %></span></p>
     <br />
     <div style="line-height: 1.25;">
       <p>To whom it may concern,</p>
       <p>
-        This letter serves as a confirmation that Hack Club<% if !@event.omit_stats? %>, on behalf of <%= @event.name %>,<% end %> has transferred <%= render_money @ach_transfer.amount %> to <%= @ach_transfer.recipient_name %> for the reason of <em>"<%= @ach_transfer.payment_for %>"</em>.
+        This letter serves as a confirmation that <%= @disbursement.source_event.name %> has transferred <%= render_money @disbursement.amount %> to <%= @disbursement.destination_event.name %> for the reason of <em>"<%= @disbursement.name %>"</em>.
       </p>
-      
       <table style="line-height: 1.15">
         <thead>
           <tr>
-            <td colspan="2" style="text-align: right"><strong>ACH Transfer ID:</strong></td>
-            <td style="width: 10%"><%= @ach_transfer.id %></td>
+            <td colspan="2" style="text-align: right"><strong>Transfer ID:</strong></td>
+            <td style="width: 10%"><%= @disbursement.id %></td>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td class="bold">Sent by</td>
-            <td colspan="2"><%= @ach_transfer.creator.name %></td>
+            <td colspan="2"><%= @disbursement.requested_by.name %></td>
           </tr>
           <tr>
-            <td class="bold">Recipient name</td>
-            <td colspan="2"><%= @ach_transfer.recipient_name %></td>
+            <td class="bold">Destintation</td>
+            <td colspan="2"><%= @disbursement.destination_event.name %></td>
           </tr>
           <tr>
-            <td class="bold">Recipient phone</td>
-            <td colspan="2"><%= @ach_transfer.recipient_tel %></td>
+            <td class="bold">Source</td>
+            <td colspan="2"><%= @disbursement.source_event.name %></td>
           </tr>
           <tr>
             <td class="bold">Payment purpose</td>
-            <td colspan="2"><%= @ach_transfer.payment_for %></td>
-          </tr>
-          <tr>
-            <td class="bold">Routing number</td>
-            <td colspan="2"><%= @ach_transfer.routing_number %></td>
-          </tr>
-          <tr>
-            <td class="bold">Account number</td>
-            <td colspan="2"><%= @ach_transfer.account_number %></td>
+            <td colspan="2"><%= @disbursement.name %></td>
           </tr>
           <tr>
             <td class="bold">Amount</td>
-            <td colspan="2"><%= render_money @ach_transfer.amount %></td>
+            <td colspan="2"><%= render_money @disbursement.amount %></td>
           </tr>
         </tbody>
       </table>

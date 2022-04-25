@@ -17,6 +17,10 @@ class DisbursementPolicy < ApplicationPolicy
     user.admin? || user_associated_with_events?
   end
 
+  def transfer_confirmation_letter?
+    admin_or_user
+  end
+
   def edit?
     user.admin?
   end
@@ -38,6 +42,10 @@ class DisbursementPolicy < ApplicationPolicy
   end
 
   private
+
+  def admin_or_user
+    user&.admin? || record.event.users.include?(user)
+  end
 
   def user_associated_with_events?
     record.nil? or record.users.includes(user)

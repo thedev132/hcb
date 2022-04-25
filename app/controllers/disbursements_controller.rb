@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class DisbursementsController < ApplicationController
-  before_action :set_disbursement, only: [:show, :edit, :update]
+  before_action :set_disbursement, only: [:show, :edit, :update, :transfer_confirmation_letter]
 
   def index
     @disbursements = Disbursement.all.order(created_at: :desc).includes(:t_transactions, :event, :source_event)
@@ -13,6 +13,30 @@ class DisbursementsController < ApplicationController
 
     # Comments
     @hcb_code = HcbCode.find_or_create_by(hcb_code: @disbursement.hcb_code)
+  end
+
+  def transfer_confirmation_letter
+    authorize @disbursement
+
+    respond_to do |format|
+      unless @disbursement.fulfilled?
+        redirect_to @disbursement and return
+      end
+
+      format.html do
+        redirect_to @disbursement
+      end
+
+      format.pdf do
+        render pdf: "Hack Club Bank Transfer ##{@disbursement.id} Confirmation Letter (#{@disbursement.source_event.name} to #{@disbursement.destination_event.name} on #{@disbursement.created_at})", page_height: "11in", page_width: "8.5in"
+      end
+
+      # not being used at the moment
+      format.png do
+        send_data ::DisbursementService::PreviewTransferConfirmationLetter.new(disbursement: @disbursement, event: @event).run, filename: "transfer_confirmation_letter.png"
+      end
+
+    end
   end
 
   def new

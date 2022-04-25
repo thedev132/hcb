@@ -235,6 +235,10 @@ Rails.application.routes.draw do
     post "reject"
   end
 
+  resources :disbursements do
+    get "confirmation", to: "disbursements#transfer_confirmation_letter"
+  end
+
   resources :comments, only: [:edit, :update]
 
   resources :documents, except: [:index] do

@@ -64,6 +64,17 @@
       <strong>Memo</strong>
       <%= organizer_signed_in? ? @hcb_code.disbursement.name : 'Sign in to view' %>
     </p>
+
+    <% if @hcb_code.disbursement.fulfilled? %>
+      <p>
+        <strong>Confirmation letter</strong>
+          <span class="muted">
+            <a href="/disbursements/<%= @hcb_code.disbursement.id %>/confirmation.pdf" target="_blank">
+            <%= organizer_signed_in? ? 'View confirmation letter' : 'Sign in to view'  %>
+            </a>
+          </span>
+      </p>
+    <% end %>
   </section>
 
 </article>

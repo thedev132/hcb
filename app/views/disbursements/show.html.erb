@@ -72,6 +72,17 @@
         <strong>Created at</strong>
         <%= format_datetime @disbursement.created_at %>
       </p>
+
+    <% if @disbursement.fulfilled? %>
+      <p>
+        <strong>Confirmation letter</strong>
+          <span class="muted">
+            <a href="/disbursements/<%= @disbursement.id %>/confirmation.pdf" target="_blank">
+            <%= organizer_signed_in? ? 'View confirmation letter' : 'Sign in to view'  %>
+            </a>
+          </span>
+      </p>
+    <% end %>
     </section>
 
     <% if @disbursement.pending? %>
