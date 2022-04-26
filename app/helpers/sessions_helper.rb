@@ -1,16 +1,24 @@
 # frozen_string_literal: true
 
 module SessionsHelper
-  EXPIRATION_DURATION = 30.days
+  SESSION_DURATION_OPTIONS = {
+    "1 hour"  => 1.hour.to_i,
+    "1 day"   => 1.day.to_i,
+    "3 days"  => 3.days.to_i,
+    "7 days"  => 7.days.to_i,
+    "14 days" => 14.days.to_i,
+    "30 days" => 30.days.to_i
+  }.freeze
 
   def impersonate_user(user)
     sign_in(user: user, impersonate: true)
   end
 
   # DEPRECATED - begin to start deprecating and ultimately replace with sign_in_and_set_cookie
-  def sign_in(user:, fingerprint_info: {}, impersonate: false, duration: EXPIRATION_DURATION, webauthn_credential: nil)
+  def sign_in(user:, fingerprint_info: {}, impersonate: false, webauthn_credential: nil)
     session_token = SecureRandom.urlsafe_base64
-    cookies.encrypted[:session_token] = { value: session_token, expires: Time.now + duration }
+    expiration_at = Time.now + user.session_duration_seconds
+    cookies.encrypted[:session_token] = { value: session_token, expires: expiration_at }
     user_session = user.user_sessions.create(
       session_token: session_token,
       fingerprint: fingerprint_info[:fingerprint],
@@ -18,7 +26,8 @@ module SessionsHelper
       os_info: fingerprint_info[:os_info],
       timezone: fingerprint_info[:timezone],
       ip: fingerprint_info[:ip],
-      webauthn_credential: webauthn_credential
+      webauthn_credential: webauthn_credential,
+      expiration_at: expiration_at
     )
 
     if impersonate
@@ -69,8 +78,7 @@ module SessionsHelper
     # check if the potential session is still valid
     # If the session is greater than the expiration duration then the current
     # user is no longer valid.
-    # (.abs) is added for easier testing when fast-forwarding created_at times
-    if (Time.now - @current_session.created_at).abs > EXPIRATION_DURATION
+    if Time.now > @current_session.expiration_at
       @current_session.set_as_peacefully_expired
       @current_session.destroy
       return nil

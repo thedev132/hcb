@@ -39,10 +39,8 @@ module Api
           ip: request.remote_ip,
           # TODO: add more fingerprinting to be on par with normal login
         }
-        # Signed in the user for half the normal duration
-        user = sign_in(user: user,
-                       fingerprint_info: fingerprint,
-                       duration: SessionsHelper::EXPIRATION_DURATION / 2)
+
+        user = sign_in(user: user, fingerprint_info: fingerprint)
 
         # Semi-jank way to get the session that was just created for this user
         session = user.user_sessions.last

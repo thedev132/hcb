@@ -237,7 +237,8 @@ class UsersController < ApplicationController
       :phone_number,
       :profile_picture,
       :pretend_is_not_admin,
-      :sessions_reported
+      :sessions_reported,
+      :session_duration_seconds
     )
   end
 
