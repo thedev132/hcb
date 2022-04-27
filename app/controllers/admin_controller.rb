@@ -1002,7 +1002,7 @@ class AdminController < ApplicationController
 
     relation = filtered_events.reorder("events.id asc")
     # Omit orgs if they were created after the end date
-    relation = relation.where("created_at <= ?", @end_date) if @end_date
+    relation = relation.where("events.created_at <= ?", @end_date) if @end_date
 
     @events = relation
 
