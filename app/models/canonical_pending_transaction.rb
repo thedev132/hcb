@@ -57,16 +57,18 @@ class CanonicalPendingTransaction < ApplicationRecord
   after_create_commit :write_hcb_code
   after_create_commit :write_system_event
 
+  attr_writer :local_hcb_code, :stripe_cardholder
+
   def mapped?
     @mapped ||= canonical_pending_event_mapping.present?
   end
 
   def settled?
-    @settled ||= canonical_pending_settled_mappings.exists?
+    @settled ||= canonical_pending_settled_mappings.present?
   end
 
   def declined?
-    @declined ||= canonical_pending_declined_mappings.exists?
+    @declined ||= canonical_pending_declined_mappings.present?
   end
 
   def unsettled?

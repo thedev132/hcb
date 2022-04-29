@@ -402,7 +402,11 @@ class EventsController < ApplicationController
     return [] if params[:page] && params[:page] != "1"
     return [] unless using_transaction_engine_v2? && using_pending_transaction_engine?
 
-    PendingTransactionEngine::PendingTransaction::All.new(event_id: @event.id, search: params[:q]).run
+    pending_transactions = PendingTransactionEngine::PendingTransaction::All.new(event_id: @event.id, search: params[:q]).run
+    if params[:preload] == "true"
+      PendingTransactionEngine::PendingTransaction::AssociationPreloader.new(pending_transactions: pending_transactions).run!
+    end
+    pending_transactions
   end
 
 end

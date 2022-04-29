@@ -28,7 +28,7 @@ module TransactionGroupingEngine
 
         hcb_code_objects.each do |hc|
           hc.canonical_transactions = canonical_transactions_by_hcb_code[hc.hcb_code]
-                                      .sort { |ct1, ct2| compare_date_id_descending(ct1, ct2) }
+                                      .sort { |ct1, ct2| self.class.compare_date_id_descending(ct1, ct2) }
           hc.canonical_pending_transactions = canonical_pending_transactions_by_hcb_code[hc.hcb_code]
           hc.not_admin_only_comments_count = hc.comments.count { |c| !c.admin_only }
         end
@@ -71,7 +71,7 @@ module TransactionGroupingEngine
           t.canonical_transactions = canonical_transactions_by_id
                                      .slice(*t.canonical_transaction_ids)
                                      .values
-                                     .sort { |ct1, ct2| compare_date_id_descending(ct1, ct2) }
+                                     .sort { |ct1, ct2| self.class.compare_date_id_descending(ct1, ct2) }
 
           t.local_hcb_code = hcb_code_by_code[t.hcb_code]
         end
@@ -79,7 +79,7 @@ module TransactionGroupingEngine
 
       # comparator that can be used in Array#sort for canonical_transactions
       # https://ruby-doc.org/core-2.7.5/Array.html#method-i-sort
-      def compare_date_id_descending(ct1, ct2)
+      def self.compare_date_id_descending(ct1, ct2)
         # date in descending order
         if ct2.date > ct1.date
           1

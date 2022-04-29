@@ -46,7 +46,7 @@
 
     <% if pt.local_hcb_code %>
       <%= list_badge_for pt.local_hcb_code.receipts.size, "receipt", "payment-docs", optional: !pt.raw_pending_stripe_transaction_id, required: pt.raw_pending_stripe_transaction_id && !pt.local_hcb_code.no_or_lost_receipt? %>
-      <%= list_badge_for admin_signed_in? ? pt.local_hcb_code.comments.size : pt.local_hcb_code.comments.not_admin_only.size, "note", "post", optional: true %>
+      <%= list_badge_for admin_signed_in? ? pt.local_hcb_code.comments.size : pt.local_hcb_code.not_admin_only_comments_count, "note", "post", optional: true %>
     <% end %>
   </td>
   <td class="nowrap<%= " strikethrough" if pt.declined? %><%= " italic" if pt.unsettled? %>">

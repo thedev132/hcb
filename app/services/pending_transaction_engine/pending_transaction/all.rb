@@ -25,7 +25,8 @@ module PendingTransactionEngine
       def canonical_pending_transactions
         @canonical_pending_transactions ||=
           begin
-            cpts = CanonicalPendingTransaction.unsettled
+            cpts = CanonicalPendingTransaction.includes(:raw_pending_stripe_transaction)
+                                              .unsettled
                                               .where(id: canonical_pending_event_mappings.pluck(:canonical_pending_transaction_id))
                                               .order("date desc, canonical_pending_transactions.id desc")
 
