@@ -39,16 +39,6 @@
     <%= form.label :subject_has_active_cards, 'Yes', value: true %>
   </div>
 
-  <p>
-    Does <%= user_mention @target %> have important emails in their G Suite account?
-  </p>
-  <div class="field field--radiobox">
-    <%= form.radio_button :subject_emails_should_be_forwarded, false, value: false %>
-    <%= form.label :subject_emails_should_be_forwarded, 'No', value: false %>
-    <%= form.radio_button :subject_emails_should_be_forwarded, true, value: true %>
-    <%= form.label :subject_emails_should_be_forwarded, 'Yes', value: true %>
-  </div>
-
   <div class="actions">
     <%= form.submit 'Request removal' %>
   </div>

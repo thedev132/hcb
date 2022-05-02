@@ -47,11 +47,6 @@
     <strong>Active cards?</strong>
   </p>
 
-  <p>
-    <%= @opdr.subject_emails_should_be_forwarded ? '✅' : '❌' %>
-    <strong>Forward emails?</strong>
-  </p>
-
   <% if @opdr.organizer_position.deleted_at.nil? %>
     <%= link_to 'Delete organizer ⚠️☣☠',
       organizer_path(@opdr.organizer_position.id),
