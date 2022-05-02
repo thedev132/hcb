@@ -319,7 +319,7 @@ module StaticPagesHelper
         "Where's the money lebowski?!",
         "We put the 'poggers' in 'taxes' (there isn't any)",
         "We put the 'fun' in 'accrual-based accounting' (there isn't any)",
-        "<a href='https://hack.af/hcb-stickers?prefill_Recipient%20Name=#{current_user.full_name}&prefill_Login%20Email=#{current_user.email}' target='_blank' style='color: inherit'>Want stickers?</a>",
+        "<a href='https://hack.af/hcb-stickers?prefill_Recipient%20Name=#{current_user.full_name}&prefill_Login%20Email=#{current_user.email}&prefill_Organization=#{current_user.events.first&.name}' target='_blank' style='color: inherit'>Want stickers?</a>",
         "🐨 Koalaty banking",
         "🐨 Banking ekoalaty",
         "🐨 Equality is about more than just caffeinated digital marsupials",
@@ -341,8 +341,8 @@ module StaticPagesHelper
     return nil if rand(100) <= 5 || DateTime.now >= Date.new(2022, 2, 13)
 
     [
-      "<a href='https://hack.af/hcb-stickers?prefill_Recipient%20Name=#{current_user.full_name}&prefill_Login%20Email=#{current_user.email}' target='_blank' style='color: inherit'>Want a gift?</a>",
-      "<a href='https://hack.af/hcb-stickers?prefill_Recipient%20Name=#{current_user.full_name}&prefill_Login%20Email=#{current_user.email}' target='_blank' style='color: inherit'>A present, from us to you</a>",
+      "<a href='https://hack.af/hcb-stickers?prefill_Recipient%20Name=#{current_user.full_name}&prefill_Login%20Email=#{current_user.email}&prefill_Organization=#{current_user.events.first&.name}' target='_blank' style='color: inherit'>Want a gift?</a>",
+      "<a href='https://hack.af/hcb-stickers?prefill_Recipient%20Name=#{current_user.full_name}&prefill_Login%20Email=#{current_user.email}&prefill_Organization=#{current_user.events.first&.name}' target='_blank' style='color: inherit'>A present, from us to you</a>",
       "Hacky Holidays",
       "let there be snow",
       "ho ho ho ho",
