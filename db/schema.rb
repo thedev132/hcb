@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_04_25_061358) do
+ActiveRecord::Schema.define(version: 2022_04_30_202332) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -242,6 +242,7 @@ ActiveRecord::Schema.define(version: 2022_04_25_061358) do
     t.text "hcb_code"
     t.bigint "raw_pending_bank_fee_transaction_id"
     t.text "custom_memo"
+    t.index ["hcb_code"], name: "index_canonical_pending_transactions_on_hcb_code"
     t.index ["raw_pending_bank_fee_transaction_id"], name: "index_canonical_pending_txs_on_raw_pending_bank_fee_tx_id"
     t.index ["raw_pending_donation_transaction_id"], name: "index_canonical_pending_txs_on_raw_pending_donation_tx_id"
     t.index ["raw_pending_invoice_transaction_id"], name: "index_canonical_pending_txs_on_raw_pending_invoice_tx_id"
@@ -259,6 +260,7 @@ ActiveRecord::Schema.define(version: 2022_04_25_061358) do
     t.text "friendly_memo"
     t.text "custom_memo"
     t.text "hcb_code"
+    t.index ["hcb_code"], name: "index_canonical_transactions_on_hcb_code"
   end
 
   create_table "checks", force: :cascade do |t|
@@ -1094,6 +1096,7 @@ ActiveRecord::Schema.define(version: 2022_04_25_061358) do
     t.integer "cardholder_type", default: 0, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["stripe_id"], name: "index_stripe_cardholders_on_stripe_id"
     t.index ["user_id"], name: "index_stripe_cardholders_on_user_id"
   end
 
