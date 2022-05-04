@@ -329,4 +329,8 @@ html[data-dark='true'] {
   .dino-svg {
     filter: invert(88%) sepia(100%) saturate(2%) hue-rotate(187deg) brightness(110%) contrast(97%);
   }
+
+  .file-dropzone {
+    background-color: rgba($darkless, 0.8);
+  }
 }

@@ -1,9 +1,18 @@
-<%= form_with model: nil, url: receipt_hcb_code_path(@hcb_code), class: "card flex flex-column justify-center mt2 mb3" do |form| %>
+<%= form_with model: nil, url: receipt_hcb_code_path(@hcb_code), class: "card flex flex-column justify-center mt2 mb3", data: {
+  controller: "file-drop",
+  action: "
+    dragover@window->file-drop#dragover
+    drop@window->file-drop#drop
+    dragenter@window->file-drop#dragenter
+    dragleave@window->file-drop#dragleave
+  ",
+  "file-drop-title-value" => "Drop to instantly add a receipt."
+} do |form| %>
   <h3 class="h2 mt0 mb1">Add a receipt</h3>
 
   <%= form.hidden_field :redirect_url, value: url_for(only_path: false) %>
 
-  <%= form.file_field :file, multiple: true, required: true, class: "mb2" %>
+  <%= form.file_field :file, multiple: true, required: true, class: "mb2", data: { "file-drop-target" => "fileInput" } %>
 
   <footer class="flex flex-wrap justify-between align-center">
     <%= form.submit "Upload" %>

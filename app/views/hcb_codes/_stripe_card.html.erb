@@ -39,9 +39,7 @@
     <section class="card__banner card__darker details-horiz border-top border-bottom">
       <p>
         <strong>Card</strong>
-        <%= link_to @hcb_code.stripe_card do %>
-          <%= stripe_card_mention @hcb_code.stripe_card %>
-        <% end %>
+        <%= stripe_card_mention @hcb_code.stripe_card %>
       </p>
       <p>
         <strong>Spender</strong>

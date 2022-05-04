@@ -44,7 +44,7 @@ class HcbCodesController < ApplicationController
       ::HcbCodeService::Receipt::Create.new(attrs).run
     end
 
-    redirect_to params[:redirect_url]
+    redirect_to params[:redirect_url], flash: { success: "Receipt".pluralize(params[:file].length) + " added!" }
   rescue => e
     Airbrake.notify(e)
 
