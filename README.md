@@ -38,6 +38,16 @@ Clone the repository or create a new Codespaces instance.
 git clone https://github.com/hackclub/bank.git && cd bank
 ```
 
+Create a `config/master.key` file and ask a team member (ping `@creds` in Slack) for the contents.
+
+```bash
+touch config/master.key
+# copy the key to your clipboard
+pbpaste > config/master.key
+```
+
+Install and run [Docker](https://docs.docker.com/get-docker/).
+
 Run the [docker_setup.sh](./docker_setup.sh) script to install dependencies and set up a local environment with Docker.
 
 ```bash
