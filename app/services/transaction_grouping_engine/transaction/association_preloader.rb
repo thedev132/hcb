@@ -12,17 +12,25 @@ module TransactionGroupingEngine
       end
 
       def preload_associations!
-        canonical_transaction_ids = @transactions.flat_map(&:canonical_transaction_ids)
-        canonical_transactions = CanonicalTransaction.where(id: canonical_transaction_ids)
-        canonical_transactions_by_id = canonical_transactions.index_by(&:id)
-
         hcb_code_codes = @transactions.map(&:hcb_code)
         hcb_code_objects = HcbCode.includes(:receipts, :comments).where(hcb_code: hcb_code_codes)
         hcb_code_by_code = hcb_code_objects.index_by(&:hcb_code)
 
-        # query again for CanonicalTransactions associated with these hcb_codes, since this set could be greater than
-        # the canonical_transactions we got from the current page
-        canonical_transactions_by_hcb_code = CanonicalTransaction.where(hcb_code: hcb_code_codes).group_by(&:hcb_code)
+        # Query for CanonicalTransactions associated with hcb_codes because this can be the superset of
+        # canonical_transactions associated with @transactions due to pagination
+        # https://github.com/hackclub/bank/pull/2453#discussion_r848110917
+        # However, we still need to OR with CanonicalTransactions by id because hcb codes are lazily attached
+        # If hcb codes are ever eagerly attached to CanonicalTransactions instead, we can remove the OR
+        canonical_transactions = CanonicalTransaction
+                                 .where(hcb_code: hcb_code_codes)
+                                 .or(
+                                   CanonicalTransaction.where(id: @transactions.flat_map(&:canonical_transaction_ids))
+                                 )
+
+        canonical_transactions_by_hcb_code = canonical_transactions.group_by(&:hcb_code)
+        canonical_transactions_by_id = canonical_transactions.index_by(&:id)
+        canonical_transaction_ids = canonical_transactions.pluck(:id)
+
 
         canonical_pending_transactions_by_hcb_code = CanonicalPendingTransaction.where(hcb_code: hcb_code_codes).group_by(&:hcb_code)
 

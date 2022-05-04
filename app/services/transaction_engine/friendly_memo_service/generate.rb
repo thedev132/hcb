@@ -58,7 +58,7 @@ module TransactionEngine
       end
 
       def hack_club_fee?
-        @canonical_transaction.fees.hack_club_fee.exists?
+        @canonical_transaction.fee_payment?
       end
 
     end
