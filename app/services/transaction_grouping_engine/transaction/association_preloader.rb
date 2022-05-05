@@ -37,7 +37,7 @@ module TransactionGroupingEngine
         hcb_code_objects.each do |hc|
           hc.canonical_transactions = canonical_transactions_by_hcb_code[hc.hcb_code]
                                       .sort { |ct1, ct2| self.class.compare_date_id_descending(ct1, ct2) }
-          hc.canonical_pending_transactions = canonical_pending_transactions_by_hcb_code[hc.hcb_code]
+          hc.canonical_pending_transactions = canonical_pending_transactions_by_hcb_code[hc.hcb_code] || []
           hc.not_admin_only_comments_count = hc.comments.count { |c| !c.admin_only }
         end
 
