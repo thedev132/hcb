@@ -39,19 +39,19 @@
   <section class="details pt2 pb2">
     <p>
       <strong>From</strong>
-      <% if @destination.is_public? || organizer_signed_in?(@destination) %>
-        <%= link_to @destination.name, @destination %>
+      <% if @source.is_public? || organizer_signed_in?(@source) %>
+        <%= link_to @source.name, @source %>
       <% else %>
-        <%= @destination.name %>
+        <%= @source.name %>
       <% end %>
     </p>
 
     <p>
       <strong>To</strong>
-      <% if @source.is_public? || organizer_signed_in?(@source) %>
-        <%= link_to @source.name, @source %>
+      <% if @destination.is_public? || organizer_signed_in?(@destination) %>
+        <%= link_to @destination.name, @destination %>
       <% else %>
-        <%= @source.name %>
+        <%= @destination.name %>
       <% end %>
     </p>
 
