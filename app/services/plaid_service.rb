@@ -4,18 +4,22 @@ class PlaidService
   include Singleton
 
   def client_id
+    ENV["TEMP_PLAID_CLIENT_ID"] ||
     Rails.application.credentials.plaid[:client_id]
   end
 
   def public_key
+    ENV["TEMP_PLAID_PUBLIC_KEY"] ||
     Rails.application.credentials.plaid[:public_key]
   end
 
   def secret_key
     case env
     when "development"
+      ENV["TEMP_PLAID_DEVELOPMENT_SECRET"] ||
       Rails.application.credentials.plaid[:development_secret]
     when "sandbox"
+      ENV["TEMP_PLAID_SANDBOX_SECRET"] ||
       Rails.application.credentials.plaid[:sandbox_secret]
     end
   end
