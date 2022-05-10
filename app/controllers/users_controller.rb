@@ -172,9 +172,9 @@ class UsersController < ApplicationController
     @feature = params[:feature]
     authorize @user
     if Flipper.disable_actor(@feature, @user)
-      flash[:success] = "Opted into beta"
+      flash[:success] = "Opted out of beta"
     else
-      flash[:error] = "Error while opting into beta"
+      flash[:error] = "Error while opting out of beta"
     end
     redirect_to edit_user_path(@user)
   end
