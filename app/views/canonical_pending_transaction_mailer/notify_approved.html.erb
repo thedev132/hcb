@@ -1,3 +1,7 @@
 A charge of <%= @cpt.amount %> at '<%= @cpt.memo %>' occurred on your card ending in <%= @cpt.stripe_card.last4 %>.
 
 <%= link_to "Upload your receipt for this charge.", attach_receipt_hcb_code_url(@cpt.local_hcb_code.hashid) %>
+
+<% if @receipt_upload_feature %>
+Alternatively, <em>reply to this email with an image or PDF receipt attached</em>.
+<% end %>

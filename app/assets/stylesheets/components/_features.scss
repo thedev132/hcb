@@ -13,3 +13,16 @@ html[data-dark='true'] {
     background-size: 3em;
   }
 }
+
+.feature-receipt-upload {
+  background-color: $snow;
+  background-image: #{image-url('feature-receipt-upload-light.png')};
+  background-size: 6em;
+}
+
+html[data-dark='true'] {
+  .feature-receipt-upload {
+    background-color: $black;
+    background-image: #{image-url('feature-receipt-upload-dark.png')};
+  }
+}

@@ -51,7 +51,7 @@
           If you'd like to switch back to your Gravatar, <%= link_to 'click here', user_delete_profile_picture_path(@user), method: :post %>.
         <% else %>
           If you have a <a href="https://gravatar.com" target="_blank">Gravatar</a>, we’ll pull it in here.<br>
-           Or, you can upload a profile picture below.<br>
+          Or, you can upload a profile picture below.<br>
         <% end %>
       </span>
     </p>
@@ -98,146 +98,170 @@
   <% end %>
   <% unless @onboarding %>
     <h2 id="feature-previews">Feature previews</h2>
-    <div class="card pb0 mb3" id="internal-transfers">
-      <div class="card__banner card__banner--top flex justify-between items-center feature-disbursements <%= 'b--info' if Flipper.enabled?(:transfers_2022_04_21, current_user)%> ">
-        <h3 class="h1 p2 my0 color-black">Internal Transfers</h3>
-              <% if Flipper.enabled?(:transfers_2022_04_21) %>
-                <%# Feature is enabled for all users, don't include a choice %>
-                <div class="actions tooltipped tooltipped--w inline-block mt1" aria-label="This feature is now generally available!">
-                  <span class="btn bg-accent disabled">Shipped!</span>
-                </div>
-                <%# link_to "Shipped!", enable_feature_path(feature: :transfers_2022_04_21), method: :post, class: 'btn bg-accent' %>
-              <% elsif Flipper.enabled?(:transfers_2022_04_21, current_user) %>
-                <%# Feature is enabled, let the user opt-out %>
-                <%= link_to "Disable", disable_feature_users_path(feature: :transfers_2022_04_21), method: :post, class: 'btn bg-accent' %>
-              <% else %>
-                <%# Feature is disabled, let the user opt-in %>
-                <%= link_to "Enable", enable_feature_users_path(feature: :transfers_2022_04_21), method: :post, class: 'btn bg-info' %>
-              <% end %>
-
-          </div>
-          <p>
-            Users with multiple organizations on Hack Club Bank can now create
-            transfers between their accounts. After opting-in, new options will
-            show up on an organziation's "Transfers" page, including a "New
-            Transfer" button and tools for searching and sorting the existing
-            transfers list.
-          </p>
-          <section class="card__banner card__darker secondary border-top">
-            <p class="my0">
-              This feature is on a per-user basis. Co-organizers will also have to
-              opt-in for access.
-            </p>
-          </section>
-        </div>
-    </div>
-    <h2>Login details</h2>
-    <fieldset>
-      <% unless @user.phone_number.blank? %>
-        <div class="session-header mt3 pb2">
-        <legend class="heading flex flex-row justify-start items-center">
-          <span class="h2">Login Codes</span>
-          <%= badge_for @user.use_sms_auth ? "SMS" : "Email", class: 'bg-muted' %>
-        </legend>
-        </div>
-        <div class="card border b--info mt1 mb3">
-          <% if @user.phone_number_verified %>
-            <% if @user.use_sms_auth %>
-              You are currently receiving login codes via SMS. Email codes can still be sent as a backup.
-              <%= link_to "Turn off SMS login codes.", toggle_sms_auth_users_path, method: :post %>
-            <% else %>
-              You are currently receiving login codes via email.
-              <%= link_to "Turn on SMS login codes.", toggle_sms_auth_users_path, method: :post %>
-            <% end %>
+    <% admin_tools do %>
+      <div class="card pb0 mb3" id="receipt-email-upload">
+        <div class="card__banner card__banner--top flex justify-between items-center feature-receipt-upload <%= 'b--info' if Flipper.enabled?(:receipt_email_upload_2022_05_10, current_user)%> ">
+          <h3 class="h1 p2 my0 color-black">Email Receipt Upload</h3>
+          <% if Flipper.enabled?(:receipt_email_upload_2022_05_10) %>
+            <%# Feature is enabled for all users, don't include a choice %>
+            <div class="actions tooltipped tooltipped--w inline-block mt1" aria-label="This feature is now generally available!">
+              <span class="btn bg-accent disabled">Shipped!</span>
+            </div>
+            <%# link_to "Shipped!", enable_feature_path(feature: :transfers_2022_04_21), method: :post, class: 'btn bg-accent' %>
+          <% elsif Flipper.enabled?(:receipt_email_upload_2022_05_10, current_user) %>
+            <%# Feature is enabled, let the user opt-out %>
+            <%= link_to "Disable", disable_feature_users_path(feature: :receipt_email_upload_2022_05_10), method: :post, class: 'btn bg-accent' %>
           <% else %>
-            <p>Your login codes are sent to <span class="bold"><%= @user.email %></span>.</p>
-            <p>
-              To send login codes to your phone, first 
-              <action data-behavior="modal_trigger" data-modal="verify_phone">
-                <a>
-                verify your phone number.
-                </a>
-              </action>
-            </p>
-            <section class="modal modal--scroll bg-snow" data-behavior="modal" role="dialog" id="verify_phone">
-              <%= modal_header 'Verify phone number' %>
-              <%= react_component 'settings/SmsVerification',
+            <%# Feature is disabled, let the user opt-in %>
+            <%= link_to "Enable", enable_feature_users_path(feature: :receipt_email_upload_2022_05_10), method: :post, class: 'btn bg-info' %>
+          <% end %>
+          <div class="actions tooltipped tooltipped--w inline-block mt1" aria-label="Not yet available!">
+            <span class="btn bg-accent disabled">Disabled</span>
+          </div>
+        </div>
+        <p>
+          We send an email once a card is charged along the lines of "Please
+          upload a receipt for your $10 charge" with a link to a form on HCB
+          to upload receipts.
+          After opting-in to this feature preview, you can reply directly to
+          that email with your receipt attached to upload it.
+        </p>
+      </div>
+    </div>
+  <% end %>
+  <div class="card pb0 mb3" id="internal-transfers">
+    <div class="card__banner card__banner--top flex justify-between items-center feature-disbursements <%= 'b--info' if Flipper.enabled?(:transfers_2022_04_21, current_user)%> ">
+      <h3 class="h1 p2 my0 color-black">Internal Transfers</h3>
+      <% if Flipper.enabled?(:transfers_2022_04_21) %>
+        <%# Feature is enabled for all users, don't include a choice %>
+        <div class="actions tooltipped tooltipped--w inline-block mt1" aria-label="This feature is now generally available!">
+          <span class="btn bg-accent disabled">Shipped!</span>
+        </div>
+        <%# link_to "Shipped!", enable_feature_path(feature: :transfers_2022_04_21), method: :post, class: 'btn bg-accent' %>
+      <% elsif Flipper.enabled?(:transfers_2022_04_21, current_user) %>
+        <%# Feature is enabled, let the user opt-out %>
+        <%= link_to "Disable", disable_feature_users_path(feature: :transfers_2022_04_21), method: :post, class: 'btn bg-accent' %>
+      <% else %>
+        <%# Feature is disabled, let the user opt-in %>
+        <%= link_to "Enable", enable_feature_users_path(feature: :transfers_2022_04_21), method: :post, class: 'btn bg-info' %>
+      <% end %>
+    </div>
+    <p>
+      Users with multiple organizations on Hack Club Bank can now create
+      transfers between their accounts. After opting-in, new options will
+      show up on an organziation's "Transfers" page, including a "New
+      Transfer" button and tools for searching and sorting the existing
+      transfers list.
+    </p>
+    <section class="card__banner card__darker secondary border-top">
+      <p class="my0">
+        This feature is on a per-user basis. Co-organizers will also have to
+        opt-in for access.
+      </p>
+    </section>
+  </div>
+</div>
+<h2>Login details</h2>
+<fieldset>
+  <% unless @user.phone_number.blank? %>
+    <div class="session-header mt3 pb2">
+      <legend class="heading flex flex-row justify-start items-center">
+        <span class="h2">Login Codes</span>
+        <%= badge_for @user.use_sms_auth ? "SMS" : "Email", class: 'bg-muted' %>
+      </legend>
+    </div>
+    <div class="card border b--info mt1 mb3">
+      <% if @user.phone_number_verified %>
+        <% if @user.use_sms_auth %>
+          You are currently receiving login codes via SMS. Email codes can still be sent as a backup.
+          <%= link_to "Turn off SMS login codes.", toggle_sms_auth_users_path, method: :post %>
+        <% else %>
+          You are currently receiving login codes via email.
+          <%= link_to "Turn on SMS login codes.", toggle_sms_auth_users_path, method: :post %>
+        <% end %>
+      <% else %>
+        <p>Your login codes are sent to <span class="bold"><%= @user.email %></span>.</p>
+        <p>
+          To send login codes to your phone, first 
+          <action data-behavior="modal_trigger" data-modal="verify_phone">
+            <a>
+              verify your phone number.
+            </a>
+          </action>
+        </p>
+        <section class="modal modal--scroll bg-snow" data-behavior="modal" role="dialog" id="verify_phone">
+          <%= modal_header 'Verify phone number' %>
+          <%= react_component 'settings/SmsVerification',
                   phoneNumber: @user.phone_number
                   %>
-            </section>
-          <% end %>
-        </div>
+        </section>
       <% end %>
-
-      <div class="session-header mt3 pb2" id="security-keys">
-        <legend class="heading flex flex-row justify-start items-center">
-          <span class="h2">Security keys</span>
-          <%= badge_for @user.webauthn_credentials.count, class: 'bg-muted' %>
-        </legend>
-
-        <button class="btn px2 h4" data-behavior="modal_trigger" data-modal="webauthn_register">
-          <%= inline_icon 'plus', size: home_action_size %>
-          Set up
-        </button>
-
-        <%= render "webauthn_credentials/modal" %>
-      </div>
-
-      <% if @user.webauthn_credentials.length > 0 %>
-        <div class="grid grid--split mb3">
-          <% @user.webauthn_credentials.order(created_at: :desc).each do |credential| %>
-            <%= render credential %>
-          <% end %>
-        </div>
-      <% else %>
-        <div class="secondary center mb4">
-          <%= inline_icon "fingerprint", width: "40px", class: "secondary block mx-auto mb1" %>
-
-          Sign in to Bank using your fingerprint or a hardware security key.
-        </div>
-      <% end %>
-
-      <div class="session-header pb2">
-        <legend class="heading flex flex-row justify-start items-center">
-          <span class="h2">Sessions</span>
-          <%= badge_for @sessions.count, class: 'bg-muted' %>
-        </legend>
-        <%= link_to logout_all_users_path, method: :delete,
-            class: 'btn bg-error mt1 py1 px2 h4', disabled: @sessions.count <= 1 do %>
-          <%= inline_icon 'door-leave', size: home_action_size %>
-          Sign out everywhere else
-        <% end %>
-      </div>
-      <div class="grid grid--split">
-        <% @sessions.order(created_at: :desc).each do |session| %>
-          <div class="card border<%= ' b--warning' if session.impersonated? %><%= ' b--success' if current_session.id == session.id %>">
-            <% if session.impersonated? %>
-              <span class="admin-tools">Impersonated by <%= user_mention session.impersonated_by %></span>
-            <% end %>
-            <span class="flex items-center justify-between">
-              <span class="bold flex items-center">
-                <% if session.device_info %>
-                  <span><%= session.device_info %> on <%= session.os_info %></span>
-                <% else %>
-                  <span>No data is available for this session.</span>
-                <% end %>
-                <% if current_session.id == session.id %>
-                  <span class="badge bg-success medium">current&nbsp;session</span>
-                <% end %>
-              </span>
-              <%= link_to logout_session_users_path(user: @user, id: session.id), method: :delete, class: 'muted tooltipped tooltipped--w z5', 'aria-label': 'Sign out of this session' do %>
-                <%= inline_icon 'door-leave', size: home_action_size %>
-              <% end %>
-            </span>
-            <% if session.device_info %>
-              <span class="flex items-center"><%= inline_icon 'web', size: 20 %>&nbsp;<code class="mr1"><%= session.ip %></code> • <%= inline_icon 'clock', size: 20, class: 'ml1' %>&nbsp;<%= session.timezone %></span>
-            <% end %>
-          </div>
-        <% end %>
-      </div>
-    </fieldset>
+    </div>
   <% end %>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/intlTelInput.min.js" integrity="sha512-QMUqEPmhXq1f3DnAVdXvu40C8nbTgxvBGvNruP6RFacy3zWKbNTmx7rdQVVM2gkd2auCWhlPYtcW2tHwzso4SA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/css/intlTelInput.css" integrity="sha512-gxWow8Mo6q6pLa1XH/CcH8JyiSDEtiwJV78E+D+QP0EVasFs8wKXq16G8CLD4CJ2SnonHr4Lm/yY2fSI2+cbmw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <%= javascript_include_tag "phone_input.js" %>
+  <div class="session-header mt3 pb2" id="security-keys">
+    <legend class="heading flex flex-row justify-start items-center">
+      <span class="h2">Security keys</span>
+      <%= badge_for @user.webauthn_credentials.count, class: 'bg-muted' %>
+    </legend>
+    <button class="btn px2 h4" data-behavior="modal_trigger" data-modal="webauthn_register">
+      <%= inline_icon 'plus', size: home_action_size %>
+      Set up
+    </button>
+    <%= render "webauthn_credentials/modal" %>
+  </div>
+  <% if @user.webauthn_credentials.length > 0 %>
+    <div class="grid grid--split mb3">
+      <% @user.webauthn_credentials.order(created_at: :desc).each do |credential| %>
+        <%= render credential %>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="secondary center mb4">
+      <%= inline_icon "fingerprint", width: "40px", class: "secondary block mx-auto mb1" %>
+      Sign in to Bank using your fingerprint or a hardware security key.
+    </div>
+  <% end %>
+  <div class="session-header pb2">
+    <legend class="heading flex flex-row justify-start items-center">
+      <span class="h2">Sessions</span>
+      <%= badge_for @sessions.count, class: 'bg-muted' %>
+    </legend>
+    <%= link_to logout_all_users_path, method: :delete,
+            class: 'btn bg-error mt1 py1 px2 h4', disabled: @sessions.count <= 1 do %>
+      <%= inline_icon 'door-leave', size: home_action_size %>
+      Sign out everywhere else
+    <% end %>
+  </div>
+  <div class="grid grid--split">
+    <% @sessions.order(created_at: :desc).each do |session| %>
+      <div class="card border<%= ' b--warning' if session.impersonated? %><%= ' b--success' if current_session.id == session.id %>">
+        <% if session.impersonated? %>
+          <span class="admin-tools">Impersonated by <%= user_mention session.impersonated_by %></span>
+        <% end %>
+        <span class="flex items-center justify-between">
+          <span class="bold flex items-center">
+            <% if session.device_info %>
+              <span><%= session.device_info %> on <%= session.os_info %></span>
+            <% else %>
+              <span>No data is available for this session.</span>
+            <% end %>
+            <% if current_session.id == session.id %>
+              <span class="badge bg-success medium">current&nbsp;session</span>
+            <% end %>
+          </span>
+          <%= link_to logout_session_users_path(user: @user, id: session.id), method: :delete, class: 'muted tooltipped tooltipped--w z5', 'aria-label': 'Sign out of this session' do %>
+            <%= inline_icon 'door-leave', size: home_action_size %>
+          <% end %>
+        </span>
+        <% if session.device_info %>
+          <span class="flex items-center"><%= inline_icon 'web', size: 20 %>&nbsp;<code class="mr1"><%= session.ip %></code> • <%= inline_icon 'clock', size: 20, class: 'ml1' %>&nbsp;<%= session.timezone %></span>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</fieldset>
+<% end %>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/intlTelInput.min.js" integrity="sha512-QMUqEPmhXq1f3DnAVdXvu40C8nbTgxvBGvNruP6RFacy3zWKbNTmx7rdQVVM2gkd2auCWhlPYtcW2tHwzso4SA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/css/intlTelInput.css" integrity="sha512-gxWow8Mo6q6pLa1XH/CcH8JyiSDEtiwJV78E+D+QP0EVasFs8wKXq16G8CLD4CJ2SnonHr4Lm/yY2fSI2+cbmw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<%= javascript_include_tag "phone_input.js" %>
 </section>

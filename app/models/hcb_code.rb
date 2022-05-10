@@ -18,6 +18,14 @@ class HcbCode < ApplicationRecord
     "/hcb/#{hashid}"
   end
 
+  def receipt_upload_email
+    if Rails.development?
+      "receipts+hcb-#{hashid}@bank-parse-dev.hackclub.com"
+    else
+      "receipts+hcb-#{hashid}@bank-parse.hackclub.com"
+    end
+  end
+
   def date
     @date ||= ct.try(:date) || pt.try(:date)
   end
