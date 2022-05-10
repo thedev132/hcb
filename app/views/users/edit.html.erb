@@ -97,8 +97,8 @@
     </div>
   <% end %>
   <% unless @onboarding %>
-    <h2>Feature previews</h2>
-    <div class="card pb0 mb3">
+    <h2 id="feature-previews">Feature previews</h2>
+    <div class="card pb0 mb3" id="internal-transfers">
       <div class="card__banner card__banner--top flex justify-between items-center feature-disbursements <%= 'b--info' if Flipper.enabled?(:transfers_2022_04_21, current_user)%> ">
         <h3 class="h1 p2 my0 color-black">Internal Transfers</h3>
               <% if Flipper.enabled?(:transfers_2022_04_21) %>
