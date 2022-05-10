@@ -19,7 +19,7 @@ class HcbCode < ApplicationRecord
   end
 
   def receipt_upload_email
-    if Rails.development?
+    if Rails.env.development?
       "receipts+hcb-#{hashid}@bank-parse-dev.hackclub.com"
     else
       "receipts+hcb-#{hashid}@bank-parse.hackclub.com"
