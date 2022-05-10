@@ -48,7 +48,8 @@ class DisbursementPolicy < ApplicationPolicy
   end
 
   def user_associated_with_events?
-    record.nil? or record.users.includes(user)
+    (record.nil? or record.users.includes(user)) and
+      Flipper.enabled?(:transfers_2022_04_21, user)
   end
 
 end

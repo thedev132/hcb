@@ -265,23 +265,16 @@ class EventsController < ApplicationController
     # to `q`. This following line retains backwards compatibility.
     params[:q] ||= params[:search]
 
+    @transfers_enabled = Flipper.enabled?(:transfers_2022_04_21, current_user)
     @ach_transfers = @event.ach_transfers
     @checks = @event.checks
-    @disbursements = @event.beta_features_enabled? ? @event.outgoing_disbursements : []
+    @disbursements = @transfers_enabled ? @event.outgoing_disbursements : Disbursement.none
 
-    if @event.beta_features_enabled?
-      @stats = {
-        deposited: @ach_transfers.deposited.sum(:amount) + @checks.deposited.sum(:amount) + @disbursements.fulfilled.pluck(:amount).sum,
-        in_transit: @ach_transfers.in_transit.sum(:amount) + @checks.in_transit_or_in_transit_and_processed.sum(:amount) + @disbursements.reviewing_or_processing.sum(:amount),
-        canceled: @ach_transfers.rejected.sum(:amount) + @checks.canceled.sum(:amount) + @disbursements.rejected.sum(:amount)
-      }
-    else
-      @stats = {
-        deposited: @ach_transfers.deposited.sum(:amount) + @checks.deposited.sum(:amount),
-        in_transit: @ach_transfers.in_transit.sum(:amount) + @checks.in_transit_or_in_transit_and_processed.sum(:amount),
-        canceled: @ach_transfers.rejected.sum(:amount) + @checks.canceled.sum(:amount)
-      }
-    end
+    @stats = {
+      deposited: @ach_transfers.deposited.sum(:amount) + @checks.deposited.sum(:amount) + @disbursements.fulfilled.pluck(:amount).sum,
+      in_transit: @ach_transfers.in_transit.sum(:amount) + @checks.in_transit_or_in_transit_and_processed.sum(:amount) + @disbursements.reviewing_or_processing.sum(:amount),
+      canceled: @ach_transfers.rejected.sum(:amount) + @checks.canceled.sum(:amount) + @disbursements.rejected.sum(:amount)
+    }
 
     # only search/filter transfers if organizer is signed in
     if organizer_signed_in?
@@ -295,7 +288,7 @@ class EventsController < ApplicationController
       @checks = @checks.canceled if params[:filter] == "canceled"
       @checks = @checks.search_recipient(params[:q]) if params[:q].present?
 
-      if @event.beta_features_enabled?
+      if @transfers_enabled
         @disbursements = @disbursements.reviewing_or_processing if params[:filter] == "in_transit"
         @disbursements = @disbursements.fulfilled if params[:filter] == "deposited"
         @disbursements = @disbursements.rejected if params[:filter] == "canceled"

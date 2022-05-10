@@ -155,6 +155,30 @@ class UsersController < ApplicationController
     redirect_to root_path
   end
 
+  def enable_feature
+    @user = current_user
+    @feature = params[:feature]
+    authorize @user
+    if Flipper.enable_actor(@feature, @user)
+      flash[:success] = "Opted into beta"
+    else
+      flash[:error] = "Error while opting into beta"
+    end
+    redirect_to edit_user_path(@user)
+  end
+
+  def disable_feature
+    @user = current_user
+    @feature = params[:feature]
+    authorize @user
+    if Flipper.disable_actor(@feature, @user)
+      flash[:success] = "Opted into beta"
+    else
+      flash[:error] = "Error while opting into beta"
+    end
+    redirect_to edit_user_path(@user)
+  end
+
   def edit
     @user = params[:id] ? User.friendly.find(params[:id]) : current_user
     @onboarding = @user.full_name.blank?

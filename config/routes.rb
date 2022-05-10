@@ -6,6 +6,7 @@ require "admin_constraint"
 
 Rails.application.routes.draw do
   mount Sidekiq::Web => "/sidekiq", :constraints => AdminConstraint.new
+  mount Flipper::UI.app(Flipper), at: "flipper", constraints: AdminConstraint.new
   mount Blazer::Engine, at: "blazer", constraints: AdminConstraint.new
   get "/sidekiq", to: "users#auth" # fallback if adminconstraint fails, meaning user is not signed in
   if Rails.env.development?
@@ -66,6 +67,11 @@ Rails.application.routes.draw do
       post "complete_sms_auth_verification", to: "users#complete_sms_auth_verification"
       post "toggle_sms_auth", to: "users#toggle_sms_auth"
 
+      # Feature-flags
+      post "enable_feature", to: "users#enable_feature"
+      post "disable_feature", to: "users#disable_feature"
+
+      # Logout
       delete "logout", to: "users#logout"
       delete "logout_all", to: "users#logout_all"
       delete "logout_session", to: "users#logout_session"

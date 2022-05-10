@@ -113,6 +113,11 @@ gem "google-api-client"
 # Validations on receipt files
 gem "active_storage_validations"
 
+# Feature-flags
+gem "flipper"
+gem "flipper-active_record"
+gem "flipper-ui"
+
 group :development, :test do
   gem "relaxed-rubocop"
   gem "rspec-rails", "~> 4.0.1"

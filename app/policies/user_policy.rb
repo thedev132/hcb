@@ -29,4 +29,12 @@ class UserPolicy < ApplicationPolicy
     user.admin? || record == user
   end
 
+  def enable_feature?
+    user.admin? || record == user
+  end
+
+  def disable_feature?
+    user.admin? || record == user
+  end
+
 end

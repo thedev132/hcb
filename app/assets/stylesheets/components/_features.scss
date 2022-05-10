@@ -1,0 +1,10 @@
+.feature-disbursements {
+  background-image: url('https://cloud-9tlnq99ql-hack-club-bot.vercel.app/1double-bubble-outline.webp');
+  // background-repeat: ;
+}
+
+html[data-dark='true'] {
+  .feature-disbursements {
+    background-image: url('https://cloud-9tlnq99ql-hack-club-bot.vercel.app/0double-bubble-dark.webp');
+  }
+}

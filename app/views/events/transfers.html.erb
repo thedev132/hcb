@@ -9,7 +9,7 @@
   </span>
 
   <% if organizer_signed_in? %>
-    <% if @event.beta_features_enabled? %>
+    <% if @transfers_enabled %>
       <%= link_to "New transfer", new_disbursement_path(source_event_id: @event), class: "btn bg-success" %>
     <% end %>
     <%= link_to "Reimbursement", event_reimbursements_path(@event), class: "btn" %>
@@ -22,7 +22,7 @@
           data: { behavior: "modal_trigger", modal: "paypal_transfer" } do %>
           PayPal
         <% end %>
-        <%= link_to "Transfer", new_disbursement_path(source_event_id: @event) if @event.beta_features_enabled? %>
+        <%= link_to "Transfer", new_disbursement_path(source_event_id: @event) if @transfers_enabled %>
       </div>
     </action>
 
