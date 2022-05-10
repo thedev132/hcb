@@ -13,6 +13,7 @@ class ReceiptUploadMailer < ApplicationMailer
   end
 
   def bounce_missing_hcb
+    @to = @inbound_mail.mail.from.first
     mail
   end
 
