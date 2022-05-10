@@ -1,39 +1,32 @@
 # frozen_string_literal: true
 
 class ReceiptUploadMailer < ApplicationMailer
-  def missing_user(inbound_email, params)
-    to = params[:to]
-    reply_to = params[:reply_to]
+  before_action { @inbound_mail = params[:mail] }
+  before_action { @reply_to = params[:reply_to] }
 
-    mail to: email.to, reply_to: reply_to
+  default to: -> { @inbound_mail.mail.from.first },
+          reply_to: -> { @reply_to },
+          subject: -> { @inbound_mail.mail.subject }
+
+  def bounce_missing_user
+    mail
   end
 
-  def missing_hcb(inbound_email, params)
-    to = params[:to]
-    reply_to = params[:reply_to]
-
-    mail to: to, reply_to: reply_to
+  def bounce_missing_hcb
+    mail
   end
 
-  def missing_attachments(inbound_email, params)
-    to = params[:to]
-    reply_to = params[:reply_to]
-
-    mail to: to, reply_to: reply_to
+  def bounce_missing_attachment
+    mail
   end
 
-  def notify_success(inbound_email, params)
-    to = params[:to]
-    reply_to = params[:reply_to]
-
-    mail to: to, reply_to: reply_to
+  def bounce_success
+    @receipts_count = params[:receipts_count]
+    mail
   end
 
-  def notify_error(inbound_email, params)
-    to = params[:to]
-    reply_to = params[:reply_to]
-
-    mail to: to, reply_to: reply_to
+  def bounce_error
+    mail
   end
 
 end
