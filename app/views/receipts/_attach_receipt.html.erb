@@ -1,0 +1,31 @@
+<%# This is another pass on making a good receipt upload form, mobile-first, for use on the attach_receipt page %>
+
+<%= form_with model: nil, url: receipt_hcb_code_path(@hcb_code), class: "flex flex-column justify-center mt2", data: {
+  controller: "file-drop submit-form",
+  action: "
+    dragover@window->file-drop#dragover
+    drop@window->file-drop#drop
+    dragenter@window->file-drop#dragenter
+    dragleave@window->file-drop#dragleave
+  ",
+  "file-drop-title-value" => "Drop to instantly add a receipt."
+} do |form| %>
+
+  <%= form.hidden_field :redirect_url, value: url_for(only_path: false) %>
+
+  <%= form.file_field :file,
+                      multiple: true,
+                      required: true,
+                      capture: "environment",
+                      class: "display-none",
+                      data: {
+                        "file-drop-target" => "fileInput",
+                        "action" => "change->submit-form#submit"
+                      }
+                    %>
+  <%= form.label :file, class: "btn" do %>
+    <%= inline_icon "share" %>
+    <span class="md-hide lg-hide">Take photo</span>
+    <span class="xs-hide sm-hide">Upload photo</span>
+  <% end %>
+<% end %>

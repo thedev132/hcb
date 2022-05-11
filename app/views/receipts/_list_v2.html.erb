@@ -2,6 +2,10 @@
 💌 Bonjour!
 <%= mail_to @hcb_code.receipt_upload_email, "Email me to upload your receipts" %>
 <% end %>
+<% admin_tools do %>
+🌸 Aloha!
+<%= link_to "Here's the page for attaching receipts", attach_receipt_hcb_code_url(@hcb_code.hashid) %>
+<% end %>
 <% @hcb_code.receipts.order(created_at: :asc).each do |receipt| %>
 
   <% file_path = Rails.application.routes.url_helpers.rails_blob_path(receipt.file, only_path: true) %>
