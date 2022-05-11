@@ -8,7 +8,20 @@
     <span class="truncate break-none">"<%= @hcb_code.memo %>"</span>
   </p>
 
-  <div class="card">
+  <div class="card <%= "pt0" if @hcb_code.receipts.any? || @hcb_code.no_or_lost_receipt? %>">
+    <% if @hcb_code.receipts.any? %>
+      <p class="card__banner bg-success white bold flex items-center mt0 mb0">
+        <%= inline_icon "checkmark", size: 24, class: "mr2" %>
+        <%= pluralize @hcb_code.receipts.count, "receipt" %>
+        added
+      </p>
+    <% elsif @hcb_code.no_or_lost_receipt? %>
+      <p class="card__banner bg-muted white bold flex items-center mt0 mb0">
+        <%= inline_icon "view-close", size: 24, class: "mr2" %>
+        Marked no/lost receipt
+      </p>
+    <% end %>
+
     <%= render "receipts/attach_receipt" %>
     <p class="center muted">Or drag & drop your receipt here.</p>
   </div>
