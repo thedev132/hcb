@@ -3,7 +3,7 @@ import { Controller } from '@hotwired/stimulus'
 let dropzone
 
 export default class extends Controller {
-  static targets = ['fileInput']
+  static targets = ['fileInput', 'dropzone', 'form']
   static values = {
     title: String
   }
@@ -25,7 +25,11 @@ export default class extends Controller {
 
     this.fileInputTarget.files = e.dataTransfer.files
 
-    this.element.submit()
+    if (this.hasFormTarget) {
+      this.formTarget.submit()
+    } else {
+      this.element.submit()
+    }
   }
 
   dragenter() {
@@ -45,6 +49,11 @@ export default class extends Controller {
   /* Utilities */
 
   showDropzone() {
+    if (this.hasDropzoneTarget) {
+      this.dropzoneTarget.classList.add('dropzone')
+      return
+    }
+
     if (!dropzone) {
       dropzone = document.createElement('div')
       dropzone.classList.add('file-dropzone')
@@ -64,6 +73,11 @@ export default class extends Controller {
   }
 
   hideDropzone() {
+    if (this.hasDropzoneTarget) {
+      this.dropzoneTarget.classList.remove('dropzone')
+      return
+    }
+
     if (dropzone) {
       dropzone.remove()
       dropzone = undefined

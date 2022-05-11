@@ -3,8 +3,12 @@
 }
 
 .transaction__memo {
-  width: 99.99%; // make description column span available space
-  display: inline-flex;
+  max-width: 400px;
+
+  > div {
+    display: flex;
+    align-items: center;
+  }
 
   a:first-child,
   span:first-child {

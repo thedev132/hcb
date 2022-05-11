@@ -1,3 +1,8 @@
+[class^="transaction--"].dropzone {
+  outline: 5px dashed $orange;
+  outline-offset: -5px;
+}
+
 .file-dropzone {
   background-color: rgba($snow, 0.8);
   position: fixed;

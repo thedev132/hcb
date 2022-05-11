@@ -98,6 +98,8 @@
 }
 
 .stripe-card {
+  overflow: hidden;
+
   background-color: #123;
   background-image: radial-gradient(ellipse at top left, #867ae7, transparent);
   &:focus,

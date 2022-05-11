@@ -1,4 +1,16 @@
-<tr class="transaction--<%= ct.amount.negative? ? "negative" : "positive" %>">
+<tr
+  class="transaction--<%= ct.amount.negative? ? "negative" : "positive" %>"
+  <% if defined?(receipt_upload_button) %>
+    data-controller="file-drop"
+    data-file-drop-target="dropzone"
+    data-action="
+      dragover->file-drop#dragover
+      drop->file-drop#drop
+      dragenter->file-drop#dragenter
+      dragleave->file-drop#dragleave
+    "
+  <% end %>
+>
     <% if ct.fee_payment? %>
       <td class="transaction__icon tooltipped tooltipped--e" aria-label="Hack Club Bank Fee payment">
         <%= inline_icon "minus-fill" %>
@@ -45,14 +57,16 @@
     <%= ct.date %>
   </td>
   <td class="transaction__memo">
-    <span title="<%= ct.local_hcb_code.memo %>">
-      <%= ct.local_hcb_code.memo %>
-    </span>
+    <div>
+      <span title="<%= ct.local_hcb_code.memo %>">
+        <%= ct.local_hcb_code.memo %>
+      </span>
 
-    <% if ct.local_hcb_code %>
-      <%= list_badge_for ct.local_hcb_code.receipts.size, "receipt", "payment-docs", optional: !ct.raw_stripe_transaction, required: ct.raw_stripe_transaction && !ct.local_hcb_code.no_or_lost_receipt? %>
-      <%= list_badge_for admin_signed_in? ? ct.local_hcb_code.comments.size : ct.local_hcb_code.not_admin_only_comments_count, "note", "post", optional: true %>
-    <% end %>
+      <% if ct.local_hcb_code %>
+        <%= list_badge_for ct.local_hcb_code.receipts.size, "receipt", "payment-docs", optional: !ct.raw_stripe_transaction, required: ct.raw_stripe_transaction && !ct.local_hcb_code.no_or_lost_receipt? %>
+        <%= list_badge_for admin_signed_in? ? ct.local_hcb_code.comments.size : ct.local_hcb_code.not_admin_only_comments_count, "note", "post", optional: true %>
+      <% end %>
+    </div>
   </td>
   <td class="nowrap">
     <span><%= number_to_currency ct.amount %></span>
@@ -60,5 +74,17 @@
   <td>
     <%= link_to "Details", ct.url if organizer_signed_in? || defined?(force_display_details) %>
   </td>
+  <% if defined?(receipt_upload_button) %>
+    <td style="width: 1%">
+      <%= form_with url: receipt_hcb_code_path(ct.local_hcb_code), data: { controller: "submit-form", "file-drop-target" => "form" } do |form| %>
+        <%= form.file_field :file, id: "file_#{ct.local_hcb_code.hashid}", multiple: true, required: true, class: "display-none", data: { action: "change->submit-form#submit", "file-drop-target" => "fileInput" } %>
+        <%= form.hidden_field :redirect_url, value: my_inbox_path %>
+        <%= form.hidden_field :show_link, value: true %>
+        <%= form.label "file_#{ct.local_hcb_code.hashid}", class: "btn", style: "font-size: 0.875rem; font-weight: 600; padding: 0.25rem 1rem;" do %>
+          <%= inline_icon 'plus' %>
+          Add a receipt
+        <% end %>
+      <% end %>
+    </td>
+  <% end %>
 </tr>
-

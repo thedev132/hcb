@@ -4,7 +4,14 @@
       role="alertdialog"
       class="flash flex items-center mt3 mb2 mx-auto shrink-none <%= key %>"
       data-behavior="flash">
-      <span class="flex-auto"><%= value %></span>
+      <span class="flex-auto flex justify-between items-center">
+        <% if value.is_a? Hash %>
+          <%= value["text"] %>
+          <%= link_to value["link_text"], value["link"], class: "ml1" if value["link"] %>
+        <% else %>
+          <%= value %>
+        <% end %>
+      </span>
       <%= inline_icon 'view-close', size: 32, class: 'pointer' %>
     </article>
   <% end %>
