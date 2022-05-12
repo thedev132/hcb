@@ -11,6 +11,16 @@ class Receipt < ApplicationRecord
 
   validates :file, attached: true
 
+  enum upload_method: {
+    transaction_page: 0,
+    transaction_page_drag_and_drop: 1,
+    receipts_page: 2,
+    receipts_page_drag_and_drop: 3,
+    attach_receipt_page: 4,
+    attach_receipt_page_drag_and_drop: 5,
+    email: 6
+  }
+
   def url
     Rails.application.routes.url_helpers.rails_blob_url(object)
   end

@@ -39,6 +39,7 @@ class HcbCodesController < ApplicationController
       attrs = {
         hcb_code_id: @hcb_code.id,
         file: file,
+        upload_method: params[:upload_method],
         current_user: current_user
       }
       ::HcbCodeService::Receipt::Create.new(attrs).run

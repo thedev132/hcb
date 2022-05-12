@@ -11,6 +11,7 @@
   <h3 class="h2 mt0 mb1">Add a receipt</h3>
 
   <%= form.hidden_field :redirect_url, value: url_for(only_path: false) %>
+  <%= form.hidden_field :upload_method, value: "transaction_page", data: { "file-drop-target" => "uploadMethod" } %>
 
   <%= form.file_field :file, multiple: true, required: true, class: "mb2", data: { "file-drop-target" => "fileInput" } %>
 

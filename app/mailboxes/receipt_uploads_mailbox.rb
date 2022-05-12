@@ -14,7 +14,8 @@ class ReceiptUploadsMailbox < ApplicationMailbox
     result = ::ReceiptService::Create.new(
       receiptable: hcb,
       uploader: user,
-      attachments: attachments
+      attachments: attachments,
+      upload_method: "email"
     ).run!
 
     if result&.any?

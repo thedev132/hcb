@@ -2,10 +2,11 @@
 
 module ReceiptService
   class Create
-    def initialize(receiptable:, attachments:, uploader:)
+    def initialize(receiptable:, attachments:, uploader:, upload_method: nil)
       @attachments = attachments
       @receiptable = receiptable
       @uploader = uploader
+      @upload_method = upload_method
     end
 
     def run!
@@ -25,7 +26,8 @@ module ReceiptService
         file: attachment,
         uploader: @uploader,
         receiptable_type: @receiptable.class.name,
-        receiptable_id: @receiptable.id
+        receiptable_id: @receiptable.id,
+        upload_method: @upload_method
       }
     end
 

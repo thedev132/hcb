@@ -5,9 +5,11 @@ module HcbCodeService
     class Create
       def initialize(hcb_code_id:,
                      file:,
+                     upload_method: nil,
                      current_user: nil)
         @hcb_code_id = hcb_code_id
         @file = file
+        @upload_method = upload_method
         @current_user = current_user
       end
 
@@ -21,6 +23,7 @@ module HcbCodeService
       def attrs
         {
           file: @file,
+          upload_method: @upload_method,
           user: @current_user
         }.compact
       end

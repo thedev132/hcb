@@ -3,7 +3,7 @@ import { Controller } from '@hotwired/stimulus'
 let dropzone
 
 export default class extends Controller {
-  static targets = ['fileInput', 'dropzone', 'form']
+  static targets = ['fileInput', 'dropzone', 'form', 'uploadMethod']
   static values = {
     title: String
   }
@@ -24,6 +24,11 @@ export default class extends Controller {
     this.hideDropzone()
 
     this.fileInputTarget.files = e.dataTransfer.files
+
+    if (this.hasUploadMethodTarget) {
+      // Append `_drag_and_drop` to the upload method
+      this.uploadMethodTarget.value += '_drag_and_drop'
+    }
 
     if (this.hasFormTarget) {
       this.formTarget.submit()
