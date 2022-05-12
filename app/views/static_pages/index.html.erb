@@ -16,7 +16,7 @@
     <% if @events.any? %>
       <ul class="grid grid--narrow left-align w-100 mt0">
         <% @events.not_hidden.each do |event| %>
-          <%= link_to event do %>
+          <%= link_to event, class: "overflow-hidden" do %>
             <li class="card card--hover flex flex-column justify-between h-100">
               <strong class="brand-sans h3 line-height-2 mb1"><%= event.name %></strong>
               <div class="avatar-row">
