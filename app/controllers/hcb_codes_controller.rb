@@ -61,6 +61,11 @@ class HcbCodesController < ApplicationController
     @event = @hcb_code.event
 
     authorize @hcb_code
+
+  rescue Pundit::NotAuthorizedError
+    unless (@hcb_code.date > 10.days.ago) && HcbCodeService::Receipt::SigningEndpoint.new.valid_url?(@hcb_code.hashid, params[:s])
+      raise
+    end
   end
 
   include HcbCodeHelper # for disputed_transactions_airtable_form_url

@@ -14,7 +14,7 @@ class HcbCodePolicy < ApplicationPolicy
   end
 
   def attach_receipt?
-    user&.admin? || present_in_events? || record.date > 10.days.ago
+    user&.admin? || present_in_events? || record.date > Date.parse('2022-05-15') - 10.days
   end
 
   def dispute?
