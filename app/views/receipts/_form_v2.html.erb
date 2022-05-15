@@ -1,30 +1,50 @@
-<%= form_with model: nil, url: receipt_hcb_code_path(@hcb_code), class: "card flex flex-column justify-center mt2 mb3", data: {
-  controller: "file-drop",
-  action: "
-    dragover@window->file-drop#dragover
-    drop@window->file-drop#drop
-    dragenter@window->file-drop#dragenter
-    dragleave@window->file-drop#dragleave
-  ",
-  "file-drop-title-value" => "Drop to instantly add a receipt."
-} do |form| %>
-  <h3 class="h2 mt0 mb1">Add a receipt</h3>
+<div class="mb3">
+  <div class="card mt2 flex flex-column">
+    <div class="container container--sm">
+      <%= form_with model: nil, url: receipt_hcb_code_path(@hcb_code), class: "flex flex-column justify-center mt2", data: {
+        controller: "file-drop submit-form",
+        action: "
+          dragover@window->file-drop#dragover
+          drop@window->file-drop#drop
+          dragenter@window->file-drop#dragenter
+          dragleave@window->file-drop#dragleave
+        ",
+        "file-drop-title-value" => "Drop to instantly add a receipt."
+      } do |form| %>
 
-  <%= form.hidden_field :redirect_url, value: url_for(only_path: false) %>
-  <%= form.hidden_field :upload_method, value: "transaction_page", data: { "file-drop-target" => "uploadMethod" } %>
+        <%= form.hidden_field :redirect_url, value: url_for(only_path: false) %>
+        <%= form.hidden_field :upload_method, value: "transaction_page", data: { "file-drop-target" => "uploadMethod" } %>
 
-  <%= form.file_field :file, multiple: true, required: true, class: "mb2", data: { "file-drop-target" => "fileInput" } %>
+        <%= form.file_field :file,
+                            multiple: true,
+                            required: true,
+                            capture: "environment",
+                            class: "display-none",
+                            data: {
+                              "file-drop-target" => "fileInput",
+                              "action" => "change->submit-form#submit"
+                            }
+                          %>
+        <%= form.label :file, class: "btn" do %>
+          <%= inline_icon "share" %>
+          <span>Upload receipt</span>
+        <% end %>
 
-  <footer class="flex flex-wrap justify-between align-center">
-    <%= form.submit "Upload" %>
-
-    <% if @hcb_code.missing_receipt? %>
-      <%= link_to receiptable_mark_no_or_lost_path(receiptable_type: @hcb_code.class, receiptable_id: @hcb_code.id),
-                  method: :post,
-                  class: "ml2 btn bg-muted" do %>
-        <%= inline_icon "view-close" %>
-        Missing/lost receipt
+        <p class="center muted">Or drag & drop your receipt here.</p>
       <% end %>
-    <% end %>
-  </footer>
-<% end %>
+    </div>
+  </div>
+
+  <% if @hcb_code.missing_receipt? %>
+    <div class="flex muted justify-end items-center mt1">
+      <%= inline_icon 'forbidden', size: 20 %>
+      <%= link_to receiptable_mark_no_or_lost_path(receiptable_type: @hcb_code.class, receiptable_id: @hcb_code.id), method: :post do %>
+        <small class="mt0 mb0">
+          No/lost receipt?
+        </small>
+      <% end %>
+    </div>
+  <% end %>
+</div>
+
+<hr>
