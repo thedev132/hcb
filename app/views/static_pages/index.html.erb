@@ -16,8 +16,8 @@
     <% if @events.any? %>
       <ul class="grid grid--narrow left-align w-100 mt0">
         <% @events.not_hidden.each do |event| %>
-          <%= link_to event, class: "overflow-hidden" do %>
-            <li class="card card--hover flex flex-column justify-between h-100">
+          <%= link_to event, style: "max-width: 90vw" do %>
+            <li class="card card--hover flex flex-column justify-between h-100 mx-auto">
               <strong class="brand-sans h3 line-height-2 mb1"><%= event.name %></strong>
               <div class="avatar-row">
                 <% event.organizer_positions.each do |position| %>
@@ -28,7 +28,7 @@
           <% end %>
         <% end %>
         <a href="https://hackclub.com/bank/apply/?userEmail=<%= current_user.email %>&firstName=<%= current_user.first_name %>&lastName=<%= current_user.last_name %>&returningUser=Yes,%20I%20have%20used%20Hack%20Club%20Bank%20before&userPhone=<%= current_user.phone_number %>">
-          <li class="card card--hover bold brand-sans flex items-center justify-center align-center h-100">
+          <li class="card card--hover bold brand-sans flex items-center justify-center align-center h-100" style="max-width: 90vw">
             <div class="center">
               <div class="pop success mx-auto" style="display: flex; margin-bottom: 4px;">
                 <%= inline_icon 'plus', size: 28 %>
