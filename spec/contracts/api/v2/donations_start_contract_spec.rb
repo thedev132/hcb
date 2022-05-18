@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe Api::V2::DonationsNewContract, type: :model do
+RSpec.describe Api::V2::DonationsNewContract, type: :model, skip: true do
   let(:organization_identifier) { "org_1234" }
 
   let(:attrs) do

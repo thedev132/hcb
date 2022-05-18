@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe OperationsMailer, type: :mailer do
+RSpec.describe OperationsMailer, type: :mailer, skip: true do
   fixtures "g_suites"
 
   let(:g_suite) { g_suites(:g_suite1) }

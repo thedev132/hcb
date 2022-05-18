@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe ApiService::V2::GenerateLoginToken, type: :model do
+RSpec.describe ApiService::V2::GenerateLoginToken, type: :model, skip: true do
   fixtures "partners", "events", "users", "organizer_positions"
 
   let(:partner) { partners(:partner1) }

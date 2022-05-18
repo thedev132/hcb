@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe GSuiteAccountService::Create, type: :model do
+RSpec.describe GSuiteAccountService::Create, type: :model, skip: true do
   fixtures "users", "events", "g_suites"
 
   let(:g_suite) { g_suites(:g_suite1) }

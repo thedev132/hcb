@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe ApiService::V2::DonationsNew, type: :model do
+RSpec.describe ApiService::V2::DonationsNew, type: :model, skip: true do
   fixtures "partners", "events"
 
   let(:partner) { partners(:partner1) }

@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe GSuiteService::Update, type: :model do
+RSpec.describe GSuiteService::Update, type: :model, skip: true do
   fixtures   "users", "g_suites"
 
   let(:user) { users(:user1) }

@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe Event, type: :model do
+RSpec.describe Event, type: :model, skip: true do
   fixtures "events", "transactions", "fee_relationships", "canonical_event_mappings", "canonical_transactions", "partners"
 
   let(:event) { events(:event1) }

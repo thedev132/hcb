@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe GSuiteService::MarkVerified, type: :model do
+RSpec.describe GSuiteService::MarkVerified, type: :model, skip: true do
   fixtures "users", "g_suites"
 
   let(:g_suite) { g_suites(:g_suite2) }
