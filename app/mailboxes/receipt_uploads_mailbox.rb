@@ -19,11 +19,11 @@ class ReceiptUploadsMailbox < ApplicationMailbox
     ).run!
 
     if result&.any?
-      bounce_with ReceiptUploadMailer.with(
+      ReceiptUploadMailer.with(
         mail: inbound_email,
         reply_to: hcb.receipt_upload_email,
         receipts_count: result.size
-      ).bounce_success
+      ).bounce_success.deliver_now
     else
       bounce_with ReceiptUploadMailer.with(
         mail: inbound_email,
@@ -86,7 +86,7 @@ class ReceiptUploadsMailbox < ApplicationMailbox
   end
 
   def ensure_permissions?
-    if hcb.event.users.include?(user)
+    if hcb&.event&.users&.include?(user)
       true
     else
       # We return with the email equivalent of 404 if you don't have permission

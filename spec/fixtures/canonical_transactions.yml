@@ -21,3 +21,10 @@ canonical_transaction4:
   memo: "FEE REFUND xyz FROM ACCOUNT REDACTED"
   date: "2020-09-05"
   created_at: <%= Time.now %>
+
+canonical_transaction_with_hcb:
+  amount_cents: 300
+  memo: "ADAFRUIT LLC"
+  date: "2020-09-05"
+  created_at: <%= Time.now %>
+  hcb_code: "HCB-600-iauth_1234567890abcdefghijklmn"

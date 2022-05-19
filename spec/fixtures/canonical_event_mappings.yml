@@ -1,3 +1,7 @@
 canonical_event_mapping1:
   event: event1
   canonical_transaction: canonical_transaction1
+
+canonical_event_mapping2:
+  event: event1
+  canonical_transaction: canonical_transaction_with_hcb
