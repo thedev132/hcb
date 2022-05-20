@@ -1,5 +1,8 @@
 <div align="center">
-  <img src="https://cloud-5yru8jas0-hack-club-bot.vercel.app/0logo-512.png" width="126" alt="Hack Club Bank logo">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://cloud-djxhgxve6-hack-club-bot.vercel.app/0hcb-icon-icon-dark_1_.png">
+    <img src="https://cloud-5yru8jas0-hack-club-bot.vercel.app/0logo-512.png" width="126" alt="Hack Club Bank logo">
+  </picture>
   <h1>Hack Club Bank</h1>
   <strong>A powerful, safe, and easy-to-use fiscal sponsorship platform for Hack Clubs, hackathons, and nonprofits.</strong>
 </div>
@@ -82,4 +85,4 @@ Please see the [wiki](https://github.com/hackclub/bank/wiki) for technical docum
 <p><strong>Happy hacking. ❤️</strong></p>
 </div>
 
-🔼 [Back to Top](#)
+🔼 [Back to Top](#readme)
