@@ -655,6 +655,7 @@ DEPENDENCIES
   maildown
   mini_magick
   mini_racer
+  monetize
   money-rails
   namae
   newrelic_rpm

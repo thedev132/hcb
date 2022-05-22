@@ -111,7 +111,7 @@ module InvoiceService
     end
 
     def clean_item_amount
-      @clean_item_amount ||= cleanse(@item_amount)
+      @clean_item_amount ||= Monetize.parse(@item_amount).cents
     end
 
     def sponsor
@@ -131,10 +131,6 @@ module InvoiceService
 
     def event
       @event ||= Event.friendly.find(@event_id)
-    end
-
-    def cleanse(item_amount)
-      (@item_amount.gsub(",", "").to_f * 100.to_i).to_i
     end
 
   end
