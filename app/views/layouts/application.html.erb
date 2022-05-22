@@ -12,8 +12,10 @@
     <%= javascript_pack_tag 'application', 'data-turbo-track': 'reload', defer: true %>
     <%= javascript_include_tag 'application', 'data-turbo-track': 'reload', defer: true %>
 
-    <script>var HW_config = { selector: "#changelog-icon", account:  "7z8ovy" }</script>
-    <script async src="https://cdn.headwayapp.co/widget.js"></script>
+    <% if signed_in? %>
+      <script>var HW_config = { selector: "#changelog-icon", account:  "7z8ovy" }</script>
+      <script async src="https://cdn.headwayapp.co/widget.js"></script>
+    <% end %>
 
     <meta name="format-detection" content="telephone=no">
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
