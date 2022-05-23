@@ -334,8 +334,12 @@ class EventsController < ApplicationController
   def set_event
     @event = Event.friendly.find(params[:event_id] || params[:id])
   rescue ActiveRecord::RecordNotFound
-    flash[:error] = "We couldn’t find that event!"
-    redirect_to root_path
+    if signed_in?
+      flash[:error] = "We couldn’t find that event!"
+      redirect_to root_path
+    else
+      redirect_to auth_users_path(return_to: request.original_url)
+    end
   end
 
   # Only allow a trusted parameter "white list" through.

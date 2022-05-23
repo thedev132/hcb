@@ -13,6 +13,10 @@ export default class extends Controller {
     'continueButton'
   ]
 
+  static values = {
+    returnTo: String
+  }
+
   loginEmailInputTargetConnected() {
     this.loginEmailInputTarget.value = localStorage.getItem('login_email')
   }
@@ -40,6 +44,7 @@ export default class extends Controller {
       submitForm('/users/webauthn', {
         credential: JSON.stringify(credential),
         email: loginEmail,
+        return_to: this.returnToValue,
         ...(await this.fingerprint())
       })
     } catch (e) {

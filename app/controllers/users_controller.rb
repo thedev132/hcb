@@ -82,7 +82,8 @@ class UsersController < ApplicationController
 
       sign_in(user: user, fingerprint_info: fingerprint_info, webauthn_credential: stored_credential)
 
-      redirect_to root_path
+      return_to = params[:return_to] if params[:return_to].present? && params[:return_to].start_with?(root_url)
+      redirect_to(return_to || root_path)
 
     rescue WebAuthn::SignCountVerificationError => e
       redirect_to auth_users_path, flash: { error: "Something went wrong." }
