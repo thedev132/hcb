@@ -52,13 +52,12 @@
         <% if pt.declined? %>
           DECLINED:
         <% else %>
-          PENDING: 
+          PENDING:
         <% end %>
         <%= pt.local_hcb_code.memo %>
       </span>
-
       <% if pt.local_hcb_code %>
-        <%= list_badge_for pt.local_hcb_code.receipts.size, "receipt", "payment-docs", optional: !pt.raw_pending_stripe_transaction_id, required: pt.raw_pending_stripe_transaction_id && !pt.local_hcb_code.no_or_lost_receipt? %>
+        <%= list_badge_for pt.local_hcb_code.receipts.size, "receipt", "payment-docs", optional: !pt.raw_pending_stripe_transaction_id, required: pt.raw_pending_stripe_transaction_id && !pt.local_hcb_code.no_or_lost_receipt? && !pt.declined? %>
         <%= list_badge_for admin_signed_in? ? pt.local_hcb_code.comments.size : pt.local_hcb_code.not_admin_only_comments_count, "note", "post", optional: true %>
       <% end %>
     </div>

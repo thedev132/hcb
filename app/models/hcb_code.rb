@@ -237,6 +237,14 @@ class HcbCode < ApplicationRecord
     ct2.custom_memo
   end
 
+  def receipt_required?
+    if type == :card_charge && !pt.declined?
+      true
+    else
+      false
+    end
+  end
+
   def local_hcb_code
     @local_hcb_code ||= HcbCode.find_or_create_by(hcb_code: hcb_code)
   end

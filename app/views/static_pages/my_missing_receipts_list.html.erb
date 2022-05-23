@@ -30,6 +30,7 @@
               <% end %>
             <% else %>
               <% hcb_code.canonical_pending_transactions.each do |pt| %>
+                <% next if pt.declined? %>
                 <%= render partial: "canonical_pending_transactions/canonical_pending_transaction", locals: { pt: pt, force_display_details: true, authorless: true, receipt_upload_button: true  } %>
               <% end %>
             <% end %>

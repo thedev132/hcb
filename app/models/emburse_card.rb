@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class EmburseCard < ApplicationRecord
+  include Hashid::Rails
   extend FriendlyId
 
   scope :deactivated, -> { where.not(emburse_state: "active") }

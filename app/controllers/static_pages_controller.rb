@@ -67,8 +67,22 @@ class StaticPagesController < ApplicationController
     stripe_cards = current_user.stripe_cards.includes(:event)
     emburse_cards = current_user.emburse_cards.includes(:event)
 
-    @cards = (stripe_cards + emburse_cards).filter { |card| card.hcb_codes.missing_receipt.length > 0 }
-    @count = @cards.sum { |card| card.hcb_codes.missing_receipt.length }
+    @hcb_codes = {}
+    @count = 0
+
+    @cards = (stripe_cards + emburse_cards).filter do |card|
+      has_missing_receipt_tx = false
+      card.hcb_codes.missing_receipt.each do |hcb_code|
+        next unless hcb_code.receipt_required?
+
+        @hcb_codes[card.hashid] ||= []
+        @hcb_codes[card.hashid] << hcb_code
+        @count += 1
+        has_missing_receipt_tx = true
+      end
+
+      has_missing_receipt_tx
+    end
   end
 
   def project_stats

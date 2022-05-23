@@ -9,8 +9,13 @@ module Receiptable
     scope :without_receipt, -> { includes(:receipts).where(receipts: { receiptable_id: nil }) }
     scope :missing_receipt, -> { without_receipt.where(marked_no_or_lost_receipt_at: nil) }
 
+    def receipt_required?
+      # This method should be overwritten in specific classes
+      raise NotImplementedError, "The #{self.class.name} model includes Receiptable, but hasn't implemented it's own version of receipt_required?."
+    end
+
     def missing_receipt?
-      without_receipt? && !no_or_lost_receipt?
+      receipt_required? && without_receipt? && !no_or_lost_receipt?
     end
 
     def without_receipt?
