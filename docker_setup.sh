@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # installs all the dependencies for using Hack Club Bank with Docker
 # reach out to kunal botla (kunal@hackclub.com) if you have any questions or issues.
