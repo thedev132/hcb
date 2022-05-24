@@ -70,9 +70,9 @@ GEM
       device_detector
       geocoder (>= 1.4.5)
       safely_block (>= 0.2.1)
-    airbrake (10.0.5)
-      airbrake-ruby (~> 4.13)
-    airbrake-ruby (4.15.0)
+    airbrake (13.0.2)
+      airbrake-ruby (~> 6.0)
+    airbrake-ruby (6.1.0)
       rbtree3 (~> 0.5)
     android_key_attestation (0.3.0)
     api-pagination (4.8.2)
@@ -428,7 +428,7 @@ GEM
     rb-fsevent (0.10.4)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
-    rbtree3 (0.6.0)
+    rbtree3 (0.7.0)
     react-rails (2.6.1)
       babel-transpiler (>= 0.7.0)
       connection_pool
