@@ -7,9 +7,10 @@ class StripeAuthorizationMailer < ApplicationMailer
     @card = @auth.card
     @user = @card.user
     @event = @card.event
+    @merchant = params[:merchant] || @auth.stripe_obj.merchant_data.name
 
     mail to: @user.email,
-         subject: "#{@auth.status_emoji} Purchase #{@auth.status_text} at #{@auth.stripe_obj.merchant_data.name}"
+         subject: "#{@auth.status_emoji} Purchase #{@auth.status_text} at #{@merchant}"
   end
 
   def notify_user_of_approve
@@ -18,9 +19,11 @@ class StripeAuthorizationMailer < ApplicationMailer
     @card = @auth.card
     @user = @card.user
     @event = @card.event
+    @authorization_method = params[:authorization_method] || @auth.stripe_obj.authorization_method.humanize.downcase
+    @merchant = params[:merchant] || @auth.stripe_obj.merchant_data.name
 
     mail to: @user.email,
-         subject: "Upload a receipt for your #{@auth.stripe_obj.authorization_method.humanize.downcase} transaction at #{@auth.stripe_obj.merchant_data.name}"
+         subject: "Upload a receipt for your #{@authorization_method} transaction at #{@merchant}"
   end
 
 end
