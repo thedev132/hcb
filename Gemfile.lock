@@ -269,8 +269,6 @@ GEM
       hashids (~> 1.0)
     hashids (1.0.6)
     hashie (5.0.0)
-    heroku-deflater (0.6.3)
-      rack (>= 1.4.5)
     hiredis (0.6.3)
     htmlbeautifier (1.4.2)
     htmlentities (4.3.4)
@@ -680,7 +678,6 @@ DEPENDENCIES
   geocoder
   google-apis-admin_directory_v1 (~> 0.23.0)
   hashid-rails (~> 1.0)
-  heroku-deflater
   hiredis
   htmlbeautifier
   httparty
