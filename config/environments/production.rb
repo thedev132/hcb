@@ -111,6 +111,7 @@ Rails.application.configure do
   config.action_mailer.default_url_options = {
     host: Rails.application.credentials.default_url_host[:live]
   }
+  Rails.application.routes.default_url_options[:host] = Rails.application.credentials.default_url_host[:live]
 
   # Inserts middleware to perform automatic connection switching.
   # The `database_selector` hash is used to pass options to the DatabaseSelector
