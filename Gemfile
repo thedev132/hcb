@@ -53,7 +53,7 @@ gem "faraday"
 gem "bootsnap", ">= 1.4.4", require: false
 
 # Allow un-deletions
-gem "acts_as_paranoid", "~> 0.6.0"
+gem "acts_as_paranoid", "~> 0.8.1"
 # friendly ids in URLs
 gem "friendly_id", "~> 5.2.0"
 

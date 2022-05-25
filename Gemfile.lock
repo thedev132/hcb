@@ -67,9 +67,9 @@ GEM
       minitest (>= 5.1)
       tzinfo (~> 2.0)
       zeitwerk (~> 2.3)
-    acts_as_paranoid (0.6.3)
-      activerecord (>= 4.2, < 7.0)
-      activesupport (>= 4.2, < 7.0)
+    acts_as_paranoid (0.8.1)
+      activerecord (>= 5.2, < 7.1)
+      activesupport (>= 5.2, < 7.1)
     addressable (2.8.0)
       public_suffix (>= 2.0.2, < 5.0)
     ahoy_matey (4.0.3)
@@ -652,7 +652,7 @@ PLATFORMS
 DEPENDENCIES
   aasm
   active_storage_validations
-  acts_as_paranoid (~> 0.6.0)
+  acts_as_paranoid (~> 0.8.1)
   ahoy_matey
   airbrake
   api-pagination
