@@ -103,8 +103,8 @@ gem "local_time"
 gem "business_time"
 
 # Image Processing for ActiveStorage
-gem "mini_magick"
 gem "image_processing", "~> 1.2"
+gem "mini_magick"
 
 # Pagination
 gem "api-pagination"
