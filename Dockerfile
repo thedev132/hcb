@@ -14,7 +14,7 @@ ENV EDITOR=vim
 RUN apt-get -y install nodejs npm
 RUN npm install -g yarn
 
-RUN gem install bundler -v 1.17.3
+RUN gem install bundler -v 2.1.4
 
 ADD yarn.lock /usr/src/app/yarn.lock
 ADD package.json /usr/src/app/package.json

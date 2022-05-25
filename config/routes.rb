@@ -5,6 +5,8 @@ require "sidekiq/cron/web"
 require "admin_constraint"
 
 Rails.application.routes.draw do
+  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
+
   mount Sidekiq::Web => "/sidekiq", :constraints => AdminConstraint.new
   mount Flipper::UI.app(Flipper), at: "flipper", constraints: AdminConstraint.new
   mount Blazer::Engine, at: "blazer", constraints: AdminConstraint.new

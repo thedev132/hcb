@@ -10,7 +10,7 @@ gem "dotenv-rails", groups: [:development, :test]
 # gem 'sassc-rails' # required for rails 6
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem "rails", "6.0.3.6"
+gem "rails", "6.1.6"
 # Use postgresql as the database for Active Record
 gem "pg", ">= 0.18", "< 2.0"
 # Use Puma as the app server
@@ -25,7 +25,9 @@ gem "uglifier", ">= 1.3.0"
 gem "react-rails"
 gem "webpacker", "~> 4.0"
 # See https://github.com/rails/execjs#readme for more supported runtimes
-gem "mini_racer", platforms: :ruby
+# Due to a bug in mini_racer >=0.5.0 running on GitHub Actions, we've had to
+# roll back to mini_racer 0.4.0: https://github.com/rubyjs/mini_racer/issues/218.
+gem "mini_racer", "~> 0.4.0", platforms: :ruby
 # Turbo makes navigating your web application faster. Read more: https://github.com/hotwired/turbo
 gem "turbo-rails", "~> 0.8.3"
 # Use Redis adapter to run Action Cable in production
@@ -108,7 +110,7 @@ gem "api-pagination"
 gem "kaminari"
 
 # Google (GSuite)
-gem "google-api-client"
+gem "google-apis-admin_directory_v1", "~> 0.23.0"
 
 # Validations on receipt files
 gem "active_storage_validations"

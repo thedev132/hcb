@@ -23,6 +23,20 @@ class ApplicationController < ActionController::Base
     @hide_footer = true
   end
 
+  # @msw: this handles a bug caused by CSRF changes between Rails 6 -> 6.1. If
+  # users signed into a session when Rails 6 was running, and then try to load a
+  # page once Rails 6.1 is running, they'll get caught. See:
+  # https://github.com/rails/rails/pull/41797
+  # https://dev.to/nuttapon/handle-csrf-issue-when-upgrade-rails-from-5-to-6-1edp
+  rescue_from ArgumentError do |exception|
+    if request.format.html? && exception.message == "invalid base64"
+      request.reset_session # reset your old existing session.
+      redirect_to auth_users_path # your login page.
+    else
+      raise(exception)
+    end
+  end
+
   private
 
   # This being called probably means that the User's access token has expired.

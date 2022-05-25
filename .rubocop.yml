@@ -30,7 +30,7 @@ Style/RedundantReturn:
 Style/StringLiteralsInInterpolation:
   Enabled: false
 
-Layout/AlignHash:
+Layout/HashAlignment:
   EnforcedHashRocketStyle: table
 
 Style/NumericLiterals:
@@ -39,7 +39,7 @@ Style/NumericLiterals:
 Style/SymbolProc:
   Enabled: false
 
-Naming/UncommunicativeMethodParamName:
+Naming/MethodParameterName:
   Enabled: false
 
 Style/EmptyMethod:
@@ -75,7 +75,7 @@ Layout/EmptyLineBetweenDefs:
 Style/CommentedKeyword:
   Enabled: false
 
-Lint/HandleExceptions:
+Lint/SuppressedException:
   Enabled: false
 
 Lint/UnusedBlockArgument:
