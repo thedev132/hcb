@@ -197,11 +197,13 @@ class Event < ApplicationRecord
   validates :name, :sponsorship_fee, presence: true
   validates :slug, uniqueness: true, presence: true, format: { without: /\s/ }
 
-  CUSTOM_SORT = "CASE WHEN id = 183 THEN '1'
-                      WHEN id = 999 THEN '2'
-                      WHEN id = 689 THEN '3'
-                      WHEN id = 636 THEN '4'
-                      ELSE 'z' || name END ASC"
+  CUSTOM_SORT = Arel.sql(
+    "CASE WHEN id = 183 THEN '1'"\
+    "WHEN id = 999 THEN '2'     "\
+    "WHEN id = 689 THEN '3'     "\
+    "WHEN id = 636 THEN '4'     "\
+    "ELSE 'z' || name END ASC   "
+  )
 
   def country_us?
     country == "US"
