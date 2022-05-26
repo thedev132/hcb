@@ -24,7 +24,7 @@ class DonationsController < ApplicationController
       return not_found
     end
 
-    @donation = Donation.new
+    @donation = Donation.new(amount: params[:amount])
   end
 
   def make_donation
