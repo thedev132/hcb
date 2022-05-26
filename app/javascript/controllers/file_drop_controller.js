@@ -11,6 +11,8 @@ export default class extends Controller {
   initialize() {
     // Explanation: https://stackoverflow.com/a/21002544/10987085
     this.counter = 0
+
+    this.submitting = false
   }
 
   dragover(e) {
@@ -25,7 +27,7 @@ export default class extends Controller {
 
     this.fileInputTarget.files = e.dataTransfer.files
 
-    if (this.hasUploadMethodTarget) {
+    if (this.hasUploadMethodTarget && !this.submitting) {
       // Append `_drag_and_drop` to the upload method
       this.uploadMethodTarget.value += '_drag_and_drop'
     }
@@ -35,6 +37,8 @@ export default class extends Controller {
     } else {
       this.element.submit()
     }
+
+    this.submitting = true
   }
 
   dragenter() {
