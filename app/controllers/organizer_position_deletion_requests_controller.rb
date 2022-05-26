@@ -20,6 +20,7 @@ class OrganizerPositionDeletionRequestsController < ApplicationController
 
   def new
     @op = OrganizerPosition.find(params[:organizer_id])
+    @event = @op.event
     @opdr = OrganizerPositionDeletionRequest.new(organizer_position: @op)
     authorize @opdr
 
