@@ -684,6 +684,7 @@ ActiveRecord::Schema.define(version: 2022_05_20_051108) do
     t.datetime "marked_no_or_lost_receipt_at"
     t.text "short_code"
     t.index ["hcb_code"], name: "index_hcb_codes_on_hcb_code", unique: true
+    t.check_constraint "short_code = upper(short_code)", name: "constraint_hcb_codes_on_short_code_to_uppercase"
   end
 
   create_table "invoice_payouts", force: :cascade do |t|
