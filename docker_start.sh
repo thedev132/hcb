@@ -49,4 +49,4 @@ fi
 # max@maxwofford.com: This is a hack to get past https://github.com/hackclub/bank/issues/2445 while developing. This isn't a long-term fix.
 env $(cat .env.docker) docker-compose run --service-ports web yarn install --check-files
 
-env $(cat .env.docker) docker-compose run --service-ports web
+env $(cat .env.docker) docker-compose run --service-ports web "${@/--with-solargraph/''}"
