@@ -28,6 +28,10 @@
   }
 }
 
+[class^="transaction--"]:target {
+  animation: highlight 2s;
+}
+
 .transaction__icon {
   padding-top: 0;
   padding-bottom: 0;
@@ -39,5 +43,14 @@
     height: 24px;
     fill: map-get($palette, muted);
     margin: 0;
+  }
+}
+
+@keyframes highlight {
+  from {
+    background-color: map-get($palette, warning);
+  }
+  to {
+    background-color: none;
   }
 }

@@ -1,5 +1,6 @@
 <tr
   class="transaction--<%= pt.amount.negative? ? "negative" : "positive" %> muted"
+  id="<%= pt.local_hcb_code.hashid %>"
   <% if defined?(receipt_upload_button) %>
     data-controller="file-drop"
     data-file-drop-target="dropzone"
@@ -43,7 +44,7 @@
     <td class="transaction__icon tooltipped tooltipped--e" aria-label="Other">
     </td>
   <% end %>
-  <td title="<%= pt.hcb_code %>">
+  <td>
     <%= pt.date %>
   </td>
   <td class="transaction__memo">

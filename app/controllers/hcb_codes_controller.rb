@@ -1,14 +1,28 @@
 # frozen_string_literal: true
 
 class HcbCodesController < ApplicationController
-  skip_before_action :signed_in_user, only: [:receipt, :attach_receipt]
+  skip_before_action :signed_in_user, only: [:receipt, :attach_receipt, :show]
 
   def show
     @hcb_code = HcbCode.find_by(hcb_code: params[:id]) || HcbCode.find(params[:id])
+    @event = @hcb_code.event
+
+    hcb = @hcb_code.hcb_code
+    hcb_id = @hcb_code.hashid
 
     authorize @hcb_code
+  rescue Pundit::NotAuthorizedError => e
+    raise unless @event.is_public?
 
-    @event = @hcb_code.event
+    if @hcb_code.canonical_transactions.any?
+      txs = TransactionGroupingEngine::Transaction::All.new(event_id: @event.id).run
+      pos = txs.index { |tx| tx.hcb_code == hcb } + 1
+      page = (pos.to_f / 100).ceil
+
+      redirect_to event_path(@event, page: page, anchor: hcb_id)
+    else
+      redirect_to event_path(@event, anchor: hcb_id)
+    end
   end
 
   def comment
