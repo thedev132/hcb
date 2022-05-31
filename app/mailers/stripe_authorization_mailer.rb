@@ -8,6 +8,7 @@ class StripeAuthorizationMailer < ApplicationMailer
     @user = @card.user
     @event = @card.event
     @merchant = params[:merchant] || @auth.stripe_obj.merchant_data.name
+    @reason = @auth.stripe_obj.request_history[0].reason
 
     mail to: @user.email,
          subject: "#{@auth.status_emoji} Purchase #{@auth.status_text} at #{@merchant}"
