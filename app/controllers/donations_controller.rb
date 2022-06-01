@@ -10,6 +10,13 @@ class DonationsController < ApplicationController
   before_action :set_event, only: [:start_donation, :make_donation, :finish_donation, :qr_code]
   before_action :allow_iframe, except: [:show, :index]
 
+  permissions_policy do |p|
+    # Allow stripe.js to wrap PaymentRequest in non-safari browsers.
+    p.payment    :self
+    # Allow embedded donation pages to be fullscreened
+    p.fullscreen :self
+  end
+
   invisible_captcha only: [:make_donation], honeypot: :subtitle, on_timestamp_spam: :redirect_to_404
 
   # GET /donations/1
@@ -42,6 +49,7 @@ class DonationsController < ApplicationController
   end
 
   def finish_donation
+
     @donation = Donation.find_by!(url_hash: params["donation"])
 
     if @donation.status == "succeeded"
