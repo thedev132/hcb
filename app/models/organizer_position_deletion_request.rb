@@ -18,11 +18,23 @@ class OrganizerPositionDeletionRequest < ApplicationRecord
   end
 
   def status
-    under_review? ? :under_review : :closed
+    if organizer_position.deleted_at.present?
+      :organizer_deleted
+    elsif under_review?
+      :under_review
+    else
+      :closed
+    end
   end
 
   def status_badge_type
-    under_review? ? :pending : :success
+    if organizer_position.deleted_at.present?
+      :primary
+    elsif under_review?
+      :pending
+    else
+      :success
+    end
   end
 
   def close(closed_by)
