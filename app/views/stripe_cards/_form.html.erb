@@ -1,4 +1,12 @@
 <%= form_with(model: StripeCard.new, local: true) do |form| %>
+  <% if @event || params[:event_id] %>
+    <%= form.hidden_field :event_id, value: @event&.id || params[:event_id] %>
+  <% else %>
+    <fieldset>
+      <legend class="heading h2 pt2 pb2">Which project?</legend>
+      <%= form.select :event_id, current_user.events.pluck(:name, :id) %>
+    </fieldset>
+  <% end %>
   <fieldset>
     <legend class="heading h2 pt2 pb2">What type of card?</legend>
     <div class="field field--options">
@@ -52,7 +60,6 @@
   </section>
 
   <%= form.hidden_field :stripe_cardholder_id, value: current_user&.stripe_cardholder&.id %>
-  <%= form.hidden_field :event_id, value: defined?(@event) ? @event.id : params[:event_id] %>
 
   <div class="actions">
     <%= form.submit "Issue my card" %>
