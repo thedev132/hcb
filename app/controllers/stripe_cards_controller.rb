@@ -76,11 +76,11 @@ class StripeCardsController < ApplicationController
     }
     ::StripeCardService::Create.new(attrs).run
 
-    redirect_to event_cards_overview_path(event_id: event.id), flash: { success: "Card was successfully created." }
+    redirect_to event_cards_overview_path(event), flash: { success: "Card was successfully created." }
   rescue => e
     Airbrake.notify(e)
 
-    redirect_to event_cards_new_path(event_id: event.id), flash: { error: e.message }
+    redirect_to event_cards_new_path(event), flash: { error: e.message }
   end
 
   private
