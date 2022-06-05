@@ -6,8 +6,10 @@ class OrganizerPositionDeletionRequestsController < ApplicationController
   def index
     authorize OrganizerPositionDeletionRequest
     @opdrs = OrganizerPositionDeletionRequest
+             .order(Arel.sql("closed_at IS NULL DESC")) # Place open requests at the top
              .order(created_at: :desc)
              .includes(:submitted_by, organizer_position: :event)
+             .page(params[:page])
   end
 
   def show

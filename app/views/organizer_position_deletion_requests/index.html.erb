@@ -2,6 +2,8 @@
 <h1>Organizer Position Deletion Requests</h1>
 
 <% if @opdrs.any? %>
+  <small class="muted mb2 inline-block"><%= page_entries_info @opdrs, entry_name: 'deletion requests' %></small>
+
   <table>
     <thead>
       <tr>
@@ -28,6 +30,8 @@
       <% end %>
     </tbody>
   </table>
+
+  <%= paginate @opdrs %>
 <% else %>
   <h3>Everything is well in the land of Bank</h3>
   <p>There are no account deletion requests.</p>
