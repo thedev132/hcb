@@ -95,6 +95,10 @@ module ApplicationHelper
     @no_app_shell = true
   end
 
+  def no_transparency_header
+    @no_transparency_header = true
+  end
+
   def form_errors(model, name = nil, prefix = "We couldn't save this")
     return if model.errors.none?
 
