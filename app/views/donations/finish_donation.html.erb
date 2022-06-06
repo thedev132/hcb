@@ -22,43 +22,66 @@
   <script defer>
     document.addEventListener('turbo:load', function() {
       const stripe = Stripe('<%= StripeService.publishable_key %>')
-      const elements = stripe.elements()
       const clientSecret = '<%= @donation.stripe_client_secret %>'
-
-      const dark = BK.isDark()
-
-      const style = {
-        base: {
-          fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Fira Sans', Oxygen, Ubuntu, 'Helvetica Neue', sans-serif",
-          ...(dark ? {
-            color: "white",
-            iconColor: "white",
-            '::placeholder': {
-              color: "#9b9a9d"
-            },
-          } : {}),
+      const appearance = BK.isDark() ? {
+        theme: "none",
+        variables: {
+          colorBackground: "#17171d",
+          colorText: "#e0e6ed",
+          borderRadius: "6px",
+          colorDanger: "#ec3750",
+        },
+        rules: {
+          ".Input:focus": {
+            outline: "none",
+          },
+          ".Tab": {
+            border: "2px solid transparent",
+          },
+          ".Tab--selected": {
+            borderColor: "#338eda",
+          },
+          ".Tab:focus": {
+            outline: "none",
+          },
+        },
+      } : {
+        theme: "none",
+        variables: {
+          colorBackground: "#e0e6ed",
+          colorText: "#1f2d3d",
+          borderRadius: "6px",
+          colorDanger: "#ec3750",
+        },
+        rules: {
+          ".Input": {
+            border: "1px solid transparent",
+          },
+          ".Input:focus": {
+            outline: "none",
+            borderColor: "#338eda",
+          },
+          ".Tab": {
+            border: "2px solid transparent",
+          },
+          ".Tab--selected": {
+            borderColor: "#338eda",
+          },
+          ".Tab:focus": {
+            outline: "none",
+          },
         },
       }
+      const elements = stripe.elements({ clientSecret, appearance })
 
-      var card = elements.create("card", { style })
-      card.mount("#card-element")
-
-      card.addEventListener('change', function(event) {
-        var displayError = document.getElementById('card-errors')
-        if (event.error) {
-          displayError.textContent = event.error.message
-        } else {
-          displayError.textContent = ''
-        }
-      })
+      const paymentElement = elements.create("payment");
+      paymentElement.mount("#payment-element");
 
       var submitButton = document.getElementById('submit')
 
       submitButton.addEventListener('click', function(ev) {
         $('.show-on-processing').show()
-        stripe.confirmCardPayment(clientSecret, {
-          payment_method: {card: card}
-        }).then(function(result) {
+        stripe.confirmPayment({ elements, redirect: "if_required" }).then(function(result) {
           if (result.error) {
             resetErrors()
             flashError(result.error.message)
@@ -98,9 +121,8 @@
   </p>
 
   <div class="hide-on-success">
-    <label for="card-element" class="mb1">Payment information</label>
     <div class="stripe">
-      <div id="card-element" class="input fit w-100" style="min-height: 0; padding: 0.9rem 0.5rem;">
+      <div id="payment-element">
         <!-- Stripe Elements will create input elements here -->
       </div>
       <div id="card-errors" role="alert" class="muted"></div>
