@@ -427,7 +427,7 @@ class Event < ApplicationRecord
 
   def point_of_contact_is_admin
     return unless point_of_contact # for remote partner created events
-    return if point_of_contact&.admin?
+    return if point_of_contact&.admin_override_pretend?
 
     errors.add(:point_of_contact, "must be an admin")
   end
