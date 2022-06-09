@@ -167,7 +167,7 @@ Rails.application.routes.draw do
   post "set_event/:id", to: "admin#set_event", as: :set_event
   get "transactions/dedupe", to: "admin#transaction_dedupe", as: :transaction_dedupe
 
-  resources :organizer_position_invites, only: [:index, :show], path: "invites" do
+  resources :organizer_position_invites, only: [:show], path: "invites" do
     post "accept"
     post "reject"
     post "cancel"
