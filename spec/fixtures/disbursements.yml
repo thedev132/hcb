@@ -1,0 +1,5 @@
+user_created:
+  amount: 100
+  name: "user created disbursement"
+  event: event1
+  source_event: event2
