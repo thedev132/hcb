@@ -5,7 +5,7 @@ module PendingEventMappingEngine
     class OutgoingDisbursement
       def run
         unsettled.find_each(batch_size: 100) do |cpt|
-          Single::OutgoingDisbursement(canonical_pending_transaction: cpt)
+          Single::OutgoingDisbursement.new(canonical_pending_transaction: cpt).run
         end
       end
 

@@ -18,7 +18,7 @@ module PendingTransactionEngine
           {
             disbursement_id: @disbursement.id,
             amount_cents: @disbursement.amount.abs,
-            date_posted: @disbursement.fulfilled_at
+            date_posted: @disbursement.fulfilled_at || @disbursement.created_at
           }
         end
 

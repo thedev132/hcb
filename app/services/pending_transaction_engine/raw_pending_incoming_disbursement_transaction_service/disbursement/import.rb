@@ -13,7 +13,7 @@ module PendingTransactionEngine
         private
 
         def disbursements
-          ::Disbursement.where.not(fulfilled_by: nil).where.not(fulfilled_at: nil).where.missing :raw_pending_incoming_disbursement_transaction
+          ::Disbursement.where.missing :raw_pending_incoming_disbursement_transaction
         end
 
       end

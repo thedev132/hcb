@@ -6,9 +6,7 @@ module PendingTransactionEngine
       class OutgoingDisbursement
         def run
           raw_pending_outgoing_disbursement_transactions.find_each(batch_size: 100) do |rpodt|
-            ActiveRecord::Base.transaction do
-              ImportSingle::OutgoingDisbursement(raw_pending_outgoing_disbursement_transaction: rpodt)
-            end
+            ::PendingTransactionEngine::CanonicalPendingTransactionService::ImportSingle::OutgoingDisbursement.new(raw_pending_outgoing_disbursement_transaction: rpodt).run
           end
         end
 
@@ -17,7 +15,6 @@ module PendingTransactionEngine
         def raw_pending_outgoing_disbursement_transactions
           RawPendingOutgoingDisbursementTransaction.where.missing :canonical_pending_transaction
         end
-
 
       end
     end

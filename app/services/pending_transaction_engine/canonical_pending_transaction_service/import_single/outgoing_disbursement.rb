@@ -11,7 +11,7 @@ module PendingTransactionEngine
         def run
           return existing_canonical_pending_transaction if existing_canonical_pending_transaction
 
-          ::CanonicalPendingTransaction.find_or_create_by(attrs)
+          ::CanonicalPendingTransaction.find_or_create_by!(attrs)
         end
 
         private

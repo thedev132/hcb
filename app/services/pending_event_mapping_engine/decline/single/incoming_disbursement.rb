@@ -14,7 +14,7 @@ module PendingEventMappingEngine
           return unless disbursement.errored? || disbursement.rejected?
 
           CanonicalPendingDeclinedMapping.create!(
-            canonical_pending_transaction_id: cpt.id
+            canonical_pending_transaction_id: @canonical_pending_transaction.id
           )
         end
 
