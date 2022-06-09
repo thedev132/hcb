@@ -40,6 +40,14 @@
     <td class="transaction__icon tooltipped tooltipped--e" aria-label="Hack Club Bank Fee payment">
       <%= inline_icon "minus-fill" %>
     </td>
+  <% elsif pt.raw_pending_incoming_disbursement_transaction_id %>
+    <td class="transaction__icon tooltipped tooltipped--e" aria-label="Incoming transfer">
+      <%= inline_icon "plus-fill" %>
+    </td>
+  <% elsif pt.raw_pending_outgoing_disbursement_transaction_id %>
+    <td class="transaction__icon tooltipped tooltipped--e" aria-label="Outgoing transfer">
+      <%= inline_icon "minus-fill" %>
+    </td>
   <% else %>
     <td class="transaction__icon tooltipped tooltipped--e" aria-label="Other">
     </td>

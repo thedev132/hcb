@@ -11,9 +11,9 @@ module PendingEventMappingEngine
       settle_canonical_pending_outgoing_ach!
       decline_canonical_pending_outgoing_ach!
 
-      map_canonical_pending_stripe!
-      settle_canonical_pending_stripe!
-      decline_canonical_pending_stripe!
+      # map_canonical_pending_stripe!
+      # settle_canonical_pending_stripe!
+      # decline_canonical_pending_stripe!
 
       map_canonical_pending_donation!
       settle_canonical_pending_donation!
@@ -31,10 +31,42 @@ module PendingEventMappingEngine
       map_canonical_pending_partner_donation!
       settle_canonical_pending_partner_donation_hcb_code!
 
+      map_canonical_pending_outgoing_disbursement!
+      settle_canonical_pending_outgoing_disbursement_hcb_code!
+      decline_canonical_pending_outgoing_disbursement!
+
+      map_canonical_pending_incoming_disbursement!
+      settle_canonical_pending_incoming_disbursement_hcb_code!
+      decline_canonical_pending_incoming_disbursement!
+
       true
     end
 
     private
+
+    def map_canonical_pending_incoming_disbursement!
+      ::PendingEventMappingEngine::Map::IncomingDisbursement.new.run
+    end
+
+    def settle_canonical_pending_incoming_disbursement_hcb_code!
+      ::PendingEventMappingEngine::Settle::IncomingDisbursementHcbCode.new.run
+    end
+
+    def decline_canonical_pending_incoming_disbursement!
+      ::PendingEventMappingEngine::Decline::IncomingDisbursement.new.run
+    end
+
+    def map_canonical_pending_outgoing_disbursement!
+      ::PendingEventMappingEngine::Map::OutgoingDisbursement.new.run
+    end
+
+    def settle_canonical_pending_outgoing_disbursement_hcb_code!
+      ::PendingEventMappingEngine::Settle::OutgoingDisbursementHcbCode.new.run
+    end
+
+    def decline_canonical_pending_outgoing_disbursement!
+      ::PendingEventMappingEngine::Decline::OutgoingDisbursement.new.run
+    end
 
     def map_canonical_pending_outgoing_check!
       ::PendingEventMappingEngine::Map::OutgoingCheck.new.run

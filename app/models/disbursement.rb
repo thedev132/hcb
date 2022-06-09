@@ -15,6 +15,9 @@ class Disbursement < ApplicationRecord
   belongs_to :source_event, class_name: "Event", inverse_of: 'outgoing_disbursements'
   belongs_to :event
 
+  has_one :raw_pending_incoming_disbursement_transaction
+  has_one :raw_pending_outgoing_disbursement_transaction
+
   has_many :t_transactions, class_name: "Transaction", inverse_of: :disbursement
 
   validates_presence_of :source_event_id,

@@ -21,7 +21,16 @@ module DisbursementService
       raise ArgumentError, "amount_cents must be greater than 0" unless amount_cents > 0
       raise ArgumentError, "You don't have enough money to make this disbursement." unless ample_balance?(amount_cents, @source_event) || requested_by.admin?
 
-      Disbursement.create!(attrs)
+      disbursement = Disbursement.create!(attrs)
+
+      if requested_by.admin?
+        DisbursementService::Approve.new(
+          disbursement_id: disbursement.id,
+          fulfilled_by_id: requested_by.id
+        ).run
+      end
+
+      disbursement
     end
 
     private
@@ -32,21 +41,12 @@ module DisbursementService
         event_id: destination_event.id,
         name: @name,
         amount: amount_cents,
-        requested_by: requested_by,
-        fulfilled_by: fulfilled_by
+        requested_by: requested_by
       }
     end
 
     def requested_by
       @requested_by ||= User.find @requested_by_id
-    end
-
-    def fulfilled_by
-      @fulfilled_by ||= if @fulfilled_by_id
-                          User.find @fulfilled_by_id
-                        elsif requested_by.admin?
-                          requested_by
-                        end
     end
 
     def amount_cents

@@ -31,6 +31,7 @@ class HcbCode < ApplicationRecord
   end
 
   def memo
+    return disbursement_memo if disbursement?
     return invoice_memo if invoice?
     return donation_memo if donation?
     return partner_donation_memo if partner_donation?
@@ -143,6 +144,10 @@ class HcbCode < ApplicationRecord
 
   def disbursement?
     hcb_i1 == ::TransactionGroupingEngine::Calculate::HcbCode::DISBURSEMENT_CODE
+  end
+
+  def disbursement_memo
+    smartish_custom_memo || "Transfer from #{disbursement.source_event.name} to #{disbursement.destination_event.name}".strip.upcase
   end
 
   def stripe_card?

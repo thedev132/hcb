@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_06_05_131029) do
+ActiveRecord::Schema.define(version: 2022_06_07_180352) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -259,11 +259,15 @@ ActiveRecord::Schema.define(version: 2022_06_05_131029) do
     t.bigint "raw_pending_bank_fee_transaction_id"
     t.bigint "raw_pending_partner_donation_transaction_id"
     t.text "custom_memo"
+    t.bigint "raw_pending_incoming_disbursement_transaction_id"
+    t.bigint "raw_pending_outgoing_disbursement_transaction_id"
     t.index ["hcb_code"], name: "index_canonical_pending_transactions_on_hcb_code"
     t.index ["raw_pending_bank_fee_transaction_id"], name: "index_canonical_pending_txs_on_raw_pending_bank_fee_tx_id"
     t.index ["raw_pending_donation_transaction_id"], name: "index_canonical_pending_txs_on_raw_pending_donation_tx_id"
+    t.index ["raw_pending_incoming_disbursement_transaction_id"], name: "index_cpts_on_raw_pending_incoming_disbursement_transaction_id"
     t.index ["raw_pending_outgoing_ach_transaction_id"], name: "index_canonical_pending_txs_on_raw_pending_outgoing_ach_tx_id"
     t.index ["raw_pending_outgoing_check_transaction_id"], name: "index_canonical_pending_txs_on_raw_pending_outgoing_check_tx_id"
+    t.index ["raw_pending_outgoing_disbursement_transaction_id"], name: "index_cpts_on_raw_pending_outgoing_disbursement_transaction_id"
     t.index ["raw_pending_stripe_transaction_id"], name: "index_canonical_pending_txs_on_raw_pending_stripe_tx_id"
   end
 
@@ -995,6 +999,16 @@ ActiveRecord::Schema.define(version: 2022_06_05_131029) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "raw_pending_incoming_disbursement_transactions", force: :cascade do |t|
+    t.integer "amount_cents"
+    t.date "date_posted"
+    t.string "state"
+    t.bigint "disbursement_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["disbursement_id"], name: "index_rpidts_on_disbursement_id"
+  end
+
   create_table "raw_pending_invoice_transactions", force: :cascade do |t|
     t.string "invoice_transaction_id"
     t.integer "amount_cents"
@@ -1020,6 +1034,16 @@ ActiveRecord::Schema.define(version: 2022_06_05_131029) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "check_transaction_id"
+  end
+
+  create_table "raw_pending_outgoing_disbursement_transactions", force: :cascade do |t|
+    t.integer "amount_cents"
+    t.date "date_posted"
+    t.string "state"
+    t.bigint "disbursement_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["disbursement_id"], name: "index_rpodts_on_disbursement_id"
   end
 
   create_table "raw_pending_partner_donation_transactions", force: :cascade do |t|
@@ -1358,6 +1382,8 @@ ActiveRecord::Schema.define(version: 2022_06_05_131029) do
   add_foreign_key "partnered_signups", "partners"
   add_foreign_key "partnered_signups", "users"
   add_foreign_key "partners", "users", column: "representative_id"
+  add_foreign_key "raw_pending_incoming_disbursement_transactions", "disbursements"
+  add_foreign_key "raw_pending_outgoing_disbursement_transactions", "disbursements"
   add_foreign_key "receipts", "users"
   add_foreign_key "sponsors", "events"
   add_foreign_key "stripe_authorizations", "stripe_cards"
