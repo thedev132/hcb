@@ -8,8 +8,12 @@ class RawPendingStripeTransactionDecorator < SimpleDelegator
   end
 
   def original_amount
-    tx = stripe_transaction["transactions"].first
-    Money.new tx["merchant_amount"].abs, tx["merchant_currency"]
+    txs = stripe_transaction["transactions"] + stripe_transaction["request_history"]
+
+    amount = txs.pluck("merchant_amount").first
+    currency = txs.pluck("merchant_currency").first
+
+    Money.new amount.abs, currency
   end
 
   def original_amount_international
