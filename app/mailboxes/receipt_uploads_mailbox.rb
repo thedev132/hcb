@@ -35,7 +35,7 @@ class ReceiptUploadsMailbox < ApplicationMailbox
   private
 
   def user
-    @user ||= User.find_by email: mail.from
+    @user ||= User.find_by(email: mail.from[0].downcase)
   end
 
   def hcb
