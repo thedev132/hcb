@@ -37,6 +37,16 @@ class StripeController < ApplicationController
     ::StripeAuthorizationService::Webhook::HandleIssuingAuthorizationRequest.new(stripe_event: event).run
   end
 
+  def handle_issuing_authorization_created(event)
+    auth_id = event[:data][:object][:id]
+
+    # DEPRECATED: put the transaction on the v1 ledger
+    ::StripeAuthorizationJob::Deprecated::CreateFromWebhook.perform_later(auth_id)
+
+    # put the transaction on the pending ledger in almost realtime
+    ::StripeAuthorizationJob::CreateFromWebhook.perform_later(auth_id)
+  end
+
   def handle_issuing_authorization_updated(event)
     # This is to listen for edge-cases like multi-capture TXs
     # https://stripe.com/docs/issuing/purchases/transactions
@@ -45,9 +55,6 @@ class StripeController < ApplicationController
     sa.sync_from_stripe!
     sa.save
   end
-  # This is to listen for declined authorizations before the 'issuing_authorization.request' hook.
-  # ex. An authorization for an inactive card
-  alias_method :handle_issuing_authorization_created, :handle_issuing_authorization_updated
 
   def handle_issuing_transaction_created(event)
     tx = event[:data][:object]

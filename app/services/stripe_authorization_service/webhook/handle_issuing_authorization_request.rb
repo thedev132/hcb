@@ -15,11 +15,10 @@ module StripeAuthorizationService
           StripeService::Issuing::Authorization.decline(auth_id)
         end
 
-        # 2. DEPRECATED
-        ::StripeAuthorizationJob::Deprecated::CreateFromWebhook.perform_later(auth_id) #
-
-        # 3. put the transaction on the pending ledger in almost realtime
-        ::StripeAuthorizationJob::CreateFromWebhook.perform_later(auth_id) #
+        # The actual pending transaction is not created here, because Stripe is about to send us an `issuing_authorization.created` webhook event.
+        # See `StripeController#handle_issuing_authorization_created`
+        #
+        # ~ @cjdenio
       end
 
       private
