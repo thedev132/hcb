@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_05_31_000103) do
+ActiveRecord::Schema.define(version: 2022_06_05_131029) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -1244,7 +1244,6 @@ ActiveRecord::Schema.define(version: 2022_05_31_000103) do
     t.text "api_access_token"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.text "session_token"
     t.text "email"
     t.string "full_name"
     t.text "phone_number"

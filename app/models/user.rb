@@ -11,7 +11,6 @@ class User < ApplicationRecord
 
   friendly_id :slug_candidates, use: :slugged
   scope :admin, -> { where.not(admin_at: nil) }
-  scope :has_session_token, -> { where.not(session_token: nil) }
 
   has_many :login_tokens
   has_many :user_sessions, dependent: :destroy
@@ -45,7 +44,6 @@ class User < ApplicationRecord
 
   has_one :partner, inverse_of: :representative
 
-  before_create :create_session_token
   before_create :format_number
   before_save :on_phone_number_update
 
@@ -144,10 +142,6 @@ class User < ApplicationRecord
 
   def email_handle
     @email_handle ||= email.split("@").first
-  end
-
-  def create_session_token
-    self.session_token = SecureRandom.urlsafe_base64
   end
 
   def slug_candidates
