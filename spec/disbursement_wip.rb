@@ -9,7 +9,7 @@ RSpec.describe PendingTransactionEngine do
     event.canonical_pending_transactions.incoming.unsettled.sum(:amount_cents)
   end
 
-  describe "source event" do
+  describe "disbursement moves pending money" do
     def create_partner
       Partner.create!({
                         slug: SecureRandom.hex(30)
@@ -54,7 +54,7 @@ RSpec.describe PendingTransactionEngine do
       expect(disbursement.raw_pending_incoming_disbursement_transaction).to eq(nil)
       expect(disbursement.raw_pending_outgoing_disbursement_transaction).to eq(nil)
 
-      cpt_count = CanonicalPendingTransaction.all.size
+      cpt_count = CanonicalPendingTransaction.count
 
       # Act
       ::PendingTransactionEngine::RawPendingIncomingDisbursementTransactionService::Disbursement::Import.new.run
@@ -68,7 +68,7 @@ RSpec.describe PendingTransactionEngine do
       expect(disbursement.raw_pending_incoming_disbursement_transaction).to be_present
       expect(disbursement.raw_pending_outgoing_disbursement_transaction).to be_present
 
-      expect(CanonicalPendingTransaction.all.size).to eq(cpt_count + 2)
+      expect(CanonicalPendingTransaction.count).to eq(cpt_count + 2)
     end
 
     it "increments the incoming deposit total" do
@@ -93,7 +93,7 @@ RSpec.describe PendingTransactionEngine do
       ::PendingEventMappingEngine::Decline::OutgoingDisbursement.new.run
 
       expect(incoming_deposits(destination_event)).to eq(incoming_amount + 100)
-      
+
       # TODO: should we assert that the source_event has been decremented 100?
     end
   end
