@@ -10,46 +10,47 @@ RSpec.describe PendingTransactionEngine do
   end
 
   describe "source event" do
-    let(:partner) {
+    def create_partner
       Partner.create!({
-        slug: SecureRandom.hex(30)
-      })
-    }
+                        slug: SecureRandom.hex(30)
+                      })
+    end
 
-    let(:source_event) {
+    def create_event(name, partner)
       Event.create!({
-        name: 'source hacks',
-        partner_id: partner.id,
-        sponsorship_fee: 0,
-        organization_identifier: SecureRandom.hex(30)
-      })
-    }
+                      name: name,
+                      partner_id: partner.id,
+                      sponsorship_fee: 0,
+                      organization_identifier: SecureRandom.hex(30)
+                    })
+    end
 
-    let(:destination_event) {
-      Event.create!({
-        name: 'destinoshacks',
-        partner_id: partner.id,
-        sponsorship_fee: 0,
-        organization_identifier: SecureRandom.hex(30)
-      })
-    }
-
-    let(:disbursement) {
+    def create_disbursement(source_event, destination_event)
       Disbursement.create!({
-        event: destination_event,
-        source_event: source_event,
-        amount: 100,
-        name: 'for fun'
-      })
-    }
+                             event: destination_event,
+                             source_event: source_event,
+                             amount: 100,
+                             name: 'for fun'
+                           })
+    end
 
-    before do
+    it "creates valid setup data" do
+      partner = create_partner
+      source_event = create_event('source hacks', partner)
+      destination_event = create_event('destination hacks', partner)
+      disbursement = create_disbursement(source_event, destination_event)
+
       expect(source_event).to be_valid
       expect(destination_event).to be_valid
       expect(disbursement).to be_valid
     end
 
     it "creates raw incoming and outgoing transactions" do
+      partner = create_partner
+      source_event = create_event('source hacks', partner)
+      destination_event = create_event('destination hacks', partner)
+      disbursement = create_disbursement(source_event, destination_event)
+
       expect(disbursement.raw_pending_incoming_disbursement_transaction).to eq(nil)
       expect(disbursement.raw_pending_outgoing_disbursement_transaction).to eq(nil)
 
@@ -71,6 +72,11 @@ RSpec.describe PendingTransactionEngine do
     end
 
     it "increments the incoming deposit total" do
+      partner = create_partner
+      source_event = create_event('source hacks', partner)
+      destination_event = create_event('destination hacks', partner)
+      create_disbursement(source_event, destination_event)
+
       incoming_amount = incoming_deposits destination_event
 
       ::PendingTransactionEngine::RawPendingIncomingDisbursementTransactionService::Disbursement::Import.new.run
@@ -87,6 +93,8 @@ RSpec.describe PendingTransactionEngine do
       ::PendingEventMappingEngine::Decline::OutgoingDisbursement.new.run
 
       expect(incoming_deposits(destination_event)).to eq(incoming_amount + 100)
+      
+      # TODO: should we assert that the source_event has been decremented 100?
     end
   end
 end
