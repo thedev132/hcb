@@ -9,7 +9,7 @@ RSpec.describe PendingTransactionEngine do
     event.canonical_pending_transactions.incoming.unsettled.sum(:amount_cents)
   end
 
-  describe "disbursement moves pending money" do
+  context "disbursement moves pending money" do
     def create_partner
       Partner.create!({
                         slug: SecureRandom.hex(30)
