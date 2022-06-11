@@ -2,6 +2,7 @@ require "rails_helper"
 
 RSpec.describe PendingTransactionEngine do
 
+  # TODO: move this method into business logic and use in view as well as this test
   def incoming_deposits(event)
     event.canonical_pending_transactions.incoming.unsettled.sum(:amount_cents)
   end
