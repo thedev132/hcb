@@ -64,25 +64,6 @@ RSpec.describe PendingTransactionEngine do
       expect(incoming_deposits(destination_event)).to eq(@incoming_amount + 100)
     end
   end
-
-  before(:all) do
-    Disbursement.delete_all
-    Disbursement.delete_all
-    CanonicalPendingEventMapping.delete_all
-    CanonicalPendingEventMapping.delete_all
-    CanonicalEventMapping.delete_all
-    CanonicalEventMapping.delete_all
-    Check.delete_all
-    Check.delete_all
-    LobAddress.delete_all
-    LobAddress.delete_all
-    StripeCard.delete_all
-    StripeCard.delete_all
-    Event.delete_all
-    Event.delete_all
-    Partner.delete_all
-    Partner.delete_all
-  end
 end
 # setup
 # - [x] 2 accounts, one with funds one without
