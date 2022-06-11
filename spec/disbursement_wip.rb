@@ -10,41 +10,48 @@ RSpec.describe PendingTransactionEngine do
   end
 
   describe "source event" do
-    before do
-      # Arrange
-      @partner = Partner.create!({
+    let(:partner) {
+      Partner.create!({
         slug: SecureRandom.hex(30)
       })
+    }
 
-      @source_event = Event.create!({
+    let(:source_event) {
+      Event.create!({
         name: 'source hacks',
-        partner_id: @partner.id,
+        partner_id: partner.id,
         sponsorship_fee: 0,
         organization_identifier: SecureRandom.hex(30)
       })
+    }
 
-      @destination_event = Event.create!({
+    let(:destination_event) {
+      Event.create!({
         name: 'destinoshacks',
-        partner_id: @partner.id,
+        partner_id: partner.id,
         sponsorship_fee: 0,
         organization_identifier: SecureRandom.hex(30)
       })
+    }
 
-      @disbursement = Disbursement.create!({
-        event: @destination_event,
-        source_event: @source_event,
+    let(:disbursement) {
+      Disbursement.create!({
+        event: destination_event,
+        source_event: source_event,
         amount: 100,
         name: 'for fun'
       })
+    }
 
-      expect(@source_event).to be_valid
-      expect(@destination_event).to be_valid
-      expect(@disbursement).to be_valid
+    before do
+      expect(source_event).to be_valid
+      expect(destination_event).to be_valid
+      expect(disbursement).to be_valid
     end
 
     it "creates raw incoming and outgoing transactions" do
-      expect(@disbursement.raw_pending_incoming_disbursement_transaction).to eq(nil)
-      expect(@disbursement.raw_pending_outgoing_disbursement_transaction).to eq(nil)
+      expect(disbursement.raw_pending_incoming_disbursement_transaction).to eq(nil)
+      expect(disbursement.raw_pending_outgoing_disbursement_transaction).to eq(nil)
 
       cpt_count = CanonicalPendingTransaction.all.size
 
@@ -56,15 +63,15 @@ RSpec.describe PendingTransactionEngine do
       ::PendingTransactionEngine::CanonicalPendingTransactionService::Import::OutgoingDisbursement.new.run
 
       # Assert
-      @disbursement.reload
-      expect(@disbursement.raw_pending_incoming_disbursement_transaction).to be_present
-      expect(@disbursement.raw_pending_outgoing_disbursement_transaction).to be_present
+      disbursement.reload
+      expect(disbursement.raw_pending_incoming_disbursement_transaction).to be_present
+      expect(disbursement.raw_pending_outgoing_disbursement_transaction).to be_present
 
       expect(CanonicalPendingTransaction.all.size).to eq(cpt_count + 2)
     end
 
     it "increments the incoming deposit total" do
-      incoming_amount = incoming_deposits @destination_event
+      incoming_amount = incoming_deposits destination_event
 
       ::PendingTransactionEngine::RawPendingIncomingDisbursementTransactionService::Disbursement::Import.new.run
       ::PendingTransactionEngine::RawPendingOutgoingDisbursementTransactionService::Disbursement::Import.new.run
@@ -79,7 +86,7 @@ RSpec.describe PendingTransactionEngine do
       ::PendingEventMappingEngine::Decline::IncomingDisbursement.new.run
       ::PendingEventMappingEngine::Decline::OutgoingDisbursement.new.run
 
-      expect(incoming_deposits(@destination_event)).to eq(incoming_amount + 100)
+      expect(incoming_deposits(destination_event)).to eq(incoming_amount + 100)
     end
   end
 end
