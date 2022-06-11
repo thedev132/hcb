@@ -41,8 +41,8 @@ RSpec.describe PendingTransactionEngine do
       expect(disbursement.raw_pending_incoming_disbursement_transaction).to eq(nil)
       expect(disbursement.raw_pending_outgoing_disbursement_transaction).to eq(nil)
 
-      @cpt_count = CanonicalPendingTransaction.all.size
-      @incoming_amount = incoming_deposits destination_event
+      cpt_count = CanonicalPendingTransaction.all.size
+      incoming_amount = incoming_deposits destination_event
 
       ::PendingTransactionEngine::RawPendingIncomingDisbursementTransactionService::Disbursement::Import.new.run
       ::PendingTransactionEngine::RawPendingOutgoingDisbursementTransactionService::Disbursement::Import.new.run
@@ -54,7 +54,7 @@ RSpec.describe PendingTransactionEngine do
       expect(disbursement.raw_pending_incoming_disbursement_transaction).to be_present
       expect(disbursement.raw_pending_outgoing_disbursement_transaction).to be_present
 
-      expect(CanonicalPendingTransaction.all.size).to eq(@cpt_count + 2)
+      expect(CanonicalPendingTransaction.all.size).to eq(cpt_count + 2)
 
       ::PendingEventMappingEngine::Map::IncomingDisbursement.new.run
       ::PendingEventMappingEngine::Map::OutgoingDisbursement.new.run
@@ -63,7 +63,7 @@ RSpec.describe PendingTransactionEngine do
       ::PendingEventMappingEngine::Decline::IncomingDisbursement.new.run
       ::PendingEventMappingEngine::Decline::OutgoingDisbursement.new.run
 
-      expect(incoming_deposits(destination_event)).to eq(@incoming_amount + 100)
+      expect(incoming_deposits(destination_event)).to eq(incoming_amount + 100)
     end
   end
 end
