@@ -51,8 +51,8 @@ RSpec.describe PendingTransactionEngine do
       destination_event = create_event('destination hacks', partner)
       disbursement = create_disbursement(source_event, destination_event)
 
-      expect(disbursement.raw_pending_incoming_disbursement_transaction).to eq(nil)
-      expect(disbursement.raw_pending_outgoing_disbursement_transaction).to eq(nil)
+      expect(disbursement.raw_pending_incoming_disbursement_transaction).to be_nil
+      expect(disbursement.raw_pending_outgoing_disbursement_transaction).to be_nil
 
       cpt_count = CanonicalPendingTransaction.count
 
@@ -75,9 +75,9 @@ RSpec.describe PendingTransactionEngine do
       partner = create_partner
       source_event = create_event('source hacks', partner)
       destination_event = create_event('destination hacks', partner)
-      create_disbursement(source_event, destination_event)
+      disbursement = create_disbursement(source_event, destination_event)
 
-      incoming_amount = incoming_deposits destination_event
+      incoming_amount_before = incoming_deposits destination_event
 
       ::PendingTransactionEngine::RawPendingIncomingDisbursementTransactionService::Disbursement::Import.new.run
       ::PendingTransactionEngine::RawPendingOutgoingDisbursementTransactionService::Disbursement::Import.new.run
@@ -92,7 +92,7 @@ RSpec.describe PendingTransactionEngine do
       ::PendingEventMappingEngine::Decline::IncomingDisbursement.new.run
       ::PendingEventMappingEngine::Decline::OutgoingDisbursement.new.run
 
-      expect(incoming_deposits(destination_event)).to eq(incoming_amount + 100)
+      expect(incoming_deposits(destination_event)).to eq(incoming_amount_before + disbursement.amount)
 
       # TODO: should we assert that the source_event has been decremented 100?
     end
