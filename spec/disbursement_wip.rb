@@ -8,7 +8,7 @@ RSpec.describe PendingTransactionEngine do
 
   describe "source event" do
     it "is valid" do
-
+      # Arrange
       partner = Partner.create!({
         slug: SecureRandom.hex(30)
       })
@@ -44,17 +44,12 @@ RSpec.describe PendingTransactionEngine do
       cpt_count = CanonicalPendingTransaction.all.size
       incoming_amount = incoming_deposits destination_event
 
+      # Act
       ::PendingTransactionEngine::RawPendingIncomingDisbursementTransactionService::Disbursement::Import.new.run
       ::PendingTransactionEngine::RawPendingOutgoingDisbursementTransactionService::Disbursement::Import.new.run
 
       ::PendingTransactionEngine::CanonicalPendingTransactionService::Import::IncomingDisbursement.new.run
       ::PendingTransactionEngine::CanonicalPendingTransactionService::Import::OutgoingDisbursement.new.run
-
-      disbursement.reload
-      expect(disbursement.raw_pending_incoming_disbursement_transaction).to be_present
-      expect(disbursement.raw_pending_outgoing_disbursement_transaction).to be_present
-
-      expect(CanonicalPendingTransaction.all.size).to eq(cpt_count + 2)
 
       ::PendingEventMappingEngine::Map::IncomingDisbursement.new.run
       ::PendingEventMappingEngine::Map::OutgoingDisbursement.new.run
@@ -63,6 +58,12 @@ RSpec.describe PendingTransactionEngine do
       ::PendingEventMappingEngine::Decline::IncomingDisbursement.new.run
       ::PendingEventMappingEngine::Decline::OutgoingDisbursement.new.run
 
+      # Assert
+      disbursement.reload
+      expect(disbursement.raw_pending_incoming_disbursement_transaction).to be_present
+      expect(disbursement.raw_pending_outgoing_disbursement_transaction).to be_present
+
+      expect(CanonicalPendingTransaction.all.size).to eq(cpt_count + 2)
       expect(incoming_deposits(destination_event)).to eq(incoming_amount + 100)
     end
   end
