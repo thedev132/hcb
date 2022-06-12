@@ -19,7 +19,7 @@ RSpec.describe PendingTransactionEngine do
     def create_event(name, partner)
       Event.create!({
                       name: name,
-                      partner_id: partner.id,
+                      partner: partner,
                       sponsorship_fee: 0,
                       organization_identifier: SecureRandom.hex(30)
                     })
