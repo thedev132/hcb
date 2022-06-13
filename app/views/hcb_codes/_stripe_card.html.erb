@@ -1,4 +1,4 @@
-<% title "#{render_money(-@hcb_code.amount_cents)} charge for #{@hcb_code.memo}" %>
+<% title "#{render_money(@hcb_code.amount_cents.abs)} charge for #{@hcb_code.memo}" %>
 
 <% admin_tools('mt1') do %>
   <%= link_to 'View on Stripe', @hcb_code.stripe_auth_dashboard_url, class: 'btn bg-accent' %>
@@ -19,7 +19,7 @@
     <span>
       <%= @hcb_code.memo %>
       <span class="regular muted"> for </span>
-      <%= number_to_currency(-@hcb_code.amount) %>
+      <%= number_to_currency(@hcb_code.amount.abs) %>
       </span>
 
       <% if @hcb_code.pt.declined? %>
