@@ -4,8 +4,10 @@
 
 <%= render partial: "hcb_codes/admin_tools" %>
 <%= render partial: "hcb_codes/rich_metadata" %>
-<%= render partial: "hcb_codes/transaction_history" %>
-<%= render partial: "hcb_codes/pending_transaction_history" %>
+<% admin_tools do %>
+  <%= render partial: "hcb_codes/transaction_history" %>
+  <%= render partial: "hcb_codes/pending_transaction_history" %>
+<% end %>
 
 <%= render "receipts/list_v2" %>
 <%= render "receipts/form_v2" %>

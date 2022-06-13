@@ -28,7 +28,10 @@ module TransactionEngine
 
           return "DISBURSEMENT" if disbursement?
 
-          memo
+          # @msw: temporary patch to fix
+          # https://github.com/hackclub/bank/issues/2670 in production. This
+          # should have a permanent fix.
+          memo.gsub(/(FROM|TO) ACCOUNT \d+$/, '')
 
         else
 
