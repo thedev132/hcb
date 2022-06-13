@@ -17,7 +17,7 @@ module GSuiteService
     def org_unit_name
       # Prefixing the G Suite id with `G` will it easier to search for them in
       # the Google Admin Dashboard.
-      "##{@g_suite.event.id} G##{@g_suite.id}"
+      "E#{@g_suite.event.id} G#{@g_suite.id}"
 
       # The old OU name used to be in the format of:
       #   "##{event.id} #{event.name.to_s.gsub("+", "")}".strip
