@@ -8,7 +8,14 @@ class DonationsController < ApplicationController
   skip_before_action :signed_in_user
   before_action :set_donation, only: [:show]
   before_action :set_event, only: [:start_donation, :make_donation, :finish_donation, :qr_code]
-  before_action :allow_iframe, except: [:show, :index]
+
+  # Rationale: the session doesn't work inside iframes (because of third-party cookies)
+  skip_before_action :verify_authenticity_token, only: [:start_donation, :make_donation, :finish_donation]
+
+  # Allow embedding donation pages inside iframes
+  content_security_policy(only: [:start_donation, :make_donation, :finish_donation]) do |policy|
+    policy.frame_ancestors "*"
+  end
 
   permissions_policy do |p|
     # Allow stripe.js to wrap PaymentRequest in non-safari browsers.
@@ -180,10 +187,6 @@ class DonationsController < ApplicationController
 
   def public_donation_params
     params.require(:donation).permit(:email, :name, :amount, :message)
-  end
-
-  def allow_iframe
-    response.headers["X-Frame-Options"] = "ALLOWALL"
   end
 
   def redirect_to_404

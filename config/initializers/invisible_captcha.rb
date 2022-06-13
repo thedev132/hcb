@@ -6,7 +6,7 @@ InvisibleCaptcha.setup do |config|
   # config.timestamp_threshold = 2
   config.timestamp_enabled   = false
   # config.injectable_styles   = false
-  # config.spinner_enabled     = true
+  config.spinner_enabled     = false
 
   # Leave these unset if you want to use I18n (see below)
   config.sentence_for_humans = "please do not spam us. we are trying to do good."
