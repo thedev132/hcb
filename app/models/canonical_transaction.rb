@@ -64,7 +64,9 @@ class CanonicalTransaction < ApplicationRecord
   end
 
   def less_smart_memo
-    friendly_memo || friendly_memo_in_memory_backup
+    # friendly_memo || friendly_memo_in_memory_backup
+    # Prevent reading 'friendly_memo' from DB while patching #2670
+    friendly_memo_in_memory_backup
   end
 
   def likely_disbursement?
