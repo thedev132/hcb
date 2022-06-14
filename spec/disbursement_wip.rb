@@ -98,12 +98,3 @@ RSpec.describe PendingTransactionEngine do
     end
   end
 end
-# setup
-# - [x] 2 accounts, one with funds one without
-# - [x] disbursement to provide funds
-# test
-# - run services to populate pending TXs
-# validate
-# - pending TXs should be created
-# - budgets should update
-# teardown
