@@ -2,12 +2,14 @@
 
 module EventService
   class Create
-    def initialize(name:, emails: [], country: [], approved: false, sponsorship_fee: 0.07)
+    def initialize(name:, emails: [], country: [], approved: false, sponsorship_fee: 0.07, organized_by_hack_clubbers: false, omit_stats: false)
       @name = name
       @emails = emails
       @country = country
       @approved = approved || false
       @sponsorship_fee = sponsorship_fee ? sponsorship_fee.to_f : 0.07
+      @organized_by_hack_clubbers = organized_by_hack_clubbers
+      @omit_stats = omit_stats
     end
 
     def run
