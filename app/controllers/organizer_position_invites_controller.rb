@@ -7,25 +7,25 @@ class OrganizerPositionInvitesController < ApplicationController
   skip_after_action :verify_authorized, only: [:show], if: -> { @skip_verfiy_authorized }
 
   def new
-    @invite = OrganizerPositionInvite.new
-    @invite.event = Event.friendly.find(params[:event_id])
+    event = Event.friendly.find(params[:event_id])
+    service = OrganizerPositionInviteService::Create.new(event: event)
+
+    @invite = service.model
     authorize @invite
   end
 
   def create
     event = Event.friendly.find(params[:event_id])
+    user_email = invite_params[:email]
 
-    @invite = OrganizerPositionInvite.new(invite_params)
-    @invite.event = event
-    @invite.sender = current_user
+    service = OrganizerPositionInviteService::Create.new(event: event, sender: current_user, user_email: user_email)
 
-    # will be set to nil if not found, which is OK. see invite class for docs.
-    @invite.user = User.find_by(email: invite_params[:email])
+    @invite = service.model
 
     authorize @invite
 
-    if @invite.save
-      flash[:success] = "Invite successfully sent to #{invite_params[:email]}"
+    if service.run
+      flash[:success] = "Invite successfully sent to #{user_email}"
       redirect_to event_team_path @invite.event
     else
       render "new"

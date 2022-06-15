@@ -16,11 +16,11 @@ module EventService
                             .pending.where(email: @user_email).any?
 
       unless position_exists || invite_exists
-        OrganizerPositionInvite.create!(
+        OrganizerPositionInviteService::Create.new(
           event: @event,
-          email: @user_email,
           sender: @event.partner.representative,
-        )
+          user_email: @user_email,
+        ).run!
       end
 
       user

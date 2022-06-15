@@ -36,12 +36,11 @@ class Partner < ApplicationRecord
       partnered_email = "bank+#{event.partner.slug}@hackclub.com"
       invite_sender = User.find_by(email: partnered_email)
       invite_sender ||= User.create!(email: partnered_email)
-      OrganizerPositionInvite.create!(
+      OrganizerPositionInviteService::Create.new(
         event: event,
-        email: user_email,
-        # user: user,
-        sender: invite_sender
-      )
+        sender: invite_sender,
+        user_email: user_email,
+      ).run!
     end
 
     self

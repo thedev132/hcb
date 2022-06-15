@@ -37,7 +37,7 @@
 
 <h2 class="mt3">Invite a team member</h2>
 <% if organizer_signed_in? %>
-  <%= render 'form_invite', invite: OrganizerPositionInvite.new %>
+  <%= render 'form_invite', invite: OrganizerPositionInviteService::Create.new(event: @event).model %>
 <% else %>
   <p>Disabled in transparency mode</p>
 <% end %>

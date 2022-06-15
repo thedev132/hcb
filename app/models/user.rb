@@ -14,7 +14,7 @@ class User < ApplicationRecord
 
   has_many :login_tokens
   has_many :user_sessions, dependent: :destroy
-  has_many :organizer_position_invites
+  has_many :organizer_position_invites, dependent: :destroy
   has_many :organizer_positions
   has_many :organizer_position_deletion_requests, inverse_of: :submitted_by
   has_many :organizer_position_deletion_requests, inverse_of: :closed_by
