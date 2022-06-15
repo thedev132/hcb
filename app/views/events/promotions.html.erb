@@ -97,78 +97,6 @@
     </p>
   </div>
 
-<div class="card mb3" id="stickermule">
-  <div class="card__banner card__banner--top flex justify-between items-center" style="background-color:#4E2817">
-    <%= image_tag 'stickermule.svg', width: 240 %>
-    <%= link_to 'Unavailable',
-      organizer_signed_in? ? "https://hack.af/stickermule?prefill_Event%20Name=#{@event.name}&prefill_First%20Name=#{current_user.first_name}&prefill_Email=#{current_user.email}" : root_path,
-      class: "btn bg-success mr1 #{'disabled' unless organizer_signed_in?}",
-      target: :_blank,
-      disabled: true
-    %>
-  </div>
-
-  <p class="italic">
-  Sticker Mule grants are temporarily unavailable. We're working to get this back up and running soon, so please check back later.
-  </p>
-
-  <p class="muted">
-  Hack Club Bank is working with Sticker Mule to make up to $400 of Sticker Mule credits
-  available to hackathons and clubs on Hack Club Bank, growing with attendance for hackathons.
-  </p>
-
-  <div class="grid grid-spacious muted">
-    <div class="mr1">
-      <h3 class="mb0">Hack Clubs</h3>
-      <table>
-        <tr>
-          <th>Tier</th>
-          <th>Credit</th>
-        </tr>
-        <tr>
-          <td>Base</td>
-          <td>$20</td>
-        </tr>
-        <tr>
-          <td>With logo on website*</td>
-          <td>$200</td>
-        </tr>
-      </table>
-    </div>
-    <div>
-      <h3 class="mb0">Hackathons</h3>
-      <table>
-        <tr>
-          <th>Attendees</th>
-          <th>Credit</th>
-        </tr>
-        <tr>
-          <td>Base</td>
-          <td>$50</td>
-        </tr>
-        <tr>
-          <td>Over 100*</td>
-          <td>$100</td>
-        </tr>
-        <tr>
-          <td>Over 200*</td>
-          <td>$200</td>
-        </tr>
-        <tr>
-          <td>Over 400*</td>
-          <td>$400</td>
-        </tr>
-      </table>
-    </div>
-  </div>
-
-  <p class="muted">
-    *To qualify for these tiers, add the <a href="https://www.stickermule.com/press" target="_blank">Sticker Mule logo</a> to your website
-    that links back to <a href="https://www.stickermule.com" target="_blank">stickermule.com</a>,
-    and to any other materials like hackathon T-shirts.
-  </p>
-</div>
-
 <div class="card mb3 pb0" id="stickers">
   <div class="card__banner card__banner--top flex justify-between items-center promo-stickers">
       <span class="flex flex-row items-center">
@@ -218,6 +146,74 @@
 
 <details class="w-100 left-align">
   <summary><h3 class="inline-block pb0 border-none">Expired Promotions</h3></summary>
+
+  <div class="card mb3" id="stickermule">
+    <div class="card__banner card__banner--top flex justify-between items-center" style="background-color:#4E2817">
+      <%= image_tag 'stickermule.svg', width: 240 %>
+      <%= link_to 'Expired',
+                  organizer_signed_in? ? "https://hack.af/stickermule?prefill_Event%20Name=#{@event.name}&prefill_First%20Name=#{current_user.first_name}&prefill_Email=#{current_user.email}" : root_path,
+                  class: "btn bg-success mr1 #{'disabled' unless organizer_signed_in?}",
+                  target: :_blank,
+                  disabled: true
+      %>
+    </div>
+
+    <p class="muted">
+      Hack Club Bank is working with Sticker Mule to make up to $400 of Sticker Mule credits
+      available to hackathons and clubs on Hack Club Bank, growing with attendance for hackathons.
+    </p>
+
+    <div class="grid grid-spacious muted">
+      <div class="mr1">
+        <h3 class="mb0">Hack Clubs</h3>
+        <table>
+          <tr>
+            <th>Tier</th>
+            <th>Credit</th>
+          </tr>
+          <tr>
+            <td>Base</td>
+            <td>$20</td>
+          </tr>
+          <tr>
+            <td>With logo on website*</td>
+            <td>$200</td>
+          </tr>
+        </table>
+      </div>
+      <div>
+        <h3 class="mb0">Hackathons</h3>
+        <table>
+          <tr>
+            <th>Attendees</th>
+            <th>Credit</th>
+          </tr>
+          <tr>
+            <td>Base</td>
+            <td>$50</td>
+          </tr>
+          <tr>
+            <td>Over 100*</td>
+            <td>$100</td>
+          </tr>
+          <tr>
+            <td>Over 200*</td>
+            <td>$200</td>
+          </tr>
+          <tr>
+            <td>Over 400*</td>
+            <td>$400</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <p class="muted">
+      *To qualify for these tiers, add the <a href="https://www.stickermule.com/press" target="_blank">Sticker Mule logo</a> to your website
+      that links back to <a href="https://www.stickermule.com" target="_blank">stickermule.com</a>,
+      and to any other materials like hackathon T-shirts.
+    </p>
+  </div>
 
   <div class="card mb3" id="github">
     <div class="card__banner card__banner--top flex justify-between items-center" style="background-color:#eee">
