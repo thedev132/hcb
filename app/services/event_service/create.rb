@@ -43,6 +43,8 @@ module EventService
         end: Date.current,
         address: "N/A",
         country: @country,
+        organized_by_hack_clubbers: @organized_by_hack_clubbers,
+        omit_stats: @omit_stats,
         sponsorship_fee: @sponsorship_fee,
         expected_budget: 100.0,
         point_of_contact_id: point_of_contact.id,

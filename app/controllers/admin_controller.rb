@@ -228,7 +228,9 @@ class AdminController < ApplicationController
       emails: emails,
       country: params[:country],
       approved: params[:approved].to_i == 1,
-      sponsorship_fee: params[:sponsorship_fee]
+      sponsorship_fee: params[:sponsorship_fee],
+      organized_by_hack_clubbers: params[:organized_by_hack_clubbers].to_i == 1,
+      omit_stats: params[:omit_stats].to_i == 1
     }
     ::EventService::Create.new(attrs).run
 
