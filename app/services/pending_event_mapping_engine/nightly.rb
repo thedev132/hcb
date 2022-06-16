@@ -11,9 +11,9 @@ module PendingEventMappingEngine
       settle_canonical_pending_outgoing_ach!
       decline_canonical_pending_outgoing_ach!
 
-      # map_canonical_pending_stripe!
-      # settle_canonical_pending_stripe!
-      # decline_canonical_pending_stripe!
+      map_canonical_pending_stripe!
+      settle_canonical_pending_stripe!
+      decline_canonical_pending_stripe!
 
       map_canonical_pending_donation!
       settle_canonical_pending_donation!
