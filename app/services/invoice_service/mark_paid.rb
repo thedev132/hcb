@@ -22,8 +22,10 @@ module InvoiceService
         invoice.save!
         invoice.mark_paid! # aasm
 
-        remote_invoice.paid = true
-        remote_invoice.save
+        unless remote_invoice.paid?
+          remote_invoice.paid = true
+          remote_invoice.save
+        end
       end
 
       invoice.set_fields_from_stripe_invoice(remote_invoice)
