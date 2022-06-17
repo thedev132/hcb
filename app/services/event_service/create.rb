@@ -24,19 +24,12 @@ module EventService
         # event.mark_approved! if @approved
 
         @emails.each do |email|
-          event.organizer_position_invites.create!(organizer_attrs(email: email))
+          OrganizerPositionInviteService::Create.new(event: event, sender: point_of_contact, user_email: email).run!
         end
       end
     end
 
     private
-
-    def organizer_attrs(email:)
-      {
-        sender: point_of_contact,
-        email: email,
-      }
-    end
 
     def attrs
       {
