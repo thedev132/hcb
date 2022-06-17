@@ -2,6 +2,7 @@
 
 class HcbCodesController < ApplicationController
   skip_before_action :signed_in_user, only: [:receipt, :attach_receipt, :show]
+  skip_after_action :verify_authorized, only: [:receipt]
 
   def show
     @hcb_code = HcbCode.find_by(hcb_code: params[:id]) || HcbCode.find(params[:id])
@@ -44,10 +45,13 @@ class HcbCodesController < ApplicationController
     redirect_to params[:redirect_url], flash: { error: e.message }
   end
 
+  include HcbCodeHelper # for disputed_transactions_airtable_form_url and attach_receipt_url
+
   def receipt
     @hcb_code = HcbCode.find(params[:id])
+    @has_valid_secret = HcbCodeService::Receipt::SigningEndpoint.new.valid_url?(@hcb_code.hashid, params[:s])
 
-    authorize @hcb_code
+    authorize @hcb_code unless @has_valid_secret
 
     params[:file]&.each do |file|
       attrs = {
@@ -64,6 +68,7 @@ class HcbCodesController < ApplicationController
     else
       redirect_to params[:redirect_url], flash: { success: "Receipt".pluralize(params[:file].length) + " added!" }
     end
+
   rescue => e
     Airbrake.notify(e)
 
@@ -77,12 +82,12 @@ class HcbCodesController < ApplicationController
     authorize @hcb_code
 
   rescue Pundit::NotAuthorizedError
-    unless (@hcb_code.date > 10.days.ago) && HcbCodeService::Receipt::SigningEndpoint.new.valid_url?(@hcb_code.hashid, params[:s])
+    unless HcbCodeService::Receipt::SigningEndpoint.new.valid_url?(@hcb_code.hashid, params[:s])
       raise
     end
+
   end
 
-  include HcbCodeHelper # for disputed_transactions_airtable_form_url
   def dispute
     @hcb_code = HcbCode.find(params[:id])
 

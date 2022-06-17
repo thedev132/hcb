@@ -17,6 +17,10 @@ module HcbCodeHelper
     (embed ? embed_url : url) + "?" + prefill.join("&")
   end
 
+  def attach_receipt_url(hcb_code)
+    HcbCodeService::Receipt::SigningEndpoint.new.create(hcb_code)
+  end
+
   def can_dispute?(hcb_code:)
     can_dispute, error_reason = ::HcbCodeService::CanDispute.new(hcb_code: hcb_code).run
 

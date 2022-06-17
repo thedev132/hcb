@@ -4,7 +4,7 @@
 <% end %>
 <% admin_tools do %>
 🌸 Aloha!
-<%= link_to "Here's the page for attaching receipts", attach_receipt_hcb_code_url(@hcb_code.hashid) %>
+<%= link_to "Here's the page for attaching receipts", attach_receipt_url(@hcb_code) %>
 <% end %>
 <% @hcb_code.receipts.order(created_at: :asc).each do |receipt| %>
 
