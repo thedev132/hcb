@@ -251,9 +251,14 @@ class Event < ApplicationRecord
   end
 
   def balance_v2_cents(start_date: nil, end_date: nil)
-    @balance_v2_cents ||=
-      settled_balance_cents(start_date: start_date, end_date: end_date) +
-      pending_outgoing_balance_v2_cents(start_date: start_date, end_date: end_date)
+    @flipper_balance ||= Flipper.enabled?(:fronted_balance_2022_06_17, self)
+    @balance_v2_cents ||= begin
+      sum = 0
+      sum += settled_balance_cents(start_date: start_date, end_date: end_date)
+      sum += pending_outgoing_balance_v2_cents(start_date: start_date, end_date: end_date)
+      sum += fronted_incoming_balance_v2_cents(start_date: start_date, end_date: end_date) if @flipper_balance
+      sum
+    end
   end
 
   # This calculates v2 cents of settled (Canonical Transactions)
@@ -288,6 +293,18 @@ class Event < ApplicationRecord
 
         ct.sum(:amount_cents)
       end
+  end
+
+  def fronted_incoming_balance_v2_cents(start_date: nil, end_date: nil)
+    # TODO: verify start_date & end_date are being used correctly
+    @fronted_incoming_balance_v2_cents ||= begin
+      cpt = canonical_pending_transactions.incoming_disbursement.unsettled
+
+      cpt = cpt.where("date >= ?", start_date) if start_date
+      cpt = cpt.where("date <= ?", end_date) if end_date
+
+      cpt.sum(:amount_cents)
+    end
   end
 
   def pending_balance_v2_cents(start_date: nil, end_date: nil)
