@@ -34,8 +34,7 @@ module DisbursementService
 
     def attrs
       {
-        fulfilled_by: @fulfilled_by,
-        fulfilled_at: DateTime.now
+        fulfilled_by: @fulfilled_by
       }
     end
 
