@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 module InvoiceService
+  # This service handles marking open Invoices as "manually paid". This service
+  # is used in scenarios where an invoice issued via Stripe was paid "out of
+  # band" of Stripe. For example, via Bill.com, PayPal, or a paper check mailed
+  # to our Santa Monica address.
   class MarkPaid
     def initialize(invoice_id:,
                    reason:, attachment: nil,
@@ -13,9 +17,20 @@ module InvoiceService
 
     def run
       raise ArgumentError, "reason is required" if @reason.blank?
+      if remote_invoice.paid? && !remote_invoice.paid_out_of_band
+        raise ArgumentError, "can not manually mark an invoice as paid when it was already paid through Stripe"
+      end
 
       ActiveRecord::Base.transaction do
-        invoice.manually_marked_as_paid_at = Time.current
+        # If an invoice was already marked as paid on Stripe, then use the
+        # paid_at time from Stripe.
+        invoice.manually_marked_as_paid_at =
+          if remote_invoice.paid?
+            Time.at(remote_invoice.status_transitions.paid_at)
+          else
+            Time.now
+          end
+
         invoice.manually_marked_as_paid_user = @user
         invoice.manually_marked_as_paid_reason = @reason
         invoice.manually_marked_as_paid_attachment = @attachment
