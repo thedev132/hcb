@@ -296,7 +296,6 @@ class Event < ApplicationRecord
   end
 
   def fronted_incoming_balance_v2_cents(start_date: nil, end_date: nil)
-    # TODO: verify start_date & end_date are being used correctly
     @fronted_incoming_balance_v2_cents ||= begin
       cpt = canonical_pending_transactions.incoming_disbursement.unsettled
 
