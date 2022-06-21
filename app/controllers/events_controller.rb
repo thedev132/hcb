@@ -335,7 +335,7 @@ class EventsController < ApplicationController
     @event = Event.friendly.find(params[:event_id] || params[:id])
   rescue ActiveRecord::RecordNotFound
     if signed_in?
-      flash[:error] = "We couldn’t find that event!"
+      flash[:error] = "We couldn’t find that organization!"
       redirect_to root_path
     else
       redirect_to auth_users_path(return_to: request.original_url)
