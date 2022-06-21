@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_06_07_180352) do
+ActiveRecord::Schema.define(version: 2022_06_17_202739) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -1279,6 +1279,7 @@ ActiveRecord::Schema.define(version: 2022_06_07_180352) do
     t.boolean "use_sms_auth", default: false
     t.string "webauthn_id"
     t.integer "session_duration_seconds", default: 2592000, null: false
+    t.date "birthday"
     t.index ["api_access_token"], name: "index_users_on_api_access_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["slug"], name: "index_users_on_slug", unique: true

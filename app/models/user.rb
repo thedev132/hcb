@@ -53,6 +53,13 @@ class User < ApplicationRecord
     end
   end
 
+  validate on: :update do
+    # Birthday is required if the user already had a birthday
+    if birthday_in_database.present? && birthday.blank?
+      errors.add(:birthday, "can't be blank")
+    end
+  end
+
   validates :email, uniqueness: true, presence: true
   validates :phone_number, phone: { allow_blank: true }
 
@@ -72,18 +79,18 @@ class User < ApplicationRecord
 
   def first_name
     @first_name ||= begin
-                      return nil unless namae.given || namae.particle
+      return nil unless namae.given || namae.particle
 
-                      (namae.given || namae.particle).split(" ").first
-                    end
+      (namae.given || namae.particle).split(" ").first
+    end
   end
 
   def last_name
     @last_name ||= begin
-                     return nil unless namae.family
+      return nil unless namae.family
 
-                     namae.family.split(" ").last
-                   end
+      namae.family.split(" ").last
+    end
   end
 
   def initial_name

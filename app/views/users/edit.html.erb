@@ -39,6 +39,17 @@
       <input type="tel" id="phone_raw" value="<%= @user.phone_number || nil %>" required="required">
     </div>
     <div class="field">
+      <%= form.label :birthday, class: 'muted' %>
+      <p class="h5 muted mt0 mb1">
+        Used for card issuing.
+      </p>
+      <%= form.date_select :birthday,
+                          start_year: Date.today.year - 100,
+                          end_year: Date.today.year,
+                          order: [:month, :day, :year],
+                          prompt: @user.birthday.nil? %>
+    </div>
+    <div class="field">
       <%= form.label :email, class: 'muted' %>
       <%= form.email_field :email, disabled: true %>
     </div>
