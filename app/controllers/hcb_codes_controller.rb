@@ -49,9 +49,13 @@ class HcbCodesController < ApplicationController
 
   def receipt
     @hcb_code = HcbCode.find(params[:id])
-    @has_valid_secret = HcbCodeService::Receipt::SigningEndpoint.new.valid_url?(@hcb_code.hashid, params[:s])
+    begin
+      authorize @hcb_code
+    rescue Pundit::NotAuthorizedError
+      @has_valid_secret = HcbCodeService::Receipt::SigningEndpoint.new.valid_url?(@hcb_code.hashid, params[:s])
 
-    authorize @hcb_code unless @has_valid_secret
+      raise unless @has_valid_secret
+    end
 
     params[:file]&.each do |file|
       attrs = {

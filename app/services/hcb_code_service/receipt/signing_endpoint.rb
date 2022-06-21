@@ -20,6 +20,8 @@ module HcbCodeService
       end
 
       def valid_url?(hashid, hmac)
+        return false if hashid.blank? || hmac.blank?
+
         ActiveSupport::SecurityUtils.secure_compare(hmac, compute_hmac(hashid))
       end
 

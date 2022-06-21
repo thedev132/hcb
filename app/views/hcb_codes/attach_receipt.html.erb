@@ -27,7 +27,7 @@
     <p class="center muted">Or drag & drop your receipt here.</p>
   </div>
 
-  <%= admin_tools('mt2') do %>
+  <% admin_tools('mt2') do %>
     <p>The secret url for this hcb code is <%= attach_receipt_url @hcb_code %></p>
   <% end %>
 
