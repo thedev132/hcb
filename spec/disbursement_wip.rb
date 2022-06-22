@@ -10,35 +10,10 @@ RSpec.describe PendingTransactionEngine do
   end
 
   context "disbursement moves pending money" do
-    def create_partner
-      Partner.create!({
-                        slug: SecureRandom.hex(30)
-                      })
-    end
-
-    def create_event(name, partner)
-      Event.create!({
-                      name: name,
-                      partner: partner,
-                      sponsorship_fee: 0,
-                      organization_identifier: SecureRandom.hex(30)
-                    })
-    end
-
-    def create_disbursement(source_event, destination_event)
-      Disbursement.create!({
-                             event: destination_event,
-                             source_event: source_event,
-                             amount: 100,
-                             name: 'for fun'
-                           })
-    end
-
     it "creates valid setup data" do
-      partner = create_partner
-      source_event = create_event('source hacks', partner)
-      destination_event = create_event('destination hacks', partner)
-      disbursement = create_disbursement(source_event, destination_event)
+      source_event = create(:event)
+      destination_event = create(:event)
+      disbursement = create(:disbursement)
 
       expect(source_event).to be_valid
       expect(destination_event).to be_valid
@@ -46,10 +21,9 @@ RSpec.describe PendingTransactionEngine do
     end
 
     it "creates raw incoming and outgoing transactions" do
-      partner = create_partner
-      source_event = create_event('source hacks', partner)
-      destination_event = create_event('destination hacks', partner)
-      disbursement = create_disbursement(source_event, destination_event)
+      source_event = create(:event)
+      destination_event = create(:event)
+      disbursement = create(:disbursement, event: destination_event, source_event: source_event)
 
       expect(disbursement.raw_pending_incoming_disbursement_transaction).to be_nil
       expect(disbursement.raw_pending_outgoing_disbursement_transaction).to be_nil
@@ -72,10 +46,9 @@ RSpec.describe PendingTransactionEngine do
     end
 
     it "increments the incoming deposit total" do
-      partner = create_partner
-      source_event = create_event('source hacks', partner)
-      destination_event = create_event('destination hacks', partner)
-      disbursement = create_disbursement(source_event, destination_event)
+      source_event = create(:event)
+      destination_event = create(:event)
+      disbursement = create(:disbursement, event: destination_event, source_event: source_event)
 
       incoming_amount_before = incoming_deposits destination_event
 

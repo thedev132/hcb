@@ -162,6 +162,11 @@ group :test do
   # gem 'selenium-webdriver'
   # Easy installation and use of chromedriver to run system tests with Chrome
   # gem 'chromedriver-helper'
+
+  # For creating test data in the database
+  gem 'factory_bot_rails'
+  # For initializing fake values
+  gem 'faker'
 end
 
 group :production do
