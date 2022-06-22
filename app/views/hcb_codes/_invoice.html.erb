@@ -25,11 +25,39 @@
       <span class="regular muted"> invoiced for </span>
       <span class="regular"><%= render_money @invoice.item_amount %></span>
     </span>
-    <span class="badge h4 md-right bg-<%= @invoice.state %>">
-      <%= @invoice.state_text %>
-      <%= inline_icon @invoice.state_icon, size: 20 if @invoice.state_icon %>
+    <span class="md-right flex flex-row">
+      <span class="badge h4 bg-<%= @invoice.state %>">
+        <%= @invoice.state_text %>
+        <%= inline_icon @invoice.state_icon, size: 20 if @invoice.state_icon %>
+      </span>
+      <% if @invoice.paid_v2? && !@invoice.deposited? %>
+        <span class="<%= 'cursor-pointer tooltipped tooltipped--w' if @invoice.paid_v2? && !@invoice.deposited? %> ml1 muted"
+              aria-label="Request to expedite incoming funds"
+              data-behavior="<%= 'modal_trigger' if @invoice.paid_v2? && !@invoice.deposited? %>"
+              data-modal="<%= 'request_front' if @invoice.paid_v2? && !@invoice.deposited? %>"
+        >
+          <%= inline_icon 'bolt', size: 30 %>
+        </span>
+      <% end %>
     </span>
   </h2>
+
+  <% if @invoice.paid_v2? && !@invoice.deposited? %>
+    <section class="modal modal--scroll bg-snow" data-behavior="modal" role="dialog" id="request_front">
+      <%= modal_header 'Expedite funds' %>
+      <p>
+        Incoming funds typically take a few days to settle, and we understand there are situations where you may need funds from Hack Club Bank immediately.
+        If this is the case for you, please email <%= help_email %> with your request and reason to expedite the incoming funds, and the Bank team will review your request accordingly.
+      </p>
+      <a class="btn"
+         href="mailto:bank@hackclub.com?subject=Request%20to%20Expedite%20Incoming%20Payment&body=I%20am%20requesting%20to%20expedite%20the%20transfer%20of%20<%= url_encode(Rails.application.routes.url_helpers.root_url + @hcb_code.url) %>%20for%20the%20following%20reason"
+         target="_blank"
+      >
+        Request
+      </a>
+    </section>
+  <% end %>
+
   <section class="card__banner card__darker details-horiz border-top border-bottom">
     <p>
       <strong>Sent by</strong>
