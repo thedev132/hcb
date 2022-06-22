@@ -1,5 +1,38 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: user_sessions
+#
+#  id                     :bigint           not null, primary key
+#  deleted_at             :datetime
+#  device_info            :string
+#  expiration_at          :datetime         not null
+#  fingerprint            :string
+#  ip                     :string
+#  latitude               :decimal(, )
+#  longitude              :decimal(, )
+#  os_info                :string
+#  peacefully_expired     :boolean
+#  session_token          :text
+#  timezone               :string
+#  created_at             :datetime         not null
+#  updated_at             :datetime         not null
+#  impersonated_by_id     :bigint
+#  user_id                :bigint
+#  webauthn_credential_id :bigint
+#
+# Indexes
+#
+#  index_user_sessions_on_impersonated_by_id      (impersonated_by_id)
+#  index_user_sessions_on_user_id                 (user_id)
+#  index_user_sessions_on_webauthn_credential_id  (webauthn_credential_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (impersonated_by_id => users.id)
+#  fk_rails_...  (user_id => users.id)
+#
 class UserSession < ApplicationRecord
   has_paper_trail
   acts_as_paranoid

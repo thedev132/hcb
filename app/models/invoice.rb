@@ -1,5 +1,95 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: invoices
+#
+#  id                                                   :bigint           not null, primary key
+#  aasm_state                                           :string
+#  amount_due                                           :bigint
+#  amount_paid                                          :bigint
+#  amount_remaining                                     :bigint
+#  archived_at                                          :datetime
+#  attempt_count                                        :bigint
+#  attempted                                            :boolean
+#  auto_advance                                         :boolean
+#  due_date                                             :datetime
+#  ending_balance                                       :bigint
+#  finalized_at                                         :datetime
+#  hcb_code                                             :text
+#  hosted_invoice_url                                   :text
+#  invoice_pdf                                          :text
+#  item_amount                                          :bigint
+#  item_description                                     :text
+#  livemode                                             :boolean
+#  manually_marked_as_paid_at                           :datetime
+#  manually_marked_as_paid_reason                       :text
+#  memo                                                 :text
+#  number                                               :text
+#  payment_method_ach_credit_transfer_account_number    :text
+#  payment_method_ach_credit_transfer_bank_name         :text
+#  payment_method_ach_credit_transfer_routing_number    :text
+#  payment_method_ach_credit_transfer_swift_code        :text
+#  payment_method_card_brand                            :text
+#  payment_method_card_checks_address_line1_check       :text
+#  payment_method_card_checks_address_postal_code_check :text
+#  payment_method_card_checks_cvc_check                 :text
+#  payment_method_card_country                          :text
+#  payment_method_card_exp_month                        :text
+#  payment_method_card_exp_year                         :text
+#  payment_method_card_funding                          :text
+#  payment_method_card_last4                            :text
+#  payment_method_type                                  :text
+#  payout_creation_balance_available_at                 :datetime
+#  payout_creation_balance_net                          :integer
+#  payout_creation_balance_stripe_fee                   :integer
+#  payout_creation_queued_at                            :datetime
+#  payout_creation_queued_for                           :datetime
+#  reimbursable                                         :boolean          default(TRUE)
+#  slug                                                 :text
+#  starting_balance                                     :bigint
+#  statement_descriptor                                 :text
+#  status                                               :text
+#  subtotal                                             :bigint
+#  tax                                                  :bigint
+#  tax_percent                                          :decimal(, )
+#  total                                                :bigint
+#  created_at                                           :datetime         not null
+#  updated_at                                           :datetime         not null
+#  archived_by_id                                       :bigint
+#  creator_id                                           :bigint
+#  fee_reimbursement_id                                 :bigint
+#  item_stripe_id                                       :text
+#  manually_marked_as_paid_user_id                      :bigint
+#  payout_creation_queued_job_id                        :text
+#  payout_id                                            :bigint
+#  sponsor_id                                           :bigint
+#  stripe_charge_id                                     :text
+#  stripe_invoice_id                                    :text
+#
+# Indexes
+#
+#  index_invoices_on_archived_by_id                   (archived_by_id)
+#  index_invoices_on_creator_id                       (creator_id)
+#  index_invoices_on_fee_reimbursement_id             (fee_reimbursement_id)
+#  index_invoices_on_item_stripe_id                   (item_stripe_id) UNIQUE
+#  index_invoices_on_manually_marked_as_paid_user_id  (manually_marked_as_paid_user_id)
+#  index_invoices_on_payout_creation_queued_job_id    (payout_creation_queued_job_id) UNIQUE
+#  index_invoices_on_payout_id                        (payout_id)
+#  index_invoices_on_slug                             (slug) UNIQUE
+#  index_invoices_on_sponsor_id                       (sponsor_id)
+#  index_invoices_on_status                           (status)
+#  index_invoices_on_stripe_invoice_id                (stripe_invoice_id) UNIQUE
+#
+# Foreign Keys
+#
+#  fk_rails_...  (archived_by_id => users.id)
+#  fk_rails_...  (creator_id => users.id)
+#  fk_rails_...  (fee_reimbursement_id => fee_reimbursements.id)
+#  fk_rails_...  (manually_marked_as_paid_user_id => users.id)
+#  fk_rails_...  (payout_id => invoice_payouts.id)
+#  fk_rails_...  (sponsor_id => sponsors.id)
+#
 class Invoice < ApplicationRecord
   has_paper_trail
 

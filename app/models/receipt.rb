@@ -1,5 +1,27 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: receipts
+#
+#  id                 :bigint           not null, primary key
+#  attempted_match_at :datetime
+#  receiptable_type   :string
+#  upload_method      :integer
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
+#  receiptable_id     :bigint
+#  user_id            :bigint
+#
+# Indexes
+#
+#  index_receipts_on_receiptable_type_and_receiptable_id  (receiptable_type,receiptable_id)
+#  index_receipts_on_user_id                              (user_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (user_id => users.id)
+#
 class Receipt < ApplicationRecord
   belongs_to :receiptable, polymorphic: true
 

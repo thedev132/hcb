@@ -1,5 +1,35 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: organizer_position_deletion_requests
+#
+#  id                                           :bigint           not null, primary key
+#  closed_at                                    :datetime
+#  reason                                       :text
+#  subject_emails_should_be_forwarded           :boolean          default(FALSE), not null
+#  subject_has_active_cards                     :boolean          default(FALSE), not null
+#  subject_has_outstanding_expenses_expensify   :boolean          default(FALSE), not null
+#  subject_has_outstanding_transactions_emburse :boolean          default(FALSE), not null
+#  subject_has_outstanding_transactions_stripe  :boolean          default(FALSE), not null
+#  created_at                                   :datetime         not null
+#  updated_at                                   :datetime         not null
+#  closed_by_id                                 :bigint
+#  organizer_position_id                        :bigint
+#  submitted_by_id                              :bigint
+#
+# Indexes
+#
+#  index_organizer_deletion_requests_on_organizer_position_id     (organizer_position_id)
+#  index_organizer_position_deletion_requests_on_closed_by_id     (closed_by_id)
+#  index_organizer_position_deletion_requests_on_submitted_by_id  (submitted_by_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (closed_by_id => users.id)
+#  fk_rails_...  (organizer_position_id => organizer_positions.id)
+#  fk_rails_...  (submitted_by_id => users.id)
+#
 class OrganizerPositionDeletionRequest < ApplicationRecord
   has_paper_trail
 

@@ -1,5 +1,34 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: stripe_cardholders
+#
+#  id                                 :bigint           not null, primary key
+#  cardholder_type                    :integer          default("individual"), not null
+#  stripe_billing_address_city        :text
+#  stripe_billing_address_country     :text
+#  stripe_billing_address_line1       :text
+#  stripe_billing_address_line2       :text
+#  stripe_billing_address_postal_code :text
+#  stripe_billing_address_state       :text
+#  stripe_email                       :text
+#  stripe_name                        :text
+#  stripe_phone_number                :text
+#  created_at                         :datetime         not null
+#  updated_at                         :datetime         not null
+#  stripe_id                          :text
+#  user_id                            :bigint           not null
+#
+# Indexes
+#
+#  index_stripe_cardholders_on_stripe_id  (stripe_id)
+#  index_stripe_cardholders_on_user_id    (user_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (user_id => users.id)
+#
 class StripeCardholder < ApplicationRecord
   enum cardholder_type: { individual: 0, company: 1 }
 

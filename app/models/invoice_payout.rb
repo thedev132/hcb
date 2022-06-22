@@ -1,5 +1,36 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: invoice_payouts
+#
+#  id                                    :bigint           not null, primary key
+#  amount                                :bigint
+#  arrival_date                          :datetime
+#  automatic                             :boolean
+#  currency                              :text
+#  description                           :text
+#  failure_code                          :text
+#  failure_message                       :text
+#  method                                :text
+#  source_type                           :text
+#  statement_descriptor                  :text
+#  status                                :text
+#  stripe_created_at                     :datetime
+#  type                                  :text
+#  created_at                            :datetime         not null
+#  updated_at                            :datetime         not null
+#  failure_stripe_balance_transaction_id :text
+#  stripe_balance_transaction_id         :text
+#  stripe_destination_id                 :text
+#  stripe_payout_id                      :text
+#
+# Indexes
+#
+#  index_invoice_payouts_on_failure_stripe_balance_transaction_id  (failure_stripe_balance_transaction_id) UNIQUE
+#  index_invoice_payouts_on_stripe_balance_transaction_id          (stripe_balance_transaction_id) UNIQUE
+#  index_invoice_payouts_on_stripe_payout_id                       (stripe_payout_id) UNIQUE
+#
 class InvoicePayout < ApplicationRecord
   has_paper_trail
 

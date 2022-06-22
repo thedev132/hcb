@@ -1,5 +1,37 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: emburse_cards
+#
+#  id               :bigint           not null, primary key
+#  address          :text
+#  daily_limit      :bigint
+#  deactivated_at   :datetime
+#  emburse_state    :string
+#  expiration_month :integer
+#  expiration_year  :integer
+#  full_name        :string
+#  is_virtual       :boolean
+#  last_four        :string
+#  slug             :text
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#  emburse_id       :text
+#  event_id         :bigint
+#  user_id          :bigint
+#
+# Indexes
+#
+#  index_emburse_cards_on_event_id  (event_id)
+#  index_emburse_cards_on_slug      (slug) UNIQUE
+#  index_emburse_cards_on_user_id   (user_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (event_id => events.id)
+#  fk_rails_...  (user_id => users.id)
+#
 class EmburseCard < ApplicationRecord
   include Hashid::Rails
   extend FriendlyId

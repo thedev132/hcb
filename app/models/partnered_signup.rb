@@ -1,5 +1,51 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: partnered_signups
+#
+#  id                        :bigint           not null, primary key
+#  aasm_state                :string
+#  accepted_at               :datetime
+#  applicant_signed_at       :datetime
+#  completed_at              :datetime
+#  country                   :integer
+#  legal_acknowledgement     :boolean
+#  organization_name         :string           not null
+#  owner_address             :string
+#  owner_address_city        :string
+#  owner_address_country     :integer
+#  owner_address_line1       :string
+#  owner_address_line2       :string
+#  owner_address_postal_code :text
+#  owner_address_state       :string
+#  owner_birthdate           :date
+#  owner_email               :string
+#  owner_name                :string
+#  owner_phone               :string
+#  redirect_url              :string           not null
+#  rejected_at               :datetime
+#  signed_contract           :boolean
+#  submitted_at              :datetime
+#  created_at                :datetime         not null
+#  updated_at                :datetime         not null
+#  docusign_envelope_id      :string
+#  event_id                  :bigint
+#  partner_id                :bigint           not null
+#  user_id                   :bigint
+#
+# Indexes
+#
+#  index_partnered_signups_on_event_id    (event_id)
+#  index_partnered_signups_on_partner_id  (partner_id)
+#  index_partnered_signups_on_user_id     (user_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (event_id => events.id)
+#  fk_rails_...  (partner_id => partners.id)
+#  fk_rails_...  (user_id => users.id)
+#
 class PartneredSignup < ApplicationRecord
   has_paper_trail
 

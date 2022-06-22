@@ -1,5 +1,42 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: stripe_cards
+#
+#  id                                  :bigint           not null, primary key
+#  card_type                           :integer          default("virtual"), not null
+#  last4                               :text
+#  purchased_at                        :datetime
+#  spending_limit_amount               :integer
+#  spending_limit_interval             :integer
+#  stripe_brand                        :text
+#  stripe_exp_month                    :integer
+#  stripe_exp_year                     :integer
+#  stripe_shipping_address_city        :text
+#  stripe_shipping_address_country     :text
+#  stripe_shipping_address_line1       :text
+#  stripe_shipping_address_line2       :text
+#  stripe_shipping_address_postal_code :text
+#  stripe_shipping_address_state       :text
+#  stripe_shipping_name                :text
+#  stripe_status                       :text
+#  created_at                          :datetime         not null
+#  updated_at                          :datetime         not null
+#  event_id                            :bigint           not null
+#  stripe_cardholder_id                :bigint           not null
+#  stripe_id                           :text
+#
+# Indexes
+#
+#  index_stripe_cards_on_event_id              (event_id)
+#  index_stripe_cards_on_stripe_cardholder_id  (stripe_cardholder_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (event_id => events.id)
+#  fk_rails_...  (stripe_cardholder_id => stripe_cardholders.id)
+#
 class StripeCard < ApplicationRecord
   include Hashid::Rails
 

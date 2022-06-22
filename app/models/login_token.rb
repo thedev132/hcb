@@ -1,5 +1,34 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: login_tokens
+#
+#  id              :bigint           not null, primary key
+#  aasm_state      :string
+#  expiration_at   :datetime         not null
+#  ip              :string
+#  latitude        :decimal(, )
+#  longitude       :decimal(, )
+#  token           :text             not null
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#  partner_id      :bigint
+#  user_id         :bigint           not null
+#  user_session_id :bigint
+#
+# Indexes
+#
+#  index_login_tokens_on_partner_id       (partner_id)
+#  index_login_tokens_on_token            (token) UNIQUE
+#  index_login_tokens_on_user_id          (user_id)
+#  index_login_tokens_on_user_session_id  (user_session_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (user_id => users.id)
+#  fk_rails_...  (user_session_id => user_sessions.id)
+#
 class LoginToken < ApplicationRecord
   has_paper_trail
 

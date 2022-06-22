@@ -151,6 +151,9 @@ group :development do
 
   # Prints out how many SQL queries were executed
   gem 'query_count'
+
+  # adds comments to models with database fields
+  gem 'annotate'
 end
 
 group :test do

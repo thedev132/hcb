@@ -1,5 +1,17 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: raw_pending_outgoing_ach_transactions
+#
+#  id                 :bigint           not null, primary key
+#  amount_cents       :integer
+#  date_posted        :date
+#  state              :string
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
+#  ach_transaction_id :text
+#
 class RawPendingOutgoingAchTransaction < ApplicationRecord
   monetize :amount_cents
 

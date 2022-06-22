@@ -1,5 +1,20 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: hcb_codes
+#
+#  id                           :bigint           not null, primary key
+#  hcb_code                     :text             not null
+#  marked_no_or_lost_receipt_at :datetime
+#  short_code                   :text
+#  created_at                   :datetime         not null
+#  updated_at                   :datetime         not null
+#
+# Indexes
+#
+#  index_hcb_codes_on_hcb_code  (hcb_code) UNIQUE
+#
 class HcbCode < ApplicationRecord
   has_paper_trail
 

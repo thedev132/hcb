@@ -1,5 +1,45 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: emburse_card_requests
+#
+#  id                          :bigint           not null, primary key
+#  accepted_at                 :datetime
+#  canceled_at                 :datetime
+#  daily_limit                 :bigint
+#  fulfilled_at                :datetime
+#  full_name                   :string
+#  is_virtual                  :boolean
+#  notes                       :text
+#  rejected_at                 :datetime
+#  shipping_address            :text
+#  shipping_address_city       :string
+#  shipping_address_state      :string
+#  shipping_address_street_one :string
+#  shipping_address_street_two :string
+#  shipping_address_zip        :string
+#  created_at                  :datetime         not null
+#  updated_at                  :datetime         not null
+#  creator_id                  :bigint
+#  emburse_card_id             :bigint
+#  event_id                    :bigint
+#  fulfilled_by_id             :bigint
+#
+# Indexes
+#
+#  index_emburse_card_requests_on_creator_id       (creator_id)
+#  index_emburse_card_requests_on_emburse_card_id  (emburse_card_id)
+#  index_emburse_card_requests_on_event_id         (event_id)
+#  index_emburse_card_requests_on_fulfilled_by_id  (fulfilled_by_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (creator_id => users.id)
+#  fk_rails_...  (emburse_card_id => emburse_cards.id)
+#  fk_rails_...  (event_id => events.id)
+#  fk_rails_...  (fulfilled_by_id => users.id)
+#
 class EmburseCardRequest < ApplicationRecord
   include Rejectable
   include Commentable

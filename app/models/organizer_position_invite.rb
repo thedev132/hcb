@@ -1,5 +1,38 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: organizer_position_invites
+#
+#  id                    :bigint           not null, primary key
+#  accepted_at           :datetime
+#  cancelled_at          :datetime
+#  email                 :text
+#  rejected_at           :datetime
+#  slug                  :string
+#  created_at            :datetime         not null
+#  updated_at            :datetime         not null
+#  event_id              :bigint           not null
+#  organizer_position_id :bigint
+#  sender_id             :bigint
+#  user_id               :bigint
+#
+# Indexes
+#
+#  index_organizer_position_invites_on_event_id               (event_id)
+#  index_organizer_position_invites_on_organizer_position_id  (organizer_position_id)
+#  index_organizer_position_invites_on_sender_id              (sender_id)
+#  index_organizer_position_invites_on_slug                   (slug) UNIQUE
+#  index_organizer_position_invites_on_user_id                (user_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (event_id => events.id)
+#  fk_rails_...  (organizer_position_id => organizer_positions.id)
+#  fk_rails_...  (sender_id => users.id)
+#  fk_rails_...  (user_id => users.id)
+#
+
 # OrganizerPositionInvites are used to invite users - whether they already
 # exist or not - to manage an Event.
 #

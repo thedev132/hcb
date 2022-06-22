@@ -1,5 +1,34 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: g_suite_accounts
+#
+#  id               :bigint           not null, primary key
+#  accepted_at      :datetime
+#  address          :text
+#  backup_email     :text
+#  first_name       :string
+#  initial_password :string
+#  last_name        :string
+#  rejected_at      :datetime
+#  suspended_at     :datetime
+#  verified_at      :datetime
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#  creator_id       :bigint
+#  g_suite_id       :bigint
+#
+# Indexes
+#
+#  index_g_suite_accounts_on_creator_id  (creator_id)
+#  index_g_suite_accounts_on_g_suite_id  (g_suite_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (creator_id => users.id)
+#  fk_rails_...  (g_suite_id => g_suites.id)
+#
 class GSuiteAccount < ApplicationRecord
   has_paper_trail
 

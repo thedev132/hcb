@@ -1,5 +1,36 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: disbursements
+#
+#  id              :bigint           not null, primary key
+#  amount          :integer
+#  errored_at      :datetime
+#  fulfilled_at    :datetime
+#  name            :string
+#  rejected_at     :datetime
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#  event_id        :bigint
+#  fulfilled_by_id :bigint
+#  requested_by_id :bigint
+#  source_event_id :bigint
+#
+# Indexes
+#
+#  index_disbursements_on_event_id         (event_id)
+#  index_disbursements_on_fulfilled_by_id  (fulfilled_by_id)
+#  index_disbursements_on_requested_by_id  (requested_by_id)
+#  index_disbursements_on_source_event_id  (source_event_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (event_id => events.id)
+#  fk_rails_...  (fulfilled_by_id => users.id)
+#  fk_rails_...  (requested_by_id => users.id)
+#  fk_rails_...  (source_event_id => events.id)
+#
 class Disbursement < ApplicationRecord
   include PgSearch::Model
   pg_search_scope :search_name, against: [:name]

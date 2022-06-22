@@ -1,5 +1,25 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: fees
+#
+#  id                         :bigint           not null, primary key
+#  amount_cents_as_decimal    :decimal(, )
+#  event_sponsorship_fee      :decimal(, )
+#  reason                     :text
+#  created_at                 :datetime         not null
+#  updated_at                 :datetime         not null
+#  canonical_event_mapping_id :bigint           not null
+#
+# Indexes
+#
+#  index_fees_on_canonical_event_mapping_id  (canonical_event_mapping_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (canonical_event_mapping_id => canonical_event_mappings.id)
+#
 class Fee < ApplicationRecord
   has_paper_trail
 

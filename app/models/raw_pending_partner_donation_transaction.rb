@@ -1,5 +1,17 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: raw_pending_partner_donation_transactions
+#
+#  id                              :bigint           not null, primary key
+#  amount_cents                    :integer
+#  date_posted                     :date
+#  state                           :string
+#  created_at                      :datetime         not null
+#  updated_at                      :datetime         not null
+#  partner_donation_transaction_id :text
+#
 class RawPendingPartnerDonationTransaction < ApplicationRecord
   monetize :amount_cents
 

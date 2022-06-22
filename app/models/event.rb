@@ -1,5 +1,60 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: events
+#
+#  id                              :bigint           not null, primary key
+#  aasm_state                      :string
+#  address                         :text
+#  beta_features_enabled           :boolean
+#  country                         :integer
+#  custom_css_url                  :string
+#  donation_page_enabled           :boolean          default(TRUE)
+#  donation_page_message           :text
+#  end                             :datetime
+#  expected_budget                 :integer
+#  has_fiscal_sponsorship_document :boolean
+#  hidden_at                       :datetime
+#  holiday_features                :boolean          default(TRUE), not null
+#  is_public                       :boolean          default(FALSE)
+#  last_fee_processed_at           :datetime
+#  name                            :text
+#  omit_stats                      :boolean          default(FALSE)
+#  organization_identifier         :string           not null
+#  organized_by_hack_clubbers      :boolean
+#  owner_address                   :string
+#  owner_birthdate                 :date
+#  owner_email                     :string
+#  owner_name                      :string
+#  owner_phone                     :string
+#  pending_transaction_engine_at   :datetime         default(Sat, 13 Feb 2021 22:49:40.981965000 UTC +00:00)
+#  public_message                  :text
+#  redirect_url                    :string
+#  slug                            :text
+#  sponsorship_fee                 :decimal(, )
+#  start                           :datetime
+#  transaction_engine_v2_at        :datetime
+#  webhook_url                     :string
+#  created_at                      :datetime         not null
+#  updated_at                      :datetime         not null
+#  club_airtable_id                :text
+#  emburse_department_id           :string
+#  partner_id                      :bigint           not null
+#  point_of_contact_id             :bigint
+#
+# Indexes
+#
+#  index_events_on_club_airtable_id                        (club_airtable_id) UNIQUE
+#  index_events_on_partner_id                              (partner_id)
+#  index_events_on_partner_id_and_organization_identifier  (partner_id,organization_identifier) UNIQUE
+#  index_events_on_point_of_contact_id                     (point_of_contact_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (partner_id => partners.id)
+#  fk_rails_...  (point_of_contact_id => users.id)
+#
 class Event < ApplicationRecord
   include Hashid::Rails
   extend FriendlyId

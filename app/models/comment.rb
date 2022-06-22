@@ -1,5 +1,25 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: comments
+#
+#  id                 :bigint           not null, primary key
+#  admin_only         :boolean          default(FALSE), not null
+#  commentable_type   :string
+#  content            :text
+#  has_untracked_edit :boolean          default(FALSE), not null
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
+#  commentable_id     :bigint
+#  user_id            :bigint
+#
+# Indexes
+#
+#  index_comments_on_commentable_id_and_commentable_type  (commentable_id,commentable_type)
+#  index_comments_on_commentable_type_and_commentable_id  (commentable_type,commentable_id)
+#  index_comments_on_user_id                              (user_id)
+#
 class Comment < ApplicationRecord
   include Hashid::Rails
 

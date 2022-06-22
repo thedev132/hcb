@@ -1,5 +1,37 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: ach_transfers
+#
+#  id                     :bigint           not null, primary key
+#  aasm_state             :string
+#  account_number         :string
+#  amount                 :integer
+#  approved_at            :datetime
+#  bank_name              :string
+#  confirmation_number    :text
+#  payment_for            :text
+#  recipient_name         :string
+#  recipient_tel          :string
+#  rejected_at            :datetime
+#  routing_number         :string
+#  scheduled_arrival_date :datetime
+#  created_at             :datetime         not null
+#  updated_at             :datetime         not null
+#  creator_id             :bigint
+#  event_id               :bigint
+#
+# Indexes
+#
+#  index_ach_transfers_on_creator_id  (creator_id)
+#  index_ach_transfers_on_event_id    (event_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (creator_id => users.id)
+#  fk_rails_...  (event_id => events.id)
+#
 class AchTransfer < ApplicationRecord
   has_paper_trail
 

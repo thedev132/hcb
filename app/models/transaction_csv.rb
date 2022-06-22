@@ -1,5 +1,14 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: transaction_csvs
+#
+#  id         :bigint           not null, primary key
+#  aasm_state :string
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
 class TransactionCsv < ApplicationRecord
   include AASM
 

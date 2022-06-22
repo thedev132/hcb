@@ -1,5 +1,25 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: bank_fees
+#
+#  id           :bigint           not null, primary key
+#  aasm_state   :string
+#  amount_cents :integer
+#  hcb_code     :string
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
+#  event_id     :bigint           not null
+#
+# Indexes
+#
+#  index_bank_fees_on_event_id  (event_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (event_id => events.id)
+#
 class BankFee < ApplicationRecord
   has_paper_trail
 

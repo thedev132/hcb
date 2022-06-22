@@ -1,5 +1,20 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: fee_reimbursements
+#
+#  id               :bigint           not null, primary key
+#  amount           :bigint
+#  processed_at     :datetime
+#  transaction_memo :string
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#
+# Indexes
+#
+#  index_fee_reimbursements_on_transaction_memo  (transaction_memo) UNIQUE
+#
 class FeeReimbursement < ApplicationRecord
   has_paper_trail
 

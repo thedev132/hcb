@@ -1,5 +1,45 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: donations
+#
+#  id                                   :bigint           not null, primary key
+#  aasm_state                           :string
+#  amount                               :integer
+#  amount_received                      :integer
+#  email                                :text
+#  hcb_code                             :text
+#  message                              :text
+#  name                                 :text
+#  payout_creation_balance_available_at :datetime
+#  payout_creation_balance_net          :integer
+#  payout_creation_balance_stripe_fee   :integer
+#  payout_creation_queued_at            :datetime
+#  payout_creation_queued_for           :datetime
+#  status                               :string
+#  stripe_client_secret                 :string
+#  url_hash                             :string
+#  created_at                           :datetime         not null
+#  updated_at                           :datetime         not null
+#  event_id                             :bigint
+#  fee_reimbursement_id                 :bigint
+#  payout_creation_queued_job_id        :string
+#  payout_id                            :bigint
+#  stripe_payment_intent_id             :string
+#
+# Indexes
+#
+#  index_donations_on_event_id              (event_id)
+#  index_donations_on_fee_reimbursement_id  (fee_reimbursement_id)
+#  index_donations_on_payout_id             (payout_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (event_id => events.id)
+#  fk_rails_...  (fee_reimbursement_id => fee_reimbursements.id)
+#  fk_rails_...  (payout_id => donation_payouts.id)
+#
 class Donation < ApplicationRecord
   has_paper_trail
 

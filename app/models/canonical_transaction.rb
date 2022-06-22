@@ -1,5 +1,23 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: canonical_transactions
+#
+#  id            :bigint           not null, primary key
+#  amount_cents  :integer          not null
+#  custom_memo   :text
+#  date          :date             not null
+#  friendly_memo :text
+#  hcb_code      :text
+#  memo          :text             not null
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#
+# Indexes
+#
+#  index_canonical_transactions_on_hcb_code  (hcb_code)
+#
 class CanonicalTransaction < ApplicationRecord
   has_paper_trail
 

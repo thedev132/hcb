@@ -1,5 +1,17 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: raw_pending_stripe_transactions
+#
+#  id                    :bigint           not null, primary key
+#  amount_cents          :integer
+#  date_posted           :date
+#  stripe_transaction    :jsonb
+#  created_at            :datetime         not null
+#  updated_at            :datetime         not null
+#  stripe_transaction_id :text
+#
 class RawPendingStripeTransaction < ApplicationRecord
   monetize :amount_cents
 

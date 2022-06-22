@@ -1,5 +1,34 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: hashed_transactions
+#
+#  id                                 :bigint           not null, primary key
+#  date                               :date
+#  primary_hash                       :text
+#  primary_hash_input                 :text
+#  secondary_hash                     :text
+#  unique_bank_identifier             :text
+#  created_at                         :datetime         not null
+#  updated_at                         :datetime         not null
+#  duplicate_of_hashed_transaction_id :bigint
+#  raw_csv_transaction_id             :bigint
+#  raw_emburse_transaction_id         :bigint
+#  raw_plaid_transaction_id           :bigint
+#  raw_stripe_transaction_id          :bigint
+#
+# Indexes
+#
+#  index_hashed_transactions_on_duplicate_of_hashed_transaction_id  (duplicate_of_hashed_transaction_id)
+#  index_hashed_transactions_on_raw_csv_transaction_id              (raw_csv_transaction_id)
+#  index_hashed_transactions_on_raw_plaid_transaction_id            (raw_plaid_transaction_id)
+#  index_hashed_transactions_on_raw_stripe_transaction_id           (raw_stripe_transaction_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (raw_plaid_transaction_id => raw_plaid_transactions.id)
+#
 class HashedTransaction < ApplicationRecord
   monetize :amount_cents
 

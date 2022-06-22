@@ -1,5 +1,25 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: fee_relationships
+#
+#  id             :bigint           not null, primary key
+#  fee_amount     :bigint
+#  fee_applies    :boolean
+#  is_fee_payment :boolean
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
+#  event_id       :bigint
+#
+# Indexes
+#
+#  index_fee_relationships_on_event_id  (event_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (event_id => events.id)
+#
 class FeeRelationship < ApplicationRecord
   belongs_to :event
   has_one :t_transaction, class_name: "Transaction", inverse_of: :fee_relationship

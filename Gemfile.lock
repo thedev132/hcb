@@ -81,6 +81,9 @@ GEM
     airbrake-ruby (6.1.0)
       rbtree3 (~> 0.5)
     android_key_attestation (0.3.0)
+    annotate (3.2.0)
+      activerecord (>= 3.2, < 8.0)
+      rake (>= 10.4, < 14.0)
     api-pagination (5.0.0)
     ast (2.4.2)
     awesome_print (1.9.2)
@@ -655,6 +658,7 @@ DEPENDENCIES
   acts_as_paranoid (~> 0.8.1)
   ahoy_matey
   airbrake
+  annotate
   api-pagination
   awesome_print
   aws-sdk-s3

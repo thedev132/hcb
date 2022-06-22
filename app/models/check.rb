@@ -1,5 +1,41 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: checks
+#
+#  id                     :bigint           not null, primary key
+#  aasm_state             :string
+#  amount                 :integer
+#  approved_at            :datetime
+#  check_number           :integer
+#  description            :text
+#  expected_delivery_date :datetime
+#  exported_at            :datetime
+#  lob_url                :text
+#  memo                   :text
+#  payment_for            :text
+#  refunded_at            :datetime
+#  rejected_at            :datetime
+#  send_date              :datetime
+#  transaction_memo       :string
+#  voided_at              :datetime
+#  created_at             :datetime         not null
+#  updated_at             :datetime         not null
+#  creator_id             :bigint
+#  lob_address_id         :bigint
+#  lob_id                 :string
+#
+# Indexes
+#
+#  index_checks_on_creator_id      (creator_id)
+#  index_checks_on_lob_address_id  (lob_address_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (creator_id => users.id)
+#  fk_rails_...  (lob_address_id => lob_addresses.id)
+#
 class Check < ApplicationRecord
   has_paper_trail
 

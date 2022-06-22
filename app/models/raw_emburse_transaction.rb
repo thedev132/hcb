@@ -1,5 +1,19 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: raw_emburse_transactions
+#
+#  id                     :bigint           not null, primary key
+#  amount_cents           :integer
+#  date_posted            :date
+#  emburse_transaction    :jsonb
+#  state                  :string
+#  unique_bank_identifier :string           not null
+#  created_at             :datetime         not null
+#  updated_at             :datetime         not null
+#  emburse_transaction_id :text
+#
 class RawEmburseTransaction < ApplicationRecord
   has_many :hashed_transactions
 

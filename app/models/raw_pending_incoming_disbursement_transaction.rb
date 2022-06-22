@@ -1,5 +1,25 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: raw_pending_incoming_disbursement_transactions
+#
+#  id              :bigint           not null, primary key
+#  amount_cents    :integer
+#  date_posted     :date
+#  state           :string
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#  disbursement_id :bigint
+#
+# Indexes
+#
+#  index_rpidts_on_disbursement_id  (disbursement_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (disbursement_id => disbursements.id)
+#
 class RawPendingIncomingDisbursementTransaction < ApplicationRecord
   monetize :amount_cents
 

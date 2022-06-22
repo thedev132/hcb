@@ -1,5 +1,31 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: partners
+#
+#  id                        :bigint           not null, primary key
+#  api_key                   :text
+#  external                  :boolean          default(TRUE), not null
+#  logo                      :text
+#  name                      :text
+#  public_stripe_api_key     :string
+#  slug                      :string           not null
+#  stripe_api_key_ciphertext :text
+#  webhook_url               :string
+#  created_at                :datetime         not null
+#  updated_at                :datetime         not null
+#  docusign_template_id      :string
+#  representative_id         :bigint
+#
+# Indexes
+#
+#  index_partners_on_representative_id  (representative_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (representative_id => users.id)
+#
 class Partner < ApplicationRecord
   has_paper_trail
 

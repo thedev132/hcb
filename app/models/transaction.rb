@@ -1,5 +1,75 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: transactions
+#
+#  id                             :bigint           not null, primary key
+#  amount                         :bigint
+#  date                           :date
+#  deleted_at                     :datetime
+#  display_name                   :text
+#  is_event_related               :boolean
+#  location_address               :text
+#  location_city                  :text
+#  location_lat                   :decimal(, )
+#  location_lng                   :decimal(, )
+#  location_state                 :text
+#  location_zip                   :text
+#  name                           :text
+#  payment_meta_by_order_of       :text
+#  payment_meta_payee             :text
+#  payment_meta_payer             :text
+#  payment_meta_payment_method    :text
+#  payment_meta_payment_processor :text
+#  payment_meta_reason            :text
+#  payment_meta_reference_number  :text
+#  pending                        :boolean
+#  slug                           :text
+#  transaction_type               :text
+#  created_at                     :datetime         not null
+#  updated_at                     :datetime         not null
+#  ach_transfer_id                :bigint
+#  bank_account_id                :bigint
+#  check_id                       :bigint
+#  disbursement_id                :bigint
+#  donation_payout_id             :bigint
+#  emburse_transfer_id            :bigint
+#  fee_reimbursement_id           :bigint
+#  fee_relationship_id            :bigint
+#  invoice_payout_id              :bigint
+#  payment_meta_ppd_id            :text
+#  pending_transaction_id         :text
+#  plaid_category_id              :text
+#  plaid_id                       :text
+#
+# Indexes
+#
+#  index_transactions_on_ach_transfer_id       (ach_transfer_id)
+#  index_transactions_on_bank_account_id       (bank_account_id)
+#  index_transactions_on_check_id              (check_id)
+#  index_transactions_on_deleted_at            (deleted_at)
+#  index_transactions_on_disbursement_id       (disbursement_id)
+#  index_transactions_on_donation_payout_id    (donation_payout_id)
+#  index_transactions_on_emburse_transfer_id   (emburse_transfer_id)
+#  index_transactions_on_fee_reimbursement_id  (fee_reimbursement_id)
+#  index_transactions_on_fee_relationship_id   (fee_relationship_id)
+#  index_transactions_on_invoice_payout_id     (invoice_payout_id)
+#  index_transactions_on_plaid_id              (plaid_id) UNIQUE
+#  index_transactions_on_slug                  (slug) UNIQUE
+#
+# Foreign Keys
+#
+#  fk_rails_...  (ach_transfer_id => ach_transfers.id)
+#  fk_rails_...  (bank_account_id => bank_accounts.id)
+#  fk_rails_...  (check_id => checks.id)
+#  fk_rails_...  (disbursement_id => disbursements.id)
+#  fk_rails_...  (donation_payout_id => donation_payouts.id)
+#  fk_rails_...  (emburse_transfer_id => emburse_transfers.id)
+#  fk_rails_...  (fee_reimbursement_id => fee_reimbursements.id)
+#  fk_rails_...  (fee_relationship_id => fee_relationships.id)
+#  fk_rails_...  (invoice_payout_id => invoice_payouts.id)
+#
 class Transaction < ApplicationRecord
   include Receiptable
   include Commentable

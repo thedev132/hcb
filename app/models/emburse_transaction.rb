@@ -1,5 +1,52 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: emburse_transactions
+#
+#  id                           :bigint           not null, primary key
+#  amount                       :integer
+#  category_code                :text
+#  category_name                :text
+#  category_parent              :text
+#  category_url                 :text
+#  deleted_at                   :datetime
+#  emburse_card_uuid            :string
+#  label                        :text
+#  location                     :text
+#  marked_no_or_lost_receipt_at :datetime
+#  merchant_address             :text
+#  merchant_city                :text
+#  merchant_mcc                 :integer
+#  merchant_mid                 :bigint
+#  merchant_name                :text
+#  merchant_state               :text
+#  merchant_zip                 :text
+#  note                         :text
+#  notified_admin_at            :datetime
+#  receipt_filename             :text
+#  receipt_url                  :text
+#  state                        :integer
+#  transaction_time             :datetime
+#  created_at                   :datetime         not null
+#  updated_at                   :datetime         not null
+#  category_emburse_id          :text
+#  emburse_card_id              :bigint
+#  emburse_department_id        :string
+#  emburse_id                   :string
+#  event_id                     :bigint
+#
+# Indexes
+#
+#  index_emburse_transactions_on_deleted_at       (deleted_at)
+#  index_emburse_transactions_on_emburse_card_id  (emburse_card_id)
+#  index_emburse_transactions_on_event_id         (event_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (emburse_card_id => emburse_cards.id)
+#  fk_rails_...  (event_id => events.id)
+#
 class EmburseTransaction < ApplicationRecord
   include Receiptable
   include Commentable

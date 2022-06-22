@@ -1,5 +1,32 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: g_suites
+#
+#  id                   :bigint           not null, primary key
+#  aasm_state           :string           default("creating")
+#  deleted_at           :datetime
+#  dkim_key             :text
+#  domain               :citext
+#  remote_org_unit_path :text
+#  verification_key     :text
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
+#  created_by_id        :bigint
+#  event_id             :bigint
+#  remote_org_unit_id   :text
+#
+# Indexes
+#
+#  index_g_suites_on_created_by_id  (created_by_id)
+#  index_g_suites_on_event_id       (event_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (created_by_id => users.id)
+#  fk_rails_...  (event_id => events.id)
+#
 class GSuite < ApplicationRecord
   VALID_DOMAIN = /[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?\z/ix.freeze
 

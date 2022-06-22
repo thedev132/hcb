@@ -1,5 +1,30 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: stripe_authorizations
+#
+#  id                           :bigint           not null, primary key
+#  amount                       :integer
+#  approved                     :boolean          default(FALSE), not null
+#  authorization_method         :integer
+#  display_name                 :string
+#  marked_no_or_lost_receipt_at :datetime
+#  name                         :string
+#  stripe_status                :integer
+#  created_at                   :datetime         not null
+#  updated_at                   :datetime         not null
+#  stripe_card_id               :bigint           not null
+#  stripe_id                    :text
+#
+# Indexes
+#
+#  index_stripe_authorizations_on_stripe_card_id  (stripe_card_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (stripe_card_id => stripe_cards.id)
+#
 class StripeAuthorization < ApplicationRecord
   include Receiptable
   include Commentable

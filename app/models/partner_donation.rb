@@ -1,5 +1,27 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: partner_donations
+#
+#  id                       :bigint           not null, primary key
+#  aasm_state               :string
+#  hcb_code                 :string
+#  payout_amount_cents      :integer
+#  stripe_charge_created_at :datetime
+#  created_at               :datetime         not null
+#  updated_at               :datetime         not null
+#  event_id                 :bigint           not null
+#  stripe_charge_id         :string
+#
+# Indexes
+#
+#  index_partner_donations_on_event_id  (event_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (event_id => events.id)
+#
 class PartnerDonation < ApplicationRecord
   has_paper_trail
 

@@ -1,5 +1,32 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: sponsors
+#
+#  id                  :bigint           not null, primary key
+#  address_city        :text
+#  address_line1       :text
+#  address_line2       :text
+#  address_postal_code :text
+#  address_state       :text
+#  contact_email       :text
+#  name                :text
+#  slug                :text
+#  created_at          :datetime         not null
+#  updated_at          :datetime         not null
+#  event_id            :bigint
+#  stripe_customer_id  :text
+#
+# Indexes
+#
+#  index_sponsors_on_event_id  (event_id)
+#  index_sponsors_on_slug      (slug) UNIQUE
+#
+# Foreign Keys
+#
+#  fk_rails_...  (event_id => events.id)
+#
 class Sponsor < ApplicationRecord
   has_paper_trail
 
