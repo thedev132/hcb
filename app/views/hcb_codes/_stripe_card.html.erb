@@ -17,10 +17,16 @@
 
   <h2 class="h2 mt0 mx0 border-none flex items-center justify-between">
     <span>
-      <%= @hcb_code.memo %>
-      <span class="regular muted"> for </span>
-      <%= number_to_currency(@hcb_code.amount.abs) %>
+      <%= pop_icon_to "edit",
+          @hcb_code.ct ? edit_canonical_transaction_path(@hcb_code.ct) : edit_canonical_pending_transaction_path(@hcb_code.pt),
+          class: "tooltipped tooltipped--e mr2 align-middle", "aria-label": "Rename transaction" if organizer_signed_in? %>
+
+      <span class="align-middle">
+        <%= @hcb_code.memo %>
+        <span class="regular muted"> for </span>
+        <%= number_to_currency(@hcb_code.amount.abs) %>
       </span>
+    </span>
 
       <% if @hcb_code.pt.declined? %>
         <span class="badge h4 md-right bg-accent">
