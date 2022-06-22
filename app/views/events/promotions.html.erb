@@ -146,7 +146,7 @@
 </div>
 
 <div class="card mb3" id="sendy">
-  <div class="card__banner card__banner--top flex justify-between items-center" style="background-color: #343a44;">
+  <div class="card__banner card__banner--top flex justify-between items-center promo-sendy">
     <h3 class="h1 white p2 my0">Sendy</h3>
     <%= link_to 'Apply',
       organizer_signed_in? ? "https://hack.af/sendypromo?prefill_Project%20Name=#{@event.name}&prefill_Bank%20URL=#{event_url(@event)}&prefill_Your%20name=#{current_user.full_name}&prefill_Domain%20URL=#{@event.g_suites.not_deleted.first&.domain}" : root_path,

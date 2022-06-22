@@ -57,6 +57,10 @@
   background-repeat: no-repeat;
 }
 
+.promo-sendy {
+  background-color: #8492a6;
+  background-image: url('https://user-images.githubusercontent.com/72365100/174316757-2bf5d75a-60dd-42f4-82ea-3fd7e45de793.svg');
+
 .promo-wallets {
   background-color: #BFE595;
   background-image: url('https://cloud-kir52yjnl-hack-club-bot.vercel.app/0amaziograph_c0634a90-37b4-42a9-9986-9d1495a3f33d_1__traced___1_.svg');
@@ -101,6 +105,9 @@ html[data-dark='true'] {
     background-color: $black;
   }
 
+  .promo-sendy {
+    background-color: #343a44;
+    
   .promo-wallets {
     background-color: #768C5D;
   }
