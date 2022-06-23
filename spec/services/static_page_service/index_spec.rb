@@ -3,9 +3,7 @@
 require "rails_helper"
 
 RSpec.describe StaticPageService::Index, type: :model do
-  fixtures "users", "events", "g_suites", "organizer_positions", "organizer_position_invites"
-
-  let(:current_user) { users(:user1) }
+  let(:current_user) { create(:user, admin_at: Time.now) }
 
   let(:attrs) do
     {
@@ -17,6 +15,10 @@ RSpec.describe StaticPageService::Index, type: :model do
 
   describe "#events" do
     it "returns events for that user" do
+      2.times do
+        create(:organizer_position, user: current_user)
+      end
+
       result = service.events
 
       expect(result.count).to eql(2)
@@ -30,10 +32,10 @@ RSpec.describe StaticPageService::Index, type: :model do
       expect(result.count).to eql(0)
     end
 
-    context "when the user is part of the invites " do
-      let(:current_user) { users(:user2) }
-
+    context "when the user is part of the invites" do
       it "returns invites" do
+        create(:organizer_position_invite, user: current_user)
+
         result = service.invites
 
         expect(result.count).to eql(1)
