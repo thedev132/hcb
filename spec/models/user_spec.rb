@@ -2,10 +2,17 @@
 
 require "rails_helper"
 
-RSpec.describe User, type: :model, skip: true do
+RSpec.describe User, type: :model do
   fixtures "users"
 
   let(:user) { users(:user1) }
+
+  # TODO: Fold this test with the one testing for validity of the fixture
+  # once we get rid of fixtures in this spec
+  it "factory is valid" do
+    user = create(:user)
+    expect(user).to be_valid
+  end
 
   it "is valid" do
     expect(user).to be_valid
@@ -106,7 +113,7 @@ RSpec.describe User, type: :model, skip: true do
     end
   end
 
-  describe "#initial_name" do
+  describe "#initial_name", skip: true do
     before do
       user.full_name = "First Last"
     end
