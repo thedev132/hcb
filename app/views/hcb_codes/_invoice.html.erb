@@ -25,6 +25,7 @@
       <span class="regular muted"> invoiced for </span>
       <span class="regular"><%= render_money @invoice.item_amount %></span>
     </span>
+
     <span class="md-right flex flex-row">
       <span class="badge h4 bg-<%= @invoice.state %>">
         <%= @invoice.state_text %>
