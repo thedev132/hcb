@@ -3,9 +3,7 @@
 require "rails_helper"
 
 RSpec.describe Partner, type: :model do
-  fixtures "partners"
-
-  let(:partner) { partners(:partner1) }
+  let(:partner) { create(:partner) }
 
   it "is valid" do
     expect(partner).to be_valid
