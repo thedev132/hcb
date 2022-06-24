@@ -8,7 +8,7 @@ Rails.application.routes.draw do
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 
   mount Sidekiq::Web => "/sidekiq", :constraints => AdminConstraint.new
-  mount Flipper::UI.app(Flipper), at: "flipper", constraints: AdminConstraint.new
+  mount Flipper::UI.app(Flipper), at: "flipper", as: "flipper", constraints: AdminConstraint.new
   mount Blazer::Engine, at: "blazer", constraints: AdminConstraint.new
   get "/sidekiq", to: "users#auth" # fallback if adminconstraint fails, meaning user is not signed in
   if Rails.env.development?
