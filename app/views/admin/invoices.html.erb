@@ -46,7 +46,7 @@
       <th class="w-24">ID</th>
       <th class="w-32">Date</th>
       <th>Recipient</th>
-      <th>StripeInvoiceId</th>
+      <th>Stripe Invoice Number</th>
       <th class="w-32">Amount</th>
       <th class="w-24">Status</th>
       <th class="w-32">FeeReimbursementId</th>
@@ -63,7 +63,7 @@
             <%= invoice.event.name.upcase %>: <%= invoice.sponsor.name %>
           <% end %>
         </td>
-        <td><%= link_to invoice.stripe_invoice_id, invoice.stripe_dashboard_url %></td>
+        <td><%= link_to invoice.number, invoice.stripe_dashboard_url %></td>
         <td><%= render_money_amount(invoice.amount_due) %></td>
         <td><%= invoice.status.upcase %></td>
         <td><%= invoice.fee_reimbursement_id %></td>
