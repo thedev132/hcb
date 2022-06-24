@@ -88,6 +88,7 @@ class User < ApplicationRecord
   end
 
   validates :email, uniqueness: true, presence: true
+  validates_email_format_of :email
   validates :phone_number, phone: { allow_blank: true }
 
   validate :profile_picture_format
