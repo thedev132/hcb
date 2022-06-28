@@ -71,7 +71,7 @@ class DonationsController < ApplicationController
     event = nil
 
     begin
-      event = StripeService.construct_webhook_event(payload, sig_header)
+      event = StripeService.construct_webhook_event(payload, sig_header, :donations)
     rescue Stripe::SignatureVerificationError
       head 400
       return
