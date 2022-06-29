@@ -101,8 +101,8 @@ class EventsController < ApplicationController
     fixed_user_event_params.delete(:hidden)
 
     if @event.update(current_user.admin? ? fixed_event_params : fixed_user_event_params)
-      flash[:success] = "Project successfully updated."
-      redirect_to edit_event_path(@event.slug)
+      flash[:success] = "Organization successfully updated."
+      redirect_back fallback_location: edit_event_path(@event.slug)
     else
       render "edit"
     end
@@ -330,6 +330,14 @@ class EventsController < ApplicationController
     end
   end
 
+  def remove_header_image
+    authorize @event
+
+    @event.donation_header_image.purge_later
+
+    redirect_back fallback_location: edit_event_path(@event)
+  end
+
   private
 
   # Only allow a trusted parameter "white list" through.
@@ -355,13 +363,14 @@ class EventsController < ApplicationController
       :is_public,
       :holiday_features,
       :public_message,
-      :custom_css_url
+      :custom_css_url,
+      :donation_header_image
     )
 
     # Expected budget is in cents on the backend, but dollars on the frontend
-    result_params[:expected_budget] = result_params[:expected_budget].to_f * 100
+    result_params[:expected_budget] = result_params[:expected_budget].to_f * 100 if result_params[:expected_budget]
     # convert whatever the user inputted into something that is a legal slug
-    result_params[:slug] = ActiveSupport::Inflector.parameterize(user_event_params[:slug])
+    result_params[:slug] = ActiveSupport::Inflector.parameterize(user_event_params[:slug]) if result_params[:slug]
 
     result_params
   end
@@ -376,11 +385,12 @@ class EventsController < ApplicationController
       :is_public,
       :holiday_features,
       :public_message,
-      :custom_css_url
+      :custom_css_url,
+      :donation_header_image
     )
 
     # convert whatever the user inputted into something that is a legal slug
-    result_params[:slug] = ActiveSupport::Inflector.parameterize(result_params[:slug])
+    result_params[:slug] = ActiveSupport::Inflector.parameterize(result_params[:slug]) if result_params[:slug]
 
     result_params
   end

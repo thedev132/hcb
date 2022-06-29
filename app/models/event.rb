@@ -250,6 +250,8 @@ class Event < ApplicationRecord
   has_one :partnered_signup, required: false
   has_many :partner_donations
 
+  has_one_attached :donation_header_image
+
   validate :point_of_contact_is_admin
 
   validates :name, :sponsorship_fee, presence: true

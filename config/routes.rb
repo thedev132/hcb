@@ -410,6 +410,8 @@ Rails.application.routes.draw do
     get "dashboard_stats", to: "events#dashboard_stats", as: :dashboard_stats
     put "toggle_hidden", to: "events#toggle_hidden"
 
+    post "remove_header_image"
+
     get "team", to: "events#team", as: :team
     get "google_workspace", to: "events#g_suite_overview", as: :g_suite_overview
     post "g_suite_create", to: "events#g_suite_create", as: :g_suite_create
