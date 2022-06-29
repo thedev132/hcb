@@ -201,6 +201,9 @@ class Event < ApplicationRecord
 
   belongs_to :point_of_contact, class_name: "User", optional: true
 
+  # Used for tracking slug history
+  has_many :slugs, -> { order(id: :desc) }, class_name: "FriendlyId::Slug", as: :sluggable
+
   has_many :organizer_position_invites
   has_many :organizer_positions
   has_many :users, through: :organizer_positions
@@ -251,6 +254,8 @@ class Event < ApplicationRecord
 
   validates :name, :sponsorship_fee, presence: true
   validates :slug, uniqueness: true, presence: true, format: { without: /\s/ }
+
+  after_save :update_slug_history
 
   CUSTOM_SORT = Arel.sql(
     "CASE WHEN id = 183 THEN '1'"\
@@ -522,6 +527,12 @@ class Event < ApplicationRecord
 
   def canonical_transaction_ids_from_hack_club_fees
     @canonical_transaction_ids_from_hack_club_fees ||= CanonicalEventMapping.find(canonical_event_mapping_ids_from_hack_club_fees).pluck(:canonical_transaction_id)
+  end
+
+  def update_slug_history
+    if slug_previously_changed?
+      slugs.create(slug: slug)
+    end
   end
 
 end

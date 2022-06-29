@@ -1,5 +1,5 @@
 <%= form_with(model: event, local: true, class: "mb3") do |form| %>
-  <%= form_errors event, "account info" %>
+  <%= form_errors event, "organization" %>
 
   <div class="field">
     <p class="mt0"><%= event.name %> is on the <strong><%= event.plan_name %></strong> plan and charging <strong><%= number_to_percentage(event.sponsorship_fee * 100, significant: true, strip_insignificant_zeros: true) %></strong> of your revenue.</p>
@@ -91,12 +91,17 @@
       <p class="bold mt0 mb0">If you change your URL, beware:</p>
     </div>
     <ul class="mt1 mb2">
-      <li>Another project may claim your current URL and you could be
-        <span class="bold">unable to get it back</span>
+      <li>
+        We'll automatically redirect most pages to your organization's new URL, including:
+        <ul>
+          <li>Your donation page</li>
+          <li>Transparency Mode pages</li>
+          <li>Transaction bookmarks</li>
+        </ul>
       </li>
-      <li>Your donation page link will change, and <span class="bold">any existing use of it will break</span></li>
-      <li>All bookmarks to this project will <span class="bold">break</span></li>
-      <li>Your team members currently using Bank will be bumped to the home page</li>
+      <li>However, another organization may claim your current URL and you could be
+        <span class="bold">unable to get it back.</span>
+      </li>
     </ul>
     <%= form.label :slug, "Bank URL", class: "bold" %>
     <div class="flex items-center">

@@ -3,7 +3,9 @@
 require "csv"
 
 class DonationsController < ApplicationController
+  include SetEvent
   include Rails::Pagination
+
   skip_after_action :verify_authorized
   skip_before_action :signed_in_user
   before_action :set_donation, only: [:show]
@@ -170,10 +172,6 @@ class DonationsController < ApplicationController
 
   def donations_json
     ::DonationService::Export::Json.new(event_id: @event.id).run
-  end
-
-  def set_event
-    @event = Event.find(params["event_name"])
   end
 
   def set_donation

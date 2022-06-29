@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class EventsController < ApplicationController
+  include SetEvent
+
   include Rails::Pagination
   before_action :set_event, except: [:index, :new, :create, :by_airtable_id]
   skip_before_action :signed_in_user
@@ -329,18 +331,6 @@ class EventsController < ApplicationController
   end
 
   private
-
-  # Use callbacks to share common setup or constraints between actions.
-  def set_event
-    @event = Event.friendly.find(params[:event_id] || params[:id])
-  rescue ActiveRecord::RecordNotFound
-    if signed_in?
-      flash[:error] = "We couldn’t find that organization!"
-      redirect_to root_path
-    else
-      redirect_to auth_users_path(return_to: request.original_url)
-    end
-  end
 
   # Only allow a trusted parameter "white list" through.
   def event_params

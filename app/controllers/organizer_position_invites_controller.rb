@@ -1,24 +1,25 @@
 # frozen_string_literal: true
 
 class OrganizerPositionInvitesController < ApplicationController
+  include SetEvent
+
   before_action :set_opi, only: [:show, :accept, :reject, :cancel]
+  before_action :set_event, only: [:new, :create]
 
   skip_before_action :signed_in_user, only: [:show]
   skip_after_action :verify_authorized, only: [:show], if: -> { @skip_verfiy_authorized }
 
   def new
-    event = Event.friendly.find(params[:event_id])
-    service = OrganizerPositionInviteService::Create.new(event: event)
+    service = OrganizerPositionInviteService::Create.new(event: @event)
 
     @invite = service.model
     authorize @invite
   end
 
   def create
-    event = Event.friendly.find(params[:event_id])
     user_email = invite_params[:email]
 
-    service = OrganizerPositionInviteService::Create.new(event: event, sender: current_user, user_email: user_email)
+    service = OrganizerPositionInviteService::Create.new(event: @event, sender: current_user, user_email: user_email)
 
     @invite = service.model
 

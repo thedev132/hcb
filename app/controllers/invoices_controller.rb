@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 class InvoicesController < ApplicationController
-  before_action :set_event, only: [:index]
+  include SetEvent
+
+  before_action :set_event, only: [:index, :new]
   skip_before_action :signed_in_user
 
   def index
@@ -44,7 +46,6 @@ class InvoicesController < ApplicationController
   end
 
   def new
-    @event = Event.friendly.find(params[:event_id])
     @sponsor = Sponsor.new(event: @event)
     @invoice = Invoice.new(sponsor: @sponsor)
 
@@ -143,10 +144,6 @@ class InvoicesController < ApplicationController
       :sponsor_id,
       sponsor_attributes: policy(Sponsor).permitted_attributes
     )
-  end
-
-  def set_event
-    @event = Event.friendly.find(params[:id] || params[:event_id])
   end
 
 end
