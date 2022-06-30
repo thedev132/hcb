@@ -267,6 +267,13 @@ class Event < ApplicationRecord
     "ELSE 'z' || name END ASC   "
   )
 
+  enum category: {
+    hackathon: 0,
+    'hack club': 1,
+    nonprofit: 2,
+    event: 3
+  }
+
   def country_us?
     country == "US"
   end

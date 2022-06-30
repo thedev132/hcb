@@ -33,6 +33,24 @@
       </div>
     <% end %>
 
+    <% if @event.category == "hackathon" || @event.category == "event" %>
+      <h3 class="mb1" id="event_date_heading">Event Date</h3>
+      <div class="card mb3">
+        <p class="mt0">
+          The date of your next event.
+        </p>
+        <div class="field">
+          <%= form.label :start %>
+          <%= form.date_select :start %>
+        </div>
+        <div class="field">
+          <%= form.label :end %>
+          <%= form.date_select :end %>
+        </div>
+        <%= form.submit "Update" %>
+      </div>
+    <% end %>
+
     <h3 class="mb1">Donations</h3>
 
     <div class="card">
@@ -128,16 +146,6 @@
     </div>
 
     <div class="field">
-      <%= form.label :start %>
-      <%= form.date_select :start %>
-    </div>
-
-    <div class="field">
-      <%= form.label :end %>
-      <%= form.date_select :end %>
-    </div>
-
-    <div class="field">
       <%= form.label :sponsorship_fee, "Sponsorship fee (as fraction of revenue)" %>
       <%= form.text_field :sponsorship_fee, value: event.sponsorship_fee || 0.07, placeholder: "0.07" %>
     </div>
@@ -153,7 +161,12 @@
     </div>
 
     <div class="field">
-      <%= form.label :point_of_contact_id, "Point of contact (deprecated)" %>
+      <%= form.label :category %>
+      <%= form.collection_select :category, Event.categories, :first, :first, { include_blank: 'Select a category'} %>
+    </div>
+
+    <div class="field">
+      <%= form.label :point_of_contact_id, "Point of contact" %>
       <%= form.collection_select :point_of_contact_id, User.admin.all, :id, :email %>
     </div>
 

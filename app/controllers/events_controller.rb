@@ -352,6 +352,7 @@ class EventsController < ApplicationController
       :omit_stats,
       :emburse_department_id,
       :country,
+      :category,
       :organized_by_hack_clubbers,
       :club_airtable_id,
       :point_of_contact_id,

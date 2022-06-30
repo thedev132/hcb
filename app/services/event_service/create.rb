@@ -2,10 +2,12 @@
 
 module EventService
   class Create
-    def initialize(name:, emails: [], country: [], approved: false, sponsorship_fee: 0.07, organized_by_hack_clubbers: false, omit_stats: false)
+    def initialize(name:, point_of_contact_id:, emails: [], country: [], category: [], approved: false, sponsorship_fee: 0.07, organized_by_hack_clubbers: false, omit_stats: false)
       @name = name
       @emails = emails
       @country = country
+      @category = category
+      @point_of_contact_id = point_of_contact_id
       @approved = approved || false
       @sponsorship_fee = sponsorship_fee ? sponsorship_fee.to_f : 0.07
       @organized_by_hack_clubbers = organized_by_hack_clubbers
@@ -38,11 +40,12 @@ module EventService
         end: Date.current,
         address: "N/A",
         country: @country,
+        category: @category,
         organized_by_hack_clubbers: @organized_by_hack_clubbers,
         omit_stats: @omit_stats,
         sponsorship_fee: @sponsorship_fee,
         expected_budget: 100.0,
-        point_of_contact_id: point_of_contact.id,
+        point_of_contact_id: @point_of_contact_id,
         partner_id: partner.id,
         organization_identifier: organization_identifier
       }

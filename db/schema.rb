@@ -556,6 +556,7 @@ ActiveRecord::Schema.define(version: 2022_06_17_230458) do
     t.boolean "holiday_features", default: true, null: false
     t.boolean "organized_by_hack_clubbers"
     t.string "custom_css_url"
+    t.integer "category"
     t.index ["club_airtable_id"], name: "index_events_on_club_airtable_id", unique: true
     t.index ["partner_id", "organization_identifier"], name: "index_events_on_partner_id_and_organization_identifier", unique: true
     t.index ["partner_id"], name: "index_events_on_partner_id"
