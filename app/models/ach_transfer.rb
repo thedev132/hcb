@@ -35,6 +35,9 @@
 class AchTransfer < ApplicationRecord
   has_paper_trail
 
+  include PublicIdentifiable
+  set_public_id_prefix :ach
+
   include AASM
   include Commentable
 

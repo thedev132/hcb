@@ -39,6 +39,9 @@ class Disbursement < ApplicationRecord
 
   has_paper_trail
 
+  include PublicIdentifiable
+  set_public_id_prefix :xfr # Transfer
+
   belongs_to :fulfilled_by, class_name: "User", optional: true
   belongs_to :requested_by, class_name: "User", optional: true
 
@@ -146,6 +149,10 @@ class Disbursement < ApplicationRecord
     else
       :pending
     end
+  end
+
+  def v3_api_state
+    state_text.underscore
   end
 
   def state_text

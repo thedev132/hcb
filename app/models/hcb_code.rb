@@ -18,6 +18,9 @@
 class HcbCode < ApplicationRecord
   has_paper_trail
 
+  include PublicIdentifiable
+  set_public_id_prefix :txn
+
   include Hashid::Rails
 
   include Commentable
@@ -122,7 +125,7 @@ class HcbCode < ApplicationRecord
   end
 
   def raw_stripe_transaction
-    ct.raw_stripe_transaction
+    ct&.raw_stripe_transaction
   end
 
   def stripe_card

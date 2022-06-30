@@ -52,5 +52,8 @@ module Bank
 
     config.exceptions_app = routes
 
+    # TODO: Pre-load grape API
+    # ::API::V3.compile!
+
   end
 end

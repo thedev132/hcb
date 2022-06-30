@@ -10,8 +10,8 @@ module UsersHelper
     "https://gravatar.com/avatar/#{hex}?s=#{size}&d=https%3A%2F%2Fui-avatars.com%2Fapi%2F/#{CGI.escape(name)}/#{size}/#{get_user_color(id)}/fff"
   end
 
-  def avatar_for(user, size = 24, options = {})
-    # avatar_for works with OpenStructs (used on the front end when a user isn't registered),
+  def profile_picture_for(user, size = 24)
+    # profile_picture_for works with OpenStructs (used on the front end when a user isn't registered),
     # so this method shows Gravatars/intials for non-registered and allows showing of uploaded profile pictures for registered users.
     if user.nil?
       src = "https://cloud-80pd8aqua-hack-club-bot.vercel.app/0image-23.png"
@@ -24,6 +24,12 @@ module UsersHelper
     else
       src = gravatar_url(user.email, user.initials, user.id, size * 2)
     end
+
+    src
+  end
+
+  def avatar_for(user, size = 24, options = {})
+    src = profile_picture_for(user, size)
 
     klasses = ["circle", "shrink-none"]
     klasses << "avatar--current-user" if user == current_user

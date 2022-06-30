@@ -43,6 +43,9 @@
 class Donation < ApplicationRecord
   has_paper_trail
 
+  include PublicIdentifiable
+  set_public_id_prefix :don
+
   include AASM
   include Commentable
 

@@ -30,6 +30,9 @@
 class User < ApplicationRecord
   has_paper_trail
 
+  include PublicIdentifiable
+  set_public_id_prefix :usr
+
   include Commentable
   extend FriendlyId
 

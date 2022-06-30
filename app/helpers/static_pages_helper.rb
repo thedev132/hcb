@@ -350,6 +350,8 @@ module StaticPagesHelper
     end
   end
 
+  module_function :flavor_text
+
   def holiday_flavor_text
     return nil if rand(100) <= 5 || DateTime.now >= Date.new(2022, 2, 13)
 

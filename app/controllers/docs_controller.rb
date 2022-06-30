@@ -34,10 +34,6 @@ class DocsController < ActionController::Base
     self
   ].freeze
 
-  def api
-    render file: "public/docs/api.html"
-  end
-
   def swagger
     render json: Swagger::Blocks.build_root_json(SWAGGERED_CLASSES)
   end

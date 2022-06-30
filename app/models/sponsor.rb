@@ -30,6 +30,9 @@
 class Sponsor < ApplicationRecord
   has_paper_trail
 
+  include PublicIdentifiable
+  set_public_id_prefix :spr
+
   extend FriendlyId
 
   include PgSearch::Model

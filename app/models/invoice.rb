@@ -93,6 +93,9 @@
 class Invoice < ApplicationRecord
   has_paper_trail
 
+  include PublicIdentifiable
+  set_public_id_prefix :inv
+
   extend FriendlyId
   include AASM
   include Commentable

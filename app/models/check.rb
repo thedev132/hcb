@@ -39,6 +39,9 @@
 class Check < ApplicationRecord
   has_paper_trail
 
+  include PublicIdentifiable
+  set_public_id_prefix :chk
+
   include AASM
   include Commentable
 

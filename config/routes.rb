@@ -15,12 +15,19 @@ Rails.application.routes.draw do
     mount LetterOpenerWeb::Engine, at: "/letter_opener"
   end
 
-  resources :docs, only: [] do
-    collection do
-      get :api
-      get :swagger
-    end
+  # API documentation
+  scope "docs/api" do
+    get "v2", to: "docs#v2"
+    get "v2/swagger", to: "docs#swagger"
+
+    get "v3", to: "docs#v3"
+    get "v3/*path", to: "docs#v3"
+
+    get "/", to: redirect("/docs/api/v3")
   end
+
+  # V3 API
+  mount Api::V3 => '/'
 
   root to: "static_pages#index"
   get "stats", to: "static_pages#stats"

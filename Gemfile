@@ -187,6 +187,12 @@ gem "byebug", platforms: [:mri, :mingw, :x64_mingw]
 gem "chronic"
 gem "dry-validation"
 gem "geocoder" # lookup lat/lng for Stripe Cards shipment tracking
+gem "grape" # API v3
+gem 'grape-entity' # For Grape::Entity ( https://github.com/ruby-grape/grape-entity )
+gem 'grape-kaminari'
+gem 'grape-route-helpers'
+gem "grape-swagger" # API v3
+gem 'grape-swagger-entity', '~> 0.3'
 gem "hashid-rails", "~> 1.0"
 gem "hiredis"
 gem "invisible_captcha"
