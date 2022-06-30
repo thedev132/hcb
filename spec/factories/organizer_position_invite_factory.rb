@@ -5,5 +5,6 @@ FactoryBot.define do
     association :event
     email { Faker::Internet.email }
     association :sender, factory: :user
+    association :user
   end
 end

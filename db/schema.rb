@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_06_17_202739) do
+ActiveRecord::Schema.define(version: 2022_06_17_230458) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -870,7 +870,7 @@ ActiveRecord::Schema.define(version: 2022_06_17_202739) do
   create_table "organizer_position_invites", force: :cascade do |t|
     t.bigint "event_id", null: false
     t.text "email"
-    t.bigint "user_id"
+    t.bigint "user_id", null: false
     t.bigint "sender_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

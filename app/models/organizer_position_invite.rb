@@ -63,7 +63,7 @@ class OrganizerPositionInvite < ApplicationRecord
   scope :pending_assign, -> { where(accepted_at: nil, rejected_at: nil) }
 
   belongs_to :event
-  belongs_to :user, required: false # TODO: make required after backfill
+  belongs_to :user
   belongs_to :sender, class_name: "User"
 
   belongs_to :organizer_position, required: false
@@ -82,12 +82,6 @@ class OrganizerPositionInvite < ApplicationRecord
   end
 
   def accept
-    # TODO: remove after making user not null
-    unless user.present?
-      self.errors.add(:user, "must be present to accept invite")
-      return false
-    end
-
     if cancelled?
       self.errors.add(:base, "was canceled!")
       return false
@@ -113,12 +107,6 @@ class OrganizerPositionInvite < ApplicationRecord
   end
 
   def reject
-    # TODO: remove after making user not null
-    unless user.present?
-      self.errors.add(:user, "must be present to reject invite")
-      return false
-    end
-
     if cancelled?
       self.errors.add(:base, "was canceled!")
       return false
@@ -163,19 +151,6 @@ class OrganizerPositionInvite < ApplicationRecord
     # https://github.com/norman/friendly_id/issues/480
     sequence = OrganizerPositionInvite.where("slug LIKE ?", "#{slug}-%").size + 2
     [slug, "#{slug} #{sequence}"]
-  end
-
-  # TODO: remove after making user not null
-  # This overrides the default `user` getter method to allow for associating
-  # a user on the fly
-  def user
-    return super unless super.nil?
-
-    # `user` is nil, attempt to find and associate the user to this invite
-    found_user = User.find_by(email: email)
-    self.update(user: found_user) unless found_user.nil?
-
-    super
   end
 
   private
