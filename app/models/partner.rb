@@ -43,7 +43,7 @@ class Partner < ApplicationRecord
   validates :slug, exclusion: { in: EXCLUDED_SLUGS }, uniqueness: true
   validates :api_key, presence: true, uniqueness: true
 
-  encrypts :stripe_api_key
+  has_encrypted :stripe_api_key
 
   def add_user_to_partnered_event!(user_email:, event:)
     # @msw: I take full responsibility the aweful way this is being implemented.
