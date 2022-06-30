@@ -1,14 +1,11 @@
 <% if @onboarding %>
+  <% title "Setup your account" %>
   <% page_sm %>
 <% else %>
+  <% title "Account Settings" %>
   <% page_md %>
   <%= render 'users/nav' %>
 <% end %>
-<!--
-<main class="<%= !@onboarding && 'grid grid--spacious grid--split' %>" style="grid-row-gap: 0;">
-
-<h1 class="grid__fill">
--->
 <h1>
   <%= @onboarding ? 'Welcome to Bank!' : 'Settings' %>
 </h1>
