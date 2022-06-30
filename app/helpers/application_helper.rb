@@ -228,13 +228,23 @@ module ApplicationHelper
     content_for :title, text
   end
 
-  def commit_hash
-    @commit_hash ||= begin
-      hash = ::Util.commit_hash || ""
-      hash[0...7]
+  def commit_name
+    @short_hash ||= commit_hash[0...7]
+    @commit_name ||= begin
+      if commit_dirty?
+        "#{@short_hash}-dirty"
+      else
+        @short_hash
+      end
     end
+  end
 
-    @commit_hash
+  def commit_dirty?
+    ::Util.commit_dirty?
+  end
+
+  def commit_hash
+    ::Util.commit_hash
   end
 
   def commit_time

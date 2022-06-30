@@ -34,4 +34,11 @@ module Util
 
     @commit_hash
   end
+
+  def self.commit_dirty?
+    @commit_dirty ||= begin
+      `git diff --shortstat 2> /dev/null | tail -n1`&.chomp.present?
+    end
+    @commit_dirty
+  end
 end
