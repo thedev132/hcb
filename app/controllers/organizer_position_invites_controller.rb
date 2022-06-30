@@ -5,6 +5,7 @@ class OrganizerPositionInvitesController < ApplicationController
 
   before_action :set_opi, only: [:show, :accept, :reject, :cancel]
   before_action :set_event, only: [:new, :create]
+  before_action :hide_footer, only: :show
 
   skip_before_action :signed_in_user, only: [:show]
   skip_after_action :verify_authorized, only: [:show], if: -> { @skip_verfiy_authorized }
