@@ -13,7 +13,9 @@ module Api
             invoice.sponsor.name
           end
         end
-        expose :created_at, as: :date
+        with_options(format_with: :iso_timestamp) do
+          expose :created_at, as: :date
+        end
         expose :status, documentation: {
           values: %w[
             open

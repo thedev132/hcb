@@ -15,7 +15,9 @@ module Api
       when_expanded do
         expose :amount_cents, documentation: { type: "integer" }
         expose :memo
-        expose :date
+        with_options(format_with: :iso_timestamp) do
+          expose :date
+        end
 
         # This uses the `linked_object_type` method defined below
         expose :linked_object_type, as: :type, documentation: {
@@ -56,6 +58,8 @@ module Api
           expose type, if: ->(hcb_code, options) {
             obj_type = linked_object_type(hcb_code.type).to_s
             self.class.should_show?(entity) && type == obj_type
+          }, documentation: {
+            type: entity
           } do |hcb_code, options|
             linked_objects = hcb_code.public_send(method)
             entity.represent(linked_objects, options_hide(self))

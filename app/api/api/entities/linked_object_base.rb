@@ -12,7 +12,7 @@ module Api
       end
 
       when_showing(Transaction) do
-        expose :transaction do |obj, options|
+        expose :transaction, documentation: { type: Transaction } do |obj, options|
           Entities::Transaction.represent(obj.local_hcb_code, options_hide(API_LINKED_OBJECT_TYPE))
         end
       end
