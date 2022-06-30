@@ -11,80 +11,104 @@ module Api
 
     helpers do
       def org
-        id = params[:organization_id]
-        @event ||= Event.transparent.find_by_public_id id # by public id (ex. org_1234). Will NOT error if not found
-        @event ||= Event.transparent.find id # by slug or numeric id. Will error if not found
+        @org ||=
+          begin
+            id = params[:organization_id]
+            event ||= Event.transparent.find_by_public_id id # by public id (ex. org_1234). Will NOT error if not found
+            event ||= Event.transparent.find id # by slug or numeric id. Will error if not found
+          end
       rescue ActiveRecord::RecordNotFound
         error!({ message: 'Organization not found.' }, 404)
       end
 
       def transactions
         # TODO: this can be optimized
-        pending = PendingTransactionEngine::PendingTransaction::All.new(event_id: org.id).run
-        settled = TransactionGroupingEngine::Transaction::All.new(event_id: org.id).run
+        @transactions ||=
+          begin
+            pending = PendingTransactionEngine::PendingTransaction::All.new(event_id: org.id).run
+            settled = TransactionGroupingEngine::Transaction::All.new(event_id: org.id).run
 
-        combined = paginate(Kaminari.paginate_array(pending + settled))
-        @transactions = combined.map(&:local_hcb_code)
+            combined = paginate(Kaminari.paginate_array(pending + settled))
+            combined.map(&:local_hcb_code)
+          end
       end
 
       def transaction
-        id = params[:transaction_id]
-        @hcb_code = HcbCode.find_by_public_id!(id)
+        @transaction ||=
+          begin
+            id = params[:transaction_id]
+            HcbCode.find_by_public_id!(id)
+          end
       rescue ActiveRecord::RecordNotFound
         error!({ message: 'Transaction not found.' }, 404)
       end
 
       def donations
-        @donations = paginate(org.donations)
+        @donations ||= paginate(org.donations)
       end
 
       def donation
-        id = params[:donation_id]
-        @donation = Donation.find_by_public_id!(id)
+        @donation ||=
+          begin
+            id = params[:donation_id]
+            Donation.find_by_public_id!(id)
+          end
       rescue ActiveRecord::RecordNotFound
         error!({ message: 'Donation not found.' }, 404)
       end
 
       def transfers
-        @transfers = paginate(org.disbursements)
+        @transfers ||= paginate(org.disbursements)
       end
 
       def transfer
-        id = params[:transfer_id]
-        @transfer = Disbursement.find_by_public_id!(id)
+        @transfer ||=
+          begin
+            id = params[:transfer_id]
+            Disbursement.find_by_public_id!(id)
+          end
       rescue ActiveRecord::RecordNotFound
         error!({ message: 'Transfer not found.' }, 404)
       end
 
       def ach_transfers
-        @ach_transfers = paginate(org.ach_transfers)
+        @ach_transfers ||= paginate(org.ach_transfers)
       end
 
       def ach_transfer
-        id = params[:ach_transfer_id]
-        @ach_transfer = AchTransfer.find_by_public_id!(id)
+        @ach_transfer ||=
+          begin
+            id = params[:ach_transfer_id]
+            AchTransfer.find_by_public_id!(id)
+          end
       rescue ActiveRecord::RecordNotFound
         error!({ message: 'Ach transfer not found.' }, 404)
       end
 
       def invoices
-        @invoices = paginate(org.invoices)
+        @invoices ||= paginate(org.invoices)
       end
 
       def invoice
-        id = params[:invoice_id]
-        @invoice = Invoice.find_by_public_id!(id)
+        @invoice ||=
+          begin
+            id = params[:invoice_id]
+            Invoice.find_by_public_id!(id)
+          end
       rescue ActiveRecord::RecordNotFound
         error!({ message: 'Invoice not found.' }, 404)
       end
 
       def checks
-        @checks = paginate(org.checks)
+        @checks ||= paginate(org.checks)
       end
 
       def check
-        id = params[:check_id]
-        @check = Check.find_by_public_id!(id)
+        @check ||=
+          begin
+            id = params[:check_id]
+            Check.find_by_public_id!(id)
+          end
       rescue ActiveRecord::RecordNotFound
         error!({ message: 'Check not found.' }, 404)
       end
@@ -171,7 +195,7 @@ module Api
             use :expand
           end
           get do
-            present transactions, with: Api::Entities::Transaction, **type_expansion(expand: %w[transaction linked_objects])
+            present transactions, with: Api::Entities::Transaction, **type_expansion(expand: %w[transaction])
           end
         end
 

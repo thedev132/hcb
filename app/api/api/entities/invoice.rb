@@ -13,7 +13,7 @@ module Api
             invoice.sponsor.name
           end
         end
-        with_options(format_with: :iso_timestamp) do
+        format_as_date do
           expose :created_at, as: :date
         end
         expose :status, documentation: {

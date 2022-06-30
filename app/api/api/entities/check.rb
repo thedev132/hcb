@@ -5,7 +5,7 @@ module Api
     class Check < LinkedObjectBase
       when_expanded do
         expose :amount, as: :amount_cents, documentation: { type: "integer" }
-        with_options(format_with: :iso_timestamp) do
+        format_as_date do
           expose :created_at, as: :date
         end
         expose :aasm_state, as: :status, documentation: {

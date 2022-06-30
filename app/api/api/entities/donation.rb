@@ -8,7 +8,7 @@ module Api
         expose :donor do
           expose :name
         end
-        with_options(format_with: :iso_timestamp) do
+        format_as_date do
           expose :created_at, as: :date
         end
         expose :aasm_state, as: :status, documentation: {

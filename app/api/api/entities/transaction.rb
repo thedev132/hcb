@@ -15,7 +15,7 @@ module Api
       when_expanded do
         expose :amount_cents, documentation: { type: "integer" }
         expose :memo
-        with_options(format_with: :iso_timestamp) do
+        format_as_date do
           expose :date
         end
 

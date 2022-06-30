@@ -13,7 +13,7 @@ module Api
           expose :pending_incoming_balance_v2_cents, as: :incoming_balance_cents, documentation: { type: "integer" }
         end
 
-        with_options(format_with: :iso_timestamp) do
+        format_as_date do
           expose :created_at
         end
       end

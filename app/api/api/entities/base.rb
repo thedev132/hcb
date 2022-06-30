@@ -16,7 +16,11 @@ module Api
         root + public_send(self.class.api_self_path_method_name, params)
       end
 
-      format_with(:iso_timestamp) { |dt| dt.iso8601 }
+      format_with(:iso_timestamp) { |dt| dt&.iso8601 }
+
+      def self.format_as_date(&block)
+        with_options(format_with: :iso_timestamp, &block)
+      end
 
       def self.entity_name
         self.name.demodulize.titleize
