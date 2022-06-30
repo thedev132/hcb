@@ -4,20 +4,21 @@
 #
 # Table name: g_suite_accounts
 #
-#  id               :bigint           not null, primary key
-#  accepted_at      :datetime
-#  address          :text
-#  backup_email     :text
-#  first_name       :string
-#  initial_password :string
-#  last_name        :string
-#  rejected_at      :datetime
-#  suspended_at     :datetime
-#  verified_at      :datetime
-#  created_at       :datetime         not null
-#  updated_at       :datetime         not null
-#  creator_id       :bigint
-#  g_suite_id       :bigint
+#  id                          :bigint           not null, primary key
+#  accepted_at                 :datetime
+#  address                     :text
+#  backup_email                :text
+#  first_name                  :string
+#  initial_password            :string
+#  initial_password_ciphertext :text
+#  last_name                   :string
+#  rejected_at                 :datetime
+#  suspended_at                :datetime
+#  verified_at                 :datetime
+#  created_at                  :datetime         not null
+#  updated_at                  :datetime         not null
+#  creator_id                  :bigint
+#  g_suite_id                  :bigint
 #
 # Indexes
 #
@@ -40,6 +41,8 @@ class GSuiteAccount < ApplicationRecord
 
   belongs_to :g_suite
   belongs_to :creator, class_name: "User"
+
+  has_encrypted :initial_password, migrating: true
 
   validates_presence_of :address, :backup_email, :first_name, :last_name
 

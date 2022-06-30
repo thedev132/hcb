@@ -36,6 +36,7 @@ ActiveRecord::Schema.define(version: 2022_07_03_102629) do
     t.text "payment_for"
     t.string "aasm_state"
     t.text "confirmation_number"
+    t.text "account_number_ciphertext"
     t.index ["creator_id"], name: "index_ach_transfers_on_creator_id"
     t.index ["event_id"], name: "index_ach_transfers_on_event_id"
   end
@@ -643,6 +644,7 @@ ActiveRecord::Schema.define(version: 2022_07_03_102629) do
     t.string "first_name"
     t.string "last_name"
     t.datetime "suspended_at"
+    t.text "initial_password_ciphertext"
     t.index ["creator_id"], name: "index_g_suite_accounts_on_creator_id"
     t.index ["g_suite_id"], name: "index_g_suite_accounts_on_g_suite_id"
   end

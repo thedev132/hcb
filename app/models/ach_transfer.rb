@@ -4,23 +4,24 @@
 #
 # Table name: ach_transfers
 #
-#  id                     :bigint           not null, primary key
-#  aasm_state             :string
-#  account_number         :string
-#  amount                 :integer
-#  approved_at            :datetime
-#  bank_name              :string
-#  confirmation_number    :text
-#  payment_for            :text
-#  recipient_name         :string
-#  recipient_tel          :string
-#  rejected_at            :datetime
-#  routing_number         :string
-#  scheduled_arrival_date :datetime
-#  created_at             :datetime         not null
-#  updated_at             :datetime         not null
-#  creator_id             :bigint
-#  event_id               :bigint
+#  id                        :bigint           not null, primary key
+#  aasm_state                :string
+#  account_number            :string
+#  account_number_ciphertext :text
+#  amount                    :integer
+#  approved_at               :datetime
+#  bank_name                 :string
+#  confirmation_number       :text
+#  payment_for               :text
+#  recipient_name            :string
+#  recipient_tel             :string
+#  rejected_at               :datetime
+#  routing_number            :string
+#  scheduled_arrival_date    :datetime
+#  created_at                :datetime         not null
+#  updated_at                :datetime         not null
+#  creator_id                :bigint
+#  event_id                  :bigint
 #
 # Indexes
 #
@@ -46,6 +47,8 @@ class AchTransfer < ApplicationRecord
 
   belongs_to :creator, class_name: "User"
   belongs_to :event
+
+  has_encrypted :account_number, migrating: true
 
   validates :amount, numericality: { greater_than: 0, message: "must be greater than 0" }
   validates_length_of :routing_number, is: 9
