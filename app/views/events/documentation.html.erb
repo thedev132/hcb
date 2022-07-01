@@ -7,19 +7,29 @@
 </h1>
 
   <ul class="grid">
-  <%= link_to(branding_path) do %>
+    <%= link_to(v3_path) do %>
+      <li class="card card--hover">
+        <span class="flex items-center">
+          <h3 class="mt1 mb0">API Docs</h3>
+          <span class="badge nowrap bg-success mt1">New</span>
+        </span>
+        <p class="mb1 mt1">The Hack Club Bank API.</p>
+      </li>
+    <% end %>
+
+    <%= link_to(branding_path) do %>
     <li class="card card--hover">
       <h3 class="mt1 mb0">Branding</h3>
       <p class="mb1 mt1">How and when to use our logo.</p>
     </li>
     <% end %>
 
-  <%= link_to(event_documents_path) do %>
-    <li class="card card--hover">
-      <h3 class="mt1 mb0">Legal Documents</h3>
-      <p class="mb1 mt1">EINs, W-9s, and paperwork&nbsp;oh&nbsp;my!</p>
-    </li>
-  <% end %>
+    <%= link_to(event_documents_path) do %>
+      <li class="card card--hover">
+        <h3 class="mt1 mb0">Legal Documents</h3>
+        <p class="mb1 mt1">EINs, W-9s, and paperwork&nbsp;oh&nbsp;my!</p>
+      </li>
+    <% end %>
   </ul>
 
 <hr class="my3" />
