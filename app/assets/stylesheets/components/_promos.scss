@@ -57,6 +57,12 @@
   background-repeat: no-repeat;
 }
 
+
+.promo-event-helper {
+  background-color: rgb(238, 188, 36);
+  color: black;
+}
+
 .promo-sendy {
   background-color: #8492a6;
   background-image: url('https://cloud-7cxyr06bk-hack-club-bot.vercel.app/0yeah.svg');
@@ -109,6 +115,10 @@ html[data-dark='true'] {
     background-color: $black;
   }
 
+  .promo-event-helper {
+    background-color: rgba(39, 110, 87, 0.732);
+  }
+  
   .promo-sendy {
     background-color: #343a44;
   }

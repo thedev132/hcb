@@ -33,6 +33,7 @@
       <%= card_to 'Pending Sendy accounts', link_to_airtable_task(:sendy), { badge: @active[:pending_sendy_airtable] } %>
       <%= card_to 'Pending 1Password', link_to_airtable_task(:onepassword), { badge: @active[:pending_onepassword_airtable] } %>
       <%= card_to 'Pending PVSA orders', link_to_airtable_task(:pvsa), { badge: @active[:pending_pvsa_airtable] } %>
+      <%= card_to 'Pending Event Insurance', link_to_airtable_task(:theeventhelper), { badge: @active[:pending_theeventhelper_airtable] } %>
       <%= card_to 'Pending Disputes', link_to_airtable_task(:disputed_transactions), { badge: @active[:pending_disputed_transactions] } %>
       <%= card_to 'Pending Feedback', link_to_airtable_task(:feedback), { badge: @active[:pending_feedback_airtable] } %>
     </ul>

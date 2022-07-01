@@ -449,6 +449,11 @@ module StaticPagesHelper
         query: { filterByFormula: "Status='Pending'", fields: [] },
         destination: "https://airtable.com/tbl4ffIbyaEa2fIYW/viw2OPTziXEqOpaLA"
       },
+      theeventhelper: {
+        url: "https://airbridge.hackclub.com/v0.1/Bank%20Promotions/Event%20Insurance",
+        query: { filterByFormula: "Status='Pending'", fields: [] },
+        destination: "https://airtable.com/tblWlQxkf6L7mEjC4/viwzbku7oWsw5GFEa"
+      },
       wire_transfers: {
         url: "https://airbridge.hackclub.com/v0.1/Bank%20Promotions/Wire%20Transfers",
         query: { filterByFormula: "Status='Pending'", fields: [] },
