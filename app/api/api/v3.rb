@@ -44,7 +44,7 @@ module Api
       end
 
       def donations
-        @donations ||= paginate(org.donations)
+        @donations ||= paginate(org.donations.not_pending)
       end
 
       def donation
