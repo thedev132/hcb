@@ -172,6 +172,7 @@ module Api
       route_param :organization_id do
         get do
           begin
+            Pundit.authorize(nil, [:api, org], :show?)
             present org, with: Api::Entities::Organization, **type_expansion(expand: %w[organization user])
           rescue ActiveRecord::RecordNotFound, ArgumentError
             error!({ message: 'Organization not found.' }, 404)
@@ -195,6 +196,7 @@ module Api
             use :expand
           end
           get do
+            Pundit.authorize(nil, [:api, org], :transactions?)
             present transactions, with: Api::Entities::Transaction, **type_expansion(expand: %w[transaction])
           end
         end
@@ -216,6 +218,7 @@ module Api
             use :expand
           end
           get do
+            Pundit.authorize(nil, [:api, org], :donations?)
             present donations, with: Api::Entities::Donation, **type_expansion(expand: %w[donation])
           end
         end
@@ -237,6 +240,7 @@ module Api
             use :expand
           end
           get do
+            Pundit.authorize(nil, [:api, org], :transfers?)
             present transfers, with: Api::Entities::Transfer, **type_expansion(expand: %w[transfer])
           end
         end
@@ -258,6 +262,7 @@ module Api
             use :expand
           end
           get do
+            Pundit.authorize(nil, [:api, org], :invoices?)
             present invoices, with: Api::Entities::Invoice, **type_expansion(expand: %w[invoice])
           end
         end
@@ -279,6 +284,7 @@ module Api
             use :expand
           end
           get do
+            Pundit.authorize(nil, [:api, org], :ach_transfers?)
             present ach_transfers, with: Api::Entities::AchTransfer, **type_expansion(expand: %w[ach_transfer])
           end
         end
@@ -300,6 +306,7 @@ module Api
             use :expand
           end
           get do
+            Pundit.authorize(nil, [:api, org], :checks?)
             present checks, with: Api::Entities::Check, **type_expansion(expand: %w[check])
           end
         end
@@ -325,6 +332,7 @@ module Api
       end
       route_param :donation_id do
         get do
+          Pundit.authorize(nil, [:api, donation], :show?)
           present donation, with: Api::Entities::Donation, **type_expansion(expand: %w[donation])
         end
       end
@@ -347,6 +355,7 @@ module Api
       end
       route_param :transfer_id do
         get do
+          Pundit.authorize(nil, [:api, transfer], :show?)
           present transfer, with: Api::Entities::Transfer, **type_expansion(expand: %w[transfer])
         end
       end
@@ -369,6 +378,7 @@ module Api
       end
       route_param :invoice_id do
         get do
+          Pundit.authorize(nil, [:api, invoice], :show?)
           present invoice, with: Api::Entities::Invoice, **type_expansion(expand: %w[invoice])
         end
       end
@@ -391,6 +401,7 @@ module Api
       end
       route_param :ach_transfer_id do
         get do
+          Pundit.authorize(nil, [:api, ach_transfer], :show?)
           present ach_transfer, with: Api::Entities::AchTransfer, **type_expansion(expand: %w[ach_transfer])
         end
       end
@@ -413,6 +424,7 @@ module Api
       end
       route_param :check_id do
         get do
+          Pundit.authorize(nil, [:api, check], :show?)
           present check, with: Api::Entities::Check, **type_expansion(expand: %w[check])
         end
       end
@@ -435,6 +447,7 @@ module Api
       end
       route_param :transaction_id do
         get do
+          Pundit.authorize(nil, [:api, transaction], :show?)
           present transaction, with: Api::Entities::Transaction, **type_expansion(expand: %w[transaction])
         end
       end
@@ -453,6 +466,9 @@ module Api
     # Handle unexpected errors
     rescue_from ActiveRecord::RecordNotFound do
       error!({ message: 'Not found.' }, 404)
+    end
+    rescue_from Pundit::NotAuthorizedError do
+      error!({ message: 'Not authorized.' }, 403)
     end
     rescue_from :all do |e|
       Airbrake.notify(e)
