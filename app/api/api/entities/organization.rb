@@ -7,6 +7,9 @@ module Api
         expose :name
         expose :slug
         expose :is_public, as: :transparent, documentation: { type: "boolean" }
+        expose :public_message do |event|
+          event.public_message.presence
+        end
         expose :balances do
           expose :balance_v2_cents, as: :balance_cents, documentation: { type: "integer" }
           expose :fee_balance_v2_cents, as: :fee_balance_cents, documentation: { type: "integer" }
