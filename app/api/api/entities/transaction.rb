@@ -28,6 +28,10 @@ module Api
           expose :date
         end
 
+        expose :organization_id do |hcb_code|
+          hcb_code.event.public_id
+        end
+
         # This uses the `linked_object_type` method defined below
         expose :linked_object_type, as: :type, documentation: {
           values: LINKED_OBJECT_TYPES
