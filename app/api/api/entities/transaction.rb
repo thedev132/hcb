@@ -28,16 +28,18 @@ module Api
           expose :date
         end
 
-        expose :organization_id do |hcb_code|
-          hcb_code.event.public_id
-        end
-
         # This uses the `linked_object_type` method defined below
         expose :linked_object_type, as: :type, documentation: {
           values: LINKED_OBJECT_TYPES
         }
         expose :pending, documentation: { type: "boolean" } do |hcb_code, options|
           hcb_code.canonical_transactions.empty?
+        end
+      end
+
+      when_showing Organization do
+        expose :organization, documentation: { type: Organization } do |hcb_code, options|
+          Organization.represent(hcb_code.event, options_hide(User))
         end
       end
 

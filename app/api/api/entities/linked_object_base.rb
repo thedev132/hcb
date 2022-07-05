@@ -17,6 +17,12 @@ module Api
         end
       end
 
+      when_showing Organization do
+        expose :organization, documentation: { type: Organization } do |obj, options|
+          Organization.represent(obj.event, options_hide(User))
+        end
+      end
+
     end
   end
 end
