@@ -150,8 +150,9 @@ module Api
       hidden true
     end
     get :flavor do
-      content_type "text/plain"
-      StaticPagesHelper.flavor_text
+      {
+        flavor: StaticPagesHelper.flavor_text
+      }
     end
 
     resource :organizations do
