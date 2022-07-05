@@ -12,6 +12,11 @@
 #  updated_at            :datetime         not null
 #  stripe_transaction_id :text
 #
+# Indexes
+#
+#  index_raw_pending_stripe_transactions_on_card_id_text  ((((stripe_transaction -> 'card'::text) ->> 'id'::text))) USING hash
+#  index_raw_pending_stripe_transactions_on_status_text   (((stripe_transaction ->> 'status'::text))) USING hash
+#
 class RawPendingStripeTransaction < ApplicationRecord
   monetize :amount_cents
 

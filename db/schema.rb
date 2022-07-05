@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_06_17_230458) do
+ActiveRecord::Schema.define(version: 2022_07_03_102054) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -1063,6 +1063,8 @@ ActiveRecord::Schema.define(version: 2022_06_17_230458) do
     t.date "date_posted"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index "(((stripe_transaction -> 'card'::text) ->> 'id'::text))", name: "index_raw_pending_stripe_transactions_on_card_id_text", using: :hash
+    t.index "((stripe_transaction ->> 'status'::text))", name: "index_raw_pending_stripe_transactions_on_status_text", using: :hash
   end
 
   create_table "raw_plaid_transactions", force: :cascade do |t|
