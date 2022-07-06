@@ -30,7 +30,8 @@ class HcbCode < ApplicationRecord
 
   before_create :generate_and_set_short_code
 
-  attr_writer :canonical_transactions, :canonical_pending_transactions, :not_admin_only_comments_count
+  attr_accessor :not_admin_only_comments_count
+  attr_writer :canonical_transactions, :canonical_pending_transactions
 
   def url
     "/hcb/#{hashid}"
@@ -274,13 +275,6 @@ class HcbCode < ApplicationRecord
 
   def generate_and_set_short_code
     self.short_code = ::HcbCodeService::Generate::ShortCode.new.run
-  end
-
-  # delete this method once preload is on by default
-  def not_admin_only_comments_count
-    return @not_admin_only_comments_count if defined?(@not_admin_only_comments_count)
-
-    @not_admin_only_comments_count = comments.not_admin_only.count
   end
 
 end
