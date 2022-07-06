@@ -3,32 +3,23 @@
 require "rails_helper"
 
 RSpec.describe User, type: :model do
-  fixtures "users"
-
-  let(:user) { users(:user1) }
-
-  # TODO: Fold this test with the one testing for validity of the fixture
-  # once we get rid of fixtures in this spec
-  it "factory is valid" do
-    user = create(:user)
-    expect(user).to be_valid
-  end
-
   it "is valid" do
+    user = create(:user)
+
     expect(user).to be_valid
   end
 
   it "is admin" do
+    user = create(:user, admin_at: Time.now)
+
     expect(user).to be_admin
   end
 
   describe "#initials" do
     context "when missing name" do
-      before do
-        user.full_name = nil
-      end
-
       it "returns initials from email" do
+        user = create(:user, email: "user1@example.com", full_name: nil)
+
         expect(user.initials).to eql("U")
       end
     end
@@ -36,11 +27,9 @@ RSpec.describe User, type: :model do
 
   describe "#safe_name" do
     context "when initial name is really long" do
-      before do
-        user.full_name = "Thisisareallyreallylongfirstnamethatembursewillnotlike Last"
-      end
-
       it "returns safe_name max of 24 chars" do
+        user = create(:user, full_name: "Thisisareallyreallylongfirstnamethatembursewillnotlike Last")
+
         expect(user.safe_name).to eql("Thisisareallyreallylo L")
         expect(user.safe_name.length).to eql(23)
       end
@@ -48,107 +37,83 @@ RSpec.describe User, type: :model do
   end
 
   describe "#first_name" do
-    before do
-      user.full_name = "First Last"
-    end
-
     context "when name is downcased" do
-      before do
-        user.full_name = "ann marie"
-      end
-
       it "returns" do
+        user = create(:user, full_name: "ann marie")
+
         expect(user.first_name).to eql("ann")
       end
     end
 
     context "when multiple first names" do
-      before do
-        user.full_name = "Prof. Donald Ervin Knuth"
-      end
-
       it "returns actual first name" do
+        user = create(:user, full_name: "Prof. Donald Ervin Knuth")
+
         expect(user.first_name).to eql("Donald")
       end
     end
 
     context "when name entered with comma" do
-      before do
-        user.full_name = "Turing, Alan M."
-      end
-
       it "returns actual first name" do
+        user = create(:user, full_name: "Turing, Alan M.")
+
         expect(user.first_name).to eql("Alan")
       end
     end
   end
 
   describe "#last_name" do
-    before do
-      user.full_name = "Ken Griffey Jr."
-    end
-
     it "returns actual last name" do
+      user = create(:user, full_name: "Ken Griffey Jr.")
+
       expect(user.last_name).to eql("Griffey")
     end
 
     context "when name is downcased" do
-      before do
-        user.full_name = "ann marie"
-      end
-
       it "returns" do
+        user = create(:user, full_name: "ann marie")
+
         expect(user.last_name).to eql("marie")
       end
     end
 
     context "when entered with comma" do
-      before do
-        user.full_name = "Carreño Quiñones, María-Jose"
-      end
-
       it "returns actual last name" do
+        user = create(:user, full_name: "Carreño Quiñones, María-Jose")
+
         expect(user.last_name).to eql("Quiñones")
       end
     end
   end
 
-  describe "#initial_name", skip: true do
-    before do
-      user.full_name = "First Last"
-    end
-
+  describe "#initial_name" do
     it "returns" do
+      user = create(:user, full_name: "First Last")
+
       expect(user.initial_name).to eql("First L")
     end
 
     context "when first name is missing" do
-      before do
-        user.full_name = "Last"
-      end
-
       it "returns" do
-        expect(user.initial_name).to eql("Last L")
+        user = create(:user, full_name: "Last")
+
+        expect(user.initial_name).to eql("Last")
       end
     end
 
     context "when last name is missing" do
-      before do
-        user.full_name = "First"
-      end
-
       it "returns" do
-        expect(user.initial_name).to eql("First F")
+        user = create(:user, full_name: "First")
+
+        expect(user.initial_name).to eql("First")
       end
     end
 
     context "when full_name is nil" do
-      before do
-        user.full_name = nil
-      end
-
       it "returns" do
-        expect(user.initial_name).to eql("user1 u")
+        user = create(:user, email: "user1@example.com", full_name: nil)
+
+        expect(user.initial_name).to eql("user1")
       end
     end
   end
@@ -156,11 +121,8 @@ RSpec.describe User, type: :model do
   describe "#private" do
     describe "#namae" do
       context "when brackets in name" do
-        before do
-          user.full_name = "Zach Latta [Dev]"
-        end
-
         it "can parse the name" do
+          user = create(:user, full_name: "Zach Latta [Dev]")
           result = user.send(:namae)
 
           expect(result).to_not eql(nil)
@@ -170,11 +132,8 @@ RSpec.describe User, type: :model do
       end
 
       context "when parentheses" do
-        before do
-          user.full_name = "Max (test) Wofford"
-        end
-
         it "can parse the name" do
+          user = create(:user, full_name: "Max (test) Wofford")
           result = user.send(:namae)
 
           expect(result).to_not eql(nil)
@@ -184,11 +143,8 @@ RSpec.describe User, type: :model do
       end
 
       context "when emojis in name" do
-        before do
-          user.full_name = "Melody ✨"
-        end
-
         it "can parse the name" do
+          user = create(:user, full_name: "Melody ✨")
           result = user.send(:namae)
 
           expect(result).to_not eql(nil)
@@ -198,11 +154,8 @@ RSpec.describe User, type: :model do
       end
 
       context "when a number" do
-        before do
-          user.full_name = "5512700050241863"
-        end
-
         it "can parse the name" do
+          user = create(:user, full_name: "5512700050241863")
           result = user.send(:namae)
 
           expect(result).to_not eql(nil)
