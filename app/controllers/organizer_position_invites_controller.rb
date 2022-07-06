@@ -46,8 +46,12 @@ class OrganizerPositionInvitesController < ApplicationController
     authorize @invite
     @organizers = @invite.event.organizer_positions.includes(:user)
     if @invite.cancelled?
-      flash[:error] = "That invite was canceled!"
+      flash[:error] = "This invitation has been canceled."
       redirect_to root_path
+    elsif @invite.accepted?
+      redirect_to @invite.event, flash: { success: "You’ve already joined this team!" }
+    elsif @invite.rejected?
+      redirect_to root_path, flash: { error: "You’ve already rejected this invitation." }
     end
   end
 
