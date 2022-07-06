@@ -7,6 +7,11 @@ RSpec.describe CanonicalTransaction, type: :model do
 
   let(:canonical_transaction) { canonical_transactions(:canonical_transaction1) }
 
+  it "factory is valid" do
+    canonical_transaction = create(:canonical_transaction)
+    expect(canonical_transaction).to be_valid
+  end
+
   it "is valid" do
     expect(canonical_transaction).to be_valid
   end

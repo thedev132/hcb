@@ -5,27 +5,21 @@ require "rails_helper"
 RSpec.describe ReceiptUploadsMailbox, type: :mailbox do
   include ActionMailbox::TestHelper
 
-  fixtures :events, :users, :canonical_transactions, :canonical_event_mappings
+  let!(:user) { create(:user, admin_at: Time.now) }
+  let!(:event) { create(:event) }
+  let!(:canonical_transaction) { create(:canonical_transaction, hcb_code: "HCB-600-iauth_1234567890abcdefghijklmn") }
+  let!(:canonical_event_mapping) { create(:canonical_event_mapping, event: event, canonical_transaction: canonical_transaction) }
+  let!(:receipt_filepath) { file_fixture("receipt.png") }
+  let!(:hcb) { canonical_transaction.local_hcb_code }
 
-  let(:user) { users(:user1) }
-  let(:event) { events(:event1) }
-  let(:canonical_transaction) { canonical_transactions(:canonical_transaction_with_hcb) }
-  let(:canonical_event_mapping) { canonical_event_mapping(:canonical_event_mapping2) }
-  let(:receipt_filepath) { file_fixture("receipt.png") }
-  let(:hcb) { canonical_transaction.local_hcb_code }
   before :each do
     event.users << user
   end
 
-
-  # @msw: Seems like rspec-rails is working on the fix for this in a PR here:
-  # https://github.com/rspec/rspec-rails/pull/2400#pullrequestreview-521545458
-  # For the time being, I'm going to disable this test for the time being.
-
-  # it "routes email to mailbox" do
-  #   expect(ReceiptUploadsMailbox)
-  #     .to receive_inbound_email(to: "receipts+hcb-#{hcb.hashid}@example.com")
-  # end
+  it "routes email to mailbox" do
+    expect(ReceiptUploadsMailbox)
+      .to receive_inbound_email(to: "receipts+hcb-#{hcb.hashid}@example.com")
+  end
 
   it "marks email as delivered" do
     mail = Mail.new do |m|

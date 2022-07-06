@@ -123,7 +123,7 @@ gem "flipper-ui"
 
 group :development, :test do
   gem "relaxed-rubocop"
-  gem "rspec-rails", "~> 4.0.1"
+  gem "rspec-rails", "~> 5.0.0"
   gem "rubocop"
   gem "webdrivers"
 end

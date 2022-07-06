@@ -7,6 +7,11 @@ RSpec.describe CanonicalEventMapping, type: :model do
 
   let(:canonical_event_mapping) { canonical_event_mappings(:canonical_event_mapping1) }
 
+  it "factory is valid" do
+    canonical_event_mapping = create(:canonical_event_mapping)
+    expect(canonical_event_mapping).to be_valid
+  end
+
   it "is valid" do
     expect(canonical_event_mapping).to be_valid
   end
