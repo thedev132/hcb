@@ -9,11 +9,11 @@ module StripeAuthorizationService
     def run
       cpt = nil
 
-      ActiveRecord::Base.transaction do
-        # 1. fetch remote stripe transaction (authorization)
-        remote_stripe_transaction = ::Partners::Stripe::Issuing::Authorizations::Show.new(id: @stripe_transaction_id).run
-        return unless remote_stripe_transaction
+      # 1. fetch remote stripe transaction (authorization)
+      remote_stripe_transaction = ::Partners::Stripe::Issuing::Authorizations::Show.new(id: @stripe_transaction_id).run
+      return unless remote_stripe_transaction
 
+      ActiveRecord::Base.transaction do
         # 2. idempotent import into the db
         rpst = ::PendingTransactionEngine::RawPendingStripeTransactionService::Stripe::ImportSingle.new(remote_stripe_transaction: remote_stripe_transaction).run
 
@@ -25,7 +25,11 @@ module StripeAuthorizationService
       end
 
       if cpt
-        CanonicalPendingTransactionMailer.with(canonical_pending_transaction_id: cpt.id).notify_approved.deliver_later
+        if remote_stripe_transaction.approved
+          CanonicalPendingTransactionMailer.with(canonical_pending_transaction_id: cpt.id).notify_approved.deliver_later
+        else
+          CanonicalPendingTransactionMailer.with(canonical_pending_transaction_id: cpt.id).notify_declined.deliver_later
+        end
       end
     end
 

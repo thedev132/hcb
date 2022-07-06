@@ -18,4 +18,16 @@ class CanonicalPendingTransactionMailer < ApplicationMailer
     mail to: to, subject: subject, reply_to: reply_to
   end
 
+  def notify_declined
+    @cpt = CanonicalPendingTransaction.find(params[:canonical_pending_transaction_id])
+    @card = @cpt.raw_pending_stripe_transaction.stripe_card
+    @event = @cpt.event
+    @user = @card.user
+    @merchant = @cpt.raw_pending_stripe_transaction.stripe_transaction["merchant_data"]["name"]
+    @reason = @cpt.raw_pending_stripe_transaction.stripe_transaction["request_history"][0]["reason"]
+
+    mail to: @user.email,
+         subject: "Purchase declined at #{@merchant}"
+  end
+
 end

@@ -30,7 +30,6 @@ class StripeAuthorization < ApplicationRecord
   include Commentable
 
   before_validation :sync_from_stripe! # pull details from stripe if we're creating it for the first time. expensive in the webhook. TODO: adjust - ideally async after authorization approved or not
-  after_create_commit :notify_of_creation # TODO: move to v2 engine
 
   default_scope { order(created_at: :desc) }
   scope :awaiting_receipt, -> { missing_receipt.where.not(amount: 0).where(approved: true) }
@@ -164,14 +163,6 @@ class StripeAuthorization < ApplicationRecord
   end
 
   private
-
-  def notify_of_creation
-    # Notify the card user
-    if approved?
-    else
-      StripeAuthorizationMailer.with(auth_id: id).notify_user_of_decline.deliver_later
-    end
-  end
 
   def remote_stripe_transactions
     @remote_stripe_transactions ||= begin

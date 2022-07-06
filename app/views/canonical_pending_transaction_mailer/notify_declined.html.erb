@@ -1,0 +1,23 @@
+<% if @reason == "card_inactive" %>
+A <%= humanized_money_with_symbol @cpt.amount.abs %> <%= @authorization_method %> charge to your card ending in <%= @card.last4 %> at '<%= @merchant %>' was declined because this card has been frozen.
+
+You can defrost your card at any time <%= link_to "here", stripe_card_url(@card) %>.
+<% elsif @reason == "suspected_fraud" || @reason == "verification_failed" %>
+A <%= humanized_money_with_symbol @cpt.amount.abs %> <%= @authorization_method %> charge to your card ending in <%= @card.last4 %> at '<%= @merchant %>' was declined due to suspected fraud.
+
+If this was a mistake, please make sure you've entered the right CVC code.
+<% elsif @reason == "webhook_declined" %>
+A <%= humanized_money_with_symbol @cpt.amount.abs %> <%= @authorization_method %> charge to your card ending in <%= @card.last4 %> at '<%= @merchant %>' was declined due to insufficient funds in your Hack Club Bank account.
+
+The account balance for <%= @event.name %> is <%= render_money @event.balance %>.
+<% else %>
+A <%= humanized_money_with_symbol @cpt.amount.abs %> <%= @authorization_method %> charge to your card ending in <%= @card.last4 %> at '<%= @merchant %>' was declined.
+<% end %>
+
+<% if Rails.env.development? %>
+  <hr />
+  <p>Development mode metadata:</p>
+  <pre>
+    <%= json auth: @cpt.raw_pending_stripe_transaction.stripe_transaction %>
+  </pre>
+<% end %>
