@@ -22,6 +22,11 @@ module StripeAuthorizationService
 
         # 4. idempotent map to event
         ::PendingEventMappingEngine::Map::Single::Stripe.new(canonical_pending_transaction: cpt).run
+
+        # 5. instantly mark the transaction as declined if it was declined on Stripe's end
+        unless remote_stripe_transaction.approved
+          CanonicalPendingDeclinedMapping.create!(canonical_pending_transaction_id: cpt.id)
+        end
       end
 
       if cpt
