@@ -484,33 +484,54 @@ module Api
     end
 
     add_swagger_documentation(
-      {
-        info: {
-          title: "The Hack Club Bank API",
-          description: "The Hack Club Bank API is an unauthenticated REST API that allows you to read public information
-                        from organizations with <a href='https://changelog.bank.hackclub.com/transparent-finances-(optional-feature)-151427'>Transparency Mode</a>
-                        enabled.
-                        <br><br><strong>Questions or suggestions?</strong>
-                        <br>Reach us in the #bank channel on the <a href='https://hackclub.com/slack'>Hack Club Slack</a>
-                        or email <a href='mailto:bank@hackclub.com'>bank@hackclub.com</a>.
-                        <br><br>Happy hacking! ✨",
-          contact_name: "Hack Club Bank",
-          contact_email: "bank@hackclub.com",
+      info: {
+        title: "The Hack Club Bank API",
+        description: "The Hack Club Bank API is an unauthenticated REST API that allows you to read public information
+                      from organizations with <a href='https://changelog.bank.hackclub.com/transparent-finances-(optional-feature)-151427'>Transparency Mode</a>
+                      enabled.
+                      <br><br><strong>Questions or suggestions?</strong>
+                      <br>Reach us in the #bank channel on the <a href='https://hackclub.com/slack'>Hack Club Slack</a>
+                      or email <a href='mailto:bank@hackclub.com'>bank@hackclub.com</a>.
+                      <br><br>Happy hacking! ✨",
+        contact_name: "Hack Club Bank",
+        contact_email: "bank@hackclub.com",
+      },
+      doc_version: '3.0.0',
+      models: [
+        Entities::Organization,
+        Entities::Transaction,
+        Entities::AchTransfer,
+        Entities::Check,
+        Entities::Transfer,
+        Entities::Donation,
+        Entities::Invoice,
+        Entities::User,
+        Entities::ApiError
+      ],
+      array_use_braces: true,
+      tags: [
+        {
+          name: "Organizations",
         },
-        doc_version: '3.0.0',
-        models: [
-          Entities::Organization,
-          Entities::Transaction,
-          Entities::AchTransfer,
-          Entities::Check,
-          Entities::Transfer,
-          Entities::Donation,
-          Entities::Invoice,
-          Entities::User,
-          Entities::ApiError
-        ],
-        array_use_braces: true,
-      }
+        {
+          name: "Transactions",
+        },
+        {
+          name: "Donations",
+        },
+        {
+          name: "Invoices",
+        },
+        {
+          name: "Checks",
+        },
+        {
+          name: "ACH Transfers",
+        },
+        {
+          name: "Transfers"
+        }
+      ]
     )
 
   end
