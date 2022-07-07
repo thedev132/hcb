@@ -110,6 +110,10 @@ module UsersHelper
     end
   end
 
+  def user_birthday?(user = current_user)
+    user&.birthday.present? && user.birthday.month == Date.today.month && user.birthday.day == Date.today.day
+  end
+
   private
 
   def get_user_color(id)

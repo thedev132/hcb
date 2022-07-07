@@ -17,6 +17,9 @@ module StaticPagesHelper
     if Rails.env.development?
       "Development Mode"
     else
+      birthday = birthday_flavor_text
+      return birthday unless birthday.nil?
+
       holiday = holiday_flavor_text
       return holiday unless holiday.nil?
 
@@ -353,6 +356,19 @@ module StaticPagesHelper
         "◥◤◢◤◢$$$◣◥◣◥◤",
       ].sample
     end
+  end
+
+  def birthday_flavor_text
+    return nil unless user_birthday? && rand(100) <= 90
+
+    [
+      "Happy birthday! #{['🎂', '🎈', '🎉', '🥳'].sample}",
+      "<a href='https://www.youtube.com/watch?v=XNV2EyC1NrQ' target='_blank' style='color: inherit'>happy birthday</a>",
+      "herpy derpday",
+      "<a href='https://www.youtube.com/watch?v=1G9iEvQYM4I&t=3s' target='_blank' style='color: inherit'>wahoo!</a>",
+      "it’s the birthday (boy|girl|person|dinosaur)!",
+      "#{%w[🦩 🕊 🦅 🦆 🐓 🦤 🦉 🦃 🐣].sample} harpy bird-day!"
+    ].sample
   end
 
   def holiday_flavor_text
