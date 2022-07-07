@@ -79,10 +79,12 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td class="bold">Sent by</td>
-            <td colspan="2"><%= @disbursement.requested_by.name %></td>
-          </tr>
+          <% unless @disbursement.requested_by.nil? %>
+            <tr>
+              <td class="bold">Sent by</td>
+              <td colspan="2"><%= @disbursement.requested_by.name %></td>
+            </tr>
+          <% end %>
           <tr>
             <td class="bold">Destintation</td>
             <td colspan="2"><%= @disbursement.destination_event.name %></td>
