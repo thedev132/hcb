@@ -68,10 +68,14 @@ class HcbCodesController < ApplicationController
     end
 
     if params[:show_link]
-      redirect_to params[:redirect_url], flash: { success: { text: "Receipt".pluralize(params[:file].length) + " added!", link: hcb_code_path(@hcb_code), link_text: "View" } }
+      flash[:success] = { text: "Receipt".pluralize(params[:file].length) + " added!", link: hcb_code_path(@hcb_code), link_text: "View" }
     else
-      redirect_to params[:redirect_url], flash: { success: "Receipt".pluralize(params[:file].length) + " added!" }
+      flash[:success] = "Receipt".pluralize(params[:file].length) + " added!"
     end
+
+    return redirect_to params[:redirect_url] if params[:redirect_url]
+
+    redirect_back fallback_location: @hcb_code.url
 
   rescue => e
     Airbrake.notify(e)

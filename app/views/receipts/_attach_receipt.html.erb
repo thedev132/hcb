@@ -11,7 +11,6 @@
   "file-drop-title-value" => "Drop to instantly add a receipt."
 } do |form| %>
 
-  <%= form.hidden_field :redirect_url, value: url_for(only_path: false) %>
   <%= form.hidden_field :upload_method, value: "attach_receipt_page", data: { "file-drop-target" => "uploadMethod" } %>
   <%= form.hidden_field :s, value: params[:s] unless params[:s].nil? %>
 
