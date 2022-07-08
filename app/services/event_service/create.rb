@@ -51,12 +51,8 @@ module EventService
       }
     end
 
-    def melanie_smith_user_id
-      2046
-    end
-
     def point_of_contact
-      @point_of_contact ||= ::User.find(melanie_smith_user_id)
+      @point_of_contact ||= ::User.find(@point_of_contact_id)
     end
 
     def partner
