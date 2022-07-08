@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-dark="<%= !!@dark %>">
+<html data-dark="<%= !!@dark %>" <%= "data-ignore-theme" unless @dark.nil? %>>
   <head>
     <title>
       <%= yield(:title).concat(" –") if content_for?(:title) %>

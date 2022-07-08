@@ -3,6 +3,13 @@
 // light when the page loads in.
 
 ;(function () {
+  if (
+    document.querySelector('html').getAttribute('data-ignore-theme') != null
+  ) {
+    // Ignore the user's theme preference
+    return
+  }
+
   const darkModeConfig = localStorage.getItem('dark')
   let darkMode = darkModeConfig == 'true'
 

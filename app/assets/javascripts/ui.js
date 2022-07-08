@@ -1,9 +1,10 @@
 // restore previous theme setting
 $(document).ready(function () {
-  if (localStorage.getItem('dark') === 'true') {
+  if (
+    document.querySelector('html').getAttribute('data-ignore-theme') == null &&
+    localStorage.getItem('dark') === 'true'
+  ) {
     BK.s('toggle_theme').find('svg').toggle()
-  }
-  if (localStorage.getItem('dark') === 'true') {
     return BK.styleDark(true)
   }
 })
