@@ -14,15 +14,15 @@ class OrganizerPositionInvitePolicy < ApplicationPolicy
   end
 
   def show?
-    record.email == user.email || user.admin?
+    record.user == user || user.admin?
   end
 
   def accept?
-    record.email == user.email || record.user == user
+    record.user == user
   end
 
   def reject?
-    record.email == user.email || record.user == user
+    record.user == user
   end
 
   def cancel?
