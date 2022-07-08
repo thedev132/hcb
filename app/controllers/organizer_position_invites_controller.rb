@@ -39,7 +39,7 @@ class OrganizerPositionInvitesController < ApplicationController
     unless signed_in?
       hide_footer
       @skip_verfiy_authorized = true
-      @prefill_email = @invite.email
+      @prefill_email = @invite.user.email
 
       render "users/auth" and return
     end
@@ -83,7 +83,7 @@ class OrganizerPositionInvitesController < ApplicationController
     authorize @invite
 
     if @invite.cancel
-      flash[:success] = "#{@invite.email}\'s invitation has been canceled."
+      flash[:success] = "#{@invite.user.email}\'s invitation has been canceled."
       redirect_to event_team_path(@invite.event)
     else
       flash[:error] = "Failed to cancel the invitation."

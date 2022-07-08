@@ -6,7 +6,7 @@ module OrganizerPositionInviteService
       @event = event
       @sender = sender
       @user_email = normalize_email(user_email)
-      @model = OrganizerPositionInvite.new(event: @event, sender: @sender, email: @user_email)
+      @model = OrganizerPositionInvite.new(event: @event, sender: @sender)
     end
 
     def run
@@ -15,6 +15,9 @@ module OrganizerPositionInviteService
 
         @model.save
       end
+    rescue ActiveRecord::RecordInvalid => e
+      @model.errors.add(:base, message: e.message)
+      false # signal that we didn't save the model properly
     end
 
     def run!

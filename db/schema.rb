@@ -870,7 +870,6 @@ ActiveRecord::Schema.define(version: 2022_07_03_102629) do
 
   create_table "organizer_position_invites", force: :cascade do |t|
     t.bigint "event_id", null: false
-    t.text "email"
     t.bigint "user_id", null: false
     t.bigint "sender_id"
     t.datetime "created_at", null: false

@@ -7,7 +7,6 @@
 #  id                    :bigint           not null, primary key
 #  accepted_at           :datetime
 #  cancelled_at          :datetime
-#  email                 :text
 #  rejected_at           :datetime
 #  slug                  :string
 #  created_at            :datetime         not null
@@ -15,7 +14,7 @@
 #  event_id              :bigint           not null
 #  organizer_position_id :bigint
 #  sender_id             :bigint
-#  user_id               :bigint
+#  user_id               :bigint           not null
 #
 # Indexes
 #
@@ -67,8 +66,6 @@ class OrganizerPositionInvite < ApplicationRecord
   belongs_to :sender, class_name: "User"
 
   belongs_to :organizer_position, required: false
-
-  validates_email_format_of :email
 
   validate :not_already_organizer
   validate :not_already_invited, on: :create
@@ -147,7 +144,7 @@ class OrganizerPositionInvite < ApplicationRecord
   end
 
   def slug_candidates
-    slug = normalize_friendly_id("#{event.try(:name)} #{email}")
+    slug = normalize_friendly_id("#{event.try(:name)} #{user.email}")
     # https://github.com/norman/friendly_id/issues/480
     sequence = OrganizerPositionInvite.where("slug LIKE ?", "#{slug}-%").size + 2
     [slug, "#{slug} #{sequence}"]
@@ -156,13 +153,13 @@ class OrganizerPositionInvite < ApplicationRecord
   private
 
   def not_already_organizer
-    if event && event.users.pluck(:email).include?(email)
+    if event && event.users.pluck(:email).include?(user.email)
       self.errors.add(:user, "is already an organizer of this event!")
     end
   end
 
   def not_already_invited
-    if event && event.organizer_position_invites.pending.pluck(:email).include?(email)
+    if event && event.organizer_position_invites.includes(:user).pending.pluck(:email).include?(user.email)
       self.errors.add(:user, "already has a pending invite!")
     end
   end
