@@ -23,7 +23,7 @@
   <%= link_to root_path,
     class: "header-center text-decoration-none flex items-center #{'tooltipped tooltipped--s' if !Rails.env.production? || user_birthday?}",
     'aria-label': user_birthday? ? "Happy birthday! #{['🎂', '🎈', '🎉', '🥳'].sample}" : "You’re in #{Rails.env} mode. #{development_mode_flavor}" do %>
-    <%= image_tag user_birthday? ? "logo-party.gif" : "logo-#{Rails.env}-dark.svg",
+    <%= image_tag user_birthday? ? "logo-party-dark.gif" : "logo-#{Rails.env}-dark.svg",
         name: 'header-logo',
         class: 'logo-dark',
         width: @home_size || 36,
