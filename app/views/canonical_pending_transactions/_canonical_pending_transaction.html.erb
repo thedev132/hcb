@@ -29,7 +29,7 @@
       <%= inline_icon "support" %>
     </td>
   <% elsif pt.raw_pending_stripe_transaction_id %>
-    <td class="transaction__icon tooltipped tooltipped--e" aria-label="Card transaction">
+    <td class="transaction__icon tooltipped tooltipped--e" aria-label="Card transaction<%= !defined?(authorless) && pt.stripe_cardholder ? ' by ' + pt.stripe_cardholder.user.initial_name : ''%>">
       <% unless defined?(authorless) || !pt.stripe_cardholder %>
         <%= avatar_for pt.stripe_cardholder.user, 24 %>
       <% else %>
