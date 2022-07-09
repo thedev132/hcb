@@ -82,7 +82,7 @@ module Api
             AchTransfer.find_by_public_id!(id)
           end
       rescue ActiveRecord::RecordNotFound
-        error!({ message: 'Ach transfer not found.' }, 404)
+        error!({ message: 'ACH Transfer not found.' }, 404)
       end
 
       def invoices
@@ -114,7 +114,6 @@ module Api
       end
 
       # FOR TYPE EXPANSION
-      # TODO: needs a better name
       def type_expansion(expand: [], hide: [])
         {
           expand: (params[:expand] || []) + expand,
@@ -131,7 +130,7 @@ module Api
                    [x].flatten.compact.map { |type| type.split(',') }
                       .flatten.map { |type| type.strip.underscore }
                  },
-                 desc: "Object types to expand in the API response"
+                 desc: "Object types to expand in the API response (separated by commas)"
 
         optional :hide,
                  types: [String, Array[String]],

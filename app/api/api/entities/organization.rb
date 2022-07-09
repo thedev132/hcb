@@ -19,11 +19,12 @@ module Api
         format_as_date do
           expose :created_at
         end
-      end
 
-      when_showing(User) do
-        expose :users, documentation: { is_array: true, type: User } do |org, options|
-          User.represent(org.users, options_hide(self))
+        # This association is intentionally nested within the `when_expanded`.
+        # This means that users will only be visible when an Organization is
+        # expanded.
+        expose_associated User, documentation: { type: User, is_array: true } do |event, options|
+          event.users
         end
       end
 

@@ -66,6 +66,18 @@ module Api
           with_options(if: should_show?(entity), &block)
         end
 
+        def expose_associated(entity, as: nil, hide: nil, documentation: nil, &block)
+          key = (as || entity.object_type || entity.to_s).to_sym
+          docs = documentation || { type: entity }
+
+          when_showing entity do
+            expose key, documentation: docs do |obj, options|
+              association_obj = block.call(obj, options)
+              entity.represent(association_obj, options_hide(hide || self))
+            end
+          end
+        end
+
       end
 
       def options_hide(entity)

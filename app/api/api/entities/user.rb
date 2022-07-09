@@ -5,14 +5,14 @@ module Api
     class User < Base
       include UsersHelper # for `profile_picture_for`
 
-      when_expanded do
-        expose :full_name
-        expose :photo do |user, options|
-          profile_picture_for user
-        end
+      # Since User is a small object, the full name and photo is included in the
+      # minimized version of the object.
+      expose :full_name
+      expose :photo do |user, options|
+        profile_picture_for user
       end
 
-      unexpose :href # Users don't have a `get` endpoint (they can't a resource in our v3 API)
+      unexpose :href # Users don't have a `get` endpoint (they aren't a resource in our v3 API)
 
     end
   end

@@ -11,16 +11,16 @@ module Api
         end
       end
 
-      when_showing(Transaction) do
-        expose :transaction, documentation: { type: Transaction } do |obj, options|
-          Entities::Transaction.represent(obj.local_hcb_code, options_hide(API_LINKED_OBJECT_TYPE))
-        end
+      expose_associated Transaction, hide: [API_LINKED_OBJECT_TYPE, Organization] do |obj, options|
+        # Don't show the Organizations for these association Transactions since
+        # they will belong to the same Organization as the one associated below
+        # (in this Linked Object)
+
+        obj.local_hcb_code
       end
 
-      when_showing Organization do
-        expose :organization, documentation: { type: Organization } do |obj, options|
-          Organization.represent(obj.event, options_hide(User))
-        end
+      expose_associated Organization, hide: [API_LINKED_OBJECT_TYPE, Transaction] do |obj, options|
+        obj.event
       end
 
     end

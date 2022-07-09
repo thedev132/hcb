@@ -37,13 +37,11 @@ module Api
         end
       end
 
-      when_showing Organization do
-        expose :organization, documentation: { type: Organization } do |hcb_code, options|
-          Organization.represent(hcb_code.event, options_hide(User))
-        end
+      expose_associated Organization do |hcb_code, options|
+        hcb_code.event
       end
 
-      when_showing(LinkedObjectBase::API_LINKED_OBJECT_TYPE) do
+      when_showing LinkedObjectBase::API_LINKED_OBJECT_TYPE do
         [
           {
             entity: Entities::AchTransfer,
@@ -77,7 +75,7 @@ module Api
             type: entity
           } do |hcb_code, options|
             linked_objects = hcb_code.public_send(method)
-            entity.represent(linked_objects, options_hide(self))
+            entity.represent(linked_objects, options_hide([self, Organization]))
           end
 
         end
