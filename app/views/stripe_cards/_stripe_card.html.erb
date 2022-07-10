@@ -7,7 +7,7 @@
     </p>
     <p class="stripe-card__name flex justify-between items-end">
       <span>
-        <%= defined?(@event) ? stripe_card.stripe_name : stripe_card.event.name %>
+        <%= defined?(@event) ? (stripe_card.stripe_name || stripe_card.user.full_name) : stripe_card.event.name %>
       </span>
       <span class="ml2 badge h6" style="background-color: rgba(255,255,255,0.125);">
         <%= stripe_card.status_text %>

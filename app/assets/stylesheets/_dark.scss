@@ -183,6 +183,10 @@ html[data-dark='true'] {
     background-color: rgba(map-get($palette, pending), 0.125);
   }
 
+  .card--sunset {
+    background-image: url('https://cloud-hlea0o5k2-hack-club-bot.vercel.app/0sunset_card__4_.png');
+  }
+
   input[type='submit'],
   .btn {
     background-color: rgba(map-get($palette, info), 0.75);

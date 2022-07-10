@@ -32,81 +32,82 @@
     <%= render "stripe_cards/form", stripe_card: StripeCard.new %>
   </section>
 
-  <% if @session_user_stripe_cards.blank? and @stripe_cards.blank? %>
-    <%= blankslate "You haven’t requested any cards yet." %>
+  <% if organizer_signed_in? %>
+    <h4>Your Cards</h4>
+    <% if @session_user_stripe_cards.blank? %>
+      <%= blankslate "You haven’t requested any cards yet." %>
+    <% else %>
+      <article class="mixed-grid grid--spacious">
+      <%= render @session_user_stripe_cards %>
+      </article>
+    <% end %>
   <% end %>
 
-  <% if signed_in? %>
-    <%=render 'event_cards_table', title: "Your Cards", stripe_cards: @session_user_stripe_cards %>
+  <% if organizer_signed_in? || @event.used_emburse? %>
+    <section class="grid grid--split pt4 pb4">
+      <% if organizer_signed_in? %>
+        <%= link_to my_cards_path,
+                    class: "card card--hover block pt4 pb4 card--promo card--sunset cursor-pointer" do %>
+          <h3 class="mt0 mb0">See all your cards →</h3>
+        <% end %>
+      <% end %>
+      <% if @event.used_emburse? %>
+        <%= link_to event_emburse_cards_overview_path(event_id: @event.slug),
+                    class: "card card--hover block pt4 pb4 card--promo cursor-pointer",
+                    style: "background-image: url(https://cloud-awvmmj0xe.vercel.app/grey_card.png);" do %>
+          <h3 class="mt0 mb0">Previous Emburse cards →</h3>
+        <% end %>
+      <% end %>
+    </section>
   <% end %>
-  <%=render 'event_cards_table', title: "Organization Cards", stripe_cards: @stripe_cards %>
 
-  <section class="grid grid--split pt4 pb4">
-    <% if signed_in? %>
-      <%= link_to my_cards_path,
-                  class: "card card--hover block pt4 pb4 card--promo",
-                  style: "background-image: url(https://cloud-awvmmj0xe.vercel.app/sunset_card.png);" do %>
-        <h3 class="mt0 mb0">See all your cards →</h3>
-      <% end %>
-    <% end %>
-    <% if @event.used_emburse? %>
-      <%= link_to event_emburse_cards_overview_path(event_id: @event.slug),
-                  class: "card card--hover block pt4 pb4 card--promo",
-                  style: "background-image: url(https://cloud-awvmmj0xe.vercel.app/grey_card.png);" do %>
-        <h3 class="mt0 mb0">Previous Emburse cards →</h3>
-      <% end %>
-    <% end %>
+  <h4>Organization Cards</h4>
 
-    <style>
-        .card--promo {
-            background-size: cover;
-            background-position: center center;
-            color: white !important;
-        }
-    </style>
-  </section>
-
-  <h4>Cardholders</h4>
-
-  <article class="table-container">
-
-    <table>
-      <thead>
-      <tr>
-        <th>TYPE</th>
-        <th>STATUS</th>
-        <th>DATE</th>
-        <th>NAME</th>
-        <th></th>
-      </tr>
-      </thead>
-
-      <tbody>
-      <% @stripe_cardholders.each do |d| %>
-        <tr>
-          <td>
-            <%= d.cardholder_type.upcase %>
-          </td>
-          <td>
-            <span class="ml0 badge bg-<%= d.state %>"><%= d.state_text %></span>
-          </td>
-          <td>
-            <%= format_date d.created_at %>
-          </td>
-          <td>
-            <%= d.user.full_name if organizer_signed_in? %>
-            <%= "(redacted)" unless organizer_signed_in? %>
-          </td>
-          <td>
-            <% if d.remote_status == "disabled" %>
-              Please <%= link_to "contact us", "mailto:bank@hackclub.com" %> to fix this.
-            <% end %>
-          </td>
-        </tr>
-      <% end %>
-      </tbody>
-    </table>
-
+  <article class="mixed-grid grid--spacious">
+    <%= render @stripe_cards %>
   </article>
+
+  <% admin_tools do %>
+
+    <h4>Cardholders</h4>
+
+    <article class="table-container">
+
+      <table>
+        <thead>
+        <tr>
+          <th>NAME</th>
+          <th>DATE</th>
+          <th>STATUS</th>
+          <th></th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <% @stripe_cardholders.each do |d| %>
+          <tr>
+            <td>
+              <%= user_mention d.user if organizer_signed_in? %>
+              <%= "(redacted)" unless organizer_signed_in? %>
+            </td>
+            <td>
+              <%= format_date d.created_at %>
+            </td>
+            <td>
+              <span class="ml0 badge bg-<%= d.state %>"><%= d.state_text %></span>
+            </td>
+            <td>
+              <% if d.remote_status == "disabled" %>
+                Please <%= link_to "contact us", "mailto:bank@hackclub.com" %> to fix this.
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+
+    </article>
+
+  <% end %>
 
 <% end %>

@@ -117,3 +117,13 @@ a.card {
     background-color: rgba(map-get($palette, error), 0.125);
   }
 }
+
+.card--promo {
+  background-size: cover;
+  background-position: center center;
+  color: white !important;
+}
+
+.card--sunset {
+  background-image: url('https://cloud-awvmmj0xe.vercel.app/sunset_card.png');
+}
