@@ -23,7 +23,7 @@ module Api
         # This association is intentionally nested within the `when_expanded`.
         # This means that users will only be visible when an Organization is
         # expanded.
-        expose_associated User, documentation: { type: User, is_array: true } do |event, options|
+        expose_associated User, as: "users", documentation: { type: User, is_array: true } do |event, options|
           event.users
         end
       end
