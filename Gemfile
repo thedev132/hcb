@@ -128,6 +128,11 @@ group :development, :test do
   gem "webdrivers"
 end
 
+group :development, :staging do
+  # Prints out how many SQL queries were executed
+  gem 'query_count'
+end
+
 group :development do
   # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
   gem "listen", "~> 3.2"
@@ -148,9 +153,6 @@ group :development do
   # Lets you set a breakpoint with a REPL using binding.pry
   gem "pry-byebug"
   gem "pry-rails"
-
-  # Prints out how many SQL queries were executed
-  gem 'query_count'
 
   # adds comments to models with database fields
   gem 'annotate'
