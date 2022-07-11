@@ -9,9 +9,6 @@
   </span>
 
   <% if organizer_signed_in? %>
-    <% if @transfers_enabled %>
-      <%= link_to "New transfer", new_disbursement_path(source_event_id: @event), class: "btn bg-success" %>
-    <% end %>
     <%= link_to "Reimbursement", event_reimbursements_path(@event), class: "btn" %>
     <action type="button" class="btn bg-accent overflow-visible menu__toggle" data-behavior="menu_toggle" aria-expanded="false" tabindex="0">
       Send

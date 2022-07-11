@@ -2,7 +2,7 @@
   <%= form_errors(disbursement, 'Disbursements') %>
 
   <div class="field event-select-target">
-    <%= form.label :source_event_id, 'From...' %>
+    <%= form.label :source_event_id, 'From' %>
     <%= form.collection_select(:source_event_id,
                                 @allowed_source_events,
                                 :id,
@@ -13,7 +13,7 @@
   </div>
 
   <div class="field event-select-target">
-    <%= form.label :event_id, 'To...' %>
+    <%= form.label :event_id, 'To' %>
     <%= form.collection_select(:event_id,
                                 @allowed_destination_events,
                                 :id,
@@ -43,7 +43,7 @@
   </div>
 
   <div class="actions tooltipped tooltipped--n inline-block" aria-label="The Bank team will make the transfer">
-    <%= form.submit 'Schedule transfer', class: 'btn' %>
+    <%= form.submit 'Make transfer', class: 'btn' %>
   </div>
 <% end %>
 
