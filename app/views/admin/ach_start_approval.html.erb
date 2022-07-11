@@ -12,8 +12,8 @@
 <ol>
   <li><b>Check that all values below look correct.</b></li>
   <li class="bold">Check the notes area for any messages from Bank staff before processing.</li>
-  <li>Go into SVB &gt; "Bill Pay" and create a new individual payee with the information below, and be sure to include the nickname.</li>
-  <li>Under Bill Pay, initiate a new ACH transfer to the new payee, out from the "Fiscal Sponsorship New -2" account if there is one.</li>
+  <li>Go into SVB &rarr; "Bill Pay" and create a new individual payee with the information below, and be sure to include the nickname.</li>
+  <li>Under Bill Pay, initiate a new ACH transfer to the new payee, out from the "Fiscal Sponsorship New - 2" account if there is one.</li>
   <li>Make sure the transaction is also <b>approved</b> in Bill Pay, so it can successfully go through.</li>
   <li>Click "Mark as approved and sent" below to finish</li>
   <li>Make sure that we have proper documentation and papertrail for this ACH transfer! You can <%= link_to "attach receipts or other notes to the ACH transfer", @ach_transfer %> to keep track.</li>
@@ -21,8 +21,8 @@
 
 <p>
   Submitted by:
-  <%= "ADMIN" if @ach_transfer.creator.admin? %> <%= @ach_transfer.creator.initial_name %>
-  (<%= link_to @ach_transfer.creator.pretty_phone_number, "tel:#{@ach_transfer.creator.phone_number}" %>, <%= mail_to @ach_transfer.creator.email %>) of <%= link_to @ach_transfer.event.name, @ach_transfer.event %>
+  <%= "ADMIN" if @ach_transfer.creator.admin? %> <%= @ach_transfer.creator.name %>
+  (<%= link_to @ach_transfer.creator.phone_number, "tel:#{@ach_transfer.creator.phone_number}" %>, <%= mail_to @ach_transfer.creator.email %>) of <%= link_to @ach_transfer.event.name, @ach_transfer.event %>
 </p>
 
 <p>
@@ -38,14 +38,29 @@
     <tr>
       <td style="text-align: right;">Payee Name:</td>
       <td><%= @ach_transfer.recipient_name %></td>
+      <td>
+        <span class="m0 badge pointer" onClick="navigator.clipboard.writeText('<%= @ach_transfer.recipient_name %>');">
+          copy
+        </span>
+      </td>
     </tr>
     <tr>
       <td style="text-align: right;">Payee Phone Number:</td>
       <td><%= @ach_transfer.recipient_tel %></td>
+      <td>
+        <span class="m0 badge pointer" onClick="navigator.clipboard.writeText('<%= @ach_transfer.recipient_tel %>');">
+          copy
+        </span>
+      </td>
     </tr>
     <tr>
       <td style="text-align: right;">Payee Nickname:</td>
       <td>HCB ACH #<%= @ach_transfer.id %></td>
+      <td>
+        <span class="m0 badge pointer" onClick="navigator.clipboard.writeText('<%= @ach_transfer.id %>');">
+          copy
+        </span>
+      </td>
     </tr>
     <tr>
       <td style="text-align: right;">Payment for:</td>
@@ -58,14 +73,29 @@
     <tr>
       <td style="text-align: right;">Account Number:</td>
       <td><%= @ach_transfer.account_number %></td>
+      <td>
+        <span class="m0 badge pointer" onClick="navigator.clipboard.writeText('<%= @ach_transfer.account_number %>');">
+          copy
+        </span>
+      </td>
     </tr>
     <tr>
       <td style="text-align: right;">Routing Number:</td>
       <td><%= @ach_transfer.routing_number %></td>
+      <td>
+        <span class="m0 badge pointer" onClick="navigator.clipboard.writeText('<%= @ach_transfer.routing_number %>');">
+          copy
+        </span>
+      </td>
     </tr>
     <tr>
       <td style="text-align: right;">Amount</td>
       <td><%= render_money_amount @ach_transfer.amount %></td>
+      <td>
+        <span class="m0 badge pointer" onClick="navigator.clipboard.writeText('<%= @ach_transfer.amount %>');">
+          copy
+        </span>
+      </td>
     </tr>
   </tbody>
 </table>
@@ -96,7 +126,7 @@
     <small>(This requires you to communicate to the organizer about the reason why.)</small>
   <% end %>
 <% else %>
-  <p><strong>ACH Transfer already processed -- cannot approve nor reject.</strong></p>
+  <p><strong>ACH Transfer already processed — cannot approve nor reject.</strong></p>
   <p>Estimated Arrival Date: <%= @ach_transfer.scheduled_arrival_date %></p>
   <p>Confirmation Number: <%= @ach_transfer.confirmation_number || "NONE" %></p>
 <% end %>
