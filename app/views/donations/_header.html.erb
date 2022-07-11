@@ -1,4 +1,5 @@
 <% @has_header_image = @event.donation_header_image.attached? %>
+<% content_for(:container_style) { @has_header_image ? "padding-top: 68px" : "padding-top: 16px" } %>
 
 <action
   role="button"
@@ -43,9 +44,10 @@
   </div>
 <% end %>
 
-<a href="<%= start_donation_donations_path(@event.slug) %>" class="black text-decoration-none">
-  <h1 class="mt4 mb2 border-none center <%= "smoke" if @has_header_image %>" style="<%= "margin-top: 100px" if @has_header_image %>">
-    <span class="h3 caps block <%= @has_header_image ? "muted" : "secondary" %>">Donate to</span>
+<h1 class="mt3 mb2 border-none center <%= "smoke text-shadow-lg" if @has_header_image %>">
+  <span class="h3 caps block <%= @has_header_image ? "muted" : "secondary" %>">Donate to</span>
+  <div class="flex justify-center items-center mt1">
+    <%= render "logo" %>
     <span><%= @event.name %></span>
-  </h1>
-</a>
+  </div>
+</h1>

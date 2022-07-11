@@ -55,7 +55,7 @@
           <%= render 'application/flash' %>
           <%= yield(:nav) %>
         </aside>
-        <article class="container app__content <%= content_for :container_class %>">
+        <article class="container app__content <%= content_for :container_class %>" style="<%= content_for :container_style %>">
           <%= yield(:container) %>
           <%= yield %>
           <%= render 'application/footer' unless (@no_app_shell || @hide_footer) %>
@@ -63,7 +63,7 @@
       </main>
     <% else %>
       <%= render 'application/header' unless @no_app_shell %>
-      <main class="container <%= content_for :container_class %>">
+      <main class="container <%= content_for :container_class %>" style="<%= content_for :container_style %>">
         <%= render 'application/flash' %>
         <%= yield %>
         <%= render 'application/footer' unless (@no_app_shell || @hide_footer) %>

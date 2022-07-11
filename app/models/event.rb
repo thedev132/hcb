@@ -251,6 +251,7 @@ class Event < ApplicationRecord
   has_many :partner_donations
 
   has_one_attached :donation_header_image
+  has_one_attached :logo
 
   validate :point_of_contact_is_admin
 

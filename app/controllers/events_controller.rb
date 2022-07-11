@@ -338,6 +338,14 @@ class EventsController < ApplicationController
     redirect_back fallback_location: edit_event_path(@event)
   end
 
+  def remove_logo
+    authorize @event
+
+    @event.logo.purge_later
+
+    redirect_back fallback_location: edit_event_path(@event)
+  end
+
   private
 
   # Only allow a trusted parameter "white list" through.
@@ -365,7 +373,8 @@ class EventsController < ApplicationController
       :holiday_features,
       :public_message,
       :custom_css_url,
-      :donation_header_image
+      :donation_header_image,
+      :logo
     )
 
     # Expected budget is in cents on the backend, but dollars on the frontend
@@ -387,7 +396,8 @@ class EventsController < ApplicationController
       :holiday_features,
       :public_message,
       :custom_css_url,
-      :donation_header_image
+      :donation_header_image,
+      :logo
     )
 
     # convert whatever the user inputted into something that is a legal slug

@@ -55,7 +55,7 @@
     <%= react_component 'donation_overview/PreviewLink', path: start_donation_donations_url(@event) %>
   </section>
 <% else %>
-  <p>You can start accepting donations once you enable it in your project's <%= link_to "settings", edit_event_path(@event, anchor: "donation-section") %>.</p>
+  <p>You can start accepting donations once you enable it in your project's <%= link_to "settings", edit_event_path(@event, anchor: "donations") %>.</p>
 <% end %>
 
 <div class="statset mt3 mb2">

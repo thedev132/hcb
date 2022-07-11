@@ -1,0 +1,37 @@
+<% if @event.logo.attached? %>
+    <div class="relative mr2 donations-logo">
+        <% if organizer_signed_in? %>
+            <%= form_with model: @event, data: { "controller" => "submit-form" } do |form| %>
+                <%= form.file_field :logo, required: true, class: "display-none", data: { action: "change->submit-form#submit" } %>
+                <%= form.label :logo do %>
+                    <div
+                        role="button"
+                        class="donations-logo-edit-btn pointer no-select tooltipped tooltipped--e line-height-0 absolute circle flex items-center justify-center"
+                        aria-label="Upload new logo">
+                        <%= inline_icon 'pen', size: 12 %>
+                    </div>
+                <% end %>
+            <% end %>
+
+            <%= link_to event_remove_logo_path(@event), method: :post do %>
+                <div
+                    role="button"
+                    class="donations-logo-edit-btn donations-logo-edit-btn--left pointer no-select tooltipped tooltipped--e line-height-0 absolute circle flex items-center justify-center"
+                    style="top: 20px"
+                    aria-label="Remove logo">
+                    <%= inline_icon 'view-close-small', size: 18 %>
+                </div>
+            <% end %>
+        <% end %>
+        <%= image_tag @event.logo, height: 72, class: "rounded" %>
+    </div>
+<% elsif organizer_signed_in? %>
+    <%= form_with model: @event, data: { "controller" => "submit-form" } do |form| %>
+        <%= form.file_field :logo, required: true, class: "display-none", data: { action: "change->submit-form#submit" } %>
+        <%= form.label :logo do %>
+            <div class="mr2 donations-logo-placeholder">
+                Add a logo
+            </div>
+        <% end %>
+    <% end %>
+<% end %>

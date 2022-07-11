@@ -7,6 +7,9 @@ module Api
         expose :name
         expose :slug
         expose :is_public, as: :transparent, documentation: { type: "boolean" }
+        expose :logo do |organization|
+          organization.logo.attached? ? Rails.application.routes.url_helpers.url_for(organization.logo) : nil
+        end
         expose :public_message do |event|
           event.public_message.presence
         end

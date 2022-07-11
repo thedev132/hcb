@@ -15,6 +15,49 @@
     right: 0;
     top: 0;
     bottom: 0;
-    background-image: linear-gradient(to bottom, $dark, transparent);
+    background-image: linear-gradient(to bottom, $dark, rgba($dark, 0.2));
+  }
+}
+
+.donations-logo-placeholder {
+  width: 72px;
+  height: 72px;
+  border: 3px dashed $muted;
+  color: $muted;
+  letter-spacing: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  font-weight: 400;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.donations-logo-edit-btn {
+  opacity: 0;
+  transform: scale(0.8);
+
+  background-color: $smoke;
+  color: $muted;
+
+  transition: opacity 0.125s ease-in-out, transform 0.125s ease-in-out;
+
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  position: absolute;
+  right: -8px;
+  top: -8px;
+  width: 24px;
+  height: 24px;
+
+  .donations-logo:hover & {
+    opacity: 1;
+    transform: none;
   }
 }

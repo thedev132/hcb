@@ -5,6 +5,31 @@
     <p class="mt0"><%= event.name %> is on the <strong><%= event.plan_name %></strong> plan and charging <strong><%= number_to_percentage(event.sponsorship_fee * 100, significant: true, strip_insignificant_zeros: true) %></strong> of your revenue.</p>
   </div>
 
+  <h3 class="mb1">Organization profile</h3>
+
+  <div class="card">
+    <div class="field">
+      <%= form.label :logo %>
+      <p class="h5 muted mt0 mb1">
+        Displayed on your
+        <%= link_to "donation page",
+          @event.donation_page_enabled? ? start_donation_donations_path(@event) : { anchor: "donations" },
+          target: @event.donation_page_enabled? ? "_blank" : nil
+        %>.
+      </p>
+      <% if @event.logo.attached? %>
+        <%= image_tag @event.logo, height: 72 %>
+      <% end %>
+      <%= form.file_field :logo %>
+
+      <% if @event.logo.attached? %>
+        <%= link_to "Remove logo", event_remove_logo_path(@event), class: "block mt1", method: :post %>
+      <% end %>
+    </div>
+
+    <%= form.submit "Update" %>
+  </div>
+
   <% if !@event.unapproved? %>
     <% if params[:jank].present? || DateTime.now <= Time.new(2022, 4, 2, 9, 30, 00, "-04:00") %>
       <h3 class="mb1 border-none flex flex-row items-center">
@@ -51,7 +76,7 @@
       </div>
     <% end %>
 
-    <h3 class="mb1">Donations</h3>
+    <h3 class="mb1" id="donations">Donations</h3>
 
     <div class="card">
       <div class="field field--checkbox">

@@ -125,6 +125,10 @@ class EventPolicy < ApplicationPolicy
     user_or_admin
   end
 
+  def remove_logo?
+    user_or_admin
+  end
+
   def user_or_admin
     user&.admin? || record.users.include?(user)
   end
