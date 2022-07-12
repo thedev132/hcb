@@ -57,7 +57,7 @@
       <td style="text-align: right;">Payee Nickname:</td>
       <td>HCB ACH #<%= @ach_transfer.id %></td>
       <td>
-        <span class="m0 badge pointer" onClick="navigator.clipboard.writeText('<%= @ach_transfer.id %>');">
+        <span class="m0 badge pointer" onClick="navigator.clipboard.writeText('HCB ACH #<%= @ach_transfer.id %>');">
           copy
         </span>
       </td>
@@ -92,7 +92,7 @@
       <td style="text-align: right;">Amount</td>
       <td><%= render_money_amount @ach_transfer.amount %></td>
       <td>
-        <span class="m0 badge pointer" onClick="navigator.clipboard.writeText('<%= @ach_transfer.amount %>');">
+        <span class="m0 badge pointer" onClick="navigator.clipboard.writeText('<%= render_money_amount @ach_transfer.amount %>');">
           copy
         </span>
       </td>
