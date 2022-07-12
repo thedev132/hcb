@@ -99,7 +99,7 @@
 
 .stripe-card {
   overflow: hidden;
-
+  background-repeat: repeat;
   background-color: #123;
   background-image: radial-gradient(ellipse at top left, #867ae7, transparent);
   &:focus,
@@ -109,7 +109,15 @@
   }
 
   &.frozen:before {
-    content: '❄️'
+    content: '❄️';
+  }
+
+  &.frozen {
+    filter: grayscale(1);
+  }
+
+  &.canceled {
+    filter: grayscale(1);
   }
 
   &:before {
@@ -154,4 +162,8 @@
 .stripe-card__number {
   margin-top: 0;
   margin-bottom: 0;
+}
+
+.stripe-card__status {
+  background-color: rgba(255, 255, 255, .2)
 }

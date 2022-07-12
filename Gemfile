@@ -219,3 +219,5 @@ gem "docusign_esign", "~> 3.13"
 gem "webauthn", "~> 2.5"
 
 gem "browser", "~> 5.3"
+
+gem "geo_pattern", "~> 1.4" # for procedurally generated patterns on Cards
