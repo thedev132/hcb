@@ -784,13 +784,16 @@ class AdminController < ApplicationController
     @page = params[:page] || 1
     @per = params[:per] || 20
     @q = params[:q].present? ? params[:q] : nil
+    @has_receipt = params[:has_receipt]
 
     relation = HcbCode
 
     relation = relation.where("hcb_code ilike '%#{@q}%'") if @q
+    relation = relation.without_receipt if @has_receipt == "no"
+    relation = relation.with_receipt if @has_receipt == "yes"
 
     @count = relation.count
-    @hcb_codes = relation.page(@page).per(@per).order("created_at desc")
+    @hcb_codes = relation.page(@page).per(@per).order("hcb_codes.created_at desc")
 
     render layout: "admin"
   end

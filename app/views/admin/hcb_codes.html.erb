@@ -7,6 +7,11 @@
 <%= form_with local: true, url: hcb_codes_admin_index_path, method: :get do |form| %>
   <%= form.text_field :q, value: params[:q], placeholder: 'Search' %>
   |
+  <%= form.label :has_receipt do %>
+    Has receipt?
+    <%= form.select :has_receipt, [['Both', 'both'], ['Yes', 'yes'], ['No', 'no']], :selected => @has_receipt %>
+  <% end %>
+  |
 
   <%= form.submit "Search" %>
 <% end %>
@@ -27,7 +32,7 @@
   <tbody>
     <% @hcb_codes.each do |hcb_code| %>
       <tr>
-        <td><%= hcb_code.hcb_code %></td>
+        <td><%= link_to hcb_code.hcb_code, hcb_code.url %></td>
         <td>
           <% hcb_code.canonical_pending_transactions.each do |cpt| %>
             <% if cpt.event %>
