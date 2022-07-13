@@ -50,7 +50,7 @@ module DisbursementService
     end
 
     def amount_cents
-      @amount_cents ||= @amount.to_s.gsub(",", "").to_f * 100
+      Monetize.parse(@amount).cents
     end
 
     def source_event
