@@ -8,6 +8,7 @@
 #  aasm_state                      :string
 #  address                         :text
 #  beta_features_enabled           :boolean
+#  category                        :integer
 #  country                         :integer
 #  custom_css_url                  :string
 #  donation_page_enabled           :boolean          default(TRUE)
