@@ -781,21 +781,34 @@ class AdminController < ApplicationController
   end
 
   def hcb_codes
-    @page = params[:page] || 1
-    @per = params[:per] || 20
-    @q = params[:q].present? ? params[:q] : nil
-    @has_receipt = params[:has_receipt]
+    @params = params.permit(:page, :per, :q, :has_receipt, :start_date, :end_date)
+    @page = @params[:page] || 1
+    @per = @params[:per] || 20
+    @q = @params[:q].present? ? @params[:q] : nil
+    @has_receipt = @params[:has_receipt]
+    @start_date = @params[:start_date]
+    @end_date = @params[:end_date]
 
     relation = HcbCode
 
     relation = relation.where("hcb_code ilike '%#{@q}%'") if @q
-    relation = relation.without_receipt if @has_receipt == "no"
-    relation = relation.with_receipt if @has_receipt == "yes"
+    relation = relation.missing_receipt if @has_receipt == "no"
+    relation = relation.has_receipt_or_marked_no_or_lost if @has_receipt == "yes"
+    relation = relation.lost_receipt if @has_receipt == "lost"
+
+    relation = relation.where("created_at >= ?", @start_date.to_date.beginning_of_day) if @start_date.present?
+    relation = relation.where("created_at <= ?", @end_date.to_date.end_of_day) if @end_date.present?
 
     @count = relation.count
-    @hcb_codes = relation.page(@page).per(@per).order("hcb_codes.created_at desc")
+    @hcb_codes = relation.order("hcb_codes.created_at desc")
 
-    render layout: "admin"
+    respond_to do |format|
+      format.html do
+        @hcb_codes = @hcb_codes.page(@page).per(@per)
+        render layout: "admin"
+      end
+      format.csv { render csv: @hcb_codes }
+    end
   end
 
   def invoices

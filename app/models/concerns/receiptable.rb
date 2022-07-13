@@ -9,6 +9,8 @@ module Receiptable
     scope :without_receipt, -> { includes(:receipts).where(receipts: { receiptable_id: nil }) }
     scope :missing_receipt, -> { without_receipt.where(marked_no_or_lost_receipt_at: nil) }
     scope :with_receipt, -> { includes(:receipts).where.not(receipts: { receiptable_id: nil }) }
+    scope :lost_receipt, -> { where.not(marked_no_or_lost_receipt_at: nil) }
+    scope :has_receipt_or_marked_no_or_lost, -> { with_receipt.or(lost_receipt) }
 
     def receipt_required?
       # This method should be overwritten in specific classes

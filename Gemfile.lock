@@ -144,6 +144,8 @@ GEM
     chunky_png (1.4.0)
     coderay (1.1.3)
     color (1.8)
+    comma (4.6.0)
+      activesupport (>= 4.2.0)
     concurrent-ruby (1.1.10)
     connection_pool (2.2.5)
     cose (1.2.0)
@@ -712,6 +714,7 @@ DEPENDENCIES
   caxlsx
   caxlsx_rails
   chronic
+  comma (~> 4.6)
   docusign_esign (~> 3.13)
   dotenv-rails
   dry-validation

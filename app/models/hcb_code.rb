@@ -33,6 +33,16 @@ class HcbCode < ApplicationRecord
   attr_accessor :not_admin_only_comments_count
   attr_writer :canonical_transactions, :canonical_pending_transactions
 
+  comma do
+    hcb_code "HCB Code"
+    created_at "Created at"
+    date "Transaction date"
+    url "URL" do |url| "https://bank.hackclub.com#{url}" end
+    memo
+    receipts size: "Receipt count"
+    receipts "Has receipt?" do |receipts| receipts.exists? end
+  end
+
   def url
     "/hcb/#{hashid}"
   end

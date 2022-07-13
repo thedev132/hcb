@@ -8,12 +8,27 @@
   <%= form.text_field :q, value: params[:q], placeholder: 'Search' %>
   |
   <%= form.label :has_receipt do %>
-    Has receipt?
-    <%= form.select :has_receipt, [['Both', 'both'], ['Yes', 'yes'], ['No', 'no']], :selected => @has_receipt %>
+    Receipt
+    <%= form.select :has_receipt, [['All', 'all'], ['Has receipt', 'yes'], ['Missing receipt', 'no'], ['Lost receipt', 'lost']], :selected => @has_receipt %>
+  <% end %>
+  |
+  <%= form.label :start_date do %>
+    Start date
+    <%= form.text_field :start_date, value: @start_date, placeholder: "YYYY-MM-DD" %>
+  <% end %>
+  |
+  <%= form.label :end_date do %>
+    End date
+    <%= form.text_field :end_date, value: @end_date, placeholder: "YYYY-MM-DD" %>
   <% end %>
   |
 
   <%= form.submit "Search" %>
+  |
+
+  <%= link_to @params.merge(format: :csv) do %>
+    <button type="button" <%= "disabled" if @hcb_codes.total_count == 0 %>>Export <%= pluralize @hcb_codes.total_count, "record" %></button>
+  <% end %>
 <% end %>
 
 <%= page_entries_info @hcb_codes, entry_name: 'HCB codes' %>
@@ -21,6 +36,7 @@
 <table>
   <thead>
     <tr>
+      <th>Date</th>
       <th>HCB Code</th>
       <th>Pending TXs</th>
       <th>Canonical TXs</th>
@@ -32,6 +48,7 @@
   <tbody>
     <% @hcb_codes.each do |hcb_code| %>
       <tr>
+        <td><%= hcb_code.created_at.strftime("%Y-%m-%d") %></td>
         <td><%= link_to hcb_code.hcb_code, hcb_code.url %></td>
         <td>
           <% hcb_code.canonical_pending_transactions.each do |cpt| %>
