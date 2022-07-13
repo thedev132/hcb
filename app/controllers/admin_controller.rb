@@ -796,8 +796,12 @@ class AdminController < ApplicationController
     relation = relation.has_receipt_or_marked_no_or_lost if @has_receipt == "yes"
     relation = relation.lost_receipt if @has_receipt == "lost"
 
-    relation = relation.where("created_at >= ?", @start_date.to_date.beginning_of_day) if @start_date.present?
-    relation = relation.where("created_at <= ?", @end_date.to_date.end_of_day) if @end_date.present?
+    begin
+      relation = relation.where("hcb_codes.created_at >= ?", Date.strptime(@start_date, "%Y-%m-%d").beginning_of_day) if @start_date.present?
+      relation = relation.where("hcb_codes.created_at <= ?", Date.strptime(@end_date, "%Y-%m-%d").end_of_day) if @end_date.present?
+    rescue Date::Error
+      flash[:error] = "Invalid date."
+    end
 
     @count = relation.count
     @hcb_codes = relation.order("hcb_codes.created_at desc")
