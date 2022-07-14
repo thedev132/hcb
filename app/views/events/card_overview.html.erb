@@ -25,6 +25,20 @@
         Order a card
       <% end %>
     <% end %>
+
+    <button
+      type="button"
+      data-behavior="menu_toggle" aria-expanded="false" tabindex="0"
+      class="btn menu__toggle overflow-visible z1">
+      <%= inline_icon 'view', size: 16 %>
+      View
+      <% if organizer_signed_in? %>
+        <div class="menu__content h5" data-behavior="menu_content">
+          <%= link_to "List view  #{'✔' if params[:view] == 'list'}", '?view=list' %>
+          <%= link_to "Grid view  #{'✔' if params[:view] != 'list'}", '?view=grid' %>
+        </div>
+      <% end %>
+    </button>
   </h1>
 
   <section class="modal modal--scroll bg-snow" data-behavior="modal" role="dialog" id="order_card">
@@ -37,9 +51,15 @@
     <% if @session_user_stripe_cards.blank? %>
       <%= blankslate "You haven’t requested any cards yet." %>
     <% else %>
-      <article class="mixed-grid grid--spacious">
-      <%= render @session_user_stripe_cards %>
-      </article>
+
+      <% if params[:view] == "list" %>
+        <%= render 'event_cards_table', stripe_cards: @session_user_stripe_cards %>
+      <% else %>
+        <article class="mixed-grid grid--spacious">
+          <%= render @session_user_stripe_cards %>
+        </article>
+      <% end %>
+
     <% end %>
   <% end %>
 
@@ -63,9 +83,13 @@
 
   <h4>Organization Cards</h4>
 
-  <article class="mixed-grid grid--spacious">
-    <%= render @stripe_cards %>
-  </article>
+  <% if params[:view] == "list" %>
+    <%= render 'event_cards_table', stripe_cards: @stripe_cards %>
+  <% else %>
+    <article class="mixed-grid grid--spacious">
+      <%= render @stripe_cards %>
+    </article>
+  <% end %>
 
   <% admin_tools do %>
 
