@@ -45,7 +45,7 @@ class DonationsController < ApplicationController
 
   def make_donation
     d_params = public_donation_params
-    d_params[:amount] = (public_donation_params[:amount].to_f * 100.to_i)
+    d_params[:amount] = Monetize.parse(public_donation_params[:amount]).cents
 
     @donation = Donation.new(d_params)
     @donation.event = @event
