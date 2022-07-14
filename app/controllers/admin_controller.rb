@@ -300,7 +300,7 @@ class AdminController < ApplicationController
 
     @count = relation.count
 
-    @users = relation.page(@page).per(@per).order("created_at desc")
+    @users = relation.page(@page).per(@per).order(created_at: :desc)
 
     render layout: "admin"
   end
