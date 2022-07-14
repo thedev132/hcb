@@ -154,6 +154,18 @@ module Api
       }
     end
 
+    desc 'Git' do
+      summary "Get the commit hash of the latest build."
+      failure [[404]]
+      hidden true
+    end
+    get :git do
+      {
+        commit_time: ApplicationHelper.commit_time,
+        commit_hash: ApplicationHelper.commit_hash
+      }
+    end
+
     resource :organizations do
       desc 'Return a transparent organization' do
         summary 'Get a single organization'

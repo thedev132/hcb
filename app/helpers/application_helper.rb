@@ -268,6 +268,8 @@ module ApplicationHelper
                          end
   end
 
+  module_function :commit_hash, :commit_time
+
   def admin_inspectable_attributes(record)
     stripe_obj = begin
                    record.stripe_obj
