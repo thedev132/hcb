@@ -59,7 +59,8 @@ class DocumentsController < ApplicationController
 
     @document.destroy!
 
-    redirect_to @document.event
+    flash[:success] = "Document successfully deleted."
+    redirect_to @document.event || documents_path
   end
 
   def download

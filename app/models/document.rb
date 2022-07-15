@@ -32,7 +32,7 @@ class Document < ApplicationRecord
   belongs_to :user
 
   has_one_attached :file
-  has_many :downloads, class_name: "DocumentDownload"
+  has_many :downloads, class_name: "DocumentDownload", dependent: :destroy
 
   validates_presence_of :user, :name
   validate :ensure_file_attached
