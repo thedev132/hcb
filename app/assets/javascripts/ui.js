@@ -2,7 +2,7 @@
 $(document).ready(function () {
   if (
     document.querySelector('html').getAttribute('data-ignore-theme') == null &&
-    localStorage.getItem('dark') === 'true'
+    BK.isDark()
   ) {
     BK.s('toggle_theme').find('svg').toggle()
     return BK.styleDark(true)
@@ -53,9 +53,11 @@ $(document).on('turbo:load', function () {
 
     // auto-fill email address from local storage
     if (val === '' || val === undefined) {
-      if ((email = localStorage.getItem('login_email'))) {
-        BK.s('login').find('input[type=email]').val(email)
-      }
+      try {
+        if ((email = localStorage.getItem('login_email'))) {
+          BK.s('login').find('input[type=email]').val(email)
+        }
+      } catch(e) {}
     }
 
     // auto fill @hackclub.com email addresses on submit
