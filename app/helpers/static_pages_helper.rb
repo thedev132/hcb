@@ -450,7 +450,7 @@ module StaticPagesHelper
       sendy: {
         url: "https://airbridge.hackclub.com/v0.1/Bank%20Promotions/Sendy",
         query: { filterByFormula: "Status='Pending'", fields: [] },
-        destination: "https://airtable.com/tbl1MRaNpF4KphbOd/viwdGjjDdtsS7bjlP"
+        destination: "https://airtable.com/tbl1MRaNpF4KphbOd/viwb7ELYyxpuAz6gQ"
       },
       domains: {
         url: "https://airbridge.hackclub.com/v0.1/Bank%20Promotions/Domains",
