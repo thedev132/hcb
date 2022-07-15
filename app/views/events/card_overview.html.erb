@@ -32,12 +32,10 @@
       class="btn menu__toggle overflow-visible z1">
       <%= inline_icon 'view', size: 16 %>
       View
-      <% if organizer_signed_in? %>
-        <div class="menu__content h5" data-behavior="menu_content">
-          <%= link_to "List view  #{'✔' if params[:view] == 'list'}", '?view=list' %>
-          <%= link_to "Grid view  #{'✔' if params[:view] != 'list'}", '?view=grid' %>
-        </div>
-      <% end %>
+      <div class="menu__content h5" data-behavior="menu_content">
+        <%= link_to "List view  #{'✔' if params[:view] == 'list'}", '?view=list' %>
+        <%= link_to "Grid view  #{'✔' if params[:view] != 'list'}", '?view=grid' %>
+      </div>
     </button>
   </h1>
 
