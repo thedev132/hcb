@@ -83,91 +83,94 @@
   <% end %>
 
   <% admin_tools('w-100 center mt3') do %>
-    <h2>Daily Tasks</h2>
-    <ul class="grid left-align w-100 mt0">
-      <%= card_to "Bank Accounts (#{BankAccount.failing.count})", bank_accounts_admin_index_path %>
-      <%= card_to "Partners (#{Partner.count})", partners_admin_index_path %>
-      <%= card_to "Partnered Signups (#{PartneredSignup.applicant_signed.count})", partnered_signups_admin_index_path %>
-      <%= card_to "Partner Organizations (#{Event.partner.count})", partner_organizations_admin_index_path %>
-      <%= card_to "Organizations (#{Event.approved.count})", events_admin_index_path %>
-      <%= card_to "Bank Fees (#{BankFee.in_transit_or_pending.count})", bank_fees_admin_index_path %>
-      <%= card_to "Users", users_admin_index_path %>
-      <%= card_to "Raw Transactions (#{RawCsvTransaction.unhashed.count})", raw_transactions_admin_index_path %>
-      <%= card_to "Hashed Transactions (#{HashedTransaction.uncanonized.count})", hashed_transactions_admin_index_path %>
-      <%= card_to "Ledger (#{CanonicalTransaction.not_stripe_top_up.unmapped.count})", ledger_admin_index_path %>
-      <%= card_to "Pending Ledger (#{CanonicalPendingTransaction.unsettled.count})", pending_ledger_admin_index_path %>
-      <%= card_to "ACH (#{AchTransfer.pending.count})", ach_admin_index_path %>
-      <%= card_to "Check (#{Check.in_transit.count + Check.admin_count_offset})", check_admin_index_path %>
-      <%= card_to "Donations", donations_admin_index_path %>
-      <%= card_to "Partner Donations (#{PartnerDonation.in_transit.count})", partner_donations_admin_index_path %>
-      <%= card_to "Disbursements (#{Disbursement.reviewing.count})", disbursements_admin_index_path %>
-      <%= card_to "Invoices", invoices_admin_index_path %>
-      <%= card_to "Sponsors", sponsors_admin_index_path %>
-      <%= card_to "Google Workspaces (#{GSuite.needs_ops_review.count})", google_workspaces_admin_index_path %>
-      <%= card_to "HCB Codes", hcb_codes_admin_index_path %>
-      <%= card_to "Transaction CSVs", transaction_csvs_admin_index_path %>
-      <%= card_to "Selenium Sessions", selenium_sessions_admin_index_path %>
-      <%= card_to 'Duplicated (WIP)', transaction_dedupe_path %>
-      <%= card_to "Deletion Requests (#{OrganizerPositionDeletionRequest.under_review.count})", organizer_position_deletion_requests_path %>
-    </ul>
-
-    <h2>Perks</h2>
-    <ul class="grid left-align w-100 mt0">
-      <%= react_component 'admin_task/Card', human_name: 'Hackathons', task_name: :pending_hackathons_airtable, task_path: link_to_airtable_task(:hackathons) %>
-      <%= react_component 'admin_task/Card', human_name: 'Sticker Mule', task_name: :pending_stickermule_airtable, task_path: link_to_airtable_task(:stickermule) %>
-      <%= react_component 'admin_task/Card', human_name: 'Stickers', task_name: :pending_stickers_airtable, task_path: link_to_airtable_task(:stickers) %>
-      <%= react_component 'admin_task/Card', human_name: 'Wallets', task_name: :pending_wallets_airtable, task_path: link_to_airtable_task(:wallets) %>
-      <%= react_component 'admin_task/Card', human_name: 'Sendy', task_name: :pending_sendy_airtable, task_path: link_to_airtable_task(:sendy) %>
-      <%= react_component 'admin_task/Card', human_name: '1Password', task_name: :pending_onepassword_airtable, task_path: link_to_airtable_task(:onepassword) %>
-      <%= react_component 'admin_task/Card', human_name: 'Domains', task_name: :pending_domains_airtable, task_path: link_to_airtable_task(:domains) %>
-      <%= react_component 'admin_task/Card', human_name: 'Wires', task_name: :pending_wire_transfers_airtable, task_path: link_to_airtable_task(:wire_transfers) %>
-      <%= react_component 'admin_task/Card', human_name: 'PVSA', task_name: :pending_pvsa_airtable, task_path: link_to_airtable_task(:pvsa) %>
-      <%= react_component 'admin_task/Card', human_name: 'The Event Helper', task_name: :pending_theeventhelper_airtable, task_path: link_to_airtable_task(:theeventhelper) %>
-      <%= react_component 'admin_task/Card', human_name: 'PayPal', task_name: :pending_paypal_transfers_airtable, task_path: link_to_airtable_task(:paypal_transfers) %>
-      <%= react_component 'admin_task/Card', human_name: 'Disputes', task_name: :pending_disputed_transactions_airtable, task_path: link_to_airtable_task(:disputed_transactions) %>
-      <%= react_component 'admin_task/Card', human_name: 'Feedback', task_name: :pending_feedback_airtable, task_path: link_to_airtable_task(:feedback) %>
-    </ul>
-
-    <details>
-      <summary class="mb2 left-align bold">Deprecated</summary>
-      <ul class="grid w-100 mt0 left-align">
-        <%= card_to 'Pending tasks', admin_tasks_path %>
-        <%= render partial: 'static_pages/card', locals: { task_path: g_suites_path, task_name: :g_suites, human_name: 'Google Workspaces', count: @service.g_suites_needs_ops_review_count } %>
-        <%= render partial: 'static_pages/card', locals: { task_path: transactions_path, task_name: :transactions, human_name: 'Transactions', count: @service.transactions_count } %>
-        <%= react_component 'admin_task/Card', human_name: 'Grants', task_name: :pending_grant_airtable, task_path: link_to_airtable_task(:grant) %>
-        <%= react_component 'admin_task/Card', human_name: 'Replit', task_name: :pending_replit_airtable, task_path: link_to_airtable_task(:replit) %>
-      </ul>
-    </details>
-
-    <h2>Information</h2>
-    <ul class="grid left-align w-100 mt0">
-      <%= render partial: 'static_pages/card', locals: { task_path: events_path, human_name: 'Projects' } %>
-      <%= render partial: 'static_pages/card', locals: { task_path: negative_events_path, human_name: 'Negative projects' } %>
-      <%= react_component 'admin_task/Card', human_name: 'Stripe TXs', task_path: stripe_authorizations_path %>
-      <%= render partial: 'static_pages/card', locals: { task_path: sponsors_path, human_name: 'Sponsors' } %>
-      <%= render partial: 'static_pages/card', locals: { task_path: g_suite_accounts_path, human_name: 'Google Workspace accounts' } %>
-      <%= react_component 'admin_task/Card', human_name: :bookkeeping, task_path: bookkeeping_path %>
-      <%= render partial: 'static_pages/card', locals: { task_path: balances_admin_index_path, human_name: 'Organization Balances' } %>
-      <%= card_to 'Emburse cards', emburse_cards_path %>
-      <%= card_to 'Emburse card requests', emburse_card_requests_path %>
-      <%= card_to 'Emburse transfers', emburse_transfers_path %>
-      <%= card_to 'Emburse transactions', emburse_transactions_path %>
-      <%= render partial: 'static_pages/card', locals: { task_path: admin_search_path, human_name: 'Search by user' } %>
-      <%= render partial: 'static_pages/card', locals: { task_path: 'https://hack.af/hcb-knowledgebase', human_name: 'Knowledgebase' } %>
-    </ul>
-
-    <h2>Other Tools</h2>
-    <ul class="grid left-align w-100 mt0">
-      <%= render partial: 'static_pages/card', locals: { task_path: bank_accounts_path, human_name: 'Bank accounts' } %>
-      <%= render partial: 'static_pages/card', locals: { task_path: common_documents_path, human_name: 'Common docs' } %>
-      <%= render partial: 'static_pages/card', locals: { task_path: new_bank_account_path, human_name: 'Setup HCB' } %>
-      <%= card_to 'Export finances', export_finances_path, { method: :post } %>
-      <%= render partial: 'static_pages/card', locals: { task_path: blazer_path, human_name: 'BI tool' } %>
-      <%= render partial: 'static_pages/card', locals: { task_path: flipper_path, human_name: 'Flipper' } %>
-    </ul>
     <p>
       <%= content_tag :strong, render_money(@transaction_volume) %>
       in transactions & counting…
     </p>
+
+    <h2>Tasks & Perks</h2>
+    <ul class="grid left-align w-100 mt0">
+      <%= card_to "Ledger (#{CanonicalTransaction.not_stripe_top_up.unmapped.count})", ledger_admin_index_path %>
+      <%= card_to "ACH (#{AchTransfer.pending.count})", ach_admin_index_path %>
+      <%= card_to "Check (#{Check.in_transit.count + Check.admin_count_offset})", check_admin_index_path %>
+      <%= react_component 'admin_task/Card', human_name: 'Wires', task_name: :pending_wire_transfers_airtable, task_path: link_to_airtable_task(:wire_transfers) %>
+      <%= react_component 'admin_task/Card', human_name: 'PayPal', task_name: :pending_paypal_transfers_airtable, task_path: link_to_airtable_task(:paypal_transfers) %>
+      <%= card_to "Disbursements (#{Disbursement.reviewing.count})", disbursements_admin_index_path %>
+      <%= card_to "Google Workspaces (#{GSuite.needs_ops_review.count})", google_workspaces_admin_index_path %>
+      <%= card_to "Deletion Requests (#{OrganizerPositionDeletionRequest.under_review.count})", organizer_position_deletion_requests_path %>
+      <%= react_component 'admin_task/Card', human_name: 'Disputes', task_name: :pending_disputed_transactions_airtable, task_path: link_to_airtable_task(:disputed_transactions) %>
+      <%= react_component 'admin_task/Card', human_name: 'Feedback', task_name: :pending_feedback_airtable, task_path: link_to_airtable_task(:feedback) %>
+      <%= react_component 'admin_task/Card', human_name: 'Stickers', task_name: :pending_stickers_airtable, task_path: link_to_airtable_task(:stickers) %>
+      <%= react_component 'admin_task/Card', human_name: 'Wallets', task_name: :pending_wallets_airtable, task_path: link_to_airtable_task(:wallets) %>
+      <%= react_component 'admin_task/Card', human_name: 'Hackathons', task_name: :pending_hackathons_airtable, task_path: link_to_airtable_task(:hackathons) %>
+      <%= react_component 'admin_task/Card', human_name: 'Sticker Mule', task_name: :pending_stickermule_airtable, task_path: link_to_airtable_task(:stickermule) %>
+      <%= react_component 'admin_task/Card', human_name: 'Sendy', task_name: :pending_sendy_airtable, task_path: link_to_airtable_task(:sendy) %>
+      <%= react_component 'admin_task/Card', human_name: '1Password', task_name: :pending_onepassword_airtable, task_path: link_to_airtable_task(:onepassword) %>
+      <%= react_component 'admin_task/Card', human_name: 'Domains', task_name: :pending_domains_airtable, task_path: link_to_airtable_task(:domains) %>
+      <%= react_component 'admin_task/Card', human_name: 'PVSA', task_name: :pending_pvsa_airtable, task_path: link_to_airtable_task(:pvsa) %>
+      <%= react_component 'admin_task/Card', human_name: 'The Event Helper', task_name: :pending_theeventhelper_airtable, task_path: link_to_airtable_task(:theeventhelper) %>
+    </ul>
+
+    <h2>Information</h2>
+    <ul class="grid left-align w-100 mt0">
+      <%= card_to "Organizations (#{Event.approved.count})", events_admin_index_path %>
+      <%= card_to "Users", users_admin_index_path %>
+      <%= card_to "Pending Ledger (#{CanonicalPendingTransaction.unsettled.count})", pending_ledger_admin_index_path %>
+      <%= card_to "Donations", donations_admin_index_path %>
+      <%= card_to "Invoices", invoices_admin_index_path %>
+      <%= card_to "Sponsors", sponsors_admin_index_path %>
+      <%= card_to "Bank Fees (#{BankFee.in_transit_or_pending.count})", bank_fees_admin_index_path %>
+      <%= render partial: 'static_pages/card', locals: { task_path: balances_admin_index_path, human_name: 'Organization Balances' } %>
+    </ul>
+
+
+    <h2>Admin Tasks</h2>
+    <ul class="grid left-align w-100 mt0">
+      <%= card_to "Bank Accounts (#{BankAccount.failing.count})", bank_accounts_admin_index_path %>
+      <%= card_to "Raw Transactions (#{RawCsvTransaction.unhashed.count})", raw_transactions_admin_index_path %>
+      <%= card_to "Hashed Transactions (#{HashedTransaction.uncanonized.count})", hashed_transactions_admin_index_path %>
+      <%= card_to "HCB Codes", hcb_codes_admin_index_path %>
+      <%= card_to "Transaction CSVs", transaction_csvs_admin_index_path %>
+      <%= card_to "Selenium Sessions", selenium_sessions_admin_index_path %>
+      <%= card_to 'Duplicated (WIP)', transaction_dedupe_path %>
+    </ul>
+
+    <!--
+    <h2>Partner Tasks</h2>
+    <ul class="grid w-100 mt0 left-align">
+      <%#= card_to "Partners (#{Partner.count})", partners_admin_index_path %>
+      <%#= card_to "Partnered Signups (#{PartneredSignup.applicant_signed.count})", partnered_signups_admin_index_path %>
+      <%#= card_to "Partner Organizations (#{Event.partner.count})", partner_organizations_admin_index_path %>
+      <%#= card_to "Partner Donations (#{PartnerDonation.in_transit.count})", partner_donations_admin_index_path %>
+    </ul>
+    -->
+
+    <h2>Other Tools</h2>
+    <ul class="grid left-align w-100 mt0">
+      <%= render partial: 'static_pages/card', locals: { task_path: blazer_path, human_name: 'BI tool' } %>
+      <%= render partial: 'static_pages/card', locals: { task_path: bank_accounts_path, human_name: 'Bank accounts' } %>
+      <%= render partial: 'static_pages/card', locals: { task_path: new_bank_account_path, human_name: 'Setup HCB' } %>
+      <%= render partial: 'static_pages/card', locals: { task_path: common_documents_path, human_name: 'Common docs' } %>
+      <%= card_to 'Export finances', export_finances_path, { method: :post } %>
+      <%= render partial: 'static_pages/card', locals: { task_path: flipper_path, human_name: 'Flipper' } %>
+    </ul>
+
+    <details>
+      <summary class="left-align">Information (old)</summary>
+      <ul class="grid left-align w-100 mt0">
+        <%= render partial: 'static_pages/card', locals: { task_path: events_path, human_name: 'Projects' } %>
+        <%= render partial: 'static_pages/card', locals: { task_path: negative_events_path, human_name: 'Negative projects' } %>
+        <%= react_component 'admin_task/Card', human_name: 'Stripe TXs', task_path: stripe_authorizations_path %>
+        <%= render partial: 'static_pages/card', locals: { task_path: sponsors_path, human_name: 'Sponsors' } %>
+        <%= render partial: 'static_pages/card', locals: { task_path: g_suite_accounts_path, human_name: 'Google Workspace accounts' } %>
+        <%= react_component 'admin_task/Card', human_name: :bookkeeping, task_path: bookkeeping_path %>
+        <%= card_to 'Emburse cards', emburse_cards_path %>
+        <%= card_to 'Emburse card requests', emburse_card_requests_path %>
+        <%= card_to 'Emburse transfers', emburse_transfers_path %>
+        <%= card_to 'Emburse transactions', emburse_transactions_path %>
+        <%= render partial: 'static_pages/card', locals: { task_path: admin_search_path, human_name: 'Search by user' } %>
+        <%= render partial: 'static_pages/card', locals: { task_path: 'https://hack.af/hcb-knowledgebase', human_name: 'Knowledgebase' } %>
+      </ul>
+    </details>
   <% end %>
 </main>
