@@ -210,6 +210,11 @@
       <%= form.label :organized_by_hack_clubbers, "Organized by Hack Clubbers?" %>
     </div>
 
+    <div class="field field--checkbox">
+      <%= form.check_box :can_front_balance %>
+      <%= form.label :can_front_balance, "Front incoming transactions?" %>
+    </div>
+
     <p class="mt3">To change an organization's status (Pending, Approved, Rejected, etc.),
       use the <%= link_to "admin Organizations process page", event_process_admin_path(@event) %>
     </p>

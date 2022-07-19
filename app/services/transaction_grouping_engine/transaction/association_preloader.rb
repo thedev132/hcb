@@ -31,12 +31,13 @@ module TransactionGroupingEngine
         canonical_transactions_by_id = canonical_transactions.index_by(&:id)
         canonical_transaction_ids = canonical_transactions.pluck(:id)
 
-
-        canonical_pending_transactions_by_hcb_code = CanonicalPendingTransaction.where(hcb_code: hcb_code_codes).group_by(&:hcb_code)
+        canonical_pending_transactions = CanonicalPendingTransaction.where(hcb_code: hcb_code_codes)
+        canonical_pending_transactions_by_hcb_code = canonical_pending_transactions.group_by(&:hcb_code)
+        canonical_pending_transactions_by_id = canonical_pending_transactions.index_by(&:id)
 
         hcb_code_objects.each do |hc|
           hc.canonical_transactions = canonical_transactions_by_hcb_code[hc.hcb_code]
-                                      .sort { |ct1, ct2| self.class.compare_date_id_descending(ct1, ct2) }
+                                        &.sort { |ct1, ct2| self.class.compare_date_id_descending(ct1, ct2) }
           hc.canonical_pending_transactions = canonical_pending_transactions_by_hcb_code[hc.hcb_code] || []
           hc.not_admin_only_comments_count = hc.comments.count { |c| !c.admin_only }
         end
@@ -80,6 +81,10 @@ module TransactionGroupingEngine
                                      .slice(*t.canonical_transaction_ids)
                                      .values
                                      .sort { |ct1, ct2| self.class.compare_date_id_descending(ct1, ct2) }
+          t.canonical_pending_transactions = canonical_pending_transactions_by_id
+                                             .slice(*t.canonical_pending_transaction_ids)
+                                             .values
+                                             .sort { |pt1, pt2| self.class.compare_date_id_descending(pt1, pt2) }
 
           t.local_hcb_code = hcb_code_by_code[t.hcb_code]
         end

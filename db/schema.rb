@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_07_03_102629) do
+ActiveRecord::Schema.define(version: 2022_07_12_202126) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -262,6 +262,7 @@ ActiveRecord::Schema.define(version: 2022_07_03_102629) do
     t.text "custom_memo"
     t.bigint "raw_pending_incoming_disbursement_transaction_id"
     t.bigint "raw_pending_outgoing_disbursement_transaction_id"
+    t.boolean "fronted", default: false
     t.index ["hcb_code"], name: "index_canonical_pending_transactions_on_hcb_code"
     t.index ["raw_pending_bank_fee_transaction_id"], name: "index_canonical_pending_txs_on_raw_pending_bank_fee_tx_id"
     t.index ["raw_pending_donation_transaction_id"], name: "index_canonical_pending_txs_on_raw_pending_donation_tx_id"
@@ -270,6 +271,7 @@ ActiveRecord::Schema.define(version: 2022_07_03_102629) do
     t.index ["raw_pending_outgoing_check_transaction_id"], name: "index_canonical_pending_txs_on_raw_pending_outgoing_check_tx_id"
     t.index ["raw_pending_outgoing_disbursement_transaction_id"], name: "index_cpts_on_raw_pending_outgoing_disbursement_transaction_id"
     t.index ["raw_pending_stripe_transaction_id"], name: "index_canonical_pending_txs_on_raw_pending_stripe_tx_id"
+    t.check_constraint "fronted IS NOT NULL", name: "canonical_pending_transactions_fronted_null"
   end
 
   create_table "canonical_transactions", force: :cascade do |t|
@@ -558,6 +560,7 @@ ActiveRecord::Schema.define(version: 2022_07_03_102629) do
     t.boolean "organized_by_hack_clubbers"
     t.string "custom_css_url"
     t.integer "category"
+    t.boolean "can_front_balance", default: false, null: false
     t.index ["club_airtable_id"], name: "index_events_on_club_airtable_id", unique: true
     t.index ["partner_id", "organization_identifier"], name: "index_events_on_partner_id_and_organization_identifier", unique: true
     t.index ["partner_id"], name: "index_events_on_partner_id"

@@ -9,10 +9,7 @@ module PendingTransactionEngine
 
         def run
           pending_invoice_transactions.each do |pit|
-            ::RawPendingInvoiceTransaction.find_or_initialize_by(invoice_transaction_id: pit.id.to_s).tap do |t|
-              t.amount_cents = pit.amount_due
-              t.date_posted = pit.created_at
-            end.save!
+            ::PendingTransactionEngine::RawPendingInvoiceTransactionService::Invoice::ImportSingle.new(invoice: pit).run
           end
 
           nil

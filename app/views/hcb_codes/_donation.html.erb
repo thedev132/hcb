@@ -21,53 +21,11 @@
       <% end %>
     </span>
 
-    <span class="md-right flex flex-row">
-      <span class="badge h4 bg-<%= @donation.state %> nowrap">
-        <%= @donation.state_text %>
-        <%= inline_icon @donation.state_icon, size: 20 if @donation.state_icon %>
-      </span>
-      
-      <% if @donation.in_transit? %>
-        <span class="<%= 'cursor-pointer tooltipped tooltipped--w' if @donation.in_transit? %> ml1 muted"
-              aria-label="Request to expedite incoming funds"
-              data-behavior="<%= 'modal_trigger' if @donation.in_transit? %>"
-              data-modal="<%= 'request_front' if @donation.in_transit? %>"
-        >
-          <%= inline_icon 'bolt', class: 'pop' %>
-        </span>
-      <% end %>
+    <span class="badge h4 md-right bg-<%= @donation.state %> nowrap">
+      <%= @donation.state_text %>
+      <%= inline_icon @donation.state_icon, size: 20 if @donation.state_icon %>
     </span>
   </h2>
-
-  <% if @donation.in_transit? %>
-    <section class="modal modal--scroll bg-snow" data-behavior="modal" role="dialog" id="request_front">
-      <%= modal_header 'Request fronted funds' %>
-      <p>
-        Incoming funds typically take a few days to settle, and we understand there are situations where you may need access to funds sooner.
-        <span class="muted">
-          (<%= link_to 'learn more', "https://headwayapp.co/bank-changelog/instant-transfers-emergency-funds-235516" %>)
-        </span>
-      </p>
-      <div class="border-top pt1 secondary">
-        <div class="flex items-center warning">
-          <%= inline_icon 'info', size: 32, class: 'mr1' %>
-          <p class="bold mt0 mb0">If you request fronted funds, please keep in mind:</p>
-        </div>
-        <ul class="mt1 mb2">
-          <li>For a quicker response, <strong>include your phone number</strong>.</li>
-          <li>Requests take a business day to review.</li>
-          <li>Your event should be running on or before <em><%= format_date Time.now + 7.days %></em>.</li>
-          <li>We only front <strong>already paid, in transit donations</strong>.</li>
-        </ul>
-      </div>
-      <a class="btn"
-         href="mailto:bank@hackclub.com?subject=Request%20to%20Expedite%20Incoming%20Payment&body=I%20am%20requesting%20to%20expedite%20the%20transfer%20of%20<%= url_encode(Rails.application.routes.url_helpers.root_url + @hcb_code.url) %>%20for%20the%20following%20reason"
-         target="_blank"
-      >
-        Request
-      </a>
-    </section>
-  <% end %>
 
   <section class="card__banner card__darker details-horiz border-top border-bottom">
     <% if @donation.payment_method_type == 'card' %>
@@ -95,7 +53,9 @@
       <strong>Donated at</strong>
       <%= format_datetime @donation.created_at %>
     </p>
-    <%= donation_payout_datetime %>
+    <% admin_tools do %>
+      <%= donation_payout_datetime %>
+    <% end %>
   </section>
   <% if @donation.payout %>
     <section class="pt2 pb2 details">
@@ -127,6 +87,15 @@
       </p>
     </section>
   <% end %>
+
+  <% unless @donation.deposited? %>
+    <section class="card__banner card__darker secondary border-top">
+      <p class="my0 italic">
+        Incoming donations are immediately reflected in your account balance.
+      </p>
+    </section>
+  <% end %>
+
 </article>
 <%= render partial: "hcb_codes/dispute", locals: { type: 'donation', hcb_code: @hcb_code } %>
 

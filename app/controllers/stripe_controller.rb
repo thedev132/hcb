@@ -75,4 +75,47 @@ class StripeController < ApplicationController
     ::PartnerDonationService::HandleWebhookChargeSucceeded.new(charge).run
   end
 
+  def handle_invoice_paid(event)
+    invoice = Invoice.find_by(stripe_invoice_id: event[:data][:object][:id])
+    return unless invoice
+
+    # Mark invoice as paid
+    InvoiceService::OpenToPaid.new(invoice_id: invoice.id).run
+
+    # Import to the ledger
+    rpit = ::PendingTransactionEngine::RawPendingInvoiceTransactionService::Invoice::ImportSingle.new(invoice: invoice).run
+    cpt = ::PendingTransactionEngine::CanonicalPendingTransactionService::ImportSingle::Invoice.new(raw_pending_invoice_transaction: rpit).run
+    ::PendingEventMappingEngine::Map::Single::Invoice.new(canonical_pending_transaction: cpt).run
+  end
+
+  def handle_charge_dispute_funds_withdrawn(event)
+    # A donor has disputed a charge. Oh no!
+
+    # TODO: properly handle disputes
+
+    dispute = event[:data][:object]
+
+    payment_intent = Partners::Stripe::PaymentIntents::Show.new(id: dispute[:payment_intent]).run
+
+    if payment_intent.metadata[:donation].present?
+      # It's a donation
+
+      donation = Donation.find_by(stripe_payment_intent_id: dispute[:payment_intent])
+
+      return Airbrake.notify("Received charge dispute on nonexistent donation") if donation.nil?
+
+      # Let's un-front the transaction.
+      donation.canonical_pending_transactions.update_all(fronted: false)
+    else
+      # It's an invoice
+
+      invoice = Invoice.find_by(stripe_charge_id: dispute[:charge])
+
+      return Airbrake.notify("Received charge dispute on nonexistent invoice") if invoice.nil?
+
+      invoice.canonical_pending_transactions.update_all(fronted: false)
+    end
+
+  end
+
 end

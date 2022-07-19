@@ -17,12 +17,15 @@ module DonationService
         # 1. Mark refunded
         donation.mark_refunded!
 
+        # 2. Un-front all pending transaction associated with this donation
+        donation.canonical_pending_transactions.update_all(fronted: false)
+
         raise ArgumentError, "production only" unless Rails.env.production?
 
-        # 2. Process remotely
+        # 3. Process remotely
         ::Partners::Stripe::Refunds::Create.new(payment_intent_id: payment_intent_id).run
 
-        # 3. Transfer on SVB
+        # 4. Transfer on SVB
         transfer_from_fs_main_to_fs_operating!(amount_cents: amount_cents, memo: memo) # make the transfer on remote bank similar to monthly fee service
       end
 

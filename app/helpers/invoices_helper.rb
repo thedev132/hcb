@@ -153,6 +153,7 @@ def invoice_card_check_badge(check, invoice = @invoice)
   content_tag(:span, class: "pr1 #{background} line-height-0 tooltipped tooltipped--w", 'aria-label': text) { tag }
 end
 
+# this information is visible to admins only because payouts should feel instant to the user
 def invoice_payout_datetime(invoice = @invoice)
   date = nil
   title = nil

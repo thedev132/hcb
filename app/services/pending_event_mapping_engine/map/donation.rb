@@ -5,13 +5,7 @@ module PendingEventMappingEngine
     class Donation
       def run
         unmapped.find_each(batch_size: 100) do |cpt|
-          next unless cpt.raw_pending_donation_transaction.likely_event_id
-
-          attrs = {
-            event_id: cpt.raw_pending_donation_transaction.likely_event_id,
-            canonical_pending_transaction_id: cpt.id
-          }
-          CanonicalPendingEventMapping.create!(attrs)
+          ::PendingEventMappingEngine::Map::Single::Donation.new(canonical_pending_transaction: cpt).run
         end
       end
 

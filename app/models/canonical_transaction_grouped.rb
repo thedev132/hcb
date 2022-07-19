@@ -3,8 +3,8 @@
 class CanonicalTransactionGrouped
   include ActiveModel::Model
 
-  attr_accessor :hcb_code, :date, :amount_cents, :raw_canonical_transaction_ids
-  attr_writer :canonical_transactions, :local_hcb_code
+  attr_accessor :hcb_code, :date, :amount_cents, :raw_canonical_transaction_ids, :raw_canonical_pending_transaction_ids
+  attr_writer :canonical_transactions, :canonical_pending_transactions, :local_hcb_code
 
   def memo
     return invoice_memo if invoice?
@@ -12,9 +12,10 @@ class CanonicalTransactionGrouped
     return partner_donation_memo if partner_donation?
     return ach_transfer_memo if ach_transfer?
     return check_memo if check?
-    return ct.smart_memo if stripe_card?
+    return ct&.smart_memo if stripe_card?
 
-    ct.smart_memo
+    pt&.smart_memo
+    ct&.smart_memo
   end
 
   def amount
@@ -22,11 +23,21 @@ class CanonicalTransactionGrouped
   end
 
   def url
-    return "/transactions/#{ct.id}" if disbursement? # because disbursements go across 2 events
+    if disbursement? && ct && disbursement?
+      return "/transactions/#{ct.id}" # because disbursements go across 2 events
+    end
 
     return "/hcb/#{local_hcb_code.hashid}" if local_hcb_code
 
-    "/transactions/#{ct.id}"
+    if ct
+      return "/transactions/#{ct.id}"
+    end
+
+    "/canonical_pending_transactions/#{pt.id}"
+  end
+
+  def canonical_pending_transactions
+    @canonical_pending_transactions ||= CanonicalPendingTransaction.where(id: canonical_pending_transaction_ids).order("date desc, id desc")
   end
 
   def canonical_transactions
@@ -34,23 +45,23 @@ class CanonicalTransactionGrouped
   end
 
   def fee_payment?
-    ct.fee_payment?
+    ct&.fee_payment?
   end
 
   def fee_reimbursement?
-    ct.fee_reimbursement
+    ct&.fee_reimbursement
   end
 
   def fee_reimbursed?
-    ct.fee_reimbursement.completed?
+    ct&.fee_reimbursement&.completed?
   end
 
   def raw_stripe_transaction
-    ct.raw_stripe_transaction
+    ct&.raw_stripe_transaction
   end
 
   def stripe_cardholder
-    ct.stripe_cardholder
+    ct&.stripe_cardholder
   end
 
   def invoice?
@@ -85,7 +96,15 @@ class CanonicalTransactionGrouped
     @local_hcb_code ||= HcbCode.find_or_create_by(hcb_code: hcb_code)
   end
 
+  def canonical_pending_transaction_ids
+    return [] if raw_canonical_pending_transaction_ids.nil?
+
+    JSON.parse(raw_canonical_pending_transaction_ids)
+  end
+
   def canonical_transaction_ids
+    return [] if raw_canonical_transaction_ids.nil?
+
     JSON.parse(raw_canonical_transaction_ids)
   end
 
@@ -148,11 +167,17 @@ class CanonicalTransactionGrouped
   end
 
   def smart_hcb_code
-    hcb_code || ::TransactionGroupingEngine::Calculate::HcbCode.new(canonical_transaction_or_canonical_pending_transaction: canonical_transactions.first)
+    hcb_code ||
+      ::TransactionGroupingEngine::Calculate::HcbCode.new(canonical_transaction_or_canonical_pending_transaction: ct) ||
+      ::TransactionGroupingEngine::Calculate::HcbCode.new(canonical_transaction_or_canonical_pending_transaction: pt)
   end
 
   def split_code
     @split_code ||= smart_hcb_code.split(::TransactionGroupingEngine::Calculate::HcbCode::SEPARATOR)
+  end
+
+  def pt
+    canonical_pending_transactions.first
   end
 
   def ct
@@ -164,8 +189,8 @@ class CanonicalTransactionGrouped
   end
 
   def smartish_custom_memo
-    return nil unless ct.custom_memo
-    return ct.custom_memo unless ct.custom_memo.include?("FEE REFUND")
+    return nil unless ct&.custom_memo
+    return ct&.custom_memo unless ct&.custom_memo&.include?("FEE REFUND")
 
     ct2.custom_memo
   end

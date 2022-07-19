@@ -358,6 +358,7 @@ class EventsController < ApplicationController
       :sponsorship_fee,
       :expected_budget,
       :omit_stats,
+      :can_front_balance,
       :emburse_department_id,
       :country,
       :category,

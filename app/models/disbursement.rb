@@ -139,7 +139,11 @@ class Disbursement < ApplicationRecord
     if fulfilled?
       :success
     elsif processed?
-      :info
+      if destination_event.can_front_balance?
+        :success
+      else
+        :info
+      end
     elsif rejected?
       :error
     elsif errored?
@@ -159,7 +163,11 @@ class Disbursement < ApplicationRecord
     if fulfilled?
       "fulfilled"
     elsif processed?
-      "processing"
+      if destination_event.can_front_balance?
+        "fulfilled"
+      else
+        "processing"
+      end
     elsif rejected?
       "rejected"
     elsif errored?
@@ -172,7 +180,7 @@ class Disbursement < ApplicationRecord
   end
 
   def state_icon
-    "checkmark" if fulfilled?
+    "checkmark" if fulfilled? || processed? || (pending? && destination_event.can_front_balance?)
   end
 
   def mark_fulfilled!

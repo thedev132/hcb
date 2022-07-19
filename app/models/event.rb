@@ -8,6 +8,7 @@
 #  aasm_state                      :string
 #  address                         :text
 #  beta_features_enabled           :boolean
+#  can_front_balance               :boolean          default(FALSE), not null
 #  category                        :integer
 #  country                         :integer
 #  custom_css_url                  :string
@@ -322,14 +323,14 @@ class Event < ApplicationRecord
   end
 
   def balance_v2_cents(start_date: nil, end_date: nil)
-    @flipper_balance ||= Flipper.enabled?(:fronted_balance_2022_06_17, self)
-    @balance_v2_cents ||= begin
-      sum = 0
-      sum += settled_balance_cents(start_date: start_date, end_date: end_date)
-      sum += pending_outgoing_balance_v2_cents(start_date: start_date, end_date: end_date)
-      sum += fronted_incoming_balance_v2_cents(start_date: start_date, end_date: end_date) if @flipper_balance
-      sum
-    end
+    @balance_v2_cents ||=
+      begin
+        sum = 0
+        sum += settled_balance_cents(start_date: start_date, end_date: end_date)
+        sum += pending_outgoing_balance_v2_cents(start_date: start_date, end_date: end_date)
+        sum += fronted_incoming_balance_v2_cents(start_date: start_date, end_date: end_date) if can_front_balance?
+        sum
+      end
   end
 
   # This calculates v2 cents of settled (Canonical Transactions)
@@ -367,14 +368,15 @@ class Event < ApplicationRecord
   end
 
   def fronted_incoming_balance_v2_cents(start_date: nil, end_date: nil)
-    @fronted_incoming_balance_v2_cents ||= begin
-      cpt = canonical_pending_transactions.incoming_disbursement.unsettled
+    @fronted_incoming_balance_v2_cents ||=
+      begin
+        pts = canonical_pending_transactions.incoming.fronted
 
-      cpt = cpt.where("date >= ?", start_date) if start_date
-      cpt = cpt.where("date <= ?", end_date) if end_date
+        pts = pts.where("date >= ?", start_date) if start_date
+        pts = pts.where("date <= ?", end_date) if end_date
 
-      cpt.sum(:amount_cents)
-    end
+        pts.sum(&:fronted_amount)
+      end
   end
 
   def pending_balance_v2_cents(start_date: nil, end_date: nil)
@@ -386,7 +388,7 @@ class Event < ApplicationRecord
   def pending_incoming_balance_v2_cents(start_date: nil, end_date: nil)
     @pending_incoming_balance_v2_cents ||=
       begin
-        cpt = canonical_pending_transactions.incoming.unsettled
+        cpt = canonical_pending_transactions.incoming.unsettled.not_fronted
 
         cpt = cpt.where("date >= ?", start_date) if start_date
         cpt = cpt.where("date <= ?", end_date) if end_date

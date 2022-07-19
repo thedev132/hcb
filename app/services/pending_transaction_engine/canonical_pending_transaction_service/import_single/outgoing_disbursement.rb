@@ -11,7 +11,14 @@ module PendingTransactionEngine
         def run
           return existing_canonical_pending_transaction if existing_canonical_pending_transaction
 
-          ::CanonicalPendingTransaction.find_or_create_by!(attrs)
+          ::CanonicalPendingTransaction.find_or_create_by!(attrs) do |cpt|
+            # Newly created CPT will be automatically fronted.
+            # This is an outgoing disbursement. By default, negative (debit)
+            # pending transactions will subtract from an Event's balance.
+            # Fronting this negative pending transaction will only make it show
+            # as settled.
+            cpt.fronted = true
+          end
         end
 
         private

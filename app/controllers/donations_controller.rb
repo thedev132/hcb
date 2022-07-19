@@ -96,6 +96,11 @@ class DonationsController < ApplicationController
 
     donation.send_receipt!
 
+    # Import the donation onto the ledger
+    rpdt = ::PendingTransactionEngine::RawPendingDonationTransactionService::Donation::ImportSingle.new(donation: donation).run
+    cpt = ::PendingTransactionEngine::CanonicalPendingTransactionService::ImportSingle::Donation.new(raw_pending_donation_transaction: rpdt).run
+    ::PendingEventMappingEngine::Map::Single::Donation.new(canonical_pending_transaction: cpt).run
+
     return true
   end
 

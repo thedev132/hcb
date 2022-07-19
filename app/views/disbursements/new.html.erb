@@ -9,7 +9,7 @@
     <%= inline_icon 'info', size: 32, class: 'mr1' %>
     <p class="bold mt0 mb0">Important info about transfers:</p>
   </div>
-  <% if Flipper.enabled?(:fronted_balance_2022_06_17, @source_event) %>
+  <% if @source_event.can_front_balance? %>
     <p class="mt1 mb2">
       Once a transfer is sent, it will leave your account balance and immediately be added to the recipient organization's balance.
     </p>

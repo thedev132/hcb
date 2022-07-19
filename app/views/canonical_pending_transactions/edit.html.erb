@@ -24,6 +24,13 @@
     </span>
   </div>
 
+  <% admin_tools do %>
+    <div class="field field--checkbox">
+      <%= form.check_box :fronted %>
+      <%= form.label :fronted, "Fronted" %>
+    </div>
+  <% end %>
+
   <div class="actions">
     <%= form.submit 'Rename', disabled: !current_user %>
   </div>

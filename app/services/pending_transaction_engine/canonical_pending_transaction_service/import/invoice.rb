@@ -6,17 +6,7 @@ module PendingTransactionEngine
       class Invoice
         def run
           raw_pending_invoice_transactions_ready_for_processing.find_each(batch_size: 100) do |rpit|
-
-            ActiveRecord::Base.transaction do
-              attrs = {
-                date: rpit.date,
-                memo: rpit.memo,
-                amount_cents: rpit.amount_cents,
-                raw_pending_invoice_transaction_id: rpit.id
-              }
-              ct = ::CanonicalPendingTransaction.create!(attrs)
-            end
-
+            ::PendingTransactionEngine::CanonicalPendingTransactionService::ImportSingle::Invoice.new(raw_pending_invoice_transaction: rpit).run
           end
         end
 

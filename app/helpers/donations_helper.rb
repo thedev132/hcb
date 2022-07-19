@@ -20,6 +20,7 @@ module DonationsHelper
     timestamp ? format_datetime(timestamp) : "–"
   end
 
+  # this information is visible to admins only because payouts should feel instant to the user
   def donation_payout_datetime(donation = @donation)
     date = nil
     title = nil
