@@ -10,7 +10,7 @@ module PendingEventMappingEngine
 
         def run
           return @canonical_pending_transaction.canonical_pending_event_mapping if @canonical_pending_transaction.mapped?
-          return unless cpt.raw_pending_invoice_transaction.likely_event_id
+          return unless @canonical_pending_transaction.raw_pending_invoice_transaction.likely_event_id
 
           attrs = {
             event_id: @canonical_pending_transaction.raw_pending_invoice_transaction.likely_event_id,
