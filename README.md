@@ -71,7 +71,7 @@ Visit [localhost:3000](http://localhost:3000) to see the result.
 
 ## Deployment
 
-Pushes to the `main` branch are automatically deployed to Heroku via a [GitHub Action](.github/workflows/deploy.yml).
+Pushes to the `main` branch are automatically deployed by Heroku.
 
 ## Developer Documentation
 
