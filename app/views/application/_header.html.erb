@@ -39,10 +39,10 @@
 
   <div class="header-right line-height-0 flex items-center">
     <% if signed_in? %>
-      <%= link_to "https://hack.af/bank-userfeedback?prefill_Name=#{current_user.name}&prefill_Email=#{current_user.email}&prefill_Organization=#{current_user.events.first&.name}",
+      <%= link_to my_inbox_path,
         class: 'muted tooltipped tooltipped--s mr2',
-        'aria-label': 'Feedback', target: '_blank', rel: 'nofollow' do %>
-        <%= inline_icon 'message-new', size: home_action_size %>
+        'aria-label': 'View transactions awaiting receipts' do %>
+        <%= inline_icon 'payment-docs', size: home_action_size %>
       <% end %>
       <%= link_to logout_users_path, method: :delete,
           class: 'muted tooltipped tooltipped--s',

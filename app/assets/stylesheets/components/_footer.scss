@@ -1,0 +1,12 @@
+.footer * {
+  color: rgba(map-get($palette, muted), .25);
+  transition: color 0.125s ease-in-out 0s;
+}
+
+.footer:hover * {
+  color: rgba(map-get($palette, muted), .75);
+}
+
+.footer a:hover {
+  color: map-get($palette, muted);
+}
