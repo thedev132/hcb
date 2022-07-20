@@ -51,7 +51,10 @@ module TransactionGroupingEngine
         return "" unless @search.present?
 
         type = type.to_s
-        "and (#{type}.memo ilike '%#{@search}%' or #{type}.friendly_memo ilike '%#{@search}%' or #{type}.custom_memo ilike '%#{@search}%')"
+
+        return "and (#{type}.memo ilike '%#{@search}%' or #{type}.friendly_memo ilike '%#{@search}%' or #{type}.custom_memo ilike '%#{@search}%')" if type == "ct"
+
+        "and (#{type}.memo ilike '%#{@search}%' or #{type}.custom_memo ilike '%#{@search}%')"
       end
 
       def canonical_transactions_grouped
