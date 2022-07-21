@@ -33,6 +33,10 @@
   <%= render partial: "hcb_codes/disbursement", locals: {} %>
 <% end %>
 
+<%# bank fee %>
+<% if @hcb_code.bank_fee? && @hcb_code.bank_fee.present? %>
+  <%= render partial: "hcb_codes/bank_fee", locals: {} %>
+<% end %>
 
 <%# unknown (most likely a direct to bank account transaction) %>
 <% if @hcb_code.unknown? %>

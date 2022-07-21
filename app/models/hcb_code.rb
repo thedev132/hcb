@@ -78,6 +78,7 @@ class HcbCode < ApplicationRecord
     return :check if check?
     return :disbursement if disbursement?
     return :card_charge if stripe_card?
+    return :bank_fee if bank_fee?
 
     nil
   end
@@ -148,6 +149,10 @@ class HcbCode < ApplicationRecord
 
   def stripe_auth_dashboard_url
     pt.try(:stripe_auth_dashboard_url) || ct.try(:stripe_auth_dashboard_url)
+  end
+
+  def bank_fee?
+    hcb_i1 == ::TransactionGroupingEngine::Calculate::HcbCode::BANK_FEE_CODE
   end
 
   def invoice?
@@ -224,6 +229,10 @@ class HcbCode < ApplicationRecord
 
   def disbursement
     @disbursement ||= Disbursement.find_by(id: hcb_i2) if disbursement?
+  end
+
+  def bank_fee
+    @bank_fee ||= BankFee.find_by(id: hcb_i2) if bank_fee?
   end
 
   def unknown?
