@@ -76,6 +76,17 @@ module TransactionGroupingEngine
               where
                 cpem.event_id = #{event.id}
                 #{search_modifier_for :pt}
+              except ( -- hide pending transactions that have either settled or been declined.
+                select
+                  cpsm.canonical_pending_transaction_id
+                from
+                  canonical_pending_settled_mappings cpsm
+                union
+                select
+                  cpdm.canonical_pending_transaction_id
+                from
+                  canonical_pending_declined_mappings cpdm
+              )
             )
             and
             fronted = true -- only included fronted pending transactions
