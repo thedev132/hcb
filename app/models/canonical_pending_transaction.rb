@@ -131,7 +131,6 @@ class CanonicalPendingTransaction < ApplicationRecord
     cts_sum = cts.sum(:amount_cents)
 
     if self.amount_cents.negative? || pts_sum.negative?
-      Airbrake.notify("UH We're calling fronted_amount on a negative pending transaction.")
       return 0
     end
 
