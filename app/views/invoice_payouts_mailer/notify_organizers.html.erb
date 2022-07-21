@@ -1,14 +1,21 @@
+<% can_front_balance = @payout.invoice.sponsor.event.can_front_balance? %>
+
 <p>
   Hi there,
 </p>
 
 <p>
   The funds from <%= link_to "a recently paid invoice to #{@payout.invoice.sponsor.name}", @payout.invoice %>
-  are transferring into <%= link_to @payout.invoice.sponsor.event.name, @payout.invoice.sponsor.event %> on Hack Club Bank.
+  <% if can_front_balance %>
+    are transferring
+    <% else %>
+    have transferred
+  <% end %>
+  into <%= link_to @payout.invoice.sponsor.event.name, @payout.invoice.sponsor.event %> on Hack Club Bank.
 </p>
 
 <p>
-  <% if @payout.invoice.sponsor.event.can_front_balance? %>
+  <% if can_front_balance %>
       The funds (<strong><%= render_money @payout.invoice.item_amount %></strong>) are now available to spend.
   <% else %>
     The funds (<strong><%= render_money @payout.invoice.item_amount %></strong>) will be available on approximately <strong><%= @payout.arrival_date.to_date %></strong>.
