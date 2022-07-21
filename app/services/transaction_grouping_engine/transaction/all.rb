@@ -68,6 +68,8 @@ module TransactionGroupingEngine
           from
             canonical_pending_transactions pt
           where
+            fronted = true -- only included fronted pending transactions
+            and
             pt.id in (
               select
                 cpem.canonical_pending_transaction_id
@@ -89,7 +91,11 @@ module TransactionGroupingEngine
               )
             )
             and
-            fronted = true -- only included fronted pending transactions
+            not exists ( -- hide pt if there are ct in its hcb code (handles edge case of unsettled PT)
+              select *
+              from canonical_transactions ct
+              where ct.hcb_code = pt.hcb_code
+            )
           group by
             coalesce(pt.hcb_code, cast(pt.id as text)) -- handle edge case when hcb_code is null
         SQL
