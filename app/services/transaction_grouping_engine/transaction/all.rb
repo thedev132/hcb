@@ -173,7 +173,7 @@ module TransactionGroupingEngine
 
         q = <<~SQL
           select
-            q1.ct_ids
+            q1.ct_ids -- ct_ids and pt_ids in this query are mutually exclusive
             ,q1.pt_ids
             ,q1.hcb_code
             ,q1.amount_cents

@@ -19,7 +19,18 @@ class CanonicalTransactionGrouped
   end
 
   def amount
-    @amount ||= Money.new(amount_cents, "USD")
+    @amount ||=
+      begin
+        # If there are pending transactions, include their fronted amount. This
+        # allows the total amount of an invoice/donation to show when only the
+        # payout has arrived.
+        pts = local_hcb_code.canonical_pending_transactions
+        if pts.any? { |pt| pt.fronted? }
+          return Money.new(amount_cents + pts.sum(&:fronted_amount), "USD")
+        end
+
+        Money.new(amount_cents, "USD")
+      end
   end
 
   def url

@@ -144,6 +144,8 @@ class CanonicalPendingTransaction < ApplicationRecord
     # The code below is a simplified implementation of that "algorithm".
 
     index = pts.pluck(:id).index(self.id)
+    return 0 if index.nil?
+
     prior_pts = pts.slice(0, index + 1)
     prior_sum = prior_pts.sum(&:amount_cents)
     residual = prior_sum - cts_sum
