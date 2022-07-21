@@ -103,7 +103,7 @@ class Disbursement < ApplicationRecord
   end
 
   def processed?
-    fulfilled_at.present?
+    fulfilled_by.present?
   end
 
   def fulfilled?

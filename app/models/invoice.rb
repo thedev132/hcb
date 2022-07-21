@@ -193,7 +193,7 @@ class Invoice < ApplicationRecord
   def state
     return :success if paid_v2? && deposited?
     return :success if paid_v2? && event.can_front_balance?
-    return :info if paid_v2? && !event.can_front_balance?
+    return :info if paid_v2?
     return :muted if archived?
     return :error if void_v2?
     return :error if due_date < Time.current
@@ -203,8 +203,7 @@ class Invoice < ApplicationRecord
   end
 
   def state_text
-    return "Deposited" if paid_v2? && deposited?
-    return "Deposited" if paid_v2? && event.can_front_balance?
+    return "Deposited" if paid_v2? && (event.can_front_balance? || deposited?)
     return "In Transit" if paid_v2?
     return "Archived" if archived?
     return "Voided" if void_v2?

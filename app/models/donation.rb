@@ -109,6 +109,7 @@ class Donation < ApplicationRecord
 
   def state
     return :success if deposited?
+    return :success if in_transit? && event.can_front_balance?
     return :info if in_transit?
     return :warning if refunded?
     return :error if failed?
@@ -118,6 +119,7 @@ class Donation < ApplicationRecord
 
   def state_text
     return "Deposited" if deposited?
+    return "Deposited" if in_transit? && event.can_front_balance?
     return "In Transit" if in_transit?
     return "Refunded" if refunded?
     return "Failed" if failed?
@@ -126,7 +128,7 @@ class Donation < ApplicationRecord
   end
 
   def state_icon
-    return "checkmark" if deposited?
+    return "checkmark" if deposited? || (in_transit? && event.can_front_balance?)
 
     "clock" if in_transit?
   end
