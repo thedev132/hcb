@@ -21,16 +21,21 @@ class CanonicalTransactionGrouped
   def amount
     @amount ||=
       begin
-        # If there are pending transactions, include their fronted amount. This
-        # allows the total amount of an invoice/donation to show when only the
-        # payout has arrived.
+        # If this CanonicalTransactionGrouped is a CT, get it's pending
+        # transactions and sum their their fronted amount. This allows the total
+        # amount of an invoice/donation to show when only the payout has arrived.
 
-        # Getting pending transactions from hcb code since the
-        # `canonical_pending_transactions` method in this class will be empty
-        # if this CanonicalTransactionGrouped represents a CanonicalTransaction
-        pts = local_hcb_code.canonical_pending_transactions.select { |pt| pt.fronted? && pt.event == event }
-        return Money.new(amount_cents + pts.sum(&:fronted_amount), "USD") if pts.any?
+        # Having no pt means it is a ct (the sql query below makes it mutually exclusive)
+        if canonical_pending_transactions.none?
+          # Getting pending transactions from hcb code since the
+          # `canonical_pending_transactions` method in this class will be empty
+          # if this CanonicalTransactionGrouped represents a CanonicalTransaction
+          pts = local_hcb_code.canonical_pending_transactions.select { |pt| pt.fronted? && pt.event == event }
+          return Money.new(amount_cents + pts.sum(&:fronted_amount), "USD")
+        end
 
+        # Otherwise, this transaction is just a PT, and the `amount_cents`
+        # should already reflect the full amount
         Money.new(amount_cents, "USD")
       end
   end
