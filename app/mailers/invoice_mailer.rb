@@ -1,18 +1,16 @@
 # frozen_string_literal: true
 
 class InvoiceMailer < ApplicationMailer
-  def payment_notification
+  def notify_organizers
     @invoice = params[:invoice]
     @emails = @invoice.sponsor.event.users.map { |u| u.email }
 
-    mail to: @emails, subject: "Your invoice to #{@invoice.sponsor.name} was paid ✅"
-  end
+    if @invoice.sponsor.event.can_front_balance?
+      mail to: @emails, subject: "Payment from #{@invoice.sponsor.name} has arrived 💵"
+    else
+      mail to: @emails, subject: "Payment from #{@invoice.sponsor.name} is on the way 💵"
+    end
 
-  def first_payment_notification
-    @invoice = params[:invoice]
-    @emails = @invoice.sponsor.event.users.map { |u| u.email }
-
-    mail to: @emails, subject: "Congrats! 🎉 Your invoice to #{@invoice.sponsor.name} was paid"
   end
 
 end
