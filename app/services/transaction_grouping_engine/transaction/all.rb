@@ -26,7 +26,8 @@ module TransactionGroupingEngine
           date: ctg["date"],
           amount_cents: ctg["amount_cents"],
           raw_canonical_transaction_ids: ctg["canonical_transaction_ids"],
-          raw_canonical_pending_transaction_ids: ctg["canonical_pending_transaction_ids"]
+          raw_canonical_pending_transaction_ids: ctg["canonical_pending_transaction_ids"],
+          event: event
         }
         CanonicalTransactionGrouped.new(attrs)
       end
@@ -94,7 +95,8 @@ module TransactionGroupingEngine
             not exists ( -- hide pt if there are ct in its hcb code (handles edge case of unsettled PT)
               select *
               from canonical_transactions ct
-              where ct.hcb_code = pt.hcb_code
+              inner join canonical_event_mappings cem on cem.canonical_transaction_id = ct.id
+              where ct.hcb_code = pt.hcb_code and cem.event_id = #{event.id}
             )
           group by
             coalesce(pt.hcb_code, cast(pt.id as text)) -- handle edge case when hcb_code is null

@@ -3,7 +3,7 @@
 class CanonicalTransactionGrouped
   include ActiveModel::Model
 
-  attr_accessor :hcb_code, :date, :amount_cents, :raw_canonical_transaction_ids, :raw_canonical_pending_transaction_ids
+  attr_accessor :hcb_code, :date, :amount_cents, :raw_canonical_transaction_ids, :raw_canonical_pending_transaction_ids, :event
   attr_writer :canonical_transactions, :canonical_pending_transactions, :local_hcb_code
 
   def memo
@@ -38,13 +38,6 @@ class CanonicalTransactionGrouped
         # should already reflect the full amount
         Money.new(amount_cents, "USD")
       end
-  end
-
-  def event
-    @event ||= [canonical_pending_transactions, canonical_transactions]
-               .compact.flatten.compact
-               .map { |t| t.event }
-               .compact.first
   end
 
   def url
