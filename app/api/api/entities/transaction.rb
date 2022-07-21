@@ -33,6 +33,10 @@ module Api
           values: LINKED_OBJECT_TYPES
         }
         expose :pending, documentation: { type: "boolean" } do |hcb_code, options|
+          if hcb_code.event.can_front_balance?
+            next hcb_code.canonical_transactions.empty? && hcb_code.canonical_pending_transactions.none? { |pt| pt.fronted? }
+          end
+
           hcb_code.canonical_transactions.empty?
         end
       end
