@@ -138,7 +138,7 @@ class Disbursement < ApplicationRecord
   def state
     if fulfilled?
       :success
-    elsif processed?
+    elsif processed? || pending?
       if destination_event.can_front_balance?
         :success
       else

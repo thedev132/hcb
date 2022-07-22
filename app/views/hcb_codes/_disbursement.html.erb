@@ -7,9 +7,9 @@
   <h2 class="h2 mt0 border-none">
     <%= @source.name %>
     <span class="regular muted">
-      <%= if @hcb_code.disbursement.fulfilled? || (@hcb_code.disbursement.destination_event.can_front_balance? && @hcb_code.disbursement.processed?) %>
+      <% if @hcb_code.disbursement.fulfilled? || (@destination.can_front_balance? && @hcb_code.disbursement.processed?) %>
         transferred
-      <% else if @hcb_code.disbursement.processed? || @hcb_code.disbursement.pending? %>
+      <% elsif @hcb_code.disbursement.processed? || @hcb_code.disbursement.pending? %>
         transferring
       <% else %>
         transfer of
