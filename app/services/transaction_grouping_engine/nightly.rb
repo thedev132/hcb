@@ -9,21 +9,37 @@ module TransactionGroupingEngine
     end
 
     def run
+      canonical_transaction_missing_hcb_count = 0
       canonical_transactions.find_each(batch_size: 100) do |ct|
         hcb_code = ::TransactionGroupingEngine::Calculate::HcbCode.new(canonical_transaction_or_canonical_pending_transaction: ct).run
 
         ct.update_column(:hcb_code, hcb_code)
 
         HcbCode.find_or_create_by!(hcb_code: hcb_code)
-      end
 
+        canonical_transaction_missing_hcb_count += 1
+      end
+      Ahoy::Event.create!({
+                            name: "canonicalTransactionMissingHcbCount",
+                            properties: { count: canonical_transaction_missing_hcb_count }
+                          })
+
+
+      canonical_pending_transaction_missing_hcb_count = 0
       canonical_pending_transactions.find_each(batch_size: 100) do |cpt|
         hcb_code = ::TransactionGroupingEngine::Calculate::HcbCode.new(canonical_transaction_or_canonical_pending_transaction: cpt).run
 
         cpt.update_column(:hcb_code, hcb_code)
 
         HcbCode.find_or_create_by!(hcb_code: hcb_code)
+
+        canonical_pending_transaction_missing_hcb_count += 1
       end
+      Ahoy::Event.create!({
+                            name: "pendingTransactionMissingHcbCount",
+                            properties: { count: canonical_pending_transaction_missing_hcb_count }
+                          })
+
     end
 
     private
