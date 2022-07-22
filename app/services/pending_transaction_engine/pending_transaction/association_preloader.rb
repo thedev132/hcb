@@ -13,15 +13,12 @@ module PendingTransactionEngine
 
       def preload_associations!
         hcb_code_codes = @pending_transactions.map(&:hcb_code)
-        hcb_code_objects = HcbCode.includes(:receipts, :comments).where(hcb_code: hcb_code_codes)
+        hcb_code_objects = HcbCode.includes(:receipts, :comments, :canonical_transactions).where(hcb_code: hcb_code_codes)
         hcb_code_by_code = hcb_code_objects.index_by(&:hcb_code)
 
-        canonical_transactions_by_hcb_code = CanonicalTransaction.where(hcb_code: hcb_code_codes).group_by(&:hcb_code)
         canonical_pending_transactions_by_hcb_code = CanonicalPendingTransaction.where(hcb_code: hcb_code_codes).group_by(&:hcb_code)
 
         hcb_code_objects.each do |hc|
-          hc.canonical_transactions = (canonical_transactions_by_hcb_code[hc.hcb_code] || [])
-                                      .sort { |ct1, ct2| TransactionGroupingEngine::Transaction::AssociationPreloader.compare_date_id_descending(ct1, ct2) }
           hc.canonical_pending_transactions = canonical_pending_transactions_by_hcb_code[hc.hcb_code]
           hc.not_admin_only_comments_count = hc.comments.count { |c| !c.admin_only }
         end
