@@ -7,8 +7,13 @@
   <h2 class="h2 mt0 border-none">
     <%= @source.name %>
     <span class="regular muted">
-      <%= @hcb_code.disbursement.fulfilled? ? 'transferred' : (@hcb_code.disbursement.pending? ||
-        @hcb_code.disbursement.processed?) ? 'transferring' : 'transfer of' %>
+      <%= if @hcb_code.disbursement.fulfilled? || (@hcb_code.disbursement.destination_event.can_front_balance? && @hcb_code.disbursement.processed?) %>
+        transferred
+      <% else if @hcb_code.disbursement.processed? || @hcb_code.disbursement.pending? %>
+        transferring
+      <% else %>
+        transfer of
+      <% end %>
     </span>
     <span class="regular"><%= render_money @hcb_code.disbursement.amount %></span>
     <span class="regular muted">to</span>
