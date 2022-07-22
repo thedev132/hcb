@@ -103,7 +103,7 @@ class Disbursement < ApplicationRecord
   end
 
   def processed?
-    fulfilled_by.present?
+    fulfilled_at.present?
   end
 
   def fulfilled?
@@ -162,7 +162,7 @@ class Disbursement < ApplicationRecord
   def state_text
     if fulfilled?
       "fulfilled"
-    elsif processed?
+    elsif processed? || pending?
       if destination_event.can_front_balance?
         "fulfilled"
       else
