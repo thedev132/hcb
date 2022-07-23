@@ -57,20 +57,22 @@ class HcbCodesController < ApplicationController
       raise unless @has_valid_secret
     end
 
-    params[:file]&.each do |file|
-      attrs = {
-        hcb_code_id: @hcb_code.id,
-        file: file,
-        upload_method: params[:upload_method],
-        current_user: current_user
-      }
-      ::HcbCodeService::Receipt::Create.new(attrs).run
-    end
+    if params[:file] # Ignore if no files were uploaded
+      params[:file].each do |file|
+        attrs = {
+          hcb_code_id: @hcb_code.id,
+          file: file,
+          upload_method: params[:upload_method],
+          current_user: current_user
+        }
+        ::HcbCodeService::Receipt::Create.new(attrs).run
+      end
 
-    if params[:show_link]
-      flash[:success] = { text: "Receipt".pluralize(params[:file].length) + " added!", link: hcb_code_path(@hcb_code), link_text: "View" }
-    else
-      flash[:success] = "Receipt".pluralize(params[:file].length) + " added!"
+      if params[:show_link]
+        flash[:success] = { text: "Receipt".pluralize(params[:file].length) + " added!", link: hcb_code_path(@hcb_code), link_text: "View" }
+      else
+        flash[:success] = "Receipt".pluralize(params[:file].length) + " added!"
+      end
     end
 
     return redirect_to params[:redirect_url] if params[:redirect_url]

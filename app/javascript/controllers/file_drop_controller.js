@@ -26,6 +26,7 @@ export default class extends Controller {
     this.hideDropzone()
 
     this.fileInputTarget.files = e.dataTransfer.files
+    if (!this.fileInputTarget.files.length) return
 
     if (this.hasUploadMethodTarget && !this.submitting) {
       // Append `_drag_and_drop` to the upload method
