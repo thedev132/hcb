@@ -125,7 +125,7 @@ class HcbCode < ApplicationRecord
         disbursement.try(:event).try(:id)
       ].compact.flatten.uniq
 
-      Event.where(id: ids[0])
+      Event.where(id: ids)
     end
   end
 

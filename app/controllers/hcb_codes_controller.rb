@@ -6,7 +6,25 @@ class HcbCodesController < ApplicationController
 
   def show
     @hcb_code = HcbCode.find_by(hcb_code: params[:id]) || HcbCode.find(params[:id])
-    @event = @hcb_code.event
+    @event =
+      begin
+        # Attempt to retrieve the event using the context of the
+        # previous page. Has a high chance of erroring, but we'll give it
+        # a shot.
+        route = Rails.application.routes.recognize_path(request.referrer)
+        model = route[:controller].classify.constantize
+        object = model.find(route[:id])
+        event = model == Event ? object : object.event
+        raise StandardError unless @hcb_code.events.include? event
+
+        event
+      rescue
+        @hcb_code.events.min_by do |e|
+          [e.users.include?(current_user), e.is_public?].map { |b| b ? 0 : 1 }
+        end
+      rescue
+        @hcb_code.event
+      end
 
     hcb = @hcb_code.hcb_code
     hcb_id = @hcb_code.hashid
