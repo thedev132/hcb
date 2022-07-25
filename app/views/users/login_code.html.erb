@@ -42,5 +42,9 @@
       <%= form.hidden_field :email, value: @email %>
     <% end %>
   <% end %>
+
+  <% if @webauthn_available %>
+    <%= link_to "Sign in another way", choose_login_preference_users_path, class: "block mt2" %>
+  <% end %>
 </article>
 <%= javascript_include_tag "fingerprint.js" %>

@@ -17,12 +17,12 @@
   <meta name="description" content="Sign in to Hack Club Bank.">
 <% end %>
 
-<article class="center mt3" data-turbo="false" data-controller="webauthn-auth" data-webauthn-auth-return-to-value="<%= @return_to %>">
+<article class="center mt3" data-turbo="false" data-controller="webauthn-auth" data-webauthn-auth-return-to-value="<%= @return_to %>" data-webauthn-auth-require-webauthn-preference-value="true">
   <h1 class="mt2">
     <span class="h3 caps secondary block">Sign in to</span>
     <span class="primary">Hack Club Bank</span>
   </h1>
-  <%= form_tag login_code_users_path, 'data-action': 'webauthn-auth#submit', 'data-webauthn-auth-target': 'authForm' do %>
+  <%= form_tag auth_users_path, 'data-action': 'webauthn-auth#submit', 'data-webauthn-auth-target': 'authForm' do %>
     <div data-webauthn-auth-target="error" class="mb2 display-none">
       <p class="flash error mb1">Security key authentication failed.</p>
     </div>
@@ -34,10 +34,7 @@
       <%= submit_tag 'Continue', data: { 'webauthn-auth-target' => 'continueButton' } %>
     </div>
 
-    <%= link_to login_code_users_path, class: 'display-none mt2 flex items-center justify-center', data: { 'action': 'webauthn-auth#loginCode', 'webauthn-auth-target': 'loginCode' } do %>
-      <%= inline_icon 'email' %>
-      <span>Get a login code instead</span>
-    <% end %>
+    <%= link_to "Sign in another way", choose_login_preference_users_path, class: "display-none block mt2", data: { "webauthn-auth-target" => "loginCode" } %>
   <% end %>
   <p class="h5 muted mt5">Need help? <%= help_email %></p>
   <p class="h5 mt2"><a href="https://hackclub.com/bank?ref=bank_auth">What’s Bank?</a></p>

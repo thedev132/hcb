@@ -66,6 +66,9 @@ Rails.application.routes.draw do
     collection do
       get "impersonate", to: "users#impersonate"
       get "auth", to: "users#auth"
+      post "auth", to: "users#auth_submit"
+      get "auth/login_preference", to: "users#choose_login_preference", as: :choose_login_preference
+      post "auth/login_preference", to: "users#set_login_preference", as: :set_login_preference
       post "webauthn", to: "users#webauthn_auth"
       get "webauthn/auth_options", to: "users#webauthn_options"
       post "login_code", to: "users#login_code"

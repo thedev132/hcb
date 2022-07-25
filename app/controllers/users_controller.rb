@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class UsersController < ApplicationController
-  skip_before_action :signed_in_user, only: [:auth, :webauthn_options, :webauthn_auth, :login_code, :exchange_login_code]
+  skip_before_action :signed_in_user, only: [:auth, :auth_submit, :choose_login_preference, :set_login_preference, :webauthn_options, :webauthn_auth, :login_code, :exchange_login_code]
   skip_after_action :verify_authorized, except: [:edit, :update]
 
   def impersonate
@@ -18,6 +18,42 @@ class UsersController < ApplicationController
     @return_to = params[:return_to]
   end
 
+  def auth_submit
+    @email = params[:email].downcase
+    user = User.find_by(email: @email)
+
+    has_webauthn_enabled = user&.webauthn_credentials&.any?
+    login_preference = session[:login_preference]
+
+    if !has_webauthn_enabled || login_preference == "email"
+      redirect_to login_code_users_path, status: 307
+    else
+      session[:auth_email] = @email
+      redirect_to choose_login_preference_users_path
+    end
+  end
+
+  def choose_login_preference
+    @email = session[:auth_email]
+    return redirect_to auth_users_path if @email.nil?
+
+    session.delete :login_preference
+  end
+
+  def set_login_preference
+    @email = params[:email]
+    remember = params[:remember] == "1"
+
+    case params[:login_preference]
+    when "email"
+      session[:login_preference] = "email" if remember
+      redirect_to login_code_users_path, status: 307
+    when "webauthn"
+      # This should never happen, because WebAuthn auth is handled on the frontend
+      redirect_to choose_login_preference_users_path
+    end
+  end
+
   # post to request login code
   def login_code
     @return_to = params[:return_to]
@@ -32,10 +68,16 @@ class UsersController < ApplicationController
       return redirect_to auth_users_path
     end
     @user_id = resp[:id]
+
+    @webauthn_available = User.find_by(email: @email)&.webauthn_credentials&.any?
   end
 
   def webauthn_options
     return head :not_found if !params[:email]
+
+    session[:auth_email] = params[:email]
+
+    return head :not_found if params[:require_webauthn_preference] && session[:login_preference] != "webauthn"
 
     user = User.find_by(email: params[:email])
 
@@ -78,6 +120,8 @@ class UsersController < ApplicationController
         timezone: params[:timezone],
         ip: request.remote_ip
       }
+
+      session[:login_preference] = "webauthn" if params[:remember] == "true"
 
       sign_in(user: user, fingerprint_info: fingerprint_info, webauthn_credential: stored_credential)
 

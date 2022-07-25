@@ -10,11 +10,14 @@ export default class extends Controller {
     'loginEmailInput',
     'error',
     'loginCode',
-    'continueButton'
+    'continueButton',
+    'loginPreferenceWebauthnInput',
+    'rememberInput'
   ]
 
   static values = {
-    returnTo: String
+    returnTo: String,
+    requireWebauthnPreference: Boolean
   }
 
   loginEmailInputTargetConnected() {
@@ -22,6 +25,13 @@ export default class extends Controller {
   }
 
   async submit(event) {
+    if (
+      this.hasLoginPreferenceWebauthnInputTarget &&
+      !this.loginPreferenceWebauthnInputTarget.checked
+    ) {
+      return
+    }
+
     event.preventDefault()
     event.stopImmediatePropagation()
 
@@ -32,8 +42,10 @@ export default class extends Controller {
     try {
       const options = await this.fetchWebAuthnOptions(loginEmail)
 
-      this.loginCodeTarget.classList.remove('display-none')
-      this.continueButtonTarget.value = 'Waiting for security key... '
+      if (this.hasLoginCodeTarget) {
+        this.loginCodeTarget.classList.remove('display-none')
+      }
+      this.continueButtonTarget.value = 'Waiting for security key...'
 
       const credential = await get({
         publicKey: options
@@ -45,6 +57,8 @@ export default class extends Controller {
         credential: JSON.stringify(credential),
         email: loginEmail,
         return_to: this.returnToValue,
+        remember:
+          this.hasRememberInputTarget && this.rememberInputTarget.checked,
         ...(await this.fingerprint())
       })
     } catch (e) {
@@ -61,14 +75,6 @@ export default class extends Controller {
         this.errorTarget.classList.remove('display-none')
       }
     }
-  }
-
-  loginCode(e) {
-    e.preventDefault()
-
-    this.storeLoginEmail(this.loginEmailInputTarget.value)
-
-    this.authFormTarget.submit()
   }
 
   disableForm() {
@@ -90,6 +96,9 @@ export default class extends Controller {
   async fetchWebAuthnOptions(email) {
     const searchParams = new URLSearchParams()
     searchParams.set('email', email)
+    if (this.requireWebauthnPreferenceValue) {
+      searchParams.set('require_webauthn_preference', true) // Only continue if the user prefers WebAuthn for this session
+    }
 
     const options = await fetch(
       `/users/webauthn/auth_options?${searchParams}`
