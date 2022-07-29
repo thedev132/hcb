@@ -34,9 +34,17 @@ class InvoicesController < ApplicationController
       unpaid: relation.unpaid.sum(:item_amount) - archived_unpaid,
     }
 
-    relation = relation.paid_v2 if params[:filter] == "paid"
-    relation = relation.unpaid if params[:filter] == "unpaid"
-    relation = relation.archived if params[:filter] == "archived"
+    case params[:filter]
+    when "paid"
+      relation = relation.paid_v2
+    when "unpaid"
+      relation = relation.unpaid
+    when "archived"
+      relation = relation.archived
+    else
+      relation = relation.unarchived
+    end
+
     relation = relation.search_description(params[:q]) if params[:q].present?
 
     @invoices = relation.order(created_at: :desc)
