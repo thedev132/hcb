@@ -269,8 +269,8 @@ class EventsController < ApplicationController
 
     @transfers_enabled = Flipper.enabled?(:transfers_2022_04_21, current_user)
     @ach_transfers = @event.ach_transfers
-    @checks = @event.checks
-    @disbursements = @transfers_enabled ? @event.outgoing_disbursements : Disbursement.none
+    @checks = @event.checks.includes(:lob_address)
+    @disbursements = @transfers_enabled ? @event.outgoing_disbursements.includes(:destination_event) : Disbursement.none
 
     @stats = {
       deposited: @ach_transfers.deposited.sum(:amount) + @checks.deposited.sum(:amount) + @disbursements.fulfilled.pluck(:amount).sum,
@@ -298,7 +298,7 @@ class EventsController < ApplicationController
       end
     end
 
-    @transfers = (@checks + @ach_transfers + @disbursements).sort_by { |o| o.created_at }.reverse
+    @transfers = (@checks + @ach_transfers + @disbursements).sort_by { |o| o.created_at }.reverse!
   end
 
   def promotions
