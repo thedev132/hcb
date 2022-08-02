@@ -15,6 +15,7 @@ class CanonicalPendingTransactionsController < ApplicationController
     authorize @canonical_pending_transaction
 
     @event = @canonical_pending_transaction.event
+    @suggested_memos = ::HcbCodeService::SuggestedMemos.new(hcb_code: @canonical_pending_transaction.local_hcb_code, event: @event).run.first(4)
   end
 
   def set_custom_memo
