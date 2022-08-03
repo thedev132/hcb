@@ -44,7 +44,7 @@ module Api
       end
 
       def donations
-        @donations ||= paginate(org.donations.not_pending)
+        @donations ||= paginate(org.donations.not_pending.order(created_at: :desc))
       end
 
       def donation
@@ -72,7 +72,7 @@ module Api
       end
 
       def ach_transfers
-        @ach_transfers ||= paginate(org.ach_transfers)
+        @ach_transfers ||= paginate(org.ach_transfers.order(created_at: :desc))
       end
 
       def ach_transfer
@@ -86,7 +86,7 @@ module Api
       end
 
       def invoices
-        @invoices ||= paginate(org.invoices)
+        @invoices ||= paginate(org.invoices.order(created_at: :desc))
       end
 
       def invoice
@@ -100,7 +100,7 @@ module Api
       end
 
       def checks
-        @checks ||= paginate(org.checks)
+        @checks ||= paginate(org.checks.order(created_at: :desc))
       end
 
       def check
