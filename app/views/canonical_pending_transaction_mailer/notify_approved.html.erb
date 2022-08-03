@@ -1,4 +1,4 @@
-A charge of <%= @cpt.amount %> at '<%= @cpt.memo %>' occurred on your card ending in <%= @cpt.stripe_card.last4 %>.
+A charge of <%= render_money @cpt.amount_cents %> at '<%= @cpt.memo %>' occurred on your card ending in <%= @cpt.stripe_card.last4 %>.
 
 <%= link_to "Upload your receipt for this charge.", @upload_url %>
 
