@@ -6,6 +6,60 @@
   Promotions &amp; perks
 </h1>
 
+<% if @event.hackathon? && (@event.country_us? || @event.country == "CA") && Flipper.enabled?(:assemble_woot, @event) %>
+  <div class="card pb0 mb3 promo-hackathon-grant" id="hackathon-grant" style="border: 2px solid #ec3750">
+    <div class="card__banner card__banner--top flex justify-between items-center">
+      <h3 class="h1 p2 my0 flex flex-column items-start smoke">
+        <span class="badge bg-info m0 mb1">Coming soon!</span>
+        💵 Hackathon Grant
+      </h3>
+      <%= link_to 'Get Notified',
+        organizer_signed_in? ? airtable_form("shrXsBhB1bRuCpWby", {"Event Name" => @event.name, "Bank URL" => event_url(@event), "Email" => current_user.email}, ["Event Name", "Bank URL"]) : root_path,
+        class: "btn mr1 #{'disabled' unless organizer_signed_in?} tooltipped tooltipped--w",
+        "aria-label" => "Get notified when grant applications are open.",
+        target: :_blank
+      %>
+    </div>
+
+    <p>
+      Hack Club is partnering with <a href="https://firstinspires.org" target="_blank"><i>FIRST</i></a> to offer <strong>$500</strong> grants to in-person high-school hackathons happening this semester (through December 31, 2022). <strong>Applications are opening soon.</strong>
+    </p>
+
+    
+    <details class="mb2">
+      <summary class="pointer">
+        <h3 class="mb0 mt0 inline-block">Requirements</h3>
+      </summary>
+
+
+      <ol>
+        <li>
+          Proof of venue. Examples:
+          <ul>
+            <li>Scan of a contract</li>
+            <li>Scan of an <a href="https://www.investopedia.com/terms/m/mou.asp">MOU (memorandum of understanding)</a></li>
+          </ul>
+        </li>
+        <li>Event must be fully in-person— not virtual or hybrid</li>
+        <li><a href="https://changelog.bank.hackclub.com/transparent-finances-(optional-feature)-151427">Transparency Mode</a> enabled on Hack Club Bank</li>
+        <li>
+          Hand-made event website*
+          <ul class="list-reset">
+            <li class="flex items-center"><%= inline_icon "checkmark", size: 24, class: "mr1 success" %> HTML/CSS sites</li>
+            <li class="flex items-center"><%= inline_icon "checkmark", size: 24, class: "mr1 success" %> Custom WordPress themes</li>
+            <li class="flex items-center"><%= inline_icon "minus", size: 24, class: "mr1 primary" %> Website builders with pre-built themes, like WordPress, Wix, or Google Sites</li>
+            <li class="flex items-center"><%= inline_icon "minus", size: 24, class: "mr1 primary" %> Devpost listings</li>
+          </ul>
+        </li>
+      </ol>
+    </details>
+
+    <section class="card__banner card__darker secondary border-top">
+      *Need help building a website for your event? Check out our <a href="https://workshops.hackclub.com/personal_website" target="_blank">starter workshop</a> or get help <a href="https://hackclub.com/slack" target="_blank">in Slack</a>!
+    </section>
+  </div>
+<% end %>
+
 <div class="card mb3" id="1password">
   <div class="card__banner card__banner--top flex justify-between items-center promo-1password">
     <%= image_tag '1password.svg', width: 210, class: "p2" %>

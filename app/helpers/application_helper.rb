@@ -249,35 +249,35 @@ module ApplicationHelper
 
   def commit_time
     @commit_time ||= begin
-                       heroku_time = ENV["HEROKU_RELEASE_CREATED_AT"]
-                       git_time = `git log -1 --format=%at`&.chomp
+      heroku_time = ENV["HEROKU_RELEASE_CREATED_AT"]
+      git_time = `git log -1 --format=%at`&.chomp
 
-                       return nil if heroku_time.blank? && git_time.blank?
+      return nil if heroku_time.blank? && git_time.blank?
 
-                       heroku_time.blank? ? git_time.to_i : Time.parse(heroku_time)
-                     end
+      heroku_time.blank? ? git_time.to_i : Time.parse(heroku_time)
+    end
 
     @commit_time
   end
 
   def commit_duration
     @commit_duration ||= begin
-                           return nil if commit_time.nil?
+      return nil if commit_time.nil?
 
-                           distance_of_time_in_words Time.at(commit_time), Time.now
-                         end
+      distance_of_time_in_words Time.at(commit_time), Time.now
+    end
   end
 
   module_function :commit_hash, :commit_time
 
   def admin_inspectable_attributes(record)
     stripe_obj = begin
-                   record.stripe_obj
-                 rescue Stripe::InvalidRequestError
-                   puts "Can't access stripe object, skipping"
-                 rescue NoMethodError
-                   puts "Not a stripe object, skipping"
-                 end
+      record.stripe_obj
+    rescue Stripe::InvalidRequestError
+      puts "Can't access stripe object, skipping"
+    rescue NoMethodError
+      puts "Not a stripe object, skipping"
+    end
 
     if stripe_obj.nil?
       record
@@ -306,5 +306,17 @@ module ApplicationHelper
 
   def json(obj)
     JSON.pretty_generate(obj.as_json)
+  end
+
+  def airtable_form(id, params = {}, hide = [])
+    query = {}
+    params.each do |key, value|
+      query["prefill_#{key}"] = value
+    end
+    hide.each do |field|
+      query["hide_#{field}"] = "true"
+    end
+
+    "https://airtable.com/#{id}?#{URI.encode_www_form(query)}"
   end
 end
