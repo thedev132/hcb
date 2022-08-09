@@ -90,6 +90,7 @@
 
     <h2>Tasks & Perks</h2>
     <ul class="grid left-align w-100 mt0">
+      <%= react_component 'admin_task/Card', human_name: 'Applications', task_name: :pending_bank_applications_airtable, task_path: link_to_airtable_task(:bank_applications) %>
       <%= card_to "Ledger (#{CanonicalTransaction.not_stripe_top_up.unmapped.count})", ledger_admin_index_path %>
       <%= card_to "ACH (#{AchTransfer.pending.count})", ach_admin_index_path %>
       <%= card_to "Check (#{Check.in_transit.count + Check.admin_count_offset})", check_admin_index_path %>

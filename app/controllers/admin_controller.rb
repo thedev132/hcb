@@ -1165,6 +1165,8 @@ class AdminController < ApplicationController
         airtable_task_size :hackathons
       when :pending_grant_airtable
         airtable_task_size :grant
+      when :pending_bank_applications_airtable
+        airtable_task_size :bank_applications
       when :pending_stickermule_airtable
         airtable_task_size :stickermule
       when :pending_stickers_airtable
@@ -1228,6 +1230,7 @@ class AdminController < ApplicationController
     # This method could take upwards of 10 seconds. USE IT SPARINGLY
     pending_task :pending_hackathons_airtable
     pending_task :pending_grant_airtable
+    pending_task :pending_bank_applications_airtable
     pending_task :pending_stickermule_airtable
     pending_task :pending_stickers_airtable
     pending_task :pending_wallets_airtable
