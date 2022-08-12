@@ -30,7 +30,7 @@ class HcbCode < ApplicationRecord
 
   before_create :generate_and_set_short_code
 
-  attr_writer :canonical_pending_transactions, :not_admin_only_comments_count
+  attr_writer :not_admin_only_comments_count
 
   comma do
     hcb_code "HCB Code"
@@ -102,9 +102,7 @@ class HcbCode < ApplicationRecord
     end
   end
 
-  def canonical_pending_transactions
-    @canonical_pending_transactions ||= CanonicalPendingTransaction.where(hcb_code: hcb_code)
-  end
+  has_many :canonical_pending_transactions, foreign_key: 'hcb_code', primary_key: 'hcb_code'
 
   has_many :canonical_transactions, -> { order("date desc, id desc") }, foreign_key: 'hcb_code', primary_key: 'hcb_code'
 
