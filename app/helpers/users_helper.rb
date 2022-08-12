@@ -72,7 +72,11 @@ module UsersHelper
                "Yes, you!",
                "Who do you think you are?!",
                "Who? You!",
-               "You who!"
+               "You who!",
+               "Yahoo!",
+               "dats me!",
+               "dats u!",
+               "byte me!"
              ].sample
            elsif user&.admin?
              "#{user.name.split(' ').first} is an admin"
