@@ -391,6 +391,8 @@ class EventsController < ApplicationController
       :address,
       :slug,
       :hidden,
+      :start,
+      :end,
       :donation_page_enabled,
       :donation_page_message,
       :is_public,
