@@ -42,7 +42,10 @@ class GSuiteAccount < ApplicationRecord
   belongs_to :g_suite
   belongs_to :creator, class_name: "User"
 
-  has_encrypted :initial_password, migrating: true
+  has_encrypted :initial_password
+
+  # TODO(2541): temporary until unencrypted column is dropped
+  self.ignored_columns = ["initial_password"]
 
   validates_presence_of :address, :backup_email, :first_name, :last_name
 
