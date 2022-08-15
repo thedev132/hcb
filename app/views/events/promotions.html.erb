@@ -6,7 +6,7 @@
   Promotions &amp; perks
 </h1>
 
-<% if @event.hackathon? && (@event.country_us? || @event.country == "CA") && Flipper.enabled?(:assemble_woot, @event) %>
+<% if (@event.hackathon? || @event.high_school_hackathon?) && (@event.country_us? || @event.country == "CA") && Flipper.enabled?(:assemble_woot, @event) %>
   <div class="card pb0 mb3 promo-hackathon-grant" id="hackathon-grant" style="border: 2px solid #ec3750">
     <div class="card__banner card__banner--top flex justify-between items-center">
       <h3 class="h1 p2 my0 flex flex-column items-start smoke">
