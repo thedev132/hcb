@@ -25,13 +25,13 @@ module DonationsHelper
     date = nil
     title = nil
     if donation.deposited?
-      title = "Funds available since"
+      title = "Funds available since "
       date = @hcb_code.canonical_transactions.pluck(:date).max
     elsif donation.payout_creation_queued_at && donation.payout.nil?
-      title = "Transfer scheduled"
+      title = "Transfer scheduled for "
       date = donation.payout_creation_queued_for
     elsif donation.payout_creation_queued_at && donation.payout.present?
-      title = "Funds should be available"
+      title = "Funds should be available from "
       date = donation.payout.arrival_date
     end
 
