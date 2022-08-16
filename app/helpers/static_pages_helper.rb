@@ -501,6 +501,11 @@ module StaticPagesHelper
         query: { filterByFormula: "Status='Pending'", fields: [] },
         destination: "https://airtable.com/tblWlQxkf6L7mEjC4/viwzbku7oWsw5GFEa"
       },
+      first_grant: {
+        url: "https://airbridge.hackclub.com/v0.1/Bank%20Promotions/FIRST%20Grant",
+        query: { filterByFormula: "Status='Pending'", fields: [] },
+        destination: "https://airtable.com/tblnNB5iMbidfB552/viwjF8iDPU3gAiXJU"
+      },
       wire_transfers: {
         url: "https://airbridge.hackclub.com/v0.1/Bank%20Promotions/Wire%20Transfers",
         query: { filterByFormula: "Status='Pending'", fields: [] },

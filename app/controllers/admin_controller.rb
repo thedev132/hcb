@@ -1185,6 +1185,8 @@ class AdminController < ApplicationController
         airtable_task_size :pvsa
       when :pending_theeventhelper_airtable
         airtable_task_size :theeventhelper
+      when :pending_first_grant_airtable
+        airtable_task_size :first_grant
       when :pending_wire_transfers_airtable
         airtable_task_size :wire_transfers
       when :pending_paypal_transfers_airtable
@@ -1240,6 +1242,7 @@ class AdminController < ApplicationController
     pending_task :pending_domains_airtable
     pending_task :pending_pvsa_airtable
     pending_task :pending_theeventhelper_airtable
+    pending_task :pending_first_grant_airtable
     pending_task :pending_feedback_airtable
     pending_task :wire_transfers
     pending_task :paypal_transfers
