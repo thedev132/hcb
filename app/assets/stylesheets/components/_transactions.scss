@@ -2,6 +2,17 @@
   overflow-x: auto;
 }
 
+.transaction--fancy {
+  background-image: repeating-linear-gradient(
+    to bottom right,
+    rgb(226, 177, 66) 0px,
+    rgb(251, 232, 122) 50px,
+    rgb(226, 177, 66) 100px
+  );
+  background-attachment: fixed;
+  color: $black;
+}
+
 .transaction__memo {
   max-width: 400px;
 
@@ -28,7 +39,7 @@
   }
 }
 
-[class^="transaction--"]:target {
+[class^='transaction--']:target {
   animation: highlight 2s;
 }
 
@@ -42,6 +53,9 @@
     width: 24px;
     height: 24px;
     fill: map-get($palette, muted);
+    .transaction--fancy & {
+      fill: $black;
+    }
     margin: 0;
   }
 }

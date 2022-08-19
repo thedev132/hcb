@@ -59,6 +59,7 @@ class HcbCode < ApplicationRecord
   end
 
   def memo
+    return "💰 Hackathon grant" if hackathon_grant?
     return disbursement_memo if disbursement?
     return invoice_memo if invoice?
     return donation_memo if donation?
@@ -125,6 +126,10 @@ class HcbCode < ApplicationRecord
 
       Event.where(id: ids)
     end
+  end
+
+  def hackathon_grant?
+    disbursement? && disbursement.source_event_id == 1610
   end
 
   def fee_payment?

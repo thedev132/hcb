@@ -1,5 +1,5 @@
 <tr
-  class="transaction--<%= ct.amount.negative? ? "negative" : "positive" %>"
+  class="transaction--<%= ct.amount.negative? ? "negative" : "positive" %> <%= "transaction--fancy" if ct.local_hcb_code.hackathon_grant? %>"
   id="<%= ct.local_hcb_code.hashid %>"
   <% if defined?(receipt_upload_button) %>
     data-controller="file-drop"
@@ -39,6 +39,10 @@
     <% elsif ct.donation? %>
       <td class="transaction__icon tooltipped tooltipped--e" aria-label="Donation">
         <%= inline_icon "support" %>
+      </td>
+    <% elsif ct.local_hcb_code.hackathon_grant? %>
+      <td class="transaction__icon tooltipped tooltipped--e" aria-label="Hackathon grant">
+        <%= inline_icon "purse" %>
       </td>
     <% elsif ct.disbursement? %>
       <td class="transaction__icon tooltipped tooltipped--e" aria-label="Disbursement">
