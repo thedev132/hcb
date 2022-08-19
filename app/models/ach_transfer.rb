@@ -6,7 +6,6 @@
 #
 #  id                        :bigint           not null, primary key
 #  aasm_state                :string
-#  account_number            :string
 #  account_number_ciphertext :text
 #  amount                    :integer
 #  approved_at               :datetime

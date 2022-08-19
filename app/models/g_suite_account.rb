@@ -9,7 +9,6 @@
 #  address                     :text
 #  backup_email                :text
 #  first_name                  :string
-#  initial_password            :string
 #  initial_password_ciphertext :text
 #  last_name                   :string
 #  rejected_at                 :datetime

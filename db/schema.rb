@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_07_12_202126) do
+ActiveRecord::Schema.define(version: 2022_08_13_171422) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -23,7 +23,6 @@ ActiveRecord::Schema.define(version: 2022_07_12_202126) do
     t.bigint "event_id"
     t.bigint "creator_id"
     t.string "routing_number"
-    t.string "account_number"
     t.string "bank_name"
     t.string "recipient_name"
     t.integer "amount"
@@ -643,7 +642,6 @@ ActiveRecord::Schema.define(version: 2022_07_12_202126) do
     t.datetime "verified_at"
     t.bigint "creator_id"
     t.text "backup_email"
-    t.string "initial_password"
     t.string "first_name"
     t.string "last_name"
     t.datetime "suspended_at"
