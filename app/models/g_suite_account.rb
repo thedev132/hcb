@@ -43,9 +43,6 @@ class GSuiteAccount < ApplicationRecord
 
   has_encrypted :initial_password
 
-  # TODO(2541): temporary until unencrypted column is dropped
-  self.ignored_columns = ["initial_password"]
-
   validates_presence_of :address, :backup_email, :first_name, :last_name
 
   validate :status_accepted_or_rejected
