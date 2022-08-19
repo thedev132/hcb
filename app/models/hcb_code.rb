@@ -59,7 +59,7 @@ class HcbCode < ApplicationRecord
   end
 
   def memo
-    return "💰 Hackathon grant" if hackathon_grant?
+    return "💰 Grant from Hack Club and FIRST" if hackathon_grant?
     return disbursement_memo if disbursement?
     return invoice_memo if invoice?
     return donation_memo if donation?
