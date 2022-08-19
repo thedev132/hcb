@@ -64,7 +64,11 @@
   <td class="transaction__memo">
     <div>
       <span title="<%= ct.local_hcb_code.memo %>">
-        <%= ct.local_hcb_code.memo %>
+        <% if ct.local_hcb_code.hackathon_grant? %>
+          💰 Grant from Hack Club and <i>FIRST</i>®
+        <% else %>
+          <%= ct.local_hcb_code.memo %>
+        <% end %>
       </span>
 
       <% if ct.local_hcb_code %>
