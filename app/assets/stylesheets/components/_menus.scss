@@ -6,7 +6,7 @@
   &[aria-expanded='true'] {
     outline: none;
 
-    &:after {
+    &:not(.menu__toggle--arrowless):after {
       bottom: -1px;
       left: 50%;
       transform: translateX(-50%);
@@ -21,7 +21,7 @@
       }
     }
 
-    &:after {
+    &:not(.menu__toggle--arrowless):after {
       border-bottom-color: map-get($palette, white);
       border-width: 10px;
     }
@@ -34,6 +34,7 @@
 
 .menu__content {
   display: none;
+  cursor: initial;
   min-width: 14rem;
   position: absolute;
   top: 100%;
@@ -42,6 +43,30 @@
   box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.0625), 0 6px 12px rgba(0, 0, 0, 0.125);
   overflow: hidden;
   z-index: 6;
+
+  input[type='submit'].menu__action,
+  button.menu__action {
+    background: transparent;
+    font-size: inherit;
+    width: 100%;
+    text-align: left;
+    box-shadow: none;
+    justify-content: start;
+    transform: none;
+    padding: 0.75rem 0.5rem;
+    border: none;
+  }
+
+  // Because pseudo elements don't work with inputs
+  input[type='submit'].menu__action:hover {
+    @include gradient(info);
+    border-radius: 6px;
+  }
+
+  .menu__toggle--arrowless &,
+  .menu__toggle--arrowless + & {
+    top: calc(100% + 5px);
+  }
 
   @media (min-width: 32em) {
     width: 16rem;
@@ -87,6 +112,43 @@
     border-bottom: 1px solid map-get($palette, smoke);
     margin: 0.5rem 0;
   }
+
+  &.menu__content--left {
+    left: 0;
+  }
+
+  input[type='text'] {
+    font-size: inherit !important;
+    padding: 0.25rem 0.5rem !important;
+    min-height: 0;
+    font-weight: 500;
+    color: map-get($palette, black);
+
+    &::placeholder {
+      font-weight: 500;
+    }
+
+    &:not(:focus)::placeholder {
+      opacity: 1;
+      color: map-get($palette, black);
+    }
+
+    &:focus {
+      background: $snow;
+    }
+
+    &:not(:focus) {
+      cursor: pointer;
+      border-color: transparent;
+    }
+
+    &:hover:not(:focus) {
+      @include gradient(info);
+      &::placeholder {
+        color: $white;
+      }
+    }
+  }
 }
 
 .menu__content > a,
@@ -102,6 +164,7 @@
   letter-spacing: 0;
   background-color: transparent;
   transition: 0.125s ease-in-out background-color, 0.125s ease-in-out color;
+  cursor: pointer;
 
   &:before {
     content: '';
@@ -131,5 +194,25 @@
 
   + .menu__action {
     border-top: 1px solid map-get($palette, smoke);
+  }
+}
+
+.menu__content--compact > a,
+.menu__content--compact .menu__action {
+  padding: 0.25rem 0.5rem !important;
+}
+
+.menu__divider {
+  display: block;
+  height: 1px;
+  background-color: $smoke;
+  margin: 0.5rem 0;
+
+  .menu__content--compact & {
+    margin: 0.25rem 0;
+  }
+
+  html[data-dark='true'] & {
+    background-color: $slate;
   }
 }

@@ -23,7 +23,6 @@
 
   a:first-child,
   span:first-child {
-    flex: 1 1 auto;
     max-width: 100%;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -37,6 +36,16 @@
   + td {
     text-align: right; // right-align amount
   }
+
+  .add-tag-badge {
+    display: none;
+    cursor: pointer;
+  }
+}
+
+[class^='transaction--']:hover .add-tag-badge,
+.add-tag-badge[aria-expanded='true'] {
+  display: block;
 }
 
 [class^='transaction--']:target {

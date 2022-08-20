@@ -57,8 +57,8 @@
       <%= donation_payout_datetime %>
     <% end %>
   </section>
-  <% if @donation.payout %>
-    <section class="pt2 pb2 details">
+  <section class="pt2 pb2 details">
+    <% if @donation.payout %>
       <p>
         <strong>Donor email</strong>
         <% if organizer_signed_in? %>
@@ -85,8 +85,9 @@
           </span>
         </span>
       </p>
-    </section>
-  <% end %>
+    <% end %>
+    <%= render 'hcb_codes/tags', hcb_code: @hcb_code, event: (@event || @hcb_code.event) %>
+  </section>
 
   <% unless @donation.deposited? %>
     <section class="card__banner card__darker secondary border-top">

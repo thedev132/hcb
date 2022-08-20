@@ -19,8 +19,8 @@ gem "puma", "~> 4.3"
 gem "sassc-rails"
 # Include jQuery
 gem "jquery-rails"
-# Use Uglifier as compressor for JavaScript assets
-gem "uglifier", ">= 1.3.0"
+# Use Terser as compressor for JavaScript assets
+gem "terser", "~> 1.1"
 # Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker
 gem "react-rails"
 gem "webpacker", "~> 4.0"

@@ -108,7 +108,8 @@ html[data-dark='true'] {
   .modal,
   .card,
   .menu__content {
-    box-shadow: -2px -4px 8px rgba(0, 0, 0, 0.125), 4px 8px 16px rgba(0, 0, 0, 0.25);
+    box-shadow: -2px -4px 8px rgba(0, 0, 0, 0.125),
+      4px 8px 16px rgba(0, 0, 0, 0.25);
   }
 
   .card {
@@ -331,7 +332,8 @@ html[data-dark='true'] {
   }
 
   .dino-svg {
-    filter: invert(88%) sepia(100%) saturate(2%) hue-rotate(187deg) brightness(110%) contrast(97%);
+    filter: invert(88%) sepia(100%) saturate(2%) hue-rotate(187deg)
+      brightness(110%) contrast(97%);
   }
 
   .file-dropzone {
@@ -340,5 +342,35 @@ html[data-dark='true'] {
 
   .stripe-card__status {
     color: #fff;
+  }
+
+  .menu__content input[type='text'] {
+    font-size: inherit !important;
+    padding: 0.25rem 0.5rem !important;
+    min-height: 0;
+    font-weight: 500;
+    color: map-get($palette, snow);
+
+    &::placeholder {
+      font-weight: 500;
+    }
+
+    &:not(:focus)::placeholder {
+      opacity: 1;
+      color: map-get($palette, snow);
+    }
+
+    &:focus {
+      background: $darker;
+    }
+
+    &:not(:focus) {
+      cursor: pointer;
+      border-color: transparent;
+    }
+
+    &:hover:not(:focus) {
+      @include gradient(info);
+    }
   }
 }

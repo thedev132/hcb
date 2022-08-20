@@ -1,0 +1,41 @@
+<% if Flipper.enabled?(:transaction_tags_2022_07_29, event) %>
+  <div>
+    <strong>Tags</strong>
+    <div>
+      <%#= organizer_signed_in? ? @hcb_code.disbursement.name : 'Sign in to view' %>
+      <% hcb_code.tags.each do |tag| %>
+
+          <span
+            class="badge ml0 mr1"
+            <% if tag.color %>
+              style='background: <%= tag.color %>'
+            <% end %>
+            >
+            <%= tag.label %>
+            <span class="pointer tooltipped tooltipped--n" aria-label='Remove tag'>
+              <%= inline_icon 'view-close', size: 14 %>
+            </span>
+          </span>
+      <% end %>
+
+      <div class="overflow-visible relative" style="display: inline-block">
+        <button class="badge pointer ml0 menu__toggle menu__toggle--arrowless" data-behavior="menu_toggle">
+          + Add tag
+        </button>
+        <div class="menu__content menu__content--compact menu__content--left h6" data-behavior="menu_content">
+          <% event.tags.each do |tag| %>
+            <a href="#"><%= tag.label %></a>
+          <% end %>
+          <% if event.tags.count > 0 %>
+            <div class="menu__divider"></div>
+          <% end %>
+          <%= form_with url: event_tags_path(event) do |form| %>
+            <%= form.hidden_field :hcb_code_id, value: hcb_code.hashid %>
+            <%= form.text_field :label, data: { behavior: "menu_input #{"menu_input--autofocus" if event.tags.count == 0}" }, class: "menu__input", placeholder: "+ Create tag", autocomplete: "off", required: true %>
+          <% end %>
+        </div>
+      </div>
+
+    </div>
+  </div>
+<% end %>

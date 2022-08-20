@@ -130,4 +130,22 @@ class HcbCodesController < ApplicationController
     end
   end
 
+  def toggle_tag
+    hcb_code = HcbCode.find(params[:id])
+    tag = Tag.find(params[:tag_id])
+
+    authorize hcb_code
+    authorize tag
+
+    raise Pundit::NotAuthorizedError if tag.event != hcb_code.event
+
+    if hcb_code.tags.exists?(tag.id)
+      hcb_code.tags.destroy(tag)
+    else
+      hcb_code.tags << tag
+    end
+
+    redirect_back fallback_location: @event
+  end
+
 end

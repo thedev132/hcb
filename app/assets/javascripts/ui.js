@@ -57,7 +57,7 @@ $(document).on('turbo:load', function () {
         if ((email = localStorage.getItem('login_email'))) {
           BK.s('login').find('input[type=email]').val(email)
         }
-      } catch(e) {}
+      } catch (e) {}
     }
 
     // auto fill @hackclub.com email addresses on submit
@@ -265,12 +265,32 @@ $(document).on('turbo:load', function () {
   // Popover menus
   BK.openMenuSelector = '[data-behavior~=menu_toggle][aria-expanded=true]'
   BK.toggleMenu = function (m) {
+    // The menu content might either be a child or a sibling of the button.
     $(m).find('[data-behavior~=menu_content]').slideToggle(100)
+    $(m).siblings('[data-behavior~=menu_content]').slideToggle(100)
+
     const o = $(m).attr('aria-expanded') === 'true'
+    if (o) {
+      // The menu is closing
+      // Clear all inputs in the menu
+      $(m)
+        .siblings('[data-behavior~=menu_content]')
+        .find('input[data-behavior~=menu_input')
+        .val('')
+    } else {
+      // The menu is opening
+      // Autofocus any inputs that should be autofocused
+      $(m)
+        .siblings('[data-behavior~=menu_content]')
+        .find('input[data-behavior~=menu_input--autofocus')
+        .focus()
+    }
     return $(m).attr('aria-expanded', !o)
   }
 
   $(document).on('click', function (e) {
+    if ($(e.target).data('behavior')?.includes('menu_input')) return
+
     const o = $(BK.openMenuSelector)
     const c = $(e.target).closest('[data-behavior~=menu_toggle]')
     if (o.length > 0 || c.length > 0) {

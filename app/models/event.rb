@@ -248,6 +248,8 @@ class Event < ApplicationRecord
   has_many :fees, through: :canonical_event_mappings
   has_many :bank_fees
 
+  has_many :tags
+
   belongs_to :partner
   has_one :partnered_signup, required: false
   has_many :partner_donations

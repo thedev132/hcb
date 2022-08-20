@@ -16,7 +16,6 @@ ActiveRecord::Schema.define(version: 2022_08_19_143807) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
-  enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
 
   create_table "ach_transfers", force: :cascade do |t|
@@ -31,8 +30,8 @@ ActiveRecord::Schema.define(version: 2022_08_19_143807) do
     t.datetime "updated_at", null: false
     t.string "recipient_tel"
     t.datetime "rejected_at"
-    t.datetime "scheduled_arrival_date"
     t.text "payment_for"
+    t.datetime "scheduled_arrival_date"
     t.string "aasm_state"
     t.text "confirmation_number"
     t.text "account_number_ciphertext"
@@ -258,7 +257,6 @@ ActiveRecord::Schema.define(version: 2022_08_19_143807) do
     t.bigint "raw_pending_invoice_transaction_id"
     t.text "hcb_code"
     t.bigint "raw_pending_bank_fee_transaction_id"
-    t.bigint "raw_pending_partner_donation_transaction_id"
     t.text "custom_memo"
     t.bigint "raw_pending_incoming_disbursement_transaction_id"
     t.bigint "raw_pending_outgoing_disbursement_transaction_id"
@@ -267,6 +265,7 @@ ActiveRecord::Schema.define(version: 2022_08_19_143807) do
     t.index ["raw_pending_bank_fee_transaction_id"], name: "index_canonical_pending_txs_on_raw_pending_bank_fee_tx_id"
     t.index ["raw_pending_donation_transaction_id"], name: "index_canonical_pending_txs_on_raw_pending_donation_tx_id"
     t.index ["raw_pending_incoming_disbursement_transaction_id"], name: "index_cpts_on_raw_pending_incoming_disbursement_transaction_id"
+    t.index ["raw_pending_invoice_transaction_id"], name: "index_canonical_pending_txs_on_raw_pending_invoice_tx_id"
     t.index ["raw_pending_outgoing_ach_transaction_id"], name: "index_canonical_pending_txs_on_raw_pending_outgoing_ach_tx_id"
     t.index ["raw_pending_outgoing_check_transaction_id"], name: "index_canonical_pending_txs_on_raw_pending_outgoing_check_tx_id"
     t.index ["raw_pending_outgoing_disbursement_transaction_id"], name: "index_cpts_on_raw_pending_outgoing_disbursement_transaction_id"
@@ -544,7 +543,7 @@ ActiveRecord::Schema.define(version: 2022_08_19_143807) do
     t.boolean "omit_stats", default: false
     t.datetime "transaction_engine_v2_at", default: -> { "CURRENT_TIMESTAMP" }
     t.datetime "last_fee_processed_at"
-    t.datetime "pending_transaction_engine_at", default: "2021-02-13 22:49:40"
+    t.datetime "pending_transaction_engine_at", default: "2021-02-13 22:27:44"
     t.string "aasm_state"
     t.string "organization_identifier", null: false
     t.string "redirect_url"
@@ -694,6 +693,12 @@ ActiveRecord::Schema.define(version: 2022_08_19_143807) do
     t.text "short_code"
     t.index ["hcb_code"], name: "index_hcb_codes_on_hcb_code", unique: true
     t.check_constraint "short_code = upper(short_code)", name: "constraint_hcb_codes_on_short_code_to_uppercase"
+  end
+
+  create_table "hcb_codes_tags", id: false, force: :cascade do |t|
+    t.bigint "hcb_code_id", null: false
+    t.bigint "tag_id", null: false
+    t.index ["hcb_code_id", "tag_id"], name: "index_hcb_codes_tags_on_hcb_code_id_and_tag_id", unique: true
   end
 
   create_table "invoice_payouts", force: :cascade do |t|
@@ -1109,6 +1114,18 @@ ActiveRecord::Schema.define(version: 2022_08_19_143807) do
     t.index ["user_id"], name: "index_receipts_on_user_id"
   end
 
+  create_table "reimbursements", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.integer "amount_cents"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "aasm_state"
+    t.text "reimbursement_for"
+    t.bigint "event_id", null: false
+    t.index ["event_id"], name: "index_reimbursements_on_event_id"
+    t.index ["user_id"], name: "index_reimbursements_on_user_id"
+  end
+
   create_table "selenium_sessions", force: :cascade do |t|
     t.string "aasm_state"
     t.jsonb "cookies"
@@ -1191,6 +1208,15 @@ ActiveRecord::Schema.define(version: 2022_08_19_143807) do
     t.integer "spending_limit_amount"
     t.index ["event_id"], name: "index_stripe_cards_on_event_id"
     t.index ["stripe_cardholder_id"], name: "index_stripe_cards_on_stripe_cardholder_id"
+  end
+
+  create_table "tags", force: :cascade do |t|
+    t.text "label"
+    t.text "color"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.bigint "event_id", null: false
+    t.index ["event_id"], name: "index_tags_on_event_id"
   end
 
   create_table "transaction_csvs", force: :cascade do |t|
@@ -1396,6 +1422,7 @@ ActiveRecord::Schema.define(version: 2022_08_19_143807) do
   add_foreign_key "raw_pending_incoming_disbursement_transactions", "disbursements"
   add_foreign_key "raw_pending_outgoing_disbursement_transactions", "disbursements"
   add_foreign_key "receipts", "users"
+  add_foreign_key "reimbursements", "users"
   add_foreign_key "sponsors", "events"
   add_foreign_key "stripe_authorizations", "stripe_cards"
   add_foreign_key "stripe_cardholders", "users"

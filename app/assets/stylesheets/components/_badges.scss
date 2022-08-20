@@ -38,6 +38,15 @@
   svg:last-child {
     margin-left: 0.25rem;
   }
+
+  &.tx-tag {
+    font-weight: normal;
+    background-color: transparent;
+    color: map-get($palette, slate);
+    border: 1px solid;
+    border-color: rgba(0, 0, 0, 0.125);
+    border-width: 0.5px;
+  }
 }
 
 .list-badge {

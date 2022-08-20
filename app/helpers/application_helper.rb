@@ -74,7 +74,7 @@ module ApplicationHelper
   end
 
   def badge_for(count, options = {})
-    content_tag :span, count, class: "badge #{options[:class]} #{'bg-muted' if count == 0} #{options[:class]}"
+    content_tag :span, count, class: "badge #{options[:class]} #{'bg-muted' if count == 0}"
   end
 
   def status_badge(type = :pending)

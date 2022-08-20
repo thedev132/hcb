@@ -96,42 +96,46 @@
   <% end %>
 </h2>
 
-
 <%= form_with(model: nil, local: true, method: :get) do |form| %>
-  <div class="filterbar flex flex-wrap items-center width-100">
+  <div class="filterbar flex flex-row items-center width-100">
 
-    <%= form.text_field :q, placeholder: "Search…", class: "flex-auto md-mr2", style: "width auto; max-width: none;", value: params[:q] %>
+    <button
+      type="button"
+      data-behavior="menu_toggle" aria-expanded="false" tabindex="0"
+      class="btn bg-info menu__toggle overflow-visible z1 mr1">
+      <%= inline_icon 'filter', size: 16 %>
+      <span class="sm-hide md-hide">Filter</span>
+        <div class="menu__content h5" data-behavior="menu_content">
+          <% @event.tags.each do |tag| %>
+            <%= link_to tag.label, "?tag=#{tag.label}" %>
+          <% end %>
+        </div>
+    </button>
 
-    <!--
-    <div data-behavior="filterbar" role="tablist" class="filterbar__filters flex mt1 lg-mt0">
-      <%= filterbar_item 'All', :exists, true %>
-      <%= filterbar_item 'Revenue', :fee_applies %>
-      <%#= filterbar_item 'Fees', :fee_payment %>
-      <%#= filterbar_item 'Card', :card %>
-    </div>
-    -->
-
+    <%= form.text_field :q, placeholder: "Search", class: "flex-auto md-mr2", style: "width auto; max-width: none;", value: params[:q] %>
   </div>
 <% end %>
 
 <% if @pending_transactions.any? || @transactions.any? %>
   <div class="table-container">
-    <table>
-      <thead>
-        <tr>
-          <th></th>
-          <th>Date</th>
-          <th>Description</th>
-          <th class="right-align">Amount</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody data-behavior="transactions">
-        <%= render partial: "canonical_pending_transactions/canonical_pending_transaction", collection: @pending_transactions, as: :pt, locals: { event: @event } %>
+    <%= turbo_frame_tag :ledger do %>
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            <th>Date</th>
+            <th>Description</th>
+            <th class="right-align">Amount</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody data-behavior="transactions">
+          <%= render partial: "canonical_pending_transactions/canonical_pending_transaction", collection: @pending_transactions, as: :pt, locals: { event: @event } %>
 
-        <%= render partial: "canonical_transactions/canonical_transaction", collection: @transactions, as: :ct, locals: { event: @event } %>
-      </tbody>
-    </table>
+          <%= render partial: "canonical_transactions/canonical_transaction", collection: @transactions, as: :ct, locals: { event: @event } %>
+        </tbody>
+      </table>
+    <% end %>
   </div>
   <%= paginate @transactions %>
 <% else %>

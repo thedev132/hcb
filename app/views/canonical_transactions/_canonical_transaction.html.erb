@@ -69,13 +69,27 @@
   </td>
   <td class="transaction__memo">
     <div>
-      <span title="<%= ct.local_hcb_code.memo %>">
-        <% if ct.local_hcb_code.hackathon_grant? %>
-          💰 Grant from Hack Club and <i>FIRST</i>®
-        <% else %>
-          <%= ct.local_hcb_code.memo %>
-        <% end %>
-      </span>
+      <div class="flex-auto">
+        <div class="flex items-center justify-start">
+          <span title="<%= ct.local_hcb_code.memo %>">
+            <% if ct.local_hcb_code.hackathon_grant? %>
+              💰 Grant from Hack Club and <i>FIRST</i>®
+            <% else %>
+              <%= ct.local_hcb_code.memo %>
+            <% end %>
+          </span>
+
+          <% if organizer_signed_in? && Flipper.enabled?(:transaction_tags_2022_07_29, @event || ct.local_hcb_code.event) %>
+            <%= render "tags/add_tag", hcb_code: ct.local_hcb_code, event: (@event || ct.local_hcb_code.event) %>
+          <% end %>
+        </div>
+
+        <div class="flex flex-wrap" style="gap: 0.25rem">
+          <% ct.local_hcb_code.tags.each do |tag| %>
+            <%= badge_for tag.label, class: "tx-tag m0 shrink-none" %>
+          <% end %>
+        </div>
+      </div>
 
       <% if ct.local_hcb_code %>
         <%= list_badge_for ct.local_hcb_code.receipts.size, "receipt", "payment-docs", optional: !ct.raw_stripe_transaction, required: ct.raw_stripe_transaction && !ct.local_hcb_code.no_or_lost_receipt? %>

@@ -28,6 +28,8 @@ class HcbCode < ApplicationRecord
 
   monetize :amount_cents
 
+  has_and_belongs_to_many :tags
+
   before_create :generate_and_set_short_code
 
   attr_writer :not_admin_only_comments_count

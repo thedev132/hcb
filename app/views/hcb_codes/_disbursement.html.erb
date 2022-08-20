@@ -64,6 +64,8 @@
       <%= organizer_signed_in? ? @hcb_code.disbursement.name : 'Sign in to view' %>
     </p>
 
+    <%= render 'hcb_codes/tags', hcb_code: @hcb_code, event: (@event || @hcb_code.event) %>
+
     <% if @hcb_code.disbursement.fulfilled? %>
       <p>
         <strong>Confirmation letter</strong>

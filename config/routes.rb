@@ -276,6 +276,7 @@ Rails.application.routes.draw do
       post "receipt"
       get "attach_receipt"
       get "dispute"
+      post "toggle_tag/:tag_id", to: "hcb_codes#toggle_tag", as: :toggle_tag
     end
 
     resources :comments
@@ -457,6 +458,7 @@ Rails.application.routes.draw do
     resources :stripe_authorizations, only: [:show] do
       resources :comments
     end
+    resources :tags, only: [:create]
   end
 
   # rewrite old event urls to the new ones not prefixed by /events/
