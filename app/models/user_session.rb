@@ -4,23 +4,24 @@
 #
 # Table name: user_sessions
 #
-#  id                     :bigint           not null, primary key
-#  deleted_at             :datetime
-#  device_info            :string
-#  expiration_at          :datetime         not null
-#  fingerprint            :string
-#  ip                     :string
-#  latitude               :decimal(, )
-#  longitude              :decimal(, )
-#  os_info                :string
-#  peacefully_expired     :boolean
-#  session_token          :text
-#  timezone               :string
-#  created_at             :datetime         not null
-#  updated_at             :datetime         not null
-#  impersonated_by_id     :bigint
-#  user_id                :bigint
-#  webauthn_credential_id :bigint
+#  id                       :bigint           not null, primary key
+#  deleted_at               :datetime
+#  device_info              :string
+#  expiration_at            :datetime         not null
+#  fingerprint              :string
+#  ip                       :string
+#  latitude                 :decimal(, )
+#  longitude                :decimal(, )
+#  os_info                  :string
+#  peacefully_expired       :boolean
+#  session_token            :text
+#  session_token_ciphertext :text
+#  timezone                 :string
+#  created_at               :datetime         not null
+#  updated_at               :datetime         not null
+#  impersonated_by_id       :bigint
+#  user_id                  :bigint
+#  webauthn_credential_id   :bigint
 #
 # Indexes
 #
@@ -41,6 +42,8 @@ class UserSession < ApplicationRecord
   belongs_to :impersonated_by, class_name: "User", required: false
   belongs_to :webauthn_credential, optional: true
   has_one :login_token, required: false
+
+  has_encrypted :session_token, migrating: true
 
   scope :impersonated, -> { where.not(impersonated_by_id: nil) }
   scope :not_impersonated, -> { where(impersonated_by_id: nil) }

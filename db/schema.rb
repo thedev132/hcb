@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_08_13_171422) do
+ActiveRecord::Schema.define(version: 2022_08_19_143807) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -131,6 +131,7 @@ ActiveRecord::Schema.define(version: 2022_08_13_171422) do
     t.boolean "should_sync_v2", default: false
     t.datetime "failed_at"
     t.integer "failure_count", default: 0
+    t.text "plaid_access_token_ciphertext"
   end
 
   create_table "bank_fees", force: :cascade do |t|
@@ -782,6 +783,7 @@ ActiveRecord::Schema.define(version: 2022_08_13_171422) do
     t.bigint "archived_by_id"
     t.text "hcb_code"
     t.string "aasm_state"
+    t.text "payment_method_ach_credit_transfer_account_number_ciphertext"
     t.index ["archived_by_id"], name: "index_invoices_on_archived_by_id"
     t.index ["creator_id"], name: "index_invoices_on_creator_id"
     t.index ["fee_reimbursement_id"], name: "index_invoices_on_fee_reimbursement_id"
@@ -958,6 +960,7 @@ ActiveRecord::Schema.define(version: 2022_08_13_171422) do
     t.string "webhook_url"
     t.string "docusign_template_id"
     t.bigint "representative_id"
+    t.text "api_key_ciphertext"
     t.index ["representative_id"], name: "index_partners_on_representative_id"
   end
 
@@ -1265,6 +1268,7 @@ ActiveRecord::Schema.define(version: 2022_08_13_171422) do
     t.decimal "longitude"
     t.bigint "webauthn_credential_id"
     t.datetime "expiration_at", null: false
+    t.text "session_token_ciphertext"
     t.index ["impersonated_by_id"], name: "index_user_sessions_on_impersonated_by_id"
     t.index ["user_id"], name: "index_user_sessions_on_user_id"
     t.index ["webauthn_credential_id"], name: "index_user_sessions_on_webauthn_credential_id"

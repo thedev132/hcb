@@ -4,68 +4,69 @@
 #
 # Table name: invoices
 #
-#  id                                                   :bigint           not null, primary key
-#  aasm_state                                           :string
-#  amount_due                                           :bigint
-#  amount_paid                                          :bigint
-#  amount_remaining                                     :bigint
-#  archived_at                                          :datetime
-#  attempt_count                                        :bigint
-#  attempted                                            :boolean
-#  auto_advance                                         :boolean
-#  due_date                                             :datetime
-#  ending_balance                                       :bigint
-#  finalized_at                                         :datetime
-#  hcb_code                                             :text
-#  hosted_invoice_url                                   :text
-#  invoice_pdf                                          :text
-#  item_amount                                          :bigint
-#  item_description                                     :text
-#  livemode                                             :boolean
-#  manually_marked_as_paid_at                           :datetime
-#  manually_marked_as_paid_reason                       :text
-#  memo                                                 :text
-#  number                                               :text
-#  payment_method_ach_credit_transfer_account_number    :text
-#  payment_method_ach_credit_transfer_bank_name         :text
-#  payment_method_ach_credit_transfer_routing_number    :text
-#  payment_method_ach_credit_transfer_swift_code        :text
-#  payment_method_card_brand                            :text
-#  payment_method_card_checks_address_line1_check       :text
-#  payment_method_card_checks_address_postal_code_check :text
-#  payment_method_card_checks_cvc_check                 :text
-#  payment_method_card_country                          :text
-#  payment_method_card_exp_month                        :text
-#  payment_method_card_exp_year                         :text
-#  payment_method_card_funding                          :text
-#  payment_method_card_last4                            :text
-#  payment_method_type                                  :text
-#  payout_creation_balance_available_at                 :datetime
-#  payout_creation_balance_net                          :integer
-#  payout_creation_balance_stripe_fee                   :integer
-#  payout_creation_queued_at                            :datetime
-#  payout_creation_queued_for                           :datetime
-#  reimbursable                                         :boolean          default(TRUE)
-#  slug                                                 :text
-#  starting_balance                                     :bigint
-#  statement_descriptor                                 :text
-#  status                                               :text
-#  subtotal                                             :bigint
-#  tax                                                  :bigint
-#  tax_percent                                          :decimal(, )
-#  total                                                :bigint
-#  created_at                                           :datetime         not null
-#  updated_at                                           :datetime         not null
-#  archived_by_id                                       :bigint
-#  creator_id                                           :bigint
-#  fee_reimbursement_id                                 :bigint
-#  item_stripe_id                                       :text
-#  manually_marked_as_paid_user_id                      :bigint
-#  payout_creation_queued_job_id                        :text
-#  payout_id                                            :bigint
-#  sponsor_id                                           :bigint
-#  stripe_charge_id                                     :text
-#  stripe_invoice_id                                    :text
+#  id                                                           :bigint           not null, primary key
+#  aasm_state                                                   :string
+#  amount_due                                                   :bigint
+#  amount_paid                                                  :bigint
+#  amount_remaining                                             :bigint
+#  archived_at                                                  :datetime
+#  attempt_count                                                :bigint
+#  attempted                                                    :boolean
+#  auto_advance                                                 :boolean
+#  due_date                                                     :datetime
+#  ending_balance                                               :bigint
+#  finalized_at                                                 :datetime
+#  hcb_code                                                     :text
+#  hosted_invoice_url                                           :text
+#  invoice_pdf                                                  :text
+#  item_amount                                                  :bigint
+#  item_description                                             :text
+#  livemode                                                     :boolean
+#  manually_marked_as_paid_at                                   :datetime
+#  manually_marked_as_paid_reason                               :text
+#  memo                                                         :text
+#  number                                                       :text
+#  payment_method_ach_credit_transfer_account_number            :text
+#  payment_method_ach_credit_transfer_account_number_ciphertext :text
+#  payment_method_ach_credit_transfer_bank_name                 :text
+#  payment_method_ach_credit_transfer_routing_number            :text
+#  payment_method_ach_credit_transfer_swift_code                :text
+#  payment_method_card_brand                                    :text
+#  payment_method_card_checks_address_line1_check               :text
+#  payment_method_card_checks_address_postal_code_check         :text
+#  payment_method_card_checks_cvc_check                         :text
+#  payment_method_card_country                                  :text
+#  payment_method_card_exp_month                                :text
+#  payment_method_card_exp_year                                 :text
+#  payment_method_card_funding                                  :text
+#  payment_method_card_last4                                    :text
+#  payment_method_type                                          :text
+#  payout_creation_balance_available_at                         :datetime
+#  payout_creation_balance_net                                  :integer
+#  payout_creation_balance_stripe_fee                           :integer
+#  payout_creation_queued_at                                    :datetime
+#  payout_creation_queued_for                                   :datetime
+#  reimbursable                                                 :boolean          default(TRUE)
+#  slug                                                         :text
+#  starting_balance                                             :bigint
+#  statement_descriptor                                         :text
+#  status                                                       :text
+#  subtotal                                                     :bigint
+#  tax                                                          :bigint
+#  tax_percent                                                  :decimal(, )
+#  total                                                        :bigint
+#  created_at                                                   :datetime         not null
+#  updated_at                                                   :datetime         not null
+#  archived_by_id                                               :bigint
+#  creator_id                                                   :bigint
+#  fee_reimbursement_id                                         :bigint
+#  item_stripe_id                                               :text
+#  manually_marked_as_paid_user_id                              :bigint
+#  payout_creation_queued_job_id                                :text
+#  payout_id                                                    :bigint
+#  sponsor_id                                                   :bigint
+#  stripe_charge_id                                             :text
+#  stripe_invoice_id                                            :text
 #
 # Indexes
 #
@@ -127,6 +128,8 @@ class Invoice < ApplicationRecord
   belongs_to :payout, class_name: "InvoicePayout", required: false
   belongs_to :fee_reimbursement, required: false
   belongs_to :archived_by, class_name: "User", required: false
+
+  has_encrypted :payment_method_ach_credit_transfer_account_number, migrating: true
 
   has_one_attached :manually_marked_as_paid_attachment
 

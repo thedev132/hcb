@@ -6,6 +6,7 @@
 #
 #  id                        :bigint           not null, primary key
 #  api_key                   :text
+#  api_key_ciphertext        :text
 #  external                  :boolean          default(TRUE), not null
 #  logo                      :text
 #  name                      :text
@@ -44,6 +45,8 @@ class Partner < ApplicationRecord
   validates :api_key, presence: true, uniqueness: true
 
   has_encrypted :stripe_api_key
+
+  has_encrypted :api_key, migrating: true
 
   def add_user_to_partnered_event!(user_email:, event:)
     # @msw: I take full responsibility the aweful way this is being implemented.
