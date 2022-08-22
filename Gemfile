@@ -185,6 +185,7 @@ gem "ahoy_matey" # event engine
 gem "airbrake" # exception tracking
 gem "awesome_print"
 gem "blazer" # business intelligence tool/dashboard
+gem "blind_index" # needed to query and/or guarantee uniqueness for  lockbox encrypted fields
 gem "byebug", platforms: [:mri, :mingw, :x64_mingw]
 gem "chronic"
 gem "dry-validation"

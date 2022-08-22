@@ -85,6 +85,7 @@ GEM
       activerecord (>= 3.2, < 8.0)
       rake (>= 10.4, < 14.0)
     api-pagination (5.0.0)
+    argon2-kdf (0.1.7)
     ast (2.4.2)
     awesome_print (1.9.2)
     awrence (1.2.1)
@@ -120,6 +121,9 @@ GEM
       chartkick (>= 3.2)
       railties (>= 5)
       safely_block (>= 0.1.1)
+    blind_index (2.3.0)
+      activesupport (>= 5.2)
+      argon2-kdf (>= 0.1.1)
     bootsnap (1.11.1)
       msgpack (~> 1.2)
     browser (5.3.1)
@@ -709,6 +713,7 @@ DEPENDENCIES
   aws-sdk-s3
   barnes
   blazer
+  blind_index
   bootsnap (>= 1.4.4)
   browser (~> 5.3)
   business_time

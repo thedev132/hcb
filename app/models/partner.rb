@@ -6,6 +6,7 @@
 #
 #  id                        :bigint           not null, primary key
 #  api_key                   :text
+#  api_key_bidx              :string
 #  api_key_ciphertext        :text
 #  external                  :boolean          default(TRUE), not null
 #  logo                      :text
@@ -21,6 +22,7 @@
 #
 # Indexes
 #
+#  index_partners_on_api_key_bidx       (api_key_bidx) UNIQUE
 #  index_partners_on_representative_id  (representative_id)
 #
 # Foreign Keys
@@ -47,6 +49,7 @@ class Partner < ApplicationRecord
   has_encrypted :stripe_api_key
 
   has_encrypted :api_key, migrating: true
+  blind_index :api_key, migrating: true
 
   def add_user_to_partnered_event!(user_email:, event:)
     # @msw: I take full responsibility the aweful way this is being implemented.

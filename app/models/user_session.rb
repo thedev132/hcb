@@ -15,6 +15,7 @@
 #  os_info                  :string
 #  peacefully_expired       :boolean
 #  session_token            :text
+#  session_token_bidx       :string
 #  session_token_ciphertext :text
 #  timezone                 :string
 #  created_at               :datetime         not null
@@ -26,6 +27,7 @@
 # Indexes
 #
 #  index_user_sessions_on_impersonated_by_id      (impersonated_by_id)
+#  index_user_sessions_on_session_token_bidx      (session_token_bidx)
 #  index_user_sessions_on_user_id                 (user_id)
 #  index_user_sessions_on_webauthn_credential_id  (webauthn_credential_id)
 #
@@ -44,6 +46,7 @@ class UserSession < ApplicationRecord
   has_one :login_token, required: false
 
   has_encrypted :session_token, migrating: true
+  blind_index :session_token, migrating: true
 
   scope :impersonated, -> { where.not(impersonated_by_id: nil) }
   scope :not_impersonated, -> { where(impersonated_by_id: nil) }

@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_08_19_143807) do
+ActiveRecord::Schema.define(version: 2022_08_21_185157) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -966,6 +966,8 @@ ActiveRecord::Schema.define(version: 2022_08_19_143807) do
     t.string "docusign_template_id"
     t.bigint "representative_id"
     t.text "api_key_ciphertext"
+    t.string "api_key_bidx"
+    t.index ["api_key_bidx"], name: "index_partners_on_api_key_bidx", unique: true
     t.index ["representative_id"], name: "index_partners_on_representative_id"
   end
 
@@ -1295,7 +1297,9 @@ ActiveRecord::Schema.define(version: 2022_08_19_143807) do
     t.bigint "webauthn_credential_id"
     t.datetime "expiration_at", null: false
     t.text "session_token_ciphertext"
+    t.string "session_token_bidx"
     t.index ["impersonated_by_id"], name: "index_user_sessions_on_impersonated_by_id"
+    t.index ["session_token_bidx"], name: "index_user_sessions_on_session_token_bidx"
     t.index ["user_id"], name: "index_user_sessions_on_user_id"
     t.index ["webauthn_credential_id"], name: "index_user_sessions_on_webauthn_credential_id"
   end
