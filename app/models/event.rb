@@ -71,7 +71,7 @@ class Event < ApplicationRecord
 
   include AASM
   include PgSearch::Model
-  pg_search_scope :search_name, against: [:name, :slug, :id], using: { tsearch: { prefix: true, dictionary: "english" } }
+  pg_search_scope :search_name, against: [:name, :slug, :id], using: { tsearch: { prefix: true, dictionary: "simple" } }
 
   monetize :total_fees_v2_cents
 
