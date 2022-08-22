@@ -14,7 +14,7 @@ module PendingTransactionEngine
       def preload_associations!
         hcb_code_codes = @pending_transactions.map(&:hcb_code)
         hcb_code_objects = HcbCode
-                           .includes(:receipts, :comments, :canonical_transactions, :canonical_pending_transactions)
+                           .includes(:receipts, :comments, :canonical_transactions, :canonical_pending_transactions, :tags)
                            .where(hcb_code: hcb_code_codes)
         hcb_code_by_code = hcb_code_objects.index_by(&:hcb_code)
 
