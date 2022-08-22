@@ -51,4 +51,13 @@ RSpec.describe CanonicalTransaction, type: :model do
       expect(canonical_transaction).to be_valid
     end
   end
+
+  describe "#search_memo" do
+    context "when the memo is a partial match for the search query" do
+      it "still finds the transaction" do
+        canonical_transaction = create(:canonical_transaction, memo: "POSTAGE GOSHIPPO.COM")
+        expect(CanonicalTransaction.search_memo("go shippo")).to contain_exactly(canonical_transaction)
+      end
+    end
+  end
 end

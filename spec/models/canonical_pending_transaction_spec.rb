@@ -7,6 +7,11 @@ RSpec.describe CanonicalPendingTransaction, type: :model do
 
   let(:canonical_pending_transaction) { canonical_pending_transactions(:canonical_pending_transaction1) }
 
+  it "factory is valid" do
+    canonical_pending_transaction = create(:canonical_pending_transaction)
+    expect(canonical_pending_transaction).to be_valid
+  end
+
   it "is valid" do
     expect(canonical_pending_transaction).to be_valid
   end
@@ -74,6 +79,15 @@ RSpec.describe CanonicalPendingTransaction, type: :model do
       sc = canonical_pending_transaction.stripe_card
 
       expect(sc).to eql(stripe_card)
+    end
+  end
+
+  describe "#search_memo" do
+    context "when the memo is a partial match for the search query" do
+      it "still finds the transaction" do
+        canonical_pending_transaction = create(:canonical_pending_transaction, memo: "POSTAGE GOSHIPPO.COM")
+        expect(CanonicalPendingTransaction.search_memo("go shippo")).to contain_exactly(canonical_pending_transaction)
+      end
     end
   end
 end

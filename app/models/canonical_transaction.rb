@@ -25,7 +25,7 @@ class CanonicalTransaction < ApplicationRecord
   include Receiptable
 
   include PgSearch::Model
-  pg_search_scope :search_memo, against: [:memo, :friendly_memo, :custom_memo, :hcb_code], using: { tsearch: { prefix: true, dictionary: "english" } }, ranked_by: "canonical_transactions.date"
+  pg_search_scope :search_memo, against: [:memo, :friendly_memo, :custom_memo, :hcb_code], using: { tsearch: { any_word: true, prefix: true, dictionary: "english" } }, ranked_by: "canonical_transactions.date"
   pg_search_scope :pg_text_search, lambda { |query, **args| { query: query }.merge(**args) }
 
   scope :unmapped, -> { includes(:canonical_event_mapping).where(canonical_event_mappings: { canonical_transaction_id: nil }) }
