@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
 
   before_action do
-    if current_user&.admin?
+    if current_user&.admin? || current_session&.impersonated_by&.admin?
       Rack::MiniProfiler.authorize_request
     end
   end
