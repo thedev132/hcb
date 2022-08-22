@@ -176,7 +176,11 @@
       <% end %>
       <p>
         <strong>Paid at</strong>
-        <%= format_datetime @invoice.payout_creation_queued_at %>
+        <% if @invoice.manually_marked_as_paid? %>
+          <%= format_datetime @invoice.manually_marked_as_paid_at %>
+        <% else %>
+          <%= format_datetime @invoice.payout_creation_queued_at %>
+        <% end %>
       </p>
       <% admin_tools do %>
         <%= invoice_payout_datetime %>
