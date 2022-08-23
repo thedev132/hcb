@@ -79,12 +79,12 @@
                     <%= tag.label %>
                   <% end %>
                 <% end %>
-                <% if (@event || pt.local_hcb_code.event).tags.count > 0 %>
+                <% if (@event || pt.local_hcb_code.event).tags.any? %>
                   <div class="menu__divider"></div>
                 <% end %>
                 <%= form_with url: event_tags_path(@event || pt.local_hcb_code.event), data: { turbo: true } do |form| %>
                   <%= form.hidden_field :hcb_code_id, value: pt.local_hcb_code.hashid %>
-                  <%= form.text_field :label, data: { behavior: "menu_input #{"menu_input--autofocus" if (@event || pt.local_hcb_code.event).tags.count == 0}" }, class: "menu__input", placeholder: "+ Create tag", autocomplete: "off", required: true %>
+                  <%= form.text_field :label, data: { behavior: "menu_input #{"menu_input--autofocus" if (@event || pt.local_hcb_code.event).tags.none?}" }, class: "menu__input", placeholder: "+ Create tag", autocomplete: "off", required: true %>
                 <% end %>
               </div>
             </div>
