@@ -31,7 +31,7 @@ class EventsController < ApplicationController
     end
 
     @transactions = Kaminari.paginate_array(TransactionGroupingEngine::Transaction::All.new(event_id: @event.id, search: params[:q]).run).page(params[:page]).per(100)
-    TransactionGroupingEngine::Transaction::AssociationPreloader.new(transactions: @transactions).run!
+    TransactionGroupingEngine::Transaction::AssociationPreloader.new(transactions: @transactions, event: @event).run!
   end
 
   def fees
@@ -414,7 +414,7 @@ class EventsController < ApplicationController
     return [] unless using_transaction_engine_v2? && using_pending_transaction_engine?
 
     pending_transactions = PendingTransactionEngine::PendingTransaction::All.new(event_id: @event.id, search: params[:q]).run
-    PendingTransactionEngine::PendingTransaction::AssociationPreloader.new(pending_transactions: pending_transactions).run!
+    PendingTransactionEngine::PendingTransaction::AssociationPreloader.new(pending_transactions: pending_transactions, event: @event).run!
     pending_transactions
   end
 
