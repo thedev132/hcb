@@ -45,6 +45,10 @@ module Api
         hcb_code.event
       end
 
+      expose_associated Tag, documentation: { type: "array" }, as: :tags do |hcb_code, options|
+        hcb_code.tags
+      end
+
       when_showing LinkedObjectBase::API_LINKED_OBJECT_TYPE do
         [
           {
