@@ -15,7 +15,10 @@ module StaticPagesHelper
 
   def flavor_text
     if Rails.env.development?
-      "Development Mode"
+      [
+        "Hack the Bank Mode",
+        "Development Mode"
+      ].sample
     else
       birthday = birthday_flavor_text
       return birthday unless birthday.nil?

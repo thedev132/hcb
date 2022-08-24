@@ -8,7 +8,7 @@
     <span class="h3 caps secondary block">Welcome to</span>
     <span class="primary nowrap">Hack&nbsp;Club Bank</span>
   </div>
-  <span class="badge ml0 h5 caps"><%= flavor_text.html_safe %></span>
+  <span class="badge ml0 h5 caps #{'bg-success' if Rails.env.development?}"><%= flavor_text.html_safe %></span>
 </h1>
 
 <main class="flex flex-column items-center center pb3">
