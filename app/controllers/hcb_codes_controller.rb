@@ -137,7 +137,7 @@ class HcbCodesController < ApplicationController
     authorize hcb_code
     authorize tag
 
-    raise Pundit::NotAuthorizedError if tag.event != hcb_code.event
+    raise Pundit::NotAuthorizedError unless hcb_code.events.include?(tag.event)
 
     if hcb_code.tags.exists?(tag.id)
       hcb_code.tags.destroy(tag)
