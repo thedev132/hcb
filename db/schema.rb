@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_08_21_185157) do
+ActiveRecord::Schema.define(version: 2022_08_24_144918) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -698,6 +698,8 @@ ActiveRecord::Schema.define(version: 2022_08_21_185157) do
   create_table "hcb_codes_tags", id: false, force: :cascade do |t|
     t.bigint "hcb_code_id", null: false
     t.bigint "tag_id", null: false
+    t.datetime "created_at", precision: 6
+    t.datetime "updated_at", precision: 6
     t.index ["hcb_code_id", "tag_id"], name: "index_hcb_codes_tags_on_hcb_code_id_and_tag_id", unique: true
   end
 
