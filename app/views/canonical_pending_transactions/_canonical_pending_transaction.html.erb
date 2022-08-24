@@ -91,7 +91,7 @@
           <% end %>
         </div>
 
-        <% if Flipper.enabled?(:transaction_tags_2022_07_29, event) %>
+        <% if Flipper.enabled?(:transaction_tags_2022_07_29, @event) %>
           <div class="flex flex-wrap" style="gap: 0.25rem">
             <% pt.local_hcb_code.tags.each do |tag| %>
               <%= badge_for tag.label, class: "tx-tag m0 shrink-none" %>
