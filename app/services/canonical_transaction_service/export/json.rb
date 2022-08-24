@@ -25,7 +25,7 @@ module CanonicalTransactionService
       def row(ct)
         {
           date: ct.date,
-          memo: ct.smart_memo,
+          memo: ct.local_hcb_code.memo,
           amount_cents: ct.amount_cents
         }
       end

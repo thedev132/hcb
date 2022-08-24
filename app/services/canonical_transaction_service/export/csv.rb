@@ -32,7 +32,7 @@ module CanonicalTransactionService
       end
 
       def row(ct)
-        ::CSV::Row.new(headers, [ct.date, ct.smart_memo, ct.amount_cents])
+        ::CSV::Row.new(headers, [ct.date, ct.local_hcb_code.memo, ct.amount_cents])
       end
 
       def headers
