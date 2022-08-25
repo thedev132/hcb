@@ -278,24 +278,21 @@ class EventsController < ApplicationController
       canceled: @ach_transfers.rejected.sum(:amount) + @checks.canceled.sum(:amount) + @disbursements.rejected.sum(:amount)
     }
 
-    # only search/filter transfers if organizer is signed in
-    if organizer_signed_in?
-      @ach_transfers = @ach_transfers.in_transit if params[:filter] == "in_transit"
-      @ach_transfers = @ach_transfers.deposited if params[:filter] == "deposited"
-      @ach_transfers = @ach_transfers.rejected if params[:filter] == "canceled"
-      @ach_transfers = @ach_transfers.search_recipient(params[:q]) if params[:q].present?
+    @ach_transfers = @ach_transfers.in_transit if params[:filter] == "in_transit"
+    @ach_transfers = @ach_transfers.deposited if params[:filter] == "deposited"
+    @ach_transfers = @ach_transfers.rejected if params[:filter] == "canceled"
+    @ach_transfers = @ach_transfers.search_recipient(params[:q]) if params[:q].present?
 
-      @checks = @checks.in_transit_or_in_transit_and_processed if params[:filter] == "in_transit"
-      @checks = @checks.deposited if params[:filter] == "deposited"
-      @checks = @checks.canceled if params[:filter] == "canceled"
-      @checks = @checks.search_recipient(params[:q]) if params[:q].present?
+    @checks = @checks.in_transit_or_in_transit_and_processed if params[:filter] == "in_transit"
+    @checks = @checks.deposited if params[:filter] == "deposited"
+    @checks = @checks.canceled if params[:filter] == "canceled"
+    @checks = @checks.search_recipient(params[:q]) if params[:q].present?
 
-      if @transfers_enabled
-        @disbursements = @disbursements.reviewing_or_processing if params[:filter] == "in_transit"
-        @disbursements = @disbursements.fulfilled if params[:filter] == "deposited"
-        @disbursements = @disbursements.rejected if params[:filter] == "canceled"
-        @disbursements = @disbursements.search_name(params[:q]) if params[:q].present?
-      end
+    if @transfers_enabled
+      @disbursements = @disbursements.reviewing_or_processing if params[:filter] == "in_transit"
+      @disbursements = @disbursements.fulfilled if params[:filter] == "deposited"
+      @disbursements = @disbursements.rejected if params[:filter] == "canceled"
+      @disbursements = @disbursements.search_name(params[:q]) if params[:q].present?
     end
 
     @transfers = (@checks + @ach_transfers + @disbursements).sort_by { |o| o.created_at }.reverse!
