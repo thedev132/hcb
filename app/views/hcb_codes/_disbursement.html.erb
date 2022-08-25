@@ -25,6 +25,16 @@
   </h2>
 
   <section class="card__banner card__darker details-horiz border-top border-bottom">
+    <% unless @hcb_code.disbursement.requested_by.nil? || @hcb_code.disbursement.fulfilled_by.nil? %>
+      <p>
+        <strong>Sent by</strong>
+        <%= user_mention @hcb_code.disbursement.requested_by %>
+      </p>
+      <% admin_tools('', 'p') do %>
+        <strong>Fulfilled by</strong>
+        <%= user_mention @hcb_code.disbursement.fulfilled_by  %>
+      <% end %>
+    <% end %>
     <p>
       <strong>Transferred at</strong>
       <%= format_datetime @hcb_code.disbursement.created_at %>
