@@ -18,6 +18,10 @@ RSpec.describe Partner, type: :model do
     expect(Partner.find_by(api_key: api_key)).to eq(partner)
   end
 
+  it "sets a default (encrypted) api_key" do
+    expect(partner.api_key_ciphertext).to be_present
+  end
+
   context "when slug is reserved" do
     it "fails" do
       partner.slug = "connect"

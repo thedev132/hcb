@@ -26,7 +26,6 @@
 #  manually_marked_as_paid_reason                               :text
 #  memo                                                         :text
 #  number                                                       :text
-#  payment_method_ach_credit_transfer_account_number            :text
 #  payment_method_ach_credit_transfer_account_number_ciphertext :text
 #  payment_method_ach_credit_transfer_bank_name                 :text
 #  payment_method_ach_credit_transfer_routing_number            :text
@@ -129,7 +128,10 @@ class Invoice < ApplicationRecord
   belongs_to :fee_reimbursement, required: false
   belongs_to :archived_by, class_name: "User", required: false
 
-  has_encrypted :payment_method_ach_credit_transfer_account_number, migrating: true
+  has_encrypted :payment_method_ach_credit_transfer_account_number
+
+  # TODO(2541): temporary until unencrypted column is dropped
+  self.ignored_columns = ["payment_method_ach_credit_transfer_account_number"]
 
   has_one_attached :manually_marked_as_paid_attachment
 

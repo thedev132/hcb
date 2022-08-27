@@ -9,7 +9,6 @@
 #  failure_count                 :integer          default(0)
 #  is_positive_pay               :boolean
 #  name                          :text
-#  plaid_access_token            :text
 #  plaid_access_token_ciphertext :text
 #  should_sync                   :boolean          default(TRUE)
 #  should_sync_v2                :boolean          default(FALSE)
@@ -23,7 +22,10 @@ class BankAccount < ApplicationRecord
 
   has_many :transactions
 
-  has_encrypted :plaid_access_token, migrating: true
+  has_encrypted :plaid_access_token
+
+  # TODO(2541): temporary until unencrypted column is dropped
+  self.ignored_columns = ["plaid_access_token"]
 
   scope :syncing, -> { where(should_sync: true) }
   scope :syncing_v2, -> { where(should_sync_v2: true) }

@@ -5,7 +5,6 @@
 # Table name: partners
 #
 #  id                        :bigint           not null, primary key
-#  api_key                   :text
 #  api_key_bidx              :string
 #  api_key_ciphertext        :text
 #  external                  :boolean          default(TRUE), not null
@@ -34,8 +33,6 @@ class Partner < ApplicationRecord
 
   EXCLUDED_SLUGS = %w(connect api donations donation connects organization organizations).freeze
 
-  attribute :api_key, :string, default: -> { new_api_key }
-
   has_many :events
   has_many :partnered_signups
   has_many :partner_donations, through: :events
@@ -46,10 +43,16 @@ class Partner < ApplicationRecord
   validates :slug, exclusion: { in: EXCLUDED_SLUGS }, uniqueness: true
   validates :api_key, presence: true, uniqueness: true
 
-  has_encrypted :stripe_api_key
+  has_encrypted :stripe_api_key, :api_key
 
-  has_encrypted :api_key, migrating: true
-  blind_index :api_key, migrating: true
+  blind_index :api_key
+
+  after_initialize do
+    self.api_key ||= new_api_key
+  end
+
+  # TODO(2541): temporary until unencrypted column is dropped
+  self.ignored_columns = ["api_key"]
 
   def add_user_to_partnered_event!(user_email:, event:)
     # @msw: I take full responsibility the aweful way this is being implemented.

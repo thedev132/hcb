@@ -14,7 +14,6 @@
 #  longitude                :decimal(, )
 #  os_info                  :string
 #  peacefully_expired       :boolean
-#  session_token            :text
 #  session_token_bidx       :string
 #  session_token_ciphertext :text
 #  timezone                 :string
@@ -45,8 +44,11 @@ class UserSession < ApplicationRecord
   belongs_to :webauthn_credential, optional: true
   has_one :login_token, required: false
 
-  has_encrypted :session_token, migrating: true
-  blind_index :session_token, migrating: true
+  has_encrypted :session_token
+  blind_index :session_token
+
+  # TODO(2541): temporary until unencrypted column is dropped
+  self.ignored_columns = ["session_token"]
 
   scope :impersonated, -> { where.not(impersonated_by_id: nil) }
   scope :not_impersonated, -> { where(impersonated_by_id: nil) }
