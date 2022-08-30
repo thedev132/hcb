@@ -372,6 +372,7 @@ module StaticPagesHelper
         "not available offline!",
         "as seen online",
         "online only!",
+        "Hack Club Bank? More like Wack Club Jank.",
         "hello fellow kids!",
         "we hope you enjoyed your flight with us today!",
         "new strawberry flavor!",
