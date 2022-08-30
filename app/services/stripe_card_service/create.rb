@@ -5,7 +5,7 @@ module StripeCardService
     def initialize(current_user:, event_id:,
                    card_type:,
                    stripe_shipping_name: nil, stripe_shipping_address_city: nil, stripe_shipping_address_state: nil,
-                   stripe_shipping_address_line1: nil, stripe_shipping_address_line2: nil, stripe_shipping_address_postal_code: nil)
+                   stripe_shipping_address_line1: nil, stripe_shipping_address_line2: nil, stripe_shipping_address_postal_code: nil, stripe_shipping_address_country: "US")
       @current_user = current_user
       @event_id = event_id
 
@@ -16,6 +16,7 @@ module StripeCardService
       @stripe_shipping_address_line1 = stripe_shipping_address_line1
       @stripe_shipping_address_line2 = stripe_shipping_address_line2
       @stripe_shipping_address_postal_code = stripe_shipping_address_postal_code
+      @stripe_shipping_address_country = stripe_shipping_address_country
     end
 
     def run
@@ -43,7 +44,7 @@ module StripeCardService
         stripe_shipping_name: @stripe_shipping_name,
         stripe_shipping_address_city: @stripe_shipping_address_city,
         stripe_shipping_address_state: @stripe_shipping_address_state,
-        stripe_shipping_address_country: "US",
+        stripe_shipping_address_country: @stripe_shipping_address_country,
         stripe_shipping_address_line1: @stripe_shipping_address_line1,
         stripe_shipping_address_line2: formatted_stripe_shipping_address_line2,
         stripe_shipping_address_postal_code: @stripe_shipping_address_postal_code
@@ -83,7 +84,7 @@ module StripeCardService
             line2: formatted_stripe_shipping_address_line2,
             city: @stripe_shipping_address_city,
             state: @stripe_shipping_address_state,
-            country: "US",
+            country: @stripe_shipping_address_country,
             postal_code: @stripe_shipping_address_postal_code
           }.compact
         }.compact

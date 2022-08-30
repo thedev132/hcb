@@ -63,6 +63,9 @@ class StripeCardsController < ApplicationController
     authorize event, :user_or_admin?, policy_class: EventPolicy
 
     sc = params[:stripe_card]
+
+    return redirect_back fallback_location: event_cards_new_path(event), flash: { error: "Invalid country" } unless %w(US CA).include? sc[:stripe_shipping_address_country]
+
     attrs = {
       current_user: current_user,
       event_id: event.id,
@@ -73,6 +76,7 @@ class StripeCardsController < ApplicationController
       stripe_shipping_address_line1: sc[:stripe_shipping_address_line1],
       stripe_shipping_address_line2: sc[:stripe_shipping_address_line2],
       stripe_shipping_address_postal_code: sc[:stripe_shipping_address_postal_code],
+      stripe_shipping_address_country: sc[:stripe_shipping_address_country],
     }
     ::StripeCardService::Create.new(attrs).run
 

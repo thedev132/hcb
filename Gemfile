@@ -226,3 +226,5 @@ gem "geo_pattern", "~> 1.4" # for procedurally generated patterns on Cards
 gem "comma", "~> 4.6"
 
 gem "rack-mini-profiler", "~> 3.0"
+
+gem "country_select", "~> 8.0"
