@@ -4,28 +4,31 @@
 #
 # Table name: users
 #
-#  id                       :bigint           not null, primary key
-#  admin_at                 :datetime
-#  api_access_token         :text
-#  birthday                 :date
-#  email                    :text
-#  full_name                :string
-#  phone_number             :text
-#  phone_number_verified    :boolean          default(FALSE)
-#  pretend_is_not_admin     :boolean          default(FALSE), not null
-#  session_duration_seconds :integer          default(2592000), not null
-#  sessions_reported        :boolean          default(FALSE), not null
-#  slug                     :string
-#  use_sms_auth             :boolean          default(FALSE)
-#  created_at               :datetime         not null
-#  updated_at               :datetime         not null
-#  webauthn_id              :string
+#  id                          :bigint           not null, primary key
+#  admin_at                    :datetime
+#  api_access_token            :text
+#  api_access_token_bidx       :string
+#  api_access_token_ciphertext :text
+#  birthday                    :date
+#  email                       :text
+#  full_name                   :string
+#  phone_number                :text
+#  phone_number_verified       :boolean          default(FALSE)
+#  pretend_is_not_admin        :boolean          default(FALSE), not null
+#  session_duration_seconds    :integer          default(2592000), not null
+#  sessions_reported           :boolean          default(FALSE), not null
+#  slug                        :string
+#  use_sms_auth                :boolean          default(FALSE)
+#  created_at                  :datetime         not null
+#  updated_at                  :datetime         not null
+#  webauthn_id                 :string
 #
 # Indexes
 #
-#  index_users_on_api_access_token  (api_access_token) UNIQUE
-#  index_users_on_email             (email) UNIQUE
-#  index_users_on_slug              (slug) UNIQUE
+#  index_users_on_api_access_token       (api_access_token) UNIQUE
+#  index_users_on_api_access_token_bidx  (api_access_token_bidx) UNIQUE
+#  index_users_on_email                  (email) UNIQUE
+#  index_users_on_slug                   (slug) UNIQUE
 #
 class User < ApplicationRecord
   has_paper_trail
@@ -76,6 +79,9 @@ class User < ApplicationRecord
 
   before_create :format_number
   before_save :on_phone_number_update
+
+  has_encrypted :api_access_token, migrating: true
+  blind_index :api_access_token, migrating: true
 
   validate on: :update do
     if full_name.blank? && full_name_in_database.present?
