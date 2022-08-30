@@ -20,7 +20,8 @@
     bottom: 0;
     left: 0;
     right: 0;
-    padding: 0.5rem 1rem 1.5rem;
+    border-bottom: rgba(255, 255, 255, 0.98) solid 1rem;
+    padding: 0.5rem 1rem;
     @supports (padding: env(safe-area-inset-bottom)) {
       padding-bottom: env(safe-area-inset-bottom) !important;
     }
@@ -32,14 +33,17 @@
     z-index: 3;
     background-color: rgba(255, 255, 255, 0.98);
     @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
-      background-color: rgba(255, 255, 255, 0.75);
+      background-color: rgba(255, 255, 255, 0.90);
+      border-bottom: rgba(255, 255, 255, 0.90) solid 1rem;
       -webkit-backdrop-filter: saturate(180%) blur(12px);
     }
 
     html[data-dark='true'] & {
       background-color: rgba(0, 0, 0, 0.875);
+      border-bottom: rgba(0, 0, 0, 0.875) solid 1rem;
       @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
-        background-color: rgba(0, 0, 0, 0.75);
+        background-color: rgba(0, 0, 0, 0.8);
+        border-bottom: rgba(0, 0, 0, 0.8) solid 1rem;
         -webkit-backdrop-filter: saturate(180%) blur(12px);
       }
     }
