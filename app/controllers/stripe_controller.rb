@@ -82,10 +82,12 @@ class StripeController < ApplicationController
     # Mark invoice as paid
     InvoiceService::OpenToPaid.new(invoice_id: invoice.id).run
 
-    # Import to the ledger
-    rpit = ::PendingTransactionEngine::RawPendingInvoiceTransactionService::Invoice::ImportSingle.new(invoice: invoice).run
-    cpt = ::PendingTransactionEngine::CanonicalPendingTransactionService::ImportSingle::Invoice.new(raw_pending_invoice_transaction: rpit).run
-    ::PendingEventMappingEngine::Map::Single::Invoice.new(canonical_pending_transaction: cpt).run
+    unless invoice.manually_marked_as_paid?
+      # Import to the ledger
+      rpit = ::PendingTransactionEngine::RawPendingInvoiceTransactionService::Invoice::ImportSingle.new(invoice: invoice).run
+      cpt = ::PendingTransactionEngine::CanonicalPendingTransactionService::ImportSingle::Invoice.new(raw_pending_invoice_transaction: rpit).run
+      ::PendingEventMappingEngine::Map::Single::Invoice.new(canonical_pending_transaction: cpt).run
+    end
   end
 
   def handle_charge_dispute_funds_withdrawn(event)
