@@ -101,6 +101,9 @@ class HcbCode < ApplicationRecord
     @amount_cents ||= begin
       return canonical_transactions.sum(:amount_cents) if canonical_transactions.exists?
 
+      # ACH transfers that haven't been sent don't have any CPTs
+      return ach_transfer.amount if ach_transfer?
+
       canonical_pending_transactions.sum(:amount_cents)
     end
   end
