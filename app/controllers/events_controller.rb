@@ -295,7 +295,7 @@ class EventsController < ApplicationController
       @disbursements = @disbursements.search_name(params[:q]) if params[:q].present?
     end
 
-    @transfers = (@checks + @ach_transfers + @disbursements).sort_by { |o| o.created_at }.reverse!
+    @transfers = Kaminari.paginate_array((@checks + @ach_transfers + @disbursements).sort_by { |o| o.created_at }.reverse!).page(params[:page]).per(100)
   end
 
   def promotions
