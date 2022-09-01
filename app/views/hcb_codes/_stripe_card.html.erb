@@ -201,32 +201,38 @@
   <article class="details-horiz">
     <div class="mt1 md-mt0" style="width: 100%;">
       <p class="details__simulated">
-        <strong>Payment type</strong>
+        <strong>Type</strong>
         <span class="pl1">
-        <%= @hcb_code.pt.raw_pending_stripe_transaction.stripe_transaction["authorization_method"].humanize.capitalize %></span>
+        <%= @hcb_code.pt.raw_pending_stripe_transaction.stripe_transaction["authorization_method"].humanize.capitalize %>
         </span>
       </p>
-      <p class="details__simulated">
-        <strong><%= country_to_emoji @merchant_data["country"] %></strong>
-        <span>Payment country</span>
-      </p>
+      <% if @hcb_code.pt.raw_pending_stripe_transaction.stripe_transaction["authorization_method"] == "contactless" && !@hcb_code.pt.raw_pending_stripe_transaction.stripe_transaction["wallet"].nil? %>
+        <p class="details__simulated">
+          <strong>Wallet</strong>
+          <span class="pl1"><%= @hcb_code.pt.raw_pending_stripe_transaction.stripe_transaction["wallet"].titleize %></span>
+        </p>
+      <% end %>
+    </div>
+
+    <div class="mt1 md-mt0" style="width: 100%;">
       <p class="details__simulated">
         <%= stripe_verification_check_badge 'address_line1' %>
         <span>Address check</span>
       </p>
+      <p class="details__simulated">
+        <%= stripe_verification_check_badge 'address_postal_code' %>
+        <span>Zip check</span>
+      </p>
     </div>
+
     <div class="mt1 md-mt0" style="width: 100%;">
       <p class="details__simulated">
         <%= stripe_verification_check_badge 'expiry' %>
-        <span>Expiration check</span>
+        <span>Expiry check</span>
       </p>
       <p class="details__simulated">
         <%= stripe_verification_check_badge 'cvc' %>
         <span>CVC check</span>
-      </p>
-      <p class="details__simulated">
-        <%= stripe_verification_check_badge 'address_postal_code' %>
-        <span>Zip check</span>
       </p>
     </div>
   </article>
