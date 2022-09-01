@@ -18,8 +18,10 @@ module Api
           # However, for Disbursements, this will always result in an
           # amount_cents of 0 (zero) since there are two equal, by opposite,
           # Canonical Transactions. Therefore, for the API, we are overriding the
-          # default amount_cents exposure defined in the LinkedObjectBase.k0jjkk
+          # default amount_cents exposure defined in the LinkedObjectBase.
           next hcb_code.disbursement.amount if hcb_code.disbursement?
+          next hcb_code.donation.amount if hcb_code.donation?
+          next hcb_code.ach_transfer.amount if hcb_code.ach_transfer?
 
           hcb_code.amount_cents
         end
