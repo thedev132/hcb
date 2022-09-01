@@ -80,8 +80,11 @@ class User < ApplicationRecord
   before_create :format_number
   before_save :on_phone_number_update
 
-  has_encrypted :api_access_token, migrating: true
-  blind_index :api_access_token, migrating: true
+  has_encrypted :api_access_token
+  blind_index :api_access_token
+
+  # TODO(2541): temporary until unencrypted column is dropped
+  self.ignored_columns = ["api_access_token"]
 
   validate on: :update do
     if full_name.blank? && full_name_in_database.present?

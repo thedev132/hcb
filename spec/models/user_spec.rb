@@ -174,7 +174,7 @@ RSpec.describe User, type: :model do
 
         expect do
           create(:user, api_access_token: token)
-        end.to raise_error(ActiveRecord::RecordNotUnique, /index_users_on_api_access_token\b/)
+        end.to raise_error(ActiveRecord::RecordNotUnique, /index_users_on_api_access_token_bidx\b/)
       end
     end
   end
