@@ -130,9 +130,6 @@ class Invoice < ApplicationRecord
 
   has_encrypted :payment_method_ach_credit_transfer_account_number
 
-  # TODO(2541): temporary until unencrypted column is dropped
-  self.ignored_columns = ["payment_method_ach_credit_transfer_account_number"]
-
   has_one_attached :manually_marked_as_paid_attachment
 
   aasm do

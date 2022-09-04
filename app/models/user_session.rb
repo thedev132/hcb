@@ -47,9 +47,6 @@ class UserSession < ApplicationRecord
   has_encrypted :session_token
   blind_index :session_token
 
-  # TODO(2541): temporary until unencrypted column is dropped
-  self.ignored_columns = ["session_token"]
-
   scope :impersonated, -> { where.not(impersonated_by_id: nil) }
   scope :not_impersonated, -> { where(impersonated_by_id: nil) }
 

@@ -24,9 +24,6 @@ class BankAccount < ApplicationRecord
 
   has_encrypted :plaid_access_token
 
-  # TODO(2541): temporary until unencrypted column is dropped
-  self.ignored_columns = ["plaid_access_token"]
-
   scope :syncing, -> { where(should_sync: true) }
   scope :syncing_v2, -> { where(should_sync_v2: true) }
   scope :failing, -> { where("failed_at is not null") }

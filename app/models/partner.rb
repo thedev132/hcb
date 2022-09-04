@@ -51,9 +51,6 @@ class Partner < ApplicationRecord
     self.api_key ||= new_api_key
   end
 
-  # TODO(2541): temporary until unencrypted column is dropped
-  self.ignored_columns = ["api_key"]
-
   def add_user_to_partnered_event!(user_email:, event:)
     # @msw: I take full responsibility the aweful way this is being implemented.
     # To my future self, or other devs: this should be moved to a service, and
