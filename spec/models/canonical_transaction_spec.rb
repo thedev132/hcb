@@ -7,12 +7,12 @@ RSpec.describe CanonicalTransaction, type: :model do
 
   let(:canonical_transaction) { canonical_transactions(:canonical_transaction1) }
 
-  it "factory is valid" do
-    canonical_transaction = create(:canonical_transaction)
+  it "is valid" do
     expect(canonical_transaction).to be_valid
   end
 
-  it "is valid" do
+  it "factory is valid" do
+    canonical_transaction = create(:canonical_transaction)
     expect(canonical_transaction).to be_valid
   end
 
@@ -58,6 +58,13 @@ RSpec.describe CanonicalTransaction, type: :model do
         canonical_transaction = create(:canonical_transaction, memo: "POSTAGE GOSHIPPO.COM")
         expect(CanonicalTransaction.search_memo("go shippo")).to contain_exactly(canonical_transaction)
       end
+    end
+  end
+
+  describe "hcb_code" do
+    it "is reachable from the canonical transaction" do
+      canonical_transaction = create(:canonical_transaction)
+      expect(canonical_transaction.local_hcb_code).to be_present
     end
   end
 end

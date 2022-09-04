@@ -76,6 +76,7 @@ class CanonicalTransaction < ApplicationRecord
   validates :friendly_memo, presence: true, allow_nil: true
   validates :custom_memo, presence: true, allow_nil: true
 
+  after_create :write_hcb_code
   after_create_commit :write_system_event
 
   def smart_memo
@@ -271,9 +272,19 @@ class CanonicalTransaction < ApplicationRecord
 
   private
 
+  def write_hcb_code
+    safely do
+      code = ::TransactionGroupingEngine::Calculate::HcbCode.new(canonical_transaction_or_canonical_pending_transaction: self).run
+
+      self.update_column(:hcb_code, code)
+
+      ::HcbCodeService::FindOrCreate.new(hcb_code: code).run
+    end
+  end
+
   def hashed_transaction
     @hashed_transaction ||= begin
-      Airbrake.notify("There was more (or less) than 1 hashed_transaction for canonical_transaction: #{canonical_transaction.id}") if hashed_transactions.count != 1
+      Airbrake.notify("There was more (or less) than 1 hashed_transaction for canonical_transaction: #{self.id}") if hashed_transactions.count != 1
 
       hashed_transactions.first
     end

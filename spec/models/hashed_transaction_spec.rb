@@ -11,6 +11,11 @@ RSpec.describe HashedTransaction, type: :model do
     expect(hashed_transaction).to be_valid
   end
 
+  it "factory with trait plaid is valid" do
+    hashed_transaction = create(:hashed_transaction, :plaid)
+    expect(hashed_transaction).to be_valid
+  end
+
   describe "#memo" do
     context "source is emburse without memo details" do
       let(:hashed_transaction) { hashed_transactions(:hashed_transaction2) }
