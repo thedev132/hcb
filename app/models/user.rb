@@ -6,7 +6,6 @@
 #
 #  id                          :bigint           not null, primary key
 #  admin_at                    :datetime
-#  api_access_token            :text
 #  api_access_token_bidx       :string
 #  api_access_token_ciphertext :text
 #  birthday                    :date
@@ -25,7 +24,6 @@
 #
 # Indexes
 #
-#  index_users_on_api_access_token       (api_access_token) UNIQUE
 #  index_users_on_api_access_token_bidx  (api_access_token_bidx) UNIQUE
 #  index_users_on_email                  (email) UNIQUE
 #  index_users_on_slug                   (slug) UNIQUE

@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_08_28_185523) do
+ActiveRecord::Schema.define(version: 2022_08_28_191138) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -1303,7 +1303,6 @@ ActiveRecord::Schema.define(version: 2022_08_28_185523) do
   end
 
   create_table "users", force: :cascade do |t|
-    t.text "api_access_token"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "email"
@@ -1320,7 +1319,6 @@ ActiveRecord::Schema.define(version: 2022_08_28_185523) do
     t.date "birthday"
     t.string "api_access_token_bidx"
     t.text "api_access_token_ciphertext"
-    t.index ["api_access_token"], name: "index_users_on_api_access_token", unique: true
     t.index ["api_access_token_bidx"], name: "index_users_on_api_access_token_bidx", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["slug"], name: "index_users_on_slug", unique: true
