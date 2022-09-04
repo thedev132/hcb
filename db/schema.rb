@@ -119,7 +119,6 @@ ActiveRecord::Schema.define(version: 2022_08_28_185523) do
   end
 
   create_table "bank_accounts", force: :cascade do |t|
-    t.text "plaid_access_token"
     t.text "plaid_item_id"
     t.text "plaid_account_id"
     t.text "name"
@@ -784,7 +783,6 @@ ActiveRecord::Schema.define(version: 2022_08_28_185523) do
     t.text "payment_method_card_last4"
     t.text "payment_method_ach_credit_transfer_bank_name"
     t.text "payment_method_ach_credit_transfer_routing_number"
-    t.text "payment_method_ach_credit_transfer_account_number"
     t.text "payment_method_ach_credit_transfer_swift_code"
     t.datetime "archived_at"
     t.bigint "archived_by_id"
@@ -956,7 +954,6 @@ ActiveRecord::Schema.define(version: 2022_08_28_185523) do
 
   create_table "partners", force: :cascade do |t|
     t.string "slug", null: false
-    t.text "api_key"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.boolean "external", default: true, null: false
@@ -1283,7 +1280,6 @@ ActiveRecord::Schema.define(version: 2022_08_28_185523) do
 
   create_table "user_sessions", force: :cascade do |t|
     t.bigint "user_id"
-    t.text "session_token"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "fingerprint"
