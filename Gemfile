@@ -172,6 +172,9 @@ group :test do
 end
 
 group :production do
+  # Performance tracking
+  gem 'skylight'
+
   # Enable compression in production
   # gem "heroku-deflater"
 

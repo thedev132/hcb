@@ -1,0 +1,6 @@
+---
+# The authentication token for the application.
+# authentication: See SKYLIGHT_AUTHENTICATION in heroku
+
+# Keeping this file checked in so that `bundle exec skylight setup <setup token>`
+# from https://www.skylight.io/support/getting-started does not generate a new skylight app
