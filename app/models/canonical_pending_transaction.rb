@@ -98,6 +98,7 @@ class CanonicalPendingTransaction < ApplicationRecord
   scope :partner_donation_hcb_code, -> { where("hcb_code ilike 'HCB-#{::TransactionGroupingEngine::Calculate::HcbCode::PARTNER_DONATION_CODE}%'") }
   scope :fronted, -> { where(fronted: true) }
   scope :not_fronted, -> { where(fronted: false) }
+  scope :not_declined, -> { includes(:canonical_pending_declined_mappings).where(canonical_pending_declined_mappings: { canonical_pending_transaction_id: nil }) }
 
   validates :custom_memo, presence: true, allow_nil: true
 
@@ -123,6 +124,8 @@ class CanonicalPendingTransaction < ApplicationRecord
   end
 
   def fronted_amount
+    return 0 if declined?
+
     pts = local_hcb_code.canonical_pending_transactions.includes(:canonical_pending_event_mapping).where(canonical_pending_event_mapping: { event_id: event.id })
                         .where(fronted: true)
                         .order(date: :asc, id: :asc)
