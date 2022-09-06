@@ -30,7 +30,7 @@ class ChecksController < ApplicationController
 
       payment_for: filtered_params[:payment_for],
       memo: filtered_params[:memo],
-      amount_cents: (filtered_params[:amount].to_f * 100).to_i,
+      amount_cents_string: filtered_params[:amount],
       send_date: Time.now.utc + 48.hours,
 
       current_user: current_user
