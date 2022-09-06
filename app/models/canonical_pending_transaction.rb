@@ -20,6 +20,7 @@
 #  raw_pending_outgoing_ach_transaction_id          :bigint
 #  raw_pending_outgoing_check_transaction_id        :bigint
 #  raw_pending_outgoing_disbursement_transaction_id :bigint
+#  raw_pending_partner_donation_transaction_id      :bigint
 #  raw_pending_stripe_transaction_id                :bigint
 #
 # Indexes

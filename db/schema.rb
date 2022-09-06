@@ -16,6 +16,7 @@ ActiveRecord::Schema.define(version: 2022_08_28_191138) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
+  enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
 
   create_table "ach_transfers", force: :cascade do |t|
@@ -30,8 +31,8 @@ ActiveRecord::Schema.define(version: 2022_08_28_191138) do
     t.datetime "updated_at", null: false
     t.string "recipient_tel"
     t.datetime "rejected_at"
-    t.text "payment_for"
     t.datetime "scheduled_arrival_date"
+    t.text "payment_for"
     t.string "aasm_state"
     t.text "confirmation_number"
     t.text "account_number_ciphertext"
@@ -256,6 +257,7 @@ ActiveRecord::Schema.define(version: 2022_08_28_191138) do
     t.bigint "raw_pending_invoice_transaction_id"
     t.text "hcb_code"
     t.bigint "raw_pending_bank_fee_transaction_id"
+    t.bigint "raw_pending_partner_donation_transaction_id"
     t.text "custom_memo"
     t.bigint "raw_pending_incoming_disbursement_transaction_id"
     t.bigint "raw_pending_outgoing_disbursement_transaction_id"
@@ -542,7 +544,7 @@ ActiveRecord::Schema.define(version: 2022_08_28_191138) do
     t.boolean "omit_stats", default: false
     t.datetime "transaction_engine_v2_at", default: -> { "CURRENT_TIMESTAMP" }
     t.datetime "last_fee_processed_at"
-    t.datetime "pending_transaction_engine_at", default: "2021-02-13 22:27:44"
+    t.datetime "pending_transaction_engine_at", default: "2021-02-13 22:49:40"
     t.string "aasm_state"
     t.string "organization_identifier", null: false
     t.string "redirect_url"
@@ -1115,18 +1117,6 @@ ActiveRecord::Schema.define(version: 2022_08_28_191138) do
     t.index ["user_id"], name: "index_receipts_on_user_id"
   end
 
-  create_table "reimbursements", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.integer "amount_cents"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.string "aasm_state"
-    t.text "reimbursement_for"
-    t.bigint "event_id", null: false
-    t.index ["event_id"], name: "index_reimbursements_on_event_id"
-    t.index ["user_id"], name: "index_reimbursements_on_user_id"
-  end
-
   create_table "selenium_sessions", force: :cascade do |t|
     t.string "aasm_state"
     t.jsonb "cookies"
@@ -1425,7 +1415,6 @@ ActiveRecord::Schema.define(version: 2022_08_28_191138) do
   add_foreign_key "raw_pending_incoming_disbursement_transactions", "disbursements"
   add_foreign_key "raw_pending_outgoing_disbursement_transactions", "disbursements"
   add_foreign_key "receipts", "users"
-  add_foreign_key "reimbursements", "users"
   add_foreign_key "sponsors", "events"
   add_foreign_key "stripe_authorizations", "stripe_cards"
   add_foreign_key "stripe_cardholders", "users"
