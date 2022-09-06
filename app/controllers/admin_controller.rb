@@ -547,6 +547,7 @@ class AdminController < ApplicationController
 
     redirect_to disbursement_process_admin_path(disbursement), flash: { success: "Success" }
   rescue => e
+    notify_airbrake e
     redirect_to disbursement_process_admin_path(params[:id]), flash: { error: e.message }
   end
 
@@ -559,6 +560,7 @@ class AdminController < ApplicationController
 
     redirect_to disbursement_process_admin_path(disbursement), flash: { success: "Success" }
   rescue => e
+    notify_airbrake e
     redirect_to disbursement_process_admin_path(params[:id]), flash: { error: e.message }
   end
 
