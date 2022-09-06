@@ -10,7 +10,7 @@ module DisbursementService
     def run
       raise ArgumentError, "Disbursement is already processed" unless @disbursement.reviewing?
 
-      @disbursement.update_attribute(attrs)
+      @disbursement.update!(attrs)
 
       decline_pending_transactions!
 
