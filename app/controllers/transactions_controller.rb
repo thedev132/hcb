@@ -199,7 +199,7 @@ class TransactionsController < ApplicationController
             fees_occured = previous_transactions.map { |t| t.fee_relationship.fee_applies ? t.fee_relationship.fee_amount : 0 }.sum
             fee_paid = previous_transactions.map { |t| t.fee_relationship.is_fee_payment ? t.amount : 0 }.sum
 
-            view_context.render_money (fees_occured + fee_paid)
+            view_context.render_money(fees_occured + fee_paid)
           elsif attr == "account_balance"
             prev_account_balance = account_balance
             account_balance -= transaction.amount

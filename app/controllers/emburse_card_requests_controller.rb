@@ -17,9 +17,10 @@ class EmburseCardRequestsController < ApplicationController
 
       emburse_card_requests.each do |cr|
         csv << attributes.map do |attr|
-          if attr == "user_email"
+          case attr
+          when "user_email"
             cr.creator.email
-          elsif attr == "event_name"
+          when "event_name"
             "##{cr.event.id} #{cr.event.name}"
           else
             cr.send(attr)

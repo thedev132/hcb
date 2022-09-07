@@ -117,7 +117,7 @@ module PendingEventMappingEngine
     end
 
     def decline_canonical_pending_donation!
-      #::PendingEventMappingEngine::Decline::Donation.new.run
+      # ::PendingEventMappingEngine::Decline::Donation.new.run
     end
 
     def map_canonical_pending_partner_donation!
@@ -137,7 +137,7 @@ module PendingEventMappingEngine
     end
 
     def decline_canonical_pending_invoice!
-      #::PendingEventMappingEngine::Decline::Invoice.new.run
+      # ::PendingEventMappingEngine::Decline::Invoice.new.run
     end
 
     def map_canonical_pending_bank_fee!

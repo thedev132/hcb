@@ -6,91 +6,6 @@
 # Note that changes in the inspected code, or installation of new
 # versions of RuboCop, may require this file to be generated again.
 
-# Offense count: 5
-# This cop supports safe auto-correction (--auto-correct).
-# Configuration parameters: EnforcedStyleAlignWith, Severity.
-# SupportedStylesAlignWith: start_of_line, begin
-Layout/BeginEndAlignment:
-  Exclude:
-    - 'app/helpers/application_helper.rb'
-    - 'app/models/user.rb'
-
-# Offense count: 1
-# This cop supports safe auto-correction (--auto-correct).
-# Configuration parameters: AllowForAlignment.
-Layout/CommentIndentation:
-  Exclude:
-    - 'config/application.rb'
-
-# Offense count: 4
-# This cop supports safe auto-correction (--auto-correct).
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: leading, trailing
-Layout/DotPosition:
-  Exclude:
-    - 'bin/yarn'
-
-# Offense count: 2
-# This cop supports safe auto-correction (--auto-correct).
-# Configuration parameters: EmptyLineBetweenMethodDefs, EmptyLineBetweenClassDefs, EmptyLineBetweenModuleDefs, AllowAdjacentOneLineDefs, NumberOfEmptyLines.
-Layout/EmptyLineBetweenDefs:
-  Exclude:
-    - 'db/migrate/20180716202116_add_event_to_load_card_requests.rb'
-
-# Offense count: 2
-# This cop supports safe auto-correction (--auto-correct).
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: empty_lines, empty_lines_except_namespace, empty_lines_special, no_empty_lines, beginning_only, ending_only
-Layout/EmptyLinesAroundClassBody:
-  Exclude:
-    - 'db/migrate/20220520051107_add_service_name_to_active_storage_blobs.active_storage.rb'
-    - 'db/migrate/20220520051108_create_active_storage_variant_records.active_storage.rb'
-
-# Offense count: 2
-# This cop supports safe auto-correction (--auto-correct).
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: normal, indented_internal_methods
-Layout/IndentationConsistency:
-  Exclude:
-    - 'config/environments/development.rb'
-    - 'config/environments/production.rb'
-
-# Offense count: 2
-# This cop supports safe auto-correction (--auto-correct).
-# Configuration parameters: AllowDoxygenCommentStyle, AllowGemfileRubyComment.
-Layout/LeadingCommentSpace:
-  Exclude:
-    - 'app/services/pending_event_mapping_engine/nightly.rb'
-
-# Offense count: 4
-# This cop supports safe auto-correction (--auto-correct).
-# Configuration parameters: EnforcedStyle, IndentationWidth.
-# SupportedStyles: aligned, indented, indented_relative_to_receiver
-Layout/MultilineMethodCallIndentation:
-  Exclude:
-    - 'bin/yarn'
-
-# Offense count: 2
-# This cop supports safe auto-correction (--auto-correct).
-Layout/RescueEnsureAlignment:
-  Exclude:
-    - 'app/helpers/application_helper.rb'
-
-# Offense count: 2
-# This cop supports safe auto-correction (--auto-correct).
-# Configuration parameters: EnforcedStyle, EnforcedStyleForEmptyBrackets.
-# SupportedStyles: space, no_space, compact
-# SupportedStylesForEmptyBrackets: space, no_space
-Layout/SpaceInsideArrayLiteralBrackets:
-  Exclude:
-    - 'config/environments/production.rb'
-
-# Offense count: 2
-# This cop supports safe auto-correction (--auto-correct).
-Layout/SpaceInsidePercentLiteralDelimiters:
-  Exclude:
-    - 'db/migrate/20220520051108_create_active_storage_variant_records.active_storage.rb'
-
 # Offense count: 1
 # Configuration parameters: AllowedMethods.
 # AllowedMethods: enums
@@ -121,12 +36,6 @@ Lint/NonLocalExitFromIterator:
   Exclude:
     - 'app/models/transaction.rb'
     - 'app/services/fee_engine/hourly.rb'
-
-# Offense count: 1
-# This cop supports safe auto-correction (--auto-correct).
-Lint/ParenthesesAsGroupedExpression:
-  Exclude:
-    - 'app/controllers/transactions_controller.rb'
 
 # Offense count: 4
 # Configuration parameters: AllowedMethods.
@@ -181,18 +90,6 @@ Naming/VariableNumber:
     - 'app/models/fee.rb'
     - 'app/policies/disbursement_policy.rb'
 
-# Offense count: 7
-# This cop supports unsafe auto-correction (--auto-correct-all).
-Style/CaseLikeIf:
-  Exclude:
-    - 'app/controllers/emburse_card_requests_controller.rb'
-    - 'app/controllers/emburse_transfers_controller.rb'
-    - 'app/helpers/donations_helper.rb'
-    - 'app/helpers/invoices_helper.rb'
-    - 'app/helpers/partner_donations_helper.rb'
-    - 'app/models/invoice.rb'
-    - 'app/services/invoice_service/sync_remote_to_local.rb'
-
 # Offense count: 4
 # This cop supports safe auto-correction (--auto-correct).
 # Configuration parameters: EnforcedStyle.
@@ -204,34 +101,11 @@ Style/ClassAndModuleChildren:
     - 'config/initializers/ahoy.rb'
     - 'config/initializers/rack_attack.rb'
 
-# Offense count: 1
-# This cop supports safe auto-correction (--auto-correct).
-Style/ExplicitBlockArgument:
-  Exclude:
-    - 'app/services/partners/stripe/charges/list.rb'
-
 # Offense count: 2
 # Configuration parameters: MaxUnannotatedPlaceholdersAllowed, IgnoredMethods.
 # SupportedStyles: annotated, template, unannotated
 Style/FormatStringToken:
   EnforcedStyle: template
-
-# Offense count: 4
-# This cop supports safe auto-correction (--auto-correct).
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: always, always_true, never
-Style/FrozenStringLiteralComment:
-  Exclude:
-    - 'config/initializers/new_framework_defaults_6_1.rb'
-    - 'config/initializers/permissions_policy.rb'
-    - 'db/migrate/20220520051107_add_service_name_to_active_storage_blobs.active_storage.rb'
-    - 'db/migrate/20220520051108_create_active_storage_variant_records.active_storage.rb'
-
-# Offense count: 1
-# This cop supports safe auto-correction (--auto-correct).
-Style/GlobalStdStream:
-  Exclude:
-    - 'config/environments/production.rb'
 
 # Offense count: 41
 # Configuration parameters: MinBodyLength, AllowConsecutiveConditionals.
@@ -244,35 +118,14 @@ Style/HashLikeCase:
   Exclude:
     - 'app/models/ach_transfer.rb'
 
-# Offense count: 1
-# This cop supports unsafe auto-correction (--auto-correct-all).
-Style/HashTransformValues:
-  Exclude:
-    - 'app/controllers/admin_controller.rb'
-
 # Offense count: 14
 # This cop supports safe auto-correction (--auto-correct).
 Style/IdenticalConditionalBranches:
   Exclude:
-    - 'app/controllers/fee_reimbursements_controller.rb'
     - 'app/controllers/g_suite_accounts_controller.rb'
     - 'app/controllers/invoices_controller.rb'
     - 'app/controllers/receipts_controller.rb'
     - 'app/services/pending_event_mapping_engine/settle/invoice.rb'
-
-# Offense count: 1
-# This cop supports unsafe auto-correction (--auto-correct-all).
-# Configuration parameters: InverseMethods, InverseBlocks.
-Style/InverseMethods:
-  Exclude:
-    - 'bin/yarn'
-
-# Offense count: 3
-# This cop supports safe auto-correction (--auto-correct).
-Style/KeywordParametersOrder:
-  Exclude:
-    - 'app/services/hcb_code_service/comment/create.rb'
-    - 'app/services/invoice_service/mark_paid.rb'
 
 # Offense count: 13
 # Configuration parameters: AllowedMethods.
@@ -288,12 +141,6 @@ Style/OptionalBooleanParameter:
     - 'app/helpers/sessions_helper.rb'
     - 'app/models/g_suite_account.rb'
 
-# Offense count: 4
-# This cop supports unsafe auto-correction (--auto-correct-all).
-# Configuration parameters: SafeForConstants.
-Style/RedundantFetchBlock:
-  Exclude:
-    - 'config/puma.rb'
 
 # Offense count: 3
 # This cop supports safe auto-correction (--auto-correct).
@@ -301,35 +148,6 @@ Style/RedundantRegexpEscape:
   Exclude:
     - 'app/mailboxes/receipt_uploads_mailbox.rb'
     - 'app/models/g_suite.rb'
-
-# Offense count: 6
-# This cop supports unsafe auto-correction (--auto-correct-all).
-Style/SingleArgumentDig:
-  Exclude:
-    - 'app/controllers/integrations_controller.rb'
-    - 'app/helpers/application_helper.rb'
-    - 'app/models/raw_pending_stripe_transaction.rb'
-    - 'app/models/raw_stripe_transaction.rb'
-
-# Offense count: 2
-# This cop supports unsafe auto-correction (--auto-correct-all).
-Style/SlicingWithRange:
-  Exclude:
-    - 'app/models/emburse_card.rb'
-    - 'app/models/transaction.rb'
-
-# Offense count: 1
-# This cop supports safe auto-correction (--auto-correct).
-# Configuration parameters: AllowModifier.
-Style/SoleNestedConditional:
-  Exclude:
-    - 'app/models/donation.rb'
-
-# Offense count: 2
-# This cop supports safe auto-correction (--auto-correct).
-Style/StderrPuts:
-  Exclude:
-    - 'bin/yarn'
 
 # Offense count: 19
 # This cop supports unsafe auto-correction (--auto-correct-all).

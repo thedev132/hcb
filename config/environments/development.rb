@@ -92,6 +92,6 @@ Rails.application.configure do
 
   Rails.application.routes.default_url_options[:host] = Rails.application.credentials.default_url_host[:test]
 
-   # SMTP config
-   config.action_mailer.delivery_method = :letter_opener_web
+  # SMTP config
+  config.action_mailer.delivery_method = :letter_opener_web
 end

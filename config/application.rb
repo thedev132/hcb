@@ -17,7 +17,7 @@ module Bank
       host: Rails.application.credentials.default_url_host[:live]
     }
 
-   # SMTP config
+    # SMTP config
     config.action_mailer.smtp_settings = {
       user_name: Rails.application.credentials.smtp[:username],
       password: Rails.application.credentials.smtp[:password],

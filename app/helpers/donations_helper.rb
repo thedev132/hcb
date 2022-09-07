@@ -97,11 +97,12 @@ module DonationsHelper
   end
 
   def donation_fee_type(donation = @donation)
-    if donation.payment_method_type == "card"
+    case donation.payment_method_type
+    when "card"
       brand = donation.payment_method_card_brand.humanize.capitalize
       funding = donation.payment_method_card_funding.humanize.capitalize
       return "#{brand} #{funding} card fee"
-    elsif donation.payment_method_type == "ach_credit_transfer"
+    when "ach_credit_transfer"
       "ACH / wire fee"
     else
       "Transfer fee"

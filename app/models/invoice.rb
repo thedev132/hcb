@@ -260,7 +260,8 @@ class Invoice < ApplicationRecord
     details = inv&.charge&.payment_method_details[self.payment_method_type]
     return unless details
 
-    if type == "card"
+    case type
+    when "card"
       self.payment_method_card_brand = details.brand
       self.payment_method_card_checks_address_line1_check = details.checks.address_line1_check
       self.payment_method_card_checks_address_postal_code_check = details.checks.address_postal_code_check
@@ -270,7 +271,7 @@ class Invoice < ApplicationRecord
       self.payment_method_card_exp_year = details.exp_year
       self.payment_method_card_funding = details.funding
       self.payment_method_card_last4 = details.last4
-    elsif type == "ach_credit_transfer"
+    when "ach_credit_transfer"
       self.payment_method_ach_credit_transfer_bank_name = details.bank_name
       self.payment_method_ach_credit_transfer_routing_number = details.routing_number
       self.payment_method_ach_credit_transfer_account_number = details.account_number

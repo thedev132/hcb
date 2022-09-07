@@ -153,7 +153,7 @@ class EmburseCard < ApplicationRecord
 
     expiration = Date.parse(emburse_obj[:expiration])
     self.expiration_month = expiration.month
-    self.expiration_year = expiration.year.to_s[-2..-1].to_i
+    self.expiration_year = expiration.year.to_s[-2..].to_i
 
     self.emburse_state = emburse_obj[:state]
 

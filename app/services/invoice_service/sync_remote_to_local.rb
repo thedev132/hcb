@@ -34,7 +34,8 @@ module InvoiceService
       if invoice.payment_method_type
         details = remote_invoice&.charge&.payment_method_details[invoice.payment_method_type]
         if details
-          if type == "card"
+          case type
+          when "card"
             invoice.payment_method_card_brand = details.brand
             invoice.payment_method_card_checks_address_line1_check = details.checks.address_line1_check
             invoice.payment_method_card_checks_address_postal_code_check = details.checks.address_postal_code_check
@@ -44,7 +45,7 @@ module InvoiceService
             invoice.payment_method_card_exp_year = details.exp_year
             invoice.payment_method_card_funding = details.funding
             invoice.payment_method_card_last4 = details.last4
-          elsif type == "ach_credit_transfer"
+          when "ach_credit_transfer"
             invoice.payment_method_ach_credit_transfer_bank_name = details.bank_name
             invoice.payment_method_ach_credit_transfer_routing_number = details.routing_number
             invoice.payment_method_ach_credit_transfer_account_number = details.account_number

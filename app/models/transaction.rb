@@ -132,7 +132,7 @@ class Transaction < ApplicationRecord
   end
 
   def short_plaid_id
-    plaid_id[0...4] + "…" + plaid_id[-4..-1]
+    plaid_id[0...4] + "…" + plaid_id[-4..]
   end
 
   def self.total_volume

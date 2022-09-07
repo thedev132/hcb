@@ -63,14 +63,14 @@ module ApplicationHelper
   end
 
   def list_badge_for(count, item, glyph, options = { optional: false, required: false })
-    return nil if options.dig(:optional) && count == 0
+    return nil if options[:optional] && count == 0
 
     icon = inline_icon(glyph, size: 20, 'aria-hidden': true)
 
     content_tag(:span,
                 icon + count.to_s,
                 'aria-label': pluralize(count, item),
-                class: "list-badge tooltipped tooltipped--w #{options.dig(:required) && count == 0 ? 'b--warning warning' : ''} #{options.dig(:class)}")
+                class: "list-badge tooltipped tooltipped--w #{options[:required] && count == 0 ? 'b--warning warning' : ''} #{options[:class]}")
   end
 
   def badge_for(count, options = {})

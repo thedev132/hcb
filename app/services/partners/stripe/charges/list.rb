@@ -11,7 +11,7 @@ module Partners
           @start_date = start_date || Time.now.utc - 1.month
         end
 
-        def run
+        def run(&block)
           starting_after = nil
 
           loop do
@@ -20,9 +20,7 @@ module Partners
             ts = resp.data
             break if ts.empty?
 
-            ts.each do |t|
-              yield t
-            end
+            ts.each(&block)
 
             starting_after = ts.last.id
           end

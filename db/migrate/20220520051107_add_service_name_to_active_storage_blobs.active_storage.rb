@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # This migration comes from active_storage (originally 20190112182829)
 class AddServiceNameToActiveStorageBlobs < ActiveRecord::Migration[6.0]
   def up
@@ -17,4 +19,5 @@ class AddServiceNameToActiveStorageBlobs < ActiveRecord::Migration[6.0]
   def down
     remove_column :active_storage_blobs, :service_name
   end
+
 end

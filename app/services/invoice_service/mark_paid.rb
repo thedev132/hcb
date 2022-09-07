@@ -6,9 +6,7 @@ module InvoiceService
   # band" of Stripe. For example, via Bill.com, PayPal, or a paper check mailed
   # to our Santa Monica address.
   class MarkPaid
-    def initialize(invoice_id:,
-                   reason:, attachment: nil,
-                   user:)
+    def initialize(invoice_id:, reason:, user:, attachment: nil)
       @invoice_id = invoice_id
       @reason = reason
       @attachment = attachment

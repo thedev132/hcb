@@ -32,7 +32,7 @@ class RawStripeTransaction < ApplicationRecord
   private
 
   def stripe_card_id
-    stripe_transaction.dig("card")
+    stripe_transaction["card"]
   end
 
 end

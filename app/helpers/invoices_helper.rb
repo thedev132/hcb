@@ -177,11 +177,12 @@ def invoice_payout_datetime(invoice = @invoice)
 end
 
 def invoice_fee_type(invoice = @invoice)
-  if @invoice.payment_method_type == "card"
+  case @invoice.payment_method_type
+  when "card"
     brand = @invoice.payment_method_card_brand.humanize.capitalize
     funding = @invoice.payment_method_card_funding.humanize.downcase
     return "#{brand} #{funding} card fee"
-  elsif @invoice.payment_method_type == "ach_credit_transfer"
+  when "ach_credit_transfer"
     "ACH / wire fee"
   else
     "Transfer fee"

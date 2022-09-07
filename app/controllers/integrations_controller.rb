@@ -54,7 +54,7 @@ class IntegrationsController < ApplicationController
 
   def set_event
     authenticate_or_request_with_http_token do |bearer_token, _options|
-      token = Rails.application.credentials.dig(:mvp_frankly_token)
+      token = Rails.application.credentials[:mvp_frankly_token]
       api_key = bearer_token.split("|")[0]
       slug = bearer_token.split("|")[1]
       return render_invalid_authorization unless api_key && slug

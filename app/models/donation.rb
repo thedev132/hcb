@@ -264,16 +264,20 @@ class Donation < ApplicationRecord
   def send_payment_notification_if_needed
     return unless saved_changes[:status].present?
 
-    was = saved_changes[:status][0] # old value of status
-    now = saved_changes[:status][1] # new value of status
+    return unless status_changed_to_succeeded?(saved_changes[:status])
+    return unless first_donation?
 
-    if was != "succeeded" && now == "succeeded"
-      # send special email on first donation paid
-      if self.event.donations.select { |d| d.status == "succeeded" }.count == 1
-        DonationMailer.with(donation: self).first_donation_notification.deliver_later
-        return
-      end
-    end
+    DonationMailer.with(donation: self).first_donation_notification.deliver_later
+  end
+
+  def status_changed_to_succeeded?(saved_changes)
+    was, now = saved_changes
+
+    was != "succeeded" && now == "succeeded"
+  end
+
+  def first_donation?
+    self.event.donations.succeeded.size == 1
   end
 
   def create_payment_intent_attrs

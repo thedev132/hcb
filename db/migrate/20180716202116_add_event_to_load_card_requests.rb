@@ -5,10 +5,12 @@ class AddEventToLoadCardRequests < ActiveRecord::Migration[5.2]
     self.table_name = :load_card_requests
 
   end
+
   class MigrationCard < ApplicationRecord
     self.table_name = :cards
 
   end
+
   def change
     add_reference :load_card_requests, :event, foreign_key: true
 

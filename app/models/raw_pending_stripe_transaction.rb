@@ -39,7 +39,7 @@ class RawPendingStripeTransaction < ApplicationRecord
   end
 
   def authorization_method
-    stripe_transaction.dig("authorization_method").humanize.downcase
+    stripe_transaction["authorization_method"].humanize.downcase
   end
 
   private

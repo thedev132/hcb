@@ -4,8 +4,10 @@ module HcbCodeService
   module Comment
     class Create
       def initialize(hcb_code_id:,
-                     content:, file: nil, admin_only: false,
-                     current_user:)
+                     content:,
+                     current_user:,
+                     file: nil,
+                     admin_only: false)
         @hcb_code_id = hcb_code_id
         @content = content
         @file = file

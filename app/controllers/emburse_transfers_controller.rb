@@ -16,9 +16,10 @@ class EmburseTransfersController < ApplicationController
 
       emburse_transfers.each do |emburse_transfer|
         csv << attributes.map do |attr|
-          if attr == "load_amount"
+          case attr
+          when "load_amount"
             emburse_transfer.load_amount.to_f / 100
-          elsif attr == "emburse_memo"
+          when "emburse_memo"
             "Transfer request ID##{emburse_transfer.id}"
           else
             cr.send(attr)

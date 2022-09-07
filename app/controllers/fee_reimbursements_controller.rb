@@ -5,11 +5,7 @@ class FeeReimbursementsController < ApplicationController
 
   # GET /fee_reimbursements/1
   def show
-    if @fee_reimbursement.invoice
-      @event = @fee_reimbursement.event
-    else
-      @event = @fee_reimbursement.event
-    end
+    @event = @fee_reimbursement.event
     authorize @fee_reimbursement
 
     @commentable = @fee_reimbursement
