@@ -26,3 +26,33 @@ html[data-dark='true'] {
     background-image: #{image-url('feature-receipt-upload-dark.png')};
   }
 }
+
+.feature-transaction-tags {
+  background-size: 24em;
+  background-color: $snow;
+  position: relative;
+
+  & > * {
+    z-index: 100;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-image: #{image-url('feature-transaction-tags-dark.png')};
+    background-size: 24em;
+    opacity: 0.1;
+  }
+}
+
+html[data-dark='true'] .feature-transaction-tags {
+  background-color: $black;
+
+  &::after {
+    opacity: 1;
+  }
+}

@@ -129,6 +129,14 @@ class EventPolicy < ApplicationPolicy
     user_or_admin
   end
 
+  def enable_feature?
+    user_or_admin
+  end
+
+  def disable_feature?
+    user_or_admin
+  end
+
   def user_or_admin
     user&.admin? || record.users.include?(user)
   end

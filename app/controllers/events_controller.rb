@@ -347,6 +347,28 @@ class EventsController < ApplicationController
     redirect_back fallback_location: edit_event_path(@event)
   end
 
+  def enable_feature
+    authorize @event
+    feature = params[:feature]
+    if Flipper.enable_actor(feature, @event)
+      flash[:success] = "Opted into beta"
+    else
+      flash[:error] = "Error while opting into beta"
+    end
+    redirect_to edit_event_path(@event)
+  end
+
+  def disable_feature
+    authorize @event
+    feature = params[:feature]
+    if Flipper.disable_actor(feature, @event)
+      flash[:success] = "Opted out of beta"
+    else
+      flash[:error] = "Error while opting out of beta"
+    end
+    redirect_to edit_event_path(@event)
+  end
+
   private
 
   # Only allow a trusted parameter "white list" through.

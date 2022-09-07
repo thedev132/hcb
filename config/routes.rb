@@ -460,6 +460,11 @@ Rails.application.routes.draw do
       resources :comments
     end
     resources :tags, only: [:create, :destroy]
+
+    member do
+      post "disable_feature"
+      post "enable_feature"
+    end
   end
 
   # rewrite old event urls to the new ones not prefixed by /events/
