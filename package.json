@@ -4,6 +4,7 @@
   "dependencies": {
     "@babel/preset-react": "^7.16.0",
     "@fingerprintjs/fingerprintjs": "^3.3.0",
+    "@floating-ui/dom": "^1.0.1",
     "@github/webauthn-json": "^1.0.0",
     "@hackclub/icons": "^0.0.9",
     "@hotwired/stimulus": "^3.0.1",
@@ -12,6 +13,7 @@
     "@rails/webpacker": "5.4.3",
     "axios": "^0.24.0",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
+    "jquery": "^3.6.1",
     "prop-types": "^15.7.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",

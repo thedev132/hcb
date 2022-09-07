@@ -8,15 +8,26 @@ class TagsController < ApplicationController
   def create
     authorize @event, policy_class: TagPolicy
 
-    tag = @event.tags.build(label: params[:label].strip)
-    if !tag.save
-      flash[:error] = "That tag already exists."
-    elsif params[:hcb_code_id]
+    tag = @event.tags.find_or_create_by(label: params[:label].strip)
+
+    if params[:hcb_code_id]
       hcb_code = HcbCode.find(params[:hcb_code_id])
       authorize hcb_code, :toggle_tag?
 
-      hcb_code.tags << tag
+      suppress(ActiveRecord::RecordNotUnique) do
+        hcb_code.tags << tag
+      end
     end
+
+    redirect_back fallback_location: @event
+  end
+
+  def destroy
+    tag = Tag.find(params[:id])
+
+    authorize tag
+
+    tag.destroy!
 
     redirect_back fallback_location: @event
   end

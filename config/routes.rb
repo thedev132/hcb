@@ -459,7 +459,7 @@ Rails.application.routes.draw do
     resources :stripe_authorizations, only: [:show] do
       resources :comments
     end
-    resources :tags, only: [:create]
+    resources :tags, only: [:create, :destroy]
   end
 
   # rewrite old event urls to the new ones not prefixed by /events/

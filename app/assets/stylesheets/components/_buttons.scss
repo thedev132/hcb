@@ -70,6 +70,13 @@ input[type='submit'],
   }
 }
 
+.btn-small {
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.75;
+  padding: 0.25rem 1rem;
+}
+
 form .flex-auto + input[type='submit'] {
   height: 2.5rem;
 }

@@ -16,6 +16,8 @@
 #  index_tags_on_event_id  (event_id)
 #
 class Tag < ApplicationRecord
+  include ActionView::Helpers::TextHelper # for `pluralize`
+
   include PublicIdentifiable
   set_public_id_prefix :tag
 
@@ -24,5 +26,15 @@ class Tag < ApplicationRecord
 
   validates :label, presence: true, uniqueness: { scope: :event_id, case_sensitive: false }
   validates_format_of :color, with: /\A#(?:\h{3}){1,2}\z/, allow_nil: true, message: 'must be a color hex code'
+
+  def removal_confirmation_message
+    message = "Are you sure you'd like to delete this tag?"
+
+    if hcb_codes.length > 0
+      message + " It will be removed from #{pluralize(hcb_codes.length, 'transaction')}."
+    else
+      message
+    end
+  end
 
 end

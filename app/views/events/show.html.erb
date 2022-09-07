@@ -96,50 +96,78 @@
   <% end %>
 </h2>
 
-<%= form_with(model: nil, local: true, method: :get) do |form| %>
+<%= turbo_frame_tag :ledger do %>
   <div class="filterbar flex flex-row items-center width-100">
 
-    <% if Flipper.enabled?(:transaction_tags_2022_07_29, @event) %>
-      <button
-        type="button"
-        data-behavior="menu_toggle" aria-expanded="false" tabindex="0"
-        class="btn bg-info menu__toggle overflow-visible z1 mr1">
-        <%= inline_icon 'filter', size: 16 %>
-        <span class="sm-hide md-hide">Filter</span>
-          <div class="menu__content h5" data-behavior="menu_content">
-            <% @event.tags.each do |tag| %>
-              <%= link_to tag.label, "?tag=#{tag.label}" %>
+    <%= form_with(model: nil, local: true, method: :get, class: "flex-auto md-mr2") do |form| %>
+      <%= form.text_field :q, placeholder: "Search", style: "width auto; max-width: none;", value: params[:q] %>
+      <% if @tag %>
+        <%= form.hidden_field :tag, value: @tag.label %>
+      <% end %>
+    <% end %>
+
+    <% if Flipper.enabled?(:transaction_tags_2022_07_29, @event) && @event.tags.size > 0 %>
+      <div data-controller="menu" data-menu-append-to-value="turbo-frame#ledger" data-menu-placement-value="bottom-end">
+        <button
+          type="button"
+          class="btn btn-small bg-info menu__toggle menu__toggle--arrowless overflow-visible z1 mr1"
+          data-menu-target="toggle" data-action="menu#toggle click@document->menu#close keydown@document->menu#keydown">
+          <%= inline_icon 'filter', size: 16 %>
+          <% if @tag %>
+            <span class="sm-hide md-hide flex items-center">
+              <span class="nowrap">Filtered by</span>
+              <span style="background-color: rgba(0, 0, 0, 0.3); color: #f9fafc" class="nowrap badge regular ml1"><%= @tag.label %></span>
+            </span>
+          <% else %>
+            <span class="sm-hide md-hide nowrap">Filter</span>
+          <% end %>
+        </button>
+        <div class="menu__content menu__content--2 menu__content--compact h5" data-menu-target="content">
+          <% if @tag %>
+            <%= link_to do %>
+              <%= inline_icon "view-close", size: 24 %>
+              Clear filters
             <% end %>
-          </div>
-      </button>
-    <% end %>
 
-    <%= form.text_field :q, placeholder: "Search", class: "flex-auto md-mr2", style: "width auto; max-width: none;", value: params[:q] %>
-  </div>
-<% end %>
+            <div class="menu__divider"></div>
+          <% end %>
 
-<% if @pending_transactions.any? || @transactions.any? %>
-  <div class="table-container">
-    <%= turbo_frame_tag :ledger do %>
-      <table>
-        <thead>
-          <tr>
-            <th></th>
-            <th>Date</th>
-            <th>Description</th>
-            <th class="right-align">Amount</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody data-behavior="transactions">
-          <%= render partial: "canonical_pending_transactions/canonical_pending_transaction", collection: @pending_transactions, as: :pt, locals: { event: @event } %>
-
-          <%= render partial: "canonical_transactions/canonical_transaction", collection: @transactions, as: :ct, locals: { event: @event } %>
-        </tbody>
-      </table>
+          <% @event.tags.each do |tag| %>
+            <div class="flex items-center">
+              <%= link_to tag.label, { tag: tag.label, q: params[:q] }.compact, class: "flex-auto menu__action" %>
+              <% if organizer_signed_in? %>
+                <%= button_to event_tag_path(@event, tag), class: "menu__action", method: :delete, title: "Delete this tag", form: { "data-turbo" => "true", "data-turbo-confirm" => tag.removal_confirmation_message } do %>
+                  <%= inline_icon "delete", size: 20, style: "margin: 0" %>
+                <% end %>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      </div>
     <% end %>
   </div>
-  <%= paginate @transactions %>
-<% else %>
-  <%= blankslate 'No transactions yet' %>
+
+  <% if @pending_transactions.any? || @transactions.any? %>
+    <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th></th>
+              <th>Date</th>
+              <th>Description</th>
+              <th class="right-align">Amount</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody data-behavior="transactions">
+            <%= render partial: "canonical_pending_transactions/canonical_pending_transaction", collection: @pending_transactions, as: :pt, locals: { event: @event } %>
+
+            <%= render partial: "canonical_transactions/canonical_transaction", collection: @transactions, as: :ct, locals: { event: @event } %>
+          </tbody>
+        </table>
+    </div>
+    <%= paginate @transactions %>
+  <% else %>
+    <%= blankslate 'No transactions yet' %>
+  <% end %>
 <% end %>

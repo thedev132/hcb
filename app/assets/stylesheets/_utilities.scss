@@ -138,6 +138,10 @@ $shades: (
   }
 }
 
+.bg-transparent {
+  background-color: transparent;
+}
+
 .secondary {
   color: map-get($palette, slate);
 }
