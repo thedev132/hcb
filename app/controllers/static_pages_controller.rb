@@ -63,6 +63,32 @@ class StaticPagesController < ApplicationController
     end
   end
 
+  # async frame
+  def my_missing_receipts_icon
+    @missing_receipt_count ||= begin
+      count = 0
+
+      stripe_cards = current_user.stripe_cards.includes(:event)
+      emburse_cards = current_user.emburse_cards.includes(:event)
+
+      (stripe_cards + emburse_cards).each do |card|
+        card.hcb_codes.missing_receipt.each do |hcb_code|
+          next unless hcb_code.receipt_required?
+
+          count += 1
+        end
+      end
+
+      count
+    end
+
+    if @missing_receipt_count.zero?
+      head :ok
+    else
+      render :my_missing_receipts_icon, layout: false
+    end
+  end
+
   def my_inbox
     stripe_cards = current_user.stripe_cards.includes(:event)
     emburse_cards = current_user.emburse_cards.includes(:event)

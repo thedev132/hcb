@@ -111,11 +111,23 @@
       height: 28px;
     }
 
+    .dock__item--badge {
+      transition: box-shadow 0.125s ease-in-out;
+    }
+
     &:hover,
     &:focus,
     &:active {
       color: map-get($palette, white) !important;
       background-color: rgba(map-get($palette, primary), 0.25);
+
+      .dock__item--badge {
+        box-shadow: 0 0 0 2px mix(map-get($palette, primary), $snow, 25%);
+
+        html[data-dark="true"] & {
+          box-shadow: 0 0 0 2px mix(map-get($palette, primary), $dark, 25%);
+        }
+      }
     }
 
     /* For adding active links
@@ -132,6 +144,40 @@
 
   span {
     color: $black;
+  }
+
+  .dock__item--badge {
+    position: absolute;
+    top: -0.3125rem;
+    right: 0.3125rem;
+    @media (max-width: 32em) {
+      right: calc(0.3125rem - 0.5rem);
+    }
+    line-height: initial;
+    color: white;
+    font-size: 0.75rem;
+    min-width: 1rem;
+    min-height: 1rem;
+    text-align: center;
+    box-shadow: 0 0 0 2px $snow;
+    border-radius: 999px;
+    background-color: map-get($palette, primary);
+    padding: 0 0.2rem;
+
+    html[data-dark='true'] & {
+      box-shadow: 0 0 0 2px $dark;
+    }
+  }
+}
+
+// For the mobile-friendly tab bar
+@media (max-width: 56em)  {
+  .dock__item .dock__item--badge {
+    box-shadow: 0 0 0 2px mix(white, $snow, 98%);
+
+    html[data-dark='true'] & {
+      box-shadow: 0 0 0 2px mix(black, $dark, 87.5%);
+    }
   }
 }
 
