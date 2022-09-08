@@ -81,9 +81,6 @@ class User < ApplicationRecord
   has_encrypted :api_access_token
   blind_index :api_access_token
 
-  # TODO(2541): temporary until unencrypted column is dropped
-  self.ignored_columns = ["api_access_token"]
-
   validate on: :update do
     if full_name.blank? && full_name_in_database.present?
       errors.add(:full_name, "can't be blank")
