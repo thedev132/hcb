@@ -4,6 +4,7 @@ module BankFeeService
   class ProcessSingle
     include ::Shared::Selenium::LoginToSvb
     include ::Shared::Selenium::TransferFromFsMainToFsOperating
+    include ::Shared::Selenium::TransferFromFsOperatingToFsMain
 
     def initialize(bank_fee_id:, driver: nil)
       @bank_fee_id = bank_fee_id
@@ -22,6 +23,14 @@ module BankFeeService
 
         # Make the transfer on remote bank
         transfer_from_fs_main_to_fs_operating!(amount_cents: amount_cents, memo: memo)
+        sleep 5 # helps simulate real clicking
+
+        begin
+          # Make the transfer out from Fiscal Sponsorship
+          transfer_from_fs_operating_to_fs_main!(amount_cents: amount_cents, memo: memo)
+        rescue => e
+          Airbrake.notify(e)
+        end
       end
 
       sleep 5
