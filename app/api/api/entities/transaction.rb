@@ -22,7 +22,7 @@ module Api
           next hcb_code.disbursement.amount if hcb_code.disbursement?
           next hcb_code.donation.amount if hcb_code.donation?
           next hcb_code.invoice.item_amount if hcb_code.invoice?
-          next hcb_code.ach_transfer.amount if hcb_code.ach_transfer?
+          next -hcb_code.ach_transfer.amount if hcb_code.ach_transfer?
 
           hcb_code.amount_cents
         end
