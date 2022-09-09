@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_08_28_191138) do
+ActiveRecord::Schema.define(version: 2022_09_05_210605) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -307,6 +307,7 @@ ActiveRecord::Schema.define(version: 2022_08_28_191138) do
     t.text "payment_for"
     t.string "aasm_state"
     t.text "lob_url"
+    t.text "description_ciphertext"
     t.index ["creator_id"], name: "index_checks_on_creator_id"
     t.index ["lob_address_id"], name: "index_checks_on_lob_address_id"
   end
@@ -320,6 +321,7 @@ ActiveRecord::Schema.define(version: 2022_08_28_191138) do
     t.datetime "updated_at", null: false
     t.boolean "admin_only", default: false, null: false
     t.boolean "has_untracked_edit", default: false, null: false
+    t.text "content_ciphertext"
     t.index ["commentable_id", "commentable_type"], name: "index_comments_on_commentable_id_and_commentable_type"
     t.index ["commentable_type", "commentable_id"], name: "index_comments_on_commentable_type_and_commentable_id"
     t.index ["user_id"], name: "index_comments_on_user_id"

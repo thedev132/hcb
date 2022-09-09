@@ -10,6 +10,7 @@
 #  approved_at            :datetime
 #  check_number           :integer
 #  description            :text
+#  description_ciphertext :text
 #  expected_delivery_date :datetime
 #  exported_at            :datetime
 #  lob_url                :text
@@ -53,6 +54,8 @@ class Check < ApplicationRecord
   has_one :event, through: :lob_address
 
   accepts_nested_attributes_for :lob_address
+
+  has_encrypted :description, migrating: true
 
   has_many :t_transactions, class_name: "Transaction", inverse_of: :check
 

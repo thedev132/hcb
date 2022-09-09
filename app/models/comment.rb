@@ -8,6 +8,7 @@
 #  admin_only         :boolean          default(FALSE), not null
 #  commentable_type   :string
 #  content            :text
+#  content_ciphertext :text
 #  has_untracked_edit :boolean          default(FALSE), not null
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
@@ -32,6 +33,8 @@ class Comment < ApplicationRecord
 
   validates :user, presence: true
   validates :content, presence: true, unless: :has_attached_file?
+
+  has_encrypted :content, migrating: true
 
   validate :commentable_includes_concern
 
