@@ -9,7 +9,6 @@
 #  amount                 :integer
 #  approved_at            :datetime
 #  check_number           :integer
-#  description            :text
 #  description_ciphertext :text
 #  expected_delivery_date :datetime
 #  exported_at            :datetime
@@ -55,7 +54,10 @@ class Check < ApplicationRecord
 
   accepts_nested_attributes_for :lob_address
 
-  has_encrypted :description, migrating: true
+  has_encrypted :description
+
+  # TODO(2541): temporary until unencrypted column is dropped
+  self.ignored_columns = ["description"]
 
   has_many :t_transactions, class_name: "Transaction", inverse_of: :check
 
