@@ -414,7 +414,7 @@ class Event < ApplicationRecord
   end
 
   def balance_available_v2_cents
-    @balance_available_v2_cents ||= balance_v2_cents - fee_balance_v2_cents
+    @balance_available_v2_cents ||= balance_v2_cents - (can_front_balance? ? fronted_fee_balance_v2_cents : fee_balance_v2_cents)
   end
 
   def balance
@@ -444,6 +444,20 @@ class Event < ApplicationRecord
     @fee_balance ||= total_fees - total_fee_payments
   end
 
+  # `fee_balance_v2_cents`, but it includes fees on fronted (unsettled) transactions to prevent overspending before fees are charged
+  def fronted_fee_balance_v2_cents
+    feed_fronted_balance = canonical_pending_transactions
+                           .incoming
+                           .fronted
+                           .not_declined
+                           .where(raw_pending_incoming_disbursement_transaction_id: nil) # We don't charge fees on disbursements
+                           .sum(&:fronted_amount)
+
+    # TODO: make sure this has the same rounding error has the rest of the codebase
+    fee_balance_v2_cents + (feed_fronted_balance * sponsorship_fee)
+  end
+
+  # This intentionally does not include fees on fronted transactions to make sure they aren't actually charged
   def fee_balance_v2_cents
     @fee_balance_v2_cents ||= total_fees_v2_cents - total_fee_payments_v2_cents
   end

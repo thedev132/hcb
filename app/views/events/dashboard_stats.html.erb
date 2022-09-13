@@ -3,7 +3,7 @@
     Pending fees
     <%= inline_icon 'external', size: 24, class: 'muted ml1', 'aria-label': 'Icon indicating click for more' %>
   </span>
-  <span class="stat__value"><%= render_money_amount [@event.fee_balance_v2_cents, 0].max %></span>
+  <span class="stat__value"><%= render_money_amount [@event.can_front_balance? ? @event.fronted_fee_balance_v2_cents : @event.fee_balance_v2_cents, 0].max %></span>
   <% if @event.fee_balance_v2_cents < 0 %>
     <span class="" style="font-size: 10px;"><%= render_money_amount @event.fee_balance_v2_cents.abs %> credit</span>
   <% end %>
