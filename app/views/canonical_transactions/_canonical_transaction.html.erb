@@ -79,7 +79,7 @@
             <% end %>
           </span>
 
-          <% if organizer_signed_in? && Flipper.enabled?(:transaction_tags_2022_07_29, @event || ct.local_hcb_code.event) %>
+          <% if !defined?(receipt_upload_button) && organizer_signed_in? && Flipper.enabled?(:transaction_tags_2022_07_29, @event || ct.local_hcb_code.event) %>
             <div class="overflow-visible relative" style="margin-left: 0.5rem;" data-controller="menu" data-menu-append-to-value="turbo-frame#ledger">
               <button class="list-badge add-tag-badge ml0 menu__toggle menu__toggle--arrowless" data-menu-target="toggle" data-action="menu#toggle click@document->menu#close keydown@document->menu#keydown">+ Add tag</button>
               <div class="menu__content menu__content--2 menu__content--compact menu__content--left h6" data-menu-target="content">
@@ -90,7 +90,7 @@
 
                       <%= tag.label %>
                     <% end %>
-                    <%= button_to event_tag_path(@event, tag), class: "menu__action", method: :delete, title: "Delete this tag", form: { "data-turbo" => "true", "data-turbo-confirm" => tag.removal_confirmation_message } do %>
+                    <%= button_to event_tag_path(@event || ct.local_hcb_code.event, tag), class: "menu__action", method: :delete, title: "Delete this tag", form: { "data-turbo" => "true", "data-turbo-confirm" => tag.removal_confirmation_message } do %>
                       <%= inline_icon "delete", size: 16, style: "margin: 0" %>
                     <% end %>
                   </div>
