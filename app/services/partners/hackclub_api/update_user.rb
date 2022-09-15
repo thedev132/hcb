@@ -9,6 +9,8 @@ module Partners
       end
 
       def run
+        return if Rails.env.test?
+
         current_user = ::BankApiService.req(
           "get",
           "/v1/users/current",

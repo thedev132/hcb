@@ -2,53 +2,88 @@
 
 require "rails_helper"
 
-RSpec.describe UserService::Create, type: :model, skip: true do
-  fixtures "users", "events", "organizer_positions"
+RSpec.describe UserService::Create, type: :model do
+  let(:event) { create(:event) }
 
-  let(:event) { events(:event1) }
-
-  let(:event_id) { event.id }
-  let(:email) { "newuser@example.com" }
-  let(:full_name) { "New User" }
-  let(:phone_number) { "+13105551234" }
-
-  let(:attrs) do
-    {
-      event_id: event_id,
-      email: email,
-      full_name: full_name,
-      phone_number: phone_number
-    }
-  end
-
-  let(:service) { UserService::Create.new(attrs) }
-
-  it "creates a user" do
-    expect do
-      service.run
-    end.to change(User, :count).by(1)
-  end
-
-  it "creates the organizer position" do
-    expect do
-      service.run
-    end.to change(OrganizerPosition, :count).by(1)
-  end
-
-  context "when users already exists" do
-    let(:user) { users(:user1) }
-    let(:email) { user.email }
-
-    it "does not create the user" do
-      expect do
-        service.run
-      end.not_to change(User, :count)
+  context "when the user doesn't exist" do
+    let(:attrs) do
+      {
+        event_id: event.id,
+        email: "newuser@example.com",
+        full_name: "New User",
+        phone_number: "+13105551234"
+      }
     end
 
-    it "does not create the organizer position" do
+    it "creates a user" do
+      service = UserService::Create.new(attrs)
+
       expect do
         service.run
-      end.not_to change(OrganizerPosition, :count)
+      end.to change(User, :count).by(1)
+    end
+
+    it "creates the organizer position" do
+      service = UserService::Create.new(attrs)
+
+      expect do
+        service.run
+      end.to change(OrganizerPosition, :count).by(1)
+    end
+  end
+
+  context "when user already exists" do
+    let(:user) { create(:user) }
+
+    let(:attrs) do
+      {
+        event_id: event.id,
+        email: user.email,
+        full_name: "Existing User",
+        phone_number: "+13105551234"
+      }
+    end
+
+    context "but is not an organizer of the event" do
+      it "does not create the user" do
+        service = UserService::Create.new(attrs)
+
+        expect do
+          service.run
+        end.not_to change(User, :count)
+      end
+
+      it "does create the organizer position" do
+        service = UserService::Create.new(attrs)
+
+        expect do
+          service.run
+        end.to change(OrganizerPosition, :count).by(1)
+      end
+
+    end
+
+    context "and is already an organizer of the event" do
+      before do
+        # user is already organizer of event
+        create(:organizer_position, event: event, user: user)
+      end
+
+      it "does not create the user" do
+        service = UserService::Create.new(attrs)
+
+        expect do
+          service.run
+        end.not_to change(User, :count)
+      end
+
+      it "does not create the organizer position" do
+        service = UserService::Create.new(attrs)
+
+        expect do
+          service.run
+        end.not_to change(OrganizerPosition, :count)
+      end
     end
   end
 end
