@@ -1046,7 +1046,7 @@ class AdminController < ApplicationController
       [:end_date, ->(_) { @end_date }]
     ]
     serializer = ->(event) do
-      template.transform_values do |field|
+      template.to_h.transform_values do |field|
         field.call(event)
       end
     end
