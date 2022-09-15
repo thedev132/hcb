@@ -59,6 +59,8 @@ class LobAddress < ApplicationRecord
   end
 
   def create_lob_address
+    return if Rails.env.test?
+
     lob_address = LobService.instance.add_address(
       description,
       name,
@@ -74,6 +76,8 @@ class LobAddress < ApplicationRecord
   end
 
   def update_lob_address
+    return if Rails.env.test?
+
     lob_address = LobService.instance.update_address(
       lob_id,
       description,
@@ -90,6 +94,8 @@ class LobAddress < ApplicationRecord
   end
 
   def destroy_lob_address
+    return if Rails.env.test?
+
     LobService.instance.delete_address(lob_id)
   end
 
