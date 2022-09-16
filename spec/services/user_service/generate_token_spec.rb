@@ -2,25 +2,21 @@
 
 require "rails_helper"
 
-RSpec.describe UserService::GenerateToken, type: :model, skip: true do
-  fixtures "users"
+RSpec.describe UserService::GenerateToken, type: :model do
+  let(:user) { create(:user) }
+  let(:partner) { create(:partner) }
 
-  let(:user) { users(:user1) }
-
-  let(:user_id) { user.id }
-
-  let(:attrs) do
-    {
-      user_id: user_id
-    }
+  let(:service) do
+    UserService::GenerateToken.new(
+      user_id: user.id,
+      partner_id: partner.id
+    )
   end
 
-  let(:service) { UserService::GenerateToken.new(attrs) }
-
   it "returns the token" do
-    token = service.run
+    login_token = service.run
 
-    expect(token).to start_with("tok_")
+    expect(login_token.token).to start_with("tok_")
   end
 
   it "creates a login token object" do
