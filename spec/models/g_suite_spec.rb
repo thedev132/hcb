@@ -3,17 +3,16 @@
 require "rails_helper"
 
 RSpec.describe GSuite, type: :model do
-  fixtures "g_suites", "partners"
-
-  let(:g_suite) { g_suites(:g_suite1) }
-
   it "is valid" do
+    g_suite = create(:g_suite)
     expect(g_suite).to be_valid
   end
 
   describe "#domain" do
     context "when domain is missing" do
       it "is not valid" do
+        g_suite = build(:g_suite)
+
         g_suite.domain = nil
         expect(g_suite).to_not be_valid
 
@@ -24,6 +23,8 @@ RSpec.describe GSuite, type: :model do
 
     context "when domain is missing extension" do
       it "is not valid" do
+        g_suite = build(:g_suite)
+
         g_suite.domain = "example"
 
         expect(g_suite).to_not be_valid
@@ -33,6 +34,8 @@ RSpec.describe GSuite, type: :model do
 
   describe "#verification_key" do
     it "strips out the google verification key for only the value (bit of a misnomer at this point)" do
+      g_suite = build(:g_suite)
+
       g_suite.verification_key = "google-site-verification=Cb-_ZL"
 
       g_suite.save!
@@ -43,13 +46,17 @@ RSpec.describe GSuite, type: :model do
 
   describe "#verification_url" do
     it "generates it" do
+      g_suite = build(:g_suite)
+
       result = g_suite.verification_url
 
-      expect(result).to eql("https://www.google.com/webmasters/verification/verification?siteUrl=http://event1.example.com&priorities=vdns,vmeta,vfile,vanalytics")
+      expect(result).to eql("https://www.google.com/webmasters/verification/verification?siteUrl=http://#{g_suite.domain}&priorities=vdns,vmeta,vfile,vanalytics")
     end
   end
 
   describe "#aasm_state" do
+    let(:g_suite) { create(:g_suite) }
+
     it "defaults to configuring" do
       expect(g_suite).to be_creating
     end
