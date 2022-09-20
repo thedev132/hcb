@@ -5,6 +5,7 @@
 # Table name: stripe_cards
 #
 #  id                                  :bigint           not null, primary key
+#  activated                           :boolean          default(FALSE)
 #  card_type                           :integer          default("virtual"), not null
 #  last4                               :text
 #  purchased_at                        :datetime
@@ -24,12 +25,14 @@
 #  created_at                          :datetime         not null
 #  updated_at                          :datetime         not null
 #  event_id                            :bigint           not null
+#  replacement_for_id                  :bigint
 #  stripe_cardholder_id                :bigint           not null
 #  stripe_id                           :text
 #
 # Indexes
 #
 #  index_stripe_cards_on_event_id              (event_id)
+#  index_stripe_cards_on_replacement_for_id    (replacement_for_id)
 #  index_stripe_cards_on_stripe_cardholder_id  (stripe_cardholder_id)
 #
 # Foreign Keys
@@ -52,6 +55,8 @@ class StripeCard < ApplicationRecord
 
   belongs_to :event
   belongs_to :stripe_cardholder
+  belongs_to :replacement_for, class_name: "StripeCard", optional: true
+  has_one :replacement, class_name: "StripeCard", foreign_key: :replacement_for_id
   alias_attribute :cardholder, :stripe_cardholder
   has_one :user, through: :stripe_cardholder
   has_many :stripe_authorizations
@@ -117,7 +122,8 @@ class StripeCard < ApplicationRecord
   end
 
   def status_text
-    return "frozen" if stripe_status == "inactive"
+    return "Inactive" if !activated?
+    return "Frozen" if stripe_status == "inactive"
 
     stripe_status.humanize
   end
@@ -130,6 +136,7 @@ class StripeCard < ApplicationRecord
     s = stripe_status.to_sym
     return :success if s == :active
     return :error if s == :deleted
+    return :warning if s == :inactive && !activated?
 
     :muted
   end
@@ -150,6 +157,14 @@ class StripeCard < ApplicationRecord
 
   def defrost!
     StripeService::Issuing::Card.update(self.stripe_id, status: :active)
+    sync_from_stripe!
+    save!
+  end
+
+  alias_method :activate!, :defrost!
+
+  def cancel!
+    StripeService::Issuing::Card.update(self.stripe_id, status: :canceled)
     sync_from_stripe!
     save!
   end
@@ -212,6 +227,12 @@ class StripeCard < ApplicationRecord
     self.stripe_status = stripe_obj[:status]
     self.card_type = stripe_obj[:type]
 
+    if stripe_obj[:status] == "active"
+      self.activated = true
+    elsif stripe_obj[:status] == "inactive" && !self.activated
+      self.activated = false
+    end
+
     if stripe_obj[:shipping]
       self.stripe_shipping_address_city = stripe_obj[:shipping][:address][:city]
       self.stripe_shipping_address_country = stripe_obj[:shipping][:address][:country]
@@ -226,6 +247,10 @@ class StripeCard < ApplicationRecord
     if spending_limits.any?
       self.spending_limit_interval = spending_limits.first[:interval]
       self.spending_limit_amount = spending_limits.first[:amount]
+    end
+
+    if stripe_obj[:replacement_for]
+      self.replacement_for = StripeCard.find_by(stripe_id: stripe_obj[:replacement_for])
     end
 
     self

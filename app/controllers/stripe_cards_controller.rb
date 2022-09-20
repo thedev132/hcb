@@ -44,6 +44,26 @@ class StripeCardsController < ApplicationController
     end
   end
 
+  def activate
+    @card = StripeCard.find(params[:stripe_card_id])
+    authorize @card
+
+    # Does this card replace another card? If so, attempt to cancel the old card
+    if @card&.replacement_for
+      suppress(Stripe::InvalidRequestError) do
+        @card.replacement_for.cancel!
+      end
+    end
+
+    if @card.activate!
+      flash[:success] = "Card activated!"
+      confetti!
+      redirect_to @card
+    else
+      render "show"
+    end
+  end
+
   def show
     @card = StripeCard.includes(:event, :user).find(params[:id])
 

@@ -73,5 +73,18 @@
     <% if Rails.env.production? %>
       <%= render 'application/fullstory' if current_user&.sessions_reported %>
     <% end %>
+
+    <% if flash[:confetti] %>
+      <script src="/brand/js-confetti.browser.js"></script>
+      <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+          const jsConfetti = new JSConfetti()
+
+          setTimeout(() => {
+            jsConfetti.addConfetti()
+          }, 100);
+        });
+      </script>
+    <% end %>
   </body>
 </html>

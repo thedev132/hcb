@@ -5,10 +5,56 @@
   <%= link_to 'View on Stripe', @card.stripe_dashboard_url, class: 'btn bg-accent' %>
 <% end %>
 
-<article class="check--form flex align-start justify-center mt2 mb3">
+<% if @card.canceled? %>
+  <div class="card border b--info mt3 mb3 container--sm mx-auto">
+    <div class="flex items-center info">
+      <%= inline_icon 'info', size: 32, class: 'mr1' %>
+      <p class="bold mt0 mb0">This card has been canceled.</p>
+    </div>
+    <% if @card.replacement %>
+      <p class="mt1 mb0">
+        It was replaced by <%= stripe_card_mention @card.replacement %>.
+      </p>
+    <% end %>
+  </div>
+<% end %>
+
+<article class="check--form flex items-start justify-center mt2 mb3">
   <section class="center mt0 mx-auto" style="width: 400px; max-width: 100%;">
     <%= render @card %>
-    <% if @card.stripe_status == 'inactive' %>
+    <% if !@card.activated? %>
+      <% if @card.replacement_for %>
+        <div class="card border b--warning pb0 mt3 mx-auto" data-controller="form-disable">
+          <div class="flex items-center warning">
+            <%= inline_icon 'info', size: 32, class: 'mr1' %>
+            <p class="bold mt0 mb0">Heads up:</p>
+          </div>
+          <p class="mt1 left-align">
+            Since this card is a replacement, activating it will permanently deactivate <%= stripe_card_mention @card.replacement_for %>.
+          </p>
+          <p class="mt1 left-align">
+            You'll need to update billing information for any subscriptions that use <%= stripe_card_mention @card.replacement_for %>.
+          </p>
+          <div class="field field--checkbox">
+            <input type="checkbox" id="confirm" data-action="form-disable#run" data-form-disable-target="radioButton" />
+            <label for="confirm">Click here to confirm.</label>
+          </div>
+          <%= button_to stripe_card_activate_path(@card),
+                      method: :post,
+                      class: 'btn bg-success mt1 mb2', data: { "form-disable-target" => "submitButton" } do %>
+            <%= inline_icon 'rep', size: home_action_size %>
+            Activate card
+          <% end %>
+        </div>
+      <% else %>
+        <%= button_to stripe_card_activate_path(@card),
+                    method: :post,
+                    class: 'btn bg-success mt3' do %>
+          <%= inline_icon 'rep', size: home_action_size %>
+          Activate card
+        <% end %>
+      <% end %>
+    <% elsif @card.stripe_status == 'inactive' %>
       <%= link_to 'Defrost card',
                   stripe_card_defrost_path(@card),
                   method: :post,
@@ -23,6 +69,7 @@
     <% end %>
   </section>
 
+  <% if @card.activated? %>
   <article class="card max-width-2 mx-auto mt3">
     <h2 class="mt0 heading">
       <span class="flex-auto">
@@ -32,6 +79,15 @@
     </h2>
 
     <section class="details mt2">
+      <% if @card.replacement_for %>
+        <p>
+          <strong>Replacement for</strong>
+          <span class="flex items-baseline">
+            <%= stripe_card_mention @card.replacement_for %>
+          </span>
+        </p>
+      <% end %>
+
       <% eta = @card.stripe_obj.to_hash.dig(:shipping, :eta) %>
       <% if eta && Time.now.before?(Time.at(eta) + 3.days) %>
         <p>
@@ -119,6 +175,7 @@
       </p>
     </section>
   </article>
+  <% end %>
 </article>
 
 <% if @card.hcb_codes.exists? %>
@@ -143,6 +200,6 @@
   </div>
 
   <%#= render 'stripe_authorizations/list', stripe_authorizations: @authorizations, headless: true, authorless: true %>
-<% else %>
+<% elsif @card.activated? %>
   <%= blankslate "No transactions made on this card yet." %>
 <% end %>

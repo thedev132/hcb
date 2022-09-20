@@ -34,7 +34,7 @@
   }
 
   &.canceled-left {
-    @supports(clip-path: polygon(0 0, 20% 0, 80% 100%, 0% 100%)) {
+    @supports (clip-path: polygon(0 0, 20% 0, 80% 100%, 0% 100%)) {
       position: absolute;
       left: 0;
       right: 0;
@@ -44,7 +44,7 @@
 
   &.canceled-right {
     display: none;
-    @supports(clip-path: polygon(20% 0, 100% 0, 100% 100%, 80% 100%)) {
+    @supports (clip-path: polygon(20% 0, 100% 0, 100% 100%, 80% 100%)) {
       position: absolute;
       left: 0;
       right: 0;
@@ -112,10 +112,7 @@
     content: '❄️';
   }
 
-  &.frozen {
-    filter: grayscale(1);
-  }
-
+  &.frozen,
   &.canceled {
     filter: grayscale(1);
   }
@@ -165,5 +162,5 @@
 }
 
 .stripe-card__status {
-  background-color: rgba(255, 255, 255, .2)
+  background-color: rgba(255, 255, 255, 0.2);
 }

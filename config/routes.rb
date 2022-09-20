@@ -225,6 +225,7 @@ Rails.application.routes.draw do
   resources :stripe_cards, only: %i[create index show] do
     post "freeze"
     post "defrost"
+    post "activate"
   end
   resources :emburse_cards, except: %i[new create]
 
