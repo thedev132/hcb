@@ -178,13 +178,13 @@
   <% end %>
 </article>
 
-<% if @card.hcb_codes.exists? %>
+<% if @hcb_codes.exists? %>
   <h2 class="heading h2 line-height-4 mt0 ml0 pt1 pb1 pl2 pr2">Transactions on this card</h2>
 
   <div class="table-container">
     <table>
       <tbody data-behavior="transactions">
-        <% @card.hcb_codes.order(created_at: :desc).each do |hcb_code| %>
+        <% @hcb_codes.order(created_at: :desc).each do |hcb_code| %>
           <% if hcb_code.canonical_transactions.any? %>
             <% hcb_code.canonical_transactions.each do |ct| %>
               <%= render partial: "canonical_transactions/canonical_transaction", locals: { ct: hcb_code } %>
@@ -197,6 +197,7 @@
         <% end %>
       </tbody>
     </table>
+    <%= paginate @hcb_codes %>
   </div>
 
   <%#= render 'stripe_authorizations/list', stripe_authorizations: @authorizations, headless: true, authorless: true %>

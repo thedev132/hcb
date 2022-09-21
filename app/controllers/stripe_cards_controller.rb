@@ -70,6 +70,7 @@ class StripeCardsController < ApplicationController
     authorize @card
 
     @event = @card.event
+    @hcb_codes = @card.hcb_codes.page(params[:page]).per(25)
   end
 
   def new
