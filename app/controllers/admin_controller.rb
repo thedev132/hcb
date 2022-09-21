@@ -1108,7 +1108,11 @@ class AdminController < ApplicationController
     @funded = params[:funded].present? ? params[:funded] : "both" # both by default
     @hidden = params[:hidden].present? ? params[:hidden] : "both" # both by default
     @organized_by_hack_clubbers = params[:organized_by_hack_clubbers].present? ? params[:organized_by_hack_clubbers] : "both" # both by default
-    @category = params[:category].present? ? params[:category] : "all"
+    if params[:category] == "none"
+      @category = "none"
+    else
+      @category = params[:category].present? ? params[:category] : "all"
+    end
     @point_of_contact_id = params[:point_of_contact_id].present? ? params[:point_of_contact_id] : "all"
     if params[:country] == 9999.to_s
       @country = 9999
@@ -1129,7 +1133,11 @@ class AdminController < ApplicationController
     relation = relation.not_funded if @funded == "not_funded"
     relation = relation.organized_by_hack_clubbers if @organized_by_hack_clubbers == "organized_by_hack_clubbers"
     relation = relation.not_organized_by_hack_clubbers if @organized_by_hack_clubbers == "not_organized_by_hack_clubbers"
-    relation = relation.where(category: @category) if @category != "all"
+    if @category == "none"
+      relation = relation.where(category: nil)
+    elsif @category != "all"
+      relation = relation.where(category: @category)
+    end
     relation = relation.where(point_of_contact_id: @point_of_contact_id) if @point_of_contact_id != "all"
     if @country == 9999
       relation = relation.where.not(country: "US")

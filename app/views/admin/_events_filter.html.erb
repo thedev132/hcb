@@ -61,7 +61,7 @@
 |
 <%= form.label :category do %>
    Category
-  <%= form.select :category, Event.categories, { include_blank: 'all', :selected => @category } %>
+  <%= form.select :category, {'uncategorized': 'none'}.merge(Event.categories), { include_blank: 'all', :selected => @category } %>
 <% end %>
 |
 <%= form.label :point_of_contact_id do %>
