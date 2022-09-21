@@ -45,7 +45,10 @@ class StripeCard < ApplicationRecord
 
   has_paper_trail
 
-  after_create_commit :notify_user, :pay_for_issuing
+  after_create_commit :notify_user, unless: :skip_notify_user
+  after_create_commit :pay_for_issuing, unless: :skip_pay_for_issuing
+
+  attr_accessor :skip_pay_for_issuing, :skip_notify_user
 
   scope :deactivated, -> { where.not(stripe_status: "active") }
   scope :canceled, -> { where(stripe_status: "canceled") }
