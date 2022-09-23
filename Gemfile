@@ -23,7 +23,6 @@ gem "jquery-rails"
 gem "terser", "~> 1.1"
 # Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker
 gem "react-rails"
-gem "webpacker", "~> 4.0"
 # See https://github.com/rails/execjs#readme for more supported runtimes
 # Due to a bug in mini_racer >=0.5.0 running on GitHub Actions, we've had to
 # roll back to mini_racer 0.4.0: https://github.com/rubyjs/mini_racer/issues/218.
@@ -227,6 +226,9 @@ gem "browser", "~> 5.3"
 gem "geo_pattern", "~> 1.4" # for procedurally generated patterns on Cards
 
 gem "comma", "~> 4.6"
+
+
+gem "jsbundling-rails", "~> 1.0"
 
 gem "rack-mini-profiler", "~> 3.0"
 
