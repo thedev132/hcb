@@ -126,7 +126,8 @@ class HcbCode < ApplicationRecord
         partner_donation.try(:event).try(:id),
         ach_transfer.try(:event).try(:id),
         check.try(:event).try(:id),
-        disbursement.try(:event).try(:id)
+        disbursement.try(:event).try(:id),
+        incoming_bank_fee? ? 1671 : nil
       ].compact.flatten.uniq
 
       Event.where(id: ids)
@@ -159,6 +160,10 @@ class HcbCode < ApplicationRecord
 
   def bank_fee?
     hcb_i1 == ::TransactionGroupingEngine::Calculate::HcbCode::BANK_FEE_CODE
+  end
+
+  def incoming_bank_fee?
+    hcb_i1 == ::TransactionGroupingEngine::Calculate::HcbCode::INCOMING_BANK_FEE_CODE
   end
 
   def invoice?
