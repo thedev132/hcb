@@ -150,7 +150,7 @@ module Api
     end
     get :flavor do
       {
-        flavor: StaticPagesHelper.flavor_text
+        flavor: FlavorTextService.new.generate
       }
     end
 

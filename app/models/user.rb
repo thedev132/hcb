@@ -172,6 +172,10 @@ class User < ApplicationRecord
     "#{name} (#{email})"
   end
 
+  def birthday?
+    birthday.present? && birthday.month == Date.today.month && birthday.day == Date.today.day
+  end
+
   private
 
   def namae
