@@ -1,9 +1,11 @@
 version: '3'
 services:
   db:
-    image: "postgres:11.4"
+    image: "postgres:11.16"
     volumes:
       - pg-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: trust
   redis:
     image: redis
     volumes:
