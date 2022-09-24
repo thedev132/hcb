@@ -290,7 +290,6 @@ ActiveRecord::Schema.define(version: 2022_09_15_164239) do
     t.bigint "creator_id"
     t.bigint "lob_address_id"
     t.string "lob_id"
-    t.text "description"
     t.text "memo"
     t.integer "check_number"
     t.integer "amount"
@@ -313,7 +312,6 @@ ActiveRecord::Schema.define(version: 2022_09_15_164239) do
   end
 
   create_table "comments", force: :cascade do |t|
-    t.text "content"
     t.string "commentable_type"
     t.bigint "commentable_id"
     t.bigint "user_id"
