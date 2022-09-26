@@ -8,7 +8,7 @@ module EventMappingEngine
       end
 
       def run
-        EventMappingEngine::EventIds::NOEVENT
+        999 # Hack Club NoEvent
       end
 
     end
