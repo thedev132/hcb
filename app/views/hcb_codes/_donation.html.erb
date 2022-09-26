@@ -58,19 +58,19 @@
     <% end %>
   </section>
   <section class="pt2 pb2 details">
+    <p>
+      <strong>Donor email</strong>
+      <% if organizer_signed_in? %>
+        <%= mail_to @donation.email, @donation.email.downcase %>
+      <% else %>
+        <strong>Sign in to view</strong>
+      <% end %>
+    </p>
+    <p>
+      <strong>Amount</strong>
+      +<%= render_money @donation.amount %>
+    </p>
     <% if @donation.payout %>
-      <p>
-        <strong>Donor email</strong>
-        <% if organizer_signed_in? %>
-          <%= mail_to @donation.email, @donation.email.downcase, class: 'slate underline' %>
-        <% else %>
-          <strong>Sign in to view</strong>
-        <% end %>
-      </p>
-      <p>
-        <strong>Amount</strong>
-        +<%= render_money @donation.amount %>
-      </p>
       <p>
         <strong><%= donation_fee_type(@donation) %></strong>
         -<%= donation_payment_processor_fee(true, @donation) %>
