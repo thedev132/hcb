@@ -35,9 +35,6 @@ class Comment < ApplicationRecord
 
   has_encrypted :content
 
-  # TODO(2541): temporary until unencrypted column is dropped
-  self.ignored_columns = ["content"]
-
   validate :commentable_includes_concern
 
   scope :admin_only, -> { where(admin_only: true) }

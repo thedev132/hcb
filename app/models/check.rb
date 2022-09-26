@@ -56,9 +56,6 @@ class Check < ApplicationRecord
 
   has_encrypted :description
 
-  # TODO(2541): temporary until unencrypted column is dropped
-  self.ignored_columns = ["description"]
-
   has_many :t_transactions, class_name: "Transaction", inverse_of: :check
 
   validates :amount, numericality: { greater_than: 0, message: "must be greater than 0" }
