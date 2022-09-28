@@ -6,11 +6,6 @@ RSpec.describe GSuiteService::Create, type: :model do
   let(:event) { create(:event) }
   let(:current_user) { create(:user) }
 
-  before do
-    allow_any_instance_of(::Partners::Google::GSuite::CreateDomain).to receive(:run).and_return(true)
-    allow_any_instance_of(::Partners::Google::GSuite::DeleteDomain).to receive(:run).and_return(true)
-  end
-
   context "when g suite does not exist" do
     let(:domain) { "event99.example.com" }
     let(:service) do

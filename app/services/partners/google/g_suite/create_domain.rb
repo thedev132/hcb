@@ -11,6 +11,11 @@ module Partners
         end
 
         def run
+          unless Rails.env.production?
+            puts "☣️ In production, we would currently be updating the GSuite on Google Admin ☣️"
+            return
+          end
+
           directory_client.insert_domain(gsuite_customer_id, domains_object)
         end
 
