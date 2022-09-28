@@ -9,7 +9,7 @@ module PendingTransactionEngine
 
         def run
           pending_outgoing_ach_transactions.each do |poat|
-            PendingTransaction::RawPendingOutgoingAchTransactionService::OutgoingAch::ImportSingle.new(ach_transfer: poat).run
+            PendingTransactionEngine::RawPendingOutgoingAchTransactionService::OutgoingAch::ImportSingle.new(ach_transfer: poat).run
           end
 
           nil
