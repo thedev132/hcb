@@ -7,7 +7,7 @@
   <h2 class="h2 mt0 border-none">
     <%= @source.name %>
     <span class="regular muted">
-      <% if @hcb_code.disbursement.fulfilled? || (@destination.can_front_balance? && @hcb_code.disbursement.processed?) %>
+      <% if @hcb_code.disbursement.fulfilled? || (@destination.can_front_balance? && (@hcb_code.disbursement.processed? || @hcb_code.disbursement.pending?)) %>
         transferred
       <% elsif @hcb_code.disbursement.processed? || @hcb_code.disbursement.pending? %>
         transferring
@@ -19,26 +19,40 @@
     <span class="regular muted">to</span>
     <%= @destination.name %>
     <span class="badge h4 md-right ml0 bg-<%= @hcb_code.disbursement.state %>">
-      <%= @hcb_code.disbursement.state_text %>
+      <%= @hcb_code.disbursement.state_text.humanize %>
       <%= inline_icon @hcb_code.disbursement.state_icon, size: 20 if @hcb_code.disbursement.state_icon %>
     </span>
   </h2>
 
   <section class="card__banner card__darker details-horiz border-top border-bottom">
-    <% unless @hcb_code.disbursement.requested_by.nil? || @hcb_code.disbursement.fulfilled_by.nil? %>
+    <% unless @hcb_code.disbursement.requested_by.nil? %>
       <p>
-        <strong>Sent by</strong>
+        <% if @hcb_code.disbursement.reviewing? || @hcb_code.disbursement.rejected? %>
+          <strong>Requested by</strong>
+        <% else %>
+          <strong>Sent by</strong>
+        <% end %>
         <%= user_mention @hcb_code.disbursement.requested_by %>
       </p>
+    <% end %>
+
+    <% unless @hcb_code.disbursement.fulfilled_by.nil? %>
       <% admin_tools('', 'p') do %>
         <strong>Fulfilled by</strong>
         <%= user_mention @hcb_code.disbursement.fulfilled_by  %>
       <% end %>
     <% end %>
+
     <p>
-      <strong>Transferred at</strong>
-      <%= format_datetime @hcb_code.disbursement.created_at %>
+      <% if @hcb_code.disbursement.processed? %>
+        <strong>Transferred at</strong>
+        <%= format_datetime @hcb_code.disbursement.fulfilled_at %>
+      <% else %>
+        <strong>Requested at</strong>
+        <%= format_datetime @hcb_code.disbursement.created_at %>
+      <% end %>
     </p>
+
     <% admin_tools('', 'p') do %>
       <strong>Disbursement ID</strong>
       <%= link_to @hcb_code.disbursement.id, @hcb_code.disbursement %>
