@@ -6,15 +6,7 @@ module PendingTransactionEngine
       class OutgoingAch
         def run
           raw_pending_outgoing_ach_transactions_ready_for_processing.find_each(batch_size: 100) do |rpoct|
-            ActiveRecord::Base.transaction do
-              attrs = {
-                date: rpoct.date,
-                memo: rpoct.memo,
-                amount_cents: rpoct.amount_cents,
-                raw_pending_outgoing_ach_transaction_id: rpoct.id
-              }
-              ct = ::CanonicalPendingTransaction.create!(attrs)
-            end
+            PendingTransactionEngine::CanonicalPendingTransactionService::ImportSingle::OutgoingAch.new(raw_pending_outgoing_ach_transaction: rpoct).run
           end
         end
 

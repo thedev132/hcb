@@ -9,10 +9,7 @@ module PendingTransactionEngine
 
         def run
           pending_outgoing_ach_transactions.each do |poat|
-            ::RawPendingOutgoingAchTransaction.find_or_initialize_by(ach_transaction_id: poat.id.to_s).tap do |t|
-              t.amount_cents = -poat.amount
-              t.date_posted = poat.created_at
-            end.save!
+            PendingTransaction::RawPendingOutgoingAchTransactionService::OutgoingAch::ImportSingle.new(ach_transfer: poat).run
           end
 
           nil
