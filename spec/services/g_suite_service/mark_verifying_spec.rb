@@ -2,18 +2,10 @@
 
 require "rails_helper"
 
-RSpec.describe GSuiteService::MarkVerifying, type: :model, skip: true do
-  fixtures "g_suites"
+RSpec.describe GSuiteService::MarkVerifying, type: :model do
+  let(:g_suite) { create(:g_suite, aasm_state: :configuring) }
 
-  let(:g_suite) { g_suites(:g_suite3) }
-
-  let(:attrs) do
-    {
-      g_suite_id: g_suite.id
-    }
-  end
-
-  let(:service) { GSuiteService::MarkVerifying.new(attrs) }
+  let(:service) { GSuiteService::MarkVerifying.new(g_suite_id: g_suite.id) }
 
   it "changes state" do
     expect(g_suite).not_to be_verifying
@@ -29,7 +21,7 @@ RSpec.describe GSuiteService::MarkVerifying, type: :model, skip: true do
     mail = ActionMailer::Base.deliveries.last
 
     expect(mail.to).to eql(["bank@hackclub.com"])
-    expect(mail.subject).to include("[OPS] [ACTION] [GSuite]")
+    expect(mail.subject).to include("[OPS] [ACTION] [Google Workspace]")
   end
 
   context "mailer 3rd party fails" do
