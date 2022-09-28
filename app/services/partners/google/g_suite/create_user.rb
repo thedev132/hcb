@@ -18,6 +18,11 @@ module Partners
         end
 
         def run
+          unless Rails.env.production?
+            puts "☣️ In production, we would currently be creating the GSuite on Google Admin ☣️"
+            return
+          end
+
           directory_client.insert_user(user_object)
         end
 

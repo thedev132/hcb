@@ -2,11 +2,10 @@
 
 require "rails_helper"
 
-RSpec.describe GSuiteAccountService::Create, type: :model, skip: true do
-  fixtures "users", "events", "g_suites"
-
-  let(:g_suite) { g_suites(:g_suite1) }
-  let(:current_user) { users(:user1) }
+RSpec.describe GSuiteAccountService::Create, type: :model do
+  let(:g_suite) { create(:g_suite, domain: "event.example.com") }
+  let(:current_user) { create(:user) }
+  let(:event) { create(:event) }
 
   let(:backup_email) { "backup@mailinator.com" }
   let(:address) { "address" }
@@ -14,7 +13,7 @@ RSpec.describe GSuiteAccountService::Create, type: :model, skip: true do
   let(:last_name) { "Last" }
 
   let(:remote_org_unit) do
-    ou_name = "##{event.id} G##{@g_suite.id}"
+    ou_name = "##{event.id} G##{g_suite.id}"
     double("remoteOrgUnit", name: ou_name, org_unit_id: "id:1234", org_unit_path: "/Events/#{ou_name}")
   end
 
@@ -54,8 +53,8 @@ RSpec.describe GSuiteAccountService::Create, type: :model, skip: true do
 
     expect(mail.to).to eql(["backup@mailinator.com"])
     expect(mail.subject).to include("Your Google Workspace account via Bank is ready")
-    expect(mail.body).to include("address@event1.example.com")
-    expect(mail.body).to include(g_suite_account.initial_password)
+    expect(mail.body.encoded).to include("address@event.example.com")
+    expect(mail.body.encoded).to include(g_suite_account.initial_password)
   end
 
   context "when remote org unit does not exist" do
@@ -79,7 +78,7 @@ RSpec.describe GSuiteAccountService::Create, type: :model, skip: true do
     it "assigns remote_org_unit_path" do
       expect do
         service.run
-      end.to change(g_suite.reload, :remote_org_unit_path).to("/Events/##{event.id} G##{@g_suite.id}")
+      end.to change(g_suite.reload, :remote_org_unit_path).to("/Events/##{event.id} G##{g_suite.id}")
     end
   end
 
@@ -94,7 +93,7 @@ RSpec.describe GSuiteAccountService::Create, type: :model, skip: true do
       end.not_to change(GSuiteAccount, :count)
     end
 
-    it "raises an errro" do
+    it "raises an error" do
       expect do
         service.run
       end.to raise_error(ArgumentError)
@@ -106,7 +105,7 @@ RSpec.describe GSuiteAccountService::Create, type: :model, skip: true do
       it "builds" do
         result = service.send(:full_email_address)
 
-        expect(result).to eql("address@event1.example.com")
+        expect(result).to eql("address@event.example.com")
       end
     end
   end

@@ -11,6 +11,11 @@ module Partners
         end
 
         def run
+          unless Rails.env.production?
+            puts "☣️ In production, we would currently be creating the GSuite on Google Admin ☣️"
+            return
+          end
+
           directory_client.get_org_unit(gsuite_customer_id, org_unit_path_without_leading_slash)
         rescue ::Google::Apis::ClientError => e
           # re-raise unless 404

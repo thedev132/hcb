@@ -14,11 +14,6 @@ module GSuiteAccountService
     end
 
     def run
-      unless Rails.env.production?
-        puts "☣️ In production, we would currently be creating the GSuite on Google Admin ☣️"
-        return
-      end
-
       ActiveRecord::Base.transaction do
         # 1. Create local account
         g_suite_account.save!
