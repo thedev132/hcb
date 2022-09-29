@@ -78,6 +78,9 @@ class Disbursement < ApplicationRecord
 
   scope :reviewing_or_processing, -> { where(fulfilled_at: nil, rejected_at: nil, errored_at: nil).where.not(fulfilled_by_id: nil) }
 
+  # Eagerly create HcbCode object
+  after_create :local_hcb_code
+
   def hcb_code
     "HCB-#{TransactionGroupingEngine::Calculate::HcbCode::DISBURSEMENT_CODE}-#{id}"
   end
