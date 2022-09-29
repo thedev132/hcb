@@ -21,7 +21,7 @@ module HcbCodeService
       hcb_amount = @hcb_code.amount_cents
       hcb_type = @hcb_code.hcb_i1
       hcb_amount_sign = @hcb_code.amount_cents.positive?
-      hcb_linked_obj = @hcb_code.try(@hcb_code.type)
+      hcb_linked_obj = @hcb_code.try(@hcb_code.type) if @hcb_code.type
       if @hcb_code.type == :card_charge
         hcb_linked_obj = @hcb_code.raw_stripe_transaction
       end
