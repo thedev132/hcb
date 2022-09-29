@@ -23,7 +23,7 @@
 
   <div data-controller="menu" data-menu-placement-value="<%= content_for?(:nav) ? "bottom-start" : "bottom-center" %>">
     <%= link_to root_path,
-      class: "header-center text-decoration-none flex items-center #{'tooltipped tooltipped--s' if Rails.env.production? || user_birthday?}",
+      class: "header-center text-decoration-none flex items-center #{'tooltipped tooltipped--s' if !Rails.env.production? || user_birthday?}",
       'aria-label': user_birthday? ? "Happy birthday! #{['🎂', '🎈', '🎉', '🥳'].sample}" : "You’re in #{Rails.env} mode. #{development_mode_flavor}",
       data: {  "controller" => "fullstory", "fullstory-event-name-value" => "Icon right-clicked", "action" => "contextmenu->menu#toggle contextmenu->fullstory#event click@document->menu#close keydown@document->menu#keydown", "menu-target" => "toggle" } do %>
       <%= image_tag user_birthday? ? "logo-party-dark.gif" : "logo-#{Rails.env}-dark.svg",
