@@ -18,7 +18,9 @@ export default class extends Controller {
     this.cleanup && this.cleanup()
   }
 
-  toggle() {
+  toggle(e) {
+    e.preventDefault()
+
     if (this.isOpen) {
       this.close()
     } else {

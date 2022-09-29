@@ -21,22 +21,38 @@
     <% end %>
   </div>
 
-  <%= link_to root_path,
-    class: "header-center text-decoration-none flex items-center #{'tooltipped tooltipped--s' if !Rails.env.production? || user_birthday?}",
-    'aria-label': user_birthday? ? "Happy birthday! #{['🎂', '🎈', '🎉', '🥳'].sample}" : "You’re in #{Rails.env} mode. #{development_mode_flavor}" do %>
-    <%= image_tag user_birthday? ? "logo-party-dark.gif" : "logo-#{Rails.env}-dark.svg",
-        name: 'header-logo',
-        class: 'logo-dark',
-        width: @home_size || 36,
-        height: @home_size || 36,
-        alt: 'Bank logo' %>
-    <%= image_tag user_birthday? ? "logo-party.gif" : "logo-#{Rails.env}.svg",
-        name: 'header-logo',
-        class: 'logo',
-        width: @home_size || 36,
-        height: @home_size || 36,
-        alt: 'Bank logo' %>
-  <% end %>
+  <div data-controller="menu" data-menu-placement-value="<%= content_for?(:nav) ? "bottom-start" : "bottom-center" %>">
+    <%= link_to root_path,
+      class: "header-center text-decoration-none flex items-center #{'tooltipped tooltipped--s' if Rails.env.production? || user_birthday?}",
+      'aria-label': user_birthday? ? "Happy birthday! #{['🎂', '🎈', '🎉', '🥳'].sample}" : "You’re in #{Rails.env} mode. #{development_mode_flavor}",
+      data: {  "controller" => "fullstory", "fullstory-event-name-value" => "Icon right-clicked", "action" => "contextmenu->menu#toggle contextmenu->fullstory#event click@document->menu#close keydown@document->menu#keydown", "menu-target" => "toggle" } do %>
+      <%= image_tag user_birthday? ? "logo-party-dark.gif" : "logo-#{Rails.env}-dark.svg",
+          name: 'header-logo',
+          class: 'logo-dark',
+          width: @home_size || 36,
+          height: @home_size || 36,
+          alt: 'Bank logo' %>
+      <%= image_tag user_birthday? ? "logo-party.gif" : "logo-#{Rails.env}.svg",
+          name: 'header-logo',
+          class: 'logo',
+          width: @home_size || 36,
+          height: @home_size || 36,
+          alt: 'Bank logo' %>
+    <% end %>
+
+    <div data-menu-target="content" class="menu__content menu__content--2 menu__content--compact">
+      <a href="/brand/hcb-icon-icon-original.png" download class="flex">
+        <%= image_tag "logo-production.svg", class: "mr1", size: 24 %>
+        Download PNG icon
+      </a>
+      <a href="/brand/hcb-icon-icon-dark.png" download class="flex">
+        <%= image_tag "logo-production-dark.svg", class: "mr1", size: 24 %>
+        Download PNG icon
+      </a>
+      <div class="menu__divider"></div>
+      <a href="/branding">Brand guidelines</a>
+    </div>
+  </div>
 
   <div class="header-right line-height-0 flex items-center">
     <% if signed_in? %>
