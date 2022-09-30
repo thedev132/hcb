@@ -432,7 +432,8 @@ class FlavorTextService
       "<a href='https://assemble.hackclub.com' target='_blank' style='color: inherit'>we ran our own hackathon on it!</a>",
       "<a href='https://assemble.hackclub.com' target='_blank' style='color: inherit'>good enough for us to use!</a>",
       "<a href='https://assemble.hackclub.com' target='_blank' style='color: inherit'>dogfooded by us!</a>",
-      "<strike>Runs on Airtable™</strike>"
+      "<strike>Runs on Airtable™</strike>",
+      "Got a hankering for some Bankering?"
     ]
   end
 
