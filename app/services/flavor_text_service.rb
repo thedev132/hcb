@@ -300,7 +300,7 @@ class FlavorTextService
       "Receipts are kinda like a recipe for money",
       "Receipts are kinda like a recipe for a nonprofit",
       "Receipts are kinda like a recipe for losing money",
-      "Check the back of this page for an exclusive promo code!",
+      "Check the back of this page for an exclusive promo code!<!--\n\n\n\n\n\n\n\n          Use promo code STICKERSNOW for free Hack Club Bank stickers.\n\n          (Alternatively, you could just get some here: https://hack.af/hcb-stickers)\n\n\n\n\n\n\n\n          -->",
       "You've found the 5th easter egg on the site!",
       "Happiness > Wealthiness, but I didn't tell you that",
       "A wallet is fine too",
