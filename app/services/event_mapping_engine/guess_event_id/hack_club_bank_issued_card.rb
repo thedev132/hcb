@@ -8,7 +8,7 @@ module EventMappingEngine
       end
 
       def run
-        636 # Hack Club Bank
+        EventMappingEngine::EventIds::HACK_CLUB_BANK
       end
 
     end

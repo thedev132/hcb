@@ -127,7 +127,7 @@ class HcbCode < ApplicationRecord
         ach_transfer.try(:event).try(:id),
         check.try(:event).try(:id),
         disbursement.try(:event).try(:id),
-        incoming_bank_fee? ? 1671 : nil
+        incoming_bank_fee? ? EventMappingEngine::EventIds::INCOMING_FEES : nil
       ].compact.flatten.uniq
 
       Event.where(id: ids)
@@ -135,7 +135,7 @@ class HcbCode < ApplicationRecord
   end
 
   def hackathon_grant?
-    disbursement? && disbursement.source_event_id == 1610
+    disbursement? && disbursement.source_event_id == EventMappingEngine::EventIds::HACKATHON_GRANT_FUND
   end
 
   def fee_payment?
