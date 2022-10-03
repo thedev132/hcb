@@ -155,6 +155,9 @@ group :development do
 
   # adds comments to models with database fields
   gem 'annotate'
+
+  # for running webpack-dev-server and rails server together via Procfile
+  gem "foreman"
 end
 
 group :test do

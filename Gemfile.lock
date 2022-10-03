@@ -259,6 +259,7 @@ GEM
       rack (>= 1.4, < 3)
       rack-protection (>= 1.5.3, <= 2.2.0)
       sanitize (< 7)
+    foreman (0.87.2)
     friendly_id (5.2.5)
       activerecord (>= 4.0.0)
     fugit (1.5.3)
@@ -735,6 +736,7 @@ DEPENDENCIES
   flipper
   flipper-active_record
   flipper-ui
+  foreman
   friendly_id (~> 5.2.0)
   geo_pattern (~> 1.4)
   geocoder
