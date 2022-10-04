@@ -89,47 +89,4 @@
     </article>
   <% end %>
 
-  <% admin_tools do %>
-
-    <h4>Cardholders</h4>
-
-    <article class="table-container">
-
-      <table>
-        <thead>
-        <tr>
-          <th>NAME</th>
-          <th>DATE</th>
-          <th>STATUS</th>
-          <th></th>
-        </tr>
-        </thead>
-
-        <tbody>
-        <% @stripe_cardholders.each do |d| %>
-          <tr>
-            <td>
-              <%= user_mention d.user if organizer_signed_in? %>
-              <%= "(redacted)" unless organizer_signed_in? %>
-            </td>
-            <td>
-              <%= format_date d.created_at %>
-            </td>
-            <td>
-              <span class="ml0 badge bg-<%= d.state %>"><%= d.state_text %></span>
-            </td>
-            <td>
-              <% if d.remote_status == "disabled" %>
-                Please <%= link_to "contact us", "mailto:bank@hackclub.com" %> to fix this.
-              <% end %>
-            </td>
-          </tr>
-        <% end %>
-        </tbody>
-      </table>
-
-    </article>
-
-  <% end %>
-
 <% end %>

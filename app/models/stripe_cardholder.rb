@@ -48,6 +48,10 @@ class StripeCardholder < ApplicationRecord
   alias_attribute :address_country, :stripe_billing_address_country
   alias_attribute :address_postal_code, :stripe_billing_address_postal_code
 
+  def stripe_dashboard_url
+    "https://dashboard.stripe.com/issuing/cardholders/#{self.stripe_id}"
+  end
+
   def state
     return :success if remote_status == "active"
     return :error if remote_status == "blocked"
