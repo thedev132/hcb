@@ -2,35 +2,18 @@
 
 require "rails_helper"
 
-RSpec.describe ApiService::V2::DonationsNew, type: :model, skip: true do
-  fixtures "partners", "events"
+RSpec.describe ApiService::V2::DonationsNew, type: :model do
+  let(:event) { create(:event) }
+  let(:partner) { event.partner }
 
-  let(:partner) { partners(:partner1) }
-  let(:event) { events(:event1) }
+  let(:service) {
+    ApiService::V2::DonationsNew.new(
+      partner_id: partner.id,
+      organization_public_id: event.public_id
+    )
+  }
 
-  let(:partner_id) { partner.id }
-  let(:organization_identifier) { event.organization_identifier }
-
-  let(:attrs) do
-    {
-      partner_id: partner_id,
-      organization_identifier: organization_identifier
-    }
-  end
-
-  let(:service) { ApiService::V2::DonationsNew.new(attrs) }
-
-  it "does not create partner donation" do
-    expect do
-      service.run
-    end.to raise_error(ArgumentError)
-  end
-
-  context "when event is approved" do
-    before do
-      event.mark_approved!
-    end
-
+  context "when event is approved (the default state)" do
     it "creates a partner donation" do
       expect do
         service.run
