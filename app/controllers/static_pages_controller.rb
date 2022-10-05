@@ -47,11 +47,12 @@ class StaticPagesController < ApplicationController
   # async frame
   def my_missing_receipts_list
     @missing_receipt_ids = []
-    current_user.stripe_cards.map do |card|
-      break unless @missing_receipt_ids.size < 5
 
-      card.hcb_codes.without_receipt.pluck(:id).each do |id|
-        @missing_receipt_ids << id
+    current_user.stripe_cards.map do |card|
+      card.hcb_codes.missing_receipt.each do |hcb_code|
+        next unless hcb_code.receipt_required?
+
+        @missing_receipt_ids << hcb_code.id
         break unless @missing_receipt_ids.size < 5
       end
     end
