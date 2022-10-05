@@ -106,6 +106,30 @@
   <% end %>
   <% unless @onboarding %>
     <h2 id="feature-previews">Feature previews</h2>
+    <div class="card pb0 mb3" id="detailed-events-list">
+      <div class="card__banner card__banner--top flex justify-between items-center feature-detailed-events-list <%= 'b--info' if Flipper.enabled?(:detailed_events_list_2022_10_04, current_user)%> ">
+        <h3 class="h1 p2 my0 color-black">Detailed Org List</h3>
+        <% if Flipper.enabled?(:detailed_events_list_2022_10_04) %>
+          <%# Feature is enabled for all users, don't include a choice %>
+          <div class="actions tooltipped tooltipped--w inline-block mt1" aria-label="This feature is now generally available!">
+            <span class="btn bg-accent disabled">Shipped!</span>
+          </div>
+          <%# link_to "Shipped!", enable_feature_path(feature: :transfers_2022_04_21), method: :post, class: 'btn bg-accent' %>
+        <% elsif Flipper.enabled?(:detailed_events_list_2022_10_04, current_user) %>
+          <%# Feature is enabled, let the user opt-out %>
+          <%= link_to "Disable", disable_feature_users_path(feature: :detailed_events_list_2022_10_04), method: :post, class: 'btn bg-accent' %>
+        <% else %>
+          <%# Feature is disabled, let the user opt-in %>
+          <%= link_to "Enable", enable_feature_users_path(feature: :detailed_events_list_2022_10_04), method: :post, class: 'btn bg-info' %>
+        <% end %>
+      </div>
+      <p>
+        The organization list now shows additional information about each org
+        such as current balance and card count. After opting-in, you'll
+        see a modified org list on the Bank homepage.
+      </p>
+    </div>
+  </div>
     <div class="card pb0 mb3" id="receipt-email-upload">
       <div class="card__banner card__banner--top flex justify-between items-center feature-receipt-upload <%= 'b--info' if Flipper.enabled?(:receipt_email_upload_2022_05_10, current_user)%> ">
         <h3 class="h1 p2 my0 color-black">Email Receipt Upload</h3>

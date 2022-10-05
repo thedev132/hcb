@@ -27,6 +27,16 @@ html[data-dark='true'] {
   }
 }
 
+.feature-detailed-events-list {
+  background-color: $snow;
+}
+
+html[data-dark='true'] {
+  .feature-detailed-events-list {
+    background-color: $black;
+  }
+}
+
 .feature-transaction-tags {
   background-size: 24em;
   background-color: $snow;

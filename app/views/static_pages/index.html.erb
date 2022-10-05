@@ -14,11 +14,23 @@
 <main class="flex flex-column items-center center pb3">
   <% if signed_in? %>
     <% if @events.any? %>
-      <ul class="grid grid--narrow left-align w-100 mt0">
+      <ul class="grid grid--<%= "medium-" if Flipper.enabled?(:detailed_events_list_2022_10_04, current_user) %>narrow left-align w-100 mt0">
         <% @events.not_hidden.each do |event| %>
           <%= link_to event, style: "max-width: 90vw" do %>
             <li class="card card--hover flex flex-column justify-between h-100 mx-auto">
               <strong class="brand-sans h3 line-height-2 mb1"><%= event.name %></strong>
+              <% if Flipper.enabled?(:detailed_events_list_2022_10_04, current_user) %>
+                <div class="brand-sans h4 line-height-2 mb2 flex justify-between"> 
+                  <span style="white-space: nowrap;">
+                    <%= inline_icon 'payment', size: 16, class: 'muted align-middle', 'aria-label': 'Dollar sign', style: 'transform: scale(2)' %>
+                    <strong><%= render_money_amount(event.balance_v2_cents) %></strong>
+                  </span>
+                  <span>
+                    <%= inline_icon 'card', size: 20, class: 'muted align-middle', 'aria-label': 'Cards', style: 'transform: scale(1.2)' %>
+                    <strong><%= event.stripe_cards.count %></strong>
+                  </span>
+                </div>
+              <% end %>
               <div class="avatar-row">
                 <% event.organizer_positions.each do |position| %>
                   <%= avatar_for position.user, 24 %>
