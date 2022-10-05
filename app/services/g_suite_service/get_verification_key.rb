@@ -2,6 +2,8 @@
 
 module GSuiteService
   class GetVerificationKey
+    G_VERIFY_DOMAIN = 'https://gverify.bank.engineering/'
+
     def initialize(g_suite_id:)
       @g_suite_id = g_suite_id
     end
@@ -13,7 +15,7 @@ module GSuiteService
         req.headers["Authorization"] = Rails.application.credentials.g_verify_api_key
       end
 
-      if !res.success?
+      unless res.success?
         raise ArgumentError, "Failed to get Google Workspace Verification Key for #{domain}"
       end
 
@@ -31,7 +33,7 @@ module GSuiteService
     end
 
     def url
-      "http://g-verify.herokuapp.com/token/#{domain}"
+      "#{G_VERIFY_DOMAIN}/token/#{domain}"
     end
 
   end
