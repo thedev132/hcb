@@ -53,8 +53,23 @@ module StripeCardholderService
             postal_code: postal_code,
             country: country
           }
+        },
+        individual: {
+          first_name: @current_user.first_name,
+          last_name: @current_user.last_name,
+          dob: dob
         }
       }
+    end
+
+    def dob
+      if @current_user.birthday
+        {
+          day: @current_user.birthday.day,
+          month: @current_user.birthday.month,
+          year: @current_user.birthday.year
+        }
+      end
     end
 
     def line1
