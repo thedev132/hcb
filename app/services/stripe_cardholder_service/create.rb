@@ -63,13 +63,16 @@ module StripeCardholderService
     end
 
     def dob
-      if @current_user.birthday
-        {
-          day: @current_user.birthday.day,
-          month: @current_user.birthday.month,
-          year: @current_user.birthday.year
-        }
-      end
+      return nil unless @current_user.birthday
+      # We don't want to share the dob for users under 13
+      # https://github.com/hackclub/bank/pull/3071#issuecomment-1268880804
+      return nil unless @current_user.birthday > 13.years.ago
+
+      {
+        day: @current_user.birthday.day,
+        month: @current_user.birthday.month,
+        year: @current_user.birthday.year
+      }
     end
 
     def line1
