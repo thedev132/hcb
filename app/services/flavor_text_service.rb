@@ -13,7 +13,13 @@ class FlavorTextService
     return holiday_flavor_texts.sample if holiday?
     return birthday_flavor_texts.sample if @user&.birthday?
 
-    flavor_texts.sample
+    in_frc_team = @user&.events&.exists?(category: Event.categories["robotics team"])
+
+    if in_frc_team
+      (flavor_texts + frc_flavor_texts).sample
+    else
+      flavor_texts.sample
+    end
   end
 
   def development_flavor_texts
@@ -72,6 +78,22 @@ class FlavorTextService
       "u seein' the snow outside?",
       "Dear Santa...",
       "where's my gingerbread house"
+    ]
+  end
+
+  def frc_flavor_texts
+    [
+      "Built by someone from team ##{[1759, 8724].sample}!",
+      "Safety FIRST!",
+      "Safety glasses == invincible",
+      "Stop! Where are your safety glasses?",
+      "something something ‘gracious professionalism’",
+      "help I’ve run out of FIRST puns",
+      "do the robot!",
+      "It’s not battlebots mom!",
+      "I heard next year is a water game",
+      "Did you bring enough #{%w[zip-ties ductape].sample}?",
+      "Duct tape, ductape, duck tape"
     ]
   end
 
