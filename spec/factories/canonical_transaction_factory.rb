@@ -5,6 +5,6 @@ FactoryBot.define do
     amount_cents { Faker::Number.number(digits: 4) }
     date { Faker::Date.backward(days: 14) }
     memo { Faker::Quote.matz }
-    association :hashed_transaction, :plaid
+    hashed_transactions { [association(:hashed_transaction, :plaid)] }
   end
 end

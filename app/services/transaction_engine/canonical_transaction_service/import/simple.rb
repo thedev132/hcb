@@ -6,21 +6,13 @@ module TransactionEngine
       class Simple
         def run
           hashed_transactions_ready_for_processing.find_each(batch_size: 100) do |ht|
-            ActiveRecord::Base.transaction do
-              attrs = {
-                date: ht.date,
-                memo: ht.memo,
-                amount_cents: ht.amount_cents
-              }
-              ct = ::CanonicalTransaction.create!(attrs)
-
-              attrs = {
-                canonical_transaction_id: ct.id,
-                hashed_transaction_id: ht.id
-              }
-              ::CanonicalHashedMapping.create!(attrs)
-            end
-
+            attrs = {
+              date: ht.date,
+              memo: ht.memo,
+              amount_cents: ht.amount_cents,
+              canonical_hashed_mappings: [CanonicalHashedMapping.new(hashed_transaction: ht)]
+            }
+            ::CanonicalTransaction.create!(attrs)
           end
         end
 
