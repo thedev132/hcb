@@ -2,12 +2,10 @@
 
 require "rails_helper"
 
-RSpec.describe RawPendingPartnerDonationTransaction, type: :model, skip: true do
-  fixtures "raw_pending_partner_donation_transactions", "partner_donations"
+RSpec.describe RawPendingPartnerDonationTransaction, type: :model do
+  let(:partner_donation) { create(:partner_donation) }
 
-  let(:partner_donation) { partner_donations(:partner_donation2) }
-
-  let(:raw_pending_partner_donation_transaction) { raw_pending_partner_donation_transactions(:raw_pending_partner_donation_transaction1) }
+  let(:raw_pending_partner_donation_transaction) { create(:raw_pending_partner_donation_transaction, partner_donation_transaction_id: partner_donation.id) }
 
   it "is valid" do
     expect(raw_pending_partner_donation_transaction).to be_valid
