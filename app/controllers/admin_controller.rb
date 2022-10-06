@@ -230,6 +230,7 @@ class AdminController < ApplicationController
       category: params[:category],
       point_of_contact_id: params[:point_of_contact_id],
       approved: params[:approved].to_i == 1,
+      is_public: params[:is_public].to_i == 1,
       sponsorship_fee: params[:sponsorship_fee],
       organized_by_hack_clubbers: params[:organized_by_hack_clubbers].to_i == 1,
       omit_stats: params[:omit_stats].to_i == 1
