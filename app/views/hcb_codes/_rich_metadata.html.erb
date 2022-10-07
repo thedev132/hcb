@@ -38,6 +38,11 @@
   <%= render partial: "hcb_codes/bank_fee", locals: {} %>
 <% end %>
 
+<%# fee revenue %>
+<% if @hcb_code.fee_revenue? && @hcb_code.fee_revenue.present? %>
+  <%= render partial: "hcb_codes/fee_revenue", locals: {} %>
+<% end %>
+
 <%# unknown (most likely a direct to bank account transaction) %>
 <% if @hcb_code.unknown? %>
   <%= render partial: "hcb_codes/unknown", locals: {} %>

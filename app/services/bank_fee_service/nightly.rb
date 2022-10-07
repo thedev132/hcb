@@ -6,11 +6,15 @@ module BankFeeService
     include ::Shared::Selenium::TransferFromFsMainToFsOperating
 
     def run
-      if BankFee.pending.present?
+      if BankFee.pending.present? || FeeRevenue.pending.present?
         login_to_svb!
 
         BankFee.pending.each do |bank_fee|
           ::BankFeeService::ProcessSingle.new(bank_fee_id: bank_fee.id, driver: driver).run
+        end
+
+        FeeRevenue.pending.each do |fee_revenue|
+          ::FeeRevenueService::ProcessSingle.new(fee_revenue_id: fee_revenue.id, driver: driver).run
         end
 
         driver.quit
@@ -28,6 +32,12 @@ module BankFeeService
           bank_fee.mark_settled!
         rescue => e
           Airbrake.notify(e)
+        end
+      end
+
+      FeeRevenue.in_transit.each do |fee_revenue|
+        if fee_revenue.canonical_transaction
+          fee_revenue.mark_settled!
         end
       end
     end

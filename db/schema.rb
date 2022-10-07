@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_10_03_004924) do
+ActiveRecord::Schema.define(version: 2022_10_06_145256) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -140,7 +140,9 @@ ActiveRecord::Schema.define(version: 2022_10_03_004924) do
     t.integer "amount_cents"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "fee_revenue_id"
     t.index ["event_id"], name: "index_bank_fees_on_event_id"
+    t.index ["fee_revenue_id"], name: "index_bank_fees_on_fee_revenue_id"
   end
 
   create_table "blazer_audits", force: :cascade do |t|
@@ -594,6 +596,15 @@ ActiveRecord::Schema.define(version: 2022_10_03_004924) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["event_id"], name: "index_fee_relationships_on_event_id"
+  end
+
+  create_table "fee_revenues", force: :cascade do |t|
+    t.integer "amount_cents"
+    t.date "start"
+    t.date "end"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "aasm_state"
   end
 
   create_table "fees", force: :cascade do |t|

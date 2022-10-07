@@ -4,17 +4,19 @@
 #
 # Table name: bank_fees
 #
-#  id           :bigint           not null, primary key
-#  aasm_state   :string
-#  amount_cents :integer
-#  hcb_code     :string
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
-#  event_id     :bigint           not null
+#  id             :bigint           not null, primary key
+#  aasm_state     :string
+#  amount_cents   :integer
+#  hcb_code       :string
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
+#  event_id       :bigint           not null
+#  fee_revenue_id :bigint
 #
 # Indexes
 #
-#  index_bank_fees_on_event_id  (event_id)
+#  index_bank_fees_on_event_id        (event_id)
+#  index_bank_fees_on_fee_revenue_id  (fee_revenue_id)
 #
 # Foreign Keys
 #
@@ -26,6 +28,7 @@ class BankFee < ApplicationRecord
   include AASM
 
   belongs_to :event
+  belongs_to :fee_revenue, optional: true
 
   monetize :amount_cents
 

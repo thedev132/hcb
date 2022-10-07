@@ -1,27 +1,27 @@
 # frozen_string_literal: true
 
-module BankFeeService
+module FeeRevenueService
   class ProcessSingle
     include ::Shared::Selenium::LoginToSvb
-    include ::Shared::Selenium::TransferFromFsMainToFsOperating
+    include ::Shared::Selenium::TransferFromFsOperatingToFsMain
 
-    def initialize(bank_fee_id:, driver: nil)
-      @bank_fee_id = bank_fee_id
+    def initialize(fee_revenue_id:, driver: nil)
+      @fee_revenue_id = fee_revenue_id
       @driver = driver
       @already_logged_in = @driver.present?
     end
 
     def run
-      raise ArgumentError, "must be a pending bank fee only" unless bank_fee.pending?
+      raise ArgumentError, "must be pending fee revenue only" unless fee_revenue.pending?
 
       ActiveRecord::Base.transaction do
-        bank_fee.mark_in_transit!
+        fee_revenue.mark_in_transit!
 
         # 1. begin by navigating
         login_to_svb! unless @already_logged_in
 
         # Make the transfer on remote bank
-        transfer_from_fs_main_to_fs_operating!(amount_cents: amount_cents, memo: memo)
+        transfer_from_fs_operating_to_fs_main!(amount_cents: amount_cents, memo: memo)
       end
 
       sleep 5
@@ -34,7 +34,7 @@ module BankFeeService
     private
 
     def amount_cents
-      bank_fee.amount_cents.abs # needs to use absolute positive value
+      fee_revenue.amount_cents
     end
 
     def memo
@@ -42,11 +42,11 @@ module BankFeeService
     end
 
     def local_hcb_code
-      @local_hcb_code ||= bank_fee.local_hcb_code
+      @local_hcb_code ||= fee_revenue.local_hcb_code
     end
 
-    def bank_fee
-      @bank_fee ||= BankFee.pending.find(@bank_fee_id)
+    def fee_revenue
+      @fee_revenue ||= FeeRevenue.pending.find(@fee_revenue_id)
     end
 
   end

@@ -68,6 +68,7 @@ class HcbCode < ApplicationRecord
     return partner_donation_memo if partner_donation?
     return ach_transfer_memo if ach_transfer?
     return check_memo if check?
+    return fee_revenue_memo if fee_revenue?
 
     custom_memo || ct.try(:smart_memo) || pt.try(:smart_memo) || ""
   end
@@ -127,7 +128,8 @@ class HcbCode < ApplicationRecord
         ach_transfer.try(:event).try(:id),
         check.try(:event).try(:id),
         disbursement.try(:event).try(:id),
-        incoming_bank_fee? ? EventMappingEngine::EventIds::INCOMING_FEES : nil
+        incoming_bank_fee? ? EventMappingEngine::EventIds::INCOMING_FEES : nil,
+        fee_revenue? ? EventMappingEngine::EventIds::HACK_CLUB_BANK : nil
       ].compact.flatten.uniq
 
       Event.where(id: ids)
@@ -164,6 +166,10 @@ class HcbCode < ApplicationRecord
 
   def incoming_bank_fee?
     hcb_i1 == ::TransactionGroupingEngine::Calculate::HcbCode::INCOMING_BANK_FEE_CODE
+  end
+
+  def fee_revenue?
+    hcb_i1 == ::TransactionGroupingEngine::Calculate::HcbCode::FEE_REVENUE_CODE
   end
 
   def invoice?
@@ -244,6 +250,14 @@ class HcbCode < ApplicationRecord
 
   def bank_fee
     @bank_fee ||= BankFee.find_by(id: hcb_i2) if bank_fee?
+  end
+
+  def fee_revenue
+    @fee_revenue ||= FeeRevenue.find_by(id: hcb_i2) if fee_revenue?
+  end
+
+  def fee_revenue_memo
+    "Fee revenue from #{fee_revenue.start.strftime("%b %e")} to #{fee_revenue.end.strftime("%b %e")}"
   end
 
   def unknown?
