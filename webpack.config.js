@@ -1,8 +1,10 @@
 const path = require('path')
 const webpack = require('webpack')
 
+const mode = process.env.NODE_ENV === 'development' ? 'development' : 'production';
+
 module.exports = {
-  mode: 'production',
+  mode,
   devtool: 'source-map',
   entry: {
     bundle: './app/javascript/application.js'
