@@ -149,10 +149,6 @@ group :development do
   # For https://marketplace.visualstudio.com/items?itemName=tomclose.format-erb
   gem 'htmlbeautifier', require: false
 
-  # Lets you set a breakpoint with a REPL using binding.pry
-  gem "pry-byebug"
-  gem "pry-rails"
-
   # adds comments to models with database fields
   gem 'annotate'
 
@@ -171,6 +167,12 @@ group :test do
   gem 'factory_bot_rails'
   # For initializing fake values
   gem 'faker'
+end
+
+group :development, :test do
+  # Lets you set a breakpoint with a REPL using binding.pry
+  gem "pry-byebug"
+  gem "pry-rails"
 end
 
 group :production do
