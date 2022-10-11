@@ -26,21 +26,25 @@
       class: "header-center text-decoration-none flex items-center #{'tooltipped tooltipped--s' if !Rails.env.production? || user_birthday?}",
       'aria-label': user_birthday? ? "Happy birthday! #{['🎂', '🎈', '🎉', '🥳'].sample}" : "You’re in #{Rails.env} mode. #{development_mode_flavor}",
       data: {  "controller" => "fullstory", "fullstory-event-name-value" => "Icon right-clicked", "action" => "contextmenu->menu#toggle contextmenu->fullstory#event click@document->menu#close keydown@document->menu#keydown", "menu-target" => "toggle" } do %>
-      <%= image_tag user_birthday? ? "logo-party-dark.gif" : "logo-#{Rails.env}-dark.svg",
+      <%= image_tag user_birthday? ? "logo-party-dark.gif" : by_season("logo-#{Rails.env}-dark.svg", fall: "https://cloud-qmskqc293-hack-club-bot.vercel.app/0bank-pumpkin.png"),
           name: 'header-logo',
           class: 'logo-dark',
-          width: @home_size || 36,
           height: @home_size || 36,
           alt: 'Bank logo' %>
-      <%= image_tag user_birthday? ? "logo-party.gif" : "logo-#{Rails.env}.svg",
+      <%= image_tag user_birthday? ? "logo-party.gif" : by_season("logo-#{Rails.env}.svg", fall: "https://cloud-qmskqc293-hack-club-bot.vercel.app/0bank-pumpkin.png"),
           name: 'header-logo',
           class: 'logo',
-          width: @home_size || 36,
           height: @home_size || 36,
           alt: 'Bank logo' %>
     <% end %>
 
     <div data-menu-target="content" class="menu__content menu__content--2 menu__content--compact">
+      <% if fall? %>
+        <a href="https://cloud-qmskqc293-hack-club-bot.vercel.app/0bank-pumpkin.png" download class="flex">
+          <%= image_tag "https://cloud-qmskqc293-hack-club-bot.vercel.app/0bank-pumpkin.png", class: "mr1", height: 24 %>
+          Download spooky icon
+        </a>
+      <% end %>
       <a href="/brand/hcb-icon-icon-original.png" download class="flex">
         <%= image_tag "logo-production.svg", class: "mr1", size: 24 %>
         Download PNG icon

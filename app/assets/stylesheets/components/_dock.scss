@@ -107,7 +107,11 @@
     width: fit-content;
 
     svg {
-      fill: map-get($palette, primary) !important;
+      fill: map-get($palette, primary);
+      .season-fall & {
+        fill: map-get($palette, warning);
+      }
+
       height: 28px;
     }
 

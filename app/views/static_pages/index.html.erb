@@ -6,9 +6,16 @@
 <h1 class="heading items-center md-items-baseline justify-center md-justify-between center md-left-align w-auto">
   <div>
     <span class="h3 caps secondary block">Welcome to</span>
-    <span class="primary nowrap">Hack&nbsp;Club Bank</span>
+    <span class="primary <%= "nowrap" unless fall? %> <%= "warning" if fall? %>">
+      <% if fall? %>
+        <span class="warning strikethrough"><span class="primary">Hack</span></span>
+        Spook&nbsp;Club Bank
+      <% else %>
+        Hack&nbsp;Club Bank
+      <% end %>
+    </span>
   </div>
-  <span class="badge ml0 h5 caps <%= 'bg-success' if Rails.env.development? %>"><%= flavor_text.html_safe %></span>
+  <span class="badge ml0 h5 caps <%= Rails.env.development? ? 'bg-success' : by_season("", fall: "bg-warning") %>"><%= flavor_text.html_safe %></span>
 </h1>
 
 <main class="flex flex-column items-center center pb3">

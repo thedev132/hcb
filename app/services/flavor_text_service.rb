@@ -2,6 +2,7 @@
 
 class FlavorTextService
   include ActionView::Helpers::NumberHelper
+  include SeasonalHelper
 
   def initialize(user: nil, env: Rails.env)
     @user = user
@@ -10,7 +11,8 @@ class FlavorTextService
 
   def generate
     return development_flavor_texts.sample if @env == "development"
-    return holiday_flavor_texts.sample if holiday?
+    return holiday_flavor_texts.sample if winter?
+    return rand > 0.5 ? spooky_flavor_texts.sample : flavor_texts.sample if fall? # ~50% chance of spookiness
     return birthday_flavor_texts.sample if @user&.birthday?
 
     in_frc_team = @user&.events&.exists?(category: Event.categories["robotics team"])
@@ -78,6 +80,17 @@ class FlavorTextService
       "u seein' the snow outside?",
       "Dear Santa...",
       "where's my gingerbread house"
+    ]
+  end
+
+  def spooky_flavor_texts
+    [
+      "Spooky edition",
+      "Boo!",
+      "Trick or treat!",
+      "👻",
+      "🧛",
+      "🎃"
     ]
   end
 
@@ -457,12 +470,6 @@ class FlavorTextService
       "<strike>Runs on Airtable™</strike>",
       "Got a hankering for some Bankering?"
     ]
-  end
-
-  private
-
-  def holiday?
-    rand(100) >= 5 && DateTime.now <= Date.new(2022, 2, 13)
   end
 
 end
