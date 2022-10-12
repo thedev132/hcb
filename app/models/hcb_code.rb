@@ -32,8 +32,6 @@ class HcbCode < ApplicationRecord
 
   before_create :generate_and_set_short_code
 
-  attr_writer :not_admin_only_comments_count
-
   comma do
     hcb_code "HCB Code"
     created_at "Created at"
@@ -320,11 +318,15 @@ class HcbCode < ApplicationRecord
     self.short_code = ::HcbCodeService::Generate::ShortCode.new.run
   end
 
-  # delete this method once preload is on by default
   def not_admin_only_comments_count
-    return @not_admin_only_comments_count if defined?(@not_admin_only_comments_count)
-
-    @not_admin_only_comments_count = comments.not_admin_only.count
+    # `not_admin_only.count` always issues a new query to the DB because a scope is being applied.
+    # However, if comments have been preloaded, it's more likely to be faster to count
+    # the non admin comments in memory. The vast majority of HcbCodes have fewer than 4 comments
+    @not_admin_only_comments_count ||= if comments.loaded?
+                                         comments.count { |c| !c.admin_only }
+                                       else
+                                         comments.not_admin_only.count
+                                       end
   end
 
 end

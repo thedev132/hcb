@@ -39,10 +39,6 @@ module TransactionGroupingEngine
 
         canonical_pending_transactions_by_id = CanonicalPendingTransaction.where(hcb_code: hcb_code_codes).index_by(&:id)
 
-        hcb_code_objects.each do |hc|
-          hc.not_admin_only_comments_count = hc.comments.count { |c| !c.admin_only }
-        end
-
         hack_club_fees_by_canonical_transaction_id = Fee
                                                      .includes(:canonical_event_mapping)
                                                      .where(canonical_event_mappings: { canonical_transaction_id: canonical_transaction_ids })

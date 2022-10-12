@@ -24,10 +24,6 @@ module PendingTransactionEngine
                            .where(hcb_code: hcb_code_codes)
         hcb_code_by_code = hcb_code_objects.index_by(&:hcb_code)
 
-        hcb_code_objects.each do |hc|
-          hc.not_admin_only_comments_count = hc.comments.count { |c| !c.admin_only }
-        end
-
         stripe_ids = @pending_transactions.filter_map do |pt|
           if pt.raw_pending_stripe_transaction
             pt.raw_pending_stripe_transaction.stripe_transaction["cardholder"]
