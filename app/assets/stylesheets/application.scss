@@ -250,6 +250,32 @@ action {
   border: 0;
 }
 
+@keyframes flying-spook {
+  from {
+    left: 0;
+    top: 100%;
+  }
+
+  to {
+    left: 100%;
+    top: 10rem;
+  }
+}
+
+.flying-spook {
+  position: fixed;
+  left: 0;
+  top: 100%;
+  width: 3rem;
+  z-index: 10;
+
+  animation: ease-in flying-spook 30s 10s;
+}
+
+.flying-spook.ghost {
+  animation-delay: 50s;
+}
+
 // Make mobile views nice. Full-bleed separator lines
 @media screen and (max-width: 32em) {
   table:not(.table-container > table),

@@ -48,6 +48,12 @@
       <%= react_component 'holiday/Snow', {}, {:style => "height:100%"} %>
     <% end %>
 
+    <%# ghosts and ghouls %>
+    <% if fall? %>
+      <img src="https://cloud-iuqyduosh-hack-club-bot.vercel.app/0image.png" alt="oOoOoOoOo" class="flying-spook ghost" />
+      <img src="https://cloud-fy14iajlp-hack-club-bot.vercel.app/0image__50_-removebg-preview.png" alt="witch orpheus" class="flying-spook" />
+    <% end %>
+
     <% if content_for?(:nav) %>
       <main class="container app">
         <aside class="app__sidebar">
