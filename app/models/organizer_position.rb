@@ -6,6 +6,7 @@
 #
 #  id         :bigint           not null, primary key
 #  deleted_at :datetime
+#  sort_index :integer
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  event_id   :bigint
@@ -23,6 +24,8 @@
 #
 class OrganizerPosition < ApplicationRecord
   acts_as_paranoid
+
+  scope :not_hidden, -> { where(event: { hidden_at: nil }) }
 
   belongs_to :user
   belongs_to :event

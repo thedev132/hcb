@@ -11,7 +11,11 @@ module StaticPageService
     end
 
     def events
-      @current_user.events.includes(organizer_positions: :user)
+      @current_user.events.reorder("organizer_positions.sort_index ASC", "events.id ASC").includes(organizer_positions: :user)
+    end
+
+    def organizer_positions
+      @current_user.organizer_positions.includes(:event).order(sort_index: :asc, event_id: :asc)
     end
 
     def invites

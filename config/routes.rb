@@ -185,6 +185,10 @@ Rails.application.routes.draw do
   end
 
   resources :organizer_positions, only: [:destroy], as: "organizers" do
+    member do
+      post "set_index"
+    end
+
     resources :organizer_position_deletion_requests, only: [:new], as: "remove"
   end
 

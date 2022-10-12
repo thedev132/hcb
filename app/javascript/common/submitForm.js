@@ -1,3 +1,5 @@
+import csrf, { csrfParam } from './csrf'
+
 /**
  * Creates and submits a hidden form with the given parameters as inputs.
  *
@@ -10,14 +12,7 @@ export default function submitForm(url, params) {
   form.method = 'POST'
   form.style.display = 'none'
 
-  const csrfParam = document
-    .querySelector('meta[name="csrf-param"]')
-    .getAttribute('content')
-  const csrfToken = document
-    .querySelector('meta[name="csrf-token"]')
-    .getAttribute('content')
-
-  params[csrfParam] = csrfToken
+  params[csrfParam()] = csrf()
 
   for (const key in params) {
     const value = params[key]

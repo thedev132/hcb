@@ -5,4 +5,8 @@ class OrganizerPositionPolicy < ApplicationPolicy
     user.admin?
   end
 
+  def set_index?
+    record.user == user
+  end
+
 end

@@ -14,6 +14,7 @@ class StaticPagesController < ApplicationController
       @service = StaticPageService::Index.new(attrs)
 
       @events = @service.events
+      @organizer_positions = @service.organizer_positions.not_hidden
       @invites = @service.invites
     end
     if admin_signed_in?
