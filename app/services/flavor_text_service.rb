@@ -96,7 +96,7 @@ class FlavorTextService
 
   def frc_flavor_texts
     [
-      "Built by someone from team ##{[1759, 8724].sample}!",
+      "Built by someone from team ##{[1759, 8724, 461, 6763, 1519].sample}!",
       "Safety FIRST!",
       "Safety glasses == invincible",
       "Stop! Where are your safety glasses?",
@@ -106,7 +106,8 @@ class FlavorTextService
       "It’s not battlebots mom!",
       "I heard next year is a water game",
       "Did you bring enough #{%w[zip-ties ductape].sample}?",
-      "Duct tape, ductape, duck tape"
+      "Duct tape, ductape, duck tape",
+      "🦆 📼"
     ]
   end
 
@@ -247,7 +248,7 @@ class FlavorTextService
       "Did you see the price of #{%w[Ðogecoin ₿itcoin Ξtherium].sample}?!",
       "Guess how much it costs to run this thing!",
       "Bytes served fresh daily by Heroku",
-      "Running with Ruby on Rails 6",
+      "Running with Ruby on Rails #{Rails.gem_version.canonical_segments.first}",
       "Running on Rails on Ruby",
       "Try saying that 5 times fast!",
       "Try saying it backwards 3 times fast!",
