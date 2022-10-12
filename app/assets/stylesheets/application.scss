@@ -221,6 +221,10 @@ action {
   position: static;
 }
 
+#HW_frame_cont {
+  transform: translateY(30px);
+}
+
 .admin-tools {
   padding: 0.5rem;
   border-radius: 0.5rem;

@@ -10,13 +10,8 @@
       <%= inline_icon 'moon-fill', size: home_action_size, style: 'display: none;' %>
     </action>
     <% if signed_in? %>
-      <div class="ml2 relative" id="changelog-icon">
-        <%= link_to 'https://changelog.bank.hackclub.com',
-          class: 'muted tooltipped tooltipped--s',
-          'data-behavior': 'clear_changelog',
-          'aria-label': 'See what’s new in Bank' do %>
-          <%= inline_icon 'rep', size: home_action_size %>
-        <% end %>
+      <div class="ml2 relative muted pointer tooltipped tooltipped--s" aria-label="See what’s new in Bank" id="changelog-icon">
+        <%= inline_icon 'rep', size: home_action_size %>
       </div>
     <% end %>
   </div>
