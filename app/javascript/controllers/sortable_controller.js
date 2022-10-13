@@ -1,5 +1,5 @@
 import { Controller } from '@hotwired/stimulus'
-import { Sortable, Plugins } from '@shopify/draggable'
+import { Sortable, Plugins, Draggable } from '@shopify/draggable'
 
 export default class extends Controller {
   static values = {
@@ -14,7 +14,10 @@ export default class extends Controller {
         appendTo: this.appendToValue
       },
       distance: 10,
-      plugins: [Plugins.SortAnimation]
+      plugins: [Plugins.SortAnimation],
+      exclude: {
+        sensors: [Draggable.Sensors.TouchSensor]
+      }
     })
 
     this.sortable.on('sortable:sorted', e => {

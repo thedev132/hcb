@@ -6,7 +6,9 @@ export default class extends Controller {
     organizerPositions: Array
   }
 
-  async stop({ detail: { oldIndex, newIndex } }) {
+  async sort({ detail: { oldIndex, newIndex } }) {
+    if (oldIndex == newIndex) return
+
     const copy = this.organizerPositionsValue
 
     const id = copy[oldIndex]

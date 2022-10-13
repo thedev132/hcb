@@ -26,7 +26,7 @@
         data-controller="<%= "sortable event-sort" if Flipper.enabled?(:event_reordering_2022_10_10, current_user) %>"
         data-sortable-append-to-value="body"
         data-event-sort-organizer-positions-value="<%= @organizer_positions.pluck(:id).to_json %>"
-        data-action="sortable:stop->event-sort#stop"
+        data-action="sortable:stop->event-sort#sort"
       >
         <% @events.not_hidden.each do |event| %>
           <%= link_to event, style: "max-width: 90vw", class: "draggable text-decoration-none" do %>
