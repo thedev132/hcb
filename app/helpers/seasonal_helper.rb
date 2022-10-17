@@ -10,7 +10,12 @@ module SeasonalHelper
   }.freeze
 
   SEASONS.each do |key, value|
-    define_method "#{key}?" do
+    define_method "#{key}?" do |override_preference = false|
+      user = (current_user if self.respond_to? :current_user, true)
+      if !override_preference && user&.seasonal_themes_disabled?
+        return false
+      end
+
       today = Date.today
       low = SEASONS[key][0]
       high = SEASONS[key][1]
@@ -20,16 +25,16 @@ module SeasonalHelper
   end
 
   def by_season(default, hash)
-    hash.each do |key, value|
-      return value if send("#{key}?")
+    hash.filter { |key, value| key != :override_preference }.each do |key, value|
+      return value if send("#{key}?", hash[:override_preference])
     end
 
     return default
   end
 
-  def current_season
+  def current_season(override_preference: false)
     SEASONS.each do |key, value|
-      return key if send("#{key}?")
+      return key if send("#{key}?", override_preference)
     end
 
     nil

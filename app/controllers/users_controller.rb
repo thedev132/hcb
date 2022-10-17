@@ -236,6 +236,8 @@ class UsersController < ApplicationController
     authorize @user
 
     if @user.update(user_params)
+      confetti! if !@user.seasonal_themes_enabled_before_last_save && @user.seasonal_themes_enabled? # confetti if the user enables seasonal themes
+
       if @user.full_name_before_last_save.blank?
         flash[:success] = "Profile created!"
         redirect_to root_path
@@ -307,7 +309,8 @@ class UsersController < ApplicationController
       :pretend_is_not_admin,
       :sessions_reported,
       :session_duration_seconds,
-      :birthday
+      :birthday,
+      :seasonal_themes_enabled
     )
   end
 

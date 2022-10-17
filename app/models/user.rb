@@ -14,6 +14,7 @@
 #  phone_number                :text
 #  phone_number_verified       :boolean          default(FALSE)
 #  pretend_is_not_admin        :boolean          default(FALSE), not null
+#  seasonal_themes_enabled     :boolean          default(TRUE), not null
 #  session_duration_seconds    :integer          default(2592000), not null
 #  sessions_reported           :boolean          default(FALSE), not null
 #  slug                        :string
@@ -174,6 +175,10 @@ class User < ApplicationRecord
 
   def birthday?
     birthday.present? && birthday.month == Date.today.month && birthday.day == Date.today.day
+  end
+
+  def seasonal_themes_disabled?
+    !seasonal_themes_enabled?
   end
 
   private

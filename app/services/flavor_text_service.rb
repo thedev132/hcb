@@ -473,4 +473,11 @@ class FlavorTextService
     ]
   end
 
+  private
+
+  # Used by `SeasonalHelper`
+  def current_user
+    @user
+  end
+
 end
