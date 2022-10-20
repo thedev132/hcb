@@ -226,6 +226,10 @@ class CanonicalTransaction < ApplicationRecord
     nil
   end
 
+  def likely_ach_confirmation_number
+    memo.match(/BUSBILLPAY TRAN#(\d+)/)&.[](1)
+  end
+
   def partner_donation
     nil # TODO: implement
   end

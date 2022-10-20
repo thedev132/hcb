@@ -14,11 +14,11 @@ module EventMappingEngine
       private
 
       def ach
-        @ach ||= ::AchTransfer.in_transit.where(amount: -amount_cents).order("created_at asc").first
-      end
+        confirmation_number = @canonical_transaction.likely_ach_confirmation_number
 
-      def amount_cents
-        @canonical_transaction.amount_cents
+        return nil unless confirmation_number
+
+        @ach ||= AchTransfer.find_by(confirmation_number: confirmation_number)
       end
 
     end
