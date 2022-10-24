@@ -54,7 +54,7 @@
   </thead>
   <tbody>
     <% @canonical_transactions.each do |ct| %>
-      <tr class="<%= "admin-bg-pending" unless ct.canonical_event_mapping || !ct.local_hcb_code.unknown? %>">
+      <tr class="<%= "admin-bg-pending" unless ct.canonical_event_mapping || !ct.local_hcb_code.unknown? || ct.memo.include?("BUSBILLPAY") %>">
         <td><%= ct.id %></td>
         <td><%= ct.date %></td>
         <td><%= link_to ct.memo, transaction_path(ct) %></td>
@@ -64,6 +64,11 @@
         <td>
           <%= link_to "Process", transaction_admin_path(ct) unless ct.event.present? %>
           <%= link_to "View", transaction_admin_path(ct) if ct.event.present? %>
+
+          <% if !ct.event.present? && ct.memo.include?("BUSBILLPAY") %>
+            <br>
+            🕐 This ACH should auto-map within 24 hours
+          <% end %>
 
           <% if ct.canonical_event_mapping.try(:user) %>
             <br/>
