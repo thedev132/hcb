@@ -86,5 +86,6 @@
       <%= yield %>
     </div>
 
+    <%= render 'application/footer' unless (@no_app_shell || @hide_footer) %>
   </body>
 </html>
