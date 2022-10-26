@@ -236,5 +236,6 @@ gem "comma", "~> 4.6"
 gem "jsbundling-rails", "~> 1.0"
 
 gem "rack-mini-profiler", "~> 3.0"
+gem "stackprof" # Used with `rack-mini-profiler` to provide flamegraphs
 
 gem "country_select", "~> 8.0"

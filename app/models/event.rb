@@ -330,8 +330,7 @@ class Event < ApplicationRecord
   def balance_v2_cents(start_date: nil, end_date: nil)
     @balance_v2_cents ||=
       begin
-        sum = 0
-        sum += settled_balance_cents(start_date: start_date, end_date: end_date)
+        sum = settled_balance_cents(start_date: start_date, end_date: end_date)
         sum += pending_outgoing_balance_v2_cents(start_date: start_date, end_date: end_date)
         sum += fronted_incoming_balance_v2_cents(start_date: start_date, end_date: end_date) if can_front_balance?
         sum
@@ -376,6 +375,7 @@ class Event < ApplicationRecord
     @fronted_incoming_balance_v2_cents ||=
       begin
         pts = canonical_pending_transactions.incoming.fronted.not_declined
+                                            .includes(:event)
 
         pts = pts.where("date >= ?", start_date) if start_date
         pts = pts.where("date <= ?", end_date) if end_date

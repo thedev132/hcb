@@ -126,19 +126,20 @@ class CanonicalPendingTransaction < ApplicationRecord
   end
 
   def fronted_amount
-    return 0 if declined?
+    return 0 if !fronted || self.amount_cents.negative? || declined?
 
-    pts = local_hcb_code.canonical_pending_transactions.includes(:canonical_pending_event_mapping).where(canonical_pending_event_mapping: { event_id: event.id })
+    pts = local_hcb_code.canonical_pending_transactions
+                        .includes(:canonical_pending_event_mapping)
+                        .where(canonical_pending_event_mapping: { event_id: event.id })
                         .where(fronted: true)
                         .order(date: :asc, id: :asc)
-    cts = local_hcb_code.canonical_transactions.includes(:canonical_event_mapping).where(canonical_event_mapping: { event_id: event.id })
-
     pts_sum = pts.sum(:amount_cents)
-    cts_sum = cts.sum(:amount_cents)
+    return 0 if pts_sum.negative?
 
-    if self.amount_cents.negative? || pts_sum.negative?
-      return 0
-    end
+    cts_sum = local_hcb_code.canonical_transactions
+                            .includes(:canonical_event_mapping)
+                            .where(canonical_event_mapping: { event_id: event.id })
+                            .sum(:amount_cents)
 
     # PTs that were chronologically created first in an HcbCode are first
     # responsible for "contributing" to the fronted amount. After a PT's
@@ -148,12 +149,12 @@ class CanonicalPendingTransaction < ApplicationRecord
     #
     # The code below is a simplified implementation of that "algorithm".
 
-    index = pts.pluck(:id).index(self.id)
-    return 0 if index.nil?
-
-    prior_pts = pts.slice(0, index + 1)
-    prior_sum = prior_pts.sum(&:amount_cents)
-    residual = prior_sum - cts_sum
+    prior_pt_sum = pts.reduce(0) do |sum, pt|
+      # Sum until this PT (inclusive)
+      sum += pt.amount_cents
+      break sum if pt.id == self.id
+    end
+    residual = prior_pt_sum - cts_sum
 
     if residual.positive?
       [residual, amount_cents].min
