@@ -6,7 +6,7 @@
 
     <div class="field">
       <%= form.label :file %>
-      <%= form.file_field :file, required: true, data: { target: "new-document.file", action: "change->new-document#fileChanged" } %>
+      <%= form.file_field :file, data: { target: "new-document.file", action: "change->new-document#fileChanged" } %>
     </div>
 
     <div class="field">
