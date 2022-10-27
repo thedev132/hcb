@@ -9,4 +9,8 @@ class OrganizerPositionPolicy < ApplicationPolicy
     record.user == user
   end
 
+  def mark_visited?
+    record.user == user
+  end
+
 end

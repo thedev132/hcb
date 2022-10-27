@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_10_13_134342) do
+ActiveRecord::Schema.define(version: 2022_10_26_140929) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -917,6 +917,7 @@ ActiveRecord::Schema.define(version: 2022_10_13_134342) do
     t.datetime "updated_at", null: false
     t.datetime "deleted_at"
     t.integer "sort_index"
+    t.boolean "first_time", default: true
     t.index ["event_id"], name: "index_organizer_positions_on_event_id"
     t.index ["user_id"], name: "index_organizer_positions_on_user_id"
   end

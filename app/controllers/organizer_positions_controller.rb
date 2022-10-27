@@ -41,4 +41,13 @@ class OrganizerPositionsController < ApplicationController
     render json: organizer_positions.pluck(:id)
   end
 
+  def mark_visited
+    organizer_position = OrganizerPosition.find(params[:id])
+    authorize organizer_position
+
+    organizer_position.update(first_time: false)
+
+    redirect_to organizer_position.event
+  end
+
 end
