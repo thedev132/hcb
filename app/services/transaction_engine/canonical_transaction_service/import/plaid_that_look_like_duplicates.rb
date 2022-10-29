@@ -6,27 +6,15 @@ module TransactionEngine
       class PlaidThatLookLikeDuplicates
         def run
           unprocessed_plaid_with_duplicate_hashes.find_each(batch_size: 100) do |ht|
-            # For some reason we imported transactions from the same bank
-            # account through 2 different plaid connections. All those
-            # transactions would be actual duplicates (they'd each have 1
-            # transaction from each plaid connection)
+            next if actual_duplicate_already_processed(ht)
 
-            next unless not_actual_duplicate(ht)
-
-            ActiveRecord::Base.transaction do
-              attrs = {
-                date: ht.date,
-                memo: ht.memo,
-                amount_cents: ht.amount_cents
-              }
-              ct = ::CanonicalTransaction.create!(attrs)
-
-              attrs = {
-                canonical_transaction_id: ct.id,
-                hashed_transaction_id: ht.id
-              }
-              ::CanonicalHashedMapping.create!(attrs)
-            end
+            attrs = {
+              date: ht.date,
+              memo: ht.memo,
+              amount_cents: ht.amount_cents,
+              canonical_hashed_mappings: [CanonicalHashedMapping.new(hashed_transaction: ht)]
+            }
+            ::CanonicalTransaction.create!(attrs)
           end
         end
 
@@ -52,11 +40,24 @@ module TransactionEngine
           @previously_processed_ht_ids ||= ::CanonicalHashedMapping.pluck(:hashed_transaction_id)
         end
 
-        def not_actual_duplicate(hashed_transaction)
-          # true if it's in the same plaid account
-          # false if it's in a different plaid account
-          ::HashedTransaction.where(raw_plaid_transaction_id: hashed_transaction.raw_plaid_transaction_id,
-                                    primary_hash: hashed_transaction.primary_hash).any?
+        def actual_duplicate_already_processed(hashed_transaction)
+          # For some reason we imported transactions from the same bank
+          # account 2 different connections. Some historical reasons for this happening
+          # - Plaid authentication info changed (2 separate plaid connections)
+          # - Plaid has downtime, so transactions were imported by CSV. Then later when Plaid is
+          #   back online, transactions that had already been imported from CSV are sent again from Plaid.
+          #
+          # All those transactions would be actual duplicates (they'd each have 1
+          # transaction from each plaid connection)
+          #
+          # If the same primary hash is seen in the same plaid account, then we don't consider those duplicates.
+          # However, we only care if the duplicate has already been processed (i.e. a CanonicalTransaction has been made for it),
+          # because at least one of the duplicates should be processed.
+          ::HashedTransaction.includes(:canonical_transaction)
+                             .where.not(raw_plaid_transaction_id: hashed_transaction.raw_plaid_transaction_id)
+                             .where(primary_hash: hashed_transaction.primary_hash)
+                             .map(&:canonical_transaction)
+                             .any?
         end
 
       end
