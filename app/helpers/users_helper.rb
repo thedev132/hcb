@@ -68,25 +68,20 @@ module UsersHelper
   end
 
   def user_mention(user, options = {}, default_name = "No User")
-    if user.nil?
-      name = content_tag :span, default_name
-    else
-      name = content_tag :span, user.initial_name
-    end
-
+    name = content_tag :span, (user&.initial_name || default_name)
     avi = avatar_for user
 
     klasses = ["mention"]
     klasses << %w[mention--admin tooltipped tooltipped--n] if user&.admin?
-    klasses << %w[mention--current-user tooltipped tooltipped--n] if user == current_user
+    klasses << %w[mention--current-user tooltipped tooltipped--n] if current_user && (user&.id == current_user.id)
     klasses << options[:class] if options[:class]
     klass = klasses.uniq.join(" ")
 
     aria = if user.nil?
              "No user found"
-           elsif user.id == current_user.id
+           elsif user.id == current_user&.id
              current_user_flavor_text.sample
-           elsif user&.admin?
+           elsif user.admin?
              "#{user.name.split(' ').first} is an admin"
            end
 
