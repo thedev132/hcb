@@ -14,7 +14,10 @@ class StripeCardsController < ApplicationController
       @stripe_cards = @event.stripe_cards.physical_shipping
     else # my cards page
       # Only show shipping for phyiscal cards if the eta is in the future (or 1 week after)
-      @stripe_cards = current_user.stripe_cards.physical_shipping.reject { |sc| Time.at(sc.stripe_obj[:shipping][:eta]) < 1.week.ago }
+      @stripe_cards = current_user.stripe_cards.physical_shipping.reject do |sc|
+        eta = sc.stripe_obj[:shipping][:eta]
+        !eta || Time.at(eta) < 1.week.ago
+      end
       skip_authorization # do not force pundit
     end
     render :shipping, layout: false
