@@ -19,7 +19,7 @@ class UsersController < ApplicationController
   end
 
   def auth_submit
-    @email = params[:email].downcase
+    @email = params[:email]&.downcase
     user = User.find_by(email: @email)
 
     has_webauthn_enabled = user&.webauthn_credentials&.any?
