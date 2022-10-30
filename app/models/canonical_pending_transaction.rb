@@ -158,8 +158,6 @@ class CanonicalPendingTransaction < ApplicationRecord
 
     if residual.positive?
       [residual, amount_cents].min
-    elsif residual.negative?
-      amount_cents
     else
       0
     end
