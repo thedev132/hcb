@@ -441,6 +441,8 @@ Rails.application.routes.draw do
     get "cards/new", to: "stripe_cards#new"
     get "stripe_cards/shipping", to: "stripe_cards#shipping", as: :stripe_cards_shipping
 
+    get "async_balance", to: "events#async_balance", as: :async_balance
+
     # (@eilla1) these pages are for the wip resources page and will be moved later
     get "connect_gofundme", to: "events#connect_gofundme", as: :connect_gofundme
     get "receive_check", to: "events#receive_check", as: :receive_check

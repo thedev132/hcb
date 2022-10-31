@@ -38,12 +38,21 @@
         <% @events.not_hidden.each do |event| %>
           <%= link_to event, style: "max-width: 90vw", class: "draggable text-decoration-none" do %>
             <li class="card card--hover flex flex-column justify-between h-100 mx-auto">
-              <strong class="brand-sans h3 line-height-2 mb1"><%= event.name %></strong>
+              <strong class="brand-sans h3 line-height-2 mb1 display-inline">
+                <% if Flipper.enabled?(:detailed_events_list_2022_10_04, current_user) %>
+                  <% if event.logo.attached? %>
+                    <%= image_tag event.logo, height: 24, width: 24, class: "rounded display-inline align-bottom" %>
+                  <% end %>
+                <% end %>
+                <%= event.name %>
+              </strong>
               <% if Flipper.enabled?(:detailed_events_list_2022_10_04, current_user) %>
                 <div class="brand-sans h4 line-height-2 mb2 flex justify-between"> 
                   <span style="white-space: nowrap;">
                     <%= inline_icon 'payment', size: 16, class: 'muted align-middle', 'aria-label': 'Dollar sign', style: 'transform: scale(2)' %>
-                    <strong><%= render_money_amount(event.balance_v2_cents) %></strong>
+                    <%= async_frame_to event_async_balance_path(event), as: :span do %>
+                      <strong>-</strong>
+                    <% end %>
                   </span>
                   <span>
                     <%= inline_icon 'card', size: 20, class: 'muted align-middle', 'aria-label': 'Cards', style: 'transform: scale(1.2)' %>

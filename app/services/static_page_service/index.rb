@@ -11,7 +11,13 @@ module StaticPageService
     end
 
     def events
-      @current_user.events.reorder("organizer_positions.sort_index ASC", "events.id ASC").includes(organizer_positions: :user)
+      # rubocop:disable Naming/VariableNumber
+      if Flipper.enabled?(:detailed_events_list_2022_10_04, @current_user)
+        @current_user.events.reorder("organizer_positions.sort_index ASC", "events.id ASC").includes(:stripe_cards, organizer_positions: :user)
+      else
+        @current_user.events.reorder("organizer_positions.sort_index ASC", "events.id ASC").includes(organizer_positions: :user)
+      end
+      # rubocop:enable Naming/VariableNumber
     end
 
     def organizer_positions

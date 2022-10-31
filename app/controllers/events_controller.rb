@@ -155,6 +155,12 @@ class EventsController < ApplicationController
     authorize @event
   end
 
+  def async_balance
+    authorize @event
+
+    render :async_balance, layout: false
+  end
+
   # (@msw) these pages are for the WIP resources page.
   def connect_gofundme
     @event_name = @event.name

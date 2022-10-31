@@ -77,6 +77,10 @@ class EventPolicy < ApplicationPolicy
     is_public || user_or_admin
   end
 
+  def async_balance?
+    is_public || user_or_admin
+  end
+
   def receive_check?
     is_public || user_or_admin
   end
