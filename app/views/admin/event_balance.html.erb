@@ -1,0 +1,7 @@
+<% if @balance.zero? %>
+  <span class="muted">
+    <%= render_money 0 %>
+  </span>
+<% else %>
+  <%= render_money @balance %>
+<% end %>

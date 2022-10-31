@@ -151,6 +151,7 @@ Rails.application.routes.draw do
 
     member do
       get "transaction", to: "admin#transaction"
+      get "event_balance", to: "admin#event_balance"
       get "event_process", to: "admin#event_process"
       put "event_toggle_approved", to: "admin#event_toggle_approved"
       put "event_reject", to: "admin#event_reject"

@@ -242,6 +242,14 @@ class AdminController < ApplicationController
     redirect_to event_new_admin_index_path, flash: { error: e.message }
   end
 
+  def event_balance
+    @event = Event.find(params[:id])
+    @balance = Rails.cache.fetch("admin_event_balance_#{@event.id}", expires_in: 5.minutes) do
+      @event.balance.to_i
+    end
+    render :event_balance, layout: false
+  end
+
   def event_toggle_approved
     @event = Event.find(params[:id])
 
