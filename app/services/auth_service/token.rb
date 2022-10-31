@@ -11,12 +11,11 @@ module AuthService
 
     # @return [[User, TrueClass | FalseClass]]
     def run
+      @already_used = login_token.used?
+      login_token.mark_used!(@ip) unless @already_used
       user
     rescue ActiveRecord::RecordNotFound
       raise UnauthenticatedError
-    ensure
-      @already_used = login_token.used?
-      login_token.mark_used!(@ip) rescue nil
     end
 
     # The purpose of this method is to identify scenarios where a user should

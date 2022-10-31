@@ -2,19 +2,10 @@
 
 require "rails_helper"
 
-RSpec.describe AuthService::Token, type: :model, skip: true do
-  fixtures "users", "login_tokens"
+RSpec.describe AuthService::Token, type: :model do
+  let(:login_token) { create(:login_token) }
 
-  let(:login_token) { login_tokens(:login_token1) }
-  let(:token) { login_token.token }
-
-  let(:attrs) do
-    {
-      token: token,
-    }
-  end
-
-  let(:service) { AuthService::Token.new(attrs) }
+  let(:service) { AuthService::Token.new(token: login_token.token) }
 
   it "returns the user" do
     result = service.run
@@ -23,7 +14,7 @@ RSpec.describe AuthService::Token, type: :model, skip: true do
   end
 
   context "when missing login token" do
-    let(:token) { "doesnotexist" }
+    let(:service) { AuthService::Token.new(token: "doesnotexist") }
 
     it "raises unauthenticated error" do
       expect do

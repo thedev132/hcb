@@ -3,9 +3,7 @@
 require "rails_helper"
 
 RSpec.describe LoginToken, type: :model do
-  fixtures "users", "login_tokens"
-
-  let(:login_token) { login_tokens(:login_token1) }
+  let(:login_token) { create(:login_token) }
 
   it "is valid" do
     expect(login_token).to be_valid
