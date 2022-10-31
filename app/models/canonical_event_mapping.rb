@@ -30,6 +30,10 @@ class CanonicalEventMapping < ApplicationRecord
 
   has_many :fees
 
+  after_create do
+    FeeEngine::Create.new(canonical_event_mapping: self).run
+  end
+
   scope :missing_fee, -> { includes(:fees).where(fees: { canonical_event_mapping_id: nil }) }
   scope :mapped_by_human, -> { where("user_id is not null") }
 
