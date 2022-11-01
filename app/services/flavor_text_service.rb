@@ -470,7 +470,8 @@ class FlavorTextService
       "<a href='https://assemble.hackclub.com' target='_blank' style='color: inherit'>good enough for us to use!</a>",
       "<a href='https://assemble.hackclub.com' target='_blank' style='color: inherit'>dogfooded by us!</a>",
       "<strike>Runs on Airtable™</strike>",
-      "Got a hankering for some Bankering?"
+      "Got a hankering for some Bankering?",
+      "<marquee scrollamount='5'>💸💸💸</marquee>"
     ]
   end
 
