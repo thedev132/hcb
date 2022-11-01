@@ -27,7 +27,8 @@ class FlavorTextService
   def development_flavor_texts
     [
       "Hack the Bank Mode",
-      "Development Mode"
+      "Development Mode",
+      "super secret admin mode"
     ]
   end
 
