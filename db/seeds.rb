@@ -1,9 +1,35 @@
 # frozen_string_literal: true
 
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rails db:seed command (or created alongside the database with db:setup).
-#
-# Examples:
-#
-#   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
-#   Character.create(name: 'Luke', movie: movies.first)
+user = User.first
+
+if user.nil?
+  puts "Woah there, there aren't any users! Please sign in first."
+else
+  puts "Continuing with #{user.email}..."
+
+  user.update!(admin_at: Time.now) if !user.admin?
+
+  partner = Partner.create_with(
+    id: 1,
+    name: "Bank",
+    external: false,
+  ).find_or_create_by!(slug: 'bank')
+
+  event = Event.create_with(
+    name: "Test Org",
+    slug: "test",
+    can_front_balance: true,
+    point_of_contact: user,
+    partner: partner,
+    sponsorship_fee: 0.07,
+    organization_identifier: "bank_#{SecureRandom.hex}",
+  ).find_or_create_by!(slug: "test")
+
+  OrganizerPositionInvite.create!(
+    event: event,
+    user: user,
+    sender: user,
+  )
+
+  puts "Done!"
+end

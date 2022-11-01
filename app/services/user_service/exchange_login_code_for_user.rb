@@ -13,7 +13,8 @@ module UserService
 
       user = User.find_or_initialize_by(email: remote_email)
       user.api_access_token = remote_access_token
-      user.admin_at = remote_admin_at # TODO: remove admin_at as necessary from a 3rd party auth service
+      #               Make all users admin in development mode
+      user.admin_at = Rails.env.development? ? Time.now : remote_admin_at # TODO: remove admin_at as necessary from a 3rd party auth service
       user.save!
 
       user.reload

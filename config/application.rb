@@ -13,6 +13,11 @@ module Bank
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 6.1
 
+    if ENV["USE_PROD_CREDENTIALS"].present?
+      config.credentials.content_path = Rails.root.join("config", "credentials.yml.enc")
+      config.credentials.key_path = Rails.root.join("config", "master.key")
+    end
+
     config.action_mailer.default_url_options = {
       host: Rails.application.credentials.default_url_host[:live]
     }
@@ -40,9 +45,6 @@ module Bank
     config.react.camelize_props = true
 
     config.add_autoload_paths_to_load_path
-
-    # Use Sidekiq
-    config.active_job.queue_adapter = :sidekiq
 
     config.autoload_paths << "#{config.root}/lib"
     config.eager_load_paths << "#{config.root}/lib"

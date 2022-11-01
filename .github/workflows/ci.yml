@@ -102,4 +102,5 @@ jobs:
       - name: Run zeitwerk:check
         env:
           RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+          RAILS_ENV: test
         run: bundle exec rails zeitwerk:check
