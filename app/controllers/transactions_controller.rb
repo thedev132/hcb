@@ -15,25 +15,30 @@ class TransactionsController < ApplicationController
   def export
     @event = Event.friendly.find(params[:event])
 
-    if using_transaction_engine_v2?
-      authorize @event.canonical_transactions.first # temporary hack for policies
+    authorize @event.canonical_transactions.first # temporary hack for policies
 
-      respond_to do |format|
-        format.csv { stream_transactions_csv }
-        format.json { stream_transactions_json }
+    # 3k is slightly arbitrary. HQ didn't run into issues until 5k
+    should_queue = @event.canonical_transactions.size > 3000
+
+    respond_to do |format|
+      format.csv do
+        if should_queue
+          CanonicalTransactionJob::Export::Csv.perform_later(event_id: @event.id, user_id: current_user.id)
+          flash[:success] = "Check your email for the export"
+          redirect_back fallback_location: @event and return
+        end
+
+        stream_transactions_csv
       end
-    else
-      @transactions = @event.transactions
-      authorize @transactions
 
-      @attributes = %w{date display_name name amount account_balance fee fee_balance link}
-      @attributes_to_currency = %w{amount fee}
+      format.json do
+        if should_queue
+          CanonicalTransactionJob::Export::Json.perform_later(event_id: @event.id, user_id: current_user.id)
+          flash[:success] = "Check your email for the export"
+          redirect_back fallback_location: @event and return
+        end
 
-      name = "#{DateTime.now.strftime("%Y-%m-%d_%H:%M:%S")}_#{@event.name.to_param}_transactions"
-
-      respond_to do |format|
-        format.csv { send_data generate_csv, filename: "#{name}.csv" }
-        format.json { send_data generate_json, filename: "#{name}.json" }
+        stream_transactions_json
       end
     end
   end
@@ -147,70 +152,6 @@ class TransactionsController < ApplicationController
         :is_fee_payment
       ]
     )
-  end
-
-  def generate_json
-    account_balance = @event.balance
-    results = @transactions.map do |transaction|
-      t = {}
-      @attributes.each do |attr|
-        t[attr] = case attr
-                  when "account_balance"
-                    prev_account_balance = account_balance
-                    account_balance -= transaction.amount
-
-                    account_balance.to_i
-                  when "fee_balance"
-                    previous_transactions = @transactions.select { |t| t.date <= transaction.date }
-
-                    fees_occured = previous_transactions.map { |t| t.fee_relationship.fee_applies ? t.fee_relationship.fee_amount : 0 }.sum
-                    fee_paid = previous_transactions.map { |t| t.fee_relationship.is_fee_payment ? t.amount : 0 }.sum
-
-                    fee_balance = fees_occured + fee_paid
-                  else
-                    transaction.send attr
-                  end
-      end
-      t
-    end
-
-    results.to_json
-  end
-
-  def generate_csv
-    CSV.generate(headers: true) do |csv|
-      csv << @attributes.map do |k|
-        next "Raw Name" if k == "name"
-        next "Fiscal Sponsorship Fee" if k == "fee"
-        next "Fiscal Sponsorship Fee Balance" if k == "fee_balance"
-
-        k.sub("_", " ").gsub(/\S+/, &:capitalize)
-      end
-
-      account_balance = @event.balance
-
-      @transactions.each do |transaction|
-        csv << @attributes.map do |attr|
-          if @attributes_to_currency.include? attr
-            view_context.render_money transaction.send(attr)
-          elsif attr == "fee_balance"
-            previous_transactions = @transactions.select { |t| t.date <= transaction.date }
-
-            fees_occured = previous_transactions.map { |t| t.fee_relationship.fee_applies ? t.fee_relationship.fee_amount : 0 }.sum
-            fee_paid = previous_transactions.map { |t| t.fee_relationship.is_fee_payment ? t.amount : 0 }.sum
-
-            view_context.render_money(fees_occured + fee_paid)
-          elsif attr == "account_balance"
-            prev_account_balance = account_balance
-            account_balance -= transaction.amount
-
-            view_context.render_money prev_account_balance
-          else
-            transaction.send(attr)
-          end
-        end
-      end
-    end
   end
 
   def stream_transactions_csv
