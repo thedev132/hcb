@@ -17,8 +17,8 @@ class TransactionsController < ApplicationController
 
     authorize @event.canonical_transactions.first # temporary hack for policies
 
-    # 3k is slightly arbitrary. HQ didn't run into issues until 5k
-    should_queue = @event.canonical_transactions.size > 3000
+    # 300 is slightly arbitrary. HQ didn't run into issues until 5k
+    should_queue = @event.canonical_transactions.size > 300
 
     respond_to do |format|
       format.csv do
