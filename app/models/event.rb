@@ -12,6 +12,8 @@
 #  category                        :integer
 #  country                         :integer
 #  custom_css_url                  :string
+#  demo_mode                       :boolean          default(FALSE), not null
+#  demo_mode_request_meeting_at    :datetime
 #  donation_page_enabled           :boolean          default(TRUE)
 #  donation_page_message           :text
 #  end                             :datetime
@@ -176,6 +178,10 @@ class Event < ApplicationRecord
     where("(last_fee_processed_at is null or last_fee_processed_at <= ?) and id in (?)", 5.days.ago, self.event_ids_with_pending_fees_greater_than_0_v2.to_a.map { |a| a["event_id"] })
   end
 
+  scope :demo_mode, -> { where(demo_mode: true) }
+  scope :not_demo_mode, -> { where(demo_mode: false) }
+  scope :filter_demo_mode, ->(demo_mode) { demo_mode.nil? || demo_mode.blank? ? all : where(demo_mode: demo_mode) }
+
   aasm do
     # All events should be approved prior to creation
     state :approved, initial: true # Full fiscal sponsorship
@@ -258,6 +264,11 @@ class Event < ApplicationRecord
   has_one_attached :logo
 
   validate :point_of_contact_is_admin
+
+  include ::UserService::CanOpenDemoMode
+  attr_accessor :demo_mode_limit_email
+
+  validate :demo_mode_limit, if: proc{ |e| e.demo_mode_limit_email }
 
   validates :name, :sponsorship_fee, :organization_identifier, presence: true
   validates :slug, uniqueness: true, presence: true, format: { without: /\s/ }
@@ -540,6 +551,9 @@ class Event < ApplicationRecord
     errors.add(:point_of_contact, "must be an admin")
   end
 
+  # def demo_mode_limit
+  # end
+
   def total_fees
     @total_fees ||= transactions.joins(:fee_relationship).where(fee_relationships: { fee_applies: true }).sum("fee_relationships.fee_amount")
   end
@@ -565,6 +579,12 @@ class Event < ApplicationRecord
     if slug_previously_changed?
       slugs.create(slug: slug)
     end
+  end
+
+  def demo_mode_limit
+    return if can_open_demo_mode? demo_mode_limit_email
+
+    errors.add(:demo_mode, "limit reached for user")
   end
 
 end

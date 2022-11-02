@@ -197,18 +197,22 @@
 
   <hr>
 
-  <%= form_with(local: true, url: event_g_suite_create_path(event_id: @event.id), method: :post) do %>
-    <%= hidden_field_tag :event_id, @event.id %>
-    <%= hidden_field_tag :creator_id, current_user.id %>
+  <% if @event.demo_mode? %>
+    <%= blankslate "Disabled in Demo Mode" %>
+  <% else %>
+    <%= form_with(local: true, url: event_g_suite_create_path(event_id: @event.id), method: :post) do %>
+      <%= hidden_field_tag :event_id, @event.id %>
+      <%= hidden_field_tag :creator_id, current_user.id %>
 
-    <div class="field">
-      <%= label_tag :domain, 'Your domain' %>
-      <%= text_field_tag :domain, nil, placeholder: 'yourdomain.com', 'data-behavior': 'prevent_whitespace', required: true %>
-    </div>
+      <div class="field">
+        <%= label_tag :domain, 'Your domain' %>
+        <%= text_field_tag :domain, nil, placeholder: 'yourdomain.com', 'data-behavior': 'prevent_whitespace', required: true %>
+      </div>
 
-    <div class="actions">
-      <%= submit_tag 'Configure' %>
-    </div>
+      <div class="actions">
+        <%= submit_tag 'Configure' %>
+      </div>
+    <% end %>
   <% end %>
 
 <% end %>

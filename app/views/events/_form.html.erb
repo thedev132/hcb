@@ -1,13 +1,15 @@
 <%= form_with(model: event, local: true, class: "mb3") do |form| %>
   <%= form_errors event, "organization" %>
 
-  <div class="field">
-    <p class="mt0">
-      <%= event.name %> is on the <strong><%= event.plan_name %></strong> plan and charging
-      <strong><%= number_to_percentage(event.sponsorship_fee * 100, significant: true, strip_insignificant_zeros: true) %></strong> of revenue
-      <% if event.high_school_hackathon? && event.sponsorship_fee == 0 %>(until December 31st, 2022 on the <a href="https://changelog.bank.hackclub.com/bank-now-provides-free-durian-241524">high school hackathon fee waiver</a>)<% end %>
-    </p>
-  </div>
+  <% unless @event.demo_mode? %>
+    <div class="field">
+      <p class="mt0">
+        <%= event.name %> is on the <strong><%= event.plan_name %></strong> plan and charging
+        <strong><%= number_to_percentage(event.sponsorship_fee * 100, significant: true, strip_insignificant_zeros: true) %></strong> of revenue
+        <% if event.high_school_hackathon? && event.sponsorship_fee == 0 %>(until December 31st, 2022 on the <a href="https://changelog.bank.hackclub.com/bank-now-provides-free-durian-241524">high school hackathon fee waiver</a>)<% end %>
+      </p>
+    </div>
+  <% end %>
 
   <h3 class="mb1">Organization profile</h3>
 
@@ -197,6 +199,11 @@
     <div class="field">
       <%= form.label :point_of_contact_id, "Point of contact" %>
       <%= form.collection_select :point_of_contact_id, User.admin.all, :id, :email %>
+    </div>
+
+    <div class="field field--checkbox">
+      <%= form.check_box :demo_mode %>
+      <%= form.label :demo_mode, "Is in demo mode?" %>
     </div>
 
     <div class="field field--checkbox">

@@ -4,6 +4,25 @@
 
 <h1>Settings</h1>
 
+<% if @event.demo_mode? %>
+  <div class="card border b--info pb0 mb2 max-width-2">
+    <div class="flex items-center info">
+      <%= inline_icon 'info', size: 32, class: 'mr1' %>
+      <p class="bold mt0 mb0">Welcome to Demo Mode</p>
+    </div>
+    <ul class="mt1 mb2">
+      <li>You can invite other team members.</li>
+      <li>Your financial tools are restricted.</li>
+      <li>Your account may be removed after a week of inactivity.</li>
+      <li>When you're ready to sign up for a full account, <%= link_to "click here", "#", data: { behavior: :modal_trigger, modal: :demo_mode } %>.</li>
+    </ul>
+    <div class="border-top card__banner card__darker secondary">
+      <strong>Questions?</strong>
+      <%= help_message %>
+    </div>
+  </div>
+<% end %>
+
 <% admin_tools do %>
   <strong>Event slug history:</strong> <%= @event.slugs.pluck(:slug).join ", " %>
 <% end %>

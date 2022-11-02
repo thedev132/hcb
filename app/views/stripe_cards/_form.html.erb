@@ -26,42 +26,46 @@
   </fieldset>
   <p class="h5 muted mt0">Plastic cards are only available to ship to the US and Canada.</p>
 
-  <section class="grid grid--split" data-behavior="shipping_address_inputs autohide">
-  <h2 class="grid__fill">Shipping info</h2>
-  <div class="field">
-    <%= form.label :stripe_shipping_name, "Shipping name" %>
-    <%= form.text_field :stripe_shipping_name, value: current_user&.full_name %>
-  </div>
-  <div class="field">
-    <%= form.label :stripe_shipping_address_line1, "Address (line 1)" %>
-    <%= form.text_field :stripe_shipping_address_line1, placeholder: suggested(:line1) %>
-  </div>
-  <div class="field">
-    <%= form.label :stripe_shipping_address_line2, "Address (line 2)" %>
-    <%= form.text_field :stripe_shipping_address_line2, placeholder: suggested(:line2) %>
-  </div>
-  <div class="field grid__half">
-    <%= form.label :stripe_shipping_address_city, "City" %>
-    <%= form.text_field :stripe_shipping_address_city, placeholder: suggested(:city) %>
-  </div>
-  <div class="field grid__half">
-    <%= form.label :stripe_shipping_address_state, "State / province" %>
-    <%= form.text_field :stripe_shipping_address_state, placeholder: suggested(:state) %>
-  </div>
-  <div class="field grid__half">
-    <%= form.label :stripe_shipping_address_postal_code, "ZIP code" %>
-    <%= form.text_field :stripe_shipping_address_postal_code, placeholder: suggested(:postal_code) %>
-  </div>
-  <div class="field grid__half">
-    <%= form.label :stripe_shipping_address_country, "Country" %>
-    <%= form.country_select :stripe_shipping_address_country, only: ["US", "CA"], sort_provided: false, selected: "US" %>
-    <small>Currently only shipping within the US and Canada</small>
-  </div>
-  </section>
+  <% if @event.demo_mode? %>
+    <%= blankslate "Cards unavailable in Demo Mode" %>
+  <% else %>
+    <section class="grid grid--split" data-behavior="shipping_address_inputs autohide">
+    <h2 class="grid__fill">Shipping info</h2>
+    <div class="field">
+      <%= form.label :stripe_shipping_name, "Shipping name" %>
+      <%= form.text_field :stripe_shipping_name, value: current_user&.full_name %>
+    </div>
+    <div class="field">
+      <%= form.label :stripe_shipping_address_line1, "Address (line 1)" %>
+      <%= form.text_field :stripe_shipping_address_line1, placeholder: suggested(:line1) %>
+    </div>
+    <div class="field">
+      <%= form.label :stripe_shipping_address_line2, "Address (line 2)" %>
+      <%= form.text_field :stripe_shipping_address_line2, placeholder: suggested(:line2) %>
+    </div>
+    <div class="field grid__half">
+      <%= form.label :stripe_shipping_address_city, "City" %>
+      <%= form.text_field :stripe_shipping_address_city, placeholder: suggested(:city) %>
+    </div>
+    <div class="field grid__half">
+      <%= form.label :stripe_shipping_address_state, "State / province" %>
+      <%= form.text_field :stripe_shipping_address_state, placeholder: suggested(:state) %>
+    </div>
+    <div class="field grid__half">
+      <%= form.label :stripe_shipping_address_postal_code, "ZIP code" %>
+      <%= form.text_field :stripe_shipping_address_postal_code, placeholder: suggested(:postal_code) %>
+    </div>
+    <div class="field grid__half">
+      <%= form.label :stripe_shipping_address_country, "Country" %>
+      <%= form.country_select :stripe_shipping_address_country, only: ["US", "CA"], sort_provided: false, selected: "US" %>
+      <small>Currently only shipping within the US and Canada</small>
+    </div>
+    </section>
 
-  <%= form.hidden_field :stripe_cardholder_id, value: current_user&.stripe_cardholder&.id %>
+    <%= form.hidden_field :stripe_cardholder_id, value: current_user&.stripe_cardholder&.id %>
 
-  <div class="actions">
-    <%= form.submit "Issue my card" %>
-  </div>
+    <div class="actions">
+      <%= form.submit "Issue my card" %>
+    </div>
+  <% end %>
 <% end %>

@@ -2,6 +2,8 @@
 <% page_md %>
 <%= render 'events/nav' %>
 
+<% @perks_available = organizer_signed_in? && !@event.demo_mode? %>
+
 <h1>
   Promotions &amp; perks
 </h1>
@@ -14,8 +16,8 @@
         💵 Hackathon Grant
       </h3>
       <%= link_to 'Apply',
-        organizer_signed_in? ? "https://hackclub.com/hackathons/grant/" : root_path,
-        class: "btn mr1 #{'disabled' unless organizer_signed_in?} tooltipped tooltipped--w",
+        @perks_available ? "https://hackclub.com/hackathons/grant/" : root_path,
+        class: "btn mr1 #{'disabled' unless @perks_available} tooltipped tooltipped--w",
         "aria-label" => "Get notified when grant applications are open.",
         target: :_blank
       %>
@@ -31,8 +33,8 @@
   <div class="card__banner card__banner--top flex justify-between items-center promo-1password">
     <%= image_tag '1password.svg', width: 210, class: "p2" %>
     <%= link_to 'Apply',
-      organizer_signed_in? ? "https://hack.af/1passpromo?prefill_Project%20Name=#{@event.name}&prefill_Bank%20URL=#{event_url(@event)}&prefill_Your%20Name=#{current_user.full_name}&prefill_Email=#{current_user.email}" : root_path,
-      class: "btn bg-success mr1 #{'disabled' unless organizer_signed_in?}",
+      @perks_available ? "https://hack.af/1passpromo?prefill_Project%20Name=#{@event.name}&prefill_Bank%20URL=#{event_url(@event)}&prefill_Your%20Name=#{current_user.full_name}&prefill_Email=#{current_user.email}" : root_path,
+      class: "btn bg-success mr1 #{'disabled' unless @perks_available}",
       target: :_blank
      %>
   </div>
@@ -49,8 +51,8 @@
   <div class="card__banner card__banner--top flex justify-between items-center promo-event-helper">
     <%= image_tag 'https://cloud-fz66hmje0-hack-club-bot.vercel.app/0theeventhelperbutbetter.png', width: 60 %>
     <%= link_to 'Purchase',
-      organizer_signed_in? ? "https://hack.af/event-helper-perk?prefill_Event%20Name=#{@event.name}&prefill_Bank%20URL=#{event_url(@event)}&prefill_Submitter%20Name=#{current_user.full_name}&prefill_Submitter%20Email=#{current_user.email}" : root_path,
-      class: "btn mr1 #{'disabled' unless organizer_signed_in?}",
+      @perks_available ? "https://hack.af/event-helper-perk?prefill_Event%20Name=#{@event.name}&prefill_Bank%20URL=#{event_url(@event)}&prefill_Submitter%20Name=#{current_user.full_name}&prefill_Submitter%20Email=#{current_user.email}" : root_path,
+      class: "btn mr1 #{'disabled' unless @perks_available}",
       target: :_blank
     %>
   </div>
@@ -94,8 +96,8 @@
   <div class="card__banner card__banner--top flex justify-between items-center promo-wallets">
     <h3 class="h1 p2 my0 color-black">Wallets (beta)</h3>
     <%= link_to 'Out of stock!',
-                organizer_signed_in? ? "https://hack.af/hcb-wallets?prefill_Organization%20Name=#{@event.name}&prefill_Recipient%20Name=#{current_user.full_name}&prefill_Login%20Email=#{current_user.email}" : root_path,
-                class: "btn bg-success mr1 #{'disabled' unless organizer_signed_in?}",
+                @perks_available ? "https://hack.af/hcb-wallets?prefill_Organization%20Name=#{@event.name}&prefill_Recipient%20Name=#{current_user.full_name}&prefill_Login%20Email=#{current_user.email}" : root_path,
+                class: "btn bg-success mr1 #{'disabled' unless @perks_available}",
                 target: :_blank, disabled: true
     %>
   </div>
@@ -111,8 +113,8 @@
   <div class="card__banner card__banner--top flex justify-between items-center promo-pvsa">
     <%= image_tag 'https://cloud-q7i8htyv7-hack-club-bot.vercel.app/0pvsa-logo-2x.png', width: 60 %>
     <%= link_to 'Purchase',
-      organizer_signed_in? ? "https://hack.af/pvsa-order?prefill_Event%20Name=#{@event.name}&prefill_Bank%20URL=#{event_url(@event)}&prefill_Submitter%20Email=#{current_user.email}" : root_path,
-      class: "btn mr1 #{'disabled' unless organizer_signed_in?}",
+      @perks_available ? "https://hack.af/pvsa-order?prefill_Event%20Name=#{@event.name}&prefill_Bank%20URL=#{event_url(@event)}&prefill_Submitter%20Email=#{current_user.email}" : root_path,
+      class: "btn mr1 #{'disabled' unless @perks_available}",
       target: :_blank
     %>
   </div>
@@ -163,14 +165,14 @@
     <div
       class="card__banner card__banner--top flex justify-between items-center promo-domains">
       <h3 class="h1 p2 my0 color-black">Domains</h3>
-        <% if !@event.g_suites.not_deleted.none? && organizer_signed_in? %>
+        <% if !@event.g_suites.not_deleted.none? && @perks_available %>
           <div class="actions tooltipped tooltipped--w inline-block mt1" aria-label="You already own a domain!">
             <span class="btn bg-success disabled">Apply</span>
           </div>
         <% else %>
           <%= link_to 'Apply',
-            organizer_signed_in? ? "https://hack.af/bank-domains?prefill_Project%20Name=#{@event.name}&prefill_Bank%20URL=#{event_url(@event)}&prefill_Name=#{current_user.first_name}&prefill_Login%20email=#{current_user.email}" : root_path,
-            class: "btn bg-success mr1 #{'disabled' unless organizer_signed_in?}",
+            @perks_available ? "https://hack.af/bank-domains?prefill_Project%20Name=#{@event.name}&prefill_Bank%20URL=#{event_url(@event)}&prefill_Name=#{current_user.first_name}&prefill_Login%20email=#{current_user.email}" : root_path,
+            class: "btn bg-success mr1 #{'disabled' unless @perks_available}",
             target: :_blank
           %>
         <% end %>
@@ -194,8 +196,8 @@
         <%= image_tag 'stickers/icon-sticker-light.svg', width: 50, class: 'sticker ml2 xs-hide' %>
       </span>
     <%= link_to 'Request',
-      organizer_signed_in? ? "https://hack.af/hcb-stickers?prefill_Recipient%20Name=#{current_user.full_name}&prefill_Login%20Email=#{current_user.email}&prefill_Organization=#{@event.name}" : root_path,
-      class: "btn bg-success mr1 #{'disabled' unless organizer_signed_in?}",
+      @perks_available ? "https://hack.af/hcb-stickers?prefill_Recipient%20Name=#{current_user.full_name}&prefill_Login%20Email=#{current_user.email}&prefill_Organization=#{@event.name}" : root_path,
+      class: "btn bg-success mr1 #{'disabled' unless @perks_available}",
       target: :_blank
      %>
   </div>
@@ -217,8 +219,8 @@
   <div class="card__banner card__banner--top flex justify-between items-center promo-sendy">
     <h3 class="h1 white p2 my0">Sendy</h3>
     <%= link_to 'Apply',
-      organizer_signed_in? ? "https://hack.af/sendypromo?prefill_Project%20Name=#{@event.name}&prefill_Bank%20URL=#{event_url(@event)}&prefill_Your%20name=#{current_user.full_name}&prefill_Domain%20URL=#{@event.g_suites.not_deleted.first&.domain}" : root_path,
-      class: "btn bg-success mr1 #{'disabled' unless organizer_signed_in?}",
+      @perks_available ? "https://hack.af/sendypromo?prefill_Project%20Name=#{@event.name}&prefill_Bank%20URL=#{event_url(@event)}&prefill_Your%20name=#{current_user.full_name}&prefill_Domain%20URL=#{@event.g_suites.not_deleted.first&.domain}" : root_path,
+      class: "btn bg-success mr1 #{'disabled' unless @perks_available}",
       target: :_blank
      %>
   </div>
@@ -235,8 +237,8 @@
     <div class="card__banner card__banner--top flex justify-between items-center" style="background-color:#4E2817">
       <%= image_tag 'stickermule.svg', width: 240 %>
       <%= link_to 'Expired',
-                  organizer_signed_in? ? "https://hack.af/stickermule?prefill_Event%20Name=#{@event.name}&prefill_First%20Name=#{current_user.first_name}&prefill_Email=#{current_user.email}" : root_path,
-                  class: "btn bg-success mr1 #{'disabled' unless organizer_signed_in?}",
+                  @perks_available ? "https://hack.af/stickermule?prefill_Event%20Name=#{@event.name}&prefill_First%20Name=#{current_user.first_name}&prefill_Email=#{current_user.email}" : root_path,
+                  class: "btn bg-success mr1 #{'disabled' unless @perks_available}",
                   target: :_blank,
                   disabled: true
       %>
@@ -303,8 +305,8 @@
     <div class="card__banner card__banner--top flex justify-between items-center" style="background-color:#eee">
       <%= image_tag 'github.png', width: 170 %>
       <%= link_to 'Expired',
-        organizer_signed_in? ? "https://hack.af/grant?prefill_Event%20Name=#{@event.name}" : root_path,
-        class: "btn bg-accent mr1 #{'disabled' unless organizer_signed_in?}",
+        @perks_available ? "https://hack.af/grant?prefill_Event%20Name=#{@event.name}" : root_path,
+        class: "btn bg-accent mr1 #{'disabled' unless @perks_available}",
         disabled: true
       %>
     </div>

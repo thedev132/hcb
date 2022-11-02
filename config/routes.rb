@@ -399,6 +399,7 @@ Rails.application.routes.draw do
 
   get "api/v1/events/find", to: "api#event_find" # to be deprecated
   post "api/v1/disbursements", to: "api#disbursement_new" # to be deprecated
+  post "api/v1/events/create_demo", to: "api#create_demo_event"
 
   post "stripe/webhook", to: "stripe#webhook"
   get "docusign/signing_complete_redirect", to: "docusign#signing_complete_redirect"
@@ -454,6 +455,7 @@ Rails.application.routes.draw do
     get "reimbursements", to: "events#reimbursements", as: :reimbursements
     get "donations", to: "events#donation_overview", as: :donation_overview
     get "partner_donations", to: "events#partner_donation_overview", as: :partner_donation_overview
+    post "demo_mode_request_meeting", to: "events#demo_mode_request_meeting", as: :demo_mode_request_meeting
     get "bank_fees", to: "events#bank_fees", as: :bank_fees
     resources :disbursements, only: [:new, :create]
     resources :checks, only: [:new, :create]

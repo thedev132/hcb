@@ -20,4 +20,8 @@
   </div>
 </div>
 
-<%= render 'form', ach_transfer: @ach_transfer %>
+<% if @event.demo_mode? %>
+  <%= blankslate "Not available in Demo Mode" %>
+<% else %>
+  <%= render 'form', ach_transfer: @ach_transfer %>
+<% end %>

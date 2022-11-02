@@ -36,6 +36,10 @@
   <% end %>
 </h1>
 
+<% if @event.demo_mode? %>
+  <p>You can start accepting donations once you upgrade your Demo Mode account.</p>
+<% else %>
+
 <% if @event.donation_page_enabled %>
   <section class="modal" data-behavior="modal" role="dialog" id="qr_code">
     <%= modal_header "Donations QR code" %>
@@ -56,6 +60,7 @@
   </section>
 <% else %>
   <p>You can start accepting donations once you enable it in your project's <%= link_to "settings", edit_event_path(@event, anchor: "donations") %>.</p>
+<% end %>
 <% end %>
 
 <div class="statset mt3 mb2">

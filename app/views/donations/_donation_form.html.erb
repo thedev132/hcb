@@ -37,5 +37,9 @@
     Your contribution is tax-deductible<% if !@event.country_us? %> in the US<% end %>.
   </p>
 
-  <%= form.submit 'Continue →', class: 'w-100 bg-success', 'data-turbo': 'false' %>
+  <% if @event.demo_mode? %>
+    <%= form.submit 'Continue →', class: 'w-100 bg-success', disabled: "true" %>
+  <% else %>
+    <%= form.submit 'Continue →', class: 'w-100 bg-success', 'data-turbo': 'false' %>
+  <% end %>
 <% end %>

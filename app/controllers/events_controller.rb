@@ -259,6 +259,21 @@ class EventsController < ApplicationController
     @partner_donations = relation.order(created_at: :desc)
   end
 
+  def demo_mode_request_meeting
+    authorize @event
+
+    @event.demo_mode_request_meeting_at = Time.current
+
+    if @event.save!
+      OperationsMailer.with(event_id: @event.id).demo_mode_request_meeting.deliver_later
+      flash[:success] = "We've received your request. We'll be in touch soon!"
+    else
+      flash[:error] = "Something went wrong. Please try again."
+    end
+
+    redirect_to @event
+  end
+
   def bank_fees
     authorize @event
 
@@ -387,6 +402,7 @@ class EventsController < ApplicationController
       :sponsorship_fee,
       :expected_budget,
       :omit_stats,
+      :demo_mode,
       :can_front_balance,
       :emburse_department_id,
       :country,

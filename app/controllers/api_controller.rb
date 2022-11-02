@@ -79,6 +79,29 @@ class ApiController < ApplicationController
     }, status: 201
   end
 
+  def create_demo_event
+    event = EventService::CreateDemoEvent.new(
+      name: params[:name],
+      email: params[:email],
+      country: params[:country],
+    ).run
+
+    result = {}
+    status = 200
+    if event&.errors&.any?
+      result.error = event.errors
+      status = 422
+    else
+      result[:name] = event.name
+      result[:slug] = event.slug
+      result[:email] = params[:email]
+    end
+
+    render json: result, status: status
+  rescue ArgumentError, ActiveRecord::RecordInvalid => e
+    render json: { error: e }, status: 422
+  end
+
   private
 
   def check_token
@@ -91,6 +114,8 @@ class ApiController < ApplicationController
 
   def set_params
     @params = ActiveSupport::JSON.decode(request.body.read)
+  rescue JSON::ParserError
+    render json: { error: "Invalid JSON body" }, status: 401
   end
 
 end

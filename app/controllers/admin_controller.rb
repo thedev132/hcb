@@ -233,7 +233,8 @@ class AdminController < ApplicationController
       is_public: params[:is_public].to_i == 1,
       sponsorship_fee: params[:sponsorship_fee],
       organized_by_hack_clubbers: params[:organized_by_hack_clubbers].to_i == 1,
-      omit_stats: params[:omit_stats].to_i == 1
+      omit_stats: params[:omit_stats].to_i == 1,
+      demo_mode: params[:demo_mode].to_i == 1
     }
     ::EventService::Create.new(attrs).run
 
@@ -1108,6 +1109,7 @@ class AdminController < ApplicationController
 
   def filtered_events(events: Event.all)
     @q = params[:q].present? ? params[:q] : nil
+    @demo_mode = params[:demo_mode].present? ? params[:demo_mode] : nil
     @pending = params[:pending] == "0" ? nil : true # checked by default
     @unapproved = params[:unapproved] == "0" ? nil : true # checked by default
     @approved = params[:approved] == "0" ? nil : true # checked by default
@@ -1142,6 +1144,7 @@ class AdminController < ApplicationController
     relation = relation.not_funded if @funded == "not_funded"
     relation = relation.organized_by_hack_clubbers if @organized_by_hack_clubbers == "organized_by_hack_clubbers"
     relation = relation.not_organized_by_hack_clubbers if @organized_by_hack_clubbers == "not_organized_by_hack_clubbers"
+    relation = relation.filter_demo_mode params[:demo_mode]
     if @category == "none"
       relation = relation.where(category: nil)
     elsif @category != "all"

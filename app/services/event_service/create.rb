@@ -2,7 +2,7 @@
 
 module EventService
   class Create
-    def initialize(name:, point_of_contact_id:, emails: [], country: [], category: [], is_public: false, approved: false, sponsorship_fee: 0.07, organized_by_hack_clubbers: false, omit_stats: false, can_front_balance: true)
+    def initialize(name:, point_of_contact_id:, emails: [], country: [], category: [], is_public: false, approved: false, sponsorship_fee: 0.07, organized_by_hack_clubbers: false, omit_stats: false, can_front_balance: true, demo_mode: false)
       @name = name
       @emails = emails
       @country = country
@@ -14,6 +14,7 @@ module EventService
       @organized_by_hack_clubbers = organized_by_hack_clubbers
       @omit_stats = omit_stats
       @can_front_balance = can_front_balance
+      @demo_mode = demo_mode
     end
 
     def run
@@ -51,7 +52,8 @@ module EventService
         expected_budget: 100.0,
         point_of_contact_id: @point_of_contact_id,
         partner_id: partner.id,
-        organization_identifier: organization_identifier
+        organization_identifier: organization_identifier,
+        demo_mode: @demo_mode
       }
     end
 

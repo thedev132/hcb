@@ -72,6 +72,10 @@ class EventPolicy < ApplicationPolicy
     is_public || user_or_admin
   end
 
+  def demo_mode_request_meeting?
+    user_or_admin
+  end
+
   # (@eilla1) these pages are for the wip resources page and should be moved later
   def connect_gofundme?
     is_public || user_or_admin
@@ -94,7 +98,7 @@ class EventPolicy < ApplicationPolicy
   end
 
   def g_suite_create?
-    user_or_admin
+    user_or_admin && is_not_demo_mode?
   end
 
   def g_suite_verify?
@@ -143,6 +147,10 @@ class EventPolicy < ApplicationPolicy
 
   def user_or_admin
     user&.admin? || record.users.include?(user)
+  end
+
+  def is_not_demo_mode?
+    !record.demo_mode?
   end
 
   def is_public

@@ -29,4 +29,8 @@
   <p class="h5 muted">It looks like you don't have any organizations to transfer to. You can transfer funds between any organizations you're a part of as long as the destination organization has Transparency Mode enabled.</p>
 <% end %>
 
-<%= render 'form', disbursement: @disbursement %>
+<% if @source_event %>
+  <%= blankslate "Not available in Demo Mode" %>
+<% else %>
+  <%= render 'form', disbursement: @disbursement %>
+<% end %>

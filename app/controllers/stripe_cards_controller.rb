@@ -88,6 +88,7 @@ class StripeCardsController < ApplicationController
 
     sc = params[:stripe_card]
 
+    return redirect_back fallback_location: event_cards_new_path(event), flash: { error: "Event is in Demo Mode" } if event.demo_mode?
     return redirect_back fallback_location: event_cards_new_path(event), flash: { error: "Invalid country" } unless %w(US CA).include? sc[:stripe_shipping_address_country]
 
     attrs = {

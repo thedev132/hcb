@@ -6,5 +6,9 @@ FactoryBot.define do
     association :partner
     sponsorship_fee { 0 }
     organization_identifier { SecureRandom.hex(30) + Faker::Name.unique.name }
+
+    trait :demo_mode do
+      demo_mode { true }
+    end
   end
 end

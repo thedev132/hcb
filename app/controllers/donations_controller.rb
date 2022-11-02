@@ -6,7 +6,7 @@ class DonationsController < ApplicationController
   include SetEvent
   include Rails::Pagination
 
-  skip_after_action :verify_authorized
+  skip_after_action :verify_authorized, except: [:start_donation, :make_donation]
   skip_before_action :signed_in_user
   before_action :set_donation, only: [:show]
   before_action :set_event, only: [:start_donation, :make_donation, :finish_donation, :qr_code]
@@ -40,7 +40,9 @@ class DonationsController < ApplicationController
       return not_found
     end
 
-    @donation = Donation.new(amount: params[:amount])
+    @donation = Donation.new(amount: params[:amount], event: @event)
+
+    authorize @donation
   end
 
   def make_donation
@@ -49,6 +51,8 @@ class DonationsController < ApplicationController
 
     @donation = Donation.new(d_params)
     @donation.event = @event
+
+    authorize @donation
 
     if @donation.save
       redirect_to finish_donation_donations_path(@event, @donation.url_hash)

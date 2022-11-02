@@ -564,6 +564,8 @@ ActiveRecord::Schema.define(version: 2022_10_26_140929) do
     t.string "custom_css_url"
     t.integer "category"
     t.boolean "can_front_balance", default: false, null: false
+    t.boolean "demo_mode", default: false, null: false
+    t.datetime "demo_mode_request_meeting_at"
     t.index ["club_airtable_id"], name: "index_events_on_club_airtable_id", unique: true
     t.index ["partner_id", "organization_identifier"], name: "index_events_on_partner_id_and_organization_identifier", unique: true
     t.index ["partner_id"], name: "index_events_on_partner_id"
