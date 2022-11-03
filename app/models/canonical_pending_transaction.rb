@@ -61,6 +61,7 @@ class CanonicalPendingTransaction < ApplicationRecord
   has_many :canonical_pending_settled_mappings
   has_many :canonical_transactions, through: :canonical_pending_settled_mappings
   has_many :canonical_pending_declined_mappings
+  has_one :local_hcb_code, foreign_key: 'hcb_code', primary_key: 'hcb_code', class_name: "HcbCode"
 
   monetize :amount_cents
 
@@ -107,7 +108,7 @@ class CanonicalPendingTransaction < ApplicationRecord
   after_create :write_hcb_code
   after_create_commit :write_system_event
 
-  attr_writer :local_hcb_code, :stripe_cardholder
+  attr_writer :stripe_cardholder
 
   def mapped?
     @mapped ||= canonical_pending_event_mapping.present?
@@ -287,10 +288,6 @@ class CanonicalPendingTransaction < ApplicationRecord
     return "/hcb/#{local_hcb_code.hashid}" if local_hcb_code
 
     "/canonical_pending_transactions/#{id}"
-  end
-
-  def local_hcb_code
-    @local_hcb_code ||= HcbCode.find_or_create_by(hcb_code: hcb_code)
   end
 
   def stripe_cardholder

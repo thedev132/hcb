@@ -26,10 +26,15 @@ module PendingTransactionEngine
       def canonical_pending_transactions
         @canonical_pending_transactions ||=
           begin
-            cpts = CanonicalPendingTransaction.includes(:raw_pending_stripe_transaction)
+            included_local_hcb_code_associations = [:receipts, :comments, :canonical_transactions, :canonical_pending_transactions]
+            # rubocop:disable Naming/VariableNumber
+            included_local_hcb_code_associations << :tags if Flipper.enabled?(:transaction_tags_2022_07_29, @event)
+            # rubocop:enable Naming/VariableNumber
+            cpts = CanonicalPendingTransaction.includes(:raw_pending_stripe_transaction,
+                                                        local_hcb_code: included_local_hcb_code_associations)
                                               .unsettled
                                               .where(id: canonical_pending_event_mappings.pluck(:canonical_pending_transaction_id))
-                                              .order("date desc, canonical_pending_transactions.id desc")
+                                              .order("canonical_pending_transactions.date desc, canonical_pending_transactions.id desc")
 
             if @tag_id
               cpts =

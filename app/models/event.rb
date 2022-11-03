@@ -386,7 +386,7 @@ class Event < ApplicationRecord
     @fronted_incoming_balance_v2_cents ||=
       begin
         pts = canonical_pending_transactions.incoming.fronted.not_declined
-                                            .includes(:event)
+                                            .includes(:event, :local_hcb_code)
 
         pts = pts.where("date >= ?", start_date) if start_date
         pts = pts.where("date <= ?", end_date) if end_date
