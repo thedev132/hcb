@@ -9,7 +9,7 @@ module ApiService
       end
 
       def run
-        partner.events.find_by_public_id(clean_organization_identifier)
+        partner.events.find_by_public_id!(clean_organization_identifier)
       end
 
       def partner

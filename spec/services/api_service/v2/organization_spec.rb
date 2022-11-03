@@ -2,52 +2,67 @@
 
 require "rails_helper"
 
-RSpec.describe ApiService::V2::FindOrganization, type: :model, skip: true do
-  fixtures "partners", "events"
+RSpec.describe ApiService::V2::FindOrganization, type: :model do
+  let(:event) { create(:event) }
+  let(:partner) { event.partner }
 
-  let(:partner) { partners(:partner1) }
-  let(:partner_id) { partner.id }
-
-  let(:event) { events(:event1) }
-  let(:organization_identifier) { event.organization_identifier }
-  let(:status) { event.aasm_state }
-
-  let(:attrs) do
-    {
-      partner_id: partner_id,
-      organization_identifier: organization_identifier,
+  context "when partner and organization identifier exist" do
+    let(:service) {
+      ApiService::V2::FindOrganization.new(
+        partner_id: partner.id,
+        organization_public_id: event.public_id
+      )
     }
-  end
-
-  let(:service) { ApiService::V2::FindOrganization.new(attrs) }
-
-  context "when partner does not exist" do
-    let(:partner_id) { "999999" }
-
-    it "raises a 404" do
-      expect do
-        service.run
-      end.to raise_error(ActiveRecord::RecordNotFound)
-    end
-  end
-
-  context "when organization identifier does not exists" do
-    let(:organization_identifier) { "org_1234" }
-
-    it "raises a 404" do
-      expect do
-        service.run
-      end.to raise_error(ActiveRecord::RecordNotFound)
-    end
-  end
-
-  context "when organization identifier exists" do
-    let(:organization_identifier) { "event1" }
 
     it "returns an organization" do
       result = service.run
 
-      expect(result).to be_instance_of(Event)
+      expect(result).to eq(event)
+    end
+  end
+
+  context "when partner does not exist" do
+    let(:service) {
+      ApiService::V2::FindOrganization.new(
+        partner_id: "999999",
+        organization_public_id: event.public_id
+      )
+    }
+
+    it "raises a 404" do
+      expect do
+        service.run
+      end.to raise_error(ActiveRecord::RecordNotFound)
+    end
+  end
+
+  context "when partner is not affiliated with the organizatino" do
+    let(:service) {
+      ApiService::V2::FindOrganization.new(
+        partner_id: create(:partner).id,
+        organization_public_id: event.public_id
+      )
+    }
+
+    it "raises a 404" do
+      expect do
+        service.run
+      end.to raise_error(ActiveRecord::RecordNotFound)
+    end
+  end
+
+  context "when organization identifier does not exist" do
+    let(:service) {
+      ApiService::V2::FindOrganization.new(
+        partner_id: partner.id,
+        organization_public_id: "org_1234"
+      )
+    }
+
+    it "raises a 404" do
+      expect do
+        service.run
+      end.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
 end
