@@ -119,7 +119,7 @@ class Transaction < ApplicationRecord
             absence: true,
             unless: -> { self.is_event_related }
 
-  validates :amount, numericality: { greater_than: 0, message: "must be greater than 0" }
+  validates :amount, numericality: { only_integer: true }
 
   validate :ensure_paired_correctly
 
