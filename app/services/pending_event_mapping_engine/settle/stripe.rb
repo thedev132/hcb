@@ -17,11 +17,10 @@ module PendingEventMappingEngine
               next unless ct
 
               # 2. mark no longer pending
-              attrs = {
-                canonical_transaction_id: ct.id,
-                canonical_pending_transaction_id: cpt.id
-              }
-              CanonicalPendingSettledMapping.create!(attrs)
+              CanonicalPendingTransactionService::Settle.new(
+                canonical_transaction: ct,
+                canonical_pending_transaction: cpt
+              ).run!
             end
           end
         end
