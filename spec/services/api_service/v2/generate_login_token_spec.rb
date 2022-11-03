@@ -2,23 +2,25 @@
 
 require "rails_helper"
 
-RSpec.describe ApiService::V2::GenerateLoginToken, type: :model, skip: true do
-  fixtures "partners", "events", "users", "organizer_positions"
-
-  let(:partner) { partners(:partner1) }
-  let(:event) { events(:event1) }
+RSpec.describe ApiService::V2::GenerateLoginToken, type: :model do
+  let(:user) { create(:user) }
+  let(:event) { create(:event) }
+  let(:partner) { event.partner }
 
   let(:partner_id) { partner.id }
-  let(:organization_identifier) { event.organization_identifier }
+  let(:organization_public_id) { event.public_id }
 
-  let(:attrs) do
-    {
-      partner_id: partner_id,
-      organization_identifier: organization_identifier
-    }
+  let(:service) {
+    ApiService::V2::GenerateLoginToken.new(
+      partner: partner,
+      user_email: user.email,
+      organization_public_id: organization_public_id
+    )
+  }
+
+  before do
+    create(:organizer_position, event: event, user: user)
   end
-
-  let(:service) { ApiService::V2::GenerateLoginToken.new(attrs) }
 
   it "creates a login token" do
     expect do
@@ -27,9 +29,9 @@ RSpec.describe ApiService::V2::GenerateLoginToken, type: :model, skip: true do
   end
 
   it "creates with the login url" do
-    url = service.run
+    url = service.run.login_url
 
-    expect(url).to eql("http://example.com/api/v1/login?loginToken=#{LoginToken.last.token}")
+    expect(url).to eql("#{Rails.application.routes.url_helpers.root_url}api/v2/login?login_token=#{LoginToken.last.token}")
   end
 
   it "idempotently creates" do
@@ -40,8 +42,8 @@ RSpec.describe ApiService::V2::GenerateLoginToken, type: :model, skip: true do
     end.to_not raise_error
   end
 
-  context "when partner does not exist" do
-    let(:partner_id) { "999999" }
+  context "when partner is not tied to organization" do
+    let(:partner) { create(:partner) }
 
     it "raises a 404" do
       expect do
@@ -50,8 +52,8 @@ RSpec.describe ApiService::V2::GenerateLoginToken, type: :model, skip: true do
     end
   end
 
-  context "when organization identifier does not exist" do
-    let(:organization_identifier) { "event8787878" }
+  context "when organization_public_id does not exist" do
+    let(:organization_public_id) { "event8787878" }
 
     it "raises a 404" do
       expect do

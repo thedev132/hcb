@@ -29,7 +29,7 @@ module ApiService
       end
 
       def organization
-        @organization ||= Event.find_by_public_id(clean_organization_public_id)
+        @organization ||= Event.find_by_public_id!(clean_organization_public_id)
       end
 
       def clean_organization_public_id
