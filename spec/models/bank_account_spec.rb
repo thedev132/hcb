@@ -3,9 +3,7 @@
 require "rails_helper"
 
 RSpec.describe BankAccount, type: :model do
-  fixtures "bank_accounts"
-
-  let(:bank_account) { bank_accounts(:bank_account1) }
+  let(:bank_account) { create(:bank_account) }
 
   it "is valid" do
     expect(bank_account).to be_valid

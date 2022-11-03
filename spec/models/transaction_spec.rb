@@ -3,9 +3,7 @@
 require "rails_helper"
 
 RSpec.describe Transaction, type: :model do
-  fixtures "transactions"
-
-  let(:transaction) { transactions(:transaction1) }
+  let(:transaction) { create(:transaction) }
 
   it "is valid" do
     expect(transaction).to be_valid
