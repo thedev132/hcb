@@ -57,10 +57,8 @@
             Your account is in demo mode– you can sign in and poke around, but many features are disabled. Once you're ready to activate your account, you can sign a contract.
           </p>
           <% if @event.demo_mode_request_meeting_at.blank? %>
-            <%= link_to event_demo_mode_request_meeting_path(@event), method: :post do %>
-              <button class="btn btn-success">
-                Request a contract
-              </button>
+            <%= link_to event_demo_mode_request_meeting_path(@event), method: :post, class: 'btn btn-success' do %>
+              Request a contract
             <% end %>
             <p class="muted">After requesting, we'll be in touch in 2-3 business days.</p>
           <% else %>
