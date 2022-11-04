@@ -239,3 +239,7 @@ gem "rack-mini-profiler", "~> 3.0"
 gem "stackprof" # Used with `rack-mini-profiler` to provide flamegraphs
 
 gem "country_select", "~> 8.0"
+
+gem "lab_tech" # Integrates `scientist` with ActiveRecord for experiment data collection
+gem "scientist" # Refactor testing for critical paths
+gem "table_print" # Pretty print tables in the console (used with `lab_tech`)

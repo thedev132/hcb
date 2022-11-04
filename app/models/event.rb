@@ -382,9 +382,14 @@ class Event < ApplicationRecord
       end
   end
 
-  def fronted_incoming_balance_v2_cents(start_date: nil, end_date: nil)
+  def fronted_incoming_balance_v2_cents(start_date: nil, end_date: nil, queue_experiment: true)
     @fronted_incoming_balance_v2_cents ||=
       begin
+        # Queue the experiment (if this method was not called by the experiment)
+        if queue_experiment
+          ExperimentJob::EventFrontedBalance.perform_later(event_id: self.id, start_date: start_date, end_date: end_date)
+        end
+
         pts = canonical_pending_transactions.incoming.fronted.not_declined
                                             .includes(:event, :local_hcb_code)
 
