@@ -2,26 +2,37 @@
 
 require "rails_helper"
 
-RSpec.describe Api::V2::GenerateLoginUrlContract, type: :model, skip: true do
-  let(:organization_identifier) { "org_1234" }
+RSpec.describe Api::V2::GenerateLoginUrlContract, type: :model do
 
-  let(:attrs) do
-    {
-      organizationIdentifier: organization_identifier
+  context "required fields" do
+    let(:public_id) { "org_1234" }
+    let(:email) { "example@example.com" }
+
+    let(:contract) {
+      Api::V2::GenerateLoginUrlContract.new.call(
+        public_id: public_id,
+        email: email
+      )
     }
-  end
 
-  let(:contract) { Api::V2::GenerateLoginUrlContract.new.call(attrs) }
+    it "is successful when all required fields are present" do
+      expect(contract).to be_success
+    end
 
-  it "is successful" do
-    expect(contract).to be_success
-  end
+    context "when missing public_id" do
+      let(:public_id) { "" }
 
-  context "when missing organizationIdentifier" do
-    let(:organization_identifier) { "" }
+      it "is unsuccessful" do
+        expect(contract).to_not be_success
+      end
+    end
 
-    it "is unsuccessful" do
-      expect(contract).to_not be_success
+    context "when missing email" do
+      let(:email) { "" }
+
+      it "is unsuccessful" do
+        expect(contract).to_not be_success
+      end
     end
   end
 end

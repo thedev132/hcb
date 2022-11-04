@@ -2,20 +2,17 @@
 
 require "rails_helper"
 
-RSpec.describe Api::V2::PartneredSignupsNewContract, type: :model, skip: true do
-  let(:organization_name) { "org_1234" }
-  let(:redirect_url) { "http://example.com/redirect" }
+RSpec.describe Api::V2::PartneredSignupsNewContract, type: :model do
+  let(:contract) {
+    Api::V2::PartneredSignupsNewContract.new.call(
+      organization_name: "org_1234",
+      redirect_url: "http://example.com/redirect",
+      owner_email: "owner@example.com",
+      owner_name: "owner"
+    )
+  }
 
-  let(:attrs) do
-    {
-      organization_name: organization_name,
-      redirect_url: redirect_url,
-    }
-  end
-
-  let(:contract) { Api::V2::PartneredSignupsNewContract.new.call(attrs) }
-
-  it "is successful" do
+  it "is successful with all required fields" do
     expect(contract).to be_success
   end
 end

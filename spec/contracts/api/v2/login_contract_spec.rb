@@ -2,23 +2,17 @@
 
 require "rails_helper"
 
-RSpec.describe Api::V2::LoginContract, type: :model, skip: true do
-  let(:login_token) { "tok_1234" }
+RSpec.describe Api::V2::LoginContract, type: :model do
+  context "when login_token is present" do
+    let(:contract) { Api::V2::LoginContract.new.call(login_token: "tok_1234") }
 
-  let(:attrs) do
-    {
-      loginToken: login_token
-    }
+    it "is successful" do
+      expect(contract).to be_success
+    end
   end
 
-  let(:contract) { Api::V2::LoginContract.new.call(attrs) }
-
-  it "is successful" do
-    expect(contract).to be_success
-  end
-
-  context "when missing loginToken" do
-    let(:login_token) { "" }
+  context "when login_token is missing" do
+    let(:contract) { Api::V2::LoginContract.new.call(login_token: "") }
 
     it "is unsuccessful" do
       expect(contract).to_not be_success
