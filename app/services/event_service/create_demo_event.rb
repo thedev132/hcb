@@ -6,7 +6,7 @@ module EventService
 
     def initialize(email:, name:, country:, point_of_contact_id: nil, partner_id: nil)
       @email = email
-      @point_of_contact = point_of_contact_id ? User.find(point_of_contact_id) : User.find_by_email("melanie@hackclub.com")
+      @point_of_contact = point_of_contact_id ? User.find(point_of_contact_id) : User.find_by_email("bank@hackclub.com")
       @default_partner = ::Partner.find_by!(slug: "bank")
       @partner = partner_id ? ::Partner.find(partner_id) : @default_partner
       @event = ::Event.new(
