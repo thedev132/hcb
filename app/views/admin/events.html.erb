@@ -29,7 +29,7 @@
   </thead>
   <tbody>
     <% @events.each do |event| %>
-      <tr class="<%= "admin-bg-pending" if event.pending? || event.unapproved? %> <%= "admin-bg-orange" if event.omit_stats? %>">
+      <tr class="<%= "admin-bg-pending" if event.pending? || event.unapproved? || event.demo_mode? %> <%= "admin-bg-orange" if event.omit_stats? %>">
         <td><%= event.id %></td>
         <td><%= event.created_at.strftime("%Y-%m-%d") %></td>
         <td>
@@ -60,6 +60,9 @@
           <% end %>
           <% if event.organized_by_hack_clubbers? %>
             <span title="🦕 Organized by Hack Clubbers">🦕</span>
+          <% end %>
+          <% if event.demo_mode? %>
+            <span title="🧪 Demo Account">🧪</span>
           <% end %>
         </td>
         <td>

@@ -1109,7 +1109,7 @@ class AdminController < ApplicationController
 
   def filtered_events(events: Event.all)
     @q = params[:q].present? ? params[:q] : nil
-    @demo_mode = params[:demo_mode].present? ? params[:demo_mode] : nil
+    @demo_mode = params[:demo_mode].present? ? params[:demo_mode] : "full" # full accounts only by default
     @pending = params[:pending] == "0" ? nil : true # checked by default
     @unapproved = params[:unapproved] == "0" ? nil : true # checked by default
     @approved = params[:approved] == "0" ? nil : true # checked by default
@@ -1144,7 +1144,8 @@ class AdminController < ApplicationController
     relation = relation.not_funded if @funded == "not_funded"
     relation = relation.organized_by_hack_clubbers if @organized_by_hack_clubbers == "organized_by_hack_clubbers"
     relation = relation.not_organized_by_hack_clubbers if @organized_by_hack_clubbers == "not_organized_by_hack_clubbers"
-    relation = relation.filter_demo_mode params[:demo_mode]
+    relation = relation.demo_mode if @demo_mode == "demo"
+    relation = relation.not_demo_mode if @demo_mode == "full"
     if @category == "none"
       relation = relation.where(category: nil)
     elsif @category != "all"

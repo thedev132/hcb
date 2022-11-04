@@ -41,7 +41,7 @@
 |
 <%= form.label :demo_mode do %>
   Demo
-  <%= form.select :demo_mode, [["Full", false], ['Demo', true], ['Either', nil]], selected: @demo_mode %>
+  <%= form.select :demo_mode, [['Both', 'both'], ['Full', 'full'], ['Demo', 'demo']], selected: @demo_mode %>
 <% end %>
 |
 <%= form.label :hidden do %>
