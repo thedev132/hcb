@@ -54,18 +54,18 @@
         <%= modal_header "Demo Mode" %>
         <% if organizer_signed_in? %>
           <p>
-            Your account is in demo mode– you can sign in and poke around, but many features are disabled. Once you're ready to activate your account, you can sign a contract.
+            Your account is in <strong>demo mode</strong>. You can sign in and poke around, but many features are disabled. Once you're ready to activate your account, you can schedule a call with the Hack Club Bank team.
           </p>
           <% if @event.demo_mode_request_meeting_at.blank? %>
             <%= link_to event_demo_mode_request_meeting_path(@event), method: :post, class: 'btn btn-success' do %>
-              Request a contract
+              Request activation
             <% end %>
-            <p class="muted">After requesting, we'll be in touch in 2-3 business days.</p>
+            <p class="muted">After requesting, we'll be in touch within 24 hours on business days.</p>
           <% else %>
-            <p class="muted">You requested a contract around <%= local_time_ago @event.demo_mode_request_meeting_at %>.</p>
+            <p class="muted">You requested to activate your account around <%= local_time_ago @event.demo_mode_request_meeting_at %>.</p>
           <% end %>
         <% else %>
-          <p>This is a demo account. Someone created this account about <%= local_time_ago @event.created_at %> to take it for a test drive, but hasn't signed a contract to join yet.</p>
+          <p>This is a <strong>demo account</strong>. Someone created this account about <%= local_time_ago @event.created_at %> to take it for a test drive, but hasn't fully activated their account yet.</p>
         <% end %>
       </section>
     <% end %>
