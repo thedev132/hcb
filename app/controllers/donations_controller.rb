@@ -9,7 +9,7 @@ class DonationsController < ApplicationController
   skip_after_action :verify_authorized, except: [:start_donation, :make_donation]
   skip_before_action :signed_in_user
   before_action :set_donation, only: [:show]
-  before_action :set_event, only: [:start_donation, :make_donation, :finish_donation, :qr_code]
+  before_action :set_event, only: [:start_donation, :make_donation, :qr_code]
 
   # Rationale: the session doesn't work inside iframes (because of third-party cookies)
   skip_before_action :verify_authenticity_token, only: [:start_donation, :make_donation, :finish_donation]
@@ -64,6 +64,10 @@ class DonationsController < ApplicationController
   def finish_donation
 
     @donation = Donation.find_by!(url_hash: params["donation"])
+
+    # We don't use set_event here to prevent a UI vulnerability where a user could create a donation on one org and make it look like another org by changing the slug
+    # https://github.com/hackclub/bank/issues/3197
+    @event = @donation.event
 
     if @donation.status == "succeeded"
       flash[:info] = "You tried to access the payment page for a donation that’s already been sent."
