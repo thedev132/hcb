@@ -18,7 +18,7 @@ $(tput setaf 9)Hack Club Bank:$(tput sgr0) Step 1/7: Install Heroku (Quiet)"
 if ! command -v heroku &> /dev/null
 then
   echo "running|||"
-  (curl https://cli-assets.heroku.com/install-ubuntu.sh | sh) > /dev/null 2>&1
+  (curl https://cli-assets.heroku.com/install.sh | sh) > /dev/null 2>&1
 fi
 echo "$(tput setaf 9)Hack Club Bank:$(tput sgr0) $(tput setaf 10)Done$(tput sgr0)"
 echo "
