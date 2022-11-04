@@ -61,6 +61,7 @@ class Disbursement < ApplicationRecord
 
   validates :amount, numericality: { greater_than: 0 }
   validate :events_are_different
+  validate :events_are_not_demos
 
   # Disbursement goes through 5 stages:
   # 1. Reviewing (before human review)
@@ -202,6 +203,11 @@ class Disbursement < ApplicationRecord
 
   def events_are_different
     self.errors.add(:event, "must be different than source event") if event_id == source_event_id
+  end
+
+  def events_are_not_demos
+    self.errors.add(:event, "cannot be a demo event") if event.demo_mode?
+    self.errors.add(:source_event, "cannot be a demo event") if source_event.demo_mode?
   end
 
 end
