@@ -10,7 +10,7 @@ class AchTransferPolicy < ApplicationPolicy
   end
 
   def create?
-    user&.admin? || record.users.include?(user) && record.not_demo_mode # dirty implementation here. record is event (temporary)
+    user&.admin? || record.users.include?(user) && !record.demo_mode # dirty implementation here. record is event (temporary)
   end
 
   def show?
