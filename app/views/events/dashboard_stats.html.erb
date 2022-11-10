@@ -1,11 +1,13 @@
-<action class="stat stat--small tooltipped tooltipped--s" aria-label="The amount that will be automatically deducted from your account balance" data-behavior="modal_trigger" data-modal="pending_withdrawals" tabindex="0">
+<action class="stat stat--small" data-behavior="modal_trigger" data-modal="pending_withdrawals" tabindex="0">
   <span class="stat__label flex items-center">
     Pending fees
     <%= inline_icon 'external', size: 24, class: 'muted ml1', 'aria-label': 'Icon indicating click for more' %>
   </span>
-  <span class="stat__value"><%= render_money_amount [@event.can_front_balance? ? @event.fronted_fee_balance_v2_cents : @event.fee_balance_v2_cents, 0].max %></span>
+  <span class="stat__value tooltipped tooltipped--s" aria-label="The amount that will be automatically deducted from your account balance">
+    <%= render_money_amount [@event.can_front_balance? ? @event.fronted_fee_balance_v2_cents : @event.fee_balance_v2_cents, 0].max %>
+  </span>
   <% if @event.fee_balance_v2_cents < 0 %>
-    <span class="" style="font-size: 10px;"><%= render_money_amount @event.fee_balance_v2_cents.abs %> credit</span>
+    <span class="" style="font-size: 10px;">$<%= render_money_amount @event.fee_balance_v2_cents.abs %> credit</span>
   <% end %>
 </action>
 <% if @event.pending_incoming_balance_v2_cents > 0 %>
@@ -18,13 +20,17 @@
 <div class="modal" data-behavior="modal" role="dialog" id="pending_withdrawals">
   <% if using_transaction_engine_v2? %>
     <%= modal_header "Pending fees #{"(#{render_money @event.fee_balance_v2_cents})" if @event.fee_balance_v2_cents > 0}" %>
-    <p class="center mt0 mb0 pt2 pb2 slate bold h3 mx-auto max-width-2">
-      <%= link_to fees_report_path(@event, format: :csv) do %>
-        Download Fee Schedule (fees.csv)
+      <%= link_to fees_report_path(@event, format: :csv), class: "btn" do %>
+        <%= inline_icon 'download', size: 16 %>
+        Download Fee Schedule
       <% end %>
-    </p>
+
     <% if organizer_signed_in? %>
-      <span class="h5 muted block mt2 center">
+      <span class="h5 muted block mt2">
+        <% if @event.fee_balance_v2_cents < 0 %>
+          You currently have $<%= render_money_amount @event.fee_balance_v2_cents.abs %> in fee credit. This is the amount we're going to waive.
+          This may be from a previous waiver or to pay off fees that were overcharged.
+        <% end %>
         Questions? <%= help_message %>
       </span>
     <% end %>
