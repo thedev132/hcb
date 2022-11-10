@@ -7,7 +7,8 @@
         maxlength: 30,
         placeholder: 'for venue payment',
         required: true,
-        'data-behavior': 'check_memo_field' %>
+        'data-behavior': 'check_memo_field',
+        disabled: @event.demo_mode? %>
     <span class="muted" data-behavior="check_characters_update">
       This will appear on the physical check. You have 30 characters remaining.
     </span>
@@ -20,7 +21,7 @@
       <%= form.number_field :amount,
         placeholder: '500.00',
         value: (@check.amount.nil? ? nil : (@check.amount.to_f / 100)),
-        disabled: @event.balance <= 0,
+        disabled: (@event.balance <= 0 || !@event.demo_mode?),
         step: 0.01,
         max: (current_user&.admin? ? nil : @event.balance),
         min: 1,
@@ -35,7 +36,7 @@
 
   <div class="field">
     <%= form.label :payment_for, "What are you paying for with this check?" %>
-    <%= form.text_field :payment_for, placeholder: 'Event venue', required: true %>
+    <%= form.text_field :payment_for, placeholder: 'Event venue', required: true, disabled: @event.demo_mode? %>
     <span class="muted">This is to help Hack Club Bank keep record of our transactions. Bank team will see this.</span>
   </div>
 
@@ -46,7 +47,7 @@
         options_for_select(!organizer_signed_in? ? [] : @event.lob_addresses.map { |la|
           [la.name, la.id, { 'data-json': la.to_json } ]
         }),
-        include_blank: 'New payee…' %>
+        include_blank: 'New payee…', disabled: @event.demo_mode? %>
     </div>
   <% end %>
 
@@ -61,32 +62,32 @@
     <%= form.hidden_field :id %>
     <div class="field mt2">
       <%= form.label :name, "Name (use company name if applicable)" %>
-      <%= form.text_field :name, placeholder: 'Raviga Capital', required: true, data: {'behavior': 'check_payee_name_field'} %>
+      <%= form.text_field :name, placeholder: 'Raviga Capital', required: true, disabled: @event.demo_mode?, data: {'behavior': 'check_payee_name_field'} %>
     </div>
 
     <div class="field">
       <%= form.label :address1, 'Street address (where we’re mailing it to)' %>
-      <%= form.text_field :address1, placeholder: '1 Letterman Drive', required: true %>
+      <%= form.text_field :address1, placeholder: '1 Letterman Drive', required: true, disabled: @event.demo_mode? %>
     </div>
 
     <div class="field">
-      <%= form.text_field :address2, placeholder: 'Suite 500' %>
+      <%= form.text_field :address2, placeholder: 'Suite 500', disabled: @event.demo_mode? %>
     </div>
 
     <div class="flex">
       <div class="field flex-auto mr1">
         <%= form.label :city, 'City' %>
-        <%= form.text_field :city, placeholder: 'San Francisco', required: true %>
+        <%= form.text_field :city, placeholder: 'San Francisco', required: true, disabled: @event.demo_mode? %>
       </div>
       <div class="field flex-auto ml1">
         <%= form.label :state, 'State' %>
-        <%= form.text_field :state, placeholder: 'CA', required: true %>
+        <%= form.text_field :state, placeholder: 'CA', required: true, disabled: @event.demo_mode? %>
       </div>
     </div>
 
     <div class="field">
       <%= form.label :zip, 'ZIP' %>
-      <%= form.text_field :zip, placeholder: '94129', required: true %>
+      <%= form.text_field :zip, placeholder: '94129', required: true, disabled: @event.demo_mode? %>
     </div>
   <% end %>
 <% end %>

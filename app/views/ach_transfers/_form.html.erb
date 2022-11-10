@@ -3,33 +3,33 @@
 
   <div class="field">
     <%= form.label :recipient_name %>
-    <%= form.text_field :recipient_name, placeholder: 'Max Kern', required: true %>
+    <%= form.text_field :recipient_name, placeholder: 'Max Kern', required: true, disabled: @event.demo_mode? %>
   </div>
 
   <div class="field">
     <%= form.label :recipient_tel %>
-    <%= form.text_field :recipient_tel, placeholder: '1234567890', required: true %>
+    <%= form.text_field :recipient_tel, placeholder: '1234567890', required: true, disabled: @event.demo_mode? %>
   </div>
 
   <div class="field">
     <%= form.label :payment_for, "What are you paying for with this deposit?" %>
-    <%= form.text_field :payment_for, placeholder: 'Shipment of potions', required: true %>
+    <%= form.text_field :payment_for, placeholder: 'Shipment of potions', required: true, disabled: @event.demo_mode? %>
     <span class="muted">This is to help Hack Club Bank keep record of our transactions. Bank team will see this.</span>
   </div>
 
   <div class="field">
     <%= form.label :bank_name %>
-    <%= form.text_field :bank_name, placeholder: 'Name of the bank', required: true %>
+    <%= form.text_field :bank_name, placeholder: 'Name of the bank', required: true, disabled: @event.demo_mode? %>
   </div>
 
   <div class="field">
     <%= form.label :routing_number %>
-    <%= form.text_field :routing_number, placeholder: '123456789', required: true %>
+    <%= form.text_field :routing_number, placeholder: '123456789', required: true, disabled: @event.demo_mode? %>
   </div>
 
   <div class="field">
     <%= form.label :account_number %>
-    <%= form.text_field :account_number, placeholder: '0913338883', required: true %>
+    <%= form.text_field :account_number, placeholder: '0913338883', required: true, disabled: @event.demo_mode? %>
   </div>
 
   <%= form.label :amount, 'Amount' %>
@@ -38,10 +38,10 @@
       <span class="bold muted" style="width: 1rem;">$</span>
       <%= form.number_field :amount, 
       value: (@ach_transfer.amount.nil? ? nil : (@ach_transfer.amount.to_f / 100)),
-      placeholder: '500.00', step: 0.01, min: 0.01, required: true %>
+      placeholder: '500.00', step: 0.01, min: 0.01, required: true, disabled: @event.demo_mode? %>
     </div>
   </div>
   <div class="actions tooltipped tooltipped--n inline-block" aria-label="ACH transfers can't be cancelled">
-    <%= form.submit 'Transfer money now', class: 'btn bg-warning', disabled: !organizer_signed_in? %>
+    <%= form.submit 'Transfer money now', class: 'btn bg-warning', disabled: (!organizer_signed_in? || @event.demo_mode?) %>
   </div>
 <% end %>
