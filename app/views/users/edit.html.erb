@@ -303,10 +303,10 @@
         <% end %>
         <span class="flex items-center justify-between">
           <span class="bold flex items-center">
-            <% if session.device_info %>
-              <span><%= session.device_info %> on <%= session.os_info %></span>
+            <% if session.device_info.present? %>
+              <span><%= session.os_info %> <span class="regular italic muted"><%= local_time_ago session.created_at %></span></span>
             <% else %>
-              <span>No data is available for this session.</span>
+              <span>No device is available for this session.</span>
             <% end %>
             <% if current_session.id == session.id %>
               <span class="badge bg-success medium">current&nbsp;session</span>
@@ -317,7 +317,11 @@
           <% end %>
         </span>
         <% if session.device_info %>
-          <span class="flex items-center"><%= inline_icon 'web', size: 20 %>&nbsp;<code class="mr1"><%= session.ip %></code> • <%= inline_icon 'clock', size: 20, class: 'ml1' %>&nbsp;<%= session.timezone %></span>
+          <span class="flex items-center">
+            <%= inline_icon 'web', size: 20 %>&nbsp;<code class="mr1 tooltipped tooltipped--n" aria-label="<%= session.timezone %>"><%= session.ip %></code>
+            •
+            <%= inline_icon 'compass', size: 20, class: 'ml1' %>&nbsp;<%= session.device_info %>
+          </span>
         <% end %>
       </div>
     <% end %>
