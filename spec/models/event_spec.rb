@@ -3,42 +3,53 @@
 require "rails_helper"
 
 RSpec.describe Event, type: :model do
-  fixtures "events", "transactions", "fee_relationships", "canonical_event_mappings", "canonical_transactions", "partners"
-
-  let(:event) { events(:event1) }
+  let(:event) { create(:event) }
 
   it "is valid" do
     expect(event).to be_valid
   end
 
-  it "defaults to awaiting_connect", skip: true do
-    expect(event).to be_awaiting_connect
+  it "defaults to approved" do
+    expect(event).to be_approved
   end
 
   describe "#transaction_engine_v2_at" do
     it "has a value" do
+      expect(event.transaction_engine_v2_at).to be_nil
+
       event.save!
 
-      result = event.transaction_engine_v2_at
-
-      expect(result).to_not eql(nil)
+      expect(event.reload.transaction_engine_v2_at).not_to be_nil
     end
   end
 
-  describe "#balance_v2_cents", skip: true do
+  describe "#balance_v2_cents" do
+    before do
+      tx1 = create(:canonical_transaction, amount_cents: 100)
+      tx2 = create(:canonical_transaction, amount_cents: 300)
+      create(:canonical_event_mapping, canonical_transaction: tx1, event: event)
+      create(:canonical_event_mapping, canonical_transaction: tx2, event: event)
+    end
+
     it "calculates a value from canonical transactions" do
       result = event.balance_v2_cents
 
-      expect(result).to eql(100)
+      expect(result).to eql(400)
     end
   end
 
-  describe "private", skip: true do
+  describe "private" do
+    before do
+      create(:fee_relationship, fee_applies: true, event: event, fee_amount: 10010)
+      fee_payment = create(:transaction, amount: -10)
+      create(:fee_relationship, is_fee_payment: true, event: event, t_transaction: fee_payment)
+    end
+
     describe "#total_fees" do
       it "calculates" do
         result = event.send(:total_fees)
 
-        expect(result).to eql(10010.0)
+        expect(result).to eq(10010.0)
       end
     end
 
@@ -46,7 +57,7 @@ RSpec.describe Event, type: :model do
       it "calculates" do
         result = event.send(:total_fee_payments)
 
-        expect(result).to eql(10.0)
+        expect(result).to eq(10.0)
       end
     end
   end
