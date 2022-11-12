@@ -5,7 +5,10 @@ require "cgi"
 
 module UsersHelper
   def gravatar_url(email, name, id, size)
-    name ||= email
+    name ||= begin
+      temp = email.split("@").first.split(/[^a-z\d]/i).compact_blank
+      temp.length == 1 ? temp.first.first(2) : temp.first(2).map(&:first).join
+    end
     hex = Digest::MD5.hexdigest(email.downcase.strip)
     "https://gravatar.com/avatar/#{hex}?s=#{size}&d=https%3A%2F%2Fui-avatars.com%2Fapi%2F/#{CGI.escape(name)}/#{size}/#{get_user_color(id)}/fff"
   end
