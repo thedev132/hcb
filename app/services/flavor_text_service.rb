@@ -91,7 +91,8 @@ class FlavorTextService
       "Trick or treat!",
       "👻",
       "🧛",
-      "🎃"
+      "🎃",
+      "Pumpkin spice is the pumpkin spice of life."
     ]
   end
 
@@ -237,12 +238,14 @@ class FlavorTextService
       "To TCP, or UDP, that is the question",
       "Now with 0 off-by-one errors!",
       "Initial commit: get that bread",
+      "Beards are like, so hot.",
       "git commit -m 'cash money'",
       "git commit -m 'get that bread'",
       "git commit --amend '$$$'",
       "git add ./cash/money",
       "Wireframed with real wire!",
       "Made from 100% recycled pixels",
+      "💖🙌💅🙌💖💁‍♀️💁‍♀️😂😂😂",
       "Open on weekdays!",
       "Open on #{Date.today.strftime("%A")}s",
       "??? profit!",
