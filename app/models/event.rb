@@ -382,21 +382,24 @@ class Event < ApplicationRecord
       end
   end
 
-  def fronted_incoming_balance_v2_cents(start_date: nil, end_date: nil, queue_experiment: true)
+  def fronted_incoming_balance_v2_cents(start_date: nil, end_date: nil)
     @fronted_incoming_balance_v2_cents ||=
       begin
-        # Queue the experiment (if this method was not called by the experiment)
-        if queue_experiment
-          ExperimentJob::EventFrontedBalance.perform_later(event_id: self.id, start_date: start_date, end_date: end_date)
-        end
-
         pts = canonical_pending_transactions.incoming.fronted.not_declined
-                                            .includes(:event, :local_hcb_code)
 
-        pts = pts.where("date >= ?", start_date) if start_date
-        pts = pts.where("date <= ?", end_date) if end_date
+        pts = pts.where("date >= ?", @start_date) if @start_date
+        pts = pts.where("date <= ?", @end_date) if @end_date
 
-        pts.sum(&:fronted_amount)
+        pt_sum_by_hcb_code = pts.group(:hcb_code).sum(:amount_cents)
+        hcb_codes = pt_sum_by_hcb_code.keys
+
+        ct_sum_by_hcb_code = canonical_transactions.where(hcb_code: hcb_codes)
+                                                   .group(:hcb_code)
+                                                   .sum(:amount_cents)
+
+        pt_sum_by_hcb_code.reduce 0 do |sum, (hcb_code, pt_sum)|
+          sum + [pt_sum - (ct_sum_by_hcb_code[hcb_code] || 0), 0].max
+        end
       end
   end
 
