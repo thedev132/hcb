@@ -7,9 +7,8 @@
       <% if comment.edited? %>
       <span class="mx1">|</span>
       <action data-behavior="modal_trigger" data-turbolinks="false" data-modal="comment-modal-<%= comment.hashid %>" tabindex="0">
-        <%= link_to "edited", "#comment-history-#{comment.hashid}",
-          class: 'muted tooltipped tooltipped--s',
-          'aria-label': 'See all edit history' %>
+        <%#= link_to "edited", "#comment-history-#{comment.hashid}", class: 'muted tooltipped tooltipped--s', 'aria-label': 'See all edit history' %>
+        edit history temporarily disabled
       </action>
       <% end %>
       <% if organizer_signed_in? %>
