@@ -37,7 +37,8 @@
 #  fk_rails_...  (lob_address_id => lob_addresses.id)
 #
 class Check < ApplicationRecord
-  has_paper_trail
+  has_paper_trail skip: [:description] # ciphertext columns will still be tracked
+  has_encrypted :description
 
   include PublicIdentifiable
   set_public_id_prefix :chk
@@ -53,8 +54,6 @@ class Check < ApplicationRecord
   has_one :event, through: :lob_address
 
   accepts_nested_attributes_for :lob_address
-
-  has_encrypted :description
 
   has_many :t_transactions, class_name: "Transaction", inverse_of: :check
 

@@ -30,7 +30,8 @@
 #  fk_rails_...  (g_suite_id => g_suites.id)
 #
 class GSuiteAccount < ApplicationRecord
-  has_paper_trail
+  has_paper_trail skip: [:initial_password] # ciphertext columns will still be tracked
+  has_encrypted :initial_password
 
   include Rejectable
 
@@ -40,8 +41,6 @@ class GSuiteAccount < ApplicationRecord
 
   belongs_to :g_suite
   belongs_to :creator, class_name: "User"
-
-  has_encrypted :initial_password
 
   validates_presence_of :address, :backup_email, :first_name, :last_name
 

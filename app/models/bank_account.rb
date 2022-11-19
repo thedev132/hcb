@@ -18,11 +18,10 @@
 #  plaid_item_id                 :text
 #
 class BankAccount < ApplicationRecord
-  has_paper_trail
+  has_paper_trail skip: [:plaid_access_token] # ciphertext columns will still be tracked
+  has_encrypted :plaid_access_token
 
   has_many :transactions
-
-  has_encrypted :plaid_access_token
 
   scope :syncing, -> { where(should_sync: true) }
   scope :syncing_v2, -> { where(should_sync_v2: true) }

@@ -29,7 +29,10 @@
 #  fk_rails_...  (representative_id => users.id)
 #
 class Partner < ApplicationRecord
-  has_paper_trail
+  has_paper_trail skip: [:stripe_api_key, :api_key] # ciphertext columns will still be tracked
+  has_encrypted :stripe_api_key, :api_key
+
+  blind_index :api_key
 
   EXCLUDED_SLUGS = %w(connect api donations donation connects organization organizations).freeze
 
@@ -42,10 +45,6 @@ class Partner < ApplicationRecord
 
   validates :slug, exclusion: { in: EXCLUDED_SLUGS }, uniqueness: true
   validates :api_key, presence: true, uniqueness: true
-
-  has_encrypted :stripe_api_key, :api_key
-
-  blind_index :api_key
 
   after_initialize do
     self.api_key ||= new_api_key

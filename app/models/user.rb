@@ -30,7 +30,9 @@
 #  index_users_on_slug                   (slug) UNIQUE
 #
 class User < ApplicationRecord
-  has_paper_trail
+  has_paper_trail skip: [:api_access_token] # api_access_token_ciphertext will still be tracked
+  has_encrypted :api_access_token
+  blind_index :api_access_token
 
   include PublicIdentifiable
   set_public_id_prefix :usr
@@ -78,9 +80,6 @@ class User < ApplicationRecord
 
   before_create :format_number
   before_save :on_phone_number_update
-
-  has_encrypted :api_access_token
-  blind_index :api_access_token
 
   validate on: :update do
     if full_name.blank? && full_name_in_database.present?

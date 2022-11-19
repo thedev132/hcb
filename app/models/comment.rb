@@ -28,12 +28,11 @@ class Comment < ApplicationRecord
 
   has_one_attached :file
 
-  has_paper_trail
+  has_paper_trail skip: [:content] # ciphertext columns will still be tracked
+  has_encrypted :content
 
   validates :user, presence: true
   validates :content, presence: true, unless: :has_attached_file?
-
-  has_encrypted :content
 
   validate :commentable_includes_concern
 

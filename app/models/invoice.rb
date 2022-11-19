@@ -91,7 +91,8 @@
 #  fk_rails_...  (sponsor_id => sponsors.id)
 #
 class Invoice < ApplicationRecord
-  has_paper_trail
+  has_paper_trail skip: [:payment_method_ach_credit_transfer_account_number] # ciphertext columns will still be tracked
+  has_encrypted :payment_method_ach_credit_transfer_account_number
 
   include PublicIdentifiable
   set_public_id_prefix :inv
@@ -127,8 +128,6 @@ class Invoice < ApplicationRecord
   belongs_to :payout, class_name: "InvoicePayout", required: false
   belongs_to :fee_reimbursement, required: false
   belongs_to :archived_by, class_name: "User", required: false
-
-  has_encrypted :payment_method_ach_credit_transfer_account_number
 
   has_one_attached :manually_marked_as_paid_attachment
 

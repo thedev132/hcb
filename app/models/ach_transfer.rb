@@ -33,7 +33,8 @@
 #  fk_rails_...  (event_id => events.id)
 #
 class AchTransfer < ApplicationRecord
-  has_paper_trail
+  has_paper_trail skip: [:account_number] # ciphertext columns will still be tracked
+  has_encrypted :account_number
 
   include PublicIdentifiable
   set_public_id_prefix :ach
@@ -46,8 +47,6 @@ class AchTransfer < ApplicationRecord
 
   belongs_to :creator, class_name: "User"
   belongs_to :event
-
-  has_encrypted :account_number
 
   validates :amount, numericality: { greater_than: 0, message: "must be greater than 0" }
   validates_length_of :routing_number, is: 9

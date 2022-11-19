@@ -36,16 +36,16 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class UserSession < ApplicationRecord
-  has_paper_trail
+  has_paper_trail skip: [:session_token] # ciphertext columns will still be tracked
+  has_encrypted :session_token
+  blind_index :session_token
+
   acts_as_paranoid
 
   belongs_to :user
   belongs_to :impersonated_by, class_name: "User", required: false
   belongs_to :webauthn_credential, optional: true
   has_one :login_token, required: false
-
-  has_encrypted :session_token
-  blind_index :session_token
 
   scope :impersonated, -> { where.not(impersonated_by_id: nil) }
   scope :not_impersonated, -> { where(impersonated_by_id: nil) }
