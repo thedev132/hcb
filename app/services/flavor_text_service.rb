@@ -238,7 +238,6 @@ class FlavorTextService
       "To TCP, or UDP, that is the question",
       "Now with 0 off-by-one errors!",
       "Initial commit: get that bread",
-      "Beards are like, so hot.",
       "git commit -m 'cash money'",
       "git commit -m 'get that bread'",
       "git commit --amend '$$$'",
