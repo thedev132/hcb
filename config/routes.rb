@@ -39,7 +39,8 @@ Rails.application.routes.draw do
   scope :my do
     get "/", to: redirect("/"), as: :my
     get "settings", to: "users#edit", as: :my_settings
-
+    get "settings/previews", to: "users#edit_featurepreviews"
+    get "settings/security", to: "users#edit_security"
     resources :stripe_authorizations, only: [:index, :show], path: "transactions" do
       resources :comments
     end
@@ -95,6 +96,10 @@ Rails.application.routes.draw do
 
       # For compatibility with the previous WebAuthn login flow
       get "webauthn", to: redirect("/users/auth")
+    end
+    member do
+      get "previews", to: "users#edit_featurepreviews"
+      get "security", to: "users#edit_security"
     end
     post "delete_profile_picture", to: "users#delete_profile_picture"
     patch "stripe_cardholder_profile", to: "stripe_cardholders#update_profile"

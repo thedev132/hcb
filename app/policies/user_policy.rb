@@ -9,6 +9,14 @@ class UserPolicy < ApplicationPolicy
     user.admin? || record == user
   end
 
+  def edit_featurepreviews?
+    user.admin? || record == user
+  end
+
+  def edit_security?
+    user.admin? || record == user
+  end
+
   def update?
     user.admin? || record == user
   end

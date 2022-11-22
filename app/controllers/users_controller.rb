@@ -208,7 +208,7 @@ class UsersController < ApplicationController
     else
       flash[:error] = "Error while opting into beta"
     end
-    redirect_to edit_user_path(@user)
+    redirect_to settings_previews_path
   end
 
   def disable_feature
@@ -220,10 +220,26 @@ class UsersController < ApplicationController
     else
       flash[:error] = "Error while opting out of beta"
     end
-    redirect_to edit_user_path(@user)
+    redirect_to settings_previews_path
   end
 
   def edit
+    @user = params[:id] ? User.friendly.find(params[:id]) : current_user
+    @onboarding = @user.full_name.blank?
+    show_impersonated_sessions = admin_signed_in? || current_session.impersonated?
+    @sessions = show_impersonated_sessions ? @user.user_sessions : @user.user_sessions.not_impersonated
+    authorize @user
+  end
+
+  def edit_featurepreviews
+    @user = params[:id] ? User.friendly.find(params[:id]) : current_user
+    @onboarding = @user.full_name.blank?
+    show_impersonated_sessions = admin_signed_in? || current_session.impersonated?
+    @sessions = show_impersonated_sessions ? @user.user_sessions : @user.user_sessions.not_impersonated
+    authorize @user
+  end
+
+  def edit_security
     @user = params[:id] ? User.friendly.find(params[:id]) : current_user
     @onboarding = @user.full_name.blank?
     show_impersonated_sessions = admin_signed_in? || current_session.impersonated?

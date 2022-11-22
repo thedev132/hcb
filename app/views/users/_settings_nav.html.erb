@@ -1,0 +1,13 @@
+<ul class="tab-container">
+    <li class="<%= 'active' if active == 'general'  %>">
+        <%= link_to 'General', edit_user_path(@user), data: { turbo: true } %>
+    </li>
+    <li class="<%= 'active' if active == 'previews' %>">
+        <%= link_to previews_user_path(@user), data:{turbo: true} do %>
+            <span class="xs-hide">Feature</span> Previews
+        <% end %>
+    </li>
+    <li class="<%= 'active' if active == 'security' %>">
+        <%= link_to 'Security', security_user_path(@user), data: { turbo: true } %>
+    </li>
+</ul>

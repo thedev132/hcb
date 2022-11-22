@@ -1,0 +1,123 @@
+<% title "Account Settings" %>
+<% page_md %>
+<%= render 'users/nav' %>
+
+<h1>
+  Settings
+</h1>
+<turbo-frame id='settings'>
+<%= render 'settings_nav', active:'previews' %>
+<section>    
+    <h2 id="feature-previews">Feature previews</h2>
+        <div class="card pb0 mb3" id="detailed-events-list">
+        <div class="card__banner card__banner--top flex justify-between items-center feature-detailed-events-list <%= 'b--info' if Flipper.enabled?(:detailed_events_list_2022_10_04, current_user)%> ">
+            <h3 class="h1 p2 my0 color-black">Detailed Org List</h3>
+            <% if Flipper.enabled?(:detailed_events_list_2022_10_04) %>
+            <%# Feature is enabled for all users, don't include a choice %>
+            <div class="actions tooltipped tooltipped--w inline-block mt1" aria-label="This feature is now generally available!">
+                <span class="btn bg-accent disabled">Shipped!</span>
+            </div>
+            <%# link_to "Shipped!", enable_feature_path(feature: :transfers_2022_04_21), method: :post, class: 'btn bg-accent' %>
+            <% elsif Flipper.enabled?(:detailed_events_list_2022_10_04, current_user) %>
+            <%# Feature is enabled, let the user opt-out %>
+            <%= link_to "Disable", disable_feature_users_path(feature: :detailed_events_list_2022_10_04), method: :post, class: 'btn bg-accent' %>
+            <% else %>
+            <%# Feature is disabled, let the user opt-in %>
+            <%= link_to "Enable", enable_feature_users_path(feature: :detailed_events_list_2022_10_04), method: :post, class: 'btn bg-info' %>
+            <% end %>
+        </div>
+        <p>
+            The organization list now shows additional information about each org
+            such as current balance and card count. After opting-in, you'll
+            see a modified org list on the Bank homepage.
+        </p>
+        </div>
+    </div>
+        <div class="card pb0 mb3" id="receipt-email-upload">
+        <div class="card__banner card__banner--top flex justify-between items-center feature-receipt-upload <%= 'b--info' if Flipper.enabled?(:receipt_email_upload_2022_05_10, current_user)%> ">
+            <h3 class="h1 p2 my0 color-black">Email Receipt Upload</h3>
+            <% if Flipper.enabled?(:receipt_email_upload_2022_05_10) %>
+            <%# Feature is enabled for all users, don't include a choice %>
+            <div class="actions tooltipped tooltipped--w inline-block mt1" aria-label="This feature is now generally available!">
+                <span class="btn bg-accent disabled">Shipped!</span>
+            </div>
+            <%# link_to "Shipped!", enable_feature_path(feature: :transfers_2022_04_21), method: :post, class: 'btn bg-accent' %>
+            <% elsif Flipper.enabled?(:receipt_email_upload_2022_05_10, current_user) %>
+            <%# Feature is enabled, let the user opt-out %>
+            <%= link_to "Disable", disable_feature_users_path(feature: :receipt_email_upload_2022_05_10), method: :post, class: 'btn bg-accent' %>
+            <% else %>
+            <%# Feature is disabled, let the user opt-in %>
+            <%= link_to "Enable", enable_feature_users_path(feature: :receipt_email_upload_2022_05_10), method: :post, class: 'btn bg-info' %>
+            <% end %>
+        </div>
+        <p>
+            We send an email once a card is charged along the lines of "Please
+            upload a receipt for your $10 charge" with a link to a form on HCB
+            to upload receipts.
+            After opting-in to this feature preview, you can reply directly to
+            that email with your receipt attached to upload it.
+        </p>
+        </div>
+    </div>
+    <div class="card pb0 mb3" id="internal-transfers">
+        <div class="card__banner card__banner--top flex justify-between items-center feature-disbursements <%= 'b--info' if Flipper.enabled?(:transfers_2022_04_21, current_user)%> ">
+        <h3 class="h1 p2 my0 color-black">Internal Transfers</h3>
+        <% if Flipper.enabled?(:transfers_2022_04_21) %>
+            <%# Feature is enabled for all users, don't include a choice %>
+            <div class="actions tooltipped tooltipped--w inline-block mt1" aria-label="This feature is now generally available!">
+            <span class="btn bg-accent disabled">Shipped!</span>
+            </div>
+            <%# link_to "Shipped!", enable_feature_path(feature: :transfers_2022_04_21), method: :post, class: 'btn bg-accent' %>
+        <% elsif Flipper.enabled?(:transfers_2022_04_21, current_user) %>
+            <%# Feature is enabled, let the user opt-out %>
+            <%= link_to "Disable", disable_feature_users_path(feature: :transfers_2022_04_21), method: :post, class: 'btn bg-accent' %>
+        <% else %>
+            <%# Feature is disabled, let the user opt-in %>
+            <%= link_to "Enable", enable_feature_users_path(feature: :transfers_2022_04_21), method: :post, class: 'btn bg-info' %>
+        <% end %>
+        </div>
+        <p>
+        Users with multiple organizations on Hack Club Bank can now create
+        transfers between their accounts. After opting-in, new options will
+        show up on an organziation's "Transfers" page, including a "New
+        Transfer" button and tools for searching and sorting the existing
+        transfers list.
+        </p>
+        <section class="card__banner card__darker secondary border-top">
+        <p class="my0">
+            This feature is on a per-user basis. Co-organizers will also have to
+            opt-in for access.
+        </p>
+        </section>
+    </div>
+    <div class="card pb0 mb3" id="suggested-memos">
+        <div class="card__banner card__banner--top flex justify-between items-center feature-disbursements <%= 'b--info' if Flipper.enabled?(:suggested_memo_2022_08_02, current_user)%> ">
+            <h3 class="h1 p2 my0 color-black">Transaction Memo Suggestions</h3>
+            <% if Flipper.enabled?(:suggested_memo_2022_08_02) %>
+                <%# Feature is enabled for all users, don't include a choice %>
+                <div class="actions tooltipped tooltipped--w inline-block mt1" aria-label="This feature is now generally available!">
+                <span class="btn bg-accent disabled">Shipped!</span>
+                </div>
+                <%# link_to "Shipped!", enable_feature_path(feature: :transfers_2022_04_21), method: :post, class: 'btn bg-accent' %>
+            <% elsif Flipper.enabled?(:suggested_memo_2022_08_02, current_user) %>
+                <%# Feature is enabled, let the user opt-out %>
+                <%= link_to "Disable", disable_feature_users_path(feature: :suggested_memo_2022_08_02), method: :post, class: 'btn bg-accent'%>
+            <% else %>
+                <%# Feature is disabled, let the user opt-in %>
+                <%= link_to "Enable", enable_feature_users_path(feature: :suggested_memo_2022_08_02), method: :post, class: 'btn bg-info' %>
+            <% end %>
+        </div>
+        <p>
+        Renaming transactions is a great way for donors and team members to
+        understand how your organization's money is spent. After opting-in to
+        this feature preview, you will be provided with some suggestions when
+        renaming a transaction. Feel free to choose one of those suggestions or
+        write your own, as you normally would. To provide you these suggestions,
+        we look at the memos of similar transactions in your organization. As a
+        result, organizations with more renamed transactions will have more
+        accurate suggestions!
+        </p>
+    </div>
+    </div>
+</section>
+</turbo-frame>
