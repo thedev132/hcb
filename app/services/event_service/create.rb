@@ -29,7 +29,7 @@ module EventService
         # event.mark_approved! if @approved
 
         @emails.each do |email|
-          OrganizerPositionInviteService::Create.new(event: event, sender: point_of_contact, user_email: email).run!
+          OrganizerPositionInviteService::Create.new(event: event, sender: point_of_contact, user_email: email, initial: true).run!
         end
       end
     end

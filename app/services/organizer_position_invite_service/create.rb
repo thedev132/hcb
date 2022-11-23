@@ -2,11 +2,12 @@
 
 module OrganizerPositionInviteService
   class Create
-    def initialize(event:, sender: nil, user_email: nil)
+    def initialize(event:, sender: nil, user_email: nil, initial: false)
       @event = event
       @sender = sender
       @user_email = normalize_email(user_email)
-      @model = OrganizerPositionInvite.new(event: @event, sender: @sender)
+      @initial = initial
+      @model = OrganizerPositionInvite.new(event: @event, sender: @sender, initial: @initial)
     end
 
     def run

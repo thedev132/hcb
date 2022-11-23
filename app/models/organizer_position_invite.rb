@@ -7,6 +7,7 @@
 #  id                    :bigint           not null, primary key
 #  accepted_at           :datetime
 #  cancelled_at          :datetime
+#  initial               :boolean          default(FALSE)
 #  rejected_at           :datetime
 #  slug                  :string
 #  created_at            :datetime         not null

@@ -20,7 +20,10 @@
     <%= dock_item 'Cards',
       'Manage team debit cards',
       'card',
-      event_cards_overview_path(event_id: @event.slug) unless !@event.approved? %>
+      event_cards_overview_path(event_id: @event.slug),
+      nil,
+      nil,
+      data: { "tour-step" => "cards" } unless !@event.approved? %>
     <%= dock_item 'Transfers',
       'Send & transfer money',
       'transactions',
@@ -29,11 +32,17 @@
       'Receive donations online',
       'support',
       @event.partner.external? ? event_partner_donation_overview_path(event_id: @event.slug) :
-      event_donation_overview_path(event_id: @event.slug) unless !@event.approved? %>
+      event_donation_overview_path(event_id: @event.slug),
+      nil,
+      nil,
+      data: { "tour-step" => "donations" } unless !@event.approved? %>
     <%= dock_item 'Perks',
       'Receive promos & discounts',
       'shirt',
-       event_promotions_path(event_id: @event.slug), :lg unless !@event.approved? %>
+       event_promotions_path(event_id: @event.slug),
+       :lg,
+       nil,
+       data: { "tour-step": "perks" } unless !@event.approved? %>
     <%= dock_item "Google #{content_tag(:span, 'Workspace', class: 'sm-hide md-hide')}",
       'Set up domain Gmail',
       'google',

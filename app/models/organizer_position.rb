@@ -6,6 +6,7 @@
 #
 #  id         :bigint           not null, primary key
 #  deleted_at :datetime
+#  first_time :boolean          default(TRUE)
 #  sort_index :integer
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
@@ -32,7 +33,20 @@ class OrganizerPosition < ApplicationRecord
 
   has_one :organizer_position_invite
   has_many :organizer_position_deletion_requests
+  has_many :tours, as: :tourable
 
   validates :user, uniqueness: { scope: :event, conditions: -> { where(deleted_at: nil) } }
+
+  def initial?
+    organizer_position_invite.initial?
+  end
+
+  def tourable_options
+    {
+      demo: event.demo_mode?,
+      category: event.category,
+      initial: initial?
+    }
+  end
 
 end

@@ -3,6 +3,7 @@
 class ApplicationController < ActionController::Base
   include Pundit::Authorization
   include SessionsHelper
+  include ToursHelper
 
   protect_from_forgery
 

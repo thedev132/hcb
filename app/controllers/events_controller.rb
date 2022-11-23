@@ -5,6 +5,9 @@ class EventsController < ApplicationController
 
   include Rails::Pagination
   before_action :set_event, except: [:index, :new, :create, :by_airtable_id]
+  before_action except: [:show, :index] do
+    render_back_to_tour @organizer_position, :welcome, event_path(@event)
+  end
   skip_before_action :signed_in_user
 
   # GET /events
@@ -17,6 +20,8 @@ class EventsController < ApplicationController
 
   # GET /events/1
   def show
+    render_tour @organizer_position, :welcome
+
     authorize @event
 
     # The search query name was historically `search`. It has since been renamed

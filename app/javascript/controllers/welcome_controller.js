@@ -7,6 +7,10 @@ export default class extends Controller {
     organizerPosition: Number
   }
 
+  initialize() {
+    this.shouldReload = false
+  }
+
   connect() {
     document.body.style.overflow = 'hidden'
     this.tl = gsap.timeline({ delay: 0.5 })
@@ -78,8 +82,11 @@ export default class extends Controller {
 
     this.hideTl = gsap.timeline({
       paused: true,
-      onComplete() {
+      onComplete: () => {
         document.body.style.overflow = 'auto'
+        if (this.shouldReload) {
+          location.reload() // TODO: remove
+        }
       }
     })
     this.hideTl.fromTo(
@@ -107,7 +114,30 @@ export default class extends Controller {
     )
   }
 
-  async hide() {
+  async tour() {
+    this.shouldReload = true
+
+    this.hideTl.play()
+
+    if (this.organizerPositionValue) {
+      await fetch(
+        `/organizer_positions/${this.organizerPositionValue}/mark_visited`,
+        {
+          method: 'POST',
+          headers: {
+            'X-CSRF-Token': csrf(),
+            'Content-Type': 'application/json'
+          },
+          redirect: 'manual',
+          body: JSON.stringify({ start_tour: true })
+        }
+      )
+    }
+  }
+
+  async dismiss(e) {
+    e.preventDefault()
+
     this.hideTl.play()
 
     if (this.organizerPositionValue) {

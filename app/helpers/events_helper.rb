@@ -3,10 +3,11 @@
 require "cgi"
 
 module EventsHelper
-  def dock_item(name, tooltip, icon, url, lg = false, async_badge = nil)
-    link_to url,
-            class: "dock__item #{lg && 'dock__item--lg'} tooltipped tooltipped--e",
-            'aria-label': tooltip do
+  def dock_item(name, tooltip, icon, url, lg = false, async_badge = nil, options = {})
+    link_to url, options.merge(
+      class: "dock__item #{lg && 'dock__item--lg'} tooltipped tooltipped--e",
+      'aria-label': tooltip
+    ) do
       (content_tag :div, class: "line-height-0 relative" do
         if async_badge
           inline_icon(icon, size: 32, class: "primary") +

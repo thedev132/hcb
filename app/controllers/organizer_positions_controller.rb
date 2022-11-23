@@ -45,7 +45,15 @@ class OrganizerPositionsController < ApplicationController
     organizer_position = OrganizerPosition.find(params[:id])
     authorize organizer_position
 
-    organizer_position.update(first_time: false)
+    organizer_position.update!(first_time: false)
+
+    if params[:start_tour] == true
+      start_tour organizer_position, :welcome
+
+      ahoy.track "Tour started", organizer_position_id: organizer_position.id
+    else
+      ahoy.track "Tour skipped", organizer_position_id: organizer_position.id
+    end
 
     redirect_to organizer_position.event
   end

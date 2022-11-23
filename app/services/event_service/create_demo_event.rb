@@ -31,7 +31,7 @@ module EventService
 
         @event.save!
 
-        OrganizerPositionInviteService::Create.new(event: @event, sender: @point_of_contact, user_email: @email).run!
+        OrganizerPositionInviteService::Create.new(event: @event, sender: @point_of_contact, user_email: @email, initial: true).run!
 
         @event
       end

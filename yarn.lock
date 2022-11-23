@@ -972,12 +972,26 @@
   resolved "https://registry.yarnpkg.com/@floating-ui/core/-/core-1.0.1.tgz#00e64d74e911602c8533957af0cce5af6b2e93c8"
   integrity sha512-bO37brCPfteXQfFY0DyNDGB3+IMe4j150KFQcgJ5aBP295p9nBGeHEs/p0czrRbtlHq4Px/yoPXO/+dOCcF4uA==
 
+"@floating-ui/dom@^1.0.0":
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/@floating-ui/dom/-/dom-1.0.4.tgz#cc0f2a03db7193b1b932b90d09c5c81235682a60"
+  integrity sha512-maYJRv+sAXTy4K9mzdv0JPyNW5YPVHrqtY90tEdI6XNpuLOP26Ci2pfwPsKBA/Wh4Z3FX5sUrtUFTdMYj9v+ug==
+  dependencies:
+    "@floating-ui/core" "^1.0.1"
+
 "@floating-ui/dom@^1.0.1":
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/@floating-ui/dom/-/dom-1.0.1.tgz#3321d4e799d6ac2503e729131d07ad0e714aabeb"
   integrity sha512-wBDiLUKWU8QNPNOTAFHiIAkBv1KlHauG2AhqjSeh2H+wR8PX+AArXfz8NkRexH5PgMJMmSOS70YS89AbWYh5dA==
   dependencies:
     "@floating-ui/core" "^1.0.1"
+
+"@floating-ui/react-dom@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@floating-ui/react-dom/-/react-dom-1.0.0.tgz#e0975966694433f1f0abffeee5d8e6bb69b7d16e"
+  integrity sha512-uiOalFKPG937UCLm42RxjESTWUVpbbatvlphQAU6bsv+ence6IoVG8JOUZcy8eW81NkU+Idiwvx10WFLmR4MIg==
+  dependencies:
+    "@floating-ui/dom" "^1.0.0"
 
 "@github/webauthn-json@^1.0.0":
   version "1.0.0"
@@ -1406,6 +1420,11 @@ clone-deep@^4.0.1:
     is-plain-object "^2.0.4"
     kind-of "^6.0.2"
     shallow-clone "^3.0.0"
+
+clsx@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/clsx/-/clsx-1.2.1.tgz#0ddc4a20a549b59c93a4116bb26f5294ca17dc12"
+  integrity sha512-EcR6r5a8bj6pu3ycsa/E/cKVGuTgZJZdsyUYHOksG/UHIiKfjxzRxYJpyVBwYaQeOvghal9fcc4PidlgzugAQg==
 
 color-convert@^1.9.0:
   version "1.9.3"

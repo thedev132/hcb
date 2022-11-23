@@ -424,6 +424,13 @@ Rails.application.routes.draw do
 
   post "twilio/messaging", to: "admin#twilio_messaging"
 
+  resources :tours, only: [] do
+    member do
+      post "mark_complete"
+      post "set_step"
+    end
+  end
+
   match "/404", to: "errors#not_found", via: :all
   match "/500", to: "errors#internal_server_error", via: :all
 

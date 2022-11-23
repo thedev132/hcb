@@ -943,6 +943,7 @@ ActiveRecord::Schema.define(version: 2022_11_22_125049) do
     t.bigint "organizer_position_id"
     t.datetime "cancelled_at"
     t.string "slug"
+    t.boolean "initial", default: false
     t.index ["event_id"], name: "index_organizer_position_invites_on_event_id"
     t.index ["organizer_position_id"], name: "index_organizer_position_invites_on_organizer_position_id"
     t.index ["sender_id"], name: "index_organizer_position_invites_on_sender_id"
@@ -1265,6 +1266,17 @@ ActiveRecord::Schema.define(version: 2022_11_22_125049) do
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "event_id", null: false
     t.index ["event_id"], name: "index_tags_on_event_id"
+  end
+
+  create_table "tours", force: :cascade do |t|
+    t.string "name"
+    t.boolean "active", default: true
+    t.string "tourable_type", null: false
+    t.bigint "tourable_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "step", default: 0
+    t.index ["tourable_type", "tourable_id"], name: "index_tours_on_tourable"
   end
 
   create_table "transaction_csvs", force: :cascade do |t|

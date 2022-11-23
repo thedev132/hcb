@@ -1,0 +1,124 @@
+import React, { useEffect, useState } from 'react'
+import TourStep from './TourStep'
+import csrf from '../../common/csrf'
+
+const tours = {
+  welcome(options) {
+    const steps = []
+
+    const isMobile = window.matchMedia('(max-width: 56em)').matches
+
+    if (options.initial || options.demo) {
+      steps.push({
+        attachTo: 'invite',
+        text: `Invite ${
+          options.category == 'robotics team' ? 'teammates' : 'others'
+        } to your ${
+          options.demo ? 'demo' : 'new'
+        } organization. It's like multiplayer banking!`,
+        placement: isMobile ? 'bottom' : 'right'
+      })
+    }
+
+    if (!options.demo) {
+      steps.push(
+        {
+          attachTo: 'cards',
+          text: 'Instantly issue a virtual debit card for yourself. Gotta spend that 💸!',
+          placement: isMobile ? 'top' : 'right'
+        },
+        {
+          attachTo: 'donations',
+          text: 'Share your donation form with others, and get it embedded on your website.',
+          placement: isMobile ? 'top-end' : 'right'
+        }
+      )
+
+      if (!isMobile) {
+        steps.push({
+          attachTo: 'perks',
+          text: 'Get access to free tools for things like sending newsletters and managing team passwords. Stickers included.'
+        })
+      }
+    } else {
+      steps.push({
+        attachTo: 'activate_account',
+        text: "You're in Demo Mode— click here to activate your account when you're ready.",
+        placement: isMobile ? 'top' : 'right'
+      })
+    }
+
+    return steps
+  }
+}
+
+export default function TourOverlay(props) {
+  const [currentStep, setCurrentStep] = useState(props.step)
+
+  const tour = props.tour && tours[props.tour](props.options)
+
+  useEffect(async () => {
+    if (props.tour && currentStep < tour.length) {
+      await fetch(`/tours/${props.id}/set_step`, {
+        method: 'POST',
+        headers: {
+          'X-CSRF-Token': csrf(),
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ step: currentStep })
+      })
+    }
+  }, [currentStep])
+
+  return (
+    <div>
+      {tour &&
+        tour.map((step, index) => (
+          <TourStep
+            key={index}
+            text={step.text}
+            attachTo={`[data-tour-step='${step.attachTo}']`}
+            placement={step.placement ?? 'right'}
+            last={index == tour.length - 1}
+            visible={index == currentStep}
+            stepIndex={index}
+            stepCount={tour.length}
+            tourId={props.id}
+            onNext={() => {
+              if (currentStep + 1 >= tour.length) {
+                fetch(`/tours/${props.id}/mark_complete`, {
+                  method: 'POST',
+                  headers: {
+                    'X-CSRF-Token': csrf()
+                  }
+                })
+              }
+
+              setCurrentStep(currentStep + 1)
+            }}
+            onSkip={() => {
+              setCurrentStep(null)
+
+              fetch(`/tours/${props.id}/mark_complete`, {
+                method: 'POST',
+                headers: {
+                  'X-CSRF-Token': csrf(),
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ cancelled: true })
+              })
+            }}
+          />
+        ))}
+
+      {props.backToTour && (
+        <a
+          href={props.backToTour}
+          className="flex items-center text-decoration-none card back-to-tour"
+        >
+          Continue tour <span className="ml1 back-to-tour__arrow">→</span>
+        </a>
+      )}
+    </div>
+  )
+}

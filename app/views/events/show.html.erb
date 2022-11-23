@@ -47,7 +47,7 @@
         <%= avatar_for position.user, 36 %>
       </div>
     <% end %>
-    <%= pop_icon_to 'member-add', event_team_path(@event), class: 'mb1' %>
+    <%= pop_icon_to 'member-add', event_team_path(@event), class: 'mb1', data: { 'tour-step' => 'invite' } %>
   <% else %>
     <p class="slate bold h3 mr2">No organizers invited yet</p>
     <%= pop_icon_to 'member-add', event_team_path(@event) %>
@@ -61,7 +61,7 @@
 <% end %>
 
 <div class="statset">
-  <div class="stat statset__wide">
+  <div class="stat statset__wide" data-tour-step="balance">
     <span class="stat__label">Account balance</span>
     <span class="stat__value"><%= render_money_amount @event.balance_v2_cents %></span>
   </div>
@@ -86,7 +86,7 @@
       <li>You can invite other team members.</li>
       <li>Your financial tools are restricted.</li>
       <li>Your account may be removed after a week of inactivity.</li>
-      <li>When you're ready to fully activate your account, <%= link_to "click here", "#", data: { behavior: :modal_trigger, modal: :demo_mode } %>.</li>
+      <li>When you're ready to fully activate your account, <%= link_to "click here", "#", data: { behavior: :modal_trigger, modal: :demo_mode, "tour-step": :activate_account } %>.</li>
     </ul>
     <div class="border-top card__banner card__darker secondary">
       <strong>Questions?</strong>
@@ -167,7 +167,7 @@
   </div>
 
   <% if @pending_transactions.any? || @transactions.any? %>
-    <div class="table-container">
+    <div class="table-container" data-tour-step="transactions">
         <table>
           <thead>
             <tr>
