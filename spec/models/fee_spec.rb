@@ -3,9 +3,7 @@
 require "rails_helper"
 
 RSpec.describe Fee, type: :model do
-  fixtures "canonical_event_mappings", "fees"
-
-  let(:fee) { fees(:fee1) }
+  let(:fee) { create(:fee) }
 
   it "is valid" do
     expect(fee).to be_valid

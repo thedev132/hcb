@@ -3,11 +3,19 @@
 require "rails_helper"
 
 RSpec.describe StripeCard, type: :model do
-  fixtures "stripe_cards", "stripe_cardholders", "events"
+  context "without stripe id" do
+    let(:stripe_card) { create(:stripe_card) }
 
-  let(:stripe_card) { stripe_cards(:stripe_card1) }
+    it "is valid" do
+      expect(stripe_card).to be_valid
+    end
+  end
 
-  it "is valid" do
-    expect(stripe_card).to be_valid
+  context "with stripe id" do
+    let(:stripe_card) { create(:stripe_card, :with_stripe_id) }
+
+    it "is valid" do
+      expect(stripe_card).to be_valid
+    end
   end
 end

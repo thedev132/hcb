@@ -3,49 +3,34 @@
 require "rails_helper"
 
 RSpec.describe CanonicalPendingTransaction, type: :model do
-  fixtures "canonical_pending_transactions", "raw_pending_stripe_transactions", "canonical_pending_event_mappings", "stripe_cards", "events"
-
-  let(:canonical_pending_transaction) { canonical_pending_transactions(:canonical_pending_transaction1) }
-
-  it "factory is valid" do
-    canonical_pending_transaction = create(:canonical_pending_transaction)
-    expect(canonical_pending_transaction).to be_valid
-  end
+  let(:canonical_pending_transaction) { create(:canonical_pending_transaction) }
 
   it "is valid" do
     expect(canonical_pending_transaction).to be_valid
   end
 
   describe "hcb_code" do
-    let(:attrs) do
-      {
-        amount_cents: 100,
-        memo: "Pending Transaction",
-        date: "2020-09-02"
-      }
-    end
-
-    let(:canonical_pending_transaction) { CanonicalPendingTransaction.new(attrs) }
+    let(:canonical_pending_transaction) {
+      create(:canonical_pending_transaction)
+    }
     let(:hcb_code) { canonical_pending_transaction.reload.hcb_code }
-
-    before do
-      canonical_pending_transaction.save!
-    end
 
     it "calculates it on create" do
       expect(hcb_code).to eql("HCB-000-#{canonical_pending_transaction.id}")
     end
 
-    context "when a stripe transaction" do
-      let(:raw_pending_stripe_transaction) { raw_pending_stripe_transactions(:raw_pending_stripe_transaction1) }
+    context "when a raw_pending_stripe_transaction is attached" do
+      let(:raw_pending_stripe_transaction) { create(:raw_pending_stripe_transaction) }
 
-      let(:attrs) do
-        {
-          amount_cents: 100,
-          memo: "Pending Transaction",
-          date: "2020-09-02",
-          raw_pending_stripe_transaction_id: raw_pending_stripe_transaction.id
-        }
+      let(:canonical_pending_transaction) {
+        create(:canonical_pending_transaction,
+               raw_pending_stripe_transaction: raw_pending_stripe_transaction)
+      }
+
+      it "returns it" do
+        rpst = canonical_pending_transaction.raw_pending_stripe_transaction
+
+        expect(rpst).to eql(raw_pending_stripe_transaction)
       end
 
       it "calculates a different hcb code" do
@@ -55,25 +40,23 @@ RSpec.describe CanonicalPendingTransaction, type: :model do
   end
 
   describe "#event" do
-    it "returns event" do
-      event = canonical_pending_transaction.event
+    let(:event) { create(:event) }
+    let(:canonical_pending_transaction) { create(:canonical_pending_transaction) }
 
-      expect(event.name).to eql("Event1")
+    before do
+      CanonicalPendingEventMapping.create!(event: event, canonical_pending_transaction: canonical_pending_transaction)
     end
-  end
 
-  describe "#raw_pending_stripe_transaction" do
-    let(:raw_pending_stripe_transaction) { raw_pending_stripe_transactions(:raw_pending_stripe_transaction1) }
-
-    it "returns it" do
-      rpst = canonical_pending_transaction.raw_pending_stripe_transaction
-
-      expect(rpst).to eql(raw_pending_stripe_transaction)
+    it "returns event" do
+      expect(canonical_pending_transaction.event).to be_present
+      expect(canonical_pending_transaction.event).to eq(event)
     end
   end
 
   describe "#stripe_card" do
-    let(:stripe_card) { stripe_cards(:stripe_card1) }
+    let!(:raw_pending_stripe_transaction) { create(:raw_pending_stripe_transaction) }
+    let!(:canonical_pending_transaction) { create(:canonical_pending_transaction, raw_pending_stripe_transaction: raw_pending_stripe_transaction) }
+    let!(:stripe_card) { create(:stripe_card, :with_stripe_id, stripe_id: raw_pending_stripe_transaction.stripe_transaction["card"]["id"]) }
 
     it "returns stripe card" do
       sc = canonical_pending_transaction.stripe_card

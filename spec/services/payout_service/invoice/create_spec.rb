@@ -3,9 +3,7 @@
 require "rails_helper"
 
 RSpec.describe PayoutService::Invoice::Create do
-  fixtures :canonical_transactions, :hashed_transactions, :raw_plaid_transactions, :canonical_hashed_mappings, :transactions, :fee_reimbursements, :events, :invoices, :sponsors
-
-  let(:invoice) { invoices(:invoice2) }
+  let(:invoice) { create(:invoice) }
 
   let(:attrs) do
     {
@@ -25,25 +23,25 @@ RSpec.describe PayoutService::Invoice::Create do
 
   it "creates a payout" do
     expect do
-      result = service.run
+      service.run
     end.to change(InvoicePayout, :count).by(1)
   end
 
   it "creates a fee_reimbursement" do
     expect do
-      result = service.run
+      service.run
     end.to change(FeeReimbursement, :count).by(1)
   end
 
   it "updates invoice with relationships" do
-    expect(invoice.payout_id).to eql(nil)
-    expect(invoice.fee_reimbursement_id).to eql(nil)
+    expect(invoice.payout_id).to be_nil
+    expect(invoice.fee_reimbursement_id).to be_nil
 
     service.run
 
     invoice.reload
 
-    expect(invoice.payout_id).to_not eql(nil)
-    expect(invoice.fee_reimbursement_id).to_not eql(nil)
+    expect(invoice.payout_id).to be_present
+    expect(invoice.fee_reimbursement_id).to be_present
   end
 end

@@ -3,9 +3,7 @@
 require "rails_helper"
 
 RSpec.describe TransactionEngine::HashedTransactionService::RawCsvTransaction::Import do
-  fixtures :raw_csv_transactions
-
-  let(:raw_csv_transaction) { raw_csv_transactions(:raw_csv_transaction1) }
+  let!(:raw_csv_transaction) { create(:raw_csv_transaction) }
 
   let(:service) { TransactionEngine::HashedTransactionService::RawCsvTransaction::Import.new }
 
