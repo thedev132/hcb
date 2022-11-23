@@ -3,9 +3,8 @@
 require "rails_helper"
 
 RSpec.describe ApiService::V2::PartneredSignupsNew, type: :model do
-  fixtures "partners", "events"
-
-  let(:partner) { partners(:partner1) }
+  let!(:event) { create(:event) }
+  let(:partner) { event.partner }
 
   let(:partner_id) { partner.id }
   let(:organization_identifier) { "org_1234" }
@@ -54,7 +53,7 @@ RSpec.describe ApiService::V2::PartneredSignupsNew, type: :model do
   end
 
   context "when organization identifier exists" do
-    let(:organization_identifier) { "event1" }
+    let(:organization_identifier) { event.organization_identifier }
 
     it "does not create the event" do
       expect do
@@ -63,7 +62,7 @@ RSpec.describe ApiService::V2::PartneredSignupsNew, type: :model do
     end
 
     context "when for a different partner" do
-      let(:partner_id) { partners(:partner2).id }
+      let(:partner_id) { create(:partner).id }
 
       it "does create the event" do
         expect do

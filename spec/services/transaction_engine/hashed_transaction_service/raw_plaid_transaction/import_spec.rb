@@ -3,9 +3,15 @@
 require "rails_helper"
 
 RSpec.describe TransactionEngine::HashedTransactionService::RawPlaidTransaction::Import do
-  fixtures :raw_plaid_transactions
+  before do
+    # even with config.use_transactional_fixtures = true
+    # there is test pollution from fixtures, so delete all records relevant to this test before
+    CanonicalHashedMapping.destroy_all
+    HashedTransaction.destroy_all
+    RawPlaidTransaction.destroy_all
+  end
 
-  let(:raw_plaid_transaction) { raw_plaid_transactions(:raw_plaid_transaction1) }
+  let!(:raw_plaid_transaction) { create(:raw_plaid_transaction, date_posted: "2020-09-02") }
 
   let(:service) { TransactionEngine::HashedTransactionService::RawPlaidTransaction::Import.new }
 

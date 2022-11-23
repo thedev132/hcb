@@ -3,9 +3,6 @@
 require "rails_helper"
 
 RSpec.describe ApiService::V2::FindOrganizations, type: :model do
-  fixtures "partners", "events"
-
-  let(:partner) { partners(:partner1) }
   let(:partner_id) { partner.id }
 
   let(:attrs) do
@@ -27,7 +24,7 @@ RSpec.describe ApiService::V2::FindOrganizations, type: :model do
   end
 
   context "when partner has no organizations" do
-    let(:partner) { partners(:partnerWithNoOrganizations) }
+    let(:partner) { create(:partner) }
 
     it "returns an empty array" do
       result = service.run
@@ -37,6 +34,9 @@ RSpec.describe ApiService::V2::FindOrganizations, type: :model do
   end
 
   context "when partner has organizations" do
+    let(:event) { create(:event) }
+    let(:partner) { event.partner }
+
     it "returns an array of organizations" do
       result = service.run
 

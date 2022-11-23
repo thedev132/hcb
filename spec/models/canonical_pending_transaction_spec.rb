@@ -3,7 +3,7 @@
 require "rails_helper"
 
 RSpec.describe CanonicalPendingTransaction, type: :model do
-  fixtures "canonical_pending_transactions", "raw_pending_stripe_transactions", "canonical_pending_event_mappings", "stripe_cards"
+  fixtures "canonical_pending_transactions", "raw_pending_stripe_transactions", "canonical_pending_event_mappings", "stripe_cards", "events"
 
   let(:canonical_pending_transaction) { canonical_pending_transactions(:canonical_pending_transaction1) }
 

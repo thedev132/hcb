@@ -5,7 +5,7 @@ FactoryBot.define do
     name { Faker::Name.unique.name }
     association :partner
     sponsorship_fee { 0 }
-    organization_identifier { SecureRandom.hex(30) + Faker::Name.unique.name }
+    organization_identifier { SecureRandom.hex(30) }
 
     trait :demo_mode do
       demo_mode { true }

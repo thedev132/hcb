@@ -3,8 +3,7 @@
 require "rails_helper"
 
 RSpec.describe Disbursement, type: :model do
-  fixtures "disbursements", "events"
-  let(:disbursement) { disbursements(:user_created) }
+  let(:disbursement) { create(:disbursement) }
 
   it "is valid" do
     expect(disbursement).to be_valid

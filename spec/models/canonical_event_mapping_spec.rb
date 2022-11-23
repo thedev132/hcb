@@ -3,14 +3,7 @@
 require "rails_helper"
 
 RSpec.describe CanonicalEventMapping, type: :model do
-  fixtures "events", "canonical_transactions", "canonical_event_mappings"
-
-  let(:canonical_event_mapping) { canonical_event_mappings(:canonical_event_mapping1) }
-
-  it "factory is valid" do
-    canonical_event_mapping = create(:canonical_event_mapping)
-    expect(canonical_event_mapping).to be_valid
-  end
+  let(:canonical_event_mapping) { create(:canonical_event_mapping) }
 
   it "is valid" do
     expect(canonical_event_mapping).to be_valid

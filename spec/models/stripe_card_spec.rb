@@ -3,7 +3,7 @@
 require "rails_helper"
 
 RSpec.describe StripeCard, type: :model do
-  fixtures "stripe_cards", "stripe_cardholders"
+  fixtures "stripe_cards", "stripe_cardholders", "events"
 
   let(:stripe_card) { stripe_cards(:stripe_card1) }
 

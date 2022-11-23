@@ -3,15 +3,8 @@
 require "rails_helper"
 
 RSpec.describe Comment, type: :model, versioning: true do
-  fixtures "users", "transactions", "comments"
-
-  let(:transaction) { transactions(:transaction1) }
-  let(:comment) { comments(:comment1) }
-
-  before do
-    comment.commentable_type = Transaction
-    comment.commentable_id = transaction.id
-  end
+  let(:transaction) { create(:transaction) }
+  let(:comment) { create(:comment, commentable: transaction) }
 
   it "is valid" do
     expect(comment).to be_valid
@@ -23,9 +16,9 @@ RSpec.describe Comment, type: :model, versioning: true do
   end
 
   it "is versioned by PaperTrail on edit" do
-    expect(comment.versions.size).to eq(0)
+    expect(comment.versions.size).to eq(1)
     comment.update(content: 'Edited content')
-    expect(comment.versions.size).to be >= 1
+    expect(comment.versions.size).to eq(2)
   end
 
   context "when missing content" do

@@ -3,9 +3,7 @@
 require "rails_helper"
 
 RSpec.describe UserService::ExchangeLoginCodeForUser, type: :model do
-  fixtures "users"
-
-  let(:user) { users(:user1) }
+  let(:user) { create(:user) }
 
   let(:user_id) { 1234 }
   let(:login_code) { "555-555" }

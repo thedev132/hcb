@@ -3,14 +3,7 @@
 require "rails_helper"
 
 RSpec.describe OrganizerPosition, type: :model do
-  fixtures "users", "events", "organizer_positions"
-
-  let(:organizer_position) { organizer_positions(:organizer_position1) }
-
-  it "factory is valid" do
-    organizer_position = create(:organizer_position)
-    expect(organizer_position).to be_valid
-  end
+  let(:organizer_position) { create(:organizer_position) }
 
   it "is valid" do
     expect(organizer_position).to be_valid
