@@ -85,6 +85,10 @@ class EventPolicy < ApplicationPolicy
     is_public || user_or_admin
   end
 
+  def new_transfer?
+    user_or_admin
+  end
+
   def receive_check?
     is_public || user_or_admin
   end

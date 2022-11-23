@@ -447,6 +447,8 @@ Rails.application.routes.draw do
     get "cards/new", to: "stripe_cards#new"
     get "stripe_cards/shipping", to: "stripe_cards#shipping", as: :stripe_cards_shipping
 
+    get "transfers/new", to: "events#new_transfer"
+
     get "async_balance", to: "events#async_balance", as: :async_balance
 
     # (@eilla1) these pages are for the wip resources page and will be moved later

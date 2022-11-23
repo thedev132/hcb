@@ -323,6 +323,10 @@ class EventsController < ApplicationController
     @transfers = Kaminari.paginate_array((@checks + @ach_transfers + @disbursements).sort_by { |o| o.created_at }.reverse!).page(params[:page]).per(100)
   end
 
+  def new_transfer
+    authorize @event
+  end
+
   def promotions
     authorize @event
   end

@@ -1,0 +1,46 @@
+<%= form_with(local: true) do |form| %>
+  <% if @event || params[:event_id] %>
+    <%= form.hidden_field :event_id, value: @event&.id || params[:event_id] %>
+  <% else %>
+    <fieldset>
+      <legend class="heading h2 pt2 pb2">Which project?</legend>
+      <%= form.select :event_id, current_user.events.not_demo_mode.pluck(:name, :id) %>
+    </fieldset>
+  <% end %>
+  <fieldset>
+    <legend class="heading h2 pt2 pb2">What type of transfer?</legend>
+    <div class="field field--options fit">
+
+      <%= link_to new_event_ach_transfer_path(@event), class: 'text-decoration-none btn--form-option' do %>
+        <%= inline_icon "payment-transfer", size: 28 %>
+        <strong>ACH transfer</strong>
+      <% end %>
+
+
+      <%= link_to new_event_check_path(@event), class: 'text-decoration-none btn--form-option' do %>
+        <%= inline_icon "email", size: 28 %>
+        <strong>Mailed check</strong>
+      <% end %>
+
+
+
+      <%= link_to paypal_transfers_airtable_form_url(embed: false, event: @event, user: @current_user), class: 'text-decoration-none btn--form-option' do %>
+        <%= inline_icon "paypal", size: 28 %>
+        <strong>PayPal</strong>
+        <%# TODO: add subtitle with PayPal fee amount %>
+      <% end %>
+
+
+
+      <%= link_to new_disbursement_path(source_event_id: @event), class: 'text-decoration-none btn--form-option' do %>
+        <%= inline_icon "bank-account", size: 28 %>
+        <strong>HCB transfer</strong>
+        <small>(between Hack Club Bank accounts)</small>
+      <% end %>
+    </div>
+  </fieldset>
+
+  <% if @event&.demo_mode? %>
+    <%= blankslate "Transfers unavailable in Demo Mode" %>
+  <% end %>
+<% end %>
