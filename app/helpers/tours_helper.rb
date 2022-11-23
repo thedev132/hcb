@@ -9,7 +9,7 @@ module ToursHelper
 
   # Renders the given tour to the UI
   def render_tour(tourable, name)
-    tour = tourable.tours.find_by(name: name)
+    tour = tourable&.tours&.find_by(name: name)
     if tour&.active
       @tour = tour
     end
@@ -17,7 +17,7 @@ module ToursHelper
 
   # Renders a "Back to tour" button if there's an active tour
   def render_back_to_tour(tourable, name, url)
-    if tourable.tours.find_by(name: name)&.active?
+    if tourable&.tours&.find_by(name: name)&.active?
       @back_to_tour = url
     end
   end
