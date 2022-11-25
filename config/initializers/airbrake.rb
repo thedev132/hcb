@@ -81,10 +81,13 @@ Airbrake.add_filter do |notice|
   notice.ignore! if rand(1..10) <= 9
 end
 
-ignorable_errors = [SignalException, Sidekiq::Shutdown, Plaid::PlaidAPIError, ActiveRecord::ConnectionTimeoutError, ::BankApiService::UnauthorizedError]
 
-Airbrake.add_filter do |notice|
-  next unless ignorable_errors.include?(notice.stash[:exception].class)
+Rails.application.reloader.to_prepare do
+  ignorable_errors = [SignalException, Sidekiq::Shutdown, Plaid::PlaidAPIError, ActiveRecord::ConnectionTimeoutError, ::BankApiService::UnauthorizedError]
 
-  notice.ignore!
+  Airbrake.add_filter do |notice|
+    next unless ignorable_errors.include?(notice.stash[:exception].class)
+
+    notice.ignore!
+  end
 end
