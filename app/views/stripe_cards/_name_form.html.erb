@@ -1,12 +1,30 @@
-<%= form_with(model: StripeCard.new, local: true, url: stripe_card_update_name_path(@card), method: "post") do |form| %>
+<%= form_with(model: StripeCard.new, local: true, url: stripe_card_update_name_path(@card), method: "post", id: "stripe_card_name_form") do |form| %>
   <section class="grid grid--split">
-  <div class="field">
-    <%= form.label :name, "Name" %>
-    <%= form.text_field :name, value: @card.name %>
-  </div>
+    <div class="field">
+      <%= form.label :name, "Name" %>
+      <div class="flex" style="gap: 0.75rem;">
+        <%= form.text_field :name, value: @card.name, placeholder: "Online Retailers" %>
+        <% if @card.name %>
+          <div class="stat tooltipped tooltipped--s" aria-label="Clear Name">
+            <button class="btn bg-error" style="padding-left:10px; padding-right:10px; height:100%;" id="clear_name_btn" onclick="clearName();" type="button">
+              <%= inline_icon "delete", style:"margin-right: 0px; margin-left: 0px;" %>
+            </button>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    
   </section>
 
   <div class="actions">
     <%= form.submit "Save" %>
   </div>
 <% end %>
+
+<script>
+  const clearName = () => {
+    document.querySelector("#stripe_card_name").value = ""
+    document.querySelector("#clear_name_btn").disabled = true;
+    document.querySelector("#stripe_card_name_form").submit();
+  }
+</script>
