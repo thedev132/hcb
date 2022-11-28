@@ -25,4 +25,12 @@ class StripeCardPolicy < ApplicationPolicy
     user&.admin? || record&.event&.users&.include?(user)
   end
 
+  def edit?
+    user&.admin? || record&.event&.users&.include?(user) || record&.user == user
+  end
+
+  def update_name?
+    user&.admin? || record&.event&.users&.include?(user) || record&.user == user
+  end
+
 end

@@ -8,6 +8,7 @@
 #  activated                           :boolean          default(FALSE)
 #  card_type                           :integer          default("virtual"), not null
 #  last4                               :text
+#  name                                :string
 #  purchased_at                        :datetime
 #  spending_limit_amount               :integer
 #  spending_limit_interval             :integer
@@ -114,10 +115,6 @@ class StripeCard < ApplicationRecord
 
   def stripe_name
     stripe_cardholder.stripe_name
-  end
-
-  def name
-    stripe_name
   end
 
   def total_spent

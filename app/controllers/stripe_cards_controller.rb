@@ -112,6 +112,23 @@ class StripeCardsController < ApplicationController
     redirect_to event_cards_new_path(event), flash: { error: e.message }
   end
 
+  def edit
+    @card = StripeCard.find(params[:stripe_card_id])
+    @event = @card.event
+
+    authorize @card
+  end
+
+  def update_name
+    card = StripeCard.find(params[:stripe_card_id])
+    authorize card
+    name = params[:stripe_card][:name]
+    name = nil unless name.present?
+    updated = card.update(name: name)
+
+    redirect_to stripe_card_url(card), flash: updated ? { success: "Card's name has been successfully updated!" } : { error: "Card's name could not be updated" }
+  end
+
   private
 
   def suggested(field)

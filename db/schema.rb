@@ -1254,6 +1254,7 @@ ActiveRecord::Schema.define(version: 2022_11_22_125049) do
     t.integer "spending_limit_amount"
     t.boolean "activated", default: false
     t.bigint "replacement_for_id"
+    t.string "name"
     t.index ["event_id"], name: "index_stripe_cards_on_event_id"
     t.index ["replacement_for_id"], name: "index_stripe_cards_on_replacement_for_id"
     t.index ["stripe_cardholder_id"], name: "index_stripe_cards_on_stripe_cardholder_id"

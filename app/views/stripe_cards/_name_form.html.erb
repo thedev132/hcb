@@ -1,0 +1,12 @@
+<%= form_with(model: StripeCard.new, local: true, url: stripe_card_update_name_path(@card), method: "post") do |form| %>
+  <section class="grid grid--split">
+  <div class="field">
+    <%= form.label :name, "Name" %>
+    <%= form.text_field :name, value: @card.name %>
+  </div>
+  </section>
+
+  <div class="actions">
+    <%= form.submit "Save" %>
+  </div>
+<% end %>

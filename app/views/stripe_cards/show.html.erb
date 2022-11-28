@@ -66,16 +66,25 @@
                   class: 'btn bg-accent mt3' do %>
         <%= inline_icon 'freeze' %> Freeze card
       <%end%>
+      <%= link_to stripe_card_edit_path(@card), class: "btn bg-success ml1", data: { behavior: "modal_trigger", modal: "name_card" } do %>
+        <%= inline_icon "edit" %>
+        Name
+      <% end %>
       <p class="muted">You can instantly defrost your card anytime</p>
     <% end %>
+  </section>
+
+  <section class="modal modal--scroll bg-snow" data-behavior="modal" role="dialog" id="name_card">
+    <%= modal_header "Name your card" %>
+    <%= render "name_form", stripe_card: StripeCard.new %>
   </section>
 
   <% if @card.activated? %>
   <article class="card max-width-2 mx-auto mt3">
     <h2 class="mt0 heading">
       <span class="flex-auto">
-        <%= @card.virtual? ? 'Virtual card' : 'Card' %>
-        for <%= user_mention @card.user %>
+      <%= user_mention @card.user %><span class="medium muted">'s</span> 
+      <%= @card.name %> <span class="medium muted">Card</span>
       </span>
     </h2>
 
@@ -146,6 +155,10 @@
       <p>
         <strong>Billing address</strong>
         <%= render_address @card.cardholder %>
+      </p>
+      <p>
+        <strong>Type</strong>
+        <%= @card.virtual? ? 'Virtual' : 'Physical' %>
       </p>
     </section>
     <% admin_tools 'details' do %>
