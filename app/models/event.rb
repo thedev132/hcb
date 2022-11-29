@@ -290,7 +290,8 @@ class Event < ApplicationRecord
     nonprofit: 2,
     event: 3,
     'high school hackathon': 4,
-    'robotics team': 5
+    'robotics team': 5,
+    'hardware grant': 6
   }
 
   def country_us?
