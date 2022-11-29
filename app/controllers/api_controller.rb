@@ -84,6 +84,7 @@ class ApiController < ApplicationController
       name: params[:name],
       email: params[:email],
       country: params[:country],
+      category: params[:category],
     ).run
 
     result = {}
