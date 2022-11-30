@@ -34,11 +34,13 @@
   <% end %>
 
   <% unless @g_suite.creating? %>
-    <section class="card center mt3 mb3 bg-success white pt3">
-      <%= inline_icon 'rep', size: 32 %>
-      <h3 class="mt0 mb0">Your application was accepted!</h3>
-      <p class="mt0">It’s time to set up your servers.</p>
-    </section>
+    <% unless @g_suite.verified? %>
+      <section class="card center mt3 mb3 bg-success white pt3">
+        <%= inline_icon 'rep', size: 32 %>
+        <h3 class="mt0 mb0">Your application was accepted!</h3>
+        <p class="mt0">It’s time to set up your servers.</p>
+      </section>
+    <% end %>
 
     <details <%= @g_suite.verified? ? nil : 'open' %>>
       <summary><h2 class="inline-block pb0 border-none mt0">Setup Instructions</h2></summary>

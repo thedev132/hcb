@@ -169,6 +169,10 @@ action {
   }
 }
 
+summary {
+  cursor: pointer;
+}
+
 @import 'components/avatars';
 @import 'components/badges';
 @import 'components/buttons';
