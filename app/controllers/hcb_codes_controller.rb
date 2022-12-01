@@ -125,6 +125,7 @@ class HcbCodesController < ApplicationController
 
     CanonicalPendingTransactionJob::SendTwilioMessage.perform_now(cpt_id: cpt.id, user_id: current_user.id)
 
+    flash[:success] = "SMS queued for delivery!"
     redirect_back fallback_location: @hcb_code
   end
 
