@@ -147,7 +147,7 @@ class GSuiteAccount < ApplicationRecord
     end
 
     if !GsuiteService.instance.delete_gsuite_user(address)
-      errors.add(self, "couldn't be deleted from GSuite!")
+      errors.add(:base, "couldn't be deleted from GSuite!")
       throw :abort
     end
   end
