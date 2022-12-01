@@ -666,6 +666,10 @@ GEM
     trailblazer-option (0.1.2)
     turbo-rails (0.8.3)
       rails (>= 6.0.0)
+    twilio-ruby (5.73.2)
+      faraday (>= 0.9, < 3.0)
+      jwt (>= 1.5, <= 2.5)
+      nokogiri (>= 1.6, < 2.0)
     typhoeus (1.4.0)
       ethon (>= 0.9.0)
     tzinfo (2.0.5)
@@ -818,6 +822,7 @@ DEPENDENCIES
   table_print
   terser (~> 1.1)
   turbo-rails (~> 0.8.3)
+  twilio-ruby
   validates_email_format_of
   web-console (>= 3.3.0)
   webauthn (~> 2.5)

@@ -37,6 +37,19 @@ html[data-dark='true'] {
   }
 }
 
+.feature-sms-receipt-notification {
+  background-color: $snow;
+  background-image: #{image-url('feature-sms-receipt-notification-light.png')};
+  background-size: 8em;
+}
+
+html[data-dark='true'] {
+  .feature-sms-receipt-notification {
+    background-color: $black;
+    background-image: #{image-url('feature-sms-receipt-notification-dark.png')};
+  }
+}
+
 .feature-transaction-tags {
   background-size: 24em;
   background-color: $snow;

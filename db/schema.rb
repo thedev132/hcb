@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_11_22_125049) do
+ActiveRecord::Schema.define(version: 2022_11_22_125050) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -963,6 +963,15 @@ ActiveRecord::Schema.define(version: 2022_11_22_125049) do
     t.index ["user_id"], name: "index_organizer_positions_on_user_id"
   end
 
+  create_table "outgoing_twilio_messages", force: :cascade do |t|
+    t.bigint "twilio_message_id"
+    t.bigint "hcb_code_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["hcb_code_id"], name: "index_outgoing_twilio_messages_on_hcb_code_id"
+    t.index ["twilio_message_id"], name: "index_outgoing_twilio_messages_on_twilio_message_id"
+  end
+
   create_table "partner_donations", force: :cascade do |t|
     t.bigint "event_id", null: false
     t.string "hcb_code"
@@ -1336,6 +1345,17 @@ ActiveRecord::Schema.define(version: 2022_11_22_125049) do
     t.index ["invoice_payout_id"], name: "index_transactions_on_invoice_payout_id"
     t.index ["plaid_id"], name: "index_transactions_on_plaid_id", unique: true
     t.index ["slug"], name: "index_transactions_on_slug", unique: true
+  end
+
+  create_table "twilio_messages", force: :cascade do |t|
+    t.text "from"
+    t.text "to"
+    t.text "body"
+    t.text "twilio_sid"
+    t.text "twilio_account_sid"
+    t.jsonb "raw_data"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "user_sessions", force: :cascade do |t|

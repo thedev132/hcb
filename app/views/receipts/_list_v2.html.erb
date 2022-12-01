@@ -6,6 +6,10 @@
 🌸 Aloha!
 <%= link_to "Here's the page for attaching receipts", attach_receipt_url(@hcb_code) %>
 <% end %>
+<% admin_tools do %>
+☎️ moshi moshi?
+<%= link_to "Click to get an SMS (to #{current_user.phone_number}) of the notification", send_sms_receipt_hcb_code_path(@hcb_code), method: :post %>
+<% end %>
 <% @hcb_code.receipts.order(created_at: :asc).each do |receipt| %>
 
   <% file_path = Rails.application.routes.url_helpers.rails_blob_path(receipt.file, only_path: true) %>

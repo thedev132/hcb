@@ -116,6 +116,18 @@ class HcbCodesController < ApplicationController
 
   end
 
+  def send_receipt_sms
+    @hcb_code = HcbCode.find(params[:id])
+
+    authorize @hcb_code
+
+    cpt = @hcb_code.canonical_pending_transactions.first
+
+    CanonicalPendingTransactionJob::SendTwilioMessage.perform_now(cpt_id: cpt.id, user_id: current_user.id)
+
+    redirect_back fallback_location: @hcb_code
+  end
+
   def dispute
     @hcb_code = HcbCode.find(params[:id])
 

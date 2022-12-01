@@ -17,6 +17,10 @@ class HcbCodePolicy < ApplicationPolicy
     user&.admin? || present_in_events?
   end
 
+  def send_receipt_sms?
+    user&.admin?
+  end
+
   def dispute?
     user&.admin? || present_in_events?
   end

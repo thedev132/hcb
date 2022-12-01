@@ -120,6 +120,9 @@ gem "flipper"
 gem "flipper-active_record"
 gem "flipper-ui"
 
+# Send SMS messages
+gem "twilio-ruby"
+
 group :development, :test do
   gem "relaxed-rubocop"
   gem "rspec-rails", "~> 5.0.0"
