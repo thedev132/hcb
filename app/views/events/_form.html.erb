@@ -26,7 +26,10 @@
       <% if @event.logo.attached? %>
         <%= image_tag @event.logo, height: 72 %>
       <% end %>
-      <%= form.file_field :logo %>
+      <div class="field--fileupload">
+        <%= form.label :logo, "Choose File", class: "field--fileupload__label" %>
+        <%= form.file_field :logo, class: "field--fileupload__field" %>
+      </div>
 
       <% if @event.logo.attached? %>
         <%= link_to "Remove logo", event_remove_logo_path(@event), class: "block mt1", method: :post %>

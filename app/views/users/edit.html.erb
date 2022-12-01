@@ -73,8 +73,9 @@
             <% end %>
         </span>
         </p>
-        <div class="field">
-        <%= form.file_field :profile_picture, accept: 'image/png, image/jpeg' %>
+        <div class="field field--fileupload">
+            <%= form.label :profile_picture, "Choose File", class: "field--fileupload__label" %>
+            <%= form.file_field :profile_picture, accept: 'image/png, image/jpeg', class: "field--fileupload__field" %>
         </div>
         <% if @user.admin_override_pretend? %>
         <div class="field field--checkbox admin-tools">
