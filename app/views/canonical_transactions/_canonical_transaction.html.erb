@@ -20,11 +20,11 @@
       <td class="transaction__icon tooltipped tooltipped--e" aria-label="Fee revenue">
         <%= inline_icon "plus-fill" %>
       </td>
-    <% elsif ct.check? %>
+    <% elsif ct.local_hcb_code.check? %>
       <td class="transaction__icon tooltipped tooltipped--e" aria-label="Outgoing check">
         <%= inline_icon "payment-transfer" %>
       </td>
-    <% elsif ct.ach_transfer? %>
+    <% elsif ct.local_hcb_code.ach_transfer? %>
       <td class="transaction__icon tooltipped tooltipped--e" aria-label="Outgoing ACH">
         <%= inline_icon "payment-transfer" %>
       </td>
@@ -36,11 +36,11 @@
           <%= inline_icon "card" %>
         <% end %>
       </td>
-    <% elsif ct.invoice? %>
+    <% elsif ct.local_hcb_code.invoice? %>
       <td class="transaction__icon tooltipped tooltipped--e" aria-label="Invoice">
         <%= inline_icon "briefcase" %>
       </td>
-    <% elsif ct.donation? %>
+    <% elsif ct.local_hcb_code.donation? %>
       <td class="transaction__icon tooltipped tooltipped--e" aria-label="Donation">
         <%= inline_icon "support" %>
       </td>
@@ -54,7 +54,7 @@
           <%= inline_icon "door-leave" %>
         </td>
       <% end %>
-    <% elsif ct.disbursement? %>
+    <% elsif ct.local_hcb_code.disbursement? %>
       <td class="transaction__icon tooltipped tooltipped--e" aria-label="Disbursement">
         <% if ct.amount.negative? %>
           <%= inline_icon "door-leave" %>
@@ -137,7 +137,7 @@
     <span><%= number_to_currency ct.amount %></span>
   </td>
   <td>
-    <%= link_to "Details", ct.url if organizer_signed_in? || defined?(force_display_details) %>
+    <%= link_to "Details", ct.local_hcb_code.url if organizer_signed_in? || defined?(force_display_details) %>
   </td>
   <% if defined?(receipt_upload_button) %>
     <td style="width: 1%">

@@ -29,7 +29,7 @@
           <% @hcb_codes[card.hashid].each do |hcb_code| %>
             <% if hcb_code.canonical_transactions.any? %>
               <% hcb_code.canonical_transactions.each do |ct| %>
-                <%= render partial: "canonical_transactions/canonical_transaction", locals: { ct: hcb_code, force_display_details: true, receipt_upload_button: true } %>
+                <%= render partial: "canonical_transactions/canonical_transaction", locals: { ct: ct, force_display_details: true, receipt_upload_button: true } %>
               <% end %>
             <% else %>
               <% hcb_code.canonical_pending_transactions.each do |pt| %>

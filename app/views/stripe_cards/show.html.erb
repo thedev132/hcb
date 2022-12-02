@@ -201,7 +201,7 @@
         <% @hcb_codes.order(created_at: :desc).each do |hcb_code| %>
           <% if hcb_code.canonical_transactions.any? %>
             <% hcb_code.canonical_transactions.each do |ct| %>
-              <%= render partial: "canonical_transactions/canonical_transaction", locals: { ct: hcb_code } %>
+              <%= render partial: "canonical_transactions/canonical_transaction", locals: { ct: ct } %>
             <% end %>
           <% else %>
             <% hcb_code.canonical_pending_transactions.each do |pt| %>
