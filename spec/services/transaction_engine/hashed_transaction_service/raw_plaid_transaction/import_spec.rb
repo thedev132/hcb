@@ -3,14 +3,6 @@
 require "rails_helper"
 
 RSpec.describe TransactionEngine::HashedTransactionService::RawPlaidTransaction::Import do
-  before do
-    # even with config.use_transactional_fixtures = true
-    # there is test pollution from fixtures, so delete all records relevant to this test before
-    CanonicalHashedMapping.destroy_all
-    HashedTransaction.destroy_all
-    RawPlaidTransaction.destroy_all
-  end
-
   let!(:raw_plaid_transaction) { create(:raw_plaid_transaction, date_posted: "2020-09-02") }
 
   let(:service) { TransactionEngine::HashedTransactionService::RawPlaidTransaction::Import.new }

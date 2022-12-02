@@ -1,4 +1,0 @@
-stripe_cardholder1:
-  user: user1
-  stripe_id: "ich_12345"
-  created_at: <%= Time.now %>

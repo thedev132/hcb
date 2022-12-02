@@ -1,3 +1,0 @@
-bank_account1:
-  name: "Bank Account 1"
-  created_at: <%= Time.now %>

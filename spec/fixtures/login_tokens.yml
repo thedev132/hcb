@@ -1,5 +1,0 @@
-login_token1:
-  user: user1
-  token: "token1"
-  expiration_at: <%= Time.now + 10.minutes %>
-  created_at: <%= Time.now %>

@@ -6,15 +6,6 @@ RSpec.describe TransactionEngine::CanonicalTransactionService::Import::Simple do
   let(:service) { TransactionEngine::CanonicalTransactionService::Import::Simple.new }
 
   before do
-    # even with config.use_transactional_fixtures = true
-    # there is test pollution from fixtures, so delete all records relevant to this test before
-    CanonicalHashedMapping.destroy_all
-    # Fee and CanonicalEventMapping need to be destroyed to prevent cascading FK violation errors
-    Fee.destroy_all
-    CanonicalEventMapping.destroy_all
-    CanonicalTransaction.destroy_all
-    HashedTransaction.destroy_all
-
     # This creates a HashedTransaction that has already been processed
     # (i.e. a corresponding CanonicalTransaction was linked to it via a CanonicalHashedMapping)
     # This is required for the test because the service does a NOT IN query based on a list of

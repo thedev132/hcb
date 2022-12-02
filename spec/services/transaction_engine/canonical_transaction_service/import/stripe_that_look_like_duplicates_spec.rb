@@ -5,17 +5,6 @@ require "rails_helper"
 RSpec.describe TransactionEngine::CanonicalTransactionService::Import::StripeThatLookLikeDuplicates do
   let(:service) { TransactionEngine::CanonicalTransactionService::Import::StripeThatLookLikeDuplicates.new }
 
-  before do
-    # even with config.use_transactional_fixtures = true
-    # there is test pollution from fixtures, so delete all records relevant to this test before
-    CanonicalHashedMapping.destroy_all
-    # Fee and CanonicalEventMapping need to be destroyed to prevent cascading FK violation errors
-    Fee.destroy_all
-    CanonicalEventMapping.destroy_all
-    CanonicalTransaction.destroy_all
-    HashedTransaction.destroy_all
-  end
-
   context 'when there are 2 duplicate stripe_transactions' do
     before do
       duplicate_hash = "1234"

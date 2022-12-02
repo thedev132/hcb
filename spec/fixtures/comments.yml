@@ -1,4 +1,0 @@
-comment1:
-  user: user1
-  content_ciphertext: <%= Comment.generate_content_ciphertext("comment 1").inspect %>
-  created_at: <%= Time.now %>
