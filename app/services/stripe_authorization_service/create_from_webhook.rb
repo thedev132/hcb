@@ -33,8 +33,9 @@ module StripeAuthorizationService
         if remote_stripe_transaction.approved
           CanonicalPendingTransactionMailer.with(canonical_pending_transaction_id: cpt.id).notify_approved.deliver_later
           # rubocop:disable Naming/VariableNumber
-          if Flipper.enabled?(:sms_receipt_notifications_2022_11_23, cpt.stripe_card.user)
-            CanonicalPendingTransactionJob::SendTwilioMessage.perform_later(cpt_id: cpt.id, user_id: cpt.user_id)
+          user = cpt&.stripe_card&.user
+          if Flipper.enabled?(:sms_receipt_notifications_2022_11_23, user)
+            CanonicalPendingTransactionJob::SendTwilioMessage.perform_later(cpt_id: cpt.id, user_id: user.id)
           end
           # rubocop:enable Naming/VariableNumber
         else
