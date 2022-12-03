@@ -292,7 +292,14 @@ class StripeCard < ApplicationRecord
   end
 
   def hcb_codes
-    @hcb_codes ||= ::HcbCode.where(hcb_code: canonical_transaction_hcb_codes + canonical_pending_transaction_hcb_codes)
+    all_hcb_codes = canonical_transaction_hcb_codes + canonical_pending_transaction_hcb_codes
+    # rubocop:disable Naming/VariableNumber
+    if Flipper.enabled?(:transaction_tags_2022_07_29, self.event)
+      @hcb_codes ||= ::HcbCode.where(hcb_code: all_hcb_codes).includes(:tags)
+    else
+      @hcb_codes ||= ::HcbCode.where(hcb_code: all_hcb_codes)
+    end
+    # rubocop:enable Naming/VariableNumber
   end
 
   def remote_shipping_status

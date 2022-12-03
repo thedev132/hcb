@@ -73,7 +73,11 @@ class StripeCardsController < ApplicationController
     authorize @card
 
     @event = @card.event
-    @hcb_codes = @card.hcb_codes.page(params[:page]).per(25)
+
+    @hcb_codes = @card.hcb_codes
+                      .includes(canonical_pending_transactions: [:raw_pending_stripe_transaction], canonical_transactions: { hashed_transactions: [:raw_stripe_transaction] })
+                      .page(params[:page]).per(25)
+
   end
 
   def new
