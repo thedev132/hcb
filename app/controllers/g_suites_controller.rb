@@ -49,7 +49,7 @@ class GSuitesController < ApplicationController
   def destroy
     authorize @g_suite
 
-    if @g_suite.update(deleted_at: Time.now)
+    if @g_suite.destroy
       flash[:success] = "Google Workspace was successfully destroyed."
       redirect_to g_suites_url
     else

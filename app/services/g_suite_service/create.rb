@@ -9,7 +9,7 @@ module GSuiteService
     end
 
     def run
-      raise ArgumentError, error_message if event.g_suites.not_deleted.present?
+      raise ArgumentError, error_message if event.g_suites.present?
 
       ActiveRecord::Base.transaction do
         g_suite.save!

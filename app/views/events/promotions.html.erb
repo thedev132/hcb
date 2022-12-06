@@ -165,7 +165,7 @@
     <div
       class="card__banner card__banner--top flex justify-between items-center promo-domains">
       <h3 class="h1 p2 my0 color-black">Domains</h3>
-        <% if !@event.g_suites.not_deleted.none? && @perks_available %>
+        <% if !@event.g_suites.none? && @perks_available %>
           <div class="actions tooltipped tooltipped--w inline-block mt1" aria-label="You already own a domain!">
             <span class="btn bg-success disabled">Apply</span>
           </div>
@@ -219,7 +219,7 @@
   <div class="card__banner card__banner--top flex justify-between items-center promo-sendy">
     <h3 class="h1 white p2 my0">Sendy</h3>
     <%= link_to 'Apply',
-      @perks_available ? "https://hack.af/sendypromo?prefill_Project%20Name=#{@event.name}&prefill_Bank%20URL=#{event_url(@event)}&prefill_Your%20name=#{current_user.full_name}&prefill_Domain%20URL=#{@event.g_suites.not_deleted.first&.domain}" : root_path,
+      @perks_available ? "https://hack.af/sendypromo?prefill_Project%20Name=#{@event.name}&prefill_Bank%20URL=#{event_url(@event)}&prefill_Your%20name=#{current_user.full_name}&prefill_Domain%20URL=#{@event.g_suites.first&.domain}" : root_path,
       class: "btn bg-success mr1 #{'disabled' unless @perks_available}",
       target: :_blank
      %>
