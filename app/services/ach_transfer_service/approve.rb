@@ -2,10 +2,11 @@
 
 module AchTransferService
   class Approve
-    def initialize(ach_transfer_id:, scheduled_arrival_date:, confirmation_number:)
+    def initialize(ach_transfer_id:, scheduled_arrival_date:, confirmation_number:, processor:)
       @ach_transfer_id = ach_transfer_id
       @scheduled_arrival_date = scheduled_arrival_date
       @confirmation_number = confirmation_number
+      @processor = processor
     end
 
     def run
@@ -14,9 +15,12 @@ module AchTransferService
 
       ActiveRecord::Base.transaction do
         ach_transfer.mark_in_transit!
-        ach_transfer.scheduled_arrival_date = chronic_scheduled_arrival_date
-        ach_transfer.confirmation_number = @confirmation_number
-        ach_transfer.save!
+
+        ach_transfer.update!(
+          processor: @processor,
+          scheduled_arrival_date: chronic_scheduled_arrival_date,
+          confirmation_number: @confirmation_number
+        )
       end
 
       ach_transfer

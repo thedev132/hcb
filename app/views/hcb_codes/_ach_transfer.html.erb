@@ -10,11 +10,19 @@
       <%= inline_icon @hcb_code.ach_transfer.state_icon, size: 20 if @hcb_code.ach_transfer.state_icon %>
     </span>
   </h2>
+
+
   <section class="card__banner card__darker details-horiz border-top border-bottom">
     <p>
       <strong>Sent by</strong>
       <%= user_mention @hcb_code.ach_transfer.creator %>
     </p>
+    <% unless @hcb_code.ach_transfer.processor.nil? %>
+      <% admin_tools('', 'p') do %>
+        <strong>Processed by</strong>
+        <%= user_mention @hcb_code.ach_transfer.processor  %>
+      <% end %>
+    <% end %>
     <p>
       <strong>Sent at</strong>
       <%= format_datetime @hcb_code.ach_transfer.created_at %>
@@ -72,4 +80,3 @@
     <%= render 'hcb_codes/tags', hcb_code: @hcb_code, event: (@event || @hcb_code.event) %>
   </section>
 </article>
-

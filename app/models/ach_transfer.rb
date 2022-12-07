@@ -21,11 +21,13 @@
 #  updated_at                :datetime         not null
 #  creator_id                :bigint
 #  event_id                  :bigint
+#  processor_id              :bigint
 #
 # Indexes
 #
-#  index_ach_transfers_on_creator_id  (creator_id)
-#  index_ach_transfers_on_event_id    (event_id)
+#  index_ach_transfers_on_creator_id    (creator_id)
+#  index_ach_transfers_on_event_id      (event_id)
+#  index_ach_transfers_on_processor_id  (processor_id)
 #
 # Foreign Keys
 #
@@ -46,6 +48,7 @@ class AchTransfer < ApplicationRecord
   pg_search_scope :search_recipient, against: [:recipient_name], using: { tsearch: { prefix: true, dictionary: "english" } }, ranked_by: "ach_transfers.created_at"
 
   belongs_to :creator, class_name: "User"
+  belongs_to :processor, class_name: "User", optional: true
   belongs_to :event
 
   validates :amount, numericality: { greater_than: 0, message: "must be greater than 0" }

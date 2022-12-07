@@ -29,6 +29,17 @@
   <%= avatar_for @ach_transfer.creator %>
 </p>
 
+<% if @ach_transfer.processor %>
+  <p>
+    Processed by:
+    <span>
+      <%= avatar_for @ach_transfer.processor, 24, style: "margin: 0; vertical-align: bottom" %>
+      <%= inline_icon "admin-badge", size: 20, style: "vertical-align: middle; margin: -0.2rem -0.3rem 0 -0.3rem;" if @ach_transfer.processor.admin? %>
+      <span><%= @ach_transfer.processor.initial_name %></span>
+    </span>
+  </p>
+<% end %>
+
 <hr/>
 
 <h3>ACH Details</h3>
