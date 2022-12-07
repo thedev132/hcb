@@ -113,9 +113,14 @@ class DisbursementsController < ApplicationController
     @disbursement = Disbursement.find(params[:disbursement_id])
     authorize @disbursement
 
-    DisbursementService::Reject.new(disbursement_id: @disbursement.id, fulfilled_by_id: current_user.id).run
-    flash[:error] = "Disbursement rejected"
-    redirect_to disbursements_path
+    begin
+      DisbursementService::Reject.new(disbursement_id: @disbursement.id, fulfilled_by_id: current_user.id).run
+      flash[:success] = "Disbursement rejected"
+    rescue => e
+      flash[:error] = e.message
+    end
+
+    redirect_to disbursement_path(@disbursement)
   end
 
   private

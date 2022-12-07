@@ -8,7 +8,7 @@ module DisbursementService
     end
 
     def run
-      raise ArgumentError, "Disbursement is already processed" unless @disbursement.reviewing?
+      raise ArgumentError, "Disbursement is already processed" unless @disbursement.reviewing? || @disbursement.pending?
 
       @disbursement.update!(attrs)
       @disbursement.mark_rejected!(@fulfilled_by)
