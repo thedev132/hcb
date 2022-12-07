@@ -12,7 +12,7 @@ module DisbursementService
 
       ActiveRecord::Base.transaction do
         # 1. Approve the disbursement
-        @disbursement.update(attrs)
+        @disbursement.mark_approved!(@fulfilled_by)
 
         # 2. Create the raw pending transactions
         rpidt = ::PendingTransactionEngine::RawPendingIncomingDisbursementTransactionService::Disbursement::ImportSingle.new(disbursement: @disbursement).run
@@ -28,14 +28,6 @@ module DisbursementService
       end
 
       @disbursement
-    end
-
-    private
-
-    def attrs
-      {
-        fulfilled_by: @fulfilled_by
-      }
     end
 
   end

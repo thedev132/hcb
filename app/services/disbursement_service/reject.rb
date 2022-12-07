@@ -11,6 +11,7 @@ module DisbursementService
       raise ArgumentError, "Disbursement is already processed" unless @disbursement.reviewing?
 
       @disbursement.update!(attrs)
+      @disbursement.mark_rejected!(@fulfilled_by)
 
       decline_pending_transactions!
 

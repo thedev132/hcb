@@ -55,6 +55,11 @@ disbursement_nightly_job: # PERFORMS SVB TRANSFERS
   class: "DisbursementJob::Nightly"
   queue: "default"
 
+disbursement_hourly_job:
+  cron: "*/30 * * * *" # run every 30 minutes
+  class: "DisbursementJob::Hourly"
+  queue: "default"
+
 ach_transfer_nightly_job:
   cron: "*/30 * * * *" # run every 30 minutes
   class: "AchTransferJob::Nightly"

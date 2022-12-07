@@ -5,6 +5,7 @@
 # Table name: disbursements
 #
 #  id              :bigint           not null, primary key
+#  aasm_state      :string
 #  amount          :integer
 #  errored_at      :datetime
 #  fulfilled_at    :datetime
@@ -35,6 +36,7 @@ class Disbursement < ApplicationRecord
   include PgSearch::Model
   pg_search_scope :search_name, against: [:name]
 
+  include AASM
   include Commentable
 
   has_paper_trail
@@ -76,6 +78,41 @@ class Disbursement < ApplicationRecord
   scope :fulfilled, -> { where.not(fulfilled_at: nil).select { |d| d.fulfilled? } }
   scope :rejected, -> { where.not(rejected_at: nil) }
   scope :errored, -> { where.not(errored_at: nil) }
+
+  aasm create_scopes: false, whiny_transitions: false, timestamps: true do
+    state :reviewing, initial: true # Being reviewed by an admin
+    state :pending                  # Waiting to be processed by the TX engine
+    state :in_transit               # Transfer started on SVB
+    state :deposited                # Transfer completed!
+    state :rejected                 # Rejected by admin
+    state :errored                  # oh no! an error!
+
+    event :mark_approved do
+      after do |fulfilled_by|
+        update(fulfilled_by: fulfilled_by)
+      end
+      transitions from: :reviewing, to: :pending
+    end
+
+    event :mark_in_transit do
+      transitions from: :pending, to: :in_transit
+    end
+
+    event :mark_deposited do
+      transitions from: :in_transit, to: :deposited
+    end
+
+    event :mark_errored do
+      transitions from: [:pending, :in_transit], to: :errored
+    end
+
+    event :mark_rejected do
+      after do |fulfilled_by|
+        update(fulfilled_by: fulfilled_by)
+      end
+      transitions from: [:reviewing, :pending], to: :rejected
+    end
+  end
 
   scope :reviewing_or_processing, -> { where(fulfilled_at: nil, rejected_at: nil, errored_at: nil).where.not(fulfilled_by_id: nil) }
 
@@ -185,10 +222,6 @@ class Disbursement < ApplicationRecord
 
   def state_icon
     "checkmark" if fulfilled? || processed? || (pending? && destination_event.can_front_balance?)
-  end
-
-  def mark_fulfilled!
-    update(fulfilled_at: DateTime.now)
   end
 
   def admin_dropdown_description

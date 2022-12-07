@@ -342,6 +342,7 @@ ActiveRecord::Schema.define(version: 2022_11_22_232753) do
     t.datetime "errored_at"
     t.bigint "requested_by_id"
     t.bigint "fulfilled_by_id"
+    t.string "aasm_state"
     t.index ["event_id"], name: "index_disbursements_on_event_id"
     t.index ["fulfilled_by_id"], name: "index_disbursements_on_fulfilled_by_id"
     t.index ["requested_by_id"], name: "index_disbursements_on_requested_by_id"

@@ -41,6 +41,7 @@
       <th>Amount</th>
       <th>Status</th>
       <th>Actions</th>
+      <th>AASM status (WIP)</th>
     </tr>
   </thead>
   <tbody>
@@ -62,6 +63,9 @@
           <% elsif disbursement.pending? %>
             AUTOMATED
           <% end %>
+        </td>
+        <td>
+          <%= disbursement.aasm.human_state %>
         </td>
       </tr>
     <% end %>
