@@ -21,7 +21,7 @@
       <%= form.number_field :amount,
         placeholder: '500.00',
         value: (@check.amount.nil? ? nil : (@check.amount.to_f / 100)),
-        disabled: (@event.balance <= 0 || !@event.demo_mode?),
+        disabled: (@event.balance <= 0 || @event.demo_mode?),
         step: 0.01,
         max: (current_user&.admin? ? nil : @event.balance),
         min: 1,
