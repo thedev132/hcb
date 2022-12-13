@@ -60,7 +60,7 @@ class CanonicalPendingTransaction < ApplicationRecord
   has_one :event, through: :canonical_pending_event_mapping
   has_many :canonical_pending_settled_mappings
   has_many :canonical_transactions, through: :canonical_pending_settled_mappings
-  has_many :canonical_pending_declined_mappings
+  has_one :canonical_pending_declined_mapping
   has_one :local_hcb_code, foreign_key: 'hcb_code', primary_key: 'hcb_code', class_name: "HcbCode"
 
   monetize :amount_cents
@@ -85,8 +85,8 @@ class CanonicalPendingTransaction < ApplicationRecord
   scope :unsettled, -> {
     includes(:canonical_pending_settled_mappings)
       .where(canonical_pending_settled_mappings: { canonical_pending_transaction_id: nil })
-      .includes(:canonical_pending_declined_mappings)
-      .where(canonical_pending_declined_mappings: { canonical_pending_transaction_id: nil })
+      .includes(:canonical_pending_declined_mapping)
+      .where(canonical_pending_declined_mapping: { canonical_pending_transaction_id: nil })
   }
   scope :missing_hcb_code, -> { where(hcb_code: nil) }
   scope :missing_or_unknown_hcb_code, -> { where("hcb_code is null or hcb_code ilike 'HCB-000%'") }
@@ -101,7 +101,7 @@ class CanonicalPendingTransaction < ApplicationRecord
   scope :partner_donation_hcb_code, -> { where("hcb_code ilike 'HCB-#{::TransactionGroupingEngine::Calculate::HcbCode::PARTNER_DONATION_CODE}%'") }
   scope :fronted, -> { where(fronted: true) }
   scope :not_fronted, -> { where(fronted: false) }
-  scope :not_declined, -> { includes(:canonical_pending_declined_mappings).where(canonical_pending_declined_mappings: { canonical_pending_transaction_id: nil }) }
+  scope :not_declined, -> { includes(:canonical_pending_declined_mapping).where(canonical_pending_declined_mapping: { canonical_pending_transaction_id: nil }) }
 
   validates :custom_memo, presence: true, allow_nil: true
 
@@ -119,7 +119,7 @@ class CanonicalPendingTransaction < ApplicationRecord
   end
 
   def declined?
-    @declined ||= canonical_pending_declined_mappings.present?
+    @declined ||= canonical_pending_declined_mapping.present?
   end
 
   def unsettled?
