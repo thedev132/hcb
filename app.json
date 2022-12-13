@@ -1,7 +1,7 @@
 {
   "name": "bank",
   "scripts": {
-    "postdeploy": "pg_dump -Fc $HEROKU_POSTGRESQL_ROSE_URL | pg_restore --clean --if-exists --no-acl --no-owner -d $DATABASE_URL; bundle exec rails db:migrate"
+    "postdeploy": "pg_dump --data-only -Fc $HEROKU_POSTGRESQL_ROSE_URL | pg_restore --clean --if-exists --no-acl --no-owner -d $DATABASE_URL; bundle exec rails db:migrate"
   },
   "env": {
     "HEROKU_POSTGRESQL_ROSE_URL": {
