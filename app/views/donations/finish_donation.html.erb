@@ -21,8 +21,8 @@
   </script>
   <script defer>
     document.addEventListener('turbo:load', function() {
-      const stripe = Stripe('<%= StripeService.publishable_key %>')
-      const clientSecret = '<%= @donation.stripe_client_secret %>'
+      const stripe = Stripe(<%= StripeService.publishable_key.to_json.html_safe %>)
+      const clientSecret = <%= @donation.stripe_client_secret.to_json.html_safe %>
       const appearance = BK.isDark() ? {
         theme: "none",
         variables: {

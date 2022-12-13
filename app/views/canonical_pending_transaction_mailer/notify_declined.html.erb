@@ -25,7 +25,7 @@ A <%= humanized_money_with_symbol @cpt.amount.abs %> <%= @authorization_method %
 <% end %>
 
 <% if Rails.env.development? %>
-  <hr />
+  <hr>
   <p>Development mode metadata:</p>
   <pre>
     <%= json auth: @cpt.raw_pending_stripe_transaction.stripe_transaction %>

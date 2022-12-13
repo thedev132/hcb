@@ -41,12 +41,11 @@
   </tbody>
 </table>
 
-<br/><hr/>
+<br><hr>
 
 <h4>Comments</h4>
 
 <%= render "comments/list_v2", { :blankslate? => true } %>
-
 
 <% if @potential_donation_payouts.present? %>
   <h4>Potential DonationPayouts to Map to</h4>
@@ -65,7 +64,7 @@
     </body>
   </table>
 
-  <br/><hr/>
+  <br><hr>
 <% end %>
 
 <% if @potential_invoice_payouts.present? %>
@@ -84,9 +83,8 @@
     </body>
   </table>
 
-  <br/><hr/>
+  <br><hr>
 <% end %>
-
 
 <% if @canonical_pending_transactions.present? %>
   <h4>Potential Pending Transactions to Map to</h4>
@@ -106,7 +104,7 @@
     </body>
   </table>
 
-  <br/><hr/>
+  <br><hr>
 <% end %>
 
 <h4>Journey</h4>
@@ -142,7 +140,7 @@
 
 <% end %>
 
-<br/><hr/>
+<br><hr>
 
 <h4>System Events</h4>
 
@@ -151,4 +149,4 @@
   <%= (ap ae.properties).html_safe %>
 <% end %>
 
-<br/><hr/>
+<br><hr>

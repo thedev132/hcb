@@ -7,25 +7,25 @@
     <legend>Disbursement</legend>
     <p>
       <%= form.label :source_event_id, "Source event" %>
-      <br/>
+      <br>
       <%= form.collection_select(:source_event_id, Event.reorder(Event::CUSTOM_SORT), :id, :admin_dropdown_description, include_blank: "Select one…") %>
     </p>
 
     <p>
       <%= form.label :event_id, "Destination event" %>
-      <br/>
+      <br>
       <%= form.collection_select(:event_id, Event.reorder(Event::CUSTOM_SORT), :id, :admin_dropdown_description, include_blank: "Select one…") %>
     </p>
 
     <p>
       <%= form.label :name %>
-      <br/>
+      <br>
       <%= form.text_field :name, placeholder: "ex. GitHub Grant", required: true %>
     </p>
 
     <p>
       <%= form.label :amount, "Amount" %>
-      <br/>
+      <br>
       <span class="bold muted" style="width: 1rem;">$</span>
       <%= form.number_field :amount, placeholder: "500.00", step: 0.01, required: true %>
     </p>
@@ -35,4 +35,3 @@
     <%= form.submit "Schedule disbursement" %>
   </p>
 <% end %>
-

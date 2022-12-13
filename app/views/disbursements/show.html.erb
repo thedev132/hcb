@@ -37,7 +37,6 @@
   </ul>
 <% end %>
 
-
 <article class="card max-width-2 mx-auto mt3">
   <section class="mb2">
     <h2 class="mt0 mb0 heading">
@@ -78,7 +77,7 @@
         <strong>Confirmation letter</strong>
           <span class="muted">
             <a href="/disbursements/<%= @disbursement.id %>/confirmation.pdf" target="_blank">
-            <%= organizer_signed_in? ? 'View confirmation letter' : 'Sign in to view'  %>
+            <%= organizer_signed_in? ? 'View confirmation letter' : 'Sign in to view' %>
             </a>
           </span>
       </p>

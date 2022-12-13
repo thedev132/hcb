@@ -10,8 +10,7 @@
       dragenter->file-drop#dragenter
       dragleave->file-drop#dragleave
     "
-  <% end %>
->
+  <% end %>>
     <% if ct.fee_payment? %>
       <td class="transaction__icon tooltipped tooltipped--e" aria-label="Hack Club Bank Fee payment">
         <%= inline_icon "minus-fill" %>
@@ -29,7 +28,7 @@
         <%= inline_icon "payment-transfer" %>
       </td>
     <% elsif ct.raw_stripe_transaction %>
-      <td class="transaction__icon tooltipped tooltipped--e" aria-label="Card transaction<%= !defined?(authorless) && ct.stripe_cardholder ? ' by ' + ct.stripe_cardholder.user.initial_name : ''%>">
+      <td class="transaction__icon tooltipped tooltipped--e" aria-label="Card transaction<%= !defined?(authorless) && ct.stripe_cardholder ? ' by ' + ct.stripe_cardholder.user.initial_name : '' %>">
         <% unless defined?(authorless) || !ct.stripe_cardholder %>
           <%= avatar_for ct.stripe_cardholder.user, 24 %>
         <% else %>

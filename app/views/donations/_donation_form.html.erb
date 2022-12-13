@@ -15,10 +15,10 @@
   </div>
 
   <div class="field">
-    <% if !@event.country_us? %> 
-      <%= form.label :amount, 'Donation amount (USD)' %> 
+    <% if !@event.country_us? %>
+      <%= form.label :amount, 'Donation amount (USD)' %>
     <% else %>
-      <%= form.label :amount, 'Donation amount' %> 
+      <%= form.label :amount, 'Donation amount' %>
     <% end %>
     <div class="flex items-center">
       <span class="bold muted" style="width: 1rem;">$</span>
@@ -28,8 +28,7 @@
                             step: 0.01,
                             min: 1, # Limitations placed by Stripe
                             max: 999_999.99, # Limitations placed by Stripe
-                            required: true, class: 'fit w-100'
-      %>
+                            required: true, class: 'fit w-100' %>
     </div>
   </div>
 

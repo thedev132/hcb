@@ -74,7 +74,7 @@
           <strong><%= partner_donation_fee_type(@partner_donation) %></strong>
           -<%= partner_donation_payment_processor_fee(true, @partner_donation) %>
         </p>
-        <hr class="m0" />
+        <hr class="m0">
         <p>
           <strong>Revenue</strong>
           <%= render_money @partner_donation.payout_amount_cents %>
@@ -87,7 +87,6 @@
   <%= render partial: "hcb_codes/dispute", locals: { type: 'donation', hcb_code: @hcb_code } %>
 
 </div>
-
 
 <% if @partner_donation.payment_method_type == 'card' %>
   <section class="modal modal--scroll bg-snow" data-behavior="modal" role="dialog" id="payment_details">

@@ -47,7 +47,7 @@
         <td class="right-align"></td>
         <td class="right-align"><%= @fees.sum("amount_cents_as_decimal") %></td>
         <td class="right-align"><%= @fees.hack_club_fee.sum("canonical_transactions.amount_cents") %></td>
-        <td class="right-align"><%= @fees.sum("amount_cents_as_decimal") + @fees.hack_club_fee.sum("canonical_transactions.amount_cents")  %></td>
+        <td class="right-align"><%= @fees.sum("amount_cents_as_decimal") + @fees.hack_club_fee.sum("canonical_transactions.amount_cents") %></td>
       </tr>
     </tfoot>
   </table>

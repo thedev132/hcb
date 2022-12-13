@@ -3,9 +3,9 @@
         <td class="muted"><%= name %></td>
         <% if tip %>
           <td class="muted left-align"><span class="tooltipped tooltipped--e" aria-label="<%= tip %>"><%= inline_icon 'info', size: 16 %></span></td>
-        <% else%>
+        <% else %>
           <td></td>
         <% end %>
-        <td class="muted"><%= '+' if change > 0%><%= render_money_amount change %></td>
+        <td class="muted"><%= '+' if change > 0 %><%= render_money_amount change %></td>
         <td class="pl3"><%= render_money balance %></td>
       </tr>

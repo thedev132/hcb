@@ -6,7 +6,7 @@
   <% end %>
   <div>
     <% admin_tools('m0 p0 badge mb2', 'span') do %>
-      <span class="m0 badge bg-muted pointer" onClick="navigator.clipboard.writeText('<%= @event.name %>');">
+      <span class="m0 badge bg-muted pointer" onClick="navigator.clipboard.writeText(<%= @event.name.to_json %>);">
         copy event name
       </span>
     <% end %>

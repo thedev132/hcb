@@ -1,5 +1,5 @@
 <ul class="tab-container">
-    <li class="<%= 'active' if active == 'general'  %>">
+    <li class="<%= 'active' if active == 'general' %>">
         <%= link_to 'General', edit_user_path(@user), data: { turbo: true } %>
     </li>
     <li class="<%= 'active' if active == 'previews' %>">

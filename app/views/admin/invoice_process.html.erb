@@ -1,7 +1,7 @@
 <h1>Process Invoice #<%= @invoice.id %> (<%= @invoice.number %>)</h1>
 <p><small>Current Status: <%= @invoice.state_text %></small></p>
 
-</hr>
+<hr>
 
 <h3>Invoice Details</h3>
 
@@ -34,14 +34,14 @@
     <tr>
       <td style="text-align: right;">Invoice URL:</td>
       <td>
-        <%= link_to "URL", @invoice.hosted_invoice_url, target: :_blank %>, 
+        <%= link_to "URL", @invoice.hosted_invoice_url, target: :_blank %>,
         <%= link_to "PDF", @invoice.invoice_pdf %>
       </td>
     </tr>
   </tbody>
 </table>
 
-<hr/>
+<hr>
 
 <h3>Instructions</h3>
 

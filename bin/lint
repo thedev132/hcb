@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -e
+
+echo "=== Running Rubocop ==="
+bundle exec rubocop
+
+echo "=== Running ERB Lint ==="
+bundle exec erblint app/views/

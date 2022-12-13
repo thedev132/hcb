@@ -26,11 +26,10 @@
         max: (current_user&.admin? ? nil : @event.balance),
         min: 1,
         required: true,
-        'data-behavior': 'check_amount_field'
-        %>
+        'data-behavior': 'check_amount_field' %>
     </div>
       <% if @event.balance <= 0 %>
-        <span class="error">There are no funds to transfer.</br>
+        <span class="error">There are no funds to transfer.<br>
       <% end %>
   </div>
 

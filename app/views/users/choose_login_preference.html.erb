@@ -6,9 +6,9 @@
 <% content_for :head do %>
   <% img = "/brand/hcb-icon-icon-original.png" %>
   <meta name="twitter:card" content="summary">
-  <meta property="og:image" content="<%= img %>"/>
+  <meta property="og:image" content="<%= img %>">
   <meta name="twitter:image" content="<%= img %>">
-  <meta property="og:site_name" content="Hack Club Bank" />
+  <meta property="og:site_name" content="Hack Club Bank">
   <meta property="og:url" content="https://bank.hackclub.com">
   <meta property="og:title" content="Sign in">
   <meta name="twitter:title" content="Sign in">
@@ -22,7 +22,7 @@
     <span class="h3 caps secondary block">Sign in to</span>
     <span class="primary">Hack Club Bank</span>
   </h1>
-  
+
   <p>How would you like to sign in?</p>
 
   <%= form_with url: set_login_preference_users_path, method: :post, data: { "controller" => "webauthn-auth form-disable", "webauthn-auth-target" => "authForm", "action" => "webauthn-auth#submit" } do |form| %>

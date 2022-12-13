@@ -3,7 +3,6 @@
 
 <%= render "events/nav" if @event %>
 
-
 <% if @transaction&.local_hcb_code %>
   <% admin_tools("mt3") do %>
     <p>
@@ -20,7 +19,6 @@
     <%= link_to 'View on Stripe', @transaction.stripe_auth_dashboard_url, class: 'btn bg-accent' %>
   <% end %>
 <% end %>
-
 
 <article class="card mt2">
   <h1 class="heading h1 mt0 mb0">
@@ -145,7 +143,7 @@
         <%= link_to "View", emburse_transfer_path(@transaction.emburse_transfer) %>
       </p>
     <% end %>
-    
+
   </section>
 
   <% unless using_transaction_engine_v2? || @transaction.is_a?(CanonicalTransaction) %>

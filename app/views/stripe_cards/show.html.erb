@@ -37,7 +37,7 @@
             You'll need to update billing information for any subscriptions that use <%= stripe_card_mention @card.replacement_for %>.
           </p>
           <div class="field field--checkbox">
-            <input type="checkbox" id="confirm" data-action="form-disable#run" data-form-disable-target="radioButton" />
+            <input type="checkbox" id="confirm" data-action="form-disable#run" data-form-disable-target="radioButton">
             <label for="confirm">Click here to confirm.</label>
           </div>
           <%= button_to stripe_card_activate_path(@card),
@@ -65,7 +65,7 @@
                   method: :post,
                   class: 'btn bg-accent mt3' do %>
         <%= inline_icon 'freeze' %> Freeze card
-      <%end%>
+      <% end %>
       <%= link_to stripe_card_edit_path(@card), class: "btn bg-success ml1", data: { behavior: "modal_trigger", modal: "name_card" } do %>
         <%= inline_icon "edit" %>
         Name
@@ -83,7 +83,7 @@
   <article class="card max-width-2 mx-auto mt3">
     <h2 class="mt0 heading">
       <span class="flex-auto">
-      <%= user_mention @card.user %><span class="medium muted">'s</span> 
+      <%= user_mention @card.user %><span class="medium muted">'s</span>
       <%= @card.name %> <span class="medium muted">Card</span>
       </span>
     </h2>

@@ -11,7 +11,6 @@
     </span>
   </h2>
 
-
   <section class="card__banner card__darker details-horiz border-top border-bottom">
     <p>
       <strong>Sent by</strong>
@@ -20,7 +19,7 @@
     <% unless @hcb_code.ach_transfer.processor.nil? %>
       <% admin_tools('', 'p') do %>
         <strong>Processed by</strong>
-        <%= user_mention @hcb_code.ach_transfer.processor  %>
+        <%= user_mention @hcb_code.ach_transfer.processor %>
       <% end %>
     <% end %>
     <p>
@@ -37,7 +36,7 @@
 
     <p>
       <strong>Recipient phone</strong>
-      <%= organizer_signed_in? ? @hcb_code.ach_transfer.recipient_tel : 'Sign in to view'  %>
+      <%= organizer_signed_in? ? @hcb_code.ach_transfer.recipient_tel : 'Sign in to view' %>
     </p>
 
     <p>
@@ -52,7 +51,7 @@
 
     <p>
       <strong>Routing number</strong>
-      <%= organizer_signed_in? ? @hcb_code.ach_transfer.routing_number : 'Sign in to view'  %>
+      <%= organizer_signed_in? ? @hcb_code.ach_transfer.routing_number : 'Sign in to view' %>
     </p>
 
     <p>

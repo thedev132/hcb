@@ -9,17 +9,16 @@
   <%= render_money @check.amount %>
 </p>
 
-
 <p>Make this transfer in SVB from the FS Operating into the FS Main</p>
 
 <p>
-	<strong>Amount</strong>
-	<%= render_money @check.amount %>
+  <strong>Amount</strong>
+  <%= render_money @check.amount %>
 </p>
 
 <p>
-	<strong>Transaction Memo</strong>
-	<%= @check.transaction_memo %>
+  <strong>Transaction Memo</strong>
+  <%= @check.transaction_memo %>
 </p>
 
 <%= link_to 'Refund check', check_refund_path(@check), method: :post %>

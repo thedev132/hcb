@@ -7,31 +7,31 @@
     <legend>Organization</legend>
     <p>
       <%= form.label :name, "Name (required)" %>
-      <br/>
+      <br>
       <%= form.text_field :name, placeholder: "Organization Name", required: true %>
     </p>
 
     <p>
       <%= form.label :organizer_email, "Organizer's Email Address" %>
-      <br/>
+      <br>
       <%= form.email_field :organizer_email, placeholder: "Email Address", required: false %>
     </p>
 
     <p>
       <%= form.label :country %>
-      <br />
+      <br>
       <%= form.collection_select :country, Event.countries, :first, :first %>
     </p>
 
     <p>
       <%= form.label :category %>
-      <br />
+      <br>
       <%= form.collection_select :category, Event.categories, :first, :first, { include_blank: 'Select a category'} %>
     </p>
 
     <p>
       <%= form.label :sponsorship_fee, "Sponsorship fee (required)" %>
-      <br/>
+      <br>
       <%= form.number_field :sponsorship_fee, placeholder: "0.07", value: "0.07", required: true, step: "any" %>
     </p>
 
@@ -71,4 +71,3 @@
     <%= form.submit "Create organization" %>
   </p>
 <% end %>
-

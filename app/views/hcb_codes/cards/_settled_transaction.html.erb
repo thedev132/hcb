@@ -94,7 +94,6 @@
         <strong>Fee</strong>
         <%= render_money fee.amount_cents_as_decimal %> (<%= render_percentage fee.event_sponsorship_fee %>)
 
-
         <% admin_tools('py0') do %>
           <%= link_to "[waive fee]", waive_fee_canonical_transaction_url(ct), method: :post if fee.amount_cents_as_decimal > 0 %>
         <% end %>

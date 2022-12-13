@@ -124,6 +124,7 @@ gem "flipper-ui"
 gem "twilio-ruby"
 
 group :development, :test do
+  gem "erb_lint", require: false
   gem "relaxed-rubocop"
   gem "rspec-rails", "~> 5.0.0"
   gem "rubocop"

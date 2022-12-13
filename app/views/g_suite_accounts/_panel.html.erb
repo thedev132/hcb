@@ -34,20 +34,17 @@
             <%= link_to 'Reset password',
                 g_suite_account_reset_password_path(account.id),
                 method: :put,
-                'data-confirm': "Reset the account password for #{account.address}? We’ll email a new password to the backup email."
-            %>
+                'data-confirm': "Reset the account password for #{account.address}? We’ll email a new password to the backup email." %>
             <%= link_to (account.suspended? ? 'Re-activate' : 'Suspend'),
                 g_suite_account_toggle_suspension_path(account.id),
                 method: :put,
-                'data-confirm': "Do you really want to #{account.suspended? ? 're-activate' : 'suspend'} #{account.address}?"
-            %>
+                'data-confirm': "Do you really want to #{account.suspended? ? 're-activate' : 'suspend'} #{account.address}?" %>
             <% end %>
             <%= link_to 'Delete',
               account,
               method: :delete,
               'data-confirm': "Deleting #{account.address} is *permanent, irreversible, and does not back up any data*. Think carefully before you click ok.",
-              class: 'admin-tools' if admin_signed_in?
-            %>
+              class: 'admin-tools' if admin_signed_in? %>
           </div>
         </action>
       </li>

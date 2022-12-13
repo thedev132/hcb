@@ -20,8 +20,7 @@
         Displayed on your
         <%= link_to "donation page",
           @event.donation_page_enabled? ? start_donation_donations_path(@event) : { anchor: "donations" },
-          target: @event.donation_page_enabled? ? "_blank" : nil
-        %>.
+          target: @event.donation_page_enabled? ? "_blank" : nil %>.
       </p>
       <% if @event.logo.attached? %>
         <%= image_tag @event.logo, height: 72 %>
@@ -168,8 +167,7 @@
                 event_toggle_hidden_path(event),
                 method: :put,
                 "data-confirm": "Do you really want to #{event.hidden? ? "un-hide" : "hide"} #{event.name}?",
-                class: "btn bg-success" if event.persisted?
-    %>
+                class: "btn bg-success" if event.persisted? %>
   <% end %>
 
   <% admin_tools do %>

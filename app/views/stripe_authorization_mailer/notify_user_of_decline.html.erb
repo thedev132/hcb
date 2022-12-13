@@ -15,7 +15,7 @@ A <%= render_money @auth.amount %> <%= @authorization_method %> charge to your c
 <% end %>
 
 <% if Rails.env.development? %>
-  <hr />
+  <hr>
   <p>Development mode metadata:</p>
   <pre>
     <%= json auth: @auth.stripe_obj %>

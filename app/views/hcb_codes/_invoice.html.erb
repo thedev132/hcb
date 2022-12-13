@@ -17,7 +17,6 @@
   </div>
 <% end %>
 
-
 <article class="card pb0 mt3 mb3">
   <h2 class="h2 mt0 mx0 border-none flex items-center justify-between">
     <span>
@@ -82,9 +81,9 @@
       <strong>Address</strong>
       <% if organizer_signed_in? %>
         <span>
-        <%= @sponsor.address_line1 %><br />
+        <%= @sponsor.address_line1 %><br>
         <% if @sponsor.address_line2.present? %>
-          <%= @sponsor.address_line2 %><br />
+          <%= @sponsor.address_line2 %><br>
         <% end %>
         <%= @sponsor.address_city %>, <%= @sponsor.address_state %> <%= @sponsor.address_postal_code %>
         </span>
@@ -140,8 +139,7 @@
       (@invoice.archived? ? invoice_unarchive_path(@invoice) : invoice_archive_path(@invoice)),
       disabled: !organizer_signed_in?,
       method: :post,
-      class: 'btn bg-muted'
-    %>
+      class: 'btn bg-muted' %>
   </section>
 </article>
 
@@ -289,5 +287,3 @@
     </article>
   </section>
 <% end %>
-
-

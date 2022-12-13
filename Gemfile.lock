@@ -114,6 +114,13 @@ GEM
       multi_json (~> 1)
       statsd-ruby (~> 1.1)
     benchmark (0.2.0)
+    better_html (2.0.1)
+      actionview (>= 6.0)
+      activesupport (>= 6.0)
+      ast (~> 2.0)
+      erubi (~> 1.4)
+      parser (>= 2.4)
+      smart_properties
     bindata (2.4.10)
     bindex (0.8.1)
     blazer (2.6.3)
@@ -209,6 +216,13 @@ GEM
       dry-initializer (~> 3.0)
       dry-schema (~> 1.9, >= 1.9.1)
     e2mmap (0.1.0)
+    erb_lint (0.3.1)
+      activesupport
+      better_html (>= 2.0.1)
+      parser (>= 2.7.1.4)
+      rainbow
+      rubocop
+      smart_properties
     errbase (0.2.2)
     erubi (1.11.0)
     et-orbi (1.2.7)
@@ -618,6 +632,7 @@ GEM
     sixarm_ruby_unaccent (1.2.0)
     skylight (5.3.3)
       activesupport (>= 5.2.0)
+    smart_properties (1.17.0)
     solargraph (0.44.3)
       backport (~> 1.2)
       benchmark
@@ -740,6 +755,7 @@ DEPENDENCIES
   docusign_esign (~> 3.13)
   dotenv-rails
   dry-validation
+  erb_lint
   factory_bot_rails
   faker
   faraday

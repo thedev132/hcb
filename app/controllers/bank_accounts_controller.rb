@@ -71,7 +71,7 @@ class BankAccountsController < ApplicationController
     @client_name = PlaidService.instance.client_name
     @link_env = PlaidService.instance.env
     @public_key = PlaidService.instance.public_key
-    @product = ["transactions"].to_json.html_safe
+    @product = ["transactions"]
   end
 
   def bank_account_update_params

@@ -39,7 +39,7 @@
     <% unless @hcb_code.disbursement.fulfilled_by.nil? %>
       <% admin_tools('', 'p') do %>
         <strong>Fulfilled by</strong>
-        <%= user_mention @hcb_code.disbursement.fulfilled_by  %>
+        <%= user_mention @hcb_code.disbursement.fulfilled_by %>
       <% end %>
     <% end %>
 
@@ -95,7 +95,7 @@
         <strong>Confirmation letter</strong>
           <span class="muted">
             <a href="/disbursements/<%= @hcb_code.disbursement.id %>/confirmation.pdf" target="_blank">
-            <%= organizer_signed_in? ? 'View confirmation letter' : 'Sign in to view'  %>
+            <%= organizer_signed_in? ? 'View confirmation letter' : 'Sign in to view' %>
             </a>
           </span>
       </p>
@@ -111,4 +111,3 @@
   <% end %>
 
 </article>
-

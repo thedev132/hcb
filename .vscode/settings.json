@@ -19,14 +19,15 @@
   "solargraph.folding": true,
   "solargraph.transport": "external",
   "solargraph.externalServer": {
-		// external server is ran via docker-compose.solargraph.yml
+    // external server is ran via docker-compose.solargraph.yml
     "host": "localhost",
     "port": 7658
   },
-  "[ruby]": {
+  "[ruby][gemfile]": {
     "editor.defaultFormatter": "castwide.solargraph"
   },
-  "[gemfile]": {
-    "editor.defaultFormatter": "castwide.solargraph"
+  "[ruby][gemfile][erb]": {
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true
   }
 }

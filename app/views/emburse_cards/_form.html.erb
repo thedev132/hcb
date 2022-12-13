@@ -28,7 +28,7 @@
 
   <p class="mt0">User email <input type="text" disabled="disabled" value="<%= @emburse_card&.user&.email %>"></p>
   <p class="mt0">Full name <input type="text" disabled="disabled" value="<%= @emburse_card&.user&.full_name || @emburse_card_request.full_name %>"></p>
-  <% if @emburse_card_request&.is_virtual  %>
+  <% if @emburse_card_request&.is_virtual %>
     <div class="field field--checkbox">
       <%= form.check_box :is_virtual, checked: @emburse_card_request&.is_virtual, disabled: true %>
       <%= form.label :is_virtual, 'Is virtual', readonly: true %>

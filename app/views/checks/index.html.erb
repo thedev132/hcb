@@ -15,7 +15,7 @@
   <tbody>
     <tr>
       <td colspan="6" style="text-align: center; font-weight: bold;">
-        SCHEDULED<br/><small>users have up to 48 hours to cancel these checks themselves</small>
+        SCHEDULED<br><small>users have up to 48 hours to cancel these checks themselves</small>
       </td>
     </tr>
     <% Check.scheduled.order(created_at: :desc).each do |check| %>
@@ -30,7 +30,7 @@
     <% end %>
 
     <td colspan="6" style="text-align: center; font-weight: bold;">
-      IN_TRANSIT<br/><small>needs manual processing by operations team</small>
+      IN_TRANSIT<br><small>needs manual processing by operations team</small>
     </td>
 
     <% Check.in_transit.order(created_at: :desc).each do |check| %>
@@ -45,7 +45,7 @@
     <% end %>
 
     <td colspan="6" style="text-align: center; font-weight: bold;">
-      PROCESSED<br/><small>all other checks and their various states</small>
+      PROCESSED<br><small>all other checks and their various states</small>
     </td>
 
     <% Check.where("aasm_state != 'scheduled' and aasm_state != 'in_transit'").order(created_at: :desc).each do |check| %>
@@ -55,7 +55,7 @@
         <td>
           <%= link_to check.event.name, check.event %>
           <% check.t_transactions.each do |t| %>
-            <br/>
+            <br>
             <small><%= link_to "#{t.amount.positive? ? '📈' : '📉'} #{t.name}", t, class: 'h6 muted' %></small>
           <% end %>
         </td>

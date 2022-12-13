@@ -16,6 +16,19 @@ jobs:
         env:
           RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
         run: bundle exec rubocop
+  erblint:
+    name: 'ERB Lint'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '2.7.5'
+          bundler-cache: true
+      - name: Run erblint
+        run: bundle exec erblint app/views/
   rspec:
     name: RSpec
     runs-on: ubuntu-latest

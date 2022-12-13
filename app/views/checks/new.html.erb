@@ -49,12 +49,11 @@
     </div>
   </aside>
 
-
   <div class="container--xs">
     <h1 class="mt0">Send a check</h1>
     <%= render 'new_form', check: @check, lob_address: @lob_address %>
     <div class="actions tooltipped tooltipped--n inline-block mt1" aria-label="Your check will be immediately mailed out by the Bank team">
-      <input type="submit" value="Send check" data-behavior="modal_trigger send_check_modal_trigger" data-modal="confirm_dialog" <%= "disabled" if (!organizer_signed_in? || @event.demo_mode?) %>></input>
+      <input type="submit" value="Send check" data-behavior="modal_trigger send_check_modal_trigger" data-modal="confirm_dialog" <%= "disabled" if (!organizer_signed_in? || @event.demo_mode?) %>><input>
     </div>
   </div>
 
@@ -63,7 +62,7 @@
     <p class="h3 mt0 mb1" data-behavior="modal_confirm_words">You are about to send a check to <span class="bold">%person%</span> for <span class="bold">%amount%</span>.</p>
 
     <p class="">Once you send this check, you can only cancel if you do so in the next 48 hours.</p>
-    
+
     <button class="btn bg-error" data-behavior="submit_check">I understand, send check</button>
   </div>
 </article>

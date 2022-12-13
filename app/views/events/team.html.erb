@@ -14,7 +14,7 @@
       <%= avatar_for position.user, 48, class: 'mr2' %>
       <p class="flex-auto">
         <strong class="h3 block"><%= position.user.full_name || 'Unnamed' %></strong>
-        <%= organizer_signed_in? ? position.user.email : 'Sign in to view email'  %>
+        <%= organizer_signed_in? ? position.user.email : 'Sign in to view email' %>
         <% if admin_signed_in? %>
           <span class="admin-tools inline-block h5">
           phone: <%= position.user.phone_number %>

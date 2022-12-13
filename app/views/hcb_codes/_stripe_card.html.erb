@@ -140,7 +140,7 @@
 <% if organizer_signed_in? %>
 <section class="modal modal--scroll bg-snow" data-behavior="modal" role="dialog" id="merchant_details">
   <%= modal_header 'Merchant details' %>
-  <%@merchant_data = @hcb_code.pt.raw_pending_stripe_transaction.stripe_transaction["merchant_data"] %>
+  <% @merchant_data = @hcb_code.pt.raw_pending_stripe_transaction.stripe_transaction["merchant_data"] %>
 
   <div class="details mb2">
     <p>
@@ -196,7 +196,7 @@
 <% if organizer_signed_in? %>
 <section class="modal modal--scroll bg-snow" data-behavior="modal" role="dialog" id="verification_details">
   <%= modal_header 'Charge details' %>
-  <%@verification_data = @hcb_code.pt.raw_pending_stripe_transaction.stripe_transaction["verification_data"] %>
+  <% @verification_data = @hcb_code.pt.raw_pending_stripe_transaction.stripe_transaction["verification_data"] %>
 
   <article class="details-horiz">
     <div class="mt1 md-mt0" style="width: 100%;">

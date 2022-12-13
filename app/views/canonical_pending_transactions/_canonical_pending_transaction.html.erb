@@ -10,8 +10,7 @@
       dragenter->file-drop#dragenter
       dragleave->file-drop#dragleave
     "
-  <% end %>
->
+  <% end %>>
   <% if pt.raw_pending_outgoing_check_transaction_id %>
     <td class="transaction__icon tooltipped tooltipped--e" aria-label="Outgoing check">
       <%= inline_icon "payment-transfer" %>
@@ -29,7 +28,7 @@
       <%= inline_icon "support" %>
     </td>
   <% elsif pt.raw_pending_stripe_transaction_id %>
-    <td class="transaction__icon tooltipped tooltipped--e" aria-label="Card transaction<%= !defined?(authorless) && pt.stripe_cardholder ? ' by ' + pt.stripe_cardholder.user.initial_name : ''%>">
+    <td class="transaction__icon tooltipped tooltipped--e" aria-label="Card transaction<%= !defined?(authorless) && pt.stripe_cardholder ? ' by ' + pt.stripe_cardholder.user.initial_name : '' %>">
       <% unless defined?(authorless) || !pt.stripe_cardholder %>
         <%= avatar_for pt.stripe_cardholder.user, 24 %>
       <% else %>
@@ -122,7 +121,7 @@
     <%= number_to_currency pt.amount %>
   </td>
   <td>
-    <%= link_to "Details", pt.url if organizer_signed_in? || defined?(force_display_details)  %>
+    <%= link_to "Details", pt.url if organizer_signed_in? || defined?(force_display_details) %>
   </td>
   <% if defined?(receipt_upload_button) %>
     <td style="width: 1%">

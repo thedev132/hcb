@@ -39,7 +39,7 @@
 <% if @event.donation_page_enabled %>
   <section class="modal" data-behavior="modal" role="dialog" id="qr_code">
     <%= modal_header "Donations QR code" %>
-    <img alt="QR code" src="<%= qr_code_donations_path @event %>" />
+    <img alt="QR code" src="<%= qr_code_donations_path @event %>">
   </section>
 
   <section class="modal" data-behavior="modal" role="dialog" id="embed_code">
@@ -90,7 +90,7 @@
   </div>
 </div>
 
-<hr/>
+<hr>
 
 <div style="text-align: center;">
   <%= link_to "All", "?filter=all", class: "filterbar__item", "aria-selected": !["deposited", "in_transit", "refunded"].include?(params[:filter]), role: "tab" %>

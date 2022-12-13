@@ -38,13 +38,13 @@
     </tr>
   </tbody>
 </table>
-<br/>
-<hr/>
+<br>
+<hr>
 <h3>Instructions</h3>
 <p>Context: <%= link_to "see what the user sees", event_g_suite_overview_path(event_id: @g_suite.event.slug) %>.</p>
 
 <% if @g_suite.creating? %>
-  <p>Is this a valid/reasonable domain name? If so, let's approve it!<br/>Check out the URL to see if it seems like they own the domain.<br/>This will generate a verification key for this domain and
+  <p>Is this a valid/reasonable domain name? If so, let's approve it!<br>Check out the URL to see if it seems like they own the domain.<br>This will generate a verification key for this domain and
   email the organizer to let them know they can start setting up their domain's DNS records.</p>
   <% if false %>
     <%# these are the manual instructions %>
@@ -98,11 +98,11 @@
 <% end %>
 
 <% if @g_suite.verified? %>
-  <p>Nothing more to do. This was setup, configured, and verified successfully.<br />
+  <p>Nothing more to do. This was setup, configured, and verified successfully.<br>
   However, if the user is having issues with email delivery or would like to setup DKIM, please see the DKIM key instructions below.</p>
 <% end %>
 
-<hr />
+<hr>
 <h3>DKIM Key</h3>
 <div>
   <small><a href="https://support.google.com/a/answer/174124?hl=en">What is DKIM?</a></small>
@@ -123,7 +123,7 @@
   <%= dkim_key_form.submit "Update DKIM key" %>
 <% end %>
 
-<hr />
+<hr>
 <h3>Delete</h3>
-<p>The following button will destroy the Google Workspace record.<br/>Before proceeding, make sure that there are no active Google Workspace accounts.</p>
+<p>The following button will destroy the Google Workspace record.<br>Before proceeding, make sure that there are no active Google Workspace accounts.</p>
 <%= link_to 'Delete', g_suite_path(@g_suite, event_id: @g_suite.event.slug), method: :delete, data: { confirm: 'Are you sure?' }, class: 'admin-bg-warning p1 rounded link-reset' %>

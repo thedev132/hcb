@@ -1,0 +1,9 @@
+EnableDefaultLinters: true
+linters:
+  ErbSafety:
+    enabled: true
+    exclude:
+      - 'app/views/kaminari/**'
+      - 'app/views/admin/transaction.html.erb'
+  RequireInputAutocomplete:
+    enabled: false

@@ -3,17 +3,17 @@
 <%= render 'events/nav' %>
 
 <% content_for :head do %>
-	<% img = "https://workshop-cards.hackclub.com/#{url_encode(@document_title)}.png?theme=light&fontSize=200px&caption=Documentation&brand=Bank" %>
-	<meta name="twitter:card" content="summary_large_image">
-	<meta property="og:image" content="<%= img %>"/>
-	<meta name="twitter:image" content="<%= img %>">
-	<meta property="og:site_name" content="Hack Club Bank" />
-	<meta property="og:url" content="https://bank.hackclub.com">
-	<meta property="og:title" content="<%= @document_title %>">
-	<meta name="twitter:title" content="<%= @document_title %>">
-	<meta property="og:description" content="<%= @document_subtitle %>">
-	<meta name="twitter:description" content="<%= @document_subtitle %>">
-	<meta name="description" content="<%= @document_subtitle %>">
+  <% img = "https://workshop-cards.hackclub.com/#{url_encode(@document_title)}.png?theme=light&fontSize=200px&caption=Documentation&brand=Bank" %>
+  <meta name="twitter:card" content="summary_large_image">
+  <meta property="og:image" content="<%= img %>">
+  <meta name="twitter:image" content="<%= img %>">
+  <meta property="og:site_name" content="Hack Club Bank">
+  <meta property="og:url" content="https://bank.hackclub.com">
+  <meta property="og:title" content="<%= @document_title %>">
+  <meta name="twitter:title" content="<%= @document_title %>">
+  <meta property="og:description" content="<%= @document_subtitle %>">
+  <meta name="twitter:description" content="<%= @document_subtitle %>">
+  <meta name="description" content="<%= @document_subtitle %>">
 <% end %>
 
 <div style="padding-top: 2rem;">
@@ -51,7 +51,7 @@
         <li><strong>PayPal will charge an additional fee</strong> of around 4% or more, on top of the 7% Bank fee.</li>
       </ul>
       <div class="border-top card__banner card__darker secondary">
-        <strong class="warning">Questions?</strong> 
+        <strong class="warning">Questions?</strong>
           <span>Contact the Bank team at <a href="mailto:bank@hackclub.com">bank@hackclub.com</a></span>
       </div>
     </div>

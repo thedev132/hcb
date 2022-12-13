@@ -15,7 +15,7 @@
       <% end %>
     </span>
   </div>
-  <span class="badge ml0 h5 caps <%= Rails.env.development? ? 'bg-success' : by_season("", fall: "bg-warning") %>"><%= flavor_text.html_safe %></span>
+  <span class="badge ml0 h5 caps <%= Rails.env.development? ? 'bg-success' : by_season("", fall: "bg-warning") %>"><%= flavor_text %></span>
 </h1>
 
 <main class="flex flex-column items-center center pb3">
@@ -33,8 +33,7 @@
         data-controller="<%= "sortable event-sort" if Flipper.enabled?(:event_reordering_2022_10_10, current_user) %>"
         data-sortable-append-to-value="body"
         data-event-sort-organizer-positions-value="<%= @organizer_positions.pluck(:id).to_json %>"
-        data-action="sortable:stop->event-sort#sort"
-      >
+        data-action="sortable:stop->event-sort#sort">
         <% @events.not_hidden.each do |event| %>
           <%= link_to event, style: "max-width: 90vw", class: "draggable text-decoration-none" do %>
             <li class="card card--hover flex flex-column justify-between h-100 mx-auto">
@@ -47,7 +46,7 @@
                 <%= event.name %>
               </strong>
               <% if Flipper.enabled?(:detailed_events_list_2022_10_04, current_user) %>
-                <div class="brand-sans h4 line-height-2 mb2 flex justify-between"> 
+                <div class="brand-sans h4 line-height-2 mb2 flex justify-between">
                   <span style="white-space: nowrap;">
                     <%= inline_icon 'payment', size: 16, class: 'muted align-middle', 'aria-label': 'Dollar sign', style: 'transform: scale(2)' %>
                     <%= async_frame_to event_async_balance_path(event), as: :span do %>
@@ -165,7 +164,6 @@
       <%= card_to "Bank Fees (#{BankFee.in_transit_or_pending.count})", bank_fees_admin_index_path %>
       <%= render partial: 'static_pages/card', locals: { task_path: balances_admin_index_path, human_name: 'Organization Balances' } %>
     </ul>
-
 
     <h2>Admin Tasks</h2>
     <ul class="grid left-align w-100 mt0">
