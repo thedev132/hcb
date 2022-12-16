@@ -21,7 +21,7 @@
 #  has_fiscal_sponsorship_document :boolean
 #  hidden_at                       :datetime
 #  holiday_features                :boolean          default(TRUE), not null
-#  is_public                       :boolean          default(FALSE)
+#  is_public                       :boolean          default(TRUE)
 #  last_fee_processed_at           :datetime
 #  name                            :text
 #  omit_stats                      :boolean          default(FALSE)
