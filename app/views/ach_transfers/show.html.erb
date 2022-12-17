@@ -52,7 +52,7 @@
       <%= @ach_transfer.recipient_name %>
     </p>
 
-    <p>
+    <p class="fs-mask">
       <strong>Recipient phone</strong>
       <%= organizer_signed_in? ? @ach_transfer.recipient_tel : 'Sign in to view' %>
     </p>
@@ -67,12 +67,12 @@
       <%= organizer_signed_in? ? @ach_transfer.bank_name : 'Sign in to view' %>
     </p>
 
-    <p>
+    <p class="fs-mask">
       <strong>Routing number</strong>
       <%= organizer_signed_in? ? @ach_transfer.routing_number : 'Sign in to view' %>
     </p>
 
-    <p>
+    <p class="fs-mask">
       <strong>Account number</strong>
       <%= organizer_signed_in? ? @ach_transfer.account_number : 'Sign in to view' %>
     </p>
