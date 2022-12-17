@@ -116,7 +116,7 @@
 
       <% if @card.virtual? %>
         <% if @card.user == current_user %>
-          <div>
+          <div class="fs-mask">
             <strong>
               Card number
             </strong>
@@ -125,13 +125,13 @@
         <% end %>
 
         <% if @card.user == current_user %>
-        <div>
+        <div class="fs-mask">
           <strong>CVC</strong>
           <%= @card.cvc %>
         </div>
         <% end %>
 
-        <div>
+        <div class="fs-mask">
           <strong>Expiration date</strong>
           <%= render_exp_date %>
         </div>

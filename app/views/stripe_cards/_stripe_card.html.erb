@@ -5,7 +5,7 @@
     <p class="absolute m0" style="right: 0; margin-right: 1.5rem; margin-left: 3.5rem;">
       <%= stripe_card.name %>
     </p>
-    <p class="stripe-card__number">
+    <p class="stripe-card__number fs-mask">
       <%= stripe_card.user == current_user ? stripe_card.formatted_card_number : stripe_card.hidden_card_number %>
     </p>
     <p class="stripe-card__name flex justify-between items-center">
