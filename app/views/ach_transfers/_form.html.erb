@@ -24,12 +24,12 @@
 
   <div class="field">
     <%= form.label :routing_number %>
-    <%= form.text_field :routing_number, placeholder: '123456789', required: true, disabled: @event.demo_mode? %>
+    <%= form.text_field :routing_number, placeholder: '123456789', required: true, disabled: @event.demo_mode?, class: "fs-mask" %>
   </div>
 
   <div class="field">
     <%= form.label :account_number %>
-    <%= form.text_field :account_number, placeholder: '0913338883', required: true, disabled: @event.demo_mode? %>
+    <%= form.text_field :account_number, placeholder: '0913338883', required: true, disabled: @event.demo_mode?, class: "fs-mask" %>
   </div>
 
   <%= form.label :amount, 'Amount' %>

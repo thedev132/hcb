@@ -34,7 +34,7 @@
             <%= d.stripe_name || d.user.full_name if organizer_signed_in? %>
             <%= "(redacted)" unless organizer_signed_in? %>
           </td>
-          <td>
+          <td class="fs-mask">
             <%= d.formatted_card_number if d.user == current_user %>
             <%= d.hidden_card_number if d.user != current_user %>
           </td>
