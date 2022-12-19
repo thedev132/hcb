@@ -48,20 +48,10 @@
           <%= event.country %>
         </td>
         <td>
-          <% if event.omit_stats? %>
-            <span title="🏦 Omitted from stats">🏦</span>
-          <% end %>
-          <% if event.is_public? %>
-            <span title="📈 Transparency mode enabled">📈</span>
-          <% end %>
-          <% if event.hidden_at? %>
-            <span title="🕵️‍♂️ Hidden">🕵️‍♂️</span>
-          <% end %>
-          <% if event.organized_by_hack_clubbers? %>
-            <span title="🦕 Organized by Hack Clubbers">🦕</span>
-          <% end %>
-          <% if event.demo_mode? %>
-            <span title="🧪 Demo Account">🧪</span>
+          <% Event::BADGES.each do |_key, badge| %>
+            <% if event.send(badge[:qualifier]) %>
+              <span title="<%= badge[:emoji] %> <%= badge[:description] %>"><%= badge[:emoji] %></span>
+            <% end %>
           <% end %>
         </td>
         <td>

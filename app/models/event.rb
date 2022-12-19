@@ -182,6 +182,36 @@ class Event < ApplicationRecord
   scope :not_demo_mode, -> { where(demo_mode: false) }
   scope :filter_demo_mode, ->(demo_mode) { demo_mode.nil? || demo_mode.blank? ? all : where(demo_mode: demo_mode) }
 
+  BADGES = {
+    # Qualifier must be a method on Event. If the method returns true, the badge
+    # will be displayed for the event.
+    omit_stats: {
+      qualifier: :omit_stats?,
+      emoji: '🏦',
+      description: 'Omitted from stats'
+    },
+    transparent: {
+      qualifier: :is_public?,
+      emoji: '📈',
+      description: 'Transparency mode enabled'
+    },
+    hidden: {
+      qualifier: :hidden_at?,
+      emoji: '🕵️‍♂️',
+      description: 'Hidden'
+    },
+    organized_by_hack_clubbers: {
+      qualifier: :organized_by_hack_clubbers?,
+      emoji: '🦕',
+      description: 'Organized by Hack Clubbers'
+    },
+    demo_mode: {
+      qualifier: :demo_mode?,
+      emoji: '🧪',
+      description: 'Demo Account'
+    }
+  }.freeze
+
   aasm do
     # All events should be approved prior to creation
     state :approved, initial: true # Full fiscal sponsorship
@@ -308,7 +338,12 @@ class Event < ApplicationRecord
   end
 
   def admin_dropdown_description
-    "#{name} - #{id}"
+    desc = "#{name} - #{id}"
+
+    badges = BADGES.map { |_, badge| send(badge[:qualifier]) ? badge[:emoji] : nil }.compact
+    desc += " [#{badges.join(' ')}]" if badges.any?
+
+    desc
   end
 
   def disbursement_dropdown_description
