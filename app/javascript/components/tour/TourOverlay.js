@@ -25,19 +25,22 @@ const tours = {
         {
           attachTo: 'cards',
           text: 'Instantly issue a virtual debit card for yourself. Gotta spend that 💸!',
-          placement: isMobile ? 'top' : 'right'
+          placement: isMobile ? 'top' : 'right',
+          strategy: 'fixed'
         },
         {
           attachTo: 'donations',
           text: 'Share your donation form with others, and get it embedded on your website.',
-          placement: isMobile ? 'top-end' : 'right'
+          placement: isMobile ? 'top-end' : 'right',
+          strategy: 'fixed'
         }
       )
 
       if (!isMobile) {
         steps.push({
           attachTo: 'perks',
-          text: 'Get access to free tools for things like sending newsletters and managing team passwords. Stickers included.'
+          text: 'Get access to free tools for things like sending newsletters and managing team passwords. Stickers included.',
+          strategy: 'fixed'
         })
       }
     } else {
@@ -79,6 +82,7 @@ export default function TourOverlay(props) {
             text={step.text}
             attachTo={`[data-tour-step='${step.attachTo}']`}
             placement={step.placement ?? 'right'}
+            strategy={step.strategy}
             last={index == tour.length - 1}
             visible={index == currentStep}
             stepIndex={index}

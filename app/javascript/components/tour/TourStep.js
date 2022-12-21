@@ -20,7 +20,8 @@ export default function ({
   visible = false,
   stepIndex,
   stepCount,
-  tourId
+  tourId,
+  ...props
 }) {
   const arrowRef = useRef(null)
 
@@ -35,6 +36,7 @@ export default function ({
   } = useFloating({
     whileElementsMounted: autoUpdate,
     placement,
+    strategy: props.strategy,
     middleware: [
       offset(14),
       shift({ padding: 5 }),
