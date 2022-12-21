@@ -98,11 +98,11 @@ class EventPolicy < ApplicationPolicy
   end
 
   def g_suite_overview?
-    user_or_admin
+    user_or_admin && !record.hardware_grant?
   end
 
   def g_suite_create?
-    user_or_admin && is_not_demo_mode?
+    user_or_admin && is_not_demo_mode? && !record.hardware_grant?
   end
 
   def g_suite_verify?
@@ -114,7 +114,7 @@ class EventPolicy < ApplicationPolicy
   end
 
   def promotions?
-    is_public || user_or_admin
+    (is_public || user_or_admin) && !record.hardware_grant?
   end
 
   def reimbursements?

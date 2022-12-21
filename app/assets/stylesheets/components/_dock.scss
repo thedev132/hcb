@@ -172,6 +172,11 @@
       box-shadow: 0 0 0 2px $dark;
     }
   }
+
+  &.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
 }
 
 // For the mobile-friendly tab bar
