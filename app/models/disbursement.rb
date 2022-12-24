@@ -67,6 +67,7 @@ class Disbursement < ApplicationRecord
 
   scope :processing, -> { in_transit }
   scope :fulfilled, -> { deposited }
+  scope :reviewing_or_processing, -> { where(aasm_state: [:reviewing, :pending, :in_transit]) }
 
   aasm timestamps: true do
     state :reviewing, initial: true # Being reviewed by an admin
@@ -102,8 +103,6 @@ class Disbursement < ApplicationRecord
       transitions from: [:reviewing, :pending], to: :rejected
     end
   end
-
-  scope :reviewing_or_processing, -> { where(fulfilled_at: nil, rejected_at: nil, errored_at: nil).where.not(fulfilled_by_id: nil) }
 
   # Eagerly create HcbCode object
   after_create :local_hcb_code
