@@ -766,7 +766,7 @@ class AdminController < ApplicationController
 
     relation = relation.pending if @pending
     relation = relation.reviewing if @reviewing
-    # relation = relation.processing if @processing # TODO: remove ruby logic from scope
+    relation = relation.processing if @processing
 
     @count = relation.count
     @disbursements = relation.page(@page).per(@per).order("created_at desc")

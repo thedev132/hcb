@@ -36,9 +36,7 @@ module DisbursementService
         end
 
         disbursement.update_column(:fulfilled_at, Time.now)
-        unless disbursement.mark_in_transit!
-          Airbrake.notify("Failed to mark disbursement #{disbursement.id} as in_transit. Current state is #{disbursement.aasm.current_state}.")
-        end
+        disbursement.mark_in_transit!
 
         sleep 5 # helps simulate real clicking
       end

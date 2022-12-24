@@ -65,21 +65,10 @@ class Disbursement < ApplicationRecord
   validate :events_are_different
   validate :events_are_not_demos
 
-  # Disbursement goes through 5 stages:
-  # 1. Reviewing (before human review)
-  # 2. Pending (before automated job tries to process the transfer)
-  # 3. Processing
-  # 4. Fulfilled
-  # or, if not accepted...
-  # 5. Rejected
-  scope :reviewing, -> { where(fulfilled_at: nil, errored_at: nil, rejected_at: nil, fulfilled_by_id: nil).where.not(requested_by_id: nil) }
-  scope :pending, -> {   where(fulfilled_at: nil, errored_at: nil, rejected_at: nil).where.not(fulfilled_by_id: nil) }
-  scope :processing, -> { where.not(fulfilled_at: nil).reject { |d| d.fulfilled? } }
-  scope :fulfilled, -> { where.not(fulfilled_at: nil).select { |d| d.fulfilled? } }
-  scope :rejected, -> { where.not(rejected_at: nil) }
-  scope :errored, -> { where.not(errored_at: nil) }
+  scope :processing, -> { in_transit }
+  scope :fulfilled, -> { deposited }
 
-  aasm create_scopes: false, whiny_transitions: false, timestamps: true do
+  aasm timestamps: true do
     state :reviewing, initial: true # Being reviewed by an admin
     state :pending                  # Waiting to be processed by the TX engine
     state :in_transit               # Transfer started on SVB
@@ -135,30 +124,12 @@ class Disbursement < ApplicationRecord
     @canonical_pending_transactions ||= ::CanonicalPendingTransaction.where(hcb_code: hcb_code)
   end
 
-  def reviewing?
-    !requested_by.nil? && !processed? && !rejected? && !errored? && fulfilled_by.nil?
-  end
-
-  def pending?
-    !reviewing? && !processed? && !rejected? && !errored?
-  end
-
   def processed?
-    fulfilled_at.present?
+    in_transit? || deposited?
   end
 
   def fulfilled?
-    # two transactions, one coming out of source event and another
-    # going into destination event
-    canonical_transactions.size == 2
-  end
-
-  def rejected?
-    rejected_at.present?
-  end
-
-  def errored?
-    errored_at.present?
+    deposited?
   end
 
   def filter_data

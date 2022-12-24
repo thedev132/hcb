@@ -3,7 +3,7 @@
 module DisbursementService
   class Hourly
     def run
-      Disbursement.where(aasm_state: :in_transit).each do |disbursement|
+      Disbursement.in_transit.each do |disbursement|
         if disbursement.canonical_transactions.size == 2
           disbursement.mark_deposited!
         elsif disbursement.canonical_transactions.size > 2
