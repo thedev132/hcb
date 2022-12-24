@@ -30,5 +30,9 @@ module Api
       record.is_public?
     end
 
+    def card_charges?
+      record.is_public?
+    end
+
   end
 end
