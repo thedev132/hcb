@@ -118,6 +118,38 @@ RSpec.describe User, type: :model do
     end
   end
 
+  describe "#locked?" do
+    context "when locked" do
+      it "returns" do
+        user = create(:user, locked_at: Time.now)
+        expect(user).to be_locked
+      end
+    end
+
+    context "when unlocked" do
+      it "returns" do
+        user = create(:user, locked_at: nil)
+        expect(user).not_to be_locked
+      end
+    end
+  end
+
+  describe "#lock!" do
+    it "locks" do
+      user = create(:user, locked_at: nil)
+      user.lock!
+      expect(user).to be_locked
+    end
+  end
+
+  describe "#unlock!" do
+    it "unlocks" do
+      user = create(:user, locked_at: Time.now)
+      user.unlock!
+      expect(user).not_to be_locked
+    end
+  end
+
   describe "#private" do
     describe "#namae" do
       context "when brackets in name" do

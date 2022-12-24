@@ -11,6 +11,7 @@
 #  birthday                    :date
 #  email                       :text
 #  full_name                   :string
+#  locked_at                   :datetime
 #  phone_number                :text
 #  phone_number_verified       :boolean          default(FALSE)
 #  pretend_is_not_admin        :boolean          default(FALSE), not null
@@ -178,6 +179,21 @@ class User < ApplicationRecord
 
   def seasonal_themes_disabled?
     !seasonal_themes_enabled?
+  end
+
+  def locked?
+    locked_at.present?
+  end
+
+  def lock!
+    update!(locked_at: Time.now)
+
+    # Invalidate all sessions
+    user_sessions.destroy_all
+  end
+
+  def unlock!
+    update!(locked_at: nil)
   end
 
   private

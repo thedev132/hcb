@@ -128,10 +128,10 @@ class UsersController < ApplicationController
       return_to = params[:return_to] if params[:return_to].present? && params[:return_to].start_with?(root_url)
       redirect_to(return_to || root_path)
 
-    rescue WebAuthn::SignCountVerificationError => e
+    rescue WebAuthn::SignCountVerificationError, WebAuthn::Error => e
       redirect_to auth_users_path, flash: { error: "Something went wrong." }
-    rescue WebAuthn::Error => e
-      redirect_to auth_users_path, flash: { error: "Something went wrong." }
+    rescue ActiveRecord::RecordInvalid => e
+      redirect_to auth_users_path, flash: { error: e.record.errors&.full_messages&.join(". ") }
     end
   end
 
@@ -170,6 +170,9 @@ class UsersController < ApplicationController
     @force_use_email = params[:force_use_email]
     initialize_sms_params
     return render "login_code", status: :unprocessable_entity
+  rescue ActiveRecord::RecordInvalid => e
+    flash[:error] = e.record.errors&.full_messages&.join(". ")
+    redirect_to auth_users_path
   end
 
   def logout
@@ -247,9 +250,30 @@ class UsersController < ApplicationController
     authorize @user
   end
 
+  def edit_admin
+    @user = params[:id] ? User.friendly.find(params[:id]) : current_user
+    @onboarding = @user.full_name.blank?
+    show_impersonated_sessions = admin_signed_in? || current_session.impersonated?
+    @sessions = show_impersonated_sessions ? @user.user_sessions : @user.user_sessions.not_impersonated
+    authorize @user
+  end
+
   def update
     @user = User.friendly.find(params[:id])
     authorize @user
+
+    locked = params[:user][:locked] == '1'
+    if locked && @user == current_user
+      flash[:error] = 'As much as you might desire to, you cannot lock yourself out.'
+      return redirect_to admin_user_path(@user)
+    elsif locked && @user.admin?
+      flash[:error] = 'Contact a engineer to lock out another admin.'
+      return redirect_to admin_user_path(@user)
+    elsif locked
+      @user.lock!
+    else
+      @user.unlock!
+    end
 
     if @user.update(user_params)
       confetti! if !@user.seasonal_themes_enabled_before_last_save && @user.seasonal_themes_enabled? # confetti if the user enables seasonal themes
@@ -258,7 +282,7 @@ class UsersController < ApplicationController
         flash[:success] = "Profile created!"
         redirect_to root_path
       else
-        flash[:success] = "Updated your profile!"
+        flash[:success] = @user == current_user ? 'Updated your profile!' : "Updated #{@user.first_name}'s profile!"
         redirect_to edit_user_path(@user)
       end
     else

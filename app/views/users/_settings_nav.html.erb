@@ -10,4 +10,11 @@
     <li class="<%= 'active' if active == 'security' %>">
         <%= link_to 'Security', security_user_path(@user), data: { turbo: true } %>
     </li>
+    <% if @user == current_user || current_user.admin? %>
+        <% admin_tools('p0 overflow-hidden', override_pretend: true) do %>
+            <li class="<%= 'active' if active == 'admin' %>">
+              <%= link_to 'Admin', admin_user_path(@user), data: { turbo: true } %>
+            </li>
+        <% end %>
+    <% end %>
 </ul>

@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_12_15_151050) do
+ActiveRecord::Schema.define(version: 2022_12_21_020637) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -1403,6 +1403,7 @@ ActiveRecord::Schema.define(version: 2022_12_15_151050) do
     t.string "api_access_token_bidx"
     t.text "api_access_token_ciphertext"
     t.boolean "seasonal_themes_enabled", default: true, null: false
+    t.datetime "locked_at"
     t.index ["api_access_token_bidx"], name: "index_users_on_api_access_token_bidx", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["slug"], name: "index_users_on_slug", unique: true

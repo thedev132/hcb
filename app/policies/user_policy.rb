@@ -17,6 +17,10 @@ class UserPolicy < ApplicationPolicy
     user.admin? || record == user
   end
 
+  def edit_admin?
+    user.admin? || (record == user && user.admin_override_pretend?)
+  end
+
   def update?
     user.admin? || record == user
   end

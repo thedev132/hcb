@@ -85,6 +85,8 @@ class UserSession < ApplicationRecord
   geocoded_by :ip
   after_validation :geocode, if: ->(session){ session.ip.present? and session.ip_changed? }
 
+  validate :user_is_unlocked, on: :create
+
   def impersonated?
     !impersonated_by.nil?
   end
@@ -100,6 +102,14 @@ class UserSession < ApplicationRecord
 
     # Return self to allow chaining
     self
+  end
+
+  private
+
+  def user_is_unlocked
+    if user.locked? && !impersonated?
+      errors.add(:user, "is locked. Please contact support.")
+    end
   end
 
 end
