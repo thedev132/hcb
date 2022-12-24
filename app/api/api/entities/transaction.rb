@@ -48,6 +48,12 @@ module Api
         hcb_code.event
       end
 
+
+      expose_associated User do |hcb_code, options|
+        hcb_code.stripe_cardholder&.user
+      end
+
+
       expose_associated Tag, documentation: { type: "array" }, as: :tags do |hcb_code, options|
         hcb_code.tags
       end
