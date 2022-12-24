@@ -42,17 +42,33 @@ module Api
 
           hcb_code.canonical_transactions.empty?
         end
+
+        expose :receipts do
+          expose :count, documentation: { type: 'integer' } do |hcb_code, options|
+            hcb_code.receipts.size
+          end
+          expose :missing, documentation: { type: 'boolean' } do |hcb_code, options|
+            # This logic really needs to be moved inside the HcbCode model
+            hcb_code.type == :card_charge &&
+              !hcb_code.no_or_lost_receipt? &&
+              hcb_code.receipts.none?
+          end
+        end
+
+        expose :comments do
+          expose :count, documentation: { type: 'integer' } do |hcb_code, options|
+            hcb_code.not_admin_only_comments_count
+          end
+        end
       end
 
       expose_associated Organization do |hcb_code, options|
         hcb_code.event
       end
 
-
       expose_associated User do |hcb_code, options|
         hcb_code.stripe_cardholder&.user
       end
-
 
       expose_associated Tag, documentation: { type: Tag, is_array: true }, as: :tags do |hcb_code, options|
         hcb_code.tags
