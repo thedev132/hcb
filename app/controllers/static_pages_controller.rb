@@ -16,6 +16,8 @@ class StaticPagesController < ApplicationController
       @events = @service.events
       @organizer_positions = @service.organizer_positions.not_hidden
       @invites = @service.invites
+
+      @show_event_reorder_tip = current_user.organizer_positions.where.not(sort_index: nil).none?
     end
     if admin_signed_in?
       @transaction_volume = CanonicalTransaction.included_in_stats.sum("@amount_cents")

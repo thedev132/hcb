@@ -21,7 +21,7 @@
 <main class="flex flex-column items-center center pb3">
   <% if signed_in? %>
     <% if @events.any? %>
-      <% if Flipper.enabled?(:event_reordering_2022_10_10, current_user) %>
+      <% if @show_event_reorder_tip && Flipper.enabled?(:event_reordering_2022_10_10, current_user) %>
         <% if @events.size > 1 %>
           <%= link_to "https://changelog.bank.hackclub.com/re-order-your-homepage-247413", class: "muted flex items-center justify-end h6 mb1", style: "align-self: baseline", target: "_blank" do %>
             <%= inline_icon "hand-pointer-solid", size: 18, class: "mr1" %> Drag to reorder
