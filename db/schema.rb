@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_12_21_020637) do
+ActiveRecord::Schema.define(version: 2022_12_24_055925) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -343,6 +343,9 @@ ActiveRecord::Schema.define(version: 2022_12_21_020637) do
     t.bigint "requested_by_id"
     t.bigint "fulfilled_by_id"
     t.string "aasm_state"
+    t.datetime "pending_at"
+    t.datetime "in_transit_at"
+    t.datetime "deposited_at"
     t.index ["event_id"], name: "index_disbursements_on_event_id"
     t.index ["fulfilled_by_id"], name: "index_disbursements_on_fulfilled_by_id"
     t.index ["requested_by_id"], name: "index_disbursements_on_requested_by_id"

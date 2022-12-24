@@ -7,9 +7,12 @@
 #  id              :bigint           not null, primary key
 #  aasm_state      :string
 #  amount          :integer
+#  deposited_at    :datetime
 #  errored_at      :datetime
 #  fulfilled_at    :datetime
+#  in_transit_at   :datetime
 #  name            :string
+#  pending_at      :datetime
 #  rejected_at     :datetime
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
@@ -106,6 +109,8 @@ class Disbursement < ApplicationRecord
 
   # Eagerly create HcbCode object
   after_create :local_hcb_code
+
+  alias_attribute :approved_at, :pending_at
 
   def hcb_code
     "HCB-#{TransactionGroupingEngine::Calculate::HcbCode::DISBURSEMENT_CODE}-#{id}"
