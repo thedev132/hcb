@@ -10,21 +10,11 @@ module DisbursementService
     def run
       raise ArgumentError, "Disbursement is already processed" unless @disbursement.reviewing? || @disbursement.pending?
 
-      @disbursement.update!(attrs)
       @disbursement.mark_rejected!(@fulfilled_by)
 
       decline_pending_transactions!
 
       @disbursement
-    end
-
-    private
-
-    def attrs
-      {
-        rejected_at: DateTime.now,
-        fulfilled_by: @fulfilled_by
-      }
     end
 
     def decline_pending_transactions!
