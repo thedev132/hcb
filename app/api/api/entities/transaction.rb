@@ -54,7 +54,7 @@ module Api
       end
 
 
-      expose_associated Tag, documentation: { type: "array" }, as: :tags do |hcb_code, options|
+      expose_associated Tag, documentation: { type: Tag, is_array: true }, as: :tags do |hcb_code, options|
         hcb_code.tags
       end
 
