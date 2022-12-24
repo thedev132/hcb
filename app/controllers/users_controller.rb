@@ -339,6 +339,10 @@ class UsersController < ApplicationController
     redirect_to edit_user_path(current_user)
   end
 
+  def wrapped
+    redirect_to "https://bank-wrapped.hackclub.com/wrapped?user_id=#{current_user.public_id}&org_ids=#{current_user.events.transparent.map(&:public_id).join(",")}"
+  end
+
   private
 
   def user_params

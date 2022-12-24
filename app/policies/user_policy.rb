@@ -49,4 +49,8 @@ class UserPolicy < ApplicationPolicy
     user.admin? || record == user
   end
 
+  def wrapped?
+    user.admin? || record == user
+  end
+
 end
