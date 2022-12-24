@@ -11,6 +11,10 @@ module Api
           expose :date
         end
 
+        expose_associated Card, hide: [Card, Organization, User] do |hcb_code, options|
+          hcb_code.stripe_card
+        end
+
         expose_associated User do |hcb_code, options|
           hcb_code.stripe_cardholder&.user
         end

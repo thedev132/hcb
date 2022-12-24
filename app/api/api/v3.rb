@@ -139,6 +139,20 @@ module Api
         error!({ message: 'Check not found.' }, 404)
       end
 
+      def cards
+        @cards ||= paginate(org.stripe_cards.order(created_at: :desc))
+      end
+
+      def card
+        @card ||=
+          begin
+            id = params[:card_id]
+            StripeCard.find_by_public_id!(id)
+          end
+      rescue ActiveRecord::RecordNotFound
+        error!({ message: 'Card not found.' }, 404)
+      end
+
       # FOR TYPE EXPANSION
       def type_expansion(expand: [], hide: [])
         {
@@ -371,6 +385,28 @@ module Api
           end
         end
 
+        resource :cards do
+          desc 'Return a list of cards' do
+            summary "List an organization's cards"
+            detail ''
+            produces ['application/json']
+            consumes ['application/json']
+            is_array true
+            success Entities::Card
+            failure [[404, "Organization not found. Check the id/slug and make sure Transparency Mode is on.", Entities::ApiError]]
+            tags ["Cards"]
+            nickname "list-an-organizations-cards"
+          end
+          params do
+            use :pagination, per_page: 50, max_per_page: 500
+            use :expand
+          end
+          get do
+            Pundit.authorize(nil, [:api, org], :cards?)
+            present cards, with: Api::Entities::Card, **type_expansion(expand: %w[card])
+          end
+        end
+
       end
 
     end
@@ -513,6 +549,29 @@ module Api
       end
     end
 
+    resource :cards do
+      desc 'Return a single card' do
+        summary "Get a single card"
+        detail ''
+        produces ['application/json']
+        consumes ['application/json']
+        success Entities::Card
+        failure [[404, "Card not found. Check the ID.", Entities::ApiError]]
+        tags ["Cards"]
+        nickname "get-a-single-card"
+      end
+      params do
+        requires :card_id, type: String, desc: 'Card ID'
+        use :expand
+      end
+      route_param :card_id do
+        get do
+          Pundit.authorize(nil, [:api, card], :show?)
+          present card, with: Api::Entities::Card, **type_expansion(expand: %w[card])
+        end
+      end
+    end
+
     resource :transactions do
       desc 'Return a single transaction' do
         summary "Get a single transaction"
@@ -588,6 +647,7 @@ module Api
         Entities::Transfer,
         Entities::Donation,
         Entities::Invoice,
+        Entities::Card,
         Entities::User,
         Entities::ApiError
       ],
@@ -616,6 +676,9 @@ module Api
         },
         {
           name: "Transfers"
+        },
+        {
+          name: "Cards"
         }
       ]
     )

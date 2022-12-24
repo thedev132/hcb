@@ -34,5 +34,9 @@ module Api
       record.is_public?
     end
 
+    def cards?
+      record.is_public?
+    end
+
   end
 end

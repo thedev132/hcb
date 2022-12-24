@@ -43,6 +43,8 @@
 #
 class StripeCard < ApplicationRecord
   include Hashid::Rails
+  include PublicIdentifiable
+  set_public_id_prefix :crd
 
   has_paper_trail
 
