@@ -13,8 +13,9 @@ module UserService
 
       user = User.find_or_initialize_by(email: remote_email)
       user.api_access_token = remote_access_token
-      #               Make all users admin in development mode
-      user.admin_at = Rails.env.development? ? Time.now : remote_admin_at # TODO: remove admin_at as necessary from a 3rd party auth service
+      # User `admin_at` was previously coupled to the Hack Club API. This is no
+      # longer the case.
+      user.admin_at = Time.now if Rails.env.development? # Make all users admin in development mode
       user.save!
 
       user.reload
@@ -40,10 +41,6 @@ module UserService
 
     def remote_email
       get_user_resp[:email]
-    end
-
-    def remote_admin_at
-      get_user_resp[:admin_at]
     end
 
     def error_message
