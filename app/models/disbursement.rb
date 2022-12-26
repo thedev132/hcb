@@ -112,6 +112,12 @@ class Disbursement < ApplicationRecord
 
   alias_attribute :approved_at, :pending_at
 
+  # Returns the perceived time of the transfer to an event with fronting enabled
+  def transferred_at
+    # `approved_at` isn't set on some old disbursements, so fall back to `in_transit_at`.
+    approved_at || in_transit_at
+  end
+
   def hcb_code
     "HCB-#{TransactionGroupingEngine::Calculate::HcbCode::DISBURSEMENT_CODE}-#{id}"
   end

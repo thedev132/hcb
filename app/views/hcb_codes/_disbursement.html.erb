@@ -46,7 +46,7 @@
     <p>
       <% if @hcb_code.disbursement.processed? %>
         <strong>Transferred at</strong>
-        <%= format_datetime @hcb_code.disbursement.fulfilled_at %>
+        <%= format_datetime @hcb_code.disbursement.transferred_at %>
       <% else %>
         <strong>Requested at</strong>
         <%= format_datetime @hcb_code.disbursement.created_at %>

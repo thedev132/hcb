@@ -34,7 +34,6 @@ module DisbursementService
           raise e
         end
 
-        disbursement.update_column(:fulfilled_at, Time.now)
         disbursement.mark_in_transit!
 
         sleep 5 # helps simulate real clicking

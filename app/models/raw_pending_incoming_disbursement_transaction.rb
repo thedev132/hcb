@@ -27,7 +27,7 @@ class RawPendingIncomingDisbursementTransaction < ApplicationRecord
   belongs_to :disbursement
 
   def date
-    disbursement.fulfilled_at || disbursement.created_at
+    disbursement.in_transit_at || disbursement.created_at
   end
 
   def memo

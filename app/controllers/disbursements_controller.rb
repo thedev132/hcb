@@ -99,7 +99,7 @@ class DisbursementsController < ApplicationController
     @disbursement = Disbursement.find(params[:disbursement_id])
     authorize @disbursement
 
-    if @disbursement.update(fulfilled_at: DateTime.now)
+    if @disbursement.mark_in_transit!
       flash[:success] = "Disbursement marked as fulfilled"
       if Disbursement.pending.any?
         redirect_to pending_disbursements_path
