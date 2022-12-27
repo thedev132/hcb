@@ -36,6 +36,8 @@
 #  fk_rails_...  (source_event_id => events.id)
 #
 class Disbursement < ApplicationRecord
+  self.ignored_columns = ["fulfilled_at"]
+
   include PgSearch::Model
   pg_search_scope :search_name, against: [:name]
 
