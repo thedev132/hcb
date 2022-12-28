@@ -11,6 +11,7 @@ module Api
             fulfilled
             processing
             rejected
+            canceled
             errored
             under_review
             pending

@@ -155,10 +155,6 @@ class Disbursement < ApplicationRecord
     }
   end
 
-  def status
-    state
-  end
-
   def state
     if fulfilled?
       :success
@@ -179,6 +175,8 @@ class Disbursement < ApplicationRecord
     end
   end
 
+  alias_method :status, :state
+
   def v3_api_state
     state_text.underscore
   end
@@ -192,6 +190,8 @@ class Disbursement < ApplicationRecord
       else
         "processing"
       end
+    elsif rejected? && approved_at.present? # Disbursements that were approved, then rejected
+      "canceled"
     elsif rejected?
       "rejected"
     elsif errored?
