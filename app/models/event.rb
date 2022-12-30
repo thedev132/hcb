@@ -209,6 +209,11 @@ class Event < ApplicationRecord
       qualifier: :demo_mode?,
       emoji: '🧪',
       description: 'Demo Account'
+    },
+    winter_hardware_grant: {
+      qualifier: :hardware_grant?,
+      emoji: '❄️',
+      description: 'Winter hardware grant'
     }
   }.freeze
 
