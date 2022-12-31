@@ -206,6 +206,24 @@ module Api
       }
     end
 
+    desc 'Return a list of transparent organizations' do
+      summary "Get a list of transparent organizations"
+      detail "Returns a list of organizations in <a href='https://changelog.bank.hackclub.com/transparent-finances-(optional-feature)-151427'><strong>Transparency Mode</strong></a> that have opted in to public listing."
+      failure [[404]]
+      produces ['application/json']
+      consumes ['application/json']
+      success Entities::Organization
+      tags ["Organizations"]
+      nickname "list-transparent-organizations"
+    end
+    params do
+      use :pagination, per_page: 50, max_per_page: 500
+      use :expand
+    end
+    get :organizations do
+      present Event.indexable, with: Api::Entities::Organization, **type_expansion(expand: %w[organization user])
+    end
+
     resource :organizations do
       desc 'Return a transparent organization' do
         summary 'Get a single organization'

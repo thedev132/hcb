@@ -119,8 +119,12 @@
       <%= form.check_box :is_public %>
       <%= form.label :is_public, "Enable Transparency Mode" %>
     </div>
-    <% if false %> <%# Holiday features disabled site-wide %>
-      <div class="field field--checkbox" data-behavior="holiday_features_transparency <% if !event.is_public? %>autohide<% end %>">
+    <div class="field field--checkbox" data-behavior="additional_transparency_settings <% if !event.is_public? %>autohide<% end %>">
+      <%= form.check_box :is_indexable %>
+      <%= form.label :is_indexable, "List #{@event.name} in Hack Club Bank public directory" %>
+    </div>
+    <% unless @hide_holiday_features || !winter? %>
+      <div class="field field--checkbox" data-behavior="additional_transparency_settings <% if !event.is_public? %>autohide<% end %>">
         <%= form.check_box :holiday_features %>
         <%= form.label :holiday_features, "Enable Holiday Features ⛄ for Transparency Mode" %>
       </div>

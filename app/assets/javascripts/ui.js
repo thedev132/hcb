@@ -321,14 +321,14 @@ $(document).on('turbo:load', function () {
     })
   }
 
-  if (BK.thereIs('holiday_features_transparency')) {
-    const holidayFeaturesTransparency = BK.s('holiday_features_transparency')
+  if (BK.thereIs('additional_transparency_settings')) {
+    const additionalTransparencySettings = BK.s('additional_transparency_settings')
     const transparencyToggle = $('#event_is_public')
     $(transparencyToggle).on('change', e => {
       if (e.target.checked) {
-        holidayFeaturesTransparency.slideDown()
+        additionalTransparencySettings.slideDown()
       } else {
-        holidayFeaturesTransparency.slideUp()
+        additionalTransparencySettings.slideUp()
       }
     })
   }

@@ -82,6 +82,7 @@ class Event < ApplicationRecord
   scope :pending_or_unapproved, -> { where(aasm_state: [:pending, :unapproved]) }
   scope :transparent, -> { where(is_public: true) }
   scope :not_transparent, -> { where(is_public: false) }
+  scope :indexable, -> { where(is_public: true, is_indexable: true) }
   scope :omitted, -> { where(omit_stats: true) }
   scope :not_omitted, -> { where(omit_stats: false) }
   scope :hidden, -> { where("hidden_at is not null") }
