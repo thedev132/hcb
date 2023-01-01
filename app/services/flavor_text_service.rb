@@ -28,7 +28,9 @@ class FlavorTextService
     [
       "Hack the Bank Mode",
       "Development Mode",
-      "super secret admin mode"
+      "super secret admin mode",
+      "Puts the 'dev' in 'financially devious'!",
+      "Rails.env.fun?"
     ]
   end
 
@@ -109,7 +111,9 @@ class FlavorTextService
       "I heard next year is a water game",
       "Did you bring enough #{%w[zip-ties ductape].sample}?",
       "Duct tape, ductape, duck tape",
-      "🦆 📼"
+      "🦆 📼",
+      "Build season? Bank season!",
+      "Build season already?"
     ]
   end
 
@@ -473,7 +477,10 @@ class FlavorTextService
       "<a href='https://assemble.hackclub.com' target='_blank' style='color: inherit'>dogfooded by us!</a>".html_safe,
       "<strike>Runs on Airtable™</strike>".html_safe,
       "Got a hankering for some Bankering?",
-      "<marquee scrollamount='5'>💸💸💸</marquee>".html_safe
+      "<marquee scrollamount='5'>💸💸💸</marquee>".html_safe,
+      "Wow, that’s a lot of money. Need some help carrying it?",
+      "I would rather check my Facebook than face my checkbook.",
+      "The only part not outstanding is our balance"
     ]
   end
 
