@@ -86,11 +86,7 @@ class StaticPagesController < ApplicationController
       count
     end
 
-    if @missing_receipt_count.zero?
-      head :ok
-    else
-      render :my_missing_receipts_icon, layout: false
-    end
+    render :my_missing_receipts_icon, layout: false
   end
 
   def my_inbox
