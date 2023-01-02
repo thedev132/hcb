@@ -32,7 +32,7 @@ class EventsController < ApplicationController
       @tag = Tag.find_by(event_id: @event.id, label: params[:tag])
     end
 
-    @organizers = @event.organizer_positions.includes(:user)
+    @organizers = @event.organizer_positions.includes(:user).order(created_at: :desc)
     @pending_transactions = _show_pending_transactions
 
     if !signed_in? && !@event.holiday_features
@@ -71,7 +71,7 @@ class EventsController < ApplicationController
 
   def team
     authorize @event
-    @positions = @event.organizer_positions.includes(:user)
+    @positions = @event.organizer_positions.includes(:user).order(created_at: :desc)
     @pending = @event.organizer_position_invites.pending.includes(:sender)
   end
 
