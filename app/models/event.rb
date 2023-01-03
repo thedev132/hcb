@@ -82,7 +82,7 @@ class Event < ApplicationRecord
   scope :pending_or_unapproved, -> { where(aasm_state: [:pending, :unapproved]) }
   scope :transparent, -> { where(is_public: true) }
   scope :not_transparent, -> { where(is_public: false) }
-  scope :indexable, -> { where(is_public: true, is_indexable: true) }
+  scope :indexable, -> { where(is_public: true, is_indexable: true, demo_mode: false) }
   scope :omitted, -> { where(omit_stats: true) }
   scope :not_omitted, -> { where(omit_stats: false) }
   scope :hidden, -> { where("hidden_at is not null") }
@@ -327,7 +327,8 @@ class Event < ApplicationRecord
     event: 3,
     'high school hackathon': 4,
     'robotics team': 5,
-    'hardware grant': 6
+    'hardware grant': 6,
+    'hack club hq': 7
   }
 
   def country_us?

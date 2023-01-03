@@ -210,6 +210,7 @@ module Api
       summary "Get a list of transparent organizations"
       detail "Returns a list of organizations in <a href='https://changelog.bank.hackclub.com/transparent-finances-(optional-feature)-151427'><strong>Transparency Mode</strong></a> that have opted in to public listing."
       failure [[404]]
+      is_array true
       produces ['application/json']
       consumes ['application/json']
       success Entities::Organization
