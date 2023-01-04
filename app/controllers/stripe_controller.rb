@@ -27,14 +27,18 @@ class StripeController < ApplicationController
       head 400
       return
     end
-
-    head 200
   end
 
   private
 
   def handle_issuing_authorization_request(event)
-    ::StripeAuthorizationService::Webhook::HandleIssuingAuthorizationRequest.new(stripe_event: event).run
+    approved = ::StripeAuthorizationService::Webhook::HandleIssuingAuthorizationRequest.new(stripe_event: event).run
+
+    response.set_header "Stripe-Version", "2022-08-01"
+
+    render json: {
+      approved: approved
+    }
   end
 
   def handle_issuing_authorization_created(event)
@@ -45,6 +49,8 @@ class StripeController < ApplicationController
 
     # put the transaction on the pending ledger in almost realtime
     ::StripeAuthorizationJob::CreateFromWebhook.perform_later(auth_id)
+
+    head 200
   end
 
   def handle_issuing_authorization_updated(event)
@@ -54,6 +60,8 @@ class StripeController < ApplicationController
     sa = StripeAuthorization.find_or_initialize_by(stripe_id: auth[:id])
     sa.sync_from_stripe!
     sa.save
+
+    head 200
   end
 
   def handle_issuing_transaction_created(event)
@@ -62,17 +70,23 @@ class StripeController < ApplicationController
     return unless amount < 0
 
     TopupStripeJob.perform_later
+
+    head 200
   end
 
   def handle_issuing_card_updated(event)
     card = StripeCard.find_by(stripe_id: event[:data][:object][:id])
     card.sync_from_stripe!
     card.save
+
+    head 200
   end
 
   def handle_charge_succeeded(event)
     charge = event[:data][:object]
     ::PartnerDonationService::HandleWebhookChargeSucceeded.new(charge).run
+
+    head 200
   end
 
   def handle_invoice_paid(event)
@@ -88,6 +102,8 @@ class StripeController < ApplicationController
       cpt = ::PendingTransactionEngine::CanonicalPendingTransactionService::ImportSingle::Invoice.new(raw_pending_invoice_transaction: rpit).run
       ::PendingEventMappingEngine::Map::Single::Invoice.new(canonical_pending_transaction: cpt).run
     end
+
+    head 200
   end
 
   def handle_charge_dispute_funds_withdrawn(event)
@@ -118,6 +134,7 @@ class StripeController < ApplicationController
       invoice.canonical_pending_transactions.update_all(fronted: false)
     end
 
+    head 200
   end
 
 end

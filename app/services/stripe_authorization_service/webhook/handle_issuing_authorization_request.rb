@@ -8,17 +8,7 @@ module StripeAuthorizationService
       end
 
       def run
-        # 1. approve or decline
-        if approve?
-          StripeService::Issuing::Authorization.approve(auth_id)
-        else
-          StripeService::Issuing::Authorization.decline(auth_id)
-        end
-
-        # The actual pending transaction is not created here, because Stripe is about to send us an `issuing_authorization.created` webhook event.
-        # See `StripeController#handle_issuing_authorization_created`
-        #
-        # ~ @cjdenio
+        approve?
       end
 
       private
