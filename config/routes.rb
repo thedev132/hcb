@@ -115,9 +115,6 @@ Rails.application.routes.draw do
     end
   end
 
-  # webhooks
-  post "webhooks/donations", to: "donations#accept_donation_hook"
-
   resources :admin, only: [] do
     collection do
       get "twilio_messaging", to: "admin#twilio_messaging"

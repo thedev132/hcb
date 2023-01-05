@@ -79,43 +79,6 @@ class DonationsController < ApplicationController
     end
   end
 
-  def accept_donation_hook
-    payload = request.body.read
-    sig_header = request.headers['Stripe-Signature']
-    event = nil
-
-    begin
-      event = StripeService.construct_webhook_event(payload, sig_header, :donations)
-    rescue Stripe::SignatureVerificationError
-      head 400
-      return
-    end
-
-    # only proceed if payment intent is a donation and not an invoice
-    return unless event.data.object.metadata[:donation].present?
-
-    # get donation to process
-    donation = Donation.find_by_stripe_payment_intent_id(event.data.object.id)
-
-    pi = StripeService::PaymentIntent.retrieve(
-      id: donation.stripe_payment_intent_id,
-      expand: ["charges.data.balance_transaction"]
-    )
-    donation.set_fields_from_stripe_payment_intent(pi)
-    donation.save!
-
-    DonationService::Queue.new(donation_id: donation.id).run # queues/crons payout. DEPRECATE. most is unnecessary if we just run in a cron
-
-    donation.send_receipt!
-
-    # Import the donation onto the ledger
-    rpdt = ::PendingTransactionEngine::RawPendingDonationTransactionService::Donation::ImportSingle.new(donation: donation).run
-    cpt = ::PendingTransactionEngine::CanonicalPendingTransactionService::ImportSingle::Donation.new(raw_pending_donation_transaction: rpdt).run
-    ::PendingEventMappingEngine::Map::Single::Donation.new(canonical_pending_transaction: cpt).run
-
-    return true
-  end
-
   def qr_code
     qrcode = RQRCode::QRCode.new(start_donation_donations_url(@event))
 
