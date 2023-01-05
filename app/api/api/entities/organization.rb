@@ -6,6 +6,20 @@ module Api
       when_expanded do
         expose :name
         expose :slug
+        expose :category, documentation: {
+          values: %w[
+            hackathon
+            high_school_hackathon
+            event
+            hack_club
+            nonprofit
+            robotics_team
+            hardware_grant
+            hack_club_hq
+          ]
+        } do |organization|
+          organization.category&.underscore
+        end
         expose :is_public, as: :transparent, documentation: { type: "boolean" }
         expose :logo do |organization|
           organization.logo.attached? ? Rails.application.routes.url_helpers.url_for(organization.logo) : nil
