@@ -6,16 +6,21 @@
 
   <nav class="dock">
     <%= dock_item 'Home',
-      'See all your organizations.',
-      'home', root_path %>
+      root_path,
+      tooltip: 'See all your organizations.',
+      icon: 'home' %>
     <%= dock_item 'Cards',
-      'See all your cards.',
-      'card', my_cards_path %>
+      my_cards_path,
+      tooltip: 'See all your cards.',
+      icon: 'card' %>
     <%= dock_item 'Receipts',
-      'See transactions awaiting receipts.',
-      'payment-docs', my_inbox_path, nil, my_missing_receipts_icon_path %>
+      my_inbox_path,
+      tooltip: 'See transactions awaiting receipts.',
+      icon: 'payment-docs',
+      async_badge: my_missing_receipts_icon_path %>
     <%= dock_item 'Settings',
-      'Edit account settings.',
-      'settings', my_settings_path %>
+      my_settings_path,
+      tooltip: 'Edit account settings.',
+      icon: 'settings' %>
   </nav>
 <% end %>

@@ -14,47 +14,43 @@
   <!-- add project switcher here -->
   <nav class="dock">
     <%= dock_item 'Invoices',
-      'Collect sponsor payments',
-      'briefcase',
-      event_invoices_path(event_id: @event.slug) unless !@event.approved? %>
+      event_invoices_path(event_id: @event.slug),
+      tooltip: 'Collect sponsor payments',
+      icon: 'briefcase' unless !@event.approved? %>
     <%= dock_item 'Cards',
-      'Manage team debit cards',
-      'card',
       event_cards_overview_path(event_id: @event.slug),
-      nil,
-      nil,
-      data: { "tour-step" => "cards" } unless !@event.approved? %>
+      tooltip: 'Manage team debit cards',
+      icon: 'card',
+      data: { tour_step: "cards" } unless !@event.approved? %>
     <%= dock_item 'Transfers',
-      'Send & transfer money',
-      'transactions',
-      event_transfers_path(event_id: @event.slug) %>
+      event_transfers_path(event_id: @event.slug),
+      tooltip: 'Send & transfer money',
+      icon: 'transactions' %>
     <%= dock_item 'Donations',
-      'Receive donations online',
-      'support',
       @event.partner.external? ? event_partner_donation_overview_path(event_id: @event.slug) :
       event_donation_overview_path(event_id: @event.slug),
-      nil,
-      nil,
-      data: { "tour-step" => "donations" } unless !@event.approved? %>
+      tooltip: 'Receive donations online',
+      icon: 'support',
+      data: { tour_step: "donations" } unless !@event.approved? %>
     <%= dock_item 'Perks',
-      (@event.hardware_grant? ? 'Not available for Winter Hardware Wonderland accounts' : 'Receive promos & discounts'),
-      'shirt',
-       event_promotions_path(event_id: @event.slug),
-       :lg,
-       nil,
-       data: { "tour-step": "perks" }, disabled: @event.hardware_grant? unless !@event.approved? %>
+      event_promotions_path(event_id: @event.slug),
+      tooltip: (@event.hardware_grant? ? 'Not available for Winter Hardware Wonderland accounts' : 'Receive promos & discounts'),
+      icon: 'shirt',
+      data: { tour_step: "perks" },
+      disabled: @event.hardware_grant? unless !@event.approved? %>
     <%= dock_item "Google #{content_tag(:span, 'Workspace', class: 'sm-hide md-hide')}",
-      (@event.hardware_grant? ? 'Not available for Winter Hardware Wonderland accounts' : 'Set up domain Gmail'),
-      'google',
-       event_g_suite_overview_path(event_id: @event.slug), :lg, nil, disabled: @event.hardware_grant? %>
+      event_g_suite_overview_path(event_id: @event.slug),
+      tooltip: (@event.hardware_grant? ? 'Not available for Winter Hardware Wonderland accounts' : 'Set up domain Gmail'),
+      icon: 'google',
+      disabled: @event.hardware_grant? %>
     <%= dock_item 'Documentation',
-      'Commonly asked questions and how-tos',
-      'info',
-      event_documentation_path(event_id: @event.slug), :lg %>
+      event_documentation_path(event_id: @event.slug),
+      tooltip: 'Commonly asked questions and how-tos',
+      icon: 'info' %>
     <%= dock_item 'Settings',
-      'Edit project settings',
-      'project-settings',
-      edit_event_path(@event) %>
+      edit_event_path(@event),
+      tooltip: 'Edit project settings',
+      icon: 'project-settings' %>
     <div class="dock__overflow">
       <action type="button" class="pop primary menu__toggle" data-behavior="menu_toggle" aria-expanded="false" tabindex="0">
         <%= inline_icon 'more' %>
