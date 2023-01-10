@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import PropTypes from "prop-types";
 import TourStep from './TourStep'
 import csrf from '../../common/csrf'
 
@@ -55,7 +56,7 @@ const tours = {
   }
 }
 
-export default function TourOverlay(props) {
+function TourOverlay(props) {
   const [currentStep, setCurrentStep] = useState(props.step)
 
   const tour = props.tour && tours[props.tour](props.options)
@@ -126,3 +127,13 @@ export default function TourOverlay(props) {
     </div>
   )
 }
+
+TourOverlay.propTypes = {
+  step: PropTypes.number,
+  id: PropTypes.number,
+  options: PropTypes.object,
+  tour: PropTypes.string,
+  backToTour: PropTypes.string,
+}
+
+export default TourOverlay

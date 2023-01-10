@@ -41,7 +41,7 @@ class Card extends React.Component {
   }
 
   async updateCount() {
-    const start = Date.now()
+    // const start = Date.now()
     await fetch('/admin_task_size?task_name=' + this.props.taskName)
       .then(t => t.json())
       .then(data => {
@@ -79,6 +79,7 @@ class Card extends React.Component {
       <a
         href={this.props.taskPath}
         target="_blank"
+        rel="noreferrer"
         className="regular link-reset black"
       >
         <li className="card card--item card--hover flex justify-between overflow-visible line-height-3">

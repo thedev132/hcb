@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-const StripeChargeLookup = _props => {
+const StripeChargeLookup = () => {
   const [search, setSearch] = useState('')
   const [results, setResults] = useState({})
 

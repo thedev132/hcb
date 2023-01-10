@@ -5,7 +5,7 @@ import createPersistedState from 'use-persisted-state'
 const useSnow = createPersistedState('shallItSnow')
 
 export default function Snow() {
-  const [snow, setSnow] = useSnow(true)
+  const [snow] = useSnow(true)
 
   return <>{snow ? <Snowfall /> : null}</>
 }

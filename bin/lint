@@ -7,3 +7,6 @@ bundle exec rubocop -a
 
 echo "=== Running ERB Lint ==="
 bundle exec erblint app/views/ -a
+
+echo "=== Running ESLint ==="
+yarn lint --fix

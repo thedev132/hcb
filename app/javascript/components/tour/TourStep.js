@@ -1,4 +1,5 @@
 import React, { useEffect, useLayoutEffect, useMemo, useRef } from 'react'
+import PropTypes from 'prop-types'
 import {
   useFloating,
   autoUpdate,
@@ -8,9 +9,8 @@ import {
 } from '@floating-ui/react-dom'
 import Icon from '@hackclub/icons'
 import clsx from 'clsx'
-import csrf from '../../common/csrf'
 
-export default function ({
+function TourStep({
   text,
   attachTo,
   placement,
@@ -20,7 +20,6 @@ export default function ({
   visible = false,
   stepIndex,
   stepCount,
-  tourId,
   ...props
 }) {
   const arrowRef = useRef(null)
@@ -180,3 +179,32 @@ export default function ({
     </div>
   )
 }
+
+TourStep.propTypes = {
+  text: PropTypes.string.isRequired,
+  attachTo: PropTypes.string.isRequired,
+  placement: PropTypes.oneOf([
+    'top',
+    'top-start',
+    'top-end',
+    'right',
+    'right-start',
+    'right-end',
+    'bottom',
+    'bottom-start',
+    'bottom-end',
+    'left',
+    'left-start',
+    'left-end'
+  ]).isRequired,
+  strategy: PropTypes.oneOf(['absolute', 'fixed']),
+  onNext: PropTypes.func.isRequired,
+  onSkip: PropTypes.func.isRequired,
+  last: PropTypes.bool,
+  visible: PropTypes.bool,
+  stepIndex: PropTypes.number.isRequired,
+  stepCount: PropTypes.number.isRequired,
+  tourId: PropTypes.number.isRequired
+}
+
+export default TourStep

@@ -16,7 +16,7 @@ class PreviewLink extends React.Component {
 
   handleCopy(e) {
     e.preventDefault()
-    let copyText = this.refs.inputField
+    let copyText = this.inputField
 
     copyText.select()
     copyText.setSelectionRange(0, copyText.value.length)
@@ -80,7 +80,7 @@ class PreviewLink extends React.Component {
                     readOnly={true}
                     name="prefill-url"
                     type="text"
-                    ref="inputField"
+                    ref={(c) => this.inputField = c}
                      />
             <span className="ml1 tooltipped tooltipped--w cursor-pointer"
                   aria-label={this.state.copy ? '✅ Copied to clipboard!' : 'Copy link'}

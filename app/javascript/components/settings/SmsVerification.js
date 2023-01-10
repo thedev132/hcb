@@ -1,5 +1,6 @@
 import HttpClient from "../../common/http";
 import React, { useState } from 'react';
+import PropTypes from "prop-types"
 
 const SmsVerification = ({ phoneNumber }) => {
   const [errors, setErrors] = useState([])
@@ -21,8 +22,6 @@ const SmsVerification = ({ phoneNumber }) => {
       } else {
         setErrors(["something went wrong!"])
       }
-    } catch (e) {
-
     } finally {
       document.getElementById('verification-code').focus()
       setLoading(false)
@@ -38,10 +37,10 @@ const SmsVerification = ({ phoneNumber }) => {
     await HttpClient.post(
       '/users/complete_sms_auth_verification',
       { code },
-    ).then((res) => {
+    ).then(() => {
       setErrors([])
       setValidationSuccess(true)
-    }).catch(e => {
+    }).catch(() => {
       setErrors(["⚠️ Invalid code. Did you type it in correctly?"])
     })
     setLoading(false)
@@ -77,7 +76,7 @@ const SmsVerification = ({ phoneNumber }) => {
         <>
           {(validationSent) && (
             <>
-              <p>We've just sent a code to {phoneNumber}. It should arrive in the next 5 to 30 seconds depending on your connection.</p>
+              <p>We&apos;ve just sent a code to {phoneNumber}. It should arrive in the next 5 to 30 seconds depending on your connection.</p>
               <div className="flex">
                 <form onSubmit={handleSubmit}>
                   <input type="tel" id="verification-code" autoComplete="off" onSubmit={handleSubmit} onInput={handleInput} placeholder="XXX-XXX" value={code} className="mb1" required />
@@ -96,5 +95,9 @@ const SmsVerification = ({ phoneNumber }) => {
     </>
   )
 }
+
+SmsVerification.propTypes = {
+  phoneNumber: PropTypes.string.isRequired,
+};
 
 export default SmsVerification;
