@@ -18,7 +18,7 @@ module Api
             hack_club_hq
           ]
         } do |organization|
-          organization.category&.underscore
+          organization.category&.parameterize&.underscore
         end
         expose :is_public, as: :transparent, documentation: { type: "boolean" }
         expose :logo do |organization|
