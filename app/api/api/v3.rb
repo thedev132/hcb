@@ -218,7 +218,7 @@ module Api
       nickname "list-transparent-organizations"
     end
     params do
-      use :pagination, per_page: 50, max_per_page: 500
+      use :pagination, per_page: 50, max_per_page: 100
       use :expand
     end
     get :organizations do
@@ -263,7 +263,7 @@ module Api
             nickname "list-an-organizations-transactions"
           end
           params do
-            use :pagination, per_page: 50, max_per_page: 500
+            use :pagination, per_page: 50, max_per_page: 100
             use :expand
           end
           get do
@@ -285,7 +285,7 @@ module Api
             nickname "list-an-organizations-card-charges"
           end
           params do
-            use :pagination, per_page: 50, max_per_page: 500
+            use :pagination, per_page: 50, max_per_page: 100
             use :expand
           end
           get do
@@ -307,7 +307,7 @@ module Api
             nickname "list-an-organizations-donations"
           end
           params do
-            use :pagination, per_page: 50, max_per_page: 500
+            use :pagination, per_page: 50, max_per_page: 100
             use :expand
           end
           get do
@@ -329,7 +329,7 @@ module Api
             nickname "list-an-organizations-transfers"
           end
           params do
-            use :pagination, per_page: 50, max_per_page: 500
+            use :pagination, per_page: 50, max_per_page: 100
             use :expand
           end
           get do
@@ -351,7 +351,7 @@ module Api
             nickname "list-an-organizations-invoices"
           end
           params do
-            use :pagination, per_page: 50, max_per_page: 500
+            use :pagination, per_page: 50, max_per_page: 100
             use :expand
           end
           get do
@@ -373,7 +373,7 @@ module Api
             nickname "list-an-organizations-ach-transfers"
           end
           params do
-            use :pagination, per_page: 50, max_per_page: 500
+            use :pagination, per_page: 50, max_per_page: 100
             use :expand
           end
           get do
@@ -395,7 +395,7 @@ module Api
             nickname "list-an-organizations-checks"
           end
           params do
-            use :pagination, per_page: 50, max_per_page: 500
+            use :pagination, per_page: 50, max_per_page: 100
             use :expand
           end
           get do
@@ -417,7 +417,7 @@ module Api
             nickname "list-an-organizations-cards"
           end
           params do
-            use :pagination, per_page: 50, max_per_page: 500
+            use :pagination, per_page: 50, max_per_page: 100
             use :expand
           end
           get do
