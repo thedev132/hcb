@@ -10,6 +10,10 @@ module Api
     default_format :json
 
     helpers do
+      def orgs
+        @orgs ||= paginate(Event.indexable.order(created_at: :asc))
+      end
+
       def org
         @org ||=
           begin
@@ -222,7 +226,7 @@ module Api
       use :expand
     end
     get :organizations do
-      present Event.indexable, with: Api::Entities::Organization, **type_expansion(expand: %w[organization user])
+      present orgs, with: Api::Entities::Organization, **type_expansion(expand: %w[organization user])
     end
 
     resource :organizations do
