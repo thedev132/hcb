@@ -12,6 +12,17 @@
   background-attachment: fixed;
   color: $black;
 }
+.transaction--icy {
+  background-image: repeating-linear-gradient(
+                  to bottom right,
+                  #33d6a6 0px,
+                  #338eda 50px,
+                  #33d6a6 100px
+  );
+  background-attachment: fixed;
+  font-weight: bold;
+  color: $white;
+}
 
 .transaction__memo {
   max-width: 400px;
@@ -64,6 +75,9 @@
     fill: map-get($palette, muted);
     .transaction--fancy & {
       fill: $black;
+    }
+    .transaction--icy & {
+      fill: $white;
     }
     margin: 0;
   }

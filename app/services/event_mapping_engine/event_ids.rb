@@ -6,5 +6,6 @@ module EventMappingEngine
     HACK_CLUB_BANK = 636
     NOEVENT = 999
     HACKATHON_GRANT_FUND = 1610
+    WINTER_HARDWARE_WONDERLAND_GRANT_FUND = 1966
   end
 end

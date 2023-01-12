@@ -1,5 +1,5 @@
 <tr
-  class="transaction--<%= ct.amount.negative? ? "negative" : "positive" %> <%= "transaction--fancy" if ct.local_hcb_code.hackathon_grant? && ct.amount > 0 %>"
+  class="transaction--<%= ct.amount.negative? ? "negative" : "positive" %> <%= ct.local_hcb_code.disbursement.special_appearance[:css_class] if !ct.amount.negative? && ct.local_hcb_code.disbursement&.special_appearance? %>"
   id="<%= ct.local_hcb_code.hashid %>"
   <% if defined?(receipt_upload_button) %>
     data-controller="file-drop"
@@ -43,14 +43,14 @@
       <td class="transaction__icon tooltipped tooltipped--e" aria-label="Donation">
         <%= inline_icon "support" %>
       </td>
-    <% elsif ct.local_hcb_code.hackathon_grant? %>
-      <% if ct.amount.positive? %>
-        <td class="transaction__icon tooltipped tooltipped--e" aria-label="Hackathon grant">
-          <%= inline_icon "purse" %>
+    <% elsif ct.local_hcb_code.disbursement&.special_appearance? %>
+      <% if ct.amount.negative? %>
+        <td class="transaction__icon tooltipped tooltipped--e" aria-label="Outgoing <%= ct.local_hcb_code.disbursement.special_appearance[:title] %>">
+          <%= inline_icon "door-leave" %>
         </td>
       <% else %>
-        <td class="transaction__icon tooltipped tooltipped--e" aria-label="Outgoing hackathon grant">
-          <%= inline_icon "door-leave" %>
+        <td class="transaction__icon tooltipped tooltipped--e" aria-label="<%= ct.local_hcb_code.disbursement.special_appearance[:title] %>">
+          <%= inline_icon "#{ct.local_hcb_code.disbursement.special_appearance[:icon] || 'door-enter'}" %>
         </td>
       <% end %>
     <% elsif ct.local_hcb_code.disbursement? %>
@@ -75,11 +75,7 @@
       <div class="flex-auto">
         <div class="flex items-center justify-start">
           <span title="<%= ct.local_hcb_code.memo %>">
-            <% if ct.local_hcb_code.hackathon_grant? %>
-              💰 Grant from Hack Club and <i>FIRST</i>®
-            <% else %>
-              <%= ct.local_hcb_code.memo %>
-            <% end %>
+            <%= ct.local_hcb_code.memo %>
           </span>
 
           <% if !defined?(receipt_upload_button) && organizer_signed_in? && Flipper.enabled?(:transaction_tags_2022_07_29, @event || ct.local_hcb_code.event) %>

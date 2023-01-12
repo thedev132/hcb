@@ -59,7 +59,6 @@ class HcbCode < ApplicationRecord
   end
 
   def memo
-    return "💰 Grant from Hack Club and FIRST®" if hackathon_grant?
     return disbursement_memo if disbursement?
     return invoice_memo if invoice?
     return donation_memo if donation?
@@ -148,10 +147,6 @@ class HcbCode < ApplicationRecord
       end
   end
 
-  def hackathon_grant?
-    disbursement? && disbursement.source_event_id == EventMappingEngine::EventIds::HACKATHON_GRANT_FUND
-  end
-
   def fee_payment?
     ct.fee_payment?
   end
@@ -209,7 +204,7 @@ class HcbCode < ApplicationRecord
   end
 
   def disbursement_memo
-    smartish_custom_memo || "Transfer from #{disbursement.source_event.name} to #{disbursement.destination_event.name}".strip.upcase
+    smartish_custom_memo || disbursement.special_appearance_memo || "Transfer from #{disbursement.source_event.name} to #{disbursement.destination_event.name}".strip.upcase
   end
 
   def stripe_card?
