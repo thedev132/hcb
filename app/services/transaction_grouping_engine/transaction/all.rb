@@ -3,11 +3,10 @@
 module TransactionGroupingEngine
   module Transaction
     class All
-      def initialize(event_id:, search: nil, tag_id: nil, hcb_code_type: nil)
+      def initialize(event_id:, search: nil, tag_id: nil)
         @event_id = event_id
         @search = ActiveRecord::Base.connection.quote_string(search || "")
         @tag_id = tag_id
-        @hcb_code_type = hcb_code_type # this is a mess :sob:
       end
 
       def run
@@ -60,13 +59,12 @@ module TransactionGroupingEngine
         "and (#{type}.memo ilike '%#{@search}%' or #{type}.custom_memo ilike '%#{@search}%')"
       end
 
-      def filter
+      def tag_modifier
         if @tag_id
           <<~SQL
             left join hcb_codes on hcb_codes.hcb_code = q1.hcb_code
             left join hcb_codes_tags on hcb_codes_tags.hcb_code_id = hcb_codes.id
             where hcb_codes_tags.tag_id = #{@tag_id}
-            where hcb_codes.hcb_code = 'HCB-#{@hcb_code_type}-%'
           SQL
         end
       end
@@ -208,13 +206,12 @@ module TransactionGroupingEngine
             #{event.can_front_balance? ? "#{pt_group_sql}\nunion" : ''}
             #{ct_group_sql}
           ) q1
-          #{filter}
+          #{tag_modifier}
           order by date desc, pt_ids[0] desc, ct_ids[0] desc
         SQL
 
         ActiveRecord::Base.connection.execute(q)
       end
-      public :canonical_transactions_grouped
 
     end
   end
