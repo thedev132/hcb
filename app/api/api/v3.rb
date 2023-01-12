@@ -44,18 +44,15 @@ module Api
       end
 
       def card_charges
-        # TODO: this can be optimized
         @card_charges ||=
           begin
-            pending = PendingTransactionEngine::PendingTransaction::All.new(event_id: org.id).run
-            settled = TransactionGroupingEngine::Transaction::All.new(event_id: org.id).run
+            hcb_code_card_type = TransactionGroupingEngine::Calculate::HcbCode::STRIPE_CARD_CODE
+            pending = PendingTransactionEngine::PendingTransaction::All.new(event_id: org.id, hcb_code_type: hcb_code_card_type).run.pluck(:hcb_code)
+            settled = TransactionGroupingEngine::Transaction::All.new(event_id: org.id, hcb_code_type: hcb_code_card_type).canonical_transactions_grouped.pluck(:hcb_code)
 
             combined = pending + settled
-            combined.select! { |t| t.local_hcb_code.type == :card_charge }
             combined = paginate(Kaminari.paginate_array(combined))
-            combined.map do |t|
-              Models::CardCharge.find_by_hcb_code(t.hcb_code)
-            end
+            Models::CardCharge.where(hcb_code: combined)
           end
       end
 

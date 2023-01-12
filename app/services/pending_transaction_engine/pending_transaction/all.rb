@@ -3,10 +3,11 @@
 module PendingTransactionEngine
   module PendingTransaction
     class All
-      def initialize(event_id:, search: nil, tag_id: nil)
+      def initialize(event_id:, search: nil, tag_id: nil, hcb_code_type: nil)
         @event_id = event_id
         @search = search
         @tag_id = tag_id
+        @hcb_code_type = hcb_code_type # this is a mess :sob:
       end
 
       def run
@@ -41,6 +42,7 @@ module PendingTransactionEngine
                 cpts.joins("LEFT JOIN hcb_codes ON hcb_codes.hcb_code = canonical_pending_transactions.hcb_code")
                     .joins("LEFT JOIN hcb_codes_tags ON hcb_codes_tags.hcb_code_id = hcb_codes.id")
                     .where("hcb_codes_tags.tag_id = ?", @tag_id)
+                    .where("hcb_codes.hcb_code = ?", "HCB-#{@hcb_code_type}-%")
             end
 
             if event.can_front_balance?
