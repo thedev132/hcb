@@ -42,7 +42,7 @@
       event_g_suite_overview_path(event_id: @event.slug),
       tooltip: (@event.hardware_grant? ? 'Not available for Winter Hardware Wonderland accounts' : 'Set up domain Gmail'),
       icon: 'google',
-      disabled: @event.hardware_grant? %>
+      disabled: @event.hardware_grant? unless !@event.g_suites.exists? && Flipper.enabled?(:disable_google_workspace, @event) %>
     <%= dock_item 'Documentation',
       event_documentation_path(event_id: @event.slug),
       tooltip: 'Commonly asked questions and how-tos',
@@ -55,7 +55,7 @@
       <action type="button" class="pop primary menu__toggle" data-behavior="menu_toggle" aria-expanded="false" tabindex="0">
         <%= inline_icon 'more' %>
         <div class="menu__content" data-behavior="menu_content">
-          <%= link_to 'Google Workspace', event_g_suite_overview_path(event_id: @event.slug) unless @event.hardware_grant? %>
+          <%= link_to 'Google Workspace', event_g_suite_overview_path(event_id: @event.slug) unless @event.hardware_grant? || (!@event.g_suites.exists? && Flipper.enabled?(:disable_google_workspace, @event)) %>
           <%= link_to 'Promotions & perks', event_promotions_path(event_id: @event.slug) unless !@event.approved? || @event.hardware_grant? %>
           <%= link_to 'Documentation', event_documentation_path(event_id: @event.slug) %>
           <%= link_to 'Settings', edit_event_path(@event) %>
