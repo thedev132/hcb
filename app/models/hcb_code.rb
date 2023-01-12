@@ -116,22 +116,36 @@ class HcbCode < ApplicationRecord
   end
 
   def events
-    @events ||= begin
-      ids = [
-        canonical_pending_transactions.map { |cpt| cpt.event&.id },
-        canonical_transactions.map { |ct| ct.event&.id },
-        invoice.try(:event).try(:id),
-        donation.try(:event).try(:id),
-        partner_donation.try(:event).try(:id),
-        ach_transfer.try(:event).try(:id),
-        check.try(:event).try(:id),
-        disbursement.try(:event).try(:id),
-        incoming_bank_fee? ? EventMappingEngine::EventIds::INCOMING_FEES : nil,
-        fee_revenue? ? EventMappingEngine::EventIds::HACK_CLUB_BANK : nil
-      ].compact.flatten.uniq
+    @events ||=
+      begin
+        ids = [].concat(canonical_pending_transactions.includes(:canonical_pending_event_mapping).pluck(:event_id))
+                .concat(canonical_transactions.includes(:canonical_event_mapping).pluck(:event_id))
+                .uniq
 
-      Event.where(id: ids)
-    end
+        return Event.where(id: ids) unless ids.empty?
+
+        ids.concat([
+          invoice.try(:event).try(:id),
+          donation.try(:event).try(:id),
+          partner_donation.try(:event).try(:id),
+          ach_transfer.try(:event).try(:id),
+          check.try(:event).try(:id),
+          disbursement.try(:event).try(:id),
+        ].compact.uniq)
+
+        ids << EventMappingEngine::EventIds::INCOMING_FEES if incoming_bank_fee?
+        ids << EventMappingEngine::EventIds::HACK_CLUB_BANK if fee_revenue?
+
+        # I'm trying to figure out if the 2nd set of ids (with try) is necessary
+        # ~ @garyhtou
+        if ids.empty?
+          Airbrake.notify("HcbCode has no events at all!", hcb_code: hcb_code, id: id)
+        else
+          Airbrake.notify("HcbCode has no events from CT & PT", hcb_code: hcb_code, id: id)
+        end
+
+        Event.where(id: ids)
+      end
   end
 
   def hackathon_grant?
