@@ -37,43 +37,37 @@
   <% end %>
 </h1>
 
-<div class="flex flex-wrap items-center mb1 md-mb2">
-  <% if @organizers.any? %>
-    <%= pop_icon_to 'email',
-      "mailto:#{@organizers.map(&:user).map(&:email).join(',')}",
-      class: 'info mb1 mr2' if admin_signed_in? %>
-    <% @organizers.each do |position| %>
-      <div class="avatar-grow line-height-0 tooltipped tooltipped--s mb1 mr1" aria-label="<%= position.user == current_user ? current_user_flavor_text.sample : position.user.full_name %>">
-        <%= avatar_for position.user, 36 %>
-      </div>
-    <% end %>
-    <%= pop_icon_to 'member-add', event_team_path(@event), class: 'mb1', data: { 'tour-step' => 'invite' } %>
-  <% else %>
-    <p class="slate bold h3 mr2">No organizers invited yet</p>
-    <%= pop_icon_to 'member-add', event_team_path(@event) %>
-  <% end %>
-</div>
-
-<% if organizer_signed_in? %>
-  <p class="muted mt2">
-    <strong>We’re standing by to help.</strong> <%= help_message %>
-  </p>
-<% end %>
-
-<div class="statset">
+<div class="flex items-center details-horiz details-horiz--lg" style="gap: 8px">
   <div class="stat statset__wide" data-tour-step="balance">
     <span class="stat__label">Account balance</span>
-    <span class="stat__value"><%= render_money_amount @event.balance_v2_cents %></span>
+    <span class="stat__value"><%= render_money_amount @event.balance_available_v2_cents %></span>
   </div>
-  <%= async_frame_to event_dashboard_stats_path(@event), as: :div, class: 'grid grid--split', style: 'grid-column: span 2' do %>
-    <action class="stat stat--small tooltipped tooltipped--s" aria-label="The amount that will be automatically deducted from your account balance">
-      <span class="stat__label flex items-center">
-        Pending fees
-        <%= inline_icon 'external', size: 24, class: 'muted ml1', 'aria-label': 'Icon indicating click for more' %>
-      </span>
-      <span class="stat__value">—</span>
-    </action>
-  <% end %>
+
+  <div>
+    <div class="flex items-center">
+      <% if @organizers.any? %>
+        <%= pop_icon_to 'email',
+          "mailto:#{@organizers.map(&:user).map(&:email).join(',')}",
+          class: 'info mr2' if admin_signed_in? %>
+        <div class="flex items-center">
+          <% @organizers.each do |position| %>
+            <div class="avatar-grow line-height-0 tooltipped tooltipped--s mr1" aria-label="<%= position.user == current_user ? current_user_flavor_text.sample : position.user.full_name %>">
+              <%= avatar_for position.user, 36 %>
+            </div>
+          <% end %>
+        </div>
+        <% if @event.organizer_positions.count > 5 %>
+          <%= link_to event_team_path(@event), class: "pop" do %>
+            +<%= @event.organizer_positions.count - 5 %>
+          <% end %>
+        <% end %>
+        <%= pop_icon_to 'member-add', event_team_path(@event), class: 'ml1', data: { 'tour-step' => 'invite' } %>
+      <% else %>
+        <p class="slate bold h3 mr2">No organizers invited yet</p>
+        <%= pop_icon_to 'member-add', event_team_path(@event) %>
+      <% end %>
+    </div>
+  </div>
 </div>
 
 <% if @event.demo_mode? && organizer_signed_in? %>
@@ -116,7 +110,7 @@
 </h2>
 
 <%= turbo_frame_tag :ledger do %>
-  <div class="filterbar flex flex-row items-center width-100">
+  <div class="filterbar flex flex-row justify-between items-center width-100" style="gap: 16px">
 
     <%= form_with(model: nil, local: true, method: :get, class: "flex-auto md-mr2") do |form| %>
       <%= form.text_field :q, placeholder: "Search", style: "width auto; max-width: none;", value: params[:q] %>
@@ -131,14 +125,14 @@
           type="button"
           class="btn btn-small bg-info menu__toggle menu__toggle--arrowless overflow-visible z1 mr1"
           data-menu-target="toggle" data-action="menu#toggle click@document->menu#close keydown@document->menu#keydown">
-          <%= inline_icon 'filter', size: 16 %>
+          <%= inline_icon 'filter', size: 16, style: "margin: 0" %>
           <% if @tag %>
-            <span class="sm-hide md-hide flex items-center">
+            <span class="xs-hide sm-hide md-hide flex items-center">
               <span class="nowrap">Filtered by</span>
               <span style="background-color: rgba(0, 0, 0, 0.3); color: #f9fafc" class="nowrap badge regular ml1"><%= @tag.label %></span>
             </span>
           <% else %>
-            <span class="sm-hide md-hide nowrap">Filter</span>
+            <span class="xs-hide sm-hide md-hide nowrap">Filter</span>
           <% end %>
         </button>
         <div class="menu__content menu__content--2 menu__content--compact h5" data-menu-target="content">
@@ -179,6 +173,8 @@
             </tr>
           </thead>
           <tbody data-behavior="transactions">
+            <%= render "pending_fee_transaction" if @event.fronted_fee_balance_v2_cents > 0 %>
+
             <%= render partial: "canonical_pending_transactions/canonical_pending_transaction", collection: @pending_transactions, as: :pt, locals: { event: @event } %>
 
             <%= render partial: "canonical_transactions/canonical_transaction", collection: @transactions, as: :ct, locals: { event: @event } %>

@@ -1,0 +1,9 @@
+<tr class="transaction--negative muted">
+  <td class="transaction__icon tooltipped tooltipped--e" aria-label="Hack Club Bank Fee payment">
+    <%= inline_icon "minus-fill" %>
+  </td>
+  <td><%= Date.today.strftime("%Y-%m-%d") %></td>
+  <td class="transaction__memo">PENDING: HACK CLUB BANK FEE</td>
+  <td class="italic">-$<%= render_money_amount @event.fronted_fee_balance_v2_cents %></td>
+  <td></td>
+</tr>
