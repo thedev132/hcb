@@ -10,26 +10,41 @@
 <% if @positions.any? %>
   <% @positions.each do |position| %>
     <%= creator_bar position.organizer_position_invite, prefix: 'invited ' %>
-    <div class="card flex items-center pt0 pb0 mb2">
-      <%= avatar_for position.user, 48, class: 'mr2' %>
-      <p class="flex-auto">
-        <strong class="h3 block"><%= position.user.full_name || 'Unnamed' %></strong>
-        <%= organizer_signed_in? ? position.user.email : 'Sign in to view email' %>
-        <% if admin_signed_in? %>
-          <span class="admin-tools inline-block h5">
-          phone: <%= position.user.phone_number %>
-          </span>
-          <span class="admin-tools inline-block h5">
-          <%= link_to "Impersonate this user", impersonate_users_path(user_id: position.user.id, return_to: request.url) %>
-          </span>
+    <article class="card pt0 pb0 mb2">
+      <section class='flex items-center'>
+        <%= avatar_for position.user, 48, class: 'mr2' %>
+        <p class="flex-auto">
+          <strong class="h3 block"><%= position.user.full_name || 'Unnamed' %></strong>
+          <%= organizer_signed_in? ? position.user.email : 'Sign in to view email' %>
+        </p>
+        <% admin_tools('mr2 p0 circle') do %>
+          <%= pop_icon_to 'controls', edit_user_path(position.user.slug) if position.user == current_user || admin_signed_in? %>
         <% end %>
-      </p>
-      <% admin_tools('mr2') do %>
-        <%= pop_icon_to 'controls', edit_user_path(position.user.slug) if position.user == current_user || admin_signed_in? %>
+        <%= pop_icon_to 'member-remove', new_organizer_remove_path(organizer_id: position.id), class: 'error', disabled: !organizer_signed_in? unless position.user == current_user %>
+        <%= pop_icon_to 'controls', edit_user_path(position.user.slug), class: 'ml2' if position.user == current_user && !admin_signed_in? %>
+      </section>
+      <% if current_user&.admin? %>
+        <section class='card__banner card__darker b--warning h5' style='border-style: dashed; border-width: 1px;'>
+          <div class='mb1'>
+            <%= inline_icon 'message-simple-new', size: 20, style: "vertical-align: middle; margin: -0.2rem 0.5rem 0 0;" %>
+            <span><%= position.user.phone_number %></span>
+          </div>
+          <div class='mb1'>
+            <% if position.signee? %>
+                <%= inline_icon 'docs-fill', size: 20, style: "vertical-align: middle; margin: -0.2rem 0.5rem 0 0;" %>
+                <span>Contract signee</span>
+            <% else %>
+              <%= inline_icon 'docs', size: 20, style: "vertical-align: middle; margin: -0.2rem 0.5rem 0 0;" %>
+              <span>No contract signature</span>
+          <% end %>
+          </div>
+          <div>
+            <%= inline_icon 'leader', size: 20, style: "vertical-align: middle; margin: -0.2rem 0.5rem 0 0;" %>
+            <%= link_to "Impersonate this user", impersonate_users_path(user_id: position.user.id, return_to: request.url) %>
+          </div>
+        </section>
       <% end %>
-      <%= pop_icon_to 'member-remove', new_organizer_remove_path(organizer_id: position.id), class: 'error', disabled: !organizer_signed_in? unless position.user == current_user %>
-      <%= pop_icon_to 'controls', edit_user_path(position.user.slug), class: 'ml2' if position.user == current_user && !admin_signed_in? %>
-    </div>
+    </article>
   <% end %>
 <% else %>
   <%= blankslate 'No others on your team yet' %>
@@ -49,29 +64,44 @@
   </h2>
   <% @pending.order(created_at: :desc).each do |invite| %>
     <%= creator_bar invite %>
-    <div class="card flex items-center pt0 pb0 mb3">
-      <%= avatar_for OpenStruct.new(email: invite.user.email, name: invite.user.email), 24, class:
-      'mr1' %>
-      <p class="line-height-3 flex-auto">
-        <strong><%= organizer_signed_in? ? invite.user.email : 'Sign in to view' %></strong>
-      </p>
-      <% if invite.sender == current_user || admin_signed_in? %>
-        <%= pop_icon_to 'view-close',
-          organizer_position_invite_cancel_path(invite.id),
-          size: 24,
-          method: :post,
-          class: 'error tooltipped tooltipped--w',
-          'aria-label': 'Cancel this invitation' %>
-      <% else %>
-      <div class="tooltipped tooltipped--w" aria-label="Only the sender can cancel an invitation">
-        <%= pop_icon_to 'view-close',
-          organizer_position_invite_cancel_path(invite.id),
-          method: :post,
-          size: 24,
-          class: 'muted',
-          disabled: true %>
-        <% end %>
-      </div>
-    </div>
+    <article class="card pt0 pb0 mb3">
+      <section class='flex items-center'>
+        <%= avatar_for OpenStruct.new(email: invite.user.email, name: invite.user.email), 24, class:
+        'mr1' %>
+        <p class="line-height-3 flex-auto">
+          <strong><%= organizer_signed_in? ? invite.user.email : 'Sign in to view' %></strong>
+        </p>
+        <% if invite.sender == current_user || admin_signed_in? %>
+          <%= pop_icon_to 'view-close',
+            organizer_position_invite_cancel_path(invite.id),
+            size: 24,
+            method: :post,
+            class: 'error tooltipped tooltipped--w',
+            'aria-label': 'Cancel this invitation' %>
+        <% else %>
+        <div class="tooltipped tooltipped--w" aria-label="Only the sender can cancel an invitation">
+          <%= pop_icon_to 'view-close',
+            organizer_position_invite_cancel_path(invite.id),
+            method: :post,
+            size: 24,
+            class: 'muted',
+            disabled: true %>
+          <% end %>
+        </div>
+      </section>
+      <% if current_user&.admin? %>
+        <section class='card__banner card__darker b--warning h5' style='border-style: dashed; border-width: 1px;'>
+          <div>
+            <% if invite.signee? %>
+              <%= inline_icon 'docs-fill', size: 20, style: "vertical-align: middle; margin: -0.2rem 0.5rem 0 0;" %>
+              <span>Contract signee</span>
+            <% else %>
+              <%= inline_icon 'docs', size: 20, style: "vertical-align: middle; margin: -0.2rem 0.5rem 0 0;" %>
+              <span>No contract signature</span>
+            <% end %>
+          </div>
+        </section>
+      <% end %>
+    </article>
   <% end %>
 <% end %>

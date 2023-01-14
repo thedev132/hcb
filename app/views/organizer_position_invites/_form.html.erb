@@ -10,4 +10,10 @@
     </div>
     <%= form.submit 'Send' %>
   </div>
+  <% admin_tools('mt1') do %>
+    <div class="field field--checkbox m0">
+      <%= form.check_box :is_signee %>
+      <%= form.label :is_signee, "Signed contract" %>
+    </div>
+  <% end %>
 <% end %>

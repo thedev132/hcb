@@ -49,4 +49,8 @@ class OrganizerPosition < ApplicationRecord
     }
   end
 
+  def signee?
+    is_signee
+  end
+
 end

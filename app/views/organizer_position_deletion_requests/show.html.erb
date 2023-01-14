@@ -31,6 +31,11 @@
     </p>
 
     <p>
+      <strong>Contract signee?</strong>
+      <%= @opdr.organizer_position.signee? ? "Yes" : "No" %>
+    </p>
+
+    <p>
       <strong>Reason for deletion</strong>
       <%= @opdr.reason %>
     </p>
@@ -50,6 +55,14 @@
     <%= @opdr.subject_has_active_cards ? '✅' : '❌' %>
     <strong>Active cards?</strong>
   </p>
+
+  <% if @opdr.organizer_position.signee? %>
+    <p class='warning'>
+      <%= inline_icon 'important', size: 24, style: "vertical-align: middle; margin: -0.2rem 0 0 -0.2rem;" %>
+      Woah! This user has signed the fiscal sponsorship contract for this
+      organization. Are you sure you want to remove them?
+    </p>
+  <% end %>
 
   <% if @opdr.organizer_position.deleted_at.nil? %>
     <%= link_to 'Delete organizer ⚠️☣☠',

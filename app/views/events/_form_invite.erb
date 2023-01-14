@@ -10,5 +10,11 @@
       <%= form.email_field :email, class: "mr2" %>
       <%= form.submit 'Send', disabled: !organizer_signed_in? %>
     </div>
+    <% admin_tools('mt1') do %>
+      <div class="field field--checkbox mb0">
+        <%= form.check_box :is_signee %>
+        <%= form.label :is_signee, "Signed contract" %>
+      </div>
+    <% end %>
   </div>
 <% end %>

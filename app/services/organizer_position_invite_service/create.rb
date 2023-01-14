@@ -2,12 +2,13 @@
 
 module OrganizerPositionInviteService
   class Create
-    def initialize(event:, sender: nil, user_email: nil, initial: false)
+    def initialize(event:, sender: nil, user_email: nil, initial: false, is_signee: nil)
       @event = event
       @sender = sender
       @user_email = normalize_email(user_email)
       @initial = initial
-      @model = OrganizerPositionInvite.new(event: @event, sender: @sender, initial: @initial)
+      @is_signee = is_signee
+      @model = OrganizerPositionInvite.new(event: @event, sender: @sender, initial: @initial, is_signee: @is_signee)
     end
 
     def run

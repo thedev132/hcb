@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# frozen_string_literal: true
+
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -12,7 +14,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_12_31_182853) do
+ActiveRecord::Schema.define(version: 2023_01_12_051748) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -950,6 +952,7 @@ ActiveRecord::Schema.define(version: 2022_12_31_182853) do
     t.datetime "cancelled_at"
     t.string "slug"
     t.boolean "initial", default: false
+    t.boolean "is_signee"
     t.index ["event_id"], name: "index_organizer_position_invites_on_event_id"
     t.index ["organizer_position_id"], name: "index_organizer_position_invites_on_organizer_position_id"
     t.index ["sender_id"], name: "index_organizer_position_invites_on_sender_id"
@@ -965,6 +968,7 @@ ActiveRecord::Schema.define(version: 2022_12_31_182853) do
     t.datetime "deleted_at"
     t.integer "sort_index"
     t.boolean "first_time", default: true
+    t.boolean "is_signee"
     t.index ["event_id"], name: "index_organizer_positions_on_event_id"
     t.index ["user_id"], name: "index_organizer_positions_on_user_id"
   end

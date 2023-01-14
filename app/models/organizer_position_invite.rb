@@ -92,7 +92,8 @@ class OrganizerPositionInvite < ApplicationRecord
 
     self.organizer_position = OrganizerPosition.new(
       event: event,
-      user: user
+      user: user,
+      is_signee: is_signee
     )
 
     self.accepted_at = Time.current
@@ -149,6 +150,10 @@ class OrganizerPositionInvite < ApplicationRecord
     # https://github.com/norman/friendly_id/issues/480
     sequence = OrganizerPositionInvite.where("slug LIKE ?", "#{slug}-%").size + 2
     [slug, "#{slug} #{sequence}"]
+  end
+
+  def signee?
+    is_signee
   end
 
   private
