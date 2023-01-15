@@ -69,9 +69,10 @@ class CanonicalTransaction < ApplicationRecord
   has_one :event, through: :canonical_event_mapping
   has_one :canonical_pending_settled_mapping
   has_one :canonical_pending_transaction, through: :canonical_pending_settled_mapping
+  has_one :local_hcb_code, foreign_key: 'hcb_code', primary_key: 'hcb_code', class_name: "HcbCode"
   has_many :fees, through: :canonical_event_mapping
 
-  attr_writer :fee_payment, :hashed_transaction, :stripe_cardholder, :local_hcb_code
+  attr_writer :fee_payment, :hashed_transaction, :stripe_cardholder
 
   validates :friendly_memo, presence: true, allow_nil: true
   validates :custom_memo, presence: true, allow_nil: true
@@ -260,10 +261,6 @@ class CanonicalTransaction < ApplicationRecord
 
   def unique_bank_identifier
     @unique_bank_identifier ||= hashed_transactions.first.unique_bank_identifier
-  end
-
-  def local_hcb_code
-    @local_hcb_code ||= HcbCode.find_or_create_by(hcb_code: hcb_code)
   end
 
   def memo_hcb_code_likely_donation?
