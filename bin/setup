@@ -19,6 +19,7 @@ FileUtils.chdir APP_ROOT do
   system! 'gem install bundler --conservative'
   system('bundle check') || system!('bundle install')
 
+  # This line isn't present in Rails 7 default
   # Install JavaScript dependencies
   system! 'bin/yarn'
 
