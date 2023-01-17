@@ -21,7 +21,6 @@
 #  has_fiscal_sponsorship_document :boolean
 #  hidden_at                       :datetime
 #  holiday_features                :boolean          default(TRUE), not null
-#  is_indexable                    :boolean          default(TRUE)
 #  is_public                       :boolean          default(TRUE)
 #  last_fee_processed_at           :datetime
 #  name                            :text

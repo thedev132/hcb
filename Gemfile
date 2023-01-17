@@ -10,7 +10,7 @@ gem "dotenv-rails", groups: [:development, :test]
 # gem 'sassc-rails' # required for rails 6
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem "rails", "7.0.4"
+gem "rails", "6.1.7"
 # Use postgresql as the database for Active Record
 gem "pg", ">= 0.18", "< 2.0"
 # Use Puma as the app server
@@ -44,12 +44,6 @@ gem "stripe"
 gem "aws-sdk-s3", require: false
 # And our own API...
 gem "faraday"
-# net-http is required in top level Gemfile to avoid these warnings
-# /usr/local/lib/ruby/2.7.0/net/protocol.rb:66: warning: already initialized constant Net::ProtocRetryError
-# /bundle/ruby/2.7.0/gems/net-protocol-0.1.3/lib/net/protocol.rb:68: warning: previous definition of ProtocRetryError was here
-# https://github.com/ruby/net-imap/issues/16
-gem "net-http"
-gem "uri", "0.10.0" # lock to default version of uri from Ruby 2.7
 
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", ">= 1.4.4", require: false
@@ -143,6 +137,9 @@ group :development do
   # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
   gem "listen", "~> 3.2"
   gem "web-console", ">= 3.3.0"
+  # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
+  gem "spring"
+  gem "spring-watcher-listen", "~> 2.0.0"
   # Preview emails
   gem "letter_opener_web"
   # Generate PDFs from HTML. Version must match the wkhtmltopdf Heroku buildpack version (0.12.3 by default)
@@ -244,7 +241,6 @@ gem "stackprof" # Used with `rack-mini-profiler` to provide flamegraphs
 
 gem "country_select", "~> 8.0"
 
-# temporarily remove lab_tech because it's not compatible with rails 7
-# gem "lab_tech" # Integrates `scientist` with ActiveRecord for experiment data collection
+gem "lab_tech" # Integrates `scientist` with ActiveRecord for experiment data collection
 gem "scientist" # Refactor testing for critical paths
 gem "table_print" # Pretty print tables in the console (used with `lab_tech`)
