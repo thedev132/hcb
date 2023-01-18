@@ -151,7 +151,12 @@ class StaticPagesController < ApplicationController
 
     render json: {
       date: now,
-      events_count: Event.not_omitted.not_hidden.approved.where("created_at <= ?", now).size,
+      events_count: Event.not_omitted
+                         .not_hidden
+                         .not_demo_mode
+                         .approved
+                         .where("created_at <= ?", now)
+                         .count,
       last_transaction_date: tx_all.order(:date).last.date.to_time.to_i,
 
       # entire time period. this remains to prevent breaking changes to existing systems that use this endpoint
