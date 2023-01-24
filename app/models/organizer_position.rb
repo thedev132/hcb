@@ -7,6 +7,7 @@
 #  id         :bigint           not null, primary key
 #  deleted_at :datetime
 #  first_time :boolean          default(TRUE)
+#  is_signee  :boolean
 #  sort_index :integer
 #  created_at :datetime         not null
 #  updated_at :datetime         not null

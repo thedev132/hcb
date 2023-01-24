@@ -8,6 +8,7 @@
 #  accepted_at           :datetime
 #  cancelled_at          :datetime
 #  initial               :boolean          default(FALSE)
+#  is_signee             :boolean
 #  rejected_at           :datetime
 #  slug                  :string
 #  created_at            :datetime         not null
