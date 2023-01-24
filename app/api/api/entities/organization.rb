@@ -21,6 +21,7 @@ module Api
           organization.category&.parameterize&.underscore
         end
         expose :is_public, as: :transparent, documentation: { type: "boolean" }
+        expose :demo_mode, documentation: { type: "boolean" }
         expose :logo do |organization|
           organization.logo.attached? ? Rails.application.routes.url_helpers.url_for(organization.logo) : nil
         end
