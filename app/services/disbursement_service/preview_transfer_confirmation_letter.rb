@@ -14,7 +14,7 @@ module DisbursementService
     private
 
     def pdf_string
-      @pdf_string ||= ApplicationController.new.render_to_string pdf: "transfer_confirmation_letter", template: "disbursement/transfer_confirmation_letter.pdf.erb", encoding: "UTF-8", locals: { :@disbursement => @disbursement, :@event => @event }
+      @pdf_string ||= ApplicationController.new.render_to_string pdf: "transfer_confirmation_letter", template: "disbursement/transfer_confirmation_letter", encoding: "UTF-8", locals: { :@disbursement => @disbursement, :@event => @event }, formats: :pdf
     end
 
     def input
