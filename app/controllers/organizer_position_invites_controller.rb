@@ -38,11 +38,7 @@ class OrganizerPositionInvitesController < ApplicationController
   def show
     # If the user's not signed in, redirect them to login page
     unless signed_in?
-      hide_footer
-      @skip_verfiy_authorized = true
-      @prefill_email = @invite.user.email
-
-      render "users/auth" and return
+      return redirect_to auth_users_path(email: @invite.user.email, return_to: organizer_position_invite_path(@invite)), flash: { info: "Please sign in to accept this invitation." }
     end
 
     authorize @invite

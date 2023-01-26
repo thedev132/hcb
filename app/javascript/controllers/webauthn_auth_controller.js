@@ -21,7 +21,7 @@ export default class extends Controller {
   }
 
   loginEmailInputTargetConnected() {
-    this.loginEmailInputTarget.value = localStorage.getItem('login_email')
+    this.loginEmailInputTarget.value ||= localStorage.getItem('login_email')
   }
 
   async submit(event) {
