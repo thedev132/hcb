@@ -226,6 +226,7 @@ class AdminController < ApplicationController
     attrs = {
       name: params[:name],
       emails: emails,
+      is_signee: params[:is_signee].to_i == 1,
       country: params[:country],
       category: params[:category],
       point_of_contact_id: params[:point_of_contact_id],

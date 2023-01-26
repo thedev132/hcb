@@ -18,6 +18,11 @@
     </p>
 
     <p>
+      <%= form.check_box :is_signee, { checked: true } %>
+      <%= form.label :is_signee, "Organizer signed contract?" %>
+    </p>
+
+    <p>
       <%= form.label :country %>
       <br>
       <%= form.collection_select :country, Event.countries, :first, :first %>

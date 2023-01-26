@@ -2,9 +2,10 @@
 
 module EventService
   class Create
-    def initialize(name:, point_of_contact_id:, emails: [], country: [], category: [], is_public: true, is_indexable: true, approved: false, sponsorship_fee: 0.07, organized_by_hack_clubbers: false, omit_stats: false, can_front_balance: true, demo_mode: false)
+    def initialize(name:, point_of_contact_id:, emails: [], is_signee: true, country: [], category: [], is_public: true, is_indexable: true, approved: false, sponsorship_fee: 0.07, organized_by_hack_clubbers: false, omit_stats: false, can_front_balance: true, demo_mode: false)
       @name = name
       @emails = emails
+      @is_signee = is_signee
       @country = country
       @category = category
       @point_of_contact_id = point_of_contact_id
@@ -30,7 +31,7 @@ module EventService
         # event.mark_approved! if @approved
 
         @emails.each do |email|
-          OrganizerPositionInviteService::Create.new(event: event, sender: point_of_contact, user_email: email, initial: true).run!
+          OrganizerPositionInviteService::Create.new(event: event, sender: point_of_contact, user_email: email, initial: true, is_signee: @is_signee).run!
         end
       end
     end
