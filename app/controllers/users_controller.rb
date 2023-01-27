@@ -2,6 +2,7 @@
 
 class UsersController < ApplicationController
   skip_before_action :signed_in_user, only: [:auth, :auth_submit, :choose_login_preference, :set_login_preference, :webauthn_options, :webauthn_auth, :login_code, :exchange_login_code]
+  skip_before_action :redirect_to_onboarding, only: [:edit, :update]
   skip_after_action :verify_authorized, except: [:edit, :update]
 
   def impersonate
@@ -228,7 +229,7 @@ class UsersController < ApplicationController
 
   def edit
     @user = params[:id] ? User.friendly.find(params[:id]) : current_user
-    @onboarding = @user.full_name.blank?
+    @onboarding = @user.onboarding?
     show_impersonated_sessions = admin_signed_in? || current_session.impersonated?
     @sessions = show_impersonated_sessions ? @user.user_sessions : @user.user_sessions.not_impersonated
     authorize @user

@@ -196,6 +196,10 @@ class User < ApplicationRecord
     update!(locked_at: nil)
   end
 
+  def onboarding?
+    full_name.blank?
+  end
+
   private
 
   def namae

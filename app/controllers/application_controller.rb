@@ -20,6 +20,9 @@ class ApplicationController < ActionController::Base
   # Track papertrail edits to specific users
   before_action :set_paper_trail_whodunnit
 
+  # Redirect users to the onboarding page if they haven't completed it yet
+  before_action :redirect_to_onboarding
+
   # Force usage of Pundit on actions
   after_action :verify_authorized
 
@@ -45,6 +48,12 @@ class ApplicationController < ActionController::Base
   end
 
   private
+
+  def redirect_to_onboarding
+    if current_user&.onboarding?
+      redirect_to my_settings_path
+    end
+  end
 
   # This being called probably means that the User's access token has expired.
   def user_not_authenticated
