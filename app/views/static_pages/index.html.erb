@@ -81,7 +81,7 @@
 
       <% if @events.hidden.any? %>
         <details class="w-100 left-align">
-          <summary><h3 class="inline-block pb0 border-none">Hidden projects</h3></summary>
+          <summary><h4 class="inline-block pb0 border-none muted">Hidden projects</h4></summary>
           <ul class="grid grid--narrow left-align mt0">
             <% @events.hidden.each do |event| %>
               <%= link_to event do %>
