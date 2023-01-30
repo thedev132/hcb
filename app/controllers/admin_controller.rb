@@ -1132,6 +1132,7 @@ class AdminController < ApplicationController
     else
       @country = params[:country].present? ? params[:country] : "all"
     end
+    @activity_since_date = params[:activity_since]
 
     relation = events.not_partner
 
@@ -1148,6 +1149,7 @@ class AdminController < ApplicationController
     relation = relation.not_organized_by_hack_clubbers if @organized_by_hack_clubbers == "not_organized_by_hack_clubbers"
     relation = relation.demo_mode if @demo_mode == "demo"
     relation = relation.not_demo_mode if @demo_mode == "full"
+    relation = relation.joins(:canonical_transactions).where("canonical_transactions.date >= ?", @activity_since_date).group("events.id") if @activity_since_date.present?
     if @category == "none"
       relation = relation.where(category: nil)
     elsif @category != "all"

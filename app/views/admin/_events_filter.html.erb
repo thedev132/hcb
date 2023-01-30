@@ -73,3 +73,8 @@
   POC
   <%= form.collection_select :point_of_contact_id, User.admin.all, :id, :email, :selected => @point_of_contact_id, include_blank: 'all' %>
 <% end %>
+|
+<%= form.label :activity_since do %>
+  Activity Since
+  <%= form.date_field :activity_since, value: @activity_since_date %>
+<% end %>

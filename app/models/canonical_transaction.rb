@@ -16,6 +16,7 @@
 #
 # Indexes
 #
+#  index_canonical_transactions_on_date      (date)
 #  index_canonical_transactions_on_hcb_code  (hcb_code)
 #
 class CanonicalTransaction < ApplicationRecord
