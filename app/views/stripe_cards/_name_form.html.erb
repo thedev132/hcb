@@ -22,9 +22,9 @@
 <% end %>
 
 <script>
-  const clearName = () => {
+  window.clearName = () => {
     document.querySelector("#stripe_card_name").value = ""
     document.querySelector("#clear_name_btn").disabled = true;
-    document.querySelector("#stripe_card_name_form").submit();
+    document.querySelector("#stripe_card_name_form").requestSubmit();
   }
 </script>

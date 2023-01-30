@@ -18,6 +18,4 @@ document.addEventListener('turbo:frame-render', () => {
 import './controllers'
 
 import { Turbo } from '@hotwired/turbo-rails'
-
-Turbo.setProgressBarDelay(0)
-Turbo.session.drive = false
+window.Turbo = Turbo

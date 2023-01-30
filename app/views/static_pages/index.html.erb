@@ -15,7 +15,7 @@
       <% end %>
     </span>
   </div>
-  <span class="badge ml0 h5 caps <%= Rails.env.development? ? 'bg-success' : by_season("", fall: "bg-warning") %>"><%= flavor_text %></span>
+  <span class="badge ml0 h5 caps <%= Rails.env.development? ? 'bg-success' : by_season("", fall: "bg-warning") %>" id="flavor-text" data-turbo-permanent><%= flavor_text %></span>
 </h1>
 
 <main class="flex flex-column items-center center pb3">

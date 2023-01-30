@@ -27,5 +27,5 @@ export default function submitForm(url, params) {
 
   document.body.appendChild(form)
 
-  form.submit()
+  form.requestSubmit()
 }

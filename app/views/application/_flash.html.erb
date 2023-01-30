@@ -3,7 +3,8 @@
     <article
       role="alertdialog"
       class="flash flex items-center mt3 mb2 mx-auto shrink-none <%= key %>"
-      data-behavior="flash">
+      data-behavior="flash"
+      data-turbo-cache="false">
       <span class="flex-auto flex justify-between items-center">
         <% if value.is_a? Hash %>
           <%= value["text"] %>

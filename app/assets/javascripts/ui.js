@@ -9,6 +9,145 @@ $(document).ready(function () {
   }
 })
 
+$(document).on('click', '[data-behavior~=flash]', function () {
+  $(this).fadeOut('medium')
+})
+
+$(document).on('click', '[data-behavior~=modal_trigger]', function (e) {
+  if ($(this).attr('href') || $(e.target).attr('href')) e.preventDefault()
+  BK.s('modal', '#' + $(this).data('modal')).modal({
+    modalClass: $(this).parents('turbo-frame').length
+      ? 'turbo-frame-modal'
+      : undefined
+  })
+  return this.blur()
+})
+
+$(document).on('keyup', 'action', function (e) {
+  if (e.keyCode === 13) {
+    return $(e.target).click()
+  }
+})
+
+$(document).on('submit', '[data-behavior~=login]', function () {
+  const val = $('input[name=email]').val()
+  return localStorage.setItem('login_email', val)
+})
+
+$(document).on('change', '[name="invoice[sponsor]"]', function (e) {
+  let sponsor = $(e.target).children('option:selected').data('json')
+  if (!sponsor) {
+    sponsor = {}
+  }
+
+  if (sponsor.id) {
+    $('[data-behavior~=sponsor_update_warning]').slideDown('fast')
+  } else {
+    $('[data-behavior~=sponsor_update_warning]').slideUp('fast')
+  }
+
+  const fields = [
+    'name',
+    'contact_email',
+    'address_line1',
+    'address_line2',
+    'address_city',
+    'address_state',
+    'address_postal_code',
+    'id'
+  ]
+
+  return fields.forEach(field =>
+    $(`input#invoice_sponsor_attributes_${field}`).val(sponsor[field])
+  )
+})
+
+$(document).on('change', '[name="check[lob_address]"]', function (e) {
+  let lob_address = $(e.target).children('option:selected').data('json')
+  if (!lob_address) {
+    lob_address = {}
+  }
+
+  if (lob_address.id) {
+    $('[data-behavior~=lob_address_update_warning]').slideDown('fast')
+  } else {
+    $('[data-behavior~=lob_address_update_warning]').slideUp('fast')
+  }
+
+  const fields = [
+    'name',
+    'address1',
+    'address2',
+    'city',
+    'state',
+    'zip',
+    'id'
+  ]
+
+  return fields.forEach(field =>
+    $(`input#check_lob_address_attributes_${field}`)
+      .val(lob_address[field])
+      .change()
+  )
+})
+
+const updateAmountPreview = function () {
+  const amount = $('[name="invoice[item_amount]"]').val().replace(/,/g, '')
+  const previousAmount = BK.s('amount-preview').data('amount') || 0
+  if (amount === previousAmount) {
+    return
+  }
+  if (amount > 0) {
+    const feePercent = BK.s('amount-preview').data('fee')
+    const lFeePercent = (feePercent * 100).toFixed(1)
+    const lAmount = BK.money(amount * 100)
+    const feeAmount = BK.money(feePercent * amount * 100)
+    const revenue = BK.money((1 - feePercent) * amount * 100)
+    BK.s('amount-preview').text(
+      `${lAmount} - ${feeAmount} (${lFeePercent}% Bank fee) = ${revenue}`
+    )
+    BK.s('amount-preview').show()
+    return BK.s('amount-preview').data('amount', amount)
+  } else {
+    BK.s('amount-preview').hide()
+    return BK.s('amount-preview').data('amount', 0)
+  }
+}
+
+$(document).on('keyup', '[name="invoice[item_amount]"]', () =>
+  updateAmountPreview()
+)
+$(document).on('change', '[name="invoice[item_amount]"]', () =>
+  updateAmountPreview()
+)
+
+$(document).on(
+  'click',
+  '[data-behavior~=transaction_dedupe_info_trigger]',
+  e => {
+    const raw = $(e.target).closest('tr').data('json')
+    const json = JSON.stringify(raw, null, 2)
+    BK.s('transaction_dedupe_info_target').html(json)
+  }
+)
+
+$(document).on('click', function (e) {
+  if ($(e.target).data('behavior')?.includes('menu_input')) return
+
+  const o = $(BK.openMenuSelector)
+  const c = $(e.target).closest('[data-behavior~=menu_toggle]')
+  if (o.length > 0 || c.length > 0) {
+    BK.toggleMenu(o.length > 0 ? o : c)
+    e.stopImmediatePropagation()
+  }
+})
+$(document).keydown(function (e) {
+  // Close popover menus on esc
+  if (e.keyCode === 27 && $(BK.openMenuSelector).length > 0) {
+    return BK.toggleMenu($(BK.openMenuSelector))
+  }
+})
+
 $(document).on('turbo:load', function () {
   $('[data-behavior~=toggle_theme]').on('click', () => BK.toggleDark())
 
@@ -20,35 +159,10 @@ $(document).on('turbo:load', function () {
 
   BK.s('autohide').hide()
 
-  $(document).on('click', '[data-behavior~=flash]', function () {
-    $(this).fadeOut('medium')
-  })
-
-  $(document).on('click', '[data-behavior~=modal_trigger]', function (e) {
-    if ($(this).attr('href') || $(e.target).attr('href')) e.preventDefault()
-    BK.s('modal', '#' + $(this).data('modal')).modal({
-      modalClass: $(this).parents('turbo-frame').length
-        ? 'turbo-frame-modal'
-        : undefined
-    })
-    return this.blur()
-  })
-
-  $(document).on('keyup', 'action', function (e) {
-    if (e.keyCode === 13) {
-      return $(e.target).click()
-    }
-  })
-
   $.each(BK.s('async_frame'), (i, frame) => {
     $.get($(frame).data('src'), data => {
       $(frame).replaceWith(data)
     })
-  })
-
-  $(document).on('submit', '[data-behavior~=login]', function () {
-    const val = $('input[name=email]').val()
-    return localStorage.setItem('login_email', val)
   })
 
   if (BK.thereIs('login')) {
@@ -158,103 +272,6 @@ $(document).on('turbo:load', function () {
     }
   })
 
-  $(document).on('change', '[name="invoice[sponsor]"]', function (e) {
-    let sponsor = $(e.target).children('option:selected').data('json')
-    if (!sponsor) {
-      sponsor = {}
-    }
-
-    if (sponsor.id) {
-      $('[data-behavior~=sponsor_update_warning]').slideDown('fast')
-    } else {
-      $('[data-behavior~=sponsor_update_warning]').slideUp('fast')
-    }
-
-    const fields = [
-      'name',
-      'contact_email',
-      'address_line1',
-      'address_line2',
-      'address_city',
-      'address_state',
-      'address_postal_code',
-      'id'
-    ]
-
-    return fields.forEach(field =>
-      $(`input#invoice_sponsor_attributes_${field}`).val(sponsor[field])
-    )
-  })
-
-  $(document).on('change', '[name="check[lob_address]"]', function (e) {
-    let lob_address = $(e.target).children('option:selected').data('json')
-    if (!lob_address) {
-      lob_address = {}
-    }
-
-    if (lob_address.id) {
-      $('[data-behavior~=lob_address_update_warning]').slideDown('fast')
-    } else {
-      $('[data-behavior~=lob_address_update_warning]').slideUp('fast')
-    }
-
-    const fields = [
-      'name',
-      'address1',
-      'address2',
-      'city',
-      'state',
-      'zip',
-      'id'
-    ]
-
-    return fields.forEach(field =>
-      $(`input#check_lob_address_attributes_${field}`)
-        .val(lob_address[field])
-        .change()
-    )
-  })
-
-  const updateAmountPreview = function () {
-    const amount = $('[name="invoice[item_amount]"]').val().replace(/,/g, '')
-    const previousAmount = BK.s('amount-preview').data('amount') || 0
-    if (amount === previousAmount) {
-      return
-    }
-    if (amount > 0) {
-      const feePercent = BK.s('amount-preview').data('fee')
-      const lFeePercent = (feePercent * 100).toFixed(1)
-      const lAmount = BK.money(amount * 100)
-      const feeAmount = BK.money(feePercent * amount * 100)
-      const revenue = BK.money((1 - feePercent) * amount * 100)
-      BK.s('amount-preview').text(
-        `${lAmount} - ${feeAmount} (${lFeePercent}% Bank fee) = ${revenue}`
-      )
-      BK.s('amount-preview').show()
-      return BK.s('amount-preview').data('amount', amount)
-    } else {
-      BK.s('amount-preview').hide()
-      return BK.s('amount-preview').data('amount', 0)
-    }
-  }
-
-  $(document).on('keyup', '[name="invoice[item_amount]"]', () =>
-    updateAmountPreview()
-  )
-  $(document).on('change', '[name="invoice[item_amount]"]', () =>
-    updateAmountPreview()
-  )
-
-  $(document).on(
-    'click',
-    '[data-behavior~=transaction_dedupe_info_trigger]',
-    e => {
-      const raw = $(e.target).closest('tr').data('json')
-      const json = JSON.stringify(raw, null, 2)
-      BK.s('transaction_dedupe_info_target').html(json)
-    }
-  )
-
   $('textarea')
     .each(function () {
       $(this).css({
@@ -291,23 +308,6 @@ $(document).on('turbo:load', function () {
     }
     return $(m).attr('aria-expanded', !o)
   }
-
-  $(document).on('click', function (e) {
-    if ($(e.target).data('behavior')?.includes('menu_input')) return
-
-    const o = $(BK.openMenuSelector)
-    const c = $(e.target).closest('[data-behavior~=menu_toggle]')
-    if (o.length > 0 || c.length > 0) {
-      BK.toggleMenu(o.length > 0 ? o : c)
-      e.stopImmediatePropagation()
-    }
-  })
-  $(document).keydown(function (e) {
-    // Close popover menus on esc
-    if (e.keyCode === 27 && $(BK.openMenuSelector).length > 0) {
-      return BK.toggleMenu($(BK.openMenuSelector))
-    }
-  })
 
   if (BK.thereIs('shipping_address_inputs')) {
     const shippingInputs = BK.s('shipping_address_inputs')

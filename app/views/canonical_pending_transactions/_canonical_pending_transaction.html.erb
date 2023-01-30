@@ -121,7 +121,7 @@
     <%= number_to_currency pt.amount %>
   </td>
   <td>
-    <%= link_to "Details", pt.url if organizer_signed_in? || defined?(force_display_details) %>
+    <%= link_to "Details", pt.url, data: { turbo_frame: "_top" } if organizer_signed_in? || defined?(force_display_details) %>
   </td>
   <% if defined?(receipt_upload_button) %>
     <td style="width: 1%">

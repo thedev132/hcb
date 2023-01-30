@@ -15,7 +15,7 @@
     <%= javascript_include_tag 'application', 'data-turbo-track': 'reload', defer: true %>
 
     <% if signed_in? %>
-      <script>var HW_config = { selector: "#changelog-icon", account:  "7z8ovy", trigger: "#changelog-icon" }</script>
+      <script>document.addEventListener("turbo:load", () => { Headway.init({ selector: "#changelog-icon", account:  "7z8ovy", trigger: "#changelog-icon" }) })</script>
       <script async src="https://cdn.headwayapp.co/widget.js"></script>
     <% end %>
 
@@ -33,7 +33,7 @@
     <meta name="msapplication-TileColor" content="#ec3750">
     <%= yield(:head) if content_for?(:head) %>
   </head>
-  <body <%= yield(:body_attributes) if content_for?(:body_attributes) %> class="bg-snow <%= content_for :page_class %> <%= "season-#{current_season}" if current_season %>">
+  <body <%= yield(:body_attributes) if content_for?(:body_attributes) %> class="bg-snow <%= content_for :page_class %> <%= "season-#{current_season}" if current_season %>" data-turbo="<%= Flipper.enabled?(:turbo_2023_01_23, current_user) %>">
     <%= react_component 'tour/TourOverlay',
                         tour: @tour&.name,
                         id: @tour&.id,

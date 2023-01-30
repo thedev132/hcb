@@ -20,11 +20,17 @@ export default class extends Controller {
     requireWebauthnPreference: Boolean
   }
 
+  initialize() {
+    this.submitting = false
+  }
+
   loginEmailInputTargetConnected() {
     this.loginEmailInputTarget.value ||= localStorage.getItem('login_email')
   }
 
   async submit(event) {
+    if (this.submitting) return
+
     if (
       this.hasLoginPreferenceWebauthnInputTarget &&
       !this.loginPreferenceWebauthnInputTarget.checked
@@ -66,7 +72,8 @@ export default class extends Controller {
         // Submit the form normally
         this.storeLoginEmail(loginEmail)
 
-        event.target.submit()
+        this.submitting = true
+        event.target.requestSubmit()
       } else {
         // Show an error
         this.enableForm()

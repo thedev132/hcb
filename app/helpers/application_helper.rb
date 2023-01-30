@@ -127,14 +127,6 @@ module ApplicationHelper
     end
   end
 
-  # jQuery plugins are buggy when navigating between pages with Turbo.
-  # This forces the page to reload when Turbo navigates to it
-  def include_modals
-    content_for :head do
-      tag(:meta, name: "turbo-visit-control", content: "reload")
-    end
-  end
-
   def relative_timestamp(time, options = {})
     content_tag :span, "#{options[:prefix]}#{time_ago_in_words time} ago", options.merge(title: time)
   end

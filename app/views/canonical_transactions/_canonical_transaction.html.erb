@@ -132,7 +132,7 @@
     <span><%= number_to_currency ct.amount %></span>
   </td>
   <td>
-    <%= link_to "Details", ct.local_hcb_code.url if organizer_signed_in? || defined?(force_display_details) %>
+    <%= link_to "Details", ct.local_hcb_code.url, data: { turbo_frame: "_top" } if organizer_signed_in? || defined?(force_display_details) %>
   </td>
   <% if defined?(receipt_upload_button) %>
     <td style="width: 1%">

@@ -94,27 +94,27 @@
 
 <script src="/brand/js-confetti.browser.js"></script>
 <script>
-  window.onload = () => {
-    const jsConfetti = new JSConfetti()
+    document.addEventListener("turbo:load", () => {
+      const jsConfetti = new JSConfetti()
 
-    const combinations = [
-      {
-        emojis: ['🦄'],
-        confettiNumber: 1,
-      },
-      {
-        emojis: ['💸', '💵', '💰'],
-      },
-      {
-        emojis: ['🏦', '🏧'],
-      },
-      {
-        emojis: ['🌈', '⚡️', '💥', '✨', '💫', '💸', '💵', '💰', '💲', '🪙', '🏦', '💴'],
-      }
-    ]
+      const combinations = [
+        {
+          emojis: ['🦄'],
+          confettiNumber: 1,
+        },
+        {
+          emojis: ['💸', '💵', '💰'],
+        },
+        {
+          emojis: ['🏦', '🏧'],
+        },
+        {
+          emojis: ['🌈', '⚡️', '💥', '✨', '💫', '💸', '💵', '💰', '💲', '🪙', '🏦', '💴'],
+        }
+      ]
 
-    $('.logo-confetti').click(() => {
-      jsConfetti.addConfetti(combinations[Math.floor(Math.random() * combinations.length)])
+      $('.logo-confetti').click(() => {
+        jsConfetti.addConfetti(combinations[Math.floor(Math.random() * combinations.length)])
+      })
     })
-  }
 </script>
