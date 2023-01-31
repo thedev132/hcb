@@ -74,17 +74,9 @@
     <div>
       <div class="flex-auto">
         <div class="flex items-center justify-start">
-          <%= turbo_frame_tag "#{ct.local_hcb_code.hashid}:memo_frame", class: "memo-frame" do %>
-            <span title="<%= ct.local_hcb_code.memo %>">
-              <%= ct.local_hcb_code.memo %>
-
-              <% if current_user&.admin? && ct.amount_cents < 0 && /^\p{Emoji}/ !~ ct.local_hcb_code.memo %>
-                <a href="<%= memo_frame_hcb_code_path(ct.local_hcb_code, gen_memo: true) %>" class="m0 ml1 text-decoration-none badge bg-muted admin-tools pointer memo-frame__ai-button" style="padding: 4px 6px;" data-turbo="true">
-                  ✨ AI Rename
-                </a>
-              <% end %>
-            </span>
-          <% end %>
+          <span title="<%= ct.local_hcb_code.memo %>">
+            <%= ct.local_hcb_code.memo %>
+          </span>
 
           <% if !defined?(receipt_upload_button) && organizer_signed_in? && Flipper.enabled?(:transaction_tags_2022_07_29, @event || ct.local_hcb_code.event) %>
             <div class="overflow-visible relative" style="margin-left: 0.5rem;" data-controller="menu" data-menu-append-to-value="turbo-frame#ledger">

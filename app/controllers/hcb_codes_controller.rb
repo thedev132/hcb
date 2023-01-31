@@ -44,15 +44,6 @@ class HcbCodesController < ApplicationController
     end
   end
 
-  def memo_frame
-    @hcb_code = HcbCode.find(params[:id])
-    authorize @hcb_code
-
-    if params[:gen_memo]
-      @ai_memo = HcbCodeService::AiGenerateMemo.new(hcb_code: @hcb_code).run
-    end
-  end
-
   def comment
     @hcb_code = HcbCode.find(params[:id])
 

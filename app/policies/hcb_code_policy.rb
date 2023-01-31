@@ -5,10 +5,6 @@ class HcbCodePolicy < ApplicationPolicy
     user&.admin? || present_in_events?
   end
 
-  def memo_frame?
-    user&.admin?
-  end
-
   def comment?
     user&.admin? || present_in_events?
   end

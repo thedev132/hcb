@@ -29,14 +29,12 @@ class CanonicalPendingTransactionsController < ApplicationController
     }
     ::CanonicalPendingTransactionService::SetCustomMemo.new(attrs).run
 
-    if @current_user.admin? && !params[:canonical_pending_transaction][:fronted].nil?
+    if @current_user.admin?
       @canonical_pending_transaction.update(fronted: params[:canonical_pending_transaction][:fronted])
     end
 
-    unless params[:no_flash]
-      flash[:success] = "Renamed pending transaction"
-    end
-    redirect_to params[:redirect_to] || @canonical_pending_transaction.local_hcb_code
+    flash[:success] = "Renamed pending transaction"
+    redirect_to @canonical_pending_transaction.local_hcb_code
   end
 
 end
