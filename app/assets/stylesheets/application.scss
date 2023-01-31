@@ -257,6 +257,15 @@ summary {
   border: 0;
 }
 
+.memo-frame[busy] {
+  cursor: progress;
+}
+
+.memo-frame[busy] .memo-frame__ai-button {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
 @keyframes flying-spook {
   from {
     left: 0;
