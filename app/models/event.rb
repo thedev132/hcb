@@ -613,7 +613,9 @@ class Event < ApplicationRecord
   end
 
   def total_fee_payments_v2_cents
-    @total_fee_payments_v2_cents ||= -canonical_transactions.where(id: canonical_transaction_ids_from_hack_club_fees).sum(:amount_cents)
+    @total_fee_payments_v2_cents ||=
+      canonical_transactions.where(id: canonical_transaction_ids_from_hack_club_fees).sum(:amount_cents).abs +
+      canonical_pending_transactions.bank_fee.unsettled.sum(:amount_cents).abs
   end
 
   def canonical_event_mapping_ids_from_hack_club_fees
