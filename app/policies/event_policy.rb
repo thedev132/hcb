@@ -53,7 +53,7 @@ class EventPolicy < ApplicationPolicy
   end
 
   def destroy?
-    user&.admin?
+    user&.admin? && record.demo_mode?
   end
 
   def team?

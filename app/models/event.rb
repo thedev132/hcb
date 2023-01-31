@@ -12,6 +12,7 @@
 #  category                        :integer
 #  country                         :integer
 #  custom_css_url                  :string
+#  deleted_at                      :datetime
 #  demo_mode                       :boolean          default(FALSE), not null
 #  demo_mode_request_meeting_at    :datetime
 #  donation_page_enabled           :boolean          default(TRUE)
@@ -71,6 +72,8 @@ class Event < ApplicationRecord
   has_country_enum :country
 
   has_paper_trail
+  acts_as_paranoid
+  validates_as_paranoid
 
   include AASM
   include PgSearch::Model
@@ -250,7 +253,7 @@ class Event < ApplicationRecord
   has_many :slugs, -> { order(id: :desc) }, class_name: "FriendlyId::Slug", as: :sluggable
 
   has_many :organizer_position_invites
-  has_many :organizer_positions
+  has_many :organizer_positions, dependent: :destroy
   has_many :users, through: :organizer_positions
   has_many :g_suites
   has_many :g_suite_accounts, through: :g_suites
@@ -308,7 +311,8 @@ class Event < ApplicationRecord
   validate :demo_mode_limit, if: proc{ |e| e.demo_mode_limit_email }
 
   validates :name, :sponsorship_fee, :organization_identifier, presence: true
-  validates :slug, uniqueness: true, presence: true, format: { without: /\s/ }
+  validates :slug, presence: true, format: { without: /\s/ }
+  validates_uniqueness_of_without_deleted :slug
 
   after_save :update_slug_history
 

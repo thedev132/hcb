@@ -122,8 +122,8 @@ class EventsController < ApplicationController
     authorize @event
 
     @event.destroy
-    flash[:success] = "Project successfully destroyed."
-    redirect_to events_url
+    flash[:success] = "Organization successfully deleted."
+    redirect_to root_path
   end
 
   def emburse_card_overview
