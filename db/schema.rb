@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_01_30_171315) do
+ActiveRecord::Schema[7.0].define(version: 2023_01_31_174528) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_stat_statements"
@@ -568,7 +568,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_30_171315) do
     t.boolean "organized_by_hack_clubbers"
     t.string "custom_css_url"
     t.integer "category"
-    t.boolean "can_front_balance", default: false, null: false
+    t.boolean "can_front_balance", default: true, null: false
     t.boolean "demo_mode", default: false, null: false
     t.datetime "demo_mode_request_meeting_at", precision: nil
     t.boolean "is_indexable", default: true

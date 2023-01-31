@@ -8,7 +8,7 @@
 #  aasm_state                      :string
 #  address                         :text
 #  beta_features_enabled           :boolean
-#  can_front_balance               :boolean          default(FALSE), not null
+#  can_front_balance               :boolean          default(TRUE), not null
 #  category                        :integer
 #  country                         :integer
 #  custom_css_url                  :string
