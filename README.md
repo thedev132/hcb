@@ -20,6 +20,8 @@ Hack Club Bank is a platform for managing your nonprofit's finances. Through Ban
 - [Table of Contents](#table-of-contents)
 - [Contributing](#contributing)
 - [Quick Start](#quick-start)
+  - [Production Access](#production-access)
+- [Deployment](#deployment)
 - [Developer Documentation](#developer-documentation)
 
 ## Contributing
@@ -68,6 +70,16 @@ Start the development server with the [docker_start.sh](./docker_start.sh) scrip
 Visit [localhost:3000](http://localhost:3000) to see the result.
 
 **What's Solargraph?** [Solargraph](https://solargraph.org/) is a Ruby language server that provides better Intellisense and code completion. It's completely optional to use Solargraph but highly recommended. You may also need to install the [Solargraph extension](https://github.com/castwide/solargraph#using-solargraph) for your IDE.
+
+### Production Access
+
+We've transitioned to using development keys and tokens in development, but historically have used production data on dev machines. It is recommended to not roll back to using production data & keys in development, but if absolutely neccessary the following steps can be taken:
+
+- Set environment variable `USE_PROD_CREDENTIALS=true` in your docker container
+- Temporarily remove `config/credentials/development.yml.enc`
+- Put the production key in `master.key`
+
+Developing with production keys & data has risk and should only be used if you know what you are doing.
 
 ## Deployment
 
