@@ -250,7 +250,7 @@ class Event < ApplicationRecord
   belongs_to :point_of_contact, class_name: "User", optional: true
 
   # Used for tracking slug history
-  has_many :slugs, -> { order(id: :desc) }, class_name: "FriendlyId::Slug", as: :sluggable
+  has_many :slugs, -> { order(id: :desc) }, class_name: "FriendlyId::Slug", as: :sluggable, dependent: :destroy
 
   has_many :organizer_position_invites
   has_many :organizer_positions, dependent: :destroy
