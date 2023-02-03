@@ -156,7 +156,7 @@ class Invoice < ApplicationRecord
 
   validate :due_date_cannot_be_in_past, on: :create
 
-  validates :item_amount, numericality: { greater_than_or_equal_to: 100 }
+  validates :item_amount, numericality: { greater_than_or_equal_to: 100, message: "must be at least $1" }
 
   before_create :set_defaults
 

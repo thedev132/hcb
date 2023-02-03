@@ -67,7 +67,7 @@
       <%= form.number_field :item_amount,
       value: (invoice.item_amount.nil? ? nil : (invoice.item_amount.to_f / 100)),      placeholder: '500.00',
       step: 0.01,
-      min: 0.01, required: true, disabled: @event.demo_mode? %>
+      min: 1.00, required: true, disabled: @event.demo_mode? %>
     </div>
     <% if invoice.event.sponsorship_fee != 0 %>
       <span class="muted" data-behavior="amount-preview" data-fee="<%= sponsor.event.sponsorship_fee %>"></span>
