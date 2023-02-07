@@ -1,6 +1,6 @@
 <% 'Team member removals' %>
 <% page_sm %>
-<%= render 'events/nav' %>
+<%= render 'events/nav' if @event %>
 
 <article class="card mt3">
   <div class="mb2">
@@ -10,6 +10,11 @@
   <h1 class="h2 mt0">Organizer position deletion request</h1>
 
   <div class="details">
+    <p>
+      <strong>Organization</strong>
+      <%= @opdr.event.name %> <%= "(DELETED)" if @opdr.event.deleted? %>
+    </p>
+
     <p>
       <strong>Submitted by</strong>
       <%= user_mention @opdr.submitted_by %>

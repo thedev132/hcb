@@ -18,7 +18,7 @@
     <tbody>
       <% @opdrs.each do |opdr| %>
         <tr class="<%= 'shade-yellow' if opdr.under_review? %>">
-          <td><%= opdr.organizer_position.event.name %></td>
+          <td><%= opdr.event.name %> <%= inline_icon "delete", size: 24, class: "muted align-bottom" if opdr.event.deleted? %></td>
           <td><%= user_mention opdr.submitted_by %></td>
           <td><%= user_mention opdr.organizer_position.user %></td>
           <td class="flex items-center">
