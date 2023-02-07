@@ -31,8 +31,10 @@ class CanonicalTransactionsController < ApplicationController
     }
     ::CanonicalTransactionService::SetCustomMemo.new(attrs).run
 
-    flash[:success] = "Renamed transaction"
-    redirect_to @canonical_transaction.local_hcb_code
+    unless params[:no_flash]
+      flash[:success] = "Renamed transaction"
+    end
+    redirect_to params[:redirect_to] || @canonical_transaction.local_hcb_code
   end
 
   def waive_fee

@@ -58,14 +58,28 @@
     <div>
       <div class="flex-auto">
         <div class="flex items-center justify-start">
-          <span title="<%= pt.local_hcb_code.memo %>">
-            <% if pt.declined? %>
-              DECLINED:
-            <% else %>
-              PENDING:
+          <%= turbo_frame_tag "#{pt.local_hcb_code.hashid}:memo_frame", class: "memo-frame flex", style: "width:100%; overflow:hidden; text-overflow:ellipsis" do %>
+            <span title="<%= pt.local_hcb_code.memo %>">
+              <% if pt.declined? %>
+                DECLINED:
+              <% else %>
+                PENDING:
+              <% end %>
+
+              <%= pt.local_hcb_code.memo %>
+            </span>
+
+            <% if pt.amount_cents.negative? && name_contains_emoji?(pt.local_hcb_code.memo) %>
+              <% admin_tools('memo-frame__ai-button badge m0 ml1 p0 overflow-visible') do %>
+                <a href="<%= memo_frame_hcb_code_path(pt.local_hcb_code, gen_memo: true) %>"
+                   style="padding: 4px 6px"
+                   data-turbo="true"
+                   class="link-reset">
+                  ✨ AI Rename
+                </a>
+              <% end %>
             <% end %>
-            <%= pt.local_hcb_code.memo %>
-          </span>
+          <% end %>
 
           <% if !defined?(receipt_upload_button) && organizer_signed_in? && Flipper.enabled?(:transaction_tags_2022_07_29, @event || pt.local_hcb_code.event) %>
             <div class="overflow-visible relative" style="margin-left: 0.5rem;" data-controller="menu" data-menu-append-to-value="turbo-frame#ledger">
