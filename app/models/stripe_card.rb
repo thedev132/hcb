@@ -111,6 +111,10 @@ class StripeCard < ApplicationRecord
     "•••• •••• •••• ••••"
   end
 
+  def hidden_cvc
+    "•••"
+  end
+
   def hidden_card_number_with_last_four
     "•••• •••• •••• #{last4}"
   end

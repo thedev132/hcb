@@ -88,79 +88,98 @@
       </span>
     </h2>
 
-    <section class="details mt2">
-      <% if @card.replacement_for %>
-        <p>
-          <strong>Replacement for</strong>
-          <span class="flex items-baseline">
-            <%= stripe_card_mention @card.replacement_for %>
-          </span>
-        </p>
-      <% end %>
+      <turbo-frame id="details">
+        <section class="details mt2">
+          <% if @card.replacement_for %>
+            <p>
+              <strong>Replacement for</strong>
+              <span class="flex items-baseline">
+                <%= stripe_card_mention @card.replacement_for %>
+              </span>
+            </p>
+          <% end %>
 
-      <% eta = @card.stripe_obj.to_hash.dig(:shipping, :eta) %>
-      <% if eta && Time.now.before?(Time.at(eta) + 3.days) %>
-        <p>
-          <strong>Expected arrival</strong>
-          <%= format_date Time.at(eta).to_date %>
-        </p>
-      <% else %>
-        <p>
-          <strong>Activation status</strong>
-          <span class="flex items-baseline">
-            <%= status_badge @card.status_badge_type %>
-            <%= @card.status_text.capitalize %>
-          </span>
-        </p>
-      <% end %>
+          <% eta = @card.stripe_obj.to_hash.dig(:shipping, :eta) %>
+          <% if eta && Time.now.before?(Time.at(eta) + 3.days) %>
+            <p>
+              <strong>Expected arrival</strong>
+              <%= format_date Time.at(eta).to_date %>
+            </p>
+          <% else %>
+            <p>
+              <strong>Activation status</strong>
+              <span class="flex items-baseline">
+                <%= status_badge @card.status_badge_type %>
+                <%= @card.status_text.capitalize %>
+              </span>
+            </p>
+          <% end %>
+          <% if @card.virtual? %>
 
-      <% if @card.virtual? %>
-        <% if @card.user == current_user %>
-          <div class="fs-mask">
-            <strong>
-              Card number
-            </strong>
-            <%= @card.formatted_card_number %>
-          </div>
-        <% end %>
+              <% if @card.user == current_user %>
+                <div class="fs-mask">
+                  <strong>
+                    Card number
+                  </strong>
+                  <div class="flex justify-between mono">
+                    <% if @show_card_details %>
+                        <%= @card.formatted_card_number %>
+                        <%= link_to stripe_card_path(@card), data: { turbo: true } do %>
+                          <%= inline_icon "view-fill", class: "align-middle" %>
+                        <% end %>
+                    <% else %>
+                        <%= @card.hidden_card_number_with_last_four %>
+                        <%= link_to stripe_card_path(@card, show_details: "true"), data: { turbo: true } do %>
+                          <%= inline_icon "view", class: "align-middle" %>
+                        <% end %>
+                      </div>
+                    <% end %>
+                  </div>
+                </div>
+              <% end %>
 
-        <% if @card.user == current_user %>
-        <div class="fs-mask">
-          <strong>CVC</strong>
-          <%= @card.cvc %>
-        </div>
-        <% end %>
+              <% if @card.user == current_user %>
+              <div class="fs-mask mono">
+                <strong>CVC</strong>
+                <% if @show_card_details %>
+                  <%= @card.cvc %>
+                <% else %>
+                  <%= @card.hidden_cvc %>
+                <% end %>
+              </div>
+              <% end %>
 
-        <div class="fs-mask">
-          <strong>Expiration date</strong>
-          <%= render_exp_date %>
-        </div>
+            <div class="fs-mask">
+              <strong>Expiration date</strong>
+              <%= render_exp_date %>
+            </div>
 
-        <div>
-          <strong>ZIP/Postal code</strong>
-          <%= @card.stripe_cardholder.address_postal_code %>
-        </div>
-      <% else %>
-        <div>
-          <strong>
-            Card number
-          </strong>
-          <%= @card.formatted_card_number %>
-          <div class="right tooltipped tooltipped--w" aria-label="Full number hidden to protect security">
-            <%= inline_icon 'private', size: 32, class: 'smoke' %>
-          </div>
-        </div>
-      <% end %>
+            <div>
+              <strong>ZIP/Postal code</strong>
+              <%= @card.stripe_cardholder.address_postal_code %>
+            </div>
+          <% else %>
+            <div>
+              <strong>
+                Card number
+              </strong>
+              <%= @card.formatted_card_number %>
+              <div class="right tooltipped tooltipped--w" aria-label="Full number hidden to protect security">
+                <%= inline_icon 'private', size: 32, class: 'smoke' %>
+              </div>
+            </div>
+          <% end %>
+          <p>
+            <strong>Billing address</strong>
+            <%= render_address @card.cardholder %>
+          </p>
+          <p>
+            <strong>Type</strong>
+            <%= @card.virtual? ? 'Virtual' : 'Physical' %>
+          </p>
+        </section>
+      </turbo-frame>
 
-      <p>
-        <strong>Billing address</strong>
-        <%= render_address @card.cardholder %>
-      </p>
-      <p>
-        <strong>Type</strong>
-        <%= @card.virtual? ? 'Virtual' : 'Physical' %>
-      </p>
-    </section>
     <% admin_tools 'details' do %>
       <div>
         <strong>Ordered at</strong>

@@ -70,8 +70,14 @@ class StripeCardsController < ApplicationController
   def show
     @card = StripeCard.includes(:event, :user).find(params[:id])
 
+
     authorize @card
 
+    if params[:show_details] == "true"
+      ahoy.track "Card details shown", stripe_card_id: @card.id
+    end
+
+    @show_card_details = params[:show_details] == "true"
     @event = @card.event
 
     @hcb_codes = @card.hcb_codes
@@ -119,7 +125,6 @@ class StripeCardsController < ApplicationController
   def edit
     @card = StripeCard.find(params[:stripe_card_id])
     @event = @card.event
-
     authorize @card
   end
 
