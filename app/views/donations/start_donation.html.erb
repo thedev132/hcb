@@ -17,7 +17,7 @@
   <meta name="description" content="<%= description %>">
 <% end %>
 
-<%= render 'header' %>
+<%= render 'donations/header' %>
 
 <% if @event.donation_page_message.present? %>
   <div class="container container--sm">
@@ -27,7 +27,7 @@
   </div>
 <% end %>
 
-<%= render 'donation_form', donation: @donation %>
+<%= render 'donations/donation_form', donation: @donation %>
 
 <% if @event.demo_mode? %>
   <div class="container container--sm">
@@ -39,4 +39,4 @@
   </div>
 <% end %>
 
-<%= render 'footer' %>
+<%= render 'donations/footer' %>

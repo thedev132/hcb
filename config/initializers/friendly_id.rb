@@ -19,7 +19,7 @@ FriendlyId.defaults do |config|
   config.use :reserved
 
   config.reserved_words = %w(new edit index session login logout users admin
-                             stylesheets assets javascripts images my)
+                             stylesheets assets javascripts images my recurring)
 
   # This adds an option to to treat reserved words as conflicts rather than exceptions.
   # When there is no good candidate, a UUID will be appended, matching the existing

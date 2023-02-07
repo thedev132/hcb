@@ -245,6 +245,8 @@ class EventsController < ApplicationController
     relation = relation.search_name(params[:q]) if params[:q].present?
 
     @donations = relation.order(created_at: :desc)
+
+    @recurring_donations = @event.recurring_donations.active.order(created_at: :desc)
   end
 
   def partner_donation_overview

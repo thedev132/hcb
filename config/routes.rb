@@ -435,6 +435,12 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :recurring_donations, only: [:show, :edit, :update], path: "recurring" do
+    member do
+      post "cancel"
+    end
+  end
+
   match "/404", to: "errors#not_found", via: :all
   match "/500", to: "errors#internal_server_error", via: :all
 
@@ -489,6 +495,13 @@ Rails.application.routes.draw do
       resources :comments
     end
     resources :tags, only: [:create, :destroy]
+
+    resources :recurring_donations, only: [:create], path: "recurring" do
+      member do
+        get "pay"
+        get "finished"
+      end
+    end
 
     member do
       post "disable_feature"

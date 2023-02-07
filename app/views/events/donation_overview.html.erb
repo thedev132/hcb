@@ -92,6 +92,41 @@
 
 <hr>
 
+<% if @recurring_donations.size > 0 %>
+  <h2>Recurring donors</h2>
+  <table class="mb3">
+    <thead>
+      <tr>
+        <th></th>
+        <th>Started on</th>
+        <th>Name</th>
+        <th>Amount</th>
+        <th>Total donated</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @recurring_donations.each do |recurring_donation| %>
+        <tr>
+          <td style="width: 1%"><span class="ml0 mr1 badge bg-success"><%= recurring_donation.stripe_status.humanize %></span></td>
+          <td><%= format_date recurring_donation.created_at %></td>
+          <td class="line-height-3">
+            <%= recurring_donation.name %><br>
+            <% if organizer_signed_in? %>
+              <span class="muted h5"><%= recurring_donation.email %></span>
+            <% end %>
+          </td>
+          <td>
+            <%= render_money recurring_donation.amount %><span class="muted">/month</span>
+          </td>
+          <td>
+            <strong><%= render_money recurring_donation.total_donated %></strong>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>
+
 <div style="text-align: center;">
   <%= link_to "All", "?filter=all", class: "filterbar__item", "aria-selected": !["deposited", "in_transit", "refunded"].include?(params[:filter]), role: "tab" %>
   <%= link_to "Deposited", "?filter=deposited", class: "filterbar__item", "aria-selected": params[:filter] == "deposited", role: "tab" %>
@@ -130,8 +165,11 @@
           <td>
             <%= format_date d.created_at %>
           </td>
-          <td>
+          <td class="flex items-center">
             <%= d.name %>
+            <% if d.recurring? %>
+              <div class="line-height-0 ml1 tooltipped tooltipped--n" aria-label="Monthly donor"><%= inline_icon "transactions", size: 24, class: "muted" %></div>
+            <% end %>
           </td>
           <td style="text-align: right;">
             <%= render_money(d.amount) %>

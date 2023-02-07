@@ -275,6 +275,7 @@ class Event < ApplicationRecord
   has_many :outgoing_disbursements, class_name: "Disbursement", foreign_key: :source_event_id
   has_many :donations
   has_many :donation_payouts, through: :donations, source: :payout
+  has_many :recurring_donations
 
   has_many :lob_addresses
   has_many :checks, through: :lob_addresses

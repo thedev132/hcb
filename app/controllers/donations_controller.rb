@@ -47,6 +47,12 @@ class DonationsController < ApplicationController
     @donation = Donation.new(amount: params[:amount], event: @event)
 
     authorize @donation
+
+    @monthly = params[:monthly].present?
+
+    if @monthly
+      @recurring_donation = @event.recurring_donations.build
+    end
   end
 
   def make_donation

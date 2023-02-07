@@ -1,0 +1,10 @@
+<p>Hi <%= @recurring_donation.name %>,</p>
+
+<p>Your donation of <%= render_money @recurring_donation.amount %> per month to <strong><%= @recurring_donation.event.name %></strong> has been canceled.</p>
+
+<p>If you'd like to donate again in the future, you can do so on <%= link_to "#{@recurring_donation.event.name}'s donation page", start_donation_donations_url(@recurring_donation.event) %>.</p>
+
+<p>
+  Best regards,<br>
+  The Hack Club Bank Team
+</p>

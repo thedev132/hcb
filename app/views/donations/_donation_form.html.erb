@@ -1,44 +1,65 @@
-<%= form_with(model: donation, local: true, url: make_donation_donations_path,
-              class: 'card mx-auto max-width-1 mb3') do |form| %>
-  <%= form.invisible_captcha :subtitle %>
-  <%= form_errors(donation, nil, "We couldn't start this") %>
+<%= turbo_frame_tag :donation do %>
+  <% if Flipper.enabled?(:recurring_donations_2023_02_07, @event) %>
+    <ul class="tab-container max-width-1 mx-auto">
+        <li class="<%= "active" unless @monthly %>">
+            <%= link_to 'One-time', start_donation_donations_path(@event), data: { turbo: true } %>
+        </li>
+        <li class="<%= "active" if @monthly %>">
+            <%= link_to 'Monthly', start_donation_donations_path(@event, monthly: true), data: { turbo: true } %>
+        </li>
+    </ul>
+  <% end %>
 
-  <div class="field mb2">
-    <%= form.label :name, 'Your name' %>
-    <%= form.text_field :name, placeholder: 'Fiona Hackworth', required: true %>
-  </div>
+  <%= form_with(model: @monthly ? [ @event, @recurring_donation ] : donation, local: true, url: (make_donation_donations_path unless @monthly),
+                class: 'card mx-auto max-width-1 mb3', data: @monthly ? { turbo: true, turbo_action: "advance" } : { turbo_frame: "_top" }) do |form| %>
+    <% donation = @recurring_donation if @monthly %>
 
-  <div class="field mb2">
-    <%= form.label :email, 'Your email' %>
-    <span class="muted block h5">We’ll send a receipt here for your tax records.</span>
-    <%= form.email_field :email, placeholder: 'fionah@gmail.com', required: true %>
-  </div>
+    <%= form.invisible_captcha :subtitle %>
+    <%= form_errors(donation, nil, "We couldn't start this") unless @monthly %>
 
-  <div class="field">
-    <% if !@event.country_us? %>
-      <%= form.label :amount, 'Donation amount (USD)' %>
-    <% else %>
-      <%= form.label :amount, 'Donation amount' %>
-    <% end %>
-    <div class="flex items-center">
-      <span class="bold muted" style="width: 1rem;">$</span>
-      <%= form.number_field :amount,
-                            value: (donation.amount.nil? ? nil : ('%.2f' % (donation.amount.to_f / 100))),
-                            placeholder: '20.00',
-                            step: 0.01,
-                            min: 1, # Limitations placed by Stripe
-                            max: 999_999.99, # Limitations placed by Stripe
-                            required: true, class: 'fit w-100' %>
+    <div class="field mb2">
+      <%= form.label :name, 'Your name' %>
+      <%= form.text_field :name, placeholder: 'Fiona Hackworth', required: true, autofocus: true %>
     </div>
-  </div>
 
-  <p class="muted h5 mt2 mb1">
-    Your contribution is tax-deductible<% if !@event.country_us? %> in the US<% end %>.
-  </p>
+    <div class="field mb2">
+      <%= form.label :email, 'Your email' %>
+      <span class="muted block h5">We’ll send <%= @monthly ? "receipts" : "a receipt" %> here for your tax records.</span>
+      <%= form.email_field :email, placeholder: 'fionah@gmail.com', required: true %>
+      <% donation.errors.messages_for(:email).each do |message| %>
+        <div class="primary"><%= message %></div>
+      <% end %>
+    </div>
 
-  <% if @event.demo_mode? %>
-    <%= form.submit 'Continue →', class: 'w-100 bg-success', disabled: "true" %>
-  <% else %>
-    <%= form.submit 'Continue →', class: 'w-100 bg-success', 'data-turbo': 'false' %>
+      <div class="field">
+        <% if !@event.country_us? %>
+          <%= form.label :amount, 'Donation amount (USD)' %>
+        <% else %>
+          <%= form.label :amount, 'Donation amount' %>
+        <% end %>
+        <div class="flex items-center">
+          <span class="bold muted shrink-none" style="width: 1rem;">$</span>
+          <%= form.number_field :amount,
+                                value: (donation.amount.nil? ? nil : ('%.2f' % (donation.amount.to_f / 100))),
+                                placeholder: '20.00',
+                                step: 0.01,
+                                min: 1, # Limitations placed by Stripe
+                                max: 999_999.99, # Limitations placed by Stripe
+                                required: true, class: 'fit w-100' %>
+          <% if @monthly %>
+            <span class="muted nowrap ml1">/ month</span>
+          <% end %>
+        </div>
+      </div>
+
+    <p class="muted h5 mt2 mb1">
+      Your contribution is tax-deductible<% if !@event.country_us? %> in the US<% end %>.
+    </p>
+
+    <% if @event.demo_mode? %>
+      <%= form.submit 'Continue →', class: 'w-100 bg-success', disabled: "true" %>
+    <% else %>
+      <%= form.submit 'Continue →', class: 'w-100 bg-success' %>
+    <% end %>
   <% end %>
 <% end %>

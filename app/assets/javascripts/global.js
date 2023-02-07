@@ -30,6 +30,7 @@ BK.styleDark = theme => {
 }
 BK.toggleDark = () => {
   theme = !BK.isDark()
+  window.dispatchEvent(new CustomEvent('theme-toggle', { detail: theme }))
   return BK.setDark(theme)
 }
 BK.setDark = dark => {

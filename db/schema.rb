@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_01_31_174528) do
+ActiveRecord::Schema[7.0].define(version: 2023_02_06_164307) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_stat_statements"
@@ -422,9 +422,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_31_174528) do
     t.text "message"
     t.text "hcb_code"
     t.string "aasm_state"
+    t.bigint "recurring_donation_id"
     t.index ["event_id"], name: "index_donations_on_event_id"
     t.index ["fee_reimbursement_id"], name: "index_donations_on_fee_reimbursement_id"
     t.index ["payout_id"], name: "index_donations_on_payout_id"
+    t.index ["recurring_donation_id"], name: "index_donations_on_recurring_donation_id"
   end
 
   create_table "emburse_card_requests", force: :cascade do |t|
@@ -1190,6 +1192,27 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_31_174528) do
     t.index ["user_id"], name: "index_receipts_on_user_id"
   end
 
+  create_table "recurring_donations", force: :cascade do |t|
+    t.text "email"
+    t.text "name"
+    t.bigint "event_id", null: false
+    t.integer "amount"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.text "stripe_customer_id"
+    t.text "stripe_subscription_id"
+    t.text "stripe_payment_intent_id"
+    t.text "stripe_client_secret"
+    t.datetime "stripe_current_period_end"
+    t.text "stripe_status"
+    t.text "url_hash"
+    t.text "last4_ciphertext"
+    t.datetime "canceled_at"
+    t.index ["event_id"], name: "index_recurring_donations_on_event_id"
+    t.index ["stripe_subscription_id"], name: "index_recurring_donations_on_stripe_subscription_id", unique: true
+    t.index ["url_hash"], name: "index_recurring_donations_on_url_hash", unique: true
+  end
+
   create_table "selenium_sessions", force: :cascade do |t|
     t.string "aasm_state"
     t.jsonb "cookies"
@@ -1516,6 +1539,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_31_174528) do
   add_foreign_key "raw_pending_incoming_disbursement_transactions", "disbursements"
   add_foreign_key "raw_pending_outgoing_disbursement_transactions", "disbursements"
   add_foreign_key "receipts", "users"
+  add_foreign_key "recurring_donations", "events"
   add_foreign_key "sponsors", "events"
   add_foreign_key "stripe_authorizations", "stripe_cards"
   add_foreign_key "stripe_cardholders", "users"

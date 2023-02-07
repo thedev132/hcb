@@ -26,13 +26,15 @@
 #  fee_reimbursement_id                 :bigint
 #  payout_creation_queued_job_id        :string
 #  payout_id                            :bigint
+#  recurring_donation_id                :bigint
 #  stripe_payment_intent_id             :string
 #
 # Indexes
 #
-#  index_donations_on_event_id              (event_id)
-#  index_donations_on_fee_reimbursement_id  (fee_reimbursement_id)
-#  index_donations_on_payout_id             (payout_id)
+#  index_donations_on_event_id               (event_id)
+#  index_donations_on_fee_reimbursement_id   (fee_reimbursement_id)
+#  index_donations_on_payout_id              (payout_id)
+#  index_donations_on_recurring_donation_id  (recurring_donation_id)
 #
 # Foreign Keys
 #
@@ -55,13 +57,15 @@ class Donation < ApplicationRecord
   belongs_to :event
   belongs_to :fee_reimbursement, required: false
   belongs_to :payout, class_name: "DonationPayout", required: false
+  belongs_to :recurring_donation, required: false
 
-  before_create :create_stripe_payment_intent
-  before_create :assign_unique_hash
+  before_create :create_stripe_payment_intent, unless: -> { recurring? }
+  before_create :assign_unique_hash, unless: -> { recurring? }
 
   after_update :send_payment_notification_if_needed
 
-  validates :name, :email, :amount, presence: true
+  validates :name, :email, presence: true, unless: -> { recurring? } # recurring donations have a name/email in their `RecurringDonation` object
+  validates_presence_of :amount
   validates :amount, numericality: { greater_than_or_equal_to: 100, less_than_or_equal_to: 999_999_99 }
 
   scope :succeeded, -> { where(status: "succeeded") }
@@ -249,6 +253,22 @@ class Donation < ApplicationRecord
 
   def fee_reimbursed?
     fee_reimbursement.canonical_transaction.present?
+  end
+
+  def recurring?
+    recurring_donation.present?
+  end
+
+  def initial_recurring_donation?
+    recurring? && recurring_donation.donations.order(created_at: :asc).first == self
+  end
+
+  def name
+    recurring_donation&.name || super
+  end
+
+  def email
+    recurring_donation&.email || super
   end
 
   private

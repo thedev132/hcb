@@ -120,10 +120,10 @@ module ApplicationHelper
     pop_icon_to "view-close", "#close_modal", class: "modal__close muted", rel: "modal:close", tabindex: 0
   end
 
-  def modal_header(text)
+  def modal_header(text, level: "h0")
     content_tag :header, class: "pb2" do
       modal_close +
-        content_tag(:h2, text.html_safe, class: "h0 mt0 mb0 pb0 border-none")
+        content_tag(:h2, text.html_safe, class: "#{level} mt0 mb0 pb0 border-none")
     end
   end
 

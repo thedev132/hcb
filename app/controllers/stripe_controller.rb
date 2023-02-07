@@ -89,7 +89,14 @@ class StripeController < ApplicationController
   end
 
   def handle_invoice_paid(event)
-    invoice = Invoice.find_by(stripe_invoice_id: event[:data][:object][:id])
+    stripe_invoice = event[:data][:object]
+
+    if stripe_invoice.subscription.present?
+      RecurringDonationService::HandleInvoicePaid.new(stripe_invoice).run
+      return
+    end
+
+    invoice = Invoice.find_by(stripe_invoice_id: stripe_invoice[:id])
     return unless invoice
 
     # Mark invoice as paid
@@ -103,6 +110,30 @@ class StripeController < ApplicationController
     end
 
     head 200
+  end
+
+  def handle_customer_subscription_updated(event)
+    recurring_donation = RecurringDonation.find_by(stripe_subscription_id: event.data.object.id)
+    return unless recurring_donation
+
+    recurring_donation.sync_with_stripe_subscription!
+    recurring_donation.save!
+  end
+
+  alias_method :handle_customer_subscription_deleted, :handle_customer_subscription_updated
+
+  def handle_setup_intent_succeeded(event)
+    setup_intent = event.data.object
+    return unless setup_intent.metadata.recurring_donation_id
+
+    suppress(ActiveRecord::RecordNotFound) do
+      recurring_donation = RecurringDonation.find(setup_intent.metadata.recurring_donation_id)
+      StripeService::Subscription.update(recurring_donation.stripe_subscription_id, default_payment_method: setup_intent.payment_method)
+      recurring_donation.sync_with_stripe_subscription!
+      recurring_donation.save!
+
+      RecurringDonationMailer.with(recurring_donation: recurring_donation).payment_method_changed.deliver_later
+    end
   end
 
   def handle_charge_dispute_funds_withdrawn(event)

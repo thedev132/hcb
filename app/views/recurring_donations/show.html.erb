@@ -1,0 +1,95 @@
+<% page_sm %>
+<% no_transparency_header %>
+<% @hide_footer = true %>
+
+<section class="modal modal--scroll bg-snow" data-behavior="modal" role="dialog" id="change_payment_details">
+  <%= modal_header "Update payment details", level: "h1" %>
+  <%= turbo_frame_tag :update_recurring_donation_payment_method, src: edit_recurring_donation_path(@recurring_donation.url_hash), loading: "lazy" do %>
+    <p class="center muted mt3 h3">One moment...</p>
+  <% end %>
+</section>
+
+<section class="modal modal--scroll bg-snow" data-behavior="modal" role="dialog" id="change_amount">
+  <%= modal_header "Update donation amount", level: "h1" %>
+
+  <%= form_with model: @recurring_donation, url: recurring_donation_path(@recurring_donation.url_hash) do |form| %>
+    <div class="field">
+      <div class="flex items-center justify-center">
+        <span class="bold muted shrink-none" style="width: 1rem;">$</span>
+        <%= form.number_field :amount,
+                              value: (@recurring_donation.amount.nil? ? nil : ('%.2f' % (@recurring_donation.amount.to_f / 100))),
+                              placeholder: '20.00',
+                              step: 0.01,
+                              min: 1, # Limitations placed by Stripe
+                              max: 999_999.99, # Limitations placed by Stripe
+                              required: true %>
+        <span class="muted nowrap ml1">/ month</span>
+      </div>
+    </div>
+    <div class="center">
+      <%= form.submit "Update", class: "ml1" %>
+    </div>
+
+    <p class="muted center mb0">You'll be charged the new amount on <%= local_date(@recurring_donation.stripe_current_period_end, '%B %e, %Y') %>.</p>
+  <% end %>
+
+</section>
+
+<% admin_tools "mt1" do %>
+  <%= link_to "View subscription on Stripe", "https://dashboard.stripe.com/subscriptions/#{@recurring_donation.stripe_subscription_id}", class: "btn bg-accent", target: "_blank" %>
+<% end %>
+
+<div class="card mb3 center mt4">
+  <h3 class="mt0 flex left-align items-start justify-between regular muted border-none">
+    <span><strong class="black"><%= @recurring_donation.name %>'s</strong> donation of<br>
+    <strong class="black"><%= render_money @recurring_donation.amount %></strong> per month to<br>
+    <strong class="black"><%= link_to_if @recurring_donation.event.is_public?, @recurring_donation.event.name, @recurring_donation.event, target: "_blank" %></strong></span>
+
+    <div class="badge bg-<%= @recurring_donation.status_badge_color %> mt1 h4"><%= @recurring_donation.stripe_status.humanize %></div>
+  </h3>
+
+  <section class="details left-align">
+    <p>
+      <strong>Payment method</strong>
+      <span class="flex items-center">
+        <%= inline_icon "card", size: 24, class: "muted mr1" %>
+        ••••<%= @recurring_donation.last4 %>
+        <% unless @recurring_donation.canceled? %>
+          <button class="btn bg-accent ml-auto h5" style="padding: 4px 16px" data-behavior="modal_trigger" data-modal="change_payment_details">Change</button>
+        <% end %>
+      </span>
+    </p>
+    <p>
+      <strong>Amount</strong>
+      <span class="flex items-center">
+        <%= render_money @recurring_donation.amount %> per month
+        <% unless @recurring_donation.canceled? %>
+          <button class="btn bg-accent ml-auto h5" style="padding: 4px 16px" data-behavior="modal_trigger" data-modal="change_amount">Change</button>
+        <% end %>
+      </span>
+    </p>
+    <p>
+      <strong>Started on</strong>
+      <%= local_date(@recurring_donation.created_at, '%B %e, %Y') %>
+    </p>
+    <% unless @recurring_donation.canceled? %>
+      <p>
+        <strong>Next donation on</strong>
+        <%= local_date(@recurring_donation.stripe_current_period_end, '%B %e, %Y') %>
+      </p>
+    <% else %>
+      <p>
+        <strong>Canceled on</strong>
+        <%= local_date(@recurring_donation.canceled_at, '%B %e, %Y') %>
+      </p>
+    <% end %>
+  </section>
+
+  <% unless @recurring_donation.canceled? %>
+    <div class="actions left-align">
+      <%= button_to "Cancel donation", cancel_recurring_donation_path(@recurring_donation.url_hash), method: :post, class: "btn bg-error", data: { confirm: "Are you sure you'd like to stop donating to #{@recurring_donation.event.name}?" } %>
+    </div>
+  <% end %>
+</div>
+
+<p class="muted center">Need help? Contact us at <%= mail_to "bank@hackclub.com" %>.</p>

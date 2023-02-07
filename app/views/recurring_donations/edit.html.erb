@@ -1,0 +1,25 @@
+<% no_app_shell %>
+<% @hide_footer = true %>
+
+<%= turbo_frame_tag :update_recurring_donation_payment_method do %>
+  <div
+    data-controller="stripe"
+    data-stripe-api-key-value="<%= StripeService.publishable_key %>"
+    data-stripe-client-secret-value="<%= @client_secret %>"
+    data-stripe-return-url-value="<%= recurring_donation_url(@recurring_donation.url_hash) %>"
+    data-stripe-theme-value="default"
+    data-stripe-type-value="setup"
+    data-action="theme-toggle@window->stripe#themeToggle">
+
+    <div data-stripe-target="errors"></div>
+
+    <%= form_with data: { action: "stripe#submit:prevent" } do |form| %>
+      <div data-stripe-target="element"></div>
+      <div class="actions center">
+        <button type="submit" class="btn btn-success w-100">
+          Update payment details
+        </button>
+      </div>
+    <% end %>
+  </div>
+<% end %>

@@ -1,0 +1,31 @@
+<% title 'Give to ' + @event.name %>
+<% page_sm %>
+<% no_app_shell %>
+
+<%= render 'donations/header' %>
+
+<%= turbo_frame_tag :donation do %>
+  <div
+    class="card mb3"
+    data-controller="stripe"
+    data-stripe-api-key-value="<%= StripeService.publishable_key %>"
+    data-stripe-client-secret-value="<%= @recurring_donation.stripe_client_secret %>"
+    data-stripe-return-url-value="<%= finished_event_recurring_donation_url(@event, @recurring_donation) %>"
+    data-action="theme-toggle@window->stripe#themeToggle">
+
+    <div data-stripe-target="errors"></div>
+
+    <%= form_with data: { action: "stripe#submit:prevent" } do |form| %>
+      <div data-stripe-target="element"></div>
+      <div class="actions center">
+        <button type="submit" class="btn btn-success w-100">
+          <%= inline_icon "private" %>
+          Donate <%= render_money @recurring_donation.amount %> per month
+        </button>
+        <p class="h5 muted inline-block mt2 mb0">Your card will immediately be charged <%= render_money @recurring_donation.amount %> and a receipt will be emailed to <strong><%= @recurring_donation.email %></strong>.</p>
+      </div>
+    <% end %>
+  </div>
+<% end %>
+
+<%= render 'donations/footer' %>
