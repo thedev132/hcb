@@ -9,7 +9,7 @@
   |
   <%= form.label :has_receipt do %>
     Receipt
-    <%= form.select :has_receipt, [['All', 'all'], ['Has receipt', 'yes'], ['Missing receipt', 'no'], ['Lost receipt', 'lost']], :selected => @has_receipt %>
+    <%= form.select :has_receipt, [['All', 'all'], ['Has receipt', 'yes'], ['Missing receipt', 'no'], ['Lost receipt', 'lost']], selected: @has_receipt %>
   <% end %>
   |
   <%= form.label :start_date do %>

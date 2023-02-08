@@ -1,5 +1,5 @@
 <div id="flash-container">
-  <% flash.filter {|key, value| key != "confetti"}.each do |key, value| %>
+  <% flash.filter { |key, value| key != "confetti" }.each do |key, value| %>
     <article
       role="alertdialog"
       class="flash flex items-center mt3 mb2 mx-auto shrink-none <%= key %>"

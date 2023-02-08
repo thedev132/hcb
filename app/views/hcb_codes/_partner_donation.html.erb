@@ -61,7 +61,7 @@
       <% end %>
     </section>
     <section class="pt2 pb2 details">
-      <% admin_tools() do %>
+      <% admin_tools do %>
         <strong>Partner</strong>
         <%= @partner_donation.partner.name || @partner_donation.partner.slug.capitalize %>
       <% end %>

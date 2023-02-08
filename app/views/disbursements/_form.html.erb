@@ -7,10 +7,9 @@
                                 @allowed_source_events,
                                 :id,
                                 current_user.admin? ? :admin_dropdown_description : :disbursement_dropdown_description,
-                                {selected: @source_event.id},
+                                { selected: @source_event.id },
                                 required: true,
-                                disabled: @source_event.demo_mode?
-                                ) %>
+                                disabled: @source_event.demo_mode?) %>
   </div>
 
   <div class="field event-select-target">
@@ -19,10 +18,9 @@
                                 @allowed_destination_events,
                                 :id,
                                 current_user.admin? ? :admin_dropdown_description : :disbursement_dropdown_description,
-                                {prompt: 'Select one…'},
+                                { prompt: 'Select one…' },
                                 required: true,
-                                disabled: @source_event.demo_mode?
-                                ) %>
+                                disabled: @source_event.demo_mode?) %>
     <span class="muted">You can transfer to any organization you're a part of with Transparency Mode enabled.</span>
   </div>
 
@@ -31,11 +29,11 @@
     <div class="flex items-center">
       <span class="bold muted" style="width: 1rem;">$</span>
       <%= form.number_field :amount, value: (@disbursement&.amount.nil? ? nil : (@disbursement.amount.to_f / 100)),
-        placeholder: '500.00',
-        step: 0.01,
-        min: 0.01,
-        required: true,
-        disabled: @source_event.demo_mode? %>
+                                     placeholder: '500.00',
+                                     step: 0.01,
+                                     min: 0.01,
+                                     required: true,
+                                     disabled: @source_event.demo_mode? %>
     </div>
   </div>
 

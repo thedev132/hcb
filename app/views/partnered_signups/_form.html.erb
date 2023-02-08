@@ -1,4 +1,4 @@
-<%= form_with(model: partnered_signup, url: edit_partnered_signups_path(public_id: partnered_signup.public_id), local: true, html:{ onsubmit: 'onSubmit()'}) do |form| %>
+<%= form_with(model: partnered_signup, url: edit_partnered_signups_path(public_id: partnered_signup.public_id), local: true, html: { onsubmit: 'onSubmit()' }) do |form| %>
 
   <%= form_errors partnered_signup %>
 
@@ -55,7 +55,7 @@
   </div>
   <div class="field grid__half">
     <%= form.label :owner_address_country, "Country" %>
-    <%= form.collection_select :owner_address_country, PartneredSignup.countries.map{|c| [c.first, get_country_name_from_alpha2(c.first)]}, :first, :last, { include_blank: 'Select a country'}, required: true %>
+    <%= form.collection_select :owner_address_country, PartneredSignup.countries.map{ |c| [c.first, get_country_name_from_alpha2(c.first)] }, :first, :last, { include_blank: 'Select a country' }, required: true %>
   </section>
   <span class="muted h5">This is so we can send you some swag and goodies if you ever request them!</span>
   </p>

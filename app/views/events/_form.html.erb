@@ -59,7 +59,7 @@
         </ul>
         <div class="field">
           <%= form.label :custom_css_url, "Custom CSS URL" %>
-          <%= form.text_field :custom_css_url, type: 'url',  placeholder: "https://bank.hackclub.com/dinobbq.css", class: "w-100 fit" %>
+          <%= form.text_field :custom_css_url, type: 'url', placeholder: "https://bank.hackclub.com/dinobbq.css", class: "w-100 fit" %>
         </div>
         <%= form.submit "Update" %>
       </div>
@@ -191,12 +191,12 @@
 
     <div class="field">
       <%= form.label :country %>
-      <%= form.collection_select :country, Event.countries.map{|c| [c.first, get_country_name_from_alpha2(c.first)]}, :first, :last, { include_blank: 'Select a country'} %>
+      <%= form.collection_select :country, Event.countries.map{ |c| [c.first, get_country_name_from_alpha2(c.first)] }, :first, :last, { include_blank: 'Select a country' } %>
     </div>
 
     <div class="field">
       <%= form.label :category %>
-      <%= form.collection_select :category, Event.categories, :first, :first, { include_blank: 'Select a category'} %>
+      <%= form.collection_select :category, Event.categories, :first, :first, { include_blank: 'Select a category' } %>
     </div>
 
     <div class="field">

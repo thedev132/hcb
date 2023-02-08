@@ -1,6 +1,8 @@
-<% title "Connect to Hack Club Bank" %> <% page_md %> <% @home_size = 128 %> <%
-@no_app_shell = true
-                                                                             %> <% content_for(:page_class) { 'pt4 gradient--bg' } %>
+<% title "Connect to Hack Club Bank" %>
+<% page_md %>
+<% @home_size = 128 %>
+<% @no_app_shell = true %>
+<% content_for(:page_class) { 'pt4 gradient--bg' } %>
 
 <div class="loader hidden">
   <svg
@@ -45,7 +47,7 @@
 <div class="mt3 card p3 max-width-3 mx-auto">
   <div class="center">
     <% if @partner.logo.present? %> <%= image_tag @partner.logo, width: 128,
-    class: "align-middle partner-logo-left" %>
+                                                                 class: "align-middle partner-logo-left" %>
     <span class="bold h1 inline-block align-middle muted">+</span>
     <% end %> <%= image_tag "logo-512.png", width: 128, class: "align-middle
     partner-logo-right" %>

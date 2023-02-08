@@ -7,7 +7,7 @@
       <%= form.label :sponsor, 'Sponsor' %>
       <%= form.select :sponsor,
         options_for_select(!organizer_signed_in? ? [] : @event.sponsors.map { |s|
-          [s.name, s.id, { 'data-json': s.to_json } ]
+          [s.name, s.id, { 'data-json': s.to_json }]
         }),
         include_blank: 'New sponsor…' %>
     </div>
@@ -65,7 +65,7 @@
     <div class="flex items-center">
       <span class="bold muted" style="width: 1rem;">$</span>
       <%= form.number_field :item_amount,
-      value: (invoice.item_amount.nil? ? nil : (invoice.item_amount.to_f / 100)),      placeholder: '500.00',
+      value: (invoice.item_amount.nil? ? nil : (invoice.item_amount.to_f / 100)), placeholder: '500.00',
       step: 0.01,
       min: 1.00, required: true, disabled: @event.demo_mode? %>
     </div>

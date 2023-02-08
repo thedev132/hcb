@@ -44,7 +44,7 @@
       <%= form.label :lob_address, 'Payee' %>
       <%= form.select :lob_address,
         options_for_select(!organizer_signed_in? ? [] : @event.lob_addresses.map { |la|
-          [la.name, la.id, { 'data-json': la.to_json } ]
+          [la.name, la.id, { 'data-json': la.to_json }]
         }),
         include_blank: 'New payee…', disabled: @event.demo_mode? %>
     </div>
@@ -61,7 +61,7 @@
     <%= form.hidden_field :id %>
     <div class="field mt2">
       <%= form.label :name, "Name (use company name if applicable)" %>
-      <%= form.text_field :name, placeholder: 'Raviga Capital', required: true, disabled: @event.demo_mode?, data: {'behavior': 'check_payee_name_field'} %>
+      <%= form.text_field :name, placeholder: 'Raviga Capital', required: true, disabled: @event.demo_mode?, data: { 'behavior': 'check_payee_name_field' } %>
     </div>
 
     <div class="field">

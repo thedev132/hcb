@@ -108,7 +108,7 @@
   <div class="card__banner card__banner--top flex justify-between items-center promo-pvsa">
     <%= image_tag 'https://cloud-q7i8htyv7-hack-club-bot.vercel.app/0pvsa-logo-2x.png', width: 60 %>
     <%= link_to 'Purchase',
-      @perks_available ? airtable_form("shrPlG3a9WMBDhB69", { "Event Name" => @event.name, "Bank URL" => event_url(@event), "Submitter Email" => current_user.email}, ["Event Name", "Bank URL"] ) : root_path,
+      @perks_available ? airtable_form("shrPlG3a9WMBDhB69", { "Event Name" => @event.name, "Bank URL" => event_url(@event), "Submitter Email" => current_user.email }, ["Event Name", "Bank URL"] ) : root_path,
       class: "btn mr1 #{'disabled' unless @perks_available}",
       target: :_blank %>
   </div>

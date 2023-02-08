@@ -31,12 +31,12 @@
 <br>
 <%= form.label :transparent do %>
   Transparent
-  <%= form.select :transparent, [['Both', 'both'], ["Not Transparent", 'not_transparent'], ['Transparent', 'transparent']], :selected => @transparent %>
+  <%= form.select :transparent, [['Both', 'both'], ["Not Transparent", 'not_transparent'], ['Transparent', 'transparent']], selected: @transparent %>
 <% end %>
 |
 <%= form.label :omitted do %>
   Omitted
-  <%= form.select :omitted, [['Both', 'both'], ["Not Omitted", 'not_omitted'], ['Omitted', 'omitted']], :selected => @omitted %>
+  <%= form.select :omitted, [['Both', 'both'], ["Not Omitted", 'not_omitted'], ['Omitted', 'omitted']], selected: @omitted %>
 <% end %>
 |
 <%= form.label :demo_mode do %>
@@ -46,32 +46,32 @@
 |
 <%= form.label :hidden do %>
   Hidden
-  <%= form.select :hidden, [['Both', 'both'], ["Not Hidden", 'not_hidden'], ['Hidden', 'hidden']], :selected => @hidden %>
+  <%= form.select :hidden, [['Both', 'both'], ["Not Hidden", 'not_hidden'], ['Hidden', 'hidden']], selected: @hidden %>
 <% end %>
 |
 <%= form.label :funded do %>
   Funded
-  <%= form.select :funded, [['Both', 'both'], ["Not Funded", 'not_funded'], ['Funded', 'funded']], :selected => @funded %>
+  <%= form.select :funded, [['Both', 'both'], ["Not Funded", 'not_funded'], ['Funded', 'funded']], selected: @funded %>
 <% end %>
 |
 <%= form.label :organized_by_hack_clubbers do %>
   Organized by
-  <%= form.select :organized_by_hack_clubbers, [['Both', 'both'], ["Hack Clubbers", 'organized_by_hack_clubbers'], ['Not Hack Clubbers', 'not_organized_by_hack_clubbers']], :selected => @organized_by_hack_clubbers %>
+  <%= form.select :organized_by_hack_clubbers, [['Both', 'both'], ["Hack Clubbers", 'organized_by_hack_clubbers'], ['Not Hack Clubbers', 'not_organized_by_hack_clubbers']], selected: @organized_by_hack_clubbers %>
 <% end %>
 |
 <%= form.label :country do %>
   Country
-  <%= form.select :country, {'Outside US': 9999}.merge(Event.countries), { include_blank: 'all', :selected => @country } %>
+  <%= form.select :country, { 'Outside US': 9999 }.merge(Event.countries), { include_blank: 'all', selected: @country } %>
 <% end %>
 |
 <%= form.label :category do %>
    Category
-  <%= form.select :category, {'uncategorized': 'none'}.merge(Event.categories), { include_blank: 'all', :selected => @category } %>
+  <%= form.select :category, { 'uncategorized': 'none' }.merge(Event.categories), { include_blank: 'all', selected: @category } %>
 <% end %>
 |
 <%= form.label :point_of_contact_id do %>
   POC
-  <%= form.collection_select :point_of_contact_id, User.admin.all, :id, :email, :selected => @point_of_contact_id, include_blank: 'all' %>
+  <%= form.collection_select :point_of_contact_id, User.admin.all, :id, :email, selected: @point_of_contact_id, include_blank: 'all' %>
 <% end %>
 |
 <%= form.label :activity_since do %>

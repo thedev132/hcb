@@ -126,13 +126,13 @@
     <br>
     <%= form.text_field :confirmation_number, required: true %>
 
-    <p><%= form.submit "Mark as approved and sent", data: {confirm: "Mark as approved and sent?"} %></p>
+    <p><%= form.submit "Mark as approved and sent", data: { confirm: "Mark as approved and sent?" } %></p>
   <% end %>
 
   <p>or</p>
 
   <%= form_with(model: nil, local: true, url: ach_reject_admin_path(@ach_transfer), method: :post) do |form| %>
-    <%= form.submit "Reject", data: {confirm: "Mark as rejected? This requires you to communicate to the organizer about the reason why."} %>
+    <%= form.submit "Reject", data: { confirm: "Mark as rejected? This requires you to communicate to the organizer about the reason why." } %>
     <small>(This requires you to communicate to the organizer about the reason why.)</small>
   <% end %>
 <% else %>

@@ -34,7 +34,7 @@
             <%= event.name.upcase %>
           <% end %>
         </td>
-        <td style="<%= 'color: lightgray;' if event.balance === 0 %>">
+        <td style="<%= 'color: lightgray;' if event.balance.zero? %>">
           <%= render_money event.balance %>
         </td>
         <td>

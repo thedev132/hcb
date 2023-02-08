@@ -33,7 +33,7 @@
   </td>
   <td class="nowrap">
     <span class="<%= 'strikethrough' unless stripe_authorization.approved? %>">
-      <%= render_money -stripe_authorization.amount %>
+      <%= render_money(-stripe_authorization.amount) %>
     </span>
   </td>
   <% if organizer_signed_in? || !@event %>

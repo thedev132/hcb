@@ -42,7 +42,7 @@
       <% end %>
       <% if transaction.potential_disbursement? %>
           <%= form.label :disbursement, 'Disbursement' %>
-          <%= form.collection_select(:disbursement_id, Disbursement.processing.sort_by {|d| d.amount} + [transaction.disbursement].compact, :id, :admin_dropdown_description, include_blank: 'Select one…') %>
+          <%= form.collection_select(:disbursement_id, Disbursement.processing.sort_by { |d| d.amount } + [transaction.disbursement].compact, :id, :admin_dropdown_description, include_blank: 'Select one…') %>
           <p class="muted h5 mb2">If this isn't a transaction from a disbursement, leave this field blank.</p>
       <% end %>
       <% if transaction.potential_emburse? %>
@@ -57,24 +57,24 @@
         <div class="field invoicepayout-select-target">
           <%= form.label :invoice_payout, 'Invoice payout' %>
           <%= form.collection_select(
-            :invoice_payout_id,
+                :invoice_payout_id,
             InvoicePayout.lacking_transaction.reorder(:amount) + [transaction.invoice_payout].compact, # .compact to remove nil values if transaction.invoice_payout is nil
             :id,
             :dropdown_description,
             include_blank: 'Select one…'
-          ) %>
+              ) %>
         </div>
       <% end %>
       <% if transaction.potential_donation_payout? %>
         <div class="field">
           <%= form.label :donation_payout, 'Donation payout' %>
           <%= form.collection_select(
-            :donation_payout_id,
+                :donation_payout_id,
             DonationPayout.lacking_transaction.reorder(:amount) + [transaction.donation_payout].compact, # .compact to remove nil values if transaction.donation_payout is nil
             :id,
             :dropdown_description,
             include_blank: 'Select one…'
-          ) %>
+              ) %>
         </div>
       <% end %>
 

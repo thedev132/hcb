@@ -16,7 +16,7 @@
   <tbody>
     <% @negative_events.each do |event| %>
       <tr class="shade-yellow">
-        <td class="underline"><%= link_to "#{event.name}", event %></td>
+        <td class="underline"><%= link_to event.name, event %></td>
         <td>
           <% if event.balance < 0 %>
             <strong><%= render_money event.balance %></strong>

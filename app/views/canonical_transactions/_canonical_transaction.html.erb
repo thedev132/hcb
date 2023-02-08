@@ -50,7 +50,7 @@
         </td>
       <% else %>
         <td class="transaction__icon tooltipped tooltipped--e" aria-label="<%= ct.local_hcb_code.disbursement.special_appearance[:title] %>">
-          <%= inline_icon "#{ct.local_hcb_code.disbursement.special_appearance[:icon] || 'door-enter'}" %>
+          <%= inline_icon(ct.local_hcb_code.disbursement.special_appearance[:icon] || 'door-enter') %>
         </td>
       <% end %>
     <% elsif ct.local_hcb_code.disbursement? %>
@@ -120,7 +120,7 @@
 
         <% if Flipper.enabled?(:transaction_tags_2022_07_29, @event) %>
           <div class="flex flex-wrap" style="gap: 0.25rem">
-            <% ct.local_hcb_code.tags.filter {|tag| !@event || tag.event == @event}.each do |tag| %>
+            <% ct.local_hcb_code.tags.filter { |tag| !@event || tag.event == @event }.each do |tag| %>
               <div class="badge tx-tag m0 shrink-none flex items-center">
                 <%= tag.label %>
                 <% if organizer_signed_in? %>

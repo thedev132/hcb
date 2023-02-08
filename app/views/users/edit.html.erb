@@ -17,7 +17,7 @@
     <% if @onboarding %>
         <p>Complete your profile to get started.</p>
     <% end %>
-    <%= form_with(model: @user, local: true, html:{ onsubmit: 'onSubmit()'}) do |form| %>
+    <%= form_with(model: @user, local: true, html: { onsubmit: 'onSubmit()' }) do |form| %>
         <%= form_errors @user, 'user information' %>
         <% if current_season(override_preference: true) %>
         <div class="field field--checkbox">

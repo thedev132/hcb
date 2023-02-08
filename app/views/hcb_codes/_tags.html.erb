@@ -2,7 +2,7 @@
   <div>
     <strong>Tags</strong>
     <div class="flex items-center flex-wrap" style="gap: 0.25rem">
-      <% hcb_code.tags.filter {|tag| tag.event == @event}.each do |tag| %>
+      <% hcb_code.tags.filter { |tag| tag.event == @event }.each do |tag| %>
         <span class="badge bg-muted ml0 mr1">
           <%= tag.label %>
           <%= button_to toggle_tag_hcb_code_path(id: @hcb_code.hashid, tag_id: tag.id), class: "p0 line-height-0 bg-transparent border-none cursor-pointer link-reset", form_class: "line-height-0", form: { "data-turbo" => "true" } do %>
