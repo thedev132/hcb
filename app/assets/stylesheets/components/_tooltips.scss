@@ -30,6 +30,10 @@
       transition: 0.125s all ease-in-out;
       width: max-content;
       z-index: 1;
+
+      &.tooltipped--lg {
+        max-width: 24rem;
+      }
     }
 
     &:hover:after,
