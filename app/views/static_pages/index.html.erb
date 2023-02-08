@@ -60,8 +60,8 @@
                 </div>
               <% end %>
               <div class="avatar-row">
-                <% event.organizer_positions.each do |position| %>
-                  <%= avatar_for position.user, 24 %>
+                <% event.organizer_positions.order(created_at: :desc).each_with_index do |position, index| %>
+                  <%= avatar_for position.user, 24, style: "z-index: #{(event.organizer_positions.size - index).abs}" %>
                 <% end %>
               </div>
             </li>
