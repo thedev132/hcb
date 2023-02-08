@@ -1,18 +1,18 @@
 <ul class="tab-container">
   <li class="<%= 'active' if active == 'general' %>">
-    <%= link_to 'General', my_settings_path, data: { turbo: true }, onclick: 'history.pushState(null, null, "' + my_settings_path + '");' %>
+    <%= link_to 'General', @user == current_user ? my_settings_path : edit_user_path(@user), data: { turbo: true, turbo_action: "advance" } %>
   </li>
   <li class="<%= 'active' if active == 'previews' %>">
-    <%= link_to settings_previews_path, data: { turbo: true }, onclick: 'history.pushState(null, null, "' + settings_previews_path + '");' do %>
+    <%= link_to @user == current_user ? settings_previews_path : previews_user_path(@user), data: { turbo: true, turbo_action: "advance" } do %>
       <span class="xs-hide">Feature&nbsp;</span>Previews
     <% end %>
   </li>
   <li class="<%= 'active' if active == 'security' %>">
-    <%= link_to 'Security', settings_security_path, data: { turbo: true }, onclick: 'history.pushState(null, null, "' + settings_security_path + '");' %>
+    <%= link_to 'Security', @user == current_user ? settings_security_path : security_user_path(@user), data: { turbo: true, turbo_action: "advance" } %>
   </li>
   <% admin_tools('p0 overflow-hidden', override_pretend: true) do %>
     <li class="<%= 'active' if active == 'admin' %>">
-      <%= link_to 'Admin', settings_admin_path, data: { turbo: true }, onclick: 'history.pushState(null, null, "' + settings_security_path + '");' %>
+      <%= link_to 'Admin', @user == current_user ? settings_admin_path : admin_user_path(@user), data: { turbo: true, turbo_action: "advance" } %>
     </li>
   <% end %>
 </ul>
