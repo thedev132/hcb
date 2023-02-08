@@ -135,7 +135,7 @@
       PDF
     <% end %>
     </div>
-    <%= link_to(@invoice.archived? ? 'Un-archive' : 'Archive'),
+    <%= link_to (@invoice.archived? ? 'Un-archive' : 'Archive'),
       (@invoice.archived? ? invoice_unarchive_path(@invoice) : invoice_archive_path(@invoice)),
       disabled: !organizer_signed_in?,
       method: :post,
