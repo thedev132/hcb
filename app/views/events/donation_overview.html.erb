@@ -94,37 +94,39 @@
 
 <% if @recurring_donations.size > 0 %>
   <h2>Recurring donors</h2>
-  <table class="mb3">
-    <thead>
-      <tr>
-        <th></th>
-        <th>Started on</th>
-        <th>Name</th>
-        <th>Amount</th>
-        <th>Total donated</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @recurring_donations.each do |recurring_donation| %>
+  <div class="table-container mb3">
+    <table>
+      <thead>
         <tr>
-          <td style="width: 1%"><span class="ml0 mr1 badge bg-success"><%= recurring_donation.stripe_status.humanize %></span></td>
-          <td><%= format_date recurring_donation.created_at %></td>
-          <td class="line-height-3">
-            <%= recurring_donation.name %><br>
-            <% if organizer_signed_in? %>
-              <span class="muted h5"><%= recurring_donation.email %></span>
-            <% end %>
-          </td>
-          <td>
-            <%= render_money recurring_donation.amount %><span class="muted">/month</span>
-          </td>
-          <td>
-            <strong><%= render_money recurring_donation.total_donated %></strong>
-          </td>
+          <th></th>
+          <th>Started on</th>
+          <th>Name</th>
+          <th>Amount</th>
+          <th>Total donated</th>
         </tr>
-      <% end %>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+        <% @recurring_donations.each do |recurring_donation| %>
+          <tr>
+            <td style="width: 1%"><span class="ml0 mr1 badge bg-success"><%= recurring_donation.stripe_status.humanize %></span></td>
+            <td><%= format_date recurring_donation.created_at %></td>
+            <td class="line-height-3">
+              <%= recurring_donation.name %><br>
+              <% if organizer_signed_in? %>
+                <span class="muted h5"><%= recurring_donation.email %></span>
+              <% end %>
+            </td>
+            <td>
+              <%= render_money recurring_donation.amount %><span class="muted">/month</span>
+            </td>
+            <td>
+              <strong><%= render_money recurring_donation.total_donated %></strong>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
 <% end %>
 
 <div style="text-align: center;">
