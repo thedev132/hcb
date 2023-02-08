@@ -12,8 +12,8 @@ module PendingTransactionEngine
           return existing_canonical_pending_transaction if existing_canonical_pending_transaction
 
           ::CanonicalPendingTransaction.find_or_create_by!(attrs) do |cpt|
-            # Newly created CPT will be automatically fronted.
-            cpt.fronted = true
+            # In-review disbursements shouldn't be fronted.
+            cpt.fronted = !@rpidt.disbursement.reviewing?
           end
         end
 

@@ -45,7 +45,7 @@
     <span class="muted">This is to help Hack Club Bank keep record of our transactions. It will be used as the memo on your transaction list.</span>
   </div>
 
-  <div class="actions tooltipped tooltipped--n inline-block" aria-label="The Bank team will make the transfer">
+  <div class="actions inline-block">
     <%= form.submit 'Make transfer', class: 'btn', disabled: @source_event.demo_mode? %>
   </div>
 <% end %>

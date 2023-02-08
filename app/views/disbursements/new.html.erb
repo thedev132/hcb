@@ -9,16 +9,9 @@
     <%= inline_icon 'info', size: 32, class: 'mr1' %>
     <p class="bold mt0 mb0">Important info about transfers:</p>
   </div>
-  <% if @source_event.can_front_balance? %>
-    <p class="mt1 mb2">
-      Once a transfer is sent, it will leave your account balance and immediately be added to the recipient organization's balance.
-    </p>
-  <% else %>
-    <ul class="mt1 mb2">
-      <li><strong>Transfers take 2-3 business days</strong>—they don't send over weekends.</li>
-      <li>Once a transfer is sent, it will leave your account balance but won't immediately be added to the recipient organization's balance.</li>
-    </ul>
-  <% end %>
+  <p class="mt1 mb2">
+    Transfers are reviewed by the Hack Club Bank team and process within 24 hours on weekdays.
+  </p>
   <div class="border-top card__banner card__darker secondary">
     <strong class="warning">Questions?</strong>
       <%= help_message %>

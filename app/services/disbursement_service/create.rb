@@ -23,6 +23,18 @@ module DisbursementService
 
       disbursement = Disbursement.create!(attrs)
 
+      # 1. Create the raw pending transactions
+      rpidt = ::PendingTransactionEngine::RawPendingIncomingDisbursementTransactionService::Disbursement::ImportSingle.new(disbursement: disbursement).run
+      rpodt = ::PendingTransactionEngine::RawPendingOutgoingDisbursementTransactionService::Disbursement::ImportSingle.new(disbursement: disbursement).run
+
+      # 2. Canonize the newly added raw pending transactions
+      i_cpt = ::PendingTransactionEngine::CanonicalPendingTransactionService::ImportSingle::IncomingDisbursement.new(raw_pending_incoming_disbursement_transaction: rpidt).run
+      o_cpt = ::PendingTransactionEngine::CanonicalPendingTransactionService::ImportSingle::OutgoingDisbursement.new(raw_pending_outgoing_disbursement_transaction: rpodt).run
+
+      # 3. Map to event
+      ::PendingEventMappingEngine::Map::Single::IncomingDisbursement.new(canonical_pending_transaction: i_cpt).run
+      ::PendingEventMappingEngine::Map::Single::OutgoingDisbursement.new(canonical_pending_transaction: o_cpt).run
+
       if requested_by.admin?
         DisbursementService::Approve.new(
           disbursement_id: disbursement.id,
