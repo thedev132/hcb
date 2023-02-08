@@ -1,14 +1,14 @@
 <%# This is another pass on making a good receipt upload form, mobile-first, for use on the attach_receipt page %>
 
 <%= form_with model: nil, url: receipt_hcb_code_path(@hcb_code), class: "flex flex-column justify-center mt2", data: {
-      controller: "file-drop submit-form",
-  action: "
-    dragover@window->file-drop#dragover
-    drop@window->file-drop#drop
-    dragenter@window->file-drop#dragenter
-    dragleave@window->file-drop#dragleave
-  ",
-  "file-drop-title-value" => "Drop to instantly add a receipt."
+      controller: "file-drop form",
+      action: "
+        dragover@window->file-drop#dragover
+        drop@window->file-drop#drop
+        dragenter@window->file-drop#dragenter
+        dragleave@window->file-drop#dragleave
+      ",
+      "file-drop-title-value" => "Drop to instantly add a receipt."
     } do |form| %>
 
   <%= form.hidden_field :upload_method, value: "attach_receipt_page", data: { "file-drop-target" => "uploadMethod" } %>
@@ -21,7 +21,7 @@
                       accept: "image/*,.pdf",
                       data: {
                         "file-drop-target" => "fileInput",
-                        "action"           => "change->submit-form#submit"
+                        "action"           => "change->form#submit"
                       } %>
   <%= form.label :file, class: "btn" do %>
     <%= inline_icon "share" %>

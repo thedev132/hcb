@@ -74,15 +74,7 @@ $(document).on('change', '[name="check[lob_address]"]', function (e) {
     $('[data-behavior~=lob_address_update_warning]').slideUp('fast')
   }
 
-  const fields = [
-    'name',
-    'address1',
-    'address2',
-    'city',
-    'state',
-    'zip',
-    'id'
-  ]
+  const fields = ['name', 'address1', 'address2', 'city', 'state', 'zip', 'id']
 
   return fields.forEach(field =>
     $(`input#check_lob_address_attributes_${field}`)
@@ -272,7 +264,7 @@ $(document).on('turbo:load', function () {
     }
   })
 
-  $('textarea')
+  $('textarea:not([data-behavior~=no_autosize])')
     .each(function () {
       $(this).css({
         height: `${this.scrollHeight + 1}px`
@@ -322,7 +314,9 @@ $(document).on('turbo:load', function () {
   }
 
   if (BK.thereIs('additional_transparency_settings')) {
-    const additionalTransparencySettings = BK.s('additional_transparency_settings')
+    const additionalTransparencySettings = BK.s(
+      'additional_transparency_settings'
+    )
     const transparencyToggle = $('#event_is_public')
     $(transparencyToggle).on('change', e => {
       if (e.target.checked) {
@@ -359,7 +353,7 @@ $(document).on('turbo:load', function () {
 
 $('[data-behavior~=ctrl_enter_submit]').keydown(function (event) {
   if ((event.ctrlKey || event.metaKey) && event.keyCode === 13) {
-    $(this).closest('form').submit()
+    $(this).closest('form').get(0).requestSubmit()
   }
 })
 

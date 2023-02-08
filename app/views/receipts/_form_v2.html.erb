@@ -2,14 +2,14 @@
   <div class="card mt2 flex flex-column">
     <div class="container container--sm">
       <%= form_with model: nil, url: receipt_hcb_code_path(@hcb_code), class: "flex flex-column justify-center mt2", data: {
-            controller: "file-drop submit-form",
-        action: "
-          dragover@window->file-drop#dragover
-          drop@window->file-drop#drop
-          dragenter@window->file-drop#dragenter
-          dragleave@window->file-drop#dragleave
-        ",
-        "file-drop-title-value" => "Drop to instantly add a receipt."
+            controller: "file-drop form",
+            action: "
+              dragover@window->file-drop#dragover
+              drop@window->file-drop#drop
+              dragenter@window->file-drop#dragenter
+              dragleave@window->file-drop#dragleave
+            ",
+            "file-drop-title-value" => "Drop to instantly add a receipt."
           } do |form| %>
 
         <%= form.hidden_field :redirect_url, value: url_for(only_path: false) %>
@@ -22,7 +22,7 @@
                             accept: "image/*,image/heic,.pdf",
                             data: {
                               "file-drop-target" => "fileInput",
-                              "action"           => "change->submit-form#submit"
+                              "action"           => "change->form#submit"
                             } %>
         <%= form.label :file, class: "btn" do %>
           <%= inline_icon "share" %>

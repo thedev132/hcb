@@ -1,8 +1,8 @@
 <% if @event.logo.attached? %>
     <div class="relative mr2 donations-logo">
         <% if organizer_signed_in? %>
-            <%= form_with model: @event, data: { "controller" => "submit-form" } do |form| %>
-                <%= form.file_field :logo, required: true, class: "display-none", data: { action: "change->submit-form#submit" } %>
+            <%= form_with model: @event, data: { "controller" => "form" } do |form| %>
+                <%= form.file_field :logo, required: true, class: "display-none", data: { action: "change->form#submit" } %>
                 <%= form.label :logo do %>
                     <div
                         role="button"
@@ -26,8 +26,8 @@
         <%= image_tag @event.logo, height: 72, class: "rounded" %>
     </div>
 <% elsif organizer_signed_in? %>
-    <%= form_with model: @event, data: { "controller" => "submit-form" } do |form| %>
-        <%= form.file_field :logo, required: true, class: "display-none", data: { action: "change->submit-form#submit" } %>
+    <%= form_with model: @event, data: { "controller" => "form" } do |form| %>
+        <%= form.file_field :logo, required: true, class: "display-none", data: { action: "change->form#submit" } %>
         <%= form.label :logo do %>
             <div class="mr2 donations-logo-placeholder">
                 Add a logo

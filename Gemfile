@@ -244,6 +244,8 @@ gem "stackprof" # Used with `rack-mini-profiler` to provide flamegraphs
 
 gem "country_select", "~> 8.0"
 
+gem "airrecord", "~> 1.0"
+
 # temporarily remove lab_tech because it's not compatible with rails 7
 # gem "lab_tech" # Integrates `scientist` with ActiveRecord for experiment data collection
 gem "scientist" # Refactor testing for critical paths

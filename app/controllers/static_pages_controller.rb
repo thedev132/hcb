@@ -202,4 +202,23 @@ class StaticPagesController < ApplicationController
     }
   end
 
+  def feedback
+    message = params[:message]
+    share_email = params[:share_email] || "1"
+
+    feedback = {
+      "Share your idea(s)" => message,
+    }
+
+    if share_email == "1"
+      feedback["Name"] = current_user.full_name
+      feedback["Email"] = current_user.email
+      feedback["Organization"] = current_user.events.first&.name
+    end
+
+    Feedback.create(feedback)
+
+    head :no_content
+  end
+
 end

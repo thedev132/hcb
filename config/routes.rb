@@ -36,6 +36,7 @@ Rails.application.routes.draw do
   get "bookkeeping", to: "admin#bookkeeping"
   get "stripe_charge_lookup", to: "static_pages#stripe_charge_lookup"
 
+  post "feedback", to: "static_pages#feedback"
   get "wrapped", to: "users#wrapped"
 
   scope :my do

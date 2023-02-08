@@ -134,6 +134,8 @@
       </main>
     <% end %>
 
+    <%= render 'application/feedback_form' if signed_in? %>
+
     <% if Rails.env.production? %>
       <%= render 'application/fullstory' if current_user&.sessions_reported %>
     <% end %>

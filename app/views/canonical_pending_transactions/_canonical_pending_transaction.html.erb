@@ -139,8 +139,8 @@
   </td>
   <% if defined?(receipt_upload_button) %>
     <td style="width: 1%">
-      <%= form_with url: receipt_hcb_code_path(pt.local_hcb_code), data: { controller: "submit-form", "file-drop-target" => "form" } do |form| %>
-        <%= form.file_field :file, id: "file_#{pt.local_hcb_code.hashid}", multiple: true, required: true, class: "display-none", data: { action: "change->submit-form#submit", "file-drop-target" => "fileInput" } %>
+      <%= form_with url: receipt_hcb_code_path(pt.local_hcb_code), data: { controller: "form", "file-drop-target" => "form" } do |form| %>
+        <%= form.file_field :file, id: "file_#{pt.local_hcb_code.hashid}", multiple: true, required: true, class: "display-none", data: { action: "change->form#submit", "file-drop-target" => "fileInput" } %>
         <%= form.hidden_field :redirect_url, value: my_inbox_path %>
         <%= form.hidden_field :show_link, value: true %>
         <%= form.hidden_field :upload_method, value: "receipts_page", data: { "file-drop-target" => "uploadMethod" } %>
