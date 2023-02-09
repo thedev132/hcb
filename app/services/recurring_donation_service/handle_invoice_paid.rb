@@ -22,6 +22,8 @@ module RecurringDonationService
 
       donation.save!
 
+      DonationService::Queue.new(donation_id: donation.id).run
+
       donation.send_receipt!
 
       # Import the donation onto the ledger
