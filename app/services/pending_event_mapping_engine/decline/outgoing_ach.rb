@@ -11,10 +11,7 @@ module PendingEventMappingEngine
           # 1. identify rejected ach_transfers
           if ach_transfer.rejected?
             # 2. mark this as declined
-            attrs = {
-              canonical_pending_transaction_id: cpt.id
-            }
-            CanonicalPendingDeclinedMapping.create!(attrs)
+            cpt.decline!
           end
         end
       end

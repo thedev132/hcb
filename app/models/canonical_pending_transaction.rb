@@ -120,6 +120,13 @@ class CanonicalPendingTransaction < ApplicationRecord
     @settled ||= canonical_pending_settled_mappings.present?
   end
 
+  def decline!
+    create_canonical_pending_declined_mapping!
+    true
+  rescue ActiveRecord::RecordNotUnique
+    false
+  end
+
   def declined?
     @declined ||= canonical_pending_declined_mapping.present?
   end

@@ -11,7 +11,7 @@
 #
 # Indexes
 #
-#  index_canonical_pending_declined_map_on_canonical_pending_tx_id  (canonical_pending_transaction_id)
+#  index_canonical_pending_declined_mappings_on_cpt_id  (canonical_pending_transaction_id) UNIQUE
 #
 # Foreign Keys
 #

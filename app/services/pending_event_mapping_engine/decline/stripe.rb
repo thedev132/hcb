@@ -13,26 +13,17 @@ module PendingEventMappingEngine
 
           # 1. identify declined (closed & not approved) transactions
           if status == "closed" && approved == false
-            attrs = {
-              canonical_pending_transaction_id: cpt.id
-            }
-            CanonicalPendingDeclinedMapping.create!(attrs)
+            cpt.decline!
           end
 
           # 2. identify authed (0 amount and a considerable amount of time has passed)
           if rpst.amount_cents == 0
-            attrs = {
-              canonical_pending_transaction_id: cpt.id
-            }
-            CanonicalPendingDeclinedMapping.create!(attrs)
+            cpt.decline!
           end
 
           # 3. identify reversed (0 amount and a considerable amount of time has passed)
           if status == "reversed" && rpst.amount_cents < 0
-            attrs = {
-              canonical_pending_transaction_id: cpt.id
-            }
-            CanonicalPendingDeclinedMapping.create!(attrs)
+            cpt.decline!
           end
 
         end

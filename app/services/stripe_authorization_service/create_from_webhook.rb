@@ -25,7 +25,7 @@ module StripeAuthorizationService
 
         # 5. instantly mark the transaction as declined if it was declined on Stripe's end
         unless remote_stripe_transaction.approved
-          CanonicalPendingDeclinedMapping.create!(canonical_pending_transaction_id: cpt.id)
+          cpt.decline!
         end
       end
 

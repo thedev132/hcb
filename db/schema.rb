@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_02_08_213353) do
+ActiveRecord::Schema[7.0].define(version: 2023_02_09_045002) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_stat_statements"
@@ -226,7 +226,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_08_213353) do
     t.bigint "canonical_pending_transaction_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["canonical_pending_transaction_id"], name: "index_canonical_pending_declined_map_on_canonical_pending_tx_id"
+    t.index ["canonical_pending_transaction_id"], name: "index_canonical_pending_declined_mappings_on_cpt_id", unique: true
   end
 
   create_table "canonical_pending_event_mappings", force: :cascade do |t|

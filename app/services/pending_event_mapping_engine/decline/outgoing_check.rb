@@ -11,10 +11,7 @@ module PendingEventMappingEngine
           # 1. identify canceled/rejected check
           if check.canceled? || check.rejected? || check.refunded?
             # 2. mark this as declined
-            attrs = {
-              canonical_pending_transaction_id: cpt.id
-            }
-            CanonicalPendingDeclinedMapping.create!(attrs)
+            cpt.decline!
           end
         end
       end
