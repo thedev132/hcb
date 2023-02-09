@@ -24,7 +24,7 @@
 <% end %>
 
 <%# stripe card %>
-<% if @hcb_code.stripe_card? && @hcb_code.stripe_card.present? %>
+<% if (@hcb_code.stripe_card? || @hcb_code.stripe_force_capture?) && @hcb_code.stripe_card.present? %>
   <%= render partial: "hcb_codes/stripe_card", locals: {} %>
 <% end %>
 

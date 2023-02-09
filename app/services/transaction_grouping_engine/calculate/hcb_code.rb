@@ -15,6 +15,7 @@ module TransactionGroupingEngine
       CHECK_CODE = "400"
       DISBURSEMENT_CODE = "500"
       STRIPE_CARD_CODE = "600"
+      STRIPE_FORCE_CAPTURE_CODE = "601"
       BANK_FEE_CODE = "700"
       INCOMING_BANK_FEE_CODE = "701"  # short-lived and deprecated
       FEE_REVENUE_CODE = "702"
@@ -124,12 +125,20 @@ module TransactionGroupingEngine
       end
 
       def stripe_card_hcb_code
-        return unknown_hcb_code unless @ct_or_cp.remote_stripe_iauth_id.present?
+        return stripe_force_capture_hcb_code unless @ct_or_cp.remote_stripe_iauth_id.present?
 
         [
           HCB_CODE,
           STRIPE_CARD_CODE,
           @ct_or_cp.remote_stripe_iauth_id
+        ].join(SEPARATOR)
+      end
+
+      def stripe_force_capture_hcb_code
+        [
+          HCB_CODE,
+          STRIPE_FORCE_CAPTURE_CODE,
+          @ct_or_cp.id
         ].join(SEPARATOR)
       end
 

@@ -27,6 +27,10 @@
       <td class="transaction__icon tooltipped tooltipped--e" aria-label="Outgoing ACH">
         <%= inline_icon "payment-transfer" %>
       </td>
+    <% elsif ct.local_hcb_code.stripe_refund? %>
+      <td class="transaction__icon tooltipped tooltipped--e" aria-label="Card transaction refund">
+        <%= inline_icon "view-reload" %>
+      </td>
     <% elsif ct.raw_stripe_transaction %>
       <td class="transaction__icon tooltipped tooltipped--e" aria-label="Card transaction<%= !defined?(authorless) && ct.stripe_cardholder ? ' by ' + ct.stripe_cardholder.user.initial_name : '' %>">
         <% unless defined?(authorless) || !ct.stripe_cardholder %>
@@ -135,7 +139,7 @@
       </div>
 
       <% if ct.local_hcb_code %>
-        <%= list_badge_for ct.local_hcb_code.receipts.size, "receipt", "payment-docs", optional: !ct.raw_stripe_transaction, required: ct.raw_stripe_transaction && !ct.local_hcb_code.no_or_lost_receipt? %>
+        <%= list_badge_for ct.local_hcb_code.receipts.size, "receipt", "payment-docs", optional: !ct.raw_stripe_transaction || ct.local_hcb_code.stripe_refund?, required: ct.raw_stripe_transaction && !ct.local_hcb_code.no_or_lost_receipt? %>
         <%= list_badge_for admin_signed_in? ? ct.local_hcb_code.comments.size : ct.local_hcb_code.not_admin_only_comments_count, "note", "post", optional: true %>
       <% end %>
     </div>

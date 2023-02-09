@@ -29,6 +29,10 @@ class RawStripeTransaction < ApplicationRecord
     @likely_event_id ||= ::StripeCard.find_by!(stripe_id: stripe_card_id).event_id
   end
 
+  def refund?
+    stripe_transaction["type"] == "refund"
+  end
+
   private
 
   def stripe_card_id

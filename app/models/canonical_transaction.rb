@@ -143,6 +143,10 @@ class CanonicalTransaction < ApplicationRecord
     end
   end
 
+  def stripe_refund?
+    raw_stripe_transaction&.refund?
+  end
+
   def raw_pending_stripe_transaction
     nil
   end

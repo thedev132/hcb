@@ -170,6 +170,18 @@ class HcbCode < ApplicationRecord
     pt.try(:stripe_cardholder) || ct.try(:stripe_cardholder)
   end
 
+  def stripe_merchant
+    pt&.raw_pending_stripe_transaction&.stripe_transaction&.dig("merchant_data") || ct.raw_stripe_transaction.stripe_transaction["merchant_data"]
+  end
+
+  def stripe_merchant_currency
+    pt&.raw_pending_stripe_transaction&.stripe_transaction&.dig("merchant_currency") || ct.raw_stripe_transaction.stripe_transaction["merchant_currency"]
+  end
+
+  def stripe_refund?
+    stripe_force_capture? && ct&.stripe_refund?
+  end
+
   def stripe_auth_dashboard_url
     pt.try(:stripe_auth_dashboard_url) || ct.try(:stripe_auth_dashboard_url)
   end
@@ -216,6 +228,10 @@ class HcbCode < ApplicationRecord
 
   def stripe_card?
     hcb_i1 == ::TransactionGroupingEngine::Calculate::HcbCode::STRIPE_CARD_CODE
+  end
+
+  def stripe_force_capture?
+    hcb_i1 == ::TransactionGroupingEngine::Calculate::HcbCode::STRIPE_FORCE_CAPTURE_CODE
   end
 
   def invoice

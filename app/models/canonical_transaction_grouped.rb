@@ -110,6 +110,10 @@ class CanonicalTransactionGrouped
     hcb_i1 == ::TransactionGroupingEngine::Calculate::HcbCode::STRIPE_CARD_CODE
   end
 
+  def stripe_refund?
+    local_hcb_code.stripe_refund?
+  end
+
   def local_hcb_code
     @local_hcb_code ||= HcbCode.find_or_create_by(hcb_code: hcb_code)
   end
