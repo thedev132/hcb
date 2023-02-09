@@ -112,12 +112,16 @@ class Disbursement < ApplicationRecord
     end
 
     event :mark_errored do
+      after do
+        canonical_pending_transactions.each { |cpt| cpt.decline! }
+      end
       transitions from: [:pending, :in_transit], to: :errored
     end
 
     event :mark_rejected do
       after do |fulfilled_by|
         update(fulfilled_by: fulfilled_by)
+        canonical_pending_transactions.each { |cpt| cpt.decline! }
       end
       transitions from: [:reviewing, :pending], to: :rejected
     end

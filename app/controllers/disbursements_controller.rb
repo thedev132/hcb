@@ -114,7 +114,7 @@ class DisbursementsController < ApplicationController
     authorize @disbursement
 
     begin
-      DisbursementService::Reject.new(disbursement_id: @disbursement.id, fulfilled_by_id: current_user.id).run
+      @disbursement.mark_rejected!(current_user)
       flash[:success] = "Disbursement rejected"
     rescue => e
       flash[:error] = e.message

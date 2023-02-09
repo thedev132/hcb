@@ -30,7 +30,6 @@ module DisbursementService
           # there was an error so mark this disbursement as in a bad/mixed state
           Airbrake.notify("Disbursement #{disbursement.id} in mixed/bad error state. Partially processed remotely. Investigate and fix by hand.")
           disbursement.mark_errored!
-          decline_pending_transactions!
           raise e
         end
 
@@ -40,17 +39,6 @@ module DisbursementService
       end
 
       driver.quit
-    end
-
-    private
-
-
-    def decline_pending_transactions!
-      i_cpt = @disbursement&.raw_pending_incoming_disbursement_transaction&.canonical_pending_transaction
-      o_cpt = @disbursement&.raw_pending_outgoing_disbursement_transaction&.canonical_pending_transaction
-
-      ::PendingEventMappingEngine::Decline::Single::IncomingDisbursement.new(canonical_pending_transaction: i_cpt).run if i_cpt
-      ::PendingEventMappingEngine::Decline::Single::OutgoingDisbursement.new(canonical_pending_transaction: o_cpt).run if o_cpt
     end
 
   end
