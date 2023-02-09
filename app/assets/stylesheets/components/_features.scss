@@ -79,3 +79,21 @@ html[data-dark='true'] .feature-transaction-tags {
     opacity: 1;
   }
 }
+
+.feature-turbo {
+  background-color: $snow;
+  background-image: linear-gradient(
+      to right,
+      rgba($snow, 0.9),
+      rgba($snow, 0.9)
+    ),
+    #{image-url('feature-turbo.png')};
+  background-size: 4em;
+}
+
+html[data-dark='true'] {
+  .feature-turbo {
+    background-color: $black;
+    background-image: #{image-url('feature-turbo.png')};
+  }
+}
