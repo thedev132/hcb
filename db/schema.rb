@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_02_06_164307) do
+ActiveRecord::Schema[7.0].define(version: 2023_02_08_213353) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_stat_statements"
@@ -265,6 +265,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_06_164307) do
     t.bigint "raw_pending_incoming_disbursement_transaction_id"
     t.bigint "raw_pending_outgoing_disbursement_transaction_id"
     t.boolean "fronted", default: false
+    t.boolean "fee_waived", default: false
     t.index ["hcb_code"], name: "index_canonical_pending_transactions_on_hcb_code"
     t.index ["raw_pending_bank_fee_transaction_id"], name: "index_canonical_pending_txs_on_raw_pending_bank_fee_tx_id"
     t.index ["raw_pending_donation_transaction_id"], name: "index_canonical_pending_txs_on_raw_pending_donation_tx_id"

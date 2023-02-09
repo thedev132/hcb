@@ -29,8 +29,8 @@ class CanonicalPendingTransactionsController < ApplicationController
     }
     ::CanonicalPendingTransactionService::SetCustomMemo.new(attrs).run
 
-    if @current_user.admin? && !params[:canonical_pending_transaction][:fronted].nil?
-      @canonical_pending_transaction.update(fronted: params[:canonical_pending_transaction][:fronted])
+    if @current_user.admin?
+      @canonical_pending_transaction.update(params.require(:canonical_pending_transaction).permit(:fronted, :fee_waived))
     end
 
     unless params[:no_flash]

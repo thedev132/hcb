@@ -43,6 +43,7 @@ module FeeEngine
 
       # don't run fee if other transactions in it's HCB Code have fees waived
       reason = "REVENUE WAIVED" if @canonical_event_mapping.canonical_transaction.local_hcb_code.canonical_transactions.map { |ct| ct.fees }.flatten.any? { |fee| fee.reason == "REVENUE WAIVED" }
+      reason = "REVENUE WAIVED" if @canonical_event_mapping.canonical_transaction.local_hcb_code.canonical_pending_transactions.any?(&:fee_waived?)
 
       reason
     end

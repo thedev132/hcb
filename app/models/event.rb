@@ -518,6 +518,7 @@ class Event < ApplicationRecord
     feed_fronted_balance = canonical_pending_transactions
                            .incoming
                            .fronted
+                           .not_waived
                            .not_declined
                            .where(raw_pending_incoming_disbursement_transaction_id: nil) # We don't charge fees on disbursements
                            .sum(&:fronted_amount)

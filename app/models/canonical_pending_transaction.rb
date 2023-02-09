@@ -8,6 +8,7 @@
 #  amount_cents                                     :integer          not null
 #  custom_memo                                      :text
 #  date                                             :date             not null
+#  fee_waived                                       :boolean          default(FALSE)
 #  fronted                                          :boolean          default(FALSE)
 #  hcb_code                                         :text
 #  memo                                             :text             not null
@@ -102,6 +103,7 @@ class CanonicalPendingTransaction < ApplicationRecord
   scope :fronted, -> { where(fronted: true) }
   scope :not_fronted, -> { where(fronted: false) }
   scope :not_declined, -> { includes(:canonical_pending_declined_mapping).where(canonical_pending_declined_mapping: { canonical_pending_transaction_id: nil }) }
+  scope :not_waived, -> { where(fee_waived: false) }
 
   validates :custom_memo, presence: true, allow_nil: true
 
