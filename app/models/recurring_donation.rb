@@ -34,6 +34,8 @@
 class RecurringDonation < ApplicationRecord
   include Hashid::Rails
 
+  has_paper_trail
+
   belongs_to :event
   has_many :donations
 
