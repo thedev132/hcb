@@ -99,6 +99,7 @@ class Disbursement < ApplicationRecord
     event :mark_approved do
       after do |fulfilled_by|
         update(fulfilled_by: fulfilled_by)
+        canonical_pending_transactions.update_all(fronted: true)
       end
       transitions from: :reviewing, to: :pending
     end

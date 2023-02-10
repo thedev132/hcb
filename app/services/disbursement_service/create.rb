@@ -36,10 +36,7 @@ module DisbursementService
       ::PendingEventMappingEngine::Map::Single::OutgoingDisbursement.new(canonical_pending_transaction: o_cpt).run
 
       if requested_by.admin?
-        DisbursementService::Approve.new(
-          disbursement_id: disbursement.id,
-          fulfilled_by_id: requested_by.id
-        ).run
+        disbursement.mark_approved!(requested_by)
       end
 
       disbursement

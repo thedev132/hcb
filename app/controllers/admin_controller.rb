@@ -551,11 +551,9 @@ class AdminController < ApplicationController
   end
 
   def disbursement_approve
-    attrs = {
-      disbursement_id: params[:id],
-      fulfilled_by_id: current_user.id
-    }
-    disbursement = DisbursementService::Approve.new(attrs).run
+    disbursement = Disbursement.find(params[:id])
+
+    disbursement.mark_approved!(current_user)
 
     redirect_to disbursement_process_admin_path(disbursement), flash: { success: "Success" }
   rescue => e
