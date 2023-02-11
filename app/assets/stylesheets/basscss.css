@@ -251,13 +251,13 @@
   -webkit-align-self: flex-start;
   -ms-flex-item-align: start;
   align-self: flex-start;
-}
+}*/
 .self-end {
   -webkit-align-self: flex-end;
   -ms-flex-item-align: end;
   align-self: flex-end;
 }
-.self-center {
+/*.self-center {
   -webkit-align-self: center;
   -ms-flex-item-align: center;
   align-self: center;
