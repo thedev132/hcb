@@ -252,7 +252,7 @@ class Event < ApplicationRecord
   # Used for tracking slug history
   has_many :slugs, -> { order(id: :desc) }, class_name: "FriendlyId::Slug", as: :sluggable, dependent: :destroy
 
-  has_many :organizer_position_invites
+  has_many :organizer_position_invites, dependent: :destroy
   has_many :organizer_positions, dependent: :destroy
   has_many :users, through: :organizer_positions
   has_many :g_suites
