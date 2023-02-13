@@ -159,6 +159,7 @@
       <%= card_to "Users", users_admin_index_path %>
       <%= card_to "Pending Ledger (#{CanonicalPendingTransaction.unsettled.count})", pending_ledger_admin_index_path %>
       <%= card_to "Donations", donations_admin_index_path %>
+      <%= card_to "Recurring donations (#{RecurringDonation.active.count})", recurring_donations_admin_index_path %>
       <%= card_to "Invoices", invoices_admin_index_path %>
       <%= card_to "Sponsors", sponsors_admin_index_path %>
       <%= card_to "Bank Fees (#{BankFee.in_transit_or_pending.count})", bank_fees_admin_index_path %>
