@@ -517,7 +517,7 @@ module OneTimeJobs
         recurring_donation.save!
 
         # cancel their old subscription
-        StripeService::Subscription.cancel(subscription[:old_subscription_id], { api_key: api_key })
+        StripeService::Subscription.cancel(subscription[:old_subscription_id], {}, { api_key: api_key })
       end
 
       nil
