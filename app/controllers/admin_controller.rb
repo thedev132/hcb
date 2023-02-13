@@ -733,6 +733,24 @@ class AdminController < ApplicationController
     render layout: "admin"
   end
 
+  def recurring_donations
+    @active = params[:active] == "1" ? true : nil
+    @canceled = params[:canceled] == "1" ? true : nil
+
+    @event_id = params[:event_id].present? ? params[:event_id] : nil
+
+    relation = RecurringDonation.includes(:event).where.not(stripe_status: [:incomplete, :incomplete_expired])
+
+    relation = relation.active if @active
+    relation = relation.canceled if @canceled
+
+    relation = relation.where(event_id: @event_id) if @event_id
+
+    @donations = relation.page(params[:page]).per(20).order(created_at: :desc)
+
+    render layout: "admin"
+  end
+
   def disbursements
     @page = params[:page] || 1
     @per = params[:per] || 20
