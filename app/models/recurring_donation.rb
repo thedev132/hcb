@@ -4,22 +4,23 @@
 #
 # Table name: recurring_donations
 #
-#  id                        :bigint           not null, primary key
-#  amount                    :integer
-#  canceled_at               :datetime
-#  email                     :text
-#  last4_ciphertext          :text
-#  name                      :text
-#  stripe_client_secret      :text
-#  stripe_current_period_end :datetime
-#  stripe_status             :text
-#  url_hash                  :text
-#  created_at                :datetime         not null
-#  updated_at                :datetime         not null
-#  event_id                  :bigint           not null
-#  stripe_customer_id        :text
-#  stripe_payment_intent_id  :text
-#  stripe_subscription_id    :text
+#  id                                  :bigint           not null, primary key
+#  amount                              :integer
+#  canceled_at                         :datetime
+#  email                               :text
+#  last4_ciphertext                    :text
+#  migrated_from_legacy_stripe_account :boolean
+#  name                                :text
+#  stripe_client_secret                :text
+#  stripe_current_period_end           :datetime
+#  stripe_status                       :text
+#  url_hash                            :text
+#  created_at                          :datetime         not null
+#  updated_at                          :datetime         not null
+#  event_id                            :bigint           not null
+#  stripe_customer_id                  :text
+#  stripe_payment_intent_id            :text
+#  stripe_subscription_id              :text
 #
 # Indexes
 #
@@ -41,7 +42,7 @@ class RecurringDonation < ApplicationRecord
 
   has_encrypted :last4
 
-  before_create :create_stripe_subscription
+  before_create :create_stripe_subscription, unless: -> { stripe_subscription_id.present? }
   before_create :assign_unique_hash
 
   before_update :update_amount, if: -> { amount_changed? }
@@ -75,12 +76,13 @@ class RecurringDonation < ApplicationRecord
 
   def sync_with_stripe_subscription!(subscription = stripe_subscription)
     self.stripe_subscription_id = subscription.id
-    self.stripe_payment_intent_id = subscription.latest_invoice.payment_intent.id
-    self.stripe_client_secret = subscription.latest_invoice.payment_intent.client_secret
+    self.stripe_payment_intent_id = subscription.latest_invoice&.payment_intent&.id
+    self.stripe_client_secret = subscription.latest_invoice&.payment_intent&.client_secret
     self.stripe_current_period_end = Time.at(subscription.current_period_end)
     self.stripe_status = subscription.status
     self.last4 = subscription.default_payment_method&.card&.last4
     self.canceled_at = Time.at(subscription.canceled_at) if subscription.canceled_at
+    self.stripe_customer_id = subscription.customer
 
     self
   end
@@ -132,9 +134,6 @@ class RecurringDonation < ApplicationRecord
         name: name,
       )
     end
-
-
-    self.stripe_customer_id = customer.id
 
     price = StripeService::Price.create(
       currency: "usd",
