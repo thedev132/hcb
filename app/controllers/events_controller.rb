@@ -359,7 +359,7 @@ class EventsController < ApplicationController
         "https://cloud-is6jebpbb.vercel.app/disappearing_doge_meme.mp4"
       ].sample
 
-      redirect_to file_redirects
+      redirect_to file_redirects, allow_other_host: true
     end
   end
 

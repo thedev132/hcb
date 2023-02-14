@@ -47,6 +47,13 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  # Fallback for bad redirects that do not have allow_other_host set to true
+  # https://blog.saeloun.com/2022/02/08/rails-7-raise-unsafe-redirect-error.html#after
+  rescue_from ActionController::Redirecting::UnsafeRedirectError do |exception|
+    Airbrake.notify(exception)
+    redirect_to root_url
+  end
+
   private
 
   def redirect_to_onboarding

@@ -28,7 +28,7 @@ class DocusignController < ApplicationController
 
   ensure
     # move to the redirect URL after submitting
-    redirect_to partnered_signup.redirect_url
+    redirect_to partnered_signup.redirect_url, allow_other_host: true
   end
 
   def handle_admin_redirect(partnered_signup_id)

@@ -114,7 +114,7 @@ class AdminController < ApplicationController
     end
 
     admin_contract_signing = Partners::Docusign::AdminContractSigning.new(@partnered_signup)
-    redirect_to admin_contract_signing.admin_signing_link
+    redirect_to admin_contract_signing.admin_signing_link, allow_other_host: true
   end
 
   def partnered_signups
