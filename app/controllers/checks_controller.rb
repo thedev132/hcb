@@ -64,7 +64,7 @@ class ChecksController < ApplicationController
   def view_scan
     authorize @check
 
-    redirect_to @check.lob_url
+    redirect_to @check.lob_url, allow_other_host: true
   end
 
   def refund_get
