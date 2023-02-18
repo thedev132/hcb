@@ -176,7 +176,7 @@ class StripeCard < ApplicationRecord
   end
 
   def frozen?
-    stripe_status == "inactive"
+    activated? && stripe_status == "inactive"
   end
 
   def deactivated?

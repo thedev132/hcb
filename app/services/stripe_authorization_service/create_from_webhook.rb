@@ -39,7 +39,9 @@ module StripeAuthorizationService
           end
           # rubocop:enable Naming/VariableNumber
         else
-          CanonicalPendingTransactionMailer.with(canonical_pending_transaction_id: cpt.id).notify_declined.deliver_later
+          unless cpt&.stripe_card&.frozen?
+            CanonicalPendingTransactionMailer.with(canonical_pending_transaction_id: cpt.id).notify_declined.deliver_later
+          end
         end
       end
     end
