@@ -301,6 +301,8 @@ class Event < ApplicationRecord
   has_one :partnered_signup, required: false
   has_many :partner_donations
 
+  has_one :stripe_ach_payment_source
+
   has_one_attached :donation_header_image
   has_one_attached :logo
 
@@ -594,6 +596,14 @@ class Event < ApplicationRecord
 
   def total_fees_v2_cents
     @total_fess_v2_cents ||= fees.sum(:amount_cents_as_decimal).ceil
+  end
+
+  def account_number
+    (stripe_ach_payment_source || create_stripe_ach_payment_source)&.account_number
+  end
+
+  def routing_number
+    (stripe_ach_payment_source || create_stripe_ach_payment_source)&.routing_number
   end
 
   private

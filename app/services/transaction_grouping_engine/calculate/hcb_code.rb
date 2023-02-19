@@ -19,6 +19,7 @@ module TransactionGroupingEngine
       BANK_FEE_CODE = "700"
       INCOMING_BANK_FEE_CODE = "701"  # short-lived and deprecated
       FEE_REVENUE_CODE = "702"
+      ACH_PAYMENT_CODE = "800"
 
       def initialize(canonical_transaction_or_canonical_pending_transaction:)
         @ct_or_cp = canonical_transaction_or_canonical_pending_transaction
@@ -34,6 +35,7 @@ module TransactionGroupingEngine
         return disbursement_hcb_code if disbursement
         return stripe_card_hcb_code if raw_stripe_transaction
         return stripe_card_hcb_code_pending if raw_pending_stripe_transaction
+        return ach_payment_hcb_code if ach_payment
 
         unknown_hcb_code
       end
@@ -158,6 +160,18 @@ module TransactionGroupingEngine
 
       def raw_pending_stripe_transaction
         @raw_pending_stripe_transaction ||= @ct_or_cp.raw_pending_stripe_transaction
+      end
+
+      def ach_payment_hcb_code
+        [
+          HCB_CODE,
+          ACH_PAYMENT_CODE,
+          ach_payment.id
+        ].join(SEPARATOR)
+      end
+
+      def ach_payment
+        @ct_or_cp.try :ach_payment
       end
 
       def unknown_hcb_code

@@ -47,6 +47,10 @@
     <td class="transaction__icon tooltipped tooltipped--e" aria-label="Outgoing transfer">
       <%= inline_icon "minus-fill" %>
     </td>
+  <% elsif pt.ach_payment_id %>
+    <td class="transaction__icon tooltipped tooltipped--e" aria-label="Incoming bank transfer">
+      <%= inline_icon "bank-account" %>
+    </td>
   <% else %>
     <td class="transaction__icon tooltipped tooltipped--e" aria-label="Other">
     </td>

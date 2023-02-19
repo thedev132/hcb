@@ -14,6 +14,7 @@
 #  memo                                             :text             not null
 #  created_at                                       :datetime         not null
 #  updated_at                                       :datetime         not null
+#  ach_payment_id                                   :bigint
 #  raw_pending_bank_fee_transaction_id              :bigint
 #  raw_pending_donation_transaction_id              :bigint
 #  raw_pending_incoming_disbursement_transaction_id :bigint
@@ -26,6 +27,7 @@
 #
 # Indexes
 #
+#  index_canonical_pending_transactions_on_ach_payment_id           (ach_payment_id)
 #  index_canonical_pending_transactions_on_hcb_code                 (hcb_code)
 #  index_canonical_pending_txs_on_raw_pending_bank_fee_tx_id        (raw_pending_bank_fee_transaction_id)
 #  index_canonical_pending_txs_on_raw_pending_donation_tx_id        (raw_pending_donation_transaction_id)
@@ -57,6 +59,7 @@ class CanonicalPendingTransaction < ApplicationRecord
   belongs_to :raw_pending_partner_donation_transaction, optional: true
   belongs_to :raw_pending_incoming_disbursement_transaction, optional: true
   belongs_to :raw_pending_outgoing_disbursement_transaction, optional: true
+  belongs_to :ach_payment, optional: true
   has_one :canonical_pending_event_mapping
   has_one :event, through: :canonical_pending_event_mapping
   has_many :canonical_pending_settled_mappings
@@ -81,6 +84,7 @@ class CanonicalPendingTransaction < ApplicationRecord
   scope :bank_fee, -> { where("raw_pending_bank_fee_transaction_id is not null") }
   scope :incoming_disbursement, -> { where("raw_pending_incoming_disbursement_transaction_id is not null") }
   scope :outgoing_disbursement, -> { where("raw_pending_outgoing_disbursement_transaction_id is not null") }
+  scope :ach_payment, -> { where.not(ach_payment: nil) }
   scope :unmapped, -> { includes(:canonical_pending_event_mapping).where(canonical_pending_event_mappings: { canonical_pending_transaction_id: nil }) }
   scope :mapped, -> { includes(:canonical_pending_event_mapping).where.not(canonical_pending_event_mappings: { canonical_pending_transaction_id: nil }) }
   scope :unsettled, -> {

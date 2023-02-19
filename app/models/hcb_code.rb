@@ -290,6 +290,14 @@ class HcbCode < ApplicationRecord
     "Fee revenue from #{fee_revenue.start.strftime("%b %e")} to #{fee_revenue.end.strftime("%b %e")}"
   end
 
+  def ach_payment?
+    hcb_i1 == ::TransactionGroupingEngine::Calculate::HcbCode::ACH_PAYMENT_CODE
+  end
+
+  def ach_payment
+    @ach_payment ||= AchPayment.find(hcb_i2) if ach_payment?
+  end
+
   def unknown?
     hcb_i1 == ::TransactionGroupingEngine::Calculate::HcbCode::UNKNOWN_CODE
   end

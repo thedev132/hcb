@@ -65,6 +65,10 @@
           <%= inline_icon "door-enter" %>
         <% end %>
       </td>
+    <% elsif ct.local_hcb_code.ach_payment? %>
+      <td class="transaction__icon tooltipped tooltipped--e" aria-label="Incoming bank transfer">
+        <%= inline_icon "bank-account" %>
+      </td>
     <% else %>
       <td class="transaction__icon tooltipped tooltipped--e" aria-label="Bank account transaction">
         <%= inline_icon "bank-account" %>

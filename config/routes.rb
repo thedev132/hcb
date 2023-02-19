@@ -509,6 +509,7 @@ Rails.application.routes.draw do
     member do
       post "disable_feature"
       post "enable_feature"
+      post "test_ach_payment"
     end
   end
 
