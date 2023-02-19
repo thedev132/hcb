@@ -207,7 +207,7 @@ module TransactionGroupingEngine
             #{ct_group_sql}
           ) q1
           #{tag_modifier}
-          order by date desc, pt_ids[0] desc, ct_ids[0] desc
+          order by date desc, pt_ids[1] desc, ct_ids[1] desc
         SQL
 
         ActiveRecord::Base.connection.execute(q)
