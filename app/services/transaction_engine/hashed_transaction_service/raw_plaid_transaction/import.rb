@@ -13,6 +13,8 @@ module TransactionEngine
         def run
           ::RawPlaidTransaction.where("date_posted >= ?", @start_date).find_each(batch_size: 100) do |pt|
             begin
+              next if pt.amount_cents == 0
+
               ph = primary_hash(pt)
 
               # Option 1, instead of finding by primary hash here, I could find by raw_plaid_transction id ?
