@@ -14,6 +14,7 @@ module TransactionEngine
         raise ArgumentError, "unique bank identifier must be upcased" unless unique_bank_identifier_is_upcased?
         raise ArgumentError, "memo must be upcased" unless memo_is_upcased?
         raise ArgumentError, "amount cents is not an integer" unless amount_cents_is_integer?
+        raise ArgumentError, "amount cents cannot be zero" if amount_cents_is_zero?
         raise ArgumentError, "date must be formatted correctly" unless date_formatted_correctly?
 
         [XXhash.xxh64(csv), csv]
