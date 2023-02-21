@@ -146,8 +146,6 @@ class HcbCode < ApplicationRecord
         # ~ @garyhtou
         if ids.empty?
           Airbrake.notify("HcbCode has no events at all!", hcb_code: hcb_code, id: id)
-        else
-          Airbrake.notify("HcbCode has no events from CT & PT", hcb_code: hcb_code, id: id)
         end
 
         Event.where(id: ids)
