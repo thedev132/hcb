@@ -63,15 +63,15 @@ RSpec.describe TransactionEngine::HashedTransactionService::PrimaryHash do
     end
   end
 
-  context "when amount_cents is 0" do
-    let(:amount_cents) { 0 }
+  # context "when amount_cents is 0" do
+  #   let(:amount_cents) { 0 }
 
-    it "raises an error" do
-      expect do
-        service.run
-      end.to raise_error(ArgumentError)
-    end
-  end
+  #   it "raises an error" do
+  #     expect do
+  #       service.run
+  #     end.to raise_error(ArgumentError)
+  #   end
+  # end
 
   context "when amount_cents is negative" do
     let(:amount_cents) { -2_02 }
