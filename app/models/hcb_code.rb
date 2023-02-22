@@ -142,12 +142,6 @@ class HcbCode < ApplicationRecord
         ids << EventMappingEngine::EventIds::INCOMING_FEES if incoming_bank_fee?
         ids << EventMappingEngine::EventIds::HACK_CLUB_BANK if fee_revenue?
 
-        # I'm trying to figure out if the 2nd set of ids (with try) is necessary
-        # ~ @garyhtou
-        if ids.empty?
-          Airbrake.notify("HcbCode has no events at all!", hcb_code: hcb_code, id: id)
-        end
-
         Event.where(id: ids)
       end
   end
