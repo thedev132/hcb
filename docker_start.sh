@@ -24,7 +24,7 @@ K      L   U   B      H
     HACK FOUNDATION
 
 Hack Club Bank, A Hack Club Project
-2022 The Hack Foundation
+2023 The Hack Foundation
 "
 
 # echo -e "
