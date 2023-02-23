@@ -38,16 +38,17 @@ RSpec.describe UserService::ExchangeLoginCodeForUser, type: :model do
     }
   end
 
+  context 'when exchange_login_code_resp and get_user_resp return expected values from hackclub/api' do
+    before do
+      allow(service).to receive(:exchange_login_code_resp).and_return(exchange_login_code_resp)
+      allow(service).to receive(:get_user_resp).and_return(get_user_resp)
+    end
 
-  before do
-    allow(service).to receive(:exchange_login_code_resp).and_return(exchange_login_code_resp)
-    allow(service).to receive(:get_user_resp).and_return(get_user_resp)
-  end
+    it "returns the user" do
+      user = service.run
 
-  it "returns the user" do
-    user = service.run
-
-    expect(user.id).to eql(user.id)
+      expect(user.id).to eql(user.id)
+    end
   end
 
   context "when login code response has errors" do
