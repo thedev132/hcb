@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_02_17_181936) do
+ActiveRecord::Schema[7.0].define(version: 2023_02_17_182212) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_stat_statements"
@@ -896,6 +896,18 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_17_181936) do
     t.index ["event_id"], name: "index_lob_addresses_on_event_id"
   end
 
+  create_table "login_codes", force: :cascade do |t|
+    t.bigint "user_id"
+    t.text "code"
+    t.inet "ip_address"
+    t.text "user_agent"
+    t.datetime "used_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["code"], name: "index_login_codes_on_code", unique: true, where: "(used_at IS NULL)"
+    t.index ["user_id"], name: "index_login_codes_on_user_id"
+  end
+
   create_table "login_tokens", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.text "token", null: false
@@ -1547,6 +1559,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_17_181936) do
   add_foreign_key "invoices", "users", column: "creator_id"
   add_foreign_key "invoices", "users", column: "manually_marked_as_paid_user_id"
   add_foreign_key "lob_addresses", "events"
+  add_foreign_key "login_codes", "users"
   add_foreign_key "login_tokens", "user_sessions"
   add_foreign_key "login_tokens", "users"
   add_foreign_key "mfa_requests", "mfa_codes"
