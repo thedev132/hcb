@@ -47,6 +47,7 @@ class User < ApplicationRecord
   friendly_id :slug_candidates, use: :slugged
   scope :admin, -> { where.not(admin_at: nil) }
 
+  has_many :login_codes
   has_many :login_tokens
   has_many :user_sessions, dependent: :destroy
   has_many :organizer_position_invites, dependent: :destroy

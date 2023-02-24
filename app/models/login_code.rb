@@ -29,6 +29,11 @@ class LoginCode < ApplicationRecord
 
   validates :user, :code, presence: true
 
+  validates :ip_address,
+            format: {
+              with: Resolv::AddressRegex
+            }
+
   after_initialize :generate_code
 
   # "123456" -> "123-456"

@@ -62,4 +62,60 @@ RSpec.describe UserService::ExchangeLoginCodeForUser, type: :model do
       end.to raise_error(::Errors::InvalidLoginCode)
     end
   end
+
+  # rubocop:disable Naming/VariableNumber
+  context 'flipper flag login_code_2023_02_21' do
+    let(:login_code) { create(:login_code) }
+    let(:user) { login_code.user }
+    let(:service) { UserService::ExchangeLoginCodeForUser.new(user_id: user.id, login_code: login_code.code) }
+
+    context 'when flag is off' do
+      it 'calls hackclub api' do
+        Flipper.disable(:login_code_2023_02_21)
+        expect(Partners::HackclubApi::ExchangeLoginCode).to receive_message_chain(:new, :run)
+          .and_return({})
+        expect(Partners::HackclubApi::GetUser).to receive_message_chain(:new, :run)
+          .and_return({ email: user.email })
+
+        service.run
+      end
+    end
+
+    context 'when flag is on' do
+      let(:service) {
+        UserService::ExchangeLoginCodeForUser.new(
+          user_id: user.id,
+          login_code: login_code.code,
+          sms: sms
+        )
+      }
+
+      before do
+        Flipper.enable(:login_code_2023_02_21)
+      end
+
+      context 'when not sent by sms' do
+        let(:sms) { false }
+
+        it 'exchanges login code for user in bank' do
+          exchanged_user = service.run
+          expect(exchanged_user).to eq(user)
+        end
+      end
+
+      context 'when sent by sms' do
+        let(:sms) { true }
+
+        it 'calls hackclub api' do
+          expect(Partners::HackclubApi::ExchangeLoginCode).to receive_message_chain(:new, :run)
+            .and_return({})
+          expect(Partners::HackclubApi::GetUser).to receive_message_chain(:new, :run)
+            .and_return({ email: user.email })
+
+          service.run
+        end
+      end
+    end
+  end
+  # rubocop:enable Naming/VariableNumber
 end

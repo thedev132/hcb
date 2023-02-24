@@ -70,4 +70,10 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
+
+  # Use a new in memory version of flipper per test (so every flag is disabled)
+  # per instructions at https://www.flippercloud.io/docs/testing#starting-fresh
+  config.before(:each) do
+    Flipper.instance = Flipper.new(Flipper::Adapters::Memory.new)
+  end
 end

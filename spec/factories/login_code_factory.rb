@@ -3,5 +3,6 @@
 FactoryBot.define do
   factory :login_code do
     association :user
+    ip_address { "127.0.0.1" }
   end
 end
