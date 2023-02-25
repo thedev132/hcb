@@ -106,11 +106,8 @@ RSpec.describe UserService::ExchangeLoginCodeForUser, type: :model do
       context 'when sent by sms' do
         let(:sms) { true }
 
-        it 'calls hackclub api' do
-          expect(Partners::HackclubApi::ExchangeLoginCode).to receive_message_chain(:new, :run)
-            .and_return({})
-          expect(Partners::HackclubApi::GetUser).to receive_message_chain(:new, :run)
-            .and_return({ email: user.email })
+        it 'calls twilio' do
+          expect(TwilioVerificationService).to receive_message_chain(:new, :check_verification_token).and_return(true)
 
           service.run
         end

@@ -36,10 +36,13 @@ describe UsersController do
       end
 
       context 'when sent by sms' do
-        it 'calls hackclub api' do
-          expect(Partners::HackclubApi::RequestLoginCode).to receive_message_chain(:new, :run).and_return({})
+        it 'calls LoginCodeService::Request service in bank (which in turns calls twilio)' do
+          expect(LoginCodeService::Request).to receive_message_chain(:new).and_call_original
+          expect(TwilioVerificationService).to receive_message_chain(:new, :send_verification_request)
 
-          user = create(:user, use_sms_auth: true)
+          user = create(:user, phone_number: '+18005555555')
+          # need to update after the fact because of User callback on_phone_number_update resetting this value
+          user.update(use_sms_auth: true)
           params = {
             email: user.email
           }

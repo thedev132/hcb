@@ -12,6 +12,26 @@ module LoginCodeService
     def run
       user = User.find_or_initialize_by(email: @email.downcase)
 
+      if @sms
+        send_login_code_by_sms(user)
+      else
+        send_login_code_by_email(user)
+      end
+    end
+
+    def send_login_code_by_sms(user)
+      return { error: 'no phone number provided' } if user.phone_number.empty?
+
+      TwilioVerificationService.new.send_verification_request(user.phone_number)
+
+      {
+        id: user.id,
+        email: user.email,
+        status: 'login code sent'
+      }
+    end
+
+    def send_login_code_by_email(user)
       login_code = user.login_codes.new(
         ip_address: @ip_address,
         user_agent: @user_agent

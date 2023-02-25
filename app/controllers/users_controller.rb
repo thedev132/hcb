@@ -64,7 +64,7 @@ class UsersController < ApplicationController
     initialize_sms_params
 
     # rubocop:disable Naming/VariableNumber
-    resp = if Flipper.enabled?(:login_code_2023_02_21) && !@use_sms_auth
+    resp = if Flipper.enabled?(:login_code_2023_02_21)
              LoginCodeService::Request.new(email: @email, sms: @use_sms_auth, ip_address: request.ip, user_agent: request.user_agent).run
            else
              ::Partners::HackclubApi::RequestLoginCode.new(email: @email, sms: @use_sms_auth).run

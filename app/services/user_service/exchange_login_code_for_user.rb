@@ -12,7 +12,7 @@ module UserService
       raise ::Errors::InvalidLoginCode, error_message if exchange_login_code_resp[:errors].present? || exchange_login_code_resp[:error].present?
 
       # rubocop:disable Naming/VariableNumber
-      if Flipper.enabled?(:login_code_2023_02_21) && !@sms
+      if Flipper.enabled?(:login_code_2023_02_21)
         user = exchange_login_code_resp[:user]
       else
         user = User.find_or_initialize_by(email: remote_email)
@@ -32,15 +32,12 @@ module UserService
 
     def exchange_login_code_resp
       # rubocop:disable Naming/VariableNumber
-      if Flipper.enabled?(:login_code_2023_02_21) && !@sms
-        login_code = LoginCode.active.find_by(code: @login_code.delete("-"), user_id: @user_id)
-
-        return @exchange_login_code_resp ||= { errors: 'not found' } if login_code.nil?
-        return @exchange_login_code_resp ||= { errors: 'invalid' } if login_code.created_at < (Time.current - 15.minutes)
-
-        login_code.update(used_at: Time.current)
-
-        @exchange_login_code_resp ||= { user: login_code.user }
+      if Flipper.enabled?(:login_code_2023_02_21)
+        if @sms
+          @exchange_login_code_resp ||= exchange_login_code_by_sms
+        else
+          @exchange_login_code_resp ||= exchange_login_code_by_email
+        end
       else
         @exchange_login_code_resp ||= ::Partners::HackclubApi::ExchangeLoginCode.new(
           user_id: @user_id,
@@ -49,6 +46,28 @@ module UserService
         ).run
       end
       # rubocop:enable Naming/VariableNumber
+    end
+
+    def exchange_login_code_by_sms
+      login_code = @login_code.delete("-")
+      user = User.find(@user_id)
+
+      if TwilioVerificationService.new.check_verification_token(user.phone_number, login_code)
+        { user: user }
+      else
+        { errors: 'login code is invalid' }
+      end
+    end
+
+    def exchange_login_code_by_email
+      login_code = LoginCode.active.find_by(code: @login_code.delete("-"), user_id: @user_id)
+
+      return { errors: 'not found' } if login_code.nil?
+      return { errors: 'invalid' } if login_code.created_at < (Time.current - 15.minutes)
+
+      login_code.update(used_at: Time.current)
+
+      { user: login_code.user }
     end
 
     def get_user_resp
