@@ -18,6 +18,7 @@ RUN gem install bundler -v 2.1.4
 
 ADD yarn.lock /usr/src/app/yarn.lock
 ADD package.json /usr/src/app/package.json
+ADD .ruby-version /usr/src/app/.ruby-version
 ADD Gemfile /usr/src/app/Gemfile
 ADD Gemfile.lock /usr/src/app/Gemfile.lock
 
