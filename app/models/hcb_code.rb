@@ -66,6 +66,7 @@ class HcbCode < ApplicationRecord
     return ach_transfer_memo if ach_transfer?
     return check_memo if check?
     return fee_revenue_memo if fee_revenue?
+    return ach_payment_memo if ach_payment?
 
     custom_memo || ct.try(:smart_memo) || pt.try(:smart_memo) || ""
   end
@@ -288,6 +289,10 @@ class HcbCode < ApplicationRecord
 
   def ach_payment
     @ach_payment ||= AchPayment.find(hcb_i2) if ach_payment?
+  end
+
+  def ach_payment_memo
+    "Bank transfer"
   end
 
   def unknown?
