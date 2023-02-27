@@ -43,6 +43,11 @@
   <%= render partial: "hcb_codes/fee_revenue", locals: {} %>
 <% end %>
 
+<%# ach payment %>
+<% if @hcb_code.ach_payment? && @hcb_code.ach_payment.present? %>
+  <%= render "ach_payment" %>
+<% end %>
+
 <%# unknown (most likely a direct to bank account transaction) %>
 <% if @hcb_code.unknown? %>
   <%= render partial: "hcb_codes/unknown", locals: {} %>
