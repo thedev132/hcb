@@ -114,6 +114,14 @@ class User < ApplicationRecord
     self.admin_at.present?
   end
 
+  def make_admin!
+    update!(admin_at: Time.now)
+  end
+
+  def remove_admin!
+    update!(admin_at: nil)
+  end
+
   def first_name
     @first_name ||= begin
       return nil unless namae.given || namae.particle
