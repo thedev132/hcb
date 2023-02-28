@@ -306,7 +306,7 @@ class Donation < ApplicationRecord
       currency: "usd",
       statement_descriptor: "HACK CLUB BANK",
       statement_descriptor_suffix: StripeService::StatementDescriptor.format(event.name, as: :suffix),
-      metadata: { 'donation': true }
+      metadata: { 'donation': true, 'event_id': event.id }
     }
   end
 
