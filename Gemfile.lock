@@ -143,6 +143,7 @@ GEM
       argon2-kdf (>= 0.1.1)
     bootsnap (1.11.1)
       msgpack (~> 1.2)
+    brakeman (5.4.1)
     browser (5.3.1)
     builder (3.2.4)
     business_time (0.11.0)
@@ -762,6 +763,7 @@ DEPENDENCIES
   blazer
   blind_index
   bootsnap (>= 1.4.4)
+  brakeman
   browser (~> 5.3)
   business_time
   byebug

@@ -132,6 +132,10 @@ group :development, :test do
   gem "rspec-rails", "~> 5.0.0"
   gem "rubocop"
   gem "webdrivers"
+
+  # Static analysis tool that devs can manually trigger
+  # https://github.com/presidentbeef/brakeman
+  gem "brakeman"
 end
 
 group :development, :staging do
