@@ -4,25 +4,23 @@
 #
 # Table name: users
 #
-#  id                          :bigint           not null, primary key
-#  admin_at                    :datetime
-#  api_access_token_bidx       :string
-#  api_access_token_ciphertext :text
-#  birthday                    :date
-#  email                       :text
-#  full_name                   :string
-#  locked_at                   :datetime
-#  phone_number                :text
-#  phone_number_verified       :boolean          default(FALSE)
-#  pretend_is_not_admin        :boolean          default(FALSE), not null
-#  seasonal_themes_enabled     :boolean          default(TRUE), not null
-#  session_duration_seconds    :integer          default(2592000), not null
-#  sessions_reported           :boolean          default(FALSE), not null
-#  slug                        :string
-#  use_sms_auth                :boolean          default(FALSE)
-#  created_at                  :datetime         not null
-#  updated_at                  :datetime         not null
-#  webauthn_id                 :string
+#  id                       :bigint           not null, primary key
+#  admin_at                 :datetime
+#  birthday                 :date
+#  email                    :text
+#  full_name                :string
+#  locked_at                :datetime
+#  phone_number             :text
+#  phone_number_verified    :boolean          default(FALSE)
+#  pretend_is_not_admin     :boolean          default(FALSE), not null
+#  seasonal_themes_enabled  :boolean          default(TRUE), not null
+#  session_duration_seconds :integer          default(2592000), not null
+#  sessions_reported        :boolean          default(FALSE), not null
+#  slug                     :string
+#  use_sms_auth             :boolean          default(FALSE)
+#  created_at               :datetime         not null
+#  updated_at               :datetime         not null
+#  webauthn_id              :string
 #
 # Indexes
 #
@@ -31,9 +29,7 @@
 #  index_users_on_slug                   (slug) UNIQUE
 #
 class User < ApplicationRecord
-  has_paper_trail skip: [:api_access_token] # api_access_token_ciphertext will still be tracked
-  has_encrypted :api_access_token
-  blind_index :api_access_token
+  self.ignored_columns = ["api_access_token_bidx", "api_access_token_ciphertext"]
 
   include PublicIdentifiable
   set_public_id_prefix :usr

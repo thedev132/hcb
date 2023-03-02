@@ -13,9 +13,6 @@ module UserService
 
       user = exchange_login_code_resp[:user]
 
-      user.api_access_token = remote_access_token
-      # User `admin_at` was previously coupled to the Hack Club API. This is no
-      # longer the case.
       user.admin_at = Time.now if Rails.env.development? # Make all users admin in development mode
       user.save!
 

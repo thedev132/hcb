@@ -198,17 +198,4 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe "#api_access_token" do
-    context "duplicate api tokens are created" do
-      it "fails because of unique index violation" do
-        token = "token"
-        _existing_user = create(:user, api_access_token: token)
-
-        expect do
-          create(:user, api_access_token: token)
-        end.to raise_error(ActiveRecord::RecordNotUnique, /index_users_on_api_access_token_bidx\b/)
-      end
-    end
-  end
-
 end
