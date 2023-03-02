@@ -16,8 +16,6 @@ class AdminConstraint
     end
 
     false
-  rescue BankApiService::UnauthorizedError
-    false # user is not logged in
   end
 
 end

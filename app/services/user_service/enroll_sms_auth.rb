@@ -48,14 +48,5 @@ module UserService
     class SMSEnrollmentError < StandardError
     end
 
-    def current_user
-      ::BankApiService.req(
-        "get",
-        "/v1/users/current",
-        nil,
-        @user.api_access_token
-      )
-    end
-
   end
 end

@@ -26,7 +26,6 @@ class ApplicationController < ActionController::Base
   # Force usage of Pundit on actions
   after_action :verify_authorized
 
-  rescue_from BankApiService::UnauthorizedError, with: :user_not_authenticated
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   def hide_footer
@@ -62,16 +61,6 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  # This being called probably means that the User's access token has expired.
-  def user_not_authenticated
-    sign_out
-    flash[:error] = "You were signed out. Please re-login."
-    if request.get?
-      redirect_to auth_users_path(return_to: request.url)
-    else
-      redirect_to auth_users_path
-    end
-  end
 
   def user_not_authorized
     flash[:error] = "You are not authorized to perform this action."
