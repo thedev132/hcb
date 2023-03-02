@@ -11,13 +11,7 @@ module UserService
     def run
       raise ::Errors::InvalidLoginCode, error_message if exchange_login_code_resp[:errors].present? || exchange_login_code_resp[:error].present?
 
-      # rubocop:disable Naming/VariableNumber
-      if Flipper.enabled?(:login_code_2023_02_21)
-        user = exchange_login_code_resp[:user]
-      else
-        user = User.find_or_initialize_by(email: remote_email)
-      end
-      # rubocop:enable Naming/VariableNumber
+      user = exchange_login_code_resp[:user]
 
       user.api_access_token = remote_access_token
       # User `admin_at` was previously coupled to the Hack Club API. This is no
@@ -31,21 +25,11 @@ module UserService
     private
 
     def exchange_login_code_resp
-      # rubocop:disable Naming/VariableNumber
-      if Flipper.enabled?(:login_code_2023_02_21)
-        if @sms
-          @exchange_login_code_resp ||= exchange_login_code_by_sms
-        else
-          @exchange_login_code_resp ||= exchange_login_code_by_email
-        end
+      if @sms
+        @exchange_login_code_resp ||= exchange_login_code_by_sms
       else
-        @exchange_login_code_resp ||= ::Partners::HackclubApi::ExchangeLoginCode.new(
-          user_id: @user_id,
-          login_code: @login_code,
-          sms: @sms
-        ).run
+        @exchange_login_code_resp ||= exchange_login_code_by_email
       end
-      # rubocop:enable Naming/VariableNumber
     end
 
     def exchange_login_code_by_sms
@@ -70,16 +54,8 @@ module UserService
       { user: login_code.user }
     end
 
-    def get_user_resp
-      @get_user_resp ||= ::Partners::HackclubApi::GetUser.new(user_id: @user_id, access_token: remote_access_token).run
-    end
-
     def remote_access_token
       exchange_login_code_resp[:auth_token]
-    end
-
-    def remote_email
-      get_user_resp[:email]
     end
 
     def error_message

@@ -248,13 +248,6 @@ class User < ApplicationRecord
       # turn all this stuff off until they reverify
       self.phone_number_verified = false
       self.use_sms_auth = false
-      # Update the Hackclub API as well
-      # Don't call HackclubApi when the flag is on because we won't have a valid api_access_token
-      # rubocop:disable Naming/VariableNumber
-      if !Flipper.enabled?(:login_code_2023_02_21)
-        Partners::HackclubApi::UpdateUser.new(api_access_token, phone_number: phone_number).run
-      end
-      # rubocop:enable Naming/VariableNumber
     end
   end
 

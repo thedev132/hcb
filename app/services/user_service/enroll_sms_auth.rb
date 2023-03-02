@@ -12,48 +12,17 @@ module UserService
       # doing this here to be safe.
       raise ArgumentError.new("phone number for user: #{@user.id} not in E.164 format") unless @user.phone_number =~ /\A\+[1-9]\d{1,14}\z/
 
-      # rubocop:disable Naming/VariableNumber
-      if Flipper.enabled?(:login_code_2023_02_21)
-        TwilioVerificationService.new.send_verification_request(@user.phone_number)
-      else
-        # updates the user's phone number on the Bank API
-        ::BankApiService.req(
-          "put",
-          "/v1/users/#{current_user[:id]}",
-          { phone_number: @user.phone_number },
-          @user.api_access_token
-        )
-
-        ::BankApiService.req("post", "/v1/users/sms_auth", email: @user.email)
-      end
-      # rubocop:enable Naming/VariableNumber
+      TwilioVerificationService.new.send_verification_request(@user.phone_number)
     end
 
     # Completing the phone number verification by checking that exchanging code works
     def complete_verification(verification_code)
-      # rubocop:disable Naming/VariableNumber
-      if Flipper.enabled?(:login_code_2023_02_21)
-        begin
-          verified = TwilioVerificationService.new.check_verification_token(@user.phone_number, verification_code)
-        rescue Twilio::REST::RestError
-          raise ::Errors::InvalidLoginCode, "invalid login code"
-        end
-        raise ::Errors::InvalidLoginCode, "invalid login code" if !verified
-      else
-        begin
-          resp = ::BankApiService.req(
-            "post",
-            "/v1/users/#{current_user[:id]}/sms_exchange_login_code",
-            login_code: verification_code
-          )
-        rescue ::BankApiService::UnauthorizedError
-          raise ::Errors::InvalidLoginCode, "invalid login code"
-        end
-
-        # Make sure we re-copy the api access token or else our Bank API is not gonna be happy
-        @user.api_access_token = resp[:auth_token]
+      begin
+        verified = TwilioVerificationService.new.check_verification_token(@user.phone_number, verification_code)
+      rescue Twilio::REST::RestError
+        raise ::Errors::InvalidLoginCode, "invalid login code"
       end
-      # rubocop:enable Naming/VariableNumber
+      raise ::Errors::InvalidLoginCode, "invalid login code" if !verified
 
       # save all our fields
       @user.phone_number_verified = true
