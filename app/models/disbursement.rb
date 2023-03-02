@@ -85,6 +85,13 @@ class Disbursement < ApplicationRecord
       css_class: "transaction--icy",
       icon: 'freeze',
       qualifier: ->(d) { d.source_event_id == EventMappingEngine::EventIds::WINTER_HARDWARE_WONDERLAND_GRANT_FUND }
+    },
+    first_transparency_grant: {
+      title: 'FIRST® Transparency grant',
+      memo: "🤖 FIRST® Transparency Grant",
+      css_class: "transaction--frc",
+      icon: 'sam',
+      qualifier: ->(d) { d.source_event_id == EventMappingEngine::EventIds::FIRST_TRANSPARENCY_GRANT_FUND }
     }
   }.freeze
 

@@ -14,14 +14,42 @@
 }
 .transaction--icy {
   background-image: repeating-linear-gradient(
-                  to bottom right,
-                  #33d6a6 0px,
-                  #338eda 50px,
-                  #33d6a6 100px
+    to bottom right,
+    #33d6a6 0px,
+    #338eda 50px,
+    #33d6a6 100px
   );
   background-attachment: fixed;
   font-weight: bold;
   color: $white;
+}
+.transaction--frc {
+  position: relative;
+  font-weight: 600;
+  color: $black;
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+    opacity: 0.3;
+    background-image: #{image-url('frc-background.png')};
+    background-size: 24em;
+    background-position: center;
+    background-attachment: fixed;
+  }
+}
+
+html[data-dark='true'] {
+  .transaction--frc {
+    color: $white;
+    &::after {
+      filter: invert(100%);
+    }
+  }
 }
 
 .transaction__memo {
