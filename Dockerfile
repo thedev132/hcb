@@ -10,9 +10,11 @@ RUN apt-get -y update -qq
 RUN apt-get -y install postgresql-client vim poppler-utils
 ENV EDITOR=vim
 
-# Install yarn through npm to avoid this bug: https://github.com/docker/for-mac/issues/5864#issuecomment-884336317
-RUN apt-get -y install nodejs npm
-RUN npm install -g yarn
+# Install node18 & yarn
+RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
+RUN curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | gpg --dearmor | tee /usr/share/keyrings/yarnkey.gpg >/dev/null
+RUN echo "deb [signed-by=/usr/share/keyrings/yarnkey.gpg] https://dl.yarnpkg.com/debian stable main" | tee /etc/apt/sources.list.d/yarn.list
+RUN apt-get update; apt-get install -y nodejs yarn
 
 RUN gem install bundler -v 2.1.4
 
