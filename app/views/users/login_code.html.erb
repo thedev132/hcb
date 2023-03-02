@@ -9,6 +9,9 @@
     <span class="black">Login code</span>
   </h1>
   <p>We just sent a login code to <%= @use_sms_auth ? 'your phone number ending in: ' + @phone_last_four : @email %></p>
+  <% if Rails.env.development? %>
+    <p class="h5"><%= link_to "Seems like you're in development. Check your dev email outbox here!", letter_opener_web_path, target: :_blank %></p>
+  <% end %>
    <%= form_tag exchange_login_code_users_path do %>
     <%= label_tag :login_code, "Enter your login code", class: 'left-align' %>
     <%= telephone_field_tag :login_code, '', placeholder: 'Login code', autofocus: true, autocomplete: 'off', class: 'left-align mb2' %>
