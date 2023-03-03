@@ -148,11 +148,13 @@
       <% end %>
     </div>
   </td>
-  <td class="nowrap flex items-center justify-end">
-    <% if ct.local_hcb_code.donation&.recurring? %>
-      <div class="line-height-0 mr1 tooltipped tooltipped--n" aria-label="Recurring donation"><%= inline_icon "transactions", size: 24, class: "muted" %></div>
-    <% end %>
-    <span><%= number_to_currency ct.amount %></span>
+  <td class="nowrap">
+    <span class="flex items-center justify-end">
+      <% if ct.local_hcb_code.donation&.recurring? %>
+        <div class="line-height-0 mr1 tooltipped tooltipped--n" aria-label="Recurring donation"><%= inline_icon "transactions", size: 24, class: "muted" %></div>
+      <% end %>
+      <span><%= number_to_currency ct.amount %></span>
+    </span>
   </td>
   <td>
     <%= link_to "Details", ct.local_hcb_code.url, data: { turbo_frame: "_top" } if organizer_signed_in? || defined?(force_display_details) %>
