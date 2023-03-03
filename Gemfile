@@ -218,7 +218,6 @@ gem "lockbox" # encrypt partner stripe keys and other sensitive fields
 gem "monetize" # for handling human input for money amounts
 gem "money-rails" # back cent fields as money objects
 gem "namae" # multi-cultural human name parser
-gem "newrelic_rpm"
 gem "paper_trail" # track changes on models
 gem "pg_search"
 gem 'premailer-rails' # css to inline styles for emails
