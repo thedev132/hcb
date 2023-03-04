@@ -24,22 +24,23 @@
   color: $white;
 }
 .transaction--frc {
-  position: relative;
   font-weight: 600;
   color: $black;
-  &::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: -1;
-    opacity: 0.1;
-    background-image: #{image-url('frc-background.png')};
-    background-size: 20rem;
-    background-position: center;
-    background-attachment: fixed;
+  td {
+    position: relative;
+    &:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      opacity: 0.1;
+      background-image: #{image-url('frc-background.png')};
+      background-size: 24em;
+      background-position: center;
+      background-attachment: fixed;
+    }
   }
 }
 
