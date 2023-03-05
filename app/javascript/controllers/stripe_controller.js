@@ -38,19 +38,21 @@ export default class extends Controller {
 
     e.submitter.disabled = true
 
-    const result = this.confirm()
+    const result = await this.confirm()
 
     if (result.error) {
       e.submitter.disabled = false
 
-      if (this.hasErrorsTarget) {
-        const flash = document.createElement('p')
-        flash.classList.add('flash', 'error', 'fit', 'mt1', 'mb3')
-        flash.textContent = `Something went wrong: ${result.error.message}`
+      if (result.error.type != 'validation_error') {
+        if (this.hasErrorsTarget) {
+          const flash = document.createElement('p')
+          flash.classList.add('flash', 'error', 'fit', 'mt1', 'mb3')
+          flash.textContent = `Something went wrong: ${result.error.message}`
 
-        this.errorsTarget.appendChild(flash)
-      } else {
-        alert(`Something went wrong: ${result.error.message}`)
+          this.errorsTarget.appendChild(flash)
+        } else {
+          alert(`Something went wrong: ${result.error.message}`)
+        }
       }
     }
   }
