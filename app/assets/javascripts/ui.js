@@ -140,9 +140,9 @@ $(document).keydown(function (e) {
   }
 })
 
-$('[data-behavior~=toggle_theme]').on('click', () => BK.toggleDark())
-
 $(document).on('turbo:load', function () {
+  $('[data-behavior~=toggle_theme]').on('click', () => BK.toggleDark())
+
   if (window.location !== window.parent.location) {
     $('[data-behavior~=hide_iframe]').hide()
   }
