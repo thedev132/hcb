@@ -36,6 +36,7 @@ class StripeAchPaymentSource < ApplicationRecord
       currency: "usd",
       source: self.stripe_source_id,
       customer: self.stripe_customer_id,
+      metadata: { event_id: event.id },
     )
   end
 
