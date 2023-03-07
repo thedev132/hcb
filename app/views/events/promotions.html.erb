@@ -1,6 +1,6 @@
 <% title "Perks for #{@event.name}" %>
 <% page_md %>
-<%= render 'events/nav' %>
+<%= render 'events/nav', selected: :promotions %>
 
 <% @perks_available = organizer_signed_in? && !@event.demo_mode? %>
 

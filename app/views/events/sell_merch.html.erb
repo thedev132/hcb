@@ -1,6 +1,6 @@
 <% title "Sell Merchandise" %>
 <% page_md %>
-<%= render 'events/nav' %>
+<%= render 'events/nav', selected: :documentation %>
 
 <% content_for :head do %>
   <% img = "https://workshop-cards.hackclub.com/#{url_encode(@document_title)}.png?theme=light&fontSize=200px&caption=Documentation&brand=Bank" %>

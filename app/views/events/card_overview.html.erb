@@ -1,6 +1,6 @@
 <% title "Cards for #{@event.name}" %>
 <% page_md %>
-<%= render "nav" %>
+<%= render "nav", selected: :cards %>
 <% if current_user.try(:full_name).try(:blank?) %>
 
   <h1 class="heading">
