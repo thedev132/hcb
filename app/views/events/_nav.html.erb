@@ -73,7 +73,7 @@
     <%= dock_item 'Home',
       event_path(id: @event.slug),
       icon: 'home' %>
-    <button class="dock__item bg-transparent border-none menu__toggle" data-behavior="menu_toggle">
+    <button class="dock__item bg-transparent border-none menu__toggle" data-behavior="menu_toggle" data-tour-step="receive">
       <div class="line-height-0 relative"><%= inline_icon 'support', size: 32, class: 'primary' %></div>
       <span class="line-height-3">Receive</span>
 
@@ -84,7 +84,7 @@
         <%= link_to "Invoices", event_invoices_path(@event) %>
       </div>
     </button>
-    <button class="dock__item bg-transparent border-none menu__toggle" data-behavior="menu_toggle">
+    <button class="dock__item bg-transparent border-none menu__toggle" data-behavior="menu_toggle" data-tour-step="spend">
       <div class="line-height-0 relative"><%= inline_icon 'card', size: 32, class: 'primary' %></div>
       <span class="line-height-3">Spend</span>
 

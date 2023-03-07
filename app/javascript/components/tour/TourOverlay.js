@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types'
 import TourStep from './TourStep'
 import csrf from '../../common/csrf'
 
@@ -24,13 +24,13 @@ const tours = {
     if (!options.demo) {
       steps.push(
         {
-          attachTo: 'cards',
+          attachTo: isMobile ? 'spend' : 'cards',
           text: 'Instantly issue a virtual debit card for yourself. Gotta spend that 💸!',
           placement: isMobile ? 'top' : 'right',
           strategy: 'fixed'
         },
         {
-          attachTo: 'donations',
+          attachTo: isMobile ? 'receive' : 'donations',
           text: 'Share your donation form with others, and get it embedded on your website.',
           placement: isMobile ? 'top-end' : 'right',
           strategy: 'fixed'
@@ -133,7 +133,7 @@ TourOverlay.propTypes = {
   id: PropTypes.number,
   options: PropTypes.object,
   tour: PropTypes.string,
-  backToTour: PropTypes.string,
+  backToTour: PropTypes.string
 }
 
 export default TourOverlay
