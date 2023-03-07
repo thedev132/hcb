@@ -90,7 +90,7 @@ jobs:
           DATABASE_URL: postgres://postgres:postgres@localhost:5432/bank_test
           RAILS_ENV: test
           RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
-        run: bundler exec rails db:create db:migrate RAILS_ENV=test
+        run: bundler exec rails db:create db:schema:load RAILS_ENV=test
       - name: Run RSpec
         env:
           DATABASE_URL: postgres://postgres:postgres@localhost:5432/bank_test
