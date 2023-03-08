@@ -17,18 +17,18 @@
   <% end %>
 <% end %>
 
-<%= render 'nav', selected: :transactions %>
+<%= render "nav", selected: :transactions %>
 
 <h1 class="flex items-center">
   Financials
   <% if admin_signed_in? %>
-    <% admin_tools('p0 badge', 'span') do %>
+    <% admin_tools("p0 badge", "span") do %>
       <span class="m0 badge bg-muted">
       #<%= @event.id %>
       </span>
     <% end %>
 
-    <% admin_tools('p0 badge', 'span') do %>
+    <% admin_tools("p0 badge", "span") do %>
       <span class="m0 badge bg-muted">
         <%= @event.partner.slug.capitalize %>
       </span>
@@ -50,9 +50,9 @@
   <div>
     <div class="flex items-center">
       <% if @organizers.any? %>
-        <%= pop_icon_to 'email',
+        <%= pop_icon_to "email",
           "mailto:#{@organizers.map(&:user).map(&:email).join(',')}",
-          class: 'info mr2' if admin_signed_in? %>
+          class: "info mr2" if admin_signed_in? %>
         <div class="flex items-center">
           <% @organizers.each do |position| %>
             <div class="avatar-grow line-height-0 tooltipped tooltipped--s mr1" aria-label="<%= position.user == current_user ? current_user_flavor_text.sample : position.user.full_name %>">
@@ -65,10 +65,10 @@
             +<%= @event.organizer_positions.count - 5 %>
           <% end %>
         <% end %>
-        <%= pop_icon_to 'member-add', event_team_path(@event), class: 'ml1', data: { 'tour-step' => 'invite' } %>
+        <%= pop_icon_to "member-add", event_team_path(@event), class: "ml1", data: { "tour-step" => "invite" } %>
       <% else %>
         <p class="slate bold h3 mr2">No organizers invited yet</p>
-        <%= pop_icon_to 'member-add', event_team_path(@event) %>
+        <%= pop_icon_to "member-add", event_team_path(@event) %>
       <% end %>
     </div>
   </div>
@@ -77,7 +77,7 @@
 <% if @event.demo_mode? && organizer_signed_in? %>
   <div class="card border b--info pb0 mb2 mt2 max-width-2 overflow-y-auto">
     <div class="flex items-center info">
-      <%= inline_icon 'welcome', size: 32, class: 'mr1' %>
+      <%= inline_icon "welcome", size: 32, class: "mr1" %>
       <p class="bold mt0 mb0">Welcome to Demo Mode</p>
     </div>
     <ul class="mt1 mb2">
@@ -99,14 +99,14 @@
   <% if organizer_signed_in? && @event.canonical_transactions.exists? %>
     <button
       type="button"
-      <%= organizer_signed_in? ? 'data-behavior=menu_toggle aria-expanded=false tabindex=0' : 'disabled=disabled' %>
+      <%= organizer_signed_in? ? "data-behavior=menu_toggle aria-expanded=false tabindex=0" : "disabled=disabled" %>
       class="btn bg-info menu__toggle overflow-visible z1">
-        <%= inline_icon 'download', size: 16 %>
+        <%= inline_icon "download", size: 16 %>
         Export
         <% if organizer_signed_in? %>
           <div class="menu__content h5" data-behavior="menu_content">
-            <%= link_to 'All transactions (CSV)', export_transactions_path(event: @event, format: :csv), target: :_blank %>
-            <%= link_to 'All transactions (JSON)', export_transactions_path(event: @event, format: :json), target: :_blank %>
+            <%= link_to "All transactions (CSV)", export_transactions_path(event: @event, format: :csv), target: :_blank %>
+            <%= link_to "All transactions (JSON)", export_transactions_path(event: @event, format: :json), target: :_blank %>
           </div>
         <% end %>
     </button>
@@ -129,7 +129,7 @@
           type="button"
           class="btn btn-small bg-info menu__toggle menu__toggle--arrowless overflow-visible z1 mr1"
           data-menu-target="toggle" data-action="menu#toggle click@document->menu#close keydown@document->menu#keydown">
-          <%= inline_icon 'filter', size: 16, style: "margin: 0" %>
+          <%= inline_icon "filter", size: 16, style: "margin: 0" %>
           <% if @tag %>
             <span class="xs-hide sm-hide md-hide flex items-center">
               <span class="nowrap">Filtered by</span>
@@ -187,6 +187,6 @@
     </div>
     <%= paginate @transactions %>
   <% else %>
-    <%= blankslate 'No transactions yet' %>
+    <%= blankslate "No transactions yet" %>
   <% end %>
 <% end %>

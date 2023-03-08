@@ -1,15 +1,15 @@
 <% title "#{render_money(@hcb_code.amount_cents.abs)} charge for #{@hcb_code.memo}" %>
 
-<% admin_tools('mt1') do %>
-  <%= link_to 'View on Stripe', @hcb_code.stripe_auth_dashboard_url, class: 'btn bg-accent' %>
+<% admin_tools("mt1") do %>
+  <%= link_to "View on Stripe", @hcb_code.stripe_auth_dashboard_url, class: "btn bg-accent" %>
 <% end %>
 
 <% @hcb_code.canonical_pending_transactions.each do |pt| %>
-<%= render partial: 'admin_viewer', locals: { record: pt } %>
-<%= render partial: 'admin_viewer', locals: { record: pt.raw_pending_stripe_transaction } %>
+<%= render partial: "admin_viewer", locals: { record: pt } %>
+<%= render partial: "admin_viewer", locals: { record: pt.raw_pending_stripe_transaction } %>
 <% end %>
 <% @hcb_code.canonical_transactions.each do |pt| %>
-<%= render partial: 'admin_viewer', locals: { record: pt } %>
+<%= render partial: "admin_viewer", locals: { record: pt } %>
 <% end %>
 
 <div class="mt2 mb3">
@@ -60,7 +60,7 @@
       <% unless @hcb_code.ct.nil? || @hcb_code.pt.nil? %>
         <p>
           <strong>Settled after</strong>
-          <span title="<%= Time.at(@hcb_code.ct.raw_stripe_transaction.stripe_transaction["created"]).strftime('%B %e, %Y %l:%M%P') %>">
+          <span title="<%= Time.at(@hcb_code.ct.raw_stripe_transaction.stripe_transaction["created"]).strftime("%B %e, %Y %l:%M%P") %>">
           <%= distance_of_time_in_words @hcb_code.pt.raw_pending_stripe_transaction.created_at, @hcb_code.ct.created_at %>
           </span>
         </p>
@@ -87,7 +87,7 @@
               <span class="inline-flex">
                 <%= country_to_emoji @hcb_code.stripe_merchant["country"] %>
                 <%= @hcb_code.stripe_merchant["name"] %>
-              <%= inline_icon 'external', size: 24, class: 'muted', 'aria-label': 'Icon indicating click for more' %>
+              <%= inline_icon "external", size: 24, class: "muted", 'aria-label': "Icon indicating click for more" %>
               </span>
             </action>
         <% else %>
@@ -101,7 +101,7 @@
               <action data-behavior="modal_trigger" data-modal="verification_details" class="pointer" tabindex="0">
                 <span>
                 <%= @hcb_code.pt.raw_pending_stripe_transaction.stripe_transaction["authorization_method"].humanize %>
-                <%= inline_icon 'external', size: 24, class: 'muted', 'aria-label': 'Icon indicating click for more' %>
+                <%= inline_icon "external", size: 24, class: "muted", 'aria-label': "Icon indicating click for more" %>
                 </span>
               </action>
           <% else %>
@@ -109,7 +109,7 @@
           <% end %>
         </p>
       <% end %>
-      <%= render 'hcb_codes/tags', hcb_code: @hcb_code, event: (@event || @hcb_code.event) %>
+      <%= render "hcb_codes/tags", hcb_code: @hcb_code, event: (@event || @hcb_code.event) %>
     </section>
 
     <% unless @hcb_code.stripe_refund? %>
@@ -138,12 +138,12 @@
     <% end %>
 
   </article>
-  <%= render partial: "hcb_codes/dispute", locals: { type: 'card', hcb_code: @hcb_code } %>
+  <%= render partial: "hcb_codes/dispute", locals: { type: "card", hcb_code: @hcb_code } %>
 </div>
 
 <% if organizer_signed_in? %>
 <section class="modal modal--scroll bg-snow" data-behavior="modal" role="dialog" id="merchant_details">
-  <%= modal_header 'Merchant details' %>
+  <%= modal_header "Merchant details" %>
 
   <div class="details mb2">
     <p>
@@ -198,7 +198,7 @@
 
 <% if organizer_signed_in? && @hcb_code.pt.present? %>
 <section class="modal modal--scroll bg-snow" data-behavior="modal" role="dialog" id="verification_details">
-  <%= modal_header 'Charge details' %>
+  <%= modal_header "Charge details" %>
   <% @verification_data = @hcb_code.pt.raw_pending_stripe_transaction.stripe_transaction["verification_data"] %>
 
   <article class="details-horiz">
@@ -219,22 +219,22 @@
 
     <div class="mt1 md-mt0" style="width: 100%;">
       <p class="details__simulated">
-        <%= stripe_verification_check_badge 'address_line1' %>
+        <%= stripe_verification_check_badge "address_line1" %>
         <span>Address check</span>
       </p>
       <p class="details__simulated">
-        <%= stripe_verification_check_badge 'address_postal_code' %>
+        <%= stripe_verification_check_badge "address_postal_code" %>
         <span>Zip check</span>
       </p>
     </div>
 
     <div class="mt1 md-mt0" style="width: 100%;">
       <p class="details__simulated">
-        <%= stripe_verification_check_badge 'expiry' %>
+        <%= stripe_verification_check_badge "expiry" %>
         <span>Expiry check</span>
       </p>
       <p class="details__simulated">
-        <%= stripe_verification_check_badge 'cvc' %>
+        <%= stripe_verification_check_badge "cvc" %>
         <span>CVC check</span>
       </p>
     </div>

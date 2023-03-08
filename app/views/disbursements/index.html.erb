@@ -3,9 +3,9 @@
 <h1 class="heading">
   <div class="flex flex-row items-center">
     Disbursements
-    <%= badge_for @disbursements.size, class: 'bg-muted' %>
+    <%= badge_for @disbursements.size, class: "bg-muted" %>
   </div>
-  <%= link_to 'New disbursement', new_disbursement_path, class: 'btn bg-success' %>
+  <%= link_to "New disbursement", new_disbursement_path, class: "btn bg-success" %>
 </h1>
 
 <% if @disbursements.any? %>
@@ -17,17 +17,17 @@
            aria-label="Filter disbursements"
            style="width: auto; max-width: none;">
     <div class="filterbar__filters flex mt1 lg-mt0" data-behavior="filterbar" role="tablist">
-      <%= filterbar_item 'All', :exists, true %>
-      <%= filterbar_item 'Pending', :pending %>
-      <%= filterbar_item 'Processing', :processing %>
-      <%= filterbar_item 'Fulfilled', :fulfilled %>
-      <%= filterbar_item 'Rejected', :rejected %>
+      <%= filterbar_item "All", :exists, true %>
+      <%= filterbar_item "Pending", :pending %>
+      <%= filterbar_item "Processing", :processing %>
+      <%= filterbar_item "Fulfilled", :fulfilled %>
+      <%= filterbar_item "Rejected", :rejected %>
     </div>
   </div>
 
   <ul class="grid grid--spacious">
     <% @disbursements.each do |dsb| %>
-      <%= link_to dsb, data: { behavior: 'filterbar_row', filter: dsb.filter_data.to_json } do %>
+      <%= link_to dsb, data: { behavior: "filterbar_row", filter: dsb.filter_data.to_json } do %>
         <li class="card">
           <div class="flex">
             <strong class="flex-auto h3 line-height-3 mb1">

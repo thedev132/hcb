@@ -5,7 +5,7 @@
 <%= paginate @canonical_transactions %>
 
 <%= form_with local: true, url: ledger_admin_index_path, method: :get do |form| %>
-  <%= form.text_field :q, value: params[:q], placeholder: 'Search' %>
+  <%= form.text_field :q, value: params[:q], placeholder: "Search" %>
   <%= form.label :unmapped do %>
     <%= form.check_box :unmapped, checked: @unmapped %>
     Unmapped
@@ -38,7 +38,7 @@
   <%= form.submit "Search" %>
 <% end %>
 
-<%= page_entries_info @canonical_transactions, entry_name: 'transactions' %>
+<%= page_entries_info @canonical_transactions, entry_name: "transactions" %>
 
 <table>
   <thead>
@@ -81,7 +81,7 @@
 </table>
 
 <% if @canonical_transactions.empty? %>
-  <%= blankslate 'No transaction match your search parameters' %>
+  <%= blankslate "No transaction match your search parameters" %>
 <% end %>
 
 <%= paginate @canonical_transactions %>

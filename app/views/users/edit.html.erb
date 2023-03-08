@@ -4,21 +4,21 @@
 <% else %>
   <% title "Account Settings" %>
   <% page_md %>
-  <%= render 'users/nav' %>
+  <%= render "users/nav" %>
 <% end %>
 
     <h1>
-    <%= @onboarding ? 'Welcome to Bank!' : 'Settings' %>
+    <%= @onboarding ? "Welcome to Bank!" : "Settings" %>
     </h1>
     <turbo-frame id='settings'>
-    <%= render 'settings_nav', active: 'general' unless @onboarding %>
+    <%= render "settings_nav", active: "general" unless @onboarding %>
     <section>
     <h2>Account details</h2>
     <% if @onboarding %>
         <p>Complete your profile to get started.</p>
     <% end %>
-    <%= form_with(model: @user, local: true, html: { onsubmit: 'onSubmit()' }) do |form| %>
-        <%= form_errors @user, 'user information' %>
+    <%= form_with(model: @user, local: true, html: { onsubmit: "onSubmit()" }) do |form| %>
+        <%= form_errors @user, "user information" %>
         <% if current_season(override_preference: true) %>
         <div class="field field--checkbox">
             <%= form.check_box :seasonal_themes_enabled %>
@@ -42,7 +42,7 @@
             Changing your number will turn off SMS login codes.
             </p>
         <% end %>
-        <%= form.hidden_field :phone_number, required: true, placeholder: '555-555-5555', id: 'phone_number' %>
+        <%= form.hidden_field :phone_number, required: true, placeholder: "555-555-5555", id: "phone_number" %>
         <input type="tel" id="phone_raw" value="<%= @user.phone_number || nil %>" required="required">
         </div>
         <div class="field">
@@ -57,16 +57,16 @@
                             prompt: @user.birthday.nil? %>
         </div>
         <div class="field">
-        <%= form.label :email, class: 'muted' %>
+        <%= form.label :email, class: "muted" %>
         <%= form.email_field :email, disabled: true %>
         </div>
         <%= form.label :profile_picture %>
         <p class="flex items-center mt1">
-        <%= avatar_for @user, 48, class: 'mr2' %>
+        <%= avatar_for @user, 48, class: "mr2" %>
         <span>
             <% if @user.profile_picture.attached? %>
             You're currently using an uploaded profile picture.<br>
-            If you'd like to switch back to your Gravatar, <%= link_to 'click here', user_delete_profile_picture_path(@user), method: :post %>.
+            If you'd like to switch back to your Gravatar, <%= link_to "click here", user_delete_profile_picture_path(@user), method: :post %>.
             <% else %>
             If you have a <a href="https://gravatar.com" target="_blank">Gravatar</a>, we’ll pull it in here.<br>
             Or, you can upload a profile picture below.<br>
@@ -75,7 +75,7 @@
         </p>
         <div class="field field--fileupload">
             <%= form.label :profile_picture, "Choose File", class: "field--fileupload__label" %>
-            <%= form.file_field :profile_picture, accept: 'image/png, image/jpeg', class: "field--fileupload__field" %>
+            <%= form.file_field :profile_picture, accept: "image/png, image/jpeg", class: "field--fileupload__field" %>
         </div>
         <div>
         <%= form.label :session_duration_seconds, "Stay signed in for" %>
@@ -95,18 +95,18 @@
         <div class="field field--options">
             <%= form.radio_button :sessions_reported, false %>
             <%= form.label :sessions_reported, value: false do %>
-            <%= inline_icon 'thumbsdown', size: 28 %>
+            <%= inline_icon "thumbsdown", size: 28 %>
             <strong>No thanks</strong>
             <% end %>
             <%= form.radio_button :sessions_reported, true %>
             <%= form.label :sessions_reported, value: true do %>
-            <%= inline_icon 'support', size: 28 %>
+            <%= inline_icon "support", size: 28 %>
             <strong>Sure thing!</strong>
             <% end %>
         </div>
         </fieldset>
         <div class="actions flex">
-        <%= form.submit @onboarding ? 'Start using Bank' : 'Save profile' %>
+        <%= form.submit @onboarding ? "Start using Bank" : "Save profile" %>
         </div>
     <% end %>
     <% unless @onboarding %>

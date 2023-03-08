@@ -1,20 +1,20 @@
 <div class="mt2 mb2">
-  <div class="card border b--muted pb0 pt0 mb2 max-width-4<%= ' current-user' if comment.user == current_user %>" id="comment-<%= comment.hashid %>">
+  <div class="card border b--muted pb0 pt0 mb2 max-width-4<%= " current-user" if comment.user == current_user %>" id="comment-<%= comment.hashid %>">
     <div class="border-bottom card__banner secondary">
       <%= user_mention comment.user %> commented
       <%= link_to "#comment-#{comment.hashid}", class: "anchor-link", 'data-anchor': "comment-#{comment.hashid}", title: comment.created_at do %>
-        <%= time_ago_in_words comment.created_at %> ago<%= inline_icon "link", size: 24, class: 'align-middle' %><% end %>
+        <%= time_ago_in_words comment.created_at %> ago<%= inline_icon "link", size: 24, class: "align-middle" %><% end %>
       <% if comment.edited? %>
       <span class="mx1">|</span>
       <action data-behavior="modal_trigger" data-turbolinks="false" data-modal="comment-modal-<%= comment.hashid %>" tabindex="0">
         <%= link_to "edited", "#comment-history-#{comment.hashid}",
-          class: 'muted tooltipped tooltipped--s',
-          'aria-label': 'See all edit history' %>
+          class: "muted tooltipped tooltipped--s",
+          'aria-label': "See all edit history" %>
       </action>
       <% end %>
       <% if organizer_signed_in? %>
-      <%= link_to edit_comment_path(comment), class: 'tooltipped tooltipped--s right', 'aria-label': 'Edit' do %>
-        <%= inline_icon "edit", size: 24, 'aria-label': 'Edit' %>
+      <%= link_to edit_comment_path(comment), class: "tooltipped tooltipped--s right", 'aria-label': "Edit" do %>
+        <%= inline_icon "edit", size: 24, 'aria-label': "Edit" %>
       <% end %>
       <% end %>
     </div>
@@ -44,18 +44,18 @@
 
 <% if comment.edited? %>
   <section class="modal" data-behavior="modal" role="dialog" id="comment-modal-<%= comment.hashid %>">
-    <%= modal_header 'Edit history' %>
+    <%= modal_header "Edit history" %>
     <ul class="list-reset">
-    <% comment.versions.order("created_at desc").filter { |v| v.event == 'update' }.each do |version| %>
+    <% comment.versions.order("created_at desc").filter { |v| v.event == "update" }.each do |version| %>
       <li>
-        <%= version.whodunnit.nil? ? 'Automatically ' : user_mention(User.find(version.whodunnit)) %>
+        <%= version.whodunnit.nil? ? "Automatically " : user_mention(User.find(version.whodunnit)) %>
         updated <%= time_ago_in_words version.created_at %> ago
       </li>
     <% end %>
     <% if comment.has_untracked_edit? %>
     <li>
       <span class="mention tooltipped tooltipped--e" aria-label="No information on edits before 2022">
-      <%= inline_icon 'info', size: 24 %>
+      <%= inline_icon "info", size: 24 %>
       </span>
       <span>Someone edited this sometime ago</span>.
     </li>

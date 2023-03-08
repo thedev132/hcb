@@ -37,7 +37,7 @@
     <% end %>
 
     <% unless @hcb_code.disbursement.fulfilled_by.nil? %>
-      <% admin_tools('', 'p') do %>
+      <% admin_tools("", "p") do %>
         <strong>Fulfilled by</strong>
         <%= user_mention @hcb_code.disbursement.fulfilled_by %>
       <% end %>
@@ -53,7 +53,7 @@
       <% end %>
     </p>
 
-    <% admin_tools('', 'p') do %>
+    <% admin_tools("", "p") do %>
       <strong>Disbursement ID</strong>
       <%= link_to @hcb_code.disbursement.id, @hcb_code.disbursement %>
     <% end %>
@@ -85,17 +85,17 @@
 
     <p>
       <strong>Memo</strong>
-      <%= organizer_signed_in? ? @hcb_code.disbursement.name : 'Sign in to view' %>
+      <%= organizer_signed_in? ? @hcb_code.disbursement.name : "Sign in to view" %>
     </p>
 
-    <%= render 'hcb_codes/tags', hcb_code: @hcb_code, event: (@event || @hcb_code.event) %>
+    <%= render "hcb_codes/tags", hcb_code: @hcb_code, event: (@event || @hcb_code.event) %>
 
     <% if @hcb_code.disbursement.fulfilled? %>
       <p>
         <strong>Confirmation letter</strong>
           <span class="muted">
             <a href="/disbursements/<%= @hcb_code.disbursement.id %>/confirmation.pdf" target="_blank">
-            <%= organizer_signed_in? ? 'View confirmation letter' : 'Sign in to view' %>
+            <%= organizer_signed_in? ? "View confirmation letter" : "Sign in to view" %>
             </a>
           </span>
       </p>

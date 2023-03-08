@@ -1,8 +1,8 @@
 <%= form_with(model: disbursement, local: true, url: disbursements_path) do |form| %>
-  <%= form_errors(disbursement, 'Disbursements') %>
+  <%= form_errors(disbursement, "Disbursements") %>
 
   <div class="field event-select-target">
-    <%= form.label :source_event_id, 'From' %>
+    <%= form.label :source_event_id, "From" %>
     <%= form.collection_select(:source_event_id,
                                 @allowed_source_events,
                                 :id,
@@ -13,23 +13,23 @@
   </div>
 
   <div class="field event-select-target">
-    <%= form.label :event_id, 'To' %>
+    <%= form.label :event_id, "To" %>
     <%= form.collection_select(:event_id,
                                 @allowed_destination_events,
                                 :id,
                                 current_user.admin? ? :admin_dropdown_description : :disbursement_dropdown_description,
-                                { prompt: 'Select one…' },
+                                { prompt: "Select one…" },
                                 required: true,
                                 disabled: @source_event.demo_mode?) %>
     <span class="muted">You can transfer to any organization you're a part of with Transparency Mode enabled.</span>
   </div>
 
-  <%= form.label :amount, 'Amount' %>
+  <%= form.label :amount, "Amount" %>
   <div class="field">
     <div class="flex items-center">
       <span class="bold muted" style="width: 1rem;">$</span>
       <%= form.number_field :amount, value: (@disbursement&.amount.nil? ? nil : (@disbursement.amount.to_f / 100)),
-                                     placeholder: '500.00',
+                                     placeholder: "500.00",
                                      step: 0.01,
                                      min: 0.01,
                                      required: true,
@@ -39,11 +39,11 @@
 
   <div class="field">
     <%= form.label :name, "What is the transfer for?" %>
-    <%= form.text_field :name, placeholder: 'Donating extra funds to another organization', maxlength: 60, required: true, disabled: @source_event.demo_mode? %>
+    <%= form.text_field :name, placeholder: "Donating extra funds to another organization", maxlength: 60, required: true, disabled: @source_event.demo_mode? %>
     <span class="muted">This is to help Hack Club Bank keep record of our transactions. It will be used as the memo on your transaction list.</span>
   </div>
 
   <div class="actions inline-block">
-    <%= form.submit 'Make transfer', class: 'btn', disabled: @source_event.demo_mode? %>
+    <%= form.submit "Make transfer", class: "btn", disabled: @source_event.demo_mode? %>
   </div>
 <% end %>

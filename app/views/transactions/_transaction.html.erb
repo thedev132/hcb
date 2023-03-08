@@ -1,9 +1,9 @@
 <tr
-  class="transaction--<%= transaction.amount.negative? ? 'negative' : 'positive' %>"
+  class="transaction--<%= transaction.amount.negative? ? "negative" : "positive" %>"
   data-behavior="filterbar_row"
   data-filter="<%= transaction.filter_data.to_json %>">
   <td class="transaction__icon tooltipped tooltipped--e" aria-label="Bank account transaction">
-    <%= inline_icon 'bank-account' %>
+    <%= inline_icon "bank-account" %>
   </td>
   <td>
     <%= transaction.date %>
@@ -12,14 +12,14 @@
     <span>
       <%= transaction.display_name %>
     </span>
-    <%= list_badge_for transaction.comments.size, 'note', 'post', optional: true %>
+    <%= list_badge_for transaction.comments.size, "note", "post", optional: true %>
   </td>
   <td class="nowrap">
     <%= render_money transaction.amount %>
   </td>
   <% if organizer_signed_in? %>
   <td>
-    <%= link_to 'Details', transaction %>
+    <%= link_to "Details", transaction %>
   </td>
   <% end %>
 </tr>

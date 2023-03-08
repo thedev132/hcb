@@ -69,7 +69,7 @@
   <p>Hack Club Bank is now trying to automatically verify if the user has configured their domain correctly with the TXT record.</p>
   <p>If you would like to check yourself:</p>
   <ul>
-    <li>Use the <%= link_to 'Bank Ops Plugin', 'https://github.com/hackclub/bank-ops-plugin', target: '_blank' %> to verify the TXT & MX records and see the current status. Reach out to kunal@hackclub.com or @kunal on Slack to get setup with the Bank Ops Plugin.</li>
+    <li>Use the <%= link_to "Bank Ops Plugin", "https://github.com/hackclub/bank-ops-plugin", target: "_blank" %> to verify the TXT & MX records and see the current status. Reach out to kunal@hackclub.com or @kunal on Slack to get setup with the Bank Ops Plugin.</li>
   </ul>
   <p>or</p>
   <ol>
@@ -79,7 +79,7 @@
   </ol>
   <p>You can additionally verify that the TXT record they have matches the verification key we have on file:</p>
   <p><code>google-site-verification=<%= @g_suite.verification_key %></code></p>
-  <p><%= link_to "DNS Check", @g_suite.dns_check_url, target: '_blank' %></p>
+  <p><%= link_to "DNS Check", @g_suite.dns_check_url, target: "_blank" %></p>
   <p>If it does not match or is missing, make sure to notify the event owner and have them set it up on their DNS provider.</p>
   <p>Has it still been stuck on verifying after a few days? Try updating the verification key.</p>
   <%= form_with(model: nil, local: true, url: google_workspace_approve_admin_path(@g_suite), method: :post) do |form| %>
@@ -126,4 +126,4 @@
 <hr>
 <h3>Delete</h3>
 <p>The following button will destroy the Google Workspace record.<br>Before proceeding, make sure that there are no active Google Workspace accounts.</p>
-<%= link_to 'Delete', g_suite_path(@g_suite, event_id: @g_suite.event.slug), method: :delete, data: { confirm: 'Are you sure?' }, class: 'admin-bg-warning p1 rounded link-reset' %>
+<%= link_to "Delete", g_suite_path(@g_suite, event_id: @g_suite.event.slug), method: :delete, data: { confirm: "Are you sure?" }, class: "admin-bg-warning p1 rounded link-reset" %>

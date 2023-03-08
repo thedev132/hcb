@@ -1,7 +1,7 @@
 <% if @stripe_cards.any? %>
 <div class="banner bg-pending slate flex items-center mt2 mb2">
-  <%= inline_icon 'card-pin', size: 32 %>
-  <strong class="ml2"><%= pluralize @stripe_cards.size, 'card' %> <%= @stripe_cards.size == 1 ? 'is' : 'are' %> on the way!</strong>
+  <%= inline_icon "card-pin", size: 32 %>
+  <strong class="ml2"><%= pluralize @stripe_cards.size, "card" %> <%= @stripe_cards.size == 1 ? "is" : "are" %> on the way!</strong>
 </div>
 <section class="grid grid--split mb3">
 <% @stripe_cards.each do |card| %>
@@ -39,15 +39,15 @@
       <% end %>
       <% if card.shipping_has_tracking? %>
         <footer class="flex flex-wrap items-center p2 relative">
-          <%= image_tag "https://logo.clearbit.com/#{card.stripe_obj[:shipping][:carrier]}.com", width: 64, height: 64, style: 'height: auto; object-fit: contain;', class: 'rounded bg-white mr2' %>
-          <%= link_to card.stripe_obj[:shipping][:tracking_url], class: 'btn' do %>
-            <%= inline_icon 'external' %>
+          <%= image_tag "https://logo.clearbit.com/#{card.stripe_obj[:shipping][:carrier]}.com", width: 64, height: 64, style: "height: auto; object-fit: contain;", class: "rounded bg-white mr2" %>
+          <%= link_to card.stripe_obj[:shipping][:tracking_url], class: "btn" do %>
+            <%= inline_icon "external" %>
             Track shipment
           <% end %>
         </footer>
       <% end %>
     </div>
-    <%= image_tag @map_url, style: 'width: 100%; max-width: 512px; height: auto; object-fit: cover;', width: 256, height: 128 if @map_url %>
+    <%= image_tag @map_url, style: "width: 100%; max-width: 512px; height: auto; object-fit: cover;", width: 256, height: 128 if @map_url %>
   </div>
   <% @map_url = nil %>
 <% end %>

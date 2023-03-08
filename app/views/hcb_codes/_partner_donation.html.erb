@@ -2,11 +2,11 @@
 
 <% title "#{render_money(@partner_donation.payout_amount_cents)} donation to #{@partner_donation.event.name}" %>
 
-<% admin_tools('mt3') do %>
-  <%= link_to 'View on Stripe', @partner_donation.stripe_dashboard_url, class: "btn bg-accent #{@partner_donation.paid? ? '' : 'disabled'}" %>
+<% admin_tools("mt3") do %>
+  <%= link_to "View on Stripe", @partner_donation.stripe_dashboard_url, class: "btn bg-accent #{@partner_donation.paid? ? '' : 'disabled'}" %>
 <% end %>
 
-<%= render partial: 'admin_viewer', locals: { record: @partner_donation } %>
+<%= render partial: "admin_viewer", locals: { record: @partner_donation } %>
 
 <div class="mt2 mb3">
   <article class="card pb0">
@@ -33,7 +33,7 @@
             <%# Nested tag to avoid flexbox-induced full-width strong leading to icon on right edge on mobile %>
             <span class="inline-flex items-start relative" style="padding-right: 28px;">
               Payment method
-              <%= inline_icon 'external', size: 24, class: 'muted ml1 absolute right-0', 'aria-label': 'Icon indicating click for more' %>
+              <%= inline_icon "external", size: 24, class: "muted ml1 absolute right-0", 'aria-label': "Icon indicating click for more" %>
             </span>
           </strong>
           <span class="inline-flex">
@@ -79,18 +79,18 @@
           <strong>Revenue</strong>
           <%= render_money @partner_donation.payout_amount_cents %>
         </p>
-        <%= render 'hcb_codes/tags', hcb_code: @hcb_code, event: (@event || @hcb_code.event) %>
+        <%= render "hcb_codes/tags", hcb_code: @hcb_code, event: (@event || @hcb_code.event) %>
       <% end %>
     </section>
   </article>
 
-  <%= render partial: "hcb_codes/dispute", locals: { type: 'donation', hcb_code: @hcb_code } %>
+  <%= render partial: "hcb_codes/dispute", locals: { type: "donation", hcb_code: @hcb_code } %>
 
 </div>
 
 <% if @partner_donation.payment_method_type == 'card' %>
   <section class="modal modal--scroll bg-snow" data-behavior="modal" role="dialog" id="payment_details">
-    <%= modal_header 'Payment details' + content_tag(:span, '', class: 'pl2') + partner_donation_payment_method_mention(@partner_donation, class: 'h3 sans slate regular') %>
+    <%= modal_header "Payment details" + content_tag(:span, "", class: "pl2") + partner_donation_payment_method_mention(@partner_donation, class: "h3 sans slate regular") %>
 
     <article class="details-horiz">
       <div class="details">
@@ -105,7 +105,7 @@
         <p>
           <strong>Expiration</strong>
           <% if organizer_signed_in? %>
-            <%= @partner_donation.payment_method_card_exp_month.to_s.rjust(2, '0') %> / <%= @partner_donation.payment_method_card_exp_year %>
+            <%= @partner_donation.payment_method_card_exp_month.to_s.rjust(2, "0") %> / <%= @partner_donation.payment_method_card_exp_year %>
           <% else %>
             MM / YYYY (Sign in to view)
           <% end %>
@@ -117,11 +117,11 @@
           <span>Payment country</span>
         </p>
         <p class="details__simulated">
-          <%= partner_donation_card_check_badge 'cvc' %>
+          <%= partner_donation_card_check_badge "cvc" %>
           <span>CVC check</span>
         </p>
         <p class="details__simulated">
-          <%= partner_donation_card_check_badge 'address_postal_code' %>
+          <%= partner_donation_card_check_badge "address_postal_code" %>
           <span>Zip check</span>
         </p>
       </div>

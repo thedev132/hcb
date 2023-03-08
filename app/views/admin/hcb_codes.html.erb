@@ -5,11 +5,11 @@
 <%= paginate @hcb_codes %>
 
 <%= form_with local: true, url: hcb_codes_admin_index_path, method: :get do |form| %>
-  <%= form.text_field :q, value: params[:q], placeholder: 'Search' %>
+  <%= form.text_field :q, value: params[:q], placeholder: "Search" %>
   |
   <%= form.label :has_receipt do %>
     Receipt
-    <%= form.select :has_receipt, [['All', 'all'], ['Has receipt', 'yes'], ['Missing receipt', 'no'], ['Lost receipt', 'lost']], selected: @has_receipt %>
+    <%= form.select :has_receipt, [["All", "all"], ["Has receipt", "yes"], ["Missing receipt", "no"], ["Lost receipt", "lost"]], selected: @has_receipt %>
   <% end %>
   |
   <%= form.label :start_date do %>
@@ -31,7 +31,7 @@
   <% end %>
 <% end %>
 
-<%= page_entries_info @hcb_codes, entry_name: 'HCB codes' %>
+<%= page_entries_info @hcb_codes, entry_name: "HCB codes" %>
 
 <table>
   <thead>

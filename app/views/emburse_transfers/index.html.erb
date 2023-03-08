@@ -1,7 +1,7 @@
-<% title 'Emburse transfer requests' %>
+<% title "Emburse transfer requests" %>
 <h1 class="heading">
   Emburse transfer requests
-  <%= link_to 'Export Under Review TRs for Selenium', export_emburse_transfers_path, class: 'btn bg-info' %>
+  <%= link_to "Export Under Review TRs for Selenium", export_emburse_transfers_path, class: "btn bg-info" %>
 </h1>
 
 <%= paginate @emburse_transfers %>
@@ -19,6 +19,6 @@
   </thead>
 
   <tbody>
-    <%= render partial: 'emburse_transfers/row', collection: @emburse_transfers, as: 'request' %>
+    <%= render partial: "emburse_transfers/row", collection: @emburse_transfers, as: "request" %>
   </tbody>
 </table>

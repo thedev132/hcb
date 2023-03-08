@@ -3,7 +3,7 @@
 <h1 class="heading">
   <span class="flex items-center">
     Invoices
-    <%= badge_for @invoices.size, class: 'bg-muted' %>
+    <%= badge_for @invoices.size, class: "bg-muted" %>
   </span>
 </h1>
 
@@ -17,18 +17,18 @@
       class="flex-auto md-mr2"
       style="width: auto; max-width: none;">
     <div data-behavior="filterbar" role="tablist" class="filterbar__filters flex mt1 lg-mt0">
-      <%= filterbar_item 'All', :exists, true %>
-      <%= filterbar_item 'Paid', :paid %>
-      <%= filterbar_item 'Unpaid', :unpaid %>
-      <%= filterbar_item 'Upcoming', :upcoming %>
-      <%= filterbar_item 'Overdue', :overdue %>
-      <%= filterbar_item 'Archived', :archived %>
+      <%= filterbar_item "All", :exists, true %>
+      <%= filterbar_item "Paid", :paid %>
+      <%= filterbar_item "Unpaid", :unpaid %>
+      <%= filterbar_item "Upcoming", :upcoming %>
+      <%= filterbar_item "Overdue", :overdue %>
+      <%= filterbar_item "Archived", :archived %>
     </div>
   </div>
 
   <ul class="grid grid--spacious">
     <% @invoices.each do |i| %>
-      <%= link_to i, data: { behavior: 'filterbar_row', filter: i.filter_data.to_json } do %>
+      <%= link_to i, data: { behavior: "filterbar_row", filter: i.filter_data.to_json } do %>
         <%= creator_bar i %>
         <li class="card">
           <div class="flex">
@@ -44,5 +44,5 @@
       <% end %>
     <% end %>
   </ul>
-  <%= filterbar_blankslate 'No invoices match this filter' %>
+  <%= filterbar_blankslate "No invoices match this filter" %>
 <% end %>

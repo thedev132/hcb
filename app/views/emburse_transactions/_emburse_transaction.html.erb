@@ -1,6 +1,6 @@
 <% et = emburse_transaction %>
 <tr
-  class="transaction--<%= et.amount.positive? ? 'positive' : 'negative' %><%= ' muted' if !et.completed? %>"
+  class="transaction--<%= et.amount.positive? ? "positive" : "negative" %><%= " muted" if !et.completed? %>"
   data-behavior="filterbar_row"
   data-filter="<%= et.filter_data.to_json %>">
   <% if defined? authorless %>
@@ -21,12 +21,12 @@
     <% end %>
   <% else %>
     <td class="transaction__icon tooltipped tooltipped--e" aria-label="Emburse card transaction">
-      <%= inline_icon et.transfer? ? 'payment-transfer' : 'card' %>
+      <%= inline_icon et.transfer? ? "payment-transfer" : "card" %>
     </td>
   <% end %>
   <% end %>
   <td>
-    <%= et.transaction_time.nil? ? '–' : et.transaction_time.to_date %>
+    <%= et.transaction_time.nil? ? "–" : et.transaction_time.to_date %>
   </td>
   <td class="transaction__memo">
     <span>
@@ -36,15 +36,15 @@
       <i><%= et.memo.humanize %> (pending)</i>
     <% end %>
     </span>
-    <%= list_badge_for et.receipts.size, 'receipt', 'payment-docs', required: true unless et.is_transfer? %>
-    <%= list_badge_for admin_signed_in? ? et.comments.size : et.comments.not_admin_only.size, 'note', 'post', optional: true %>
+    <%= list_badge_for et.receipts.size, "receipt", "payment-docs", required: true unless et.is_transfer? %>
+    <%= list_badge_for admin_signed_in? ? et.comments.size : et.comments.not_admin_only.size, "note", "post", optional: true %>
   </td>
   <td class="nowrap">
     <%= render_money et.amount %>
   </td>
   <% if organizer_signed_in? || !@event %>
     <td>
-      <%= link_to 'Details', et %>
+      <%= link_to "Details", et %>
     </td>
   <% end %>
 </tr>

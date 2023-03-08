@@ -28,7 +28,7 @@
       <%= inline_icon "support" %>
     </td>
   <% elsif pt.raw_pending_stripe_transaction_id %>
-    <td class="transaction__icon tooltipped tooltipped--e" aria-label="Card transaction<%= !defined?(authorless) && pt.stripe_cardholder ? ' by ' + pt.stripe_cardholder.user.initial_name : '' %>">
+    <td class="transaction__icon tooltipped tooltipped--e" aria-label="Card transaction<%= !defined?(authorless) && pt.stripe_cardholder ? " by " + pt.stripe_cardholder.user.initial_name : "" %>">
       <% unless defined?(authorless) || !pt.stripe_cardholder %>
         <%= avatar_for pt.stripe_cardholder.user, 24 %>
       <% else %>
@@ -74,7 +74,7 @@
             </span>
 
             <% if pt.amount_cents.negative? && name_contains_emoji?(pt.local_hcb_code.memo) %>
-              <% admin_tools('memo-frame__ai-button badge m0 ml1 p0 overflow-visible') do %>
+              <% admin_tools("memo-frame__ai-button badge m0 ml1 p0 overflow-visible") do %>
                 <a href="<%= memo_frame_hcb_code_path(pt.local_hcb_code, gen_memo: true) %>"
                    style="padding: 4px 6px"
                    data-turbo="true"
@@ -149,7 +149,7 @@
         <%= form.hidden_field :show_link, value: true %>
         <%= form.hidden_field :upload_method, value: "receipts_page", data: { "file-drop-target" => "uploadMethod" } %>
         <%= form.label "file_#{pt.local_hcb_code.hashid}", class: "btn", style: "font-size: 0.875rem; font-weight: 600; padding: 0.25rem 1rem;" do %>
-          <%= inline_icon 'plus' %>
+          <%= inline_icon "plus" %>
           Add a receipt
         <% end %>
       <% end %>

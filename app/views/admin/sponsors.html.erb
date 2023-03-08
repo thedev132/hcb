@@ -5,7 +5,7 @@
 <%= paginate @sponsors %>
 
 <%= form_with local: true, url: sponsors_admin_index_path, method: :get do |form| %>
-  <%= form.text_field :q, value: params[:q], placeholder: 'Search' %>
+  <%= form.text_field :q, value: params[:q], placeholder: "Search" %>
   <%= form.label :open do %>
     <%= form.check_box :open, checked: @open %>
     Open
@@ -17,7 +17,7 @@
   <%= form.submit "Search" %>
 <% end %>
 
-<%= page_entries_info @sponsors, entry_name: 'sponsors' %>
+<%= page_entries_info @sponsors, entry_name: "sponsors" %>
 
 <table>
   <thead>

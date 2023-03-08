@@ -5,7 +5,7 @@
   <div class="check__number"><%= @hcb_code.check.check_number %></div>
 
   <div class="flex w-100 justify-end mb1">
-    <div class="check__field check__field--date" data-label="Date"><%= (@hcb_code.check.send_date || @hcb_code.check.created_at).strftime('%b %d, %Y') %></div>
+    <div class="check__field check__field--date" data-label="Date"><%= (@hcb_code.check.send_date || @hcb_code.check.created_at).strftime("%b %d, %Y") %></div>
   </div>
 
   <div class="check__row">
@@ -18,7 +18,7 @@
   <div class="check__field check__field--dollars" data-label="Dollars" data-check-amount="<%= render_money_amount @hcb_code.check.amount %>" data-behavior="fill_check_words"></div>
 
   <div class="check__row items-start">
-    <div class="check__field check__field--memo" data-label="Memo"><%= organizer_signed_in? ? @hcb_code.check.memo : 'Sign in to view' %></div>
+    <div class="check__field check__field--memo" data-label="Memo"><%= organizer_signed_in? ? @hcb_code.check.memo : "Sign in to view" %></div>
     <div class="check__sig"></div>
 
   </div>
@@ -36,7 +36,7 @@
   <h2 class="h2 mt0 border-none">
     <div class="flex items-start">
       <span class="flex-auto mr1">
-        <span class="regular muted"><%= @hcb_code.check.deposited? ? 'Sent' : 'Sending' %> </span>
+        <span class="regular muted"><%= @hcb_code.check.deposited? ? "Sent" : "Sending" %> </span>
         <%= @hcb_code.check.lob_address.name %>
         <span class="regular muted"> a&nbsp;check for </span>
         <span class="regular"><%= render_money @hcb_code.check.amount %></span>
@@ -75,12 +75,12 @@
 
     <p>
       <strong>Addressed to</strong>
-      <%= organizer_signed_in? ? @hcb_code.check.lob_address.address_text : 'Sign in to view' %>
+      <%= organizer_signed_in? ? @hcb_code.check.lob_address.address_text : "Sign in to view" %>
     </p>
 
     <p>
       <strong>Memo</strong>
-      <%= organizer_signed_in? ? @hcb_code.check.memo : 'Sign in to view' %>
+      <%= organizer_signed_in? ? @hcb_code.check.memo : "Sign in to view" %>
     </p>
 
     <p>
@@ -93,21 +93,21 @@
       <%= render_money @hcb_code.check.amount %>
     </p>
 
-    <%= render 'hcb_codes/tags', hcb_code: @hcb_code, event: (@event || @hcb_code.event) %>
+    <%= render "hcb_codes/tags", hcb_code: @hcb_code, event: (@event || @hcb_code.event) %>
   </section>
 
   <section class="card__banner card__darker border-top overflow-hidden">
-    <%= link_to 'Cancel',
+    <%= link_to "Cancel",
       organizer_signed_in? ? check_cancel_path(@hcb_code.check) : root_path,
       disabled: !organizer_signed_in?,
-      class: 'btn bg-error mr1 right',
+      class: "btn bg-error mr1 right",
       method: :post,
       data: { confirm: "Cancel this check?" } if @hcb_code.check.can_cancel? %>
 
-    <%= link_to 'View scan',
+    <%= link_to "View scan",
         organizer_signed_in? ? check_view_scan_path(@hcb_code.check) : root_path,
         disabled: !organizer_signed_in?,
         target: :_blank,
-        class: 'btn bg-info' if @hcb_code.check.lob_url.present? %>
+        class: "btn bg-info" if @hcb_code.check.lob_url.present? %>
   </section>
 </article>

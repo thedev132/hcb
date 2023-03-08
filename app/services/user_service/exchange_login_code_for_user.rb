@@ -36,15 +36,15 @@ module UserService
       if TwilioVerificationService.new.check_verification_token(user.phone_number, login_code)
         { user: user }
       else
-        { errors: 'login code is invalid' }
+        { errors: "login code is invalid" }
       end
     end
 
     def exchange_login_code_by_email
       login_code = LoginCode.active.find_by(code: @login_code.delete("-"), user_id: @user_id)
 
-      return { errors: 'not found' } if login_code.nil?
-      return { errors: 'invalid' } if login_code.created_at < (Time.current - 15.minutes)
+      return { errors: "not found" } if login_code.nil?
+      return { errors: "invalid" } if login_code.created_at < (Time.current - 15.minutes)
 
       login_code.update(used_at: Time.current)
 

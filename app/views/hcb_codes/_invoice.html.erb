@@ -3,17 +3,17 @@
 
 <% title "#{render_money @invoice.item_amount} invoice from #{@invoice.event.name}" %>
 
-<%= render partial: 'admin_viewer', locals: { record: @invoice } %>
+<%= render partial: "admin_viewer", locals: { record: @invoice } %>
 
-<% admin_tools('mt3') do %>
-  <%= link_to 'View on Stripe', @invoice.stripe_dashboard_url, class: 'btn bg-accent' %>
+<% admin_tools("mt3") do %>
+  <%= link_to "View on Stripe", @invoice.stripe_dashboard_url, class: "btn bg-accent" %>
 <% end %>
 
 <% if @invoice.archived? %>
   <div class="banner banner--archived mt3">
     <span class="bold block mb1">This invoice was archived by <%= user_mention @invoice.archived_by %> on <%= format_date @invoice.archived_at %>.</span>
     <span class="block">It will only display in the Archived tab<span class="xs-hide"> on the Invoices page</span>.</span>
-    <span>You can <%= link_to 'un-archive it', invoice_unarchive_path(@invoice), method: :post %>.</span>
+    <span>You can <%= link_to "un-archive it", invoice_unarchive_path(@invoice), method: :post %>.</span>
   </div>
 <% end %>
 
@@ -70,10 +70,10 @@
       <strong>Payment methods</strong>
       <span class="flex">
         <span class="bg-smoke slate tooltipped tooltipped--s inline-flex rounded mr2" aria-label="Credit or debit cards" style="padding: 4px;">
-          <%= inline_icon 'card', size: 24 %>
+          <%= inline_icon "card", size: 24 %>
         </span>
         <span class="bg-smoke slate tooltipped tooltipped--s inline-flex rounded" aria-label="ACH credit transfers and domestic wires">
-          <%= inline_icon 'bank-account', size: 32 %>
+          <%= inline_icon "bank-account", size: 32 %>
         </span>
       </span>
     </p>
@@ -95,7 +95,7 @@
       <strong>Memo</strong>
       <span><%= @invoice.memo %></span>
     </p>
-    <%= render 'hcb_codes/tags', hcb_code: @hcb_code, event: (@event || @hcb_code.event) %>
+    <%= render "hcb_codes/tags", hcb_code: @hcb_code, event: (@event || @hcb_code.event) %>
   </section>
   <section class="card__banner card__darker details details--wide border-top md-pl0 md-pr0">
     <table>
@@ -122,24 +122,24 @@
     <div class="btn-group mr-auto">
     <%= link_to organizer_signed_in? ? @invoice.hosted_invoice_url : root_path,
       disabled: !organizer_signed_in?,
-      class: 'btn bg-accent mr1',
-      target: '_blank' do %>
-      <%= inline_icon 'external' %>
+      class: "btn bg-accent mr1",
+      target: "_blank" do %>
+      <%= inline_icon "external" %>
       View sent invoice
     <% end %>
     <%= link_to organizer_signed_in? ? @invoice.invoice_pdf : root_path,
       disabled: !organizer_signed_in?,
-      class: 'btn bg-info mr1',
-      target: '_blank' do %>
-      <%= inline_icon 'download' %>
+      class: "btn bg-info mr1",
+      target: "_blank" do %>
+      <%= inline_icon "download" %>
       PDF
     <% end %>
     </div>
-    <%= link_to (@invoice.archived? ? 'Un-archive' : 'Archive'),
+    <%= link_to (@invoice.archived? ? "Un-archive" : "Archive"),
       (@invoice.archived? ? invoice_unarchive_path(@invoice) : invoice_archive_path(@invoice)),
       disabled: !organizer_signed_in?,
       method: :post,
-      class: 'btn bg-muted' %>
+      class: "btn bg-muted" %>
   </section>
 </article>
 
@@ -157,7 +157,7 @@
             <%# Nested tag to avoid flexbox-induced full-width strong leading to icon on right edge on mobile %>
             <span class="inline-flex items-start relative" style="padding-right: 28px;">
               Payment method
-              <%= inline_icon 'external', size: 24, class: 'muted ml1 absolute right-0', 'aria-label': 'Icon indicating click for more' %>
+              <%= inline_icon "external", size: 24, class: "muted ml1 absolute right-0", 'aria-label': "Icon indicating click for more" %>
             </span>
           </strong>
           <span class="inline-flex">
@@ -194,7 +194,7 @@
             Reason given: "<%= @invoice.manually_marked_as_paid_reason %>"
           </p>
           <% if @invoice.manually_marked_as_paid_attachment.attached? %>
-            <p><%= link_to 'Download provided attachment', @invoice.manually_marked_as_paid_attachment if organizer_signed_in? %></p>
+            <p><%= link_to "Download provided attachment", @invoice.manually_marked_as_paid_attachment if organizer_signed_in? %></p>
           <% end %>
         </div>
         <div class="details">
@@ -206,7 +206,7 @@
         <p>
           <strong>Recipient email</strong>
           <% if organizer_signed_in? %>
-            <%= mail_to @sponsor.contact_email, @sponsor.contact_email.downcase, class: 'slate underline' %>
+            <%= mail_to @sponsor.contact_email, @sponsor.contact_email.downcase, class: "slate underline" %>
           <% else %>
             <strong>Sign in to view</strong>
           <% end %>
@@ -224,8 +224,8 @@
           <span>
             +<%= invoice_payment_processor_fee %>
             <span class="muted">
-              <% 'Pending ' unless @invoice&.fee_reimbursement&.t_transaction %>
-              (<%= link_to 'learn more', "https://headwayapp.co/bank-changelog/we're-making-payment-processing-fees-disappear-101088" %>)
+              <% "Pending " unless @invoice&.fee_reimbursement&.t_transaction %>
+              (<%= link_to "learn more", "https://headwayapp.co/bank-changelog/we're-making-payment-processing-fees-disappear-101088" %>)
             </span>
           </span>
         </p>
@@ -249,7 +249,7 @@
 
 <% if @invoice.payment_method_type == 'card' %>
   <section class="modal modal--scroll bg-snow" data-behavior="modal" role="dialog" id="payment_details">
-    <%= modal_header 'Payment details' + content_tag(:span, '', class: 'pl2') + invoice_payment_method_mention(@invoice, class: 'h3 sans slate regular') %>
+    <%= modal_header "Payment details" + content_tag(:span, "", class: "pl2") + invoice_payment_method_mention(@invoice, class: "h3 sans slate regular") %>
 
     <article class="details-horiz">
       <div class="details">
@@ -264,7 +264,7 @@
         <p>
           <strong>Expiration</strong>
           <% if organizer_signed_in? %>
-            <%= @invoice.payment_method_card_exp_month.to_s.rjust(2, '0') %> / <%= @invoice.payment_method_card_exp_year %>
+            <%= @invoice.payment_method_card_exp_month.to_s.rjust(2, "0") %> / <%= @invoice.payment_method_card_exp_year %>
           <% else %>
             MM / YYYY (Sign in to view)
           <% end %>
@@ -276,11 +276,11 @@
           <span>Payment country</span>
         </p>
         <p class="details__simulated">
-          <%= invoice_card_check_badge 'cvc' %>
+          <%= invoice_card_check_badge "cvc" %>
           <span>CVC check</span>
         </p>
         <p class="details__simulated">
-          <%= invoice_card_check_badge 'address_postal_code' %>
+          <%= invoice_card_check_badge "address_postal_code" %>
           <span>Zip check</span>
         </p>
       </div>

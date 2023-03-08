@@ -49,8 +49,8 @@ class Disbursement < ApplicationRecord
   belongs_to :fulfilled_by, class_name: "User", optional: true
   belongs_to :requested_by, class_name: "User", optional: true
 
-  belongs_to :destination_event, foreign_key: 'event_id', class_name: "Event", inverse_of: 'incoming_disbursements'
-  belongs_to :source_event, class_name: "Event", inverse_of: 'outgoing_disbursements'
+  belongs_to :destination_event, foreign_key: "event_id", class_name: "Event", inverse_of: "incoming_disbursements"
+  belongs_to :source_event, class_name: "Event", inverse_of: "outgoing_disbursements"
   belongs_to :event
 
   has_one :raw_pending_incoming_disbursement_transaction
@@ -73,24 +73,24 @@ class Disbursement < ApplicationRecord
 
   SPECIAL_APPEARANCES = {
     hackathon_grant: {
-      title: 'Hackathon grant',
+      title: "Hackathon grant",
       memo: "💰 Grant from Hack Club and FIRST®",
       css_class: "transaction--fancy",
-      icon: 'purse',
+      icon: "purse",
       qualifier: ->(d) { d.source_event_id == EventMappingEngine::EventIds::HACKATHON_GRANT_FUND }
     },
     winter_hardware_wonderland: {
-      title: 'Winter Hardware Wonderland grant',
+      title: "Winter Hardware Wonderland grant",
       memo: "❄️ Winter Hardware Wonderland Grant",
       css_class: "transaction--icy",
-      icon: 'freeze',
+      icon: "freeze",
       qualifier: ->(d) { d.source_event_id == EventMappingEngine::EventIds::WINTER_HARDWARE_WONDERLAND_GRANT_FUND }
     },
     first_transparency_grant: {
-      title: 'FIRST® Transparency grant',
+      title: "FIRST® Transparency grant",
       memo: "🤖 FIRST® Transparency Grant",
       css_class: "transaction--frc",
-      icon: 'sam',
+      icon: "sam",
       qualifier: ->(d) { d.source_event_id == EventMappingEngine::EventIds::FIRST_TRANSPARENCY_GRANT_FUND }
     }
   }.freeze

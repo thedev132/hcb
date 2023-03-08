@@ -27,7 +27,7 @@ Rails.application.routes.draw do
   end
 
   # V3 API
-  mount Api::V3 => '/'
+  mount Api::V3 => "/"
 
   root to: "static_pages#index"
   get "stats", to: "static_pages#stats"

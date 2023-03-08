@@ -41,7 +41,7 @@ class Partner < ApplicationRecord
   has_many :partner_donations, through: :events
 
   # The default `representative` association accessor method is overridden below
-  belongs_to :representative, class_name: 'User'
+  belongs_to :representative, class_name: "User"
 
   validates :slug, exclusion: { in: EXCLUDED_SLUGS }, uniqueness: true
   validates :api_key, presence: true, uniqueness: true

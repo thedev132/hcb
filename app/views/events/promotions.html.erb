@@ -1,6 +1,6 @@
 <% title "Perks for #{@event.name}" %>
 <% page_md %>
-<%= render 'events/nav', selected: :promotions %>
+<%= render "events/nav", selected: :promotions %>
 
 <% @perks_available = organizer_signed_in? && !@event.demo_mode? %>
 
@@ -15,7 +15,7 @@
         <span class="badge bg-success m0 mb1">New!</span>
         💵 Hackathon Grant
       </h3>
-      <%= link_to 'Apply',
+      <%= link_to "Apply",
         @perks_available ? "https://hackclub.com/hackathons/grant/" : root_path,
         class: "btn mr1 #{'disabled' unless @perks_available} tooltipped tooltipped--w",
         "aria-label" => "Get notified when grant applications are open.",
@@ -30,15 +30,15 @@
 
 <div class="card mb3" id="1password">
   <div class="card__banner card__banner--top flex justify-between items-center promo-1password">
-    <%= image_tag '1password.svg', width: 210, class: "p2" %>
-    <%= link_to 'Apply',
+    <%= image_tag "1password.svg", width: 210, class: "p2" %>
+    <%= link_to "Apply",
       @perks_available ? airtable_form("shrzBkriPDd6ngbgp", { "Project Name" => @event.name, "Bank URL" => event_url(@event), "Your Name" => current_user.full_name, "Email" => current_user.email }, ["Project Name", "Bank URL"]) : root_path,
       class: "btn bg-success mr1 #{'disabled' unless @perks_available}",
       target: :_blank %>
   </div>
 
   <p class="mb0">
-    <%= link_to '1Password', 'https://1password.com' %> is providing $100 USD
+    <%= link_to "1Password", "https://1password.com" %> is providing $100 USD
     credit to all organizations on Hack Club Bank that can be claimed once per
     organizations. 1Password is a password manager that allows you to securely
     keep and share account logins and credentials with your teammates; we use it
@@ -48,15 +48,15 @@
 
 <div class="card pb0 mb3" id="event-helper">
   <div class="card__banner card__banner--top flex justify-between items-center promo-event-helper">
-    <%= image_tag 'https://cloud-fz66hmje0-hack-club-bot.vercel.app/0theeventhelperbutbetter.png', width: 60 %>
-    <%= link_to 'Purchase',
+    <%= image_tag "https://cloud-fz66hmje0-hack-club-bot.vercel.app/0theeventhelperbutbetter.png", width: 60 %>
+    <%= link_to "Purchase",
       @perks_available ? airtable_form("shrtBxs52NfNkgLPW", { "Event Name" => @event.name, "Bank URL" => event_url(@event), "Submitter Name" => current_user.full_name, "Submitter Email" => current_user.email }, ["Event Name", "Bank URL"]) : root_path,
       class: "btn mr1 #{'disabled' unless @perks_available}",
       target: :_blank %>
   </div>
 
   <p>
-    <%= link_to 'The Event Helper', 'https://www.theeventhelper.com/', target: :_blank %>
+    <%= link_to "The Event Helper", "https://www.theeventhelper.com/", target: :_blank %>
     is partnering with Hack Club Bank to create a simplified way for your team to
     purchase event insurance. Just apply with your event details to receive a quote from the Bank team.
     All costs are directly from The Event Helper, we don't charge a fee on top.
@@ -93,7 +93,7 @@
 <div class="card mb3" id="wallets">
   <div class="card__banner card__banner--top flex justify-between items-center promo-wallets">
     <h3 class="h1 p2 my0 color-black">Wallets (beta)</h3>
-    <%= link_to 'Out of stock!',
+    <%= link_to "Out of stock!",
                 @perks_available ? airtable_form("shrx9Bpv5UKhszWlM", { "Organization Name" => @event.name, "Recipient Name" => current_user.full_name, "Login Email" => current_user.email }, ["Organization Name", "Login Email"]) : root_path,
                 class: "btn bg-success mr1 #{'disabled' unless @perks_available}",
                 target: :_blank, disabled: true %>
@@ -108,8 +108,8 @@
 
 <div class="card pb0 mb3" id="pvsa">
   <div class="card__banner card__banner--top flex justify-between items-center promo-pvsa">
-    <%= image_tag 'https://cloud-q7i8htyv7-hack-club-bot.vercel.app/0pvsa-logo-2x.png', width: 60 %>
-    <%= link_to 'Purchase',
+    <%= image_tag "https://cloud-q7i8htyv7-hack-club-bot.vercel.app/0pvsa-logo-2x.png", width: 60 %>
+    <%= link_to "Purchase",
       @perks_available ? airtable_form("shrPlG3a9WMBDhB69", { "Event Name" => @event.name, "Bank URL" => event_url(@event), "Submitter Email" => current_user.email }, ["Event Name", "Bank URL"] ) : root_path,
       class: "btn mr1 #{'disabled' unless @perks_available}",
       target: :_blank %>
@@ -166,7 +166,7 @@
             <span class="btn bg-success disabled">Apply</span>
           </div>
         <% else %>
-          <%= link_to 'Apply',
+          <%= link_to "Apply",
             @perks_available ? airtable_form("shrKUmCPpbZ7Pdl0B", { "Project Name" => @event.name, "Bank URL" => event_url(@event), "Name" => current_user.full_name, "Login email" => current_user.email }, ["Project Name", "Bank URL", "Name", "Login email"]) : root_path,
             class: "btn bg-success mr1 #{'disabled' unless @perks_available}",
             target: :_blank %>
@@ -180,7 +180,7 @@
     renew. This can only be claimed once per organization.
     <% if Flipper.enabled?(:google_workspace, @event) %>
       You'll also have the option of setting
-      up <%= link_to 'Google Workspace', event_g_suite_overview_path %> once
+      up <%= link_to "Google Workspace", event_g_suite_overview_path %> once
       we've purchased your domain.
     <% end %>
   </p>
@@ -190,15 +190,15 @@
   <div class="card__banner card__banner--top flex justify-between items-center promo-stickers">
       <span class="flex flex-row items-center">
         <h3 class="h1 white p2 my0 card-title z1">
-          <%= content_tag(:span, 'Hack Club Bank', class: 'xs-hide sm-hide md-hide') %>
-          <%= content_tag(:span, 'HCB', class: 'xs-hide lg-hide') %>
+          <%= content_tag(:span, "Hack Club Bank", class: "xs-hide sm-hide md-hide") %>
+          <%= content_tag(:span, "HCB", class: "xs-hide lg-hide") %>
           Stickers
         </h3>
-        <%= image_tag 'stickers/card-sticker.svg', width: 100, class: 'sticker z0', style: 'margin-left: -25px' %>
-        <%= image_tag 'stickers/wide-sticker-light.svg', width: 150, class: 'sticker wide sm-hide xs-hide ml2' %>
-        <%= image_tag 'stickers/icon-sticker-light.svg', width: 50, class: 'sticker ml2 xs-hide' %>
+        <%= image_tag "stickers/card-sticker.svg", width: 100, class: "sticker z0", style: "margin-left: -25px" %>
+        <%= image_tag "stickers/wide-sticker-light.svg", width: 150, class: "sticker wide sm-hide xs-hide ml2" %>
+        <%= image_tag "stickers/icon-sticker-light.svg", width: 50, class: "sticker ml2 xs-hide" %>
       </span>
-    <%= link_to 'Request',
+    <%= link_to "Request",
       @perks_available ? airtable_form("shrSSUq9y8YIESs2e", { "Recipient Name" => current_user.full_name, "Login Email" => current_user.email, "Organization" => @event.name }, ["Organization", "Login Email"]) : root_path,
       class: "btn bg-success mr1 #{'disabled' unless @perks_available}",
       target: :_blank %>
@@ -220,14 +220,14 @@
 <div class="card mb3" id="sendy">
   <div class="card__banner card__banner--top flex justify-between items-center promo-sendy">
     <h3 class="h1 white p2 my0">Sendy</h3>
-    <%= link_to 'Apply',
+    <%= link_to "Apply",
       @perks_available ? airtable_form("shrfNzwwEGTlc7Zn7", { "Project Name" => @event.name, "Bank URL" => event_url(@event), "Your name" => current_user.full_name, "Login email" => current_user.email, "Domain URL" => @event.g_suites.first&.domain }, ["Project Name", "Bank URL", "Your name", "Login email"]) : root_path,
       class: "btn bg-success mr1 #{'disabled' unless @perks_available}",
       target: :_blank %>
   </div>
 
   <p class="mb0">
-    <%= link_to 'Sendy', 'https://sendy.co' %> is straightforward, reliable mass-emailing software for sending newsletters. We use it at Hack Club HQ & provide it to all Bank projects.
+    <%= link_to "Sendy", "https://sendy.co" %> is straightforward, reliable mass-emailing software for sending newsletters. We use it at Hack Club HQ & provide it to all Bank projects.
   </p>
 </div>
 
@@ -236,8 +236,8 @@
 
   <div class="card mb3" id="stickermule">
     <div class="card__banner card__banner--top flex justify-between items-center" style="background-color:#4E2817">
-      <%= image_tag 'stickermule.svg', width: 240 %>
-      <%= link_to 'Expired',
+      <%= image_tag "stickermule.svg", width: 240 %>
+      <%= link_to "Expired",
                   @perks_available ? "https://hack.af/stickermule?prefill_Event%20Name=#{@event.name}&prefill_First%20Name=#{current_user.first_name}&prefill_Email=#{current_user.email}" : root_path,
                   class: "btn bg-success mr1 #{'disabled' unless @perks_available}",
                   target: :_blank,
@@ -303,8 +303,8 @@
 
   <div class="card mb3" id="github">
     <div class="card__banner card__banner--top flex justify-between items-center" style="background-color:#eee">
-      <%= image_tag 'github.png', width: 170 %>
-      <%= link_to 'Expired',
+      <%= image_tag "github.png", width: 170 %>
+      <%= link_to "Expired",
         @perks_available ? "https://hack.af/grant?prefill_Event%20Name=#{@event.name}" : root_path,
         class: "btn bg-accent mr1 #{'disabled' unless @perks_available}",
         disabled: true %>
@@ -340,8 +340,8 @@
     <div
       class="card__banner card__banner--top flex justify-between items-center"
       style="background-color: #0d101e; border: 1px solid #0068ad;">
-      <%= image_tag 'replit.png', width: 170 %>
-      <%= link_to 'Expired', '#', class: "btn bg-success mr1 disabled" %>
+      <%= image_tag "replit.png", width: 170 %>
+      <%= link_to "Expired", "#", class: "btn bg-success mr1 disabled" %>
     </div>
 
     <p class="mb0">

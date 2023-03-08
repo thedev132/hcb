@@ -1,15 +1,15 @@
 <% title "Card #{@card.last_four}" %>
-<%= render 'events/nav' %>
+<%= render "events/nav" %>
 
-<% admin_tools('mt3') do %>
-  <%= link_to 'View card on Stripe', @card.stripe_dashboard_url, class: 'btn bg-accent' %>
-  <%= link_to 'View cardholder on Stripe', @card.cardholder.stripe_dashboard_url, class: 'btn bg-accent' %>
+<% admin_tools("mt3") do %>
+  <%= link_to "View card on Stripe", @card.stripe_dashboard_url, class: "btn bg-accent" %>
+  <%= link_to "View cardholder on Stripe", @card.cardholder.stripe_dashboard_url, class: "btn bg-accent" %>
 <% end %>
 
 <% if @card.canceled? %>
   <div class="card border b--info mt3 mb3 container--sm mx-auto">
     <div class="flex items-center info">
-      <%= inline_icon 'info', size: 32, class: 'mr1' %>
+      <%= inline_icon "info", size: 32, class: "mr1" %>
       <p class="bold mt0 mb0">This card has been canceled.</p>
     </div>
     <% if @card.replacement %>
@@ -27,7 +27,7 @@
       <% if @card.replacement_for %>
         <div class="card border b--warning pb0 mt3 mx-auto" data-controller="form-disable">
           <div class="flex items-center warning">
-            <%= inline_icon 'info', size: 32, class: 'mr1' %>
+            <%= inline_icon "info", size: 32, class: "mr1" %>
             <p class="bold mt0 mb0">Heads up:</p>
           </div>
           <p class="mt1 left-align">
@@ -42,29 +42,29 @@
           </div>
           <%= button_to stripe_card_activate_path(@card),
                       method: :post,
-                      class: 'btn bg-success mt1 mb2', data: { "form-disable-target" => "submitButton" } do %>
-            <%= inline_icon 'rep', size: home_action_size %>
+                      class: "btn bg-success mt1 mb2", data: { "form-disable-target" => "submitButton" } do %>
+            <%= inline_icon "rep", size: home_action_size %>
             Activate card
           <% end %>
         </div>
       <% else %>
         <%= button_to stripe_card_activate_path(@card),
                     method: :post,
-                    class: 'btn bg-success mt3' do %>
-          <%= inline_icon 'rep', size: home_action_size %>
+                    class: "btn bg-success mt3" do %>
+          <%= inline_icon "rep", size: home_action_size %>
           Activate card
         <% end %>
       <% end %>
     <% elsif @card.stripe_status == 'inactive' %>
-      <%= link_to 'Defrost card',
+      <%= link_to "Defrost card",
                   stripe_card_defrost_path(@card),
                   method: :post,
-                  class: 'btn bg-accent mt3' %>
+                  class: "btn bg-accent mt3" %>
     <% elsif @card.stripe_status == 'active' %>
       <%= link_to stripe_card_freeze_path(@card),
                   method: :post,
-                  class: 'btn bg-accent mt3' do %>
-        <%= inline_icon 'freeze' %> Freeze card
+                  class: "btn bg-accent mt3" do %>
+        <%= inline_icon "freeze" %> Freeze card
       <% end %>
       <%= link_to stripe_card_edit_path(@card), class: "btn bg-success ml1", data: { behavior: "modal_trigger", modal: "name_card" } do %>
         <%= inline_icon "edit" %>
@@ -83,7 +83,7 @@
   <article class="card max-width-2 mx-auto mt3">
     <h2 class="mt0 heading">
       <span class="flex-auto">
-      <%= user_mention @card.user, class: 'align-bottom' %><span class="medium muted">'s</span>
+      <%= user_mention @card.user, class: "align-bottom" %><span class="medium muted">'s</span>
       <%= @card.name %> <span class="medium muted">Card</span>
       </span>
     </h2>
@@ -165,7 +165,7 @@
               </strong>
               <%= @card.formatted_card_number %>
               <div class="right tooltipped tooltipped--w" aria-label="Full number hidden to protect security">
-                <%= inline_icon 'private', size: 32, class: 'smoke' %>
+                <%= inline_icon "private", size: 32, class: "smoke" %>
               </div>
             </div>
           <% end %>
@@ -175,12 +175,12 @@
           </p>
           <p>
             <strong>Type</strong>
-            <%= @card.virtual? ? 'Virtual' : 'Physical' %>
+            <%= @card.virtual? ? "Virtual" : "Physical" %>
           </p>
         </section>
       </turbo-frame>
 
-    <% admin_tools 'details' do %>
+    <% admin_tools "details" do %>
       <div>
         <strong>Ordered at</strong>
         <%= format_datetime Time.at(@card.stripe_obj[:created]) %>

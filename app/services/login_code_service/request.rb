@@ -20,14 +20,14 @@ module LoginCodeService
     end
 
     def send_login_code_by_sms(user)
-      return { error: 'no phone number provided' } if user.phone_number.empty?
+      return { error: "no phone number provided" } if user.phone_number.empty?
 
       TwilioVerificationService.new.send_verification_request(user.phone_number)
 
       {
         id: user.id,
         email: user.email,
-        status: 'login code sent'
+        status: "login code sent"
       }
     end
 
@@ -44,7 +44,7 @@ module LoginCodeService
         resp = {
           id: user.id,
           email: user.email,
-          status: 'login code sent'
+          status: "login code sent"
         }
       elsif !user.valid?
         resp[:error] = user.errors

@@ -21,7 +21,7 @@ class MarkdownService
     def image(link, title, alt_text)
       image_tag link, title: title || alt_text,
                       alt: alt_text,
-                      style: 'width: 100%;'
+                      style: "width: 100%;"
     end
 
     private
@@ -52,7 +52,7 @@ class MarkdownService
                 link,
                 target: "_blank",
                 class: "tooltipped tooltipped--e autolink",
-                'aria-label' => card.status_text.to_s
+                "aria-label" => card.status_text.to_s
       end
     end
 
@@ -68,7 +68,7 @@ class MarkdownService
                 link,
                 target: "_blank",
                 class: "tooltipped tooltipped--e autolink",
-                'aria-label' => "#{render_money hcb.amount_cents} - #{hcb.memo}"
+                "aria-label" => "#{render_money hcb.amount_cents} - #{hcb.memo}"
       else
         return nil
       end

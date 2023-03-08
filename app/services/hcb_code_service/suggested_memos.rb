@@ -208,18 +208,18 @@ module HcbCodeService
 
     def find_similar_from(type)
       collection = @event.public_send(type)
-      joined_memos = existing_memos.uniq.join ' '
+      joined_memos = existing_memos.uniq.join " "
       against_cols = {
-        memo: 'B', custom_memo: 'A', hcb_code: 'C' # Columns are weighted
+        memo: "B", custom_memo: "A", hcb_code: "C" # Columns are weighted
       }
       if type == :canonical_transactions
-        against_cols.merge!({ friendly_memo: 'B' })
+        against_cols.merge!({ friendly_memo: "B" })
       end
 
       # The similar transaction must not be from this hcb code, and it must have a custom memo
       collection.where.not(custom_memo: nil)
                 .where.not(hcb_code: @hcb_code.hcb_code)
-                .where.not('custom_memo = memo')
+                .where.not("custom_memo = memo")
                 .pg_text_search(joined_memos,
                                 against: against_cols,
                                 using: {

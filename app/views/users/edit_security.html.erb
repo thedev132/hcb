@@ -1,19 +1,19 @@
 <% title "Account Settings" %>
 <% page_md %>
-<%= render 'users/nav' %>
+<%= render "users/nav" %>
 
 <h1>
   Settings
 </h1>
 <turbo-frame id='settings'>
-<%= render 'settings_nav', active: 'security' %>
+<%= render "settings_nav", active: "security" %>
 <h2>Login details</h2>
 <fieldset>
   <% unless @user.phone_number.blank? %>
     <div class="session-header mt3 pb2">
       <legend class="heading flex flex-row justify-start items-center">
         <span class="h2">Login Codes</span>
-        <%= badge_for @user.use_sms_auth ? "SMS" : "Email", class: 'bg-muted' %>
+        <%= badge_for @user.use_sms_auth ? "SMS" : "Email", class: "bg-muted" %>
       </legend>
     </div>
     <div class="card border b--info mt1 mb3">
@@ -36,8 +36,8 @@
           </action>
         </p>
         <section class="modal modal--scroll bg-snow" data-behavior="modal" role="dialog" id="verify_phone">
-          <%= modal_header 'Verify phone number' %>
-          <%= react_component 'settings/SmsVerification',
+          <%= modal_header "Verify phone number" %>
+          <%= react_component "settings/SmsVerification",
                   phoneNumber: @user.phone_number %>
         </section>
       <% end %>
@@ -46,10 +46,10 @@
   <div class="session-header mt3 pb2" id="security-keys">
     <legend class="heading flex flex-row justify-start items-center">
       <span class="h2">Security keys</span>
-      <%= badge_for @user.webauthn_credentials.count, class: 'bg-muted' %>
+      <%= badge_for @user.webauthn_credentials.count, class: "bg-muted" %>
     </legend>
     <button class="btn px2 h4" data-behavior="modal_trigger" data-modal="webauthn_register">
-      <%= inline_icon 'plus', size: home_action_size %>
+      <%= inline_icon "plus", size: home_action_size %>
       Set up
     </button>
     <%= render "webauthn_credentials/modal" %>
@@ -69,17 +69,17 @@
   <div class="session-header pb2">
     <legend class="heading flex flex-row justify-start items-center">
       <span class="h2">Sessions</span>
-      <%= badge_for @sessions.count, class: 'bg-muted' %>
+      <%= badge_for @sessions.count, class: "bg-muted" %>
     </legend>
     <%= link_to logout_all_users_path, method: :delete,
-            class: 'btn bg-error mt1 py1 px2 h4', disabled: @sessions.count <= 1 do %>
-      <%= inline_icon 'door-leave', size: home_action_size %>
+            class: "btn bg-error mt1 py1 px2 h4", disabled: @sessions.count <= 1 do %>
+      <%= inline_icon "door-leave", size: home_action_size %>
       Sign out everywhere else
     <% end %>
   </div>
   <div class="grid grid--split">
     <% @sessions.order(created_at: :desc).each do |session| %>
-      <div class="card border<%= ' b--warning' if session.impersonated? %><%= ' b--success' if current_session.id == session.id %>">
+      <div class="card border<%= " b--warning" if session.impersonated? %><%= " b--success" if current_session.id == session.id %>">
         <% if session.impersonated? %>
           <span class="admin-tools">Impersonated by <%= user_mention session.impersonated_by %></span>
         <% end %>
@@ -94,15 +94,15 @@
               <span class="badge bg-success medium">current&nbsp;session</span>
             <% end %>
           </span>
-          <%= link_to logout_session_users_path(user: @user, id: session.id), method: :delete, class: 'muted tooltipped tooltipped--w z5', 'aria-label': 'Sign out of this session' do %>
-            <%= inline_icon 'door-leave', size: home_action_size %>
+          <%= link_to logout_session_users_path(user: @user, id: session.id), method: :delete, class: "muted tooltipped tooltipped--w z5", 'aria-label': "Sign out of this session" do %>
+            <%= inline_icon "door-leave", size: home_action_size %>
           <% end %>
         </span>
         <% if session.device_info %>
           <span class="flex items-center">
-            <%= inline_icon 'web', size: 20 %>&nbsp;<code class="mr1 tooltipped tooltipped--n" aria-label="<%= session.timezone %>"><%= session.ip %></code>
+            <%= inline_icon "web", size: 20 %>&nbsp;<code class="mr1 tooltipped tooltipped--n" aria-label="<%= session.timezone %>"><%= session.ip %></code>
             •
-            <%= inline_icon 'compass', size: 20, class: 'ml1' %>&nbsp;<%= session.device_info %>
+            <%= inline_icon "compass", size: 20, class: "ml1" %>&nbsp;<%= session.device_info %>
           </span>
         <% end %>
       </div>

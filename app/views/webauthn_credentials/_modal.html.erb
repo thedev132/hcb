@@ -1,23 +1,23 @@
 <section class="modal modal--scroll bg-snow" data-behavior="modal" role="dialog" id="webauthn_register">
-  <%= modal_header 'Set up a security key' %>
+  <%= modal_header "Set up a security key" %>
   <%= form_with url: user_webauthn_credentials_path(@user), data: {
-        controller: 'webauthn-register',
-    action: 'webauthn-register#submit',
-    'webauthn-register-options-url-value' => register_options_user_webauthn_credentials_path(@user)
+        controller: "webauthn-register",
+    action: "webauthn-register#submit",
+    "webauthn-register-options-url-value" => register_options_user_webauthn_credentials_path(@user)
       } do |form| %>
     <p class="display-none flash error mx-auto" data-webauthn-register-target="error">Something went wrong.</p>
 
     <div class="field field--options fit">
-      <%= form.radio_button :type, "platform", required: true, disabled: true, data: { 'webauthn-register-target' => 'platformRadio', action: 'webauthn-register#toggleNameField' } %>
+      <%= form.radio_button :type, "platform", required: true, disabled: true, data: { "webauthn-register-target" => "platformRadio", action: "webauthn-register#toggleNameField" } %>
       <%= form.label :type_platform do %>
         <%= inline_icon "fingerprint", size: "28px", style: "padding: 3px" %>
 
         <strong>This device</strong>
         <small>Use your device's fingerprint sensor or facial recognition</small>
       <% end %>
-      <%= form.radio_button :type, 'cross_platform', required: true, data: { 'webauthn-register-target' => 'crossPlatformRadio', action: 'webauthn-register#toggleNameField' } %>
+      <%= form.radio_button :type, "cross_platform", required: true, data: { "webauthn-register-target" => "crossPlatformRadio", action: "webauthn-register#toggleNameField" } %>
       <%= form.label :type_cross_platform do %>
-        <%= inline_icon 'private-outline', size: "28px" %>
+        <%= inline_icon "private-outline", size: "28px" %>
 
         <strong>Authenticator</strong>
         <small>Use a Yubikey or other hardware authenticator</small>
@@ -25,14 +25,14 @@
     </div>
 
     <div class="field">
-      <%= form.label :name, 'Name', data: { 'webauthn-register-target' => 'nameLabel' } %>
-      <%= form.text_field :name, placeholder: 'e.g. Yubikey', data: { 'webauthn-register-target': 'nameInput' } %>
+      <%= form.label :name, "Name", data: { "webauthn-register-target" => "nameLabel" } %>
+      <%= form.text_field :name, placeholder: "e.g. Yubikey", data: { 'webauthn-register-target': "nameInput" } %>
     </div>
 
-    <%= form.hidden_field :credential, data: { 'webauthn-register-target' => 'credentialInput' } %>
+    <%= form.hidden_field :credential, data: { "webauthn-register-target" => "credentialInput" } %>
 
     <div class="actions">
-      <%= form.submit 'Next', data: { 'webauthn-register-target' => 'submitButton' } %>
+      <%= form.submit "Next", data: { "webauthn-register-target" => "submitButton" } %>
     </div>
   <% end %>
 </section>

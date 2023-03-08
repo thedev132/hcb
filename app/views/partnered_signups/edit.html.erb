@@ -2,7 +2,7 @@
 <% page_md %>
 <% @home_size = 128 %>
 <% @no_app_shell = true %>
-<% content_for(:page_class) { 'pt4 gradient--bg' } %>
+<% content_for(:page_class) { "pt4 gradient--bg" } %>
 
 <div class="loader hidden">
   <svg
@@ -62,8 +62,8 @@
     <p>
       <%= @partner.name || @partner.slug.humanize %> has partnered with
       <strong>Hack Club Bank</strong> to bring you seamless <%= link_to 'fiscal
-      sponsorship', 'https://en.wikipedia.org/wiki/Fiscal_sponsorship', target:
-      '_blank' %> for your organization.
+      sponsorship', "https://en.wikipedia.org/wiki/Fiscal_sponsorship", target:
+      "_blank" %> for your organization.
     </p>
     <p>
       When you partner with Hack Club Bank, you'll instantly become a nonprofit
@@ -95,7 +95,7 @@
     <p>You pay just <strong>10% of revenue</strong> with no upfront costs.</p>
   </div>
 
-  <%= render 'form', partnered_signup: @partnered_signup %>
+  <%= render "form", partnered_signup: @partnered_signup %>
 </div>
 
 <div class="center">

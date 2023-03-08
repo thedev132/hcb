@@ -13,7 +13,7 @@ else
     id: 1,
     name: "Bank",
     external: false,
-  ).find_or_create_by!(slug: 'bank')
+  ).find_or_create_by!(slug: "bank")
 
   event = Event.create_with(
     name: "Test Org",

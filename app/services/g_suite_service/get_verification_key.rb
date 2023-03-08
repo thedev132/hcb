@@ -2,7 +2,7 @@
 
 module GSuiteService
   class GetVerificationKey
-    G_VERIFY_DOMAIN = 'https://gverify.bank.engineering'
+    G_VERIFY_DOMAIN = "https://gverify.bank.engineering"
 
     def initialize(g_suite_id:)
       @g_suite_id = g_suite_id

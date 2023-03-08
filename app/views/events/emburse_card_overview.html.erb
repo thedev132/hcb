@@ -1,6 +1,6 @@
 <% title "Emburse cards for #{@event.name}" %>
 <% page_md %>
-<%= render 'nav' %>
+<%= render "nav" %>
 
 <h1>
   Emburse cards
@@ -19,14 +19,14 @@
     <div class="stat md-w-50 mb2 tooltipped tooltipped--s" aria-label="The amount available to spend on your cards">
       <span class="stat__label flex items-center">
       Card balance
-      <%= inline_icon 'info', size: 24, class: 'ml1', 'aria-label': 'Info icon' %>
+      <%= inline_icon "info", size: 24, class: "ml1", 'aria-label': "Info icon" %>
       </span>
       <span class="stat__value mr2"><%= render_money_amount @event.emburse_balance %></span>
     </div>
     <div class="stat md-w-50 muted mb2">
       <span class="stat__label flex items-center">
         Available Bank balance
-        <%= inline_icon 'info', size: 24, class: 'muted ml1', 'aria-label': 'Info icon' %>
+        <%= inline_icon "info", size: 24, class: "muted ml1", 'aria-label': "Info icon" %>
       </span>
       <span class="stat__value"><%= render_money_amount @event.available_balance %></span>
     </div>
@@ -37,11 +37,11 @@
 8605 Santa Monica Blvd #86294
 West Hollywood, CA 90069</pre>
 
-  <% admin_tools('flex items-center mt2') do %>
+  <% admin_tools("flex items-center mt2") do %>
     <% if @event.emburse_department_path.nil? %>
-      <%= link_to 'Set Emburse Department ID', edit_event_path(@event), class: 'btn bg-accent mr2' %>
+      <%= link_to "Set Emburse Department ID", edit_event_path(@event), class: "btn bg-accent mr2" %>
     <% else %>
-      <%= link_to 'Set Emburse budget', @event.emburse_department_path, class: 'btn bg-accent mr2' %>
+      <%= link_to "Set Emburse budget", @event.emburse_department_path, class: "btn bg-accent mr2" %>
     <% end %>
     <span class="h5 mt1 mb1">
       (Current: <strong>$<%= render_money_amount @event.emburse_budget_limit %></strong>)
@@ -65,9 +65,9 @@ West Hollywood, CA 90069</pre>
     </details>
   <% end %>
 <% elsif @emburse_card_requests.any? %>
-  <%= blankslate 'No cards have been issued yet.' %>
+  <%= blankslate "No cards have been issued yet." %>
 <% elsif @cards.blank? %>
-  <%= blankslate 'You haven’t requested any cards yet.' %>
+  <%= blankslate "You haven’t requested any cards yet." %>
 <% end %>
 
 <% if @emburse_card_requests.outstanding.any? %>
@@ -75,8 +75,8 @@ West Hollywood, CA 90069</pre>
   <% @emburse_card_requests.outstanding.each do |request| %>
     <%# Rails has link_to_if but that doesn't support blocks. I feel like there should be a better way to do this but couldn't find one. -Theo %>
     <% if current_user&.admin? %>
-      <%= link_to request, class: 'text-decoration-none mb2' do %>
-        <%= creator_bar request, prefix: 'requested ' %>
+      <%= link_to request, class: "text-decoration-none mb2" do %>
+        <%= creator_bar request, prefix: "requested " %>
         <div class="card">
           <span class="tooltipped tooltipped--e" aria-label="<%= request.status.capitalize %>">
             <%= status_badge request.status_badge_type %>
@@ -86,7 +86,7 @@ West Hollywood, CA 90069</pre>
       <% end %>
     <% else %>
       <div>
-        <%= creator_bar request, prefix: 'requested ' %>
+        <%= creator_bar request, prefix: "requested " %>
         <div class="card">
           <span class="tooltipped tooltipped--e" aria-label="<%= request.status.capitalize %>">
             <%= status_badge request.status_badge_type %>
@@ -98,10 +98,10 @@ West Hollywood, CA 90069</pre>
   <% end %>
 <% end %>
 <% if @emburse_card_requests.accepted.any? %>
-  <% admin_tools('mt3') do %>
+  <% admin_tools("mt3") do %>
     <h2 class="mt0 mb1">Accepted card requests</h2>
     <% @emburse_card_requests.accepted.each do |request| %>
-      <%= link_to request, class: 'text-decoration-none mb2' do %>
+      <%= link_to request, class: "text-decoration-none mb2" do %>
         <%= creator_bar request %>
         <div class="card">
           <strong class="h3"><%= request.full_name %>’s card</strong>
@@ -159,7 +159,7 @@ West Hollywood, CA 90069</pre>
     </thead>
     <tbody>
 
-    <%= render partial: 'emburse_transactions/transaction',
+    <%= render partial: "emburse_transactions/transaction",
                collection: @emburse_transactions,
                as: :et,
                locals: { show_running_sum: true, show_card: true } %>

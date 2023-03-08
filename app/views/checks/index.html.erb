@@ -56,7 +56,7 @@
           <%= link_to check.event.name, check.event %>
           <% check.t_transactions.each do |t| %>
             <br>
-            <small><%= link_to "#{t.amount.positive? ? '📈' : '📉'} #{t.name}", t, class: 'h6 muted' %></small>
+            <small><%= link_to "#{t.amount.positive? ? '📈' : '📉'} #{t.name}", t, class: "h6 muted" %></small>
           <% end %>
         </td>
         <td><%= render_money check.amount %></td>

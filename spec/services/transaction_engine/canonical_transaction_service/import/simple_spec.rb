@@ -14,8 +14,8 @@ RSpec.describe TransactionEngine::CanonicalTransactionService::Import::Simple do
     _already_processed_hashed_transaction = create(:canonical_transaction)
   end
 
-  context 'when there is an unprocessed hashed_transaction' do
-    it 'creates a corresponding canonical_transaction' do
+  context "when there is an unprocessed hashed_transaction" do
+    it "creates a corresponding canonical_transaction" do
       hashed_transaction = create(:hashed_transaction, :plaid)
 
       expect do

@@ -29,7 +29,7 @@ module Api
       delegate :object_type, to: :class
 
       def self.object_type
-        self.entity_name.gsub(' ', '_').underscore
+        self.entity_name.gsub(" ", "_").underscore
       end
 
       def self.api_self_path_method_name

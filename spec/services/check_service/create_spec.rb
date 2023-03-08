@@ -3,7 +3,7 @@
 require "rails_helper"
 
 RSpec.describe CheckService::Create, type: :model do
-  context 'when an event has ample balance' do
+  context "when an event has ample balance" do
     it "creates a check with the correct amount" do
       # Set up event with ample balance of 1000 cents
       event = create(:event)

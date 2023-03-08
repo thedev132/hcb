@@ -1,21 +1,21 @@
 <% title "Card #{@emburse_card.last_four}" %>
-<%= render 'events/nav' %>
+<%= render "events/nav" %>
 
 <% if @emburse_card.created_at > 1.hour.ago %>
   <%# if the card was created in the last hour, let's give a link back to the card requests list %>
-  <% admin_tools('mt3 mb0') do %>
-    <%= link_to 'All card requests', emburse_card_requests_path, class: 'breadcrumb' %>
+  <% admin_tools("mt3 mb0") do %>
+    <%= link_to "All card requests", emburse_card_requests_path, class: "breadcrumb" %>
   <% end %>
 <% end %>
-<% admin_tools('mt3 mb0') do %>
-  <%= link_to 'All cards', emburse_cards_path, class: 'breadcrumb' %>
+<% admin_tools("mt3 mb0") do %>
+  <%= link_to "All cards", emburse_cards_path, class: "breadcrumb" %>
 <% end %>
 
 <article class="check--form flex align-start justify-center mt2">
   <section class="center mt0 mx-auto" style="width: 400px; max-width: 100%;">
     <%= render @emburse_card %>
-    <%= link_to @emburse_card.emburse_path, target: '_blank', class: 'btn bg-info mt2 md-mt3' do %>
-      <%= inline_icon 'external' %>
+    <%= link_to @emburse_card.emburse_path, target: "_blank", class: "btn bg-info mt2 md-mt3" do %>
+      <%= inline_icon "external" %>
       View on Emburse
     <% end if @emburse_card.is_virtual %>
     <p class="bold mt2 mb1">Your billing address for purchases</p>
@@ -37,15 +37,15 @@ West Hollywood, CA 90069</pre>
           <% unless @emburse_card.is_virtual %>
             <%= @emburse_card.formatted_card_number %>
               <div class="right tooltipped tooltipped--w" aria-label="Full number hidden to protect security">
-                <%= inline_icon 'private', size: 32, class: 'smoke' %>
+                <%= inline_icon "private", size: 32, class: "smoke" %>
               </div>
           <% else %>
             <% if @emburse_card.user == current_user || current_user.admin? %>
-              <%= link_to 'View on Emburse', @emburse_card.emburse_path, target: '_blank' %>
+              <%= link_to "View on Emburse", @emburse_card.emburse_path, target: "_blank" %>
             <% else %>
               <%= @emburse_card.formatted_card_number %>
               <div class="right tooltipped tooltipped--w" aria-label="Full number hidden to protect security">
-                <%= inline_icon 'private', size: 32, class: 'smoke' %>
+                <%= inline_icon "private", size: 32, class: "smoke" %>
               </div>
             <% end %>
           <% end %>
@@ -74,14 +74,14 @@ West Hollywood, CA 90069</pre>
 
       <% if @emburse_card.transactions_missing_receipts.any? %>
         <div class="flex items-center warning mt1 md-mt0">
-          <%= inline_icon 'important', size: 32, class: 'mr1' %>
-          <p class="bold mt0 mb0">This card has <%= pluralize @emburse_card.transactions_missing_receipts.size, 'missing receipt' %></p>
+          <%= inline_icon "important", size: 32, class: "mr1" %>
+          <p class="bold mt0 mb0">This card has <%= pluralize @emburse_card.transactions_missing_receipts.size, "missing receipt" %></p>
         </div>
       <% end %>
     </section>
 
     <% admin_tools do %>
-      <%= link_to 'Edit', edit_emburse_card_path(@emburse_card), class: 'btn bg-info' %>
+      <%= link_to "Edit", edit_emburse_card_path(@emburse_card), class: "btn bg-info" %>
     <% end %>
 
     <section class="card__banner card__banner--bottom card__darker pt2 pb2">
@@ -110,7 +110,7 @@ West Hollywood, CA 90069</pre>
       </thead>
       <tbody>
       <% @emburse_transactions.each do |et| %>
-        <%= render 'emburse_transactions/transaction', et: et, show_running_sum: false %>
+        <%= render "emburse_transactions/transaction", et: et, show_running_sum: false %>
       <% end %>
       </tbody>
     </table>

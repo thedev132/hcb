@@ -1,6 +1,6 @@
 <h1 class="heading">
   Card Requests
-  <%= link_to 'Export Pending CRs for Selenium', export_emburse_card_requests_path, class: 'btn bg-info' %>
+  <%= link_to "Export Pending CRs for Selenium", export_emburse_card_requests_path, class: "btn bg-info" %>
 </h1>
 
 <%= paginate @emburse_card_requests %>
@@ -18,15 +18,15 @@
 
   <tbody>
     <% @emburse_card_requests.each do |emburse_card_request| %>
-      <tr class="<%= 'shade-yellow' if emburse_card_request.under_review? %>">
+      <tr class="<%= "shade-yellow" if emburse_card_request.under_review? %>">
         <td><%= emburse_card_request.creator.email %> (#<%= emburse_card_request.creator.id %>)</td>
         <td><%= emburse_card_request.full_name %></td>
         <td><%= link_to emburse_card_request.event&.name, emburse_card_request.event %></td>
         <td><%= emburse_card_request.status %></td>
         <% if emburse_card_request.under_review? %>
-          <td><%= link_to 'Show', emburse_card_request %></td>
-          <td><%= link_to 'Edit', edit_emburse_card_request_path(emburse_card_request) %></td>
-          <td><%= link_to 'Reject', emburse_card_request_reject_path(emburse_card_request), method: :post %></td>
+          <td><%= link_to "Show", emburse_card_request %></td>
+          <td><%= link_to "Edit", edit_emburse_card_request_path(emburse_card_request) %></td>
+          <td><%= link_to "Reject", emburse_card_request_reject_path(emburse_card_request), method: :post %></td>
         <% end %>
       </tr>
     <% end %>

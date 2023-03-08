@@ -1,9 +1,9 @@
 <% page_sm %>
-<%= render 'events/nav' %>
+<%= render "events/nav" %>
 
 <h1 class="heading">
   <%= @sponsor.name %>
-  <%= link_to 'Edit', edit_sponsor_path(@sponsor), class: 'btn bg-info' %>
+  <%= link_to "Edit", edit_sponsor_path(@sponsor), class: "btn bg-info" %>
 </h1>
 
 <section class="details">
@@ -24,23 +24,23 @@
 
 <% admin_tools do %>
 <p>
-  <%= link_to 'Open in Stripe dashboard', @sponsor.stripe_dashboard_url, target: '_blank' %>
+  <%= link_to "Open in Stripe dashboard", @sponsor.stripe_dashboard_url, target: "_blank" %>
 </p>
 <% end %>
 
 <h2 class="heading">
   Invoices
-  <%= link_to 'New Invoice', new_event_invoice_path(@event), class: 'btn bg-success' %>
+  <%= link_to "New Invoice", new_event_invoice_path(@event), class: "btn bg-success" %>
 </h2>
 
 <% if @sponsor.invoices.any? %>
   <ul class="list">
     <% @sponsor.invoices.each do |invoice| %>
       <%= link_to invoice_path(invoice) do %>
-        <li class="transaction--<%= invoice.paid_v2? ? 'positive' : 'negative' %>">
+        <li class="transaction--<%= invoice.paid_v2? ? "positive" : "negative" %>">
           <strong>
-            <%= render_money invoice.total %> – <span class="<%= invoice.paid_v2? ? 'success' : 'error' %>">
-              <%= invoice.paid_v2? ? 'PAID' : 'UNPAID' %>
+            <%= render_money invoice.total %> – <span class="<%= invoice.paid_v2? ? "success" : "error" %>">
+              <%= invoice.paid_v2? ? "PAID" : "UNPAID" %>
             </span>
           </strong>
           <span class="muted">Due <%= invoice.due_date.to_date %></span>
@@ -49,5 +49,5 @@
     <% end %>
   </ul>
 <% else %>
-  <%= blankslate 'No invoices yet' %>
+  <%= blankslate "No invoices yet" %>
 <% end %>

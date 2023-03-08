@@ -1,5 +1,5 @@
 <tr
-  class="transaction--<%= stripe_authorization.amount.negative? ? 'positive' : 'negative' %><%= ' muted' unless (stripe_authorization.status_text == 'Approved') %>"
+  class="transaction--<%= stripe_authorization.amount.negative? ? "positive" : "negative" %><%= " muted" unless (stripe_authorization.status_text == "Approved") %>"
   data-behavior="filterbar_row"
   data-filter="<%= stripe_authorization.filter_data.to_json %>">
   <% if defined? authorless %>
@@ -29,16 +29,16 @@
       <i><%= stripe_authorization.name.humanize %> (<%= stripe_authorization.status_text %>)</i>
     <% end %>
     </span>
-    <%= list_badge_for stripe_authorization.receipts.size, 'receipt', 'payment-docs', required: stripe_authorization.awaiting_receipt? %>
+    <%= list_badge_for stripe_authorization.receipts.size, "receipt", "payment-docs", required: stripe_authorization.awaiting_receipt? %>
   </td>
   <td class="nowrap">
-    <span class="<%= 'strikethrough' unless stripe_authorization.approved? %>">
+    <span class="<%= "strikethrough" unless stripe_authorization.approved? %>">
       <%= render_money(-stripe_authorization.amount) %>
     </span>
   </td>
   <% if organizer_signed_in? || !@event %>
     <td>
-      <%= link_to 'Details', stripe_authorization %>
+      <%= link_to "Details", stripe_authorization %>
     </td>
   <% end %>
 </tr>

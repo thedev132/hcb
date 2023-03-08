@@ -3,16 +3,16 @@
 <%= form_with(model: receipt,
               url: receipts_upload_path,
               method: :post,
-              class: 'card flex flex-column justify-center mt2 mb3',
+              class: "card flex flex-column justify-center mt2 mb3",
               local: true) do |form| %>
   <h3 class="h2 mt0 mb1">Add a receipt</h3>
   <%= form_errors receipt %>
   <%= form.hidden_field :receiptable_type, value: receiptable.class.name %>
   <%= form.hidden_field :receiptable_id, value: receiptable.id %>
   <%= form.hidden_field :uploader_id, value: current_user&.id %>
-  <%= form.file_field :file, class: 'mb2' %>
+  <%= form.file_field :file, class: "mb2" %>
   <footer class="flex flex-wrap justify-between align-center">
-    <%= form.submit 'Upload' %>
-    <%= render 'receipts/no_or_missing_receipt', receiptable: receiptable if !using_transaction_engine_v2? && receiptable.missing_receipt? && !receiptable.no_or_lost_receipt? %>
+    <%= form.submit "Upload" %>
+    <%= render "receipts/no_or_missing_receipt", receiptable: receiptable if !using_transaction_engine_v2? && receiptable.missing_receipt? && !receiptable.no_or_lost_receipt? %>
   </footer>
 <% end %>

@@ -1,6 +1,6 @@
 <% title "ACH transfer – #{@ach_transfer.recipient_name}" %>
 <% page_md %>
-<%= render 'events/nav' %>
+<%= render "events/nav" %>
 
 <% admin_tools("mt3") do %>
   <ul>
@@ -26,7 +26,7 @@
 <article class="card pb0 mt3 mb3">
   <h2 class="h2 mt0 border-none flex items-start justify-between">
     <span>
-      <span class="regular muted"><%= @ach_transfer.deposited? ? 'Transferred ' : 'Transferring ' %> </span>
+      <span class="regular muted"><%= @ach_transfer.deposited? ? "Transferred " : "Transferring " %> </span>
       <%= @ach_transfer.recipient_name %>
       <span class="regular"><%= render_money @ach_transfer.amount %></span>
     </span>
@@ -54,7 +54,7 @@
 
     <p class="fs-mask">
       <strong>Recipient phone</strong>
-      <%= organizer_signed_in? ? @ach_transfer.recipient_tel : 'Sign in to view' %>
+      <%= organizer_signed_in? ? @ach_transfer.recipient_tel : "Sign in to view" %>
     </p>
 
     <p>
@@ -64,17 +64,17 @@
 
     <p>
       <strong>Bank name</strong>
-      <%= organizer_signed_in? ? @ach_transfer.bank_name : 'Sign in to view' %>
+      <%= organizer_signed_in? ? @ach_transfer.bank_name : "Sign in to view" %>
     </p>
 
     <p class="fs-mask">
       <strong>Routing number</strong>
-      <%= organizer_signed_in? ? @ach_transfer.routing_number : 'Sign in to view' %>
+      <%= organizer_signed_in? ? @ach_transfer.routing_number : "Sign in to view" %>
     </p>
 
     <p class="fs-mask">
       <strong>Account number</strong>
-      <%= organizer_signed_in? ? @ach_transfer.account_number : 'Sign in to view' %>
+      <%= organizer_signed_in? ? @ach_transfer.account_number : "Sign in to view" %>
     </p>
 
     <p>
@@ -88,7 +88,7 @@
         <%= @ach_transfer.status_text_long %>
         <% if @ach_transfer.deposited? %>
           <span class="muted">
-            <%= link_to "(#{ organizer_signed_in? ? 'view confirmation letter' : 'sign in to view' })", ach_transfer_confirmation_path(@hcb_code.ach_transfer, format: :pdf), target: '_blank' %>
+            <%= link_to "(#{ organizer_signed_in? ? 'view confirmation letter' : 'sign in to view' })", ach_transfer_confirmation_path(@hcb_code.ach_transfer, format: :pdf), target: "_blank" %>
           </span>
         <% end %>
 

@@ -1,12 +1,12 @@
 <footer data-behavior="hide_iframe">
   <p class="muted max-width-1 mx-auto h5 mb1 center">
     <% if @event.is_public? %>
-      <%= link_to @event.name, @event, target: '_blank' %>
+      <%= link_to @event.name, @event, target: "_blank" %>
     <% else %>
       <%= @event.name %>
     <% end %>
     is fiscally sponsored by
-    <%= link_to 'Hack Club', 'https://hackclub.com/bank?ref=donation', target: '_blank' %>,
+    <%= link_to "Hack Club", "https://hackclub.com/bank?ref=donation", target: "_blank" %>,
     <span class="nowrap">a 501(c)(3)</span>&nbsp;nonprofit. Our registered EIN is 81-2908499.
   </p>
   <p class="muted h5 center">

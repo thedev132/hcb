@@ -1,11 +1,11 @@
-<p><%= @emails.length > 1 ? 'Hi all,' : 'Hi there,' %></p>
+<p><%= @emails.length > 1 ? "Hi all," : "Hi there," %></p>
 
 <p>
   Congrats! We're emailing to let you know that you've received your first-ever donation of <%= render_money @donation.amount %> from <%= @donation.name %>.
 </p>
 
 <p>
-  The funds are available to spend right away. You can <%= link_to 'click here', event_donation_overview_url(@donation.event.slug) %> to see the full details.
+  The funds are available to spend right away. You can <%= link_to "click here", event_donation_overview_url(@donation.event.slug) %> to see the full details.
 </p>
 
 <p>

@@ -262,12 +262,12 @@ class UsersController < ApplicationController
     @user = User.friendly.find(params[:id])
     authorize @user
 
-    locked = params[:user][:locked] == '1'
+    locked = params[:user][:locked] == "1"
     if locked && @user == current_user
-      flash[:error] = 'As much as you might desire to, you cannot lock yourself out.'
+      flash[:error] = "As much as you might desire to, you cannot lock yourself out."
       return redirect_to admin_user_path(@user)
     elsif locked && @user.admin?
-      flash[:error] = 'Contact a engineer to lock out another admin.'
+      flash[:error] = "Contact a engineer to lock out another admin."
       return redirect_to admin_user_path(@user)
     elsif locked
       @user.lock!
@@ -282,7 +282,7 @@ class UsersController < ApplicationController
         flash[:success] = "Profile created!"
         redirect_to root_path
       else
-        flash[:success] = @user == current_user ? 'Updated your profile!' : "Updated #{@user.first_name}'s profile!"
+        flash[:success] = @user == current_user ? "Updated your profile!" : "Updated #{@user.first_name}'s profile!"
         redirect_to edit_user_path(@user)
       end
     else

@@ -5,7 +5,7 @@ require "rails_helper"
 RSpec.describe TransactionEngine::CanonicalTransactionService::Import::EmburseThatLookLikeDuplicates do
   let(:service) { TransactionEngine::CanonicalTransactionService::Import::EmburseThatLookLikeDuplicates.new }
 
-  context 'when there are 2 duplicate emburse_transactions' do
+  context "when there are 2 duplicate emburse_transactions" do
     before do
       duplicate_hash = "1234"
       2.times do
@@ -13,8 +13,8 @@ RSpec.describe TransactionEngine::CanonicalTransactionService::Import::EmburseTh
       end
     end
 
-    context 'when both are unprocessed' do
-      it 'creates a corresponding canonical_transaction for each' do
+    context "when both are unprocessed" do
+      it "creates a corresponding canonical_transaction for each" do
         expect do
           service.run
         end.to change(CanonicalTransaction, :count).by(2)
@@ -26,12 +26,12 @@ RSpec.describe TransactionEngine::CanonicalTransactionService::Import::EmburseTh
       end
     end
 
-    context 'when only one is unprocessed' do
+    context "when only one is unprocessed" do
       before do
         _process_first_hashed_transaction = create(:canonical_transaction, hashed_transactions: [HashedTransaction.first])
       end
 
-      it 'creates one canonical_transaction' do
+      it "creates one canonical_transaction" do
         expect do
           service.run
         end.to change(CanonicalTransaction, :count).by(1)

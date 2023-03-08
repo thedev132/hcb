@@ -5,7 +5,7 @@
 <%= paginate @checks %>
 
 <%= form_with local: true, url: check_admin_index_path, method: :get do |form| %>
-  <%= form.text_field :q, value: params[:q], placeholder: 'Search' %>
+  <%= form.text_field :q, value: params[:q], placeholder: "Search" %>
   <%= form.label :in_transit do %>
     <%= form.check_box :in_transit, checked: @in_transit %>
     In Transit
@@ -18,7 +18,7 @@
   <%= form.submit "Search" %>
 <% end %>
 
-<%= page_entries_info @checks, entry_name: 'checks' %>
+<%= page_entries_info @checks, entry_name: "checks" %>
 
 <table>
   <thead>

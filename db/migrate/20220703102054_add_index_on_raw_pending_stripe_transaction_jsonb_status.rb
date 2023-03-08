@@ -4,7 +4,7 @@ class AddIndexOnRawPendingStripeTransactionJsonbStatus < ActiveRecord::Migration
   disable_ddl_transaction!
 
   def up
-    add_index :raw_pending_stripe_transactions, "((stripe_transaction->>'status')::text)", name: :index_raw_pending_stripe_transactions_on_status_text, using: 'hash', algorithm: :concurrently
+    add_index :raw_pending_stripe_transactions, "((stripe_transaction->>'status')::text)", name: :index_raw_pending_stripe_transactions_on_status_text, using: "hash", algorithm: :concurrently
   end
 
   def down

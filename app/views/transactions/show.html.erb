@@ -15,8 +15,8 @@
 <% end %>
 
 <% if @transaction.stripe_auth_dashboard_url %>
-  <% admin_tools('mt1') do %>
-    <%= link_to 'View on Stripe', @transaction.stripe_auth_dashboard_url, class: 'btn bg-accent' %>
+  <% admin_tools("mt1") do %>
+    <%= link_to "View on Stripe", @transaction.stripe_auth_dashboard_url, class: "btn bg-accent" %>
   <% end %>
 <% end %>
 
@@ -117,7 +117,7 @@
           <strong>Fee</strong>
           <span>
             <%= render_money fee.amount_cents_as_decimal %> (<%= render_percentage fee.event_sponsorship_fee %>)
-            <% admin_tools('py0 ml1', 'span') do %>
+            <% admin_tools("py0 ml1", "span") do %>
               <%= link_to "[waive fee]", waive_fee_canonical_transaction_url(@transaction), method: :post if fee.amount_cents_as_decimal > 0 %>
             <% end %>
           </span>

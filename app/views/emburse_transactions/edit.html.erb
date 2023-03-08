@@ -3,19 +3,19 @@
 <h1>Editing Emburse Transaction</h1>
 
 <%= form_with(model: @emburse_transaction, local: true) do |form| %>
-  <%= form_errors @emburse_transaction, 'account' %>
+  <%= form_errors @emburse_transaction, "account" %>
 
   <div class="mb2">
-    View on emburse: <%= link_to @emburse_transaction.emburse_id, @emburse_transaction.emburse_path, target: '_blank' %>
+    View on emburse: <%= link_to @emburse_transaction.emburse_id, @emburse_transaction.emburse_path, target: "_blank" %>
   </div>
 
   <div class="field">
     <%= form.label :event %>
-    <%= form.collection_select(:event_id, Event.reorder(:name), :id, :name, include_blank: 'Select one…') %>
+    <%= form.collection_select(:event_id, Event.reorder(:name), :id, :name, include_blank: "Select one…") %>
   </div>
 
   <div class="field">
-    <%= form.label :amount, 'Transaction amount (USD)' %>
+    <%= form.label :amount, "Transaction amount (USD)" %>
     <div class="flex items-center">
       <span class="bold muted" style="width: 1rem;">$</span>
       <%= form.number_field :amount, value: @amount, step: 0.01 %>
@@ -27,7 +27,7 @@
   </div>
 
   <% if @emburse_transaction.amount > 0 %>
-    <% admin_tools('mt3') do %>
+    <% admin_tools("mt3") do %>
       <h2>Recent card transfer requests</h2>
       <p>Use this list to cross-reference recent card load requests to any positive Emburse transaction above.</p>
 

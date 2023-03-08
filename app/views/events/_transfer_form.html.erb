@@ -11,23 +11,23 @@
     <legend class="heading h2 pt2 pb2">What type of transfer?</legend>
     <div class="field field--options fit">
 
-      <%= link_to new_event_ach_transfer_path(@event), class: 'text-decoration-none btn--form-option' do %>
+      <%= link_to new_event_ach_transfer_path(@event), class: "text-decoration-none btn--form-option" do %>
         <%= inline_icon "payment-transfer", size: 28 %>
         <strong>ACH transfer</strong>
       <% end %>
 
-      <%= link_to new_event_check_path(@event), class: 'text-decoration-none btn--form-option' do %>
+      <%= link_to new_event_check_path(@event), class: "text-decoration-none btn--form-option" do %>
         <%= inline_icon "email", size: 28 %>
         <strong>Mailed check</strong>
       <% end %>
 
-      <%= link_to paypal_transfers_airtable_form_url(embed: false, event: @event, user: @current_user), class: 'text-decoration-none btn--form-option' do %>
+      <%= link_to paypal_transfers_airtable_form_url(embed: false, event: @event, user: @current_user), class: "text-decoration-none btn--form-option" do %>
         <%= inline_icon "paypal", size: 28 %>
         <strong>PayPal</strong>
         <%# TODO: add subtitle with PayPal fee amount %>
       <% end %>
 
-      <%= link_to new_disbursement_path(source_event_id: @event), class: 'text-decoration-none btn--form-option' do %>
+      <%= link_to new_disbursement_path(source_event_id: @event), class: "text-decoration-none btn--form-option" do %>
         <%= inline_icon "bank-account", size: 28 %>
         <strong>HCB transfer</strong>
         <small>(between Hack Club Bank accounts)</small>

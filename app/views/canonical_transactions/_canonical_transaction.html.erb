@@ -32,7 +32,7 @@
         <%= inline_icon "view-reload" %>
       </td>
     <% elsif ct.raw_stripe_transaction %>
-      <td class="transaction__icon tooltipped tooltipped--e" aria-label="Card transaction<%= !defined?(authorless) && ct.stripe_cardholder ? ' by ' + ct.stripe_cardholder.user.initial_name : '' %>">
+      <td class="transaction__icon tooltipped tooltipped--e" aria-label="Card transaction<%= !defined?(authorless) && ct.stripe_cardholder ? " by " + ct.stripe_cardholder.user.initial_name : "" %>">
         <% unless defined?(authorless) || !ct.stripe_cardholder %>
           <%= avatar_for ct.stripe_cardholder.user, 24 %>
         <% else %>
@@ -54,7 +54,7 @@
         </td>
       <% else %>
         <td class="transaction__icon tooltipped tooltipped--e" aria-label="<%= ct.local_hcb_code.disbursement.special_appearance[:title] %>">
-          <%= inline_icon(ct.local_hcb_code.disbursement.special_appearance[:icon] || 'door-enter') %>
+          <%= inline_icon(ct.local_hcb_code.disbursement.special_appearance[:icon] || "door-enter") %>
         </td>
       <% end %>
     <% elsif ct.local_hcb_code.disbursement? %>
@@ -87,7 +87,7 @@
               <%= ct.local_hcb_code.memo %>
             </span>
             <% if ct.amount_cents.negative? && name_contains_emoji?(ct.local_hcb_code.memo) %>
-              <% admin_tools('memo-frame__ai-button badge m0 ml1 p0 overflow-visible') do %>
+              <% admin_tools("memo-frame__ai-button badge m0 ml1 p0 overflow-visible") do %>
                 <a href="<%= memo_frame_hcb_code_path(ct.local_hcb_code, gen_memo: true) %>"
                    style="padding: 4px 6px"
                    data-turbo="true"
@@ -167,7 +167,7 @@
         <%= form.hidden_field :show_link, value: true %>
         <%= form.hidden_field :upload_method, value: "receipts_page", data: { "file-drop-target" => "uploadMethod" } %>
         <%= form.label "file_#{ct.local_hcb_code.hashid}", class: "btn", style: "font-size: 0.875rem; font-weight: 600; padding: 0.25rem 1rem;" do %>
-          <%= inline_icon 'plus' %>
+          <%= inline_icon "plus" %>
           Add a receipt
         <% end %>
       <% end %>

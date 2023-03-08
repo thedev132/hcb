@@ -6,8 +6,8 @@
   data-behavior="toggle_theme"
   class="muted absolute top-0 right-0 m2 pointer no-select tooltipped tooltipped--w"
   aria-label="Toggle dark mode" tabindex="0">
-  <%= inline_icon 'moon', size: home_action_size %>
-  <%= inline_icon 'moon-fill', size: home_action_size, style: 'display: none;' %>
+  <%= inline_icon "moon", size: home_action_size %>
+  <%= inline_icon "moon-fill", size: home_action_size, style: "display: none;" %>
 </action>
 
 <% if organizer_signed_in? && Flipper.enabled?(:donation_page_customization_2022_06_29, @event) %>
@@ -19,7 +19,7 @@
           role="button"
           class="muted pointer no-select tooltipped tooltipped--e line-height-0"
           aria-label="<%= @has_header_image ? "Edit" : "Upload" %> header image">
-          <%= inline_icon 'photo', size: home_action_size %>
+          <%= inline_icon "photo", size: home_action_size %>
         </div>
       <% end %>
     <% end %>
@@ -29,7 +29,7 @@
           role="button"
           class="muted pointer ml1 no-select tooltipped tooltipped--e line-height-0"
           aria-label="Remove header image">
-          <%= inline_icon 'view-close', size: home_action_size %>
+          <%= inline_icon "view-close", size: home_action_size %>
         </div>
       <% end %>
     <% end %>

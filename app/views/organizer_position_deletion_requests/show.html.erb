@@ -1,10 +1,10 @@
-<% 'Team member removals' %>
+<% "Team member removals" %>
 <% page_sm %>
-<%= render 'events/nav' if @event %>
+<%= render "events/nav" if @event %>
 
 <article class="card mt3">
   <div class="mb2">
-    <%= link_to 'Back', organizer_position_deletion_requests_path, class: 'breadcrumb' %>
+    <%= link_to "Back", organizer_position_deletion_requests_path, class: "breadcrumb" %>
   </div>
 
   <h1 class="h2 mt0">Organizer position deletion request</h1>
@@ -47,52 +47,52 @@
   </div>
 
   <p>
-    <%= @opdr.subject_has_outstanding_expenses_expensify ? '✅' : '❌' %>
+    <%= @opdr.subject_has_outstanding_expenses_expensify ? "✅" : "❌" %>
     <strong>Outstanding Expensify expenses?</strong>
   </p>
 
   <p>
-    <%= @opdr.subject_has_outstanding_transactions_stripe ? '✅' : '❌' %>
+    <%= @opdr.subject_has_outstanding_transactions_stripe ? "✅" : "❌" %>
     <strong>Outstanding Stripe transactions?</strong>
   </p>
 
   <p>
-    <%= @opdr.subject_has_active_cards ? '✅' : '❌' %>
+    <%= @opdr.subject_has_active_cards ? "✅" : "❌" %>
     <strong>Active cards?</strong>
   </p>
 
   <% if @opdr.organizer_position.signee? %>
     <p class='warning'>
-      <%= inline_icon 'important', size: 24, style: "vertical-align: middle; margin: -0.2rem 0 0 -0.2rem;" %>
+      <%= inline_icon "important", size: 24, style: "vertical-align: middle; margin: -0.2rem 0 0 -0.2rem;" %>
       Woah! This user has signed the fiscal sponsorship contract for this
       organization. Are you sure you want to remove them?
     </p>
   <% end %>
 
   <% if @opdr.organizer_position.deleted_at.nil? %>
-    <%= link_to 'Delete organizer ⚠️☣☠',
+    <%= link_to "Delete organizer ⚠️☣☠",
       organizer_path(@opdr.organizer_position.id),
       method: :delete,
       data: { confirm: "This will remove this user from #{@opdr.organizer_position.event.name} from the database. Are you sure you want to do this?" },
-      class: 'btn bg-error ml1' %>
+      class: "btn bg-error ml1" %>
   <% else %>
     <p><strong>Organizer is marked as deleted</strong></p>
   <% end %>
 </div>
 
 <% if @opdr.under_review? %>
-  <%= link_to 'Close Request',
+  <%= link_to "Close Request",
     organizer_position_deletion_request_close_path(@opdr.id),
     method: :post,
-    data: { confirm: 'This will mark the request as processed. Only continue if no follow-up is needed for this request.' },
-    class: 'btn bg-accent' %>
+    data: { confirm: "This will mark the request as processed. Only continue if no follow-up is needed for this request." },
+    class: "btn bg-accent" %>
 <% else %>
-  <%= link_to 'Open Request',
+  <%= link_to "Open Request",
     organizer_position_deletion_request_open_path(@opdr.id),
     method: :post,
-    data: { confirm: 'This will re-open the request.' },
-    class: 'btn bg-info' %>
+    data: { confirm: "This will re-open the request." },
+    class: "btn bg-info" %>
 <% end %>
 </article>
 
-<%= render 'comments/comments' %>
+<%= render "comments/comments" %>

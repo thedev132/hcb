@@ -2,7 +2,7 @@
 
 module PartneredSignupService
   class SyncToAirtable
-    PROXY_URL = 'https://airtable-forms-proxy.hackclub.dev/api/apppALh5FEOKkhjLR/Partnered%20Signups'
+    PROXY_URL = "https://airtable-forms-proxy.hackclub.dev/api/apppALh5FEOKkhjLR/Partnered%20Signups"
 
     def initialize(partnered_signup_id:)
       @partnered_signup_id = partnered_signup_id

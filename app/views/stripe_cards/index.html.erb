@@ -19,7 +19,7 @@
         <td><%= link_to card.last4, card %></td>
         <td><%= user_mention card.user %></td>
         <td><%= link_to card.event.name, card.event %></td>
-        <td><%= card.virtual? ? 'Virtual' : 'Physical' %></td>
+        <td><%= card.virtual? ? "Virtual" : "Physical" %></td>
         <td><%= format_datetime card.created_at %></td>
         <td><%= render_money card.event.balance %></td>
       </tr>

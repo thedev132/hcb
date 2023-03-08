@@ -1,8 +1,8 @@
-<% title 'Give to ' + @event.name %>
+<% title "Give to " + @event.name %>
 <% page_sm %>
 <% no_app_shell %>
 
-<%= render 'donations/header' %>
+<%= render "donations/header" %>
 
 <%= turbo_frame_tag :donation do %>
   <div
@@ -28,4 +28,4 @@
   </div>
 <% end %>
 
-<%= render 'donations/footer' %>
+<%= render "donations/footer" %>

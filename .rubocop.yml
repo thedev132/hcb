@@ -30,6 +30,10 @@ Style/RedundantReturn:
 Style/StringLiteralsInInterpolation:
   Enabled: false
 
+Style/StringLiterals:
+  Enabled: true
+  EnforcedStyle: double_quotes
+
 Layout/HashAlignment:
   EnforcedHashRocketStyle: table
 

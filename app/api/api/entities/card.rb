@@ -10,7 +10,7 @@ module Api
         expose :status, documentation: {
           type: "string", values: %w[active frozen canceled]
         } do |stripe_card, options|
-          next 'frozen' if stripe_card.frozen? # rename 'inactive' to 'frozen'
+          next "frozen" if stripe_card.frozen? # rename 'inactive' to 'frozen'
 
           stripe_card.stripe_status
         end

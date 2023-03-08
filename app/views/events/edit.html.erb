@@ -8,7 +8,7 @@
   <strong>Event slug history:</strong> <%= @event.slugs.pluck(:slug).join ", " %>
 <% end %>
 
-<%= render partial: 'admin_viewer', locals: { record: @event } %>
+<%= render partial: "admin_viewer", locals: { record: @event } %>
 
 <% if Flipper.enabled?(:incoming_ach_payments_2023_02_17, @event) %>
   <h3 class="mb1 flex items-center">
@@ -48,7 +48,7 @@
 <h3 class="mb1">Feature previews</h3>
 
 <div class="card pb0 mb3" id="transaction-tags">
-  <div class="card__banner card__banner--top flex justify-between items-center feature-transaction-tags <%= 'b--info' if Flipper.enabled?(:transaction_tags_2022_07_29, @event) %> ">
+  <div class="card__banner card__banner--top flex justify-between items-center feature-transaction-tags <%= "b--info" if Flipper.enabled?(:transaction_tags_2022_07_29, @event) %> ">
     <h3 class="h1 p2 my0 color-black">Transaction Tags</h3>
     <% if Flipper.enabled?(:transaction_tags_2022_07_29) %>
       <%# Feature is enabled for all users, don't include a choice %>
@@ -58,10 +58,10 @@
       <%# link_to "Shipped!", enable_feature_path(feature: :transfers_2022_04_21), method: :post, class: 'btn bg-accent' %>
     <% elsif Flipper.enabled?(:transaction_tags_2022_07_29, @event) %>
       <%# Feature is enabled, let the user opt-out %>
-      <%= link_to "Disable", disable_feature_event_path(feature: :transaction_tags_2022_07_29), method: :post, class: 'btn bg-accent' %>
+      <%= link_to "Disable", disable_feature_event_path(feature: :transaction_tags_2022_07_29), method: :post, class: "btn bg-accent" %>
     <% else %>
       <%# Feature is disabled, let the user opt-in %>
-      <%= link_to "Enable", enable_feature_event_path(feature: :transaction_tags_2022_07_29), method: :post, class: 'btn bg-info' %>
+      <%= link_to "Enable", enable_feature_event_path(feature: :transaction_tags_2022_07_29), method: :post, class: "btn bg-info" %>
     <% end %>
   </div>
   <p>

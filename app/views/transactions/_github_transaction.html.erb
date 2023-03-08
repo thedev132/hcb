@@ -1,9 +1,9 @@
 <tr
-  class="transaction--<%= transaction.amount.negative? ? 'negative' : 'positive' %>"
+  class="transaction--<%= transaction.amount.negative? ? "negative" : "positive" %>"
   data-behavior="filterbar_row"
   data-filter="<%= transaction.filter_data.to_json %>">
   <td class="transaction__icon tooltipped tooltipped--e" aria-label="GitHub Grant">
-    <%= inline_icon 'github' %>
+    <%= inline_icon "github" %>
   </td>
   <td>
     <%= transaction.date %>
@@ -15,6 +15,6 @@
     <%= render_money transaction.amount %>
   </td>
   <td>
-    <%= link_to 'Details', transaction if organizer_signed_in? %>
+    <%= link_to "Details", transaction if organizer_signed_in? %>
   </td>
 </tr>

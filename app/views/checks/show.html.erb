@@ -1,6 +1,6 @@
 <% title "Check for #{@check.memo}" %>
 <% page_md %>
-<%= render 'events/nav' %>
+<%= render "events/nav" %>
 
 <link href="https://fonts.googleapis.com/css?family=Damion" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=Space+Mono" rel="stylesheet">
@@ -31,7 +31,7 @@
   <div class="check__number"><%= @check.check_number %></div>
 
   <div class="flex w-100 justify-end mb1">
-    <div class="check__field check__field--date" data-label="Date"><%= (@check.send_date || @check.created_at).strftime('%b %d, %Y') %></div>
+    <div class="check__field check__field--date" data-label="Date"><%= (@check.send_date || @check.created_at).strftime("%b %d, %Y") %></div>
   </div>
 
   <div class="check__row">
@@ -44,7 +44,7 @@
   <div class="check__field check__field--dollars" data-label="Dollars" data-check-amount="<%= render_money_amount @check.amount %>" data-behavior="fill_check_words"></div>
 
   <div class="check__row items-start">
-    <div class="check__field check__field--memo" data-label="Memo"><%= organizer_signed_in? ? @check.memo : 'Sign in to view' %></div>
+    <div class="check__field check__field--memo" data-label="Memo"><%= organizer_signed_in? ? @check.memo : "Sign in to view" %></div>
     <div class="check__sig"></div>
 
   </div>
@@ -62,7 +62,7 @@
   <h2 class="h2 mt0 border-none">
     <div class="flex items-start">
       <span class="flex-auto mr1">
-        <span class="regular muted"><%= @check.deposited? ? 'Sent' : 'Sending' %> </span>
+        <span class="regular muted"><%= @check.deposited? ? "Sent" : "Sending" %> </span>
         <%= @check.lob_address.name %>
         <span class="regular muted"> a&nbsp;check for </span>
         <span class="regular"><%= render_money @check.amount %></span>
@@ -101,12 +101,12 @@
 
     <p>
       <strong>Addressed to</strong>
-      <%= organizer_signed_in? ? @check.lob_address.address_text : 'Sign in to view' %>
+      <%= organizer_signed_in? ? @check.lob_address.address_text : "Sign in to view" %>
     </p>
 
     <p>
       <strong>Memo</strong>
-      <%= organizer_signed_in? ? @check.memo : 'Sign in to view' %>
+      <%= organizer_signed_in? ? @check.memo : "Sign in to view" %>
     </p>
 
     <p>
@@ -121,18 +121,18 @@
   </section>
 
   <section class="card__banner card__darker border-top overflow-hidden">
-    <%= link_to 'Cancel',
+    <%= link_to "Cancel",
       organizer_signed_in? ? check_cancel_path(@check) : root_path,
       disabled: !organizer_signed_in?,
-      class: 'btn bg-error mr1 right',
+      class: "btn bg-error mr1 right",
       method: :post,
       data: { confirm: "Cancel this check?" } if @check.can_cancel? %>
 
-    <%= link_to 'View scan',
+    <%= link_to "View scan",
         organizer_signed_in? ? check_view_scan_path(@check) : root_path,
         disabled: !organizer_signed_in?,
         target: :_blank,
-        class: 'btn bg-info' if @check.lob_url.present? %>
+        class: "btn bg-info" if @check.lob_url.present? %>
   </section>
 </article>
 

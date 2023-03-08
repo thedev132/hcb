@@ -1,5 +1,5 @@
 <%= form_with(model: organizer_position_deletion_request, local: true) do |form| %>
-  <%= form_errors organizer_position_deletion_request, 'request' %>
+  <%= form_errors organizer_position_deletion_request, "request" %>
 
   <%= form.hidden_field :organizer_position_id %>
 
@@ -10,13 +10,13 @@
   </div>
 
   <p>
-    Does <%= user_mention @target %> have outstanding expenses on <%= link_to 'Expensify', event_reimbursements_path(@op.event) %>?
+    Does <%= user_mention @target %> have outstanding expenses on <%= link_to "Expensify", event_reimbursements_path(@op.event) %>?
   </p>
   <div class="field field--radiobox">
     <%= form.radio_button :subject_has_outstanding_expenses_expensify, false, value: false %>
-    <%= form.label :subject_has_outstanding_expenses_expensify, 'No', value: false %>
+    <%= form.label :subject_has_outstanding_expenses_expensify, "No", value: false %>
     <%= form.radio_button :subject_has_outstanding_expenses_expensify, true, value: true %>
-    <%= form.label :subject_has_outstanding_expenses_expensify, 'Yes', value: true %>
+    <%= form.label :subject_has_outstanding_expenses_expensify, "Yes", value: true %>
   </div>
 
   <p>
@@ -24,9 +24,9 @@
   </p>
   <div class="field field--radiobox">
     <%= form.radio_button :subject_has_outstanding_transactions_stripe, false, value: false %>
-    <%= form.label :subject_has_outstanding_transactions_stripe, 'No', value: false %>
+    <%= form.label :subject_has_outstanding_transactions_stripe, "No", value: false %>
     <%= form.radio_button :subject_has_outstanding_transactions_stripe, true, value: true %>
-    <%= form.label :subject_has_outstanding_transactions_stripe, 'Yes', value: true %>
+    <%= form.label :subject_has_outstanding_transactions_stripe, "Yes", value: true %>
   </div>
 
   <p>
@@ -34,12 +34,12 @@
   </p>
   <div class="field field--radiobox">
     <%= form.radio_button :subject_has_active_cards, false, value: false %>
-    <%= form.label :subject_has_active_cards, 'No', value: false %>
+    <%= form.label :subject_has_active_cards, "No", value: false %>
     <%= form.radio_button :subject_has_active_cards, true, value: true %>
-    <%= form.label :subject_has_active_cards, 'Yes', value: true %>
+    <%= form.label :subject_has_active_cards, "Yes", value: true %>
   </div>
 
   <div class="actions">
-    <%= form.submit 'Request removal' %>
+    <%= form.submit "Request removal" %>
   </div>
 <% end %>

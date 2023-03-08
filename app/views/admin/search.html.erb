@@ -1,5 +1,5 @@
 <% page_sm %>
-<% title 'Search by Contact Info' %>
+<% title "Search by Contact Info" %>
 <h1>
   Search
 </h1>
@@ -8,15 +8,15 @@
   <%= label_tag(:q, "Search for users by name, tel, email") %>
   <div class="flex flex-row mt1">
     <%= text_field_tag(:q) %>
-    <%= submit_tag "Search", class: 'ml1' %>
+    <%= submit_tag "Search", class: "ml1" %>
   </div>
 <% end %>
 
 <% if @result.present? %>
   <% @result.each do |r| %>
     <div class="card card--hover mt2">
-      <div class="card__banner card__banner--top <%= r.events.any? ? 'bg-info' : 'bg-muted' %>">
-        <%= link_to r, class: 'text-decoration-none white' do %>
+      <div class="card__banner card__banner--top <%= r.events.any? ? "bg-info" : "bg-muted" %>">
+        <%= link_to r, class: "text-decoration-none white" do %>
           <h3 class="mt0 mb0"><%= r.name %></h3>
         <% end %>
       </div>
@@ -39,7 +39,7 @@
         </ul>
       <% end %>
       <div class="card__banner card__banner--bottom card__darker">
-        <%= link_to 'Impersonate', impersonate_users_path(user_id: r.id), class: 'btn' %>
+        <%= link_to "Impersonate", impersonate_users_path(user_id: r.id), class: "btn" %>
       </div>
     </div>
   <% end %>

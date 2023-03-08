@@ -46,7 +46,7 @@ plugin :tmp_restart
 
 # Heroku Barnes config for Puma
 # https://github.com/heroku/barnes
-require 'barnes'
+require "barnes"
 before_fork do
   # worker configuration
   Barnes.start

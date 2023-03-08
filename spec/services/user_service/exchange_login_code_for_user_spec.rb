@@ -32,7 +32,7 @@ RSpec.describe UserService::ExchangeLoginCodeForUser, type: :model do
     }
   end
 
-  context 'when exchange_login_code_resp and get_user_resp return expected values from hackclub/api' do
+  context "when exchange_login_code_resp and get_user_resp return expected values from hackclub/api" do
     before do
       allow(service).to receive(:exchange_login_code_resp).and_return(exchange_login_code_resp)
     end
@@ -56,7 +56,7 @@ RSpec.describe UserService::ExchangeLoginCodeForUser, type: :model do
     end
   end
 
-  context 'sms' do
+  context "sms" do
     let(:login_code) { create(:login_code) }
     let(:user) { login_code.user }
     let(:service) {
@@ -67,19 +67,19 @@ RSpec.describe UserService::ExchangeLoginCodeForUser, type: :model do
       )
     }
 
-    context 'when not sent by sms' do
+    context "when not sent by sms" do
       let(:sms) { false }
 
-      it 'exchanges login code for user in bank' do
+      it "exchanges login code for user in bank" do
         exchanged_user = service.run
         expect(exchanged_user).to eq(user)
       end
     end
 
-    context 'when sent by sms' do
+    context "when sent by sms" do
       let(:sms) { true }
 
-      it 'calls twilio' do
+      it "calls twilio" do
         expect(TwilioVerificationService).to receive_message_chain(:new, :check_verification_token).and_return(true)
 
         exchanged_user = service.run

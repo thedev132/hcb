@@ -1,7 +1,7 @@
 <% if @sponsor.event.present? %>
-  <%= link_to @sponsor.event.name, @sponsor.event, class: 'breadcrumb' %>
+  <%= link_to @sponsor.event.name, @sponsor.event, class: "breadcrumb" %>
 <% end %>
 
 <h1>New Sponsor</h1>
 
-<%= render 'form', sponsor: @sponsor %>
+<%= render "form", sponsor: @sponsor %>

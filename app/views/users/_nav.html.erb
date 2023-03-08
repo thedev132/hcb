@@ -1,27 +1,27 @@
 <% content_for(:nav) do %>
   <h1 class="flex items-center xs-hide border-none h1 mt0 mb0 pt2">
-    <%= avatar_for current_user, 36, class: 'mr1' %>
+    <%= avatar_for current_user, 36, class: "mr1" %>
     <%= current_user.initial_name %>
   </h1>
 
   <nav class="dock">
-    <%= dock_item 'Home',
+    <%= dock_item "Home",
       root_path,
-      tooltip: 'See all your organizations.',
-      icon: 'home' %>
-    <%= dock_item 'Cards',
+      tooltip: "See all your organizations.",
+      icon: "home" %>
+    <%= dock_item "Cards",
       my_cards_path,
-      tooltip: 'See all your cards.',
-      icon: 'card' %>
-    <%= dock_item 'Receipts',
+      tooltip: "See all your cards.",
+      icon: "card" %>
+    <%= dock_item "Receipts",
       my_inbox_path,
-      tooltip: 'See transactions awaiting receipts.',
-      icon: 'payment-docs',
+      tooltip: "See transactions awaiting receipts.",
+      icon: "payment-docs",
       async_badge: my_missing_receipts_icon_path %>
-    <%= dock_item 'Settings',
+    <%= dock_item "Settings",
       my_settings_path,
-      tooltip: 'Edit account settings.',
-      icon: 'settings' %>
+      tooltip: "Edit account settings.",
+      icon: "settings" %>
   </nav>
 
   <% if current_user.events.not_demo_mode.funded.exists? %>

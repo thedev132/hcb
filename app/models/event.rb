@@ -192,33 +192,33 @@ class Event < ApplicationRecord
     # will be displayed for the event.
     omit_stats: {
       qualifier: :omit_stats?,
-      emoji: '🏦',
-      description: 'Omitted from stats'
+      emoji: "🏦",
+      description: "Omitted from stats"
     },
     transparent: {
       qualifier: :is_public?,
-      emoji: '📈',
-      description: 'Transparency mode enabled'
+      emoji: "📈",
+      description: "Transparency mode enabled"
     },
     hidden: {
       qualifier: :hidden_at?,
-      emoji: '🕵️‍♂️',
-      description: 'Hidden'
+      emoji: "🕵️‍♂️",
+      description: "Hidden"
     },
     organized_by_hack_clubbers: {
       qualifier: :organized_by_hack_clubbers?,
-      emoji: '🦕',
-      description: 'Organized by Hack Clubbers'
+      emoji: "🦕",
+      description: "Organized by Hack Clubbers"
     },
     demo_mode: {
       qualifier: :demo_mode?,
-      emoji: '🧪',
-      description: 'Demo Account'
+      emoji: "🧪",
+      description: "Demo Account"
     },
     winter_hardware_grant: {
       qualifier: :hardware_grant?,
-      emoji: '❄️',
-      description: 'Winter hardware grant'
+      emoji: "❄️",
+      description: "Winter hardware grant"
     }
   }.freeze
 

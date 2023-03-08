@@ -1,19 +1,19 @@
-<% title 'Create an invoice' %>
+<% title "Create an invoice" %>
 <% page_xs %>
-<%= render 'events/nav' %>
+<%= render "events/nav" %>
 
 <h1>Send an Invoice</h1>
 
 <% if @event.demo_mode? %>
   <p class="flex items-center info line-height-3">
-    <%= inline_icon 'important', size: 32, class: 'mr1' %>
+    <%= inline_icon "important", size: 32, class: "mr1" %>
     While in demo mode, invoices can't be created or sent.
   </p>
 <% end %>
 
 <% if @event.invoices.none? %>
   <p class="flex items-center info line-height-3">
-    <%= inline_icon 'important', size: 32, class: 'mr1' %>
+    <%= inline_icon "important", size: 32, class: "mr1" %>
     We recommend sending yourself an invoice for $1 to understand what your
     sponsors will see.
   </p>
@@ -26,4 +26,4 @@
   </p>
 <% end %>
 
-<%= render 'form', invoice: @invoice, sponsor: @sponsor %>
+<%= render "form", invoice: @invoice, sponsor: @sponsor %>

@@ -1,16 +1,16 @@
 <p class="muted mb1">This person will have full access to your event finances.</p>
 
 <%= form_with(model: invite, local: true, url: event_organizer_position_invites_path) do |form| %>
-  <%= form_errors invite, 'user' %>
+  <%= form_errors invite, "user" %>
 
   <div class="field flex items-end">
     <div class="mr2 flex-auto">
       <%= form.label :email %>
       <%= form.email_field :email %>
     </div>
-    <%= form.submit 'Send' %>
+    <%= form.submit "Send" %>
   </div>
-  <% admin_tools('mt1') do %>
+  <% admin_tools("mt1") do %>
     <div class="field field--checkbox m0">
       <%= form.check_box :is_signee %>
       <%= form.label :is_signee, "Signed contract" %>

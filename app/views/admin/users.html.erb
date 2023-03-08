@@ -5,7 +5,7 @@
 <%= paginate @users %>
 
 <%= form_with local: true, url: users_admin_index_path, method: :get do |form| %>
-  <%= form.text_field :q, value: params[:q], placeholder: 'Search' %>
+  <%= form.text_field :q, value: params[:q], placeholder: "Search" %>
 
   <%= form.collection_select(:event_id, Event.reorder(Event::CUSTOM_SORT), :id, :admin_dropdown_description, { include_blank: true, selected: @event_id }, { width: 150, style: "max-width: 150px" }) %>
   |
@@ -13,7 +13,7 @@
   <%= form.submit "Search" %>
 <% end %>
 
-<%= page_entries_info @users, entry_name: 'users' %>
+<%= page_entries_info @users, entry_name: "users" %>
 
 <table>
   <thead>
@@ -43,7 +43,7 @@
           <% end %>
         </td>
         <td>
-          <%= link_to 'Impersonate', impersonate_users_path(user_id: user.id), data: { confirm: "Are you sure?" } %>
+          <%= link_to "Impersonate", impersonate_users_path(user_id: user.id), data: { confirm: "Are you sure?" } %>
         </td>
       </tr>
     <% end %>

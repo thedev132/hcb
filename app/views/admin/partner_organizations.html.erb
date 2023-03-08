@@ -4,7 +4,7 @@
 
 <%= paginate @partner_organizations %>
 
-<%= page_entries_info @partner_organizations, entry_name: 'organizations' %>
+<%= page_entries_info @partner_organizations, entry_name: "organizations" %>
 
 <table>
   <thead>
@@ -34,7 +34,7 @@
             <%= event.name.upcase %>
           <% end %>
         </td>
-        <td style="<%= 'color: lightgray;' if event.balance.zero? %>">
+        <td style="<%= "color: lightgray;" if event.balance.zero? %>">
           <%= render_money event.balance %>
         </td>
         <td>

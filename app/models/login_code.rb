@@ -38,7 +38,7 @@ class LoginCode < ApplicationRecord
 
   # "123456" -> "123-456"
   def pretty
-    code&.scan(/.../)&.join('-')
+    code&.scan(/.../)&.join("-")
   end
 
   def active?
@@ -58,7 +58,7 @@ class LoginCode < ApplicationRecord
 
     loop do
       self.code = SecureRandom.random_number(999_999).to_s
-      self.code = code.ljust(6, '0') # left pad w/ zero
+      self.code = code.ljust(6, "0") # left pad w/ zero
 
       break unless LoginCode.active.find_by(code: code)
     end

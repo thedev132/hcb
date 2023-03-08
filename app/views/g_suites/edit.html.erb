@@ -1,13 +1,13 @@
-<% 'Edit G Suite' %>
+<% "Edit G Suite" %>
 <% page_sm %>
 
-<%= link_to 'All G Suites', g_suites_path, class: 'breadcrumb' %>
-<%= link_to 'This G Suite', @g_suite, class: 'breadcrumb' %>
+<%= link_to "All G Suites", g_suites_path, class: "breadcrumb" %>
+<%= link_to "This G Suite", @g_suite, class: "breadcrumb" %>
 
 <h1>Editing G Suite</h1>
 
 <%= form_with(model: @g_suite, local: true, url: event_g_suite_path(@g_suite)) do |form| %>
-  <%= form_errors @g_suite, 'G Suite' %>
+  <%= form_errors @g_suite, "G Suite" %>
 
   <div class="field">
     <%= form.label :domain %>

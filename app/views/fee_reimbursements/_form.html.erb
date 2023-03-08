@@ -8,7 +8,7 @@
   <% end %>
 
   <div class="field">
-    <%= form.label :amount, 'Amount to reimburse' %>
+    <%= form.label :amount, "Amount to reimburse" %>
     <div class="flex items-center">
       <span class="bold muted" style="width: 1rem;">$</span>
       <%= form.number_field :amount, value: fee_reimbursement.amount / 100.0, step: 0.01, placeholder: fee_reimbursement.amount %>

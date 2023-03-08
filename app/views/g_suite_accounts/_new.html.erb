@@ -1,8 +1,8 @@
 <%= form_with(model: [@g_suite, g_suite_account], local: true) do |form| %>
-  <%= form_errors g_suite_account, 'account' %>
+  <%= form_errors g_suite_account, "account" %>
 
   <h3 class="mb1">
-    Add <%= @g_suite.accounts.any? ? 'another' : 'your first' %> account
+    Add <%= @g_suite.accounts.any? ? "another" : "your first" %> account
   </h3>
 
   <div class="flex items-center">
@@ -18,7 +18,7 @@
   <div class="field">
     <%= form.label :address %>
     <div class="flex items-center">
-      <%= form.text_field :address, value: example_email_username, class: 'input--narrow right-align', required: true %>
+      <%= form.text_field :address, value: example_email_username, class: "input--narrow right-align", required: true %>
       <span style="margin-left: 2px;">@<%= g_suite_account.g_suite.domain %></span>
     </div>
   </div>
@@ -28,6 +28,6 @@
     <span class="block muted h5">(To sign into your account for the first time, you’ll receive your initial password to this email.)</span>
   </div>
   <div class="actions">
-    <%= form.submit 'Create', disabled: !organizer_signed_in? %>
+    <%= form.submit "Create", disabled: !organizer_signed_in? %>
   </div>
 <% end %>

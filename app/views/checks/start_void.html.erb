@@ -1,4 +1,4 @@
-<% title 'Void a Check' %>
+<% title "Void a Check" %>
 <% page_sm %>
 
 <h1>Void a check to <%= @check.lob_address.name %></h1>
@@ -7,7 +7,7 @@
 <% if false %>
 <div class="card border b--warning pb0 mt3 mb3">
   #<div class="flex items-center warning">
-    #<%= inline_icon 'important', size: 32, class: 'mr1' %>
+    #<%= inline_icon "important", size: 32, class: "mr1" %>
     #<p class="bold mt0 mb0">Voiding should be used as a last resort, read ahead and proceed with caution</p>
   #</div>
   #<% if @check.approved? %>
@@ -32,5 +32,5 @@
 <%#= link_to "Void this #{render_money_short @check.amount} check", check_void_path(@check), method: :post, class: 'btn bg-error right' %>
 <%= link_to "Email about voiding #{render_money_short @check.amount} check",
   "mailto:bank@hackclub.com?subject=[URGENT] void check ##{@check.check_number}",
-  class: 'btn bg-error right' %>
-<%= link_to 'Cancel', check_path(@check), class: 'btn bg-muted' %>
+  class: "btn bg-error right" %>
+<%= link_to "Cancel", check_path(@check), class: "btn bg-muted" %>

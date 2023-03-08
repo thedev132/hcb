@@ -108,14 +108,14 @@ class HcbCode < ApplicationRecord
   end
 
   has_many :canonical_pending_transactions,
-           foreign_key: 'hcb_code',
-           primary_key: 'hcb_code',
+           foreign_key: "hcb_code",
+           primary_key: "hcb_code",
            inverse_of: :local_hcb_code
 
   has_many :canonical_transactions,
            -> { order("canonical_transactions.date desc, canonical_transactions.id desc") },
-           foreign_key: 'hcb_code',
-           primary_key: 'hcb_code',
+           foreign_key: "hcb_code",
+           primary_key: "hcb_code",
            inverse_of: :local_hcb_code
 
   def event

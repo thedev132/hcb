@@ -1,9 +1,9 @@
 <% title "Disbursement to #{@disbursement.event.name}" %>
 <% page_sm %>
-<% render 'events/nav' %>
+<% render "events/nav" %>
 
-<% admin_tools('mt3 mb0') do %>
-  <%= link_to 'All disbursements', disbursements_path, class: 'breadcrumb' %>
+<% admin_tools("mt3 mb0") do %>
+  <%= link_to "All disbursements", disbursements_path, class: "breadcrumb" %>
 <% end %>
 
 <% admin_tools do %>
@@ -77,7 +77,7 @@
         <strong>Confirmation letter</strong>
           <span class="muted">
             <a href="/disbursements/<%= @disbursement.id %>/confirmation.pdf" target="_blank">
-            <%= organizer_signed_in? ? 'View confirmation letter' : 'Sign in to view' %>
+            <%= organizer_signed_in? ? "View confirmation letter" : "Sign in to view" %>
             </a>
           </span>
       </p>
@@ -85,9 +85,9 @@
     </section>
 
     <% if @disbursement.pending? %>
-      <% admin_tools('mt2') do %>
-        <%= link_to 'Mark fulfilled', disbursement_mark_fulfilled_path(@disbursement), method: :post, class: 'btn bg-success', data: { confirm: "WOAH THERE! This will prevent Bank from auto-fulfilling this disbursement. I hope you know what you're doing!" } %>
-        <%= link_to 'Reject', disbursement_reject_path(@disbursement), method: :post, class: 'btn bg-error' %>
+      <% admin_tools("mt2") do %>
+        <%= link_to "Mark fulfilled", disbursement_mark_fulfilled_path(@disbursement), method: :post, class: "btn bg-success", data: { confirm: "WOAH THERE! This will prevent Bank from auto-fulfilling this disbursement. I hope you know what you're doing!" } %>
+        <%= link_to "Reject", disbursement_reject_path(@disbursement), method: :post, class: "btn bg-error" %>
       <% end %>
     <% end %>
   </section>

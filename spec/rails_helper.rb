@@ -5,12 +5,12 @@ require "spec_helper"
 ENV["RAILS_ENV"] ||= "test"
 require File.expand_path("../config/environment", __dir__)
 # PaperTrail helper to make it easier to use PaperTrail in specs
-require 'paper_trail/frameworks/rspec'
+require "paper_trail/frameworks/rspec"
 # Prevent database truncation if the environment is production
 abort("The Rails environment is running in production mode!") if Rails.env.production?
 require "rspec/rails"
 # Add additional requires below this line. Rails is not loaded until this point!
-require_relative 'support/factory_bot'
+require_relative "support/factory_bot"
 
 
 # Requires supporting ruby files with custom matchers and macros, etc, in

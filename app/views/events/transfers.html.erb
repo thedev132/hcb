@@ -71,15 +71,15 @@
           <td class="transaction__icon">
             <% if d.is_a?(Check) %>
               <span class="tooltipped tooltipped--e" aria-label="Mailed check">
-                <%= inline_icon 'email' %>
+                <%= inline_icon "email" %>
               </span>
             <% elsif d.is_a?(AchTransfer) %>
               <span class="tooltipped tooltipped--e" aria-label="ACH transfer">
-                <%= inline_icon 'bank-account' %>
+                <%= inline_icon "bank-account" %>
               </span>
             <% else %>
               <span class="tooltipped tooltipped--e" aria-label="Hack Club Bank transfer">
-                <%= inline_icon 'door-leave' %>
+                <%= inline_icon "door-leave" %>
               </span>
             <% end %>
           </td>
@@ -118,7 +118,7 @@
 
 </article>
 <% else %>
-  <%= blankslate 'No transfers yet' %>
+  <%= blankslate "No transfers yet" %>
 <% end %>
 
 <section class="modal modal--scroll bg-snow" data-behavior="modal" role="dialog" id="send_transfer">

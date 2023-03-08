@@ -140,7 +140,7 @@ end
 
 group :development, :staging do
   # Prints out how many SQL queries were executed
-  gem 'query_count'
+  gem "query_count"
 end
 
 group :development do
@@ -155,10 +155,10 @@ group :development do
   gem "solargraph", require: false
   gem "solargraph-rails", "~> 0.2.0", require: false
   # For https://marketplace.visualstudio.com/items?itemName=tomclose.format-erb
-  gem 'htmlbeautifier', require: false
+  gem "htmlbeautifier", require: false
 
   # adds comments to models with database fields
-  gem 'annotate'
+  gem "annotate"
 
   # for running webpack-dev-server and rails server together via Procfile
   gem "foreman"
@@ -172,9 +172,9 @@ group :test do
   # gem 'chromedriver-helper'
 
   # For creating test data in the database
-  gem 'factory_bot_rails'
+  gem "factory_bot_rails"
   # For initializing fake values
-  gem 'faker'
+  gem "faker"
 end
 
 group :development, :test do
@@ -185,7 +185,7 @@ end
 
 group :production do
   # Performance tracking
-  gem 'skylight'
+  gem "skylight"
 
   # Enable compression in production
   # gem "heroku-deflater"
@@ -206,11 +206,11 @@ gem "chronic"
 gem "dry-validation"
 gem "geocoder" # lookup lat/lng for Stripe Cards shipment tracking
 gem "grape" # API v3
-gem 'grape-entity' # For Grape::Entity ( https://github.com/ruby-grape/grape-entity )
-gem 'grape-kaminari'
-gem 'grape-route-helpers'
+gem "grape-entity" # For Grape::Entity ( https://github.com/ruby-grape/grape-entity )
+gem "grape-kaminari"
+gem "grape-route-helpers"
 gem "grape-swagger" # API v3
-gem 'grape-swagger-entity', '~> 0.3'
+gem "grape-swagger-entity", "~> 0.3"
 gem "hashid-rails", "~> 1.0"
 gem "hiredis"
 gem "invisible_captcha"
@@ -220,7 +220,7 @@ gem "money-rails" # back cent fields as money objects
 gem "namae" # multi-cultural human name parser
 gem "paper_trail" # track changes on models
 gem "pg_search"
-gem 'premailer-rails' # css to inline styles for emails
+gem "premailer-rails" # css to inline styles for emails
 gem "rack-attack"
 gem "safely_block"
 gem "selenium-webdriver", "4.0.0.beta3"

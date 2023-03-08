@@ -130,15 +130,15 @@ class PartneredSignup < ApplicationRecord
   end
 
   def api_status
-    return 'rejected' if rejected?
-    return 'approved' if completed?
+    return "rejected" if rejected?
+    return "approved" if completed?
 
     # Applicant needs to sign for the contract for the SUP to be considered
     # fully submitted from the Partner's perspective.
-    return 'unsubmitted' if unsubmitted? || submitted?
-    return 'submitted' if applicant_signed?
+    return "unsubmitted" if unsubmitted? || submitted?
+    return "submitted" if applicant_signed?
 
-    ''
+    ""
   end
 
 end

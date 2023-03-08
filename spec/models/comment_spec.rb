@@ -17,7 +17,7 @@ RSpec.describe Comment, type: :model, versioning: true do
 
   it "is versioned by PaperTrail on edit" do
     expect(comment.versions.size).to eq(1)
-    comment.update(content: 'Edited content')
+    comment.update(content: "Edited content")
     expect(comment.versions.size).to eq(2)
   end
 

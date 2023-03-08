@@ -1,8 +1,8 @@
-<% title 'Invite another member' %>
+<% title "Invite another member" %>
 <% page_sm %>
 
-<%= link_to @invite.event.name, @invite.event, class: 'breadcrumb' %>
+<%= link_to @invite.event.name, @invite.event, class: "breadcrumb" %>
 <h1>Invite Another Member</h1>
 
 <!-- Does this page only get rendered when validation fails? -->
-<%= render 'form', invite: @invite %>
+<%= render "form", invite: @invite %>

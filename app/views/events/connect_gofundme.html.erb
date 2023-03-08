@@ -1,6 +1,6 @@
 <% title "Connect GoFundMe" %>
 <% page_md %>
-<%= render 'events/nav', selected: :documentation %>
+<%= render "events/nav", selected: :documentation %>
 
 <% content_for :head do %>
   <% img = "https://workshop-cards.hackclub.com/#{url_encode(@document_title)}.png?theme=light&fontSize=200px&caption=Documentation&brand=Bank" %>
@@ -20,7 +20,7 @@
   <div class="container container--md">
   <h1 class="mb0" style="border:none"><%= @document_title %></h1>
   <h3 class="mt0 mb2" style="color: gray; font-weight: 500;"><%= @document_subtitle %></h3>
-  <%= image_tag @document_image, class: 'w-100' if @document_image %>
+  <%= image_tag @document_image, class: "w-100" if @document_image %>
 
 <p>Hack Club Bank supports fundraiser payouts to your organization’s account on Bank! Here are the different ways to get your donations from your GoFundMe fundraiser into Hack Club Bank.</p>
 <ul>

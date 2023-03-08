@@ -25,7 +25,7 @@ class Tag < ApplicationRecord
   has_and_belongs_to_many :hcb_codes
 
   validates :label, presence: true, uniqueness: { scope: :event_id, case_sensitive: false }
-  validates_format_of :color, with: /\A#(?:\h{3}){1,2}\z/, allow_nil: true, message: 'must be a color hex code'
+  validates_format_of :color, with: /\A#(?:\h{3}){1,2}\z/, allow_nil: true, message: "must be a color hex code"
 
   def removal_confirmation_message
     message = "Are you sure you'd like to delete this tag?"

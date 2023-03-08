@@ -9,10 +9,10 @@
     <%= csp_meta_tag %>
     <meta name="theme-color" content="#f9fafc">
 
-    <%= javascript_include_tag 'dark', 'data-turbo-track': 'reload' %>
-    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbo-track': 'reload' %>
-    <%= javascript_include_tag 'bundle', 'data-turbo-track': 'reload', defer: true %>
-    <%= javascript_include_tag 'application', 'data-turbo-track': 'reload', defer: true %>
+    <%= javascript_include_tag "dark", 'data-turbo-track': "reload" %>
+    <%= stylesheet_link_tag "application", media: "all", 'data-turbo-track': "reload" %>
+    <%= javascript_include_tag "bundle", 'data-turbo-track': "reload", defer: true %>
+    <%= javascript_include_tag "application", 'data-turbo-track': "reload", defer: true %>
 
     <% if signed_in? %>
       <script>document.addEventListener("turbo:load", () => { Headway.init({ selector: "#changelog-icon", account:  "7z8ovy", trigger: "#changelog-icon" }) })</script>
@@ -34,7 +34,7 @@
     <%= yield(:head) if content_for?(:head) %>
   </head>
   <body <%= yield(:body_attributes) if content_for?(:body_attributes) %> class="bg-snow <%= content_for :page_class %> <%= "season-#{current_season}" if current_season %>" data-turbo="<%= Flipper.enabled?(:turbo_2023_01_23, current_user) %>">
-    <%= react_component 'tour/TourOverlay',
+    <%= react_component "tour/TourOverlay",
                         tour: @tour&.name,
                         id: @tour&.id,
                         step: @tour&.step || 0,
@@ -45,7 +45,7 @@
       <div class="w-100 px3 bg-white transparency-banner" data-behavior="hide_iframe">
         <p class="h5 medium center mt1 mb1">
           This Hack Club Bank project has been made public so you can see all its finances.
-          Hey, <%= link_to 'what’s Bank?', 'https://hackclub.com/bank/', target: '_blank', class: 'primary' %>
+          Hey, <%= link_to "what’s Bank?", "https://hackclub.com/bank/", target: "_blank", class: "primary" %>
         </p>
       </div>
     <% end %>
@@ -55,7 +55,7 @@
         <hr class="m0 p0 b--warning">
         <span class="m0 badge rounded-bottom bg-warning pointer" data-behavior="modal_trigger" data-modal="demo_mode">
           Demo Mode
-          <%= inline_icon 'info', size: 18 %>
+          <%= inline_icon "info", size: 18 %>
         </span>
       </div>
       <section class="modal modal--scroll bg-snow" data-behavior="modal" role="dialog" id="demo_mode">
@@ -65,7 +65,7 @@
             Your account is in <strong>demo mode</strong>. You can sign in and poke around, but many features are disabled. Once you're ready to activate your account, you can schedule a call with the Hack Club Bank team.
           </p>
           <% if @event.demo_mode_request_meeting_at.blank? %>
-            <%= link_to event_demo_mode_request_meeting_path(@event), method: :post, class: 'btn btn-success' do %>
+            <%= link_to event_demo_mode_request_meeting_path(@event), method: :post, class: "btn btn-success" do %>
               Request activation
             <% end %>
             <p class="muted">After requesting, we'll be in touch within 24 hours on business days.</p>
@@ -80,8 +80,8 @@
 
     <%# LET THERE BE SNOW %>
     <% unless @hide_holiday_features || !winter? %>
-      <%= react_component 'holiday/SnowToggl', {}, { style: "position:fixed;left:1rem;bottom:1rem;z-index:99" } %>
-      <%= react_component 'holiday/Snow', {}, { style: "height:100%" } %>
+      <%= react_component "holiday/SnowToggl", {}, { style: "position:fixed;left:1rem;bottom:1rem;z-index:99" } %>
+      <%= react_component "holiday/Snow", {}, { style: "height:100%" } %>
     <% end %>
 
     <%# ghosts and ghouls %>
@@ -96,8 +96,8 @@
           <div class="welcome" data-controller="welcome" data-welcome-organizer-position-value="<%= @organizer_position&.id %>">
             <div class="welcome__image mb3">
               <div class="welcome__shine"></div>
-              <%= image_tag "logo-production-dark.svg", width: 100, class: 'logo-dark' %>
-              <%= image_tag "logo-production.svg", width: 100, class: 'logo' %>
+              <%= image_tag "logo-production-dark.svg", width: 100, class: "logo-dark" %>
+              <%= image_tag "logo-production.svg", width: 100, class: "logo" %>
             </div>
 
             <div class="welcome__content">
@@ -115,29 +115,29 @@
         <% end %>
 
         <aside class="app__sidebar">
-          <%= render 'application/header' %>
-          <%= render 'application/flash' %>
+          <%= render "application/header" %>
+          <%= render "application/flash" %>
           <%= yield(:nav) %>
         </aside>
         <article class="container app__content <%= content_for :container_class %>" style="<%= content_for :container_style %>">
           <%= yield(:container) %>
           <%= yield %>
-          <%= render 'application/footer' unless (@no_app_shell || @hide_footer) %>
+          <%= render "application/footer" unless (@no_app_shell || @hide_footer) %>
         </article>
       </main>
     <% else %>
-      <%= render 'application/header' unless @no_app_shell %>
+      <%= render "application/header" unless @no_app_shell %>
       <main class="container <%= content_for :container_class %>" style="<%= content_for :container_style %>">
-        <%= render 'application/flash' %>
+        <%= render "application/flash" %>
         <%= yield %>
-        <%= render 'application/footer' unless (@no_app_shell || @hide_footer) %>
+        <%= render "application/footer" unless (@no_app_shell || @hide_footer) %>
       </main>
     <% end %>
 
-    <%= render 'application/feedback_form' if signed_in? %>
+    <%= render "application/feedback_form" if signed_in? %>
 
     <% if Rails.env.production? %>
-      <%= render 'application/fullstory' if current_user&.sessions_reported %>
+      <%= render "application/fullstory" if current_user&.sessions_reported %>
     <% end %>
 
     <% if flash[:confetti] %>

@@ -2,8 +2,8 @@
   <%= form_errors transaction %>
 
   <div class="field">
-    <%= form.label :display_name, 'Display name' %>
-    <%= form.text_field :display_name, placeholder: transaction.name, autofocus: true, style: 'max-width: none;' %>
+    <%= form.label :display_name, "Display name" %>
+    <%= form.text_field :display_name, placeholder: transaction.name, autofocus: true, style: "max-width: none;" %>
     <span class="muted block h5">
       Give this transaction a more descriptive name to improve your records.
     </span>
@@ -13,15 +13,15 @@
     <%= form.fields_for :fee_relationship do |fr_form| %>
       <% if transaction.potential_fee_reimbursement? %>
         <div class="field">
-          <%= form.label :fee_reimbursement, 'Fee refund' %>
-          <%= form.collection_select(:fee_reimbursement_id, FeeReimbursement.pending.reorder(:amount) + [transaction.fee_reimbursement].compact, :id, :admin_dropdown_description, include_blank: 'Select one…') %>
+          <%= form.label :fee_reimbursement, "Fee refund" %>
+          <%= form.collection_select(:fee_reimbursement_id, FeeReimbursement.pending.reorder(:amount) + [transaction.fee_reimbursement].compact, :id, :admin_dropdown_description, include_blank: "Select one…") %>
         <p class="muted h5 mb0">If this isn’t a transfer to reimburse a Stripe fee, leave this field blank.</p>
         </div>
       <% end %>
       <% if transaction.potential_check? && (Check.in_transit.any? || Check.refunded_but_needs_match.any?) %>
         <div class="field">
-          <%= form.label :check, 'Check' %>
-          <%= form.collection_select(:check_id, Check.where(amount: transaction.amount.abs), :id, :admin_dropdown_description, include_blank: 'Select one…') %>
+          <%= form.label :check, "Check" %>
+          <%= form.collection_select(:check_id, Check.where(amount: transaction.amount.abs), :id, :admin_dropdown_description, include_blank: "Select one…") %>
           <p class="muted h5 mb2">If this isn't a transaction made from a Check, leave this field blank.</p>
           <% if transaction.bank_account.is_positive_pay %>
             <% if transaction.amount > 0 %>
@@ -36,62 +36,62 @@
         </div>
       <% end %>
       <% if transaction.potential_ach_transfer? %>
-          <%= form.label :ach_transfer, 'ACH Transfer' %>
-          <%= form.collection_select(:ach_transfer_id, AchTransfer.in_transit, :id, :admin_dropdown_description, include_blank: 'Select one…') %>
+          <%= form.label :ach_transfer, "ACH Transfer" %>
+          <%= form.collection_select(:ach_transfer_id, AchTransfer.in_transit, :id, :admin_dropdown_description, include_blank: "Select one…") %>
           <p class="muted h5 mb2">If this isn't a transaction from an ACH Transfer, leave this field blank.</p>
       <% end %>
       <% if transaction.potential_disbursement? %>
-          <%= form.label :disbursement, 'Disbursement' %>
-          <%= form.collection_select(:disbursement_id, Disbursement.processing.sort_by { |d| d.amount } + [transaction.disbursement].compact, :id, :admin_dropdown_description, include_blank: 'Select one…') %>
+          <%= form.label :disbursement, "Disbursement" %>
+          <%= form.collection_select(:disbursement_id, Disbursement.processing.sort_by { |d| d.amount } + [transaction.disbursement].compact, :id, :admin_dropdown_description, include_blank: "Select one…") %>
           <p class="muted h5 mb2">If this isn't a transaction from a disbursement, leave this field blank.</p>
       <% end %>
       <% if transaction.potential_emburse? %>
         <div class="field lcr-select-target">
-          <%= form.label :emburse_transfer, 'Emburse transfer' %>
+          <%= form.label :emburse_transfer, "Emburse transfer" %>
           <%= form.collection_select(:emburse_transfer_id, EmburseTransfer.unpaired.reorder(:load_amount) + [transaction.emburse_transfer].compact,
-                                     :id, :description, include_blank: 'Select one…') %>
+                                     :id, :description, include_blank: "Select one…") %>
         </div>
         <p class="muted h5 mb2">If this isn’t from transferring money to Emburse to fulfill a Load Card Request, leave this field blank.</p>
       <% end %>
       <% if transaction.potential_invoice_payout? %>
         <div class="field invoicepayout-select-target">
-          <%= form.label :invoice_payout, 'Invoice payout' %>
+          <%= form.label :invoice_payout, "Invoice payout" %>
           <%= form.collection_select(
                 :invoice_payout_id,
             InvoicePayout.lacking_transaction.reorder(:amount) + [transaction.invoice_payout].compact, # .compact to remove nil values if transaction.invoice_payout is nil
             :id,
             :dropdown_description,
-            include_blank: 'Select one…'
+            include_blank: "Select one…"
               ) %>
         </div>
       <% end %>
       <% if transaction.potential_donation_payout? %>
         <div class="field">
-          <%= form.label :donation_payout, 'Donation payout' %>
+          <%= form.label :donation_payout, "Donation payout" %>
           <%= form.collection_select(
                 :donation_payout_id,
             DonationPayout.lacking_transaction.reorder(:amount) + [transaction.donation_payout].compact, # .compact to remove nil values if transaction.donation_payout is nil
             :id,
             :dropdown_description,
-            include_blank: 'Select one…'
+            include_blank: "Select one…"
               ) %>
         </div>
       <% end %>
 
       <div class="field event-select-target">
         <%= fr_form.label :event %>
-        <%= fr_form.collection_select(:event_id, Event.reorder(:name), :id, :admin_dropdown_description, include_blank: 'Select one…') %>
+        <%= fr_form.collection_select(:event_id, Event.reorder(:name), :id, :admin_dropdown_description, include_blank: "Select one…") %>
       </div>
 
-      <%= form.label :is_event_related, class: 'field field--checkbox mb1' do %>
+      <%= form.label :is_event_related, class: "field field--checkbox mb1" do %>
         <%= form.check_box :is_event_related %>
         Is event-related?
       <% end %>
-      <%= fr_form.label :fee_applies, class: 'field field--checkbox mb1' do %>
+      <%= fr_form.label :fee_applies, class: "field field--checkbox mb1" do %>
         &nbsp;&nbsp;&nbsp;&nbsp;<%= fr_form.check_box :fee_applies %>
         Should charge fee?
       <% end %>
-      <%= fr_form.label :is_fee_payment, class: 'field field--checkbox mb2' do %>
+      <%= fr_form.label :is_fee_payment, class: "field field--checkbox mb2" do %>
         &nbsp;&nbsp;&nbsp;&nbsp;<%= fr_form.check_box :is_fee_payment %>
         Is fee payment?
       <% end %>
@@ -99,6 +99,6 @@
   <% end %>
 
   <div class="actions">
-    <%= form.submit 'Rename transaction', disabled: !current_user %>
+    <%= form.submit "Rename transaction", disabled: !current_user %>
   </div>
 <% end %>

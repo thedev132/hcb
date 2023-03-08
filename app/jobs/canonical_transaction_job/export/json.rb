@@ -9,7 +9,7 @@ module CanonicalTransactionJob
 
         datetime = Time.now.to_formatted_s(:db)
         title = "transaction_export_#{@event.name}_#{datetime}"
-                .gsub(/[^0-9a-z_]/i, '-').gsub(' ', '_')
+                .gsub(/[^0-9a-z_]/i, "-").gsub(" ", "_")
         title += ".json"
 
         json = CanonicalTransactionService::Export::Json.new(event_id: event_id).run

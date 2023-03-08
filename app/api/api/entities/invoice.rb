@@ -23,7 +23,7 @@ module Api
             void
           ]
         } do |invoice, options|
-          invoice.aasm_state.split('_').first # remove the "_v2" suffix
+          invoice.aasm_state.split("_").first # remove the "_v2" suffix
         end
 
       end

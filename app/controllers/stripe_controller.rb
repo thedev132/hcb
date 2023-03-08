@@ -7,7 +7,7 @@ class StripeController < ApplicationController
 
   def webhook
     payload = request.body.read
-    sig_header = request.headers['Stripe-Signature']
+    sig_header = request.headers["Stripe-Signature"]
 
     begin
       event = StripeService.construct_webhook_event(payload, sig_header)

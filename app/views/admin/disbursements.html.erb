@@ -5,7 +5,7 @@
 <%= paginate @disbursements %>
 
 <%= form_with local: true, url: disbursements_admin_index_path, method: :get do |form| %>
-  <%= form.text_field :q, value: params[:q], placeholder: 'Search' %>
+  <%= form.text_field :q, value: params[:q], placeholder: "Search" %>
   <%= form.label :reviewing do %>
     <%= form.check_box :reviewing, checked: @reviewing %>
     Reviewing
@@ -28,7 +28,7 @@
   <%= form.submit "Search" %>
 <% end %>
 
-<%= page_entries_info @disbursements, entry_name: 'disbursements' %>
+<%= page_entries_info @disbursements, entry_name: "disbursements" %>
 
 <table>
   <thead>

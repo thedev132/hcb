@@ -1,4 +1,4 @@
-<% title 'Emburse cards' %>
+<% title "Emburse cards" %>
 
 <h1>
   Emburse cards
@@ -20,9 +20,9 @@
       <tr>
         <td><%= user_mention card.user %></td>
         <td><%= card.event.name %></td>
-        <td><%= link_to 'Show', card %></td>
-        <td><%= link_to 'Edit', edit_emburse_card_path(card) %></td>
-        <td><%= link_to 'Destroy', card, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to "Show", card %></td>
+        <td><%= link_to "Edit", edit_emburse_card_path(card) %></td>
+        <td><%= link_to "Destroy", card, method: :delete, data: { confirm: "Are you sure?" } %></td>
       </tr>
     <% end %>
   </tbody>

@@ -1,80 +1,80 @@
 <% content_for(:nav) do %>
-  <%= link_to @event, class: 'text-decoration-none pt2' do %>
+  <%= link_to @event, class: "text-decoration-none pt2" do %>
     <h1 class="border-none h1 mt0 mb0 primary">
       <%= @event.name %>
     </h1>
   <% end %>
   <div>
-    <% admin_tools('m0 p0 badge mb2', 'span') do %>
+    <% admin_tools("m0 p0 badge mb2", "span") do %>
       <span class="m0 badge bg-muted pointer" onClick="navigator.clipboard.writeText(<%= @event.name.to_json %>);">
         copy event name
       </span>
     <% end %>
   </div>
   <nav class="dock dock--desktop mt2">
-    <%= dock_item 'Home',
+    <%= dock_item "Home",
       event_path(id: @event.slug),
-      tooltip: 'View your transactions',
-      icon: 'home',
+      tooltip: "View your transactions",
+      icon: "home",
       selected: local_assigns[:selected] == :transactions %>
     <h4 class="mb0 h5 muted">Receive</h4>
     <hr>
-    <%= dock_item 'Donations',
+    <%= dock_item "Donations",
       @event.partner.external? ? event_partner_donation_overview_path(event_id: @event.slug) :
       event_donation_overview_path(event_id: @event.slug),
-      tooltip: 'Receive donations online',
-      icon: 'support',
+      tooltip: "Receive donations online",
+      icon: "support",
       data: { tour_step: "donations" },
       selected: local_assigns[:selected] == :donations unless !@event.approved? %>
-    <%= dock_item 'Invoices',
+    <%= dock_item "Invoices",
       event_invoices_path(event_id: @event.slug),
-      tooltip: 'Collect sponsor payments',
-      icon: 'briefcase',
+      tooltip: "Collect sponsor payments",
+      icon: "briefcase",
       selected: local_assigns[:selected] == :invoices unless !@event.approved? %>
     <h4 class="mb0 h5 muted">Spend</h4>
     <hr>
-    <%= dock_item 'Cards',
+    <%= dock_item "Cards",
       event_cards_overview_path(event_id: @event.slug),
-      tooltip: 'Manage team debit cards',
-      icon: 'card',
+      tooltip: "Manage team debit cards",
+      icon: "card",
       data: { tour_step: "cards" },
       selected: local_assigns[:selected] == :cards unless !@event.approved? %>
-    <%= dock_item 'Transfers',
+    <%= dock_item "Transfers",
       event_transfers_path(event_id: @event.slug),
-      tooltip: 'Send & transfer money',
-      icon: 'transactions',
+      tooltip: "Send & transfer money",
+      icon: "transactions",
       selected: local_assigns[:selected] == :transfers %>
     <hr>
-    <%= dock_item 'Perks',
+    <%= dock_item "Perks",
       event_promotions_path(event_id: @event.slug),
-      tooltip: (@event.hardware_grant? ? 'Not available for Winter Hardware Wonderland accounts' : 'Receive promos & discounts'),
-      icon: 'shirt',
+      tooltip: (@event.hardware_grant? ? "Not available for Winter Hardware Wonderland accounts" : "Receive promos & discounts"),
+      icon: "shirt",
       data: { tour_step: "perks" },
       disabled: @event.hardware_grant?,
       selected: local_assigns[:selected] == :promotions unless !@event.approved? %>
     <%= dock_item "Google #{content_tag(:span, 'Workspace', class: 'sm-hide md-hide')}",
       event_g_suite_overview_path(event_id: @event.slug),
-      tooltip: (@event.hardware_grant? ? 'Not available for Winter Hardware Wonderland accounts' : 'Set up domain Gmail'),
-      icon: 'google',
+      tooltip: (@event.hardware_grant? ? "Not available for Winter Hardware Wonderland accounts" : "Set up domain Gmail"),
+      icon: "google",
       disabled: @event.hardware_grant?,
       selected: local_assigns[:selected] == :google_workspace if @event.g_suites.exists? || Flipper.enabled?(:google_workspace, @event) %>
-    <%= dock_item 'Documentation',
+    <%= dock_item "Documentation",
       event_documentation_path(event_id: @event.slug),
-      tooltip: 'Commonly asked questions and how-tos',
-      icon: 'info',
+      tooltip: "Commonly asked questions and how-tos",
+      icon: "info",
       selected: local_assigns[:selected] == :documentation %>
-    <%= dock_item 'Settings',
+    <%= dock_item "Settings",
       edit_event_path(@event),
-      tooltip: 'Edit project settings',
-      icon: 'project-settings',
+      tooltip: "Edit project settings",
+      icon: "project-settings",
       selected: local_assigns[:selected] == :settings %>
   </nav>
   <nav class="dock dock--mobile">
-    <%= dock_item 'Home',
+    <%= dock_item "Home",
       event_path(id: @event.slug),
-      icon: 'home' %>
+      icon: "home" %>
     <button class="dock__item bg-transparent border-none menu__toggle" data-behavior="menu_toggle" data-tour-step="receive">
-      <div class="line-height-0 relative"><%= inline_icon 'support', size: 32, class: 'primary' %></div>
+      <div class="line-height-0 relative"><%= inline_icon "support", size: 32, class: "primary" %></div>
       <span class="line-height-3">Receive</span>
 
       <div class="menu__content" data-behavior="menu_content">
@@ -85,7 +85,7 @@
       </div>
     </button>
     <button class="dock__item bg-transparent border-none menu__toggle" data-behavior="menu_toggle" data-tour-step="spend">
-      <div class="line-height-0 relative"><%= inline_icon 'card', size: 32, class: 'primary' %></div>
+      <div class="line-height-0 relative"><%= inline_icon "card", size: 32, class: "primary" %></div>
       <span class="line-height-3">Spend</span>
 
       <div class="menu__content" data-behavior="menu_content">
@@ -97,17 +97,17 @@
     </button>
     <div class="dock__overflow">
       <action type="button" class="pop primary menu__toggle" data-behavior="menu_toggle" aria-expanded="false" tabindex="0">
-        <%= inline_icon 'more' %>
+        <%= inline_icon "more" %>
         <div class="menu__content" data-behavior="menu_content">
-          <%= link_to 'Promotions & perks', event_promotions_path(event_id: @event.slug) unless !@event.approved? || @event.hardware_grant? %>
-          <%= link_to 'Google Workspace', event_g_suite_overview_path(event_id: @event.slug) unless @event.hardware_grant? || (!@event.g_suites.exists? && !Flipper.enabled?(:google_workspace, @event)) %>
-          <%= link_to 'Documentation', event_documentation_path(event_id: @event.slug) %>
-          <%= link_to 'Settings', edit_event_path(@event) %>
+          <%= link_to "Promotions & perks", event_promotions_path(event_id: @event.slug) unless !@event.approved? || @event.hardware_grant? %>
+          <%= link_to "Google Workspace", event_g_suite_overview_path(event_id: @event.slug) unless @event.hardware_grant? || (!@event.g_suites.exists? && !Flipper.enabled?(:google_workspace, @event)) %>
+          <%= link_to "Documentation", event_documentation_path(event_id: @event.slug) %>
+          <%= link_to "Settings", edit_event_path(@event) %>
         </div>
       </action>
     </div>
   </nav>
-  <%= render 'events/public_message' %>
+  <%= render "events/public_message" %>
 <% end %>
 <% content_for(:container) do %>
 <% end %>

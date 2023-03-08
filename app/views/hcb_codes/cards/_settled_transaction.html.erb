@@ -94,7 +94,7 @@
         <strong>Fee</strong>
         <%= render_money fee.amount_cents_as_decimal %> (<%= render_percentage fee.event_sponsorship_fee %>)
 
-        <% admin_tools('py0') do %>
+        <% admin_tools("py0") do %>
           <%= link_to "[waive fee]", waive_fee_canonical_transaction_url(ct), method: :post if fee.amount_cents_as_decimal > 0 %>
         <% end %>
       </p>
@@ -106,7 +106,7 @@
     </p>
   <% else %>
     <% ct.fees.each do |fee| %>
-      <% admin_tools('py0') do %>
+      <% admin_tools("py0") do %>
         <%= link_to "[unwaive fee]", unwaive_fee_canonical_transaction_url(ct), method: :post if fee.revenue_waived? %>
       <% end %>
     <% end %>
@@ -115,7 +115,7 @@
   <% if ct.emburse_transfer %>
     <p>
       <strong>Transfer Request</strong>
-      <%= link_to 'View', emburse_transfer_path(ct.emburse_transfer) %>
+      <%= link_to "View", emburse_transfer_path(ct.emburse_transfer) %>
     </p>
   <% end %>
 

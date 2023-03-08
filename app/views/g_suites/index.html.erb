@@ -1,4 +1,4 @@
-<% title 'Google Workspaces' %>
+<% title "Google Workspaces" %>
 
 <h1 class="heading">
   Google Workspaces
@@ -17,14 +17,14 @@
 
   <tbody>
     <% @g_suites.each do |g_suite| %>
-      <tr class="<%= 'shade-yellow' if g_suite.needs_ops_review? %> <%= 'shade-red' if g_suite.deleted_at %>">
+      <tr class="<%= "shade-yellow" if g_suite.needs_ops_review? %> <%= "shade-red" if g_suite.deleted_at %>">
         <td><%= link_to g_suite.event.name, g_suite.event %></td>
         <td><%= g_suite.domain %></td>
         <td><%= g_suite.verification_key %></td>
         <td><%= g_suite.aasm_state %></td>
-        <td><%= link_to 'Verify', g_suite.verification_url, target: :blank %></td>
-        <td><%= link_to 'Show', g_suite_path(g_suite, event_id: g_suite.event.slug) %></td>
-        <td><%= link_to 'Edit', edit_event_g_suite_path(g_suite, event_id: g_suite.event.slug) %></td>
+        <td><%= link_to "Verify", g_suite.verification_url, target: :blank %></td>
+        <td><%= link_to "Show", g_suite_path(g_suite, event_id: g_suite.event.slug) %></td>
+        <td><%= link_to "Edit", edit_event_g_suite_path(g_suite, event_id: g_suite.event.slug) %></td>
       </tr>
     <% end %>
   </tbody>

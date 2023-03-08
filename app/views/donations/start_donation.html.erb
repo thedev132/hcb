@@ -1,4 +1,4 @@
-<% title 'Give to ' + @event.name %>
+<% title "Give to " + @event.name %>
 <% page_sm %>
 <% no_app_shell %>
 
@@ -17,7 +17,7 @@
   <meta name="description" content="<%= description %>">
 <% end %>
 
-<%= render 'donations/header' %>
+<%= render "donations/header" %>
 
 <% if @event.donation_page_message.present? %>
   <div class="container container--sm">
@@ -27,7 +27,7 @@
   </div>
 <% end %>
 
-<%= render 'donations/donation_form', donation: @donation %>
+<%= render "donations/donation_form", donation: @donation %>
 
 <% if @event.demo_mode? %>
   <div class="container container--sm">
@@ -39,4 +39,4 @@
   </div>
 <% end %>
 
-<%= render 'donations/footer' %>
+<%= render "donations/footer" %>

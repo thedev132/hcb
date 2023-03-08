@@ -5,7 +5,7 @@ require "rails_helper"
 RSpec.describe TransactionEngine::CanonicalTransactionService::Import::PlaidThatLookLikeDuplicates do
   let(:service) { TransactionEngine::CanonicalTransactionService::Import::PlaidThatLookLikeDuplicates.new }
 
-  context 'when there are 2 actually duplicate plaid_transactions' do
+  context "when there are 2 actually duplicate plaid_transactions" do
     before do
       duplicate_hash = "1234"
       2.times do
@@ -14,8 +14,8 @@ RSpec.describe TransactionEngine::CanonicalTransactionService::Import::PlaidThat
       end
     end
 
-    context 'when both are unprocessed' do
-      it 'creates only one CanonicalTransaction (i.e. skips one duplicate)' do
+    context "when both are unprocessed" do
+      it "creates only one CanonicalTransaction (i.e. skips one duplicate)" do
         expect do
           service.run
         end.to change(CanonicalTransaction, :count).by(1)
@@ -27,12 +27,12 @@ RSpec.describe TransactionEngine::CanonicalTransactionService::Import::PlaidThat
       end
     end
 
-    context 'when only one is unprocessed' do
+    context "when only one is unprocessed" do
       before do
         _process_first_hashed_transaction = create(:canonical_transaction, hashed_transactions: [HashedTransaction.first])
       end
 
-      it 'does not create any CanonicalTransactions, since the duplicate has already been processed' do
+      it "does not create any CanonicalTransactions, since the duplicate has already been processed" do
         expect do
           service.run
         end.to change(CanonicalTransaction, :count).by(0)
@@ -40,7 +40,7 @@ RSpec.describe TransactionEngine::CanonicalTransactionService::Import::PlaidThat
     end
   end
 
-  context 'when there are 2 not actually duplicate plaid_transactions' do
+  context "when there are 2 not actually duplicate plaid_transactions" do
     before do
       # same hash and same raw_plaid_transaction are not considered duplicates
       raw_plaid_transaction = create(:raw_plaid_transaction)
@@ -50,8 +50,8 @@ RSpec.describe TransactionEngine::CanonicalTransactionService::Import::PlaidThat
       end
     end
 
-    context 'when both are unprocessed' do
-      it 'creates a corresponding canonical_transaction for each' do
+    context "when both are unprocessed" do
+      it "creates a corresponding canonical_transaction for each" do
         expect do
           service.run
         end.to change(CanonicalTransaction, :count).by(2)
@@ -63,12 +63,12 @@ RSpec.describe TransactionEngine::CanonicalTransactionService::Import::PlaidThat
       end
     end
 
-    context 'when only one is unprocessed' do
+    context "when only one is unprocessed" do
       before do
         _process_first_hashed_transaction = create(:canonical_transaction, hashed_transactions: [HashedTransaction.first])
       end
 
-      it 'creates one canonical_transaction' do
+      it "creates one canonical_transaction" do
         expect do
           service.run
         end.to change(CanonicalTransaction, :count).by(1)

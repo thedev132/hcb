@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'twilio-ruby'
+require "twilio-ruby"
 
 class TwilioVerificationService
   CLIENT = Twilio::REST::Client.new(
@@ -9,13 +9,13 @@ class TwilioVerificationService
   )
 
   # This isn't private/sensitive so it's okay to keep here
-  VERIFY_SERVICE_ID = 'VAa06a66dad4c1ca3c199a46334ff11945'
+  VERIFY_SERVICE_ID = "VAa06a66dad4c1ca3c199a46334ff11945"
 
   def send_verification_request(phone_number)
     CLIENT.verify
           .services(VERIFY_SERVICE_ID)
           .verifications
-          .create(to: phone_number, channel: 'sms')
+          .create(to: phone_number, channel: "sms")
   end
 
   def check_verification_token(phone_number, code)
@@ -23,7 +23,7 @@ class TwilioVerificationService
                          .services(VERIFY_SERVICE_ID)
                          .verification_checks
                          .create(to: phone_number, code: code)
-    verification.status == 'approved'
+    verification.status == "approved"
   end
 
 end

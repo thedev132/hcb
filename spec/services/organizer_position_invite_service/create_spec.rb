@@ -9,16 +9,16 @@ RSpec.describe OrganizerPositionInviteService::Create do
                                 representative: User.create!(email: representative_email)
                               })
     Event.create!({
-                    name: 'test-event',
+                    name: "test-event",
                     partner: partner,
                     sponsorship_fee: 0,
                     organization_identifier: SecureRandom.hex(30)
                   })
   end
 
-  context 'associated user' do
-    context 'when it does not exist' do
-      it 'creates the user before creating the invite' do
+  context "associated user" do
+    context "when it does not exist" do
+      it "creates the user before creating the invite" do
         event = create_event("partner@example.com")
         sender = User.create!(email: "sender@example.com")
 
@@ -40,8 +40,8 @@ RSpec.describe OrganizerPositionInviteService::Create do
       end
     end
 
-    context 'when it does exist' do
-      it 'associates the existing user to the newly created invite' do
+    context "when it does exist" do
+      it "associates the existing user to the newly created invite" do
         event = create_event("partner@example.com")
         sender = User.create!(email: "sender@example.com")
         invited_user = User.create!(email: "invitee@example.com")
@@ -60,9 +60,9 @@ RSpec.describe OrganizerPositionInviteService::Create do
     end
   end
 
-  context 'persist fails' do
-    context 'when calling run' do
-      it 'returns false without exception' do
+  context "persist fails" do
+    context "when calling run" do
+      it "returns false without exception" do
         invite_count_before = OrganizerPositionInvite.count
 
         service = OrganizerPositionInviteService::Create.new(event: nil,
@@ -73,8 +73,8 @@ RSpec.describe OrganizerPositionInviteService::Create do
       end
     end
 
-    context 'when calling run!' do
-      it 'throws an exception' do
+    context "when calling run!" do
+      it "throws an exception" do
         invite_count_before = OrganizerPositionInvite.count
 
         service = OrganizerPositionInviteService::Create.new(event: nil,

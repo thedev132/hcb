@@ -1,7 +1,7 @@
 <h1>Link a bank account</h1>
 <button id="linkButton">Begin</button>
 
-<%= form_for :auth, url: '/bank_accounts', html: { id: 'authForm' } do |f| %>
+<%= form_for :auth, url: "/bank_accounts", html: { id: "authForm" } do |f| %>
   <%= f.hidden_field :public_token %>
   <%= f.hidden_field :account_id %>
   <%= f.hidden_field :account_name %>

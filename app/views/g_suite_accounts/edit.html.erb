@@ -1,10 +1,10 @@
-<% title 'Edit Google Workspace Account' %>
-<%= link_to 'Google Workspace Accounts', g_suite_accounts_path, class: 'breadcrumb' %>
+<% title "Edit Google Workspace Account" %>
+<%= link_to "Google Workspace Accounts", g_suite_accounts_path, class: "breadcrumb" %>
 <h1>Editing Google Workspace Account</h1>
 <p><strong>For #<%= @event.id %> <%= @event.name %> </strong></p>
 
 <%= form_with(model: @g_suite_account, local: true) do |form| %>
-  <%= form_errors @g_suite_account, 'account' %>
+  <%= form_errors @g_suite_account, "account" %>
 
   <div class="field">
     <%= form.label :first_name %>
@@ -28,7 +28,7 @@
 
   <div class="field">
     <%= form.label :initial_password %>
-    <%= form.text_field :initial_password, required: 'required' %>
+    <%= form.text_field :initial_password, required: "required" %>
   </div>
 
   <div class="actions">

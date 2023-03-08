@@ -4,7 +4,7 @@ module Api
   class V3 < Grape::API
     include Grape::Kaminari
 
-    version 'v3', using: :path
+    version "v3", using: :path
     prefix :api
     format :json
     default_format :json
@@ -22,7 +22,7 @@ module Api
             event ||= Event.transparent.find id # by slug or numeric id. Will error if not found
           end
       rescue ActiveRecord::RecordNotFound
-        error!({ message: 'Organization not found.' }, 404)
+        error!({ message: "Organization not found." }, 404)
       end
 
       def transactions
@@ -44,7 +44,7 @@ module Api
             HcbCode.find_by_public_id!(id)
           end
       rescue ActiveRecord::RecordNotFound
-        error!({ message: 'Transaction not found.' }, 404)
+        error!({ message: "Transaction not found." }, 404)
       end
 
       def card_charges
@@ -70,7 +70,7 @@ module Api
             Models::CardCharge.find_by_public_id!(id)
           end
       rescue ActiveRecord::RecordNotFound
-        error!({ message: 'Card charge not found.' }, 404)
+        error!({ message: "Card charge not found." }, 404)
       end
 
       def donations
@@ -84,7 +84,7 @@ module Api
             Donation.find_by_public_id!(id)
           end
       rescue ActiveRecord::RecordNotFound
-        error!({ message: 'Donation not found.' }, 404)
+        error!({ message: "Donation not found." }, 404)
       end
 
       def transfers
@@ -98,7 +98,7 @@ module Api
             Disbursement.find_by_public_id!(id)
           end
       rescue ActiveRecord::RecordNotFound
-        error!({ message: 'Transfer not found.' }, 404)
+        error!({ message: "Transfer not found." }, 404)
       end
 
       def ach_transfers
@@ -112,7 +112,7 @@ module Api
             AchTransfer.find_by_public_id!(id)
           end
       rescue ActiveRecord::RecordNotFound
-        error!({ message: 'ACH Transfer not found.' }, 404)
+        error!({ message: "ACH Transfer not found." }, 404)
       end
 
       def invoices
@@ -126,7 +126,7 @@ module Api
             Invoice.find_by_public_id!(id)
           end
       rescue ActiveRecord::RecordNotFound
-        error!({ message: 'Invoice not found.' }, 404)
+        error!({ message: "Invoice not found." }, 404)
       end
 
       def checks
@@ -140,7 +140,7 @@ module Api
             Check.find_by_public_id!(id)
           end
       rescue ActiveRecord::RecordNotFound
-        error!({ message: 'Check not found.' }, 404)
+        error!({ message: "Check not found." }, 404)
       end
 
       def cards
@@ -154,7 +154,7 @@ module Api
             StripeCard.find_by_public_id!(id)
           end
       rescue ActiveRecord::RecordNotFound
-        error!({ message: 'Card not found.' }, 404)
+        error!({ message: "Card not found." }, 404)
       end
 
       # FOR TYPE EXPANSION
@@ -171,7 +171,7 @@ module Api
                  types: [String, Array[String]],
                  # TODO: this `coerce_with` is temporarily really messy because it needs to handle both processing strings and arrays of strings
                  coerce_with: ->(x) {
-                   [x].flatten.compact.map { |type| type.split(',') }
+                   [x].flatten.compact.map { |type| type.split(",") }
                       .flatten.map { |type| type.strip.underscore }
                  },
                  desc: "Object types to expand in the API response (separated by commas)"
@@ -180,14 +180,14 @@ module Api
                  types: [String, Array[String]],
                  # TODO: this `coerce_with` is temporarily really messy because it needs to handle both processing strings and arrays of strings
                  coerce_with: ->(x) {
-                   [x].flatten.compact.map { |type| type.split(',') }
+                   [x].flatten.compact.map { |type| type.split(",") }
                       .flatten.map { |type| type.strip.underscore }
                  },
                  documentation: { hidden: true }
       end
     end
 
-    desc 'Flavor text!' do
+    desc "Flavor text!" do
       summary "Flavor text!"
       failure [[404]]
       hidden true
@@ -198,7 +198,7 @@ module Api
       }
     end
 
-    desc 'Git' do
+    desc "Git" do
       summary "Get the commit hash of the latest build."
       failure [[404]]
       hidden true
@@ -210,13 +210,13 @@ module Api
       }
     end
 
-    desc 'Return a list of transparent organizations' do
+    desc "Return a list of transparent organizations" do
       summary "Get a list of transparent organizations"
       detail "Returns a list of organizations in <a href='https://changelog.bank.hackclub.com/transparent-finances-(optional-feature)-151427'><strong>Transparency Mode</strong></a> that have opted in to public listing."
       failure [[404]]
       is_array true
-      produces ['application/json']
-      consumes ['application/json']
+      produces ["application/json"]
+      consumes ["application/json"]
       success Entities::Organization
       tags ["Organizations"]
       nickname "list-transparent-organizations"
@@ -230,18 +230,18 @@ module Api
     end
 
     resource :organizations do
-      desc 'Return a transparent organization' do
-        summary 'Get a single organization'
+      desc "Return a transparent organization" do
+        summary "Get a single organization"
         detail "The organization must be in <a href='https://changelog.bank.hackclub.com/transparent-finances-(optional-feature)-151427'><strong>Transparency Mode</strong></a>."
-        produces ['application/json']
-        consumes ['application/json']
+        produces ["application/json"]
+        consumes ["application/json"]
         success Entities::Organization
         failure [[404, "Organization not found. Check the id/slug and make sure Transparency Mode is on.", Entities::ApiError]]
         tags ["Organizations"]
         nickname "get-a-single-organization"
       end
       params do
-        requires :organization_id, type: String, desc: 'Organization ID or slug.'
+        requires :organization_id, type: String, desc: "Organization ID or slug."
         use :expand
       end
       route_param :organization_id do
@@ -250,16 +250,16 @@ module Api
             Pundit.authorize(nil, [:api, org], :show?)
             present org, with: Api::Entities::Organization, **type_expansion(expand: %w[organization user])
           rescue ActiveRecord::RecordNotFound, ArgumentError
-            error!({ message: 'Organization not found.' }, 404)
+            error!({ message: "Organization not found." }, 404)
           end
         end
 
         resource :transactions do
-          desc 'Return a list of transactions' do
+          desc "Return a list of transactions" do
             summary "List an organization's transactions"
             detail "Transaction represent a line item on an Organization's ledger. There are various <em>types</em> of transaction (see the <em>type</em> below).<br/><br/>"
-            produces ['application/json']
-            consumes ['application/json']
+            produces ["application/json"]
+            consumes ["application/json"]
             is_array true
             success Entities::Transaction
             failure [[404, "Organization not found. Check the id/slug and make sure Transparency Mode is on.", Entities::ApiError]]
@@ -277,11 +277,11 @@ module Api
         end
 
         resource :card_charges do
-          desc 'Return a list of card charges' do
+          desc "Return a list of card charges" do
             summary "List an organization's card charges"
-            detail 'Transactions created using a Hack Club Bank card.'
-            produces ['application/json']
-            consumes ['application/json']
+            detail "Transactions created using a Hack Club Bank card."
+            produces ["application/json"]
+            consumes ["application/json"]
             is_array true
             success Entities::CardCharge
             failure [[404, "Organization not found. Check the id/slug and make sure Transparency Mode is on.", Entities::ApiError]]
@@ -299,11 +299,11 @@ module Api
         end
 
         resource :donations do
-          desc 'Return a list of donations' do
+          desc "Return a list of donations" do
             summary "List an organization's donations"
-            detail ''
-            produces ['application/json']
-            consumes ['application/json']
+            detail ""
+            produces ["application/json"]
+            consumes ["application/json"]
             is_array true
             success Entities::Donation
             failure [[404, "Organization not found. Check the id/slug and make sure Transparency Mode is on.", Entities::ApiError]]
@@ -321,11 +321,11 @@ module Api
         end
 
         resource :transfers do
-          desc 'Return a list of transfers' do
+          desc "Return a list of transfers" do
             summary "List an organization's transfers"
-            detail ''
-            produces ['application/json']
-            consumes ['application/json']
+            detail ""
+            produces ["application/json"]
+            consumes ["application/json"]
             is_array true
             success Entities::Transfer
             failure [[404, "Organization not found. Check the id/slug and make sure Transparency Mode is on.", Entities::ApiError]]
@@ -343,11 +343,11 @@ module Api
         end
 
         resource :invoices do
-          desc 'Return a list of invoices' do
+          desc "Return a list of invoices" do
             summary "List an organization's invoices"
-            detail ''
-            produces ['application/json']
-            consumes ['application/json']
+            detail ""
+            produces ["application/json"]
+            consumes ["application/json"]
             is_array true
             success Entities::Invoice
             failure [[404, "Organization not found. Check the id/slug and make sure Transparency Mode is on.", Entities::ApiError]]
@@ -365,11 +365,11 @@ module Api
         end
 
         resource :ach_transfers do
-          desc 'Return a list of ACH transfers' do
+          desc "Return a list of ACH transfers" do
             summary "List an organization's ACH transfers"
-            detail ''
-            produces ['application/json']
-            consumes ['application/json']
+            detail ""
+            produces ["application/json"]
+            consumes ["application/json"]
             is_array true
             success Entities::AchTransfer
             failure [[404, "Organization not found. Check the id/slug and make sure Transparency Mode is on.", Entities::ApiError]]
@@ -387,11 +387,11 @@ module Api
         end
 
         resource :checks do
-          desc 'Return a list of checks' do
+          desc "Return a list of checks" do
             summary "List an organization's checks"
-            detail ''
-            produces ['application/json']
-            consumes ['application/json']
+            detail ""
+            produces ["application/json"]
+            consumes ["application/json"]
             is_array true
             success Entities::Check
             failure [[404, "Organization not found. Check the id/slug and make sure Transparency Mode is on.", Entities::ApiError]]
@@ -409,11 +409,11 @@ module Api
         end
 
         resource :cards do
-          desc 'Return a list of cards' do
+          desc "Return a list of cards" do
             summary "List an organization's cards"
-            detail ''
-            produces ['application/json']
-            consumes ['application/json']
+            detail ""
+            produces ["application/json"]
+            consumes ["application/json"]
             is_array true
             success Entities::Card
             failure [[404, "Organization not found. Check the id/slug and make sure Transparency Mode is on.", Entities::ApiError]]
@@ -435,18 +435,18 @@ module Api
     end
 
     resource :card_charges do
-      desc 'Return a card charge' do
+      desc "Return a card charge" do
         summary "Get a card charge"
-        detail ''
-        produces ['application/json']
-        consumes ['application/json']
+        detail ""
+        produces ["application/json"]
+        consumes ["application/json"]
         success Entities::CardCharge
         failure [[404, "Card charge not found. Check the ID.", Entities::ApiError]]
         tags ["Card Charges"]
         nickname "get-a-card-charge"
       end
       params do
-        requires :card_charge_id, type: String, desc: 'Card charge ID'
+        requires :card_charge_id, type: String, desc: "Card charge ID"
         use :expand
       end
       route_param :card_charge_id do
@@ -458,18 +458,18 @@ module Api
     end
 
     resource :donations do
-      desc 'Return a single donation' do
+      desc "Return a single donation" do
         summary "Get a single donation"
-        detail ''
-        produces ['application/json']
-        consumes ['application/json']
+        detail ""
+        produces ["application/json"]
+        consumes ["application/json"]
         success Entities::Donation
         failure [[404, "Donation not found. Check the ID.", Entities::ApiError]]
         tags ["Donations"]
         nickname "get-a-single-donation"
       end
       params do
-        requires :donation_id, type: String, desc: 'Donation ID'
+        requires :donation_id, type: String, desc: "Donation ID"
         use :expand
       end
       route_param :donation_id do
@@ -481,18 +481,18 @@ module Api
     end
 
     resource :transfers do
-      desc 'Return a single transfer' do
+      desc "Return a single transfer" do
         summary "Get a single transfer"
-        detail ''
-        produces ['application/json']
-        consumes ['application/json']
+        detail ""
+        produces ["application/json"]
+        consumes ["application/json"]
         success Entities::Transfer
         failure [[404, "Transfer not found. Check the ID.", Entities::ApiError]]
         tags ["Transfers"]
         nickname "get-a-single-transfer"
       end
       params do
-        requires :transfer_id, type: String, desc: 'Transfer ID'
+        requires :transfer_id, type: String, desc: "Transfer ID"
         use :expand
       end
       route_param :transfer_id do
@@ -504,18 +504,18 @@ module Api
     end
 
     resource :invoices do
-      desc 'Return a single invoice' do
+      desc "Return a single invoice" do
         summary "Get a single invoice"
-        detail ''
-        produces ['application/json']
-        consumes ['application/json']
+        detail ""
+        produces ["application/json"]
+        consumes ["application/json"]
         success Entities::Invoice
         failure [[404, "Invoice not found. Check the ID.", Entities::ApiError]]
         tags ["Invoices"]
         nickname "get-a-single-invoice"
       end
       params do
-        requires :invoice_id, type: String, desc: 'Invoice ID'
+        requires :invoice_id, type: String, desc: "Invoice ID"
         use :expand
       end
       route_param :invoice_id do
@@ -527,18 +527,18 @@ module Api
     end
 
     resource :ach_transfers do
-      desc 'Return a single ACH transfer' do
+      desc "Return a single ACH transfer" do
         summary "Get a single ACH transfer"
-        detail ''
-        produces ['application/json']
-        consumes ['application/json']
+        detail ""
+        produces ["application/json"]
+        consumes ["application/json"]
         success Entities::AchTransfer
         failure [[404, "ACH transfer not found. Check the ID.", Entities::ApiError]]
         tags ["ACH Transfers"]
         nickname "get-a-single-ach-transfer"
       end
       params do
-        requires :ach_transfer_id, type: String, desc: 'ACH transfer ID'
+        requires :ach_transfer_id, type: String, desc: "ACH transfer ID"
         use :expand
       end
       route_param :ach_transfer_id do
@@ -550,18 +550,18 @@ module Api
     end
 
     resource :checks do
-      desc 'Return a single check' do
+      desc "Return a single check" do
         summary "Get a single check"
-        detail ''
-        produces ['application/json']
-        consumes ['application/json']
+        detail ""
+        produces ["application/json"]
+        consumes ["application/json"]
         success Entities::Check
         failure [[404, "Check not found. Check the ID.", Entities::ApiError]]
         tags ["Checks"]
         nickname "get-a-single-check"
       end
       params do
-        requires :check_id, type: String, desc: 'Check ID'
+        requires :check_id, type: String, desc: "Check ID"
         use :expand
       end
       route_param :check_id do
@@ -573,18 +573,18 @@ module Api
     end
 
     resource :cards do
-      desc 'Return a single card' do
+      desc "Return a single card" do
         summary "Get a single card"
-        detail ''
-        produces ['application/json']
-        consumes ['application/json']
+        detail ""
+        produces ["application/json"]
+        consumes ["application/json"]
         success Entities::Card
         failure [[404, "Card not found. Check the ID.", Entities::ApiError]]
         tags ["Cards"]
         nickname "get-a-single-card"
       end
       params do
-        requires :card_id, type: String, desc: 'Card ID'
+        requires :card_id, type: String, desc: "Card ID"
         use :expand
       end
       route_param :card_id do
@@ -596,18 +596,18 @@ module Api
     end
 
     resource :transactions do
-      desc 'Return a single transaction' do
+      desc "Return a single transaction" do
         summary "Get a single transaction"
-        detail ''
-        produces ['application/json']
-        consumes ['application/json']
+        detail ""
+        produces ["application/json"]
+        consumes ["application/json"]
         success Entities::Transaction
         failure [[404, "Transaction not found. Check the ID.", Entities::ApiError]]
         tags ["Transactions"]
         nickname "get-a-single-transaction"
       end
       params do
-        requires :transaction_id, type: String, desc: 'Transaction ID'
+        requires :transaction_id, type: String, desc: "Transaction ID"
         use :expand
       end
       route_param :transaction_id do
@@ -624,16 +624,16 @@ module Api
     end
 
     # Handle 404 errors (catch all)
-    route :any, '*path' do
-      error!({ message: 'Path not found. Please see the documentation (https://bank.hackclub.com/docs/api/v3/) for all available paths.' }, 404)
+    route :any, "*path" do
+      error!({ message: "Path not found. Please see the documentation (https://bank.hackclub.com/docs/api/v3/) for all available paths." }, 404)
     end
 
     # Handle unexpected errors
     rescue_from ActiveRecord::RecordNotFound do
-      error!({ message: 'Not found.' }, 404)
+      error!({ message: "Not found." }, 404)
     end
     rescue_from Pundit::NotAuthorizedError do
-      error!({ message: 'Not authorized.' }, 403)
+      error!({ message: "Not authorized." }, 403)
     end
     rescue_from :all do |e|
       Airbrake.notify(e)
@@ -642,7 +642,7 @@ module Api
       msg = if Rails.env.development?
               e.message
             else
-              'A server error has occurred.'
+              "A server error has occurred."
             end
       error!({ message: msg }, 500)
     end
@@ -660,7 +660,7 @@ module Api
         contact_name: "Hack Club Bank",
         contact_email: "bank@hackclub.com",
       },
-      doc_version: '3.0.0',
+      doc_version: "3.0.0",
       models: [
         Entities::Organization,
         Entities::Transaction,

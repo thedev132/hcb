@@ -1,20 +1,20 @@
 <% title @document.name %>
 <% page_sm %>
 
-<%= render 'events/nav' if !@event.nil? %>
+<%= render "events/nav" if !@event.nil? %>
 
 <h1 class="heading">
   <%= @document.name %>
   <% if (@document.user == current_user) || current_user.admin? %>
-    <%= link_to 'Edit', edit_document_path(@document), class: 'btn bg-info' %>
-    <%= link_to 'Destroy', @document, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn--destroy' %>
+    <%= link_to "Edit", edit_document_path(@document), class: "btn bg-info" %>
+    <%= link_to "Destroy", @document, method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn--destroy" %>
   <% end %>
 </h1>
 
 <section class="details mb3">
 <p>
   <strong>Download file</strong>
-  <%= link_to 'Click here', document_download_path(@document), target: :_blank %>
+  <%= link_to "Click here", document_download_path(@document), target: :_blank %>
 </p>
 
 <p>

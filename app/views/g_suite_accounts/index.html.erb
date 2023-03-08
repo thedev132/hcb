@@ -1,4 +1,4 @@
-<% title 'Google Workspace Accounts' %>
+<% title "Google Workspace Accounts" %>
 <h1>Google Workspace Accounts</h1>
 
 <% if params[:page] == nil %>
@@ -20,15 +20,15 @@
         <tr class="shade-yellow">
           <td><%= g_suite_account.address %></td>
           <td><%= g_suite_account.backup_email %></td>
-          <td><%= link_to 'Workspace', g_suite_account.g_suite %></td>
+          <td><%= link_to "Workspace", g_suite_account.g_suite %></td>
           <% if g_suite_account.under_review? %>
-            <td><%= link_to 'Reject', g_suite_account_reject_path(g_suite_account),
-              method: :post, data: { confirm: 'Are you sure?' }, class: 'h5 btn bg-error' %></td>
+            <td><%= link_to "Reject", g_suite_account_reject_path(g_suite_account),
+              method: :post, data: { confirm: "Are you sure?" }, class: "h5 btn bg-error" %></td>
           <% end %>
           <% if g_suite_account.under_review? %>
-            <td><%= link_to 'Process', edit_g_suite_account_path(g_suite_account), class: 'btn bg-info' %></td>
+            <td><%= link_to "Process", edit_g_suite_account_path(g_suite_account), class: "btn bg-info" %></td>
           <% else %>
-            <td><%= link_to 'Edit', edit_g_suite_account_path(g_suite_account), class: 'h5 btn bg-info' %></td>
+            <td><%= link_to "Edit", edit_g_suite_account_path(g_suite_account), class: "h5 btn bg-info" %></td>
           <% end %>
         </tr>
       <% end %>
@@ -54,19 +54,19 @@
 
   <tbody>
     <% @g_suite_accounts.each do |g_suite_account| %>
-      <tr class="<%= 'shade-yellow' if g_suite_account.under_review? %> <%= 'shade-red' if g_suite_account.rejected? %>">
+      <tr class="<%= "shade-yellow" if g_suite_account.under_review? %> <%= "shade-red" if g_suite_account.rejected? %>">
         <td><%= g_suite_account.address %></td>
         <td><%= g_suite_account.backup_email %></td>
         <td><%= g_suite_account.status.capitalize %></td>
-        <td><%= link_to 'Workspace', g_suite_account.g_suite %></td>
+        <td><%= link_to "Workspace", g_suite_account.g_suite %></td>
         <% if g_suite_account.under_review? %>
-          <td><%= link_to 'Reject', g_suite_account_reject_path(g_suite_account),
-            method: :post, data: { confirm: 'Are you sure?' }, class: 'h5 btn bg-error' %></td>
+          <td><%= link_to "Reject", g_suite_account_reject_path(g_suite_account),
+            method: :post, data: { confirm: "Are you sure?" }, class: "h5 btn bg-error" %></td>
         <% end %>
         <% if g_suite_account.under_review? %>
-          <td><%= link_to 'Process', edit_g_suite_account_path(g_suite_account), class: 'btn bg-info' %></td>
+          <td><%= link_to "Process", edit_g_suite_account_path(g_suite_account), class: "btn bg-info" %></td>
         <% else %>
-          <td><%= link_to 'Edit', edit_g_suite_account_path(g_suite_account), class: 'h5 btn bg-info' %></td>
+          <td><%= link_to "Edit", edit_g_suite_account_path(g_suite_account), class: "h5 btn bg-info" %></td>
         <% end %>
       </tr>
     <% end %>
