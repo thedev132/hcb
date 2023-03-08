@@ -319,6 +319,10 @@ class HcbCode < ApplicationRecord
     JSON.parse(raw_canonical_transaction_ids)
   end
 
+  def no_transactions?
+    !pt && !ct
+  end
+
   def pt
     canonical_pending_transactions.first
   end

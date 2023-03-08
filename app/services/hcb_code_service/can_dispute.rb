@@ -10,6 +10,10 @@ module HcbCodeService
     # error_reason will be nil, unless it can not be disputed — which then it
     # would contain the reason why it can not be disputed.
     def run
+      if @hcb_code.no_transactions?
+        return [false, "This is not a valid transaction"]
+      end
+
       if @hcb_code.stripe_card?
         # Stripe allows disputes on card transactions captured fewer than 110
         # days ago. We are decreasing this to 90 days for our users. This 20 day
@@ -39,10 +43,7 @@ module HcbCodeService
         end
 
       else
-        error_message = "Can not dispute this type of transaction"
-        Airbrake.notify(error_message)
-
-        [false, error_message]
+        [false, "Can not dispute this type of transaction"]
       end
     end
 
