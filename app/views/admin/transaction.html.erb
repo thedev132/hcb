@@ -61,7 +61,7 @@
           <td><%= link_to "stripe #{pdp.stripe_payout_id}", "https://dashboard.stripe.com/payouts/#{pdp.stripe_payout_id}" %></td>
         </tr>
       <% end %>
-    </body>
+    </tbody>
   </table>
 
   <br><hr>
@@ -80,7 +80,7 @@
           <td><%= link_to pdp.event.admin_formatted_name, pdp.event %></td>
         </tr>
       <% end %>
-    </body>
+    </tbody>
   </table>
 
   <br><hr>
@@ -101,7 +101,7 @@
           <td><%= link_to "Linked Object", cpt.linked_object %></td>
         </tr>
       <% end %>
-    </body>
+    </tbody>
   </table>
 
   <br><hr>
