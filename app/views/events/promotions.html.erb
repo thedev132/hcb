@@ -38,9 +38,11 @@
   </div>
 
   <p class="mb0">
-    <%= link_to '1Password', 'https://1password.com' %> is providing $100 USD of credit to all organizations
-    on Hack Club Bank. 1Password is a password manager that allows you to securely keep and share account logins
-    and credentials with your teammates; we use it ourselves at Hack Club HQ!
+    <%= link_to '1Password', 'https://1password.com' %> is providing $100 USD
+    credit to all organizations on Hack Club Bank that can be claimed once per
+    organizations. 1Password is a password manager that allows you to securely
+    keep and share account logins and credentials with your teammates; we use it
+    ourselves at Hack Club HQ!
   </p>
 </div>
 
@@ -171,10 +173,18 @@
         <% end %>
     </div>
 
-    <p class="mb0">
-      Running a high school student-led hackathon, nonprofit, or club? Hack Club Bank will purchase your domain for under $20 and cover the cost for the first year. After the first year, you'll be responsible for paying to renew. <% if Flipper.enabled?(:google_workspace, @event) %>You'll also have the option of setting up <%= link_to 'Google Workspace', event_g_suite_overview_path %> once we've purchased your domain.<% end %>
-    </p>
-  </div>
+  <p class="mb0">
+    Running a high school student-led hackathon, nonprofit, or club? Hack Club
+    Bank will purchase your domain for under $20 and cover the cost for the
+    first year. After the first year, you'll be responsible for paying to
+    renew. This can only be claimed once per organization.
+    <% if Flipper.enabled?(:google_workspace, @event) %>
+      You'll also have the option of setting
+      up <%= link_to 'Google Workspace', event_g_suite_overview_path %> once
+      we've purchased your domain.
+    <% end %>
+  </p>
+</div>
 
 <div class="card mb3 pb0" id="stickers">
   <div class="card__banner card__banner--top flex justify-between items-center promo-stickers">
