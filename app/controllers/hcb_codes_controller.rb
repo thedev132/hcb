@@ -6,11 +6,6 @@ class HcbCodesController < ApplicationController
 
   def show
     @hcb_code = HcbCode.find_by(hcb_code: params[:id]) || HcbCode.find(params[:id])
-
-    if @hcb_code.no_transactions?
-      raise ActiveRecord::RecordNotFound
-    end
-
     @event =
       begin
         # Attempt to retrieve the event using the context of the
