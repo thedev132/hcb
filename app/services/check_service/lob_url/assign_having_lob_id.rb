@@ -5,9 +5,7 @@ module CheckService
     class AssignHavingLobId
       def run
         checks.each do |check|
-          lob_url = ::CheckService::LobUrl::Generate.new(check: check).run
-
-          check.update_column(:lob_url, lob_url)
+          CheckJob::LobUrl::SingleAssignHavingLobId.perform_later(check: check)
         end
       end
 
