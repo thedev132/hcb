@@ -22,7 +22,19 @@ module CheckService
     def run
       raise ArgumentError, "You don't have enough money to write this check." unless ample_balance?(amount_cents, event)
 
-      Check.create!(create_attrs)
+      check = Check.create!(create_attrs)
+
+      rpoct = RawPendingOutgoingCheckTransaction.create!(check_transaction_id: check.id.to_s, amount_cents: -check.amount, date_posted: check.created_at)
+      cpt = CanonicalPendingTransaction.create!(
+        date: rpoct.date,
+        memo: rpoct.memo,
+        amount_cents: rpoct.amount_cents,
+        raw_pending_outgoing_check_transaction_id: rpoct.id,
+
+        event: event
+      )
+
+      check
     end
 
     private
