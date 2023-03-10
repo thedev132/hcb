@@ -73,8 +73,6 @@ class CanonicalPendingTransaction < ApplicationRecord
 
   scope :stripe, -> { where("raw_pending_stripe_transaction_id is not null") }
   scope :incoming, -> { where("amount_cents > 0") }
-  # This should be implemented in https://github.com/hackclub/bank/pull/2621 before these changes are merged
-  scope :incoming_disbursement, -> { where("raw_pending_incoming_disbursement_id is not null") }
   scope :outgoing, -> { where("amount_cents < 0") }
   scope :outgoing_ach, -> { where("raw_pending_outgoing_ach_transaction_id is not null") }
   scope :outgoing_check, -> { where("raw_pending_outgoing_check_transaction_id is not null") }
