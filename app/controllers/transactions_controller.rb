@@ -24,7 +24,7 @@ class TransactionsController < ApplicationController
       format.csv do
         if should_queue
           CanonicalTransactionJob::Export::Csv.perform_later(event_id: @event.id, user_id: current_user.id)
-          flash[:success] = "Check your email for the export"
+          flash[:success] = "This export is too big, so we'll send you an email when it's ready."
           redirect_back fallback_location: @event and return
         end
 
@@ -34,7 +34,7 @@ class TransactionsController < ApplicationController
       format.json do
         if should_queue
           CanonicalTransactionJob::Export::Json.perform_later(event_id: @event.id, user_id: current_user.id)
-          flash[:success] = "Check your email for the export"
+          flash[:success] = "This export is too big, so we'll send you an email when it's ready."
           redirect_back fallback_location: @event and return
         end
 
