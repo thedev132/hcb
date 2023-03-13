@@ -6,6 +6,10 @@ module Shared
       private
 
       def transfer_from_fs_operating_to_fs_main!(amount_cents:, memo:)
+        raise StandardError, "SVB transfers are disabled"
+
+        # rubocop:disable Lint/UnreachableCode
+
         amount = amount_cents / 100.0
 
         # Go to transfer url
@@ -60,6 +64,8 @@ module Shared
         wait.until { driver.find_element(:xpath, '//h2[text()="Confirmation"]') }
 
         sleep 1
+
+        # rubocop:enable Lint/UnreachableCode
       end
 
       def transfers_url
