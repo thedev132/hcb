@@ -10,7 +10,7 @@ class CheckPolicy < ApplicationPolicy
   end
 
   def create?
-    user&.admin? || record.users.include?(user) # dirty implementation here. record is event (temporary)
+    Flipper.enabled?(:outgoing_checks) && (user&.admin? || record.users.include?(user)) # dirty implementation here. record is event (temporary)
   end
 
   def show?
