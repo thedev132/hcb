@@ -183,6 +183,11 @@ group :development, :test do
   gem "pry-rails"
 end
 
+gem "mrsk", "~> 0.9.1" # deployments
+# net-ssh (used by mrsk) needs these
+gem "bcrypt_pbkdf"
+gem "ed25519"
+
 group :production do
   # Performance tracking
   gem "skylight"

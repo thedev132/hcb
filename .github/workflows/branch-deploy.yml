@@ -1,0 +1,46 @@
+name: Branch Deploy
+on:
+  issue_comment:
+    types: [created]
+jobs:
+  process:
+    if: ${{ github.event.issue.pull_request }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Process command
+        uses: github/branch-deploy@v4.6.1
+        id: branch-deploy
+        with:
+          trigger: .deploy
+          environment: atm1
+          environment-targets: web, atm1, atm2, atm3
+
+      - name: Checkout code
+        uses: actions/checkout@v3.1.0
+        with:
+          ref: ${{ steps.branch-deploy.outputs.ref }}
+
+      - name: Fake-Deploy
+        if: ${{ steps.branch-deploy.outputs.continue == "true" && steps.branch-deploy.outputs.noop == "true" }}
+        run: |
+          echo "fake-deploying Bank to ${{ steps.branch-deploy.outputs.environment }}!"
+
+      - name: Set up Ruby
+        if: ${{ steps.branch-deploy.outputs.continue == "true" && steps.branch-deploy.outputs.noop != "true" }}
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '2.7.7'
+          bundler-cache: true
+
+      - name: Deploy
+        if: ${{ steps.branch-deploy.outputs.continue == "true" && steps.branch-deploy.outputs.noop != "true" }}
+        env:
+          MRSK_REGISTRY_USERNAME: ${{ github.actor }}
+          MRSK_REGISTRY_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+          MRSK_SSH_KEY: ${{ secrets.MRSK_SSH_KEY }}
+        run: |
+          echo "deploying Bank to ${{ steps.branch-deploy.outputs.environment }}!"
+          mkdir -p ~/.ssh/
+          echo "$MRSK_SSH_KEY" > ~/.ssh/id_rsa && sudo chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ steps.branch-deploy.outputs.environment }}.hcb.gg > ~/.ssh/known_hosts
+          bundle exec mrsk deploy --roles ${{ steps.branch-deploy.outputs.environment }}

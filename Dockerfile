@@ -37,3 +37,7 @@ RUN ln -s /usr/src/app/.rubocop.yml ~/.rubocop.yml
 RUN ln -s /usr/src/app/.rubocop_todo.yml ~/.rubocop_todo.yml
 
 ADD . /usr/src/app
+
+EXPOSE 3000
+
+CMD ["bundle", "exec", "foreman", "start", "-f", "Procfile.dev", "-m", "all=1,stripe=0"]
