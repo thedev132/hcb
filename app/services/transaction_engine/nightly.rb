@@ -15,12 +15,14 @@ module TransactionEngine
       # import_raw_emburse_transactions! TODO: remove completely
       import_raw_stripe_transactions!
       import_raw_csv_transactions!
+      import_raw_increase_transactions!
 
       # 2 hashed
       hash_raw_plaid_transactions!
       # hash_raw_emburse_transactions! TODO: remove completely
       hash_raw_stripe_transactions!
       hash_raw_csv_transactions!
+      hash_raw_increase_transactions!
 
       # 3 canonical
       canonize_hashed_transactions!
@@ -75,6 +77,10 @@ module TransactionEngine
       ::TransactionEngine::RawCsvTransactionService::Import.new.run
     end
 
+    def import_raw_increase_transactions!
+      ::TransactionEngine::RawIncreaseTransactionService::Increase::Import.new(start_date: @start_date).run
+    end
+
     def hash_raw_plaid_transactions!
       ::TransactionEngine::HashedTransactionService::RawPlaidTransaction::Import.new(start_date: @start_date).run
     end
@@ -89,6 +95,10 @@ module TransactionEngine
 
     def hash_raw_csv_transactions!
       ::TransactionEngine::HashedTransactionService::RawCsvTransaction::Import.new.run
+    end
+
+    def hash_raw_increase_transactions!
+      ::TransactionEngine::HashedTransactionService::RawIncreaseTransaction::Import.new(start_date: @start_date).run
     end
 
     def canonize_hashed_transactions!

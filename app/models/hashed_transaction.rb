@@ -15,6 +15,7 @@
 #  duplicate_of_hashed_transaction_id :bigint
 #  raw_csv_transaction_id             :bigint
 #  raw_emburse_transaction_id         :bigint
+#  raw_increase_transaction_id        :bigint
 #  raw_plaid_transaction_id           :bigint
 #  raw_stripe_transaction_id          :bigint
 #
@@ -22,6 +23,7 @@
 #
 #  index_hashed_transactions_on_duplicate_of_hashed_transaction_id  (duplicate_of_hashed_transaction_id)
 #  index_hashed_transactions_on_raw_csv_transaction_id              (raw_csv_transaction_id)
+#  index_hashed_transactions_on_raw_increase_transaction_id         (raw_increase_transaction_id)
 #  index_hashed_transactions_on_raw_plaid_transaction_id            (raw_plaid_transaction_id)
 #  index_hashed_transactions_on_raw_stripe_transaction_id           (raw_stripe_transaction_id)
 #
@@ -36,6 +38,7 @@ class HashedTransaction < ApplicationRecord
   belongs_to :raw_plaid_transaction, optional: true
   belongs_to :raw_emburse_transaction, optional: true
   belongs_to :raw_stripe_transaction, optional: true
+  belongs_to :raw_increase_transaction, optional: true
 
   has_one :canonical_hashed_mapping
   has_one :canonical_transaction, through: :canonical_hashed_mapping
@@ -55,14 +58,16 @@ class HashedTransaction < ApplicationRecord
     raw_plaid_transaction.try(:memo) ||
       raw_emburse_transaction.try(:memo) ||
       raw_stripe_transaction.try(:memo) ||
-      raw_csv_transaction.try(:memo)
+      raw_csv_transaction.try(:memo) ||
+      raw_increase_transaction.try(:description)
   end
 
   def amount_cents
     raw_plaid_transaction.try(:amount_cents) ||
       raw_emburse_transaction.try(:amount_cents) ||
       raw_stripe_transaction.try(:amount_cents) ||
-      raw_csv_transaction.try(:amount_cents)
+      raw_csv_transaction.try(:amount_cents) ||
+      raw_increase_transaction.try(:amount_cents)
   end
 
   def unique_bank_identifier
@@ -75,7 +80,8 @@ class HashedTransaction < ApplicationRecord
     d = raw_plaid_transaction.try(:date_posted) ||
         raw_emburse_transaction.try(:date_posted) ||
         raw_stripe_transaction.try(:date_posted) ||
-        raw_csv_transaction.try(:date_posted)
+        raw_csv_transaction.try(:date_posted) ||
+        raw_increase_transaction.try(:date_posted)
 
     self.update_column(:date, d)
 

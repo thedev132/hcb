@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_02_17_182212) do
+ActiveRecord::Schema[7.0].define(version: 2023_03_10_203121) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_stat_statements"
@@ -718,8 +718,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_17_182212) do
     t.bigint "raw_stripe_transaction_id"
     t.text "unique_bank_identifier"
     t.date "date"
+    t.bigint "raw_increase_transaction_id"
     t.index ["duplicate_of_hashed_transaction_id"], name: "index_hashed_transactions_on_duplicate_of_hashed_transaction_id"
     t.index ["raw_csv_transaction_id"], name: "index_hashed_transactions_on_raw_csv_transaction_id"
+    t.index ["raw_increase_transaction_id"], name: "index_hashed_transactions_on_raw_increase_transaction_id"
     t.index ["raw_plaid_transaction_id"], name: "index_hashed_transactions_on_raw_plaid_transaction_id"
     t.index ["raw_stripe_transaction_id"], name: "index_hashed_transactions_on_raw_stripe_transaction_id"
   end
@@ -1095,6 +1097,19 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_17_182212) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "unique_bank_identifier", null: false
+  end
+
+  create_table "raw_increase_transactions", force: :cascade do |t|
+    t.integer "amount_cents"
+    t.date "date_posted"
+    t.text "increase_transaction_id"
+    t.text "increase_account_id"
+    t.text "increase_route_id"
+    t.text "increase_route_type"
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["increase_transaction_id"], name: "index_raw_increase_transactions_on_increase_transaction_id", unique: true
   end
 
   create_table "raw_pending_bank_fee_transactions", force: :cascade do |t|
