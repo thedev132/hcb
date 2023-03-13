@@ -10,7 +10,7 @@ module DonationService
       end
 
       def run
-        event.donations.order("created_at desc").map do |donation|
+        event.donations.not_pending.order("created_at desc").map do |donation|
           row(donation)
         end.to_json
       end

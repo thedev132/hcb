@@ -15,7 +15,7 @@ module DonationService
         Enumerator.new do |y|
           y << header.to_s
 
-          event.donations.order("created_at desc").each do |donation|
+          event.donations.not_pending.order("created_at desc").each do |donation|
             y << row(donation).to_s
           end
         end

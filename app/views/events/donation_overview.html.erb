@@ -72,7 +72,7 @@
     <span class="stat__value"><%= render_money_amount @stats[:refunded] %></span>
   </div>
   <div>
-  <% if organizer_signed_in? && @event.canonical_transactions.exists? %>
+  <% if organizer_signed_in? && @donations.not_pending.any? %>
     <button
       type="button"
       <%= organizer_signed_in? ? "data-behavior=menu_toggle aria-expanded=false tabindex=0" : "disabled=disabled" %>
