@@ -179,6 +179,18 @@ class HcbCode < ApplicationRecord
     pt.try(:stripe_auth_dashboard_url) || ct.try(:stripe_auth_dashboard_url)
   end
 
+  def raw_emburse_transaction
+    ct&.raw_emburse_transaction
+  end
+
+  def emburse_card
+    ct&.emburse_card
+  end
+
+  def card
+    stripe_card || emburse_card
+  end
+
   def bank_fee?
     hcb_i1 == ::TransactionGroupingEngine::Calculate::HcbCode::BANK_FEE_CODE
   end
@@ -344,11 +356,7 @@ class HcbCode < ApplicationRecord
   end
 
   def receipt_required?
-    if type == :card_charge && !pt.declined?
-      true
-    else
-      false
-    end
+    (type == :card_charge && !pt.declined?) || !!raw_emburse_transaction
   end
 
   def local_hcb_code

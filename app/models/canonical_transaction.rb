@@ -143,6 +143,14 @@ class CanonicalTransaction < ApplicationRecord
     end
   end
 
+  def emburse_card
+    @emburse_card ||= begin
+      return nil unless raw_emburse_transaction
+
+      ::EmburseCard.find_by(emburse_id: raw_emburse_transaction.emburse_transaction.dig("card", "id"))
+    end
+  end
+
   def stripe_refund?
     raw_stripe_transaction&.refund?
   end

@@ -91,25 +91,20 @@ class StaticPagesController < ApplicationController
   end
 
   def my_inbox
-    stripe_cards = current_user.stripe_cards.includes(:event)
-    emburse_cards = current_user.emburse_cards.includes(:event)
+    user_cards = current_user.stripe_cards + current_user.emburse_cards
+    user_hcb_code_ids = user_cards.flat_map { |card| card.hcb_codes.pluck(:id) }
+    user_hcb_codes = HcbCode.where(id: user_hcb_code_ids)
 
-    @hcb_codes = {}
-    @count = 0
+    hcb_codes_missing_ids = user_hcb_codes.missing_receipt.filter(&:receipt_required?).pluck(:id)
+    hcb_codes_missing = HcbCode.where(id: hcb_codes_missing_ids).order(created_at: :desc)
 
-    @cards = (stripe_cards + emburse_cards).filter do |card|
-      has_missing_receipt_tx = false
-      card.hcb_codes.missing_receipt.each do |hcb_code|
-        next unless hcb_code.receipt_required?
+    @count = hcb_codes_missing.count # Total number of HcbCodes missing receipts
+    @hcb_codes = hcb_codes_missing.page(params[:page]).per(params[:per] || 20)
 
-        @hcb_codes[card.hashid] ||= []
-        @hcb_codes[card.hashid] << hcb_code
-        @count += 1
-        has_missing_receipt_tx = true
-      end
-
-      has_missing_receipt_tx
-    end
+    @card_hcb_codes = @hcb_codes.group_by { |hcb| hcb.card.to_global_id.to_s }
+    @cards = GlobalID::Locator.locate_many(@card_hcb_codes.keys)
+    # Ideally we'd preload (includes) events for @cards, but that isn't
+    # supported yet: https://github.com/rails/globalid/pull/139
   end
 
   def project_stats
