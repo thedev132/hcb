@@ -38,7 +38,11 @@ module TransactionEngine
           cursor = nil
 
           loop do
-            response = conn.get "/transactions", { limit: 100, cursor: cursor, "created_at.on_or_after" => @start_date.iso8601 }
+            response = conn.get "/transactions",
+                                account_id: fs_main_account_id,
+                                limit: 100,
+                                cursor: cursor,
+                                "created_at.on_or_after" => @start_date.iso8601
 
             transactions += response.body["data"]
 
@@ -52,8 +56,16 @@ module TransactionEngine
           transactions
         end
 
-        def increase_url
+        def increase_environment
           if Rails.env.production?
+            :production
+          else
+            :sandbox
+          end
+        end
+
+        def increase_url
+          if increase_environment == :production
             "https://api.increase.com"
           else
             "https://sandbox.increase.com"
@@ -61,11 +73,11 @@ module TransactionEngine
         end
 
         def increase_api_key
-          if Rails.env.production?
-            Rails.application.credentials.increase.production_key
-          else
-            Rails.application.credentials.increase.sandbox_key
-          end
+          Rails.application.credentials.dig(:increase, increase_environment, :api_key)
+        end
+
+        def fs_main_account_id
+          Rails.application.credentials.dig(:increase, increase_environment, :fs_main_account_id)
         end
 
       end
