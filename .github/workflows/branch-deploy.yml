@@ -21,19 +21,19 @@ jobs:
           ref: ${{ steps.branch-deploy.outputs.ref }}
 
       - name: Fake-Deploy
-        if: ${{ steps.branch-deploy.outputs.continue == "true" && steps.branch-deploy.outputs.noop == "true" }}
+        if: ${{ steps.branch-deploy.outputs.continue == 'true' && steps.branch-deploy.outputs.noop == 'true' }}
         run: |
           echo "fake-deploying Bank to ${{ steps.branch-deploy.outputs.environment }}!"
 
       - name: Set up Ruby
-        if: ${{ steps.branch-deploy.outputs.continue == "true" && steps.branch-deploy.outputs.noop != "true" }}
+        if: ${{ steps.branch-deploy.outputs.continue == 'true' && steps.branch-deploy.outputs.noop != 'true' }}
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: '2.7.7'
           bundler-cache: true
 
       - name: Deploy
-        if: ${{ steps.branch-deploy.outputs.continue == "true" && steps.branch-deploy.outputs.noop != "true" }}
+        if: ${{ steps.branch-deploy.outputs.continue == 'true' && steps.branch-deploy.outputs.noop != 'true' }}
         env:
           MRSK_REGISTRY_USERNAME: ${{ github.actor }}
           MRSK_REGISTRY_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
