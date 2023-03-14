@@ -13,7 +13,7 @@ jobs:
         with:
           trigger: .deploy
           environment: atm1
-          environment-targets: web, atm1, atm2, atm3
+          environment_targets: web, atm1, atm2, atm3
 
       - name: Checkout code
         uses: actions/checkout@v3.1.0
