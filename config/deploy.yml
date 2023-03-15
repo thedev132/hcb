@@ -7,7 +7,7 @@ image: hackclub/bank
 # Deploy to these servers.
 servers:
   web:
-    - 167.235.200.107
+    - web.hcb.gg
   atm1:
     traefik: true
     hosts:
@@ -47,7 +47,7 @@ env:
 builder:
   remote:
     arch: amd64
-    host: ssh://root@167.235.200.107
+    host: ssh://root@warehouse.hcb.gg
 
 # Use accessory services (secrets come from .env).
 accessories:

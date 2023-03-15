@@ -1,4 +1,4 @@
-name: Branch Deploy
+name: Handle PR Comment (Process Command)
 on:
   issue_comment:
     types: [created]
@@ -7,7 +7,7 @@ jobs:
     if: ${{ github.event.issue.pull_request }}
     runs-on: ubuntu-latest
     steps:
-      - name: Process command
+      - name: Process potential command
         uses: github/branch-deploy@v4.6.1
         id: branch-deploy
         with:
@@ -16,6 +16,7 @@ jobs:
           environment_targets: web, atm1, atm2, atm3
 
       - name: Checkout code
+        if: ${{ steps.branch-deploy.outputs.continue == 'true' }}
         uses: actions/checkout@v3.1.0
         with:
           ref: ${{ steps.branch-deploy.outputs.ref }}
@@ -43,4 +44,5 @@ jobs:
           mkdir -p ~/.ssh/
           echo "$MRSK_SSH_KEY" > ~/.ssh/id_rsa && sudo chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H ${{ steps.branch-deploy.outputs.environment }}.hcb.gg > ~/.ssh/known_hosts
+          ssh-keyscan -H warehouse.hcb.gg > ~/.ssh/known_hosts
           bundle exec mrsk deploy --roles ${{ steps.branch-deploy.outputs.environment }}
