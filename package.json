@@ -29,7 +29,7 @@
     "react_ujs": "^2.6.1",
     "ua-parser-js": "^1.0.33",
     "use-persisted-state": "^0.3.3",
-    "webpack": "^5.73.0",
+    "webpack": "^5.76.0",
     "webpack-cli": "^4.10.0"
   },
   "devDependencies": {
