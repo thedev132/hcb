@@ -59,7 +59,7 @@ class HashedTransaction < ApplicationRecord
       raw_emburse_transaction.try(:memo) ||
       raw_stripe_transaction.try(:memo) ||
       raw_csv_transaction.try(:memo) ||
-      raw_increase_transaction.try(:description)
+      raw_increase_transaction.try(:memo)
   end
 
   def amount_cents

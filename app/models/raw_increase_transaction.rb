@@ -9,6 +9,7 @@
 #  date_posted             :date
 #  description             :text
 #  increase_route_type     :text
+#  increase_transaction    :jsonb
 #  created_at              :datetime         not null
 #  updated_at              :datetime         not null
 #  increase_account_id     :text
@@ -21,5 +22,20 @@
 #
 class RawIncreaseTransaction < ApplicationRecord
   has_many :hashed_transactions
+
+  def memo
+    if category == "inbound_ach_transfer"
+      originator_company_name = increase_transaction.dig("source", "inbound_ach_transfer", "originator_company_name")
+      originator_company_entry_description = increase_transaction.dig("source", "inbound_ach_transfer", "originator_company_entry_description")
+
+      "#{originator_company_name} #{originator_company_entry_description}"
+    else
+      description
+    end
+  end
+
+  def category
+    increase_transaction.dig("source", "category")
+  end
 
 end

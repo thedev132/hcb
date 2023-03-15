@@ -17,6 +17,7 @@ module TransactionEngine
               rit.increase_route_type = transaction["route_type"]
               rit.increase_route_id = transaction["route_id"]
               rit.description = transaction["description"]
+              rit.increase_transaction = transaction
             end
           end
 
