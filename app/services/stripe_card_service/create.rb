@@ -2,11 +2,12 @@
 
 module StripeCardService
   class Create
-    def initialize(current_user:, event_id:,
+    def initialize(current_user:, current_session:, event_id:,
                    card_type:,
                    stripe_shipping_name: nil, stripe_shipping_address_city: nil, stripe_shipping_address_state: nil,
                    stripe_shipping_address_line1: nil, stripe_shipping_address_line2: nil, stripe_shipping_address_postal_code: nil, stripe_shipping_address_country: "US")
       @current_user = current_user
+      @current_session = current_session
       @event_id = event_id
 
       @card_type = card_type
@@ -100,6 +101,7 @@ module StripeCardService
     def cardholder_attrs
       {
         current_user: @current_user,
+        current_session: @current_session,
         event_id: event.id
       }
     end

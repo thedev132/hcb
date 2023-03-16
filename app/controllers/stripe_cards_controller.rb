@@ -103,6 +103,7 @@ class StripeCardsController < ApplicationController
 
     attrs = {
       current_user: current_user,
+      current_session: current_session,
       event_id: event.id,
       card_type: sc[:card_type],
       stripe_shipping_name: sc[:stripe_shipping_name],

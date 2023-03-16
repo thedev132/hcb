@@ -2,8 +2,9 @@
 
 module StripeCardholderService
   class Create
-    def initialize(current_user:, event_id:)
+    def initialize(current_user:, current_session:, event_id:)
       @current_user = current_user
+      @current_session = current_session
       @event_id = event_id
     end
 
