@@ -145,13 +145,13 @@ class CanonicalPendingTransaction < ApplicationRecord
                         .where(canonical_pending_event_mapping: { event_id: event.id })
                         .where(fronted: true)
                         .order(date: :asc, id: :asc)
-    pts_sum = pts.sum(:amount_cents)
+    pts_sum = pts.map(&:amount_cents).sum
     return 0 if pts_sum.negative?
 
     cts_sum = local_hcb_code.canonical_transactions
                             .includes(:canonical_event_mapping)
                             .where(canonical_event_mapping: { event_id: event.id })
-                            .sum(:amount_cents)
+                            .map(&:amount_cents).sum
 
     # PTs that were chronologically created first in an HcbCode are first
     # responsible for "contributing" to the fronted amount. After a PT's
