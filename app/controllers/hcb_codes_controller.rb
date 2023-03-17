@@ -109,7 +109,10 @@ class HcbCodesController < ApplicationController
   rescue => e
     Airbrake.notify(e)
 
-    redirect_to params[:redirect_url], flash: { error: e.message }
+    flash[:error] = e.message
+    return redirect_to params[:redirect_url] if params[:redirect_url]
+
+    redirect_back fallback_location: @hcb_code.url
   end
 
   def attach_receipt
