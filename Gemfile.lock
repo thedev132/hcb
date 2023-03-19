@@ -711,8 +711,10 @@ GEM
       bindata (~> 2.4)
       openssl-signature_algorithm (~> 1.0)
     trailblazer-option (0.1.2)
-    turbo-rails (0.8.3)
-      rails (>= 6.0.0)
+    turbo-rails (1.4.0)
+      actionpack (>= 6.0.0)
+      activejob (>= 6.0.0)
+      railties (>= 6.0.0)
     twilio-ruby (5.73.2)
       faraday (>= 0.9, < 3.0)
       jwt (>= 1.5, <= 2.5)
@@ -872,7 +874,7 @@ DEPENDENCIES
   swagger-blocks
   table_print
   terser (~> 1.1)
-  turbo-rails (~> 0.8.3)
+  turbo-rails (~> 1.4)
   twilio-ruby
   uri (= 0.10.0)
   validates_email_format_of

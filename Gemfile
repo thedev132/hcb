@@ -28,7 +28,7 @@ gem "react-rails"
 # roll back to mini_racer 0.4.0: https://github.com/rubyjs/mini_racer/issues/218.
 gem "mini_racer", "~> 0.4.0", platforms: :ruby
 # Turbo makes navigating your web application faster. Read more: https://github.com/hotwired/turbo
-gem "turbo-rails", "~> 0.8.3"
+gem "turbo-rails", "~> 1.4"
 # Use Redis adapter to run Action Cable in production
 gem "redis", "~> 4.0"
 # Use ActiveModel has_secure_password
