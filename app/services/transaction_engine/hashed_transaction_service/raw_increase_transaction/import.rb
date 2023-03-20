@@ -36,7 +36,7 @@ module TransactionEngine
             unique_bank_identifier: "INCREASE-#{it.increase_account_id.upcase}",
             date: it.date_posted.strftime("%Y-%m-%d"),
             amount_cents: it.amount_cents,
-            memo: it.description.upcase
+            memo: it.memo.upcase
           }
           ::TransactionEngine::HashedTransactionService::PrimaryHash.new(attrs).run
         end
