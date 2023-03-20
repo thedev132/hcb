@@ -4,6 +4,8 @@ module TransactionEngine
   module RawIncreaseTransactionService
     module Increase
       class Import
+        include IncreaseService::AccountIds
+
         def initialize(start_date: 1.month.ago)
           @start_date = start_date
         end
@@ -27,58 +29,28 @@ module TransactionEngine
         private
 
         def increase_transactions
-          conn = Faraday.new(
-            url: increase_url,
-            headers: { "Authorization" => "Bearer #{increase_api_key}" }
-          ) do |f|
-            f.response :json
-          end
+          increase = IncreaseService.new
 
           transactions = []
-
           cursor = nil
 
           loop do
-            response = conn.get "/transactions",
-                                account_id: fs_main_account_id,
-                                limit: 100,
-                                cursor: cursor,
-                                "created_at.on_or_after" => @start_date.iso8601
+            response = increase.get "/transactions",
+                                    account_id: fs_main_account_id,
+                                    limit: 100,
+                                    cursor: cursor,
+                                    "created_at.on_or_after" => @start_date.iso8601
 
-            transactions += response.body["data"]
+            transactions += response["data"]
 
-            if response.body["next_cursor"]
-              cursor = response.body["next_cursor"]
+            if response["next_cursor"]
+              cursor = response["next_cursor"]
             else
               break
             end
           end
 
           transactions
-        end
-
-        def increase_environment
-          if Rails.env.production?
-            :production
-          else
-            :sandbox
-          end
-        end
-
-        def increase_url
-          if increase_environment == :production
-            "https://api.increase.com"
-          else
-            "https://sandbox.increase.com"
-          end
-        end
-
-        def increase_api_key
-          Rails.application.credentials.dig(:increase, increase_environment, :api_key)
-        end
-
-        def fs_main_account_id
-          Rails.application.credentials.dig(:increase, increase_environment, :fs_main_account_id)
         end
 
       end

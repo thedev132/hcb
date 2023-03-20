@@ -3,6 +3,9 @@
 module TransactionEngine
   class Nuke
     def run
+      Fee.delete_all
+      CanonicalEventMapping.delete_all
+
       CanonicalPendingDeclinedMapping.delete_all
       CanonicalPendingSettledMapping.delete_all
 

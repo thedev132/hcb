@@ -51,11 +51,10 @@ bank_fee_weekly_job:
   class: "BankFeeJob::Weekly"
   queue: "default"
 
-disbursement_nightly_job: # PERFORMS SVB TRANSFERS
+disbursement_nightly_job:
   cron: "0 0 * * *" # run every 1 day.
   class: "DisbursementJob::Nightly"
   queue: "default"
-  status: disabled
 
 disbursement_hourly_job:
   cron: "*/30 * * * *" # run every 30 minutes
