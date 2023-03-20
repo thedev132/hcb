@@ -28,8 +28,6 @@
 #  index_users_on_slug   (slug) UNIQUE
 #
 class User < ApplicationRecord
-  self.ignored_columns = ["api_access_token_bidx", "api_access_token_ciphertext"]
-
   include PublicIdentifiable
   set_public_id_prefix :usr
 
