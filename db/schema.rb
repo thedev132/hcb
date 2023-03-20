@@ -1485,11 +1485,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_15_155101) do
     t.string "webauthn_id"
     t.integer "session_duration_seconds", default: 2592000, null: false
     t.date "birthday"
-    t.string "api_access_token_bidx"
-    t.text "api_access_token_ciphertext"
     t.boolean "seasonal_themes_enabled", default: true, null: false
     t.datetime "locked_at", precision: nil
-    t.index ["api_access_token_bidx"], name: "index_users_on_api_access_token_bidx", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["slug"], name: "index_users_on_slug", unique: true
   end

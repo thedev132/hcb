@@ -24,9 +24,8 @@
 #
 # Indexes
 #
-#  index_users_on_api_access_token_bidx  (api_access_token_bidx) UNIQUE
-#  index_users_on_email                  (email) UNIQUE
-#  index_users_on_slug                   (slug) UNIQUE
+#  index_users_on_email  (email) UNIQUE
+#  index_users_on_slug   (slug) UNIQUE
 #
 class User < ApplicationRecord
   self.ignored_columns = ["api_access_token_bidx", "api_access_token_ciphertext"]
