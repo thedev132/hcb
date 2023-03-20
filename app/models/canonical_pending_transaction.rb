@@ -72,8 +72,8 @@ class CanonicalPendingTransaction < ApplicationRecord
   scope :safe, -> { where("date >= '2021-01-01'") } # older pending transactions don't yet all map up because of older processes (especially around invoices)
 
   scope :stripe, -> { where("raw_pending_stripe_transaction_id is not null") }
-  scope :incoming, -> { where("amount_cents > 0") }
-  scope :outgoing, -> { where("amount_cents < 0") }
+  scope :incoming, -> { where(CanonicalPendingTransaction.arel_table[:amount_cents].gt(0)) }
+  scope :outgoing, -> { where(CanonicalPendingTransaction.arel_table[:amount_cents].lt(0)) }
   scope :outgoing_ach, -> { where("raw_pending_outgoing_ach_transaction_id is not null") }
   scope :outgoing_check, -> { where("raw_pending_outgoing_check_transaction_id is not null") }
   scope :donation, -> { where("raw_pending_donation_transaction_id is not null") }
@@ -149,9 +149,8 @@ class CanonicalPendingTransaction < ApplicationRecord
     return 0 if pts_sum.negative?
 
     cts_sum = local_hcb_code.canonical_transactions
-                            .includes(:canonical_event_mapping)
-                            .where(canonical_event_mapping: { event_id: event.id })
-                            .map(&:amount_cents).sum
+                            .filter { |ct| ct.canonical_event_mapping.event_id == event.id }
+                            .sum(&:amount_cents)
 
     # PTs that were chronologically created first in an HcbCode are first
     # responsible for "contributing" to the fronted amount. After a PT's
