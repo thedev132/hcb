@@ -9,6 +9,7 @@ module TransactionEngine
           ::TransactionEngine::CanonicalTransactionService::Import::PlaidThatLookLikeDuplicates.new.run
           ::TransactionEngine::CanonicalTransactionService::Import::EmburseThatLookLikeDuplicates.new.run
           ::TransactionEngine::CanonicalTransactionService::Import::StripeThatLookLikeDuplicates.new.run
+          ::TransactionEngine::CanonicalTransactionService::Import::IncreaseThatLookLikeDuplicates.new.run
         end
 
       end
