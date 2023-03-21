@@ -24,7 +24,7 @@
       icon: "settings" %>
   </nav>
 
-  <% if current_user.events.not_demo_mode.funded.exists? %>
+  <% if current_user.events.not_demo_mode.funded.exists? && Flipper.enabled?(:bank_wrapped, current_user) %>
     <div id="bank-wrapped-dialog" style="display: none;">
       <article role="alertdialog" class="flash flex items-center mt3 mb2 mx-auto shrink-none">
         <span class="flex-auto flex justify-between items-center">
