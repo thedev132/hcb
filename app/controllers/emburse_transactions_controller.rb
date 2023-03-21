@@ -34,7 +34,7 @@ class EmburseTransactionsController < ApplicationController
         redirect_to emburse_transactions_path
       end
     else
-      render "edit"
+      render :edit, status: :unprocessable_entity
     end
   end
 

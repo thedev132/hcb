@@ -30,7 +30,7 @@ class EmburseCardsController < ApplicationController
       flash[:success] = "Card was successfully updated."
       redirect_to @emburse_card
     else
-      render "edit"
+      render :edit, status: :unprocessable_entity
     end
   end
 

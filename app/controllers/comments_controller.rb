@@ -19,7 +19,7 @@ class CommentsController < ApplicationController
       flash[:success] = "Note created."
       redirect_to @commentable
     else
-      render "new"
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -41,7 +41,7 @@ class CommentsController < ApplicationController
       # because that's the only place comments show up as a list.
       redirect_to @comment.commentable
     else
-      render "edit"
+      render :edit, status: :unprocessable_entity
     end
   end
 

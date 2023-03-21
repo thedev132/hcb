@@ -55,7 +55,7 @@ class TransactionsController < ApplicationController
 
       authorize @transaction
 
-      render "show_deprecated"
+      render :show_deprecated
     rescue ActiveRecord::RecordNotFound => e
       @transaction = TransactionEngine::Transaction::Show.new(canonical_transaction_id: params[:id]).run
 
@@ -125,7 +125,7 @@ class TransactionsController < ApplicationController
 
         redirect_to @transaction
       else
-        render "edit"
+        render :edit, status: :unprocessable_entity
       end
     end
   end

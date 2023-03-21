@@ -43,7 +43,7 @@ class OrganizerPositionDeletionRequestsController < ApplicationController
       flash[:success] = "Removal request accepted. We’ll be in touch shortly."
       redirect_to @event
     else
-      render "new"
+      render :new, status: :unprocessable_entity
     end
   end
 

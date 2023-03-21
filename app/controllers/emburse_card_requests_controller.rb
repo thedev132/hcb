@@ -84,7 +84,7 @@ class EmburseCardRequestsController < ApplicationController
       flash[:success] = "EmburseCard successfully requested!"
       redirect_to event_emburse_cards_overview_path(@event)
     else
-      render "new"
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -95,7 +95,7 @@ class EmburseCardRequestsController < ApplicationController
       flash[:success] = "Changes to emburse_card request saved."
       redirect_to @emburse_card_request
     else
-      render "edit"
+      render :edit, status: :unprocessable_entity
     end
   end
 

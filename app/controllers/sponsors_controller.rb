@@ -29,7 +29,7 @@ class SponsorsController < ApplicationController
       flash[:success] = "Sponsor was successfully created."
       redirect_to @sponsor
     else
-      render "new"
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -42,7 +42,7 @@ class SponsorsController < ApplicationController
       flash[:success] = "Sponsor was successfully updated."
       redirect_to @sponsor
     else
-      render "edit"
+      render :edit, status: :unprocessable_entity
     end
   end
 

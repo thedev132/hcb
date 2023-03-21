@@ -53,7 +53,7 @@ class GSuiteAccountsController < ApplicationController
       flash[:success] = "Saved changes to Google Workspace account."
       redirect_to g_suite_accounts_path
     else
-      render "edit"
+      render :edit, status: :unprocessable_entity
     end
   end
 

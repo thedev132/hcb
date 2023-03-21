@@ -60,7 +60,7 @@ class EmburseTransfersController < ApplicationController
       flash[:success] = "Transfer request was successfully updated."
       redirect_to @emburse_transfer
     else
-      render "edit"
+      render :edit, status: :unprocessable_entity
     end
   end
 

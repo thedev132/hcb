@@ -163,13 +163,13 @@ class UsersController < ApplicationController
       redirect_to(params[:return_to] || root_path)
     end
   rescue Errors::InvalidLoginCode => e
-    flash[:error] = e.message
+    flash.now[:error] = e.message
     # Propagate the to the login_code page on invalid code
     @user_id = params[:user_id]
     @email = params[:email]
     @force_use_email = params[:force_use_email]
     initialize_sms_params
-    return render "login_code", status: :unprocessable_entity
+    return render :login_code, status: :unprocessable_entity
   rescue ActiveRecord::RecordInvalid => e
     flash[:error] = e.record.errors&.full_messages&.join(". ")
     redirect_to auth_users_path
@@ -289,7 +289,7 @@ class UsersController < ApplicationController
       @onboarding = User.friendly.find(params[:id]).full_name.blank?
       show_impersonated_sessions = admin_signed_in? || current_session.impersonated?
       @sessions = show_impersonated_sessions ? @user.user_sessions : @user.user_sessions.not_impersonated
-      render :edit
+      render :edit, status: :unprocessable_entity
     end
   end
 

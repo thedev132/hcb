@@ -42,7 +42,7 @@ class BankAccountsController < ApplicationController
       end
       redirect_to @bank_account
     else
-      render "show"
+      render :show, status: :unprocessable_entity
     end
   end
 

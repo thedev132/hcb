@@ -39,7 +39,7 @@ class GSuitesController < ApplicationController
       flash[:success] = "Google Workspace changes saved."
       redirect_to @g_suite
     else
-      render "edit"
+      render :edit, status: :unprocessable_entity
     end
   rescue => e
     redirect_to edit_event_g_suite_path(@g_suite, event_id: @g_suite.event.slug), flash: { error: e.message }
@@ -53,7 +53,7 @@ class GSuitesController < ApplicationController
       flash[:success] = "Google Workspace was successfully destroyed."
       redirect_to g_suites_url
     else
-      render "index"
+      render :index, status: :unprocessable_entity
     end
   end
 

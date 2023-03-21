@@ -67,7 +67,7 @@ class DonationsController < ApplicationController
     if @donation.save
       redirect_to finish_donation_donations_path(@event, @donation.url_hash)
     else
-      render "start_donation"
+      render :start_donation, status: :unprocessable_entity
     end
   end
 

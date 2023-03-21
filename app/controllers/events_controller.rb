@@ -113,7 +113,7 @@ class EventsController < ApplicationController
       flash[:success] = "Organization successfully updated."
       redirect_back fallback_location: edit_event_path(@event.slug)
     else
-      render "edit"
+      render :edit, status: :unprocessable_entity
     end
   end
 

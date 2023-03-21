@@ -31,7 +31,7 @@ class StripeCardsController < ApplicationController
       flash[:success] = "Card frozen"
       redirect_to @card
     else
-      render "show"
+      render :show, status: :unprocessable_entity
     end
   end
 
@@ -43,7 +43,7 @@ class StripeCardsController < ApplicationController
       flash[:success] = "Card defrosted"
       redirect_to @card
     else
-      render "show"
+      render :show, status: :unprocessable_entity
     end
   end
 
@@ -63,7 +63,7 @@ class StripeCardsController < ApplicationController
       confetti!
       redirect_to @card
     else
-      render "show"
+      render :show, status: :unprocessable_entity
     end
   end
 

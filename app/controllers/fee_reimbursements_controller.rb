@@ -29,7 +29,7 @@ class FeeReimbursementsController < ApplicationController
     if @fee_reimbursement.update(result_params)
       redirect_to @fee_reimbursement, notice: "Fee refund was successfully updated."
     else
-      render "edit"
+      render :edit, status: :unprocessable_entity
     end
   end
 

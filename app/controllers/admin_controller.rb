@@ -183,7 +183,7 @@ class AdminController < ApplicationController
       flash[:success] = "Partner signup rejected"
       redirect_to partnered_signups_admin_index_path
     else
-      render "edit"
+      render :edit, status: :unprocessable_entity
     end
   end
 

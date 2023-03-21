@@ -37,7 +37,7 @@ class PartneredSignupsController < ApplicationController
     ::PartneredSignupJob::DeliverWebhook.perform_later(@partnered_signup.id)
   rescue => e
     Airbrake.notify(e)
-    render "edit"
+    render :edit, status: :unprocessable_entity
   end
 
   private
@@ -65,8 +65,8 @@ class PartneredSignupsController < ApplicationController
       if @partnered_signup.save
         redirect_to data[:signing_url], allow_other_host: true
       else
-        flash[:error] = "Something went wrong, please contact bank@hackclub.com for help"
-        render "edit"
+        flash.now[:error] = "Something went wrong, please contact bank@hackclub.com for help"
+        render :edit, status: :unprocessable_entity
       end
       return false
     end
