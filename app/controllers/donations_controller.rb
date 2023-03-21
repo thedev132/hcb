@@ -56,8 +56,8 @@ class DonationsController < ApplicationController
   end
 
   def make_donation
-    d_params = public_donation_params
-    d_params[:amount] = Monetize.parse(public_donation_params[:amount]).cents
+    d_params = donation_params
+    d_params[:amount] = Monetize.parse(donation_params[:amount]).cents
 
     @donation = Donation.new(d_params)
     @donation.event = @event
@@ -164,12 +164,7 @@ class DonationsController < ApplicationController
     @donation = Donation.find(params[:id])
   end
 
-  # Only allow a trusted parameter "white list" through.
   def donation_params
-    params.require(:donation).permit(:email, :name, :amount, :amount_received, :status, :stripe_client_secret)
-  end
-
-  def public_donation_params
     params.require(:donation).permit(:email, :name, :amount, :message)
   end
 
