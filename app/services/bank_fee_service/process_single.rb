@@ -2,31 +2,22 @@
 
 module BankFeeService
   class ProcessSingle
-    include ::Shared::Selenium::LoginToSvb
-    include ::Shared::Selenium::TransferFromFsMainToFsOperating
+    include IncreaseService::AccountIds
 
-    def initialize(bank_fee_id:, driver: nil)
+    def initialize(bank_fee_id:)
       @bank_fee_id = bank_fee_id
-      @driver = driver
-      @already_logged_in = @driver.present?
     end
 
     def run
       raise ArgumentError, "must be a pending bank fee only" unless bank_fee.pending?
 
+      increase = IncreaseService.new
+
       ActiveRecord::Base.transaction do
         bank_fee.mark_in_transit!
 
-        # 1. begin by navigating
-        login_to_svb! unless @already_logged_in
-
-        # Make the transfer on remote bank
-        transfer_from_fs_main_to_fs_operating!(amount_cents: amount_cents, memo: memo)
+        increase.transfer from: fs_main_account_id, to: fs_operating_account_id, amount: amount_cents, memo: memo
       end
-
-      sleep 5
-
-      driver.quit unless @already_logged_in
 
       true
     end

@@ -91,11 +91,10 @@ payout_nightly_job:
   class: "PayoutJob::Nightly"
   queue: "default"
 
-bank_fee_nightly_job: # PERFORMS SVB TRANSFERS
+bank_fee_nightly_job:
   cron: "*/30 2-23 * * *" # run every 30 minutes
   class: "BankFeeJob::Nightly"
   queue: "default"
-  status: disabled
 
 fee_engine_hourly_job:
   cron: "0 */1 * * *" # run every 1 hours

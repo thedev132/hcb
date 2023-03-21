@@ -2,22 +2,15 @@
 
 module BankFeeService
   class Nightly
-    include ::Shared::Selenium::LoginToSvb
-    include ::Shared::Selenium::TransferFromFsMainToFsOperating
-
     def run
       if BankFee.pending.present? || FeeRevenue.pending.present?
-        login_to_svb!
-
         BankFee.pending.each do |bank_fee|
-          ::BankFeeService::ProcessSingle.new(bank_fee_id: bank_fee.id, driver: driver).run
+          ::BankFeeService::ProcessSingle.new(bank_fee_id: bank_fee.id).run
         end
 
         FeeRevenue.pending.each do |fee_revenue|
-          ::FeeRevenueService::ProcessSingle.new(fee_revenue_id: fee_revenue.id, driver: driver).run
+          ::FeeRevenueService::ProcessSingle.new(fee_revenue_id: fee_revenue.id).run
         end
-
-        driver.quit
       end
 
       BankFee.in_transit.each do |bank_fee|
