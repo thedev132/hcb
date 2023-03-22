@@ -51,10 +51,6 @@ module UserService
       { user: login_code.user }
     end
 
-    def remote_access_token
-      exchange_login_code_resp[:auth_token]
-    end
-
     def error_message
       "Invalid login code"
     end
