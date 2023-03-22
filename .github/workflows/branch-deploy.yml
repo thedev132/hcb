@@ -12,8 +12,11 @@ jobs:
         id: branch-deploy
         with:
           trigger: .deploy
-          environment: atm1
-          environment_targets: web, atm1, atm2, atm3
+          environment: production
+          environment_targets: production, atm1, atm2, atm3
+          skip_ci: atm1, atm2, atm3
+          skip_reviews: atm1, atm2, atm3
+          environment_urls: production|https://web.hcb.gg, atm1|https://atm1.teleport.hcb.gg, atm2|https://atm2.teleport.hcb.gg, atm3|https://atm3.teleport.hcb.gg
 
       - name: Checkout code
         if: ${{ steps.branch-deploy.outputs.continue == 'true' }}
@@ -33,8 +36,8 @@ jobs:
           ruby-version: '2.7.7'
           bundler-cache: true
 
-      - name: Deploy
-        if: ${{ steps.branch-deploy.outputs.continue == 'true' && steps.branch-deploy.outputs.noop != 'true' }}
+      - name: Deploy to ATM
+        if: ${{ steps.branch-deploy.outputs.continue == 'true' && steps.branch-deploy.outputs.noop != 'true' && contains(steps.branch-deploy.outputs.environment, 'atm') }}
         env:
           MRSK_REGISTRY_USERNAME: ${{ github.actor }}
           MRSK_REGISTRY_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
@@ -45,4 +48,18 @@ jobs:
           echo "$MRSK_SSH_KEY" > ~/.ssh/id_rsa && sudo chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H ${{ steps.branch-deploy.outputs.environment }}.hcb.gg > ~/.ssh/known_hosts
           ssh-keyscan -H warehouse.hcb.gg > ~/.ssh/known_hosts
-          bundle exec mrsk deploy --roles ${{ steps.branch-deploy.outputs.environment }}
+          bundle exec mrsk deploy --destination ${{ steps.branch-deploy.outputs.environment }}
+
+      - name: Deploy to Production
+        if: ${{ steps.branch-deploy.outputs.continue == 'true' && steps.branch-deploy.outputs.noop != 'true' && steps.branch-deploy.outputs.environment == 'production' }}
+        env:
+          MRSK_REGISTRY_USERNAME: ${{ github.actor }}
+          MRSK_REGISTRY_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+          MRSK_SSH_KEY: ${{ secrets.MRSK_SSH_KEY }}
+        run: |
+          echo "deploying Bank to production!"
+          mkdir -p ~/.ssh/
+          echo "$MRSK_SSH_KEY" > ~/.ssh/id_rsa && sudo chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H warehouse.hcb.gg > ~/.ssh/known_hosts
+          ssh-keyscan -H web.hcb.gg > ~/.ssh/known_hosts
+          bundle exec mrsk deploy
