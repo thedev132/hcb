@@ -8,18 +8,6 @@ image: hackclub/bank
 servers:
   web:
     - web.hcb.gg
-  atm1:
-    traefik: true
-    hosts:
-      - atm1.hcb.gg
-  atm2:
-    traefik: true
-    hosts:
-      - atm2.hcb.gg
-  atm3:
-    traefik: true
-    hosts:
-      - atm3.hcb.gg
 
 # Credentials for your image host.
 registry:
@@ -63,6 +51,22 @@ accessories:
   redis:
     image: redis
     host: 167.235.200.107
+    port: 6379
+    directories:
+      - redis-data:/data
+
+  db-atms:
+    image: postgres:11.16
+    host: atms.hcb.gg
+    port: 5432
+    env:
+      clear:
+        POSTGRES_PASSWORD: postgres
+    directories:
+      - pg-data:/var/lib/postgresql/data
+  redis-atms:
+    image: redis
+    host: atms.hcb.gg
     port: 6379
     directories:
       - redis-data:/data

@@ -1,3 +1,17 @@
+GIT
+  remote: https://github.com/mrsked/mrsk.git
+  revision: 83dc82661b8a02dd1fbb0ee91261104cee127862
+  ref: 83dc82661b8a02dd1fbb0ee91261104cee127862
+  specs:
+    mrsk (0.9.1)
+      activesupport (>= 7.0)
+      bcrypt_pbkdf (~> 1.0)
+      dotenv (~> 2.8)
+      ed25519 (~> 1.2)
+      sshkit (~> 1.21)
+      thor (~> 1.2)
+      zeitwerk (~> 2.5)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -439,14 +453,6 @@ GEM
       monetize (~> 1.9)
       money (~> 6.13)
       railties (>= 3.0)
-    mrsk (0.9.1)
-      activesupport (>= 7.0)
-      bcrypt_pbkdf (~> 1.0)
-      dotenv (~> 2.8)
-      ed25519 (~> 1.2)
-      sshkit (~> 1.21)
-      thor (~> 1.2)
-      zeitwerk (~> 2.5)
     msgpack (1.5.1)
     multi_json (1.15.0)
     multi_xml (0.6.0)
@@ -836,7 +842,7 @@ DEPENDENCIES
   mini_racer (~> 0.4.0)
   monetize
   money-rails
-  mrsk (~> 0.9.1)
+  mrsk!
   namae
   net-http
   paper_trail

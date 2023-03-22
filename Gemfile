@@ -183,7 +183,7 @@ group :development, :test do
   gem "pry-rails"
 end
 
-gem "mrsk", "~> 0.9.1" # deployments
+gem "mrsk", github: "mrsked/mrsk", ref: "83dc82661b8a02dd1fbb0ee91261104cee127862" # deployments - locking to recent commit to get changes until new release
 # net-ssh (used by mrsk) needs these
 gem "bcrypt_pbkdf"
 gem "ed25519"
