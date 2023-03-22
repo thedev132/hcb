@@ -17,6 +17,7 @@ module TransactionEngine
           return likely_dda_check if dda_check?
 
           return likely_ach if outgoing_ach?
+          return likely_increase_ach if increase_ach?
 
           return likely_invoice if incoming_invoice?
 
@@ -65,6 +66,15 @@ module TransactionEngine
         return nil unless confirmation_number
 
         event.ach_transfers.find_by(confirmation_number: confirmation_number)
+      end
+
+      def likely_increase_ach
+        increase_ach_transfer_id = @canonical_transaction.raw_increase_transaction.increase_transaction.dig("source", "ach_transfer_intention", "transfer_id")
+
+        ach_transfer = AchTransfer.find_by(increase_id: increase_ach_transfer_id)
+        return unless ach_transfer
+
+        return ach_transfer
       end
 
       def likely_invoice

@@ -21,12 +21,14 @@
 #  updated_at                :datetime         not null
 #  creator_id                :bigint
 #  event_id                  :bigint
+#  increase_id               :text
 #  processor_id              :bigint
 #
 # Indexes
 #
 #  index_ach_transfers_on_creator_id    (creator_id)
 #  index_ach_transfers_on_event_id      (event_id)
+#  index_ach_transfers_on_increase_id   (increase_id) UNIQUE
 #  index_ach_transfers_on_processor_id  (processor_id)
 #
 # Foreign Keys

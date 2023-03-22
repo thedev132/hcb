@@ -16,12 +16,23 @@ module EventMappingEngine
           }
           ::CanonicalEventMapping.create!(attrs)
         end
+
+        likely_increase_achs.find_each(batch_size: 100) do |ct|
+          ach_transfer = ct.ach_transfer
+          next unless ach_transfer
+
+          ::CanonicalEventMapping.create!(canonical_transaction: ct, event: ach_transfer.event)
+        end
       end
 
       private
 
       def likely_achs
         ::CanonicalTransaction.unmapped.likely_achs.order("date asc")
+      end
+
+      def likely_increase_achs
+        ::CanonicalTransaction.unmapped.likely_increase_achs.order("date asc")
       end
 
     end

@@ -55,6 +55,7 @@ class CanonicalTransaction < ApplicationRecord
   scope :likely_checks, -> { where("memo ilike '%Check TO ACCOUNT REDACTED'") }
   scope :likely_disbursements, -> { where("memo ilike 'HCB DISBURSE%'") }
   scope :likely_achs, -> { where("memo ilike '%BUSBILLPAY%'") }
+  scope :likely_increase_achs, -> { joins(hashed_transactions: :raw_increase_transaction).where("raw_increase_transactions.increase_transaction->'source'->>'category' = 'ach_transfer_intention'") }
   scope :likely_hack_club_fee, -> { where("memo ilike '%Hack Club Bank Fee TO ACCOUNT%'") }
   scope :old_likely_hack_club_fee, -> { where("memo ilike '% Fee TO ACCOUNT REDACTED%'") }
   scope :stripe_top_up, -> { where("memo ilike '%Hack Club Bank Stripe Top%' or memo ilike '%HACKC Stripe Top%' or memo ilike '%HCKCLB Stripe Top%'") }
@@ -125,6 +126,10 @@ class CanonicalTransaction < ApplicationRecord
 
   def raw_stripe_transaction
     hashed_transaction.raw_stripe_transaction
+  end
+
+  def raw_increase_transaction
+    hashed_transaction.raw_increase_transaction
   end
 
   def stripe_cardholder

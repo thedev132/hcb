@@ -60,6 +60,10 @@ module TransactionEngine
         memo_upcase.include?(OUTGOING_ACH_MEMO_PART)
       end
 
+      def increase_ach?
+        @canonical_transaction.raw_increase_transaction&.increase_transaction&.dig("source", "category") == "ach_transfer_intention"
+      end
+
       def likely_outgoing_ach_name
         memo_upcase.split(OUTGOING_ACH_MEMO_PART)[0].strip
       end

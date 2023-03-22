@@ -3,22 +3,6 @@
 
 <hr>
 
-<h3>Instructions</h3>
-
-<p>Go to <%= link_to "this ACH transfer", @ach_transfer %>.</p>
-
-<p>Steps to process ACH:</p>
-
-<ol>
-  <li><b>Check that all values below look correct.</b></li>
-  <li class="bold">Check the notes area for any messages from Bank staff before processing.</li>
-  <li>Go into SVB &rarr; "Bill Pay" and create a new individual payee with the information below, and be sure to include the nickname.</li>
-  <li>Under Bill Pay, initiate a new ACH transfer to the new payee, out from the "Fiscal Sponsorship New - 2" account if there is one.</li>
-  <li>Make sure the transaction is also <b>approved</b> in Bill Pay, so it can successfully go through.</li>
-  <li>Click "Mark as approved and sent" below to finish</li>
-  <li>Make sure that we have proper documentation and papertrail for this ACH transfer! You can <%= link_to "attach receipts or other notes to the ACH transfer", @ach_transfer %> to keep track.</li>
-</ol>
-
 <p>
   Submitted by:
   <%= "ADMIN" if @ach_transfer.creator.admin? %> <%= @ach_transfer.creator.name %>
@@ -28,6 +12,23 @@
 <p>
   <%= avatar_for @ach_transfer.creator %>
 </p>
+
+<h3>Actions</h3>
+
+<% if @ach_transfer.pending? %>
+  <%= form_with(model: nil, local: true, url: ach_approve_admin_path(@ach_transfer), method: :post) do |form| %>
+    <%= form.submit "Send ACH transfer", data: { confirm: "Are you sure? Once an ACH transfer is sent, it cannot be un-sent." } %>
+  <% end %>
+
+  <p>or</p>
+
+  <%= form_with(model: nil, local: true, url: ach_reject_admin_path(@ach_transfer), method: :post) do |form| %>
+    <%= form.submit "Reject", data: { confirm: "Mark as rejected? This requires you to communicate to the organizer about the reason why." } %>
+    <small>(This requires you to communicate to the organizer about the reason why.)</small>
+  <% end %>
+<% else %>
+  <p><strong>ACH Transfer already sent — cannot approve nor reject.</strong></p>
+<% end %>
 
 <% if @ach_transfer.processor %>
   <p>
@@ -112,31 +113,3 @@
 </table>
 
 <hr>
-
-<h3>Actions</h3>
-
-<% if @ach_transfer.pending? %>
-  <%= form_with(model: nil, local: true, url: ach_approve_admin_path(@ach_transfer), method: :post) do |form| %>
-    <%= form.label :scheduled_arrival_date, "Estimated arrival date:" %>
-    <br>
-    <%= form.text_field :scheduled_arrival_date, required: true, placeholder: "MM/DD/YYYY", pattern: '\d{1,2}/\d{1,2}/\d{4}' %>
-
-    <br>
-    <%= form.label :confirmation_number, "Confirmation number:" %>
-    <br>
-    <%= form.text_field :confirmation_number, required: true %>
-
-    <p><%= form.submit "Mark as approved and sent", data: { confirm: "Mark as approved and sent?" } %></p>
-  <% end %>
-
-  <p>or</p>
-
-  <%= form_with(model: nil, local: true, url: ach_reject_admin_path(@ach_transfer), method: :post) do |form| %>
-    <%= form.submit "Reject", data: { confirm: "Mark as rejected? This requires you to communicate to the organizer about the reason why." } %>
-    <small>(This requires you to communicate to the organizer about the reason why.)</small>
-  <% end %>
-<% else %>
-  <p><strong>ACH Transfer already processed — cannot approve nor reject.</strong></p>
-  <p>Estimated Arrival Date: <%= @ach_transfer.scheduled_arrival_date %></p>
-  <p>Confirmation Number: <%= @ach_transfer.confirmation_number || "NONE" %></p>
-<% end %>

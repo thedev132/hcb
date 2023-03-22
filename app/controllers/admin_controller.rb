@@ -522,8 +522,6 @@ class AdminController < ApplicationController
   def ach_approve
     attrs = {
       ach_transfer_id: params[:id],
-      scheduled_arrival_date: params[:scheduled_arrival_date],
-      confirmation_number: params[:confirmation_number],
       processor: current_user
     }
     ach_transfer = AchTransferService::Approve.new(attrs).run
