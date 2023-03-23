@@ -19,8 +19,8 @@ module AchTransferService
           routing_number: ach_transfer.routing_number,
           amount: ach_transfer.amount,
           statement_descriptor: ach_transfer.payment_for,
-          individual_name: ach_transfer.recipient_name,
-          company_name: ach_transfer.event.name,
+          individual_name: ach_transfer.recipient_name[0...22],
+          company_name: ach_transfer.event.name[0...16],
         } # ...whew!
 
         ach_transfer.mark_in_transit!
