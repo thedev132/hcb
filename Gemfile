@@ -84,12 +84,6 @@ gem "maildown"
 # Generating QR codes for donation pages
 gem "rqrcode"
 
-# For Excel data exports... the custom ref is from
-# https://github.com/straydogstudio/axlsx_rails/blob/ce5b69e4ac46f4a84f4b9194d01080f6f626fbcd/README.md
-gem "caxlsx"
-gem "caxlsx_rails"
-gem "rubyzip", ">= 1.2.1"
-
 # Manage CORS
 gem "rack-cors"
 

@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_03_21_164351) do
+ActiveRecord::Schema[7.0].define(version: 2023_03_24_231826) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_stat_statements"
@@ -596,15 +596,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_21_164351) do
     t.index ["partner_id", "organization_identifier"], name: "index_events_on_partner_id_and_organization_identifier", unique: true
     t.index ["partner_id"], name: "index_events_on_partner_id"
     t.index ["point_of_contact_id"], name: "index_events_on_point_of_contact_id"
-  end
-
-  create_table "exports", force: :cascade do |t|
-    t.text "type"
-    t.bigint "user_id"
-    t.datetime "created_at", precision: nil, null: false
-    t.datetime "updated_at", precision: nil, null: false
-    t.index ["type"], name: "index_exports_on_type"
-    t.index ["user_id"], name: "index_exports_on_user_id"
   end
 
   create_table "fee_reimbursements", force: :cascade do |t|
@@ -1559,7 +1550,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_21_164351) do
   add_foreign_key "emburse_transfers", "users", column: "fulfilled_by_id"
   add_foreign_key "events", "partners"
   add_foreign_key "events", "users", column: "point_of_contact_id"
-  add_foreign_key "exports", "users"
   add_foreign_key "fee_relationships", "events"
   add_foreign_key "fees", "canonical_event_mappings"
   add_foreign_key "g_suite_accounts", "g_suites"

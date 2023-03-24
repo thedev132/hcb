@@ -193,7 +193,6 @@
       <%= render partial: "static_pages/card", locals: { task_path: bank_accounts_path, human_name: "Bank accounts" } %>
       <%= render partial: "static_pages/card", locals: { task_path: new_bank_account_path, human_name: "Setup HCB" } %>
       <%= render partial: "static_pages/card", locals: { task_path: common_documents_path, human_name: "Common docs" } %>
-      <%= card_to "Export finances", export_finances_path, { method: :post } %>
       <%= render partial: "static_pages/card", locals: { task_path: flipper_path, human_name: "Flipper" } %>
     </ul>
 

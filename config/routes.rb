@@ -416,8 +416,6 @@ Rails.application.routes.draw do
   post "stripe/webhook", to: "stripe#webhook"
   get "docusign/signing_complete_redirect", to: "docusign#signing_complete_redirect"
 
-  post "export/finances", to: "exports#financial_export"
-
   get "negative_events", to: "admin#negative_events"
 
   get "admin_tasks", to: "admin#tasks"
