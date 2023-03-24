@@ -23,10 +23,6 @@ gem "jquery-rails"
 gem "terser", "~> 1.1"
 # Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker
 gem "react-rails"
-# See https://github.com/rails/execjs#readme for more supported runtimes
-# Due to a bug in mini_racer >=0.5.0 running on GitHub Actions, we've had to
-# roll back to mini_racer 0.4.0: https://github.com/rubyjs/mini_racer/issues/218.
-gem "mini_racer", "~> 0.4.0", platforms: :ruby
 # Turbo makes navigating your web application faster. Read more: https://github.com/hotwired/turbo
 gem "turbo-rails", "~> 1.4"
 # Use Redis adapter to run Action Cable in production
