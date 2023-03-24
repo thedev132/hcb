@@ -2,8 +2,6 @@
 
 module BankFeeService
   class ProcessSingle
-    include IncreaseService::AccountIds
-
     def initialize(bank_fee_id:)
       @bank_fee_id = bank_fee_id
     end
@@ -11,12 +9,15 @@ module BankFeeService
     def run
       raise ArgumentError, "must be a pending bank fee only" unless bank_fee.pending?
 
-      increase = IncreaseService.new
-
       ActiveRecord::Base.transaction do
         bank_fee.mark_in_transit!
 
-        increase.transfer from: fs_main_account_id, to: fs_operating_account_id, amount: amount_cents, memo: memo
+        Increase::AccountTransfers.create(
+          account_id: IncreaseService::AccountIds::FS_MAIN,
+          destination_account_id: IncreaseService::AccountIds::FS_OPERATING,
+          amount: amount_cents,
+          description: memo
+        )
       end
 
       true

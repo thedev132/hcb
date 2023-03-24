@@ -2,8 +2,6 @@
 
 module DisbursementService
   class Nightly
-    include IncreaseService::AccountIds
-
     def run
       return unless Disbursement.pending.present?
 
@@ -13,10 +11,21 @@ module DisbursementService
         amount_cents = disbursement.amount
         memo = disbursement.transaction_memo
 
-        increase = IncreaseService.new
+        # FS Main -> FS Operating
+        Increase::AccountTransfers.create(
+          account_id: IncreaseService::AccountIds::FS_MAIN,
+          destination_account_id: IncreaseService::AccountIds::FS_OPERATING,
+          amount: amount_cents,
+          description: memo
+        )
 
-        increase.transfer from: fs_main_account_id, to: fs_operating_account_id, amount: amount_cents, memo: memo
-        increase.transfer from: fs_operating_account_id, to: fs_main_account_id, amount: amount_cents, memo: memo
+        # FS Operating -> FS Main
+        Increase::AccountTransfers.create(
+          account_id: IncreaseService::AccountIds::FS_OPERATING,
+          destination_account_id: IncreaseService::AccountIds::FS_MAIN,
+          amount: amount_cents,
+          description: memo
+        )
 
         disbursement.mark_in_transit!
       end

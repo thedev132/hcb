@@ -2,8 +2,6 @@
 
 module FeeRevenueService
   class ProcessSingle
-    include IncreaseService::AccountIds
-
     def initialize(fee_revenue_id:)
       @fee_revenue_id = fee_revenue_id
     end
@@ -11,12 +9,15 @@ module FeeRevenueService
     def run
       raise ArgumentError, "must be pending fee revenue only" unless fee_revenue.pending?
 
-      increase = IncreaseService.new
-
       ActiveRecord::Base.transaction do
         fee_revenue.mark_in_transit!
 
-        increase.transfer from: fs_operating_account_id, to: fs_main_account_id, amount: amount_cents, memo: memo
+        Increase::AccountTransfers.create(
+          account_id: IncreaseService::AccountIds::FS_OPERATING,
+          destination_account_id: IncreaseService::AccountIds::FS_MAIN,
+          amount: amount_cents,
+          description: memo
+        )
       end
 
       true
