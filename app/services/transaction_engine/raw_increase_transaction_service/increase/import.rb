@@ -11,7 +11,8 @@ module TransactionEngine
         def run
           params = {
             account_id: IncreaseService::AccountIds::FS_MAIN,
-            "created_at.on_or_after": @start_date.iso8601
+            "created_at.on_or_after": @start_date.iso8601,
+            limit: :all,
           }
 
           ::Increase::Transactions.list(params) do |transactions|
