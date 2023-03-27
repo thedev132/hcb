@@ -44,7 +44,6 @@ fee_reimbursement_nightly_job: # PERFORMS SVB TRANSFERS
   cron: "0 1 * * *" # run every 1 day
   class: "FeeReimbursementJob::Nightly"
   queue: "default"
-  status: disabled
 
 bank_fee_weekly_job:
   cron: "0 0 * * MON" # run first day of each week

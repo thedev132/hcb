@@ -2,15 +2,9 @@
 
 module FeeReimbursementService
   class Nightly
-    include ::Shared::Selenium::LoginToSvb
-    include ::Shared::Selenium::TransferFromFsOperatingToFsMain
-
     def run
       # Don't run job unless there are unprocessed FeeReimbursements
       return unless FeeReimbursement.unprocessed.present?
-
-      # 1. begin by navigating
-      login_to_svb!
 
       FeeReimbursement.unprocessed.each do |fee_reimbursement|
         raise ArgumentError, "must be an unprocessed fee reimbursement only" unless fee_reimbursement.unprocessed?
@@ -18,15 +12,24 @@ module FeeReimbursementService
         amount_cents = fee_reimbursement.amount
         memo = fee_reimbursement.transaction_memo
 
-        # Make the transfer on remote bank
-        transfer_from_fs_operating_to_fs_main!(amount_cents: amount_cents, memo: memo)
+        # FS Main -> FS Operating
+        Increase::AccountTransfers.create(
+          account_id: IncreaseService::AccountIds::FS_MAIN,
+          destination_account_id: IncreaseService::AccountIds::FS_OPERATING,
+          amount: amount_cents,
+          description: "Stripe fee reimbursement"
+        )
+
+        # FS Operating -> FS Main
+        Increase::AccountTransfers.create(
+          account_id: IncreaseService::AccountIds::FS_OPERATING,
+          destination_account_id: IncreaseService::AccountIds::FS_MAIN,
+          amount: amount_cents,
+          description: memo
+        )
 
         fee_reimbursement.update_column(:processed_at, Time.now)
-
-        sleep 5 # helps simulate real clicking
       end
-
-      driver.quit
     end
 
   end

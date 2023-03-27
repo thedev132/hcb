@@ -17,6 +17,7 @@ module EventMappingEngine
       map_disbursements!
       map_hack_club_bank_issued_cards!
       map_stripe_top_ups!
+      map_outgoing_fee_reimbursements!
 
       map_bank_fees! # TODO: move to using hcb short codes
 
@@ -72,6 +73,12 @@ module EventMappingEngine
 
     def map_stripe_top_ups!
       ::EventMappingEngine::Map::StripeTopUps.new.run
+    end
+
+    def map_outgoing_fee_reimbursements!
+      CanonicalTransaction.where("amount_cents < 0 AND memo ILIKE '%Stripe fee reimbursement%'").each do |ct|
+        CanonicalEventMapping.create!(canonical_transaction: ct, event_id: EventMappingEngine::EventIds::HACK_CLUB_BANK)
+      end
     end
 
     def map_hcb_codes_invoice!
