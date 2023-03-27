@@ -76,7 +76,7 @@ module EventMappingEngine
     end
 
     def map_outgoing_fee_reimbursements!
-      CanonicalTransaction.where("amount_cents < 0 AND memo ILIKE '%Stripe fee reimbursement%'").each do |ct|
+      CanonicalTransaction.unmapped.where("amount_cents < 0 AND memo ILIKE '%Stripe fee reimbursement%'").each do |ct|
         CanonicalEventMapping.create!(canonical_transaction: ct, event_id: EventMappingEngine::EventIds::HACK_CLUB_BANK)
       end
     end
