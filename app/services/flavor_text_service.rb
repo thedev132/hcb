@@ -3,26 +3,26 @@
 class FlavorTextService
   include ActionView::Helpers::NumberHelper
   include SeasonalHelper
-  include DeterministicSeedHelper
 
   def initialize(user: nil, env: Rails.env, deterministic: true)
     @user = user
     @env = env
-    use_seeded_random(Time.now.to_i / 10.seconds) if deterministic
+    @seed = deterministic ? Time.now.to_i / 5.minutes : Random.new_seed
+    @random = Random.new(@seed)
   end
 
   def generate
-    return development_flavor_texts.d_sample if @env == "development"
-    return holiday_flavor_texts.d_sample if winter?
-    return d_rand > 0.5 ? spooky_flavor_texts.d_sample : flavor_texts.d_sample if fall? # ~50% chance of spookiness
-    return birthday_flavor_texts.d_sample if @user&.birthday?
+    return development_flavor_texts.sample(random: @random) if @env == "development"
+    return holiday_flavor_texts.sample(random: @random) if winter?
+    return @random.rand > 0.5 ? spooky_flavor_texts.sample(random: @random) : flavor_texts.sample(random: @random) if fall? # ~50% chance of spookiness
+    return birthday_flavor_texts.sample(random: @random) if @user&.birthday?
 
     in_frc_team = @user&.events&.exists?(category: Event.categories["robotics team"])
 
     if in_frc_team
-      (flavor_texts + frc_flavor_texts).d_sample
+      (flavor_texts + frc_flavor_texts).sample(random: @random)
     else
-      flavor_texts.d_sample
+      flavor_texts.sample(random: @random)
     end
   end
 
@@ -38,12 +38,12 @@ class FlavorTextService
 
   def birthday_flavor_texts
     [
-      "Happy birthday! #{['🎂', '🎈', '🎉', '🥳'].d_sample}",
+      "Happy birthday! #{['🎂', '🎈', '🎉', '🥳'].sample(random: @random)}",
       "<a href='https://www.youtube.com/watch?v=XNV2EyC1NrQ' target='_blank' style='color: inherit'>happy birthday</a>".html_safe,
       "herpy derpday",
       "<a href='https://www.youtube.com/watch?v=1G9iEvQYM4I&t=3s' target='_blank' style='color: inherit'>wahoo!</a>".html_safe,
       "it’s the birthday (boy|girl|person|dinosaur)!",
-      "#{%w[🦩 🕊 🦅 🦆 🐓 🦤 🦉 🦃 🐣].d_sample} harpy bird-day!"
+      "#{%w[🦩 🕊 🦅 🦆 🐓 🦤 🦉 🦃 🐣].sample(random: @random)} harpy bird-day!"
     ]
   end
 
@@ -102,7 +102,7 @@ class FlavorTextService
 
   def frc_flavor_texts
     [
-      "Built by someone from team ##{[1759, 8724, 461, 6763, 1519].d_sample}!",
+      "Built by someone from team ##{[1759, 8724, 461, 6763, 1519].sample(random: @random)}!",
       "Safety FIRST!",
       "Safety glasses == invincible",
       "Stop! Where are your safety glasses?",
@@ -111,7 +111,7 @@ class FlavorTextService
       "do the robot!",
       "It’s not battlebots mom!",
       "I heard next year is a water game",
-      "Did you bring enough #{%w[zip-ties ductape].d_sample}?",
+      "Did you bring enough #{%w[zip-ties ductape].sample(random: @random)}?",
       "Duct tape, ductape, duck tape",
       "🦆 📼",
       "Build season? Bank season!",
@@ -165,8 +165,8 @@ class FlavorTextService
       "Coming to a browser near you",
       "Hand-crafted by our resident byte-smiths",
       "B O N K",
-      "#{d_rand 4..9}0% bug free!",
-      "#{d_rand 1..4}0% less bugs!",
+      "#{@random.rand 4..9}0% bug free!",
+      "#{@random.rand 1..4}0% less bugs!",
       "Ask your doctor if Hack Club Bank is right for you",
       "Now with an&nbsp;<a href='https://bank.hackclub.com/docs/api/v3'>API</a>!".html_safe,
       "<a href='https://bank.hackclub.com/docs/api/v3'>README</a>".html_safe,
@@ -229,7 +229,7 @@ class FlavorTextService
       'Made using "money"',
       "Chosen #1 by dinosaurs everywhere",
       "Accountants HATE him",
-      "Congratulations, you are the #{number_with_delimiter(10**d_rand(1..5))}th visitor!",
+      "Congratulations, you are the #{number_with_delimiter(10**@random.rand(1..5))}th visitor!",
       "All the finance that's fit to print",
       "You've got this",
       "Don't forget to drink water!",
@@ -254,7 +254,7 @@ class FlavorTextService
       "Open on weekdays!",
       "Open on #{Date.today.strftime("%A")}s",
       "??? profit!",
-      "Did you see the price of #{%w[Ðogecoin ₿itcoin Ξtherium].d_sample}?!",
+      "Did you see the price of #{%w[Ðogecoin ₿itcoin Ξtherium].sample(random: @random)}?!",
       "Guess how much it costs to run this thing!",
       "Bytes served fresh daily by Heroku",
       "Running with Ruby on Rails #{Rails.gem_version.canonical_segments.first}",
@@ -267,7 +267,7 @@ class FlavorTextService
       "Achievement unlocked!",
       "20,078 lines of code",
       "Now you have two problems",
-      "It's #{%w[collaborative multiplayer].d_sample} #{%w[venmo cashapp paypal finance banking].d_sample}!",
+      "It's #{%w[collaborative multiplayer].sample(random: @random)} #{%w[venmo cashapp paypal finance banking].sample(random: @random)}!",
       "Fake it till you make it!",
       "Your move, Robinhood",
       "If you can read this, the page's status code is 200",
@@ -300,7 +300,7 @@ class FlavorTextService
       "[OK]",
       "tell your parents it's educational",
       "You found the 3rd Easter egg on the site",
-      "A proud sponsor of fiscal #{%w[things thingies stuff].d_sample}",
+      "A proud sponsor of fiscal #{%w[things thingies stuff].sample(random: @random)}",
       "Now with 10% more hacks!",
       "Now with more clubs!",
       "Please stow your money in the upright position",
@@ -326,11 +326,11 @@ class FlavorTextService
       "🚂 choo choo!",
       "To the moon! 🚀",
       "Do Only Good Everyday",
-      "Much #{%w[happy cool fun].d_sample}. wow!",
-      "Very #{%w[bank currency].d_sample}. wow!",
-      "Such #{%w[internet fascinate bank hack].d_sample}. wow!",
-      "So #{%w[currency bank].d_sample}. wow!",
-      "Many #{%w[excite amaze].d_sample}. wow!",
+      "Much #{%w[happy cool fun].sample(random: @random)}. wow!",
+      "Very #{%w[bank currency].sample(random: @random)}. wow!",
+      "Such #{%w[internet fascinate bank hack].sample(random: @random)}. wow!",
+      "So #{%w[currency bank].sample(random: @random)}. wow!",
+      "Many #{%w[excite amaze].sample(random: @random)}. wow!",
       "JavaScript brewed fresh daily",
       "It's our business doing finance with you",
       "Flash plugin failed to load",
@@ -338,7 +338,7 @@ class FlavorTextService
       "ACH, checks, and credit, oh my!",
       "Debit, she said",
       "U want sum bank?",
-      "* not #{%w[banc banq].d_sample}",
+      "* not #{%w[banc banq].sample(random: @random)}",
       "Our ledger's thicker than a bowl of oatmeal",
       "receptz plzzzz",
       "Reciepts? Receipts? Recepts?",
@@ -352,7 +352,7 @@ class FlavorTextService
       "A penny saved...",
       "check... cheque... checkqu?",
       "1...2...3... is this thing on?",
-      "Welcome to #{%w[cash money].d_sample} town, population: you",
+      "Welcome to #{%w[cash money].sample(random: @random)} town, population: you",
       "The buck starts here",
       "So... what's your favorite type of pizza?",
       "<span style='font-size: 2px !important'>If you can read this you've got tiny eyes</span>".html_safe,
@@ -381,21 +381,21 @@ class FlavorTextService
       "Meme work makes the team work!",
       "Don't let your dreams be memes!",
       "<em>Vrooooooommmmmmm!</em>".html_safe,
-      "Loaded in #{d_rand(10..35)}ms... jk– i don't actually know how long it took",
-      "Loaded in #{d_rand(10..35)}ms... jk– i can't count",
+      "Loaded in #{@random.rand(10..35)}ms... jk– i don't actually know how long it took",
+      "Loaded in #{@random.rand(10..35)}ms... jk– i can't count",
       "Turns out it's hard to make one of these things",
       "Look ma, no articles of incorporation!",
       "Task failed successfully!",
       "TODO: come up with some actual jokes for this box",
       "asdgfhjdk I'm out of jokes",
-      "asdgfhjdk I'm out of #{%w[money cash bank finance financial].d_sample} puns",
+      "asdgfhjdk I'm out of #{%w[money cash bank finance financial].sample(random: @random)} puns",
       "Send your jokes to bank@hackclub.com",
       "Cha-ching!",
       "Hey there cutie!",
       "You're looking great today :)",
       "Great! You're here!",
-      "No time to explain: #{%w[quack bark honk].d_sample} as loud as you can!",
-      "Please see attached #{%w[gif avi mp3 wav zip].d_sample}",
+      "No time to explain: #{%w[quack bark honk].sample(random: @random)} as loud as you can!",
+      "Please see attached #{%w[gif avi mp3 wav zip].sample(random: @random)}",
       "Cont. on page 42",
       "See fig. 42",
       "<span class='hide-print'>Try printing this, I dare you</span><span class='hide-non-print'>Gottem!</span>".html_safe,
@@ -403,10 +403,10 @@ class FlavorTextService
       "You need to wake up",
       "you need to wake up! Pinch yourself",
       "stop dreaming, you need to wake up!",
-      "The only bank brave enough to say '#{%w[sus poggers pog oops uwu].d_sample}'",
+      "The only bank brave enough to say '#{%w[sus poggers pog oops uwu].sample(random: @random)}'",
       "Fees lookin pretty sus",
       "Are you suuuuure you aren't a robot?",
-      "#{%w[laugh cry smile giggle smirk].d_sample} here if you aren't a robot",
+      "#{%w[laugh cry smile giggle smirk].sample(random: @random)} here if you aren't a robot",
       "Show emotion here if you aren't a robot",
       "<a href='/robots.txt' target='_blank'>Click here if you are a robot</a>".html_safe,
       "Robot?&nbsp;<a href='/robots.txt' target='_blank'>Click here</a>".html_safe,
@@ -460,7 +460,7 @@ class FlavorTextService
       "non-profit doesn’t mean no profit!",
       "0 days since last accident",
       "teen built, teen approved!",
-      "a #{%w[megabyte megabit].d_sample} of #{%w[mulah money].d_sample}",
+      "a #{%w[megabyte megabit].sample(random: @random)} of #{%w[mulah money].sample(random: @random)}",
       "byte me",
       "now only 2 ticks short of a clock cycle!",
       "not running on the <a href='https://github.com/hackclub/the-hacker-zephyr' target='_blank' style='color: inherit'>zephyrnet</a>!".html_safe,
