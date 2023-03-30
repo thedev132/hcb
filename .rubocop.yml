@@ -136,3 +136,6 @@ Layout/DotPosition:
 
 # Metrics/LineLength:
 #   Max: 80
+
+Bundler/OrderedGems:
+  Enabled: false
