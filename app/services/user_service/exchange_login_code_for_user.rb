@@ -33,6 +33,10 @@ module UserService
       login_code = @login_code.delete("-")
       user = User.find(@user_id)
 
+      if login_code.length != 6
+        return { errors: "login code is invalid" }
+      end
+
       if TwilioVerificationService.new.check_verification_token(user.phone_number, login_code)
         { user: user }
       else
