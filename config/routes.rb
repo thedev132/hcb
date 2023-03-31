@@ -414,6 +414,7 @@ Rails.application.routes.draw do
   post "api/v1/events/create_demo", to: "api#create_demo_event"
 
   post "stripe/webhook", to: "stripe#webhook"
+  post "increase/webhook", to: "increase#webhook"
   get "docusign/signing_complete_redirect", to: "docusign#signing_complete_redirect"
 
   get "negative_events", to: "admin#negative_events"
