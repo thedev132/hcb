@@ -109,7 +109,7 @@ class IncreaseCheck < ApplicationRecord
       "Pending approval"
     elsif rejected?
       "Rejected"
-    elsif increase_pending_submission? || increase_submitting? || increase_submitted? || increase_mailed?
+    elsif increase_pending_submission? || increase_submitting? || increase_submitted? || increase_pending_mailing? || increase_mailed?
       "On the way"
     elsif increase_deposited?
       "Deposited"
