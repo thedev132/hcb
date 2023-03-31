@@ -1,0 +1,161 @@
+# frozen_string_literal: true
+
+# == Schema Information
+#
+# Table name: increase_checks
+#
+#  id              :bigint           not null, primary key
+#  aasm_state      :string
+#  address_city    :string
+#  address_line1   :string
+#  address_line2   :string
+#  address_state   :string
+#  address_zip     :string
+#  amount          :integer
+#  approved_at     :datetime
+#  increase_state  :string
+#  increase_status :string
+#  memo            :string
+#  payment_for     :string
+#  recipient_name  :string
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#  event_id        :bigint           not null
+#  increase_id     :string
+#  user_id         :bigint           not null
+#
+# Indexes
+#
+#  index_increase_checks_on_event_id  (event_id)
+#  index_increase_checks_on_user_id   (user_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (event_id => events.id)
+#  fk_rails_...  (user_id => users.id)
+#
+class IncreaseCheck < ApplicationRecord
+  include AASM
+
+  belongs_to :event
+  belongs_to :user
+
+  has_one :canonical_pending_transaction
+
+  after_create do
+    create_canonical_pending_transaction!(event: event, amount_cents: -amount, memo: "OUTGOING CHECK", date: created_at)
+  end
+
+  aasm timestamps: true do
+    state :pending, initial: true
+    state :approved
+    state :rejected
+
+    event :mark_approved do
+      transitions from: :pending, to: :approved
+    end
+
+    event :mark_rejected do
+      after do
+        canonical_pending_transaction.decline!
+      end
+      transitions from: :pending, to: :rejected
+    end
+  end
+
+  validates :amount, numericality: { greater_than: 0, message: "can't be zero!" }
+  validates :memo, length: { in: 1..73 }
+  validates :recipient_name, length: { in: 1..250 }
+  validates_presence_of :memo, :payment_for, :recipient_name, :address_line1, :address_city, :address_state, :address_zip
+
+  validate on: :create do
+    if amount > event.balance_available_v2_cents
+      errors.add(:amount, "You don't have enough money to send this check! Your balance is $#{'%.2f' % (event.balance_available_v2_cents / 100)}.")
+    end
+  end
+
+  scope :in_transit, -> { where(increase_status: [:pending_submission, :submitting, :submitted, :mailed]) }
+  scope :canceled, -> { where(increase_status: [:rejected, :canceled, :stopped, :returned, :rejected]).or(where(aasm_state: :rejected)) }
+
+  enum :increase_status, {
+    pending_approval: "pending_approval",
+    pending_submission: "pending_submission",
+    submitting: "submitting",
+    submitted: "submitted",
+    pending_mailing: "pending_mailing",
+    mailed: "mailed",
+    canceled: "canceled",
+    deposited: "deposited",
+    stopped: "stopped",
+    returned: "returned",
+    rejected: "rejected",
+    requires_attention: "requires_attention"
+  }, prefix: :increase
+
+  def state
+    if pending?
+      :muted
+    elsif rejected? || increase_canceled? || increase_stopped? || increase_returned? || increase_rejected?
+      :error
+    elsif increase_deposited?
+      :success
+    else
+      :info
+    end
+  end
+
+  def state_text
+    if pending?
+      "Pending approval"
+    elsif rejected?
+      "Rejected"
+    elsif increase_pending_submission? || increase_submitting? || increase_submitted? || increase_mailed?
+      "On the way"
+    elsif increase_deposited?
+      "Deposited"
+    elsif increase_canceled? || increase_stopped?
+      "Canceled"
+    elsif increase_returned?
+      "Returned"
+    end
+  end
+
+  alias_attribute :name, :recipient_name
+
+  def hcb_code
+    "HCB-#{TransactionGroupingEngine::Calculate::HcbCode::INCREASE_CHECK_CODE}-#{id}"
+  end
+
+  def local_hcb_code
+    @local_hcb_code ||= HcbCode.find_or_create_by(hcb_code: hcb_code)
+  end
+
+  def sent?
+    approved?
+  end
+
+  def address
+    "#{address_line1} #{address_line2} - #{address_city}, #{address_state} #{address_zip}"
+  end
+
+  def send_check!
+    return unless may_mark_approved?
+
+    increase_check = Increase::CheckTransfers.create(
+      account_id: IncreaseService::AccountIds::FS_MAIN,
+      address_city: address_city,
+      address_line1: address_line1,
+      address_line2: address_line2.presence,
+      address_state: address_state,
+      address_zip: address_zip,
+      amount: amount,
+      message: memo,
+      recipient_name: recipient_name,
+    )
+
+    update!(increase_id: increase_check["id"], increase_status: increase_check["status"])
+
+    mark_approved!
+  end
+
+end

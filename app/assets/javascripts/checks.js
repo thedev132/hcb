@@ -13,24 +13,8 @@ $(document).on('turbo:load', function () {
     return words
   }
 
-  $('*[id^="check_lob_address_attributes_"]').on(
-    'change paste keyup input',
-    event => {
-      let fieldName = event.currentTarget.id.replace(
-        'check_lob_address_attributes_',
-        ''
-      )
-
-      if (fieldName == 'name') {
-        $('[data-behavior~="check_orderof"]').text(
-          $(event.currentTarget).val() || '　'
-        )
-      }
-    }
-  )
-
-  $('*[id^="check_"]').on('change paste keyup input', event => {
-    const fieldName = event.currentTarget.id.replace('check_', '')
+  $('*[id^="increase_check_"]').on('change paste keyup input', event => {
+    const fieldName = event.currentTarget.id.replace('increase_check_', '')
 
     if (fieldName == 'memo') {
       $('[data-behavior~="check_memo"]').text(
@@ -47,6 +31,12 @@ $(document).on('turbo:load', function () {
 
       $('[data-behavior~="check_amount"]').text(amount || '　')
       $('[data-behavior~="check_amount_words"]').text(words || '　')
+    }
+
+    if (fieldName == 'recipient_name') {
+      $('[data-behavior~="check_orderof"]').text(
+        $(event.currentTarget).val() || '　'
+      )
     }
   })
 
@@ -67,7 +57,7 @@ $(document).on('turbo:load', function () {
 
       $('[data-behavior~="check_characters_update"').text(
         `This will appear on the physical check. You have ${
-          30 - characters
+          73 - characters
         } characters remaining.`
       )
     }

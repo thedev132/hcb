@@ -15,6 +15,7 @@ module TransactionEngine
           return likely_check if outgoing_check?
           return likely_clearing_check if clearing_check?
           return likely_dda_check if dda_check?
+          return likely_increase_check if increase_check?
 
           return likely_ach if outgoing_ach?
           return likely_increase_ach if increase_ach?
@@ -57,6 +58,12 @@ module TransactionEngine
         return nil unless event
 
         event.canonical_transactions.likely_checks.where(amount_cents: -@canonical_transaction.amount_cents, date: @canonical_transaction.date).first.try(:check)
+      end
+
+      def likely_increase_check
+        increase_check_transfer_id = @canonical_transaction.raw_increase_transaction.increase_transaction.dig("source", "check_transfer_intention", "transfer_id")
+
+        IncreaseCheck.find_by(increase_id: increase_check_transfer_id)
       end
 
       def likely_ach

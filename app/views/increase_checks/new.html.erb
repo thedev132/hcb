@@ -1,0 +1,136 @@
+<% title "Send a Check" %>
+<%= render "events/nav", selected: :transfers %>
+
+<article class="check--form flex align-start justify-center mt2">
+  <aside class="mr3">
+    <div class="check mb3 mt2" data-behavior="hover_tilt">
+      <div class="check__number">1024</div>
+
+      <div class="flex w-100 justify-end mb1">
+        <div class="check__field check__field--date" data-label="Date"><%= Date.today.strftime("%b %d, %Y") %></div>
+      </div>
+
+      <div class="check__row">
+        <div class="check__field check__field--orderof" data-label="Pay to the order of" data-behavior="check_orderof">　</div>
+        <div class="check__field check__field--num" data-label="$" data-behavior="check_amount">　</div>
+      </div>
+
+      <div class="check__field check__field--dollars" data-label="Dollars" data-behavior="check_amount_words">　</div>
+
+      <div class="check__row items-start">
+        <div class="check__field check__field--memo truncate" data-label="Memo" data-behavior="check_memo">　</div>
+        <div class="check__sig"></div>
+      </div>
+
+      <p class="check__meta">
+        &#9286;
+        00000000000
+        &#9286;
+        123456789
+        &#9286;
+      </p>
+    </div>
+    <link href="https://fonts.googleapis.com/css?family=Damion" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Space+Mono" rel="stylesheet">
+    <div class="card border b--warning pb0 mb2 max-width-2">
+        <div class="flex items-center warning">
+          <%= inline_icon "info", size: 32, class: "mr1" %>
+          <p class="bold mt0 mb0">Important info about checks:</p>
+        </div>
+        <ul class="mt1 mb2">
+          <li>Need to reimburse someone? Checks are not intended for that purpose. Visit <%= link_to "reimbursements", event_reimbursements_path(@event), class: "info" %> to learn about using Expensify instead.</li>
+          <li>This check will be valid for 30 days, until <%= format_date DateTime.now + 1.month %></li>
+          <!--<li>Bank team needs to approve your check before it's sent out. This usually takes 1 business day.</li>-->
+        </ul>
+        <div class="border-top card__banner card__darker secondary">
+          <strong>Questions?</strong>
+            <%= help_message %>
+        </div>
+    </div>
+  </aside>
+
+  <div class="container--xs">
+    <h1 class="mt0">Send a check</h1>
+    <%= form_with(model: [@event, @check], local: true) do |form| %>
+      <% form_errors @check %>
+
+      <div class="field">
+        <%= form.label :memo %>
+        <%= form.text_field :memo,
+            maxlength: 73,
+            placeholder: "for venue payment",
+            required: true,
+            'data-behavior': "check_memo_field",
+            disabled: @event.demo_mode? %>
+        <span class="muted" data-behavior="check_characters_update">
+          This will appear on the physical check. You have 73 characters remaining.
+        </span>
+      </div>
+
+      <%= form.label :amount, "Amount" %>
+      <div class="field">
+        <div class="flex items-center">
+          <span class="bold muted" style="width: 1rem;">$</span>
+          <div class="flex flex-column">
+            <%= form.number_field :amount,
+              placeholder: "500.00",
+              value: (@check.amount.nil? ? nil : (@check.amount.to_f / 100)),
+              disabled: (@event.balance <= 0 || @event.demo_mode?),
+              step: 0.01,
+              min: 1,
+              required: true,
+              'data-behavior': "check_amount_field" %>
+          </div>
+        </div>
+        <% @check.errors.messages_for(:amount).each do |message| %>
+          <div class="primary"><%= message %></div>
+        <% end %>
+        <% if @event.balance <= 0 %>
+          <span class="error">There are no funds to transfer.<br>
+        <% end %>
+      </div>
+
+      <div class="field">
+        <%= form.label :payment_for, "What are you paying for with this check?" %>
+        <%= form.text_field :payment_for, placeholder: "Event venue", required: true, disabled: @event.demo_mode? %>
+        <span class="muted">This is to help Hack Club Bank keep record of our transactions. Bank team will see this.</span>
+      </div>
+
+      <h2>Recipient details</h2>
+
+      <div class="field mt2">
+        <%= form.label :recipient_name, "Name (use company name if applicable)" %>
+        <%= form.text_field :recipient_name, placeholder: "Raviga Capital", required: true, disabled: @event.demo_mode?, data: { 'behavior': "check_payee_name_field" }, maxlength: 250 %>
+      </div>
+
+      <div class="field">
+        <%= form.label :address_line1, "Street address (where we’re mailing it to)" %>
+        <%= form.text_field :address_line1, placeholder: "1 Letterman Drive", required: true, disabled: @event.demo_mode? %>
+      </div>
+
+      <div class="field">
+        <%= form.text_field :address_line2, placeholder: "Suite 500", disabled: @event.demo_mode? %>
+      </div>
+
+      <div class="flex">
+        <div class="field flex-auto mr1">
+          <%= form.label :address_city, "City" %>
+          <%= form.text_field :address_city, placeholder: "San Francisco", required: true, disabled: @event.demo_mode? %>
+        </div>
+        <div class="field flex-auto ml1">
+          <%= form.label :address_state, "State" %>
+          <%= form.text_field :address_state, placeholder: "CA", required: true, disabled: @event.demo_mode? %>
+        </div>
+      </div>
+
+      <div class="field">
+        <%= form.label :address_zip, "ZIP" %>
+        <%= form.text_field :address_zip, placeholder: "94129", required: true, disabled: @event.demo_mode? %>
+      </div>
+
+      <div class="actions tooltipped tooltipped--n inline-block mt1" aria-label="Your check will be immediately mailed out on the next business day.">
+        <%= form.submit "Send check", disabled: (!organizer_signed_in? || @event.demo_mode?) %>
+      </div>
+    <% end %>
+  </div>
+</article>

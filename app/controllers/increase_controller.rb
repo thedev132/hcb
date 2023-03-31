@@ -35,6 +35,11 @@ class IncreaseController < ApplicationController
     # TODO: handle transaction created
   end
 
+  def handle_check_transfer_updated(event)
+    increase_check = Increase::CheckTransfers.retrieve event["associated_object_id"]
+    IncreaseCheck.find_by(increase_id: increase_check["id"])&.update(increase_status: increase_check["status"])
+  end
+
   def signing_secret
     Rails.application.credentials.dig(:increase, IncreaseService.environment, :webhook_secret)
   end

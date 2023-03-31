@@ -56,6 +56,10 @@ module TransactionEngine
         memo_upcase.gsub(CLEARING_CHECK_MEMO_PART1, "").gsub(CLEARING_CHECK_MEMO_PART2, "").strip
       end
 
+      def increase_check?
+        @canonical_transaction.raw_increase_transaction&.increase_transaction&.dig("source", "category") == "check_transfer_intention"
+      end
+
       def outgoing_ach?
         memo_upcase.include?(OUTGOING_ACH_MEMO_PART)
       end

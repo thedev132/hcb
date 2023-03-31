@@ -15,6 +15,10 @@
     <td class="transaction__icon tooltipped tooltipped--e" aria-label="Outgoing check">
       <%= inline_icon "payment-transfer" %>
     </td>
+  <% elsif pt.increase_check_id %>
+    <td class="transaction__icon tooltipped tooltipped--e" aria-label="Mailed check">
+      <%= inline_icon "email" %>
+    </td>
   <% elsif pt.raw_pending_outgoing_ach_transaction_id %>
     <td class="transaction__icon tooltipped tooltipped--e" aria-label="Outgoing ACH">
       <%= inline_icon "payment-transfer" %>

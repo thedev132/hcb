@@ -23,6 +23,10 @@
       <td class="transaction__icon tooltipped tooltipped--e" aria-label="Outgoing check">
         <%= inline_icon "payment-transfer" %>
       </td>
+    <% elsif ct.local_hcb_code.increase_check? %>
+      <td class="transaction__icon tooltipped tooltipped--e" aria-label="Mailed check">
+        <%= inline_icon "email" %>
+      </td>
     <% elsif ct.local_hcb_code.ach_transfer? %>
       <td class="transaction__icon tooltipped tooltipped--e" aria-label="Outgoing ACH">
         <%= inline_icon "payment-transfer" %>

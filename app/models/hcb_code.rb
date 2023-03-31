@@ -65,6 +65,7 @@ class HcbCode < ApplicationRecord
     return partner_donation_memo if partner_donation?
     return ach_transfer_memo if ach_transfer?
     return check_memo if check?
+    return increase_check_memo if increase_check?
     return fee_revenue_memo if fee_revenue?
     return ach_payment_memo if ach_payment?
 
@@ -137,6 +138,7 @@ class HcbCode < ApplicationRecord
           partner_donation.try(:event).try(:id),
           ach_transfer.try(:event).try(:id),
           check.try(:event).try(:id),
+          increase_check.try(:event).try(:id),
           disbursement.try(:event).try(:id),
         ].compact.uniq)
 
@@ -223,6 +225,10 @@ class HcbCode < ApplicationRecord
     hcb_i1 == ::TransactionGroupingEngine::Calculate::HcbCode::CHECK_CODE
   end
 
+  def increase_check?
+    hcb_i1 == ::TransactionGroupingEngine::Calculate::HcbCode::INCREASE_CHECK_CODE
+  end
+
   def disbursement?
     hcb_i1 == ::TransactionGroupingEngine::Calculate::HcbCode::DISBURSEMENT_CODE
   end
@@ -277,6 +283,14 @@ class HcbCode < ApplicationRecord
 
   def check_memo
     smartish_custom_memo || "CHECK TO #{check.smart_memo}"
+  end
+
+  def increase_check
+    @increase_check ||= IncreaseCheck.find_by(id: hcb_i2) if increase_check?
+  end
+
+  def increase_check_memo
+    "Check to #{increase_check.recipient_name}".upcase
   end
 
   def disbursement

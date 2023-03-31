@@ -302,12 +302,13 @@ class EventsController < ApplicationController
     @transfers_enabled = Flipper.enabled?(:transfers_2022_04_21, current_user)
     @ach_transfers = @event.ach_transfers
     @checks = @event.checks.includes(:lob_address)
+    @increase_checks = @event.increase_checks
     @disbursements = @transfers_enabled ? @event.outgoing_disbursements.includes(:destination_event) : Disbursement.none
 
     @stats = {
-      deposited: @ach_transfers.deposited.sum(:amount) + @checks.deposited.sum(:amount) + @disbursements.fulfilled.pluck(:amount).sum,
-      in_transit: @ach_transfers.in_transit.sum(:amount) + @checks.in_transit_or_in_transit_and_processed.sum(:amount) + @disbursements.reviewing_or_processing.sum(:amount),
-      canceled: @ach_transfers.rejected.sum(:amount) + @checks.canceled.sum(:amount) + @disbursements.rejected.sum(:amount)
+      deposited: @ach_transfers.deposited.sum(:amount) + @checks.deposited.sum(:amount) + @increase_checks.increase_deposited.or(@increase_checks.in_transit).sum(:amount) + @disbursements.fulfilled.pluck(:amount).sum,
+      in_transit: @ach_transfers.in_transit.sum(:amount) + @checks.in_transit_or_in_transit_and_processed.sum(:amount) + @increase_checks.in_transit.sum(:amount) + @disbursements.reviewing_or_processing.sum(:amount),
+      canceled: @ach_transfers.rejected.sum(:amount) + @checks.canceled.sum(:amount) + @increase_checks.canceled.sum(:amount) + @disbursements.rejected.sum(:amount)
     }
 
     @ach_transfers = @ach_transfers.in_transit if params[:filter] == "in_transit"
@@ -320,6 +321,10 @@ class EventsController < ApplicationController
     @checks = @checks.canceled if params[:filter] == "canceled"
     @checks = @checks.search_recipient(params[:q]) if params[:q].present?
 
+    @increase_checks = @increase_checks.in_transit if params[:filter] == "in_transit"
+    @increase_checks = @increase_checks.increase_deposited if params[:filter] == "deposited"
+    @increase_checks = @increase_checks.canceled if params[:filter] == "canceled"
+
     if @transfers_enabled
       @disbursements = @disbursements.reviewing_or_processing if params[:filter] == "in_transit"
       @disbursements = @disbursements.fulfilled if params[:filter] == "deposited"
@@ -327,7 +332,7 @@ class EventsController < ApplicationController
       @disbursements = @disbursements.search_name(params[:q]) if params[:q].present?
     end
 
-    @transfers = Kaminari.paginate_array((@checks + @ach_transfers + @disbursements).sort_by { |o| o.created_at }.reverse!).page(params[:page]).per(100)
+    @transfers = Kaminari.paginate_array((@increase_checks + @checks + @ach_transfers + @disbursements).sort_by { |o| o.created_at }.reverse!).page(params[:page]).per(100)
   end
 
   def new_transfer

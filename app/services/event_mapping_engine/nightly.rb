@@ -12,6 +12,7 @@ module EventMappingEngine
       map_stripe_transactions!
       map_github!
       map_checks!
+      map_increase_checks!
       map_clearing_checks!
       map_achs!
       map_disbursements!
@@ -53,6 +54,10 @@ module EventMappingEngine
       rescue => e
         Airbrake.notify(e)
       end
+    end
+
+    def map_increase_checks!
+      ::EventMappingEngine::Map::IncreaseChecks.new.run
     end
 
     def map_achs!

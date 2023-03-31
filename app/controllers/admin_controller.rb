@@ -651,6 +651,20 @@ class AdminController < ApplicationController
     redirect_to check_process_admin_path(params[:id]), flash: { error: e.message }
   end
 
+  def increase_checks
+    @page = params[:page] || 1
+    @per = params[:per] || 20
+    @checks = IncreaseCheck.page(@page).per(@per).order(created_at: :desc)
+
+    render layout: "admin"
+  end
+
+  def increase_check_process
+    @check = IncreaseCheck.find(params[:id])
+
+    render layout: "admin"
+  end
+
   def partner_donations
     @page = params[:page] || 1
     @per = params[:per] || 20

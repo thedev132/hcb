@@ -16,17 +16,9 @@
         <strong>ACH transfer</strong>
       <% end %>
 
-      <% if Flipper.enabled?(:outgoing_checks) %>
-        <%= link_to new_event_check_path(@event), class: "text-decoration-none btn--form-option" do %>
-          <%= inline_icon "email", size: 28 %>
-          <strong>Mailed check</strong>
-        <% end %>
-      <% else %>
-        <%= link_to "#", class: "text-decoration-none btn--form-option btn--form-option--disabled" do %>
-          <%= inline_icon "email", size: 28 %>
-          <strong>Mailed check</strong>
-        <small>(under maintenance)</small>
-        <% end %>
+      <%= link_to new_event_increase_check_path(@event), class: "text-decoration-none btn--form-option" do %>
+        <%= inline_icon "email", size: 28 %>
+        <strong>Mailed check</strong>
       <% end %>
 
       <%= link_to paypal_transfers_airtable_form_url(embed: false, event: @event, user: @current_user), class: "text-decoration-none btn--form-option" do %>

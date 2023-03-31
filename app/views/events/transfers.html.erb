@@ -69,16 +69,16 @@
       <% @transfers.each do |d| %>
         <tr>
           <td class="transaction__icon">
-            <% if d.is_a?(Check) %>
-              <span class="tooltipped tooltipped--e" aria-label="Mailed check">
+            <% if d.is_a?(Check) || d.is_a?(IncreaseCheck) %>
+              <span class="tooltipped tooltipped--e inline-block" aria-label="Mailed check">
                 <%= inline_icon "email" %>
               </span>
             <% elsif d.is_a?(AchTransfer) %>
-              <span class="tooltipped tooltipped--e" aria-label="ACH transfer">
+              <span class="tooltipped tooltipped--e inline-block" aria-label="ACH transfer">
                 <%= inline_icon "bank-account" %>
               </span>
             <% else %>
-              <span class="tooltipped tooltipped--e" aria-label="Hack Club Bank transfer">
+              <span class="tooltipped tooltipped--e inline-block" aria-label="Hack Club Bank transfer">
                 <%= inline_icon "door-leave" %>
               </span>
             <% end %>

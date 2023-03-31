@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_03_24_231826) do
+ActiveRecord::Schema[7.0].define(version: 2023_03_30_204916) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_stat_statements"
@@ -42,8 +42,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_24_231826) do
     t.datetime "updated_at", precision: nil, null: false
     t.string "recipient_tel"
     t.datetime "rejected_at", precision: nil
-    t.datetime "scheduled_arrival_date", precision: nil
     t.text "payment_for"
+    t.datetime "scheduled_arrival_date", precision: nil
     t.string "aasm_state"
     t.text "confirmation_number"
     t.text "account_number_ciphertext"
@@ -281,8 +281,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_24_231826) do
     t.boolean "fronted", default: false
     t.boolean "fee_waived", default: false
     t.bigint "ach_payment_id"
+    t.bigint "increase_check_id"
     t.index ["ach_payment_id"], name: "index_canonical_pending_transactions_on_ach_payment_id"
     t.index ["hcb_code"], name: "index_canonical_pending_transactions_on_hcb_code"
+    t.index ["increase_check_id"], name: "index_canonical_pending_transactions_on_increase_check_id"
     t.index ["raw_pending_bank_fee_transaction_id"], name: "index_canonical_pending_txs_on_raw_pending_bank_fee_tx_id"
     t.index ["raw_pending_donation_transaction_id"], name: "index_canonical_pending_txs_on_raw_pending_donation_tx_id"
     t.index ["raw_pending_incoming_disbursement_transaction_id"], name: "index_cpts_on_raw_pending_incoming_disbursement_transaction_id"
@@ -735,6 +737,29 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_24_231826) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.index ["hcb_code_id", "tag_id"], name: "index_hcb_codes_tags_on_hcb_code_id_and_tag_id", unique: true
+  end
+
+  create_table "increase_checks", force: :cascade do |t|
+    t.string "memo"
+    t.string "payment_for"
+    t.integer "amount"
+    t.string "address_city"
+    t.string "address_line1"
+    t.string "address_line2"
+    t.string "address_state"
+    t.string "address_zip"
+    t.string "recipient_name"
+    t.string "increase_id"
+    t.string "aasm_state"
+    t.string "increase_state"
+    t.bigint "event_id", null: false
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "approved_at"
+    t.string "increase_status"
+    t.index ["event_id"], name: "index_increase_checks_on_event_id"
+    t.index ["user_id"], name: "index_increase_checks_on_user_id"
   end
 
   create_table "invoice_payouts", force: :cascade do |t|
@@ -1557,6 +1582,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_24_231826) do
   add_foreign_key "g_suites", "events"
   add_foreign_key "g_suites", "users", column: "created_by_id"
   add_foreign_key "hashed_transactions", "raw_plaid_transactions"
+  add_foreign_key "increase_checks", "events"
+  add_foreign_key "increase_checks", "users"
   add_foreign_key "invoices", "fee_reimbursements"
   add_foreign_key "invoices", "invoice_payouts", column: "payout_id"
   add_foreign_key "invoices", "sponsors"

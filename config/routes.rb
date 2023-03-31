@@ -141,6 +141,7 @@ Rails.application.routes.draw do
       get "pending_ledger", to: "admin#pending_ledger"
       get "ach", to: "admin#ach"
       get "check", to: "admin#check"
+      get "increase_checks", to: "admin#increase_checks"
       get "partner_organizations", to: "admin#partner_organizations"
       get "events", to: "admin#events"
       get "event_new", to: "admin#event_new"
@@ -173,6 +174,7 @@ Rails.application.routes.draw do
       get "check_positive_pay_csv", to: "admin#check_positive_pay_csv"
       post "check_send", to: "admin#check_send"
       post "check_mark_in_transit_and_processed", to: "admin#check_mark_in_transit_and_processed"
+      get "increase_check_process", to: "admin#increase_check_process"
       get "google_workspace_process", to: "admin#google_workspace_process"
       post "google_workspace_approve", to: "admin#google_workspace_approve"
       post "google_workspace_update", to: "admin#google_workspace_update"
@@ -256,6 +258,13 @@ Rails.application.routes.draw do
     post "refund", to: "checks#refund"
 
     resources :comments
+  end
+
+  resources :increase_checks, only: [] do
+    member do
+      post "approve"
+      post "reject"
+    end
   end
 
   resources :ach_transfers, only: [:show] do
@@ -484,7 +493,7 @@ Rails.application.routes.draw do
     post "demo_mode_request_meeting", to: "events#demo_mode_request_meeting", as: :demo_mode_request_meeting
     get "bank_fees", to: "events#bank_fees", as: :bank_fees
     resources :disbursements, only: [:new, :create]
-    resources :checks, only: [:new, :create]
+    resources :increase_checks, only: [:new, :create], path: "checks"
     resources :ach_transfers, only: [:new, :create]
     resources :organizer_position_invites,
               only: [:new, :create],

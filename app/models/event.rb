@@ -279,6 +279,7 @@ class Event < ApplicationRecord
 
   has_many :lob_addresses
   has_many :checks, through: :lob_addresses
+  has_many :increase_checks
 
   has_many :sponsors
   has_many :invoices, through: :sponsors
