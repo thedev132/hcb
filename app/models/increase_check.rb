@@ -74,7 +74,7 @@ class IncreaseCheck < ApplicationRecord
     end
   end
 
-  scope :in_transit, -> { where(increase_status: [:pending_submission, :submitting, :submitted, :mailed]) }
+  scope :in_transit, -> { where(increase_status: [:pending_submission, :submitting, :submitted, :pending_mailing, :mailed]) }
   scope :canceled, -> { where(increase_status: [:rejected, :canceled, :stopped, :returned, :rejected]).or(where(aasm_state: :rejected)) }
 
   enum :increase_status, {
