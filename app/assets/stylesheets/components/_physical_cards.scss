@@ -135,7 +135,27 @@
     );
   }
 
-  &:not(.virtual):after {
+  &.platinum {
+    font-family: $font-family;
+    background: linear-gradient(
+      to bottom right,
+      #808080,
+      #ffffff 80%,
+      #808080
+    ) !important;
+    color: rgba(0, 0, 0, 0.4);
+
+    .badge {
+      display: none;
+    }
+
+    .stripe-card__name {
+      font-family: $font-family;
+      text-transform: none;
+    }
+  }
+
+  &:not(.virtual)::after {
     content: '';
     position: absolute;
     left: 2rem;
@@ -144,6 +164,7 @@
     width: 3.5rem;
     background: #{image-url('emburse-chip.svg')} no-repeat;
     background-size: contain;
+    mix-blend-mode: add;
   }
 }
 

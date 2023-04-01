@@ -91,8 +91,8 @@ class ApplicationController < ActionController::Base
     headers.delete("Content-Length")
   end
 
-  def confetti!
-    flash[:confetti] = true
+  def confetti!(emoji: true)
+    flash[:confetti] = emoji
   end
 
 end

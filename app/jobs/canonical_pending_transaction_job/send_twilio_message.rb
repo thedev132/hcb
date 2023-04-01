@@ -12,9 +12,7 @@ module CanonicalPendingTransactionJob
       @cpt = CanonicalPendingTransaction.find(cpt_id)
       @user = User.find(user_id)
 
-      # rubocop:disable Naming/VariableNumber
       return unless Flipper.enabled?(:sms_receipt_notifications_2022_11_23, @user)
-      # rubocop:enable Naming/VariableNumber
 
       return unless IN_PERSON_AUTH_METHODS.include? auth_method
 

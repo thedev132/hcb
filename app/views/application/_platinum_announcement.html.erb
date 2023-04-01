@@ -1,0 +1,85 @@
+<style>
+  .platinum-candidate:hover {
+    padding-left: 2.5rem;
+  }
+
+  .platinum-candidate__icon {
+    opacity: 0;
+    transition-duration: 300ms;
+    transition-property: opacity, transform;
+    transition-timing-function: ease-in-out;
+    transform: scale(0);
+  }
+
+  .platinum-candidate:hover .platinum-candidate__icon {
+    opacity: 1;
+    transform: scale(1);
+  }
+</style>
+
+<div class="fixed bg-muted flex flex-column items-center justify-center platinum-announcement" style="top: 0; left: 0; width: 100vw; z-index: 999; min-height: 100vh; overflow: auto">
+  <div class="muted">Not interested? <%= link_to "Continue to Hack Club Bank", request.original_fullpath %></div>
+
+  <h1 class="border-none flex flex-wrap items-center justify-center pl3 pr3">
+    Introducing the
+    <span><%= inline_icon "bank-account", size: 72, class: "align-middle ml1" %> <span style="-webkit-background-clip: text; -webkit-text-fill-color: transparent;" class="platinum-announcement__text align-middle">HCB Platinum Card.</span></span>
+  </h1>
+
+  <div class="flex flex-wrap items-start justify-center" style="gap: 3rem">
+    <div>
+      <div class="stripe-card virtual platinum" data-behavior="hover_tilt">
+        <span class="bold caps h6 absolute flex items-center" style="opacity: 50%; right: 10px; top: 10px;">
+          <%= inline_icon "bank-account" %>
+          Platinum
+        </span>
+        <p class="stripe-card__number fs-mask">
+          •••• •••• •••• 4225
+        </p>
+        <p class="stripe-card__name flex justify-between items-center">
+          <span>
+            <%= current_user.name %>
+          </span>
+        </p>
+      </div>
+      <ul class="list-reset">
+        <li class="flex items-center h3">
+          <%= inline_icon "checkmark", class: "mr2 success" %>
+          Premium platinum design
+        </li>
+        <li class="flex items-center h3">
+          <%= inline_icon "checkmark", class: "mr2 success" %>
+          Free stickers with every purchase*
+        </li>
+        <li class="flex items-center h3">
+          <%= inline_icon "checkmark", class: "mr2 success" %>
+          # TODO: come up with third perk
+        </li>
+      </ul>
+    </div>
+
+    <div>
+      <h3 class="mt0 mb0 mb1">Upgrade any of your existing cards.</h3>
+      <small class="mb3">Currently you may only upgrade one card.</small>
+
+      <ul class="card pt0 mb0" style="max-height: 20rem; overflow: auto">
+        <% current_user.stripe_cards.active.where("is_platinum_april_fools_2023 IS NOT true").includes(:event).each do |card| %>
+          <%= link_to make_platinum_stripe_card_path(card), method: :post, class: "text-decoration-none black" do %>
+            <li class="flex items-center pt2 pb2 relative platinum-candidate" style="transition-duration: 300ms; transition-property: padding; transition-timing-function: ease-in-out">
+              <%= inline_icon "bolt", class: "mr2 absolute pending platinum-candidate__icon", style: "left: 0" %>
+
+              <div class="rounded relative mr2 flex items-center justify-center" style="width: 52px; height: 32px; background-image: <%= GeoPattern.generate(card.id).to_data_uri %>">
+                <% if card.event.logo.attached? %>
+                  <%= image_tag card.event.logo, height: 16, width: 16, style: "top: 5px; left: 5px;" %>
+                <% end %>
+              </div>
+              <span><%= card.event.name %></span>
+              <span class="ml-auto">•••• <%= card.last4 %></span>
+            </li>
+          <% end %>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+
+  <small class="mt3 muted">*With the purchase of eligible stickers</small>
+</div>

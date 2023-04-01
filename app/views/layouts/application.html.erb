@@ -114,6 +114,8 @@
           </div>
         <% end %>
 
+        <%= render "application/platinum_announcement" if @show_platinum_announcement %>
+
         <aside class="app__sidebar">
           <%= render "application/header" %>
           <%= render "application/flash" %>
@@ -147,7 +149,9 @@
           const jsConfetti = new JSConfetti()
 
           setTimeout(() => {
-            jsConfetti.addConfetti()
+            jsConfetti.addConfetti({
+              emojis: <%= flash[:confetti] == true ? "undefined" : [flash[:confetti]].to_json.html_safe %>
+            })
           }, 100);
         });
       </script>

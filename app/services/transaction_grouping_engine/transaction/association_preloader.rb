@@ -15,9 +15,7 @@ module TransactionGroupingEngine
       def preload_associations!
         hcb_code_codes = @transactions.map(&:hcb_code)
         included_models = [:receipts, :comments, :canonical_transactions, :canonical_pending_transactions]
-        # rubocop:disable Naming/VariableNumber
         included_models << :tags if Flipper.enabled?(:transaction_tags_2022_07_29, @event)
-        # rubocop:enable Naming/VariableNumber
         hcb_code_objects = HcbCode
                            .includes(included_models)
                            .where(hcb_code: hcb_code_codes)

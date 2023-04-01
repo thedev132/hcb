@@ -139,6 +139,17 @@ class StripeCardsController < ApplicationController
     redirect_to stripe_card_url(card), flash: updated ? { success: "Card's name has been successfully updated!" } : { error: "Card's name could not be updated" }
   end
 
+  def make_platinum
+    card = StripeCard.find_by_hashid(params[:id])
+    authorize card
+
+    card.update!(is_platinum_april_fools_2023: true)
+    current_user.update!(seen_platinum_announcement: true)
+    confetti!(emoji: "🪙")
+
+    redirect_to card, flash: { success: "Successfully upgraded this card to HCB Platinum!" }
+  end
+
   private
 
   def suggested(field)

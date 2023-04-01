@@ -370,3 +370,29 @@ summary {
 @import 'space';
 @import 'utilities';
 @import 'dark';
+
+.platinum-announcement {
+  background-color: rgba($white, 0.8);
+
+  html[data-dark='true'] & {
+    background-color: rgba($dark, 0.8);
+  }
+
+  .platinum-announcement__text {
+    background: repeating-linear-gradient(
+      to bottom right,
+      rgb(200, 200, 200),
+      rgb(100, 100, 100) 25px,
+      rgb(200, 200, 200) 50px
+    );
+
+    html[data-dark='true'] & {
+      background: repeating-linear-gradient(
+        to bottom right,
+        rgb(180, 180, 180),
+        #ffffff 25px,
+        rgb(180, 180, 180) 50px
+      );
+    }
+  }
+}

@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_03_30_204916) do
+ActiveRecord::Schema[7.0].define(version: 2023_04_01_143129) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_stat_statements"
@@ -1370,6 +1370,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_30_204916) do
     t.boolean "activated", default: false
     t.bigint "replacement_for_id"
     t.string "name"
+    t.boolean "is_platinum_april_fools_2023"
     t.index ["event_id"], name: "index_stripe_cards_on_event_id"
     t.index ["replacement_for_id"], name: "index_stripe_cards_on_replacement_for_id"
     t.index ["stripe_cardholder_id"], name: "index_stripe_cards_on_stripe_cardholder_id"
@@ -1505,6 +1506,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_30_204916) do
     t.date "birthday"
     t.boolean "seasonal_themes_enabled", default: true, null: false
     t.datetime "locked_at", precision: nil
+    t.boolean "seen_platinum_announcement", default: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["slug"], name: "index_users_on_slug", unique: true
   end

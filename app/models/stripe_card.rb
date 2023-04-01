@@ -7,6 +7,7 @@
 #  id                                  :bigint           not null, primary key
 #  activated                           :boolean          default(FALSE)
 #  card_type                           :integer          default("virtual"), not null
+#  is_platinum_april_fools_2023        :boolean
 #  last4                               :text
 #  name                                :string
 #  purchased_at                        :datetime
@@ -58,6 +59,7 @@ class StripeCard < ApplicationRecord
   scope :frozen, -> { where(stripe_status: "inactive") }
   scope :active, -> { where(stripe_status: "active") }
   scope :physical_shipping, -> { physical.includes(:user, :event).reject { |c| c.stripe_obj[:shipping][:status] == "delivered" } }
+  scope :platinum, -> { where(is_platinum_april_fools_2023: true) }
 
   belongs_to :event
   belongs_to :stripe_cardholder
@@ -68,6 +70,7 @@ class StripeCard < ApplicationRecord
   has_many :stripe_authorizations
   alias_attribute :authorizations, :stripe_authorizations
   alias_attribute :transactions, :stripe_authorizations
+  alias_attribute :platinum, :is_platinum_april_fools_2023
 
   alias_attribute :last_four, :last4
 
@@ -299,13 +302,11 @@ class StripeCard < ApplicationRecord
 
   def hcb_codes
     all_hcb_codes = canonical_transaction_hcb_codes + canonical_pending_transaction_hcb_codes
-    # rubocop:disable Naming/VariableNumber
     if Flipper.enabled?(:transaction_tags_2022_07_29, self.event)
       @hcb_codes ||= ::HcbCode.where(hcb_code: all_hcb_codes).includes(:tags)
     else
       @hcb_codes ||= ::HcbCode.where(hcb_code: all_hcb_codes)
     end
-    # rubocop:enable Naming/VariableNumber
   end
 
   def remote_shipping_status
