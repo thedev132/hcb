@@ -6,7 +6,6 @@
   .tooltipped {
     &:after {
       background-color: rgba(map-get($palette, black), 0.875);
-      backdrop-filter: blur(2px);
       border-radius: 0.5rem;
       box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.0625),
         0 4px 8px 0 rgba(0, 0, 0, 0.125);
@@ -41,6 +40,7 @@
     &:focus:after {
       opacity: 1;
       z-index: 9;
+      backdrop-filter: blur(2px);
     }
   }
 
