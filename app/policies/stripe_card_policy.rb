@@ -33,8 +33,4 @@ class StripeCardPolicy < ApplicationPolicy
     user&.admin? || record&.event&.users&.include?(user) || record&.user == user
   end
 
-  def make_platinum?
-    record&.user == user
-  end
-
 end

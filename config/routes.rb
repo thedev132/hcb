@@ -244,10 +244,6 @@ Rails.application.routes.draw do
     post "freeze"
     post "defrost"
     post "activate"
-
-    member do
-      post "make_platinum"
-    end
   end
   resources :emburse_cards, except: %i[new create]
 

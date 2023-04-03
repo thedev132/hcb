@@ -9,9 +9,6 @@ class StaticPagesController < ApplicationController
 
   def index
     if signed_in?
-      @show_platinum_announcement = signed_in? && Flipper.enabled?(:april_fools_2023, current_user) && !current_user.seen_platinum_announcement? && current_user.stripe_cards.platinum.empty? && current_user.stripe_cards.active.any?
-      current_user.update(seen_platinum_announcement: true) if @show_platinum_announcement
-
       attrs = {
         current_user: current_user
       }

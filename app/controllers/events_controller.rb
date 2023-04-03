@@ -20,9 +20,6 @@ class EventsController < ApplicationController
 
   # GET /events/1
   def show
-    @show_platinum_announcement = signed_in? && Flipper.enabled?(:april_fools_2023, current_user) && !current_user.seen_platinum_announcement? && current_user.stripe_cards.platinum.empty? && current_user.stripe_cards.active.any?
-    current_user.update(seen_platinum_announcement: true) if @show_platinum_announcement
-
     render_tour @organizer_position, :welcome
 
     authorize @event
