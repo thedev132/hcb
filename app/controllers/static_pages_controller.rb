@@ -143,7 +143,14 @@ class StaticPagesController < ApplicationController
                        .map(&:to_i)
                        .map { |time| { created_at: time } }
 
-    tx_all = CanonicalTransaction.included_in_stats.where("date <= ?", now)
+    tx_all = CanonicalTransaction.where.not("hcb_code LIKE 'HCB-#{::TransactionGroupingEngine::Calculate::HcbCode::BANK_FEE_CODE}%'")
+                                 .included_in_stats
+                                 .where("date <= ?", now)
+
+    pending_tx_all = CanonicalPendingTransaction.where(raw_pending_bank_fee_transaction_id: nil)
+                                                .included_in_stats
+                                                .unsettled
+                                                .and(CanonicalPendingTransaction.outgoing.or(CanonicalPendingTransaction.fronted))
 
     render json: {
       date: now,
@@ -156,9 +163,9 @@ class StaticPagesController < ApplicationController
       last_transaction_date: tx_all.order(:date).last.date.to_time.to_i,
 
       # entire time period. this remains to prevent breaking changes to existing systems that use this endpoint
-      raised: tx_all.revenue.sum(:amount_cents),
+      raised: tx_all.revenue.sum(:amount_cents) + pending_tx_all.incoming.sum(:amount_cents),
       transactions_count: tx_all.size,
-      transactions_volume: tx_all.sum("@amount_cents"),
+      transactions_volume: tx_all.sum("@amount_cents") + pending_tx_all.sum("@amount_cents"),
 
       # entire (all), year, quarter, and month time periods
       all: CanonicalTransactionService::Stats::During.new.run,

@@ -110,6 +110,7 @@ class CanonicalPendingTransaction < ApplicationRecord
   scope :not_fronted, -> { where(fronted: false) }
   scope :not_declined, -> { includes(:canonical_pending_declined_mapping).where(canonical_pending_declined_mapping: { canonical_pending_transaction_id: nil }) }
   scope :not_waived, -> { where(fee_waived: false) }
+  scope :included_in_stats, -> { includes(canonical_pending_event_mapping: :event).where(events: { omit_stats: false }) }
 
   validates :custom_memo, presence: true, allow_nil: true
 
