@@ -138,6 +138,11 @@
     <%= (ap ht.raw_stripe_transaction).html_safe %>
   <% end %>
 
+  <% if ht.raw_increase_transaction %>
+    <p>RawIncreaseTransaction</p>
+    <%= (ap ht.raw_increase_transaction).html_safe %>
+  <% end %>
+
 <% end %>
 
 <br><hr>
