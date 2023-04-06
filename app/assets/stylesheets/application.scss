@@ -12,11 +12,13 @@ $mono: 'SFMono-Regular', 'Roboto Mono', Menlo, Consolas, monospace;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
 }
+
 html,
 body {
   min-height: 100%;
   min-width: 100%;
 }
+
 body {
   display: flex;
   flex-direction: column;
@@ -40,9 +42,11 @@ h3,
 .brand-sans {
   font-family: $brand-font-family;
 }
+
 .sans {
   font-family: $font-family;
 }
+
 pre,
 code,
 .mono {
@@ -91,6 +95,7 @@ fieldset legend {
   line-height: 1.125;
   letter-spacing: -0.02em;
 }
+
 h1 {
   font-size: 3rem;
   padding-bottom: 0.5rem;
@@ -98,6 +103,7 @@ h1 {
   border-bottom-width: 0.5px;
   margin-bottom: 1rem;
 }
+
 h2 {
   font-size: 1.75rem;
   padding-bottom: 0.25rem;
@@ -105,14 +111,16 @@ h2 {
   border-bottom-width: 0.5px;
   margin-bottom: 0.5rem;
 }
+
 h3 {
   font-size: 1.5rem;
 }
+
 h4 {
   font-size: 1.25rem;
 }
 
-p + p {
+p+p {
   margin-top: 0;
 }
 
@@ -120,16 +128,20 @@ table {
   border-collapse: collapse;
   width: 100%;
 }
+
 tr {
   border-bottom: 1px solid rgba(0, 0, 0, 0.0625);
   border-bottom-width: 0.5px;
+
   a {
     color: map-get($palette, slate);
   }
 }
+
 thead {
   table-layout: fixed;
 }
+
 th,
 td {
   padding: 0.5rem;
@@ -140,6 +152,7 @@ td {
     padding-left: 1rem;
   }
 }
+
 th {
   font-weight: bold;
   text-align: left;
@@ -175,6 +188,7 @@ summary {
 
 @import 'components/avatars';
 @import 'components/badges';
+@import 'components/banners'; //TODO: Rename
 @import 'components/buttons';
 @import 'components/cards';
 @import 'components/checks';
@@ -295,6 +309,7 @@ summary {
 
 // Make mobile views nice. Full-bleed separator lines
 @media screen and (max-width: 32em) {
+
   table:not(.table-container > table),
   .table-container,
   .list,
@@ -307,20 +322,23 @@ summary {
     margin-left: -1rem;
     margin-right: -1rem;
   }
+
   td,
   th {
     &:first-child {
       padding-left: 1rem;
     }
+
     &:last-child {
       padding-right: 1rem;
     }
   }
-  .list > a > li,
-  .list > li,
+
+  .list>a>li,
+  .list>li,
   .heading,
-  .details > p,
-  .details > div,
+  .details>p,
+  .details>div,
   h1,
   h2,
   h3 {
@@ -336,6 +354,7 @@ summary {
 }
 
 @media print {
+
   .home,
   .dock,
   .heading .btn,

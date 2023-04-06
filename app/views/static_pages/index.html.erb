@@ -37,14 +37,19 @@
         <% @events.not_hidden.each do |event| %>
           <%= link_to event, style: "max-width: 90vw", class: "draggable text-decoration-none" do %>
             <li class="card card--hover flex flex-column justify-between h-100 mx-auto">
-              <strong class="brand-sans h3 line-height-2 mb1 display-inline">
-                <% if Flipper.enabled?(:detailed_events_list_2022_10_04, current_user) %>
-                  <% if event.logo.attached? %>
-                    <%= image_tag event.logo, height: 24, width: 24, class: "rounded display-inline align-bottom" %>
+              <div id="event-<%= event.id %>-title" class="flex mb2">
+                <strong class="brand-sans h3 line-height-2 display-inline">
+                  <% if Flipper.enabled?(:detailed_events_list_2022_10_04, current_user) %>
+                    <% if event.logo.attached? %>
+                      <%= image_tag event.logo, height: 24, width: 24, class: "rounded display-inline align-bottom" %>
+                    <% end %>
                   <% end %>
+                  <%= event.name %>
+                </strong>
+                <% if event.demo_mode? %>
+                  <div class="badge bg-info" style="width: fit-content;">Demo Mode</div>
                 <% end %>
-                <%= event.name %>
-              </strong>
+              </div>
               <% if Flipper.enabled?(:detailed_events_list_2022_10_04, current_user) %>
                 <div class="brand-sans h4 line-height-2 mb2 flex justify-between">
                   <span style="white-space: nowrap;">
@@ -67,16 +72,19 @@
             </li>
           <% end %>
         <% end %>
-        <a href="https://hackclub.com/bank/apply/?userEmail=<%= current_user.email %>&firstName=<%= current_user.first_name %>&lastName=<%= current_user.last_name %>&returningUser=Yes,%20I%20have%20used%20Hack%20Club%20Bank%20before&userPhone=<%= current_user.phone_number %>">
-          <li class="card card--hover bold brand-sans flex items-center justify-center align-center h-100" style="max-width: 90vw">
-            <div class="center">
-              <div class="pop success mx-auto" style="display: flex; margin-bottom: 4px;">
-                <%= inline_icon "plus", size: 28 %>
+
+        <% if @show_event_form %>
+          <a href="https://hackclub.com/bank/apply/?userEmail=<%= current_user.email %>&firstName=<%= current_user.first_name %>&lastName=<%= current_user.last_name %>&returningUser=Yes,%20I%20have%20used%20Hack%20Club%20Bank%20before&userPhone=<%= current_user.phone_number %>">
+            <li class="card card--hover bold brand-sans flex items-center justify-center align-center h-100" style="max-width: 90vw">
+              <div class="center">
+                <div class="pop success mx-auto" style="display: flex; margin-bottom: 4px;">
+                  <%= inline_icon 'plus', size: 28 %>
+                </div>
+                New Project
               </div>
-              New Project
-            </div>
-          </li>
-        </a>
+            </li>
+          </a>
+        <% end %>
       </ul>
 
       <% if @events.hidden.any? %>

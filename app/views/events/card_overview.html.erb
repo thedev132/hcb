@@ -49,8 +49,8 @@
       <%= blankslate "You haven’t requested any cards yet." %>
     <% else %>
 
-      <% if params[:view] == "list" %>
-        <%= render "event_cards_table", stripe_cards: @session_user_stripe_cards %>
+      <% if params[:view] == "list" || @event.demo_mode %> <!-- Grim hack -->
+        <%= render 'event_cards_table', stripe_cards: @session_user_stripe_cards %>
       <% else %>
         <article class="mixed-grid grid--spacious">
           <%= render @session_user_stripe_cards %>

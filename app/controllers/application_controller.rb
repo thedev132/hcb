@@ -11,6 +11,11 @@ class ApplicationController < ActionController::Base
     if current_user&.admin? || current_session&.impersonated_by&.admin?
       Rack::MiniProfiler.authorize_request
     end
+
+    if params[:show_mock_data].present?
+      session[:show_mock_data] =
+        params[:show_mock_data].downcase == "true"
+    end
   end
 
   # Ensure users are signed in. Create one-off exceptions to this on routes

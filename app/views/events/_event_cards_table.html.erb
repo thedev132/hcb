@@ -39,7 +39,7 @@
             <%= d.hidden_card_number if d.user != current_user %>
           </td>
           <td>
-            <%= link_to "Details", stripe_card_path(d) if organizer_signed_in? %>
+            <%= link_to "Details", stripe_card_path(d) if organizer_signed_in? && !@event.demo_mode %>
           </td>
         </tr>
       <% end %>

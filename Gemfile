@@ -133,6 +133,7 @@ gem "blazer" # business intelligence tool/dashboard
 
 gem "geo_pattern", "~> 1.4" # create procedurally generated patterns for Cards
 gem "comma", "~> 4.6" # CSV generation
+gem "faker" # Create mock data
 
 gem "chronic" # time/date parsing
 gem "rinku", require: "rails_rinku" # auto-linking URLs in text
@@ -169,9 +170,7 @@ group :production do
 end
 
 group :test do
-  # Test data
-  gem "factory_bot_rails"
-  gem "faker"
+  gem "factory_bot_rails" # Test data
 end
 
 group :development, :test do

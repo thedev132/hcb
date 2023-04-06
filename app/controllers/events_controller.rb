@@ -41,6 +41,57 @@ class EventsController < ApplicationController
 
     @transactions = Kaminari.paginate_array(TransactionGroupingEngine::Transaction::All.new(event_id: @event.id, search: params[:q], tag_id: @tag&.id).run).page(params[:page]).per(params[:per] || 75)
     TransactionGroupingEngine::Transaction::AssociationPreloader.new(transactions: @transactions, event: @event).run!
+
+    @mock_total = 0
+    if @event.demo_mode? && session[:show_mock_data]
+      mock_transaction_descriptions = [
+        { desc: "🌶️ Jalapeños for the steamy social salsa sesh", amount: -9.57 },
+        { desc: "👩‍💻 Payment for club coding lessons (solid gold; rare; imported)", amount: -127.63 },
+        { desc: "🍺 Reimbursement for Friday night's team-building pub crawl", amount: -88.90 },
+        { desc: "😨 Monthly payment to the local protection racket", monthly: true, amount: -2500.00 },
+        { desc: "🚀 Rocket fuel for Lucas' commute", amount: -50.00 },
+        { desc: "💰 Donation from t̶͖̯́̒̇͝h̸͇̥̘̖̞̋͛̕ę̷̧̯̓̄͜ ̵̧̡̀̎͋̚v̸̰̰̝͈̟̂̇̏̓ͅo̶͓͈͑̑̄̍i̸͉̺͕̥̓̍d̵̟̮̼̠̺̿͌́", amount: 50_000.00 },
+        { desc: "🎵 Payment for a DJ for the club disco (groovy)", amount: -430.00 },
+        { desc: "🤫 Hush money", amount: -1000.00 },
+        { desc: "🦄 Purchase of a cute unicorn for team morale", amount: -57.00 },
+        { desc: "🍌 Bananas (Fairtrade)", amount: -1.80 },
+        { desc: "💸 Withdrawal for emergency pizza run", amount: -62.99 },
+        { desc: "🍔 Withdrawal for a not-so-emergency burger run", amount: -47.06 },
+        { desc: "🧑‍🚀 Astronaut suit for Lucas to get home when it's cold", amount: -943.99 },
+        { desc: "💰 Donation from the man in the walls", amount: 1_200.00, monthly: true },
+        { desc: "🫘 Chilli con carne (home cooked, just how you like it)", amount: -8.28 },
+        { desc: "🦖 Purchase of a teeny tiny T-Rex", amount: -3.35 },
+        { desc: "🧪 Purchase of lab rats for the club's genetics project", amount: -120.00 },
+        { desc: "🐣 An incubator to help hatch big ideas", amount: -1.59 },
+        { desc: "📈 Financial advisor to teach us better spending tips", amount: -900.00 },
+        { desc: "🐛 Office wormery", amount: -47.53 },
+        { desc: "📹 Webcams for the team x4", amount: -199.96 },
+        { desc: "🪨 Hackathon rock tumbler", amount: -19.99 },
+        { desc: "🌸 Payment for a floral arrangement", monthly: true, amount: -15.50 },
+        { desc: "🧼 Purchase of eco-friendly soap for the club bathrooms", monthly: true, amount: -7.49 },
+        { desc: "💰 Donation from Dave from next door", monthly: true, amount: 250.00 },
+        { desc: "💰 Donation from Old Greg down hill", amount: 500.00 },
+      ]
+
+      mock_transaction_descriptions.shuffle.slice(0, rand(6..10)).each do |trans|
+        @transactions << OpenStruct.new(
+          amount: trans[:amount],
+          amount_cents: rand(1000),
+          fee_payment: true,
+          date: Faker::Date.backward(days: 365 * 2),
+          local_hcb_code: OpenStruct.new(
+            memo: trans[:desc],
+            receipts: Array.new(rand(9) > 1 ? 0 : rand(1..2)),
+            comments: Array.new(rand(9) > 1 ? 0 : rand(1..2)),
+            donation?: !trans[:amount].negative?,
+            donation: !trans[:amount].negative? ? nil : OpenStruct.new(recurring?: trans[:monthly]),
+          )
+        )
+      end
+      @transactions.sort_by!(&:date).reverse!
+      @transactions = Kaminari.paginate_array(@transactions).page(params[:page]).per(params[:per] || 75)
+      @mock_total = @transactions.reduce(0) { |sum, obj| sum + obj.amount * 100 }.to_i
+    end
   end
 
   def fees
@@ -152,6 +203,38 @@ class EventsController < ApplicationController
     @stripe_cardholders = StripeCardholder.where(user_id: @event.users.pluck(:id)).includes(:user).order("created_at desc")
 
     authorize @event
+
+    # Generate mock data
+    if @event.demo_mode? && session[:show_mock_data]
+      @session_user_stripe_cards = []
+
+      # The user's cards
+      (0..rand(1..3)).each do |_|
+        state = rand > 0.5
+        name = current_user.name
+        virtual = rand > 0.5
+        card = OpenStruct.new(
+          virtual?: virtual,
+          physical?: !virtual,
+          remote_shipping_status: rand > 0.5 ? "PENDING" : "SHIPPED",
+          created_at: Faker::Time.between(from: 1.year.ago, to: Time.now),
+          state: state ? "success" : "muted",
+          state_text: state ? "Active" : "Cancelled",
+          stripe_name: name,
+          user: current_user,
+          formatted_card_number: Faker::Finance.credit_card(:mastercard),
+          hidden_card_number: "•••• •••• •••• ••••",
+        )
+        @session_user_stripe_cards << card
+      end
+      # Sort by date issued
+      @session_user_stripe_cards.sort_by! { |card| card.created_at }.reverse!
+
+      # @ma1ted: Org cards are refusing to render (in the grid view) because
+      # they're not instances of the right dohickey whatsitcalled. Not having
+      # the grid view is a wee bummer but it's not the end of the world.
+    end
+
   end
 
   def documentation
@@ -247,6 +330,42 @@ class EventsController < ApplicationController
     @donations = relation.order(created_at: :desc)
 
     @recurring_donations = @event.recurring_donations.active.order(created_at: :desc)
+
+    if @event.demo_mode? && session[:show_mock_data]
+      @donations = []
+      @recurring_donations = []
+      @stats = { deposited: 0, in_transit: 0, refunded: 0 }
+
+      (0..rand(20..50)).each do |_|
+        refunded = rand > 0.9
+        amount = rand(1..100) * 100
+        started_on = Faker::Date.backward(days: 365 * 2)
+
+        donation = OpenStruct.new(
+          amount: amount,
+          total_donated: amount * rand(1..5),
+          stripe_status: "active",
+          state: refunded ? "warning" : "success",
+          state_text: refunded ? "Refunded" : "Deposited",
+          filter: refunded ? "refunded" : "deposited",
+          created_at: started_on,
+          name: Faker::Name.name,
+          recurring: rand > 0.9,
+          local_hcb_code: OpenStruct.new(hashid: "")
+        )
+        @stats[:deposited] += amount unless refunded
+        @stats[:refunded] += amount if refunded
+        @donations << donation
+      end
+      @donations.each do |donation|
+        if donation[:recurring]
+          @recurring_donations << donation
+        end
+      end
+      # Sort by date descending
+      @recurring_donations.sort_by! { |invoice| invoice[:created_at] }.reverse!
+      @donations.sort_by! { |invoice| invoice[:created_at] }.reverse!
+    end
   end
 
   def partner_donation_overview
@@ -332,7 +451,37 @@ class EventsController < ApplicationController
       @disbursements = @disbursements.search_name(params[:q]) if params[:q].present?
     end
 
-    @transfers = Kaminari.paginate_array((@increase_checks + @checks + @ach_transfers + @disbursements).sort_by { |o| o.created_at }.reverse!).page(params[:page]).per(100)
+    @transfers = Kaminari.paginate_array((@checks + @ach_transfers + @disbursements).sort_by { |o| o.created_at }.reverse!).page(params[:page]).per(100)
+
+    # Generate mock data
+    if @event.demo_mode? && session[:show_mock_data]
+      @transfers = []
+      @stats = { deposited: 0, in_transit: 0, canceled: 0 }
+
+      (0..rand(20..100)).each do |_|
+        transfer = OpenStruct.new(
+          state: "success",
+          state_text: rand > 0.5 ? "Fufilled" : "Deposited",
+          created_at: Faker::Date.backward(days: 365 * 2),
+          amount: rand(1000..10000),
+          name: Faker::Name.name,
+          hcb_code: "",
+        )
+        @stats[:deposited] += transfer.amount
+        @transfers << transfer
+      end
+      # Sort by date
+      @transfers = @transfers.sort_by { |o| o.created_at }.reverse!
+
+      # Set the most recent 0-3 invoices to be pending
+      (0..rand(-1..2)).each do |i|
+        @transfers[i].state = "muted"
+        @transfers[i].state_text = "Pending"
+        @stats[:in_transit] += @transfers[i].amount
+      end
+
+      @transfers = Kaminari.paginate_array(@transfers).page(params[:page]).per(100)
+    end
   end
 
   def new_transfer

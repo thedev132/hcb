@@ -39,11 +39,19 @@
 <div class="flex items-center details-horiz details-horiz--lg" style="gap: 8px">
   <div class="stat statset__wide" data-tour-step="balance">
     <span class="stat__label">Account balance</span>
-    <% if @event.fee_balance_v2_cents < 0 # this event has a fee credit (owes negative fees) %>
-      <span class="stat__value"><%= render_money_amount @event.balance_v2_cents %></span>
-      <span class="self-end" style="font-size: 10px;">+$<%= render_money_amount @event.fee_balance_v2_cents.abs %> fee credit</span>
+    <% if @event.fee_balance_v2_cents < 0 || @mock_total < 0 # this event has a fee credit (owes negative fees) %>
+      <span class="stat__value">
+        <%= render_money_amount @event.demo_mode? && session[:show_mock_data] ? 
+          @mock_total : @event.balance_v2_cents %>
+      </span>
+      <span class="self-end" style="font-size: 10px;">
+        +$<%= render_money_amount @event.demo_mode? && session[:show_mock_data] ? 
+          @mock_total : @event.fee_balance_v2_cents.abs %> fee credit
+      </span>
     <% else %>
-      <span class="stat__value"><%= render_money_amount @event.balance_available_v2_cents %></span>
+      <span class="stat__value">
+        <%= render_money_amount @event.demo_mode? && session[:show_mock_data] ? @mock_total : @event.balance_available_v2_cents %>
+      </span>
     <% end %>
   </div>
 
@@ -74,28 +82,8 @@
   </div>
 </div>
 
-<% if @event.demo_mode? && organizer_signed_in? %>
-  <div class="card border b--info pb0 mb2 mt2 max-width-2 overflow-y-auto">
-    <div class="flex items-center info">
-      <%= inline_icon "welcome", size: 32, class: "mr1" %>
-      <p class="bold mt0 mb0">Welcome to Demo Mode</p>
-    </div>
-    <ul class="mt1 mb2">
-      <li>You can invite other team members.</li>
-      <li>Your financial tools are restricted.</li>
-      <li>Your account may be removed after a week of inactivity.</li>
-      <li>When you're ready to fully activate your account, <%= link_to "click here", "#", data: { behavior: :modal_trigger, modal: :demo_mode, "tour-step": :activate_account } %>.</li>
-    </ul>
-    <div class="border-top card__banner card__darker secondary">
-      <strong>Questions?</strong>
-      <%= help_message %>
-    </div>
-  </div>
-<% end %>
-
 <h2 class="heading">
   Transactions
-
   <% if organizer_signed_in? && @event.canonical_transactions.exists? %>
     <button
       type="button"
@@ -164,7 +152,7 @@
     <% end %>
   </div>
 
-  <% if @pending_transactions.any? || @transactions.any? %>
+  <% if @pending_transactions.any? || @transactions.any? || @event.demo_mode? %>
     <div class="table-container" data-tour-step="transactions">
         <table>
           <thead>
@@ -182,7 +170,7 @@
             <%= render partial: "canonical_pending_transactions/canonical_pending_transaction", collection: @pending_transactions, as: :pt, locals: { event: @event } %>
 
             <%= render partial: "canonical_transactions/canonical_transaction", collection: @transactions, as: :ct, locals: { event: @event } %>
-          </tbody>
+        </tbody>
         </table>
     </div>
     <%= paginate @transactions %>

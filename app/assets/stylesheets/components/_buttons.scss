@@ -46,6 +46,10 @@ input[type='submit'],
     margin-right: 6px;
   }
 
+  &.bg-primary {
+    @include gradient(primary);
+  }
+
   &.bg-muted {
     @include gradient(muted);
   }

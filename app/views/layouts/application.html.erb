@@ -51,12 +51,32 @@
     <% end %>
 
     <% if @event&.demo_mode? %>
-      <div class="w-100 px3 transparency-banner bg-transparent center">
-        <hr class="m0 p0 b--warning">
-        <span class="m0 badge rounded-bottom bg-warning pointer" data-behavior="modal_trigger" data-modal="demo_mode">
-          Demo Mode
-          <%= inline_icon "info", size: 18 %>
-        </span>
+      <div class="w-full dev-banner dev-banner--info rounded-bottom">
+        <div class="flex flex-column container container--md center pb2">
+          <p class="bold center m0" style="font-size: 2rem;">Playground Mode</p>
+          <div class="grid g3" style="grid-template-columns: 1fr 2fr 1fr; place-items: center;">
+            <%= link_to event_demo_mode_request_meeting_path(@event), method: :post, class: "btn bg-primary shrink-none nowrap" do %>
+              <%= inline_icon 'welcome' %>Request Activation
+            <% end %>
+            <p class="center m0">While in Playground mode, explore the dashboard with mock data, and invite your team.<br />To utilise financial features, activate your account!</p>
+            <button 
+              id="mock-data-toggle" 
+              data-mock-data-status=<%= session[:show_mock_data] %> 
+              class="btn btn-small shrink-none nowrap"
+            >
+              <%= inline_icon 'view' %>
+              <%= session[:show_mock_data] ? "Hide" : "Show" %> Mock Data
+            </button>
+            <script>   
+              document.getElementById("mock-data-toggle").addEventListener("click", ({ target }) => {
+                const currentStatus = target.dataset.mockDataStatus === "true" ? true : false;
+                const url = new URL(window.location.href);
+                url.searchParams.set("show_mock_data", !currentStatus);
+                window.location.href = url.toString();
+              });
+            </script>
+          </div>
+        </div>
       </div>
       <section class="modal modal--scroll bg-snow" data-behavior="modal" role="dialog" id="demo_mode">
         <%= modal_header "Demo Mode" %>

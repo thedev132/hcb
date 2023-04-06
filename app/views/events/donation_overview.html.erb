@@ -1,6 +1,6 @@
 <% title "Donations to #{@event.name}" %>
 <% page_md %>
-<%= render "events/nav", selected: :donations %>
+<%= render "events/nav" %>
 
 <h1 class="heading">
   <span class="flex items-center">
@@ -26,7 +26,7 @@
             data: { behavior: "modal_trigger", modal: "embed_code" } do %>
             Embed code
           <% end %>
-          <%= link_to "#",
+          <%= link_to '#',
             data: { behavior: "modal_trigger", modal: "prefilled_link" } do %>
             Prefilled amount
           <% end %>
@@ -52,7 +52,7 @@
 
   <section class="modal" data-behavior="modal" role="dialog" id="prefilled_link">
     <%= modal_header "Prefilled Amount" %>
-    <%= react_component "donation_overview/PreviewLink", path: start_donation_donations_url(@event) %>
+    <%= react_component 'donation_overview/PreviewLink', path: start_donation_donations_url(@event) %>
   </section>
 <% else %>
   <p>You can start accepting donations once you enable it in your project's <%= link_to "settings", edit_event_path(@event, anchor: "donations") %>.</p>
@@ -72,20 +72,22 @@
     <span class="stat__value"><%= render_money_amount @stats[:refunded] %></span>
   </div>
   <div>
-  <% if organizer_signed_in? && @donations.not_pending.any? %>
-    <button
-      type="button"
-      <%= organizer_signed_in? ? "data-behavior=menu_toggle aria-expanded=false tabindex=0" : "disabled=disabled" %>
-      class="btn bg-info menu__toggle overflow-visible right h5 z1" style="padding: 0.25rem 1rem;">
-        <%= inline_icon "download", size: 16 %>
-        Export
-        <% if organizer_signed_in? %>
-          <div class="menu__content h5" data-behavior="menu_content">
-          <%= link_to "Export donations (CSV)", export_donations_path(event: @event, format: :csv), target: :_blank %>
-          <%= link_to "Export donations (JSON)", export_donations_path(event: @event, format: :json), target: :_blank %>
-          </div>
-        <% end %>
-    </button>
+  <% unless session[:show_mock_data] %>
+    <% if organizer_signed_in? && @donations.not_pending.any? %>
+      <button
+        type="button"
+        <%= organizer_signed_in? ? 'data-behavior=menu_toggle aria-expanded=false tabindex=0' : 'disabled=disabled' %>
+        class="btn bg-info menu__toggle overflow-visible right h5 z1" style="padding: 0.25rem 1rem;">
+          <%= inline_icon 'download', size: 16 %>
+          Export
+          <% if organizer_signed_in? %>
+            <div class="menu__content h5" data-behavior="menu_content">
+            <%= link_to 'Export donations (CSV)', export_donations_path(event: @event, format: :csv), target: :_blank %>
+            <%= link_to 'Export donations (JSON)', export_donations_path(event: @event, format: :json), target: :_blank %>
+            </div>
+          <% end %>
+      </button>
+    <% end %>
   <% end %>
   </div>
 </div>
@@ -187,5 +189,5 @@
 </article>
 
 <% else %>
-  <%= blankslate "No donations yet" %>
+  <%= blankslate 'No donations yet' %>
 <% end %>
