@@ -158,4 +158,3 @@ Style/StringConcatenation:
     - 'app/models/transaction.rb'
     - 'app/services/partners/docusign/api.rb'
     - 'app/services/partners/docusign/signing_completion_redirect.rb'
-    - 'app/services/shared/selenium/login_to_svb.rb'
