@@ -303,6 +303,7 @@ class Event < ApplicationRecord
   has_many :partner_donations
 
   has_one :stripe_ach_payment_source
+  has_one :increase_account_number
 
   has_one_attached :donation_header_image
   has_one_attached :logo
@@ -601,11 +602,11 @@ class Event < ApplicationRecord
   end
 
   def account_number
-    (stripe_ach_payment_source || create_stripe_ach_payment_source)&.account_number
+    (increase_account_number || create_increase_account_number)&.account_number
   end
 
   def routing_number
-    (stripe_ach_payment_source || create_stripe_ach_payment_source)&.routing_number
+    (increase_account_number || create_increase_account_number)&.routing_number
   end
 
   private

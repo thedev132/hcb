@@ -406,17 +406,6 @@ class EventsController < ApplicationController
     redirect_to edit_event_path(@event)
   end
 
-  def test_ach_payment
-    authorize @event
-
-    StripeService::Source.update(
-      @event.stripe_ach_payment_source.stripe_source_id,
-      { owner: { email: "amount_#{params[:amount]}@example.com" } }
-    )
-
-    redirect_to edit_event_path(@event), flash: { success: "Success!" }
-  end
-
   private
 
   # Only allow a trusted parameter "white list" through.

@@ -28,20 +28,11 @@
         <strong>Routing number</strong>
         <span><%= @event.routing_number %></span>
       </p>
+      <% admin_tools "", "p" do %>
+        <strong>ID</strong>
+        <span><%= @event.increase_account_number&.increase_account_number_id %></span>
+      <% end %>
     </section>
-
-    <% if Rails.env.development? %>
-      <div class="admin-tools mt1">
-        <%= form_with url: test_ach_payment_event_path(@event) do |form| %>
-          <h3 class="mt1 mb1">Test an ACH payment</h3>
-          <div class="field">
-            <%= form.label :amount, "Amount (cents)" %>
-            <%= form.number_field :amount, placeholder: "0.00" %>
-          </div>
-          <%= form.submit "Submit" %>
-        <% end %>
-      </div>
-    <% end %>
   </div>
 <% end %>
 

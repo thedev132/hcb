@@ -9,6 +9,8 @@ module EventMappingEngine
     end
 
     def run
+      map_increase_account_number_transactions!
+
       map_stripe_transactions!
       map_github!
       map_checks!
@@ -31,6 +33,15 @@ module EventMappingEngine
     end
 
     private
+
+    def map_increase_account_number_transactions!
+      CanonicalTransaction.unmapped.likely_increase_account_number.each do |ct|
+        increase_account_number = IncreaseAccountNumber.find_by(increase_account_number_id: ct.raw_increase_transaction.increase_route_id)
+        next unless increase_account_number
+
+        CanonicalEventMapping.create!(event: increase_account_number.event, canonical_transaction: ct)
+      end
+    end
 
     def map_stripe_transactions!
       ::EventMappingEngine::Map::StripeTransactions.new(start_date: @start_date).run

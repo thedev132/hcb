@@ -18,7 +18,7 @@ module TransactionGroupingEngine
       STRIPE_CARD_CODE = "600"
       STRIPE_FORCE_CAPTURE_CODE = "601"
       BANK_FEE_CODE = "700"
-      INCOMING_BANK_FEE_CODE = "701"  # short-lived and deprecated
+      INCOMING_BANK_FEE_CODE = "701" # short-lived and deprecated
       FEE_REVENUE_CODE = "702"
       ACH_PAYMENT_CODE = "800"
 
@@ -27,6 +27,7 @@ module TransactionGroupingEngine
       end
 
       def run
+        return unknown_hcb_code if @ct_or_cp.is_a?(CanonicalTransaction) && @ct_or_cp.raw_increase_transaction&.increase_route_type == "account_number" && IncreaseAccountNumber.exists?(increase_account_number_id: @ct_or_cp.raw_increase_transaction&.increase_route_id) # Don't attempt to group transactions posted to an org's account/routing number
         return invoice_hcb_code if invoice
         return bank_fee_hcb_code if bank_fee
         return donation_hcb_code if donation

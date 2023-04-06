@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_04_03_203836) do
+ActiveRecord::Schema[7.0].define(version: 2023_04_04_165646) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_stat_statements"
@@ -737,6 +737,17 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_03_203836) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.index ["hcb_code_id", "tag_id"], name: "index_hcb_codes_tags_on_hcb_code_id_and_tag_id", unique: true
+  end
+
+  create_table "increase_account_numbers", force: :cascade do |t|
+    t.text "account_number_ciphertext"
+    t.text "routing_number_ciphertext"
+    t.bigint "event_id", null: false
+    t.string "increase_account_number_id"
+    t.string "increase_limit_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["event_id"], name: "index_increase_account_numbers_on_event_id"
   end
 
   create_table "increase_checks", force: :cascade do |t|
@@ -1576,6 +1587,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_03_203836) do
   add_foreign_key "g_suites", "events"
   add_foreign_key "g_suites", "users", column: "created_by_id"
   add_foreign_key "hashed_transactions", "raw_plaid_transactions"
+  add_foreign_key "increase_account_numbers", "events"
   add_foreign_key "increase_checks", "events"
   add_foreign_key "increase_checks", "users"
   add_foreign_key "invoices", "fee_reimbursements"

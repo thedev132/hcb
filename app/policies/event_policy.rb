@@ -149,10 +149,6 @@ class EventPolicy < ApplicationPolicy
     user_or_admin
   end
 
-  def test_ach_payment?
-    Rails.env.development?
-  end
-
   def user_or_admin
     user&.admin? || record.users.include?(user)
   end
