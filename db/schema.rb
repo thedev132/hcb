@@ -1275,13 +1275,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_03_203836) do
     t.index ["url_hash"], name: "index_recurring_donations_on_url_hash", unique: true
   end
 
-  create_table "selenium_sessions", force: :cascade do |t|
-    t.string "aasm_state"
-    t.jsonb "cookies"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "sponsors", force: :cascade do |t|
     t.bigint "event_id"
     t.text "name"
