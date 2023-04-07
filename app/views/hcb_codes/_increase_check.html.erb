@@ -1,6 +1,12 @@
 <link href="https://fonts.googleapis.com/css?family=Damion" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=Space+Mono" rel="stylesheet">
 
+<% if @hcb_code.increase_check.increase_id.present? %>
+  <% admin_tools("mt3") do %>
+    <%= link_to "View on Increase", "https://dashboard.increase.com/transfers/#{@hcb_code.increase_check.increase_id}", class: "btn bg-accent", target: "_blank" %>
+  <% end %>
+<% end %>
+
 <div class="check xs-hide w-100 mt3 mb3" data-behavior="hover_tilt">
   <div class="check__number">1234</div>
 
@@ -88,6 +94,13 @@
       <strong>Payment purpose</strong>
       <%= @hcb_code.increase_check.payment_for %>
     </p>
+
+    <% if @hcb_code.increase_check.increase_status.present? %>
+      <% admin_tools "", "p" do %>
+        <strong>Status</strong>
+        <%= @hcb_code.increase_check.increase_status.humanize %>
+      <% end %>
+    <% end %>
 
     <%= render "hcb_codes/tags", hcb_code: @hcb_code, event: (@event || @hcb_code.event) %>
   </section>

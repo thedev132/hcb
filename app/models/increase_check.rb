@@ -70,7 +70,7 @@ class IncreaseCheck < ApplicationRecord
 
   validate on: :create do
     if amount > event.balance_available_v2_cents
-      errors.add(:amount, "You don't have enough money to send this check! Your balance is $#{'%.2f' % (event.balance_available_v2_cents / 100)}.")
+      errors.add(:amount, "You don't have enough money to send this check! Your balance is #{(event.balance_available_v2_cents / 100).to_money.format}.")
     end
   end
 
@@ -109,7 +109,9 @@ class IncreaseCheck < ApplicationRecord
       "Pending approval"
     elsif rejected?
       "Rejected"
-    elsif increase_pending_submission? || increase_submitting? || increase_submitted? || increase_pending_mailing? || increase_mailed?
+    elsif increase_pending_submission? || increase_submitting? || increase_submitted? || increase_pending_mailing?
+      "Processing"
+    elsif increase_mailed?
       "On the way"
     elsif increase_deposited?
       "Deposited"
