@@ -1,5 +1,5 @@
 <% title "Card #{@card.last_four}" %>
-<%= render "events/nav" %>
+<%= render "events/nav", selected: :cards %>
 
 <% admin_tools("mt3") do %>
   <%= link_to "View card on Stripe", @card.stripe_dashboard_url, class: "btn bg-accent" %>
