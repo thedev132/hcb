@@ -451,7 +451,7 @@ class EventsController < ApplicationController
       @disbursements = @disbursements.search_name(params[:q]) if params[:q].present?
     end
 
-    @transfers = Kaminari.paginate_array((@checks + @ach_transfers + @disbursements).sort_by { |o| o.created_at }.reverse!).page(params[:page]).per(100)
+    @transfers = Kaminari.paginate_array((@increase_checks + @checks + @ach_transfers + @disbursements).sort_by { |o| o.created_at }.reverse!).page(params[:page]).per(100)
 
     # Generate mock data
     if @event.demo_mode? && session[:show_mock_data]
