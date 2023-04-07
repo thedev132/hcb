@@ -120,7 +120,6 @@ gem "redcarpet" # markdown parsing
 gem "namae" # multi-cultural human name parser
 gem "premailer-rails" # css to inline styles for emails
 gem "safely_block"
-gem "selenium-webdriver", "4.0.0.beta3"
 gem "strong_migrations" # protects against risky migrations
 gem "swagger-blocks"
 gem "xxhash" # fast hashing
@@ -179,8 +178,6 @@ group :development, :test do
   gem "relaxed-rubocop"
 
   gem "rspec-rails", "~> 5.0.0"
-
-  gem "webdrivers"
 
   # Lets you set a breakpoint with a REPL using binding.pry
   gem "pry-byebug"
