@@ -153,10 +153,7 @@ gem "dry-validation"
 gem "bootsnap", ">= 1.4.4", require: false # reduces boot times through caching; required in config/boot.rb
 
 
-gem "mrsk", github: "mrsked/mrsk", ref: "83dc82661b8a02dd1fbb0ee91261104cee127862" # deployments - locking to recent commit to get changes until new release
-# net-ssh (used by mrsk) needs these:
-gem "bcrypt_pbkdf"
-gem "ed25519"
+gem "mrsk" # deployments
 
 group :production do
   gem "skylight"
