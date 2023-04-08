@@ -626,7 +626,6 @@ GEM
     ruby-vips (2.1.4)
       ffi (~> 1.12)
     ruby2_keywords (0.0.5)
-    rubyzip (2.3.2)
     safely_block (0.3.0)
       errbase (>= 0.1.1)
     safety_net_attestation (0.4.0)
