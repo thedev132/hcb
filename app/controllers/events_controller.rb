@@ -122,7 +122,10 @@ class EventsController < ApplicationController
 
   def team
     authorize @event
-    @positions = @event.organizer_positions.includes(:user).order(created_at: :desc)
+
+    @all_positions = @event.organizer_positions.includes(:user).order(created_at: :desc)
+    @positions = @all_positions.page(params[:page]).per(params[:per] || 5)
+
     @pending = @event.organizer_position_invites.pending.includes(:sender)
   end
 
