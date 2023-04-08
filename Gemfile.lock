@@ -300,7 +300,7 @@ GEM
     fugit (1.5.3)
       et-orbi (~> 1, >= 1.2.7)
       raabro (~> 1.4)
-    geo_pattern (1.4.0)
+    geo_pattern (1.5.0)
       color (~> 1.5)
     geocoder (1.8.0)
     globalid (1.1.0)
@@ -797,7 +797,7 @@ DEPENDENCIES
   flipper-ui
   foreman
   friendly_id (~> 5.2.0)
-  geo_pattern (~> 1.4)
+  geo_pattern
   geocoder
   google-apis-admin_directory_v1 (~> 0.23.0)
   grape

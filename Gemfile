@@ -130,7 +130,7 @@ gem "ahoy_matey" # analytics
 gem "airbrake" # exception tracking
 gem "blazer" # business intelligence tool/dashboard
 
-gem "geo_pattern", "~> 1.4" # create procedurally generated patterns for Cards
+gem "geo_pattern" # create procedurally generated patterns for Cards
 gem "comma", "~> 4.6" # CSV generation
 gem "faker" # Create mock data
 
