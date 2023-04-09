@@ -50,7 +50,7 @@
     <% else %>
 
       <% if params[:view] == "list" || @event.demo_mode %> <!-- Grim hack -->
-        <%= render 'event_cards_table', stripe_cards: @session_user_stripe_cards %>
+        <%= render "event_cards_table", stripe_cards: @session_user_stripe_cards %>
       <% else %>
         <article class="mixed-grid grid--spacious">
           <%= render @session_user_stripe_cards %>
