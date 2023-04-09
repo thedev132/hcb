@@ -1280,7 +1280,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_04_165646) do
     t.text "url_hash"
     t.text "last4_ciphertext"
     t.datetime "canceled_at"
-    t.boolean "migrated_from_legacy_stripe_account"
+    t.boolean "migrated_from_legacy_stripe_account", default: false
     t.index ["event_id"], name: "index_recurring_donations_on_event_id"
     t.index ["stripe_subscription_id"], name: "index_recurring_donations_on_stripe_subscription_id", unique: true
     t.index ["url_hash"], name: "index_recurring_donations_on_url_hash", unique: true

@@ -9,7 +9,7 @@
 #  canceled_at                         :datetime
 #  email                               :text
 #  last4_ciphertext                    :text
-#  migrated_from_legacy_stripe_account :boolean
+#  migrated_from_legacy_stripe_account :boolean          default(FALSE)
 #  name                                :text
 #  stripe_client_secret                :text
 #  stripe_current_period_end           :datetime
