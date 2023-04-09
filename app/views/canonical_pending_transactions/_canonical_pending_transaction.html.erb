@@ -142,6 +142,9 @@
   <td class="nowrap<%= " strikethrough" if pt.declined? %><%= " italic" if pt.unsettled? %>">
     <%= number_to_currency pt.amount %>
   </td>
+  <% if @show_running_balance %>
+    <td></td>
+  <% end %>
   <td>
     <%= link_to "Details", pt.url, data: { turbo_frame: "_top" } if organizer_signed_in? || defined?(force_display_details) %>
   </td>

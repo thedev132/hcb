@@ -39,8 +39,29 @@ class EventsController < ApplicationController
       @hide_holiday_features = true
     end
 
-    @transactions = Kaminari.paginate_array(TransactionGroupingEngine::Transaction::All.new(event_id: @event.id, search: params[:q], tag_id: @tag&.id).run).page(params[:page]).per(params[:per] || 75)
+    @all_transactions = TransactionGroupingEngine::Transaction::All.new(event_id: @event.id, search: params[:q], tag_id: @tag&.id).run
+
+    page = (params[:page] || 1).to_i
+    per_page = (params[:per] || 75).to_i
+
+    @transactions = Kaminari.paginate_array(@all_transactions).page(page).per(per_page)
     TransactionGroupingEngine::Transaction::AssociationPreloader.new(transactions: @transactions, event: @event).run!
+
+    if show_running_balance?
+      offset = page * per_page
+
+      initial_subtotal = if @all_transactions.count > offset
+                           # sum up transactions on pages after this one to get the initial subtotal
+                           @all_transactions.slice(offset...).map(&:amount).sum
+                         else
+                           # this is the last page, so start from 0
+                           0
+                         end
+
+      @transactions.reverse.reduce(initial_subtotal) do |running_total, transaction|
+        transaction.running_balance = running_total + transaction.amount
+      end
+    end
 
     @mock_total = 0
     if @event.demo_mode? && session[:show_mock_data]
@@ -631,6 +652,15 @@ class EventsController < ApplicationController
     pending_transactions = PendingTransactionEngine::PendingTransaction::All.new(event_id: @event.id, search: params[:q], tag_id: @tag&.id).run
     PendingTransactionEngine::PendingTransaction::AssociationPreloader.new(pending_transactions: pending_transactions, event: @event).run!
     pending_transactions
+  end
+
+  def show_running_balance?
+    # don't support running balance if tag or search query are present because these filter the query of all transactions, which
+    # breaks the running balance computation
+    return false if @tag.present?
+    return false if params[:q].present?
+
+    @show_running_balance = params[:show_running_balance] == "true" && current_user.admin?
   end
 
 end
