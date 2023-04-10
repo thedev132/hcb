@@ -200,7 +200,7 @@
   <hr>
 
   <% if @event.demo_mode? %>
-    <%= blankslate "Disabled in Demo Mode" %>
+    <%= blankslate "Disabled in Playground Mode" %>
   <% else %>
     <%= form_with(local: true, url: event_g_suite_create_path(event_id: @event.id), method: :post) do %>
       <%= hidden_field_tag :event_id, @event.id %>

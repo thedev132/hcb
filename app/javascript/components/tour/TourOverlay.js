@@ -47,7 +47,7 @@ const tours = {
     } else {
       steps.push({
         attachTo: 'activate_account',
-        text: "You're in Demo Mode— click here to activate your account when you're ready.",
+        text: "You're in Playground Mode— click here to activate your account when you're ready.",
         placement: isMobile ? 'top' : 'right'
       })
     }

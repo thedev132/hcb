@@ -78,10 +78,10 @@
         </div>
       </div>
       <section class="modal modal--scroll bg-snow" data-behavior="modal" role="dialog" id="demo_mode">
-        <%= modal_header "Demo Mode" %>
+        <%= modal_header "Playground Mode" %>
         <% if organizer_signed_in? %>
           <p>
-            Your account is in <strong>demo mode</strong>. You can sign in and poke around, but many features are disabled. Once you're ready to activate your account, you can schedule a call with the Hack Club Bank team.
+            Your account is in <strong>Playground Mode</strong>. You can sign in and poke around, but many features are disabled. Once you're ready to activate your account, you can schedule a call with the Hack Club Bank team.
           </p>
           <% if @event.demo_mode_request_meeting_at.blank? %>
             <%= link_to event_demo_mode_request_meeting_path(@event), method: :post, class: "btn btn-success" do %>
