@@ -660,7 +660,7 @@ class EventsController < ApplicationController
     return false if @tag.present?
     return false if params[:q].present?
 
-    @show_running_balance = params[:show_running_balance] == "true" && current_user.admin?
+    @show_running_balance = params[:show_running_balance] == "true" && current_user&.admin?
   end
 
 end
