@@ -311,6 +311,7 @@ module ApplicationHelper
 
     "https://airtable.com/#{id}?#{URI.encode_www_form(query)}"
   end
+  
   def fillout_form(id, params = {}, hide = [])
     query = {}
     params.each do |key, value|
