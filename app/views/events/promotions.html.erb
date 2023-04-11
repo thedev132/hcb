@@ -32,7 +32,7 @@
   <div class="card__banner card__banner--top flex justify-between items-center promo-1password">
     <%= image_tag "1password.svg", width: 210, class: "p2" %>
     <%= link_to "Apply",
-      @perks_available ? fillout_form("1EVMTc9d1Zus", { "Event Name" => @event.name, "Bank URL" => event_url(@event), "Submitter Name" => current_user.full_name, "Submitter Email" => current_user.email }, []) : root_path,
+      @perks_available ? fillout_form("1EVMTc9d1Zus", { "Project Name" => @event.name, "Bank URL" => event_url(@event), "Your Name" => current_user.full_name, "Email" => current_user.email }, []) : root_path,
       class: "btn bg-success mr1 #{'disabled' unless @perks_available}",
       target: :_blank %>
   </div>
@@ -199,7 +199,7 @@
         <%= image_tag "stickers/icon-sticker-light.svg", width: 50, class: "sticker ml2 xs-hide" %>
       </span>
     <%= link_to "Request",
-      @perks_available ? fillout_form("umhwJ5s1fNus", { "Project Name" => @event.name, "Bank URL" => event_url(@event), "Name" => current_user.full_name, "Login email" => current_user.email }, []) : root_path,
+      @perks_available ? fillout_form("umhwJ5s1fNus", { "Recipient Name" => current_user.full_name, "Login Email" => current_user.email, "Organization" => @event.name }, []) : root_path,
       class: "btn bg-success mr1 #{'disabled' unless @perks_available}",
       target: :_blank %>
   </div>
