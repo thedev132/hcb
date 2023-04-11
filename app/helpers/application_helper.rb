@@ -311,4 +311,15 @@ module ApplicationHelper
 
     "https://airtable.com/#{id}?#{URI.encode_www_form(query)}"
   end
+  def fillout_form(id, params = {}, hide = [])
+    query = {}
+    params.each do |key, value|
+      query["prefill_#{key}"] = value
+    end
+    hide.each do |field|
+      query["hide_#{field}"] = "true"
+    end
+
+    "https://forms.hackclub.com/t/#{id}?#{URI.encode_www_form(query)}"
+  end
 end
