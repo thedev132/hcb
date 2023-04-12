@@ -300,6 +300,10 @@ class EventsController < ApplicationController
     authorize @event
   end
 
+  def account_number
+    authorize @event
+  end
+
   def g_suite_overview
     authorize @event
 

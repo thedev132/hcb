@@ -149,6 +149,10 @@ class EventPolicy < ApplicationPolicy
     user_or_admin
   end
 
+  def account_number?
+    is_public || user_or_admin
+  end
+
   def user_or_admin
     user&.admin? || record.users.include?(user)
   end
