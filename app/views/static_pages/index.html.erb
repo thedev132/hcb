@@ -29,7 +29,7 @@
         <% end %>
       <% end %>
       <ul
-        class="grid grid--<%= "medium-" if Flipper.enabled?(:detailed_events_list_2022_10_04, current_user) %>narrow left-align w-100 mt0"
+        class="grid grid--medium-narrow left-align w-100 mt0"
         data-controller="<%= "sortable event-sort" if Flipper.enabled?(:event_reordering_2022_10_10, current_user) %>"
         data-sortable-append-to-value="body"
         data-event-sort-organizer-positions-value="<%= @organizer_positions.pluck(:id).to_json %>"
@@ -39,10 +39,8 @@
             <li class="card card--hover flex flex-column justify-between h-100 mx-auto">
               <div id="event-<%= event.id %>-title" class="flex mb2">
                 <strong class="brand-sans h3 line-height-2 display-inline">
-                  <% if Flipper.enabled?(:detailed_events_list_2022_10_04, current_user) %>
-                    <% if event.logo.attached? %>
-                      <%= image_tag event.logo, height: 24, width: 24, class: "rounded display-inline align-bottom" %>
-                    <% end %>
+                  <% if event.logo.attached? %>
+                    <%= image_tag event.logo, height: 24, width: 24, class: "rounded display-inline align-bottom" %>
                   <% end %>
                   <%= event.name %>
                 </strong>
@@ -50,20 +48,18 @@
                   <div class="badge bg-info" style="width: fit-content;">Playground Mode</div>
                 <% end %>
               </div>
-              <% if Flipper.enabled?(:detailed_events_list_2022_10_04, current_user) %>
-                <div class="brand-sans h4 line-height-2 mb2 flex justify-between">
-                  <span style="white-space: nowrap;">
-                    <%= inline_icon "payment", size: 16, class: "muted align-middle", 'aria-label': "Dollar sign", style: "transform: scale(2)" %>
-                    <%= async_frame_to event_async_balance_path(event), as: :span do %>
-                      <strong>-</strong>
-                    <% end %>
-                  </span>
-                  <span>
-                    <%= inline_icon "card", size: 20, class: "muted align-middle", 'aria-label': "Cards", style: "transform: scale(1.2)" %>
-                    <strong><%= event.stripe_cards.active.count %></strong>
-                  </span>
-                </div>
-              <% end %>
+              <div class="brand-sans h4 line-height-2 mb2 flex justify-between">
+                <span style="white-space: nowrap;">
+                  <%= inline_icon "payment", size: 16, class: "muted align-middle", 'aria-label': "Dollar sign", style: "transform: scale(2)" %>
+                  <%= async_frame_to event_async_balance_path(event), as: :span do %>
+                    <strong>-</strong>
+                  <% end %>
+                </span>
+                <span>
+                  <%= inline_icon "card", size: 20, class: "muted align-middle", 'aria-label': "Cards", style: "transform: scale(1.2)" %>
+                  <strong><%= event.stripe_cards.active.count %></strong>
+                </span>
+              </div>
               <div class="avatar-row">
                 <% event.organizer_positions.each do |position| %>
                   <%= avatar_for position.user, 24 %>
