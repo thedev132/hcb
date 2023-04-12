@@ -55,7 +55,7 @@ class InvoicesController < ApplicationController
     # @ma1ted: I have no clue how to use the above methods here.
     # Reimplementing logic is okay if you apolgise to every
     # future contributor. You can hold me to that.
-    if @event.demo_mode? && session[:show_mock_data]
+    if show_mock_data?
       @invoices = []
       @stats = { total: 0, paid: 0, pending: 0, unpaid: 0 }
 

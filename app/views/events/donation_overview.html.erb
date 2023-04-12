@@ -72,7 +72,7 @@
     <span class="stat__value"><%= render_money_amount @stats[:refunded] %></span>
   </div>
   <div>
-  <% unless session[:show_mock_data] %>
+  <% unless show_mock_data? %>
     <% if organizer_signed_in? && @donations.not_pending.any? %>
       <button
         type="button"

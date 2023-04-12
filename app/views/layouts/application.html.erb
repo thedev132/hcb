@@ -61,10 +61,10 @@
             <p class="center m0">While in Playground mode, explore the dashboard with mock data, and invite your team.<br>To utilise financial features, activate your account!</p>
             <button
               id="mock-data-toggle"
-              data-mock-data-status="<%= session[:show_mock_data] %>"
+              data-mock-data-status="<%= show_mock_data? %>"
               class="btn btn-small shrink-none nowrap">
               <%= inline_icon "view" %>
-              <%= session[:show_mock_data] ? "Hide" : "Show" %> Mock Data
+              <%= show_mock_data? ? "Hide" : "Show" %> Mock Data
             </button>
             <script>
               document.getElementById("mock-data-toggle").addEventListener("click", ({ target }) => {
