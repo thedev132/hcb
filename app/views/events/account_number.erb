@@ -6,22 +6,12 @@
 
 <h4 class="mt0 mb1 muted medium center mb3">Connect your Hack Club Bank account to GoFundMe, Shopify, Venmo, and more.</h4>
 
-<div class="card container--sm mx-auto center overflow-visible">
-  <div class="badge bg-info mb1 tooltipped tooltipped--n pointer" aria-label="This account number can only receive funds, and not be used to send money."><%= inline_icon "info", size: 20, style: "margin-left: 0; margin-right: 0.25rem" %> Deposit-only</div>
+<hr>
 
-  <div class="flex items-start justify-center h3" style="gap: 0.5rem">
-    <span class="muted">&#9286;</span>
-    <span class="flex flex-column" data-controller="clipboard" data-clipboard-text-value="<%= @event.routing_number if organizer_signed_in? %>">
-      <span class="mono pointer tooltipped tooltipped--n" aria-label="<%= organizer_signed_in? ? "Click to copy" : "Sign in to view" %>" data-action="click->clipboard#copy">
-        <% if organizer_signed_in? %>
-          <%= @event.routing_number %>
-        <% else %>
-          <%= "•" * @event.routing_number.length %>
-        <% end %>
-      </span>
-      <span class="h4 muted">Routing</span>
-    </span>
-    <span class="muted">&#9286;</span>
+<div class="card container--sm mx-auto center overflow-visible">
+  <div class="badge bg-info mb1 ml0 tooltipped tooltipped--n pointer" aria-label="This account number can only receive funds. You can't use it to send money."><%= inline_icon "info", size: 20, style: "margin-left: 0; margin-right: 0.25rem" %> Deposit-only</div>
+
+  <div class="flex items-start justify-around h2" style="gap: 1rem">
     <span class="flex flex-column" data-controller="clipboard" data-clipboard-text-value="<%= @event.account_number if organizer_signed_in? %>">
       <span class="mono pointer tooltipped tooltipped--n" aria-label="<%= organizer_signed_in? ? "Click to copy" : "Sign in to view" %>" data-action="click->clipboard#copy">
         <% if organizer_signed_in? %>
@@ -32,17 +22,26 @@
       </span>
       <span class="h4 muted">Account</span>
     </span>
-    <span class="muted">&#9286;</span>
+    <span class="flex flex-column" data-controller="clipboard" data-clipboard-text-value="<%= @event.routing_number if organizer_signed_in? %>">
+      <span class="mono pointer tooltipped tooltipped--n" aria-label="<%= organizer_signed_in? ? "Click to copy" : "Sign in to view" %>" data-action="click->clipboard#copy">
+        <% if organizer_signed_in? %>
+          <%= @event.routing_number %>
+        <% else %>
+          <%= "•" * @event.routing_number.length %>
+        <% end %>
+      </span>
+      <span class="h4 muted">Routing</span>
+    </span>
   </div>
 </div>
 
 <div class="flex items-start info container--sm mx-auto mt1 mb3">
   <%= inline_icon "info", class: "mr1" %>
-  <p class="m0">You may need to tap "Verify bank manually" or similar when linking your account.</p>
+  <p class="m0">You may need to tap "Verify bank manually" or similar when linking your account to apps like Venmo.</p>
 </div>
 
-<div class="container--xs mx-auto card card--hover pointer" data-behavior="modal_trigger" data-modal="ach_form">
-  <h3 class="mb1 mt1 flex justify-between">How to fill out an ACH form <%= inline_icon "external", class: "muted" %></h3>
+<div class="center">
+  <a href="#" data-behavior="modal_trigger" data-modal="ach_form">How to fill out an ACH form <%= inline_icon "external", size: 20 %></a>
 </div>
 
 <section class="modal modal--scroll bg-snow" data-behavior="modal" role="dialog" id="ach_form">
@@ -53,7 +52,7 @@
   <section class="details">
     <p>
       <strong>Company Name</strong>
-      <span>The Hack Foundation</span>
+      <span><%= @event.name %> C/O Hack Club</span>
     </p>
     <p>
       <strong>Company Address</strong>
