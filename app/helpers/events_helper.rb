@@ -31,6 +31,10 @@ module EventsHelper
     "show_mock_data_#{event.id}".to_sym
   end
 
+  def can_request_activation?(event = @event)
+    event.demo_mode? && event.demo_mode_request_meeting_at.nil? && organizer_signed_in?
+  end
+
   def paypal_transfers_airtable_form_url(embed: false, event: nil, user: nil)
     # The airtable form is located within the Bank Promotions base
     form_id = "4j6xJB5hoRus"
