@@ -670,8 +670,7 @@ class EventsController < ApplicationController
 
   def set_mock_data
     if params[:show_mock_data].present?
-      session[:show_mock_data] =
-        params[:show_mock_data].downcase == "true"
+      helpers.set_mock_data!(params[:show_mock_data] == "true")
     end
   end
 
