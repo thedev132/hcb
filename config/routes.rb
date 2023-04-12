@@ -49,6 +49,7 @@ Rails.application.routes.draw do
       resources :comments
     end
     get "inbox", to: "static_pages#my_inbox", as: :my_inbox
+    post "receipts/upload", to: "static_pages#receipt", as: :my_receipts_upload
     get "missing_receipts", to: "static_pages#my_missing_receipts_list", as: :my_missing_receipts_list
     get "missing_receipts_icon", to: "static_pages#my_missing_receipts_icon", as: :my_missing_receipts_icon
     get "receipts", to: redirect("/my/inbox")

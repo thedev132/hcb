@@ -1,6 +1,17 @@
-[class^="transaction--"].dropzone {
-  outline: 5px dashed $orange;
-  outline-offset: -5px;
+.dropzone {
+  &[class^="transaction--"] {
+    outline: 5px dashed $orange;
+    outline-offset: -5px;
+  }
+
+  &.my-inbox-dropzone > div {
+    background-color: rgba($snow, 0.8);
+    animation: border-dance 1s infinite linear;
+    background-image: linear-gradient(90deg, $orange 50%, transparent 50%), linear-gradient(90deg, $orange 50%, transparent 50%), linear-gradient(0deg, $orange 50%, transparent 50%), linear-gradient(0deg, $orange 50%, transparent 50%);
+    background-repeat: repeat-x, repeat-x, repeat-y, repeat-y;
+    background-size: 50px 5px, 50px 5px, 5px 50px, 5px 50px;
+    background-position: 0 0, 0 100%, 0 100%, 100% 20px;
+  }
 }
 
 .file-dropzone {
@@ -11,6 +22,7 @@
   right: 0;
   bottom: 0;
   z-index: 10;
+  pointer-events: none;
 
   display: flex;
   align-items: center;

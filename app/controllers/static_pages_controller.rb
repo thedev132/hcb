@@ -105,6 +105,36 @@ class StaticPagesController < ApplicationController
     @cards = GlobalID::Locator.locate_many(@card_hcb_codes.keys)
     # Ideally we'd preload (includes) events for @cards, but that isn't
     # supported yet: https://github.com/rails/globalid/pull/139
+
+    @receipts = Receipt.where(user: current_user, receiptable: nil)
+  end
+
+  def receipt
+    if params[:file] # Ignore if no files were uploaded
+      ::ReceiptService::Create.new(
+        uploader: current_user,
+        attachments: params[:file],
+        upload_method: params[:upload_method]
+      ).run!
+
+      if params[:show_link]
+        flash[:success] = { text: "#{"Receipt".pluralize(params[:file].length)} added!", link: hcb_code_path(@hcb_code), link_text: "View" }
+      else
+        flash[:success] = "#{"Receipt".pluralize(params[:file].length)} added!"
+      end
+    end
+
+    return redirect_to params[:redirect_url] if params[:redirect_url]
+
+    redirect_back
+
+  rescue => e
+    Airbrake.notify(e)
+
+    flash[:error] = e.message
+    return redirect_to params[:redirect_url] if params[:redirect_url]
+
+    redirect_back
   end
 
   def project_stats

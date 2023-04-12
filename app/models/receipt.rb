@@ -23,7 +23,7 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class Receipt < ApplicationRecord
-  belongs_to :receiptable, polymorphic: true
+  belongs_to :receiptable, polymorphic: true, required: false
 
   belongs_to :user, class_name: "User", required: false
   alias_attribute :uploader, :user
@@ -32,6 +32,8 @@ class Receipt < ApplicationRecord
   has_one_attached :file
 
   validates :file, attached: true
+
+  validate :has_owner
 
   enum upload_method: {
     transaction_page: 0,
@@ -55,6 +57,15 @@ class Receipt < ApplicationRecord
     end
   rescue ActiveStorage::FileNotFoundError
     nil
+  end
+
+  private
+
+  def has_owner
+    if user.nil? && receiptable.nil?
+      errors.add(:base, "must belong to a user, a transaction, or both.")
+    end
+
   end
 
 end

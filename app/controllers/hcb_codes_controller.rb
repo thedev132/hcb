@@ -86,13 +86,12 @@ class HcbCodesController < ApplicationController
 
     if params[:file] # Ignore if no files were uploaded
       params[:file].each do |file|
-        attrs = {
-          hcb_code_id: @hcb_code.id,
-          file: file,
-          upload_method: params[:upload_method],
-          current_user: current_user
-        }
-        ::HcbCodeService::Receipt::Create.new(attrs).run
+        ::ReceiptService::Create.new(
+          receiptable: @hcb_code,
+          uploader: current_user,
+          attachments: [file],
+          upload_method: params[:upload_method]
+        ).run!
       end
 
       if params[:show_link]

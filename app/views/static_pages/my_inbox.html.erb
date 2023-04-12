@@ -1,19 +1,83 @@
 <% title "My receipts" %>
-<% page_md %>
+<% page_xl %>
 <%= render "users/nav" %>
 
 <h1 class="heading">
-  Receipts
+  Receipt Center
   <%= badge_for @count %>
 </h1>
-<% if @count == 0 %>
-  <%= blankslate "No missing receipts!" %>
-<% else %>
-  <p class="muted h3">These are your card transactions missing receipts.</p>
+<p class="muted h3">Manage your receipts and transactions awaiting receipts.</p>
+
+<% if Flipper.enabled?(:receipt_bin_2023_04_07, current_user) %>
+  <h2>
+    Receipt Bin
+  </h2>
+
+  <div class="<%= "mb3" unless @receipts.size == 0 %>">
+    <%= form_with model: nil, url: my_receipts_upload_path(current_user), class: "flex flex-column justify-center my-inbox-dropzone", data: {
+          controller: "file-drop form",
+          action: "
+            dragover->file-drop#dragover
+            drop->file-drop#drop
+            dragenter->file-drop#dragenter
+            dragleave->file-drop#dragleave
+          ",
+          "file-drop-target" => "dropzone",
+          "file-drop-title-value" => "Drop to add to Receipt Bin."
+        } do |form| %>
+
+      <div class="card flex flex-column">
+        <div class="container container--sm">
+          <div style="margin: 0px auto;">
+
+            <%= form.hidden_field :redirect_url, value: url_for(only_path: false) %>
+            <%= form.hidden_field :upload_method, value: "transaction_page", data: { "file-drop-target" => "uploadMethod" } %>
+
+            <%= form.file_field :file,
+              multiple: true,
+              required: true,
+              class: "display-none",
+              accept: "image/*,image/heic,.pdf",
+              data: {
+                "file-drop-target" => "fileInput",
+                "action"           => "change->form#submit"
+              } %>
+
+            <div class="mt2 flex justify-center">
+              <%= form.label :file, class: "btn" do %>
+                <%= inline_icon "share" %>
+                <span>Upload receipt</span>
+              <% end %>
+            </div>
+
+            <p class="center muted">Or drag & drop your receipt here.</p>
+
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <% if @receipts.size == 0 %>
+    <%= blankslate "Receipt Bin is empty." %>
+  <% end %>
+
+  <ul class="grid grid--medium-narrow left-align w-100 mt0">
+    <% @receipts.each do |receipt| %>
+      <li class="flex grid flex-column justify-between h-100 mx-auto">
+        <%= render partial: "receipts/receipt", locals: { receipt: receipt } %>
+      </li>
+    <% end %>
+  </ul>
+
 <% end %>
 
+<h2>
+  Transactions
+</h2>
+
 <% @cards.each do |card| %>
-  <section class="mt3 card p0">
+  <section class="mb3 card p0">
     <h2 class="heading line-height-4 p1 pl2 mt0 ml0 flex justify-between items-center">
       <%= card.event.name %>
 
@@ -41,6 +105,10 @@
       </table>
     </div>
   </section>
+<% end %>
+
+<% if @count == 0 %>
+  <%= blankslate "No missing receipts!" %>
 <% end %>
 
 <%= paginate @hcb_codes %>

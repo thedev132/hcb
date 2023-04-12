@@ -33,7 +33,7 @@ class ReceiptsController < ApplicationController
 
     if @receipt.delete
       flash[:success] = "Deleted receipt"
-      redirect_to @receiptable
+      redirect_to @receiptable || my_inbox_path
     else
       flash[:error] = "Failed to delete receipt"
       redirect_to @receiptable
