@@ -41,11 +41,6 @@ latest.dump*
 yarn-debug.log*
 .yarn-integrity
 
-# Ignore (and don't ignore) for dotenv.
-.env
-.env.me
-!.env.project
-
 # IntelliJ
 .idea
 
