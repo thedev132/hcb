@@ -5,11 +5,22 @@ module TransactionEngine
     module Import
       class All
         def run
-          ::TransactionEngine::CanonicalTransactionService::Import::Simple.new.run
-          ::TransactionEngine::CanonicalTransactionService::Import::PlaidThatLookLikeDuplicates.new.run
-          ::TransactionEngine::CanonicalTransactionService::Import::EmburseThatLookLikeDuplicates.new.run
-          ::TransactionEngine::CanonicalTransactionService::Import::StripeThatLookLikeDuplicates.new.run
-          ::TransactionEngine::CanonicalTransactionService::Import::IncreaseThatLookLikeDuplicates.new.run
+          HashedTransaction.uncanonized.each do |ht|
+            CanonicalTransaction.create!(
+              date: ht.date,
+              memo: ht.memo,
+              amount_cents: ht.amount_cents,
+              canonical_hashed_mappings: [CanonicalHashedMapping.new(hashed_transaction: ht)]
+            )
+          end
+
+          # |  old transaction duplicate detection
+          # v
+          # ::TransactionEngine::CanonicalTransactionService::Import::Simple.new.run
+          # ::TransactionEngine::CanonicalTransactionService::Import::PlaidThatLookLikeDuplicates.new.run
+          # ::TransactionEngine::CanonicalTransactionService::Import::EmburseThatLookLikeDuplicates.new.run
+          # ::TransactionEngine::CanonicalTransactionService::Import::StripeThatLookLikeDuplicates.new.run
+          # ::TransactionEngine::CanonicalTransactionService::Import::IncreaseThatLookLikeDuplicates.new.run
         end
 
       end
