@@ -336,7 +336,6 @@ GEM
       hashids (~> 1.0)
     hashids (1.0.6)
     hashie (5.0.0)
-    hiredis (0.6.3)
     htmlbeautifier (1.4.2)
     htmlentities (4.3.4)
     http-accept (1.7.0)
@@ -570,7 +569,10 @@ GEM
       railties (>= 3.2)
       tilt
     redcarpet (3.5.1)
-    redis (4.6.0)
+    redis (5.0.6)
+      redis-client (>= 0.9.0)
+    redis-client (0.14.1)
+      connection_pool
     regexp_parser (2.4.0)
     relaxed-rubocop (2.5)
     representable (3.2.0)
@@ -798,7 +800,6 @@ DEPENDENCIES
   grape-swagger
   grape-swagger-entity (~> 0.3)
   hashid-rails (~> 1.0)
-  hiredis
   htmlbeautifier
   httparty
   image_processing (~> 1.2)
@@ -836,7 +837,7 @@ DEPENDENCIES
   rails (~> 7.0.4)
   react-rails
   redcarpet
-  redis (~> 4.0)
+  redis (~> 5.0)
   relaxed-rubocop
   rinku
   rounding

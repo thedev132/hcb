@@ -18,6 +18,8 @@ module Bank
       config.credentials.key_path = Rails.root.join("config", "master.key")
     end
 
+    ENV["REDIS_URL"] = ENV["REDIS_TLS_URL"] if ENV["REDIS_TLS_URL"].present?
+
     config.action_mailer.default_url_options = {
       host: Rails.application.credentials.default_url_host[:live]
     }

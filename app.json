@@ -40,7 +40,20 @@
       "quantity": 1
     }
   },
-  "addons": ["heroku-postgresql", "heroku-redis"],
+  "addons": [
+    {
+      "plan": "heroku-postgresql",
+      "options": {
+        "version": "11"
+      }
+    },
+    {
+      "plan": "heroku-redis",
+      "options": {
+        "version": "6"
+      }
+    }
+  ],
   "buildpacks": [
     {
       "url": "https://github.com/maxwofford/heroku-buildpack-sourceversion"
