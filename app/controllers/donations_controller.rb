@@ -53,6 +53,8 @@ class DonationsController < ApplicationController
     if @monthly
       @recurring_donation = @event.recurring_donations.build
     end
+
+    @placeholder_amount = DonationService::SuggestedAmount.new(@event, monthly: @monthly).run / 100.0
   end
 
   def make_donation

@@ -42,6 +42,8 @@ class RecurringDonationsController < ApplicationController
         redirect_to recurring_donation_path(@recurring_donation.url_hash), flash: { success: "Your payment details have been updated." }
       end
     end
+
+    @placeholder_amount = DonationService::SuggestedAmount.new(@event, monthly: true).run / 100.0
   end
 
   def edit
