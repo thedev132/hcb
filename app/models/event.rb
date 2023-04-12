@@ -602,11 +602,11 @@ class Event < ApplicationRecord
   end
 
   def account_number
-    (increase_account_number || create_increase_account_number)&.account_number
+    (increase_account_number || create_increase_account_number)&.account_number || "••••••••••"
   end
 
   def routing_number
-    (increase_account_number || create_increase_account_number)&.routing_number
+    (increase_account_number || create_increase_account_number)&.routing_number || "•••••••••"
   end
 
   private

@@ -28,6 +28,12 @@ class IncreaseAccountNumber < ApplicationRecord
 
   before_create :create_increase_account_number
 
+  validate do
+    if event.demo_mode?
+      errors.add(:base, "Can't create an account number for a Playground Mode org")
+    end
+  end
+
   private
 
   def create_increase_account_number
