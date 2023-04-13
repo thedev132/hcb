@@ -25,14 +25,6 @@ class EventPolicy < ApplicationPolicy
     is_public || user_or_admin
   end
 
-  def fees?
-    user_or_admin
-  end
-
-  def dashboard_stats?
-    is_public || user_or_admin
-  end
-
   # NOTE(@lachlanjc): this is bad, I’m sorry.
   # This is the StripeCardsController#shipping method when rendered on the event
   # card overview page. This should be moved out of here.
@@ -127,10 +119,6 @@ class EventPolicy < ApplicationPolicy
 
   def partner_donation_overview?
     is_public || user_or_admin
-  end
-
-  def bank_fees?
-    user_or_admin
   end
 
   def remove_header_image?

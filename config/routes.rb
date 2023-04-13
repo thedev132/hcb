@@ -457,8 +457,6 @@ Rails.application.routes.draw do
   get "/event_by_airtable_id/:airtable_id" => "events#by_airtable_id"
   resources :events, except: [:new, :create], path_names: { edit: "settings" }, path: "/" do
     get "edit", to: redirect("/%{event_id}/settings")
-    get "fees", to: "events#fees", as: :fees
-    get "dashboard_stats", to: "events#dashboard_stats", as: :dashboard_stats
     put "toggle_hidden", to: "events#toggle_hidden"
 
     post "remove_header_image"
@@ -489,7 +487,6 @@ Rails.application.routes.draw do
     get "donations", to: "events#donation_overview", as: :donation_overview
     get "partner_donations", to: "events#partner_donation_overview", as: :partner_donation_overview
     post "demo_mode_request_meeting", to: "events#demo_mode_request_meeting", as: :demo_mode_request_meeting
-    get "bank_fees", to: "events#bank_fees", as: :bank_fees
     resources :disbursements, only: [:new, :create]
     resources :increase_checks, only: [:new, :create], path: "checks"
     resources :ach_transfers, only: [:new, :create]

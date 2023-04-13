@@ -116,19 +116,6 @@ class EventsController < ApplicationController
     end
   end
 
-  def fees
-    authorize @event
-
-    @fees = @event.fees.includes(canonical_event_mapping: :canonical_transaction).order("canonical_transactions.date desc, canonical_transactions.id desc")
-  end
-
-  # async frame for incoming money
-  def dashboard_stats
-    authorize @event
-
-    render :dashboard_stats, layout: false
-  end
-
   # GET /event_by_airtable_id/recABC
   def by_airtable_id
     authorize Event
@@ -427,17 +414,6 @@ class EventsController < ApplicationController
     end
 
     redirect_to @event
-  end
-
-  def bank_fees
-    authorize @event
-
-    relation1 = @event.bank_fees
-
-    relation1 = relation1.in_transit if params[:filter] == "in_transit"
-    relation1 = relation1.settled if params[:filter] == "settled"
-
-    @bank_fees = relation1.order("created_at desc")
   end
 
   def transfers
