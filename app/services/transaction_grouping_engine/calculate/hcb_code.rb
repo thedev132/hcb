@@ -27,7 +27,7 @@ module TransactionGroupingEngine
       end
 
       def run
-        return unknown_hcb_code if @ct_or_cp.is_a?(CanonicalTransaction) && @ct_or_cp.raw_increase_transaction&.increase_route_type == "account_number" && IncreaseAccountNumber.exists?(increase_account_number_id: @ct_or_cp.raw_increase_transaction&.increase_route_id) # Don't attempt to group transactions posted to an org's account/routing number
+        return unknown_hcb_code if @ct_or_cp.is_a?(CanonicalTransaction) && @ct_or_cp.raw_increase_transaction&.increase_account_number&.present? # Don't attempt to group transactions posted to an org's account/routing number
         return invoice_hcb_code if invoice
         return bank_fee_hcb_code if bank_fee
         return donation_hcb_code if donation

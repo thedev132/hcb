@@ -23,6 +23,11 @@
 class RawIncreaseTransaction < ApplicationRecord
   has_many :hashed_transactions
 
+  belongs_to :increase_account_number,
+             foreign_key: "increase_route_id",
+             primary_key: "increase_account_number_id",
+             optional: true
+
   def memo
     if category == "inbound_ach_transfer"
       originator_company_name = increase_transaction.dig("source", "inbound_ach_transfer", "originator_company_name")

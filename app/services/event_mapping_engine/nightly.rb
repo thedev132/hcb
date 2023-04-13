@@ -36,7 +36,7 @@ module EventMappingEngine
 
     def map_increase_account_number_transactions!
       CanonicalTransaction.unmapped.likely_increase_account_number.each do |ct|
-        increase_account_number = IncreaseAccountNumber.find_by(increase_account_number_id: ct.raw_increase_transaction.increase_route_id)
+        increase_account_number = ct.raw_increase_transaction.increase_account_number
         next unless increase_account_number
 
         CanonicalEventMapping.create!(event: increase_account_number.event, canonical_transaction: ct)
@@ -92,8 +92,10 @@ module EventMappingEngine
     end
 
     def map_outgoing_fee_reimbursements!
-      CanonicalTransaction.unmapped.where("amount_cents < 0 AND memo ILIKE '%Stripe fee reimbursement%'").each do |ct|
-        CanonicalEventMapping.create!(canonical_transaction: ct, event_id: EventMappingEngine::EventIds::HACK_CLUB_BANK)
+      if Rails.env.production? # somewhat hacky— the "Hack Club Bank" org only exists in production
+        CanonicalTransaction.unmapped.where("amount_cents < 0 AND memo ILIKE '%Stripe fee reimbursement%'").each do |ct|
+          CanonicalEventMapping.create!(canonical_transaction: ct, event_id: EventMappingEngine::EventIds::HACK_CLUB_BANK)
+        end
       end
     end
 
