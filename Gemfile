@@ -140,9 +140,6 @@ gem "geocoder" # lookup lat/lng for Stripe Cards shipment tracking
 
 gem "rqrcode" # QR code generation
 
-gem "rack-mini-profiler", "~> 3.0"
-gem "stackprof" # provides flamegraphs for rack-mini-profiler
-
 gem "brakeman" # static security vulnerability scanner
 
 gem "awesome_print" # pretty print objects in console
@@ -182,6 +179,10 @@ end
 
 group :development, :staging do
   gem "query_count"
+
+  # for recording performance and sql queries on the page
+  gem "rack-mini-profiler", "~> 3.0"
+  gem "stackprof" # Used with `rack-mini-profiler` to provide flamegraphs
 end
 
 group :development do
