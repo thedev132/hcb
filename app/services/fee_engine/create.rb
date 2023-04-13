@@ -30,20 +30,24 @@ module FeeEngine
     private
 
     def determine_reason
+      canonical_transaction = @canonical_event_mapping.canonical_transaction
+
       reason = "TBD"
 
       # TODO: add other reasons here like disbursements, github, etc
-      reason = "HACK CLUB FEE" if @canonical_event_mapping.canonical_transaction.likely_hack_club_fee?
+      reason = "HACK CLUB FEE" if canonical_transaction.likely_hack_club_fee?
 
-      reason = "REVENUE" if @canonical_event_mapping.canonical_transaction.amount_cents > 0
+      reason = "REVENUE" if canonical_transaction.amount_cents > 0
 
-      reason = "REVENUE WAIVED" if @canonical_event_mapping.canonical_transaction.likely_check_clearing_dda? # this typically has a negative balancing transaction with it
-      reason = "REVENUE WAIVED" if @canonical_event_mapping.canonical_transaction.likely_card_transaction_refund? # sometimes a user is issued a refund on a transaction
-      reason = "REVENUE WAIVED" if @canonical_event_mapping.canonical_transaction.likely_disbursement? # don't run fees on disbursements
+      reason = "REVENUE WAIVED" if canonical_transaction.likely_check_clearing_dda? # this typically has a negative balancing transaction with it
+      reason = "REVENUE WAIVED" if canonical_transaction.likely_card_transaction_refund? # sometimes a user is issued a refund on a transaction
+      reason = "REVENUE WAIVED" if canonical_transaction.likely_disbursement? # don't run fees on disbursements
 
       # don't run fee if other transactions in it's HCB Code have fees waived
-      reason = "REVENUE WAIVED" if @canonical_event_mapping.canonical_transaction.local_hcb_code.canonical_transactions.map { |ct| ct.fees }.flatten.any? { |fee| fee.reason == "REVENUE WAIVED" }
-      reason = "REVENUE WAIVED" if @canonical_event_mapping.canonical_transaction.local_hcb_code.canonical_pending_transactions.any?(&:fee_waived?)
+      reason = "REVENUE WAIVED" if canonical_transaction.local_hcb_code.canonical_transactions.map { |ct| ct.fees }.flatten.any? { |fee| fee.reason == "REVENUE WAIVED" }
+      reason = "REVENUE WAIVED" if canonical_transaction.local_hcb_code.canonical_pending_transactions.any?(&:fee_waived?)
+
+      reason = "REVENUE WAIVED" if canonical_transaction.memo.downcase.include?("acctverify") && canonical_transaction.amount_cents.abs < 100 # Waive fees on account verification transactions from platforms like Venmo
 
       reason
     end
