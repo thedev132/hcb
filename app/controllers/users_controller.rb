@@ -163,7 +163,7 @@ class UsersController < ApplicationController
       redirect_to(params[:return_to] || root_path)
     end
   rescue Errors::InvalidLoginCode => e
-    flash.now[:error] = e.message
+    flash.now[:error] = "Invalid login code!"
     # Propagate the to the login_code page on invalid code
     @user_id = params[:user_id]
     @email = params[:email]
