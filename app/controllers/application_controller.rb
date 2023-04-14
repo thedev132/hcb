@@ -7,12 +7,6 @@ class ApplicationController < ActionController::Base
 
   protect_from_forgery
 
-  before_action do
-    if current_user&.admin? || current_session&.impersonated_by&.admin?
-      Rack::MiniProfiler.authorize_request
-    end
-  end
-
   # Ensure users are signed in. Create one-off exceptions to this on routes
   # that you want to be unauthenticated with skip_before_action.
   before_action :signed_in_user
