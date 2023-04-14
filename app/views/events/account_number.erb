@@ -2,7 +2,7 @@
 <% page_md %>
 <%= render "events/nav", selected: :account_number %>
 
-<h1 class="heading center justify-center border-none">Account/routing number</h1>
+<h1 class="heading block center border-none">Account <span class="xs-hide">& routing</span> number</h1>
 
 <h4 class="mt0 mb1 muted medium center mb3">Connect your Hack Club Bank account to GoFundMe, Shopify, Venmo, and more.</h4>
 
@@ -37,7 +37,7 @@
       </span>
     </div>
 
-    <section class="card__banner card__darker border-top overflow-hidden info flex items-start">
+    <section class="card__banner card__darker border-top overflow-hidden info flex items-start" style="border-radius: 0 0 0.5rem 0.5rem">
       <%= inline_icon "info", class: "mr1", size: 24 %>
       <p class="m0 left-align">You may need to tap "Verify bank manually" or similar when linking your account to apps like Venmo.</p>
     </section>

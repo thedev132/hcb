@@ -31,7 +31,7 @@
       tooltip: "Collect sponsor payments",
       icon: "briefcase",
       selected: local_assigns[:selected] == :invoices unless !@event.approved? %>
-    <%= dock_item "Account/routing number",
+    <%= dock_item "Account & routing number",
       account_number_event_path(@event),
       tooltip: "Receive payouts from GoFundMe, Shopify, Venmo, and more",
       icon: "bank-account",
@@ -87,7 +87,7 @@
         <div class="menu__divider"></div>
         <%= link_to "Donations", event_donation_overview_path(@event) %>
         <%= link_to "Invoices", event_invoices_path(@event) %>
-        <%= link_to "Account/routing number", account_number_event_path(@event) if Flipper.enabled?(:incoming_ach_payments_2023_02_17, @event) %>
+        <%= link_to "Account & routing number", account_number_event_path(@event) if Flipper.enabled?(:incoming_ach_payments_2023_02_17, @event) %>
       </div>
     </button>
     <button class="dock__item bg-transparent border-none menu__toggle" data-behavior="menu_toggle" data-tour-step="spend">
