@@ -90,7 +90,7 @@ class Donation < ApplicationRecord
     end
 
     event :mark_refunded do
-      transitions from: :deposited, to: :refunded
+      transitions from: [:in_transit, :deposited], to: :refunded
     end
 
     event :mark_failed do

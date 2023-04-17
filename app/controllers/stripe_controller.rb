@@ -167,6 +167,22 @@ class StripeController < ApplicationController
     head 200
   end
 
+  def handle_charge_refunded(event)
+    charge = event[:data][:object]
+
+    donation = Donation.find_by(stripe_payment_intent_id: charge[:payment_intent])
+    return unless donation
+
+    donation.mark_refunded! unless donation.refunded?
+
+    StripeService::Topup.create(
+      amount: charge[:amount_refunded],
+      currency: "usd",
+      description: "Refund for donation #{donation.id}",
+      statement_descriptor: "HCB-#{donation.local_hcb_code.short_code}"
+    )
+  end
+
   def handle_payment_intent_succeeded(event)
     # only proceed if payment intent is a donation and not an invoice
     return unless event.data.object.metadata[:donation].present?
