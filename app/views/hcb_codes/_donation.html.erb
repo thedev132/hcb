@@ -7,7 +7,7 @@
 
 <% admin_tools("mt3") do %>
   <%= link_to "View on Stripe", @donation.stripe_dashboard_url, class: "btn bg-accent" %>
-  <%= link_to "Issue refund", refund_donation_path(@donation), method: :post, class: "btn bg-error" unless @donation.refunded? %>
+  <%= link_to "Issue refund", refund_donation_path(@donation), method: :post, class: "btn bg-error", data: { confirm: "Are you sure you'd like to refund this donation?" } unless @donation.refunded? %>
   <%= link_to "View recurring donation", recurring_donation_path(@donation.recurring_donation.url_hash), class: "btn bg-success" if @donation.recurring? %>
 <% end %>
 
