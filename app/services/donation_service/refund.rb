@@ -2,8 +2,9 @@
 
 module DonationService
   class Refund
-    def initialize(donation_id:)
+    def initialize(donation_id:, amount:)
       @donation_id = donation_id
+      @amount = amount
     end
 
     def run
@@ -14,10 +15,8 @@ module DonationService
         # 2. Un-front all pending transaction associated with this donation
         donation.canonical_pending_transactions.update_all(fronted: false)
 
-        raise ArgumentError, "production only" unless Rails.env.production?
-
         # 3. Process remotely
-        ::Partners::Stripe::Refunds::Create.new(payment_intent_id: payment_intent_id).run
+        ::StripeService::Refund.create(payment_intent: payment_intent_id, amount: @amount)
 
         # 4. Create top-up on Stripe. Located in `StripeController#handle_charge_refunded`
       end

@@ -108,7 +108,7 @@ class DonationsController < ApplicationController
     @donation = Donation.find(params[:id])
     @hcb_code = @donation.local_hcb_code
 
-    ::DonationService::Refund.new(donation_id: @donation.id).run
+    ::DonationService::Refund.new(donation_id: @donation.id, amount: Monetize.parse(params[:amount]).cents).run
 
     redirect_to hcb_code_path(@hcb_code.hashid), flash: { success: "The refund process has been queued for this donation." }
   end
