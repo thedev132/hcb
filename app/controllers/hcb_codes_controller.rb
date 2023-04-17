@@ -172,4 +172,27 @@ class HcbCodesController < ApplicationController
     redirect_back fallback_location: @event
   end
 
+  def link_receipt_modal
+    @receipts = Receipt.where(user: current_user, receiptable: nil)
+
+    @hcb_code = HcbCode.find(params[:id])
+
+    authorize @hcb_code
+
+    render :link_receipt, layout: false
+  end
+
+  def link_receipt
+    @hcb_code = HcbCode.find(params[:id])
+    @receipt = Receipt.find(params[:receipt_id])
+
+    authorize @hcb_code
+
+    @receipt.receiptable = @hcb_code
+    @receipt.save!
+
+    flash[:success] = "Receipt added!"
+    redirect_back fallback_location: @hcb_code
+  end
+
 end

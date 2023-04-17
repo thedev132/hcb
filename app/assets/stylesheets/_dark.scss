@@ -97,7 +97,7 @@ html[data-dark='true'] {
   .modal--scroll.bg-snow {
     background-color: $dark;
   }
-  .modal--scroll header {
+  .modal--scroll header, .modal--scroll > footer, .modal--scroll > * > footer {
     background-color: $darkless;
   }
   .mini-calendar strong {

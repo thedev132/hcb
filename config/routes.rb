@@ -300,6 +300,8 @@ Rails.application.routes.draw do
       post "comment"
       post "receipt"
       get "attach_receipt"
+      get "link_receipt", to: "hcb_codes#link_receipt_modal", as: :link_receipt_modal
+      post "link_receipt"
       get "memo_frame"
       get "dispute"
       post "toggle_tag/:tag_id", to: "hcb_codes#toggle_tag", as: :toggle_tag

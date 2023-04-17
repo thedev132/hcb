@@ -1,6 +1,6 @@
 <div class="mb3">
   <div class="card mt2 flex flex-column">
-    <div class="container container--sm">
+    <div class="container container--md">
       <%= form_with model: nil, url: receipt_hcb_code_path(@hcb_code), class: "flex flex-column justify-center mt2", data: {
             controller: "file-drop form",
             action: "
@@ -24,12 +24,22 @@
                               "file-drop-target" => "fileInput",
                               "action"           => "change->form#submit"
                             } %>
-        <%= form.label :file, class: "btn" do %>
-          <%= inline_icon "share" %>
-          <span>Upload receipt</span>
-        <% end %>
+        <span class="flex items-center justify-center flex-row flex-wrap" style="margin: -8px;">
+          <%= form.label :file, class: "btn m1" do %>
+            <%= inline_icon "share" %>
+            <span>Select from computer</span>
+          <% end %>
+          <% if Flipper.enabled?(:receipt_bin_2023_04_07, current_user) %>
 
-        <p class="center muted">Or drag & drop your receipt here.</p>
+            <%= link_to my_receipts_upload_path(current_user), class: "btn bg-primary m1", data: { behavior: "modal_trigger", modal: "link_receipt" } do %>
+              <%= inline_icon "payment-docs" %>
+              <span>Add from Receipt Bin</span>
+    <% end %>
+
+          <% end %>
+        </span>
+
+        <p class="center muted">Or drag & drop your receipt here</p>
       <% end %>
     </div>
   </div>
@@ -47,3 +57,12 @@
 </div>
 
 <hr>
+
+<% if Flipper.enabled?(:receipt_bin_2023_04_07, current_user) %>
+  <section class="modal modal--scroll bg-snow" data-behavior="modal" role="dialog" id="link_receipt">
+    <%= modal_header "Select receipt" %>
+    <%= async_frame_to link_receipt_modal_hcb_code_path(@hcb_code), as: :span do %>
+      <strong>Loading...</strong>
+    <% end %>
+  </section>
+<% end %>

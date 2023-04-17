@@ -31,7 +31,7 @@
           <div style="margin: 0px auto;">
 
             <%= form.hidden_field :redirect_url, value: url_for(only_path: false) %>
-            <%= form.hidden_field :upload_method, value: "transaction_page", data: { "file-drop-target" => "uploadMethod" } %>
+            <%= form.hidden_field :upload_method, value: "receipt_center", data: { "file-drop-target" => "uploadMethod" } %>
 
             <%= form.file_field :file,
               multiple: true,
@@ -65,7 +65,7 @@
   <ul class="grid grid--medium-narrow left-align w-100 mt0">
     <% @receipts.each do |receipt| %>
       <li class="flex grid flex-column justify-between h-100 mx-auto">
-        <%= render partial: "receipts/receipt", locals: { receipt: receipt } %>
+        <%= render partial: "receipts/receipt", locals: { receipt: receipt, show_delete_button: true, link_to_file: true } %>
       </li>
     <% end %>
   </ul>
