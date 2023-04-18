@@ -24,6 +24,11 @@
             <%= form.check_box :locked, checked: @user.locked? %>
             <%= form.label :locked, "Lock user from signing into Bank" %>
           </div>
+
+          <div class="field field--checkbox">
+            <%= form.check_box :running_balance_enabled, checked: @user.running_balance_enabled? %>
+            <%= form.label :running_balance_enabled, "Show running balance?" %>
+          </div>
         <% end %>
 
         <div class="actions flex">

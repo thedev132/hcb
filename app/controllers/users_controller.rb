@@ -262,6 +262,13 @@ class UsersController < ApplicationController
     @user = User.friendly.find(params[:id])
     authorize @user
 
+    if @user.admin? && params[:user][:running_balance_enabled].present?
+      enable_running_balance = params[:user][:running_balance_enabled] == "1"
+      if @user.running_balance_enabled? != enable_running_balance
+        @user.update_attribute(:running_balance_enabled, enable_running_balance)
+      end
+    end
+
     locked = params[:user][:locked] == "1"
     if locked && @user == current_user
       flash[:error] = "As much as you might desire to, you cannot lock yourself out."

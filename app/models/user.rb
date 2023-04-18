@@ -13,6 +13,7 @@
 #  phone_number             :text
 #  phone_number_verified    :boolean          default(FALSE)
 #  pretend_is_not_admin     :boolean          default(FALSE), not null
+#  running_balance_enabled  :boolean          default(FALSE), not null
 #  seasonal_themes_enabled  :boolean          default(TRUE), not null
 #  session_duration_seconds :integer          default(2592000), not null
 #  sessions_reported        :boolean          default(FALSE), not null
