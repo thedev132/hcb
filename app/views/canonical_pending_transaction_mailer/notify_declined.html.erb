@@ -13,7 +13,7 @@ If this was a mistake, please make sure you've entered the right CVC code.
 <% elsif @reason == "webhook_declined" %>
 A <%= humanized_money_with_symbol @cpt.amount.abs %> <%= @authorization_method %> charge to your card ending in <%= @card.last4 %> at '<%= @merchant %>' was declined due to insufficient funds in your Hack Club Bank account.
 
-The account balance for <%= @event.name %> is <%= render_money @event.balance %>.
+The account balance for <%= @event.name %> is <%= render_money @event.balance_available_v2_cents %>.
 <% elsif @card.canceled? %>
 A <%= humanized_money_with_symbol @cpt.amount.abs %> <%= @authorization_method %> charge to your card ending in <%= @card.last4 %> at '<%= @merchant %>' was declined because this card has been canceled.
 <% if @card.replacement %>
