@@ -10,6 +10,10 @@ module ReceiptService
     end
 
     def run!
+      suppress(ActiveModel::MissingAttributeError) do
+        @receiptable&.update(marked_no_or_lost_receipt_at: nil)
+      end
+
       receipt_ids = []
       ActiveRecord::Base.transaction do
         @attachments.each do |attachment|
