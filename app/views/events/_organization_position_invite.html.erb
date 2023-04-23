@@ -7,10 +7,10 @@
       <%= organizer_signed_in? ? position.user.email : "Sign in to view email" %>
     </p>
     <% admin_tools("mr2 p0 circle") do %>
-      <%= pop_icon_to "controls", edit_user_path(position.user.slug) if position.user == current_user || admin_signed_in? %>
+      <%= pop_icon_to "controls", edit_user_path(position.user.slug), data: { turbo_frame: "_top" } if position.user == current_user || admin_signed_in? %>
     <% end %>
-    <%= pop_icon_to "member-remove", new_organizer_remove_path(organizer_id: position.id), class: "error", disabled: !organizer_signed_in? unless position.user == current_user %>
-    <%= pop_icon_to "controls", edit_user_path(position.user.slug), class: "ml2" if position.user == current_user && !admin_signed_in? %>
+    <%= pop_icon_to "member-remove", new_organizer_remove_path(organizer_id: position.id), class: "error", data: { turbo_frame: "_top" }, disabled: !organizer_signed_in? unless position.user == current_user %>
+    <%= pop_icon_to "controls", edit_user_path(position.user.slug), class: "ml2", data: { turbo_frame: "_top" } if position.user == current_user && !admin_signed_in? %>
   </section>
   <% if current_user&.admin? %>
     <section class='card__banner card__darker b--warning h5' style='border-style: dashed; border-width: 1px; border-radius: 0 0 0.5rem 0.5rem;'>
