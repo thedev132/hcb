@@ -67,6 +67,8 @@ class IncreaseCheck < ApplicationRecord
   validates :memo, length: { in: 1..73 }
   validates :recipient_name, length: { in: 1..250 }
   validates_presence_of :memo, :payment_for, :recipient_name, :address_line1, :address_city, :address_state, :address_zip
+  validates :address_state, inclusion: { in: ["AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "DC", "FL", "GA", "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY"], message: "This isn't a valid US state abbreviation!" }
+  validates :address_zip, format: { with: /\A\d{5}(?:[-\s]\d{4})?\z/, message: "This isn't a valid ZIP code." }
 
   validate on: :create do
     if amount > event.balance_available_v2_cents
