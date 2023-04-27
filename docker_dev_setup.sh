@@ -42,7 +42,7 @@ fi
 
 echo "
 $(tput setaf 9)Hack Club Bank:$(tput sgr0)
-Run 'env $(cat .env.docker) docker-compose up' to start the dev server. You can run this command with the --with-solargraph flag to enable Solargraph."
+Run 'env \$(cat .env.docker) docker-compose up' to start the dev server. You can run this command with the --with-solargraph flag to enable Solargraph."
 
 echo "
 
