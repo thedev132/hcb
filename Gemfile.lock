@@ -184,9 +184,6 @@ GEM
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
     dotenv (2.8.1)
-    dotenv-rails (2.8.1)
-      dotenv (= 2.8.1)
-      railties (>= 3.2)
     dry-configurable (0.15.0)
       concurrent-ruby (~> 1.0)
       dry-core (~> 0.6)
@@ -780,7 +777,6 @@ DEPENDENCIES
   comma (~> 4.6)
   country_select (~> 8.0)
   docusign_esign (~> 3.13)
-  dotenv-rails
   dry-validation
   erb_lint
   factory_bot_rails
