@@ -149,6 +149,8 @@ gem "bootsnap", ">= 1.4.4", require: false # reduces boot times through caching;
 
 gem "mrsk" # deployments
 
+gem "appsignal" # monitoring
+
 group :production do
   gem "skylight"
 
