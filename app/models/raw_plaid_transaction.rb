@@ -18,6 +18,7 @@
 #
 class RawPlaidTransaction < ApplicationRecord
   has_many :hashed_transactions
+  has_one :canonical_transaction, as: :transaction_source
 
   monetize :amount_cents
 

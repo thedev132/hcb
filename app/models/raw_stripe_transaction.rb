@@ -20,6 +20,7 @@
 #
 class RawStripeTransaction < ApplicationRecord
   has_many :hashed_transactions
+  has_one :canonical_transaction, as: :transaction_source
 
   def memo
     @memo ||= stripe_transaction.dig("merchant_data", "name")

@@ -4,20 +4,23 @@
 #
 # Table name: canonical_transactions
 #
-#  id            :bigint           not null, primary key
-#  amount_cents  :integer          not null
-#  custom_memo   :text
-#  date          :date             not null
-#  friendly_memo :text
-#  hcb_code      :text
-#  memo          :text             not null
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
+#  id                      :bigint           not null, primary key
+#  amount_cents            :integer          not null
+#  custom_memo             :text
+#  date                    :date             not null
+#  friendly_memo           :text
+#  hcb_code                :text
+#  memo                    :text             not null
+#  transaction_source_type :string
+#  created_at              :datetime         not null
+#  updated_at              :datetime         not null
+#  transaction_source_id   :bigint
 #
 # Indexes
 #
-#  index_canonical_transactions_on_date      (date)
-#  index_canonical_transactions_on_hcb_code  (hcb_code)
+#  index_canonical_transactions_on_date                (date)
+#  index_canonical_transactions_on_hcb_code            (hcb_code)
+#  index_canonical_transactions_on_transaction_source  (transaction_source_type,transaction_source_id)
 #
 class CanonicalTransaction < ApplicationRecord
   has_paper_trail
@@ -75,6 +78,8 @@ class CanonicalTransaction < ApplicationRecord
   has_one :canonical_pending_transaction, through: :canonical_pending_settled_mapping
   has_one :local_hcb_code, foreign_key: "hcb_code", primary_key: "hcb_code", class_name: "HcbCode"
   has_many :fees, through: :canonical_event_mapping
+
+  belongs_to :transaction_source, polymorphic: true, optional: true
 
   attr_writer :fee_payment, :hashed_transaction, :stripe_cardholder
 

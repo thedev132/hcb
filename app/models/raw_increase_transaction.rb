@@ -22,6 +22,7 @@
 #
 class RawIncreaseTransaction < ApplicationRecord
   has_many :hashed_transactions
+  has_one :canonical_transaction, as: :transaction_source
 
   belongs_to :increase_account_number,
              foreign_key: "increase_route_id",

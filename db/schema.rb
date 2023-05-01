@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_04_18_100004) do
+ActiveRecord::Schema[7.0].define(version: 2023_04_26_040427) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_stat_statements"
@@ -306,8 +306,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_18_100004) do
     t.text "friendly_memo"
     t.text "custom_memo"
     t.text "hcb_code"
+    t.string "transaction_source_type"
+    t.bigint "transaction_source_id"
     t.index ["date"], name: "index_canonical_transactions_on_date"
     t.index ["hcb_code"], name: "index_canonical_transactions_on_hcb_code"
+    t.index ["transaction_source_type", "transaction_source_id"], name: "index_canonical_transactions_on_transaction_source"
   end
 
   create_table "checks", force: :cascade do |t|
