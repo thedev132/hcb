@@ -14,6 +14,7 @@ module TransactionGroupingEngine
       ACH_TRANSFER_CODE = "300"
       CHECK_CODE = "400"
       INCREASE_CHECK_CODE = "401"
+      CHECK_DEPOSIT_CODE = "402"
       DISBURSEMENT_CODE = "500"
       STRIPE_CARD_CODE = "600"
       STRIPE_FORCE_CAPTURE_CODE = "601"
@@ -35,6 +36,7 @@ module TransactionGroupingEngine
         return ach_transfer_hcb_code if ach_transfer
         return check_hcb_code if check
         return increase_check_hcb_code if increase_check
+        return check_deposit_hcb_code if check_deposit
         return disbursement_hcb_code if disbursement
         return stripe_card_hcb_code if raw_stripe_transaction
         return stripe_card_hcb_code_pending if raw_pending_stripe_transaction
@@ -127,6 +129,18 @@ module TransactionGroupingEngine
 
       def increase_check
         @increase_check ||= @ct_or_cp.increase_check
+      end
+
+      def check_deposit_hcb_code
+        [
+          HCB_CODE,
+          CHECK_DEPOSIT_CODE,
+          check_deposit.id
+        ].join(SEPARATOR)
+      end
+
+      def check_deposit
+        @check_deposit ||= @ct_or_cp.check_deposit
       end
 
       def disbursement_hcb_code

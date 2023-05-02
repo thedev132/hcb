@@ -66,6 +66,7 @@ class HcbCode < ApplicationRecord
     return ach_transfer_memo if ach_transfer?
     return check_memo if check?
     return increase_check_memo if increase_check?
+    return check_deposit_memo if check_deposit?
     return fee_revenue_memo if fee_revenue?
     return ach_payment_memo if ach_payment?
 
@@ -140,6 +141,7 @@ class HcbCode < ApplicationRecord
           check.try(:event).try(:id),
           increase_check.try(:event).try(:id),
           disbursement.try(:event).try(:id),
+          check_deposit.try(:event).try(:id),
         ].compact.uniq)
 
         ids << EventMappingEngine::EventIds::INCOMING_FEES if incoming_bank_fee?
@@ -319,6 +321,18 @@ class HcbCode < ApplicationRecord
 
   def ach_payment_memo
     "Bank transfer"
+  end
+
+  def check_deposit?
+    hcb_i1 == ::TransactionGroupingEngine::Calculate::HcbCode::CHECK_DEPOSIT_CODE
+  end
+
+  def check_deposit
+    @check_deposit ||= CheckDeposit.find_by(id: hcb_i2) if check_deposit?
+  end
+
+  def check_deposit_memo
+    "CHECK DEPOSIT"
   end
 
   def unknown?

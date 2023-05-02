@@ -28,6 +28,11 @@
   <%= render partial: "hcb_codes/increase_check", locals: {} %>
 <% end %>
 
+<%# check deposit %>
+<% if @hcb_code.check_deposit? && @hcb_code.check_deposit.present? %>
+  <%= render partial: "hcb_codes/check_deposit", locals: {} %>
+<% end %>
+
 <%# stripe card %>
 <% if (@hcb_code.stripe_card? || @hcb_code.stripe_force_capture?) && @hcb_code.stripe_card.present? %>
   <%= render partial: "hcb_codes/stripe_card", locals: {} %>

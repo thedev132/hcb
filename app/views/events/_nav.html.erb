@@ -36,6 +36,10 @@
       tooltip: "Receive payouts from GoFundMe, Shopify, Venmo, and more",
       icon: "bank-account",
       selected: local_assigns[:selected] == :account_number if Flipper.enabled?(:incoming_ach_payments_2023_02_17, @event) %>
+    <%= dock_item "Deposit a check",
+      event_check_deposits_path(@event),
+      icon: "payment-docs",
+      selected: local_assigns[:selected] == :deposit_check if Flipper.enabled?(:check_deposits_2023_04_17, @event) %>
     <h4 class="mb0 h5 muted">Spend</h4>
     <hr>
     <%= dock_item "Cards",
@@ -88,6 +92,7 @@
         <%= link_to "Donations", event_donation_overview_path(@event) %>
         <%= link_to "Invoices", event_invoices_path(@event) %>
         <%= link_to "Account & routing number", account_number_event_path(@event) if Flipper.enabled?(:incoming_ach_payments_2023_02_17, @event) %>
+        <%= link_to "Deposit a check", event_check_deposits_path(@event) if Flipper.enabled?(:check_deposits_2023_04_17, @event) %>
       </div>
     </button>
     <button class="dock__item bg-transparent border-none menu__toggle" data-behavior="menu_toggle" data-tour-step="spend">

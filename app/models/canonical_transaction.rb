@@ -61,6 +61,7 @@ class CanonicalTransaction < ApplicationRecord
   scope :likely_achs, -> { where("memo ilike '%BUSBILLPAY%'") }
   scope :likely_increase_achs, -> { joins(hashed_transactions: :raw_increase_transaction).where("raw_increase_transactions.increase_transaction->'source'->>'category' = 'ach_transfer_intention'") }
   scope :likely_increase_account_number, -> { joins(hashed_transactions: { raw_increase_transaction: :increase_account_number }) }
+  scope :likely_increase_check_deposit, -> { joins(hashed_transactions: :raw_increase_transaction).where("raw_increase_transactions.increase_transaction->'source'->>'category' = 'check_deposit_acceptance'") }
   scope :likely_hack_club_fee, -> { where("memo ilike '%Hack Club Bank Fee TO ACCOUNT%'") }
   scope :old_likely_hack_club_fee, -> { where("memo ilike '% Fee TO ACCOUNT REDACTED%'") }
   scope :stripe_top_up, -> { where("memo ilike '%Hack Club Bank Stripe Top%' or memo ilike '%HACKC Stripe Top%' or memo ilike '%HCKCLB Stripe Top%'") }
@@ -248,6 +249,12 @@ class CanonicalTransaction < ApplicationRecord
 
   def increase_check
     return linked_object if linked_object.is_a?(IncreaseCheck)
+
+    nil
+  end
+
+  def check_deposit
+    return linked_object if linked_object.is_a?(CheckDeposit)
 
     nil
   end

@@ -1,0 +1,33 @@
+<% title "Deposit a check to #{@event.name}" %>
+<% page_md %>
+<%= render "events/nav", selected: :deposit_check %>
+
+<h1 class="heading">Deposit a check</h1>
+
+<%= render "new" %>
+
+<% if @check_deposits.count > 0 %>
+  <div class="table-container mt3">
+    <table>
+      <thead>
+        <th></th>
+        <th>Status</th>
+        <th>Date</th>
+        <th>Amount</th>
+        <th></th>
+      </thead>
+
+      <tbody>
+        <% @check_deposits.each do |check_deposit| %>
+          <tr>
+            <td style="width: 0%"><%= image_tag check_deposit.front.representation(resize_to_limit: [64, 64]), class: "rounded mr1", width: 40 %></td>
+            <td><span class="badge bg-<%= check_deposit.state %> m0"><%= check_deposit.state_text %></span></td>
+            <td><%= format_date check_deposit.created_at %></td>
+            <td><%= render_money check_deposit.amount_cents %></td>
+            <td><%= link_to "Details", check_deposit.local_hcb_code.url %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% end %>

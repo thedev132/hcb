@@ -27,6 +27,10 @@
       <td class="transaction__icon tooltipped tooltipped--e" aria-label="Mailed check">
         <%= inline_icon "email" %>
       </td>
+    <% elsif ct.local_hcb_code.check_deposit? %>
+      <td class="transaction__icon tooltipped tooltipped--e" aria-label="Check deposit">
+        <%= inline_icon "payment-docs" %>
+      </td>
     <% elsif ct.local_hcb_code.ach_transfer? %>
       <td class="transaction__icon tooltipped tooltipped--e" aria-label="Outgoing ACH">
         <%= inline_icon "payment-transfer" %>

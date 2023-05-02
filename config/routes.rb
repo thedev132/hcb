@@ -511,6 +511,8 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :check_deposits, only: [:index, :create], path: "check-deposits"
+
     member do
       post "disable_feature"
       post "enable_feature"

@@ -1,0 +1,63 @@
+<% title "Deposit of a #{render_money(@hcb_code.check_deposit.amount_cents)} check" %>
+
+<% if @hcb_code.check_deposit.rejected? %>
+  <div class="banner error-card mt3">
+    <p class="bold block mt0 mb0"><%= @hcb_code.check_deposit.rejection_description %></p>
+
+    <% if @hcb_code.check_deposit.rejection_reason == "incomplete_image" %>
+      <p class="mt1 mb0">Try taking a photo of the entire check and <%= link_to "resubmitting", event_check_deposits_path(@event) %>.</p>
+    <% elsif @hcb_code.check_deposit.rejection_reason == "poor_image_quality" %>
+      <p class="mt1 mb0">Try taking a clearer photo and <%= link_to "resubmitting", event_check_deposits_path(@event) %>.</p>
+    <% elsif @hcb_code.check_deposit.rejection_reason == "incorrect_amount" %>
+      <p class="mt1 mb0">Try <%= link_to "resubmitting", event_check_deposits_path(@event) %> with the correct deposit amount.</p>
+    <% elsif @hcb_code.check_deposit.rejection_reason == "incorrect_recipient" %>
+      <p class="mt1 mb0">Make sure the check is made out to<br><strong>"The Hack Foundation"</strong> or <strong>"Hack Club"</strong>.</p>
+    <% end %>
+  </div>
+<% end %>
+
+<article class="card pb0 mt3 mb3">
+  <h2 class="h2 mt0 border-none">
+    Check deposit
+    <span class="regular muted">
+      of
+    </span>
+    <span class="regular"><%= render_money @hcb_code.check_deposit.amount_cents %></span>
+    <span class="badge h4 md-right ml0 bg-<%= @hcb_code.check_deposit.state %>">
+      <%= @hcb_code.check_deposit.state_text %>
+    </span>
+  </h2>
+
+  <section class="card__banner card__darker details-horiz border-top border-bottom">
+    <p>
+      <strong>Deposited by</strong>
+      <%= user_mention @hcb_code.check_deposit.created_by %>
+    </p>
+    <p>
+      <strong>Requested at</strong>
+      <%= format_datetime @hcb_code.check_deposit.created_at %>
+    </p>
+  </section>
+
+  <div class="flex justify-around pt2 pb2">
+    <div class="flex flex-column items-center justify-between">
+      <%= link_to @hcb_code.check_deposit.front, target: "_blank" do %>
+        <%= image_tag @hcb_code.check_deposit.front.representation(resize_to_limit: [300, 300]), class: "rounded mb1", width: 200 %>
+      <% end %>
+      <div class="muted">Front image</div>
+    </div>
+    <div class="flex flex-column items-center justify-between">
+      <%= link_to @hcb_code.check_deposit.back, target: "_blank" do %>
+        <%= image_tag @hcb_code.check_deposit.back.representation(resize_to_limit: [300, 300]), class: "rounded mb1", width: 200 %>
+      <% end %>
+      <div class="muted">Back image</div>
+    </div>
+  </div>
+
+  <% if @hcb_code.check_deposit.pending? %>
+    <section class="card__banner card__darker secondary border-top italic">
+      Checks may take up to 5 business days to deposit.
+    </section>
+  <% end %>
+
+</article>

@@ -15,6 +15,7 @@
 #  created_at                                       :datetime         not null
 #  updated_at                                       :datetime         not null
 #  ach_payment_id                                   :bigint
+#  check_deposit_id                                 :bigint
 #  increase_check_id                                :bigint
 #  raw_pending_bank_fee_transaction_id              :bigint
 #  raw_pending_donation_transaction_id              :bigint
@@ -29,6 +30,7 @@
 # Indexes
 #
 #  index_canonical_pending_transactions_on_ach_payment_id           (ach_payment_id)
+#  index_canonical_pending_transactions_on_check_deposit_id         (check_deposit_id)
 #  index_canonical_pending_transactions_on_hcb_code                 (hcb_code)
 #  index_canonical_pending_transactions_on_increase_check_id        (increase_check_id)
 #  index_canonical_pending_txs_on_raw_pending_bank_fee_tx_id        (raw_pending_bank_fee_transaction_id)
@@ -63,6 +65,7 @@ class CanonicalPendingTransaction < ApplicationRecord
   belongs_to :raw_pending_outgoing_disbursement_transaction, optional: true
   belongs_to :ach_payment, optional: true
   belongs_to :increase_check, optional: true
+  belongs_to :check_deposit, optional: true
   has_one :canonical_pending_event_mapping
   has_one :event, through: :canonical_pending_event_mapping
   has_many :canonical_pending_settled_mappings
@@ -80,6 +83,7 @@ class CanonicalPendingTransaction < ApplicationRecord
   scope :outgoing_ach, -> { where("raw_pending_outgoing_ach_transaction_id is not null") }
   scope :outgoing_check, -> { where("raw_pending_outgoing_check_transaction_id is not null") }
   scope :increase_check, -> { where.not(increase_check_id: nil) }
+  scope :check_deposit, -> { where.not(check_deposit_id: nil) }
   scope :donation, -> { where("raw_pending_donation_transaction_id is not null") }
   scope :invoice, -> { where("raw_pending_invoice_transaction_id is not null") }
   scope :partner_donation, -> { where("raw_pending_partner_donation_transaction_id is not null") }

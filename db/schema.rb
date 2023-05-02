@@ -282,7 +282,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_26_040427) do
     t.boolean "fee_waived", default: false
     t.bigint "ach_payment_id"
     t.bigint "increase_check_id"
+    t.bigint "check_deposit_id"
     t.index ["ach_payment_id"], name: "index_canonical_pending_transactions_on_ach_payment_id"
+    t.index ["check_deposit_id"], name: "index_canonical_pending_transactions_on_check_deposit_id"
     t.index ["hcb_code"], name: "index_canonical_pending_transactions_on_hcb_code"
     t.index ["increase_check_id"], name: "index_canonical_pending_transactions_on_increase_check_id"
     t.index ["raw_pending_bank_fee_transaction_id"], name: "index_canonical_pending_txs_on_raw_pending_bank_fee_tx_id"
@@ -311,6 +313,23 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_26_040427) do
     t.index ["date"], name: "index_canonical_transactions_on_date"
     t.index ["hcb_code"], name: "index_canonical_transactions_on_hcb_code"
     t.index ["transaction_source_type", "transaction_source_id"], name: "index_canonical_transactions_on_transaction_source"
+  end
+
+  create_table "check_deposits", force: :cascade do |t|
+    t.string "aasm_state"
+    t.bigint "event_id", null: false
+    t.integer "amount_cents"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "front_file_id"
+    t.string "back_file_id"
+    t.string "increase_id"
+    t.bigint "created_by_id", null: false
+    t.string "increase_status"
+    t.string "rejection_reason"
+    t.index ["created_by_id"], name: "index_check_deposits_on_created_by_id"
+    t.index ["event_id"], name: "index_check_deposits_on_event_id"
+    t.index ["increase_id"], name: "index_check_deposits_on_increase_id", unique: true
   end
 
   create_table "checks", force: :cascade do |t|
@@ -1557,6 +1576,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_26_040427) do
   add_foreign_key "canonical_pending_settled_mappings", "canonical_pending_transactions"
   add_foreign_key "canonical_pending_settled_mappings", "canonical_transactions"
   add_foreign_key "canonical_pending_transactions", "raw_pending_stripe_transactions"
+  add_foreign_key "check_deposits", "events"
   add_foreign_key "checks", "lob_addresses"
   add_foreign_key "checks", "users", column: "creator_id"
   add_foreign_key "disbursements", "events"

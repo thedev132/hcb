@@ -16,6 +16,7 @@ module EventMappingEngine
       map_checks!
       map_increase_checks!
       map_clearing_checks!
+      map_check_deposits!
       map_achs!
       map_disbursements!
       map_hack_club_bank_issued_cards!
@@ -64,6 +65,15 @@ module EventMappingEngine
         ::EventMappingEngine::Map::ClearingChecks.new.run
       rescue => e
         Airbrake.notify(e)
+      end
+    end
+
+    def map_check_deposits!
+      CanonicalTransaction.unmapped.likely_increase_check_deposit.each do |ct|
+        check_deposit = ct.check_deposit
+        next unless check_deposit
+
+        CanonicalEventMapping.create!(event: check_deposit.event, canonical_transaction: ct)
       end
     end
 

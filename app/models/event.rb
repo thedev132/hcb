@@ -298,6 +298,8 @@ class Event < ApplicationRecord
 
   has_many :tags, -> { includes(:hcb_codes) }
 
+  has_many :check_deposits
+
   belongs_to :partner
   has_one :partnered_signup, required: false
   has_many :partner_donations

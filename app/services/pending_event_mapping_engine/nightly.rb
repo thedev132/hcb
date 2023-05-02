@@ -9,6 +9,9 @@ module PendingEventMappingEngine
 
       settle_canonical_pending_increase_check!
 
+      settle_canonical_pending_check_deposit!
+      decline_canonical_pending_check_deposit!
+
       map_canonical_pending_outgoing_ach!
       settle_canonical_pending_outgoing_ach!
       decline_canonical_pending_outgoing_ach!
@@ -90,6 +93,21 @@ module PendingEventMappingEngine
           CanonicalPendingSettledMapping.create!(canonical_pending_transaction: cpt, canonical_transaction: cpt.local_hcb_code.ct)
         end
       end
+    end
+
+    def settle_canonical_pending_check_deposit!
+      CanonicalPendingTransaction.unsettled.check_deposit.each do |cpt|
+        if cpt.local_hcb_code.ct
+          CanonicalPendingSettledMapping.create!(canonical_pending_transaction: cpt, canonical_transaction: cpt.local_hcb_code.ct)
+        end
+      end
+    end
+
+    def decline_canonical_pending_check_deposit!
+      CanonicalPendingTransaction.check_deposit
+                                 .not_declined
+                                 .includes(:check_deposit)
+                                 .where(check_deposit: { increase_status: :rejected }).each { |cpt| cpt.decline! }
     end
 
     def map_canonical_pending_outgoing_ach!
