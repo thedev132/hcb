@@ -75,7 +75,7 @@ class CheckDeposit < ApplicationRecord
 
     increase_back = Increase::Files.create(
       purpose: :check_image_back,
-      file: StringIO.new(self.front.download.force_encoding("UTF-8")),
+      file: StringIO.new(self.back.download.force_encoding("UTF-8")),
     )
     self.back_file_id = increase_back["id"]
 

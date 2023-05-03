@@ -111,6 +111,10 @@ input[type='file'] {
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
+
+    html[data-dark='true'] & {
+      background-color: $slate;
+    }
   }
 
   input[type='file'] {
