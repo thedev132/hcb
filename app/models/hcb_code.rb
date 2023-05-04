@@ -292,7 +292,7 @@ class HcbCode < ApplicationRecord
   end
 
   def increase_check_memo
-    "Check to #{increase_check.recipient_name}".upcase
+    smartish_custom_memo || "Check to #{increase_check.recipient_name}".upcase
   end
 
   def disbursement
@@ -332,7 +332,7 @@ class HcbCode < ApplicationRecord
   end
 
   def check_deposit_memo
-    "CHECK DEPOSIT"
+    smartish_custom_memo || "CHECK DEPOSIT"
   end
 
   def unknown?
