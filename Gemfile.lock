@@ -749,7 +749,7 @@ GEM
     wicked_pdf (2.6.3)
       activesupport
     wkhtmltopdf-binary (0.12.3)
-    xxhash (0.4.0)
+    xxhash (0.5.0)
     yard (0.9.27)
       webrick (~> 1.7.0)
     zeitwerk (2.6.7)
