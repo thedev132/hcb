@@ -128,7 +128,7 @@ gem "airbrake" # exception tracking
 gem "blazer" # business intelligence tool/dashboard
 
 gem "geo_pattern" # create procedurally generated patterns for Cards
-gem "comma", "~> 4.6" # CSV generation
+gem "comma", "~> 4.7" # CSV generation
 gem "faker" # Create mock data
 
 gem "chronic" # time/date parsing
