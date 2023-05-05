@@ -21,6 +21,8 @@ module TransactionEngine
         "HACKFOUNDATION5667" # FS CHECK ESCROW - new plaid connection from scottm
       when 45
         "FRBOPERATING"
+      when 46
+        "TD5673"
       when "EMBURSEISSUING1"
         "EMBURSEISSUING1"
       when "STRIPEISSUING1"
