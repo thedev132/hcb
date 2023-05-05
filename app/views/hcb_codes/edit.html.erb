@@ -1,0 +1,37 @@
+<% page_sm %>
+
+<%= render "events/nav" if @event %>
+
+<h1 class="h1">
+  Rename transaction
+</h1>
+
+<% if @frame %>
+  <%= turbo_frame_tag @hcb_code do %>
+    <%= form_with model: @hcb_code, data: { turbo: true, controller: "form" } do |form| %>
+      <div class="flex items-center">
+        <button class="pop border-none cursor-pointer mr2">
+          <%= inline_icon "checkmark", size: 28 %>
+        </button>
+
+        <%= form.text_field :memo,
+                            placeholder: @hcb_code.memo,
+                            autofocus: true,
+                            data: { controller: "input", input_target: "input", action: "focus->input#select blur->form#submit" },
+                            class: "bg-transparent fit",
+                            style: "border-color: #338eda; min-height: 0; font-size: 1.5rem; padding: 0.125rem 0 0.125rem 4px; letter-spacing: -0.02em" %>
+      </div>
+    <% end %>
+  <% end %>
+<% end %>
+
+<%= form_with model: @hcb_code do |form| %>
+  <div class="field">
+    <%= form.label :memo %>
+    <%= form.text_field :memo, autofocus: true, required: true %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit "Rename" %>
+  </div>
+<% end %>

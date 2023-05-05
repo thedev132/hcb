@@ -53,6 +53,28 @@ class HcbCodesController < ApplicationController
     end
   end
 
+  def edit
+    @hcb_code = HcbCode.find_by(hcb_code: params[:id]) || HcbCode.find(params[:id])
+    @event = @hcb_code.event
+
+    authorize @hcb_code
+
+    @frame = turbo_frame_request?
+  end
+
+  def update
+    @hcb_code = HcbCode.find_by(hcb_code: params[:id]) || HcbCode.find(params[:id])
+
+    authorize @hcb_code
+    hcb_code_params = params.require(:hcb_code).permit(:memo)
+    hcb_code_params[:memo] = hcb_code_params[:memo].presence
+
+    @hcb_code.canonical_transactions.update_all(custom_memo: hcb_code_params[:memo])
+    @hcb_code.canonical_pending_transactions.update_all(custom_memo: hcb_code_params[:memo])
+
+    redirect_to @hcb_code
+  end
+
   def comment
     @hcb_code = HcbCode.find(params[:id])
 
