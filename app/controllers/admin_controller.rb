@@ -426,7 +426,7 @@ class AdminController < ApplicationController
 
     @count = relation.count
 
-    @canonical_transactions = relation.page(@page).per(@per).order("date desc")
+    @canonical_transactions = relation.page(@page).per(@per).order(date: :desc)
 
     render layout: "admin"
   end
@@ -892,7 +892,7 @@ class AdminController < ApplicationController
     relation = relation.past_due if @past_due
 
     @count = relation.count
-    @invoices = relation.page(@page).per(@per).order("created_at desc")
+    @invoices = relation.page(@page).per(@per).order(created_at: :desc)
 
     render layout: "admin"
   end
