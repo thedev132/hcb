@@ -42,6 +42,16 @@ class CheckDeposit < ApplicationRecord
 
   after_create_commit :submit!
 
+  after_update if: -> { increase_status_previously_changed?(to: "rejected") } do
+    canonical_pending_transaction.decline!
+    CheckDepositMailer.with(check_deposit: self).rejected.deliver_later
+  end
+
+  after_update if: -> { increase_status_previously_changed?(to: "submitted") } do
+    canonical_pending_transaction.update(fronted: true)
+    CheckDepositMailer.with(check_deposit: self).deposited.deliver_later
+  end
+
   has_one_attached :front
   has_one_attached :back
 

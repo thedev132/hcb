@@ -1,0 +1,1 @@
+Great news: <%= link_to "your #{render_money @check_deposit.amount_cents} check", @check_deposit.local_hcb_code.url %> has been deposited to <strong><%= link_to @check_deposit.event.name, @check_deposit.event %></strong> and is now available to spend in your account!
