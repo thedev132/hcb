@@ -158,7 +158,7 @@ class CanonicalPendingTransaction < ApplicationRecord
     return 0 if pts_sum.negative?
 
     cts_sum = local_hcb_code.canonical_transactions
-                            .filter { |ct| ct.canonical_event_mapping.event_id == event.id }
+                            .filter { |ct| ct.canonical_event_mapping&.event_id == event.id }
                             .sum(&:amount_cents)
 
     # PTs that were chronologically created first in an HcbCode are first
