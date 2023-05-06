@@ -23,7 +23,7 @@ module GSuiteAccountService
         @g_suite.update_column(:remote_org_unit_path, remote_org_unit_path)
 
         # 3. create remote user under org unit
-        Partners::Google::GSuite::CreateUser.new(remote_account_attrs).run
+        Partners::Google::GSuite::CreateUser.new(**remote_account_attrs).run
 
         # 4. Send notification
         GSuiteAccountMailer.notify_user_of_activation(email_params).deliver_later

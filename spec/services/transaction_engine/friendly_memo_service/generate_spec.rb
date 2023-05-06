@@ -11,7 +11,7 @@ RSpec.describe TransactionEngine::FriendlyMemoService::Generate do
     }
   end
 
-  let(:service) { TransactionEngine::FriendlyMemoService::Generate.new(attrs) }
+  let(:service) { TransactionEngine::FriendlyMemoService::Generate.new(**attrs) }
 
   it "returns a result" do
     result = service.run

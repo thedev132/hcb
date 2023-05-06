@@ -13,7 +13,7 @@ RSpec.describe CanonicalTransactionService::SetCustomMemo, type: :model do
     }
   end
 
-  let(:service) { CanonicalTransactionService::SetCustomMemo.new(attrs) }
+  let(:service) { CanonicalTransactionService::SetCustomMemo.new(**attrs) }
 
   it "sets custom memo" do
     service.run

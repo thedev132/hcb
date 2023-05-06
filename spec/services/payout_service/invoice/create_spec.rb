@@ -11,7 +11,7 @@ RSpec.describe PayoutService::Invoice::Create do
     }
   end
 
-  let(:service) { PayoutService::Invoice::Create.new(attrs) }
+  let(:service) { PayoutService::Invoice::Create.new(**attrs) }
 
   before do
     allow(service).to receive(:funds_available?).and_return(true)

@@ -9,7 +9,7 @@ module GSuiteService
     end
 
     def run
-      ::Partners::Google::GSuite::OrgUnit.new(show_attrs).run || ::Partners::Google::GSuite::CreateOrgUnit.new(create_attrs).run
+      ::Partners::Google::GSuite::OrgUnit.new(**show_attrs).run || ::Partners::Google::GSuite::CreateOrgUnit.new(**create_attrs).run
     end
 
     private

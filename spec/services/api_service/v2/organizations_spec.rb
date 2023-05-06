@@ -11,7 +11,7 @@ RSpec.describe ApiService::V2::FindOrganizations, type: :model do
     }
   end
 
-  let(:service) { ApiService::V2::FindOrganizations.new(attrs) }
+  let(:service) { ApiService::V2::FindOrganizations.new(**attrs) }
 
   context "when partner does not exist" do
     let(:partner_id) { "999999" }

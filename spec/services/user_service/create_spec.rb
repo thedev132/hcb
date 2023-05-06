@@ -16,7 +16,7 @@ RSpec.describe UserService::Create, type: :model do
     end
 
     it "creates a user" do
-      service = UserService::Create.new(attrs)
+      service = UserService::Create.new(**attrs)
 
       expect do
         service.run
@@ -24,7 +24,7 @@ RSpec.describe UserService::Create, type: :model do
     end
 
     it "creates the organizer position" do
-      service = UserService::Create.new(attrs)
+      service = UserService::Create.new(**attrs)
 
       expect do
         service.run
@@ -46,7 +46,7 @@ RSpec.describe UserService::Create, type: :model do
 
     context "but is not an organizer of the event" do
       it "does not create the user" do
-        service = UserService::Create.new(attrs)
+        service = UserService::Create.new(**attrs)
 
         expect do
           service.run
@@ -54,7 +54,7 @@ RSpec.describe UserService::Create, type: :model do
       end
 
       it "does create the organizer position" do
-        service = UserService::Create.new(attrs)
+        service = UserService::Create.new(**attrs)
 
         expect do
           service.run
@@ -70,7 +70,7 @@ RSpec.describe UserService::Create, type: :model do
       end
 
       it "does not create the user" do
-        service = UserService::Create.new(attrs)
+        service = UserService::Create.new(**attrs)
 
         expect do
           service.run
@@ -78,7 +78,7 @@ RSpec.describe UserService::Create, type: :model do
       end
 
       it "does not create the organizer position" do
-        service = UserService::Create.new(attrs)
+        service = UserService::Create.new(**attrs)
 
         expect do
           service.run

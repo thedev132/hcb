@@ -20,7 +20,7 @@ RSpec.describe ApiService::V2::PartneredSignupsNew, type: :model do
     }
   end
 
-  let(:service) { ApiService::V2::PartneredSignupsNew.new(attrs) }
+  let(:service) { ApiService::V2::PartneredSignupsNew.new(**attrs) }
 
   it "creates an organization" do
     expect do

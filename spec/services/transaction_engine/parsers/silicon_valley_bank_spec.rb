@@ -11,7 +11,7 @@ RSpec.describe TransactionEngine::Parsers::SiliconValleyBank do
     }
   end
 
-  let(:service) { TransactionEngine::Parsers::SiliconValleyBank.new(attrs) }
+  let(:service) { TransactionEngine::Parsers::SiliconValleyBank.new(**attrs) }
 
   it "runs" do
     expect do

@@ -11,7 +11,7 @@ RSpec.describe CheckService::LobUrl::Generate, type: :model do
     }
   end
 
-  let(:service) { CheckService::LobUrl::Generate.new(attrs) }
+  let(:service) { CheckService::LobUrl::Generate.new(**attrs) }
 
   let(:url) { "http://lob.com/some/url" }
   let(:resp) { { "url" => url } }

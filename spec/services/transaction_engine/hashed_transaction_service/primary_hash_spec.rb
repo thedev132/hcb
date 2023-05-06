@@ -17,7 +17,7 @@ RSpec.describe TransactionEngine::HashedTransactionService::PrimaryHash do
     }
   end
 
-  let(:service) { TransactionEngine::HashedTransactionService::PrimaryHash.new(attrs) }
+  let(:service) { TransactionEngine::HashedTransactionService::PrimaryHash.new(**attrs) }
 
   it "hashes the combination" do
     expect(service.run[0]).to eql(9686534373925407058)

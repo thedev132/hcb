@@ -11,7 +11,7 @@ RSpec.describe StaticPageService::Index, type: :model do
     }
   end
 
-  let(:service) { StaticPageService::Index.new(attrs) }
+  let(:service) { StaticPageService::Index.new(**attrs) }
 
   describe "#events" do
     it "returns events for that user" do

@@ -29,7 +29,7 @@ RSpec.describe GSuiteAccountService::Create, type: :model do
     }
   end
 
-  let(:service) { GSuiteAccountService::Create.new(attrs) }
+  let(:service) { GSuiteAccountService::Create.new(**attrs) }
 
   before do
     allow_any_instance_of(::Partners::Google::GSuite::OrgUnit).to receive(:run).and_return(remote_org_unit)

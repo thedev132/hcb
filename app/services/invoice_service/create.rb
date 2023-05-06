@@ -48,7 +48,7 @@ module InvoiceService
         attrs = {
           invoice_id: invoice.id
         }
-        ::InvoiceService::SyncRemoteToLocal.new(attrs).run
+        ::InvoiceService::SyncRemoteToLocal.new(**attrs).run
       end
 
       invoice
