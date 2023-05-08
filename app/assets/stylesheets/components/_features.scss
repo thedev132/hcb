@@ -97,3 +97,14 @@ html[data-dark='true'] {
     background-image: #{image-url('feature-turbo.png')};
   }
 }
+
+.feature-check-deposits {
+  background-color: $snow;
+  background-size: 4em;
+}
+
+html[data-dark='true'] {
+  .feature-check-deposits {
+    background-color: $black;
+  }
+}
