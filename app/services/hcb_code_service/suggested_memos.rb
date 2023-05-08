@@ -14,6 +14,8 @@ module HcbCodeService
     end
 
     def run
+      return [] unless @event
+
       ranked_similar_transactions.pluck(:transaction).pluck(:custom_memo).uniq
     end
 
