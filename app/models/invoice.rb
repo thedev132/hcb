@@ -307,6 +307,11 @@ class Invoice < ApplicationRecord
     @remote_invoice ||= ::Partners::Stripe::Invoices::Show.new(id: stripe_invoice_id).run
   end
 
+  def paid_at
+    timestamp = remote_invoice&.status_transitions&.paid_at
+    timestamp ? Time.at(timestamp) : nil
+  end
+
   def remote_status
     remote_invoice.status
   end

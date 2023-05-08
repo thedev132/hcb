@@ -13,7 +13,7 @@ module PendingTransactionEngine
 
           rpit = ::RawPendingInvoiceTransaction.find_or_initialize_by(invoice_transaction_id: @invoice.id.to_s).tap do |t|
             t.amount_cents = @invoice.amount_due
-            t.date_posted = @invoice.created_at
+            t.date_posted = @invoice.paid_at
           end
 
           rpit.save!
