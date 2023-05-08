@@ -45,7 +45,7 @@ class RecurringDonationsController < ApplicationController
 
     @event = @recurring_donation.event
 
-    @placeholder_amount = DonationService::SuggestedAmount.new(@event, monthly: true).run / 100.0
+    @placeholder_amount = "%.2f" % (DonationService::SuggestedAmount.new(@event, monthly: true).run / 100.0)
   end
 
   def edit
