@@ -16,6 +16,7 @@ echo "$(tput setaf 9)Hack Club Bank:$(tput sgr0) $(tput setaf 10)Done$(tput sgr0
 
 echo "
 $(tput setaf 9)Hack Club Bank:$(tput sgr0) Step 2/4: Docker Database Setup"
+env $(cat .env.docker) docker-compose run --service-ports web bundle exec rails db:test:prepare RAILS_ENV=test
 env $(cat .env.docker) docker compose run --service-ports web bundle exec rails db:create db:migrate
 echo "$(tput setaf 9)Hack Club Bank:$(tput sgr0) $(tput setaf 10)Done$(tput sgr0)"
 
