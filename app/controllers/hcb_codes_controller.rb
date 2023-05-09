@@ -81,14 +81,13 @@ class HcbCodesController < ApplicationController
 
     authorize @hcb_code
 
-    attrs = {
+    ::HcbCodeService::Comment::Create.new(
       hcb_code_id: @hcb_code.id,
       content: params[:content],
       file: params[:file],
       admin_only: params[:admin_only],
       current_user: current_user
-    }
-    ::HcbCodeService::Comment::Create.new(attrs).run
+    ).run
 
     redirect_to params[:redirect_url]
   rescue => e

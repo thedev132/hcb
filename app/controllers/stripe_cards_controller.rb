@@ -101,7 +101,7 @@ class StripeCardsController < ApplicationController
     return redirect_back fallback_location: event_cards_new_path(event), flash: { error: "Event is in Playground Mode" } if event.demo_mode?
     return redirect_back fallback_location: event_cards_new_path(event), flash: { error: "Invalid country" } unless %w(US CA).include? sc[:stripe_shipping_address_country]
 
-    attrs = {
+    ::StripeCardService::Create.new(
       current_user: current_user,
       current_session: current_session,
       event_id: event.id,
@@ -113,8 +113,7 @@ class StripeCardsController < ApplicationController
       stripe_shipping_address_line2: sc[:stripe_shipping_address_line2],
       stripe_shipping_address_postal_code: sc[:stripe_shipping_address_postal_code],
       stripe_shipping_address_country: sc[:stripe_shipping_address_country],
-    }
-    ::StripeCardService::Create.new(attrs).run
+    ).run
 
     redirect_to event_cards_overview_path(event), flash: { success: "Card was successfully created." }
   rescue => e

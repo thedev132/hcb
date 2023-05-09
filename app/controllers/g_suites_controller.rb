@@ -27,13 +27,12 @@ class GSuitesController < ApplicationController
   def update
     authorize GSuite
 
-    attrs = {
+    @g_suite = GSuiteService::Update.new(
       g_suite_id: @g_suite.id,
       domain: g_suite_params[:domain],
       verification_key: g_suite_params[:verification_key],
-      dkim_key: g_suite_params[:dkim_key],
-    }
-    @g_suite = GSuiteService::Update.new(attrs).run
+      dkim_key: g_suite_params[:dkim_key]
+    ).run
 
     if @g_suite.persisted?
       flash[:success] = "Google Workspace changes saved."

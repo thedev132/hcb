@@ -107,7 +107,7 @@ class InvoicesController < ApplicationController
                           filtered_params["due_date(2i)"].to_i,
                           filtered_params["due_date(3i)"].to_i)
 
-    attrs = {
+    @invoice = ::InvoiceService::Create.new(
       event_id: params[:event_id],
       due_date: due_date,
       item_description: filtered_params[:item_description],
@@ -122,8 +122,7 @@ class InvoicesController < ApplicationController
       sponsor_address_city: sponsor_attrs[:address_city],
       sponsor_address_state: sponsor_attrs[:address_state],
       sponsor_address_postal_code: sponsor_attrs[:address_postal_code]
-    }
-    @invoice = ::InvoiceService::Create.new(attrs).run
+    ).run
 
     flash[:success] = "Invoice successfully created and emailed to #{@invoice.sponsor.contact_email}."
 

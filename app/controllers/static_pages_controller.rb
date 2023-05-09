@@ -9,10 +9,7 @@ class StaticPagesController < ApplicationController
 
   def index
     if signed_in?
-      attrs = {
-        current_user: current_user
-      }
-      @service = StaticPageService::Index.new(attrs)
+      @service = StaticPageService::Index.new(current_user: current_user)
 
       @events = @service.events
       @organizer_positions = @service.organizer_positions.not_hidden

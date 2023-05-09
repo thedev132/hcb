@@ -19,11 +19,10 @@ module StripeCardService
     #   Check out HcbCode#memo for more info on how this work.
     def rename_canonical_transaction
       stripe_issuing_card_canoncial_transactons_to_rename.each do |ct|
-        attrs = {
+        ::CanonicalTransactionService::SetCustomMemo.new(
           canonical_transaction_id: ct.id,
           custom_memo: "💳 New user card fee"
-        }
-        ::CanonicalTransactionService::SetCustomMemo.new(attrs).run
+        ).run
       end
     end
 

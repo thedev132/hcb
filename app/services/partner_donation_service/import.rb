@@ -9,7 +9,7 @@ module PartnerDonationService
     def run
       return unless partner.stripe_api_key.present? && partner.stripe_api_key.start_with?("sk_live_")
 
-      ::Partners::Stripe::Charges::List.new(list_attrs).run do |sc|
+      ::Partners::Stripe::Charges::List.new(**list_attrs).run do |sc|
         pdn = partner_donation(sc)
 
         # All Charges on Partner Stripe accounts should be associated with a

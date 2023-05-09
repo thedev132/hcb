@@ -95,7 +95,7 @@ module StripeCardService
     end
 
     def stripe_cardholder
-      @stripe_cardholder ||= ::StripeCardholder.find_by(user: @current_user) || ::StripeCardholderService::Create.new(cardholder_attrs).run
+      @stripe_cardholder ||= ::StripeCardholder.find_by(user: @current_user) || ::StripeCardholderService::Create.new(**cardholder_attrs).run
     end
 
     def cardholder_attrs

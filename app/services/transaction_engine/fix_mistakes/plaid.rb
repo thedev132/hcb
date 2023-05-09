@@ -40,7 +40,7 @@ module TransactionEngine
       end
 
       def remote_plaid_transaction_ids
-        @remote_plaid_transaction_ids ||= ::Partners::Plaid::Transactions::Get.new(transaction_ids_attrs).run.map(&:transaction_id)
+        @remote_plaid_transaction_ids ||= ::Partners::Plaid::Transactions::Get.new(**transaction_ids_attrs).run.map(&:transaction_id)
       end
 
       def transaction_ids_attrs
