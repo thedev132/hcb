@@ -486,7 +486,7 @@ GEM
     pg_search (2.3.6)
       activerecord (>= 5.2)
       activesupport (>= 5.2)
-    phonelib (0.6.58)
+    phonelib (0.8.1)
     plaid (6.3.1)
       faraday
       faraday_middleware
