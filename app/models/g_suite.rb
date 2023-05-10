@@ -94,6 +94,10 @@ class GSuite < ApplicationRecord
     "https://nslookup.io/dns-records/#{domain}"
   end
 
+  def subdomain
+    domain.split(".")[0..-3].join(".")
+  end
+
   private
 
   def clean_up_verification_key

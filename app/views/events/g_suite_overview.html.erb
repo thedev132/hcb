@@ -85,7 +85,13 @@
               </thead>
               <tbody>
               <tr class="shade-neutral">
-                <td>@ <span class="muted">or leave blank</span></td>
+                <td>
+                  <% if @g_suite.subdomain %>
+                    <%= @g_suite.subdomain %>
+                  <% else %>
+                    @ <span class="muted">or leave blank</span>
+                  <% end %>
+                </td>
                 <td>3600</td>
                 <td>TXT</td>
                 <td>1</td>
@@ -110,35 +116,65 @@
                 </tr>
               <% end %>
               <tr class="shade-neutral">
-                <td>@ <span class="muted">or leave blank</span></td>
+                <td>
+                  <% if @g_suite.subdomain %>
+                    <%= @g_suite.subdomain %>
+                  <% else %>
+                    @ <span class="muted">or leave blank</span>
+                  <% end %>
+                </td>
                 <td>3600</td>
                 <td>MX</td>
                 <td>1</td>
                 <td>ASPMX.L.GOOGLE.COM.</td>
               </tr>
               <tr>
-                <td>@ <span class="muted">or leave blank</span></td>
+                <td>
+                  <% if @g_suite.subdomain %>
+                    <%= @g_suite.subdomain %>
+                  <% else %>
+                    @ <span class="muted">or leave blank</span>
+                  <% end %>
+                </td>
                 <td>3600</td>
                 <td>MX</td>
                 <td>5</td>
                 <td>ALT1.ASPMX.L.GOOGLE.COM.</td>
               </tr>
               <tr class="shade-neutral">
-                <td>@ <span class="muted">or leave blank</span></td>
+                <td>
+                  <% if @g_suite.subdomain %>
+                    <%= @g_suite.subdomain %>
+                  <% else %>
+                    @ <span class="muted">or leave blank</span>
+                  <% end %>
+                </td>
                 <td>3600</td>
                 <td>MX</td>
                 <td>5</td>
                 <td>ALT2.ASPMX.L.GOOGLE.COM.</td>
               </tr>
               <tr>
-                <td>@ <span class="muted">or leave blank</span></td>
+                <td>
+                  <% if @g_suite.subdomain %>
+                    <%= @g_suite.subdomain %>
+                  <% else %>
+                    @ <span class="muted">or leave blank</span>
+                  <% end %>
+                </td>
                 <td>3600</td>
                 <td>MX</td>
                 <td>10</td>
                 <td>ALT3.ASPMX.L.GOOGLE.COM.</td>
               </tr>
               <tr class="shade-neutral">
-                <td>@ <span class="muted">or leave blank</span></td>
+                <td>
+                  <% if @g_suite.subdomain %>
+                    <%= @g_suite.subdomain %>
+                  <% else %>
+                    @ <span class="muted">or leave blank</span>
+                  <% end %>
+                </td>
                 <td>3600</td>
                 <td>MX</td>
                 <td>10</td>
