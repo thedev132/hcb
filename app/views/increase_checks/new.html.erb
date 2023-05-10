@@ -72,7 +72,7 @@
           <div class="flex flex-column">
             <%= form.number_field :amount,
               placeholder: "500.00",
-              value: (@check.amount.nil? ? nil : (@check.amount.to_f / 100)),
+              value: (@check.amount.nil? ? nil : ("%.2f" % (@check.amount.to_f / 100))),
               disabled: (@event.balance <= 0 || @event.demo_mode?),
               step: 0.01,
               min: 1,
