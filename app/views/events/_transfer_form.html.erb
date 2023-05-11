@@ -1,12 +1,4 @@
 <%= form_with(local: true) do |form| %>
-  <% if @event || params[:event_id] %>
-    <%= form.hidden_field :event_id, value: @event&.id || params[:event_id] %>
-  <% else %>
-    <fieldset>
-      <legend class="heading h2 pt2 pb2">Which project?</legend>
-      <%= form.select :event_id, current_user.events.not_demo_mode.pluck(:name, :id) %>
-    </fieldset>
-  <% end %>
   <fieldset>
     <legend class="heading h2 pt2 pb2">What type of transfer?</legend>
     <div class="field field--options fit">
@@ -21,10 +13,12 @@
         <strong>Mailed check</strong>
       <% end %>
 
-      <%= link_to paypal_transfers_airtable_form_url(embed: false, event: @event, user: @current_user), class: "text-decoration-none btn--form-option" do %>
+      <%= link_to (paypal_transfers_airtable_form_url(embed: false, event: @event, user: @current_user) unless @event.demo_mode?), class: "text-decoration-none btn--form-option #{"btn--form-option--disabled" if @event.demo_mode?}", disabled: true do %>
         <%= inline_icon "paypal", size: 28 %>
         <strong>PayPal</strong>
-        <%# TODO: add subtitle with PayPal fee amount %>
+        <% if @event.demo_mode? %>
+          <small>Not available in Playground Mode</small>
+        <% end %>
       <% end %>
 
       <%= link_to new_disbursement_path(source_event_id: @event), class: "text-decoration-none btn--form-option" do %>
@@ -35,7 +29,4 @@
     </div>
   </fieldset>
 
-  <% if @event&.demo_mode? %>
-    <%= blankslate "Transfers unavailable in Playground Mode" %>
-  <% end %>
 <% end %>
