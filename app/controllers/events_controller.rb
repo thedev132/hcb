@@ -329,7 +329,7 @@ class EventsController < ApplicationController
     # to `q`. This following line retains backwards compatibility.
     params[:q] ||= params[:search]
 
-    relation = @event.donations.not_pending
+    relation = @event.donations.not_pending.includes(:recurring_donation)
 
     @stats = {
       # Amount we already deposited + partial amount that was deposit for in transit transactions
@@ -346,7 +346,7 @@ class EventsController < ApplicationController
 
     @donations = relation.order(created_at: :desc)
 
-    @recurring_donations = @event.recurring_donations.active.order(created_at: :desc)
+    @recurring_donations = @event.recurring_donations.includes(:donations).active.order(created_at: :desc)
 
     if helpers.show_mock_data?
       @donations = []

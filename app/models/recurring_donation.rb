@@ -115,7 +115,11 @@ class RecurringDonation < ApplicationRecord
   end
 
   def total_donated
-    donations.sum(:amount)
+    if donations.loaded?
+      donations.records.sum(&:amount)
+    else
+      donations.sum(:amount)
+    end
   end
 
   private
