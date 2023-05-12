@@ -69,17 +69,15 @@
           <% end %>
         <% end %>
 
-        <% if @show_event_form %>
-          <a href="https://hackclub.com/bank/apply/?userEmail=<%= current_user.email %>&firstName=<%= current_user.first_name %>&lastName=<%= current_user.last_name %>&returningUser=Yes,%20I%20have%20used%20Hack%20Club%20Bank%20before&userPhone=<%= current_user.phone_number %>">
-            <li class="card card--hover bold brand-sans flex items-center justify-center align-center h-100" style="max-width: 90vw">
-              <div class="center">
-                <div class="pop success mx-auto" style="display: flex; margin-bottom: 4px;">
-                  <%= inline_icon "plus", size: 28 %>
-                </div>
-                New Project
+        <%= link_to "https://hackclub.com/bank/apply/?#{URI.encode_www_form(userEmail: current_user.email, firstName: current_user.first_name, lastName: current_user.last_name, returningUser: "Yes, I have used Hack Club Bank before", userPhone: current_user.phone_number)}" do %>
+          <li class="card card--hover bold brand-sans flex items-center justify-center align-center h-100" style="max-width: 90vw">
+            <div class="center">
+              <div class="pop success mx-auto" style="display: flex; margin-bottom: 4px;">
+                <%= inline_icon "plus", size: 28 %>
               </div>
-            </li>
-          </a>
+              New Project
+            </div>
+          </li>
         <% end %>
       </ul>
 
