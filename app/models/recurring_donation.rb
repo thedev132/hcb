@@ -57,6 +57,8 @@ class RecurringDonation < ApplicationRecord
                           conditions: -> { where(stripe_status: "active") },
                           message: ->(recurring_donation, data) { "You're already donating to #{recurring_donation.event.name}." }
 
+  # TODO: suffix: false is the default setting but we are explicitly passing it here
+  # to silence a Ruby 3 warning in Ruby 2.7. We can remove it once Ruby 3 upgrade is complete
   enum :stripe_status, {
     active: "active",
     past_due: "past_due",
@@ -65,7 +67,7 @@ class RecurringDonation < ApplicationRecord
     incomplete: "incomplete",
     incomplete_expired: "incomplete_expired",
     trialing: "trialing" # y'know... free trials... for donations
-  }
+  }, suffix: false
 
   def stripe_subscription
     @stripe_subscription ||= StripeService::Subscription.retrieve(
