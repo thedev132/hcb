@@ -23,11 +23,10 @@ class CanonicalPendingTransactionsController < ApplicationController
 
     authorize @canonical_pending_transaction
 
-    attrs = {
+    ::CanonicalPendingTransactionService::SetCustomMemo.new(
       canonical_pending_transaction_id: @canonical_pending_transaction.id,
       custom_memo: params[:canonical_pending_transaction][:custom_memo]
-    }
-    ::CanonicalPendingTransactionService::SetCustomMemo.new(attrs).run
+    ).run
 
     if @current_user.admin?
       @canonical_pending_transaction.update(params.require(:canonical_pending_transaction).permit(:fronted, :fee_waived))

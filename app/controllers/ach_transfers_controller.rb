@@ -47,7 +47,7 @@ class AchTransfersController < ApplicationController
   def create
     authorize @event, policy_class: AchTransferPolicy
 
-    attrs = {
+    ach_transfer = AchTransferService::Create.new(
       event_id: @event.id,
       routing_number: ach_transfer_params[:routing_number],
       account_number: ach_transfer_params[:account_number],
@@ -57,8 +57,7 @@ class AchTransfersController < ApplicationController
       amount_cents: (ach_transfer_params[:amount].to_f * 100).to_i,
       payment_for: ach_transfer_params[:payment_for],
       current_user: current_user
-    }
-    ach_transfer = AchTransferService::Create.new(attrs).run
+    ).run
 
     flash[:success] = "ACH Transfer successfully submitted."
 

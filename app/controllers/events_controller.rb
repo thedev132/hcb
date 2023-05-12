@@ -302,12 +302,11 @@ class EventsController < ApplicationController
   def g_suite_create
     authorize @event
 
-    attrs = {
+    GSuiteService::Create.new(
       current_user: current_user,
       event_id: @event.id,
       domain: params[:domain]
-    }
-    GSuiteService::Create.new(attrs).run
+    ).run
 
     redirect_to event_g_suite_overview_path(event_id: @event.slug)
   rescue => e

@@ -14,17 +14,13 @@ module SystemEventService
       end
 
       def run
-        ::SystemEventService::Create.new(attrs).run
+        ::SystemEventService::Create.new(
+          name: name,
+          properties: properties
+        ).run
       end
 
       private
-
-      def attrs
-        {
-          name: name,
-          properties: properties
-        }
-      end
 
       def name
         NAME

@@ -65,14 +65,13 @@ class DisbursementsController < ApplicationController
     authorize @source_event, policy_class: DisbursementPolicy
     authorize @destination_event, policy_class: DisbursementPolicy
 
-    attrs = {
+    disbursement = DisbursementService::Create.new(
       name: disbursement_params[:name],
       destination_event_id: disbursement_params[:event_id],
       source_event_id: disbursement_params[:source_event_id],
       amount: disbursement_params[:amount],
       requested_by_id: current_user.id
-    }
-    disbursement = DisbursementService::Create.new(attrs).run
+    ).run
 
     flash[:success] = "Transfer successfully requested."
 

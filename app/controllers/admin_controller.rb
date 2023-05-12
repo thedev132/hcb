@@ -520,11 +520,10 @@ class AdminController < ApplicationController
   end
 
   def ach_approve
-    attrs = {
+    ach_transfer = AchTransferService::Approve.new(
       ach_transfer_id: params[:id],
       processor: current_user
-    }
-    ach_transfer = AchTransferService::Approve.new(attrs).run
+    ).run
 
     redirect_to ach_start_approval_admin_path(ach_transfer), flash: { success: "Success" }
   rescue => e
@@ -806,14 +805,13 @@ class AdminController < ApplicationController
   end
 
   def disbursement_create
-    attrs = {
+    ::DisbursementService::Create.new(
       source_event_id: params[:source_event_id],
       destination_event_id: params[:event_id],
       name: params[:name],
       amount: params[:amount],
       requested_by_id: current_user.id
-    }
-    ::DisbursementService::Create.new(attrs).run
+    ).run
 
     redirect_to disbursements_admin_index_path, flash: { success: "Success" }
   rescue => e
@@ -906,13 +904,12 @@ class AdminController < ApplicationController
   def invoice_mark_paid
     @invoice = Invoice.open.find(params[:id])
 
-    attrs = {
+    ::InvoiceService::MarkPaid.new(
       invoice_id: @invoice.id,
       reason: params[:reason],
       attachment: params[:attachment],
       user: current_user
-    }
-    ::InvoiceService::MarkPaid.new(attrs).run
+    ).run
 
     redirect_to invoices_admin_index_path, flash: { success: "Success" }
   end
