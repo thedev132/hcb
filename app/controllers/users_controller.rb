@@ -202,6 +202,12 @@ class UsersController < ApplicationController
     redirect_to root_path
   end
 
+  def receipt_report
+    ReceiptReportJob::Send.perform_later(current_user.id, force_send: true)
+    flash[:success] = "Receipt report generating. Check #{current_user.email}"
+    redirect_to settings_previews_path
+  end
+
   def enable_feature
     @user = current_user
     @feature = params[:feature]

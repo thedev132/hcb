@@ -55,6 +55,8 @@ Rails.application.routes.draw do
     get "receipts", to: redirect("/my/inbox")
     get "receipts/:id", to: "stripe_authorizations#receipt", as: :my_receipt
 
+    post "receipt_report", to: "users#receipt_report", as: :trigger_receipt_report
+
     get "cards", to: "static_pages#my_cards", as: :my_cards
     get "cards/shipping", to: "stripe_cards#shipping", as: :my_cards_shipping
   end

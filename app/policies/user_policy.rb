@@ -41,6 +41,10 @@ class UserPolicy < ApplicationPolicy
     user.admin? || record == user
   end
 
+  def receipt_report?
+    user.admin? || record == user
+  end
+
   def enable_feature?
     user.admin? || record == user
   end

@@ -8,6 +8,20 @@
   <%= render "settings_nav", active: "previews" %>
   <section>
     <h2 id="feature-previews">Feature previews</h2>
+    <div class="card pb0 mb3" id="weekly-receipt-email">
+      <div class="card__banner card__banner--top flex justify-between items-center feature-weekly-receipt-email">
+        <h3 class="h1 p2 my0 color-black">Receipt Report</h3>
+        <% if Flipper.enabled?(:receipt_report_2023_04_19, current_user) %>
+          <%= link_to "Disable", disable_feature_users_path(feature: :receipt_report_2023_04_19), method: :post, class: "btn bg-accent" %>
+        <% else %>
+          <%= link_to "Enable", enable_feature_users_path(feature: :receipt_report_2023_04_19), method: :post, class: "btn bg-info" %>
+        <% end %>
+      </div>
+      <p>
+        Opting into this preview will send you a weekly reminder with a list of all your missing receipts.
+      </p>
+      <%= link_to "Trigger an email for yourself", trigger_receipt_report_path, method: :post %>
+    </div>
     <div class="card pb0 mb3" id="turbo">
       <div class="card__banner card__banner--top flex justify-between items-center feature-turbo">
         <h3 class="h1 p2 my0 color-black">Turbo Async Pages</h3>

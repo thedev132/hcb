@@ -16,3 +16,8 @@
 # ActiveSupport::Inflector.inflections(:en) do |inflect|
 #   inflect.acronym "RESTful"
 # end
+
+ActiveSupport::Inflector.inflections(:en) do |inflect|
+  inflect.irregular "has", "have"
+  inflect.irregular "hasn't", "haven't"
+end
