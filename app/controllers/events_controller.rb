@@ -367,7 +367,8 @@ class EventsController < ApplicationController
           created_at: started_on,
           name: Faker::Name.name,
           recurring: rand > 0.9,
-          local_hcb_code: OpenStruct.new(hashid: "")
+          local_hcb_code: OpenStruct.new(hashid: ""),
+          hcb_code: "",
         )
         @stats[:deposited] += amount unless refunded
         @stats[:refunded] += amount if refunded
