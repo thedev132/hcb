@@ -9,6 +9,27 @@
     &.dock--mobile {
       display: none;
     }
+
+    .dock__item--selected {
+      position: relative;
+    }
+
+    .dock__item--selected::before {
+      content: '';
+      background-color: map-get($palette, primary);
+      width: 0.25rem;
+      height: 50%;
+      margin-right: 0.25rem;
+      border-radius: 999px;
+      position: absolute;
+      right: 100%;
+      top: calc(50% - 50% / 2);
+
+      @media (max-width: 84em) {
+        left: 0;
+        right: unset;
+      }
+    }
   }
 
   display: flex;
@@ -18,27 +39,6 @@
   hr {
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
-  }
-
-  .dock__item--selected {
-    position: relative;
-  }
-
-  .dock__item--selected::before {
-    content: '';
-    background-color: map-get($palette, primary);
-    width: 0.25rem;
-    height: 50%;
-    margin-right: 0.25rem;
-    border-radius: 999px;
-    position: absolute;
-    right: 100%;
-    top: calc(50% - 50% / 2);
-
-    @media (max-width: 84em) {
-      left: 0;
-      right: unset;
-    }
   }
 
   // Scroll on small phones
