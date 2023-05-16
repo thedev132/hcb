@@ -6,7 +6,6 @@ module ReceiptReportJob
       @user = User.includes(:stripe_cards).find user_id
 
       return unless force_send ||
-                    Flipper.enabled?(:receipt_report_2023_04_19, @user) ||
                     @user.receipt_report_weekly? ||
                     @user.receipt_report_monthly?
       return unless hcb_ids.any?
