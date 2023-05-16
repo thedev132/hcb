@@ -5,7 +5,10 @@ module ReceiptReportJob
     def perform(user_id, force_send: false)
       @user = User.includes(:stripe_cards).find user_id
 
-      return unless force_send || Flipper.enabled?(:receipt_report_2023_04_19, @user)
+      return unless force_send ||
+                    Flipper.enabled?(:receipt_report_2023_04_19, @user) ||
+                    @user.receipt_report_weekly? ||
+                    @user.receipt_report_monthly?
       return unless hcb_ids.any?
 
       mailer = ReceiptableMailer.with user_id: user_id,

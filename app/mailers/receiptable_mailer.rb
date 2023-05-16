@@ -7,11 +7,13 @@ class ReceiptableMailer < ApplicationMailer
   def receipt_report
     @user = User.includes(:stripe_cards).find params[:user_id]
 
-    @feature_enabled = Flipper.enabled?(:receipt_report_2023_04_19, @user)
+    @feature_enabled = Flipper.enabled?(:receipt_report_2023_04_19, @user) ||
+                       @user.receipt_report_weekly? ||
+                       @user.receipt_report_monthly?
 
     @hcb_ids = params[:hcb_ids]
     @hcb_codes = HcbCode.where(id: @hcb_ids)
-    @subject = "[WEEKLY] Missing #{"receipt".pluralize(@hcb_ids.size)} on Hack Club Bank"
+    @subject = "[#{@user.receipt_report_option.upcase}] Missing #{"receipt".pluralize(@hcb_ids.size)} on Hack Club Bank"
 
     @show_flavor_text = Flipper.enabled?(:flavored_receipt_report_2023_05_12, @user)
     @flavor_text = flavor_text.sample if @show_flavor_text

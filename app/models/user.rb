@@ -13,6 +13,7 @@
 #  phone_number             :text
 #  phone_number_verified    :boolean          default(FALSE)
 #  pretend_is_not_admin     :boolean          default(FALSE), not null
+#  receipt_report_option    :integer          default("none"), not null
 #  running_balance_enabled  :boolean          default(FALSE), not null
 #  seasonal_themes_enabled  :boolean          default(TRUE), not null
 #  session_duration_seconds :integer          default(2592000), not null
@@ -42,6 +43,12 @@ class User < ApplicationRecord
 
   friendly_id :slug_candidates, use: :slugged
   scope :admin, -> { where.not(admin_at: nil) }
+
+  enum :receipt_report_option, {
+    none: 0,
+    weekly: 1,
+    monthly: 2,
+  }, prefix: :receipt_report
 
   has_many :login_codes
   has_many :login_tokens

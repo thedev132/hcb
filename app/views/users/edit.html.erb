@@ -81,6 +81,17 @@
         <%= form.label :session_duration_seconds, "Stay signed in for" %>
         <%= form.select :session_duration_seconds, SessionsHelper::SESSION_DURATION_OPTIONS.to_a %>
         </div>
+        <% unless @onboarding %>
+        <fieldset>
+        <legend class="heading h2 pt2" id="receipt-reports">Receipt reports</legend>
+        <p class="h5 muted mt1 mb2">
+            Get a regular report of what receipts are awaiting upload on your account.
+        </p>
+        <%= form.label :receipt_report_option, "Get a receipt upload report via email" %>
+        <%= form.select :receipt_report_option,
+            (User.receipt_report_options.map { |k, v| [k.humanize, k] }) %>
+        </fieldset>
+        <% end %>
         <fieldset>
         <legend class="heading h2 pt2">Share usage data with us</legend>
         <p class="h5 muted mt1 mb2">

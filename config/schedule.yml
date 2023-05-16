@@ -103,9 +103,14 @@ partnered_signup_nightly_job:
   class: "PartneredSignupJob::Nightly"
   queue: "default"
 
-receipt_report_job:
+receipt_report_weekly_job:
   cron: "0 0 * * MON" # run first day of each week
   class: "ReceiptReportJob::Weekly"
+  queue: "default"
+
+receipt_report_monthly_job:
+  cron: "0 0 1 * *" # run first day of each month
+  class: "ReceiptReportJob::Monthly"
   queue: "default"
 
 stripe_card_nightly_job:
