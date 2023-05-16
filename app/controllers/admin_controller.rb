@@ -165,7 +165,7 @@ class AdminController < ApplicationController
       redirect_to partnered_signups_admin_index_path and return
     end
   rescue => e
-    Airbrake.notify(e)
+    notify_airbrake(e)
 
     # Something went wrong
     flash[:error] = "Something went wrong. #{e}"

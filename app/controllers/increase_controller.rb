@@ -24,7 +24,7 @@ class IncreaseController < ApplicationController
     end
 
   rescue Increase::WebhookSignatureVerificationError => e
-    Airbrake.notify(e)
+    notify_airbrake(e)
 
     render json: { error: "Webhook signature verification failed" }, status: :bad_request
   end

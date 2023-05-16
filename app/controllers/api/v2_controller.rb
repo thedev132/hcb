@@ -51,7 +51,7 @@ module Api
         redirect_to root_path
 
       rescue => e
-        Airbrake.notify(e) unless e.is_a?(UnauthorizedError)
+        notify_airbrake(e) unless e.is_a?(UnauthorizedError)
         puts e
         redirect_to auth_users_url(email: contract[:user_email])
       end

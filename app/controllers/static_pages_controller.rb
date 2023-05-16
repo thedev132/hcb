@@ -126,7 +126,7 @@ class StaticPagesController < ApplicationController
     redirect_back
 
   rescue => e
-    Airbrake.notify(e)
+    notify_airbrake(e)
 
     flash[:error] = e.message
     return redirect_to params[:redirect_url] if params[:redirect_url]

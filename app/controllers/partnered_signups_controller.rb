@@ -36,7 +36,7 @@ class PartneredSignupsController < ApplicationController
     # Send webhook to let Partner know that the Connect from has been submitted
     ::PartneredSignupJob::DeliverWebhook.perform_later(@partnered_signup.id)
   rescue => e
-    Airbrake.notify(e)
+    notify_airbrake(e)
     render :edit, status: :unprocessable_entity
   end
 
