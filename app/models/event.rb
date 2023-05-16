@@ -6,6 +6,7 @@
 #
 #  id                              :bigint           not null, primary key
 #  aasm_state                      :string
+#  activated_at                    :datetime
 #  address                         :text
 #  beta_features_enabled           :boolean
 #  can_front_balance               :boolean          default(TRUE), not null
@@ -322,6 +323,10 @@ class Event < ApplicationRecord
   validates_uniqueness_of_without_deleted :slug
 
   after_save :update_slug_history
+
+  before_update if: -> { demo_mode_changed?(to: false) } do
+    self.activated_at = Time.now
+  end
 
   CUSTOM_SORT = Arel.sql(
     "CASE WHEN id = 183 THEN '1'"\

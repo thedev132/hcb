@@ -204,7 +204,7 @@ class AdminController < ApplicationController
     @page = params[:page] || 1
     @per = params[:per] || 100
 
-    @events = filtered_events.page(@page).per(@per).reorder("events.created_at desc")
+    @events = filtered_events.page(@page).per(@per).reorder(Arel.sql("COALESCE(events.activated_at, events.created_at) desc"))
     @count = @events.count
 
     render layout: "admin"
