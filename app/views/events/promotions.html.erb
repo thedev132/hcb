@@ -92,17 +92,19 @@
 
 <div class="card mb3" id="wallets">
   <div class="card__banner card__banner--top flex justify-between items-center promo-wallets">
-    <h3 class="h1 p2 my0 color-black">Wallets (beta)</h3>
-    <%= link_to "Out of stock!",
-                @perks_available ? airtable_form("shrx9Bpv5UKhszWlM", { "Organization Name" => @event.name, "Recipient Name" => current_user.full_name, "Login Email" => current_user.email }, ["Organization Name", "Login Email"]) : root_path,
-                class: "btn bg-success mr1 #{'disabled' unless @perks_available}",
-                target: :_blank, disabled: true %>
+    <h3 class="h1 p2 my0 color-black">Wallets</h3>
+    <%= link_to "Request",
+                organizer_signed_in? ? "https://hack.af/hcb-wallets?prefill_Organization%20Name=#{@event.name}&prefill_Recipient%20Name=#{current_user.full_name}&prefill_Login%20Email=#{current_user.email}" : root_path,
+                class: "btn bg-success mr1 #{'disabled' unless organizer_signed_in?}",
+                target: :_blank %>
   </div>
 
   <p class="mb0">
-    The days of needing thick leather wallets are coming to an end. Have physical Hack Club Bank cards, but not sure how to keep them?
-    We'll ship you a <a href="https://hack.af/minimalist-wallet" target="_blank">minimalist wallet</a>—durable with a slim form factor
-    designed to carry the basic necessities. Each wallet is individually printed and personally shipped out by the Bank team (while supplies last!).
+    The days of needing thick leather wallets are coming to an end. Have physical Hack Club Bank cards, but not sure how
+    to keep them?
+    We'll ship you a <a href="https://hack.af/minimalist-wallet" target="_blank">minimalist wallet</a>—durable with a
+    slim form factor designed to carry the basic necessities. Each wallet is individually printed and personally shipped
+    out by the Bank team.
   </p>
 </div>
 
