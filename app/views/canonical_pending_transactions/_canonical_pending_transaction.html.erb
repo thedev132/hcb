@@ -161,8 +161,8 @@
         <%= form.file_field :file, id: "file_#{pt.local_hcb_code.hashid}", multiple: true, required: true, class: "display-none", data: { action: "change->form#submit", "file-drop-target" => "fileInput" } %>
         <%= form.hidden_field :redirect_url, value: my_inbox_path %>
         <%= form.hidden_field :show_link, value: true %>
-        <%= form.hidden_field :receiptable_type, value: ct.local_hcb_code.class %>
-        <%= form.hidden_field :receiptable_id, value: ct.local_hcb_code.id %>
+        <%= form.hidden_field :receiptable_type, value: pt.local_hcb_code.class %>
+        <%= form.hidden_field :receiptable_id, value: pt.local_hcb_code.id %>
         <%= form.hidden_field :upload_method, value: "receipts_page", data: { "file-drop-target" => "uploadMethod" } %>
         <div class="btn-group">
           <%= form.label "file_#{pt.local_hcb_code.hashid}", class: "btn", style: "font-size: 0.875rem; font-weight: 600; padding: 0.25rem 1rem;" do %>
