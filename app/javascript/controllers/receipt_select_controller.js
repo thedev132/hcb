@@ -4,13 +4,10 @@ export default class extends Controller {
   static targets = [ "receipt", "select", "confirm" ]
   static values = { selected: String }
 
-  connect() {
-    console.log("Hello, Stimulus!", this.element)
-  }
-
   select(e) {
     const prevReceiptId = this.selectElement.value + "";
-    if (prevReceiptId?.length) document.querySelector(`[data-receipt-id="${prevReceiptId}"]`).classList.remove("receipt-selected");
+
+    document.querySelectorAll(".receipt-selected").forEach(el => el.classList.remove("receipt-selected"));
 
     const receiptId = e.currentTarget.getAttribute("data-receipt-id");
 

@@ -2,10 +2,62 @@ import { Controller } from '@hotwired/stimulus'
 
 let dropzone
 
+function postNavigate (path, data) {
+  const form = document.createElement('form')
+  form.method = 'POST'
+  form.action = path
+
+  for (const key in data) {
+    const input = document.createElement('input')
+    input.type = 'hidden'
+    input.name = key
+    input.value = data[key]
+    form.appendChild(input)
+  }
+
+  document.body.appendChild(form)
+  form.submit()
+}
+
+function extractId (dataTransfer) {
+  let receiptId
+
+  try {
+    const html = dataTransfer.getData('text/html')
+
+    const parser = new DOMParser()
+    const doc = parser.parseFromString(html, 'text/html')
+    const imgTag = doc.querySelector('img')
+
+    receiptId = imgTag.getAttribute('data-receipt-id')
+  } catch (err) {
+    console.error(err)
+  }
+  
+  if (!receiptId) {
+    try {
+      const uri = dataTransfer.getData('text/uri-list')
+      const { pathname } = new URL(uri)
+
+      const linkElement = document.querySelector(`a[href~="${pathname}"]:has(img)`)
+      const imageElement = linkElement.querySelector('img')
+
+      receiptId = imageElement.getAttribute('data-receipt-id')
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
+  return receiptId
+}
+
 export default class extends Controller {
   static targets = ['fileInput', 'dropzone', 'form', 'uploadMethod']
   static values = {
-    title: String
+    title: String,
+    linking: String,
+    receiptable: String,
+    modal: String
   }
 
   initialize() {
@@ -19,11 +71,30 @@ export default class extends Controller {
     e.preventDefault()
   }
 
-  drop(e) {
+  async drop(e) {
     e.preventDefault()
 
     this.counter = 0
     this.hideDropzone()
+
+    if (this.linkingValue == "true") {
+
+      const receiptId = extractId(e.dataTransfer)
+
+      const [receiptableType, receiptableId] = this.receiptableValue.split(':')
+      const linkPath = this.modalValue;
+
+      if (receiptId && receiptableType && receiptableId) {
+        return postNavigate(linkPath, {
+          receipt_id: receiptId,
+          receiptable_type: receiptableType,
+          receiptable_id: receiptableId,
+          show_link: true,
+          authenticity_token: document.querySelector('form[data-controller="receipt-select"] > input[name="authenticity_token"]').value // this is messy, there's probably a better way to do this
+        });
+      }
+
+    }
 
     this.fileInputTarget.files = e.dataTransfer.files
     if (!this.fileInputTarget.files.length) return

@@ -1,32 +1,31 @@
 <div class="<%= "mb3" if defined?(include_spacing) %>">
-
-  <div class="card <%= "mt2" if defined?(include_spacing) %> flex flex-column<%= " pt0" if defined?(show_banner) && defined?(receiptable) && (receiptable.receipts.any? || receiptable.no_or_lost_receipt?) %>">
-    <% if defined?(show_banner) %>
-      <% if defined?(receiptable) && receiptable.receipts.any? %>
-        <p class="card__banner bg-success white bold flex items-center mt0 mb0">
-          <%= inline_icon "checkmark", size: 24, class: "mr2" %>
-          <%= pluralize receiptable.receipts.count, "receipt" %>
-          added
-        </p>
-      <% elsif defined?(receiptable) && receiptable.no_or_lost_receipt? %>
-        <p class="card__banner bg-muted white bold flex items-center mt0 mb0">
-          <%= inline_icon "view-close", size: 24, class: "mr2" %>
-          Marked no/lost receipt
-        </p>
+  <%= form_with model: nil, url: upload_receipts_path, method: :post, class: "flex flex-column justify-center mt2#{" my-inbox-dropzone" if defined?(restricted_dropzone)}", data: {
+        controller: "file-drop form",
+        action: "
+          dragover#{"@window" unless defined?(restricted_dropzone)}->file-drop#dragover
+          drop#{"@window" unless defined?(restricted_dropzone)}->file-drop#drop
+          dragenter#{"@window" unless defined?(restricted_dropzone)}->file-drop#dragenter
+          dragleave#{"@window" unless defined?(restricted_dropzone)}->file-drop#dragleave
+        ",
+        "file-drop-target" => ("dropzone" if defined?(restricted_dropzone)),
+        "file-drop-title-value" => defined?(restricted_dropzone) ? "Drop to add to Receipt Bin." : "Drop to instantly add a receipt."
+      }.compact do |form| %>
+    <div class="card <%= "mt2" if defined?(include_spacing) %> flex flex-column<%= " pt0" if defined?(show_banner) && defined?(receiptable) && (receiptable.receipts.any? || receiptable.no_or_lost_receipt?) %>">
+      <% if defined?(show_banner) %>
+        <% if defined?(receiptable) && receiptable.receipts.any? %>
+          <p class="card__banner bg-success white bold flex items-center mt0 mb0">
+            <%= inline_icon "checkmark", size: 24, class: "mr2" %>
+            <%= pluralize receiptable.receipts.count, "receipt" %>
+            added
+          </p>
+        <% elsif defined?(receiptable) && receiptable.no_or_lost_receipt? %>
+          <p class="card__banner bg-muted white bold flex items-center mt0 mb0">
+            <%= inline_icon "view-close", size: 24, class: "mr2" %>
+            Marked no/lost receipt
+          </p>
+        <% end %>
       <% end %>
-    <% end %>
-    <div class="container container--md">
-      <%= form_with model: nil, url: upload_receipts_path, method: :post, class: "flex flex-column justify-center mt2#{" my-inbox-dropzone" if defined?(restricted_dropzone)}", data: {
-            controller: "file-drop form",
-            action: "
-              dragover#{"@window" unless defined?(restricted_dropzone)}->file-drop#dragover
-              drop#{"@window" unless defined?(restricted_dropzone)}->file-drop#drop
-              dragenter#{"@window" unless defined?(restricted_dropzone)}->file-drop#dragenter
-              dragleave#{"@window" unless defined?(restricted_dropzone)}->file-drop#dragleave
-            ",
-            "file-drop-target" => ("dropzone" if defined?(restricted_dropzone)),
-            "file-drop-title-value" => defined?(restricted_dropzone) ? "Drop to add to Receipt Bin." : "Drop to instantly add a receipt."
-          }.compact do |form| %>
+      <div class="container container--md">
 
         <%= form.hidden_field :redirect_url, value: url_for(only_path: false) %>
         <%= (form.hidden_field :receiptable_type, value: receiptable.class) if defined?(receiptable) %>
@@ -64,9 +63,9 @@
         </span>
 
         <p class="center muted">Or drag & drop your receipt here</p>
-      <% end %>
+      </div>
     </div>
-  </div>
+  <% end %>
 
   <% if defined?(receiptable) && receiptable.missing_receipt? %>
     <div class="flex muted justify-end items-center mt1">

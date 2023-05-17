@@ -5,7 +5,6 @@
   }
 
   &.my-inbox-dropzone > div {
-    background-color: rgba($snow, 0.8);
     animation: border-dance 1s infinite linear;
     background-image: linear-gradient(90deg, $orange 50%, transparent 50%), linear-gradient(90deg, $orange 50%, transparent 50%), linear-gradient(0deg, $orange 50%, transparent 50%), linear-gradient(0deg, $orange 50%, transparent 50%);
     background-repeat: repeat-x, repeat-x, repeat-y, repeat-y;

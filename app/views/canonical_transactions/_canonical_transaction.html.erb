@@ -4,6 +4,9 @@
   <% if defined?(receipt_upload_button) %>
     data-controller="file-drop"
     data-file-drop-target="dropzone"
+    data-file-drop-linking-value="true"
+    data-file-drop-modal-value="<%= link_receipts_path %>"
+    data-file-drop-receiptable-value="HcbCode:<%= ct.local_hcb_code.id %>"
     data-action="
       dragover->file-drop#dragover
       drop->file-drop#drop
@@ -179,11 +182,26 @@
         <%= form.hidden_field :receiptable_type, value: ct.local_hcb_code.class %>
         <%= form.hidden_field :receiptable_id, value: ct.local_hcb_code.id %>
         <%= form.hidden_field :upload_method, value: "receipts_page", data: { "file-drop-target" => "uploadMethod" } %>
-        <%= form.label "file_#{ct.local_hcb_code.hashid}", class: "btn", style: "font-size: 0.875rem; font-weight: 600; padding: 0.25rem 1rem;" do %>
-          <%= inline_icon "plus" %>
-          Add a receipt
-        <% end %>
+        <div class="btn-group">
+          <%= form.label "file_#{ct.local_hcb_code.hashid}", class: "btn", style: "font-size: 0.875rem; font-weight: 600; padding: 0.25rem 1rem;" do %>
+            <%= inline_icon "share" %>
+            Upload
+          <% end %>
+
+          <%= link_to my_receipts_upload_path(current_user), class: "btn bg-primary", style: "font-size: 0.875rem; font-weight: 600; padding: 0.25rem 1rem;", data: { behavior: "modal_trigger", modal: "link_receipt" } do %>
+            <%= inline_icon "payment-docs" %>
+            <span>Select</span>
+          <% end %>
       <% end %>
     </td>
+
+    <% if Flipper.enabled?(:receipt_bin_2023_04_07, current_user) %>
+      <section class="modal modal--scroll bg-snow" data-behavior="modal" role="dialog" id="link_receipt">
+        <%= modal_header "Select receipt" %>
+        <%= async_frame_to link_modal_receipts_path(receiptable_type: "HcbCode", receiptable_id: ct.local_hcb_code.id), as: :span do %>
+          <strong>Loading...</strong>
+        <% end %>
+      </section>
+    <% end %>
   <% end %>
 </tr>

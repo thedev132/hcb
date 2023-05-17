@@ -21,13 +21,17 @@
   <% if defined?(link_to_file) %>
     <%= link_to file_path, target: "_blank" do %>
       <span style="display: inline-grid; border-radius: 0.5rem;">
-        <%= image_tag receipt.preview, width: 256, height: 256, class: "card p0", style: "object-fit: contain; width: auto; height: auto; max-width: 100%; max-height: 256px;" if receipt.preview %>
+        <%= image_tag receipt.preview, width: 256, height: 256, class: "card p0", style: "object-fit: contain; width: auto; height: auto; max-width: 100%; max-height: 256px;", data: {
+              "receipt-id" => receipt.id
+            } if receipt.preview %>
       </span>
     <% end %>
   <% else %>
     <span>
       <span style="display: inline-grid; border-radius: 0.5rem;">
-        <%= image_tag receipt.preview, width: 256, height: 256, class: "card p0", style: "object-fit: contain; width: auto; height: auto; max-width: 100%; max-height: 256px; user-drag: none; -webkit-user-drag: none; user-select: none; -moz-user-select: none;" if receipt.preview %>
+        <%= image_tag receipt.preview, width: 256, height: 256, class: "card p0", style: "object-fit: contain; width: auto; height: auto; max-width: 100%; max-height: 256px; user-drag: none; -webkit-user-drag: none; user-select: none; -moz-user-select: none;", data: {
+              "receipt-id" => receipt.id
+            } if receipt.preview %>
       </span>
     </span>
   <% end %>
