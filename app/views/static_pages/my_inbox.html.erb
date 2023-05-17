@@ -12,7 +12,7 @@
   <h2>
     Receipt Bin
   </h2>
-
+  <!--
   <div class="<%= "mb3" unless @receipts.size == 0 %>">
     <%= form_with model: nil, url: my_receipts_upload_path(current_user), class: "flex flex-column justify-center my-inbox-dropzone", data: {
           controller: "file-drop form",
@@ -57,6 +57,12 @@
       </div>
     <% end %>
   </div>
+  -->
+
+  <%= render partial: "receipts/form_v3", locals: {
+        upload_method: "receipt_center",
+        restricted_dropzone: true
+      } %>
 
   <% if @receipts.size == 0 %>
     <%= blankslate "Receipt Bin is empty." %>

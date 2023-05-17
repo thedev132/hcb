@@ -66,10 +66,7 @@
 <h2>Receipts</h2>
 <section class="grid grid--split mt2 mb3">
   <%= render @stripe_authorization.receipts %>
-  <%= render "receipts/upload", receiptable: @stripe_authorization %>
 </section>
-<% else %>
-  <%= render "receipts/upload", receiptable: @stripe_authorization %>
 <% end %>
 
 <% if organizer_signed_in? %>

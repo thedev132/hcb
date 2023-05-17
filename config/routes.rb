@@ -60,8 +60,18 @@ Rails.application.routes.draw do
     get "cards", to: "static_pages#my_cards", as: :my_cards
     get "cards/shipping", to: "stripe_cards#shipping", as: :my_cards_shipping
   end
-  post "receipts/upload", to: "receipts#upload"
-  delete "receipts/destroy", to: "receipts#destroy"
+
+  resources :receipts, only: [] do
+    member do
+      delete "destroy", to: "receipts#destroy"
+    end
+
+    collection do
+      post "link", to: "receipts#link"
+      post "upload", to: "receipts#upload"
+      get "link_modal", to: "receipts#link_modal"
+    end
+  end
 
   post "receiptable/:receiptable_type/:receiptable_id/mark_no_or_lost", to: "receiptables#mark_no_or_lost", as: :receiptable_mark_no_or_lost
 
@@ -300,10 +310,7 @@ Rails.application.routes.draw do
   resources :hcb_codes, path: "/hcb", only: [:show, :edit, :update] do
     member do
       post "comment"
-      post "receipt"
       get "attach_receipt"
-      get "link_receipt", to: "hcb_codes#link_receipt_modal", as: :link_receipt_modal
-      post "link_receipt"
       get "memo_frame"
       get "dispute"
       post "toggle_tag/:tag_id", to: "hcb_codes#toggle_tag", as: :toggle_tag

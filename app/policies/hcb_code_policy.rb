@@ -21,10 +21,6 @@ class HcbCodePolicy < ApplicationPolicy
     user&.admin? || present_in_events?
   end
 
-  def receipt?
-    user&.admin? || present_in_events?
-  end
-
   def attach_receipt?
     user&.admin? || present_in_events?
   end
@@ -43,11 +39,6 @@ class HcbCodePolicy < ApplicationPolicy
 
   def link_receipt_modal?
     user&.admin? || present_in_events?
-  end
-
-  def link_receipt?
-    user&.admin? || (present_in_events? && record.receipt.user_id == user.id)
-
   end
 
   private

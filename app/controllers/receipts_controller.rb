@@ -4,27 +4,7 @@ class ReceiptsController < ApplicationController
   skip_after_action :verify_authorized, only: :upload # do not force pundit
   skip_before_action :signed_in_user, only: :upload
   before_action :set_paper_trail_whodunnit, only: :upload
-  before_action :find_receiptable, only: [:upload, :mark_no_or_lost]
-
-  def upload
-    @receipt = @receiptable.receipts.create(params[:receipts])
-    @receipt = Receipt.new(receipt_params)
-    @receipt.user_id = current_user&.id || @receiptable.user.id
-
-    @receipt.receiptable.marked_no_or_lost_receipt_at = nil
-
-    if @receipt.save && @receipt.receiptable.save
-      flash[:success] = "Added receipt!"
-      if current_user
-        redirect_to @receiptable
-      else
-        redirect_back(fallback_location: @receiptable)
-      end
-    else
-      flash[:error] = "Failed to upload receipt"
-      redirect_back(fallback_location: @receiptable)
-    end
-  end
+  before_action :find_receiptable, only: [:upload, :link, :link_modal]
 
   def destroy
     @receipt = Receipt.find(params[:id])
@@ -40,15 +20,80 @@ class ReceiptsController < ApplicationController
     end
   end
 
-  private
+  def link
+    params.require(:receipt_id)
+    params.require(:receiptable_type)
+    params.require(:receiptable_id)
 
-  def receipt_params
-    params.require(:receipt).permit(:file, :uploader, :receiptable_type, :receiptable_id)
+    @receipt = Receipt.find(params[:receipt_id])
+
+    authorize @receipt
+    authorize @receiptable, policy_class: ReceiptablePolicy
+
+    @receipt.update!(receiptable: @receiptable)
+
+    flash[:success] = "Receipt added!"
+    redirect_back fallback_location: @receiptable.try(:hcb_code) || @receiptable
   end
 
+  def link_modal
+    @receipts = Receipt.where(user: current_user, receiptable: nil)
+
+    authorize @receiptable, policy_class: ReceiptablePolicy
+
+    render :link_modal, layout: false
+  end
+
+
+  def upload
+    params.require(:file)
+    params.require(:upload_method)
+
+    begin
+      if @receiptable
+        authorize @receiptable, policy_class: ReceiptablePolicy
+      end
+    rescue Pundit::NotAuthorizedError
+      @has_valid_secret = @receiptable.instance_of?(HcbCode) && HcbCodeService::Receipt::SigningEndpoint.new.valid_url?(@receiptable.hashid, params[:s])
+
+      raise unless @has_valid_secret
+    end
+
+    if params[:file] # Ignore if no files were uploaded
+      params[:file].each do |file|
+        ::ReceiptService::Create.new(
+          receiptable: @receiptable,
+          uploader: current_user,
+          attachments: [file],
+          upload_method: params[:upload_method]
+        ).run!
+      end
+
+      if params[:show_link]
+        flash[:success] = { text: "#{"Receipt".pluralize(params[:file].length)} added!", link: (hcb_code_path(@receiptable) if @receiptable.instance_of?(HcbCode)), link_text: "View" }
+      else
+        flash[:success] = "#{"Receipt".pluralize(params[:file].length)} added!"
+      end
+    end
+  rescue => e
+    notify_airbrake(e)
+
+    flash[:error] = e.message
+  ensure
+    if params[:redirect_url]
+      redirect_to params[:redirect_url]
+    else
+      redirect_back fallback_location: @receiptable&.try(:url) || @receiptable || my_inbox_path
+    end
+  end
+
+  private
+
   def find_receiptable
-    @klass = receipt_params[:receiptable_type].constantize
-    @receiptable = @klass.find(receipt_params[:receiptable_id])
+    if params[:receiptable_type].present? && params[:receiptable_id].present?
+      @klass = params[:receiptable_type].constantize
+      @receiptable = @klass.find(params[:receiptable_id])
+    end
   end
 
 end

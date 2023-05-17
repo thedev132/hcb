@@ -96,46 +96,6 @@ class HcbCodesController < ApplicationController
 
   include HcbCodeHelper # for disputed_transactions_airtable_form_url and attach_receipt_url
 
-  def receipt
-    @hcb_code = HcbCode.find(params[:id])
-    begin
-      authorize @hcb_code
-    rescue Pundit::NotAuthorizedError
-      @has_valid_secret = HcbCodeService::Receipt::SigningEndpoint.new.valid_url?(@hcb_code.hashid, params[:s])
-
-      raise unless @has_valid_secret
-    end
-
-    if params[:file] # Ignore if no files were uploaded
-      params[:file].each do |file|
-        ::ReceiptService::Create.new(
-          receiptable: @hcb_code,
-          uploader: current_user,
-          attachments: [file],
-          upload_method: params[:upload_method]
-        ).run!
-      end
-
-      if params[:show_link]
-        flash[:success] = { text: "Receipt".pluralize(params[:file].length) + " added!", link: hcb_code_path(@hcb_code), link_text: "View" }
-      else
-        flash[:success] = "Receipt".pluralize(params[:file].length) + " added!"
-      end
-    end
-
-    return redirect_to params[:redirect_url] if params[:redirect_url]
-
-    redirect_back fallback_location: @hcb_code.url
-
-  rescue => e
-    notify_airbrake(e)
-
-    flash[:error] = e.message
-    return redirect_to params[:redirect_url] if params[:redirect_url]
-
-    redirect_back fallback_location: @hcb_code.url
-  end
-
   def attach_receipt
     @hcb_code = HcbCode.find(params[:id])
     @event = @hcb_code.event
@@ -192,29 +152,6 @@ class HcbCodesController < ApplicationController
     end
 
     redirect_back fallback_location: @event
-  end
-
-  def link_receipt_modal
-    @receipts = Receipt.where(user: current_user, receiptable: nil)
-
-    @hcb_code = HcbCode.find(params[:id])
-
-    authorize @hcb_code
-
-    render :link_receipt, layout: false
-  end
-
-  def link_receipt
-    @hcb_code = HcbCode.find(params[:id])
-    @receipt = Receipt.find(params[:receipt_id])
-
-    authorize @hcb_code
-
-    @receipt.receiptable = @hcb_code
-    @receipt.save!
-
-    flash[:success] = "Receipt added!"
-    redirect_back fallback_location: @hcb_code
   end
 
 end
