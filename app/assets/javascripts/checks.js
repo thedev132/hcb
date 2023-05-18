@@ -2,7 +2,7 @@ $(document).on('turbo:load', function () {
   const amountToCheckWords = amount => {
     let [dollarsString = '', centsString = ''] = amount.split('.')
 
-    const dollars = dollarsString ? +dollarsString : 0
+    const dollars = dollarsString ? +dollarsString.replace(/\D/g, "") : 0
     let cents = centsString ? +centsString.slice(0, 2) : 0
     if (centsString.length === 1) {
       cents *= 10
