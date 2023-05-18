@@ -4,10 +4,36 @@
 
 <h1 class="heading">Deposit a check</h1>
 
-<%= render "new" %>
+<div class="flex justify-center" style="flex-wrap: wrap-reverse; gap: 48px">
+  <div class="flex-auto" style="flex-basis: calc(50% - 40px);">
+    <%= render "new" %>
+  </div>
+  <div>
+    <div class="card border b--info pb0 mb2 max-width-1 mt2">
+      <div class="flex items-center info">
+        <%= inline_icon "info", size: 32, class: "mr1" %>
+        <p class="bold mt0 mb0">Important info about depositing checks:</p>
+      </div>
+      <ul class="mt1 mb2">
+        <li>The check must be made out to "<strong class="primary nowrap">Hack Club</strong>" or "<strong class="primary nowrap">The Hack Foundation</strong>".</li>
+        <li>Take clear photos of the entire front & back of the check.</li>
+        <li>You don't need to sign the back of the check.</li>
+        <li>Make sure the amount you enter here matches the amount on the check.</li>
+      </ul>
+      <div class="border-top card__banner card__darker secondary">
+        <strong>Questions?</strong>
+          <%= help_message %>
+      </div>
+    </div>
+  </div>
+</div>
 
 <% if @check_deposits.count > 0 %>
-  <div class="table-container mt3">
+  <hr>
+
+  <h3 class="mt3 center">Deposit history</h3>
+
+  <div class="table-container">
     <table>
       <thead>
         <th></th>

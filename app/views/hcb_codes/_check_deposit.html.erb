@@ -33,10 +33,17 @@
       <strong>Deposited by</strong>
       <%= user_mention @hcb_code.check_deposit.created_by %>
     </p>
-    <p>
-      <strong>Requested at</strong>
-      <%= format_datetime @hcb_code.check_deposit.created_at %>
-    </p>
+    <% if @hcb_code.ct %>
+      <p>
+        <strong>Deposited at</strong>
+        <%= format_datetime @hcb_code.ct.raw_increase_transaction&.increase_transaction&.dig("created_at") %>
+      </p>
+    <% else %>
+      <p>
+        <strong>Requested at</strong>
+        <%= format_datetime @hcb_code.check_deposit.created_at %>
+      </p>
+    <% end %>
   </section>
 
   <div class="flex justify-around pt2 pb2">
