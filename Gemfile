@@ -31,7 +31,7 @@ gem "country_select", "~> 8.0"
 
 
 gem "httparty" # web requests
-gem "faraday" # wen requests
+gem "faraday" # web requests
 
 gem "increase", "~> 0.3.1"
 gem "stripe", "8.2.0"
