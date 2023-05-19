@@ -579,6 +579,7 @@ class EventsController < ApplicationController
       :country,
       :category,
       :organized_by_hack_clubbers,
+      :organized_by_teenagers,
       :club_airtable_id,
       :point_of_contact_id,
       :slug,

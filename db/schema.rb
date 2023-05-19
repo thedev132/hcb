@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_16_164324) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_19_150138) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_stat_statements"
@@ -617,6 +617,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_16_164324) do
     t.boolean "is_indexable", default: true
     t.datetime "deleted_at", precision: nil
     t.datetime "activated_at"
+    t.boolean "organized_by_teenagers", default: false, null: false
     t.index ["club_airtable_id"], name: "index_events_on_club_airtable_id", unique: true
     t.index ["partner_id", "organization_identifier"], name: "index_events_on_partner_id_and_organization_identifier", unique: true
     t.index ["partner_id"], name: "index_events_on_partner_id"

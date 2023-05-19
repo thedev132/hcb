@@ -30,6 +30,7 @@
 #  omit_stats                      :boolean          default(FALSE)
 #  organization_identifier         :string           not null
 #  organized_by_hack_clubbers      :boolean
+#  organized_by_teenagers          :boolean          default(FALSE), not null
 #  owner_address                   :string
 #  owner_birthdate                 :date
 #  owner_email                     :string

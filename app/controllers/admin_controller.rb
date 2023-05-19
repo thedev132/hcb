@@ -234,6 +234,7 @@ class AdminController < ApplicationController
       is_public: params[:is_public].to_i == 1,
       sponsorship_fee: params[:sponsorship_fee],
       organized_by_hack_clubbers: params[:organized_by_hack_clubbers].to_i == 1,
+      organized_by_teenagers: params[:organized_by_teenagers].to_i == 1,
       omit_stats: params[:omit_stats].to_i == 1,
       demo_mode: params[:demo_mode].to_i == 1
     }
@@ -1121,7 +1122,7 @@ class AdminController < ApplicationController
     @omitted = params[:omitted].present? ? params[:omitted] : "both" # both by default
     @funded = params[:funded].present? ? params[:funded] : "both" # both by default
     @hidden = params[:hidden].present? ? params[:hidden] : "both" # both by default
-    @organized_by_hack_clubbers = params[:organized_by_hack_clubbers].present? ? params[:organized_by_hack_clubbers] : "both" # both by default
+    @organized_by = params[:organized_by].presence || "anyone"
     if params[:category] == "none"
       @category = "none"
     else
@@ -1146,8 +1147,9 @@ class AdminController < ApplicationController
     relation = relation.not_hidden if @hidden == "not_hidden"
     relation = relation.funded if @funded == "funded"
     relation = relation.not_funded if @funded == "not_funded"
-    relation = relation.organized_by_hack_clubbers if @organized_by_hack_clubbers == "organized_by_hack_clubbers"
-    relation = relation.not_organized_by_hack_clubbers if @organized_by_hack_clubbers == "not_organized_by_hack_clubbers"
+    relation = relation.organized_by_hack_clubbers if @organized_by == "hack_clubbers"
+    relation = relation.where(organized_by_teenagers: true).or(relation.where(organized_by_hack_clubbers: true)) if @organized_by == "teenagers"
+    relation = relation.where.not(organized_by_hack_clubbers: true).and(relation.where.not(organized_by_teenagers: true)) if @organized_by == "adults"
     relation = relation.demo_mode if @demo_mode == "demo"
     relation = relation.not_demo_mode if @demo_mode == "full"
     relation = relation.joins(:canonical_transactions).where("canonical_transactions.date >= ?", @activity_since_date).group("events.id") if @activity_since_date.present?
