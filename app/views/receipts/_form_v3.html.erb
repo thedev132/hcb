@@ -1,5 +1,5 @@
 <div class="<%= "mb3" if defined?(include_spacing) %>">
-  <%= form_with model: nil, url: upload_receipts_path, method: :post, class: "flex flex-column justify-center mt2#{" my-inbox-dropzone" if defined?(restricted_dropzone)}", data: {
+  <%= form_with model: nil, url: upload_receipts_path, method: :post, class: "flex flex-column justify-center#{" my-inbox-dropzone" if defined?(restricted_dropzone)}", data: {
         controller: "file-drop form",
         action: "
           dragover#{"@window" unless defined?(restricted_dropzone)}->file-drop#dragover
@@ -13,19 +13,19 @@
     <div class="card <%= "mt2" if defined?(include_spacing) %> flex flex-column<%= " pt0" if defined?(show_banner) && defined?(receiptable) && (receiptable.receipts.any? || receiptable.no_or_lost_receipt?) %>">
       <% if defined?(show_banner) %>
         <% if defined?(receiptable) && receiptable.receipts.any? %>
-          <p class="card__banner bg-success white bold flex items-center mt0 mb0">
+          <p class="card__banner bg-success white bold flex items-center mt0 mb2">
             <%= inline_icon "checkmark", size: 24, class: "mr2" %>
             <%= pluralize receiptable.receipts.count, "receipt" %>
             added
           </p>
         <% elsif defined?(receiptable) && receiptable.no_or_lost_receipt? %>
-          <p class="card__banner bg-muted white bold flex items-center mt0 mb0">
+          <p class="card__banner bg-muted white bold flex items-center mt0 mb2">
             <%= inline_icon "view-close", size: 24, class: "mr2" %>
             Marked no/lost receipt
           </p>
         <% end %>
       <% end %>
-      <div class="container container--md">
+      <div class="container container--md pt2">
 
         <%= form.hidden_field :redirect_url, value: url_for(only_path: false) %>
         <%= (form.hidden_field :receiptable_type, value: receiptable.class) if defined?(receiptable) %>

@@ -32,7 +32,7 @@ class ReceiptsController < ApplicationController
 
     @receipt.update!(receiptable: @receiptable)
 
-    if upload_receipt_params[:show_link]
+    if params[:show_link]
       flash[:success] = { text: "Receipt linked!", link: (hcb_code_path(@receiptable) if @receiptable.instance_of?(HcbCode)), link_text: "View" }
     else
       flash[:success] = "Receipt added!"
