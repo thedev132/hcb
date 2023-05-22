@@ -52,16 +52,20 @@ class CanonicalTransaction < ApplicationRecord
   scope :revenue, -> { where("amount_cents > 0") }
   scope :expense, -> { where("amount_cents < 0") }
 
+  scope :increase_transaction, -> { joins("INNER JOIN raw_increase_transactions ON transaction_source_type = 'RawIncreaseTransaction' AND raw_increase_transactions.id = transaction_source_id") }
+  scope :stripe_transaction,   -> { joins("INNER JOIN raw_stripe_transactions   ON transaction_source_type = 'RawStripeTransaction'   AND raw_stripe_transactions.id   = transaction_source_id") }
+  scope :emburse_transaction,  -> { joins("INNER JOIN raw_emburse_transactions  ON transaction_source_type = 'RawEmburseTransaction'  AND raw_emburse_transactions.id  = transaction_source_id") }
+
   scope :likely_hack_club_bank_issued_cards, -> { where("memo ilike 'Hack Club Bank Issued car%' or memo ilike 'HCKCLB Issued car%'") }
   scope :likely_github, -> { where("memo ilike '%github grant%'") }
   scope :likely_clearing_checks, -> { where("memo ilike '%Withdrawal - Inclearing Check #%' or memo ilike '%Withdrawal - On-Us Deposited Ite #%'") }
   scope :likely_checks, -> { where("memo ilike '%Check TO ACCOUNT REDACTED'") }
-  scope :likely_increase_checks, -> { joins(hashed_transactions: :raw_increase_transaction).where("raw_increase_transactions.increase_transaction->'source'->>'category' = 'check_transfer_intention'") }
+  scope :likely_increase_checks, -> { increase_transaction.where("raw_increase_transactions.increase_transaction->'source'->>'category' = 'check_transfer_intention'") }
   scope :likely_disbursements, -> { where("memo ilike 'HCB DISBURSE%'") }
   scope :likely_achs, -> { where("memo ilike '%BUSBILLPAY%'") }
-  scope :likely_increase_achs, -> { joins(hashed_transactions: :raw_increase_transaction).where("raw_increase_transactions.increase_transaction->'source'->>'category' = 'ach_transfer_intention'") }
-  scope :likely_increase_account_number, -> { joins(hashed_transactions: { raw_increase_transaction: :increase_account_number }) }
-  scope :likely_increase_check_deposit, -> { joins(hashed_transactions: :raw_increase_transaction).where("raw_increase_transactions.increase_transaction->'source'->>'category' = 'check_deposit_acceptance'") }
+  scope :likely_increase_achs, -> { increase_transaction.where("raw_increase_transactions.increase_transaction->'source'->>'category' = 'ach_transfer_intention'") }
+  scope :likely_increase_account_number, -> { increase_transaction.joins("INNER JOIN increase_account_numbers ON increase_account_number_id = increase_route_id") }
+  scope :likely_increase_check_deposit, -> { increase_transaction.where("raw_increase_transactions.increase_transaction->'source'->>'category' = 'check_deposit_acceptance'") }
   scope :likely_hack_club_fee, -> { where("memo ilike '%Hack Club Bank Fee TO ACCOUNT%'") }
   scope :old_likely_hack_club_fee, -> { where("memo ilike '% Fee TO ACCOUNT REDACTED%'") }
   scope :stripe_top_up, -> { where("memo ilike '%Hack Club Bank Stripe Top%' or memo ilike '%HACKC Stripe Top%' or memo ilike '%HCKCLB Stripe Top%'") }
@@ -117,7 +121,7 @@ class CanonicalTransaction < ApplicationRecord
   end
 
   def likely_stripe_card_transaction?
-    hashed_transactions.first.raw_stripe_transaction_id.present?
+    transaction_source_type == RawStripeTransaction.name
   end
 
   def linked_object
@@ -125,19 +129,19 @@ class CanonicalTransaction < ApplicationRecord
   end
 
   def raw_plaid_transaction
-    hashed_transaction.raw_plaid_transaction
+    transaction_source if transaction_source_type == RawPlaidTransaction.name
   end
 
   def raw_emburse_transaction
-    hashed_transaction.raw_emburse_transaction
+    transaction_source if transaction_source_type == RawEmburseTransaction.name
   end
 
   def raw_stripe_transaction
-    hashed_transaction.raw_stripe_transaction
+    transaction_source if transaction_source_type == RawStripeTransaction.name
   end
 
   def raw_increase_transaction
-    hashed_transaction.raw_increase_transaction
+    transaction_source if transaction_source_type == RawIncreaseTransaction.name
   end
 
   def stripe_cardholder
@@ -298,7 +302,7 @@ class CanonicalTransaction < ApplicationRecord
   end
 
   def unique_bank_identifier
-    @unique_bank_identifier ||= hashed_transactions.first.unique_bank_identifier
+    @unique_bank_identifier ||= transaction_source.try(:unique_bank_identifier)
   end
 
   def memo_hcb_code_likely_donation?

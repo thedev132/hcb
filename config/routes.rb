@@ -146,7 +146,6 @@ Rails.application.routes.draw do
       get "raw_transactions", to: "admin#raw_transactions"
       get "raw_transaction_new", to: "admin#raw_transaction_new"
       post "raw_transaction_create", to: "admin#raw_transaction_create"
-      get "hashed_transactions", to: "admin#hashed_transactions"
       get "ledger", to: "admin#ledger"
       get "pending_ledger", to: "admin#pending_ledger"
       get "ach", to: "admin#ach"
@@ -197,7 +196,6 @@ Rails.application.routes.draw do
   end
 
   post "set_event/:id", to: "admin#set_event", as: :set_event
-  get "transactions/dedupe", to: "admin#transaction_dedupe", as: :transaction_dedupe
 
   resources :organizer_position_invites, only: [:show], path: "invites" do
     post "accept"

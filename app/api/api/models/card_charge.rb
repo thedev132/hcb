@@ -9,7 +9,6 @@ module Api
     # - RawStripeTransaction
     #
     # and accessed via HcbCode using:
-    # - HashedTransaction
     # - CanonicalTransaction
     # - CanonicalPendingTransaction
     #

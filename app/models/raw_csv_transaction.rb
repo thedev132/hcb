@@ -20,6 +20,7 @@
 #
 class RawCsvTransaction < ApplicationRecord
   has_many :hashed_transactions
+  has_one :canonical_transaction, as: :transaction_source
 
   scope :unhashed, -> { left_joins(:hashed_transactions).where(hashed_transactions: { raw_csv_transaction_id: nil }) }
 

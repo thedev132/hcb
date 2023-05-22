@@ -14,10 +14,7 @@ module EventMappingEngine
 
           Airbrake.notify("There was more than 1 hashed transaction for raw_plaid_transaction: #{raw_plaid_transaction.id}") if raw_plaid_transaction.hashed_transactions.length > 1
 
-          next if raw_plaid_transaction.hashed_transactions.length > 1 # skip.
-          next if raw_plaid_transaction.hashed_transactions.length < 1 # skip. these are raw transactions that haven't yet been hashed for some reason. TODO. surface these somehow elsewhere
-
-          canonical_transaction_id = raw_plaid_transaction.hashed_transactions.first.canonical_transaction.id
+          canonical_transaction_id = raw_plaid_transaction.canonical_transaction.id
 
           historical_transaction = Transaction.with_deleted.find_by(plaid_id: raw_plaid_transaction.plaid_transaction_id)
 

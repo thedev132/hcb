@@ -178,11 +178,8 @@ class EmburseCard < ApplicationRecord
   def hcb_codes
     @emburse_transaction_emburse_ids ||= emburse_transactions.pluck(:emburse_id)
     @raw_emburse_transaction_ids ||= RawEmburseTransaction.where(emburse_transaction_id: @emburse_transaction_emburse_ids).pluck(:id)
-    @hashed_transaction_ids = HashedTransaction.where(raw_emburse_transaction_id: @raw_emburse_transaction_ids).pluck(:id)
 
-
-    @canonical_transaction_ids ||= CanonicalHashedMapping.where(hashed_transaction_id: @hashed_transaction_ids).pluck(:canonical_transaction_id)
-    @canonical_transactions ||= CanonicalTransaction.where(id: @canonical_transaction_ids)
+    @canonical_transactions ||= CanonicalTransaction.emburse_transaction.where(transaction_source_id: @raw_emburse_transaction_ids)
     @canonical_transaction_hcb_codes ||= @canonical_transactions.pluck(:hcb_code)
     @hcb_codes ||= ::HcbCode.where(hcb_code: @canonical_transaction_hcb_codes)
   end

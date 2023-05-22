@@ -113,37 +113,8 @@
 <%= (ap @canonical_transaction).html_safe %>
 <p>↓</p>
 
-<p>HashedTransaction</p>
-<%= (ap @canonical_transaction.hashed_transactions).html_safe %>
-<p>↓</p>
-
-<% @canonical_transaction.hashed_transactions.each do |ht| %>
-  <% if ht.raw_csv_transaction %>
-    <p>RawCsvTransaction</p>
-    <%= (ap ht.raw_csv_transaction).html_safe %>
-  <% end %>
-
-  <% if ht.raw_plaid_transaction %>
-    <p>RawPlaidTransaction</p>
-    <%= (ap ht.raw_plaid_transaction).html_safe %>
-  <% end %>
-
-  <% if ht.raw_emburse_transaction %>
-    <p>RawEmburseTransaction</p>
-    <%= (ap ht.raw_emburse_transaction).html_safe %>
-  <% end %>
-
-  <% if ht.raw_stripe_transaction %>
-    <p>RawStripeTransaction</p>
-    <%= (ap ht.raw_stripe_transaction).html_safe %>
-  <% end %>
-
-  <% if ht.raw_increase_transaction %>
-    <p>RawIncreaseTransaction</p>
-    <%= (ap ht.raw_increase_transaction).html_safe %>
-  <% end %>
-
-<% end %>
+<p><%= @canonical_transaction.transaction_source_type %></p>
+<%= (ap @canonical_transaction.transaction_source).html_safe %>
 
 <br><hr>
 

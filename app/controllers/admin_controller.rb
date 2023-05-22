@@ -60,10 +60,6 @@ class AdminController < ApplicationController
     @negative_events = Event.negatives
   end
 
-  def transaction_dedupe
-    @groups = TransactionEngine::HashedTransactionService::GroupedDuplicates.new.run
-  end
-
   def transaction
     @canonical_transaction = CanonicalTransaction.find(params[:id])
     @hcb_code = @canonical_transaction.local_hcb_code
@@ -360,25 +356,6 @@ class AdminController < ApplicationController
     redirect_to raw_transaction_new_admin_index_path, flash: { error: e.message }
   end
 
-  def hashed_transactions
-    @page = params[:page] || 1
-    @per = params[:per] || 100
-    @possible_duplicates = params[:possible_duplicates] == "1" ? true : nil
-    @uncanonized = params[:uncanonized] == "1" ? true : nil
-    @unique_bank_identifier = params[:unique_bank_identifier].present? ? params[:unique_bank_identifier] : nil
-
-    relation = HashedTransaction
-    relation = relation.possible_duplicates if @possible_duplicates
-    relation = relation.uncanonized if @uncanonized
-    relation = relation.where(unique_bank_identifier: @unique_bank_identifier) if @unique_bank_identifier
-
-    @count = relation.count
-
-    @hashed_transactions = relation.page(@page).per(@per).order("date desc, primary_hash asc")
-
-    render layout: "admin"
-  end
-
   def ledger
     @page = params[:page] || 1
     @per = params[:per] || 100
@@ -421,7 +398,7 @@ class AdminController < ApplicationController
     if @user_id
       user = User.find(@user_id)
       sch_sid = user&.stripe_cardholder&.stripe_id
-      relation = relation.joins(hashed_transactions: :raw_stripe_transaction)
+      relation = relation.stripe_transaction
                          .where("raw_stripe_transactions.stripe_transaction->>'cardholder' = ?", sch_sid)
     end
 

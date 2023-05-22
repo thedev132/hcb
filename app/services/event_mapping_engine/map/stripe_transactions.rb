@@ -12,16 +12,11 @@ module EventMappingEngine
       def run
         RawStripeTransaction.where("date_posted >= ?", @start_date).find_each(batch_size: 100) do |raw_stripe_transaction|
 
-          Airbrake.notify("There was more than 1 hashed transaction for raw_stripe_transaction: #{raw_stripe_transaction.id}") if raw_stripe_transaction.hashed_transactions.length > 1
-
-          next if raw_stripe_transaction.hashed_transactions.length > 1 # skip.
-          next if raw_stripe_transaction.hashed_transactions.length < 1 # skip. these are raw transactions that haven't yet been hashed for some reason. TODO. surface these somehow elsewhere
-
           event_id = raw_stripe_transaction.likely_event_id
 
           next unless event_id # TODO: surface these somehow that have no likely event id
 
-          canonical_transaction = raw_stripe_transaction.hashed_transactions.try(:first).try(:canonical_transaction)
+          canonical_transaction = raw_stripe_transaction.canonical_transaction
 
           next unless canonical_transaction # must be canon-ized already
 

@@ -44,4 +44,8 @@ class RawIncreaseTransaction < ApplicationRecord
     increase_transaction.dig("source", "category")
   end
 
+  def unique_bank_identifier
+    "INCREASE-#{increase_account_id.upcase}"
+  end
+
 end

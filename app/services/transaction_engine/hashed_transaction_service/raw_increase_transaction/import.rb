@@ -33,7 +33,7 @@ module TransactionEngine
 
         def primary_hash(it)
           attrs = {
-            unique_bank_identifier: "INCREASE-#{it.increase_account_id.upcase}",
+            unique_bank_identifier: it.unique_bank_identifier,
             date: it.date_posted.strftime("%Y-%m-%d"),
             amount_cents: it.amount_cents,
             memo: it.memo.upcase
