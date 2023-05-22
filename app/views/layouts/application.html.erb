@@ -55,7 +55,7 @@
         <div class="flex flex-column container container--md center pb2">
           <p class="bold center m0" style="font-size: 2rem;">Playground Mode</p>
           <div class="grid g3" style="grid-template-columns: 1fr 2fr 1fr; place-items: center;">
-            <%= link_to event_demo_mode_request_meeting_path(@event), method: :post, class: "btn bg-primary shrink-none nowrap #{"disabled" unless can_request_activation? }" do %>
+            <%= link_to event_demo_mode_request_meeting_path(@event), method: :post, class: "btn bg-primary shrink-none nowrap #{"disabled" unless can_request_activation? }", data: { tour_step: "activate_account" } do %>
               <%= inline_icon "welcome" %>Request Activation
             <% end %>
             <p class="center m0">While in Playground mode, explore the dashboard with mock data, and invite your team.<br>To utilise financial features, activate your account!</p>

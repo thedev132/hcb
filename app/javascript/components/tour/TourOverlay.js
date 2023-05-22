@@ -48,7 +48,7 @@ const tours = {
       steps.push({
         attachTo: 'activate_account',
         text: "You're in Playground Mode— click here to activate your account when you're ready.",
-        placement: isMobile ? 'top' : 'right'
+        placement: 'bottom'
       })
     }
 

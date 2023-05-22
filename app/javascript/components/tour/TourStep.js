@@ -116,7 +116,8 @@ function TourStep({
         visibility: visible ? 'visible' : 'hidden',
         opacity: visible ? 1 : 0,
         transform: visible ? 'none' : 'translateY(10px)',
-        width: 'calc(100vw - 10px)'
+        width: 'calc(100vw - 10px)',
+        zIndex: 150
       }}
     >
       <div
