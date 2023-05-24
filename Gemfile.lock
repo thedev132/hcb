@@ -136,7 +136,7 @@ GEM
       smart_properties
     bindata (2.4.10)
     bindex (0.8.1)
-    blazer (2.6.3)
+    blazer (2.6.5)
       activerecord (>= 5)
       chartkick (>= 3.2)
       railties (>= 5)
@@ -155,7 +155,7 @@ GEM
       tzinfo
     byebug (11.1.3)
     cbor (0.5.9.6)
-    chartkick (4.1.3)
+    chartkick (5.0.2)
     chronic (0.10.2)
     chunky_png (1.4.0)
     coderay (1.1.3)
