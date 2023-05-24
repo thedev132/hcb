@@ -103,7 +103,9 @@ class StaticPagesController < ApplicationController
     # Ideally we'd preload (includes) events for @cards, but that isn't
     # supported yet: https://github.com/rails/globalid/pull/139
 
-    @receipts = Receipt.where(user: current_user, receiptable: nil)
+    if Flipper.enabled?(:receipt_bin_2023_04_07, current_user)
+      @receipts = Receipt.where(user: current_user, receiptable: nil)
+    end
   end
 
   def receipt
