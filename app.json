@@ -59,9 +59,6 @@
       "url": "https://github.com/maxwofford/heroku-buildpack-sourceversion"
     },
     {
-      "url": "https://github.com/HiMamaInc/heroku-buildpack-imagemagick-heif"
-    },
-    {
       "url": "https://github.com/hackclub/heroku-buildpack-poppler"
     },
     {

@@ -15,7 +15,7 @@ gem "sidekiq", "~> 6.5.5" # background jobs
 gem "sidekiq-cron", "~> 1.1" # run Sidekiq jobs at scheduled intervals
 
 gem "image_processing", "~> 1.2"
-gem "mini_magick"
+gem "vips"
 
 
 gem "jsbundling-rails", "~> 1.0"

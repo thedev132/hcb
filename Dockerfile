@@ -7,7 +7,7 @@ RUN apt-get -y update -qq
 
 # install postgresql-client for easy importing of production database & vim
 # for easy editing of credentials
-RUN apt-get -y install postgresql-client vim poppler-utils
+RUN apt-get -y install postgresql-client vim poppler-utils libvips42 libheif-dev
 ENV EDITOR=vim
 
 # Install node18 & yarn

@@ -1,3 +1,6 @@
 # We are actually using poppler from https://github.com/hackclub/heroku-buildpack-poppler
 # When we're on heroku-22, we can remove the buildpack and rely on the apt version entirely
 # poppler-utils
+
+# Used to render heic files via VIPS
+libheif-dev

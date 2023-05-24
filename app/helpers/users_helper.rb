@@ -20,10 +20,8 @@ module UsersHelper
       src = "https://cloud-80pd8aqua-hack-club-bot.vercel.app/0image-23.png"
     elsif Rails.env.production? && (user.is_a?(User) && user&.profile_picture.attached?)
       src = Rails.application.routes.url_helpers.url_for(user.profile_picture.variant(
-                                                           thumbnail: "#{size * 2}x#{size * 2}^",
-                                                           gravity: "center",
-                                                           extent: "#{size * 2}x#{size * 2}"
-                                                         ))
+        resize_to_fill: [size * 2, size * 2]
+      ).processed)
     else
       src = gravatar_url(user.email, user.initials, user.id, size * 2)
     end
