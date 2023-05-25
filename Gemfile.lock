@@ -733,8 +733,6 @@ GEM
     uri (0.10.0)
     validates_email_format_of (1.6.3)
       i18n
-    vips (8.12.2)
-      ffi (~> 1.12)
     web-console (4.2.0)
       actionview (>= 6.0.0)
       activemodel (>= 6.0.0)
@@ -821,6 +819,7 @@ DEPENDENCIES
   local_time
   lockbox
   maildown
+  mini_magick
   monetize
   money-rails
   mrsk
@@ -868,7 +867,6 @@ DEPENDENCIES
   twilio-ruby
   uri (= 0.10.0)
   validates_email_format_of
-  vips
   web-console (>= 3.3.0)
   webauthn (~> 2.5)
   wicked_pdf

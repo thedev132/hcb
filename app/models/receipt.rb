@@ -51,11 +51,11 @@ class Receipt < ApplicationRecord
     Rails.application.routes.url_helpers.rails_blob_url(object)
   end
 
-  def preview(resize: [512, 512])
+  def preview(resize: "512x512")
     if file.previewable?
-      Rails.application.routes.url_helpers.rails_representation_url(file.preview(resize_to_limit: resize).processed, only_path: true)
+      Rails.application.routes.url_helpers.rails_representation_url(file.preview(resize: resize).processed, only_path: true)
     elsif file.variable?
-      Rails.application.routes.url_helpers.rails_representation_url(file.variant(resize_to_limit: resize).processed, only_path: true)
+      Rails.application.routes.url_helpers.rails_representation_url(file.variant(resize: resize).processed, only_path: true)
     end
   rescue ActiveStorage::FileNotFoundError
     nil

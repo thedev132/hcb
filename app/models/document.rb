@@ -39,14 +39,14 @@ class Document < ApplicationRecord
 
   scope :common, -> { where(event_id: nil) }
 
-  def preview_url(resize: [500, 500])
+  def preview_url(resize: "500x500")
     return nil unless file
 
     case file.content_type
     when "application/pdf"
       return nil unless file.previewable?
 
-      file.preview(resize_to_limit: resize)
+      file.preview(resize: resize)
     else
     end
   end
