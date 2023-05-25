@@ -23,7 +23,11 @@ class EventsController < ApplicationController
   def show
     render_tour @organizer_position, :welcome
 
-    authorize @event
+    begin
+      authorize @event
+    rescue Pundit::NotAuthorizedError
+      return redirect_to root_path, flash: { error: "We couldn’t find that organization!" }
+    end
 
     # The search query name was historically `search`. It has since been renamed
     # to `q`. This following line retains backwards compatibility.
