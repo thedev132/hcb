@@ -5,23 +5,28 @@
 # reach out to max wofford (max@hackclub.com) if you have any questions or issues.
 
 echo "
-$(tput setaf 9)Hack Club Bank:$(tput sgr0) Step 0/4: Copy .env file"
+$(tput setaf 9)Hack Club Bank:$(tput sgr0) Step 0/5: Copy .env file"
+cp -n config/credentials/development.key config/master.key
+echo "$(tput setaf 9)Hack Club Bank:$(tput sgr0) $(tput setaf 10)Done$(tput sgr0)"
+
+echo "
+$(tput setaf 9)Hack Club Bank:$(tput sgr0) Step 1/5: Copy development key"
 cp -n .env.docker.example .env.docker
 echo "$(tput setaf 9)Hack Club Bank:$(tput sgr0) $(tput setaf 10)Done$(tput sgr0)"
 
 echo "
-$(tput setaf 9)Hack Club Bank:$(tput sgr0) Step 1/4: Build Docker Container"
+$(tput setaf 9)Hack Club Bank:$(tput sgr0) Step 2/5: Build Docker Container"
 env $(cat .env.docker) docker compose build
 echo "$(tput setaf 9)Hack Club Bank:$(tput sgr0) $(tput setaf 10)Done$(tput sgr0)"
 
 echo "
-$(tput setaf 9)Hack Club Bank:$(tput sgr0) Step 2/4: Docker Database Setup"
+$(tput setaf 9)Hack Club Bank:$(tput sgr0) Step 3/5: Docker Database Setup"
 env $(cat .env.docker) docker-compose run --service-ports web bundle exec rails db:test:prepare RAILS_ENV=test
 env $(cat .env.docker) docker compose run --service-ports web bundle exec rails db:create db:migrate
 echo "$(tput setaf 9)Hack Club Bank:$(tput sgr0) $(tput setaf 10)Done$(tput sgr0)"
 
 echo "
-$(tput setaf 9)Hack Club Bank:$(tput sgr0) Step 3/4: Create development user"
+$(tput setaf 9)Hack Club Bank:$(tput sgr0) Step 4/5: Create development user"
 env $(cat .env.docker) docker compose up -d >/dev/null 2>&1
 echo "Go to localhost:3000 and login to create your development user"
 read -p "Press Enter to continue" </dev/tty
@@ -29,7 +34,7 @@ docker compose down
 echo "$(tput setaf 9)Hack Club Bank:$(tput sgr0) $(tput setaf 10)Done$(tput sgr0)"
 
 echo "
-$(tput setaf 9)Hack Club Bank:$(tput sgr0) Step 4/4: Development Database Seeding"
+$(tput setaf 9)Hack Club Bank:$(tput sgr0) Step 5/5: Development Database Seeding"
 env $(cat .env.docker) docker compose run --service-ports web bundle exec rails db:seed
 echo "$(tput setaf 9)Hack Club Bank:$(tput sgr0) $(tput setaf 10)Done$(tput sgr0)"
 
