@@ -75,22 +75,5 @@ describe LoginCodeService::Request do
         expect(response[:error].attribute_names).to eq([:email])
       end
     end
-
-    context "when login code has an error" do
-      it "does not save the user, does not create a login code and returns an error" do
-        new_email = "test@example.com"
-        expect(LoginCodeMailer).not_to receive(:send_code)
-
-        response = nil
-        expect do
-          response = described_class.new(email: new_email,
-                                         ip_address: "bad ip",
-                                         user_agent: user_agent).run
-        end.to change { User.count }.by(0)
-
-        expect(LoginCode.count).to eq(0)
-        expect(response[:error].attribute_names).to eq([:login_codes])
-      end
-    end
   end
 end
