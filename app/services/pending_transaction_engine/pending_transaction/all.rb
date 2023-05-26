@@ -20,7 +20,7 @@ module PendingTransactionEngine
       end
 
       def canonical_pending_event_mappings
-        @canonical_pending_event_mappings ||= CanonicalPendingEventMapping.where(event_id: event.id)
+        @canonical_pending_event_mappings ||= CanonicalPendingEventMapping.where(event_id: event.id, subledger_id: nil)
       end
 
       def canonical_pending_transactions

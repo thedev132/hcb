@@ -22,7 +22,7 @@ class StripeCardPolicy < ApplicationPolicy
   end
 
   def show?
-    user&.admin? || record&.event&.users&.include?(user)
+    user&.admin? || record&.event&.users&.include?(user) || record&.user == user
   end
 
   def edit?

@@ -1,0 +1,31 @@
+<% page_sm %>
+<%= render "events/nav", selected: :transfers %>
+
+<%= turbo_frame_tag :transfer_form do %>
+  <%= modal_header "Send a grant" %>
+
+  <%= form_with model: [@event, @card_grant], data: { turbo_frame: "_top" } do |form| %>
+    <div class="field">
+      <%= form.label :email %>
+      <%= form.email_field :email, placeholder: "fiona@hackclub.com", autofocus: true, required: true %>
+    </div>
+
+    <div class="field">
+      <%= form.label :amount_cents, "Amount" %>
+      <div class="flex items-center">
+        <span class="bold muted shrink-none" style="width: 1rem;">$</span>
+        <%= form.number_field :amount_cents, value: (@card_grant.amount_cents.nil? ? nil : ("%.2f" % (@card_grant.amount_cents.to_f / 100))), placeholder: "10.00", required: true, min: 0.01, step: 0.01 %>
+      </div>
+    </div>
+
+    <div class="field">
+      <%= form.label :merchant_lock, "Merchant lock (optional)" %>
+      <%= form.text_field :merchant_lock, placeholder: "123456789" %>
+      <p class="h5 muted mt0 mb1">Provide the network ID of a merchant to lock this card to.</p>
+    </div>
+
+    <div class="actions">
+      <%= form.submit "Send grant" %>
+    </div>
+  <% end %>
+<% end %>

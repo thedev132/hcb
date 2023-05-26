@@ -30,7 +30,7 @@ module StripeAuthorizationService
       end
 
       def card
-        @card ||= StripeCard.find_by(stripe_id: stripe_card_id)
+        @card ||= StripeCard.includes(:card_grant).find_by(stripe_id: stripe_card_id)
       end
 
       def event
@@ -38,7 +38,10 @@ module StripeAuthorizationService
       end
 
       def approve?
-        event.balance_available_v2_cents >= amount_cents
+        return false if card.balance_available < amount_cents
+        return false if card.card_grant&.merchant_lock.present? && card.card_grant.merchant_lock != auth[:merchant_data][:network_id] # Handle merchant locks for restricted grants
+
+        true
       end
 
     end

@@ -9,11 +9,13 @@
 #  updated_at                       :datetime         not null
 #  canonical_pending_transaction_id :bigint           not null
 #  event_id                         :bigint           not null
+#  subledger_id                     :bigint
 #
 # Indexes
 #
 #  index_canonical_pending_event_map_on_canonical_pending_tx_id  (canonical_pending_transaction_id)
 #  index_canonical_pending_event_mappings_on_event_id            (event_id)
+#  index_canonical_pending_event_mappings_on_subledger_id        (subledger_id)
 #
 # Foreign Keys
 #
@@ -23,5 +25,8 @@
 class CanonicalPendingEventMapping < ApplicationRecord
   belongs_to :canonical_pending_transaction
   belongs_to :event
+  belongs_to :subledger, optional: true
+
+  scope :on_main_ledger, -> { where(subledger_id: nil) }
 
 end

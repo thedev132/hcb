@@ -11,9 +11,9 @@ module EventMappingEngine
         return unless disbursement
 
         if amount_cents > 0
-          disbursement.event.id
+          [disbursement.event.id, disbursement.destination_subledger_id]
         else
-          disbursement.source_event.id
+          [disbursement.source_event.id]
         end
       end
 

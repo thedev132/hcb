@@ -5,11 +5,12 @@ module DisbursementService
     include ::Shared::AmpleBalance
 
     def initialize(source_event_id:, destination_event_id:,
-                   name:, amount:, requested_by_id:, fulfilled_by_id: nil)
+                   name:, amount:, requested_by_id:, fulfilled_by_id: nil, destination_subledger_id: nil)
       @source_event_id = source_event_id
       @source_event = Event.friendly.find(@source_event_id)
       @destination_event_id = destination_event_id
       @destination_event = Event.friendly.find(@destination_event_id)
+      @destination_subledger_id = destination_subledger_id
       @name = name
       @amount = amount
       @requested_by_id = requested_by_id
@@ -35,7 +36,7 @@ module DisbursementService
       ::PendingEventMappingEngine::Map::Single::IncomingDisbursement.new(canonical_pending_transaction: i_cpt).run
       ::PendingEventMappingEngine::Map::Single::OutgoingDisbursement.new(canonical_pending_transaction: o_cpt).run
 
-      if requested_by.admin?
+      if requested_by.admin? || disbursement.source_event == disbursement.destination_event # Auto-fulfill disbursements between subledgers in the same event
         disbursement.mark_approved!(requested_by)
       end
 
@@ -48,9 +49,10 @@ module DisbursementService
       {
         source_event_id: source_event.id,
         event_id: destination_event.id,
+        destination_subledger_id: @destination_subledger_id,
         name: @name,
         amount: amount_cents,
-        requested_by: requested_by
+        requested_by: requested_by,
       }
     end
 

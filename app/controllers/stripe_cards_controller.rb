@@ -73,6 +73,10 @@ class StripeCardsController < ApplicationController
 
     authorize @card
 
+    if @card.card_grant.present? && !current_user&.admin?
+      redirect_to @card.card_grant
+    end
+
     if params[:show_details] == "true"
       ahoy.track "Card details shown", stripe_card_id: @card.id
     end

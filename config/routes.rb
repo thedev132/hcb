@@ -459,6 +459,12 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :card_grants, only: [:show], path: "grants" do
+    member do
+      post "activate"
+    end
+  end
+
   match "/404", to: "errors#not_found", via: :all
   match "/500", to: "errors#internal_server_error", via: :all
 
@@ -519,6 +525,8 @@ Rails.application.routes.draw do
     end
 
     resources :check_deposits, only: [:index, :create], path: "check-deposits"
+
+    resources :card_grants, only: [:new, :create], path: "grants"
 
     member do
       post "disable_feature"

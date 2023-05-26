@@ -13,9 +13,16 @@ module PendingEventMappingEngine
 
           attrs = {
             event_id: @canonical_pending_transaction.raw_pending_incoming_disbursement_transaction.likely_event_id,
+            subledger_id: disbursement.destination_subledger_id,
             canonical_pending_transaction_id: @canonical_pending_transaction.id
           }
           CanonicalPendingEventMapping.create!(attrs)
+        end
+
+        private
+
+        def disbursement
+          @canonical_pending_transaction.raw_pending_incoming_disbursement_transaction.disbursement
         end
 
       end

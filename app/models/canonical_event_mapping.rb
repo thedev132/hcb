@@ -9,12 +9,14 @@
 #  updated_at               :datetime         not null
 #  canonical_transaction_id :bigint           not null
 #  event_id                 :bigint           not null
+#  subledger_id             :bigint
 #  user_id                  :bigint
 #
 # Indexes
 #
 #  index_canonical_event_mappings_on_canonical_transaction_id  (canonical_transaction_id)
 #  index_canonical_event_mappings_on_event_id                  (event_id)
+#  index_canonical_event_mappings_on_subledger_id              (subledger_id)
 #  index_canonical_event_mappings_on_user_id                   (user_id)
 #  index_cem_event_id_canonical_transaction_id_uniqueness      (event_id,canonical_transaction_id) UNIQUE
 #
@@ -26,9 +28,12 @@
 class CanonicalEventMapping < ApplicationRecord
   belongs_to :canonical_transaction
   belongs_to :event
+  belongs_to :subledger, optional: true
   belongs_to :user, optional: true
 
   has_many :fees
+
+  scope :on_main_ledger, -> { where(subledger_id: nil) }
 
   after_create do
     FeeEngine::Create.new(canonical_event_mapping: self).run

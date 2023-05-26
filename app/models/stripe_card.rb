@@ -30,12 +30,14 @@
 #  replacement_for_id                  :bigint
 #  stripe_cardholder_id                :bigint           not null
 #  stripe_id                           :text
+#  subledger_id                        :bigint
 #
 # Indexes
 #
 #  index_stripe_cards_on_event_id              (event_id)
 #  index_stripe_cards_on_replacement_for_id    (replacement_for_id)
 #  index_stripe_cards_on_stripe_cardholder_id  (stripe_cardholder_id)
+#  index_stripe_cards_on_subledger_id          (subledger_id)
 #
 # Foreign Keys
 #
@@ -61,7 +63,10 @@ class StripeCard < ApplicationRecord
   scope :physical_shipping, -> { physical.includes(:user, :event).reject { |c| c.stripe_obj[:shipping][:status] == "delivered" } }
   scope :platinum, -> { where(is_platinum_april_fools_2023: true) }
 
+  scope :on_main_ledger, -> { where(subledger_id: nil) }
+
   belongs_to :event
+  belongs_to :subledger, optional: true
   belongs_to :stripe_cardholder
   belongs_to :replacement_for, class_name: "StripeCard", optional: true
   has_one :replacement, class_name: "StripeCard", foreign_key: :replacement_for_id
@@ -71,6 +76,8 @@ class StripeCard < ApplicationRecord
   alias_attribute :authorizations, :stripe_authorizations
   alias_attribute :transactions, :stripe_authorizations
   alias_attribute :platinum, :is_platinum_april_fools_2023
+
+  has_one :card_grant, required: false
 
   alias_attribute :last_four, :last4
 
@@ -316,9 +323,17 @@ class StripeCard < ApplicationRecord
   end
 
   def canonical_pending_transaction_hcb_codes
-    @raw_pending_stripe_transaction_ids = RawPendingStripeTransaction.where("stripe_transaction->'card'->>'id' = ?", stripe_id).pluck(:id)
-    @canonical_pending_transactions ||= CanonicalPendingTransaction.where(raw_pending_stripe_transaction_id: @raw_pending_stripe_transaction_ids)
-    @canonical_pending_transaction_hcb_codes ||= @canonical_pending_transactions.pluck(:hcb_code)
+    CanonicalPendingTransaction.joins(:raw_pending_stripe_transaction)
+                               .where("raw_pending_stripe_transactions.stripe_transaction->'card'->>'id' = ?", stripe_id)
+                               .pluck(:hcb_code)
+  end
+
+  def balance_available
+    if subledger.present?
+      subledger.balance_cents
+    else
+      event.balance_available_v2_cents
+    end
   end
 
   private

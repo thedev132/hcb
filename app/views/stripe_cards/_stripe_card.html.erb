@@ -12,7 +12,13 @@
       <%= stripe_card.name %>
     </p>
     <p class="stripe-card__number fs-mask">
-      <%= stripe_card.user == current_user ? stripe_card.hidden_card_number_with_last_four : stripe_card.hidden_card_number %>
+      <% if stripe_card.user != current_user %>
+        <%= stripe_card.hidden_card_number %>
+      <% elsif local_assigns[:show_card_number] %>
+        <%= stripe_card.formatted_card_number %>
+      <% else %>
+        <%= stripe_card.hidden_card_number_with_last_four %>
+      <% end %>
     </p>
     <p class="stripe-card__name flex justify-between items-center">
       <span>

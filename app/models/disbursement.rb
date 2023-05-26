@@ -4,28 +4,30 @@
 #
 # Table name: disbursements
 #
-#  id              :bigint           not null, primary key
-#  aasm_state      :string
-#  amount          :integer
-#  deposited_at    :datetime
-#  errored_at      :datetime
-#  in_transit_at   :datetime
-#  name            :string
-#  pending_at      :datetime
-#  rejected_at     :datetime
-#  created_at      :datetime         not null
-#  updated_at      :datetime         not null
-#  event_id        :bigint
-#  fulfilled_by_id :bigint
-#  requested_by_id :bigint
-#  source_event_id :bigint
+#  id                       :bigint           not null, primary key
+#  aasm_state               :string
+#  amount                   :integer
+#  deposited_at             :datetime
+#  errored_at               :datetime
+#  in_transit_at            :datetime
+#  name                     :string
+#  pending_at               :datetime
+#  rejected_at              :datetime
+#  created_at               :datetime         not null
+#  updated_at               :datetime         not null
+#  destination_subledger_id :bigint
+#  event_id                 :bigint
+#  fulfilled_by_id          :bigint
+#  requested_by_id          :bigint
+#  source_event_id          :bigint
 #
 # Indexes
 #
-#  index_disbursements_on_event_id         (event_id)
-#  index_disbursements_on_fulfilled_by_id  (fulfilled_by_id)
-#  index_disbursements_on_requested_by_id  (requested_by_id)
-#  index_disbursements_on_source_event_id  (source_event_id)
+#  index_disbursements_on_destination_subledger_id  (destination_subledger_id)
+#  index_disbursements_on_event_id                  (event_id)
+#  index_disbursements_on_fulfilled_by_id           (fulfilled_by_id)
+#  index_disbursements_on_requested_by_id           (requested_by_id)
+#  index_disbursements_on_source_event_id           (source_event_id)
 #
 # Foreign Keys
 #
@@ -52,6 +54,7 @@ class Disbursement < ApplicationRecord
   belongs_to :destination_event, foreign_key: "event_id", class_name: "Event", inverse_of: "incoming_disbursements"
   belongs_to :source_event, class_name: "Event", inverse_of: "outgoing_disbursements"
   belongs_to :event
+  belongs_to :destination_subledger, class_name: "Subledger", optional: true
 
   has_one :raw_pending_incoming_disbursement_transaction
   has_one :raw_pending_outgoing_disbursement_transaction
@@ -264,7 +267,7 @@ class Disbursement < ApplicationRecord
   private
 
   def events_are_different
-    self.errors.add(:event, "must be different than source event") if event_id == source_event_id
+    self.errors.add(:event, "must be different than source event") if event_id == source_event_id && destination_subledger_id.nil?
   end
 
   def events_are_not_demos

@@ -3,12 +3,13 @@
 module StripeCardService
   class Create
     def initialize(current_user:, current_session:, event_id:,
-                   card_type:,
+                   card_type:, subledger: nil,
                    stripe_shipping_name: nil, stripe_shipping_address_city: nil, stripe_shipping_address_state: nil,
                    stripe_shipping_address_line1: nil, stripe_shipping_address_line2: nil, stripe_shipping_address_postal_code: nil, stripe_shipping_address_country: "US")
       @current_user = current_user
       @current_session = current_session
       @event_id = event_id
+      @subledger = subledger
 
       @card_type = card_type
       @stripe_shipping_name = stripe_shipping_name
@@ -33,6 +34,8 @@ module StripeCardService
         card.stripe_id = remote_stripe_card.id # necessary because of design of sync_from_stripe
         card.sync_from_stripe!
         card.save!
+
+        card
       end
     end
 
@@ -41,6 +44,7 @@ module StripeCardService
     def attrs
       {
         card_type: @card_type,
+        subledger: @subledger,
         stripe_cardholder_id: stripe_cardholder.id,
         stripe_shipping_name: @stripe_shipping_name,
         stripe_shipping_address_city: @stripe_shipping_address_city,

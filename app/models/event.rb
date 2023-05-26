@@ -263,7 +263,7 @@ class Event < ApplicationRecord
   has_many :fee_relationships
   has_many :transactions, through: :fee_relationships, source: :t_transaction
 
-  has_many :stripe_cards
+  has_many :stripe_cards, -> { on_main_ledger }
   has_many :stripe_authorizations, through: :stripe_cards
 
   has_many :emburse_cards
@@ -289,10 +289,10 @@ class Event < ApplicationRecord
 
   has_many :documents
 
-  has_many :canonical_pending_event_mappings
+  has_many :canonical_pending_event_mappings, -> { on_main_ledger }
   has_many :canonical_pending_transactions, through: :canonical_pending_event_mappings
 
-  has_many :canonical_event_mappings
+  has_many :canonical_event_mappings, -> { on_main_ledger }
   has_many :canonical_transactions, through: :canonical_event_mappings
 
   has_many :fees, through: :canonical_event_mappings
@@ -305,6 +305,9 @@ class Event < ApplicationRecord
   belongs_to :partner
   has_one :partnered_signup, required: false
   has_many :partner_donations
+
+  has_many :subledgers
+  has_many :card_grants
 
   has_one :stripe_ach_payment_source
   has_one :increase_account_number

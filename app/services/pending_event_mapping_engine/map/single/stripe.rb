@@ -14,7 +14,8 @@ module PendingEventMappingEngine
 
           attrs = {
             event_id: @canonical_pending_transaction.raw_pending_stripe_transaction.likely_event_id,
-            canonical_pending_transaction_id: @canonical_pending_transaction.id
+            subledger_id: @canonical_pending_transaction.stripe_card.subledger_id,
+            canonical_pending_transaction_id: @canonical_pending_transaction.id,
           }
           CanonicalPendingEventMapping.create!(attrs)
         end

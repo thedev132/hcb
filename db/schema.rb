@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_19_150138) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_26_160912) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_stat_statements"
@@ -221,9 +221,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_19_150138) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "user_id"
+    t.bigint "subledger_id"
     t.index ["canonical_transaction_id"], name: "index_canonical_event_mappings_on_canonical_transaction_id"
     t.index ["event_id", "canonical_transaction_id"], name: "index_cem_event_id_canonical_transaction_id_uniqueness", unique: true
     t.index ["event_id"], name: "index_canonical_event_mappings_on_event_id"
+    t.index ["subledger_id"], name: "index_canonical_event_mappings_on_subledger_id"
     t.index ["user_id"], name: "index_canonical_event_mappings_on_user_id"
   end
 
@@ -248,8 +250,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_19_150138) do
     t.bigint "event_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "subledger_id"
     t.index ["canonical_pending_transaction_id"], name: "index_canonical_pending_event_map_on_canonical_pending_tx_id"
     t.index ["event_id"], name: "index_canonical_pending_event_mappings_on_event_id"
+    t.index ["subledger_id"], name: "index_canonical_pending_event_mappings_on_subledger_id"
   end
 
   create_table "canonical_pending_settled_mappings", force: :cascade do |t|
@@ -313,6 +317,26 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_19_150138) do
     t.index ["date"], name: "index_canonical_transactions_on_date"
     t.index ["hcb_code"], name: "index_canonical_transactions_on_hcb_code"
     t.index ["transaction_source_type", "transaction_source_id"], name: "index_canonical_transactions_on_transaction_source"
+  end
+
+  create_table "card_grants", force: :cascade do |t|
+    t.integer "amount_cents"
+    t.bigint "event_id", null: false
+    t.bigint "subledger_id"
+    t.bigint "stripe_card_id"
+    t.bigint "user_id", null: false
+    t.bigint "sent_by_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "disbursement_id"
+    t.string "email", null: false
+    t.string "merchant_lock"
+    t.index ["disbursement_id"], name: "index_card_grants_on_disbursement_id"
+    t.index ["event_id"], name: "index_card_grants_on_event_id"
+    t.index ["sent_by_id"], name: "index_card_grants_on_sent_by_id"
+    t.index ["stripe_card_id"], name: "index_card_grants_on_stripe_card_id"
+    t.index ["subledger_id"], name: "index_card_grants_on_subledger_id"
+    t.index ["user_id"], name: "index_card_grants_on_user_id"
   end
 
   create_table "check_deposits", force: :cascade do |t|
@@ -386,6 +410,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_19_150138) do
     t.datetime "pending_at", precision: nil
     t.datetime "in_transit_at", precision: nil
     t.datetime "deposited_at", precision: nil
+    t.bigint "destination_subledger_id"
+    t.index ["destination_subledger_id"], name: "index_disbursements_on_destination_subledger_id"
     t.index ["event_id"], name: "index_disbursements_on_event_id"
     t.index ["fulfilled_by_id"], name: "index_disbursements_on_fulfilled_by_id"
     t.index ["requested_by_id"], name: "index_disbursements_on_requested_by_id"
@@ -1399,9 +1425,18 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_19_150138) do
     t.bigint "replacement_for_id"
     t.string "name"
     t.boolean "is_platinum_april_fools_2023"
+    t.bigint "subledger_id"
     t.index ["event_id"], name: "index_stripe_cards_on_event_id"
     t.index ["replacement_for_id"], name: "index_stripe_cards_on_replacement_for_id"
     t.index ["stripe_cardholder_id"], name: "index_stripe_cards_on_stripe_cardholder_id"
+    t.index ["subledger_id"], name: "index_stripe_cards_on_subledger_id"
+  end
+
+  create_table "subledgers", force: :cascade do |t|
+    t.bigint "event_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["event_id"], name: "index_subledgers_on_event_id"
   end
 
   create_table "tags", force: :cascade do |t|
@@ -1579,6 +1614,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_19_150138) do
   add_foreign_key "canonical_pending_settled_mappings", "canonical_pending_transactions"
   add_foreign_key "canonical_pending_settled_mappings", "canonical_transactions"
   add_foreign_key "canonical_pending_transactions", "raw_pending_stripe_transactions"
+  add_foreign_key "card_grants", "events"
+  add_foreign_key "card_grants", "stripe_cards"
+  add_foreign_key "card_grants", "subledgers"
+  add_foreign_key "card_grants", "users"
+  add_foreign_key "card_grants", "users", column: "sent_by_id"
   add_foreign_key "check_deposits", "events"
   add_foreign_key "checks", "lob_addresses"
   add_foreign_key "checks", "users", column: "creator_id"
@@ -1653,6 +1693,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_19_150138) do
   add_foreign_key "stripe_cardholders", "users"
   add_foreign_key "stripe_cards", "events"
   add_foreign_key "stripe_cards", "stripe_cardholders"
+  add_foreign_key "subledgers", "events"
   add_foreign_key "transactions", "ach_transfers"
   add_foreign_key "transactions", "bank_accounts"
   add_foreign_key "transactions", "checks"

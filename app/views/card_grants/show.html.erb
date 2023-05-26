@@ -1,0 +1,90 @@
+
+<div class="mt4 mb4 check--form flex justify-center" style="gap: 3rem">
+  <% if @card_grant.stripe_card.present? %>
+    <div>
+      <%= render @card_grant.stripe_card, headless: true, show_card_number: true %>
+      <div class="stat mt3 mx-auto <%= "muted" if @card_grant.balance == 0 %>" style="width: fit-content">
+        <span class="stat__label">Balance remaining</span>
+        <span class="stat__value"><%= @card_grant.balance.format(symbol: false) %></span>
+      </div>
+    </div>
+
+    <div>
+      <div class="card container--sm">
+        <h3 class="regular mt0 mb0 info">How do I make purchases on this card?</h3>
+        <p class="mt1">Here's all the info you might need:</p>
+
+        <section class="details">
+          <p class="fs-mask">
+            <strong>
+              Card number
+            </strong>
+            <%= @card.formatted_card_number %>
+          </p>
+
+          <p class="fs-mask">
+            <strong>CVC</strong>
+            <%= @card.cvc %>
+          </p>
+
+          <p class="fs-mask">
+            <strong>Expiration date</strong>
+            <%= render_exp_date %>
+          </p>
+
+          <p>
+            <strong>ZIP/Postal code</strong>
+            <%= @card.stripe_cardholder.address_postal_code %>
+          </p>
+          <p>
+            <strong>Billing address</strong>
+            <%= render_address @card.cardholder %>
+          </p>
+        </section>
+      </div>
+    </div>
+  <% else %>
+    <div class="container--xs">
+      <div class="center">
+        <h3 class="mt0">Just one more step:</h3>
+        <p class="mb3">We just need one more thing before you can start spending your grant from <%= @card_grant.event.name %>.</p>
+      </div>
+
+      <div class="card border b--info center">
+        <%= form_with url: activate_card_grant_path(@card_grant) do |form| %>
+          <div class="field field--checkbox mb2 justify-center">
+            <%= form.check_box :terms, required: true %>
+            <%= form.label :terms do %>
+              I agree to the <%= link_to "Card Issuing Terms", "https://stripe.com/legal/issuing/celtic-authorized-user-terms" %>
+            <% end %>
+          </div>
+          <div class="actions">
+            <%= form.submit "Start spending" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<hr>
+
+<% if @hcb_codes.present? %>
+  <h2 class="heading h2 line-height-4 mt0 ml0 pt1 pb1 pl2 pr2">Transactions on this card</h2>
+
+  <div class="table-container">
+    <table>
+      <tbody data-behavior="transactions">
+        <% @hcb_codes.order(created_at: :desc).each do |hcb_code| %>
+          <% if hcb_code.canonical_transactions.any? %>
+            <%= render partial: "canonical_transactions/canonical_transaction", collection: hcb_code.canonical_transactions, as: :ct, locals: { authorless: true, receipt_upload_button: true } %>
+          <% else %>
+            <%= render partial: "canonical_pending_transactions/canonical_pending_transaction", collection: hcb_code.canonical_pending_transactions, as: :pt, locals: { authorless: true, receipt_upload_button: true } %>
+          <% end %>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% else %>
+  <%= blankslate "No purchases yet." %>
+<% end %>
