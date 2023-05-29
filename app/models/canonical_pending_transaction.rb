@@ -68,6 +68,7 @@ class CanonicalPendingTransaction < ApplicationRecord
   belongs_to :check_deposit, optional: true
   has_one :canonical_pending_event_mapping
   has_one :event, through: :canonical_pending_event_mapping
+  has_one :subledger, through: :canonical_pending_event_mapping
   has_many :canonical_pending_settled_mappings
   has_many :canonical_transactions, through: :canonical_pending_settled_mappings
   has_one :canonical_pending_declined_mapping

@@ -3,7 +3,7 @@
 class CanonicalTransactionGrouped
   include ActiveModel::Model
 
-  attr_accessor :hcb_code, :date, :amount_cents, :raw_canonical_transaction_ids, :raw_canonical_pending_transaction_ids, :event, :running_balance
+  attr_accessor :hcb_code, :date, :amount_cents, :raw_canonical_transaction_ids, :raw_canonical_pending_transaction_ids, :event, :running_balance, :subledger
   attr_writer :canonical_transactions, :canonical_pending_transactions, :local_hcb_code
 
   def memo
@@ -30,7 +30,7 @@ class CanonicalTransactionGrouped
           # Getting pending transactions from hcb code since the
           # `canonical_pending_transactions` method in this class will be empty
           # if this CanonicalTransactionGrouped represents a CanonicalTransaction
-          pts = local_hcb_code.canonical_pending_transactions.select { |pt| pt.fronted? && pt.event == event }
+          pts = local_hcb_code.canonical_pending_transactions.select { |pt| pt.fronted? && pt.event == event && pt.subledger == subledger }
           return Money.new(amount_cents + pts.sum(&:fronted_amount), "USD")
         end
 
