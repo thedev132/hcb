@@ -1310,6 +1310,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_26_160912) do
     t.string "receiptable_type"
     t.bigint "receiptable_id"
     t.integer "upload_method"
+    t.text "textual_content_ciphertext"
     t.index ["receiptable_type", "receiptable_id"], name: "index_receipts_on_receiptable_type_and_receiptable_id"
     t.index ["user_id"], name: "index_receipts_on_user_id"
   end

@@ -37,6 +37,15 @@
           class: "error tooltipped tooltipped--w",
           "aria-label": "Delete this receipt" %>
     </footer>
+
+    <% admin_tools do %>
+      <details>
+        <summary><span class="h4 bold">Textual Content</span></summary>
+        <article>
+          <pre><%= receipt.textual_content || "Unsupported file type" %></pre>
+        </article>
+      </details>
+    <% end %>
   </div>
 
 <% end %>
