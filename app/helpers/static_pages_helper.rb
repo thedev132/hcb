@@ -33,6 +33,11 @@ module StaticPagesHelper
         query: { filterByFormula: "Status='Pending'", fields: [] },
         destination: "https://airtable.com/tblsYQ54Rg1Pjz1xP/viwjETKo05TouqYev"
       },
+      onboard_id: {
+        url: "https://airbridge.hackclub.com/v0.1/OnBoard/Verifications",
+        query: { filterByFormula: "Status='Pending'", fields: [] },
+        destination: "https://airtable.com/tblVZwB8QMUSDAd41/viwJ15CT6VHCZ0UZ4"
+      },
       bank_applications: {
         url: "https://airbridge.hackclub.com/v0.1/Bank%20Applications%20Database/Events",
         query: { filterByFormula: "Pending='Pending'", fields: [] },
