@@ -139,3 +139,6 @@ Layout/DotPosition:
 
 Bundler/OrderedGems:
   Enabled: false
+
+Naming/AccessorMethodName:
+  Enabled: false

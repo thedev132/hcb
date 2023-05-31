@@ -25,6 +25,7 @@ class CanonicalPendingTransactionMailer < ApplicationMailer
     @user = @card.user
     @merchant = @cpt.raw_pending_stripe_transaction.stripe_transaction["merchant_data"]["name"]
     @reason = @cpt.raw_pending_stripe_transaction.stripe_transaction["request_history"][0]["reason"]
+    @webhook_declined_reason = @cpt.raw_pending_stripe_transaction.stripe_transaction.dig("metadata", "declined_reason")
 
     mail to: @user.email,
          subject: "Purchase declined at #{@merchant}"
