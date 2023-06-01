@@ -32,7 +32,7 @@
 
   <div class="grid grid--wide mb4">
     <% current_user.card_grants.includes(:stripe_card).activated.each do |grant| %>
-      <%= render grant.stripe_card, headless: true %>
+      <%= render grant.stripe_card, headless: true, href: card_grant_path(grant) %>
     <% end %>
   </div>
 <% end %>
