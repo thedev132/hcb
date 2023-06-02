@@ -59,6 +59,8 @@ class Disbursement < ApplicationRecord
   has_one :raw_pending_incoming_disbursement_transaction
   has_one :raw_pending_outgoing_disbursement_transaction
 
+  has_one :card_grant, required: false
+
   has_many :t_transactions, class_name: "Transaction", inverse_of: :disbursement
 
   validates_presence_of :source_event_id,

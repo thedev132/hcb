@@ -59,6 +59,7 @@ class HcbCode < ApplicationRecord
   end
 
   def memo
+    return card_grant_memo if card_grant?
     return disbursement_memo if disbursement?
     return invoice_memo if invoice?
     return donation_memo if donation?
@@ -237,6 +238,14 @@ class HcbCode < ApplicationRecord
 
   def disbursement_memo
     smartish_custom_memo || disbursement.special_appearance_memo || "Transfer from #{disbursement.source_event.name} to #{disbursement.destination_event.name}".strip.upcase
+  end
+
+  def card_grant?
+    disbursement? && disbursement.card_grant.present?
+  end
+
+  def card_grant_memo
+    smartish_custom_memo || "Grant to #{disbursement.card_grant.user.name}"
   end
 
   def stripe_card?
