@@ -396,6 +396,10 @@ class HcbCode < ApplicationRecord
     (type == :card_charge && !pt.declined?) || !!raw_emburse_transaction
   end
 
+  def needs_receipt?
+    receipt_required? && marked_no_or_lost_receipt_at.nil? && receipts.size == 0
+  end
+
   def local_hcb_code
     @local_hcb_code ||= HcbCode.find_or_create_by(hcb_code: hcb_code)
   end

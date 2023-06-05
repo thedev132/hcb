@@ -154,7 +154,7 @@
       </div>
 
       <% if ct.local_hcb_code %>
-        <%= list_badge_for ct.local_hcb_code.receipts.size, "receipt", "payment-docs", optional: !ct.raw_stripe_transaction || ct.local_hcb_code.stripe_refund?, required: ct.raw_stripe_transaction && !ct.local_hcb_code.no_or_lost_receipt? %>
+        <%= list_badge_for ct.local_hcb_code.receipts.size, "receipt", "payment-docs", optional: !ct.raw_stripe_transaction || ct.local_hcb_code.stripe_refund?, required: ct.local_hcb_code.needs_receipt? %>
         <%= list_badge_for admin_signed_in? ? ct.local_hcb_code.comments.size : ct.local_hcb_code.not_admin_only_comments_count, "note", "post", optional: true %>
       <% end %>
     </div>
@@ -175,26 +175,30 @@
   </td>
   <% if defined?(receipt_upload_button) %>
     <td style="width: 1%">
-      <%= form_with url: upload_receipts_path, data: { controller: "form", "file-drop-target" => "form" } do |form| %>
-        <%= form.file_field :file, id: "file_#{ct.local_hcb_code.hashid}", multiple: true, required: true, class: "display-none", data: { action: "change->form#submit", "file-drop-target" => "fileInput" } %>
-        <%= form.hidden_field :redirect_url, value: @card_grant ? card_grant_path(@card_grant) : my_inbox_path %>
-        <%= form.hidden_field :show_link, value: true %>
-        <%= form.hidden_field :receiptable_type, value: ct.local_hcb_code.class %>
-        <%= form.hidden_field :receiptable_id, value: ct.local_hcb_code.id %>
-        <%= form.hidden_field :upload_method, value: "receipts_page", data: { "file-drop-target" => "uploadMethod" } %>
-        <div class="<%= "btn-group" if Flipper.enabled?(:receipt_bin_2023_04_07, current_user) %>">
-          <%= form.label "file_#{ct.local_hcb_code.hashid}", class: "btn", style: "font-size: 0.875rem; font-weight: 600; padding: 0.25rem 1rem;" do %>
-            <%= inline_icon "share" %>
-            Upload receipt
+      <% if ct.local_hcb_code.needs_receipt? %>
+        <%= form_with url: upload_receipts_path, data: { controller: "form", "file-drop-target" => "form" } do |form| %>
+          <%= form.file_field :file, id: "file_#{ct.local_hcb_code.hashid}", multiple: true, required: true, class: "display-none", data: { action: "change->form#submit", "file-drop-target" => "fileInput" } %>
+          <%= form.hidden_field :redirect_url, value: @card_grant ? card_grant_path(@card_grant) : my_inbox_path %>
+          <% unless @card_grant.present? %>
+            <%= form.hidden_field :show_link, value: true %>
           <% end %>
-
-          <% if Flipper.enabled?(:receipt_bin_2023_04_07, current_user) %>
-            <%= link_to my_receipts_upload_path, class: "btn bg-primary", style: "font-size: 0.875rem; font-weight: 600; padding: 0.25rem 1rem;", data: { behavior: "modal_trigger", modal: "link_receipt" } do %>
-              <%= inline_icon "payment-docs" %>
-              <span>Select</span>
+          <%= form.hidden_field :receiptable_type, value: ct.local_hcb_code.class %>
+          <%= form.hidden_field :receiptable_id, value: ct.local_hcb_code.id %>
+          <%= form.hidden_field :upload_method, value: "receipts_page", data: { "file-drop-target" => "uploadMethod" } %>
+          <div class="<%= "btn-group" if Flipper.enabled?(:receipt_bin_2023_04_07, current_user) %>">
+            <%= form.label "file_#{ct.local_hcb_code.hashid}", class: "btn", style: "font-size: 0.875rem; font-weight: 600; padding: 0.25rem 1rem;" do %>
+              <%= inline_icon "share" %>
+              Upload receipt
             <% end %>
-          <% end %>
-        </div>
+
+            <% if Flipper.enabled?(:receipt_bin_2023_04_07, current_user) %>
+              <%= link_to my_receipts_upload_path, class: "btn bg-primary", style: "font-size: 0.875rem; font-weight: 600; padding: 0.25rem 1rem;", data: { behavior: "modal_trigger", modal: "link_receipt" } do %>
+                <%= inline_icon "payment-docs" %>
+                <span>Select</span>
+              <% end %>
+            <% end %>
+          </div>
+        <% end %>
       <% end %>
     </td>
 

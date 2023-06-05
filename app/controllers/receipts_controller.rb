@@ -87,6 +87,8 @@ class ReceiptsController < ApplicationController
   ensure
     if params[:redirect_url]
       redirect_to params[:redirect_url]
+    elsif @receiptable.is_a?(HcbCode) && @receiptable.stripe_card&.card_grant.present?
+      redirect_to @receiptable.stripe_card.card_grant
     else
       redirect_back fallback_location: @receiptable&.try(:url) || @receiptable || my_inbox_path
     end

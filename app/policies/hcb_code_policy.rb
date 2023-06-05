@@ -22,7 +22,7 @@ class HcbCodePolicy < ApplicationPolicy
   end
 
   def attach_receipt?
-    user&.admin? || present_in_events?
+    user&.admin? || present_in_events? || user_made_purchase?
   end
 
   def send_receipt_sms?
@@ -45,6 +45,10 @@ class HcbCodePolicy < ApplicationPolicy
 
   def present_in_events?
     record.events.select { |e| e.try(:users).try(:include?, user) }.present?
+  end
+
+  def user_made_purchase?
+    record.stripe_card? && record.stripe_cardholder&.user == user
   end
 
 end
