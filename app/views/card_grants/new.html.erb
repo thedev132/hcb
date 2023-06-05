@@ -20,7 +20,7 @@
 
     <div class="field">
       <%= form.label :merchant_lock, "Merchant lock (optional)" %>
-      <%= form.text_field :merchant_lock, placeholder: "123456789" %>
+      <%= form.text_field :merchant_lock, placeholder: "123456789", value: @card_grant.merchant_lock&.join(", ") %>
       <p class="h5 muted mt0 mb1">Provide a comma-separated list of merchant network IDs to lock this card to.</p>
     </div>
 
