@@ -8,18 +8,14 @@ module PartnerService
     end
 
     def run
-      ::Partners::Stripe::Topup::Create.new(attrs).run
-    end
-
-    private
-
-    def attrs
-      {
+      ::Partners::Stripe::Topup::Create.new(
         stripe_api_key: stripe_api_key,
         amount_cents: @amount_cents,
         statement_descriptor: statement_descriptor
-      }
+      ).run
     end
+
+    private
 
     def stripe_api_key
       partner.stripe_api_key

@@ -219,7 +219,7 @@ class AdminController < ApplicationController
   def event_create
     emails = [params[:organizer_email]].reject(&:empty?)
 
-    attrs = {
+    ::EventService::Create.new(
       name: params[:name],
       emails: emails,
       is_signee: params[:is_signee].to_i == 1,
@@ -233,8 +233,7 @@ class AdminController < ApplicationController
       organized_by_teenagers: params[:organized_by_teenagers].to_i == 1,
       omit_stats: params[:omit_stats].to_i == 1,
       demo_mode: params[:demo_mode].to_i == 1
-    }
-    ::EventService::Create.new(attrs).run
+    ).run
 
     redirect_to events_admin_index_path, flash: { success: "Successfully created #{params[:name]}" }
   rescue => e
@@ -343,13 +342,12 @@ class AdminController < ApplicationController
   end
 
   def raw_transaction_create
-    attrs = {
+    ::RawCsvTransactionService::Create.new(
       unique_bank_identifier: params[:unique_bank_identifier],
       date: params[:date],
       memo: params[:memo],
       amount: params[:amount]
-    }
-    ::RawCsvTransactionService::Create.new(attrs).run
+    ).run
 
     redirect_to raw_transactions_admin_index_path, flash: { success: "Success" }
   rescue => e
@@ -509,10 +507,9 @@ class AdminController < ApplicationController
   end
 
   def ach_reject
-    attrs = {
+    ach_transfer = AchTransferService::Reject.new(
       ach_transfer_id: params[:id],
-    }
-    ach_transfer = AchTransferService::Reject.new(attrs).run
+    ).run
 
     redirect_to ach_start_approval_admin_path(ach_transfer), flash: { success: "Success" }
   rescue => e
@@ -609,19 +606,17 @@ class AdminController < ApplicationController
   end
 
   def check_send
-    attrs = {
+    check = ::CheckService::Send.new(
       check_id: params[:id]
-    }
-    check = ::CheckService::Send.new(attrs).run
+    ).run
 
     redirect_to check_process_admin_path(check), flash: { success: "Success" }
   end
 
   def check_mark_in_transit_and_processed
-    attrs = {
+    check = CheckService::MarkInTransitAndProcessed.new(
       check_id: params[:id]
-    }
-    check = CheckService::MarkInTransitAndProcessed.new(attrs).run
+    ).run
 
     redirect_to check_process_admin_path(check), flash: { success: "Success" }
   rescue => e
@@ -985,13 +980,12 @@ class AdminController < ApplicationController
   def google_workspace_update
     @g_suite = GSuite.find(params[:id])
 
-    attrs = {
+    @g_suite = GSuiteService::Update.new(
       g_suite_id: @g_suite.id,
       domain: @g_suite.domain,
       verification_key: params[:verification_key],
       dkim_key: params[:dkim_key]
-    }
-    @g_suite = GSuiteService::Update.new(attrs).run
+    ).run
 
     redirect_to google_workspace_process_admin_path(@g_suite), flash: { success: "Success" }
   end

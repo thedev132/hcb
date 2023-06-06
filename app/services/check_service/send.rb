@@ -11,7 +11,13 @@ module CheckService
 
       ActiveRecord::Base.transaction do
         check.mark_in_transit!
-        lob_check = Partners::Lob::Checks::Create.new(lob_attrs).run
+        lob_check = Partners::Lob::Checks::Create.new(
+          to: lob_address.lob_id,
+          memo: check.memo,
+          amount_cents: check.amount,
+          description: check.description,
+          message: message
+        ).run
         check.update_columns(update_attrs(lob_check: lob_check))
       end
 
@@ -19,16 +25,6 @@ module CheckService
     end
 
     private
-
-    def lob_attrs
-      {
-        to: lob_address.lob_id,
-        memo: check.memo,
-        amount_cents: check.amount,
-        description: check.description,
-        message: message
-      }
-    end
 
     def update_attrs(lob_check:)
       transaction_memo = "#{lob_check["check_number"]} Check"[0..30]

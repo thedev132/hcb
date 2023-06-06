@@ -14,20 +14,17 @@ module PartnerDonationService
 
       ActiveRecord::Base.transaction do
         partner_donation.mark_in_transit!
-        ::Partners::Stripe::Payouts::Create.new(attrs).run
+
+        ::Partners::Stripe::Payouts::Create.new(
+          stripe_api_key: partner.stripe_api_key,
+          amount_cents: amount_cents,
+          statement_descriptor: statement_descriptor,
+          hcb_metadata_identifier: hcb_metadata_identifier
+        ).run
       end
     end
 
     private
-
-    def attrs
-      {
-        stripe_api_key: partner.stripe_api_key,
-        amount_cents: amount_cents,
-        statement_descriptor: statement_descriptor,
-        hcb_metadata_identifier: hcb_metadata_identifier
-      }
-    end
 
     def stripe_charge
       @stripe_charge ||= ::Partners::Stripe::Charges::Show.new(stripe_api_key: partner.stripe_api_key, id: @stripe_charge_id).run

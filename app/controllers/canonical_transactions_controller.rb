@@ -25,11 +25,10 @@ class CanonicalTransactionsController < ApplicationController
 
     authorize @canonical_transaction
 
-    attrs = {
+    ::CanonicalTransactionService::SetCustomMemo.new(
       canonical_transaction_id: @canonical_transaction.id,
       custom_memo: params[:canonical_transaction][:custom_memo]
-    }
-    ::CanonicalTransactionService::SetCustomMemo.new(attrs).run
+    ).run
 
     unless params[:no_flash]
       flash[:success] = "Renamed transaction"

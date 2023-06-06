@@ -24,7 +24,7 @@ class ChecksController < ApplicationController
     @lob_address.update!(lob_address_params)
 
     # 2. Create Check
-    attrs = {
+    check = CheckService::Create.new(
       event_id: @event.id,
       lob_address_id: @lob_address.id,
 
@@ -34,8 +34,7 @@ class ChecksController < ApplicationController
       send_date: Time.now.utc + 48.hours,
 
       current_user: current_user
-    }
-    check = CheckService::Create.new(attrs).run
+    ).run
 
     flash[:success] = "Your check is scheduled to send on #{check.send_date.to_date}"
 
