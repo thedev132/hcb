@@ -722,7 +722,7 @@ GEM
       activerecord (>= 5.2)
     swagger-blocks (3.0.0)
     table_print (1.5.7)
-    terser (1.1.12)
+    terser (1.1.16)
       execjs (>= 0.3.0, < 3)
     thor (1.2.2)
     tilt (2.1.0)
