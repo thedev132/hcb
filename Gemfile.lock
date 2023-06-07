@@ -715,7 +715,7 @@ GEM
     sshkit (1.21.4)
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
-    stackprof (0.2.22)
+    stackprof (0.2.25)
     statsd-ruby (1.5.0)
     stripe (8.2.0)
     strong_migrations (1.0.0)
