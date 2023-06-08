@@ -223,9 +223,11 @@ module HcbCodeService
                 .where.not(hcb_code: @hcb_code.hcb_code)
                 .where.not("custom_memo = memo")
                 .pg_text_search(joined_memos,
-                                against: against_cols,
-                                using: {
-                                  tsearch: { prefix: true, dictionary: "english", any_word: true }
+                                {
+                                  against: against_cols,
+                                  using: {
+                                    tsearch: { prefix: true, dictionary: "english", any_word: true }
+                                  }
                                 })
                 .with_pg_search_rank
                 .limit(10)
