@@ -47,6 +47,12 @@ class AchTransfersController < ApplicationController
   def create
     authorize @event, policy_class: AchTransferPolicy
 
+    if current_user.admin? && ach_transfer_params["scheduled_on(1i)"].present?
+      scheduled_on = Date.new(ach_transfer_params["scheduled_on(1i)"].to_i,
+                              ach_transfer_params["scheduled_on(2i)"].to_i,
+                              ach_transfer_params["scheduled_on(3i)"].to_i)
+    end
+
     ach_transfer = AchTransferService::Create.new(
       event_id: @event.id,
       routing_number: ach_transfer_params[:routing_number],
@@ -56,7 +62,8 @@ class AchTransfersController < ApplicationController
       recipient_tel: ach_transfer_params[:recipient_tel],
       amount_cents: (ach_transfer_params[:amount].to_f * 100).to_i,
       payment_for: ach_transfer_params[:payment_for],
-      current_user: current_user
+      current_user: current_user,
+      scheduled_on: scheduled_on,
     ).run
 
     flash[:success] = "ACH Transfer successfully submitted."
@@ -66,6 +73,14 @@ class AchTransfersController < ApplicationController
     flash[:error] = e.message
 
     redirect_to new_event_ach_transfer_path(@event)
+  end
+
+  def cancel
+    authorize @ach_transfer
+
+    @ach_transfer.mark_rejected!
+
+    redirect_to @ach_transfer.local_hcb_code
   end
 
   private
@@ -80,7 +95,7 @@ class AchTransfersController < ApplicationController
   end
 
   def ach_transfer_params
-    params.require(:ach_transfer).permit(:routing_number, :account_number, :bank_name, :recipient_name, :recipient_tel, :amount, :payment_for)
+    params.require(:ach_transfer).permit(:routing_number, :account_number, :bank_name, :recipient_name, :recipient_tel, :amount, :payment_for, :scheduled_on)
   end
 
 end

@@ -78,4 +78,10 @@
 
     <%= render "hcb_codes/tags", hcb_code: @hcb_code, event: (@event || @hcb_code.event) %>
   </section>
+
+  <% if @hcb_code.ach_transfer.may_mark_rejected? %>
+    <section class="card__banner card__darker border-top overflow-hidden">
+      <%= button_to "Cancel transfer", cancel_ach_transfer_path(@hcb_code.ach_transfer), class: "bg-error" %>
+    </section>
+  <% end %>
 </article>

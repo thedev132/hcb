@@ -17,6 +17,7 @@
 #  rejected_at               :datetime
 #  routing_number            :string
 #  scheduled_arrival_date    :datetime
+#  scheduled_on              :date
 #  created_at                :datetime         not null
 #  updated_at                :datetime         not null
 #  creator_id                :bigint
@@ -55,24 +56,27 @@ class AchTransfer < ApplicationRecord
 
   validates :amount, numericality: { greater_than: 0, message: "must be greater than 0" }
   validates_length_of :routing_number, is: 9
+  validate :scheduled_on_must_be_in_the_future
 
   has_one :t_transaction, class_name: "Transaction", inverse_of: :ach_transfer
 
   scope :approved, -> { where.not(approved_at: nil) }
+  scope :scheduled_for_today, -> { scheduled.where(scheduled_on: ..Date.today) }
 
   aasm do
     state :pending, initial: true
+    state :scheduled
     state :in_transit
     state :rejected
     state :failed
     state :deposited
 
     event :mark_in_transit do
-      transitions from: [:pending, :deposited], to: :in_transit
+      transitions from: [:pending, :deposited, :scheduled], to: :in_transit
     end
 
     event :mark_rejected do
-      transitions from: :pending, to: :rejected
+      transitions from: [:pending, :scheduled], to: :rejected
     end
 
     event :mark_failed do
@@ -82,7 +86,14 @@ class AchTransfer < ApplicationRecord
     event :mark_deposited do
       transitions from: :in_transit, to: :deposited
     end
+
+    event :mark_scheduled do
+      transitions from: :pending, to: :scheduled
+    end
   end
+
+  # Eagerly create HcbCode object
+  after_create :local_hcb_code
 
   scope :pending_deprecated, -> { where(approved_at: nil, rejected_at: nil) }
   def self.in_transit_deprecated
@@ -91,6 +102,23 @@ class AchTransfer < ApplicationRecord
   scope :rejected_deprecated, -> { where.not(rejected_at: nil) }
   def self.delivered
     select { |a| a.t_transaction.present? }
+  end
+
+  def send_ach_transfer!
+    return unless may_mark_in_transit?
+
+    increase_ach_transfer = Increase::AchTransfers.create(
+      account_id: IncreaseService::AccountIds::FS_MAIN,
+      account_number: account_number,
+      routing_number: routing_number,
+      amount: amount,
+      statement_descriptor: payment_for,
+      individual_name: recipient_name[0...22],
+      company_name: event.name[0...16]
+    )
+
+    update!(increase_id: increase_ach_transfer["id"])
+    mark_in_transit!
   end
 
   def status
@@ -124,6 +152,7 @@ class AchTransfer < ApplicationRecord
   def status_text_long
     case status
     when :deposited then "Deposited successfully"
+    when :scheduled then "Scheduled for #{scheduled_on.strftime("%B %-d, %Y")}"
     when :in_transit then "In transit"
     when :pending then "Waiting on Bank approval"
     when :rejected then "Rejected"
@@ -134,6 +163,7 @@ class AchTransfer < ApplicationRecord
     case status
     when :deposited then :success
     when :in_transit then :info
+    when :scheduled then :pending
     when :pending then :pending
     when :rejected then :error
     end
@@ -219,6 +249,12 @@ class AchTransfer < ApplicationRecord
 
   def raw_pending_outgoing_ach_transactions
     @raw_pending_outgoing_ach_transactions ||= ::RawPendingOutgoingAchTransaction.where(ach_transaction_id: id)
+  end
+
+  def scheduled_on_must_be_in_the_future
+    if scheduled_on.present? && scheduled_on.before?(Date.today)
+      errors.add(:scheduled_on, "must be in the future")
+    end
   end
 
 end

@@ -276,6 +276,9 @@ Rails.application.routes.draw do
   end
 
   resources :ach_transfers, only: [:show] do
+    member do
+      post "cancel"
+    end
     resources :comments
   end
 

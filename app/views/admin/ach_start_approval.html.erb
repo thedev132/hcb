@@ -17,7 +17,11 @@
 
 <% if @ach_transfer.pending? %>
   <%= form_with(model: nil, local: true, url: ach_approve_admin_path(@ach_transfer), method: :post) do |form| %>
-    <%= form.submit "Send ACH transfer", data: { confirm: "Are you sure? Once an ACH transfer is sent, it cannot be un-sent." } %>
+    <%= form.submit @ach_transfer.scheduled_on.present? ? "Approve ACH transfer" : "Send ACH transfer", data: { confirm: "Are you sure? Once an ACH transfer is sent, it cannot be un-sent." } %>
+    <% if @ach_transfer.scheduled_on.present? %>
+      <br>
+      <small>Once approved, this ACH transfer will automatically send on <%= @ach_transfer.scheduled_on.strftime("%Y-%m-%d") %>.</small>
+    <% end %>
   <% end %>
 
   <p>or</p>
@@ -63,15 +67,6 @@
       <td><%= @ach_transfer.recipient_tel %></td>
       <td>
         <span class="m0 badge pointer" onClick="navigator.clipboard.writeText(<%= @ach_transfer.recipient_tel.to_json %>);">
-          copy
-        </span>
-      </td>
-    </tr>
-    <tr>
-      <td style="text-align: right;">Payee Nickname:</td>
-      <td>HCB ACH #<%= @ach_transfer.id %></td>
-      <td>
-        <span class="m0 badge pointer" onClick="navigator.clipboard.writeText(<%= "HCB ACH ##{@ach_transfer.id}".to_json %>);">
           copy
         </span>
       </td>

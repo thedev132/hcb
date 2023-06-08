@@ -17,6 +17,10 @@ class AchTransferPolicy < ApplicationPolicy
     is_public || admin_or_user
   end
 
+  def cancel?
+    admin_or_user
+  end
+
   def transfer_confirmation_letter?
     admin_or_user
   end

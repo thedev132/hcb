@@ -8,20 +8,13 @@ module AchTransferService
     end
 
     def run
-      ActiveRecord::Base.transaction do
-        increase_ach_transfer = Increase::AchTransfers.create(
-          account_id: IncreaseService::AccountIds::FS_MAIN,
-          account_number: ach_transfer.account_number,
-          routing_number: ach_transfer.routing_number,
-          amount: ach_transfer.amount,
-          statement_descriptor: ach_transfer.payment_for,
-          individual_name: ach_transfer.recipient_name[0...22],
-          company_name: ach_transfer.event.name[0...16]
-        )
-
-        ach_transfer.mark_in_transit!
-        ach_transfer.update!(increase_id: increase_ach_transfer["id"], processor: @processor)
+      if ach_transfer.scheduled_on.present?
+        ach_transfer.mark_scheduled!
+      else
+        ach_transfer.send_ach_transfer!
       end
+
+      ach_transfer.update(processor: @processor)
 
       ach_transfer
     end

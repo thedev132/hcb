@@ -18,7 +18,7 @@ module PendingTransactionEngine
         private
 
         def pending_outgoing_ach_transactions
-          @pending_outgoing_ach_transactions ||= AchTransfer.all
+          @pending_outgoing_ach_transactions ||= AchTransfer.in_transit.or(AchTransfer.pending.where(scheduled_on: nil))
         end
 
       end
