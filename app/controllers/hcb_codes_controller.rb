@@ -99,14 +99,12 @@ class HcbCodesController < ApplicationController
   def attach_receipt
     @hcb_code = HcbCode.find(params[:id])
     @event = @hcb_code.event
+    @secret = params[:s]
 
     authorize @hcb_code
 
   rescue Pundit::NotAuthorizedError
-    unless HcbCodeService::Receipt::SigningEndpoint.new.valid_url?(@hcb_code.hashid, params[:s])
-      raise
-    end
-
+    raise unless HcbCodeService::Receipt::SigningEndpoint.new.valid_url?(@hcb_code.hashid, params[:s])
   end
 
   def send_receipt_sms
