@@ -90,23 +90,25 @@
   </section>
 </div>
 
-<div class="card mb3" id="wallets">
-  <div class="card__banner card__banner--top flex justify-between items-center promo-wallets">
-    <h3 class="h1 p2 my0 color-black">Wallets</h3>
-    <%= link_to "Request",
-                @perks_available ? "https://hack.af/hcb-wallets?prefill_Organization%20Name=#{@event.name}&prefill_Recipient%20Name=#{current_user.full_name}&prefill_Login%20Email=#{current_user.email}" : root_path,
-                class: "btn bg-success mr1 #{'disabled' unless @perks_available}",
-                target: :_blank %>
-  </div>
+<% if @event.organized_by_hack_clubbers? || @event.organized_by_teenagers? || @event.high_school_hackathon? %>
+  <div class="card mb3" id="wallets">
+    <div class="card__banner card__banner--top flex justify-between items-center promo-wallets">
+      <h3 class="h1 p2 my0 color-black">Wallets</h3>
+      <%= link_to "Request",
+                  @perks_available ? "https://hack.af/hcb-wallets?prefill_Organization%20Name=#{@event.name}&prefill_Recipient%20Name=#{current_user.full_name}&prefill_Login%20Email=#{current_user.email}" : root_path,
+                  class: "btn bg-success mr1 #{'disabled' unless @perks_available}",
+                  target: :_blank %>
+    </div>
 
-  <p class="mb0">
-    The days of needing thick leather wallets are coming to an end. Have physical Hack Club Bank cards, but not sure how
-    to keep them?
-    We'll ship you a <a href="https://hack.af/minimalist-wallet" target="_blank">minimalist wallet</a>—durable with a
-    slim form factor designed to carry the basic necessities. Each wallet is individually printed and personally shipped
-    out by the Bank team.
-  </p>
-</div>
+    <p class="mb0">
+      The days of needing thick leather wallets are coming to an end. Have physical Hack Club Bank cards, but not sure how
+      to keep them?
+      We'll ship you a <a href="https://hack.af/minimalist-wallet" target="_blank">minimalist wallet</a>—durable with a
+      slim form factor designed to carry the basic necessities. Each wallet is individually printed and personally shipped
+      out by the Bank team.
+    </p>
+  </div>
+<% end %>
 
 <div class="card pb0 mb3" id="pvsa">
   <div class="card__banner card__banner--top flex justify-between items-center promo-pvsa">
