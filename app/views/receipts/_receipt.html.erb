@@ -1,40 +1,27 @@
 <% file_path = Rails.application.routes.url_helpers.rails_blob_path(receipt.file, only_path: true) %>
-<div class="flex flex-column mb1" data-receipt-id="<%= receipt.id %>" style="max-width: 256px;<% if defined?(select_target) %> cursor: pointer;" data-receipt-select-target="receipt" data-action="click->receipt-select#select<% end %>">
-  <% if defined?(link_to_file) %>
-    <%= link_to file_path, class: "link-reset mb1", target: "_blank" do %>
-      <span class="muted">
-        <strong>
+<% instance = receipt.__id__ %>
+<div class="flex flex-column mb1" data-receipt-id="<%= receipt.id %>" style="max-width: 256px;<% if defined?(select_target) %> cursor: pointer;" data-receipt-select-target="receipt" data-action="click->receipt-select#select<% end %>" data-behavior="<%= "modal_trigger" unless defined?(select_target) || receipt.preview.nil? %>" data-modal="<%= "preview_receipt_#{instance}" unless defined?(select_target) || receipt.preview.nil? %>">
+  <span class="muted mb1">
+    <strong>
+      <% if defined?(link_to_file) && !defined?(select_target) %>
+        <%= link_to file_path, target: "_blank", style: "text-decoration: none;" do %>
           <%= receipt.file.blob.filename %>
-        </strong>
-        (<%= number_to_human_size receipt.file.blob.byte_size %>)
-      </span>
-    <% end %>
-  <% else %>
-    <span class="muted mb1">
-      <strong>
+        <% end %>
+      <% else %>
         <%= receipt.file.blob.filename %>
-      </strong>
-      (<%= number_to_human_size receipt.file.blob.byte_size %>)
+      <% end %>
+    </strong>
+    (<%= number_to_human_size receipt.file.blob.byte_size %>)
+  </span>
+
+  <% if receipt.preview %>
+    <span style="display: inline-grid; border-radius: 0.5rem;" class="pointer">
+      <%= image_tag receipt.preview, width: 256, height: 256, class: "card p0", style: "object-fit: contain; width: auto; height: auto; max-width: 100%; max-height: 256px; user-drag: none; -webkit-user-drag: none; user-select: none; -moz-user-select: none;", data: {
+            "receipt-id" => receipt.id
+          } if receipt.preview %>
     </span>
   <% end %>
 
-  <% if defined?(link_to_file) %>
-    <%= link_to file_path, target: "_blank" do %>
-      <span style="display: inline-grid; border-radius: 0.5rem;">
-        <%= image_tag receipt.preview, width: 256, height: 256, class: "card p0", style: "object-fit: contain; width: auto; height: auto; max-width: 100%; max-height: 256px;", data: {
-              "receipt-id" => receipt.id
-            } if receipt.preview %>
-      </span>
-    <% end %>
-  <% else %>
-    <span>
-      <span style="display: inline-grid; border-radius: 0.5rem;">
-        <%= image_tag receipt.preview, width: 256, height: 256, class: "card p0", style: "object-fit: contain; width: auto; height: auto; max-width: 100%; max-height: 256px; user-drag: none; -webkit-user-drag: none; user-select: none; -moz-user-select: none;", data: {
-              "receipt-id" => receipt.id
-            } if receipt.preview %>
-      </span>
-    </span>
-  <% end %>
   <footer class="flex items-center flex-row">
     <%= relative_timestamp receipt.created_at, prefix: "added ", class: "h5 muted" %>
     <span style="flex-grow: 1;"></span>
@@ -49,3 +36,16 @@
     <% end %>
   </footer>
 </div>
+
+<% unless defined?(select_target) || receipt.preview.nil? %>
+  <section style="overflow: initial; line-height: 0px;" class="modal modal--scroll bg-snow modal--huge <%= "modal--flexible" unless receipt.file.blob.content_type == "application/pdf" %> p0" data-behavior="modal" role="dialog" id="<%= "preview_receipt_#{instance}" %>">
+    <a href="#close_modal" tabindex="0" class="pop modal__close muted absolute" rel="modal:close" style="top: 0px; right: -24px; transform: translateY(50%); background: #11111199;">
+      <%= inline_icon "view-close", size: 28, class: "pop modal__close muted  m0" %>
+    </a>
+    <% if receipt.file.blob.content_type == "application/pdf" %>
+      <iframe src="<%= file_path %>" style="width: 100%; height: 100vh; max-height: 100%; border: none; border-radius: 0.75rem; overflow: hidden;"></iframe>
+    <% else %>
+      <%= image_tag receipt.preview, class: "card p0", style: "image-rendering: crisp-edges; object-fit: contain; width: auto; height: auto; max-width: 100%; max-height: 100%; height: 100vh;", onload: "this.style.maxWidth = `min(${this.naturalWidth}px, 300px)`; this.style.maxHeight = `min(${this.naturalHeight}px, 300px)`; this.parentElement.style.maxHeight = `min(${this.naturalHeight}px, 300px)`;" %>
+    <% end %>
+  </section>
+<% end %>
