@@ -94,10 +94,10 @@
   <div class="card mb3" id="wallets">
     <div class="card__banner card__banner--top flex justify-between items-center promo-wallets">
       <h3 class="h1 p2 my0 color-black">Wallets</h3>
-      <%= link_to "Request",
+      <%= link_to "Out of stock",
                   @perks_available ? "https://hack.af/hcb-wallets?prefill_Organization%20Name=#{@event.name}&prefill_Recipient%20Name=#{current_user.full_name}&prefill_Login%20Email=#{current_user.email}" : root_path,
                   class: "btn bg-success mr1 #{'disabled' unless @perks_available}",
-                  target: :_blank %>
+                  target: :_blank, disabled: true %>
     </div>
 
     <p class="mb0">
