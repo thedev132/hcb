@@ -34,6 +34,12 @@ class IncreaseAccountNumber < ApplicationRecord
     end
   end
 
+  validate do
+    if event.outernet_guild?
+      errors.add(:base, "Can't create an account number for an Outernet guild")
+    end
+  end
+
   private
 
   def create_increase_account_number

@@ -14,7 +14,7 @@ class DisbursementPolicy < ApplicationPolicy
   end
 
   def create?
-    user.admin? || user_associated_with_events?
+    user.admin? || (!record.outernet_guild? && user_associated_with_events?)
   end
 
   def transfer_confirmation_letter?

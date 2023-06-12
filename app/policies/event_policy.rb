@@ -106,7 +106,7 @@ class EventPolicy < ApplicationPolicy
   end
 
   def promotions?
-    (is_public || user_or_admin) && !record.hardware_grant?
+    (is_public || user_or_admin) && !record.hardware_grant? && !record.outernet_guild?
   end
 
   def reimbursements?

@@ -332,6 +332,13 @@ class Event < ApplicationRecord
     self.activated_at = Time.now
   end
 
+  before_validation(if: :outernet_guild?, on: :create) { self.donation_page_enabled = false }
+  validate do
+    if outernet_guild? && donation_page_enabled?
+      errors.add(:donation_page_enabled, "donation page can't be enabled for Outernet guilds")
+    end
+  end
+
   CUSTOM_SORT = Arel.sql(
     "CASE WHEN id = 183 THEN '1'"\
     "WHEN id = 999 THEN '2'     "\
@@ -348,8 +355,9 @@ class Event < ApplicationRecord
     event: 3,
     'high school hackathon': 4,
     'robotics team': 5,
-    'hardware grant': 6,
-    'hack club hq': 7
+    'hardware grant': 6, # winter event 2022
+    'hack club hq': 7,
+    'outernet guild': 8, # summer event 2023
   }
 
   def country_us?

@@ -22,27 +22,28 @@ const tours = {
     }
 
     if (!options.demo) {
-      steps.push(
-        {
-          attachTo: isMobile ? 'spend' : 'cards',
-          text: 'Instantly issue a virtual debit card for yourself. Gotta spend that 💸!',
-          placement: isMobile ? 'top' : 'right',
-          strategy: 'fixed'
-        },
-        {
+      steps.push({
+        attachTo: isMobile ? 'spend' : 'cards',
+        text: 'Instantly issue a virtual debit card for yourself. Gotta spend that 💸!',
+        placement: isMobile ? 'top' : 'right',
+        strategy: 'fixed'
+      })
+
+      if (options.category != 'outernet guild') {
+        steps.push({
           attachTo: isMobile ? 'receive' : 'donations',
           text: 'Share your donation form with others, and get it embedded on your website.',
           placement: isMobile ? 'top-end' : 'right',
           strategy: 'fixed'
-        }
-      )
-
-      if (!isMobile) {
-        steps.push({
-          attachTo: 'perks',
-          text: 'Get access to free tools for things like sending newsletters and managing team passwords. Stickers included.',
-          strategy: 'fixed'
         })
+
+        if (!isMobile) {
+          steps.push({
+            attachTo: 'perks',
+            text: 'Get access to free tools for things like sending newsletters and managing team passwords. Stickers included.',
+            strategy: 'fixed'
+          })
+        }
       }
     } else {
       steps.push({

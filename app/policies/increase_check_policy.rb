@@ -6,7 +6,7 @@ class IncreaseCheckPolicy < ApplicationPolicy
   end
 
   def create?
-    admin_or_user
+    !record.event.outernet_guild? && admin_or_user
   end
 
   def approve?

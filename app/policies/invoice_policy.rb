@@ -17,7 +17,7 @@ class InvoicePolicy < ApplicationPolicy
   end
 
   def create?
-    !record.unapproved? && (user&.admin? || record.users.include?(user))
+    !record.unapproved? && !record.outernet_guild? && (user&.admin? || record.users.include?(user))
   end
 
   def show?
