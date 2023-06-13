@@ -29,7 +29,7 @@ module ReceiptService
             }
           end
 
-          SuggestedPairing.insert_all(pairs)
+          SuggestedPairing.insert_all(pairs) if pairs.any?
         end
 
         receipt
