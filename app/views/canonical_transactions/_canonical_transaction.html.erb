@@ -215,17 +215,7 @@
 </tr>
 
 <section class="modal modal--scroll modal--popover bg-snow" data-behavior="modal" role="dialog" id="transaction_details_<%= instance %>">
-  <%= modal_header({
-        unknown: "Transaction in #{ct.local_hcb_code.event.name}",
-        invoice: "Invoice in #{ct.local_hcb_code.event.name}",
-        donation: "Donation to #{ct.local_hcb_code.event.name}",
-        partner_donation: "Partner donation to #{ct.local_hcb_code.event.name}",
-        ach: "ACH in #{ct.local_hcb_code.event.name}",
-        check: "Check in #{ct.local_hcb_code.event.name}",
-        disbursement: "Disbursement #{ct.local_hcb_code.event.name}",
-        card_charge: "Card charge in #{ct.local_hcb_code.event.name}",
-        bank_fee: "Bank Fee in #{ct.local_hcb_code.event.name}"
-      }[ct.local_hcb_code.type || :unknown], level: "h1", external_link: ct.local_hcb_code.url) %>
+  <%= modal_header(ct.local_hcb_code.pretty_title, level: "h1", external_link: ct.local_hcb_code.url) %>
   <%= async_frame_to ct.local_hcb_code.popover_url, as: :span, lazy: true do %>
     <div class="shimmer mb1 mt3">
       <div class="shimmer__border"></div>

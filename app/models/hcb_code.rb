@@ -169,6 +169,22 @@ class HcbCode < ApplicationRecord
       end
   end
 
+  def pretty_title
+    pretty_type = {
+      unknown: "Transaction in",
+      invoice: "Invoice in",
+      donation: "Donation to",
+      partner_donation: "Partner donation to",
+      ach: "ACH in",
+      check: "Check in",
+      disbursement: "Disbursement to",
+      card_charge: "Card charge in",
+      bank_fee: "Bank Fee in"
+    }[type || :unknown]
+
+    event ? "#{pretty_type} #{event.name}" : pretty_type[0..-4]
+  end
+
   def fee_payment?
     ct.fee_payment?
   end
