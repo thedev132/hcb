@@ -56,7 +56,7 @@ class AchTransfer < ApplicationRecord
 
   validates :amount, numericality: { greater_than: 0, message: "must be greater than 0" }
   validates_length_of :routing_number, is: 9
-  validate :scheduled_on_must_be_in_the_future
+  validate :scheduled_on_must_be_in_the_future, on: :create
 
   has_one :t_transaction, class_name: "Transaction", inverse_of: :ach_transfer
 
