@@ -30,6 +30,14 @@ class HcbCodesController < ApplicationController
     hcb_id = @hcb_code.hashid
 
     authorize @hcb_code
+
+    if params[:frame]
+      @frame = true
+      render :show, layout: false
+    else
+      @frame = false
+      render :show
+    end
   rescue Pundit::NotAuthorizedError => e
     raise unless @event.is_public?
 

@@ -73,6 +73,13 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :suggested_pairings, only: [] do
+    member do
+      post "ignore", to: "suggested_pairings#ignore"
+      post "accept", to: "suggested_pairings#accept"
+    end
+  end
+
   post "receiptable/:receiptable_type/:receiptable_id/mark_no_or_lost", to: "receiptables#mark_no_or_lost", as: :receiptable_mark_no_or_lost
 
   resources :reports, only: [] do

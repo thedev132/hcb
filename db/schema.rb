@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_06_140739) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_08_220419) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_stat_statements"
@@ -1439,6 +1439,20 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_06_140739) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["event_id"], name: "index_subledgers_on_event_id"
+  end
+
+  create_table "suggested_pairings", force: :cascade do |t|
+    t.bigint "receipt_id", null: false
+    t.bigint "hcb_code_id", null: false
+    t.float "distance"
+    t.datetime "ignored_at"
+    t.datetime "accepted_at"
+    t.string "aasm_state"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["hcb_code_id"], name: "index_suggested_pairings_on_hcb_code_id"
+    t.index ["receipt_id", "hcb_code_id"], name: "index_suggested_pairings_on_receipt_id_and_hcb_code_id", unique: true
+    t.index ["receipt_id"], name: "index_suggested_pairings_on_receipt_id"
   end
 
   create_table "tags", force: :cascade do |t|

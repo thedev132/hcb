@@ -81,7 +81,12 @@ class StaticPagesController < ApplicationController
         end
       end
 
-      count
+      emojis = {
+        "🤡": 300,
+        "💀": 200,
+        "😱": 100,
+      }
+      emojis.find { |emoji, value| count >= value }&.first || count
     end
 
     render :my_missing_receipts_icon, layout: false
@@ -105,6 +110,17 @@ class StaticPagesController < ApplicationController
 
     if Flipper.enabled?(:receipt_bin_2023_04_07, current_user)
       @receipts = Receipt.where(user: current_user, receiptable: nil)
+
+      @pairings = @receipts.map do |receipt|
+        pairings = receipt.suggested_pairings.order(distance: :asc)
+        next if pairings.ignored.count > 2
+
+        pairing = pairings.unreviewed.first
+        next if pairing.nil?
+        next if pairing.distance > 3000
+
+        pairing
+      end.compact
     end
   end
 
