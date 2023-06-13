@@ -32,9 +32,6 @@ class Receipt < ApplicationRecord
   alias_attribute :uploader, :user
   alias_attribute :transaction, :receiptable
 
-  has_many :suggested_pairings
-  has_many :suggested_transactions, class_name: "HcbCode", through: :suggested_pairings
-
   has_one_attached :file
 
   validates :file, attached: true

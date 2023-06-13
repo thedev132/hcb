@@ -1,22 +1,22 @@
 <% page_md %>
 
 <%= render "events/nav" if @event %>
+
 <%= render partial: "hcb_codes/admin_tools" %>
 <%= render partial: "hcb_codes/rich_metadata" %>
+<% admin_tools do %>
+  <%= render partial: "hcb_codes/transaction_history" %>
+  <%= render partial: "hcb_codes/pending_transaction_history" %>
+<% end %>
 
 <%= render "receipts/list_v2" %>
 <% admin_tools if: !@hcb_code.receipt_required? do %>
-  <%= begin receipt_upload_form_config = {
+  <%= render partial: "receipts/form_v3", locals: {
         receiptable: @hcb_code,
         enable_linking: true,
         upload_method: "transaction_page",
-        include_spacing: true,
-        restricted_dropzone: @frame
-      }
-
-            receipt_upload_form_config[:restricted_dropzone] = true if @frame
-            receipt_upload_form_config[:inline_linking] = true if @frame
-            render partial: "receipts/form_v3", locals: receipt_upload_form_config end %>
+        include_spacing: true
+      } %>
 <% end %>
 
 <%= render "comments/list_v2" %>

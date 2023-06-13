@@ -8,29 +8,8 @@
   <%= render "settings_nav", active: "previews" %>
   <section>
     <h2 id="feature-previews">Feature previews</h2>
-    <% if @shown_private_feature_previews.include?("receipt_bin") || Flipper.enabled?(:receipt_bin_2023_04_07, current_user) %>
-      <div class="card pb0 mb3" id="receipt-bin">
-        <div class="card__banner card__banner--top flex justify-between items-center feature-weekly-receipt-email feature-generic">
-          <h3 class="h1 p2 my0 color-black">Receipt Bin</h3>
-          <% if Flipper.enabled?(:receipt_bin_2023_04_07, current_user) %>
-            <%= link_to "Disable", disable_feature_users_path(feature: :receipt_bin_2023_04_07), method: :post, class: "btn bg-accent" %>
-          <% else %>
-            <%= link_to "Enable", enable_feature_users_path(feature: :receipt_bin_2023_04_07), method: :post, class: "btn bg-info" %>
-          <% end %>
-        </div>
-        <p>
-          Receipts have been a common pain point for Bank's users. Keeping track of receipts for every transaction can be tiring, and it's easy to forget to upload them. We're experimenting with a new way to manage receipts: Receipt Bin. After opting-in, you'll be able to upload receipts to the Receipt Bin, and Bank will attempt to automatically match them to transactions. You can also manually link receipts to transactions or save them for later.
-        </p>
-        <section class="card__banner card__darker secondary border-top">
-          <p class="my0">
-            We're soft launching Receipt Bin- there will be bugs, and we're counting on you to report them!
-          </p>
-        </section>
-      </div>
-    <% end %>
-
     <div class="card pb0 mb3" id="weekly-receipt-email">
-      <div class="card__banner card__banner--top flex justify-between items-center feature-weekly-receipt-email feature-generic">
+      <div class="card__banner card__banner--top flex justify-between items-center feature-weekly-receipt-email">
         <h3 class="h1 p2 my0 color-black">Receipt Report</h3>
         <% if Flipper.enabled?(:receipt_report_2023_04_19, current_user) %>
           <%= link_to "Disable", disable_feature_users_path(feature: :receipt_report_2023_04_19), method: :post, class: "btn bg-accent" %>
@@ -41,13 +20,8 @@
       <p>
         Opting into this preview will send you a weekly reminder with a list of all your missing receipts.
       </p>
-      <section class="card__banner card__darker secondary border-top">
-        <p class="my0">
-          Try <%= link_to "triggering an email for yourself", trigger_receipt_report_path, method: :post %>!
-        </p>
-      </section>
+      <%= link_to "Trigger an email for yourself", trigger_receipt_report_path, method: :post %>
     </div>
-
     <div class="card pb0 mb3" id="turbo">
       <div class="card__banner card__banner--top flex justify-between items-center feature-turbo">
         <h3 class="h1 p2 my0 color-black">Turbo Async Pages</h3>
@@ -71,7 +45,6 @@
     </p>
   </section>
     </div>
-
     <div class="card pb0 mb3" id="sms-receipt-notification">
       <div class="card__banner card__banner--top flex justify-between items-center feature-sms-receipt-notification <%= "b--info" if Flipper.enabled?(:sms_receipt_notifications_2022_11_23, current_user) %> ">
         <h3 class="h1 p2 my0 color-black">SMS charge notifications</h3>
@@ -103,7 +76,6 @@
       <% end %>
     </div>
   </div>
-
   <div class="card pb0 mb3" id="receipt-email-upload">
     <div class="card__banner card__banner--top flex justify-between items-center feature-receipt-upload <%= "b--info" if Flipper.enabled?(:receipt_email_upload_2022_05_10, current_user) %> ">
       <h3 class="h1 p2 my0 color-black">Email Receipt Upload</h3>
@@ -130,7 +102,6 @@
     </p>
   </div>
 </div>
-
 <div class="card pb0 mb3" id="internal-transfers">
   <div class="card__banner card__banner--top flex justify-between items-center feature-disbursements <%= "b--info" if Flipper.enabled?(:transfers_2022_04_21, current_user) %> ">
     <h3 class="h1 p2 my0 color-black">Internal Transfers</h3>

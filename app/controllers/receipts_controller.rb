@@ -11,8 +11,6 @@ class ReceiptsController < ApplicationController
     @receiptable = @receipt.receiptable
     authorize @receipt
 
-    @receipt.suggested_pairings.destroy_all
-
     if @receipt.delete
       flash[:success] = "Deleted receipt"
       redirect_to @receiptable || my_inbox_path
@@ -40,31 +38,13 @@ class ReceiptsController < ApplicationController
       flash[:success] = "Receipt added!"
     end
 
-    if params[:redirect_url]
-      redirect_to params[:redirect_url]
-    else
-      redirect_back fallback_location: @receiptable.try(:hcb_code) || @receiptable
-    end
+    redirect_back fallback_location: @receiptable.try(:hcb_code) || @receiptable
   end
 
   def link_modal
+    @receipts = Receipt.where(user: current_user, receiptable: nil)
+
     authorize @receiptable, policy_class: ReceiptablePolicy
-
-    @receipts = Receipt.where(user: current_user, receiptable: nil).order(created_at: :desc)
-    @show_link = params[:show_link]
-    @suggested_receipt_ids = []
-
-    if @receiptable.instance_of?(HcbCode)
-      receipt_distances = @receipts.map do |receipt|
-        {
-          receipt: receipt,
-          distance: SuggestedPairing.find_by(receipt: receipt, hcb_code: @receiptable)&.distance || Float::INFINITY
-        }
-      end.sort_by { |receipt| receipt[:distance] }
-
-      @receipts = receipt_distances.pluck(:receipt)
-      @suggested_receipt_ids = @receiptable.suggested_receipts(limit: 3, threshold: 1000).pluck(:id)
-    end
 
     render :link_modal, layout: false
   end
@@ -85,7 +65,7 @@ class ReceiptsController < ApplicationController
     end
 
     if params[:file] # Ignore if no files were uploaded
-      params[:file].map do |file|
+      params[:file].each do |file|
         ::ReceiptService::Create.new(
           receiptable: @receiptable,
           uploader: current_user,
@@ -110,7 +90,7 @@ class ReceiptsController < ApplicationController
     elsif @receiptable.is_a?(HcbCode) && @receiptable.stripe_card&.card_grant.present?
       redirect_to @receiptable.stripe_card.card_grant
     else
-      redirect_back fallback_location: URI.parse(@receiptable&.try(:url) || url_for(@receiptable) || my_inbox_path)
+      redirect_back fallback_location: @receiptable&.try(:url) || @receiptable || my_inbox_path
     end
   end
 

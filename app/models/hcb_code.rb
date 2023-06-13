@@ -30,9 +30,6 @@ class HcbCode < ApplicationRecord
 
   has_and_belongs_to_many :tags
 
-  has_many :suggested_pairings
-  has_many :suggested_receipts, class_name: "Receipt", through: :suggested_pairings
-
   before_create :generate_and_set_short_code
 
   comma do
@@ -49,26 +46,12 @@ class HcbCode < ApplicationRecord
     "/hcb/#{hashid}"
   end
 
-  def popover_url
-    "/hcb/#{hashid}?frame=true"
-  end
-
   def receipt_upload_email
     if Rails.env.development?
       "receipts+hcb-#{hashid}@bank-parse-dev.hackclub.com"
     else
       "receipts+hcb-#{hashid}@bank-parse.hackclub.com"
     end
-  end
-
-  def suggested_receipts(limit: nil, threshold: nil, only_unreviewed: false)
-    pairings = (only_unreviewed ? suggested_pairings.unreviewed : suggested_pairings).order(distance: :asc).limit(limit)
-
-    if threshold
-      pairings = pairings.select { |p| p.distance <= threshold }
-    end
-
-    pairings.map(&:receipt).compact
   end
 
   def date

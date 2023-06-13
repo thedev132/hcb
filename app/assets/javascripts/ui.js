@@ -1,5 +1,3 @@
-const whenViewed = (element, callback) => new IntersectionObserver(([entry]) => entry.isIntersecting && callback(), { threshold: 1 }).observe(element);
-
 // restore previous theme setting
 $(document).ready(function () {
   if (
@@ -154,17 +152,9 @@ $(document).on('turbo:load', function () {
   BK.s('autohide').hide()
 
   $.each(BK.s('async_frame'), (i, frame) => {
-    const loadFrame = () => {
-      $.get($(frame).data('src'), data => {
-        $(frame).replaceWith(data)
-      }).fail(() => {
-        $(frame).children('.shimmer').first().addClass('shimmer--error')
-      })
-    }
-    
-    if ($(frame).data('loading') == "lazy") {
-      whenViewed(frame, loadFrame);
-    } else loadFrame();
+    $.get($(frame).data('src'), data => {
+      $(frame).replaceWith(data)
+    })
   })
 
   if (BK.thereIs('login')) {
