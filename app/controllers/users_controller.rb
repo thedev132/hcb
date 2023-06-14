@@ -58,7 +58,7 @@ class UsersController < ApplicationController
   # post to request login code
   def login_code
     @return_to = params[:return_to]
-    @email = params[:email].downcase
+    @email = params[:email]&.downcase
     @force_use_email = params[:force_use_email]
 
     initialize_sms_params
