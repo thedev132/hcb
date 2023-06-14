@@ -18,7 +18,10 @@ module HcbCodeHelper
   end
 
   def attach_receipt_url(hcb_code)
-    HcbCodeService::Receipt::SigningEndpoint.new.create(hcb_code)
+    Rails.application.routes.url_helpers.attach_receipt_hcb_code_url(
+      id: hcb_code.hashid,
+      s: hcb_code.signed_id(expires_in: 2.weeks, purpose: :receipt_upload)
+    )
   end
 
   def can_dispute?(hcb_code:)

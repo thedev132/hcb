@@ -5,7 +5,10 @@ class CanonicalPendingTransactionMailer < ApplicationMailer
     @cpt = CanonicalPendingTransaction.find(params[:canonical_pending_transaction_id])
     @user = @cpt.stripe_card.user
     @receipt_upload_feature = Flipper.enabled?(:receipt_email_upload_2022_05_10, @cpt.stripe_card.user)
-    @upload_url = HcbCodeService::Receipt::SigningEndpoint.new.create(@cpt.local_hcb_code)
+    @upload_url = Rails.application.routes.url_helpers.attach_receipt_hcb_code_url(
+      id: @cpt.local_hcb_code.hashid,
+      s: @cpt.local_hcb_code.signed_id(expires_in: 2.weeks, purpose: :receipt_upload)
+    )
 
     to = @cpt.stripe_card.user.email
     subject = "Upload a receipt for your transaction at #{@cpt.smart_memo}"

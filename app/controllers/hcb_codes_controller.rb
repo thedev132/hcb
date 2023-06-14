@@ -104,7 +104,10 @@ class HcbCodesController < ApplicationController
     authorize @hcb_code
 
   rescue Pundit::NotAuthorizedError
-    raise unless HcbCodeService::Receipt::SigningEndpoint.new.valid_url?(@hcb_code.hashid, params[:s])
+    raise unless (
+      HcbCodeService::Receipt::SigningEndpoint.new.valid_url?(@hcb_code.hashid, @secret) ||
+      HcbCode.find_signed(@secret, purpose: :receipt_upload) == @hcb_code
+    )
   end
 
   def send_receipt_sms

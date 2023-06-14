@@ -59,9 +59,10 @@ class ReceiptsController < ApplicationController
         authorize @receiptable, policy_class: ReceiptablePolicy
       end
     rescue Pundit::NotAuthorizedError
-      @has_valid_secret = @receiptable.instance_of?(HcbCode) && HcbCodeService::Receipt::SigningEndpoint.new.valid_url?(@receiptable.hashid, params[:s])
-
-      raise unless @has_valid_secret
+      raise unless @receiptable.is_a?(HcbCode) && (
+        HcbCodeService::Receipt::SigningEndpoint.new.valid_url?(@receiptable.hashid, params[:s]) ||
+        HcbCode.find_signed(params[:s], purpose: :receipt_upload) == @receiptable
+      )
     end
 
     if params[:file] # Ignore if no files were uploaded
