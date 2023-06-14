@@ -12,7 +12,7 @@ module EventService
       @is_public = is_public
       @is_indexable = is_indexable
       @approved = approved || false
-      @sponsorship_fee = sponsorship_fee ? sponsorship_fee.to_f : 0.07
+      @sponsorship_fee = sponsorship_fee ? BigDecimal(sponsorship_fee) : 0.07
       @organized_by_hack_clubbers = organized_by_hack_clubbers
       @organized_by_teenagers = organized_by_teenagers
       @omit_stats = omit_stats
