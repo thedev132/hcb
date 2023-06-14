@@ -18,7 +18,7 @@ gem "image_processing", "~> 1.2"
 gem "mini_magick"
 
 
-gem "jsbundling-rails", "~> 1.0"
+gem "jsbundling-rails", "~> 1.1"
 gem "terser", "~> 1.1" # JS compressor
 gem "sassc-rails"
 gem "jquery-rails"
