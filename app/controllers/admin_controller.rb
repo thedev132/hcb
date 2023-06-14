@@ -994,6 +994,8 @@ class AdminController < ApplicationController
     @canonical_transaction = ::CanonicalTransactionService::SetEvent.new(canonical_transaction_id: params[:id], event_id: params[:event_id], user: current_user).run
 
     redirect_to transaction_admin_path(@canonical_transaction)
+  rescue => e
+    redirect_to transaction_admin_path(params[:id]), flash: { error: e.message }
   end
 
   def audit

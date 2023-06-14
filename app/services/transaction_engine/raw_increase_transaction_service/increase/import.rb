@@ -9,27 +9,34 @@ module TransactionEngine
         end
 
         def run
-          params = {
-            account_id: IncreaseService::AccountIds::FS_MAIN,
-            "created_at.on_or_after": @start_date.iso8601,
-            limit: :all,
-          }
+          account_ids = Event.select(:increase_account_id)
+                             .distinct
+                             .reorder("") # needed to override Event's default scope
+                             .pluck(:increase_account_id)
 
-          ::Increase::Transactions.list(params) do |transactions|
-            # For each transaction in the page...
-            transactions.each do |transaction|
+          account_ids.each do |account_id|
+            params = {
+              account_id: account_id,
+              "created_at.on_or_after": @start_date.iso8601,
+              limit: :all,
+            }
 
-              # Create a RawIncreaseTransaction
-              RawIncreaseTransaction.find_or_create_by(increase_transaction_id: transaction["id"]) do |rit|
-                rit.amount_cents = transaction["amount"]
-                rit.date_posted = transaction["created_at"]
-                rit.increase_account_id = transaction["account_id"]
-                rit.increase_route_type = transaction["route_type"]
-                rit.increase_route_id = transaction["route_id"]
-                rit.description = transaction["description"]
-                rit.increase_transaction = transaction
+            ::Increase::Transactions.list(params) do |transactions|
+              # For each transaction in the page...
+              transactions.each do |transaction|
+
+                # Create a RawIncreaseTransaction
+                RawIncreaseTransaction.find_or_create_by(increase_transaction_id: transaction["id"]) do |rit|
+                  rit.amount_cents = transaction["amount"]
+                  rit.date_posted = transaction["created_at"]
+                  rit.increase_account_id = transaction["account_id"]
+                  rit.increase_route_type = transaction["route_type"]
+                  rit.increase_route_id = transaction["route_id"]
+                  rit.description = transaction["description"]
+                  rit.increase_transaction = transaction
+                end
+
               end
-
             end
           end
 

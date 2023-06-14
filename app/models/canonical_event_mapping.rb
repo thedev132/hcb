@@ -42,4 +42,16 @@ class CanonicalEventMapping < ApplicationRecord
   scope :missing_fee, -> { includes(:fees).where(fees: { canonical_event_mapping_id: nil }) }
   scope :mapped_by_human, -> { where("user_id is not null") }
 
+  validate :transaction_belongs_to_correct_increase_account
+
+  private
+
+  def transaction_belongs_to_correct_increase_account
+    return if event.id == EventMappingEngine::EventIds::NOEVENT # hacky - allow all transactions to be mapped to 999 (NoEvent)
+
+    if canonical_transaction.transaction_source_type == RawIncreaseTransaction.name && canonical_transaction.raw_increase_transaction.increase_account_id != event.increase_account_id
+      errors.add(:base, "This transaction can't be mapped to \"#{event.name}\" because they belong to different Increase accounts.")
+    end
+  end
+
 end
