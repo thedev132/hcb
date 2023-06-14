@@ -5,9 +5,7 @@ module CountryEnumable
 
   module ClassMethods
     def has_country_enum(enum_name = :country)
-      # TODO: suffix: false is the default setting but we are explicitly passing it here
-      # to silence a Ruby 3 warning in Ruby 2.7. We can remove it once Ruby 3 upgrade is complete
-      enum enum_name, self.country_enum_list, suffix: false
+      enum enum_name, self.country_enum_list
     end
 
     private

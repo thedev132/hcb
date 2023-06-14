@@ -469,8 +469,6 @@ GEM
       mustermann (>= 1.0.0)
     namae (1.1.1)
     native-package-installer (1.1.5)
-    net-http (0.2.2)
-      uri
     net-http-persistent (4.0.1)
       connection_pool (~> 2.2)
     net-imap (0.3.4)
@@ -748,7 +746,6 @@ GEM
       unf_ext
     unf_ext (0.0.8.1)
     unicode-display_width (2.4.2)
-    uri (0.10.0)
     validates_email_format_of (1.6.3)
       i18n
     web-console (4.2.0)
@@ -842,7 +839,6 @@ DEPENDENCIES
   money-rails
   mrsk
   namae
-  net-http
   paper_trail
   pg (>= 0.18, < 2.0)
   pg_search
@@ -884,7 +880,6 @@ DEPENDENCIES
   terser (~> 1.1)
   turbo-rails (~> 1.4)
   twilio-ruby
-  uri (= 0.10.0)
   validates_email_format_of
   web-console (>= 3.3.0)
   webauthn (~> 2.5)

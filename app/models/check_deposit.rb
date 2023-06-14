@@ -59,14 +59,12 @@ class CheckDeposit < ApplicationRecord
   validates :front, attached: true, processable_image: true
   validates :back, attached: true, processable_image: true
 
-  # TODO: suffix: false is the default setting but we are explicitly passing it here
-  # to silence a Ruby 3 warning in Ruby 2.7. We can remove it once Ruby 3 upgrade is complete
   enum :increase_status, {
     pending: "pending",
     submitted: "submitted",
     rejected: "rejected",
     returned: "returned",
-  }, suffix: false
+  }
 
   enum :rejection_reason, {
     incomplete_image: "incomplete_image",

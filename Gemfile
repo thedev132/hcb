@@ -49,14 +49,6 @@ gem "docusign_esign", "~> 3.13" # DocuSign API
 
 gem "google-apis-admin_directory_v1", "~> 0.23.0" # GSuite
 
-# net-http is required in top level Gemfile to avoid these warnings
-# /usr/local/lib/ruby/2.7.0/net/protocol.rb:66: warning: already initialized constant Net::ProtocRetryError
-# /bundle/ruby/2.7.0/gems/net-protocol-0.1.3/lib/net/protocol.rb:68: warning: previous definition of ProtocRetryError was here
-# https://github.com/ruby/net-imap/issues/16
-gem "net-http"
-gem "uri", "0.10.0" # lock to default version of uri from Ruby 2.7
-
-
 gem "pg_search" # full-text search
 
 gem "lockbox" # encrypt sensitive data
