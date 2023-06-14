@@ -18,6 +18,7 @@ class IncreaseService
     end
 
     FS_MAIN = get_id(:fs_main)
+    DAF_MAIN = get_id(:daf_main)
     FS_OPERATING = get_id(:fs_operating)
   end
 

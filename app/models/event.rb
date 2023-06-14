@@ -48,6 +48,7 @@
 #  updated_at                      :datetime         not null
 #  club_airtable_id                :text
 #  emburse_department_id           :string
+#  increase_account_id             :string           not null
 #  partner_id                      :bigint           not null
 #  point_of_contact_id             :bigint
 #
@@ -327,6 +328,8 @@ class Event < ApplicationRecord
   validates_uniqueness_of_without_deleted :slug
 
   after_save :update_slug_history
+
+  before_create { self.increase_account_id ||= IncreaseService::AccountIds::FS_MAIN }
 
   before_update if: -> { demo_mode_changed?(to: false) } do
     self.activated_at = Time.now
