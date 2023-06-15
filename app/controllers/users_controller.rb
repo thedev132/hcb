@@ -4,6 +4,7 @@ class UsersController < ApplicationController
   skip_before_action :signed_in_user, only: [:auth, :auth_submit, :choose_login_preference, :set_login_preference, :webauthn_options, :webauthn_auth, :login_code, :exchange_login_code]
   skip_before_action :redirect_to_onboarding, only: [:edit, :update, :logout]
   skip_after_action :verify_authorized, except: [:edit, :update]
+  before_action :set_shown_private_feature_previews, only: [:edit, :edit_featurepreviews, :edit_security, :edit_admin]
 
   def impersonate
     authorize current_user
@@ -213,11 +214,12 @@ class UsersController < ApplicationController
     @feature = params[:feature]
     authorize @user
     if Flipper.enable_actor(@feature, @user)
+      confetti!
       flash[:success] = "Opted into beta"
     else
       flash[:error] = "Error while opting into beta"
     end
-    redirect_to settings_previews_path
+    redirect_back fallback_location: settings_previews_path
   end
 
   def disable_feature
@@ -229,7 +231,7 @@ class UsersController < ApplicationController
     else
       flash[:error] = "Error while opting out of beta"
     end
-    redirect_to settings_previews_path
+    redirect_back fallback_location: settings_previews_path
   end
 
   def edit
@@ -357,6 +359,10 @@ class UsersController < ApplicationController
   end
 
   private
+
+  def set_shown_private_feature_previews
+    @shown_private_feature_previews = params[:classified_top_secret]&.split(",") || []
+  end
 
   def user_params
     params.require(:user).permit(

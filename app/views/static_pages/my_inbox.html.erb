@@ -9,6 +9,87 @@
 <p class="muted h3">Manage your receipts and transactions awaiting receipts.</p>
 
 <% if Flipper.enabled?(:receipt_bin_2023_04_07, current_user) %>
+
+  <% if @pairings.any? %>
+
+    <div class="card carousel__wrapper" style="overflow: unset;">
+      <div style="background-color: #ec375044; margin: -16px; padding: 16px; margin-bottom: 0px; border-radius: 0.5rem 0.5rem 0rem 0rem;">
+        <span tabindex="0" onclick="this.parentElement.parentElement.remove();" class="pointer">
+          <%= inline_icon "view-close", size: 28, class: "pop modal__close muted  m0" %>
+        </span>
+        <div style="display: flex; padding-right: 32px;">
+          <h2 class="h2 mt0 mb0 pb0 border-none"><%= inline_icon "rep", size: 36, style: "margin: -8px; margin-right: 0px;" %> Suggested pairing</h2>
+          <span style="flex-grow: 1;"></span>
+          <span style="line-height: 0px; display: flex; align-items: center;">
+            <span>
+              <span class="carousel__number">1</span>&nbsp;of&nbsp<%= @pairings.length %>
+            </span>
+          </span>
+
+        </div>
+      </div>
+
+      <%= carousel @pairings do |pairing, i| %>
+        <p>Bank thinks that one of your receipts, <strong><%= pairing.receipt.file.blob.filename %></strong>, belongs to a transaction in <strong><%= pairing.hcb_code.event.name %></strong>.</p>
+        <div class="flex p1 justify-center">
+
+          <div class="xs-hide sm-hide" style="user-drag: none; -webkit-user-drag: none; -moz-user-drag: none;">
+            <%= render partial: "receipts/receipt", locals: { receipt: pairing.receipt, show_delete_button: true, link_to_file: true, hide_info: true, size: 200 } %>
+          </div>
+
+          <div class="flex flex-column justify-center xs-hide sm-hide" style="margin-left: 32px; margin-right: 32px; flex-grow: 0.5;">
+            <%= image_tag asset_path("link-arrow.svg"), width: 200, height: 100, style: "object-fit: contain; width: auto; height: auto; max-width: 100%; max-height: 100px;" %>
+          </div>
+
+          <div class="flex flex-column justify-center" style="max-width: 100%;">
+            <div class="card p0">
+              <h2 class="heading line-height-4 p1 pl2 mt0 ml0 flex justify-between items-center">
+                <%= pairing.hcb_code.stripe_card.event.name %>
+
+                <%= link_to pairing.hcb_code.stripe_card, class: "regular h3 mention flex items-center" do %>
+                  <%= inline_icon "card", class: "mr1", size: 25 %>
+                  <%= pairing.hcb_code.stripe_card.last_four %>
+                <% end %>
+              </h2>
+
+              <div class="table-container">
+                <table>
+                  <tbody data-behavior="transactions">
+                    <% if pairing.hcb_code.canonical_transactions.any? %>
+                      <% pairing.hcb_code.canonical_transactions.each do |ct| %>
+                        <%= render partial: "canonical_transactions/canonical_transaction", locals: { ct: ct, force_display_details: true, hide_tags: true, show_event_name: true } %>
+                      <% end %>
+                    <% else %>
+                      <% pairing.hcb_code.canonical_pending_transactions.each do |pt| %>
+                        <%= render partial: "canonical_pending_transactions/canonical_pending_transaction", locals: { pt: pt, force_display_details: true, hide_tags: true, show_event_name: true } %>
+                      <% end %>
+                    <% end %>
+                  </tbody>
+                </table>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <div class="lg-hide m3"></div>
+
+        <div class="flex flex-row justify-end" style="margin-top: -16px;">
+          <%= link_to ignore_suggested_pairing_path(pairing), method: :post, class: "btn tooltipped tooltipped--n", "aria-label": "Ignore suggestion" do %>
+            <%= inline_icon "view-close", size: 32 %>
+            <span>Ignore</span>
+          <% end %>
+
+          <%= link_to accept_suggested_pairing_path(pairing), method: :post, class: "btn bg-success ml1 tooltipped tooltipped--n", "aria-label": "Link receipt to transaction" do %>
+            <%= inline_icon "link", size: 32 %>
+            <span>Accept</span>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <% end %>
+
   <h2>
     Receipt Bin
   </h2>
@@ -99,11 +180,11 @@
           <% @card_hcb_codes[card.to_global_id.to_s].each do |hcb_code| %>
             <% if hcb_code.canonical_transactions.any? %>
               <% hcb_code.canonical_transactions.each do |ct| %>
-                <%= render partial: "canonical_transactions/canonical_transaction", locals: { ct: ct, force_display_details: true, receipt_upload_button: true } %>
+                <%= render partial: "canonical_transactions/canonical_transaction", locals: { ct: ct, force_display_details: true, receipt_upload_button: true, show_event_name: true } %>
               <% end %>
             <% else %>
               <% hcb_code.canonical_pending_transactions.each do |pt| %>
-                <%= render partial: "canonical_pending_transactions/canonical_pending_transaction", locals: { pt: pt, force_display_details: true, receipt_upload_button: true } %>
+                <%= render partial: "canonical_pending_transactions/canonical_pending_transaction", locals: { pt: pt, force_display_details: true, receipt_upload_button: true, show_event_name: true } %>
               <% end %>
             <% end %>
           <% end %>

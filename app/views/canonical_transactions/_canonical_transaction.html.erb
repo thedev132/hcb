@@ -1,3 +1,4 @@
+<% instance = ct.__id__ %>
 <tr
   class="transaction--<%= ct.amount.negative? ? "negative" : "positive" %> <%= ct.local_hcb_code.disbursement.special_appearance[:css_class] if !ct.amount.negative? && ct.local_hcb_code.disbursement&.special_appearance? %>"
   id="<%= ct.local_hcb_code.hashid %>"
@@ -109,7 +110,7 @@
             <% end %>
           <% end %>
 
-          <% if !defined?(receipt_upload_button) && organizer_signed_in? && Flipper.enabled?(:transaction_tags_2022_07_29, @event || ct.local_hcb_code.event) %>
+          <% if !defined?(receipt_upload_button) && !defined?(hide_tags) && organizer_signed_in? && Flipper.enabled?(:transaction_tags_2022_07_29, @event || ct.local_hcb_code.event) %>
             <div class="overflow-visible relative" style="margin-left: 0.5rem;" data-controller="menu" data-menu-append-to-value="turbo-frame#ledger">
               <button class="list-badge add-tag-badge ml0 menu__toggle menu__toggle--arrowless" data-menu-target="toggle" data-action="menu#toggle click@document->menu#close keydown@document->menu#keydown">+ Add tag</button>
               <div class="menu__content menu__content--2 menu__content--compact menu__content--left h6" data-menu-target="content">
@@ -171,7 +172,7 @@
     <td><%= number_to_currency ct.running_balance %></td>
   <% end %>
   <td>
-    <%= link_to "Details", ct.local_hcb_code.url, data: { turbo_frame: "_top" } if organizer_signed_in? || defined?(force_display_details) %>
+    <%= link_to "Details", ct.local_hcb_code.url, data: { turbo_frame: "_top", behavior: "modal_trigger", modal: "transaction_details_#{instance}" } if organizer_signed_in? || defined?(force_display_details) %>
   </td>
   <% if defined?(receipt_upload_button) %>
     <td style="width: 1%">
@@ -185,14 +186,14 @@
           <%= form.hidden_field :receiptable_type, value: ct.local_hcb_code.class %>
           <%= form.hidden_field :receiptable_id, value: ct.local_hcb_code.id %>
           <%= form.hidden_field :upload_method, value: "receipts_page", data: { "file-drop-target" => "uploadMethod" } %>
-          <div class="<%= "btn-group" if Flipper.enabled?(:receipt_bin_2023_04_07, current_user) %>">
+          <div class="<%= "btn-group btn-group--no-wrap" if Flipper.enabled?(:receipt_bin_2023_04_07, current_user) %>">
             <%= form.label "file_#{ct.local_hcb_code.hashid}", class: "btn", style: "font-size: 0.875rem; font-weight: 600; padding: 0.25rem 1rem;" do %>
               <%= inline_icon "share" %>
               Upload receipt
             <% end %>
 
             <% if Flipper.enabled?(:receipt_bin_2023_04_07, current_user) %>
-              <%= link_to my_receipts_upload_path, class: "btn bg-primary", style: "font-size: 0.875rem; font-weight: 600; padding: 0.25rem 1rem;", data: { behavior: "modal_trigger", modal: "link_receipt" } do %>
+              <%= link_to my_receipts_upload_path, class: "btn bg-primary", style: "font-size: 0.875rem; font-weight: 600; padding: 0.25rem 1rem;", data: { behavior: "modal_trigger", modal: "link_receipt_#{instance}" } do %>
                 <%= inline_icon "payment-docs" %>
                 <span>Select</span>
               <% end %>
@@ -203,7 +204,7 @@
     </td>
 
     <% if Flipper.enabled?(:receipt_bin_2023_04_07, current_user) %>
-      <section class="modal modal--scroll bg-snow" data-behavior="modal" role="dialog" id="link_receipt">
+      <section class="modal modal--huge modal--scroll bg-snow" data-behavior="modal" role="dialog" id="link_receipt_<%= instance %>">
         <%= modal_header "Select receipt" %>
         <%= async_frame_to link_modal_receipts_path(receiptable_type: "HcbCode", receiptable_id: ct.local_hcb_code.id), as: :span do %>
           <strong>Loading...</strong>
@@ -212,3 +213,70 @@
     <% end %>
   <% end %>
 </tr>
+
+<% if ct.local_hcb_code.event.present? %>
+  <section class="modal modal--scroll modal--popover bg-snow" data-behavior="modal" role="dialog" id="transaction_details_<%= instance %>">
+    <%= modal_header(ct.local_hcb_code.pretty_title(show_event_name: defined?(show_event_name), show_amount: defined?(show_amount)), level: "h1", external_link: ct.local_hcb_code.url) %>
+    <%= async_frame_to ct.local_hcb_code.popover_url, as: :span, lazy: true do %>
+      <div class="shimmer mb1 mt3">
+        <div class="shimmer__border"></div>
+        <div class="shimmer__main">
+          <article class="card pb0 h-100">
+            <h2 class="h2 mt0 mx0 border-none flex items-center justify-between">
+              <span class="flex-auto">
+                <%= pop_icon_to "edit",
+                    my_inbox_path,
+                    class: "mr2 align-middle", "aria-label": "Rename transaction",
+                    data: { turbo: true } if organizer_signed_in? %>
+                <span class="align-middle"
+                      data-controller="navigation"
+                      data-action="dblclick->navigation#navigate"
+                      data-navigation-location-param="<%= my_inbox_path %>"
+                      data-navigation-frame-param="2">
+                  <%= ct.local_hcb_code.humanized_type %>
+                  <span class="regular muted">for $-</span>
+                </span>
+              </span>
+            </h2>
+
+            <section class="card__banner card__darker details-horiz border-top border-bottom">
+              <p>
+                <strong>Card</strong> -
+              </p>
+              <p>
+                <strong>Spender</strong> -
+              </p>
+              <p>
+                <strong>Spent</strong> -
+              </p>
+              <p>
+                <strong>Settled after</strong> -
+              </p>
+            </section>
+
+            <section class="details details--wide pt2 pb2 details--tall">
+              <p>
+                <strong>Merchant</strong>
+                <action data-behavior="modal_trigger" data-modal="merchant_details" class="pointer" tabindex="0">
+                  <span class="inline-flex">
+                    -
+                    <%= inline_icon "external", size: 24, class: "muted", 'aria-label': "Icon indicating click for more" %>
+                  </span>
+                </action>
+              </p>
+              <p>
+                <strong>Charge method</strong>
+                <action data-behavior="modal_trigger" data-modal="verification_details" class="pointer" tabindex="0">
+                  <span>
+                    -
+                    <%= inline_icon "external", size: 24, class: "muted", 'aria-label': "Icon indicating click for more" %>
+                  </span>
+                </action>
+              </p>
+            </section>
+          </article>
+        </div>
+      </div>
+    <% end %>
+  </section>
+<% end %>

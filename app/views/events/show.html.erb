@@ -180,9 +180,9 @@
           <tbody data-behavior="transactions">
             <%= render "pending_fee_transaction" if @event.fronted_fee_balance_v2_cents > 0 %>
 
-            <%= render partial: "canonical_pending_transactions/canonical_pending_transaction", collection: @pending_transactions, as: :pt, locals: { event: @event } %>
+            <%= render partial: "canonical_pending_transactions/canonical_pending_transaction", collection: @pending_transactions, as: :pt, locals: { event: @event, show_amount: true } %>
 
-            <%= render partial: "canonical_transactions/canonical_transaction", collection: @transactions, as: :ct, locals: { event: @event } %>
+            <%= render partial: "canonical_transactions/canonical_transaction", collection: @transactions, as: :ct, locals: { event: @event, show_amount: true } %>
         </tbody>
         </table>
     </div>

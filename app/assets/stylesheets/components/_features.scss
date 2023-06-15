@@ -108,3 +108,15 @@ html[data-dark='true'] {
     background-color: $black;
   }
 }
+
+
+
+.feature-generic {
+  background-color: $snow;
+}
+
+html[data-dark='true'] {
+  .feature-generic {
+    background-color: $black;
+  }
+}

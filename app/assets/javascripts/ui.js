@@ -1,3 +1,15 @@
+const whenViewed = (element, callback) => new IntersectionObserver(([entry]) => entry.isIntersecting && callback(), { threshold: 1 }).observe(element);
+const loadModals = element => $(element).on('click', '[data-behavior~=modal_trigger]', function (e) {
+  if ($(this).attr('href') || $(e.target).attr('href')) e.preventDefault()
+  BK.s('modal', '#' + $(this).data('modal')).modal({
+    modalClass: $(this).parents('turbo-frame').length
+      ? 'turbo-frame-modal'
+      : undefined,
+    closeExisting: false
+  })
+  return this.blur()
+})
+
 // restore previous theme setting
 $(document).ready(function () {
   if (
@@ -13,15 +25,7 @@ $(document).on('click', '[data-behavior~=flash]', function () {
   $(this).fadeOut('medium')
 })
 
-$(document).on('click', '[data-behavior~=modal_trigger]', function (e) {
-  if ($(this).attr('href') || $(e.target).attr('href')) e.preventDefault()
-  BK.s('modal', '#' + $(this).data('modal')).modal({
-    modalClass: $(this).parents('turbo-frame').length
-      ? 'turbo-frame-modal'
-      : undefined
-  })
-  return this.blur()
-})
+loadModals(document);
 
 $(document).on('keyup', 'action', function (e) {
   if (e.keyCode === 13) {
@@ -152,9 +156,19 @@ $(document).on('turbo:load', function () {
   BK.s('autohide').hide()
 
   $.each(BK.s('async_frame'), (i, frame) => {
-    $.get($(frame).data('src'), data => {
-      $(frame).replaceWith(data)
-    })
+    const loadFrame = () => {
+      $.get($(frame).data('src'), data => {
+        const parent = $(frame).parent()
+        $(frame).replaceWith(data)
+        loadModals(parent)
+      }).fail(() => {
+        $(frame).children('.shimmer').first().addClass('shimmer--error')
+      })
+    }
+    
+    if ($(frame).data('loading') == "lazy") {
+      whenViewed(frame, loadFrame);
+    } else loadFrame();
   })
 
   if (BK.thereIs('login')) {

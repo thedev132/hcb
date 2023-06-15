@@ -38,13 +38,24 @@ class ReceiptsController < ApplicationController
       flash[:success] = "Receipt added!"
     end
 
-    redirect_back fallback_location: @receiptable.try(:hcb_code) || @receiptable
+    if params[:redirect_url]
+      redirect_to params[:redirect_url]
+    else
+      redirect_back fallback_location: @receiptable.try(:hcb_code) || @receiptable
+    end
   end
 
   def link_modal
-    @receipts = Receipt.where(user: current_user, receiptable: nil)
-
     authorize @receiptable, policy_class: ReceiptablePolicy
+
+    @receipts = Receipt.where(user: current_user, receiptable: nil).order(created_at: :desc)
+    @show_link = params[:show_link]
+    @suggested_receipt_ids = []
+
+    if @receiptable.instance_of?(HcbCode)
+      @receipts = @receipts.left_joins(:suggested_pairings).where("suggested_pairings.hcb_code_id = ?", @receiptable.id).reorder("suggested_pairings.distance ASC")
+      @suggested_receipt_ids = @receipts.limit(3).where("suggested_pairings.distance <= ?", 1000).pluck(:id)
+    end
 
     render :link_modal, layout: false
   end
@@ -66,7 +77,7 @@ class ReceiptsController < ApplicationController
     end
 
     if params[:file] # Ignore if no files were uploaded
-      params[:file].each do |file|
+      params[:file].map do |file|
         ::ReceiptService::Create.new(
           receiptable: @receiptable,
           uploader: current_user,
@@ -91,7 +102,7 @@ class ReceiptsController < ApplicationController
     elsif @receiptable.is_a?(HcbCode) && @receiptable.stripe_card&.card_grant.present?
       redirect_to @receiptable.stripe_card.card_grant
     else
-      redirect_back fallback_location: @receiptable&.try(:url) || @receiptable || my_inbox_path
+      redirect_back fallback_location: URI.parse(@receiptable&.try(:url) || url_for(@receiptable) || my_inbox_path)
     end
   end
 

@@ -48,7 +48,8 @@ module ApplicationHelper
                 block_given? ? capture(&block) : nil,
                 data: {
                   src: url,
-                  behavior: "async_frame"
+                  behavior: "async_frame",
+                  loading: options[:lazy] ? "lazy" : nil
                 },
                 **options
   end
@@ -120,10 +121,33 @@ module ApplicationHelper
     pop_icon_to "view-close", "#close_modal", class: "modal__close muted", rel: "modal:close", tabindex: 0
   end
 
-  def modal_header(text, level: "h0")
+  def modal_external_link(external_link)
+    pop_icon_to "external", external_link, target: "_blank", size: 14, class: "modal__external muted", onload: "window.navigator.standalone ? this.setAttribute('target', '_top') : null"
+  end
+
+  def modal_header(text, level: "h0", external_link: nil)
     content_tag :header, class: "pb2" do
       modal_close +
+        (external_link ? modal_external_link(external_link) : "") +
         content_tag(:h2, text.html_safe, class: "#{level} mt0 mb0 pb0 border-none")
+    end
+  end
+
+  def carousel(content, &block)
+    content_tag :div, class: "carousel", data: { "controller": "carousel", "carousel-target": "carousel", "carousel-slide-value": "0", "carousel-length-value": content.length.to_s } do
+      (content_tag :button, class: "carousel__button carousel__button--left", data: { "carousel-target": "left" } do
+        inline_icon "view-back", size: 40
+      end) +
+        (content_tag :div, class: "carousel__items" do
+          (content.map.with_index do |item, index|
+            content_tag :div, class: "carousel__item #{index == 0 ? 'carousel__item--active' : ''}" do
+              block.call(item, index)
+            end
+          end).join.html_safe
+        end) +
+        (content_tag :button, class: "carousel__button carousel__button--right", data: { "carousel-target": "right" } do
+          inline_icon "view-back", size: 40
+        end)
     end
   end
 

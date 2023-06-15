@@ -1,0 +1,82 @@
+.carousel {
+    position: relative;
+    z-index: 200;
+
+    .carousel__item {
+        display: none;
+
+        &.carousel__item--active {
+            display: block;
+        }
+    }
+}
+
+.carousel__button {
+    position: absolute;
+    top: 50%;
+    z-index: 201;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 0.5rem;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    transition: transform 0.1s ease-in-out;
+
+    &.carousel__button--left {
+        left: 0px;
+        transform: translate(-100%, -50%);
+
+        &:hover, &:focus {
+            transform: translate(-100%, -50%) scale(1.2);
+        }
+    }
+
+    &.carousel__button--right {
+        right: 0px;
+        transform: translate(100%, -50%);
+
+        &:hover, &:focus {
+            transform: translate(100%, -50%) scale(1.2);
+        }
+
+        svg {
+            transform: rotate(180deg);
+        }
+    }
+
+    svg {
+        fill: $black;
+    }
+
+    html[data-dark='true'] & svg {
+        fill: $white;
+    }
+}
+
+.carousel__wrapper:has(.carousel__items > *:last-child.carousel__item--active) .carousel__button--right {
+    cursor: default;
+
+    &:hover, &:focus {
+        transform: translate(100%, -50%);
+    }
+    
+    svg {
+        fill: $muted;
+    }
+}
+
+.carousel__wrapper:has(.carousel__items > *:first-child.carousel__item--active) .carousel__button--left {
+    cursor: default;
+
+    &:hover, &:focus {
+        transform: translate(-100%, -50%);
+    }
+
+    svg {
+        fill: $muted;
+    }
+}

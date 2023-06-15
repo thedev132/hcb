@@ -30,6 +30,9 @@ class HcbCode < ApplicationRecord
 
   has_and_belongs_to_many :tags
 
+  has_many :suggested_pairings
+  has_many :suggested_receipts, source: :receipt, through: :suggested_pairings
+
   before_create :generate_and_set_short_code
 
   comma do
@@ -46,12 +49,26 @@ class HcbCode < ApplicationRecord
     "/hcb/#{hashid}"
   end
 
+  def popover_url
+    "/hcb/#{hashid}?frame=true"
+  end
+
   def receipt_upload_email
     if Rails.env.development?
       "receipts+hcb-#{hashid}@bank-parse-dev.hackclub.com"
     else
       "receipts+hcb-#{hashid}@bank-parse.hackclub.com"
     end
+  end
+
+  def best_suggested_receipts(limit: nil, threshold: nil, only_unreviewed: false)
+    pairings = only_unreviewed ? suggested_pairings.unreviewed : suggested_pairings
+
+    if threshold
+      pairings = pairings.where("distance <= ?", threshold)
+    end
+
+    pairings.includes(:receipt).order(distance: :asc).limit(limit).map(&:receipt).compact
   end
 
   def date
@@ -89,6 +106,9 @@ class HcbCode < ApplicationRecord
   end
 
   def humanized_type
+    return "ACH" if ach_transfer?
+    return "Bank Fee" if bank_fee?
+
     t = type || :transaction
     t = :transaction if unknown?
 
@@ -152,20 +172,17 @@ class HcbCode < ApplicationRecord
       end
   end
 
-  def pretty_title
-    pretty_type = {
-      unknown: "Transaction in",
-      invoice: "Invoice in",
-      donation: "Donation to",
-      partner_donation: "Partner donation to",
-      ach: "ACH in",
-      check: "Check in",
-      disbursement: "Disbursement to",
-      card_charge: "Card charge in",
-      bank_fee: "Bank Fee in"
-    }[type || :unknown]
+  def pretty_title(show_event_name: true, show_amount: false)
+    event_preposition = [:unknown, :invoice, :ach, :check, :card_charge, :bank_fee].include?(type || :unknown) ? "in" : "to"
+    amount_preposition = [:transaction, :donation, :partner_donation, :disbursement, :card_charge, :bank_fee].include?(type || :unknown) ? "of" : "for"
 
-    event ? "#{pretty_type} #{event.name}" : pretty_type[0..-4]
+    amount_preposition = "refunded" if stripe_refund?
+
+    title = [humanized_type]
+    title << amount_preposition << ApplicationController.helpers.render_money(stripe_card? ? amount_cents.abs : amount_cents) if show_amount
+    title << event_preposition << event.name if show_event_name
+
+    title.join(" ")
   end
 
   def fee_payment?
