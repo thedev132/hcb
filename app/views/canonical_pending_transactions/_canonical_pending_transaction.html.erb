@@ -154,7 +154,7 @@
     <td></td>
   <% end %>
   <td>
-    <%= link_to "Details", pt.url, data: { turbo_frame: "_top", behavior: "modal_trigger", modal: "transaction_details_#{instance}" } if organizer_signed_in? || defined?(force_display_details) %>
+    <%= link_to "Details", pt.url, data: Flipper.enabled?(:hcb_code_popovers_2023_06_16, current_user) ? { turbo_frame: "_top", behavior: "modal_trigger", modal: "transaction_details_#{instance}" } : { turbo_frame: "_top" } if organizer_signed_in? || defined?(force_display_details) %>
   </td>
   <% if defined?(receipt_upload_button) %>
     <td style="width: 1%">
@@ -196,7 +196,7 @@
   <% end %>
 </tr>
 
-<% if pt.local_hcb_code.event.present? %>
+<% if Flipper.enabled?(:hcb_code_popovers_2023_06_16, current_user) && pt.local_hcb_code.event.present? %>
   <section class="modal modal--scroll modal--popover bg-snow" data-behavior="modal" role="dialog" id="transaction_details_<%= instance %>">
     <%= modal_header(pt.local_hcb_code.pretty_title(show_event_name: defined?(show_event_name), show_amount: defined?(show_amount)), level: "h1", external_link: pt.local_hcb_code.url) %>
     <%= async_frame_to pt.local_hcb_code.popover_url, as: :span, lazy: true do %>

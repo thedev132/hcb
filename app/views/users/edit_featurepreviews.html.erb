@@ -8,6 +8,21 @@
   <%= render "settings_nav", active: "previews" %>
   <section>
     <h2 id="feature-previews">Feature previews</h2>
+
+    <div class="card pb0" id="receipt-bin">
+      <div class="card__banner card__banner--top flex justify-between items-center feature-weekly-receipt-email feature-generic">
+        <h3 class="h1 p2 my0 color-black">Transaction Popovers</h3>
+        <% if Flipper.enabled?(:hcb_code_popovers_2023_06_16, current_user) %>
+          <%= link_to "Disable", disable_feature_users_path(feature: :hcb_code_popovers_2023_06_16), method: :post, class: "btn bg-accent" %>
+        <% else %>
+          <%= link_to "Enable", enable_feature_users_path(feature: :hcb_code_popovers_2023_06_16), method: :post, class: "btn bg-info" %>
+        <% end %>
+      </div>
+      <p>
+        This feature flag enables a popover allowing quick and easy access to transaction details from the organization's ledger.
+      </p>
+    </div>
+
     <% if @shown_private_feature_previews.include?("receipt_bin") || Flipper.enabled?(:receipt_bin_2023_04_07, current_user) %>
       <div class="card pb0 mb3" id="receipt-bin">
         <div class="card__banner card__banner--top flex justify-between items-center feature-weekly-receipt-email feature-generic">
