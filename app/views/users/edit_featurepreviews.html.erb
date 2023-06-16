@@ -12,7 +12,12 @@
       <div class="card pb0 mb3" id="receipt-bin">
         <div class="card__banner card__banner--top flex justify-between items-center feature-weekly-receipt-email feature-generic">
           <h3 class="h1 p2 my0 color-black">Receipt Bin</h3>
-          <% if Flipper.enabled?(:receipt_bin_2023_04_07, current_user) %>
+          <% if Flipper.enabled?(:receipt_bin_2023_04_07) %>
+            <%# Feature is enabled for all users, don't include a choice %>
+            <div class="actions tooltipped tooltipped--w inline-block mt1" aria-label="This feature is now generally available!">
+              <span class="btn bg-accent disabled">Shipped!</span>
+            </div>
+          <% elsif Flipper.enabled?(:receipt_bin_2023_04_07, current_user) %>
             <%= link_to "Disable", disable_feature_users_path(feature: :receipt_bin_2023_04_07), method: :post, class: "btn bg-accent" %>
           <% else %>
             <%= link_to "Enable", enable_feature_users_path(feature: :receipt_bin_2023_04_07), method: :post, class: "btn bg-info" %>
@@ -32,7 +37,12 @@
     <div class="card pb0 mb3" id="weekly-receipt-email">
       <div class="card__banner card__banner--top flex justify-between items-center feature-weekly-receipt-email feature-generic">
         <h3 class="h1 p2 my0 color-black">Receipt Report</h3>
-        <% if Flipper.enabled?(:receipt_report_2023_04_19, current_user) %>
+        <% if Flipper.enabled?(:receipt_report_2023_04_19) %>
+          <%# Feature is enabled for all users, don't include a choice %>
+          <div class="actions tooltipped tooltipped--w inline-block mt1" aria-label="This feature is now generally available!">
+            <span class="btn bg-accent disabled">Shipped!</span>
+          </div>
+        <% elsif Flipper.enabled?(:receipt_report_2023_04_19, current_user) %>
           <%= link_to "Disable", disable_feature_users_path(feature: :receipt_report_2023_04_19), method: :post, class: "btn bg-accent" %>
         <% else %>
           <%= link_to "Enable", enable_feature_users_path(feature: :receipt_report_2023_04_19), method: :post, class: "btn bg-info" %>
@@ -51,7 +61,12 @@
     <div class="card pb0 mb3" id="turbo">
       <div class="card__banner card__banner--top flex justify-between items-center feature-turbo">
         <h3 class="h1 p2 my0 color-black">Turbo Async Pages</h3>
-        <% if Flipper.enabled?(:turbo_2023_01_23, current_user) %>
+        <% if Flipper.enabled?(:turbo_2023_01_23) %>
+          <%# Feature is enabled for all users, don't include a choice %>
+          <div class="actions tooltipped tooltipped--w inline-block mt1" aria-label="This feature is now generally available!">
+            <span class="btn bg-accent disabled">Shipped!</span>
+          </div>
+        <% elsif Flipper.enabled?(:turbo_2023_01_23, current_user) %>
           <%= link_to "Disable", disable_feature_users_path(feature: :turbo_2023_01_23), method: :post, class: "btn bg-accent" %>
         <% else %>
           <%= link_to "Enable", enable_feature_users_path(feature: :turbo_2023_01_23), method: :post, class: "btn bg-info" %>
