@@ -53,8 +53,12 @@ class ReceiptsController < ApplicationController
     @suggested_receipt_ids = []
 
     if @receiptable.instance_of?(HcbCode)
-      @receipts = @receipts.left_joins(:suggested_pairings).where("suggested_pairings.hcb_code_id = ?", @receiptable.id).reorder("suggested_pairings.distance ASC")
-      @suggested_receipt_ids = @receipts.limit(3).where("suggested_pairings.distance <= ?", 1000).pluck(:id)
+      pairings_sql = <<~SQL
+        LEFT JOIN (#{@receiptable.suggested_pairings.to_sql}) sp
+        ON sp.receipt_id = receipts.id
+      SQL
+      @receipts = @receipts.joins(pairings_sql).reorder("sp.distance ASC, receipts.created_at DESC")
+      @suggested_receipt_ids = @receipts.limit(3).where("sp.distance <= ?", 1000).pluck(:id)
     end
 
     render :link_modal, layout: false
