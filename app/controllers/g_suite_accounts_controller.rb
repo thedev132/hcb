@@ -65,7 +65,7 @@ class GSuiteAccountsController < ApplicationController
     if @g_suite_account.destroy
       flash[:success] = "Google Workspace account deleted successfully."
     else
-      flash[:error] = `Error while trying to delete Google Workspace account. Please check Google Workspace dashboard for more information.`
+      flash[:error] = "Error while trying to delete Google Workspace account. Please check Google Workspace dashboard for more information."
     end
 
     redirect_to event_g_suite_overview_path(event_id: @event.slug)
