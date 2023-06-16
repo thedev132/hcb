@@ -9,222 +9,100 @@
   <section>
     <h2 id="feature-previews">Feature previews</h2>
 
-    <div class="card pb0 mb3" id="transaction-popovers">
-      <div class="card__banner card__banner--top flex justify-between items-center feature-weekly-receipt-email feature-generic">
-        <h3 class="h1 p2 my0 color-black">Transaction Popovers</h3>
-        <% if Flipper.enabled?(:hcb_code_popovers_2023_06_16) %>
-          <%# Feature is enabled for all users, don't include a choice %>
-          <div class="actions tooltipped tooltipped--w inline-block mt1" aria-label="This feature is now generally available!">
-            <span class="btn bg-accent disabled">Shipped!</span>
-          </div>
-        <% elsif Flipper.enabled?(:hcb_code_popovers_2023_06_16, current_user) %>
-          <%= link_to "Disable", disable_feature_users_path(feature: :hcb_code_popovers_2023_06_16), method: :post, class: "btn bg-accent" %>
-        <% else %>
-          <%= link_to "Enable", enable_feature_users_path(feature: :hcb_code_popovers_2023_06_16), method: :post, class: "btn bg-info" %>
-        <% end %>
-      </div>
-      <p>
-        This feature flag enables a popover allowing quick and easy access to transaction details from the organization's ledger.
-      </p>
-    </div>
+    <%= render partial: "users/feature_preview", locals: {
+          id: "receipt-bin",
+          unlisted: true,
+          feature_flag: :receipt_bin_2023_04_07,
+          name: "Receipt Bin",
+          description: "Receipts have been a common pain point for Bank's users. Keeping track of receipts for every transaction can be tiring, and it's easy to forget to upload them. We're experimenting with a new way to manage receipts: Receipt Bin. After opting-in, you'll be able to upload receipts to the Receipt Bin, and Bank will attempt to automatically match them to transactions. You can also manually link receipts to transactions or save them for later.",
+          footer: "We're soft launching Receipt Bin- there will be bugs, and we're counting on you to report them!"
+        } %>
 
-    <% if @shown_private_feature_previews.include?("receipt_bin") || Flipper.enabled?(:receipt_bin_2023_04_07, current_user) %>
-      <div class="card pb0 mb3" id="receipt-bin">
-        <div class="card__banner card__banner--top flex justify-between items-center feature-weekly-receipt-email feature-generic">
-          <h3 class="h1 p2 my0 color-black">Receipt Bin</h3>
-          <% if Flipper.enabled?(:receipt_bin_2023_04_07) %>
-            <%# Feature is enabled for all users, don't include a choice %>
-            <div class="actions tooltipped tooltipped--w inline-block mt1" aria-label="This feature is now generally available!">
-              <span class="btn bg-accent disabled">Shipped!</span>
-            </div>
-          <% elsif Flipper.enabled?(:receipt_bin_2023_04_07, current_user) %>
-            <%= link_to "Disable", disable_feature_users_path(feature: :receipt_bin_2023_04_07), method: :post, class: "btn bg-accent" %>
-          <% else %>
-            <%= link_to "Enable", enable_feature_users_path(feature: :receipt_bin_2023_04_07), method: :post, class: "btn bg-info" %>
-          <% end %>
-        </div>
-        <p>
-          Receipts have been a common pain point for Bank's users. Keeping track of receipts for every transaction can be tiring, and it's easy to forget to upload them. We're experimenting with a new way to manage receipts: Receipt Bin. After opting-in, you'll be able to upload receipts to the Receipt Bin, and Bank will attempt to automatically match them to transactions. You can also manually link receipts to transactions or save them for later.
-        </p>
-        <section class="card__banner card__darker secondary border-top">
-          <p class="my0">
-            We're soft launching Receipt Bin- there will be bugs, and we're counting on you to report them!
-          </p>
-        </section>
-      </div>
-    <% end %>
+    <%= render partial: "users/feature_preview", locals: {
+          id: "transaction-popovers",
+          feature_flag: :hcb_code_popovers_2023_06_16,
+          name: "Transaction Popovers",
+          description: "This feature flag enables a popover allowing quick and easy access to transaction details from the organization's ledger."
+        } %>
 
-    <div class="card pb0 mb3" id="weekly-receipt-email">
-      <div class="card__banner card__banner--top flex justify-between items-center feature-weekly-receipt-email feature-generic">
-        <h3 class="h1 p2 my0 color-black">Receipt Report</h3>
-        <% if Flipper.enabled?(:receipt_report_2023_04_19) %>
-          <%# Feature is enabled for all users, don't include a choice %>
-          <div class="actions tooltipped tooltipped--w inline-block mt1" aria-label="This feature is now generally available!">
-            <span class="btn bg-accent disabled">Shipped!</span>
-          </div>
-        <% elsif Flipper.enabled?(:receipt_report_2023_04_19, current_user) %>
-          <%= link_to "Disable", disable_feature_users_path(feature: :receipt_report_2023_04_19), method: :post, class: "btn bg-accent" %>
-        <% else %>
-          <%= link_to "Enable", enable_feature_users_path(feature: :receipt_report_2023_04_19), method: :post, class: "btn bg-info" %>
-        <% end %>
-      </div>
-      <p>
-        Opting into this preview will send you a weekly reminder with a list of all your missing receipts.
-      </p>
-      <section class="card__banner card__darker secondary border-top">
-        <p class="my0">
-          Try <%= link_to "triggering an email for yourself", trigger_receipt_report_path, method: :post %>!
-        </p>
-      </section>
-    </div>
+    <%= render partial: "users/feature_preview", locals: {
+          id: "weekly-receipt-email",
+          classes: ["feature-weekly-receipt-email", "feature-generic"],
+          feature_flag: :receipt_report_2023_04_19,
+          name: "Receipt Report",
+          description: "Opting into this preview will send you a weekly reminder with a list of all your missing receipts.",
+          footer: "Try #{link_to "triggering an email for yourself", trigger_receipt_report_path, method: :post}!"
+        } %>
 
-    <div class="card pb0 mb3" id="turbo">
-      <div class="card__banner card__banner--top flex justify-between items-center feature-turbo">
-        <h3 class="h1 p2 my0 color-black">Turbo Async Pages</h3>
-        <% if Flipper.enabled?(:turbo_2023_01_23) %>
-          <%# Feature is enabled for all users, don't include a choice %>
-          <div class="actions tooltipped tooltipped--w inline-block mt1" aria-label="This feature is now generally available!">
-            <span class="btn bg-accent disabled">Shipped!</span>
-          </div>
-        <% elsif Flipper.enabled?(:turbo_2023_01_23, current_user) %>
-          <%= link_to "Disable", disable_feature_users_path(feature: :turbo_2023_01_23), method: :post, class: "btn bg-accent" %>
-        <% else %>
-          <%= link_to "Enable", enable_feature_users_path(feature: :turbo_2023_01_23), method: :post, class: "btn bg-info" %>
-        <% end %>
-      </div>
-      <p>
-        Opting into this preview will enable <a href="https://turbo.hotwired.dev" target="_blank">Turbo</a>, a framework for speeding up web application UIs (like Bank's!) Possible side effects include:
-        <ul>
-          <li>Faster (sometimes instant!) page transitions</li>
-          <li>Possibly broken UI behavior</li>
-          <li>Flashes of cached content</li>
-        </ul>
-      </p>
-  <section class="card__banner card__darker secondary border-top">
-    <p class="my0">
-      This feature is an early tech preview and <strong>will have bugs</strong>. Please let us know when you encounter them!
-    </p>
-  </section>
-    </div>
+    <%= render partial: "users/feature_preview", locals: {
+          id: "turbo",
+          classes: ["feature-turbo"],
+          feature_flag: :turbo_2023_01_23,
+          name: "Turbo Async Pages",
+          description: "Opting into this preview will enable <a href=\"https://turbo.hotwired.dev\" target=\"_blank\">Turbo</a>, a framework for speeding up web application UIs (like Bank's!) Possible side effects include:
+            <ul>
+              <li>Faster (sometimes instant!) page transitions</li>
+              <li>Possibly broken UI behavior</li>
+              <li>Flashes of cached content</li>
+            </ul>",
+          footer: "This feature is an early tech preview and <strong>will have bugs</strong>. Please let us know when you encounter them!"
+        } %>
 
-    <div class="card pb0 mb3" id="sms-receipt-notification">
-      <div class="card__banner card__banner--top flex justify-between items-center feature-sms-receipt-notification <%= "b--info" if Flipper.enabled?(:sms_receipt_notifications_2022_11_23, current_user) %> ">
-        <h3 class="h1 p2 my0 color-black">SMS charge notifications</h3>
-        <% if Flipper.enabled?(:sms_receipt_notifications_2022_11_23) %>
-          <%# Feature is enabled for all users, don't include a choice %>
-          <div class="actions tooltipped tooltipped--w inline-block mt1" aria-label="This feature is now generally available!">
-            <span class="btn bg-accent disabled">Shipped!</span>
-          </div>
-        <% elsif Flipper.enabled?(:sms_receipt_notifications_2022_11_23, current_user) %>
-          <%# Feature is enabled, let the user opt-out %>
-          <%= link_to "Disable", disable_feature_users_path(feature: :sms_receipt_notifications_2022_11_23), method: :post, class: "btn bg-accent" %>
-        <% else %>
-          <%# Feature is disabled, let the user opt-in %>
-          <%= link_to "Enable", enable_feature_users_path(feature: :sms_receipt_notifications_2022_11_23), method: :post, class: "btn bg-info" %>
-        <% end %>
-      </div>
-      <p>
-        We're experimenting with new ways to alert people that they need to
+    <%= render partial: "users/feature_preview", locals: {
+          id: "sms-receipt-notification",
+          classes: ["feature-sms-receipt-notification"],
+          feature_flag: :sms_receipt_notifications_2022_11_23,
+          name: "SMS charge notifications",
+          description: "We're experimenting with new ways to alert people that they need to
         upload a receipt. After opting-in, you'll get a text whenever your
         card is charged asking for a receipt. You can change your phone
-        number in your user settings.
-      </p>
-      <% if current_user&.phone_number.blank? %>
-        <section class="card__banner card__darker secondary border-top">
-          <p class="my0">
-            ⚠️ This feature will only work if you have a phone number on file. Please update your security settings to add one.
-          </p>
-        </section>
-      <% end %>
-    </div>
-  </div>
+        number in your user settings.",
+          footer: "⚠️ This feature will only work if you have a phone number on file. Please update your security settings to add one."
+        } %>
 
-  <div class="card pb0 mb3" id="receipt-email-upload">
-    <div class="card__banner card__banner--top flex justify-between items-center feature-receipt-upload <%= "b--info" if Flipper.enabled?(:receipt_email_upload_2022_05_10, current_user) %> ">
-      <h3 class="h1 p2 my0 color-black">Email Receipt Upload</h3>
-      <% if Flipper.enabled?(:receipt_email_upload_2022_05_10) %>
-        <%# Feature is enabled for all users, don't include a choice %>
-        <div class="actions tooltipped tooltipped--w inline-block mt1" aria-label="This feature is now generally available!">
-          <span class="btn bg-accent disabled">Shipped!</span>
-        </div>
-        <%# link_to "Shipped!", enable_feature_path(feature: :transfers_2022_04_21), method: :post, class: 'btn bg-accent' %>
-      <% elsif Flipper.enabled?(:receipt_email_upload_2022_05_10, current_user) %>
-        <%# Feature is enabled, let the user opt-out %>
-        <%= link_to "Disable", disable_feature_users_path(feature: :receipt_email_upload_2022_05_10), method: :post, class: "btn bg-accent" %>
-      <% else %>
-        <%# Feature is disabled, let the user opt-in %>
-        <%= link_to "Enable", enable_feature_users_path(feature: :receipt_email_upload_2022_05_10), method: :post, class: "btn bg-info" %>
-      <% end %>
-    </div>
-    <p>
-      We send an email once a card is charged along the lines of "Please
-      upload a receipt for your $10 charge" with a link to a form on HCB
+    <%= render partial: "users/feature_preview", locals: {
+          id: "receipt-email-upload",
+          classes: ["feature-receipt-upload"],
+          feature_flag: :receipt_email_upload_2022_05_10,
+          name: "Email Receipt Upload",
+          description: "We send an email once a card is charged along the lines of \"Please
+      upload a receipt for your $10 charge\" with a link to a form on HCB
       to upload receipts.
       After opting-in to this feature preview, you can reply directly to
-      that email with your receipt attached to upload it.
-    </p>
-  </div>
-</div>
+      that email with your receipt attached to upload it."
+        } %>
 
-<div class="card pb0 mb3" id="internal-transfers">
-  <div class="card__banner card__banner--top flex justify-between items-center feature-disbursements <%= "b--info" if Flipper.enabled?(:transfers_2022_04_21, current_user) %> ">
-    <h3 class="h1 p2 my0 color-black">Internal Transfers</h3>
-    <% if Flipper.enabled?(:transfers_2022_04_21) %>
-      <%# Feature is enabled for all users, don't include a choice %>
-      <div class="actions tooltipped tooltipped--w inline-block mt1" aria-label="This feature is now generally available!">
-        <span class="btn bg-accent disabled">Shipped!</span>
-      </div>
-      <%# link_to "Shipped!", enable_feature_path(feature: :transfers_2022_04_21), method: :post, class: 'btn bg-accent' %>
-    <% elsif Flipper.enabled?(:transfers_2022_04_21, current_user) %>
-      <%# Feature is enabled, let the user opt-out %>
-      <%= link_to "Disable", disable_feature_users_path(feature: :transfers_2022_04_21), method: :post, class: "btn bg-accent" %>
-    <% else %>
-      <%# Feature is disabled, let the user opt-in %>
-      <%= link_to "Enable", enable_feature_users_path(feature: :transfers_2022_04_21), method: :post, class: "btn bg-info" %>
-    <% end %>
-  </div>
-  <p>
-    Users with multiple organizations on Hack Club Bank can now create
+    <%= render partial: "users/feature_preview", locals: {
+          id: "internal-transfers",
+          classes: ["feature-disbursements"],
+          feature_flag: :transfers_2022_04_21,
+          name: "Internal Transfers",
+          description: "Users with multiple organizations on Hack Club Bank can now create
     transfers between their accounts. After opting-in, new options will
-    show up on an organziation's "Transfers" page, including a "New
-    Transfer" button and tools for searching and sorting the existing
-    transfers list.
-  </p>
-  <section class="card__banner card__darker secondary border-top">
-    <p class="my0">
-      This feature is on a per-user basis. Co-organizers will also have to
-      opt-in for access.
-    </p>
-  </section>
-</div>
-<div class="card pb0 mb3" id="suggested-memos">
-  <div class="card__banner card__banner--top flex justify-between items-center feature-disbursements <%= "b--info" if Flipper.enabled?(:suggested_memo_2022_08_02, current_user) %> ">
-    <h3 class="h1 p2 my0 color-black">Transaction Memo Suggestions</h3>
-    <% if Flipper.enabled?(:suggested_memo_2022_08_02) %>
-      <%# Feature is enabled for all users, don't include a choice %>
-      <div class="actions tooltipped tooltipped--w inline-block mt1" aria-label="This feature is now generally available!">
-        <span class="btn bg-accent disabled">Shipped!</span>
-      </div>
-      <%# link_to "Shipped!", enable_feature_path(feature: :transfers_2022_04_21), method: :post, class: 'btn bg-accent' %>
-    <% elsif Flipper.enabled?(:suggested_memo_2022_08_02, current_user) %>
-      <%# Feature is enabled, let the user opt-out %>
-      <%= link_to "Disable", disable_feature_users_path(feature: :suggested_memo_2022_08_02), method: :post, class: "btn bg-accent" %>
-    <% else %>
-      <%# Feature is disabled, let the user opt-in %>
-      <%= link_to "Enable", enable_feature_users_path(feature: :suggested_memo_2022_08_02), method: :post, class: "btn bg-info" %>
-    <% end %>
-  </div>
-  <p>
-    Renaming transactions is a great way for donors and team members to
+    show up on an organziation's \"Transfers\" page, including a \"New
+    Transfer\" button and tools for searching and sorting the existing
+    transfers list.",
+          footer: "This feature is on a per-user basis. Co-organizers will also have to
+      opt-in for access."
+        } %>
+
+    <%= render partial: "users/feature_preview", locals: {
+          id: "suggested-memos",
+          classes: ["feature-disbursements"],
+          feature_flag: :suggested_memo_2022_08_02,
+          name: "Transaction Memo Suggestions",
+          description: "Renaming transactions is a great way for donors and team members to
     understand how your organization's money is spent. After opting-in to
     this feature preview, you will be provided with some suggestions when
     renaming a transaction. Feel free to choose one of those suggestions or
     write your own, as you normally would. To provide you these suggestions,
     we look at the memos of similar transactions in your organization. As a
     result, organizations with more renamed transactions will have more
-    accurate suggestions!
-  </p>
-</div>
+    accurate suggestions!",
+          footer: "This feature is on a per-user basis. Co-organizers will also have to
+      opt-in for access."
+        } %>
+
 </div>
 </section>
 </turbo-frame>
