@@ -164,9 +164,16 @@
       <script>
         document.addEventListener('DOMContentLoaded', (event) => {
           const jsConfetti = new JSConfetti()
+          const emojis = <%= flash[:confetti_emojis].to_json.html_safe %>
 
           setTimeout(() => {
-            jsConfetti.addConfetti()
+            if (!emojis) {
+              jsConfetti.addConfetti()
+            } else {
+              jsConfetti.addConfetti({
+                emojis: emojis.split(",")
+              })
+            }
           }, 100);
         });
       </script>

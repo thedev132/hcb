@@ -209,12 +209,19 @@ class UsersController < ApplicationController
     redirect_to settings_previews_path
   end
 
+  FEATURE_CONFETTI_EMOJIS = {
+    receipt_bin_2023_04_07: %w[🧾 🗑️ 💰],
+    receipt_report_2023_04_19: %w[🧾 📧],
+    turbo_2023_01_23: %w[🚀 ⚡ 🏎️ 💨],
+    sms_receipt_notifications_2022_11_23: %w[📱 🧾 🔔 💬],
+  }.freeze
+
   def enable_feature
     @user = current_user
     @feature = params[:feature]
     authorize @user
     if Flipper.enable_actor(@feature, @user)
-      confetti!
+      confetti!(emojis: FEATURE_CONFETTI_EMOJIS[@feature.to_sym])
       flash[:success] = "Opted into beta"
     else
       flash[:error] = "Error while opting into beta"
