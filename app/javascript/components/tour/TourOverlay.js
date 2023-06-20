@@ -62,17 +62,20 @@ function TourOverlay(props) {
 
   const tour = props.tour && tours[props.tour](props.options)
 
-  useEffect(async () => {
-    if (props.tour && currentStep < tour.length) {
-      await fetch(`/tours/${props.id}/set_step`, {
-        method: 'POST',
-        headers: {
-          'X-CSRF-Token': csrf(),
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ step: currentStep })
-      })
-    }
+  useEffect(() => {
+    // eslint-disable-next-line no-extra-semi
+    ;(async () => {
+      if (props.tour && currentStep < tour.length) {
+        await fetch(`/tours/${props.id}/set_step`, {
+          method: 'POST',
+          headers: {
+            'X-CSRF-Token': csrf(),
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ step: currentStep })
+        })
+      }
+    })()
   }, [currentStep])
 
   return (

@@ -584,7 +584,7 @@ GEM
       ffi (~> 1.0)
     rbs (2.8.4)
     rbtree3 (0.7.0)
-    react-rails (2.6.2)
+    react-rails (2.7.1)
       babel-transpiler (>= 0.7.0)
       connection_pool
       execjs
@@ -724,7 +724,7 @@ GEM
     terser (1.1.16)
       execjs (>= 0.3.0, < 3)
     thor (1.2.2)
-    tilt (2.1.0)
+    tilt (2.2.0)
     timeout (0.3.2)
     tpm-key_attestation (0.10.0)
       bindata (~> 2.4)
