@@ -59,15 +59,8 @@ module SessionsHelper
     @organizer_signed_in[event]
   end
 
-  # Ensure api authorized when fetching current user is removed
-  def current_user(_ensure_api_authorized = true)
-    if !@current_user && current_session
-      @current_user ||= current_session.user
-    end
-
-    return nil unless @current_user
-
-    @current_user
+  def current_user
+    @current_user ||= current_session&.user
   end
 
   def current_session
@@ -107,7 +100,7 @@ module SessionsHelper
   end
 
   def sign_out
-    current_user(false)
+    current_user
       &.user_sessions
       &.find_by(session_token: cookies.encrypted[:session_token])
       &.set_as_peacefully_expired
@@ -119,7 +112,7 @@ module SessionsHelper
 
   def sign_out_of_all_sessions
     # Destroy all the sessions except the current session
-    current_user(false)
+    current_user
       &.user_sessions
       &.where&.not(id: current_session.id)
       &.destroy_all
