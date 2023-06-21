@@ -1,6 +1,10 @@
 const whenViewed = (element, callback) => new IntersectionObserver(([entry]) => entry.isIntersecting && callback(), { threshold: 1 }).observe(element);
 const loadModals = element => $(element).on('click', '[data-behavior~=modal_trigger]', function (e) {
-  if ($(this).attr('href') || $(e.target).attr('href')) e.preventDefault()
+  const controlOrCommandClick = e.ctrlKey || e.metaKey;
+  if ($(this).attr('href') || $(e.target).attr('href')) {
+    if (controlOrCommandClick) return;
+    e.preventDefault()
+  }
   BK.s('modal', '#' + $(this).data('modal')).modal({
     modalClass: $(this).parents('turbo-frame').length
       ? 'turbo-frame-modal'
