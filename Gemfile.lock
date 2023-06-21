@@ -666,7 +666,7 @@ GEM
       sprockets (> 3.0)
       sprockets-rails
       tilt
-    scientist (1.6.3)
+    scientist (1.6.4)
     sidekiq (6.5.5)
       connection_pool (>= 2.2.2)
       rack (~> 2.0)
