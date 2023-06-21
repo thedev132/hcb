@@ -6,7 +6,7 @@
       <p class="mt0">
         <%= event.name %> is on the <strong><%= event.plan_name %></strong> plan and charging
         <strong><%= number_to_percentage(event.sponsorship_fee * 100, significant: true, strip_insignificant_zeros: true) %></strong> of revenue
-        <% if event.high_school_hackathon? && event.sponsorship_fee == 0 %>(until June 30th, 2023 on the <a href="https://changelog.bank.hackclub.com/bank-now-provides-free-durian-241524">high school hackathon fee waiver</a>)<% end %>
+        <% if event.high_school_hackathon? && event.sponsorship_fee == 0 %>(until December 31st, 2023 on the <a href="https://changelog.bank.hackclub.com/bank-now-provides-free-durian-241524">high school hackathon fee waiver</a>)<% end %>
       </p>
     </div>
   <% end %>
