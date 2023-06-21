@@ -1,6 +1,6 @@
 <% file_path = Rails.application.routes.url_helpers.rails_blob_path(receipt.file, only_path: true) %>
 
-<% instance = local_assigns.__id__ %>
+<% instance = local_assigns.__id__.to_s + receipt.id.to_s %>
 
 <div class="receipt flex flex-column mb1 <%= "receipt--pairing" if defined?(pairing) && pairing %>" <% if defined?(textual_content) %> data-textual-content="<%= j receipt.textual_content %>"<% end %> data-receipt-id="<%= receipt.id %>" style="--receipt-size: <%= defined?(size) ? size : 256 %>px;<% if defined?(selectable) %> cursor: pointer;" data-receipt-select-target="receipt" data-action="click->receipt-select#select<% end %>" data-behavior="<%= "modal_trigger" unless defined?(selectable) || receipt.preview.nil? %>" data-modal="<%= "preview_receipt_#{instance}" unless defined?(selectable) || receipt.preview.nil? %>">
 
