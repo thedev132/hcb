@@ -5,13 +5,11 @@ require "rails_helper"
 RSpec.describe TransactionEngine::Parsers::SiliconValleyBank do
   let(:filepath) { file_fixture("silicon_valley_bank1.csv") }
 
-  let(:attrs) do
-    {
+  let(:service) do
+    TransactionEngine::Parsers::SiliconValleyBank.new(
       filepath: filepath
-    }
+    )
   end
-
-  let(:service) { TransactionEngine::Parsers::SiliconValleyBank.new(**attrs) }
 
   it "runs" do
     expect do

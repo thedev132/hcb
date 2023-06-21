@@ -5,13 +5,7 @@ require "rails_helper"
 RSpec.describe PayoutService::Donation::Create do
   let(:donation) { create(:donation, aasm_state: :in_transit) }
 
-  let(:attrs) do
-    {
-      donation_id: donation.id
-    }
-  end
-
-  let(:service) { PayoutService::Donation::Create.new(**attrs) }
+  let(:service) { PayoutService::Donation::Create.new(donation_id: donation.id) }
 
   before do
     allow(service).to receive(:funds_available?).and_return(true)

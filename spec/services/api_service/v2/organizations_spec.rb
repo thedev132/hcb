@@ -5,13 +5,11 @@ require "rails_helper"
 RSpec.describe ApiService::V2::FindOrganizations, type: :model do
   let(:partner_id) { partner.id }
 
-  let(:attrs) do
-    {
+  let(:service) do
+    ApiService::V2::FindOrganizations.new(
       partner_id: partner_id,
-    }
+    )
   end
-
-  let(:service) { ApiService::V2::FindOrganizations.new(**attrs) }
 
   context "when partner does not exist" do
     let(:partner_id) { "999999" }

@@ -6,14 +6,12 @@ RSpec.describe CanonicalTransactionService::SetCustomMemo, type: :model do
   let(:canonical_transaction) { create(:canonical_transaction) }
   let(:custom_memo) { " Custom Memo " }
 
-  let(:attrs) do
-    {
+  let(:service) do
+    CanonicalTransactionService::SetCustomMemo.new(
       canonical_transaction_id: canonical_transaction.id,
       custom_memo: custom_memo
-    }
+    )
   end
-
-  let(:service) { CanonicalTransactionService::SetCustomMemo.new(**attrs) }
 
   it "sets custom memo" do
     service.run

@@ -20,8 +20,8 @@ RSpec.describe InvoiceService::Create, type: :model do
   let(:sponsor_address_state) { "CA" }
   let(:sponsor_address_postal_code) { "90401" }
 
-  let(:attrs) do
-    {
+  let(:service) do
+    InvoiceService::Create.new(
       event_id: event_id,
       due_date: due_date,
       item_description: item_description,
@@ -35,10 +35,8 @@ RSpec.describe InvoiceService::Create, type: :model do
       sponsor_address_city: sponsor_address_city,
       sponsor_address_state: sponsor_address_state,
       sponsor_address_postal_code: sponsor_address_postal_code
-    }
+    )
   end
-
-  let(:service) { InvoiceService::Create.new(**attrs) }
 
   let(:stripe_invoice_item) { double("StripeInvoice", id: 1) }
   let(:stripe_invoice_values) do

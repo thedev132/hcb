@@ -11,16 +11,14 @@ RSpec.describe ApiService::V2::PartneredSignupsNew, type: :model do
   let(:redirect_url) { "http://example.com/redirect" }
   let(:webhook_url) { "http://example.com/webhook" }
 
-  let(:attrs) do
-    {
+  let(:service) do
+    ApiService::V2::PartneredSignupsNew.new(
       partner_id: partner_id,
       organization_identifier: organization_identifier,
       redirect_url: redirect_url,
       webhook_url: webhook_url
-    }
+    )
   end
-
-  let(:service) { ApiService::V2::PartneredSignupsNew.new(**attrs) }
 
   it "creates an organization" do
     expect do

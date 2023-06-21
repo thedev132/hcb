@@ -5,13 +5,7 @@ require "rails_helper"
 RSpec.describe PayoutService::Invoice::Create do
   let(:invoice) { create(:invoice) }
 
-  let(:attrs) do
-    {
-      invoice_id: invoice.id
-    }
-  end
-
-  let(:service) { PayoutService::Invoice::Create.new(**attrs) }
+  let(:service) { PayoutService::Invoice::Create.new(invoice_id: invoice.id) }
 
   before do
     allow(service).to receive(:funds_available?).and_return(true)

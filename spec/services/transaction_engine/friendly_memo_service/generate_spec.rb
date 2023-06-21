@@ -5,13 +5,11 @@ require "rails_helper"
 RSpec.describe TransactionEngine::FriendlyMemoService::Generate do
   let(:canonical_transaction) { create(:canonical_transaction, memo: "Raw Plaid Transaction 1 Memo") }
 
-  let(:attrs) do
-    {
+  let(:service) do
+    TransactionEngine::FriendlyMemoService::Generate.new(
       canonical_transaction: canonical_transaction,
-    }
+    )
   end
-
-  let(:service) { TransactionEngine::FriendlyMemoService::Generate.new(**attrs) }
 
   it "returns a result" do
     result = service.run

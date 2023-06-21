@@ -17,8 +17,8 @@ RSpec.describe GSuiteAccountService::Create, type: :model do
     double("remoteOrgUnit", name: ou_name, org_unit_id: "id:1234", org_unit_path: "/Events/#{ou_name}")
   end
 
-  let(:attrs) do
-    {
+  let(:service) do
+    GSuiteAccountService::Create.new(
       g_suite: g_suite,
       current_user: current_user,
 
@@ -26,10 +26,8 @@ RSpec.describe GSuiteAccountService::Create, type: :model do
       address: address,
       first_name: first_name,
       last_name: last_name
-    }
+    )
   end
-
-  let(:service) { GSuiteAccountService::Create.new(**attrs) }
 
   before do
     allow_any_instance_of(::Partners::Google::GSuite::OrgUnit).to receive(:run).and_return(remote_org_unit)

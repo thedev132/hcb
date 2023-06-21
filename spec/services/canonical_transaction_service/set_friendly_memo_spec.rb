@@ -6,14 +6,12 @@ RSpec.describe CanonicalTransactionService::SetFriendlyMemo, type: :model do
   let(:canonical_transaction) { create(:canonical_transaction) }
   let(:friendly_memo) { " Friendly Memo " }
 
-  let(:attrs) do
-    {
+  let(:service) do
+    CanonicalTransactionService::SetFriendlyMemo.new(
       canonical_transaction_id: canonical_transaction.id,
       friendly_memo: friendly_memo
-    }
+    )
   end
-
-  let(:service) { CanonicalTransactionService::SetFriendlyMemo.new(**attrs) }
 
   it "sets friendly memo" do
     service.run

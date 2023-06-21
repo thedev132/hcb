@@ -5,13 +5,11 @@ require "rails_helper"
 RSpec.describe CheckService::LobUrl::Generate, type: :model do
   let(:check) { create(:check) }
 
-  let(:attrs) do
-    {
+  let(:service) do
+    CheckService::LobUrl::Generate.new(
       check: check,
-    }
+    )
   end
-
-  let(:service) { CheckService::LobUrl::Generate.new(**attrs) }
 
   let(:url) { "http://lob.com/some/url" }
   let(:resp) { { "url" => url } }

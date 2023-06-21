@@ -33,13 +33,12 @@ module TransactionEngine
         private
 
         def primary_hash(pt)
-          attrs = {
+          ::TransactionEngine::HashedTransactionService::PrimaryHash.new(
             unique_bank_identifier: pt.unique_bank_identifier,
             date: pt.date_posted.strftime("%Y-%m-%d"),
             amount_cents: pt.amount_cents,
             memo: pt.memo.upcase
-          }
-          ::TransactionEngine::HashedTransactionService::PrimaryHash.new(**attrs).run
+          ).run
         end
 
       end
