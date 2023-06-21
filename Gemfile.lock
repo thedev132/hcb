@@ -48,7 +48,7 @@ GEM
       erubi (~> 1.4)
       rails-dom-testing (~> 2.0)
       rails-html-sanitizer (~> 1.1, >= 1.2.0)
-    active_storage_validations (1.0.3)
+    active_storage_validations (1.0.4)
       activejob (>= 5.2.0)
       activemodel (>= 5.2.0)
       activestorage (>= 5.2.0)
@@ -778,7 +778,7 @@ PLATFORMS
 
 DEPENDENCIES
   aasm
-  active_storage_validations (= 1.0.3)
+  active_storage_validations (= 1.0.4)
   acts_as_paranoid (~> 0.8.1)
   ahoy_matey
   airbrake

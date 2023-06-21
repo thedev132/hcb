@@ -62,7 +62,7 @@ gem "acts_as_paranoid", "~> 0.8.1" # enables soft deletions
 gem "friendly_id", "~> 5.2.0" # slugs
 gem "hashid-rails", "~> 1.0" # obfuscate IDs in URLs
 
-gem "active_storage_validations", "1.0.3" # file validations
+gem "active_storage_validations", "1.0.4" # file validations
 gem "validates_email_format_of" # email address validations
 gem "phonelib" # phone number validations
 
