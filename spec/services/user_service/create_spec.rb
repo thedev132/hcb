@@ -58,7 +58,7 @@ RSpec.describe UserService::Create, type: :model do
     context "and is already an organizer of the event" do
       before do
         # user is already organizer of event
-        create(:organizer_position, event: event, user: user)
+        create(:organizer_position, event:, user:)
       end
 
       it "does not create the user" do

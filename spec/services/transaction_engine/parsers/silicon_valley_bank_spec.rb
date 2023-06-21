@@ -7,7 +7,7 @@ RSpec.describe TransactionEngine::Parsers::SiliconValleyBank do
 
   let(:service) do
     TransactionEngine::Parsers::SiliconValleyBank.new(
-      filepath: filepath
+      filepath:
     )
   end
 

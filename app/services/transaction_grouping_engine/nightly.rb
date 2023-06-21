@@ -19,7 +19,7 @@ module TransactionGroupingEngine
 
         ct.update_column(:hcb_code, hcb_code)
 
-        HcbCode.find_or_create_by!(hcb_code: hcb_code)
+        HcbCode.find_or_create_by!(hcb_code:)
       end
       Ahoy::Event.create!({
                             name: "canonicalTransactionMissingHcbCount",

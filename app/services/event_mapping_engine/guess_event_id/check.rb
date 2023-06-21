@@ -14,7 +14,7 @@ module EventMappingEngine
       private
 
       def check
-        @check ||= ::Check.in_transit_and_processed.where(check_number: check_number, amount: -amount_cents).order("created_at asc").first
+        @check ||= ::Check.in_transit_and_processed.where(check_number:, amount: -amount_cents).order("created_at asc").first
       end
 
       def amount_cents

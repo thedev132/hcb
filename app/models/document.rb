@@ -46,7 +46,7 @@ class Document < ApplicationRecord
     when "application/pdf"
       return nil unless file.previewable?
 
-      file.preview(resize: resize)
+      file.preview(resize:)
     else
     end
   end

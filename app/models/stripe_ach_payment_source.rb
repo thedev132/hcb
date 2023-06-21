@@ -32,7 +32,7 @@ class StripeAchPaymentSource < ApplicationRecord
 
   def charge!(amount)
     StripeService::Charge.create(
-      amount: amount,
+      amount:,
       currency: "usd",
       source: self.stripe_source_id,
       customer: self.stripe_customer_id,

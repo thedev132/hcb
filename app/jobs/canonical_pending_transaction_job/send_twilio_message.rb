@@ -19,7 +19,7 @@ module CanonicalPendingTransactionJob
       hcb_code = @cpt.local_hcb_code
       message = "Your card was charged $#{@cpt.amount.abs} at '#{@cpt.memo}'. Upload your receipt: #{attach_receipt_url hcb_code}"
 
-      TwilioMessageService::Send.new(@user, message, hcb_code: hcb_code).run!
+      TwilioMessageService::Send.new(@user, message, hcb_code:).run!
     end
 
     private

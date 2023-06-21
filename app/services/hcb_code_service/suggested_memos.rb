@@ -35,10 +35,10 @@ module HcbCodeService
           transaction: t,
           ranking: rank_transaction(
             t,
-            hcb_amount: hcb_amount,
-            hcb_type: hcb_type,
-            hcb_amount_sign: hcb_amount_sign,
-            hcb_linked_obj: hcb_linked_obj
+            hcb_amount:,
+            hcb_type:,
+            hcb_amount_sign:,
+            hcb_linked_obj:
           )
         }
       end.select { |tr| tr[:ranking] >= @confidence }.sort_by { |tr| tr[:ranking] }.reverse!

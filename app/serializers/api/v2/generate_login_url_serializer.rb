@@ -11,7 +11,7 @@ module Api
 
       def run
         {
-          data: data
+          data:
         }
       end
 

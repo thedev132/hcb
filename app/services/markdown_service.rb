@@ -7,7 +7,7 @@ class MarkdownService
     include ApplicationHelper # for render_money helper
 
     def link(link, title, alt_text)
-      link_to alt_text, link, title: title,
+      link_to alt_text, link, title:,
                               target: "_blank"
     end
 

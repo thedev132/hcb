@@ -22,7 +22,7 @@ class TwilioVerificationService
     verification = CLIENT.verify
                          .services(VERIFY_SERVICE_ID)
                          .verification_checks
-                         .create(to: phone_number, code: code)
+                         .create(to: phone_number, code:)
     verification.status == "approved"
   end
 

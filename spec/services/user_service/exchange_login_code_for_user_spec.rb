@@ -10,7 +10,7 @@ RSpec.describe UserService::ExchangeLoginCodeForUser, type: :model do
     UserService::ExchangeLoginCodeForUser.new(
       user_id: user.id,
       login_code: login_code.code,
-      sms: sms
+      sms:
     )
   }
 
@@ -35,7 +35,7 @@ RSpec.describe UserService::ExchangeLoginCodeForUser, type: :model do
         UserService::ExchangeLoginCodeForUser.new(
           user_id: user.id,
           login_code: "does not exist",
-          sms: sms
+          sms:
         )
       }
 

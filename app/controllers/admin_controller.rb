@@ -37,7 +37,7 @@ class AdminController < ApplicationController
     size = pending_task params[:task_name].to_sym
     ending = Process.clock_gettime(Process::CLOCK_MONOTONIC)
     elapsed = ending - starting
-    render json: { elapsed: elapsed, size: size }, status: 200
+    render json: { elapsed:, size: }, status: 200
   end
 
   def search
@@ -221,7 +221,7 @@ class AdminController < ApplicationController
 
     ::EventService::Create.new(
       name: params[:name],
-      emails: emails,
+      emails:,
       is_signee: params[:is_signee].to_i == 1,
       country: params[:country],
       category: params[:category],

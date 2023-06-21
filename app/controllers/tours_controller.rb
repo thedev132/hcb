@@ -23,7 +23,7 @@ class ToursController < ApplicationController
     @tour = Tour.find(params[:id])
     authorize @tour
 
-    @tour.update(step: step)
+    @tour.update(step:)
 
     ahoy.track "Tour advanced", tour_id: @tour.id, tour_options: @tour.tourable.tourable_options, to_step: step
   end

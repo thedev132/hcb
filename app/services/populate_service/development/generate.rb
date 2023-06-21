@@ -18,7 +18,7 @@ module PopulateService
 
         ActiveRecord::Base.transaction do
           attrs = {
-            email: email,
+            email:,
             admin_at: Time.now.utc
           }
           user = User.create!(attrs)
@@ -32,8 +32,8 @@ module PopulateService
           event = Event.create!(attrs)
 
           attrs = {
-            user: user,
-            event: event
+            user:,
+            event:
           }
           organizer_position = OrganizerPosition.create!(attrs)
 

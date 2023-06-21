@@ -15,9 +15,9 @@ module UserService
 
     def attrs
       {
-        token: token,
-        expiration_at: expiration_at,
-        partner: partner
+        token:,
+        expiration_at:,
+        partner:
       }
     end
 

@@ -14,7 +14,7 @@ module TransactionEngine
           csv = CSV.new(f, headers: true)
 
           csv.each do |row|
-            insert(row: row)
+            insert(row:)
           end
 
         end
@@ -26,7 +26,7 @@ module TransactionEngine
         return if row["Date"] == "File Totals"
 
         attrs = {
-          unique_bank_identifier: unique_bank_identifier,
+          unique_bank_identifier:,
           date_posted: row["Date"],
           amount_cents: amount_cents(row),
           memo: row["Description"],

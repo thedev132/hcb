@@ -20,14 +20,14 @@ else
     slug: "test",
     can_front_balance: true,
     point_of_contact: user,
-    partner: partner,
+    partner:,
     sponsorship_fee: 0.07,
     organization_identifier: "bank_#{SecureRandom.hex}",
   ).find_or_create_by!(slug: "test")
 
   OrganizerPositionInvite.create!(
-    event: event,
-    user: user,
+    event:,
+    user:,
     sender: user,
   )
 

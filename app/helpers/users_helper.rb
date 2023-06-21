@@ -67,7 +67,7 @@ module UsersHelper
     alt ||= user&.initials
     alt ||= "Brown dog grinning and gazing off into the distance"
 
-    image_tag(src, options.merge(loading: "lazy", alt: alt, width: size, height: size, class: klass))
+    image_tag(src, options.merge(loading: "lazy", alt:, width: size, height: size, class: klass))
   end
 
   def user_mention(user, options = {}, default_name = "No User")

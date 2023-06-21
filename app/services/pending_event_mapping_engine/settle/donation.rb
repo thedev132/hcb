@@ -14,7 +14,7 @@ module PendingEventMappingEngine
 
           event = donation.event
 
-          prefix = grab_prefix(donation: donation)
+          prefix = grab_prefix(donation:)
 
           # 2. look up canonical - using HCB short code
           cts ||= event.canonical_transactions.where("memo ilike 'HCKCLB HCB-#{cpt.local_hcb_code.short_code}%'")

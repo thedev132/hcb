@@ -106,8 +106,8 @@ class StripeCardsController < ApplicationController
     return redirect_back fallback_location: event_cards_new_path(event), flash: { error: "Invalid country" } unless %w(US CA).include? sc[:stripe_shipping_address_country]
 
     ::StripeCardService::Create.new(
-      current_user: current_user,
-      current_session: current_session,
+      current_user:,
+      current_session:,
       event_id: event.id,
       card_type: sc[:card_type],
       stripe_shipping_name: sc[:stripe_shipping_name],
@@ -137,7 +137,7 @@ class StripeCardsController < ApplicationController
     authorize card
     name = params[:stripe_card][:name]
     name = nil unless name.present?
-    updated = card.update(name: name)
+    updated = card.update(name:)
 
     redirect_to stripe_card_url(card), flash: updated ? { success: "Card's name has been successfully updated!" } : { error: "Card's name could not be updated" }
   end

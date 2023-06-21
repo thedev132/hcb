@@ -11,7 +11,7 @@ module ReceiptService
 
       return nil if @extracted.nil?
 
-      transaction_distances(include_details: include_details)
+      transaction_distances(include_details:)
     end
 
     def self.weights

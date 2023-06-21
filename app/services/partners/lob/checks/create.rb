@@ -27,16 +27,16 @@ module Partners
         def create_attrs
           {
             to: @to,
-            amount: amount,
+            amount:,
             memo: short_memo,
 
             message: @message,
             description: @description,
 
-            send_date: send_date,
+            send_date:,
 
             # from shared
-            bank_account: bank_account,
+            bank_account:,
             from: from_address
           }.compact
         end

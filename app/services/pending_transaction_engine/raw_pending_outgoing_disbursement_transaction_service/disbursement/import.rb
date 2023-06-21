@@ -6,7 +6,7 @@ module PendingTransactionEngine
       class Import
         def run
           disbursements.each do |disbursement|
-            ImportSingle.new(disbursement: disbursement).run
+            ImportSingle.new(disbursement:).run
           end
         end
 

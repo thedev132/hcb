@@ -9,7 +9,7 @@ module UserService
 
     def run
       recommended_lists.each do |list_id|
-        SendyService.subscribe(email: @user.email, list_id: list_id) unless @dry_run
+        SendyService.subscribe(email: @user.email, list_id:) unless @dry_run
       end
 
       recommended_lists

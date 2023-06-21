@@ -28,7 +28,7 @@ module AchTransferService
 
       unless ach_transfer.scheduled_on.present? # don't add this ACH to the ledger if it's scheduled for the future
         ActiveRecord::Base.transaction do
-          rpoat = PendingTransactionEngine::RawPendingOutgoingAchTransactionService::OutgoingAch::ImportSingle.new(ach_transfer: ach_transfer).run
+          rpoat = PendingTransactionEngine::RawPendingOutgoingAchTransactionService::OutgoingAch::ImportSingle.new(ach_transfer:).run
           pt = PendingTransactionEngine::CanonicalPendingTransactionService::ImportSingle::OutgoingAch.new(raw_pending_outgoing_ach_transaction: rpoat).run
           PendingEventMappingEngine::Map::Single::OutgoingAch.new(canonical_pending_transaction: pt).run
         end
@@ -39,7 +39,7 @@ module AchTransferService
 
     def create_attrs
       {
-        event: event,
+        event:,
 
         routing_number: @routing_number,
         account_number: @account_number,

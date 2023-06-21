@@ -63,9 +63,9 @@ class Receipt < ApplicationRecord
 
   def preview(resize: "512x512")
     if file.previewable?
-      Rails.application.routes.url_helpers.rails_representation_url(file.preview(resize: resize).processed, only_path: true)
+      Rails.application.routes.url_helpers.rails_representation_url(file.preview(resize:).processed, only_path: true)
     elsif file.variable?
-      Rails.application.routes.url_helpers.rails_representation_url(file.variant(resize: resize).processed, only_path: true)
+      Rails.application.routes.url_helpers.rails_representation_url(file.variant(resize:).processed, only_path: true)
     end
   rescue ActiveStorage::FileNotFoundError
     nil

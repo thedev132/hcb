@@ -3,7 +3,7 @@
 module PayoutJob
   class Invoice < ApplicationJob
     def perform(invoice_id)
-      ::PayoutService::Invoice::Create.new(invoice_id: invoice_id).run
+      ::PayoutService::Invoice::Create.new(invoice_id:).run
     end
 
   end

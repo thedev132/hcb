@@ -211,15 +211,15 @@ class Check < ApplicationRecord
   end
 
   def local_hcb_code
-    @local_hcb_code ||= HcbCode.find_or_create_by(hcb_code: hcb_code)
+    @local_hcb_code ||= HcbCode.find_or_create_by(hcb_code:)
   end
 
   def canonical_transactions
-    @canonical_transactions ||= CanonicalTransaction.where(hcb_code: hcb_code)
+    @canonical_transactions ||= CanonicalTransaction.where(hcb_code:)
   end
 
   def canonical_pending_transactions
-    @canonical_pending_transactions ||= ::CanonicalPendingTransaction.where(hcb_code: hcb_code)
+    @canonical_pending_transactions ||= ::CanonicalPendingTransaction.where(hcb_code:)
   end
 
   def recipient_name

@@ -30,11 +30,11 @@ module ApiService
 
       def attrs
         {
-          partner: partner,
+          partner:,
           organization_identifier: clean_organization_identifier,
           name: smart_name,
           slug: smart_slug,
-          sponsorship_fee: sponsorship_fee,
+          sponsorship_fee:,
           redirect_url: @redirect_url,
           webhook_url: @webhook_url
         }

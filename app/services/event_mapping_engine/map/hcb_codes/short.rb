@@ -12,7 +12,7 @@ module EventMappingEngine
 
             short_code = hcb_short_code_str.gsub("HCB-", "").upcase
 
-            hcb_code = ::HcbCode.find_by(short_code: short_code)
+            hcb_code = ::HcbCode.find_by(short_code:)
             next unless hcb_code
 
             guessed_event_id = hcb_code.event.try(:id)

@@ -11,8 +11,8 @@ class ReceiptableMailerPreview < ActionMailer::Preview
     # Normally this would be just requiring receipt, but this shows all
     hcb_ids = user.stripe_cards.map{ |c| c.hcb_codes }.flatten
     ReceiptableMailer.with(
-      user_id: user_id,
-      hcb_ids: hcb_ids
+      user_id:,
+      hcb_ids:
     ).receipt_report
   end
 

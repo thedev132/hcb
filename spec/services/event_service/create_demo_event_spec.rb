@@ -13,11 +13,11 @@ RSpec.describe EventService::CreateDemoEvent, type: :model do
 
     let(:service) do
       EventService::CreateDemoEvent.new(
-        name: name,
+        name:,
         point_of_contact_id: point_of_contact.id,
         partner_id: partner.id,
         email: user_email,
-        country: country
+        country:
       )
     end
 
@@ -32,11 +32,11 @@ RSpec.describe EventService::CreateDemoEvent, type: :model do
     let!(:user) { create(:user) }
     let(:service) do
       EventService::CreateDemoEvent.new(
-        name: name,
+        name:,
         point_of_contact_id: point_of_contact.id,
         partner_id: partner.id,
         email: user.email,
-        country: country
+        country:
       )
     end
 
@@ -53,17 +53,17 @@ RSpec.describe EventService::CreateDemoEvent, type: :model do
 
     before do
       events.each do |event|
-        create(:organizer_position, event: event, user: current_user)
+        create(:organizer_position, event:, user: current_user)
       end
     end
 
     let(:service) do
       EventService::CreateDemoEvent.new(
-        name: name,
+        name:,
         point_of_contact_id: point_of_contact.id,
         partner_id: partner.id,
         email: current_user.email,
-        country: country
+        country:
       )
     end
 

@@ -25,11 +25,11 @@ module PayoutService
       private
 
       def payout
-        @payout ||= ::DonationPayout.new(donation: donation)
+        @payout ||= ::DonationPayout.new(donation:)
       end
 
       def fee_reimbursement
-        @fee_reimbursement ||= FeeReimbursement.new(donation: donation)
+        @fee_reimbursement ||= FeeReimbursement.new(donation:)
       end
 
       def donation

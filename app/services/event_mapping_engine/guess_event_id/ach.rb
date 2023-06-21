@@ -18,7 +18,7 @@ module EventMappingEngine
 
         return nil unless confirmation_number
 
-        @ach ||= AchTransfer.find_by(confirmation_number: confirmation_number)
+        @ach ||= AchTransfer.find_by(confirmation_number:)
       end
 
     end

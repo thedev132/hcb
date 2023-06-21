@@ -24,7 +24,7 @@ module Partners
           while resp.has_more
             starting_after = ts.last.id
 
-            resp = fetch_payouts(starting_after: starting_after)
+            resp = fetch_payouts(starting_after:)
 
             ts += resp.data
           end
@@ -33,13 +33,13 @@ module Partners
         end
 
         def fetch_payouts(starting_after: nil)
-          ::StripeService::Payout.list(list_attrs(starting_after: starting_after))
+          ::StripeService::Payout.list(list_attrs(starting_after:))
         end
 
         def list_attrs(starting_after:)
           {
             created: { gte: @start_date.to_i },
-            starting_after: starting_after,
+            starting_after:,
             limit: 100
           }
         end

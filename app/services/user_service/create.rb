@@ -38,7 +38,7 @@ module UserService
     end
 
     def find_organizer_position
-      OrganizerPosition.where(event: event, user: user).first
+      OrganizerPosition.where(event:, user:).first
     end
 
     def create_organizer_position!
@@ -47,8 +47,8 @@ module UserService
 
     def organizer_position_attrs
       {
-        event: event,
-        user: user
+        event:,
+        user:
       }
     end
 

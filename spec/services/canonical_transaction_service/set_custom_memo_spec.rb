@@ -9,7 +9,7 @@ RSpec.describe CanonicalTransactionService::SetCustomMemo, type: :model do
   let(:service) do
     CanonicalTransactionService::SetCustomMemo.new(
       canonical_transaction_id: canonical_transaction.id,
-      custom_memo: custom_memo
+      custom_memo:
     )
   end
 

@@ -31,7 +31,7 @@ module CheckService
         amount_cents: rpoct.amount_cents,
         raw_pending_outgoing_check_transaction_id: rpoct.id,
 
-        event: event
+        event:
       )
 
       check
@@ -41,12 +41,12 @@ module CheckService
 
     def create_attrs
       {
-        lob_address: lob_address,
+        lob_address:,
         payment_for: @payment_for,
         memo: @memo,
         amount: amount_cents,
         send_date: @send_date,
-        description: description,
+        description:,
         creator: @current_user
       }
     end

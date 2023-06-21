@@ -10,8 +10,8 @@ module ReceiptReportJob
                     @user.receipt_report_monthly?
       return unless hcb_ids.any?
 
-      mailer = ReceiptableMailer.with user_id: user_id,
-                                      hcb_ids: hcb_ids
+      mailer = ReceiptableMailer.with(user_id:,
+                                      hcb_ids:)
 
       mailer.receipt_report.deliver_later
     end

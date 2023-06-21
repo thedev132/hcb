@@ -18,7 +18,7 @@ module RawCsvTransactionService
     def attrs
       {
         unique_bank_identifier: @unique_bank_identifier,
-        date_posted: date_posted,
+        date_posted:,
         memo: @memo,
         amount: @amount,
         csv_transaction_id: generate_unique_csv_transaction_id,

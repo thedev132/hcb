@@ -8,7 +8,7 @@ Rails.application.configure do
         until user.present?
           print "What is your email (used by PaperTrail to record who changed records)? "
           email = gets.chomp
-          user = User.find_by(email: email)
+          user = User.find_by(email:)
         end
         puts "Thank you, #{user.name}! Have a wonderful time!"
         user.id

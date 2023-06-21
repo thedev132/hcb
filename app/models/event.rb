@@ -188,7 +188,7 @@ class Event < ApplicationRecord
 
   scope :demo_mode, -> { where(demo_mode: true) }
   scope :not_demo_mode, -> { where(demo_mode: false) }
-  scope :filter_demo_mode, ->(demo_mode) { demo_mode.nil? || demo_mode.blank? ? all : where(demo_mode: demo_mode) }
+  scope :filter_demo_mode, ->(demo_mode) { demo_mode.nil? || demo_mode.blank? ? all : where(demo_mode:) }
 
   BADGES = {
     # Qualifier must be a method on Event. If the method returns true, the badge
@@ -416,9 +416,9 @@ class Event < ApplicationRecord
   def balance_v2_cents(start_date: nil, end_date: nil)
     @balance_v2_cents ||=
       begin
-        sum = settled_balance_cents(start_date: start_date, end_date: end_date)
-        sum += pending_outgoing_balance_v2_cents(start_date: start_date, end_date: end_date)
-        sum += fronted_incoming_balance_v2_cents(start_date: start_date, end_date: end_date) if can_front_balance?
+        sum = settled_balance_cents(start_date:, end_date:)
+        sum += pending_outgoing_balance_v2_cents(start_date:, end_date:)
+        sum += fronted_incoming_balance_v2_cents(start_date:, end_date:) if can_front_balance?
         sum
       end
   end
@@ -427,8 +427,8 @@ class Event < ApplicationRecord
   # @return [Integer] Balance in cents (v2 transaction engine)
   def settled_balance_cents(start_date: nil, end_date: nil)
     @balance_settled ||=
-      settled_incoming_balance_cents(start_date: start_date, end_date: end_date) +
-      settled_outgoing_balance_cents(start_date: start_date, end_date: end_date)
+      settled_incoming_balance_cents(start_date:, end_date:) +
+      settled_outgoing_balance_cents(start_date:, end_date:)
   end
 
   # v2 cents (v2 transaction engine)
@@ -480,8 +480,8 @@ class Event < ApplicationRecord
 
   def pending_balance_v2_cents(start_date: nil, end_date: nil)
     @pending_balance_v2_cents ||=
-      pending_incoming_balance_v2_cents(start_date: start_date, end_date: end_date) +
-      pending_outgoing_balance_v2_cents(start_date: start_date, end_date: end_date)
+      pending_incoming_balance_v2_cents(start_date:, end_date:) +
+      pending_outgoing_balance_v2_cents(start_date:, end_date:)
   end
 
   def pending_incoming_balance_v2_cents(start_date: nil, end_date: nil)
@@ -669,7 +669,7 @@ class Event < ApplicationRecord
 
   def update_slug_history
     if slug_previously_changed?
-      slugs.create(slug: slug)
+      slugs.create(slug:)
     end
   end
 

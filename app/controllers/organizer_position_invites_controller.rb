@@ -21,7 +21,7 @@ class OrganizerPositionInvitesController < ApplicationController
     user_email = invite_params[:email]
     is_signee = invite_params[:is_signee]
 
-    service = OrganizerPositionInviteService::Create.new(event: @event, sender: current_user, user_email: user_email, is_signee: is_signee)
+    service = OrganizerPositionInviteService::Create.new(event: @event, sender: current_user, user_email:, is_signee:)
 
     @invite = service.model
 

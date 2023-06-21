@@ -37,7 +37,7 @@ module InvoiceService
         invoice = Invoice.create!(attrs)
 
         item = StripeService::InvoiceItem.create(remote_invoice_item_attrs)
-        remote_invoice = StripeService::Invoice.create(remote_invoice_attrs(invoice: invoice))
+        remote_invoice = StripeService::Invoice.create(remote_invoice_attrs(invoice:))
 
         invoice.item_stripe_id = item.id
         invoice.stripe_invoice_id = remote_invoice.id
@@ -74,7 +74,7 @@ module InvoiceService
         status: invoice.status,
         statement_descriptor: invoice.statement_descriptor || "HACK CLUB BANK",
         tax_percent: invoice.tax_percent,
-        footer: footer
+        footer:
       }
     end
 
@@ -92,7 +92,7 @@ module InvoiceService
         due_date: @due_date,
         item_description: @item_description,
         item_amount: clean_item_amount,
-        sponsor: sponsor,
+        sponsor:,
         statement_descriptor: StripeService::StatementDescriptor.format(event.name, as: :full),
         creator: @current_user
       }

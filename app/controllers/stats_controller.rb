@@ -7,14 +7,14 @@ class StatsController < ApplicationController
   def project_stats
     slug = params[:slug]
 
-    event = Event.find_by(is_public: true, slug: slug)
+    event = Event.find_by(is_public: true, slug:)
 
     return render plain: "404 Not found", status: 404 unless event
 
     raised = event.canonical_transactions.revenue.sum(:amount_cents)
 
     render json: {
-      raised: raised
+      raised:
     }
   end
 

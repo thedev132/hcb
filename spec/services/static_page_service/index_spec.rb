@@ -7,7 +7,7 @@ RSpec.describe StaticPageService::Index, type: :model do
 
   let(:service) do
     StaticPageService::Index.new(
-      current_user: current_user
+      current_user:
     )
   end
 

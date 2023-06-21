@@ -33,7 +33,7 @@ class ChecksController < ApplicationController
       amount_cents_string: filtered_params[:amount],
       send_date: Time.now.utc + 48.hours,
 
-      current_user: current_user
+      current_user:
     ).run
 
     flash[:success] = "Your check is scheduled to send on #{check.send_date.to_date}"

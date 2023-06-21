@@ -8,7 +8,7 @@ RSpec.describe GSuiteMailer, type: :mailer do
   let(:recipient) { "email@mailinator.com" }
 
   describe "#notify_of_configuring" do
-    let(:mailer) { GSuiteMailer.with(g_suite_id: g_suite.id, recipient: recipient).notify_of_configuring }
+    let(:mailer) { GSuiteMailer.with(g_suite_id: g_suite.id, recipient:).notify_of_configuring }
 
     it "renders to" do
       expect(mailer.to).to eql([recipient])
@@ -25,7 +25,7 @@ RSpec.describe GSuiteMailer, type: :mailer do
   end
 
   describe "#notify_of_verified" do
-    let(:mailer) { GSuiteMailer.with(g_suite_id: g_suite.id, recipient: recipient).notify_of_verified }
+    let(:mailer) { GSuiteMailer.with(g_suite_id: g_suite.id, recipient:).notify_of_verified }
 
     it "renders to" do
       expect(mailer.to).to eql([recipient])

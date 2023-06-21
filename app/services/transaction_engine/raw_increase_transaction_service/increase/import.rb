@@ -16,7 +16,7 @@ module TransactionEngine
 
           account_ids.each do |account_id|
             params = {
-              account_id: account_id,
+              account_id:,
               "created_at.on_or_after": @start_date.iso8601,
               limit: :all,
             }

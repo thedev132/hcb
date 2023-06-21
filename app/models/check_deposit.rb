@@ -102,7 +102,7 @@ class CheckDeposit < ApplicationRecord
 
     self.save!
 
-    create_canonical_pending_transaction!(event: event, amount_cents: amount_cents, memo: "CHECK DEPOSIT", date: created_at)
+    create_canonical_pending_transaction!(event:, amount_cents:, memo: "CHECK DEPOSIT", date: created_at)
   end
 
   def hcb_code
@@ -110,7 +110,7 @@ class CheckDeposit < ApplicationRecord
   end
 
   def local_hcb_code
-    @local_hcb_code ||= HcbCode.find_or_create_by(hcb_code: hcb_code)
+    @local_hcb_code ||= HcbCode.find_or_create_by(hcb_code:)
   end
 
   def state

@@ -18,8 +18,8 @@ module CanonicalTransactionService
         canonical_event_mapping = CanonicalEventMapping.create!(attrs) if event
 
         ::SystemEventService::Write::SettledTransactionMapped.new(
-          canonical_transaction: canonical_transaction,
-          canonical_event_mapping: canonical_event_mapping,
+          canonical_transaction:,
+          canonical_event_mapping:,
           user: @user
         ).run
       end

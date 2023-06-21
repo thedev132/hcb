@@ -3,7 +3,7 @@
 module InvoiceJob
   class OpenToPaid < ApplicationJob
     def perform(invoice_id)
-      ::InvoiceService::OpenToPaid.new(invoice_id: invoice_id).run
+      ::InvoiceService::OpenToPaid.new(invoice_id:).run
     end
 
   end

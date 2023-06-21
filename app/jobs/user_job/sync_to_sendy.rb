@@ -6,7 +6,7 @@ module UserJob
     retry_on Exception, wait: :exponentially_longer, attempts: 26
 
     def perform(user_id)
-      ::UserService::SyncToSendy.new(user_id: user_id, dry_run: false).run
+      ::UserService::SyncToSendy.new(user_id:, dry_run: false).run
     end
 
   end

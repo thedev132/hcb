@@ -36,7 +36,7 @@ class StripeController < ApplicationController
     response.set_header "Stripe-Version", "2022-08-01"
 
     render json: {
-      approved: approved
+      approved:
     }
   end
 
@@ -104,7 +104,7 @@ class StripeController < ApplicationController
 
     unless invoice.manually_marked_as_paid?
       # Import to the ledger
-      rpit = ::PendingTransactionEngine::RawPendingInvoiceTransactionService::Invoice::ImportSingle.new(invoice: invoice).run
+      rpit = ::PendingTransactionEngine::RawPendingInvoiceTransactionService::Invoice::ImportSingle.new(invoice:).run
       cpt = ::PendingTransactionEngine::CanonicalPendingTransactionService::ImportSingle::Invoice.new(raw_pending_invoice_transaction: rpit).run
       ::PendingEventMappingEngine::Map::Single::Invoice.new(canonical_pending_transaction: cpt).run
     end
@@ -132,7 +132,7 @@ class StripeController < ApplicationController
       recurring_donation.sync_with_stripe_subscription!
       recurring_donation.save!
 
-      RecurringDonationMailer.with(recurring_donation: recurring_donation).payment_method_changed.deliver_later
+      RecurringDonationMailer.with(recurring_donation:).payment_method_changed.deliver_later
     end
   end
 
@@ -202,7 +202,7 @@ class StripeController < ApplicationController
     donation.send_receipt!
 
     # Import the donation onto the ledger
-    rpdt = ::PendingTransactionEngine::RawPendingDonationTransactionService::Donation::ImportSingle.new(donation: donation).run
+    rpdt = ::PendingTransactionEngine::RawPendingDonationTransactionService::Donation::ImportSingle.new(donation:).run
     cpt = ::PendingTransactionEngine::CanonicalPendingTransactionService::ImportSingle::Donation.new(raw_pending_donation_transaction: rpdt).run
     ::PendingEventMappingEngine::Map::Single::Donation.new(canonical_pending_transaction: cpt).run
   end
@@ -228,7 +228,7 @@ class StripeController < ApplicationController
       event: source.event,
       amount_cents: stripe_source_transaction.amount,
       memo: "Bank transfer",
-      ach_payment: ach_payment
+      ach_payment:
     )
   end
 

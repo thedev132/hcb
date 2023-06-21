@@ -17,9 +17,9 @@ module PartnerDonationService
 
         ::Partners::Stripe::Payouts::Create.new(
           stripe_api_key: partner.stripe_api_key,
-          amount_cents: amount_cents,
-          statement_descriptor: statement_descriptor,
-          hcb_metadata_identifier: hcb_metadata_identifier
+          amount_cents:,
+          statement_descriptor:,
+          hcb_metadata_identifier:
         ).run
       end
     end

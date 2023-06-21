@@ -32,7 +32,7 @@ module TwilioMessageService
         body: @body,
         twilio_sid: twilio_response.sid,
         twilio_account_sid: twilio_response.account_sid,
-        raw_data: raw_data
+        raw_data:
       )
 
       OutgoingTwilioMessage.create!(

@@ -20,9 +20,9 @@ module FeeEngine
 
       attrs = {
         canonical_event_mapping_id: @canonical_event_mapping.id,
-        reason: reason,
-        amount_cents_as_decimal: amount_cents_as_decimal,
-        event_sponsorship_fee: event_sponsorship_fee
+        reason:,
+        amount_cents_as_decimal:,
+        event_sponsorship_fee:
       }
       Fee.create!(attrs)
     end

@@ -11,7 +11,7 @@ module SessionsHelper
   }.freeze
 
   def impersonate_user(user)
-    sign_in(user: user, impersonate: true)
+    sign_in(user:, impersonate: true)
   end
 
   # DEPRECATED - begin to start deprecating and ultimately replace with sign_in_and_set_cookie
@@ -20,14 +20,14 @@ module SessionsHelper
     expiration_at = Time.now + user.session_duration_seconds
     cookies.encrypted[:session_token] = { value: session_token, expires: expiration_at }
     user_session = user.user_sessions.create!(
-      session_token: session_token,
+      session_token:,
       fingerprint: fingerprint_info[:fingerprint],
       device_info: fingerprint_info[:device_info],
       os_info: fingerprint_info[:os_info],
       timezone: fingerprint_info[:timezone],
       ip: fingerprint_info[:ip],
-      webauthn_credential: webauthn_credential,
-      expiration_at: expiration_at
+      webauthn_credential:,
+      expiration_at:
     )
 
     if impersonate

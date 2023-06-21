@@ -67,10 +67,10 @@ class CardGrant < ApplicationRecord
 
     self.stripe_card = StripeCardService::Create.new(
       card_type: "virtual",
-      event_id: event_id,
+      event_id:,
       current_user: user,
       current_session: session,
-      subledger: subledger,
+      subledger:,
     ).run
 
     save!
@@ -79,11 +79,11 @@ class CardGrant < ApplicationRecord
   private
 
   def create_user
-    self.user = User.find_or_create_by!(email: email)
+    self.user = User.find_or_create_by!(email:)
   end
 
   def create_subledger
-    create_subledger!(event: event)
+    create_subledger!(event:)
   end
 
   def transfer_money

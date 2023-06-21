@@ -121,15 +121,15 @@ class GSuiteAccount < ApplicationRecord
   def notify_user_of_password_change(first_password = false)
     email_params = {
       recipient: backup_email,
-      address: address,
+      address:,
       password: initial_password,
       event: g_suite.event.name,
     }
 
     creator_email_params = {
       recipient: creator.email,
-      first_name: first_name,
-      last_name: last_name,
+      first_name:,
+      last_name:,
       event: g_suite.event.name,
     }
 

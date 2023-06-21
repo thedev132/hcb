@@ -39,9 +39,9 @@ module Partners
             results = plaid_client.transactions.get(access_token,
                                                     @start_date,
                                                     @end_date,
-                                                    offset: offset,
+                                                    offset:,
                                                     count: COUNT,
-                                                    account_ids: account_ids)
+                                                    account_ids:)
 
             Rails.logger.info "plaid_client.transaction.get start_date=#{@start_date} end_date=#{@end_date} offset=#{offset} count=#{COUNT} account_ids=#{account_ids} total_transactions=#{results["total_transactions"]}"
 

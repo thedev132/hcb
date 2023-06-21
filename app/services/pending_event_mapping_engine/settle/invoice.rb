@@ -14,7 +14,7 @@ module PendingEventMappingEngine
 
           # standard case
           if invoice.payout
-            prefix = grab_prefix(invoice: invoice)
+            prefix = grab_prefix(invoice:)
 
             # 2. look up canonical - scoped to event for added accuracy
             cts = event.canonical_transactions.where(
@@ -44,7 +44,7 @@ module PendingEventMappingEngine
             cts = event.canonical_transactions.where("memo ilike '%bill.com%' and amount_cents = #{invoice.amount_due} and date > '#{invoice.created_at.strftime("%Y-%m-%d")}'")
             cts = event.canonical_transactions.where("memo ilike 'DEPOSIT' and amount_cents = #{invoice.amount_due} and date > '#{invoice.created_at.strftime("%Y-%m-%d")}'") unless cts.present? # see sachacks examples
             unless cts.present?
-              prefix = grab_prefix_old(invoice: invoice)
+              prefix = grab_prefix_old(invoice:)
               cts = event.canonical_transactions.where(
                 "memo ilike ? and date > ?",
                 "HACK CLUB EVENT TRANSFER PAYOUT - #{ActiveRecord::Base.sanitize_sql_like prefix}%",

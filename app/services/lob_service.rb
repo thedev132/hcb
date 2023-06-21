@@ -33,15 +33,15 @@ class LobService
 
   def client
     Lob::Client.new(
-      api_key: api_key,
-      api_version: api_version
+      api_key:,
+      api_version:
     )
   end
 
   def add_address(description, name, address1, address2, city, state, zip, country)
     response = client.addresses.create(
-      description: description,
-      name: name,
+      description:,
+      name:,
       address_line1: address1,
       address_line2: address2,
       address_city: city,
@@ -55,8 +55,8 @@ class LobService
     client.addresses.destroy(lob_id)
 
     response = client.addresses.create(
-      description: description,
-      name: name,
+      description:,
+      name:,
       address_line1: address1,
       address_line2: address2,
       address_city: city,

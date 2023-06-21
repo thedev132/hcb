@@ -15,7 +15,7 @@ module StripeAuthorizationService
 
       ActiveRecord::Base.transaction do
         # 2. idempotent import into the db
-        rpst = ::PendingTransactionEngine::RawPendingStripeTransactionService::Stripe::ImportSingle.new(remote_stripe_transaction: remote_stripe_transaction).run
+        rpst = ::PendingTransactionEngine::RawPendingStripeTransactionService::Stripe::ImportSingle.new(remote_stripe_transaction:).run
 
         # 3. idempotent canonize the newly added raw pending stripe transaction
         cpt = ::PendingTransactionEngine::CanonicalPendingTransactionService::ImportSingle::Stripe.new(raw_pending_stripe_transaction: rpst).run

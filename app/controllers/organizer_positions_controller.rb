@@ -23,7 +23,7 @@ class OrganizerPositionsController < ApplicationController
     index = params[:index]
 
     # get all the organizer positions as an array
-    organizer_positions = StaticPageService::Index.new(current_user: current_user).organizer_positions.not_hidden.to_a
+    organizer_positions = StaticPageService::Index.new(current_user:).organizer_positions.not_hidden.to_a
 
     return render status: :bad_request if index < 0 || index >= organizer_positions.size
 

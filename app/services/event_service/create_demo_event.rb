@@ -10,14 +10,14 @@ module EventService
       @default_partner = ::Partner.find_by!(slug: "bank")
       @partner = partner_id ? ::Partner.find(partner_id) : @default_partner
       @event = ::Event.new(
-        name: name,
-        country: country,
-        category: category,
+        name:,
+        country:,
+        category:,
         point_of_contact_id: @point_of_contact.id,
         is_public: false,
         sponsorship_fee: 0.07,
         organized_by_hack_clubbers: false,
-        organization_identifier: organization_identifier,
+        organization_identifier:,
         omit_stats: false,
         can_front_balance: true,
         demo_mode: true,

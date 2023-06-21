@@ -2,10 +2,10 @@
   <% (@comments || []).each do |comment| %>
     <% if comment.admin_only %>
       <% admin_tools do %>
-        <%= render "comments/item", comment: comment %>
+        <%= render "comments/item", comment: %>
       <% end %>
     <% else %>
-      <%= render "comments/item", comment: comment %>
+      <%= render "comments/item", comment: %>
     <% end %>
   <% end %>
 </section>

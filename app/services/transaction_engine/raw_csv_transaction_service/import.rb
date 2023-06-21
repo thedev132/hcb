@@ -16,7 +16,7 @@ module TransactionEngine
 
           s.add(row["csv_transaction_id"])
 
-          raise_any_argument_errors!(row: row)
+          raise_any_argument_errors!(row:)
 
           ::RawCsvTransaction.find_or_initialize_by(csv_transaction_id: row["csv_transaction_id"]).tap do |rvt|
             rvt.unique_bank_identifier = row["unique_bank_identifier"]

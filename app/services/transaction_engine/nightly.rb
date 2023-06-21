@@ -40,7 +40,7 @@ module TransactionEngine
       BankAccount.syncing_v2.pluck(:id).each do |bank_account_id|
         puts "raw_plaid_transactions: #{bank_account_id}"
 
-        ::TransactionEngine::RawPlaidTransactionService::Plaid::Import.new(bank_account_id: bank_account_id, start_date: @start_date).run
+        ::TransactionEngine::RawPlaidTransactionService::Plaid::Import.new(bank_account_id:, start_date: @start_date).run
       end
     end
 
@@ -107,7 +107,7 @@ module TransactionEngine
 
     def fix_plaid_mistakes!
       BankAccount.syncing_v2.pluck(:id).each do |bank_account_id|
-        ::TransactionEngine::FixMistakes::Plaid.new(bank_account_id: bank_account_id, start_date: @start_date, end_date: nil).run
+        ::TransactionEngine::FixMistakes::Plaid.new(bank_account_id:, start_date: @start_date, end_date: nil).run
       end
     end
 

@@ -27,8 +27,8 @@ RSpec.describe Event, type: :model do
     before do
       tx1 = create(:canonical_transaction, amount_cents: 100)
       tx2 = create(:canonical_transaction, amount_cents: 300)
-      create(:canonical_event_mapping, canonical_transaction: tx1, event: event)
-      create(:canonical_event_mapping, canonical_transaction: tx2, event: event)
+      create(:canonical_event_mapping, canonical_transaction: tx1, event:)
+      create(:canonical_event_mapping, canonical_transaction: tx2, event:)
     end
 
     it "calculates a value from canonical transactions" do
@@ -40,9 +40,9 @@ RSpec.describe Event, type: :model do
 
   describe "private" do
     before do
-      create(:fee_relationship, fee_applies: true, event: event, fee_amount: 10010)
+      create(:fee_relationship, fee_applies: true, event:, fee_amount: 10010)
       fee_payment = create(:transaction, amount: -10)
-      create(:fee_relationship, is_fee_payment: true, event: event, t_transaction: fee_payment)
+      create(:fee_relationship, is_fee_payment: true, event:, t_transaction: fee_payment)
     end
 
     describe "#total_fees" do

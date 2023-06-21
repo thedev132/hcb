@@ -31,7 +31,7 @@ module EventMappingEngine
 
           attrs = {
             canonical_transaction_id: canonical_transaction.id,
-            event_id: event_id,
+            event_id:,
             subledger_id: canonical_transaction.stripe_card.subledger_id,
           }
           ::CanonicalEventMapping.create!(attrs)

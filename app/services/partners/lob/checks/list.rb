@@ -27,7 +27,7 @@ module Partners
 
             after = parsed["after"]
 
-            resp = fetch_checks(after: after)
+            resp = fetch_checks(after:)
 
             ts += resp["data"]
           end
@@ -36,7 +36,7 @@ module Partners
         end
 
         def fetch_checks(after: nil)
-          client.checks.list(list_attrs(after: after))
+          client.checks.list(list_attrs(after:))
         end
 
         def list_attrs(after:)

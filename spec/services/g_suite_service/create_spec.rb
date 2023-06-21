@@ -10,9 +10,9 @@ RSpec.describe GSuiteService::Create, type: :model do
     let(:domain) { "event99.example.com" }
     let(:service) do
       GSuiteService::Create.new(
-        current_user: current_user,
+        current_user:,
         event_id: event.id,
-        domain: domain
+        domain:
       )
     end
 
@@ -41,14 +41,14 @@ RSpec.describe GSuiteService::Create, type: :model do
   context "when gsuite already exists" do
     let(:service) do
       GSuiteService::Create.new(
-        current_user: current_user,
+        current_user:,
         event_id: event.id,
         domain: "newdomain.example.com"
       )
     end
 
     before do
-      create(:g_suite, event: event)
+      create(:g_suite, event:)
     end
 
     it "does not create a new gsuite" do

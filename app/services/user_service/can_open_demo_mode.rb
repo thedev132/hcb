@@ -12,7 +12,7 @@ module UserService
       demo_mode_count += user.events.demo_mode.size
       demo_mode_count += OrganizerPositionInvite.includes(:user, :event)
                                                 .pending
-                                                .where(user: user)
+                                                .where(user:)
                                                 .where(event: { demo_mode: true })
                                                 .size
       demo_mode_count < 2

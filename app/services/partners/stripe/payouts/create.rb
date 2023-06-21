@@ -25,7 +25,7 @@ module Partners
             currency: "usd",
             description: @statement_descriptor,
             statement_descriptor: @statement_descriptor,
-            metadata: metadata
+            metadata:
           }
         end
 

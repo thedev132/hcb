@@ -10,7 +10,7 @@ RSpec.describe OrganizerPositionInviteService::Create do
                               })
     Event.create!({
                     name: "test-event",
-                    partner: partner,
+                    partner:,
                     sponsorship_fee: 0,
                     organization_identifier: SecureRandom.hex(30)
                   })
@@ -26,8 +26,8 @@ RSpec.describe OrganizerPositionInviteService::Create do
         expect(User.find_by(email: invitee_email)).to be_nil
 
         expect do
-          OrganizerPositionInviteService::Create.new(event: event,
-                                                     sender: sender,
+          OrganizerPositionInviteService::Create.new(event:,
+                                                     sender:,
                                                      user_email: invitee_email).run!
         end.to change{ OrganizerPositionInvite.count }.by(1)
 
@@ -47,8 +47,8 @@ RSpec.describe OrganizerPositionInviteService::Create do
         invited_user = User.create!(email: "invitee@example.com")
 
         expect do
-          OrganizerPositionInviteService::Create.new(event: event,
-                                                     sender: sender,
+          OrganizerPositionInviteService::Create.new(event:,
+                                                     sender:,
                                                      user_email: invited_user.email).run!
         end.to change{ OrganizerPositionInvite.count }.by(1)
 

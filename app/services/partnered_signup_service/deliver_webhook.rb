@@ -11,7 +11,7 @@ module PartneredSignupService
     def run
       ::ApiService::V2::DeliverWebhook.new(
         type: TYPE,
-        webhook_url: webhook_url,
+        webhook_url:,
         data: body,
         secret: partner.api_key
       ).run

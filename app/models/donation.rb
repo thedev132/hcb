@@ -220,7 +220,7 @@ class Donation < ApplicationRecord
   end
 
   def local_hcb_code
-    @local_hcb_code ||= HcbCode.find_or_create_by(hcb_code: hcb_code)
+    @local_hcb_code ||= HcbCode.find_or_create_by(hcb_code:)
   end
 
   def canonical_pending_transaction
@@ -228,7 +228,7 @@ class Donation < ApplicationRecord
   end
 
   def canonical_transactions
-    @canonical_transactions ||= CanonicalTransaction.where(hcb_code: hcb_code)
+    @canonical_transactions ||= CanonicalTransaction.where(hcb_code:)
   end
 
   def canonical_pending_transactions
@@ -302,7 +302,7 @@ class Donation < ApplicationRecord
 
   def create_payment_intent_attrs
     {
-      amount: amount,
+      amount:,
       currency: "usd",
       statement_descriptor: "HACK CLUB BANK",
       statement_descriptor_suffix: StripeService::StatementDescriptor.format(event.name, as: :suffix),

@@ -28,7 +28,7 @@ module TransactionGroupingEngine
           amount_cents: ctg["amount_cents"],
           raw_canonical_transaction_ids: ctg["canonical_transaction_ids"],
           raw_canonical_pending_transaction_ids: ctg["canonical_pending_transaction_ids"],
-          event: event,
+          event:,
           subledger: nil,
         }
         CanonicalTransactionGrouped.new(attrs)

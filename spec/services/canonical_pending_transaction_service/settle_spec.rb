@@ -8,8 +8,8 @@ RSpec.describe CanonicalPendingTransactionService::Settle do
 
   let(:service) {
     CanonicalPendingTransactionService::Settle.new(
-      canonical_transaction: canonical_transaction,
-      canonical_pending_transaction: canonical_pending_transaction
+      canonical_transaction:,
+      canonical_pending_transaction:
     )
   }
 

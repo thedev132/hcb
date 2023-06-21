@@ -9,8 +9,8 @@ module MfaCodeService
     def run
       create_attr = {
         message: @message,
-        code: code,
-        provider: provider
+        code:,
+        provider:
       }
 
       mfa_code = MfaCode.create!(create_attr)
@@ -18,7 +18,7 @@ module MfaCodeService
       return if provider == "unknown"
 
       # After creating the code, we attempt to match it to a MfaRequest
-      mfa_request = MfaRequest.pending.where(provider: provider).order(created_at: :asc).last
+      mfa_request = MfaRequest.pending.where(provider:).order(created_at: :asc).last
 
       return if mfa_request.nil?
 

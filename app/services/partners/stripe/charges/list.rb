@@ -15,7 +15,7 @@ module Partners
           starting_after = nil
 
           loop do
-            resp = fetch_charges(starting_after: starting_after)
+            resp = fetch_charges(starting_after:)
 
             ts = resp.data
             break if ts.empty?
@@ -29,13 +29,13 @@ module Partners
         private
 
         def fetch_charges(starting_after: nil)
-          ::Stripe::Charge.list(list_attrs(starting_after: starting_after), opts)
+          ::Stripe::Charge.list(list_attrs(starting_after:), opts)
         end
 
         def list_attrs(starting_after:)
           {
             created: { gte: @start_date.to_i },
-            starting_after: starting_after,
+            starting_after:,
             limit: 100,
             expand: ["data.payment_intent"]
           }

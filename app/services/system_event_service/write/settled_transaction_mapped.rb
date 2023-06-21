@@ -15,8 +15,8 @@ module SystemEventService
 
       def run
         ::SystemEventService::Create.new(
-          name: name,
-          properties: properties
+          name:,
+          properties:
         ).run
       end
 

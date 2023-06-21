@@ -8,9 +8,9 @@ RSpec.describe CheckService::Create, type: :model do
       # Set up event with ample balance of 1000 cents
       event = create(:event)
       canonical_transaction = create(:canonical_transaction, amount_cents: 1000)
-      create(:canonical_event_mapping, event: event, canonical_transaction: canonical_transaction)
+      create(:canonical_event_mapping, event:, canonical_transaction:)
 
-      lob_address = create(:lob_address, event: event)
+      lob_address = create(:lob_address, event:)
 
       service = described_class.new(
         event_id: event.id,

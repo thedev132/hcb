@@ -33,7 +33,7 @@ module Api
     end
 
     def authenticate
-      @current_partner = AuthService::CurrentPartner.new(bearer_token: bearer_token).run
+      @current_partner = AuthService::CurrentPartner.new(bearer_token:).run
     end
 
     def bearer_token
@@ -60,7 +60,7 @@ module Api
         ]
       }
 
-      render json: json, status: exception.status
+      render json:, status: exception.status
     end
 
     def json_error(contract)
@@ -71,7 +71,7 @@ module Api
           {
             status: 400,
             code: nil,
-            message: message,
+            message:,
             input: contract.errors.first.input
           }
         ]
@@ -86,12 +86,12 @@ module Api
           {
             status: 400,
             code: nil,
-            message: message,
+            message:,
           }
         ]
       }
 
-      render json: json, status: 400 and return
+      render json:, status: 400 and return
     end
 
     def render_json_error_500(exception)
@@ -102,12 +102,12 @@ module Api
           {
             status: 500,
             code: nil,
-            message: message,
+            message:,
           }
         ]
       }
 
-      render json: json, status: 500 and return
+      render json:, status: 500 and return
     end
 
   end

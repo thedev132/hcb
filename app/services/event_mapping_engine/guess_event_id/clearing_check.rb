@@ -14,7 +14,7 @@ module EventMappingEngine
       private
 
       def check
-        @check ||= ::Check.find_by(check_number: check_number)
+        @check ||= ::Check.find_by(check_number:)
       end
 
       def memo

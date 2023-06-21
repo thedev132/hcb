@@ -307,7 +307,7 @@ class EventsController < ApplicationController
     authorize @event
 
     GSuiteService::Create.new(
-      current_user: current_user,
+      current_user:,
       event_id: @event.id,
       domain: params[:domain]
     ).run
@@ -362,7 +362,7 @@ class EventsController < ApplicationController
         started_on = Faker::Date.backward(days: 365 * 2)
 
         donation = OpenStruct.new(
-          amount: amount,
+          amount:,
           total_donated: amount * rand(1..5),
           stripe_status: "active",
           state: refunded ? "warning" : "success",
@@ -637,7 +637,7 @@ class EventsController < ApplicationController
     return [] unless using_transaction_engine_v2? && using_pending_transaction_engine?
 
     pending_transactions = PendingTransactionEngine::PendingTransaction::All.new(event_id: @event.id, search: params[:q], tag_id: @tag&.id).run
-    PendingTransactionEngine::PendingTransaction::AssociationPreloader.new(pending_transactions: pending_transactions, event: @event).run!
+    PendingTransactionEngine::PendingTransaction::AssociationPreloader.new(pending_transactions:, event: @event).run!
     pending_transactions
   end
 

@@ -23,7 +23,7 @@ RSpec.describe PendingTransactionEngine do
     it "creates raw incoming and outgoing transactions" do
       source_event = create(:event)
       destination_event = create(:event)
-      disbursement = create(:disbursement, event: destination_event, source_event: source_event)
+      disbursement = create(:disbursement, event: destination_event, source_event:)
 
       expect(disbursement.raw_pending_incoming_disbursement_transaction).to be_nil
       expect(disbursement.raw_pending_outgoing_disbursement_transaction).to be_nil
@@ -48,7 +48,7 @@ RSpec.describe PendingTransactionEngine do
     it "increments the incoming deposit total" do
       source_event = create(:event)
       destination_event = create(:event)
-      disbursement = create(:disbursement, event: destination_event, source_event: source_event)
+      disbursement = create(:disbursement, event: destination_event, source_event:)
 
       incoming_amount_before = incoming_deposits destination_event
 

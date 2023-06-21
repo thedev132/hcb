@@ -22,19 +22,19 @@ RSpec.describe InvoiceService::Create, type: :model do
 
   let(:service) do
     InvoiceService::Create.new(
-      event_id: event_id,
-      due_date: due_date,
-      item_description: item_description,
-      item_amount: item_amount,
-      current_user: current_user,
-      sponsor_id: sponsor_id,
-      sponsor_name: sponsor_name,
-      sponsor_email: sponsor_email,
-      sponsor_address_line1: sponsor_address_line1,
-      sponsor_address_line2: sponsor_address_line2,
-      sponsor_address_city: sponsor_address_city,
-      sponsor_address_state: sponsor_address_state,
-      sponsor_address_postal_code: sponsor_address_postal_code
+      event_id:,
+      due_date:,
+      item_description:,
+      item_amount:,
+      current_user:,
+      sponsor_id:,
+      sponsor_name:,
+      sponsor_email:,
+      sponsor_address_line1:,
+      sponsor_address_line2:,
+      sponsor_address_city:,
+      sponsor_address_state:,
+      sponsor_address_postal_code:
     )
   end
 

@@ -15,7 +15,7 @@ module PartnerDonationService
         next unless cpt
         next unless cpt.settled?
 
-        raise ArgumentError, "anomaly detected when attempting to mark deposited partner donation #{partner_donation.id}" if anomaly_detected?(partner_donation: partner_donation)
+        raise ArgumentError, "anomaly detected when attempting to mark deposited partner donation #{partner_donation.id}" if anomaly_detected?(partner_donation:)
 
         begin
           partner_donation.mark_deposited!

@@ -7,7 +7,7 @@ RSpec.describe ApiService::V2::FindOrganizations, type: :model do
 
   let(:service) do
     ApiService::V2::FindOrganizations.new(
-      partner_id: partner_id,
+      partner_id:,
     )
   end
 

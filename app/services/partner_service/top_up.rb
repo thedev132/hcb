@@ -9,9 +9,9 @@ module PartnerService
 
     def run
       ::Partners::Stripe::Topup::Create.new(
-        stripe_api_key: stripe_api_key,
+        stripe_api_key:,
         amount_cents: @amount_cents,
-        statement_descriptor: statement_descriptor
+        statement_descriptor:
       ).run
     end
 

@@ -7,7 +7,7 @@
 <%= form_with local: true, url: events_admin_index_path, method: :get do |form| %>
   <%= form.text_field :q, value: params[:q], style: "vertical-align: top;", placeholder: "Search" %>
   <div class="inline-block">
-    <%= render partial: "events_filter", locals: { form: form } %>
+    <%= render partial: "events_filter", locals: { form: } %>
   </div>
 <% end %>
 

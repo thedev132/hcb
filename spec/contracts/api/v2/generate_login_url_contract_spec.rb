@@ -10,8 +10,8 @@ RSpec.describe Api::V2::GenerateLoginUrlContract, type: :model do
 
     let(:contract) {
       Api::V2::GenerateLoginUrlContract.new.call(
-        public_id: public_id,
-        email: email
+        public_id:,
+        email:
       )
     }
 

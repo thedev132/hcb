@@ -7,7 +7,7 @@ RSpec.describe TransactionEngine::FriendlyMemoService::Generate do
 
   let(:service) do
     TransactionEngine::FriendlyMemoService::Generate.new(
-      canonical_transaction: canonical_transaction,
+      canonical_transaction:,
     )
   end
 

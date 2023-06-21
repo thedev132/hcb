@@ -68,9 +68,9 @@ class Partner < ApplicationRecord
       invite_sender = User.find_by(email: partnered_email)
       invite_sender ||= User.create!(email: partnered_email)
       OrganizerPositionInviteService::Create.new(
-        event: event,
+        event:,
         sender: invite_sender,
-        user_email: user_email,
+        user_email:,
       ).run!
     end
 

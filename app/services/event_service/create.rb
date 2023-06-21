@@ -32,7 +32,7 @@ module EventService
         # event.mark_approved! if @approved
 
         @emails.each do |email|
-          OrganizerPositionInviteService::Create.new(event: event, sender: point_of_contact, user_email: email, initial: true, is_signee: @is_signee).run!
+          OrganizerPositionInviteService::Create.new(event:, sender: point_of_contact, user_email: email, initial: true, is_signee: @is_signee).run!
         end
       end
     end
@@ -57,7 +57,7 @@ module EventService
         expected_budget: 100.0,
         point_of_contact_id: @point_of_contact_id,
         partner_id: partner.id,
-        organization_identifier: organization_identifier,
+        organization_identifier:,
         demo_mode: @demo_mode
       }
     end

@@ -15,7 +15,7 @@ class SendyService
     return unless Rails.env.production?
 
     request("subscribe", :post,
-            email: email,
+            email:,
             list: list_id,
             silent: true,
             boolean: true)
@@ -25,8 +25,8 @@ class SendyService
     return unless Rails.env.production?
 
     result = request("api/subscribers/delete.php", :post,
-                     email: email,
-                     list_id: list_id)
+                     email:,
+                     list_id:)
 
     result.body == 1.to_s
   end

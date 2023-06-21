@@ -41,24 +41,24 @@ module StripeCardholderService
 
     def remote_attrs
       {
-        name: name,
-        email: email,
-        phone_number: phone_number,
+        name:,
+        email:,
+        phone_number:,
         type: cardholder_type,
         billing: {
           address: {
-            line1: line1,
+            line1:,
             # line2: line2,
-            city: city,
-            state: state,
-            postal_code: postal_code,
-            country: country
+            city:,
+            state:,
+            postal_code:,
+            country:
           }
         },
         individual: {
-          first_name: first_name,
-          last_name: last_name,
-          dob: dob,
+          first_name:,
+          last_name:,
+          dob:,
           card_issuing: {
             user_terms_acceptance: {
               date: DateTime.now.to_i,

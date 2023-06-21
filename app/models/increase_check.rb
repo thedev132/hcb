@@ -43,7 +43,7 @@ class IncreaseCheck < ApplicationRecord
   has_one :canonical_pending_transaction
 
   after_create do
-    create_canonical_pending_transaction!(event: event, amount_cents: -amount, memo: "OUTGOING CHECK", date: created_at)
+    create_canonical_pending_transaction!(event:, amount_cents: -amount, memo: "OUTGOING CHECK", date: created_at)
   end
 
   aasm timestamps: true do
@@ -131,7 +131,7 @@ class IncreaseCheck < ApplicationRecord
   end
 
   def local_hcb_code
-    @local_hcb_code ||= HcbCode.find_or_create_by(hcb_code: hcb_code)
+    @local_hcb_code ||= HcbCode.find_or_create_by(hcb_code:)
   end
 
   def sent?
@@ -147,14 +147,14 @@ class IncreaseCheck < ApplicationRecord
 
     increase_check = Increase::CheckTransfers.create(
       account_id: IncreaseService::AccountIds::FS_MAIN,
-      address_city: address_city,
-      address_line1: address_line1,
+      address_city:,
+      address_line1:,
       address_line2: address_line2.presence,
-      address_state: address_state,
-      address_zip: address_zip,
-      amount: amount,
+      address_state:,
+      address_zip:,
+      amount:,
       message: memo,
-      recipient_name: recipient_name,
+      recipient_name:,
     )
 
     update!(increase_id: increase_check["id"], increase_status: increase_check["status"])

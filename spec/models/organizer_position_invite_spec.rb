@@ -29,7 +29,7 @@ RSpec.describe OrganizerPositionInvite, type: :model do
   context "has user" do
     it "returns user" do
       user = create(:user)
-      organizer_position_invite = create(:organizer_position_invite, user: user)
+      organizer_position_invite = create(:organizer_position_invite, user:)
 
       expect(organizer_position_invite.user).to eq(user)
     end

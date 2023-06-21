@@ -14,7 +14,7 @@ module EventMappingEngine
       private
 
       def bank_fee
-        @bank_fee ||= ::BankFee.in_transit.where(event_id: parsed_event_id, amount_cents: amount_cents).order("created_at asc").first
+        @bank_fee ||= ::BankFee.in_transit.where(event_id: parsed_event_id, amount_cents:).order("created_at asc").first
       end
 
       def amount_cents

@@ -52,7 +52,7 @@ class CanonicalPendingTransaction < ApplicationRecord
 
   include PgSearch::Model
   pg_search_scope :search_memo, against: [:memo, :custom_memo, :hcb_code], using: { tsearch: { any_word: true, prefix: true, dictionary: "english" } }, ranked_by: "canonical_pending_transactions.date"
-  pg_search_scope :pg_text_search, lambda { |query, options_hash| { query: query }.merge(options_hash) }
+  pg_search_scope :pg_text_search, lambda { |query, options_hash| { query: }.merge(options_hash) }
 
   belongs_to :raw_pending_stripe_transaction, optional: true
   belongs_to :raw_pending_outgoing_check_transaction, optional: true

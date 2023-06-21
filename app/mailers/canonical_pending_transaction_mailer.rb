@@ -18,7 +18,7 @@ class CanonicalPendingTransactionMailer < ApplicationMailer
                  to
                end
 
-    mail to: to, subject: subject, reply_to: reply_to
+    mail to:, subject:, reply_to:
   end
 
   def notify_declined

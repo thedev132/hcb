@@ -57,7 +57,7 @@ class LoginToken < ApplicationRecord
       # via the user_session, however this IP field is useful in the case that
       # the user is forced to manually log in. In this case, there won't be a
       # user_session associated with the login_token.
-      transitions from: :unused, to: :used, after: proc { |ip| self.update(ip: ip) if ip.present? }
+      transitions from: :unused, to: :used, after: proc { |ip| self.update(ip:) if ip.present? }
     end
   end
 

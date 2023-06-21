@@ -10,7 +10,7 @@ class IncreaseController < ApplicationController
     sig_header = request.headers["Increase-Webhook-Signature"]
 
     Increase::Webhook::Signature.verify(
-      payload: payload,
+      payload:,
       signature_header: sig_header,
       secret: signing_secret
     )

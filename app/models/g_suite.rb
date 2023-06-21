@@ -79,7 +79,7 @@ class GSuite < ApplicationRecord
   end
 
   def verified_on_google?
-    @verified_on_google ||= ::Partners::Google::GSuite::Domain.new(domain: domain).run.verified
+    @verified_on_google ||= ::Partners::Google::GSuite::Domain.new(domain:).run.verified
   rescue => e
     Airbrake.notify(e)
 

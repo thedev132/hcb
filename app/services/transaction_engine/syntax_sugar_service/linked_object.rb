@@ -79,7 +79,7 @@ module TransactionEngine
         confirmation_number = @canonical_transaction.likely_ach_confirmation_number
         return nil unless confirmation_number
 
-        event.ach_transfers.find_by(confirmation_number: confirmation_number)
+        event.ach_transfers.find_by(confirmation_number:)
       end
 
       def likely_increase_ach

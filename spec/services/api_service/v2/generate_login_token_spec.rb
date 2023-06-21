@@ -12,14 +12,14 @@ RSpec.describe ApiService::V2::GenerateLoginToken, type: :model do
 
   let(:service) {
     ApiService::V2::GenerateLoginToken.new(
-      partner: partner,
+      partner:,
       user_email: user.email,
-      organization_public_id: organization_public_id
+      organization_public_id:
     )
   }
 
   before do
-    create(:organizer_position, event: event, user: user)
+    create(:organizer_position, event:, user:)
   end
 
   it "creates a login token" do

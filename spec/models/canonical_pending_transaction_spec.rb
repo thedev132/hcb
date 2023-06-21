@@ -24,7 +24,7 @@ RSpec.describe CanonicalPendingTransaction, type: :model do
 
       let(:canonical_pending_transaction) {
         create(:canonical_pending_transaction,
-               raw_pending_stripe_transaction: raw_pending_stripe_transaction)
+               raw_pending_stripe_transaction:)
       }
 
       it "returns it" do
@@ -44,7 +44,7 @@ RSpec.describe CanonicalPendingTransaction, type: :model do
     let(:canonical_pending_transaction) { create(:canonical_pending_transaction) }
 
     before do
-      CanonicalPendingEventMapping.create!(event: event, canonical_pending_transaction: canonical_pending_transaction)
+      CanonicalPendingEventMapping.create!(event:, canonical_pending_transaction:)
     end
 
     it "returns event" do
@@ -55,7 +55,7 @@ RSpec.describe CanonicalPendingTransaction, type: :model do
 
   describe "#stripe_card" do
     let!(:raw_pending_stripe_transaction) { create(:raw_pending_stripe_transaction) }
-    let!(:canonical_pending_transaction) { create(:canonical_pending_transaction, raw_pending_stripe_transaction: raw_pending_stripe_transaction) }
+    let!(:canonical_pending_transaction) { create(:canonical_pending_transaction, raw_pending_stripe_transaction:) }
     let!(:stripe_card) { create(:stripe_card, :with_stripe_id, stripe_id: raw_pending_stripe_transaction.stripe_transaction["card"]["id"]) }
 
     it "returns stripe card" do

@@ -34,10 +34,10 @@ class PlaidService
 
   def client
     Plaid::Client.new(
-      env: env,
-      client_id: client_id,
+      env:,
+      client_id:,
       secret: secret_key,
-      public_key: public_key
+      public_key:
     )
   end
 

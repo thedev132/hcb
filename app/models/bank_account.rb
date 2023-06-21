@@ -59,7 +59,7 @@ class BankAccount < ApplicationRecord
         )
         overwriting_t.update_attributes!(
           bank_account: self,
-          plaid_id: plaid_id,
+          plaid_id:,
           plaid_category_id: original_t.plaid_category_id,
           pending_transaction_id: original_t.pending_transaction_id,
         )

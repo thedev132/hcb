@@ -25,7 +25,7 @@ module HcbCodeHelper
   end
 
   def can_dispute?(hcb_code:)
-    can_dispute, error_reason = ::HcbCodeService::CanDispute.new(hcb_code: hcb_code).run
+    can_dispute, error_reason = ::HcbCodeService::CanDispute.new(hcb_code:).run
 
     can_dispute
   end

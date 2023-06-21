@@ -13,10 +13,10 @@ RSpec.describe ApiService::V2::PartneredSignupsNew, type: :model do
 
   let(:service) do
     ApiService::V2::PartneredSignupsNew.new(
-      partner_id: partner_id,
-      organization_identifier: organization_identifier,
-      redirect_url: redirect_url,
-      webhook_url: webhook_url
+      partner_id:,
+      organization_identifier:,
+      redirect_url:,
+      webhook_url:
     )
   end
 

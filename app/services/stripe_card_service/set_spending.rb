@@ -6,8 +6,8 @@ module StripeCardService
       @card_id = card_id
       @card = StripeCard.find_by(stripe_id: card_id)
       @spending_limit = {
-        amount: amount,
-        interval: interval,
+        amount:,
+        interval:,
       }
     end
 

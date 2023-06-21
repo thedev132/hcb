@@ -10,14 +10,14 @@ module ApplicationHelper
     num = BigDecimal(amount || 0) / 100
     if trunc
       if num >= 1_000_000
-        number_to_currency(num / 1_000_000, precision: 1, unit: unit) + "m"
+        number_to_currency(num / 1_000_000, precision: 1, unit:) + "m"
       elsif num >= 1_000
-        number_to_currency(num / 1_000, precision: 1, unit: unit) + "k"
+        number_to_currency(num / 1_000, precision: 1, unit:) + "k"
       else
-        number_to_currency(num, unit: unit)
+        number_to_currency(num, unit:)
       end
     else
-      number_to_currency(num, unit: unit)
+      number_to_currency(num, unit:)
     end
   end
 
@@ -32,7 +32,7 @@ module ApplicationHelper
 
   def render_percentage(decimal, params = {})
     precision = params[:precision] || 2
-    number_to_percentage(decimal * 100, precision: precision)
+    number_to_percentage(decimal * 100, precision:)
   end
 
   def render_address(obj)

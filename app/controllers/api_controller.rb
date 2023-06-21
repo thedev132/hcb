@@ -62,8 +62,8 @@ class ApiController < ApplicationController
     d = Disbursement.new(
       event: target_event,
       source_event: Event.find(source_event_slug),
-      amount: amount,
-      name: name
+      amount:,
+      name:
     )
 
     if !d.save
@@ -72,10 +72,10 @@ class ApiController < ApplicationController
     end
 
     render json: {
-      source_event_slug: source_event_slug,
-      destination_event_slug: destination_event_slug,
+      source_event_slug:,
+      destination_event_slug:,
       amount: amount.to_f / 100,
-      name: name
+      name:
     }, status: 201
   end
 
@@ -98,7 +98,7 @@ class ApiController < ApplicationController
       result[:email] = params[:email]
     end
 
-    render json: result, status: status
+    render json: result, status:
   rescue ArgumentError, ActiveRecord::RecordInvalid => e
     render json: { error: e }, status: 422
   end

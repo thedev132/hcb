@@ -122,7 +122,7 @@ class PartneredSignup < ApplicationRecord
   scope :with_envelope, -> { where.not(docusign_envelope_id: nil) }
 
   def continue_url
-    Rails.application.routes.url_helpers.edit_partnered_signups_url(public_id: public_id)
+    Rails.application.routes.url_helpers.edit_partnered_signups_url(public_id:)
   end
 
   def state_text

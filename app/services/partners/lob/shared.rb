@@ -14,7 +14,7 @@ module Partners
       end
 
       def client
-        @client ||= ::Lob::Client.new(api_key: api_key, api_version: api_version)
+        @client ||= ::Lob::Client.new(api_key:, api_version:)
       end
 
       def bank_account

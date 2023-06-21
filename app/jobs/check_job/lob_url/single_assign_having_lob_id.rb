@@ -4,7 +4,7 @@ module CheckJob
   module LobUrl
     class SingleAssignHavingLobId < ApplicationJob
       def perform(check:)
-        CheckService::LobUrl::SingleAssignHavingLobId.new(check: check).run
+        CheckService::LobUrl::SingleAssignHavingLobId.new(check:).run
       end
 
     end

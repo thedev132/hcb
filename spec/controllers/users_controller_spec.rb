@@ -13,7 +13,7 @@ describe UsersController do
           email: "test@example.com"
         }
 
-        post :login_code, params: params
+        post :login_code, params:
       end
     end
 
@@ -29,7 +29,7 @@ describe UsersController do
           email: user.email
         }
 
-        post :login_code, params: params
+        post :login_code, params:
       end
     end
   end

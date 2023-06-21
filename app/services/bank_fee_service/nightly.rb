@@ -19,7 +19,7 @@ module BankFeeService
         next unless cpt
         next unless cpt.settled?
 
-        raise ArgumentError, "anomaly detected when attempting to mark settled bank fee #{bank_fee.id}" if anomaly_detected?(bank_fee: bank_fee)
+        raise ArgumentError, "anomaly detected when attempting to mark settled bank fee #{bank_fee.id}" if anomaly_detected?(bank_fee:)
 
         begin
           bank_fee.mark_settled!

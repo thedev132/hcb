@@ -19,13 +19,13 @@ RSpec.describe GSuiteAccountService::Create, type: :model do
 
   let(:service) do
     GSuiteAccountService::Create.new(
-      g_suite: g_suite,
-      current_user: current_user,
+      g_suite:,
+      current_user:,
 
-      backup_email: backup_email,
-      address: address,
-      first_name: first_name,
-      last_name: last_name
+      backup_email:,
+      address:,
+      first_name:,
+      last_name:
     )
   end
 

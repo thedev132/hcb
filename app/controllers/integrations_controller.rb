@@ -59,7 +59,7 @@ class IntegrationsController < ApplicationController
       slug = bearer_token.split("|")[1]
       return render_invalid_authorization unless api_key && slug
 
-      @event = Event.find_by slug: slug
+      @event = Event.find_by(slug:)
       return render_invalid_authorization if @event.nil?
 
       ActiveSupport::SecurityUtils.secure_compare(api_key, token)

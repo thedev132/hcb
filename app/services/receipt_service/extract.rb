@@ -15,9 +15,9 @@ module ReceiptService
       end
 
       {
-        amount_cents: amount_cents,
-        card_last_four: card_last_four,
-        date: date,
+        amount_cents:,
+        card_last_four:,
+        date:,
         textual_content: @textual_content
       }
     end
@@ -39,10 +39,10 @@ module ReceiptService
         after_fragment = index == matches.length - 1 ? text[(position + match.to_s.length)..] : text[(position + match.to_s.length)..(positions[index + 1] - 1)]
 
         {
-          before_fragment: before_fragment,
-          match: match,
-          position: position,
-          after_fragment: after_fragment
+          before_fragment:,
+          match:,
+          position:,
+          after_fragment:
         }
       end
     end

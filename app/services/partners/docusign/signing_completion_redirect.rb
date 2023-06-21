@@ -16,10 +16,10 @@ module Partners
         partnered_signup_id = partnered_signup.id.to_s
         hmac = compute_hmac(partnered_signup_id, timestamp, role)
         Rails.application.routes.url_helpers.docusign_signing_complete_redirect_url(
-          timestamp: timestamp,
-          partnered_signup_id: partnered_signup_id,
-          hmac: hmac,
-          role: role
+          timestamp:,
+          partnered_signup_id:,
+          hmac:,
+          role:
         )
       end
 

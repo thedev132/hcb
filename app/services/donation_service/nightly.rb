@@ -10,7 +10,7 @@ module DonationService
         next unless cpt.settled?
         next unless donation.fee_reimbursed?
 
-        raise ArgumentError, "anomaly detected when attempting to mark deposited donation #{donation.id}" if anomaly_detected?(donation: donation)
+        raise ArgumentError, "anomaly detected when attempting to mark deposited donation #{donation.id}" if anomaly_detected?(donation:)
 
         begin
           donation.mark_deposited!

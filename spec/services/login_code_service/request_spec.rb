@@ -15,8 +15,8 @@ describe LoginCodeService::Request do
       response = nil
       expect do
         response = described_class.new(email: new_email,
-                                       ip_address: ip_address,
-                                       user_agent: user_agent).run
+                                       ip_address:,
+                                       user_agent:).run
       end.to change { User.count }.by(1)
 
       user = User.find_by(email: new_email)
@@ -41,8 +41,8 @@ describe LoginCodeService::Request do
       response = nil
       expect do
         response = described_class.new(email: user.email,
-                                       ip_address: ip_address,
-                                       user_agent: user_agent).run
+                                       ip_address:,
+                                       user_agent:).run
       end.to change { User.count }.by(0)
 
       expect(user.login_codes.count).to eq(1)
@@ -67,8 +67,8 @@ describe LoginCodeService::Request do
         response = nil
         expect do
           response = described_class.new(email: invalid_email,
-                                         ip_address: ip_address,
-                                         user_agent: user_agent).run
+                                         ip_address:,
+                                         user_agent:).run
         end.to change { User.count }.by(0)
 
         expect(LoginCode.count).to eq(0)

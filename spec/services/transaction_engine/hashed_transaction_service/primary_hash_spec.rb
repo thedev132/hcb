@@ -10,10 +10,10 @@ RSpec.describe TransactionEngine::HashedTransactionService::PrimaryHash do
 
   let(:service) do
     TransactionEngine::HashedTransactionService::PrimaryHash.new(
-      unique_bank_identifier: unique_bank_identifier,
-      date: date,
-      amount_cents: amount_cents,
-      memo: memo
+      unique_bank_identifier:,
+      date:,
+      amount_cents:,
+      memo:
     )
   end
 
