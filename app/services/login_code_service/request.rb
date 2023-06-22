@@ -3,14 +3,14 @@
 module LoginCodeService
   class Request
     def initialize(email:, ip_address:, user_agent:, sms: false)
-      @email = email
+      @email = email.downcase
       @sms = sms
       @ip_address = ip_address
       @user_agent = user_agent
     end
 
     def run
-      user = User.find_or_initialize_by(email: @email.downcase)
+      user = User.find_or_initialize_by(email: @email)
 
       if @sms
         send_login_code_by_sms(user)

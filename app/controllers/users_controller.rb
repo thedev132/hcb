@@ -59,7 +59,7 @@ class UsersController < ApplicationController
   # post to request login code
   def login_code
     @return_to = params[:return_to]
-    @email = params[:email]&.downcase
+    @email = params.require(:email)&.downcase
     @force_use_email = params[:force_use_email]
 
     initialize_sms_params
@@ -73,6 +73,10 @@ class UsersController < ApplicationController
     @user_id = resp[:id]
 
     @webauthn_available = User.find_by(email: @email)&.webauthn_credentials&.any?
+
+  rescue ActionController::ParameterMissing
+    flash[:error] = "Please enter an email address."
+    redirect_to auth_users_path
   end
 
   def webauthn_options
