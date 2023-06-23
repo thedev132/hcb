@@ -86,7 +86,7 @@ class Receipt < ApplicationRecord
   rescue => e
     # "ArgumentError: string contains null byte" is a known error
     unless e.is_a?(ArgumentError) && e.message.include?("string contains null byte")
-      Airbrake.notify("Failed to extract Receipt text contents", e)
+      Airbrake.notify(e, receipt_id: id)
     end
 
     # Since text extraction can be a resource intensive operation, saving an
