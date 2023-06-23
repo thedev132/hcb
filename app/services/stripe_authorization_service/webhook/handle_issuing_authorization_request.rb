@@ -38,15 +38,29 @@ module StripeAuthorizationService
       end
 
       def decline_with_reason!(reason)
-        StripeService::Issuing::Authorization.update(auth_id, { metadata: { declined_reason: reason } })
-        return false
+        set_metadata!(declined_reason: reason)
+
+        false
       end
 
       def approve?
-        return decline_with_reason!("inadequate_balance")   if card.balance_available < amount_cents
+        return decline_with_reason!("inadequate_balance") if card.balance_available < amount_cents
         return decline_with_reason!("merchant_not_allowed") if card.card_grant&.allowed_merchants.present? && card.card_grant.allowed_merchants.exclude?(auth[:merchant_data][:network_id]) # Handle merchant locks for restricted grants
 
+        set_metadata!
+
         true
+      end
+
+      def set_metadata!(additional = {})
+        default_metadata = {
+          current_balance_available: card.balance_available.to_i, # TODO: make sure Event#balance_available_v2_cents always returns an integer
+        }
+
+        StripeService::Issuing::Authorization.update(
+          auth_id,
+          { metadata: default_metadata.deep_merge(additional) }
+        )
       end
 
     end
