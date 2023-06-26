@@ -70,7 +70,7 @@ class Disbursement < ApplicationRecord
 
   validates :amount, numericality: { greater_than: 0 }
   validate :events_are_different
-  validate :events_are_not_demos
+  validate :events_are_not_demos, on: :create
 
   scope :processing, -> { in_transit }
   scope :fulfilled, -> { deposited }
@@ -100,7 +100,7 @@ class Disbursement < ApplicationRecord
     }
   }.freeze
 
-  aasm timestamps: true do
+  aasm timestamps: true, whiny_persistence: true do
     state :reviewing, initial: true # Being reviewed by an admin
     state :pending                  # Waiting to be processed by the TX engine
     state :in_transit               # Transfer started on SVB

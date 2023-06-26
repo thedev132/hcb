@@ -46,7 +46,7 @@ class IncreaseCheck < ApplicationRecord
     create_canonical_pending_transaction!(event:, amount_cents: -amount, memo: "OUTGOING CHECK", date: created_at)
   end
 
-  aasm timestamps: true do
+  aasm timestamps: true, whiny_persistence: true do
     state :pending, initial: true
     state :approved
     state :rejected

@@ -63,7 +63,7 @@ class AchTransfer < ApplicationRecord
   scope :approved, -> { where.not(approved_at: nil) }
   scope :scheduled_for_today, -> { scheduled.where(scheduled_on: ..Date.today) }
 
-  aasm do
+  aasm whiny_persistence: true do
     state :pending, initial: true
     state :scheduled
     state :in_transit
