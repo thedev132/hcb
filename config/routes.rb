@@ -173,6 +173,13 @@ Rails.application.routes.draw do
       get "sponsors", to: "admin#sponsors"
       get "google_workspaces", to: "admin#google_workspaces"
       get "balances", to: "admin#balances"
+      get "grants", to: "admin#grants"
+
+      resources :grants, only: [] do
+        post "approve"
+        post "additional_info_needed"
+        post "reject"
+      end
     end
 
     member do
@@ -197,6 +204,7 @@ Rails.application.routes.draw do
       post "google_workspace_update", to: "admin#google_workspace_update"
       get "invoice_process", to: "admin#invoice_process"
       post "invoice_mark_paid", to: "admin#invoice_mark_paid"
+      get "grant_process", to: "admin#grant_process"
 
       post "partnered_signups_accept", to: "admin#partnered_signups_accept"
       post "partnered_signups_reject", to: "admin#partnered_signups_reject"
@@ -476,6 +484,12 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :grants, only: [:show], path: "grants_v2" do
+    member do
+      post "activate"
+    end
+  end
+
   match "/404", to: "errors#not_found", via: :all
   match "/500", to: "errors#internal_server_error", via: :all
 
@@ -537,7 +551,9 @@ Rails.application.routes.draw do
 
     resources :check_deposits, only: [:index, :create], path: "check-deposits"
 
-    resources :card_grants, only: [:new, :create], path: "grants"
+    resources :card_grants, only: [:new, :create], path: "card-grants"
+
+    resources :grants, only: [:index, :new, :create]
 
     member do
       post "disable_feature"

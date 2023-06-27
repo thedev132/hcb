@@ -19,3 +19,8 @@ import './controllers'
 
 import { Turbo } from '@hotwired/turbo-rails'
 window.Turbo = Turbo
+
+import Alpine from "alpinejs"
+window.Alpine = Alpine
+
+Alpine.start()

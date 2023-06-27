@@ -388,6 +388,8 @@ summary {
   }
 }
 
+[x-cloak] { display: none !important; }
+
 @import 'basscss';
 @import 'space';
 @import 'utilities';

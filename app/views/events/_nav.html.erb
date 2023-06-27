@@ -72,6 +72,11 @@
         tooltip: "Send & transfer money",
         icon: "transactions",
         selected: local_assigns[:selected] == :transfers %>
+      <%= dock_item "Grants",
+        event_grants_path(@event),
+        tooltip: "Send & manage grants",
+        icon: "idea",
+        selected: local_assigns[:selected] == :grants if Flipper.enabled?(:grants_2023_06_21, @event) %>
       <hr>
       <%= dock_item "Perks",
         event_promotions_path(event_id: @event.slug),

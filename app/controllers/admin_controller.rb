@@ -1072,6 +1072,20 @@ class AdminController < ApplicationController
     end
   end
 
+  def grants
+    @page = params[:page] || 1
+    @per = params[:per] || 20
+    @grants = Grant.includes(:event, :recipient).page(@page).per(@per).order(created_at: :desc)
+
+    render layout: "admin"
+  end
+
+  def grant_process
+    @grant = Grant.find(params[:id])
+
+    render layout: "admin"
+  end
+
   private
 
   def stream_data(content_type, filename, data, download = true)

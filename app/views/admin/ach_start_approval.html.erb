@@ -3,15 +3,17 @@
 
 <hr>
 
-<p>
-  Submitted by:
-  <%= "ADMIN" if @ach_transfer.creator.admin? %> <%= @ach_transfer.creator.name %>
-  (<%= link_to @ach_transfer.creator.phone_number, "tel:#{@ach_transfer.creator.phone_number}" %>, <%= mail_to @ach_transfer.creator.email %>) of <%= link_to @ach_transfer.event.name, @ach_transfer.event %>
-</p>
+<% if @ach_transfer.creator %>
+  <p>
+    Submitted by:
+    <%= "ADMIN" if @ach_transfer.creator.admin? %> <%= @ach_transfer.creator.name %>
+    (<%= link_to @ach_transfer.creator.phone_number, "tel:#{@ach_transfer.creator.phone_number}" %>, <%= mail_to @ach_transfer.creator.email %>) of <%= link_to @ach_transfer.event.name, @ach_transfer.event %>
+  </p>
 
-<p>
-  <%= avatar_for @ach_transfer.creator %>
-</p>
+  <p>
+    <%= avatar_for @ach_transfer.creator %>
+  </p>
+<% end %>
 
 <h3>Actions</h3>
 

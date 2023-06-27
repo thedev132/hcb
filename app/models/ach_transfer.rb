@@ -50,7 +50,7 @@ class AchTransfer < ApplicationRecord
   include PgSearch::Model
   pg_search_scope :search_recipient, against: [:recipient_name], using: { tsearch: { prefix: true, dictionary: "english" } }, ranked_by: "ach_transfers.created_at"
 
-  belongs_to :creator, class_name: "User"
+  belongs_to :creator, class_name: "User", optional: true
   belongs_to :processor, class_name: "User", optional: true
   belongs_to :event
 
@@ -59,6 +59,7 @@ class AchTransfer < ApplicationRecord
   validate :scheduled_on_must_be_in_the_future, on: :create
 
   has_one :t_transaction, class_name: "Transaction", inverse_of: :ach_transfer
+  has_one :grant, required: false
 
   scope :approved, -> { where.not(approved_at: nil) }
   scope :scheduled_for_today, -> { scheduled.where(scheduled_on: ..Date.today) }
@@ -108,7 +109,7 @@ class AchTransfer < ApplicationRecord
     return unless may_mark_in_transit?
 
     increase_ach_transfer = Increase::AchTransfers.create(
-      account_id: IncreaseService::AccountIds::FS_MAIN,
+      account_id: event.increase_account_id,
       account_number:,
       routing_number:,
       amount:,

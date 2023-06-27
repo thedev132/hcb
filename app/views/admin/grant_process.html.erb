@@ -1,0 +1,63 @@
+<%= link_to "< back", grants_admin_index_path %>
+
+<h1>Process Grant #<%= @grant.id %></h1>
+<p class="admin-bg-transit"><small>Current Status: <%= @grant.state_text %></small></p>
+
+<hr>
+
+<h3>Grant Details</h3>
+
+<table class="table--autosize">
+  <tbody>
+    <tr>
+      <td style="text-align: right;">Requested at:</td>
+      <td><%= format_datetime @grant.created_at %></td>
+    </tr>
+    <tr>
+      <td style="text-align: right;">Sent By:</td>
+      <td><%= user_mention @grant.submitted_by %> of <%= link_to @grant.event.name, @grant.event %></td>
+    </tr>
+    <tr>
+      <td style="text-align: right;">Sent To:</td>
+      <td><%= @grant.recipient_name %> (<%= mail_to @grant.recipient.email %>) of <strong><%= @grant.recipient_organization %></strong></td>
+    </tr>
+    <tr>
+      <td style="text-align: right;">Amount:</td>
+      <td><%= @grant.amount.format %></td>
+    </tr>
+    <tr>
+      <td style="text-align: right;">Grant period:</td>
+      <td><%= @grant.created_at.strftime("%B %-d, %Y") %> - <%= @grant.ends_at.strftime("%B %-d, %Y") %> (<%= distance_of_time_in_words @grant.created_at, @grant.ends_at %>)</td>
+    </tr>
+    <tr>
+      <td style="text-align: right;">Reason:</td>
+      <td><%= @grant.reason %></td>
+    </tr>
+  </tbody>
+</table>
+
+<% if @grant.may_mark_approved? %>
+  <hr>
+
+  <%= button_to "Approve and send grant", grant_approve_path(@grant) %>
+  <br>
+  <small>The sender and recipient will both be notified, and the recipient will be asked to choose how to accept their grant.</small>
+  <br>
+  <small>You will still be able to reject this grant up until the point the recipient accepts.</small>
+<% end %>
+
+<% if @grant.may_mark_additional_info_needed? %>
+  <hr>
+
+  <%= button_to 'Mark "additional info needed"', grant_additional_info_needed_path(@grant), class: "admin-bg-orange" %>
+  <br>
+  <small>Use this to indicate that this grant <em>might</em> be approved in the future, but the sender needs to do something first.</small>
+<% end %>
+
+<% if @grant.may_mark_rejected? %>
+  <hr>
+
+  <%= button_to "Reject grant submission", grant_reject_path(@grant), class: "admin-bg-red" %>
+  <br>
+  <small>This will completely and permanently mark the grant as "rejected" in the sender's dashboard.</small>
+<% end %>

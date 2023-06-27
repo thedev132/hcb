@@ -1,0 +1,66 @@
+<h1 class="regular center">You've got a grant from <strong><%= @grant.event.name %></strong>.</h1>
+
+<%= form_with model: @grant, url: activate_grant_path(@grant), method: :post do |form| %>
+  <ul class="steps" x-data="{'receipt_method': null}">
+    <li>
+      <div class="field field--options mx-auto fit">
+        <%= form.radio_button :receipt_method, "new_organization", required: true, "@input" => "receipt_method = 'new_organization'" %>
+        <%= form.label :receipt_method, class: "pointer", value: "new_organization" do %>
+          <span class="badge m0 bg-info mb1">
+            <%= inline_icon "rep", size: 24, style: "margin: -2px 0px -3px -2px" %>
+            Recommended
+          </span>
+          <strong>Start a new <span class="nowrap">501(c)(3)</span> with us</strong>
+          <small>2-3 minutes</small>
+        <% end %>
+
+        <%= form.radio_button :receipt_method, "ach_transfer", required: true, "@input" => "receipt_method = 'ach_transfer'" %>
+        <%= form.label :receipt_method, class: "pointer justify-center", value: "ach_transfer" do %>
+          <%= inline_icon "briefcase", size: 28 %>
+          <strong>Deposit into an existing <span class="nowrap">501(c)(3)</span> organization</strong>
+          <small>2-3 days</small>
+        <% end %>
+      </div>
+    </li>
+    <li x-bind:style="!receipt_method ? 'opacity: 0.5' : ''" style="opacity: 0.5">
+      <h3>Organization details</h3>
+
+      <div x-show="receipt_method == 'new_organization'" x-cloak>
+        <%= form.fields_for :event do |event_form| %>
+          <div class="field">
+            <%= event_form.label :name, "Organization name" %>
+            <%= event_form.text_field :name, value: @grant.recipient_organization, "x-bind:required": "receipt_method == 'new_organization'" %>
+          </div>
+        <% end %>
+      </div>
+
+      <div x-show="receipt_method == 'ach_transfer'" x-cloak>
+        <%= form.fields_for :ach_transfer do |ach_transfer_form| %>
+          <div class="field">
+            <%= ach_transfer_form.label :recipient_name, "Organization name" %>
+            <%= ach_transfer_form.text_field :recipient_name, value: @grant.recipient_organization, "x-bind:required": "receipt_method == 'ach_transfer'" %>
+          </div>
+
+          <div class="field">
+            <%= ach_transfer_form.label :routing_number, "Bank routing number" %>
+            <%= ach_transfer_form.text_field :routing_number, placeholder: "123456789", "x-bind:required": "receipt_method == 'ach_transfer'", class: "fs-mask" %>
+          </div>
+
+          <div class="field">
+            <%= ach_transfer_form.label :account_number, "Bank account number" %>
+            <%= ach_transfer_form.text_field :account_number, placeholder: "0913338883", "x-bind:required": "receipt_method == 'ach_transfer'", class: "fs-mask" %>
+          </div>
+        <% end %>
+
+        <span class="muted">After verifying your 501(c)(3) status, we'll deposit the grant into this bank account.</span>
+      </div>
+    </li>
+    <li x-bind:style="!receipt_method ? 'opacity: 0.5' : ''" style="opacity: 0.5">
+      <h3>Sign the contract</h3>
+      <p x-cloak x-show="!!receipt_method">TODO actually sign contract</p>
+    </li>
+    <li x-bind:style="!receipt_method ? 'opacity: 0.5' : ''" style="opacity: 0.5">
+      <button class="btn">Submit</button>
+    </li>
+  </ul>
+<% end %>

@@ -16,6 +16,10 @@ module AchTransferService
 
       ach_transfer.update(processor: @processor)
 
+      if ach_transfer.grant.present?
+        ach_transfer.grant.mark_fulfilled!
+      end
+
       ach_transfer
     end
 

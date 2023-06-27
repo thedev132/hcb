@@ -34,6 +34,8 @@ module EventService
         @emails.each do |email|
           OrganizerPositionInviteService::Create.new(event:, sender: point_of_contact, user_email: email, initial: true, is_signee: @is_signee).run!
         end
+
+        event
       end
     end
 

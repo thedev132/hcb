@@ -33,6 +33,8 @@ module AchTransferService
           PendingEventMappingEngine::Map::Single::OutgoingAch.new(canonical_pending_transaction: pt).run
         end
       end
+
+      ach_transfer
     end
 
     private

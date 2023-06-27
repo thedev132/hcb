@@ -313,6 +313,8 @@ class Event < ApplicationRecord
   has_one :stripe_ach_payment_source
   has_one :increase_account_number
 
+  has_many :grants
+
   has_one_attached :donation_header_image
   has_one_attached :logo
 
@@ -361,6 +363,7 @@ class Event < ApplicationRecord
     'hardware grant': 6, # winter event 2022
     'hack club hq': 7,
     'outernet guild': 8, # summer event 2023
+    'grant recipient': 9,
   }
 
   def country_us?

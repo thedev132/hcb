@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_20_180029) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_27_024937) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_stat_statements"
@@ -288,8 +288,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_20_180029) do
     t.bigint "ach_payment_id"
     t.bigint "increase_check_id"
     t.bigint "check_deposit_id"
+    t.bigint "grant_id"
     t.index ["ach_payment_id"], name: "index_canonical_pending_transactions_on_ach_payment_id"
     t.index ["check_deposit_id"], name: "index_canonical_pending_transactions_on_check_deposit_id"
+    t.index ["grant_id"], name: "index_canonical_pending_transactions_on_grant_id"
     t.index ["hcb_code"], name: "index_canonical_pending_transactions_on_hcb_code"
     t.index ["increase_check_id"], name: "index_canonical_pending_transactions_on_increase_check_id"
     t.index ["raw_pending_bank_fee_transaction_id"], name: "index_canonical_pending_txs_on_raw_pending_bank_fee_tx_id"
@@ -750,6 +752,32 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_20_180029) do
     t.text "remote_org_unit_path"
     t.index ["created_by_id"], name: "index_g_suites_on_created_by_id"
     t.index ["event_id"], name: "index_g_suites_on_event_id"
+  end
+
+  create_table "grants", force: :cascade do |t|
+    t.integer "amount_cents"
+    t.bigint "event_id", null: false
+    t.string "aasm_state"
+    t.text "reason"
+    t.bigint "processed_by_id"
+    t.bigint "submitted_by_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "recipient_id", null: false
+    t.string "recipient_name"
+    t.integer "receipt_method"
+    t.bigint "disbursement_id"
+    t.bigint "ach_transfer_id"
+    t.bigint "increase_check_id"
+    t.string "recipient_organization"
+    t.datetime "ends_at"
+    t.index ["ach_transfer_id"], name: "index_grants_on_ach_transfer_id"
+    t.index ["disbursement_id"], name: "index_grants_on_disbursement_id"
+    t.index ["event_id"], name: "index_grants_on_event_id"
+    t.index ["increase_check_id"], name: "index_grants_on_increase_check_id"
+    t.index ["processed_by_id"], name: "index_grants_on_processed_by_id"
+    t.index ["recipient_id"], name: "index_grants_on_recipient_id"
+    t.index ["submitted_by_id"], name: "index_grants_on_submitted_by_id"
   end
 
   create_table "hashed_transactions", force: :cascade do |t|
@@ -1671,6 +1699,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_20_180029) do
   add_foreign_key "g_suite_accounts", "users", column: "creator_id"
   add_foreign_key "g_suites", "events"
   add_foreign_key "g_suites", "users", column: "created_by_id"
+  add_foreign_key "grants", "events"
+  add_foreign_key "grants", "users", column: "processed_by_id"
+  add_foreign_key "grants", "users", column: "submitted_by_id"
   add_foreign_key "hashed_transactions", "raw_plaid_transactions"
   add_foreign_key "increase_account_numbers", "events"
   add_foreign_key "increase_checks", "events"

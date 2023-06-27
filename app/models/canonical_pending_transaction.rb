@@ -16,6 +16,7 @@
 #  updated_at                                       :datetime         not null
 #  ach_payment_id                                   :bigint
 #  check_deposit_id                                 :bigint
+#  grant_id                                         :bigint
 #  increase_check_id                                :bigint
 #  raw_pending_bank_fee_transaction_id              :bigint
 #  raw_pending_donation_transaction_id              :bigint
@@ -31,6 +32,7 @@
 #
 #  index_canonical_pending_transactions_on_ach_payment_id           (ach_payment_id)
 #  index_canonical_pending_transactions_on_check_deposit_id         (check_deposit_id)
+#  index_canonical_pending_transactions_on_grant_id                 (grant_id)
 #  index_canonical_pending_transactions_on_hcb_code                 (hcb_code)
 #  index_canonical_pending_transactions_on_increase_check_id        (increase_check_id)
 #  index_canonical_pending_txs_on_raw_pending_bank_fee_tx_id        (raw_pending_bank_fee_transaction_id)
@@ -66,6 +68,8 @@ class CanonicalPendingTransaction < ApplicationRecord
   belongs_to :ach_payment, optional: true
   belongs_to :increase_check, optional: true
   belongs_to :check_deposit, optional: true
+  belongs_to :grant, optional: true
+
   has_one :canonical_pending_event_mapping
   has_one :event, through: :canonical_pending_event_mapping
   has_one :subledger, through: :canonical_pending_event_mapping

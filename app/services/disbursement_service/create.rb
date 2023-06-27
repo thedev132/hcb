@@ -36,7 +36,7 @@ module DisbursementService
       ::PendingEventMappingEngine::Map::Single::IncomingDisbursement.new(canonical_pending_transaction: i_cpt).run
       ::PendingEventMappingEngine::Map::Single::OutgoingDisbursement.new(canonical_pending_transaction: o_cpt).run
 
-      if requested_by.admin? || disbursement.source_event == disbursement.destination_event # Auto-fulfill disbursements between subledgers in the same event
+      if requested_by&.admin? || disbursement.source_event == disbursement.destination_event # Auto-fulfill disbursements between subledgers in the same event
         disbursement.mark_approved!(requested_by)
       end
 
@@ -57,7 +57,7 @@ module DisbursementService
     end
 
     def requested_by
-      @requested_by ||= User.find @requested_by_id
+      @requested_by ||= User.find @requested_by_id if @requested_by_id
     end
 
     def amount_cents
