@@ -9,7 +9,7 @@
   <p>
     We know you’re eager to share about your nonprofit status through Hack Club Bank. 🤗 Following brand guidelines will not only help you display an accurate relationship with Hack Club but will also help create a unified appearance amongst all fiscally sponsored projects and legitimize your status.
   </p>
-  <%= render partial: 'callout', locals: { type: 'info', emoji: 'ℹ️', title: 'Jump to the fiscal sponsorship section to see how you can accurately represent your 501(c)(3) status.', link: '#fiscal-sponsorship' } %>
+  <%= render partial: "callout", locals: { type: "info", emoji: "ℹ️", title: "Jump to the fiscal sponsorship section to see how you can accurately represent your 501(c)(3) status.", link: "#fiscal-sponsorship" } %>
 </div>
 
 <div class="our-name">
@@ -27,9 +27,9 @@
     <li>The acronym “HCB”</li>
     <li>“Bank,” making sure the first letter is capitalized</li>
   </ul>
-  <%= render partial: 'callout', locals: { type: 'info', emoji: 'ℹ️', title: 'We recommend including the full name at least once before HCB or Bank to make the most sense grammatically.' } %>
-  <%= render partial: 'callout', locals: { type: 'warning', emoji: '⚠️', title: "As a reminder, Hack Club Bank is not an actual bank! We are a fiscal sponsorship platform backed on Increase, First Republic Bank, and Bank of America. When you sign the fiscal sponsorship agreement, a “restricted fund” – a privatized section of these bank accounts for your team only – is created for your organization through our platform." } %>
-  <%= render partial: 'callout', locals: { type: 'info', emoji: 'ℹ️', title: "When using Hack Club Bank in legal settings, use Hack Club Bank, a project by The Hack Foundation (d.b.a. Hack Club) OR The Hack Foundation (d.b.a. Hack Club). Make sure not to abbreviate or shorten the name in this context." } %>
+  <%= render partial: "callout", locals: { type: "info", emoji: "ℹ️", title: "We recommend including the full name at least once before HCB or Bank to make the most sense grammatically." } %>
+  <%= render partial: "callout", locals: { type: "warning", emoji: "⚠️", title: "As a reminder, Hack Club Bank is not an actual bank! We are a fiscal sponsorship platform backed on Increase, First Republic Bank, and Bank of America. When you sign the fiscal sponsorship agreement, a “restricted fund” – a privatized section of these bank accounts for your team only – is created for your organization through our platform." } %>
+  <%= render partial: "callout", locals: { type: "info", emoji: "ℹ️", title: "When using Hack Club Bank in legal settings, use Hack Club Bank, a project by The Hack Foundation (d.b.a. Hack Club) OR The Hack Foundation (d.b.a. Hack Club). Make sure not to abbreviate or shorten the name in this context." } %>
 </div>
 
 <div class="fiscal-sponsorship" id="fiscal-sponsorship">
@@ -43,8 +43,8 @@
   <p>
     If you’d like to modify the above statement, make sure it clearly shares that you're fiscally sponsored by HCB. If you have questions or would like to run your phrasing by us, feel free to <%= link_to "contact the Bank team", "mailto:bank@hackclub.com" %>.
   </p>
-  <%= render partial: 'callout', locals: { type: 'warning', emoji: '⚠️', title: "Fiscal sponsor ≠ sponsor or donor. Unless you have received direct financial support from us, please do NOT use this reference as your organization's relationship to HCB." } %>
-  <%= render partial: 'callout', locals: { type: 'warning', emoji: '⚠️', title: "Misrepresenting your relationship with HCB or Hack Club could result in the termination of your fiscal sponsorship agreement." } %>
+  <%= render partial: "callout", locals: { type: "warning", emoji: "⚠️", title: "Fiscal sponsor ≠ sponsor or donor. Unless you have received direct financial support from us, please do NOT use this reference as your organization's relationship to HCB." } %>
+  <%= render partial: "callout", locals: { type: "warning", emoji: "⚠️", title: "Misrepresenting your relationship with HCB or Hack Club could result in the termination of your fiscal sponsorship agreement." } %>
 </div>
 
 <div class="our-logos">
@@ -91,7 +91,7 @@
       </div>
     <% end %>
   </div>
-  <%= render partial: 'callout', locals: { type: 'info', emoji: 'ℹ️', title: "By downloading or using any icon/badge or the Hack Club Bank brand, you agree to abide by the general usage rules.", link: '#general-usage-rules' } %>
+  <%= render partial: "callout", locals: { type: "info", emoji: "ℹ️", title: "By downloading or using any icon/badge or the Hack Club Bank brand, you agree to abide by the general usage rules.", link: "#general-usage-rules" } %>
 </div>
 
 <div class="general-usage-rules" id="general-usage-rules">
@@ -123,5 +123,5 @@
       </ul>
     </div>
   </div>
-  <%= render partial: 'callout', locals: { type: 'info', emoji: 'ℹ️', title: "For more info regarding authorized uses of the HCB brand or to request permission to use the brand for purposes other than those described above, please contact the Bank team.", link: "mailto:bank@hackclub.com" } %>
+  <%= render partial: "callout", locals: { type: "info", emoji: "ℹ️", title: "For more info regarding authorized uses of the HCB brand or to request permission to use the brand for purposes other than those described above, please contact the Bank team.", link: "mailto:bank@hackclub.com" } %>
 </div>
