@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # installs all the dependencies for using Hack Club Bank with Docker
-# reach out to kunal botla (kunal@hackclub.com) if you have any questions or issues.
+# reach out to Max Wofford (max@hackclub.com) if you have any questions or issues
 
 echo "
 $(tput setaf 9)Hack Club Bank:$(tput sgr0) Step 0/7: Checking for config/master.key"
@@ -46,25 +46,25 @@ echo "$(tput setaf 9)Hack Club Bank:$(tput sgr0) $(tput setaf 10)Done$(tput sgr0
 
 echo "
 $(tput setaf 9)Hack Club Bank:$(tput sgr0) Step 5/7: Copy .env file"
-cp -n .env.docker.example .env.docker
+cp -n .env.development.example .env.development
 echo "$(tput setaf 9)Hack Club Bank:$(tput sgr0) $(tput setaf 10)Done$(tput sgr0)"
 
 echo "
 $(tput setaf 9)Hack Club Bank:$(tput sgr0) Step 6/7: Build Docker Container"
-env $(cat .env.docker) docker-compose build
+env $(cat .env.docker) docker compose build
 echo "$(tput setaf 9)Hack Club Bank:$(tput sgr0) $(tput setaf 10)Done$(tput sgr0)"
 
 echo "
 $(tput setaf 9)Hack Club Bank:$(tput sgr0) Step 7/7: Docker Database Setup"
-env $(cat .env.docker) docker-compose run --service-ports web bundle exec rails db:test:prepare RAILS_ENV=test
-env $(cat .env.docker) docker-compose run --service-ports web bundle exec rails db:prepare
-env $(cat .env.docker) docker-compose run --service-ports web pg_restore --verbose --clean --no-acl --no-owner -h db -U postgres -d bank_development latest.dump
+env $(cat .env.docker) docker compose run --service-ports web bundle exec rails db:test:prepare RAILS_ENV=test
+env $(cat .env.docker) docker compose run --service-ports web bundle exec rails db:prepare
+env $(cat .env.docker) docker compose run --service-ports web pg_restore --verbose --clean --no-acl --no-owner -h db -U postgres -d bank_development latest.dump
 echo "$(tput setaf 9)Hack Club Bank:$(tput sgr0) $(tput setaf 10)Done$(tput sgr0)"
 
 if [[ $* == *--with-solargraph* ]]
 then
   echo "$(tput setaf 9)Hack Club Bank:$(tput sgr0) Step 8/7: Solargraph"
-  env $(cat .env.docker) docker-compose -f docker-compose.yml -f docker-compose.solargraph.yml build
+  env $(cat .env.docker) docker compose -f docker-compose.yml -f docker-compose.solargraph.yml build
   echo "$(tput setaf 9)Hack Club Bank:$(tput sgr0) $(tput setaf 10)Done$(tput sgr0)"
 fi
 
@@ -76,7 +76,7 @@ echo "
 
 Thank you for developing Hack Club Bank!
 
-Questions or issues with this script? Contact Kunal Botla (kunal@hackclub.com)"
+Questions or issues with this script? Contact Max Wofford (max@hackclub.com)"
 
 echo "
      @BANK@@@BANK@
@@ -92,5 +92,5 @@ K      L   U   B      H
     HACK FOUNDATION
 
 Hack Club Bank, A Hack Club Project
-2023 The Hack Foundation
+© The Hack Foundation
 "

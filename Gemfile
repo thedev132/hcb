@@ -5,6 +5,8 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby File.read(File.join(File.dirname(__FILE__), ".ruby-version")).strip
 
+gem "dotenv-rails", groups: [:development, :test]
+
 gem "rails", "~> 7.0.4"
 
 gem "puma", "~> 4.3" # app server

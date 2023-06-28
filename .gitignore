@@ -27,8 +27,7 @@
 # Ignore master key for decrypting credentials and more.
 /config/master.key
 .env*
-!.env.example
-!.env.docker.example
+!.env*example
 
 latest.dump*
 

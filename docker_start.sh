@@ -24,7 +24,7 @@ K      L   U   B      H
     HACK FOUNDATION
 
 Hack Club Bank, A Hack Club Project
-2023 The Hack Foundation
+© The Hack Foundation
 "
 
 # echo -e "
@@ -41,9 +41,9 @@ fi
 
 if [[ $* == *--with-solargraph* ]]
 then
-  env $(cat .env.docker) docker-compose -f docker-compose.yml -f docker-compose.solargraph.yml up -d solargraph
+  docker compose -f docker-compose.yml -f docker-compose.solargraph.yml up -d solargraph
 else
   echo "To enable Solargraph, run docker_start.sh with the --with-solargraph flag."
 fi
 
-env $(cat .env.docker) docker-compose run --service-ports web "${@/--with-solargraph/''}"
+docker compose run --service-ports web "${@/--with-solargraph/''}"
