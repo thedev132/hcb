@@ -4,8 +4,8 @@ require "net/http"
 
 class StaticPagesController < ApplicationController
   skip_after_action :verify_authorized # do not force pundit
-  skip_before_action :signed_in_user, only: [:branding, :faq]
-  skip_before_action :redirect_to_onboarding, only: [:branding, :faq]
+  skip_before_action :signed_in_user, only: [:branding, :brand_guidelines, :faq]
+  skip_before_action :redirect_to_onboarding, only: [:branding, :brand_guidelines, :faq]
 
   def index
     if signed_in?

@@ -91,7 +91,7 @@
       </div>
     <% end %>
   </div>
-  <%= render partial: 'callout', locals: { type: 'info', emoji: 'ℹ️', title: "By downloading or using any icon/badge or the Hack Club Bank brand, you agreeing to the general usage rules.", link: '#general-usage-rules' } %>
+  <%= render partial: 'callout', locals: { type: 'info', emoji: 'ℹ️', title: "By downloading or using any icon/badge or the Hack Club Bank brand, you agree to abide by the general usage rules.", link: '#general-usage-rules' } %>
 </div>
 
 <div class="general-usage-rules" id="general-usage-rules">
@@ -100,26 +100,26 @@
     <div class="card w-100 pb2 callout--success">
       <h2>✅ Do</h2>
       <ul>
-        <li>Use the HCB logo (icon/badge) to link to Hack Club Bank's page (hackclub.com/bank).</li>
-        <li>Use the HCB logo (icon/badge) to link to your project/organization's HCB page (bank.hackclub.com/<%= @event_slug %>), provided that your project/organization has transparency mode enabled.</li>
-        <li>Use the HCB logo (badge only) to show that your project/organization is fiscally sponsored by HCB.</li>
-        <li>Use the HCB logo (icon/badge) in blog posts, news articles, or social media posts about Hack Club or HCB.</li>
-        <li>Use the HCB name in correspondence/websites/marketing materials/etc. to state that your event or organization is fiscally sponsored, or, for donation and payment purposes, is a financial platform related to your fiscal sponsorship status (e.g. "donate to us using Hack Club Bank").</li>
-        <li>Capitalize the first letter of each word in Hack Club Bank.</li>
+        <li id="bglist">Use the HCB logo (icon/badge) to link to Hack Club Bank's page (hackclub.com/bank).</li>
+        <li id="bglist">Use the HCB logo (icon/badge) to link to your project/organization's HCB page (bank.hackclub.com/<%= @event_slug %>), provided that your project/organization has transparency mode enabled.</li>
+        <li id="bglist">Use the HCB logo (badge only) to show that your project/organization is fiscally sponsored by HCB.</li>
+        <li id="bglist">Use the HCB logo (icon/badge) in blog posts, news articles, or social media posts about Hack Club or HCB.</li>
+        <li id="bglist">Use the HCB name in correspondence/websites/marketing materials/etc. to state that your event or organization is fiscally sponsored, or, for donation and payment purposes, is a financial platform related to your fiscal sponsorship status (e.g. "donate to us using Hack Club Bank").</li>
+        <li id="bglist">Capitalize the first letter of each word in Hack Club Bank.</li>
       </ul>
     </div>
     <div class="card w-100 pb2 callout--error">
       <h2>🚫 Don't</h2>
       <ul>
-        <li>Use the HCB or Hack Club logo/name in any way that implies endorsement of your organization beyond fiscal sponsorship, unless such usage has been approved by HCB.</li>
-        <li>Use the HCB logo (icon/badge) as your event or organization's logo.</li>
-        <li>Integrate the HCB logo (icon/badge) into your event or organization's logo.</li>
-        <li>Sell any HCB artwork without permission from Hack Club.</li>
-        <li>Modify the original aspect ratio of the HCB logo (icon/badge) in any way, aside from resizing while maintaining the same aspect ratio.</li>
-        <li>Modify the name other than what is specified in these guidelines (e.g. HackClubBank should not be used)</li>
-        <li>Crowd the area around the HCB logo (icon/badge). The margins around all sides of the logo should be at least 1/2 the height of the logo (e.g. 32px tall icon should have 16px of margins on all sides)</li>
-        <li>Display the HCB logo (icon only) smaller than 24px in height/width, OR; (PNG icon only) larger than 512px in height/width.</li>
-        <li>Display the HCB logo (badge only) smaller than 144px wide and 36px tall or the point where the text becomes illegible, whichever is larger, OR; (PNG badge only) larger than 768px wide and 192px tall.</li>
+        <li id="bglist">Use the HCB or Hack Club logo/name in any way that implies endorsement of your organization beyond fiscal sponsorship, unless such usage has been approved by HCB.</li>
+        <li id="bglist">Use the HCB logo (icon/badge) as your event or organization's logo.</li>
+        <li id="bglist">Integrate the HCB logo (icon/badge) into your event or organization's logo.</li>
+        <li id="bglist">Sell any HCB artwork without permission from Hack Club.</li>
+        <li id="bglist">Modify the original aspect ratio of the HCB logo (icon/badge) in any way, aside from resizing while maintaining the same aspect ratio.</li>
+        <li id="bglist">Modify the name other than what is specified in these guidelines (e.g. HackClubBank should not be used)</li>
+        <li id="bglist">Crowd the area around the HCB logo (icon/badge). The margins around all sides of the logo should be at least 1/2 the height of the logo (e.g. 32px tall icon should have 16px of margins on all sides)</li>
+        <li id="bglist">Display the HCB logo (icon only) smaller than 24px in height/width, OR; (PNG icon only) larger than 512px in height/width.</li>
+        <li id="bglist">Display the HCB logo (badge only) smaller than 144px wide and 36px tall or the point where the text becomes illegible, whichever is larger, OR; (PNG badge only) larger than 768px wide and 192px tall.</li>
       </ul>
     </div>
   </div>
