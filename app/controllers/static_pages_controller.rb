@@ -22,20 +22,6 @@ class StaticPagesController < ApplicationController
     end
   end
 
-  def branding
-    @logos = [
-      { name: "Original Light", criteria: "For white or light colored backgrounds.", background: "smoke" },
-      { name: "Original Dark", criteria: "For black or dark colored backgrounds.", background: "black" },
-      { name: "Outlined Black", criteria: "For white or light colored backgrounds.", background: "snow" },
-      { name: "Outlined White", criteria: "For black or dark colored backgrounds.", background: "black" }
-    ]
-    @icons = [
-      { name: "Icon Original", criteria: "The original Hack Club Bank logo.", background: "smoke" },
-      { name: "Icon Dark", criteria: "Hack Club Bank logo in dark mode.", background: "black" }
-    ]
-    @event_name = signed_in? && current_user.events.first ? current_user.events.first.name : "Hack Pennsylvania"
-  end
-
   def brand_guidelines
     @logos = [
       { name: "Original Light", criteria: "For white or light colored backgrounds.", background: "smoke" },
@@ -47,9 +33,8 @@ class StaticPagesController < ApplicationController
       { name: "Icon Original", criteria: "The original Hack Club Bank logo.", background: "smoke" },
       { name: "Icon Dark", criteria: "Hack Club Bank logo in dark mode.", background: "black" }
     ]
-    @event_name = signed_in? && current_user.events.first ? current_user.events.first.name : "Hack Pennsylvania"
+    @event_name = signed_in? && current_user.events.first&.name || "Hack Pennsylvania"
     @event_slug = signed_in? && current_user.events.first&.slug || "hack-pennsylvania"
-    flash[:success] = @event_slug
   end
 
   def faq
