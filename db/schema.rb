@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -13,6 +15,7 @@
 ActiveRecord::Schema[7.0].define(version: 2023_06_27_024937) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
+  enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
 
   create_table "ach_payments", force: :cascade do |t|
@@ -276,11 +279,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_27_024937) do
     t.bigint "raw_pending_invoice_transaction_id"
     t.text "hcb_code"
     t.bigint "raw_pending_bank_fee_transaction_id"
+    t.bigint "raw_pending_partner_donation_transaction_id"
     t.text "custom_memo"
     t.bigint "raw_pending_incoming_disbursement_transaction_id"
     t.bigint "raw_pending_outgoing_disbursement_transaction_id"
     t.boolean "fronted", default: false
-    t.bigint "raw_pending_partner_donation_transaction_id"
     t.boolean "fee_waived", default: false
     t.bigint "ach_payment_id"
     t.bigint "increase_check_id"
@@ -340,6 +343,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_27_024937) do
   end
 
   create_table "check_deposits", force: :cascade do |t|
+    t.string "aasm_state"
     t.bigint "event_id", null: false
     t.integer "amount_cents"
     t.datetime "created_at", null: false
