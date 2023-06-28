@@ -29,11 +29,12 @@
 
   <div class="field">
     <%= form.label :ends_at, "Grant period" %>
-    <%= form.select :ends_at, [
-                                ["3 months (until #{3.months.from_now.strftime("%B %-d, %Y")})", 3.months.from_now],
-                                ["6 months (until #{6.months.from_now.strftime("%B %-d, %Y")})", 6.months.from_now],
-                                ["1 year (until #{1.year.from_now.strftime("%B %-d, %Y")})", 1.year.from_now],
-                              ] %>
+    <%= form.select :ends_at,
+      [
+        ["3 months (until #{3.months.from_now.strftime("%B %-d, %Y")})", 3.months.from_now],
+        ["6 months (until #{6.months.from_now.strftime("%B %-d, %Y")})", 6.months.from_now],
+        ["1 year (until #{1.year.from_now.strftime("%B %-d, %Y")})", 1.year.from_now],
+      ] %>
   </div>
 
   <div class="field">
