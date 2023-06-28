@@ -369,7 +369,7 @@ Rails.application.routes.draw do
     post "mark_as_unprocessed"
     resources :comments
   end
-
+  get "branding", to: redirect("brand_guidelines")
   get "brand_guidelines", to: "static_pages#brand_guidelines"
   get "faq", to: "static_pages#faq"
 
