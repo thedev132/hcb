@@ -1,0 +1,65 @@
+.overview,
+.our-name,
+.fiscal-sponsorship,
+.our-logos,
+.general-usage-rules {
+    margin-bottom: 2rem;
+}
+
+pre {
+    padding: 15px;
+    background-color: #606060;
+    border-radius: 15px;
+    overflow: auto;
+}
+  
+pre code {
+    border: 0;
+    padding: 0;
+    color: #707070;
+    word-break: normal;
+}
+
+.callout {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px solid;
+    margin: 4px 3ch 4px 3ch;
+
+    .emoji {
+        font-size: 1.5rem;
+        margin-right: 1rem;
+    }
+
+    &.info {
+        background-color: #eef4ff00;
+        text-decoration-color: #1966d7;
+        color: #1966d7;
+        border-color: #1966d7;
+    }
+
+    &.warning {
+        background-color: #fff5e900;
+        text-decoration-color: #d73a49;
+        color: #d73a49;
+        border-color: #d73a49;
+    }
+
+    .callout-title {
+        font-weight: 600;
+    }
+
+    .tab-contents {
+        display: flex;
+        justify-content: space-around;
+
+        .tab-content {
+            width: 45%; // Adjust size as needed
+            padding: 1rem;
+
+            // ...remaining styles...
+        }
+    }
+}

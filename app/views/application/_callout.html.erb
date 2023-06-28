@@ -1,0 +1,12 @@
+<div class="callout <%= type %>">
+  <span class="emoji"><%= emoji %></span>
+  <% if defined?(link) %>
+    <%= link_to link do %>
+      <%= title %>
+    <% end %>
+  <% else %>
+    <%= title %>
+  <% end %>
+
+  
+</div>
