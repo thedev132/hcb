@@ -364,7 +364,7 @@ class Event < ApplicationRecord
     'hack club hq': 7,
     'outernet guild': 8, # summer event 2023
     'grant recipient': 9,
-    'salary': 10, # e.g. Sam's Shillings
+    salary: 10, # e.g. Sam's Shillings
   }
 
   def country_us?
@@ -621,10 +621,6 @@ class Event < ApplicationRecord
 
   def ready_for_fee?
     last_fee_processed_at.nil? || last_fee_processed_at <= min_waiting_time_between_fees
-  end
-
-  def salary_org?
-    @category == "salary"
   end
 
   def total_fees_v2_cents
