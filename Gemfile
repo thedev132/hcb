@@ -74,6 +74,8 @@ gem "rounding"
 
 gem "business_time"
 
+
+gem "poppler" # PDF parsing
 gem "wicked_pdf" # HTML to PDF conversion
 
 
@@ -142,9 +144,6 @@ gem "bootsnap", ">= 1.4.4", require: false # reduces boot times through caching;
 
 
 gem "mrsk" # deployments
-
-gem "poppler" # Extracting text from PDFs
-gem "appsignal" # monitoring
 
 group :production do
   gem "skylight"
