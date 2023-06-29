@@ -69,6 +69,10 @@ class EmburseTransaction < ApplicationRecord
 
   validates_uniqueness_of_without_deleted :emburse_id
 
+  def receipt_required?
+    false # Emburse isn't used anymore
+  end
+
   def awaiting_receipt?
     !amount.zero? && approved && missing_receipt?
   end
