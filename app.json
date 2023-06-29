@@ -59,13 +59,7 @@
       "url": "https://github.com/maxwofford/heroku-buildpack-sourceversion"
     },
     {
-      "url": "https://github.com/HiMamaInc/heroku-buildpack-imagemagick-heif"
-    },
-    {
       "url": "https://github.com/nickrivadeneira/heroku-buildpack-apt#gobject-introspection-support"
-    },
-    {
-      "url": "https://github.com/hackclub/heroku-buildpack-poppler"
     },
     {
       "url": "https://github.com/dscout/wkhtmltopdf-buildpack.git"
@@ -80,5 +74,5 @@
       "url": "heroku/metrics"
     }
   ],
-  "stack": "heroku-20"
+  "stack": "heroku-22"
 }
