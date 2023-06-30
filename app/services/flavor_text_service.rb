@@ -122,6 +122,8 @@ class FlavorTextService
   def flavor_texts
     [
       "The hivemind known as Bank",
+      "How often does time happen?",
+      "To an extent",
       "A cloud full of money",
       "Hack Club's pot of gold",
       "A sentient stack of dollars",
