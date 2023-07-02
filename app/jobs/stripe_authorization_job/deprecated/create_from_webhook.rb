@@ -6,7 +6,7 @@ module StripeAuthorizationJob
       def perform(stripe_transaction_id)
         # DEPRECATED: create stripe auth on v1 engine
         #
-        ::StripeAuthorization.create!(stripe_id: stripe_transaction_id)
+        ::StripeAuthorization.find_or_create_by!(stripe_id: stripe_transaction_id)
       end
 
     end
