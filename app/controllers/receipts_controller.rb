@@ -11,12 +11,16 @@ class ReceiptsController < ApplicationController
     @receiptable = @receipt.receiptable
     authorize @receipt
 
+    if params[:popover]&.starts_with?("HcbCode:")
+      flash[:popover] = params[:popover].gsub("HcbCode:", "")
+    end
+
     if @receipt.delete
       flash[:success] = "Deleted receipt"
-      redirect_to @receiptable || my_inbox_path
+      redirect_back fallback_location: @receiptable || my_inbox_path
     else
       flash[:error] = "Failed to delete receipt"
-      redirect_to @receiptable
+      redirect_back fallback_location: @receiptable || my_inbox_path
     end
   end
 
@@ -38,6 +42,10 @@ class ReceiptsController < ApplicationController
       flash[:success] = "Receipt added!"
     end
 
+    if params[:popover]&.starts_with?("HcbCode:")
+      flash[:popover] = params[:popover].gsub("HcbCode:", "")
+    end
+
     if params[:redirect_url]
       redirect_to params[:redirect_url]
     else
@@ -51,6 +59,10 @@ class ReceiptsController < ApplicationController
     @receipts = Receipt.where(user: current_user, receiptable: nil).order(created_at: :desc)
     @show_link = params[:show_link]
     @suggested_receipt_ids = []
+
+    if params[:popover].present?
+      @popover = params[:popover]
+    end
 
     if @receiptable.instance_of?(HcbCode)
       pairings_sql = <<~SQL
@@ -106,6 +118,10 @@ class ReceiptsController < ApplicationController
     elsif @receiptable.is_a?(HcbCode) && @receiptable.stripe_card&.card_grant.present?
       redirect_to @receiptable.stripe_card.card_grant
     else
+      if params[:popover]&.starts_with?("HcbCode:")
+        flash[:popover] = params[:popover].gsub("HcbCode:", "")
+      end
+
       redirect_back fallback_location: URI.parse(@receiptable&.try(:url) || url_for(@receiptable) || my_inbox_path)
     end
   end

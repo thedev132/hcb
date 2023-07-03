@@ -172,7 +172,7 @@
     <td><%= number_to_currency ct.running_balance %></td>
   <% end %>
   <td>
-    <%= link_to "Details", ct.local_hcb_code.url, data: Flipper.enabled?(:hcb_code_popovers_2023_06_16, current_user) ? { turbo_frame: "_top", behavior: "modal_trigger", modal: "transaction_details_#{instance}" } : { turbo_frame: "_top" } if organizer_signed_in? || defined?(force_display_details) %>
+    <%= link_to "Details", ct.local_hcb_code.url, data: Flipper.enabled?(:hcb_code_popovers_2023_06_16, current_user) ? { turbo_frame: "_top", behavior: "modal_trigger", modal: "transaction_details_#{instance}", "modal-auto-open": defined?(@popover) ? @popover == ct.local_hcb_code.hashid : nil } : { turbo_frame: "_top" } if organizer_signed_in? || defined?(force_display_details) %>
   </td>
   <% if defined?(receipt_upload_button) %>
     <td style="width: 1%">

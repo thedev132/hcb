@@ -123,6 +123,11 @@ class StaticPagesController < ApplicationController
         pairing
       end.compact
     end
+
+    if flash[:popover]
+      @popover = flash[:popover]
+      flash.delete(:popover)
+    end
   end
 
   def receipt

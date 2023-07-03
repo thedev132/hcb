@@ -1,18 +1,26 @@
 const whenViewed = (element, callback) => new IntersectionObserver(([entry]) => entry.isIntersecting && callback(), { threshold: 1 }).observe(element);
-const loadModals = element => $(element).on('click', '[data-behavior~=modal_trigger]', function (e) {
-  const controlOrCommandClick = e.ctrlKey || e.metaKey;
-  if ($(this).attr('href') || $(e.target).attr('href')) {
-    if (controlOrCommandClick) return;
-    e.preventDefault()
-  }
-  BK.s('modal', '#' + $(this).data('modal')).modal({
-    modalClass: $(this).parents('turbo-frame').length
-      ? 'turbo-frame-modal'
-      : undefined,
-    closeExisting: false
+const loadModals = element => {
+   $(element).on('click', '[data-behavior~=modal_trigger]', function (e) {
+    const controlOrCommandClick = e.ctrlKey || e.metaKey;
+    if ($(this).attr('href') || $(e.target).attr('href')) {
+      if (controlOrCommandClick) return;
+      e.preventDefault()
+      e.stopPropagation()
+    }
+    BK.s('modal', '#' + $(this).data('modal')).modal({
+      modalClass: $(this).parents('turbo-frame').length
+        ? 'turbo-frame-modal'
+        : undefined,
+      closeExisting: false
+    })
+    return this.blur()
   })
-  return this.blur()
-})
+
+  $(element).on('click', '[data-behavior~=modal_trigger] [data-behavior~=modal_ignore]', function(e) {
+    e.stopPropagation();
+    e.preventDefault()
+  });
+}
 
 // restore previous theme setting
 $(document).ready(function () {
@@ -30,6 +38,20 @@ $(document).on('click', '[data-behavior~=flash]', function () {
 })
 
 loadModals(document);
+(() => {
+  let autoModals = $('[data-modal-auto-open~=true]')
+
+  if (autoModals.length < 1) return;
+
+  let element = autoModals.first();
+
+  BK.s('modal', '#' + $(element).data('modal')).modal({
+    modalClass: $(element).parents('turbo-frame').length
+      ? 'turbo-frame-modal'
+      : undefined,
+    closeExisting: false
+  })
+})();
 
 $(document).on('keyup', 'action', function (e) {
   if (e.keyCode === 13) {

@@ -2,7 +2,7 @@
 
 <% instance = local_assigns.__id__.to_s + receipt.id.to_s %>
 
-<div class="receipt flex flex-column mb1 <%= "receipt--pairing" if defined?(pairing) && pairing %>" <% if defined?(textual_content) %> data-textual-content="<%= j receipt.textual_content %>"<% end %> data-receipt-id="<%= receipt.id %>" style="--receipt-size: <%= defined?(size) ? size : 256 %>px;<% if defined?(selectable) %> cursor: pointer;" data-receipt-select-target="receipt" data-action="click->receipt-select#select<% end %>" data-behavior="<%= "modal_trigger" unless defined?(selectable) || receipt.preview.nil? %>" data-modal="<%= "preview_receipt_#{instance}" unless defined?(selectable) || receipt.preview.nil? %>">
+<div class="receipt flex flex-column mb1 <%= "receipt--pairing" if defined?(pairing) && pairing %>" <% if defined?(textual_content) %> data-textual-content="<%= j receipt.textual_content %>"<% end %> data-receipt-id="<%= receipt.id %>" style="--receipt-size: <%= defined?(size) ? size : 256 %>px;<% if defined?(selectable) %> cursor: pointer;" data-receipt-select-target="receipt" data-action="click->receipt-select#select<% end %>">
 
 <% unless defined?(hide_info) %>
   <span class="<%= "muted " unless defined?(selectable) %>mb1">
@@ -38,7 +38,9 @@
     <% if receipt.preview %>
       <span style="display: inline-grid; border-radius: 0.5rem;" class="pointer">
         <%= image_tag receipt.preview, class: "card p0 receipt--image", data: {
-              "receipt-id" => receipt.id
+              "receipt-id" => receipt.id,
+              "behavior"   => defined?(selectable) || receipt.preview.nil? ? nil : "modal_trigger",
+              "modal"      => defined?(selectable) || receipt.preview.nil? ? nil : "preview_receipt_#{instance}"
             } if receipt.preview %>
       </span>
     <% end %>
@@ -52,8 +54,9 @@
 
       <% if defined?(show_delete_button) %>
         <%= pop_icon_to "view-close",
-            { controller: :receipts, action: :destroy, id: receipt.id },
+            { controller: :receipts, action: :destroy, id: receipt.id, popover: local_assigns[:popover] },
             method: :delete,
+            data: { behavior: "modal_ignore" },
             size: 24,
             class: "error tooltipped tooltipped--w",
             'aria-label': "Delete this receipt" %>

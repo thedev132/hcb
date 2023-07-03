@@ -119,6 +119,11 @@ class EventsController < ApplicationController
       @transactions = Kaminari.paginate_array(@transactions).page(params[:page]).per(params[:per] || 75)
       @mock_total = @transactions.reduce(0) { |sum, obj| sum + obj.amount * 100 }.to_i
     end
+
+    if flash[:popover]
+      @popover = flash[:popover]
+      flash.delete(:popover)
+    end
   end
 
   # GET /event_by_airtable_id/recABC

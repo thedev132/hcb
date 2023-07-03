@@ -88,34 +88,137 @@
       <span><em>This transaction is still pending, the amount may be more or less than shown here.</em></span>
       </p>
       <% end %>
-      <p>
-        <strong>Merchant</strong>
+      <div>
+        <span style="height: 100%;">
+          <strong>Merchant</strong>
+        </span>
         <% if organizer_signed_in? %>
+          <% if defined?(@frame) && @frame %>
+            <details>
+              <summary class="inline-flex no-select">
+                <%= country_to_emoji @hcb_code.stripe_merchant["country"] %>
+                <%= @hcb_code.stripe_merchant["name"] %>
+                <%= inline_icon "down-caret", size: 24, class: "muted flip-when-open", 'aria-label': "Icon indicating click for more" %>
+              </summary>
+
+              <div class="details mb2 mt2">
+                <p>
+                  <strong>Name</strong>
+                  <span>
+                    <%= @hcb_code.stripe_merchant["name"].humanize.capitalize %>
+                  </span>
+                </p>
+                <p>
+                  <strong>Category</strong>
+                  <span>
+                    <%= @hcb_code.stripe_merchant["category"].humanize.capitalize %>
+                  </span>
+                </p>
+                <p>
+                  <strong>Currency</strong>
+                  <span>
+                  <%= @hcb_code.stripe_merchant_currency.upcase %>
+                  </span>
+                </p>
+                <% if is_city_or_phone?(@hcb_code.stripe_merchant["city"]) == :phone %>
+                  <p>
+                    <strong>Phone</strong>
+                    <span><%= @hcb_code.stripe_merchant["city"] %></span>
+                  </p>
+                <% elsif is_city_or_phone?(@hcb_code.stripe_merchant["city"]) == :city %>
+                  <p>
+                    <strong>City</strong>
+                    <span><%= @hcb_code.stripe_merchant["city"].humanize %></span>
+                  </p>
+                <% end %>
+                <p>
+                  <strong>Zip</strong>
+                  <span><%= (@hcb_code.stripe_merchant["postal_code"] or "Unknown") %></span>
+                </p>
+                <p>
+                  <strong>State</strong>
+                  <span><%= (@hcb_code.stripe_merchant["state"]&.upcase or "Unknown") %></span>
+                </p>
+                <p>
+                  <strong>Country</strong>
+                  <span><%= country_to_emoji @hcb_code.stripe_merchant["country"] %></span>
+                </p>
+              </div>
+              <p class="my0 muted">
+                Details are provided by the merchant and not guaranteed to be correct.
+              </p>
+            </details>
+          <% else %>
             <action data-behavior="modal_trigger" data-modal="merchant_details_<%= instance %>" class="pointer" tabindex="0">
               <span class="inline-flex">
                 <%= country_to_emoji @hcb_code.stripe_merchant["country"] %>
                 <%= @hcb_code.stripe_merchant["name"] %>
-              <%= inline_icon "external", size: 24, class: "muted", 'aria-label': "Icon indicating click for more" %>
+                <%= inline_icon "external", size: 24, class: "muted", 'aria-label': "Icon indicating click for more" %>
               </span>
             </action>
+          <% end %>
         <% else %>
           <span><strong>Sign in to view</strong></span>
         <% end %>
-      </p>
+      </div>
       <% if @hcb_code.pt.present? %>
-        <p>
-          <strong>Charge method</strong>
+        <div>
+          <span style="height: 100%;">
+            <strong>Charge method</strong>
+          </span>
           <% if organizer_signed_in? %>
+            <% if defined?(@frame) && @frame %>
+              <details>
+                <summary class="inline-flex no-select">
+                  <%= @hcb_code.pt.raw_pending_stripe_transaction.stripe_transaction["authorization_method"].humanize %>
+                  <%= inline_icon "down-caret", size: 24, class: "muted flip-when-open", 'aria-label': "Icon indicating click for more" %>
+                </summary>
+                <% @verification_data = @hcb_code.pt.raw_pending_stripe_transaction.stripe_transaction["verification_data"] %>
+
+                <article class="details-horiz mt2 mb1">
+
+                  <div class="mt1 md-mt0" style="width: 100%;">
+                    <p class="details__simulated">
+                      <%= stripe_verification_check_badge "address_line1" %>
+                      <span>Address check</span>
+                    </p>
+                    <p class="details__simulated">
+                      <%= stripe_verification_check_badge "address_postal_code" %>
+                      <span>Zip check</span>
+                    </p>
+                  </div>
+
+                  <div class="mt1 md-mt0" style="width: 100%;">
+                    <p class="details__simulated">
+                      <%= stripe_verification_check_badge "expiry" %>
+                      <span>Expiry check</span>
+                    </p>
+                    <p class="details__simulated">
+                      <%= stripe_verification_check_badge "cvc" %>
+                      <span>CVC check</span>
+                    </p>
+                  </div>
+                </article>
+
+                <% if @hcb_code.pt.raw_pending_stripe_transaction.stripe_transaction["authorization_method"] == "contactless" && !@hcb_code.pt.raw_pending_stripe_transaction.stripe_transaction["wallet"].nil? %>
+                  <p class="details__simulated">
+                    <strong>Wallet</strong>
+                    <span class="pl1"><%= @hcb_code.pt.raw_pending_stripe_transaction.stripe_transaction["wallet"].titleize %></span>
+                  </p>
+                <% end %>
+              </details>
+            <% else %>
               <action data-behavior="modal_trigger" data-modal="verification_details_<%= instance %>" class="pointer" tabindex="0">
                 <span>
                 <%= @hcb_code.pt.raw_pending_stripe_transaction.stripe_transaction["authorization_method"].humanize %>
                 <%= inline_icon "external", size: 24, class: "muted", 'aria-label': "Icon indicating click for more" %>
                 </span>
               </action>
+            <% end %>
           <% else %>
             <span><strong>Sign in to view</strong></span>
           <% end %>
-        </p>
+        </div>
       <% end %>
       <%= render "hcb_codes/tags", hcb_code: @hcb_code, event: (@event || @hcb_code.event) %>
     </section>
@@ -149,112 +252,114 @@
   <%= render partial: "hcb_codes/dispute", locals: { type: "card", hcb_code: @hcb_code } %>
 </div>
 
-<% if organizer_signed_in? %>
-<section class="modal modal--scroll bg-snow" data-behavior="modal" role="dialog" id="merchant_details_<%= instance %>">
-  <%= modal_header "Merchant details" %>
+<% unless defined?(@frame) && @frame %>
+  <% if organizer_signed_in? %>
+    <section class="modal modal--scroll bg-snow" data-behavior="modal" role="dialog" id="merchant_details_<%= instance %>">
+      <%= modal_header "Merchant details" %>
 
-  <div class="details mb2">
-    <p>
-      <strong>Name</strong>
-      <span>
-        <%= @hcb_code.stripe_merchant["name"].humanize.capitalize %>
-      </span>
-    </p>
-    <p>
-      <strong>Category</strong>
-      <span>
-        <%= @hcb_code.stripe_merchant["category"].humanize.capitalize %>
-      </span>
-    </p>
-    <p>
-      <strong>Currency</strong>
-      <span>
-      <%= @hcb_code.stripe_merchant_currency.upcase %>
-      </span>
-    </p>
-    <% if is_city_or_phone?(@hcb_code.stripe_merchant["city"]) == :phone %>
-      <p>
-        <strong>Phone</strong>
-        <span><%= @hcb_code.stripe_merchant["city"] %></span>
-      </p>
-    <% elsif is_city_or_phone?(@hcb_code.stripe_merchant["city"]) == :city %>
-      <p>
-        <strong>City</strong>
-        <span><%= @hcb_code.stripe_merchant["city"].humanize %></span>
-      </p>
-    <% end %>
-    <p>
-      <strong>Zip</strong>
-      <span><%= (@hcb_code.stripe_merchant["postal_code"] or "Unknown") %></span>
-    </p>
-    <p>
-      <strong>State</strong>
-      <span><%= (@hcb_code.stripe_merchant["state"]&.upcase or "Unknown") %></span>
-    </p>
-    <p>
-      <strong>Country</strong>
-      <span><%= country_to_emoji @hcb_code.stripe_merchant["country"] %></span>
-    </p>
-  </div>
-  <article class="card__banner secondary border-top" style="margin: -2em; margin-top: 0;">
-    <p class="my0 muted">
-      Details are provided by the merchant and not guaranteed to be correct.
-    </p>
-  </article>
-</section>
-<% end %>
-
-<% if organizer_signed_in? && @hcb_code.pt.present? %>
-<section class="modal modal--scroll bg-snow" data-behavior="modal" role="dialog" id="verification_details_<%= instance %>">
-  <%= modal_header "Charge details" %>
-  <% @verification_data = @hcb_code.pt.raw_pending_stripe_transaction.stripe_transaction["verification_data"] %>
-
-  <article class="details-horiz">
-    <div class="mt1 md-mt0" style="width: 100%;">
-      <p class="details__simulated">
-        <strong>Type</strong>
-        <span class="pl1">
-        <%= @hcb_code.pt.raw_pending_stripe_transaction.stripe_transaction["authorization_method"].humanize.capitalize %>
-        </span>
-      </p>
-      <% if @hcb_code.pt.raw_pending_stripe_transaction.stripe_transaction["authorization_method"] == "contactless" && !@hcb_code.pt.raw_pending_stripe_transaction.stripe_transaction["wallet"].nil? %>
-        <p class="details__simulated">
-          <strong>Wallet</strong>
-          <span class="pl1"><%= @hcb_code.pt.raw_pending_stripe_transaction.stripe_transaction["wallet"].titleize %></span>
+      <div class="details mb2">
+        <p>
+          <strong>Name</strong>
+          <span>
+            <%= @hcb_code.stripe_merchant["name"].humanize.capitalize %>
+          </span>
         </p>
-      <% end %>
-    </div>
-
-    <div class="mt1 md-mt0" style="width: 100%;">
-      <p class="details__simulated">
-        <%= stripe_verification_check_badge "address_line1" %>
-        <span>Address check</span>
-      </p>
-      <p class="details__simulated">
-        <%= stripe_verification_check_badge "address_postal_code" %>
-        <span>Zip check</span>
-      </p>
-    </div>
-
-    <div class="mt1 md-mt0" style="width: 100%;">
-      <p class="details__simulated">
-        <%= stripe_verification_check_badge "expiry" %>
-        <span>Expiry check</span>
-      </p>
-      <p class="details__simulated">
-        <%= stripe_verification_check_badge "cvc" %>
-        <span>CVC check</span>
-      </p>
-    </div>
-  </article>
-
-  <% @raw_pending_stripe_tranasction_decorator = RawPendingStripeTransactionDecorator.new @hcb_code.pt.raw_pending_stripe_transaction %>
-  <% if @raw_pending_stripe_tranasction_decorator.currency != 'USD' %>
-    <article class="card__banner secondary border-top" style="margin: -2em; margin-top: 0;">
-      <p class="my0 muted">
-        This transaction was initially charged as <%= @raw_pending_stripe_tranasction_decorator.original_amount_international %>.
-      </p>
-    </article>
+        <p>
+          <strong>Category</strong>
+          <span>
+            <%= @hcb_code.stripe_merchant["category"].humanize.capitalize %>
+          </span>
+        </p>
+        <p>
+          <strong>Currency</strong>
+          <span>
+          <%= @hcb_code.stripe_merchant_currency.upcase %>
+          </span>
+        </p>
+        <% if is_city_or_phone?(@hcb_code.stripe_merchant["city"]) == :phone %>
+          <p>
+            <strong>Phone</strong>
+            <span><%= @hcb_code.stripe_merchant["city"] %></span>
+          </p>
+        <% elsif is_city_or_phone?(@hcb_code.stripe_merchant["city"]) == :city %>
+          <p>
+            <strong>City</strong>
+            <span><%= @hcb_code.stripe_merchant["city"].humanize %></span>
+          </p>
+        <% end %>
+        <p>
+          <strong>Zip</strong>
+          <span><%= (@hcb_code.stripe_merchant["postal_code"] or "Unknown") %></span>
+        </p>
+        <p>
+          <strong>State</strong>
+          <span><%= (@hcb_code.stripe_merchant["state"]&.upcase or "Unknown") %></span>
+        </p>
+        <p>
+          <strong>Country</strong>
+          <span><%= country_to_emoji @hcb_code.stripe_merchant["country"] %></span>
+        </p>
+      </div>
+      <article class="card__banner secondary border-top" style="margin: -2em; margin-top: 0;">
+        <p class="my0 muted">
+          Details are provided by the merchant and not guaranteed to be correct.
+        </p>
+      </article>
+    </section>
   <% end %>
-</section>
+
+  <% if organizer_signed_in? && @hcb_code.pt.present? %>
+    <section class="modal modal--scroll bg-snow" data-behavior="modal" role="dialog" id="verification_details_<%= instance %>">
+      <%= modal_header "Charge details" %>
+      <% @verification_data = @hcb_code.pt.raw_pending_stripe_transaction.stripe_transaction["verification_data"] %>
+
+      <article class="details-horiz">
+        <div class="mt1 md-mt0" style="width: 100%;">
+          <p class="details__simulated">
+            <strong>Type</strong>
+            <span class="pl1">
+            <%= @hcb_code.pt.raw_pending_stripe_transaction.stripe_transaction["authorization_method"].humanize.capitalize %>
+            </span>
+          </p>
+          <% if @hcb_code.pt.raw_pending_stripe_transaction.stripe_transaction["authorization_method"] == "contactless" && !@hcb_code.pt.raw_pending_stripe_transaction.stripe_transaction["wallet"].nil? %>
+            <p class="details__simulated">
+              <strong>Wallet</strong>
+              <span class="pl1"><%= @hcb_code.pt.raw_pending_stripe_transaction.stripe_transaction["wallet"].titleize %></span>
+            </p>
+          <% end %>
+        </div>
+
+        <div class="mt1 md-mt0" style="width: 100%;">
+          <p class="details__simulated">
+            <%= stripe_verification_check_badge "address_line1" %>
+            <span>Address check</span>
+          </p>
+          <p class="details__simulated">
+            <%= stripe_verification_check_badge "address_postal_code" %>
+            <span>Zip check</span>
+          </p>
+        </div>
+
+        <div class="mt1 md-mt0" style="width: 100%;">
+          <p class="details__simulated">
+            <%= stripe_verification_check_badge "expiry" %>
+            <span>Expiry check</span>
+          </p>
+          <p class="details__simulated">
+            <%= stripe_verification_check_badge "cvc" %>
+            <span>CVC check</span>
+          </p>
+        </div>
+      </article>
+
+      <% @raw_pending_stripe_tranasction_decorator = RawPendingStripeTransactionDecorator.new @hcb_code.pt.raw_pending_stripe_transaction %>
+      <% if @raw_pending_stripe_tranasction_decorator.currency != 'USD' %>
+        <article class="card__banner secondary border-top" style="margin: -2em; margin-top: 0;">
+          <p class="my0 muted">
+            This transaction was initially charged as <%= @raw_pending_stripe_tranasction_decorator.original_amount_international %>.
+          </p>
+        </article>
+      <% end %>
+    </section>
+  <% end %>
 <% end %>

@@ -238,3 +238,7 @@ $shades: (
 .mono {
   font-family: 'Space Mono', 'SFMono-Regular', 'Roboto Mono', Menlo, Consolas, monospace;
 }
+
+details[open] .flip-when-open {
+  transform: rotate(180deg);
+}

@@ -14,6 +14,7 @@
     <%= form.hidden_field :receiptable_id, value: @receiptable.id %>
     <%= form.hidden_field :receiptable_type, value: @receiptable.class %>
     <%= form.hidden_field :show_link, value: @show_link %>
+    <%= (form.hidden_field :popover, value: @popover) if defined?(@popover) %>
 
     <ul class="grid grid--narrow left-align w-100 grid--spacious mt0 justify-center">
       <% @receipts.each do |receipt| %>
@@ -26,7 +27,7 @@
     <%= blankslate "No receipts found.", class: "mt3 mb5", data: { "receipt-select-target": "noResults" }, style: "display: none;" %>
   <% end %>
 
-  <footer class="modal__action-row flex justify-end">
+  <footer class="modal__action-row flex justify-end <% if defined?(@popover) && @popover %>mt2" style="border-top: none;<% end %>">
     <%= link_to my_inbox_path, target: "_blank", class: "btn btn--primary mr2" do %>
       Manage receipts
     <% end %>
