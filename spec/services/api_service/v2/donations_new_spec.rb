@@ -3,7 +3,7 @@
 require "rails_helper"
 
 RSpec.describe ApiService::V2::DonationsNew, type: :model do
-  let(:event) { create(:event) }
+  let(:event) { create(:event, :partnered) }
   let(:partner) { event.partner }
 
   let(:service) {

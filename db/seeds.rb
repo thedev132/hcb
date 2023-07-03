@@ -9,18 +9,11 @@ else
 
   user.update!(admin_at: Time.now) if !user.admin?
 
-  partner = Partner.create_with(
-    id: 1,
-    name: "Bank",
-    external: false,
-  ).find_or_create_by!(slug: "bank")
-
   event = Event.create_with(
     name: "Test Org",
     slug: "test",
     can_front_balance: true,
     point_of_contact: user,
-    partner:,
     sponsorship_fee: 0.07,
     organization_identifier: "bank_#{SecureRandom.hex}",
   ).find_or_create_by!(slug: "test")

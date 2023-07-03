@@ -40,7 +40,7 @@
 
     <% admin_tools("p0 badge", "span") do %>
       <span class="m0 badge bg-muted">
-        <%= @event.partner.slug.capitalize %>
+        <%= @event&.partner&.slug&.capitalize || "Not partnered" %>
       </span>
     <% end %>
   <% end %>

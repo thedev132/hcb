@@ -303,7 +303,7 @@ class Event < ApplicationRecord
 
   has_many :check_deposits
 
-  belongs_to :partner
+  belongs_to :partner, optional: true
   has_one :partnered_signup, required: false
   has_many :partner_donations
 

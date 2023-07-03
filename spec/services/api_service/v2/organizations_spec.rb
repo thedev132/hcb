@@ -32,7 +32,7 @@ RSpec.describe ApiService::V2::FindOrganizations, type: :model do
   end
 
   context "when partner has organizations" do
-    let(:event) { create(:event) }
+    let(:event) { create(:event, :partnered) }
     let(:partner) { event.partner }
 
     it "returns an array of organizations" do

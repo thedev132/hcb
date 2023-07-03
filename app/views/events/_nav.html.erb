@@ -39,7 +39,7 @@
       <h4 class="mb0 h5 muted">Receive</h4>
       <hr>
       <%= dock_item "Donations",
-        @event.partner.external? ? event_partner_donation_overview_path(event_id: @event.slug) :
+        @event&.partner&.external? ? event_partner_donation_overview_path(event_id: @event.slug) :
         event_donation_overview_path(event_id: @event.slug),
         tooltip: "Receive donations online",
         icon: "support",

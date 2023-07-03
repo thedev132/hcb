@@ -1123,7 +1123,7 @@ class AdminController < ApplicationController
     end
     @activity_since_date = params[:activity_since]
 
-    relation = events.not_partner
+    relation = events
 
     relation = relation.search_name(@q) if @q
     relation = relation.transparent if @transparent == "transparent"

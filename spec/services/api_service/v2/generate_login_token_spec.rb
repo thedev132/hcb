@@ -4,7 +4,7 @@ require "rails_helper"
 
 RSpec.describe ApiService::V2::GenerateLoginToken, type: :model do
   let(:user) { create(:user) }
-  let(:event) { create(:event) }
+  let(:event) { create(:event, :partnered) }
   let(:partner) { event.partner }
 
   let(:partner_id) { partner.id }

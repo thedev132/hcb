@@ -628,7 +628,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_27_024937) do
     t.string "aasm_state"
     t.string "organization_identifier", null: false
     t.string "redirect_url"
-    t.bigint "partner_id", null: false
+    t.bigint "partner_id"
     t.string "owner_name"
     t.string "owner_email"
     t.string "owner_phone"
