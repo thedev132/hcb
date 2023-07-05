@@ -107,9 +107,9 @@ class StripeCardholder < ApplicationRecord
               state: address_state,
               postal_code: address_postal_code,
               country: address_country
-            }
+            }.compact_blank
           }
-        }
+        }.compact_blank
       )
     rescue Stripe::StripeError # fails without proper keys
       raise if Rails.env.production?
