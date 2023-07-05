@@ -109,7 +109,7 @@ class StripeCardholder < ApplicationRecord
               country: address_country
             }.compact_blank
           }
-        }.compact_blank
+        }.compact_blank # Stripe doesn't like blank values
       )
     rescue Stripe::StripeError # fails without proper keys
       raise if Rails.env.production?
