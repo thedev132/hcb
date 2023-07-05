@@ -73,6 +73,7 @@ class User < ApplicationRecord
   has_many :emburse_transactions, through: :emburse_cards
 
   has_one :stripe_cardholder
+  accepts_nested_attributes_for :stripe_cardholder, update_only: true
   has_many :stripe_cards, through: :stripe_cardholder
   has_many :stripe_authorizations, through: :stripe_cards
   has_many :receipts

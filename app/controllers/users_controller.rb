@@ -253,6 +253,15 @@ class UsersController < ApplicationController
     authorize @user
   end
 
+  def edit_address
+    @user = params[:id] ? User.friendly.find(params[:id]) : current_user
+    redirect_to edit_user_path(@user) unless @user.stripe_cardholder
+    @onboarding = @user.full_name.blank?
+    show_impersonated_sessions = admin_signed_in? || current_session.impersonated?
+    @sessions = show_impersonated_sessions ? @user.user_sessions : @user.user_sessions.not_impersonated
+    authorize @user
+  end
+
   def edit_featurepreviews
     @user = params[:id] ? User.friendly.find(params[:id]) : current_user
     @onboarding = @user.full_name.blank?
@@ -376,7 +385,7 @@ class UsersController < ApplicationController
   end
 
   def user_params
-    params.require(:user).permit(
+    attributes = [
       :full_name,
       :phone_number,
       :profile_picture,
@@ -386,7 +395,22 @@ class UsersController < ApplicationController
       :receipt_report_option,
       :birthday,
       :seasonal_themes_enabled
-    )
+    ]
+
+    if @user.stripe_cardholder
+      attributes << {
+        stripe_cardholder_attributes: [
+          :stripe_billing_address_line1,
+          :stripe_billing_address_line2,
+          :stripe_billing_address_city,
+          :stripe_billing_address_state,
+          :stripe_billing_address_postal_code,
+          :stripe_billing_address_country
+        ]
+      }
+    end
+
+    params.require(:user).permit(attributes)
   end
 
   def initialize_sms_params

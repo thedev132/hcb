@@ -43,6 +43,7 @@ Rails.application.routes.draw do
   scope :my do
     get "/", to: redirect("/"), as: :my
     get "settings", to: "users#edit", as: :my_settings
+    get "settings/address", to: "users#edit_address"
     get "settings/previews", to: "users#edit_featurepreviews"
     get "settings/security", to: "users#edit_security"
     get "settings/admin", to: "users#edit_admin"
@@ -123,6 +124,7 @@ Rails.application.routes.draw do
       get "webauthn", to: redirect("/users/auth")
     end
     member do
+      get "address", to: "users#edit_address"
       get "previews", to: "users#edit_featurepreviews"
       get "security", to: "users#edit_security"
       get "admin", to: "users#edit_admin"

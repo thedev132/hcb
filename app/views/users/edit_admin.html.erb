@@ -3,7 +3,7 @@
 <%= render "users/nav", selected: :settings %>
 
 <h1>Settings</h1>
-<turbo-frame id='settings'>
+<turbo-frame id="settings">
   <%= render "settings_nav", active: "admin" %>
   <section>
     <% admin_tools override_pretend: true do %>

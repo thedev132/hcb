@@ -16,9 +16,7 @@ module StripeCardholderService
 
         remote_cardholder = ::StripeService::Issuing::Cardholder.create(remote_attrs)
 
-        stripe_cardholder.update_column(:stripe_id, remote_cardholder.id)
-
-        stripe_cardholder.reload
+        stripe_cardholder.update!(stripe_id: remote_cardholder.id)
       end
     end
 
@@ -31,7 +29,7 @@ module StripeCardholderService
         stripe_email: email,
         stripe_phone_number: phone_number,
         stripe_billing_address_line1: line1,
-        # stripe_billing_address_line2: line2,
+        stripe_billing_address_line2: line2,
         stripe_billing_address_city: city,
         stripe_billing_address_state: state,
         stripe_billing_address_postal_code: postal_code,
@@ -48,7 +46,7 @@ module StripeCardholderService
         billing: {
           address: {
             line1:,
-            # line2: line2,
+            # line2:,
             city:,
             state:,
             postal_code:,
