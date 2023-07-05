@@ -17,6 +17,8 @@ module StripeCardholderService
         remote_cardholder = ::StripeService::Issuing::Cardholder.create(remote_attrs)
 
         stripe_cardholder.update!(stripe_id: remote_cardholder.id)
+
+        stripe_cardholder
       end
     end
 
