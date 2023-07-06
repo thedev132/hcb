@@ -324,6 +324,10 @@ class UsersController < ApplicationController
       @onboarding = User.friendly.find(params[:id]).full_name.blank?
       show_impersonated_sessions = admin_signed_in? || current_session.impersonated?
       @sessions = show_impersonated_sessions ? @user.user_sessions : @user.user_sessions.not_impersonated
+      if @user.stripe_cardholder&.errors&.any?
+        flash.now[:error] = @user.stripe_cardholder.errors.first.full_message
+        render :edit_address, status: :unprocessable_entity and return
+      end
       render :edit, status: :unprocessable_entity
     end
   end

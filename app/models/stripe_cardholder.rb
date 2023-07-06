@@ -52,7 +52,7 @@ class StripeCardholder < ApplicationRecord
   alias_attribute :address_country, :stripe_billing_address_country
   alias_attribute :address_postal_code, :stripe_billing_address_postal_code
 
-  before_update :update_cardholder_in_stripe
+  after_validation :update_cardholder_in_stripe, on: :update, if: -> { errors.none? }
 
   def stripe_dashboard_url
     "https://dashboard.stripe.com/issuing/cardholders/#{self.stripe_id}"
@@ -93,26 +93,29 @@ class StripeCardholder < ApplicationRecord
   private
 
   def update_cardholder_in_stripe
-    begin
-      StripeService::Issuing::Cardholder.update(
-        stripe_id,
-        {
-          email: stripe_email,
-          phone_number: stripe_phone_number,
-          billing: {
-            address: {
-              line1: address_line1,
-              line2: address_line2,
-              city: address_city,
-              state: address_state,
-              postal_code: address_postal_code,
-              country: address_country
-            }.compact_blank
-          }
-        }.compact_blank # Stripe doesn't like blank values
-      )
-    rescue Stripe::StripeError # fails without proper keys
-      raise if Rails.env.production?
+    StripeService::Issuing::Cardholder.update(
+      stripe_id,
+      {
+        email: stripe_email,
+        phone_number: stripe_phone_number,
+        billing: {
+          address: {
+            line1: address_line1,
+            line2: address_line2,
+            city: address_city,
+            state: address_state,
+            postal_code: address_postal_code,
+            country: address_country
+          }.compact_blank
+        }
+      }.compact_blank # Stripe doesn't like blank values
+    )
+  rescue Stripe::StripeError => error
+    if error.message.downcase.include?("address") || error.message.downcase.include?("country")
+      Airbrake.notify(error)
+      errors.add(:base, error.message)
+    else
+      raise if Rails.env.production? # update fails without proper keys
     end
   end
 
