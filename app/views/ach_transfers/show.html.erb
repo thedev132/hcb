@@ -7,11 +7,9 @@
     <li>
       v2
       <ul>
-        <% @ach_transfer.canonical_pending_transactions.each do |ct| %>
-          <li>
-            <strong><%= link_to ct.hcb_code, hcb_code_path(ct.local_hcb_code) %></strong>: <%= link_to ct.amount, canonical_pending_transaction_path(ct) %>
-          </li>
-        <% end %>
+        <li>
+          <strong><%= link_to @ach_transfer.canonical_pending_transaction.hcb_code, hcb_code_path(@ach_transfer.canonical_pending_transaction.local_hcb_code) %></strong>: <%= link_to @ach_transfer.canonical_pending_transaction.amount, canonical_pending_transaction_path(@ach_transfer.canonical_pending_transaction) %>
+        </li>
 
         <% @ach_transfer.canonical_transactions.each do |ct| %>
           <li>

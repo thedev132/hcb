@@ -507,9 +507,8 @@ class AdminController < ApplicationController
   end
 
   def ach_reject
-    ach_transfer = AchTransferService::Reject.new(
-      ach_transfer_id: params[:id],
-    ).run
+    ach_transfer = AchTransfer.find(params[:id])
+    ach_transfer.mark_rejected!
 
     redirect_to ach_start_approval_admin_path(ach_transfer), flash: { success: "Success" }
   rescue => e

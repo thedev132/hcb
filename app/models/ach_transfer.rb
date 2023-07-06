@@ -60,8 +60,9 @@ class AchTransfer < ApplicationRecord
 
   has_one :t_transaction, class_name: "Transaction", inverse_of: :ach_transfer
   has_one :grant, required: false
+  has_one :raw_pending_outgoing_ach_transaction, foreign_key: :ach_transaction_id
+  has_one :canonical_pending_transaction, through: :raw_pending_outgoing_ach_transaction
 
-  scope :approved, -> { where.not(approved_at: nil) }
   scope :scheduled_for_today, -> { scheduled.where(scheduled_on: ..Date.today) }
 
   aasm whiny_persistence: true do
@@ -77,11 +78,10 @@ class AchTransfer < ApplicationRecord
     end
 
     event :mark_rejected do
+      after do
+        canonical_pending_transaction.decline!
+      end
       transitions from: [:pending, :scheduled], to: :rejected
-    end
-
-    event :mark_failed do
-      transitions from: :in_transit, to: :failed
     end
 
     event :mark_deposited do
@@ -95,15 +95,6 @@ class AchTransfer < ApplicationRecord
 
   # Eagerly create HcbCode object
   after_create :local_hcb_code
-
-  scope :pending_deprecated, -> { where(approved_at: nil, rejected_at: nil) }
-  def self.in_transit_deprecated
-    select { |a| a.approved_at.present? && a.t_transaction.nil? }
-  end
-  scope :rejected_deprecated, -> { where.not(rejected_at: nil) }
-  def self.delivered
-    select { |a| a.t_transaction.present? }
-  end
 
   def send_ach_transfer!
     return unless may_mark_in_transit?
@@ -123,32 +114,16 @@ class AchTransfer < ApplicationRecord
   end
 
   def status
-    aasm_state.to_sym
+    aasm.current_state
   end
 
-  def state_text
-    status_text
-  end
-
-  def name
-    recipient_name
-  end
-
-  def status_deprecated
-    if t_transaction
-      :deposited
-    elsif approved_at
-      :in_transit
-    elsif rejected_at
-      :rejected
-    elsif pending?
-      :pending
-    end
-  end
+  alias_attribute :name, :recipient_name
 
   def status_text
-    status.to_s.humanize
+    aasm.human_state
   end
+
+  alias_method :state_text, :status_text
 
   def status_text_long
     case status
@@ -170,64 +145,20 @@ class AchTransfer < ApplicationRecord
     end
   end
 
-  def filter_data
-    {
-      exists: true,
-      deposited: deposited?,
-      in_transit: in_transit?,
-      pending: pending?,
-      rejected: rejected?
-    }
-  end
-
   def state_icon
     "checkmark" if deposited?
-  end
-
-  def pending_deprecated?
-    approved_at.nil? && rejected_at.nil?
   end
 
   def approved?
     !pending?
   end
 
-  def rejected_deprecated?
-    rejected_at.present?
-  end
-
-  def in_transit_deprecated?
-    approved_at.present?
-  end
-
-  def deposited_deprecated?
-    t_transaction.present?
-  end
-
   def admin_dropdown_description
     "#{event.name} - #{recipient_name} | #{ApplicationController.helpers.render_money amount}"
   end
 
-  def approve!
-    mark_in_transit!
-    update(approved_at: DateTime.now)
-  end
-
-  def reject!
-    mark_rejected!
-    update(rejected_at: DateTime.now)
-  end
-
-  def canonical_pending_transaction
-    canonical_pending_transactions.first
-  end
-
   def smart_memo
     recipient_name.to_s.upcase
-  end
-
-  def canonical_pending_transactions
-    @canonical_pending_transactions ||= CanonicalPendingTransaction.where(hcb_code:)
   end
 
   def canonical_transactions
@@ -243,14 +174,6 @@ class AchTransfer < ApplicationRecord
   end
 
   private
-
-  def raw_pending_outgoing_ach_transaction
-    raw_pending_outgoing_ach_transactions.first
-  end
-
-  def raw_pending_outgoing_ach_transactions
-    @raw_pending_outgoing_ach_transactions ||= ::RawPendingOutgoingAchTransaction.where(ach_transaction_id: id)
-  end
 
   def scheduled_on_must_be_in_the_future
     if scheduled_on.present? && scheduled_on.before?(Date.today)

@@ -14,6 +14,8 @@
 #
 class RawPendingOutgoingAchTransaction < ApplicationRecord
   monetize :amount_cents
+  belongs_to :ach_transfer, foreign_key: :ach_transaction_id
+  has_one :canonical_pending_transaction
 
   def date
     date_posted
@@ -25,10 +27,6 @@ class RawPendingOutgoingAchTransaction < ApplicationRecord
 
   def likely_event_id
     @likely_event_id ||= ach_transfer.event.id
-  end
-
-  def ach_transfer
-    @ach_transfer ||= ::AchTransfer.find_by(id: ach_transaction_id)
   end
 
   private
