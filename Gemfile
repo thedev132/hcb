@@ -117,7 +117,7 @@ gem "strong_migrations" # protects against risky migrations
 gem "swagger-blocks"
 gem "xxhash" # fast hashing
 
-gem "webauthn", "~> 2.5"
+gem "webauthn", "~> 3.0"
 
 gem "ahoy_matey" # analytics
 gem "airbrake" # exception tracking
