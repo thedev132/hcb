@@ -36,6 +36,8 @@ class CheckDeposit < ApplicationRecord
     "not_eligible_for_mobile_deposit" => "This check is not eligible for mobile deposit.",
   }.freeze
 
+  monetize :amount_cents
+
   belongs_to :event
   belongs_to :created_by, class_name: "User"
   has_one :canonical_pending_transaction

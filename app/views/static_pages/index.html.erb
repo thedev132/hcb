@@ -187,6 +187,7 @@
       <%= card_to "Sponsors", sponsors_admin_index_path %>
       <%= card_to "Bank Fees (#{BankFee.in_transit_or_pending.count})", bank_fees_admin_index_path %>
       <%= render partial: "static_pages/card", locals: { task_path: balances_admin_index_path, human_name: "Organization Balances" } %>
+      <%= card_to "Check deposits", check_deposits_admin_index_path %>
     </ul>
 
     <h2>Admin Tasks</h2>

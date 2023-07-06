@@ -176,6 +176,7 @@ Rails.application.routes.draw do
       get "google_workspaces", to: "admin#google_workspaces"
       get "balances", to: "admin#balances"
       get "grants", to: "admin#grants"
+      get "check_deposits", to: "admin#check_deposits"
 
       resources :grants, only: [] do
         post "approve"
