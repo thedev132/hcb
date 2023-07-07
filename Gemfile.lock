@@ -617,7 +617,7 @@ GEM
     rexml (3.2.5)
     rinku (2.0.6)
     rounding (1.0.1)
-    rqrcode (2.1.1)
+    rqrcode (2.2.0)
       chunky_png (~> 1.0)
       rqrcode_core (~> 1.0)
     rqrcode_core (1.2.0)
