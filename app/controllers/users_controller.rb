@@ -391,6 +391,7 @@ class UsersController < ApplicationController
   def user_params
     attributes = [
       :full_name,
+      :preferred_name,
       :phone_number,
       :profile_picture,
       :pretend_is_not_admin,

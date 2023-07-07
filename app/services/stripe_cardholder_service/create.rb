@@ -70,11 +70,11 @@ module StripeCardholderService
     end
 
     def first_name
-      clean_name(@current_user.first_name)
+      clean_name(@current_user.first_name(legal: true))
     end
 
     def last_name
-      clean_name(@current_user.last_name)
+      clean_name(@current_user.last_name(legal: true))
     end
 
     def clean_name(name)

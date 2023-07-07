@@ -73,7 +73,7 @@
           class: "info mr2" if admin_signed_in? %>
         <div class="flex items-center">
           <% @organizers.each do |position| %>
-            <div class="avatar-grow line-height-0 tooltipped tooltipped--s mr1" aria-label="<%= position.user == current_user ? current_user_flavor_text.sample : position.user.full_name %>">
+            <div class="avatar-grow line-height-0 tooltipped tooltipped--s mr1" aria-label="<%= position.user == current_user ? current_user_flavor_text.sample : position.user.name %>">
               <%= avatar_for position.user, 36 %>
             </div>
           <% end %>

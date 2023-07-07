@@ -85,7 +85,7 @@ module UsersHelper
            elsif user.id == current_user&.id
              current_user_flavor_text.sample
            elsif user.admin?
-             "#{user.name.split(' ').first} is an admin"
+             "#{user.name} is an admin"
            end
 
     content = if user&.admin?

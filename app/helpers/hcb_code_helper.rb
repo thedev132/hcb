@@ -10,7 +10,7 @@ module HcbCodeHelper
     url = "https://forms.hackclub.com/t/#{form_id}"
 
     prefill = []
-    prefill << "prefill_Your+Name=#{CGI.escape(user.full_name)}" if user
+    prefill << "prefill_Your+Name=#{CGI.escape(user.name)}" if user
     prefill << "prefill_Login+Email=#{CGI.escape(user.email)}" if user
     prefill << "prefill_Transaction+Code=#{CGI.escape(hcb_code.hashid)}" if hcb_code
 

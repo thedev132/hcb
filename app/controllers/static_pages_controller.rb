@@ -192,7 +192,7 @@ class StaticPagesController < ApplicationController
     }
 
     if share_email == "1"
-      feedback["Name"] = current_user.full_name
+      feedback["Name"] = current_user.name
       feedback["Email"] = current_user.email
       feedback["Organization"] = current_user.events.first&.name
     end

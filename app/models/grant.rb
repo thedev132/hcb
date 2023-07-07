@@ -107,7 +107,7 @@ class Grant < ApplicationRecord
   end
 
   def recipient_name
-    recipient&.full_name || super
+    recipient&.name || super
   end
 
   def state_text

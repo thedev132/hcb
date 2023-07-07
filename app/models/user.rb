@@ -12,6 +12,7 @@
 #  locked_at                :datetime
 #  phone_number             :text
 #  phone_number_verified    :boolean          default(FALSE)
+#  preferred_name           :string
 #  pretend_is_not_admin     :boolean          default(FALSE), not null
 #  receipt_report_option    :integer          default("none"), not null
 #  running_balance_enabled  :boolean          default(FALSE), not null
@@ -106,6 +107,8 @@ class User < ApplicationRecord
   validates_email_format_of :email
   validates :phone_number, phone: { allow_blank: true }
 
+  validates :preferred_name, length: { maximum: 30 }
+
   validate :profile_picture_format
 
   # admin? takes into account an admin user's preference
@@ -128,20 +131,12 @@ class User < ApplicationRecord
     update!(admin_at: nil)
   end
 
-  def first_name
-    @first_name ||= begin
-      return nil unless namae.given || namae.particle
-
-      (namae.given || namae.particle).split(" ").first
-    end
+  def first_name(legal: false)
+    @first_name ||= (namae(legal:)&.given || namae(legal:)&.particle)&.split(" ")&.first
   end
 
-  def last_name
-    @last_name ||= begin
-      return nil unless namae.family
-
-      namae.family.split(" ").last
-    end
+  def last_name(legal: false)
+    @last_name ||= namae(legal:)&.family&.split(" ")&.last
   end
 
   def initial_name
@@ -160,7 +155,7 @@ class User < ApplicationRecord
   end
 
   def name
-    full_name || email_handle
+    preferred_name.presence || full_name || email_handle
   end
 
   def initials
@@ -217,8 +212,12 @@ class User < ApplicationRecord
 
   private
 
-  def namae
-    @namae ||= Namae.parse(name).first || Namae.parse(name_simplified).first || Namae::Name.new(given: name_simplified)
+  def namae(legal: false)
+    if legal
+      @legal_namae ||= Namae.parse(full_name).first
+    else
+      @namae ||= Namae.parse(name).first || Namae.parse(name_simplified).first || Namae::Name.new(given: name_simplified)
+    end
   end
 
   def name_simplified

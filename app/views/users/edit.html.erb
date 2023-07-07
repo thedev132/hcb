@@ -7,61 +7,67 @@
   <%= render "users/nav", selected: :settings %>
 <% end %>
 
-    <h1>
-    <%= @onboarding ? "Welcome to Bank!" : "Settings" %>
-    </h1>
-    <turbo-frame id="settings" target="_top">
-    <%= render "settings_nav", active: "general" unless @onboarding %>
-    <section>
+<h1>
+  <%= @onboarding ? "Welcome to Bank!" : "Settings" %>
+</h1>
+<turbo-frame id="settings" target="_top">
+  <%= render "settings_nav", active: "general" unless @onboarding %>
+  <section>
     <h2>Account details</h2>
     <% if @onboarding %>
-        <p>Complete your profile to get started.</p>
+      <p>Complete your profile to get started.</p>
     <% end %>
     <%= form_with(model: @user, local: true, html: { onsubmit: "onSubmit()" }) do |form| %>
-        <%= form_errors @user, "user information" %>
-        <% if current_season(override_preference: true) %>
+      <%= form_errors @user, "user information" %>
+      <% if current_season(override_preference: true) %>
         <div class="field field--checkbox">
-            <%= form.check_box :seasonal_themes_enabled %>
-            <%= form.label :seasonal_themes_enabled, "#{by_season "✨", override_preference: true, fall: "🎃", winter: "🎄"} Enable #{current_season(override_preference: true)} theme", class: "h3 bold" %>
+          <%= form.check_box :seasonal_themes_enabled %>
+          <%= form.label :seasonal_themes_enabled, "#{by_season "✨", override_preference: true, fall: "🎃", winter: "🎄"} Enable #{current_season(override_preference: true)} theme", class: "h3 bold" %>
         </div>
-        <% end %>
+      <% end %>
 
-        <div class="field">
-        <%= form.label :full_name %>
-        <%= form.text_field :full_name, required: true, placeholder: "Fiona Hackworth", pattern: '^\S+.+' %>
-        </div>
-        <div class="field">
+      <div class="field">
+        <%= form.label :legal_name %>
+        <%= form.text_field :full_name, required: true, placeholder: "Fiona Hackworth III", pattern: '^\S+.+' %>
+      </div>
+      <div class="field">
+        <%= form.label :preferred_name %>
+        <p class="h5 muted mt0 mb1">If you go by a different name.</p>
+        <%= form.text_field :preferred_name, placeholder: @user.full_name.presence || "FiFi Hacks", maxlength: 30 %>
+      </div>
+
+      <div class="field">
         <%= form.label :phone_number, "Mobile phone number" %>
         <% if @onboarding %>
-            <p class="h5 muted mt0 mb1">
+          <p class="h5 muted mt0 mb1">
             To contact you on short notice.
-            </p>
+          </p>
         <% end %>
         <% if @user.use_sms_auth %>
-            <p class="h5 muted mt0 mb1">
+          <p class="h5 muted mt0 mb1">
             Changing your number will turn off SMS login codes.
-            </p>
+          </p>
         <% end %>
         <%= form.hidden_field :phone_number, required: true, placeholder: "555-555-5555", id: "phone_number" %>
         <input type="tel" id="phone_raw" value="<%= @user.phone_number || nil %>" required="required">
-        </div>
-        <div class="field">
+      </div>
+      <div class="field">
         <%= form.label :birthday %>
         <p class="h5 muted mt0 mb1">
-            Used for card issuing.
+          Used for card issuing.
         </p>
         <%= form.date_select :birthday,
-                            start_year: Date.today.year - 100,
-                            end_year: Date.today.year,
-                            order: [:month, :day, :year],
-                            prompt: @user.birthday.nil? %>
-        </div>
-        <div class="field">
+                             start_year: Date.today.year - 100,
+                             end_year: Date.today.year,
+                             order: [:month, :day, :year],
+                             prompt: @user.birthday.nil? %>
+      </div>
+      <div class="field">
         <%= form.label :email, class: "muted" %>
         <%= form.email_field :email, disabled: true %>
-        </div>
-        <%= form.label :profile_picture %>
-        <p class="flex items-center mt1">
+      </div>
+      <%= form.label :profile_picture %>
+      <p class="flex items-center mt1">
         <%= avatar_for @user, 48, class: "mr2" %>
         <span>
             <% if @user.profile_picture.attached? %>
@@ -72,53 +78,53 @@
             Or, you can upload a profile picture below.<br>
             <% end %>
         </span>
-        </p>
-        <div class="field field--fileupload">
-            <%= form.label :profile_picture, "Choose File", class: "field--fileupload__label" %>
-            <%= form.file_field :profile_picture, accept: "image/png, image/jpeg", class: "field--fileupload__field" %>
-        </div>
-        <div>
+      </p>
+      <div class="field field--fileupload">
+        <%= form.label :profile_picture, "Choose File", class: "field--fileupload__label" %>
+        <%= form.file_field :profile_picture, accept: "image/png, image/jpeg", class: "field--fileupload__field" %>
+      </div>
+      <div>
         <%= form.label :session_duration_seconds, "Stay signed in for" %>
         <%= form.select :session_duration_seconds, SessionsHelper::SESSION_DURATION_OPTIONS.to_a %>
-        </div>
-        <% unless @onboarding %>
+      </div>
+      <% unless @onboarding %>
         <fieldset>
-        <legend class="heading h2 pt2" id="receipt-reports">Receipt reports</legend>
-        <p class="h5 muted mt1 mb2">
+          <legend class="heading h2 pt2" id="receipt-reports">Receipt reports</legend>
+          <p class="h5 muted mt1 mb2">
             Get a regular report of what receipts are awaiting upload on your account.
-        </p>
-        <%= form.label :receipt_report_option, "Get a receipt upload report via email" %>
-        <%= form.select :receipt_report_option,
-            (User.receipt_report_options.map { |k, v| [k.humanize, k] }) %>
+          </p>
+          <%= form.label :receipt_report_option, "Get a receipt upload report via email" %>
+          <%= form.select :receipt_report_option,
+                          (User.receipt_report_options.map { |k, v| [k.humanize, k] }) %>
         </fieldset>
-        <% end %>
-        <fieldset>
+      <% end %>
+      <fieldset>
         <legend class="heading h2 pt2">Share usage data with us</legend>
         <p class="h5 muted mt1 mb2">
-            Help us improve Hack Club Bank by sending usage data.
-            <% if @onboarding %>
+          Help us improve Hack Club Bank by sending usage data.
+          <% if @onboarding %>
             <br>
             You can turn this off in your settings anytime.
-            <% else %>
+          <% else %>
             Off by default.
-            <% end %>
+          <% end %>
         </p>
         <div class="field field--options">
-            <%= form.radio_button :sessions_reported, false %>
-            <%= form.label :sessions_reported, value: false do %>
+          <%= form.radio_button :sessions_reported, false %>
+          <%= form.label :sessions_reported, value: false do %>
             <%= inline_icon "thumbsdown", size: 28 %>
             <strong>No thanks</strong>
-            <% end %>
-            <%= form.radio_button :sessions_reported, true %>
-            <%= form.label :sessions_reported, value: true do %>
+          <% end %>
+          <%= form.radio_button :sessions_reported, true %>
+          <%= form.label :sessions_reported, value: true do %>
             <%= inline_icon "support", size: 28 %>
             <strong>Sure thing!</strong>
-            <% end %>
+          <% end %>
         </div>
-        </fieldset>
-        <div class="actions flex">
+      </fieldset>
+      <div class="actions flex">
         <%= form.submit @onboarding ? "Start using Bank" : "Save profile" %>
-        </div>
+      </div>
     <% end %>
     <% unless @onboarding %>
 
@@ -126,6 +132,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/intlTelInput.min.js" integrity="sha512-QMUqEPmhXq1f3DnAVdXvu40C8nbTgxvBGvNruP6RFacy3zWKbNTmx7rdQVVM2gkd2auCWhlPYtcW2tHwzso4SA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/css/intlTelInput.css" integrity="sha512-gxWow8Mo6q6pLa1XH/CcH8JyiSDEtiwJV78E+D+QP0EVasFs8wKXq16G8CLD4CJ2SnonHr4Lm/yY2fSI2+cbmw==" crossorigin="anonymous" referrerpolicy="no-referrer">
     <%= javascript_include_tag "phone_input.js" %>
-    </section>
+  </section>
 
 </turbo-frame>

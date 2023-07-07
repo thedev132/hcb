@@ -49,8 +49,8 @@ class FlavorTextService
 
   def holiday_flavor_texts
     [
-      *(["<a href='https://hack.af/hcb-stickers?#{URI.encode_www_form "prefill_Recipient Name": @user.full_name, "prefill_Login Email": @user.email, prefill_Organization: @user.events.first&.name}' target='_blank' style='color: inherit'>Want a gift?</a>".html_safe] if @user),
-      *(["<a href='https://hack.af/hcb-stickers?#{URI.encode_www_form "prefill_Recipient Name": @user.full_name, "prefill_Login Email": @user.email, prefill_Organization: @user.events.first&.name}' target='_blank' style='color: inherit'>A present, from us to you</a>".html_safe] if @user),
+      *(["<a href='https://hack.af/hcb-stickers?#{URI.encode_www_form "prefill_Recipient Name": @user.name, "prefill_Login Email": @user.email, prefill_Organization: @user.events.first&.name}' target='_blank' style='color: inherit'>Want a gift?</a>".html_safe] if @user),
+      *(["<a href='https://hack.af/hcb-stickers?#{URI.encode_www_form "prefill_Recipient Name": @user.name, "prefill_Login Email": @user.email, prefill_Organization: @user.events.first&.name}' target='_blank' style='color: inherit'>A present, from us to you</a>".html_safe] if @user),
       "Hacky Holidays",
       "let there be snow",
       "ho ho ho ho",
@@ -436,7 +436,7 @@ class FlavorTextService
       "Where's the money lebowski?!",
       "We put the 'poggers' in 'taxes' (there isn't any)",
       "We put the 'fun' in 'accrual-based accounting' (there isn't any)",
-      *(["<a href='https://hack.af/hcb-stickers?#{URI.encode_www_form "prefill_Recipient Name": @user.full_name, "prefill_Login Email": @user.email, prefill_Organization: @user.events.first&.name}' target='_blank' style='color: inherit'>Want stickers?</a>".html_safe] if @user),
+      *(["<a href='https://hack.af/hcb-stickers?#{URI.encode_www_form "prefill_Recipient Name": @user.name, "prefill_Login Email": @user.email, prefill_Organization: @user.events.first&.name}' target='_blank' style='color: inherit'>Want stickers?</a>".html_safe] if @user),
       "🐨 Koalaty banking",
       "If money doesn’t grow on trees, then why do banks have branches?",
       "I was gonna tell a Bank joke, but ran out of interest",
