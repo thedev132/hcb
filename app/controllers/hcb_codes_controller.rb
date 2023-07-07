@@ -68,7 +68,7 @@ class HcbCodesController < ApplicationController
     authorize @hcb_code
 
     @frame = turbo_frame_request?
-    @suggested_memos = ::HcbCodeService::SuggestedMemos.new(hcb_code: @hcb_code, event: @event).run.first(4)
+    @suggested_memos = [::HcbCodeService::AiGenerateMemo.new(hcb_code: @hcb_code).run].compact + ::HcbCodeService::SuggestedMemos.new(hcb_code: @hcb_code, event: @event).run.first(4)
   end
 
   def update
