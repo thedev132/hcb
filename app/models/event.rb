@@ -417,6 +417,10 @@ class Event < ApplicationRecord
     completed_t + pending_t
   end
 
+  def total_raised
+    settled_incoming_balance_cents
+  end
+
   def balance_v2_cents(start_date: nil, end_date: nil)
     @balance_v2_cents ||=
       begin

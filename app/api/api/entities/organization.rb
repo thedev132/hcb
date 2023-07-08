@@ -32,6 +32,7 @@ module Api
           expose :balance_available_v2_cents, as: :balance_cents, documentation: { type: "integer" }
           expose :fee_balance_v2_cents, as: :fee_balance_cents, documentation: { type: "integer" }
           expose :pending_incoming_balance_v2_cents, as: :incoming_balance_cents, documentation: { type: "integer" }
+          expose :total_raised, as: :total_raised, documentation: { type: "integer" }
         end
 
         format_as_date do
