@@ -25,6 +25,9 @@ module Api
         expose :logo do |organization|
           organization.logo.attached? ? Rails.application.routes.url_helpers.url_for(organization.logo) : nil
         end
+        expose :donation_header do |organization|
+          organization.donation_header_image.attached? ? Rails.application.routes.url_helpers.url_for(organization.donation_header_image) : nil
+        end
         expose :public_message do |event|
           event.public_message.presence
         end
