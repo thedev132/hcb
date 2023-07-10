@@ -164,7 +164,7 @@ group :development, :test do
   gem "rubocop"
   gem "relaxed-rubocop"
 
-  gem "rspec-rails", "~> 5.0.0"
+  gem "rspec-rails", "~> 6.0.3"
 
   # Lets you set a breakpoint with a REPL using binding.pry
   gem "pry-byebug", require: ENV["EXCLUDE_PRY"] != "true"
