@@ -111,8 +111,7 @@ class StripeCardholder < ApplicationRecord
       }.compact_blank # Stripe doesn't like blank values
     )
   rescue Stripe::StripeError => error
-    if error.message.downcase.include?("address") || error.message.downcase.include?("country")
-      Airbrake.notify(error)
+    if error.message.downcase.include?("address") || error.message.downcase.include?("country") || error.message.downcase.include?("state")
       errors.add(:base, error.message)
     else
       raise if Rails.env.production? # update fails without proper keys
