@@ -36,7 +36,7 @@ gem "httparty" # web requests
 gem "faraday" # web requests
 
 gem "increase", "~> 0.3.1"
-gem "stripe", "8.2.0"
+gem "stripe", "8.5.0"
 gem "plaid", "~> 6.0"
 
 gem "aws-sdk-s3", require: false
