@@ -28,7 +28,9 @@ module InvoiceService
         invoice.save!
       end
 
-      InvoiceMailer.with(invoice: @invoice).notify_organizers.deliver_later
+      if invoice.event.users.any?
+        InvoiceMailer.with(invoice:).notify_organizers.deliver_later
+      end
     end
 
     def hidden_fee(inv)
