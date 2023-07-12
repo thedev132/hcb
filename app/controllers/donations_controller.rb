@@ -44,7 +44,13 @@ class DonationsController < ApplicationController
       @example_event = Event.find(183)
     end
 
-    @donation = Donation.new(amount: params[:amount], event: @event)
+    @donation = Donation.new(
+      name: params[:name],
+      email: params[:email],
+      amount: params[:amount],
+      message: params[:message],
+      event: @event
+    )
 
     authorize @donation
 

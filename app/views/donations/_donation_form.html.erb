@@ -31,6 +31,14 @@
       <% end %>
     </div>
 
+    <% if params[:message] %>
+      <div class="field mb2">
+        <%= form.label :message, "Message" %>
+        <span class="muted block h5">Optionally include a note.</span>
+        <%= form.text_field :message, placeholder: "Keep up the good work!", required: false %>
+      </div>
+    <% end %>
+
       <div class="field">
         <% if !@event.country_us? %>
           <%= form.label :amount, "Donation amount (USD)" %>

@@ -92,6 +92,12 @@
       <strong>Amount</strong>
       +<%= render_money @donation.amount %>
     </p>
+    <% if @donation.message.present? %>
+    <p>
+      <strong>Message</strong>
+      <%= @donation.message %>
+    </p>
+    <% end %>
     <% if @donation.payout %>
       <p>
         <strong><%= donation_fee_type(@donation) %></strong>
