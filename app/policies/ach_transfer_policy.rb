@@ -10,7 +10,7 @@ class AchTransferPolicy < ApplicationPolicy
   end
 
   def create?
-    user&.admin? || record.users.include?(user) && !record.demo_mode && !record.outernet_guild? # dirty implementation here. record is event (temporary)
+    admin_or_user && !record.event.demo_mode && !record.event.outernet_guild?
   end
 
   def show?

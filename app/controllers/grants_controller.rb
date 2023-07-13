@@ -105,18 +105,17 @@ class GrantsController < ApplicationController
 
         @grant.mark_fulfilled!
       elsif @grant.receipt_method_ach_transfer?
-        @grant.ach_transfer = AchTransferService::Create.new(
-          event_id: @grant.event_id,
-          routing_number: grant_params[:ach_transfer][:routing_number],
-          account_number: grant_params[:ach_transfer][:account_number],
-          bank_name: nil,
-          recipient_name: grant_params[:ach_transfer][:recipient_name],
-          recipient_tel: nil,
-          amount_cents: @grant.amount_cents,
-          payment_for: "Grant to #{grant_params[:ach_transfer][:recipient_name]}",
-          current_user: nil,
-          scheduled_on: nil,
-        ).run
+        @grant.create_ach_transfer!(
+          grant_params.require(:ach_transfer).permit(
+            :recipient_name,
+            :routing_number,
+            :account_number,
+          ).merge(
+            event: @grant.event,
+            amount: @grant.amount_cents,
+            payment_for: "Grant to #{grant_params[:ach_transfer][:recipient_name]}",
+          )
+        )
 
         @grant.mark_verifying!
       end

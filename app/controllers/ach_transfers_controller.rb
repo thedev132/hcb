@@ -45,34 +45,15 @@ class AchTransfersController < ApplicationController
 
   # POST /ach_transfers
   def create
-    authorize @event, policy_class: AchTransferPolicy
+    @ach_transfer = @event.ach_transfers.build(ach_transfer_params.merge(creator: current_user))
 
-    if current_user.admin? && ach_transfer_params["scheduled_on(1i)"].present?
-      scheduled_on = Date.new(ach_transfer_params["scheduled_on(1i)"].to_i,
-                              ach_transfer_params["scheduled_on(2i)"].to_i,
-                              ach_transfer_params["scheduled_on(3i)"].to_i)
+    authorize @ach_transfer
+
+    if @ach_transfer.save
+      redirect_to event_transfers_path(@event), flash: { success: "ACH transfer successfully submitted." }
+    else
+      render :new, status: :unprocessable_entity
     end
-
-    ach_transfer = AchTransferService::Create.new(
-      event_id: @event.id,
-      routing_number: ach_transfer_params[:routing_number],
-      account_number: ach_transfer_params[:account_number],
-      bank_name: ach_transfer_params[:bank_name],
-      recipient_name: ach_transfer_params[:recipient_name],
-      recipient_tel: ach_transfer_params[:recipient_tel],
-      amount_cents: (ach_transfer_params[:amount].to_f * 100).to_i,
-      payment_for: ach_transfer_params[:payment_for],
-      current_user:,
-      scheduled_on:,
-    ).run
-
-    flash[:success] = "ACH Transfer successfully submitted."
-
-    redirect_to event_transfers_path(@event)
-  rescue ArgumentError, ActiveRecord::RecordInvalid => e
-    flash[:error] = e.message
-
-    redirect_to new_event_ach_transfer_path(@event)
   end
 
   def cancel
@@ -95,7 +76,7 @@ class AchTransfersController < ApplicationController
   end
 
   def ach_transfer_params
-    params.require(:ach_transfer).permit(:routing_number, :account_number, :bank_name, :recipient_name, :recipient_tel, :amount, :payment_for, :scheduled_on)
+    params.require(:ach_transfer).permit(:routing_number, :account_number, :bank_name, :recipient_name, :recipient_tel, :amount_money, :payment_for, :scheduled_on)
   end
 
 end

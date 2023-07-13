@@ -40,6 +40,7 @@
 class AchTransfer < ApplicationRecord
   has_paper_trail skip: [:account_number] # ciphertext columns will still be tracked
   has_encrypted :account_number
+  monetize :amount, as: "amount_money"
 
   include PublicIdentifiable
   set_public_id_prefix :ach
@@ -55,11 +56,19 @@ class AchTransfer < ApplicationRecord
   belongs_to :event
 
   validates :amount, numericality: { greater_than: 0, message: "must be greater than 0" }
-  validates_length_of :routing_number, is: 9
+  validates :routing_number, format: { with: /\A\d{9}\z/ }
   validate :scheduled_on_must_be_in_the_future, on: :create
+  validate on: :create do
+    if amount > event.balance_available_v2_cents
+      errors.add(:base, "You don't have enough money to send this transfer! Your balance is #{(event.balance_available_v2_cents / 100).to_money.format}.")
+    end
+  end
 
   has_one :t_transaction, class_name: "Transaction", inverse_of: :ach_transfer
   has_one :grant, required: false
+  has_one :raw_pending_outgoing_ach_transaction, foreign_key: :ach_transaction_id
+  has_one :canonical_pending_transaction, through: :raw_pending_outgoing_ach_transaction
+
   has_one :raw_pending_outgoing_ach_transaction, foreign_key: :ach_transaction_id
   has_one :canonical_pending_transaction, through: :raw_pending_outgoing_ach_transaction
 
@@ -78,8 +87,9 @@ class AchTransfer < ApplicationRecord
     end
 
     event :mark_rejected do
-      after do
+      after do |processed_by = nil|
         canonical_pending_transaction.decline!
+        update!(processor: processed_by) if processed_by.present?
       end
       transitions from: [:pending, :scheduled], to: :rejected
     end
@@ -96,6 +106,16 @@ class AchTransfer < ApplicationRecord
   # Eagerly create HcbCode object
   after_create :local_hcb_code
 
+  after_create unless: -> { scheduled_on.present? } do
+    create_raw_pending_outgoing_ach_transaction!(amount_cents: -amount, date_posted: scheduled_on || created_at)
+    raw_pending_outgoing_ach_transaction.create_canonical_pending_transaction!(
+      event:,
+      amount_cents: -amount,
+      memo: raw_pending_outgoing_ach_transaction.memo,
+      date: raw_pending_outgoing_ach_transaction.date_posted,
+    )
+  end
+
   def send_ach_transfer!
     return unless may_mark_in_transit?
 
@@ -111,6 +131,18 @@ class AchTransfer < ApplicationRecord
 
     update!(increase_id: increase_ach_transfer["id"])
     mark_in_transit!
+  end
+
+  def approve!(processed_by = nil)
+    if scheduled_on.present?
+      mark_scheduled!
+    else
+      send_ach_transfer!
+    end
+
+    update!(processor: processed_by) if processed_by.present?
+
+    grant.mark_fulfilled! if grant.present?
   end
 
   def status

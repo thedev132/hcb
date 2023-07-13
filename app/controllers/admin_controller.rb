@@ -496,10 +496,8 @@ class AdminController < ApplicationController
   end
 
   def ach_approve
-    ach_transfer = AchTransferService::Approve.new(
-      ach_transfer_id: params[:id],
-      processor: current_user
-    ).run
+    ach_transfer = AchTransfer.find(params[:id])
+    ach_transfer.approve!(current_user)
 
     redirect_to ach_start_approval_admin_path(ach_transfer), flash: { success: "Success" }
   rescue => e
@@ -508,7 +506,7 @@ class AdminController < ApplicationController
 
   def ach_reject
     ach_transfer = AchTransfer.find(params[:id])
-    ach_transfer.mark_rejected!
+    ach_transfer.mark_rejected!(current_user)
 
     redirect_to ach_start_approval_admin_path(ach_transfer), flash: { success: "Success" }
   rescue => e
