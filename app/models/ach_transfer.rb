@@ -88,7 +88,7 @@ class AchTransfer < ApplicationRecord
 
     event :mark_rejected do
       after do |processed_by = nil|
-        canonical_pending_transaction.decline!
+        canonical_pending_transaction&.decline!
         update!(processor: processed_by) if processed_by.present?
       end
       transitions from: [:pending, :scheduled], to: :rejected
