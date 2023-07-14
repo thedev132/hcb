@@ -7,16 +7,7 @@ module Api
         expose :name
         expose :slug
         expose :category, documentation: {
-          values: %w[
-            hackathon
-            high_school_hackathon
-            event
-            hack_club
-            nonprofit
-            robotics_team
-            hardware_grant
-            hack_club_hq
-          ]
+          values: Event.categories.keys.map(&:parameterize).map(&:underscore)
         } do |organization|
           organization.category&.parameterize&.underscore
         end
