@@ -85,7 +85,7 @@
         data: { tour_step: "perks" },
         disabled: @event.hardware_grant?,
         selected: local_assigns[:selected] == :promotions unless !@event.approved? %>
-      <% if Flipper.enabled?(:google_workspace_2023_07_12, @event) %>
+      <% if Flipper.enabled?(:google_workspace_2023_07_12, @event) || (!Flipper.enabled?(:google_workspace_2023_07_12, @event) && (@event.g_suites.exists? || Flipper.enabled?(:google_workspace, @event))) %>
         <%= dock_item "Google #{content_tag(:span, 'Workspace', class: 'sm-hide md-hide')}",
           event_g_suite_overview_path(event_id: @event.slug),
           tooltip: (@event.hardware_grant? ? "Not available for Winter Hardware Wonderland accounts" : @event.outernet_guild? ? "Not available for Outernet Guilds" : @event.demo_mode? ? "Not available for Demo Mode accounts" : @event.g_suites.exists? ? "Manage domain Google Workspace" : Flipper.enabled?(:google_workspace, @event) ? "Set up domain Google Workspace" : "Register for Google Workspace Waitlist"),
