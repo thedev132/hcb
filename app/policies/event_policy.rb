@@ -145,6 +145,12 @@ class EventPolicy < ApplicationPolicy
     is_public || user_or_admin
   end
 
+  def toggle_event_tag?
+    user.admin?
+  end
+
+  private
+
   def user_or_admin
     user&.admin? || record.users.include?(user)
   end

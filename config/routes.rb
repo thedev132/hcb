@@ -545,6 +545,7 @@ Rails.application.routes.draw do
       resources :comments
     end
     resources :tags, only: [:create, :destroy]
+    resources :event_tags, only: [:create, :destroy]
 
     resources :recurring_donations, only: [:create], path: "recurring" do
       member do
@@ -564,6 +565,7 @@ Rails.application.routes.draw do
       post "enable_feature"
       post "test_ach_payment"
       get "account-number", to: "events#account_number"
+      post "toggle_event_tag/:event_tag_id", to: "events#toggle_event_tag", as: :toggle_event_tag
     end
   end
 

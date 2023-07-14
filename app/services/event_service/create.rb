@@ -27,6 +27,8 @@ module EventService
 
       ActiveRecord::Base.transaction do
         event = ::Event.create!(attrs)
+        event.event_tags << ::EventTag.find_or_create_by!(name: EventTag::Tags::ORGANIZED_BY_HACK_CLUBBERS) if @organized_by_hack_clubbers
+        event.event_tags << ::EventTag.find_or_create_by!(name: EventTag::Tags::ORGANIZED_BY_TEENAGERS) if @organized_by_teenagers
 
         # Event aasm_state is already approved by default.
         # event.mark_approved! if @approved
@@ -49,8 +51,6 @@ module EventService
         address: "N/A",
         country: @country,
         category: @category,
-        organized_by_hack_clubbers: @organized_by_hack_clubbers,
-        organized_by_teenagers: @organized_by_teenagers,
         omit_stats: @omit_stats,
         is_public: @is_public,
         is_indexable: @is_indexable,

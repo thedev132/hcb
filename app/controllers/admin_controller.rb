@@ -1140,8 +1140,8 @@ class AdminController < ApplicationController
     relation = relation.funded if @funded == "funded"
     relation = relation.not_funded if @funded == "not_funded"
     relation = relation.organized_by_hack_clubbers if @organized_by == "hack_clubbers"
-    relation = relation.where(organized_by_teenagers: true).or(relation.where(organized_by_hack_clubbers: true)) if @organized_by == "teenagers"
-    relation = relation.where.not(organized_by_hack_clubbers: true).and(relation.where.not(organized_by_teenagers: true)) if @organized_by == "adults"
+    relation = relation.organized_by_teenagers if @organized_by == "teenagers"
+    relation = relation.not_organized_by_teenagers if @organized_by == "adults"
     relation = relation.demo_mode if @demo_mode == "demo"
     relation = relation.not_demo_mode if @demo_mode == "full"
     relation = relation.joins(:canonical_transactions).where("canonical_transactions.date >= ?", @activity_since_date).group("events.id") if @activity_since_date.present?

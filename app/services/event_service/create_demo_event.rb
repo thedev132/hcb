@@ -16,7 +16,6 @@ module EventService
         point_of_contact_id: @point_of_contact.id,
         is_public: false,
         sponsorship_fee: 0.07,
-        organized_by_hack_clubbers: false,
         organization_identifier:,
         omit_stats: false,
         can_front_balance: true,

@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_14_012846) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_14_043346) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_stat_statements"
@@ -599,6 +599,22 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_14_012846) do
     t.index ["emburse_card_id"], name: "index_emburse_transfers_on_emburse_card_id"
     t.index ["event_id"], name: "index_emburse_transfers_on_event_id"
     t.index ["fulfilled_by_id"], name: "index_emburse_transfers_on_fulfilled_by_id"
+  end
+
+  create_table "event_tags", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_event_tags_on_name", unique: true
+  end
+
+  create_table "event_tags_events", id: false, force: :cascade do |t|
+    t.bigint "event_tag_id", null: false
+    t.bigint "event_id", null: false
+    t.index ["event_id"], name: "index_event_tags_events_on_event_id"
+    t.index ["event_tag_id", "event_id"], name: "index_event_tags_events_on_event_tag_id_and_event_id", unique: true
+    t.index ["event_tag_id"], name: "index_event_tags_events_on_event_tag_id"
   end
 
   create_table "events", force: :cascade do |t|

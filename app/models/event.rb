@@ -106,8 +106,10 @@ class Event < ApplicationRecord
       .references(:canonical_transaction)
   }
   scope :not_funded, -> { where.not(id: funded) }
-  scope :organized_by_hack_clubbers, -> { where(organized_by_hack_clubbers: true) }
-  scope :not_organized_by_hack_clubbers, -> { where.not(organized_by_hack_clubbers: true) }
+  scope :organized_by_hack_clubbers, -> { includes(:event_tags).where(event_tags: { name: EventTag::Tags::ORGANIZED_BY_HACK_CLUBBERS }) }
+  scope :not_organized_by_hack_clubbers, -> { includes(:event_tags).where.not(event_tags: { name: EventTag::Tags::ORGANIZED_BY_HACK_CLUBBERS }).or(where(event_tags: { name: nil })) }
+  scope :organized_by_teenagers, -> { includes(:event_tags).where(event_tags: { name: [EventTag::Tags::ORGANIZED_BY_TEENAGERS, EventTag::Tags::ORGANIZED_BY_HACK_CLUBBERS] }) }
+  scope :not_organized_by_teenagers, -> { includes(:event_tags).where.not(event_tags: { name: [EventTag::Tags::ORGANIZED_BY_TEENAGERS, EventTag::Tags::ORGANIZED_BY_HACK_CLUBBERS] }).or(where(event_tags: { name: nil })) }
   scope :event_ids_with_pending_fees_greater_than_100, -> do
     query = <<~SQL
       ;select event_id, fee_balance from (
@@ -301,6 +303,7 @@ class Event < ApplicationRecord
   has_many :bank_fees
 
   has_many :tags, -> { includes(:hcb_codes) }
+  has_and_belongs_to_many :event_tags
 
   has_many :check_deposits
 
@@ -641,6 +644,14 @@ class Event < ApplicationRecord
 
   def routing_number
     (increase_account_number || create_increase_account_number)&.routing_number || "•••••••••"
+  end
+
+  def organized_by_hack_clubbers?
+    event_tags.where(name: EventTag::Tags::ORGANIZED_BY_HACK_CLUBBERS).exists?
+  end
+
+  def organized_by_teenagers?
+    event_tags.where(name: [EventTag::Tags::ORGANIZED_BY_TEENAGERS, EventTag::Tags::ORGANIZED_BY_HACK_CLUBBERS]).exists?
   end
 
   private

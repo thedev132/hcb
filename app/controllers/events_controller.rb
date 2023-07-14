@@ -578,6 +578,21 @@ class EventsController < ApplicationController
     redirect_to edit_event_path(@event)
   end
 
+  def toggle_event_tag
+    @event_tag = EventTag.find(params[:event_tag_id])
+
+    authorize @event
+    authorize @event_tag
+
+    if @event.event_tags.where(id: @event_tag.id).exists?
+      @event.event_tags.destroy(@event_tag)
+    else
+      @event.event_tags << @event_tag
+    end
+
+    redirect_back fallback_location: edit_event_path(@event, anchor: "admin_organization_tags")
+  end
+
   private
 
   # Only allow a trusted parameter "white list" through.
@@ -595,8 +610,6 @@ class EventsController < ApplicationController
       :emburse_department_id,
       :country,
       :category,
-      :organized_by_hack_clubbers,
-      :organized_by_teenagers,
       :club_airtable_id,
       :point_of_contact_id,
       :slug,
