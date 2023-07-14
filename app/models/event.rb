@@ -333,7 +333,7 @@ class Event < ApplicationRecord
 
   after_save :update_slug_history
 
-  validates :website, format: URI::DEFAULT_PARSER.make_regexp(%w[http https]), allow_nil: true
+  validates :website, format: URI::DEFAULT_PARSER.make_regexp(%w[http https]), if: -> { website.present? }
 
   before_create { self.increase_account_id ||= IncreaseService::AccountIds::FS_MAIN }
 
