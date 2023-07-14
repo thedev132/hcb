@@ -48,6 +48,14 @@ module Api
       #   end
       # end
 
+      private
+
+      def url_for_attached(attachment)
+        return nil unless attachment&.attached?
+
+        Rails.application.routes.url_helpers.url_for attachment
+      end
+
     end
   end
 end

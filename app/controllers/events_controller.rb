@@ -540,6 +540,14 @@ class EventsController < ApplicationController
     redirect_back fallback_location: edit_event_path(@event)
   end
 
+  def remove_background_image
+    authorize @event
+
+    @event.background_image.purge_later
+
+    redirect_back fallback_location: edit_event_path(@event)
+  end
+
   def remove_logo
     authorize @event
 
@@ -602,7 +610,9 @@ class EventsController < ApplicationController
       :public_message,
       :custom_css_url,
       :donation_header_image,
-      :logo
+      :logo,
+      :website,
+      :background_image
     )
 
     # Expected budget is in cents on the backend, but dollars on the frontend
@@ -628,7 +638,9 @@ class EventsController < ApplicationController
       :public_message,
       :custom_css_url,
       :donation_header_image,
-      :logo
+      :logo,
+      :website,
+      :background_image
     )
 
     # convert whatever the user inputted into something that is a legal slug

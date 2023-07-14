@@ -503,6 +503,7 @@ Rails.application.routes.draw do
     put "toggle_hidden", to: "events#toggle_hidden"
 
     post "remove_header_image"
+    post "remove_background_image"
     post "remove_logo"
 
     get "team", to: "events#team", as: :team

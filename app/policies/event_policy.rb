@@ -125,6 +125,10 @@ class EventPolicy < ApplicationPolicy
     user_or_admin
   end
 
+  def remove_background_image?
+    user_or_admin
+  end
+
   def remove_logo?
     user_or_admin
   end

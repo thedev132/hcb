@@ -6,6 +6,7 @@ module Api
       when_expanded do
         expose :name
         expose :slug
+        expose :website
         expose :category, documentation: {
           values: Event.categories.keys.map(&:parameterize).map(&:underscore)
         } do |organization|
@@ -14,10 +15,13 @@ module Api
         expose :is_public, as: :transparent, documentation: { type: "boolean" }
         expose :demo_mode, documentation: { type: "boolean" }
         expose :logo do |organization|
-          organization.logo.attached? ? Rails.application.routes.url_helpers.url_for(organization.logo) : nil
+          url_for_attached organization.logo
         end
         expose :donation_header do |organization|
-          organization.donation_header_image.attached? ? Rails.application.routes.url_helpers.url_for(organization.donation_header_image) : nil
+          url_for_attached organization.donation_header_image
+        end
+        expose :background_image do |organization|
+          url_for_attached organization.background_image
         end
         expose :public_message do |event|
           event.public_message.presence

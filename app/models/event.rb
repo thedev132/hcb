@@ -44,6 +44,7 @@
 #  start                           :datetime
 #  transaction_engine_v2_at        :datetime
 #  webhook_url                     :string
+#  website                         :string
 #  created_at                      :datetime         not null
 #  updated_at                      :datetime         not null
 #  club_airtable_id                :text
@@ -316,6 +317,7 @@ class Event < ApplicationRecord
   has_many :grants
 
   has_one_attached :donation_header_image
+  has_one_attached :background_image
   has_one_attached :logo
 
   validate :point_of_contact_is_admin
@@ -330,6 +332,8 @@ class Event < ApplicationRecord
   validates_uniqueness_of_without_deleted :slug
 
   after_save :update_slug_history
+
+  validates :website, format: URI::DEFAULT_PARSER.make_regexp(%w[http https]), allow_nil: true
 
   before_create { self.increase_account_id ||= IncreaseService::AccountIds::FS_MAIN }
 

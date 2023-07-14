@@ -26,12 +26,35 @@
       <% end %>
       <div class="field--fileupload">
         <%= form.label :logo, "Choose File", class: "field--fileupload__label" %>
-        <%= form.file_field :logo, class: "field--fileupload__field" %>
+        <%= form.file_field :logo, accept: "image/*,image/heic", class: "field--fileupload__field" %>
       </div>
 
       <% if @event.logo.attached? %>
         <%= link_to "Remove logo", event_remove_logo_path(@event), class: "block mt1", method: :post %>
       <% end %>
+    </div>
+
+    <div class="field mt3">
+      <%= form.label :background_image %>
+      <p class="h5 muted mt0 mb1">
+        Displayed as the background of your organization's card on the homepage.
+      </p>
+      <% if @event.background_image.attached? %>
+        <%= image_tag @event.background_image, width: 256 %>
+      <% end %>
+      <div class="field--fileupload">
+        <%= form.label :background_image, "Choose File", class: "field--fileupload__label" %>
+        <%= form.file_field :background_image, accept: "image/*,image/heic", class: "field--fileupload__field" %>
+      </div>
+
+      <% if @event.background_image.attached? %>
+        <%= link_to "Remove background", event_remove_background_image_path(@event), class: "block mt1", method: :post %>
+      <% end %>
+    </div>
+
+    <div class="field mt3">
+      <%= form.label :website, "Website URL" %>
+      <%= form.text_field :website, type: :url, placeholder: "https://hackclub.com" %>
     </div>
 
     <%= form.submit "Update" %>
