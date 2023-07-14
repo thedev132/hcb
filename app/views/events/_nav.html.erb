@@ -85,12 +85,14 @@
         data: { tour_step: "perks" },
         disabled: @event.hardware_grant?,
         selected: local_assigns[:selected] == :promotions unless !@event.approved? %>
-      <%= dock_item "Google #{content_tag(:span, 'Workspace', class: 'sm-hide md-hide')}",
-        event_g_suite_overview_path(event_id: @event.slug),
-        tooltip: (@event.hardware_grant? ? "Not available for Winter Hardware Wonderland accounts" : "Set up domain Gmail"),
-        icon: "google",
-        disabled: @event.hardware_grant?,
-        selected: local_assigns[:selected] == :google_workspace if @event.g_suites.exists? || Flipper.enabled?(:google_workspace, @event) %>
+      <% if Flipper.enabled?(:google_workspace_2023_07_12, @event) %>
+        <%= dock_item "Google #{content_tag(:span, 'Workspace', class: 'sm-hide md-hide')}",
+          event_g_suite_overview_path(event_id: @event.slug),
+          tooltip: (@event.hardware_grant? ? "Not available for Winter Hardware Wonderland accounts" : @event.outernet_guild? ? "Not available for Outernet Guilds" : @event.demo_mode? ? "Not available for Demo Mode accounts" : @event.g_suites.exists? ? "Manage domain Google Workspace" : Flipper.enabled?(:google_workspace, @event) ? "Set up domain Google Workspace" : "Register for Google Workspace Waitlist"),
+          icon: "google",
+          disabled: @event.hardware_grant? || @event.demo_mode?,
+          selected: local_assigns[:selected] == :google_workspace %>
+      <% end %>
       <%= dock_item "Documentation",
         event_documentation_path(event_id: @event.slug),
         tooltip: "Commonly asked questions and how-tos",
@@ -145,7 +147,7 @@
           <%= inline_icon "more" %>
           <div class="menu__content" data-behavior="menu_content">
             <%= link_to "Promotions & perks", event_promotions_path(event_id: @event.slug) unless !@event.approved? || @event.hardware_grant? %>
-            <%= link_to "Google Workspace", event_g_suite_overview_path(event_id: @event.slug) unless @event.hardware_grant? || (!@event.g_suites.exists? && !Flipper.enabled?(:google_workspace, @event)) %>
+            <%= link_to "Google Workspace", event_g_suite_overview_path(event_id: @event.slug) unless @event.hardware_grant? || @event.outernet_guild? %>
             <%= link_to "Documentation", event_documentation_path(event_id: @event.slug) %>
             <%= link_to "Settings", edit_event_path(@event) %>
           </div>

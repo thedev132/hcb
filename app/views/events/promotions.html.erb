@@ -32,7 +32,7 @@
   <div class="card__banner card__banner--top flex justify-between items-center promo-1password">
     <%= image_tag "1password.svg", width: 210, class: "p2" %>
     <%= link_to "Apply",
-      @perks_available ? fillout_form("1EVMTc9d1Zus", { "Project Name" => @event.name, "Bank URL" => event_url(@event), "Your Name" => current_user.name, "Email" => current_user.email }, []) : root_path,
+      @perks_available ? fillout_form("1EVMTc9d1Zus", { "Project Name" => @event.name, "Bank URL" => event_url(@event), "Your Name" => current_user.name, "Email" => current_user.email }, prefix: "prefill_") : root_path,
       class: "btn bg-success mr1 #{'disabled' unless @perks_available}",
       target: :_blank %>
   </div>
@@ -50,7 +50,7 @@
   <div class="card__banner card__banner--top flex justify-between items-center promo-event-helper">
     <%= image_tag "https://cloud-fz66hmje0-hack-club-bot.vercel.app/0theeventhelperbutbetter.png", width: 60 %>
     <%= link_to "Purchase",
-      @perks_available ? fillout_form("hDJYyLd7qNus", { "Event Name" => @event.name, "Bank URL" => event_url(@event), "Submitter Name" => current_user.name, "Submitter Email" => current_user.email }, ["Event Name", "Bank URL"]) : root_path,
+      @perks_available ? fillout_form("hDJYyLd7qNus", { "Event Name" => @event.name, "Bank URL" => event_url(@event), "Submitter Name" => current_user.name, "Submitter Email" => current_user.email }, prefix: "prefill_") : root_path,
       class: "btn mr1 #{'disabled' unless @perks_available}",
       target: :_blank %>
   </div>
@@ -114,7 +114,7 @@
   <div class="card__banner card__banner--top flex justify-between items-center promo-pvsa">
     <%= image_tag "https://cloud-q7i8htyv7-hack-club-bot.vercel.app/0pvsa-logo-2x.png", width: 60 %>
     <%= link_to "Purchase",
-      @perks_available ? fillout_form("dyHShKvTL1us", { "Event Name" => @event.name, "Bank URL" => event_url(@event), "Submitter Email" => current_user.email }, [] ) : root_path,
+      @perks_available ? fillout_form("dyHShKvTL1us", { "Event Name" => @event.name, "Bank URL" => event_url(@event), "Submitter Email" => current_user.email }, prefix: "prefill_") : root_path,
       class: "btn mr1 #{'disabled' unless @perks_available}",
       target: :_blank %>
   </div>
@@ -171,7 +171,7 @@
           </div>
         <% else %>
           <%= link_to "Apply",
-            @perks_available ? airtable_form("shrKUmCPpbZ7Pdl0B", { "Project Name" => @event.name, "Bank URL" => event_url(@event), "Name" => current_user.name, "Login email" => current_user.email }, ["Project Name", "Bank URL", "Name", "Login email"]) : root_path,
+            @perks_available ? airtable_form("shrKUmCPpbZ7Pdl0B", { "Project Name" => @event.name, "Bank URL" => event_url(@event), "Name" => current_user.name, "Login email" => current_user.email }) : root_path,
             class: "btn bg-success mr1 #{'disabled' unless @perks_available}",
             target: :_blank %>
         <% end %>
@@ -203,7 +203,7 @@
         <%= image_tag "stickers/icon-sticker-light.svg", width: 50, class: "sticker ml2 xs-hide" %>
       </span>
     <%= link_to "Request",
-      @perks_available ? fillout_form("umhwJ5s1fNus", { "Recipient Name" => current_user.name, "Login Email" => current_user.email, "Organization" => @event.name }, []) : root_path,
+      @perks_available ? fillout_form("umhwJ5s1fNus", { "Recipient Name" => current_user.name, "Login Email" => current_user.email, "Organization" => @event.name }, prefix: "prefill_") : root_path,
       class: "btn bg-success mr1 #{'disabled' unless @perks_available}",
       target: :_blank %>
   </div>
@@ -225,7 +225,7 @@
   <div class="card__banner card__banner--top flex justify-between items-center promo-sendy">
     <h3 class="h1 white p2 my0">Sendy</h3>
     <%= link_to "Apply",
-      @perks_available ? fillout_form("4cJ69MSzKhus", { "Project Name" => @event.name, "Bank URL" => event_url(@event), "Your name" => current_user.name, "Login email" => current_user.email, "Domain URL" => @event.g_suites.first&.domain }, ["Project Name", "Bank URL", "Your name", "Login email"]) : root_path,
+      @perks_available ? fillout_form("4cJ69MSzKhus", { "Project Name" => @event.name, "Bank URL" => event_url(@event), "Your name" => current_user.name, "Login email" => current_user.email, "Domain URL" => @event.g_suites.first&.domain }, prefix: "prefill_") : root_path,
       class: "btn bg-success mr1 #{'disabled' unless @perks_available}",
       target: :_blank %>
   </div>
