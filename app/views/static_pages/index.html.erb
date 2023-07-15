@@ -55,7 +55,7 @@
         data-action="sortable:stop->event-sort#sort">
         <% @events.not_hidden.each do |event| %>
           <%= link_to event, style: "max-width: 90vw", class: "draggable text-decoration-none" do %>
-            <li class="card card--hover flex flex-column justify-between h-100 mx-auto" style="<%= "background-position: center; background-repeat: no-repeat; background-size: cover; background-image: linear-gradient(rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.85) 75%),url('#{url_for(event.background_image)}')" if event.background_image.attached? %>;">
+            <li class="card card--hover flex flex-column justify-between h-100 mx-auto <%= "card--background-image" if event.background_image.attached? %>" style="<%= "--bg-image: url(#{url_for(event.background_image).dump})" if event.background_image.attached? %>">
               <div id="event-<%= event.id %>-title" class="flex mb2">
                 <strong class="brand-sans h3 line-height-2 display-inline">
                   <% if event.logo.attached? %>
