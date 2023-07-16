@@ -88,6 +88,7 @@ class StatsController < ApplicationController
       5875, # Ben Dixon (@hackclub.com)
       5045, # Ben Dixon (@malted.dev)
       2501, # Ian
+      5046 # Matt
     ]
 
     q = <<~SQL
