@@ -360,6 +360,9 @@ $(document).on('turbo:load', function () {
     const transparencyToggle = $('#event_is_public')
     $(transparencyToggle).on('change', e => {
       if (e.target.checked) {
+        // When transparency mode is enabled, also enable indexing by default
+        $('#event_is_indexable').prop('checked', true)
+
         additionalTransparencySettings.slideDown()
       } else {
         additionalTransparencySettings.slideUp()
