@@ -16,6 +16,7 @@
 #  deleted_at                      :datetime
 #  demo_mode                       :boolean          default(FALSE), not null
 #  demo_mode_request_meeting_at    :datetime
+#  description                     :text
 #  donation_page_enabled           :boolean          default(TRUE)
 #  donation_page_message           :text
 #  end                             :datetime
@@ -331,6 +332,7 @@ class Event < ApplicationRecord
   validate :demo_mode_limit, if: proc{ |e| e.demo_mode_limit_email }
 
   validates :name, :sponsorship_fee, :organization_identifier, presence: true
+  validates :description, length: { maximum: 250 }
   validates :slug, presence: true, format: { without: /\s/ }
   validates_uniqueness_of_without_deleted :slug
 

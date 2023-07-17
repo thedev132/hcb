@@ -600,6 +600,7 @@ class EventsController < ApplicationController
   def event_params
     result_params = params.require(:event).permit(
       :name,
+      :description,
       :start,
       :end,
       :address,
@@ -639,6 +640,7 @@ class EventsController < ApplicationController
 
   def user_event_params
     result_params = params.require(:event).permit(
+      :description,
       :address,
       :slug,
       :hidden,

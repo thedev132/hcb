@@ -53,8 +53,16 @@
     </div>
 
     <div class="field mt3">
+      <%= form.label :description, "Mission Statement" %>
+      <p class="h5 muted mt0 mb1">
+        A short description of your organization's goals and impacts.
+      </p>
+      <%= form.text_area :description, placeholder: "Focusing on...", maxlength: 250, class: "w-100 fit" %>
+    </div>
+
+    <div class="field mt2">
       <%= form.label :website, "Website URL" %>
-      <%= form.text_field :website, type: :url, placeholder: "https://hackclub.com" %>
+      <%= form.text_field :website, type: :url, placeholder: "https://hackclub.com", class: "w-100 fit" %>
     </div>
 
     <%= form.submit "Update" %>
