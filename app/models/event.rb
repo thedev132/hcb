@@ -65,8 +65,6 @@
 #  fk_rails_...  (point_of_contact_id => users.id)
 #
 class Event < ApplicationRecord
-  self.ignored_columns = %w[organized_by_hack_clubbers organized_by_teenagers]
-
   include Hashid::Rails
   extend FriendlyId
 
