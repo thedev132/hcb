@@ -653,7 +653,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_17_072124) do
     t.string "webhook_url"
     t.integer "country"
     t.boolean "holiday_features", default: true, null: false
-    t.boolean "organized_by_hack_clubbers"
     t.string "custom_css_url"
     t.integer "category"
     t.boolean "can_front_balance", default: true, null: false
@@ -662,7 +661,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_17_072124) do
     t.boolean "is_indexable", default: true
     t.datetime "deleted_at", precision: nil
     t.datetime "activated_at"
-    t.boolean "organized_by_teenagers", default: false, null: false
     t.string "increase_account_id", null: false
     t.string "website"
     t.text "description"
