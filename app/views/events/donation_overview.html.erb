@@ -58,20 +58,11 @@
   <p>You can start accepting donations once you enable it in your project's <%= link_to "settings", edit_event_path(@event, anchor: "donations") %>.</p>
 <% end %>
 
-<div class="statset mt3 mb2">
+<div class="mt3 mb2">
   <div class="stat stat--small">
     <span class="stat__label">Total</span>
     <span class="stat__value"><%= render_money_amount @stats[:deposited] %></span>
   </div>
-  <div class="stat stat--small">
-    <span class="stat__label">On the way</span>
-    <span class="stat__value"><%= render_money_amount @stats[:in_transit] %></span>
-  </div>
-  <div class="stat stat--small">
-    <span class="stat__label">Refunded</span>
-    <span class="stat__value"><%= render_money_amount @stats[:refunded] %></span>
-  </div>
-  <div>
   <% unless show_mock_data? %>
     <% if organizer_signed_in? && @donations.not_pending.any? %>
       <button
@@ -89,7 +80,6 @@
       </button>
     <% end %>
   <% end %>
-  </div>
 </div>
 
 <hr>
@@ -132,9 +122,7 @@
 <% end %>
 
 <div style="text-align: center;">
-  <%= link_to "All", "?filter=all", class: "filterbar__item", "aria-selected": !["deposited", "in_transit", "refunded"].include?(params[:filter]), role: "tab" %>
-  <%= link_to "Deposited", "?filter=deposited", class: "filterbar__item", "aria-selected": params[:filter] == "deposited", role: "tab" %>
-  <%= link_to "In Transit", "?filter=in_transit", class: "filterbar__item", "aria-selected": params[:filter] == "in_transit", role: "tab" %>
+  <%= link_to "Deposited", "?filter=deposited", class: "filterbar__item", "aria-selected": !["refunded"].include?(params[:filter]), role: "tab" %>
   <%= link_to "Refunded", "?filter=refunded", class: "filterbar__item", "aria-selected": params[:filter] == "refunded", role: "tab" %>
 </div>
 
