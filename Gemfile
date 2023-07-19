@@ -47,7 +47,7 @@ gem "twilio-ruby" # SMS notifications
 
 gem "lob"
 
-gem "docusign_esign", "~> 3.13" # DocuSign API
+gem "docusign_esign", "~> 3.24" # DocuSign API
 
 gem "google-apis-admin_directory_v1", "~> 0.43.0" # GSuite
 
