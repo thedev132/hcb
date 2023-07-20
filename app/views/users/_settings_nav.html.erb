@@ -3,7 +3,7 @@
     <%= link_to "General", @user == current_user ? my_settings_path : edit_user_path(@user), data: { turbo: true, turbo_action: "advance" } %>
   </li>
   <li class="<%= "active" if active == "address" %>">
-    <%= link_to "Address", @user == current_user ? settings_address_path : address_user_path(@user), data: { turbo: true, turbo_action: "advance" } %>
+    <%= link_to "Billing Address", @user == current_user ? settings_address_path : address_user_path(@user), data: { turbo: true, turbo_action: "advance" } %>
   </li>
   <li class="<%= "active" if active == "previews" %>">
     <%= link_to @user == current_user ? settings_previews_path : previews_user_path(@user), data: { turbo: true, turbo_action: "advance" } do %>
