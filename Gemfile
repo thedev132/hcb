@@ -197,3 +197,5 @@ group :development do
 
   gem "foreman"
 end
+
+gem "jbuilder", "~> 2.11"

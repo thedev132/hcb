@@ -442,6 +442,26 @@ Rails.application.routes.draw do
     post "v2/partnered_signups/new", to: "v2#partnered_signups_new"
     get "v2/partnered_signups", to: "v2#partnered_signups"
     get "v2/partnered_signup/:public_id", to: "v2#partnered_signup", as: :v2_partnered_signup
+
+    namespace :v4 do
+      defaults format: :json do
+        resource :user do
+          resources :events, path: "organizations", only: [:index]
+          resources :stripe_cards, path: "cards", only: [:index]
+        end
+
+        resources :events, path: "organizations", only: [:show] do
+          resources :stripe_cards, path: "cards", only: [:index]
+          member do
+            get "transactions"
+          end
+        end
+
+        resources :stripe_cards, path: "cards", only: [:show]
+
+        match "*path" => "application#not_found", via: [:get, :post]
+      end
+    end
   end
 
   get "partnered_signups/:public_id", to: "partnered_signups#edit", as: :edit_partnered_signups

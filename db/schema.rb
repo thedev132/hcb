@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_17_072124) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_19_194911) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_stat_statements"
@@ -133,6 +133,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_17_072124) do
     t.datetime "started_at", precision: nil
     t.index ["user_id"], name: "index_ahoy_visits_on_user_id"
     t.index ["visit_token"], name: "index_ahoy_visits_on_visit_token", unique: true
+  end
+
+  create_table "api_tokens", force: :cascade do |t|
+    t.text "token_ciphertext"
+    t.string "token_bidx"
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["token_bidx"], name: "index_api_tokens_on_token_bidx", unique: true
+    t.index ["user_id"], name: "index_api_tokens_on_user_id"
   end
 
   create_table "bank_accounts", force: :cascade do |t|
@@ -1666,6 +1676,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_17_072124) do
   add_foreign_key "ach_transfers", "users", column: "creator_id"
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "api_tokens", "users"
   add_foreign_key "bank_fees", "events"
   add_foreign_key "canonical_event_mappings", "canonical_transactions"
   add_foreign_key "canonical_event_mappings", "events"
