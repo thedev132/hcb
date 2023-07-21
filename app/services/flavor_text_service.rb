@@ -32,7 +32,8 @@ class FlavorTextService
       "Development Mode",
       "super secret admin mode",
       "Puts the 'dev' in 'financially devious'!",
-      "Rails.env.fun?"
+      "Rails.env.fun?",
+      "Let's rewrite Bank in #{Faker::ProgrammingLanguage.name}!"
     ]
   end
 
