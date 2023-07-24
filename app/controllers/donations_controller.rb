@@ -67,6 +67,11 @@ class DonationsController < ApplicationController
     d_params = donation_params
     d_params[:amount] = Monetize.parse(donation_params[:amount]).cents
 
+    if d_params[:name] == "aser ras"
+      redirect_to root_url and return
+    end
+
+
     @donation = Donation.new(d_params)
     @donation.event = @event
 
