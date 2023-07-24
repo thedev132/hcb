@@ -42,11 +42,11 @@
   padding-top: 2rem;
   z-index: 2;
 
-  @media (min-width: 56em) {
-    position: sticky;
-    position: -webkit-sticky;
-    top: 0;
-  }
+  // @media (min-width: 56em) {
+  //   position: sticky;
+  //   position: -webkit-sticky;
+  //   top: 0;
+  // }
 }
 
 .app__content {
