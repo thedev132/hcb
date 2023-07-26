@@ -23,8 +23,15 @@ module Api
         expose :background_image do |organization|
           url_for_attached organization.background_image
         end
-        expose :public_message do |event|
-          event.public_message.presence
+        expose :public_message do |organization|
+          organization.public_message.presence
+        end
+        expose :donation_link do |organization|
+          if organization.donation_page_enabled?
+            Rails.application.routes.url_helpers.start_donation_donations_url(organization)
+          else
+            nil
+          end
         end
         expose :balances do
           expose :balance_available_v2_cents, as: :balance_cents, documentation: { type: "integer" }
