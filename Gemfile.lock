@@ -86,7 +86,7 @@ GEM
       airbrake-ruby (~> 6.0)
     airbrake-ruby (6.2.0)
       rbtree3 (~> 0.5)
-    airrecord (1.0.10)
+    airrecord (1.0.12)
       faraday (>= 1.0, < 3.0)
       faraday-net_http_persistent
       net-http-persistent
@@ -474,7 +474,7 @@ GEM
       mustermann (>= 1.0.0)
     namae (1.1.1)
     native-package-installer (1.1.5)
-    net-http-persistent (4.0.1)
+    net-http-persistent (4.0.2)
       connection_pool (~> 2.2)
     net-imap (0.3.4)
       date
