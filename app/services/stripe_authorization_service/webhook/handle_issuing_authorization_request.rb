@@ -54,7 +54,7 @@ module StripeAuthorizationService
 
       def set_metadata!(additional = {})
         default_metadata = {
-          current_balance_available: card.balance_available.to_i, # TODO: make sure Event#balance_available_v2_cents always returns an integer
+          current_balance_available: card.balance_available,
         }
 
         StripeService::Issuing::Authorization.update(

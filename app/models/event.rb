@@ -568,7 +568,7 @@ class Event < ApplicationRecord
                            .sum(&:fronted_amount)
 
     # TODO: make sure this has the same rounding error has the rest of the codebase
-    fee_balance_v2_cents + (feed_fronted_balance * sponsorship_fee)
+    fee_balance_v2_cents + (feed_fronted_balance * sponsorship_fee).ceil
   end
 
   # This intentionally does not include fees on fronted transactions to make sure they aren't actually charged
