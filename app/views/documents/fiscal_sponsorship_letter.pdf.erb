@@ -1,4 +1,4 @@
-<% fs_date = @event.created_at %>
+<% fs_date = @event.activated_at || @event.created_at %>
 
 <head>
   <title><%= @event.name %> Fiscal Sponsorship Confirmation</title>
