@@ -20,6 +20,7 @@ module Api
             refunded
           ]
         }
+        expose :recurring?, as: :recurring, documentation: { type: "boolean" }
 
       end
 
