@@ -11,7 +11,9 @@ module.exports = {
     sourceType: 'module'
   },
   plugins: ['react'],
-  rules: {},
+  rules: {
+    'react/forbid-dom-props': ['error', { forbid: ['id'] }]
+  },
   globals: {
     require: 'readonly',
     PublicKeyCredential: 'readonly'

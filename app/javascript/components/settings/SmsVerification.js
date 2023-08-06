@@ -1,5 +1,5 @@
 import HttpClient from "../../common/http";
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from "prop-types"
 
 const SmsVerification = ({ phoneNumber }) => {
@@ -8,6 +8,7 @@ const SmsVerification = ({ phoneNumber }) => {
   const [validationSuccess, setValidationSuccess] = useState(false)
   const [loading, setLoading] = useState(false)
   const [code, setCode] = useState('')
+  const verificationCodeInput = useRef(null)
 
   const handleClick = async (e) => {
     e.preventDefault()
@@ -23,10 +24,15 @@ const SmsVerification = ({ phoneNumber }) => {
         setErrors(["something went wrong!"])
       }
     } finally {
-      document.getElementById('verification-code').focus()
       setLoading(false)
     }
   }
+
+  useEffect(() => {
+    if(validationSent) {
+      verificationCodeInput.current.focus()
+    }
+  }, [validationSent])
 
   const handleSubmit = async (e) => {
     console.log('submitting...')
@@ -79,7 +85,7 @@ const SmsVerification = ({ phoneNumber }) => {
               <p>We&apos;ve just sent a code to {phoneNumber}. It should arrive in the next 5 to 30 seconds depending on your connection.</p>
               <div className="flex">
                 <form onSubmit={handleSubmit}>
-                  <input type="tel" id="verification-code" autoComplete="off" onSubmit={handleSubmit} onInput={handleInput} placeholder="XXX-XXX" value={code} className="mb1" required />
+                  <input type="tel" ref={verificationCodeInput} autoComplete="off" onSubmit={handleSubmit} onInput={handleInput} placeholder="XXX-XXX" value={code} className="mb1" required />
                   <input className={loading ? 'muted wait disabled' : 'pointer'} onSubmit={handleSubmit} type="submit" value="Verify" />
                 </form>
               </div>
