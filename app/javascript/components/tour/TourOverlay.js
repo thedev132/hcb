@@ -32,7 +32,7 @@ const tours = {
       if (options.category != 'outernet guild') {
         steps.push({
           attachTo: isMobile ? 'receive' : 'donations',
-          text: 'Share your donation form with others, and get it embedded on your website.',
+          text: 'Share your donation form with others and embed it on your website.',
           placement: isMobile ? 'top-end' : 'right',
           strategy: 'fixed'
         })
