@@ -15,15 +15,9 @@ module PendingTransactionEngine
         private
 
         def raw_pending_stripe_transactions_ready_for_processing
-          @raw_pending_stripe_transactions_ready_for_processing ||= begin
-            return RawPendingStripeTransaction.all if previously_processed_raw_pending_stripe_transactions_ids.length < 1
-
-            RawPendingStripeTransaction.where("id not in(?)", previously_processed_raw_pending_stripe_transactions_ids)
-          end
-        end
-
-        def previously_processed_raw_pending_stripe_transactions_ids
-          @previously_processed_raw_pending_stripe_transactions_ids ||= ::CanonicalPendingTransaction.stripe.pluck(:raw_pending_stripe_transaction_id)
+          RawPendingStripeTransaction
+            .left_joins(:canonical_pending_transaction)
+            .where("canonical_pending_transactions.id IS NULL OR canonical_pending_transactions.amount_cents != raw_pending_stripe_transactions.amount_cents")
         end
 
       end
