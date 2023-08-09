@@ -9,8 +9,7 @@ class AchTransfersController < ApplicationController
   def show
     authorize @ach_transfer
 
-    # Comments
-    @hcb_code = HcbCode.find_or_create_by(hcb_code: @ach_transfer.hcb_code)
+    redirect_to @ach_transfer.local_hcb_code
   end
 
   def transfer_confirmation_letter
