@@ -56,9 +56,7 @@
   </div>
   <% if @user.webauthn_credentials.length > 0 %>
     <div class="grid grid--split mb3">
-      <% @user.webauthn_credentials.order(created_at: :desc).each do |credential| %>
-        <%= render credential %>
-      <% end %>
+      <%= render @user.webauthn_credentials.order(created_at: :desc) %>
     </div>
   <% else %>
     <div class="secondary center mb4">
