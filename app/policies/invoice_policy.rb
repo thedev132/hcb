@@ -40,6 +40,14 @@ class InvoicePolicy < ApplicationPolicy
     user&.admin?
   end
 
+  def hosted?
+    admin_or_user
+  end
+
+  def pdf?
+    admin_or_user
+  end
+
   private
 
   def admin_or_user

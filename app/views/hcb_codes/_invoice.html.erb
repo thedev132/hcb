@@ -120,14 +120,14 @@
 
   <section class="card__banner border-top flex flex-wrap">
     <div class="btn-group mr-auto">
-    <%= link_to organizer_signed_in? ? @invoice.hosted_invoice_url : root_path,
+    <%= link_to organizer_signed_in? ? invoice_hosted_path(@invoice.hashid) : root_path,
       disabled: !organizer_signed_in?,
       class: "btn bg-accent mr1",
       target: "_blank" do %>
       <%= inline_icon "external" %>
       View sent invoice
     <% end %>
-    <%= link_to organizer_signed_in? ? @invoice.invoice_pdf : root_path,
+    <%= link_to organizer_signed_in? ? invoice_pdf_path(@invoice.hashid) : root_path,
       disabled: !organizer_signed_in?,
       class: "btn bg-info mr1",
       target: "_blank" do %>

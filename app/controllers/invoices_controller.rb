@@ -177,6 +177,28 @@ class InvoicesController < ApplicationController
     end
   end
 
+  def hosted
+    @invoice = Invoice.find(params[:invoice_id])
+
+    authorize @invoice
+
+    @invoice.sync_remote!
+    @invoice.reload
+
+    redirect_to @invoice.hosted_invoice_url, allow_other_host: true
+  end
+
+  def pdf
+    @invoice = Invoice.find(params[:invoice_id])
+
+    authorize @invoice
+
+    @invoice.sync_remote!
+    @invoice.reload
+
+    redirect_to @invoice.invoice_pdf, allow_other_host: true
+  end
+
   private
 
   def filtered_params
