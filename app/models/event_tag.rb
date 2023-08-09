@@ -7,19 +7,16 @@
 #  id          :bigint           not null, primary key
 #  description :string
 #  name        :string           not null
+#  purpose     :string
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
-#
-# Indexes
-#
-#  index_event_tags_on_name  (name) UNIQUE
 #
 class EventTag < ApplicationRecord
   include ActionView::Helpers::TextHelper # for `pluralize`
 
   has_and_belongs_to_many :events
 
-  validates :name, presence: true, uniqueness: true
+  validates :name, presence: true, uniqueness: { scope: :purpose }
 
   def removal_confirmation_message
     message = "Are you sure you'd like to delete this tag?"
@@ -28,12 +25,16 @@ class EventTag < ApplicationRecord
     message + " It will be removed from #{pluralize(events.size, 'organization')}."
   end
 
-end
+  def api_name(format = :short)
+    components = [name]
+    components << purpose unless format == :short
+    components.compact.join("_").parameterize.underscore
+  end
 
-class EventTag
   module Tags
     ORGANIZED_BY_HACK_CLUBBERS = "Organized by Hack Clubbers"
     ORGANIZED_BY_TEENAGERS = "Organized by Teenagers"
+    CLIMATE = "Climate"
   end
 
 end

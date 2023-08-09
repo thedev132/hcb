@@ -806,6 +806,7 @@ DEPENDENCIES
   byebug
   chronic
   comma (~> 4.7)
+  countries
   country_select (~> 8.0)
   docusign_esign (~> 3.24)
   dotenv-rails

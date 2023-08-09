@@ -288,6 +288,9 @@
               <%= button_to toggle_event_tag_event_path(id: @event.id, event_tag_id: tag.id), class: "menu__action", form_class: "flex-auto", form: { "data-turbo" => "true" } do %>
                 <%= "✓" if @event.event_tags.include?(tag) %>
 
+                <% if tag.purpose.present? %>
+                  <span class="bold italic"><%= tag.purpose.titleize %>:</span>&nbsp;
+                <% end %>
                 <%= tag.name %>
               <% end %>
               <%= button_to event_event_tag_path(@event, tag), class: "menu__action", method: :delete, title: "Delete this tag", form: { "data-turbo" => "true", "data-turbo-confirm" => tag.removal_confirmation_message } do %>

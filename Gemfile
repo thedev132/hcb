@@ -29,6 +29,7 @@ gem "turbo-rails", "~> 1.4"
 
 gem "invisible_captcha"
 gem "local_time" # client-side timestamp converter for cache-safe rendering
+gem "countries"
 gem "country_select", "~> 8.0"
 
 

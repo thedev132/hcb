@@ -187,6 +187,8 @@ module Api
       end
     end
 
+    mount Directory
+
     desc "Flavor text!" do
       summary "Flavor text!"
       failure [[404]]
