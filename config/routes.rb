@@ -300,6 +300,9 @@ Rails.application.routes.draw do
     member do
       post "cancel"
     end
+    collection do
+      post "validate_routing_number"
+    end
     resources :comments
   end
 

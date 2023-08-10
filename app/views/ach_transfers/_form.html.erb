@@ -22,9 +22,16 @@
     <%= form.text_field :bank_name, placeholder: "Name of the bank", required: true, disabled: @event.demo_mode? %>
   </div>
 
-  <div class="field">
+  <div
+    class="field"
+    <% if Flipper.enabled?(:routing_number_validation, current_user) %>
+      data-controller="external-validation"
+      data-external-validation-url-value="<%= validate_routing_number_ach_transfers_path %>"
+    <% end %>>
+
     <%= form.label :routing_number %>
-    <%= form.text_field :routing_number, placeholder: "123456789", required: true, disabled: @event.demo_mode?, class: "fs-mask" %>
+    <%= form.text_field :routing_number, placeholder: "123456789", required: true, disabled: @event.demo_mode?, class: "fs-mask", data: { action: "input->external-validation#validate" } %>
+    <span class="muted" data-external-validation-target="hint"></span>
   </div>
 
   <div class="field">

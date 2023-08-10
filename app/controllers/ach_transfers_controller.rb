@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
 class AchTransfersController < ApplicationController
-  before_action :set_ach_transfer, except: [:new, :create, :index]
+  before_action :set_ach_transfer, except: [:new, :create, :index, :validate_routing_number]
   before_action :set_event, only: [:new, :create]
-  skip_before_action :signed_in_user
+  skip_before_action :signed_in_user, except: [:validate_routing_number]
+  skip_after_action :verify_authorized, only: [:validate_routing_number]
 
   # GET /ach_transfers/1
   def show
@@ -61,6 +62,19 @@ class AchTransfersController < ApplicationController
     @ach_transfer.mark_rejected!
 
     redirect_to @ach_transfer.local_hcb_code
+  end
+
+  def validate_routing_number
+    return render json: { valid: false, hint: "Bank not found for this routing number." } unless params[:value].size == 9
+
+    banks = Increase::RoutingNumbers.list(routing_number: params[:value])
+
+    valid = banks.size > 0
+
+    render json: {
+      valid:,
+      hint: valid ? banks.first&.dig("name") : "Bank not found for this routing number.",
+    }
   end
 
   private
