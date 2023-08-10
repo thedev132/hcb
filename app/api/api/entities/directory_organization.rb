@@ -37,7 +37,7 @@ module Api
         # This is written with filtering in Ruby rather than SQL to use
         # previously loaded data and prevent an N+1.
         organization.event_tags.any? do |tag|
-          tag.name == EventTag::Tags::CLIMATE && tag.purpose == :directory
+          tag.name == EventTag::Tags::CLIMATE && tag.purpose == "directory"
         end
       end
 

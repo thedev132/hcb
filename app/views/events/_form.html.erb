@@ -271,6 +271,9 @@
     <div class="flex items-center flex-wrap" style="gap: 0.25rem">
       <% @event.event_tags.each do |tag| %>
         <span class="badge bg-muted ml0 mr1">
+          <% if tag.purpose.present? %>
+            <span class="bold italic"><%= tag.purpose.titleize %>:</span>&nbsp;
+          <% end %>
           <%= tag.name %>
           <%= button_to toggle_event_tag_event_path(id: @event.id, event_tag_id: tag.id), class: "p0 line-height-0 bg-transparent border-none cursor-pointer link-reset", form_class: "line-height-0", form: { "data-turbo" => "true" } do %>
             <%= inline_icon "view-close", size: 16 %>
