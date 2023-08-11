@@ -7,6 +7,16 @@ module Api
         ->(org, _) { org.is_public? }
       end
 
+      def self.partner_128_collective_org?
+        ->(org, _) do
+          # This is written with filtering in Ruby rather than SQL to use
+          # previously loaded data and prevent an N+1.
+          org.event_tags.any? do |tag|
+            tag.name == EventTag::Tags::CLIMATE && tag.purpose == "directory"
+          end
+        end
+      end
+
       expose :name
       expose :description
 
@@ -34,10 +44,18 @@ module Api
                     .map { |tag| tag.api_name(:short) }
       end
       expose :climate do |organization|
-        # This is written with filtering in Ruby rather than SQL to use
-        # previously loaded data and prevent an N+1.
-        organization.event_tags.any? do |tag|
-          tag.name == EventTag::Tags::CLIMATE && tag.purpose == "directory"
+        self.class.partner_128_collective_org?.call(organization, nil)
+      end
+
+      expose :partners do
+        expose :"128_collective", if: partner_128_collective_org? do
+          expose :funded do |organization|
+            organization.event_tags.any? { |tag| tag.name == EventTag::Tags::PARTNER_128_COLLECTIVE_FUNDED }
+          end
+
+          expose :recommended do |organization|
+            organization.event_tags.any? { |tag| tag.name == EventTag::Tags::PARTNER_128_COLLECTIVE_RECOMMENDED }
+          end
         end
       end
 

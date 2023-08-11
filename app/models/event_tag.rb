@@ -35,6 +35,8 @@ class EventTag < ApplicationRecord
     ORGANIZED_BY_HACK_CLUBBERS = "Organized by Hack Clubbers"
     ORGANIZED_BY_TEENAGERS = "Organized by Teenagers"
     CLIMATE = "Climate"
+    PARTNER_128_COLLECTIVE_FUNDED = "128 Collective Funded"
+    PARTNER_128_COLLECTIVE_RECOMMENDED = "128 Collective Recommended"
   end
 
 end

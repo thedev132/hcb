@@ -24,7 +24,9 @@ module Api
           "salary"
         ]
         orgs = orgs.where.not(category: disallowed_categories)
-                   .with_attached_logo.with_attached_background_image
+        orgs = Event.where(id: orgs.select(:id))
+                    .includes(:event_tags)
+                    .with_attached_logo.with_attached_background_image
 
         @organizations = paginate(orgs.reorder(name: :asc))
 
