@@ -5,7 +5,7 @@ FactoryBot.define do
     email { Faker::Internet.email }
 
     trait :make_admin do
-      admin_at { Time.zone.now }
+      access_level { :admin }
     end
   end
 end

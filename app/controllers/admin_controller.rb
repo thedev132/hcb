@@ -293,6 +293,7 @@ class AdminController < ApplicationController
     @page = params[:page] || 1
     @per = params[:per] || 100
     @q = params[:q].present? ? params[:q] : nil
+    @access_level = params[:access_level]
     @event_id = params[:event_id].present? ? params[:event_id] : nil
 
     if @event_id
@@ -304,6 +305,7 @@ class AdminController < ApplicationController
     end
 
     relation = relation.search_name(@q) if @q
+    relation = relation.where(access_level: @access_level) if @access_level.present?
 
     @count = relation.count
 

@@ -10,6 +10,9 @@
   <%= form.collection_select(:event_id, Event.reorder(Event::CUSTOM_SORT), :id, :admin_dropdown_description, { include_blank: true, selected: @event_id }, { width: 150, style: "max-width: 150px" }) %>
   |
 
+  <%= form.select :access_level, User.access_levels.keys.map { |level| [level.humanize, level] }, { include_blank: "All user types", selected: @access_level } %>
+  |
+
   <%= form.submit "Search" %>
 <% end %>
 
@@ -28,7 +31,7 @@
   </thead>
   <tbody>
     <% @users.each do |user| %>
-      <tr style="<%= "background: #ff8c38;" if user.admin_at.present? %>">
+      <tr style="<%= "background: #ff8c38;" if user.admin? %>">
         <td><%= user.id %></td>
         <td><%= user.created_at.strftime("%Y-%m-%d") %></td>
         <td>

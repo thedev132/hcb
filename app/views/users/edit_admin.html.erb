@@ -6,6 +6,9 @@
 <turbo-frame id="settings">
   <%= render "settings_nav", active: "admin" %>
   <section>
+    <% admin_tools do %>
+      Updating <%= user_mention @user %>'s profile
+    <% end %>
     <% admin_tools override_pretend: true do %>
       <h2 id="admin">Admin configurations</h2>
 
@@ -28,6 +31,20 @@
           <div class="field field--checkbox">
             <%= form.check_box :running_balance_enabled, checked: @user.running_balance_enabled? %>
             <%= form.label :running_balance_enabled, "Show running balance?" %>
+          </div>
+        <% end %>
+
+        <% if current_user.superadmin? %>
+          <div class="field">
+            <%= form.label :access_level, "Access level" %>
+            <%= form.select :access_level,
+                            [
+                              ["👤 Regular user", "user"],
+                              ["🛡️ Admin", "admin"],
+                              ["👑 Superadmin (can manage other users' admin status)", "superadmin"],
+                            ],
+                            {},
+                            disabled: current_user == @user %>
           </div>
         <% end %>
 

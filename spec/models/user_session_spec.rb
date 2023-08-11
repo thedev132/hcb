@@ -22,7 +22,7 @@ RSpec.describe UserSession, type: :model do
 
     it "can be be created when impersonated" do
       user = create(:user, locked_at: Time.now)
-      admin_user = create(:user, admin_at: Time.now)
+      admin_user = create(:user, access_level: :admin)
       user_session = create(:user_session, user:, impersonated_by: admin_user)
       expect(user_session).to be_valid
     end

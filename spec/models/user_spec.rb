@@ -10,7 +10,7 @@ RSpec.describe User, type: :model do
   end
 
   it "is admin" do
-    user = create(:user, admin_at: Time.now)
+    user = create(:user, access_level: :admin)
 
     expect(user).to be_admin
   end

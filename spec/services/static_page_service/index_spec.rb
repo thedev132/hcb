@@ -3,7 +3,7 @@
 require "rails_helper"
 
 RSpec.describe StaticPageService::Index, type: :model do
-  let(:current_user) { create(:user, admin_at: Time.now) }
+  let(:current_user) { create(:user, access_level: :admin) }
 
   let(:service) do
     StaticPageService::Index.new(

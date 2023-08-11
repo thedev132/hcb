@@ -318,7 +318,7 @@ class UsersController < ApplicationController
         redirect_to root_path
       else
         flash[:success] = @user == current_user ? "Updated your profile!" : "Updated #{@user.first_name}'s profile!"
-        redirect_to edit_user_path(@user)
+        redirect_back_or_to edit_user_path(@user)
       end
     else
       @onboarding = User.friendly.find(params[:id]).full_name.blank?
@@ -413,6 +413,10 @@ class UsersController < ApplicationController
           :stripe_billing_address_country
         ]
       }
+    end
+
+    if current_user.superadmin?
+      attributes << :access_level
     end
 
     params.require(:user).permit(attributes)
