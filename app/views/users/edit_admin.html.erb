@@ -34,7 +34,7 @@
           </div>
         <% end %>
 
-        <% if current_user.superadmin? %>
+        <% if superadmin_signed_in? %>
           <div class="field">
             <%= form.label :access_level, "Access level" %>
             <%= form.select :access_level,

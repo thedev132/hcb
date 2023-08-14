@@ -48,6 +48,12 @@ module SessionsHelper
     signed_in? && current_user&.admin?
   end
 
+  def superadmin_signed_in?
+    signed_in? &&
+      current_user&.superadmin? &&
+      !current_session&.impersonated?
+  end
+
   def current_user=(user)
     @current_user = user
   end

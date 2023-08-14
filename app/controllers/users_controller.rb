@@ -415,7 +415,7 @@ class UsersController < ApplicationController
       }
     end
 
-    if current_user.superadmin?
+    if superadmin_signed_in?
       attributes << :access_level
     end
 
