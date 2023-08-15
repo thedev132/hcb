@@ -1,0 +1,28 @@
+<% title "Stripe Cards" %>
+
+<h1>STRIPE CARDS</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Cardholder name</th>
+      <th>Last 4</th>
+      <th>Created</th>
+      <th>Card name</th>
+      <th>Type</th>
+      <th>URL</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @cards.each do |card| %>
+      <tr>
+        <td><%= card.cardholder.user.name %>
+        <td><%= card.last4 %></td>
+        <td><%= card.created_at %></td>
+        <td><%= card.name %></td>
+        <td><%= card.card_type %></td>
+        <td><%= stripe_card_url(card) %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

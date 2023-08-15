@@ -157,6 +157,7 @@ Rails.application.routes.draw do
       get "raw_transaction_new", to: "admin#raw_transaction_new"
       post "raw_transaction_create", to: "admin#raw_transaction_create"
       get "ledger", to: "admin#ledger"
+      get "stripe_cards", to: "admin#stripe_cards"
       get "pending_ledger", to: "admin#pending_ledger"
       get "ach", to: "admin#ach"
       get "check", to: "admin#check"

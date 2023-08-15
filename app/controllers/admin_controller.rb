@@ -314,6 +314,16 @@ class AdminController < ApplicationController
     render layout: "admin"
   end
 
+  def stripe_cards
+    @page = params[:page] || 1
+    @per = params[:per] || 20
+
+    @cards = StripeCard.includes(:stripe_cardholder).page(@page).per(@per).order("created_at desc")
+
+    render layout: "admin"
+  end
+
+
   def bank_accounts
     relation = BankAccount
 
