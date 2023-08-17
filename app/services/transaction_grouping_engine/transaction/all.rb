@@ -91,7 +91,6 @@ module TransactionGroupingEngine
               where
                 cpem.event_id = #{event.id}
                 and cpem.subledger_id is null
-                #{search_modifier_for :pt}
               except ( -- hide pending transactions that have either settled or been declined.
                 select
                   cpsm.canonical_pending_transaction_id
@@ -111,6 +110,7 @@ module TransactionGroupingEngine
               inner join canonical_event_mappings cem on cem.canonical_transaction_id = ct.id
               where ct.hcb_code = pt.hcb_code and cem.event_id = #{event.id}
             )
+            #{search_modifier_for :pt}
           group by
             coalesce(pt.hcb_code, cast(pt.id as text)) -- handle edge case when hcb_code is null
         SQL
@@ -133,8 +133,8 @@ module TransactionGroupingEngine
               where
                 cem.event_id = #{event.id}
                 and cem.subledger_id is null
-                #{search_modifier_for :ct}
             )
+            #{search_modifier_for :ct}
           group by
             coalesce(ct.hcb_code, cast(ct.id as text)) -- handle edge case when hcb_code is null
         SQL
