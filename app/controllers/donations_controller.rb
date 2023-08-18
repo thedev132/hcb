@@ -68,6 +68,7 @@ class DonationsController < ApplicationController
     d_params[:amount] = Monetize.parse(donation_params[:amount]).cents
 
     if d_params[:name] == "aser ras"
+      skip_authorization
       redirect_to root_url and return
     end
 
