@@ -169,7 +169,7 @@ class FlavorTextService
       "Hand-crafted by our resident byte-smiths",
       "B O N K",
       "#{@random.rand 4..9}0% bug free!",
-      "#{@random.rand 1..4}0% less bugs!",
+      "#{@random.rand 1..4}0% fewer bugs!",
       "Ask your doctor if Hack Club Bank is right for you",
       "Now with an&nbsp;<a href='https://bank.hackclub.com/docs/api/v3'>API</a>!".html_safe,
       "<a href='https://bank.hackclub.com/docs/api/v3'>README</a>".html_safe,
