@@ -9,8 +9,8 @@ class CreateEventTagsAndEvents < ActiveRecord::Migration[7.0]
     end
 
     # Migrate data from old boolean columns to new EventTag model
-    hack_clubers = EventTag.find_or_create_by!(name: EventTag::Tags::ORGANIZED_BY_HACK_CLUBBERS)
-    teenagers = EventTag.find_or_create_by!(name: EventTag::Tags::ORGANIZED_BY_TEENAGERS)
+    hack_clubers = EventTag.find_or_initialize_by(name: EventTag::Tags::ORGANIZED_BY_HACK_CLUBBERS).save!(validate: false)
+    teenagers = EventTag.find_or_initialize_by(name: EventTag::Tags::ORGANIZED_BY_TEENAGERS).save!(validate: false)
 
     Event.where(organized_by_hack_clubbers: true).find_each do |e|
       e.event_tags << hack_clubers
