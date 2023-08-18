@@ -123,3 +123,7 @@ stripe_card_nightly_job:
   class: "StripeCardJob::Nightly"
   queue: "default"
 
+128_collective_fund_distribute_monthly_job:
+  cron: "0 0 1 * *" # run first day of each month
+  class: "DisbursementJob::Distribute128CollectiveFund"
+  queue: "default"
