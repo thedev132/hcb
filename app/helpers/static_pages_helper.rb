@@ -113,6 +113,11 @@ module StaticPagesHelper
         query: { filterByFormula: "Status='Pending'", fields: [] },
         destination: "https://airtable.com/tblJtjtY9qAOG3FS8/viwUz9aheNAvXwzjg"
       },
+      google_workspace_waitlist: {
+        url: "https://airbridge.hackclub.com/v0.1/Bank%20Promotions/Google%20Workspace%20Waitlist",
+        query: { filterByFormula: "Status='Pending'", fields: [] },
+        destination: "https://airtable.com/appEzv7w2IBMoxxHe/tbl9CkfZHKZYrXf1T/viwgfJvrrD9Jn9VLj"
+      }
     }
   end
 end
