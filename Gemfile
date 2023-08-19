@@ -32,8 +32,6 @@ gem "local_time" # client-side timestamp converter for cache-safe rendering
 gem "countries"
 gem "country_select", "~> 8.0"
 
-
-gem "httparty" # web requests
 gem "faraday" # web requests
 
 gem "increase", "~> 0.3.1"

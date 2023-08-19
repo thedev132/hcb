@@ -323,7 +323,6 @@ class AdminController < ApplicationController
     render layout: "admin"
   end
 
-
   def bank_accounts
     relation = BankAccount
 
@@ -1181,14 +1180,25 @@ class AdminController < ApplicationController
 
   def airtable_task_size(task_name)
     info = airtable_info[task_name]
-    res = HTTParty.get info[:url], query: { select: info[:query].to_json }
-    case res.code
-    when 200..399
-      tasks = JSON.parse res.body
-      tasks.size
-    else # not successful
-      return 9999 # return something invalidly high to get the ops team to report it
-    end
+    task = Faraday
+           .new { |c| c.response :json }
+           .get(info[:url], { select: info[:query].to_json })
+           .body
+
+    task.size
+  rescue Faraday::Error
+    9999 # return something invalidly high to get the ops team to report it
+  end
+
+  def hackathons_task_size
+    hackathons = Faraday
+                 .new { |c| c.response :json }
+                 .get("https://dash.hackathons.hackclub.com/api/v1/stats/hackathons")
+                 .body
+
+    hackathons.dig("status", "pending", "meta", "count")
+  rescue Faraday::Error
+    9999
   end
 
   def pending_task(task_name)
@@ -1196,7 +1206,7 @@ class AdminController < ApplicationController
     @pending_tasks[task_name] ||= begin
       case task_name
       when :pending_hackathons_airtable
-        airtable_task_size :hackathons
+        hackathons_task_size
       when :pending_grant_airtable
         airtable_task_size :grant
       when :pending_bank_applications_airtable
