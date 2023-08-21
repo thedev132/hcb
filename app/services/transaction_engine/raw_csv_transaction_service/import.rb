@@ -9,22 +9,24 @@ module TransactionEngine
       def run
         s = Set.new
 
-        CSV.read(csv1, headers: true).each do |row|
-          next unless row.present? # skip empty rows
+        csvs.each do |csv|
+          CSV.read(csv, headers: true).each do |row|
+            next unless row.present? # skip empty rows
 
-          raise ArgumentError, "csv_transaction_id #{row["csv_transaction_id"]} must be unique in the file" if s.include?(row["csv_transaction_id"])
+            raise ArgumentError, "csv_transaction_id #{row["csv_transaction_id"]} must be unique in the file" if s.include?(row["csv_transaction_id"])
 
-          s.add(row["csv_transaction_id"])
+            s.add(row["csv_transaction_id"])
 
-          raise_any_argument_errors!(row:)
+            raise_any_argument_errors!(row:)
 
-          ::RawCsvTransaction.find_or_initialize_by(csv_transaction_id: row["csv_transaction_id"]).tap do |rvt|
-            rvt.unique_bank_identifier = row["unique_bank_identifier"]
-            rvt.amount_cents = row["amount_cents"]
-            rvt.date_posted = row["date"]
-            rvt.memo = row["memo"]
-            rvt.raw_data = row
-          end.save!
+            ::RawCsvTransaction.find_or_initialize_by(csv_transaction_id: row["csv_transaction_id"]).tap do |rvt|
+              rvt.unique_bank_identifier = row["unique_bank_identifier"]
+              rvt.amount_cents = row["amount_cents"]
+              rvt.date_posted = row["date"]
+              rvt.memo = row["memo"]
+              rvt.raw_data = row
+            end.save!
+          end
         end
       end
 
@@ -39,8 +41,8 @@ module TransactionEngine
         raise ArgumentError, "memo is required for row #{csv_transaction_id}" unless row["memo"]
       end
 
-      def csv1
-        "#{csvs_path}/ach_transfers_that_were_processed_under_wrong_svb_account.csv"
+      def csvs
+        ["#{csvs_path}/ach_transfers_that_were_processed_under_wrong_svb_account.csv", "#{csvs_path}/td_bank_missing_transactions.csv"]
       end
 
       def csvs_path
