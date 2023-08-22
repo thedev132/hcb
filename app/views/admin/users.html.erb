@@ -25,7 +25,7 @@
       <th class="w-32">Created</th>
       <th>Name</th>
       <th>Email</th>
-      <th>Events</th>
+      <th>Org Positions</th>
       <th class="w-32">Actions</th>
     </tr>
   </thead>
@@ -41,8 +41,18 @@
         </td>
         <td><%= user.email %></td>
         <td>
-          <% user.events.each do |e| %>
-            <%= link_to e.id, e %>
+          <% user.organizer_positions.with_deleted.each do |op| %>
+            <% if op.deleted? %>
+              <em style="font-size: 0.8em;">
+                <% if op.organizer_position_deletion_requests.any? %>
+                  <%= link_to "#{op&.event&.id}☥", op.organizer_position_deletion_requests.first %>
+                <% else %>
+                  <%= link_to "#{op.event_id}☥", Event.with_deleted.find(op.event_id) %>
+                <% end %>
+              </em>
+            <% else %>
+              <%= link_to op.event.id, op.event %>
+            <% end %>
           <% end %>
         </td>
         <td>

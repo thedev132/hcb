@@ -26,6 +26,7 @@
 #
 class OrganizerPosition < ApplicationRecord
   acts_as_paranoid
+  has_paper_trail
 
   scope :not_hidden, -> { where(event: { hidden_at: nil }) }
 
