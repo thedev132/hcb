@@ -1,0 +1,25 @@
+<% if signed_in? && local_assigns.has_key?(:datetime) && local_assigns.has_key?(:duration) %>
+  <% if (datetime + duration) > Time.now %><%# if it hasn't already passed %>
+
+    <div class="w-100 px3 bg-white transparency-banner" data-behavior="hide_iframe">
+      <p class="h5 medium center mt1 mb1">
+        Hack Club Bank will be under maintenance
+        <strong>
+          <%= local_time(datetime, format: "%b %e") %>
+          from
+          <%= local_time(datetime, format: "%l:%M %P") %>
+          to
+          <%= local_time(datetime + duration, format: "%l:%M %P") %>.
+        </strong>
+        <br>
+        You will not be able to access your account and
+        <i>card transactions will decline</i> during this time.
+
+        <% if local_assigns.has_key? :learn_more_url %>
+          <%= link_to "Learn more", learn_more_url, target: "_blank" %>
+        <% end %>
+      </p>
+    </div>
+
+  <% end %>
+<% end %>
