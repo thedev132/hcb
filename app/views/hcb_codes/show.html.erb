@@ -5,7 +5,7 @@
 <%= render partial: "hcb_codes/rich_metadata" %>
 
 <%= render "receipts/list_v2" %>
-<% admin_tools if: !@hcb_code.receipt_required? do %>
+<% admin_tools if: !(@hcb_code.receipt_required? || @hcb_code.ach_transfer?) do %>
   <%= begin receipt_upload_form_config = {
         receiptable: @hcb_code,
         enable_linking: true,
