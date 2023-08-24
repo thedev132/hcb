@@ -31,11 +31,6 @@ class HcbCodesController < ApplicationController
 
     authorize @hcb_code
 
-    if params[:show_details] == "true" && @hcb_code.type == :ach
-      ahoy.track "ACH details shown", hcb_code_id: @hcb_code.id
-      @show_ach_details = params[:show_details] == "true"
-    end
-
     if params[:frame]
       @frame = true
       render :show, layout: false
