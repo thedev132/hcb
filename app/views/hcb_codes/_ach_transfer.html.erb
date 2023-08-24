@@ -27,57 +27,74 @@
       <%= format_datetime @hcb_code.ach_transfer.created_at %>
     </p>
   </section>
+  <turbo-frame id="details">
+    <section class="details pt2 pb2">
+      <p>
+        <strong>Recipient name</strong>
+        <%= @hcb_code.ach_transfer.recipient_name %>
+      </p>
 
-  <section class="details pt2 pb2">
-    <p>
-      <strong>Recipient name</strong>
-      <%= @hcb_code.ach_transfer.recipient_name %>
-    </p>
+      <p class="fs-mask">
+        <strong>Recipient phone</strong>
+        <%= organizer_signed_in? ? @hcb_code.ach_transfer.recipient_tel : "Sign in to view" %>
+      </p>
 
-    <p class="fs-mask">
-      <strong>Recipient phone</strong>
-      <%= organizer_signed_in? ? @hcb_code.ach_transfer.recipient_tel : "Sign in to view" %>
-    </p>
+      <p>
+        <strong>Payment purpose</strong>
+        <%= @hcb_code.ach_transfer.payment_for %>
+      </p>
 
-    <p>
-      <strong>Payment purpose</strong>
-      <%= @hcb_code.ach_transfer.payment_for %>
-    </p>
+      <p>
+        <strong>Bank name</strong>
+        <%= organizer_signed_in? ? @hcb_code.ach_transfer.bank_name : "Sign in to view" %>
+      </p>
 
-    <p>
-      <strong>Bank name</strong>
-      <%= organizer_signed_in? ? @hcb_code.ach_transfer.bank_name : "Sign in to view" %>
-    </p>
-
-    <p class="fs-mask">
-      <strong>Routing number</strong>
-      <%= organizer_signed_in? ? @hcb_code.ach_transfer.routing_number : "Sign in to view" %>
-    </p>
-
-    <p class="fs-mask">
-      <strong>Account number</strong>
-      <%= organizer_signed_in? ? @hcb_code.ach_transfer.account_number : "Sign in to view" %>
-    </p>
-
-    <p>
-      <strong>Amount</strong>
-      <%= render_money @hcb_code.ach_transfer.amount %>
-    </p>
-
-    <p>
-      <strong>Status</strong>
-      <span>
-        <%= @hcb_code.ach_transfer.status_text_long %>
-        <% if @hcb_code.ach_transfer.deposited? %>
-          <span class="muted">
-            <%= link_to "(#{ organizer_signed_in? ? 'view confirmation letter' : 'sign in to view' })", ach_transfer_confirmation_path(@hcb_code.ach_transfer, format: :pdf), target: "_blank" %>
-          </span>
+      <p class="fs-mask">
+        <strong>Routing number</strong>
+        <% if organizer_signed_in? && @show_ach_details %>
+          <%= @hcb_code.ach_transfer.routing_number %>
+        <% elsif organizer_signed_in? %>
+          <%= link_to hcb_code_path(@hcb_code, show_details: "true"), data: { turbo: true } do %>
+            Reveal
+          <% end %>
+        <% else %>
+          Sign in to view
         <% end %>
-      </span>
-    </p>
+      </p>
 
-    <%= render "hcb_codes/tags", hcb_code: @hcb_code, event: (@event || @hcb_code.event) %>
-  </section>
+      <p class="fs-mask">
+        <strong>Account number</strong>
+        <% if organizer_signed_in? && @show_ach_details %>
+          <%= @hcb_code.ach_transfer.account_number %>
+        <% elsif organizer_signed_in? %>
+          <%= link_to hcb_code_path(@hcb_code, show_details: "true"), data: { turbo: true } do %>
+            Reveal
+          <% end %>
+        <% else %>
+          Sign in to view
+        <% end %>
+      </p>
+
+      <p>
+        <strong>Amount</strong>
+        <%= render_money @hcb_code.ach_transfer.amount %>
+      </p>
+
+      <p>
+        <strong>Status</strong>
+        <span>
+          <%= @hcb_code.ach_transfer.status_text_long %>
+          <% if @hcb_code.ach_transfer.deposited? %>
+            <span class="muted">
+              <%= link_to "(#{ organizer_signed_in? ? 'view confirmation letter' : 'sign in to view' })", ach_transfer_confirmation_path(@hcb_code.ach_transfer, format: :pdf), target: "_blank" %>
+            </span>
+          <% end %>
+        </span>
+      </p>
+
+      <%= render "hcb_codes/tags", hcb_code: @hcb_code, event: (@event || @hcb_code.event) %>
+    </section>
+  </turbo-frame>
 
   <% if @hcb_code.ach_transfer.may_mark_rejected? %>
     <section class="card__banner card__darker border-top overflow-hidden">
