@@ -63,10 +63,10 @@
                   <% end %>
                   <%= event.name %>
                 </strong>
-                <% if event.demo_mode? %>
-                  <div class="badge bg-info" style="width: fit-content;">Playground Mode</div>
-                <% end %>
               </div>
+              <% if event.demo_mode? %>
+                <div class="badge bg-info ml0 mb2" style="width: fit-content;">Playground Mode</div>
+              <% end %>
               <div class="brand-sans h4 line-height-2 mb2 flex justify-between">
                 <span style="white-space: nowrap;">
                   <%= inline_icon "payment", size: 16, class: "muted align-middle", 'aria-label': "Dollar sign", style: "transform: scale(2)" %>
