@@ -17,7 +17,8 @@ module CanonicalPendingTransactionJob
       return unless IN_PERSON_AUTH_METHODS.include? auth_method
 
       hcb_code = @cpt.local_hcb_code
-      message = "Your card was charged $#{@cpt.amount.abs} at '#{@cpt.memo}'. Upload your receipt: #{attach_receipt_url hcb_code}"
+      message = "Your card was charged $#{@cpt.amount.abs} at '#{@cpt.memo}'."
+      message += " Upload your receipt: #{attach_receipt_url hcb_code}" if hcb_code.receipt_required?
 
       TwilioMessageService::Send.new(@user, message, hcb_code:).run!
     end
