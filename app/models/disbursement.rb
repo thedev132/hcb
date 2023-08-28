@@ -79,7 +79,7 @@ class Disbursement < ApplicationRecord
   SPECIAL_APPEARANCES = {
     hackathon_grant: {
       title: "Hackathon grant",
-      memo: "💰 Grant from Hack Club and FIRST®",
+      memo: "💰 Hackathon grant from Hack Club",
       css_class: "transaction--fancy",
       icon: "purse",
       qualifier: ->(d) { d.source_event_id == EventMappingEngine::EventIds::HACKATHON_GRANT_FUND }
