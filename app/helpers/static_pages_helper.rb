@@ -6,10 +6,14 @@ module StaticPagesHelper
   def card_to(name, path, options = {})
     return "" if options[:badge] == 0
 
-    badge = options[:badge].to_i > 0 ? badge_for(options[:badge]) : ""
+    badge = if options[:badge].to_i > 0
+              badge_for(options[:badge], class: !options[:subtle_badge] ? "bg-accent pr2" : "pr2")
+            else
+              ""
+            end
     link_to content_tag(:li,
                         [content_tag(:strong, name), badge].join.html_safe,
-                        class: "card card--item card--hover relative overflow-visible line-height-3"),
+                        class: "card card--item card--hover flex justify-between overflow-visible line-height-3"),
             path, method: options[:method]
   end
 

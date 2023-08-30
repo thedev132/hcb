@@ -85,7 +85,7 @@ class Card extends React.Component {
         <li className="card card--item card--hover flex justify-between overflow-visible line-height-3">
           <strong>{this.props.humanName}</strong>
           {this.props.taskName && (
-            <span className={`badge ${this.getColor()}`}>
+            <span className={`badge pr2 ${this.getColor()}`}>
               {this.getCount()}
             </span>
           )}
