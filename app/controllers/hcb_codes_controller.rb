@@ -39,7 +39,7 @@ class HcbCodesController < ApplicationController
       render :show
     end
   rescue Pundit::NotAuthorizedError => e
-    raise unless @event.is_public?
+    raise unless @event.is_public? && !params[:redirect_to_sign_in]
 
     if @hcb_code.canonical_transactions.any?
       txs = TransactionGroupingEngine::Transaction::All.new(event_id: @event.id).run
