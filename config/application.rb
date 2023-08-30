@@ -54,6 +54,10 @@ module Bank
 
     config.exceptions_app = routes
 
+    config.to_prepare do
+      Doorkeeper::AuthorizationsController.layout "application"
+    end
+
     # TODO: Pre-load grape API
     # ::API::V3.compile!
 

@@ -436,6 +436,10 @@ Rails.application.routes.draw do
     end
   end
 
+  use_doorkeeper scope: "api/v4/oauth" do
+    skip_controllers :applications, :authorized_applications
+  end
+
   namespace :api do
     get "v2/login", to: "v2#login"
 

@@ -18,7 +18,7 @@ class ApplicationController < ActionController::Base
   before_action :redirect_to_onboarding
 
   # Force usage of Pundit on actions
-  after_action :verify_authorized
+  after_action :verify_authorized, unless: -> { controller_path.starts_with?("doorkeeper/") }
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 

@@ -1,0 +1,41 @@
+<% page_xs %>
+<% no_app_shell if params[:no_app_shell] %>
+<% @hide_footer = true %>
+
+<h2 class="border-none center regular mt5 mb2">Connect <strong><%= @pre_auth.client.name %></strong> to your Hack Club Bank account?</h2>
+
+<section class="mb2">
+  <div class="flex items-start">
+    <span class="muted mr2"><%= inline_icon "private-outline" %></span>
+    <p class="mt0"><%= @pre_auth.client.name %> is a trusted app created by Hack Club Bank.</p>
+  </div>
+
+  <div class="flex items-start">
+    <span class="muted mr2"><%= inline_icon "important" %></span>
+
+    <p class="mt0"><%= @pre_auth.client.name %> will have full access to your organization funds.</p>
+  </div>
+</section>
+
+<div class="flex items-center justify-center g1">
+  <%= button_to "Connect", oauth_authorization_path, class: "bg-success h2", params: {
+        client_id: @pre_auth.client.uid,
+        redirect_uri: @pre_auth.redirect_uri,
+        state: @pre_auth.state,
+        response_type: @pre_auth.response_type,
+        response_mode: @pre_auth.response_mode,
+        scope: @pre_auth.scope,
+        code_challenge: @pre_auth.code_challenge,
+        code_challenge_method: @pre_auth.code_challenge_method,
+      } %>
+  <%= button_to "Cancel", oauth_authorization_path, method: :delete, class: "bg-muted", params: {
+        client_id: @pre_auth.client.uid,
+        redirect_uri: @pre_auth.redirect_uri,
+        state: @pre_auth.state,
+        response_type: @pre_auth.response_type,
+        response_mode: @pre_auth.response_mode,
+        scope: @pre_auth.scope,
+        code_challenge: @pre_auth.code_challenge,
+        code_challenge_method: @pre_auth.code_challenge_method,
+      } %>
+</div>

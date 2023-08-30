@@ -198,3 +198,5 @@ group :development do
 end
 
 gem "jbuilder", "~> 2.11"
+
+gem "doorkeeper", "~> 5.6"
