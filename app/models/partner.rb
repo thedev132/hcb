@@ -64,7 +64,7 @@ class Partner < ApplicationRecord
     invite_exists = event.organizer_position_invites.where(email: user_email).any?
 
     unless position_exists || invite_exists
-      partnered_email = "bank+#{event.partner.slug}@hackclub.com"
+      partnered_email = "hcb+#{event.partner.slug}@hackclub.com"
       invite_sender = User.find_by(email: partnered_email)
       invite_sender ||= User.create!(email: partnered_email)
       OrganizerPositionInviteService::Create.new(
@@ -101,9 +101,9 @@ class Partner < ApplicationRecord
     return super unless super.nil?
 
     representative_email = if external
-                             "bank+#{slug || "partner_#{id}"}@hackclub.com"
+                             "hcb+#{slug || "partner_#{id}"}@hackclub.com"
                            else
-                             "bank@hackclub.com"
+                             "hcb@hackclub.com"
                            end
 
     transaction do

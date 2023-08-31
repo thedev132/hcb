@@ -31,6 +31,6 @@
 
 <%#= link_to "Void this #{render_money_short @check.amount} check", check_void_path(@check), method: :post, class: 'btn bg-error right' %>
 <%= link_to "Email about voiding #{render_money_short @check.amount} check",
-  "mailto:bank@hackclub.com?subject=[URGENT] void check ##{@check.check_number}",
+  "mailto:hcb@hackclub.com?subject=[URGENT] void check ##{@check.check_number}",
   class: "btn bg-error right" %>
 <%= link_to "Cancel", check_path(@check), class: "btn bg-muted" %>

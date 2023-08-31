@@ -3,7 +3,7 @@
   <head>
     <title>
       <%= yield(:title).concat(" –") if content_for?(:title) %>
-      Bank
+      HCB
     </title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -44,8 +44,8 @@
     <% if @event&.is_public && !organizer_signed_in? && !@no_app_shell && !@no_transparency_header %>
       <div class="w-100 px3 bg-white transparency-banner" data-behavior="hide_iframe">
         <p class="h5 medium center mt1 mb1">
-          This Hack Club Bank project has been made public so you can see all its finances.
-          Hey, <%= link_to "what’s Bank?", "https://hackclub.com/bank/", target: "_blank", class: "primary" %>
+          This HCB project has been made public so you can see all its finances.
+          Hey, <%= link_to "what’s HCB?", "https://hackclub.com/hcb/", target: "_blank", class: "primary" %>
         </p>
       </div>
     <% end %>
@@ -81,7 +81,7 @@
         <%= modal_header "Playground Mode" %>
         <% if organizer_signed_in? %>
           <p>
-            Your account is in <strong>Playground Mode</strong>. You can sign in and poke around, but many features are disabled. Once you're ready to activate your account, you can schedule a call with the Hack Club Bank team.
+            Your account is in <strong>Playground Mode</strong>. You can sign in and poke around, but many features are disabled. Once you're ready to activate your account, you can schedule a call with the HCB team.
           </p>
           <% if @event.demo_mode_request_meeting_at.blank? %>
             <%= link_to event_demo_mode_request_meeting_path(@event), method: :post, class: "btn btn-success" do %>
@@ -122,13 +122,13 @@
             <div class="welcome__content">
               <div class="center">
                 <h3 class="h3 caps secondary block m0">Welcome to</h3>
-                <h1 class="primary mt0 border-none"><%= @organizer_position.initial? ? "Hack Club Bank" : @event.name %></h1>
+                <h1 class="primary mt0 border-none"><%= @organizer_position.initial? ? "HCB" : @event.name %></h1>
               </div>
 
               <div class="mb2">
                 <button class="btn" data-action="welcome#tour">Show me around</button>
               </div>
-              <a href="<%= event_path(@event) %>" data-action="welcome#dismiss">No thanks, bring me straight to Bank</a>
+              <a href="<%= event_path(@event) %>" data-action="welcome#dismiss">No thanks, bring me straight to HCB</a>
             </div>
           </div>
         <% end %>

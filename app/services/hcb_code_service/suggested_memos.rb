@@ -2,7 +2,7 @@
 
 module HcbCodeService
   class SuggestedMemos
-    # Users on Bank generally like to rename transactions (set a custom_memo)
+    # Users on HCB generally like to rename transactions (set a custom_memo)
     # to provide a better appearance on their ledger. HQ generally prefixes
     # memos with emojis. The goal of this service to analyze similar
     # transactions and provide memo suggestions.

@@ -20,7 +20,7 @@ class StripeController < ApplicationController
     rescue NoMethodError => e
       puts e
       notify_airbrake(e)
-      head 200 # success so that stripe doesn't retry (method is unsupported by Bank)
+      head 200 # success so that stripe doesn't retry (method is unsupported by HCB)
       return
     rescue Stripe::SignatureVerificationError
       head 400

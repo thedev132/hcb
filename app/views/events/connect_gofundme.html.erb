@@ -3,12 +3,9 @@
 <%= render "events/nav", selected: :documentation %>
 
 <% content_for :head do %>
-  <% img = "https://workshop-cards.hackclub.com/#{url_encode(@document_title)}.png?theme=light&fontSize=200px&caption=Documentation&brand=Bank" %>
   <meta name="twitter:card" content="summary_large_image">
-  <meta property="og:image" content="<%= img %>">
-  <meta name="twitter:image" content="<%= img %>">
-  <meta property="og:site_name" content="Hack Club Bank">
-  <meta property="og:url" content="https://bank.hackclub.com">
+  <meta property="og:site_name" content="HCB">
+  <meta property="og:url" content="https://hcb.hackclub.com">
   <meta property="og:title" content="<%= @document_title %>">
   <meta name="twitter:title" content="<%= @document_title %>">
   <meta property="og:description" content="<%= @document_subtitle %>">
@@ -22,10 +19,10 @@
   <h3 class="mt0 mb2" style="color: gray; font-weight: 500;"><%= @document_subtitle %></h3>
   <%= image_tag @document_image, class: "w-100" if @document_image %>
 
-<p>Hack Club Bank supports fundraiser payouts to your organization’s account on Bank! Here are the different ways to get your donations from your GoFundMe fundraiser into Hack Club Bank.</p>
+<p>HCB supports fundraiser payouts to your organization’s account! Here are the different ways to get your donations from your GoFundMe fundraiser into HCB.</p>
 <ul>
-  <li><strong>(Recommended) Create a fundraiser for The Hack Foundation.</strong> To have your payouts sent directly to you on Hack Club Bank, create a fundraiser that will automatically pay out to The Hack Foundation <a href="https://www.gofundme.com/start/charity-fundraising" target="_blank">here</a>. Make sure that the recipient is "The Hack Foundation" with EIN 81-2908499. Feel free to personalize the location, logo, and other details to your specific fundraiser. If you have additional questions, reach out to the Bank team at <%= help_email %>.</li>
-  <li><strong>Personal accounts.</strong> To cash out donations from an individual fundraiser, you'll need to connect a personal bank account. Once you've received the funds, donate them directly to your organization on Hack Club Bank through your donations page or an invoice. This method may incur fees on GoFundMe's end, and to avoid paying them, the first option is recommended.</li>
+  <li><strong>(Recommended) Create a fundraiser for The Hack Foundation.</strong> To have your payouts sent directly to you on HCB, create a fundraiser that will automatically pay out to The Hack Foundation <a href="https://www.gofundme.com/start/charity-fundraising" target="_blank">here</a>. Make sure that the recipient is "The Hack Foundation" with EIN 81-2908499. Feel free to personalize the location, logo, and other details to your specific fundraiser. If you have additional questions, reach out to the HCB team at <%= help_email %>.</li>
+  <li><strong>Personal accounts.</strong> To cash out donations from an individual fundraiser, you'll need to connect a personal bank account. Once you've received the funds, donate them directly to your organization on HCB through your donations page or an invoice. This method may incur fees on GoFundMe's end, and to avoid paying them, the first option is recommended.</li>
 </ul>
 
 <%# info card %>

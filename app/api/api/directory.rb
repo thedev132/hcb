@@ -4,7 +4,7 @@ module Api
   class Directory < Grape::API
     include Grape::Kaminari
 
-    desc "Endpoints for Hack Club Bank directory" do
+    desc "Endpoints for HCB directory" do
       hidden true # Don't list endpoints in OpenAPI spec/docs
     end
     namespace "directory" do

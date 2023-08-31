@@ -15,7 +15,7 @@ try {
     let darkMode = darkModeConfig == 'true'
 
     if (darkModeConfig === null) {
-      // Bank has not stored a dark mode preference. Fallback to the browser's
+      // HCB has not stored a dark mode preference. Fallback to the browser's
       // `prefers-color-scheme` preference.
       if (
         window.matchMedia &&

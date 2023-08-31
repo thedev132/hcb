@@ -39,7 +39,7 @@ class V2OrganizationsDocumentation < ApplicationDocumentation
       parameter do
         key :name, :organization_id
         key :in, :path
-        key :description, "Bank Connect's `organization_id`"
+        key :description, "HCB Connect's `organization_id`"
         key :required, true
         schema do
           key :type, :string
@@ -56,7 +56,7 @@ class V2OrganizationsDocumentation < ApplicationDocumentation
                 balance: 68605
               },
               links: {
-                self: "https://bank.hackclub.com/api/v2/organizations/org_Yvguja"
+                self: "https://hcb.hackclub.com/api/v2/organizations/org_Yvguja"
               }
         end
       end
@@ -67,14 +67,14 @@ class V2OrganizationsDocumentation < ApplicationDocumentation
     operation :post do
       key :summary, "Generate an automatic login url for an organization"
       key :description, "Redirect a user to this url, and they will be automatically logged into " \
-                        "their Hack Club Bank account"
+                        "their HCB account"
       key :tags, ["Organizations"]
       key :operationId, "v2OrganizationsGenerateLoginUrl"
 
       parameter do
         key :name, :organization_id
         key :in, :path
-        key :description, "Bank Connect's `organization_id`"
+        key :description, "HCB Connect's `organization_id`"
         key :required, true
         schema do
           key :type, :string
@@ -98,7 +98,7 @@ class V2OrganizationsDocumentation < ApplicationDocumentation
               data:
                     {
                       organization_id: "org_Yvguja",
-                      login_url: "https://bank.hackclub.com/api/v2/login?login_token=tok_U2w2vzV2xNNkMFvNGbr9ckqfX7tsKpKh"
+                      login_url: "https://hcb.hackclub.com/api/v2/login?login_token=tok_U2w2vzV2xNNkMFvNGbr9ckqfX7tsKpKh"
                     }
         end
       end

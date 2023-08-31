@@ -3,12 +3,9 @@
 <%= render "events/nav", selected: :documentation %>
 
 <% content_for :head do %>
-  <% img = "https://workshop-cards.hackclub.com/#{url_encode(@document_title)}.png?theme=light&fontSize=200px&caption=Documentation&brand=Bank" %>
   <meta name="twitter:card" content="summary_large_image">
-  <meta property="og:image" content="<%= img %>">
-  <meta name="twitter:image" content="<%= img %>">
-  <meta property="og:site_name" content="Hack Club Bank">
-  <meta property="og:url" content="https://bank.hackclub.com">
+  <meta property="og:site_name" content="HCB">
+  <meta property="og:url" content="https://hcb.hackclub.com">
   <meta property="og:title" content="<%= @document_title %>">
   <meta name="twitter:title" content="<%= @document_title %>">
   <meta property="og:description" content="<%= @document_subtitle %>">
@@ -41,7 +38,7 @@
         </blockquote>
       </li>
       <li>
-        <strong>Notify the Bank team</strong> (<%= help_email %>). Let us know the name of the donor, donation amount, and the name of your organization.
+        <strong>Notify the HCB team</strong> (<%= help_email %>). Let us know the name of the donor, donation amount, and the name of your organization.
       </li>
     </ol>
     <h4>Below is an example of a properly filled out check:</h4>

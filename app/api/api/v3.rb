@@ -214,7 +214,7 @@ module Api
 
     desc "Return a list of transparent organizations" do
       summary "Get a list of transparent organizations"
-      detail "Returns a list of organizations in <a href='https://changelog.bank.hackclub.com/transparent-finances-(optional-feature)-151427'><strong>Transparency Mode</strong></a> that have opted in to public listing."
+      detail "Returns a list of organizations in <a href='https://changelog.hcb.hackclub.com/transparent-finances-(optional-feature)-151427'><strong>Transparency Mode</strong></a> that have opted in to public listing."
       failure [[404]]
       is_array true
       produces ["application/json"]
@@ -234,7 +234,7 @@ module Api
     resource :organizations do
       desc "Return a transparent organization" do
         summary "Get a single organization"
-        detail "The organization must be in <a href='https://changelog.bank.hackclub.com/transparent-finances-(optional-feature)-151427'><strong>Transparency Mode</strong></a>."
+        detail "The organization must be in <a href='https://changelog.hcb.hackclub.com/transparent-finances-(optional-feature)-151427'><strong>Transparency Mode</strong></a>."
         produces ["application/json"]
         consumes ["application/json"]
         success Entities::Organization
@@ -281,7 +281,7 @@ module Api
         resource :card_charges do
           desc "Return a list of card charges" do
             summary "List an organization's card charges"
-            detail "Transactions created using a Hack Club Bank card."
+            detail "Transactions created using an HCB card."
             produces ["application/json"]
             consumes ["application/json"]
             is_array true
@@ -627,7 +627,7 @@ module Api
 
     # Handle 404 errors (catch all)
     route :any, "*path" do
-      error!({ message: "Path not found. Please see the documentation (https://bank.hackclub.com/docs/api/v3/) for all available paths." }, 404)
+      error!({ message: "Path not found. Please see the documentation (https://hcb.hackclub.com/docs/api/v3/) for all available paths." }, 404)
     end
 
     # Handle unexpected errors
@@ -651,16 +651,16 @@ module Api
 
     add_swagger_documentation(
       info: {
-        title: "The Hack Club Bank API",
-        description: "The Hack Club Bank API is an unauthenticated REST API that allows you to read public information
-                      from organizations with <a href='https://changelog.bank.hackclub.com/transparent-finances-(optional-feature)-151427'>Transparency Mode</a>
+        title: "The HCB API",
+        description: "The HCB API is an unauthenticated REST API that allows you to read public information
+                      from organizations with <a href='https://changelog.hcb.hackclub.com/transparent-finances-(optional-feature)-151427'>Transparency Mode</a>
                       enabled.
                       <br><br><strong>Questions or suggestions?</strong>
-                      <br>Reach us in the #bank channel on the <a href='https://hackclub.com/slack'>Hack Club Slack</a>
-                      or email <a href='mailto:bank@hackclub.com'>bank@hackclub.com</a>.
+                      <br>Reach us in the #hcb channel on the <a href='https://hackclub.com/slack'>Hack Club Slack</a>
+                      or email <a href='mailto:hcb@hackclub.com'>hcb@hackclub.com</a>.
                       <br><br>Happy hacking! ✨",
-        contact_name: "Hack Club Bank",
-        contact_email: "bank@hackclub.com",
+        contact_name: "HCB",
+        contact_email: "hcb@hackclub.com",
       },
       doc_version: "3.0.0",
       models: [

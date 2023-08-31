@@ -7,7 +7,7 @@ A <%= render_money @auth.amount %> <%= @authorization_method %> charge to your c
 
 If this was a mistake, please make sure you've entered the right CVC code.
 <% elsif @reason == "webhook_declined" %>
-A <%= render_money @auth.amount %> <%= @authorization_method %> charge to your card ending in <%= @card.last4 %> at '<i><%= @merchant %></i>' was <%= @auth.status_text.downcase %> due to insufficient funds in your Hack Club Bank account.
+A <%= render_money @auth.amount %> <%= @authorization_method %> charge to your card ending in <%= @card.last4 %> at '<i><%= @merchant %></i>' was <%= @auth.status_text.downcase %> due to insufficient funds in your HCB account.
 
 The account balance for <%= @event.name %> is <%= render_money @event.balance %>.
 <% else %>

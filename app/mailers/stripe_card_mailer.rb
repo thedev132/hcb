@@ -10,7 +10,7 @@ class StripeCardMailer < ApplicationMailer
     @eta = params[:eta] || @card.stripe_obj.to_hash[:shipping][:eta]
 
     mail to: @recipient,
-         subject: "Your new Hack Club Bank card (ending in #{@card.last4}) for #{@event.name} is on its way"
+         subject: "Your new HCB card (ending in #{@card.last4}) for #{@event.name} is on its way"
   end
 
   def virtual_card_ordered
@@ -20,7 +20,7 @@ class StripeCardMailer < ApplicationMailer
     @recipient = @user.email
 
     mail to: @recipient,
-         subject: "New virtual Hack Club Bank card (ending in #{@card.last4}) for #{@event.name}"
+         subject: "New virtual HCB card (ending in #{@card.last4}) for #{@event.name}"
   end
 
 end

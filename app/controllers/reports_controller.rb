@@ -24,7 +24,7 @@ class ReportsController < ApplicationController
 
   def set_file_headers_csv
     headers["Content-Type"] = "text/csv"
-    headers["Content-disposition"] = "attachment; filename=#{clean_event_name}_Hack_Club_Bank_Fees_(#{current_time}).csv"
+    headers["Content-disposition"] = "attachment; filename=#{clean_event_name}_HCB_Fees_(#{current_time}).csv"
   end
 
   def fees_csv

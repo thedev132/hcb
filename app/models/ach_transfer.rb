@@ -162,7 +162,7 @@ class AchTransfer < ApplicationRecord
     when :deposited then "Deposited successfully"
     when :scheduled then "Scheduled for #{scheduled_on.strftime("%B %-d, %Y")}"
     when :in_transit then "In transit"
-    when :pending then "Waiting on Bank approval"
+    when :pending then "Waiting on HCB approval"
     when :rejected then "Rejected"
     end
   end

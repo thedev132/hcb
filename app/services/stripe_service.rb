@@ -43,7 +43,7 @@ module StripeService
                                     .to_s.gsub(/[^a-zA-Z0-9\-_ ]/, "")
       return str if str.present?
 
-      "HACK CLUB BANK"
+      "HCB"
     end
 
     def self.format(str, as: :full)

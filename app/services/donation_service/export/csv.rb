@@ -32,7 +32,7 @@ module DonationService
       end
 
       def row(ct)
-        ::CSV::Row.new(headers, [ct.aasm_state, ct.created_at, "https://bank.hackclub.com/donations/#{ct.id}", ct.name, ct.amount])
+        ::CSV::Row.new(headers, [ct.aasm_state, ct.created_at, "https://hcb.hackclub.com/donations/#{ct.id}", ct.name, ct.amount])
       end
 
       def headers

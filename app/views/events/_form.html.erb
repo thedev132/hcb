@@ -6,7 +6,7 @@
       <p class="mt0">
         <%= event.name %> is on the <strong><%= event.plan_name %></strong> plan and charging
         <strong><%= number_to_percentage(event.sponsorship_fee * 100, significant: true, strip_insignificant_zeros: true) %></strong> of revenue
-        <% if event.high_school_hackathon? && event.sponsorship_fee == 0 %>(until December 31st, 2023 on the <a href="https://changelog.bank.hackclub.com/bank-now-provides-free-durian-241524">high school hackathon fee waiver</a>)<% end %>
+        <% if event.high_school_hackathon? && event.sponsorship_fee == 0 %>(until December 31st, 2023 on the <a href="https://changelog.hcb.hackclub.com/bank-now-provides-free-durian-241524">high school hackathon fee waiver</a>)<% end %>
       </p>
     </div>
   <% end %>
@@ -90,7 +90,7 @@
         </ul>
         <div class="field">
           <%= form.label :custom_css_url, "Custom CSS URL" %>
-          <%= form.text_field :custom_css_url, type: "url", placeholder: "https://bank.hackclub.com/dinobbq.css", class: "w-100 fit" %>
+          <%= form.text_field :custom_css_url, type: "url", placeholder: "https://hcb.hackclub.com/dinobbq.css", class: "w-100 fit" %>
         </div>
         <%= form.submit "Update" %>
       </div>
@@ -135,7 +135,7 @@
   <div class="card mb3">
     <ul class="mt0 pl2 mb2">
       <li>Unauthenticated users will be able to access a <strong>read-only</strong> version of your account.</li>
-      <li>None of Hack Club Bank’s pages will change for signed in team members.</li>
+      <li>None of HCB’s pages will change for signed in team members.</li>
       <li>We’ll do our best to redact contact info, but we can’t guarantee it doesn't show up in these
         fields:
         <ul>
@@ -152,7 +152,7 @@
     </div>
     <div class="field field--checkbox" data-behavior="additional_transparency_settings <% if !event.is_public? %>autohide<% end %>">
       <%= form.check_box :is_indexable %>
-      <%= form.label :is_indexable, "List #{@event.name} in Hack Club Bank public directory" %>
+      <%= form.label :is_indexable, "List #{@event.name} in HCB's public directory" %>
     </div>
     <% unless @hide_holiday_features || !winter? %>
       <div class="field field--checkbox" data-behavior="additional_transparency_settings <% if !event.is_public? %>autohide<% end %>">
@@ -187,9 +187,9 @@
         <span class="bold">unable to get it back.</span>
       </li>
     </ul>
-    <%= form.label :slug, "Bank URL", class: "bold" %>
+    <%= form.label :slug, "Organization URL", class: "bold" %>
     <div class="flex items-center">
-      <span class="secondary">bank.hackclub.com/</span>
+      <span class="secondary">hcb.hackclub.com/</span>
       <%= form.text_field :slug, placeholder: event.persisted? ? event.name.parameterize : nil %>
     </div>
     <div class="actions">

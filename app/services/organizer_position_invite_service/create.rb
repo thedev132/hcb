@@ -43,7 +43,7 @@ module OrganizerPositionInviteService
     end
 
     def normalize_email(email)
-      # canonicalize emails as soon as possible -- otherwise, Bank gets
+      # canonicalize emails as soon as possible -- otherwise, HCB gets
       # confused about who's invited and who's not when they log in.
       email&.downcase
     end

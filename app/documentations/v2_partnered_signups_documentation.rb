@@ -3,7 +3,7 @@
 class V2PartneredSignupsDocumentation < ApplicationDocumentation
   swagger_path "/api/v2/partnered_signups/new" do
     operation :post do
-      key :summary, "Start the Bank Connect flow"
+      key :summary, "Start the HCB Connect flow"
       key :description, "Creates a **PartneredSignup** object which is used to track the onboarding and application progress"
       key :tags, ["PartneredSignups"]
       key :operationId, "v2PartneredSignupsNew"
@@ -21,7 +21,7 @@ class V2PartneredSignupsDocumentation < ApplicationDocumentation
       parameter do
         key :name, :redirect_url
         key :in, :query
-        key :description, "Bank Connect redirects to this page after the user finishes the Bank Connect flow"
+        key :description, "HCB Connect redirects to this page after the user finishes the HCB Connect flow"
         key :required, true
         schema do
           key :type, :string
@@ -31,7 +31,7 @@ class V2PartneredSignupsDocumentation < ApplicationDocumentation
       parameter do
         key :name, :owner_email
         key :in, :query
-        key :description, "Email address of the user setting up the Hack Club Bank account"
+        key :description, "Email address of the user setting up the Hack Club HCB account"
         key :required, true
         schema do
           key :type, :string
@@ -129,48 +129,48 @@ class V2PartneredSignupsDocumentation < ApplicationDocumentation
       end
 
       # response 200 do
-      #   key :description, "Take user to html page(s) on Bank Connect"
+      #   key :description, "Take user to html page(s) on HCB Connect"
       #   content :"text/html" do
-      #     key :example, "<html><!-- Bank Connect HTML --></html>"
+      #     key :example, "<html><!-- HCB Connect HTML --></html>"
       #   end
       # end
 
       response 200 do
-        key :description, "Redirect the user to `connect_url` in order to continue the user through the Bank Connect flow. " \
-                          "They will be greeted by a form.\n\nOnce the user fills out the \"Bank Connect Form\", they will be " \
+        key :description, "Redirect the user to `connect_url` in order to continue the user through the HCB Connect flow. " \
+                          "They will be greeted by a form.\n\nOnce the user fills out the \"HCB Connect Form\", they will be " \
                           "redirected to the `redirect_url`."
         content :"application/json" do
           key :example,
               data: {
                 id: "sup_l3mtZz",
                 status: "unsubmitted",
-                redirect_url: "https://yoursite.com/organizations/1234/bankConnect/redirect",
-                connect_url: "https://bank.hackclub.com/api/v2/connect/continue/sup_l3mtZz",
+                redirect_url: "https://yoursite.com/organizations/1234/hcbConnect/redirect",
+                connect_url: "https://hcb.hackclub.com/api/v2/connect/continue/sup_l3mtZz",
                 owner_email: nil,
                 organization_name: "My Organization's Name",
                 organization_id: nil
               },
               links: {
-                self: "https://bank.hackclub.com/api/v2/partnered_signups/sup_l3mtZz"
+                self: "https://hcb.hackclub.com/api/v2/partnered_signups/sup_l3mtZz"
               }
         end
       end
     end
   end
 
-  swagger_path "https://yoursite.com/api/bankConnect/webhook" do
+  swagger_path "https://yoursite.com/api/hcbConnect/webhook" do
     operation :post do
-      key :summary, "Receive webhook payload from Bank Connect to your site"
-      key :description, "Receive **webhook payload** from Bank Connect.\n\n" \
-                        "Webhooks from Bank Connect can be verified using [Stripe's webhook signature system](https://stripe.com/docs/webhooks/signatures). " \
-                        "The verification signature is located in the `HCB-Signature` header and the `secret` is your Bank Connect api key."
+      key :summary, "Receive webhook payload from HCB Connect to your site"
+      key :description, "Receive **webhook payload** from HCB Connect.\n\n" \
+                        "Webhooks from HCB Connect can be verified using [Stripe's webhook signature system](https://stripe.com/docs/webhooks/signatures). " \
+                        "The verification signature is located in the `HCB-Signature` header and the `secret` is your HCB Connect api key."
       key :tags, ["PartneredSignups"]
       key :operationId, "v2ConnectWebhook"
 
       response 200 do
-        key :description, "Parse this **PartneredSignup** object in order to update the organization's Bank Connect `status` in your database (in this example, it is 'submitted', " \
-                          "indicating that the user has submitted the Bank Connect Form.\n\nAfter a user has submit the Bank Connect Form (`status` = 'submitted'), " \
-                          "it will be reviewed by the Hack Club Bank team — resulting in either an approval or rejection.\n\n Once an **PartneredSignup** has been " \
+        key :description, "Parse this **PartneredSignup** object in order to update the organization's HCB Connect `status` in your database (in this example, it is 'submitted', " \
+                          "indicating that the user has submitted the HCB Connect Form.\n\nAfter a user has submit the HCB Connect Form (`status` = 'submitted'), " \
+                          "it will be reviewed by the HCB team — resulting in either an approval or rejection.\n\n Once an **PartneredSignup** has been " \
                           "approved, the `organization_id` will no longer be 'null' (such as 'org_s2cDsp'). Alternatively, a rejected **PartneredSignup** will have a 'rejected' `status` " \
                           "and the `organization_id` will remain 'null'."
         content :"application/json" do
@@ -178,14 +178,14 @@ class V2PartneredSignupsDocumentation < ApplicationDocumentation
               data: {
                 id: "sup_l3mtZz",
                 status: "submitted",
-                redirect_url: "https://yoursite.com/organizations/1234/bankConnect/redirect",
-                connect_url: "https://bank.hackclub.com/api/v2/connect/continue/sup_l3mtZz",
+                redirect_url: "https://yoursite.com/organizations/1234/hcbConnect/redirect",
+                connect_url: "https://hcb.hackclub.com/api/v2/connect/continue/sup_l3mtZz",
                 owner_email: "user@gmail.com",
                 organization_name: "My Organization's Name",
                 organization_id: nil
               },
               links: {
-                self: "https://bank.hackclub.com/api/v2/partnered_signups/sup_l3mtZz"
+                self: "https://hcb.hackclub.com/api/v2/partnered_signups/sup_l3mtZz"
               },
               meta: {
                 type: "partnered_signup.status"
@@ -210,8 +210,8 @@ class V2PartneredSignupsDocumentation < ApplicationDocumentation
                 {
                   id: "sup_lYntM4",
                   status: "accepted",
-                  redirect_url: "https://yoursite.com/organizations/5154/bankConnect/redirect",
-                  connect_url: "https://bank.hackclub.com/api/v2/connect/continue/sup_lYntM4",
+                  redirect_url: "https://yoursite.com/organizations/5154/hcbConnect/redirect",
+                  connect_url: "https://hcb.hackclub.com/api/v2/connect/continue/sup_lYntM4",
                   owner_email: "hey@gmail.com",
                   organization_name: "Test org",
                   organization_id: "org_BJouPR"
@@ -219,8 +219,8 @@ class V2PartneredSignupsDocumentation < ApplicationDocumentation
                 {
                   id: "sup_l3mtZz",
                   status: "submitted",
-                  redirect_url: "https://yoursite.com/organizations/1234/bankConnect/redirect",
-                  connect_url: "https://bank.hackclub.com/api/v2/connect/continue/sup_l3mtZz",
+                  redirect_url: "https://yoursite.com/organizations/1234/hcbConnect/redirect",
+                  connect_url: "https://hcb.hackclub.com/api/v2/connect/continue/sup_l3mtZz",
                   owner_email: "user@gmail.com",
                   organization_name: "My Organization's Name",
                   organization_id: nil
@@ -241,7 +241,7 @@ class V2PartneredSignupsDocumentation < ApplicationDocumentation
       parameter do
         key :name, :partnered_signups_id
         key :in, :path
-        key :description, "Bank Connect's `partnered_signups_id`"
+        key :description, "HCB Connect's `partnered_signups_id`"
         key :required, true
         schema do
           key :type, :string
@@ -255,14 +255,14 @@ class V2PartneredSignupsDocumentation < ApplicationDocumentation
               data: {
                 id: "sup_l3mtZz",
                 status: "submitted",
-                redirect_url: "https://yoursite.com/organizations/1234/bankConnect/redirect",
-                connect_url: "https://bank.hackclub.com/api/v2/connect/continue/sup_l3mtZz",
+                redirect_url: "https://yoursite.com/organizations/1234/hcbConnect/redirect",
+                connect_url: "https://hcb.hackclub.com/api/v2/connect/continue/sup_l3mtZz",
                 owner_email: "user@gmail.com",
                 organization_name: "My Organization's Name",
                 organization_id: nil
               },
               links: {
-                self: "https://bank.hackclub.com/api/v2/partnered_signups/sup_l3mtZz"
+                self: "https://hcb.hackclub.com/api/v2/partnered_signups/sup_l3mtZz"
               }
         end
       end

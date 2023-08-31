@@ -275,7 +275,7 @@ class EventsController < ApplicationController
   def connect_gofundme
     @event_name = @event.name
     @document_title = "Connect a GoFundMe Campaign"
-    @document_subtitle = "Receive payouts from GoFundMe directly into Hack Club Bank"
+    @document_subtitle = "Receive payouts from GoFundMe directly into HCB"
     @document_image = "https://cloud-jl944nr65-hack-club-bot.vercel.app/004e072bbe1.png"
     authorize @event
   end
@@ -284,7 +284,7 @@ class EventsController < ApplicationController
   def receive_check
     @event_name = @event.name
     @document_title = "Receive Checks"
-    @document_subtitle = "Deposit checks into your Hack Club Bank account"
+    @document_subtitle = "Deposit checks into your HCB account"
     @document_image = "https://cloud-9sk4no7es-hack-club-bot.vercel.app/0slaps-jpg-this-image-can-hold-so-many-pixels.avi.onion.gif.7zip.msw.jpg"
     authorize @event
   end
@@ -293,7 +293,7 @@ class EventsController < ApplicationController
   def sell_merch
     event_name = @event.name
     @document_title = "Sell Merch with Redbubble"
-    @document_subtitle = "Connect your online merch shop to Hack Club Bank"
+    @document_subtitle = "Connect your online merch shop to HCB"
     @document_image = "https://cloud-fodxc88eu-hack-club-bot.vercel.app/0placeholder.png"
     authorize @event
   end

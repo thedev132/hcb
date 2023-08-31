@@ -1,6 +1,6 @@
 // automatically select events on selection of invoices or LCRs
 
-// This script is a pretty hacky tool to reduce a step in bank admin
+// This script is a pretty hacky tool to reduce a step in hcb admin
 // dashboard work when pairing common transactions with Invoice Payouts
 // or Emburse Transfers. It attempts to parse out the event name from a
 // selected option and select the event automatically in the events drop-down

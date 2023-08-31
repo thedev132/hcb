@@ -24,7 +24,7 @@ RSpec.describe UserService::ExchangeLoginCodeForUser, type: :model do
     let(:sms) { false }
 
     context "when sent by email" do
-      it "exchanges login code for user in bank" do
+      it "exchanges login code for user in hcb" do
         exchanged_user = service.run
         expect(exchanged_user).to eq(user)
       end

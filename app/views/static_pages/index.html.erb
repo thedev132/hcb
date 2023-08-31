@@ -7,12 +7,7 @@
   <div>
     <span class="h3 caps secondary block">Welcome to</span>
     <span class="primary <%= "nowrap" unless fall? %> <%= "warning" if fall? %>">
-      <% if fall? %>
-        <span class="warning strikethrough"><span class="primary">Hack</span></span>
-        Spook&nbsp;Club Bank
-      <% else %>
-        Hack&nbsp;Club Bank
-      <% end %>
+      HCB
     </span>
   </div>
   <span class="badge ml0 h5 caps <%= Rails.env.development? ? "bg-success" : by_season("", fall: "bg-warning") %>" id="flavor-text" data-turbo-permanent><%= flavor_text %></span>
@@ -42,7 +37,7 @@
     <% if @events.any? %>
       <% if @show_event_reorder_tip && Flipper.enabled?(:event_reordering_2022_10_10, current_user) %>
         <% if @events.size > 1 %>
-          <%= link_to "https://changelog.bank.hackclub.com/re-order-your-homepage-247413", class: "muted flex items-center justify-end h6 mb1", style: "align-self: baseline", target: "_blank" do %>
+          <%= link_to "https://changelog.hcb.hackclub.com/re-order-your-homepage-247413", class: "muted flex items-center justify-end h6 mb1", style: "align-self: baseline", target: "_blank" do %>
             <%= inline_icon "hand-pointer-solid", size: 18, class: "mr1" %> Drag to reorder
           <% end %>
         <% end %>
@@ -88,7 +83,7 @@
           <% end %>
         <% end %>
 
-        <%= link_to "https://hackclub.com/bank/apply/?#{URI.encode_www_form(userEmail: current_user.email, firstName: current_user.first_name, lastName: current_user.last_name, returningUser: "Yes, I have used Hack Club Bank before", userPhone: current_user.phone_number)}" do %>
+        <%= link_to "https://hackclub.com/hcb/apply/?#{URI.encode_www_form(userEmail: current_user.email, firstName: current_user.first_name, lastName: current_user.last_name, returningUser: "Yes, I have used Hack Club Bank before", userPhone: current_user.phone_number)}" do %>
           <li class="card card--hover bold brand-sans flex items-center justify-center align-center h-100" style="max-width: 90vw">
             <div class="center">
               <div class="pop success mx-auto" style="display: flex; margin-bottom: 4px;">
@@ -136,7 +131,7 @@
     <% end %>
     <% if @events.empty? && @invites.empty? && !current_user.admin? %>
       <%= blankslate "No projects associated with your account yet." %>
-      <a href="https://hackclub.com/bank/apply/?userEmail=<%= current_user.email %>&firstName=<%= current_user.first_name %>&lastName=<%= current_user.last_name %>&returningUser=No,%20first%20time!&userPhone=<%= current_user.phone_number %>" class="btn bg-success">
+      <a href="https://hackclub.com/hcb/apply/?userEmail=<%= current_user.email %>&firstName=<%= current_user.first_name %>&lastName=<%= current_user.last_name %>&returningUser=No,%20first%20time!&userPhone=<%= current_user.phone_number %>" class="btn bg-success">
         <%= inline_icon "plus" %>
         New project
       </a>

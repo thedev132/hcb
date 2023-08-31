@@ -126,7 +126,7 @@ const updateAmountPreview = function () {
     const feeAmount = BK.money(feePercent * amount * 100)
     const revenue = BK.money((1 - feePercent) * amount * 100)
     BK.s('amount-preview').text(
-      `${lAmount} - ${feeAmount} (${lFeePercent}% Bank fee) = ${revenue}`
+      `${lAmount} - ${feeAmount} (${lFeePercent}% HCB fee) = ${revenue}`
     )
     BK.s('amount-preview').show()
     return BK.s('amount-preview').data('amount', amount)

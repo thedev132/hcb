@@ -24,7 +24,7 @@ module GSuiteService
       #
       # This was very brittle. Event names that contained special characters
       # would fail with "invalid: Invalid Ou Id".
-      # See https://github.com/hackclub/bank/issues/1741
+      # See https://github.com/hackclub/hcb/issues/1741
     end
 
     def org_unit_path

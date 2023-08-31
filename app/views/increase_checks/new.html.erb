@@ -40,7 +40,7 @@
         <ul class="mt1 mb2">
           <li>Need to reimburse someone? Checks are not intended for that purpose. Visit <%= link_to "reimbursements", event_reimbursements_path(@event), class: "info" %> to learn about using Expensify instead.</li>
           <li>This check will be valid for 30 days, until <%= format_date DateTime.now + 1.month %></li>
-          <!--<li>Bank team needs to approve your check before it's sent out. This usually takes 1 business day.</li>-->
+          <!--<li>HCB team needs to approve your check before it's sent out. This usually takes 1 business day.</li>-->
         </ul>
         <div class="border-top card__banner card__darker secondary">
           <strong>Questions?</strong>
@@ -91,7 +91,7 @@
       <div class="field">
         <%= form.label :payment_for, "What are you paying for with this check?" %>
         <%= form.text_field :payment_for, placeholder: "Event venue", required: true, disabled: @event.demo_mode? %>
-        <span class="muted">This is to help Hack Club Bank keep record of our transactions. Bank team will see this.</span>
+        <span class="muted">This is to help HCB keep record of our transactions. The HCB team will see this.</span>
       </div>
 
       <h2>Recipient details</h2>

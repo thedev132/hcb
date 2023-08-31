@@ -1,5 +1,5 @@
 <%= form_with url: feedback_path, class: "feedback-form #{"feedback-form--with-dock" if content_for?(:nav)}", data: { "turbo" => true, "controller" => "class form focus confetti", "class-class-value" => "visible", "focus-delay-value" => 50, "action" => "turbo:submit-end->form#reset turbo:submit-end->class#remove turbo:submit-end->confetti#party" } do |form| %>
-  <%= form.text_area :message, placeholder: "I wish Bank had...", required: true, class: "feedback-form__message", data: { "behavior" => "no_autosize ctrl_enter_submit", "focus-target" => "element" } %>
+  <%= form.text_area :message, placeholder: "I wish HCB had...", required: true, class: "feedback-form__message", data: { "behavior" => "no_autosize ctrl_enter_submit", "focus-target" => "element" } %>
 
   <div class="flex items-center">
     <div class="feedback-form__options items-center flex">

@@ -26,7 +26,7 @@ export default class extends Controller {
 
     const paymentElement = this.elements.create('payment', {
       business: {
-        name: 'Hack Club Bank'
+        name: 'HCB'
       },
       terms: { card: 'never' }
     })

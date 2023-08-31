@@ -8,19 +8,19 @@
   <meta name="twitter:card" content="summary">
   <meta property="og:image" content="<%= img %>">
   <meta name="twitter:image" content="<%= img %>">
-  <meta property="og:site_name" content="Hack Club Bank">
-  <meta property="og:url" content="https://bank.hackclub.com">
+  <meta property="og:site_name" content="HCB">
+  <meta property="og:url" content="https://hcb.hackclub.com">
   <meta property="og:title" content="Sign in">
   <meta name="twitter:title" content="Sign in">
-  <meta property="og:description" content="Sign in to Hack Club Bank.">
-  <meta name="twitter:description" content="Sign in to Hack Club Bank.">
-  <meta name="description" content="Sign in to Hack Club Bank.">
+  <meta property="og:description" content="Sign in to HCB.">
+  <meta name="twitter:description" content="Sign in to HCB.">
+  <meta name="description" content="Sign in to HCB.">
 <% end %>
 
 <article class="center mt3" data-controller="webauthn-auth" data-webauthn-auth-return-to-value="<%= @return_to %>" data-webauthn-auth-require-webauthn-preference-value="true">
   <h1 class="mt2">
     <span class="h3 caps secondary block">Sign in to</span>
-    <span class="primary">Hack Club Bank</span>
+    <span class="primary">HCB</span>
   </h1>
   <%= form_tag auth_users_path, 'data-action': "webauthn-auth#submit", 'data-webauthn-auth-target': "authForm" do %>
     <div data-webauthn-auth-target="error" class="mb2 display-none">
@@ -37,5 +37,5 @@
     <%= link_to "Sign in another way", choose_login_preference_users_path, class: "display-none block mt2", data: { "webauthn-auth-target" => "loginCode" } %>
   <% end %>
   <p class="h5 muted mt5">Need help? <%= help_email %></p>
-  <p class="h5 mt2"><a href="https://hackclub.com/bank?ref=bank_auth">What’s Bank?</a></p>
+  <p class="h5 mt2"><a href="https://hackclub.com/hcb?ref=bank_auth">What’s HCB?</a></p>
 </article>

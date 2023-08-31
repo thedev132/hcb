@@ -16,7 +16,7 @@
     "
   <% end %>>
     <% if ct.fee_payment? %>
-      <td class="transaction__icon tooltipped tooltipped--e" aria-label="Hack Club Bank Fee payment">
+      <td class="transaction__icon tooltipped tooltipped--e" aria-label="HCB fee payment">
         <%= inline_icon "minus-fill" %>
       </td>
     <% elsif ct.local_hcb_code.fee_revenue? %>

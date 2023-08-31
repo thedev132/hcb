@@ -39,7 +39,7 @@ class HcbCode < ApplicationRecord
     hcb_code "HCB Code"
     created_at "Created at"
     date "Transaction date"
-    url "URL" do |url| "https://bank.hackclub.com#{url}" end
+    url "URL" do |url| "https://hcb.hackclub.com#{url}" end
     memo
     receipts size: "Receipt count"
     receipts "Has receipt?" do |receipts| receipts.exists? end
@@ -57,7 +57,7 @@ class HcbCode < ApplicationRecord
     if Rails.env.development?
       "receipts+hcb-#{hashid}@bank-parse-dev.hackclub.com"
     else
-      "receipts+hcb-#{hashid}@bank-parse.hackclub.com"
+      "receipts+hcb-#{hashid}@hcb.hackclub.com"
     end
   end
 

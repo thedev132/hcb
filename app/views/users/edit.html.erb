@@ -8,7 +8,7 @@
 <% end %>
 
 <h1>
-  <%= @onboarding ? "Welcome to Bank!" : "Settings" %>
+  <%= @onboarding ? "Welcome to HCB!" : "Settings" %>
 </h1>
 <turbo-frame id="settings" target="_top">
   <%= render "settings_nav", active: "general" unless @onboarding %>
@@ -101,7 +101,7 @@
       <fieldset>
         <legend class="heading h2 pt2">Share usage data with us</legend>
         <p class="h5 muted mt1 mb2">
-          Help us improve Hack Club Bank by sending usage data.
+          Help us improve HCB by sending usage data.
           <% if @onboarding %>
             <br>
             You can turn this off in your settings anytime.
@@ -123,7 +123,7 @@
         </div>
       </fieldset>
       <div class="actions flex">
-        <%= form.submit @onboarding ? "Start using Bank" : "Save profile" %>
+        <%= form.submit @onboarding ? "Start using HCB" : "Save profile" %>
       </div>
     <% end %>
     <% unless @onboarding %>

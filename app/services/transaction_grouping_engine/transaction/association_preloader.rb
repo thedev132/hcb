@@ -23,7 +23,7 @@ module TransactionGroupingEngine
 
         # Query for CanonicalTransactions associated with hcb_codes because this can be the superset of
         # canonical_transactions associated with @transactions due to pagination
-        # https://github.com/hackclub/bank/pull/2453#discussion_r848110917
+        # https://github.com/hackclub/hcb/pull/2453#discussion_r848110917
         # However, we still need to OR with CanonicalTransactions by id because hcb codes are lazily attached
         # If hcb codes are ever eagerly attached to CanonicalTransactions instead, we can remove the OR
         canonical_transactions = CanonicalTransaction

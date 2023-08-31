@@ -3,15 +3,15 @@
 class V2DonationsDocumentation < ApplicationDocumentation
   swagger_path "/api/v2/donations/new" do
     operation :post do
-      key :summary, "Start a donation backed by Bank"
-      key :description, "Start a donation backed by Bank"
+      key :summary, "Start a donation backed by HCB"
+      key :description, "Start a donation backed by HCB"
       key :tags, ["Donations"]
       key :operationId, "v2DonationsNew"
 
       parameter do
         key :name, :organization_id
         key :in, :query
-        key :description, "The Bank Connect organization's id"
+        key :description, "The HCB Connect organization's id"
         key :required, true
         schema do
           key :type, :string

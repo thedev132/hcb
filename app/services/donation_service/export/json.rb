@@ -25,7 +25,7 @@ module DonationService
         {
           status: ct.aasm_state,
           created_at: ct.created_at,
-          url: "https://bank.hackclub.com/donations/#{ct.id}/",
+          url: "https://hcb.hackclub.com/donations/#{ct.id}/",
           name: ct.name,
           amount: ct.amount
         }

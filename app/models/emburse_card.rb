@@ -95,9 +95,9 @@ class EmburseCard < ApplicationRecord
 
   # Emburse emburse_cards have three activation states:
   # 1. "unactivated", when emburse_card first ships. Must be activated by user
-  #   at emburse.com/activate to be active, cannot be activated by Bank
+  #   at emburse.com/activate to be active, cannot be activated by HCB
   # 2. "active", active emburse_card
-  # 3. "suspended", deactivated by user and can be activated again thru Bank.
+  # 3. "suspended", deactivated by user and can be activated again thru HCB.
   def status_text
     if requires_activation?
       "Shipping"

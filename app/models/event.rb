@@ -233,8 +233,8 @@ class Event < ApplicationRecord
     state :rejected # Rejected from fiscal sponsorship
 
     # DEPRECATED
-    state :awaiting_connect # Initial state of partner events. Waiting for user to fill out Bank Connect form
-    state :pending # Awaiting Bank approval (after filling out Bank Connect form)
+    state :awaiting_connect # Initial state of partner events. Waiting for user to fill out HCB Connect form
+    state :pending # Awaiting HCB approval (after filling out HCB Connect form)
     state :unapproved # Old spend only events. Deprecated, should not be granted to any new events
 
     event :mark_pending do

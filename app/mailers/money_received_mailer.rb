@@ -5,7 +5,7 @@ class MoneyReceivedMailer < ApplicationMailer
     @transaction = params[:transaction]
     @emails = @transaction.event.users.pluck(:email)
 
-    mail to: @emails, subject: "Money from #{@transaction.invoice_payout.invoice.sponsor.name} is in your Hack Club Bank fund 💵"
+    mail to: @emails, subject: "Money from #{@transaction.invoice_payout.invoice.sponsor.name} is in your HCB fund 💵"
   end
 
 end

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Adds a `set_event` method to a controller.
-# Why are we not using FriendlyId's built-in history module? See https://github.com/hackclub/bank/pull/2714#pullrequestreview-1022038333
+# Why are we not using FriendlyId's built-in history module? See https://github.com/hackclub/hcb/pull/2714#pullrequestreview-1022038333
 module SetEvent
   extend ActiveSupport::Concern
 

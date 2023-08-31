@@ -156,7 +156,7 @@ class Donation < ApplicationRecord
   def arrival_date
     arrival = self&.payout&.arrival_date || 3.business_days.after(payout_creation_queued_for)
 
-    # Add 1 day to account for plaid and Bank processing time
+    # Add 1 day to account for plaid and HCB processing time
     arrival + 1.day
   end
 
@@ -304,7 +304,7 @@ class Donation < ApplicationRecord
     {
       amount:,
       currency: "usd",
-      statement_descriptor: "HACK CLUB BANK",
+      statement_descriptor: "HCB",
       statement_descriptor_suffix: StripeService::StatementDescriptor.format(event.name, as: :suffix),
       metadata: { 'donation': true, 'event_id': event.id }
     }

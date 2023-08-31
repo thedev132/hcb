@@ -95,7 +95,7 @@ module StripeCardholderService
     def dob
       return nil unless @current_user.birthday
       # We don't want to share the dob for users under 13
-      # https://github.com/hackclub/bank/pull/3071#issuecomment-1268880804
+      # https://github.com/hackclub/hcb/pull/3071#issuecomment-1268880804
       return nil if @current_user.birthday > 13.years.ago
 
       {

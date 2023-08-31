@@ -30,7 +30,7 @@
       </div>
 
       <%= carousel @pairings do |pairing, i| %>
-        <p>Bank thinks that one of your receipts, <strong><%= pairing.receipt.file.blob.filename %></strong>, belongs to a transaction in <strong><%= pairing.hcb_code.event.name %></strong>.</p>
+        <p>HCB thinks that one of your receipts, <strong><%= pairing.receipt.file.blob.filename %></strong>, belongs to a transaction in <strong><%= pairing.hcb_code.event.name %></strong>.</p>
         <div class="flex p1 justify-center">
 
           <div class="xs-hide sm-hide" style="user-drag: none; -webkit-user-drag: none; -moz-user-drag: none;">

@@ -28,12 +28,12 @@ class FlavorTextService
 
   def development_flavor_texts
     [
-      "Hack the Bank Mode",
+      "<s>Hack the Bank Mode</s>",
       "Development Mode",
       "super secret admin mode",
       "Puts the 'dev' in 'financially devious'!",
       "Rails.env.fun?",
-      "Let's rewrite Bank in #{Faker::ProgrammingLanguage.name}!"
+      "Let's rewrite HCB in #{Faker::ProgrammingLanguage.name}!"
     ]
   end
 

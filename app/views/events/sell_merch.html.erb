@@ -3,12 +3,9 @@
 <%= render "events/nav", selected: :documentation %>
 
 <% content_for :head do %>
-  <% img = "https://workshop-cards.hackclub.com/#{url_encode(@document_title)}.png?theme=light&fontSize=200px&caption=Documentation&brand=Bank" %>
   <meta name="twitter:card" content="summary_large_image">
-  <meta property="og:image" content="<%= img %>">
-  <meta name="twitter:image" content="<%= img %>">
-  <meta property="og:site_name" content="Hack Club Bank">
-  <meta property="og:url" content="https://bank.hackclub.com">
+  <meta property="og:site_name" content="HCB">
+  <meta property="og:url" content="https://hcb.hackclub.com">
   <meta property="og:title" content="<%= @document_title %>">
   <meta name="twitter:title" content="<%= @document_title %>">
   <meta property="og:description" content="<%= @document_subtitle %>">
@@ -22,7 +19,7 @@
     <h3 class="mt0 mb2" style="color: gray; font-weight: 500;"><%= @document_subtitle %></h3>
     <%= image_tag @document_image, class: "w-100" if @document_image %>
 <%# content starts here %>
-    <p>If you raise funds by selling merchandise on online platforms such as Redbubble, Shopify, or Wix, you can deposit your funds into Hack Club Bank. Follow these steps to get started:</p>
+    <p>If you raise funds by selling merchandise on online platforms such as Redbubble, Shopify, or Wix, you can deposit your funds into HCB. Follow these steps to get started:</p>
     <ol>
       <li><strong>Verify</strong> that the platform you’re using allows for PayPal as a payout option.</li>
       <li>
@@ -32,9 +29,9 @@
         <li>Any thresholds you need to reach in order to get a payout (ex. no payout until you hit a $20 minimum)</li>
       </ul>
       </li>
-      <li><strong>Get in touch with the Bank team.</strong>
+      <li><strong>Get in touch with the HCB team.</strong>
         <ul>
-          <li>Let us know at <%= help_email %> that you'd like to connect an online merch shop to your Hack Club Bank account.</li>
+          <li>Let us know at <%= help_email %> that you'd like to connect an online merch shop to your HCB account.</li>
           <li>We'll schedule a 15-minute call to get you setup.</li>
         </ul>
       </li>
@@ -48,15 +45,15 @@
       </div>
       <ul class="mt1 mb2">
         <li><strong>Notify us when you make a deposit</strong>—we can't fund your account until you reach out.</li>
-        <li><strong>PayPal will charge an additional fee</strong> of around 4% or more, on top of the 7% Bank fee.</li>
+        <li><strong>PayPal will charge an additional fee</strong> of around 4% or more, on top of the 7% fee.</li>
       </ul>
       <div class="border-top card__banner card__darker secondary">
         <strong class="warning">Questions?</strong>
-          <span>Contact the Bank team at <a href="mailto:bank@hackclub.com">bank@hackclub.com</a></span>
+          <span>Contact the HCB team at <a href="mailto:hcb@hackclub.com">hcb@hackclub.com</a></span>
       </div>
     </div>
     <p>
-      It will be your responsibility to notify the Bank team of the amount of money you’re receiving for each payout. If you are expecting money, <strong>you need to let us know</strong>; otherwise, we will not be able to move funds.
+      It will be your responsibility to notify the HCB team of the amount of money you’re receiving for each payout. If you are expecting money, <strong>you need to let us know</strong>; otherwise, we will not be able to move funds.
     </p>
   </div>
 </div>

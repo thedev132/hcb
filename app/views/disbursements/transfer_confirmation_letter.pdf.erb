@@ -1,5 +1,5 @@
 <head>
-  <title>Hack Club Bank - Transfer Confirmation Letter</title>
+  <title>HCB - Transfer Confirmation Letter</title>
   <style>
     .container {
       font-size: 12pt;
@@ -57,14 +57,14 @@
         <span class="bold">Hack Club</span><br />
         <span style="white-space: nowrap;">8605 Santa Monica Boulevard #86294</span><br />
         West Hollywood, CA 90069<br />
-        bank@hackclub.com
+        hcb@hackclub.com
       </p>
       <%= image_tag(wicked_pdf_asset_base64('hack_club_logo.png'), width: 156.6, height: 26.88, class: 'centerImage')%>
     </div>
     <br />
     <br />
     <p style="margin-top: 2rem; margin-bottom: 0.5rem;"><%= format_date @disbursement.created_at %></p>
-    <p style="font-size: 12.5pt;"><span class="bold">Hack Club Bank Transfer: <%= @disbursement.source_event.name %> to <%= @disbursement.destination_event.name %></span></p>
+    <p style="font-size: 12.5pt;"><span class="bold">HCB Transfer: <%= @disbursement.source_event.name %> to <%= @disbursement.destination_event.name %></span></p>
     <br />
     <div style="line-height: 1.25;">
       <p>To whom it may concern,</p>
@@ -116,7 +116,7 @@
     </div>
     <p style="line-height: 1.15">
       Melanie Smith<br />
-      Bank Operations Lead<br />
+      HCB Operations Lead<br />
       Hack Club
     </p>
     <br />
