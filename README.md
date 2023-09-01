@@ -1,22 +1,22 @@
 <div align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="https://cloud-djxhgxve6-hack-club-bot.vercel.app/0hcb-icon-icon-dark_1_.png">
-    <img src="https://cloud-5yru8jas0-hack-club-bot.vercel.app/0logo-512.png" width="126" alt="Hack Club Bank logo">
+    <img src="https://cloud-5yru8jas0-hack-club-bot.vercel.app/0logo-512.png" width="126" alt="HCB logo">
   </picture>
-  <h1>Hack Club Bank</h1>
+  <h1>HCB</h1>
   <strong>A powerful, safe, and easy-to-use fiscal sponsorship platform for Hack Clubs, hackathons, and nonprofits.</strong>
 </div>
 <br>
 
-Welcome to the [Hack Club Bank](https://hackclub.com/bank/) codebase. We are so excited to have you. With your help, we can make Bank the best platform to run a nonprofit.
+Welcome to the [HCB](https://hackclub.com/hcb/) codebase. We are so excited to have you. With your help, we can make HCB the best platform to run a nonprofit.
 
-## What is Hack Club Bank?
+## What is HCB?
 
-Hack Club Bank is a platform for managing your nonprofit's finances. Through Bank, you can get a 501(c)(3) status-backed restricted fund for your project and manage your finances through an intuitive web interface.
+HCB is a platform for managing your nonprofit's finances. Through HCB, you can get a 501(c)(3) status-backed restricted fund for your project and manage your finances through an intuitive web interface.
 
 ## Table of Contents
 
-- [What is Hack Club Bank?](#what-is-hack-club-bank)
+- [What is HCB?](#what-is-hcb)
 - [Table of Contents](#table-of-contents)
 - [Contributing](#contributing)
 - [Quick Start](#quick-start)
@@ -26,19 +26,19 @@ Hack Club Bank is a platform for managing your nonprofit's finances. Through Ban
 
 ## Contributing
 
-We encourage you to contribute to Hack Club Bank! Please see the [wiki](https://github.com/hackclub/bank/wiki) for more information on how to get started.
+We encourage you to contribute to HCB! Please see the [wiki](https://github.com/hackclub/hcb/wiki) for more information on how to get started.
 
 All contributors are expected to follow the Hack Club [Code of Conduct](https://hackclub.com/conduct).
 
 ## Quick Start
 
-This section provides a high-level quick start guide for running Bank with Docker or GitHub Codespaces. For more information, please see the [wiki page](https://github.com/hackclub/bank/wiki/Development).
+This section provides a high-level quick start guide for running HCB with Docker or GitHub Codespaces. For more information, please see the [wiki page](https://github.com/hackclub/hcb/wiki/Development).
 
 Clone the repository or create a new Codespaces instance.
 
 ```bash
 # skip this step if you're using Codespaces
-git clone https://github.com/hackclub/bank.git && cd bank
+git clone https://github.com/hackclub/hcb.git && cd hcb
 ```
 
 Create a `config/master.key` file and ask a team member (ping `@creds` in Slack) for the contents.
@@ -87,12 +87,12 @@ Pushes to the `main` branch are automatically deployed by Heroku.
 
 ## Developer Documentation
 
-Please see the [wiki](https://github.com/hackclub/bank/wiki) for technical documentation on Hack Club Bank.
+Please see the [wiki](https://github.com/hackclub/hcb/wiki) for technical documentation on HCB.
 
 ---
 
 <div align="center">
-<img src="./hack_club_bank_laser.gif" alt="Laser engraving the Hack Club Bank logo" width="500">
+<img src="./hcb_laser.gif" alt="Laser engraving the HCB logo" width="500">
 <br>
 <p><strong>Happy hacking. ❤️</strong></p>
 </div>
