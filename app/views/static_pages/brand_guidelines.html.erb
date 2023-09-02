@@ -4,10 +4,10 @@
   <h1>Brand Guidelines</h1>
   <h2>Overview</h2>
   <p>
-    Hey, Bankers! 👋 From logos to phrasing, we want to make sure you and your team feel confident sharing about Hack Club on your site, fundraising platforms, grant apps, and other online spaces.
+    Hey folks! 👋 From logos to phrasing, we want to make sure you and your team feel confident sharing about Hack Club / HCB on your site, fundraising platforms, grant apps, and other online spaces.
   </p>
   <p>
-    We know you’re eager to share about your nonprofit status through Hack Club Bank. 🤗 Following brand guidelines will not only help you display an accurate relationship with Hack Club but will also help create a unified appearance amongst all fiscally sponsored projects and legitimize your status.
+    We know you're eager to share about your nonprofit status through HCB. 🤗 Following brand guidelines will not only help you display an accurate relationship with Hack Club but will also help create a unified appearance amongst all fiscally sponsored projects and legitimize your status.
   </p>
   <%= render partial: "callout", locals: { type: "info", emoji: "ℹ️", title: "Jump to the fiscal sponsorship section to see how you can accurately represent your 501(c)(3) status.", link: "#fiscal-sponsorship" } %>
 </div>
@@ -16,20 +16,12 @@
   <h2>Our Name</h2>
   <p>When using our name, please make sure to:</p>
   <ul>
-    <li>Capitalize the first letter of each word (e.g. Hack Club Bank)</li>
-    <li>Refrain from adding/removing additional characters (e.g. ‘HackClubBank’)</li>
+    <li>Capitalize every letter of HCB</li>
+    <li>Refrain from adding/removing additional characters and words (e.g. 'Hack Club HCB')</li>
+    <li>Refrain from using our previous name, "Hack Club Bank".</li>
   </ul>
-  <h3>Acceptable abbreviations of "Hack Club Bank"</h3>
-  <p>
-    You may have seen our team use these references, and if “Hack Club Bank” becomes a mouthful, feel free to use them too.
-  </p>
-  <ul>
-    <li>The acronym “HCB”</li>
-    <li>“Bank,” making sure the first letter is capitalized</li>
-  </ul>
-  <%= render partial: "callout", locals: { type: "info", emoji: "ℹ️", title: "We recommend including the full name at least once before HCB or Bank to make the most sense grammatically." } %>
-  <%= render partial: "callout", locals: { type: "warning", emoji: "⚠️", title: "As a reminder, Hack Club Bank is not an actual bank! We are a fiscal sponsorship platform backed on Increase and Bank of America. When you sign the fiscal sponsorship agreement, a “restricted fund” – a privatized section of these bank accounts for your team only – is created for your organization through our platform." } %>
-  <%= render partial: "callout", locals: { type: "info", emoji: "ℹ️", title: "When using Hack Club Bank in legal settings, use Hack Club Bank, a project by The Hack Foundation (d.b.a. Hack Club) OR The Hack Foundation (d.b.a. Hack Club). Make sure not to abbreviate or shorten the name in this context." } %>
+  <%= render partial: "callout", locals: { type: "warning", emoji: "⚠️", title: "As a reminder, HCB is not a bank! We are a fiscal sponsorship platform backed on Increase and Bank of America. When you sign the fiscal sponsorship agreement, a “restricted fund” - a privatized section of these bank accounts for your team only - is created for your organization through our platform." } %>
+  <%= render partial: "callout", locals: { type: "info", emoji: "ℹ️", title: "When using HCB in legal settings, use HCB, a project by The Hack Foundation (d.b.a. Hack Club) OR The Hack Foundation (d.b.a. Hack Club)." } %>
 </div>
 
 <div class="fiscal-sponsorship" id="fiscal-sponsorship">
@@ -38,10 +30,10 @@
     As an event or organization fiscally sponsored through HCB, the following can be included on any correspondence, websites, marketing, etc.:
   </p>
   <pre><code>
-<%= @event_name %> is fiscally sponsored by Hack Club Bank, a project by The Hack Foundation (d.b.a. Hack Club), a 501(c)(3) nonprofit (EIN: 81-2908499).
+<%= @event_name %> is fiscally sponsored by The Hack Foundation (d.b.a. Hack Club), a 501(c)(3) nonprofit (EIN: 81-2908499).
   </code></pre>
   <p>
-    If you’d like to modify the above statement, make sure it clearly shares that you're fiscally sponsored by HCB. If you have questions or would like to run your phrasing by us, feel free to <%= link_to "contact the Bank team", "mailto:bank@hackclub.com" %>.
+    If you'd like to modify the above statement, make sure it clearly shares that you're fiscally sponsored by HCB. If you have questions or would like to run your phrasing by us, feel free to <%= link_to "contact the HCB team", "mailto:hcb@hackclub.com" %>.
   </p>
   <%= render partial: "callout", locals: { type: "warning", emoji: "⚠️", title: "Fiscal sponsor ≠ sponsor or donor. Unless you have received direct financial support from us, please do NOT use this reference as your organization's relationship to HCB." } %>
   <%= render partial: "callout", locals: { type: "warning", emoji: "⚠️", title: "Misrepresenting your relationship with HCB or Hack Club could result in the termination of your fiscal sponsorship agreement." } %>
@@ -68,30 +60,7 @@
       </div>
     <% end %>
   </div>
-
-  <h3>
-    Badges
-    <span class="muted h4 regular sans block">
-      For placing in a footer or details section.
-    </span>
-  </h3>
-
-  <div class="grid grid--wide grid--spacious mt3 mb3 md-mb4">
-    <% @logos.each do |logo| %>
-      <div class="card w-100 pb0">
-        <div class="card__banner card__banner--top center bg-<%= logo[:background] %>" aria-label="<%= logo[:criteria] %>" style="transform-style: preserve-3d;" data-behavior="hover_tilt" data-tilt-scale="1.2">
-          <img src="/brand/hcb-logo-<%= logo[:name].parameterize %>.svg" style="transform: translateZ(20px); cursor: pointer;" class="logo-confetti">
-        </div>
-        <h3 class="mb0"><%= logo[:name] %></h3>
-        <p class="mt0 muted"><%= logo[:criteria] %></p>
-        <div class="card__banner card__banner--bottom card__darker mb0">
-          <%= link_to "SVG", "/brand/hcb-logo-#{logo[:name].parameterize}.svg", class: "btn bg-info mr2 w-auto", target: :_blank, download: "" %>
-          <%= link_to "PNG", "/brand/hcb-logo-#{logo[:name].parameterize}.png", class: "btn bg-accent", target: :_blank, download: "" %>
-        </div>
-      </div>
-    <% end %>
-  </div>
-  <%= render partial: "callout", locals: { type: "info", emoji: "ℹ️", title: "By downloading or using any icon/badge or the Hack Club Bank brand, you agree to abide by the general usage rules.", link: "#general-usage-rules" } %>
+  <%= render partial: "callout", locals: { type: "info", emoji: "ℹ️", title: "By downloading or using any icon/logo or the HCB brand, you agree to abide by the general usage rules.", link: "#general-usage-rules" } %>
 </div>
 
 <div class="general-usage-rules" id="general-usage-rules">
@@ -100,28 +69,27 @@
     <div class="card w-100 pb2 callout--success">
       <h2>✅ Do</h2>
       <ul>
-        <li id="bglist">Use the HCB logo (icon/badge) to link to Hack Club Bank's page (hackclub.com/bank).</li>
-        <li id="bglist">Use the HCB logo (icon/badge) to link to your project/organization's HCB page (bank.hackclub.com/<%= @event_slug %>), provided that your project/organization has transparency mode enabled.</li>
-        <li id="bglist">Use the HCB logo (badge only) to show that your project/organization is fiscally sponsored by HCB.</li>
-        <li id="bglist">Use the HCB logo (icon/badge) in blog posts, news articles, or social media posts about Hack Club or HCB.</li>
-        <li id="bglist">Use the HCB name in correspondence/websites/marketing materials/etc. to state that your event or organization is fiscally sponsored, or, for donation and payment purposes, is a financial platform related to your fiscal sponsorship status (e.g. "donate to us using Hack Club Bank").</li>
-        <li id="bglist">Capitalize the first letter of each word in Hack Club Bank.</li>
+        <li id="bglist">Use the HCB logo to link to HCB's page (hackclub.com/hcb).</li>
+        <li id="bglist">Use the HCB logo to link to your project/organization's HCB page (hcb.hackclub.com/<%= @event_slug %>), provided that your project/organization has transparency mode enabled.</li>
+        <li id="bglist">Use the HCB logo to show that your project/organization is fiscally sponsored by HCB.</li>
+        <li id="bglist">Use the HCB logo in blog posts, news articles, or social media posts about Hack Club or HCB.</li>
+        <li id="bglist">Use the HCB name in correspondence/websites/marketing materials/etc. to state that your event or organization is fiscally sponsored, or, for donation and payment purposes, is a financial platform related to your fiscal sponsorship status (e.g. "donate to us using HCB").</li>
       </ul>
     </div>
     <div class="card w-100 pb2 callout--error">
       <h2>🚫 Don't</h2>
       <ul>
         <li id="bglist">Use the HCB or Hack Club logo/name in any way that implies endorsement of your organization beyond fiscal sponsorship, unless such usage has been approved by HCB.</li>
-        <li id="bglist">Use the HCB logo (icon/badge) as your event or organization's logo.</li>
-        <li id="bglist">Integrate the HCB logo (icon/badge) into your event or organization's logo.</li>
+        <li id="bglist">Use the HCB logo as your event or organization's logo.</li>
+        <li id="bglist">Integrate the HCB logo into your event or organization's logo.</li>
         <li id="bglist">Sell any HCB artwork without permission from Hack Club.</li>
         <li id="bglist">Modify the original aspect ratio of the HCB logo (icon/badge) in any way, aside from resizing while maintaining the same aspect ratio.</li>
-        <li id="bglist">Modify the name other than what is specified in these guidelines (e.g. HackClubBank should not be used)</li>
-        <li id="bglist">Crowd the area around the HCB logo (icon/badge). The margins around all sides of the logo should be at least 1/2 the height of the logo (e.g. 32px tall icon should have 16px of margins on all sides)</li>
-        <li id="bglist">Display the HCB logo (icon only) smaller than 24px in height/width, OR; (PNG icon only) larger than 512px in height/width.</li>
-        <li id="bglist">Display the HCB logo (badge only) smaller than 144px wide and 36px tall or the point where the text becomes illegible, whichever is larger, OR; (PNG badge only) larger than 768px wide and 192px tall.</li>
+        <li id="bglist">Modify the name other than what is specified in these guidelines</li>
+        <li id="bglist">Crowd the area around the HCB logo. The margins around all sides of the logo should be at least 1/2 the height of the logo (e.g. 32px tall icon should have 16px of margins on all sides)</li>
+        <li id="bglist">Display the HCB logo smaller than 24px in height/width, OR; (PNG icon only) larger than 512px in height/width.</li>
+        <li id="bglist">Display the HCB logo smaller than 144px wide and 36px tall or the point where the text becomes illegible, whichever is larger, OR; (PNG badge only) larger than 768px wide and 192px tall.</li>
       </ul>
     </div>
   </div>
-  <%= render partial: "callout", locals: { type: "info", emoji: "ℹ️", title: "For more info regarding authorized uses of the HCB brand or to request permission to use the brand for purposes other than those described above, please contact the Bank team.", link: "mailto:bank@hackclub.com" } %>
+  <%= render partial: "callout", locals: { type: "info", emoji: "ℹ️", title: "For more info regarding authorized uses of the HCB brand or to request permission to use the brand for purposes other than those described above, please contact the HCB team.", link: "mailto:hcb@hackclub.com" } %>
 </div>
