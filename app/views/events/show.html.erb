@@ -93,6 +93,8 @@
   </div>
 </div>
 
+<%= render "events/public_message" %>
+
 <h2 class="heading">
   Transactions
   <% if organizer_signed_in? && @event.canonical_transactions.exists? %>
