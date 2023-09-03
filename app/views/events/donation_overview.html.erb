@@ -50,7 +50,7 @@
     <iframe src='<%= start_donation_donations_url @event %>' style='border:none;' name='donateFrame' scrolling='yes' frameborder='0' marginheight='0px' marginwidth='0px' height='256px' width='512px' allowfullscreen style="width: 100%; max-width: 100%; max-height: 40vh;"></iframe>
   </section>
 
-  <section class="modal" data-behavior="modal" role="dialog" id="prefilled_link">
+  <section class="modal modal--scroll bg-snow" data-behavior="modal" role="dialog" id="prefilled_link">
     <%= modal_header "Prefilled Amount" %>
     <%= react_component "donation_overview/PreviewLink", path: start_donation_donations_url(@event) %>
   </section>

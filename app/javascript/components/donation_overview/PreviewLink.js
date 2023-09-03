@@ -83,7 +83,7 @@ class PreviewLink extends React.Component {
 
     return (
       <>
-        <label htmlFor="prefill-amount">Prefilled amount (USD)</label>
+        <label htmlFor="prefill-amount" className="mb1" style={{fontWeight: 600}}>Prefilled amount (USD)</label>
         <div className="field">
           <div className="flex items-center">
             <span className="bold muted" style={{width: "1rem"}}>$</span>
@@ -96,7 +96,7 @@ class PreviewLink extends React.Component {
                      />
           </div>
         </div>
-        <label htmlFor="prefill-message">Prefilled message</label>
+        <label htmlFor="prefill-message" className="mb1" style={{fontWeight: 600}}>Prefilled message</label>
         <div className="field">
           <div className="flex items-center">
             <input placeholder="optional"
@@ -106,18 +106,16 @@ class PreviewLink extends React.Component {
                      />
           </div>
         </div>
-        <label htmlFor="prefill-monthly">Monthly charge</label>
-        <div className="field">
-          <div className="flex items-center">
-            <input placeholder="500.00"
-                    type="checkbox"
-                    name="prefill-monthly"
-                    onChange={this.handleChange}
-                     />
-          </div>
-        </div>
-        <hr />
-        <label htmlFor="prefill-url">
+        <label htmlFor="prefill-monthly flex items-center">
+          <span style={{fontWeight: 600}}>Monthly charge?</span>
+          <input placeholder="500.00"
+                  type="checkbox"
+                  name="prefill-monthly"
+                  onChange={this.handleChange}
+                   />        
+        </label>
+        <hr style={{ margin: "1rem 0" }} />
+        <label htmlFor="prefill-url" className="mb1" style={{fontWeight: 600}}>
           {this.state.amount == null ?
           'Donation link' :
           'Prefilled donation link'
