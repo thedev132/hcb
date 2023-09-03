@@ -34,6 +34,14 @@
     background-color: rgba(map-get($palette, info), 0.125);
     color: map-get($palette, info);
   }
+  &.bg-accent {
+    background-color: rgba(map-get($palette, accent), 0.125);
+    color: map-get($palette, accent);
+  }
+  &.bg-muted {
+    background-color: rgba(map-get($palette, muted), 0.125);
+    color: map-get($palette, muted);
+  }
 
   svg:last-child {
     margin-left: 0.25rem;

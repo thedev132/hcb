@@ -7,7 +7,7 @@ module StaticPagesHelper
     return "" if options[:badge] == 0
 
     badge = if options[:badge].to_i > 0
-              badge_for(options[:badge], class: !options[:subtle_badge] ? "bg-accent pr2" : "pr2")
+              badge_for(options[:badge], class: options[:subtle_badge].present? ? "bg-muted pr2" : "bg-accent pr2")
             else
               ""
             end
