@@ -406,3 +406,9 @@ $('[data-behavior~=submit_form]').click(function (e) {
   const formId = $(this).data('form')
   $(`#${formId}`).submit()
 })
+
+window.onload = function() {
+  if (window.self === window.top) {
+     document.body.classList.remove('embedded');
+  }
+}

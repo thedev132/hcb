@@ -286,6 +286,10 @@ summary {
   pointer-events: none;
 }
 
+.embedded .embedded-display-none {
+  display: none;
+}
+
 @keyframes flying-spook {
   from {
     left: 0;
