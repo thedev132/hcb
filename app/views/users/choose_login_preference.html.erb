@@ -23,6 +23,8 @@
     <span class="primary">Sign in to HCB</span>
   </h1>
 
+  <%= render partial: "users/sms_auth_notice" %>
+
   <p>How would you like to sign in?</p>
 
   <%= form_with url: set_login_preference_users_path, method: :post, data: { "controller" => "webauthn-auth form-disable", "webauthn-auth-target" => "authForm", "action" => "webauthn-auth#submit" } do |form| %>

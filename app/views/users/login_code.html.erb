@@ -8,6 +8,9 @@
     <span class="h3 caps secondary block">Sign in to HCB</span>
     <span class="black">Login Code</span>
   </h1>
+
+  <%= render partial: "users/sms_auth_notice" %>
+
   <p>We just sent a login code to <%= @use_sms_auth ? "your phone number ending in: " + @phone_last_four : @email %></p>
   <% if Rails.env.development? %>
     <p class="h5"><%= link_to "Seems like you're in development. Check your dev email outbox here!", letter_opener_web_path, target: :_blank %></p>
