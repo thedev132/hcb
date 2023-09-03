@@ -26,7 +26,8 @@ module CanonicalTransactionService
         {
           date: ct.date,
           memo: ct.local_hcb_code.memo,
-          amount_cents: ct.amount_cents
+          amount_cents: ct.amount_cents,
+          tags: ct.local_hcb_code.tags.filter { |tag| tag.event_id == @event_id }.pluck(:label).join(", ")
         }
       end
 
