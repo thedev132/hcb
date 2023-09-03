@@ -82,10 +82,10 @@ class Card extends React.Component {
         rel="noreferrer"
         className="regular link-reset black"
       >
-        <li className="card card--item card--hover flex justify-between overflow-visible line-height-3">
+        <li className="card card--item card--hover flex justify-between overflow-visible line-height-3 items-center">
           <strong>{this.props.humanName}</strong>
           {this.props.taskName && (
-            <span className={`badge pr2 ${this.getColor()}`}>
+            <span className={`badge pr2 ${this.getColor()} h-fit-content`}>
               {this.getCount()}
             </span>
           )}

@@ -7,13 +7,13 @@ module StaticPagesHelper
     return "" if options[:badge] == 0
 
     badge = if options[:badge].to_i > 0
-              badge_for(options[:badge], class: options[:subtle_badge].present? ? "bg-muted pr2" : "bg-accent pr2")
+              badge_for(options[:badge], class: options[:subtle_badge].present? ? "bg-muted pr2 h-fit-content" : "bg-accent pr2 h-fit-content")
             else
               ""
             end
     link_to content_tag(:li,
                         [content_tag(:strong, name), badge].join.html_safe,
-                        class: "card card--item card--hover flex justify-between overflow-visible line-height-3"),
+                        class: "card card--item card--hover flex justify-between overflow-visible line-height-3 items-center"),
             path, method: options[:method]
   end
 
