@@ -407,6 +407,25 @@ $('[data-behavior~=submit_form]').click(function (e) {
   $(`#${formId}`).submit()
 })
 
+$(document).on('click', '[data-behavior~=expand_receipt]', function (e) {
+  const controlOrCommandClick = e.ctrlKey || e.metaKey;
+  if ($(this).attr('href') || $(e.target).attr('href')) {
+    if (controlOrCommandClick) return;
+    e.preventDefault()
+    e.stopPropagation()
+  }
+  $(e.target).parents(".modal--popover").addClass("modal--popover--receipt-expanded");
+  let selected_receipt = document.querySelectorAll(`.hidden_except_${e.originalEvent.target.dataset.receiptId}`)[0]
+  selected_receipt.style.display = "flex";
+  selected_receipt.style.setProperty("--receipt-size", "100%");
+  selected_receipt.classList.add("receipt--expanded")
+})
+
+function unexpandReceipt(){
+  document.querySelectorAll(`.receipt--expanded`)[0].classList.remove('receipt--expanded'); 
+  document.querySelector('.modal--popover.modal--popover--receipt-expanded').classList.remove('modal--popover--receipt-expanded');
+}
+
 window.onload = function() {
   if (window.self === window.top) {
      document.body.classList.remove('embedded');

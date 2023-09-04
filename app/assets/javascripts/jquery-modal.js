@@ -110,6 +110,7 @@
       modals.pop()
       this.unblock()
       this.hide()
+      unexpandReceipt()
       if (!$.modal.isActive()) $(document).off('keydown.modal')
     },
 

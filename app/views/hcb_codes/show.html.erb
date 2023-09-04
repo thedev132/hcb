@@ -1,6 +1,7 @@
 <% page_md %>
 
 <%= render "events/nav" if @event %>
+
 <%= render partial: "hcb_codes/admin_tools" %>
 <%= render partial: "hcb_codes/rich_metadata" %>
 
@@ -23,8 +24,8 @@
 <%= render "comments/form_v2" %>
 
 <% admin_tools do %>
-<%= render partial: "hcb_codes/transaction_history" %>
-<%= render partial: "hcb_codes/pending_transaction_history" %>
+  <%= render partial: "hcb_codes/transaction_history" %>
+  <%= render partial: "hcb_codes/pending_transaction_history" %>
 <% end %>
 
 <% title "Transaction for #{number_to_currency(@hcb_code.amount)}" unless content_for :title %>
