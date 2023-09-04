@@ -5,19 +5,24 @@
 <div class="receipt flex flex-column mb1 hidden_except_<%= receipt.id %> <%= "receipt--pairing" if defined?(pairing) && pairing %>" <% if defined?(textual_content) %> data-textual-content="<%= j receipt.textual_content %>"<% end %> data-receipt-id="<%= receipt.id %>" style="--receipt-size: <%= defined?(size) ? size : 256 %>px;<% if defined?(selectable) %> cursor: pointer;" data-receipt-select-target="receipt" data-action="click->receipt-select#select<% end %>">
 
 <% unless defined?(hide_info) %>
-  <span class="<%= "muted " unless defined?(selectable) %>mb1">
-    <strong>
-      <% if defined?(link_to_file) && !defined?(selectable) %>
-        <%= link_to file_path, target: "_blank", style: "text-decoration: none;" do %>
+  <span class="<%= "muted " unless defined?(selectable) %>mb1 flex items-center">
+    <button class="pop receipt__minimize" onClick="unexpandReceipt()">
+      <%= inline_icon "view-back", size: 24 %>
+    </button>
+    <span>
+      <strong>
+        <% if defined?(link_to_file) && !defined?(selectable) %>
+          <%= link_to file_path, target: "_blank", style: "text-decoration: none;" do %>
+            <%= receipt.file.blob.filename %>
+          <% end %>
+        <% else %>
           <%= receipt.file.blob.filename %>
         <% end %>
-      <% else %>
-        <%= receipt.file.blob.filename %>
+      </strong>
+      <% unless defined?(selectable) %>
+        (<%= number_to_human_size receipt.file.blob.byte_size %>)
       <% end %>
-    </strong>
-    <% unless defined?(selectable) %>
-      (<%= number_to_human_size receipt.file.blob.byte_size %>)
-    <% end %>
+    </span>
   </span>
 <% end %>
 
@@ -44,7 +49,6 @@
             } if receipt.preview %>
       </span>
     <% elsif receipt.preview && local_assigns[:popover] %>
-    <span class="h5 muted mb1 receipt__minimize" onClick="unexpandReceipt()">Minimize Receipt</span>
     <span style="display: inline-grid; border-radius: 0.5rem;" class="pointer">
       <%= image_tag receipt.preview,
             class: "card p0 receipt--image #{receipt.file.blob.content_type == "application/pdf" ? "receipt__pdf-preview" : ""}",

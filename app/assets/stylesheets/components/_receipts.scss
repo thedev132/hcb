@@ -139,13 +139,15 @@
   display: block!important;
 }
 
-.receipt--expanded > .receipt__minimize {
-  display: inline!important;
+.receipt--expanded > span > .receipt__minimize {
+  display: inline-flex!important;
 }
 
 .receipt__minimize {
-  display: none;
   cursor: pointer;
-  margin-top: -4px;
-  text-decoration: underline;
+  display: none;
+  margin-right: 4px;
+  border: none;
+  height: 24px;
+  width: 24px;
 }
