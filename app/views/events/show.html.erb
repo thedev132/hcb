@@ -2,7 +2,7 @@
 
 <% if @event&.is_public %>
   <% content_for :head do %>
-    <% img = "https://bank-og.hackclub.com/api/embeds/#{@event.slug}" %>
+    <% img = "https://hcb-og.hackclub.com/api/embeds/#{@event.slug}" %>
     <meta property="og:type" content="website">
     <meta name="twitter:card" content="summary_large_image">
     <meta property="og:image" content="<%= img %>">
