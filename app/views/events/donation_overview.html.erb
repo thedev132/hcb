@@ -38,8 +38,66 @@
 
 <% if @event.donation_page_enabled %>
   <section class="modal" data-behavior="modal" role="dialog" id="qr_code">
-    <%= modal_header "Donations QR code" %>
-    <img alt="QR code" src="<%= qr_code_donations_path @event %>">
+    <%= modal_header "Donations QR Code" %>
+    <div class="qrCode__configPanel">
+      <div>
+        <div class="qrCode__wrapper" onclick="saveActiveQRCodeAsImage()" style="padding-top: 4.5px; padding-left: 4.5px;">
+          <qr-code
+            contents='<%= start_donation_donations_url @event %>'
+            class="qrCode"
+            id="qrCode--icon">
+            <img
+              src="https://icons.hackclub.com/api/icons/black/bank-account"
+              slot="icon">
+          </qr-code>
+          <qr-code
+            contents='<%= start_donation_donations_url @event %>'
+            class="qrCode"
+            id="qrCode--support">
+            <img
+              src="https://icons.hackclub.com/api/icons/black/support"
+              slot="icon">
+          </qr-code>
+          <% if @event.logo.attached? %>
+            <qr-code
+              contents='<%= start_donation_donations_url @event %>'
+              class="qrCode"
+              id="qrCode--logo">
+              <%= image_tag @event.logo, slot: "icon", class: "rounded", style: "height: 36px;" %>
+            </qr-code>
+          <% end %>
+          <qr-code
+            contents='<%= start_donation_donations_url @event %>'
+            class="qrCode"
+            id="qrCode--bank">
+            <%= image_tag "logo-production.svg", slot: "icon", class: "rounded", style: "height: 36px;" %>
+          </qr-code>
+          <qr-code
+            contents='<%= start_donation_donations_url @event %>'
+            class="qrCode"
+            id="qrCode--bank-dark">
+            <%= image_tag "logo-production-dark.svg", slot: "icon", class: "rounded", style: "height: 36px;" %>
+          </qr-code>
+          <qr-code
+            contents='<%= start_donation_donations_url @event %>'
+            class="qrCode qrCode--active"
+            id="qrCode--blank" />
+        </div>
+      </div>
+      <div>
+        <div class="iconsGrid">
+          <%= inline_icon "view-close", size: 54, class: "btn bg-muted p1", onclick: "changeCode('blank')" %>
+          <%= inline_icon "bank-account", size: 54, class: "btn bg-muted p1", onclick: "changeCode('icon')" %>
+          <%= inline_icon "support", size: 54, class: "btn bg-muted p1", onclick: "changeCode('support')" %>
+          <% if @event.logo.attached? %>
+            <%= image_tag @event.logo, slot: "icon", class: "btn bg-muted p1 rounded", onclick: "changeCode('logo')" %>
+          <% end %>
+          <%= image_tag "logo-production.svg", slot: "icon", class: "btn bg-muted p1 rounded", onclick: "changeCode('bank')" %>
+          <%= image_tag "logo-production-dark.svg", slot: "icon", class: "btn bg-muted p1 rounded", onclick: "changeCode('bank-dark')" %>
+        </div>
+        <button class="btn mt2" onclick="saveActiveQRCodeAsImage()" id="downloadButton">Download</button>
+      </div>
+    </div>
   </section>
 
   <section class="modal" data-behavior="modal" role="dialog" id="embed_code">
@@ -180,3 +238,7 @@
 <% else %>
   <%= blankslate "No donations yet" %>
 <% end %>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://unpkg.com/@bitjson/qr-code@1.0.2/dist/qr-code.js"></script>
+<%= javascript_include_tag "donation_qr_codes.js" %>
