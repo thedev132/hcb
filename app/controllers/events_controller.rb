@@ -112,6 +112,7 @@ class EventsController < ApplicationController
             comments: Array.new(rand(9) > 1 ? 0 : rand(1..2)),
             donation?: !trans[:amount].negative?,
             donation: !trans[:amount].negative? ? nil : OpenStruct.new(recurring?: trans[:monthly]),
+            tags: []
           )
         )
       end
