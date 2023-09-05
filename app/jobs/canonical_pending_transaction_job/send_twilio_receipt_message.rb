@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module CanonicalPendingTransactionJob
-  class SendTwilioMessage < ApplicationJob
+  class SendTwilioReceiptMessage < ApplicationJob
     include HcbCodeHelper # for attach_receipt_url
 
     # This is a heuristic to avoid sending SMS for online charges. This isn't
