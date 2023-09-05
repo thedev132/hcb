@@ -2,6 +2,12 @@
   overflow-x: auto;
 }
 
+@media (min-width: 72em) {
+  .table-container {
+    max-width: calc(100vw - 20rem);
+  }
+}
+
 .transaction--fancy {
   background-image: repeating-linear-gradient(
     to bottom right,
