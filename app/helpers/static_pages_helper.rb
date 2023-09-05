@@ -4,10 +4,8 @@ module StaticPagesHelper
   extend ActionView::Helpers::NumberHelper
 
   def card_to(name, path, options = {})
-    return "" if options[:badge] == 0
-
-    badge = if options[:badge].to_i > 0
-              badge_for(options[:badge], class: options[:subtle_badge].present? ? "bg-muted pr2 h-fit-content" : "bg-accent pr2 h-fit-content")
+    badge = if options[:badge].present?
+              badge_for(options[:badge], class: options[:subtle_badge].present? || options[:badge] == 0 ? "bg-muted pr2 h-fit-content" : "bg-accent pr2 h-fit-content")
             else
               ""
             end
