@@ -10,6 +10,7 @@
 #  amount_received                      :integer
 #  email                                :text
 #  hcb_code                             :text
+#  ip_address                           :inet
 #  message                              :text
 #  name                                 :text
 #  payout_creation_balance_available_at :datetime
@@ -20,6 +21,7 @@
 #  status                               :string
 #  stripe_client_secret                 :string
 #  url_hash                             :string
+#  user_agent                           :text
 #  created_at                           :datetime         not null
 #  updated_at                           :datetime         not null
 #  event_id                             :bigint

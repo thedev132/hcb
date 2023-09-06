@@ -49,7 +49,9 @@ class DonationsController < ApplicationController
       email: params[:email],
       amount: params[:amount],
       message: params[:message],
-      event: @event
+      event: @event,
+      ip_address: request.ip,
+      user_agent: request.user_agent
     )
 
     authorize @donation
@@ -72,6 +74,8 @@ class DonationsController < ApplicationController
       redirect_to root_url and return
     end
 
+    d_params[:ip_address] = request.ip
+    d_params[:user_agent] = request.user_agent
 
     @donation = Donation.new(d_params)
     @donation.event = @event

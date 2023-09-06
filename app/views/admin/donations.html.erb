@@ -6,6 +6,8 @@
 
 <%= form_with local: true, url: donations_admin_index_path, method: :get do |form| %>
   <%= form.text_field :q, value: params[:q], placeholder: "Search" %>
+  <%= form.text_field :ip_address, value: params[:ip_address], placeholder: "IP Address" %>
+  <%= form.text_field :user_agent, value: params[:user_agent], placeholder: "User Agent" %>
   <%= form.label :deposited do %>
     <%= form.check_box :deposited, checked: @deposited %>
     Deposited
@@ -49,6 +51,8 @@
       <th>Status</th>
       <th>PayoutId</th>
       <th>FeeReimbursementId</th>
+      <th>IP Address</th>
+      <th>User Agent</th>
       <th>Actions</th>
     </tr>
   </thead>
@@ -66,6 +70,8 @@
         <td><%= donation.aasm_state.upcase %></td>
         <td><%= donation.payout_id %></td>
         <td><%= donation.fee_reimbursement_id %></td>
+        <td><%= donation.ip_address %></td>
+        <td><%= donation.user_agent %></td>
         <td>
         </td>
       </tr>

@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_25_033737) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_25_055850) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_stat_statements"
@@ -509,6 +509,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_25_033737) do
     t.text "hcb_code"
     t.string "aasm_state"
     t.bigint "recurring_donation_id"
+    t.text "user_agent"
+    t.inet "ip_address"
     t.index ["event_id"], name: "index_donations_on_event_id"
     t.index ["fee_reimbursement_id"], name: "index_donations_on_fee_reimbursement_id"
     t.index ["payout_id"], name: "index_donations_on_payout_id"

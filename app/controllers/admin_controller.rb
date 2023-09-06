@@ -687,6 +687,8 @@ class AdminController < ApplicationController
     @page = params[:page] || 1
     @per = params[:per] || 20
     @q = params[:q].present? ? params[:q] : nil
+    @ip_address = params[:ip_address].present? ? params[:ip_address] : nil
+    @user_agent = params[:user_agent].present? ? params[:user_agent] : nil
     @deposited = params[:deposited] == "1" ? true : nil
     @in_transit = params[:in_transit] == "1" ? true : nil
     @failed = params[:failed] == "1" ? true : nil
@@ -713,6 +715,8 @@ class AdminController < ApplicationController
       end
     end
 
+    relation = relation.where(ip_address: @ip_address) if @ip_address
+    relation = relation.where("user_agent ILIKE ?", "%#{Donation.sanitize_sql_like(@user_agent)}%") if @user_agent
     relation = relation.deposited if @deposited
     relation = relation.in_transit if @in_transit
     relation = relation.failed if @failed
