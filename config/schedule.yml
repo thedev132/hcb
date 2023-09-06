@@ -127,3 +127,8 @@ stripe_card_nightly_job:
   cron: "0 0 1 * *" # run first day of each month
   class: "DisbursementJob::Distribute128CollectiveFund"
   queue: "default"
+
+refresh_hcb_acronym_expansions_job:
+  cron: "*/5 * * * *" # run every 5 minutes
+  class: "RefreshHcbAcronymExpansionsJob"
+  queue: "default"

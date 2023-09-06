@@ -16,6 +16,9 @@ class StaticPagesController < ApplicationController
       @invites = @service.invites
 
       @show_event_reorder_tip = current_user.organizer_positions.where.not(sort_index: nil).none?
+
+      @hcb_expansion = Rails.cache.read("hcb_acronym_expansions")&.sample || "Hack Club Buckaroos"
+
     end
     if admin_signed_in?
       @transaction_volume = CanonicalTransaction.included_in_stats.sum("@amount_cents")

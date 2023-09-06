@@ -5,9 +5,14 @@
 
 <h1 class="heading items-center md-items-baseline justify-center md-justify-between center md-left-align w-auto">
   <div>
-    <span class="h3 caps secondary block">Welcome to</span>
-    <span class="primary <%= "nowrap" unless fall? %> <%= "warning" if fall? %>">
-      HCB
+    <a
+      class="h4 caps muted block text-decoration-none"
+      href="https://github.com/hackclub/hcb-expansions/tree/main#hcb-what-does-it-stand-for"
+      target="_blank">
+      <%= @hcb_expansion %>
+    </a>
+    <span class="<%= "nowrap" unless fall? %> <%= "warning" if fall? %>">
+      Welcome to <span class="primary">HCB</span>
     </span>
   </div>
   <span class="badge ml0 h5 caps <%= Rails.env.development? ? "bg-success" : by_season("", fall: "bg-warning") %>" id="flavor-text" data-turbo-permanent><%= flavor_text %></span>
