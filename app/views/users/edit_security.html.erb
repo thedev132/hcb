@@ -12,7 +12,7 @@
   <% unless @user.phone_number.blank? %>
     <div class="session-header mt3 pb2">
       <legend class="heading flex flex-row justify-start items-center">
-        <span class="h2">Login Codes</span>
+        <span class="h2">Login codes</span>
         <%= badge_for @user.use_sms_auth ? "SMS" : "Email", class: "bg-muted" %>
       </legend>
     </div>
