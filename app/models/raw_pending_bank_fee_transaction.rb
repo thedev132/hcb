@@ -20,7 +20,7 @@ class RawPendingBankFeeTransaction < ApplicationRecord
   end
 
   def memo
-    "HCB FEE".strip.upcase
+    "FISCAL SPONSORSHIP".strip.upcase
   end
 
   def likely_event_id
