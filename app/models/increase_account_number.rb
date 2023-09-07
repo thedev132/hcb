@@ -44,7 +44,7 @@ class IncreaseAccountNumber < ApplicationRecord
 
   def create_increase_account_number
     increase_account_number = Increase::AccountNumbers.create(
-      account_id: IncreaseService::AccountIds::FS_MAIN,
+      account_id: event.increase_account_id,
       name: "##{event.id} (#{event.name})"
     )
 
