@@ -20,201 +20,199 @@
   </div>
 <% end %>
 
-<article class="check--form flex items-start justify-center mt2 mb3">
-  <section class="center mt0 mx-auto" style="width: 400px; max-width: 100%;">
-    <% if @card.card_grant.present? %>
-      <% admin_tools do %>
-        This card is linked to a <%= link_to "#{@card.card_grant.amount.format} grant", @card.card_grant %> to <%= mail_to @card.card_grant.user.email %>.
+<turbo-frame id="details">
+  <article class="check--form flex items-start justify-center mt2 mb3">
+    <section class="center mt0 mx-auto" style="width: 400px; max-width: 100%;">
+      <% if @card.card_grant.present? %>
+        <% admin_tools do %>
+          This card is linked to a <%= link_to "#{@card.card_grant.amount.format} grant", @card.card_grant %> to <%= mail_to @card.card_grant.user.email %>.
+        <% end %>
       <% end %>
-    <% end %>
-    <%= render @card %>
-    <% if !@card.activated? %>
-      <% if @card.replacement_for %>
-        <div class="card border b--warning pb0 mt3 mx-auto" data-controller="form-disable">
-          <div class="flex items-center warning">
-            <%= inline_icon "info", size: 32, class: "mr1" %>
-            <p class="bold mt0 mb0">Heads up:</p>
+      <%= render @card %>
+      <% if !@card.activated? %>
+        <% if @card.replacement_for %>
+          <div class="card border b--warning pb0 mt3 mx-auto" data-controller="form-disable">
+            <div class="flex items-center warning">
+              <%= inline_icon "info", size: 32, class: "mr1" %>
+              <p class="bold mt0 mb0">Heads up:</p>
+            </div>
+            <p class="mt1 left-align">
+              Since this card is a replacement, activating it will permanently deactivate <%= stripe_card_mention @card.replacement_for %>.
+            </p>
+            <p class="mt1 left-align">
+              You'll need to update billing information for any subscriptions that use <%= stripe_card_mention @card.replacement_for %>.
+            </p>
+            <div class="field field--checkbox">
+              <input type="checkbox" id="confirm" data-action="form-disable#run" data-form-disable-target="radioButton">
+              <label for="confirm">Click here to confirm.</label>
+            </div>
+            <%= button_to stripe_card_activate_path(@card),
+                        method: :post,
+                        class: "btn bg-success mt1 mb2", data: { "form-disable-target" => "submitButton" } do %>
+              <%= inline_icon "rep", size: home_action_size %>
+              Activate card
+            <% end %>
           </div>
-          <p class="mt1 left-align">
-            Since this card is a replacement, activating it will permanently deactivate <%= stripe_card_mention @card.replacement_for %>.
-          </p>
-          <p class="mt1 left-align">
-            You'll need to update billing information for any subscriptions that use <%= stripe_card_mention @card.replacement_for %>.
-          </p>
-          <div class="field field--checkbox">
-            <input type="checkbox" id="confirm" data-action="form-disable#run" data-form-disable-target="radioButton">
-            <label for="confirm">Click here to confirm.</label>
-          </div>
+        <% else %>
           <%= button_to stripe_card_activate_path(@card),
                       method: :post,
-                      class: "btn bg-success mt1 mb2", data: { "form-disable-target" => "submitButton" } do %>
+                      class: "btn bg-success mt3" do %>
             <%= inline_icon "rep", size: home_action_size %>
             Activate card
           <% end %>
-        </div>
-      <% else %>
-        <%= button_to stripe_card_activate_path(@card),
-                    method: :post,
-                    class: "btn bg-success mt3" do %>
-          <%= inline_icon "rep", size: home_action_size %>
-          Activate card
         <% end %>
+      <% elsif @card.stripe_status == 'inactive' %>
+        <%= link_to "Defrost card",
+                    stripe_card_defrost_path(@card),
+                    method: :post,
+                    class: "btn bg-accent mt3" %>
+      <% elsif @card.stripe_status == 'active' %>
+        <%= link_to stripe_card_freeze_path(@card),
+                    method: :post,
+                    class: "btn bg-accent mt3" do %>
+          <%= inline_icon "freeze" %> Freeze card
+        <% end %>
+        <%= link_to stripe_card_edit_path(@card), class: "btn bg-success ml1", data: { behavior: "modal_trigger", modal: "name_card" } do %>
+          <%= inline_icon "edit" %>
+          Name
+        <% end %>
+        <p class="muted">You can instantly defrost your card anytime</p>
       <% end %>
-    <% elsif @card.stripe_status == 'inactive' %>
-      <%= link_to "Defrost card",
-                  stripe_card_defrost_path(@card),
-                  method: :post,
-                  class: "btn bg-accent mt3" %>
-    <% elsif @card.stripe_status == 'active' %>
-      <%= link_to stripe_card_freeze_path(@card),
-                  method: :post,
-                  class: "btn bg-accent mt3" do %>
-        <%= inline_icon "freeze" %> Freeze card
-      <% end %>
-      <%= link_to stripe_card_edit_path(@card), class: "btn bg-success ml1", data: { behavior: "modal_trigger", modal: "name_card" } do %>
-        <%= inline_icon "edit" %>
-        Name
-      <% end %>
-      <p class="muted">You can instantly defrost your card anytime</p>
-    <% end %>
-  </section>
+    </section>
 
-  <section class="modal modal--scroll bg-snow" data-behavior="modal" role="dialog" id="name_card">
-    <%= modal_header "Name your card" %>
-    <%= render "name_form", stripe_card: StripeCard.new %>
-  </section>
+    <section class="modal modal--scroll bg-snow" data-behavior="modal" role="dialog" id="name_card">
+      <%= modal_header "Name your card" %>
+      <%= render "name_form", stripe_card: StripeCard.new %>
+    </section>
 
-  <% if @card.activated? %>
-  <article class="card max-width-2 mx-auto mt3">
-    <h2 class="mt0 heading">
-      <span class="flex-auto">
-      <%= user_mention @card.user, class: "align-bottom" %><span class="medium muted">'s</span>
-      <%= @card.name %> <span class="medium muted">Card</span>
-      </span>
-    </h2>
+    <% if @card.activated? %>
+    <article class="card max-width-2 mx-auto mt3">
+      <h2 class="mt0 heading">
+        <span class="flex-auto">
+        <%= user_mention @card.user, class: "align-bottom" %><span class="medium muted">'s</span>
+        <%= @card.name %> <span class="medium muted">Card</span>
+        </span>
+      </h2>
+      <section class="details mt2">
+        <% if @card.replacement_for %>
+          <p>
+            <strong>Replacement for</strong>
+            <span class="flex items-baseline">
+              <%= stripe_card_mention @card.replacement_for %>
+            </span>
+          </p>
+        <% end %>
 
-      <turbo-frame id="details">
-        <section class="details mt2">
-          <% if @card.replacement_for %>
-            <p>
-              <strong>Replacement for</strong>
-              <span class="flex items-baseline">
-                <%= stripe_card_mention @card.replacement_for %>
-              </span>
-            </p>
-          <% end %>
+        <% eta = @card.stripe_obj.to_hash.dig(:shipping, :eta) %>
+        <% if eta && Time.now.before?(Time.at(eta) + 3.days) %>
+          <p>
+            <strong>Expected arrival</strong>
+            <%= format_date Time.at(eta).to_date %>
+          </p>
+        <% else %>
+          <p>
+            <strong>Activation status</strong>
+            <span class="flex items-baseline">
+              <%= status_badge @card.status_badge_type %>
+              <%= @card.status_text.capitalize %>
+            </span>
+          </p>
+        <% end %>
+        <% if @card.virtual? %>
 
-          <% eta = @card.stripe_obj.to_hash.dig(:shipping, :eta) %>
-          <% if eta && Time.now.before?(Time.at(eta) + 3.days) %>
-            <p>
-              <strong>Expected arrival</strong>
-              <%= format_date Time.at(eta).to_date %>
-            </p>
-          <% else %>
-            <p>
-              <strong>Activation status</strong>
-              <span class="flex items-baseline">
-                <%= status_badge @card.status_badge_type %>
-                <%= @card.status_text.capitalize %>
-              </span>
-            </p>
-          <% end %>
-          <% if @card.virtual? %>
-
-              <% if @card.user == current_user %>
-                <div class="fs-mask">
-                  <strong>
-                    Card number
-                  </strong>
-                  <div class="flex justify-between mono">
-                    <% if @show_card_details %>
-                        <%= @card.formatted_card_number %>
-                        <%= link_to stripe_card_path(@card), data: { turbo: true } do %>
-                          <%= inline_icon "view-fill", class: "align-middle" %>
-                        <% end %>
-                    <% else %>
-                        <%= @card.hidden_card_number_with_last_four %>
-                        <%= link_to stripe_card_path(@card, show_details: "true"), data: { turbo: true } do %>
-                          <%= inline_icon "view", class: "align-middle" %>
-                        <% end %>
-                      </div>
-                    <% end %>
-                  </div>
+            <% if @card.user == current_user %>
+              <div class="fs-mask">
+                <strong>
+                  Card number
+                </strong>
+                <div class="flex justify-between mono">
+                  <% if @show_card_details %>
+                      <%= @card.formatted_card_number %>
+                      <%= link_to stripe_card_path(@card), data: { turbo: true } do %>
+                        <%= inline_icon "view-fill", class: "align-middle" %>
+                      <% end %>
+                  <% else %>
+                      <%= @card.hidden_card_number_with_last_four %>
+                      <%= link_to stripe_card_path(@card, show_details: "true"), data: { turbo: true } do %>
+                        <%= inline_icon "view", class: "align-middle" %>
+                      <% end %>
+                    </div>
+                  <% end %>
                 </div>
-              <% end %>
-
-              <% if @card.user == current_user %>
-              <div class="fs-mask mono">
-                <strong>CVC</strong>
-                <% if @show_card_details %>
-                  <%= @card.cvc %>
-                <% else %>
-                  <%= @card.hidden_cvc %>
-                <% end %>
               </div>
+            <% end %>
+
+            <% if @card.user == current_user %>
+            <div class="fs-mask mono">
+              <strong>CVC</strong>
+              <% if @show_card_details %>
+                <%= @card.cvc %>
+              <% else %>
+                <%= @card.hidden_cvc %>
               <% end %>
-
-            <div class="fs-mask">
-              <strong>Expiration date</strong>
-              <%= render_exp_date %>
             </div>
+            <% end %>
 
-            <div>
-              <strong>ZIP/Postal code</strong>
-              <%= @card.stripe_cardholder.address_postal_code %>
-            </div>
-          <% else %>
-            <div>
-              <strong>
-                Card number
-              </strong>
-              <%= @card.formatted_card_number %>
-              <div class="right tooltipped tooltipped--w" aria-label="Full number hidden to protect security">
-                <%= inline_icon "private", size: 32, class: "smoke" %>
-              </div>
-            </div>
-          <% end %>
-          <p>
-            <strong>Billing address</strong>
-            <%= render_address @card.cardholder %>
-          </p>
-          <p>
-            <strong>Type</strong>
-            <%= @card.virtual? ? "Virtual" : "Physical" %>
-          </p>
-        </section>
-      </turbo-frame>
+          <div class="fs-mask">
+            <strong>Expiration date</strong>
+            <%= render_exp_date %>
+          </div>
 
-    <% admin_tools "details" do %>
-      <div>
-        <strong>Ordered at</strong>
-        <%= format_datetime Time.at(@card.stripe_obj[:created]) %>
-      </div>
+          <div>
+            <strong>ZIP/Postal code</strong>
+            <%= @card.stripe_cardholder.address_postal_code %>
+          </div>
+        <% else %>
+          <div>
+            <strong>
+              Card number
+            </strong>
+            <%= @card.formatted_card_number %>
+            <div class="right tooltipped tooltipped--w" aria-label="Full number hidden to protect security">
+              <%= inline_icon "private", size: 32, class: "smoke" %>
+            </div>
+          </div>
+        <% end %>
+        <p>
+          <strong>Billing address</strong>
+          <%= render_address @card.cardholder %>
+        </p>
+        <p>
+          <strong>Type</strong>
+          <%= @card.virtual? ? "Virtual" : "Physical" %>
+        </p>
+      </section>
+      <% admin_tools "details" do %>
+        <div>
+          <strong>Ordered at</strong>
+          <%= format_datetime Time.at(@card.stripe_obj[:created]) %>
+        </div>
+      <% end %>
+
+      <section class="grid grid--split items-end pt2">
+        <div class="stat tooltipped tooltipped--s" aria-label="This is your account balance">
+          <strong class="stat__label">Spending limit</strong>
+          <span class="stat__value">
+            <%= render_money_amount @card.balance_available %>
+          </span>
+        </div>
+        <div class="stat stat--small">
+          <strong class="stat__label">Lifetime spent</strong>
+          <span class="stat__value">
+            <%= render_money_amount @card.total_spent %>
+          </span>
+        </div>
+      </section>
+
+      <section class="card__banner card__banner--bottom card__darker pt2 pb2">
+        <p class="muted mt0 mb0">
+        Alert us if there are fraudulent or incorrect charges on your card. <%= help_message %>
+        </p>
+      </section>
+    </article>
     <% end %>
-
-    <section class="grid grid--split items-end pt2">
-      <div class="stat tooltipped tooltipped--s" aria-label="This is your account balance">
-        <strong class="stat__label">Spending limit</strong>
-        <span class="stat__value">
-          <%= render_money_amount @card.balance_available %>
-        </span>
-      </div>
-      <div class="stat stat--small">
-        <strong class="stat__label">Lifetime spent</strong>
-        <span class="stat__value">
-          <%= render_money_amount @card.total_spent %>
-        </span>
-      </div>
-    </section>
-
-    <section class="card__banner card__banner--bottom card__darker pt2 pb2">
-      <p class="muted mt0 mb0">
-      Alert us if there are fraudulent or incorrect charges on your card. <%= help_message %>
-      </p>
-    </section>
   </article>
-  <% end %>
-</article>
+</turbo-frame>
 
 <% if @hcb_codes.exists? %>
   <h2 class="heading h2 line-height-4 mt0 ml0 pt1 pb1 pl2 pr2">Transactions on this card</h2>
