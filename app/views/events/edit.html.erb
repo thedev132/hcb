@@ -28,6 +28,25 @@
         <strong>Routing number</strong>
         <span><%= @event.routing_number %></span>
       </p>
+      <% unless @event.demo_mode? %>
+        <p>
+          <strong>Current plan</strong>
+          <span><%= @event.plan_name.titleize %></span>
+        </p>
+        <p>
+          <strong>Fee on revenue</strong>
+          <span><%= number_to_percentage(@event.sponsorship_fee * 100, significant: true, strip_insignificant_zeros: true) %></span>
+        </p>
+        <% if @event.high_school_hackathon? && @event.sponsorship_fee == 0 %>
+          <p>
+            <strong>
+              <a
+                href="https://changelog.hcb.hackclub.com/bank-now-provides-free-durian-241524">Fee waiver</a> expiration
+            </strong>
+            <span>December 31st, 2023</span>
+          </p>
+        <% end %>
+      <% end %>
       <% admin_tools "", "p" do %>
         <strong>ID</strong>
         <span><%= @event.increase_account_number&.increase_account_number_id %></span>
