@@ -16,6 +16,8 @@
         <%= stripe_card.hidden_card_number %>
       <% elsif local_assigns[:show_card_number] %>
         <%= stripe_card.formatted_card_number %>
+      <% elsif @show_card_details %>
+          <%= stripe_card.formatted_card_number %>
       <% else %>
         <%= stripe_card.hidden_card_number_with_last_four %>
       <% end %>
