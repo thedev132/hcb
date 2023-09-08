@@ -143,7 +143,12 @@
 <hr>
 
 <% if @recurring_donations.size > 0 %>
-  <h2>Recurring donors</h2>
+  <h2>
+    Recurring Donations
+    <span style="font-weight: 400; font-size: 0.7em">
+      <%= render_money @recurring_donations_monthly_sum %><span class="muted">/month</span>
+    </span>
+  </h2>
   <div class="table-container mb3">
     <table>
       <thead>

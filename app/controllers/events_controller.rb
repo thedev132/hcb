@@ -393,6 +393,9 @@ class EventsController < ApplicationController
       @recurring_donations.sort_by! { |invoice| invoice[:created_at] }.reverse!
       @donations.sort_by! { |invoice| invoice[:created_at] }.reverse!
     end
+
+    @recurring_donations_monthly_sum = @recurring_donations.sum(0) { |donation| donation[:amount] }
+
   end
 
   def partner_donation_overview
