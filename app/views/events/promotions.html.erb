@@ -172,7 +172,7 @@
         <% else %>
           <%= link_to "Apply",
             @perks_available ? airtable_form("shrKUmCPpbZ7Pdl0B", { "Project Name" => @event.name, "Bank URL" => event_url(@event), "Name" => current_user.name, "Login email" => current_user.email }) : root_path,
-            class: "btn bg-success mr1 #{'disabled' unless @perks_available}",
+            class: "btn bg-success mr1 disabled",
             target: :_blank %>
         <% end %>
     </div>
