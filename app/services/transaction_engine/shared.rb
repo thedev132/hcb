@@ -23,6 +23,8 @@ module TransactionEngine
         "FRBOPERATING"
       when 46
         "TD5673"
+      when 47
+        "TD5673"
       when "EMBURSEISSUING1"
         "EMBURSEISSUING1"
       when "STRIPEISSUING1"
