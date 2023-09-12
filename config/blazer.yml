@@ -29,6 +29,19 @@ data_sources:
       event_id: "SELECT id, name FROM events ORDER BY name ASC"
       partner_id: "SELECT id, name FROM partners ORDER BY name ASC"
       month: { 1: "January", 2: "February", 3: "March", 4: "April", 5: "May", 6: "June", 7: "July", 8: "August", 9: "September", 10: "October", 11: "November", 12: "December" }
+      bank_account_id: |
+        SELECT CONCAT('plaid_', plaid_account_id) AS id, CONCAT('Plaid: ', name) FROM bank_accounts WHERE should_sync_v2
+        UNION
+        SELECT
+          DISTINCT CONCAT('increase_', increase_account_id) AS id,
+          CASE increase_account_id
+            WHEN 'account_phqksuhybmwhepzeyjcb' THEN 'Increase: FS Main'
+            WHEN 'account_v9tdabo2us8epcz8onuq' THEN 'Increase: DAF Main'
+            ELSE CONCAT('Increase: ', increase_account_id)
+          END AS name
+        FROM events
+        UNION
+        SELECT 'stripe' AS id, 'Stripe Issuing' AS name
 
 
     linked_columns:
