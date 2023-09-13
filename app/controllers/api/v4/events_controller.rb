@@ -4,7 +4,7 @@ module Api
   module V4
     class EventsController < ApplicationController
       def index
-        @events = current_user.events.not_hidden.includes(:users)
+        @events = current_user.events.not_hidden.includes(:users).order("organizer_positions.created_at DESC")
       end
 
       def show

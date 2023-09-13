@@ -6,9 +6,9 @@ module Api
       def index
         if params[:event_id].present?
           @event = Event.find_by_public_id(params[:event_id]) || Event.friendly.find(params[:event_id])
-          @stripe_cards = @event.stripe_cards.includes(:user, :event)
+          @stripe_cards = @event.stripe_cards.includes(:user, :event).order(created_at: :desc)
         else
-          @stripe_cards = current_user.stripe_cards.includes(:user, :event)
+          @stripe_cards = current_user.stripe_cards.includes(:user, :event).order(created_at: :desc)
         end
       end
 
