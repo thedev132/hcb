@@ -29,8 +29,10 @@ class StripeCardPolicy < ApplicationPolicy
     user&.admin? || record&.event&.users&.include?(user) || record&.user == user
   end
 
-  def update_name?
+  def update?
     user&.admin? || record&.event&.users&.include?(user) || record&.user == user
   end
+
+  alias_method :update_name?, :update?
 
 end

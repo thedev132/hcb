@@ -467,7 +467,7 @@ Rails.application.routes.draw do
           end
         end
 
-        resources :stripe_cards, path: "cards", only: [:show]
+        resources :stripe_cards, path: "cards", only: [:show, :update]
 
         match "*path" => "application#not_found", via: [:get, :post]
       end

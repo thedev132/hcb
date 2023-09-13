@@ -7,6 +7,7 @@ json.country event.country
 json.slug event.slug
 json.icon event.logo.attached? ? Rails.application.routes.url_helpers.url_for(event.logo) : nil
 json.playground_mode event.demo_mode?
+json.playground_mode_meeting_requested event.demo_mode_request_meeting_at.present?
 json.transparent event.is_public?
 json.fee_percentage event.sponsorship_fee.to_f
 json.category event.category&.parameterize(separator: "_")
