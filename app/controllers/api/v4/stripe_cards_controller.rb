@@ -16,6 +16,14 @@ module Api
         @stripe_card = authorize StripeCard.find_by_public_id!(params[:id])
       end
 
+      def transactions
+        @stripe_card = authorize StripeCard.find_by_public_id!(params[:id])
+        @hcb_codes = @stripe_card.hcb_codes.order(created_at: :desc)
+
+        @total_count = @hcb_codes.size
+        @has_more = false # TODO: implement pagination
+      end
+
       def update
         @stripe_card = authorize StripeCard.find_by_public_id!(params[:id])
 
