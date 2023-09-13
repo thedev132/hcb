@@ -6,6 +6,7 @@
 #
 #  id              :bigint           not null, primary key
 #  amount_cents    :integer
+#  category_lock   :string
 #  email           :string           not null
 #  merchant_lock   :string
 #  created_at      :datetime         not null
@@ -52,7 +53,9 @@ class CardGrant < ApplicationRecord
   delegate :balance, to: :subledger
 
   serialize :merchant_lock, CommaSeparatedCoder # convert comma-separated merchant list to an array
+  serialize :category_lock, CommaSeparatedCoder
   alias_attribute :allowed_merchants, :merchant_lock
+  alias_attribute :allowed_categories, :category_lock
 
   validates_presence_of :amount_cents, :email
   validates :amount_cents, numericality: { greater_than: 0, message: "can't be zero!" }
