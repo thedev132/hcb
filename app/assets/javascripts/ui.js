@@ -422,7 +422,7 @@ $(document).on('click', '[data-behavior~=expand_receipt]', function (e) {
 })
 
 function unexpandReceipt(){
-  document.querySelectorAll(`.receipt--expanded`)[0].classList.remove('receipt--expanded'); 
+  document.querySelectorAll(`.receipt--expanded`)[0]?.classList.remove('receipt--expanded'); 
   document.querySelector('.modal--popover.modal--popover--receipt-expanded').classList.remove('modal--popover--receipt-expanded');
 }
 
