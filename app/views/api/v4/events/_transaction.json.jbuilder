@@ -2,7 +2,7 @@
 
 json.id tx.local_hcb_code.public_id
 json.date tx.date
-json.amount_cents tx.amount_cents
+json.amount_cents tx.amount.cents
 json.memo tx.local_hcb_code.memo
 json.pending tx.is_a?(CanonicalPendingTransaction)
 json.declined tx.is_a?(CanonicalPendingTransaction) && tx.declined?
