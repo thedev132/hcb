@@ -149,6 +149,10 @@ class EventPolicy < ApplicationPolicy
     user.admin?
   end
 
+  def receive_grant?
+    record.users.include?(user)
+  end
+
   private
 
   def user_or_admin

@@ -22,7 +22,7 @@
 #  updated_at      :datetime         not null
 #  event_id        :bigint           not null
 #  increase_id     :string
-#  user_id         :bigint           not null
+#  user_id         :bigint
 #
 # Indexes
 #
@@ -38,9 +38,10 @@ class IncreaseCheck < ApplicationRecord
   include AASM
 
   belongs_to :event
-  belongs_to :user
+  belongs_to :user, optional: true
 
   has_one :canonical_pending_transaction
+  has_one :grant, required: false
 
   after_create do
     create_canonical_pending_transaction!(event:, amount_cents: -amount, memo: "OUTGOING CHECK", date: created_at)
@@ -160,6 +161,10 @@ class IncreaseCheck < ApplicationRecord
     update!(increase_id: increase_check["id"], increase_status: increase_check["status"])
 
     mark_approved!
+
+    if grant.present?
+      grant.mark_fulfilled!
+    end
   end
 
 end

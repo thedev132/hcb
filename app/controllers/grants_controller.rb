@@ -47,6 +47,12 @@ class GrantsController < ApplicationController
     redirect_to grant_process_admin_path(@grant), flash: { error: "Grant rejected." }
   end
 
+  def mark_fulfilled
+    @grant = authorize Grant.find(params[:grant_id])
+    @grant.mark_fulfilled!
+    redirect_to grant_process_admin_path(@grant), flash: { success: "Grant marked as fulfilled." }
+  end
+
   def additional_info_needed
     @grant = authorize Grant.find(params[:grant_id])
     @grant.mark_additional_info_needed!
@@ -75,14 +81,32 @@ class GrantsController < ApplicationController
 
     authorize @grant
 
-    grant_params = params.require(:grant).permit(:receipt_method, ach_transfer: [:recipient_name, :routing_number, :account_number], event: [:name])
+    grant_params = params.require(:grant).permit(
+      :recipient_org_type,
+      :receipt_method,
+      :recipient_organization,
+      :determination_letter,
+      :event_id,
+      ach_transfer: [
+        :recipient_name,
+        :routing_number,
+        :account_number,
+      ],
+      increase_check: [
+        :address_line1,
+        :address_line2,
+        :address_city,
+        :address_state,
+        :address_zip,
+      ],
+    )
 
     ActiveRecord::Base.transaction do
-      @grant.update!(receipt_method: grant_params[:receipt_method])
+      @grant.assign_attributes(grant_params.permit(:recipient_org_type, :receipt_method, :recipient_organization, :determination_letter))
 
-      if @grant.receipt_method_new_organization?
+      if @grant.recipient_org_fiscally_sponsored?
         event = EventService::Create.new(
-          name: grant_params[:event][:name],
+          name: @grant.recipient_organization,
           point_of_contact_id: @grant.event.point_of_contact_id,
           emails: [@grant.recipient.email],
           category: "grant recipient",
@@ -100,29 +124,73 @@ class GrantsController < ApplicationController
           requested_by_id: nil,
           fulfilled_by_id: nil,
         ).run
+        @grant.receipt_method = "disbursement"
+
+        @grant.disbursement.mark_approved!
+
+        @grant.mark_fulfilled!
+      elsif @grant.recipient_org_existing_hcb_account?
+        event = Event.find(grant_params[:event_id])
+
+        authorize event, :receive_grant?
+
+        @grant.disbursement = DisbursementService::Create.new(
+          source_event_id: @grant.event.id,
+          destination_event_id: event.id,
+          name: "Grant to #{event.name}",
+          amount: @grant.amount,
+          requested_by_id: nil,
+          fulfilled_by_id: nil,
+        ).run
+        @grant.receipt_method = "disbursement"
 
         @grant.disbursement.mark_approved!
 
         @grant.mark_fulfilled!
       elsif @grant.receipt_method_ach_transfer?
+        @grant.mark_verifying remove_pending_transaction: true
+
         @grant.create_ach_transfer!(
           grant_params.require(:ach_transfer).permit(
-            :recipient_name,
-            :routing_number,
             :account_number,
+            :routing_number,
+          ).merge(
+            payment_for: "Grant to #{@grant.recipient_organization}",
+            event: @grant.event,
+            amount: @grant.amount_cents,
+            recipient_name: @grant.recipient_organization,
+          )
+        )
+      elsif @grant.receipt_method_check?
+        @grant.mark_verifying remove_pending_transaction: true
+
+        @grant.create_increase_check!(
+          grant_params.require(:increase_check).permit(
+            :address_line1,
+            :address_line2,
+            :address_city,
+            :address_state,
+            :address_zip,
           ).merge(
             event: @grant.event,
             amount: @grant.amount_cents,
-            payment_for: "Grant to #{grant_params[:ach_transfer][:recipient_name]}",
+            recipient_name: @grant.recipient_organization,
+            payment_for: "Grant to #{@grant.recipient_organization}",
+            memo: "Grant from #{@grant.event.name}",
           )
         )
-
-        @grant.mark_verifying!
+      else
+        @grant.mark_verifying
       end
 
-      @grant.canonical_pending_transaction.decline! # make the pending transaction disappear from the ledger
+      @grant.save!
     end
 
+    redirect_back_or_to grant_path(@grant)
+
+  rescue => e
+    flash[:error] = e.message
+    notify_airbrake(e)
     redirect_back_or_to grant_path(@grant)
 
   end

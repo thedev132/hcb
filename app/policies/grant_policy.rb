@@ -25,6 +25,10 @@ class GrantPolicy < ApplicationPolicy
     user&.admin?
   end
 
+  def mark_fulfilled?
+    user&.admin?
+  end
+
   def show?
     user&.admin? || user == record.recipient
   end

@@ -11,6 +11,7 @@
 #  reason                 :text
 #  receipt_method         :integer
 #  recipient_name         :string
+#  recipient_org_type     :integer
 #  recipient_organization :string
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
@@ -61,17 +62,30 @@ class Grant < ApplicationRecord
     create_canonical_pending_transaction!(event:, amount_cents: -amount_cents, memo: "OUTGOING GRANT", date: created_at)
   end
 
-  validates_presence_of :email, on: :create, unless: :recipient
-  validates_presence_of :reason, :amount_cents
+  enum :receipt_method, [:disbursement, :ach_transfer, :check, :manual], prefix: "receipt_method"
+  enum :recipient_org_type, ["fiscally_sponsored", "existing_hcb_account", "501c3", "international"], prefix: "recipient_org"
 
-  enum :receipt_method, [:new_organization, :ach_transfer, :check], prefix: "receipt_method"
+  validates_presence_of :email, on: :create, unless: :recipient
+  validates_presence_of :recipient_organization, :recipient_name, :reason, :amount_cents, :ends_at
+
+  validates_comparison_of :receipt_method, equal_to: "manual",                      if: :recipient_org_international?
+  validates_comparison_of :receipt_method, equal_to: "disbursement",                if: :recipient_org_fiscally_sponsored?
+  validates_inclusion_of  :receipt_method, in: ["ach_transfer", "check", "manual"], if: :recipient_org_501c3?
+
+  has_one_attached :determination_letter
+
+  validates :determination_letter, attached: true, if: :recipient_org_501c3?
 
   belongs_to :disbursement, optional: true
   belongs_to :ach_transfer, optional: true
   belongs_to :increase_check, optional: true
 
+  has_one :recipient_event, through: :disbursement, source: :event
+
+  scope :admin_action_needed, -> { where(aasm_state: [:pending, :verifying]) }
+
   aasm timestamps: true, whiny_persistence: true do
-    state :pending, initial: true, display: "Pending approval"
+    state :pending, initial: true, display: "Pending HCB approval"
     state :additional_info_needed
     state :rejected
     state :waiting_on_recipient
@@ -98,12 +112,22 @@ class Grant < ApplicationRecord
     end
 
     event :mark_verifying do
+      after do |remove_pending_transaction: false|
+        canonical_pending_transaction.decline! if remove_pending_transaction
+      end
       transitions from: :waiting_on_recipient, to: :verifying
     end
 
     event :mark_fulfilled do
+      after do
+        canonical_pending_transaction.decline!
+      end
       transitions from: [:waiting_on_recipient, :verifying], to: :fulfilled
     end
+  end
+
+  def linked_object
+    self.disbursement || self.increase_check || self.ach_transfer
   end
 
   def recipient_name

@@ -87,6 +87,7 @@ class HcbCode < ApplicationRecord
     return check_deposit_memo if check_deposit?
     return fee_revenue_memo if fee_revenue?
     return ach_payment_memo if ach_payment?
+    return grant_memo if grant?
 
     custom_memo || ct.try(:smart_memo) || pt.try(:smart_memo) || ""
   end
@@ -279,6 +280,14 @@ class HcbCode < ApplicationRecord
 
   def card_grant_memo
     smartish_custom_memo || "Grant to #{disbursement.card_grant.user.name}"
+  end
+
+  def grant?
+    canonical_pending_transactions.first&.grant.present?
+  end
+
+  def grant_memo
+    smartish_custom_memo || "Grant to #{canonical_pending_transactions.first.grant.recipient_organization}"
   end
 
   def stripe_card?

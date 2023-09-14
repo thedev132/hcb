@@ -806,6 +806,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_13_143642) do
     t.bigint "increase_check_id"
     t.string "recipient_organization"
     t.datetime "ends_at"
+    t.integer "recipient_org_type"
     t.index ["ach_transfer_id"], name: "index_grants_on_ach_transfer_id"
     t.index ["disbursement_id"], name: "index_grants_on_disbursement_id"
     t.index ["event_id"], name: "index_grants_on_event_id"
@@ -879,7 +880,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_13_143642) do
     t.string "aasm_state"
     t.string "increase_state"
     t.bigint "event_id", null: false
-    t.bigint "user_id", null: false
+    t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "approved_at"

@@ -10,24 +10,28 @@
   <% end %>
 </h1>
 
-<table>
-  <tr>
-    <th>Status</th>
-    <th>Amount</th>
-    <th>To</th>
-    <th class="muted h6">Reference ID</th>
-  </tr>
-
-  <% @grants.each do |grant| %>
+<% if @grants.any? %>
+  <table>
     <tr>
-      <td><span class="m0 badge bg-<%= grant.status_badge_color %>"><%= grant.state_text %></span></td>
-      <td><%= grant.amount.format %></td>
-      <td><strong><%= grant.recipient_name %></strong> (<%= mail_to grant.recipient.email %>)</td>
-      <td>
-        <span class="mono h6 pointer muted tooltipped tooltipped--n" data-controller="clipboard" data-clipboard-text-value="<%= grant.hashid %>" data-action="click->clipboard#copy" aria-label="Click to copy">
-          <%= grant.hashid %>
-        </span>
-      </td>
+      <th>Status</th>
+      <th>Amount</th>
+      <th>To</th>
+      <th class="muted h6">Reference ID</th>
     </tr>
-  <% end %>
-</table>
+
+    <% @grants.each do |grant| %>
+      <tr>
+        <td><span class="m0 badge bg-<%= grant.status_badge_color %>"><%= grant.state_text %></span></td>
+        <td><%= grant.amount.format %></td>
+        <td><strong><%= grant.recipient_name %></strong> (<%= mail_to grant.recipient.email %>)</td>
+        <td>
+          <span class="mono h6 pointer muted tooltipped tooltipped--n" data-controller="clipboard" data-clipboard-text-value="<%= grant.hashid %>" data-action="click->clipboard#copy" aria-label="Click to copy">
+            <%= grant.hashid %>
+          </span>
+        </td>
+      </tr>
+    <% end %>
+  </table>
+<% else %>
+  <%= blankslate "You haven't sent any grants yet.", class: "mt5 mb5" %>
+<% end %>

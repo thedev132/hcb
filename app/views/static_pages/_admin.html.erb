@@ -10,7 +10,7 @@
     <%= card_to "Ledger", ledger_admin_index_path, { badge: CanonicalTransaction.not_stripe_top_up.unmapped.count } %>
     <%= card_to "ACH", ach_admin_index_path, { badge: AchTransfer.pending.count } %>
     <%= card_to "Check", increase_checks_admin_index_path, { badge: IncreaseCheck.pending.count } %>
-    <%= card_to "Grants", grants_admin_index_path, { badge: Grant.pending.count } %>
+    <%= card_to "Grants", grants_admin_index_path, { badge: Grant.admin_action_needed.count } %>
     <%= react_component "admin_task/Card", human_name: "Wires", task_name: :pending_wire_transfers_airtable, task_path: link_to_airtable_task(:wire_transfers) %>
     <%= react_component "admin_task/Card", human_name: "PayPal", task_name: :pending_paypal_transfers_airtable, task_path: link_to_airtable_task(:paypal_transfers) %>
     <%= card_to "Disbursements", disbursements_admin_index_path, { badge: Disbursement.reviewing.count } %>

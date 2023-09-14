@@ -183,6 +183,7 @@ Rails.application.routes.draw do
         post "approve"
         post "additional_info_needed"
         post "reject"
+        post "mark_fulfilled"
       end
     end
 

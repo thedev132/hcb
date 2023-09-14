@@ -20,7 +20,7 @@
   </thead>
   <tbody>
     <% @grants.each do |grant| %>
-      <tr class="<%= "admin-bg-pending" if grant.pending? %>">
+      <tr class="<%= "admin-bg-pending" if grant.pending? || grant.verifying? %>">
         <td><%= grant.id %></td>
         <td><%= grant.created_at.strftime("%Y-%m-%d") %></td>
         <td><%= link_to grant.event.name, grant.event %></td>

@@ -137,6 +137,8 @@ class CanonicalPendingTransaction < ApplicationRecord
   end
 
   def decline!
+    return false if declined?
+
     create_canonical_pending_declined_mapping!
     true
   rescue ActiveRecord::RecordNotUnique

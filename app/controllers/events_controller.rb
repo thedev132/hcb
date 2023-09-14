@@ -23,6 +23,10 @@ class EventsController < ApplicationController
   def show
     render_tour @organizer_position, :welcome
 
+    maybe_pending_invite = OrganizerPositionInvite.pending.find_by(user: current_user, event: @event)
+
+    return redirect_to maybe_pending_invite if maybe_pending_invite.present?
+
     begin
       authorize @event
     rescue Pundit::NotAuthorizedError
