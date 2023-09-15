@@ -427,7 +427,11 @@ class Event < ApplicationRecord
   end
 
   def total_raised
-    settled_incoming_balance_cents
+    balance = settled_incoming_balance_cents
+    if can_front_balance?
+      balance += fronted_incoming_balance_v2_cents
+    end
+    balance
   end
 
   def balance_v2_cents(start_date: nil, end_date: nil)
