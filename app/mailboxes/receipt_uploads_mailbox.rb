@@ -4,6 +4,8 @@ class ReceiptUploadsMailbox < ApplicationMailbox
   # mail --> Mail object, this actual email
   # inbound_email => ActionMailbox::InboundEmail record  --> the active storage record
 
+  include Pundit::Authorization
+
   def process
     return unless ensure_user?
     return unless ensure_hcb?
@@ -37,6 +39,8 @@ class ReceiptUploadsMailbox < ApplicationMailbox
   def user
     @user ||= User.find_by(email: mail.from[0].downcase)
   end
+
+  alias_method :pundit_user, :user
 
   def hcb
     @email_comment ||= mail.to.first.match(/\+.*\@/i)[0]
@@ -86,13 +90,12 @@ class ReceiptUploadsMailbox < ApplicationMailbox
   end
 
   def ensure_permissions?
-    if hcb&.event&.users&.include?(user)
-      true
-    else
-      # We return with the email equivalent of 404 if you don't have permission
-      bounce_with ReceiptUploadMailer.with(mail: inbound_email).bounce_missing_hcb
-      false
-    end
+    authorize hcb, :upload?, policy_class: ReceiptablePolicy
+
+  rescue Pundit::NotAuthorizedError
+    # We return with the email equivalent of 404 if you don't have permission
+    bounce_with ReceiptUploadMailer.with(mail: inbound_email).bounce_missing_hcb
+    false
   end
 
 end
