@@ -75,9 +75,9 @@ class HcbCode < ApplicationRecord
     @date ||= ct.try(:date) || pt.try(:date)
   end
 
-  def memo
+  def memo(event: nil)
     return card_grant_memo if card_grant?
-    return disbursement_memo if disbursement?
+    return disbursement_memo(event:) if disbursement?
     return invoice_memo if invoice?
     return donation_memo if donation?
     return partner_donation_memo if partner_donation?
@@ -270,8 +270,18 @@ class HcbCode < ApplicationRecord
     hcb_i1 == ::TransactionGroupingEngine::Calculate::HcbCode::DISBURSEMENT_CODE
   end
 
-  def disbursement_memo
-    smartish_custom_memo || disbursement.special_appearance_memo || "Transfer from #{disbursement.source_event.name} to #{disbursement.destination_event.name}".strip.upcase
+  def disbursement_memo(event: nil)
+    return smartish_custom_memo if smartish_custom_memo
+    return disbursement.special_appearance_memo if disbursement.special_appearance_memo
+
+    if event == disbursement.source_event
+      "Transfer to #{disbursement.destination_event.name}".strip.upcase
+    elsif event == disbursement.destination_event
+      "Transfer from #{disbursement.source_event.name}".strip.upcase
+    else
+      "Transfer from #{disbursement.source_event.name} to #{disbursement.destination_event.name}".strip.upcase
+    end
+
   end
 
   def card_grant?

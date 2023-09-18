@@ -79,14 +79,14 @@
       <div class="flex-auto">
         <div class="flex items-center justify-start">
           <%= turbo_frame_tag "#{pt.local_hcb_code.hashid}:memo_frame", class: "memo-frame flex", style: "width:100%; overflow:hidden; text-overflow:ellipsis" do %>
-            <span title="<%= pt.local_hcb_code.memo %>">
+            <span title="<%= pt.local_hcb_code.memo(event: @event) %>">
               <% if pt.declined? %>
                 DECLINED:
               <% else %>
                 PENDING:
               <% end %>
 
-              <%= pt.local_hcb_code.memo %>
+              <%= pt.local_hcb_code.memo(event: @event) %>
             </span>
 
             <% if pt.amount_cents.negative? && name_contains_emoji?(pt.local_hcb_code.memo) %>
