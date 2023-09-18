@@ -48,4 +48,12 @@ module EventsHelper
 
     (embed ? embed_url : url) + "?" + prefill.join("&")
   end
+
+  def transaction_memo(tx) # needed to handle mock data in playground mode
+    if tx.local_hcb_code.method(:memo).parameters.size == 0
+      tx.local_hcb_code.memo
+    else
+      tx.local_hcb_code.memo(event: @event)
+    end
+  end
 end
