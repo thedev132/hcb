@@ -384,9 +384,8 @@ class AdminController < ApplicationController
     end
 
     if @q
-      if @q.to_f != 0.0
+      if @q.match /\A\d+(\.\d{1,2})?\z/
         @q = Monetize.parse(@q).cents
-
         relation = relation.where("amount_cents = ? or amount_cents = ?", @q, -@q)
       else
         case @q.delete(" ")
