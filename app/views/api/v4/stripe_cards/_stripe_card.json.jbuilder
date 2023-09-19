@@ -7,5 +7,5 @@ json.type stripe_card.card_type
 json.status stripe_card.status_text.parameterize(separator: "_")
 json.name stripe_card.name
 
-json.organization stripe_card.event, partial: "api/v4/events/event", as: :event
-json.user         stripe_card.user,  partial: "api/v4/users/user",   as: :user
+json.organization stripe_card.event, partial: "api/v4/events/event", as: :event if local_assigns[:expand]&.include?(:organization)
+json.user         stripe_card.user,  partial: "api/v4/users/user",   as: :user if local_assigns[:expand]&.include?(:user)

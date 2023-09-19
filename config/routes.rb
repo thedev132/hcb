@@ -459,6 +459,7 @@ Rails.application.routes.draw do
         resource :user do
           resources :events, path: "organizations", only: [:index]
           resources :stripe_cards, path: "cards", only: [:index]
+          get "transactions/missing_receipt", to: "transactions#missing_receipt"
         end
 
         resources :events, path: "organizations", only: [:show] do
