@@ -372,6 +372,7 @@ class Event < ApplicationRecord
     'outernet guild': 8, # summer event 2023
     'grant recipient': 9,
     salary: 10, # e.g. Sam's Shillings
+    ai: 11,
   }
 
   def country_us?
