@@ -34,7 +34,7 @@ RSpec.describe Event, type: :model do
     it "calculates a value from canonical transactions" do
       result = event.balance_v2_cents
 
-      expect(result).to eql(400)
+      expect(result).to eql(400).and eql(event.balance)
     end
   end
 
@@ -43,22 +43,6 @@ RSpec.describe Event, type: :model do
       create(:fee_relationship, fee_applies: true, event:, fee_amount: 10010)
       fee_payment = create(:transaction, amount: -10)
       create(:fee_relationship, is_fee_payment: true, event:, t_transaction: fee_payment)
-    end
-
-    describe "#total_fees" do
-      it "calculates" do
-        result = event.send(:total_fees)
-
-        expect(result).to eq(10010.0)
-      end
-    end
-
-    describe "#total_fee_payments" do
-      it "calculates" do
-        result = event.send(:total_fee_payments)
-
-        expect(result).to eq(10.0)
-      end
     end
   end
 
