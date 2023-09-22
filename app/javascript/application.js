@@ -22,5 +22,7 @@ window.Turbo = Turbo
 
 import Alpine from "alpinejs"
 window.Alpine = Alpine
-
 Alpine.start()
+
+import LocalTime from "local-time"
+LocalTime.start()
