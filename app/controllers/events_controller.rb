@@ -25,7 +25,10 @@ class EventsController < ApplicationController
 
     maybe_pending_invite = OrganizerPositionInvite.pending.find_by(user: current_user, event: @event)
 
-    return redirect_to maybe_pending_invite if maybe_pending_invite.present?
+    if maybe_pending_invite.present?
+      skip_authorization
+      return redirect_to maybe_pending_invite
+    end
 
     begin
       authorize @event
