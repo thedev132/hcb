@@ -24,11 +24,11 @@ module Partners
 
         def plaid_transactions
           resp = fetch_transactions
-          ts = resp["transactions"]
+          ts = resp.transactions
 
-          while ts.length < resp["total_transactions"]
+          while ts.length < resp.total_transactions
             resp = fetch_transactions(offset: ts.length)
-            ts += resp["transactions"]
+            ts += resp.transactions
           end
 
           ts
@@ -36,24 +36,30 @@ module Partners
 
         def fetch_transactions(offset: 0)
           begin
-            results = plaid_client.transactions.get(access_token,
-                                                    @start_date,
-                                                    @end_date,
-                                                    offset:,
-                                                    count: COUNT,
-                                                    account_ids:)
+            request = ::Plaid::TransactionsGetRequest.new(
+              access_token:,
+              start_date: @start_date,
+              end_date: @end_date,
+              options: {
+                offset:,
+                count: COUNT,
+                account_ids:,
+              },
+            )
 
-            Rails.logger.info "plaid_client.transaction.get start_date=#{@start_date} end_date=#{@end_date} offset=#{offset} count=#{COUNT} account_ids=#{account_ids} total_transactions=#{results["total_transactions"]}"
+            results = plaid_client.transactions_get(request)
+
+            Rails.logger.info "plaid_client.transaction.get start_date=#{@start_date} end_date=#{@end_date} offset=#{offset} count=#{COUNT} account_ids=#{account_ids} total_transactions=#{results.total_transactions}"
 
             mark_plaid_item_success!
 
             results
-          rescue ::Plaid::ItemError, ::Plaid::InvalidInputError => error
+          rescue ::Plaid::ApiError => error
             Airbrake.notify("plaid_client.transactions.get failed for bank_account #{bank_account.id} with access token #{access_token}. #{error.message}")
 
             mark_plaid_item_failed!
 
-            { "accounts" => [], "transactions" => [], "total_transactions" => 0 }
+            raise
           end
         end
 

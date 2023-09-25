@@ -7,10 +7,14 @@ module Partners
         private
 
         def plaid_client
-          ::Plaid::Client.new(env: plaid_env,
-                              client_id: plaid_client_id,
-                              secret: plaid_secret,
-                              public_key: plaid_public_key)
+          configuration = ::Plaid::Configuration.new
+          configuration.server_index = ::Plaid::Configuration::Environment[plaid_env]
+          configuration.api_key["PLAID-CLIENT-ID"] = plaid_client_id
+          configuration.api_key["PLAID-SECRET"] = plaid_secret
+
+          api_client = ::Plaid::ApiClient.new(configuration)
+
+          ::Plaid::PlaidApi.new(api_client)
         end
 
         def plaid_client_id

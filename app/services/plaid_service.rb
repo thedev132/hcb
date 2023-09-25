@@ -33,21 +33,19 @@ class PlaidService
   end
 
   def client
-    Plaid::Client.new(
-      env:,
-      client_id:,
-      secret: secret_key,
-      public_key:
-    )
+    configuration = ::Plaid::Configuration.new
+    configuration.server_index = ::Plaid::Configuration::Environment[env]
+    configuration.api_key["PLAID-CLIENT-ID"] = client_id
+    configuration.api_key["PLAID-SECRET"] = secret_key
+
+    api_client = ::Plaid::ApiClient.new(configuration)
+
+    ::Plaid::PlaidApi.new(api_client)
   end
 
   def exchange_public_token(public_token)
-    client.item.public_token.exchange(public_token)
-  end
-
-  # get info of currently authenticated item
-  def get_auth_info(access_token)
-    client.auth.get(access_token)
+    request = Plaid::ItemPublicTokenExchangeRequest.new(public_token:)
+    client.item_public_token_exchange(request)
   end
 
 end
