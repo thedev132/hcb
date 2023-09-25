@@ -6,6 +6,7 @@
 #
 #  id                  :bigint           not null, primary key
 #  address_city        :text
+#  address_country     :text
 #  address_line1       :text
 #  address_line2       :text
 #  address_postal_code :text
@@ -132,7 +133,8 @@ class Sponsor < ApplicationRecord
           line2: self.address_line2,
           city: self.address_city,
           state: self.address_state,
-          postal_code: self.address_postal_code
+          postal_code: self.address_postal_code,
+          country: self.address_country
         }
       }
     }

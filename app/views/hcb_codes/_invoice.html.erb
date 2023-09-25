@@ -85,7 +85,8 @@
         <% if @sponsor.address_line2.present? %>
           <%= @sponsor.address_line2 %><br>
         <% end %>
-        <%= @sponsor.address_city %>, <%= @sponsor.address_state %> <%= @sponsor.address_postal_code %>
+        <%= @sponsor.address_city %>, <%= @sponsor.address_state %> <%= @sponsor.address_postal_code %> <br>
+        <%= get_country_name_from_alpha2(@sponsor.address_country) %>
         </span>
       <% else %>
         <span><strong>Sign in to view</strong></span>

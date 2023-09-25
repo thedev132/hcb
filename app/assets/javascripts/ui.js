@@ -84,11 +84,12 @@ $(document).on('change', '[name="invoice[sponsor]"]', function (e) {
     'address_city',
     'address_state',
     'address_postal_code',
+    'address_country',
     'id'
   ]
 
   return fields.forEach(field =>
-    $(`input#invoice_sponsor_attributes_${field}`).val(sponsor[field])
+    $(`#invoice_sponsor_attributes_${field}`).val(sponsor[field])
   )
 })
 

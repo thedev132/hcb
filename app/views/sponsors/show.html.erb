@@ -18,7 +18,8 @@
     <% if @sponsor.address_line2.present? %>
       <%= @sponsor.address_line2 %><br>
     <% end %>
-    <%= @sponsor.address_city %>, <%= @sponsor.address_state %> <%= @sponsor.address_postal_code %>
+    <%= @sponsor.address_city %>, <%= @sponsor.address_state %> <%= @sponsor.address_postal_code %><br>
+    <%= @sponsor.address_country %>
   </p>
 </section>
 

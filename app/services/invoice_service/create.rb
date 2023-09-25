@@ -9,7 +9,8 @@ module InvoiceService
                    sponsor_name:, sponsor_email:,
                    sponsor_address_line1:, sponsor_address_line2:,
                    sponsor_address_city:, sponsor_address_state:,
-                   sponsor_address_postal_code:)
+                   sponsor_address_postal_code:,
+                   sponsor_address_country:)
       @event_id = event_id
 
       @due_date = due_date
@@ -26,6 +27,7 @@ module InvoiceService
       @sponsor_address_city = sponsor_address_city
       @sponsor_address_state = sponsor_address_state
       @sponsor_address_postal_code = sponsor_address_postal_code
+      @sponsor_address_country = sponsor_address_country
     end
 
     def run
@@ -106,7 +108,8 @@ module InvoiceService
         address_line2: @sponsor_address_line2,
         address_city: @sponsor_address_city,
         address_state: @sponsor_address_state,
-        address_postal_code: @sponsor_address_postal_code
+        address_postal_code: @sponsor_address_postal_code,
+        address_country: @sponsor_address_country
       }
     end
 

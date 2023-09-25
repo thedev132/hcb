@@ -1445,6 +1445,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_13_143642) do
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.text "slug"
+    t.text "address_country"
     t.index ["event_id"], name: "index_sponsors_on_event_id"
     t.index ["slug"], name: "index_sponsors_on_slug", unique: true
   end

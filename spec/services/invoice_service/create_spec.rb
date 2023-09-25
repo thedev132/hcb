@@ -19,6 +19,7 @@ RSpec.describe InvoiceService::Create, type: :model do
   let(:sponsor_address_city) { "Santa Monica" }
   let(:sponsor_address_state) { "CA" }
   let(:sponsor_address_postal_code) { "90401" }
+  let(:sponsor_address_country) { "US" }
 
   let(:service) do
     InvoiceService::Create.new(
@@ -34,7 +35,8 @@ RSpec.describe InvoiceService::Create, type: :model do
       sponsor_address_line2:,
       sponsor_address_city:,
       sponsor_address_state:,
-      sponsor_address_postal_code:
+      sponsor_address_postal_code:,
+      sponsor_address_country:
     )
   end
 

@@ -121,7 +121,8 @@ class InvoicesController < ApplicationController
       sponsor_address_line2: sponsor_attrs[:address_line2],
       sponsor_address_city: sponsor_attrs[:address_city],
       sponsor_address_state: sponsor_attrs[:address_state],
-      sponsor_address_postal_code: sponsor_attrs[:address_postal_code]
+      sponsor_address_postal_code: sponsor_attrs[:address_postal_code],
+      sponsor_address_country: sponsor_attrs[:address_country]
     ).run
 
     flash[:success] = "Invoice successfully created and emailed to #{@invoice.sponsor.contact_email}."

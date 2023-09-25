@@ -38,6 +38,7 @@ class SponsorPolicy < ApplicationPolicy
       :address_city,
       :address_state,
       :address_postal_code,
+      :address_country,
       :id
     ]
 
