@@ -8,6 +8,7 @@ module Api
           @event = authorize(Event.find_by_public_id(params[:event_id]) || Event.friendly.find(params[:event_id]), :card_overview?)
           @stripe_cards = @event.stripe_cards.includes(:user, :event).order(created_at: :desc)
         else
+          skip_authorization
           @stripe_cards = current_user.stripe_cards.includes(:user, :event).order(created_at: :desc)
         end
       end
