@@ -3,6 +3,8 @@
 module Api
   module V4
     class EventsController < ApplicationController
+      skip_after_action :verify_authorized, only: [:index]
+
       def index
         @events = current_user.events.not_hidden.includes(:users).order("organizer_positions.created_at DESC")
       end

@@ -6,7 +6,7 @@ module Api
       include ActionController::HttpAuthentication::Token::ControllerMethods
       include Pundit::Authorization
 
-      after_action :verify_authorized, except: :index
+      after_action :verify_authorized
 
       before_action :authenticate!
 
