@@ -53,6 +53,9 @@ class IncreaseCheck < ApplicationRecord
     state :rejected
 
     event :mark_approved do
+      after do
+        canonical_pending_transaction.update(fronted: true)
+      end
       transitions from: :pending, to: :approved
     end
 
@@ -148,14 +151,23 @@ class IncreaseCheck < ApplicationRecord
 
     increase_check = Increase::CheckTransfers.create(
       account_id: IncreaseService::AccountIds::FS_MAIN,
-      address_city:,
-      address_line1:,
-      address_line2: address_line2.presence,
-      address_state:,
-      address_zip:,
-      amount:,
-      message: memo,
-      recipient_name:,
+      source_account_number_id: event.increase_account_number_id,
+      # Increase will print and mail the physical check for us
+      fulfillment_method: "physical_check",
+      physical_check: {
+        memo:,
+        note: "Check from #{event.name}",
+        recipient_name:,
+        mailing_address: {
+          line1: address_line1,
+          line2: address_line2.presence,
+          city: address_city,
+          state: address_state,
+          postal_code: address_zip,
+        }
+      },
+      unique_identifier: self.id.to_s,
+      amount:
     )
 
     update!(increase_id: increase_check["id"], increase_status: increase_check["status"])

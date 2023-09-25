@@ -636,6 +636,10 @@ class Event < ApplicationRecord
     (increase_account_number || create_increase_account_number)&.routing_number || "•••••••••"
   end
 
+  def increase_account_number_id
+    (increase_account_number || create_increase_account_number).increase_account_number_id
+  end
+
   def organized_by_hack_clubbers?
     event_tags.where(name: EventTag::Tags::ORGANIZED_BY_HACK_CLUBBERS).exists?
   end
