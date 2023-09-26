@@ -134,7 +134,11 @@ class StripeCard < ApplicationRecord
   end
 
   def total_spent
-    stripe_authorizations.approved.sum(:amount)
+    # pending authorizations + settled transactions
+    RawPendingStripeTransaction
+      .pending
+      .where("stripe_transaction->'card'->>'id' = ?", stripe_id)
+      .sum(:amount_cents).abs + canonical_transactions.sum(:amount_cents).abs
   end
 
   def status_text
@@ -367,14 +371,6 @@ class StripeCard < ApplicationRecord
     end
 
     @auths
-  end
-
-  def sync_authorizations
-    authorizations_from_stripe.each do |stripe_auth|
-      sa = StripeAuthorization.find_or_initialize_by(stripe_id: stripe_auth[:id])
-      sa.sync_from_stripe!
-      sa.save
-    end
   end
 
 end

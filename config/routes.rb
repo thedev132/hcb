@@ -47,15 +47,11 @@ Rails.application.routes.draw do
     get "settings/previews", to: "users#edit_featurepreviews"
     get "settings/security", to: "users#edit_security"
     get "settings/admin", to: "users#edit_admin"
-    resources :stripe_authorizations, only: [:index, :show], path: "transactions" do
-      resources :comments
-    end
     get "inbox", to: "static_pages#my_inbox", as: :my_inbox
     post "receipts/upload", to: "static_pages#receipt", as: :my_receipts_upload
     get "missing_receipts", to: "static_pages#my_missing_receipts_list", as: :my_missing_receipts_list
     get "missing_receipts_icon", to: "static_pages#my_missing_receipts_icon", as: :my_missing_receipts_icon
     get "receipts", to: redirect("/my/inbox")
-    get "receipts/:id", to: "stripe_authorizations#receipt", as: :my_receipt
 
     post "receipt_report", to: "users#receipt_report", as: :trigger_receipt_report
 
@@ -265,9 +261,6 @@ Rails.application.routes.draw do
     resources :comments
   end
 
-  resources :stripe_authorizations, only: [:show, :index] do
-    resources :comments
-  end
   resources :stripe_cardholders, only: [:new, :create, :update]
   resources :stripe_cards, only: %i[create index show] do
     get "edit"
@@ -577,9 +570,6 @@ Rails.application.routes.draw do
     resources :documents, only: [:index]
     get "fiscal_sponsorship_letter", to: "documents#fiscal_sponsorship_letter"
     resources :invoices, only: [:new, :create, :index]
-    resources :stripe_authorizations, only: [:show] do
-      resources :comments
-    end
     resources :tags, only: [:create, :destroy]
     resources :event_tags, only: [:create, :destroy]
 

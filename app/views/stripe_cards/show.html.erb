@@ -232,7 +232,6 @@
     <%= paginate @hcb_codes %>
   </div>
 
-  <%#= render 'stripe_authorizations/list', stripe_authorizations: @authorizations, headless: true, authorless: true %>
 <% elsif @card.activated? %>
   <%= blankslate "No transactions made on this card yet." %>
 <% end %>

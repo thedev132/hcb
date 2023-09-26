@@ -4,7 +4,6 @@ module Api
   module Models
     # Card Charges are not an actual linked object within the transaction
     # engine. It's pretty messy. In the TX engine, they're represented with:
-    # - StripeAuthorization
     # - RawPendingStripeTransaction
     # - RawStripeTransaction
     #

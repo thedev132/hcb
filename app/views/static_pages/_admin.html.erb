@@ -59,7 +59,6 @@
     <ul class="grid left-align w-100 mt0">
       <%= render partial: "static_pages/card", locals: { task_path: events_path, human_name: "Projects" } %>
       <%= render partial: "static_pages/card", locals: { task_path: negative_events_path, human_name: "Negative projects" } %>
-      <%= react_component "admin_task/Card", human_name: "Stripe TXs", task_path: stripe_authorizations_path %>
       <%= render partial: "static_pages/card", locals: { task_path: sponsors_path, human_name: "Sponsors" } %>
       <%= render partial: "static_pages/card", locals: { task_path: g_suite_accounts_path, human_name: "Google Workspace accounts" } %>
       <%= react_component "admin_task/Card", human_name: :bookkeeping, task_path: bookkeeping_path %>

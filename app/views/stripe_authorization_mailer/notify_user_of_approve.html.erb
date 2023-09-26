@@ -1,3 +1,0 @@
-A <%= render_money @auth.amount %> <%= @authorization_method %> charge from '<i><%= @merchant %></i>' to your card ending in <%= @card.last4 %> is <%= @auth.status_text.downcase %>.
-
-<%= link_to "Upload your receipt for this charge.", my_receipt_url(id: @auth.stripe_id) %>
