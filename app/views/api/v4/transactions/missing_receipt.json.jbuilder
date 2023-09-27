@@ -2,4 +2,4 @@
 
 pagination_metadata(json)
 
-json.data @hcb_codes, partial: "api/v4/events/transaction", as: :tx, expand: [:organization]
+json.data @hcb_codes, partial: "api/v4/transactions/transaction", as: :tx, expand: [:organization]

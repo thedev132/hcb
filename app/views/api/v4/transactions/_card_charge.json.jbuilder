@@ -1,0 +1,17 @@
+# frozen_string_literal: true
+
+stripe_transaction = hcb_code.ct&.raw_stripe_transaction&.stripe_transaction
+stripe_authorization = hcb_code.pt&.raw_pending_stripe_transaction&.stripe_transaction
+
+json.merchant do
+  merchant_data = (stripe_transaction || stripe_authorization)["merchant_data"]
+
+  json.name merchant_data["name"]
+  json.country merchant_data["country"]
+end
+
+json.charge_method stripe_authorization&.dig("authorization_method")
+json.spent_at Time.at((stripe_authorization || stripe_transaction)["created"])
+json.wallet stripe_authorization&.dig("wallet")
+
+json.card { json.partial! "api/v4/stripe_cards/stripe_card", stripe_card: hcb_code.stripe_card, expand: [:user] }

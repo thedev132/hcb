@@ -453,7 +453,7 @@ class HcbCode < ApplicationRecord
   end
 
   def local_hcb_code
-    @local_hcb_code ||= HcbCode.find_or_create_by(hcb_code:)
+    self
   end
 
   def generate_and_set_short_code
