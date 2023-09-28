@@ -12,6 +12,10 @@ Style/RedundantSelf:
 Style/RescueStandardError:
   EnforcedStyle: implicit
 
+Style/FrozenStringLiteralComment:
+  Exclude:
+    - 'app/views/**/*.jbuilder'
+
 Lint/UselessAssignment:
   Enabled: false
 

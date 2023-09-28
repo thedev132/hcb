@@ -452,6 +452,13 @@ Rails.application.routes.draw do
         resource :user do
           resources :events, path: "organizations", only: [:index]
           resources :stripe_cards, path: "cards", only: [:index]
+          resources :invitations, only: [:index, :show] do
+            member do
+              post "accept"
+              post "reject"
+            end
+          end
+
           get "transactions/missing_receipt", to: "transactions#missing_receipt"
         end
 

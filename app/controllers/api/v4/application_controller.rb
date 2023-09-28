@@ -18,6 +18,10 @@ module Api
         render json: { error: "resource_not_found" }, status: :not_found
       end
 
+      rescue_from ActiveRecord::RecordInvalid do |e|
+        render json: { error: "invalid_operation", messages: e.record.errors.full_messages }, status: :bad_request
+      end
+
       def not_found
         skip_authorization
         render json: { error: "not_found" }, status: :not_found

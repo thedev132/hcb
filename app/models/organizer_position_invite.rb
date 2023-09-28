@@ -55,6 +55,9 @@
 class OrganizerPositionInvite < ApplicationRecord
   has_paper_trail
 
+  include PublicIdentifiable
+  set_public_id_prefix :inv
+
   include FriendlyId
 
   friendly_id :slug_candidates, use: :slugged

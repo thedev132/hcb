@@ -28,9 +28,7 @@ module PublicIdentifiable
       return nil unless prefix == self.get_public_id_prefix
 
       # ex. 'org_h1izp'
-      find(hash)
-    rescue ActiveRecord::RecordNotFound # find_by method shouldn't error
-      nil
+      find_by_hashid(hash)
     end
 
     def find_by_public_id!(id)
