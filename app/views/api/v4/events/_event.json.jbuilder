@@ -12,5 +12,9 @@ json.transparent event.is_public?
 json.fee_percentage event.sponsorship_fee.to_f
 json.category event.category&.parameterize(separator: "_")
 
-json.balance_cents event.balance_available_v2_cents                     if local_assigns[:expand]&.include?(:balance_cents)
-json.users         event.users, partial: "api/v4/users/user", as: :user if local_assigns[:expand]&.include?(:users)
+if local_assigns[:expand]&.include?(:balance_cents)
+  json.balance_cents event.balance_available_v2_cents
+  json.fee_balance_cents event.fronted_fee_balance_v2_cents
+end
+
+json.users event.users, partial: "api/v4/users/user", as: :user if local_assigns[:expand]&.include?(:users)
