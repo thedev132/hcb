@@ -338,6 +338,8 @@ class Event < ApplicationRecord
 
   validates :website, format: URI::DEFAULT_PARSER.make_regexp(%w[http https]), if: -> { website.present? }
 
+  validates :sponsorship_fee, numericality: { in: 0..0.5, message: "must be between 0 and 0.5" }
+
   before_create { self.increase_account_id ||= IncreaseService::AccountIds::FS_MAIN }
 
   before_update if: -> { demo_mode_changed?(to: false) } do
