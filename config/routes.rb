@@ -464,7 +464,7 @@ Rails.application.routes.draw do
 
         resources :events, path: "organizations", only: [:show] do
           resources :stripe_cards, path: "cards", only: [:index]
-          resources :transactions, only: [:show]
+          resources :transactions, only: [:show, :update]
 
           member do
             get "transactions"

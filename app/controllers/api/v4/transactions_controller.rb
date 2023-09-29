@@ -21,6 +21,18 @@ module Api
         @has_more = false # TODO: implement pagination
       end
 
+      def update
+        @event = Event.find_by_public_id(params[:event_id]) || Event.friendly.find(params[:event_id])
+        @hcb_code = authorize HcbCode.find_by_public_id(params[:id])
+
+        if params.key? :memo
+          @hcb_code.canonical_transactions.each { |ct| ct.update!(custom_memo: params[:memo]) }
+          @hcb_code.canonical_pending_transactions.each { |cpt| cpt.update!(custom_memo: params[:memo]) }
+        end
+
+        render "show"
+      end
+
     end
   end
 end
