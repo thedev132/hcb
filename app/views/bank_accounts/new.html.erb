@@ -1,11 +1,17 @@
 <h1>Link a bank account</h1>
-<button id="linkButton">Begin</button>
 
 <%= form_for :auth, url: "/bank_accounts", html: { id: "authForm" } do |f| %>
   <%= f.hidden_field :public_token %>
   <%= f.hidden_field :account_id %>
   <%= f.hidden_field :account_name %>
+
+  <div class="field">
+    <%= f.label :bank_account_id, "Bank account to replace" %>
+    <%= f.select :bank_account_id, BankAccount.order(id: :asc).all.collect {|b| ["#{b.id} - #{b.name}", b.id]}, include_blank: "Create new" %>
+  </div>
 <% end %>
+
+<button id="linkButton">Begin</button>
 
 <script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"></script>
 <script>

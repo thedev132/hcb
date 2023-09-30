@@ -12,14 +12,20 @@ class BankAccountsController < ApplicationController
     account_id = params[:auth][:account_id]
     account_name = params[:auth][:account_name]
 
+    bank_account_id = params[:auth][:bank_account_id]
+
     auth_info = PlaidService.instance.exchange_public_token(public_token)
 
-    @account = BankAccount.new(
-      plaid_access_token: auth_info.access_token,
-      plaid_item_id: auth_info.item_id,
-      plaid_account_id: account_id,
-      name: account_name
-    )
+    if bank_account_id.present?
+      @account = BankAccount.find(bank_account_id)
+    else
+      @account = BankAccount.new
+    end
+
+    @account.plaid_access_token = auth_info.access_token
+    @account.plaid_item_id = auth_info.item_id
+    @account.plaid_account_id = account_id
+    @account.name = account_name
 
     authorize @account
 
