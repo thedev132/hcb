@@ -21,7 +21,7 @@ class PlaidService
   end
 
   def client_name
-    "Hack Club"
+    "HCB"
   end
 
   # env to provide to Plaid Link integration

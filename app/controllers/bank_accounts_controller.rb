@@ -60,9 +60,17 @@ class BankAccountsController < ApplicationController
     @account = BankAccount.find(params[:bank_account_id])
     authorize @account
 
-    @public_token = PlaidService.instance.client.item.public_token.create(
-      @account.plaid_access_token
-    ).public_token
+    request = ::Plaid::LinkTokenCreateRequest.new(
+      user: { client_user_id: "1" },
+      country_codes: ["US"],
+      client_name: PlaidService.instance.client_name,
+      language: "en",
+      access_token: @account.plaid_access_token,
+    )
+
+    response = PlaidService.instance.client.link_token_create(request)
+
+    @link_token = response.link_token
   end
 
   private

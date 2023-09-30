@@ -4,11 +4,7 @@
 <script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"></script>
 <script>
 var linkHandler = Plaid.create({
-  env: <%= @link_env.to_json.html_safe %>,
-  clientName: <%= @client_name.to_json.html_safe %>,
-  key: <%= @public_key.to_json.html_safe %>,
-  product: <%= @product.to_json.html_safe %>,
-  token: <%= @public_token.to_json.html_safe %>,
+  token: <%= @link_token.to_json.html_safe %>,
   onSuccess: function(public_token, metadata) {
     // Don't need to do anything, access token remains the same
     alert('Done! Feel free to continue using Bank.')
@@ -32,5 +28,5 @@ document.getElementById('linkButton').onclick = function() {
   <li>env: <%= @link_env %></li>
   <li>clientName: <%= @client_name %></li>
   <li>product: <%= @product %></li>
-  <li>token: <%= @public_token %></li>
+  <li>token: <%= @link_token %></li>
 </ul>
