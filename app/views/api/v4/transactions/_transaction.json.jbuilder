@@ -8,6 +8,7 @@ json.id hcb_code.public_id
 json.date tx.date
 json.amount_cents transaction_amount(tx)
 json.memo hcb_code.memo(event: @event)
+json.has_custom_memo hcb_code.custom_memo.present?
 json.pending tx.is_a?(CanonicalPendingTransaction) || (tx.is_a?(HcbCode) && tx.pt&.unsettled?)
 json.declined (tx.is_a?(CanonicalPendingTransaction) && tx.declined?) || (tx.is_a?(HcbCode) && tx.pt&.declined?)
 if Flipper.enabled?(:transaction_tags_2022_07_29, @event)

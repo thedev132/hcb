@@ -76,6 +76,8 @@ class HcbCode < ApplicationRecord
   end
 
   def memo(event: nil)
+    return custom_memo if custom_memo.present?
+
     return card_grant_memo if card_grant?
     return disbursement_memo(event:) if disbursement?
     return invoice_memo if invoice?
@@ -89,7 +91,7 @@ class HcbCode < ApplicationRecord
     return ach_payment_memo if ach_payment?
     return grant_memo if grant?
 
-    custom_memo || ct.try(:smart_memo) || pt.try(:smart_memo) || ""
+    ct.try(:smart_memo) || pt.try(:smart_memo) || ""
   end
 
   def type
@@ -271,7 +273,6 @@ class HcbCode < ApplicationRecord
   end
 
   def disbursement_memo(event: nil)
-    return smartish_custom_memo if smartish_custom_memo
     return disbursement.special_appearance_memo if disbursement.special_appearance_memo
 
     if event == disbursement.source_event
@@ -289,7 +290,7 @@ class HcbCode < ApplicationRecord
   end
 
   def card_grant_memo
-    smartish_custom_memo || "Grant to #{disbursement.card_grant.user.name}"
+    "Grant to #{disbursement.card_grant.user.name}"
   end
 
   def grant?
@@ -297,7 +298,7 @@ class HcbCode < ApplicationRecord
   end
 
   def grant_memo
-    smartish_custom_memo || "Grant to #{canonical_pending_transactions.first.grant.recipient_organization}"
+    "Grant to #{canonical_pending_transactions.first.grant.recipient_organization}"
   end
 
   def stripe_card?
@@ -313,7 +314,7 @@ class HcbCode < ApplicationRecord
   end
 
   def invoice_memo
-    smartish_custom_memo || "INVOICE TO #{invoice.smart_memo}"
+    "INVOICE TO #{invoice.smart_memo}"
   end
 
   def donation
@@ -321,7 +322,7 @@ class HcbCode < ApplicationRecord
   end
 
   def donation_memo
-    smartish_custom_memo || "DONATION FROM #{donation.smart_memo}#{donation.refunded? ? " (REFUNDED)" : ""}"
+    "DONATION FROM #{donation.smart_memo}#{donation.refunded? ? " (REFUNDED)" : ""}"
   end
 
   def partner_donation
@@ -329,7 +330,7 @@ class HcbCode < ApplicationRecord
   end
 
   def partner_donation_memo
-    smartish_custom_memo || "DONATION FROM #{partner_donation.smart_memo}#{partner_donation.refunded? ? " (REFUNDED)" : ""}"
+    "DONATION FROM #{partner_donation.smart_memo}#{partner_donation.refunded? ? " (REFUNDED)" : ""}"
   end
 
   def ach_transfer
@@ -337,7 +338,7 @@ class HcbCode < ApplicationRecord
   end
 
   def ach_transfer_memo
-    smartish_custom_memo || "ACH TO #{ach_transfer.smart_memo}"
+    "ACH TO #{ach_transfer.smart_memo}"
   end
 
   def check
@@ -345,7 +346,7 @@ class HcbCode < ApplicationRecord
   end
 
   def check_memo
-    smartish_custom_memo || "CHECK TO #{check.smart_memo}"
+    "CHECK TO #{check.smart_memo}"
   end
 
   def increase_check
@@ -353,7 +354,7 @@ class HcbCode < ApplicationRecord
   end
 
   def increase_check_memo
-    smartish_custom_memo || "Check to #{increase_check.recipient_name}".upcase
+    "Check to #{increase_check.recipient_name}".upcase
   end
 
   def disbursement
@@ -393,7 +394,7 @@ class HcbCode < ApplicationRecord
   end
 
   def check_deposit_memo
-    smartish_custom_memo || "CHECK DEPOSIT"
+    "CHECK DEPOSIT"
   end
 
   def unknown?
@@ -434,14 +435,6 @@ class HcbCode < ApplicationRecord
 
   def ct2
     canonical_transactions.last
-  end
-
-  def smartish_custom_memo
-    return nil unless ct&.custom_memo || pt&.custom_memo
-    return ct.custom_memo unless ct&.custom_memo.blank? || ct&.custom_memo.include?("FEE REFUND")
-    return pt.custom_memo unless pt&.custom_memo.blank?
-
-    ct2.custom_memo
   end
 
   def receipt_required?
