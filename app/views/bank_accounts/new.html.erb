@@ -7,7 +7,7 @@
 
   <div class="field">
     <%= f.label :bank_account_id, "Bank account to replace" %>
-    <%= f.select :bank_account_id, BankAccount.order(id: :asc).all.collect {|b| ["#{b.id} - #{b.name}", b.id]}, include_blank: "Create new" %>
+    <%= f.select :bank_account_id, BankAccount.order(id: :asc).all.collect { |b| ["#{b.id} - #{b.name}", b.id] }, include_blank: "Create new" %>
   </div>
 <% end %>
 

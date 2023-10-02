@@ -33,6 +33,13 @@ module Api
         render "show"
       end
 
+      def memo_suggestions
+        @event = Event.find_by_public_id(params[:event_id]) || Event.friendly.find(params[:event_id])
+        @hcb_code = authorize HcbCode.find_by_public_id(params[:id]), :update?
+
+        @suggested_memos = [::HcbCodeService::AiGenerateMemo.new(hcb_code: @hcb_code).run].compact + ::HcbCodeService::SuggestedMemos.new(hcb_code: @hcb_code, event: @event).run.first(4)
+      end
+
     end
   end
 end
