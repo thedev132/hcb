@@ -35,7 +35,7 @@ class TopupStripeJob < ApplicationJob
 
     StripeService::Topup.create(
       destination_balance: "issuing",
-      amount: topup_amount,
+      amount: topup_amount.clamp(0, 50_000 * 100), # Limit to $50,000 per transaction
       currency: "usd",
       statement_descriptor: "Stripe Top-up"
     )
