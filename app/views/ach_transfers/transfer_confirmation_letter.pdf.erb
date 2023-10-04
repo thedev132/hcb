@@ -88,10 +88,12 @@
             <td class="bold">Recipient name</td>
             <td colspan="2"><%= @ach_transfer.recipient_name %></td>
           </tr>
-          <tr>
-            <td class="bold">Recipient phone</td>
-            <td colspan="2"><%= @ach_transfer.recipient_tel %></td>
-          </tr>
+          <% if @ach_transfer.recipient_tel.present? %>
+            <tr>
+              <td class="bold">Recipient phone</td>
+              <td colspan="2"><%= @ach_transfer.recipient_tel %></td>
+            </tr>
+          <% end %>
           <tr>
             <td class="bold">Payment purpose</td>
             <td colspan="2"><%= @ach_transfer.payment_for %></td>

@@ -64,15 +64,17 @@
         </span>
       </td>
     </tr>
-    <tr>
-      <td style="text-align: right;">Payee Phone Number:</td>
-      <td><%= @ach_transfer.recipient_tel %></td>
-      <td>
-        <span class="m0 badge pointer" onClick="navigator.clipboard.writeText(<%= @ach_transfer.recipient_tel.to_json %>);">
-          copy
-        </span>
-      </td>
-    </tr>
+    <% if @ach_transfer.recipient_tel.present? %>
+      <tr>
+        <td style="text-align: right;">Payee Phone Number:</td>
+        <td><%= @ach_transfer.recipient_tel %></td>
+        <td>
+          <span class="m0 badge pointer" onClick="navigator.clipboard.writeText(<%= @ach_transfer.recipient_tel.to_json %>);">
+            copy
+          </span>
+        </td>
+      </tr>
+    <% end %>
     <tr>
       <td style="text-align: right;">Payment for:</td>
       <td><%= @ach_transfer.payment_for %></td>

@@ -8,11 +8,6 @@
   </div>
 
   <div class="field">
-    <%= form.label :recipient_tel %>
-    <%= form.text_field :recipient_tel, placeholder: "1234567890", required: true, disabled: @event.demo_mode? %>
-  </div>
-
-  <div class="field">
     <%= form.label :payment_for, "What are you paying for with this deposit?" %>
     <%= form.text_field :payment_for, placeholder: "Shipment of potions", required: true, disabled: @event.demo_mode? %>
     <span class="muted">This is to help HCB keep record of our transactions. HCB team will see this.</span>

@@ -34,10 +34,12 @@
       <%= @hcb_code.ach_transfer.recipient_name %>
     </p>
 
-    <p class="fs-mask">
-      <strong>Recipient phone</strong>
-      <%= organizer_signed_in? ? @hcb_code.ach_transfer.recipient_tel : "Sign in to view" %>
-    </p>
+    <% if @hcb_code.ach_transfer.recipient_tel.present? %>
+      <p class="fs-mask">
+        <strong>Recipient phone</strong>
+        <%= organizer_signed_in? ? @hcb_code.ach_transfer.recipient_tel : "Sign in to view" %>
+      </p>
+    <% end %>
 
     <p>
       <strong>Payment purpose</strong>
