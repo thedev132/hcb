@@ -1,10 +1,10 @@
 json.from do
   json.partial! "api/v4/events/event", event: disbursement.source_event
-end 
+end
 
 json.to do
   json.partial! "api/v4/events/event", event: disbursement.destination_event
-end 
+end
 
 json.memo disbursement.name
 

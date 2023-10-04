@@ -4,6 +4,7 @@
   <div class="field">
     <%= form.label :recipient_name %>
     <%= form.text_field :recipient_name, placeholder: "Max Kern", required: true, disabled: @event.demo_mode? %>
+    <span class="muted">This is only for your reference— it doesn't need to match the name on the recipient's bank account.</span>
   </div>
 
   <div class="field">
