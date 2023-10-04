@@ -78,8 +78,8 @@ class HcbCodesController < ApplicationController
     hcb_code_params = params.require(:hcb_code).permit(:memo)
     hcb_code_params[:memo] = hcb_code_params[:memo].presence
 
-    @hcb_code.canonical_transactions.update_all(custom_memo: hcb_code_params[:memo])
-    @hcb_code.canonical_pending_transactions.update_all(custom_memo: hcb_code_params[:memo])
+    @hcb_code.canonical_transactions.each { |ct| ct.update!(custom_memo: hcb_code_params[:memo]) }
+    @hcb_code.canonical_pending_transactions.each { |cpt| cpt.update!(custom_memo: hcb_code_params[:memo]) }
 
     redirect_to @hcb_code
   end

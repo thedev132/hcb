@@ -28,15 +28,23 @@ RSpec.describe CanonicalTransaction, type: :model do
   end
 
   describe "custom_memo" do
-    it "does not permit empty string" do
+    it "treats empty strings as nil" do
       canonical_transaction.custom_memo = ""
-      expect(canonical_transaction).to_not be_valid
+      expect(canonical_transaction).to be_valid
+      expect(canonical_transaction.custom_memo).to be_nil
 
       canonical_transaction.custom_memo = " "
-      expect(canonical_transaction).to_not be_valid
+      expect(canonical_transaction).to be_valid
+      expect(canonical_transaction.custom_memo).to be_nil
 
       canonical_transaction.custom_memo = "Custom Memo"
       expect(canonical_transaction).to be_valid
+    end
+
+    it "removes whitespace from strings" do
+      canonical_transaction.custom_memo = " Custom Memo"
+      expect(canonical_transaction).to be_valid
+      expect(canonical_transaction.custom_memo).to eql("Custom Memo")
     end
 
     it "does permit nil" do

@@ -92,6 +92,8 @@ class CanonicalTransaction < ApplicationRecord
   validates :friendly_memo, presence: true, allow_nil: true
   validates :custom_memo, presence: true, allow_nil: true
 
+  before_validation { self.custom_memo = custom_memo.presence&.strip }
+
   after_create :write_hcb_code
   after_create_commit :write_system_event
 

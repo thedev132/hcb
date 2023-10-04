@@ -23,19 +23,22 @@ class CanonicalPendingTransactionsController < ApplicationController
 
     authorize @canonical_pending_transaction
 
-    ::CanonicalPendingTransactionService::SetCustomMemo.new(
-      canonical_pending_transaction_id: @canonical_pending_transaction.id,
-      custom_memo: params[:canonical_pending_transaction][:custom_memo]
-    ).run
-
-    if @current_user.admin?
-      @canonical_pending_transaction.update(params.require(:canonical_pending_transaction).permit(:fronted, :fee_waived))
-    end
+    @canonical_pending_transaction.update!(canonical_pending_transaction_params)
 
     unless params[:no_flash]
       flash[:success] = "Renamed pending transaction"
     end
     redirect_to params[:redirect_to] || @canonical_pending_transaction.local_hcb_code
+  end
+
+  private
+
+  def canonical_pending_transaction_params
+    if admin_signed_in?
+      params.require(:canonical_pending_transaction).permit(:custom_memo, :fronted, :fee_waived)
+    else
+      params.require(:canonical_pending_transaction).permit(:custom_memo)
+    end
   end
 
 end
