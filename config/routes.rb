@@ -465,7 +465,11 @@ Rails.application.routes.draw do
         resources :events, path: "organizations", only: [:show] do
           resources :stripe_cards, path: "cards", only: [:index]
           resources :transactions, only: [:show, :update] do
-            member { get "memo_suggestions" }
+            resources :receipts, only: [:create, :index]
+
+            member do
+              get "memo_suggestions"
+            end
           end
 
           member do
