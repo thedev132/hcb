@@ -27,7 +27,7 @@
         scope: @pre_auth.scope,
         code_challenge: @pre_auth.code_challenge,
         code_challenge_method: @pre_auth.code_challenge_method,
-      } %>
+      }, form: { data: { turbo: false } } %>
   <%= button_to "Cancel", oauth_authorization_path, method: :delete, class: "bg-muted", params: {
         client_id: @pre_auth.client.uid,
         redirect_uri: @pre_auth.redirect_uri,
@@ -37,5 +37,5 @@
         scope: @pre_auth.scope,
         code_challenge: @pre_auth.code_challenge,
         code_challenge_method: @pre_auth.code_challenge_method,
-      } %>
+      }, form: { data: { turbo: false } } %>
 </div>
