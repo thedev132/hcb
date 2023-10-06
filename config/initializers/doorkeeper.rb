@@ -13,6 +13,8 @@ Doorkeeper.configure do
   access_token_class "::ApiToken"
   access_token_generator "::ApiToken"
 
+  access_token_expires_in nil
+
   # If you didn't skip applications controller from Doorkeeper routes in your application routes.rb
   # file then you need to declare this block in order to restrict access to the web interface for
   # adding oauth authorized applications. In other case it will return 403 Forbidden response
@@ -60,11 +62,6 @@ Doorkeeper.configure do
   # Authorization Code expiration time (default: 10 minutes).
   #
   # authorization_code_expires_in 10.minutes
-
-  # Access token expiration time (default: 2 hours).
-  # If you want to disable expiration, set this to `nil`.
-  #
-  # access_token_expires_in 2.hours
 
   # Assign custom TTL for access tokens. Will be used instead of access_token_expires_in
   # option if defined. In case the block returns `nil` value Doorkeeper fallbacks to
