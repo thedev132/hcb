@@ -33,14 +33,18 @@ class TopupStripeJob < ApplicationJob
     puts "topup amount == #{topup_amount}"
     return unless topup_amount > 0
 
+    limited_topup_amount = topup_amount.clamp(0, 50_000 * 100) # Limit to $50,000 per transaction
+
     StripeService::Topup.create(
       destination_balance: "issuing",
-      amount: topup_amount.clamp(0, 50_000 * 100), # Limit to $50,000 per transaction
+      amount: limited_topup_amount,
       currency: "usd",
       statement_descriptor: "Stripe Top-up"
     )
 
-    puts "Just created a topup for #{topup_amount}"
+    puts "Just created a topup for #{limited_topup_amount}"
+
+    StatsD.gauge("stripe_issuing_topup", limited_topup_amount)
   end
 
 end

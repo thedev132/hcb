@@ -716,6 +716,7 @@ GEM
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
     stackprof (0.2.25)
+    statsd-instrument (3.5.12)
     statsd-ruby (1.5.0)
     stripe (8.5.0)
     strong_migrations (1.4.4)
@@ -879,6 +880,7 @@ DEPENDENCIES
   solargraph
   solargraph-rails (~> 0.2.0)
   stackprof
+  statsd-instrument (~> 3.5, >= 3.5.12)
   stripe (= 8.5.0)
   strong_migrations
   swagger-blocks
