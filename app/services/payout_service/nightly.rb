@@ -3,7 +3,7 @@
 module PayoutService
   class Nightly
     def run
-      ::Donation.in_transit.missing_payout.each do |donation|
+      ::Donation.where(aasm_state: [:in_transit, :refunded]).missing_payout.each do |donation|
         ::PayoutJob::Donation.perform_later(donation.id)
       end
 

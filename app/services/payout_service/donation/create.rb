@@ -9,7 +9,7 @@ module PayoutService
 
       def run
         return nil unless donation.payout_id.nil?
-        return nil unless donation.in_transit?
+        return nil unless donation.in_transit? || donation.refunded?
         return nil unless funds_available?
 
         ActiveRecord::Base.transaction do
