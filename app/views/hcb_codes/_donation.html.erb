@@ -98,22 +98,20 @@
       <%= @donation.message %>
     </p>
     <% end %>
-    <% if @donation.payout %>
-      <p>
-        <strong><%= donation_fee_type(@donation) %></strong>
-        -<%= donation_payment_processor_fee(true, @donation) %>
-      </p>
-      <p>
-        <strong>Processing fee refund</strong>
-        <span>
-          +<%= donation_payment_processor_fee(true, @donation) %>
-          <span class="muted">
-            <% "Pending " unless @donation&.fee_reimbursement&.t_transaction %>
-            (<%= link_to "learn more", "https://changelog.hcb.hackclub.com/we're-making-payment-processing-fees-disappear-101088" %>)
-          </span>
+    <p>
+      <strong><%= donation_fee_type(@donation) %></strong>
+      -<%= donation_payment_processor_fee(true, @donation) %>
+    </p>
+    <p>
+      <strong>Processing fee refund</strong>
+      <span>
+        +<%= donation_payment_processor_fee(true, @donation) %>
+        <span class="muted">
+          <% "Pending " unless @donation&.fee_reimbursement&.t_transaction %>
+          (<%= link_to "learn more", "https://changelog.hcb.hackclub.com/we're-making-payment-processing-fees-disappear-101088" %>)
         </span>
-      </p>
-    <% end %>
+      </span>
+    </p>
     <%= render "hcb_codes/tags", hcb_code: @hcb_code, event: (@event || @hcb_code.event) %>
   </section>
 

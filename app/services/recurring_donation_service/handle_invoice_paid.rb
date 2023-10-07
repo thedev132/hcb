@@ -18,11 +18,8 @@ module RecurringDonationService
         stripe_payment_intent_id: @stripe_invoice.payment_intent
       )
 
-      donation.set_fields_from_stripe_payment_intent(StripeService::PaymentIntent.retrieve(@stripe_invoice.payment_intent))
-
+      donation.set_fields_from_stripe_payment_intent(StripeService::PaymentIntent.retrieve(id: @stripe_invoice.payment_intent, expand: ["charges.data.balance_transaction"]))
       donation.save!
-
-      DonationService::Queue.new(donation_id: donation.id).run
 
       donation.send_receipt!
 

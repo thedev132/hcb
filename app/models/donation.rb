@@ -106,6 +106,16 @@ class Donation < ApplicationRecord
     self.status = payment_intent.status
     self.stripe_client_secret = payment_intent.client_secret
 
+    if status == "succeeded"
+      balance_transaction = payment_intent.charges.data.first.balance_transaction
+      funds_available_at = Time.at(balance_transaction.available_on)
+
+      self.payout_creation_queued_for = funds_available_at + 1.day
+      self.payout_creation_balance_net = balance_transaction.net # amount to pay out
+      self.payout_creation_balance_stripe_fee = balance_transaction.fee
+      self.payout_creation_balance_available_at = funds_available_at
+    end
+
     self.aasm_state = "in_transit" if aasm_state == "pending" && status == "succeeded" # hacky
   end
 

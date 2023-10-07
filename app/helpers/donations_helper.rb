@@ -2,7 +2,7 @@
 
 module DonationsHelper
   def donation_payment_processor_fee(humanized = true, donation = @donation)
-    fee = donation.amount - donation.payout.amount
+    fee = donation.payout_creation_balance_stripe_fee
 
     return fee unless humanized
 
@@ -27,10 +27,10 @@ module DonationsHelper
     if donation.deposited?
       title = "Funds available since "
       date = @hcb_code.canonical_transactions.pluck(:date).max
-    elsif donation.payout_creation_queued_at && donation.payout.nil?
+    elsif donation.payout.nil?
       title = "Transfer scheduled for "
       date = donation.payout_creation_queued_for
-    elsif donation.payout_creation_queued_at && donation.payout.present?
+    elsif donation.payout.present?
       title = "Funds should be available from "
       date = donation.payout.arrival_date
     end
