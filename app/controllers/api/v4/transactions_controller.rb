@@ -8,6 +8,8 @@ module Api
       def show
         @event = Event.find_by_public_id(params[:event_id]) || Event.friendly.find(params[:event_id])
         @hcb_code = authorize HcbCode.find_by_public_id(params[:id])
+
+        raise ActiveRecord::RecordNotFound if !@hcb_code.events.include?(@event)
       end
 
       def missing_receipt

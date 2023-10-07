@@ -8,10 +8,15 @@ module Api
         json.has_more @has_more
       end
 
-      def transaction_amount(tx)
+      def transaction_amount(tx, event: nil)
         return tx.amount.cents if !tx.is_a?(HcbCode)
 
-        return tx.disbursement.amount if tx.disbursement?
+        if tx.disbursement? && event == tx.disbursement.source_event
+          return -tx.disbursement.amount
+        elsif tx.disbursement? && event == tx.disbursement.destination_event
+          return tx.disbursement.amount
+        end
+
         return tx.donation.amount if tx.donation?
         return tx.invoice.item_amount if tx.invoice?
 

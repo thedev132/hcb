@@ -6,7 +6,7 @@ hcb_code = tx.is_a?(HcbCode) ? tx : tx.local_hcb_code
 
 json.id hcb_code.public_id
 json.date tx.date
-json.amount_cents transaction_amount(tx)
+json.amount_cents transaction_amount(tx, event: @event)
 json.memo hcb_code.memo(event: @event)
 json.has_custom_memo hcb_code.custom_memo.present?
 json.pending tx.is_a?(CanonicalPendingTransaction) || (tx.is_a?(HcbCode) && !tx.pt&.fronted? && tx.pt&.unsettled?)
