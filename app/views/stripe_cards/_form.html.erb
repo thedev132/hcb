@@ -16,15 +16,16 @@
         <strong>Virtual</strong>
         <small>(online-only, instant)</small>
       <% end %>
-      <%= form.radio_button :card_type, "physical" %>
+      <%= form.radio_button :card_type, "physical", disabled: true %>
       <%= form.label :card_type, value: "physical" do %>
         <%= inline_icon "card", size: 28 %>
         <strong>Plastic</strong>
-        <small>(mailed, 5-7 biz. days)</small>
+        <%# <small>(mailed, 5-7 biz. days)</small> %>
+        <small>temporarily unavailable</small>
       <% end %>
     </div>
   </fieldset>
-  <p class="h5 muted mt0">Plastic cards are only available to ship to the US and Canada.</p>
+  <%# <p class="h5 muted mt0">Plastic cards are only available to ship to the US and Canada.</p> %>
 
   <section class="grid grid--split" data-behavior="shipping_address_inputs autohide">
   <h2 class="grid__fill">Shipping info</h2>
