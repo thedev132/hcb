@@ -38,7 +38,7 @@ module StaticPagesHelper
       onboard_id: {
         url: "https://airbridge.hackclub.com/v0.1/OnBoard/Verifications",
         query: { filterByFormula: "Status='Pending'", fields: [] },
-        destination: "https://airtable.com/tblVZwB8QMUSDAd41/viwJ15CT6VHCZ0UZ4"
+        destination: "https://airtable.com/app4Bs8Tjwvk5qcD4/tblVZwB8QMUSDAd41/viwJ15CT6VHCZ0UZ4"
       },
       bank_applications: {
         url: "https://airbridge.hackclub.com/v0.1/Bank%20Applications%20Database/Events",
