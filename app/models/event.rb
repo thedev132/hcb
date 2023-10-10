@@ -41,6 +41,7 @@
 #  slug                            :text
 #  sponsorship_fee                 :decimal(, )
 #  start                           :datetime
+#  stripe_card_shipping_type       :integer          default("standard"), not null
 #  transaction_engine_v2_at        :datetime
 #  webhook_url                     :string
 #  website                         :string
@@ -375,6 +376,12 @@ class Event < ApplicationRecord
     'grant recipient': 9,
     salary: 10, # e.g. Sam's Shillings
     ai: 11,
+  }
+
+  enum stripe_card_shipping_type: {
+    standard: 0,
+    express: 1,
+    priority: 2,
   }
 
   def country_us?

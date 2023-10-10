@@ -637,7 +637,8 @@ class EventsController < ApplicationController
       :donation_header_image,
       :logo,
       :website,
-      :background_image
+      :background_image,
+      :stripe_card_shipping_type,
     )
 
     # Expected budget is in cents on the backend, but dollars on the frontend

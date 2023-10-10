@@ -212,6 +212,11 @@
     </div>
 
     <div class="field">
+      <%= form.label :stripe_card_shipping_type, "Card shipping method" %>
+      <%= form.collection_select :stripe_card_shipping_type, Event.stripe_card_shipping_types, :first, :first %>
+    </div>
+
+    <div class="field">
       <%= form.label :country %>
       <%= form.collection_select :country, Event.countries.map{ |c| [c.first, get_country_name_from_alpha2(c.first)] }, :first, :last, { include_blank: "Select a country" } %>
     </div>

@@ -83,7 +83,7 @@ module StripeCardService
       if physical?
         attrs[:shipping] = {
           name: @stripe_shipping_name,
-          service: "standard",
+          service: shipping_type,
           address: {
             line1: @stripe_shipping_address_line1,
             line2: formatted_stripe_shipping_address_line2,
@@ -96,6 +96,10 @@ module StripeCardService
       end
 
       attrs
+    end
+
+    def shipping_type
+      @shipping_type ||= event.stripe_card_shipping_type
     end
 
     def stripe_cardholder
