@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_10_10_043940) do
+ActiveRecord::Schema[7.0].define(version: 2023_10_11_112855) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_stat_statements"
@@ -886,6 +886,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_10_043940) do
     t.datetime "updated_at", null: false
     t.datetime "approved_at"
     t.string "increase_status"
+    t.string "check_number"
     t.index ["event_id"], name: "index_increase_checks_on_event_id"
     t.index ["user_id"], name: "index_increase_checks_on_user_id"
   end

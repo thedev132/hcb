@@ -8,7 +8,7 @@
 <% end %>
 
 <div class="check xs-hide w-100 mt3 mb3" data-behavior="hover_tilt">
-  <div class="check__number">1234</div>
+  <div class="check__number"><%= @hcb_code.increase_check.check_number || "----" %></div>
 
   <div class="flex w-100 justify-end mb1">
     <div class="check__field check__field--date" data-label="Date"><%= (@hcb_code.increase_check.approved_at || @hcb_code.increase_check.created_at).strftime("%b %d, %Y") %></div>
@@ -31,9 +31,9 @@
 
   <p class="check__meta">
       &#9286;
-      000001234
+      <%= @hcb_code.increase_check.event.routing_number %>
       &#9286;
-      123[HIDDEN]
+      <%= @hcb_code.increase_check.event.account_number[0..2] %>[HIDDEN]
       &#9286;
   </p>
 </div>
@@ -94,6 +94,13 @@
       <strong>Payment purpose</strong>
       <%= @hcb_code.increase_check.payment_for %>
     </p>
+
+    <% if @hcb_code.increase_check.check_number.present? %>
+      <p>
+        <strong>Check number</strong>
+        <span class="mono"><%= @hcb_code.increase_check.check_number %></span>
+      </p>
+    <% end %>
 
     <% if @hcb_code.increase_check.increase_status.present? %>
       <% admin_tools "", "p" do %>

@@ -13,6 +13,7 @@
 #  address_zip     :string
 #  amount          :integer
 #  approved_at     :datetime
+#  check_number    :string
 #  increase_state  :string
 #  increase_status :string
 #  memo            :string

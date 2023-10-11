@@ -37,7 +37,7 @@ class IncreaseController < ApplicationController
 
   def handle_check_transfer_updated(event)
     increase_check = Increase::CheckTransfers.retrieve event["associated_object_id"]
-    IncreaseCheck.find_by(increase_id: increase_check["id"])&.update(increase_status: increase_check["status"])
+    IncreaseCheck.find_by(increase_id: increase_check["id"])&.update!(increase_status: increase_check["status"], check_number: increase_check["check_number"])
   end
 
   def handle_check_deposit_updated(event)
