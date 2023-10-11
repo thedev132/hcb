@@ -85,6 +85,7 @@ class ApiController < ApplicationController
       email: params[:email],
       country: params[:country],
       category: params[:category],
+      is_public: params[:transparent].nil? ? true : params[:transparent],
     ).run
 
     result = {}
@@ -96,6 +97,7 @@ class ApiController < ApplicationController
       result[:name] = event.name
       result[:slug] = event.slug
       result[:email] = params[:email]
+      result[:transparent] = event.is_public?
     end
 
     render json: result, status:

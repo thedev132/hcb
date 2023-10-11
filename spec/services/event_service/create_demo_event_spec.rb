@@ -49,7 +49,7 @@ RSpec.describe EventService::CreateDemoEvent, type: :model do
 
   context "when user is already in multiple demo accounts" do
     let(:current_user) { create :user }
-    let(:events) { create_list :event, 3, :demo_mode }
+    let(:events) { create_list :event, 11, :demo_mode }
 
     before do
       events.each do |event|

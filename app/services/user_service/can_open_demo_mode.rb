@@ -7,7 +7,7 @@ module UserService
 
       return true if user.nil?
 
-      # Users can only be in 2 demo mode events
+      # Users can only be in 10 demo mode events
       demo_mode_count = 0
       demo_mode_count += user.events.demo_mode.size
       demo_mode_count += OrganizerPositionInvite.includes(:user, :event)
@@ -15,7 +15,7 @@ module UserService
                                                 .where(user:)
                                                 .where(event: { demo_mode: true })
                                                 .size
-      demo_mode_count < 2
+      demo_mode_count < 10
     end
   end
 end
