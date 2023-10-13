@@ -50,7 +50,7 @@
 #  club_airtable_id                :text
 #  emburse_department_id           :string
 #  increase_account_id             :string           not null
-#  partner_id                      :bigint           not null
+#  partner_id                      :bigint
 #  point_of_contact_id             :bigint
 #
 # Indexes

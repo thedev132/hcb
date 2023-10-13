@@ -6,7 +6,7 @@
 #
 #  id                  :bigint           not null, primary key
 #  address_city        :text
-#  address_country     :text
+#  address_country     :text             default("US")
 #  address_line1       :text
 #  address_line2       :text
 #  address_postal_code :text
