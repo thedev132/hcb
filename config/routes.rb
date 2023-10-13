@@ -597,7 +597,11 @@ Rails.application.routes.draw do
 
     resources :check_deposits, only: [:index, :create], path: "check-deposits"
 
-    resources :card_grants, only: [:new, :create], path: "card-grants"
+    resources :card_grants, only: [:new, :create], path: "card-grants" do
+      member do
+        post "cancel"
+      end
+    end
 
     resources :grants, only: [:index, :new, :create]
 

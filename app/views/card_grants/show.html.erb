@@ -19,12 +19,20 @@
             <strong>
               Card number
             </strong>
-            <%= @card.formatted_card_number %>
+            <% if @card_grant.user == current_user %>
+              <%= @card.formatted_card_number %>
+            <% else %>
+              <%= @card.hidden_card_number %>
+            <% end %>
           </p>
 
           <p class="fs-mask">
             <strong>CVC</strong>
-            <%= @card.cvc %>
+            <% if @card_grant.user == current_user %>
+              <%= @card.cvc %>
+            <% else %>
+              <%= @card.hidden_cvc %>
+            <% end %>
           </p>
 
           <p class="fs-mask">

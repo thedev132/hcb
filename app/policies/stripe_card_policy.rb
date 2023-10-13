@@ -14,7 +14,7 @@ class StripeCardPolicy < ApplicationPolicy
   end
 
   def defrost?
-    user&.admin? || record&.event&.users&.include?(user) || record&.user == user
+    user&.admin? || record&.event&.users&.include?(user)
   end
 
   def activate?

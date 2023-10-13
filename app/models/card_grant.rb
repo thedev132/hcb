@@ -9,6 +9,7 @@
 #  category_lock   :string
 #  email           :string           not null
 #  merchant_lock   :string
+#  status          :integer          default("active"), not null
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #  disbursement_id :bigint
@@ -45,10 +46,14 @@ class CardGrant < ApplicationRecord
   belongs_to :sent_by, class_name: "User"
   belongs_to :disbursement, optional: true
 
+  enum :status, [:active, :canceled], default: :active
+
   before_create :create_user
   before_create :create_subledger
   after_create :transfer_money
   after_create_commit :send_email
+
+  before_validation { self.email = email.presence&.downcase&.strip }
 
   delegate :balance, to: :subledger
 
@@ -60,10 +65,56 @@ class CardGrant < ApplicationRecord
   validates_presence_of :amount_cents, :email
   validates :amount_cents, numericality: { greater_than: 0, message: "can't be zero!" }
 
-  scope :not_activated, -> { where(stripe_card_id: nil) }
-  scope :activated, -> { where.not(stripe_card_id: nil) }
+  scope :not_activated, -> { active.where(stripe_card_id: nil) }
+  scope :activated, -> { active.where.not(stripe_card_id: nil) }
+  scope :search_recipient, ->(q) { joins(:user).where("users.full_name ILIKE :query OR card_grants.email ILIKE :query", query: "%#{User.sanitize_sql_like(q)}%") }
 
   monetize :amount_cents
+
+  def name
+    "#{user.name} (#{user.email})"
+  end
+
+  def state
+    if canceled?
+      "muted"
+    elsif stripe_card.nil?
+      "info"
+    elsif stripe_card.frozen?
+      "info"
+    else
+      "success"
+    end
+  end
+
+  def state_text
+    if canceled?
+      "Canceled"
+    elsif stripe_card.nil?
+      "Invitation sent"
+    elsif stripe_card.frozen?
+      "Frozen"
+    else
+      "Active"
+    end
+  end
+
+  def cancel!(user)
+    if balance > 0
+      DisbursementService::Create.new(
+        source_event_id: event_id,
+        destination_event_id: event_id,
+        name: "Recalling grant to #{user.email}",
+        amount: balance.amount,
+        source_subledger_id: subledger_id,
+        requested_by_id: user.id,
+      ).run
+    end
+
+    update!(status: :canceled)
+
+    stripe_card&.freeze!
+  end
 
   def create_stripe_card(session)
     return if stripe_card.present?
@@ -86,7 +137,7 @@ class CardGrant < ApplicationRecord
   end
 
   def create_subledger
-    create_subledger!(event:)
+    self.subledger = event.subledgers.create!
   end
 
   def transfer_money

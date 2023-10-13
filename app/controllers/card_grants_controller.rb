@@ -64,4 +64,13 @@ class CardGrantsController < ApplicationController
     redirect_to @card_grant
   end
 
+  def cancel
+    @card_grant = CardGrant.find_by_hashid(params[:id])
+    authorize @card_grant
+
+    disbursement = @card_grant.cancel!(current_user)
+
+    redirect_back_or_to event_transfers_path(@card_grant.event), flash: { success: "Successfully canceled grant." }
+  end
+
 end

@@ -17,6 +17,10 @@ class CardGrantPolicy < ApplicationPolicy
     user&.admin? || record.user == user
   end
 
+  def cancel?
+    admin_or_user
+  end
+
   def admin_or_user
     user&.admin? || record.event.users.include?(user)
   end

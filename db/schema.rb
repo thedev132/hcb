@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_10_11_112855) do
+ActiveRecord::Schema[7.0].define(version: 2023_10_13_151111) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_stat_statements"
@@ -351,6 +351,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_11_112855) do
     t.string "email", null: false
     t.string "merchant_lock"
     t.string "category_lock"
+    t.integer "status", default: 0, null: false
     t.index ["disbursement_id"], name: "index_card_grants_on_disbursement_id"
     t.index ["event_id"], name: "index_card_grants_on_event_id"
     t.index ["sent_by_id"], name: "index_card_grants_on_sent_by_id"
@@ -430,11 +431,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_11_112855) do
     t.datetime "in_transit_at", precision: nil
     t.datetime "deposited_at", precision: nil
     t.bigint "destination_subledger_id"
+    t.bigint "source_subledger_id"
     t.index ["destination_subledger_id"], name: "index_disbursements_on_destination_subledger_id"
     t.index ["event_id"], name: "index_disbursements_on_event_id"
     t.index ["fulfilled_by_id"], name: "index_disbursements_on_fulfilled_by_id"
     t.index ["requested_by_id"], name: "index_disbursements_on_requested_by_id"
     t.index ["source_event_id"], name: "index_disbursements_on_source_event_id"
+    t.index ["source_subledger_id"], name: "index_disbursements_on_source_subledger_id"
   end
 
   create_table "document_downloads", force: :cascade do |t|

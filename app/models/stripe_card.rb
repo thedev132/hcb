@@ -193,6 +193,10 @@ class StripeCard < ApplicationRecord
     activated? && stripe_status == "inactive"
   end
 
+  def active?
+    stripe_status == "active"
+  end
+
   def deactivated?
     stripe_status != "active"
   end

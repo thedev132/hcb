@@ -20,6 +20,8 @@
 class Subledger < ApplicationRecord
   belongs_to :event
 
+  has_one :card_grant
+
   has_many :canonical_event_mappings
   has_many :canonical_transactions, through: :canonical_event_mappings
 

@@ -1,0 +1,24 @@
+<div data-controller="menu" data-menu-placement-value="bottom-end">
+  <button class="pop menu__toggle tooltipped tooltipped--w" data-action="menu#toggle click@document->menu#close keydown@document->menu#keydown" data-menu-target="toggle" aria-label="Actions">
+    <%= inline_icon "more" %>
+  </button>
+
+  <div data-menu-target="content" class="menu__content menu__content--2 menu__content--compact">
+    <p class="h6 muted m0 ml1 mb1">Card balance: <strong><%= card_grant.balance.format %></strong></p>
+    <%= link_to card_grant.stripe_card do %>
+      <%= inline_icon "card", size: 20 %> View transactions
+    <% end if card_grant.stripe_card.present? %>
+    <% if card_grant.active? && card_grant.stripe_card&.active? %>
+      <%= link_to stripe_card_freeze_path(card_grant.stripe_card), method: :post do %>
+        <%= inline_icon "freeze", size: 20 %> Freeze
+      <% end %>
+    <% elsif card_grant.active? && card_grant.stripe_card&.frozen? %>
+      <%= link_to stripe_card_defrost_path(card_grant.stripe_card), method: :post do %>
+        <%= inline_icon "freeze", size: 20 %> Defrost
+      <% end %>
+    <% end %>
+    <%= link_to cancel_event_card_grant_path(id: card_grant.hashid, event_id: @event.slug), data: { confirm: "Are you sure? This will irreversibly transfer the remaining balance on this grant BACK to your account." }, method: :post do %>
+      <%= inline_icon "reply", size: 20 %> Cancel grant...
+    <% end if card_grant.active? %>
+  </div>
+</div>

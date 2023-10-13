@@ -29,7 +29,7 @@ class StripeCardsController < ApplicationController
 
     if @card.freeze!
       flash[:success] = "Card frozen"
-      redirect_to @card
+      redirect_back_or_to @card
     else
       render :show, status: :unprocessable_entity
     end
@@ -41,7 +41,7 @@ class StripeCardsController < ApplicationController
 
     if @card.defrost!
       flash[:success] = "Card defrosted"
-      redirect_to @card
+      redirect_back_or_to @card
     else
       render :show, status: :unprocessable_entity
     end
@@ -73,8 +73,8 @@ class StripeCardsController < ApplicationController
 
     authorize @card
 
-    if @card.card_grant.present? && !current_user&.admin?
-      redirect_to @card.card_grant
+    if @card.card_grant.present? && !current_user&.admin? && @card.event.users.exclude?(current_user)
+      return redirect_to @card.card_grant
     end
 
     if params[:show_details] == "true"

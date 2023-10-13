@@ -13,7 +13,7 @@ module EventMappingEngine
         if amount_cents > 0
           [disbursement.event.id, disbursement.destination_subledger_id]
         else
-          [disbursement.source_event.id]
+          [disbursement.source_event.id, disbursement.source_subledger_id]
         end
       end
 
