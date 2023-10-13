@@ -42,8 +42,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_11_112855) do
     t.datetime "updated_at", precision: nil, null: false
     t.string "recipient_tel"
     t.datetime "rejected_at", precision: nil
-    t.text "payment_for"
     t.datetime "scheduled_arrival_date", precision: nil
+    t.text "payment_for"
     t.string "aasm_state"
     t.text "confirmation_number"
     t.text "account_number_ciphertext"
@@ -360,7 +360,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_11_112855) do
   end
 
   create_table "check_deposits", force: :cascade do |t|
-    t.string "aasm_state"
     t.bigint "event_id", null: false
     t.integer "amount_cents"
     t.datetime "created_at", null: false
@@ -1447,7 +1446,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_11_112855) do
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.text "slug"
-    t.text "address_country"
+    t.text "address_country", default: "US"
     t.index ["event_id"], name: "index_sponsors_on_event_id"
     t.index ["slug"], name: "index_sponsors_on_slug", unique: true
   end
