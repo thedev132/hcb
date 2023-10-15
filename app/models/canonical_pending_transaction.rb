@@ -160,14 +160,15 @@ class CanonicalPendingTransaction < ApplicationRecord
 
     pts = local_hcb_code.canonical_pending_transactions
                         .includes(:canonical_pending_event_mapping)
-                        .where(canonical_pending_event_mapping: { event_id: event.id })
+                        .where(canonical_pending_event_mapping: { event_id: event.id, subledger_id: subledger&.id })
                         .where(fronted: true)
                         .order(date: :asc, id: :asc)
     pts_sum = pts.map(&:amount_cents).sum
     return 0 if pts_sum.negative?
 
     cts_sum = local_hcb_code.canonical_transactions
-                            .filter { |ct| ct.canonical_event_mapping&.event_id == event.id }
+                            .includes(:canonical_event_mapping)
+                            .where(canonical_event_mapping: { event_id: event.id, subledger_id: subledger&.id })
                             .sum(&:amount_cents)
 
     # PTs that were chronologically created first in an HcbCode are first
