@@ -41,12 +41,7 @@ class BankAccountsController < ApplicationController
     authorize @bank_account
 
     if @bank_account.update(bank_account_update_params)
-      if @bank_account.should_sync?
-        flash[:success] = "Bank account transaction syncing is enabled."
-      else
-        flash[:muted] = "Bank account transaction syncing is paused."
-      end
-      redirect_to @bank_account
+      redirect_back_or_to bank_accounts_admin_index_path
     else
       render :show, status: :unprocessable_entity
     end
@@ -54,6 +49,7 @@ class BankAccountsController < ApplicationController
 
   def index
     authorize BankAccount
+    redirect_to bank_accounts_admin_index_path
   end
 
   def show
@@ -89,7 +85,7 @@ class BankAccountsController < ApplicationController
   end
 
   def bank_account_update_params
-    params.require(:bank_account).permit(:should_sync)
+    params.require(:bank_account).permit(:should_sync, :should_sync_v2)
   end
 
 end

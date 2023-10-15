@@ -1,6 +1,9 @@
 <% title "BANK ACCOUNTS" %>
 
 <h1>BANK ACCOUNTS</h1>
+<%= link_to new_bank_account_path do %>
+  <button class="mb2">Link new bank account</button>
+<% end %>
 
 <p><small><%= pluralize(@count, "result") %></small></p>
 
@@ -18,15 +21,15 @@
   </thead>
   <tbody>
     <% @bank_accounts.each do |ba| %>
-      <tr class="<%= "admin-bg-red" if ba.failed_at.present? %>">
+      <tr class="<%= "admin-bg-red" if ba.failed_at.present? %> <%= "admin-bg-transit" if ba.should_sync_v2 %>">
         <td><%= ba.id %></td>
         <td><%= ba.name %></td>
         <td><%= render_money ba.balance %></td>
-        <td><%= ba.should_sync_v2 %></td>
+        <td><%= ba.should_sync_v2 ? "✅" : "🚫" %></td>
         <td><%= ba.failed_at %></td>
         <td><%= ba.failure_count %></td>
         <td>
-          <%= link_to "View", ba %>
+          <%= button_to ba.should_sync_v2? ? "Disable" : "Enable", ba, method: :patch, class: ("admin-bg-red" if ba.should_sync_v2?), params: { bank_account: { should_sync_v2: !ba.should_sync_v2? } } %>
         </td>
       </tr>
     <% end %>
