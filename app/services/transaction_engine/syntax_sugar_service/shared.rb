@@ -57,7 +57,7 @@ module TransactionEngine
       end
 
       def increase_check?
-        @canonical_transaction.raw_increase_transaction&.increase_transaction&.dig("source", "category") == "check_transfer_intention"
+        @canonical_transaction.raw_increase_transaction&.increase_transaction&.dig("source", "category").in? ["check_transfer_intention", "check_transfer_deposit"]
       end
 
       def check_deposit?

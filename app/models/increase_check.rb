@@ -14,6 +14,7 @@
 #  amount          :integer
 #  approved_at     :datetime
 #  check_number    :string
+#  increase_object :jsonb
 #  increase_state  :string
 #  increase_status :string
 #  memo            :string
@@ -27,8 +28,9 @@
 #
 # Indexes
 #
-#  index_increase_checks_on_event_id  (event_id)
-#  index_increase_checks_on_user_id   (user_id)
+#  index_increase_checks_on_event_id        (event_id)
+#  index_increase_checks_on_transaction_id  ((((increase_object -> 'deposit'::text) ->> 'transaction_id'::text)))
+#  index_increase_checks_on_user_id         (user_id)
 #
 # Foreign Keys
 #
