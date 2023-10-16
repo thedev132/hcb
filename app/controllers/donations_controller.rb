@@ -40,10 +40,6 @@ class DonationsController < ApplicationController
       return not_found
     end
 
-    if @event.demo_mode?
-      @example_event = Event.find(183)
-    end
-
     @donation = Donation.new(
       name: params[:name],
       email: params[:email],
