@@ -48,7 +48,7 @@ gem "lob"
 
 gem "docusign_esign", "~> 3.24" # DocuSign API
 
-gem "google-apis-admin_directory_v1", "~> 0.43.0" # GSuite
+gem "google-apis-admin_directory_v1", "~> 0.45.0" # GSuite
 
 gem "pg_search" # full-text search
 
