@@ -93,6 +93,7 @@ Rails.application.configure do
   config.log_formatter = ::Logger::Formatter.new
 
   config.active_storage.routes_prefix = "/storage"
+  config.active_storage.variant_processor = :mini_magick
 
   # Use a different logger for distributed setups.
   # require "syslog/logger"

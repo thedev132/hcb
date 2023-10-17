@@ -83,7 +83,7 @@
 
   <% if @hcb_code.ach_transfer.may_mark_rejected? %>
     <section class="card__banner card__darker border-top overflow-hidden">
-      <%= button_to "Cancel transfer", cancel_ach_transfer_path(@hcb_code.ach_transfer), class: "bg-error" %>
+      <%= button_to "Cancel transfer", cancel_ach_transfer_path(@hcb_code.ach_transfer), class: "btn bg-error" %>
     </section>
   <% end %>
 </article>
