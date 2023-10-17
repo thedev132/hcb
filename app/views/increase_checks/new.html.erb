@@ -169,7 +169,7 @@
                 ["West Virginia", "WV"],
                 ["Wisconsin", "WI"],
                 ["Wyoming", "WY"],
-              ], {}, disabled: @event.demo_mode? %>
+              ], { prompt: "Select a state" }, disabled: @event.demo_mode? %>
           <% @check.errors.messages_for(:address_state).each do |message| %>
             <div class="primary"><%= message %></div>
           <% end %>

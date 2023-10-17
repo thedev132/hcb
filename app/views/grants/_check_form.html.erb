@@ -67,7 +67,7 @@
             ["West Virginia", "WV"],
             ["Wisconsin", "WI"],
             ["Wyoming", "WY"],
-          ], {}, ":required" => "recipient_org_type == '501c3' && receipt_method == 'check'" %>
+          ], { prompt: "Select a state" }, ":required" => "recipient_org_type == '501c3' && receipt_method == 'check'" %>
     </div>
   </div>
 
