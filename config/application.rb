@@ -58,6 +58,8 @@ module Bank
       Doorkeeper::AuthorizationsController.layout "application"
     end
 
+    config.active_storage.variant_processor = :mini_magick
+
     # TODO: Pre-load grape API
     # ::API::V3.compile!
 

@@ -40,6 +40,7 @@
 
         <%= form.file_field :file,
                             multiple: true,
+                            include_hidden: false,
                             required: true,
                             class: "display-none",
                             accept: "image/*,image/heic,.pdf",
