@@ -8,7 +8,6 @@ class OrganizerPositionInvitesController < ApplicationController
   before_action :hide_footer, only: :show
 
   skip_before_action :signed_in_user, only: [:show]
-  skip_after_action :verify_authorized, only: [:show], if: -> { @skip_verfiy_authorized }
 
   def new
     service = OrganizerPositionInviteService::Create.new(event: @event)
@@ -38,6 +37,7 @@ class OrganizerPositionInvitesController < ApplicationController
   def show
     # If the user's not signed in, redirect them to login page
     unless signed_in?
+      skip_authorization
       return redirect_to auth_users_path(email: @invite.user.email, return_to: organizer_position_invite_path(@invite)), flash: { info: "Please sign in to accept this invitation." }
     end
 
