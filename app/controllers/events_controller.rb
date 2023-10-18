@@ -11,6 +11,8 @@ class EventsController < ApplicationController
   skip_before_action :signed_in_user
   before_action :set_mock_data
 
+  before_action :redirect_to_onboarding, unless: -> { @event&.is_public? }
+
   # GET /events
   def index
     authorize Event

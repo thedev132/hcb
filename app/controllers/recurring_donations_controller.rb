@@ -8,6 +8,7 @@ class RecurringDonationsController < ApplicationController
   before_action :set_recurring_donation_by_url_hash, only: [:show, :edit, :update, :cancel]
 
   skip_before_action :signed_in_user
+  skip_before_action :redirect_to_onboarding
 
   invisible_captcha only: [:create], honeypot: :subtitle
 
