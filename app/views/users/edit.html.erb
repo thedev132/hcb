@@ -17,8 +17,8 @@
     <% if @onboarding %>
       <p>Complete your profile to get started.</p>
     <% end %>
-    <%= form_with(model: @user, local: true, html: { onsubmit: "onSubmit()" }) do |form| %>
-      <%= form_errors @user, "user information" %>
+    <%= form_with(model: @user, local: true, html: { onsubmit: "onSubmit()" }, data: { turbo_frame: "_top" }) do |form| %>
+      <%= form_errors @user, "profile", "We couldn't update your" %>
       <% if current_season(override_preference: true) %>
         <div class="field field--checkbox">
           <%= form.check_box :seasonal_themes_enabled %>
@@ -29,6 +29,9 @@
       <div class="field">
         <%= form.label :legal_name %>
         <%= form.text_field :full_name, required: true, placeholder: "Fiona Hackworth III", pattern: '^\S+.+' %>
+        <% @user.errors.full_messages_for(:legal_name).each do |message| %>
+          <div class="primary"><%= message %></div>
+        <% end %>
       </div>
       <div class="field">
         <%= form.label :preferred_name %>

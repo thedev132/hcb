@@ -99,18 +99,14 @@ class User < ApplicationRecord
   before_create :format_number
   before_save :on_phone_number_update
 
-  validate on: :update do
-    if full_name.blank? && full_name_in_database.present?
-      errors.add(:full_name, "can't be blank")
-    end
-  end
+  validates_presence_of :full_name, if: -> { full_name_in_database.present? }
+  validates_presence_of :birthday, if: -> { birthday_in_database.present? }
 
-  validate on: :update do
-    # Birthday is required if the user already had a birthday
-    if birthday_in_database.present? && birthday.blank?
-      errors.add(:birthday, "can't be blank")
-    end
-  end
+  alias_attribute :legal_name, :full_name
+  validates :legal_name, format: {
+    with: /\A[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð.,'-]+ [a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð.,' -]+\z/,
+    message: "must contain your first and last name, and can't contain special characters.", allow_blank: true,
+  }
 
   validates :email, uniqueness: true, presence: true
   validates_email_format_of :email
