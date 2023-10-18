@@ -6,6 +6,8 @@ class UsersController < ApplicationController
   skip_after_action :verify_authorized, except: [:edit, :update]
   before_action :set_shown_private_feature_previews, only: [:edit, :edit_featurepreviews, :edit_security, :edit_admin]
 
+  wrap_parameters format: :url_encoded_form
+
   def impersonate
     authorize current_user
 
