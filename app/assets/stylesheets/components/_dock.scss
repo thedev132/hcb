@@ -14,22 +14,22 @@
       position: relative;
     }
 
-    .dock__item--selected::before {
-      content: '';
-      background-color: map-get($palette, primary);
-      width: 0.25rem;
-      height: 50%;
-      margin-right: 0.25rem;
-      border-radius: 999px;
-      position: absolute;
-      right: 100%;
-      top: calc(50% - 50% / 2);
-
-      @media (max-width: 84em) {
-        left: 0;
-        right: unset;
-      }
-    }
+    //.dock__item--selected::before {
+    //  content: '';
+    //  background-color: map-get($palette, primary);
+    //  width: 0.25rem;
+    //  height: 50%;
+    //  margin-right: 0.25rem;
+    //  border-radius: 999px;
+    //  position: absolute;
+    //  right: 100%;
+    //  top: calc(50% - 50% / 2);
+    //
+    //  @media (max-width: 84em) {
+    //    left: 0;
+    //    right: unset;
+    //  }
+    //}
   }
 
   display: flex;
@@ -147,12 +147,12 @@
     width: fit-content;
 
     svg {
-      fill: map-get($palette, primary);
-      .season-fall & {
-        fill: map-get($palette, warning);
-      }
-
+      fill: map-get($palette, muted);
       height: 28px;
+    }
+
+    &.dock__item--selected svg {
+      fill: map-get($palette, primary);
     }
 
     .dock__item--badge {
@@ -188,6 +188,10 @@
 
   span {
     color: $black;
+  }
+
+  &.dock__item--selected span {
+    color: map-get($palette, primary) !important;
   }
 
   .dock__item--badge {

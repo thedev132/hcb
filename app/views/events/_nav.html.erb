@@ -40,7 +40,7 @@
       <hr>
       <%= dock_item "Donations",
         @event&.partner&.external? ? event_partner_donation_overview_path(event_id: @event.slug) :
-        event_donation_overview_path(event_id: @event.slug),
+          event_donation_overview_path(event_id: @event.slug),
         tooltip: "Receive donations online",
         icon: "support",
         data: { tour_step: "donations" },
@@ -55,9 +55,10 @@
         tooltip: "Receive payouts from GoFundMe, Shopify, Venmo, and more",
         icon: "bank-account",
         selected: local_assigns[:selected] == :account_number if Flipper.enabled?(:incoming_ach_payments_2023_02_17, @event) %>
-      <%= dock_item "Deposit a check",
+      <%= dock_item "Check deposit",
         event_check_deposits_path(@event),
-        icon: "payment-docs",
+        tooltip: "Deposit checks",
+        icon: "cheque",
         selected: local_assigns[:selected] == :deposit_check if Flipper.enabled?(:check_deposits_2023_04_17, @event) %>
       <h4 class="mb0 h5 muted">Spend</h4>
       <hr>
@@ -78,6 +79,11 @@
         icon: "idea",
         selected: local_assigns[:selected] == :grants if Flipper.enabled?(:grants_2023_06_21, @event) %>
       <hr>
+      <%= dock_item "Team",
+        event_team_path(event_id: @event.slug),
+        tooltip: "Manage your team",
+        icon: "leader",
+        selected: local_assigns[:selected] == :team %>
       <%= dock_item "Perks",
         event_promotions_path(event_id: @event.slug),
         tooltip: (@event.hardware_grant? ? "Not available for Winter Hardware Wonderland accounts" : "Receive promos & discounts"),
@@ -100,7 +106,7 @@
         selected: local_assigns[:selected] == :documentation %>
       <%= dock_item "Settings",
         edit_event_path(@event),
-        tooltip: "Edit project settings",
+        tooltip: "Edit organization settings",
         icon: "project-settings",
         selected: local_assigns[:selected] == :settings %>
     <% end %>
