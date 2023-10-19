@@ -9,7 +9,7 @@ gem "dotenv-rails", groups: [:development, :test]
 
 gem "rails", "~> 7.0.4"
 
-gem "puma", "~> 4.3" # app server
+gem "puma", "~> 6.4" # app server
 
 gem "pg", ">= 0.18", "< 2.0" # database
 gem "redis", "~> 5.0" # for caching, jobs, etc.
