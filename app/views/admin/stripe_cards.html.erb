@@ -2,26 +2,32 @@
 
 <h1>STRIPE CARDS</h1>
 
+<%= form_with method: :get do |form| %>
+  <%= form.text_field :q, value: @q, placeholder: "Search" %>
+<% end %>
+
 <table>
   <thead>
     <tr>
-      <th>Cardholder name</th>
+      <th>ID</th>
+      <th>Cardholder</th>
       <th>Last 4</th>
       <th>Created</th>
       <th>Card name</th>
       <th>Type</th>
-      <th>URL</th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
     <% @cards.each do |card| %>
       <tr>
-        <td><%= card.cardholder.user.name %>
+        <td><%= card.id %></td>
+        <td><%= link_to card.user.name, edit_user_path(card.user) %> (<%= card.user.email %>)</td>
         <td><%= card.last4 %></td>
         <td><%= card.created_at %></td>
         <td><%= card.name %></td>
-        <td><%= card.card_type %></td>
-        <td><%= stripe_card_url(card) %>
+        <td><%= card.physical? ? "💳 Physical" : "🔢 Virtual" %></td>
+        <td><%= link_to "View", card %></td>
       </tr>
     <% end %>
   </tbody>
