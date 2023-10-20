@@ -438,7 +438,7 @@ class HcbCode < ApplicationRecord
   end
 
   def receipt_required?
-    (type == :card_charge && !pt.declined? && !event&.salary?) || !!raw_emburse_transaction
+    (type == :card_charge && !pt&.declined? && !event&.salary?) || !!raw_emburse_transaction
   end
 
   def needs_receipt?
