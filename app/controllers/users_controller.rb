@@ -178,7 +178,7 @@ class UsersController < ApplicationController
     initialize_sms_params
     return render :login_code, status: :unprocessable_entity
   rescue ActiveRecord::RecordInvalid => e
-    flash[:error] = e.record.errors&.full_messages&.join(". ")
+    flash[:error] = e.record.errors&.messages&.values&.flatten&.join(". ")
     redirect_to auth_users_path
   end
 

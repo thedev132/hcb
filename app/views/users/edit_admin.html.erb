@@ -12,7 +12,7 @@
     <% admin_tools override_pretend: true do %>
       <h2 id="admin">Admin configurations</h2>
 
-      <%= form_with(model: @user, local: true, html: { onsubmit: "onSubmit()" }) do |form| %>
+      <%= form_with(model: @user, local: true, html: { onsubmit: "onSubmit()" }, data: { turbo_frame: "_top" }) do |form| %>
         <%= form_errors @user %>
 
         <% if @user == current_user %>

@@ -108,7 +108,7 @@ class UserSession < ApplicationRecord
 
   def user_is_unlocked
     if user.locked? && !impersonated?
-      errors.add(:user, "is locked. Please contact support.")
+      errors.add(:user, "Your HCB account has been locked.")
     end
   end
 
