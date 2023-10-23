@@ -99,6 +99,8 @@ class User < ApplicationRecord
   before_create :format_number
   before_save :on_phone_number_update
 
+  after_update :update_stripe_cardholder, if: -> { phone_number_previously_changed? || email_previously_changed? }
+
   validates_presence_of :full_name, if: -> { full_name_in_database.present? }
   validates_presence_of :birthday, if: -> { birthday_in_database.present? }
 
@@ -216,6 +218,10 @@ class User < ApplicationRecord
   end
 
   private
+
+  def update_stripe_cardholder
+    stripe_cardholder&.update!(stripe_email: email, stripe_phone_number: phone_number)
+  end
 
   def namae(legal: false)
     if legal
