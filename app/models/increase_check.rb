@@ -38,6 +38,8 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class IncreaseCheck < ApplicationRecord
+  has_paper_trail
+
   include AASM
 
   belongs_to :event
