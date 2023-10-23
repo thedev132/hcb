@@ -77,9 +77,11 @@ class OrganizerPositionInvite < ApplicationRecord
   validates :accepted_at, absence: true, if: -> { rejected_at.present? }
   validates :rejected_at, absence: true, if: -> { accepted_at.present? }
 
-  after_create_commit :send_email
+  after_create_commit do
+    user == sender ? accept : deliver
+  end
 
-  def send_email
+  def deliver
     OrganizerPositionInvitesMailer.with(invite: self).notify.deliver_later
   end
 
