@@ -99,15 +99,15 @@ class CardGrant < ApplicationRecord
     end
   end
 
-  def cancel!(user)
+  def cancel!(canceled_by)
     if balance > 0
       DisbursementService::Create.new(
         source_event_id: event_id,
         destination_event_id: event_id,
-        name: "Recalling grant to #{user.email}",
+        name: "Cancel of grant to #{user.email}",
         amount: balance.amount,
         source_subledger_id: subledger_id,
-        requested_by_id: user.id,
+        requested_by_id: canceled_by.id,
       ).run
     end
 
