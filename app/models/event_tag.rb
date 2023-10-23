@@ -37,6 +37,7 @@ class EventTag < ApplicationRecord
     CLIMATE = "Climate"
     PARTNER_128_COLLECTIVE_FUNDED = "128 Collective Funded"
     PARTNER_128_COLLECTIVE_RECOMMENDED = "128 Collective Recommended"
+    VERMONT_BASED = "Vermont-based"
   end
 
 end
