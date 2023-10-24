@@ -58,6 +58,7 @@
       <%= dock_item "Check deposit",
         event_check_deposits_path(@event),
         tooltip: "Deposit checks",
+        disabled: !organizer_signed_in?,
         icon: "cheque",
         selected: local_assigns[:selected] == :deposit_check if Flipper.enabled?(:check_deposits_2023_04_17, @event) %>
       <h4 class="mb0 h5 muted">Spend</h4>
@@ -96,7 +97,7 @@
           event_g_suite_overview_path(event_id: @event.slug),
           tooltip: (@event.hardware_grant? ? "Not available for Winter Hardware Wonderland accounts" : @event.outernet_guild? ? "Not available for Outernet Guilds" : @event.demo_mode? ? "Not available for Demo Mode accounts" : @event.g_suites.exists? ? "Manage domain Google Workspace" : Flipper.enabled?(:google_workspace, @event) ? "Set up domain Google Workspace" : "Register for Google Workspace Waitlist"),
           icon: "google",
-          disabled: @event.hardware_grant? || @event.demo_mode?,
+          disabled: @event.hardware_grant? || @event.demo_mode? || !organizer_signed_in?,
           selected: local_assigns[:selected] == :google_workspace %>
       <% end %>
       <%= dock_item "Documentation",
@@ -108,6 +109,7 @@
         edit_event_path(@event),
         tooltip: "Edit organization settings",
         icon: "project-settings",
+        disabled: !organizer_signed_in?,
         selected: local_assigns[:selected] == :settings %>
     <% end %>
   </nav>

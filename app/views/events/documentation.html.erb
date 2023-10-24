@@ -24,11 +24,13 @@
     </li>
     <% end %>
 
-    <%= link_to(event_documents_path) do %>
-      <li class="card card--hover">
-        <h3 class="mt1 mb0">Legal Documents</h3>
-        <p class="mb1 mt1">EINs, W-9s, and paperwork&nbsp;oh&nbsp;my!</p>
-      </li>
+    <% if organizer_signed_in? %>
+      <%= link_to(event_documents_path) do %>
+        <li class="card card--hover">
+          <h3 class="mt1 mb0">Legal Documents</h3>
+          <p class="mb1 mt1">EINs, W-9s, and paperwork&nbsp;oh&nbsp;my!</p>
+        </li>
+      <% end %>
     <% end %>
   </ul>
 
