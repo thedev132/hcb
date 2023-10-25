@@ -187,7 +187,7 @@ group :development do
 
   gem "letter_opener_web" # preview emails
 
-  gem "wkhtmltopdf-binary", "0.12.3" # version must match the wkhtmltopdf Heroku buildpack version (0.12.3 by default)
+  gem "wkhtmltopdf-binary", "0.12.6.6" # version must match the wkhtmltopdf Heroku buildpack version (0.12.3 by default)
 
   # Ruby language server
   gem "solargraph", require: false
