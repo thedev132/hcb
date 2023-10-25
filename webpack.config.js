@@ -23,7 +23,13 @@ module.exports = {
         use: {
           loader: 'babel-loader',
           options: {
-            presets: ['@babel/preset-react']
+            envName: mode,
+            presets: ['@babel/preset-react'],
+            env: {
+              production: {
+                plugins: ['transform-react-remove-prop-types']
+              }
+            }
           }
         }
       }
