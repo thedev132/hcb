@@ -527,7 +527,7 @@ GEM
     public_suffix (5.0.3)
     puma (6.4.0)
       nio4r (~> 2.0)
-    pundit (2.2.0)
+    pundit (2.3.1)
       activesupport (>= 3.0.0)
     query_count (1.1.1)
       activerecord (>= 4.2)
