@@ -215,22 +215,26 @@ class UsersController < ApplicationController
     redirect_to settings_previews_path
   end
 
-  FEATURE_CONFETTI_EMOJIS = {
+  FEATURES = { # the keys are current feature flags, the values are emojis that show when-enabled.
     receipt_bin_2023_04_07: %w[🧾 🗑️ 💰],
-    receipt_report_2023_04_19: %w[🧾 📧],
     turbo_2023_01_23: %w[🚀 ⚡ 🏎️ 💨],
     sms_receipt_notifications_2022_11_23: %w[📱 🧾 🔔 💬],
+    hcb_code_popovers_2023_06_16: nil
   }.freeze
 
   def enable_feature
     @user = current_user
     @feature = params[:feature]
     authorize @user
-    if Flipper.enable_actor(@feature, @user)
-      confetti!(emojis: FEATURE_CONFETTI_EMOJIS[@feature.to_sym])
-      flash[:success] = "Opted into beta"
+    if FEATURES.key?(@feature.to_sym) || @user.admin?
+      if Flipper.enable_actor(@feature, @user)
+        confetti!(emojis: FEATURES[@feature.to_sym])
+        flash[:success] = "Opted into beta"
+      else
+        flash[:error] = "Error while opting into beta"
+      end
     else
-      flash[:error] = "Error while opting into beta"
+      flash[:error] = "Beta doesn't exist."
     end
     redirect_back fallback_location: settings_previews_path
   end
@@ -239,10 +243,14 @@ class UsersController < ApplicationController
     @user = current_user
     @feature = params[:feature]
     authorize @user
-    if Flipper.disable_actor(@feature, @user)
-      flash[:success] = "Opted out of beta"
+    if FEATURES.key?(@feature.to_sym) || @user.admin?
+      if Flipper.disable_actor(@feature, @user)
+        flash[:success] = "Opted out of beta"
+      else
+        flash[:error] = "Error while opting out of beta"
+      end
     else
-      flash[:error] = "Error while opting out of beta"
+      flash[:error] = "Beta doesn't exist."
     end
     redirect_back fallback_location: settings_previews_path
   end
