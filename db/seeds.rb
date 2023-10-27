@@ -7,7 +7,7 @@ if user.nil?
 else
   puts "Continuing with #{user.email}..."
 
-  user.update!(admin_at: Time.now) if !user.admin?
+  user.make_admin! if !user.admin?
 
   event = Event.create_with(
     name: "Test Org",
