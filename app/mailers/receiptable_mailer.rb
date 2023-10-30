@@ -7,8 +7,7 @@ class ReceiptableMailer < ApplicationMailer
   def receipt_report
     @user = User.includes(:stripe_cards).find params[:user_id]
 
-    @feature_enabled = Flipper.enabled?(:receipt_report_2023_04_19, @user) ||
-                       @user.receipt_report_weekly? ||
+    @feature_enabled = @user.receipt_report_weekly? ||
                        @user.receipt_report_monthly?
 
     @hcb_ids = params[:hcb_ids]
