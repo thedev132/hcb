@@ -312,7 +312,10 @@ class Event < ApplicationRecord
   has_many :partner_donations
 
   has_many :subledgers
+
   has_many :card_grants
+  has_one :card_grant_setting
+  accepts_nested_attributes_for :card_grant_setting, update_only: true
 
   has_one :stripe_ach_payment_source
   has_one :increase_account_number

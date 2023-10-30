@@ -1,7 +1,13 @@
 You've been sent a <%= @card_grant.amount.format %> grant from <%= @card_grant.event.name %>!
 
 <br>
-<br>
+<% if @custom_invite_message.present? %>
+  <%== MarkdownService.instance.renderer.render @custom_invite_message %>
+<% else %>
+  <br>
+<% end %>
 <br>
 
 <%= link_to "Click here to start spending", @card_grant, style: "background-color: #ec3750; color: white; padding: 1rem; border-radius: 0.75rem; margin: 0 auto 2rem 0; text-decoration: none" %>
+
+<br>

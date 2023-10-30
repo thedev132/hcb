@@ -45,6 +45,8 @@ class CardGrant < ApplicationRecord
   belongs_to :user, optional: true
   belongs_to :sent_by, class_name: "User"
   belongs_to :disbursement, optional: true
+  has_one :card_grant_setting, through: :event, required: true
+  alias_method :setting, :card_grant_setting
 
   enum :status, [:active, :canceled], default: :active
 
@@ -59,8 +61,6 @@ class CardGrant < ApplicationRecord
 
   serialize :merchant_lock, CommaSeparatedCoder # convert comma-separated merchant list to an array
   serialize :category_lock, CommaSeparatedCoder
-  alias_attribute :allowed_merchants, :merchant_lock
-  alias_attribute :allowed_categories, :category_lock
 
   validates_presence_of :amount_cents, :email
   validates :amount_cents, numericality: { greater_than: 0, message: "can't be zero!" }
@@ -128,6 +128,14 @@ class CardGrant < ApplicationRecord
     ).run
 
     save!
+  end
+
+  def allowed_merchants
+    (merchant_lock + (setting&.merchant_lock || [])).uniq
+  end
+
+  def allowed_categories
+    (category_lock + (setting&.category_lock || [])).uniq
   end
 
   private

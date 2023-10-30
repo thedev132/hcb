@@ -48,6 +48,14 @@
             <strong>Billing address</strong>
             <%= render_address @card.cardholder %>
           </p>
+          <% admin_tools "", "p" do %>
+            <strong>Allowed merchants</strong>
+            <span class="mono"><%= @card_grant.allowed_merchants.join(" ") %></span>
+          <% end %>
+          <% admin_tools "", "p" do %>
+            <strong>Allowed categories</strong>
+            <span class="mono"><%= @card_grant.allowed_categories.join(" ") %></span>
+          <% end %>
         </section>
       </div>
     </div>

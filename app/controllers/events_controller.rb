@@ -646,6 +646,11 @@ class EventsController < ApplicationController
       :website,
       :background_image,
       :stripe_card_shipping_type,
+      card_grant_setting_attributes: [
+        :merchant_lock,
+        :category_lock,
+        :invite_message
+      ]
     )
 
     # Expected budget is in cents on the backend, but dollars on the frontend
@@ -674,7 +679,12 @@ class EventsController < ApplicationController
       :donation_header_image,
       :logo,
       :website,
-      :background_image
+      :background_image,
+      card_grant_setting_attributes: [
+        :merchant_lock,
+        :category_lock,
+        :invite_message
+      ]
     )
 
     # convert whatever the user inputted into something that is a legal slug

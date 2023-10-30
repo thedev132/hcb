@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_10_16_153904) do
+ActiveRecord::Schema[7.0].define(version: 2023_10_19_092813) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_stat_statements"
@@ -336,6 +336,14 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_16_153904) do
     t.index ["date"], name: "index_canonical_transactions_on_date"
     t.index ["hcb_code"], name: "index_canonical_transactions_on_hcb_code"
     t.index ["transaction_source_type", "transaction_source_id"], name: "index_canonical_transactions_on_transaction_source"
+  end
+
+  create_table "card_grant_settings", force: :cascade do |t|
+    t.string "merchant_lock"
+    t.string "category_lock"
+    t.bigint "event_id", null: false
+    t.string "invite_message"
+    t.index ["event_id"], name: "index_card_grant_settings_on_event_id"
   end
 
   create_table "card_grants", force: :cascade do |t|
@@ -1734,6 +1742,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_16_153904) do
   add_foreign_key "canonical_pending_settled_mappings", "canonical_pending_transactions"
   add_foreign_key "canonical_pending_settled_mappings", "canonical_transactions"
   add_foreign_key "canonical_pending_transactions", "raw_pending_stripe_transactions"
+  add_foreign_key "card_grant_settings", "events"
   add_foreign_key "card_grants", "events"
   add_foreign_key "card_grants", "stripe_cards"
   add_foreign_key "card_grants", "subledgers"
