@@ -32,6 +32,10 @@ module TransactionEngine
 
       # 5 fix memo mistakes
       fix_memo_mistakes!
+
+      # temporary patch for https://github.com/hackclub/hcb/issues/4360
+      EventMappingEngine::Nightly.new.run
+      PendingEventMappingEngine::Nightly.new.run
     end
 
     private
