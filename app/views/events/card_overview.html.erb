@@ -81,11 +81,13 @@
   <h4>Organization Cards</h4>
 
   <% if params[:view] == "list" %>
-    <%= render "event_cards_table", stripe_cards: @stripe_cards %>
+    <%= render "event_cards_table", stripe_cards: @paginated_stripe_cards %>
   <% else %>
     <article class="mixed-grid grid--spacious">
-      <%= render @stripe_cards %>
+      <%= render @paginated_stripe_cards %>
     </article>
   <% end %>
+
+  <%= paginate @paginated_stripe_cards %>
 
 <% end %>

@@ -267,6 +267,11 @@ class EventsController < ApplicationController
       # the grid view is a wee bummer but it's not the end of the world.
     end
 
+    page = (params[:page] || 1).to_i
+    per_page = (params[:per] || 20).to_i
+
+    @paginated_stripe_cards = Kaminari.paginate_array(@stripe_cards).page(page).per(per_page)
+
   end
 
   def documentation
