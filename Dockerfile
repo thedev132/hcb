@@ -29,7 +29,7 @@ ADD Gemfile.lock /usr/src/app/Gemfile.lock
 
 ENV BUNDLE_GEMFILE=Gemfile \
   BUNDLE_JOBS=4 \
-  BUNDLE_PATH=/bundle
+  BUNDLE_PATH=/usr/local/bundle
 
 RUN bundle install
 RUN yarn install --check-files
