@@ -61,7 +61,7 @@
 
   <% if @event.card_grant_setting.present? %>
 
-    <h3 class="mb1">Card Grants</h3>
+    <h3 class="mb1" id="card-grants">Card Grants</h3>
 
     <div class="card">
       <%= form.fields_for :card_grant_setting, @event.card_grant_setting do |card_grant_setting_fields| %>
