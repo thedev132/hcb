@@ -42,11 +42,21 @@
   </tr>
   </thead>
   <tbody>
-  <% @rows.each do |row| %>
+    <% @rows.each do |row| %>
     <tr>
-      <% row.each do |attr| %>
-        <td><%= attr %></td>
+      <td><%= row.first %></td>
+      <td><a href="<%= event_path(row[0]) %>"><%= row.second %></a></td>
+      <td><%= row[3] %></td>
+      <td><%= row[4] %></td>
+      <td><%= row[5] %></td>
+
+      <% if !row[6] && !row[7] %>
+        <td colspan="2">All time</td>
+      <% else %>
+        <td><%= row[6] %></td>
+        <td><%= row[7] %></td>
       <% end %>
+
     </tr>
   <% end %>
   </tbody>
