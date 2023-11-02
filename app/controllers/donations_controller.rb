@@ -10,6 +10,7 @@ class DonationsController < ApplicationController
   skip_before_action :signed_in_user
   before_action :set_donation, only: [:show]
   before_action :set_event, only: [:start_donation, :make_donation, :qr_code]
+  before_action :check_dark_param
   skip_before_action :redirect_to_onboarding
 
   # Rationale: the session doesn't work inside iframes (because of third-party cookies)
@@ -98,6 +99,10 @@ class DonationsController < ApplicationController
       flash[:info] = "You tried to access the payment page for a donation that’s already been sent."
       redirect_to start_donation_donations_path(@event)
     end
+
+    if cookies[:donation_dark]
+      cookies.delete(:donation_dark)
+    end
   end
 
   def qr_code
@@ -177,6 +182,13 @@ class DonationsController < ApplicationController
 
   def set_donation
     @donation = Donation.find(params[:id])
+  end
+
+  def check_dark_param
+    if params[:dark].present? || cookies[:donation_dark]
+      @dark = true
+      cookies[:donation_dark] = true
+    end
   end
 
   def donation_params
