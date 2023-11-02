@@ -36,7 +36,7 @@ module CanonicalTransactionService
             )
           end
         end
-        ledger = ::Ledger::Journal.new(entries)
+        ledger = ::Ledger::Journal.new(entries:)
         return ledger.to_s
       end
 
