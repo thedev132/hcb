@@ -1,6 +1,6 @@
 <%= turbo_frame_tag :donation do %>
   <% if Flipper.enabled?(:recurring_donations_2023_02_07, @event) %>
-    <ul class="tab-container max-width-1 mx-auto">
+    <ul class="tab-container max-width-1 mx-auto <%= "mt7" if @event.donation_header_image.attached? && !@event.donation_page_message.present? %>">
         <li class="<%= "active" unless @monthly %>">
             <%= link_to "One-time", start_donation_donations_path(@event), data: { turbo: true } %>
         </li>
