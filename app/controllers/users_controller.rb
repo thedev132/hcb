@@ -265,6 +265,10 @@ class UsersController < ApplicationController
 
   def edit_address
     @user = params[:id] ? User.friendly.find(params[:id]) : current_user
+    @states = [
+      ISO3166::Country.new("US").subdivisions.values.map { |s| [s.translations["en"], s.code] },
+      ISO3166::Country.new("CA").subdivisions.values.map { |s| [s.translations["en"], s.code] }
+    ].flatten(1)
     redirect_to edit_user_path(@user) unless @user.stripe_cardholder
     @onboarding = @user.full_name.blank?
     show_impersonated_sessions = admin_signed_in? || current_session.impersonated?
