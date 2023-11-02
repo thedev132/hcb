@@ -18,6 +18,12 @@
   <% end %>
   |
 
+  <%= form.label :exclude_spending do %>
+    <%= form.check_box :exclude_spending, checked: @exclude_spending %>
+    Exclude Spending
+  <% end %>
+  |
+
   <%= form.label :mapped_by_human do %>
     <%= form.check_box :mapped_by_human, checked: @mapped_by_human %>
     Mapped by Human
