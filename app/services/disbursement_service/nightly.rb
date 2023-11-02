@@ -5,7 +5,7 @@ module DisbursementService
     def run
       return unless Disbursement.pending.present?
 
-      Disbursement.pending.each do |disbursement|
+      Disbursement.pending.find_each(batch_size: 100) do |disbursement|
         raise ArgumentError, "must be a pending disbursement only" unless disbursement.pending?
 
         amount_cents = disbursement.amount

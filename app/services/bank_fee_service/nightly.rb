@@ -4,16 +4,16 @@ module BankFeeService
   class Nightly
     def run
       if BankFee.pending.present? || FeeRevenue.pending.present?
-        BankFee.pending.each do |bank_fee|
+        BankFee.pending.find_each(batch_size: 100) do |bank_fee|
           ::BankFeeService::ProcessSingle.new(bank_fee_id: bank_fee.id).run
         end
 
-        FeeRevenue.pending.each do |fee_revenue|
+        FeeRevenue.pending.find_each(batch_size: 100) do |fee_revenue|
           ::FeeRevenueService::ProcessSingle.new(fee_revenue_id: fee_revenue.id).run
         end
       end
 
-      BankFee.in_transit.each do |bank_fee|
+      BankFee.in_transit.find_each(batch_size: 100) do |bank_fee|
         cpt = bank_fee.canonical_pending_transaction
 
         next unless cpt
@@ -28,7 +28,7 @@ module BankFeeService
         end
       end
 
-      FeeRevenue.in_transit.each do |fee_revenue|
+      FeeRevenue.in_transit.find_each(batch_size: 100) do |fee_revenue|
         if fee_revenue.canonical_transaction
           fee_revenue.mark_settled!
         end

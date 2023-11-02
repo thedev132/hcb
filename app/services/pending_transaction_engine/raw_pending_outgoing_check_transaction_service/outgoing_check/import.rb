@@ -8,7 +8,7 @@ module PendingTransactionEngine
         end
 
         def run
-          pending_outgoing_check_transactions.each do |poct|
+          pending_outgoing_check_transactions.select(:id, :amount, :created_at).find_each(batch_size: 100) do |poct|
             ::RawPendingOutgoingCheckTransaction.find_or_initialize_by(check_transaction_id: poct.id.to_s).tap do |t|
               t.amount_cents = -poct.amount
               t.date_posted = poct.created_at

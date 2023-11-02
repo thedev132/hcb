@@ -3,7 +3,7 @@
 module DonationService
   class Nightly
     def run
-      Donation.in_transit.each do |donation|
+      Donation.in_transit.find_each(batch_size: 100) do |donation|
         cpt = donation.canonical_pending_transaction
 
         next unless cpt

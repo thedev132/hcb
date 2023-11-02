@@ -5,7 +5,7 @@ module TransactionEngine
     module Import
       class All
         def run
-          HashedTransaction.uncanonized.each do |ht|
+          HashedTransaction.uncanonized.find_each(batch_size: 100) do |ht|
             CanonicalTransaction.create!(
               date: ht.date,
               memo: ht.memo,

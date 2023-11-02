@@ -4,7 +4,7 @@ module AchTransferService
   class Nightly
     def run
       # in_transit -> processed
-      AchTransfer.in_transit.each do |ach_transfer|
+      AchTransfer.in_transit.find_each(batch_size: 100) do |ach_transfer|
         cpt = ach_transfer.canonical_pending_transaction
 
         next unless cpt

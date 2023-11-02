@@ -8,7 +8,7 @@ module PendingTransactionEngine
         end
 
         def run
-          pending_donation_transactions.each do |podt|
+          pending_donation_transactions.find_each(batch_size: 100) do |podt|
             ::PendingTransactionEngine::RawPendingDonationTransactionService::Donation::ImportSingle.new(donation: podt).run
           end
 

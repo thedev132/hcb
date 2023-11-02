@@ -88,7 +88,7 @@ module PendingEventMappingEngine
     end
 
     def settle_canonical_pending_increase_check!
-      CanonicalPendingTransaction.unsettled.increase_check.each do |cpt|
+      CanonicalPendingTransaction.unsettled.increase_check.find_each(batch_size: 100) do |cpt|
         if cpt.local_hcb_code.ct
           CanonicalPendingSettledMapping.create!(canonical_pending_transaction: cpt, canonical_transaction: cpt.local_hcb_code.ct)
         end
@@ -96,7 +96,7 @@ module PendingEventMappingEngine
     end
 
     def settle_canonical_pending_check_deposit!
-      CanonicalPendingTransaction.unsettled.check_deposit.each do |cpt|
+      CanonicalPendingTransaction.unsettled.check_deposit.find_each(batch_size: 100) do |cpt|
         if cpt.local_hcb_code.ct
           CanonicalPendingSettledMapping.create!(canonical_pending_transaction: cpt, canonical_transaction: cpt.local_hcb_code.ct)
         end
@@ -107,7 +107,8 @@ module PendingEventMappingEngine
       CanonicalPendingTransaction.check_deposit
                                  .not_declined
                                  .includes(:check_deposit)
-                                 .where(check_deposit: { increase_status: :rejected }).each { |cpt| cpt.decline! }
+                                 .where(check_deposit: { increase_status: :rejected })
+                                 .find_each(batch_size: 100) { |cpt| cpt.decline! }
     end
 
     def map_canonical_pending_outgoing_ach!

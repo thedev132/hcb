@@ -8,7 +8,7 @@ module PendingTransactionEngine
         end
 
         def run
-          pending_bank_fee_transactions.each do |pbft|
+          pending_bank_fee_transactions.find_each(batch_size: 100) do |pbft|
             ::RawPendingBankFeeTransaction.find_or_initialize_by(bank_fee_transaction_id: pbft.id.to_s).tap do |t|
               t.amount_cents = pbft.amount_cents
               t.date_posted = pbft.created_at

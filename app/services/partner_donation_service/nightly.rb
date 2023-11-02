@@ -9,7 +9,7 @@ module PartnerDonationService
       end
 
       # 2. mark anything in transit that now has a settled transaction as deposited
-      PartnerDonation.in_transit.each do |partner_donation|
+      PartnerDonation.in_transit.find_each(batch_size: 100) do |partner_donation|
         cpt = partner_donation.canonical_pending_transaction
 
         next unless cpt

@@ -8,7 +8,7 @@ module PendingTransactionEngine
         end
 
         def run
-          pending_invoice_transactions.each do |pit|
+          pending_invoice_transactions.find_each(batch_size: 100) do |pit|
             ::PendingTransactionEngine::RawPendingInvoiceTransactionService::Invoice::ImportSingle.new(invoice: pit).run
           end
 

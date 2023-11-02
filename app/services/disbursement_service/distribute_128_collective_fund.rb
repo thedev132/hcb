@@ -15,7 +15,7 @@ module DisbursementService
       return if distributed_amount_cents <= 0
 
       ActiveRecord::Base.transaction do
-        recommended_organizations.each do |org|
+        recommended_organizations.find_each(batch_size: 100) do |org|
           DisbursementService::Create.new(
             source_event_id: fund.id, destination_event_id: org.id,
             name: "128 Collective Climate Fund (#{month})",

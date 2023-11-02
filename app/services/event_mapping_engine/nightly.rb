@@ -37,7 +37,7 @@ module EventMappingEngine
     private
 
     def map_increase_account_number_transactions!
-      CanonicalTransaction.unmapped.likely_increase_account_number.each do |ct|
+      CanonicalTransaction.unmapped.likely_increase_account_number.find_each(batch_size: 100) do |ct|
         increase_account_number = ct.raw_increase_transaction.increase_account_number
         next unless increase_account_number
 
@@ -70,7 +70,7 @@ module EventMappingEngine
     end
 
     def map_check_deposits!
-      CanonicalTransaction.unmapped.likely_increase_check_deposit.each do |ct|
+      CanonicalTransaction.unmapped.likely_increase_check_deposit.find_each(batch_size: 100) do |ct|
         check_deposit = ct.check_deposit
         next unless check_deposit
 
@@ -104,7 +104,7 @@ module EventMappingEngine
 
     def map_outgoing_fee_reimbursements!
       if Rails.env.production? # somewhat hacky— the "Hack Club Bank" org only exists in production
-        CanonicalTransaction.unmapped.where("amount_cents < 0 AND memo ILIKE '%Stripe fee reimbursement%'").each do |ct|
+        CanonicalTransaction.unmapped.where("amount_cents < 0 AND memo ILIKE '%Stripe fee reimbursement%'").find_each(batch_size: 100) do |ct|
           CanonicalEventMapping.create!(canonical_transaction: ct, event_id: EventMappingEngine::EventIds::HACK_CLUB_BANK)
         end
       end
@@ -113,7 +113,7 @@ module EventMappingEngine
     def map_increase_interest!
       return unless Rails.env.production?
 
-      CanonicalTransaction.unmapped.increase_interest.each do |ct|
+      CanonicalTransaction.unmapped.increase_interest.find_each(batch_size: 100) do |ct|
         CanonicalEventMapping.create!(canonical_transaction: ct, event_id: EventMappingEngine::EventIds::HACK_FOUNDATION_INTEREST)
       end
     end

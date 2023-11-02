@@ -4,12 +4,12 @@ module CheckService
   class Nightly
     def run
       # process checks ready to be sent (check created on lob)
-      scheduled_checks.where("send_date <= ?", Time.now.utc).each do |check|
+      scheduled_checks.where("send_date <= ?", Time.now.utc).find_each(batch_size: 100) do |check|
         ::CheckService::Send.new(check_id: check.id).run
       end
 
       # in_transit_and_processed -> deposited
-      in_transit_and_processed_checks.each do |check|
+      in_transit_and_processed_checks.find_each(batch_size: 100) do |check|
         # 1. check if it has cleared the pending transaction
         id = check.id
 

@@ -8,17 +8,11 @@ module PendingTransactionEngine
         end
 
         def run
-          pending_stripe_transactions.each do |t|
+          ::Partners::Stripe::Issuing::Authorizations::List.new.run do |t|
             ::PendingTransactionEngine::RawPendingStripeTransactionService::Stripe::ImportSingle.new(remote_stripe_transaction: t).run
           end
 
           nil
-        end
-
-        private
-
-        def pending_stripe_transactions
-          @pending_stripe_transactions ||= ::Partners::Stripe::Issuing::Authorizations::List.new.run
         end
 
       end

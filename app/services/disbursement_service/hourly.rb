@@ -3,7 +3,7 @@
 module DisbursementService
   class Hourly
     def run
-      Disbursement.in_transit.each do |disbursement|
+      Disbursement.in_transit.find_each(batch_size: 100) do |disbursement|
         if disbursement.canonical_transactions.size == 2
           disbursement.mark_deposited!
         elsif disbursement.canonical_transactions.size > 2

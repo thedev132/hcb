@@ -8,7 +8,7 @@ module PendingTransactionEngine
         end
 
         def run
-          pending_outgoing_ach_transactions.each do |poat|
+          pending_outgoing_ach_transactions.find_each(batch_size: 100) do |poat|
             PendingTransactionEngine::RawPendingOutgoingAchTransactionService::OutgoingAch::ImportSingle.new(ach_transfer: poat).run
           end
 
