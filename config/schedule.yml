@@ -4,7 +4,7 @@ g_suite_mark_verifieds_job:
   queue: "default"
   
 pending_transaction_engine_nightly_job:
-  cron: "0,30 * * * *" # run every 30 minutes. As of 12/2/21, this takes 5 minutes to complete. Will increase with more TXs
+  cron: "0 * * * *" # run every 1 hour
   class: "PendingTransactionEngineJob::Nightly"
   queue: "default"
 
