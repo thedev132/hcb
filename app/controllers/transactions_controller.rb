@@ -40,6 +40,16 @@ class TransactionsController < ApplicationController
 
         stream_transactions_json
       end
+
+      format.ledger do
+        if should_queue
+          CanonicalTransactionJob::Export::Ledger.perform_later(event_id: @event.id, user_id: current_user.id)
+          flash[:success] = "This export is too big, so we'll send you an email when it's ready."
+          redirect_back fallback_location: @event and return
+        end
+
+        stream_transactions_ledger
+      end
     end
   end
 
@@ -172,6 +182,15 @@ class TransactionsController < ApplicationController
     self.response_body = transactions_json
   end
 
+  def stream_transactions_ledger
+    set_file_headers_ledger
+    set_streaming_headers
+
+    response.status = 200
+
+    self.response_body = transactions_ledger
+  end
+
   def set_file_headers_csv
     headers["Content-Type"] = "text/csv"
     headers["Content-disposition"] = "attachment; filename=transactions.csv"
@@ -182,12 +201,21 @@ class TransactionsController < ApplicationController
     headers["Content-disposition"] = "attachment; filename=transactions.json"
   end
 
+  def set_file_headers_ledger
+    headers["Content-Type"] = "text/ledger"
+    headers["Content-disposition"] = "attachment; filename=transactions.ledger"
+  end
+
   def transactions_csv
     ::CanonicalTransactionService::Export::Csv.new(event_id: @event.id).run
   end
 
   def transactions_json
     ::CanonicalTransactionService::Export::Json.new(event_id: @event.id).run
+  end
+
+  def transactions_ledger
+    ::CanonicalTransactionService::Export::Ledger.new(event_id: @event.id).run
   end
 
 end

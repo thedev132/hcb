@@ -412,6 +412,7 @@ GEM
       letter_opener (~> 1.7)
       railties (>= 5.2)
       rexml
+    libledger (0.0.8)
     listen (3.8.0)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
@@ -834,6 +835,7 @@ DEPENDENCIES
   jsbundling-rails (~> 1.1)
   kaminari
   letter_opener_web
+  libledger
   listen (~> 3.8)
   lob
   local_time
