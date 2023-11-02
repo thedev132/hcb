@@ -8,6 +8,16 @@
   The funds are available to spend right away. You can <%= link_to "click here", event_donation_overview_url(@donation.event.slug) %> to see the full details.
 </p>
 
+<% if @donation.includes_message? %>
+  <p>
+    Also, they've left you a message:
+  </p>
+
+  <blockquote>
+    <%= @donation.message %>
+  </blockquote>
+<% end %>
+
 <p>
   From,<br>
   The Hack Club Team

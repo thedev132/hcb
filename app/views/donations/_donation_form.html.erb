@@ -31,34 +31,32 @@
       <% end %>
     </div>
 
-    <% if params[:message] %>
-      <div class="field mb2">
-        <%= form.label :message, "Message" %>
-        <span class="muted block h5">Optionally include a note.</span>
-        <%= form.text_field :message, placeholder: "Keep up the good work!", required: false %>
-      </div>
-    <% end %>
+    <div class="field mb2">
+      <%= form.label :message, "Message" %>
+      <span class="muted block h5">Optionally include a note.</span>
+      <%= form.text_area :message, placeholder: "Keep up the good work!", required: false %>
+    </div>
 
-      <div class="field">
-        <% if !@event.country_us? %>
-          <%= form.label :amount, "Donation amount (USD)" %>
-        <% else %>
-          <%= form.label :amount, "Donation amount" %>
+    <div class="field">
+      <% if !@event.country_us? %>
+        <%= form.label :amount, "Donation amount (USD)" %>
+      <% else %>
+        <%= form.label :amount, "Donation amount" %>
+      <% end %>
+      <div class="flex items-center">
+        <span class="bold muted shrink-none" style="width: 1rem;">$</span>
+        <%= form.number_field :amount,
+                              value: (donation.amount.nil? ? nil : ("%.2f" % (donation.amount.to_f / 100))),
+                              placeholder: @placeholder_amount,
+                              step: 0.01,
+                              min: 1, # Limitations placed by Stripe
+                              max: 999_999.99, # Limitations placed by Stripe
+                              required: true, class: "fit w-100" %>
+        <% if @monthly %>
+          <span class="muted nowrap ml1">/ month</span>
         <% end %>
-        <div class="flex items-center">
-          <span class="bold muted shrink-none" style="width: 1rem;">$</span>
-          <%= form.number_field :amount,
-                                value: (donation.amount.nil? ? nil : ("%.2f" % (donation.amount.to_f / 100))),
-                                placeholder: @placeholder_amount,
-                                step: 0.01,
-                                min: 1, # Limitations placed by Stripe
-                                max: 999_999.99, # Limitations placed by Stripe
-                                required: true, class: "fit w-100" %>
-          <% if @monthly %>
-            <span class="muted nowrap ml1">/ month</span>
-          <% end %>
-        </div>
       </div>
+    </div>
 
     <p class="muted h5 mt2 mb1">
       Your contribution is tax-deductible<% if !@event.country_us? %> in the US<% end %>.

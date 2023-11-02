@@ -301,9 +301,14 @@ class Donation < ApplicationRecord
     return unless saved_changes[:status].present?
 
     return unless status_changed_to_succeeded?(saved_changes[:status])
-    return unless first_donation?
 
-    DonationMailer.with(donation: self).first_donation_notification.deliver_later
+    if first_donation?
+      DonationMailer.with(donation: self).first_donation_notification.deliver_later
+    elsif includes_message?
+      DonationMailer.with(donation: self).donation_with_message_notification.deliver_later
+    end
+
+
   end
 
   def status_changed_to_succeeded?(saved_changes)
@@ -314,6 +319,10 @@ class Donation < ApplicationRecord
 
   def first_donation?
     self.event.donations.succeeded.size == 1
+  end
+
+  def includes_message?
+    self.message.present?
   end
 
   def create_payment_intent_attrs
