@@ -18,7 +18,7 @@ BK.select = (selector, filter) =>
 // document.getElementsByTagName('html')[0].getAttribute('data-dark') === 'true'
 BK.isDark = () => {
   try {
-    return localStorage.getItem('dark') === 'true'
+    return localStorage.getItem('dark') === 'true' || document.getElementsByTagName('html')[0].getAttribute('data-dark') === "true"
   } catch(e) {
     return false
   }
