@@ -61,7 +61,9 @@ module PendingTransactionEngine
     end
 
     def import_raw_pending_stripe_transactions!
-      ::PendingTransactionEngine::RawPendingStripeTransactionService::Stripe::Import.new.run
+      ::PendingTransactionEngine::RawPendingStripeTransactionService::Stripe::Import.new(
+        created_after: 1.week.ago.to_i
+      ).run
     end
 
     def canonize_raw_pending_stripe_transactions!

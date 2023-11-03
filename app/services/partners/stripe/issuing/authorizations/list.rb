@@ -7,6 +7,10 @@ module Partners
         class List
           include StripeService
 
+          def initialize(created_after: nil)
+            @created_after = created_after
+          end
+
           def run(&block)
             stripe_authorizations(&block)
           end
@@ -43,6 +47,9 @@ module Partners
           def list_attrs(starting_after:)
             {
               starting_after:,
+              created: {
+                gt: @created_after
+              },
               limit: 100
             }
           end
