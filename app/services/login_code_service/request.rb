@@ -39,7 +39,7 @@ module LoginCodeService
 
       resp = {}
       if user.save
-        LoginCodeMailer.send_code(user.email, login_code.pretty).deliver_later
+        LoginCodeMailer.send_code(user.email, login_code.pretty).deliver_now
 
         resp = {
           id: user.id,

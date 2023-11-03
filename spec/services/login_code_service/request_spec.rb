@@ -11,7 +11,7 @@ describe LoginCodeService::Request do
       new_email = "test@example.com"
       expect(User.find_by(email: new_email)).to be_nil
 
-      expect(LoginCodeMailer).to receive_message_chain(:send_code, :deliver_later)
+      expect(LoginCodeMailer).to receive_message_chain(:send_code, :deliver_now)
       response = nil
       expect do
         response = described_class.new(email: new_email,
@@ -37,7 +37,7 @@ describe LoginCodeService::Request do
     it "creates that user with login code and emails" do
       user = create(:user)
 
-      expect(LoginCodeMailer).to receive_message_chain(:send_code, :deliver_later)
+      expect(LoginCodeMailer).to receive_message_chain(:send_code, :deliver_now)
       response = nil
       expect do
         response = described_class.new(email: user.email,
