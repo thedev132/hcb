@@ -153,6 +153,10 @@ class Donation < ApplicationRecord
     pending?
   end
 
+  def includes_message?
+    self.message.present?
+  end
+
   def filter_data
     {
       in_transit: in_transit?,
@@ -319,10 +323,6 @@ class Donation < ApplicationRecord
 
   def first_donation?
     self.event.donations.succeeded.size == 1
-  end
-
-  def includes_message?
-    self.message.present?
   end
 
   def create_payment_intent_attrs
