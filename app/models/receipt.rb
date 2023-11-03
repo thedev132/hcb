@@ -5,7 +5,6 @@
 # Table name: receipts
 #
 #  id                         :bigint           not null, primary key
-#  attempted_match_at         :datetime
 #  receiptable_type           :string
 #  textual_content_ciphertext :text
 #  upload_method              :integer
