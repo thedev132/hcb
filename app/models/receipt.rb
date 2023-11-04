@@ -41,8 +41,6 @@ class Receipt < ApplicationRecord
 
   validates :file, attached: true
 
-  self.ignored_columns = ["attempted_match_at"]
-
   before_create do
     suppress(ActiveModel::MissingAttributeError) do
       receiptable&.update(marked_no_or_lost_receipt_at: nil)
