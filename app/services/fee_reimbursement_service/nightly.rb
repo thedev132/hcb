@@ -3,6 +3,7 @@
 module FeeReimbursementService
   class Nightly
     def run
+      rename_stripe_fee_reimbursement
       # Don't run job unless there are unprocessed FeeReimbursements
       return unless FeeReimbursement.unprocessed.present?
 
@@ -32,5 +33,12 @@ module FeeReimbursementService
       end
     end
 
+    def rename_stripe_fee_reimbursement
+      stripe_fee_reimbursement_canonical_transactions_to_rename.update_all(custom_memo: "🗂️ Stripe fee reimbursement")
+    end
+
+    def stripe_fee_reimbursement_canonical_transactions_to_rename
+      CanonicalTransaction.likely_fee_reimbursement.without_custom_memo
+    end
   end
 end
