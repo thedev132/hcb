@@ -4,7 +4,7 @@ g_suite_mark_verifieds_job:
   queue: "default"
   
 pending_transaction_engine_nightly_job:
-  cron: "0 * * * *" # run every 1 hour
+  cron: "0 */3 * * *" # run every 3 hour
   class: "PendingTransactionEngineJob::Nightly"
   queue: "default"
 
@@ -29,7 +29,7 @@ event_mapping_engine_nightly_job:
   queue: "default"
 
 sync_payouts_job:
-  cron: "0/30 * * * *" # run every 30 minutes
+  cron: "0,30 * * * *" # run every 30 minutes
   class: "SyncPayoutsJob"
   queue: "default"
 
@@ -74,7 +74,7 @@ check_lob_url_assign_having_lob_id_job:
   queue: "default"
 
 invoice_opens_to_paids_job:
-  cron: "*/10 * * * *" # run every 10 minutes
+  cron: "30 * * * *" # run every hour
   class: "InvoiceJob::OpensToPaids"
   queue: "default"
 
