@@ -40,5 +40,6 @@ module FeeReimbursementService
     def stripe_fee_reimbursement_canonical_transactions_to_rename
       CanonicalTransaction.likely_fee_reimbursement.without_custom_memo
     end
+
   end
 end
