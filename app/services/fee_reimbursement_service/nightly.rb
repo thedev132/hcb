@@ -4,8 +4,6 @@ module FeeReimbursementService
   class Nightly
     def run
       rename_stripe_fee_reimbursement
-      # Don't run job unless there are unprocessed FeeReimbursements
-      return unless FeeReimbursement.unprocessed.present?
 
       FeeReimbursement.unprocessed.find_each(batch_size: 100) do |fee_reimbursement|
         raise ArgumentError, "must be an unprocessed fee reimbursement only" unless fee_reimbursement.unprocessed?
