@@ -16,11 +16,11 @@ module Partners
         attr_reader :api_client, :token
       end
 
-      BASE_URI = Rails.application.credentials[:docusign][ENVIRONMENT_KEY][:account_base_uri]
-      INTEGRATION_KEY = Rails.application.credentials[:docusign][ENVIRONMENT_KEY][:integration_key]
-      USER_ID = Rails.application.credentials[:docusign][ENVIRONMENT_KEY][:user_id]
-      PRIVATE_KEY = Rails.application.credentials[:docusign][ENVIRONMENT_KEY][:private_key]
-      ACCOUNT_ID = Rails.application.credentials[:docusign][ENVIRONMENT_KEY][:account_id]
+      BASE_URI = Rails.application.credentials.dig(:docusign, ENVIRONMENT_KEY, :account_base_uri)
+      INTEGRATION_KEY = Rails.application.credentials.dig(:docusign, ENVIRONMENT_KEY, :integration_key)
+      USER_ID = Rails.application.credentials.dig(:docusign, ENVIRONMENT_KEY, :user_id)
+      PRIVATE_KEY = Rails.application.credentials.dig(:docusign, ENVIRONMENT_KEY, :private_key)
+      ACCOUNT_ID = Rails.application.credentials.dig(:docusign, ENVIRONMENT_KEY, :account_id)
 
       def initialize
         configuration = DocuSign_eSign::Configuration.new

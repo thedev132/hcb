@@ -4,12 +4,7 @@
 # reach out to Max Wofford (max@hackclub.com) if you have any questions or issues
 
 echo "
-$(tput setaf 9)Hack Club Bank:$(tput sgr0) Step 0/5: Copy .env file"
-cp -n config/credentials/development.key config/master.key
-echo "$(tput setaf 9)Hack Club Bank:$(tput sgr0) $(tput setaf 10)Done$(tput sgr0)"
-
-echo "
-$(tput setaf 9)Hack Club Bank:$(tput sgr0) Step 1/5: Copy development key"
+$(tput setaf 9)Hack Club Bank:$(tput sgr0) Step 1/5: Copy .env file"
 cp -n .env.development.example .env.development
 echo "$(tput setaf 9)Hack Club Bank:$(tput sgr0) $(tput setaf 10)Done$(tput sgr0)"
 

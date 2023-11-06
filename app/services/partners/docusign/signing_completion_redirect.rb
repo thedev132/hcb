@@ -8,7 +8,7 @@ module Partners
       else
         ENVIRONMENT_KEY = :development
       end
-      HMAC_KEY = Rails.application.credentials[:docusign][ENVIRONMENT_KEY][:hmac_key]
+      HMAC_KEY = Rails.application.credentials.dig(:docusign, ENVIRONMENT_KEY, :hmac_key)
 
       # Creates a redirect URL that is protected by a HMAC so it isn't forge-able
       def create(partnered_signup, role: :recipient)

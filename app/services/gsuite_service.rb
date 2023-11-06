@@ -12,7 +12,7 @@ class GsuiteService
 
   # this is a hack to work with the google library's requirement that tokens must be in files
   TOKEN_FILE = Tempfile.new("token")
-  TOKEN_FILE << Rails.application.credentials.gsuite[:token]
+  TOKEN_FILE << Rails.application.credentials.dig(:gsuite, :token)
   TOKEN_FILE.rewind
   TOKEN_FILE.close
 
