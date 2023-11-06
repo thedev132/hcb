@@ -166,6 +166,7 @@ class HcbCode < ApplicationRecord
           increase_check.try(:event).try(:id),
           disbursement.try(:event).try(:id),
           check_deposit.try(:event).try(:id),
+          bank_fee.try(:event).try(:id),
         ].compact.uniq)
 
         ids << EventMappingEngine::EventIds::INCOMING_FEES if incoming_bank_fee?
