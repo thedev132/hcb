@@ -9,9 +9,16 @@ module PendingTransactionEngine
         end
 
         def run
-          ::Partners::Stripe::Issuing::Authorizations::List.new(created_after: @created_after).run do |t|
-            ::PendingTransactionEngine::RawPendingStripeTransactionService::Stripe::ImportSingle.new(remote_stripe_transaction: t).run
-          end
+          authorizations = ::Partners::Stripe::Issuing::Authorizations::List.new(created_after: @created_after).run
+
+          RawPendingStripeTransaction.upsert_all(authorizations.map { |authorization|
+            {
+              stripe_transaction_id: authorization[:id],
+              stripe_transaction: authorization,
+              amount_cents: -authorization[:amount],
+              date_posted: Time.at(authorization[:created]),
+            }
+          }, unique_by: :stripe_transaction_id)
 
           nil
         end

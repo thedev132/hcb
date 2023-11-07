@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_11_03_173958) do
+ActiveRecord::Schema[7.0].define(version: 2023_11_07_175412) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_stat_statements"
@@ -1384,6 +1384,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_03_173958) do
     t.index "((((stripe_transaction -> 'card'::text) -> 'cardholder'::text) ->> 'id'::text))", name: "index_raw_pending_stripe_transactions_on_cardholder_id"
     t.index "(((stripe_transaction -> 'card'::text) ->> 'id'::text))", name: "index_raw_pending_stripe_transactions_on_card_id_text", using: :hash
     t.index "((stripe_transaction ->> 'status'::text))", name: "index_raw_pending_stripe_transactions_on_status_text", using: :hash
+    t.index ["stripe_transaction_id"], name: "index_raw_pending_stripe_transactions_on_stripe_transaction_id", unique: true
   end
 
   create_table "raw_plaid_transactions", force: :cascade do |t|

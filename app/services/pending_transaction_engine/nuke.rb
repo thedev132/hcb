@@ -3,6 +3,7 @@
 module PendingTransactionEngine
   class Nuke
     def run
+      CanonicalPendingEventMapping.delete_all
       CanonicalPendingTransaction.delete_all
       RawPendingStripeTransaction.delete_all
 
