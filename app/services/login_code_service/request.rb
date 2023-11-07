@@ -32,24 +32,23 @@ module LoginCodeService
     end
 
     def send_login_code_by_email(user)
-      login_code = user.login_codes.new(
+      user.save if user.new_record?
+      if user.new_record? && !user.save
+        return { error: user.errors }
+      end
+
+      login_code = user.login_codes.create(
         ip_address: @ip_address,
         user_agent: @user_agent
       )
 
-      resp = {}
-      if user.save
-        LoginCodeMailer.send_code(user.email, login_code.pretty).deliver_now
+      LoginCodeMailer.send_code(user.email, login_code.pretty).deliver_now
 
-        resp = {
-          id: user.id,
-          email: user.email,
-          status: "login code sent"
-        }
-      elsif !user.valid?
-        resp[:error] = user.errors
-      end
-      resp
+      {
+        id: user.id,
+        email: user.email,
+        status: "login code sent"
+      }
     end
 
   end
