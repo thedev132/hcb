@@ -274,7 +274,7 @@ module Api
           end
           get do
             Pundit.authorize(nil, [:api, org], :transactions?)
-            present transactions, with: Api::Entities::Transaction, **type_expansion(expand: %w[transaction])
+            present transactions, with: Api::Entities::Transaction, **type_expansion(expand: %w[transaction]), org:
           end
         end
 

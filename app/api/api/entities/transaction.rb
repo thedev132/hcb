@@ -15,19 +15,27 @@ module Api
 
       when_expanded do
         expose :amount_cents, documentation: { type: "integer" } do |hcb_code, options|
+          org = options[:org]
+
           # By default, linked objects use the HcbCode#amount_cents method.
           # However, for Disbursements, this will always result in an
           # amount_cents of 0 (zero) since there are two equal, by opposite,
           # Canonical Transactions. Therefore, for the API, we are overriding the
           # default amount_cents exposure defined in the LinkedObjectBase.
-          next hcb_code.disbursement.amount if hcb_code.disbursement?
+          if hcb_code.disbursement? && org == hcb_code.disbursement.source_event
+            next -hcb_code.disbursement.amount
+          elsif hcb_code.disbursement?
+            next hcb_code.disbursement.amount
+          end
           next hcb_code.donation.amount if hcb_code.donation?
           next hcb_code.invoice.item_amount if hcb_code.invoice?
           next -hcb_code.ach_transfer.amount if hcb_code.ach_transfer?
 
           hcb_code.amount_cents
         end
-        expose :memo
+        expose :memo do |hcb_code, options|
+          hcb_code.memo(event: options[:org])
+        end
         format_as_date do
           expose :date
         end
