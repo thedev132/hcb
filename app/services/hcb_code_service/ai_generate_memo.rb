@@ -27,7 +27,7 @@ module HcbCodeService
       )
 
       unless res.success?
-        Airbrake.notify("Failed to contact OpenAI. #{res.status}: #{res.reason_phrase}\n#{res.body["error"]["message"]}")
+        Airbrake.notify("Failed to contact OpenAI. #{res.status}: #{res.reason_phrase}\n#{res.body&.dig("error", "message")}")
         return nil
       end
 
