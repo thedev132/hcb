@@ -20,7 +20,7 @@ html[data-dark='true'] {
   input[type='url'],
   select,
   textarea {
-    background: $darkless;
+    background-color: $darkless;
     color: map-get($palette, white);
     border-color: $darkless;
 
@@ -97,7 +97,9 @@ html[data-dark='true'] {
   .modal--scroll.bg-snow {
     background-color: $dark;
   }
-  .modal--scroll header, .modal--scroll:not(.modal--popover) > footer, .modal--scroll:not(.modal--popover) > * > footer {
+  .modal--scroll header,
+  .modal--scroll:not(.modal--popover) > footer,
+  .modal--scroll:not(.modal--popover) > * > footer {
     background-color: $darkless;
   }
   .mini-calendar strong {
