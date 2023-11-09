@@ -18,8 +18,8 @@
   </div>
 </div>
 
-<% unless @allowed_destination_events.any? %>
-  <p class="h5 muted">It looks like you don't have any organizations to transfer to. You can transfer funds between any organizations you're a part of as long as the destination organization has Transparency Mode enabled.</p>
+<% if @allowed_destination_events.empty? %>
+  <p class="h5 muted">It looks like you don't have any organizations to transfer to. You can transfer funds between any organizations you're a part of.</p>
 <% end %>
 
 <%= render "form", disbursement: @disbursement %>

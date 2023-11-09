@@ -52,7 +52,7 @@ class DisbursementsController < ApplicationController
     @allowed_destination_events = if current_user.admin?
                                     Event.all
                                   else
-                                    current_user.events.not_hidden.transparent.where.not(id: @source_event.id).filter_demo_mode(false)
+                                    current_user.events.not_hidden.where.not(id: @source_event.id).filter_demo_mode(false)
                                   end
 
     authorize @destination_event, policy_class: DisbursementPolicy

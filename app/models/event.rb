@@ -196,7 +196,7 @@ class Event < ApplicationRecord
 
   scope :demo_mode, -> { where(demo_mode: true) }
   scope :not_demo_mode, -> { where(demo_mode: false) }
-  scope :filter_demo_mode, ->(demo_mode) { demo_mode.nil? || demo_mode.blank? ? all : where(demo_mode:) }
+  scope :filter_demo_mode, ->(demo_mode) { demo_mode.nil? ? all : where(demo_mode:) }
 
   BADGES = {
     # Qualifier must be a method on Event. If the method returns true, the badge
