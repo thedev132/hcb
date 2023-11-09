@@ -46,7 +46,11 @@ class EventsController < ApplicationController
       @tag = Tag.find_by(event_id: @event.id, label: params[:tag])
     end
 
-    @organizers = @event.organizer_positions.includes(:user).order(created_at: :desc).limit(5)
+    @user = User.find(params[:user]) if params[:user]
+
+    @type = params[:type]
+
+    @organizers = @event.organizer_positions.includes(:user).order(created_at: :desc)
     @pending_transactions = _show_pending_transactions
 
     if !signed_in? && !@event.holiday_features
@@ -54,6 +58,72 @@ class EventsController < ApplicationController
     end
 
     @all_transactions = TransactionGroupingEngine::Transaction::All.new(event_id: @event.id, search: params[:q], tag_id: @tag&.id).run
+
+    if @user
+      @all_transactions = @all_transactions.select { |t| t.stripe_cardholder&.user == @user }
+      @pending_transactions = @pending_transactions.select { |x| x.stripe_cardholder && x.stripe_cardholder.user.id == @user.id }
+    end
+
+    @type_filters = {
+      "ach_transfer"  => {
+        "settled" => ->(t) { t.local_hcb_code.ach_transfer? },
+        "pending" => ->(t) { t.raw_pending_outgoing_ach_transaction_id },
+        "icon"    => "plus-fill"
+      },
+      "check"         => {
+        "settled" => ->(t) { t.local_hcb_code.check? || t.local_hcb_code.increase_check? },
+        "pending" => ->(t) { t.raw_pending_outgoing_check_transaction_id || t.increase_check_id },
+        "icon"    => "payment-transfer"
+      },
+      "disbursement"  => {
+        "settled" => ->(t) { t.local_hcb_code.disbursement? },
+        "pending" => ->(t) { false },
+        "icon"    => "door-enter"
+      },
+      "card_charge"   => {
+        "settled" => ->(t) { t.raw_stripe_transaction },
+        "pending" => ->(t) { t.raw_pending_stripe_transaction_id },
+        "icon"    => "card"
+      },
+      "check_deposit" => {
+        "settled" => ->(t) { t.local_hcb_code.check_deposit? },
+        "pending" => ->(t) { t.check_deposit_id },
+        "icon"    => "payment-docs"
+      },
+      "ach_payment"   => {
+        "settled" => ->(t) { t.local_hcb_code.ach_payment? },
+        "pending" => ->(t) { t.ach_payment_id },
+        "icon"    => "bank-account"
+      },
+      "donation"      => {
+        "settled" => ->(t) { t.local_hcb_code.donation? },
+        "pending" => ->(t) { t.raw_pending_donation_transaction_id },
+        "icon"    => "support"
+      },
+      "invoice"       => {
+        "settled" => ->(t) { t.local_hcb_code.invoice? },
+        "pending" => ->(t) { t.raw_pending_invoice_transaction_id },
+        "icon"    => "briefcase"
+      },
+      "refund"        => {
+        "settled" => ->(t) { t.local_hcb_code.stripe_refund? },
+        "pending" => ->(t) { false },
+        "icon"    => "view-reload"
+      },
+      "bank_fee"      => {
+        "settled" => ->(t) { t.local_hcb_code.fee_revenue? || t.fee_payment? },
+        "pending" => ->(t) { t.raw_pending_bank_fee_transaction_id },
+        "icon"    => "minus-fill"
+      }
+    }
+
+    if @type
+      filter = @type_filters[@type]
+      if filter
+        @all_transactions = @all_transactions.select(&filter["settled"])
+        @pending_transactions = @pending_transactions.select(&filter["pending"])
+      end
+    end
 
     page = (params[:page] || 1).to_i
     per_page = (params[:per] || 75).to_i

@@ -1,0 +1,116 @@
+<div class="filterbar flex flex-row justify-between items-center width-100" style="gap: 16px">
+  <%= form_with(model: nil, local: true, method: :get, class: "flex-auto md-mr2") do |form| %>
+    <%= form.text_field :q, placeholder: "Search", style: "width auto; max-width: none;", value: params[:q] %>
+    <% if @tag %>
+      <%= form.hidden_field :tag, value: @tag.label %>
+    <% end %>
+  <% end %>
+  <div data-controller="menu" data-menu-append-to-value="turbo-frame#ledger" data-menu-placement-value="bottom-end">
+    <button
+      type="button"
+      class="btn btn-small bg-info menu__toggle menu__toggle--arrowless overflow-visible z1 mr1"
+      data-menu-target="toggle" data-action="menu#toggle keydown@document->menu#keydown">
+      <%= inline_icon "filter", size: 16, style: "margin: 0" %>
+      <% if @tag %>
+        <span class="xs-hide sm-hide md-hide flex items-center">
+          <span class="nowrap">Filtered by</span>
+          <span style="background-color: rgba(0, 0, 0, 0.3); color: #f9fafc" class="nowrap badge regular ml1"><%= @tag.label %></span>
+        </span>
+      <% elsif @user %>
+        <span class="xs-hide sm-hide md-hide flex items-center">
+          <span class="nowrap">Filtered by</span>
+          <span style="background-color: rgba(0, 0, 0, 0.3); color: #f9fafc" class="nowrap badge regular ml1">
+            <div class="avatar-grow line-height-0 mr1">
+              <%= avatar_for @user, 18 %>
+            </div>
+            <%= @user.name %>
+          </span>
+        </span>
+      <% elsif @type %>
+      <span class="xs-hide sm-hide md-hide flex items-center">
+        <span class="nowrap">Filtered by</span>
+        <span style="background-color: rgba(0, 0, 0, 0.3); color: #f9fafc" class="nowrap badge regular ml1">
+          <%= @type.humanize.titleize.gsub("Ach", "ACH") %>
+        </span>
+      </span>
+      <% else %>
+        <span class="xs-hide sm-hide md-hide nowrap">Filter</span>
+      <% end %>
+    </button>
+    <div class="menu__content menu__content--2 menu__content--compact h5" data-menu-target="content" data-controller="filter">
+      <div style="display: flex; gap: 12px;padding: 0.25rem 0.5rem !important;">
+        <% if Flipper.enabled?(:transaction_tags_2022_07_29, @event) && @event.tags.size > 0 %>
+          <span
+            data-filter-target="tagsLabel"
+            data-filter-menu-label-selected="<%= @tag || (!@user && !@type) ? "true" : "false" %>"
+            data-action="click->filter#selectTags"
+            style="cursor: pointer;">
+            Tags
+          </span>
+        <% end %>
+        <span
+          data-filter-target="usersLabel"
+          data-filter-menu-label-selected="<%= (@user || !(Flipper.enabled?(:transaction_tags_2022_07_29, @event) && @event.tags.size > 0)) && !@type ? "true" : "false" %>"
+          data-action="click->filter#selectUsers"
+          style="cursor: pointer;">
+          Users
+        </span>
+        <span
+          data-filter-target="typesLabel"
+          data-filter-menu-label-selected="<%= @type ? "true" : "false" %>"
+          data-action="click->filter#selectTypes"
+          style="cursor: pointer;">
+          Types
+        </span>
+      </div>
+
+      <div class="menu__divider"></div>
+
+      <% if Flipper.enabled?(:transaction_tags_2022_07_29, @event) && @event.tags.size > 0 %>
+        <div data-filter-target="tags" data-filter-menu-selected="<%= @tag || (!@user && !@type) ? "true" : "false" %>">
+          <% @event.tags.each do |tag| %>
+            <div class="flex items-center">
+              <%= link_to tag.label, { tag: tag.label, q: params[:q] }.compact, class: "flex-auto menu__action" %>
+              <% if organizer_signed_in? %>
+                <%= button_to event_tag_path(@event, tag), class: "menu__action", method: :delete, title: "Delete this tag", form: { "data-turbo" => "true", "data-turbo-confirm" => tag.removal_confirmation_message } do %>
+                  <%= inline_icon "delete", size: 20, style: "margin: 0" %>
+                <% end %>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+
+      <div data-filter-target="users" data-filter-menu-selected="<%= (@user || !(Flipper.enabled?(:transaction_tags_2022_07_29, @event) && @event.tags.size > 0)) && !@type ? "true" : "false" %>">
+        <% @organizers.each do |position| %>
+          <div>
+              <%= link_to({ user: position.user.id, q: params[:q] }.compact, class: "flex-auto flex items-center menu__action") do %>
+                <div class="avatar-grow line-height-0 mr1">
+                  <%= avatar_for position.user, 18 %>
+                </div>
+                <%= position.user.name %>
+              <% end %>
+          </div>
+        <% end %>
+      </div>
+
+      <div data-filter-target="types" data-filter-menu-selected="<%= @type ? "true" : "false" %>">
+        <% ["ach_transfer", "check", "disbursement", "card_charge", "check_deposit", "ach_payment", "donation", "invoice", "refund", "bank_fee"].each do |type| %>
+          <div>
+              <%= link_to({ type:, q: params[:q] }.compact, class: "flex-auto flex items-center menu__action") do %>
+                <%= type.humanize.titleize.gsub("Ach", "ACH") %>
+              <% end %>
+          </div>
+        <% end %>
+      </div>
+
+      <% if @tag || @user || @type %>
+        <div class="menu__divider"></div>
+        <%= link_to do %>
+          <%= inline_icon "view-close", size: 24 %>
+          Clear filters
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+</div>

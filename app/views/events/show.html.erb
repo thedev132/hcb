@@ -67,7 +67,7 @@
           "mailto:#{@organizers.map(&:user).map(&:email).join(',')}",
           class: "info mr2" if admin_signed_in? %>
         <div class="flex items-center">
-          <% @organizers.each do |position| %>
+          <% @organizers.limit(5).each do |position| %>
             <div class="avatar-grow line-height-0 tooltipped tooltipped--s mr1" aria-label="<%= position.user == current_user ? current_user_flavor_text.sample : position.user.name %>">
               <%= avatar_for position.user, 36 %>
             </div>
@@ -110,55 +110,8 @@
 </h2>
 
 <%= turbo_frame_tag :ledger do %>
-  <div class="filterbar flex flex-row justify-between items-center width-100" style="gap: 16px">
 
-    <%= form_with(model: nil, local: true, method: :get, class: "flex-auto md-mr2") do |form| %>
-      <%= form.text_field :q, placeholder: "Search", style: "width auto; max-width: none;", value: params[:q] %>
-      <% if @tag %>
-        <%= form.hidden_field :tag, value: @tag.label %>
-      <% end %>
-    <% end %>
-
-    <% if Flipper.enabled?(:transaction_tags_2022_07_29, @event) && @event.tags.size > 0 %>
-      <div data-controller="menu" data-menu-append-to-value="turbo-frame#ledger" data-menu-placement-value="bottom-end">
-        <button
-          type="button"
-          class="btn btn-small bg-info menu__toggle menu__toggle--arrowless overflow-visible z1 mr1"
-          data-menu-target="toggle" data-action="menu#toggle click@document->menu#close keydown@document->menu#keydown">
-          <%= inline_icon "filter", size: 16, style: "margin: 0" %>
-          <% if @tag %>
-            <span class="xs-hide sm-hide md-hide flex items-center">
-              <span class="nowrap">Filtered by</span>
-              <span style="background-color: rgba(0, 0, 0, 0.3); color: #f9fafc" class="nowrap badge regular ml1"><%= @tag.label %></span>
-            </span>
-          <% else %>
-            <span class="xs-hide sm-hide md-hide nowrap">Filter</span>
-          <% end %>
-        </button>
-        <div class="menu__content menu__content--2 menu__content--compact h5" data-menu-target="content">
-          <% if @tag %>
-            <%= link_to do %>
-              <%= inline_icon "view-close", size: 24 %>
-              Clear filters
-            <% end %>
-
-            <div class="menu__divider"></div>
-          <% end %>
-
-          <% @event.tags.each do |tag| %>
-            <div class="flex items-center">
-              <%= link_to tag.label, { tag: tag.label, q: params[:q] }.compact, class: "flex-auto menu__action" %>
-              <% if organizer_signed_in? %>
-                <%= button_to event_tag_path(@event, tag), class: "menu__action", method: :delete, title: "Delete this tag", form: { "data-turbo" => "true", "data-turbo-confirm" => tag.removal_confirmation_message } do %>
-                  <%= inline_icon "delete", size: 20, style: "margin: 0" %>
-                <% end %>
-              <% end %>
-            </div>
-          <% end %>
-        </div>
-      </div>
-    <% end %>
-  </div>
+  <%= render partial: "filter" %>
 
   <% if @pending_transactions.any? || @transactions.any? || @event.demo_mode? %>
     <div class="table-container" data-tour-step="transactions">
