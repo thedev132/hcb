@@ -693,6 +693,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_07_175412) do
     t.string "increase_account_id", null: false
     t.string "website"
     t.text "description"
+    t.text "donation_thank_you_message"
+    t.text "donation_reply_to_email"
     t.integer "stripe_card_shipping_type", default: 0, null: false
     t.index ["club_airtable_id"], name: "index_events_on_club_airtable_id", unique: true
     t.index ["partner_id", "organization_identifier"], name: "index_events_on_partner_id_and_organization_identifier", unique: true

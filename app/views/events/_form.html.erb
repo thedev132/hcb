@@ -154,6 +154,15 @@
         <%= form.text_area :donation_page_message, class: "w-100 fit" %>
         <%= inline_icon "markdown", size: 32, class: "muted right" %>
       </div>
+      <div class="field">
+        <%= form.label :donation_thank_you_message, "Thank you message to donors" %>
+        <%= form.text_area :donation_thank_you_message, class: "w-100 fit" %>
+        <%= inline_icon "markdown", size: 32, class: "muted right" %>
+      </div>
+      <div class="field">
+        <%= form.label :donation_reply_to_email, "Reply-to email for donation receipts" %>
+        <%= form.text_field :donation_reply_to_email, type: "email", placeholder: "fiona@hackclub.com", class: "w-100 fit" %>
+      </div>
       <%= form.submit "Update" %>
     </div>
   <% end %>

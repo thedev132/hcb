@@ -19,6 +19,8 @@
 #  description                     :text
 #  donation_page_enabled           :boolean          default(TRUE)
 #  donation_page_message           :text
+#  donation_reply_to_email         :text
+#  donation_thank_you_message      :text
 #  end                             :datetime
 #  expected_budget                 :integer
 #  has_fiscal_sponsorship_document :boolean
@@ -78,6 +80,9 @@ class Event < ApplicationRecord
   has_paper_trail
   acts_as_paranoid
   validates_as_paranoid
+
+  validates_email_format_of :donation_reply_to_email, allow_nil: true, allow_blank: true
+  validates :donation_thank_you_message, length: { maximum: 500 }
 
   include AASM
   include PgSearch::Model
