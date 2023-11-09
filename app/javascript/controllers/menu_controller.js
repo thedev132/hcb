@@ -65,6 +65,11 @@ export default class extends Controller {
       )
         return
       if (
+        e.target == this.content ||
+        $(this.content).find(e.target).length
+      )
+        return
+      if (
         e.target.tagName.toLowerCase() == 'input' &&
         $(e.target).closest('.menu__content').length
       )

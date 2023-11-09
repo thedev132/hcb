@@ -9,7 +9,7 @@
     <button
       type="button"
       class="btn btn-small bg-info menu__toggle menu__toggle--arrowless overflow-visible z1 mr1"
-      data-menu-target="toggle" data-action="menu#toggle keydown@document->menu#keydown">
+      data-menu-target="toggle" data-action="menu#toggle click@document->menu#close keydown@document->menu#keydown">
       <%= inline_icon "filter", size: 16, style: "margin: 0" %>
       <% if @tag %>
         <span class="xs-hide sm-hide md-hide flex items-center">
