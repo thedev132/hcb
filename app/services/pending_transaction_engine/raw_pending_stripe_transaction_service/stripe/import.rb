@@ -10,6 +10,7 @@ module PendingTransactionEngine
 
         def run
           authorizations = ::Partners::Stripe::Issuing::Authorizations::List.new(created_after: @created_after).run
+          return if authorizations.empty?
 
           RawPendingStripeTransaction.upsert_all(authorizations.map { |authorization|
             {
