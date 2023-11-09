@@ -41,7 +41,7 @@
   background-color: map-get($palette, white);
   border-radius: 0.5rem;
   box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.0625), 0 6px 12px rgba(0, 0, 0, 0.125);
-  overflow: hidden;
+  overflow: auto;
   z-index: 6;
 
   input[type='submit'].menu__action,
@@ -219,11 +219,11 @@
   }
 }
 
-[data-filter-menu-selected="false"] {
+[data-filter-menu-selected='false'] {
   display: none;
 }
 
-[data-filter-menu-label-selected="true"] {
+[data-filter-menu-label-selected='true'] {
   font-weight: 800;
   color: $cyan;
 }
