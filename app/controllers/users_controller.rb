@@ -33,12 +33,13 @@ class UsersController < ApplicationController
       redirect_to login_code_users_path, status: 307
     else
       session[:auth_email] = @email
-      redirect_to choose_login_preference_users_path
+      redirect_to choose_login_preference_users_path(return_to: params[:return_to])
     end
   end
 
   def choose_login_preference
     @email = session[:auth_email]
+    @return_to = params[:return_to]
     return redirect_to auth_users_path if @email.nil?
 
     session.delete :login_preference

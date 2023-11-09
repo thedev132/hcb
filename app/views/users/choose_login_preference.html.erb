@@ -27,7 +27,7 @@
 
   <p>How would you like to sign in?</p>
 
-  <%= form_with url: set_login_preference_users_path, method: :post, data: { "controller" => "webauthn-auth form-disable", "webauthn-auth-target" => "authForm", "action" => "webauthn-auth#submit" } do |form| %>
+  <%= form_with url: set_login_preference_users_path, method: :post, data: { "controller" => "webauthn-auth form-disable", "webauthn-auth-target" => "authForm", "action" => "webauthn-auth#submit", webauthn_auth_return_to_value: @return_to } do |form| %>
     <div data-webauthn-auth-target="error" class="mb2 display-none">
       <p class="flash error mb1">Security key authentication failed.</p>
     </div>
@@ -49,6 +49,7 @@
         <%= form.label :remember, "Remember my choice in this browser" %>
     </div>
     <%= form.hidden_field :email, value: @email, data: { "webauthn-auth-target" => "loginEmailInput" } %>
+    <%= form.hidden_field :return_to, value: @return_to if @return_to %>
     <%= form.submit "Continue", data: { "webauthn-auth-target" => "continueButton", "form-disable-target" => "submitButton" } %>
   <% end %>
 

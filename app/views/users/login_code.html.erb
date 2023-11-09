@@ -50,7 +50,7 @@
   <% end %>
 
   <% if @webauthn_available %>
-    <%= link_to "Sign in another way", choose_login_preference_users_path, class: "block mt2" %>
+    <%= link_to "Sign in another way", choose_login_preference_users_path(return_to: @return_to), class: "block mt2" %>
   <% end %>
 </article>
 <%= javascript_include_tag "fingerprint.js" %>
