@@ -13,7 +13,7 @@ module Bank
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 7.0
 
-    if ENV["USE_PROD_CREDENTIALS"].present?
+    if ENV["USE_PROD_CREDENTIALS"]&.downcase == "true"
       config.credentials.content_path = Rails.root.join("config", "credentials", "production.yml.enc")
       config.credentials.key_path = Rails.root.join("config", "credentials", "production.key")
     end
