@@ -1261,8 +1261,6 @@ class AdminController < ApplicationController
         0
       when :ach_transfers
         AchTransfer.pending.size
-      when :pending_fees
-        Event.pending_fees.size
       when :negative_events
         Event.negatives.size
       when :fee_reimbursements
@@ -1308,7 +1306,6 @@ class AdminController < ApplicationController
     pending_task :emburse_card_requests
     pending_task :checks
     pending_task :ach_transfers
-    pending_task :pending_fees
     pending_task :negative_events
     pending_task :fee_reimbursements
     pending_task :emburse_transfers

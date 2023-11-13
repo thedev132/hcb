@@ -48,10 +48,6 @@ module StaticPageService
       Transaction.needs_action.count
     end
 
-    def pending_fees_count
-      Event.pending_fees.count
-    end
-
     def disbursements_count
       Disbursement.pending.count
     end

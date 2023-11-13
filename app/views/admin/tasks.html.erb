@@ -24,7 +24,6 @@
       <%= card_to "Account Deletion Requests", organizer_position_deletion_requests_path, { badge: @active[:organizer_position_deletion_requests] } %>
       <%= card_to "Transactions", transactions_path, { badge: @active[:transactions] } %>
       <%= card_to "Emburse Transactions", emburse_transactions_path, { badge: @active[:emburse_transactions] } %>
-      <%= card_to "Pending Fees", pending_fees_path, { badge: @active[:pending_fees] } %>
       <%= card_to "Pending Disbursements", pending_disbursements_path, { badge: @active[:disbursements] } %>
       <%= card_to "Pending hackathons", link_to_airtable_task(:hackathons), { badge: @active[:pending_hackathons_airtable] } %>
       <%= card_to "Pending grants", link_to_airtable_task(:grant), { badge: @active[:pending_grant_airtable] } %>

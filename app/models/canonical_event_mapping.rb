@@ -35,7 +35,7 @@ class CanonicalEventMapping < ApplicationRecord
 
   scope :on_main_ledger, -> { where(subledger_id: nil) }
 
-  after_create do
+  after_create if: -> { fees.empty? } do
     FeeEngine::Create.new(canonical_event_mapping: self).run
   end
 
