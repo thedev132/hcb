@@ -44,6 +44,7 @@ class DonationPayout < ApplicationRecord
   scope :in_transit, -> { where(status: "in_transit") }
   scope :paid, -> { where(status: "paid") }
   scope :donation_hcb_code, -> { where("statement_descriptor ilike 'HCB-#{::TransactionGroupingEngine::Calculate::HcbCode::DONATION_CODE}%'") }
+  scope :should_sync, -> { where(status: ["pending", "in_transit"]).or(where(status: "paid", stripe_created_at: 3.days.ago..)) } # `paid` payouts can still transition to `failed`
 
   # although it normally doesn't make sense for a paynot not to be linked to an donation,
   # Stripe's schema makes this possible, and when that happens, requiring donation<>payout breaks bank

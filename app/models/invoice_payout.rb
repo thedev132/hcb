@@ -41,6 +41,7 @@ class InvoicePayout < ApplicationRecord
   # find invoice payouts that don't yet have an associated transaction
   scope :lacking_transaction, -> { includes(:t_transaction).where(transactions: { invoice_payout_id: nil }) }
   scope :invoice_hcb_code, -> { where("statement_descriptor ilike 'HCB-#{::TransactionGroupingEngine::Calculate::HcbCode::INVOICE_CODE}%'") }
+  scope :should_sync, -> { where(status: ["pending", "in_transit"]).or(where(status: "paid", stripe_created_at: 3.days.ago..)) } # `paid` payouts can still transition to `failed`
 
   # although it normally doesn't make sense for a paynot not to be linked to an invoice,
   # Stripe's schema makes this possible, and when that happens, requiring invoice<>payout breaks bank
