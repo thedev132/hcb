@@ -16,6 +16,7 @@
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 
+require "simplecov"
 require "faker"
 
 RSpec.configure do |config|
