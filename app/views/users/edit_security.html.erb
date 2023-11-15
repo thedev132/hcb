@@ -67,7 +67,7 @@
   <div class="session-header pb2">
     <legend class="heading flex flex-row justify-start items-center">
       <span class="h2">Sessions</span>
-      <%= badge_for @sessions.count, class: "bg-muted" %>
+      <%= badge_for @all_sessions.count, class: "bg-muted" %>
     </legend>
     <%= link_to logout_all_users_path, method: :delete,
             class: "btn bg-error mt1 py1 px2 h4", disabled: @sessions.count <= 1 do %>
@@ -76,40 +76,12 @@
     <% end %>
   </div>
   <div class="grid grid--split">
-    <% @sessions.order(created_at: :desc).each do |session| %>
-      <div class="card border<%= " b--warning" if session.impersonated? %><%= " b--success" if current_session.id == session.id %>">
-        <% if session.impersonated? %>
-          <span class="admin-tools">Impersonated by <%= user_mention session.impersonated_by %></span>
-        <% end %>
-        <span class="flex items-center justify-between flex-wrap">
-          <span class="bold flex items-center">
-            <% if session.device_info.present? %>
-              <span><%= session.os_info %> <span class="regular italic muted"><%= local_time_ago session.created_at %></span></span>
-            <% else %>
-              <span>No device is available for this session.</span>
-            <% end %>
-          </span>
-          <%= link_to logout_session_users_path(user: @user, id: session.id), method: :delete, class: "muted tooltipped tooltipped--w z5", 'aria-label': "Sign out of this session" do %>
-            <%= inline_icon "door-leave", size: home_action_size %>
-          <% end %>
-        </span>
-        <span class="flex items-center">
-          <% if current_session.id == session.id %>
-            <span class="badge bg-success medium ml0 mr1" style="margin-left: 0;">Current&nbsp;Session</span>
-          <% end %>
-          <% if session.ip.present? %>
-            <%= inline_icon "web", size: 20 %>&nbsp;<code class="mr1 tooltipped tooltipped--n" aria-label="<%= session.timezone %>"><%= session.ip %></code>
-          <% end %>
-          <% if session.ip.present? &&  session.device_info.present? %>
-            <span class="mr1">
-              •
-            </span>
-          <% end %>
-          <% if session.device_info.present? %>
-            <%= inline_icon "compass", size: 20 %>&nbsp;<%= session.device_info %>
-          <% end %>
-        </span>
-      </div>
+    <% @all_sessions.each do |session| %>
+      <% if session.is_a? UserSession %>
+        <%= render "user_session", session: %>
+      <% elsif session.is_a? ApiToken %>
+        <%= render "oauth_authorization", authorization: session %>
+      <% end %>
     <% end %>
   </div>
 </fieldset>

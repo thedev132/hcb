@@ -1,0 +1,13 @@
+<div class="card border">
+  <span class="flex items-center justify-between flex-wrap">
+    <span class="bold flex items-center">
+      <span><%= authorization.application.name %></span> <span class="badge bg-info ml1">App</span>
+    </span>
+    <%= link_to revoke_oauth_application_users_path(authorization.application.id), method: :delete, class: "muted tooltipped tooltipped--w z5", 'aria-label': "Sign out of this app" do %>
+      <%= inline_icon "door-leave", size: home_action_size %>
+    <% end %>
+  </span>
+  <span class="italic muted">
+    <%= authorization.authorization_count == 1 ? "Authorized" : "Last authorized" %> <%= local_time_ago authorization.created_at %>
+  </span>
+</div>
