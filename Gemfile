@@ -58,7 +58,7 @@ gem "blind_index" # needed to query and/or guarantee uniqueness for encrypted fi
 gem "aasm" # state machine
 
 gem "paper_trail" # track changes to models
-gem "acts_as_paranoid", "~> 0.8.1" # enables soft deletions
+gem "acts_as_paranoid", "~> 0.9.0" # enables soft deletions
 
 gem "friendly_id", "~> 5.2.0" # slugs
 gem "hashid-rails", "~> 1.0" # obfuscate IDs in URLs
