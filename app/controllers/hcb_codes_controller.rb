@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class HcbCodesController < ApplicationController
+  include TagsHelper
+
   skip_before_action :signed_in_user, only: [:receipt, :attach_receipt, :show]
   skip_after_action :verify_authorized, only: [:receipt]
 
@@ -153,19 +155,32 @@ class HcbCodesController < ApplicationController
   def toggle_tag
     hcb_code = HcbCode.find(params[:id])
     tag = Tag.find(params[:tag_id])
+    @event = tag.event
 
     authorize hcb_code
     authorize tag
 
     raise Pundit::NotAuthorizedError unless hcb_code.events.include?(tag.event)
 
+    removed = false
+
     if hcb_code.tags.exists?(tag.id)
+      removed = true
       hcb_code.tags.destroy(tag)
     else
       hcb_code.tags << tag
     end
 
-    redirect_back fallback_location: @event
+    respond_to do |format|
+      format.turbo_stream do
+        if removed
+          render turbo_stream: turbo_stream.remove(tag_dom_id(hcb_code, tag)) + turbo_stream.update_all(tag_dom_class(hcb_code, tag, "_toggle"), tag.label)
+        else
+          render turbo_stream: turbo_stream.append("hcb_code_#{hcb_code.hashid}_tags", partial: "canonical_transactions/tag", locals: { tag:, hcb_code: }) + turbo_stream.update_all(tag_dom_class(hcb_code, tag, "_toggle"), "✓ " + tag.label)
+        end
+      end
+      format.any { redirect_back fallback_location: @event }
+    end
   end
 
 end
