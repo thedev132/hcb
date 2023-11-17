@@ -252,6 +252,8 @@ class Disbursement < ApplicationRecord
   end
 
   def special_appearance_name
+    return nil if canonical_pending_transactions.with_custom_memo.exists? || canonical_transactions.with_custom_memo.exists?
+
     SPECIAL_APPEARANCES.each do |key, value|
       return key if value[:qualifier].call(self)
     end
