@@ -39,3 +39,9 @@
         code_challenge_method: @pre_auth.code_challenge_method,
       }, form: { data: { turbo: false } } %>
 </div>
+
+<div class="center mt2">
+  <div class="flex items-center justify-center muted">Signed in as <%= user_mention current_user, class: "ml1" %></div>
+
+  <%= link_to "Switch accounts", auth_users_path(return_to: request.fullpath), class: "center" %>
+</div>

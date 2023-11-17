@@ -432,7 +432,7 @@ Rails.application.routes.draw do
   end
 
   use_doorkeeper scope: "api/v4/oauth" do
-    skip_controllers :applications, :authorized_applications
+    skip_controllers :authorized_applications
   end
 
   namespace :api do
