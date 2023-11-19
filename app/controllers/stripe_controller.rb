@@ -54,7 +54,7 @@ class StripeController < ApplicationController
 
   def handle_issuing_authorization_updated(event)
     is_closed = event[:data][:object][:status] == "closed"
-    has_timeout = event[:data][:object][:request_history].map(:status).include?("webhook_timeout")
+    has_timeout = event[:data][:object][:request_history].pluck(:reason).include?("webhook_timeout")
 
     StatsD.increment("stripe_webhook_timeout", 1) if is_closed && has_timeout
 
