@@ -31,6 +31,9 @@ class StripeController < ApplicationController
   private
 
   def handle_issuing_authorization_request(event)
+    # fire-and-forget update to grafana dashboard
+    StatsD.increment("stripe_webhook_authorization", 1)
+
     approved = ::StripeAuthorizationService::Webhook::HandleIssuingAuthorizationRequest.new(stripe_event: event).run
 
     response.set_header "Stripe-Version", "2022-08-01"
@@ -45,6 +48,15 @@ class StripeController < ApplicationController
 
     # put the transaction on the pending ledger in almost realtime
     ::StripeAuthorizationJob::CreateFromWebhook.perform_later(auth_id)
+
+    head 200
+  end
+
+  def handle_issuing_authorization_updated(event)
+    is_closed = event[:data][:object][:status] == "closed"
+    has_timeout = event[:data][:object][:request_history].map(:status).include?("webhook_timeout")
+
+    StatsD.increment("stripe_webhook_timeout", 1) if is_closed && has_timeout
 
     head 200
   end
