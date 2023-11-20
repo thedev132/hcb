@@ -6,4 +6,7 @@
   <td class="transaction__memo">PENDING: FISCAL SPONSORSHIP</td>
   <td class="italic">-$<%= render_money_amount @event.fronted_fee_balance_v2_cents %></td>
   <td></td>
+  <% if @show_running_balance %>
+    <td></td>
+  <% end %>
 </tr>
