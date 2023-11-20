@@ -77,7 +77,7 @@ class EventsController < ApplicationController
       },
       "account_transfer"       => {
         "settled" => ->(t) { t.local_hcb_code.disbursement? },
-        "pending" => ->(t) { false },
+        "pending" => ->(t) { t.local_hcb_code.disbursement? },
         "icon"    => "door-enter"
       },
       "card_charge"            => {

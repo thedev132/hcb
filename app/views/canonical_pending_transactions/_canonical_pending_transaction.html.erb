@@ -53,11 +53,11 @@
     </td>
   <% elsif pt.raw_pending_incoming_disbursement_transaction_id %>
     <td class="transaction__icon tooltipped tooltipped--e" aria-label="Incoming transfer">
-      <%= inline_icon "plus-fill" %>
+      <%= inline_icon "door-enter" %>
     </td>
   <% elsif pt.raw_pending_outgoing_disbursement_transaction_id %>
     <td class="transaction__icon tooltipped tooltipped--e" aria-label="Outgoing transfer">
-      <%= inline_icon "minus-fill" %>
+      <%= inline_icon "door-leave" %>
     </td>
   <% elsif pt.ach_payment_id %>
     <td class="transaction__icon tooltipped tooltipped--e" aria-label="Incoming bank transfer">
