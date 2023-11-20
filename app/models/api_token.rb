@@ -36,7 +36,7 @@ class ApiToken < ApplicationRecord
   PREFIX = "hcb_"
   SIZE = 32
 
-  scope :not_expired, -> { where(expires_in: nil).or(where("(created_at + make_interval(secs => expires_in)) >= ?", Time.now)) }
+  scope :not_expired, -> { where(expires_in: nil).or(where("(api_tokens.created_at + make_interval(secs => expires_in)) >= ?", Time.now)) }
   scope :not_revoked, -> { where(revoked_at: nil).or(where(revoked_at: Time.now..)) }
 
   scope :accessible, -> { not_expired.and(not_revoked) }

@@ -296,7 +296,8 @@ class UsersController < ApplicationController
     show_impersonated_sessions = admin_signed_in? || current_session.impersonated?
     @sessions = show_impersonated_sessions ? @user.user_sessions : @user.user_sessions.not_impersonated
     @oauth_authorizations = @user.api_tokens
-                                 .select("application_id, MAX(created_at) AS created_at, MIN(created_at) AS first_authorized_at, COUNT(*) AS authorization_count")
+                                 .where.not(application_id: nil)
+                                 .select("application_id, MAX(api_tokens.created_at) AS created_at, MIN(api_tokens.created_at) AS first_authorized_at, COUNT(*) AS authorization_count")
                                  .accessible
                                  .group(:application_id)
                                  .includes(:application)
