@@ -9,38 +9,42 @@ module TransactionEngine
     end
 
     def run
-      # 1 raw imports
-      import_raw_plaid_transactions!
-      import_other_raw_plaid_transactions!
+      # (1) Import transactions
+      try_to { import_raw_plaid_transactions! }
+      try_to { import_other_raw_plaid_transactions! }
       # import_raw_emburse_transactions! TODO: remove completely
-      import_raw_stripe_transactions!
-      import_raw_csv_transactions!
-      import_raw_increase_transactions!
+      try_to { import_raw_stripe_transactions! }
+      try_to { import_raw_csv_transactions! }
+      try_to { import_raw_increase_transactions! }
 
-      # 2 hashed
-      hash_raw_plaid_transactions!
+      # (2) Hash transactions
+      try_to { hash_raw_plaid_transactions! }
       # hash_raw_emburse_transactions! TODO: remove completely
-      hash_raw_stripe_transactions!
-      hash_raw_csv_transactions!
-      hash_raw_increase_transactions!
+      try_to { hash_raw_stripe_transactions! }
+      try_to { hash_raw_csv_transactions! }
+      try_to { hash_raw_increase_transactions! }
 
-      # 3 canonical
-      canonize_hashed_transactions!
+      # (3) Canonize transactions
+      try_to { canonize_hashed_transactions! }
 
-      # 4 plaid mistakes
+      # (4) Fix plaid mistakes
       fix_plaid_mistakes!
 
-      # 5 fix memo mistakes
-      fix_memo_mistakes!
+      # (5) Fix memo mistakes
+      try_to { fix_memo_mistakes! }
     end
 
     private
 
     def import_raw_plaid_transactions!
       BankAccount.syncing_v2.pluck(:id).each do |bank_account_id|
-        puts "raw_plaid_transactions: #{bank_account_id}"
+        begin
+          puts "raw_plaid_transactions: #{bank_account_id}"
 
-        ::TransactionEngine::RawPlaidTransactionService::Plaid::Import.new(bank_account_id:, start_date: @start_date).run
+          ::TransactionEngine::RawPlaidTransactionService::Plaid::Import.new(bank_account_id:, start_date: @start_date).run
+        rescue => e
+          Airbrake.notify(e)
+        end
       end
     end
 
@@ -107,12 +111,24 @@ module TransactionEngine
 
     def fix_plaid_mistakes!
       BankAccount.syncing_v2.pluck(:id).each do |bank_account_id|
-        ::TransactionEngine::FixMistakes::Plaid.new(bank_account_id:, start_date: @start_date.to_date.iso8601, end_date: nil).run
+        begin
+          ::TransactionEngine::FixMistakes::Plaid.new(bank_account_id:, start_date: @start_date.to_date.iso8601, end_date: nil).run
+        rescue => e
+          Airbrake.notify(e)
+        end
       end
     end
 
     def fix_memo_mistakes!
       ::TransactionEngine::FixMistakes::Memos.new(start_date: @start_date).run
+    end
+
+    private
+
+    def try_to
+      yield
+    rescue => e
+      Airbrake.notify(e)
     end
 
   end
