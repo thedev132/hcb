@@ -91,6 +91,8 @@ class StatsController < ApplicationController
       5046, # Matt
       2468, # Lexi
       1328, # Sarthak
+      7104, # Hunter
+      8507, # Paul
     ]
 
     q = <<~SQL
@@ -103,8 +105,10 @@ class StatsController < ApplicationController
             INNER JOIN stripe_cardholders sc ON sc.stripe_id = rpst.stripe_transaction->'card'->'cardholder'->>'id'
             LEFT JOIN receipts ON receipts.receiptable_type = 'HcbCode' AND receipts.receiptable_id = hcb_codes.id
             LEFT JOIN canonical_pending_declined_mappings cpdm ON cpdm.canonical_pending_transaction_id = cpt.id
+            INNER JOIN canonical_pending_event_mappings cpem ON cpem.canonical_pending_transaction_id = cpt.id
+            INNER JOIN events ON events.id = cpem.event_id
             WHERE sc.user_id = users.id
-            AND   receipts.id IS NULL AND cpdm.id IS NULL AND hcb_codes.marked_no_or_lost_receipt_at IS NULL
+            AND   receipts.id IS NULL AND cpdm.id IS NULL AND hcb_codes.marked_no_or_lost_receipt_at IS NULL AND events.category != 10
         )
       FROM users
       WHERE id IN (?)
