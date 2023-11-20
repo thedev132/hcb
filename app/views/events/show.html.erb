@@ -109,7 +109,7 @@
   <% end %>
 </h2>
 
-<%= turbo_frame_tag :ledger do %>
+<%= turbo_frame_tag :ledger, data: { turbo_action: "advance" } do %>
 
   <%= render partial: "filter" %>
 
