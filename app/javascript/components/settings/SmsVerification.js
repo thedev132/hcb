@@ -1,6 +1,6 @@
-import HttpClient from "../../common/http";
-import React, { useEffect, useRef, useState } from 'react';
-import PropTypes from "prop-types"
+import csrf from '../../common/csrf'
+import React, { useEffect, useRef, useState } from 'react'
+import PropTypes from 'prop-types'
 
 const SmsVerification = ({ phoneNumber }) => {
   const [errors, setErrors] = useState([])
@@ -15,9 +15,12 @@ const SmsVerification = ({ phoneNumber }) => {
     if (loading) { return }
     setLoading(true)
     try {
-      const resp = await HttpClient.post('/users/start_sms_auth_verification');
+      const resp = await fetch('/users/start_sms_auth_verification', {
+        method: 'POST',
+        headers: { 'X-CSRF-Token': csrf() }
+      })
 
-      if (resp.status === 200) {
+      if (resp.ok) {
         setErrors([])
         setValidationSent(true)
       } else {
@@ -40,15 +43,19 @@ const SmsVerification = ({ phoneNumber }) => {
       e.preventDefault()
     }
     setLoading(true)
-    await HttpClient.post(
-      '/users/complete_sms_auth_verification',
-      { code },
-    ).then(() => {
+    const resp = await fetch('/users/complete_sms_auth_verification', {
+      method: 'POST',
+      headers: { 'X-CSRF-Token': csrf(), 'Content-Type': 'application/json' },
+      body: JSON.stringify({ code })
+    })
+
+    if (resp.ok) {
       setErrors([])
       setValidationSuccess(true)
-    }).catch(() => {
-      setErrors(["⚠️ Invalid code. Did you type it in correctly?"])
-    })
+    } else {
+      setErrors(['⚠️ Invalid code. Did you type it in correctly?'])
+    }
+
     setLoading(false)
   }
 
