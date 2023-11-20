@@ -21,7 +21,7 @@ module TransactionGroupingEngine
       BANK_FEE_CODE = "700"
       INCOMING_BANK_FEE_CODE = "701" # short-lived and deprecated
       FEE_REVENUE_CODE = "702"
-      ACH_PAYMENT_CODE = "800"
+      ACH_PAYMENT_CODE = "800" # ALSO short-lived and deprecated
 
       def initialize(canonical_transaction_or_canonical_pending_transaction:)
         @ct_or_cp = canonical_transaction_or_canonical_pending_transaction
