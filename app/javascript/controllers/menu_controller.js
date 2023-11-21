@@ -37,6 +37,7 @@ export default class extends Controller {
 
   open() {
     this.content = this.contentTarget.cloneNode(true)
+    this.content.dataset.turboTemporary = true
     ;(
       (this.appendToValue && document.querySelector(this.appendToValue)) ||
       document.body
@@ -64,10 +65,7 @@ export default class extends Controller {
         $(this.toggleTarget).find(e.target).length
       )
         return
-      if (
-        e.target == this.content ||
-        $(this.content).find(e.target).length
-      )
+      if (e.target == this.content || $(this.content).find(e.target).length)
         return
       if (
         e.target.tagName.toLowerCase() == 'input' &&

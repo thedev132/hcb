@@ -11,14 +11,14 @@
       </div>
 
       <div class="check__row">
-        <div class="check__field check__field--orderof" data-label="Pay to the order of" data-behavior="check_orderof">　</div>
-        <div class="check__field check__field--num" data-label="$" data-behavior="check_amount">　</div>
+        <div class="check__field check__field--orderof" data-label="Pay to the order of" data-behavior="check_orderof"><%= @check.recipient_name || "　" %></div>
+        <div class="check__field check__field--num" data-label="$" data-behavior="check_amount"><%= @check.amount.nil? ? "　" : "%.2f" % (@check.amount / 100) %></div>
       </div>
 
       <div class="check__field check__field--dollars" data-label="Dollars" data-behavior="check_amount_words">　</div>
 
       <div class="check__row items-start">
-        <div class="check__field check__field--memo truncate" data-label="Memo" data-behavior="check_memo">　</div>
+        <div class="check__field check__field--memo truncate" data-label="Memo" data-behavior="check_memo"><%= @check.memo || "　" %></div>
         <div class="check__sig"></div>
       </div>
 

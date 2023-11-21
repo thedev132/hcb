@@ -171,9 +171,9 @@ $(document).keydown(function (e) {
   }
 })
 
-$(document).on('turbo:load', function () {
-  $('[data-behavior~=toggle_theme]').on('click', () => BK.toggleDark())
+$(document).on('click', '[data-behavior~=toggle_theme]', () => BK.toggleDark())
 
+$(document).on('turbo:load', function () {
   if (window.location !== window.parent.location) {
     $('[data-behavior~=hide_iframe]').hide()
   }
@@ -423,8 +423,8 @@ $(document).on('click', '[data-behavior~=expand_receipt]', function (e) {
 })
 
 function unexpandReceipt(){
-  document.querySelectorAll(`.receipt--expanded`)[0]?.classList.remove('receipt--expanded'); 
-  document.querySelector('.modal--popover.modal--popover--receipt-expanded').classList.remove('modal--popover--receipt-expanded');
+  document.querySelectorAll(`.receipt--expanded`)[0]?.classList?.remove('receipt--expanded'); 
+  document.querySelector('.modal--popover.modal--popover--receipt-expanded')?.classList?.remove('modal--popover--receipt-expanded');
 }
 
 window.onload = function() {

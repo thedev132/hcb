@@ -1,19 +1,18 @@
-$(document).on('turbo:load', function () {
-  const amountToCheckWords = amount => {
-    let [dollarsString = '', centsString = ''] = amount.split('.')
+const amountToCheckWords = amount => {
+  let [dollarsString = '', centsString = ''] = amount.split('.')
 
-    const dollars = dollarsString ? +dollarsString.replace(/\D/g, "") : 0
-    let cents = centsString ? +centsString.slice(0, 2) : 0
-    if (centsString.length === 1) {
-      cents *= 10
-    }
-    const words = `${BK.numToWords(dollars)} ${
-      cents > 0 ? `and ${cents}/100` : 'and 00/100'
-    }`
-    return words
+  const dollars = dollarsString ? +dollarsString.replace(/\D/g, "") : 0
+  let cents = centsString ? +centsString.slice(0, 2) : 0
+  if (centsString.length === 1) {
+    cents *= 10
   }
+  const words = `${BK.numToWords(dollars)} ${
+    cents > 0 ? `and ${cents}/100` : 'and 00/100'
+  }`
+  return words
+}
 
-  $('*[id^="increase_check_"]').on('change paste keyup input', event => {
+$(document).on('change paste keyup input', '*[id^="increase_check_"]', event => {
     const fieldName = event.currentTarget.id.replace('increase_check_', '')
 
     if (fieldName == 'memo') {
@@ -38,8 +37,9 @@ $(document).on('turbo:load', function () {
         $(event.currentTarget).val() || '　'
       )
     }
-  })
+})
 
+$(document).on('turbo:load', function () {
   // make the check have words on the show
   if ($('[data-behavior~="fill_check_words"]').length == 1) {
     const amount = $('[data-behavior~="fill_check_words"]')
