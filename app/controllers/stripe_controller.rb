@@ -228,4 +228,16 @@ class StripeController < ApplicationController
     )
   end
 
+  def handle_payout_updated(event)
+    payout = DonationPayout.find_by(stripe_payout_id: event.data.object.id) || InvoicePayout.find_by(stripe_payout_id: event.data.object.id)
+    return unless payout
+
+    payout.set_fields_from_stripe_payout(event.data.object)
+    payout.save!
+  end
+
+  alias_method :handle_payout_canceled, :handle_payout_updated
+  alias_method :handle_payout_failed, :handle_payout_updated
+  alias_method :handle_payout_paid, :handle_payout_updated
+
 end
