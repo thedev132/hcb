@@ -400,12 +400,10 @@ class UsersController < ApplicationController
     svc = UserService::EnrollSmsAuth.new(current_user)
     if current_user.use_sms_auth
       svc.disable_sms_auth
-      flash[:success] = "SMS sign-in turned off"
     else
       svc.enroll_sms_auth
-      flash[:success] = "SMS sign-in turned on"
     end
-    redirect_to edit_user_path(current_user)
+    redirect_back_or_to security_user_path(current_user)
   end
 
   def wrapped
