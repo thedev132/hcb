@@ -56,7 +56,8 @@ class AchTransfer < ApplicationRecord
   belongs_to :event
 
   validates :amount, numericality: { greater_than: 0, message: "must be greater than 0" }
-  validates :routing_number, format: { with: /\A\d{9}\z/ }
+  validates :routing_number, format: { with: /\A\d{9}\z/, message: "must be 9 digits" }
+  validates :account_number, format: { with: /\A\d+\z/, message: "must be only numbers" }
   validate :scheduled_on_must_be_in_the_future, on: :create
   validate on: :create do
     if amount > event.balance_available_v2_cents
