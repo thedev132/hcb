@@ -285,6 +285,10 @@ class CanonicalTransaction < ApplicationRecord
     memo.match(/BUSBILLPAY TRAN#(\d+)/)&.[](1)
   end
 
+  def short_code
+    memo[/HCB-(\w{5})/, 1]
+  end
+
   def partner_donation
     nil # TODO: implement
   end

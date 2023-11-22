@@ -30,6 +30,7 @@ module TransactionGroupingEngine
       def run
         return increase_check_hcb_code if increase_check
         return unknown_hcb_code if @ct_or_cp.is_a?(CanonicalTransaction) && @ct_or_cp.raw_increase_transaction&.increase_account_number&.present? # Don't attempt to group transactions posted to an org's account/routing number
+        return short_code_hcb_code if has_short_code?
         return invoice_hcb_code if invoice
         return bank_fee_hcb_code if bank_fee
         return donation_hcb_code if donation
@@ -46,6 +47,14 @@ module TransactionGroupingEngine
       end
 
       private
+
+      def has_short_code?
+        @ct_or_cp.try(:short_code).present?
+      end
+
+      def short_code_hcb_code
+        ::HcbCode.find_by(short_code: @ct_or_cp.short_code)&.hcb_code || unknown_hcb_code
+      end
 
       def invoice_hcb_code
         [
