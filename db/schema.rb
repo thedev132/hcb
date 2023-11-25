@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_11_07_175412) do
+ActiveRecord::Schema[7.0].define(version: 2023_11_25_005204) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_stat_statements"
@@ -1542,6 +1542,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_07_175412) do
     t.index ["event_id"], name: "index_stripe_cards_on_event_id"
     t.index ["replacement_for_id"], name: "index_stripe_cards_on_replacement_for_id"
     t.index ["stripe_cardholder_id"], name: "index_stripe_cards_on_stripe_cardholder_id"
+    t.index ["stripe_id"], name: "index_stripe_cards_on_stripe_id", unique: true
     t.index ["subledger_id"], name: "index_stripe_cards_on_subledger_id"
   end
 

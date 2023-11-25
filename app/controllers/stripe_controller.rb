@@ -1,9 +1,7 @@
 # frozen_string_literal: true
 
-class StripeController < ApplicationController
-  protect_from_forgery except: :webhook # ignore csrf checks
-  skip_after_action :verify_authorized # do not force pundit
-  skip_before_action :signed_in_user, only: [:webhook] # do not require logged in user
+class StripeController < ActionController::Base
+  protect_from_forgery except: :webhook
 
   def webhook
     payload = request.body.read

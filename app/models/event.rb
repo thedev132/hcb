@@ -463,16 +463,7 @@ class Event < ApplicationRecord
         pts = pts.where("date >= ?", @start_date) if @start_date
         pts = pts.where("date <= ?", @end_date) if @end_date
 
-        pt_sum_by_hcb_code = pts.group(:hcb_code).sum(:amount_cents)
-        hcb_codes = pt_sum_by_hcb_code.keys
-
-        ct_sum_by_hcb_code = canonical_transactions.where(hcb_code: hcb_codes)
-                                                   .group(:hcb_code)
-                                                   .sum(:amount_cents)
-
-        pt_sum_by_hcb_code.reduce 0 do |sum, (hcb_code, pt_sum)|
-          sum + [pt_sum - (ct_sum_by_hcb_code[hcb_code] || 0), 0].max
-        end
+        sum_fronted_amount(pts)
       end
   end
 
@@ -520,14 +511,14 @@ class Event < ApplicationRecord
 
   # `fee_balance_v2_cents`, but it includes fees on fronted (unsettled) transactions to prevent overspending before fees are charged
   def fronted_fee_balance_v2_cents
-    feed_fronted_balance = canonical_pending_transactions
-                           .incoming
-                           .fronted
-                           .not_waived
-                           .not_declined
-                           .where(raw_pending_incoming_disbursement_transaction_id: nil) # We don't charge fees on disbursements
-                           .includes(:event, local_hcb_code: { canonical_transactions: :canonical_event_mapping })
-                           .sum(&:fronted_amount)
+    feed_fronted_pts = canonical_pending_transactions
+                       .incoming
+                       .fronted
+                       .not_waived
+                       .not_declined
+                       .where(raw_pending_incoming_disbursement_transaction_id: nil) # We don't charge fees on disbursements
+
+    feed_fronted_balance = sum_fronted_amount(feed_fronted_pts)
 
     # TODO: make sure this has the same rounding error has the rest of the codebase
     fee_balance_v2_cents + (feed_fronted_balance * sponsorship_fee).ceil
@@ -623,6 +614,19 @@ class Event < ApplicationRecord
     return if can_open_demo_mode? demo_mode_limit_email
 
     errors.add(:demo_mode, "limit reached for user")
+  end
+
+  def sum_fronted_amount(pts)
+    pt_sum_by_hcb_code = pts.group(:hcb_code).sum(:amount_cents)
+    hcb_codes = pt_sum_by_hcb_code.keys
+
+    ct_sum_by_hcb_code = canonical_transactions.where(hcb_code: hcb_codes)
+                                               .group(:hcb_code)
+                                               .sum(:amount_cents)
+
+    pt_sum_by_hcb_code.reduce 0 do |sum, (hcb_code, pt_sum)|
+      sum + [pt_sum - (ct_sum_by_hcb_code[hcb_code] || 0), 0].max
+    end
   end
 
 end
