@@ -16,7 +16,10 @@ module.exports = {
   },
   globals: {
     require: 'readonly',
-    PublicKeyCredential: 'readonly'
+    PublicKeyCredential: 'readonly',
+    process: 'readonly',
+    AIRBRAKE_PROJECT_ID: 'readonly',
+    AIRBRAKE_API_KEY: 'readonly'
   },
   settings: {
     react: {

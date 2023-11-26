@@ -3,7 +3,15 @@
 
 import { Application } from '@hotwired/stimulus'
 import { definitionsFromContext } from '@hotwired/stimulus-webpack-helpers'
+import airbrake from '../airbrake'
 
 const application = Application.start()
+
+if (airbrake) {
+  application.handleError = error => {
+    airbrake.notify(error)
+  }
+}
+
 const context = require.context('.', true, /_controller\.js$/)
 application.load(definitionsFromContext(context))

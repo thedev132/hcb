@@ -38,6 +38,11 @@ module.exports = {
   plugins: [
     new webpack.optimize.LimitChunkCountPlugin({
       maxChunks: 1
+    }),
+    new webpack.DefinePlugin({
+      // prettier-ignore
+      AIRBRAKE_PROJECT_ID: JSON.stringify(process.env.AIRBRAKE_PROJECT_ID || null),
+      AIRBRAKE_API_KEY: JSON.stringify(process.env.AIRBRAKE_API_KEY || null)
     })
   ]
 }

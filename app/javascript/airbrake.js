@@ -1,0 +1,19 @@
+import { Notifier } from '@airbrake/browser'
+
+const environment = process.env.NODE_ENV || 'development'
+const shouldEnableAirbrake = AIRBRAKE_PROJECT_ID && AIRBRAKE_API_KEY
+
+const airbrake = shouldEnableAirbrake
+  ? new Notifier({
+      projectId: AIRBRAKE_PROJECT_ID,
+      projectKey: AIRBRAKE_API_KEY,
+      environment
+    })
+  : undefined
+
+airbrake?.addFilter(notice => {
+  if (environment === 'development') return null
+  return notice
+})
+
+export default airbrake
