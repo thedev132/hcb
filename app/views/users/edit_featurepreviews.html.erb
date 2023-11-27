@@ -26,29 +26,6 @@
         } %>
 
     <%= render partial: "users/feature_preview", locals: {
-          id: "weekly-receipt-email",
-          classes: ["feature-weekly-receipt-email", "feature-generic"],
-          feature_flag: :receipt_report_2023_04_19,
-          name: "Receipt Report",
-          description: "Opting into this preview will send you a weekly reminder with a list of all your missing receipts.",
-          footer: "Try #{link_to "triggering an email for yourself", trigger_receipt_report_path, method: :post}!"
-        } %>
-
-    <%= render partial: "users/feature_preview", locals: {
-          id: "turbo",
-          classes: ["feature-turbo"],
-          feature_flag: :turbo_2023_01_23,
-          name: "Turbo Async Pages",
-          description: "Opting into this preview will enable <a href=\"https://turbo.hotwired.dev\" target=\"_blank\">Turbo</a>, a framework for speeding up web application UIs (like HCB's!) Possible side effects include:
-            <ul>
-              <li>Faster (sometimes instant!) page transitions</li>
-              <li>Possibly broken UI behavior</li>
-              <li>Flashes of cached content</li>
-            </ul>",
-          footer: "This feature is an early tech preview and <strong>will have bugs</strong>. Please let us know when you encounter them!"
-        } %>
-
-    <%= render partial: "users/feature_preview", locals: {
           id: "sms-receipt-notification",
           classes: ["feature-sms-receipt-notification"],
           feature_flag: :sms_receipt_notifications_2022_11_23,
@@ -60,47 +37,74 @@
           footer: "⚠️ This feature will only work if you have a phone number on file. Please update your security settings to add one."
         } %>
 
-    <%= render partial: "users/feature_preview", locals: {
-          id: "receipt-email-upload",
-          classes: ["feature-receipt-upload"],
-          feature_flag: :receipt_email_upload_2022_05_10,
-          name: "Email Receipt Upload",
-          description: "We send an email once a card is charged along the lines of \"Please
-      upload a receipt for your $10 charge\" with a link to a form on HCB
-      to upload receipts.
-      After opting-in to this feature preview, you can reply directly to
-      that email with your receipt attached to upload it."
-        } %>
+        <details>
+          <summary class="mb2">Past feature previews</summary>
 
-    <%= render partial: "users/feature_preview", locals: {
-          id: "internal-transfers",
-          classes: ["feature-disbursements"],
-          feature_flag: :transfers_2022_04_21,
-          name: "Internal Transfers",
-          description: "Users with multiple organizations on HCB can now create
-    transfers between their accounts. After opting-in, new options will
-    show up on an organziation's \"Transfers\" page, including a \"New
-    Transfer\" button and tools for searching and sorting the existing
-    transfers list.",
-          footer: "This feature is on a per-user basis. Co-organizers will also have to
-      opt-in for access."
-        } %>
+          <%= render partial: "users/feature_preview", locals: {
+                id: "turbo",
+                classes: ["feature-turbo"],
+                feature_flag: :turbo_2023_01_23,
+                name: "Turbo Async Pages",
+                description: "Opting into this preview will enable <a href=\"https://turbo.hotwired.dev\" target=\"_blank\">Turbo</a>, a framework for speeding up web application UIs (like HCB's!) Possible side effects include:
+                  <ul>
+                    <li>Faster (sometimes instant!) page transitions</li>
+                    <li>Possibly broken UI behavior</li>
+                    <li>Flashes of cached content</li>
+                  </ul>",
+                footer: "This feature is an early tech preview and <strong>will have bugs</strong>. Please let us know when you encounter them!"
+              } %>
 
-    <%= render partial: "users/feature_preview", locals: {
-          id: "suggested-memos",
-          classes: ["feature-disbursements"],
-          feature_flag: :suggested_memo_2022_08_02,
-          name: "Transaction Memo Suggestions",
-          description: "Renaming transactions is a great way for donors and team members to
-    understand how your organization's money is spent. After opting-in to
-    this feature preview, you will be provided with some suggestions when
-    renaming a transaction. Feel free to choose one of those suggestions or
-    write your own, as you normally would. To provide you these suggestions,
-    we look at the memos of similar transactions in your organization. As a
-    result, organizations with more renamed transactions will have more
-    accurate suggestions!",
-          footer: "This feature is on a per-user basis. Co-organizers will also have to
-      opt-in for access."
-        } %>
+          <%= render partial: "users/feature_preview", locals: {
+                id: "weekly-receipt-email",
+                classes: ["feature-weekly-receipt-email", "feature-generic"],
+                feature_flag: :receipt_report_2023_04_19,
+                name: "Receipt Report",
+                description: "Opting into this preview will send you a weekly reminder with a list of all your missing receipts.",
+                footer: "Try #{link_to "triggering an email for yourself", trigger_receipt_report_path, method: :post}!"
+              } %>
+
+          <%= render partial: "users/feature_preview", locals: {
+                id: "receipt-email-upload",
+                classes: ["feature-receipt-upload"],
+                feature_flag: :receipt_email_upload_2022_05_10,
+                name: "Email Receipt Upload",
+                description: "We send an email once a card is charged along the lines of \"Please
+            upload a receipt for your $10 charge\" with a link to a form on HCB
+            to upload receipts.
+            After opting-in to this feature preview, you can reply directly to
+            that email with your receipt attached to upload it."
+              } %>
+
+          <%= render partial: "users/feature_preview", locals: {
+                id: "internal-transfers",
+                classes: ["feature-disbursements"],
+                feature_flag: :transfers_2022_04_21,
+                name: "Internal Transfers",
+                description: "Users with multiple organizations on HCB can now create
+          transfers between their accounts. After opting-in, new options will
+          show up on an organziation's \"Transfers\" page, including a \"New
+          Transfer\" button and tools for searching and sorting the existing
+          transfers list.",
+                footer: "This feature is on a per-user basis. Co-organizers will also have to
+            opt-in for access."
+              } %>
+
+          <%= render partial: "users/feature_preview", locals: {
+                id: "suggested-memos",
+                classes: ["feature-disbursements"],
+                feature_flag: :suggested_memo_2022_08_02,
+                name: "Transaction Memo Suggestions",
+                description: "Renaming transactions is a great way for donors and team members to
+          understand how your organization's money is spent. After opting-in to
+          this feature preview, you will be provided with some suggestions when
+          renaming a transaction. Feel free to choose one of those suggestions or
+          write your own, as you normally would. To provide you these suggestions,
+          we look at the memos of similar transactions in your organization. As a
+          result, organizations with more renamed transactions will have more
+          accurate suggestions!",
+                footer: "This feature is on a per-user basis. Co-organizers will also have to
+            opt-in for access."
+              } %>
+        </details>
   </section>
 </turbo-frame>
