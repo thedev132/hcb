@@ -1,7 +1,7 @@
 <p><%= @emails.length > 1 ? "Hi all," : "Hi there," %></p>
 
 <p>
-  Congrats! We're emailing to let you know that you've received a donation of <%= render_money @donation.amount %> from <%= @donation.name %>. They left you a message:
+  Congrats! We're emailing to let you know that you've received a donation of <%= link_to "#{render_money @donation.amount} from #{@donation.name}", @donation.local_hcb_code %>. They left you a message:
 </p>
 
 <blockquote>

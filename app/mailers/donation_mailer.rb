@@ -12,14 +12,14 @@ class DonationMailer < ApplicationMailer
     @donation = params[:donation]
     @emails = @donation.event.users.map { |u| u.email }
 
-    mail to: @emails, subject: "Congrats on receiving your first donation! 🎉"
+    mail to: @emails, subject: "Congrats on receiving your first donation for #{@donation.event.name}! 🎉"
   end
 
   def donation_with_message_notification
     @donation = params[:donation]
     @emails = @donation.event.users.pluck(:email)
 
-    mail to: @emails, subject: "You've received a donation! 🎉"
+    mail to: @emails, subject: "You've received a donation for #{@donation.event.name}! 🎉"
   end
 
 end
