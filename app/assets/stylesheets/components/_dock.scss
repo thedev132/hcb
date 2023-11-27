@@ -113,6 +113,15 @@
   align-items: center;
   overflow: visible; // for tooltips
 
+  svg {
+    fill: map-get($palette, muted);
+    height: 28px;
+  }
+
+  &.dock__item--selected svg {
+    fill: map-get($palette, primary);
+  }
+
   // Hide beyond 4 items on small screens
   @media (max-width: 56em) {
     &:nth-child(4) ~ & {
@@ -145,15 +154,6 @@
     padding: 0.5rem 1.5rem 0.5rem 0.75rem;
     margin: 0 0 0 -0.75rem;
     width: fit-content;
-
-    svg {
-      fill: map-get($palette, muted);
-      height: 28px;
-    }
-
-    &.dock__item--selected svg {
-      fill: map-get($palette, primary);
-    }
 
     .dock__item--badge {
       transition: box-shadow 0.125s ease-in-out;

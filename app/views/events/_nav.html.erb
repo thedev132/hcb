@@ -125,8 +125,9 @@
     <% else %>
       <%= dock_item "Home",
         event_path(id: @event.slug),
-        icon: "home" %>
-      <button class="dock__item bg-transparent border-none menu__toggle" data-behavior="menu_toggle" data-tour-step="receive">
+        icon: "home",
+        selected: local_assigns[:selected] == :transactions %>
+      <button class="dock__item <%= "dock__item--selected" if local_assigns[:selected].in? [:donations, :invoices, :account_number, :deposit_check] %> bg-transparent border-none menu__toggle" data-behavior="menu_toggle" data-tour-step="receive">
         <div class="line-height-0 relative"><%= inline_icon "support", size: 32, class: "primary" %></div>
         <span class="line-height-3">Receive</span>
 
@@ -139,7 +140,7 @@
           <%= link_to "Deposit a check", event_check_deposits_path(@event) if Flipper.enabled?(:check_deposits_2023_04_17, @event) %>
         </div>
       </button>
-      <button class="dock__item bg-transparent border-none menu__toggle" data-behavior="menu_toggle" data-tour-step="spend">
+      <button class="dock__item <%= "dock__item--selected" if local_assigns[:selected].in? [:cards, :transfers] %> bg-transparent border-none menu__toggle" data-behavior="menu_toggle" data-tour-step="spend">
         <div class="line-height-0 relative"><%= inline_icon "card", size: 32, class: "primary" %></div>
         <span class="line-height-3">Spend</span>
 
