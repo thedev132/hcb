@@ -40,7 +40,7 @@
       <% end %>
       <%= form.radio_button :login_preference, "email", required: true, data: { "webauthn-auth-target" => "loginPreferenceWebauthnInput", "action" => "form-disable#run", "form-disable-target" => "radioButton" } %>
       <%= form.label :login_preference, value: "email", class: "cursor-pointer" do %>
-        <%= inline_icon "email", size: 28 %>
+        <%= inline_icon @user&.use_sms_auth? ? "message" : "email", size: 28 %>
         <strong>Login code</strong>
       <% end %>
     </div>

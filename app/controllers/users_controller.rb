@@ -39,6 +39,7 @@ class UsersController < ApplicationController
 
   def choose_login_preference
     @email = session[:auth_email]
+    @user = User.find_by_email(@email)
     @return_to = params[:return_to]
     return redirect_to auth_users_path if @email.nil?
 
