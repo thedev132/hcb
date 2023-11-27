@@ -1,1 +1,3 @@
-<strong><%= render_money_amount(@event.balance_available_v2_cents) %></strong>
+<%= turbo_frame_tag "event_balance_#{@event.public_id}" do %>
+  <strong><%= render_money_amount(@event.balance_available_v2_cents) %></strong>
+<% end %>
