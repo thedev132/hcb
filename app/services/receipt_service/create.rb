@@ -17,6 +17,8 @@ module ReceiptService
       @attachments.map do |attachment|
         receipt = Receipt.create!(attrs(attachment))
 
+        next if receipt.user.nil?
+
         pairings = ::ReceiptService::Suggest.new(receipt:).run!
 
         unless pairings.nil?
