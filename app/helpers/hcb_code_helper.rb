@@ -48,7 +48,7 @@ module HcbCodeHelper
       background = "success"
       icon_name = "checkmark"
       text = "Passed"
-    when "failed"
+    when "mismatch"
       background = "warning"
       icon_name = "view-close"
       text = "Failed"
