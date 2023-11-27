@@ -33,7 +33,7 @@ try {
 
     if (darkMode) {
       document.querySelector('html').setAttribute('data-dark', darkMode)
-      document.querySelector('meta[name=theme-color]').setAttribute('content', '#17171d')
+      document.querySelector('meta[name=theme-color]')?.setAttribute('content', '#17171d')
     }
   })()
 } catch (e) {

@@ -25,7 +25,7 @@ BK.isDark = () => {
 }
 BK.styleDark = theme => {
   document.getElementsByTagName('html')[0].setAttribute('data-dark', theme)
-  document.querySelector('meta[name=theme-color]').setAttribute('content', theme ? '#17171d' : '#f9fafc')
+  document.querySelector('meta[name=theme-color]')?.setAttribute('content', theme ? '#17171d' : '#f9fafc')
   BK.s('toggle_theme').find('svg').toggle()
 }
 BK.toggleDark = () => {
@@ -45,6 +45,11 @@ BK.setDark = dark => {
   localStorage.setItem('dark', theme)
   return theme
 }
+
+document.addEventListener('turbo:load', () => {
+  const dark = BK.isDark()
+  document.querySelector('meta[name=theme-color]')?.setAttribute('content', dark ? '#17171d' : '#f9fafc')
+})
 
 // Listen for Browser dark mode preference changes (`prefers-color-scheme`)
 if (window.matchMedia) {
