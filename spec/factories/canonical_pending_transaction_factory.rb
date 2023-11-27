@@ -5,5 +5,6 @@ FactoryBot.define do
     amount_cents { Faker::Number.number(digits: 4) }
     date { Faker::Date.backward(days: 14) }
     memo { Faker::Quote.matz }
+    fronted { false }
   end
 end

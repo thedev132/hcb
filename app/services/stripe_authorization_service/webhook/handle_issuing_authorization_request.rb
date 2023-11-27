@@ -3,6 +3,8 @@
 module StripeAuthorizationService
   module Webhook
     class HandleIssuingAuthorizationRequest
+      attr_reader :declined_reason
+
       def initialize(stripe_event:)
         @stripe_event = stripe_event
       end
@@ -42,6 +44,7 @@ module StripeAuthorizationService
       end
 
       def decline_with_reason!(reason)
+        @declined_reason = reason
         set_metadata!(declined_reason: reason)
 
         false
@@ -64,6 +67,8 @@ module StripeAuthorizationService
       end
 
       def set_metadata!(additional = {})
+        return if Rails.env.test?
+
         default_metadata = {
           current_balance_available: card_balance_available,
         }
