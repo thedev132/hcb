@@ -153,6 +153,7 @@ class HcbCode < ApplicationRecord
       begin
         ids = [].concat(canonical_pending_transactions.includes(:canonical_pending_event_mapping).pluck(:event_id))
                 .concat(canonical_transactions.includes(:canonical_event_mapping).pluck(:event_id))
+                .compact
                 .uniq
 
         return Event.where(id: ids) unless ids.empty?
