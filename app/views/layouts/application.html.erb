@@ -15,7 +15,17 @@
     <%= javascript_include_tag "application", 'data-turbo-track': "reload", defer: true %>
 
     <% if signed_in? %>
-      <script>document.addEventListener("turbo:load", () => { Headway.init({ selector: "#changelog-icon", account:  "7z8ovy", trigger: "#changelog-icon" }) })</script>
+      <script>
+        document.addEventListener("turbo:load", () => {
+          try {
+            Headway.init({
+              selector: "#changelog-icon",
+              account:  "7z8ovy",
+              trigger: "#changelog-icon"
+            })
+          } catch {};
+        })
+      </script>
       <script async src="https://cdn.headwayapp.co/widget.js"></script>
     <% end %>
 

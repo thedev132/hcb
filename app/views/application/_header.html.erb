@@ -10,9 +10,14 @@
       <%= inline_icon "moon-fill", size: home_action_size, style: "display: none;" %>
     </action>
     <% if signed_in? %>
-      <div class="ml2 relative muted pointer tooltipped tooltipped--s" aria-label="See what’s new with HCB" id="changelog-icon">
+      <a
+        href="https://changelog.hcb.hackclub.com"
+        target="_blank"
+        class="ml2 relative muted pointer tooltipped tooltipped--s"
+        aria-label="See what’s new with HCB"
+        id="changelog-icon">
         <%= inline_icon "rep", size: home_action_size %>
-      </div>
+      </a>
     <% end %>
   </div>
 
