@@ -110,6 +110,10 @@ class Receipt < ApplicationRecord
     end
   end
 
+  def has_textual_content?
+    !!(textual_content || extract_textual_content!)
+  end
+
   private
 
   def pdf_text

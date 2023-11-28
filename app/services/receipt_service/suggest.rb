@@ -7,9 +7,10 @@ module ReceiptService
     end
 
     def run!(include_details: false)
-      @extracted = ::ReceiptService::Extract.new(receipt: @receipt).run!
+      return nil if user.nil?
+      return nil unless @receipt.has_textual_content?
 
-      return nil if @extracted.nil?
+      @extracted = ::ReceiptService::Extract.new(receipt: @receipt).run!
 
       transaction_distances(include_details:)
     end

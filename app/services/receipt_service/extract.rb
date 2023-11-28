@@ -7,12 +7,8 @@ module ReceiptService
     end
 
     def run!
-      if @receipt.textual_content.nil?
-        @textual_content = @receipt.extract_textual_content!
-        return nil if @textual_content.nil?
-      else
-        @textual_content = @receipt.textual_content
-      end
+      @textual_content = @receipt.textual_content || @receipt.extract_textual_content!
+      return nil if @textual_content.nil?
 
       {
         amount_cents:,
