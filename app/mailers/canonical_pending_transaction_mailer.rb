@@ -30,6 +30,8 @@ class CanonicalPendingTransactionMailer < ApplicationMailer
     @reason = @cpt.raw_pending_stripe_transaction.stripe_transaction["request_history"][0]["reason"]
     @webhook_declined_reason = @cpt.raw_pending_stripe_transaction.stripe_transaction.dig("metadata", "declined_reason")
 
+    @failed_verification_checks = @cpt.raw_pending_stripe_transaction.stripe_transaction["verification_data"].select { |k, v| k.end_with?("check") && v == "mismatch" }.keys
+
     mail to: @user.email,
          subject: "Purchase declined at #{@merchant}"
   end

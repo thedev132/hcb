@@ -44,3 +44,9 @@ en:
           attributes:
             slug:
               uniqueness: "is already taken!"
+
+  stripe_verification_checks:
+    cvc_check: 'CVC'
+    expiry_check: 'expiration date'
+    address_line1_check: 'billing address'
+    address_postal_code_check: 'postal code'
