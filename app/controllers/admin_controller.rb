@@ -200,7 +200,7 @@ class AdminController < ApplicationController
     @page = params[:page] || 1
     @per = params[:per] || 100
 
-    @events = filtered_events.page(@page).per(@per).reorder(Arel.sql("COALESCE(events.activated_at, events.created_at) desc"))
+    @events = filtered_events.page(@page).per(@per)
     @count = @events.count
 
     render layout: "admin"
@@ -1147,6 +1147,7 @@ class AdminController < ApplicationController
       @country = params[:country].present? ? params[:country] : "all"
     end
     @activity_since_date = params[:activity_since]
+    @sort_by = params[:sort_by].present? ? params[:sort_by] : "date_desc"
 
     relation = events
 
@@ -1183,6 +1184,16 @@ class AdminController < ApplicationController
     states << "approved" if @approved
     states << "rejected" if @rejected
     relation = relation.where("aasm_state in (?)", states)
+
+    # Sorting
+    case @sort_by
+    when "balance_asc"
+      relation = Kaminari.paginate_array(relation.sort_by(&:balance_v2_cents))
+    when "balance_desc"
+      relation = Kaminari.paginate_array(relation.sort_by(&:balance_v2_cents).reverse!)
+    else # Default sort is "date_desc"
+      relation = relation.reorder(Arel.sql("COALESCE(events.activated_at, events.created_at) desc"))
+    end
   end
 
   include StaticPagesHelper # for airtable_info
