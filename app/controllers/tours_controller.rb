@@ -20,12 +20,16 @@ class ToursController < ApplicationController
 
     return render status: :bad_request if step < 0
 
-    @tour = Tour.find(params[:id])
-    authorize @tour
+    suppress(ActiveRecord::RecordNotFound) do
+      @tour = Tour.find(params[:id])
+      authorize @tour
 
-    @tour.update(step:)
+      @tour.update(step:)
 
-    ahoy.track "Tour advanced", tour_id: @tour.id, tour_options: @tour.tourable.tourable_options, to_step: step
+      ahoy.track "Tour advanced", tour_id: @tour.id, tour_options: @tour.tourable.tourable_options, to_step: step
+    end
+
+    head :no_content
   end
 
 end
