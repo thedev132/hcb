@@ -70,7 +70,7 @@ class Receipt < ApplicationRecord
     Rails.application.routes.url_helpers.rails_blob_url(file)
   end
 
-  def preview(resize: "512x512", only_path: true)
+  def preview(resize: "1024x1024", only_path: true)
     if file.previewable?
       Rails.application.routes.url_helpers.rails_representation_url(file.preview(resize:).processed, only_path:)
     elsif file.variable?
