@@ -376,7 +376,7 @@ class Event < ApplicationRecord
   end
 
   def disbursement_dropdown_description
-    "#{name} (#{ApplicationController.helpers.render_money balance})"
+    "#{name} (#{ApplicationController.helpers.render_money balance_available})"
   end
 
   # displayed on /negative_events

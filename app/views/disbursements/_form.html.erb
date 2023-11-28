@@ -7,7 +7,7 @@
                                 @allowed_source_events,
                                 :id,
                                 current_user.admin? ? :admin_dropdown_description : :disbursement_dropdown_description,
-                                { prompt: "Select one…" },
+                                { prompt: "Select one…", disabled: ->(e) { e != @source_event && !current_user.admin? && e.balance_available <= 0 } },
                                 required: true,
                                 disabled: @source_event&.demo_mode?) %>
   </div>
