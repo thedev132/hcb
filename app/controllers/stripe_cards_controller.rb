@@ -87,11 +87,6 @@ class StripeCardsController < ApplicationController
     @hcb_codes = @card.hcb_codes
                       .includes(canonical_pending_transactions: [:raw_pending_stripe_transaction], canonical_transactions: :transaction_source)
                       .page(params[:page]).per(25)
-
-    if flash[:popover]
-      @popover = flash[:popover]
-      flash.delete(:popover)
-    end
   end
 
   def new
