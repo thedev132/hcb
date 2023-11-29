@@ -11,7 +11,7 @@
   <% end %>
 
   <%= form_with(model: @monthly ? [@event, @recurring_donation] : donation, local: true, url: (make_donation_donations_path unless @monthly),
-                class: "card mx-auto max-width-1 mb3", data: @monthly ? { turbo: true, turbo_action: "advance" } : { turbo_frame: "_top" }) do |form| %>
+                class: "card mx-auto max-width-1 mb3", data: { turbo: true, turbo_action: "advance" }) do |form| %>
     <% donation = @recurring_donation if @monthly %>
 
     <%= form.invisible_captcha :subtitle %>

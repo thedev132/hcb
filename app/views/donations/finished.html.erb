@@ -1,0 +1,15 @@
+<% title "Give to " + @event.name %>
+<% page_sm %>
+<% no_app_shell %>
+
+<%= render "header" %>
+
+<div class="card mb3 pt3 pb3">
+  <%= inline_icon :checkmark, size: 48, class: "success block mx-auto mb1" %>
+  <h2 class="border-none center mt1 ml0 mr0 regular">Thanks for donating!</h2>
+  <p class="center secondary">
+    Your generous donation of <%= render_money @donation.amount %> to <%= @event.name %> is on its way. We'll send a receipt to <%= mail_to @donation.email %> shortly.
+  </p>
+</div>
+
+<%= render "footer" %>

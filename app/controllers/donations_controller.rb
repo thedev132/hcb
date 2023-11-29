@@ -105,6 +105,11 @@ class DonationsController < ApplicationController
     end
   end
 
+  def finished
+    @donation = Donation.find_by!(url_hash: params[:donation])
+    @event = @donation.event
+  end
+
   def qr_code
     qrcode = RQRCode::QRCode.new(start_donation_donations_url(@event))
 

@@ -1,147 +1,40 @@
-<% content_for :body_attributes do %>
-  data-turbo="false"
-<% end %>
-
-<% content_for :head do %>
-  <script src="https://js.stripe.com/v3/"></script>
-  <script>
-    function flashError(message) {
-      const flash = document.createElement('p')
-      flash.classList.add('flash')
-      flash.classList.add('error')
-      flash.classList.add('fit')
-      flash.textContent = `We couldn't process your donation. ${message}`
-
-      document.querySelector('.processing-errors').appendChild(flash)
-    }
-
-    function resetErrors() {
-      document.querySelector('.processing-errors').innerHTML = ''
-    }
-  </script>
-  <script defer>
-    document.addEventListener('turbo:load', function() {
-      const stripe = Stripe(<%= StripeService.publishable_key.to_json.html_safe %>)
-      const clientSecret = <%= @donation.stripe_client_secret.to_json.html_safe %>
-      const appearance = BK.isDark() ? {
-        theme: "none",
-        variables: {
-          colorBackground: "#17171d",
-          colorText: "#e0e6ed",
-          borderRadius: "6px",
-          colorDanger: "#ec3750",
-        },
-        rules: {
-          ".Input:focus": {
-            outline: "none",
-          },
-          ".Tab": {
-            border: "2px solid transparent",
-          },
-          ".Tab--selected": {
-            borderColor: "#338eda",
-          },
-          ".Tab:focus": {
-            outline: "none",
-          },
-        },
-      } : {
-        theme: "none",
-        variables: {
-          colorBackground: "#e0e6ed",
-          colorText: "#1f2d3d",
-          borderRadius: "6px",
-          colorDanger: "#ec3750",
-        },
-        rules: {
-          ".Input": {
-            border: "1px solid transparent",
-          },
-          ".Input:focus": {
-            outline: "none",
-            borderColor: "#338eda",
-          },
-          ".Tab": {
-            border: "2px solid transparent",
-          },
-          ".Tab--selected": {
-            borderColor: "#338eda",
-          },
-          ".Tab:focus": {
-            outline: "none",
-          },
-        },
-      }
-      const elements = stripe.elements({ clientSecret, appearance })
-
-      const paymentElement = elements.create("payment");
-      paymentElement.mount("#payment-element");
-
-      var submitButton = document.getElementById('submit')
-
-      submitButton.addEventListener('click', function(ev) {
-        $('.show-on-processing').show()
-        stripe.confirmPayment({ elements, redirect: "if_required" }).then(function(result) {
-          if (result.error) {
-            resetErrors()
-            flashError(result.error.message)
-          } else {
-            // The payment has been processed!
-            if (result.paymentIntent.status === 'succeeded') {
-              $('.hide-on-success').hide()
-              $('.show-on-processing').hide()
-              $('.show-on-success').show()
-            }
-          }
-        })
-      })
-    })
-  </script>
-<% end %>
-
 <% title "Give to " + @event.name %>
 <% page_sm %>
 <% no_app_shell %>
 
 <%= render "header" %>
 
-<div class="card mb3">
-  <p class="mt1">
-    Hi <strong><%= @donation.name %></strong>,
-  </p>
+<%= turbo_frame_tag :donation do %>
+  <div class="card mb3">
+    <p class="mt1">
+      Hi <strong><%= @donation.name %></strong>,
+    </p>
 
-  <p class="mb2">
-    Please enter your payment information for your contribution of
-    <strong><%= render_money @donation.amount %></strong>.
-  </p>
+    <p class="mb2">
+      Please enter your payment information for your contribution of
+      <strong><%= render_money @donation.amount %></strong>.
+    </p>
 
-  <div class="hide-on-success">
-    <div class="stripe">
-      <div id="payment-element">
-        <!-- Stripe Elements will create input elements here -->
-      </div>
-      <div id="card-errors" role="alert" class="muted"></div>
+    <div
+      data-controller="stripe"
+      data-stripe-api-key-value="<%= StripeService.publishable_key %>"
+      data-stripe-client-secret-value="<%= @donation.stripe_client_secret %>"
+      data-stripe-return-url-value="<%= finished_donation_donations_url(@event, @donation.url_hash) %>"
+      data-action="theme-toggle@window->stripe#themeToggle">
 
-      <div class="show-on-processing" style="display: none">
-        <p class="flash fit">Sending your donation...</p>
-      </div>
+      <div data-stripe-target="errors"></div>
 
-      <div class="processing-errors">
-        <!-- Stripe errors will be flashed here -->
-      </div>
+      <%= form_with data: { action: "stripe#submit:prevent" } do |form| %>
+        <div data-stripe-target="element"></div>
 
-      <div class="mt3">
-        <button id="submit" class="btn w-100 donation-btn">Donate <%= render_money @donation.amount %></button>
-      </div>
+        <div class="actions center">
+          <button type="submit" class="btn btn-success w-100">
+            Donate <%= render_money @donation.amount %>
+          </button>
+        </div>
+      <% end %>
     </div>
   </div>
-
-  <div id="success" class="show-on-success center mt3" style="display: none">
-    <p class="flash success fit">
-      Thanks! Your generous donation to <%= @event.name %>
-      is on its way. We'll send you a receipt shortly.
-    </p>
-  </div>
-</div>
+<% end %>
 
 <%= render "footer" %>
