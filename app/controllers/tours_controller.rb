@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class ToursController < ApplicationController
+  skip_after_action :verify_authorized, only: [:set_step]
+
   def mark_complete
     @tour = Tour.find(params[:id])
     authorize @tour
