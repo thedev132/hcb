@@ -27,7 +27,7 @@ class MailboxAddress < ApplicationRecord
 
   VALIDATION_REGEX = /\A[a-z]+\.\d{#{DISCRIMINATOR_LENGTH}}@#{Regexp.escape(EMAIL_DOMAIN)}\z/
 
-  belongs_to :user, dependent: :destroy
+  belongs_to :user
   validates :user, uniqueness: { scope: [:aasm_state, :user_id, :discarded_at], message: "can only have one mailbox address previewed/active at a time" }
 
   validates :address, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP, message: "must be a valid email address" }
