@@ -91,13 +91,14 @@
 </div>
 
 <% if @event.organized_by_hack_clubbers? || @event.organized_by_teenagers? || @event.high_school_hackathon? %>
+  <% @wallets_available = false %>
   <div class="card mb3" id="wallets">
     <div class="card__banner card__banner--top flex justify-between items-center promo-wallets">
       <h3 class="h1 p2 my0 color-black">Wallets</h3>
-      <%= link_to "Out of stock",
-                  @perks_available ? "https://hack.af/hcb-wallets?prefill_Organization%20Name=#{@event.name}&prefill_Recipient%20Name=#{current_user.name}&prefill_Login%20Email=#{current_user.email}" : root_path,
-                  class: "btn bg-success mr1 #{'disabled' unless @perks_available}",
-                  target: :_blank, disabled: true %>
+      <%= link_to @wallets_available ? "Request" : "Out of stock",
+                  @perks_available && @wallets_available ? "https://hack.af/hcb-wallets?prefill_Organization%20Name=#{@event.name}&prefill_Recipient%20Name=#{current_user.name}&prefill_Login%20Email=#{current_user.email}" : root_path,
+                  class: "btn bg-success mr1 #{'disabled' unless @perks_available && @wallets_available}",
+                  target: :_blank, disabled: !(@perks_available && @wallets_available) %>
     </div>
 
     <p class="mb0">
