@@ -265,6 +265,7 @@ class UsersController < ApplicationController
   def edit
     @user = params[:id] ? User.friendly.find(params[:id]) : current_user
     @onboarding = @user.onboarding?
+    @mailbox_address = @user.active_mailbox_address
     show_impersonated_sessions = admin_signed_in? || current_session.impersonated?
     @sessions = show_impersonated_sessions ? @user.user_sessions : @user.user_sessions.not_impersonated
     authorize @user

@@ -68,6 +68,7 @@ class User < ApplicationRecord
   has_many :organizer_position_deletion_requests, inverse_of: :submitted_by
   has_many :organizer_position_deletion_requests, inverse_of: :closed_by
   has_many :webauthn_credentials
+  has_many :mailbox_addresses
   has_many :api_tokens
 
   has_many :events, through: :organizer_positions
@@ -216,6 +217,10 @@ class User < ApplicationRecord
 
   def onboarding?
     full_name.blank?
+  end
+
+  def active_mailbox_address
+    self.mailbox_addresses.activated.first
   end
 
   private

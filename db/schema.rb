@@ -1089,6 +1089,17 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_25_005204) do
     t.index ["user_session_id"], name: "index_login_tokens_on_user_session_id"
   end
 
+  create_table "mailbox_addresses", force: :cascade do |t|
+    t.string "address", null: false
+    t.string "aasm_state"
+    t.bigint "user_id", null: false
+    t.datetime "discarded_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["address"], name: "index_mailbox_addresses_on_address", unique: true
+    t.index ["user_id"], name: "index_mailbox_addresses_on_user_id"
+  end
+
   create_table "mfa_codes", force: :cascade do |t|
     t.text "message"
     t.string "code"
@@ -1802,6 +1813,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_25_005204) do
   add_foreign_key "login_codes", "users"
   add_foreign_key "login_tokens", "user_sessions"
   add_foreign_key "login_tokens", "users"
+  add_foreign_key "mailbox_addresses", "users"
   add_foreign_key "mfa_requests", "mfa_codes"
   add_foreign_key "ops_checkins", "users", column: "point_of_contact_id"
   add_foreign_key "organizer_position_deletion_requests", "organizer_positions"

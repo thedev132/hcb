@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe ReceiptUploadsMailbox, type: :mailbox do
+RSpec.describe HcbCodeReceiptsMailbox, type: :mailbox do
   include ActionMailbox::TestHelper
 
   let!(:user) { create(:user, access_level: :admin) }
@@ -17,7 +17,7 @@ RSpec.describe ReceiptUploadsMailbox, type: :mailbox do
   end
 
   it "routes email to mailbox" do
-    expect(ReceiptUploadsMailbox)
+    expect(HcbCodeReceiptsMailbox)
       .to receive_inbound_email(to: "receipts+hcb-#{hcb.hashid}@example.com")
   end
 
@@ -45,7 +45,7 @@ RSpec.describe ReceiptUploadsMailbox, type: :mailbox do
     expect(mail_processed).to have_bounced
   end
 
-  it "marks email as bounced if no attachments" do
+  it "marks email as bounced if no attachments or content" do
     mail = Mail.new do |m|
       m.from user.email
       m.to "receipts+hcb-#{hcb.hashid}@example.com"

@@ -1,0 +1,36 @@
+<% title "Settings" %>
+<% page_md %>
+<%= render "users/nav", selected: :settings %>
+
+<h1>Receipt email address</h1>
+
+<p>Using this email address, you can email receipts to your Receipt Bin. It's great for when you have email receipts to forward or if you're at an in-person point-of-sale terminal.</p>
+
+<%= turbo_frame_tag "mailbox_address" do %>
+
+  <% if @previewed_address.present? %>
+    <div style="position: relative; display: inline-block;">
+      <input type="text" value="<%= @previewed_address.address %>" readonly style="cursor: text; width: 384px;">
+      <%= pop_icon_to "view-reload",
+          mailbox_addresses_path,
+          class: "mr2 align-middle", "aria-label": "Generate a new address",
+          style: "position: absolute; top: 50%; right: 32px; transform: translateY(-50%) scale(0.9);",
+          data: { turbo: true, "turbo-method" => "post" } %>
+      <%= pop_icon_to "thumbsup",
+          activate_mailbox_address_path(@previewed_address),
+          class: "mr2 align-middle success", "aria-label": "Activate this address",
+          style: "position: absolute; top: 50%; right: -8px; transform: translateY(-50%) scale(0.9);",
+          data: { turbo: true, "turbo-method" => "post" } %>
+    </div>
+  <% else %>
+    <div style="position: relative; display: inline-block;">
+      <input type="text" value="<%= @active_address.address %>" readonly style="cursor: text; width: 384px;">
+      <%= pop_icon_to "view-reload",
+          mailbox_addresses_path,
+          class: "mr2 align-middle", "aria-label": "Generate a new address",
+          style: "position: absolute; top: 50%; right: -8px; transform: translateY(-50%) scale(0.9);",
+          data: { turbo: true, "turbo-method" => "post" } %>
+    </div>
+  <% end %>
+
+<% end %>

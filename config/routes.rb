@@ -59,6 +59,12 @@ Rails.application.routes.draw do
     get "cards/shipping", to: "stripe_cards#shipping", as: :my_cards_shipping
   end
 
+  resources :mailbox_addresses, only: [:create, :show] do
+    member do
+      post "activate"
+    end
+  end
+
   resources :receipts, only: [] do
     member do
       delete "destroy", to: "receipts#destroy"

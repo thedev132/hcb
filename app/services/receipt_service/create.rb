@@ -43,7 +43,7 @@ module ReceiptService
         file: attachment,
         uploader: @uploader,
         upload_method: @upload_method,
-        receiptable: @receiptable   # Receiptable may be nil
+        receiptable: @receiptable # Receiptable may be nil
       }
     end
 

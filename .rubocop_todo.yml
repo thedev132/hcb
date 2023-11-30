@@ -138,7 +138,7 @@ Style/OptionalBooleanParameter:
 # This cop supports safe auto-correction (--auto-correct).
 Style/RedundantRegexpEscape:
   Exclude:
-    - 'app/mailboxes/receipt_uploads_mailbox.rb'
+    - 'app/mailboxes/hcb_code_receipts_mailbox.rb'
     - 'app/models/g_suite.rb'
 
 # Offense count: 19

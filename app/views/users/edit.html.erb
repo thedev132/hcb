@@ -92,13 +92,47 @@
       </div>
       <% unless @onboarding %>
         <fieldset>
-          <legend class="heading h2 pt2" id="receipt-reports">Receipt reports</legend>
-          <p class="h5 muted mt1 mb2">
-            Get a regular report of what receipts are awaiting upload on your account.
+          <legend class="heading h2 pt2 pb1" id="receipt-reports">Receipts</legend>
+          <%= form.label :receipt_report_option, "Receipt reports" %>
+          <p class="h5 muted mt0 mb1">
+            Get a regular report via email of what receipts are awaiting upload on your account.
           </p>
-          <%= form.label :receipt_report_option, "Get a receipt upload report via email" %>
           <%= form.select :receipt_report_option,
                           (User.receipt_report_options.map { |k, v| [k.humanize, k] }) %>
+
+          <% if Flipper.enabled?(:receipt_bin_2023_04_07, current_user) %>
+            <div class="mt2"></div>
+
+            <%= form.label :receipt_identifier, "Email us your receipts" %>
+
+            <p class="h5 muted mt0 mb1" style="max-width: 600px;">
+              Using this address, you can forward email receipts to your <%= link_to "Receipt Bin", my_inbox_path %>. Perfect for when you have email receipts to forward or if you're at an in-person point-of-sale terminal.
+            </p>
+
+            <div class="flex flex-row items-center g2">
+              <div class="flex flex-row items-center g1">
+                <% if @mailbox_address %>
+                  <%= turbo_frame_tag "mailbox_address" do %>
+                    <div style="position: relative; display: inline-block;">
+                      <input type="text" value="<%= @mailbox_address.address %>" readonly style="cursor: text; width: 384px; user-select:">
+                      <%= pop_icon_to "view-reload",
+                          mailbox_addresses_path,
+                          class: "mr2 align-middle", "aria-label": "Generate a new address",
+                          style: "position: absolute; top: 50%; right: -8px; transform: translateY(-50%) scale(0.9);",
+                          data: { turbo: true, "turbo-method" => "post" } %>
+                    </div>
+                  <% end %>
+                <% else %>
+                  <%= turbo_frame_tag "mailbox_address" do %>
+                    <%= link_to "Choose an email address",
+                        mailbox_addresses_path,
+                        class: "btn pl2 pr2",
+                        data: { turbo: true, "turbo-method" => "post" } %>
+                  <% end %>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
         </fieldset>
       <% end %>
       <fieldset>
