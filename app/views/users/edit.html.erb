@@ -106,7 +106,7 @@
             <%= form.label :receipt_identifier, "Email us your receipts" %>
 
             <p class="h5 muted mt0 mb1" style="max-width: 600px;">
-              Using this address, you can forward email receipts to your <%= link_to "Receipt Bin", my_inbox_path %>. Perfect for when you have email receipts to forward or if you're at an in-person point-of-sale terminal.
+              Using this address, you can forward email receipts to your <%= link_to "Receipt Bin", my_inbox_path, data: { turbo_frame: "_top" } %>. Perfect for when you have email receipts to forward or if you're at an in-person point-of-sale terminal.
             </p>
 
             <div class="flex flex-row items-center g2">
