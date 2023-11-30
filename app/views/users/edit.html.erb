@@ -53,6 +53,11 @@
         <% end %>
         <%= form.hidden_field :phone_number, required: true, placeholder: "555-555-5555", id: "phone_number" %>
         <input type="tel" id="phone_raw" value="<%= @user.phone_number || nil %>" required="required">
+        <% if @user.phone_number_in_database.present? && !@user.phone_number_verified? %>
+          <p class="h5 mt1 m0 warning flex items-center">
+            <%= inline_icon "important-fill", class: "warning mr1" %> <span>Your phone number is unverified. <%= link_to "Click here", "#", class: "info", data: { behavior: "modal_trigger", modal: "verify_phone" } %> to verify it.</span>
+          </p>
+        <% end %>
       </div>
       <div class="field">
         <%= form.label :birthday %>
@@ -170,5 +175,13 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/css/intlTelInput.css" integrity="sha512-gxWow8Mo6q6pLa1XH/CcH8JyiSDEtiwJV78E+D+QP0EVasFs8wKXq16G8CLD4CJ2SnonHr4Lm/yY2fSI2+cbmw==" crossorigin="anonymous" referrerpolicy="no-referrer">
     <%= javascript_include_tag "phone_input.js" %>
   </section>
+
+  <% if @user.phone_number_in_database.present? %>
+    <section class="modal modal--scroll bg-snow" data-behavior="modal" role="dialog" id="verify_phone">
+      <%= modal_header "Verify phone number" %>
+      <%= react_component "settings/SmsVerification",
+              phone_number: @user.phone_number_in_database %>
+    </section>
+  <% end %>
 
 </turbo-frame>

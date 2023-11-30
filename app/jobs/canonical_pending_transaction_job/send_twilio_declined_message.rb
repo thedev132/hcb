@@ -19,6 +19,8 @@ module CanonicalPendingTransactionJob
 
       return unless IN_PERSON_AUTH_METHODS.include? auth_method
 
+      return unless @user.phone_number.present? && @user.phone_number_verified?
+
       humanized_reason = case @reason
                          when "card_inactive"
                            if !@card.activated?

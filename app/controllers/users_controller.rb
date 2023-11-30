@@ -388,6 +388,7 @@ class UsersController < ApplicationController
     params.require(:code)
     svc = UserService::EnrollSmsAuth.new(current_user)
     svc.complete_verification(params[:code])
+    svc.enroll_sms_auth if params[:enroll_sms_auth]
     # flash[:success] = "Completed verification"
     # redirect_to edit_user_path(current_user)
     render json: { message: "completed verification successfully" }, status: :ok

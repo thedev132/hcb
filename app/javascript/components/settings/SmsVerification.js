@@ -2,7 +2,7 @@ import csrf from '../../common/csrf'
 import React, { useEffect, useRef, useState } from 'react'
 import PropTypes from 'prop-types'
 
-const SmsVerification = ({ phoneNumber }) => {
+const SmsVerification = ({ phoneNumber, enrollSmsAuth = false }) => {
   const [errors, setErrors] = useState([])
   const [validationSent, setValidationSent] = useState(false)
   const [validationSuccess, setValidationSuccess] = useState(false)
@@ -46,7 +46,7 @@ const SmsVerification = ({ phoneNumber }) => {
     const resp = await fetch('/users/complete_sms_auth_verification', {
       method: 'POST',
       headers: { 'X-CSRF-Token': csrf(), 'Content-Type': 'application/json' },
-      body: JSON.stringify({ code })
+      body: JSON.stringify({ code, enroll_sms_auth: enrollSmsAuth })
     })
 
     if (resp.ok) {
@@ -81,7 +81,7 @@ const SmsVerification = ({ phoneNumber }) => {
       )}
       {(validationSuccess) && (
         <>
-          <p>✅ Verified! Next time you sign in your login code will go to {phoneNumber}.</p>
+          <p>✅ Verified! {enrollSmsAuth && `Next time you sign in your login code will go to ${phoneNumber}.`}</p>
           <button className="btn btn-success" onClick={refresh}>Refresh to continue</button>
         </>
       )}
@@ -111,6 +111,7 @@ const SmsVerification = ({ phoneNumber }) => {
 
 SmsVerification.propTypes = {
   phoneNumber: PropTypes.string.isRequired,
+  enrollSmsAuth: PropTypes.bool,
 };
 
 export default SmsVerification;

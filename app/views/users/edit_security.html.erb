@@ -83,9 +83,12 @@
   </div>
 </fieldset>
 
-<section class="modal modal--scroll bg-snow" data-behavior="modal" role="dialog" id="verify_phone">
-  <%= modal_header "Verify phone number" %>
-  <%= react_component "settings/SmsVerification",
-          phoneNumber: @user.phone_number %>
-</section>
+<% if @user.phone_number.present? %>
+  <section class="modal modal--scroll bg-snow" data-behavior="modal" role="dialog" id="verify_phone">
+    <%= modal_header "Verify phone number" %>
+    <%= react_component "settings/SmsVerification",
+            phone_number: @user.phone_number,
+            enroll_sms_auth: true %>
+  </section>
+<% end %>
 </turbo-frame>

@@ -26,7 +26,6 @@ module UserService
 
       # save all our fields
       @user.phone_number_verified = true
-      @user.use_sms_auth = true
       @user.save!
     end
 

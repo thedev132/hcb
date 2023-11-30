@@ -16,6 +16,8 @@ module CanonicalPendingTransactionJob
 
       return unless IN_PERSON_AUTH_METHODS.include? auth_method
 
+      return unless @user.phone_number.present? && @user.phone_number_verified?
+
       hcb_code = @cpt.local_hcb_code
       message = "Your card was charged $#{@cpt.amount.abs} at '#{@cpt.memo}'."
       if hcb_code.receipt_required? && Flipper.enabled?(:receipt_bin_2023_04_07, @user)
