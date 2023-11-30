@@ -12,47 +12,6 @@ class TransactionsController < ApplicationController
     @transactions = Transaction.order(:date).includes(:bank_account).page params[:page]
   end
 
-  def export
-    @event = Event.friendly.find(params[:event])
-
-    authorize @event.canonical_transactions.first # temporary hack for policies
-
-    # 300 is slightly arbitrary. HQ didn't run into issues until 5k
-    should_queue = @event.canonical_transactions.size > 300
-
-    respond_to do |format|
-      format.csv do
-        if should_queue
-          CanonicalTransactionJob::Export::Csv.perform_later(event_id: @event.id, user_id: current_user.id)
-          flash[:success] = "This export is too big, so we'll send you an email when it's ready."
-          redirect_back fallback_location: @event and return
-        end
-
-        stream_transactions_csv
-      end
-
-      format.json do
-        if should_queue
-          CanonicalTransactionJob::Export::Json.perform_later(event_id: @event.id, user_id: current_user.id)
-          flash[:success] = "This export is too big, so we'll send you an email when it's ready."
-          redirect_back fallback_location: @event and return
-        end
-
-        stream_transactions_json
-      end
-
-      format.ledger do
-        if should_queue
-          CanonicalTransactionJob::Export::Ledger.perform_later(event_id: @event.id, user_id: current_user.id)
-          flash[:success] = "This export is too big, so we'll send you an email when it's ready."
-          redirect_back fallback_location: @event and return
-        end
-
-        stream_transactions_ledger
-      end
-    end
-  end
-
   def show
     begin
       # DEPRECATED
@@ -162,60 +121,6 @@ class TransactionsController < ApplicationController
         :is_fee_payment
       ]
     )
-  end
-
-  def stream_transactions_csv
-    set_file_headers_csv
-    set_streaming_headers
-
-    response.status = 200
-
-    self.response_body = transactions_csv
-  end
-
-  def stream_transactions_json
-    set_file_headers_json
-    set_streaming_headers
-
-    response.status = 200
-
-    self.response_body = transactions_json
-  end
-
-  def stream_transactions_ledger
-    set_file_headers_ledger
-    set_streaming_headers
-
-    response.status = 200
-
-    self.response_body = transactions_ledger
-  end
-
-  def set_file_headers_csv
-    headers["Content-Type"] = "text/csv"
-    headers["Content-disposition"] = "attachment; filename=transactions.csv"
-  end
-
-  def set_file_headers_json
-    headers["Content-Type"] = "application/json"
-    headers["Content-disposition"] = "attachment; filename=transactions.json"
-  end
-
-  def set_file_headers_ledger
-    headers["Content-Type"] = "text/ledger"
-    headers["Content-disposition"] = "attachment; filename=transactions.ledger"
-  end
-
-  def transactions_csv
-    ::CanonicalTransactionService::Export::Csv.new(event_id: @event.id).run
-  end
-
-  def transactions_json
-    ::CanonicalTransactionService::Export::Json.new(event_id: @event.id).run
-  end
-
-  def transactions_ledger
-    ::CanonicalTransactionService::Export::Ledger.new(event_id: @event.id).run
   end
 
 end

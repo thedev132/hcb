@@ -364,10 +364,14 @@ Rails.application.routes.draw do
     resources :comments
   end
 
-  resources :transactions, only: [:index, :show, :edit, :update] do
+  resources :exports do
     collection do
-      get "export"
+      get "collect_email", to: "exports#collect_email", as: "collect_email"
+      get ":event", to: "exports#transactions", as: "transactions"
     end
+  end
+
+  resources :transactions, only: [:index, :show, :edit, :update] do
     resources :comments
   end
 

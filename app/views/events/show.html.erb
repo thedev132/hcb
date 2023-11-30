@@ -91,20 +91,20 @@
 
 <h2 class="heading">
   Transactions
-  <% if organizer_signed_in? && @event.canonical_transactions.exists? %>
+  <% if @event.canonical_transactions.exists? %>
     <button
       type="button"
-      <%= organizer_signed_in? ? "data-behavior=menu_toggle aria-expanded=false tabindex=0" : "disabled=disabled" %>
-      class="btn bg-info menu__toggle overflow-visible z2">
+      data-behavior=menu_toggle
+      aria-expanded=false
+      tabindex=0
+      class="btn bg-info menu__toggle overflow-visible z1">
         <%= inline_icon "download", size: 16 %>
         Export
-        <% if organizer_signed_in? %>
-          <div class="menu__content h5" data-behavior="menu_content">
-            <%= link_to "All transactions (CSV)", export_transactions_path(event: @event, format: :csv), target: :_blank %>
-            <%= link_to "All transactions (JSON)", export_transactions_path(event: @event, format: :json), target: :_blank %>
-            <%= link_to "All transactions (Ledger)", export_transactions_path(event: @event, format: :ledger), target: :_blank %>
-          </div>
-        <% end %>
+        <div class="menu__content h5" data-behavior="menu_content">
+          <%= link_to "All transactions (CSV)", transactions_exports_path(event: @event, format: :csv), target: :_blank %>
+          <%= link_to "All transactions (JSON)", transactions_exports_path(event: @event, format: :json), target: :_blank %>
+          <%= link_to "All transactions (Ledger)", transactions_exports_path(event: @event, format: :ledger), target: :_blank %>
+        </div>
     </button>
   <% end %>
 </h2>
