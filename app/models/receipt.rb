@@ -64,7 +64,8 @@ class Receipt < ApplicationRecord
     receipt_center: 7,
     receipt_center_drag_and_drop: 8,
     api: 9,
-    email_receipt_bin: 10
+    email_receipt_bin: 10,
+    sms: 11
   }
 
   def url
