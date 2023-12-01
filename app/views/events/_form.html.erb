@@ -249,7 +249,7 @@
 
     <div class="field">
       <%= form.label :sponsorship_fee, "Sponsorship fee (as fraction of revenue)" %>
-      <%= form.text_field :sponsorship_fee, value: event.sponsorship_fee || 0.07, placeholder: "0.07" %>
+      <%= form.text_field :sponsorship_fee, value: event.sponsorship_fee || 0.07, placeholder: "0.07", required: true %>
     </div>
 
     <div class="field">
