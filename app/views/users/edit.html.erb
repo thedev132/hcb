@@ -114,36 +114,32 @@
               Using this address, you can forward email receipts to your <%= link_to "Receipt Bin", my_inbox_path, data: { turbo_frame: "_top" } %>. Perfect for when you have email receipts to forward or if you're at an in-person point-of-sale terminal.
             </p>
 
-            <div class="flex flex-row items-center g2">
-              <div class="flex flex-row items-center g1">
-                <% if @mailbox_address %>
-                  <%= turbo_frame_tag "mailbox_address" do %>
-                    <div style="position: relative; display: inline-block;" data-controller="clipboard" data-clipboard-text-value="<%= @mailbox_address.address %>">
-                      <input type="text" value="<%= @mailbox_address.address %>" readonly style="cursor: text; width: 384px; user-select:">
-                      <button
-                        class="pointer pop mr2 align-middle tooltipped tooltipped--n"
-                        style="position: absolute; top: 50%; right: 32px; transform: translateY(-50%) scale(0.9);"
-                        aria-label="Copy address"
-                        data-action="clipboard#copy:prevent">
-                        <%= inline_icon "copy", size: 28 %>
-                      </button>
-                      <%= pop_icon_to "view-reload",
-                          mailbox_addresses_path,
-                          class: "mr2 align-middle", "aria-label": "Generate a new address",
-                          style: "position: absolute; top: 50%; right: -8px; transform: translateY(-50%) scale(0.9);",
-                          data: { turbo: true, "turbo-method" => "post" } %>
-                    </div>
-                  <% end %>
-                <% else %>
-                  <%= turbo_frame_tag "mailbox_address" do %>
-                    <%= link_to "Choose an email address",
-                        mailbox_addresses_path,
-                        class: "btn pl2 pr2",
-                        data: { turbo: true, "turbo-method" => "post" } %>
-                  <% end %>
-                <% end %>
-              </div>
-            </div>
+            <% if @mailbox_address %>
+              <%= turbo_frame_tag "mailbox_address" do %>
+                <div style="position: relative; display: block;" class="max-width-1" data-controller="clipboard" data-clipboard-text-value="<%= @mailbox_address.address %>">
+                  <input type="text" value="<%= @mailbox_address.address %>" readonly style="cursor: text; user-select:">
+                  <button
+                    class="pointer pop mr2 align-middle tooltipped tooltipped--n"
+                    style="position: absolute; top: 50%; right: 32px; transform: translateY(-50%) scale(0.9);"
+                    aria-label="Copy address"
+                    data-action="clipboard#copy:prevent">
+                    <%= inline_icon "copy", size: 28 %>
+                  </button>
+                  <%= pop_icon_to "view-reload",
+                      mailbox_addresses_path,
+                      class: "mr2 align-middle", "aria-label": "Generate a new address",
+                      style: "position: absolute; top: 50%; right: -8px; transform: translateY(-50%) scale(0.9);",
+                      data: { turbo: true, "turbo-method" => "post" } %>
+                </div>
+              <% end %>
+            <% else %>
+              <%= turbo_frame_tag "mailbox_address" do %>
+                <%= link_to "Choose an email address",
+                    mailbox_addresses_path,
+                    class: "btn pl2 pr2",
+                    data: { turbo: true, "turbo-method" => "post" } %>
+              <% end %>
+            <% end %>
           <% end %>
         </fieldset>
       <% end %>

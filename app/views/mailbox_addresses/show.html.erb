@@ -9,8 +9,8 @@
 <%= turbo_frame_tag "mailbox_address" do %>
 
   <% if @previewed_address.present? %>
-    <div style="position: relative; display: inline-block;">
-      <input type="text" value="<%= @previewed_address.address %>" readonly style="cursor: text; width: 384px;">
+    <div style="position: relative; display: block;" class="max-width-1">
+      <input type="text" value="<%= @previewed_address.address %>" readonly style="cursor: text;">
       <%= pop_icon_to "view-reload",
           mailbox_addresses_path,
           class: "mr2 align-middle", "aria-label": "Generate a new address",
@@ -23,8 +23,8 @@
           data: { turbo: true, "turbo-method" => "post" } %>
     </div>
   <% else %>
-    <div style="position: relative; display: inline-block;" data-controller="clipboard" data-clipboard-text-value="<%= @active_address.address %>">
-      <input type="text" value="<%= @active_address.address %>" readonly style="cursor: text; width: 384px;">
+    <div style="position: relative; display: block;" class="max-width=1" data-controller="clipboard" data-clipboard-text-value="<%= @active_address.address %>">
+      <input type="text" value="<%= @active_address.address %>" readonly style="cursor: text;">
       <button
         class="pointer pop mr2 align-middle tooltipped tooltipped--n"
         style="position: absolute; top: 50%; right: 32px; transform: translateY(-50%) scale(0.9);"
