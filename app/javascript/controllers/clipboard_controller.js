@@ -5,7 +5,19 @@ export default class extends Controller {
     text: String
   }
 
-  copy() {
+  copy(e) {
     navigator.clipboard.writeText(this.textValue)
+
+    const button = e.currentTarget
+
+    if (button.hasAttribute('aria-label')) {
+      const previousLabel = button.getAttribute('aria-label')
+
+      button.setAttribute('aria-label', 'Copied!')
+
+      setTimeout(() => {
+        button.setAttribute('aria-label', previousLabel)
+      }, 1000)
+    }
   }
 }

@@ -118,8 +118,15 @@
               <div class="flex flex-row items-center g1">
                 <% if @mailbox_address %>
                   <%= turbo_frame_tag "mailbox_address" do %>
-                    <div style="position: relative; display: inline-block;">
+                    <div style="position: relative; display: inline-block;" data-controller="clipboard" data-clipboard-text-value="<%= @mailbox_address.address %>">
                       <input type="text" value="<%= @mailbox_address.address %>" readonly style="cursor: text; width: 384px; user-select:">
+                      <button
+                        class="pointer pop mr2 align-middle tooltipped tooltipped--n"
+                        style="position: absolute; top: 50%; right: 32px; transform: translateY(-50%) scale(0.9);"
+                        aria-label="Copy address"
+                        data-action="clipboard#copy:prevent">
+                        <%= inline_icon "copy", size: 28 %>
+                      </button>
                       <%= pop_icon_to "view-reload",
                           mailbox_addresses_path,
                           class: "mr2 align-middle", "aria-label": "Generate a new address",
