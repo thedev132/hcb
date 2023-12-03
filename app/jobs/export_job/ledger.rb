@@ -10,7 +10,7 @@ module ExportJob
               .gsub(/[^0-9a-z_]/i, "-").gsub(" ", "_")
       title += ".ledger"
 
-      ledger = CanonicalTransactionService::Export::Ledger.new(event_id:).run
+      ledger = ExportService::Ledger.new(event_id:).run
 
       ExportMailer.export_ready(
         event: @event,

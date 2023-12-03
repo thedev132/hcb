@@ -10,7 +10,7 @@ module ExportJob
               .gsub(/[^0-9a-z_]/i, "-").gsub(" ", "_")
       title += ".csv"
 
-      csv_enumerator = CanonicalTransactionService::Export::Csv.new(event_id:).run
+      csv_enumerator = ExportService::Csv.new(event_id:).run
       csv = csv_enumerator.reduce(:+)
 
       ExportMailer.export_ready(

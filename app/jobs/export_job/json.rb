@@ -10,7 +10,7 @@ module ExportJob
               .gsub(/[^0-9a-z_]/i, "-").gsub(" ", "_")
       title += ".json"
 
-      json = CanonicalTransactionService::Export::Json.new(event_id:).run
+      json = ExportService::Json.new(event_id:).run
 
       ExportMailer.export_ready(
         event: @event,

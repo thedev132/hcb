@@ -66,9 +66,9 @@ class ExportsController < ApplicationController
             redirect_back fallback_location: @event and return
           elsif params[:email]
             # this handles the second stage of large transparent exports
-            ExportJob::Ledger.perform_later(event_id: @event.id, email: current_user.email)
+            ExportJob::Ledger.perform_later(event_id: @event.id, email: params[:email])
             flash[:success] = "We'll send you an email when your export is ready."
-            redirect_back fallback_location: @event and return
+            redirect_to @event and return
           else
             # handles when large exports are requested by the non-signed-in users viewing transparent orgs
             # this redirects them to a form that collects their email and then goes to the above statement
