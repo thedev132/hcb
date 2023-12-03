@@ -1,5 +1,5 @@
 <p>
-We got your <%= "receipt".pluralize(@receipts_count) %>, thanks! You can find <%= @receipts_count == 1 ? "it" : "them" %> in your Receipt Bin.
+We got your <%= "receipt".pluralize(@receipts_count) %>, thanks! You can find <%= @receipts_count == 1 ? "it" : "them" %> in your <%= link_to "Receipt Bin", my_inbox_path %>.
 </p>
 
 <p>
