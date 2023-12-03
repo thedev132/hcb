@@ -19,7 +19,7 @@ class ExportsController < ApplicationController
       format.csv do
         if should_queue
           if current_user
-            ExportJob::Csv.perform_later(event_id: @event.id, user_id: current_user.id)
+            ExportJob::Csv.perform_later(event_id: @event.id, email: current_user.email)
             flash[:success] = "This export is too big, so we'll send you an email when it's ready."
             redirect_back fallback_location: @event and return
           elsif params[:email]
@@ -40,7 +40,7 @@ class ExportsController < ApplicationController
       format.json do
         if should_queue
           if current_user
-            ExportJob::Json.perform_later(event_id: @event.id, user_id: current_user.id)
+            ExportJob::Json.perform_later(event_id: @event.id, email: current_user.email)
             flash[:success] = "This export is too big, so we'll send you an email when it's ready."
             redirect_back fallback_location: @event and return
           elsif params[:email]
@@ -61,12 +61,12 @@ class ExportsController < ApplicationController
       format.ledger do
         if should_queue
           if current_user
-            ExportJob::Ledger.perform_later(event_id: @event.id, user_id: current_user.id)
+            ExportJob::Ledger.perform_later(event_id: @event.id, email: current_user.email)
             flash[:success] = "This export is too big, so we'll send you an email when it's ready."
             redirect_back fallback_location: @event and return
           elsif params[:email]
             # this handles the second stage of large transparent exports
-            ExportJob::Ledger.perform_later(event_id: @event.id, email: params[:email])
+            ExportJob::Ledger.perform_later(event_id: @event.id, email: current_user.email)
             flash[:success] = "We'll send you an email when your export is ready."
             redirect_back fallback_location: @event and return
           else

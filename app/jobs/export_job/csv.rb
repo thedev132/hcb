@@ -2,9 +2,8 @@
 
 module ExportJob
   class Csv < ApplicationJob
-    def perform(event_id:, user_id:, email:)
+    def perform(event_id:, email:)
       @event = Event.find(event_id)
-      @user = user_id ? User.find(user_id) : nil
 
       datetime = Time.now.to_formatted_s(:db)
       title = "transaction_export_#{@event.name}_#{datetime}"
@@ -16,7 +15,7 @@ module ExportJob
 
       ExportMailer.export_ready(
         event: @event,
-        email: @user.email || email,
+        email:,
         mime_type: "text/csv",
         title:,
         content: csv
