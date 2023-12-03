@@ -198,9 +198,6 @@
           <%= content_tag(:span, "HCB") %>
           Stickers
         </h3>
-        <%= image_tag "stickers/card-sticker.svg", width: 100, class: "sticker z0", style: "margin-left: -25px" %>
-        <%= image_tag "stickers/wide-sticker-light.svg", width: 150, class: "sticker wide sm-hide xs-hide ml2" %>
-        <%= image_tag "stickers/icon-sticker-light.svg", width: 50, class: "sticker ml2 xs-hide" %>
       </span>
     <%= link_to "Request",
       @perks_available ? fillout_form("umhwJ5s1fNus", { "Recipient Name" => current_user.name, "Login Email" => current_user.email, "Organization" => @event.name }, prefix: "prefill_") : root_path,

@@ -35,8 +35,14 @@
 }
 
 .promo-stickers {
-  background-color: #ec3750;
-  border: 2px solid #ec3750;
+  background-image: linear-gradient(
+    to right,
+    rgba(20, 20, 20, 0.3),
+    rgba(248, 248, 248, 0.05)
+  ),
+  url('https://cloud-gjqy3yr8t-hack-club-bot.vercel.app/0hero.jpg');
+  background-size: cover;
+  background-position: 0% 30%;
 
   .sticker {
     transform: rotate(20deg);
@@ -120,8 +126,6 @@ html[data-dark='true'] {
   }
 
   .promo-stickers {
-    background-color: #343a44;
-    border: 2px solid #ec3750;
     border-radius: 0.5rem 0.5rem 0 0;
   }
 
