@@ -1030,7 +1030,7 @@ class AdminController < ApplicationController
       flash[:info] = "Do you really want the Start Date to be after the End Date?"
     end
 
-    relation = filtered_events.reorder("events.id asc")
+    relation = filtered_events
     # Omit orgs if they were created after the end date
     relation = relation.where("events.created_at <= ?", @end_date) if @end_date
 
