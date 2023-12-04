@@ -62,7 +62,7 @@ module PendingTransactionEngine
 
     def import_raw_pending_stripe_transactions!
       ::PendingTransactionEngine::RawPendingStripeTransactionService::Stripe::Import.new(
-        created_after: 1.week.ago.to_i
+        created_after: 2.weeks.ago.to_i
       ).run
     end
 
