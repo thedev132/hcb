@@ -1,4 +1,4 @@
-<%= creator_bar position.organizer_position_invite, prefix: "invited " %>
+<%= creator_bar position.organizer_position_invite, prefix: "invited " if position.organizer_position_invite.present? %>
 <article class="card pt0 pb0 mb2">
   <section class='flex items-center'>
     <%= avatar_for position.user, 48, class: "mr2" %>
