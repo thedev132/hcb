@@ -296,6 +296,8 @@ class Event < ApplicationRecord
   has_one_attached :background_image
   has_one_attached :logo
 
+  include HasMetrics
+
   validate :point_of_contact_is_admin
 
   include ::UserService::CanOpenDemoMode

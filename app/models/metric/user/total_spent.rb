@@ -1,0 +1,35 @@
+# frozen_string_literal: true
+
+# == Schema Information
+#
+# Table name: metrics
+#
+#  id           :bigint           not null, primary key
+#  metric       :jsonb
+#  subject_type :string
+#  type         :string           not null
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
+#  subject_id   :bigint
+#
+# Indexes
+#
+#  index_metrics_on_subject  (subject_type,subject_id)
+#
+class Metric
+  module User
+    class TotalSpent < Metric
+      include Subject
+
+      def calculate
+        card = RawStripeTransaction.joins("JOIN stripe_cardholders on raw_stripe_transactions.stripe_transaction->>'cardholder' = stripe_cardholders.stripe_id").where("EXTRACT(YEAR FROM date_posted) = ?", 2023).where(stripe_cardholders: { user_id: user.id }).sum(:amount_cents)
+        ach = AchTransfer.where(creator_id: user.id, rejected_at: nil).where("EXTRACT(YEAR FROM created_at) = ?", 2023).sum(:amount)
+        checks = Check.where(creator_id: user.id, rejected_at: nil).where("EXTRACT(YEAR FROM created_at) = ?", 2023).sum(:amount) + IncreaseCheck.where(user_id: user.id, increase_status: "deposited").where.not(approved_at: nil).where("EXTRACT(YEAR FROM created_at) = ?", 2023).sum(:amount)
+        disbursements = Disbursement.where(requested_by_id: user.id).where.not(fulfilled_by_id: nil).where("EXTRACT(YEAR FROM created_at) = ?", 2023).sum(:amount)
+        card.abs + ach.abs + checks.abs + disbursements.abs
+      end
+
+    end
+  end
+
+end

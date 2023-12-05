@@ -98,6 +98,8 @@ class User < ApplicationRecord
 
   has_one :partner, inverse_of: :representative
 
+  include HasMetrics
+
   before_create :format_number
   before_save :on_phone_number_update
 

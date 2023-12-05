@@ -3,10 +3,12 @@
 module TransactionGroupingEngine
   module Transaction
     class All
-      def initialize(event_id:, search: nil, tag_id: nil)
+      def initialize(event_id:, search: nil, tag_id: nil, expenses: false, revenue: false)
         @event_id = event_id
         @search = ActiveRecord::Base.connection.quote_string(search || "")
         @tag_id = tag_id
+        @expenses = expenses
+        @revenue = revenue
       end
 
       def run
@@ -17,6 +19,10 @@ module TransactionGroupingEngine
         canonical_transactions_grouped.map do |ctg|
           build(ctg)
         end
+      end
+
+      def sum
+        all.sum { |t| t.amount_cents }
       end
 
       private
@@ -60,14 +66,24 @@ module TransactionGroupingEngine
         "and (#{type}.memo ilike '%#{@search}%' or #{type}.custom_memo ilike '%#{@search}%')"
       end
 
-      def tag_modifier
+      def modifiers
+        joins = []
+        conditions = []
+
         if @tag_id
-          <<~SQL
+          joins << <<~SQL
             left join hcb_codes on hcb_codes.hcb_code = q1.hcb_code
             left join hcb_codes_tags on hcb_codes_tags.hcb_code_id = hcb_codes.id
-            where hcb_codes_tags.tag_id = #{@tag_id}
           SQL
+          conditions << "hcb_codes_tags.tag_id = #{@tag_id}"
         end
+
+        conditions << "q1.amount_cents < 0" if @expenses
+        conditions << "q1.amount_cents >= 0" if @revenue
+
+        return if conditions.none?
+
+        "#{joins.join(" ")} where #{conditions.join(" and ")}"
       end
 
       def canonical_transactions_grouped
@@ -209,7 +225,7 @@ module TransactionGroupingEngine
             #{event.can_front_balance? ? "#{pt_group_sql}\nunion" : ''}
             #{ct_group_sql}
           ) q1
-          #{tag_modifier}
+          #{modifiers}
           order by date desc, pt_ids[1] desc, ct_ids[1] desc
         SQL
 

@@ -38,7 +38,6 @@ Rails.application.routes.draw do
   get "stripe_charge_lookup", to: "static_pages#stripe_charge_lookup"
 
   post "feedback", to: "static_pages#feedback"
-  get "wrapped", to: "users#wrapped"
 
   scope :my do
     get "/", to: redirect("/"), as: :my
@@ -138,6 +137,13 @@ Rails.application.routes.draw do
     resources :webauthn_credentials, only: [:create, :destroy] do
       collection do
         get "register_options"
+      end
+    end
+  end
+  scope module: :users do
+    resources "wrapped", only: :index do
+      collection do
+        get "data"
       end
     end
   end
