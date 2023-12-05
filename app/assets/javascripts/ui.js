@@ -401,13 +401,6 @@ $('[data-behavior~=ctrl_enter_submit]').keydown(function (event) {
   }
 })
 
-$('[data-behavior~=submit_form]').click(function (e) {
-  e.preventDefault()
-
-  const formId = $(this).data('form')
-  $(`#${formId}`).submit()
-})
-
 $(document).on('click', '[data-behavior~=expand_receipt]', function (e) {
   const controlOrCommandClick = e.ctrlKey || e.metaKey;
   if ($(this).attr('href') || $(e.target).attr('href')) {

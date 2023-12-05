@@ -37,16 +37,18 @@
     <%= submit_tag "Submit" %>
   <% end %>
   <% if @use_sms_auth %>
-    <p>Don't have access to your phone?
-      Click
-      <%= link_to "here", login_code_users_path, data: { behavior: "submit_form", form: "use_email_form" } %>
-      to send a login code to your
-      email instead</p>
+    <div data-controller="form">
+      <p>Don't have access to your phone?
+        Click
+        <%= link_to "here", login_code_users_path, data: { action: "form#submit:prevent" } %>
+        to send a login code to your
+        email instead</p>
 
-    <%= form_with id: "use_email_form", url: login_code_users_path, class: "display-none" do |form| %>
-      <%= form.hidden_field :force_use_email, value: true %>
-      <%= form.hidden_field :email, value: @email %>
-    <% end %>
+      <%= form_with id: "use_email_form", url: login_code_users_path, class: "display-none", data: { form_target: "form" } do |form| %>
+        <%= form.hidden_field :force_use_email, value: true %>
+        <%= form.hidden_field :email, value: @email %>
+      <% end %>
+    </div>
   <% end %>
 
   <% if @webauthn_available %>

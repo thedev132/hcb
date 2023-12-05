@@ -78,6 +78,8 @@ class UsersController < ApplicationController
 
     @webauthn_available = User.find_by(email: @email)&.webauthn_credentials&.any?
 
+    render status: :unprocessable_entity
+
   rescue ActionController::ParameterMissing
     flash[:error] = "Please enter an email address."
     redirect_to auth_users_path
