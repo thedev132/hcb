@@ -139,7 +139,7 @@ refresh_hcb_acronym_expansions_job:
   queue: "default"
 
 calculate_app_wide_metrics:
-  cron: "*/5 * * * *" # run every 5 minutes
+  cron: "0 */1 * * *" # run every 1 hour
   class: "MetricJobs::CalculateAppWide"
   queue: "default"
   
