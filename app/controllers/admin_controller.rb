@@ -1030,11 +1030,7 @@ class AdminController < ApplicationController
       flash[:info] = "Do you really want the Start Date to be after the End Date?"
     end
 
-    relation = filtered_events
-    # Omit orgs if they were created after the end date
-    relation = relation.where("events.created_at <= ?", @end_date) if @end_date
-
-    @events = relation
+    @events = filtered_events
 
     render_balance = ->(event, type) {
       ApplicationController.helpers.render_money(event.send(type, start_date: @start_date, end_date: @end_date))
@@ -1151,6 +1147,8 @@ class AdminController < ApplicationController
 
     relation = events
 
+    # Omit orgs if they were created after the end date
+    relation = relation.where("events.created_at <= ?", @end_date) if @end_date
     relation = relation.search_name(@q) if @q
     relation = relation.transparent if @transparent == "transparent"
     relation = relation.not_transparent if @transparent == "not_transparent"
