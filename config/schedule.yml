@@ -138,17 +138,12 @@ refresh_hcb_acronym_expansions_job:
   class: "RefreshHcbAcronymExpansionsJob"
   queue: "default"
 
-hcb_metrics_generation_job:
+calculate_app_wide_metrics:
   cron: "*/5 * * * *" # run every 5 minutes
-  class: "MetricJobs::Hcb"
+  class: "MetricJobs::CalculateAppWide"
   queue: "default"
   
-users_metrics_generation_job:
+calculate_subjects_metrics:
   cron: "0 */1 * * *" # run every 1 hour
-  class: "MetricJobs::Users"
-  queue: "default"
-  
-events_metrics_generation_job:
-  cron: "0 */1 * * *" # run every 1 hour
-  class: "MetricJobs::Events"
+  class: "MetricJobs::CalculateSubjects"
   queue: "default"
