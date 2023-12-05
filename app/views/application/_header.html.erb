@@ -1,14 +1,13 @@
 <header class="header <%= "mt3" unless content_for?(:nav) %>">
   <div class="header-left line-height-0 flex items-center justify-end">
-    <action
-      role="button"
+    <button
       data-behavior="toggle_theme"
       class="muted pointer no-select tooltipped tooltipped--s"
       aria-label="Toggle dark mode"
       tabindex="0">
       <%= inline_icon "moon", size: home_action_size %>
       <%= inline_icon "moon-fill", size: home_action_size, style: "display: none;" %>
-    </action>
+    </button>
     <% if signed_in? %>
       <a
         href="https://changelog.hcb.hackclub.com"
@@ -71,7 +70,7 @@
           'aria-label': "View transactions awaiting receipts" do %>
             <%= inline_icon "payment-docs", size: home_action_size %>
       <% end %>
-      <%= link_to logout_users_path,
+      <%= button_to logout_users_path,
           method: :delete,
           class: "muted tooltipped tooltipped--s",
           'aria-label': "Sign out" do %>

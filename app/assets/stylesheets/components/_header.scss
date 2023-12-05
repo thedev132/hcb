@@ -4,6 +4,14 @@
   grid-gap: 1rem;
   align-items: center;
   justify-content: center;
+
+  button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    line-height: 0;
+  }
 }
 
 .header-left,
