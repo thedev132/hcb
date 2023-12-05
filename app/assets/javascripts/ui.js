@@ -420,8 +420,8 @@ function unexpandReceipt(){
   document.querySelector('.modal--popover.modal--popover--receipt-expanded')?.classList?.remove('modal--popover--receipt-expanded');
 }
 
-window.onload = function() {
+document.addEventListener("turbo:load", () => {
   if (window.self === window.top) {
-     document.body.classList.remove('embedded');
+    document.body.classList.remove('embedded');
   }
-}
+})
