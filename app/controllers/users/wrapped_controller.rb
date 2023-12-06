@@ -52,7 +52,7 @@ module Users
         },
       }
       headers["Content-Type"] = "application/json"
-      headers["Content-disposition"] = "attachment; filename=test.json"
+      headers["Content-disposition"] = "attachment; filename=wrapped.json"
       set_streaming_headers
 
       response.status = 200
