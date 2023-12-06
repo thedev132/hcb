@@ -11,7 +11,7 @@ class ApplicationMailbox < ActionMailbox::Base
   routing /#{MailboxAddress::VALIDATION_REGEX}/i => :receipt_bin
 
   # fallback
-  routing all: :fallback_mailbox
+  routing all: :fallback
 
   # Helper methods
   private
