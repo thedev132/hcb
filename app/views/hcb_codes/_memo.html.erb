@@ -3,7 +3,7 @@
 <% form ||= false %>
 <% prepended_to_memo ||= "" %>
 
-<% if organizer_signed_in? %>
+<% if organizer_signed_in?(hcb_code.event) %>
   <%= turbo_frame_tag "#{dom_id(hcb_code)}:memo", style: "flex-grow: 1"  do %>
     <% if form %>
         <%= form_with model: hcb_code, data: { turbo: true, controller: "form" } do |form| %>
