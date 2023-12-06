@@ -107,6 +107,8 @@ class StaticPagesController < ApplicationController
     @count = hcb_codes_missing.count # Total number of HcbCodes missing receipts
     @hcb_codes = hcb_codes_missing.page(params[:page]).per(params[:per] || 20)
 
+    @mailbox_address = current_user.active_mailbox_address
+
     @card_hcb_codes = @hcb_codes.group_by { |hcb| hcb.card.to_global_id.to_s }
     @cards = GlobalID::Locator.locate_many(@card_hcb_codes.keys)
     # Ideally we'd preload (includes) events for @cards, but that isn't

@@ -10,6 +10,15 @@
 
 <% if Flipper.enabled?(:receipt_bin_2023_04_07, current_user) %>
 
+  <p class="muted h3">
+    Alternatively, text your receipts to <%= link_to "+1-864-548-4225", "tel:+1-864-548-4225" %>
+    <% if @mailbox_address %>
+      or email them to <%= link_to @mailbox_address.address, "mailto:#{@mailbox_address.address}" %>.
+    <% else %>
+      or configure an email for receipt uploads in <%= link_to "your settings", my_settings_path %>.
+    <% end %>
+  </p>
+
   <% if @pairings.any? %>
 
     <div class="card carousel__wrapper" style="overflow: unset;">
