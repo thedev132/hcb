@@ -96,7 +96,11 @@
         <div class="flex items-center justify-start">
           <%= turbo_frame_tag "#{ct.local_hcb_code.hashid}:memo_frame", class: "memo-frame flex", style: "width:100%; overflow:hidden; text-overflow:ellipsis" do %>
             <span title="<%= transaction_memo(ct) %>">
-              <%= transaction_memo(ct) %>
+              <% if Flipper.enabled?(:rename_on_homepage_2023_12_06, current_user) %>
+                <%= render "hcb_codes/memo", hcb_code: ct.local_hcb_code %>
+              <% else %>
+                <%= transaction_memo(ct) %>
+              <% end %>
             </span>
             <% if ct.amount_cents.negative? && name_contains_emoji?(ct.local_hcb_code.memo) %>
               <% admin_tools("memo-frame__ai-button badge m0 ml1 p0 overflow-visible") do %>

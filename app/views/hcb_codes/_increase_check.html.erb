@@ -86,8 +86,8 @@
     </p>
 
     <p>
-      <strong>Memo</strong>
-      <%= organizer_signed_in? ? @hcb_code.increase_check.memo : "Sign in to view" %>
+      <strong>Transaction memo</strong>
+      <%= render "hcb_codes/memo", hcb_code: @hcb_code %>
     </p>
 
     <p>

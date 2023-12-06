@@ -44,6 +44,10 @@
         <%= format_datetime @hcb_code.check_deposit.created_at %>
       </p>
     <% end %>
+    <p>
+      <strong>Transaction memo</strong>
+      <%= render "hcb_codes/memo", hcb_code: @hcb_code %>
+    </p>
   </section>
 
   <div class="flex justify-around pt2 pb2">

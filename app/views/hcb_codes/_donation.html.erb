@@ -89,6 +89,10 @@
       <% end %>
     </p>
     <p>
+      <strong>Transaction memo</strong>
+      <%= render "hcb_codes/memo", hcb_code: @hcb_code %>
+    </p>
+    <p>
       <strong>Amount</strong>
       +<%= render_money @donation.amount %>
     </p>

@@ -7,13 +7,13 @@
           <%= pop_icon_to "edit",
               edit_hcb_code_path(@hcb_code),
               class: "mr2 align-middle", "aria-label": "Rename transaction",
-              data: { turbo: true } if organizer_signed_in? %>
+              data: { turbo: true } %>
 
           <span class="align-middle"
                 data-controller="navigation"
                 data-action="dblclick->navigation#navigate"
                 data-navigation-location-param="<%= edit_hcb_code_path(@hcb_code) %>"
-                data-navigation-frame-param="<%= ActionView::RecordIdentifier.dom_id(@hcb_code) %>">
+                data-navigation-frame-param="<%= dom_id(@hcb_code) %>">
             <%= @hcb_code.memo %>
             <span class="regular muted"> for </span>
             <%= number_to_currency(@hcb_code.amount) %>

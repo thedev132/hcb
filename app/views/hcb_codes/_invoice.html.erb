@@ -59,6 +59,10 @@
       </p>
     <% end %>
     <p>
+      <strong>Transaction memo</strong>
+      <%= render "hcb_codes/memo", hcb_code: @hcb_code %>
+    </p>
+    <p>
       <strong>Billed to</strong>
       <% if organizer_signed_in? %>
         <span><%= mail_to @sponsor.contact_email.downcase %></span>

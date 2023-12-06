@@ -1,0 +1,40 @@
+<%# locals: (hcb_code:, form: false, prepended_to_memo: "") -%>
+
+<% form ||= false %>
+<% prepended_to_memo ||= "" %>
+
+<% if organizer_signed_in? %>
+  <%= turbo_frame_tag "#{dom_id(hcb_code)}:memo", style: "flex-grow: 1"  do %>
+    <% if form %>
+        <%= form_with model: hcb_code, data: { turbo: true, controller: "form" } do |form| %>
+          <div class="flex items-center">
+            <%= form.hidden_field :memo, value: "true" %>
+            <%= form.hidden_field :prepended_to_memo, value: prepended_to_memo %>
+            <%= form.text_field :memo,
+                                list: "custom-memos",
+                                placeholder: hcb_code.memo,
+                                autofocus: true,
+                                data: { controller: "input", input_target: "input", action: "focus->input#select blur->form#submit" },
+                                class: "bg-transparent fit",
+                                style: "border: none; outline: none; padding: 0; border-radius: 0; min-height: 0; margin-top: 5px; margin-bottom: 3px; width: 100%" %>
+          </div>
+        <% end %>
+
+    <% else %>
+      <span class="align-middle"
+            data-controller="navigation"
+            data-action="dblclick->navigation#navigate"
+            title="<%= hcb_code.memo %>"
+            data-navigation-location-param="<%= edit_hcb_code_path(hcb_code, mini: true, prepend: prepended_to_memo) %>"
+            data-navigation-frame-param="<%= "#{ActionView::RecordIdentifier.dom_id(hcb_code)}:memo" %>">
+        <%= link_to "#{prepended_to_memo} #{hcb_code.memo}", edit_hcb_code_path(hcb_code, mini: true, prepended_to_memo: ),
+            class: "mr2 align-middle tooltipped tooltipped--s",
+            style: "color: inherit; text-decoration: none;",
+            "aria-label": "Click to rename this transaction",
+            data: { turbo: true } %>
+      </span>
+    <% end %>
+  <% end %>
+<% else %>
+  <%= prepended_to_memo %> <%= hcb_code.memo %>
+<% end %>

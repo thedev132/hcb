@@ -80,13 +80,13 @@
         <div class="flex items-center justify-start">
           <%= turbo_frame_tag "#{pt.local_hcb_code.hashid}:memo_frame", class: "memo-frame flex", style: "width:100%; overflow:hidden; text-overflow:ellipsis" do %>
             <span title="<%= transaction_memo(pt) %>">
-              <% if pt.declined? %>
-                DECLINED:
+              <% prepended_to_memo = pt.declined? ? "DECLINED:" : "PENDING:" %>
+              <% if Flipper.enabled?(:rename_on_homepage_2023_12_06, current_user) %>
+                <%= render "hcb_codes/memo", hcb_code: pt.local_hcb_code, prepended_to_memo: %>
               <% else %>
-                PENDING:
+                <%= prepended_to_memo %>
+                <%= transaction_memo(pt) %>
               <% end %>
-
-              <%= transaction_memo(pt) %>
             </span>
 
             <% if pt.amount_cents.negative? && name_contains_emoji?(pt.local_hcb_code.memo) %>

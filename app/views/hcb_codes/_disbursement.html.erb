@@ -96,8 +96,8 @@
     </p>
 
     <p>
-      <strong>Memo</strong>
-      <%= organizer_signed_in? ? @hcb_code.disbursement.name : "Sign in to view" %>
+      <strong>Transaction memo</strong>
+      <%= render "hcb_codes/memo", hcb_code: @hcb_code %>
     </p>
 
     <%= render "hcb_codes/tags", hcb_code: @hcb_code, event: (@event || @hcb_code.event) %>

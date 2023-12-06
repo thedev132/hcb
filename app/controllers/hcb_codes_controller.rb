@@ -74,6 +74,10 @@ class HcbCodesController < ApplicationController
 
     authorize @hcb_code
 
+    if params[:mini].present?
+      return render partial: "hcb_codes/memo", locals: { hcb_code: @hcb_code, form: true, prepended_to_memo: params[:prepended_to_memo] }
+    end
+
     @frame = turbo_frame_request?
     @suggested_memos = [::HcbCodeService::AiGenerateMemo.new(hcb_code: @hcb_code).run].compact + ::HcbCodeService::SuggestedMemos.new(hcb_code: @hcb_code, event: @event).run.first(4)
   end
@@ -87,6 +91,10 @@ class HcbCodesController < ApplicationController
 
     @hcb_code.canonical_transactions.each { |ct| ct.update!(custom_memo: hcb_code_params[:memo]) }
     @hcb_code.canonical_pending_transactions.each { |cpt| cpt.update!(custom_memo: hcb_code_params[:memo]) }
+
+    if params[:hcb_code][:memo].present?
+      return render partial: "hcb_codes/memo", locals: { hcb_code: @hcb_code, form: false, prepended_to_memo: params[:hcb_code][:prepended_to_memo] }
+    end
 
     redirect_to @hcb_code
   end
