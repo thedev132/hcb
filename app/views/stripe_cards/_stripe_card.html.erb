@@ -1,4 +1,4 @@
-<a class="text-decoration-none" href="<%= local_assigns[:href] || stripe_card_path(stripe_card) %>">
+<a class="text-decoration-none" href="<%= !show_mock_data? ? (local_assigns[:href] || stripe_card_path(stripe_card)) : "javascript:;" %>">
 
   <%= creator_bar stripe_card, prefix: "#{ 'grant' if stripe_card.card_grant.present? } issued " unless defined? headless %>
   <div class="stripe-card <%= stripe_card.status_text.downcase %> <%= stripe_card.virtual? ? "virtual" : "" %> <%= "platinum" if stripe_card.platinum? %>" data-behavior="hover_tilt" style="background-image: <%= GeoPattern.generate(stripe_card.id).to_data_uri unless stripe_card.platinum? %>">
