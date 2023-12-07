@@ -24,7 +24,7 @@
       <% end %>
     <% end %>
     <% if @has_header_image %>
-      <%= link_to event_remove_header_image_path(@event), method: :post do %>
+      <%= link_to event_remove_header_image_path(@event), method: :post, data: { turbo_confirm: "Are you sure you want to remove this image?" } do %>
         <div
           role="button"
           class="muted pointer ml1 no-select tooltipped tooltipped--e line-height-0"
