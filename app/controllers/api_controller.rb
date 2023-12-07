@@ -7,6 +7,8 @@ class ApiController < ApplicationController
   skip_after_action :verify_authorized # do not force pundit
   skip_before_action :signed_in_user
 
+  rescue_from(ActiveRecord::RecordNotFound) { render json: { error: "Record not found" }, status: :not_found }
+
   # find an event by slug
   def event_find
     # pull slug out from JSON
