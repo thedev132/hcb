@@ -288,7 +288,7 @@ class HcbCode < ApplicationRecord
   end
 
   def card_grant?
-    disbursement? && disbursement.card_grant.present?
+    disbursement? && disbursement&.card_grant.present?
   end
 
   def card_grant_memo
