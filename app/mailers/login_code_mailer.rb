@@ -7,7 +7,7 @@ class LoginCodeMailer < ApplicationMailer
     mail(to: email_address,
          subject: "Hack Club Login Code: #{@pretty_login_code}",
          from: "Hack Club <login@hackclub.com>",
-         reply_to: "Hack Club Team <team@hackclub.com>")
+         reply_to: "HCB <hcb@hackclub.com>")
   end
 
 end
