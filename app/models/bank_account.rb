@@ -22,13 +22,15 @@ class BankAccount < ApplicationRecord
   has_encrypted :plaid_access_token
 
   has_many :transactions
+  has_many :raw_plaid_transactions, primary_key: :plaid_account_id, foreign_key: :plaid_account_id
+  has_many :canonical_transactions, through: :raw_plaid_transactions
 
   scope :syncing, -> { where(should_sync: true) }
   scope :syncing_v2, -> { where(should_sync_v2: true) }
   scope :failing, -> { where("failed_at is not null") }
 
   def balance
-    self.transactions.sum(:amount)
+    canonical_transactions.sum(:amount_cents)
   end
 
 end
