@@ -29,7 +29,7 @@
       </div>
       <div>
         <%= inline_icon "leader", size: 20, style: "vertical-align: middle; margin: -0.2rem 0.5rem 0 0;" %>
-        <%= link_to "Impersonate this user", impersonate_users_path(user_id: position.user.id, return_to: request.url) %>
+        <%= link_to "Impersonate this user", impersonate_user_path(position.user.id, return_to: request.url), data: { turbo_method: "post", turbo_frame: "_top" } %>
       </div>
     </section>
   <% end %>

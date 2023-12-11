@@ -93,7 +93,6 @@ Rails.application.routes.draw do
 
   resources :users, only: [:edit, :update] do
     collection do
-      get "impersonate", to: "users#impersonate"
       get "auth", to: "users#auth"
       post "auth", to: "users#auth_submit"
       get "auth/login_preference", to: "users#choose_login_preference", as: :choose_login_preference
@@ -130,6 +129,8 @@ Rails.application.routes.draw do
       get "previews", to: "users#edit_featurepreviews"
       get "security", to: "users#edit_security"
       get "admin", to: "users#edit_admin"
+
+      post "impersonate"
     end
     post "delete_profile_picture", to: "users#delete_profile_picture"
     patch "stripe_cardholder_profile", to: "stripe_cardholders#update_profile"

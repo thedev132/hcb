@@ -11,9 +11,11 @@ class UsersController < ApplicationController
   def impersonate
     authorize current_user
 
-    impersonate_user(User.find(params[:user_id]))
+    user = User.find(params[:id])
 
-    redirect_to(params[:return_to] || root_path)
+    impersonate_user(user)
+
+    redirect_to params[:return_to] || root_path, flash: { info: "You're now impersonating #{user.name}." }
   end
 
   # view to log in
@@ -368,7 +370,7 @@ class UsersController < ApplicationController
   end
 
   def delete_profile_picture
-    @user = User.friendly.find(params[:user_id])
+    @user = User.friendly.find(params[:id])
     authorize @user
 
     @user.profile_picture.purge_later

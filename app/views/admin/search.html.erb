@@ -39,7 +39,7 @@
         </ul>
       <% end %>
       <div class="card__banner card__banner--bottom card__darker">
-        <%= link_to "Impersonate", impersonate_users_path(user_id: r.id), class: "btn" %>
+        <%= link_to "Impersonate", impersonate_user_path(r.id), class: "btn", data: { turbo_method: "post" } %>
       </div>
     </div>
   <% end %>
