@@ -32,7 +32,7 @@ All contributors are expected to follow the Hack Club [Code of Conduct](https://
 
 ## Quick Start
 
-This section provides a high-level quick start guide for running HCB with Docker or GitHub Codespaces. For more information, please see the [wiki page](https://github.com/hackclub/hcb/wiki/Development).
+This section provides a high-level quick start guide for running HCB with Docker or GitHub Codespaces. <!--For more information, please see the [wiki page](https://github.com/hackclub/hcb/wiki/Development).-->
 
 Clone the repository or create a new Codespaces instance.
 
@@ -41,35 +41,19 @@ Clone the repository or create a new Codespaces instance.
 git clone https://github.com/hackclub/hcb.git && cd hcb
 ```
 
-Create a `config/master.key` file and ask a team member (ping `@creds` in Slack) for the contents.
-
-```bash
-touch config/master.key
-# copy the key to your clipboard
-pbpaste > config/master.key
-```
-
 Install and run [Docker](https://docs.docker.com/get-docker/).
 
-Run the [docker_setup.sh](./docker_setup.sh) script to install dependencies and set up a local environment with Docker.
+Run the [docker_dev_setup.sh](./docker_dev_setup.sh) script to install dependencies and set up a local environment with Docker.
 
 ```bash
-./docker_setup.sh
-# optionally, append the --with-solargraph flag to enable Solargraph
-./docker_setup.sh --with-solargraph
+./docker_dev_setup.sh
 ```
 
-Start the development server with the [docker_start.sh](./docker_start.sh) script.
-
-```bash
-./docker_start.sh
-# optionally, append the --with-solargraph flag to start Solargraph
-./docker_start.sh --with-solargraph
-```
+Start the development server with `docker compose up`
 
 Visit [localhost:3000](http://localhost:3000) to see the result.
 
-**What's Solargraph?** [Solargraph](https://solargraph.org/) is a Ruby language server that provides better Intellisense and code completion. It's completely optional to use Solargraph but highly recommended. You may also need to install the [Solargraph extension](https://github.com/castwide/solargraph#using-solargraph) for your IDE.
+<!--**What's Solargraph?** [Solargraph](https://solargraph.org/) is a Ruby language server that provides better Intellisense and code completion. It's completely optional to use Solargraph but highly recommended. You may also need to install the [Solargraph extension](https://github.com/castwide/solargraph#using-solargraph) for your IDE.-->
 
 ### Production Access
 
