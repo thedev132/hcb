@@ -4,6 +4,6 @@ module HasMetrics
   extend ActiveSupport::Concern
 
   included do
-    has_many :metrics, dependent: :destroy
+    has_many :metrics, as: :subject, dependent: :destroy
   end
 end
