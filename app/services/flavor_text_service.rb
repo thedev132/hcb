@@ -33,7 +33,9 @@ class FlavorTextService
       "super secret admin mode",
       "Puts the 'dev' in 'financially devious'!",
       "Rails.env.fun?",
-      "Let's rewrite HCB in #{Faker::ProgrammingLanguage.name}!"
+      "Let's rewrite HCB in #{Faker::ProgrammingLanguage.name}!",
+      "Here's a secret: HCB stands for Hack Club Bonk",
+      "recommended by 100% of fraudsters"
     ]
   end
 
