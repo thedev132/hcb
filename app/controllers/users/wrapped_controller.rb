@@ -10,7 +10,8 @@ module Users
     def data
       @data = {
         individual: {
-          firstName: current_user.full_name,
+          name: current_user.full_name,
+          id: current_user.public_id,
           totalMoneySpent: Metric::User::TotalSpent.from(current_user).metric,
           spendingByDate: Metric::User::SpendingByDate.from(current_user).metric,
           ranking: Metric::Hcb::SpendingByUser.metric.to_h.keys.index(current_user.id).to_f / Metric::Hcb::SpendingByUser.metric.to_h.keys.size, # this still needs to be done, we have spending by user
