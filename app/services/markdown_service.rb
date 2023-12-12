@@ -65,13 +65,15 @@ class MarkdownService
     end
 
     def try_hcb_autolink(link)
-      found_link = link.match(/(#{app_hosts.join('|')})\/hcb\/(\w{5,6})\#comment-(\w{5,6})/)
-      found_link ||= link.match(/(#{app_hosts.join('|')})\/hcb\/(\w{5,6})/)
+      found_link = link.match(/(#{app_hosts.join('|')})\/hcb\/(\w+)\#comment-(\w+)/)
+      found_link ||= link.match(/(#{app_hosts.join('|')})\/hcb\/(\w+)/)
 
       if found_link
         hcb_code = found_link[2]
         comment = found_link[3]
         hcb = HcbCode.find_by_hashid hcb_code
+        return nil unless hcb
+
         Pundit.authorize(@current_user, hcb, :show?)
         link_to "#{'comment on ' unless comment.blank?}#{hcb.humanized_type.downcase} (HCB-#{hcb.hashid})",
                 link,
