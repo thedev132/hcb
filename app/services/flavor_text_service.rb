@@ -87,7 +87,8 @@ class FlavorTextService
       "u seein' the snow outside?",
       "Dear Santa...",
       "where's my gingerbread house",
-      "makin' that money snow"
+      "makin' that money snow",
+      "Merry Fourth Of July and have a jolly halloween!"
     ]
   end
 
@@ -99,7 +100,8 @@ class FlavorTextService
       "👻",
       "🧛",
       "🎃",
-      "Pumpkin spice is the pumpkin spice of life."
+      "Pumpkin spice is the pumpkin spice of life.",
+      "Happy Easter - Oh wait wrong holiday."
     ]
   end
 
@@ -259,6 +261,7 @@ class FlavorTextService
       "Open on weekdays!",
       "Open on #{Date.today.strftime("%A")}s",
       "??? profit!",
+      "Made with Rails, Ruby and did I forget to mention Rails?",
       "Did you see the price of #{%w[Ðogecoin ₿itcoin Ξtherium].sample(random: @random)}?!",
       "Guess how much it costs to run this thing!",
       "Bytes served fresh daily by Heroku",
