@@ -524,8 +524,8 @@ Rails.application.routes.draw do
 
   get "admin_tasks", to: "admin#tasks"
   get "admin_task_size", to: "admin#task_size"
-  get "admin_search", to: "admin#search"
-  post "admin_search", to: "admin#search"
+  get "admin_search", to: redirect("/admin/users")
+  post "admin_search", to: redirect("/admin/users")
 
   resources :ops_checkins, only: [:create]
 

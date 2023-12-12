@@ -40,22 +40,6 @@ class AdminController < ApplicationController
     render json: { elapsed:, size: }, status: 200
   end
 
-  def search
-    # allows the same URL to easily be used for form and GET
-    return if request.method == "GET"
-
-    # removing dashes to deal with phone number
-    query = params[:q].gsub("-", "").strip
-
-    users = []
-
-    users.push(User.where("full_name ilike ?", "%#{query.downcase}%").includes(:events))
-    users.push(User.where(email: query).includes(:events))
-    users.push(User.where(phone_number: query).includes(:events))
-
-    @result = users.flatten.compact
-  end
-
   def negative_events
     @negative_events = Event.negatives
   end
