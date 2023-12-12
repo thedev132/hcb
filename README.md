@@ -49,7 +49,7 @@ Run the [docker_dev_setup.sh](./docker_dev_setup.sh) script to install dependenc
 ./docker_dev_setup.sh
 ```
 
-Start the development server with `docker compose up`
+Start the development server with `./docker_start.sh`
 
 Visit [localhost:3000](http://localhost:3000) to see the result.
 
