@@ -58,6 +58,7 @@ class FlavorTextService
       "where r my cookies?",
       "holiday edition",
       "santa edition",
+      "Walking in a winter hackerland...",
       "🎅🏻",
       "🦌🦌🦌🦌🦌🦌🦌🦌🛷🎅🎁",
       "fresh snow for $0.99!",
