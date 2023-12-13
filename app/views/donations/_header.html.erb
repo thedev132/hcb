@@ -10,7 +10,7 @@
   <%= inline_icon "moon-fill", size: home_action_size, style: "display: none;" %>
 </action>
 
-<% if organizer_signed_in? && Flipper.enabled?(:donation_page_customization_2022_06_29, @event) %>
+<% if organizer_signed_in? %>
   <div class="flex items-center m2 absolute top-0 left-0">
     <%= form_with model: @event, class: "embedded-display-none", data: { "controller" => "form" } do |form| %>
       <%= form.file_field :donation_header_image, required: true, class: "display-none", data: { action: "change->form#submit" } %>
