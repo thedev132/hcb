@@ -16,9 +16,35 @@ class EventsController < ApplicationController
   # GET /events
   def index
     authorize Event
+    respond_to do |format|
+      format.json do
+        events = @current_user.events.with_attached_logo.reorder("organizer_positions.sort_index ASC", "events.id ASC").map { |x|
+          {
+            name: x.name,
+            slug: x.slug,
+            logo: x.logo.attached? ? Rails.application.routes.url_helpers.url_for(x.logo) : "none",
+            member: true
+          }
+        }
 
-    @event_ids_with_transactions_cache = FeeRelationship.distinct.pluck(:event_id) # for performance reasons - until we build proper counter caching and modify schemas a bit for easier calculations
-    @events = Event.all
+        if admin_signed_in?
+          events.concat(
+            Event.all.excluding(@current_user.events).with_attached_logo.select([:slug, :name]).map { |e|
+              {
+                slug: e.slug,
+                name: e.name,
+                logo: e.logo.attached? ? Rails.application.routes.url_helpers.url_for(e.logo) : "none",
+                member: false
+              }
+            }
+          )
+        end
+
+        response.content_type = "text/json"
+
+        render json: events
+      end
+    end
   end
 
   # GET /events/1

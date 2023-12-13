@@ -6,7 +6,7 @@ class EventPolicy < ApplicationPolicy
   end
 
   def index?
-    user&.admin?
+    user.present?
   end
 
   def toggle_hidden?
