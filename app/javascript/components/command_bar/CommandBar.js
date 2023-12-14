@@ -593,7 +593,7 @@ const ResultItem = React.forwardRef(
         ref={ref}
         style={{
           padding: "12px 16px",
-          background: active ? "var(--kbar-overlay)" : "transparent",
+          background: active ? "var(--kbar-overlay)" : action.section == "Admin Tools" ? "var(--kbar-admin-overlay)" : "transparent",
           borderLeft: `2px solid ${active ? "var(--kbar-foreground)" : "transparent"}`,
           display: "flex",
           alignItems: "center",

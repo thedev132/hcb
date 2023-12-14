@@ -2,10 +2,12 @@
   --kbar-background: #fcfcfc;
   --kbar-foreground: #1c1c1d;
   --kbar-overlay: rgba(0 0 0 / 0.05);
+  --kbar-admin-overlay: rgba(241,196,15,0.125)
 }
 
 html[data-dark='true'] {
   --kbar-background: #1c1c1d;
   --kbar-foreground: #fcfcfc;
   --kbar-overlay: rgba(255 255 255 / 0.05);
+  --kbar-admin-overlay: rgba(255,140,55,0.0625);
 }
