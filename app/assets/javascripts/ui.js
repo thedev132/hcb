@@ -223,8 +223,7 @@ $(document).on('turbo:load', function () {
   }
 
   // login code sanitization
-  const loginCodeInput = $("input[name='login_code']")
-  loginCodeInput.on('keyup change', function (event) {
+  $(document).on('keyup change', "input[name='login_code']", function() {
     const currentVal = $(this).val()
     let newVal = currentVal.replace(/[^0-9]+/g, '')
 
