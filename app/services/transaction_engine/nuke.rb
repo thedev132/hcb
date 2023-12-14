@@ -20,6 +20,7 @@ module TransactionEngine
       RawEmburseTransaction.delete_all
       RawStripeTransaction.delete_all
       RawIncreaseTransaction.delete_all
+      RawColumnTransaction.delete_all
 
       true
     end

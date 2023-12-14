@@ -1286,6 +1286,17 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_01_193105) do
     t.index ["representative_id"], name: "index_partners_on_representative_id"
   end
 
+  create_table "raw_column_transactions", force: :cascade do |t|
+    t.string "column_report_id"
+    t.integer "transaction_index"
+    t.jsonb "column_transaction"
+    t.text "description"
+    t.date "date_posted"
+    t.integer "amount_cents"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "raw_csv_transactions", force: :cascade do |t|
     t.integer "amount_cents"
     t.date "date_posted"

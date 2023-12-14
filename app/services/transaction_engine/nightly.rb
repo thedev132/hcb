@@ -5,7 +5,7 @@ module TransactionEngine
     include ::TransactionEngine::Shared
 
     def initialize(start_date: nil)
-      @start_date = start_date || last_1_month
+      @start_date = start_date || 1.week.ago
     end
 
     def run
@@ -16,6 +16,7 @@ module TransactionEngine
       try_to { import_raw_stripe_transactions! }
       try_to { import_raw_csv_transactions! }
       try_to { import_raw_increase_transactions! }
+      try_to { import_raw_column_transactions! }
 
       # (2) Hash transactions
       try_to { hash_raw_plaid_transactions! }
@@ -83,6 +84,20 @@ module TransactionEngine
 
     def import_raw_increase_transactions!
       ::TransactionEngine::RawIncreaseTransactionService::Increase::Import.new(start_date: @start_date).run
+    end
+
+    def import_raw_column_transactions!
+      transactions_by_report = ColumnService.new.transactions(from_date: @start_date)
+
+      transactions_by_report.each do |report_id, transactions|
+        transactions.each_with_index do |transaction, transaction_index|
+          raw_column_transaction = RawColumnTransaction.find_or_create_by(column_report_id: report_id, transaction_index:) do |rct|
+            rct.amount_cents = transaction["available_amount"]
+            rct.date_posted = transaction["effective_at"]
+            rct.column_transaction = transaction
+          end
+        end
+      end
     end
 
     def hash_raw_plaid_transactions!
