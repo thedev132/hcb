@@ -247,28 +247,6 @@ $(document).on('turbo:load', function () {
     $(this).val(newVal)
   })
 
-  loginCodeInput.closest('form').on('submit', function (event) {
-    // Ignore double submissions.
-    // Since we are auto-submitting the form, the user may attempt to submit at
-    // the same time. Let's prevent this.
-    const submittedAt = $(this).data('submittedAt')
-
-    // Theoretically, we only need to check for `submittedAt` since the form
-    // will reset on submitting; meaning the `submittedAt` data will be cleared.
-    // However, in the case of strange network issues, i'm not sure if that's
-    // always the case.
-    const recentlySubmitted = submittedAt && new Date() - submittedAt < 5000
-    if (recentlySubmitted) {
-      // The form was recently submitted. Don't submit form again
-      event.preventDefault()
-      console.log('Login form was recently submitted')
-    } else {
-      // Go ahead and submit, but also set `autoSubmittedAt`
-      $(this).data('submittedAt', new Date().getTime())
-      return true
-    }
-  })
-
   // if you add the money behavior to an input, it'll add commas, only allow two numbers for cents,
   // and only permit numbers to be entered
   $('input[data-behavior~=money]').on('input', function () {
