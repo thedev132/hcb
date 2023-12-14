@@ -41,6 +41,10 @@ class ColumnService
     puts e.response_body
   end
 
+  def ach_transfer(id)
+    get("/transfers/ach/#{id}")
+  end
+
   def environment
     Rails.env.production? ? :production : :sandbox
   end

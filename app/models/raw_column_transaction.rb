@@ -22,9 +22,22 @@ class RawColumnTransaction < ApplicationRecord
   def canonize
     create_canonical_transaction!(
       amount_cents:,
-      memo: "COLUMN TRANSACTION",
+      memo:,
       date: date_posted,
     )
+  end
+
+  def memo
+    transaction_id = column_transaction["transaction_id"]
+    if transaction_id.start_with? "acht"
+      ach_transfer = ColumnService.new.ach_transfer(transaction_id)
+
+      return "#{ach_transfer["company_name"]} #{ach_transfer["company_entry_description"]}"
+    end
+
+    "COLUMN TRANSACTION"
+  rescue
+    "COLUMN TRANSACTION"
   end
 
 end
