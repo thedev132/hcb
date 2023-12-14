@@ -13,6 +13,7 @@ import {
 	Priority,
 } from "kbar";
 import Icon from "@hackclub/icons";
+import csrf from '../../common/csrf'
 
 const searchStyle = {
 	padding: "12px 16px",
@@ -212,10 +213,19 @@ export default function CommandBar({admin = false, adminUrls = {}}) {
 			priority: Priority.HIGH,
 		},
 		{
-			id: "logout",
-			name: "Logout",
+			id: "signout",
+			name: "Sign out",
 			keywords: "sign out logout log out",
-			perform: () => (window.location.pathname = "/users/logout"),
+			perform: () => fetch(
+				"/users/logout", 
+				{ 
+					method: "DELETE", 
+					headers: {
+						'Content-Type': 'application/json',
+						'X-CSRF-Token': csrf()
+					} 
+				}
+			).then(() => window.location.pathname = "/"),
 			section: 'Actions',
 			icon: <Icon glyph="door-leave" size={16} />,
 			priority: Priority.HIGH,
