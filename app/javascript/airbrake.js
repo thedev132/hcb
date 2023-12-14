@@ -16,4 +16,14 @@ airbrake?.addFilter(notice => {
   return notice
 })
 
+airbrake?.addFilter((notice) => {
+  if (
+    notice.errors
+      .flatMap(e => e.backtrace)
+      .some(e => e.file?.startsWith('chrome-extension://'))
+  )
+    return null
+  return notice;
+});
+
 export default airbrake
