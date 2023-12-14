@@ -124,7 +124,7 @@
       </div>
     <% end %>
 
-    <% if @event.category == "hackathon" || @event.category == "event" %>
+    <% if @event.category.in? ["hackathon", "event", "high school hackathon"] %>
       <h3 class="mb1" id="event_date_heading">Event Date</h3>
       <div class="card mb3">
         <p class="mt0">
@@ -243,18 +243,13 @@
 
   <% admin_tools do %>
     <div class="field" id="admin_settings">
-      <%= form.label :name, "Name (if changed, also change in G Suite)" %>
+      <%= form.label :name %>
       <%= form.text_field :name %>
     </div>
 
     <div class="field">
       <%= form.label :sponsorship_fee, "Sponsorship fee (as fraction of revenue)" %>
       <%= form.text_field :sponsorship_fee, value: event.sponsorship_fee || 0.07, placeholder: "0.07", required: true %>
-    </div>
-
-    <div class="field">
-      <%= form.label :emburse_department_id %>
-      <%= form.text_field :emburse_department_id %>
     </div>
 
     <div class="field">
@@ -296,10 +291,6 @@
       <%= form.check_box :can_front_balance %>
       <%= form.label :can_front_balance, "Front incoming transactions?" %>
     </div>
-
-    <p class="mt3">To change an organization's status (Pending, Approved, Rejected, etc.),
-      use the <%= link_to "admin Organizations process page", event_process_admin_path(@event) %>
-    </p>
 
     <div class="action">
       <%= form.submit "Update" %>

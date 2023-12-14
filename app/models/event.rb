@@ -536,6 +536,12 @@ class Event < ApplicationRecord
   def plan_name
     if unapproved?
       "pending approval"
+    elsif hack_club_hq?
+      "hack club affiliated project"
+    elsif salary?
+      "salary account"
+    elsif sponsorship_fee == 0
+      "full fiscal sponsorship (fee waived)"
     else
       "full fiscal sponsorship"
     end
