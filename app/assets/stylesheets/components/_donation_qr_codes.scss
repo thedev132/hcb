@@ -66,7 +66,7 @@
 
 .iconsGrid > img, .iconsGrid > svg {
   height: 54px;
-	background-color: map-get($palette, snow);
+    background-color: map-get($palette, snow);
   border-radius: 12px;
   cursor: pointer;
 }
