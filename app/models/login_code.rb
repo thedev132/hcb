@@ -15,7 +15,7 @@
 #
 # Indexes
 #
-#  index_login_codes_on_code     (code) UNIQUE WHERE (used_at IS NULL)
+#  index_login_codes_on_code     (code)
 #  index_login_codes_on_user_id  (user_id)
 #
 # Foreign Keys
@@ -23,11 +23,15 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class LoginCode < ApplicationRecord
-  scope :active, -> { where(used_at: nil) }
+  EXPIRATION = 15.minutes
+
+  scope :active, -> { where(used_at: nil, created_at: EXPIRATION.ago..) }
 
   belongs_to :user
 
-  before_create :generate_code
+  after_initialize :generate_code
+
+  validates :code, presence: true, uniqueness: { conditions: -> { active } }
 
   # "123456" -> "123-456"
   def pretty
@@ -35,13 +39,19 @@ class LoginCode < ApplicationRecord
   end
 
   def active?
-    used_at.nil?
+    used_at.nil? && created_at >= EXPIRATION.ago
   end
 
   private
 
   def generate_code
-    self.code = SecureRandom.random_number(999_999).to_s.ljust(6, "0") # pad with zero(s) if needed
+    return if code.present?
+
+    loop do
+      self.code = SecureRandom.random_number(999_999).to_s.ljust(6, "0") # pad with zero(s) if needed
+      self.validate
+      break unless self.errors[:code].any?
+    end
   end
 
 end
