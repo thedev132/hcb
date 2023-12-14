@@ -26,6 +26,8 @@ class HcbCode < ApplicationRecord
   include Commentable
   include Receiptable
 
+  include Memo
+
   monetize :amount_cents
 
   has_and_belongs_to_many :tags
@@ -75,25 +77,6 @@ class HcbCode < ApplicationRecord
     @date ||= ct.try(:date) || pt.try(:date)
   end
 
-  def memo(event: nil)
-    return custom_memo if custom_memo.present?
-
-    return card_grant_memo if card_grant?
-    return disbursement_memo(event:) if disbursement?
-    return invoice_memo if invoice?
-    return donation_memo if donation?
-    return partner_donation_memo if partner_donation?
-    return ach_transfer_memo if ach_transfer?
-    return check_memo if check?
-    return increase_check_memo if increase_check?
-    return check_deposit_memo if check_deposit?
-    return fee_revenue_memo if fee_revenue?
-    return ach_payment_memo if ach_payment?
-    return grant_memo if grant?
-
-    ct.try(:smart_memo) || pt.try(:smart_memo) || ""
-  end
-
   def type
     return :unknown if unknown?
     return :invoice if invoice?
@@ -116,10 +99,6 @@ class HcbCode < ApplicationRecord
     t = :transaction if unknown?
 
     t.to_s.humanize
-  end
-
-  def custom_memo
-    ct.try(:custom_memo) || pt.try(:custom_memo)
   end
 
   def amount_cents
@@ -274,33 +253,12 @@ class HcbCode < ApplicationRecord
     hcb_i1 == ::TransactionGroupingEngine::Calculate::HcbCode::DISBURSEMENT_CODE
   end
 
-  def disbursement_memo(event: nil)
-    return disbursement.special_appearance_memo if disbursement.special_appearance_memo
-
-    if event == disbursement.source_event
-      "Transfer to #{disbursement.destination_event.name}".strip.upcase
-    elsif event == disbursement.destination_event
-      "Transfer from #{disbursement.source_event.name}".strip.upcase
-    else
-      "Transfer from #{disbursement.source_event.name} to #{disbursement.destination_event.name}".strip.upcase
-    end
-
-  end
-
   def card_grant?
     disbursement? && disbursement&.card_grant.present?
   end
 
-  def card_grant_memo
-    "Grant to #{disbursement.card_grant.user.name}"
-  end
-
   def grant?
     canonical_pending_transactions.first&.grant.present?
-  end
-
-  def grant_memo
-    "Grant to #{canonical_pending_transactions.first.grant.recipient_organization}"
   end
 
   def stripe_card?
@@ -315,48 +273,24 @@ class HcbCode < ApplicationRecord
     @invoice ||= Invoice.find_by(id: hcb_i2) if invoice?
   end
 
-  def invoice_memo
-    "INVOICE TO #{invoice.smart_memo}"
-  end
-
   def donation
     @donation ||= Donation.find_by(id: hcb_i2) if donation?
-  end
-
-  def donation_memo
-    "DONATION FROM #{donation.smart_memo}#{donation.refunded? ? " (REFUNDED)" : ""}"
   end
 
   def partner_donation
     @partner_donation ||= PartnerDonation.find_by(id: hcb_i2) if partner_donation?
   end
 
-  def partner_donation_memo
-    "DONATION FROM #{partner_donation.smart_memo}#{partner_donation.refunded? ? " (REFUNDED)" : ""}"
-  end
-
   def ach_transfer
     @ach_transfer ||= AchTransfer.find_by(id: hcb_i2) if ach_transfer?
-  end
-
-  def ach_transfer_memo
-    "ACH TO #{ach_transfer.smart_memo}"
   end
 
   def check
     @check ||= Check.find_by(id: hcb_i2) if check?
   end
 
-  def check_memo
-    "CHECK TO #{check.smart_memo}"
-  end
-
   def increase_check
     @increase_check ||= IncreaseCheck.find_by(id: hcb_i2) if increase_check?
-  end
-
-  def increase_check_memo
-    "Check to #{increase_check.recipient_name}".upcase
   end
 
   def disbursement
@@ -371,10 +305,6 @@ class HcbCode < ApplicationRecord
     @fee_revenue ||= FeeRevenue.find_by(id: hcb_i2) if fee_revenue?
   end
 
-  def fee_revenue_memo
-    "Fee revenue from #{fee_revenue.start.strftime("%b %e")} to #{fee_revenue.end.strftime("%b %e")}"
-  end
-
   def ach_payment?
     hcb_i1 == ::TransactionGroupingEngine::Calculate::HcbCode::ACH_PAYMENT_CODE
   end
@@ -383,20 +313,12 @@ class HcbCode < ApplicationRecord
     @ach_payment ||= AchPayment.find(hcb_i2) if ach_payment?
   end
 
-  def ach_payment_memo
-    "Bank transfer"
-  end
-
   def check_deposit?
     hcb_i1 == ::TransactionGroupingEngine::Calculate::HcbCode::CHECK_DEPOSIT_CODE
   end
 
   def check_deposit
     @check_deposit ||= CheckDeposit.find_by(id: hcb_i2) if check_deposit?
-  end
-
-  def check_deposit_memo
-    "CHECK DEPOSIT"
   end
 
   def unknown?
