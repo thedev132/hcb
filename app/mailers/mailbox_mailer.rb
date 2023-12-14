@@ -1,8 +1,11 @@
 # frozen_string_literal: true
 
 class MailboxMailer < ApplicationMailer
-  def forward(incoming_mail:, to:)
-    mail to:, subject: "Fwd: #{incoming_mail.subject} (#{incoming_mail.to.first})", reply_to: incoming_mail.from, content: incoming_mail.content
+  def forward(inbound_email:, to:)
+    mail to:, reply_to: inbound_email.mail.from,
+         content_type: "text/html",
+         subject: "Fwd: #{inbound_email.mail.subject} (#{inbound_email.mail.to.first})",
+         body: inbound_email.mail.body.decoded
   end
 
 end
