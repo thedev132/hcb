@@ -128,7 +128,7 @@ class Check < ApplicationRecord
     when :canceled, :rejected
       "Canceled"
     else
-      status
+      status.to_s.humanize
     end
   end
 
