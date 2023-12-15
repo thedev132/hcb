@@ -10,6 +10,7 @@
 #  amount_received                      :integer
 #  email                                :text
 #  hcb_code                             :text
+#  in_transit_at                        :datetime
 #  ip_address                           :inet
 #  message                              :text
 #  name                                 :text
@@ -76,7 +77,7 @@ class Donation < ApplicationRecord
   scope :not_pending, -> { where.not(aasm_state: "pending") }
   scope :incoming_deposits, -> { where("aasm_state in (?)", ["in_transit"]) }
 
-  aasm do
+  aasm timestamps: true do
     state :pending, initial: true
     state :in_transit
     state :deposited
@@ -116,7 +117,11 @@ class Donation < ApplicationRecord
       self.payout_creation_balance_available_at = funds_available_at
     end
 
-    self.aasm_state = "in_transit" if aasm_state == "pending" && status == "succeeded" # hacky
+    mark_in_transit if may_mark_in_transit? && status == "succeeded" # hacky
+  end
+
+  def donated_at
+    in_transit_at || created_at
   end
 
   def stripe_dashboard_url

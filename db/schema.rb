@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_12_01_193105) do
+ActiveRecord::Schema[7.0].define(version: 2023_12_15_161228) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_stat_statements"
@@ -522,6 +522,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_01_193105) do
     t.bigint "recurring_donation_id"
     t.text "user_agent"
     t.inet "ip_address"
+    t.datetime "in_transit_at"
     t.index ["event_id"], name: "index_donations_on_event_id"
     t.index ["fee_reimbursement_id"], name: "index_donations_on_fee_reimbursement_id"
     t.index ["payout_id"], name: "index_donations_on_payout_id"
