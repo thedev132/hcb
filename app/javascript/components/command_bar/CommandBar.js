@@ -31,9 +31,11 @@ const animatorStyle = {
   width: "100%",
   background: "var(--kbar-background)",
   color: "var(--kbar-foreground)",
-  borderRadius: "8px",
+  borderRadius: "6px",
   overflow: "hidden",
   boxShadow: "0px 6px 20px rgb(0 0 0 / 20%)",
+  fontFamily: `ui-rounded, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 
+               Roboto, 'Fira Sans', Oxygen, Ubuntu, 'Helvetica Neue', sans-serif`
 };
 
 const groupNameStyle = {
@@ -214,7 +216,7 @@ export default function CommandBar({admin = false, adminUrls = {}}) {
     },
     {
       id: "signout",
-      name: "Sign out",
+      name: "Sign Out",
       keywords: "sign out logout log out",
       perform: () => fetch(
         "/users/logout",
@@ -546,7 +548,7 @@ export default function CommandBar({admin = false, adminUrls = {}}) {
         <KBarPortal>
           <KBarPositioner style={{ zIndex: 1000 }}>
             <KBarAnimator style={animatorStyle}>
-              <KBarSearch style={searchStyle} />
+              <KBarSearch style={searchStyle} defaultPlaceholder={"Search..."} />
               <RenderResults />
             </KBarAnimator>
           </KBarPositioner>
