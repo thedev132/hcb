@@ -10,16 +10,13 @@
 
 <%= render partial: "admin_viewer", locals: { record: @event } %>
 
-<% if Flipper.enabled?(:incoming_ach_payments_2023_02_17, @event) %>
-  <h3 class="mb1 flex items-center">
-    Account information
-    <% unless Flipper.enabled?(:incoming_ach_payments_2023_02_17) %>
-      <div class="badge bg-info">Beta</div>
-    <% end %>
-  </h3>
+<h3 class="mb1 flex items-center">
+  Account information
+</h3>
 
-  <div class="card mb3">
-    <section class="details">
+<div class="card mb3">
+  <section class="details">
+    <% if Flipper.enabled?(:incoming_ach_payments_2023_02_17, @event) %>
       <p>
         <strong>Account number</strong>
         <span><%= @event.account_number %></span>
@@ -28,32 +25,34 @@
         <strong>Routing number</strong>
         <span><%= @event.routing_number %></span>
       </p>
-      <% unless @event.demo_mode? %>
+    <% end %>
+
+    <p>
+      <strong>Current plan</strong>
+      <span><%= @event.plan_name.titleize %></span>
+    </p>
+
+    <% unless @event.demo_mode? %>
+      <p>
+        <strong>Fee on revenue</strong>
+        <span><%= number_to_percentage(@event.sponsorship_fee_in_database * 100, significant: true, strip_insignificant_zeros: true) %></span>
+      </p>
+      <% if @event.high_school_hackathon? && @event.sponsorship_fee == 0 %>
         <p>
-          <strong>Current plan</strong>
-          <span><%= @event.plan_name.titleize %></span>
+          <strong>
+            <a
+              href="https://changelog.hcb.hackclub.com/bank-now-provides-free-durian-241524">Fee waiver</a> expiration
+          </strong>
+          <span>December 31st, 2024</span>
         </p>
-        <p>
-          <strong>Fee on revenue</strong>
-          <span><%= number_to_percentage(@event.sponsorship_fee_in_database * 100, significant: true, strip_insignificant_zeros: true) %></span>
-        </p>
-        <% if @event.high_school_hackathon? && @event.sponsorship_fee == 0 %>
-          <p>
-            <strong>
-              <a
-                href="https://changelog.hcb.hackclub.com/bank-now-provides-free-durian-241524">Fee waiver</a> expiration
-            </strong>
-            <span>December 31st, 2024</span>
-          </p>
-        <% end %>
       <% end %>
-      <% admin_tools "", "p" do %>
-        <strong>ID</strong>
-        <span><%= @event.increase_account_number&.increase_account_number_id %></span>
-      <% end %>
-    </section>
-  </div>
-<% end %>
+    <% end %>
+    <% admin_tools "", "p" do %>
+      <strong>ID</strong>
+      <span><%= @event.increase_account_number&.increase_account_number_id %></span>
+    <% end %>
+  </section>
+</div>
 
 <h3 class="mb1">Feature previews</h3>
 

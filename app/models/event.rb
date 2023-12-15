@@ -534,7 +534,9 @@ class Event < ApplicationRecord
   alias fee_balance fee_balance_v2_cents
 
   def plan_name
-    if unapproved?
+    if demo_mode?
+      "playground mode"
+    elsif unapproved?
       "pending approval"
     elsif hack_club_hq?
       "hack club affiliated project"
