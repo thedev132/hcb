@@ -38,8 +38,7 @@ class Metric < ApplicationRecord
     zip = loc_array.last
     unless zip == "000000"
       geocode = Geocoder.search(location)[0]
-      if geocode.present?
-        address = Geocoder.search(location)[0]&.data&.[]("address")
+      if geocode.present? && (address = Geocoder.search(location)[0]&.data&.[]("address"))
         if address["town"]
           return "#{loc_array[0, loc_array.length - 1].join(" - ")} - #{address["town"]}"
         elsif address["city"]
