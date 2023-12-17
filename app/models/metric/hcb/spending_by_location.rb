@@ -63,7 +63,7 @@ class Metric
           END"
                             )
                             .order(Arel.sql("SUM(amount_cents) * -1 DESC"))
-                            .each_with_object({}) { |item, hash| hash[item[:location]] = item[:amount_spent] }
+                            .each_with_object({}) { |item, hash| hash[self.geocode(item[:location])] = item[:amount_spent] }
 
       end
 

@@ -33,6 +33,26 @@ class Metric < ApplicationRecord
     raise UnimplementedError
   end
 
+  def geocode(location)
+    loc_array = location.split(" - ")
+    zip = loc_array.last
+    unless zip == "000000"
+      geocode = Geocoder.search(location)[0]
+      if geocode.present?
+        address = Geocoder.search(location)[0]&.data&.[]("address")
+        if address["town"]
+          return "#{loc_array[0, loc_array.length - 1].join(" - ")} - #{address["town"]}"
+        elsif address["city"]
+          return "#{loc_array[0, loc_array.length - 1].join(" - ")} - #{address["city"]}"
+        elsif address["county"]
+          return "#{loc_array[0, loc_array.length - 1].join(" - ")} - #{address["county"]}"
+        end
+
+      end
+    end
+    return loc_array[0, loc_array.length - 1].join(" - ")
+  end
+
   def self.from(subject, repopulate: false)
     metric = self.find_by(subject:)
     return self.create(subject:) if metric.nil?
