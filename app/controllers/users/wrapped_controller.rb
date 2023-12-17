@@ -11,10 +11,11 @@ module Users
       @data = {
         individual: {
           name: current_user.full_name,
+          first_name: current_user.first_name,
           id: current_user.public_id,
           totalMoneySpent: Metric::User::TotalSpent.from(current_user).metric,
           spendingByDate: Metric::User::SpendingByDate.from(current_user).metric,
-          ranking: Metric::Hcb::SpendingByUser.metric.to_h.keys.index(current_user.id).to_f / Metric::Hcb::SpendingByUser.metric.to_h.keys.size, # this still needs to be done, we have spending by user
+          ranking: Metric::Hcb::SpendingByUser.metric.keys.index(current_user.id).to_f / Metric::Hcb::SpendingByUser.metric.keys.size, # this still needs to be done, we have spending by user
           averageReceiptUploadTime: Metric::User::TimeToReceipt.from(current_user).metric, # in seconds
           lostReceiptCount: Metric::User::LostReceiptCount.from(current_user).metric,
           platinumCard: Metric::User::PlatinumCard.from(current_user).metric,

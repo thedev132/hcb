@@ -81,7 +81,6 @@ class Metric
         FROM "users"
         WHERE users.full_name IS NOT NULL
         ORDER BY spent desc
-        LIMIT 10000
         ' % { event: event.id }).reject { |hash| hash["spent"].nil? }
                           .map { |item| [item["id"], item["spent"].to_f] }
                           .sort_by { |_, spent| -spent }

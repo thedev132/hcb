@@ -23,9 +23,8 @@ class Metric
 
       def calculate
         ActiveRecord::Base.connection.exec_query('
-
         SELECT
-        users.full_name,
+        users.id AS user_id,
         (SELECT SUM(dollars_spent) AS spent
         FROM (
             SELECT SUM(amount_cents) * -1 AS dollars_spent
@@ -64,13 +63,18 @@ class Metric
             ) AS combined_table
         ) AS combined_result)
         FROM "users"
-        WHERE users.full_name IS NOT NULL
         ORDER BY spent desc
-        LIMIT 10000
         ').reject { |hash| hash["spent"].nil? }
-                          .map { |item| [item["full_name"], item["spent"].to_f] }
-                          .sort_by { |_, spent| -spent }
+                          .map { |item| [item["user_id"], item["spent"].to_i] }
                           .to_h
+      end
+
+      def metric
+        # Unfortunately, jsonb columns don't maintain key order, so we have to re-sort. (json columns will keep key order tho)
+        Rails.cache.fetch("#{cache_key_with_version}/metric", expires_in: 1.week) do
+          # json doesn't support integer keys, so we have to convert them from strings back to ints
+          super.sort_by { |_, spent| -spent }.to_h.transform_keys { |user_id| user_id.to_i }
+        end
       end
 
     end
