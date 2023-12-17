@@ -36,7 +36,7 @@ class Metric
           words = memo.scan(/\b\w+\b/)
           words.each do |word|
             word = word.downcase
-            next if common.include?(word)
+            next if common.include?(word) || is_numeric?(word)
 
             word_frequency[word] += 1
           end
@@ -44,6 +44,12 @@ class Metric
 
         word_frequency
 
+      end
+
+      private
+
+      def is_numeric?(str)
+        !Float(str).nil? rescue false
       end
 
     end
