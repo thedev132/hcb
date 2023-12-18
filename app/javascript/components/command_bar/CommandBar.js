@@ -128,6 +128,7 @@ function ActionRegister() {
                 (window.location.pathname = `/${event.slug}/transfers`),
               icon: <Icon glyph="payment-transfer" size={16} />,
               parent: event.slug,
+              keywords: "ach check",
             })),
             ...data.map((event) => ({
               id: `${event.slug}-team`,
