@@ -27,7 +27,7 @@ class Metric < ApplicationRecord
 
   def populate
     self.metric = calculate
-    touch # Shows that the metric is update to date; even if value hasn't changed
+    touch if persisted? # Shows that the metric is update to date; even if value hasn't changed
   end
 
   def calculate
