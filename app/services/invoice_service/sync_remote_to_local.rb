@@ -32,7 +32,7 @@ module InvoiceService
       # https://stripe.com/docs/api/charges/object#charge_object-payment_method_details
       invoice.payment_method_type = type = remote_invoice&.charge&.payment_method_details&.type
       if invoice.payment_method_type
-        details = remote_invoice&.charge&.payment_method_details&.dig(invoice.payment_method_type)
+        details = remote_invoice&.charge&.payment_method_details&.[](invoice.payment_method_type)
         if details
           case type
           when "card"
