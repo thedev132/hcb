@@ -230,7 +230,7 @@ class Invoice < ApplicationRecord
     }
   end
 
-  def set_fields_from_stripe_invoice(inv)
+  def set_fields_from_stripe_invoice(inv = remote_invoice)
     self.amount_due = inv.amount_due
     self.amount_paid = inv.amount_paid
     self.amount_remaining = inv.amount_remaining
@@ -348,7 +348,8 @@ class Invoice < ApplicationRecord
   end
 
   def sync_remote!
-    ::InvoiceService::SyncRemoteToLocal.new(invoice_id: id).run
+    set_fields_from_stripe_invoice
+    save!
   end
 
   private

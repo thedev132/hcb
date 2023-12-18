@@ -47,9 +47,7 @@ module InvoiceService
 
         remote_invoice.send_invoice
 
-        ::InvoiceService::SyncRemoteToLocal.new(
-          invoice_id: invoice.id
-        ).run
+        invoice.sync_remote!
       end
 
       invoice
