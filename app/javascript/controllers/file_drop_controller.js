@@ -1,23 +1,8 @@
 import { Controller } from '@hotwired/stimulus'
+import submitForm from "../common/submitForm"
+import airbrake from "../airbrake"
 
 let dropzone
-
-function postNavigate (path, data) {
-  const form = document.createElement('form')
-  form.method = 'POST'
-  form.action = path
-
-  for (const key in data) {
-    const input = document.createElement('input')
-    input.type = 'hidden'
-    input.name = key
-    input.value = data[key]
-    form.appendChild(input)
-  }
-
-  document.body.appendChild(form)
-  form.submit()
-}
 
 function extractId (dataTransfer) {
   let receiptId
@@ -32,6 +17,7 @@ function extractId (dataTransfer) {
     receiptId = imgTag.getAttribute('data-receipt-id')
   } catch (err) {
     console.error(err)
+    airbrake?.notify(err)
   }
   
   if (!receiptId) {
@@ -45,6 +31,7 @@ function extractId (dataTransfer) {
       receiptId = imageElement.getAttribute('data-receipt-id')
     } catch (err) {
       console.error(err)
+      airbrake?.notify(err)
     }
   }
 
@@ -55,7 +42,7 @@ export default class extends Controller {
   static targets = ['fileInput', 'dropzone', 'form', 'uploadMethod']
   static values = {
     title: String,
-    linking: String,
+    linking: { type: Boolean, default: false },
     receiptable: String,
     modal: String
   }
@@ -77,7 +64,7 @@ export default class extends Controller {
     this.counter = 0
     this.hideDropzone()
 
-    if (this.linkingValue == "true") {
+    if (this.linkingValue) {
 
       const receiptId = extractId(e.dataTransfer)
 
@@ -85,13 +72,12 @@ export default class extends Controller {
       const linkPath = this.modalValue;
 
       if (receiptId && receiptableType && receiptableId) {
-        return postNavigate(linkPath, {
+        return submitForm(linkPath, {
           receipt_id: receiptId,
           receiptable_type: receiptableType,
           receiptable_id: receiptableId,
           show_link: true,
-          authenticity_token: document.querySelector('form[data-controller="receipt-select"] > input[name="authenticity_token"]').value // this is messy, there's probably a better way to do this
-        });
+        })
       }
 
     }
