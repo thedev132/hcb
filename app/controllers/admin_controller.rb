@@ -423,7 +423,7 @@ class AdminController < ApplicationController
     end
 
     if @q
-      if @q.to_f != 0.0
+      if @q.to_f.nonzero?
         @q = (@q.to_f * 100).to_i
 
         relation = relation.where("amount_cents = ? or amount_cents = ?", @q, -@q)
@@ -465,7 +465,7 @@ class AdminController < ApplicationController
     end
 
     if @q
-      if @q.to_f != 0.0
+      if @q.to_f.nonzero?
         @q = (@q.to_f * 100).to_i
 
         relation = relation.where("amount = ? or amount = ?", @q, -@q)
@@ -558,7 +558,7 @@ class AdminController < ApplicationController
     end
 
     if @q
-      if @q.to_f != 0.0
+      if @q.to_f.nonzero?
         @q = (@q.to_f * 100).to_i
 
         relation = relation.where("amount = ? or amount = ?", @q, -@q)
@@ -653,7 +653,7 @@ class AdminController < ApplicationController
     end
 
     if @q
-      if @q.to_f != 0.0
+      if @q.to_f.nonzero?
         @q = (@q.to_f * 100).to_i
         relation = relation.where("payout_amount_cents = ? or payout_amount_cents = ?", @q, -@q)
       else
@@ -695,7 +695,7 @@ class AdminController < ApplicationController
     end
 
     if @q
-      if @q.to_f != 0.0
+      if @q.to_f.nonzero?
         @q = (@q.to_f * 100).to_i
 
         relation = relation.where("amount = ? or amount = ?", @q, -@q)
@@ -755,7 +755,7 @@ class AdminController < ApplicationController
     end
 
     if @q
-      if @q.to_f != 0.0
+      if @q.to_f.nonzero?
         @q = (@q.to_f * 100).to_i
 
         relation = relation.where("amount = ? or amount = ?", @q, -@q)
@@ -848,7 +848,7 @@ class AdminController < ApplicationController
     end
 
     if @q
-      if @q.to_f != 0.0
+      if @q.to_f.nonzero?
         @q = (@q.to_f * 100).to_i
 
         relation = relation.where("amount_due = ? or amount_due = ?", @q, -@q)

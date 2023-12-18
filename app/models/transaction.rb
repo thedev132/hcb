@@ -529,8 +529,8 @@ class Transaction < ApplicationRecord
 
     FeeReimbursement.pending.each do |reimbursement|
       next unless (self.name.start_with? reimbursement.transaction_memo)
-      return unless reimbursement.payout&.t_transaction
-      return unless self.amount == reimbursement.amount || reimbursement.amount < 100 && self.amount == 100
+      next unless reimbursement.payout&.t_transaction
+      next unless self.amount == reimbursement.amount || reimbursement.amount < 100 && self.amount == 100
 
       reimbursement.t_transaction = self
 

@@ -257,7 +257,7 @@ class Invoice < ApplicationRecord
     self.payment_method_type = type = inv&.charge&.payment_method_details&.type
     return unless self.payment_method_type
 
-    details = inv&.charge&.payment_method_details[self.payment_method_type]
+    details = inv&.charge&.payment_method_details&.dig(self.payment_method_type)
     return unless details
 
     case type

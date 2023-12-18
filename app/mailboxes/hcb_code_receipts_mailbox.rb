@@ -38,8 +38,8 @@ class HcbCodeReceiptsMailbox < ApplicationMailbox
   private
 
   def set_hcb_code
-    email_comment = mail.to.first.match(/\+.*\@/i)[0]
-    hcb_code_hashid = email_comment.match(/hcb-(.*)\@/i).captures.first
+    email_comment = mail.to.first.match(/\+.*@/i)[0]
+    hcb_code_hashid = email_comment.match(/hcb-(.*)@/i).captures.first
     @hcb_code = HcbCode.find_by_hashid hcb_code_hashid
   end
 

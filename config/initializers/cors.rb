@@ -8,11 +8,11 @@
 # Read more: https://github.com/cyu/rack-cors
 
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
-  DOMAINS = %w{https://hackclub.com localhost}.freeze
+  domains = %w{https://hackclub.com localhost}.freeze
 
   allow do
     origins do |source, _env|
-      DOMAINS.each do |domain|
+      domains.each do |domain|
         parsed = URI.parse(source)
         domain == source || domain == parsed.host
       end

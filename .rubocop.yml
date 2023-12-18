@@ -146,3 +146,14 @@ Bundler/OrderedGems:
 
 Naming/AccessorMethodName:
   Enabled: false
+
+Style/HashLikeCase:
+  Enabled: false
+
+Style/FormatStringToken:
+  EnforcedStyle: template
+
+Style/ClassAndModuleChildren:
+  Exclude:
+    - 'config/**/*.rb'
+    - 'app/models/ahoy/{event,visit}.rb'

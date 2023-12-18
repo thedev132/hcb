@@ -34,8 +34,6 @@ module EmburseClient
     result
   end
 
-  private
-
   def self.access_token
     Rails.application.credentials.emburse[:access_token]
   end

@@ -124,14 +124,14 @@ class Partner < ApplicationRecord
     nil
   end
 
+  def self.new_api_key
+    self.new.send(:new_api_key)
+  end
+
   private
 
   def new_api_key
     "hcbk_#{SecureRandom.hex(32)}"
-  end
-
-  def self.new_api_key
-    self.new.send(:new_api_key)
   end
 
 end
