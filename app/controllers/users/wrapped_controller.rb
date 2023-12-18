@@ -19,7 +19,7 @@ module Users
           averageReceiptUploadTime: Metric::User::TimeToReceipt.from(current_user).metric, # in seconds
           lostReceiptCount: Metric::User::LostReceiptCount.from(current_user).metric,
           platinumCard: Metric::User::PlatinumCard.from(current_user).metric,
-          words: Metric::User::Words.from(current_user).metric.select { |key, value| key.length >= 3 }.sort_by { |_, value| -value }.first(20).to_h.keys, # needs a format change to an array (rn it's a has)
+          words: Metric::User::Words.from(current_user).metric.first(20).to_h.keys, # needs a format change to an array (rn it's a has)
           spendingByLocation: Metric::User::SpendingByLocation.from(current_user).metric, # needs a format change on the React-side, should match spendingByCat format
           spendingByCategory: Metric::User::SpendingByCategory.from(current_user).metric,
           spendingByMerchant: Metric::User::SpendingByMerchant.from(current_user).metric,

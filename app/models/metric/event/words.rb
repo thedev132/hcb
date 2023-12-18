@@ -22,34 +22,51 @@ class Metric
       include Subject
 
       def calculate
-        transactions =
-          CanonicalTransaction
-          .joins("LEFT JOIN canonical_event_mappings ON canonical_transactions.id = canonical_event_mappings.canonical_transaction_id")
-          .where("canonical_event_mappings.event_id = ? AND EXTRACT(YEAR FROM canonical_transactions.created_at) = ?", event.id, 2023)
+        transactions = TransactionGroupingEngine::Transaction::All.new(event_id: event.id).run
+        TransactionGroupingEngine::Transaction::AssociationPreloader.new(transactions:, event:).run!
 
-        common = ["the", "of", "and", "to", "in", "is", "for", "from", "a"]
+        # 1. Get words from transaction memos
+        words = transactions.flat_map { |t| t.local_hcb_code.memo(event:).split }
 
-        word_frequency = Hash.new(0)
+        # 2. Clean words
+        words.map!(&method(:clean))
 
-        transactions.each do |transaction|
-          memo = transaction.memo.to_s.downcase
-          words = memo.scan(/\b\w+\b/)
-          words.each do |word|
-            word = word.downcase
-            next if common.include?(word) || is_numeric?(word)
+        # 3. Remove stop words, numbers, and stuff we don't want
+        words.reject! { |w| stop_word?(w) || numeric?(w) || !meaningful?(w) }
 
-            word_frequency[word] += 1
-          end
-        end
+        # 4. Count them all up
+        frequency = words.tally
 
-        word_frequency
+        # 5. Sort by frequency
+        sort frequency
+      end
 
+      def metric
+        # JSONB will disregard key order when saving, so we need to sort again
+        sort super
       end
 
       private
 
-      def is_numeric?(str)
+      def clean(word)
+        word.downcase.match(/\A[("]*(.*?)[):,"]*\Z/)[1]
+      end
+
+      def stop_word?(str)
+        str.in? %w[the of and to in is for from a]
+      end
+
+      def numeric?(str)
         !Float(str).nil? rescue false
+      end
+
+      def meaningful?(str)
+        # we don't want stuff too short, but we also want emojis
+        str.size >= 3 || str.match?(/\A\p{Emoji}\z/)
+      end
+
+      def sort(hash)
+        hash.sort_by { |_, value| value }.reverse!.to_h
       end
 
     end
