@@ -74,7 +74,7 @@ class AchTransfersController < ApplicationController
 
     render json: {
       valid:,
-      hint: valid ? banks.first&.dig("name") : "Bank not found for this routing number.",
+      hint: valid ? banks.first&.dig("name")&.titleize : "Bank not found for this routing number.",
     }
   rescue => e
     notify_airbrake(e)
