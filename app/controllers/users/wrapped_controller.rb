@@ -10,7 +10,7 @@ module Users
         render plain: "HCB Wrapped coming soon! I heard #{current_user&.first_name.presence&.concat("'s") || "you're"} on the naughty list 🎅" and return
       end
 
-      ahoy.track "Wrapped 2023 viewed", user_id: current_user.id
+      ahoy.track "Wrapped 2023 viewed", user_id: current_user.id if current_user == @user
 
       render layout: "bare"
     end
@@ -24,23 +24,28 @@ module Users
     private
 
     def set_data
+      if current_user.admin? && params[:user_email].present?
+        @user = User.find_by(email: params[:user_email])
+      end
+      @user ||= current_user
+
       @data = {
         individual: {
-          name: current_user.full_name,
-          firstName: current_user.first_name,
-          id: current_user.id,
-          totalMoneySpent: Metric::User::TotalSpent.from(current_user).metric,
-          spendingByDate: Metric::User::SpendingByDate.from(current_user).metric,
-          ranking: Metric::Hcb::SpendingByUser.metric.keys.index(current_user.id).to_f / Metric::Hcb::SpendingByUser.metric.keys.size, # this still needs to be done, we have spending by user
-          averageReceiptUploadTime: Metric::User::TimeToReceipt.from(current_user).metric, # in seconds
-          lostReceiptCount: Metric::User::LostReceiptCount.from(current_user).metric,
-          platinumCard: Metric::User::PlatinumCard.from(current_user).metric,
-          words: Metric::User::Words.from(current_user).metric.first(20).to_h.keys, # needs a format change to an array (rn it's a has)
-          spendingByLocation: Metric::User::SpendingByLocation.from(current_user).metric, # needs a format change on the React-side, should match spendingByCat format
-          spendingByCategory: Metric::User::SpendingByCategory.from(current_user).metric,
-          spendingByMerchant: Metric::User::SpendingByMerchant.from(current_user).metric,
+          name: @user.full_name,
+          firstName: @user.first_name,
+          id: @user.id,
+          totalMoneySpent: Metric::User::TotalSpent.from(@user).metric,
+          spendingByDate: Metric::User::SpendingByDate.from(@user).metric,
+          ranking: Metric::Hcb::SpendingByUser.metric.keys.index(@user.id).to_f / Metric::Hcb::SpendingByUser.metric.keys.size, # this still needs to be done, we have spending by user
+          averageReceiptUploadTime: Metric::User::TimeToReceipt.from(@user).metric, # in seconds
+          lostReceiptCount: Metric::User::LostReceiptCount.from(@user).metric,
+          platinumCard: Metric::User::PlatinumCard.from(@user).metric,
+          words: Metric::User::Words.from(@user).metric.first(20).to_h.keys, # needs a format change to an array (rn it's a has)
+          spendingByLocation: Metric::User::SpendingByLocation.from(@user).metric, # needs a format change on the React-side, should match spendingByCat format
+          spendingByCategory: Metric::User::SpendingByCategory.from(@user).metric,
+          spendingByMerchant: Metric::User::SpendingByMerchant.from(@user).metric,
         },
-        organizations: current_user.events.map do |event|
+        organizations: @user.events.map do |event|
           [event.name, {
             spendingByUser: Metric::Event::SpendingByUser.from(event).metric,
             category: event.category,
