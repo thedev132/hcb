@@ -34,6 +34,8 @@ en:
     attributes:
       event:
         slug: "URL"
+      user:
+        full_name: "Legal name"
     errors:
       models:
         donation:

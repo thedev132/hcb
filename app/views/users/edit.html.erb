@@ -27,9 +27,9 @@
       <% end %>
 
       <div class="field">
-        <%= form.label :legal_name %>
+        <%= form.label :full_name %>
         <%= form.text_field :full_name, required: true, placeholder: "Fiona Hackworth III", pattern: '^\S+.+' %>
-        <% @user.errors.full_messages_for(:legal_name).each do |message| %>
+        <% @user.errors.full_messages_for(:full_name).each do |message| %>
           <div class="primary"><%= message %></div>
         <% end %>
       </div>

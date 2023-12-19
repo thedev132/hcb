@@ -121,7 +121,7 @@ RSpec.describe User, type: :model do
         user = build(:user, full_name: "Last")
 
         expect(user).not_to be_valid
-        expect(user.errors[:legal_name]).not_to be_empty
+        expect(user.errors[:full_name]).not_to be_empty
       end
     end
 
@@ -130,7 +130,7 @@ RSpec.describe User, type: :model do
         user = build(:user, full_name: "First")
 
         expect(user).not_to be_valid
-        expect(user.errors[:legal_name]).not_to be_empty
+        expect(user.errors[:full_name]).not_to be_empty
       end
     end
 
@@ -182,7 +182,7 @@ RSpec.describe User, type: :model do
           user = build(:user, full_name: "Zach Latta [Dev]")
 
           expect(user).not_to be_valid
-          expect(user.errors[:legal_name]).not_to be_empty
+          expect(user.errors[:full_name]).not_to be_empty
         end
       end
 
@@ -191,7 +191,7 @@ RSpec.describe User, type: :model do
           user = build(:user, full_name: "Max (test) Wofford")
 
           expect(user).not_to be_valid
-          expect(user.errors[:legal_name]).not_to be_empty
+          expect(user.errors[:full_name]).not_to be_empty
         end
       end
 
@@ -200,7 +200,7 @@ RSpec.describe User, type: :model do
           user = build(:user, full_name: "Melody ✨")
 
           expect(user).not_to be_valid
-          expect(user.errors[:legal_name]).not_to be_empty
+          expect(user.errors[:full_name]).not_to be_empty
         end
       end
 
@@ -209,7 +209,7 @@ RSpec.describe User, type: :model do
           user = build(:user, full_name: "5512700050241863")
 
           expect(user).not_to be_valid
-          expect(user.errors[:legal_name]).not_to be_empty
+          expect(user.errors[:full_name]).not_to be_empty
         end
       end
     end

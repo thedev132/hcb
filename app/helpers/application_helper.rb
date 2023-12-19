@@ -111,7 +111,7 @@ module ApplicationHelper
       end
     end
 
-    content_tag :div, class: "error-card" do
+    content_tag :div, class: "error-card", data: { turbo_temporary: true } do
       content_tag(:h2, "#{prefix} #{name} because of #{pluralize(model.errors.size, 'error')}.") +
         errors_list
     end
