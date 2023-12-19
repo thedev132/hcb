@@ -3,11 +3,27 @@
 module Users
   class WrappedController < ApplicationController
     skip_after_action :verify_authorized
+    before_action :set_data
 
     def index
+      unless Flipper.enabled?(:bank_wrapped, current_user)
+        render plain: "HCB Wrapped coming soon! I heard #{current_user&.first_name.presence&.concat("'s") || "you're"} on the naughty list 🎅" and return
+      end
+
+      ahoy.track "Wrapped 2023 viewed", user_id: current_user.id
+
+      render layout: "bare"
     end
 
     def data
+      headers["Content-Disposition"] = "attachment; filename=wrapped.json"
+
+      render json: @data
+    end
+
+    private
+
+    def set_data
       @data = {
         individual: {
           name: current_user.full_name,
@@ -53,13 +69,6 @@ module Users
           spendingByDate: Metric::Hcb::SpendingByDate.metric,
         },
       }
-      headers["Content-Type"] = "application/json"
-      headers["Content-disposition"] = "attachment; filename=wrapped.json"
-      set_streaming_headers
-
-      response.status = 200
-
-      self.response_body = @data.to_json
     end
 
   end
