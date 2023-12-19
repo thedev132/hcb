@@ -1032,10 +1032,10 @@
   resolved "https://registry.yarnpkg.com/@github/webauthn-json/-/webauthn-json-1.0.0.tgz#da01a3a6759e3b861725fe9dac109a5db8c5b7e7"
   integrity sha512-lMfMONVrYad6C/36mefoN86nHJy7jRhdewuxeu/nrl+FEWWNAimdvAo3evUe6ZdxtdhlZwE8Pjk9B/M0K+1H5A==
 
-"@hackclub/hcb-wrapped@^1.4.1":
-  version "1.4.1"
-  resolved "https://registry.yarnpkg.com/@hackclub/hcb-wrapped/-/hcb-wrapped-1.4.1.tgz#bf9babb66131580e43187410bc3cd70a185a3812"
-  integrity sha512-zes1RY1j6dTzQd4qvpzRg5lgfm02sdWSxMd2yPcbYbRy2RlHTT+kSirBYLoJjumEb6aG9H//gHnt3TZMqFLdWg==
+"@hackclub/hcb-wrapped@^1.5.0":
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/@hackclub/hcb-wrapped/-/hcb-wrapped-1.5.0.tgz#c998a1235a8c4cb169fef02ab56f2005271b6d9f"
+  integrity sha512-GbsHP1MxOUYPr3ym8rHDRvLu4ybd+PWue/DGE+w0p0Va0uR2bdBVVK++n4QTGzimYttc7V186ZRvCa76nngy+Q==
   dependencies:
     confetti-js "^0.0.18"
     fast-shuffle "^6.0.1"
