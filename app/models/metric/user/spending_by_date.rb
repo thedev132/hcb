@@ -52,8 +52,16 @@ class Metric
 
         final_result = Arel.sql("SELECT date(transaction_date) AS transaction_date, SUM(amount) AS amount FROM #{combined_result_subquery} GROUP BY date(transaction_date) ORDER BY date(transaction_date) ASC")
 
-        ActiveRecord::Base.connection.exec_query(final_result).each_with_object({}) { |item, hash| hash[item["transaction_date"]] = item["amount"].to_f }
+        hash = {}
+        (Date.new(2023, 1, 1)..Date.new(2023, 12, 31)).each do |date|
+          hash[date.to_s] = 0
+        end
 
+        ActiveRecord::Base.connection.exec_query(final_result).each do |item|
+          hash[item["transaction_date"]] = item["amount"].to_f
+        end
+
+        hash
       end
 
     end
