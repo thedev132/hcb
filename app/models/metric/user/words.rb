@@ -23,8 +23,7 @@ class Metric
 
       def calculate
         # 1. Get word frequencies from the User's events
-        events_words = user.organizer_positions.includes(:event)
-                           .map { |o| ::Metric::Event::Words.from(o.event).metric }
+        events_words = user.events.map { |e| ::Metric::Event::Words.from(e).metric }
 
         # 2. Merge the frequency counts
         events_words = events_words.inject { |memo, el| memo.merge(el) { |k, old_v, new_v| old_v + new_v } }

@@ -54,14 +54,22 @@ class Metric < ApplicationRecord
   end
 
   def self.from(subject, repopulate: false)
-    metric = self.find_by(subject:)
-    return self.create(subject:) if metric.nil?
+    metric = self.where(subject:).order(updated_at: :desc).first_or_initialize(subject:)
+
+    # If creating, save and return the new record
+    if metric.new_record?
+      unless metric.save
+        Airbrake.notify("Failed to save metric #{metric.inspect}")
+        return nil
+      end
+      return metric
+    end
 
     if repopulate
       metric.populate
       unless metric.save
-        metric.reload
         Airbrake.notify("Failed to save metric #{metric.inspect}")
+        metric.reload
       end
     end
 
