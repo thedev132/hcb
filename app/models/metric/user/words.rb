@@ -26,7 +26,7 @@ class Metric
         events_words = user.events.map { |e| ::Metric::Event::Words.from(e).metric }
 
         # 2. Merge the frequency counts
-        events_words = events_words.inject { |memo, el| memo.merge(el) { |k, old_v, new_v| old_v + new_v } }
+        events_words = events_words.reduce({}) { |memo, el| memo.merge(el) { |k, old_v, new_v| old_v + new_v } }
 
         # 3. Sort by frequency
         sort events_words
