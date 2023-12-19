@@ -25,19 +25,22 @@ class Metric
         transactions = TransactionGroupingEngine::Transaction::All.new(event_id: event.id).run
         TransactionGroupingEngine::Transaction::AssociationPreloader.new(transactions:, event:).run!
 
-        # 1. Get words from transaction memos
+        # 1. Filter transactions by year
+        transactions.filter! { |t| t.date&.to_date&.year == 2023 }
+
+        # 2. Get words from transaction memos
         words = transactions.flat_map { |t| t.local_hcb_code.memo(event:).split }
 
-        # 2. Clean words
+        # 3. Clean words
         words.map!(&method(:clean))
 
-        # 3. Remove stop words, numbers, and stuff we don't want
+        # 4. Remove stop words, numbers, and stuff we don't want
         words.reject! { |w| stop_word?(w) || numeric?(w) || !meaningful?(w) }
 
-        # 4. Count them all up
+        # 5. Count them all up
         frequency = words.tally
 
-        # 5. Sort by frequency
+        # 6. Sort by frequency
         sort frequency
       end
 
