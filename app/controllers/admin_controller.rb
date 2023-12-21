@@ -184,10 +184,16 @@ class AdminController < ApplicationController
     @page = params[:page] || 1
     @per = params[:per] || 100
 
-    @events = filtered_events.page(@page).per(@per)
+    @events = filtered_events
     @count = @events.count
 
-    render layout: "admin"
+    respond_to do |format|
+      format.html do
+        @events = @events.page(@page).per(@per)
+        render layout: "admin"
+      end
+      format.csv { render csv: @events }
+    end
   end
 
   def event_process

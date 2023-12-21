@@ -331,6 +331,16 @@ class Event < ApplicationRecord
     end
   end
 
+  comma do
+    id
+    name
+    sponsorship_fee
+    slug "url" do |slug| "https://hcb.hackclub.com/#{slug}" end
+    country
+    is_public "transparent"
+    category
+  end
+
   CUSTOM_SORT = Arel.sql(
     "CASE WHEN id = 183 THEN '1'"\
     "WHEN id = 999 THEN '2'     "\

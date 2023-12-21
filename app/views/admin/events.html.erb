@@ -9,6 +9,9 @@
   <div class="inline-block">
     <%= render partial: "events_filter", locals: { form: } %>
   </div>
+  <%= link_to params.to_unsafe_h.merge(format: :csv) do %>
+    <button type="button" <%= "disabled" if @events.total_count == 0 %>>Export <%= pluralize @events.total_count, "record" %></button>
+  <% end %>
 <% end %>
 
 <%= page_entries_info @events, entry_name: "organizations" %>
