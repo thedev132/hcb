@@ -9,7 +9,11 @@
     <% admin_tools("mr2 p0 circle") do %>
       <%= pop_icon_to "controls", edit_user_path(position.user.slug), data: { turbo_frame: "_top" } if position.user == current_user || admin_signed_in? %>
     <% end %>
-    <%= pop_icon_to "member-remove", new_organizer_remove_path(organizer_id: position.id), class: "error", data: { turbo_frame: "_top" }, disabled: !organizer_signed_in? unless position.user == current_user && !admin_signed_in? %>
+    <% if organizer_signed_in? && position.organizer_position_deletion_requests.under_review.where(submitted_by: current_user).exists? %>
+      <%= pop_icon_to "clock", "#", class: "muted tooltipped tooltipped--w", "aria-label" => "Removal request pending", disabled: !organizer_signed_in? unless position.user == current_user && !admin_signed_in? %>
+    <% else %>
+      <%= pop_icon_to "member-remove", new_event_organizer_remove_path(organizer_id: position.user.slug), class: "error", data: { turbo_frame: "_top" }, disabled: !organizer_signed_in? unless position.user == current_user && !admin_signed_in? %>
+    <% end %>
     <%= pop_icon_to "controls", edit_user_path(position.user.slug), class: "ml2", data: { turbo_frame: "_top" } if position.user == current_user && !admin_signed_in? %>
   </section>
   <% if current_user&.admin? %>

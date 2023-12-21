@@ -629,6 +629,10 @@ Rails.application.routes.draw do
 
     resource :column_account_number, controller: "column/account_number", only: [:create], path: "account-number"
 
+    resources :organizer_positions, path: "team", as: "organizer", only: [] do
+      resources :organizer_position_deletion_requests, path: "removal-requests", as: "remove", only: [:new]
+    end
+
     member do
       post "disable_feature"
       post "enable_feature"

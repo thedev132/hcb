@@ -21,7 +21,20 @@ class OrganizerPositionDeletionRequestsController < ApplicationController
   end
 
   def new
-    @op = OrganizerPosition.find(params[:organizer_id])
+    if params[:event_id].nil?
+      @op = OrganizerPosition.find(params[:organizer_id])
+      authorize @op.organizer_position_deletion_requests.build
+      return redirect_to new_event_organizer_remove_path(event_id: @op.event.slug, organizer_id: @op.user.slug)
+    end
+
+    @event = Event.friendly.find(params[:event_id])
+    begin
+      @user = User.friendly.find(params[:organizer_id])
+      @op = OrganizerPosition.find_by!(event: @event, user: @user)
+    rescue ActiveRecord::RecordNotFound
+      @op = OrganizerPosition.find_by!(event: @event, id: params[:organizer_id])
+    end
+
     @event = @op.event
     @opdr = OrganizerPositionDeletionRequest.new(organizer_position: @op)
     authorize @opdr
@@ -40,8 +53,8 @@ class OrganizerPositionDeletionRequestsController < ApplicationController
     authorize @opdr
 
     if @opdr.save
-      flash[:success] = "Removal request accepted. We’ll be in touch shortly."
-      redirect_to @event
+      flash[:success] = "Removal request submitted. We’ll be in touch shortly."
+      redirect_to event_team_path(@event)
     else
       render :new, status: :unprocessable_entity
     end
