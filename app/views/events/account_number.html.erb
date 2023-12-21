@@ -11,11 +11,47 @@
 <% if @event.demo_mode? %>
   <%= blankslate "Unavailable in Playground Mode" %>
 <% else %>
+  <% if @event.increase_account_number.present? %>
+    <div class="card border b--warning container--xs mx-auto mb4">
+      <div class="flex items-center justify-center"><%= inline_icon "important", class: "warning mr1" %> <strong class="h4">Your account number has changed.</strong></div>
+      <p class="center">
+        As of <%= format_date @event.column_account_number&.created_at %>, your account number has changed while we migrate banking partners.
+      </p>
+
+      <p class="center">
+        Your previous account number will stop receiving payments on <strong>January 12, 2023</strong>.
+      </p>
+
+      <% if organizer_signed_in? %>
+        <details>
+          <summary class="center">View your previous account number</summary>
+
+          <div class="details">
+            <p>
+              <strong>Account number</strong>
+              <%= @event.increase_account_number.account_number %>
+            </p>
+            <p>
+              <strong>Routing number</strong>
+              <%= @event.increase_account_number.routing_number %>
+            </p>
+          </div>
+        </details>
+      <% end %>
+    </div>
+  <% end %>
+
+  <% if @event.column_account_number.nil? %>
+    <% admin_tools do %>
+      <%= button_to "Generate Column account number", event_column_account_number_path(@event), method: :post, class: "btn bg-accent" %>
+    <% end %>
+  <% end %>
+
   <div class="card container--sm mx-auto center overflow-visible pb0 mb3">
     <div class="badge bg-info mb1 ml0 tooltipped tooltipped--n pointer" aria-label="This account number can only receive funds. You can't use it to send money."><%= inline_icon "info", size: 20, style: "margin-left: 0; margin-right: 0.25rem" %> Deposit-only</div>
 
     <div class="flex items-start justify-around h2 mb2" style="gap: 1rem">
-      <span class="flex flex-column" data-controller="clipboard" data-clipboard-text-value="<%= @event.account_number if organizer_signed_in? %>">
+      <span class="flex flex-column" data-controller="<%= "clipboard" if organizer_signed_in? %>" data-clipboard-text-value="<%= @event.account_number if organizer_signed_in? %>">
         <span class="mono pointer tooltipped tooltipped--n" aria-label="<%= organizer_signed_in? ? "Click to copy" : "Sign in to view" %>" data-action="click->clipboard#copy">
           <% if organizer_signed_in? %>
             <%= @event.account_number %>
@@ -25,7 +61,7 @@
         </span>
         <span class="h4 muted">Account</span>
       </span>
-      <span class="flex flex-column" data-controller="clipboard" data-clipboard-text-value="<%= @event.routing_number if organizer_signed_in? %>">
+      <span class="flex flex-column" data-controller="<%= "clipboard" if organizer_signed_in? %>" data-clipboard-text-value="<%= @event.routing_number if organizer_signed_in? %>">
         <span class="mono pointer tooltipped tooltipped--n" aria-label="<%= organizer_signed_in? ? "Click to copy" : "Sign in to view" %>" data-action="click->clipboard#copy">
           <% if organizer_signed_in? %>
             <%= @event.routing_number %>

@@ -30,7 +30,7 @@ class RawColumnTransaction < ApplicationRecord
   def memo
     transaction_id = column_transaction["transaction_id"]
     if transaction_id.start_with? "acht"
-      ach_transfer = ColumnService.new.ach_transfer(transaction_id)
+      ach_transfer = ColumnService.ach_transfer(transaction_id)
 
       return "#{ach_transfer["company_name"]} #{ach_transfer["company_entry_description"]}"
     end

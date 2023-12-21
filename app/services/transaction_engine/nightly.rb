@@ -87,7 +87,7 @@ module TransactionEngine
     end
 
     def import_raw_column_transactions!
-      transactions_by_report = ColumnService.new.transactions(from_date: @start_date)
+      transactions_by_report = ColumnService.transactions(from_date: @start_date)
 
       transactions_by_report.each do |report_id, transactions|
         transactions.each_with_index do |transaction, transaction_index|

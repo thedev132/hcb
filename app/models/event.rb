@@ -290,6 +290,9 @@ class Event < ApplicationRecord
   has_one :stripe_ach_payment_source
   has_one :increase_account_number
 
+  has_one :column_account_number, class_name: "Column::AccountNumber"
+  delegate :account_number, :routing_number, to: :column_account_number, allow_nil: true
+
   has_many :grants
 
   has_one_attached :donation_header_image
@@ -572,14 +575,6 @@ class Event < ApplicationRecord
 
   def total_fees_v2_cents
     @total_fees_v2_cents ||= fees.sum(:amount_cents_as_decimal).ceil
-  end
-
-  def account_number
-    (increase_account_number || create_increase_account_number)&.account_number || "••••••••••"
-  end
-
-  def routing_number
-    (increase_account_number || create_increase_account_number)&.routing_number || "•••••••••"
   end
 
   def increase_account_number_id

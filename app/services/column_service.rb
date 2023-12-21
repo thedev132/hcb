@@ -1,24 +1,30 @@
 # frozen_string_literal: true
 
 class ColumnService
-  def initialize
-    @conn = Faraday.new url: "https://api.column.com" do |f|
-      f.request :basic_auth, "", Rails.application.credentials.column.dig(environment, :api_key)
+  ENVIRONMENT = Rails.env.production? ? :production : :sandbox
+
+  module Accounts
+    FS_MAIN = Rails.application.credentials.column.dig(ENVIRONMENT, :fs_main_account_id)
+  end
+
+  def self.conn
+    @conn ||= Faraday.new url: "https://api.column.com" do |f|
+      f.request :basic_auth, "", Rails.application.credentials.column.dig(ENVIRONMENT, :api_key)
       f.request :url_encoded
       f.response :json
       f.response :raise_error
     end
   end
 
-  def get(url, params = {})
-    @conn.get(url, params).body
+  def self.get(url, params = {})
+    conn.get(url, params).body
   end
 
-  def post(url, params = {})
-    @conn.post(url, params).body
+  def self.post(url, params = {})
+    conn.post(url, params).body
   end
 
-  def transactions(from_date: 1.week.ago, to_date: Date.today, bank_account: Rails.application.credentials.column.dig(environment, :fs_main_account_id))
+  def self.transactions(from_date: 1.week.ago, to_date: Date.today, bank_account: Accounts::FS_MAIN)
     # 1: fetch daily reports from Column
     reports = get(
       "/reporting",
@@ -41,12 +47,8 @@ class ColumnService
     puts e.response_body
   end
 
-  def ach_transfer(id)
+  def self.ach_transfer(id)
     get("/transfers/ach/#{id}")
-  end
-
-  def environment
-    Rails.env.production? ? :production : :sandbox
   end
 
 end

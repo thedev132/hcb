@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_12_15_161228) do
+ActiveRecord::Schema[7.0].define(version: 2023_12_19_175938) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_stat_statements"
@@ -407,6 +407,17 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_15_161228) do
     t.text "description_ciphertext"
     t.index ["creator_id"], name: "index_checks_on_creator_id"
     t.index ["lob_address_id"], name: "index_checks_on_lob_address_id"
+  end
+
+  create_table "column_account_numbers", force: :cascade do |t|
+    t.text "account_number_ciphertext"
+    t.text "routing_number_ciphertext"
+    t.text "bic_code_ciphertext"
+    t.text "column_id"
+    t.bigint "event_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["event_id"], name: "index_column_account_numbers_on_event_id"
   end
 
   create_table "comments", force: :cascade do |t|
@@ -1787,6 +1798,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_15_161228) do
   add_foreign_key "check_deposits", "events"
   add_foreign_key "checks", "lob_addresses"
   add_foreign_key "checks", "users", column: "creator_id"
+  add_foreign_key "column_account_numbers", "events"
   add_foreign_key "disbursements", "events"
   add_foreign_key "disbursements", "events", column: "source_event_id"
   add_foreign_key "disbursements", "users", column: "fulfilled_by_id"
