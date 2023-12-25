@@ -10,6 +10,7 @@ module EventMappingEngine
 
     def run
       map_increase_account_number_transactions!
+      map_column_account_number_transactions!
 
       map_stripe_transactions!
       map_github!
@@ -42,6 +43,15 @@ module EventMappingEngine
         next unless increase_account_number
 
         CanonicalEventMapping.create!(event: increase_account_number.event, canonical_transaction: ct)
+      end
+    end
+
+    def map_column_account_number_transactions!
+      CanonicalTransaction.unmapped.likely_column_account_number.find_each(batch_size: 100) do |ct|
+        column_account_number = Column::AccountNumber.find_by(column_id: ct.raw_column_transaction.column_transaction["account_number_id"])
+        next unless column_account_number
+
+        CanonicalEventMapping.create!(event: column_account_number.event, canonical_transaction: ct)
       end
     end
 

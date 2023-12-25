@@ -55,6 +55,7 @@ class CanonicalTransaction < ApplicationRecord
   scope :increase_transaction, -> { joins("INNER JOIN raw_increase_transactions ON transaction_source_type = 'RawIncreaseTransaction' AND raw_increase_transactions.id = transaction_source_id") }
   scope :stripe_transaction,   -> { joins("INNER JOIN raw_stripe_transactions   ON transaction_source_type = 'RawStripeTransaction'   AND raw_stripe_transactions.id   = transaction_source_id") }
   scope :emburse_transaction,  -> { joins("INNER JOIN raw_emburse_transactions  ON transaction_source_type = 'RawEmburseTransaction'  AND raw_emburse_transactions.id  = transaction_source_id") }
+  scope :column_transaction,   -> { joins("INNER JOIN raw_column_transactions   ON transaction_source_type = 'RawColumnTransaction'   AND raw_column_transactions.id  =  transaction_source_id") }
 
   scope :likely_hack_club_bank_issued_cards, -> { where("memo ilike 'Hack Club Bank Issued car%' or memo ilike 'HCKCLB Issued car%'") }
   scope :likely_fee_reimbursement, -> { where(memo: "Stripe fee reimbursement") }
@@ -68,6 +69,7 @@ class CanonicalTransaction < ApplicationRecord
   scope :likely_increase_account_number, -> { increase_transaction.joins("INNER JOIN increase_account_numbers ON increase_account_number_id = increase_route_id") }
   scope :likely_increase_check_deposit, -> { increase_transaction.where("raw_increase_transactions.increase_transaction->'source'->>'category' = 'check_deposit_acceptance'") }
   scope :increase_interest, -> { increase_transaction.where("raw_increase_transactions.increase_transaction->'source'->>'category' = 'interest_payment'") }
+  scope :likely_column_account_number, -> { column_transaction.joins("INNER JOIN column_account_numbers ON column_transaction->>'account_number_id' = column_account_numbers.column_id") }
   scope :likely_hack_club_fee, -> { where("memo ilike '%Hack Club Bank Fee TO ACCOUNT%'") }
   scope :old_likely_hack_club_fee, -> { where("memo ilike '% Fee TO ACCOUNT REDACTED%'") }
   scope :stripe_top_up, -> { where("memo ilike '%Hack Club Bank Stripe Top%' or memo ilike '%HACKC Stripe Top%' or memo ilike '%HCKCLB Stripe Top%'") }
@@ -154,6 +156,10 @@ class CanonicalTransaction < ApplicationRecord
 
   def raw_increase_transaction
     transaction_source if transaction_source_type == RawIncreaseTransaction.name
+  end
+
+  def raw_column_transaction
+    transaction_source if transaction_source_type == RawColumnTransaction.name
   end
 
   def stripe_cardholder
