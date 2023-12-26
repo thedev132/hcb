@@ -47,3 +47,12 @@ linters:
         Enabled: false
       Style/StringConcatenation:
         Enabled: false
+
+      Rails/LinkToBlank:
+        Enabled: false
+      Rails/OutputSafety:
+        Enabled: false
+      Rails/Presence:
+        Enabled: false
+      Rails/Present:
+        Enabled: false

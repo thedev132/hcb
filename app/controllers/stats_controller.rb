@@ -28,7 +28,7 @@ class StatsController < ApplicationController
   def stats
     now = params[:date].present? ? Date.parse(params[:date]) : DateTime.current
     year_ago = now - 1.year
-    qtr_ago = now - 3.month
+    qtr_ago = now - 3.months
     month_ago = now - 1.month
     week_ago = now - 1.week
 

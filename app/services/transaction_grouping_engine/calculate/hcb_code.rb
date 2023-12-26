@@ -29,7 +29,7 @@ module TransactionGroupingEngine
 
       def run
         return increase_check_hcb_code if increase_check
-        return unknown_hcb_code if @ct_or_cp.is_a?(CanonicalTransaction) && @ct_or_cp.raw_increase_transaction&.increase_account_number&.present? # Don't attempt to group transactions posted to an org's account/routing number
+        return unknown_hcb_code if @ct_or_cp.is_a?(CanonicalTransaction) && @ct_or_cp.raw_increase_transaction&.increase_account_number.present? # Don't attempt to group transactions posted to an org's account/routing number
         return short_code_hcb_code if has_short_code?
         return invoice_hcb_code if invoice
         return bank_fee_hcb_code if bank_fee

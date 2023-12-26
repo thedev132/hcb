@@ -352,7 +352,7 @@ class StripeCard < ApplicationRecord
   end
 
   def issued?
-    !stripe_id.blank?
+    stripe_id.present?
   end
 
   def pay_for_issuing

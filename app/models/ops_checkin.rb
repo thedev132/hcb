@@ -35,7 +35,7 @@ class OpsCheckin < ApplicationRecord
 
   def self.is_cooldown_active?
     # if there was a checkin in the last hour, we're still in cooldown
-    where(created_at: 1.hours.ago..Time.now).any?
+    where(created_at: 1.hour.ago..Time.now).any?
   end
 
 end

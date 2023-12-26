@@ -24,7 +24,7 @@ class PartneredSignupsController < ApplicationController
 
   # PATCH /partnered_signups/:public_id
   def update
-    @partnered_signup.update_attributes(partnered_signup_params)
+    @partnered_signup.update(partnered_signup_params)
     authorize @partnered_signup
 
     @partnered_signup.mark_submitted! unless @partnered_signup.submitted?

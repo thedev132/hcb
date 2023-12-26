@@ -168,7 +168,7 @@ class EmburseCard < ApplicationRecord
       address = []
       address << sa[:attn]
       address << sa[:address_1]
-      address << sa[:address_2] unless sa[:address_2].blank?
+      address << sa[:address_2] if sa[:address_2].present?
       address << "#{sa[:city]}, #{sa[:state]} #{sa[:zip_code]}"
 
       self.address = address.join("/n").strip

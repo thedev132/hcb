@@ -163,6 +163,7 @@ end
 group :development, :test do
   gem "erb_lint", require: false
   gem "rubocop"
+  gem "rubocop-rails", "~> 2.22"
   gem "relaxed-rubocop"
 
   gem "rspec-rails", "~> 6.0.3"
