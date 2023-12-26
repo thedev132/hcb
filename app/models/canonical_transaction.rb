@@ -291,6 +291,10 @@ class CanonicalTransaction < ApplicationRecord
     memo.match(/BUSBILLPAY TRAN#(\d+)/)&.[](1)
   end
 
+  def likely_account_verification_related?
+    hcb_code.starts_with?("HCB-000-") && memo.downcase.include?("acctverify") && amount_cents.abs < 100
+  end
+
   def short_code
     memo[/HCB-(\w{5})/, 1]
   end

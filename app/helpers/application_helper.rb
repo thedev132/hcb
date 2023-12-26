@@ -341,4 +341,10 @@ module ApplicationHelper
     "https://forms.hackclub.com/t/#{id}?#{URI.encode_www_form(query)}"
   end
 
+  def redacted_amount(max: 100)
+    tag.span class: "tooltipped tooltipped--w", style: "cursor: default", "aria-label": "Hidden for security" do
+      tag.span(style: "filter: blur(5px)") { render_money rand(max) }
+    end
+  end
+
 end

@@ -6,6 +6,8 @@ class CanonicalTransactionGrouped
   attr_accessor :hcb_code, :date, :amount_cents, :raw_canonical_transaction_ids, :raw_canonical_pending_transaction_ids, :event, :running_balance, :subledger
   attr_writer :canonical_transactions, :canonical_pending_transactions, :local_hcb_code
 
+  delegate :likely_account_verification_related?, to: :ct, allow_nil: true
+
   def memo
     return invoice_memo if invoice?
     return donation_memo if donation?

@@ -37,6 +37,8 @@ class HcbCode < ApplicationRecord
 
   before_create :generate_and_set_short_code
 
+  delegate :likely_account_verification_related?, to: :ct, allow_nil: true
+
   comma do
     hcb_code "HCB Code"
     created_at "Created at"
