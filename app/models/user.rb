@@ -32,7 +32,7 @@
 #  index_users_on_slug   (slug) UNIQUE
 #
 class User < ApplicationRecord
-  self.ignored_columns = ["seen_platinum_announcement"]
+  self.ignored_columns = ["seen_platinum_announcement", "admin_at"]
 
   include PublicIdentifiable
   set_public_id_prefix :usr
