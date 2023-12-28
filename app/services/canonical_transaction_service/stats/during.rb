@@ -13,7 +13,7 @@ module CanonicalTransactionService
           transactions_volume: tx.sum("@amount_cents"),
           expenses: tx.expense.sum(:amount_cents),
           raised: tx.revenue.sum(:amount_cents),
-          revenue: tx.includes(:fees).sum("amount_cents_as_decimal").to_i,
+          revenue: tx.includes(:fee).sum("fees.amount_cents_as_decimal").to_i,
           size: {
             total: tx.size,
             raised: tx.revenue.size,

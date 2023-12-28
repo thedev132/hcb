@@ -112,28 +112,24 @@
     <% end %>
 
     <% if @transaction.fee_applies? %>
-      <% @transaction.fees.each do |fee| %>
-        <p>
-          <strong>Fee</strong>
-          <span>
-            <%= render_money fee.amount_cents_as_decimal %> (<%= render_percentage fee.event_sponsorship_fee %>)
-            <% admin_tools("py0 ml1", "span") do %>
-              <%= link_to "[waive fee]", waive_fee_canonical_transaction_url(@transaction), method: :post if fee.amount_cents_as_decimal > 0 %>
-            <% end %>
-          </span>
-        </p>
-      <% end %>
+      <p>
+        <strong>Fee</strong>
+        <span>
+          <%= render_money @transaction.fee.amount_cents_as_decimal %> (<%= render_percentage @transaction.fee.event_sponsorship_fee %>)
+          <% admin_tools("py0 ml1", "span") do %>
+            <%= link_to "[waive fee]", waive_fee_canonical_transaction_url(@transaction), method: :post if @transaction.fee.amount_cents_as_decimal > 0 %>
+          <% end %>
+        </span>
+      </p>
     <% elsif @transaction.fee_payment? %>
       <p>
         <strong>Note</strong>
         <strong>This is a fee payment</strong>
       </p>
     <% else %>
-      <% @transaction.fees.each do |fee| %>
-        <% admin_tools("py0", "p") do %>
-          <strong>Fee</strong>
-          <%= link_to "[unwaive fee]", unwaive_fee_canonical_transaction_url(@transaction), method: :post if fee.revenue_waived? %>
-        <% end %>
+      <% admin_tools("py0", "p") do %>
+        <strong>Fee</strong>
+        <%= link_to "[unwaive fee]", unwaive_fee_canonical_transaction_url(@transaction), method: :post if @transaction.fee&.revenue_waived? %>
       <% end %>
     <% end %>
 

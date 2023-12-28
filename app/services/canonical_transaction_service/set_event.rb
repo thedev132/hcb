@@ -10,10 +10,7 @@ module CanonicalTransactionService
 
     def run
       ActiveRecord::Base.transaction do
-        if canonical_transaction.canonical_event_mapping
-          canonical_transaction.canonical_event_mapping.fees.destroy_all
-          canonical_transaction.canonical_event_mapping.destroy!
-        end
+        canonical_transaction.canonical_event_mapping&.destroy!
 
         canonical_event_mapping = CanonicalEventMapping.create!(attrs) if event
 

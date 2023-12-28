@@ -38,7 +38,7 @@ class CanonicalTransactionsController < ApplicationController
 
     ct = CanonicalTransaction.find(params[:id])
 
-    fee = ct.canonical_event_mapping.fees.first
+    fee = ct.fee
     fee.amount_cents_as_decimal = 0
     fee.reason = "REVENUE WAIVED"
     fee.save!
@@ -53,7 +53,7 @@ class CanonicalTransactionsController < ApplicationController
 
     raise ArgumentError unless ct.amount_cents > 0
 
-    fee = ct.canonical_event_mapping.fees.first
+    fee = ct.fee
     fee.amount_cents_as_decimal = BigDecimal(ct.amount_cents.to_s) * BigDecimal(ct.event.sponsorship_fee.to_s)
 
     fee.reason = "REVENUE"
@@ -67,7 +67,7 @@ class CanonicalTransactionsController < ApplicationController
 
     ct = CanonicalTransaction.find(params[:id])
 
-    fee = ct.canonical_event_mapping.fees.first
+    fee = ct.fee
     fee.reason = "HACK CLUB FEE"
     fee.save!
 

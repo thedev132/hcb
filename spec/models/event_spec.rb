@@ -69,7 +69,7 @@ RSpec.describe Event, type: :model do
           :canonical_event_mapping,
           canonical_transaction: create(:canonical_transaction, amount_cents: -1000, hcb_code: "HCB-000-1"),
           event:,
-          fees: [create(:fee, reason: "HACK CLUB FEE")],
+          fee: create(:fee, reason: "HACK CLUB FEE"),
         )
       }.to change { event.reload.total_fee_payments_v2_cents }.from(0).to(1000)
     end

@@ -606,7 +606,7 @@ class Event < ApplicationRecord
 
   def total_fee_payments_v2_cents
     @total_fee_payments_v2_cents ||=
-      canonical_transactions.includes(:fees).where(fees: { reason: "HACK CLUB FEE" }).sum(:amount_cents).abs +
+      canonical_transactions.includes(:fee).where(fee: { reason: "HACK CLUB FEE" }).sum(:amount_cents).abs +
       canonical_pending_transactions.bank_fee.unsettled.sum(:amount_cents).abs
   end
 

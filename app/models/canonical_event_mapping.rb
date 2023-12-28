@@ -31,15 +31,15 @@ class CanonicalEventMapping < ApplicationRecord
   belongs_to :subledger, optional: true
   belongs_to :user, optional: true
 
-  has_many :fees
+  has_one :fee, dependent: :destroy
 
   scope :on_main_ledger, -> { where(subledger_id: nil) }
 
-  after_create if: -> { fees.empty? } do
+  after_create if: -> { fee.nil? } do
     FeeEngine::Create.new(canonical_event_mapping: self).run
   end
 
-  scope :missing_fee, -> { includes(:fees).where(fees: { canonical_event_mapping_id: nil }) }
+  scope :missing_fee, -> { includes(:fee).where(fee: { canonical_event_mapping_id: nil }) }
   scope :mapped_by_human, -> { where("user_id is not null") }
 
   validate :transaction_belongs_to_correct_increase_account

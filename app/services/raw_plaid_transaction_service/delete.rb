@@ -9,7 +9,6 @@ module RawPlaidTransactionService
     def run
       ActiveRecord::Base.transaction do
         raw_plaid_transaction.hashed_transactions.each do |ht|
-          ht.canonical_transaction.fees.map(&:destroy!)
           ht.canonical_transaction.canonical_event_mapping.try(:destroy!)
           ht.canonical_transaction.canonical_hashed_mappings.map(&:destroy!)
           ht.canonical_transaction.destroy!
