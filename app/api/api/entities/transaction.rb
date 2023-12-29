@@ -30,6 +30,7 @@ module Api
           next hcb_code.donation.amount if hcb_code.donation?
           next hcb_code.invoice.item_amount if hcb_code.invoice?
           next -hcb_code.ach_transfer.amount if hcb_code.ach_transfer?
+          next 0 if hcb_code.likely_account_verification_related?
 
           hcb_code.amount_cents
         end
