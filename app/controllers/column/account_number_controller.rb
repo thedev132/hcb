@@ -14,6 +14,10 @@ module Column
       end
       redirect_to account_number_event_path(@event)
 
+    rescue Faraday::Error => e
+      notify_airbrake(e)
+      redirect_to account_number_event_path(@event), flash: { error: "Something went wrong: #{JSON.parse(e.response_body)["message"]}" }
+
     end
 
   end
