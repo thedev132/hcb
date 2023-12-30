@@ -11,8 +11,8 @@ class ColumnService
     @conn ||= Faraday.new url: "https://api.column.com" do |f|
       f.request :basic_auth, "", Rails.application.credentials.column.dig(ENVIRONMENT, :api_key)
       f.request :url_encoded
-      f.response :json
       f.response :raise_error
+      f.response :json
     end
   end
 
