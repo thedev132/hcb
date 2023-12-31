@@ -370,7 +370,7 @@ class UsersController < ApplicationController
   end
 
   def delete_profile_picture
-    @user = User.friendly.find(params[:id])
+    @user = User.friendly.find(params[:user_id])
     authorize @user
 
     @user.profile_picture.purge_later
