@@ -35,7 +35,7 @@
             <%= "(redacted)" unless organizer_signed_in? %>
           </td>
           <td class="fs-mask">
-            <%= d.formatted_card_number if d.user == current_user %>
+            <%= d.hidden_card_number_with_last_four if d.user == current_user %>
             <%= d.hidden_card_number if d.user != current_user %>
           </td>
           <td>
