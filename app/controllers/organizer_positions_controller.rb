@@ -58,4 +58,11 @@ class OrganizerPositionsController < ApplicationController
     redirect_to organizer_position.event
   end
 
+  def toggle_signee_status
+    organizer_position = OrganizerPosition.find(params[:id])
+    authorize organizer_position
+    organizer_position.toggle!(:is_signee)
+    redirect_back(fallback_location: event_team_path(organizer_position.event))
+  end
+
 end

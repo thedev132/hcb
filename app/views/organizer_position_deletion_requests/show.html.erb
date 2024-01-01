@@ -26,8 +26,8 @@
     </p>
 
     <p>
-      <strong>Organizer position for deletion</strong>
-      #<%= @opdr.organizer_position.id %> <%= @opdr.organizer_position.user.name %>
+      <strong>Requesting deletion for</strong>
+      <%= user_mention @opdr.organizer_position.user %>
     </p>
 
     <p>
@@ -39,6 +39,8 @@
       <strong>Contract signee?</strong>
       <%= @opdr.organizer_position.signee? ? "Yes" : "No" %>
     </p>
+
+    (Please <%= link_to "check the contract", event_documents_path(@opdr.event.id) %> before processing a deletion request.)
 
     <p>
       <strong>Reason for deletion</strong>

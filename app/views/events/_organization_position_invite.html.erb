@@ -30,8 +30,9 @@
           <%= inline_icon "docs", size: 20, style: "vertical-align: middle; margin: -0.2rem 0.5rem 0 0;" %>
           <span>No contract signature</span>
         <% end %>
+        <%= link_to "(toggle)", toggle_signee_status_organizer_path(position.id), data: { turbo_method: "post", turbo_frame: "_top", turbo_confirm: "Are you sure you want to toggle #{position.user.name}'s contract signee status?" } %>
       </div>
-      <div>
+      <div class='mb1'>
         <%= inline_icon "leader", size: 20, style: "vertical-align: middle; margin: -0.2rem 0.5rem 0 0;" %>
         <%= link_to "Impersonate this user", impersonate_user_path(position.user.id, return_to: request.url), data: { turbo_method: "post", turbo_frame: "_top" } %>
       </div>

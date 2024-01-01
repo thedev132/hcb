@@ -238,6 +238,7 @@ Rails.application.routes.draw do
     member do
       post "set_index"
       post "mark_visited"
+      post "toggle_signee_status"
     end
 
     resources :organizer_position_deletion_requests, only: [:new], as: "remove"
