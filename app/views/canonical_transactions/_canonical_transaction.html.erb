@@ -142,7 +142,7 @@
           <% end %>
         </div>
 
-        <% if Flipper.enabled?(:transaction_tags_2022_07_29, @event) %>
+        <% if Flipper.enabled?(:transaction_tags_2022_07_29, @event) && !event.demo_mode? %>
           <div class="flex flex-wrap" style="gap: 0.25rem" id="hcb_code_<%= ct.local_hcb_code.hashid %>_tags">
             <%= render partial: "canonical_transactions/tag", collection: ct.local_hcb_code.tags.filter { |tag| !@event || tag.event == @event }, locals: { hcb_code: ct.local_hcb_code } %>
           </div>
