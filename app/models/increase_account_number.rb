@@ -26,6 +26,11 @@ class IncreaseAccountNumber < ApplicationRecord
 
   has_encrypted :account_number, :routing_number
 
+  has_many :raw_increase_transactions,
+           foreign_key: :increase_route_id,
+           primary_key: :increase_account_number_id,
+           inverse_of: :increase_account_number
+
   before_create :create_increase_account_number
 
   validate do
@@ -38,6 +43,10 @@ class IncreaseAccountNumber < ApplicationRecord
     if event.outernet_guild?
       errors.add(:base, "Can't create an account number for an Outernet guild")
     end
+  end
+
+  def used?
+    raw_increase_transactions.any?
   end
 
   private

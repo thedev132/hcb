@@ -11,7 +11,7 @@
 <% if @event.demo_mode? %>
   <%= blankslate "Unavailable in Playground Mode" %>
 <% else %>
-  <% if @event.increase_account_number.present? %>
+  <% if @event.increase_account_number&.used? %>
     <div class="card border b--warning container--xs mx-auto mb4">
       <div class="flex items-center justify-center"><%= inline_icon "important", class: "warning mr1" %> <strong class="h4">Your account number has changed.</strong></div>
       <p class="center">
