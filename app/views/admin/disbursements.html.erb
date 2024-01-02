@@ -51,7 +51,7 @@
             <%= disbursement.source_event.name.upcase %>: <%= disbursement.name %>
           <% end %>
         </td>
-        <td><%= render_money_amount(disbursement.amount) %></td>
+        <td><%= render_money(disbursement.amount) %></td>
         <td><%= disbursement.aasm.human_state %></td>
         <td>
           <% if disbursement.reviewing? %>

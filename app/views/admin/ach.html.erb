@@ -42,7 +42,7 @@
             <%= ach.event.name.upcase %>: <%= ach.recipient_name.upcase %>
           <% end %>
         </td>
-        <td><%= render_money_amount(ach.amount) %></td>
+        <td><%= render_money(ach.amount) %></td>
         <td><%= ach.aasm_state.upcase %></td>
         <td><%= ach.confirmation_number %></td>
         <td>
