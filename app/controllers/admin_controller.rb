@@ -490,7 +490,10 @@ class AdminController < ApplicationController
     relation = relation.pending if @pending
 
     @count = relation.count
-    @ach_transfers = relation.page(@page).per(@per).order("created_at desc")
+    @ach_transfers = relation.page(@page).per(@per).order(
+      Arel.sql("aasm_state = 'pending' DESC"),
+      "created_at desc"
+    )
 
     render layout: "admin"
   end
@@ -585,7 +588,10 @@ class AdminController < ApplicationController
     relation = relation.in_transit if @in_transit
 
     @count = relation.count
-    @checks = relation.page(@page).per(@per).order("created_at desc")
+    @checks = relation.page(@page).per(@per).order(
+      Arel.sql("aasm_state = 'pending' DESC"),
+      "created_at desc"
+    )
 
     render layout: "admin"
   end
@@ -631,7 +637,10 @@ class AdminController < ApplicationController
   def increase_checks
     @page = params[:page] || 1
     @per = params[:per] || 20
-    @checks = IncreaseCheck.page(@page).per(@per).order(created_at: :desc)
+    @checks = IncreaseCheck.page(@page).per(@per).order(
+      Arel.sql("aasm_state = 'pending' DESC"),
+      "created_at desc"
+    )
 
     render layout: "admin"
   end
@@ -777,7 +786,10 @@ class AdminController < ApplicationController
     relation = relation.processing if @processing
 
     @count = relation.count
-    @disbursements = relation.page(@page).per(@per).order("created_at desc")
+    @disbursements = relation.page(@page).per(@per).order(
+      Arel.sql("aasm_state = 'reviewing' DESC"),
+      "created_at desc"
+    )
 
     render layout: "admin"
   end
