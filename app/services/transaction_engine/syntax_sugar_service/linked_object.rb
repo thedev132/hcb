@@ -20,6 +20,7 @@ module TransactionEngine
 
           return likely_ach if outgoing_ach?
           return likely_increase_ach if increase_ach?
+          return likely_column_ach if column_ach?
 
           return likely_invoice if incoming_invoice?
 
@@ -93,6 +94,11 @@ module TransactionEngine
         return unless ach_transfer
 
         return ach_transfer
+      end
+
+      def likely_column_ach
+        column_ach_transfer_id = @canonical_transaction.raw_column_transaction&.column_transaction&.dig("transaction_id")
+        return AchTransfer.find_by(column_id: column_ach_transfer_id)
       end
 
       def likely_invoice

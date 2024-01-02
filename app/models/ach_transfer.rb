@@ -20,6 +20,7 @@
 #  scheduled_on              :date
 #  created_at                :datetime         not null
 #  updated_at                :datetime         not null
+#  column_id                 :text
 #  creator_id                :bigint
 #  event_id                  :bigint
 #  increase_id               :text
@@ -27,6 +28,7 @@
 #
 # Indexes
 #
+#  index_ach_transfers_on_column_id     (column_id) UNIQUE
 #  index_ach_transfers_on_creator_id    (creator_id)
 #  index_ach_transfers_on_event_id      (event_id)
 #  index_ach_transfers_on_increase_id   (increase_id) UNIQUE
@@ -120,18 +122,28 @@ class AchTransfer < ApplicationRecord
   def send_ach_transfer!
     return unless may_mark_in_transit?
 
-    increase_ach_transfer = Increase::AchTransfers.create(
-      account_id: event.increase_account_id,
-      account_number:,
-      routing_number:,
-      amount:,
-      statement_descriptor: payment_for,
-      individual_name: recipient_name[0...22],
-      company_name: event.name[0...16]
-    )
+    account_number_id = event.column_account_number&.column_id ||
+                        Rails.application.credentials.dig(:column, ColumnService::ENVIRONMENT, :default_account_number)
 
-    update!(increase_id: increase_ach_transfer["id"])
-    mark_in_transit!
+    column_ach_transfer = ColumnService.post("/transfers/ach", {
+      idempotency_key: self.id.to_s,
+      amount:,
+      currency_code: "USD",
+      type: "CREDIT",
+      entry_class_code: "PPD",
+      counterparty: {
+        account_number:,
+        routing_number:,
+      },
+      company_name: event.name[0...16],
+      description: payment_for,
+      account_number_id:,
+    }.compact_blank)
+
+    mark_in_transit
+    self.column_id = column_ach_transfer["id"]
+
+    save!
   end
 
   def approve!(processed_by = nil)

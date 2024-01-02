@@ -72,6 +72,10 @@ module TransactionEngine
         @canonical_transaction.raw_increase_transaction&.increase_transaction&.dig("source", "category") == "ach_transfer_intention"
       end
 
+      def column_ach?
+        @canonical_transaction.column_transaction_type&.start_with?("ach.outgoing_transfer")
+      end
+
       def likely_outgoing_ach_name
         memo_upcase.split(OUTGOING_ACH_MEMO_PART)[0].strip
       end

@@ -77,6 +77,8 @@ class CanonicalTransaction < ApplicationRecord
   scope :mapped_by_human, -> { includes(:canonical_event_mapping).where("canonical_event_mappings.user_id is not null").references(:canonical_event_mapping) }
   scope :included_in_stats, -> { includes(canonical_event_mapping: :event).where(events: { omit_stats: false }) }
 
+  scope :with_column_transaction_type, ->(type) { column_transaction.where("raw_column_transactions.column_transaction->>'transaction_type' LIKE ?", "#{sanitize_sql_like(type)}%") }
+
   monetize :amount_cents
 
   has_many :canonical_hashed_mappings
@@ -160,6 +162,10 @@ class CanonicalTransaction < ApplicationRecord
 
   def raw_column_transaction
     transaction_source if transaction_source_type == RawColumnTransaction.name
+  end
+
+  def column_transaction_type
+    raw_column_transaction&.transaction_type
   end
 
   def stripe_cardholder

@@ -29,7 +29,7 @@ class RawColumnTransaction < ApplicationRecord
 
   def memo
     transaction_id = column_transaction["transaction_id"]
-    if transaction_id.start_with? "acht"
+    if transaction_id.start_with? "acht" # TODO: use `transaction_type` instead
       ach_transfer = ColumnService.ach_transfer(transaction_id)
 
       return "#{ach_transfer["company_name"]} #{ach_transfer["company_entry_description"]}"
@@ -38,6 +38,10 @@ class RawColumnTransaction < ApplicationRecord
     "COLUMN TRANSACTION"
   rescue
     "COLUMN TRANSACTION"
+  end
+
+  def transaction_type
+    column_transaction["transaction_type"]
   end
 
 end

@@ -21,7 +21,8 @@ class ColumnService
   end
 
   def self.post(url, params = {})
-    conn.post(url, params).body
+    idempotency_key = params.delete(:idempotency_key)
+    conn.post(url, params, { "Idempotency-Key" => idempotency_key }.compact_blank).body
   end
 
   def self.transactions(from_date: 1.week.ago, to_date: Date.today, bank_account: Accounts::FS_MAIN)
@@ -42,9 +43,6 @@ class ColumnService
 
       [report["id"], transactions]
     end
-
-  rescue => e
-    puts e.response_body
   end
 
   def self.ach_transfer(id)
