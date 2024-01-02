@@ -93,6 +93,37 @@ class StatsController < ApplicationController
       1328, # Sarthak
       7104, # Hunter
       8507, # Paul
+
+      # These users are on the list because they're in HQ
+      5855, # Zoya Hussain
+      4282, # Sahiti Dasari
+      5991, # Dieter Schoening
+      4171, # B Smith
+      5992, # NJOUONDO DJIMI JOSIAS AUREL
+      5913, # Henry Bass
+      6058, # Shubham Panth
+      7368, # Kristina Hoadley
+      5082, # Graham Darcey
+      7114, # Jianmin Chen
+      6678, # Shawn Malluwa-wadu
+      5086, # Quillan George
+      7545, # Faisal Ilyas Sayed
+      4048, # Nila Ram
+      5138, # Ruien Luo
+      421,  # Zach Latta
+      904,  # Christina Asquith
+      595,  # Chris Walker
+      2303, # Leo McElroy
+      2596, # Deven Jadhav
+      2779, # Judy Castillo
+      2922, # Kara Massie
+      3173, # Bence Beres
+      1803, # Gary Tou
+      1,    #   Zach Latta
+      5670, # Thomas Stubblefield
+      7873, # Cody Flaherty
+      595,  # Chris Walker
+      8823  # Lucy Tran
     ]
 
     q = <<~SQL
