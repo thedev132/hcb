@@ -795,21 +795,7 @@ class AdminController < ApplicationController
   end
 
   def disbursement_new
-    render layout: "admin"
-  end
-
-  def disbursement_create
-    ::DisbursementService::Create.new(
-      source_event_id: params[:source_event_id],
-      destination_event_id: params[:event_id],
-      name: params[:name],
-      amount: params[:amount],
-      requested_by_id: current_user.id
-    ).run
-
-    redirect_to disbursements_admin_index_path, flash: { success: "Success" }
-  rescue => e
-    redirect_to disbursement_new_admin_index_path, flash: { error: e.message }
+    redirect_to new_disbursement_path
   end
 
   def hcb_codes
