@@ -37,7 +37,17 @@ class AdminController < ApplicationController
     size = pending_task params[:task_name].to_sym
     ending = Process.clock_gettime(Process::CLOCK_MONOTONIC)
     elapsed = ending - starting
-    render json: { elapsed:, size: }, status: 200
+
+    respond_to do |format|
+      format.json { render json: { elapsed:, size: } }
+      format.html do
+        color = size == 0 ? "muted" : "accent"
+
+        render html: helpers.turbo_frame_tag(params[:task_name]) {
+          helpers.badge_for size, class: "pr2 bg-#{color}"
+        }
+      end
+    end
   end
 
   def negative_events
@@ -1200,7 +1210,7 @@ class AdminController < ApplicationController
 
   def hackathons_task_size
     hackathons = Faraday
-                 .new { |c| c.response :json }
+                 .new(ssl: { verify: false }) { |c| c.response :json }
                  .get("https://dash.hackathons.hackclub.com/api/v1/stats/hackathons")
                  .body
 

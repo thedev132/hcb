@@ -5,19 +5,19 @@
   </p>
   <h2>Tasks</h2>
   <ul class="grid left-align w-100 mt0">
-    <%= react_component "admin_task/Card", human_name: "Applications", task_name: :pending_bank_applications_airtable, task_path: link_to_airtable_task(:bank_applications) %>
-    <%= react_component "admin_task/Card", human_name: "OnBoard ID", task_name: :pending_onboard_id_airtable, task_path: link_to_airtable_task(:onboard_id) %>
+    <%= card_to "Applications", link_to_airtable_task(:bank_applications), { async_badge: :pending_bank_applications_airtable } %>
+    <%= card_to "OnBoard ID", link_to_airtable_task(:onboard_id), { async_badge: :pending_onboard_id_airtable } %>
     <%= card_to "Ledger", ledger_admin_index_path, { badge: CanonicalTransaction.not_stripe_top_up.unmapped.count } %>
     <%= card_to "ACH", ach_admin_index_path, { badge: AchTransfer.pending.count } %>
     <%= card_to "Check", increase_checks_admin_index_path, { badge: IncreaseCheck.pending.count } %>
     <%= card_to "Grants", grants_admin_index_path, { badge: Grant.admin_action_needed.count } %>
-    <%= react_component "admin_task/Card", human_name: "Wires", task_name: :pending_wire_transfers_airtable, task_path: link_to_airtable_task(:wire_transfers) %>
-    <%= react_component "admin_task/Card", human_name: "PayPal", task_name: :pending_paypal_transfers_airtable, task_path: link_to_airtable_task(:paypal_transfers) %>
+    <%= card_to "Wires", link_to_airtable_task(:wire_transfers), { async_badge: :pending_wire_transfers_airtable } %>
+    <%= card_to "PayPal", link_to_airtable_task(:paypal_transfers), { async_badge: :pending_paypal_transfers_airtable } %>
     <%= card_to "Disbursements", disbursements_admin_index_path, { badge: Disbursement.reviewing.count } %>
     <%= card_to "Deletion Requests", organizer_position_deletion_requests_path, { badge: OrganizerPositionDeletionRequest.under_review.count } %>
-    <%= react_component "admin_task/Card", human_name: "Disputes", task_name: :pending_disputed_transactions_airtable, task_path: link_to_airtable_task(:disputed_transactions) %>
-    <%= react_component "admin_task/Card", human_name: "Feedback", task_name: :pending_feedback_airtable, task_path: link_to_airtable_task(:feedback) %>
-    <%= react_component "admin_task/Card", human_name: "FIRST Grants", task_name: :pending_first_grant_airtable, task_path: link_to_airtable_task(:first_grant) %>
+    <%= card_to "Disputes", link_to_airtable_task(:disputed_transactions), { async_badge: :pending_disputed_transactions_airtable } %>
+    <%= card_to "Feedback", link_to_airtable_task(:feedback), { async_badge: :pending_feedback_airtable } %>
+    <%= card_to "FIRST Grants", link_to_airtable_task(:first_grant), { async_badge: :pending_first_grant_airtable } %>
   </ul>
   <h2>Info</h2>
   <ul class="grid left-align w-100 mt0">
@@ -31,15 +31,15 @@
   <h2>Perks</h2>
   <ul class="grid left-align w-100 mt0">
     <%= card_to "Google Workspaces", google_workspaces_admin_index_path, { badge: GSuite.needs_ops_review.count } %>
-    <%= react_component "admin_task/Card", human_name: "Stickers", task_name: :pending_stickers_airtable, task_path: link_to_airtable_task(:stickers) %>
-    <%= react_component "admin_task/Card", human_name: "Wallets", task_name: :pending_wallets_airtable, task_path: link_to_airtable_task(:wallets) %>
-    <%= react_component "admin_task/Card", human_name: "Hackathons", task_name: :pending_hackathons_airtable, task_path: "https://dash.hackathons.hackclub.com/sign_in" %>
-    <%= react_component "admin_task/Card", human_name: "Sendy", task_name: :pending_sendy_airtable, task_path: link_to_airtable_task(:sendy) %>
-    <%= react_component "admin_task/Card", human_name: "1Password", task_name: :pending_onepassword_airtable, task_path: link_to_airtable_task(:onepassword) %>
-    <%= react_component "admin_task/Card", human_name: "Domains", task_name: :pending_domains_airtable, task_path: link_to_airtable_task(:domains) %>
-    <%= react_component "admin_task/Card", human_name: "PVSA", task_name: :pending_pvsa_airtable, task_path: link_to_airtable_task(:pvsa) %>
-    <%= react_component "admin_task/Card", human_name: "The Event Helper", task_name: :pending_theeventhelper_airtable, task_path: link_to_airtable_task(:theeventhelper) %>
-    <%= react_component "admin_task/Card", human_name: "Google Workspace Waitlist", task_name: :pending_google_workspace_waitlist_airtable, task_path: link_to_airtable_task(:google_workspace_waitlist) %>
+    <%= card_to "Stickers", link_to_airtable_task(:stickers), { async_badge: :pending_stickers_airtable } %>
+    <%= card_to "Wallets", link_to_airtable_task(:wallets), { async_badge: :pending_wallets_airtable } %>
+    <%= card_to "Hackathons", "https://dash.hackathons.hackclub.com/sign_in", { async_badge: :pending_hackathons_airtable } %>
+    <%= card_to "Sendy", link_to_airtable_task(:sendy), { async_badge: :pending_sendy_airtable } %>
+    <%= card_to "1Password", link_to_airtable_task(:onepassword), { async_badge: :pending_onepassword_airtable } %>
+    <%= card_to "Domains", link_to_airtable_task(:domains), { async_badge: :pending_domains_airtable } %>
+    <%= card_to "PVSA", link_to_airtable_task(:pvsa), { async_badge: :pending_pvsa_airtable } %>
+    <%= card_to "The Event Helper", link_to_airtable_task(:theeventhelper), { async_badge: :pending_theeventhelper_airtable } %>
+    <%= card_to "Google Workspace Waitlist", link_to_airtable_task(:google_workspace_waitlist), { async_badge: :pending_google_workspace_waitlist_airtable } %>
   </ul>
   <h2>Accounting</h2>
   <ul class="grid left-align w-100 mt0">
@@ -62,7 +62,7 @@
       <%= render partial: "static_pages/card", locals: { task_path: negative_events_path, human_name: "Negative projects" } %>
       <%= render partial: "static_pages/card", locals: { task_path: sponsors_path, human_name: "Sponsors" } %>
       <%= render partial: "static_pages/card", locals: { task_path: g_suite_accounts_path, human_name: "Google Workspace accounts" } %>
-      <%= react_component "admin_task/Card", human_name: :bookkeeping, task_path: bookkeeping_path %>
+      <%= card_to "Bookkeeping", bookkeeping_path %>
       <%= card_to "Emburse cards", emburse_cards_path %>
       <%= card_to "Emburse card requests", emburse_card_requests_path %>
       <%= card_to "Emburse transfers", emburse_transfers_path %>

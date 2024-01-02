@@ -6,6 +6,10 @@ module StaticPagesHelper
   def card_to(name, path, options = {})
     badge = if options[:badge].present?
               badge_for(options[:badge], class: options[:subtle_badge].present? || options[:badge] == 0 ? "bg-muted pr2 h-fit-content" : "bg-accent pr2 h-fit-content")
+            elsif options[:async_badge].present?
+              turbo_frame_tag options[:async_badge], src: admin_task_size_path(task_name: options[:async_badge]) do
+                badge_for "⏳", class: "bg-muted pr2"
+              end
             else
               ""
             end
