@@ -95,8 +95,9 @@ html {
   --hcb-font-sans: ui-rounded, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Fira Sans', Oxygen,
     Ubuntu, 'Helvetica Neue', sans-serif;
   --hcb-font-mono: 'SF Mono', 'Roboto Mono', Menlo, Consolas, monospace;
+}
 
-  /* Light theme */
+html {
   --hcb-tx-1: #17171d;
   --hcb-tx-2: #1a1a1a;
   --hcb-bg-1: #ffffff;
@@ -112,42 +113,24 @@ html {
   --hcb-accent-transit: #ccffff;
   --hcb-accent-active: #00ff00;
   --hcb-accent-tx: #1a1a1a;
-
-  /* Dark theme */
-  --hcb-d-tx-1: #e0e6ed;
-  --hcb-d-tx-2: #e0e6ed;
-  --hcb-d-bg-1: #17171d;
-  --hcb-d-bg-2: #121217;
-  --hcb-d-bg-3: #252429;
-  --hcb-d-link-1: #8492a6;
-  --hcb-d-link-2: #3c4858;
-  --hcb-d-link-tx: #ffffff;
-  --hcb-d-accent: #338eda; // button color
-  --hcb-d-accent-red: #916262;
-  --hcb-d-accent-orange: #bf6a2e;
-  --hcb-d-accent-pending: #544d29;
-  --hcb-d-accent-transit: #005c5c;
-  --hcb-d-accent-active: #008a00;
-  --hcb-d-accent-tx: #070707;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --hcb-tx-1: var(--hcb-d-tx-1);
-    --hcb-tx-2: var(--hcb-d-tx-2);
-    --hcb-bg-1: var(--hcb-d-bg-1);
-    --hcb-bg-2: var(--hcb-d-bg-2);
-    --hcb-bg-3: var(--hcb-d-bg-3);
-    --hcb-link-1: var(--hcb-d-link-1);
-    --hcb-link-2: var(--hcb-d-link-2);
-    --hcb-link-tx: var(--hcb--dlk-tx);
-    --hcb-accent: var(--hcb-d-accent);
-    --hcb-accent-red: var(--hcb-d-accent-red);
-    --hcb-accent-orange: var(--hcb-d-accent-orange);
-    --hcb-accent-pending: var(--hcb-d-accent-pending);
-    --hcb-accent-transit: var(--hcb-d-accent-transit);
-    --hcb-accent-tx: var(--hcb--daccent-tx);
-  }
+html[data-dark='true'] {
+  --hcb-tx-1: #e0e6ed;
+  --hcb-tx-2: #e0e6ed;
+  --hcb-bg-1: #17171d;
+  --hcb-bg-2: #121217;
+  --hcb-bg-3: #252429;
+  --hcb-link-1: #8492a6;
+  --hcb-link-2: #3c4858;
+  --hcb-link-tx: #ffffff;
+  --hcb-accent: #338eda; // button color
+  --hcb-accent-red: #916262;
+  --hcb-accent-orange: #bf6a2e;
+  --hcb-accent-pending: #544d29;
+  --hcb-accent-transit: #005c5c;
+  --hcb-accent-active: #008a00;
+  --hcb-accent-tx: #070707;
 }
 
 * {
