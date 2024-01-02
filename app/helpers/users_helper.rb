@@ -99,14 +99,12 @@ module UsersHelper
   end
 
   def admin_tools(class_name = "", element = "div", override_pretend: false, **options, &block)
-    if options[:if] == false
+    if options.delete(:if) == false
       yield
     else
       return unless current_user&.admin? || (override_pretend && current_user&.admin_override_pretend?)
 
-      concat("<#{element} class='admin-tools #{class_name}'>".html_safe)
-      yield
-      concat("</#{element}>".html_safe)
+      concat content_tag(element, class: "admin-tools #{class_name}", **options, &block)
     end
   end
 
