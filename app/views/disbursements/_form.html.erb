@@ -1,4 +1,4 @@
-<%= form_with(model: disbursement, local: true, url: disbursements_path) do |form| %>
+<%= form_with(model: disbursement, local: true, url: disbursements_path, html: { "x-data" => "{fee: null}" }) do |form| %>
   <%= form_errors(disbursement, "Disbursements") %>
 
   <div class="field event-select-target">
@@ -14,15 +14,31 @@
 
   <div class="field event-select-target">
     <%= form.label :event_id, "To" %>
-    <%= form.collection_select(:event_id,
-                                @allowed_destination_events,
-                                :id,
-                                current_user.admin? ? :admin_dropdown_description : :disbursement_dropdown_description,
-                                { prompt: "Select one…" },
-                                required: true,
-                                disabled: @source_event&.demo_mode?) %>
-    <span class="muted">You can transfer to any organization you're a part of.</span>
+    <%= form.select(:event_id,
+                    @allowed_destination_events.map do |event|
+                      [
+                        current_user.admin? ? event.admin_dropdown_description : event.disbursement_dropdown_description,
+                        event.id,
+                        { "data-fee" => event.sponsorship_fee.to_s },
+                      ]
+                    end,
+                    { prompt: "Select one…" },
+                    required: true,
+                    disabled: @source_event&.demo_mode?,
+                    "x-on:input" => "fee = $event.target.options[$event.target.selectedIndex].dataset.fee") %>
+    <% unless admin_signed_in? %>
+      <span class="muted">You can transfer to any organization you're a part of.</span>
+    <% end %>
   </div>
+
+  <% if admin_signed_in? %>
+    <div class="admin-tools field field--checkbox" x-show="fee > 0" x-cloak x-transition.duration.500ms>
+      <%= form.check_box :should_charge_fee %>
+      <%= form.label :should_charge_fee do %>
+        Charge <span x-text="Math.round(fee * 100) || '0'"></span>% fiscal sponsorship fee?
+      <% end %>
+    </div>
+  <% end %>
 
   <%= form.label :amount, "Amount" %>
   <div class="field">

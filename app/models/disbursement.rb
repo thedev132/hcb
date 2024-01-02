@@ -13,6 +13,7 @@
 #  name                     :string
 #  pending_at               :datetime
 #  rejected_at              :datetime
+#  should_charge_fee        :boolean          default(FALSE)
 #  created_at               :datetime         not null
 #  updated_at               :datetime         not null
 #  destination_subledger_id :bigint
@@ -271,6 +272,10 @@ class Disbursement < ApplicationRecord
 
   def special_appearance_memo
     special_appearance&.[](:memo)
+  end
+
+  def fee_waived?
+    !should_charge_fee?
   end
 
   private

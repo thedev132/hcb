@@ -14,6 +14,7 @@ module PendingTransactionEngine
           ::CanonicalPendingTransaction.find_or_create_by!(attrs) do |cpt|
             # In-review disbursements shouldn't be fronted.
             cpt.fronted = !@rpidt.disbursement.reviewing?
+            cpt.fee_waived = @rpidt.disbursement.fee_waived?
           end
         end
 

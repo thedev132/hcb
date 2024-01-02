@@ -71,7 +71,8 @@ class DisbursementsController < ApplicationController
       destination_event_id: disbursement_params[:event_id],
       source_event_id: disbursement_params[:source_event_id],
       amount: disbursement_params[:amount],
-      requested_by_id: current_user.id
+      requested_by_id: current_user.id,
+      should_charge_fee: disbursement_params[:should_charge_fee] == "1",
     ).run
 
     flash[:success] = "Transfer successfully requested."
@@ -127,12 +128,15 @@ class DisbursementsController < ApplicationController
 
   # Only allow a trusted parameter "white list" through.
   def disbursement_params
-    params.require(:disbursement).permit(
+    attributes = [
       :source_event_id,
       :event_id,
       :amount,
-      :name
-    )
+      :name,
+    ]
+    attributes << :should_charge_fee if admin_signed_in?
+
+    params.require(:disbursement).permit(attributes)
   end
 
   # Use callbacks to share common setup or constraints between actions.
