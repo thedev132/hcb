@@ -54,7 +54,8 @@
         account_number_event_path(@event),
         tooltip: "Receive payouts from GoFundMe, Shopify, Venmo, and more",
         icon: "bank-account",
-        selected: local_assigns[:selected] == :account_number if Flipper.enabled?(:incoming_ach_payments_2023_02_17, @event) %>
+        selected: local_assigns[:selected] == :account_number,
+        disabled: !organizer_signed_in? if Flipper.enabled?(:incoming_ach_payments_2023_02_17, @event) %>
       <%= dock_item "Check deposit",
         event_check_deposits_path(@event),
         tooltip: "Deposit checks",

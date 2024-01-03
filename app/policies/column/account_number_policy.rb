@@ -3,7 +3,7 @@
 module Column
   class AccountNumberPolicy < ApplicationPolicy
     def create?
-      user&.admin?
+      user&.admin? || record.event.users.include?(user)
     end
 
   end

@@ -142,7 +142,7 @@ class EventPolicy < ApplicationPolicy
   end
 
   def account_number?
-    is_public || user_or_admin
+    user_or_admin
   end
 
   def toggle_event_tag?
