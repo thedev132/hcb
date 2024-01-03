@@ -9,6 +9,7 @@
 #  card_type                           :integer          default("virtual"), not null
 #  is_platinum_april_fools_2023        :boolean
 #  last4                               :text
+#  lost_in_shipping                    :boolean          default(FALSE)
 #  name                                :string
 #  purchased_at                        :datetime
 #  spending_limit_amount               :integer
@@ -103,6 +104,8 @@ class StripeCard < ApplicationRecord
                         :last4,
                         :stripe_status,
                         if: -> { self.stripe_id.present? }
+
+  validate :only_physical_cards_can_be_lost_in_shipping
 
   def full_card_number
     secret_details[:number]
@@ -259,6 +262,18 @@ class StripeCard < ApplicationRecord
     end
 
     if stripe_obj[:shipping]
+      if (stripe_obj[:shipping][:status] == "returned" || stripe_obj[:shipping][:status] == "failure") && !lost_in_shipping?
+        self.lost_in_shipping = true
+        StripeCardMailer.with(card_id: self.id).lost_in_shipping.deliver_later
+
+        # force a refresh of the cache; otherwise, the card will be marked as
+        # lost in shipping again since stripe_obj is cached
+        @stripe_obj = nil
+        self.cancel!
+
+        # `cancel!` calls `sync_from_stripe!`, so there is no need to continue
+        return self
+      end
       self.stripe_shipping_address_city = stripe_obj[:shipping][:address][:city]
       self.stripe_shipping_address_country = stripe_obj[:shipping][:address][:country]
       self.stripe_shipping_address_line1 = stripe_obj[:shipping][:address][:line1]
@@ -376,6 +391,12 @@ class StripeCard < ApplicationRecord
     end
 
     @auths
+  end
+
+  def only_physical_cards_can_be_lost_in_shipping
+    if !physical? && lost_in_shipping?
+      errors.add(:lost_in_shipping, "can only be true for physical cards")
+    end
   end
 
 end

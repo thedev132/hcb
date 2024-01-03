@@ -1584,6 +1584,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_30_000209) do
     t.string "name"
     t.boolean "is_platinum_april_fools_2023"
     t.bigint "subledger_id"
+    t.boolean "lost_in_shipping", default: false
     t.index ["event_id"], name: "index_stripe_cards_on_event_id"
     t.index ["replacement_for_id"], name: "index_stripe_cards_on_replacement_for_id"
     t.index ["stripe_cardholder_id"], name: "index_stripe_cards_on_stripe_cardholder_id"
