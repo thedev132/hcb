@@ -46,12 +46,12 @@ class DisbursementsController < ApplicationController
     @disbursement = Disbursement.new(destination_event: @destination_event, source_event: @source_event)
 
     @allowed_source_events = if current_user.admin?
-                               Event.all
+                               Event.all.reorder(Event::CUSTOM_SORT)
                              else
                                current_user.events.not_hidden.filter_demo_mode(false)
                              end
     @allowed_destination_events = if current_user.admin?
-                                    Event.all
+                                    Event.all.reorder(Event::CUSTOM_SORT)
                                   else
                                     current_user.events.not_hidden.without(@source_event).filter_demo_mode(false)
                                   end
