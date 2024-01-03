@@ -12,7 +12,7 @@
   <%= blankslate "Unavailable in Playground Mode" %>
 <% else %>
   <% if @event.increase_account_number&.used? %>
-    <%= render "increase_account_number", increase_account_number: @event.increase_account_number %>
+    <%= render "events/increase_account_number", increase_account_number: @event.increase_account_number %>
   <% end %>
 
   <%= turbo_frame_tag "#{@event.public_id}_account_number" do %>
