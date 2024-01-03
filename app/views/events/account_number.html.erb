@@ -48,7 +48,15 @@
   <% end %>
 
   <div class="card container--sm mx-auto center overflow-visible pb0 mb3">
-    <div class="badge bg-info mb1 ml0 tooltipped tooltipped--n pointer" aria-label="This account number can only receive funds. You can't use it to send money."><%= inline_icon "info", size: 20, style: "margin-left: 0; margin-right: 0.25rem" %> Deposit-only</div>
+    <% if @event.column_account_number&.deposit_only? %>
+      <div class="badge bg-info mb1 ml0 tooltipped tooltipped--n pointer" aria-label="This account number can only receive funds. You can't use it to send money.">
+        <%= inline_icon "info", size: 20, style: "margin-left: 0; margin-right: 0.25rem" %> Receive-only
+      </div>
+    <% else %>
+      <div class="badge bg-success mb1 ml0 tooltipped tooltipped--n pointer" aria-label="This account number can be used to deposit and withdraw from your account.">
+        <%= inline_icon "info", size: 20, style: "margin-left: 0; margin-right: 0.25rem" %> Receive + Send
+      </div>
+    <% end %>
 
     <div class="flex items-start justify-around h2 mb2" style="gap: 1rem">
       <span class="flex flex-column" data-controller="<%= "clipboard" if organizer_signed_in? %>" data-clipboard-text-value="<%= @event.account_number if organizer_signed_in? %>">

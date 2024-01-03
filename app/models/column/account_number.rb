@@ -7,6 +7,7 @@
 #  id                        :bigint           not null, primary key
 #  account_number_ciphertext :text
 #  bic_code_ciphertext       :text
+#  deposit_only              :boolean          default(TRUE), not null
 #  routing_number_ciphertext :text
 #  created_at                :datetime         not null
 #  updated_at                :datetime         not null

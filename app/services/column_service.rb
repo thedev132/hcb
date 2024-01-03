@@ -7,6 +7,11 @@ class ColumnService
     FS_MAIN = Rails.application.credentials.column.dig(ENVIRONMENT, :fs_main_account_id)
   end
 
+  module AchCodes
+    INSUFFICIENT_BALANCE = "R01"
+    STOP_PAYMENT = "R08"
+  end
+
   def self.conn
     @conn ||= Faraday.new url: "https://api.column.com" do |f|
       f.request :basic_auth, "", Rails.application.credentials.column.dig(ENVIRONMENT, :api_key)
@@ -47,6 +52,10 @@ class ColumnService
 
   def self.ach_transfer(id)
     get("/transfers/ach/#{id}")
+  end
+
+  def self.return_ach(id, with:)
+    post("/transfers/ach/#{id}/return", return_code: with)
   end
 
 end
