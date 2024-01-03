@@ -214,6 +214,18 @@ class HcbCodesController < ApplicationController
       sponsor_address_country: spender.stripe_cardholder.stripe_billing_address_country
     ).run
 
+    ::HcbCodeService::Comment::Create.new(
+      hcb_code_id: @invoice.local_hcb_code.id,
+      content: "#{hcb_code_url(hcb_code)} was marked as an accidental misuse.",
+      current_user:
+    ).run
+
+    ::HcbCodeService::Comment::Create.new(
+      hcb_code_id: hcb_code.id,
+      content: "This transaction was marked as an accidental misuse. Reimbursement requested at #{hcb_code_url(@invoice.local_hcb_code)}.",
+      current_user:
+    ).run
+
     flash[:success] = "We've sent an invoice for repayment to #{@invoice.sponsor.contact_email}."
 
     redirect_to @invoice
