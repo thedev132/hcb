@@ -20,7 +20,7 @@ class ToursController < ApplicationController
   def set_step
     step = params[:step].to_i
 
-    return render status: :bad_request if step < 0
+    return head status: :bad_request if step < 0
 
     suppress(ActiveRecord::RecordNotFound) do
       @tour = Tour.find(params[:id])
