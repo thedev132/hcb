@@ -1,0 +1,10 @@
+<% if local_assigns[:hcb_code].event&.hack_club_hq? %>
+  <div class="flex muted justify-end items-end">
+    <%= inline_icon "sad", size: 20 %>
+    <%= link_to invoice_as_personal_transaction_hcb_code_path(id: local_assigns[:hcb_code].hashid), method: :post do %>
+      <small class="mt0 mb0">
+        Flag as accidental misuse
+      </small>
+    <% end %>
+  </div>
+<% end %>
