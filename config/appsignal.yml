@@ -1,0 +1,12 @@
+default: &defaults
+  name: "HCB"
+
+  push_api_key: <%= Rails.application.credentials.dig(:appsignal, :push_api_key) %>
+
+production:
+  <<: *defaults
+  active: true
+
+staging:
+  <<: *defaults
+  active: true

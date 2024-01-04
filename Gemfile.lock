@@ -95,6 +95,8 @@ GEM
       activerecord (>= 3.2, < 8.0)
       rake (>= 10.4, < 14.0)
     api-pagination (5.0.0)
+    appsignal (3.5.2)
+      rack
     argon2-kdf (0.2.0)
     ast (2.4.2)
     awesome_print (1.9.2)
@@ -800,6 +802,7 @@ DEPENDENCIES
   airrecord (~> 1.0)
   annotate
   api-pagination
+  appsignal
   awesome_print
   aws-sdk-s3
   barnes
