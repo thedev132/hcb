@@ -7,6 +7,7 @@
 #  id                       :bigint           not null, primary key
 #  access_level             :integer          default("user"), not null
 #  birthday                 :date
+#  birthday_ciphertext      :text
 #  email                    :text
 #  full_name                :string
 #  locked_at                :datetime
@@ -94,6 +95,8 @@ class User < ApplicationRecord
   has_one_attached :profile_picture
 
   has_one :partner, inverse_of: :representative
+
+  has_encrypted :birthday, type: :date, migrating: true
 
   include HasMetrics
 

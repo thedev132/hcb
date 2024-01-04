@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -1747,6 +1749,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_30_000209) do
     t.integer "receipt_report_option", default: 0, null: false
     t.string "preferred_name"
     t.integer "access_level", default: 0, null: false
+    t.text "birthday_ciphertext"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["slug"], name: "index_users_on_slug", unique: true
   end
