@@ -32,6 +32,8 @@
 #  index_users_on_slug   (slug) UNIQUE
 #
 class User < ApplicationRecord
+  self.ignored_columns = ["birthday"]
+
   include PublicIdentifiable
   set_public_id_prefix :usr
 
@@ -96,7 +98,7 @@ class User < ApplicationRecord
 
   has_one :partner, inverse_of: :representative
 
-  has_encrypted :birthday, type: :date, migrating: true
+  has_encrypted :birthday, type: :date
 
   include HasMetrics
 
@@ -106,7 +108,7 @@ class User < ApplicationRecord
   after_update :update_stripe_cardholder, if: -> { phone_number_previously_changed? || email_previously_changed? }
 
   validates_presence_of :full_name, if: -> { full_name_in_database.present? }
-  validates_presence_of :birthday, if: -> { birthday_in_database.present? }
+  validates_presence_of :birthday, if: -> { birthday_ciphertext_in_database.present? }
 
   validates :full_name, format: {
     with: /\A[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð.,'-]+ [a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð.,' -]+\z/,
