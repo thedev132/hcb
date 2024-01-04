@@ -10,7 +10,7 @@
       <%= inline_icon "view-back", size: 24 %>
     </button>
     <span>
-      <strong>
+      <strong style="overflow-wrap: anywhere;">
         <% if defined?(link_to_file) && !defined?(selectable) %>
           <%= link_to file_path, target: "_blank", style: "text-decoration: none;" do %>
             <%= receipt.file.blob.filename %>
