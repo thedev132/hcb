@@ -1742,7 +1742,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_30_000209) do
     t.boolean "use_sms_auth", default: false
     t.string "webauthn_id"
     t.integer "session_duration_seconds", default: 2592000, null: false
-    t.date "birthday"
     t.boolean "seasonal_themes_enabled", default: true, null: false
     t.datetime "locked_at", precision: nil
     t.boolean "running_balance_enabled", default: false, null: false

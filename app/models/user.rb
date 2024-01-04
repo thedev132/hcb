@@ -6,7 +6,6 @@
 #
 #  id                       :bigint           not null, primary key
 #  access_level             :integer          default("user"), not null
-#  birthday                 :date
 #  birthday_ciphertext      :text
 #  email                    :text
 #  full_name                :string
