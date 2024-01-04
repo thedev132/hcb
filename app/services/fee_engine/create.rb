@@ -47,6 +47,8 @@ module FeeEngine
 
       reason = "REVENUE WAIVED" if canonical_transaction.memo.downcase.include?("acctverify") && canonical_transaction.amount_cents.abs < 100 # Waive fees on account verification transactions from platforms like Venmo
 
+      reason = "DONATION REFUNDED" if canonical_transaction.local_hcb_code.donation&.refunded?
+
       reason
     end
 

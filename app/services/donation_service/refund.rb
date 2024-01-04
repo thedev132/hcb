@@ -15,10 +15,18 @@ module DonationService
         # 2. Un-front all pending transaction associated with this donation
         donation.canonical_pending_transactions.update_all(fronted: false)
 
-        # 3. Process remotely
+        # 3. Waive all fees collected
+        donation.canonical_transactions.each do |ct|
+          fee = ct.fee
+          fee.amount_cents_as_decimal = 0
+          fee.reason = "DONATION REFUNDED"
+          fee.save!
+        end
+
+        # 4. Process remotely
         ::StripeService::Refund.create(payment_intent: payment_intent_id, amount: @amount)
 
-        # 4. Create top-up on Stripe. Located in `StripeController#handle_charge_refunded`
+        # 5. Create top-up on Stripe. Located in `StripeController#handle_charge_refunded`
       end
     end
 
