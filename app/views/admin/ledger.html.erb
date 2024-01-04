@@ -64,7 +64,7 @@
         <td><%= ct.id %></td>
         <td><%= ct.date %></td>
         <td><%= link_to ct.memo, transaction_path(ct) %></td>
-        <td><%= ct.amount.format %></td>
+        <td class="nowrap"><%= ct.amount.format %></td>
         <td><%= ct.hcb_code %></td>
         <td><%= link_to ct.canonical_event_mapping.event.id, ct.canonical_event_mapping.event if ct.canonical_event_mapping.try(:event) %></td>
         <td>
