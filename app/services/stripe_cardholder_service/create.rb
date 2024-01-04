@@ -58,7 +58,7 @@ module StripeCardholderService
         individual: {
           first_name:,
           last_name:,
-          dob:,
+          dob: DateOfBirthAgeRestrictedExtractor.new(user: @current_user).run,
           card_issuing: {
             user_terms_acceptance: {
               date: DateTime.now.to_i,
@@ -90,19 +90,6 @@ module StripeCardholderService
       raise ArgumentError, requirements if name.gsub(/[^a-z]/i, "").blank?
 
       name
-    end
-
-    def dob
-      return nil unless @current_user.birthday
-      # We don't want to share the dob for users under 13
-      # https://github.com/hackclub/hcb/pull/3071#issuecomment-1268880804
-      return nil if @current_user.birthday > 13.years.ago
-
-      {
-        day: @current_user.birthday.day,
-        month: @current_user.birthday.month,
-        year: @current_user.birthday.year
-      }
     end
 
     def line1

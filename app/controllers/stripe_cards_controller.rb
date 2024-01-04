@@ -99,8 +99,14 @@ class StripeCardsController < ApplicationController
     event = Event.friendly.find(params[:stripe_card][:event_id])
     authorize event, :user_or_admin?, policy_class: EventPolicy
 
-    sc = params[:stripe_card]
+    sc = stripe_card_params
 
+    if current_user.birthday.nil?
+      user_params = sc.slice("birthday(1i)", "birthday(2i)", "birthday(3i)")
+      current_user.update(user_params)
+    end
+
+    return redirect_back fallback_location: event_cards_new_path(event), flash: { error: "Birthday is required" } if current_user.birthday.nil?
     return redirect_back fallback_location: event_cards_new_path(event), flash: { error: "Event is in Playground Mode" } if event.demo_mode?
     return redirect_back fallback_location: event_cards_new_path(event), flash: { error: "Invalid country" } unless %w(US CA).include? sc[:stripe_shipping_address_country]
 
@@ -186,7 +192,9 @@ class StripeCardsController < ApplicationController
       :stripe_shipping_address_line1,
       :stripe_shipping_address_postal_code,
       :stripe_shipping_address_line2,
-      :stripe_shipping_address_state
+      :stripe_shipping_address_state,
+      :stripe_shipping_address_country,
+      :birthday
     )
   end
 

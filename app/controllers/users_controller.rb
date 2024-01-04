@@ -355,6 +355,9 @@ class UsersController < ApplicationController
         redirect_to root_path
       else
         flash[:success] = @user == current_user ? "Updated your profile!" : "Updated #{@user.first_name}'s profile!"
+
+        ::StripeCardholderService::Update.new(current_user: @user).run
+
         redirect_back_or_to edit_user_path(@user)
       end
     else
