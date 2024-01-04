@@ -38,12 +38,13 @@
     </button>
   </h1>
 
-  <section class="modal modal--scroll bg-snow" data-behavior="modal" role="dialog" id="order_card">
-    <%= modal_header "Order a card" %>
-    <%= render "stripe_cards/form", stripe_card: StripeCard.new %>
-  </section>
-
   <% if organizer_signed_in? %>
+
+    <section class="modal modal--scroll bg-snow" data-behavior="modal" role="dialog" id="order_card">
+      <%= modal_header "Order a card" %>
+      <%= render "stripe_cards/form", stripe_card: StripeCard.new %>
+    </section>
+
     <h4>Your Cards</h4>
     <% if @session_user_stripe_cards.blank? %>
       <%= blankslate "You haven’t requested any cards yet." %>
