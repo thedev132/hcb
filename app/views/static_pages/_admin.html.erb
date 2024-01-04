@@ -17,7 +17,7 @@
     <%= card_to "Deletion Requests", organizer_position_deletion_requests_path, { badge: OrganizerPositionDeletionRequest.under_review.count } %>
     <%= card_to "Disputes", link_to_airtable_task(:disputed_transactions), { async_badge: :pending_disputed_transactions_airtable } %>
     <%= card_to "Feedback", link_to_airtable_task(:feedback), { async_badge: :pending_feedback_airtable } %>
-    <%= card_to "FIRST Grants", link_to_airtable_task(:first_grant), { async_badge: :pending_first_grant_airtable } %>
+    <%= card_to "Hackathon Grants", link_to_airtable_task(:first_grant), { async_badge: :pending_first_grant_airtable } %>
   </ul>
   <h2>Info</h2>
   <ul class="grid left-align w-100 mt0">

@@ -343,10 +343,10 @@ export default function CommandBar({admin = false, adminUrls = {}}) {
       id: "admin_tool_13",
       section: "Admin Tools",
       priority: Priority.HIGH,
-      name: "FIRST Grants",
+      name: "Hackathon Grants",
       icon: <Icon glyph="sam" size={16} />,
       perform: () =>
-        (window.location.href = adminUrls["FIRST Grants"]),
+        (window.location.href = adminUrls["Hackathon Grants"]),
     },
     {
       id: "admin_tool_14",
