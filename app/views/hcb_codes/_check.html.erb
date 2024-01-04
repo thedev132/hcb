@@ -102,12 +102,6 @@
   </section>
 
   <section class="card__banner card__darker border-top overflow-hidden">
-    <%= link_to "Cancel",
-      check_cancel_path(@hcb_code.check),
-      class: "btn bg-error mr1 right",
-      method: :post,
-      data: { confirm: "Cancel this check?" } if @hcb_code.check.can_cancel? %>
-
     <%= link_to "View scan",
         check_view_scan_path(@hcb_code.check),
         target: :_blank,

@@ -63,16 +63,6 @@ ach_transfer_daily_job:
   class: "AchTransferJob::Daily"
   queue: "default"
 
-check_nightly_job:
-  cron: "*/30 0 * * *" # run every 30 minutes
-  class: "CheckJob::Nightly"
-  queue: "default"
-
-check_lob_url_assign_having_lob_id_job:
-  cron: "0 0 * * *" # run every 1 day
-  class: "CheckJob::LobUrl::AssignHavingLobId"
-  queue: "default"
-
 invoice_opens_to_paids_job:
   cron: "30 * * * *" # run every hour
   class: "InvoiceJob::OpensToPaids"

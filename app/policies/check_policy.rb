@@ -1,68 +1,12 @@
 # frozen_string_literal: true
 
 class CheckPolicy < ApplicationPolicy
-  def index?
-    user&.admin?
-  end
-
-  def new?
-    is_public || admin_or_user
-  end
-
-  def create?
-    Flipper.enabled?(:outgoing_checks) && (user&.admin? || record.users.include?(user)) # dirty implementation here. record is event (temporary)
-  end
-
   def show?
     is_public || admin_or_user
   end
 
-  def cancel?
-    admin_or_user
-  end
-
   def view_scan?
     admin_or_user
-  end
-
-  def start_void?
-    admin_or_user
-  end
-
-  def void?
-    admin_or_user
-  end
-
-  def edit?
-    admin_or_user
-  end
-
-  def update?
-    admin_or_user
-  end
-
-  def refund_get?
-    user&.admin?
-  end
-
-  def refund?
-    user&.admin?
-  end
-
-  def start_approval?
-    user&.admin?
-  end
-
-  def approve?
-    user&.admin?
-  end
-
-  def reject?
-    user&.admin?
-  end
-
-  def export?
-    user&.admin?
   end
 
   private

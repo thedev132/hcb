@@ -170,7 +170,7 @@ Rails.application.routes.draw do
       get "stripe_cards", to: "admin#stripe_cards"
       get "pending_ledger", to: "admin#pending_ledger"
       get "ach", to: "admin#ach"
-      get "check", to: "admin#check"
+      get "checks", to: "admin#checks"
       get "increase_checks", to: "admin#increase_checks"
       get "partner_organizations", to: "admin#partner_organizations"
       get "events", to: "admin#events"
@@ -208,10 +208,6 @@ Rails.application.routes.draw do
       get "disbursement_process", to: "admin#disbursement_process"
       post "disbursement_approve", to: "admin#disbursement_approve"
       post "disbursement_reject", to: "admin#disbursement_reject"
-      get "check_process", to: "admin#check_process"
-      get "check_positive_pay_csv", to: "admin#check_positive_pay_csv"
-      post "check_send", to: "admin#check_send"
-      post "check_mark_in_transit_and_processed", to: "admin#check_mark_in_transit_and_processed"
       get "increase_check_process", to: "admin#increase_check_process"
       get "google_workspace_process", to: "admin#google_workspace_process"
       post "google_workspace_approve", to: "admin#google_workspace_approve"
@@ -287,13 +283,6 @@ Rails.application.routes.draw do
 
   resources :checks, only: [:show] do
     get "view_scan"
-    post "cancel"
-    get "positive_pay_csv"
-
-    get "start_void"
-    post "void"
-    get "refund", to: "checks#refund_get"
-    post "refund", to: "checks#refund"
 
     resources :comments
   end

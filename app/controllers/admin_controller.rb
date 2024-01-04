@@ -562,7 +562,7 @@ class AdminController < ApplicationController
     redirect_to disbursement_process_admin_path(params[:id]), flash: { error: e.message }
   end
 
-  def check
+  def checks
     @page = params[:page] || 1
     @per = params[:per] || 20
     @q = params[:q].present? ? params[:q] : nil
@@ -604,44 +604,6 @@ class AdminController < ApplicationController
     )
 
     render layout: "admin"
-  end
-
-  def check_process
-    @check = Check.find(params[:id])
-
-    render layout: "admin"
-  end
-
-  def check_positive_pay_csv
-    @check = Check.find(params[:id])
-
-    headers["Content-Type"] = "text/csv"
-    headers["Content-disposition"] = "attachment; filename=check-#{@check.id}-#{@check.check_number}.csv"
-    headers["X-Accel-Buffering"] = "no"
-    headers["Cache-Control"] ||= "no-cache"
-    headers.delete("Content-Length")
-
-    response.status = 200
-
-    self.response_body = ::CheckService::PositivePay::Csv.new(check_id: @check.id).run
-  end
-
-  def check_send
-    check = ::CheckService::Send.new(
-      check_id: params[:id]
-    ).run
-
-    redirect_to check_process_admin_path(check), flash: { success: "Success" }
-  end
-
-  def check_mark_in_transit_and_processed
-    check = CheckService::MarkInTransitAndProcessed.new(
-      check_id: params[:id]
-    ).run
-
-    redirect_to check_process_admin_path(check), flash: { success: "Success" }
-  rescue => e
-    redirect_to check_process_admin_path(params[:id]), flash: { error: e.message }
   end
 
   def increase_checks
