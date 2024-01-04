@@ -2,6 +2,7 @@
 
 module GSuiteJob
   class SetVerificationKey < ApplicationJob
+    queue_as :default
     def perform(g_suite_id)
       @g_suite_id = g_suite_id
       key = GSuiteService::GetVerificationKey.new(g_suite_id:).run

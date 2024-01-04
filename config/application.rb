@@ -63,5 +63,11 @@ module Bank
     # TODO: Pre-load grape API
     # ::API::V3.compile!
 
+    config.action_mailer.deliver_later_queue_name = "critical"
+    config.action_mailbox.queues.routing = "default"
+    config.active_storage.queues.analysis = "low"
+    config.active_storage.queues.purge = "low"
+    config.active_storage.queues.mirror = "low"
+
   end
 end

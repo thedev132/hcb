@@ -2,6 +2,7 @@
 
 module AchTransferJob
   class Nightly < ApplicationJob
+    queue_as :low
     def perform
       AchTransferService::Nightly.new.run
     end

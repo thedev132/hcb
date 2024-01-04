@@ -2,6 +2,7 @@
 
 module FeeEngineJob
   class Hourly < ApplicationJob
+    queue_as :default
     def perform
       ::FeeEngine::Hourly.new.run
     end

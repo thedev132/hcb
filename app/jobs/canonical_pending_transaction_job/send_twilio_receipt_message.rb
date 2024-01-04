@@ -2,6 +2,7 @@
 
 module CanonicalPendingTransactionJob
   class SendTwilioReceiptMessage < ApplicationJob
+    queue_as :critical
     include HcbCodeHelper # for attach_receipt_url
 
     # This is a heuristic to avoid sending SMS for online charges. This isn't

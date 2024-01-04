@@ -2,6 +2,7 @@
 
 module TransactionGroupingEngineJob
   class Nightly < ApplicationJob
+    queue_as :low
     include ::TransactionEngine::Shared
 
     def perform

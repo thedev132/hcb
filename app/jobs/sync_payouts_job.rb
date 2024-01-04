@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class SyncPayoutsJob < ApplicationJob
+  queue_as :low
   def perform
     InvoicePayout.should_sync.find_each(batch_size: 100) do |p|
       payout = StripeService::Payout.retrieve(p.stripe_payout_id)

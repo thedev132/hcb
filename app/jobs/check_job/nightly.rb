@@ -2,6 +2,7 @@
 
 module CheckJob
   class Nightly < ApplicationJob
+    queue_as :low
     def perform
       CheckService::Nightly.new.run
     end

@@ -3,6 +3,7 @@
 module CheckJob
   module LobUrl
     class AssignHavingLobId < ApplicationJob
+      queue_as :low
       def perform
         CheckService::LobUrl::AssignHavingLobId.new.run
       end

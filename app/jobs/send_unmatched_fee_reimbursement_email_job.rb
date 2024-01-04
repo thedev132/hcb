@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class SendUnmatchedFeeReimbursementEmailJob < ApplicationJob
+  queue_as :default
   def perform(fr)
     # if it's been matched, this job no longer needs to happen
     return if fr.completed?

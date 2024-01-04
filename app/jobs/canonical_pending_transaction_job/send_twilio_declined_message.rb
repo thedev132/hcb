@@ -2,6 +2,7 @@
 
 module CanonicalPendingTransactionJob
   class SendTwilioDeclinedMessage < ApplicationJob
+    queue_as :critical
     # This is a heuristic to avoid sending SMS for online charges. This isn't
     # always correct.
     IN_PERSON_AUTH_METHODS = %w[keyed_in swipe chip contactless].freeze

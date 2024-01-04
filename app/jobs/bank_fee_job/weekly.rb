@@ -2,6 +2,7 @@
 
 module BankFeeJob
   class Weekly < ApplicationJob
+    queue_as :low
     def perform
       BankFeeService::Weekly.new.run
     end

@@ -2,6 +2,7 @@
 
 module EventMappingEngineJob
   class Nightly < ApplicationJob
+    queue_as :low
     def perform
       ::EventMappingEngine::Nightly.new.run
     end

@@ -2,6 +2,7 @@
 
 module BankFeeJob
   class Nightly < ApplicationJob
+    queue_as :low
     def perform
       BankFeeService::Nightly.new.run
     end

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class RefreshHcbAcronymExpansionsJob < ApplicationJob
+  queue_as :low
   def perform
     response = Faraday.get("https://raw.githubusercontent.com/hackclub/hcb-expansions/main/phrases.txt")
 
