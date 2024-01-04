@@ -2,6 +2,7 @@
 
 module ExportJob
   class Json < ApplicationJob
+    queue_as :default
     def perform(event_id:, email:)
       @event = Event.find(event_id)
 

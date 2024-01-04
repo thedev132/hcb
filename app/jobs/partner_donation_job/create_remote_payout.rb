@@ -2,6 +2,7 @@
 
 module PartnerDonationJob
   class CreateRemotePayout < ApplicationJob
+    queue_as :default
     # Don't retry job, reattempt at next cron scheduled run
     discard_on(StandardError) do |job, error|
       Airbrake.notify(error)

@@ -2,7 +2,7 @@
 
 module DisbursementJob
   class Hourly < ApplicationJob
-    queue_as :default
+    queue_as :low
     def perform
       DisbursementService::Hourly.new.run
     end

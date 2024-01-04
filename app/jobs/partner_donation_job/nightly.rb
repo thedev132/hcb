@@ -2,6 +2,7 @@
 
 module PartnerDonationJob
   class Nightly < ApplicationJob
+    queue_as :low
     def perform
       ::PartnerDonationService::Nightly.new.run
     end

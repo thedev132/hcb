@@ -2,7 +2,7 @@
 
 module ReceiptReportJob
   class Send < ApplicationJob
-    queue_as :low
+    queue_as :default
     def perform(user_id, force_send: false)
       @user = User.includes(:stripe_cards).find user_id
 

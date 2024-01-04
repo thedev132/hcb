@@ -2,6 +2,7 @@
 
 module PartneredSignupJob
   class DeliverWebhook < ApplicationJob
+    queue_as :default
     WebhookFailed = Class.new(StandardError)
 
     retry_on WebhookFailed, wait: :exponentially_longer, attempts: 16
