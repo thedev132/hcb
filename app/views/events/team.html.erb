@@ -2,19 +2,9 @@
 <% page_sm %>
 <%= render "nav", selected: :team %>
 
-<h1 class="heading flex items-center">
+<h1 class="flex items-center">
   Team
   <%= badge_for @all_positions.size, class: "bg-muted" %>
-
-  <% if organizer_signed_in? %>
-    <a
-      href="mailto:<%= @all_positions.map(&:user).map(&:email).join(',') %>"
-      class="btn btn--icon bg-info"
-    >
-      <%= inline_icon "email" %>
-      Email everyone
-    </a>
-  <% end %>
 </h1>
 
 <% if @all_positions.any? %>
@@ -34,72 +24,50 @@
 <% end %>
 
 <% if @pending.any? %>
-  <h2 class="flex items-center mt3 mb2">
+  <h2 class="flex items-center mt3 mb0">
     Pending invitations
     <%= badge_for @pending.size, class: "bg-muted" %>
   </h2>
-
-  <div class="flex flex-column" style="gap: 0.5rem">
-    <% @pending.order(created_at: :desc).each do |invite| %>
-      <div class="pending-invite-card card pt1 pb1">
-        <div class='flex flex-col items-center'>
-          <div class="invite-info flex flex-auto items-center" style="gap: 1rem">
-            <p class="line-height-3">
-              <strong><%= organizer_signed_in? ? invite.user.email : "Sign in to view" %></strong>
-            </p>
-
-            <% if invite.signee? %>
-              <%= inline_icon("docs-positive", size: 16) %>
-            <% else %>
-              <%= inline_icon("docs-negative", size: 16) %>
-            <% end %>
-          </div>
-
+  <% @pending.order(created_at: :desc).each do |invite| %>
+    <%= creator_bar invite %>
+    <article class="card pt0 pb0 mb3">
+      <section class='flex items-center'>
+        <%= avatar_for OpenStruct.new(email: invite.user.email, name: invite.user.email), 24, class:
+        "mr1" %>
+        <p class="line-height-3 flex-auto">
+          <strong><%= organizer_signed_in? ? invite.user.email : "Sign in to view" %></strong>
+        </p>
+        <% if invite.sender == current_user || admin_signed_in? %>
+          <%= pop_icon_to "view-close",
+            organizer_position_invite_cancel_path(invite.id),
+            size: 24,
+            method: :post,
+            class: "error tooltipped tooltipped--w",
+            'aria-label': "Cancel this invitation" %>
+        <% else %>
+        <div class="tooltipped tooltipped--w" aria-label="Only the sender can cancel an invitation">
+          <%= pop_icon_to "view-close",
+            organizer_position_invite_cancel_path(invite.id),
+            method: :post,
+            size: 24,
+            class: "muted",
+            disabled: true %>
+          <% end %>
         </div>
-
-          <div class="invite-cancel">
-            <% if invite.sender == current_user || admin_signed_in? %>
-              <%= pop_icon_to "view-close",
-                organizer_position_invite_cancel_path(invite.id),
-                size: 24,
-                method: :post,
-                class: "error tooltipped tooltipped--w",
-                'aria-label': "Cancel this invitation" %>
+      </section>
+      <% if current_user&.admin? %>
+        <section class='card__banner card__darker b--warning h5' style='border-style: dashed; border-width: 1px;'>
+          <div>
+            <% if invite.signee? %>
+              <%= inline_icon "docs-fill", size: 20, style: "vertical-align: middle; margin: -0.2rem 0.5rem 0 0;" %>
+              <span>Contract signee</span>
+            <% else %>
+              <%= inline_icon "docs", size: 20, style: "vertical-align: middle; margin: -0.2rem 0.5rem 0 0;" %>
+              <span>No contract signature</span>
             <% end %>
           </div>
-
-        <p class="invited-date muted h6">Invited <%= relative_timestamp(invite.created_at) %> by <%= invite.sender.safe_name %></p>
-      </div>
-    <% end %>
-  </div>
+        </section>
+      <% end %>
+    </article>
+  <% end %>
 <% end %>
-
-<style>
-    .pending-invite-card {
-        display: grid;
-        grid-template-columns: 1fr auto;
-        grid-template-rows: 1fr 1fr;
-        gap: 0.5rem;
-        grid-auto-flow: row;
-        grid-template-areas:
-      "invite-info invite-cancel"
-      "invited-date invite-cancel";
-    }
-
-    .pending-invite-card .invite-cancel {
-        grid-area: invite-cancel;
-        display: flex;
-        justify-content: flex-end;
-        align-items: center;
-    }
-
-    .pending-invite-card .invite-info {
-        grid-area: invite-info;
-        justify-self: start;
-    }
-
-    .pending-invite-card .invited-date {
-        grid-area: invited-date;
-        justify-self: start;
-    }
-</style>
