@@ -287,15 +287,6 @@ export default function CommandBar({admin = false, adminUrls = {}}) {
       perform: () => (window.location.href = "/admin/grants"),
     },
     {
-      id: "admin_tool_7",
-      section: "Admin Tools",
-      priority: Priority.HIGH,
-      name: "Wires",
-      icon: <Icon glyph="bolt" size={16} />,
-      perform: () =>
-        (window.location.href = adminUrls["Wires"]),
-    },
-    {
       id: "admin_tool_8",
       section: "Admin Tools",
       priority: Priority.HIGH,
