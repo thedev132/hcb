@@ -55,18 +55,16 @@
           <% end %>
         </div>
       </section>
-      <% if current_user&.admin? %>
-        <section class='card__banner card__darker b--warning h5' style='border-style: dashed; border-width: 1px;'>
-          <div>
-            <% if invite.signee? %>
-              <%= inline_icon "docs-fill", size: 20, style: "vertical-align: middle; margin: -0.2rem 0.5rem 0 0;" %>
-              <span>Contract signee</span>
-            <% else %>
-              <%= inline_icon "docs", size: 20, style: "vertical-align: middle; margin: -0.2rem 0.5rem 0 0;" %>
-              <span>No contract signature</span>
-            <% end %>
-          </div>
-        </section>
+      <% admin_tools "card__banner card__darker h5", "section", style: "border-radius: 0 0 0.5rem 0.5rem;" do %>
+        <div>
+          <% if invite.signee? %>
+            <%= inline_icon "docs-fill", size: 20, style: "vertical-align: middle; margin: -0.2rem 0.5rem 0 0;" %>
+            <span>Contract signee</span>
+          <% else %>
+            <%= inline_icon "docs", size: 20, style: "vertical-align: middle; margin: -0.2rem 0.5rem 0 0;" %>
+            <span>No contract signature</span>
+          <% end %>
+        </div>
       <% end %>
     </article>
   <% end %>

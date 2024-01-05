@@ -21,26 +21,24 @@
     <% end %>
     <%= pop_icon_to "controls", edit_user_path(position.user.slug), class: "ml2", data: { turbo_frame: "_top" } if position.user == current_user && !admin_signed_in? %>
   </section>
-  <% if current_user&.admin? %>
-    <section class='card__banner card__darker b--warning h5' style='border-style: dashed; border-width: 1px; border-radius: 0 0 0.5rem 0.5rem;'>
-      <div class='mb1'>
-        <%= inline_icon "message-simple-new", size: 20, style: "vertical-align: middle; margin: -0.2rem 0.5rem 0 0;" %>
-        <span><%= position.user.phone_number %></span>
-      </div>
-      <div class='mb1'>
-        <% if position.signee? %>
-          <%= inline_icon "docs-fill", size: 20, style: "vertical-align: middle; margin: -0.2rem 0.5rem 0 0;" %>
-          <span>Contract signee</span>
-        <% else %>
-          <%= inline_icon "docs", size: 20, style: "vertical-align: middle; margin: -0.2rem 0.5rem 0 0;" %>
-          <span>No contract signature</span>
-        <% end %>
-        <%= link_to "(toggle)", toggle_signee_status_organizer_path(position.id), data: { turbo_method: "post", turbo_frame: "_top", turbo_confirm: "Are you sure you want to toggle #{position.user.name}'s contract signee status?" } %>
-      </div>
-      <div class='mb1'>
-        <%= inline_icon "leader", size: 20, style: "vertical-align: middle; margin: -0.2rem 0.5rem 0 0;" %>
-        <%= link_to "Impersonate this user", impersonate_user_path(position.user.id, return_to: request.url), data: { turbo_method: "post", turbo_frame: "_top" } %>
-      </div>
-    </section>
+  <% admin_tools "card__banner card__darker h5", "section", style: "border-radius: 0 0 0.5rem 0.5rem;" do %>
+    <div class='mb1'>
+      <%= inline_icon "message-simple-new", size: 20, style: "vertical-align: middle; margin: -0.2rem 0.5rem 0 0;" %>
+      <span><%= position.user.phone_number %></span>
+    </div>
+    <div class='mb1'>
+      <% if position.signee? %>
+        <%= inline_icon "docs-fill", size: 20, style: "vertical-align: middle; margin: -0.2rem 0.5rem 0 0;" %>
+        <span>Contract signee</span>
+      <% else %>
+        <%= inline_icon "docs", size: 20, style: "vertical-align: middle; margin: -0.2rem 0.5rem 0 0;" %>
+        <span>No contract signature</span>
+      <% end %>
+      <%= link_to "(toggle)", toggle_signee_status_organizer_path(position.id), data: { turbo_method: "post", turbo_frame: "_top", turbo_confirm: "Are you sure you want to toggle #{position.user.name}'s contract signee status?" } %>
+    </div>
+    <div>
+      <%= inline_icon "leader", size: 20, style: "vertical-align: middle; margin: -0.2rem 0.5rem 0 0;" %>
+      <%= link_to "Impersonate this user", impersonate_user_path(position.user.id, return_to: request.url), data: { turbo_method: "post", turbo_frame: "_top" } %>
+    </div>
   <% end %>
 </article>
