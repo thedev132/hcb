@@ -5,6 +5,11 @@
     <p class="flex-auto">
       <strong class="h3 block"><%= position.user.name || "Unnamed" %></strong>
       <%= organizer_signed_in? ? position.user.email : "Sign in to view email" %>
+      <% admin_tools("m0 p0 badge mb2 block w-fit", "span") do %>
+      <span class="m0 badge bg-muted pointer" data-controller="clipboard" data-clipboard-text-value="<%= position.user.email %>" data-action="click->clipboard#copy">
+        copy email
+      </span>
+    <% end %>
     </p>
     <% admin_tools("mr2 p0 circle") do %>
       <%= pop_icon_to "controls", edit_user_path(position.user.slug), data: { turbo_frame: "_top" } if position.user == current_user || admin_signed_in? %>
