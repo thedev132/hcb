@@ -68,6 +68,8 @@ class Receipt < ApplicationRecord
     sms: 11
   }
 
+  scope :in_receipt_bin, -> { where(receiptable: nil) }
+
   def url
     Rails.application.routes.url_helpers.rails_blob_url(file)
   end
