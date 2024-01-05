@@ -1,41 +1,104 @@
-<%= creator_bar position.organizer_position_invite, prefix: "invited " if position.organizer_position_invite.present? %>
-<article class="card pt0 pb0 mb2">
-  <section class='flex items-center'>
-    <%= avatar_for position.user, 48, class: "mr2" %>
-    <p class="flex-auto">
-      <strong class="h3 block"><%= position.user.name || "Unnamed" %></strong>
-      <%= organizer_signed_in? ? position.user.email : "Sign in to view email" %>
-    </p>
-    <% admin_tools("mr2 p0 circle") do %>
-      <%= pop_icon_to "controls", edit_user_path(position.user.slug), data: { turbo_frame: "_top" } if position.user == current_user || admin_signed_in? %>
-    <% end %>
-    <% if organizer_signed_in? && position.organizer_position_deletion_requests.under_review.where(submitted_by: current_user).exists? %>
-      <%= pop_icon_to "clock", "#", class: "muted tooltipped tooltipped--w", "aria-label" => "Removal request pending", disabled: !organizer_signed_in? unless position.user == current_user && !admin_signed_in? %>
-    <% else %>
-      <%= pop_icon_to "member-remove", new_event_organizer_remove_path(organizer_id: position.user.slug), class: "error", data: { turbo_frame: "_top" }, disabled: !organizer_signed_in? unless position.user == current_user && !admin_signed_in? %>
-    <% end %>
-    <%= pop_icon_to "controls", edit_user_path(position.user.slug), class: "ml2", data: { turbo_frame: "_top" } if position.user == current_user && !admin_signed_in? %>
-  </section>
-  <% if current_user&.admin? %>
-    <section class='card__banner card__darker b--warning h5' style='border-style: dashed; border-width: 1px; border-radius: 0 0 0.5rem 0.5rem;'>
-      <div class='mb1'>
-        <%= inline_icon "message-simple-new", size: 20, style: "vertical-align: middle; margin: -0.2rem 0.5rem 0 0;" %>
-        <span><%= position.user.phone_number %></span>
+<div class="card flex flex-column overflow-visible">
+  <div class="flex justify-between">
+    <div class="avatar-container">
+      <%= inline_icon("admin-badge", size: 48, class: "pending") if position.user.admin? %>
+      <%= avatar_for position.user, 64 %>
+    </div>
+
+    <div class="flex g1 h-fit-content">
+      <% if current_user.admin? %>
+        <div class="tooltipped tooltipped--s" aria-label="Edit user's global settings">
+          <%= pop_icon_to "controls", edit_user_path(position.user.slug), data: { turbo_frame: "_top" }, class: "admin-tools circle" %>
+        </div>
+      <% end %>
+      <% if current_user.admin? %>
+        <div class="tooltipped tooltipped--s" aria-label="Impersonate user">
+          <%= pop_icon_to "spy", impersonate_user_path(id: position.user.id, return_to: request.url), data: { turbo_frame: "_top" }, class: "admin-tools circle" %>
+        </div>
+      <% end %>
+      <%# if current_user.position(@event)&.manager? || current_user.admin? %>
+      <% if current_user.admin? %>
+        <div class="tooltipped tooltipped--s" aria-label="Remove user from organization">
+          <%= pop_icon_to "member-remove", new_organizer_remove_path(organizer_id: position.id), class: "error", data: { turbo_frame: "_top" } %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="inline-flex items-center g2">
+    <p class="h2 bold"><%= position.user.name %></p>
+    <div class="inline-flex g1 align-center">
+      <div class="info tooltipped tooltipped--n copyable flex" aria-label="Copy <%= position.user.email %>" data-copy="<%= position.user.email %>">
+        <%= inline_icon("email", size: 24, class: "muted") %>
       </div>
-      <div class='mb1'>
+      <% if current_user.admin? %> <!-- or manager -->
+        <div class="info tooltipped tooltipped--n copyable flex" aria-label="Copy <%= position.user.phone_number %>" data-copy="<%= position.user.phone_number %>">
+          <%= inline_icon("message-simple", size: 24, class: "admin") %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <div data-controller="menu">
+<!--    <div class="inline-flex items-center">-->
+<!--      <p><%#= position.role.humanize %></p>-->
+      <%# OrganizerPositionPolicy.new(current_user, position) %>
+      <%# if OrganizerPositionPolicy.new(current_user, position).update? %>
+<!--        <div class="role-chevron line-height-0" data-action="click->menu#toggle click@document->menu#close keydown@document->menu#keydown" data-menu-target="toggle">-->
+          <%#= inline_icon("down-caret", size: 32, class: "info") %>
+<!--        </div>-->
+      <%# end %>
+<!--    </div>-->
+
+    <div data-menu-target="content" class="menu__content menu__content--2 menu__content--compact">
+      <%# OrganizerPosition.roles.keys.each do |role| %>
+        <%#= button_to(role.humanize, organizer_path(position), method: :patch, params: { organizer_position: { role: role } }, class: "menu__action") %>
+      <%# end %>
+      <div class="menu__divider"></div>
+      <a href="/branding">What do these roles mean?</a>
+    </div>
+  </div>
+
+  <div class="muted flex justify-between align-bottom relative w-100 h6 mt1">
+    <p>Invited <%= relative_timestamp(position.organizer_position_invite.created_at) %> by <%= position.organizer_position_invite.sender.safe_name %></p>
+    <div class="absolute right-0 bottom-0 line-height-0 tooltipped tooltipped--w" aria-label="<%= position.signee? ? "Contract signee" : "No contract signature" %>">
+      <%= link_to toggle_signee_status_organizer_path(position.id), data: { turbo_method: "post", turbo_frame: "_top", turbo_confirm: "Are you sure you want to toggle #{position.user.name}'s contract signee status?" } do %>
         <% if position.signee? %>
-          <%= inline_icon "docs-fill", size: 20, style: "vertical-align: middle; margin: -0.2rem 0.5rem 0 0;" %>
-          <span>Contract signee</span>
+          <%= inline_icon("docs-positive", size: 24) %>
         <% else %>
-          <%= inline_icon "docs", size: 20, style: "vertical-align: middle; margin: -0.2rem 0.5rem 0 0;" %>
-          <span>No contract signature</span>
+          <%= inline_icon("docs-negative", size: 24) %>
         <% end %>
-        <%= link_to "(toggle)", toggle_signee_status_organizer_path(position.id), data: { turbo_method: "post", turbo_frame: "_top", turbo_confirm: "Are you sure you want to toggle #{position.user.name}'s contract signee status?" } %>
-      </div>
-      <div class='mb1'>
-        <%= inline_icon "leader", size: 20, style: "vertical-align: middle; margin: -0.2rem 0.5rem 0 0;" %>
-        <%= link_to "Impersonate this user", impersonate_user_path(position.user.id, return_to: request.url), data: { turbo_method: "post", turbo_frame: "_top" } %>
-      </div>
-    </section>
-  <% end %>
-</article>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<script>
+    for (const field of document.getElementsByClassName("copyable")) {
+        field.onclick = async () => await navigator.clipboard.writeText(field.dataset.copy);
+    }
+</script>
+
+<style>
+    .card {
+        /*line-height: 1;*/
+
+        & p {
+            margin: 0;
+        }
+
+        .role-chevron {
+            margin-bottom: -4px;
+        }
+
+        & .avatar-container {
+            position: relative;
+
+            & > svg {
+                position: absolute;
+                left: -14.5px;
+                bottom: -2.5px;
+            }
+        }
+    }
+</style>

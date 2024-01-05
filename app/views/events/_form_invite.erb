@@ -7,14 +7,62 @@
     <%= form.label :email, class: "mb1" %>
 
     <div class="flex items-center">
-      <%= form.email_field :email, class: "mr2" %>
+      <%= form.email_field :email %>
+
+      <% admin_tools("ml1 mr1") do %>
+        <div class="field field--checkbox mb0" style="display: none"><%= form.check_box :is_signee %></div>
+        <div id="invite-signee" class="line-height-0">
+          <div id="invite-is-signee" style="translate: 1px 0; display: none"><%= inline_icon("docs-positive", size: 24) %></div>
+          <div id="invite-not-signee" style="translate: -2px 1.2px"><%= inline_icon("docs-negative", size: 24) %></div>
+        </div>
+      <% end %>
+
       <%= form.submit 'Send', disabled: !organizer_signed_in? %>
     </div>
-    <% admin_tools('mt1') do %>
-      <div class="field field--checkbox mb0">
-        <%= form.check_box :is_signee %>
-        <%= form.label :is_signee, "Signed contract" %>
-      </div>
-    <% end %>
+
   </div>
 <% end %>
+
+<%#= form_with(model: invite, local: true, url: event_organizer_position_invites_path) do |form| %>
+  <%#= form_errors invite %>
+
+<!--  <div class="field">-->
+    <%#= form.label :email, class: "mb1" %>
+
+<!--    <div class="flex items-center">-->
+      <%#= form.email_field :email, class: "mr2" %>
+      <%#= form.submit 'Send', disabled: !organizer_signed_in? %>
+<!--    </div>-->
+    <%# admin_tools('mt1') do %>
+<!--      <div id="invite-checkbox" class="field field--checkbox mb0">-->
+<!--        <div id="invite-signee-signee">-->
+          <%#= inline_icon("docs-positive", size: 20) %>
+<!--        </div>-->
+<!--        <div id="invite-not-signee">-->
+          <%#= inline_icon("docs-negative", size: 20) %>
+<!--        </div>-->
+<!--      </div>-->
+    <%# end %>
+<!--  </div>-->
+<%# end %>
+
+<script>
+  const elIsSignee = document.getElementById("invite-is-signee");
+  const elNotSignee = document.getElementById("invite-not-signee");
+  const realCheckbox = document.getElementById("organizer_position_invite_is_signee");
+
+  let isSignee = false;
+  document.getElementById("invite-signee").addEventListener("click", () => {
+      isSignee = !isSignee;
+
+      if (isSignee) {
+          elIsSignee.style.display = "block";
+          elNotSignee.style.display = "none";
+          realCheckbox.checked = true;
+      } else {
+          elIsSignee.style.display = "none";
+          elNotSignee.style.display = "block";
+          realCheckbox.checked = false;
+      }
+  });
+</script>
