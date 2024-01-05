@@ -518,8 +518,6 @@ Rails.application.routes.draw do
   get "admin_search", to: redirect("/admin/users")
   post "admin_search", to: redirect("/admin/users")
 
-  resources :ops_checkins, only: [:create]
-
   get "/integrations/frankly" => "integrations#frankly"
 
   post "twilio/messaging", to: "admin#twilio_messaging"

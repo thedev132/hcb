@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_12_30_000209) do
+ActiveRecord::Schema[7.0].define(version: 2024_01_05_193655) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_stat_statements"
@@ -1171,13 +1171,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_30_000209) do
     t.index ["uid"], name: "index_oauth_applications_on_uid", unique: true
   end
 
-  create_table "ops_checkins", force: :cascade do |t|
-    t.bigint "point_of_contact_id"
-    t.datetime "created_at", precision: nil, null: false
-    t.datetime "updated_at", precision: nil, null: false
-    t.index ["point_of_contact_id"], name: "index_ops_checkins_on_point_of_contact_id"
-  end
-
   create_table "organizer_position_deletion_requests", force: :cascade do |t|
     t.bigint "organizer_position_id"
     t.bigint "submitted_by_id"
@@ -1853,7 +1846,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_30_000209) do
   add_foreign_key "login_tokens", "users"
   add_foreign_key "mailbox_addresses", "users"
   add_foreign_key "mfa_requests", "mfa_codes"
-  add_foreign_key "ops_checkins", "users", column: "point_of_contact_id"
   add_foreign_key "organizer_position_deletion_requests", "organizer_positions"
   add_foreign_key "organizer_position_deletion_requests", "users", column: "closed_by_id"
   add_foreign_key "organizer_position_deletion_requests", "users", column: "submitted_by_id"
