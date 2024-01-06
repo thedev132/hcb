@@ -43,6 +43,17 @@
     </div>
   </div>
 
+  <div class="field">
+    <%= form.label :file, "Attach a receipt / invoice" %>
+    <%= form.file_field :file,
+        multiple: true,
+        include_hidden: false,
+        required: false,
+        accept: "image/*,image/heic,.pdf",
+        style: "margin: 8px 0px" %>
+    <span class="muted">Required for reimbursements / goods & services payments.</span>
+  </div>
+
   <% admin_tools do %>
     <div class="field">
       <%= form.label :scheduled_on, "Schedule for" %>

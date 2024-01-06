@@ -15,10 +15,19 @@ class IncreaseChecksController < ApplicationController
   def create
     params[:increase_check][:amount] = Monetize.parse(params[:increase_check][:amount]).cents
 
-    @check = @event.increase_checks.build(check_params.merge(user: current_user))
+    @check = @event.increase_checks.build(check_params.except(:file).merge(user: current_user))
+
     authorize @check
 
     if @check.save
+      if check_params[:file]
+        ::ReceiptService::Create.new(
+          uploader: current_user,
+          attachments: check_params[:file],
+          upload_method: :transfer_create_page,
+          receiptable: @check.local_hcb_code
+        ).run!
+      end
       redirect_to @check.local_hcb_code.url, flash: { success: "Your check has been sent!" }
     else
       render "new", status: :unprocessable_entity
@@ -57,6 +66,7 @@ class IncreaseChecksController < ApplicationController
       :address_city,
       :address_state,
       :address_zip,
+      file: []
     )
   end
 

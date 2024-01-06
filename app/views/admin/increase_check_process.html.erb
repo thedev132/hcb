@@ -34,6 +34,8 @@
   </tbody>
 </table>
 
+<%= render partial: "receipts/receipt", collection: @check.local_hcb_code.receipts.transfer_create_page.order(created_at: :asc), as: :receipt, locals: { link_to_file: true } %>
+
 <hr>
 
 <% if @check.pending? %>

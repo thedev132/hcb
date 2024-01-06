@@ -184,6 +184,17 @@
         <% end %>
       </div>
 
+      <div class="field">
+        <%= form.label :file, "Attach a receipt" %>
+        <%= form.file_field :file,
+            multiple: true,
+            include_hidden: false,
+            required: false,
+            accept: "image/*,image/heic,.pdf",
+            style: "margin: 8px 0px" %>
+        <span class="muted">Required for reimbursements / goods & services payments.</span>
+      </div>
+
       <div class="actions tooltipped tooltipped--n inline-block mt1" aria-label="Your check will be mailed out on the next business day.">
         <%= form.submit "Send check", disabled: (!organizer_signed_in? || @event.demo_mode?) %>
       </div>

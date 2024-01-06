@@ -65,7 +65,8 @@ class Receipt < ApplicationRecord
     receipt_center_drag_and_drop: 8,
     api: 9,
     email_receipt_bin: 10,
-    sms: 11
+    sms: 11,
+    transfer_create_page: 12
   }
 
   scope :in_receipt_bin, -> { where(receiptable: nil) }
