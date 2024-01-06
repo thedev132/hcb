@@ -75,10 +75,10 @@ function ActionRegister() {
               section: "Organizations",
             })),
             ...data.map((event) => ({
-              id: `${event.slug}-home`,
-              name: "Home",
+              id: `${event.slug}-transactions`,
+              name: "Transactions",
               perform: () => (window.location.pathname = `/${event.slug}`),
-              icon: <Icon glyph="home" size={16} />,
+              icon: <Icon glyph="transactions" size={16} />,
               parent: event.slug,
             })),
             ...data.map((event) => ({
