@@ -2,7 +2,7 @@
 <tr
   class="transaction--<%= ct.amount.negative? ? "negative" : "positive" %> <%= ct.local_hcb_code.disbursement.special_appearance[:css_class] if !ct.amount.negative? && ct.local_hcb_code.disbursement&.special_appearance? %>"
   id="<%= ct.local_hcb_code.hashid %>"
-  <% if defined?(receipt_upload_button) %>
+  <% if local_assigns[:receipt_upload_button] %>
     data-controller="file-drop"
     data-file-drop-target="dropzone"
     data-file-drop-linking-value="true"
@@ -69,6 +69,10 @@
           <%= inline_icon(ct.local_hcb_code.disbursement.special_appearance[:icon] || "door-enter") %>
         </td>
       <% end %>
+    <% elsif ct.local_hcb_code.card_grant? %>
+      <td class="transaction__icon tooltipped tooltipped--e" aria-label="Card Grant">
+        <%= inline_icon "bag" %>
+      </td>
     <% elsif ct.local_hcb_code.disbursement? %>
       <td class="transaction__icon tooltipped tooltipped--e" aria-label="Disbursement">
         <% if ct.amount.negative? %>
@@ -95,11 +99,13 @@
       <div class="flex-auto">
         <div class="flex items-center justify-start">
           <%= turbo_frame_tag "#{ct.local_hcb_code.hashid}:memo_frame", class: "memo-frame flex", style: "width:100%; overflow:hidden; text-overflow:ellipsis" do %>
-            <span title="<%= transaction_memo(ct) %>" class="flex-auto">
-              <% if Flipper.enabled?(:rename_on_homepage_2023_12_06, current_user) %>
-                <%= render "hcb_codes/memo", hcb_code: ct.local_hcb_code %>
-              <% else %>
-                <%= transaction_memo(ct) %>
+            <span title="<%= transaction_memo(ct) %>">
+              <%= ct.local_hcb_code.card_grant? && !organizer_signed_in? ? link_to(transaction_memo(ct), spending_card_grant_path(ct.local_hcb_code.disbursement.card_grant), data: { turbo_frame: "_top", behavior: "modal_trigger", modal: "card_grant_details_#{instance}" }) : content_tag(:span) do %>
+                <% if Flipper.enabled?(:rename_on_homepage_2023_12_06, current_user) %>
+                  <%= render "hcb_codes/memo", hcb_code: ct.local_hcb_code %>
+                <% else %>
+                  <%= transaction_memo(ct) %>
+                <% end %>
               <% end %>
             </span>
             <% if ct.amount_cents.negative? && name_contains_emoji?(ct.local_hcb_code.memo) %>
@@ -171,9 +177,11 @@
     <td><%= number_to_currency ct.running_balance %></td>
   <% end %>
   <td>
-    <%= link_to "Details", ct.local_hcb_code.url, data: Flipper.enabled?(:hcb_code_popovers_2023_06_16, current_user) ? { turbo_frame: "_top", behavior: "modal_trigger", modal: "transaction_details_#{instance}", "modal-auto-open": defined?(@popover) ? @popover == ct.local_hcb_code.hashid : nil } : { turbo_frame: "_top" } if organizer_signed_in? || defined?(force_display_details) %>
+    <% details_link = ct.local_hcb_code.card_grant? ? spending_card_grant_path(ct.local_hcb_code.disbursement.card_grant) : ct.local_hcb_code.url %>
+    <% modal = ct.local_hcb_code.card_grant? ? "card_grant_details_#{instance}" : "transaction_details_#{instance}" %>
+    <%= link_to "Details", details_link, data: Flipper.enabled?(:hcb_code_popovers_2023_06_16, current_user) && !@force_no_popover ? { turbo_frame: "_top", behavior: "modal_trigger", modal: } : { turbo_frame: "_top" } if organizer_signed_in? || defined?(force_display_details) %>
   </td>
-  <% if defined?(receipt_upload_button) %>
+  <% if local_assigns[:receipt_upload_button] %>
     <td style="width: 1%">
       <% if ct.local_hcb_code.needs_receipt? %>
         <%= form_with url: upload_receipts_path, data: { controller: "form", "file-drop-target" => "form" } do |form| %>
@@ -276,6 +284,15 @@
           </article>
         </div>
       </div>
+    <% end %>
+  </section>
+<% end %>
+
+<% if (Flipper.enabled?(:hcb_code_popovers_2023_06_16, current_user) || !organizer_signed_in?) && ct.local_hcb_code.card_grant? %>
+  <section class="modal modal--scroll modal--popover bg-snow" data-behavior="modal" role="dialog" id="card_grant_details_<%= instance %>">
+    <%= modal_header(transaction_memo(ct), level: "h1", external_link: spending_card_grant_path(ct.local_hcb_code.disbursement.card_grant)) %>
+    <%= async_frame_to spending_card_grant_path(ct.local_hcb_code.disbursement.card_grant, params: { frame: true }), as: :div do %>
+      <strong>Loading...</strong>
     <% end %>
   </section>
 <% end %>

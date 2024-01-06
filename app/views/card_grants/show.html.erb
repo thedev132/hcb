@@ -1,13 +1,8 @@
+<% title "Card Grant to #{@card_grant.user.name}" %>
 
 <div class="mt4 mb4 check--form flex justify-center" style="gap: 3rem">
   <% if @card_grant.stripe_card.present? %>
-    <div>
-      <%= render @card_grant.stripe_card, headless: true, show_card_number: true %>
-      <div class="stat mt3 mx-auto <%= "muted" if @card_grant.balance == 0 %>" style="width: fit-content">
-        <span class="stat__label">Balance remaining</span>
-        <span class="stat__value"><%= @card_grant.balance.format(symbol: false) %></span>
-      </div>
-    </div>
+    <%= render partial: "header", locals: { card_grant: @card_grant } %>
 
     <div>
       <div class="card container--sm">
@@ -85,22 +80,4 @@
 
 <hr>
 
-<% if @hcb_codes.present? %>
-  <h2 class="heading h2 line-height-4 mt0 ml0 pt1 pb1 pl2 pr2">Transactions on this card</h2>
-
-  <div class="table-container">
-    <table>
-      <tbody data-behavior="transactions">
-        <% @hcb_codes.order(created_at: :desc).each do |hcb_code| %>
-          <% if hcb_code.canonical_transactions.any? %>
-            <%= render partial: "canonical_transactions/canonical_transaction", collection: hcb_code.canonical_transactions, as: :ct, locals: { authorless: true, receipt_upload_button: true } %>
-          <% else %>
-            <%= render partial: "canonical_pending_transactions/canonical_pending_transaction", collection: hcb_code.canonical_pending_transactions, as: :pt, locals: { authorless: true, receipt_upload_button: true } %>
-          <% end %>
-        <% end %>
-      </tbody>
-    </table>
-  </div>
-<% else %>
-  <%= blankslate "No purchases yet." %>
-<% end %>
+<%= render partial: "transactions", locals: { hcb_codes: @hcb_codes } %>

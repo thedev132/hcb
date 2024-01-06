@@ -538,6 +538,7 @@ Rails.application.routes.draw do
   resources :card_grants, only: [:show], path: "grants" do
     member do
       post "activate"
+      get "spending"
     end
   end
 

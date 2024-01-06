@@ -3,8 +3,8 @@
 class CardGrantsController < ApplicationController
   include SetEvent
 
-  skip_before_action :signed_in_user, only: [:show]
-  skip_after_action :verify_authorized, only: [:show]
+  skip_before_action :signed_in_user, only: [:show, :spending]
+  skip_after_action :verify_authorized, only: [:show, :spending]
 
   before_action :set_event, only: %i[new create]
 
@@ -53,6 +53,20 @@ class CardGrantsController < ApplicationController
 
   rescue Pundit::NotAuthorizedError
     redirect_to auth_users_path(email: @card_grant.user.email, return_to: card_grant_path(@card_grant)), flash: { info: "Please sign in with the same email you received the invitation at." }
+  end
+
+  def spending
+    @card_grant = CardGrant.find_by_hashid!(params[:id])
+
+    authorize @card_grant
+
+    @card = @card_grant.stripe_card
+    @hcb_codes = @card&.hcb_codes
+
+    @frame = params[:frame].present?
+    @force_no_popover = @frame
+
+    render :spending, layout: !@frame
   end
 
   def activate
