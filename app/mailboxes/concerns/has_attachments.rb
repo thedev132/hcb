@@ -17,7 +17,7 @@ module HasAttachments
 
       return @attachments = files if files.any?
 
-      if (content = html || text)
+      if (content = html || text || body)
         @attachments = [{
           io: StringIO.new(WickedPdf.new.pdf_from_string(content)),
           content_type: "application/pdf",

@@ -24,4 +24,8 @@ class ApplicationMailbox < ActionMailbox::Base
     mail.text_part&.body&.decoded
   end
 
+  def body
+    mail.body&.decoded&.presence
+  end
+
 end
