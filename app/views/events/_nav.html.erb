@@ -73,7 +73,7 @@
       <%= dock_item "Transfers",
         event_transfers_path(event_id: @event.slug),
         tooltip: "Send & transfer money",
-        icon: "transactions",
+        icon: "payment-transfer",
         selected: local_assigns[:selected] == :transfers %>
       <%= dock_item "Grants",
         event_grants_path(@event),
