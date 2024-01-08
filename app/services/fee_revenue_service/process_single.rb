@@ -12,12 +12,12 @@ module FeeRevenueService
       ActiveRecord::Base.transaction do
         fee_revenue.mark_in_transit!
 
-        Increase::AccountTransfers.create(
-          account_id: IncreaseService::AccountIds::FS_OPERATING,
-          destination_account_id: IncreaseService::AccountIds::FS_MAIN,
-          amount: amount_cents,
-          description: memo
-        )
+        ColumnService.post "/transfers/book",
+                           amount: amount_cents,
+                           currency_code: "USD",
+                           sender_bank_account_id: ColumnService::Accounts::FS_OPERATING,
+                           receiver_bank_account_id: ColumnService::Accounts::FS_MAIN,
+                           description: memo
       end
 
       true

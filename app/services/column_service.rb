@@ -5,6 +5,7 @@ class ColumnService
 
   module Accounts
     FS_MAIN = Rails.application.credentials.column.dig(ENVIRONMENT, :fs_main_account_id)
+    FS_OPERATING = Rails.application.credentials.column.dig(ENVIRONMENT, :fs_operating_account_id)
   end
 
   module AchCodes

@@ -33,9 +33,13 @@ class RawColumnTransaction < ApplicationRecord
       ach_transfer = ColumnService.ach_transfer(transaction_id)
 
       return "#{ach_transfer["company_name"]} #{ach_transfer["company_entry_description"]}"
+    elsif transaction_id.start_with? "book"
+      book_transfer = ColumnService.get "/transfers/book/#{transaction_id}"
+
+      return book_transfer["description"]
     end
 
-    "COLUMN TRANSACTION"
+    raise
   rescue
     "COLUMN TRANSACTION"
   end
