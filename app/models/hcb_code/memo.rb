@@ -13,6 +13,7 @@ class HcbCode
         return invoice_memo if invoice?
         return donation_memo if donation?
         return partner_donation_memo if partner_donation?
+        return bank_fee_memo if bank_fee?
         return ach_transfer_memo if ach_transfer?
         return check_memo if check?
         return increase_check_memo if increase_check?
@@ -55,6 +56,10 @@ class HcbCode
 
       def partner_donation_memo
         "DONATION FROM #{partner_donation.smart_memo}#{partner_donation.refunded? ? " (REFUNDED)" : ""}"
+      end
+
+      def bank_fee_memo
+        "FISCAL SPONSORSHIP"
       end
 
       def ach_transfer_memo
