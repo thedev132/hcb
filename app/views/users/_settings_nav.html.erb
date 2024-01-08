@@ -2,8 +2,10 @@
   <%= settings_tab active: active == "general" do %>
     <%= link_to "General", @user == current_user ? my_settings_path : edit_user_path(@user), data: { turbo: true, turbo_action: "advance" } %>
   <% end %>
-  <%= settings_tab active: active == "address" do %>
-    <%= link_to "Billing Address", @user == current_user ? settings_address_path : address_user_path(@user), data: { turbo: true, turbo_action: "advance" } %>
+  <% if @user.stripe_cardholder.present? %>
+    <%= settings_tab active: active == "address" do %>
+      <%= link_to "Billing Address", @user == current_user ? settings_address_path : address_user_path(@user), data: { turbo: true, turbo_action: "advance" } %>
+    <% end %>
   <% end %>
   <%= settings_tab active: active == "previews" do %>
     <%= link_to @user == current_user ? settings_previews_path : previews_user_path(@user), data: { turbo: true, turbo_action: "advance" } do %>
