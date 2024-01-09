@@ -27,7 +27,7 @@ jobs:
       - name: Fake-Deploy
         if: ${{ steps.branch-deploy.outputs.continue == 'true' && steps.branch-deploy.outputs.noop == 'true' }}
         run: |
-          echo "fake-deploying Bank to ${{ steps.branch-deploy.outputs.environment }}!"
+          echo "fake-deploying HCB to ${{ steps.branch-deploy.outputs.environment }}!"
 
       - name: Set up Ruby
         if: ${{ steps.branch-deploy.outputs.continue == 'true' && steps.branch-deploy.outputs.noop != 'true' }}
@@ -43,7 +43,7 @@ jobs:
           MRSK_REGISTRY_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
           MRSK_SSH_KEY: ${{ secrets.MRSK_SSH_KEY }}
         run: |
-          echo "deploying Bank to ${{ steps.branch-deploy.outputs.environment }}!"
+          echo "deploying HCB to ${{ steps.branch-deploy.outputs.environment }}!"
           mkdir -p ~/.ssh/
           echo "$MRSK_SSH_KEY" > ~/.ssh/id_rsa && sudo chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H ${{ steps.branch-deploy.outputs.environment }}.hcb.gg > ~/.ssh/known_hosts
@@ -57,7 +57,7 @@ jobs:
           MRSK_REGISTRY_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
           MRSK_SSH_KEY: ${{ secrets.MRSK_SSH_KEY }}
         run: |
-          echo "deploying Bank to production!"
+          echo "deploying HCB to production!"
           mkdir -p ~/.ssh/
           echo "$MRSK_SSH_KEY" > ~/.ssh/id_rsa && sudo chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H warehouse.hcb.gg > ~/.ssh/known_hosts

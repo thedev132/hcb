@@ -18,7 +18,7 @@ class DocsController < ActionController::Base
     info do
       key :version, "2.0.0"
       key :title, "bank-api"
-      key :description, "🏛 Process payments on Bank via an API"
+      key :description, "🏛 Process payments on HCB via an API"
     end
 
     security do

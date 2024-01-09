@@ -3,15 +3,15 @@
 ### Default
 
 - User swipes card
-- Bank determines if a TX is going through (ie. don't continue if balance is low)
+- HCB determines if a TX is going through (ie. don't continue if balance is low)
 - Sends an SMS to user asking them to reply with receipt
 - User sends receipt in reply
-- Bank uploads receipt to latest SMS
+- HCB uploads receipt to latest SMS
 
 ### Subscription
 
 - User's card is charged a monthly subscription
-- Bank detects that charge is a monthly subscription that they've already uploaded a receipt for & marks the transaction as 'subscription'– not required
+- HCB detects that charge is a monthly subscription that they've already uploaded a receipt for & marks the transaction as 'subscription'– not required
 
 ### Admin
 
