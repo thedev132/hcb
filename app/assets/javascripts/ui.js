@@ -402,3 +402,15 @@ document.addEventListener("turbo:load", () => {
     document.body.classList.remove('embedded');
   }
 })
+
+let hankIndex = 0
+$(document).on('keydown', function (e) {
+  if (e.originalEvent.key === 'hank'[hankIndex]) {
+    hankIndex++
+    if (hankIndex === 4) {
+      return $('[name="header-logo"]').attr('src', '/hank.png')
+    }
+  } else {
+    return (hankIndex = 0)
+  }
+})
