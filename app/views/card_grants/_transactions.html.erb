@@ -1,7 +1,7 @@
 <% if local_assigns[:hcb_codes].present? %>
   <h2 class="heading h2 line-height-4 mt0 ml0 pt1 pb1 pl2 pr2">Transactions on this card</h2>
 
-  <div class="table-container">
+  <div style="overflow-x: auto;">
     <table>
       <tbody data-behavior="transactions">
         <% local_assigns[:hcb_codes].order(created_at: :desc).each do |hcb_code| %>
