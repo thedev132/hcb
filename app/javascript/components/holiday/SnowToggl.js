@@ -5,7 +5,7 @@ const useSnow = createPersistedState('shallItSnow')
 export default function SnowToggle() {
   const emojis = {
     on: '⛄',
-    off: '☁️'
+    off: '☁️',
   }
 
   const [snow, setSnow] = useSnow(true)

@@ -4,7 +4,7 @@ import csrf from '../common/csrf'
 
 export default class extends Controller {
   static values = {
-    organizerPosition: Number
+    organizerPosition: Number,
   }
 
   initialize() {
@@ -20,7 +20,7 @@ export default class extends Controller {
       {
         opacity: 0,
         scale: 0.8,
-        filter: 'blur(5px)'
+        filter: 'blur(5px)',
       },
       {
         opacity: 1,
@@ -28,7 +28,7 @@ export default class extends Controller {
         filter: 'blur(0px)',
 
         duration: 1.5,
-        ease: 'power2.out'
+        ease: 'power2.out',
       }
     )
 
@@ -38,13 +38,13 @@ export default class extends Controller {
           document.documentElement.dataset.dark == 'true'
             ? 'rgba(23, 23, 29, 0.5)'
             : 'rgba(249, 250, 252, 0.5)',
-        duration: 1.5
+        duration: 1.5,
       })
       .to(
         '.welcome',
         {
           backdropFilter: 'blur(10px)',
-          duration: 0
+          duration: 0,
         },
         '<0.01' // Turn on backdrop filter only after the background starts transitioning. Weird Firefox bug.
       )
@@ -58,7 +58,7 @@ export default class extends Controller {
 
         duration: 1.5,
         stagger: 0.3,
-        ease: 'power2.out'
+        ease: 'power2.out',
       },
       '<'
     )
@@ -67,7 +67,7 @@ export default class extends Controller {
       {
         scale: 1,
         duration: 1.5,
-        ease: 'power2.out'
+        ease: 'power2.out',
       },
       '<'
     )
@@ -75,7 +75,7 @@ export default class extends Controller {
       '.welcome__shine',
       {
         backgroundPosition: '50px 50px',
-        duration: 1
+        duration: 1,
       },
       '<'
     )
@@ -87,7 +87,7 @@ export default class extends Controller {
         if (this.shouldReload) {
           location.reload() // TODO: remove
         }
-      }
+      },
     })
     this.hideTl.fromTo(
       '.welcome__shine',
@@ -99,7 +99,7 @@ export default class extends Controller {
       {
         autoAlpha: 0,
         duration: 1,
-        ease: 'power2.inOut'
+        ease: 'power2.inOut',
       },
       '<0.5'
     )
@@ -108,7 +108,7 @@ export default class extends Controller {
       {
         y: -20,
         ease: 'power2.inOut',
-        duration: 1
+        duration: 1,
       },
       '<'
     )
@@ -126,10 +126,10 @@ export default class extends Controller {
           method: 'POST',
           headers: {
             'X-CSRF-Token': csrf(),
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
           },
           redirect: 'manual',
-          body: JSON.stringify({ start_tour: true })
+          body: JSON.stringify({ start_tour: true }),
         }
       )
     }
@@ -146,9 +146,9 @@ export default class extends Controller {
         {
           method: 'POST',
           headers: {
-            'X-CSRF-Token': csrf()
+            'X-CSRF-Token': csrf(),
           },
-          redirect: 'manual'
+          redirect: 'manual',
         }
       )
     }

@@ -7,7 +7,7 @@ const airbrake = shouldEnableAirbrake
   ? new Notifier({
       projectId: AIRBRAKE_PROJECT_ID,
       projectKey: AIRBRAKE_API_KEY,
-      environment
+      environment,
     })
   : undefined
 
@@ -16,14 +16,14 @@ airbrake?.addFilter(notice => {
   return notice
 })
 
-airbrake?.addFilter((notice) => {
+airbrake?.addFilter(notice => {
   if (
     notice.errors
       .flatMap(e => e.backtrace)
       .some(e => e.file?.startsWith('chrome-extension://'))
   )
     return null
-  return notice;
-});
+  return notice
+})
 
 export default airbrake

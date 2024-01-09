@@ -3,7 +3,7 @@ import { create } from '@github/webauthn-json'
 
 export default class extends Controller {
   static values = {
-    optionsUrl: String
+    optionsUrl: String,
   }
   static targets = [
     'error',
@@ -12,7 +12,7 @@ export default class extends Controller {
     'platformRadio',
     'crossPlatformRadio',
     'nameInput',
-    'nameLabel'
+    'nameLabel',
   ]
 
   // Toggles the `name` field based on the authenticator type
@@ -55,7 +55,7 @@ export default class extends Controller {
       this.errorTarget.classList.add('display-none')
 
       const params = new URLSearchParams({
-        type: this.platformRadioTarget.checked ? 'platform' : 'cross-platform'
+        type: this.platformRadioTarget.checked ? 'platform' : 'cross-platform',
       })
 
       const options = await fetch(this.optionsUrlValue + `?${params}`).then(r =>

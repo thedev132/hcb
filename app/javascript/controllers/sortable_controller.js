@@ -3,7 +3,7 @@ import { Sortable, Plugins, Draggable } from '@shopify/draggable'
 
 export default class extends Controller {
   static values = {
-    appendTo: String
+    appendTo: String,
   }
 
   connect() {
@@ -11,13 +11,13 @@ export default class extends Controller {
       draggable: '.draggable',
       mirror: {
         constrainDimensions: true,
-        appendTo: this.appendToValue
+        appendTo: this.appendToValue,
       },
       distance: 10,
       plugins: [Plugins.SortAnimation],
       exclude: {
-        sensors: [Draggable.Sensors.TouchSensor]
-      }
+        sensors: [Draggable.Sensors.TouchSensor],
+      },
     })
 
     this.sortable.on('sortable:sorted', e => {

@@ -5,8 +5,8 @@ export default class extends Controller {
   static values = {
     delay: {
       type: Number,
-      default: 0
-    }
+      default: 0,
+    },
   }
 
   focus() {

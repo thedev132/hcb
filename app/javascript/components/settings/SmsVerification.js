@@ -10,21 +10,23 @@ const SmsVerification = ({ phoneNumber, enrollSmsAuth = false }) => {
   const [code, setCode] = useState('')
   const verificationCodeInput = useRef(null)
 
-  const handleClick = async (e) => {
+  const handleClick = async e => {
     e.preventDefault()
-    if (loading) { return }
+    if (loading) {
+      return
+    }
     setLoading(true)
     try {
       const resp = await fetch('/users/start_sms_auth_verification', {
         method: 'POST',
-        headers: { 'X-CSRF-Token': csrf() }
+        headers: { 'X-CSRF-Token': csrf() },
       })
 
       if (resp.ok) {
         setErrors([])
         setValidationSent(true)
       } else {
-        setErrors(["something went wrong!"])
+        setErrors(['something went wrong!'])
       }
     } finally {
       setLoading(false)
@@ -32,12 +34,12 @@ const SmsVerification = ({ phoneNumber, enrollSmsAuth = false }) => {
   }
 
   useEffect(() => {
-    if(validationSent) {
+    if (validationSent) {
       verificationCodeInput.current.focus()
     }
   }, [validationSent])
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     console.log('submitting...')
     if (e) {
       e.preventDefault()
@@ -46,7 +48,7 @@ const SmsVerification = ({ phoneNumber, enrollSmsAuth = false }) => {
     const resp = await fetch('/users/complete_sms_auth_verification', {
       method: 'POST',
       headers: { 'X-CSRF-Token': csrf(), 'Content-Type': 'application/json' },
-      body: JSON.stringify({ code, enroll_sms_auth: enrollSmsAuth })
+      body: JSON.stringify({ code, enroll_sms_auth: enrollSmsAuth }),
     })
 
     if (resp.ok) {
@@ -59,7 +61,7 @@ const SmsVerification = ({ phoneNumber, enrollSmsAuth = false }) => {
     setLoading(false)
   }
 
-  const handleInput = (e) => {
+  const handleInput = e => {
     setCode(e.target.value)
     if (e.key === 'Enter' || e.keyCode === 13) {
       handleSubmit(e)
@@ -72,35 +74,67 @@ const SmsVerification = ({ phoneNumber, enrollSmsAuth = false }) => {
 
   return (
     <>
-      {(errors.length > 0) && (
-        <ul className="list-reset bg-error p1 rounded" style={{ color: 'white' }}>
+      {errors.length > 0 && (
+        <ul
+          className="list-reset bg-error p1 rounded"
+          style={{ color: 'white' }}
+        >
           {errors.map((e, i) => (
             <li key={i}>{e}</li>
           ))}
         </ul>
       )}
-      {(validationSuccess) && (
+      {validationSuccess && (
         <>
-          <p>✅ Verified! {enrollSmsAuth && `Next time you sign in your login code will go to ${phoneNumber}.`}</p>
-          <button className="btn btn-success" onClick={refresh}>Refresh to continue</button>
+          <p>
+            ✅ Verified!{' '}
+            {enrollSmsAuth &&
+              `Next time you sign in your login code will go to ${phoneNumber}.`}
+          </p>
+          <button className="btn btn-success" onClick={refresh}>
+            Refresh to continue
+          </button>
         </>
       )}
-      {(!validationSuccess) && (
+      {!validationSuccess && (
         <>
-          {(validationSent) && (
+          {validationSent && (
             <>
-              <p>We&apos;ve just sent a code to {phoneNumber}. It should arrive in the next 5 to 30 seconds depending on your connection.</p>
+              <p>
+                We&apos;ve just sent a code to {phoneNumber}. It should arrive
+                in the next 5 to 30 seconds depending on your connection.
+              </p>
               <div className="flex">
                 <form onSubmit={handleSubmit}>
-                  <input type="tel" ref={verificationCodeInput} autoComplete="off" onSubmit={handleSubmit} onInput={handleInput} placeholder="XXX-XXX" value={code} className="mb1" required />
-                  <input className={loading ? 'muted wait disabled' : 'pointer'} onSubmit={handleSubmit} type="submit" value="Verify" />
+                  <input
+                    type="tel"
+                    ref={verificationCodeInput}
+                    autoComplete="off"
+                    onSubmit={handleSubmit}
+                    onInput={handleInput}
+                    placeholder="XXX-XXX"
+                    value={code}
+                    className="mb1"
+                    required
+                  />
+                  <input
+                    className={loading ? 'muted wait disabled' : 'pointer'}
+                    onSubmit={handleSubmit}
+                    type="submit"
+                    value="Verify"
+                  />
                 </form>
               </div>
             </>
           )}
           <p>
-            <a href="#" onClick={handleClick} className={loading ? 'muted wait' : 'pointer'}>{validationSent ? 'Resend code' : 'Send verification code'}</a>
-            {' '}
+            <a
+              href="#"
+              onClick={handleClick}
+              className={loading ? 'muted wait' : 'pointer'}
+            >
+              {validationSent ? 'Resend code' : 'Send verification code'}
+            </a>{' '}
             to {phoneNumber}.
           </p>
         </>
@@ -112,6 +146,6 @@ const SmsVerification = ({ phoneNumber, enrollSmsAuth = false }) => {
 SmsVerification.propTypes = {
   phoneNumber: PropTypes.string.isRequired,
   enrollSmsAuth: PropTypes.bool,
-};
+}
 
-export default SmsVerification;
+export default SmsVerification

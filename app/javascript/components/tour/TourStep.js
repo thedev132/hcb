@@ -5,7 +5,7 @@ import {
   autoUpdate,
   offset,
   arrow,
-  shift
+  shift,
 } from '@floating-ui/react-dom'
 import Icon from '@hackclub/icons'
 import clsx from 'clsx'
@@ -31,7 +31,7 @@ function TourStep({
     floating,
     strategy,
     middlewareData: { arrow: { x: arrowX, y: arrowY } = {} },
-    refs
+    refs,
   } = useFloating({
     whileElementsMounted: autoUpdate,
     placement,
@@ -39,8 +39,8 @@ function TourStep({
     middleware: [
       offset(14),
       shift({ padding: 5 }),
-      arrow({ element: arrowRef })
-    ]
+      arrow({ element: arrowRef }),
+    ],
   })
 
   useLayoutEffect(() => {
@@ -53,7 +53,7 @@ function TourStep({
     if (visible) {
       refs.floating.current.scrollIntoView({
         behavior: 'smooth',
-        block: 'center'
+        block: 'center',
       })
     }
   }, [visible])
@@ -64,8 +64,8 @@ function TourStep({
         top: 'bottom',
         right: 'left',
         bottom: 'top',
-        left: 'right'
-      }[placement.split('-')[0]]),
+        left: 'right',
+      })[placement.split('-')[0]],
     [placement]
   )
 
@@ -117,7 +117,7 @@ function TourStep({
         opacity: visible ? 1 : 0,
         transform: visible ? 'none' : 'translateY(10px)',
         width: 'calc(100vw - 10px)',
-        zIndex: 150
+        zIndex: 150,
       }}
     >
       <div
@@ -136,7 +136,7 @@ function TourStep({
           top: arrowY != null ? `${arrowY}px` : '',
           right: '',
           bottom: '',
-          [staticSide]: '-9px'
+          [staticSide]: '-9px',
         }}
       ></div>
 
@@ -147,7 +147,7 @@ function TourStep({
           top: '0.5rem',
           right: '0.5rem',
           width: 28,
-          height: 28
+          height: 28,
         }}
         onClick={e => {
           e.preventDefault()
@@ -196,7 +196,7 @@ TourStep.propTypes = {
     'bottom-end',
     'left',
     'left-start',
-    'left-end'
+    'left-end',
   ]).isRequired,
   strategy: PropTypes.oneOf(['absolute', 'fixed']),
   onNext: PropTypes.func.isRequired,
@@ -205,7 +205,7 @@ TourStep.propTypes = {
   visible: PropTypes.bool,
   stepIndex: PropTypes.number.isRequired,
   stepCount: PropTypes.number.isRequired,
-  tourId: PropTypes.number.isRequired
+  tourId: PropTypes.number.isRequired,
 }
 
 export default TourStep

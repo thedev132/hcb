@@ -3,7 +3,7 @@ import csrf from '../common/csrf'
 
 export default class extends Controller {
   static values = {
-    organizerPositions: Array
+    organizerPositions: Array,
   }
 
   async sort({ detail: { oldIndex, newIndex } }) {
@@ -22,9 +22,9 @@ export default class extends Controller {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'X-CSRF-Token': csrf()
+        'X-CSRF-Token': csrf(),
       },
-      body: JSON.stringify({ index: newIndex })
+      body: JSON.stringify({ index: newIndex }),
     })
   }
 }

@@ -1,10 +1,10 @@
 import { Controller } from '@hotwired/stimulus'
-import submitForm from "../common/submitForm"
-import airbrake from "../airbrake"
+import submitForm from '../common/submitForm'
+import airbrake from '../airbrake'
 
 let dropzone
 
-function extractId (dataTransfer) {
+function extractId(dataTransfer) {
   let receiptId
 
   try {
@@ -19,13 +19,15 @@ function extractId (dataTransfer) {
     console.error(err)
     airbrake?.notify(err)
   }
-  
+
   if (!receiptId) {
     try {
       const uri = dataTransfer.getData('text/uri-list')
       const { pathname } = new URL(uri)
 
-      const linkElement = document.querySelector(`a[href~="${pathname}"]:has(img)`)
+      const linkElement = document.querySelector(
+        `a[href~="${pathname}"]:has(img)`
+      )
       const imageElement = linkElement.querySelector('img')
 
       receiptId = imageElement.getAttribute('data-receipt-id')
@@ -44,7 +46,7 @@ export default class extends Controller {
     title: String,
     linking: { type: Boolean, default: false },
     receiptable: String,
-    modal: String
+    modal: String,
   }
 
   initialize() {
@@ -65,11 +67,10 @@ export default class extends Controller {
     this.hideDropzone()
 
     if (this.linkingValue) {
-
       const receiptId = extractId(e.dataTransfer)
 
       const [receiptableType, receiptableId] = this.receiptableValue.split(':')
-      const linkPath = this.modalValue;
+      const linkPath = this.modalValue
 
       if (receiptId && receiptableType && receiptableId) {
         return submitForm(linkPath, {
@@ -79,7 +80,6 @@ export default class extends Controller {
           show_link: true,
         })
       }
-
     }
 
     this.fileInputTarget.files = e.dataTransfer.files

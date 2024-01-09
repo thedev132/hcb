@@ -17,7 +17,7 @@ const tours = {
         } to your ${
           options.demo ? 'demo' : 'new'
         } organization. It's like multiplayer banking!`,
-        placement: isMobile ? 'bottom' : 'right'
+        placement: isMobile ? 'bottom' : 'right',
       })
     }
 
@@ -26,7 +26,7 @@ const tours = {
         attachTo: isMobile ? 'spend' : 'cards',
         text: 'Instantly issue a virtual debit card for yourself. Gotta spend that 💸!',
         placement: isMobile ? 'top' : 'right',
-        strategy: 'fixed'
+        strategy: 'fixed',
       })
 
       if (options.category != 'outernet guild') {
@@ -34,14 +34,14 @@ const tours = {
           attachTo: isMobile ? 'receive' : 'donations',
           text: 'Share your donation form with others and embed it on your website.',
           placement: isMobile ? 'top-end' : 'right',
-          strategy: 'fixed'
+          strategy: 'fixed',
         })
 
         if (!isMobile) {
           steps.push({
             attachTo: 'perks',
             text: 'Get access to free tools for things like sending newsletters and managing team passwords. Stickers included.',
-            strategy: 'fixed'
+            strategy: 'fixed',
           })
         }
       }
@@ -49,12 +49,12 @@ const tours = {
       steps.push({
         attachTo: 'activate_account',
         text: "You're in Playground Mode— click here to activate your account when you're ready.",
-        placement: 'bottom'
+        placement: 'bottom',
       })
     }
 
     return steps
-  }
+  },
 }
 
 function TourOverlay(props) {
@@ -70,9 +70,9 @@ function TourOverlay(props) {
           method: 'POST',
           headers: {
             'X-CSRF-Token': csrf(),
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ step: currentStep })
+          body: JSON.stringify({ step: currentStep }),
         })
       }
     })()
@@ -98,8 +98,8 @@ function TourOverlay(props) {
                 fetch(`/tours/${props.id}/mark_complete`, {
                   method: 'POST',
                   headers: {
-                    'X-CSRF-Token': csrf()
-                  }
+                    'X-CSRF-Token': csrf(),
+                  },
                 })
               }
 
@@ -112,9 +112,9 @@ function TourOverlay(props) {
                 method: 'POST',
                 headers: {
                   'X-CSRF-Token': csrf(),
-                  'Content-Type': 'application/json'
+                  'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ cancelled: true })
+                body: JSON.stringify({ cancelled: true }),
               })
             }}
           />
@@ -137,7 +137,7 @@ TourOverlay.propTypes = {
   id: PropTypes.number,
   options: PropTypes.object,
   tour: PropTypes.string,
-  backToTour: PropTypes.string
+  backToTour: PropTypes.string,
 }
 
 export default TourOverlay

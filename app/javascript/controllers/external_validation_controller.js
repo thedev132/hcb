@@ -15,8 +15,8 @@ export default class extends Controller {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': csrf() },
       body: JSON.stringify({
-        value: e.target.value
-      })
+        value: e.target.value,
+      }),
     }).then(r => r.json())
 
     if (valid) {

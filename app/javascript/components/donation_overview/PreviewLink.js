@@ -1,5 +1,5 @@
 import React from 'react'
-import PropTypes  from 'prop-types'
+import PropTypes from 'prop-types'
 
 class PreviewLink extends React.Component {
   constructor(props) {
@@ -9,7 +9,7 @@ class PreviewLink extends React.Component {
       amount: null,
       message: null,
       monthly: false,
-      copy: null
+      copy: null,
     }
 
     this.handleChange = this.handleChange.bind(this)
@@ -23,31 +23,31 @@ class PreviewLink extends React.Component {
     copyText.select()
     copyText.setSelectionRange(0, copyText.value.length)
     navigator.clipboard.writeText(copyText.value)
-    this.setState({copy: true})
+    this.setState({ copy: true })
     // after 3 seconds, go back to default
     setTimeout(() => {
-      this.setState({copy: null})
+      this.setState({ copy: null })
     }, 3 * 1000)
   }
 
   handleChange(e) {
     let field = e.target.name.replace('prefill-', '')
     if (e.target.value == '') {
-      this.setState({[field]: null})
+      this.setState({ [field]: null })
     } else {
       switch (field) {
         case 'amount': {
           let amount = parseFloat(e.target.value) * 100
           if (Number.isFinite(amount) && amount > 0) {
-            this.setState({amount})
+            this.setState({ amount })
           }
           break
         }
         case 'message':
-          this.setState({message: e.target.value})
+          this.setState({ message: e.target.value })
           break
         case 'monthly':
-          this.setState({monthly: e.target.checked})
+          this.setState({ monthly: e.target.checked })
           break
       }
     }
@@ -57,7 +57,10 @@ class PreviewLink extends React.Component {
     const { path } = this.props
     let url = new URL(path)
 
-    let showSubtitle = this.state.amount != null || this.state.message != null || this.state.monthly
+    let showSubtitle =
+      this.state.amount != null ||
+      this.state.message != null ||
+      this.state.monthly
 
     let humanizedMonthly = 'one-time '
     if (this.state.monthly) {
@@ -69,79 +72,107 @@ class PreviewLink extends React.Component {
     if (this.state.message) {
       humanizedMessage = ` with the message "${this.state.message}"`
       url.searchParams.set('message', this.state.message)
-    } 
+    }
 
     let humanizedAmount = null
     if (this.state.amount) {
       url.searchParams.set('amount', this.state.amount)
 
-      humanizedAmount = (this.state.amount/100).toLocaleString('en-US', {
-        style: 'currency',
-        currency: 'USD',
-      }) + ' ' || ''
+      humanizedAmount =
+        (this.state.amount / 100).toLocaleString('en-US', {
+          style: 'currency',
+          currency: 'USD',
+        }) + ' ' || ''
     }
 
     return (
       <>
-        <label htmlFor="prefill-amount" className="mb1" style={{fontWeight: 600}}>Prefilled amount (USD)</label>
+        <label
+          htmlFor="prefill-amount"
+          className="mb1"
+          style={{ fontWeight: 600 }}
+        >
+          Prefilled amount (USD)
+        </label>
         <div className="field">
           <div className="flex items-center">
-            <span className="bold muted" style={{width: "1rem"}}>$</span>
-            <input placeholder="500.00"
-                    step="0.01"
-                    min="0.01"
-                    type="number"
-                    name="prefill-amount"
-                    onChange={this.handleChange}
-                     />
+            <span className="bold muted" style={{ width: '1rem' }}>
+              $
+            </span>
+            <input
+              placeholder="500.00"
+              step="0.01"
+              min="0.01"
+              type="number"
+              name="prefill-amount"
+              onChange={this.handleChange}
+            />
           </div>
         </div>
-        <label htmlFor="prefill-message" className="mb1" style={{fontWeight: 600}}>Prefilled message</label>
+        <label
+          htmlFor="prefill-message"
+          className="mb1"
+          style={{ fontWeight: 600 }}
+        >
+          Prefilled message
+        </label>
         <div className="field">
           <div className="flex items-center">
-            <input placeholder="optional"
-                    type="text"
-                    name="prefill-message"
-                    onChange={this.handleChange}
-                     />
+            <input
+              placeholder="optional"
+              type="text"
+              name="prefill-message"
+              onChange={this.handleChange}
+            />
           </div>
         </div>
         <label htmlFor="prefill-monthly flex items-center">
-          <span style={{fontWeight: 600}}>Monthly charge?</span>
-          <input placeholder="500.00"
-                  type="checkbox"
-                  name="prefill-monthly"
-                  onChange={this.handleChange}
-                   />        
+          <span style={{ fontWeight: 600 }}>Monthly charge?</span>
+          <input
+            placeholder="500.00"
+            type="checkbox"
+            name="prefill-monthly"
+            onChange={this.handleChange}
+          />
         </label>
-        <hr style={{ margin: "1rem 0" }} />
-        <label htmlFor="prefill-url" className="mb1" style={{fontWeight: 600}}>
-          {this.state.amount == null ?
-          'Donation link' :
-          'Prefilled donation link'
-          }
+        <hr style={{ margin: '1rem 0' }} />
+        <label
+          htmlFor="prefill-url"
+          className="mb1"
+          style={{ fontWeight: 600 }}
+        >
+          {this.state.amount == null
+            ? 'Donation link'
+            : 'Prefilled donation link'}
         </label>
         <div className="field">
           <div className="flex items-center">
-            <input  value={url} 
-                    readOnly={true}
-                    name="prefill-url"
-                    type="text"
-                    ref={(c) => this.inputField = c}
-                     />
-            <span className="ml1 tooltipped tooltipped--w cursor-pointer"
-                  aria-label={this.state.copy ? '✅ Copied to clipboard!' : 'Copy link'}
-                  style={{width: "1rem"}}
-                  onClick={this.handleCopy}>
-            ⧉
+            <input
+              value={url}
+              readOnly={true}
+              name="prefill-url"
+              type="text"
+              ref={c => (this.inputField = c)}
+            />
+            <span
+              className="ml1 tooltipped tooltipped--w cursor-pointer"
+              aria-label={
+                this.state.copy ? '✅ Copied to clipboard!' : 'Copy link'
+              }
+              style={{ width: '1rem' }}
+              onClick={this.handleCopy}
+            >
+              ⧉
             </span>
           </div>
-        {showSubtitle && (
-          <>
-            <span className="muted">This will be prefilled as a{' '}
-            {humanizedMonthly} <strong>{humanizedAmount}</strong>donation{humanizedMessage}.</span>
-          </>
-        )}
+          {showSubtitle && (
+            <>
+              <span className="muted">
+                This will be prefilled as a {humanizedMonthly}{' '}
+                <strong>{humanizedAmount}</strong>donation{humanizedMessage}.
+              </span>
+            </>
+          )}
         </div>
       </>
     )
@@ -149,7 +180,7 @@ class PreviewLink extends React.Component {
 }
 
 PreviewLink.propTypes = {
-  path: PropTypes.string
+  path: PropTypes.string,
 }
 
 export default PreviewLink

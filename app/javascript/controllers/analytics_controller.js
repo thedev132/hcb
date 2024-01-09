@@ -3,7 +3,7 @@ import ahoy from 'ahoy.js'
 
 export default class extends Controller {
   static values = {
-    eventName: String
+    eventName: String,
   }
 
   track() {

@@ -12,12 +12,12 @@ export default class extends Controller {
     'loginCode',
     'continueButton',
     'loginPreferenceWebauthnInput',
-    'rememberInput'
+    'rememberInput',
   ]
 
   static values = {
     returnTo: String,
-    requireWebauthnPreference: Boolean
+    requireWebauthnPreference: Boolean,
   }
 
   initialize() {
@@ -54,7 +54,7 @@ export default class extends Controller {
       this.continueButtonTarget.value = 'Waiting for security key...'
 
       const credential = await get({
-        publicKey: options
+        publicKey: options,
       })
 
       this.storeLoginEmail(loginEmail)
@@ -65,7 +65,7 @@ export default class extends Controller {
         return_to: this.returnToValue,
         remember:
           this.hasRememberInputTarget && this.rememberInputTarget.checked,
-        ...(await this.fingerprint())
+        ...(await this.fingerprint()),
       })
     } catch (e) {
       if (e.message == "User doesn't have WebAuthn enabled") {
@@ -126,7 +126,7 @@ export default class extends Controller {
       fingerprint: fingerprint.visitorId,
       device_info: result.browser.name + ' ' + result.browser.version,
       os_info: result.os.name + ' ' + result.os.version,
-      timezone: fingerprint.components.timezone.value
+      timezone: fingerprint.components.timezone.value,
     }
   }
 }

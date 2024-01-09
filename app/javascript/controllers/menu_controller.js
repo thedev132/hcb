@@ -4,7 +4,7 @@ import {
   computePosition,
   flip,
   offset,
-  size
+  size,
 } from '@floating-ui/dom'
 import $ from 'jquery'
 import gsap from 'gsap'
@@ -14,7 +14,7 @@ export default class extends Controller {
 
   static values = {
     appendTo: String,
-    placement: { type: String, default: 'bottom-start' }
+    placement: { type: String, default: 'bottom-start' },
   }
 
   initialize() {
@@ -46,7 +46,7 @@ export default class extends Controller {
       position: 'absolute',
       display: 'block',
       left: 0,
-      top: 0
+      top: 0,
     })
 
     this.computePosition(true)
@@ -78,7 +78,7 @@ export default class extends Controller {
       } else {
         this.content &&
           Object.assign(this.content.style, {
-            display: 'none'
+            display: 'none',
           })
       }
     } else {
@@ -108,22 +108,22 @@ export default class extends Controller {
           padding: 5,
           apply({ availableHeight, elements }) {
             Object.assign(elements.floating.style, {
-              maxHeight: `${availableHeight}px`
+              maxHeight: `${availableHeight}px`,
             })
-          }
-        })
-      ]
+          },
+        }),
+      ],
     }).then(({ x, y, placement }) => {
       Object.assign(this.content.style, {
         top: `${y}px`,
-        left: `${x}px`
+        left: `${x}px`,
       })
       if (firstTime) {
         // Animate!
         gsap.from(this.content, {
           y: placement.includes('top') ? -15 : 15,
           opacity: 0,
-          duration: 0.25
+          duration: 0.25,
         })
       }
 

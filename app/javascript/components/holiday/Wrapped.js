@@ -7,5 +7,5 @@ export default function Wrapped({ data }) {
 }
 
 Wrapped.propTypes = {
-  data: PropTypes.object.isRequired
+  data: PropTypes.object.isRequired,
 }
