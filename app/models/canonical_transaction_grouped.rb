@@ -6,7 +6,20 @@ class CanonicalTransactionGrouped
   attr_accessor :hcb_code, :date, :amount_cents, :raw_canonical_transaction_ids, :raw_canonical_pending_transaction_ids, :event, :running_balance, :subledger
   attr_writer :canonical_transactions, :canonical_pending_transactions, :local_hcb_code
 
-  delegate :likely_account_verification_related?, to: :ct, allow_nil: true
+  delegate :likely_account_verification_related?,
+           :fee_payment?,
+           :fee_reimbursement?,
+           :raw_stripe_transaction,
+           :stripe_cardholder, to: :ct, allow_nil: true
+  delegate :invoice?,
+           :donation?,
+           :partner_donation?,
+           :ach_transfer?,
+           :check?,
+           :disbursement?,
+           :stripe_card?,
+           :stripe_refund?,
+           :unknown?, to: :local_hcb_code
 
   def memo
     return invoice_memo if invoice?
@@ -64,56 +77,8 @@ class CanonicalTransactionGrouped
     @canonical_transactions ||= CanonicalTransaction.where(id: canonical_transaction_ids).order("date desc, id desc")
   end
 
-  def fee_payment?
-    ct&.fee_payment?
-  end
-
-  def fee_reimbursement?
-    ct&.fee_reimbursement
-  end
-
   def fee_reimbursed?
     ct&.fee_reimbursement&.completed?
-  end
-
-  def raw_stripe_transaction
-    ct&.raw_stripe_transaction
-  end
-
-  def stripe_cardholder
-    ct&.stripe_cardholder
-  end
-
-  def invoice?
-    hcb_i1 == ::TransactionGroupingEngine::Calculate::HcbCode::INVOICE_CODE
-  end
-
-  def donation?
-    hcb_i1 == ::TransactionGroupingEngine::Calculate::HcbCode::DONATION_CODE
-  end
-
-  def partner_donation?
-    hcb_i1 == ::TransactionGroupingEngine::Calculate::HcbCode::PARTNER_DONATION_CODE
-  end
-
-  def ach_transfer?
-    hcb_i1 == ::TransactionGroupingEngine::Calculate::HcbCode::ACH_TRANSFER_CODE
-  end
-
-  def check?
-    hcb_i1 == ::TransactionGroupingEngine::Calculate::HcbCode::CHECK_CODE
-  end
-
-  def disbursement?
-    hcb_i1 == ::TransactionGroupingEngine::Calculate::HcbCode::DISBURSEMENT_CODE
-  end
-
-  def stripe_card?
-    hcb_i1 == ::TransactionGroupingEngine::Calculate::HcbCode::STRIPE_CARD_CODE
-  end
-
-  def stripe_refund?
-    local_hcb_code.stripe_refund?
   end
 
   def local_hcb_code
@@ -176,10 +141,6 @@ class CanonicalTransactionGrouped
 
   def disbursement
     Disbursement.find(hcb_i2)
-  end
-
-  def unknown?
-    hcb_i1 == ::TransactionGroupingEngine::Calculate::HcbCode::UNKNOWN_CODE
   end
 
   def hcb_i1

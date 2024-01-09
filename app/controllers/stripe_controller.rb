@@ -13,16 +13,16 @@ class StripeController < ActionController::Base
 
       StatsD.measure("StripeController.#{method}") { self.send method, event }
     rescue JSON::ParserError => e
-      head 400
+      head :bad_request
       notify_airbrake(e)
       return
     rescue NoMethodError => e
       puts e
       notify_airbrake(e)
-      head 200 # success so that stripe doesn't retry (method is unsupported by HCB)
+      head :ok # success so that stripe doesn't retry (method is unsupported by HCB)
       return
     rescue Stripe::SignatureVerificationError
-      head 400
+      head :bad_request
       return
     end
   end
@@ -48,7 +48,7 @@ class StripeController < ActionController::Base
     # put the transaction on the pending ledger in almost realtime
     ::StripeAuthorizationJob::CreateFromWebhook.perform_later(auth_id)
 
-    head 200
+    head :ok
   end
 
   def handle_issuing_authorization_updated(event)
@@ -60,7 +60,7 @@ class StripeController < ActionController::Base
     rpst = PendingTransactionEngine::RawPendingStripeTransactionService::Stripe::ImportSingle.new(remote_stripe_transaction: event[:data][:object]).run
     PendingTransactionEngine::CanonicalPendingTransactionService::ImportSingle::Stripe.new(raw_pending_stripe_transaction: rpst).run
 
-    head 200
+    head :ok
   end
 
   def handle_issuing_transaction_created(event)
@@ -70,7 +70,7 @@ class StripeController < ActionController::Base
 
     TopupStripeJob.perform_later
 
-    head 200
+    head :ok
   end
 
   def handle_issuing_card_updated(event)
@@ -78,14 +78,14 @@ class StripeController < ActionController::Base
     card.sync_from_stripe!
     card.save
 
-    head 200
+    head :ok
   end
 
   def handle_charge_succeeded(event)
     charge = event[:data][:object]
     ::PartnerDonationService::HandleWebhookChargeSucceeded.new(charge).run
 
-    head 200
+    head :ok
   end
 
   def handle_invoice_paid(event)
@@ -109,7 +109,7 @@ class StripeController < ActionController::Base
       ::PendingEventMappingEngine::Map::Single::Invoice.new(canonical_pending_transaction: cpt).run
     end
 
-    head 200
+    head :ok
   end
 
   def handle_customer_subscription_updated(event)
@@ -164,7 +164,7 @@ class StripeController < ActionController::Base
       invoice.canonical_pending_transactions.update_all(fronted: false)
     end
 
-    head 200
+    head :ok
   end
 
   def handle_charge_refunded(event)

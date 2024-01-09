@@ -49,7 +49,7 @@ class IntegrationsController < ApplicationController
   private
 
   def render_invalid_authorization
-    render json: { error: "Unauthorized" }, status: 401
+    render json: { error: "Unauthorized" }, status: :unauthorized
   end
 
   def set_event

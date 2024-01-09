@@ -24,6 +24,7 @@ class Fee < ApplicationRecord
   has_paper_trail
 
   belongs_to :canonical_event_mapping
+  has_one :canonical_transaction, through: :canonical_event_mapping
 
   validates :reason, presence: true
   validates :amount_cents_as_decimal, numericality: { greater_than_or_equal_to: 0 }
@@ -35,6 +36,8 @@ class Fee < ApplicationRecord
   scope :exclude_outflows, -> { where("canonical_transactions.amount_cents > 0") }
   scope :exclude_outflows, -> { includes(canonical_event_mapping: :canonical_transaction).where("canonical_transactions.amount_cents > 0").references(canonical_event_mapping: :canonical_transaction) }
 
+  delegate :date, :memo, :smart_memo, :amount, :amount_cents, to: :canonical_transaction
+
   def revenue_waived?
     reason == "REVENUE WAIVED"
   end
@@ -45,30 +48,6 @@ class Fee < ApplicationRecord
 
   def amount_decimal
     amount_cents_as_decimal / 100.0
-  end
-
-  def date
-    canonical_transaction.date
-  end
-
-  def memo
-    canonical_transaction.memo
-  end
-
-  def smart_memo
-    canonical_transaction.smart_memo
-  end
-
-  def amount
-    canonical_transaction.amount
-  end
-
-  def amount_cents
-    canonical_transaction.amount_cents
-  end
-
-  def canonical_transaction
-    @canonical_transaction ||= canonical_event_mapping.canonical_transaction
   end
 
   def anomaly?

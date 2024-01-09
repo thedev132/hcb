@@ -9,7 +9,7 @@ class StatsController < ApplicationController
 
     event = Event.find_by(is_public: true, slug:)
 
-    return render plain: "404 Not found", status: 404 unless event
+    return render plain: "404 Not found", status: :not_found unless event
 
     raised = event.canonical_transactions.revenue.sum(:amount_cents)
 

@@ -62,17 +62,13 @@ Rails/Date:
 # Configuration parameters: EnforceForPrefixed.
 Rails/Delegate:
   Exclude:
-    - 'app/models/canonical_transaction_grouped.rb'
     - 'app/models/donation_payout.rb'
     - 'app/models/emburse_card_request.rb'
-    - 'app/models/fee.rb'
     - 'app/models/g_suite_account.rb'
     - 'app/models/hcb_code.rb'
     - 'app/models/invoice.rb'
     - 'app/models/invoice_payout.rb'
-    - 'app/models/organizer_position.rb'
     - 'app/models/stripe_authorization.rb'
-    - 'app/models/stripe_card.rb'
 
 # Offense count: 52
 # This cop supports unsafe autocorrection (--autocorrect-all).
@@ -118,21 +114,6 @@ Rails/HelperInstanceVariable:
     - 'app/helpers/sessions_helper.rb'
     - 'app/helpers/stripe_cards_helper.rb'
     - 'app/helpers/tours_helper.rb'
-
-# Offense count: 35
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: numeric, symbolic
-Rails/HttpStatus:
-  Exclude:
-    - 'app/controllers/admin_controller.rb'
-    - 'app/controllers/api/application_controller.rb'
-    - 'app/controllers/api/v2_controller.rb'
-    - 'app/controllers/api_controller.rb'
-    - 'app/controllers/integrations_controller.rb'
-    - 'app/controllers/stats_controller.rb'
-    - 'app/controllers/stripe_controller.rb'
-    - 'app/controllers/users_controller.rb'
 
 # Offense count: 17
 # Configuration parameters: IgnoreScopes, Include.

@@ -18,7 +18,7 @@ class ApiController < ApplicationController
 
     # event not found
     if e.nil?
-      render json: { error: "Not Found" }, status: 404
+      render json: { error: "Not Found" }, status: :not_found
       return
     end
 
@@ -45,7 +45,7 @@ class ApiController < ApplicationController
     if missing.size > 0
       render json: {
         error: "Missing " + missing.to_s
-      }, status: 400
+      }, status: :bad_request
       return
     end
 
@@ -57,7 +57,7 @@ class ApiController < ApplicationController
     target_event = Event.find_by_slug(destination_event_slug)
 
     if !target_event
-      render json: { error: "Couldn't find target event!" }, status: 404
+      render json: { error: "Couldn't find target event!" }, status: :not_found
       return
     end
 
@@ -69,7 +69,7 @@ class ApiController < ApplicationController
     )
 
     if !d.save
-      render json: { error: "Disbursement couldn't be created!" + d.errors.full_messages }, status: 500
+      render json: { error: "Disbursement couldn't be created!" + d.errors.full_messages }, status: :internal_server_error
       return
     end
 
@@ -78,7 +78,7 @@ class ApiController < ApplicationController
       destination_event_slug:,
       amount: amount.to_f / 100,
       name:
-    }, status: 201
+    }, status: :created
   end
 
   def create_demo_event
@@ -104,7 +104,7 @@ class ApiController < ApplicationController
 
     render json: result, status:
   rescue ArgumentError, ActiveRecord::RecordInvalid => e
-    render json: { error: e }, status: 422
+    render json: { error: e }, status: :unprocessable_entity
   end
 
   def user_find
@@ -144,7 +144,7 @@ class ApiController < ApplicationController
   def check_token
     attempt_api_token = request.headers["Authorization"]&.split(" ")&.last
     if attempt_api_token != Rails.application.credentials.api_token
-      render json: { error: "Unauthorized" }, status: 401
+      render json: { error: "Unauthorized" }, status: :unauthorized
       return
     end
   end
@@ -152,7 +152,7 @@ class ApiController < ApplicationController
   def set_params
     @params = ActiveSupport::JSON.decode(request.body.read)
   rescue JSON::ParserError
-    render json: { error: "Invalid JSON body" }, status: 401
+    render json: { error: "Invalid JSON body" }, status: :unauthorized
   end
 
 end

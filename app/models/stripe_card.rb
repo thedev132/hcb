@@ -86,6 +86,8 @@ class StripeCard < ApplicationRecord
   enum card_type: { virtual: 0, physical: 1 }
   enum spending_limit_interval: { daily: 0, weekly: 1, monthly: 2, yearly: 3, per_authorization: 4, all_time: 5 }
 
+  delegate :stripe_name, to: :stripe_cardholder
+
   validates_uniqueness_of :stripe_id
 
   validates_presence_of :stripe_shipping_address_city,
@@ -133,10 +135,6 @@ class StripeCard < ApplicationRecord
     "•••• •••• •••• #{last4}"
   end
 
-  def stripe_name
-    stripe_cardholder.stripe_name
-  end
-
   def total_spent
     # pending authorizations + settled transactions
     RawPendingStripeTransaction
@@ -152,9 +150,7 @@ class StripeCard < ApplicationRecord
     stripe_status.humanize
   end
 
-  def state_text
-    status_text
-  end
+  alias :state_text :status_text
 
   def status_badge_type
     s = stripe_status.to_sym

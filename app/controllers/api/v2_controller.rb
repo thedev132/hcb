@@ -10,7 +10,7 @@ module Api
 
     def index
       contract = Api::V2::IndexContract.new.call(params.permit!.to_h)
-      render json: json_error(contract), status: 400 and return unless contract.success?
+      render json: json_error(contract), status: :bad_request and return unless contract.success?
 
       render json: Api::V2::IndexSerializer.new.run
     end
@@ -19,7 +19,7 @@ module Api
     # This endpoint is used by users (not an API endpoint)
     def login
       contract = Api::V2::LoginContract.new.call(params.permit!.to_h)
-      render json: json_error(contract), status: 400 and return unless contract.success?
+      render json: json_error(contract), status: :bad_request and return unless contract.success?
 
       begin
         service = AuthService::Token.new(
@@ -59,7 +59,7 @@ module Api
 
     def generate_login_url
       contract = Api::V2::GenerateLoginUrlContract.new.call(params.permit!.to_h)
-      render json: json_error(contract), status: 400 and return unless contract.success?
+      render json: json_error(contract), status: :bad_request and return unless contract.success?
 
       event = current_partner.events.find_by_public_id(contract[:public_id])
 
@@ -81,10 +81,10 @@ module Api
 
     def partnered_signups_new
       @partner = current_partner
-      render json: json_error(contract), status: 400 and return unless @partner
+      render json: json_error(contract), status: :bad_request and return unless @partner
 
       contract = Api::V2::PartneredSignupsNewContract.new.call(params.permit!.to_h)
-      render json: json_error(contract), status: 400 and return unless contract.success?
+      render json: json_error(contract), status: :bad_request and return unless contract.success?
 
       attrs = {
         partner_id: @partner.id,
@@ -109,7 +109,7 @@ module Api
 
     def partnered_signups
       contract = Api::V2::PartneredSignupsContract.new.call(params.permit!.to_h)
-      render json: json_error(contract), status: 400 and return unless contract.success?
+      render json: json_error(contract), status: :bad_request and return unless contract.success?
 
       partnered_signups = ::ApiService::V2::FindPartneredSignups.new(partner_id: current_partner.id).run
 
@@ -118,7 +118,7 @@ module Api
 
     def partnered_signup
       contract = Api::V2::PartneredSignupContract.new.call(params.permit!.to_h)
-      render json: json_error(contract), status: 400 and return unless contract.success?
+      render json: json_error(contract), status: :bad_request and return unless contract.success?
 
       partnered_signup = ::ApiService::V2::FindPartneredSignup.new(
         partner_id: current_partner.id,
@@ -133,7 +133,7 @@ module Api
 
     def donations_new
       contract = Api::V2::DonationsNewContract.new.call(params.permit!.to_h)
-      render json: json_error(contract), status: 400 and return unless contract.success?
+      render json: json_error(contract), status: :bad_request and return unless contract.success?
 
       partner_donation = ::ApiService::V2::DonationsNew.new(
         partner_id: current_partner.id,
@@ -145,7 +145,7 @@ module Api
 
     def organizations
       contract = Api::V2::OrganizationsContract.new.call(params.permit!.to_h)
-      render json: json_error(contract), status: 400 and return unless contract.success?
+      render json: json_error(contract), status: :bad_request and return unless contract.success?
 
       organizations = ::ApiService::V2::FindOrganizations.new(partner_id: current_partner.id).run
 
@@ -154,7 +154,7 @@ module Api
 
     def organization
       contract = Api::V2::OrganizationContract.new.call(params.permit!.to_h)
-      render json: json_error(contract), status: 400 and return unless contract.success?
+      render json: json_error(contract), status: :bad_request and return unless contract.success?
 
       event = ::ApiService::V2::FindOrganization.new(
         partner_id: current_partner.id,

@@ -91,7 +91,7 @@ module Api
         ]
       }
 
-      render json:, status: 400 and return
+      render json:, status: :bad_request and return
     end
 
     def render_json_error_500(exception)
@@ -107,7 +107,7 @@ module Api
         ]
       }
 
-      render json:, status: 500 and return
+      render json:, status: :internal_server_error and return
     end
 
   end

@@ -39,9 +39,9 @@ class OrganizerPosition < ApplicationRecord
 
   validates :user, uniqueness: { scope: :event, conditions: -> { where(deleted_at: nil) } }
 
-  def initial?
-    organizer_position_invite.initial?
-  end
+  delegate :initial?, to: :organizer_position_invite, allow_nil: true
+
+  alias_attribute :signee, :is_signee
 
   def tourable_options
     {
@@ -49,10 +49,6 @@ class OrganizerPosition < ApplicationRecord
       category: event.category,
       initial: initial?
     }
-  end
-
-  def signee?
-    is_signee
   end
 
 end
