@@ -663,6 +663,10 @@ class EventsController < ApplicationController
     redirect_back fallback_location: edit_event_path(@event, anchor: "admin_organization_tags")
   end
 
+  def audit_log
+    authorize @event
+  end
+
   private
 
   # Only allow a trusted parameter "white list" through.

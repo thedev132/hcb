@@ -153,6 +153,10 @@ class EventPolicy < ApplicationPolicy
     record.users.include?(user)
   end
 
+  def audit_log?
+    user.admin?
+  end
+
   private
 
   def user_or_admin
