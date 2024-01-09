@@ -214,13 +214,13 @@ class StripeCard < ApplicationRecord
   alias_attribute :address_postal_code, :stripe_shipping_address_postal_code
 
   def stripe_obj
-    @stripe_obj ||= ::Partners::Stripe::Issuing::Cards::Show.new(id: stripe_id).run
+    @stripe_obj ||= ::Stripe::Issuing::Card.retrieve(id: stripe_id)
   rescue => e
     { number: "XXXX", cvc: "XXX", created: Time.now.utc.to_i, shipping: { status: "delivered" } }
   end
 
   def secret_details
-    @secret_details ||= ::Partners::Stripe::Issuing::Cards::Show.new(id: stripe_id, expand: ["cvc", "number"]).run
+    @secret_details ||= ::Stripe::Issuing::Card.retrieve(id: stripe_id, expand: ["cvc", "number"])
   rescue => e
     { number: "XXXX", cvc: "XXX" }
   end

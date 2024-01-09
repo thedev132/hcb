@@ -10,7 +10,7 @@ module StripeAuthorizationService
       cpt = nil
 
       # 1. fetch remote stripe transaction (authorization)
-      remote_stripe_transaction = ::Partners::Stripe::Issuing::Authorizations::Show.new(id: @stripe_transaction_id).run
+      remote_stripe_transaction = StripeService::Issuing::Authorization.retrieve(@stripe_transaction_id)
       return unless remote_stripe_transaction
 
       ActiveRecord::Base.transaction do

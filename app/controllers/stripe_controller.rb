@@ -143,7 +143,7 @@ class StripeController < ActionController::Base
 
     dispute = event[:data][:object]
 
-    payment_intent = Partners::Stripe::PaymentIntents::Show.new(id: dispute[:payment_intent]).run
+    payment_intent = StripeService::PaymentIntent.retrieve(dispute[:payment_intent])
 
     if payment_intent.metadata[:donation].present?
       # It's a donation

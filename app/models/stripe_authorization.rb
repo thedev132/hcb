@@ -167,13 +167,13 @@ class StripeAuthorization < ApplicationRecord
   def remote_stripe_transactions
     @remote_stripe_transactions ||= begin
       remote_stripe_authorization["transactions"].map do |t|
-        ::Partners::Stripe::Issuing::Transactions::Show.new(id: t.id).run
+        ::Stripe::Issuing::Transaction.retrieve(t.id)
       end
     end
   end
 
   def remote_stripe_authorization
-    @remote_stripe_authorization ||= ::Partners::Stripe::Issuing::Authorizations::Show.new(id: stripe_id).run
+    @remote_stripe_authorization ||= ::StripeService::Issuing::Authorization.retrieve(stripe_id)
   end
 
 end
