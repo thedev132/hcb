@@ -291,7 +291,7 @@
 <% if (Flipper.enabled?(:hcb_code_popovers_2023_06_16, current_user) || !organizer_signed_in?) && ct.local_hcb_code.card_grant? %>
   <section class="modal modal--scroll modal--popover bg-snow" data-behavior="modal" role="dialog" id="card_grant_details_<%= instance %>">
     <%= modal_header(transaction_memo(ct), level: "h1", external_link: spending_card_grant_path(ct.local_hcb_code.disbursement.card_grant)) %>
-    <%= async_frame_to spending_card_grant_path(ct.local_hcb_code.disbursement.card_grant, params: { frame: true }), as: :div do %>
+    <%= async_frame_to spending_card_grant_path(ct.local_hcb_code.disbursement.card_grant, params: { frame: true }), lazy: true, as: :div do %>
       <strong>Loading...</strong>
     <% end %>
   </section>
