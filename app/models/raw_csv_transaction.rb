@@ -26,4 +26,8 @@ class RawCsvTransaction < ApplicationRecord
 
   monetize :amount_cents
 
+  def bank_account_name
+    unique_bank_identifier
+  end
+
 end

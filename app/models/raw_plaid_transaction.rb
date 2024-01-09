@@ -19,6 +19,9 @@
 class RawPlaidTransaction < ApplicationRecord
   has_many :hashed_transactions
   has_one :canonical_transaction, as: :transaction_source
+  belongs_to :bank_account, primary_key: :plaid_account_id, foreign_key: :plaid_account_id, inverse_of: :raw_plaid_transactions, optional: true
+
+  delegate :name, to: :bank_account, prefix: true, allow_nil: true
 
   monetize :amount_cents
 

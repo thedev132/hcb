@@ -8,6 +8,7 @@
       <th>ID</th>
       <th>Date</th>
       <th>Memo</th>
+      <th>Bank account</th>
       <th>FriendlyMemo</th>
       <th>CustomMemo</th>
       <th>Amount</th>
@@ -21,9 +22,10 @@
       <td><%= link_to @canonical_transaction.id, canonical_transaction_path(@canonical_transaction) %></td>
       <td><%= @canonical_transaction.date %></td>
       <td><%= @canonical_transaction.memo %></td>
+      <td><%= @canonical_transaction.bank_account_name %></td>
       <td><%= @canonical_transaction.friendly_memo %></td>
       <td><%= @canonical_transaction.custom_memo %></td>
-      <td><%= @canonical_transaction.amount %></td>
+      <td><%= @canonical_transaction.amount.format %></td>
       <td><%= link_to @canonical_transaction.hcb_code, hcb_code_path(@canonical_transaction.local_hcb_code) %></td>
       <td><%= @canonical_transaction.canonical_event_mapping.try(:user).try(:email) %></td>
       <td>

@@ -168,6 +168,10 @@ class CanonicalTransaction < ApplicationRecord
     raw_column_transaction&.transaction_type
   end
 
+  def bank_account_name
+    transaction_source.try(:bank_account_name) || transaction_source_type[/Raw(.+)Transaction/, 1]
+  end
+
   def stripe_cardholder
     @stripe_cardholder ||= begin
       return nil unless raw_stripe_transaction
