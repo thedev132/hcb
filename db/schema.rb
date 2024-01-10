@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_01_05_193655) do
+ActiveRecord::Schema[7.0].define(version: 2024_01_10_200752) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_stat_statements"
@@ -864,6 +864,17 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_05_193655) do
     t.index ["raw_increase_transaction_id"], name: "index_hashed_transactions_on_raw_increase_transaction_id"
     t.index ["raw_plaid_transaction_id"], name: "index_hashed_transactions_on_raw_plaid_transaction_id"
     t.index ["raw_stripe_transaction_id"], name: "index_hashed_transactions_on_raw_stripe_transaction_id"
+  end
+  
+  create_table "hcb_code_personal_transactions", force: :cascade do |t|
+    t.bigint "hcb_code_id"
+    t.bigint "invoice_id"
+    t.bigint "reporter_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["hcb_code_id"], name: "index_hcb_code_personal_transactions_on_hcb_code_id", unique: true
+    t.index ["invoice_id"], name: "index_hcb_code_personal_transactions_on_invoice_id"
+    t.index ["reporter_id"], name: "index_hcb_code_personal_transactions_on_reporter_id"
   end
 
   create_table "hcb_codes", force: :cascade do |t|
@@ -1832,6 +1843,9 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_05_193655) do
   add_foreign_key "grants", "users", column: "processed_by_id"
   add_foreign_key "grants", "users", column: "submitted_by_id"
   add_foreign_key "hashed_transactions", "raw_plaid_transactions"
+  add_foreign_key "hcb_code_personal_transactions", "hcb_codes"
+  add_foreign_key "hcb_code_personal_transactions", "invoices"
+  add_foreign_key "hcb_code_personal_transactions", "users", column: "reporter_id"
   add_foreign_key "increase_account_numbers", "events"
   add_foreign_key "increase_checks", "events"
   add_foreign_key "increase_checks", "users"

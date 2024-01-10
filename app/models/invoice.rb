@@ -130,6 +130,7 @@ class Invoice < ApplicationRecord
   belongs_to :fee_reimbursement, required: false
   belongs_to :archived_by, class_name: "User", required: false
 
+  has_one :personal_transaction, class_name: "HcbCode::PersonalTransaction", required: false
   has_one_attached :manually_marked_as_paid_attachment
 
   aasm do

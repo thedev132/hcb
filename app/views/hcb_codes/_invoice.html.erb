@@ -25,9 +25,18 @@
       <span class="regular"><%= render_money @invoice.item_amount %></span>
     </span>
 
-    <span class="badge md-right h4 bg-<%= @invoice.state %>">
-      <%= @invoice.state_text %>
-      <%= inline_icon @invoice.state_icon, size: 20 if @invoice.state_icon %>
+    <span class="md-right">
+      <% if @invoice.personal_transaction.present? %>
+        <span class="badge h4 bg-warning">
+          Repayment for Personal Transaction
+          <%= inline_icon :info, size: 20 %>
+        </span>
+      <% end %>
+
+      <span class="badge h4 bg-<%= @invoice.state %>">
+        <%= @invoice.state_text %>
+        <%= inline_icon @invoice.state_icon, size: 20 if @invoice.state_icon %>
+      </span>
     </span>
   </h2>
 
@@ -62,6 +71,12 @@
       <strong>Transaction memo</strong>
       <%= render "hcb_codes/memo", hcb_code: @hcb_code %>
     </p>
+    <% if @invoice.personal_transaction.present? %>
+      <p>
+        <strong>Repayment for</strong>
+        <%= link_to @invoice.personal_transaction.hcb_code.memo, @invoice.personal_transaction.hcb_code.url %>
+      </p>
+    <% end %>
     <p>
       <strong>Billed to</strong>
       <% if organizer_signed_in? %>

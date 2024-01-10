@@ -48,6 +48,13 @@
           <%= inline_icon :info, size: 20 %>
         </span>
       <% end %>
+
+      <% if @hcb_code.personal_transaction.present? %>
+        <span class="badge h4 md-right bg-warning">
+          Personal Transaction
+          <%= inline_icon :info, size: 20 %>
+        </span>
+    <% end %>
     </h2>
 
     <section class="card__banner card__darker details-horiz border-top border-bottom">
@@ -219,6 +226,12 @@
             <span><strong>Sign in to view</strong></span>
           <% end %>
         </div>
+        <% if @hcb_code.personal_transaction.present? %>
+          <p>
+            <strong>Repaid by</strong>
+            <%= link_to @hcb_code.personal_transaction.invoice.local_hcb_code.memo, @hcb_code.personal_transaction.invoice %>
+          </p>
+        <% end %>
       <% end %>
       <%= render "hcb_codes/tags", hcb_code: @hcb_code, event: (@event || @hcb_code.event) %>
     </section>

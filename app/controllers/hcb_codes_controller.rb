@@ -191,44 +191,14 @@ class HcbCodesController < ApplicationController
   def invoice_as_personal_transaction
     hcb_code = HcbCode.find(params[:id])
     event = hcb_code.event
-    spender = hcb_code.stripe_cardholder&.user || current_user
 
     authorize hcb_code
 
-    return render plain: "404 Not found", status: :not_found if !event&.hack_club_hq? || spender.nil?
+    personal_tx = HcbCode::PersonalTransaction.create(hcb_code:, reporter: current_user)
 
-    @invoice = ::InvoiceService::Create.new(
-      event_id: event.id,
-      due_date: 1.month.from_now,
-      item_description: "Reimbursing personal transaction: #{hcb_code.memo}",
-      item_amount: hcb_code.amount.abs,
-      current_user:,
-      sponsor_id: nil,
-      sponsor_name: spender.name,
-      sponsor_email: spender.email,
-      sponsor_address_line1: spender.stripe_cardholder.stripe_billing_address_line1,
-      sponsor_address_line2: spender.stripe_cardholder.stripe_billing_address_line2,
-      sponsor_address_city: spender.stripe_cardholder.stripe_billing_address_city,
-      sponsor_address_state: spender.stripe_cardholder.stripe_billing_address_state,
-      sponsor_address_postal_code: spender.stripe_cardholder.stripe_billing_address_postal_code,
-      sponsor_address_country: spender.stripe_cardholder.stripe_billing_address_country
-    ).run
+    flash[:success] = "We've sent an invoice for repayment to #{personal_tx.invoice.sponsor.contact_email}."
 
-    ::HcbCodeService::Comment::Create.new(
-      hcb_code_id: @invoice.local_hcb_code.id,
-      content: "#{hcb_code_url(hcb_code)} was marked as an accidental misuse.",
-      current_user:
-    ).run
-
-    ::HcbCodeService::Comment::Create.new(
-      hcb_code_id: hcb_code.id,
-      content: "This transaction was marked as an accidental misuse. Reimbursement requested at #{hcb_code_url(@invoice.local_hcb_code)}.",
-      current_user:
-    ).run
-
-    flash[:success] = "We've sent an invoice for repayment to #{@invoice.sponsor.contact_email}."
-
-    redirect_to @invoice
+    redirect_to personal_tx.invoice
   end
 
 end
