@@ -18,6 +18,10 @@ module RecurringDonationService
         stripe_payment_intent_id: @stripe_invoice.payment_intent
       )
 
+      if recurring_donation.message.present? && recurring_donation.donations.none?
+        donation.message = recurring_donation.message
+      end
+
       donation.set_fields_from_stripe_payment_intent(StripeService::PaymentIntent.retrieve(id: @stripe_invoice.payment_intent, expand: ["charges.data.balance_transaction"]))
       donation.save!
 

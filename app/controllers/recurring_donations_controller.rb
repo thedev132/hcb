@@ -15,7 +15,7 @@ class RecurringDonationsController < ApplicationController
   def create
     params[:recurring_donation][:amount] = Monetize.parse(params[:recurring_donation][:amount]).cents
 
-    @recurring_donation = RecurringDonation.new(params.require(:recurring_donation).permit(:name, :email, :amount).merge(event: @event))
+    @recurring_donation = RecurringDonation.new(params.require(:recurring_donation).permit(:name, :email, :amount, :message).merge(event: @event))
 
     authorize @recurring_donation
 
