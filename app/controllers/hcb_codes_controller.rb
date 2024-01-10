@@ -191,7 +191,7 @@ class HcbCodesController < ApplicationController
   def invoice_as_personal_transaction
     hcb_code = HcbCode.find(params[:id])
     event = hcb_code.event
-    spender = hcb_code.stripe_cardholder.user
+    spender = hcb_code.stripe_cardholder&.user || current_user
 
     authorize hcb_code
 
