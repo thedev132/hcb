@@ -38,7 +38,7 @@
         <td><%= cpt.id %></td>
         <td><%= cpt.date %></td>
         <% if cpt.event %>
-          <td><%= link_to cpt.memo, event_path(cpt.event) %></td>
+          <td><%= link_to cpt.memo, cpt.local_hcb_code %></td>
         <% else %>
           <td><%= cpt.memo %></td>
         <% end %>
