@@ -21,6 +21,7 @@ class HcbCode
         return fee_revenue_memo if fee_revenue?
         return ach_payment_memo if ach_payment?
         return grant_memo if grant?
+        return outgoing_fee_reimbursement_memo if outgoing_fee_reimbursement?
 
         ct.try(:smart_memo) || pt.try(:smart_memo) || ""
       end
@@ -88,6 +89,10 @@ class HcbCode
 
       def grant_memo
         "Grant to #{canonical_pending_transactions.first.grant.recipient_organization}"
+      end
+
+      def outgoing_fee_reimbursement_memo
+        "🗂️ Stripe fee reimbursements for week of #{ct.date.beginning_of_week.strftime("%-m/%-d")}"
       end
 
     end

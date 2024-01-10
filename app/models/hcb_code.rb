@@ -319,6 +319,10 @@ class HcbCode < ApplicationRecord
     hcb_i1 == ::TransactionGroupingEngine::Calculate::HcbCode::CHECK_DEPOSIT_CODE
   end
 
+  def outgoing_fee_reimbursement?
+    hcb_i1 == ::TransactionGroupingEngine::Calculate::HcbCode::OUTGOING_FEE_REIMBURSEMENT_CODE
+  end
+
   def check_deposit
     @check_deposit ||= CheckDeposit.find_by(id: hcb_i2) if check_deposit?
   end

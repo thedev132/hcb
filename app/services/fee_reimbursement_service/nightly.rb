@@ -3,8 +3,6 @@
 module FeeReimbursementService
   class Nightly
     def run
-      rename_stripe_fee_reimbursement
-
       FeeReimbursement.unprocessed.find_each(batch_size: 100) do |fee_reimbursement|
         raise ArgumentError, "must be an unprocessed fee reimbursement only" unless fee_reimbursement.unprocessed?
 
@@ -29,14 +27,6 @@ module FeeReimbursementService
 
         fee_reimbursement.update_column(:processed_at, Time.now)
       end
-    end
-
-    def rename_stripe_fee_reimbursement
-      stripe_fee_reimbursement_canonical_transactions_to_rename.update_all(custom_memo: "🗂️ Stripe fee reimbursement")
-    end
-
-    def stripe_fee_reimbursement_canonical_transactions_to_rename
-      CanonicalTransaction.likely_fee_reimbursement.without_custom_memo
     end
 
   end
