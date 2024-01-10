@@ -66,9 +66,19 @@ module EventsHelper
       return User.find(value).email
     end
 
+    if field == "category" && value.is_a?(Integer) || value.try(:match?, /\A\d+\z/)
+      return Event.categories.key(value.to_i)
+    end
+
     return "Yes" if value == true
     return "No" if value == false
 
     return value
+  end
+
+  def render_audit_log_value(field, value, color:)
+    return tag.span "unset", class: "muted" if value.nil? || value.try(:empty?)
+
+    return tag.span humanize_audit_log_value(field, value), class: color
   end
 end
