@@ -1,6 +1,21 @@
 <head>
+  <meta charset="UTF-8">
   <title>HCB - Transfer Confirmation Letter</title>
+  <script src="https://unpkg.com/twemoji@latest/dist/twemoji.min.js" crossorigin="anonymous"></script>
+  <script>
+    window.onload = function () {
+      twemoji.parse(document.body);
+    }
+  </script>
   <style>
+    img.emoji {
+      height: 1em;
+      width: 1em;
+      margin: 0 .05em 0 .1em;
+      vertical-align: -0.1em;
+    }
+
+
     .container {
       font-size: 12pt;
       line-height: 1.15;
@@ -9,45 +24,54 @@
       padding-right: 40pt;
       display: block;
     }
-    
+
+    * {
+      font-family: 'Phantom Sans', 'Noto Emoji', sans-serif;
+    }
+
     .centerImage {
       position: relative;
       top: 50%;
       transform: translateY(-50%);
     }
-    
+
     .bold {
       font-weight: bold;
     }
-    
+
     body {
       margin: 8px;
       font-family: 'Arial';
     }
-    
+
     a {
       color: #1155cc;
     }
-    
+
     .auto-page-break {
       page-break-before: auto;
       page-break-inside: avoid;
     }
-    
+
     table {
       width: 100%;
       table-layout: fixed;
       border-collapse: collapse;
       font-size: 9pt;
     }
-    table, th, td {
+
+    table,
+    th,
+    td {
       border: 1px solid gray;
     }
+
     td {
       padding: 4pt;
     }
   </style>
 </head>
+
 <body>
   <br />
   <div class="container">
@@ -64,12 +88,15 @@
     <br />
     <br />
     <p style="margin-top: 2rem; margin-bottom: 0.5rem;"><%= format_date @disbursement.created_at %></p>
-    <p style="font-size: 12.5pt;"><span class="bold">HCB Transfer: <%= @disbursement.source_event.name %> to <%= @disbursement.destination_event.name %></span></p>
+    <p style="font-size: 12.5pt;"><span class="bold">HCB Transfer: <%= @disbursement.source_event.name %> to
+        <%= @disbursement.destination_event.name %></span></p>
     <br />
     <div style="line-height: 1.25;">
       <p>To whom it may concern,</p>
       <p>
-        This letter serves as a confirmation that <%= @disbursement.source_event.name %> has transferred <%= render_money @disbursement.amount %> to <%= @disbursement.destination_event.name %> for the reason of <em>"<%= @disbursement.name %>"</em>.
+        This letter serves as a confirmation that <%= @disbursement.source_event.name %> has transferred
+        <%= render_money @disbursement.amount %> to <%= @disbursement.destination_event.name %> for the reason of
+        <em>"<%= @disbursement.name %>"</em>.
       </p>
       <table style="line-height: 1.15">
         <thead>
@@ -80,10 +107,10 @@
         </thead>
         <tbody>
           <% unless @disbursement.requested_by.nil? %>
-            <tr>
-              <td class="bold">Sent by</td>
-              <td colspan="2"><%= @disbursement.requested_by.name %></td>
-            </tr>
+          <tr>
+            <td class="bold">Sent by</td>
+            <td colspan="2"><%= @disbursement.requested_by.name %></td>
+          </tr>
           <% end %>
           <tr>
             <td class="bold">Destintation</td>
@@ -104,7 +131,8 @@
         </tbody>
       </table>
       <p>
-        Please don't hesitate to contact me with any additional questions. I can be reached at <a href="mailto:melanie@hackclub.com">melanie@hackclub.com</a>.
+        Please don't hesitate to contact me with any additional questions. I can be reached at <a
+          href="mailto:melanie@hackclub.com">melanie@hackclub.com</a>.
       </p>
     </div>
     <br />
@@ -121,7 +149,8 @@
     </p>
     <br />
     <br />
-    <p style="font-size: 12pt; font-weight: bold; color: #434343; position: fixed; bottom: 12px; width: 100%; white-space: nowrap;">
+    <p
+      style="font-size: 12pt; font-weight: bold; color: #434343; position: fixed; bottom: 12px; width: 100%; white-space: nowrap;">
       By the students, for the students.
     </p>
     <p style="font-size: 10pt; color: #999999; position: fixed; bottom: 0px; width: 100%; white-space: nowrap;">
