@@ -3,7 +3,7 @@
     <%= link_to link do %>
       <div class="callout callout--<%= type %>">
         <span class="callout__emoji"><%= emoji %></span>
-        <%= title %>
+        <span><%= sanitize(title, attributes: %w(target)) %></span>
       </div>
     <% end %>
   <% else %>
@@ -11,13 +11,13 @@
       <div class="callout callout--<%= type %>">
         <span class="callout__emoji"><%= emoji %></span>
         <%= inline_icon "external", size: 28, class: "callout--external" %>
-        <%= title %>
+        <span><%= sanitize(title, attributes: %w(href target)) %></span>
       </div>
     <% end %>
   <% end %>
 <% else %>
   <div class="callout callout--<%= type %>">
     <span class="callout__emoji"><%= emoji %></span>
-    <%= title %>
+    <span><%= sanitize(title, attributes: %w(href target)) %></span>
   </div>
 <% end %>
