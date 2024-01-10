@@ -117,6 +117,11 @@ html[data-dark='true'] {
   }
 }
 
+.transaction--positive:has(.renamed), 
+.transaction--negative:has(.renamed) {
+  animation: highlight 2s;
+}
+
 @keyframes highlight {
   from {
     background-color: map-get($palette, warning);

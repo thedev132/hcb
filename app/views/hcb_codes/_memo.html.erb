@@ -1,7 +1,8 @@
-<%# locals: (hcb_code:, form: false, prepended_to_memo: "") -%>
+<%# locals: (hcb_code:, form: false, prepended_to_memo: "", renamed: false) -%>
 
 <% form ||= false %>
 <% prepended_to_memo ||= "" %>
+<% renamed ||= false %>
 
 <% if organizer_signed_in?(hcb_code.event) && !hcb_code.event&.demo_mode? %>
   <%= turbo_frame_tag "#{dom_id(hcb_code)}:memo", style: "flex-grow: 1"  do %>
@@ -21,7 +22,7 @@
         <% end %>
 
     <% else %>
-      <span class="align-middle"
+      <span class="align-middle <%= "renamed" if renamed %>"
             data-controller="navigation"
             data-action="dblclick->navigation#navigate"
             title="<%= hcb_code.memo %>"
