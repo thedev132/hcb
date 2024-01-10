@@ -45,6 +45,20 @@ const groupNameStyle = {
   opacity: 0.5,
 }
 
+function navigate(to) {
+  return () => {
+    if (to.startsWith('https://')) {
+      window.open(to, '_blank')
+    } else {
+      window.Turbo.visit(to)
+    }
+    window?.FS?.event('command_bar_navigation', {
+      query: document.querySelector('[role="combobox"]').value,
+      to,
+    })
+  }
+}
+
 function ActionRegister() {
   const [actions, setActions] = useState([])
 
@@ -78,87 +92,77 @@ function ActionRegister() {
             ...data.map(event => ({
               id: `${event.slug}-transactions`,
               name: 'Transactions',
-              perform: () => (window.location.pathname = `/${event.slug}`),
+              perform: navigate(`/${event.slug}`),
               icon: <Icon glyph="transactions" size={16} />,
               parent: event.slug,
             })),
             ...data.map(event => ({
               id: `${event.slug}-donations`,
               name: 'Donations',
-              perform: () =>
-                (window.location.pathname = `/${event.slug}/donations`),
+              perform: navigate(`/${event.slug}/donations`),
               icon: <Icon glyph="support" size={16} />,
               parent: event.slug,
             })),
             ...data.map(event => ({
               id: `${event.slug}-invoices`,
               name: 'Invoices',
-              perform: () =>
-                (window.location.pathname = `/${event.slug}/invoices`),
+              perform: navigate(`/${event.slug}/invoices`),
               icon: <Icon glyph="briefcase" size={16} />,
               parent: event.slug,
             })),
             ...data.map(event => ({
               id: `${event.slug}-account-number`,
               name: 'Account & routing number',
-              perform: () =>
-                (window.location.pathname = `/${event.slug}/account-number`),
+              perform: navigate(`/${event.slug}/account-number`),
               icon: <Icon glyph="bank-account" size={16} />,
               parent: event.slug,
             })),
             ...data.map(event => ({
               id: `${event.slug}-check-deposit`,
               name: 'Check deposit',
-              perform: () =>
-                (window.location.pathname = `/${event.slug}/check-deposits`),
+              perform: navigate(`/${event.slug}/check-deposits`),
               icon: <Icon glyph="attachment" size={16} />,
               parent: event.slug,
             })),
             ...data.map(event => ({
               id: `${event.slug}-cards`,
               name: 'Cards',
-              perform: () =>
-                (window.location.pathname = `/${event.slug}/cards`),
+              perform: navigate(`/${event.slug}/cards`),
               icon: <Icon glyph="card" size={16} />,
               parent: event.slug,
             })),
             ...data.map(event => ({
               id: `${event.slug}-transfers`,
               name: 'Transfers',
-              perform: () =>
-                (window.location.pathname = `/${event.slug}/transfers`),
+              perform: navigate(`/${event.slug}/transfers`),
               icon: <Icon glyph="payment-transfer" size={16} />,
               parent: event.slug,
-              keywords: 'ach check',
             })),
             ...data.map(event => ({
               id: `${event.slug}-team`,
               name: 'Team',
-              perform: () => (window.location.pathname = `/${event.slug}/team`),
+              perform: navigate(`/${event.slug}/team`),
               icon: <Icon glyph="leader" size={16} />,
               parent: event.slug,
             })),
             ...data.map(event => ({
               id: `${event.slug}-perks`,
               name: 'Perks',
-              perform: () =>
-                (window.location.pathname = `/${event.slug}/promotions`),
+              perform: navigate(`/${event.slug}/promotions`),
               icon: <Icon glyph="shirt" size={16} />,
               parent: event.slug,
             })),
             ...data.map(event => ({
               id: `${event.slug}-documentation`,
               name: 'Documentation',
-              perform: () =>
-                (window.location.pathname = `/${event.slug}/documentation`),
+              perform: navigate(`/${event.slug}/documentation`),
               icon: <Icon glyph="info" size={16} />,
               parent: event.slug,
             })),
             ...data.map(event => ({
               id: `${event.slug}-settings`,
               name: 'Settings',
-              perform: () =>
-                (window.location.pathname = `/${event.slug}/settings`),
+              perform: navigate(`/${event.slug}/settings`),
               icon: <Icon glyph="settings" size={16} />,
               parent: event.slug,
             })),
@@ -179,7 +183,7 @@ export default function CommandBar({ admin = false, adminUrls = {} }) {
       id: 'home',
       name: 'Home',
       keywords: 'index',
-      perform: () => (window.location.pathname = '/'),
+      perform: navigate('/'),
       icon: <Icon glyph="home" size={16} />,
       priority: Priority.HIGH,
     },
@@ -187,7 +191,7 @@ export default function CommandBar({ admin = false, adminUrls = {} }) {
       id: 'cards',
       name: 'Cards',
       keywords: 'cards',
-      perform: () => (window.location.pathname = '/my/cards'),
+      perform: navigate('/my/cards'),
       icon: <Icon glyph="card" size={16} />,
       priority: Priority.HIGH,
     },
@@ -195,7 +199,7 @@ export default function CommandBar({ admin = false, adminUrls = {} }) {
       id: 'receipts',
       name: 'Receipts',
       keywords: 'receipts inbox',
-      perform: () => (window.location.pathname = '/my/inbox'),
+      perform: navigate('/my/inbox'),
       icon: <Icon glyph="payment-docs" size={16} />,
       priority: Priority.HIGH,
     },
@@ -203,7 +207,7 @@ export default function CommandBar({ admin = false, adminUrls = {} }) {
       id: 'settings',
       name: 'Settings',
       keywords: 'settings',
-      perform: () => (window.location.pathname = '/my/settings'),
+      perform: navigate('/my/settings'),
       icon: <Icon glyph="settings" size={16} />,
       priority: Priority.HIGH,
     },
@@ -241,7 +245,7 @@ export default function CommandBar({ admin = false, adminUrls = {} }) {
       priority: Priority.HIGH,
       name: 'Applications',
       icon: <Icon glyph="align-left" size={16} />,
-      perform: () => (window.location.href = adminUrls['Applications']),
+      perform: navigate(adminUrls['Applications']),
     },
     {
       id: 'admin_tool_2',
@@ -249,7 +253,7 @@ export default function CommandBar({ admin = false, adminUrls = {} }) {
       priority: Priority.HIGH,
       name: 'OnBoard ID',
       icon: <Icon glyph="emoji" size={16} />,
-      perform: () => (window.location.href = adminUrls['OnBoard ID']),
+      perform: navigate(adminUrls['OnBoard ID']),
     },
     {
       id: 'admin_tool_3',
@@ -257,7 +261,7 @@ export default function CommandBar({ admin = false, adminUrls = {} }) {
       priority: Priority.HIGH,
       name: 'Ledger',
       icon: <Icon glyph="list" size={16} />,
-      perform: () => (window.location.href = '/admin/ledger'),
+      perform: navigate('/admin/ledger'),
     },
     {
       id: 'admin_tool_4',
@@ -265,7 +269,7 @@ export default function CommandBar({ admin = false, adminUrls = {} }) {
       priority: Priority.HIGH,
       name: 'ACH',
       icon: <Icon glyph="payment-transfer" size={16} />,
-      perform: () => (window.location.href = '/admin/ach'),
+      perform: navigate('/admin/ach'),
     },
     {
       id: 'admin_tool_5',
@@ -273,7 +277,7 @@ export default function CommandBar({ admin = false, adminUrls = {} }) {
       priority: Priority.HIGH,
       name: 'Check',
       icon: <Icon glyph="payment-docs" size={16} />,
-      perform: () => (window.location.href = '/admin/increase_checks'),
+      perform: navigate('/admin/increase_checks'),
     },
     {
       id: 'admin_tool_6',
@@ -281,7 +285,7 @@ export default function CommandBar({ admin = false, adminUrls = {} }) {
       priority: Priority.HIGH,
       name: 'Grants',
       icon: <Icon glyph="support" size={16} />,
-      perform: () => (window.location.href = '/admin/grants'),
+      perform: navigate('/admin/grants'),
     },
     {
       id: 'admin_tool_8',
@@ -289,7 +293,7 @@ export default function CommandBar({ admin = false, adminUrls = {} }) {
       priority: Priority.HIGH,
       name: 'PayPal',
       icon: <Icon glyph="grid" size={16} />,
-      perform: () => (window.location.href = adminUrls['PayPal']),
+      perform: navigate(adminUrls['PayPal']),
     },
     {
       id: 'admin_tool_9',
@@ -297,7 +301,7 @@ export default function CommandBar({ admin = false, adminUrls = {} }) {
       priority: Priority.HIGH,
       name: 'Disbursements',
       icon: <Icon glyph="payment-transfer" size={16} />,
-      perform: () => (window.location.href = '/admin/disbursements'),
+      perform: navigate('/admin/disbursements'),
     },
     {
       id: 'admin_tool_10',
@@ -305,8 +309,7 @@ export default function CommandBar({ admin = false, adminUrls = {} }) {
       priority: Priority.HIGH,
       name: 'Deletion Requests',
       icon: <Icon glyph="member-remove" size={16} />,
-      perform: () =>
-        (window.location.href = '/organizer_position_deletion_requests'),
+      perform: navigate('/organizer_position_deletion_requests'),
     },
     {
       id: 'admin_tool_11',
@@ -314,7 +317,7 @@ export default function CommandBar({ admin = false, adminUrls = {} }) {
       priority: Priority.HIGH,
       name: 'Disputes',
       icon: <Icon glyph="important" size={16} />,
-      perform: () => (window.location.href = adminUrls['Disputes']),
+      perform: navigate(adminUrls['Disputes']),
     },
     {
       id: 'admin_tool_12',
@@ -322,15 +325,15 @@ export default function CommandBar({ admin = false, adminUrls = {} }) {
       priority: Priority.HIGH,
       name: 'Feedback',
       icon: <Icon glyph="message-new" size={16} />,
-      perform: () => (window.location.href = adminUrls['Feedback']),
+      perform: navigate(adminUrls['Feedback']),
     },
     {
       id: 'admin_tool_13',
       section: 'Admin Tools',
       priority: Priority.HIGH,
-      name: 'Hackathon Grants',
+      name: 'FIRST Grants',
       icon: <Icon glyph="sam" size={16} />,
-      perform: () => (window.location.href = adminUrls['Hackathon Grants']),
+      perform: navigate(adminUrls['FIRST Grants']),
     },
     {
       id: 'admin_tool_14',
@@ -338,7 +341,7 @@ export default function CommandBar({ admin = false, adminUrls = {} }) {
       priority: Priority.HIGH,
       name: 'Organizations',
       icon: <Icon glyph="explore" size={16} />,
-      perform: () => (window.location.href = '/admin/events'),
+      perform: navigate('/admin/events'),
     },
     {
       id: 'admin_tool_15',
@@ -346,7 +349,7 @@ export default function CommandBar({ admin = false, adminUrls = {} }) {
       priority: Priority.HIGH,
       name: 'Users',
       icon: <Icon glyph="leaders" size={16} />,
-      perform: () => (window.location.href = '/admin/users'),
+      perform: navigate('/admin/users'),
     },
     {
       id: 'admin_tool_16',
@@ -354,7 +357,7 @@ export default function CommandBar({ admin = false, adminUrls = {} }) {
       priority: Priority.HIGH,
       name: 'Donations',
       icon: <Icon glyph="support" size={16} />,
-      perform: () => (window.location.href = '/admin/donations'),
+      perform: navigate('/admin/donations'),
     },
     {
       id: 'admin_tool_17',
@@ -362,7 +365,7 @@ export default function CommandBar({ admin = false, adminUrls = {} }) {
       priority: Priority.HIGH,
       name: 'Invoices',
       icon: <Icon glyph="docs-fill" size={16} />,
-      perform: () => (window.location.href = '/admin/invoices'),
+      perform: navigate('/admin/invoices'),
     },
     {
       id: 'admin_tool_18',
@@ -370,7 +373,7 @@ export default function CommandBar({ admin = false, adminUrls = {} }) {
       priority: Priority.HIGH,
       name: 'Sponsors',
       icon: <Icon glyph="purse" size={16} />,
-      perform: () => (window.location.href = '/admin/sponsors'),
+      perform: navigate('/admin/sponsors'),
     },
     {
       id: 'admin_tool_19',
@@ -378,7 +381,7 @@ export default function CommandBar({ admin = false, adminUrls = {} }) {
       priority: Priority.HIGH,
       name: 'Cards',
       icon: <Icon glyph="card" size={16} />,
-      perform: () => (window.location.href = '/admin/stripe_cards'),
+      perform: navigate('/admin/stripe_cards'),
     },
     {
       id: 'admin_tool_20',
@@ -386,7 +389,7 @@ export default function CommandBar({ admin = false, adminUrls = {} }) {
       priority: Priority.HIGH,
       name: 'Google Workspaces',
       icon: <Icon glyph="google" size={16} />,
-      perform: () => (window.location.href = '/admin/google_workspaces'),
+      perform: navigate('/admin/google_workspaces'),
     },
     {
       id: 'admin_tool_21',
@@ -394,7 +397,7 @@ export default function CommandBar({ admin = false, adminUrls = {} }) {
       priority: Priority.HIGH,
       name: 'Stickers',
       icon: <Icon glyph="sticker" size={16} />,
-      perform: () => (window.location.href = adminUrls['Stickers']),
+      perform: navigate(adminUrls['Stickers']),
     },
     {
       id: 'admin_tool_22',
@@ -402,7 +405,7 @@ export default function CommandBar({ admin = false, adminUrls = {} }) {
       priority: Priority.HIGH,
       name: 'Wallets',
       icon: <Icon glyph="send" size={16} />,
-      perform: () => (window.location.href = adminUrls['Wallets']),
+      perform: navigate(adminUrls['Wallets']),
     },
     {
       id: 'admin_tool_23',
@@ -410,7 +413,7 @@ export default function CommandBar({ admin = false, adminUrls = {} }) {
       priority: Priority.HIGH,
       name: 'Hackathons',
       icon: <Icon glyph="event-code" size={16} />,
-      perform: () => (window.location.href = adminUrls['Hackathons']),
+      perform: navigate(adminUrls['Hackathons']),
     },
     {
       id: 'admin_tool_24',
@@ -418,7 +421,7 @@ export default function CommandBar({ admin = false, adminUrls = {} }) {
       priority: Priority.HIGH,
       name: 'Sendy',
       icon: <Icon glyph="email-fill" size={16} />,
-      perform: () => (window.location.href = adminUrls['Sendy']),
+      perform: navigate(adminUrls['Sendy']),
     },
     {
       id: 'admin_tool_25',
@@ -426,7 +429,7 @@ export default function CommandBar({ admin = false, adminUrls = {} }) {
       priority: Priority.HIGH,
       name: '1Password',
       icon: <Icon glyph="private" size={16} />,
-      perform: () => (window.location.href = adminUrls['1Password']),
+      perform: navigate(adminUrls['1Password']),
     },
     {
       id: 'admin_tool_26',
@@ -434,7 +437,7 @@ export default function CommandBar({ admin = false, adminUrls = {} }) {
       priority: Priority.HIGH,
       name: 'Domains',
       icon: <Icon glyph="web" size={16} />,
-      perform: () => (window.location.href = adminUrls['Domains']),
+      perform: navigate(adminUrls['Domains']),
     },
     {
       id: 'admin_tool_27',
@@ -442,7 +445,7 @@ export default function CommandBar({ admin = false, adminUrls = {} }) {
       priority: Priority.HIGH,
       name: 'PVSA',
       icon: <Icon glyph="thumbsup" size={16} />,
-      perform: () => (window.location.href = adminUrls['PVSA']),
+      perform: navigate(adminUrls['PVSA']),
     },
     {
       id: 'admin_tool_28',
@@ -450,7 +453,7 @@ export default function CommandBar({ admin = false, adminUrls = {} }) {
       priority: Priority.HIGH,
       name: 'The Event Helper',
       icon: <Icon glyph="relaxed" size={16} />,
-      perform: () => (window.location.href = adminUrls['The Event Helper']),
+      perform: navigate(adminUrls['The Event Helper']),
     },
     {
       id: 'admin_tool_29',
@@ -458,8 +461,7 @@ export default function CommandBar({ admin = false, adminUrls = {} }) {
       priority: Priority.HIGH,
       name: 'Google Workspace Waitlist',
       icon: <Icon glyph="google" size={16} />,
-      perform: () =>
-        (window.location.href = adminUrls['Google Workspace Waitlist']),
+      perform: navigate(adminUrls['Google Workspace Waitlist']),
     },
     {
       id: 'admin_tool_30',
@@ -467,7 +469,7 @@ export default function CommandBar({ admin = false, adminUrls = {} }) {
       priority: Priority.HIGH,
       name: 'Bank Fees',
       icon: <Icon glyph="bank-circle" size={16} />,
-      perform: () => (window.location.pathname = '/admin/bank_fees'),
+      perform: navigate('/admin/bank_fees'),
     },
     {
       id: 'admin_tool_30',
@@ -475,7 +477,7 @@ export default function CommandBar({ admin = false, adminUrls = {} }) {
       priority: Priority.HIGH,
       name: 'Organization Balances',
       icon: <Icon glyph="payment" size={16} />,
-      perform: () => (window.location.pathname = '/admin/balances'),
+      perform: navigate('/admin/balances'),
     },
     {
       id: 'admin_tool_31',
@@ -483,7 +485,7 @@ export default function CommandBar({ admin = false, adminUrls = {} }) {
       priority: Priority.HIGH,
       name: 'Check Deposits',
       icon: <Icon glyph="payment-docs" size={16} />,
-      perform: () => (window.location.pathname = '/admin/check_deposits'),
+      perform: navigate('/admin/check_deposits'),
     },
     {
       id: 'admin_tool_32',
@@ -491,7 +493,7 @@ export default function CommandBar({ admin = false, adminUrls = {} }) {
       priority: Priority.HIGH,
       name: 'Blazer',
       icon: <Icon glyph="bolt" size={16} />,
-      perform: () => (window.location.pathname = '/blazer'),
+      perform: navigate('/blazer'),
     },
     {
       id: 'admin_tool_33',
@@ -499,7 +501,7 @@ export default function CommandBar({ admin = false, adminUrls = {} }) {
       priority: Priority.HIGH,
       name: 'Common Documents',
       icon: <Icon glyph="docs" size={16} />,
-      perform: () => (window.location.pathname = '/documents'),
+      perform: navigate('/documents'),
     },
     {
       id: 'admin_tool_34',
@@ -507,7 +509,7 @@ export default function CommandBar({ admin = false, adminUrls = {} }) {
       priority: Priority.HIGH,
       name: 'Pending Ledger',
       icon: <Icon glyph="list" size={16} />,
-      perform: () => (window.location.pathname = '/admin/pending_ledger'),
+      perform: navigate('/admin/pending_ledger'),
     },
     {
       id: 'admin_tool_35',
@@ -515,7 +517,7 @@ export default function CommandBar({ admin = false, adminUrls = {} }) {
       priority: Priority.HIGH,
       name: 'Recurring Donations',
       icon: <Icon glyph="transactions" size={16} />,
-      perform: () => (window.location.pathname = '/admin/recurring_donations'),
+      perform: navigate('/admin/recurring_donations'),
     },
   ]
 
@@ -530,6 +532,11 @@ export default function CommandBar({ admin = false, adminUrls = {} }) {
               <KBarSearch
                 style={searchStyle}
                 defaultPlaceholder={'Search...'}
+                onChange={() => {
+                  window?.FS?.event('command_bar_typed', {
+                    query: event.target.value,
+                  })
+                }}
               />
               <RenderResults />
             </KBarAnimator>
