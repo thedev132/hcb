@@ -221,6 +221,16 @@ Rails.application.routes.draw do
     end
   end
 
+  namespace :admin do
+    namespace :ledger_audits do
+      resources :tasks, only: [:index, :show] do
+        post :reviewed
+        post :flagged
+      end
+    end
+    resources :ledger_audits, only: [:index, :show]
+  end
+
   post "set_event/:id", to: "admin#set_event", as: :set_event
 
   resources :organizer_position_invites, only: [:show], path: "invites" do

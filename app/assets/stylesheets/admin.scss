@@ -5,6 +5,12 @@
 @import 'components/receipts';
 @import 'components/modals';
 
+$font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+  'Fira Sans', Oxygen, Ubuntu, 'Helvetica Neue', sans-serif;
+$brand-font-family: ui-rounded, $font-family;
+
+@import 'components/buttons';
+
 // // https://raw.githubusercontent.com/waldyrious/downstyler/master/downstyler.css
 // /* ---------------------------------------------------------------------------------------------- */
 // /* Make HTML more responsive (adapted from https://fluidity.sexy ← note: dead link)               */

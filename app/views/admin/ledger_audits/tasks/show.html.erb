@@ -1,0 +1,193 @@
+<%= stylesheet_link_tag "application", media: "all", "data-turbo-track": "reload" %>
+
+<% @hcb_code = @task.hcb_code %>
+<% @event = @hcb_code.event %>
+<% event = @event %>
+
+<h2>Fraud-O-Matic: Weekly Compliance Checker (<%= link_to @hcb_code.hcb_code, @hcb_code, target: "_blank" %>)</h2>
+
+<div class="hcb_code mt2">
+  <div class="hcb_code_wrapper" style="margin-top: -16px;">
+    <%= render partial: "hcb_codes/rich_metadata" %>
+  </div>
+  <div class="receipts_wrapper_mobile">
+    <%= render "receipts/list_v2" %>
+  </div>
+  <div class="event_wrapper">
+    <%= link_to event, style: "max-width: 90vw", class: "draggable text-decoration-none" do %>
+      <li style="min-width: 270px;" class="card card--hover flex flex-column justify-between h-100 mx-auto <%= "card--background-image" if event.background_image.attached? %>" style="<%= "--bg-image: url(#{url_for(event.background_image).dump})" if event.background_image.attached? %>">
+        <div id="event-<%= event.id %>-title" class="flex mb2">
+          <% if event.logo.attached? %>
+            <div style="display: flex; gap: 8px; align-items: center;">
+              <%= image_tag event.logo, height: 24, width: 24, class: "rounded display-inline align-bottom" %>
+              <strong class="brand-sans h3 line-height-2 display-inline">
+                <%= event.name %>
+              </strong>
+            </div>
+          <% else %>
+            <strong class="brand-sans h3 line-height-2 display-inline">
+              <%= event.name %>
+            </strong>
+          <% end %>
+        </div>
+        <% if event.demo_mode? %>
+          <div class="badge bg-info ml0 mb2" style="width: fit-content;">Playground Mode</div>
+        <% end %>
+        <div class="brand-sans h4 line-height-2 mb2 flex justify-between item-center">
+          <span style="white-space: nowrap; gap: 4px;" class="flex items-center">
+            <%= inline_icon "payment", size: 16, class: "muted align-middle", 'aria-label': "Dollar sign", style: "transform: scale(2)" %>
+            <%= async_frame_to event_async_balance_path(event), as: :span do %>
+              <strong>-</strong>
+            <% end %>
+          </span>
+          <span style="gap: 4px;" class="flex items-center">
+            <%= inline_icon "card", size: 20, class: "muted align-middle", 'aria-label': "Cards", style: "transform: scale(1.2)" %>
+            <strong><%= event.stripe_cards.active.count %></strong>
+          </span>
+        </div>
+        <div class="avatar-row" style="max-width: 300px;">
+          <% event.organizer_positions.each do |position| %>
+            <%= avatar_for position.user, 24 %>
+          <% end %>
+        </div>
+        <section class="details mb0 mt2">
+          <p>
+            <strong>Category</strong>
+            <span>
+              <%= @event.category %>
+              <% Event::BADGES.each do |_key, badge| %>
+                <% if event.send(badge[:qualifier]) %>
+                  <span title="<%= badge[:emoji] %> <%= badge[:description] %>"><%= badge[:emoji] %></span>
+                <% end %>
+              <% end %>
+            </span>
+          </p>
+          <p>
+            <strong>Current plan</strong>
+            <span><%= @event.plan_name.titleize %></span>
+          </p>
+          <p>
+            <strong>Joined HCB</strong>
+            <span><%= (event.activated_at || @event.created_at).strftime("%B %-d, %Y") %></span>
+          </p>
+          <p>
+            <strong>Fee on revenue</strong>
+            <span><%= number_to_percentage(@event.sponsorship_fee * 100, significant: true, strip_insignificant_zeros: true) %></span>
+          </p>
+          <% if @event.high_school_hackathon? && @event.sponsorship_fee == 0 %>
+            <p>
+              <strong>
+                <a
+                  href="https://changelog.hcb.hackclub.com/bank-now-provides-free-durian-241524">Fee waiver</a> expiration
+              </strong>
+              <span>December 31st, 2023</span>
+            </p>
+          <% end %>
+          <p>
+            <strong>Organization ID</strong>
+            <span><%= @event.id %></span>
+          </p>
+        </section>
+      </li>
+
+    <% end %>
+  </div>
+  <div class="receipts_wrapper_desktop">
+    <%= render "receipts/list_v2" %>
+  </div>
+</div>
+
+<div class="action_row">
+  <%= link_to "Looks good! 🌈 ✨", admin_ledger_audits_task_reviewed_path(@task), class: "btn", method: :POST %>
+  <%= link_to "Looks fishy... 🐡", admin_ledger_audits_task_flagged_path(@task), class: "btn bg-error", method: :POST %>
+</div>
+
+<style>
+  .action_row {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 16px;
+  }
+  .hcb_code_wrapper {
+    flex: 1;
+    min-width: 440px;
+  }
+  .event_wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .event_wrapper .attribute {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  .hcb_code {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  @media (max-width: 768px) {
+    .hcb_code {
+      flex-direction: column;
+    }
+    .event_wrapper, .hcb_code_wrapper {
+      width: 100%;
+      min-width: 0px;
+    }
+    .h2 {
+      padding-left: 0px;
+    }
+    .action_row {
+      position: fixed;
+      bottom: 20px;
+      left: 0px;
+      width: 100%;
+      box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+    }
+    .receipts_wrapper_desktop {
+      display: none;
+    }
+    .details-horiz {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+    .details-horiz > p {
+        min-width: 136px;
+    }
+  }
+  @media (min-width: 768px) {
+    .receipts_wrapper_mobile {
+      display: none;
+    }
+  }
+  .hcb_code > div:not(.event_wrapper) > .admin-tools {
+    display: none
+  }
+  hr {
+    display: none
+  }
+  a.pop {
+    display: none
+  }
+  .dispute {
+    display: none
+  }
+  .h2 {
+    padding-top: 0px;
+  }
+  .card {
+    margin-top: 0px;
+  }
+  .mb3 {
+    margin-bottom: 0px;
+  }
+  #stripe_card_actions {
+    display: none;
+  }
+</style>

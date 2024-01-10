@@ -73,7 +73,7 @@
 
       <% if defined?(show_delete_button) %>
         <%= pop_icon_to "view-close",
-            { controller: :receipts, action: :destroy, id: receipt.id, popover: local_assigns[:popover] },
+            { controller: "/receipts", action: :destroy, id: receipt.id, popover: local_assigns[:popover] },
             method: :delete,
             data: { behavior: "modal_ignore" },
             size: 24,

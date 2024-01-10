@@ -1,0 +1,33 @@
+
+<% if @ledger_audits.any? %>
+  <%= link_to "📅 This Week's Compliance Check", admin_ledger_audit_path(@ledger_audits.first), class: "btn" %>
+<% end %>
+
+<%= link_to "⚠️ Flagged Transactions", admin_ledger_audits_tasks_path, class: "btn bg-error #{"ml2" if @ledger_audits.first}" %>
+
+<br>
+<br>
+
+<table>
+  <thead>
+    <tr>
+      <th class="w-16">ID</th>
+      <th class="w-40">Date</th>
+      <th>Actions</th>
+      <th>To Review</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @ledger_audits.each do |ledger_audit| %>
+      <tr>
+        <td><%= ledger_audit.id %></td>
+        <td><%= ledger_audit.start.strftime("Week of %b %m") %></td>
+        <td>
+          <%= link_to "Review", admin_ledger_audit_path(ledger_audit) %>
+        </td>
+        <td><%= ledger_audit.tasks.pending.count %></td>
+      </tr>
+    <% end %>
+</table>
+
+<%= paginate @ledger_audits %>

@@ -95,6 +95,24 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_10_200752) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "admin_ledger_audit_tasks", force: :cascade do |t|
+    t.bigint "hcb_code_id"
+    t.bigint "admin_ledger_audit_id"
+    t.bigint "reviewer_id"
+    t.string "status", default: "pending"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["admin_ledger_audit_id"], name: "index_admin_ledger_audit_tasks_on_admin_ledger_audit_id"
+    t.index ["hcb_code_id"], name: "index_admin_ledger_audit_tasks_on_hcb_code_id"
+    t.index ["reviewer_id"], name: "index_admin_ledger_audit_tasks_on_reviewer_id"
+  end
+
+  create_table "admin_ledger_audits", force: :cascade do |t|
+    t.date "start"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "ahoy_events", force: :cascade do |t|
     t.bigint "visit_id"
     t.bigint "user_id"
@@ -1786,6 +1804,9 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_10_200752) do
   add_foreign_key "ach_transfers", "users", column: "creator_id"
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "admin_ledger_audit_tasks", "admin_ledger_audits"
+  add_foreign_key "admin_ledger_audit_tasks", "hcb_codes"
+  add_foreign_key "admin_ledger_audit_tasks", "users", column: "reviewer_id"
   add_foreign_key "api_tokens", "users"
   add_foreign_key "bank_fees", "events"
   add_foreign_key "canonical_event_mappings", "canonical_transactions"
