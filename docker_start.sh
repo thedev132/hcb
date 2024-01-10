@@ -26,13 +26,8 @@ HCB, A Hack Club Project
 © The Hack Foundation
 "
 
-if [ ! -e ./config/master.key ]; then
-    echo "No config/master.key found; please get one from a HCB dev team member."
-    exit 0
-fi
-
- echo "Thank you for developing HCB!
- "
+echo "Thank you for developing HCB!
+"
 
 if [[ $* == *--with-solargraph* ]]
 then

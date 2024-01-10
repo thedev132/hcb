@@ -16,6 +16,7 @@ module Bank
     if ENV["USE_PROD_CREDENTIALS"]&.downcase == "true"
       config.credentials.content_path = Rails.root.join("config", "credentials", "production.yml.enc")
       config.credentials.key_path = Rails.root.join("config", "credentials", "production.key")
+      raise StandardError, "USE_PROD_CREDENTIALS is set to true but config/credentials/production.key is missing" unless File.file?(config.credentials.key_path)
     end
 
     config.action_mailer.default_url_options = {

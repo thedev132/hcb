@@ -4,10 +4,10 @@
 # reach out to Max Wofford (max@hackclub.com) if you have any questions or issues
 
 echo "
-$(tput setaf 9)HCB:$(tput sgr0) Step 0/7: Checking for config/master.key"
+$(tput setaf 9)HCB:$(tput sgr0) Step 0/7: Checking for config/credentials/production.key"
 
-if [ ! -e ./config/master.key ]; then
-    echo "No config/master.key found; please get one from a HCB dev team member."
+if [ ! -e ./config/credentials/production.key ]; then
+    echo "No config/credentials/production.key found; please get one from a HCB dev team member."
     exit 0
 fi
 
@@ -51,20 +51,20 @@ echo "$(tput setaf 9)HCB:$(tput sgr0) $(tput setaf 10)Done$(tput sgr0)"
 
 echo "
 $(tput setaf 9)HCB:$(tput sgr0) Step 6/7: Build Docker Container"
-env $(cat .env.docker) docker compose build
+env $(cat .env.development) docker compose build
 echo "$(tput setaf 9)HCB:$(tput sgr0) $(tput setaf 10)Done$(tput sgr0)"
 
 echo "
 $(tput setaf 9)HCB:$(tput sgr0) Step 7/7: Docker Database Setup"
-env $(cat .env.docker) docker compose run --service-ports web bundle exec rails db:test:prepare RAILS_ENV=test
-env $(cat .env.docker) docker compose run --service-ports web bundle exec rails db:prepare
-env $(cat .env.docker) docker compose run --service-ports web pg_restore --verbose --clean --no-acl --no-owner -h db -U postgres -d bank_development latest.dump
+env $(cat .env.development) docker compose run --service-ports web bundle exec rails db:test:prepare RAILS_ENV=test
+env $(cat .env.development) docker compose run --service-ports web bundle exec rails db:prepare
+env $(cat .env.development) docker compose run --service-ports web pg_restore --verbose --clean --no-acl --no-owner -h db -U postgres -d bank_development latest.dump
 echo "$(tput setaf 9)HCB:$(tput sgr0) $(tput setaf 10)Done$(tput sgr0)"
 
 if [[ $* == *--with-solargraph* ]]
 then
   echo "$(tput setaf 9)HCB:$(tput sgr0) Step 8/7: Solargraph"
-  env $(cat .env.docker) docker compose -f docker-compose.yml -f docker-compose.solargraph.yml build
+  env $(cat .env.development) docker compose -f docker-compose.yml -f docker-compose.solargraph.yml build
   echo "$(tput setaf 9)HCB:$(tput sgr0) $(tput setaf 10)Done$(tput sgr0)"
 fi
 
