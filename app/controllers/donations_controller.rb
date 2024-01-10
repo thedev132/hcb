@@ -57,7 +57,12 @@ class DonationsController < ApplicationController
     @monthly = params[:monthly].present?
 
     if @monthly
-      @recurring_donation = @event.recurring_donations.build
+      @recurring_donation = @event.recurring_donations.build(
+        name: params[:name],
+        email: params[:email],
+        amount: params[:amount],
+        message: params[:message],
+      )
     end
 
     @placeholder_amount = "%.2f" % (DonationService::SuggestedAmount.new(@event, monthly: @monthly).run / 100.0)
