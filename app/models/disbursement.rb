@@ -109,7 +109,7 @@ class Disbursement < ApplicationRecord
   aasm timestamps: true, whiny_persistence: true do
     state :reviewing, initial: true # Being reviewed by an admin
     state :pending                  # Waiting to be processed by the TX engine
-    state :in_transit               # Transfer started on SVB
+    state :in_transit               # Transfer started on remote bank
     state :deposited                # Transfer completed!
     state :rejected                 # Rejected by admin
     state :errored                  # oh no! an error!

@@ -27,7 +27,6 @@ class FeeReimbursement < ApplicationRecord
 
   before_create :default_values
 
-  # SVB has a 30 character limit for transfer descriptions
   validates_length_of :transaction_memo, maximum: 30
   validates_uniqueness_of :transaction_memo
 

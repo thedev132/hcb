@@ -4,7 +4,7 @@ module HcbCodeService
   module Generate
     class ShortCode
       ALPHANUMERIC_CHARSET = ("A".."Z").to_a + (0..9).to_a
-      KEY_LENGTH = 5 # seems to be limit from Stripe to SVB on payouts. has about 60 million possible combos with ALPHANUMERIC CHARSET
+      KEY_LENGTH = 5 # seems to be limit from Stripe to our bank on payouts. has about 60 million possible combos with ALPHANUMERIC CHARSET
 
       def run
         short_code = nil
