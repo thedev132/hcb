@@ -20,6 +20,7 @@ html[data-dark='true'] {
   input[type='url'],
   select,
   textarea {
+    color-scheme: dark;
     background-color: $darkless;
     color: map-get($palette, white);
     border-color: $darkless;
