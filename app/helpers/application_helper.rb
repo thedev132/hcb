@@ -347,4 +347,14 @@ module ApplicationHelper
     end
   end
 
+  def copy_to_clipboard(clipboard_value, tooltip_direction: "n", **options, &block)
+    # If block is not given, use clipboard_value as the rendered content
+    block ||= ->(_) { clipboard_value }
+    return yield if options.delete(:if) == false
+
+    tag.span "data-controller": "clipboard", "data-clipboard-text-value": clipboard_value do
+      tag.span class: "pointer tooltipped tooltipped--#{tooltip_direction}", "aria-label": "Click to copy", "data-action": "click->clipboard#copy", **options, &block
+    end
+  end
+
 end

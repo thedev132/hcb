@@ -97,7 +97,7 @@
                   <td>3600</td>
                   <td>TXT</td>
                   <td>1</td>
-                  <td>v=spf1 include:_spf.google.com ~all</td>
+                  <td><%= copy_to_clipboard("v=spf1 include:_spf.google.com ~all", tooltip_direction: "w") %></td>
                 </tr>
                 <% unless @g_suite.dkim_key.blank? %>
                   <tr class="shade-neutral">
@@ -105,16 +105,14 @@
                     <td>3600</td>
                     <td>TXT</td>
                     <td>1</td>
-                    <td><%= @g_suite.dkim_key %></td>
+                    <td><%= copy_to_clipboard(@g_suite.dkim_key, tooltip_direction: "w") %></td>
                   </tr>
                   <tr class="shade-neutral">
                     <td>_DMARC.<%= @g_suite.domain %></td>
                     <td>3600</td>
                     <td>TXT</td>
                     <td>1</td>
-                    <td>v=DMARC1; p=none; rua=mailto:dmarc_report@hackclub.com; ruf=mailto:dmarc_report@hackclub.com;
-                      fo=1
-                    </td>
+                    <td><%= copy_to_clipboard("v=DMARC1; p=none; rua=mailto:dmarc_report@hackclub.com; ruf=mailto:dmarc_report@hackclub.com;fo=1", tooltip_direction: "w") %></td>
                   </tr>
                 <% end %>
                 <tr class="shade-neutral">
@@ -128,7 +126,7 @@
                   <td>3600</td>
                   <td>MX</td>
                   <td>1</td>
-                  <td>ASPMX.L.GOOGLE.COM.</td>
+                  <td><%= copy_to_clipboard("ASPMX.L.GOOGLE.COM.", tooltip_direction: "w") %></td>
                 </tr>
                 <tr>
                   <td>
@@ -141,7 +139,7 @@
                   <td>3600</td>
                   <td>MX</td>
                   <td>5</td>
-                  <td>ALT1.ASPMX.L.GOOGLE.COM.</td>
+                  <td><%= copy_to_clipboard("ALT1.ASPMX.L.GOOGLE.COM.", tooltip_direction: "w") %></td>
                 </tr>
                 <tr class="shade-neutral">
                   <td>
@@ -154,7 +152,7 @@
                   <td>3600</td>
                   <td>MX</td>
                   <td>5</td>
-                  <td>ALT2.ASPMX.L.GOOGLE.COM.</td>
+                  <td><%= copy_to_clipboard("ALT2.ASPMX.L.GOOGLE.COM.", tooltip_direction: "w") %></td>
                 </tr>
                 <tr>
                   <td>
@@ -167,7 +165,7 @@
                   <td>3600</td>
                   <td>MX</td>
                   <td>10</td>
-                  <td>ALT3.ASPMX.L.GOOGLE.COM.</td>
+                  <td><%= copy_to_clipboard("ALT3.ASPMX.L.GOOGLE.COM.", tooltip_direction: "w") %></td>
                 </tr>
                 <tr class="shade-neutral">
                   <td>
@@ -180,7 +178,7 @@
                   <td>3600</td>
                   <td>MX</td>
                   <td>10</td>
-                  <td>ALT4.ASPMX.L.GOOGLE.COM.</td>
+                  <td><%= copy_to_clipboard("ALT4.ASPMX.L.GOOGLE.COM.", tooltip_direction: "w") %></td>
                 </tr>
                 </tbody>
               </table>
