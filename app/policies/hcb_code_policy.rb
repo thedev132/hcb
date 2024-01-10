@@ -45,6 +45,10 @@ class HcbCodePolicy < ApplicationPolicy
     user&.admin? || present_in_events?
   end
 
+  def breakdown?
+    user&.admin? || present_in_events?
+  end
+
   private
 
   def present_in_events?

@@ -201,4 +201,50 @@ class HcbCodesController < ApplicationController
     redirect_to personal_tx.invoice
   end
 
+  def breakdown
+    @hcb_code = HcbCode.find_by(hcb_code: params[:id]) || HcbCode.find(params[:id])
+    authorize @hcb_code
+
+    unless @hcb_code.canonical_transactions.any? { |ct| ct.amount_cents.positive? }
+      return redirect_to @hcb_code
+    end
+
+    @event = @hcb_code.event
+    @event = @hcb_code.disbursement.destination_event if @hcb_code.disbursement?
+
+    @income = ::EventService::PairIncomeWithSpending.new(event: @event).run
+
+    @spent_on = []
+    @available = 0
+
+    # PairIncomeWithSpending is done on a per CanonicalTransaction basis
+    # This compute it for this specific HcbCode
+    @hcb_code.canonical_transactions.each do |ct|
+      if (ct[:amount_cents] > 0) && @income[ct[:id].to_s]
+        @spent_on.concat @income[ct[:id].to_s][:spent_on]
+        @available += @income[ct[:id].to_s][:available]
+      end
+    end
+
+    @spent_on = @spent_on.group_by { |hash| hash[:memo] }.map do |memo, group|
+      total_amount = group.sum(0) { |item| item[:amount] }
+      significant_transaction = group.max_by { |t| t[:amount] }
+      { id: significant_transaction[:id], memo:, amount: total_amount, url: significant_transaction[:url] }
+    end
+
+    @spent_on.sort_by! { |t| t[:id] }
+
+    respond_to do |format|
+
+      format.html do
+        redirect_to @hcb_code
+      end
+
+      format.pdf do
+        render pdf: "breakdown", page_height: "11in", page_width: "8.5in"
+      end
+
+    end
+  end
+
 end
