@@ -392,8 +392,8 @@ Rails.application.routes.draw do
     resources :comments
   end
 
-  get "branding", to: redirect("brand_guidelines")
-  get "brand_guidelines", to: "static_pages#brand_guidelines"
+  get "brand_guidelines", to: redirect("branding")
+  get "branding", to: "static_pages#branding"
   get "faq", to: "static_pages#faq"
   get "audit", to: "admin#audit"
 
