@@ -3,6 +3,17 @@ default: &defaults
 
   push_api_key: <%= Rails.application.credentials.dig(:appsignal, :push_api_key) %>
 
+  ignore_errors:
+    - ActionDispatch::Http::MimeNegotiation::InvalidType
+    - ActionDispatch::Http::Parameters::ParseError
+    - ActionController::BadRequest
+    - ActionController::UnknownHttpMethod
+    - ActionController::MethodNotAllowed
+    - ActionController::UnknownFormat
+    - ActionController::ParameterMissing
+    - ActionController::InvalidCrossOriginRequest
+    - ActionController::InvalidAuthenticityToken
+
 production:
   <<: *defaults
   active: true
