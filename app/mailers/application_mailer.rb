@@ -3,7 +3,8 @@
 class ApplicationMailer < ActionMailer::Base
   OPERATIONS_EMAIL = "hcb@hackclub.com"
 
-  default from: "HCB <hcb@hackclub.com>"
+  DOMAIN = Rails.env.production? ? "hackclub.com" : "staging.hcb.hackclub.com"
+  default from: "HCB <hcb@#{DOMAIN}>"
   layout "mailer/default"
 
   # allow usage of application helper
