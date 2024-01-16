@@ -43,7 +43,7 @@ class CardGrantsController < ApplicationController
     @card_grant = CardGrant.find_by_hashid!(params[:id])
 
     if !signed_in?
-      return redirect_to auth_users_path(email: @card_grant.user.email, return_to: card_grant_path(@card_grant)), flash: { info: "Please sign in to continue." }
+      return redirect_to auth_users_path(return_to: card_grant_path(@card_grant)), flash: { info: "To continue, please sign in with the email you received the grant." }
     end
 
     authorize @card_grant
