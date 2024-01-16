@@ -193,6 +193,13 @@ class StripeCard < ApplicationRecord
     activated? && stripe_status == "inactive"
   end
 
+  def last_frozen_by
+    user_id = versions.where_object_changes_to(stripe_status: "inactive").last&.whodunnit
+    return nil unless user_id
+
+    User.find_by_id(user_id)
+  end
+
   def active?
     stripe_status == "active"
   end

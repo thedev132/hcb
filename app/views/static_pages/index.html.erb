@@ -22,7 +22,7 @@
   <% current_user.card_grants.not_activated.each do |grant| %>
     <div class="card border b--info container--sm mx-auto mb4 center">
       <p class="mt0 h3">You have a grant invitation from <strong><%= grant.event.name %></strong>!</p>
-      <%= link_to "Activate your grant", grant, class: "btn" %>
+      <%= link_to "Activate my grant", grant, class: "btn" %>
     </div>
   <% end %>
 <% end %>

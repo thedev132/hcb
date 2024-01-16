@@ -70,10 +70,9 @@ class StripeCardsController < ApplicationController
   def show
     @card = StripeCard.includes(:event, :user).find(params[:id])
 
-
     authorize @card
 
-    if @card.card_grant.present? && !current_user&.admin? && @card.event.users.exclude?(current_user)
+    if @card.card_grant.present? && !current_user&.admin?
       return redirect_to @card.card_grant
     end
 

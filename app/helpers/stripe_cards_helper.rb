@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 module StripeCardsHelper
-  def render_exp_date(card = @card)
-    "#{card.stripe_exp_month.to_s.rjust(2, '0')}/#{card.stripe_exp_year}"
+  def render_exp_date(stripe_card)
+    "#{stripe_card.stripe_exp_month.to_s.rjust(2, '0')}/#{stripe_card.stripe_exp_year}"
   end
 
   def stripe_card_mention(stripe_card, options = { size: 24 })

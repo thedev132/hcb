@@ -78,7 +78,7 @@ class CardGrant < ApplicationRecord
   def state
     if canceled?
       "muted"
-    elsif stripe_card.nil?
+    elsif pending_invite?
       "info"
     elsif stripe_card.frozen?
       "info"
@@ -90,13 +90,17 @@ class CardGrant < ApplicationRecord
   def state_text
     if canceled?
       "Canceled"
-    elsif stripe_card.nil?
+    elsif pending_invite?
       "Invitation sent"
     elsif stripe_card.frozen?
       "Frozen"
     else
       "Active"
     end
+  end
+
+  def pending_invite?
+    stripe_card.nil?
   end
 
   def cancel!(canceled_by)

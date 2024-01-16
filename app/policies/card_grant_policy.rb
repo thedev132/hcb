@@ -10,7 +10,7 @@ class CardGrantPolicy < ApplicationPolicy
   end
 
   def show?
-    user&.admin? || record.user == user
+    user&.admin? || record.user == user || user_in_event?
   end
 
   def spending?

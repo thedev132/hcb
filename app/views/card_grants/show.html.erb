@@ -1,83 +1,48 @@
-<% title "Card Grant to #{@card_grant.user.name}" %>
+<% title "Grant to #{@card_grant.user.name}" %>
+<%= render "events/nav", selected: :transfers if organizer_signed_in? %>
 
 <div class="mt4 mb4 check--form flex justify-center" style="gap: 3rem">
-  <% if @card_grant.stripe_card.present? %>
-    <%= render partial: "header", locals: { card_grant: @card_grant } %>
+  <%# Grantee has pending invite %>
+  <% if @card_grant.user == current_user && @card_grant.pending_invite? %>
+    <%= render partial: "invitation", locals: { card_grant: @card_grant } %>
 
+  <%# Grantee view after accepting invite %>
+  <% elsif @card_grant.user == current_user %>
     <div>
-      <div class="card container--sm">
-        <h3 class="mt0 mb0 info bold">How do I make purchases on this card?</h3>
-        <p class="mt1">Here's all the info you might need:</p>
-
-        <section class="details">
-          <p class="fs-mask">
-            <strong>
-              Card number
-            </strong>
-            <% if @card_grant.user == current_user %>
-              <%= @card.formatted_card_number %>
-            <% else %>
-              <%= @card.hidden_card_number %>
-            <% end %>
-          </p>
-
-          <p class="fs-mask">
-            <strong>CVC</strong>
-            <% if @card_grant.user == current_user %>
-              <%= @card.cvc %>
-            <% else %>
-              <%= @card.hidden_cvc %>
-            <% end %>
-          </p>
-
-          <p class="fs-mask">
-            <strong>Expiration date</strong>
-            <%= render_exp_date %>
-          </p>
-
-          <p>
-            <strong>ZIP/Postal code</strong>
-            <%= @card.stripe_cardholder.address_postal_code %>
-          </p>
-          <p>
-            <strong>Billing address</strong>
-            <%= render_address @card.cardholder %>
-          </p>
-          <% admin_tools "", "p" do %>
-            <strong>Allowed merchants</strong>
-            <span class="mono"><%= @card_grant.allowed_merchants.join(" ") %></span>
-          <% end %>
-          <% admin_tools "", "p" do %>
-            <strong>Allowed categories</strong>
-            <span class="mono"><%= @card_grant.allowed_categories.join(" ") %></span>
-          <% end %>
-        </section>
-      </div>
+      <%= render @card_grant.stripe_card, headless: true, show_card_number: true %>
+      <%= render partial: "balance", locals: { card_grant: @card_grant } %>
     </div>
-  <% else %>
-    <div class="container--xs">
-      <div class="center">
-        <h3 class="mt0">Just one more step:</h3>
-        <p class="mb3">We just need one more thing before you can start spending your grant from <%= @card_grant.event.name %>.</p>
-      </div>
 
-      <div class="card border b--info center">
-        <%= form_with url: activate_card_grant_path(@card_grant) do |form| %>
-          <div class="field field--checkbox mb2 justify-center">
-            <%= form.check_box :terms, required: true %>
-            <%= form.label :terms do %>
-              I agree to the <%= link_to "Card Issuing Terms", "https://stripe.com/legal/issuing/celtic-authorized-user-terms" %>
-            <% end %>
-          </div>
-          <div class="actions">
-            <%= form.submit "Start spending" %>
-          </div>
-        <% end %>
+    <%= render partial: "canceled_warning", locals: { card_grant: @card_grant } %>
+    <%= render partial: "spending_instructions", locals: { card_grant: @card_grant } %>
+
+  <%# Organizers and admins' view %>
+  <% else %>
+    <% if @card_grant.stripe_card %>
+      <div>
+        <%= render @card_grant.stripe_card %>
+        <%= render partial: "balance", locals: { card_grant: @card_grant } %>
+
+        <%= render partial: "canceled_warning", locals: { card_grant: @card_grant } %>
+        <%= render partial: "actions", locals: { card_grant: @card_grant } %>
+
       </div>
+    <% end %>
+
+    <div class="flex flex-column g2">
+      <%= render partial: "details", locals: { card_grant: @card_grant } %>
+
+      <% if @card_grant.active? && @card_grant.stripe_card %>
+        <% admin_tools do %>
+          <%= render partial: "spending_instructions", locals: { card_grant: @card_grant } %>
+        <% end %>
+      <% end %>
     </div>
   <% end %>
 </div>
 
 <hr>
 
-<%= render partial: "transactions", locals: { hcb_codes: @hcb_codes } %>
+<% unless @card_grant.user == current_user && @card_grant.pending_invite? %>
+  <%= render partial: "transactions", locals: { hcb_codes: @hcb_codes } %>
+<% end %>

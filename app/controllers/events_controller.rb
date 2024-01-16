@@ -270,7 +270,8 @@ class EventsController < ApplicationController
   end
 
   def card_overview
-    @stripe_cards = @event.stripe_cards.includes(:stripe_cardholder, :user).order("created_at desc")
+    @stripe_cards = @event.stripe_cards.where.missing(:card_grant)
+                          .includes(:stripe_cardholder, :user).order("created_at desc")
     @session_user_stripe_card = []
 
     unless current_user.nil?

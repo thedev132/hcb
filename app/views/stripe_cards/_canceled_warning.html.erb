@@ -1,0 +1,15 @@
+<%# locals: (stripe_card:) %>
+
+<% if stripe_card.canceled? %>
+  <div class="card border b--info mt3 mb3 container--sm mx-auto">
+    <div class="flex items-center info">
+      <%= inline_icon "info", size: 32, class: "mr1" %>
+      <p class="bold mt0 mb0">This card has been canceled.</p>
+    </div>
+    <% if stripe_card.replacement %>
+      <p class="mt1 mb0">
+        It was replaced by <%= stripe_card_mention stripe_card.replacement %>.
+      </p>
+    <% end %>
+  </div>
+<% end %>

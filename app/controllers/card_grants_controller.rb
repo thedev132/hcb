@@ -48,6 +48,7 @@ class CardGrantsController < ApplicationController
 
     authorize @card_grant
 
+    @event = @card_grant.event
     @card = @card_grant.stripe_card
     @hcb_codes = @card&.hcb_codes
 
@@ -60,11 +61,17 @@ class CardGrantsController < ApplicationController
 
     authorize @card_grant
 
+    @event = @card_grant.event
     @card = @card_grant.stripe_card
     @hcb_codes = @card&.hcb_codes
 
     @frame = params[:frame].present?
     @force_no_popover = @frame
+
+    if organizer_signed_in? && !@frame
+      # If trying to view spending page outside a frame, redirect to the show page
+      return redirect_to @card_grant
+    end
 
     render :spending, layout: !@frame
   end

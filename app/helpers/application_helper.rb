@@ -4,6 +4,8 @@ module ApplicationHelper
   include ActionView::Helpers
 
   def render_money(amount, opts = {})
+    amount = amount.cents if amount.is_a?(Money)
+
     unit = opts[:unit] || "$"
     trunc = opts[:trunc] || false
 

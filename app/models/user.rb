@@ -168,6 +168,10 @@ class User < ApplicationRecord
     preferred_name.presence || full_name || email_handle
   end
 
+  def possessive_name
+    "#{name}'s"
+  end
+
   def initials
     words = name.split(/[^[[:word:]]]+/)
     words.any? ? words.map(&:first).join.upcase : name

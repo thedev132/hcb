@@ -1,0 +1,126 @@
+<%# locals: (stripe_card:) %>
+
+<article class="card max-width-2 mx-auto mt3">
+  <h2 class="mt0 heading">
+    <span class="flex-auto">
+    <%= user_mention stripe_card.user, class: "align-bottom tooltipped--s" %><span class="medium muted">'s</span>
+    <%= stripe_card.name %> <span class="medium muted">Card</span>
+    </span>
+  </h2>
+  <section class="details mt2">
+    <% if stripe_card.replacement_for %>
+      <p>
+        <strong>Replacement for</strong>
+        <span class="flex items-baseline">
+          <%= stripe_card_mention stripe_card.replacement_for %>
+        </span>
+      </p>
+    <% end %>
+
+    <% eta = stripe_card.stripe_obj.to_hash.dig(:shipping, :eta) %>
+    <% if eta && Time.now.before?(Time.at(eta) + 3.days) %>
+      <p>
+        <strong>Expected arrival</strong>
+        <%= format_date Time.at(eta).to_date %>
+      </p>
+    <% else %>
+      <p>
+        <strong>Activation status</strong>
+        <span class="flex items-baseline">
+          <%= status_badge stripe_card.status_badge_type %>
+          <%= stripe_card.status_text.capitalize %>
+        </span>
+      </p>
+    <% end %>
+    <% if stripe_card.virtual? %>
+
+        <% if stripe_card.user == current_user %>
+          <div class="fs-mask">
+            <strong>
+              Card number
+            </strong>
+            <div class="flex justify-between mono">
+              <% if @show_card_details %>
+                  <%= stripe_card.formatted_card_number %>
+                  <%= link_to stripe_card_path(stripe_card), data: { turbo: true } do %>
+                    <%= inline_icon "view-fill", class: "align-middle" %>
+                  <% end %>
+              <% else %>
+                  <%= stripe_card.hidden_card_number_with_last_four %>
+                  <%= link_to stripe_card_path(stripe_card, show_details: "true"), data: { turbo: true } do %>
+                    <%= inline_icon "view", class: "align-middle" %>
+                  <% end %>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+
+        <% if stripe_card.user == current_user %>
+        <div class="fs-mask mono">
+          <strong>CVC</strong>
+          <% if @show_card_details %>
+            <%= stripe_card.cvc %>
+          <% else %>
+            <%= stripe_card.hidden_cvc %>
+          <% end %>
+        </div>
+        <% end %>
+
+      <div class="fs-mask">
+        <strong>Expiration date</strong>
+        <%= render_exp_date stripe_card %>
+      </div>
+
+      <div>
+        <strong>ZIP/Postal code</strong>
+        <%= stripe_card.stripe_cardholder.address_postal_code %>
+      </div>
+    <% else %>
+      <div>
+        <strong>
+          Card number
+        </strong>
+        <%= stripe_card.formatted_card_number %>
+        <div class="right tooltipped tooltipped--w" aria-label="Full number hidden to protect security">
+          <%= inline_icon "private", size: 32, class: "smoke" %>
+        </div>
+      </div>
+    <% end %>
+    <p>
+      <strong>Billing address</strong>
+      <%= render_address stripe_card.cardholder %>
+    </p>
+    <p>
+      <strong>Type</strong>
+      <%= stripe_card.virtual? ? "Virtual" : "Physical" %>
+    </p>
+  </section>
+  <% admin_tools "details" do %>
+    <div>
+      <strong>Ordered at</strong>
+      <%= format_datetime Time.at(stripe_card.stripe_obj[:created]) %>
+    </div>
+  <% end %>
+
+  <section class="grid grid--split items-end pt2">
+    <div class="stat tooltipped tooltipped--s" aria-label="This is your account balance">
+      <strong class="stat__label">Spending limit</strong>
+      <span class="stat__value">
+        <%= render_money_amount stripe_card.balance_available %>
+      </span>
+    </div>
+    <div class="stat stat--small">
+      <strong class="stat__label">Lifetime spent</strong>
+      <span class="stat__value">
+        <%= render_money_amount stripe_card.total_spent %>
+      </span>
+    </div>
+  </section>
+
+  <section class="card__banner card__banner--bottom card__darker pt2 pb2">
+    <p class="muted mt0 mb0">
+    Alert us if there are fraudulent or incorrect charges on your card. <%= help_message %>
+    </p>
+  </section>
+</article>

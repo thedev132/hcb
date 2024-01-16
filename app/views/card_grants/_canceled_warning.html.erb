@@ -1,0 +1,10 @@
+<%# locals: (card_grant:) %>
+
+<% if card_grant.canceled? %>
+  <div class="card border b--info mt3 container--sm mr-auto">
+    <div class="flex items-center info">
+      <%= inline_icon "info", size: 32, class: "mr1" %>
+      <p class="bold mt0 mb0">This grant has been canceled.</p>
+    </div>
+  </div>
+<% end %>
