@@ -193,6 +193,11 @@ class HcbCodesController < ApplicationController
     event = hcb_code.event
 
     authorize hcb_code
+    
+    if hcb_code.amount_cents >= -100
+      flash[:error] = "Invoices can only be generated for charges of $1.00 or more."
+      return redirect_to @hcb_code
+    end
 
     personal_tx = HcbCode::PersonalTransaction.create(hcb_code:, reporter: current_user)
 
