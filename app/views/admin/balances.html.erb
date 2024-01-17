@@ -2,7 +2,7 @@
 
 <h1>ORGANIZATION BALANCES</h1>
 
-<%= form_with local: true, action: :balances, method: :get do |form| %>
+<%= form_with local: true, action: :balances, method: :get, data: { "turbo": "false" } do |form| %>
   <%= form.text_field :q, value: params[:q], style: "vertical-align: top;", placeholder: "Search" %>
   <div class="inline-block">
     <%= render partial: "events_filter", locals: { form:, submit_disable_with_false: true } %>
@@ -23,7 +23,7 @@
 
       <div>
         <span class='mr1'>EXPORT</span>
-        <%= button_tag("CSV", value: "csv", name: "format", disable_with: false) %>
+        <%= button_tag("CSV", value: "csv", name: "format", disable_with: false, formtarget: "_blank") %>
         <%= button_tag("JSON", value: "json", name: "format", disable_with: false, formtarget: "_blank") %>
       </div>
     </div>
