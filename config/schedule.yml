@@ -110,3 +110,7 @@ calculate_app_wide_metrics:
 calculate_subjects_metrics:
   cron: "0 */12 * * *" # run twice a day
   class: "MetricJobs::CalculateSubjects"
+
+ledger_audit_weekly_job:
+  cron: "0 0 * * MON" # run first day of each week
+  class: "GenerateLedgerAuditJob"
