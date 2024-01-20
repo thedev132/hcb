@@ -331,6 +331,9 @@ class Event < ApplicationRecord
     end
   end
 
+  # Explanation: https://github.com/norman/friendly_id/blob/0500b488c5f0066951c92726ee8c3dcef9f98813/lib/friendly_id/reserved.rb#L13-L28
+  after_validation :move_friendly_id_error_to_slug
+
   comma do
     id
     name
@@ -640,6 +643,11 @@ class Event < ApplicationRecord
     pt_sum_by_hcb_code.reduce 0 do |sum, (hcb_code, pt_sum)|
       sum + [pt_sum - (ct_sum_by_hcb_code[hcb_code] || 0), 0].max
     end
+  end
+
+
+  def move_friendly_id_error_to_slug
+    errors.add :slug, *errors.delete(:friendly_id) if errors[:friendly_id].present?
   end
 
 end

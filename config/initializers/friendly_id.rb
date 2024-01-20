@@ -18,8 +18,8 @@ FriendlyId.defaults do |config|
   # undesirable to allow as slugs. Edit this list as needed for your app.
   config.use :reserved
 
-  config.reserved_words = %w(new edit index session login logout users admin
-                             stylesheets assets javascripts images my recurring)
+  # A list of words that aren't allowed to be used as organization URLs, in no particular order.
+  config.reserved_words = ["new", "edit", "index", "stylesheets", "assets", "javascripts", "images", "admin", "flipper", "sidekiq", "blazer", "stats", "stats_custom_duration", "project_stats", "bookkeeping", "stripe_charge_lookup", "set_event", "events", "negative_events", "audit", "central", "organizer_position_deletion_requests", "wrapped", "faq", "branding", "brand_guidelines", "login", "logout", "users", "my", "mailbox_addresses", "invites", "recurring", "docs", "feedback", "receipts", "suggested_pairings", "receiptable", "reports", "organizer_positions", "g_suite_accounts", "g_suites", "sponsors", "invoices", "stripe_cardholders", "cards", "stripe_cards", "emburse_cards", "checks", "increase_checks", "ach_transfers", "disbursements", "comments", "documents", "bank_accounts", "hcb", "canonical_pending_transactions", "canonical_transactions", "exports", "transactions", "fee_reimbursements", "emburse_card_requests", "emburse_transfers", "emburse_transactions", "donations", "partner_donations", "api", "partnered_signups", "twilio", "stripe", "increase", "webhooks", "docusign", "admin_tasks", "admin_task_size", "admin_search", "grants", "grants_v2", "404", "500"]
 
   # This adds an option to to treat reserved words as conflicts rather than exceptions.
   # When there is no good candidate, a UUID will be appended, matching the existing
