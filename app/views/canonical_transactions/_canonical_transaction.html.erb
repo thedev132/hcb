@@ -33,7 +33,7 @@
       </td>
     <% elsif ct.local_hcb_code.check_deposit? %>
       <td class="transaction__icon tooltipped tooltipped--e" aria-label="Check deposit">
-        <%= inline_icon "payment-docs" %>
+        <%= inline_icon "cheque" %>
       </td>
     <% elsif ct.local_hcb_code.ach_transfer? %>
       <td class="transaction__icon tooltipped tooltipped--e" aria-label="Outgoing ACH">
