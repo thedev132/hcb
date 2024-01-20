@@ -51,17 +51,8 @@ class StaticPagesController < ApplicationController
 
   # async frame
   def my_missing_receipts_list
-    @missing_receipt_ids = []
+    @missing = current_user.transactions_missing_receipt
 
-    current_user.stripe_cards.map do |card|
-      card.hcb_codes.missing_receipt.each do |hcb_code|
-        next unless hcb_code.receipt_required?
-
-        @missing_receipt_ids << hcb_code.id
-        break unless @missing_receipt_ids.size < 5
-      end
-    end
-    @missing = HcbCode.where(id: @missing_receipt_ids)
     if @missing.any?
       render :my_missing_receipts_list, layout: !request.xhr?
     else
@@ -71,44 +62,22 @@ class StaticPagesController < ApplicationController
 
   # async frame
   def my_missing_receipts_icon
-    @missing_receipt_count ||= begin
-      count = 0
+    count = current_user.transactions_missing_receipt.count
 
-      stripe_cards = current_user.stripe_cards.includes(:event)
-      emburse_cards = current_user.emburse_cards.includes(:event)
+    emojis = {
+      "🤡": 300,
+      "💀": 200,
+      "😱": 100,
+    }
 
-      (stripe_cards + emburse_cards).each do |card|
-        card.hcb_codes.missing_receipt.each do |hcb_code|
-          next unless hcb_code.receipt_required?
-
-          count += 1
-        end
-      end
-
-      emojis = {
-        "🤡": 300,
-        "💀": 200,
-        "😱": 100,
-      }
-      emojis.find { |emoji, value| count >= value }&.first || count
-    end
+    @missing_receipt_count = emojis.find { |emoji, value| count >= value }&.first || count
 
     render :my_missing_receipts_icon, layout: false
   end
 
   def my_inbox
-    user_cards = current_user.stripe_cards.includes(:event) + current_user.emburse_cards.includes(:emburse_transactions)
-    user_hcb_code_ids = user_cards.flat_map { |card| card.hcb_codes.pluck(:id) }
-    user_hcb_codes = HcbCode.where(id: user_hcb_code_ids)
-
-    hcb_codes_missing_ids = user_hcb_codes.missing_receipt
-                                          # Includes association for `HcbCode#receipt_required?`
-                                          .includes(:canonical_transactions, canonical_pending_transactions: :canonical_pending_declined_mapping)
-                                          .filter(&:receipt_required?).pluck(:id)
-    hcb_codes_missing = HcbCode.where(id: hcb_codes_missing_ids).order(created_at: :desc)
-
-    @count = hcb_codes_missing.count # Total number of HcbCodes missing receipts
-    @hcb_codes = hcb_codes_missing.page(params[:page]).per(params[:per] || 15)
+    @count = current_user.transactions_missing_receipt.count
+    @hcb_codes = current_user.transactions_missing_receipt.page(params[:page]).per(params[:per] || 15)
 
     @card_hcb_codes = @hcb_codes.includes(:canonical_transactions, canonical_pending_transactions: :raw_pending_stripe_transaction) # HcbCode#card uses CT and PT
                                 .group_by { |hcb| hcb.card.to_global_id.to_s }
