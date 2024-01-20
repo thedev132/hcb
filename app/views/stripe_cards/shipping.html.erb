@@ -1,5 +1,5 @@
 <% if @stripe_cards.any? %>
-<div class="banner bg-pending slate flex items-center mt2 mb2">
+<div class="banner bg-pending black flex items-center mt2 mb2">
   <%= inline_icon "card-pin", size: 32 %>
   <strong class="ml2"><%= pluralize @stripe_cards.size, "card" %> <%= @stripe_cards.size == 1 ? "is" : "are" %> on the way!</strong>
 </div>
