@@ -95,7 +95,7 @@ class GSuite < ApplicationRecord
   end
 
   def subdomain
-    domain.split(".")[0..-3].join(".")
+    domain.split(".")[0..-3].join(".").presence
   end
 
   private
