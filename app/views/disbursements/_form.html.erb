@@ -49,7 +49,8 @@
                                      step: 0.01,
                                      min: 0.01,
                                      required: true,
-                                     disabled: @source_event&.demo_mode? %>
+                                     disabled: @source_event&.demo_mode?,
+                                     data: { controller: "truncate-decimal", action: "truncate-decimal#truncate" } %>
     </div>
   </div>
 
