@@ -114,7 +114,7 @@
 
   <%= render partial: "filter" %>
 
-  <% if @pending_transactions.any? || @transactions.any? || @event.demo_mode? %>
+  <% if @pending_transactions.any? || @transactions.any? || show_mock_data? %>
     <div class="table-container" data-tour-step="transactions">
         <table>
           <thead>
