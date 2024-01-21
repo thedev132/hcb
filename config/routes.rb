@@ -151,7 +151,6 @@ Rails.application.routes.draw do
 
   resources :admin, only: [] do
     collection do
-      get "twilio_messaging", to: "admin#twilio_messaging"
       get "transaction_csvs", to: "admin#transaction_csvs"
       post "upload", to: "admin#upload"
       get "bank_accounts", to: "admin#bank_accounts"
@@ -528,8 +527,6 @@ Rails.application.routes.draw do
   get "admin_task_size", to: "admin#task_size"
   get "admin_search", to: redirect("/admin/users")
   post "admin_search", to: redirect("/admin/users")
-
-  post "twilio/messaging", to: "admin#twilio_messaging"
 
   resources :tours, only: [] do
     member do
