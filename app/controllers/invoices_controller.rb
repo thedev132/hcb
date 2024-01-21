@@ -50,7 +50,7 @@ class InvoicesController < ApplicationController
     @invoices = relation.order(created_at: :desc)
 
     @sponsor = Sponsor.new(event: @event)
-    @invoice = Invoice.new(sponsor: @sponsor)
+    @invoice = Invoice.new(sponsor: @sponsor, event: @event)
 
     # @ma1ted: I have no clue how to use the above methods here.
     # Reimplementing logic is okay if you apolgise to every
