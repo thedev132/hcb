@@ -76,6 +76,11 @@ class UsersController < ApplicationController
       flash[:error] = resp[:error]
       return redirect_to auth_users_path
     end
+
+    if resp[:login_code]
+      cookies.signed[:"browser_token_#{resp[:login_code].id}"] = { value: resp[:browser_token], expires: LoginCode::EXPIRATION.from_now }
+    end
+
     @user_id = resp[:id]
 
     @webauthn_available = User.find_by(email: @email)&.webauthn_credentials&.any?
@@ -162,7 +167,8 @@ class UsersController < ApplicationController
     user = UserService::ExchangeLoginCodeForUser.new(
       user_id: params[:user_id],
       login_code: params[:login_code],
-      sms: params[:sms]
+      sms: params[:sms],
+      cookies:
     ).run
 
     sign_in(user:, fingerprint_info:)
@@ -175,8 +181,15 @@ class UsersController < ApplicationController
     else
       redirect_to(params[:return_to] || root_path)
     end
-  rescue Errors::InvalidLoginCode => e
-    flash.now[:error] = "Invalid login code!"
+  rescue Errors::InvalidLoginCode, Errors::BrowserMismatch => e
+    message = case e
+              when Errors::InvalidLoginCode
+                "Invalid login code!"
+              when Errors::BrowserMismatch
+                "Looks like this isn't the browser that requested that code!"
+              end
+
+    flash.now[:error] = message
     # Propagate the to the login_code page on invalid code
     @user_id = params[:user_id]
     @email = params[:email]

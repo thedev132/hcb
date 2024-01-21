@@ -28,7 +28,9 @@ describe LoginCodeService::Request do
       expect(response).to eq({
                                id: user.id,
                                email: user.email,
-                               status: "login code sent"
+                               status: "login code sent",
+                               login_code:,
+                               browser_token: login_code.browser_token
                              })
     end
   end
@@ -53,7 +55,9 @@ describe LoginCodeService::Request do
       expect(response).to eq({
                                id: user.id,
                                email: user.email,
-                               status: "login code sent"
+                               status: "login code sent",
+                               login_code:,
+                               browser_token: login_code.browser_token
                              })
     end
   end

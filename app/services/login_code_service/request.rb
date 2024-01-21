@@ -47,7 +47,9 @@ module LoginCodeService
       {
         id: user.id,
         email: user.email,
-        status: "login code sent"
+        status: "login code sent",
+        browser_token: login_code.browser_token,
+        login_code:
       }
     end
 

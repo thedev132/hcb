@@ -53,6 +53,7 @@ describe LoginCode do
     it "retrys when colliding with an existing login code" do
       create(:login_code, code: "123456")
 
+      allow(SecureRandom).to receive(:random_number).with(58).and_call_original
       expect(SecureRandom).to receive(:random_number).twice.with(999_999).and_return(123456, 495802)
 
       login_code = create(:login_code)
