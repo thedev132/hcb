@@ -91,7 +91,7 @@ class InvoicesController < ApplicationController
 
   def new
     @sponsor = Sponsor.new(event: @event)
-    @invoice = Invoice.new(sponsor: @sponsor)
+    @invoice = Invoice.new(sponsor: @sponsor, event: @event)
 
     authorize @invoice
   end
