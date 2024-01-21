@@ -6,17 +6,6 @@
 # Note that changes in the inspected code, or installation of new
 # versions of RuboCop, may require this file to be generated again.
 
-# Offense count: 4
-# This cop supports unsafe autocorrection (--autocorrect-all).
-# Configuration parameters: EnforcedStyleForLeadingUnderscores.
-# SupportedStylesForLeadingUnderscores: disallowed, required, optional
-Naming/MemoizedInstanceVariableName:
-  Exclude:
-    - 'app/models/event.rb'
-    - 'app/models/invoice.rb'
-    - 'app/services/partnered_signup_service/deliver_webhook.rb'
-    - 'app/services/transaction_engine/friendly_memo_service/generate.rb'
-
 # Offense count: 37
 # Configuration parameters: EnforcedStyle, CheckMethodNames, CheckSymbols, AllowedIdentifiers, AllowedPatterns.
 # SupportedStyles: snake_case, normalcase, non_integer
@@ -57,19 +46,6 @@ Rails/Blank:
 Rails/Date:
   Enabled: false
 
-# Offense count: 19
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: EnforceForPrefixed.
-Rails/Delegate:
-  Exclude:
-    - 'app/models/donation_payout.rb'
-    - 'app/models/emburse_card_request.rb'
-    - 'app/models/g_suite_account.rb'
-    - 'app/models/hcb_code.rb'
-    - 'app/models/invoice.rb'
-    - 'app/models/invoice_payout.rb'
-    - 'app/models/stripe_authorization.rb'
-
 # Offense count: 52
 # This cop supports unsafe autocorrection (--autocorrect-all).
 # Configuration parameters: Whitelist, AllowedMethods, AllowedReceivers.
@@ -78,19 +54,6 @@ Rails/Delegate:
 # AllowedReceivers: Gem::Specification, page
 Rails/DynamicFindBy:
   Enabled: false
-
-# Offense count: 9
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: slashes, arguments
-Rails/FilePath:
-  Exclude:
-    - 'app/services/transaction_engine/raw_csv_transaction_service/import.rb'
-    - 'config/application.rb'
-    - 'config/initializers/preload_stis.rb'
-    - 'spec/mailboxes/hcb_code_receipts_mailbox_spec.rb'
-    - 'spec/models/comment_spec.rb'
-    - 'spec/rails_helper.rb'
 
 # Offense count: 132
 # Configuration parameters: Include.
@@ -193,17 +156,6 @@ Rails/SkipsModelValidations:
 Rails/TimeZone:
   Enabled: false
 
-# Offense count: 5
-# Configuration parameters: Include.
-# Include: app/models/**/*.rb
-Rails/UniqueValidationWithoutIndex:
-  Exclude:
-    - 'app/models/event_tag.rb'
-    - 'app/models/g_suite_account.rb'
-    - 'app/models/mailbox_address.rb'
-    - 'app/models/partner.rb'
-    - 'app/models/tag.rb'
-
 # Offense count: 58
 # This cop supports safe autocorrection (--autocorrect).
 # Configuration parameters: MinBodyLength, AllowConsecutiveConditionals.
@@ -231,20 +183,3 @@ Style/OptionalBooleanParameter:
     - 'app/helpers/invoices_helper.rb'
     - 'app/helpers/partner_donations_helper.rb'
     - 'app/models/g_suite_account.rb'
-
-# Offense count: 15
-# This cop supports unsafe autocorrection (--autocorrect-all).
-# Configuration parameters: Mode.
-Style/StringConcatenation:
-  Exclude:
-    - 'app/controllers/api_controller.rb'
-    - 'app/controllers/hcb_codes_controller.rb'
-    - 'app/controllers/stripe_controller.rb'
-    - 'app/helpers/application_helper.rb'
-    - 'app/helpers/events_helper.rb'
-    - 'app/helpers/hcb_code_helper.rb'
-    - 'app/models/emburse_card_request.rb'
-    - 'app/models/stripe_card.rb'
-    - 'app/models/transaction.rb'
-    - 'app/services/partners/docusign/api.rb'
-    - 'app/services/partners/docusign/signing_completion_redirect.rb'

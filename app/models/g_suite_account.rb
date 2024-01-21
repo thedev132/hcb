@@ -40,6 +40,7 @@ class GSuiteAccount < ApplicationRecord
   paginates_per 50
 
   belongs_to :g_suite
+  has_one :event, through: :g_suite
   belongs_to :creator, class_name: "User"
 
   validates_presence_of :address, :backup_email, :first_name, :last_name
@@ -84,10 +85,6 @@ class GSuiteAccount < ApplicationRecord
 
   def at_domain
     "@#{address.to_s.split('@').last}"
-  end
-
-  def event
-    g_suite.event
   end
 
   def reset_password!

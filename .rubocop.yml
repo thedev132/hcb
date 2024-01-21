@@ -187,3 +187,6 @@ Rails/HasAndBelongsToMany:
 
 Rails/Validation:
   Enabled: false
+
+Rails/UniqueValidationWithoutIndex:
+  Enabled: false

@@ -44,7 +44,7 @@ class ApiController < ApplicationController
 
     if missing.size > 0
       render json: {
-        error: "Missing " + missing.to_s
+        error: "Missing #{missing}"
       }, status: :bad_request
       return
     end
@@ -69,7 +69,7 @@ class ApiController < ApplicationController
     )
 
     if !d.save
-      render json: { error: "Disbursement couldn't be created!" + d.errors.full_messages }, status: :internal_server_error
+      render json: { error: "Disbursement couldn't be created! #{d.errors.full_messages}" }, status: :internal_server_error
       return
     end
 

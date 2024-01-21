@@ -442,7 +442,7 @@ class Event < ApplicationRecord
   # This calculates v2 cents of settled (Canonical Transactions)
   # @return [Integer] Balance in cents (v2 transaction engine)
   def settled_balance_cents(start_date: nil, end_date: nil)
-    @balance_settled ||=
+    @settled_balance_cents ||=
       settled_incoming_balance_cents(start_date:, end_date:) +
       settled_outgoing_balance_cents(start_date:, end_date:)
   end

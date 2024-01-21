@@ -9,7 +9,7 @@ class StripeController < ActionController::Base
 
     begin
       event = StripeService.construct_webhook_event(payload, sig_header)
-      method = "handle_" + event["type"].tr(".", "_")
+      method = "handle_#{event["type"].tr(".", "_")}"
 
       StatsD.measure("StripeController.#{method}") { self.send method, event }
     rescue JSON::ParserError => e

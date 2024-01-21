@@ -20,7 +20,7 @@ module PartneredSignupService
     private
 
     def sup
-      @partnered_signup ||= PartneredSignup.find(@partnered_signup_id)
+      @sup ||= PartneredSignup.find(@partnered_signup_id)
     end
 
     def partner

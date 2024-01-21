@@ -46,7 +46,7 @@ module EventsHelper
     prefill << "prefill_Submitter+Name=#{CGI.escape(user.full_name)}" if user
     prefill << "prefill_Submitter+Email=#{CGI.escape(user.email)}" if user
 
-    (embed ? embed_url : url) + "?" + prefill.join("&")
+    "#{embed ? embed_url : url}?#{prefill.join("&")}"
   end
 
   def transaction_memo(tx) # needed to handle mock data in playground mode

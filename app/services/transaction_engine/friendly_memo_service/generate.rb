@@ -42,7 +42,7 @@ module TransactionEngine
       end
 
       def handle_solely_from_memo
-        @smart_memo ||= ::TransactionEngine::FriendlyMemoService::GenerateSolelyFromMemo.new(canonical_transaction: @canonical_transaction).run
+        @handle_solely_from_memo ||= ::TransactionEngine::FriendlyMemoService::GenerateSolelyFromMemo.new(canonical_transaction: @canonical_transaction).run
       end
 
       def amount_cents

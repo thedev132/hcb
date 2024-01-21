@@ -123,6 +123,7 @@ class Invoice < ApplicationRecord
 
   belongs_to :sponsor
   accepts_nested_attributes_for :sponsor
+  has_one :event, through: :sponsor
 
   belongs_to :creator, class_name: "User"
   belongs_to :manually_marked_as_paid_user, class_name: "User", required: false
@@ -164,10 +165,6 @@ class Invoice < ApplicationRecord
 
   # Stripe syncing…
   before_destroy :close_stripe_invoice
-
-  def event
-    sponsor.event
-  end
 
   def fee_reimbursed?
     !fee_reimbursement.nil?
@@ -302,7 +299,7 @@ class Invoice < ApplicationRecord
   end
 
   def stripe_obj
-    @stripe_invoice_obj ||= StripeService::Invoice.retrieve(stripe_invoice_id).to_hash
+    @stripe_obj ||= StripeService::Invoice.retrieve(stripe_invoice_id).to_hash
   end
 
   def remote_invoice

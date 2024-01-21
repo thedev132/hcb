@@ -34,7 +34,7 @@ module Partners
       private
 
       def compute_hmac(partnered_signup_id, timestamp, role)
-        OpenSSL::HMAC.hexdigest("SHA256", HMAC_KEY, partnered_signup_id + "#" + timestamp + "#" + role.to_s)
+        OpenSSL::HMAC.hexdigest("SHA256", HMAC_KEY, [partnered_signup_id, timestamp, role.to_s].join("#"))
       end
 
     end

@@ -49,7 +49,10 @@ class DonationPayout < ApplicationRecord
   # although it normally doesn't make sense for a paynot not to be linked to an donation,
   # Stripe's schema makes this possible, and when that happens, requiring donation<>payout breaks bank
   has_one :donation, inverse_of: :payout, foreign_key: :payout_id
+  has_one :event, through: :donation
   has_one :t_transaction, class_name: "Transaction"
+
+  delegate :hcb_code, :local_hcb_code, to: :donation
 
   validates_length_of :statement_descriptor, maximum: 22
   validates_uniqueness_of :statement_descriptor
@@ -81,18 +84,6 @@ class DonationPayout < ApplicationRecord
   include ApplicationHelper # for render_money helper
   def dropdown_description
     "##{self.id} | #{render_money self.amount} (#{self.donation.event.name}, #{self.donation.name})"
-  end
-
-  def hcb_code
-    donation.hcb_code
-  end
-
-  def local_hcb_code
-    donation.local_hcb_code
-  end
-
-  def event
-    donation.event
   end
 
   private

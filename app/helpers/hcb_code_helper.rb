@@ -14,7 +14,7 @@ module HcbCodeHelper
     prefill << "prefill_Login+Email=#{CGI.escape(user.email)}" if user
     prefill << "prefill_Transaction+Code=#{CGI.escape(hcb_code.hashid)}" if hcb_code
 
-    (embed ? embed_url : url) + "?" + prefill.join("&")
+    "#{embed ? embed_url : url}?#{prefill.join("&")}"
   end
 
   def attach_receipt_url(hcb_code)

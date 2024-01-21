@@ -46,7 +46,7 @@ module TransactionEngine
       end
 
       def csvs_path
-        "#{Rails.root}/app/services/transaction_engine/csvs"
+        Rails.root.join("app/services/transaction_engine/csvs").to_s
       end
 
     end

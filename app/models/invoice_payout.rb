@@ -46,7 +46,10 @@ class InvoicePayout < ApplicationRecord
   # although it normally doesn't make sense for a paynot not to be linked to an invoice,
   # Stripe's schema makes this possible, and when that happens, requiring invoice<>payout breaks bank
   has_one :invoice, inverse_of: :payout, foreign_key: :payout_id
+  has_one :event, through: :invoice
   has_one :t_transaction, class_name: "Transaction"
+
+  delegate :hcb_code, :local_hcb_code, to: :invoice
 
   after_initialize :default_values
   before_create :create_stripe_payout
@@ -75,18 +78,6 @@ class InvoicePayout < ApplicationRecord
   include ApplicationHelper # for render_money helper
   def dropdown_description
     "##{self.id} (#{render_money self.amount}, #{self.invoice&.sponsor&.event&.name}, inv ##{self.invoice&.id} for #{self.invoice&.sponsor&.name})"
-  end
-
-  def hcb_code
-    invoice.hcb_code
-  end
-
-  def local_hcb_code
-    invoice.local_hcb_code
-  end
-
-  def event
-    invoice.event
   end
 
   private

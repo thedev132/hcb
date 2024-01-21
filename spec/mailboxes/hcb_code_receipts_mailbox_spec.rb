@@ -25,7 +25,7 @@ RSpec.describe HcbCodeReceiptsMailbox, type: :mailbox do
     mail = Mail.new do |m|
       m.from user.email
       m.to "receipts+hcb-#{hcb.hashid}@example.com"
-      m.add_file File.join(Rails.root, receipt_filepath)
+      m.add_file Rails.root.join(receipt_filepath).to_s
     end
 
     mail_processed = create_inbound_email_from_source(mail.to_s, status: :processing).tap(&:route)
@@ -37,7 +37,7 @@ RSpec.describe HcbCodeReceiptsMailbox, type: :mailbox do
     mail = Mail.new do |m|
       m.from "non-user@example.com"
       m.to "receipts+hcb-#{hcb.hashid}@example.com"
-      m.add_file File.join(Rails.root, receipt_filepath)
+      m.add_file Rails.root.join(receipt_filepath).to_s
     end
 
     mail_processed = create_inbound_email_from_source(mail.to_s, status: :processing).tap(&:route)
@@ -59,7 +59,7 @@ RSpec.describe HcbCodeReceiptsMailbox, type: :mailbox do
     mail = Mail.new do |m|
       m.from user.email
       m.to "receipts+hcb-invalid@example.com"
-      m.add_file File.join(Rails.root, receipt_filepath)
+      m.add_file Rails.root.join(receipt_filepath).to_s
     end
     mail_processed = process(mail)
 

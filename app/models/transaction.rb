@@ -134,7 +134,7 @@ class Transaction < ApplicationRecord
   end
 
   def short_plaid_id
-    plaid_id[0...4] + "…" + plaid_id[-4..]
+    "#{plaid_id[0...4]}…#{plaid_id[-4..]}"
   end
 
   def self.total_volume
@@ -457,7 +457,7 @@ class Transaction < ApplicationRecord
     # find all payouts that match both amount and statement_descriptor
     payouts_matching_amount = InvoicePayout.lacking_transaction.where(amount: self.amount)
     payouts_matching_prefix = payouts_matching_amount.select { |po|
-      po.statement_descriptor.start_with?("PAYOUT " + prefix)
+      po.statement_descriptor.start_with?("PAYOUT #{prefix}")
     }
 
     # if there's exactly one match, pick that one
@@ -505,7 +505,7 @@ class Transaction < ApplicationRecord
     # find all payouts that match both amount and statement_descriptor
     payouts_matching_amount = DonationPayout.lacking_transaction.where(amount: self.amount)
     payouts_matching_prefix = payouts_matching_amount.select { |po|
-      po.statement_descriptor.start_with?("DONATE " + prefix)
+      po.statement_descriptor.start_with?("DONATE #{prefix}")
     }
 
     # if there's exactly one match, pick that one
