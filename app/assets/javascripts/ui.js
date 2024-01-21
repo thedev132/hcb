@@ -137,10 +137,7 @@ const updateAmountPreview = function () {
   }
 }
 
-$(document).on('keyup', '[name="invoice[item_amount]"]', () =>
-  updateAmountPreview()
-)
-$(document).on('change', '[name="invoice[item_amount]"]', () =>
+$(document).on('input', '[name="invoice[item_amount]"]', () =>
   updateAmountPreview()
 )
 
