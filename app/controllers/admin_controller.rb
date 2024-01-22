@@ -229,7 +229,7 @@ class AdminController < ApplicationController
   end
 
   def event_balance
-    @event = Event.find(params[:id])
+    @event = Event.friendly.find(params[:id])
     @balance = Rails.cache.fetch("admin_event_balance_#{@event.id}", expires_in: 5.minutes) do
       @event.balance.to_i
     end
