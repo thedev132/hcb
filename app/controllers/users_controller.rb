@@ -242,7 +242,6 @@ class UsersController < ApplicationController
 
   FEATURES = { # the keys are current feature flags, the values are emojis that show when-enabled.
     receipt_bin_2023_04_07: %w[🧾 🗑️ 💰],
-    turbo_2023_01_23: %w[🚀 ⚡ 🏎️ 💨],
     sms_receipt_notifications_2022_11_23: %w[📱 🧾 🔔 💬],
     hcb_code_popovers_2023_06_16: nil,
     rename_on_homepage_2023_12_06: %w[🖊️ ⚡ ⌨️]
