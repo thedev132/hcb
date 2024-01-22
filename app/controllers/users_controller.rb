@@ -5,6 +5,7 @@ class UsersController < ApplicationController
   skip_before_action :redirect_to_onboarding, only: [:edit, :update, :logout]
   skip_after_action :verify_authorized, except: [:edit, :update]
   before_action :set_shown_private_feature_previews, only: [:edit, :edit_featurepreviews, :edit_security, :edit_admin]
+  before_action :migrate_return_to, only: [:auth, :auth_submit, :choose_login_preference, :login_code, :exchange_login_code, :webauthn_auth]
 
   wrap_parameters format: :url_encoded_form
 
@@ -477,6 +478,18 @@ class UsersController < ApplicationController
     if user&.use_sms_auth
       @use_sms_auth = true
       @phone_last_four = user.phone_number.last(4)
+    end
+  end
+
+  # HCB used to run on bank.hackclub.com— this ensures that any old references to `bank.` URLs are translated into `hcb.`
+  def migrate_return_to
+    if params[:return_to].present?
+      uri = URI(params[:return_to])
+
+      if uri&.host == "bank.hackclub.com"
+        uri.host = "hcb.hackclub.com"
+        params[:return_to] = uri.to_s
+      end
     end
   end
 
