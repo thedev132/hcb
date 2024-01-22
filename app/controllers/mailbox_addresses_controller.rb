@@ -16,16 +16,9 @@ class MailboxAddressesController < ApplicationController
   end
 
   def show
-    mailbox_address = current_user.mailbox_addresses.find(params[:id])
+    @mailbox_address = current_user.mailbox_addresses.find(params[:id])
 
-    authorize mailbox_address
-
-    if mailbox_address.activated?
-      @active_address = mailbox_address
-    else
-      @previewed_address = mailbox_address
-      @active_address = current_user.active_mailbox_address
-    end
+    authorize @mailbox_address
   end
 
   def activate
@@ -39,9 +32,11 @@ class MailboxAddressesController < ApplicationController
       @mailbox_address.mark_activated!
     end
 
-    redirect_to @mailbox_address, flash: { success: "Address activated!" }
+    flash[:success] = "Address activated!" unless turbo_frame_request?
+    redirect_to @mailbox_address
   rescue ActiveRecord::RecordInvalid
-    redirect_to @mailbox_address, flash: { error: "Error activating address" }
+    flash[:error] = "Error activating address" unless turbo_frame_request?
+    redirect_to @mailbox_address
   end
 
 end
