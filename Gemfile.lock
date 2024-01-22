@@ -294,7 +294,7 @@ GEM
       rack-protection (>= 1.5.3, <= 4.0.0)
       sanitize (< 7)
     foreman (0.87.2)
-    friendly_id (5.2.5)
+    friendly_id (5.5.0)
       activerecord (>= 4.0.0)
     fugit (1.8.1)
       et-orbi (~> 1, >= 1.2.7)
@@ -829,7 +829,7 @@ DEPENDENCIES
   flipper-active_record
   flipper-ui
   foreman
-  friendly_id (~> 5.2.0)
+  friendly_id (~> 5.5.0)
   geo_pattern
   geocoder
   google-apis-admin_directory_v1 (~> 0.45.0)
