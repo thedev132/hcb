@@ -157,6 +157,10 @@ class EventPolicy < ApplicationPolicy
     user.admin?
   end
 
+  def validate_slug?
+    user_or_admin
+  end
+
   private
 
   def user_or_admin

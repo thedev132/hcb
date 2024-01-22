@@ -668,6 +668,18 @@ class EventsController < ApplicationController
     authorize @event
   end
 
+  def validate_slug
+    authorize @event
+
+    if params[:value].blank? || params[:value] == @event.slug
+      render json: { valid: true }
+    elsif @event.tap { |e| e.slug = params[:value] }.valid?
+      render json: { valid: true, hint: "This URL is available!" }
+    else
+      render json: { valid: false, hint: "This URL is unavailable." }
+    end
+  end
+
   private
 
   # Only allow a trusted parameter "white list" through.

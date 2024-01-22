@@ -206,7 +206,11 @@
   </div>
 
   <h3 class="mb1">Danger Zone</h3>
-  <div class="card border b--warning mb3">
+  <div class="card border b--warning mb3"
+    data-controller="external-validation"
+    data-external-validation-url-value="<%= validate_slug_event_path(@event) %>"
+    data-external-validation-hint-success-class="success">
+
     <div class="flex items-center warning">
       <%= inline_icon "important", size: 32, class: "mr1" %>
       <p class="bold mt0 mb0">If you change your URL, beware:</p>
@@ -225,9 +229,10 @@
       </li>
     </ul>
     <%= form.label :slug, "Organization URL", class: "bold" %>
-    <div class="flex items-center">
-      <span class="secondary">hcb.hackclub.com/</span>
-      <%= form.text_field :slug, placeholder: event.persisted? ? event.name.parameterize : nil %>
+    <div style="display: grid; grid-template-columns: auto 1fr; grid-template-rows: auto auto">
+      <span class="secondary flex items-center">hcb.hackclub.com/</span>
+      <%= form.text_field :slug, placeholder: event.persisted? ? event.name.parameterize : nil, data: { action: "input->external-validation#validate" } %>
+      <span data-external-validation-target="hint" style="grid-column-start: 2"></span>
     </div>
     <div class="actions">
       <%= form.submit "Update" %>

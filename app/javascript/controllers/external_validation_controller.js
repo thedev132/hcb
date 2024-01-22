@@ -5,6 +5,7 @@ import csrf from '../common/csrf'
 export default class extends Controller {
   static values = { url: String }
   static targets = ['hint']
+  static classes = ['hintSuccess']
 
   initialize() {
     this.validate = debounce(this._validate, 500)
@@ -29,9 +30,13 @@ export default class extends Controller {
       this.hintTarget.innerText = hint || ''
       if (valid) {
         this.hintTarget.classList.remove('primary')
-        this.hintTarget.classList.add('muted')
+        this.hintTarget.classList.add(
+          this.hasHintSuccessClass ? this.hintSuccessClass : 'muted'
+        )
       } else {
-        this.hintTarget.classList.remove('muted')
+        this.hintTarget.classList.remove(
+          this.hasHintSuccessClass ? this.hintSuccessClass : 'muted'
+        )
         this.hintTarget.classList.add('primary')
       }
     }
