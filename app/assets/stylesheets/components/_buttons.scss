@@ -25,7 +25,8 @@ input[type='submit'],
   user-select: none;
 
   &:hover,
-  &:focus {
+  &:focus,
+  &[aria-expanded=true]{
     color: $white;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1875);
     transform: scale(1.0625);

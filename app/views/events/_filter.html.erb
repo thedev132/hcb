@@ -83,7 +83,7 @@
 
       <div data-filter-target="users" data-filter-menu-selected="<%= (@user || !(Flipper.enabled?(:transaction_tags_2022_07_29, @event) && @event.tags.size > 0)) && !@type ? "true" : "false" %>">
         <% @organizers.each do |position| %>
-          <div>
+          <div class="flex items-center">
               <%= link_to({ user: position.user.id, q: params[:q] }.compact, class: "flex-auto flex items-center menu__action") do %>
                 <div class="avatar-grow line-height-0 mr1">
                   <%= avatar_for position.user, 18 %>
@@ -96,8 +96,8 @@
 
       <div data-filter-target="types" data-filter-menu-selected="<%= @type ? "true" : "false" %>">
         <% ["ach_transfer", "mailed_check", "account_transfer", "card_charge", "check_deposit", "donation", "invoice", "refund", "fiscal_sponsorship_fee"].each do |type| %>
-          <div>
-              <%= link_to({ type:, q: params[:q] }.compact, class: "flex-auto flex items-center menu__action") do %>
+          <div class="flex items-center">
+              <%= link_to({ type:, q: params[:q] }.compact, class: "flex-auto menu__action") do %>
                 <%= type.humanize.titleize.gsub("Ach", "ACH") %>
               <% end %>
           </div>
