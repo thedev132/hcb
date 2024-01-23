@@ -70,8 +70,12 @@ module SessionsHelper
   def current_session
     return @current_session if defined?(@current_session)
 
+    session_token = cookies.encrypted[:session_token]
+
+    return nil if session_token.nil?
+
     # Find a valid session token within all the ones currently in the table for this particular user
-    @current_session = UserSession.find_by(session_token: cookies.encrypted[:session_token])
+    @current_session = UserSession.find_by(session_token:)
 
     return nil unless @current_session
 
