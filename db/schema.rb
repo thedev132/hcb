@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_01_10_200752) do
+ActiveRecord::Schema[7.0].define(version: 2024_01_23_161458) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_stat_statements"
@@ -694,7 +694,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_10_200752) do
     t.integer "expected_budget"
     t.boolean "has_fiscal_sponsorship_document"
     t.text "club_airtable_id"
-    t.boolean "beta_features_enabled"
     t.datetime "hidden_at", precision: nil
     t.boolean "donation_page_enabled", default: true
     t.text "donation_page_message"

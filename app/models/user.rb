@@ -189,10 +189,6 @@ class User < ApplicationRecord
     self.partner
   end
 
-  def beta_features_enabled?
-    events.where(beta_features_enabled: true).any?
-  end
-
   def admin_dropdown_description
     "#{name} (#{email})"
   end

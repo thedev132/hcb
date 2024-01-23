@@ -701,7 +701,6 @@ class EventsController < ApplicationController
       :club_airtable_id,
       :point_of_contact_id,
       :slug,
-      :beta_features_enabled,
       :hidden,
       :donation_page_enabled,
       :donation_page_message,

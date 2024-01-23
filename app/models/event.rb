@@ -8,7 +8,6 @@
 #  aasm_state                      :string
 #  activated_at                    :datetime
 #  address                         :text
-#  beta_features_enabled           :boolean
 #  can_front_balance               :boolean          default(TRUE), not null
 #  category                        :integer
 #  country                         :integer
