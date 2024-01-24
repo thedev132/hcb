@@ -256,10 +256,6 @@ class EventsController < ApplicationController
   end
 
   def emburse_card_overview
-    @event = Event.includes([
-                              { emburse_cards: :user },
-                              { emburse_transfers: [:t_transaction, :creator] }
-                            ]).find(params[:event_id])
     authorize @event
     @emburse_cards = @event.emburse_cards.includes(user: [:profile_picture_attachment])
     @emburse_card_requests = @event.emburse_card_requests.includes(creator: :profile_picture_attachment)
