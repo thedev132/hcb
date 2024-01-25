@@ -25,6 +25,7 @@ class HcbCodeReceiptsMailer < ApplicationMailer
 
   def bounce_success
     @receipts_count = params[:receipts_count]
+    @renamed_to = params[:renamed_to]
     mail subject: "Thank you for your #{"receipt".pluralize(@receipts_count)}!"
   end
 

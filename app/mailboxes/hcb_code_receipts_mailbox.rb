@@ -28,9 +28,20 @@ class HcbCodeReceiptsMailbox < ApplicationMailbox
 
     return bounce_error if result.empty?
 
+    content = text || body || html
+
+    email_command = content.match(/(?:^|\s)(?<tag>@rename)\s+(?<content>.+)/i)
+    custom_memo = email_command&.[]("content")&.strip
+
+    if custom_memo
+      @hcb_code.canonical_transactions.each { |ct| ct.update!(custom_memo:) }
+      @hcb_code.canonical_pending_transactions.each { |cpt| cpt.update!(custom_memo:) }
+    end
+
     HcbCodeReceiptsMailer.with(
       mail: inbound_email,
       reply_to: @hcb_code.receipt_upload_email,
+      renamed_to: custom_memo,
       receipts_count: result.size
     ).bounce_success.deliver_now
   end
