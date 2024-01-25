@@ -51,44 +51,54 @@
           </span>
         </div>
 
+        <div class="center mb2">
+          <a href="#" data-behavior="modal_trigger" data-modal="ach_form">Other account details <%= inline_icon "external", size: 20 %></a>
+        </div>
+
         <section class="card__banner card__darker border-top overflow-hidden info flex items-start" style="border-radius: 0 0 0.5rem 0.5rem">
           <%= inline_icon "info", class: "mr1", size: 24 %>
           <p class="m0 left-align">You may need to tap "Verify bank manually" or similar when linking your account to apps like Venmo.</p>
         </section>
-      </div>
-
-      <div class="center">
-        <a href="#" data-behavior="modal_trigger" data-modal="ach_form">How to fill out an ACH form <%= inline_icon "external", size: 20 %></a>
       </div>
     <% else %>
       <div class="card container--sm mx-auto center pt4 pb4 mb3">
         <%= button_to "View account number", event_column_account_number_path(@event), method: :post, class: "btn bg-accent" %>
       </div>
     <% end %>
-  <% end %>
 
-  <section class="modal modal--scroll bg-snow" data-behavior="modal" role="dialog" id="ach_form">
-    <%= modal_header "Fill out an ACH form" %>
+    <section class="modal modal--scroll bg-snow" data-behavior="modal" role="dialog" id="ach_form">
+      <%= modal_header "Account details" %>
 
-    <p class="mb2">In addition to an account/routing number, you may need the following information to fill out an ACH form from a sponsor:</p>
-
-    <section class="details">
-      <p>
-        <strong>Company Name</strong>
-        <span><%= @event.name %> C/O Hack Club</span>
-      </p>
-      <p>
-        <strong>Company Address</strong>
-        <span>8605 Santa Monica Blvd #86294<br>West Hollywood, CA 90069</span>
-      </p>
-      <p>
-        <strong>Bank Name</strong>
-        <span>Column N.A.</span>
-      </p>
-      <p>
-        <strong>Bank Address</strong>
-        <span>1110 Gorgas Avenue, Suite A4-700<br>San Francisco, CA 94129</span>
-      </p>
+      <section class="details">
+        <p>
+          <strong>Account Number</strong>
+          <span><%= copy_to_clipboard @event.column_account_number&.account_number, tooltip_direction: :e %></span>
+        </p>
+        <p>
+          <strong>Routing Number<sup class="muted tooltipped tooltipped--n help" aria-label="Used to receive ACH transfers and domestic wires within in the US"> ?</sup></strong>
+          <span><%= copy_to_clipboard @event.column_account_number&.routing_number, tooltip_direction: :e %></span>
+        </p>
+        <p>
+          <strong>SWIFT BIC Code<sup class="muted tooltipped tooltipped--n help" aria-label="Used to receive international wire transfers from outside the US"> ?</sup></strong>
+          <span><%= copy_to_clipboard @event.column_account_number&.bic_code, tooltip_direction: :e %></span>
+        </p>
+        <p>
+          <strong>Company Name</strong>
+          <span><%= @event.name %> C/O Hack Club</span>
+        </p>
+        <p>
+          <strong>Company Address</strong>
+          <span>8605 Santa Monica Blvd #86294<br>West Hollywood, CA 90069</span>
+        </p>
+        <p>
+          <strong>Bank Name</strong>
+          <span>Column N.A.</span>
+        </p>
+        <p>
+          <strong>Bank Address</strong>
+          <span>1110 Gorgas Avenue, Suite A4-700<br>San Francisco, CA 94129</span>
+        </p>
+      </section>
     </section>
-  </section>
+  <% end %>
 <% end %>

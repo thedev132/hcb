@@ -8,6 +8,10 @@
   cursor: wait;
 }
 
+.help {
+  cursor: help;
+}
+
 .overflow-x-auto {
   overflow-x: auto;
 }
@@ -108,7 +112,7 @@ $shades: (
   red: rgba($red, 0.125),
   yellow: rgba($yellow, 0.125),
   green: rgba($green, 0.125),
-  neutral: rgba($muted, 0.125)
+  neutral: rgba($muted, 0.125),
 );
 
 @each $name, $value in $shades {
@@ -236,7 +240,8 @@ $shades: (
 }
 
 .mono {
-  font-family: 'Space Mono', 'SFMono-Regular', 'Roboto Mono', Menlo, Consolas, monospace;
+  font-family: 'Space Mono', 'SFMono-Regular', 'Roboto Mono', Menlo, Consolas,
+    monospace;
 }
 
 details[open] .flip-when-open {
