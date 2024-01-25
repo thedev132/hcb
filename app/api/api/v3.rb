@@ -19,7 +19,7 @@ module Api
           begin
             id = params[:organization_id]
             event ||= Event.transparent.find_by_public_id id # by public id (ex. org_1234). Will NOT error if not found
-            event ||= Event.transparent.find id # by slug or numeric id. Will error if not found
+            event ||= Event.transparent.friendly.find id # by slug or numeric id. Will error if not found
           end
       rescue ActiveRecord::RecordNotFound
         error!({ message: "Organization not found." }, 404)
