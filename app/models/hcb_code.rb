@@ -366,7 +366,16 @@ class HcbCode < ApplicationRecord
   end
 
   def receipt_required?
-    (type == :card_charge && !pt&.declined? && !event&.salary?) || !!raw_emburse_transaction
+    return true if raw_emburse_transaction
+    return false if pt&.declined? || event&.salary?
+
+    (type == :card_charge) ||
+      # starting from Feb. 2024, receipts have been required for ACHs & checks
+      ([:ach, :check].include?(type) && created_at > Time.utc(2024, 2, 1))
+  end
+
+  def receipt_optional?
+    !receipt_required?
   end
 
   def needs_receipt?
