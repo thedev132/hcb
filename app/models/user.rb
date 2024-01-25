@@ -230,10 +230,7 @@ class User < ApplicationRecord
       user_hcb_code_ids = user_cards.flat_map { |card| card.hcb_codes.pluck(:id) }
       user_hcb_codes = HcbCode.where(id: user_hcb_code_ids)
 
-      hcb_codes_missing_ids = user_hcb_codes.missing_receipt
-                                            # Includes association for `HcbCode#receipt_required?`
-                                            .includes(:canonical_transactions, canonical_pending_transactions: :canonical_pending_declined_mapping)
-                                            .filter(&:receipt_required?).pluck(:id)
+      hcb_codes_missing_ids = user_hcb_codes.missing_receipt.receipt_required.pluck(:id)
 
       HcbCode.where(id: hcb_codes_missing_ids).order(created_at: :desc)
     end

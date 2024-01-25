@@ -28,11 +28,7 @@ class Metric
         emburse_cards = user.emburse_cards.includes(:event)
 
         (stripe_cards + emburse_cards).each do |card|
-          card.hcb_codes.missing_receipt.each do |hcb_code|
-            next unless hcb_code.receipt_required?
-
-            count += 1
-          end
+          card.hcb_codes.missing_receipt.receipt_required.count
         end
 
         count

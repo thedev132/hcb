@@ -365,9 +365,20 @@ class HcbCode < ApplicationRecord
     canonical_transactions.last
   end
 
+  scope :receipt_required, -> {
+    joins("LEFT JOIN canonical_pending_transactions ON canonical_pending_transactions.hcb_code = hcb_codes.hcb_code")
+      .joins("LEFT JOIN canonical_pending_declined_mappings ON canonical_pending_declined_mappings.canonical_pending_transaction_id = canonical_pending_transactions.id")
+      .joins("LEFT JOIN canonical_transactions ON canonical_transactions.hcb_code = hcb_codes.hcb_code")
+      .where("canonical_transactions.transaction_source_type = 'RawEmburseTransaction'
+              OR (hcb_codes.hcb_code LIKE 'HCB-600%' AND canonical_pending_declined_mappings.id IS NULL)
+              OR (hcb_codes.hcb_code LIKE 'HCB-300%' AND hcb_codes.created_at >= '2024-02-01' AND canonical_pending_declined_mappings.id IS NULL)
+              OR (hcb_codes.hcb_code LIKE 'HCB-400%' AND hcb_codes.created_at >= '2024-02-01' AND canonical_pending_declined_mappings.id IS NULL)
+              ")
+  }
+
   def receipt_required?
     return true if raw_emburse_transaction
-    return false if pt&.declined? || event&.salary?
+    return false if pt&.declined?
 
     (type == :card_charge) ||
       # starting from Feb. 2024, receipts have been required for ACHs & checks

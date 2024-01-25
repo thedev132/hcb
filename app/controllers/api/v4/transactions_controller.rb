@@ -16,7 +16,7 @@ module Api
         user_hcb_code_ids = current_user.stripe_cards.flat_map { |card| card.hcb_codes.pluck(:id) }
         user_hcb_codes = HcbCode.where(id: user_hcb_code_ids)
 
-        hcb_codes_missing_ids = user_hcb_codes.missing_receipt.filter(&:receipt_required?).pluck(:id)
+        hcb_codes_missing_ids = user_hcb_codes.missing_receipt.receipt_required.pluck(:id)
         @hcb_codes = HcbCode.where(id: hcb_codes_missing_ids).order(created_at: :desc)
 
         @total_count = @hcb_codes.size
