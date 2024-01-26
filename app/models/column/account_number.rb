@@ -32,6 +32,8 @@ module Column
 
     validate :event_is_not_demo_mode
 
+    has_paper_trail
+
     private
 
     def create_column_account_number
