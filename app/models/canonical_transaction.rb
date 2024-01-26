@@ -348,8 +348,6 @@ class CanonicalTransaction < ApplicationRecord
     memo.include?("HCB-#{::TransactionGroupingEngine::Calculate::HcbCode::INVOICE_CODE}")
   end
 
-  private
-
   def write_hcb_code
     safely do
       code = ::TransactionGroupingEngine::Calculate::HcbCode.new(canonical_transaction_or_canonical_pending_transaction: self).run
@@ -359,6 +357,8 @@ class CanonicalTransaction < ApplicationRecord
       ::HcbCodeService::FindOrCreate.new(hcb_code: code).run
     end
   end
+
+  private
 
   def hashed_transaction
     @hashed_transaction ||= begin

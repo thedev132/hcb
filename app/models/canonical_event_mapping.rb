@@ -35,6 +35,7 @@ class CanonicalEventMapping < ApplicationRecord
 
   scope :on_main_ledger, -> { where(subledger_id: nil) }
 
+  after_create { canonical_transaction.write_hcb_code }
   after_create if: -> { fee.nil? } do
     FeeEngine::Create.new(canonical_event_mapping: self).run
   end
