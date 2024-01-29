@@ -24,15 +24,17 @@
 #  creator_id                :bigint
 #  event_id                  :bigint
 #  increase_id               :text
+#  payment_recipient_id      :bigint
 #  processor_id              :bigint
 #
 # Indexes
 #
-#  index_ach_transfers_on_column_id     (column_id) UNIQUE
-#  index_ach_transfers_on_creator_id    (creator_id)
-#  index_ach_transfers_on_event_id      (event_id)
-#  index_ach_transfers_on_increase_id   (increase_id) UNIQUE
-#  index_ach_transfers_on_processor_id  (processor_id)
+#  index_ach_transfers_on_column_id             (column_id) UNIQUE
+#  index_ach_transfers_on_creator_id            (creator_id)
+#  index_ach_transfers_on_event_id              (event_id)
+#  index_ach_transfers_on_increase_id           (increase_id) UNIQUE
+#  index_ach_transfers_on_payment_recipient_id  (payment_recipient_id)
+#  index_ach_transfers_on_processor_id          (processor_id)
 #
 # Foreign Keys
 #
@@ -56,6 +58,7 @@ class AchTransfer < ApplicationRecord
   belongs_to :creator, class_name: "User", optional: true
   belongs_to :processor, class_name: "User", optional: true
   belongs_to :event
+  belongs_to :payment_recipient, optional: true
 
   validates :amount, numericality: { greater_than: 0, message: "must be greater than 0" }
   validates :routing_number, format: { with: /\A\d{9}\z/, message: "must be 9 digits" }
@@ -106,8 +109,12 @@ class AchTransfer < ApplicationRecord
     end
   end
 
+  before_validation { self.recipient_name = recipient_name.presence&.strip }
+
   # Eagerly create HcbCode object
   after_create :local_hcb_code
+
+  after_create :create_or_link_payment_recipient, if: -> { Flipper.enabled?(:payment_recipients_2024_01_10, event) }
 
   after_create unless: -> { scheduled_on.present? } do
     create_raw_pending_outgoing_ach_transaction!(amount_cents: -amount, date_posted: scheduled_on || created_at)
@@ -224,6 +231,23 @@ class AchTransfer < ApplicationRecord
     if scheduled_on.present? && scheduled_on.before?(Date.today)
       errors.add(:scheduled_on, "must be in the future")
     end
+  end
+
+  def create_or_link_payment_recipient
+    self.payment_recipient = event.payment_recipients.find_by("name ILIKE ?", AchTransfer.sanitize_sql_like(recipient_name))
+
+    if payment_recipient.nil? ||
+       payment_recipient.account_number != account_number ||
+       payment_recipient.routing_number != routing_number
+      self.payment_recipient = event.payment_recipients.create!(
+        name: recipient_name,
+        bank_name:,
+        account_number:,
+        routing_number:,
+      )
+    end
+
+    save!
   end
 
 end

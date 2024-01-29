@@ -51,10 +51,12 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_29_192145) do
     t.text "increase_id"
     t.date "scheduled_on"
     t.text "column_id"
+    t.bigint "payment_recipient_id"
     t.index ["column_id"], name: "index_ach_transfers_on_column_id", unique: true
     t.index ["creator_id"], name: "index_ach_transfers_on_creator_id"
     t.index ["event_id"], name: "index_ach_transfers_on_event_id"
     t.index ["increase_id"], name: "index_ach_transfers_on_increase_id", unique: true
+    t.index ["payment_recipient_id"], name: "index_ach_transfers_on_payment_recipient_id"
     t.index ["processor_id"], name: "index_ach_transfers_on_processor_id"
   end
 
@@ -1312,6 +1314,17 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_29_192145) do
     t.index ["representative_id"], name: "index_partners_on_representative_id"
   end
 
+  create_table "payment_recipients", force: :cascade do |t|
+    t.bigint "event_id", null: false
+    t.string "name"
+    t.text "account_number_ciphertext"
+    t.string "routing_number_ciphertext"
+    t.string "bank_name_ciphertext"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["event_id"], name: "index_payment_recipients_on_event_id"
+  end
+
   create_table "raw_column_transactions", force: :cascade do |t|
     t.string "column_report_id"
     t.integer "transaction_index"
@@ -1883,6 +1896,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_29_192145) do
   add_foreign_key "partnered_signups", "partners"
   add_foreign_key "partnered_signups", "users"
   add_foreign_key "partners", "users", column: "representative_id"
+  add_foreign_key "payment_recipients", "events"
   add_foreign_key "raw_pending_incoming_disbursement_transactions", "disbursements"
   add_foreign_key "raw_pending_outgoing_disbursement_transactions", "disbursements"
   add_foreign_key "receipts", "users"

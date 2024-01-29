@@ -628,6 +628,8 @@ Rails.application.routes.draw do
       resources :organizer_position_deletion_requests, path: "removal-requests", as: "remove", only: [:new]
     end
 
+    resources :payment_recipients, only: [:destroy]
+
     member do
       post "disable_feature"
       post "enable_feature"

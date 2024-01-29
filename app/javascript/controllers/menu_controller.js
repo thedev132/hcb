@@ -15,6 +15,7 @@ export default class extends Controller {
   static values = {
     appendTo: String,
     placement: { type: String, default: 'bottom-start' },
+    contentId: String,
   }
 
   initialize() {
@@ -36,8 +37,12 @@ export default class extends Controller {
   }
 
   open() {
+    if (this.isOpen) return
+    if (!this.hasContentTarget) return
+
     this.content = this.contentTarget.cloneNode(true)
     this.content.dataset.turboTemporary = true
+    if (this.hasContentIdValue) this.content.id = this.contentIdValue
     ;(
       (this.appendToValue && document.querySelector(this.appendToValue)) ||
       document.body
@@ -57,12 +62,16 @@ export default class extends Controller {
     )
   }
 
+  /**
+   * @param {Event} e
+   */
   close(e) {
-    if (e) {
+    if (e && e.currentTarget == document) {
       // Is the clicked element part of the toggle?
       if (
-        e.target == this.toggleTarget ||
-        $(this.toggleTarget).find(e.target).length
+        e.type == 'click' &&
+        (e.target == this.toggleTarget ||
+          $(this.toggleTarget).find(e.target).length)
       )
         return
       if (e.target == this.content || $(this.content).find(e.target).length)
@@ -73,14 +82,7 @@ export default class extends Controller {
       )
         return
 
-      if (!$(e.target).closest('form').length) {
-        this.content && this.content.remove()
-      } else {
-        this.content &&
-          Object.assign(this.content.style, {
-            display: 'none',
-          })
-      }
+      this.content && this.content.remove()
     } else {
       this.content && this.content.remove()
     }

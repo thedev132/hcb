@@ -182,11 +182,19 @@
     transition: opacity 125ms ease-in-out;
   }
 
+  .muted {
+    transition: color 125ms ease-in-out;
+  }
+
   &:hover,
   &:focus {
     color: $white;
     &:before {
       opacity: 1;
+    }
+
+    .muted {
+      color: $white;
     }
   }
 

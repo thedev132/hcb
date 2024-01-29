@@ -1,15 +1,57 @@
-<%= form_with(model: @ach_transfer, local: true, url: event_ach_transfers_path(@event)) do |form| %>
+<%= form_with(model: @ach_transfer, local: true, url: event_ach_transfers_path(@event), data: { controller: "form input" }) do |form| %>
   <%= form_errors(@ach_transfer, "ACH transfer", "We couldn't send this") %>
 
-  <div class="field">
+  <div class="field" id="ach_transfer_name_field" data-controller="menu text-filter" data-menu-content-id-value="payment-recipient-search" data-menu-append-to-value="#ach_transfer_name_field" data-text-filter-empty-class="display-none">
     <%= form.label :recipient_name %>
-    <%= form.text_field :recipient_name, placeholder: "Max Kern", required: true, disabled: @event.demo_mode? %>
+    <%= form.text_field :recipient_name,
+                        placeholder: "Max Kern",
+                        required: true,
+                        disabled: @event.demo_mode?,
+                        role: "combobox",
+                        "aria-controls": "payment-recipient-search",
+                        data: {
+                          action: "
+                            keydown.enter->text-filter#selectFirst
+
+                            click->menu#open
+                            focus->menu#open
+                            click@document->menu#close
+                            keydown@document->menu#keydown
+
+                            input->text-filter#query
+                          ",
+                          menu_target: "toggle",
+                        } %>
     <span class="muted">This is only for your reference— it doesn't need to match the name on the recipient's bank account.</span>
+    <% if organizer_signed_in? && Flipper.enabled?(:payment_recipients_2024_01_10, @event) && @event.payment_recipients.any? %>
+      <div class="menu__content menu__content--2" data-menu-target="content" role="listbox" style="width: 24rem">
+        <% @event.payment_recipients.each do |payment_recipient| %>
+          <div data-name="<%= payment_recipient.name %>" class="flex items-center" data-payment-recipient="<%= payment_recipient.id %>">
+            <button
+              type="button"
+              class="menu__action flex justify-between flex-auto mr1"
+              data-action="form#fill input#focus menu#close"
+              data-form-values-param="<%= {
+                                            ach_transfer_recipient_name: payment_recipient.name,
+                                            ach_transfer_bank_name: payment_recipient.bank_name,
+                                            ach_transfer_routing_number: payment_recipient.routing_number,
+                                            ach_transfer_account_number: payment_recipient.account_number,
+                                          }.to_json %>">
+              <span class="truncate"><%= payment_recipient.name %></span>
+              <span class="muted ml1">••••<%= payment_recipient.account_number.slice(-4, 4) %></span>
+            </button>
+            <%= link_to event_payment_recipient_path(@event, payment_recipient), data: { turbo_method: "delete", turbo_confirm: "Are you sure you want to remove this ACH recipient?" } do %>
+              <%= inline_icon "view-close", size: 24, class: "align-middle" %>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
   </div>
 
   <div class="field">
     <%= form.label :payment_for, "What are you paying for with this deposit?" %>
-    <%= form.text_field :payment_for, placeholder: "Shipment of potions", required: true, disabled: @event.demo_mode? %>
+    <%= form.text_field :payment_for, placeholder: "Shipment of potions", required: true, disabled: @event.demo_mode?, data: { input_target: "input" } %>
     <span class="muted">This is to help HCB keep record of our transactions. HCB team will see this.</span>
   </div>
 
