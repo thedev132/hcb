@@ -57,7 +57,7 @@ $(document).on('turbo:load', function () {
 
       $('[data-behavior~="check_characters_update"').text(
         `This will appear on the physical check. You have ${
-          73 - characters
+          40 - characters
         } characters remaining.`
       )
     }

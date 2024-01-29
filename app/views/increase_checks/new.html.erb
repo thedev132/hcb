@@ -55,13 +55,13 @@
       <div class="field">
         <%= form.label :memo %>
         <%= form.text_field :memo,
-            maxlength: 73,
+            maxlength: 40,
             placeholder: "for venue payment",
             required: true,
             'data-behavior': "check_memo_field",
             disabled: @event.demo_mode? %>
         <span class="muted" data-behavior="check_characters_update">
-          This will appear on the physical check. You have 73 characters remaining.
+          This will appear on the physical check. You have 40 characters remaining.
         </span>
       </div>
 
