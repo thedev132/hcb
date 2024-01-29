@@ -21,7 +21,7 @@
     <% @ledger_audits.each do |ledger_audit| %>
       <tr>
         <td><%= ledger_audit.id %></td>
-        <td><%= ledger_audit.start.strftime("Week of %b %m") %></td>
+        <td><%= ledger_audit.start.beginning_of_week.strftime("Week of %b %e") %></td>
         <td>
           <%= link_to "Review", admin_ledger_audit_path(ledger_audit) %>
         </td>
