@@ -884,7 +884,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_29_192145) do
     t.index ["raw_plaid_transaction_id"], name: "index_hashed_transactions_on_raw_plaid_transaction_id"
     t.index ["raw_stripe_transaction_id"], name: "index_hashed_transactions_on_raw_stripe_transaction_id"
   end
-  
+
   create_table "hcb_code_personal_transactions", force: :cascade do |t|
     t.bigint "hcb_code_id"
     t.bigint "invoice_id"
