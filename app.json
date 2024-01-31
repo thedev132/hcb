@@ -56,6 +56,9 @@
       "url": "https://github.com/maxwofford/heroku-buildpack-sourceversion"
     },
     {
+      "url": "https://github.com/gaffneyc/heroku-buildpack-jemalloc.git"
+    },
+    {
       "url": "https://github.com/nickrivadeneira/heroku-buildpack-apt#gobject-introspection-support"
     },
     {
