@@ -40,12 +40,13 @@ module FeeEngine
 
       reason = "REVENUE WAIVED" if canonical_transaction.likely_check_clearing_dda? # this typically has a negative balancing transaction with it
       reason = "REVENUE WAIVED" if canonical_transaction.likely_card_transaction_refund? # sometimes a user is issued a refund on a transaction
+      reason = "REVENUE WAIVED" if canonical_transaction.local_hcb_code.ach_transfer? # outgoing ACH transfers are sometimes returned to the account upon failure
 
       # don't run fee if other transactions in it's HCB Code have fees waived
       reason = "REVENUE WAIVED" if canonical_transaction.local_hcb_code.canonical_transactions.includes(:fee).any? { |ct| ct.fee&.revenue_waived? }
       reason = "REVENUE WAIVED" if canonical_transaction.local_hcb_code.canonical_pending_transactions.any?(&:fee_waived?)
 
-      reason = "REVENUE WAIVED" if canonical_transaction.memo.downcase.include?("acctverify") && canonical_transaction.amount_cents.abs < 100 # Waive fees on account verification transactions from platforms like Venmo
+      reason = "REVENUE WAIVED" if canonical_transaction.likely_account_verification_related? # Waive fees on account verification transactions from platforms like Venmo
 
       reason = "DONATION REFUNDED" if canonical_transaction.local_hcb_code.donation&.refunded?
 
