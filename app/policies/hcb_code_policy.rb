@@ -38,7 +38,7 @@ class HcbCodePolicy < ApplicationPolicy
   end
 
   def invoice_as_personal_transaction?
-    (user&.admin? || present_in_events?) && record.event&.hack_club_hq?
+    user&.admin? || present_in_events?
   end
 
   def link_receipt_modal?

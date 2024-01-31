@@ -263,7 +263,7 @@
 
   </article>
   <div class="flex justify-end align-middle flex-wrap" id="stripe_card_actions" style="gap: 12px">
-    <%= render partial: "hcb_codes/accidental_misuse", locals: { hcb_code: @hcb_code } %>
+    <%= render partial: "hcb_codes/personal_transaction", locals: { hcb_code: @hcb_code } %>
     <%= render partial: "hcb_codes/dispute", locals: { type: "card", hcb_code: @hcb_code } %>
   </div>
 </div>
