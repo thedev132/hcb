@@ -25,6 +25,7 @@
         <span class='mr1'>EXPORT</span>
         <%= button_tag("CSV", value: "csv", name: "format", disable_with: false, formtarget: "_blank") %>
         <%= button_tag("JSON", value: "json", name: "format", disable_with: false, formtarget: "_blank") %>
+        <%= button_tag("CSV (breakdown)", value: "true", name: "monthly_breakdown", type: "submit", formaction: "/admin/balances.csv", disable_with: false, formtarget: "_blank") %>
       </div>
     </div>
   </div>

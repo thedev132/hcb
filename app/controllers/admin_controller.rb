@@ -975,18 +975,27 @@ class AdminController < ApplicationController
   def balances
     @start_date = params[:start_date].present? ? Date.parse(params[:start_date]) : nil
     @end_date = params[:end_date].present? ? Date.parse(params[:end_date]) : nil
+    @monthly_breakdown = params[:monthly_breakdown] || false
 
     if @start_date && @end_date && @start_date > @end_date
       flash[:info] = "Do you really want the Start Date to be after the End Date?"
     end
 
-    @events = filtered_events
+    @events = filtered_events.includes(:event_tags)
 
     render_balance = ->(event, type) {
       ApplicationController.helpers.render_money(event.send(type, start_date: @start_date, end_date: @end_date))
     }
+
+    render_monthly_revenue = ->(event, year, month) {
+      key = Date.new(year, month, 1).strftime("%Y-%m")
+      ApplicationController.helpers.render_money(
+        @monthly_revenue.dig(event.id, key) || 0
+      )
+    }
+
+    # Must be wrapped in lambdas
     template = [
-      # Must be wrapped in lambdas
       [:organization_id, ->(e) { e.id }],
       [:organization_name, ->(e) { e.name }],
       [:net_balance, ->(e) { render_balance.call(e, :settled_balance_cents) }],
@@ -995,6 +1004,38 @@ class AdminController < ApplicationController
       [:start_date, ->(_) { @start_date }],
       [:end_date, ->(_) { @end_date }]
     ]
+
+
+    if @monthly_breakdown
+      template.concat(
+        [
+          [:category, ->(e) { e.category }],
+          [:tags, ->(e) { e.event_tags.pluck(:name).join(",") }],
+          [:joined, ->(e) { e.activated_at || e.created_at }],
+        ]
+      )
+      @monthly_revenue =
+        begin
+          sql_query = CanonicalTransaction.joins(:canonical_event_mapping)
+                                          .where("canonical_transactions.amount_cents > ?", 0)
+                                          .group("canonical_event_mappings.event_id, date_trunc('month', canonical_transactions.created_at)")
+                                          .select("date_trunc('month', canonical_transactions.created_at) AS month,
+                               COALESCE(SUM(canonical_transactions.amount_cents), 0) AS revenue,
+                               canonical_event_mappings.event_id AS event_id")
+                                          .to_sql
+          ActiveRecord::Base.connection.exec_query(sql_query).each_with_object({}) do |item, result|
+            result[item["event_id"]] ||= {}
+            result[item["event_id"]][item["month"].strftime("%Y-%m")] = item["revenue"].to_i
+          end
+        end
+      monthly_revenue_columns = (2018..Date.current.year).flat_map do |year|
+        (1..12).take_while { |month| (year == Date.current.year && month <= Date.current.month) || year < Date.current.year }
+               .map { |month| ["monthly_revenue_#{Date::MONTHNAMES[month]}_#{year}", ->(e) { render_monthly_revenue.call(e, year, month) }] }
+      end
+
+      template.concat(monthly_revenue_columns)
+    end
+
     serializer = ->(event) do
       template.to_h.transform_values do |field|
         field.call(event)
