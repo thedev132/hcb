@@ -82,7 +82,7 @@ class ExportsController < ApplicationController
         @start = (params[:start_date]&.to_datetime || Date.today.prev_month).beginning_of_month
         if @start >= Date.today.beginning_of_month
           flash[:error] = "Can not create an account statement for #{@start.strftime("%B %Y")}"
-          redirect_back event_statements_path
+          redirect_back fallback_location: event_statements_path(@event) and return
         end
         @end = @start.end_of_month
         all = TransactionGroupingEngine::Transaction::All.new(event_id: @event.id).run
