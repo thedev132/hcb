@@ -137,7 +137,7 @@ module ApplicationHelper
 
   def carousel(content, &block)
     content_tag :div, class: "carousel", data: { "controller": "carousel", "carousel-target": "carousel", "carousel-slide-value": "0", "carousel-length-value": content.length.to_s } do
-      (content_tag :button, class: "carousel__button carousel__button--left", data: { "carousel-target": "left" } do
+      (content_tag :button, class: "carousel__button carousel__button--left pop", data: { "carousel-target": "left" } do
         inline_icon "view-back", size: 40
       end) +
         (content_tag :div, class: "carousel__items" do
@@ -147,7 +147,7 @@ module ApplicationHelper
             end
           end).join.html_safe
         end) +
-        (content_tag :button, class: "carousel__button carousel__button--right", data: { "carousel-target": "right" } do
+        (content_tag :button, class: "carousel__button carousel__button--right pop", data: { "carousel-target": "right" } do
           inline_icon "view-back", size: 40
         end)
     end
