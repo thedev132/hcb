@@ -1,6 +1,6 @@
 
 <% if @ledger_audits.any? %>
-  <%= link_to "📅 This Week's Compliance Check", admin_ledger_audit_path(@ledger_audits.first), class: "btn" %>
+  <%= link_to "📅 This Week's Ledger Audit", admin_ledger_audit_path(@ledger_audits.first), class: "btn" %>
 <% end %>
 
 <%= link_to "⚠️ Flagged Transactions", admin_ledger_audits_tasks_path, class: "btn bg-error #{"ml2" if @ledger_audits.first}" %>
