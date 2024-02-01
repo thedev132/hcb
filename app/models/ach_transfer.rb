@@ -107,6 +107,13 @@ class AchTransfer < ApplicationRecord
     event :mark_scheduled do
       transitions from: :pending, to: :scheduled
     end
+
+    event :mark_failed do
+      after do |reason: nil|
+        AchTransferMailer.with(ach_transfer: self, reason:).notify_failed.deliver_later
+      end
+      transitions from: [:in_transit, :deposited], to: :failed
+    end
   end
 
   before_validation { self.recipient_name = recipient_name.presence&.strip }
@@ -184,6 +191,7 @@ class AchTransfer < ApplicationRecord
     when :in_transit then "In transit"
     when :pending then "Waiting on HCB approval"
     when :rejected then "Rejected"
+    else status_text
     end
   end
 
@@ -194,6 +202,7 @@ class AchTransfer < ApplicationRecord
     when :scheduled then :pending
     when :pending then :pending
     when :rejected then :error
+    when :failed then :error
     end
   end
 
