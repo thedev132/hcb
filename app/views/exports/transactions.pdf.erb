@@ -1,0 +1,106 @@
+<head>
+  <meta charset="UTF-8">
+  <script src="https://unpkg.com/twemoji@latest/dist/twemoji.min.js" crossorigin="anonymous"></script>
+  <script>
+    window.onload = function () {
+      twemoji.parse(document.body);
+    }
+  </script>
+</head>
+
+<div>
+  <img src="https://assets.hackclub.com/hcb-light.png" height="100px" />
+  <div>
+    <h1 style="margin-block: 0">
+      The Hack Foundation
+    </h1>
+    <h4 style="margin-block: 0">
+      8605 Santa Monica Blvd #86294
+      <br />
+      West Hollywood, CA, 90069
+    </h4>
+  </div>
+  <div>
+    <u>ACCOUNT STATEMENT</u>
+    <span style="text-transform: uppercase">FOR: <b><%= @event.name %></b></span>
+    <span>
+      <b><%= @start.strftime("%Y-%m-%d") %></b> to <b><%= @end.strftime("%Y-%m-%d") %></b>
+    </span>
+  </div>
+</div>
+
+<table>
+  <tr>
+    <th>Date</th>
+    <th>Description</th>
+    <th style="text-align: center;">ID</th>
+    <th style="text-align: center;">Amount</th>
+    <th style="text-align: center;">Balance</th>
+  </tr>
+  <tr>
+    <td><%= @start.strftime("%Y-%m-%d") %></td>
+    <td>PREVIOUS BALANCE</td>
+    <td style="text-align: center;"></td>
+    <td style="text-align: center;"></td>
+    <td style="text-align: center;">
+      <%= number_to_currency @start_balance  %>
+    </td>
+  </tr>
+  <% @transactions.reverse.each do |ct| %>
+    <tr>
+      <td style="white-space: nowrap;"><%= ct.date %></td>
+      <td><%= transaction_memo(ct) %></td>
+      <td style="white-space: nowrap;"><%= ct.local_hcb_code.public_id %></td>
+      <td style="text-align: center; white-space: nowrap;"><%= number_to_currency ct.amount %></td>
+      <td style="text-align: center; white-space: nowrap;"><%= number_to_currency ct.running_balance %></td>
+    </tr>
+  <% end %>
+  <tr>
+    <td></td>
+    <td><i>WITHDRAWN: <%= number_to_currency @withdrawn %>. DEPOSITED: <%= number_to_currency @deposited %>.</i></td>
+    <td style="text-align: center;"></td>
+    <td style="text-align: center;"></td>
+    <td style="text-align: center;">
+      <%= number_to_currency @end_balance %>
+    </td>
+  </tr>
+</table>
+
+<p>
+  <i><%= @event.name %></i> is fiscally sponsored by The Hack Foundation, a 501(c)(3) nonprofit with the EIN 81-2908499. The above transactions are from <i><%= @event.name %></i>'s restricted-fund provided by The Hack Foundation.
+</p>
+
+<style>
+  body {
+    padding: 16px;
+    color: black;
+  }
+  h4 {
+    font-weight: 400
+  }
+  table {
+    width: 100%;
+    margin-top: 36px;
+    border-spacing: 0;
+  }
+  th {
+    background: #ec3750;
+    color: #fff;
+    font-weight: 400;
+    text-align: left;
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+  tr:nth-child(odd) {
+      background-color: #ececec;
+  }
+  td {
+    border: none;
+  }
+  img.emoji {
+    height: 1em;
+    width: 1em;
+    margin: 0 .05em 0 .1em;
+    vertical-align: -0.1em;
+  }
+</style>

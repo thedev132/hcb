@@ -1,0 +1,16 @@
+<% title "Statements" %>
+<% page_md %>
+<%= render "events/nav", selected: :documentation %>
+
+<h1 class="heading">Statements</h1>
+
+<div class="grid">
+  <% (@end_date..@start_date).select { |date| date.day == 1 }.each do |day| %>
+    <%= link_to transactions_exports_path(event: @event, start_date: day, format: :pdf), target: "_blank", class: "card card--hover flex items-center" do %>
+        <span style="flex-grow: 1">
+          <%= day.strftime("%B %Y") %>
+        </span>
+        <%= inline_icon "download", size: 24, class: "ml1", 'aria-label': "Download" %>
+    <% end %>
+  <% end %>
+</div>

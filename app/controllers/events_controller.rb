@@ -664,6 +664,13 @@ class EventsController < ApplicationController
     authorize @event
   end
 
+  def statements
+    authorize @event
+
+    @start_date = (@event.activated_at || @event.created_at).beginning_of_month.to_date
+    @end_date = Date.today.prev_month.beginning_of_month.to_date
+  end
+
   def validate_slug
     authorize @event
 

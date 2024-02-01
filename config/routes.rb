@@ -587,6 +587,7 @@ Rails.application.routes.draw do
 
     get "documentation", to: "events#documentation", as: :documentation
     get "transfers", to: "events#transfers", as: :transfers
+    get "statements", to: "events#statements", as: :statements
     get "promotions", to: "events#promotions", as: :promotions
     get "reimbursements", to: "events#reimbursements", as: :reimbursements
     get "donations", to: "events#donation_overview", as: :donation_overview

@@ -64,6 +64,10 @@ class EventPolicy < ApplicationPolicy
     is_public || user_or_admin
   end
 
+  def statements?
+    is_public || user_or_admin
+  end
+
   def demo_mode_request_meeting?
     user_or_admin
   end
