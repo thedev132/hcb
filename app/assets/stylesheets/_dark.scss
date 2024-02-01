@@ -88,6 +88,23 @@ html[data-dark='true'] {
   .flash {
     border: 0;
   }
+  
+  .menu__content {
+    input[type='date'],
+    input[type='email'],
+    input[type='number'],
+    input[type='password'],
+    input[type='search'],
+    input[type='tel'],
+    input[type='text'],
+    input[type='url'],
+    .input,
+    select,
+    textarea {
+      background: $dark;
+      border-color: $dark;
+    }
+  }
 
   .retrofees,
   .card,

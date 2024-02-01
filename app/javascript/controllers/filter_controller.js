@@ -5,9 +5,11 @@ export default class extends Controller {
     'tagsLabel',
     'usersLabel',
     'typesLabel',
+    'datesLabel',
     'tags',
     'users',
     'types',
+    'dates',
   ]
 
   selectTags(mouseEvent) {
@@ -18,6 +20,7 @@ export default class extends Controller {
     if (mouseEvent !== undefined) {
       this.selectTypes()
       this.selectUsers()
+      this.selectDates()
     }
   }
 
@@ -28,6 +31,7 @@ export default class extends Controller {
     this.usersTarget.dataset.filterMenuSelected = mouseEvent ? 'true' : 'false'
     if (mouseEvent !== undefined) {
       this.selectTypes()
+      this.selectDates()
       if (this.hasTagsTarget) {
         this.selectTags()
       }
@@ -40,6 +44,21 @@ export default class extends Controller {
       : 'false'
     this.typesTarget.dataset.filterMenuSelected = mouseEvent ? 'true' : 'false'
     if (mouseEvent !== undefined) {
+      this.selectUsers()
+      this.selectDates()
+      if (this.hasTagsTarget) {
+        this.selectTags()
+      }
+    }
+  }
+
+  selectDates(mouseEvent) {
+    this.datesLabelTarget.dataset.filterMenuLabelSelected = mouseEvent
+      ? 'true'
+      : 'false'
+    this.datesTarget.dataset.filterMenuSelected = mouseEvent ? 'true' : 'false'
+    if (mouseEvent !== undefined) {
+      this.selectTypes()
       this.selectUsers()
       if (this.hasTagsTarget) {
         this.selectTags()

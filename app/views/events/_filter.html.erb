@@ -33,6 +33,17 @@
           <%= @type.humanize.titleize.gsub("Ach", "ACH") %>
         </span>
       </span>
+      <% elsif @start_date || @end_date %>
+        <span class="xs-hide sm-hide md-hide flex items-center">
+          <span class="nowrap">
+            <%= @start_date && @end_date ? "Between" : @end_date ? "After" : "Before" %>
+          </span>
+          <span style="background-color: rgba(0, 0, 0, 0.3); color: #f9fafc" class="nowrap badge regular ml1">
+            <%= @start_date&.to_datetime&.strftime("%m/%d/%Y") || "" %>
+            <%= @end_date && @start_date ? " and " : "" %>
+            <%= @end_date&.to_datetime&.strftime("%m/%d/%Y") || "" %>
+          </span>
+        </span>
       <% else %>
         <span class="xs-hide sm-hide md-hide nowrap">Filter</span>
       <% end %>
@@ -61,6 +72,13 @@
           data-action="click->filter#selectTypes"
           style="cursor: pointer;">
           Types
+        </span>
+        <span
+          data-filter-target="datesLabel"
+          data-filter-menu-label-selected="<%= @start_date || @end_date ? "true" : "false" %>"
+          data-action="click->filter#selectDates"
+          style="cursor: pointer;">
+          Dates
         </span>
       </div>
 
@@ -104,7 +122,19 @@
         <% end %>
       </div>
 
-      <% if @tag || @user || @type %>
+      <div data-filter-target="dates" data-filter-menu-selected="<%= @start_date || @end_date ? "true" : "false" %>">
+        <%= form_with(model: nil, local: true, method: :get, class: "flex-auto p1") do |form| %>
+          <p class="bold mb0 mt0">Transactions after...</p>
+          <%= form.date_field :start, class: "border mb1", value: @start_date %>
+          <p class="bold mb0 mt0">Transactions before...</p>
+          <%= form.date_field :end, class: "border mb1", value: @end_date %>
+          <div class="flex justify-start">
+            <%= form.submit "Filter Transactions" %>
+          </div>
+        <% end %>
+      </div>
+
+      <% if @tag || @user || @type || @start_date || @end_date %>
         <div class="menu__divider"></div>
         <%= link_to do %>
           <%= inline_icon "view-close", size: 24 %>
