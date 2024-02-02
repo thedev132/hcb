@@ -48,19 +48,39 @@
     </p>
   </div>
 
+  <% warning_emoji = capture do %>
+    <%# ⚠️ Emoji doesn't render with our default font stack %>
+    <span style="font-family: initial;">⚠️</span>
+  <% end %>
   <p>
-    <%= @opdr.subject_has_outstanding_expenses_expensify ? "✅" : "❌" %>
-    <strong>Outstanding Expensify expenses?</strong>
+    <% if @opdr.subject_has_outstanding_expenses_expensify %>
+      <%= warning_emoji %> <strong>Outstanding Expensify expenses reported</strong>
+    <% else %>
+      ✅ <strong>No outstanding Expensify expenses reported</strong>
+    <% end %>
   </p>
 
   <p>
-    <%= @opdr.subject_has_outstanding_transactions_stripe ? "✅" : "❌" %>
-    <strong>Outstanding Stripe transactions?</strong>
+    <% if @opdr.organizer_missing_receipts.any? %>
+      <%= warning_emoji %>
+      <strong>
+        <%= @opdr.organizer_missing_receipts.count %>
+        missing receipt(s) on Stripe cards
+      </strong>
+    <% else %>
+      ✅ <strong>No missing receipts on Stripe cards</strong>
+    <% end %>
   </p>
 
   <p>
-    <%= @opdr.subject_has_active_cards ? "✅" : "❌" %>
-    <strong>Active cards?</strong>
+    <% if @opdr.organizer_active_cards.any? %>
+      <%= warning_emoji %>
+      <strong>
+        <%= @opdr.organizer_active_cards.count %> active Stripe card(s)
+      </strong>
+    <% else %>
+      ✅ <strong>No active Stripe cards</strong>
+    <% end %>
   </p>
 
   <% if @opdr.organizer_position.signee? %>
@@ -76,7 +96,7 @@
       organizer_path(@opdr.organizer_position.id),
       method: :delete,
       data: { confirm: "This will remove this user from #{@opdr.organizer_position.event.name} from the database. Are you sure you want to do this?" },
-      class: "btn bg-error ml1" %>
+      class: "btn bg-error mr1" %>
   <% else %>
     <p><strong>Organizer is marked as deleted</strong></p>
   <% end %>

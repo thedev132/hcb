@@ -19,26 +19,6 @@
     <%= form.label :subject_has_outstanding_expenses_expensify, "Yes", value: true %>
   </div>
 
-  <p>
-    Does <%= user_mention @target %> have transactions without receipts on their cards?
-  </p>
-  <div class="field field--radiobox">
-    <%= form.radio_button :subject_has_outstanding_transactions_stripe, false, value: false %>
-    <%= form.label :subject_has_outstanding_transactions_stripe, "No", value: false %>
-    <%= form.radio_button :subject_has_outstanding_transactions_stripe, true, value: true %>
-    <%= form.label :subject_has_outstanding_transactions_stripe, "Yes", value: true %>
-  </div>
-
-  <p>
-    Does <%= user_mention @target %> have active cards?
-  </p>
-  <div class="field field--radiobox">
-    <%= form.radio_button :subject_has_active_cards, false, value: false %>
-    <%= form.label :subject_has_active_cards, "No", value: false %>
-    <%= form.radio_button :subject_has_active_cards, true, value: true %>
-    <%= form.label :subject_has_active_cards, "Yes", value: true %>
-  </div>
-
   <div class="actions">
     <%= form.submit "Request removal" %>
   </div>
