@@ -4,7 +4,7 @@
     <img src="https://cloud-5yru8jas0-hack-club-bot.vercel.app/0logo-512.png" width="126" alt="HCB logo">
   </picture>
   <h1>HCB</h1>
-  <strong>A powerful, safe, and easy-to-use fiscal sponsorship platform for Hack Clubs, hackathons, and nonprofits.</strong>
+  <strong>A powerful, safe, and easy-to-use fiscal sponsorship platform for hackathons, Hack Clubs, robotic teams and more.</strong>
 </div>
 <br>
 
@@ -20,64 +20,59 @@ HCB is a platform for managing your nonprofit's finances. Through HCB, you can g
 - [Table of Contents](#table-of-contents)
 - [Contributing](#contributing)
 - [Quick Start](#quick-start)
-  - [Production Access](#production-access)
+  - [Github Codespaces](#github-codespaces)
+  - [Docker](#docker)
 - [Deployment](#deployment)
-- [Developer Documentation](#developer-documentation)
+- [Wiki](https://github.com/hackclub/hcb/wiki)
 
 ## Contributing
 
-We encourage you to contribute to HCB! Please see the [wiki](https://github.com/hackclub/hcb/wiki) for more information on how to get started.
+We are so excited for you to join the codebase! We have a [Quick Start](#quick-start) guide, or you can go to the [wiki](https://github.com/hackclub/hcb/wiki) for more information on how to get started.
 
 All contributors are expected to follow the Hack Club [Code of Conduct](https://hackclub.com/conduct).
 
 ## Quick Start
 
-This section provides a high-level quick start guide for running HCB with Docker or GitHub Codespaces. <!--For more information, please see the [wiki page](https://github.com/hackclub/hcb/wiki/Development).-->
+### GitHub Codespaces
 
-Clone the repository or create a new Codespaces instance.
+[GitHub Codespaces](https://docs.github.com/en/codespaces) allows you to run a development environment without installing anything on your computer, allows for multiple instances, creates an overall streamlined and reproducible environment, and enables anyone with browser or VS Code access to contribute.
+
+To get started, [whip up a codespace](https://docs.github.com/en/codespaces/getting-started/quickstart) and follow the steps in the [Automated Setup with Docker](#automated-setup-with-docker) section.
+
+See the [Codespaces](./Codespaces.md) page for more information on developing in a GitHub Codespaces environment.
+
+### Docker
+
+If you are running macOS or Ubuntu, you can clone the repository and run the [docker_setup.sh](./docker_setup.sh) script to automatically set up a development environment with Docker. Append `--with-solargraph` to the command to also setup [Solargraph](https://solargraph.org), a language server for Ruby. You may also need to install the [Solargraph extension](https://github.com/castwide/solargraph#using-solargraph) for your editor. This script should also work for Windows; although it's recommended that Window users run it (docker) within [WSL](https://learn.microsoft.com/en-us/windows/wsl/install)
 
 ```bash
-# skip this step if you're using Codespaces
-git clone https://github.com/hackclub/hcb.git && cd hcb
+./docker_setup.sh
+# or with Solargraph
+./docker_setup.sh --with-solargraph
 ```
 
-Install and run [Docker](https://docs.docker.com/get-docker/).
-
-Run the [docker_dev_setup.sh](./docker_dev_setup.sh) script to install dependencies and set up a local environment with Docker.
+Then, to start the development server:
 
 ```bash
-./docker_dev_setup.sh
+./docker_start.sh
+# or with Solargraph
+./docker_start.sh --with-solargraph
 ```
 
-Start the development server with `./docker_start.sh`
-
-Visit [localhost:3000](http://localhost:3000) to see the result.
-
-<!--**What's Solargraph?** [Solargraph](https://solargraph.org/) is a Ruby language server that provides better Intellisense and code completion. It's completely optional to use Solargraph but highly recommended. You may also need to install the [Solargraph extension](https://github.com/castwide/solargraph#using-solargraph) for your IDE.-->
+If you have more questions about development check out our [wiki](https://github.com/hackclub/hcb/wiki)
 
 ### Production Access
 
-We've transitioned to using development keys and seed data in development, but historically have used production keys and data on dev machines. It is recommended to not roll back to using production data & keys in development, but if absolutely necessary the following steps can be taken:
-
-- Set environment variable `USE_PROD_CREDENTIALS=true` in your docker container (usually via `.env.development`). N.B. this does not set [`RAILS_ENV=production`](https://guides.rubyonrails.org/configuring.html#rails-environment-settings), which you should **never** do on a development machine.
-- Put the production key in `config/credentials/production.key`. If you have heroku access you can get this from the `RAILS_MASTER_KEY` environment variable. If not then ask a team member (ping `@creds` in Slack). [DO NOT CHECK THIS INTO GIT](https://github.com/hackclub/hcb/blob/99fab73deb27a09a9424847e02080cb3ea5d09cf/.gitignore#L29)
-    - If you need to edit [`config/credentials/production.yml.enc`](./config/credentials/production.yml.enc), you can now run `bin/rails credentials:edit --environment=production`.
-- Run the [docker_setup.sh](./docker_setup.sh) script to set up a local environment with Docker using a dump of the production database.
-
-Developing with production keys & data has risk and should only be used if you know what you are doing.
+Please see this part of the [wiki](https://github.com/hackclub/hcb/wiki/Development/#production-access) for more information on Production Access
 
 ## Deployment
 
-Pushes to the `main` branch are automatically deployed by Heroku.
-
-## Developer Documentation
-
-Please see the [wiki](https://github.com/hackclub/hcb/wiki) for technical documentation on HCB.
+All pushes to the `main` branch are automatically deployed by Heroku.
 
 ---
 
 <div align="center">
-<img src="./hcb_laser.gif" alt="Laser engraving the HCB logo" width="500">
+<img src="./hcb_laser.gif" alt="Laser engraving of the HCB logo" width="500">
 <br>
 <p><strong>Happy hacking. ❤️</strong></p>
 </div>
