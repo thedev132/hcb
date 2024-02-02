@@ -1,6 +1,6 @@
 const whenViewed = (element, callback) => new IntersectionObserver(([entry]) => entry.isIntersecting && callback(), { threshold: 1 }).observe(element);
 const loadModals = element => {
-   $(element).on('click', '[data-behavior~=modal_trigger]', function (e) {
+  $(element).on('click', '[data-behavior~=modal_trigger]', function (e) {
     const controlOrCommandClick = e.ctrlKey || e.metaKey;
     if ($(this).attr('href') || $(e.target).attr('href')) {
       if (controlOrCommandClick) return;
@@ -16,7 +16,7 @@ const loadModals = element => {
     return this.blur()
   })
 
-  $(element).on('click', '[data-behavior~=modal_trigger] [data-behavior~=modal_ignore]', function(e) {
+  $(element).on('click', '[data-behavior~=modal_trigger] [data-behavior~=modal_ignore]', function (e) {
     e.stopPropagation();
     e.preventDefault()
   });
@@ -189,7 +189,7 @@ $(document).on('turbo:load', function () {
         $(frame).children('.shimmer').first().addClass('shimmer--error')
       })
     }
-    
+
     if ($(frame).data('loading') == "lazy") {
       whenViewed(frame, loadFrame);
     } else loadFrame();
@@ -205,7 +205,7 @@ $(document).on('turbo:load', function () {
         if ((email = localStorage.getItem('login_email'))) {
           BK.s('login').find('input[type=email]').val(email)
         }
-      } catch (e) {}
+      } catch (e) { }
     }
 
     // auto fill @hackclub.com email addresses on submit
@@ -220,7 +220,7 @@ $(document).on('turbo:load', function () {
   }
 
   // login code sanitization
-  $(document).on('keyup change', "input[name='login_code']", function() {
+  $(document).on('keyup change', "input[name='login_code']", function () {
     const currentVal = $(this).val()
     let newVal = currentVal.replace(/[^0-9]+/g, '')
 
@@ -324,7 +324,7 @@ $(document).on('turbo:load', function () {
       if (e.target.checked) shippingInputs.slideDown()
     })
     $(virtualInput).on('change', e => {
-      if (e.target.checked) shippingInputs.hide()
+      if (e.target.checked) shippingInputs.slideUp()
     })
   }
 
@@ -389,8 +389,8 @@ $(document).on('click', '[data-behavior~=expand_receipt]', function (e) {
   selected_receipt.classList.add("receipt--expanded")
 })
 
-function unexpandReceipt(){
-  document.querySelectorAll(`.receipt--expanded`)[0]?.classList?.remove('receipt--expanded'); 
+function unexpandReceipt() {
+  document.querySelectorAll(`.receipt--expanded`)[0]?.classList?.remove('receipt--expanded');
   document.querySelector('.modal--popover.modal--popover--receipt-expanded')?.classList?.remove('modal--popover--receipt-expanded');
 }
 
