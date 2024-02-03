@@ -1189,13 +1189,14 @@ class AdminController < ApplicationController
 
   def airtable_task_size(task_name)
     info = airtable_info[task_name]
-    task = Faraday
-           .new { |c| c.response :json }
-           .get(info[:url], { select: info[:query].to_json })
-           .body
+    task = Faraday.new { |c|
+      c.response :json
+      c.authorization :Bearer, Rails.application.credentials.airtable[:pat]
+    }.get("https://api.airtable.com/v0/#{info[:id]}/#{info[:table]}", info[:query]).body["records"]
 
     task.size
-  rescue Faraday::Error
+  rescue => e
+    Airbrake.notify(e)
     9999 # return something invalidly high to get the ops team to report it
   end
 
