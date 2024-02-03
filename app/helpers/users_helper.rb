@@ -99,13 +99,17 @@ module UsersHelper
   end
 
   def admin_tools(class_name = "", element = "div", override_pretend: false, **options, &block)
-    if options.delete(:if) == false
-      yield
-    else
-      return unless current_user&.admin? || (override_pretend && current_user&.admin_override_pretend?)
+    return unless current_user&.admin? || (override_pretend && current_user&.admin_override_pretend?)
 
-      concat content_tag(element, class: "admin-tools #{class_name}", **options, &block)
-    end
+    concat content_tag(element, class: "admin-tools #{class_name}", **options, &block)
+  end
+
+  def admin_tools_if(condition, *args, **options, &block)
+    # If condition is false, it displays the content for ALL users. Otherwise,
+    # it's only visible to admins.
+    yield and return unless condition
+
+    admin_tools(*args, **options, &block)
   end
 
   def creator_bar(object, options = {})

@@ -12,7 +12,7 @@
 <% end %>
 
 <%= render "receipts/list_v2" %>
-<% admin_tools if: @hcb_code.receipt_optional? do %>
+<% admin_tools_if @hcb_code.receipt_optional? do %>
   <%= begin receipt_upload_form_config = {
         receiptable: @hcb_code,
         enable_linking: true,
