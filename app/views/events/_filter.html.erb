@@ -56,7 +56,7 @@
             data-filter-menu-label-selected="<%= @tag || (!@user && !@type && !(@start_date || @end_date)) ? "true" : "false" %>"
             data-action="click->filter#selectTags"
             style="cursor: pointer;">
-            Tags
+            Tag
           </span>
         <% end %>
         <span
@@ -64,21 +64,21 @@
           data-filter-menu-label-selected="<%= (@user || !(Flipper.enabled?(:transaction_tags_2022_07_29, @event) && @event.tags.size > 0)) && !@type ? "true" : "false" %>"
           data-action="click->filter#selectUsers"
           style="cursor: pointer;">
-          Users
+          User
         </span>
         <span
           data-filter-target="typesLabel"
           data-filter-menu-label-selected="<%= @type ? "true" : "false" %>"
           data-action="click->filter#selectTypes"
           style="cursor: pointer;">
-          Types
+          Type
         </span>
         <span
           data-filter-target="datesLabel"
           data-filter-menu-label-selected="<%= @start_date || @end_date ? "true" : "false" %>"
           data-action="click->filter#selectDates"
           style="cursor: pointer;">
-          Dates
+          Date
         </span>
       </div>
 
