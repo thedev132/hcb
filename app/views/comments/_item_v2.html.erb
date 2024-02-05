@@ -12,10 +12,10 @@
           'aria-label': "See all edit history" %>
       </action>
       <% end %>
-      <% if organizer_signed_in? %>
-      <%= link_to edit_comment_path(comment), class: "tooltipped tooltipped--s right", 'aria-label': "Edit" do %>
-        <%= inline_icon "edit", size: 24, 'aria-label': "Edit" %>
-      <% end %>
+      <% if policy(comment).edit? %>
+        <%= link_to edit_comment_path(comment), class: "tooltipped tooltipped--s right", 'aria-label': "Edit" do %>
+          <%= inline_icon "edit", size: 24, 'aria-label': "Edit" %>
+        <% end %>
       <% end %>
     </div>
     <div class="card__banner card__darker comment--container">

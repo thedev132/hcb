@@ -10,11 +10,11 @@ class CommentPolicy < ApplicationPolicy
   end
 
   def edit?
-    user.admin? || record.commentable.event.users.include?(user)
+    user.admin? || (record.commentable.event.users.include?(user) && record.user == user)
   end
 
   def update?
-    user.admin? || record.commentable.event.users.include?(user)
+    user.admin? || (record.commentable.event.users.include?(user) && record.user == user)
   end
 
 end
