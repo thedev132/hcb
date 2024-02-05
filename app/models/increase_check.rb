@@ -78,7 +78,7 @@ class IncreaseCheck < ApplicationRecord
   end
 
   validates :amount, numericality: { greater_than: 0, message: "can't be zero!" }
-  validates :memo, length: { in: 1..40 }
+  validates :memo, length: { in: 1..40 }, unless: :increase?
   validates :recipient_name, length: { in: 1..250 }
   validates_presence_of :memo, :payment_for, :recipient_name, :address_line1, :address_city, :address_zip
   validates_presence_of :address_state, message: "Please select a state!"
@@ -114,6 +114,10 @@ class IncreaseCheck < ApplicationRecord
 
   def column?
     column_id.present?
+  end
+
+  def increase?
+    increase_id.present?
   end
 
   def state
