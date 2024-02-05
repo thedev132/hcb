@@ -79,7 +79,7 @@ class ExportsController < ApplicationController
       end
 
       format.pdf do
-        @start = (params[:start_date]&.to_datetime || Date.today.prev_month).beginning_of_month
+        @start = (params[:start_date] || Date.today.prev_month).to_datetime.beginning_of_month
         if @start >= Date.today.beginning_of_month
           flash[:error] = "Can not create an account statement for #{@start.strftime("%B %Y")}"
           redirect_back fallback_location: event_statements_path(@event) and return
@@ -98,7 +98,8 @@ class ExportsController < ApplicationController
                            0
                          else
                            # Get the running balance of the first transaction immediately before the start date
-                           all.find { |t| t.date < @start }.running_balance
+                           # or if there's no transaction before the start date, $0.
+                           all.find { |t| t.date < @start }&.running_balance || 0
                          end
         @end_balance = @transactions.first&.running_balance || @start_balance
 
