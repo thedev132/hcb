@@ -6,20 +6,6 @@ class AdminController < ApplicationController
 
   layout "application"
 
-  def tasks
-    @active = pending_tasks
-    @pending_actions = @active.values.any? { |e| e.nonzero? }
-    @blankslate_message = [
-      "You look great today, #{current_user.first_name}.",
-      "You’re a *credit* to your team, #{current_user.first_name}.",
-      "Everybody thinks you’re amazing, #{current_user.first_name}.",
-      "You’re every organizer’s favorite team member.",
-      "You’re so good at finances, even we think your balance is outstanding.",
-      "You’re sweeter than a savings account.",
-      "Though they don't show it off, those flowers sure are pretty."
-    ].sample
-  end
-
   def task_size
     starting = Process.clock_gettime(Process::CLOCK_MONOTONIC)
     size = pending_task params[:task_name].to_sym
