@@ -3,6 +3,7 @@
 class RawIncreaseTransactionMailer < ApplicationMailer
   def deprecated_account_number
     @transaction = params[:transaction]
+    @amount = @transaction.amount_cents
     @event = @transaction.event
 
     mail to: @event.users.pluck(:email), subject: "[ACTION REQUIRED] Your HCB account number has changed"
