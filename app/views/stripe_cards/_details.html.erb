@@ -87,10 +87,19 @@
         </div>
       </div>
     <% end %>
-    <p>
-      <strong>Billing address</strong>
-      <%= render_address stripe_card.cardholder %>
-    </p>
+    <div>
+      <strong class="inline-flex items-center" style="gap: 4px">
+        Billing address
+        <% if stripe_card.user == current_user && stripe_card.cardholder.default_billing_address? %>
+          <span class="info tooltipped tooltipped--e" aria-label="You're using HCB's default billing address, not your home address. You can change it in your user settings if you'd like." style="display: flex;">
+            <%= inline_icon "info", size: 18, style: "position: unset;" %>
+          </span>
+        <% end %>
+      </strong>
+      <div class="flex justify-between">
+        <%= render_address stripe_card.cardholder %>
+      </div>
+    </div>
     <p>
       <strong>Type</strong>
       <%= stripe_card.virtual? ? "Virtual" : "Physical" %>

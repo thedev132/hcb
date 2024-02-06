@@ -30,12 +30,6 @@ module StripeCardholderService
         stripe_name: name,
         stripe_email: email,
         stripe_phone_number: phone_number,
-        stripe_billing_address_line1: line1,
-        stripe_billing_address_line2: line2,
-        stripe_billing_address_city: city,
-        stripe_billing_address_state: state,
-        stripe_billing_address_postal_code: postal_code,
-        stripe_billing_address_country: country
       }
     end
 
@@ -46,14 +40,7 @@ module StripeCardholderService
         phone_number:,
         type: cardholder_type,
         billing: {
-          address: {
-            line1:,
-            # line2:,
-            city:,
-            state:,
-            postal_code:,
-            country:
-          }
+          address: StripeCardholder::DEFAULT_BILLING_ADDRESS.compact
         },
         individual: {
           first_name:,
@@ -90,30 +77,6 @@ module StripeCardholderService
       raise ArgumentError, requirements if name.gsub(/[^a-z]/i, "").blank?
 
       name
-    end
-
-    def line1
-      "8605 Santa Monica Blvd #86294"
-    end
-
-    def line2
-      nil
-    end
-
-    def city
-      "West Hollywood"
-    end
-
-    def state
-      "CA"
-    end
-
-    def postal_code
-      "90069"
-    end
-
-    def country
-      "US"
     end
 
     def email

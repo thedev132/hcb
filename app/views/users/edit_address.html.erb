@@ -10,16 +10,30 @@
     <h2 id="address">Billing address</h2>
 
     <p class="h5 muted mt0 mb1">
-      This will be linked to your cards and may be checked against by merchants.
-      <br>
-      By default this is our address.
+      Merchants may use this address to verify your identity on card
+      transactions. By default, this is HCB's address.
     </p>
+
+    <div class="card border b--warning pb0 mt2 mb2">
+      <div class="flex items-center warning">
+        <%= inline_icon "info", size: 32, class: "mr1" %>
+        <p class="bold mt0 mb0">Important info about changing your billing address</p>
+      </div>
+      <ul class="mt1 mb2">
+        <li>Changing your address applies immedietly to all of your cards.</li>
+        <li>Recurring card charges like subscriptions might break when your billing address changes.</li>
+      </ul>
+      <div class="border-top card__banner card__darker secondary">
+        <strong>Questions?</strong>
+        <%= help_message %>
+      </div>
+    </div>
 
     <%= form_with model: @user do |form| %>
       <%= form.fields_for :stripe_cardholder, @user.stripe_cardholder do |form| %>
         <div class="field">
           <%= form.label :stripe_billing_address_line1, "Street address" %>
-          <%= form.text_field :stripe_billing_address_line1, placeholder: "8605 Santa Monica Blvd #86294", required: true %>
+          <%= form.text_field :stripe_billing_address_line1, placeholder: StripeCardholder::DEFAULT_BILLING_ADDRESS[:line1], required: true %>
         </div>
 
         <div class="field">
@@ -29,7 +43,7 @@
         <div class="flex">
           <div class="field flex-auto mr1">
             <%= form.label :stripe_billing_address_city, "City" %>
-            <%= form.text_field :stripe_billing_address_city, placeholder: "West Hollywood", required: true %>
+            <%= form.text_field :stripe_billing_address_city, placeholder: StripeCardholder::DEFAULT_BILLING_ADDRESS[:city], required: true %>
           </div>
           <div class="field flex-auto ml1">
             <%= form.label :address_state, "State / Province" %>
@@ -39,7 +53,7 @@
 
         <div class="field">
           <%= form.label :postal_code %>
-          <%= form.text_field :stripe_billing_address_postal_code, placeholder: "90069", required: true %>
+          <%= form.text_field :stripe_billing_address_postal_code, placeholder: StripeCardholder::DEFAULT_BILLING_ADDRESS[:postal_code], required: true %>
         </div>
 
         <div class="field">

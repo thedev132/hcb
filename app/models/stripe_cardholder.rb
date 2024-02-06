@@ -54,6 +54,8 @@ class StripeCardholder < ApplicationRecord
 
   after_validation :update_cardholder_in_stripe, on: :update, if: -> { errors.none? }
 
+  before_validation :set_default_billing_address
+
   def stripe_dashboard_url
     "https://dashboard.stripe.com/issuing/cardholders/#{self.stripe_id}"
   end
@@ -90,7 +92,29 @@ class StripeCardholder < ApplicationRecord
     stripe_obj[:requirements].try(:[], :disabled_reason)
   end
 
+  DEFAULT_BILLING_ADDRESS = {
+    line1: "8605 Santa Monica Blvd #86294",
+    line2: nil,
+    city: "West Hollywood",
+    state: "CA",
+    postal_code: "90069",
+    country: "US"
+  }.freeze
+
+  def default_billing_address?
+    DEFAULT_BILLING_ADDRESS.all? do |key, value|
+      self.public_send(:"address_#{key}") == value
+    end
+  end
+
   private
+
+  def set_default_billing_address
+    DEFAULT_BILLING_ADDRESS.each do |key, value|
+      method = :"address_#{key}"
+      self.public_send(:"#{method}=", value) if self.public_send(method).blank?
+    end
+  end
 
   def update_cardholder_in_stripe
     StripeService::Issuing::Cardholder.update(
