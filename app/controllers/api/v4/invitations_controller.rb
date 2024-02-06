@@ -13,7 +13,7 @@ module Api
       def show; end
 
       def accept
-        unless @invitation.accept
+        unless @invitation.accept(show_onboarding: false)
           raise ActiveRecord::RecordInvalid.new(@invitation)
         end
 

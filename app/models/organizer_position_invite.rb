@@ -85,7 +85,7 @@ class OrganizerPositionInvite < ApplicationRecord
     OrganizerPositionInvitesMailer.with(invite: self).notify.deliver_later
   end
 
-  def accept
+  def accept(show_onboarding: true)
     if cancelled?
       self.errors.add(:base, "was canceled!")
       return false
@@ -99,7 +99,8 @@ class OrganizerPositionInvite < ApplicationRecord
     self.organizer_position = OrganizerPosition.new(
       event:,
       user:,
-      is_signee:
+      is_signee:,
+      first_time: show_onboarding,
     )
 
     self.accepted_at = Time.current
