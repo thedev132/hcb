@@ -39,7 +39,7 @@
             <strong>
               Card number
             </strong>
-            <div class="flex justify-between mono">
+            <div class="flex justify-between mono items-center">
               <% if @show_card_details %>
                   <%= stripe_card.formatted_card_number %>
                   <%= link_to stripe_card_path(stripe_card), data: { turbo: true } do %>
