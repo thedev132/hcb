@@ -443,6 +443,13 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_29_192145) do
     t.index ["event_id"], name: "index_column_account_numbers_on_event_id"
   end
 
+  create_table "column_statements", force: :cascade do |t|
+    t.datetime "start_date"
+    t.datetime "end_date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "comments", force: :cascade do |t|
     t.string "commentable_type"
     t.bigint "commentable_id"
