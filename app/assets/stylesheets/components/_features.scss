@@ -82,11 +82,8 @@ html[data-dark='true'] .feature-transaction-tags {
 
 .feature-turbo {
   background-color: $snow;
-  background-image: linear-gradient(
-      to right,
-      rgba($snow, 0.9),
-      rgba($snow, 0.9)
-    ),
+  background-image:
+    linear-gradient(to right, rgba($snow, 0.9), rgba($snow, 0.9)),
     #{image-url('feature-turbo.png')};
   background-size: 4em;
 }
@@ -109,7 +106,35 @@ html[data-dark='true'] {
   }
 }
 
+.feature-anonymous-donations {
+  background-size: 24em;
+  background-color: $snow;
+  position: relative;
 
+  & > * {
+    z-index: 100;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-image: #{image-url('feature-anonymous-donations-dark.png')};
+    background-size: 24em;
+    opacity: 0.1;
+  }
+}
+
+html[data-dark='true'] .feature-anonymous-donations {
+  background-color: $black;
+
+  &::after {
+    opacity: 1;
+  }
+}
 
 .feature-generic {
   background-color: $snow;

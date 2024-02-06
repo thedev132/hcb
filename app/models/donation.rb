@@ -8,6 +8,7 @@
 #  aasm_state                           :string
 #  amount                               :integer
 #  amount_received                      :integer
+#  anonymous                            :boolean          default(FALSE), not null
 #  email                                :text
 #  hcb_code                             :text
 #  in_transit_at                        :datetime
@@ -237,7 +238,7 @@ class Donation < ApplicationRecord
   end
 
   def smart_memo
-    name.to_s.upcase
+    anonymous? ? "ANONYMOUS DONOR" : name.to_s.upcase
   end
 
   def hcb_code

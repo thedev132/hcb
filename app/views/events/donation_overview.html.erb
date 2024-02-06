@@ -221,9 +221,12 @@
             <%= format_date d.created_at %>
           </td>
           <td class="flex items-center">
-            <%= d.name %>
+            <%= d.anonymous? && !organizer_signed_in? ? "Anonymous" : d.name %>
             <% if d.recurring? %>
               <div class="line-height-0 ml1 tooltipped tooltipped--n" aria-label="Monthly donor"><%= inline_icon "transactions", size: 24, class: "muted" %></div>
+            <% end %>
+            <% if d.anonymous? %>
+              <div class="line-height-0 ml1 tooltipped tooltipped--n" aria-label="Anonymous donor"><%= inline_icon "private-fill", size: 24, class: "muted" %></div>
             <% end %>
           </td>
           <td style="text-align: right;">

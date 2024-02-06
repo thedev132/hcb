@@ -37,6 +37,9 @@
   <h2 class="h2 mt0 border-none flex items-center justify-between">
     <span>
       <%= @donation.name %>
+      <% if @donation.anonymous? %>
+        <div class="line-height-0 mx-1 tooltipped tooltipped--s inline align-bottom" style="margin: 0 2px;" aria-label="Anonymous donor"><%= inline_icon "private-fill", size: 24, class: "muted" %></div>
+      <% end %>
       <span class="regular muted"> donated </span>
       <span class="regular"><%= render_money @donation.amount_received %></span>
       <% if @donation.refunded? %>

@@ -58,7 +58,7 @@ module PendingTransactionEngine
       end
 
       def donation_name
-        raw_pending_donation_transaction.donation.name.to_s.upcase
+        raw_pending_donation_transaction.donation.smart_memo
       end
 
     end

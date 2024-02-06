@@ -78,7 +78,7 @@ class FeeReimbursement < ApplicationRecord
 
   def transaction_display_name
     if donation
-      return "Fee refund for donation from #{donation.name}"
+      return "Fee refund for #{donation.anomymous? ? "anonymous donation" : "donation from #{donation.name}"}"
     else
       return "Fee refund for invoice to #{invoice.sponsor.name}"
     end

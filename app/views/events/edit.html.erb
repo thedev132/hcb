@@ -88,4 +88,30 @@
   </p>
 </div>
 
+<div class="card pb0 mb3" id="anonymous-donations">
+  <div class="card__banner card__banner--top flex justify-between items-center feature-anonymous-donations <%= "b--info" if Flipper.enabled?(:anonymous_donations_2024_01_29, @event) %> ">
+    <h3 class="h1 pt2 pb2 my0 color-black">Anonymous Donations</h3>
+    <% if Flipper.enabled?(:anonymous_donations_2024_01_29) %>
+      <%# Feature is enabled for all users, don't include a choice %>
+      <div class="actions tooltipped tooltipped--w inline-block mt1" aria-label="This feature is now generally available!">
+        <span class="btn bg-accent disabled">Shipped!</span>
+      </div>
+      <%# link_to "Shipped!", enable_feature_path(feature: :transfers_2022_04_21), method: :post, class: 'btn bg-accent' %>
+    <% elsif @event.demo_mode? %>
+      <div class="actions tooltipped tooltipped--w inline-block mt1" aria-label="Not available in demo mode.">
+        <span class="btn bg-accent disabled">Enable</span>
+      </div>
+    <% elsif Flipper.enabled?(:anonymous_donations_2024_01_29, @event) %>
+      <%# Feature is enabled, let the user opt-out %>
+      <%= link_to "Disable", disable_feature_event_path(feature: :anonymous_donations_2024_01_29), method: :post, class: "btn bg-accent" %>
+    <% else %>
+      <%# Feature is disabled, let the user opt-in %>
+      <%= link_to "Enable", enable_feature_event_path(feature: :anonymous_donations_2024_01_29), method: :post, class: "btn bg-info" %>
+    <% end %>
+  </div>
+  <p>
+    Allow donors to appear anonymously in Transparency Mode!
+  </p>
+</div>
+
 <%= render "form", event: @event %>
