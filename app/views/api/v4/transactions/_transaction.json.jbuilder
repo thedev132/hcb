@@ -20,6 +20,7 @@ else
   json.tags []
 end
 json.code hcb_code.hcb_i1
+json.missing_receipt hcb_code.needs_receipt?
 
 json.card_charge { json.partial! "api/v4/transactions/card_charge",  hcb_code:                             } if hcb_code.stripe_card? || hcb_code.stripe_force_capture?
 json.donation    { json.partial! "api/v4/transactions/donation",     donation:     hcb_code.donation       } if hcb_code.donation?
