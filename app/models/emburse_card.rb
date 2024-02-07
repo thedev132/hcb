@@ -118,16 +118,6 @@ class EmburseCard < ApplicationRecord
     "•••• •••• •••• ••••"
   end
 
-  def deactivate!
-    self.deactivated_at = DateTime.now
-    self.save
-  end
-
-  def reactivate!
-    self.deactivated_at = nil
-    self.save
-  end
-
   def requires_activation?
     sync_from_emburse! && self.save if self.emburse_state.blank?
     self.emburse_state == "unactivated"

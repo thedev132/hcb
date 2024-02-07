@@ -9,16 +9,4 @@ class EmburseCardPolicy < ApplicationPolicy
     record.event.users.include?(user) || user&.admin?
   end
 
-  def edit?
-    user&.admin?
-  end
-
-  def update?
-    user&.admin?
-  end
-
-  def destroy?
-    user&.admin?
-  end
-
 end
