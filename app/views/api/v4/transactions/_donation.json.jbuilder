@@ -7,3 +7,4 @@ json.donor do
   json.recurring_donor_id donation.recurring_donation.hashid if donation.recurring?
 end
 json.donated_at donation.donated_at
+json.refunded donation.refunded?
