@@ -21,8 +21,8 @@ module PendingEventMappingEngine
             cpt.decline!
           end
 
-          # 3. identify reversed (0 amount and a considerable amount of time has passed)
-          if status == "reversed" && rpst.amount_cents < 0
+          # 3. identify reversed
+          if status == "reversed"
             cpt.decline!
           end
 
