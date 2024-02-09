@@ -2,10 +2,13 @@
 
 require "rails_helper"
 
+HCBCode = TransactionGroupingEngine::Calculate::HcbCode
+
+
 describe HcbCodeService::CanDispute do
 
   context "when it's an invalid transaction" do
-    let(:hcb_code) { build_stubbed(:hcb_code) }
+    let(:hcb_code) { build(:hcb_code) }
 
     it "returns false" do
       result, error_reason = described_class.new(hcb_code:).run
@@ -16,11 +19,10 @@ describe HcbCodeService::CanDispute do
   end
 
   context "when it's valid transaction but not a stripe transaction" do
-    let(:hcb_code) { build_stubbed(:hcb_code) }
+    let(:hcb_code) { build(:hcb_code) }
+    let!(:ct) { create(:canonical_transaction).update(hcb_code: hcb_code.hcb_code) }
 
     it "returns false" do
-      allow(hcb_code).to receive(:no_transactions?).and_return(false)
-
       result, error_reason = described_class.new(hcb_code:).run
 
       expect(result).to eq(false)
@@ -30,12 +32,10 @@ describe HcbCodeService::CanDispute do
 
 
   context "when stripe transaction is older than 90 days" do
-    let(:hcb_code) { build_stubbed(:hcb_code) }
-    it "returns false" do
-      allow(hcb_code).to receive(:no_transactions?).and_return(false)
-      allow(hcb_code).to receive(:stripe_card?).and_return(true)
-      allow(hcb_code).to receive(:date).and_return(Date.today - 91.days)
+    let(:hcb_code) { build(:hcb_code, code_type: ::HCBCode::STRIPE_CARD_CODE) }
+    let!(:ct) { create(:canonical_transaction, date: Date.today - 91.days).update(hcb_code: hcb_code.hcb_code) }
 
+    it "returns false" do
       result, error_reason = described_class.new(hcb_code:).run
 
       expect(result).to eq(false)
@@ -44,13 +44,10 @@ describe HcbCodeService::CanDispute do
   end
 
   context "when it's a bank transaction older than 90 days" do
-    let(:hcb_code) { build_stubbed(:hcb_code) }
+    let(:ct) { create(:canonical_transaction, date: Date.today - 91.days, amount_cents: -1) }
+
     it "returns false" do
-      allow(hcb_code).to receive(:no_transactions?).and_return(false)
-      allow(hcb_code).to receive(:stripe_card?).and_return(false)
-      allow(hcb_code).to receive(:unknown?).and_return(true)
-      allow(hcb_code).to receive(:date).and_return(Date.today - 91.days)
-      allow(hcb_code).to receive(:amount_cents).and_return(-1)
+      hcb_code = ct.local_hcb_code
 
       result, error_reason = described_class.new(hcb_code:).run
 
@@ -60,12 +57,10 @@ describe HcbCodeService::CanDispute do
   end
 
   context "when stripe transaction is newer than 90 days" do
-    let(:hcb_code) { build_stubbed(:hcb_code) }
-    it "returns true" do
-      allow(hcb_code).to receive(:no_transactions?).and_return(false)
-      allow(hcb_code).to receive(:stripe_card?).and_return(true)
-      allow(hcb_code).to receive(:date).and_return(Date.today - 90.days)
+    let(:hcb_code) { build(:hcb_code, code_type: ::HCBCode::STRIPE_CARD_CODE) }
+    let!(:ct) { create(:canonical_transaction, date: Date.today - 90.days).update(hcb_code: hcb_code.hcb_code) }
 
+    it "returns true" do
       result, = described_class.new(hcb_code:).run
 
       expect(result).to eq(true)
@@ -73,12 +68,11 @@ describe HcbCodeService::CanDispute do
   end
 
   context "when transaction is a donation" do
-    let(:hcb_code) { build_stubbed(:hcb_code) }
-    it "returns true" do
-      allow(hcb_code).to receive(:no_transactions?).and_return(false)
-      allow(hcb_code).to receive(:stripe_card?).and_return(false)
-      allow(hcb_code).to receive(:donation?).and_return(true)
+    let(:hcb_code) { build(:hcb_code, code_type: ::HCBCode::DONATION_CODE) }
+    let!(:ct) { create(:canonical_transaction).update(hcb_code: hcb_code.hcb_code) }
 
+
+    it "returns true" do
       result, = described_class.new(hcb_code:).run
 
       expect(result).to eq(true)
@@ -86,12 +80,10 @@ describe HcbCodeService::CanDispute do
   end
 
   context "when transaction is a partner donation" do
-    let(:hcb_code) { build_stubbed(:hcb_code) }
-    it "returns true" do
-      allow(hcb_code).to receive(:no_transactions?).and_return(false)
-      allow(hcb_code).to receive(:stripe_card?).and_return(false)
-      allow(hcb_code).to receive(:donation?).and_return(true)
+    let(:hcb_code) { build(:hcb_code, code_type: ::HCBCode::PARTNER_DONATION_CODE) }
+    let!(:ct) { create(:canonical_transaction).update(hcb_code: hcb_code.hcb_code) }
 
+    it "returns true" do
       result, = described_class.new(hcb_code:).run
 
       expect(result).to eq(true)
@@ -100,13 +92,10 @@ describe HcbCodeService::CanDispute do
 
 
   context "when transaction is a bank transaction newer than 90 days" do
-    let(:hcb_code) { build_stubbed(:hcb_code) }
-    it "returns true" do
-      allow(hcb_code).to receive(:no_transactions?).and_return(false)
-      allow(hcb_code).to receive(:stripe_card?).and_return(false)
-      allow(hcb_code).to receive(:unknown?).and_return(true)
-      allow(hcb_code).to receive(:date).and_return(Date.today - 90.days)
+    let(:ct) { create(:canonical_transaction, date: Date.today - 90.days, amount_cents: -1) }
 
+    it "returns true" do
+      hcb_code = ct.local_hcb_code
       result, = described_class.new(hcb_code:).run
 
       expect(result).to eq(true)
