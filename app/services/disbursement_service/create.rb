@@ -5,7 +5,7 @@ module DisbursementService
     include ::Shared::AmpleBalance
 
     def initialize(source_event_id:, destination_event_id:,
-                   name:, amount:, requested_by_id:, fulfilled_by_id: nil, destination_subledger_id: nil, source_subledger_id: nil, should_charge_fee: false)
+                   name:, amount:, requested_by_id:, fulfilled_by_id: nil, destination_subledger_id: nil, source_subledger_id: nil, should_charge_fee: false, skip_auto_approve: false)
       @source_event_id = source_event_id
       @source_event = Event.friendly.find(@source_event_id)
       @destination_event_id = destination_event_id
@@ -17,12 +17,13 @@ module DisbursementService
       @requested_by_id = requested_by_id
       @fulfilled_by_id = fulfilled_by_id
       @should_charge_fee = should_charge_fee
+      @skip_auto_approve = skip_auto_approve
     end
 
     def run
       raise ArgumentError, "amount is required" unless @amount
       raise ArgumentError, "amount_cents must be greater than 0" unless amount_cents > 0
-      raise ArgumentError, "You don't have enough money to make this disbursement." unless ample_balance?(amount_cents, @source_event) || requested_by.admin?
+      raise ArgumentError, "You don't have enough money to make this disbursement." unless ample_balance?(amount_cents, @source_event) || requested_by_admin?
 
       disbursement = Disbursement.create!(attrs)
 
@@ -38,7 +39,7 @@ module DisbursementService
       ::PendingEventMappingEngine::Map::Single::IncomingDisbursement.new(canonical_pending_transaction: i_cpt).run
       ::PendingEventMappingEngine::Map::Single::OutgoingDisbursement.new(canonical_pending_transaction: o_cpt).run
 
-      if requested_by&.admin? || disbursement.source_event == disbursement.destination_event # Auto-fulfill disbursements between subledgers in the same event
+      if requested_by_admin? || disbursement.source_event == disbursement.destination_event # Auto-fulfill disbursements between subledgers in the same event
         disbursement.mark_approved!(requested_by)
       end
 
@@ -62,6 +63,10 @@ module DisbursementService
 
     def requested_by
       @requested_by ||= User.find @requested_by_id if @requested_by_id
+    end
+
+    def requested_by_admin?
+      !@skip_auto_approve && requested_by&.admin?
     end
 
     def amount_cents

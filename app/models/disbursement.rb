@@ -218,6 +218,18 @@ class Disbursement < ApplicationRecord
     state_text.underscore
   end
 
+  def v4_api_state
+    if reviewing?
+      "pending"
+    elsif rejected?
+      "rejected"
+    elsif pending? || in_transit? || deposited?
+      "completed"
+    else
+      aasm.current_state
+    end
+  end
+
   def state_text
     if fulfilled?
       "fulfilled"

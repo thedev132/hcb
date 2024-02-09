@@ -492,6 +492,8 @@ Rails.application.routes.draw do
             end
           end
 
+          resources :disbursements, path: "transfers", only: [:create]
+
           member do
             get "transactions"
           end
