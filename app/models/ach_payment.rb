@@ -25,7 +25,7 @@
 class AchPayment < ApplicationRecord
   belongs_to :stripe_ach_payment_source
   has_one :event, through: :stripe_ach_payment_source
-  belongs_to :fee_reimbursement, required: false
+  belongs_to :fee_reimbursement, optional: true
 
   def stripe_fee
     stripe_charge.balance_transaction.fee

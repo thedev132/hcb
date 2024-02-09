@@ -17,7 +17,7 @@
 #
 class OutgoingTwilioMessage < ApplicationRecord
   belongs_to :twilio_message
-  belongs_to :hcb_code, required: false
+  belongs_to :hcb_code, optional: true
 
   validates_presence_of :twilio_message
 

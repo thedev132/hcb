@@ -63,8 +63,8 @@ class EmburseTransaction < ApplicationRecord
   scope :awaiting_receipt, -> { missing_receipt.completed.where.not(amount: 0) }
   scope :unified_list, -> { undeclined }
 
-  belongs_to :event, required: false
-  belongs_to :emburse_card, required: false
+  belongs_to :event, optional: true
+  belongs_to :emburse_card, optional: true
   alias_attribute :card, :emburse_card
 
   validates_uniqueness_of_without_deleted :emburse_id

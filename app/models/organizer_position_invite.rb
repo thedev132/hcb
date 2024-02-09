@@ -70,7 +70,7 @@ class OrganizerPositionInvite < ApplicationRecord
   belongs_to :user
   belongs_to :sender, class_name: "User"
 
-  belongs_to :organizer_position, required: false
+  belongs_to :organizer_position, optional: true
 
   validate :not_already_organizer
   validate :not_already_invited, on: :create

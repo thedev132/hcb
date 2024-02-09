@@ -126,10 +126,10 @@ class Invoice < ApplicationRecord
   has_one :event, through: :sponsor
 
   belongs_to :creator, class_name: "User"
-  belongs_to :manually_marked_as_paid_user, class_name: "User", required: false
-  belongs_to :payout, class_name: "InvoicePayout", required: false
-  belongs_to :fee_reimbursement, required: false
-  belongs_to :archived_by, class_name: "User", required: false
+  belongs_to :manually_marked_as_paid_user, class_name: "User", optional: true
+  belongs_to :payout, class_name: "InvoicePayout", optional: true
+  belongs_to :fee_reimbursement, optional: true
+  belongs_to :archived_by, class_name: "User", optional: true
 
   has_one :personal_transaction, class_name: "HcbCode::PersonalTransaction", required: false
   has_one_attached :manually_marked_as_paid_attachment

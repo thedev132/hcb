@@ -13,26 +13,6 @@
 Naming/VariableNumber:
   Enabled: false
 
-# Offense count: 33
-# This cop supports safe autocorrection (--autocorrect).
-Rails/BelongsTo:
-  Exclude:
-    - 'app/models/ach_payment.rb'
-    - 'app/models/check.rb'
-    - 'app/models/donation.rb'
-    - 'app/models/emburse_card_request.rb'
-    - 'app/models/emburse_transaction.rb'
-    - 'app/models/emburse_transfer.rb'
-    - 'app/models/invoice.rb'
-    - 'app/models/lob_address.rb'
-    - 'app/models/organizer_position_deletion_request.rb'
-    - 'app/models/organizer_position_invite.rb'
-    - 'app/models/outgoing_twilio_message.rb'
-    - 'app/models/partnered_signup.rb'
-    - 'app/models/receipt.rb'
-    - 'app/models/transaction.rb'
-    - 'app/models/user_session.rb'
-
 # Offense count: 27
 # This cop supports unsafe autocorrection (--autocorrect-all).
 # Configuration parameters: NilOrEmpty, NotPresent, UnlessPresent.

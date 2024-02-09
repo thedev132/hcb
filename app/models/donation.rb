@@ -59,9 +59,9 @@ class Donation < ApplicationRecord
   pg_search_scope :search_name, against: [:name, :email], using: { tsearch: { prefix: true, dictionary: "english" } }, ranked_by: "donations.created_at"
 
   belongs_to :event
-  belongs_to :fee_reimbursement, required: false
-  belongs_to :payout, class_name: "DonationPayout", required: false
-  belongs_to :recurring_donation, required: false
+  belongs_to :fee_reimbursement, optional: true
+  belongs_to :payout, class_name: "DonationPayout", optional: true
+  belongs_to :recurring_donation, optional: true
 
   before_create :create_stripe_payment_intent, unless: -> { recurring? }
   before_create :assign_unique_hash, unless: -> { recurring? }

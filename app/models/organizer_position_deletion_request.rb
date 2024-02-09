@@ -36,7 +36,7 @@ class OrganizerPositionDeletionRequest < ApplicationRecord
   include Commentable
 
   belongs_to :submitted_by, class_name: "User"
-  belongs_to :closed_by, class_name: "User", required: false
+  belongs_to :closed_by, class_name: "User", optional: true
   belongs_to :organizer_position, with_deleted: true
   has_one :event, through: :organizer_position
 

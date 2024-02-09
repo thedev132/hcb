@@ -41,10 +41,10 @@ class EmburseTransfer < ApplicationRecord
 
   # NOTE(@msw) emburse_transfers used to be on a per-emburse_card basis & we're keeping the
   # association for compatability with migrations
-  belongs_to :emburse_card, required: false
+  belongs_to :emburse_card, optional: true
 
   belongs_to :event
-  belongs_to :fulfilled_by, class_name: "User", required: false
+  belongs_to :fulfilled_by, class_name: "User", optional: true
   belongs_to :creator, class_name: "User"
   has_one :t_transaction, class_name: "Transaction"
 

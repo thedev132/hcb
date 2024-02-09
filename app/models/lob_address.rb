@@ -28,7 +28,7 @@
 #
 class LobAddress < ApplicationRecord
   has_many :checks
-  belongs_to :event, required: true
+  belongs_to :event
 
   before_create :default_values
   before_create :create_lob_address

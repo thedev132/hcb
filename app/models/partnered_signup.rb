@@ -55,9 +55,9 @@ class PartneredSignup < ApplicationRecord
   include CountryEnumable
   has_country_enum :countries
 
-  belongs_to :partner, required: true
-  belongs_to :event,   required: false
-  belongs_to :user,    required: false
+  belongs_to :partner
+  belongs_to :event, optional: true
+  belongs_to :user,  optional: true
 
   validates :redirect_url, presence: true
   validates_presence_of [:organization_name,
