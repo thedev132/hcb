@@ -1,6 +1,6 @@
 <% instance = ct.__id__ %>
 <tr
-  class="transaction--<%= ct.amount.negative? ? "negative" : "positive" %> <%= ct.local_hcb_code.disbursement.special_appearance[:css_class] if !ct.amount.negative? && ct.local_hcb_code.disbursement&.special_appearance? %>"
+  class="transaction--<%= ct.amount.negative? ? "negative" : ct.amount.positive? ? "positive" : "zero" %> <%= ct.local_hcb_code.disbursement.special_appearance[:css_class] if !ct.amount.negative? && ct.local_hcb_code.disbursement&.special_appearance? %>"
   id="<%= ct.local_hcb_code.hashid %>"
   <% if local_assigns[:receipt_upload_button] %>
     data-controller="file-drop"

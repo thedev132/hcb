@@ -1,6 +1,6 @@
 <% instance = pt.__id__ %>
 <tr
-  class="transaction--<%= pt.amount.negative? ? "negative" : "positive" %> muted"
+  class="transaction--<%= pt.amount.negative? ? "negative" : pt.amount.positive? ? "positive" : "zero" %> muted"
   id="<%= pt.local_hcb_code.hashid %>"
   <% if local_assigns[:receipt_upload_button] %>
     data-controller="file-drop"

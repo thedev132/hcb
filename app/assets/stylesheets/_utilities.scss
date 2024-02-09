@@ -127,6 +127,9 @@ $shades: (
 .transaction--negative {
   @extend .shade-red;
 }
+.transaction--zero {
+  @extend .shade-neutral;
+}
 
 @each $name, $value in $palette {
   .#{'' + $name} {
