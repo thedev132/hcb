@@ -291,7 +291,7 @@ class Event < ApplicationRecord
   has_one :increase_account_number
 
   has_one :column_account_number, class_name: "Column::AccountNumber"
-  delegate :account_number, :routing_number, to: :column_account_number, allow_nil: true
+  delegate :account_number, :routing_number, :bic_code, to: :column_account_number, allow_nil: true
 
   has_many :grants
 

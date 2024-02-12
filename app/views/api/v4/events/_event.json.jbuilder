@@ -17,4 +17,10 @@ if local_assigns[:expand]&.include?(:balance_cents)
   json.fee_balance_cents event.fronted_fee_balance_v2_cents
 end
 
+if policy(event).account_number? && local_assigns[:expand]&.include?(:account_number)
+  json.account_number event.account_number
+  json.routing_number event.routing_number
+  json.swift_bic_code event.bic_code
+end
+
 json.users event.users, partial: "api/v4/users/user", as: :user if local_assigns[:expand]&.include?(:users)
