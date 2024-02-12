@@ -31,7 +31,7 @@ module Api
       private
 
       def set_invitation
-        @invitation = authorize OrganizerPositionInvite.find_by_public_id!(params[:id])
+        @invitation = authorize OrganizerPositionInvite.find_by_public_id(params[:id]) || OrganizerPositionInvite.friendly.find(params[:id])
       end
 
     end

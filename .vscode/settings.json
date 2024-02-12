@@ -29,5 +29,8 @@
   "[ruby][gemfile][erb]": {
     "editor.tabSize": 2,
     "editor.insertSpaces": true
+  },
+  "files.associations": {
+    "apple-app-site-association": "json"
   }
 }
