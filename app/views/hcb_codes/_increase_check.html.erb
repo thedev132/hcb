@@ -1,3 +1,6 @@
+<% @check = @hcb_code.increase_check %>
+<% @account_details = @check.increase? ? @event.increase_account_number : @event.column_account_number %>
+
 <link href="https://fonts.googleapis.com/css?family=Damion" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=Space+Mono" rel="stylesheet">
 
@@ -31,9 +34,9 @@
 
   <p class="check__meta">
       &#9286;
-      <%= @hcb_code.increase_check.event.increase_account_number&.routing_number %>
+      <%= @account_details&.routing_number %>
       &#9286;
-      <%= @hcb_code.increase_check.event.increase_account_number&.account_number&.slice(0..2) %>[HIDDEN]
+      <%= @account_details&.account_number&.slice(0..2) %>[HIDDEN]
       &#9286;
   </p>
 </div>
