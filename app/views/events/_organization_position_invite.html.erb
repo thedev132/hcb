@@ -9,10 +9,10 @@
       <div class="flex g1 h-fit-content">
         <% if admin_signed_in? %>
           <div class="tooltipped tooltipped--s" aria-label="Edit user's settings">
-            <%= pop_icon_to "controls", edit_user_path(position.user.slug), data: { turbo_frame: "_top" }, class: "admin-tools circle" %>
+            <%= pop_icon_to "controls", edit_user_path(position.user.slug), data: { turbo_frame: "_top" }, class: "admin-tools circle overflow-hidden" %>
           </div>
           <div class="tooltipped tooltipped--s" aria-label="Impersonate user">
-            <%= pop_icon_to "spy", impersonate_user_path(id: position.user.id, return_to: request.url), data: { turbo_frame: "_top" }, class: "admin-tools circle" %>
+            <%= pop_icon_to "spy", impersonate_user_path(id: position.user.id, return_to: request.url), data: { turbo_frame: "_top" }, class: "admin-tools circle overflow-hidden" %>
           </div>
         <% end %>
 
