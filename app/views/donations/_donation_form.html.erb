@@ -38,7 +38,7 @@
     </div>
 
     <div class="field">
-      <% if !@event.country_us? %>
+      <% if !@event.country_US? %>
         <%= form.label :amount, "Donation amount (USD)" %>
       <% else %>
         <%= form.label :amount, "Donation amount" %>
@@ -70,7 +70,7 @@
     <% end %>
 
     <p class="muted h5 mt2 mb1">
-      Your contribution is tax-deductible<% if !@event.country_us? %> in the US<% end %>.
+      Your contribution is tax-deductible<% if !@event.country_US? %> in the US<% end %>.
     </p>
 
     <% if @event.demo_mode? %>

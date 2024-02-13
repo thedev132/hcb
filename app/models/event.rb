@@ -374,10 +374,6 @@ class Event < ApplicationRecord
     priority: 2,
   }
 
-  def country_us?
-    country == "US"
-  end
-
   def admin_formatted_name
     "#{name} (#{id})"
   end

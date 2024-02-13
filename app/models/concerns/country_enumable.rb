@@ -5,7 +5,7 @@ module CountryEnumable
 
   module ClassMethods
     def has_country_enum(enum_name = :country)
-      enum enum_name, self.country_enum_list
+      enum enum_name, self.country_enum_list, prefix: :country
     end
 
     private
