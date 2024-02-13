@@ -83,11 +83,19 @@
     <% end %>
   </p>
 
-  <% if @opdr.organizer_position.signee? %>
+  <% if @opdr.organizer_last_signee? %>
+    <p class='error bold'>
+      <%= inline_icon "important", size: 24, style: "vertical-align: middle; margin: -0.2rem 0 0 -0.2rem;" %>
+      Woah! This user is THE LAST organizer that has signed the fiscal sponsorship contract for this
+      organization! Are you sure you want to remove them?
+    </p>
+  <% elsif @opdr.organizer_position.signee? %>
     <p class='warning'>
       <%= inline_icon "important", size: 24, style: "vertical-align: middle; margin: -0.2rem 0 0 -0.2rem;" %>
       Woah! This user has signed the fiscal sponsorship contract for this
       organization. Are you sure you want to remove them?
+      <% signee_count_after_removal = @opdr.event.signees.size - 1 %>
+      (<%= signee_count_after_removal %> <%= "signee".pluralize(signee_count_after_removal) %> will remain)
     </p>
   <% end %>
 
@@ -95,7 +103,7 @@
     <%= link_to "Delete organizer ⚠️☣☠",
       organizer_path(@opdr.organizer_position.id),
       method: :delete,
-      data: { confirm: "This will remove this user from #{@opdr.organizer_position.event.name} from the database. Are you sure you want to do this?" },
+      data: { confirm: "This will remove this user from #{@opdr.organizer_position.event.name} from the database. #{"⚠️ They are the last signee for this organization! This organization will be left with NO SIGNEES! ⚠️ " if @opdr.organizer_last_signee?}Are you sure you want to do this?" },
       class: "btn bg-error mr1" %>
   <% else %>
     <p><strong>Organizer is marked as deleted</strong></p>
