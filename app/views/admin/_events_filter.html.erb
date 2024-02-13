@@ -1,4 +1,5 @@
 <% submit_disable_with_false ||= false %>
+<% action_buttons ||= nil %>
 
 <div style='display: inline; border: 1px lightgray solid; border-radius: 0.2rem; padding: 0.2rem; margin-right: 0.5rem;'>
   State: |
@@ -27,6 +28,8 @@
 <% else %>
   <%= form.submit "Search" %>
 <% end %>
+
+<%= action_buttons %>
 
 <br>
 <%= form.label :transparent do %>
