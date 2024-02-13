@@ -46,7 +46,7 @@
   </div>
 
   <div class="muted flex justify-between align-bottom relative w-100 h6 mt1">
-    <p class="m0">Invited <%= relative_timestamp(position.organizer_position_invite.created_at) %> by <%= position.organizer_position_invite.sender.full_name %></p>
+    <p class="m0">Invited <%= relative_timestamp(position.organizer_position_invite.created_at) %> by <%= position.organizer_position_invite.sender.name %></p>
     <% user_mention position.organizer_position_invite.sender %>
     <% if admin_signed_in? %>
       <div class="absolute right-0 bottom-0 line-height-0 tooltipped tooltipped--w" aria-label="<%= (position.signee? ? "Contract signee" : "No contract signature") + ". Click to toggle." %>">
