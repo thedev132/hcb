@@ -29,4 +29,8 @@ class OrganizerPositionInvitePolicy < ApplicationPolicy
     user.admin? || record.event.users.include?(user)
   end
 
+  def toggle_signee_status?
+    user.admin?
+  end
+
 end

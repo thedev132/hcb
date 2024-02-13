@@ -1,44 +1,65 @@
-<%= creator_bar position.organizer_position_invite, prefix: "invited " if position.organizer_position_invite.present? %>
-<article class="card pt0 pb0 mb2">
-  <section class='flex items-center'>
-    <%= avatar_for position.user, 48, class: "mr2" %>
-    <p class="flex-auto">
-      <strong class="h3 block"><%= position.user.name || "Unnamed" %></strong>
-      <%= organizer_signed_in? ? position.user.email : "Sign in to view email" %>
-      <% admin_tools("m0 p0 badge mb2 block w-fit", "span") do %>
-      <span class="m0 badge bg-muted pointer" data-controller="clipboard" data-clipboard-text-value="<%= position.user.email %>" data-action="click->clipboard#copy">
-        copy email
-      </span>
-    <% end %>
-    </p>
-    <% admin_tools("mr2 p0 circle") do %>
-      <%= pop_icon_to "controls", edit_user_path(position.user.slug), data: { turbo_frame: "_top" } if position.user == current_user || admin_signed_in? %>
-    <% end %>
-    <% if organizer_signed_in? && position.organizer_position_deletion_requests.under_review.where(submitted_by: current_user).exists? %>
-      <%= pop_icon_to "clock", "#", class: "muted tooltipped tooltipped--w", "aria-label" => "Removal request pending", disabled: true %>
-    <% else %>
-      <%= pop_icon_to "member-remove", new_event_organizer_remove_path(organizer_id: position.user.slug), class: "error", data: { turbo_frame: "_top" }, disabled: !organizer_signed_in? unless position.user == current_user && !admin_signed_in? %>
-    <% end %>
-    <%= pop_icon_to "controls", edit_user_path(position.user.slug), class: "ml2", data: { turbo_frame: "_top" } if position.user == current_user && !admin_signed_in? %>
-  </section>
-  <% admin_tools "card__banner card__darker h5", "section", style: "border-radius: 0 0 0.5rem 0.5rem;" do %>
-    <div class='mb1'>
-      <%= inline_icon "message-simple-new", size: 20, style: "vertical-align: middle; margin: -0.2rem 0.5rem 0 0;" %>
-      <span><%= position.user.phone_number %></span>
+<div class="organizer-position-invite card flex flex-column overflow-visible mb2">
+  <div class="flex justify-between">
+    <div class="relative">
+      <%= inline_icon("admin-badge", size: 48, class: "avatar-container__admin-bolt") if position.user.admin? %>
+      <%= avatar_for position.user, 64 %>
     </div>
-    <div class='mb1'>
-      <% if position.signee? %>
-        <%= inline_icon "docs-fill", size: 20, style: "vertical-align: middle; margin: -0.2rem 0.5rem 0 0;" %>
-        <span>Contract signee</span>
-      <% else %>
-        <%= inline_icon "docs", size: 20, style: "vertical-align: middle; margin: -0.2rem 0.5rem 0 0;" %>
-        <span>No contract signature</span>
+
+    <% if organizer_signed_in? %>
+      <div class="flex g1 h-fit-content">
+        <% if admin_signed_in? %>
+          <div class="tooltipped tooltipped--s" aria-label="Edit user's settings">
+            <%= pop_icon_to "controls", edit_user_path(position.user.slug), data: { turbo_frame: "_top" }, class: "admin-tools circle" %>
+          </div>
+          <div class="tooltipped tooltipped--s" aria-label="Impersonate user">
+            <%= pop_icon_to "spy", impersonate_user_path(id: position.user.id, return_to: request.url), data: { turbo_frame: "_top" }, class: "admin-tools circle" %>
+          </div>
+        <% end %>
+
+        <% if position.organizer_position_deletion_requests.under_review.exists? %>
+          <div class="tooltipped tooltipped--w" aria-label="Pending removal request">
+            <%= pop_icon_to "clock", "#", class: "muted", disabled: true %>
+          </div>
+        <% else %>
+          <%= pop_icon_to "member-remove", new_organizer_remove_path(organizer_id: position.id), class: "error tooltipped tooltipped--s", 'aria-label': "Remove user from organization", data: { turbo_frame: "_top" } %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="inline-flex items-center g2">
+    <p class="h2 bold m0"><%= position.user.name %></p>
+
+    <% if organizer_signed_in? %>
+      <div class="inline-flex g1 align-items-center">
+        <%= copy_to_clipboard(position.user.email, class: "line-height-0") do %>
+          <%= inline_icon("email", size: 24, class: "muted") %>
+        <% end %>
+
+        <% if admin_signed_in? %>
+          <%= copy_to_clipboard(position.user.phone_number, class: "line-height-0") do %>
+            <%= inline_icon("message-simple", size: 24, class: "warning") %>
+          <% end %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="muted flex justify-between align-bottom relative w-100 h6 mt1">
+    <p class="m0">Invited <%= relative_timestamp(position.organizer_position_invite.created_at) %> by <%= position.organizer_position_invite.sender.full_name %></p>
+    <% user_mention position.organizer_position_invite.sender %>
+    <% if admin_signed_in? %>
+      <div class="absolute right-0 bottom-0 line-height-0 tooltipped tooltipped--w" aria-label="<%= (position.signee? ? "Contract signee" : "No contract signature") + ". Click to toggle." %>">
+        <%= link_to toggle_signee_status_organizer_path(position.id), data: { turbo_method: "post", turbo_frame: "_top", turbo_confirm: "Are you sure you want to toggle #{position.user.name}'s contract signee status?" } do %>
+          <div class="warning">
+            <% if position.signee? %>
+              <%= inline_icon("docs-positive", size: 24) %>
+            <% else %>
+              <%= inline_icon("docs-negative", size: 24) %>
+            <% end %>
+          </div>
       <% end %>
-      <%= link_to "(toggle)", toggle_signee_status_organizer_path(position.id), data: { turbo_method: "post", turbo_frame: "_top", turbo_confirm: "Are you sure you want to toggle #{position.user.name}'s contract signee status?" } %>
-    </div>
-    <div>
-      <%= inline_icon "leader", size: 20, style: "vertical-align: middle; margin: -0.2rem 0.5rem 0 0;" %>
-      <%= link_to "Impersonate this user", impersonate_user_path(position.user.id, return_to: request.url), data: { turbo_method: "post", turbo_frame: "_top" } %>
-    </div>
-  <% end %>
-</article>
+      </div>
+    <% end %>
+  </div>
+</div>

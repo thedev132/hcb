@@ -237,6 +237,9 @@ Rails.application.routes.draw do
     post "accept"
     post "reject"
     post "cancel"
+    member do
+      post "toggle_signee_status"
+    end
   end
 
   resources :organizer_positions, only: [:destroy], as: "organizers" do

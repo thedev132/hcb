@@ -7,14 +7,20 @@
     <%= form.label :email, class: "mb1" %>
 
     <div class="flex items-center">
-      <%= form.email_field :email, class: "mr2" %>
+      <%= form.email_field :email, class: "mr1" %>
+
+      <% admin_tools("mr1") do %>
+        <div class="field field--checkbox mb0 line-height-0" data-controller="team-invite-form" data-action="click->team-invite-form#toggle">
+          <%= form.check_box :is_signee, "data-team-invite-form-target": "realCheckbox", style: "display: none;" %>
+
+          <div class="warning">
+            <div data-team-invite-form-target="docsPos" style="translate: 1px -1px; display: none;"><%= inline_icon("docs-positive", size: 20) %></div>
+            <div data-team-invite-form-target="docsNeg" style="translate: -1.5px 0; display: none;"><%= inline_icon("docs-negative", size: 20) %></div>
+          </div>
+        </div>
+      <% end %>
+
       <%= form.submit 'Send', disabled: !organizer_signed_in? %>
     </div>
-    <% admin_tools('mt1') do %>
-      <div class="field field--checkbox mb0">
-        <%= form.check_box :is_signee %>
-        <%= form.label :is_signee, "Signed contract" %>
-      </div>
-    <% end %>
   </div>
 <% end %>
