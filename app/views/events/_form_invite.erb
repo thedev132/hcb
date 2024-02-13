@@ -22,7 +22,7 @@
 
       <%= form.submit 'Send', disabled: !organizer_signed_in? %>
     </div>
-    <template x-if="email.includes('team@', 'webmaster@', 'marketing@', 'admin@', 'info@', 'about@', 'support@', 'sales@', 'hq@', 'hello@')">
+    <template x-if="/^(team|webmaster|marketing|admin|info|about|support|sales|hq|hello)@/.test(email)">
       <div class="warning mt1">⚠️ We discourage team emails on HCB. We recommend individual emails such as <em>ben@hackclub.com</em>!</div>
     </template>
   </div>
