@@ -3,11 +3,11 @@
 <%= form_with(model: invite, local: true, url: event_organizer_position_invites_path) do |form| %>
   <%= form_errors invite %>
 
-  <div class="field">
+  <div class="field" x-data="{ email: '' }">
     <%= form.label :email, class: "mb1" %>
 
     <div class="flex items-center">
-      <%= form.email_field :email, class: "mr1" %>
+      <%= form.email_field :email, class: "mr1", "x-model": "email" %>
 
       <% admin_tools("mr1") do %>
         <div class="field field--checkbox mb0 line-height-0" data-controller="team-invite-form" data-action="click->team-invite-form#toggle">
@@ -22,5 +22,8 @@
 
       <%= form.submit 'Send', disabled: !organizer_signed_in? %>
     </div>
+    <template x-if="email.includes('team@', 'webmaster@', 'marketing@', 'admin@', 'info@', 'about@', 'support@', 'sales@', 'hq@', 'hello@')">
+      <div class="warning mt1">⚠️ We discourage team emails on HCB. We recommend individual emails such as <em>ben@hackclub.com</em>!</div>
+    </template>
   </div>
 <% end %>

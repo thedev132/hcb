@@ -1,14 +1,18 @@
-<p class="muted mb1">This person will have full access to your event finances.</p>
+<p class="muted mb1">This person will have full access to your project finances.</p>
 
 <%= form_with(model: invite, local: true, url: event_organizer_position_invites_path) do |form| %>
   <%= form_errors invite, "user" %>
-
-  <div class="field flex items-end">
-    <div class="mr2 flex-auto">
-      <%= form.label :email %>
-      <%= form.email_field :email %>
+  <div x-data="{ email: '' }">
+    <div class="field flex items-end">
+      <div class="mr2 flex-auto">
+        <%= form.label :email %>
+        <%= form.email_field :email, "x-model": "email" %>
+      </div>
+      <%= form.submit "Send" %>
     </div>
-    <%= form.submit "Send" %>
+    <template x-if="email.includes('team@', 'webmaster@', 'marketing@', 'admin@', 'info@', 'about@', 'support@', 'sales@', 'hq@', 'hello@')">
+      <div class="warning mt1">⚠️ We discourage team emails on HCB. We recommend individual emails such as <em>ben@hackclub.com</em>!</div>
+    </template>
   </div>
   <% admin_tools("mt1") do %>
     <div class="field field--checkbox m0">
