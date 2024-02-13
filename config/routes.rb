@@ -499,6 +499,8 @@ Rails.application.routes.draw do
           end
         end
 
+        resources :transactions, only: [:show]
+
         resources :stripe_cards, path: "cards", only: [:show, :update] do
           member do
             get "transactions"

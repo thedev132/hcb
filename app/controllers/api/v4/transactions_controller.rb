@@ -6,10 +6,14 @@ module Api
       skip_after_action :verify_authorized, only: [:missing_receipt]
 
       def show
-        @event = Event.find_by_public_id(params[:event_id]) || Event.friendly.find(params[:event_id])
-        @hcb_code = authorize HcbCode.find_by_public_id(params[:id])
+        @hcb_code = authorize HcbCode.find_by_public_id!(params[:id])
 
-        raise ActiveRecord::RecordNotFound if !@hcb_code.events.include?(@event)
+        if params[:event_id]
+          @event = Event.find_by_public_id(params[:event_id]) || Event.friendly.find(params[:event_id])
+          raise ActiveRecord::RecordNotFound if !@hcb_code.events.include?(@event)
+        else
+          @event = @hcb_code.events.find { |e| e.users.include?(current_user) } || @hcb_code.events.first
+        end
       end
 
       def missing_receipt
