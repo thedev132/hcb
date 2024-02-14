@@ -21,7 +21,7 @@
             <%= pop_icon_to "clock", "#", class: "muted", disabled: true %>
           </div>
         <% else %>
-          <%= pop_icon_to "member-remove", new_organizer_remove_path(organizer_id: position.id), class: "error tooltipped tooltipped--s", 'aria-label': "Remove user from organization", data: { turbo_frame: "_top" } %>
+          <%= pop_icon_to "member-remove", new_event_organizer_remove_path(organizer_id: position.user.slug), class: "error tooltipped tooltipped--s", 'aria-label': "Remove user from organization", data: { turbo_frame: "_top" } %>
         <% end %>
       </div>
     <% end %>
