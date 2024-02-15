@@ -33,6 +33,10 @@ class HcbCodePolicy < ApplicationPolicy
     user&.admin? || present_in_events?
   end
 
+  def pin?
+    user&.admin? || present_in_events?
+  end
+
   def toggle_tag?
     user&.admin? || present_in_events?
   end

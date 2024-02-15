@@ -36,6 +36,7 @@ class HcbCode < ApplicationRecord
   has_many :suggested_receipts, source: :receipt, through: :suggested_pairings
 
   has_one :personal_transaction, required: false
+  has_one :pin, required: false
 
   before_create :generate_and_set_short_code
 

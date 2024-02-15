@@ -82,6 +82,30 @@ class HcbCodesController < ApplicationController
     @suggested_memos = [::HcbCodeService::AiGenerateMemo.new(hcb_code: @hcb_code).run].compact + ::HcbCodeService::SuggestedMemos.new(hcb_code: @hcb_code, event: @event).run.first(4)
   end
 
+  def pin
+    @hcb_code = HcbCode.find(params[:id])
+    @event = @hcb_code.event
+
+    authorize @hcb_code
+
+    # Handle unpinning
+    if (@pin = HcbCode::Pin.find_by(event: @event, hcb_code: @hcb_code))
+      @pin.destroy
+      flash[:success] = "Unpinned transaction from #{@event.name}"
+      redirect_back fallback_location: @event and return
+    end
+
+    # Handle pinning
+    @pin = HcbCode::Pin.new(event: @event, hcb_code: @hcb_code)
+    if @pin.save
+      flash[:success] = "Transaction pinned!"
+    else
+      flash[:error] = @pin.errors.full_messages.to_sentence
+    end
+
+    redirect_back fallback_location: @event
+  end
+
   def update
     @hcb_code = HcbCode.find_by(hcb_code: params[:id]) || HcbCode.find(params[:id])
 

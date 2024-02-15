@@ -108,6 +108,8 @@
   <% end %>
 </h2>
 
+<%= render "pinned_transactions" %>
+
 <%= turbo_frame_tag :ledger, data: { turbo_action: "advance" } do %>
 
   <%= render partial: "filter" %>

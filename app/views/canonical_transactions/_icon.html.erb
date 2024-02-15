@@ -1,0 +1,75 @@
+<% if ct.fee_payment? %>
+  <td class="transaction__icon tooltipped tooltipped--e" aria-label="Fiscal sponsorship payment">
+    <%= inline_icon "minus-fill" %>
+  </td>
+<% elsif ct.local_hcb_code.fee_revenue? %>
+  <td class="transaction__icon tooltipped tooltipped--e" aria-label="Fee revenue">
+    <%= inline_icon "plus-fill" %>
+  </td>
+<% elsif ct.local_hcb_code.check? %>
+  <td class="transaction__icon tooltipped tooltipped--e" aria-label="Outgoing check">
+    <%= inline_icon "payment-transfer" %>
+  </td>
+<% elsif ct.local_hcb_code.increase_check? %>
+  <td class="transaction__icon tooltipped tooltipped--e" aria-label="Mailed check">
+    <%= inline_icon "email" %>
+  </td>
+<% elsif ct.local_hcb_code.check_deposit? %>
+  <td class="transaction__icon tooltipped tooltipped--e" aria-label="Check deposit">
+    <%= inline_icon "cheque" %>
+  </td>
+<% elsif ct.local_hcb_code.ach_transfer? %>
+  <td class="transaction__icon tooltipped tooltipped--e" aria-label="Outgoing ACH">
+    <%= inline_icon "payment-transfer" %>
+  </td>
+<% elsif ct.local_hcb_code.stripe_refund? %>
+  <td class="transaction__icon tooltipped tooltipped--e" aria-label="Card transaction refund">
+    <%= inline_icon "view-reload" %>
+  </td>
+<% elsif ct.raw_stripe_transaction %>
+  <td class="transaction__icon tooltipped tooltipped--e" aria-label="Card transaction<%= !defined?(authorless) && ct.stripe_cardholder ? " by " + ct.stripe_cardholder.user.initial_name : "" %>">
+    <% unless defined?(authorless) || !ct.stripe_cardholder %>
+      <%= avatar_for ct.stripe_cardholder.user, 24 %>
+    <% else %>
+      <%= inline_icon "card" %>
+    <% end %>
+  </td>
+<% elsif ct.local_hcb_code.invoice? %>
+  <td class="transaction__icon tooltipped tooltipped--e" aria-label="Invoice">
+    <%= inline_icon "briefcase" %>
+  </td>
+<% elsif ct.local_hcb_code.donation? %>
+  <td class="transaction__icon tooltipped tooltipped--e" aria-label="Donation">
+    <%= inline_icon "support" %>
+  </td>
+<% elsif ct.local_hcb_code.disbursement&.special_appearance? %>
+  <% if ct.amount.negative? %>
+    <td class="transaction__icon tooltipped tooltipped--e" aria-label="Outgoing <%= ct.local_hcb_code.disbursement.special_appearance[:title] %>">
+      <%= inline_icon "door-leave" %>
+    </td>
+  <% else %>
+    <td class="transaction__icon tooltipped tooltipped--e" aria-label="<%= ct.local_hcb_code.disbursement.special_appearance[:title] %>">
+      <%= inline_icon(ct.local_hcb_code.disbursement.special_appearance[:icon] || "door-enter") %>
+    </td>
+  <% end %>
+<% elsif ct.local_hcb_code.card_grant? %>
+  <td class="transaction__icon tooltipped tooltipped--e" aria-label="Card Grant">
+    <%= inline_icon "bag" %>
+  </td>
+<% elsif ct.local_hcb_code.disbursement? %>
+  <td class="transaction__icon tooltipped tooltipped--e" aria-label="Disbursement">
+    <% if ct.amount.negative? %>
+      <%= inline_icon "door-leave" %>
+    <% else %>
+      <%= inline_icon "door-enter" %>
+    <% end %>
+  </td>
+<% elsif ct.local_hcb_code.ach_payment? %>
+  <td class="transaction__icon tooltipped tooltipped--e" aria-label="Incoming bank transfer">
+    <%= inline_icon "bank-account" %>
+  </td>
+<% else %>
+  <td class="transaction__icon tooltipped tooltipped--e" aria-label="Bank account transaction">
+    <%= inline_icon "bank-account" %>
+  </td>
+<% end %>

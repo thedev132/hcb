@@ -15,62 +15,7 @@
       dragleave->file-drop#dragleave
     "
   <% end %>>
-  <% if pt.raw_pending_outgoing_check_transaction_id %>
-    <td class="transaction__icon tooltipped tooltipped--e" aria-label="Outgoing check">
-      <%= inline_icon "payment-transfer" %>
-    </td>
-  <% elsif pt.increase_check_id %>
-    <td class="transaction__icon tooltipped tooltipped--e" aria-label="Mailed check">
-      <%= inline_icon "email" %>
-    </td>
-  <% elsif pt.check_deposit_id %>
-    <td class="transaction__icon tooltipped tooltipped--e" aria-label="Check deposit">
-      <%= inline_icon "payment-docs" %>
-    </td>
-  <% elsif pt.raw_pending_outgoing_ach_transaction_id %>
-    <td class="transaction__icon tooltipped tooltipped--e" aria-label="Outgoing ACH">
-      <%= inline_icon "payment-transfer" %>
-    </td>
-  <% elsif pt.raw_pending_invoice_transaction_id %>
-    <td class="transaction__icon tooltipped tooltipped--e" aria-label="Invoice">
-      <%= inline_icon "briefcase" %>
-    </td>
-  <% elsif pt.raw_pending_donation_transaction_id %>
-    <td class="transaction__icon tooltipped tooltipped--e" aria-label="Donation">
-      <%= inline_icon "support" %>
-    </td>
-  <% elsif pt.raw_pending_stripe_transaction_id %>
-    <td class="transaction__icon tooltipped tooltipped--e" aria-label="Card transaction<%= !defined?(authorless) && pt.stripe_cardholder ? " by " + pt.stripe_cardholder.user.initial_name : "" %>">
-      <% unless defined?(authorless) || !pt.stripe_cardholder %>
-        <%= avatar_for pt.stripe_cardholder.user, 24 %>
-      <% else %>
-        <%= inline_icon "card" %>
-      <% end %>
-    </td>
-  <% elsif pt.raw_pending_bank_fee_transaction_id %>
-    <td class="transaction__icon tooltipped tooltipped--e" aria-label="Fiscal sponsorship payment">
-      <%= inline_icon "minus-fill" %>
-    </td>
-  <% elsif pt.raw_pending_incoming_disbursement_transaction_id %>
-    <td class="transaction__icon tooltipped tooltipped--e" aria-label="Incoming transfer">
-      <%= inline_icon "door-enter" %>
-    </td>
-  <% elsif pt.raw_pending_outgoing_disbursement_transaction_id %>
-    <td class="transaction__icon tooltipped tooltipped--e" aria-label="Outgoing transfer">
-      <%= inline_icon "door-leave" %>
-    </td>
-  <% elsif pt.ach_payment_id %>
-    <td class="transaction__icon tooltipped tooltipped--e" aria-label="Incoming bank transfer">
-      <%= inline_icon "bank-account" %>
-    </td>
-  <% elsif pt.grant_id %>
-    <td class="transaction__icon tooltipped tooltipped--e" aria-label="Outgoing grant">
-      <%= inline_icon "idea" %>
-    </td>
-  <% else %>
-    <td class="transaction__icon tooltipped tooltipped--e" aria-label="Other">
-    </td>
-  <% end %>
+  <%= render "canonical_pending_transactions/icon", pt: %>
   <td>
     <%= pt.date %>
   </td>

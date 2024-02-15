@@ -276,6 +276,8 @@ class Event < ApplicationRecord
   has_many :tags, -> { includes(:hcb_codes) }
   has_and_belongs_to_many :event_tags
 
+  has_many :hcb_code_pins, class_name: "HcbCode::Pin"
+
   has_many :check_deposits
 
   belongs_to :partner, optional: true
