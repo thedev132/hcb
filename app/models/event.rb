@@ -114,7 +114,7 @@ class Event < ApplicationRecord
   scope :organized_by_teenagers, -> { includes(:event_tags).where(event_tags: { name: [EventTag::Tags::ORGANIZED_BY_TEENAGERS, EventTag::Tags::ORGANIZED_BY_HACK_CLUBBERS] }) }
   scope :not_organized_by_teenagers, -> { includes(:event_tags).where.not(event_tags: { name: [EventTag::Tags::ORGANIZED_BY_TEENAGERS, EventTag::Tags::ORGANIZED_BY_HACK_CLUBBERS] }).or(includes(:event_tags).where(event_tags: { name: nil })) }
 
-  scope :event_ids_with_pending_fees_greater_than_0_v2, -> do
+  scope :event_ids_with_pending_fees, -> do
     query = <<~SQL
       ;select event_id, fee_balance from (
       select
@@ -147,7 +147,7 @@ class Event < ApplicationRecord
 
       on q1.event_id = q2.event_id
       ) q3
-      where fee_balance > 0
+      where fee_balance != 0
       order by fee_balance desc
     SQL
 
@@ -155,7 +155,7 @@ class Event < ApplicationRecord
   end
 
   scope :pending_fees_v2, -> do
-    where("(last_fee_processed_at is null or last_fee_processed_at <= ?) and id in (?)", MIN_WAITING_TIME_BETWEEN_FEES.ago, self.event_ids_with_pending_fees_greater_than_0_v2.to_a.map { |a| a["event_id"] })
+    where("(last_fee_processed_at is null or last_fee_processed_at <= ?) and id in (?)", MIN_WAITING_TIME_BETWEEN_FEES.ago, self.event_ids_with_pending_fees.to_a.map { |a| a["event_id"] })
   end
 
   scope :demo_mode, -> { where(demo_mode: true) }

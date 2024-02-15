@@ -13,7 +13,7 @@ module BankFeeService
 
       FeeRevenue.create!(
         bank_fees:,
-        amount_cents: bank_fees.sum { |fee| fee.amount_cents.abs },
+        amount_cents: bank_fees.sum { |fee| -fee.amount_cents },
         start: Date.today.last_week, # The previous Monday
         end: Date.yesterday
       )

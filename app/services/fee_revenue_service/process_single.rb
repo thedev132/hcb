@@ -12,11 +12,18 @@ module FeeRevenueService
       ActiveRecord::Base.transaction do
         fee_revenue.mark_in_transit!
 
+        if amount_cents.negative?
+          # If Fee credits out weighted Fiscal Sponsorship Fees
+          sender_bank_account_id, receiver_bank_account_id = ColumnService::Accounts::FS_MAIN, ColumnService::Accounts::FS_OPERATING
+        else
+          sender_bank_account_id, receiver_bank_account_id = ColumnService::Accounts::FS_OPERATING, ColumnService::Accounts::FS_MAIN
+        end
+
         ColumnService.post "/transfers/book",
-                           amount: amount_cents,
+                           amount: amount_cents.abs,
                            currency_code: "USD",
-                           sender_bank_account_id: ColumnService::Accounts::FS_OPERATING,
-                           receiver_bank_account_id: ColumnService::Accounts::FS_MAIN,
+                           sender_bank_account_id:,
+                           receiver_bank_account_id:,
                            description: memo
       end
 

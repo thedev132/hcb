@@ -8,7 +8,7 @@ module BankFeeService
 
     def run
       raise ArgumentError, "must be an event that has not had a fee for more than 5 days" unless event.ready_for_fee?
-      raise ArgumentError, "must be an event that has a balance greater than 0" unless event.fee_balance_v2_cents > 0
+      raise ArgumentError, "must be an event that has a non-zero fee balance" if event.fee_balance_v2_cents.zero?
 
       ActiveRecord::Base.transaction do
         bank_fee = event.bank_fees.create!(attrs)
