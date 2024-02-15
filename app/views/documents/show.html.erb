@@ -6,16 +6,18 @@
 <h1 class="heading">
   <%= @document.name %>
   <% if (@document.user == current_user) || current_user.admin? %>
-    <%= link_to "Edit", edit_document_path(@document), class: "btn bg-info" %>
-    <%= link_to "Destroy", @document, method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn--destroy" %>
+    <div class="flex items-center mt2" style="gap: 6px">
+      <%= link_to document_download_path(@document), target: :_blank, class: "btn" do %>
+        <%= inline_icon "download" %>
+        Download
+      <% end %>
+      <%= link_to "Edit", edit_document_path(@document), class: "btn bg-info" %>
+      <%= link_to "Destroy", @document, method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn--destroy" %>
+    </div>
   <% end %>
 </h1>
 
 <section class="details mb3">
-<p>
-  <strong>Download file</strong>
-  <%= link_to "Click here", document_download_path(@document), target: :_blank %>
-</p>
 
 <p>
   <strong>Added by</strong> <%= user_mention @document.user %>
