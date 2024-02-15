@@ -489,6 +489,7 @@ Rails.application.routes.draw do
           resources :stripe_cards, path: "cards", only: [:index]
           resources :transactions, only: [:show, :update] do
             resources :receipts, only: [:create, :index]
+            resources :comments, only: [:index]
 
             member do
               get "memo_suggestions"
