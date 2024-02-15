@@ -4,7 +4,7 @@ class GrantMailer < ApplicationMailer
   def invitation
     @grant = params[:grant]
 
-    mail to: @grant.recipient.email, subject: "Grant invitation from #{@grant.event.name}", from: "#{@grant.event.name} via HCB <hcb@hackclub.com>"
+    mail to: @grant.recipient.email, subject: "Grant invitation from #{@grant.event.name}", from: email_address_with_name("hcb@hackclub.com", "#{@grant.event.name} via HCB")
   end
 
   def approved
