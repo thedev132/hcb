@@ -1,0 +1,21 @@
+<p>
+  Hi <%= @ach_transfer.recipient_name %>,
+</p>
+
+<p>
+  <%= @ach_transfer.event.name %> has just sent you a
+  <%= render_money(@ach_transfer.amount) %> ACH transfer for
+  <i>"<%= @ach_transfer.payment_for %>"</i>.
+</p>
+
+<p>
+  If you have any questions about this transfer, please contact <%= @ach_transfer.event.name %>.
+</p>
+
+<p>
+  Sincerely,
+  <br><br>
+  The HCB Team
+</p>
+
+<p><i class="muted"><%= @ach_transfer.event.name %> is fiscally sponsored by The Hack Foundation (d.b.a. HCB), a 501(c)(3) nonprofit (EIN: 81-2908499).</i></p>

@@ -51,6 +51,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_29_192145) do
     t.text "increase_id"
     t.date "scheduled_on"
     t.text "column_id"
+    t.string "recipient_email"
+    t.boolean "send_email_notification", default: false
     t.bigint "payment_recipient_id"
     t.index ["column_id"], name: "index_ach_transfers_on_column_id", unique: true
     t.index ["creator_id"], name: "index_ach_transfers_on_creator_id"
@@ -963,6 +965,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_29_192145) do
     t.string "increase_status"
     t.string "check_number"
     t.jsonb "increase_object"
+    t.string "recipient_email"
+    t.boolean "send_email_notification", default: false
     t.string "column_id"
     t.string "column_status"
     t.jsonb "column_object"

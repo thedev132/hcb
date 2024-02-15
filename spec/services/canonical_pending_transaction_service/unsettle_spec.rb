@@ -28,7 +28,7 @@ RSpec.describe CanonicalPendingTransactionService::Unsettle do
            canonical_pending_transaction:,
            canonical_transaction:)
 
-    ach_transfer = create(:ach_transfer, event:, amount: amount_cents, aasm_state: "deposited")
+    ach_transfer = create(:ach_transfer, event:, amount: amount_cents, aasm_state: "deposited", recipient_email: "sam@hackclub.com")
     create(:raw_pending_outgoing_ach_transaction, canonical_pending_transaction:, ach_transfer:, amount_cents:)
 
     expect(ach_transfer.in_transit?).to eq(false)

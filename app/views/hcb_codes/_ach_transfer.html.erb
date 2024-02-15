@@ -40,6 +40,11 @@
         <%= @hcb_code.ach_transfer.recipient_name %>
       </p>
 
+      <p>
+        <strong>Recipient email</strong>
+        <%= @hcb_code.ach_transfer.recipient_email || "(no email provided)" %>
+      </p>
+
       <% if @hcb_code.ach_transfer.recipient_tel.present? %>
         <p class="fs-mask">
           <strong>Recipient phone</strong>

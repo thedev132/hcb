@@ -89,6 +89,11 @@
     </p>
 
     <p>
+      <strong>Recipient email</strong>
+      <%= @hcb_code.increase_check.recipient_email || "(no email provided)" %>
+    </p>
+
+    <p>
       <strong>Check Memo</strong>
       <%= @hcb_code.increase_check.memo %>
     </p>

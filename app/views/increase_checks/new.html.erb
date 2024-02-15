@@ -184,6 +184,15 @@
           <div class="primary"><%= message %></div>
         <% end %>
       </div>
+      <div class="field">
+        <%= form.label :recipient_email, "Recipient Email" %>
+        <%= form.email_field :recipient_email, placeholder: "fionah@gmail.com", required: true %>
+      </div>
+
+      <div class="field field--checkbox">
+        <%= form.check_box :send_email_notification %>
+        <%= form.label :send_email_notification, "Would you like us to notify the recipient?" %>
+      </div>
 
       <%= form.label :file, "Attach a receipt / invoice" %>
       <div class="field field--fileupload mb1 mt1">

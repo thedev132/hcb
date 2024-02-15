@@ -101,7 +101,7 @@ class AchTransfersController < ApplicationController
   end
 
   def ach_transfer_params
-    params.require(:ach_transfer).permit(:routing_number, :account_number, :bank_name, :recipient_name, :amount_money, :payment_for, :scheduled_on, file: [])
+    params.require(:ach_transfer).permit(:routing_number, :account_number, :recipient_email, :bank_name, :recipient_name, :amount_money, :payment_for, :scheduled_on, :send_email_notification, file: [])
   end
 
 end

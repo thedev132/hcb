@@ -12,12 +12,14 @@
 #  bank_name                 :string
 #  confirmation_number       :text
 #  payment_for               :text
+#  recipient_email           :string
 #  recipient_name            :string
 #  recipient_tel             :string
 #  rejected_at               :datetime
 #  routing_number            :string
 #  scheduled_arrival_date    :datetime
 #  scheduled_on              :date
+#  send_email_notification   :boolean          default(FALSE)
 #  created_at                :datetime         not null
 #  updated_at                :datetime         not null
 #  column_id                 :text
@@ -63,6 +65,8 @@ class AchTransfer < ApplicationRecord
   validates :amount, numericality: { greater_than: 0, message: "must be greater than 0" }
   validates :routing_number, format: { with: /\A\d{9}\z/, message: "must be 9 digits" }
   validates :account_number, format: { with: /\A\d+\z/, message: "must be only numbers" }
+  validates :recipient_email, format: { with: URI::MailTo::EMAIL_REGEXP, message: "must be a valid email address" }, allow_nil: true
+  validates_presence_of :recipient_email, on: :create
   validate :scheduled_on_must_be_in_the_future, on: :create
   validate on: :create do
     if amount > event.balance_available_v2_cents
@@ -89,6 +93,9 @@ class AchTransfer < ApplicationRecord
     state :deposited
 
     event :mark_in_transit do
+      after do
+        AchTransferMailer.with(ach_transfer: self).notify_recipient.deliver_later if self.send_email_notification
+      end
       transitions from: [:pending, :deposited, :scheduled], to: :in_transit
     end
 
