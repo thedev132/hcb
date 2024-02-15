@@ -29,12 +29,6 @@ module StaticPagesHelper
 
   def airtable_info
     {
-      hackathons: {
-        id: "apptapPDAi0eBaaG1",
-        table: "applications",
-        query: { filterByFormula: "AND(Approved=0,Rejected=0)" },
-        destination: "https://airtable.com/tblYVTFLwY378YZa4/viwpJOp6ZmMDfcbgb"
-      },
       grant: {
         id: "appEzv7w2IBMoxxHe",
         table: "Github%20Grant",
