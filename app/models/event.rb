@@ -513,7 +513,14 @@ class Event < ApplicationRecord
   end
 
   def balance_available_v2_cents
-    @balance_available_v2_cents ||= balance_v2_cents - (can_front_balance? ? fronted_fee_balance_v2_cents : fee_balance_v2_cents)
+    @balance_available_v2_cents ||= begin
+      fee_balance = can_front_balance? ? fronted_fee_balance_v2_cents : fee_balance_v2_cents
+      if fee_balance.positive?
+        balance_v2_cents - fee_balance
+      else # `fee_balance` is negative, indicating a fee credit
+        balance_v2_cents
+      end
+    end
   end
 
   alias balance balance_v2_cents
