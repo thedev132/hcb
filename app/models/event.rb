@@ -121,7 +121,7 @@ class Event < ApplicationRecord
       q1.event_id,
       COALESCE(q1.sum, 0) as total_fees,
       COALESCE(q2.sum, 0) as total_fee_payments,
-      COALESCE(q1.sum, 0) + COALESCE(q2.sum, 0) as fee_balance
+      CEIL(COALESCE(q1.sum, 0)) + CEIL(COALESCE(q2.sum, 0)) as fee_balance
 
       from (
           select
