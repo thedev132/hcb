@@ -51,7 +51,7 @@ class HcbCodesController < ApplicationController
     if @hcb_code.canonical_transactions.any?
       txs = TransactionGroupingEngine::Transaction::All.new(event_id: @event.id).run
       pos = txs.index { |tx| tx.hcb_code == hcb } + 1
-      page = (pos.to_f / 100).ceil
+      page = (pos.to_f / EventsController::TRANSACTIONS_PER_PAGE).ceil
 
       redirect_to event_path(@event, page:, anchor: hcb_id)
     else

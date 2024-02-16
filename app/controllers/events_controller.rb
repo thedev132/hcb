@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class EventsController < ApplicationController
+  TRANSACTIONS_PER_PAGE = 75
+
   include SetEvent
 
   include Rails::Pagination
@@ -156,7 +158,7 @@ class EventsController < ApplicationController
     end
 
     page = (params[:page] || 1).to_i
-    per_page = (params[:per] || 75).to_i
+    per_page = (params[:per] || TRANSACTIONS_PER_PAGE).to_i
 
     @transactions = Kaminari.paginate_array(@all_transactions).page(page).per(per_page)
     TransactionGroupingEngine::Transaction::AssociationPreloader.new(transactions: @transactions, event: @event).run!
