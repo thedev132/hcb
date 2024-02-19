@@ -20,6 +20,7 @@ demo_event = Event.create_with(
   category: 4,
   demo_mode: true,
   organization_identifier: "bank_#{SecureRandom.hex}",
+  created_at: 7.days.ago
 ).find_or_create_by!(slug: "devhacks")
 
 OrganizerPositionInvite.create!(
@@ -36,6 +37,7 @@ non_transparent_event = Event.create_with(
   sponsorship_fee: 0.07,
   category: 2,
   organization_identifier: "bank_#{SecureRandom.hex}",
+  created_at: 10.days.ago
 ).find_or_create_by!(slug: "expensicon23")
 
 OrganizerPositionInvite.create!(
@@ -52,6 +54,7 @@ transparent_event = Event.create_with(
   sponsorship_fee: 0.00,
   category: 7,
   organization_identifier: "bank_#{SecureRandom.hex}",
+  created_at: 14.days.ago
 ).find_or_create_by!(slug: "hack_the_seas")
 
 OrganizerPositionInvite.create!(
