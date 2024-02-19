@@ -1,6 +1,6 @@
-<% if @event.hcb_code_pins.any? && @event.hcb_code_pins.size > 0 %>
+<% if @event.pinned_hcb_codes.any? %>
   <div class="flex pinned__container">
-    <% @event.hcb_code_pins.each do |pin| %>
+    <% @event.pinned_hcb_codes.each do |pin| %>
       <%= link_to pin.hcb_code, style: "color: inherit !important" do %>
         <div class="pinned__transaction bg-smoke">
           <% if organizer_signed_in? %>

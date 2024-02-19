@@ -30,7 +30,7 @@ class HcbCode
     private
 
     def validate_max_pins_for_event
-      count = event.hcb_code_pins.size
+      count = event.pinned_hcb_codes.size
       count += 1 if new_record?
 
       if count > 4
