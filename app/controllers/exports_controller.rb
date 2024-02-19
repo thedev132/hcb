@@ -2,14 +2,12 @@
 
 class ExportsController < ApplicationController
   skip_before_action :signed_in_user
-  skip_after_action :verify_authorized, only: [:transactions, :collect_email]
+  skip_after_action :verify_authorized, only: :collect_email
 
   def transactions
     @event = Event.friendly.find(params[:event])
 
-    if !@event.is_public?
-      authorize @event.canonical_transactions.first, :show? # temporary hack for policies
-    end
+    authorize @event, :show?
 
     # 300 is slightly arbitrary. HQ didn't run into issues until 5k
     should_queue = @event.canonical_transactions.size > 300
