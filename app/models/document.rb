@@ -5,6 +5,7 @@
 # Table name: documents
 #
 #  id         :bigint           not null, primary key
+#  deleted_at :datetime
 #  name       :text
 #  slug       :text
 #  created_at :datetime         not null
@@ -25,6 +26,7 @@
 #
 class Document < ApplicationRecord
   include FriendlyId
+  acts_as_paranoid
 
   friendly_id :slug_text, use: :slugged
 

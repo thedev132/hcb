@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_01_29_192145) do
+ActiveRecord::Schema[7.0].define(version: 2024_02_20_223246) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_stat_statements"
@@ -499,6 +499,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_29_192145) do
     t.text "user_agent"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
+    t.datetime "deleted_at", precision: nil
     t.index ["document_id"], name: "index_document_downloads_on_document_id"
     t.index ["user_id"], name: "index_document_downloads_on_user_id"
   end
@@ -510,6 +511,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_29_192145) do
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.text "slug"
+    t.datetime "deleted_at", precision: nil
     t.index ["event_id"], name: "index_documents_on_event_id"
     t.index ["slug"], name: "index_documents_on_slug", unique: true
     t.index ["user_id"], name: "index_documents_on_user_id"

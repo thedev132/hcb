@@ -5,6 +5,7 @@
 # Table name: document_downloads
 #
 #  id          :bigint           not null, primary key
+#  deleted_at  :datetime
 #  ip_address  :inet
 #  user_agent  :text
 #  created_at  :datetime         not null
@@ -23,6 +24,8 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class DocumentDownload < ApplicationRecord
+  acts_as_paranoid
+
   belongs_to :document, inverse_of: :downloads
   belongs_to :user
 
