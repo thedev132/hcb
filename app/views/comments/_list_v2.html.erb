@@ -1,15 +1,8 @@
 <section class="comments">
-  <% @hcb_code.comments.order(created_at: :asc).each do |comment| %>
-    <% if comment.admin_only %>
-      <% admin_tools do %>
-        <%= render "comments/item_v2", comment: %>
-      <% end %>
-    <% else %>
-      <%= render "comments/item_v2", comment: %>
-    <% end %>
-  <% end %>
 
-  <% if @hcb_code.comments.empty? && local_assigns[:blankslate?] %>
+  <%= render partial: "comments/item_v2", collection: policy_scope(@hcb_code.comments).order(created_at: :asc), as: :comment %>
+
+  <% if policy_scope(@hcb_code.comments).empty? && local_assigns[:blankslate?] %>
     <%= blankslate "No comments yet." %>
   <% end %>
 </section>
