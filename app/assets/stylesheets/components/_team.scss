@@ -25,3 +25,13 @@
     bottom: -2.5px;
   }
 }
+
+.organizer-position-invite__main-info {
+  display: flex;
+
+  @media (max-width: 21rem) {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
+

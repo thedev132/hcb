@@ -1,8 +1,29 @@
 <div class="organizer-position-invite card flex flex-column overflow-visible mb2">
-  <div class="flex justify-between">
-    <div class="relative">
-      <%= inline_icon("admin-badge", size: 48, class: "avatar-container__admin-bolt") if position.user.admin? %>
-      <%= avatar_for position.user, 64 %>
+  <div class="organizer-position-invite__main-info">
+    <div class=" flex <%= admin_signed_in? ? "flex-column g0" : "g2" %>" style="flex-grow: 1">
+      <div class="flex justify-between">
+        <div class="relative">
+          <%= inline_icon("admin-badge", size: 48, class: "avatar-container__admin-bolt") if position.user.admin? %>
+          <%= avatar_for position.user, 64 %>
+        </div>
+      </div>
+      <div class="inline-flex items-center g2">
+        <p class="h2 bold m0"><%= position.user.name %></p>
+
+        <% if organizer_signed_in? %>
+          <div class="inline-flex g1 align-items-center">
+            <%= copy_to_clipboard(position.user.email, class: "line-height-0") do %>
+              <%= inline_icon("email", size: 24, class: "muted") %>
+            <% end %>
+
+            <% if admin_signed_in? %>
+              <%= copy_to_clipboard(position.user.phone_number, class: "line-height-0") do %>
+                <%= inline_icon("message-simple", size: 24, class: "warning") %>
+              <% end %>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
     </div>
 
     <% if organizer_signed_in? %>
@@ -25,25 +46,7 @@
         <% end %>
       </div>
     <% end %>
-  </div>
-
-  <div class="inline-flex items-center g2">
-    <p class="h2 bold m0"><%= position.user.name %></p>
-
-    <% if organizer_signed_in? %>
-      <div class="inline-flex g1 align-items-center">
-        <%= copy_to_clipboard(position.user.email, class: "line-height-0") do %>
-          <%= inline_icon("email", size: 24, class: "muted") %>
-        <% end %>
-
-        <% if admin_signed_in? %>
-          <%= copy_to_clipboard(position.user.phone_number, class: "line-height-0") do %>
-            <%= inline_icon("message-simple", size: 24, class: "warning") %>
-          <% end %>
-        <% end %>
-      </div>
-    <% end %>
-  </div>
+</div>
 
   <div class="muted flex justify-between align-bottom relative w-100 h6 mt1">
     <p class="m0">Invited <%= relative_timestamp(position.organizer_position_invite.created_at) %> by <%= position.organizer_position_invite.sender.name %></p>

@@ -2,9 +2,11 @@
 <% page_sm %>
 <%= render "nav", selected: :team %>
 
-<h1 class="heading flex items-center">
-  Team
-  <%= badge_for @all_positions.size, class: "bg-muted" %>
+<h1 class="heading">
+  <span class="flex items-center">
+    Team
+    <%= badge_for @all_positions.size, class: "bg-muted" %>
+  </span>
 
   <% if organizer_signed_in? %>
     <a href="mailto:<%= @all_positions.map(&:user).map(&:email).join(",") %>" class="btn btn--icon bg-info">
