@@ -14,6 +14,7 @@
 #
 class FeeRevenue < ApplicationRecord
   include AASM
+  include HasBookTransfer
 
   has_many :bank_fees
 

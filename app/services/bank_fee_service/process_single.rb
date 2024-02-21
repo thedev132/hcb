@@ -12,13 +12,8 @@ module BankFeeService
       ActiveRecord::Base.transaction do
         bank_fee.mark_in_transit!
 
-        if amount_cents.negative?
-          # Fiscal Sponsorship Fee
-          sender_bank_account_id, receiver_bank_account_id = ColumnService::Accounts::FS_MAIN, ColumnService::Accounts::FS_OPERATING
-        else
-          # Fee credit
-          sender_bank_account_id, receiver_bank_account_id = ColumnService::Accounts::FS_OPERATING, ColumnService::Accounts::FS_MAIN
-        end
+        sender_bank_account_id = ColumnService::Accounts.id_of bank_fee.book_transfer_originating_account
+        receiver_bank_account_id = ColumnService::Accounts.id_of bank_fee.book_transfer_receiving_account
 
         ColumnService.post "/transfers/book",
                            amount: amount_cents.abs,

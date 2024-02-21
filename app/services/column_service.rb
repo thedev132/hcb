@@ -6,6 +6,12 @@ class ColumnService
   module Accounts
     FS_MAIN = Rails.application.credentials.column.dig(ENVIRONMENT, :fs_main_account_id)
     FS_OPERATING = Rails.application.credentials.column.dig(ENVIRONMENT, :fs_operating_account_id)
+
+    def self.id_of(account_sym)
+      const_get(account_sym.upcase)
+    rescue
+      raise ArgumentError, "unknown Column account: #{account_sym.inspect}"
+    end
   end
 
   module AchCodes

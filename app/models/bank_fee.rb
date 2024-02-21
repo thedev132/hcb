@@ -26,6 +26,7 @@ class BankFee < ApplicationRecord
   has_paper_trail
 
   include AASM
+  include HasBookTransfer
 
   belongs_to :event
   belongs_to :fee_revenue, optional: true
