@@ -44,7 +44,7 @@ class CommentPolicy < ApplicationPolicy
   private
 
   def users
-    record.commentable.events&.collect(&:users)&.flatten || record.commentable.event.users
+    record.commentable.respond_to?(:events) ? record.commentable.events.collect(&:users).flatten : record.commentable.event.users
   end
 
 end
