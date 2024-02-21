@@ -29,17 +29,17 @@ module HasBookTransfer
   end
 
   def book_transfer_originating_account
-    book_transfer_directions[:originator]
+    book_transfer_accounts[:originator]
   end
 
   def book_transfer_receiving_account
-    book_transfer_directions[:receiver]
+    book_transfer_accounts[:receiver]
   end
 
   private
 
-  def book_transfer_directions
-    if amount_cents.positive?
+  def book_transfer_accounts
+    if amount_cents.negative?
       # For Bank Fees:    This occurs for regular bank fees
       # For Fee Revenues: This occurs when fee credits out weights fiscal sponsorship fees
       { originator: :fs_main, receiver: :fs_operating }
