@@ -21,7 +21,7 @@ module BankFeeService
         end
 
         FeeRevenue.pending.find_each(batch_size: 100) do |fee_revenue|
-          if bank_fee.book_transfer_to?(:fs_operating)
+          if fee_revenue.book_transfer_to?(:fs_operating)
             ::FeeRevenueService::ProcessSingle.new(fee_revenue_id: fee_revenue.id).run
           else
             fee_revenues_to_main << fee_revenue
