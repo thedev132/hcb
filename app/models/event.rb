@@ -369,6 +369,7 @@ class Event < ApplicationRecord
     'grant recipient': 9,
     salary: 10, # e.g. Sam's Shillings
     ai: 11,
+    'hcb internals': 12 # eg. https://hcb.hackclub.com/clearing
   }
 
   enum stripe_card_shipping_type: {

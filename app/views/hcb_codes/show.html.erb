@@ -5,7 +5,7 @@
 <%= render partial: "hcb_codes/admin_tools" %>
 <%= render partial: "hcb_codes/rich_metadata" %>
 
-<% if @hcb_code.canonical_transactions.any? {|ct| ct.amount_cents.positive? } %>
+<% if @hcb_code.canonical_transactions.any? {|ct| ct.amount_cents.positive? } && !@hcb_code.event&.hcb_internals? %>
   <% admin_tools("mt3") do %>
     <%= link_to "View Usage Breakdown", breakdown_hcb_code_path(@hcb_code, format: :pdf), class: "btn bg-accent" %>
   <% end %>
