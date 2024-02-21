@@ -1,12 +1,7 @@
 # frozen_string_literal: true
 
 class CommentPolicy < ApplicationPolicy
-  class Scope
-    def initialize(user, scope)
-      @user  = user
-      @scope = scope
-    end
-
+  class Scope < ApplicationPolicy::Scope
     def resolve
       if user.admin?
         scope.all
@@ -14,10 +9,6 @@ class CommentPolicy < ApplicationPolicy
         scope.not_admin_only
       end
     end
-
-    private
-
-    attr_reader :user, :scope
 
   end
 

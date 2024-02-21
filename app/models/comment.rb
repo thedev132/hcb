@@ -22,6 +22,9 @@
 #
 class Comment < ApplicationRecord
   include Hashid::Rails
+  include PublicIdentifiable
+
+  set_public_id_prefix :cmt
 
   belongs_to :commentable, polymorphic: true
   belongs_to :user
