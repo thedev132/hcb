@@ -13,7 +13,6 @@ class StripeCardsController < ApplicationController
       eta = sc.stripe_obj[:shipping][:eta]
       !eta || Time.at(eta) < 1.week.ago
     end
-    @stripe_cards = current_user.stripe_cards
     skip_authorization # do not force pundit
 
     render :shipping, layout: false
