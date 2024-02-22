@@ -4,7 +4,7 @@ module StripeCards
   class ActivationController < ApplicationController
     # Form for activating a card
     def new
-      @pattern = current_user.stripe_cardholder.stripe_cards.where(activated: false).first&.id
+      @pattern = current_user.stripe_cardholder&.stripe_cards&.where(activated: false)&.first&.id
       skip_authorization
     end
 
