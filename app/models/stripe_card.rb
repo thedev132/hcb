@@ -233,7 +233,7 @@ class StripeCard < ApplicationRecord
   end
 
   def shipping_has_tracking?
-    stripe_obj[:shipping][:tracking_number].present?
+    stripe_obj.dig(:shipping, :tracking_number).present?
   end
 
   def self.new_from_stripe_id(params)
