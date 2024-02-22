@@ -1,4 +1,4 @@
-<%= form_with(model: StripeCard.new, local: true, url: stripe_card_update_name_path(@card), method: "post", id: "stripe_card_name_form") do |form| %>
+<%= form_with(model: StripeCard.new, local: true, url: update_name_stripe_card_path(@card), method: "post", id: "stripe_card_name_form") do |form| %>
   <section class="grid grid--split">
     <div class="field">
       <%= form.label :name, "Name" %>

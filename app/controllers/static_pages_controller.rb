@@ -44,7 +44,6 @@ class StaticPagesController < ApplicationController
   end
 
   def my_cards
-    flash.now[:success] = "Card activated!" if params[:activate]
     @stripe_cards = current_user.stripe_cards.includes(:event)
     @emburse_cards = current_user.emburse_cards.includes(:event)
   end

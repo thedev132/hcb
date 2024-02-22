@@ -18,7 +18,7 @@ class StripeCardPolicy < ApplicationPolicy
   end
 
   def activate?
-    user&.admin? || record&.event&.users&.include?(user) || record&.user == user
+    user&.admin? || record&.user == user
   end
 
   def show?

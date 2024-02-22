@@ -18,6 +18,7 @@
 # end
 
 ActiveSupport::Inflector.inflections(:en) do |inflect|
+  inflect.irregular "is", "are"
   inflect.irregular "has", "have"
   inflect.irregular "hasn't", "haven't"
 end

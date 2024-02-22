@@ -2,7 +2,7 @@
 
 <% if stripe_card.stripe_status == 'inactive' %>
   <%= link_to "Defrost card",
-              stripe_card_defrost_path(stripe_card),
+              defrost_stripe_card_path(stripe_card),
               method: :post,
               class: "btn bg-accent" %>
 
@@ -12,7 +12,7 @@
                     <%= stripe_card.user == current_user ? "your" : stripe_card.user.possessive_name %>
                     card anytime">
 
-    <%= link_to stripe_card_freeze_path(stripe_card),
+    <%= link_to freeze_stripe_card_path(stripe_card),
                 method: :post,
                 class: "btn bg-accent" do %>
       <%= inline_icon "freeze" %> Freeze card

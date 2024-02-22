@@ -18,16 +18,17 @@
           <input type="checkbox" id="confirm" data-action="form-disable#run" data-form-disable-target="radioButton">
           <label for="confirm">Click here to confirm.</label>
         </div>
-        <%= button_to stripe_card_activate_path(stripe_card),
-                    method: :post,
-                    class: "btn bg-success mt1 mb2", data: { "form-disable-target" => "submitButton" } do %>
+        <%= button_to new_stripe_cards_activation_path,
+                    method: :get,
+                    class: "btn bg-success mt1 mb2", data: { "form-disable-target" => "submitButton", "turbo" => "false" } do %>
           <%= inline_icon "rep", size: home_action_size %>
           Activate card
         <% end %>
       </div>
     <% else %>
-      <%= button_to stripe_card_activate_path(stripe_card),
-                  method: :post,
+      <%= button_to new_stripe_cards_activation_path,
+                  method: :get,
+                  data: { turbo: false },
                   class: "btn bg-success" do %>
         <%= inline_icon "rep", size: home_action_size %>
         Activate card
