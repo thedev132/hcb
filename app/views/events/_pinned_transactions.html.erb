@@ -18,7 +18,7 @@
           <% end %>
 
           <p class="eyebrow mb1 mt1" style="font-weight: 900; opacity: 0.7">
-            <%= pin.hcb_code.date.strftime("%b #{pin.hcb_code.date.day.ordinalize}, %Y") %> &bull; <%= render_money pin.hcb_code.amount %>
+            <%= pin.hcb_code.date.strftime("%b #{pin.hcb_code.date.day.ordinalize}, %Y") %> &bull; <%= render_money pin.hcb_code.amount_cents_by_event(@event) %>
           </p>
           <p class="pinned__transaction__text pinned__transaction__text--memo">
             <%= pin.hcb_code.memo %>

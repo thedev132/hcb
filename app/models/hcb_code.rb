@@ -117,6 +117,23 @@ class HcbCode < ApplicationRecord
     end
   end
 
+  def amount_cents_by_event(event)
+    if canonical_transactions.exists?
+      return canonical_transactions
+             .includes(:canonical_event_mapping)
+             .where(canonical_event_mapping: { event_id: event.id })
+             .sum(:amount_cents)
+    end
+
+    # ACH transfers that haven't been sent don't have any CPTs
+    return ach_transfer.amount if ach_transfer?
+
+    canonical_pending_transactions
+      .includes(:canonical_event_mapping)
+      .where(canonical_pending_event_mapping: { event_id: event.id })
+      .sum(:amount_cents)
+  end
+
   has_many :canonical_pending_transactions,
            foreign_key: "hcb_code",
            primary_key: "hcb_code",
