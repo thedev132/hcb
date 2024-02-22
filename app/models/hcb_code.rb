@@ -129,7 +129,7 @@ class HcbCode < ApplicationRecord
     return ach_transfer.amount if ach_transfer?
 
     canonical_pending_transactions
-      .includes(:canonical_event_mapping)
+      .includes(:canonical_pending_event_mapping)
       .where(canonical_pending_event_mapping: { event_id: event.id })
       .sum(:amount_cents)
   end
