@@ -21,7 +21,7 @@
   </thead>
   <tbody>
     <% @bank_accounts.each do |ba| %>
-      <tr class="<%= "admin-bg-red" if ba.failed_at.present? %> <%= "admin-bg-transit" if ba.should_sync_v2 %>">
+      <tr class="<%= ba.admin_status_color %>">
         <td><%= ba.id %></td>
         <td><%= ba.name %></td>
         <td><%= render_money ba.balance %></td>
@@ -30,6 +30,7 @@
         <td><%= ba.failure_count %></td>
         <td>
           <%= button_to ba.should_sync_v2? ? "Disable" : "Enable", ba, method: :patch, class: ("admin-bg-red" if ba.should_sync_v2?), params: { bank_account: { should_sync_v2: !ba.should_sync_v2? } } %>
+          <%= link_to "Reauthenticate", bank_account_reauthenticate_path(ba) %>
         </td>
       </tr>
     <% end %>

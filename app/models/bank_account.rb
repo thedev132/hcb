@@ -33,4 +33,18 @@ class BankAccount < ApplicationRecord
     canonical_transactions.sum(:amount_cents)
   end
 
+  def failing?
+    failed_at.present?
+  end
+
+  def admin_status_color
+    if should_sync_v2?
+      if failing?
+        "admin-bg-red"
+      else
+        "admin-bg-transit"
+      end
+    end
+  end
+
 end
