@@ -3,7 +3,7 @@
 
 <%= render "events/nav" if !@event.nil? %>
 
-<h1 class="heading">
+<h1 class="heading pb2">
   <%= @document.name %>
   <% if (@document.user == current_user) || current_user.admin? %>
     <div class="flex items-center mt2" style="gap: 6px">
@@ -17,11 +17,16 @@
   <% end %>
 </h1>
 
-<section class="details mb3">
+<div class="card flex items-center justify-center mb2 mt2" style="width: fit-content">
+  <%= render "documents/preview", document: @document %>
+</div>
+
+<section class="details mb3 pt2">
 
 <p>
   <strong>Added by</strong> <%= user_mention @document.user %>
 </p>
+
 </section>
 
 <% admin_tools do %>

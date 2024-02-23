@@ -19,12 +19,5 @@
 </p>
 
 <ul class="grid">
-  <% @documents.each do |doc| %>
-    <%= link_to doc do %>
-      <li class="card">
-        <strong class="h3 block"><%= doc.name %></strong>
-        <%= user_mention doc.user %>
-      </li>
-    <% end %>
-  <% end %>
+  <%= render @documents %>
 </ul>
