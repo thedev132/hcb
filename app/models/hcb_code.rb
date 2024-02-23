@@ -430,4 +430,8 @@ class HcbCode < ApplicationRecord
                                        end
   end
 
+  def pinnable?
+    !no_transactions? && event
+  end
+
 end

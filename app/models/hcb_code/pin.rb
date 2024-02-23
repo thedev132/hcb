@@ -26,7 +26,7 @@ class HcbCode
     belongs_to :hcb_code
     belongs_to :event
     validate :validate_max_pins_for_event, on: :create
-    validate :validate_has_pt_or_ct, on: :create
+    validate :validate_pinnable, on: :create
 
     private
 
@@ -39,8 +39,8 @@ class HcbCode
       end
     end
 
-    def validate_has_pt_or_ct
-      unless hcb_code.pt || hcb_code.ct
+    def validate_pinnable
+      unless hcb_code.pinnable?
         errors.add(:base, "At the moment, this transaction can't be pinned.")
       end
     end
