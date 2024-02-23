@@ -16,8 +16,22 @@
             "comment": "Transaction detail pages"
           },
           {
-            "/": "/api/v4/oauth/*",
-            "comment": "OAuth authorization",
+            "/": "/api/*",
+            "comment": "API + OAuth",
+            "exclude": true
+          },
+          {
+            "/": "/users/auth",
+            "comment": "Login page",
+            "exclude": true
+          },
+          {
+            "/": "/",
+            "comment": "Homepage",
+            "exclude": true
+          },
+          {
+            "/": "/admin/*",
             "exclude": true
           },
           {
