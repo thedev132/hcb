@@ -10,7 +10,7 @@ module StripeCards
 
     # Submit a last4 for activation
     def create
-      @card = current_user.stripe_cardholder.stripe_cards.find_by(last4: params[:last4])
+      @card = current_user.stripe_cardholder&.stripe_cards&.find_by(last4: params[:last4])
 
       if @card.nil?
         flash[:error] = "Card not found"
