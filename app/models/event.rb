@@ -614,8 +614,12 @@ class Event < ApplicationRecord
 
   def total_fee_payments_v2_cents
     @total_fee_payments_v2_cents ||=
-      canonical_transactions.includes(:fee).where(fee: { reason: "HACK CLUB FEE" }).sum(:amount_cents).abs +
-      canonical_pending_transactions.bank_fee.unsettled.sum(:amount_cents).abs
+      begin
+        paid = canonical_transactions.includes(:fee).where(fee: { reason: "HACK CLUB FEE" }).sum(:amount_cents)
+        in_transit = canonical_pending_transactions.bank_fee.unsettled.sum(:amount_cents)
+
+        (paid + in_transit) * -1
+      end
   end
 
   private
@@ -651,7 +655,6 @@ class Event < ApplicationRecord
       sum + [pt_sum - (ct_sum_by_hcb_code[hcb_code] || 0), 0].max
     end
   end
-
 
   def move_friendly_id_error_to_slug
     errors.add :slug, *errors.delete(:friendly_id) if errors[:friendly_id].present?
