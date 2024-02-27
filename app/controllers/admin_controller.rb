@@ -982,22 +982,24 @@ class AdminController < ApplicationController
 
     # Must be wrapped in lambdas
     template = [
-      [:organization_id, ->(e) { e.id }],
-      [:organization_name, ->(e) { e.name }],
-      [:net_balance, ->(e) { render_balance.call(e, :settled_balance_cents) }],
-      [:expenses, ->(e) { render_balance.call(e, :settled_outgoing_balance_cents) }],
-      [:revenue, ->(e) { render_balance.call(e, :settled_incoming_balance_cents) }],
-      [:start_date, ->(_) { @start_date }],
-      [:end_date, ->(_) { @end_date }]
+      ["ID", ->(e) { e.id }],
+      [:organization, ->(e) { e.name }],
+      [:current_balance, ->(e) { render_balance.call(e, :settled_balance_cents) }],
+      [:total_expenses, ->(e) { render_balance.call(e, :settled_outgoing_balance_cents) }],
+      [:total_income, ->(e) { render_balance.call(e, :settled_incoming_balance_cents) }]
     ]
 
+    unless @monthly_breakdown
+      template.append([:start_date, ->(_) { @start_date }])
+      template.append([:end_date, ->(_) { @end_date }])
+    end
 
     if @monthly_breakdown
       template.concat(
         [
           [:category, ->(e) { e.category }],
           [:tags, ->(e) { e.event_tags.pluck(:name).join(",") }],
-          [:joined, ->(e) { e.activated_at || e.created_at }],
+          [:joined, ->(e) { (e.activated_at || e.created_at).strftime("%Y-%m-%d") }],
         ]
       )
       @monthly_revenue =
@@ -1016,10 +1018,10 @@ class AdminController < ApplicationController
         end
       monthly_revenue_columns = (2018..Date.current.year).flat_map do |year|
         (1..12).take_while { |month| (year == Date.current.year && month <= Date.current.month) || year < Date.current.year }
-               .map { |month| ["monthly_revenue_#{Date::MONTHNAMES[month]}_#{year}", ->(e) { render_monthly_revenue.call(e, year, month) }] }
+               .map { |month| ["#{Date::ABBR_MONTHNAMES[month]} #{year} Income", ->(e) { render_monthly_revenue.call(e, year, month) }] }
       end
 
-      template.concat(monthly_revenue_columns)
+      template.concat(monthly_revenue_columns.reverse)
     end
 
     serializer = ->(event) do
@@ -1030,7 +1032,7 @@ class AdminController < ApplicationController
 
     @data = @events.map { |event| serializer.call(event) }
     header_syms = template.transpose.first
-    @headers = header_syms.map { |h| h.to_s.titleize(keep_id_suffix: true) }
+    @headers = header_syms.map { |h| h.is_a?(String) ? h : h.to_s.titleize(keep_id_suffix: true) }
     @rows = @data.map { |d| d.values }
     @count = @rows.count
 
@@ -1045,6 +1047,7 @@ class AdminController < ApplicationController
         require "csv"
 
         csv = Enumerator.new do |y|
+          y << ::CSV::Row.new(header_syms, ["", "Report generated on #{Time.now.in_time_zone('Eastern Time (US & Canada)').strftime("%Y-%m-%d at %l:%M %p %Z")}"], true).to_s
           y << ::CSV::Row.new(header_syms, @headers, true).to_s
 
           @rows.each do |row|
