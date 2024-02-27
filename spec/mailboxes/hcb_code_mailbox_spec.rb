@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe HcbCodeReceiptsMailbox, type: :mailbox do
+RSpec.describe HcbCodeMailbox, type: :mailbox do
   include ActionMailbox::TestHelper
 
   let!(:user) { create(:user, access_level: :admin) }
@@ -17,7 +17,7 @@ RSpec.describe HcbCodeReceiptsMailbox, type: :mailbox do
   end
 
   it "routes email to mailbox" do
-    expect(HcbCodeReceiptsMailbox)
+    expect(HcbCodeMailbox)
       .to receive_inbound_email(to: "receipts+hcb-#{hcb.hashid}@example.com")
   end
 

@@ -1,0 +1,24 @@
+<% if @receipts_count > 0 %>
+  <p>
+    We got your <%= "receipt".pluralize(@receipts_count) %>, thanks!
+  </p>
+<% end %>
+
+<% if @renamed_to %>
+  <p>
+    We've <%= "also" if @receipts_count > 0 %> renamed the transaction to <i>"<%= @renamed_to %>"</i>.
+  </p>
+<% end %>
+
+<% if @tagged_with.any? %>
+  <p>
+    <%= @receipts_count > 0 && @renamed_to ? "Lastly, we've" : @receipts_count > 0 ? "We've also" : "We've" %>
+    tagged it with
+    <%= @tagged_with.to_sentence %>.
+  </p>
+<% end %>
+
+<p>
+  From,<br>
+  The HCB Team
+</p>

@@ -1,32 +1,32 @@
 # frozen_string_literal: true
 
-class HcbCodeReceiptsMailerPreview < ActionMailer::Preview
+class HcbCodeMailerPreview < ActionMailer::Preview
   def bounce_missing_user
-    HcbCodeReceiptsMailer.with(
+    HcbCodeMailer.with(
       to: "test@example.com"
     ).bounce_missing_user
   end
 
   def bounce_missing_hcb
-    HcbCodeReceiptsMailer.with(
+    HcbCodeMailer.with(
       to: "test@example.com"
     ).bounce_missing_hcb
   end
 
   def bounce_missing_attachment
-    HcbCodeReceiptsMailer.with(
+    HcbCodeMailer.with(
       to: "test@example.com"
     ).bounce_missing_attachment
   end
 
   def bounce_error
-    HcbCodeReceiptsMailer.with(
+    HcbCodeMailer.with(
       to: "test@example.com"
     ).bounce_error
   end
 
   def bounce_success
-    HcbCodeReceiptsMailer.with(
+    HcbCodeMailer.with(
       to: "test@example.com",
       receipts_count: 1
     ).bounce_success

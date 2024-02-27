@@ -5,7 +5,7 @@ A charge of <%= render_money @cpt.amount_cents %> at '<%= @cpt.memo %>' occurred
 
   <% if @receipt_upload_feature %>
     <p>
-      Alternatively, <em>reply to this email with an image or PDF receipt attached</em>. When responding with a receipt, include a line beginning with <em>@rename</em> to rename the transaction.
+      Alternatively, <em>reply to this email with an image or PDF receipt attached</em>. When responding with a receipt, include a line beginning with <em>@rename</em> to rename the transaction or with <em>@tag</em> to tag the transaction.
     </p>
   <% end %>
 <% end %>

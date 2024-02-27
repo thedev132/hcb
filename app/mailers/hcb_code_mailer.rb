@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class HcbCodeReceiptsMailer < ApplicationMailer
+class HcbCodeMailer < ApplicationMailer
   before_action { @inbound_mail = params[:mail] }
   before_action { @reply_to = params[:reply_to] }
   before_action { @to = params[:to] || @inbound_mail&.mail&.from&.first }
@@ -26,7 +26,14 @@ class HcbCodeReceiptsMailer < ApplicationMailer
   def bounce_success
     @receipts_count = params[:receipts_count]
     @renamed_to = params[:renamed_to]
-    mail subject: "Thank you for your #{"receipt".pluralize(@receipts_count)}!"
+    @tagged_with = params[:tagged_with]
+
+    case @receipts_count
+    when 0
+      mail subject: "Thank you for the additional details!"
+    else
+      mail subject: "Thank you for your #{"receipt".pluralize(@receipts_count)}!"
+    end
   end
 
   def bounce_error

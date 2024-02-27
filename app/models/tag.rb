@@ -27,6 +27,9 @@ class Tag < ApplicationRecord
   validates :label, presence: true, uniqueness: { scope: :event_id, case_sensitive: false }
   validates_format_of :color, with: /\A#(?:\h{3}){1,2}\z/, allow_nil: true, message: "must be a color hex code"
 
+  include PgSearch::Model
+  pg_search_scope :search_label, against: :label
+
   def removal_confirmation_message
     message = "Are you sure you'd like to delete this tag?"
 
