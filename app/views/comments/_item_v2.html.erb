@@ -49,15 +49,17 @@
     <%= modal_header "Edit History" %>
     <ul class="list-reset">
       <% comment.versions.where(event: "update").reverse.each do |version| %>
-        <li class="mb2">
-          <%= version.whodunnit.nil? ? "Automatically " : user_mention(User.find(version.whodunnit)) %>
-          updated <%= time_ago_in_words version.created_at %> ago
-          <p class="mb1">
-            <div class="card border b--muted">
-              <%= sanitize Diffy::Diff.new(Comment.new(content_ciphertext: version.changeset["content_ciphertext"][0]).content, Comment.new(content_ciphertext: version.changeset["content_ciphertext"][1]).content, allow_empty_diff: false).to_s(:html) %>
-            </div>
-          </p>
-        </li>
+        <% if version&.changeset&.[]("content_ciphertext").size > 1 %>
+          <li class="mb2">
+            <%= version.whodunnit.nil? ? "Automatically " : user_mention(User.find(version.whodunnit)) %>
+            updated <%= time_ago_in_words version.created_at %> ago
+            <p class="mb1">
+              <div class="card border b--muted">
+                <%= sanitize Diffy::Diff.new(Comment.new(content_ciphertext: version.changeset["content_ciphertext"][0]).content, Comment.new(content_ciphertext: version.changeset["content_ciphertext"][1]).content, allow_empty_diff: false).to_s(:html) %>
+              </div>
+            </p>
+          </li>
+        <% end %>
       <% end %>
       <% if comment.has_untracked_edit? %>
         <li class="mb2">
