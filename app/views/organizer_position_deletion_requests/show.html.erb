@@ -52,13 +52,6 @@
     <%# ⚠️ Emoji doesn't render with our default font stack %>
     <span style="font-family: initial;">⚠️</span>
   <% end %>
-  <p>
-    <% if @opdr.subject_has_outstanding_expenses_expensify %>
-      <%= warning_emoji %> <strong>Outstanding Expensify expenses reported</strong>
-    <% else %>
-      ✅ <strong>No outstanding Expensify expenses reported</strong>
-    <% end %>
-  </p>
 
   <p>
     <% if @opdr.organizer_missing_receipts.any? %>

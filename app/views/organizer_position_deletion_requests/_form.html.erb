@@ -9,16 +9,6 @@
     <span class="muted h5">(So we have context when we contact you.)</span>
   </div>
 
-  <p>
-    Does <%= user_mention @target %> have outstanding expenses on <%= link_to "Expensify", event_reimbursements_path(@op.event) %>?
-  </p>
-  <div class="field field--radiobox">
-    <%= form.radio_button :subject_has_outstanding_expenses_expensify, false, value: false %>
-    <%= form.label :subject_has_outstanding_expenses_expensify, "No", value: false %>
-    <%= form.radio_button :subject_has_outstanding_expenses_expensify, true, value: true %>
-    <%= form.label :subject_has_outstanding_expenses_expensify, "Yes", value: true %>
-  </div>
-
   <div class="actions">
     <%= form.submit "Request removal" %>
   </div>
