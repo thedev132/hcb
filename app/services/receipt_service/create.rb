@@ -40,7 +40,7 @@ module ReceiptService
 
     def attrs(attachment)
       {
-        file: attachment.except(:source),
+        file: attachment,
         uploader: @uploader,
         upload_method: @upload_method,
         receiptable: @receiptable # Receiptable may be nil

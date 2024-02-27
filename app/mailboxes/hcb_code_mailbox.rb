@@ -18,17 +18,7 @@ class HcbCodeMailbox < ApplicationMailbox
     return bounce_missing_user unless @user
     return unless ensure_permissions?
 
-    # All good, now let's create the receipts
-    if @commands.any?
-      # If the email contains a command, we don't want to upload the email body
-      # as a receipt. Users can still attach files to the email and those will
-      # be uploaded as receipts.
-      @attachments&.filter! do |a|
-        a[:source] == :attachments
-      end
-    end
-
-    if @attachments&.any?
+    if @attachments&.any? && (@commands.empty? || mail.attachments.any?)
       result = ::ReceiptService::Create.new(
         receiptable: @hcb_code,
         uploader: @user,
