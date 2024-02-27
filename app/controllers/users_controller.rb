@@ -331,6 +331,15 @@ class UsersController < ApplicationController
     @onboarding = @user.full_name.blank?
     show_impersonated_sessions = admin_signed_in? || current_session.impersonated?
     @sessions = show_impersonated_sessions ? @user.user_sessions : @user.user_sessions.not_impersonated
+
+    # User Information
+    @invoices = Invoice.where(creator: @user)
+    @check_deposits = CheckDeposit.where(created_by: @user)
+    @increase_checks = IncreaseCheck.where(user: @user)
+    @lob_checks = Check.where(creator: @user)
+    @ach_transfers = AchTransfer.where(creator: @user)
+    @disbursements = Disbursement.where(requested_by: @user)
+
     authorize @user
   end
 

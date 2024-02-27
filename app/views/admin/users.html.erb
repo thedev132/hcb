@@ -57,6 +57,7 @@
         </td>
         <td>
           <%= link_to "Impersonate", impersonate_user_path(user.id), data: { turbo_confirm: "Are you sure?", turbo_method: "post" } %>
+          <%= link_to "More Info", admin_user_path(user) %>
         </td>
       </tr>
     <% end %>
