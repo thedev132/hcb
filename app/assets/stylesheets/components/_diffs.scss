@@ -1,0 +1,64 @@
+// from diffy: https://github.com/samg/diffy/
+
+.diff {
+  overflow: auto;
+}
+
+.diff ul {
+  overflow: auto;
+  font-size: 13px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: table;
+  width: 100%;
+  padding-inline-start: 0px;
+}
+
+.diff del,
+.diff ins {
+  display: block;
+  text-decoration: none;
+}
+
+.diff li {
+  padding: 0;
+  display: table-row;
+  margin: 0;
+  height: 1em;
+}
+
+.diff li.ins {
+  background: rgba(92, 250, 92, 0.2);
+  color: #080;
+}
+
+.diff li.del {
+  background: rgba(248, 81, 73, 0.2);
+  color: #b00;
+}
+
+.diff del,
+.diff ins,
+.diff span {
+  white-space: pre-wrap;
+  font-family: courier;
+}
+
+.diff del strong {
+  font-weight: normal;
+  background: #fcc;
+}
+
+.diff ins strong {
+  font-weight: normal;
+  background: #9f9;
+}
+
+.diff li.diff-comment {
+  display: none;
+}
+
+.diff li.diff-block-info {
+  background: none repeat scroll 0 0 gray;
+}

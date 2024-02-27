@@ -116,6 +116,8 @@ gem "strong_migrations" # protects against risky migrations
 gem "swagger-blocks"
 gem "xxhash" # fast hashing
 
+gem "diffy" # rendering diffs (comments)
+
 gem "webauthn", "~> 3.0"
 
 gem "ahoy_matey" # analytics
