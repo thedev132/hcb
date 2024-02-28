@@ -4,15 +4,15 @@
 #
 # Table name: login_codes
 #
-#  id                       :bigint           not null, primary key
-#  browser_token            :string
-#  code                     :text
-#  ip_address               :inet
-#  used_at                  :datetime
-#  user_agent               :text
-#  created_at               :datetime         not null
-#  updated_at               :datetime         not null
-#  user_id                  :bigint
+#  id            :bigint           not null, primary key
+#  browser_token :string
+#  code          :text
+#  ip_address    :inet
+#  used_at       :datetime
+#  user_agent    :text
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#  user_id       :bigint
 #
 # Indexes
 #
