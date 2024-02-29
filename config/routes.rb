@@ -526,8 +526,6 @@ Rails.application.routes.draw do
   patch "partnered_signups/:public_id", to: "partnered_signups#update", as: :update_partnered_signups
 
   post "api/v1/users/find", to: "api#user_find"
-  get "api/v1/events/find", to: "api#event_find" # to be deprecated
-  post "api/v1/disbursements", to: "api#disbursement_new" # to be deprecated
   post "api/v1/events/create_demo", to: "api#create_demo_event"
 
   post "twilio/webhook", to: "twilio#webhook"
