@@ -44,6 +44,8 @@ class Comment < ApplicationRecord
   scope :edited, -> { joins(:versions).where("has_untracked_edit IS TRUE OR versions.event = 'update' OR versions.event = 'destroy'") }
   scope :has_attached_file, -> { joins(:file_attachment) }
 
+  after_create_commit :send_notification_email
+
   def edited?
     has_untracked_edit? or
       versions.where("event = 'update' OR event = 'destroy'").any?
@@ -59,6 +61,10 @@ class Comment < ApplicationRecord
     unless commentable.class.included_modules.include?(Commentable)
       errors.add(:commentable_type, "is not commentable")
     end
+  end
+
+  def send_notification_email
+    CommentMailer.with(comment: self).notification.deliver_later
   end
 
 end

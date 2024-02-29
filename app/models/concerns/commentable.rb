@@ -5,4 +5,12 @@ module Commentable
   included do
     has_many :comments, as: :commentable
   end
+
+  def comment_recipients_for(comment)
+    []
+  end
+
+  def comment_mailer_subject
+    "New comment from HCB"
+  end
 end

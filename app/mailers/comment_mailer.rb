@@ -1,0 +1,41 @@
+# frozen_string_literal: true
+
+class CommentMailer < ApplicationMailer
+  def notification
+    @comment = params[:comment]
+    @commentable = @comment.commentable
+
+    return if @commentable.comment_recipients_for(@comment).empty?
+
+    mail_settings = {
+      to: @commentable.comment_recipients_for(@comment),
+      reply_to: ([@comment.user.email] + @commentable.comment_recipients_for(@comment)).uniq,
+      subject: @commentable.comment_mailer_subject,
+      template_path: "comment_mailer/#{@commentable.class.name.underscore}",
+      from: email_address_with_name("hcb@hackclub.com", "#{@comment.user.name} via HCB")
+    }.merge(headers)
+
+    mail(mail_settings)
+  end
+
+  private
+
+  def headers
+    {
+      in_reply_to: thread_id(@commentable),
+      message_id: message_id(@comment),
+      references: @commentable.comments.map { |c| message_id(c) }.join(" ")
+    }.compact_blank
+  end
+
+  def message_id(comment)
+    # "<comment-cmt_Sl3ns3@hcb.hackclub.com>"
+    "<comment-#{comment.public_id}@hcb.hackclub.com>"
+  end
+
+  def thread_id(commentable)
+    first_comment = commentable.comments.first
+    message_id(first_comment)
+  end
+
+end

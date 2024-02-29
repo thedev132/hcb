@@ -419,6 +419,18 @@ class HcbCode < ApplicationRecord
     self.short_code = ::HcbCodeService::Generate::ShortCode.new.run
   end
 
+  def comment_recipients_for(comment)
+    if comment.admin_only?
+      return User.admin.pluck(:email).excluding(comment.user.email)
+    end
+
+    self.events.flat_map { |e| e.users.pluck(:email) }.excluding(comment.user.email)
+  end
+
+  def comment_mailer_subject
+    return "New comment on #{self.memo}."
+  end
+
   def not_admin_only_comments_count
     # `not_admin_only.count` always issues a new query to the DB because a scope is being applied.
     # However, if comments have been preloaded, it's more likely to be faster to count
