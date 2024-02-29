@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-OUTGOING_BANK_FEE_MEMO = ::TransactionEngine::SyntaxSugarService::Shared::OUTGOING_BANK_FEE_MEMO
+OUTGOING_BANK_FEE_MEMO = "HACK CLUB BANK FEE"
 
 describe HcbCodeService::SuggestedMemos do
 

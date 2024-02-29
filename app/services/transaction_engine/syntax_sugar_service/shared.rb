@@ -16,7 +16,6 @@ module TransactionEngine
       CLEARING_CHECK_MEMO_PART2 = "WITHDRAWAL - ON-US DEPOSITED ITE #"
       DDA_CHECK_MEMO_PART1 = "FROM DDA#80007609524 ON"
       DDA_CHECK_MEMO_PART2 = "AT"
-      OUTGOING_BANK_FEE_MEMO = "HACK CLUB BANK FEE"
 
       private
 
@@ -30,10 +29,6 @@ module TransactionEngine
 
       def memo_upcase
         @memo_upcase ||= memo.upcase
-      end
-
-      def outgoing_bank_fee?
-        memo_upcase.include?(OUTGOING_BANK_FEE_MEMO)
       end
 
       def outgoing_check?
