@@ -149,7 +149,9 @@
     line-height: 1.75;
     font-size: 1.125rem;
     outline: 0;
-    transition: color 0.125s ease-in-out, background-color 0.125s ease-in-out;
+    transition:
+      color 0.125s ease-in-out,
+      background-color 0.125s ease-in-out;
     font-family: $brand-font-family;
     padding: 0.5rem 1.5rem 0.5rem 0.75rem;
     margin: 0 0 0 -0.75rem;
@@ -236,4 +238,17 @@
 
 .dock__overflow {
   margin: 0 0.5rem;
+}
+
+.event-title-dropdown-icon {
+  opacity: 0;
+  transform: translateY(-2px);
+  transition: 0.125s ease-in-out;
+  transition-property: opacity, transform;
+}
+
+.event-title:hover .event-title-dropdown-icon,
+.event-title[aria-expanded='true'] .event-title-dropdown-icon {
+  opacity: 1;
+  transform: none;
 }

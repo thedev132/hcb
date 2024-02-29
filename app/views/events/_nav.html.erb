@@ -1,9 +1,6 @@
 <% content_for(:nav) do %>
-  <%= link_to @event, class: "text-decoration-none pt2" do %>
-    <h1 class="border-none h1 mt0 mb0 primary break-word">
-      <%= @event.name %>
-    </h1>
-  <% end %>
+  <%= render "events/title" %>
+
   <div>
     <% admin_tools("m0 p0 badge mb2", "span") do %>
       <span class="m0 badge bg-muted pointer" data-controller="clipboard" data-clipboard-text-value="<%= @event.name %>" data-action="click->clipboard#copy">

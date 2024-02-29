@@ -622,6 +622,20 @@ class Event < ApplicationRecord
       end
   end
 
+  def color
+    options = [
+      "#ec3750",
+      "#ff8c37",
+      "#f1c40f",
+      "#33d6a6",
+      "#5bc0de",
+      "#338eda",
+      "#a633d6",
+    ]
+
+    options[hashid.codepoints.first % options.size]
+  end
+
   private
 
   def point_of_contact_is_admin

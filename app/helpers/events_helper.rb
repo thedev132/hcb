@@ -81,4 +81,8 @@ module EventsHelper
 
     return tag.span humanize_audit_log_value(field, value), class: color
   end
+
+  def show_org_switcher?
+    Flipper.enabled?(:org_switcher_2024_01_31, current_user) && current_user.events.not_hidden.count > 1
+  end
 end

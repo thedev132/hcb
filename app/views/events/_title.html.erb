@@ -1,0 +1,28 @@
+<div data-controller="menu" class="pt2">
+  <%= link_to @event, class: "text-decoration-none event-title", data: ({ action: "click->menu#toggle click@document->menu#close keydown@document->menu#keydown", menu_target: "toggle" } if show_org_switcher?) do %>
+    <h1 class="pointer flex items-center border-none h1 mt0 mb0 primary break-word">
+      <%= @event.name %>
+      <%= inline_icon "down-caret", class: "event-title-dropdown-icon" if show_org_switcher? %>
+    </h1>
+  <% end %>
+  <% if show_org_switcher? %>
+    <div class="menu__content menu__content--2 menu__content--compact" data-menu-target="content">
+      <p class="h6 muted m0 ml1 mb1">Switch organizations:</p>
+      <% current_user.events.not_hidden.excluding(@event).with_attached_logo.map do |event| %>
+        <%= link_to event do %>
+          <% if event.logo.attached? %>
+            <%= image_tag event.logo, height: 24, width: 24, class: "rounded mr1" %>
+          <% else %>
+            <div style="height: 24px; width: 24px; background-color: <%= event.color %>" class="rounded mr1"></div>
+          <% end %>
+          <%= event.name %>
+          <span class="muted h6 ml-auto">
+            <%= turbo_frame_tag "event_balance_#{event.public_id}", src: event_async_balance_path(event, symbol: true), loading: :lazy do %>
+              -
+            <% end %>
+          </span>
+        <% end %>
+      <% end %>
+    </div>
+  <% end %>
+</div>
