@@ -63,12 +63,16 @@ module TransactionEngine
       end
 
       def likely_increase_check
-        increase_check_transfer_id = @canonical_transaction.raw_increase_transaction.increase_transaction.dig("source", "check_transfer_intention", "transfer_id")
+        if @canonical_transaction.transaction_source_type == "RawColumnTransaction"
+          IncreaseCheck.find_by(column_id: @canonical_transaction.raw_column_transaction.column_transaction["transaction_id"])
+        elsif @canonical_transaction.transaction_source_type == "RawIncreaseTransaction"
+          increase_check_transfer_id = @canonical_transaction.raw_increase_transaction.increase_transaction.dig("source", "check_transfer_intention", "transfer_id")
 
-        if increase_check_transfer_id
-          IncreaseCheck.find_by(increase_id: increase_check_transfer_id)
-        else
-          IncreaseCheck.find_by("increase_object->'deposit'->>'transaction_id' = ?", @canonical_transaction.raw_increase_transaction.increase_transaction_id)
+          if increase_check_transfer_id
+            IncreaseCheck.find_by(increase_id: increase_check_transfer_id)
+          else
+            IncreaseCheck.find_by("increase_object->'deposit'->>'transaction_id' = ?", @canonical_transaction.raw_increase_transaction.increase_transaction_id)
+          end
         end
       end
 
