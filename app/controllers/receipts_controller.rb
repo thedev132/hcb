@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 class ReceiptsController < ApplicationController
-  skip_after_action :verify_authorized, only: :upload # do not force pundit
-  skip_before_action :signed_in_user, only: :upload
-  before_action :set_paper_trail_whodunnit, only: :upload
-  before_action :find_receiptable, only: [:upload, :link, :link_modal]
+  skip_after_action :verify_authorized, only: :create # do not force pundit
+  skip_before_action :signed_in_user, only: :create
+  before_action :set_paper_trail_whodunnit, only: :create
+  before_action :find_receiptable, only: [:create, :link, :link_modal]
 
   def destroy
     @receipt = Receipt.find(params[:id])
@@ -77,13 +77,13 @@ class ReceiptsController < ApplicationController
   end
 
 
-  def upload
+  def create
     params.require(:file)
     params.require(:upload_method)
 
     begin
       if @receiptable
-        authorize @receiptable, policy_class: ReceiptablePolicy
+        authorize @receiptable, :upload?, policy_class: ReceiptablePolicy
       end
     rescue Pundit::NotAuthorizedError
       raise unless @receiptable.is_a?(HcbCode) && HcbCode.find_signed(params[:s], purpose: :receipt_upload) == @receiptable

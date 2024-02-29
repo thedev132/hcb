@@ -39,6 +39,13 @@ Rails.application.routes.draw do
 
   post "feedback", to: "static_pages#feedback"
 
+  resources :receipts, only: [:create, :destroy] do
+    collection do
+      post "link", to: "receipts#link"
+      get "link_modal", to: "receipts#link_modal"
+    end
+  end
+
   scope :my do
     get "/", to: redirect("/"), as: :my
     get "settings", to: "users#edit", as: :my_settings
@@ -61,18 +68,6 @@ Rails.application.routes.draw do
   resources :mailbox_addresses, only: [:create, :show] do
     member do
       post "activate"
-    end
-  end
-
-  resources :receipts, only: [] do
-    member do
-      delete "destroy", to: "receipts#destroy"
-    end
-
-    collection do
-      post "link", to: "receipts#link"
-      post "upload", to: "receipts#upload"
-      get "link_modal", to: "receipts#link_modal"
     end
   end
 

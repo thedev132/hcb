@@ -1,6 +1,6 @@
 <% instance = local_assigns.__id__ %>
 <div class="<%= "mb3" if defined?(include_spacing) %>">
-  <%= form_with model: nil, url: upload_receipts_path, method: :post, class: "flex flex-column justify-center#{" my-inbox-dropzone" if defined?(restricted_dropzone)}", data: {
+  <%= form_with model: nil, url: receipts_path, method: :post, class: "flex flex-column justify-center#{" my-inbox-dropzone" if defined?(restricted_dropzone)}", data: {
         controller: "file-drop form",
         action: "
           dragover#{"@window" unless defined?(restricted_dropzone)}->file-drop#dragover
