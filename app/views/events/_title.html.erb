@@ -9,13 +9,13 @@
     <div class="menu__content menu__content--2 menu__content--compact" data-menu-target="content">
       <p class="h6 muted m0 ml1 mb1">Switch organizations:</p>
       <% current_user.events.not_hidden.excluding(@event).with_attached_logo.map do |event| %>
-        <%= link_to event do %>
+        <%= link_to event, title: event.name, style: "gap: 8px" do %>
           <% if event.logo.attached? %>
-            <%= image_tag event.logo, height: 24, width: 24, class: "rounded mr1" %>
+            <%= image_tag event.logo, height: 24, width: 24, class: "rounded" %>
           <% else %>
-            <div style="height: 24px; width: 24px; background-color: <%= event.color %>" class="rounded mr1"></div>
+            <div style="height: 24px; width: 24px; background-color: <%= event.color %>" class="rounded shrink-none"></div>
           <% end %>
-          <%= event.name %>
+          <span class="truncate"><%= event.name %></span>
           <span class="muted h6 ml-auto">
             <%= turbo_frame_tag "event_balance_#{event.public_id}", src: event_async_balance_path(event, symbol: true), loading: :lazy do %>
               -
