@@ -54,6 +54,7 @@
 #  tax                                                          :bigint
 #  tax_percent                                                  :decimal(, )
 #  total                                                        :bigint
+#  void_v2_at                                                   :datetime
 #  created_at                                                   :datetime         not null
 #  updated_at                                                   :datetime         not null
 #  archived_by_id                                               :bigint
@@ -66,6 +67,7 @@
 #  sponsor_id                                                   :bigint
 #  stripe_charge_id                                             :text
 #  stripe_invoice_id                                            :text
+#  voided_by_id                                                 :bigint
 #
 # Indexes
 #
@@ -80,6 +82,7 @@
 #  index_invoices_on_sponsor_id                       (sponsor_id)
 #  index_invoices_on_status                           (status)
 #  index_invoices_on_stripe_invoice_id                (stripe_invoice_id) UNIQUE
+#  index_invoices_on_voided_by_id                     (voided_by_id)
 #
 # Foreign Keys
 #
@@ -89,6 +92,7 @@
 #  fk_rails_...  (manually_marked_as_paid_user_id => users.id)
 #  fk_rails_...  (payout_id => invoice_payouts.id)
 #  fk_rails_...  (sponsor_id => sponsors.id)
+#  fk_rails_...  (voided_by_id => users.id)
 #
 class Invoice < ApplicationRecord
   has_paper_trail skip: [:payment_method_ach_credit_transfer_account_number] # ciphertext columns will still be tracked
@@ -104,12 +108,13 @@ class Invoice < ApplicationRecord
   include PgSearch::Model
   pg_search_scope :search_description, associated_against: { sponsor: :name }, against: [:item_description, :item_amount], using: { tsearch: { prefix: true, dictionary: "english" } }, ranked_by: "invoices.created_at"
 
-  scope :unarchived, -> { where(archived_at: nil) }
-  scope :archived, -> { where.not(archived_at: nil) }
+  scope :unarchived, -> { where(archived_at: nil).where.not(aasm_state: "void_v2") }
+  scope :archived, -> { where.not(archived_at: nil).where.not(aasm_state: "void_v2") }
   scope :missing_fee_reimbursement, -> { where(fee_reimbursement_id: nil) }
   scope :missing_payout, -> { where("payout_id is null and payout_creation_balance_net is not null") } # some invoices are missing a payout but it is ok because they were paid by check. that is why we additionally check on payout_creation_balance_net
-  scope :unpaid, -> { where("aasm_state != 'paid_v2'") }
+  scope :unpaid, -> { where("aasm_state != 'paid_v2'").where("aasm_state != 'void_v2'") }
   scope :past_due, -> { where("due_date < ?", Time.current) }
+  scope :voided, -> { where(aasm_state: "void_v2") }
   scope :not_manually_marked_as_paid, -> { where(manually_marked_as_paid_at: nil) }
   scope :missing_raw_pending_invoice_transaction, -> { joins("LEFT JOIN raw_pending_invoice_transactions ON raw_pending_invoice_transactions.invoice_transaction_id = invoices.id::text").where(raw_pending_invoice_transactions: { id: nil }) }
 
@@ -130,11 +135,12 @@ class Invoice < ApplicationRecord
   belongs_to :payout, class_name: "InvoicePayout", optional: true
   belongs_to :fee_reimbursement, optional: true
   belongs_to :archived_by, class_name: "User", optional: true
+  belongs_to :voided_by, class_name: "User", optional: true
 
   has_one :personal_transaction, class_name: "HcbCode::PersonalTransaction", required: false
   has_one_attached :manually_marked_as_paid_attachment
 
-  aasm do
+  aasm timestamps: true do
     state :open_v2, initial: true
     state :paid_v2
     state :void_v2
@@ -194,8 +200,8 @@ class Invoice < ApplicationRecord
     return :success if paid_v2? && deposited?
     return :success if paid_v2? && event.can_front_balance?
     return :info if paid_v2?
-    return :muted if archived?
     return :error if void_v2?
+    return :muted if archived?
     return :error if due_date < Time.current
     return :warning if due_date < 3.days.from_now
 
@@ -205,8 +211,8 @@ class Invoice < ApplicationRecord
   def state_text
     return "Deposited" if paid_v2? && (event.can_front_balance? || deposited?)
     return "In Transit" if paid_v2?
-    return "Archived" if archived?
     return "Voided" if void_v2?
+    return "Archived" if archived?
     return "Overdue" if due_date < Time.current
     return "Due soon" if due_date < 3.days.from_now
 
@@ -350,6 +356,12 @@ class Invoice < ApplicationRecord
     save!
   end
 
+  def close_stripe_invoice
+    remote_invoice.void_invoice
+
+    sync_remote!
+  end
+
   private
 
   def raw_pending_invoice_transaction
@@ -371,12 +383,6 @@ class Invoice < ApplicationRecord
     if due_date.present? && due_date < Time.current
       errors.add(:due_date, "can't be in the past")
     end
-  end
-
-  def close_stripe_invoice
-    remote_invoice.void_invoice
-
-    sync_remote!
   end
 
   def slug_text

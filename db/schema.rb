@@ -324,7 +324,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_20_223246) do
     t.bigint "raw_pending_incoming_disbursement_transaction_id"
     t.bigint "raw_pending_outgoing_disbursement_transaction_id"
     t.boolean "fronted", default: false
-    t.boolean "fee_waived", default: false
+        t.boolean "fee_waived", default: false
     t.bigint "ach_payment_id"
     t.bigint "increase_check_id"
     t.bigint "check_deposit_id"
@@ -1066,6 +1066,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_20_223246) do
     t.text "hcb_code"
     t.string "aasm_state"
     t.text "payment_method_ach_credit_transfer_account_number_ciphertext"
+    t.bigint "voided_by_id"
+    t.datetime "void_v2_at"
     t.index ["archived_by_id"], name: "index_invoices_on_archived_by_id"
     t.index ["creator_id"], name: "index_invoices_on_creator_id"
     t.index ["fee_reimbursement_id"], name: "index_invoices_on_fee_reimbursement_id"
@@ -1077,6 +1079,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_20_223246) do
     t.index ["sponsor_id"], name: "index_invoices_on_sponsor_id"
     t.index ["status"], name: "index_invoices_on_status"
     t.index ["stripe_invoice_id"], name: "index_invoices_on_stripe_invoice_id", unique: true
+    t.index ["voided_by_id"], name: "index_invoices_on_voided_by_id"
   end
 
   create_table "lab_tech_experiments", force: :cascade do |t|
@@ -1346,6 +1349,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_20_223246) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["event_id"], name: "index_payment_recipients_on_event_id"
+    t.index ["name"], name: "index_payment_recipients_on_name"
   end
 
   create_table "raw_column_transactions", force: :cascade do |t|
@@ -1902,6 +1906,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_20_223246) do
   add_foreign_key "invoices", "users", column: "archived_by_id"
   add_foreign_key "invoices", "users", column: "creator_id"
   add_foreign_key "invoices", "users", column: "manually_marked_as_paid_user_id"
+  add_foreign_key "invoices", "users", column: "voided_by_id"
   add_foreign_key "lob_addresses", "events"
   add_foreign_key "login_codes", "users"
   add_foreign_key "login_tokens", "user_sessions"

@@ -9,7 +9,12 @@
   <%= link_to "View on Stripe", @invoice.stripe_dashboard_url, class: "btn bg-accent" %>
 <% end %>
 
-<% if @invoice.archived? %>
+<% if @invoice.void_v2? %>
+  <div class="banner banner--archived mt3">
+    <span class="bold block mb1">This invoice was voided by <%= user_mention @invoice.voided_by %> on <%= format_date @invoice.void_v2_at %>.</span>
+    <span class="block">It will only display in the Voided tab<span class="xs-hide"> on the Invoices page</span>.</span>
+  </div>
+<% elsif @invoice.archived? %>
   <div class="banner banner--archived mt3">
     <span class="bold block mb1">This invoice was archived by <%= user_mention @invoice.archived_by %> on <%= format_date @invoice.archived_at %>.</span>
     <span class="block">It will only display in the Archived tab<span class="xs-hide"> on the Invoices page</span>.</span>
@@ -52,7 +57,7 @@
   </section>
   <!-- recipient info -->
   <section class="details details--wide pt2 pb2 details--tall">
-    <% unless @invoice.paid_v2? or @invoice.deposited? %>
+    <% if @invoice.open_v2? %>
       <p>
         <strong>Due date</strong>
         <span>
@@ -155,11 +160,17 @@
       PDF
     <% end %>
     </div>
-    <%= link_to (@invoice.archived? ? "Un-archive" : "Archive"),
-      (@invoice.archived? ? invoice_unarchive_path(@invoice) : invoice_archive_path(@invoice)),
+    <%= link_to "Void this invoice",
+      invoice_void_path(@invoice.id),
       disabled: !organizer_signed_in?,
       method: :post,
-      class: "btn bg-muted" %>
+      data: { confirm: "Are you sure you want to void this invoice? Voided invoices can not be paid and this action cannot be undone." },
+      class: "btn bg-error mr1 right" if @invoice.open_v2? %>
+  <%= link_to (@invoice.archived? ? "Un-archive" : "Archive"),
+    (@invoice.archived? ? invoice_unarchive_path(@invoice) : invoice_archive_path(@invoice)),
+    disabled: !organizer_signed_in?,
+    method: :post,
+    class: "btn bg-muted" unless @invoice.void_v2? %>
   </section>
 </article>
 

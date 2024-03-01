@@ -789,6 +789,7 @@ class AdminController < ApplicationController
     @missing_payout = params[:missing_payout] == "1" ? true : nil
     @missing_fee_reimbursement = params[:missing_fee_reimbursement] == "1" ? true : nil
     @past_due = params[:past_due] == "1" ? true : nil
+    @voided = params[:voided] == "1" ? true : nil
 
     @event_id = params[:event_id].present? ? params[:event_id] : nil
 
@@ -815,6 +816,8 @@ class AdminController < ApplicationController
     relation = relation.missing_payout if @missing_payout
     relation = relation.missing_fee_reimbursement if @missing_fee_reimbursement
     relation = relation.past_due if @past_due
+    relation = relation.void_v2 if @voided
+
 
     @count = relation.count
     @invoices = relation.page(@page).per(@per).order(created_at: :desc)

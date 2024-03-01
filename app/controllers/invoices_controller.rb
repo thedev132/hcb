@@ -23,10 +23,11 @@ class InvoicesController < ApplicationController
       .or(@event.invoices.joins(:payout).where(invoice_payouts: { status: "pending" })))
     amount_in_transit = @invoices_in_transit.sum(&:amount_paid)
     archived_unpaid = relation.unpaid.archived.sum(:item_amount)
+    voided = relation.void_v2.sum(:item_amount)
 
     @stats = {
       # The calcluations for `total` and `unpaid` do not include archived invoices
-      total: relation.sum(:item_amount) - archived_unpaid,
+      total: relation.sum(:item_amount) - archived_unpaid - voided,
       # "paid" status invoices include manually paid invoices and
       # Stripe invoices that are paid, but for which the funds are in transit
       paid: relation.paid_v2.sum(:item_amount) - amount_in_transit,
@@ -41,6 +42,8 @@ class InvoicesController < ApplicationController
       relation = relation.unpaid
     when "archived"
       relation = relation.archived
+    when "voided"
+      relation = relation.void_v2
     else
       relation = relation.unarchived
     end
@@ -159,6 +162,16 @@ class InvoicesController < ApplicationController
       flash[:error] = "Something went wrong while trying to archive this invoice!"
       redirect_to @invoice
     end
+  end
+
+  def void
+    @invoice = Invoice.friendly.find(params[:invoice_id])
+
+    authorize @invoice
+
+    ::InvoiceService::MarkVoid.new(invoice_id: @invoice.id, user: current_user).run
+
+    redirect_to @invoice
   end
 
   def unarchive

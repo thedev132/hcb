@@ -28,6 +28,10 @@ class InvoicePolicy < ApplicationPolicy
     admin_or_user
   end
 
+  def void?
+    admin_or_user
+  end
+
   def unarchive?
     admin_or_user
   end

@@ -274,6 +274,7 @@ Rails.application.routes.draw do
     post "manually_mark_as_paid"
     post "archive"
     post "unarchive"
+    post "void"
     get "hosted"
     get "pdf"
     resources :comments
