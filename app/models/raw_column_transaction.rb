@@ -48,7 +48,7 @@ class RawColumnTransaction < ApplicationRecord
     if amount_cents.positive?
       "DEPOSIT"
     else
-      "WITHDRAWAL"
+      "DEBIT"
     end
   end
 

@@ -51,7 +51,7 @@ class ColumnService
 
     reports.to_h do |report|
       url = get("/documents/#{report["json_document_id"]}")["url"]
-      transactions = JSON.parse(Faraday.get(url).body).select { |t| t["bank_account_id"] == bank_account && t["available_amount"] != 0 }
+      transactions = JSON.parse(Faraday.get(url).body).select { |t| t["bank_account_id"] == bank_account && t["available_amount"].present? && t["available_amount"] != 0 }
 
       [report["id"], transactions]
     end
