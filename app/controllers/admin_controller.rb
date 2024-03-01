@@ -273,10 +273,11 @@ class AdminController < ApplicationController
     if @event_id
       @event = Event.find(@event_id)
 
-      relation = @event.users.includes(:events)
+      relation = @event.users
     else
-      relation = User.includes(:events)
+      relation = User.all
     end
+    relation = relation.includes(:events).includes(:card_grants)
 
     relation = relation.search_name(@q) if @q
     relation = relation.where(access_level: @access_level) if @access_level.present?

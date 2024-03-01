@@ -26,6 +26,7 @@
       <th>Name</th>
       <th>Email</th>
       <th>Org Positions</th>
+      <th class="w-48">Card Grants</th>
       <th class="w-32">Actions</th>
     </tr>
   </thead>
@@ -53,6 +54,20 @@
             <% else %>
               <%= link_to op.event.id, op.event %>
             <% end %>
+          <% end %>
+        </td>
+        <td>
+          <% if user.card_grants.any? %>
+            <% user.card_grants.each do |cg| %>
+              <%= link_to cg do %>
+                <%= cg.id %>
+                <% if cg.stripe_card&.frozen? %>
+                   <%= inline_icon "freeze", size: 15 %>
+                <% end %>
+              <% end %>
+            <% end %>
+          <% else %>
+            None
           <% end %>
         </td>
         <td>
