@@ -167,6 +167,7 @@ class AdminController < ApplicationController
   def events
     @page = params[:page] || 1
     @per = params[:per] || 100
+    @csv_export = params[:format] == "csv"
 
     @events = filtered_events
     @count = @events.count
@@ -1178,9 +1179,9 @@ class AdminController < ApplicationController
     # Sorting
     case @sort_by
     when "balance_asc"
-      relation = Kaminari.paginate_array(relation.sort_by(&:balance_v2_cents))
+      relation = @csv_export ? relation.sort_by(&:balance_v2_cents) : Kaminari.paginate_array(relation.sort_by(&:balance_v2_cents))
     when "balance_desc"
-      relation = Kaminari.paginate_array(relation.sort_by(&:balance_v2_cents).reverse!)
+      relation = @csv_export ? relation.sort_by(&:balance_v2_cents).reverse! : Kaminari.paginate_array(relation.sort_by(&:balance_v2_cents).reverse!)
     else # Default sort is "date_desc"
       relation = relation.reorder(Arel.sql("COALESCE(events.activated_at, events.created_at) desc"))
     end
