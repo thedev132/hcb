@@ -420,11 +420,16 @@ class HcbCode < ApplicationRecord
   end
 
   def comment_recipients_for(comment)
+    users = []
+    users += self.comments.map(&:user)
+    users += self.events.flat_map(&:users)
+    users += self.events.map(&:point_of_contact)
+
     if comment.admin_only?
-      return User.admin.pluck(:email).excluding(comment.user.email)
+      return users.select(&:admin?).collect(&:email).excluding(comment.user.email)
     end
 
-    self.events.flat_map { |e| e.users.pluck(:email) }.excluding(comment.user.email)
+    users.collect(&:email).excluding(comment.user.email)
   end
 
   def comment_mailer_subject

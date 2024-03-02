@@ -8,8 +8,8 @@ class CommentMailer < ApplicationMailer
     return if @commentable.comment_recipients_for(@comment).empty?
 
     mail_settings = {
-      to: @commentable.comment_recipients_for(@comment),
-      reply_to: ([@comment.user.email] + @commentable.comment_recipients_for(@comment)).uniq,
+      bcc: @commentable.comment_recipients_for(@comment),
+      reply_to: @comment.user.email,
       subject: @commentable.comment_mailer_subject,
       template_path: "comment_mailer/#{@commentable.class.name.underscore}",
       from: email_address_with_name("hcb@hackclub.com", "#{@comment.user.name} via HCB")
