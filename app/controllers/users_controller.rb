@@ -19,6 +19,16 @@ class UsersController < ApplicationController
     redirect_to params[:return_to] || root_path, flash: { info: "You're now impersonating #{user.name}." }
   end
 
+  def unimpersonate
+    return redirect_to root_path unless current_session&.impersonated?
+
+    impersonated_user = current_user
+
+    unimpersonate_user
+
+    redirect_to params[:return_to] || root_path, flash: { info: "Welcome back, 007. You're no longer impersonating #{impersonated_user.name}" }
+  end
+
   # view to log in
   def auth
     @prefill_email = params[:email] if params[:email].present?

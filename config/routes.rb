@@ -126,6 +126,7 @@ Rails.application.routes.draw do
       get "admin", to: "users#edit_admin"
 
       post "impersonate"
+      post "unimpersonate"
     end
     post "delete_profile_picture", to: "users#delete_profile_picture"
     patch "stripe_cardholder_profile", to: "stripe_cardholders#update_profile"

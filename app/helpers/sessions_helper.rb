@@ -11,7 +11,14 @@ module SessionsHelper
   }.freeze
 
   def impersonate_user(user)
+    sign_out
     sign_in(user:, impersonate: true)
+  end
+
+  def unimpersonate_user
+    curses = current_session
+    sign_out
+    sign_in(user: curses.impersonated_by)
   end
 
   # DEPRECATED - begin to start deprecating and ultimately replace with sign_in_and_set_cookie

@@ -324,7 +324,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_20_223246) do
     t.bigint "raw_pending_incoming_disbursement_transaction_id"
     t.bigint "raw_pending_outgoing_disbursement_transaction_id"
     t.boolean "fronted", default: false
-        t.boolean "fee_waived", default: false
+    t.boolean "fee_waived", default: false
     t.bigint "ach_payment_id"
     t.bigint "increase_check_id"
     t.bigint "check_deposit_id"
@@ -1349,7 +1349,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_20_223246) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["event_id"], name: "index_payment_recipients_on_event_id"
-    t.index ["name"], name: "index_payment_recipients_on_name"
   end
 
   create_table "raw_column_transactions", force: :cascade do |t|

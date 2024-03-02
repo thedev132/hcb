@@ -18,9 +18,11 @@
           <div class="tooltipped tooltipped--s" aria-label="Edit user's settings">
             <%= pop_icon_to "controls", edit_user_path(position.user.slug), data: { turbo_frame: "_top" }, class: "admin-tools circle overflow-hidden" %>
           </div>
-          <div class="tooltipped tooltipped--s" aria-label="Impersonate user">
-            <%= pop_icon_to "spy", impersonate_user_path(id: position.user.id, return_to: request.url), data: { turbo_frame: "_top" }, class: "admin-tools circle overflow-hidden" %>
-          </div>
+          <% unless position.user == current_user %>
+            <div class="tooltipped tooltipped--s" aria-label="Impersonate user">
+              <%= pop_icon_to "spy", impersonate_user_path(id: position.user.id, return_to: request.url), data: { turbo_method: "post", turbo_frame: "_top" }, class: "admin-tools circle overflow-hidden" %>
+            </div>
+          <% end %>
         <% end %>
 
         <% if position.organizer_position_deletion_requests.under_review.exists? %>
