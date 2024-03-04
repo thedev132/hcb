@@ -423,9 +423,9 @@ class HcbCode < ApplicationRecord
     users = []
     users += self.comments.map(&:user)
     users += self.events.flat_map(&:users)
-    users += self.events.map(&:point_of_contact)
 
     if comment.admin_only?
+      users += self.events.map(&:point_of_contact)
       return users.select(&:admin?).collect(&:email).excluding(comment.user.email)
     end
 
