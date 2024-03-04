@@ -38,6 +38,7 @@ module TransactionGroupingEngine
         return unknown_hcb_code if @ct_or_cp.is_a?(CanonicalTransaction) && @ct_or_cp.raw_increase_transaction&.increase_account_number.present? # Don't attempt to group transactions posted to an org's account/routing number
         return short_code_hcb_code if has_short_code?
         return invoice_hcb_code if invoice
+        return bank_fee_hcb_code if bank_fee
         return donation_hcb_code if donation
         return partner_donation_hcb_code if partner_donation
         return ach_transfer_hcb_code if ach_transfer
@@ -72,6 +73,18 @@ module TransactionGroupingEngine
 
       def invoice
         @invoice ||= @ct_or_cp.invoice
+      end
+
+      def bank_fee_hcb_code
+        [
+          HCB_CODE,
+          BANK_FEE_CODE,
+          bank_fee.id
+        ].join(SEPARATOR)
+      end
+
+      def bank_fee
+        @bank_fee ||= @ct_or_cp.bank_fee
       end
 
       def donation_hcb_code

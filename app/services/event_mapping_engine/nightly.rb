@@ -25,6 +25,8 @@ module EventMappingEngine
       map_outgoing_fee_reimbursements!
       map_increase_interest!
 
+      map_bank_fees! # TODO: move to using hcb short codes
+
       map_hcb_codes_invoice!
       map_hcb_codes_donation!
 
@@ -92,6 +94,10 @@ module EventMappingEngine
 
     def map_achs!
       ::EventMappingEngine::Map::Achs.new.run
+    end
+
+    def map_bank_fees!
+      ::EventMappingEngine::Map::BankFees.new.run
     end
 
     def map_disbursements!
