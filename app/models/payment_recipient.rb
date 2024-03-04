@@ -16,6 +16,7 @@
 # Indexes
 #
 #  index_payment_recipients_on_event_id  (event_id)
+#  index_payment_recipients_on_name      (name)
 #
 # Foreign Keys
 #
