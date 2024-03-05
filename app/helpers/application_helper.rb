@@ -198,11 +198,15 @@ module ApplicationHelper
   end
 
   def help_message
-    content_tag :span, "Contact the HCB team at #{help_email}.".html_safe
+    content_tag :span, "Contact the HCB team at #{help_email} or #{help_phone}.".html_safe
   end
 
   def help_email
     mail_to "hcb@hackclub.com"
+  end
+
+  def help_phone
+    phone_to "+18442372290", "+1 (844) 237 2290"
   end
 
   def format_date(date)
