@@ -56,4 +56,8 @@ class RawColumnTransaction < ApplicationRecord
     column_transaction["transaction_type"]
   end
 
+  def transaction_id
+    column_transaction["transaction_id"]
+  end
+
 end

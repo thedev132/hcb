@@ -4,7 +4,7 @@ module EventMappingEngine
   module Map
     class IncreaseChecks
       def run
-        likely_increase_checks.find_each(batch_size: 100) do |ct|
+        likely_increase_checks.each do |ct|
           increase_check = ct.increase_check
           next unless increase_check
 
@@ -15,7 +15,8 @@ module EventMappingEngine
       private
 
       def likely_increase_checks
-        ::CanonicalTransaction.unmapped.likely_increase_checks.order("date asc")
+        ::CanonicalTransaction.unmapped.likely_increase_checks.order("date asc") +
+          ::CanonicalTransaction.unmapped.with_column_transaction_type("check")
       end
 
     end

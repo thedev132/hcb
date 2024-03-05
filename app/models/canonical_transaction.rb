@@ -167,6 +167,10 @@ class CanonicalTransaction < ApplicationRecord
     raw_column_transaction&.transaction_type
   end
 
+  def column_transaction_id
+    raw_column_transaction&.transaction_id
+  end
+
   def bank_account_name
     transaction_source.try(:bank_account_name) || transaction_source_type[/Raw(.+)Transaction/, 1]
   end

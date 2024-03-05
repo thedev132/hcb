@@ -64,7 +64,7 @@ module TransactionEngine
 
       def likely_increase_check
         if @canonical_transaction.transaction_source_type == "RawColumnTransaction"
-          IncreaseCheck.find_by(column_id: @canonical_transaction.raw_column_transaction.column_transaction["transaction_id"])
+          IncreaseCheck.find_by(column_id: @canonical_transaction.column_transaction_id)
         elsif @canonical_transaction.transaction_source_type == "RawIncreaseTransaction"
           increase_check_transfer_id = @canonical_transaction.raw_increase_transaction.increase_transaction.dig("source", "check_transfer_intention", "transfer_id")
 
