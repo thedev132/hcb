@@ -6,7 +6,6 @@
   },
   "dependencies": {
     "@airbrake/browser": "^2.1.8",
-    "@babel/preset-react": "^7.18.6",
     "@fingerprintjs/fingerprintjs": "^3.3.0",
     "@floating-ui/dom": "^1.0.1",
     "@floating-ui/react-dom": "^1.0.0",
@@ -20,7 +19,6 @@
     "@stripe/stripe-js": "^1.46.0",
     "ahoy.js": "^0.4.3",
     "alpinejs": "^3.12.2",
-    "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
     "clsx": "^1.2.1",
     "gsap": "^3.11.3",
     "jquery": "^3.6.1",
@@ -34,19 +32,21 @@
     "react-snowfall": "^1.1.1",
     "react_ujs": "^2.7.1",
     "ua-parser-js": "^1.0.33",
-    "use-persisted-state": "^0.3.3",
-    "webpack": "^5.76.0",
-    "webpack-cli": "^4.10.0"
+    "use-persisted-state": "^0.3.3"
   },
   "devDependencies": {
     "@babel/core": "^7.18.6",
     "@babel/preset-env": "^7.18.6",
+    "@babel/preset-react": "^7.18.6",
     "@eslint/js": "^8.56.0",
     "babel-loader": "^8.2.5",
+    "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
     "eslint": "^8.31.0",
     "eslint-plugin-react": "7.33.2",
     "globals": "^13.24.0",
-    "prettier": "^3.1.1"
+    "prettier": "^3.1.1",
+    "webpack": "^5.76.0",
+    "webpack-cli": "^4.10.0"
   },
   "scripts": {
     "build": "webpack --config webpack.config.js",
