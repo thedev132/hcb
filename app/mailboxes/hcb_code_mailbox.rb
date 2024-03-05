@@ -13,7 +13,7 @@ class HcbCodeMailbox < ApplicationMailbox
   before_processing :set_user
 
   def process
-    return bounce_missing_attachments unless @attachments || @commands
+    return bounce_missing_attachments unless @attachments || @commands.any?
     return bounce_missing_hcb unless @hcb_code
     return bounce_missing_user unless @user
     return unless ensure_permissions?
@@ -45,13 +45,13 @@ class HcbCodeMailbox < ApplicationMailbox
   private
 
   def set_commands
-    content = text || body || html
+    content = text || html && Loofah.html5_fragment(html).to_text || body
     @commands = content&.lines&.select { |line| line.strip.start_with?("@") }&.map { |cmd|
       {
         "command"  => cmd.strip.split(" ")[0],
         "argument" => cmd.sub(cmd.strip.split(" ")[0], "").strip
       }
-    }
+    } || []
     @tagged_with = []
   end
 

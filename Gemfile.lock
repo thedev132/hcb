@@ -856,6 +856,7 @@ DEPENDENCIES
   lob
   local_time
   lockbox
+  loofah
   maildown
   mini_magick
   monetize

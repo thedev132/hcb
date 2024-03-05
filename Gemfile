@@ -108,6 +108,7 @@ gem "grape-swagger-entity", "~> 0.3"
 
 gem "maildown" # markdown for views
 gem "redcarpet" # markdown parsing
+gem "loofah" # html email parsing
 
 gem "namae" # multi-cultural human name parser
 gem "premailer-rails" # css to inline styles for emails
