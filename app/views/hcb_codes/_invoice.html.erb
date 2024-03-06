@@ -110,7 +110,7 @@
           <%= @sponsor.address_line2 %><br>
         <% end %>
         <%= @sponsor.address_city %>, <%= @sponsor.address_state %> <%= @sponsor.address_postal_code %> <br>
-        <%= get_country_name_from_alpha2(@sponsor.address_country) %>
+        <%= ISO3166::Country[@sponsor.address_country].common_name %>
         </span>
       <% else %>
         <span><strong>Sign in to view</strong></span>
