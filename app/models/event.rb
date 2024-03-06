@@ -76,7 +76,7 @@ class Event < ApplicationRecord
   set_public_id_prefix :org
 
   include CountryEnumable
-  has_country_enum :country
+  has_country_enum
 
   has_paper_trail
   acts_as_paranoid

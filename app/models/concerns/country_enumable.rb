@@ -3,18 +3,24 @@
 module CountryEnumable
   extend ActiveSupport::Concern
 
-  module ClassMethods
-    def has_country_enum(enum_name = :country)
-      enum enum_name, self.country_enum_list, prefix: :country
+  included do
+    def self.countries_for_select
+      countries = self.countries.keys.map do |alpha2|
+        [alpha2, ISO3166::Country[alpha2].common_name]
+      end.sort_by { |c| I18n.transliterate(c.last) }
+      countries.unshift(["US", "United States"], ["CA", "Canada"]).uniq!
+    end
+  end
+
+  class_methods do
+    def has_country_enum
+      enum :country, self.country_enum_list, prefix: :country
     end
 
     private
 
     def country_enum_list
       {
-        US: 215,
-        IN: 104,
-        CA: 41,
         AD: 6,
         AE: 235,
         AF: 1,
@@ -52,6 +58,7 @@ module CountryEnumable
         BW: 30,
         BY: 21,
         BZ: 23,
+        CA: 41,
         CC: 48,
         CD: 52,
         CF: 43,
@@ -118,6 +125,7 @@ module CountryEnumable
         IE: 108,
         IL: 110,
         IM: 109,
+        IN: 104,
         IO: 33,
         IQ: 107,
         IR: 106,
@@ -244,6 +252,7 @@ module CountryEnumable
         UA: 234,
         UG: 233,
         UM: 237,
+        US: 215,
         UY: 238,
         UZ: 239,
         VA: 99,
