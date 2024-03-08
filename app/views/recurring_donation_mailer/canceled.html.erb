@@ -1,6 +1,6 @@
-<p>Hi <%= @recurring_donation.name %>,</p>
+<p>Hi <%= @recurring_donation.name(show_anonymous: true) %>,</p>
 
-<p>Your donation of <%= render_money @recurring_donation.amount %> per month to <strong><%= @recurring_donation.event.name %></strong> has been canceled.</p>
+<p>Your <% "anonymous " if @recurring_donation.anonymous? %>donation of <%= render_money @recurring_donation.amount %> per month to <strong><%= @recurring_donation.event.name %></strong> has been canceled.</p>
 
 <p>If you'd like to donate again in the future, you can do so on <%= link_to "#{@recurring_donation.event.name}'s donation page", start_donation_donations_url(@recurring_donation.event) %>.</p>
 

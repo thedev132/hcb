@@ -15,7 +15,8 @@ module RecurringDonationService
         amount: @stripe_invoice.amount_due,
         amount_received: @stripe_invoice.amount_paid,
         event: recurring_donation.event,
-        stripe_payment_intent_id: @stripe_invoice.payment_intent
+        stripe_payment_intent_id: @stripe_invoice.payment_intent,
+        anonymous: recurring_donation.anonymous
       )
 
       if recurring_donation.message.present? && recurring_donation.donations.none?

@@ -1,6 +1,6 @@
-<p>Hi <%= @recurring_donation.name %>,</p>
+<p>Hi <%= @recurring_donation.name(show_anonymous: true) %>,</p>
 
-<p>The payment method for your donation to <strong><%= @recurring_donation.event.name %></strong> was just changed to a card ending in <strong>••••<%= @recurring_donation.last4 %></strong>.</p>
+<p>The payment method for your <% "anonymous " if @recurring_donation.anonymous? %>donation to <strong><%= @recurring_donation.event.name %></strong> was just changed to a card ending in <strong>••••<%= @recurring_donation.last4 %></strong>.</p>
 
 <p>If you didn't make this change, please cancel your donation by clicking <%= link_to "this link", recurring_donation_url(@recurring_donation.url_hash) %>.</p>
 

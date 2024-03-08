@@ -124,6 +124,10 @@ class RecurringDonation < ApplicationRecord
     end
   end
 
+  def name(show_anonymous: false)
+    anonymous? && !show_anonymous ? "Anonymous" : super()
+  end
+
   private
 
   def create_stripe_subscription

@@ -289,8 +289,8 @@ class Donation < ApplicationRecord
     recurring? && recurring_donation.donations.order(created_at: :asc).first == self
   end
 
-  def name
-    recurring_donation&.name || super
+  def name(show_anonymous: false)
+    anonymous? && !show_anonymous ? "Anonymous" : recurring_donation&.name(show_anonymous:) || super()
   end
 
   def email

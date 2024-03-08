@@ -166,7 +166,7 @@
             <td style="width: 1%"><span class="ml0 mr1 badge bg-success"><%= recurring_donation.stripe_status.humanize %></span></td>
             <td><%= format_date recurring_donation.created_at %></td>
             <td class="line-height-3">
-              <%= recurring_donation.name %><br>
+              <%= recurring_donation.name(show_anonymous: organizer_signed_in?) %><br>
               <% if organizer_signed_in? %>
                 <span class="muted h5"><%= recurring_donation.email %></span>
               <% end %>
@@ -221,7 +221,7 @@
             <%= format_date d.created_at %>
           </td>
           <td class="flex items-center">
-            <%= d.anonymous? && !organizer_signed_in? ? "Anonymous" : d.name %>
+            <%= d.name(show_anonymous: organizer_signed_in?) %>
             <% if d.recurring? %>
               <div class="line-height-0 ml1 tooltipped tooltipped--n" aria-label="Monthly donor"><%= inline_icon "transactions", size: 24, class: "muted" %></div>
             <% end %>

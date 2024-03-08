@@ -6,9 +6,7 @@ module Api
       when_expanded do
         expose :amount, as: :amount_cents, documentation: { type: "integer" }
         expose :donor do
-          expose :name do |donation|
-            donation.anonymous? ? "Anonymous donor" : donation.name
-          end
+          expose :name
           expose :anonymous, documentation: { type: "boolean" }
         end
         format_as_date do
