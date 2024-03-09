@@ -42,7 +42,7 @@ class StripeCardPolicy < ApplicationPolicy
   private
 
   def admin_or_manager?
-    user&.admin? || (record.users.include?(user) && OrganizerPosition.find_by(user, event: record)&.manager?)
+    user&.admin? || OrganizerPosition.find_by(user, event: record)&.manager?
   end
 
 end

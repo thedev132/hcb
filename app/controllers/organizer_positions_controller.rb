@@ -75,7 +75,7 @@ class OrganizerPositionsController < ApplicationController
     if was != to
       organizer_position.update(role: to)
 
-      flash[:success] = "Changed #{organizer_position.user.name}'s role from #{was} to #{OrganizerPosition.roles.key(to)}."
+      flash[:success] = "Changed #{organizer_position.user.name}'s role from #{was} to #{to}."
       OrganizerPositionMailer.with(organizer_position:, previous_role: was, changer: current_user).role_change.deliver_later
     end
 

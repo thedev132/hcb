@@ -105,7 +105,7 @@ class OrganizerPositionInvitesController < ApplicationController
     if was != to
       organizer_position_invite.update(role: to)
 
-      flash[:success] = "Changed #{organizer_position_invite.user.name}'s role from #{was} to #{OrganizerPosition.roles.key(to)}."
+      flash[:success] = "Changed #{organizer_position_invite.user.name}'s role from #{was} to #{to}."
     end
 
   rescue => e
