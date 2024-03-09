@@ -9,6 +9,27 @@
       </div>
       <div class="flex flex-column justify-center">
         <p class="h2 bold m0"><%= position.user.name %></p>
+
+        <div class="flex g0 line-height-0 items-center">
+          <p class="h4 info"><%= position.role.capitalize %></p>
+          <% if Flipper.enabled?(:user_permissions_2024_03_09, @event) %>
+            <% if organizer_signed_in?(as: :manager) %>
+              <div data-controller="menu" data-menu-placement-value="bottom-start" data-action="click->menu#toggle click@document->menu#close keydown@document->menu#keydown" data-menu-target="toggle">
+                <%= inline_icon "down-caret", class: "info menu__toggle" %>
+
+                <div data-menu-target="content" class="menu__content menu__content--2 menu__content--compact">
+                  <% OrganizerPosition.roles.keys.each do |role| %>
+                    <%= link_to change_position_role_organizer_path(id: position.id, to: role), data: { turbo_method: "post", turbo_frame: "_top" } do %>
+                      <%= role.humanize %><%= " ✔" if position.role == role %>
+                    <% end %>
+                  <% end %>
+                  <div class="menu__divider"></div>
+                  <a href="/roles">What do these mean?</a>
+                </div>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
       </div>
     </div>
 
@@ -30,7 +51,12 @@
             <%= pop_icon_to "clock", "#", class: "muted", disabled: true %>
           </div>
         <% else %>
-          <%= pop_icon_to "member-remove", new_event_organizer_remove_path(organizer_id: position.user.slug), class: "error tooltipped tooltipped--s", 'aria-label': "Remove user from organization", data: { turbo_frame: "_top" } %>
+          <%= pop_icon_to "member-remove",
+                          new_event_organizer_remove_path(organizer_id: position.user.slug),
+                          class: "error tooltipped tooltipped--s",
+                          'aria-label': "Remove user from organization",
+                          data: { turbo_frame: "_top" },
+                          disabled: !organizer_signed_in?(as: :manager) %>
         <% end %>
       </div>
     <% end %>

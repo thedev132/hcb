@@ -34,10 +34,12 @@
             <%= link_to "Reset password",
                 g_suite_account_reset_password_path(account.id),
                 method: :put,
+                class: ("disabled" unless policy(account).reset_password?),
                 'data-confirm': "Reset the account password for #{account.address}? We’ll email a new password to the backup email." %>
             <%= link_to (account.suspended? ? "Re-activate" : "Suspend"),
                 g_suite_account_toggle_suspension_path(account.id),
                 method: :put,
+                class: ("disabled" unless policy(account).toggle_suspension?),
                 'data-confirm': "Do you really want to #{account.suspended? ? 're-activate' : 'suspend'} #{account.address}?" %>
             <% end %>
             <%= link_to "Delete",

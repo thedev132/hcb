@@ -65,4 +65,25 @@ class OrganizerPositionsController < ApplicationController
     redirect_back(fallback_location: event_team_path(organizer_position.event))
   end
 
+  def change_position_role
+    organizer_position = OrganizerPosition.find(params[:id])
+    authorize organizer_position
+
+    was = organizer_position.role
+    to = params[:to]
+
+    if was != to
+      organizer_position.update(role: to)
+
+      flash[:success] = "Changed #{organizer_position.user.name}'s role from #{was} to #{OrganizerPosition.roles.key(to)}."
+      OrganizerPositionMailer.with(organizer_position:, previous_role: was, changer: current_user).role_change.deliver_later
+    end
+
+  rescue => e
+    Airbrake.notify(e)
+    flash[:error] = "Failed to change the role."
+  ensure
+    redirect_back(fallback_location: event_team_path(organizer_position.event))
+  end
+
 end

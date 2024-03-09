@@ -3,8 +3,15 @@
 module Column
   class AccountNumberPolicy < ApplicationPolicy
     def create?
-      user&.admin? || record.event.users.include?(user)
+      admin_or_manager?
+    end
+
+    private
+
+    def admin_or_manager?
+      user&.admin? || OrganizerPosition.find_by(user, event: record.event)&.manager?
     end
 
   end
+
 end

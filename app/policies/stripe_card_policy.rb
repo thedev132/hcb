@@ -10,15 +10,15 @@ class StripeCardPolicy < ApplicationPolicy
   end
 
   def freeze?
-    user&.admin? || record&.event&.users&.include?(user) || record&.user == user
+    admin_or_manager? || record&.user == user
   end
 
   def defrost?
-    user&.admin? || record&.event&.users&.include?(user)
+    admin_or_manager? || record&.user == user
   end
 
   def activate?
-    user&.admin? || record&.user == user
+    admin_or_manager? || record&.user == user
   end
 
   def show?
@@ -26,11 +26,11 @@ class StripeCardPolicy < ApplicationPolicy
   end
 
   def edit?
-    user&.admin? || record&.event&.users&.include?(user) || record&.user == user
+    admin_or_manager? || record&.user == user
   end
 
   def update?
-    user&.admin? || record&.event&.users&.include?(user) || record&.user == user
+    admin_or_manager? || record&.user == user
   end
 
   def transactions?
@@ -38,5 +38,11 @@ class StripeCardPolicy < ApplicationPolicy
   end
 
   alias_method :update_name?, :update?
+
+  private
+
+  def admin_or_manager?
+    user&.admin? || (record.users.include?(user) && OrganizerPosition.find_by(user, event: record)&.manager?)
+  end
 
 end

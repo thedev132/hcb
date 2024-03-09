@@ -1247,6 +1247,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_27_002056) do
     t.string "slug"
     t.boolean "initial", default: false
     t.boolean "is_signee"
+    t.integer "role", default: 100, null: false
     t.index ["event_id"], name: "index_organizer_position_invites_on_event_id"
     t.index ["organizer_position_id"], name: "index_organizer_position_invites_on_organizer_position_id"
     t.index ["sender_id"], name: "index_organizer_position_invites_on_sender_id"
@@ -1263,6 +1264,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_27_002056) do
     t.integer "sort_index"
     t.boolean "first_time", default: true
     t.boolean "is_signee"
+    t.integer "role", default: 100, null: false
     t.index ["event_id"], name: "index_organizer_positions_on_event_id"
     t.index ["user_id"], name: "index_organizer_positions_on_user_id"
   end

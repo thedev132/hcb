@@ -20,7 +20,7 @@
         tooltip: "Manage team debit cards",
         icon: "card",
         data: { tour_step: "cards" },
-        selected: local_assigns[:selected] == :cards unless !@event.approved? %>
+        selected: local_assigns[:selected] == :cards if @event.approved? %>
       <% admin_tools do %>
         <%= dock_item "Settings",
           edit_event_path(@event),
@@ -41,18 +41,18 @@
         tooltip: "Receive donations online",
         icon: "support",
         data: { tour_step: "donations" },
-        selected: local_assigns[:selected] == :donations unless !@event.approved? %>
+        selected: local_assigns[:selected] == :donations if @event.approved? %>
       <%= dock_item "Invoices",
         event_invoices_path(event_id: @event.slug),
         tooltip: "Collect sponsor payments",
         icon: "briefcase",
-        selected: local_assigns[:selected] == :invoices unless !@event.approved? %>
+        selected: local_assigns[:selected] == :invoices if @event.approved? %>
       <%= dock_item "Account & routing number",
         account_number_event_path(@event),
         tooltip: "Receive payouts from GoFundMe, Shopify, Venmo, and more",
         icon: "bank-account",
         selected: local_assigns[:selected] == :account_number,
-        disabled: !organizer_signed_in? if Flipper.enabled?(:incoming_ach_payments_2023_02_17, @event) %>
+        disabled: !organizer_signed_in? if Flipper.enabled?(:incoming_ach_payments_2023_02_17, @event) && policy(@event).account_number? %>
       <%= dock_item "Check deposit",
         event_check_deposits_path(@event),
         tooltip: "Deposit checks",
@@ -66,7 +66,7 @@
         tooltip: "Manage team debit cards",
         icon: "card",
         data: { tour_step: "cards" },
-        selected: local_assigns[:selected] == :cards unless !@event.approved? %>
+        selected: local_assigns[:selected] == :cards if @event.approved? %>
       <%= dock_item "Transfers",
         event_transfers_path(event_id: @event.slug),
         tooltip: "Send & transfer money",
@@ -89,7 +89,7 @@
         icon: "shirt",
         data: { tour_step: "perks" },
         disabled: @event.hardware_grant?,
-        selected: local_assigns[:selected] == :promotions unless !@event.approved? %>
+        selected: local_assigns[:selected] == :promotions if @event.approved? %>
       <%= dock_item "Google #{content_tag(:span, 'Workspace', class: 'sm-hide md-hide')}",
         event_g_suite_overview_path(event_id: @event.slug),
         tooltip: (@event.hardware_grant? ? "Not available for Winter Hardware Wonderland accounts" : @event.outernet_guild? ? "Not available for Outernet Guilds" : @event.demo_mode? ? "Not available for Demo Mode accounts" : @event.g_suites.exists? ? "Manage domain Google Workspace" : Flipper.enabled?(:google_workspace, @event) ? "Set up domain Google Workspace" : "Register for Google Workspace Waitlist"),
@@ -105,7 +105,7 @@
         edit_event_path(@event),
         tooltip: "Edit organization settings",
         icon: "project-settings",
-        disabled: !organizer_signed_in?,
+        disabled: !policy(@event).edit?,
         selected: local_assigns[:selected] == :settings %>
     <% end %>
   </nav>

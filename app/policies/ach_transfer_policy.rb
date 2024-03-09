@@ -6,23 +6,24 @@ class AchTransferPolicy < ApplicationPolicy
   end
 
   def new?
-    is_public || admin_or_user
+    is_public? || admin_or_user
   end
 
   def create?
-    admin_or_user && !record.event.demo_mode && !record.event.outernet_guild?
+    user_who_can_transfer? && !record.event.demo_mode && !record.event.outernet_guild?
   end
 
   def show?
-    is_public || admin_or_user
+    # Semantically, this should be admin_or_manager?, right?
+    is_public? || user_who_can_transfer?
   end
 
   def cancel?
-    admin_or_user
+    user_who_can_transfer?
   end
 
   def transfer_confirmation_letter?
-    admin_or_user
+    user_who_can_transfer?
   end
 
   def start_approval?
@@ -39,11 +40,11 @@ class AchTransferPolicy < ApplicationPolicy
 
   private
 
-  def admin_or_user
-    user&.admin? || record.event.users.include?(user)
+  def user_who_can_transfer?
+    user&.admin? || EventPolicy.new(user, record.event).new_transfer?
   end
 
-  def is_public
+  def is_public?
     record.event.is_public?
   end
 

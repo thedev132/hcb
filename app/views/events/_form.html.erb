@@ -21,7 +21,7 @@
       </div>
 
       <% if @event.logo.attached? %>
-        <%= link_to "Remove logo", event_remove_logo_path(@event), class: "block mt1", method: :post %>
+        <%= link_to "Remove logo", event_remove_logo_path(@event), class: "btn btn-small bg-error mt1 #{!policy(@event).remove_logo? && "disabled"}", method: :post %>
       <% end %>
     </div>
 
@@ -39,7 +39,7 @@
       </div>
 
       <% if @event.background_image.attached? %>
-        <%= link_to "Remove background", event_remove_background_image_path(@event), class: "block mt1", method: :post %>
+        <%= link_to "Remove background image", event_remove_background_image_path(@event), class: "btn btn-small bg-error mt1 #{"disabled" unless policy(@event).remove_background_image?}", method: :post %>
       <% end %>
     </div>
 
@@ -56,7 +56,7 @@
       <%= form.text_field :website, type: :url, placeholder: "https://hackclub.com", class: "w-100 fit" %>
     </div>
 
-    <%= form.submit "Update" %>
+    <%= form.submit "Update", class: ("disabled" unless policy(@event).update?) %>
   </div>
 
   <% if @event.card_grant_setting.present? %>
@@ -91,7 +91,7 @@
         </div>
       <% end %>
 
-      <%= form.submit "Update" %>
+      <%= form.submit "Update", class: ("disabled" unless policy(@event).update?) %>
     </div>
 
   <% end %>
@@ -120,7 +120,7 @@
           <%= form.label :custom_css_url, "Custom CSS URL" %>
           <%= form.text_field :custom_css_url, type: "url", placeholder: "https://hcb.hackclub.com/dinobbq.css", class: "w-100 fit" %>
         </div>
-        <%= form.submit "Update" %>
+        <%= form.submit "Update", class: ("disabled" unless policy(@event).update?) %>
       </div>
     <% end %>
 
@@ -138,7 +138,7 @@
           <%= form.label :end %>
           <%= form.date_select :end %>
         </div>
-        <%= form.submit "Update" %>
+        <%= form.submit "Update", class: ("disabled" unless policy(@event).update?) %>
       </div>
     <% end %>
 
@@ -163,7 +163,7 @@
         <%= form.label :donation_reply_to_email, "Reply-to email for donation receipts" %>
         <%= form.text_field :donation_reply_to_email, type: "email", placeholder: "fiona@hackclub.com", class: "w-100 fit" %>
       </div>
-      <%= form.submit "Update" %>
+      <%= form.submit "Update", class: ("disabled" unless policy(@event).update?) %>
     </div>
   <% end %>
 
@@ -202,7 +202,7 @@
       <%= form.text_area :public_message, class: "w-100 fit" %>
       <%= inline_icon "markdown", size: 32, class: "muted right" %>
     </div>
-    <%= form.submit "Update" %>
+    <%= form.submit "Update", class: ("disabled" unless policy(@event).update?) %>
   </div>
 
   <h3 class="mb1">Danger Zone</h3>
@@ -235,7 +235,7 @@
       <span data-external-validation-target="hint" style="grid-column-start: 2"></span>
     </div>
     <div class="actions">
-      <%= form.submit "Update" %>
+      <%= form.submit "Update", class: ("disabled" unless policy(@event).update?) %>
     </div>
   </div>
   <% admin_tools do %>
@@ -293,7 +293,7 @@
     </div>
 
     <div class="action">
-      <%= form.submit "Update" %>
+      <%= form.submit "Update", class: ("disabled" unless policy(@event).update?) %>
     </div>
   <% end %>
 <% end %>

@@ -1,5 +1,3 @@
-<p class="muted mb1">This person will have full access to your project finances.</p>
-
 <%= form_with(model: invite, local: true, url: event_organizer_position_invites_path) do |form| %>
   <%= form_errors invite %>
 
@@ -7,23 +5,51 @@
     <%= form.label :email, class: "mb1" %>
 
     <div class="flex items-center">
-      <%= form.email_field :email, class: "mr1", "x-model": "email" %>
-
-      <% admin_tools("mr1") do %>
-        <div class="field field--checkbox mb0 line-height-0" data-controller="team-invite-form" data-action="click->team-invite-form#toggle">
-          <%= form.check_box :is_signee, "data-team-invite-form-target": "realCheckbox", style: "display: none;" %>
-
-          <div class="warning">
-            <div data-team-invite-form-target="docsPos" style="translate: 1px -1px; display: none;"><%= inline_icon("docs-positive", size: 20) %></div>
-            <div data-team-invite-form-target="docsNeg" style="translate: -1.5px 0; display: none;"><%= inline_icon("docs-negative", size: 20) %></div>
-          </div>
-        </div>
-      <% end %>
-
-      <%= form.submit 'Send', disabled: !organizer_signed_in? %>
+      <%= form.email_field :email, id: "inviteFormEmailInput", class: "mr1", "x-model": "email", onInput: "(e) => console.log(e)" %>
     </div>
     <template x-if="/^(team|webmaster|marketing|admin|info|about|support|sales|hq|hello)@/.test(email)">
-      <div class="warning mt1">⚠️ We discourage team emails on HCB. We recommend individual emails such as <em>ben@hackclub.com</em>!</div>
+      <div class="warning mt1">⚠️ For security, we discourage team emails on HCB. We recommend individual emails such as <em>ben@hackclub.com</em>!</div>
     </template>
   </div>
+
+  <% if Flipper.enabled?(:user_permissions_2024_03_09, @event) %>
+    <div class="field">
+      <%= form.label :role, class: "mb1" %>
+      <%= form.select :role, OrganizerPosition.roles.keys.map { |role| [role.humanize, role] }, { include_blank: false  }, { class: "form-select", id: "inviteFormRolePicker" } %>
+    </div>
+
+    <p class="muted mb1"><span id="inviteFormEmailDisplay">This person</span> will have <span id="inviteFormAccessDisplay" class="bold info">limited</span> access to your project finances.</p>
+  <% end %>
+
+  <% admin_tools("mr1 flex g1 w-fit") do %>
+    <div class="field field--checkbox mb0 line-height-0" data-controller="team-invite-form" data-action="click->team-invite-form#toggle">
+      <%= form.check_box :is_signee, "data-team-invite-form-target": "realCheckbox", style: "display: none;" %>
+
+      <div class="warning">
+        <div data-team-invite-form-target="docsPos" style="translate: 1px -1px; display: none;"><%= inline_icon("docs-positive", size: 20) %></div>
+        <div data-team-invite-form-target="docsNeg" style="translate: -1.5px 0; display: none;"><%= inline_icon("docs-negative", size: 20) %></div>
+      </div>
+    </div>
+
+    <%= form.label :is_signee, "Is a contract signee?", class: "m0 no-select" %>
+  <% end %>
+
+  <%= form.submit "Submit" %>
+
+  <script>
+      inviteFormEmailInput.oninput = (e) => inviteFormEmailDisplay.textContent =
+          e.target.checkValidity() && e.target.value.trim() !== "" ? e.target.value : "This person"
+
+      inviteFormRolePicker.onchange = () => {
+          if (inviteFormRolePicker.options[inviteFormRolePicker.selectedIndex].text === "Member") {
+              inviteFormAccessDisplay.textContent = "limited"
+              inviteFormAccessDisplay.classList.remove("warning")
+              inviteFormAccessDisplay.classList.add("info")
+          } else {
+              inviteFormAccessDisplay.textContent = "full"
+              inviteFormAccessDisplay.classList.remove("info")
+              inviteFormAccessDisplay.classList.add("warning")
+          }
+      }
+  </script>
 <% end %>

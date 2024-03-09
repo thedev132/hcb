@@ -61,7 +61,6 @@
 </div>
 
 <h3 class="mb1">Feature previews</h3>
-
 <div class="card pb0 mb3" id="transaction-tags">
   <div class="card__banner card__banner--top flex justify-between items-center feature-transaction-tags <%= "b--info" if Flipper.enabled?(:transaction_tags_2022_07_29, @event) %> ">
     <h3 class="h1 pt2 pb2 my0 color-black">Transaction Tags</h3>
@@ -77,10 +76,10 @@
       </div>
     <% elsif Flipper.enabled?(:transaction_tags_2022_07_29, @event) %>
       <%# Feature is enabled, let the user opt-out %>
-      <%= link_to "Disable", disable_feature_event_path(feature: :transaction_tags_2022_07_29), method: :post, class: "btn bg-accent" %>
+      <%= link_to "Disable", disable_feature_event_path(feature: :transaction_tags_2022_07_29), method: :post, class: "btn bg-accent #{"disabled" unless policy(@event).disable_feature?} tooltipped tooltipped--w", "aria-label": "Only managers can disable feature previews." %>
     <% else %>
       <%# Feature is disabled, let the user opt-in %>
-      <%= link_to "Enable", enable_feature_event_path(feature: :transaction_tags_2022_07_29), method: :post, class: "btn bg-info" %>
+      <%= link_to "Enable", enable_feature_event_path(feature: :transaction_tags_2022_07_29), method: :post, class: "btn bg-info #{"disabled" unless policy(@event).enable_feature?} tooltipped tooltipped--w", "aria-label": "Only managers can enable feature previews." %>
     <% end %>
   </div>
   <p>

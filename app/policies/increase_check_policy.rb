@@ -2,11 +2,11 @@
 
 class IncreaseCheckPolicy < ApplicationPolicy
   def new?
-    admin_or_user
+    user_who_can_transfer?
   end
 
   def create?
-    !record.event.outernet_guild? && admin_or_user
+    user_who_can_transfer? && !record.event.outernet_guild?
   end
 
   def approve?
@@ -21,6 +21,10 @@ class IncreaseCheckPolicy < ApplicationPolicy
 
   def admin_or_user
     user&.admin? || record.event.users.include?(user)
+  end
+
+  def user_who_can_transfer?
+    user&.admin? || EventPolicy.new(user, record.event).new_transfer?
   end
 
 end

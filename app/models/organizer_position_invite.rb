@@ -10,6 +10,7 @@
 #  initial               :boolean          default(FALSE)
 #  is_signee             :boolean
 #  rejected_at           :datetime
+#  role                  :integer          default("manager"), not null
 #  slug                  :string
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
@@ -59,6 +60,7 @@ class OrganizerPositionInvite < ApplicationRecord
   set_public_id_prefix :inv
 
   include FriendlyId
+  include OrganizerPosition::HasRole
 
   friendly_id :slug_candidates, use: :slugged
 
@@ -99,6 +101,7 @@ class OrganizerPositionInvite < ApplicationRecord
     self.organizer_position = OrganizerPosition.new(
       event:,
       user:,
+      role:,
       is_signee:,
       first_time: show_onboarding,
     )

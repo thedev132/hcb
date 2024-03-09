@@ -10,15 +10,15 @@ class DisbursementPolicy < ApplicationPolicy
   end
 
   def new?
-    user.admin? || user_associated_with_events?
+    user.admin? || (user_associated_with_events? && user_who_can_transfer?)
   end
 
   def create?
-    user.admin? || (!record.outernet_guild? && user_associated_with_events?)
+    user.admin? || (!record.outernet_guild? && user_associated_with_events?) && user_who_can_transfer?
   end
 
   def transfer_confirmation_letter?
-    admin_or_user
+    admin_or_user?
   end
 
   def edit?
@@ -43,8 +43,12 @@ class DisbursementPolicy < ApplicationPolicy
 
   private
 
-  def admin_or_user
+  def admin_or_user?
     user&.admin? || record.event.users.include?(user)
+  end
+
+  def user_who_can_transfer?
+    user&.admin? || EventPolicy.new(user, record.event).new_transfer?
   end
 
   def user_associated_with_events?

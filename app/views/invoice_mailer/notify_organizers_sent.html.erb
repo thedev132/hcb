@@ -1,0 +1,20 @@
+<p>
+  Hi there,
+</p>
+
+<p>
+  <%= @invoice.creator.full_name %> on <%= @invoice.sponsor.event.name %> just sent a
+  <strong><%= render_money @invoice.item_amount %></strong>
+  <%= link_to hcb_code_url(@invoice.local_hcb_code.hashid) do %>invoice to <%= @invoice.sponsor.name %><% end %>
+  for <em><%= @invoice.item_description %></em>.
+</p>
+
+<p>
+  You're receiving this email because you're a manager of <em><%= @invoice.sponsor.event.name %></em>.
+  Please don't hesitate to reach out to us if you have any questions!
+</p>
+
+<p>
+  Yours truly,<br>
+  The HCB Team
+</p>

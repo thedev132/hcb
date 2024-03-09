@@ -4,8 +4,8 @@ require "net/http"
 
 class StaticPagesController < ApplicationController
   skip_after_action :verify_authorized # do not force pundit
-  skip_before_action :signed_in_user, only: [:branding, :faq]
-  skip_before_action :redirect_to_onboarding, only: [:branding, :faq]
+  skip_before_action :signed_in_user, only: [:branding, :faq, :roles]
+  skip_before_action :redirect_to_onboarding, only: [:branding, :faq, :roles]
 
   def index
     if signed_in?
@@ -26,6 +26,21 @@ class StaticPagesController < ApplicationController
   end
 
   def branding
+    @logos = [
+      { name: "Original Light", criteria: "For white or light colored backgrounds.", background: "smoke" },
+      { name: "Original Dark", criteria: "For black or dark colored backgrounds.", background: "black" },
+      { name: "Outlined Black", criteria: "For white or light colored backgrounds.", background: "snow" },
+      { name: "Outlined White", criteria: "For black or dark colored backgrounds.", background: "black" }
+    ]
+    @icons = [
+      { name: "Icon Original", criteria: "The original HCB logo.", background: "smoke" },
+      { name: "Icon Dark", criteria: "HCB logo in dark mode.", background: "black" }
+    ]
+    @event_name = signed_in? && current_user.events.first&.name || "Hack Pennsylvania"
+    @event_slug = signed_in? && current_user.events.first&.slug || "hack-pennsylvania"
+  end
+
+  def roles
     @logos = [
       { name: "Original Light", criteria: "For white or light colored backgrounds.", background: "smoke" },
       { name: "Original Dark", criteria: "For black or dark colored backgrounds.", background: "black" },

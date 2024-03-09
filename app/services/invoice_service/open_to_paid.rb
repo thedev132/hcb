@@ -29,7 +29,7 @@ module InvoiceService
       end
 
       if invoice.event.users.any?
-        InvoiceMailer.with(invoice:).notify_organizers.deliver_later
+        InvoiceMailer.with(invoice:).notify_organizers_paid.deliver_later
       end
     end
 

@@ -6,7 +6,7 @@ class GSuiteAccountPolicy < ApplicationPolicy
   end
 
   def create?
-    user.admin? || record.event.users.include?(user)
+    admin_or_manager?
   end
 
   def show?
@@ -14,7 +14,7 @@ class GSuiteAccountPolicy < ApplicationPolicy
   end
 
   def reset_password?
-    user.admin? || record.event.users.include?(user)
+    admin_or_manager?
   end
 
   def edit?
@@ -34,7 +34,13 @@ class GSuiteAccountPolicy < ApplicationPolicy
   end
 
   def toggle_suspension?
-    user.admin? || record.event.users.include?(user)
+    admin_or_manager?
+  end
+
+  private
+
+  def admin_or_manager?
+    user&.admin? || OrganizerPosition.find_by(user, event: record.event)&.manager?
   end
 
 end

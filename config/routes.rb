@@ -235,6 +235,7 @@ Rails.application.routes.draw do
     post "cancel"
     member do
       post "toggle_signee_status"
+      post "change_position_role"
     end
   end
 
@@ -243,6 +244,7 @@ Rails.application.routes.draw do
       post "set_index"
       post "mark_visited"
       post "toggle_signee_status"
+      post "change_position_role"
     end
 
     resources :organizer_position_deletion_requests, only: [:new], as: "remove"
@@ -401,6 +403,7 @@ Rails.application.routes.draw do
   get "brand_guidelines", to: redirect("branding")
   get "branding", to: "static_pages#branding"
   get "faq", to: "static_pages#faq"
+  get "roles", to: "static_pages#roles"
   get "audit", to: "admin#audit"
 
   resources :central, only: [:index] do

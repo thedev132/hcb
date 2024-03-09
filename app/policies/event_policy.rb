@@ -1,10 +1,6 @@
 # frozen_string_literal: true
 
 class EventPolicy < ApplicationPolicy
-  def user_or_admin?
-    user_or_admin
-  end
-
   def index?
     user.present?
   end
@@ -22,14 +18,14 @@ class EventPolicy < ApplicationPolicy
   end
 
   def show?
-    is_public || user_or_admin
+    is_public || admin_or_user?
   end
 
   # NOTE(@lachlanjc): this is bad, I’m sorry.
   # This is the StripeCardsController#shipping method when rendered on the event
   # card overview page. This should be moved out of here.
   def shipping?
-    user_or_admin
+    admin_or_user?
   end
 
   def by_airtable_id?
@@ -37,11 +33,11 @@ class EventPolicy < ApplicationPolicy
   end
 
   def edit?
-    user_or_admin
+    admin_or_manager?
   end
 
   def update?
-    user_or_admin
+    admin_or_manager?
   end
 
   def destroy?
@@ -49,104 +45,104 @@ class EventPolicy < ApplicationPolicy
   end
 
   def team?
-    is_public || user_or_admin
+    is_public || admin_or_user?
   end
 
   def emburse_card_overview?
-    is_public || user_or_admin
+    is_public || admin_or_user?
   end
 
   def card_overview?
-    is_public || user_or_admin
+    is_public || admin_or_user?
   end
 
   def documentation?
-    is_public || user_or_admin
+    is_public || admin_or_user?
   end
 
   def statements?
-    is_public || user_or_admin
+    is_public || admin_or_user?
   end
 
   def demo_mode_request_meeting?
-    user_or_admin
+    admin_or_user?
   end
 
   # (@eilla1) these pages are for the wip resources page and should be moved later
   def connect_gofundme?
-    is_public || user_or_admin
+    is_public || admin_or_user?
   end
 
   def async_balance?
-    is_public || user_or_admin
+    is_public || admin_or_user?
   end
 
   def new_transfer?
-    user_or_admin
+    admin_or_manager?
   end
 
   def receive_check?
-    is_public || user_or_admin
+    is_public || admin_or_user?
   end
 
   def sell_merch?
-    is_public || user_or_admin
+    is_public || admin_or_user?
   end
 
   def g_suite_overview?
-    user_or_admin && !record.hardware_grant?
+    admin_or_user? && !record.hardware_grant?
   end
 
   def g_suite_create?
-    user_or_admin && is_not_demo_mode? && !record.hardware_grant?
+    admin_or_user? && is_not_demo_mode? && !record.hardware_grant?
   end
 
   def g_suite_verify?
-    user_or_admin
+    admin_or_user?
   end
 
   def transfers?
-    is_public || user_or_admin
+    is_public || admin_or_user?
   end
 
   def promotions?
-    (is_public || user_or_admin) && !record.hardware_grant? && !record.outernet_guild?
+    (is_public || admin_or_user?) && !record.hardware_grant? && !record.outernet_guild?
   end
 
   def reimbursements?
-    is_public || user_or_admin
+    is_public || admin_or_user?
   end
 
   def donation_overview?
-    is_public || user_or_admin
+    is_public || admin_or_user?
   end
 
   def partner_donation_overview?
-    is_public || user_or_admin
+    is_public || admin_or_user?
   end
 
   def remove_header_image?
-    user_or_admin
+    admin_or_manager?
   end
 
   def remove_background_image?
-    user_or_admin
+    admin_or_manager?
   end
 
   def remove_logo?
-    user_or_admin
+    admin_or_manager?
   end
 
   def enable_feature?
-    user_or_admin
+    admin_or_manager?
   end
 
   def disable_feature?
-    user_or_admin
+    admin_or_manager?
   end
 
   def account_number?
-    user_or_admin
+    admin_or_manager?
   end
 
   def toggle_event_tag?
@@ -162,13 +158,17 @@ class EventPolicy < ApplicationPolicy
   end
 
   def validate_slug?
-    user_or_admin
+    admin_or_user?
   end
 
   private
 
-  def user_or_admin
+  def admin_or_user?
     user&.admin? || record.users.include?(user)
+  end
+
+  def admin_or_manager?
+    user&.admin? || OrganizerPosition.find_by(user:, event: record)&.manager?
   end
 
   def is_not_demo_mode?

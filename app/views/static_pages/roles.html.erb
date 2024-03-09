@@ -1,0 +1,129 @@
+<% content_for :title, "User Roles" %>
+
+<div class="overview">
+  <h1>User Roles</h1>
+  <h2>Overview</h2>
+  <p>
+    <% reference_date = Date.new(2024, 3, 1) %>
+    <% days_since = (Date.today - reference_date).to_i %>
+
+    Hi there! 👋 On <%= reference_date.strftime("#{reference_date.day.ordinalize} %B %Y") %> (<%= days_since %> days ago),
+    we introduced <em>user roles</em> to HCB.
+    This new feature allows restricting certain critical actions on HCB to a specific group of users,
+    enhancing security and control over sensitive operations.
+  </p>
+
+  <p>
+    Now, in an organization on HCB, users can have one of two roles:
+    <span class="bold info">member</span> or <span class="bold warning">manager</span>.
+  </p>
+
+  <p>
+    The TL;DR is:
+    <ul>
+      <li><span class="bold warning">Managers</span> can do everything (just like before).</li>
+      <li>
+        <span class="bold info">Members</span> can <em>spend</em>, but not <em>send</em> money,
+        and can't edit the organization's settings.</li>
+    </ul>
+  </p>
+
+  <%= render partial: "callout", locals: { type: "info", emoji: "ℹ️", title: "All existing users are now managers, to avoid any breaking changes." } %>
+
+  <h2>Specifics</h2>
+
+  <p>Here's a list of newly-privileged actions:</p>
+  <ul>
+    <li>
+      Team
+      <ul>
+        <li>Inviting users</li>
+        <li>Requesting users' removals</li>
+        <li>Cancelling invites made by other users</li>
+        <li>Changing users' roles</li>
+        <li>Changing invitations' provisional roles</li>
+      </ul>
+    </li>
+
+    <li>
+      Invoices
+      <ul>
+        <li>When a non-manager sends an invoice, all the managers in the org are notified [reword]</li>
+      </ul>
+    </li>
+
+    <li>
+      Transfers
+      <ul>As a rule, only managers can create/modify financial transfers.</ul>
+      <ul>
+        <li>
+          Checks
+          <ul>
+            <li>Mailing checks</li>
+            <li>Viewing the organization's account & routing numbers on checks</li>
+          </ul>
+        </li>
+        <li>
+          ACH
+          <ul>
+            <li>Sending ACHs</li>
+            <li>Cancelling ACHs</li>
+            <li>Viewing other parties' account & routing numbers</li>
+            <li>Viewing ACH confirmation letters</li>
+          </ul>
+        </li>
+        <li>
+          Account & Routing numbers
+          <ul>
+            <li>Viewing the organization's account & routing numbers</li>
+          </ul>
+        </li>
+        <li>
+          Disbursements
+          <ul>
+            <li>Creating disbursements</li>
+            <li>Cancelling disbursements</li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+
+    <li>
+      Cards
+      <ul>
+        <li>Viewing sensitive details of other users' cards</li>
+        <li>Renaming other users' cards</li>
+        <li>Freezing other users' cards</li>
+        <li>Defrosting other users' cards</li>
+      </ul>
+    </li>
+
+    <li>
+      GSuite
+      <ul>
+        <li>Creating accounts</li>
+        <li>Suspending accounts</li>
+        <li>Resetting accounts' passwords</li>
+      </ul>
+    </li>
+
+    <li>
+      Organization settings
+      <ul>
+        <li>Editing settings</li>
+      </ul>
+    </li>
+  </ul>
+
+  <p>
+    <span class="bold warning">Managers</span> can change users' roles on their organization's team page.
+  </p>
+
+  <%= render partial: "callout", locals: { type: "info", emoji: "ℹ️", title: "The user is notified by email when their role is changed!" } %>
+
+  <p>
+    Going forward, when you're inviting a user,
+    you'll be able to select the role they are given when they accept your invitation.
+    You can also change pending invitations' roles, at the bottom of the team page.
+  </p>
+</div>
