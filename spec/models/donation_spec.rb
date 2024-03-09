@@ -31,6 +31,11 @@ RSpec.describe Donation, type: :modal do
       donation2 = create(:donation, event:)
       donation2.status = "succeeded"
       donation2.save
+
+      donation3 = create(:donation, event:)
+      donation3.status = "succeeded"
+      donation3.save
+      donation3.delete
     end.to change(enqueued_jobs, :size).by(1)
   end
 
@@ -46,4 +51,13 @@ RSpec.describe Donation, type: :modal do
       donation.save
     end.to change(enqueued_jobs, :size).by(1)
   end
+
+  it "does not send email notifications for non-succeeded donations" do
+    event = create(:event)
+
+    expect do
+      donation = create(:donation, event:, name: "John Appleseed", email: "john@hackclub.com")
+    end.to change(enqueued_jobs, :size).by(0)
+  end
+
 end
