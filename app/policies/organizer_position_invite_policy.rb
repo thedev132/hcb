@@ -10,7 +10,7 @@ class OrganizerPositionInvitePolicy < ApplicationPolicy
   end
 
   def create?
-    user&.admin? || (record.event.users.include?(user) && OrganizerPosition.find_by(user, event: record.event)&.manager?)
+    user&.admin? || OrganizerPosition.find_by(user:, event: record.event)&.manager?
   end
 
   def show?

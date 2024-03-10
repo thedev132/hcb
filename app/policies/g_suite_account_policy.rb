@@ -40,7 +40,7 @@ class GSuiteAccountPolicy < ApplicationPolicy
   private
 
   def admin_or_manager?
-    user&.admin? || OrganizerPosition.find_by(user, event: record.event)&.manager?
+    user&.admin? || OrganizerPosition.find_by(user:, event: record.event)&.manager?
   end
 
 end
