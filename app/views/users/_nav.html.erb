@@ -26,7 +26,11 @@
       tooltip: "See expense reimbursements",
       icon: "attachment",
       async_badge: my_draft_reimbursements_icon_path,
+<<<<<<< HEAD
       selected: local_assigns[:selected] == :reimbursements if Flipper.enabled?(:reimbursements_2024_03_10, current_user) %>
+=======
+      selected: local_assigns[:selected] == :reimbursements if Flipper.enabled?(:reimbursements_2024_03_10, @user) %>
+>>>>>>> a73747918 (Expensify (HCB's Version) (#5062))
     <%= dock_item "Settings",
       my_settings_path,
       tooltip: "Edit account settings",

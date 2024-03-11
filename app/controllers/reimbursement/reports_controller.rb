@@ -169,7 +169,18 @@ module Reimbursement
 
       authorize @report
 
+<<<<<<< HEAD
       comment_params = params.require(:comment).permit(:content, :admin_only, :action)
+=======
+      begin
+        @report.mark_draft!
+      rescue => e
+        flash[:error] = e.message
+        redirect_to @report and return
+      end
+
+      comment_params = params.require(:comment).permit(:content, :file, :admin_only, :action)
+>>>>>>> a73747918 (Expensify (HCB's Version) (#5062))
 
       if comment_params[:content].blank? && comment_params[:file].blank?
         flash[:success] = "We've sent this report back to #{@report.user.name} and marked it as a draft."
@@ -180,6 +191,7 @@ module Reimbursement
           flash[:success] = "We've notified #{@report.user.name} of your requested changes."
         else
           flash[:error] = @report.errors.full_messages.to_sentence
+<<<<<<< HEAD
           redirect_to @report and return
         end
       end
@@ -191,6 +203,11 @@ module Reimbursement
         redirect_to @report and return
       end
 
+=======
+        end
+      end
+
+>>>>>>> a73747918 (Expensify (HCB's Version) (#5062))
       redirect_to @report
     end
 
