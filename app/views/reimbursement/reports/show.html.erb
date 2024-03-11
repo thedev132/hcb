@@ -22,7 +22,7 @@
     <h2 class="heading mt0 mb1 flex justify-start" style="gap: 4px;">
       <span><%= @report.name %></span>
       <% if !@report.closed? %>
-        <%= link_to "#", class: "ml0 info text-decoration-none muted", data: { behavior: "modal_trigger", modal: "edit" }, style: "padding: 0px; line-height: 0px; align-self: center;" do %>
+        <%= link_to "#", class: "ml0 info text-decoration-none muted tooltipped tooltipped--e", data: { behavior: "modal_trigger", modal: "edit" }, style: "padding: 0px; line-height: 0px; align-self: center;", "aria-label": "Edit this report's properties." do %>
           <%= inline_icon "settings", size: 30, style: "margin-left: 0px;" %>
         <% end %>
       <% end %>
