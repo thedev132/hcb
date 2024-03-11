@@ -22,7 +22,7 @@
   <div class="stat stat--small">
     <span class="stat__label">Total</span>
     <span class="stat__value">
-      <%= render_money_amount(@reports.sum(&:amount_cents)) %>
+      <%= render_money_amount(@reports.to_calculate_total.sum(&:amount_cents)) %>
     </span>
   </div>
   <div class="stat stat--small">

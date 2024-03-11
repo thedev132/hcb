@@ -53,6 +53,7 @@ module Reimbursement
 
     scope :search, ->(q) { joins(:user).where("users.full_name ILIKE :query OR reimbursement_reports.name ILIKE :query", query: "%#{User.sanitize_sql_like(q)}%") }
     scope :pending, -> { where(aasm_state: ["draft", "submitted", "reimbursement_requested"]) }
+    scope :to_calculate_total, -> { where.not(aasm_state: ["rejected"]) }
 
     include AASM
     include Commentable
