@@ -104,7 +104,7 @@
             <details>
               <summary class="inline-flex no-select">
                 <%= country_to_emoji @hcb_code.stripe_merchant["country"] %>
-                <%= @hcb_code.stripe_merchant["name"] %>
+                <%= humanized_merchant_name @hcb_code.stripe_merchant %>
                 <%= inline_icon "down-caret", size: 24, class: "muted flip-when-open", 'aria-label': "Icon indicating click for more" %>
               </summary>
 
@@ -112,7 +112,7 @@
                 <p>
                   <strong>Name</strong>
                   <span>
-                    <%= @hcb_code.stripe_merchant["name"].humanize.capitalize %>
+                    <%= humanized_merchant_name @hcb_code.stripe_merchant["name"] %>
                   </span>
                 </p>
                 <p>
@@ -159,7 +159,7 @@
             <action data-behavior="modal_trigger" data-modal="merchant_details_<%= instance %>" class="pointer" tabindex="0">
               <span class="inline-flex">
                 <%= country_to_emoji @hcb_code.stripe_merchant["country"] %>
-                <%= @hcb_code.stripe_merchant["name"] %>
+                <%= humanized_merchant_name @hcb_code.stripe_merchant %>
                 <%= inline_icon "external", size: 24, class: "muted", 'aria-label': "Icon indicating click for more" %>
               </span>
             </action>
@@ -278,7 +278,7 @@
         <p>
           <strong>Name</strong>
           <span>
-            <%= @hcb_code.stripe_merchant["name"].humanize.capitalize %>
+            <%= humanized_merchant_name @hcb_code.stripe_merchant %>
           </span>
         </p>
         <p>

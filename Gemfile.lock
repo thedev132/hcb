@@ -1,3 +1,10 @@
+GIT
+  remote: https://github.com/hackclub/yellow_pages
+  revision: 117d13e5067c540e3ee2457a4aac070ca88f59c9
+  ref: 117d13e
+  specs:
+    yellow_pages (0.1.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -913,6 +920,7 @@ DEPENDENCIES
   wicked_pdf
   wkhtmltopdf-binary (= 0.12.6.6)
   xxhash
+  yellow_pages!
 
 RUBY VERSION
    ruby 3.1.4p223
