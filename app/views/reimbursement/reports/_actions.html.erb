@@ -83,7 +83,7 @@
           </div>
         </div>
       <% elsif report.maximum_amount_cents && report.amount_cents >= report.maximum_amount_cents %>
-        <div class="tooltipped tooltipped--n" aria-label="<%= @event.name %> has restricted this report to <%= render_money @report.maximum_amount_cents %>.">
+        <div class="tooltipped tooltipped--n" aria-label="<%= report.event.name %> has restricted this report to <%= render_money @report.maximum_amount_cents %>.">
           <div class="btn bg-warning disabled" style="color: white;">
             <%= inline_icon "important" %>
             Exceeds Maximum Amount
