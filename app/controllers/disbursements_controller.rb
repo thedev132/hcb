@@ -56,8 +56,7 @@ class DisbursementsController < ApplicationController
                                     current_user.events.not_hidden.without(@source_event).filter_demo_mode(false)
                                   end
 
-    authorize @destination_event, policy_class: DisbursementPolicy
-    authorize @source_event, policy_class: DisbursementPolicy
+    authorize @disbursement
   end
 
   def create
