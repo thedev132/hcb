@@ -38,8 +38,8 @@ class HcbCode < ApplicationRecord
   has_one :personal_transaction, required: false
   has_one :pin, required: false
 
-  has_one :reimbursement_expense_payout, class_name: "Reimbursement::ExpensePayout", required: false, inverse_of: :local_hcb_code
-  has_one :reimbursement_payout_holding, class_name: "Reimbursement::PayoutHolding", required: false, inverse_of: :local_hcb_code
+  has_one :reimbursement_expense_payout, class_name: "Reimbursement::ExpensePayout", required: false, inverse_of: :local_hcb_code, foreign_key: "hcb_code", primary_key: "hcb_code"
+  has_one :reimbursement_payout_holding, class_name: "Reimbursement::PayoutHolding", required: false, inverse_of: :local_hcb_code, foreign_key: "hcb_code", primary_key: "hcb_code"
 
   before_create :generate_and_set_short_code
 
