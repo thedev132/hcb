@@ -70,7 +70,7 @@ module EventsHelper
       return Event.categories.key(value.to_i)
     end
 
-    if field = "maximum amount cents"
+    if field == "maximum_amount_cents"
       return render_money(value.to_s)
     end
 
