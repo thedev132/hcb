@@ -1,9 +1,9 @@
 name: Admin feature request
-about: got a small feature for Ops or admins? let us hear you out
+description: got a small feature for Ops or admins? let us hear you out
 title: "Admin: [feature name here]"
-labels: ''
+labels: []
 body:
-  - type: markdown
+  - type: textarea
     id: problem
     attributes:
       label: Describe the problem
