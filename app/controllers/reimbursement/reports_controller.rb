@@ -176,7 +176,7 @@ module Reimbursement
         redirect_to @report and return
       end
 
-      comment_params = params.require(:comment).permit(:content, :file, :admin_only, :action)
+      comment_params = params.require(:comment).permit(:content, :admin_only, :action)
 
       if comment_params[:content].blank? && comment_params[:file].blank?
         flash[:success] = "We've sent this report back to #{@report.user.name} and marked it as a draft."
