@@ -1,0 +1,57 @@
+<h1 class="heading h1 mt0 mb0">
+  <span class="flex-auto">
+    Pending Transaction
+  </span>
+  <span class="h2 regular">
+    <%= pt.amount %>
+  </span>
+</h1>
+
+<div class="flex items-center mb2">
+  <p class="flex-auto mr1 mb0">
+    <strong class="block">Memo</strong>
+    <span>
+      <%= pt.smart_memo %>
+    </span>
+  </p>
+</div>
+
+<section class="details">
+  <p>
+    <strong>Date</strong>
+    <%= format_date pt.date.to_date %>
+  </p>
+
+  <% if pt&.ach_transfer %>
+  <p>
+    <strong>For</strong>
+    <span>
+    <%= link_to "A transfer of #{render_money pt.ach_transfer.amount}", pt.ach_transfer %>
+    </span>
+  </p>
+  <% end %>
+
+  <% if pt&.check %>
+  <p>
+    <strong>For</strong>
+    <span>
+    <%= link_to "A check of #{render_money pt.check.amount}", pt.check %>
+    </span>
+  </p>
+  <% end %>
+
+  <% if pt&.invoice %>
+    <p>
+      <strong>For</strong>
+      <%= link_to "Invoice of #{render_money pt.invoice.item_amount}", invoice_path(pt.invoice) %>
+    </p>
+  <% end %>
+
+  <% if pt&.donation %>
+    <p>
+      <strong>For</strong>
+      <%= link_to "A donation of #{render_money pt.donation.amount}", pt.donation %>
+    </p>
+  <% end %>
+
+</section>
