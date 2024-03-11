@@ -23,12 +23,12 @@
       <% if !report.event.users.include?(current_user) && !admin_signed_in? && report.locked? %>
         <%= inline_icon "private" %>
         Expense Report Locked
-      <% elsif report.locked? && report.submitted? && report.expenses.approved.count > 0 && report.amount_to_reimburse > 0 && ::Shared::AmpleBalance.ample_balance?(report.amount_to_reimburse_cents, @event) %>
+      <% elsif report.locked? && report.submitted? && report.expenses.approved.count > 0 && report.amount_to_reimburse > 0 && ::Shared::AmpleBalance.ample_balance?(report.amount_to_reimburse_cents, report.event) %>
         <%= link_to reimbursement_report_request_reimbursement_path(report_id: report.id), class: "btn bg-info", method: :post do %>
           <%= inline_icon "payment-transfer" %>
           Reimburse <%= render_money report.amount_to_reimburse %> (<%= report.expenses.approved.count %>/<%= report.expenses.count %>)
         <% end %>
-      <% elsif report.locked? && report.submitted? && !::Shared::AmpleBalance.ample_balance?(report.amount_to_reimburse_cents, @event) %>
+      <% elsif report.locked? && report.submitted? && !::Shared::AmpleBalance.ample_balance?(report.amount_to_reimburse_cents, report.event) %>
         <div class="tooltipped tooltipped--n" aria-label="This event can not fulfill this request.">
           <div class="btn bg-info disabled">
             <%= inline_icon "payment-transfer" %>
