@@ -76,7 +76,7 @@
         event_reimbursements_path(event_id: @event.slug),
         tooltip: "Reimburse team members & volunteers",
         icon: "attachment",
-        selected: local_assigns[:selected] == :reimbursements if Flipper.enabled?(:reimbursements_2024_03_10, @user) && policy(@event).reimbursements? %>
+        selected: local_assigns[:selected] == :reimbursements if Flipper.enabled?(:reimbursements_2024_03_10, current_user) && policy(@event).reimbursements? %>
       <%= dock_item "Grants",
         event_grants_path(@event),
         tooltip: "Send & manage grants",
