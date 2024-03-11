@@ -8,7 +8,7 @@
     <%= dock_item "Home",
       root_path,
       tooltip: "See all your organizations",
-      icon: "home",
+      icon: "home",@
       selected: local_assigns[:selected] == :home %>
     <%= dock_item "Cards",
       my_cards_path,
@@ -26,7 +26,7 @@
       tooltip: "See expense reimbursements",
       icon: "attachment",
       async_badge: my_draft_reimbursements_icon_path,
-      selected: local_assigns[:selected] == :reimbursements if Flipper.enabled?(:reimbursements_2024_03_10, @user) %>
+      selected: local_assigns[:selected] == :reimbursements if Flipper.enabled?(:reimbursements_2024_03_10, current_user) %>
     <%= dock_item "Settings",
       my_settings_path,
       tooltip: "Edit account settings",
