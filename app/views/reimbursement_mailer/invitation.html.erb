@@ -1,0 +1,37 @@
+<p>
+  Hi <%= @report.user.name %>,
+</p>
+
+<p>
+  The <%= @report.event.name %> team has invited you to submit a reimbursement
+  report for <em><%= @report.name %></em>.
+</p>
+
+<% if @report.maximum_amount.present? %>
+  <p>
+    You will be reimbursed up to <%= render_money @report.maximum_amount %>.
+  </p>
+<% end %>
+
+<% if @report.invite_message.present? %>
+  <p>
+    They included this message:
+  </p>
+
+  <blockquote>
+    <%== MarkdownService.instance.renderer.render @report.invite_message %>
+  </blockquote>
+<% end %>
+
+<p>
+  <%= link_to "Click here", reimbursement_report_url(@report, email: @report.user.email) %> to learn more and begin submitting expenses.
+  If you have any questions, please contact <%= @report.event.name %>.
+</p>
+
+<p>
+  Sincerely,
+  <br><br>
+  The HCB Team
+</p>
+
+<p><i class="muted"><%= @report.event.name %> is fiscally sponsored by The Hack Foundation (d.b.a. HCB), a 501(c)(3) nonprofit (EIN: 81-2908499).</i></p>

@@ -1,0 +1,34 @@
+<section data-behavior="modal" role="dialog" id="create" class="modal modal--scroll bg-snow">
+  <%= form_with(model: Reimbursement::Report, class: "mb3", style: "max-width: 600px;", method: :post) do |form| %>
+    <%= modal_header "Open a Report" %>
+    <%= form.label :report_name, "Report Name", class: "bold" %>
+    <%= form.text_field :report_name, placeholder: "Chicago Trip Expenses", required: true %>
+    <%= form.label :maximum_amount, "Maximum Reimbursable Value (Optional)", class: "mt2 bold" %>
+    <div class="field">
+      <div class="flex items-center">
+        <span class="bold muted" style="width: 1rem;">$</span>
+        <%= form.number_field :maximum_amount, placeholder: "500.00", step: 0.01, min: 0.01, required: false, data: { controller: "truncate-decimal", action: "truncate-decimal#truncate" } %>
+      </div>
+    </div>
+    <% if defined? @event %>
+      <%= form.label :email, "For...", class: "mt1 bold" %>
+      <%= form.select :user_email, @event.users.map { |u| [u.name, u.email] } + [["Non-Organizer", ""]], selected: @current_user.email %>
+      <%= form.text_field :email, class: "display-none-not-important mt1", placeholder: "Enter this individual's email", data: { "behavior": "reimbursement_report_email_input" }, required: false, value: @current_user.email %>
+      <%= form.hidden_field :event_id, value: @event.id %>
+      <%= form.label :invite_message, "Custom Invite Message", class: "mt1 bold" %>
+      <%= form.text_area :invite_message, placeholder: "We're excited to see your expenses..." %>
+      <p class="h5 muted mt0 mb1">
+        <%= link_to "https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet#table-of-contents", target: "_blank", class: "flex items-center" do %>
+          <%= inline_icon "markdown", size: 32 %> Styling with Markdown is supported
+        <% end %>
+      </p>
+    <% else %>
+      <%= form.hidden_field :user_id, value: current_user.id %>
+      <%= form.hidden_field :email, value: current_user.email %>
+
+      <%= form.label :event_id, "Organization", class: "mt1 bold" %>
+      <%= form.select :event_id, current_user.events.not_demo_mode.pluck(:name, :id) %>
+    <% end %>
+    <%= form.submit "Submit", class: "mt2" %>
+  <% end %>
+</section>

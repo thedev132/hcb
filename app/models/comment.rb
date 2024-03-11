@@ -5,6 +5,7 @@
 # Table name: comments
 #
 #  id                 :bigint           not null, primary key
+#  action             :integer          default("commented"), not null
 #  admin_only         :boolean          default(FALSE), not null
 #  commentable_type   :string
 #  content_ciphertext :text
@@ -44,6 +45,11 @@ class Comment < ApplicationRecord
   scope :edited, -> { joins(:versions).where("has_untracked_edit IS TRUE OR versions.event = 'update' OR versions.event = 'destroy'") }
   scope :has_attached_file, -> { joins(:file_attachment) }
 
+  enum action: {
+    commented: 0,
+    changes_requested: 1 # used by reimbursements
+  }
+
   after_create_commit :send_notification_email
 
   def edited?
@@ -53,6 +59,12 @@ class Comment < ApplicationRecord
 
   def has_attached_file?
     file.attached?
+  end
+
+  def action_text
+    return "requested changes" if changes_requested?
+
+    return "commented"
   end
 
   private

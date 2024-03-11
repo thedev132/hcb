@@ -26,6 +26,11 @@
   <td class="transaction__icon tooltipped tooltipped--e" aria-label="Card transaction refund">
     <%= inline_icon "view-reload" %>
   </td>
+<% elsif ct.local_hcb_code.reimbursement_expense_payout? %>
+  <% user = ct.canonical_transactions.first.reimbursement_expense_payout.expense.report.user %>
+  <td class="transaction__icon tooltipped tooltipped--e" aria-label="Reimbursed to <%= user.name %>">
+    <%= avatar_for user, 24 %>
+  </td>
 <% elsif ct.raw_stripe_transaction %>
   <td class="transaction__icon tooltipped tooltipped--e" aria-label="Card transaction<%= !defined?(authorless) && ct.stripe_cardholder ? " by " + ct.stripe_cardholder.user.initial_name : "" %>">
     <% unless defined?(authorless) || !ct.stripe_cardholder %>

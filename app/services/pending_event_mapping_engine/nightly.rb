@@ -46,6 +46,8 @@ module PendingEventMappingEngine
 
       settle_canonical_pending_ach_payment!
 
+      settle_canonical_pending_expense_payout!
+
       true
     end
 
@@ -185,6 +187,14 @@ module PendingEventMappingEngine
 
     def settle_canonical_pending_ach_payment!
       ::PendingEventMappingEngine::Settle::AchPayment.new.run
+    end
+
+    def settle_canonical_pending_expense_payout!
+      CanonicalPendingTransaction.unsettled.reimbursement_expense_payout.find_each(batch_size: 100) do |cpt|
+        if (ct = cpt.local_hcb_code.ct)
+          CanonicalPendingSettledMapping.create!(canonical_pending_transaction: cpt, canonical_transaction: ct)
+        end
+      end
     end
 
   end

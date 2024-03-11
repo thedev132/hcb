@@ -32,6 +32,10 @@ module TransactionEngine
 
           return likely_bank_fee if outgoing_bank_fee?
 
+          return reimbursement_expense_payout if reimbursement_expense_payout
+
+          return reimbursement_payout_holding if reimbursement_payout_holding
+
           nil
         end
       end
@@ -139,6 +143,18 @@ module TransactionEngine
         return nil unless event
 
         Disbursement.where(id: likely_disbursement_id).first
+      end
+
+      def reimbursement_expense_payout
+        return nil unless @canonical_transaction.transaction_source_type == "Reimbursement::ExpensePayout"
+
+        Reimbursement::ExpensePayout.find(@canonical_transaction.transaction_source_id)
+      end
+
+      def reimbursement_payout_holding
+        return nil unless @canonical_transaction.transaction_source_type == "Reimbursement::PayoutHolding"
+
+        Reimbursement::PayoutHolding.find(@canonical_transaction.transaction_source_id)
       end
 
       def event

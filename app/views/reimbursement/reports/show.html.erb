@@ -1,0 +1,117 @@
+<% title @report.name %>
+<% page_md %>
+<%= render "events/nav", selected: :reimbursements unless @use_user_nav %>
+<%= render "users/nav", selected: :reimbursements if @use_user_nav %>
+
+<div class="mt4">
+    <h3 class="mt2 mb1 muted flex" style="font-weight: 400; gap: 4px;">
+      <span style="flex-grow: 1;">
+        <%= user_mention @user, class: "tooltipped--s align-top" %>
+        <%= "will be reimbursed " if @report.reimbursement_approved? %>
+        <%= "was reimbursed " if @report.reimbursed? %>
+        <%= "requested " if @report.rejected? %>
+        <%= "is requesting " unless @report.closed? %>
+        <%= render "total", report: @report %>
+        <% if @report.maximum_amount_cents %>
+          (<%= render_money @report.maximum_amount_cents %> cap)
+        <% end %>
+        <%= "from #{@event.name}" if @use_user_nav %> for
+      </span>
+      <span class="ml0 badge bg-<%= @report.status_color %>"><%= @report.status_text %></span>
+    </h3>
+    <h2 class="heading mt0 mb1 flex justify-start" style="gap: 4px;">
+      <span><%= @report.name %></span>
+      <% if !@report.closed? %>
+        <%= link_to "#", class: "ml0 info text-decoration-none muted", data: { behavior: "modal_trigger", modal: "edit" }, style: "padding: 0px; line-height: 0px; align-self: center;" do %>
+          <%= inline_icon "settings", size: 30, style: "margin-left: 0px;" %>
+        <% end %>
+      <% end %>
+
+    </h2>
+</div>
+
+<section data-behavior="modal" role="dialog" id="edit" class="modal modal--scroll bg-snow">
+  <%= modal_header "Edit Report" %>
+  <%= render "edit_form" %>
+</section>
+
+<section data-behavior="modal" role="dialog" id="request_changes" class="modal modal--scroll bg-snow">
+  <%= modal_header "Request Changes" %>
+  <%= form_with url: reimbursement_report_request_changes_path(report_id: @report.id), model: [@report, Comment.new] do |form| %>
+    <%= form.hidden_field :commentable_type, value: @commentable.class %>
+    <%= form.hidden_field :commentable_id, value: @report.id %>
+    <%= form.text_area :content, class: "card mb2 overflow-visible", placeholder: "Describe your requested changes…", "data-behavior": "ctrl_enter_submit", style: "min-height: 100px" %>
+
+    <%= form.hidden_field :action, value: :changes_requested %>
+
+    <div class="field field--fileupload mb1 mt1">
+      <%= form.label :file, "Choose file", class: "field--fileupload__label", for: "request_changes_file_upload" %>
+      <%= form.file_field :file,
+          multiple: false,
+          required: false,
+          style: "margin: 8px 0px",
+          class: "field--fileupload__field",
+          id: "request_changes_file_upload" %>
+    </div>
+
+    <%= form.submit "Request Changes" %>
+  <% end %>
+</section>
+
+<% if @report.invite_message.presence %>
+  <article class="card mt2 pt0">
+    <%== MarkdownService.instance.renderer.render @report.invite_message %>
+    <section class="card__banner card__banner--bottom card__darker pt2 pb2">
+        <p class="muted mt0 mb0">
+          Message from <%= @report.event.name %>
+        </p>
+      </section>
+  </article>
+<% end %>
+
+<% if @report.draft? %>
+  <section class="flex items-start justify-center mt2 mb2" style="gap: 16px; position: relative;">
+    <article class="card">
+      <p class="mt0">
+        Paid for something out of pocket? Get reimbursed by uploading your receipts.
+      </p>
+      <p>
+        Begin by adding an expense to this report below; for each expense, you'll need to attach
+        a receipt, provide a memo describing the expense, and specify the amount you are seeking reimbursement for.
+      </p>
+      <p>
+        Once you've added all of your expenses to the report, click <i>Submit</i> to begin the review process.
+      </p>
+      <% if @report.maximum_amount_cents %>
+        <p>
+         <%= @event.name %> has restricted this report to <span class="bold"><%= render_money @report.maximum_amount_cents %></span> in total reimbursement.
+        </p>
+      <% end %>
+
+      <section class="card__banner card__banner--bottom card__darker pt2 pb2">
+        <p class="muted mt0 mb0">
+          <strong>Questions?</strong>
+          <%= help_message %>
+        </p>
+      </section>
+    </article>
+  </section>
+
+  <h2 class="flex items-center">
+    <span style="flex-grow: 1">Expenses</span>
+  </h2>
+<% end %>
+
+<div id="expenses">
+  <% @report.expenses.order(created_at: :asc).each do |expense| %>
+    <%= render "reimbursement/expenses/expense", expense:, new: @editing == expense.id %>
+  <% end %>
+</div>
+
+<%= render partial: "actions", locals: { report: @report, user: @user } %>
+
+<%= render partial: "conversation" %>
+
+<style>
+  html { scroll-behavior: smooth; }
+</style>

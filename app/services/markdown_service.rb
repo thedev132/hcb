@@ -5,10 +5,24 @@ class MarkdownService
 
   class MarkdownRenderer < Redcarpet::Render::HTML
     include ApplicationHelper # for render_money helper
+    include Rails.application.routes.url_helpers
+
+    def preprocess(fulldoc)
+
+      # this is used to link expenses in expense report comments
+      # code that finds any lines like #1 and replaces them with links to the elements with id
+
+      fulldoc.gsub!(/#(\d+)/) do |match|
+        id = $1.to_i
+        "[#{match}](#{match})"
+      end
+
+      fulldoc
+    end
 
     def link(link, title, alt_text)
       link_to alt_text, link, title:,
-                              target: "_blank"
+                              target: link.start_with?("#") ? "" : "_blank"
     end
 
     def autolink(link, link_type)

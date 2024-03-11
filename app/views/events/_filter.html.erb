@@ -113,7 +113,7 @@
       </div>
 
       <div data-filter-target="types" data-filter-menu-selected="<%= @type ? "true" : "false" %>">
-        <% ["ach_transfer", "mailed_check", "account_transfer", "card_charge", "check_deposit", "donation", "invoice", "refund", "fiscal_sponsorship_fee"].each do |type| %>
+        <% ["ach_transfer", "mailed_check", "account_transfer", "card_charge", "check_deposit", "donation", "invoice", "refund", "fiscal_sponsorship_fee", "reimbursement"].each do |type| %>
           <div class="flex items-center">
               <%= link_to({ type:, q: params[:q] }.compact, class: "flex-auto menu__action") do %>
                 <%= type.humanize.titleize.gsub("Ach", "ACH") %>

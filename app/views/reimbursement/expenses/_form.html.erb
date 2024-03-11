@@ -1,0 +1,41 @@
+<%# locals: (expense:, new:) -%>
+
+<% new ||= false %>
+
+<%= form_with(model: expense, class: "mb3", style: "max-width: 600px;", local: true, data: { "expense-form-target": "form", turbo: true }) do |form| %>
+  <div class="flex flex-row items-center">
+    <div style="flex-grow: 1;">
+      <%= form.label :memo, "Memo", class: "bold" %>
+      <%= form.text_field :memo, placeholder: "Lunch during layover at SFO", required: true, data: { "expense-form-target": "field", "action": "dblclick->expense-form#edit" }, onkeydown: "event.key == 'Enter' && event.target.form.requestSubmit()" %>
+    </div>
+
+    <span class="bold muted flex self-end items-center justify-center ml1" style="width: 1rem; height: 48px;">$</span>
+
+    <div>
+      <%= form.label :amount, "Amount", class: "bold" %>
+      <%= form.number_field :amount, placeholder: "500.00", step: 0.01, min: 0.01, max: [expense.report.maximum_amount_cents, 500_000].compact_blank.min, data: { controller: "truncate-decimal", action: "truncate-decimal#truncate", "expense-form-target": "field" }, onkeydown: "event.key == 'Enter' && event.target.form.requestSubmit()" %>
+    </div>
+  </div>
+  <div class="field mt2">
+    <div class="flex flex-row items-center justify-between mb1">
+      <%= form.label :description, "Description", class: "bold" %>
+      <span class="h5 muted mt0 mb0 flex items-center">
+        <%= inline_icon "markdown", size: 32 %> Additional context for this expense
+      </span>
+    </div>
+    <%= form.text_area :description, placeholder: "This was for...", class: "w-100 fit", data: { "expense-form-target": "field" } %>
+  </div>
+  <% if admin_signed_in? || expense.report.event.users.include?(current_user) %>
+    <% if !expense.approved? && expense.report.submitted? %>
+      <%= link_to reimbursement_expense_toggle_approved_path(expense_id: expense.id), class: "btn bg-success", method: :post do %>
+        <%= inline_icon "thumbsup" %>
+        Approve
+      <% end %>
+    <% elsif expense.report.submitted? %>
+      <%= link_to reimbursement_expense_toggle_approved_path(expense_id: expense.id), class: "btn bg-muted", method: :post do %>
+        <%= inline_icon "reply" %>
+        Revert Approval
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>

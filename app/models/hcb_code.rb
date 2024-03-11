@@ -38,6 +38,9 @@ class HcbCode < ApplicationRecord
   has_one :personal_transaction, required: false
   has_one :pin, required: false
 
+  has_one :reimbursement_expense_payout, class_name: "Reimbursement::ExpensePayout", required: false, inverse_of: :local_hcb_code
+  has_one :reimbursement_payout_holding, class_name: "Reimbursement::PayoutHolding", required: false, inverse_of: :local_hcb_code
+
   before_create :generate_and_set_short_code
 
   delegate :likely_account_verification_related?, :fee_payment?, to: :ct, allow_nil: true
@@ -92,6 +95,7 @@ class HcbCode < ApplicationRecord
     return :disbursement if disbursement?
     return :card_charge if stripe_card?
     return :bank_fee if bank_fee?
+    return :reimbursement_expense_payout if reimbursement_expense_payout?
 
     nil
   end
@@ -173,6 +177,7 @@ class HcbCode < ApplicationRecord
 
         ids << EventMappingEngine::EventIds::INCOMING_FEES if incoming_bank_fee?
         ids << EventMappingEngine::EventIds::HACK_CLUB_BANK if fee_revenue?
+        ids << EventMappingEngine::EventIds::REIMBURSEMENT_CLEARING if reimbursement_payout_holding?
 
         Event.where(id: ids)
       end
@@ -335,6 +340,14 @@ class HcbCode < ApplicationRecord
     hcb_i1 == ::TransactionGroupingEngine::Calculate::HcbCode::CHECK_DEPOSIT_CODE
   end
 
+  def reimbursement_expense_payout?
+    hcb_i1 == ::TransactionGroupingEngine::Calculate::HcbCode::EXPENSE_PAYOUT_CODE
+  end
+
+  def reimbursement_payout_holding?
+    hcb_i1 == ::TransactionGroupingEngine::Calculate::HcbCode::PAYOUT_HOLDING_CODE
+  end
+
   def outgoing_fee_reimbursement?
     hcb_i1 == ::TransactionGroupingEngine::Calculate::HcbCode::OUTGOING_FEE_REIMBURSEMENT_CODE
   end
@@ -449,6 +462,10 @@ class HcbCode < ApplicationRecord
 
   def pinnable?
     !no_transactions? && event
+  end
+
+  def accepts_receipts?
+    !reimbursement_expense_payout?
   end
 
 end

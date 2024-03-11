@@ -4,55 +4,57 @@
 #
 # Table name: events
 #
-#  id                              :bigint           not null, primary key
-#  aasm_state                      :string
-#  activated_at                    :datetime
-#  address                         :text
-#  can_front_balance               :boolean          default(TRUE), not null
-#  category                        :integer
-#  country                         :integer
-#  custom_css_url                  :string
-#  deleted_at                      :datetime
-#  demo_mode                       :boolean          default(FALSE), not null
-#  demo_mode_request_meeting_at    :datetime
-#  description                     :text
-#  donation_page_enabled           :boolean          default(TRUE)
-#  donation_page_message           :text
-#  donation_reply_to_email         :text
-#  donation_thank_you_message      :text
-#  end                             :datetime
-#  expected_budget                 :integer
-#  has_fiscal_sponsorship_document :boolean
-#  hidden_at                       :datetime
-#  holiday_features                :boolean          default(TRUE), not null
-#  is_indexable                    :boolean          default(TRUE)
-#  is_public                       :boolean          default(TRUE)
-#  last_fee_processed_at           :datetime
-#  name                            :text
-#  omit_stats                      :boolean          default(FALSE)
-#  organization_identifier         :string           not null
-#  owner_address                   :string
-#  owner_birthdate                 :date
-#  owner_email                     :string
-#  owner_name                      :string
-#  owner_phone                     :string
-#  pending_transaction_engine_at   :datetime         default(Sat, 13 Feb 2021 22:49:40.000000000 UTC +00:00)
-#  public_message                  :text
-#  redirect_url                    :string
-#  slug                            :text
-#  sponsorship_fee                 :decimal(, )
-#  start                           :datetime
-#  stripe_card_shipping_type       :integer          default("standard"), not null
-#  transaction_engine_v2_at        :datetime
-#  webhook_url                     :string
-#  website                         :string
-#  created_at                      :datetime         not null
-#  updated_at                      :datetime         not null
-#  club_airtable_id                :text
-#  emburse_department_id           :string
-#  increase_account_id             :string           not null
-#  partner_id                      :bigint
-#  point_of_contact_id             :bigint
+#  id                                :bigint           not null, primary key
+#  aasm_state                        :string
+#  activated_at                      :datetime
+#  address                           :text
+#  can_front_balance                 :boolean          default(TRUE), not null
+#  category                          :integer
+#  country                           :integer
+#  custom_css_url                    :string
+#  deleted_at                        :datetime
+#  demo_mode                         :boolean          default(FALSE), not null
+#  demo_mode_request_meeting_at      :datetime
+#  description                       :text
+#  donation_page_enabled             :boolean          default(TRUE)
+#  donation_page_message             :text
+#  donation_reply_to_email           :text
+#  donation_thank_you_message        :text
+#  end                               :datetime
+#  expected_budget                   :integer
+#  has_fiscal_sponsorship_document   :boolean
+#  hidden_at                         :datetime
+#  holiday_features                  :boolean          default(TRUE), not null
+#  is_indexable                      :boolean          default(TRUE)
+#  is_public                         :boolean          default(TRUE)
+#  last_fee_processed_at             :datetime
+#  name                              :text
+#  omit_stats                        :boolean          default(FALSE)
+#  organization_identifier           :string           not null
+#  owner_address                     :string
+#  owner_birthdate                   :date
+#  owner_email                       :string
+#  owner_name                        :string
+#  owner_phone                       :string
+#  pending_transaction_engine_at     :datetime         default(Sat, 13 Feb 2021 22:49:40.000000000 UTC +00:00)
+#  public_message                    :text
+#  public_reimbursement_page_enabled :boolean          default(FALSE), not null
+#  public_reimbursement_page_message :text
+#  redirect_url                      :string
+#  slug                              :text
+#  sponsorship_fee                   :decimal(, )
+#  start                             :datetime
+#  stripe_card_shipping_type         :integer          default("standard"), not null
+#  transaction_engine_v2_at          :datetime
+#  webhook_url                       :string
+#  website                           :string
+#  created_at                        :datetime         not null
+#  updated_at                        :datetime         not null
+#  club_airtable_id                  :text
+#  emburse_department_id             :string
+#  increase_account_id               :string           not null
+#  partner_id                        :bigint
+#  point_of_contact_id               :bigint
 #
 # Indexes
 #
@@ -261,6 +263,8 @@ class Event < ApplicationRecord
   has_many :sponsors
   has_many :invoices, through: :sponsors
   has_many :payouts, through: :invoices
+
+  has_many :reimbursement_reports, class_name: "Reimbursement::Report"
 
   has_many :documents
 

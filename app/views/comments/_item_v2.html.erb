@@ -2,7 +2,7 @@
   <div class="mt2 mb2">
     <div class="card border b--muted pb0 pt0 mb2 max-width-4<%= " current-user" if comment.user == current_user %>  <%= " comment--admin" if comment.admin_only? %>" id="comment-<%= comment.hashid %>">
       <div class="border-bottom card__banner secondary">
-        <%= user_mention comment.user %> commented
+        <%= user_mention comment.user %> <%= comment.action_text %>
         <%= link_to "#comment-#{comment.hashid}", class: "anchor-link", 'data-anchor': "comment-#{comment.hashid}", title: comment.created_at do %>
           <%= time_ago_in_words comment.created_at %> ago<%= inline_icon "link", size: 24, class: "align-middle" %><% end %>
         <% if comment.edited? %>
@@ -14,7 +14,7 @@
         </action>
         <% end %>
         <% if policy(comment).edit? %>
-          <%= link_to edit_comment_path(comment), class: "tooltipped tooltipped--s right", 'aria-label': "Edit" do %>
+          <%= link_to edit_comment_path(comment), class: "tooltipped tooltipped--s right", 'aria-label': "Edit", data: { turbo: false } do %>
             <%= inline_icon "edit", size: 24, 'aria-label': "Edit" %>
           <% end %>
         <% end %>

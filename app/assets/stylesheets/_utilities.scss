@@ -142,6 +142,18 @@ $shades: (
 
   .bg-#{'' + $name} {
     background-color: $value;
+
+    &-important {
+      background-color: $value !important;
+    }
+  }
+
+  .border-#{'' + $name} {
+    border-color: $value;
+
+    &-important {
+      border-color: $value !important;
+    }
   }
 }
 
@@ -163,6 +175,10 @@ $shades: (
 
 .b--success {
   border-color: map-get($palette, success);
+}
+
+.b--primary {
+  border-color: map-get($palette, primary);
 }
 
 .w-50 {

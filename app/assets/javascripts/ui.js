@@ -327,6 +327,38 @@ $(document).on('turbo:load', function () {
       if (e.target.checked) shippingInputs.slideUp()
     })
   }
+  
+  if (BK.thereIs('check_payout_method_inputs') && BK.thereIs('ach_transfer_payout_method_inputs')) {
+    const checkPayoutMethodInputs = BK.s('check_payout_method_inputs')
+    const achTransferPayoutMethodInputs = BK.s('ach_transfer_payout_method_inputs')
+    const checkPayoutMethodInput = $('#user_payout_method_type_userpayoutmethodcheck')
+    const achTransferPayoutMethodInput = $('#user_payout_method_type_userpayoutmethodachtransfer')
+    $(checkPayoutMethodInput).on('change', e => {
+      if (e.target.checked) checkPayoutMethodInputs.slideDown() && achTransferPayoutMethodInputs.slideUp()
+    })
+    $(achTransferPayoutMethodInput).on('change', e => {
+      if (e.target.checked) achTransferPayoutMethodInputs.slideDown() && checkPayoutMethodInputs.slideUp()
+    })
+  }
+  
+  if (BK.s('reimbursement_report_email_input')) {
+    const emailInput = $('#reimbursement_report_email')
+    const input = $('#reimbursement_report_user_email')
+    if($('#reimbursement_report_email').length){
+      emailInput.hide()
+    }
+    $(input).on('change', e => {
+      document.getElementById("reimbursement_report_email").value = e.target.value
+      if (e.target.value == "") emailInput.slideDown()
+      else emailInput.hide()
+      document.getElementById("reimbursement_report_email").required = e.target.value == "" ? true : false
+    })
+  }
+
+  $('[data-behavior~=mention]').on('click', e => {
+    BK.s('comment').val(`${BK.s('comment').val() + (BK.s('comment').val().length > 0 ? " " : "")}${e.target.innerText}`)
+    BK.s('comment')[0].scrollIntoView();
+  })  
 
   if (BK.thereIs('additional_transparency_settings')) {
     const additionalTransparencySettings = BK.s(
@@ -411,3 +443,4 @@ $(document).on('keydown', function (e) {
     return (hankIndex = 0)
   }
 })
+

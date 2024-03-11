@@ -484,6 +484,35 @@ class AdminController < ApplicationController
     render layout: "admin"
   end
 
+  def reimbursements
+    @page = params[:page] || 1
+    @per = params[:per] || 20
+    @q = params[:q].present? ? params[:q] : nil
+    @pending = params[:pending] == "1" ? true : nil
+
+    @event_id = params[:event_id].present? ? params[:event_id] : nil
+
+    if @event_id
+      @event = Event.find(@event_id)
+
+      relation = @event.reimbursement_reports.includes(:event)
+    else
+      relation = Reimbursement::Report.includes(:event)
+    end
+
+    relation = relation.search(@q) if @q
+
+    relation = relation.reimbursement_requested if @pending
+
+    @count = relation.count
+    @reports = relation.page(@page).per(@per).order(
+      Arel.sql("aasm_state = 'reimbursement_requested' DESC"),
+      "reimbursement_reports.created_at desc"
+    )
+
+    render layout: "admin"
+  end
+
   def ach_start_approval
     @ach_transfer = AchTransfer.find(params[:id])
 

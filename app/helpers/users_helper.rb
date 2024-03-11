@@ -72,7 +72,7 @@ module UsersHelper
 
   def user_mention(user, options = {}, default_name = "No User")
     name = content_tag :span, (user&.initial_name || default_name)
-    avi = avatar_for user
+    avi = avatar_for user, 24, options[:avatar] || {}
 
     klasses = ["mention"]
     klasses << %w[mention--admin tooltipped tooltipped--n] if user&.admin?
@@ -88,9 +88,11 @@ module UsersHelper
              "#{user.name} is an admin"
            end
 
-    content = if user&.admin?
+    content = if user&.admin? && !options[:hide_avatar]
                 bolt = inline_icon "admin-badge", size: 20
                 avi + bolt + name
+              elsif options[:hide_avatar]
+                name
               else
                 avi + name
               end

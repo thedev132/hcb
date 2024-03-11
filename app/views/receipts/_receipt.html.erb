@@ -2,7 +2,7 @@
 
 <% instance = local_assigns.__id__.to_s + receipt.id.to_s %>
 
-<div class="receipt flex flex-column mb1 hidden_except_<%= receipt.id %> <%= "receipt--pairing" if defined?(pairing) && pairing %>" <% if defined?(textual_content) %> data-textual-content="<%= j receipt.textual_content %>"<% end %> data-receipt-id="<%= receipt.id %>" style="--receipt-size: <%= defined?(size) ? size : 256 %>px;<% if defined?(selectable) %> cursor: pointer;" data-receipt-select-target="receipt" data-action="click->receipt-select#select<% end %>">
+<div class="receipt flex flex-column relative mb1 hidden_except_<%= receipt.id %> <%= "receipt--pairing" if defined?(pairing) && pairing %>" <% if defined?(textual_content) %> data-textual-content="<%= j receipt.textual_content %>"<% end %> <% if defined?(style) %> style="<%= j style %>"<% end %> data-receipt-id="<%= receipt.id %>" style="--receipt-size: <%= defined?(size) ? size : 256 %>px;<% if defined?(selectable) %> cursor: pointer;" data-receipt-select-target="receipt" data-action="click->receipt-select#select<% end %>">
 
 <% unless defined?(hide_info) %>
   <span class="<%= "muted " unless defined?(selectable) %>mb1 flex items-center">
@@ -62,6 +62,16 @@
     <% if receipt.file.blob.content_type == "application/pdf" %>
       <iframe src="<%= file_path %>" style="width: 100%; display: none; height: 100vh; max-height: 100%; border: none; border-radius: 0.75rem; overflow: hidden;"></iframe>
     <% end %>
+    <% end %>
+    <% if defined?(delete_on_hover) && delete_on_hover %>
+      <%= pop_icon_to "view-close",
+              { controller: "/receipts", action: :destroy, id: receipt.id, popover: local_assigns[:popover] },
+              method: :delete,
+              data: { behavior: "modal_ignore" },
+              size: 12,
+              class: "warning bg-black-important tooltipped tooltipped--s receipt__delete-button",
+              style: "position: absolute; top: 4px; right: 4px; z-index: 1;",
+              'aria-label': "Delete this receipt" %>
     <% end %>
   <% end %>
 

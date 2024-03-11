@@ -312,6 +312,12 @@ class UsersController < ApplicationController
     authorize @user
   end
 
+  def edit_payout
+    @user = params[:id] ? User.friendly.find(params[:id]) : current_user
+    @states = ISO3166::Country.new("US").subdivisions.values.map { |s| [s.translations["en"], s.code] }
+    authorize @user
+  end
+
   def edit_featurepreviews
     @user = params[:id] ? User.friendly.find(params[:id]) : current_user
     @onboarding = @user.full_name.blank?
@@ -354,6 +360,7 @@ class UsersController < ApplicationController
   end
 
   def update
+    @states = ISO3166::Country.new("US").subdivisions.values.map { |s| [s.translations["en"], s.code] }
     @user = User.friendly.find(params[:id])
     authorize @user
 
@@ -399,6 +406,10 @@ class UsersController < ApplicationController
       if @user.stripe_cardholder&.errors&.any?
         flash.now[:error] = @user.stripe_cardholder.errors.first.full_message
         render :edit_address, status: :unprocessable_entity and return
+      end
+      if @user.payout_method&.errors&.any?
+        flash.now[:error] = @user.payout_method.errors.first.full_message
+        render :edit_payout, status: :unprocessable_entity and return
       end
       render :edit, status: :unprocessable_entity
     end
@@ -466,7 +477,8 @@ class UsersController < ApplicationController
       :session_duration_seconds,
       :receipt_report_option,
       :birthday,
-      :seasonal_themes_enabled
+      :seasonal_themes_enabled,
+      :payout_method_type
     ]
 
     if @user.stripe_cardholder
@@ -478,6 +490,28 @@ class UsersController < ApplicationController
           :stripe_billing_address_state,
           :stripe_billing_address_postal_code,
           :stripe_billing_address_country
+        ]
+      }
+    end
+
+    if params.require(:user)[:payout_method_type] == User::PayoutMethod::Check.name
+      attributes << {
+        payout_method_attributes: [
+          :address_line1,
+          :address_line2,
+          :address_city,
+          :address_state,
+          :address_postal_code,
+          :address_country
+        ]
+      }
+    end
+
+    if params.require(:user)[:payout_method_type] == User::PayoutMethod::AchTransfer.name
+      attributes << {
+        payout_method_attributes: [
+          :account_number,
+          :routing_number
         ]
       }
     end

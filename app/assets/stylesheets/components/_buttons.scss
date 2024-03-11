@@ -54,6 +54,10 @@ input[type='submit'],
   &.bg-muted {
     @include gradient(muted);
   }
+  
+  &.bg-warning {
+    @include gradient(warning);
+  }
 
   &.bg-purple {
     @include gradient(purple);

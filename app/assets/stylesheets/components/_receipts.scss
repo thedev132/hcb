@@ -25,6 +25,16 @@
       }
     }
   }
+
+  &:hover { 
+    .receipt__delete-button {
+      opacity: 1;
+    }
+  }
+}
+
+.receipt__delete-button {
+  opacity: 0;
 }
 
 .receipt--pairing, .receipt--selected {
