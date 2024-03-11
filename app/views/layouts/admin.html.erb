@@ -81,6 +81,8 @@
       <%= link_to "column statements", column_statements_admin_index_url %>
       |
       <%= link_to "ledger audits (#{Admin::LedgerAudit.pending.count})", admin_ledger_audits_path %>
+      |
+      <%= link_to "reimbursements (#{Reimbursement::Report.reimbursement_requested.count})", reimbursements_admin_index_path %>
     </p>
 
     <hr>
