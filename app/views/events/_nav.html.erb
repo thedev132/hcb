@@ -101,10 +101,10 @@
         icon: "google",
         disabled: @event.hardware_grant? || @event.demo_mode? || !organizer_signed_in?,
         selected: local_assigns[:selected] == :google_workspace %>
-      <%= dock_item "Documentation",
+      <%= dock_item "Documents",
         event_documentation_path(event_id: @event.slug),
-        tooltip: "Commonly asked questions and how-tos",
-        icon: "info",
+        tooltip: "View legal documents, account statements, and FAQ",
+        icon: "docs",
         selected: local_assigns[:selected] == :documentation %>
       <%= dock_item "Settings",
         edit_event_path(@event),
@@ -159,7 +159,7 @@
           <div class="menu__content" data-behavior="menu_content">
             <%= link_to "Promotions & perks", event_promotions_path(event_id: @event.slug) unless !@event.approved? || @event.hardware_grant? %>
             <%= link_to "Google Workspace", event_g_suite_overview_path(event_id: @event.slug) unless @event.hardware_grant? || @event.outernet_guild? %>
-            <%= link_to "Documentation", event_documentation_path(event_id: @event.slug) %>
+            <%= link_to "Documents", event_documentation_path(event_id: @event.slug) %>
             <%= link_to "Settings", edit_event_path(@event) %>
           </div>
         </action>
