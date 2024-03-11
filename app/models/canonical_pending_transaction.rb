@@ -98,7 +98,7 @@ class CanonicalPendingTransaction < ApplicationRecord
   scope :bank_fee, -> { where("raw_pending_bank_fee_transaction_id is not null") }
   scope :incoming_disbursement, -> { where("raw_pending_incoming_disbursement_transaction_id is not null") }
   scope :outgoing_disbursement, -> { where("raw_pending_outgoing_disbursement_transaction_id is not null") }
-  scope :reimbursement_expense_payout, -> { where.not(reimbursement_expense_payout: nil) }
+  scope :reimbursement_expense_payout, -> { where.not(reimbursement_expense_payout_id: nil) }
   scope :ach_payment, -> { where.not(ach_payment: nil) }
   scope :unmapped, -> { includes(:canonical_pending_event_mapping).where(canonical_pending_event_mappings: { canonical_pending_transaction_id: nil }) }
   scope :mapped, -> { includes(:canonical_pending_event_mapping).where.not(canonical_pending_event_mappings: { canonical_pending_transaction_id: nil }) }
@@ -316,10 +316,6 @@ class CanonicalPendingTransaction < ApplicationRecord
 
   def emburse_transfer
     nil # TODO
-  end
-
-  def reimbursement_expense_payout
-    nil
   end
 
   def reimbursement_payout_holding

@@ -44,7 +44,7 @@ module Reimbursement
 
     belongs_to :local_hcb_code, foreign_key: "hcb_code", primary_key: "hcb_code", class_name: "HcbCode", inverse_of: :reimbursement_expense_payout, optional: true
     has_many :canonical_transactions, through: :local_hcb_code
-    has_one :canonical_pending_transaction
+    has_one :canonical_pending_transaction, foreign_key: "reimbursement_expense_payout_id", inverse_of: :reimbursement_expense_payout
 
     scope :in_transit_or_pending, -> { where("aasm_state in (?)", ["pending", "in_transit"]) }
 
