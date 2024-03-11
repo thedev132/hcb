@@ -168,6 +168,7 @@ module Reimbursement
     def comment_recipients_for(comment)
       users = []
       users += self.comments.map(&:user)
+      users << self.user
 
       if comment.admin_only?
         users << self.event.point_of_contact
