@@ -1,7 +1,7 @@
 import { Controller } from '@hotwired/stimulus'
 
 export default class extends Controller {
-  static targets = ['field', 'button', 'form']
+  static targets = ['field', 'button', 'form', 'move']
   static values = {
     enabled: { type: Boolean, default: false },
     locked: { type: Boolean, default: false },
@@ -33,6 +33,7 @@ export default class extends Controller {
 
     this.#buttons()
     this.#label()
+    this.moveTarget.style.display = "none"
 
     for (const field of this.fieldTargets) {
       field.readOnly = false
