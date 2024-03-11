@@ -44,19 +44,6 @@
 
     <%= form.hidden_field :action, value: :changes_requested %>
 
-<<<<<<< HEAD
-=======
-    <div class="field field--fileupload mb1 mt1">
-      <%= form.label :file, "Choose file", class: "field--fileupload__label", for: "request_changes_file_upload" %>
-      <%= form.file_field :file,
-          multiple: false,
-          required: false,
-          style: "margin: 8px 0px",
-          class: "field--fileupload__field",
-          id: "request_changes_file_upload" %>
-    </div>
-
->>>>>>> a73747918 (Expensify (HCB's Version) (#5062))
     <%= form.submit "Request Changes" %>
   <% end %>
 </section>

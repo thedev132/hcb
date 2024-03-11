@@ -70,11 +70,7 @@ module EventsHelper
       return Event.categories.key(value.to_i)
     end
 
-<<<<<<< HEAD
     if field == "maximum_amount_cents"
-=======
-    if field = "maximum amount cents"
->>>>>>> a73747918 (Expensify (HCB's Version) (#5062))
       return render_money(value.to_s)
     end
 
