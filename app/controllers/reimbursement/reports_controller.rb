@@ -169,13 +169,6 @@ module Reimbursement
 
       authorize @report
 
-      begin
-        @report.mark_draft!
-      rescue => e
-        flash[:error] = e.message
-        redirect_to @report and return
-      end
-
       comment_params = params.require(:comment).permit(:content, :admin_only, :action)
 
       if comment_params[:content].blank? && comment_params[:file].blank?
@@ -187,7 +180,15 @@ module Reimbursement
           flash[:success] = "We've notified #{@report.user.name} of your requested changes."
         else
           flash[:error] = @report.errors.full_messages.to_sentence
+          redirect_to @report and return
         end
+      end
+
+      begin
+        @report.mark_draft!
+      rescue => e
+        flash[:error] = e.message
+        redirect_to @report and return
       end
 
       redirect_to @report
