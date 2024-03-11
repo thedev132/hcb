@@ -9,6 +9,14 @@
     <span class="muted h5">(So we have context when we contact you.)</span>
   </div>
 
+  <% cards_num = @opdr.organizer_active_cards.count %>
+  <% if cards_num.any? %>
+    <p class="warning">
+      <%= inline_icon "important", size: 24, style: "vertical-align: middle; margin: -0.2rem 0 0 -0.2rem;" %>
+      Removing this user will also permanently cancel their <%= cards_num %> <%= pluralize(cards_num, "card") %>. Recurring charges like subscriptions will be declined after cards are canceled.
+    </p>
+  <% end %>
+
   <div class="actions">
     <%= form.submit "Request removal" %>
   </div>

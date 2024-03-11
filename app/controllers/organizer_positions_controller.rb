@@ -11,8 +11,12 @@ class OrganizerPositionsController < ApplicationController
     invites.each do |ivt|
       ivt.cancel
     end
-
-    flash[:success] = "Removed #{@organizer_position.user.email} from the team."
+    # also cancel all stripe cards from the organizer
+    cards = @organizer_position.user.stripe_cards.where(event: @organizer_position.event)
+    cards.each do |card|
+      card.cancel! unless card.stripe_status = "cancelled"
+    end
+    flash[:success] = "Removed #{@organizer_position.user.email} from the team and cancelled their cards."
     redirect_back(fallback_location: event_team_path(@organizer_position.event))
   end
 
