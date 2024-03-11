@@ -6,7 +6,7 @@ class AchTransferPolicy < ApplicationPolicy
   end
 
   def new?
-    is_public? || admin_or_user
+    is_public? || user_who_can_transfer?
   end
 
   def create?
