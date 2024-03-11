@@ -17,4 +17,15 @@ class ApplicationMailer < ActionMailer::Base
     Rails.application.credentials.admin_email[env]
   end
 
+  def hcb_email_with_name_of(object)
+    name = object.try(:name)
+    if name.present?
+      name += " via HCB"
+    else
+      name = "HCB"
+    end
+
+    email_address_with_name("hcb@hackclub.com", name)
+  end
+
 end

@@ -1,0 +1,64 @@
+<% title "Get reimbursed by " + @event.name %>
+<% page_sm %>
+<% no_app_shell %>
+
+<% content_for :head do %>
+  <meta name="twitter:card" content="summary_large_image">
+  <meta property="og:site_name" content="HCB">
+  <meta property="og:url" content="<%= reimbursement_start_reimbursement_report_url @event %>">
+  <meta property="og:title" content="Get reimbursed by <%= @event.name %>">
+  <meta name="twitter:title" content="Get reimbursed by <%= @event.name %>">
+<% end %>
+
+<%= render "events/landing/header", lead: "Get reimbursed by" %>
+
+<% if @event.public_reimbursement_page_message.present? %>
+  <div class="container container--sm">
+    <div class="card border b--info mt3 mb3 pb0 pt0 public-message">
+      <%== MarkdownService.instance.renderer.render @event.public_reimbursement_page_message %>
+    </div>
+  </div>
+<% else %>
+  <div class="container container--sm">
+    <div class="card border b--info mt3 mb3 pb0 pt0 public-message">
+      <p>
+        <%= @event.name %> uses HCB to reimburse its volunteers and external contributors. After entering your email
+        and the purpose of your reimbursement request, you'll receive an email from us with a portal to submit receipts
+        and enter payout information.
+      </p>
+    </div>
+  </div>
+<% end %>
+
+<%= form_with(model: Reimbursement::Report.new, class: "card mx-auto max-width-1 mb3", data: { turbo: false }) do |form| %>
+
+  <div class="field mb2">
+    <%= form.label :report_name, "Purpose of reimbursement" %>
+    <%= form.text_field :report_name, placeholder: "FOSSASIA Conference Expenses", required: true, autofocus: true, value: "" %>
+  </div>
+
+  <div class="field mb2">
+    <%= form.label :email, "Your email" %>
+    <%= form.email_field :email, placeholder: "fionah@gmail.com", required: true %>
+  </div>
+
+  <%= form.hidden_field :event_id, value: @event.id %>
+
+  <% if @event.demo_mode? %>
+    <%= form.submit "Continue →", class: "w-100 bg-success", disabled: "true" %>
+  <% else %>
+    <%= form.submit "Continue →", class: "w-100 bg-success" %>
+  <% end %>
+<% end %>
+
+<% if @event.demo_mode? %>
+  <div class="container container--sm">
+    <div class="card border b--info mt3 mb3 pb0 pt0 public-message">
+      <p>
+        Your account is in Playground Mode. Reimbursements are only supported for activated accounts.
+      </p>
+    </div>
+  </div>
+<% end %>
+
+<%= render "events/landing/footer" %>

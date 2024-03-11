@@ -1,0 +1,15 @@
+<% title "Edit Expense on #{@expense.report.name}" %>
+<% @event = @expense.report.event %>
+<% page_md %>
+<%= render "events/nav", selected: :reimbursements unless @use_user_nav %>
+<%= render "users/nav", selected: :reimbursements if @use_user_nav %>
+
+<div class="mt4">
+  <h2 class="heading mt0 flex">
+    Edit Expense on <%= @expense.report.name %>
+  </h2>
+</div>
+
+<div class="mt2">
+  <%= render "expense", expense: @expense %>
+</div>

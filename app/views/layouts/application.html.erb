@@ -50,6 +50,7 @@
                         step: @tour&.step || 0,
                         options: @tour&.tourable&.try(:tourable_options) || {},
                         back_to_tour: @back_to_tour %>
+
     <% if current_session&.impersonated? %>
       <div class="w-100 px4 bg-white transparency-banner">
         <p class="h5 medium center mt1 mb1">
@@ -57,7 +58,7 @@
         </p>
       </div>
     <% end %>
-    <% if @event&.is_public && !organizer_signed_in? && !@no_app_shell && !@no_transparency_header %>
+    <% if @event&.is_public && !organizer_signed_in? && !@no_app_shell && !@no_transparency_header && !@use_user_nav %>
       <div class="w-100 px3 bg-white transparency-banner" data-behavior="hide_iframe">
         <p class="h5 medium center mt1 mb1">
           This HCB project has been made public so you can see all its finances.

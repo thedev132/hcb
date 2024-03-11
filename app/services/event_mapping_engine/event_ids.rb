@@ -10,5 +10,6 @@ module EventMappingEngine
     FIRST_TRANSPARENCY_GRANT_FUND = 1803
     PARTNER_128_COLLECTIVE_FUND = 3228 # would have been perfect if it was 128!
     HACK_FOUNDATION_INTEREST = 2740
+    REIMBURSEMENT_CLEARING = 4318
   end
 end

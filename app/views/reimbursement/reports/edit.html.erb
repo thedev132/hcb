@@ -1,0 +1,18 @@
+<% title @report.name %>
+<% page_md %>
+<%= render "events/nav", selected: :reimbursements unless @use_user_nav %>
+<%= render "users/nav", selected: :reimbursements if @use_user_nav %>
+
+<div class="mt4">
+    <h3 class="mt2 mb1 muted flex" style="font-weight: 400; gap: 4px;">
+      <span style="flex-grow: 1;">
+        <%= user_mention @user, class: "tooltipped--s align-top" %>is requesting <%= render_money [@report.maximum_amount_cents, @report.amount_cents].compact_blank.min %> for
+      </span>
+      <span class="ml0 badge bg-<%= @report.aasm_state %>"><%= @report.aasm_state&.capitalize %></span>
+    </h3>
+    <h2 class="heading mt0 flex">
+      <span style="flex-grow: 1;"><%= @report.name %></span>
+    </h2>
+</div>
+
+<%= render "edit_form" %>

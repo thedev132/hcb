@@ -31,7 +31,8 @@ $palette: (
   muted: $muted,
   smoke: $smoke,
   snow: $snow,
-  white: $white
+  white: $white,
+  dark: $dark
 );
 
 @mixin gradient($color) {

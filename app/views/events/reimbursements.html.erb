@@ -1,111 +1,122 @@
 <% title "Reimbursements for #{@event.name}" %>
 <% page_md %>
-<%= render "events/nav" %>
+<%= render "events/nav", selected: :reimbursements %>
 
-<h1 class="heading">
-  Reimbursements
-  <%= link_to "https://app.expensify.com/", class: "btn", target: "_blank" do %>
-    <%= inline_icon "external" %>
-    Open Expensify
+<h1 class="heading flex">
+  <span style="flex">Reimbursements</span>
+  <% if @event.public_reimbursement_page_enabled? %>
+    <%= link_to reimbursement_start_reimbursement_report_url(@event), target: "_blank", class: "btn" do %>
+      <%= inline_icon "external" %>
+      Public Form
+    <% end %>
+  <% end %>
+  <%= link_to "#", class: "btn bg-success", data: { behavior: "modal_trigger", modal: "create" } do %>
+    <%= inline_icon "docs" %>
+    New
   <% end %>
 </h1>
 
-<div class="mb4">
-  <p>
-    HCB currently uses a service called
-    <a class="info" href="https://www.expensify.com" target="_blank">Expensify</a>
-    to streamline your reimbursement process. Expensify allows
-    you to upload receipts and receive reimbursements back
-    into your bank account 🏦.
-  </p>
+<%= render partial: "reimbursement/reports/create_form" %>
 
-  <p>
-    Get in touch with the HCB team
-    <% if organizer_signed_in? %>
-      (<%= help_message %>)
-    <% else %>
-      <span class="muted">(sign in to view)</span>
-    <% end %>
-     with the email of the person to be reimbursed, and they'll be invited
-    to Expensify to upload their receipts.
-  </p>
+<div class="statset mt3 mb2">
+  <div class="stat stat--small">
+    <span class="stat__label">Total</span>
+    <span class="stat__value">
+      <%= render_money_amount(@reports.sum(&:amount_cents)) %>
+    </span>
+  </div>
+  <div class="stat stat--small">
+    <span class="stat__label">Reimbursed</span>
+    <span class="stat__value">
+      <%= render_money_amount(@reports.reimbursed.sum(&:amount_cents)) %>
+    </span>
+  </div>
+  <div class="stat stat--small">
+    <span class="stat__label">Pending</span>
+    <span class="stat__value">
+      <%= render_money_amount(@reports.pending.reimbursed.sum(&:amount_cents)) %>
+    </span>
+  </div>
 </div>
 
-<h2 class="mb2">Expensify FAQ</h2>
+<hr>
 
-<ul class="list-reset">
-  <li class="mb3">
-    <details open>
-      <summary class="inline-block cursor-pointer">
-        <strong>What happens when someone's invited to Expensify?</strong>
-      </summary>
-      <article>
-        <p>
-        We'll invite whoever needs to be reimbursed (let's call them "Max") to Expensify through their email address.
-        When Max receives the email, they'll make an account or log into Expensify, where they can upload their
-        receipts as "expenses," and submit their expenses in a "Report."
-        </p>
-        <p>
-        When Max submits a report, HCB will receive it, make sure that the numbers make sense,
-        and approve the reimbursement. Max will get a couple of emails letting them know that the expense was approved,
-        and the reimbursement is on their way!
-        </p>
-        <p>
-        To receive the reimbursement, Max will need to connect their bank account with Expensify. They'll need to do it
-        only once, and for future reimbursements, the funds will arrive in their bank account within a few days.
-        </p>
-      </article>
-    </details>
-  </li>
+<div style="text-align: center;">
+  <%= link_to "All", "?filter=all", class: "filterbar__item", "aria-selected": !["reimbursed", "pending", "rejected"].include?(params[:filter]), role: "tab" %>
+  <%= link_to "Pending", "?filter=pending", class: "filterbar__item", "aria-selected": params[:filter] == "pending", role: "tab" %>
+  <%= link_to "Reimbursed", "?filter=reimbursed", class: "filterbar__item", "aria-selected": params[:filter] == "reimbursed", role: "tab" %>
+  <%= link_to "Rejected", "?filter=rejected", class: "filterbar__item", "aria-selected": params[:filter] == "rejected", role: "tab" %>
+</div>
 
-  <li class="mb3">
-    <details>
-      <summary class="inline-block cursor-pointer">
-        <strong>Can I just send them a check or direct deposit?</strong>
-      </summary>
-      <article>
-        <p>
-        Usually, no. We ask that you make all reimbursements through Expensify on HCB because Expensify makes it
-        easy for us as a nonprofit to keep track of receipts and expenses in an auditable way.
-        </p>
-        <p>
-        If you think you have an exceptional case where using Expensify isn't sensible, feel free to get in touch with
-        us!
-        <% if organizer_signed_in? %>
-          <%= help_message %>
-        <% else %>
-          <span class="muted">(sign in to view)</span>
+<%= form_with(model: nil, local: true, method: :get) do |form| %>
+  <div class="filterbar flex flex-wrap items-center width-100">
+
+    <%= form.text_field :q, placeholder: "Search…", class: "flex-auto md-mr2", style: "width auto; max-width: none;", value: params[:q] %>
+
+  </div>
+<% end %>
+
+<% if @reports.blank? %>
+  <%= blankslate "No reports found!" %>
+<% else %>
+  <article class="table-container">
+    <table>
+      <thead>
+      <tr>
+        <th>Status</th>
+        <th>Report Title</th>
+        <th>From</th>
+        <th>Amount</th>
+        <th>Created at</th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody>
+        <% @reports.order(created_at: :desc).each do |report| %>
+          <tr>
+            <td>
+               <span class="ml0 badge bg-<%= report.status_color %>"><%= report.status_text %></span>
+            </td>
+            <td>
+              <%= report.name %>
+            </td>
+            <td>
+               <%= user_mention report.user %>
+            </td>
+            <td>
+               <%= render_money [report.maximum_amount_cents, report.expenses.sum(:amount_cents)].compact_blank.min %>
+            </td>
+            <td>
+               <%= report.created_at.strftime("%m-%d-%Y") %>
+            </td>
+            <td>
+               <%= link_to "View", report %>
+            </td>
+          </tr>
         <% end %>
-        </p>
-      </article>
-    </details>
-  </li>
+      </tbody>
+    </table>
+  </article>
+<% end %>
 
-  <li class="mb3">
-    <details>
-      <summary class="inline-block cursor-pointer">
-        <strong>How long does it take to be reimbursed?</strong>
-      </summary>
-      <article>
-        <p>
-        If the reimbursee has a bank account connected to Expensify, they'll receive the reimbursement within a few days of
-        its approval. If they need to connect their bank account to Expensify, that may take a couple of extra days at most.
-        </p>
-      </article>
-    </details>
-  </li>
-
-  <li class="mb3">
-    <details>
-      <summary class="inline-block cursor-pointer">
-        <strong>Can I reimburse someone for a part of an expense?</strong>
-      </summary>
-      <article>
-        <p>
-        Yep! When you submit your receipts to get reimbursed on Expensify, just make sure the expense amount is the
-        partial reimbursement amount rather than the full expense. Also, add a note there that it's a partial reimbursement.
-        </p>
-      </article>
-    </details>
-  </li>
-</ul>
+<%= form_with(model: Reimbursement::Report, class: "display-none", method: :post, url: quick_expense_reimbursement_reports_path, data: { controller: "file-drop form", "file-drop-title-value": "Drop to start a report." }) do |form| %>
+  <%= form.hidden_field :event_id, value: @event.id %>
+  <%= form.label :file, "Choose file", class: "field--fileupload__label", data: {
+        action: "
+        dragover@window->file-drop#dragover
+        drop@window->file-drop#drop
+        dragenter@window->file-drop#dragenter
+        dragleave@window->file-drop#dragleave
+      "
+      } %>
+  <%= form.file_field :file,
+      multiple: true,
+      include_hidden: false,
+      required: false,
+      accept: "image/*,image/heic,.pdf",
+      data: {
+        "file-drop-target" => "fileInput",
+        "action"           => "change->form#submit"
+      } %>
+  </div>
+<% end %>

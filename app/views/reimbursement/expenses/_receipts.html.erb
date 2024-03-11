@@ -1,0 +1,65 @@
+<%= turbo_frame_tag "receipts_for_" + expense.to_s do %>
+  <div class="w-100 h-100 flex">
+    <%= form_with(url: receipts_path, method: "post", class: "w-100 h-100 flex flex-column justify-center reimbursement-dropzone",
+      data: {
+        turbo: "false",
+        controller: "file-drop form",
+        action: expense.report.locked? ? "" : "
+          dragover->file-drop#dragover
+          drop->file-drop#drop
+          dragenter->file-drop#dragenter
+          dragleave->file-drop#dragleave
+        ",
+        "file-drop-target" => "dropzone",
+        "file-drop-title-value" => "Add receipt"
+      }.compact) do |form| %>
+
+      <% if expense.receipts.any? %>
+        <div class="flex flex-column p1 h-100" id="link_receipt__form">
+          <% column_width = [300 / (expense.receipts.count / 2.to_f).ceil, 150].max %>
+          <% first_column_width = expense.report.locked? ? column_width : [column_width, 200].min %>
+          <% column_amount = [((expense.receipts.count - 1) / 2.to_f).ceil, expense.receipts.count == 2 ? 2 : 1].max %>
+          <% column_amount -= 1 if expense.report.locked? %>
+          <div class="receipts" style="grid-template-columns: <%= first_column_width %>px repeat(<%= column_amount %>, <%= column_width %>px)">
+            <% unless expense.report.locked? %>
+              <label for="file_<%= expense.id %>" class="card card--sunken flex flex-column items-center justify-center flash info" style="cursor: pointer">
+                <span class="flex items-center justify-center">
+                  <h1 class="mt0 mb0 text-info add">+</h1>
+                </span>
+              </label>
+            <% end %>
+            <%= render partial: "receipts/receipt", collection: expense.receipts.order(created_at: :desc), as: :receipt, locals: { hide_info: false, delete_on_hover: !expense.report.locked?, style: "margin: 0px; min-width: 150px; max-width: 300px; height: 100%; object-fit: cover;" } %>
+          </div>
+        </div>
+      <% else %>
+        <div class="card card--sunken flex flex-column items-center justify-center g2 h-100" id="link_receipt__form">
+          <span class="flex items-center justify-center flex-row flex-wrap" style="margin: -8px;">
+            <label for="file_<%= expense.id %>" class="btn m1">
+              <%= inline_icon "share" %>
+              <span>Upload</span>
+            </label>
+          </span>
+          <p class="center muted mt0 mb0">Or drag & drop your receipt here</p>
+        </div>
+      <% end %>
+
+      <%= form.hidden_field :upload_method, value: "expense_report", data: { "file-drop-target" => "uploadMethod" } %>
+
+      <%= form.hidden_field :receiptable_type, value: expense.class %>
+      <%= form.hidden_field :receiptable_id, value: expense.id %>
+
+      <%= form.file_field :file,
+                          id: "file_#{expense.id}",
+                          multiple: true,
+                          include_hidden: false,
+                          required: true,
+                          class: "display-none",
+                          accept: "image/*,image/heic,.pdf",
+                          data: {
+                            "file-drop-target" => "fileInput",
+                            "action"           => "change->form#submit"
+                          } %>
+
+    <% end %>
+  </div>
+<% end %>

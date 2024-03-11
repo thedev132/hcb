@@ -7,23 +7,29 @@
   <nav class="dock mt2">
     <%= dock_item "Home",
       root_path,
-      tooltip: "See all your organizations.",
+      tooltip: "See all your organizations",
       icon: "home",
       selected: local_assigns[:selected] == :home %>
     <%= dock_item "Cards",
       my_cards_path,
-      tooltip: "See all your cards.",
+      tooltip: "See all your cards",
       icon: "card",
       selected: local_assigns[:selected] == :cards %>
     <%= dock_item "Receipts",
       my_inbox_path,
-      tooltip: "See transactions awaiting receipts.",
+      tooltip: "See transactions awaiting receipts",
       icon: "payment-docs",
       async_badge: my_missing_receipts_icon_path,
       selected: local_assigns[:selected] == :receipts %>
+    <%= dock_item "Reimbursements",
+      my_reimbursements_path,
+      tooltip: "See expense reimbursements",
+      icon: "attachment",
+      async_badge: my_draft_reimbursements_icon_path,
+      selected: local_assigns[:selected] == :reimbursements if Flipper.enabled?(:reimbursements_2024_03_10, @user) %>
     <%= dock_item "Settings",
       my_settings_path,
-      tooltip: "Edit account settings.",
+      tooltip: "Edit account settings",
       icon: "settings",
       selected: local_assigns[:selected] == :settings %>
   </nav>

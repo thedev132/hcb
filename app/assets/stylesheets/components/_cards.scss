@@ -7,6 +7,11 @@
   transition: 0.125s ease-in-out;
   transition-property: transform, box-shadow;
 
+  &.card--sunken {
+    box-shadow: none;
+    background-color: rgba(map-get($palette, smoke), 0.75);
+  }
+
   &.b--warning {
     box-shadow: 0 0 2px 0 rgba(map-get($palette, warning), 0.0625),
       0 4px 8px 0 rgba(map-get($palette, warning), 0.125);

@@ -48,6 +48,11 @@
   <%= render partial: "hcb_codes/bank_fee", locals: {} %>
 <% end %>
 
+<%# expense payout %>
+<% if @hcb_code.reimbursement_expense_payout? %>
+  <%= render partial: "hcb_codes/expense_payout", locals: {} %>
+<% end %>
+
 <%# fee revenue %>
 <% if @hcb_code.fee_revenue? && @hcb_code.fee_revenue.present? %>
   <%= render partial: "hcb_codes/fee_revenue", locals: {} %>

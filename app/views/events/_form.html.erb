@@ -10,7 +10,11 @@
         Displayed on your
         <%= link_to "donation page",
           @event.donation_page_enabled? ? start_donation_donations_path(@event) : { anchor: "donations" },
-          target: @event.donation_page_enabled? ? "_blank" : nil %>.
+          target: @event.donation_page_enabled? ? "_blank" : nil %>
+        and your
+        <%= link_to "public reimbursement page",
+          @event.public_reimbursement_page_enabled? ? reimbursement_start_reimbursement_report_url(@event) : { anchor: "public-reimbursements" },
+          target: @event.public_reimbursement_page_enabled? ? "_blank" : nil %>.
       </p>
       <% if @event.logo.attached? %>
         <%= image_tag @event.logo, height: 72 %>
@@ -164,6 +168,20 @@
         <%= form.text_field :donation_reply_to_email, type: "email", placeholder: "fiona@hackclub.com", class: "w-100 fit" %>
       </div>
       <%= form.submit "Update", class: ("disabled" unless policy(@event).update?) %>
+    </div>
+    <h3 class="mb1" id="public-reimbursements">Public Reimbursements</h3>
+
+    <div class="card">
+      <div class="field field--checkbox">
+        <%= form.check_box :public_reimbursement_page_enabled %>
+        <%= form.label :public_reimbursement_page_enabled, "Enable public reimbursement page" %>
+      </div>
+      <div class="field">
+        <%= form.label :public_reimbursement_page_message, "Message to show on public reimbursement page" %>
+        <%= form.text_area :public_reimbursement_page_message, placeholder: "#{@event.name} uses HCB to reimburse its volunteers...", class: "w-100 fit" %>
+        <%= inline_icon "markdown", size: 32, class: "muted right" %>
+      </div>
+      <%= form.submit "Update" %>
     </div>
   <% end %>
 

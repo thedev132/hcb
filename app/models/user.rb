@@ -10,6 +10,7 @@
 #  email                    :text
 #  full_name                :string
 #  locked_at                :datetime
+#  payout_method_type       :string
 #  phone_number             :text
 #  phone_number_verified    :boolean          default(FALSE)
 #  preferred_name           :string
@@ -23,6 +24,7 @@
 #  use_sms_auth             :boolean          default(FALSE)
 #  created_at               :datetime         not null
 #  updated_at               :datetime         not null
+#  payout_method_id         :bigint
 #  webauthn_id              :string
 #
 # Indexes
@@ -90,11 +92,20 @@ class User < ApplicationRecord
 
   has_many :checks, inverse_of: :creator
 
+  has_many :reimbursement_reports, class_name: "Reimbursement::Report"
+  has_many :created_reimbursement_reports, class_name: "Reimbursement::Report", foreign_key: "invited_by_id", inverse_of: :inviter
+
   has_many :card_grants
 
   has_one_attached :profile_picture
 
   has_one :partner, inverse_of: :representative
+
+  # a user does not actually belong to its payout method,
+  # but this is a convenient way to set up the association.
+
+  belongs_to :payout_method, polymorphic: true, optional: true
+  accepts_nested_attributes_for :payout_method
 
   has_encrypted :birthday, type: :date
 
@@ -234,6 +245,12 @@ class User < ApplicationRecord
 
       HcbCode.where(id: hcb_codes_missing_ids).order(created_at: :desc)
     end
+  end
+
+  def build_payout_method(params)
+    return unless payout_method_type
+
+    self.payout_method = payout_method_type.constantize.new(params)
   end
 
   private

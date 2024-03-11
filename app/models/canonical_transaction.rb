@@ -264,6 +264,18 @@ class CanonicalTransaction < ApplicationRecord
     nil
   end
 
+  def reimbursement_expense_payout
+    return linked_object if linked_object.is_a?(Reimbursement::ExpensePayout)
+
+    nil
+  end
+
+  def reimbursement_payout_holding
+    return linked_object if linked_object.is_a?(Reimbursement::PayoutHolding)
+
+    nil
+  end
+
   def invoice_payout
     return linked_object.payout if linked_object.is_a?(Invoice)
 

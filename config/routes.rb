@@ -50,10 +50,13 @@ Rails.application.routes.draw do
     get "/", to: redirect("/"), as: :my
     get "settings", to: "users#edit", as: :my_settings
     get "settings/address", to: "users#edit_address"
+    get "settings/payouts", to: "users#edit_payout"
     get "settings/previews", to: "users#edit_featurepreviews"
     get "settings/security", to: "users#edit_security"
     get "settings/admin", to: "users#edit_admin"
     get "inbox", to: "static_pages#my_inbox", as: :my_inbox
+    get "reimbursements", to: "static_pages#my_reimbursements", as: :my_reimbursements
+    get "draft_reimbursements_icon", to: "static_pages#my_draft_reimbursements_icon", as: :my_draft_reimbursements_icon
     post "receipts/upload", to: "static_pages#receipt", as: :my_receipts_upload
     get "missing_receipts", to: "static_pages#my_missing_receipts_list", as: :my_missing_receipts_list
     get "missing_receipts_icon", to: "static_pages#my_missing_receipts_icon", as: :my_missing_receipts_icon
@@ -121,6 +124,7 @@ Rails.application.routes.draw do
     end
     member do
       get "address", to: "users#edit_address"
+      get "payouts", to: "users#edit_payout"
       get "previews", to: "users#edit_featurepreviews"
       get "security", to: "users#edit_security"
       get "admin", to: "users#edit_admin"
@@ -165,6 +169,7 @@ Rails.application.routes.draw do
       get "stripe_cards", to: "admin#stripe_cards"
       get "pending_ledger", to: "admin#pending_ledger"
       get "ach", to: "admin#ach"
+      get "reimbursements", to: "admin#reimbursements"
       get "checks", to: "admin#checks"
       get "increase_checks", to: "admin#increase_checks"
       get "partner_organizations", to: "admin#partner_organizations"
@@ -390,6 +395,30 @@ Rails.application.routes.draw do
   resources :transactions, only: [:index, :show, :edit, :update] do
     resources :comments
   end
+  namespace :reimbursement do
+    resources :reports, only: [:show, :create, :edit, :update] do
+      post "request_reimbursement"
+      post "admin_approve"
+      post "request_changes"
+      post "reject"
+      post "submit"
+      post "draft"
+      collection do
+        post "quick_expense"
+      end
+    end
+
+    get "start/:event_name", to: "reports#start", as: "start_reimbursement_report"
+
+    resources :expenses, only: [:create, :edit, :update, :destroy] do
+      post "toggle_approved"
+    end
+  end
+
+  resources :reimbursement_reports, path: "reimbursements/reports" do
+    resources :comments
+  end
+
 
   resources :fee_reimbursements, only: [:show, :edit, :update] do
     collection do

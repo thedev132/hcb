@@ -11,19 +11,21 @@
   <% end %>
 <% end %>
 
-<%= render "receipts/list_v2" %>
-<% admin_tools_if @hcb_code.receipt_optional? do %>
-  <%= begin receipt_upload_form_config = {
-        receiptable: @hcb_code,
-        enable_linking: true,
-        upload_method: "transaction_page",
-        include_spacing: true
-      }
+<% if @hcb_code.accepts_receipts? %>
+  <%= render "receipts/list_v2" %>
+  <% admin_tools_if @hcb_code.receipt_optional? do %>
+    <%= begin receipt_upload_form_config = {
+          receiptable: @hcb_code,
+          enable_linking: true,
+          upload_method: "transaction_page",
+          include_spacing: true
+        }
 
-            receipt_upload_form_config[:restricted_dropzone] = true if @frame
-            receipt_upload_form_config[:inline_linking] = true if @frame
-            receipt_upload_form_config[:popover] = "HcbCode:#{@hcb_code.hashid}" if @frame
-            render partial: "receipts/form_v3", locals: receipt_upload_form_config end %>
+              receipt_upload_form_config[:restricted_dropzone] = true if @frame
+              receipt_upload_form_config[:inline_linking] = true if @frame
+              receipt_upload_form_config[:popover] = "HcbCode:#{@hcb_code.hashid}" if @frame
+              render partial: "receipts/form_v3", locals: receipt_upload_form_config end %>
+  <% end %>
 <% end %>
 
 <%= render "comments/list_v2" %>
