@@ -27,7 +27,7 @@
     <%= inline_icon "view-reload" %>
   </td>
 <% elsif ct.local_hcb_code.reimbursement_expense_payout? %>
-  <% user = ct.canonical_transactions.first.reimbursement_expense_payout.expense.report.user %>
+  <% user = ct.local_hcb_code.reimbursement_expense_payout.expense.report.user %>
   <td class="transaction__icon tooltipped tooltipped--e" aria-label="Reimbursed to <%= user.name %>">
     <%= avatar_for user, 24 %>
   </td>
