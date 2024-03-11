@@ -7,4 +7,18 @@ module StripeAuthorizationsHelper
     has_digits = str.scan(/\d/).any?
     has_digits ? :phone : :city
   end
+
+  def humanized_merchant_name(merchant)
+    lookup_merchant(merchant["network_id"]) || merchant["name"].humanize.capitalize
+  end
+
+  def lookup_merchant(network_id)
+    ahoy = Ahoy::Tracker.new
+
+    result = YellowPages::Merchant.lookup_name(network_id:)
+
+    ahoy.track("Merchant Network ID not found", network_id:) unless result
+
+    result
+  end
 end
