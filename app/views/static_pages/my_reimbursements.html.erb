@@ -73,8 +73,8 @@
       <thead>
       <tr>
         <th>Status</th>
-        <th>Report Title</th>
-        <th>From</th>
+        <th>Report Name</th>
+        <th>Event</th>
         <th>Amount</th>
         <th>Created at</th>
         <th></th>
@@ -90,7 +90,7 @@
               <%= report.name %>
             </td>
             <td>
-               <%= user_mention report.user %>
+               <%= report.event.name %>
             </td>
             <td>
                <%= render_money [report.maximum_amount_cents, report.expenses.sum(:amount_cents)].compact_blank.min %>
