@@ -9,7 +9,7 @@
     </span>
   </div>
 
-  <% admin_tools do %>
+  <% admin_tool do %>
     <%= form.fields_for :fee_relationship do |fr_form| %>
       <% if transaction.potential_fee_reimbursement? %>
         <div class="field">

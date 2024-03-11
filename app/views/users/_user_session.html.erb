@@ -1,6 +1,6 @@
 <div class="card border<%= " b--warning" if session.impersonated? %><%= " b--success" if current_session.id == session.id %>">
   <% if session.impersonated? %>
-    <% admin_tools "", "span" do %>
+    <% admin_tool "", "span" do %>
       Impersonated by <%= user_mention session.impersonated_by %>
     <% end %>
   <% end %>

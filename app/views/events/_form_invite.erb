@@ -21,7 +21,7 @@
     <p class="muted mb1"><span id="inviteFormEmailDisplay">This person</span> will have <span id="inviteFormAccessDisplay" class="bold info">limited</span> access to your project finances.</p>
   <% end %>
 
-  <% admin_tools("mr1 flex g1 w-fit") do %>
+  <% admin_tool("mr1 flex g1 w-fit") do %>
     <div class="field field--checkbox mb0 line-height-0" data-controller="team-invite-form" data-action="click->team-invite-form#toggle">
       <%= form.check_box :is_signee, "data-team-invite-form-target": "realCheckbox", style: "display: none;" %>
 

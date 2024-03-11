@@ -5,7 +5,7 @@
 
 <%= render partial: "admin_viewer", locals: { record: @invoice } %>
 
-<% admin_tools("mt3") do %>
+<% admin_tool("mt3") do %>
   <%= link_to "View on Stripe", @invoice.stripe_dashboard_url, class: "btn bg-accent" %>
 <% end %>
 
@@ -215,7 +215,7 @@
           <%= format_datetime @invoice.payout_creation_queued_at %>
         <% end %>
       </p>
-      <% admin_tools do %>
+      <% admin_tool do %>
         <%= invoice_payout_datetime %>
       <% end %>
     </section>

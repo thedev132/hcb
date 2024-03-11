@@ -1,7 +1,7 @@
 <section class="comments">
   <% (@comments || []).each do |comment| %>
     <% if comment.admin_only %>
-      <% admin_tools do %>
+      <% admin_tool do %>
         <%= render "comments/item", comment: %>
       <% end %>
     <% else %>

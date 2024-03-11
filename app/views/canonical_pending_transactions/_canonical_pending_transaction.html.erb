@@ -35,7 +35,7 @@
             </span>
 
             <% if pt.amount_cents.negative? && name_contains_emoji?(pt.local_hcb_code.memo) %>
-              <% admin_tools("memo-frame__ai-button badge m0 ml1 p0 overflow-visible") do %>
+              <% admin_tool("memo-frame__ai-button badge m0 ml1 p0 overflow-visible") do %>
                 <a href="<%= memo_frame_hcb_code_path(pt.local_hcb_code, gen_memo: true) %>"
                    style="padding: 4px 6px"
                    data-turbo="true"

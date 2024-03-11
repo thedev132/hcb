@@ -2,7 +2,7 @@
 
 <% title "#{render_money(@partner_donation.payout_amount_cents)} donation to #{@partner_donation.event.name}" %>
 
-<% admin_tools("mt3") do %>
+<% admin_tool("mt3") do %>
   <%= link_to "View on Stripe", @partner_donation.stripe_dashboard_url, class: "btn bg-accent #{@partner_donation.paid? ? '' : 'disabled'}" %>
 <% end %>
 
@@ -61,7 +61,7 @@
       <% end %>
     </section>
     <section class="pt2 pb2 details">
-      <% admin_tools do %>
+      <% admin_tool do %>
         <strong>Partner</strong>
         <%= @partner_donation.partner.name || @partner_donation.partner.slug.capitalize %>
       <% end %>

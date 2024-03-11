@@ -256,7 +256,7 @@
       <%= form.submit "Update", class: ("disabled" unless policy(@event).update?) %>
     </div>
   </div>
-  <% admin_tools do %>
+  <% admin_tool do %>
     <%= link_to (event.hidden? ? "Un-hide project" : "Hide project"),
                 event_toggle_hidden_path(event),
                 method: :put,
@@ -264,7 +264,7 @@
                 class: "btn bg-success" if event.persisted? %>
   <% end %>
 
-  <% admin_tools do %>
+  <% admin_tool do %>
     <div class="field" id="admin_settings">
       <%= form.label :name %>
       <%= form.text_field :name %>
@@ -316,7 +316,7 @@
   <% end %>
 <% end %>
 
-<% admin_tools("mb3") do %>
+<% admin_tool("mb3") do %>
   <%= turbo_frame_tag "organization_tags"  do %>
     <h3 id="admin_organization_tags" class="mb2 mt1">Organization Tags</h3>
     <div class="mb1">
@@ -367,7 +367,7 @@
   <% end %>
 <% end %>
 
-<% admin_tools do %>
+<% admin_tool do %>
   <%= button_to "Delete organization", event_path(@event), method: :delete, class: "btn bg-error", disabled: !@event.demo_mode?, data: { confirm: "⚠️ Are you sure you'd like to delete this organization?" } %>
   <% unless @event.demo_mode? %>
     <p class="h5 muted mt0 mb1">

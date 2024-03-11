@@ -37,7 +37,7 @@
 8605 Santa Monica Blvd #86294
 West Hollywood, CA 90069</pre>
 
-  <% admin_tools("flex items-center mt2") do %>
+  <% admin_tool("flex items-center mt2") do %>
     <% if @event.emburse_department_path.nil? %>
       <%= link_to "Set Emburse Department ID", edit_event_path(@event), class: "btn bg-accent mr2" %>
     <% else %>
@@ -98,7 +98,7 @@ West Hollywood, CA 90069</pre>
   <% end %>
 <% end %>
 <% if @emburse_card_requests.accepted.any? %>
-  <% admin_tools("mt3") do %>
+  <% admin_tool("mt3") do %>
     <h2 class="mt0 mb1">Accepted card requests</h2>
     <% @emburse_card_requests.accepted.each do |request| %>
       <%= link_to request, class: "text-decoration-none mb2" do %>

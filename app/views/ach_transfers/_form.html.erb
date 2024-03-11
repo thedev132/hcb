@@ -108,7 +108,7 @@
   </div>
   <p class="muted mt0 mb2">Required for reimbursements / goods & services payments.</p>
 
-  <% admin_tools do %>
+  <% admin_tool do %>
     <div class="field">
       <%= form.label :scheduled_on, "Schedule for" %>
       <%= form.date_select :scheduled_on, prompt: true, order: [:month, :day, :year], start_year: Date.today.year %>

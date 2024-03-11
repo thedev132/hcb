@@ -33,7 +33,7 @@
       <%= render partial: "details", locals: { card_grant: @card_grant } %>
 
       <% if @card_grant.active? && @card_grant.stripe_card %>
-        <% admin_tools do %>
+        <% admin_tool do %>
           <%= render partial: "spending_instructions", locals: { card_grant: @card_grant } %>
         <% end %>
       <% end %>

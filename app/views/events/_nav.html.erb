@@ -2,7 +2,7 @@
   <%= render "events/title" %>
 
   <div>
-    <% admin_tools("m0 p0 badge mb2", "span") do %>
+    <% admin_tool("m0 p0 badge mb2", "span") do %>
       <span class="m0 badge bg-muted pointer" data-controller="clipboard" data-clipboard-text-value="<%= @event.name %>" data-action="click->clipboard#copy">
         copy event name
       </span>
@@ -21,7 +21,7 @@
         icon: "card",
         data: { tour_step: "cards" },
         selected: local_assigns[:selected] == :cards if @event.approved? %>
-      <% admin_tools do %>
+      <% admin_tool do %>
         <%= dock_item "Settings",
           edit_event_path(@event),
           icon: "project-settings",

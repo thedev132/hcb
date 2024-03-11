@@ -1,12 +1,12 @@
-<% admin_tools do %>
+<% admin_tool do %>
 💌 Bonjour!
 <%= mail_to @hcb_code.receipt_upload_email, "Email me to upload your receipts" %>
 <% end %>
-<% admin_tools do %>
+<% admin_tool do %>
 🌸 Aloha!
 <%= link_to "Here's the page for attaching receipts", attach_receipt_url(@hcb_code) %>
 <% end %>
-<% admin_tools do %>
+<% admin_tool do %>
 ☎️ moshi moshi?
 <%= link_to "Click to get an SMS (to #{current_user.phone_number}) of the notification", send_sms_receipt_hcb_code_path(@hcb_code), method: :post %>
 <% end %>

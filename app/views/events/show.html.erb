@@ -23,14 +23,14 @@
 <h1 class="flex items-center">
   Financials
   <% if admin_signed_in? %>
-    <% admin_tools("p0 badge", "span") do %>
+    <% admin_tool("p0 badge", "span") do %>
       <span class="m0 badge bg-muted">
       #<%= @event.id %>
       </span>
     <% end %>
 
     <% if @event.increase_account_id != IncreaseService::AccountIds::FS_MAIN %>
-      <% admin_tools("p0 badge", "span") do %>
+      <% admin_tool("p0 badge", "span") do %>
         <%= link_to "https://dashboard.increase.com/accounts/#{@event.increase_account_id}" do %>
           <span class="m0 badge bg-muted">
             <%= @event.increase_account_id %>
@@ -39,7 +39,7 @@
       <% end %>
     <% end %>
 
-    <% admin_tools("p0 badge", "span") do %>
+    <% admin_tool("p0 badge", "span") do %>
       <span class="m0 badge bg-muted">
         <%= @event&.partner&.slug&.capitalize || "Not partnered" %>
       </span>

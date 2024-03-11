@@ -1,5 +1,5 @@
 <% if @hcb_code.ach_transfer.column_id.present? %>
-  <% admin_tools("mt3") do %>
+  <% admin_tool("mt3") do %>
     <%= link_to "View transfer on Column", "https://dashboard.column.com/app/transfers/edit/ach/#{@hcb_code.ach_transfer.column_id}", class: "btn bg-accent", target: "_blank" %>
   <% end %>
 <% end %>
@@ -23,7 +23,7 @@
       <%= user_mention @hcb_code.ach_transfer.creator %>
     </p>
     <% unless @hcb_code.ach_transfer.processor.nil? %>
-      <% admin_tools("", "p") do %>
+      <% admin_tool("", "p") do %>
         <strong>Processed by</strong>
         <%= user_mention @hcb_code.ach_transfer.processor %>
       <% end %>

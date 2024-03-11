@@ -3,11 +3,11 @@
 
 <% if @emburse_card.created_at > 1.hour.ago %>
   <%# if the card was created in the last hour, let's give a link back to the card requests list %>
-  <% admin_tools("mt3 mb0") do %>
+  <% admin_tool("mt3 mb0") do %>
     <%= link_to "All card requests", emburse_card_requests_path, class: "breadcrumb" %>
   <% end %>
 <% end %>
-<% admin_tools("mt3 mb0") do %>
+<% admin_tool("mt3 mb0") do %>
   <%= link_to "All cards", emburse_cards_path, class: "breadcrumb" %>
 <% end %>
 
@@ -66,7 +66,7 @@ West Hollywood, CA 90069</pre>
           <%= @emburse_card.status_text %>
         </p>
 
-      <% admin_tools do %>
+      <% admin_tool do %>
         <strong>Emburse ID</strong>
         <%= link_to @emburse_card.emburse_id, @emburse_card.emburse_path %>
       <% end %>

@@ -6,7 +6,7 @@
   <span class="flex items-center flex-auto">
     Legal Documents
   </span>
-  <% admin_tools do %>
+  <% admin_tool do %>
     <%= link_to "Upload a document",
     new_document_path(event_id: @event.slug),
     class: "btn bg-success my0 block" %>

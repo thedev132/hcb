@@ -38,7 +38,7 @@
     <% end %>
 
     <% unless @hcb_code.disbursement.fulfilled_by.nil? %>
-      <% admin_tools("", "p") do %>
+      <% admin_tool("", "p") do %>
         <strong>Fulfilled by</strong>
         <%= user_mention @hcb_code.disbursement.fulfilled_by %>
       <% end %>
@@ -54,7 +54,7 @@
       <% end %>
     </p>
 
-    <% admin_tools("", "p") do %>
+    <% admin_tool("", "p") do %>
       <strong>Disbursement ID</strong>
       <%= link_to @hcb_code.disbursement.id, @hcb_code.disbursement %>
     <% end %>

@@ -1,7 +1,7 @@
 <% title "#{render_money(@hcb_code.amount_cents.abs)} charge for #{@hcb_code.memo}" %>
 <% instance = @hcb_code.hashid %>
 
-<% admin_tools("mt1") do %>
+<% admin_tool("mt1") do %>
   <%= link_to "View on Stripe", @hcb_code.stripe_auth_dashboard_url, class: "btn bg-accent" %>
 <% end %>
 

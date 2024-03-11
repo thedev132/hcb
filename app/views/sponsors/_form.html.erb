@@ -1,7 +1,7 @@
 <%= form_with(model: sponsor, local: true) do |form| %>
   <%= form_errors sponsor %>
 
-  <% admin_tools do %>
+  <% admin_tool do %>
     <div class="field">
       <%= form.label :event_id %>
       <%= form.collection_select(:event_id, Event.all, :id, :name, prompt: "Select event…") %>

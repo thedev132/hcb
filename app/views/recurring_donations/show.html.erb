@@ -36,7 +36,7 @@
 
 </section>
 
-<% admin_tools "mt1" do %>
+<% admin_tool "mt1" do %>
   <%= link_to "View subscription on Stripe", "https://dashboard.stripe.com/subscriptions/#{@recurring_donation.stripe_subscription_id}", class: "btn bg-accent", target: "_blank" %>
 <% end %>
 

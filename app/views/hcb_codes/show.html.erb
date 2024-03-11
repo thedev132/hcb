@@ -6,14 +6,14 @@
 <%= render partial: "hcb_codes/rich_metadata" %>
 
 <% if @hcb_code.canonical_transactions.any? {|ct| ct.amount_cents.positive? } && !@hcb_code.event&.hcb_internals? %>
-  <% admin_tools("mt3") do %>
+  <% admin_tool("mt3") do %>
     <%= link_to "View Usage Breakdown", breakdown_hcb_code_path(@hcb_code, format: :pdf), class: "btn bg-accent" %>
   <% end %>
 <% end %>
 
 <% if @hcb_code.accepts_receipts? %>
   <%= render "receipts/list_v2" %>
-  <% admin_tools_if @hcb_code.receipt_optional? do %>
+  <% admin_tool_if @hcb_code.receipt_optional? do %>
     <%= begin receipt_upload_form_config = {
           receiptable: @hcb_code,
           enable_linking: true,
@@ -31,7 +31,7 @@
 <%= render "comments/list_v2" %>
 <%= render "comments/form_v2" %>
 
-<% admin_tools do %>
+<% admin_tool do %>
   <%= render partial: "hcb_codes/transaction_history" %>
   <%= render partial: "hcb_codes/pending_transaction_history" %>
 <% end %>

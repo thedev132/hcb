@@ -22,7 +22,7 @@
   <%= settings_tab active: active == "security" do %>
     <%= link_to "Security", @user == current_user ? settings_security_path : security_user_path(@user), data: { turbo: true, turbo_action: "advance" } %>
   <% end %>
-  <% admin_tools("p0 overflow-hidden", override_pretend: true) do %>
+  <% admin_tool("p0 overflow-hidden", override_pretend: true) do %>
     <%= settings_tab active: active == "admin" do %>
       <%= link_to "Admin", @user == current_user ? settings_admin_path : admin_user_path(@user), data: { turbo: true, turbo_action: "advance" } %>
     <% end %>

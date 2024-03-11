@@ -7,7 +7,7 @@
   Rename <%= render_money @canonical_transaction.amount_cents %> <%= @canonical_transaction.fee_payment? ? "fee payment" : "transaction" %>
 </h1>
 
-<% admin_tools("mb1") do %>
+<% admin_tool("mb1") do %>
   <strong>Original transaction memo</strong>
   <pre class="bg-smoke mt0"><%= organizer_signed_in? ? @canonical_transaction.memo : "REDACTED– SIGN IN TO REVEAL" %></pre>
 <% end %>

@@ -2,7 +2,7 @@
 <% page_sm %>
 <%= render "events/nav" %>
 
-<% admin_tools("mt3 mb0") do %>
+<% admin_tool("mt3 mb0") do %>
   <%= link_to "All transfers", emburse_transfers_path, class: "breadcrumb" %>
 <% end %>
 
@@ -64,7 +64,7 @@
 
   </section>
 
-  <% admin_tools do %>
+  <% admin_tool do %>
     <%= link_to "Edit", edit_emburse_transfer_path(@emburse_transfer, event_id: @event.slug), class: "btn bg-info" %>
   <% end %>
 

@@ -10,7 +10,7 @@
   <%= render @emburse_card %>
 <% end %>
 
-<% admin_tools("mt3 mb0") do %>
+<% admin_tool("mt3 mb0") do %>
   <%= link_to "Emburse transaction", @emburse_transaction.emburse_path, target: "_blank" %>
   <% if @event %>
     <%= link_to "Emburse department", @event.emburse_department_path, target: "_blank" %>
@@ -88,7 +88,7 @@
 
 <%= render "comments/comments" %>
 
-<% admin_tools do %>
+<% admin_tool do %>
   <pre>
     <%= json @emburse_transaction %>
   </pre>

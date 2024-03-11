@@ -7,7 +7,7 @@
   Rename <%= render_money @canonical_pending_transaction.amount_cents %> <%= @canonical_pending_transaction.fee_payment? ? "fee payment" : "transaction" %>
 </h1>
 
-<% admin_tools("mb1") do %>
+<% admin_tool("mb1") do %>
   <strong>Original transaction memo</strong>
   <pre class="bg-smoke mt0"><%= organizer_signed_in? ? @canonical_pending_transaction.memo : "REDACTED– SIGN IN TO REVEAL" %></pre>
 <% end %>
@@ -31,7 +31,7 @@
     </span>
   </div>
 
-  <% admin_tools do %>
+  <% admin_tool do %>
     <div class="field field--checkbox">
       <%= form.check_box :fronted %>
       <%= form.label :fronted, "Fronted" %>

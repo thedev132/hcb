@@ -34,7 +34,7 @@
       <%= form.hidden_field :commentable_type, value: @commentable.class %>
       <%= form.hidden_field :commentable_id, value: @commentable.id %>
 
-      <% admin_tools("inline-flex", "span") do %>
+      <% admin_tool("inline-flex", "span") do %>
         <div class="field field--checkbox mb0">
           <%= form.check_box :admin_only, {}, true, false %>
           <%= form.label :admin_only, "Only show this note to admins" %>
