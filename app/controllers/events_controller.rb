@@ -590,6 +590,10 @@ class EventsController < ApplicationController
     authorize @event
   end
 
+  def expensify
+    authorize @event
+  end
+
   def reimbursements
     authorize @event
     @reports = @event.reimbursement_reports

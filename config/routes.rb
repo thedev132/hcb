@@ -631,6 +631,7 @@ Rails.application.routes.draw do
     get "transfers", to: "events#transfers", as: :transfers
     get "statements", to: "events#statements", as: :statements
     get "promotions", to: "events#promotions", as: :promotions
+    get "expensify", to: "events#expensify"
     get "reimbursements", to: "events#reimbursements", as: :reimbursements
     get "donations", to: "events#donation_overview", as: :donation_overview
     get "partner_donations", to: "events#partner_donation_overview", as: :partner_donation_overview

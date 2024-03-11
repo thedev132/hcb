@@ -113,6 +113,10 @@ class EventPolicy < ApplicationPolicy
     admin_or_user?
   end
 
+  def expensify?
+    admin_or_user?
+  end
+
   def donation_overview?
     is_public || admin_or_user?
   end
