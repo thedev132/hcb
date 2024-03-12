@@ -33,7 +33,7 @@ export default class extends Controller {
 
     this.#buttons()
     this.#label()
-    this.moveTarget.style.display = "none"
+    this.moveTarget.style.display = 'none'
 
     for (const field of this.fieldTargets) {
       field.readOnly = false
