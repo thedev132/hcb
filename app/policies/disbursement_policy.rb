@@ -15,12 +15,13 @@ class DisbursementPolicy < ApplicationPolicy
     return false if !record.destination_event.nil? && !record.destination_event.users.include?(user)
     return false if !record.source_event.nil? && !record.source_event.users.include?(user)
     return false unless OrganizerPosition.find_by(user_id: user.id, event_id: record.source_event.id).manager?
+
     return true
 
 
-      # FAIL if the destinaition is not null and the user is not in dest
-      # FAIL if the soruce  is not null AND the user is not in src
-      # FAIL if user is not manager
+    # FAIL if the destinaition is not null and the user is not in dest
+    # FAIL if the soruce  is not null AND the user is not in src
+    # FAIL if user is not manager
 
     # user.admin? || (user_associated_with_events? && user_who_can_transfer?)
   end
