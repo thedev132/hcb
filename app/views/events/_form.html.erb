@@ -169,20 +169,23 @@
       </div>
       <%= form.submit "Update", class: ("disabled" unless policy(@event).update?) %>
     </div>
-    <h3 class="mb1" id="public-reimbursements">Public Reimbursements</h3>
 
-    <div class="card">
-      <div class="field field--checkbox">
-        <%= form.check_box :public_reimbursement_page_enabled %>
-        <%= form.label :public_reimbursement_page_enabled, "Enable public reimbursement page" %>
+    <% if Flipper.enabled?(:reimbursements_2024_03_10, current_user) %>
+      <h3 class="mb1" id="public-reimbursements">Public Reimbursements</h3>
+
+      <div class="card">
+        <div class="field field--checkbox">
+          <%= form.check_box :public_reimbursement_page_enabled %>
+          <%= form.label :public_reimbursement_page_enabled, "Enable public reimbursement page" %>
+        </div>
+        <div class="field">
+          <%= form.label :public_reimbursement_page_message, "Message to show on public reimbursement page" %>
+          <%= form.text_area :public_reimbursement_page_message, placeholder: "#{@event.name} uses HCB to reimburse its volunteers...", class: "w-100 fit" %>
+          <%= inline_icon "markdown", size: 32, class: "muted right" %>
+        </div>
+        <%= form.submit "Update" %>
       </div>
-      <div class="field">
-        <%= form.label :public_reimbursement_page_message, "Message to show on public reimbursement page" %>
-        <%= form.text_area :public_reimbursement_page_message, placeholder: "#{@event.name} uses HCB to reimburse its volunteers...", class: "w-100 fit" %>
-        <%= inline_icon "markdown", size: 32, class: "muted right" %>
-      </div>
-      <%= form.submit "Update" %>
-    </div>
+    <% end %>
   <% end %>
 
   <h3 class="mb1" id="transparency_mode_heading">Transparency Mode</h3>
