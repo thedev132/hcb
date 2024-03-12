@@ -10,7 +10,7 @@
   </div>
 
   <% cards_num = @opdr.organizer_active_cards.count %>
-  <% if cards_num.any? %>
+  <% if cards_num > 0 %>
     <p class="warning">
       <%= inline_icon "important", size: 24, style: "vertical-align: middle; margin: -0.2rem 0 0 -0.2rem;" %>
       Removing this user will also permanently cancel their <%= cards_num %> <%= pluralize(cards_num, "card") %>. Recurring charges like subscriptions will be declined after cards are canceled.
