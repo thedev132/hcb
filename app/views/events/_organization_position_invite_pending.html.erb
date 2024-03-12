@@ -32,24 +32,24 @@
   </div>
 
   <div class="inline muted h6 m0">
-    Invited <%= relative_timestamp(invite.created_at) %> as a
-
-    <div class="inline" data-controller="menu" data-action="click->menu#toggle click@document->menu#close keydown@document->menu#keydown" data-menu-target="toggle">
-      <span class="h6 bold info <%= "pointer" if organizer_signed_in?(as: :manager) %>"><%= invite.role %></span>
-
-      <% if organizer_signed_in?(as: :manager) %>
-        <div data-menu-target="content" class="menu__content menu__content--2 menu__content--compact">
-          <% OrganizerPositionInvite.roles.keys.each do |role| %>
-            <%= link_to change_position_role_organizer_position_invite_path(id: invite.id, to: role), data: { turbo_method: "post", turbo_frame: "_top" } do %>
-              <%= role %><%= " ✔" if invite.role == role %>
+    Invited <%= relative_timestamp(invite.created_at) %>
+    <% if Flipper.enabled?(:user_permissions_2024_03_09, @event) %>
+      as a
+      <div class="inline" data-controller="menu" data-action="click->menu#toggle click@document->menu#close keydown@document->menu#keydown" data-menu-target="toggle">
+        <span class="h6 bold info <%= "pointer" if organizer_signed_in?(as: :manager) %>"><%= invite.role %></span>
+        <% if organizer_signed_in?(as: :manager) %>
+          <div data-menu-target="content" class="menu__content menu__content--2 menu__content--compact">
+            <% OrganizerPositionInvite.roles.keys.each do |role| %>
+              <%= link_to change_position_role_organizer_position_invite_path(id: invite.id, to: role), data: { turbo_method: "post", turbo_frame: "_top" } do %>
+                <%= role %><%= " ✔" if invite.role == role %>
+              <% end %>
             <% end %>
-          <% end %>
-          <div class="menu__divider"></div>
-          <a href="/roles">What do these mean?</a>
-        </div>
-      <% end %>
-    </div>
-
+            <div class="menu__divider"></div>
+            <a href="/roles">What do these mean?</a>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
     by <%= invite.sender.full_name %>
   </div>
 
