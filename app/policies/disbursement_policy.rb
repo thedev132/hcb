@@ -12,7 +12,7 @@ class DisbursementPolicy < ApplicationPolicy
   def new?
     user&.admin? || (
       (record.destination_event.nil? || record.destination_event.users.include?(user)) &&
-      (record.source_event?          || record.source_event.users.include?(user))
+      (record.source_event.nil?      || record.source_event.users.include?(user))
     )
     # return false unless OrganizerPosition.find_by(user_id: user.id, event_id: record.source_event.id).manager?
   end
