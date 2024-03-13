@@ -10,8 +10,8 @@ export default class extends Controller {
   connect() {
     for (const field of this.fieldTargets) {
       field.readOnly = !this.enabledValue
-
       field.addEventListener('dblclick', () => this.edit())
+      this.#addTooltip(field, 'Double-click to edit...')
     }
 
     this.buttonTarget.addEventListener('click', e => {
@@ -37,6 +37,7 @@ export default class extends Controller {
 
     for (const field of this.fieldTargets) {
       field.readOnly = false
+      this.#removeTooltip(field)
     }
   }
 
@@ -52,5 +53,21 @@ export default class extends Controller {
       this.enabledValue && !this.lockedValue
         ? 'Save edits'
         : 'Edit this expense'
+  }
+
+  #addTooltip(field, label) {
+    if (!label) return
+
+    const fieldWrapper = document.createElement('div')
+    field.parentNode.insertBefore(fieldWrapper, field)
+    fieldWrapper.appendChild(field)
+    fieldWrapper.classList.add('tooltipped', 'tooltipped--n')
+    fieldWrapper.setAttribute('aria-label', label)
+  }
+
+  #removeTooltip(field) {
+    const fieldWrapper = field.parentNode
+    fieldWrapper.parentNode.insertBefore(field, fieldWrapper)
+    fieldWrapper.remove()
   }
 }
