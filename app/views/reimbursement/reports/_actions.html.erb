@@ -48,7 +48,7 @@
           Pending HCB Team Review
         </div>
       <% elsif report.locked? && report.reimbursement_requested? %>
-        <% admin_tool do %>
+        <% admin_tool("overflow-visible") do %>
           <%= link_to reimbursement_report_admin_approve_path(report_id: report.id), class: "btn bg-info", method: :post do %>
             <%= inline_icon "thumbsup" %>
             Approve Reimbursement
