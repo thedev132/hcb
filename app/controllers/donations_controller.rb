@@ -11,6 +11,7 @@ class DonationsController < ApplicationController
   before_action :set_donation, only: [:show]
   before_action :set_event, only: [:start_donation, :make_donation, :qr_code]
   before_action :check_dark_param
+  before_action :hide_seasonal_decorations
   skip_before_action :redirect_to_onboarding
 
   # Rationale: the session doesn't work inside iframes (because of third-party cookies)
@@ -199,6 +200,10 @@ class DonationsController < ApplicationController
       @dark = true
       cookies[:donation_dark] = true
     end
+  end
+
+  def hide_seasonal_decorations
+    @hide_seasonal_decorations = true
   end
 
   def donation_params

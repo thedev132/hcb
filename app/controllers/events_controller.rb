@@ -84,7 +84,7 @@ class EventsController < ApplicationController
     @pending_transactions = _show_pending_transactions
 
     if !signed_in? && !@event.holiday_features
-      @hide_holiday_features = true
+      @hide_seasonal_decorations = true
     end
 
     @all_transactions = TransactionGroupingEngine::Transaction::All.new(event_id: @event.id, search: params[:q], tag_id: @tag&.id).run

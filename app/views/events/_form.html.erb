@@ -212,7 +212,7 @@
       <%= form.check_box :is_indexable %>
       <%= form.label :is_indexable, "List #{@event.name} in HCB's public directory" %>
     </div>
-    <% unless @hide_holiday_features || !winter? %>
+    <% unless !winter?(override_preference: true) %>
       <div class="field field--checkbox" data-behavior="additional_transparency_settings <% if !event.is_public? %>autohide<% end %>">
         <%= form.check_box :holiday_features %>
         <%= form.label :holiday_features, "Enable Holiday Features ⛄ for Transparency Mode" %>

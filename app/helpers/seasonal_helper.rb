@@ -12,7 +12,7 @@ module SeasonalHelper
   SEASONS.each do |key, value|
     define_method "#{key}?" do |override_preference = false|
       user = (current_user if self.respond_to? :current_user, true)
-      if !override_preference && user&.seasonal_themes_disabled?
+      if !override_preference && (user&.seasonal_themes_disabled? || @hide_seasonal_decorations) # rubocop:disable Rails/HelperInstanceVariable
         return false
       end
 
