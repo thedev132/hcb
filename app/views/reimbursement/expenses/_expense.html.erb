@@ -12,6 +12,7 @@
     "
     data-controller="expense-form"
     data-expense-form-enabled-value="<%= new %>"
+    data-expense-form-memo-value="<%= expense.memo.presence || "Untitled Expense" %>"
     data-expense-form-locked-value="<%= expense.report.locked? %>">
     <div class="card__banner secondary mb2 border-bottom flex items-center" style="gap: 8px">
         <code
@@ -21,7 +22,9 @@
           aria-label="Click to reference in comment">
           #<%= expense.expense_number %>
         </code>
-        <div style="flex-grow: 1"></div>
+        <div style="flex-grow: 1" data-expense-form-target="memo" class="bold <%= "muted" unless expense.memo.presence %>">
+          <%= expense.memo.presence || "Untitled Expense" %>
+        </div>
         <%= pop_icon_to "enter",
                   "#",
                   size: 24,
