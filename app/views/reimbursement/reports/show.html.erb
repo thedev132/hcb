@@ -4,30 +4,30 @@
 <%= render "users/nav", selected: :reimbursements if @use_user_nav %>
 
 <div class="mt4">
-    <h3 class="mt2 mb1 muted flex" style="font-weight: 400; gap: 4px;">
-      <span style="flex-grow: 1;">
-        <%= user_mention @user, class: "tooltipped--s align-top" %>
-        <%= "will be reimbursed " if @report.reimbursement_approved? %>
-        <%= "was reimbursed " if @report.reimbursed? %>
-        <%= "requested " if @report.rejected? %>
-        <%= "is requesting " unless @report.closed? %>
-        <%= render "total", report: @report %>
-        <% if @report.maximum_amount_cents %>
-          (<%= render_money @report.maximum_amount_cents %> cap)
-        <% end %>
-        <%= "from #{@event.name}" if @use_user_nav %> for
-      </span>
-      <span class="ml0 badge bg-<%= @report.status_color %>"><%= @report.status_text %></span>
-    </h3>
-    <h2 class="heading mt0 mb1 flex justify-start" style="gap: 4px;">
-      <span><%= @report.name %></span>
-      <% if !@report.closed? %>
-        <%= link_to "#", class: "ml0 info text-decoration-none muted tooltipped tooltipped--e", data: { behavior: "modal_trigger", modal: "edit" }, style: "padding: 0px; line-height: 0px; align-self: center;", "aria-label": "Edit this report's properties." do %>
-          <%= inline_icon "settings", size: 30, style: "margin-left: 0px;" %>
-        <% end %>
+  <h3 class="mt2 mb1 muted flex" style="font-weight: 400; gap: 4px;">
+    <span style="flex-grow: 1;">
+      <%= user_mention @user, class: "tooltipped--s align-top" %>
+      <%= "will be reimbursed " if @report.reimbursement_approved? %>
+      <%= "was reimbursed " if @report.reimbursed? %>
+      <%= "requested " if @report.rejected? %>
+      <%= "is requesting " unless @report.closed? %>
+      <%= render "total", report: @report %>
+      <% if @report.maximum_amount_cents %>
+        (<%= render_money @report.maximum_amount_cents %> cap)
       <% end %>
+      <%= "from #{@event.name}" if @use_user_nav %> for
+    </span>
+    <span class="ml0 badge bg-<%= @report.status_color %>"><%= @report.status_text %></span>
+  </h3>
+  <h2 class="heading mt0 mb1 flex justify-start" style="gap: 4px;">
+    <span><%= @report.name %></span>
+    <% if !@report.closed? %>
+      <%= link_to "#", class: "ml0 info text-decoration-none muted tooltipped tooltipped--e", data: { behavior: "modal_trigger", modal: "edit" }, style: "padding: 0px; line-height: 0px; align-self: center;", "aria-label": "Edit this report's properties." do %>
+        <%= inline_icon "settings", size: 30, style: "margin-left: 0px;" %>
+      <% end %>
+    <% end %>
 
-    </h2>
+  </h2>
 </div>
 
 <section data-behavior="modal" role="dialog" id="edit" class="modal modal--scroll bg-snow">
@@ -52,10 +52,10 @@
   <article class="card mt2 pt0">
     <%== MarkdownService.instance.renderer.render @report.invite_message %>
     <section class="card__banner card__banner--bottom card__darker pt2 pb2">
-        <p class="muted mt0 mb0">
-          Message from <%= @report.event.name %>
-        </p>
-      </section>
+      <p class="muted mt0 mb0">
+        Message from <%= @report.event.name %>
+      </p>
+    </section>
   </article>
 <% end %>
 
@@ -74,7 +74,7 @@
       </p>
       <% if @report.maximum_amount_cents %>
         <p>
-         <%= @event.name %> has restricted this report to <span class="bold"><%= render_money @report.maximum_amount_cents %></span> in total reimbursement.
+          <%= @event.name %> has restricted this report to <span class="bold"><%= render_money @report.maximum_amount_cents %></span> in total reimbursement.
         </p>
       <% end %>
 
@@ -93,8 +93,12 @@
 <% end %>
 
 <div id="expenses">
-  <% @report.expenses.order(created_at: :asc).each do |expense| %>
-    <%= render "reimbursement/expenses/expense", expense:, new: @editing == expense.id %>
+  <% if @report.expenses.any? %>
+    <% @report.expenses.order(created_at: :asc).each do |expense| %>
+      <%= render "reimbursement/expenses/expense", expense:, new: @editing == expense.id %>
+    <% end %>
+  <% else %>
+    <%= blankslate "Get started by adding an expense." %>
   <% end %>
 </div>
 
