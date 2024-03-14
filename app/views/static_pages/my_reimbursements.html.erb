@@ -96,7 +96,7 @@
                <%= render_money [report.maximum_amount_cents, report.expenses.sum(:amount_cents)].compact_blank.min %>
             </td>
             <td>
-               <%= report.created_at.strftime("%m-%d-%Y") %>
+               <%= format_date report.created_at %>
             </td>
             <td>
                <%= link_to "View", report %>
