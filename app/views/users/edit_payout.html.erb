@@ -11,6 +11,11 @@
       <h2 class="h2">Reimbursement payouts</h2>
       <div class="card border b--info pb0 mt2 mb3">
         When a <%= link_to "reimbursement report of yours", my_reimbursements_path %> is approved, HCB will use the information below to reimburse you. Without this information, you won't be able to submit reimbursement reports. You can update these settings at any time.
+        <% if @user.reimbursement_reports.pending.any? %>
+          <p>
+            Changes made here will apply to all non-reimbursed reports of yours, including your <%= @user.reimbursement_reports.pending.count %> pending reports.
+          </p>
+        <% end %>
         <div class="border-top card__banner card__darker secondary mt2">
           <strong>Questions?</strong>
           <%= help_message %>
