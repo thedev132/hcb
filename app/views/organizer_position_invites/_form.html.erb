@@ -11,7 +11,7 @@
       <%= form.submit "Send" %>
     </div>
     <template x-if="/^(team|webmaster|marketing|admin|info|about|support|sales|hq|hello)@/.test(email)">
-      <div class="warning mt1">⚠️ We discourage team emails on HCB. We recommend individual emails such as <em>ben@hackclub.com</em>!</div>
+      <div class="warning mt1">⚠️ For security, we discourage team emails on HCB. We recommend individual emails such as <em>ben@hackclub.com</em>!</div>
     </template>
   </div>
   <% admin_tool("mt1") do %>
