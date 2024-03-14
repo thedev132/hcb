@@ -1,0 +1,26 @@
+<div data-controller="menu" data-menu-append-to-value="turbo-frame#ledger" data-menu-placement-value="bottom-end">
+  <%= pop_icon_to "more",
+      "#",
+      class: "align-middle", "aria-label": "More Options",
+      data: { turbo: true, "menu-target": "toggle", action: "menu#toggle click@document->menu#close keydown@document->menu#keydown" } %>
+  <div class="menu__content menu__content--2 h5 menu__content--compact" data-menu-target="content">
+    <%= link_to pin_hcb_code_path(hcb_code), method: :post, class: "flex items-center" do %>
+      <%= inline_icon "pin-fill", size: 24 %>
+      <%= hcb_code.pin.present? ? "Unpin from" : "Pin to" %> <%= hcb_code.event.name %>
+    <% end %>
+    <% if (hcb_code.stripe_card? || hcb_code.stripe_force_capture?) && hcb_code.stripe_card.present? && !hcb_code.personal_transaction.present? %>
+      <div class="menu__divider"></div>
+      <%= link_to invoice_as_personal_transaction_hcb_code_path(id: hcb_code.hashid), method: :post, class: "tooltipped tooltipped--s flex items-center", 'aria-label': "Invoice #{hcb_code.stripe_cardholder&.user&.name || "yourself"} for this transaction.", data: { confirm: "Are you sure you'd like to invoice #{hcb_code.stripe_cardholder&.user&.name || "yourself"} for this transaction? They'll be emailed an invoice." } do %>
+        <%= inline_icon "sad", size: 24 %>
+        Flag as personal transaction
+      <% end %>
+    <% end %>
+    <% if can_dispute?(hcb_code:) %>
+      <div class="menu__divider"></div>
+      <%= link_to dispute_hcb_code_path(hcb_code), target: (can_dispute?(hcb_code:) ? "_blank" : "") do %>
+        <%= inline_icon "flag-fill", size: 24 %>
+        Dispute this transaction
+      <% end %>
+    <% end %>
+  </div>
+</div>
