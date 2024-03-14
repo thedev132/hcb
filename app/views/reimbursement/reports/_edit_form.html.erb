@@ -12,7 +12,7 @@
     <%= form.label :event_id, "Event", class: "mt2 bold" %>
     <%= form.select(:event_id,
         current_user.admin? ?
-          Event.all.reorder(Event::CUSTOM_SORT).map { |event| [event.name, event.id] } :
+          Event.not_demo_mode.reorder(Event::CUSTOM_SORT).map { |event| [event.name, event.id] } :
           current_user.events.not_hidden.filter_demo_mode(false).map { |event| [event.name, event.id] },
         { prompt: "Select an event…", required: true }) %>
     <% unless admin_signed_in? %>
