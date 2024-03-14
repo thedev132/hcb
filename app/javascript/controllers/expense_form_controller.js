@@ -74,7 +74,7 @@ export default class extends Controller {
   }
 
   #addTooltip(field, label) {
-    if (!label || this.lockedValue) return
+    if (!label || this.lockedValue || this.enabledValue) return
 
     const fieldWrapper = document.createElement('div')
     field.parentNode.insertBefore(fieldWrapper, field)
