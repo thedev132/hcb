@@ -1,7 +1,7 @@
 import { Controller } from '@hotwired/stimulus'
 
 export default class extends Controller {
-  static targets = ['field', 'button', 'form', 'move', 'memo', 'memoInput']
+  static targets = ['field', 'button', 'form', 'move', 'memo']
   static values = {
     enabled: { type: Boolean, default: false },
     locked: { type: Boolean, default: false },
@@ -44,11 +44,6 @@ export default class extends Controller {
     }
   }
 
-  updateMemo() {
-    this.memoValue = this.memoInputTarget.value
-    this.#memo()
-  }
-
   #buttons() {
     this.buttonTarget.querySelector('[aria-label=checkmark]').style.display =
       this.enabledValue && !this.lockedValue ? 'block' : 'none'
@@ -66,9 +61,10 @@ export default class extends Controller {
   #memo() {
     this.memoTarget.innerText =
       this.enabledValue && !this.lockedValue
-        ? `Editing: ${this.memoValue}`
+        ? `Unsaved Changes`
         : this.memoValue
     if (this.enabledValue && !this.lockedValue) {
+      this.memoTarget.classList.add('warning')
       this.memoTarget.classList.remove('muted')
     }
   }

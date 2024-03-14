@@ -6,7 +6,7 @@
   <div class="flex flex-row items-center">
     <div style="flex-grow: 1;">
       <%= form.label :memo, "Memo", class: "bold" %>
-      <%= form.text_field :memo, placeholder: "Lunch during layover at SFO", required: true, data: { "expense-form-target": "field memoInput", "action": "dblclick->expense-form#edit input->expense-form#updateMemo" }, onkeydown: "event.key == 'Enter' && event.target.form.requestSubmit()" %>
+      <%= form.text_field :memo, placeholder: "Lunch during layover at SFO", required: true, data: { "expense-form-target": "field", "action": "dblclick->expense-form#edit" }, onkeydown: "event.key == 'Enter' && event.target.form.requestSubmit()" %>
     </div>
 
     <span class="bold muted flex self-end items-center justify-center ml1" style="width: 1rem; height: 48px;">$</span>
