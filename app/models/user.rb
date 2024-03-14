@@ -105,6 +105,7 @@ class User < ApplicationRecord
   # but this is a convenient way to set up the association.
 
   belongs_to :payout_method, polymorphic: true, optional: true
+  validate :valid_payout_method
   accepts_nested_attributes_for :payout_method
 
   has_encrypted :birthday, type: :date
@@ -300,6 +301,12 @@ class User < ApplicationRecord
       # turn all this stuff off until they reverify
       self.phone_number_verified = false
       self.use_sms_auth = false
+    end
+  end
+
+  def valid_payout_method
+    unless payout_method_type.nil? || payout_method.is_a?(User::PayoutMethod::Check) || payout_method.is_a?(User::PayoutMethod::AchTransfer)
+      errors.add(:payout_method, "is an invalid method, must be check or ACH transfer")
     end
   end
 
