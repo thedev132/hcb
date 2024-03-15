@@ -5,7 +5,7 @@
     <%= form.label :email, class: "mb1" %>
 
     <div class="flex items-center">
-      <%= form.email_field :email, id: "inviteFormEmailInput", class: "mr1", "x-model": "email", onInput: "(e) => console.log(e)" %>
+      <%= form.email_field :email, class: "mr1", "x-model": "email" %>
     </div>
     <template x-if="/^(team|webmaster|marketing|admin|info|about|support|sales|hq|hello)@/.test(email)">
       <div class="warning mt1">⚠️ For security, we discourage team emails on HCB. We recommend individual emails such as <em>ben@hackclub.com</em>!</div>
@@ -16,12 +16,23 @@
     <div class="field">
       <%= form.label :role, class: "mb1" %>
       <%= form.select :role, OrganizerPosition.roles.keys.map { |role| [role.humanize, role] }, { include_blank: false  }, { class: "form-select", id: "inviteFormRolePicker" } %>
-    </div>
 
-    <p class="muted mb1"><span id="inviteFormEmailDisplay">This person</span> will have <span id="inviteFormAccessDisplay" class="bold info">limited</span> access to your project finances.</p>
+      <p class="muted mb1">
+        Someone invited as a <span class="bold info">manager</span> can do everything in the organization.
+      </p>
+
+      <div class="muted mb1">
+        <p class="m0">Someone invited as a <span class="bold info">member</span> can</p>
+        <ul class="m0">
+          <li>Create cards</li>
+          <li>Spend money</li>
+          <li>Not change the organization's settings</li>
+        </ul>
+      </div>
+    </div>
   <% end %>
 
-  <% admin_tool("mr1 flex g1 w-fit") do %>
+  <% admin_tool("mb2 flex g1 w-fit") do %>
     <div class="field field--checkbox mb0 line-height-0" data-controller="team-invite-form" data-action="click->team-invite-form#toggle">
       <%= form.check_box :is_signee, "data-team-invite-form-target": "realCheckbox", style: "display: none;" %>
 
@@ -35,21 +46,4 @@
   <% end %>
 
   <%= form.submit "Submit" %>
-
-  <script>
-      inviteFormEmailInput.oninput = (e) => inviteFormEmailDisplay.textContent =
-          e.target.checkValidity() && e.target.value.trim() !== "" ? e.target.value : "This person"
-
-      inviteFormRolePicker.onchange = () => {
-          if (inviteFormRolePicker.options[inviteFormRolePicker.selectedIndex].text === "Member") {
-              inviteFormAccessDisplay.textContent = "limited"
-              inviteFormAccessDisplay.classList.remove("warning")
-              inviteFormAccessDisplay.classList.add("info")
-          } else {
-              inviteFormAccessDisplay.textContent = "full"
-              inviteFormAccessDisplay.classList.remove("info")
-              inviteFormAccessDisplay.classList.add("warning")
-          }
-      }
-  </script>
 <% end %>
