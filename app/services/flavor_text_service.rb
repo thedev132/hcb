@@ -491,7 +491,8 @@ class FlavorTextService
       "<marquee scrollamount='5'>💸💸💸</marquee>".html_safe,
       "Wow, that’s a lot of money. Need some help carrying it?",
       "I would rather check my Facebook than face my checkbook.",
-      "The only part not outstanding is our balance"
+      "The only part not outstanding is our balance",
+      "Wanna&nbsp;<a href='#{Rails.configuration.constants.hack_on_hcb_form_url}' target='_blank' style='color: inherit'>hack on hcb</a>?".html_safe,
     ]
   end
 

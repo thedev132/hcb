@@ -70,5 +70,18 @@ module Bank
     config.active_storage.queues.purge = "low"
     config.active_storage.queues.mirror = "low"
 
+
+    # Custom configuration for application-wide constants
+    #
+    # Usually, it's best to locate constants within the class/module it's used.
+    # However, some constants don't really have a "home" within the codebase.
+    # Thus, they're configured in the `config/constants.yml` file. Updating this
+    # file will require a server restart to take effect.
+    #
+    # Usage: `Rails.configuration.constants[:key]`
+    #
+    # https://guides.rubyonrails.org/configuring.html#custom-configuration
+    config.constants = config_for(:constants)
+
   end
 end

@@ -1,0 +1,9 @@
+# Rails custom configuration for application-wide constants
+#
+# WARNING: Application **secrets** do NOT belong here.
+#          Please use Rails credentials for that purpose.
+#
+# Learn more: https://guides.rubyonrails.org/configuring.html#custom-configuration
+
+shared:
+  hack_on_hcb_form_url: https://forms.hackclub.com/t/mWH2ycXiDdus
