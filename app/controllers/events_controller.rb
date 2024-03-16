@@ -301,8 +301,8 @@ class EventsController < ApplicationController
 
       if organizer_signed_in?
         # The user's cards
-        (0..rand(1..3)).each do |_|
-          state = Faker::Boolean.boolean
+        2.times.each_with_index do |_, i|
+          state = i > 0
           virtual = rand > 0.5
           card = OpenStruct.new(
             id: Faker::Number.number(digits: 1),

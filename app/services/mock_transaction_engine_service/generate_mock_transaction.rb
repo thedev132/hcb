@@ -6,7 +6,7 @@ module MockTransactionEngineService
       { desc: "🌶️ Jalapeños for the steamy social salsa sesh" },
       { desc: "👩‍💻 Payment for club coding lessons (solid gold; rare; imported)" },
       { desc: "🍺 Reimbursement for Friday night's team-building pub crawl" },
-      { desc: "😨 Monthly payment to the local protection racket", monthly: true },
+      { desc: "😨 Monthly payment to the local protection racket" },
       { desc: "🚀 Rocket fuel for Lucas' commute" },
       { desc: "🎵 Payment for a DJ for the club disco (groovy)" },
       { desc: "🤫 Hush money" },
@@ -23,8 +23,8 @@ module MockTransactionEngineService
       { desc: "🐛 Office wormery" },
       { desc: "📹 Webcams for the team x4" },
       { desc: "🪨 Hackathon rock tumbler" },
-      { desc: "🌸 Payment for a floral arrangement", monthly: true },
-      { desc: "🧼 Purchase of eco-friendly soap for the club bathrooms", monthly: true },
+      { desc: "🌸 Payment for a floral arrangement" },
+      { desc: "🧼 Purchase of eco-friendly soap for the club bathrooms" },
     ].freeze
     POSITIVE_DESCRIPTIONS = [
       { desc: "💰 Donation from t̶͖̯́̒̇͝h̸͇̥̘̖̞̋͛̕ę̷̧̯̓̄͜ ̵̧̡̀̎͋̚v̸̰̰̝͈̟̂̇̏̓ͅo̶͓͈͑̑̄̍i̸͉̺͕̥̓̍d̵̟̮̼̠̺̿͌́" },
@@ -53,8 +53,8 @@ module MockTransactionEngineService
                         Array.new(rand(100) < 90 ? 1 : 0)
                       end, # 90% chance of 1 receipt, 10% chance of no receipts
             comments: Array.new(rand(9) > 1 || trans[:desc].include?("💰 Fiscal sponsorship fee") ? 0 : rand(1..2)), # 1/3 chance of no comments, 2/3 chance of 1 or 2 comments
-            donation?: !trans[:amount].negative?,
-            donation: !trans[:amount].negative? ? nil : OpenStruct.new(recurring?: trans[:monthly]),
+            donation?: trans[:amount].positive?,
+            donation: trans[:amount].positive? ? OpenStruct.new(recurring?: trans[:monthly]) : nil,
             tags: []
           )
         )
