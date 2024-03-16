@@ -341,17 +341,53 @@ $(document).on('turbo:load', function () {
     })
   }
   
-  if (BK.s('reimbursement_report_email_input')) {
-    const emailInput = $('#reimbursement_report_email')
+  if (BK.s('reimbursement_report_create_form_type_selection').length) {
     const dropdownInput = $('#reimbursement_report_user_email')
-    if(emailInput.length && dropdownInput.length){
-      emailInput.hide()
-    }
+    const emailInput = $('#reimbursement_report_email')
+    const maxInput = $('#reimbursement_report_maximum_amount_wrapper')
+    const inviteInput = $('#reimbursement_report_invite_message_wrapper')
+
+    const forMyselfInput = $('#reimbursement_report_for_myself')
+    const forOrganizerInput = $('#reimbursement_report_for_organizer')
+    const forExternalInput = $('#reimbursement_report_for_external')
+
+    dropdownInput.hide()
+    emailInput.hide()
+    maxInput.hide()
+    inviteInput.hide()
+
+    $(forMyselfInput).on('change', e => {
+      if (e.target.checked) {
+        dropdownInput.slideUp()
+        emailInput.slideUp()
+        maxInput.slideUp()
+        inviteInput.slideUp()
+        emailInput.val(emailInput[0].attributes["value"].value)
+      }
+    })
+    
+    $(forOrganizerInput).on('change', e => {
+      if (e.target.checked) {
+        emailInput.val("")
+        dropdownInput.slideDown()
+        emailInput.slideUp()
+        maxInput.slideDown()
+        inviteInput.slideUp()
+      }
+    })
+    
+    $(forExternalInput).on('change', e => {
+      if (e.target.checked) {
+        emailInput.val("")
+        dropdownInput.slideUp()
+        emailInput.slideDown()
+        maxInput.slideDown()
+        inviteInput.slideDown()
+      }
+    })
+    
     $(dropdownInput).on('change', e => {
-      document.getElementById("reimbursement_report_email").value = e.target.value
-      if (e.target.value == "") emailInput.slideDown()
-      else emailInput.hide()
-      document.getElementById("reimbursement_report_email").required = e.target.value == "" ? true : false
+      emailInput.val(e.target.value)
     })
   }
 
