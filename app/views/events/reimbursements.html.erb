@@ -84,7 +84,7 @@
                <%= user_mention report.user %>
             </td>
             <td>
-               <%= render_money [report.maximum_amount_cents, report.expenses.sum(:amount_cents)].compact_blank.min %>
+               <%= render_money report.amount_cents %>
             </td>
             <td>
                <%= format_date report.created_at %>
