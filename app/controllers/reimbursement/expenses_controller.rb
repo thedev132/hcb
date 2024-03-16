@@ -106,6 +106,10 @@ module Reimbursement
       turbo_stream.replace(:total, partial: "reimbursement/reports/total", locals: { report: @expense.report })
     end
 
+    def blankslate_turbo_stream
+      turbo_stream.replace(:blankslate, partial: "reimbursement/reports/blankslate", locals: { report: @expense.report })
+    end
+
     def actions_turbo_stream
       turbo_stream.replace(:actions, partial: "reimbursement/reports/actions", locals: { report: @expense.report, user: @expense.report.user })
     end
@@ -123,7 +127,7 @@ module Reimbursement
     end
 
     def on_create_streams
-      [actions_turbo_stream, new_expense_turbo_stream]
+      [actions_turbo_stream, new_expense_turbo_stream, blankslate_turbo_stream]
     end
 
     def on_update_streams
@@ -131,7 +135,7 @@ module Reimbursement
     end
 
     def on_delete_streams
-      [total_turbo_stream, actions_turbo_stream, turbo_stream.remove(@expense)]
+      [total_turbo_stream, actions_turbo_stream, turbo_stream.remove(@expense), blankslate_turbo_stream]
     end
 
   end

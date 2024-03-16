@@ -97,9 +97,8 @@
     <% @report.expenses.order(created_at: :asc).each do |expense| %>
       <%= render "reimbursement/expenses/expense", expense:, new: @editing == expense.id %>
     <% end %>
-  <% else %>
-    <%= blankslate "Get started by adding an expense." %>
   <% end %>
+  <%= render partial: "blankslate", locals: { report: @report } %>
 </div>
 
 <%= render partial: "actions", locals: { report: @report, user: @user } %>
