@@ -28,7 +28,11 @@ class ExportsController < ApplicationController
           flash[:error] = "Can not create an account statement for #{@start.strftime("%B %Y")}"
           redirect_back fallback_location: event_statements_path(@event) and return
         end
-        @end = @start.end_of_month
+        @end = (params[:end_date] || @start).to_datetime.end_of_month
+        if @end < @start
+          flash[:error] = "End date cannot be before the start date."
+          redirect_back fallback_location: event_statements_path(@event) and return
+        end
         all = TransactionGroupingEngine::Transaction::All.new(event_id: @event.id).run
         TransactionGroupingEngine::Transaction::AssociationPreloader.new(transactions: all, event: @event).run!
 
