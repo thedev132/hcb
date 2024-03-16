@@ -3,7 +3,7 @@
       "#",
       class: "align-middle", "aria-label": "More Options",
       data: { turbo: true, "menu-target": "toggle", action: "menu#toggle click@document->menu#close keydown@document->menu#keydown" } %>
-  <div class="menu__content menu__content--2 h5 menu__content--compact" data-menu-target="content">
+  <div class="menu__content menu__content--2 h5 menu__content--compact" data-menu-target="content" style="z-index: 999;">
     <%= link_to pin_hcb_code_path(hcb_code), method: :post, class: "flex items-center" do %>
       <%= inline_icon "pin-fill", size: 24 %>
       <%= hcb_code.pin.present? ? "Unpin from" : "Pin to" %> <%= hcb_code.event.name %>
