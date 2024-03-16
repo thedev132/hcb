@@ -9,7 +9,7 @@
       <%= hcb_code.pin.present? ? "Unpin from" : "Pin to" %> <%= hcb_code.event.name %>
     <% end %>
     <% if (hcb_code.stripe_card? || hcb_code.stripe_force_capture?) && hcb_code.stripe_card.present? && !hcb_code.personal_transaction.present? %>
-      <%= link_to invoice_as_personal_transaction_hcb_code_path(id: hcb_code.hashid), method: :post, class: "tooltipped tooltipped--s flex items-center", 'aria-label': "Invoice #{hcb_code.stripe_cardholder&.user&.name || "yourself"} for this transaction.", data: { confirm: "Are you sure you'd like to invoice #{hcb_code.stripe_cardholder&.user&.name || "yourself"} for this transaction? They'll be emailed an invoice." } do %>
+      <%= link_to invoice_as_personal_transaction_hcb_code_path(id: hcb_code.hashid), method: :post, class: "flex items-center", data: { confirm: "Are you sure you'd like to invoice #{hcb_code.stripe_cardholder&.user&.name || "yourself"} for this transaction? They'll be emailed an invoice." } do %>
         <%= inline_icon "sad", size: 24 %>
         Flag as personal transaction
       <% end %>
