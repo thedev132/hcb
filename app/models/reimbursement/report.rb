@@ -59,7 +59,7 @@ module Reimbursement
     include Commentable
 
     after_create_commit do
-      ReimbursementMailer.with(report: self).invitation.deliver_later
+      ReimbursementMailer.with(report: self).invitation.deliver_later if inviter != user
     end
 
     aasm timestamps: true do

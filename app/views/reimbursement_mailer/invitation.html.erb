@@ -2,10 +2,17 @@
   Hi <%= @report.user.name %>,
 </p>
 
-<p>
-  The <%= @report.event.name %> team has invited you to submit a reimbursement
-  report for <em><%= @report.name %></em>.
-</p>
+<% if @report.event.users.include?(@report.user) %>
+  <p>
+    <%= @report.inviter.name %> has invited you to submit a reimbursement report for
+    <em><%= @report.name %></em> on the <%= @report.event.name %> organization.
+  </p>
+<% else %>
+  <p>
+    The <%= @report.event.name %> team has invited you to submit a reimbursement
+    report for <em><%= @report.name %></em>.
+  </p>
+<% end %>
 
 <% if @report.maximum_amount.present? %>
   <p>
@@ -25,7 +32,9 @@
 
 <p>
   <%= link_to "Click here", reimbursement_report_url(@report, email: @report.user.email) %> to learn more and begin submitting expenses.
-  If you have any questions, please contact <%= @report.event.name %>.
+  <% unless @report.event.users.include?(@report.user) %>
+    If you have any questions, please contact <%= @report.event.name %>.
+  <% end %>
 </p>
 
 <p>
