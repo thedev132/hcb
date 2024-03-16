@@ -1,6 +1,7 @@
 <%# locals: (expense:, new:) -%>
 
 <% new ||= false %>
+<% latest_state_change = expense.versions.reverse.find { |version| version.changeset["aasm_state"]&.first.present? } %>
 
 <%= turbo_frame_tag expense do %>
   <article
@@ -19,13 +20,21 @@
         <code
           data-behavior="mention"
           data-mention-title="<%= expense.memo %>"
-          class="bg-white tooltipped tooltipped--e pointer mention"
+          class="bg-white tooltipped tooltipped--e pointer click_to_mention"
           aria-label="Click to reference in comment">
           #<%= expense.expense_number %>
         </code>
         <div style="flex-grow: 1" data-expense-form-target="memo" class="bold <%= "muted" unless expense.memo.presence %>">
           <%= expense.memo.presence || "Untitled Expense" %>
         </div>
+        <% if latest_state_change %>
+          <% if latest_state_change.changeset["aasm_state"].second == "approved" %>
+            Approved by
+          <% else %>
+            Approval removed by
+          <% end %>
+          <%= user_mention User.find_by(id: latest_state_change.whodunnit || 2891), { avatar: { style: "vertical-align: sub;" } }, "Unknown User" %>
+        <% end %>
         <%= pop_icon_to "enter",
                   "#",
                   size: 24,

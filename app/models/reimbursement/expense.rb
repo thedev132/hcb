@@ -36,6 +36,7 @@ module Reimbursement
     attribute :expense_number, :integer, default: 0
     include AASM
     include Receiptable
+    has_paper_trail
 
     scope :complete, -> { where.not(memo: nil, amount_cents: 0) }
 

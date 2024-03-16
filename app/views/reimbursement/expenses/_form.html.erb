@@ -34,7 +34,7 @@
     <% elsif expense.report.submitted? %>
       <%= link_to reimbursement_expense_toggle_approved_path(expense_id: expense.id), class: "btn bg-muted", method: :post do %>
         <%= inline_icon "reply" %>
-        Revert Approval
+        Remove Approval
       <% end %>
     <% end %>
   <% end %>
