@@ -4,17 +4,10 @@
     opacity: 0.2;
   }
   .mention {
-    padding: 2px 4px; 
+    padding: 2px 4px;
     border-radius: 4px;
     border: 1px solid map-get($palette, smoke);
 
-  }
-  .receipt > span {
-    height: -webkit-fill-available;
-  }
-  .receipt--image {
-    height: -webkit-fill-available!important;
-    object-fit: cover!important;
   }
   .receipts {
     display: grid;
