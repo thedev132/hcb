@@ -18,7 +18,7 @@
   </blockquote>
 <% end %>
 
-Reply to this email to get in touch with <%= @donation.name %>.
+Reply to this email to get in touch with <%= @donation.anonymous? ? "your generous donor" : @donation.name %>.
 
 <% if @donation.anonymous? %>
   <p>
