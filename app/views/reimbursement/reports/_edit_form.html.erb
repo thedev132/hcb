@@ -23,5 +23,5 @@
 <% end %>
 
 <% admin_tool_if !@report.initial_draft? do %>
-  <%= button_to "Delete Report", reimbursement_report_path(@report), class: "ml0 info bg-error btn", method: :delete, type: "button" %>
+  <%= button_to "Delete Report", reimbursement_report_path(@report), class: "ml0 bg-error btn", method: :delete, type: "button" %>
 <% end %>
