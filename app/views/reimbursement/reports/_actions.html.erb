@@ -2,9 +2,18 @@
   <div class="flex items-center justify-between mt2 mb3" style="gap: 16px;" id="actions">
     <div style="flex-grow: 1;" class="flex justify-start">
       <% if !report.locked? %>
-        <%= link_to reimbursement_expenses_path(report_id: report.id), class: "btn bg-success", data: { turbo: true, turbo_method: :post } do %>
-          <%= inline_icon "docs" %>
-          Add An Expense
+        <%= form_with(method: :post, url: reimbursement_expenses_path(report_id: report.id), data: { controller: "form file-drop", turbo: "true" }, class: "tooltipped tooltipped--n", html: { "aria-label": "Drag a file into this button to create a new expense with a receipt attached." }) do |form| %>
+          <button class="btn bg-success add-expense-dropzone" data-file-drop-target="dropzone" data-action="dragover->file-drop#dragover drop->file-drop#drop dragenter->file-drop#dragenter dragleave->file-drop#dragleave">
+              <%= inline_icon "docs" %>
+              Add An Expense
+          </button>
+          <%= form.file_field :file,
+              multiple: true,
+              include_hidden: false,
+              required: false,
+              accept: "image/*,image/heic,.pdf",
+              class: "display-none",
+              data: { "file-drop-target" => "fileInput" } %>
         <% end %>
       <% elsif !report.event.users.include?(current_user) %>
         <div class="btn bg-success disabled" class="tooltipped tooltipped--n" aria-label="Expenses can't be added to locked reports">

@@ -10,10 +10,19 @@ module Reimbursement
 
       authorize @expense
 
+      if params[:file]
+        ::ReceiptService::Create.new(
+          receiptable: @expense,
+          uploader: current_user,
+          attachments: params[:file],
+          upload_method: :quick_expense
+        ).run!
+      end
+
       if @expense.save
         respond_to do |format|
           format.turbo_stream { render turbo_stream: on_create_streams }
-          format.html { redirect_to url_for(@report, hash: "expense-#{@expense.id}") }
+          format.html { redirect_to url_for(@report) }
         end
       else
         redirect_to @report, flash: { error: @expense.errors.full_messages.to_sentence }

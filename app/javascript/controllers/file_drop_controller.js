@@ -91,9 +91,9 @@ export default class extends Controller {
     }
 
     if (this.hasFormTarget) {
-      this.formTarget.submit()
+      this.formTarget.requestSubmit()
     } else {
-      this.element.submit()
+      this.element.requestSubmit()
     }
 
     this.submitting = true
