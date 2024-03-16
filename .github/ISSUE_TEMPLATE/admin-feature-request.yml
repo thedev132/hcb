@@ -12,7 +12,7 @@ body:
     validations:
       required: true
   - type: textarea
-    id: problem
+    id: solution
     attributes:
       label: Describe the feature/solution (optional)
       description: What solution or feature do you have in mind for solving your problem?
