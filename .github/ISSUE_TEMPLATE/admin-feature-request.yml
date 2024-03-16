@@ -3,6 +3,10 @@ description: got a small feature for Ops or admins? let us hear you out
 title: "Admin: [feature name here]"
 labels: []
 body:
+  - type: markdown
+    value: |
+      > [!TIP]
+      > This is a great place for submitting Operations or admin-related feature requests! If you have a feature request for user/public-facing features, please reach out to @garyhtou
   - type: textarea
     id: problem
     attributes:
