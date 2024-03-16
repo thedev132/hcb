@@ -104,7 +104,9 @@
 
 <%= render partial: "actions", locals: { report: @report, user: @user } %>
 
-<%= render partial: "conversation" %>
+<% unless @report.initial_draft? %>
+  <%= render partial: "conversation" %>
+<% end %>
 
 <style>
   html { scroll-behavior: smooth; }

@@ -183,6 +183,10 @@ module Reimbursement
       return "New comment on #{self.name}."
     end
 
+    def initial_draft?
+      draft? && submitted_at.nil?
+    end
+
     private
 
     def last_user_change_to(...)
