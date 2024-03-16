@@ -88,6 +88,7 @@ module Reimbursement
     delegate :locked?, to: :report
 
     def status_color
+      return "muted" if pending? && report.draft?
       return "primary" if rejected?
       return "warning" if pending?
 

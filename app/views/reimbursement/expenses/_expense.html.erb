@@ -11,6 +11,7 @@
       <%= "translucent" if expense.rejected? && !expense.report.rejected? %>
     "
     data-controller="expense-form"
+    data-expense-form-target="card"
     data-expense-form-enabled-value="<%= new %>"
     data-expense-form-memo-value="<%= expense.memo.presence || "Untitled Expense" %>"
     data-expense-form-locked-value="<%= expense.report.locked? %>">
