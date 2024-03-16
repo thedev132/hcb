@@ -36,10 +36,10 @@
           </div>
         </div>
       <% elsif report.locked? && report.submitted? %>
-        <div class="tooltipped tooltipped--n" aria-label="We can't send a $0 reimbursement.">
+        <div class="tooltipped tooltipped--n" aria-label="To reimburse, start by approving expenses.">
           <div class="btn bg-info disabled">
             <%= inline_icon "payment-transfer" %>
-            Reimburse <%= render_money report.amount_to_reimburse %> (<%= report.expenses.approved.count %>/<%= report.expenses.count %>)
+            Reimburse
           </div>
         </div>
       <% elsif report.locked? && report.reimbursement_requested? && !admin_signed_in? %>
