@@ -1,7 +1,15 @@
 import { Controller } from '@hotwired/stimulus'
 
 export default class extends Controller {
-  static targets = ['field', 'button', 'form', 'move', 'memo', 'card']
+  static targets = [
+    'field',
+    'button',
+    'form',
+    'move',
+    'memo',
+    'memoField',
+    'card',
+  ]
   static values = {
     enabled: { type: Boolean, default: false },
     locked: { type: Boolean, default: false },
@@ -27,6 +35,7 @@ export default class extends Controller {
     this.#buttons()
     this.#label()
     this.#memo()
+    this.#memoInput()
     this.#card()
     this.#move()
   }
@@ -44,6 +53,12 @@ export default class extends Controller {
     for (const field of this.fieldTargets) {
       field.readOnly = false
       this.#removeTooltip(field)
+    }
+  }
+
+  #memoInput() {
+    if (this.enabledValue) {
+      this.memoFieldTarget.focus()
     }
   }
 
