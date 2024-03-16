@@ -368,7 +368,7 @@ $(document).on('turbo:load', function () {
     
     $(forOrganizerInput).on('change', e => {
       if (e.target.checked) {
-        emailInput.val("")
+        emailInput.val(dropdownInput.val())
         dropdownInput.slideDown()
         emailInput.slideUp()
         maxInput.slideDown()
