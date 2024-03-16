@@ -343,11 +343,11 @@ $(document).on('turbo:load', function () {
   
   if (BK.s('reimbursement_report_email_input')) {
     const emailInput = $('#reimbursement_report_email')
-    const input = $('#reimbursement_report_user_email')
-    if($('#reimbursement_report_email').length){
+    const dropdownInput = $('#reimbursement_report_user_email')
+    if(emailInput.length && dropdownInput.length){
       emailInput.hide()
     }
-    $(input).on('change', e => {
+    $(dropdownInput).on('change', e => {
       document.getElementById("reimbursement_report_email").value = e.target.value
       if (e.target.value == "") emailInput.slideDown()
       else emailInput.hide()
