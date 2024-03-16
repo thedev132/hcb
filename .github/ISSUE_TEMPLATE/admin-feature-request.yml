@@ -11,3 +11,8 @@ body:
       placeholder: Ex. I wish I could see the total amount of money raised by hackathon orgs in 2023.
     validations:
       required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: Describe the feature/solution (optional)
+      description: What solution or feature do you have in mind for solving your problem?
