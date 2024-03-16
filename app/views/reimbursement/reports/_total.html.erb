@@ -1,3 +1,7 @@
 <span id="total">
-  <%= render_money [report.maximum_amount_cents, report.amount_cents].compact_blank.min %>
+  <% if report.amount_cents > 0 %>
+    <%= render_money [report.maximum_amount_cents, report.amount_cents].compact_blank.min %>
+  <% else %>
+    reimbursement
+  <% end %>
 </span>
