@@ -1,4 +1,4 @@
-<%= form_with(model: @report, class: "mb3 mt1", style: "max-width: 600px;", local: true) do |form| %>
+<%= form_with(model: @report, class: "mt1 mb1", style: "max-width: 600px;", local: true) do |form| %>
   <%= form.label :report_name, "Report Name", class: "bold" %>
   <%= form.text_field :report_name, placeholder: "Chicago Trip Expenses", required: true %>
   <%= form.label :maximum_amount, "Maximum Reimbursable Value (Optional)", class: "mt2 bold" %>
@@ -20,4 +20,8 @@
     <% end %>
   </div>
   <%= form.submit "Update Report", class: "mt2" %>
+<% end %>
+
+<% admin_tool_if !@report.initial_draft? do %>
+  <%= button_to "Delete Report", reimbursement_report_path(@report), class: "ml0 info bg-error btn", method: :delete, type: "button" %>
 <% end %>

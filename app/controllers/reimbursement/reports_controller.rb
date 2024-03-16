@@ -194,6 +194,19 @@ module Reimbursement
       redirect_to @report
     end
 
+    def destroy
+
+      authorize @report
+
+      @report.destroy
+
+      if organizer_signed_in?
+        redirect_to event_reimbursements_path(@event)
+      else
+        redirect_to my_reimbursements_path
+      end
+    end
+
     private
 
     def set_report_user_and_event

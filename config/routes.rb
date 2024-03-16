@@ -396,7 +396,7 @@ Rails.application.routes.draw do
     resources :comments
   end
   namespace :reimbursement do
-    resources :reports, only: [:show, :create, :edit, :update] do
+    resources :reports, only: [:show, :create, :edit, :update, :destroy] do
       post "request_reimbursement"
       post "admin_approve"
       post "request_changes"

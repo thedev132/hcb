@@ -46,6 +46,10 @@ module Reimbursement
       admin && open
     end
 
+    def destroy?
+      ((team_member || creator) && record.initial_draft?) || (admin && !record.reimbursed?)
+    end
+
     private
 
     def admin
