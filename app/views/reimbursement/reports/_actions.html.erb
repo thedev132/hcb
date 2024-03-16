@@ -71,12 +71,12 @@
         <% if user == current_user %>
           <%= link_to settings_payouts_path, class: "btn bg-warning" do %>
             <%= inline_icon "profile" %>
-            Add Payout Information
+            Next: Add Payout Information
           <% end %>
         <% elsif admin_signed_in? %>
           <%= link_to payouts_user_path(user), class: "btn bg-warning" do %>
             <%= inline_icon "profile" %>
-            Add <%= user.first_name %>'s Payout Information
+            Next: Add <%= user.first_name %>'s Payout Information
           <% end %>
         <% else %>
           <div class="btn bg-warning disabled">
