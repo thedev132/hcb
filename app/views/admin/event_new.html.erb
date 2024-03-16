@@ -25,7 +25,7 @@
     <p>
       <%= form.label :country %>
       <br>
-      <%= form.collection_select :country, Event.countries, :first, :first %>
+      <%= form.collection_select :country, Event.countries_for_select, :first, :last %>
     </p>
 
     <p>
