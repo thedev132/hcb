@@ -1,1 +1,21 @@
-* @hackclub/hcb-engineers
+# Default rule
+* @hackclub/hcb-engineers @hackclub/hcb-committers
+
+/config @hackclub/hcb-engineers # Restrict most files in the config directory
+/config/locales @hackclub/hcb-engineers @hackclub/hcb-committers
+/config/routes.rb @hackclub/hcb-engineers @hackclub/hcb-committers
+
+# Additional restrictions
+/db @hackclub/hcb-engineers
+/.ruby-version @hackclub/hcb-engineers
+/app.json @hackclub/hcb-engineers
+/Aptfile @hackclub/hcb-engineers
+/config.ru @hackclub/hcb-engineers
+/docker* @hackclub/hcb-engineers
+/Dockerfile @hackclub/hcb-engineers
+/Gemfile @hackclub/hcb-engineers
+/Gemfile.lock @hackclub/hcb-engineers
+/package.json @hackclub/hcb-engineers
+/Procfile @hackclub/hcb-engineers
+/webpack.config.js @hackclub/hcb-engineers
+/yarn.lock @hackclub/hcb-engineers
