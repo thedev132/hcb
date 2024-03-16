@@ -79,16 +79,18 @@
             Next: Add <%= user.first_name %>'s Payout Information
           <% end %>
         <% else %>
-          <div class="btn bg-warning disabled">
-            <%= inline_icon "profile" %>
-            Missing Payout Information
+          <div class="tooltipped tooltipped--n" aria-label="<%= user.name %> is missing payout information.">
+            <div class="btn bg-info disabled">
+              <%= inline_icon "send" %>
+              Submit & Request Review
+            </div>
           </div>
         <% end %>
       <% elsif report.expenses.complete.with_receipt.count != report.expenses.count || report.expenses.count == 0 %>
         <div class="tooltipped tooltipped--n" aria-label="Make sure you have a receipt, memo, and amount for each expense.">
-          <div class="btn bg-warning disabled" style="color: white;">
-            <%= inline_icon "payment-docs" %>
-            Missing Information
+          <div class="btn bg-info disabled">
+            <%= inline_icon "send" %>
+            Submit & Request Review
           </div>
         </div>
       <% elsif report.maximum_amount_cents && report.amount_cents >= report.maximum_amount_cents %>
