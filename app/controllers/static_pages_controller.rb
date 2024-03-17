@@ -180,13 +180,19 @@ class StaticPagesController < ApplicationController
 
   def feedback
     message = params[:message]
-    share_email = params[:share_email] || "1"
+    share_email = (params[:share_email] || "1") == "1"
+    url = share_email ? "#{request.base_url}#{params[:page_path]}" : ""
+
+    routing = Rails.application.routes.recognize_path(params[:page_path])
+    location = "#{routing[:controller]}##{routing[:action]} #{routing[:id] if routing[:id] && share_email}".strip
 
     feedback = {
       "Share your idea(s)" => message,
+      "URL"                => url,
+      "Location"           => location,
     }
 
-    if share_email == "1"
+    if share_email
       feedback["Name"] = current_user.name
       feedback["Email"] = current_user.email
       feedback["Organization"] = current_user.events.first&.name
