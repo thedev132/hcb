@@ -35,17 +35,17 @@
           <% end %>
           <%= user_mention User.find_by(id: latest_state_change.whodunnit || 2891), { avatar: { style: "vertical-align: sub;" } }, "Unknown User" %>
         <% end %>
+        <button id="edit-or-save" class="pop pointer tooltipped tooltipped--w" data-expense-form-target="button" aria-label="<%= expense.report.locked? ? "This expense is locked. #{expense.report.closed? ? "" : "Mark it as a draft to edit."}" : "This expense has been approved!" %>">
+          <%= inline_icon "checkmark", style: new ? nil : "display: none;" %>
+          <%= inline_icon expense.report.locked? ? "private" : "edit", style: new && !expense.report.locked? ? "display: none;" : nil %>
+        </button>
         <%= pop_icon_to "enter",
                   "#",
                   size: 24,
                   class: "purple tooltipped tooltipped--w",
                   'aria-label': "Move this expense",
                   data: { behavior: "modal_trigger", modal: "move_#{expense.id}", "expense-form-target": "move" } if policy(expense).update? %>
-        <button id="edit-or-save" class="pop pointer tooltipped tooltipped--w" data-expense-form-target="button" aria-label="<%= expense.report.locked? ? "This expense is locked. #{expense.report.closed? ? "" : "Mark it as a draft to edit."}" : "This expense has been approved!" %>">
-          <%= inline_icon "checkmark", style: new ? nil : "display: none;" %>
-          <%= inline_icon expense.report.locked? ? "private" : "edit", style: new && !expense.report.locked? ? "display: none;" : nil %>
-        </button>
-        <%= pop_icon_to "view-close",
+        <%= pop_icon_to "delete",
                   reimbursement_expense_path(expense.id),
                   method: :delete,
                   size: 24,
