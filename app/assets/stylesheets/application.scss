@@ -201,7 +201,6 @@ summary {
 @import 'components/dock';
 @import 'components/donations';
 @import 'components/donation_qr_codes';
-@import 'components/expenses';
 @import 'components/filters';
 @import 'components/forms';
 @import 'components/header';
@@ -236,6 +235,8 @@ summary {
 @import 'components/shimmer';
 @import 'components/carousel';
 @import 'components/callout';
+@import 'components/reimbursements/expenses';
+@import 'components/reimbursements/actions';
 
 .turbo-progress-bar {
   height: 0.125rem;
