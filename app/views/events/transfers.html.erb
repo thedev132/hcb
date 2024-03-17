@@ -9,7 +9,7 @@
   </span>
 
   <% if organizer_signed_in? %>
-    <% if Flipper.enabled?(:reimbursements_2024_03_10, current_user) %>
+    <% if Flipper.enabled?(:reimbursements_2024_03_10, @event) %>
       <%= link_to "Reimbursement", event_reimbursements_path(@event), class: "btn" %>
     <% else %>
       <%= link_to "Reimbursement", "expensify", class: "btn" %>

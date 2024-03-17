@@ -115,6 +115,10 @@ class Event < ApplicationRecord
   scope :not_organized_by_hack_clubbers, -> { includes(:event_tags).where.not(event_tags: { name: EventTag::Tags::ORGANIZED_BY_HACK_CLUBBERS }).or(includes(:event_tags).where(event_tags: { name: nil })) }
   scope :organized_by_teenagers, -> { includes(:event_tags).where(event_tags: { name: [EventTag::Tags::ORGANIZED_BY_TEENAGERS, EventTag::Tags::ORGANIZED_BY_HACK_CLUBBERS] }) }
   scope :not_organized_by_teenagers, -> { includes(:event_tags).where.not(event_tags: { name: [EventTag::Tags::ORGANIZED_BY_TEENAGERS, EventTag::Tags::ORGANIZED_BY_HACK_CLUBBERS] }).or(includes(:event_tags).where(event_tags: { name: nil })) }
+  scope :flag_enabled, ->(flag) {
+    joins("INNER JOIN flipper_gates ON CONCAT('Event;', events.id) = flipper_gates.value")
+      .where("flipper_gates.feature_key = ? AND flipper_gates.key = ?", flag, "actors")
+  }
 
   scope :event_ids_with_pending_fees, -> do
     query = <<~SQL

@@ -80,6 +80,21 @@ html[data-dark='true'] .feature-transaction-tags {
   }
 }
 
+.feature-reimbursements  {
+  background-color: $snow;
+  background-image:
+    linear-gradient(to right, rgba($snow, 0.9), rgba($snow, 0.9)),
+    #{image-url('feature-reimbursements.png')};
+  background-size: 4em;
+}
+
+html[data-dark='true'] {
+  .feature-reimbursements  {
+    background-color: $black;
+    background-image: #{image-url('feature-reimbursements.png')};
+  }
+}
+
 .feature-turbo {
   background-color: $snow;
   background-image:

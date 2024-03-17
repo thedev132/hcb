@@ -170,7 +170,7 @@
       <%= form.submit "Update", class: ("disabled" unless policy(@event).update?) %>
     </div>
 
-    <% if Flipper.enabled?(:reimbursements_2024_03_10, current_user) %>
+    <% if Flipper.enabled?(:reimbursements_2024_03_10, @event) %>
       <h3 class="mb1" id="public-reimbursements">Public Reimbursements</h3>
 
       <div class="card">
