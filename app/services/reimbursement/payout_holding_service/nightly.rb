@@ -18,7 +18,7 @@ module Reimbursement
                 address_city: payout_holding.report.user.payout_method.address_city,
                 address_state: payout_holding.report.user.payout_method.address_state,
                 recipient_email: payout_holding.report.user.email,
-                send_email_notification: true,
+                send_email_notification: false,
                 address_zip: payout_holding.report.user.payout_method.address_postal_code,
                 user: User.find_by(email: "hcb@hackclub.com")
               )
@@ -35,7 +35,7 @@ module Reimbursement
                 payment_for: "Reimbursement for #{payout_holding.report.name}.",
                 recipient_name: payout_holding.report.user.name,
                 recipient_email: payout_holding.report.user.email,
-                send_email_notification: true,
+                send_email_notification: false,
                 routing_number: payout_holding.report.user.payout_method.routing_number,
                 account_number: payout_holding.report.user.payout_method.account_number,
                 creator: User.find_by(email: "hcb@hackclub.com")
