@@ -57,6 +57,7 @@ module Reimbursement
 
     include AASM
     include Commentable
+    include Hashid::Rails
 
     after_create_commit do
       ReimbursementMailer.with(report: self).invitation.deliver_later if inviter != user
