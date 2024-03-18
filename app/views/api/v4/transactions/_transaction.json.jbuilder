@@ -3,10 +3,11 @@
 # This partial is capable of rendering `HcbCode`, `CanonicalPendingTransaction`, and `CanonicalTransactionGrouped` instances
 
 hcb_code = tx.is_a?(HcbCode) ? tx : tx.local_hcb_code
+amount = transaction_amount(tx, event: @event)
 
 json.id hcb_code.public_id
 json.date tx.date
-json.amount_cents transaction_amount(tx, event: @event)
+json.amount_cents amount
 json.memo hcb_code.memo(event: @event)
 json.has_custom_memo hcb_code.custom_memo.present?
 json.pending (tx.is_a?(CanonicalPendingTransaction) && tx.unsettled?) || (tx.is_a?(HcbCode) && !tx.pt&.fronted? && tx.pt&.unsettled?)
@@ -22,6 +23,7 @@ end
 json.code hcb_code.hcb_i1
 json.missing_receipt hcb_code.needs_receipt?
 json.lost_receipt hcb_code.no_or_lost_receipt?
+json.appearance hcb_code.disbursement.special_appearance_name if hcb_code.disbursement&.special_appearance? && amount.positive?
 
 json.card_charge { json.partial! "api/v4/transactions/card_charge",  hcb_code:                             } if hcb_code.stripe_card? || hcb_code.stripe_force_capture?
 json.donation    { json.partial! "api/v4/transactions/donation",     donation:     hcb_code.donation       } if hcb_code.donation?
