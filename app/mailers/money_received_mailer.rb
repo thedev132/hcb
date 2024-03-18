@@ -3,7 +3,7 @@
 class MoneyReceivedMailer < ApplicationMailer
   def money_received
     @transaction = params[:transaction]
-    @emails = @transaction.event.users.pluck(:email)
+    @emails = @transaction.event.users.map(&:email_address_with_name)
 
     mail to: @emails, subject: "Money from #{@transaction.invoice_payout.invoice.sponsor.name} is in your HCB fund 💵"
   end

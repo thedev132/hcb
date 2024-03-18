@@ -6,7 +6,7 @@ class RawIncreaseTransactionMailer < ApplicationMailer
     @amount = @transaction.amount_cents
     @event = @transaction.event
 
-    mail to: @event.users.pluck(:email), subject: "[ACTION REQUIRED] Your HCB account number has changed"
+    mail to: @event.users.map(&:email_address_with_name), subject: "[ACTION REQUIRED] Your HCB account number has changed"
   end
 
 end

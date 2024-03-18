@@ -442,7 +442,7 @@ class HcbCode < ApplicationRecord
       return users.select(&:admin?).collect(&:email).excluding(comment.user.email)
     end
 
-    users.collect(&:email).excluding(comment.user.email)
+    users.excluding(comment.user).collect(&:email_address_with_name)
   end
 
   def comment_mailer_subject

@@ -3,14 +3,14 @@
 class InvoiceMailer < ApplicationMailer
   def notify_organizers_sent
     @invoice = params[:invoice]
-    @emails = @invoice.sponsor.event.users.where(organizer_positions: { role: :manager }).pluck(:email)
+    @emails = @invoice.sponsor.event.users.where(organizer_positions: { role: :manager }).map(&:email_address_with_name)
 
     mail to: @emails, subject: "#{@invoice.event.name}: #{@invoice.creator.name} sent an invoice to #{@invoice.sponsor.name}"
   end
 
   def notify_organizers_paid
     @invoice = params[:invoice]
-    @emails = @invoice.sponsor.event.users.map { |u| u.email }
+    @emails = @invoice.sponsor.event.users.map(&:email_address_with_name)
     @emails = @emails.length > 10 ? [@invoice.creator.email] : @emails
 
     if @invoice.sponsor.event.can_front_balance?
