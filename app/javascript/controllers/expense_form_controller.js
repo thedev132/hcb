@@ -63,10 +63,14 @@ export default class extends Controller {
   }
 
   #buttons() {
-    this.buttonTarget.querySelector('[aria-label=checkmark]').style.display =
-      this.enabledValue && !this.lockedValue ? 'block' : 'none'
-    this.buttonTarget.querySelector('[aria-label=edit]').style.display =
-      this.enabledValue && !this.lockedValue ? 'none' : 'block'
+    if (!this.lockedValue) {
+      this.buttonTarget.querySelector('[aria-label=checkmark]').style.display =
+        this.enabledValue ? 'block' : 'none'
+      this.buttonTarget.querySelector('[aria-label=edit]').style.display = this
+        .enabledValue
+        ? 'none'
+        : 'block'
+    }
   }
 
   #card() {
