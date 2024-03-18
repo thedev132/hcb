@@ -35,6 +35,12 @@
           <% end %>
           <%= user_mention User.find_by(id: latest_state_change.whodunnit || 2891), { avatar: { style: "vertical-align: sub;" } }, "Unknown User" %>
         <% end %>
+        <%= pop_icon_to "enter",
+                  "#",
+                  size: 24,
+                  class: "purple tooltipped tooltipped--w",
+                  'aria-label': "Move this expense",
+                  data: { behavior: "modal_trigger", modal: "move_#{expense.id}", "expense-form-target": "move" } if policy(expense).update? %>
         <button id="edit-or-save" class="pop pointer tooltipped tooltipped--w" data-expense-form-target="button" aria-label="<%= expense.report.locked? ? "This expense is locked. #{expense.report.closed? ? "" : "Mark it as a draft to edit."}" : "This expense has been approved!" %>">
           <% if expense.report.locked? %>
             <%= inline_icon "private" %>
@@ -43,12 +49,6 @@
             <%= inline_icon "edit", style: new ? "display: none;" : nil %>
           <% end %>
         </button>
-        <%= pop_icon_to "enter",
-                  "#",
-                  size: 24,
-                  class: "purple tooltipped tooltipped--w",
-                  'aria-label': "Move this expense",
-                  data: { behavior: "modal_trigger", modal: "move_#{expense.id}", "expense-form-target": "move" } if policy(expense).update? %>
         <%= pop_icon_to "delete",
                   reimbursement_expense_path(expense.id),
                   method: :delete,
