@@ -151,6 +151,31 @@ html[data-dark='true'] .feature-anonymous-donations {
   }
 }
 
+.feature-user-permissions {
+  position: relative;
+  background-color: $snow;
+
+  & > * {
+    z-index: 100;
+  }
+
+  &::before {
+    content: '';
+    inset: 0;
+    position: absolute;
+    background-image: #{image-url('feature-user-perms-dark.png')};
+    background-size: 5em;
+    opacity: 0.1;
+  }
+
+  html[data-dark='true'] & {
+    background-color: $black;
+    &::before {
+      opacity: 0.3;
+    }
+  }
+}
+
 .feature-generic {
   background-color: $snow;
 }

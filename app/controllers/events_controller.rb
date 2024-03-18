@@ -663,6 +663,11 @@ class EventsController < ApplicationController
     authorize @event
     feature = params[:feature]
     if Flipper.disable_actor(feature, @event)
+      # If it's the user permissions feature, make all the users & invites in the org managers.
+      if feature == "user_permissions_2024_03_09"
+        @event.organizer_positions.update_all(role: :manager)
+        @event.organizer_position_invites.pending.update_all(role: :manager)
+      end
       flash[:success] = "Opted out of beta"
     else
       flash[:error] = "Error while opting out of beta"
