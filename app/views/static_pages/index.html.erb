@@ -11,8 +11,8 @@
       target="_blank">
       <%= @hcb_expansion %>
     </a>
-    <span class="<%= "nowrap" unless fall? %> <%= "warning" if fall? %> tooltipped tooltipped--e" aria-label="Happy St. Patrick's Day">
-      Welcome to 🍀 <span style="color: #009E60;">HCB</span>
+    <span class="<%= "nowrap" unless fall? %> <%= "warning" if fall? %>">
+      Welcome to <span class="primary">HCB</span>
     </span>
   </div>
   <span class="badge ml0 h5 caps <%= Rails.env.development? ? "bg-success" : by_season("", fall: "bg-warning") %>" id="flavor-text" data-turbo-permanent><%= flavor_text %></span>
