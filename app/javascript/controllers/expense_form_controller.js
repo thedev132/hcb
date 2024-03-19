@@ -80,10 +80,12 @@ export default class extends Controller {
   }
 
   #label() {
-    this.buttonTarget.ariaLabel =
-      this.enabledValue && !this.lockedValue
-        ? 'Save edits'
-        : 'Edit this expense'
+    if (!this.lockedValue) {
+      this.buttonTarget.ariaLabel =
+        this.enabledValue && !this.lockedValue
+          ? 'Save edits'
+          : 'Edit this expense'
+    }
   }
 
   #move() {

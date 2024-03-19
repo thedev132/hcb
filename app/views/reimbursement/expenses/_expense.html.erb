@@ -41,7 +41,7 @@
                   class: "purple tooltipped tooltipped--w",
                   'aria-label': "Move this expense",
                   data: { behavior: "modal_trigger", modal: "move_#{expense.id}", "expense-form-target": "move" } if policy(expense).update? %>
-        <button id="edit-or-save" class="pop pointer tooltipped tooltipped--w" data-expense-form-target="button" aria-label="<%= expense.report.locked? ? "This expense is locked. #{expense.report.closed? ? "" : "Mark it as a draft to edit."}" : "This expense has been approved!" %>">
+        <button id="edit-or-save" class="pop pointer tooltipped tooltipped--w" data-expense-form-target="button" aria-label="<%= "This expense is locked. #{expense.report.closed? ? "" : "Mark it as a draft to edit."}" %>">
           <% if expense.report.locked? %>
             <%= inline_icon "private" %>
           <% else %>
