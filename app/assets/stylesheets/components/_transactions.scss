@@ -83,14 +83,14 @@ html[data-dark='true'] {
   }
 
   .add-tag-badge {
-    display: none;
+    visibility: hidden;
     cursor: pointer;
   }
 }
 
 [class^='transaction--']:hover .add-tag-badge,
 .add-tag-badge[aria-expanded='true'] {
-  display: block;
+  visibility: visible;
 }
 
 [class^='transaction--']:target {
