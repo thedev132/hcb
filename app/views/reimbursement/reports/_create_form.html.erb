@@ -1,6 +1,11 @@
 <section data-behavior="modal" role="dialog" id="create" class="modal modal--scroll bg-snow">
   <%= form_with(model: Reimbursement::Report, class: "mb3", style: "max-width: 600px;", method: :post) do |form| %>
     <%= modal_header "Open a Report" %>
+    <% unless current_user.created_reimbursement_reports.any? %>
+      <div class="card border b--info mt2 mb2 container--sm mx-auto">
+        <p class="mt0 mb0"><span class="bold">Paid for something out of pocket?</span> Compile your expenses into a reimbursement report, get approval from the organization's team, and, after you do, get paid back via ACH transfer or check.</p>
+      </div>
+    <% end %>
     <%= form.label :report_name, "Report Name", class: "bold" %>
     <%= form.text_field :report_name, placeholder: "Chicago Trip Expenses", required: true %>
     <% if defined? @event %>
