@@ -314,7 +314,6 @@ class UsersController < ApplicationController
 
   def edit_payout
     @user = params[:id] ? User.friendly.find(params[:id]) : current_user
-    @states = ISO3166::Country.new("US").subdivisions.values.map { |s| [s.translations["en"], s.code] }
     authorize @user
   end
 

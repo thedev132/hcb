@@ -7,86 +7,19 @@
 <turbo-frame id="settings" autoscroll data-autoscroll-behavior="smooth">
   <%= render "settings_nav", active: "payouts" %>
   <section>
-    <%= form_with model: @user, data: { turbo: false } do |form| %>
-      <h2 class="h2">Reimbursement payouts</h2>
-      <div class="card border b--info pb0 mt2 mb3">
-        When a <%= link_to "reimbursement report of yours", my_reimbursements_path %> is approved, HCB will use the information below to reimburse you. Without this information, you won't be able to submit reimbursement reports. You can update these settings at any time.
-        <% if @user.reimbursement_reports.pending.any? %>
-          <p>
-            Changes made here will apply to all non-reimbursed reports of yours, including your <%= @user.reimbursement_reports.pending.count %> pending reports.
-          </p>
-        <% end %>
-        <div class="border-top card__banner card__darker secondary mt2">
-          <strong>Questions?</strong>
-          <%= help_message %>
-        </div>
+    <h2 class="h2">Reimbursement payouts</h2>
+    <div class="card border b--info pb0 mt2 mb3">
+      When a <%= link_to "reimbursement report of yours", my_reimbursements_path %> is approved, HCB will use the information below to reimburse you. Without this information, you won't be able to submit reimbursement reports. You can update these settings at any time.
+      <% if @user.reimbursement_reports.pending.any? %>
+        <p>
+          Changes made here will apply to all non-reimbursed reports of yours, including your <%= @user.reimbursement_reports.pending.count %> pending reports.
+        </p>
+      <% end %>
+      <div class="border-top card__banner card__darker secondary mt2">
+        <strong>Questions?</strong>
+        <%= help_message %>
       </div>
-      <fieldset>
-        <legend class="heading h3 pb2">How would you like to reimbursed?</legend>
-        <div class="field field--options">
-          <%= form.radio_button :payout_method_type, "User::PayoutMethod::AchTransfer" %>
-          <%= form.label :payout_method_type, value: "User::PayoutMethod::AchTransfer" do %>
-            <%= inline_icon "payment-transfer", size: 28 %>
-            <strong>ACH Transfer</strong>
-            <small>(2-3 biz. days)</small>
-          <% end %>
-          <%= form.radio_button :payout_method_type, "User::PayoutMethod::Check" %>
-          <%= form.label :payout_method_type, value: "User::PayoutMethod::Check" do %>
-            <%= inline_icon "email", size: 28 %>
-            <strong>Mailed Check</strong>
-            <small>(10-12 biz. days)</small>
-          <% end %>
-        </div>
-      </fieldset>
-      <section data-behavior="check_payout_method_inputs" class="<%= "display-none-not-important" unless @user.payout_method.instance_of?(User::PayoutMethod::Check) %>">
-        <%= form.fields_for :payout_method, @user.payout_method.instance_of?(User::PayoutMethod::Check) ? @user.payout_method : User::PayoutMethod::Check.new do |form| %>
-          <div class="field">
-            <%= form.label :address_line1, "Street address" %>
-            <%= form.text_field :address_line1, placeholder: StripeCardholder::DEFAULT_BILLING_ADDRESS[:line1] %>
-          </div>
-
-          <div class="field">
-            <%= form.text_field :address_line2, placeholder: "(Building / Apartment / Room)" %>
-          </div>
-
-          <div class="flex">
-            <div class="field flex-auto mr1">
-              <%= form.label :address_city, "City" %>
-              <%= form.text_field :address_city, placeholder: StripeCardholder::DEFAULT_BILLING_ADDRESS[:city] %>
-            </div>
-            <div class="field flex-auto ml1">
-              <%= form.label :address_state, "State / Province" %>
-              <%= form.select :address_state, @states, { prompt: "Select a state" } %>
-            </div>
-          </div>
-
-          <div class="field">
-            <%= form.label :postal_code %>
-            <%= form.text_field :address_postal_code, placeholder: StripeCardholder::DEFAULT_BILLING_ADDRESS[:postal_code] %>
-          </div>
-
-          <div class="actions inline-block mt1">
-            <%= form.submit "Save" %>
-          </div>
-        <% end %>
-      </section>
-      <section data-behavior="ach_transfer_payout_method_inputs" class="<%= "display-none-not-important" unless @user.payout_method.instance_of?(User::PayoutMethod::AchTransfer) %>">
-        <%= form.fields_for :payout_method, @user.payout_method.instance_of?(User::PayoutMethod::AchTransfer) ? @user.payout_method : User::PayoutMethod::AchTransfer.new do |form| %>
-          <div class="field">
-            <%= form.label :routing_number, "Bank routing number" %>
-            <%= form.text_field :routing_number, placeholder: "123456789", class: "fs-mask" %>
-          </div>
-
-          <div class="field">
-            <%= form.label :account_number, "Bank account number" %>
-            <%= form.text_field :account_number, placeholder: "0913338883", class: "fs-mask" %>
-          </div>
-
-          <div class="actions inline-block mt1">
-            <%= form.submit "Save" %>
-          </div>
-        <% end %>
-      </section>
-    <% end %>
+    </div>
+    <%= render "payout_form", user: @user %>
   </section>
 </turbo-frame>
