@@ -5,6 +5,8 @@ module Api
     module ApplicationHelper
       include UsersHelper # for `profile_picture_for`
 
+      attr_reader :current_user
+
       def pagination_metadata(json)
         json.total_count @total_count
         json.has_more @has_more

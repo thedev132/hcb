@@ -25,6 +25,12 @@ json.missing_receipt hcb_code.needs_receipt?
 json.lost_receipt hcb_code.no_or_lost_receipt?
 json.appearance hcb_code.disbursement.special_appearance_name if hcb_code.disbursement&.special_appearance? && amount.positive?
 
+if current_user&.admin?
+  json._debug do
+    json.hcb_code hcb_code.hcb_code
+  end
+end
+
 json.card_charge  { json.partial! "api/v4/transactions/card_charge",  hcb_code:                             } if hcb_code.stripe_card? || hcb_code.stripe_force_capture?
 json.donation     { json.partial! "api/v4/transactions/donation",     donation:     hcb_code.donation       } if hcb_code.donation?
 json.check        { json.partial! "api/v4/transactions/check",        check:        hcb_code.check          } if hcb_code.check?
