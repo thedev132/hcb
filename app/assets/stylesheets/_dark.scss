@@ -210,6 +210,10 @@ html[data-dark='true'] {
     background-color: rgba(map-get($palette, warning), 0.0625);
   }
 
+  .dev-tools {
+    background-color: rgba(map-get($palette, success), 0.0625);
+  }
+
   .comments .card.current-user {
     background-color: mix($darkless, map-get($palette, info), 90%);
   }

@@ -214,6 +214,7 @@
 
 .menu__divider {
   display: block;
+  position: relative;
   height: 1px;
   background-color: $smoke;
   margin: 0.5rem 0;
@@ -224,6 +225,26 @@
 
   html[data-dark='true'] & {
     background-color: $slate;
+  }
+
+  &[data-label] {
+    margin-top: 0.75rem;
+    margin-bottom:0.75rem;
+
+    &::after {
+      content: attr(data-label);
+      color: $muted;
+      background-color: $white;
+      padding-left: 0.25rem;
+      padding-right: 0.25rem;
+      font-size: 0.8rem;
+      position: absolute;
+      translate: 0.5rem -50%;
+
+      html[data-dark='true'] & {
+        background-color: $darkless
+      }
+    }
   }
 }
 

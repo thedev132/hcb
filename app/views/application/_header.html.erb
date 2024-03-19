@@ -57,8 +57,15 @@
       <div class="menu__divider"></div>
       <a href="/" target="_blank">Open link in new tab</a>
       <% if current_user&.admin_override_pretend? %>
-        <div class="menu__divider"></div>
+        <div class="menu__divider" data-label="Admin"></div>
         <%= button_to "#{"✔ " if current_user.pretend_is_not_admin}Pretend not to be an admin", user_path(current_user), method: :patch, params: { pretend_is_not_admin: !current_user.pretend_is_not_admin }, class: "menu__action admin-tools" %>
+      <% end %>
+      <% if Rails.env.development? %>
+        <div class="menu__divider" data-label="Development"></div>
+        <a
+          href="/letter_opener"
+          target="_blank"
+          class="menu__action dev-tools border-none"><%= "Open LetterOpener (#{LetterOpenerWeb::Letter.search.count})" %></a>
       <% end %>
     </div>
   </div>

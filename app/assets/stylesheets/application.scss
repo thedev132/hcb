@@ -285,6 +285,14 @@ summary {
   border: 0;
 }
 
+.dev-tools {
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  border: 1px dashed map-get($palette, success);
+  background-color: rgba(map-get($palette, success), 0.125);
+  overflow: auto;
+}
+
 .memo-frame[busy] {
   cursor: progress;
 }
