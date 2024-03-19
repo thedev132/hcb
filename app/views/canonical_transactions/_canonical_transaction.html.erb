@@ -15,7 +15,7 @@
       dragleave->file-drop#dragleave
     "
   <% end %>>
-  <%= render "canonical_transactions/icon", ct: %>
+  <%= render "hcb_codes/icon", tx: ct, authorless: local_assigns[:authorless] %>
   <td>
     <%= ct.date %>
   </td>
