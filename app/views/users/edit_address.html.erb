@@ -29,7 +29,7 @@
       </div>
     </div>
 
-    <%= form_with model: @user do |form| %>
+    <%= form_with model: @user, data: { turbo_frame: "_top" } do |form| %>
       <%= form.fields_for :stripe_cardholder, @user.stripe_cardholder do |form| %>
         <div class="field">
           <%= form.label :stripe_billing_address_line1, "Street address" %>
