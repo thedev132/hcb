@@ -217,7 +217,7 @@ class HcbCode < ApplicationRecord
   end
 
   def stripe_refund?
-    stripe_force_capture? && ct&.stripe_refund?
+    (stripe_force_capture? || (stripe_card? && amount_cents > 0)) && ct&.stripe_refund?
   end
 
   def stripe_auth_dashboard_url

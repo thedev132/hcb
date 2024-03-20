@@ -1,4 +1,4 @@
-<% title "#{render_money(@hcb_code.amount_cents.abs)} charge for #{@hcb_code.memo}" %>
+<% title "#{render_money(@hcb_code.amount_cents.abs)} #{@hcb_code.stripe_refund? ? "refund" : "charge"} for #{@hcb_code.memo}" %>
 <% instance = @hcb_code.hashid %>
 
 <% admin_tool("mt1") do %>
