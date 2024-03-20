@@ -420,10 +420,6 @@ class HcbCode < ApplicationRecord
     !receipt_required?
   end
 
-  def needs_receipt?
-    receipt_required? && marked_no_or_lost_receipt_at.nil? && receipts.size == 0
-  end
-
   def local_hcb_code
     self
   end
