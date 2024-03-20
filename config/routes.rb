@@ -399,6 +399,7 @@ Rails.application.routes.draw do
     resources :reports, only: [:show, :create, :edit, :update, :destroy] do
       post "request_reimbursement"
       post "admin_approve"
+      post "approve_all_expenses"
       post "request_changes"
       post "reject"
       post "submit"

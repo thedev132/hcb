@@ -38,6 +38,10 @@ module Reimbursement
       (admin || team_member) && open
     end
 
+    def approve_all_expenses?
+      (admin || team_member) && open
+    end
+
     def reject?
       (admin || team_member) && open
     end
