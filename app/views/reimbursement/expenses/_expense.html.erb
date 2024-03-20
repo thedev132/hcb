@@ -4,64 +4,67 @@
 <% latest_state_change = expense.versions.reverse.find { |version| version.changeset["aasm_state"]&.first.present? } %>
 
 <%= turbo_frame_tag expense do %>
-  <article
-    id="<%= expense.expense_number %>"
-    class="
-      expense card mt2 pt0 border
-      b--<%= expense.status_color %>
-      <%= "translucent" if expense.rejected? && !expense.report.rejected? %>
-    "
+  <div
     data-controller="expense-form"
-    data-expense-form-target="card"
     data-expense-form-enabled-value="<%= new %>"
     data-expense-form-memo-value="<%= expense.memo.presence || "Untitled Expense" %>"
     data-expense-form-locked-value="<%= expense.report.locked? %>">
-    <div class="card__banner secondary mb2 border-bottom flex items-center" style="gap: 8px">
-        <code
-          data-behavior="mention"
-          data-mention-title="<%= expense.memo %>"
-          class="bg-white tooltipped tooltipped--e pointer click_to_mention"
-          aria-label="Click to reference in comment">
-          #<%= expense.expense_number %>
-        </code>
-        <div style="flex-grow: 1" data-expense-form-target="memo" class="bold <%= "muted" unless expense.memo.presence %>">
-          <%= expense.memo.presence || "Untitled Expense" %>
-        </div>
-        <% if latest_state_change %>
-          <% if latest_state_change.changeset["aasm_state"].second == "approved" %>
-            Approved by
-          <% else %>
-            Approval removed by
+    <article
+      id="<%= expense.expense_number %>"
+      class="
+        expense card mt2 pt0 border
+        b--<%= expense.status_color %>
+        <%= "translucent" if expense.rejected? && !expense.report.rejected? %>
+      "
+      data-expense-form-target="card">
+      <div class="card__banner secondary mb2 border-bottom flex items-center" style="gap: 8px">
+          <code
+            data-behavior="mention"
+            data-mention-title="<%= expense.memo %>"
+            class="bg-white tooltipped tooltipped--e pointer click_to_mention"
+            aria-label="Click to reference in comment">
+            #<%= expense.expense_number %>
+          </code>
+          <div style="flex-grow: 1" data-expense-form-target="memo" class="bold <%= "muted" unless expense.memo.presence %>">
+            <%= expense.memo.presence || "Untitled Expense" %>
+          </div>
+          <% if latest_state_change %>
+            <% if latest_state_change.changeset["aasm_state"].second == "approved" %>
+              Approved by
+            <% else %>
+              Approval removed by
+            <% end %>
+            <%= user_mention User.find_by(id: latest_state_change.whodunnit || 2891), { avatar: { style: "vertical-align: sub;" } }, "Unknown User" %>
           <% end %>
-          <%= user_mention User.find_by(id: latest_state_change.whodunnit || 2891), { avatar: { style: "vertical-align: sub;" } }, "Unknown User" %>
-        <% end %>
-        <%= pop_icon_to "enter",
-                  "#",
-                  size: 24,
-                  class: "purple tooltipped tooltipped--w",
-                  'aria-label': "Move this expense",
-                  data: { behavior: "modal_trigger", modal: "move_#{expense.id}", "expense-form-target": "move" } if policy(expense).update? %>
-        <button id="edit-or-save" class="pop pointer tooltipped tooltipped--w" data-expense-form-target="button" aria-label="<%= "This expense is locked. #{expense.report.closed? ? "" : "Mark it as a draft to edit."}" %>">
-          <% if expense.report.locked? %>
-            <%= inline_icon "private" %>
-          <% else %>
-            <%= inline_icon "checkmark", style: new ? nil : "display: none;" %>
-            <%= inline_icon "edit", style: new ? "display: none;" : nil %>
-          <% end %>
-        </button>
-        <%= pop_icon_to "delete",
-                  reimbursement_expense_path(expense.id),
-                  method: :delete,
-                  size: 24,
-                  class: "error tooltipped tooltipped--w",
-                  'aria-label': "Delete this expense",
-                  data: { turbo: true } if policy(expense).update? %>
-    </div>
-    <section class="grid grid--split">
-      <%= render partial: "reimbursement/expenses/form", locals: { expense:, new: } %>
-      <%= render partial: "reimbursement/expenses/receipts", locals: { expense: } %>
-    </section>
-  </article>
+          <%= pop_icon_to "enter",
+                    "#",
+                    size: 24,
+                    class: "purple tooltipped tooltipped--w",
+                    'aria-label': "Move this expense",
+                    data: { behavior: "modal_trigger", modal: "move_#{expense.id}", "expense-form-target": "move" } if policy(expense).update? %>
+          <button id="edit-or-save" class="pop pointer tooltipped tooltipped--w" data-expense-form-target="button" aria-label="<%= "This expense is locked. #{expense.report.closed? ? "" : "Mark it as a draft to edit."}" %>">
+            <% if expense.report.locked? %>
+              <%= inline_icon "private" %>
+            <% else %>
+              <%= inline_icon "checkmark", style: new ? nil : "display: none;" %>
+              <%= inline_icon "edit", style: new ? "display: none;" : nil %>
+            <% end %>
+          </button>
+          <%= pop_icon_to "delete",
+                    reimbursement_expense_path(expense.id),
+                    method: :delete,
+                    size: 24,
+                    class: "error tooltipped tooltipped--w",
+                    'aria-label': "Delete this expense",
+                    data: { turbo: true } if policy(expense).update? %>
+      </div>
+      <section class="grid grid--split">
+        <%= render partial: "reimbursement/expenses/form", locals: { expense:, new: } %>
+        <%= render partial: "reimbursement/expenses/receipts", locals: { expense: } %>
+      </section>
+    </article>
+    <div class="lightbox" data-expense-form-target="lightbox"></div>
+  </div>
   <section data-behavior="modal" role="dialog" id="move_<%= expense.id %>" class="modal modal--scroll bg-snow">
     <%= modal_header "Move Expense" %>
     <%= form_with(model: expense, class: "mb3 mt1", style: "max-width: 600px;", local: true, data: { turbo: false }) do |form| %>

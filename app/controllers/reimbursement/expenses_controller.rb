@@ -39,7 +39,6 @@ module Reimbursement
       if @expense.reimbursement_report_id != expense_params[:reimbursement_report_id]
         @expense.assign_attributes(expense_number: 0)
       end
-
       @expense.assign_attributes(expense_params.except(:event_id))
 
       authorize @expense # we authorize twice in case the reimbursement_report_id changes

@@ -9,6 +9,7 @@ export default class extends Controller {
     'memo',
     'memoField',
     'card',
+    'lightbox',
   ]
   static values = {
     enabled: { type: Boolean, default: false },
@@ -28,7 +29,7 @@ export default class extends Controller {
       if (this.enabledValue) {
         this.formTarget.requestSubmit()
       } else {
-        this.edit()
+        this.edit(e)
       }
     })
 
@@ -38,9 +39,10 @@ export default class extends Controller {
     this.#memoInput()
     this.#card()
     this.#move()
+    this.#lightbox()
   }
 
-  edit() {
+  edit(e) {
     if (this.enabledValue || this.lockedValue) return
     this.enabledValue = true
 
@@ -49,10 +51,15 @@ export default class extends Controller {
     this.#label()
     this.#card()
     this.#move()
+    this.#lightbox()
 
     for (const field of this.fieldTargets) {
       field.readOnly = false
       this.#removeTooltip(field)
+    }
+
+    if (e) {
+      e.target?.focus()
     }
   }
 
@@ -119,5 +126,18 @@ export default class extends Controller {
     const fieldWrapper = field.parentNode
     fieldWrapper.parentNode.insertBefore(field, fieldWrapper)
     fieldWrapper.remove()
+  }
+
+  #lightbox() {
+    if (this.enabledValue && !this.lockedValue) {
+      this.lightboxTarget.style.display = 'block'
+      this.cardTarget.style.position = 'relative'
+      this.cardTarget.style.zIndex = '2001'
+      document.querySelector('.app__sidebar').style.zIndex = '1'
+      this.lightboxTarget.addEventListener('click', e => {
+        e.preventDefault()
+        this.formTarget.requestSubmit()
+      })
+    }
   }
 }
