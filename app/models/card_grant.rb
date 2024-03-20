@@ -105,14 +105,20 @@ class CardGrant < ApplicationRecord
 
   def cancel!(canceled_by)
     if balance > 0
-      DisbursementService::Create.new(
+      custom_memo = "Cancelled: grant to #{user.name}"
+
+      disbursement = DisbursementService::Create.new(
         source_event_id: event_id,
         destination_event_id: event_id,
-        name: "Cancel of grant to #{user.email}",
+        name: custom_memo,
         amount: balance.amount,
         source_subledger_id: subledger_id,
         requested_by_id: canceled_by.id,
       ).run
+
+      disbursement.local_hcb_code.canonical_transactions.each { |ct| ct.update!(custom_memo:) }
+      disbursement.local_hcb_code.canonical_pending_transactions.each { |cpt| cpt.update!(custom_memo:) }
+
     end
 
     update!(status: :canceled)
