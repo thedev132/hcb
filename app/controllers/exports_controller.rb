@@ -25,7 +25,7 @@ class ExportsController < ApplicationController
       format.pdf do
         @start = (params[:start_date] || Date.today.prev_month).to_datetime.beginning_of_month
         if @start >= Date.today.beginning_of_month
-          flash[:error] = "Can not create an account statement for #{@start.strftime("%B %Y")}"
+          flash[:error] = "Can not create a financial statement for #{@start.strftime("%B %Y")}"
           redirect_back fallback_location: event_statements_path(@event) and return
         end
         @end = (params[:end_date] || @start).to_datetime.end_of_month
