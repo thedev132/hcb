@@ -4,6 +4,7 @@ module Api
   module V4
     module ApplicationHelper
       include UsersHelper # for `profile_picture_for`
+      include StripeAuthorizationsHelper
 
       attr_reader :current_user
 

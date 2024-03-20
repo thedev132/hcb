@@ -7,6 +7,7 @@ json.merchant do
   merchant_data = (stripe_transaction || stripe_authorization)["merchant_data"]
 
   json.name merchant_data["name"]
+  json.smart_name humanized_merchant_name(merchant_data) rescue nil
   json.country merchant_data["country"]
 end
 
