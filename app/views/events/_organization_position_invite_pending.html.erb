@@ -47,12 +47,12 @@
               <%= link_to change_position_role_organizer_position_invite_path(id: invite.id, to: role), data: { turbo_method: "post", turbo_frame: "_top" }, aria: { current: invite.role == role } do %>
                 <%= role.humanize %><%= " ✔" if invite.role == role %>
               <% end %>
-              <div class="menu__divider"></div>
-              <%= link_to "What do these mean?", roles_path %>
-            </div>
-          <% end %>
-        </div>
-      <% end %>
+            <% end %>
+            <div class="menu__divider"></div>
+            <%= link_to "What do these mean?", roles_path %>
+          </div>
+        <% end %>
+      </div>
     <% end %>
     by <%= invite.sender.full_name %>
   </div>
