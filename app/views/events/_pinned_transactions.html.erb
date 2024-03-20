@@ -11,11 +11,7 @@
             <% end %>
           <% end %>
 
-          <% if pin.hcb_code.ct %>
-            <%= render "canonical_transactions/icon", ct: pin.hcb_code.ct %>
-          <% else %>
-            <%= render "canonical_pending_transactions/icon", pt: pin.hcb_code.pt %>
-          <% end %>
+          <%= render "hcb_codes/icon", tx: pin.hcb_code.ct || pin.hcb_code.pt %>
 
           <p class="eyebrow mb1 mt1" style="font-weight: 900; opacity: 0.7">
             <%= pin.hcb_code.date.strftime("%b #{pin.hcb_code.date.day.ordinalize}, %Y") %> &bull; <%= render_money pin.hcb_code.amount_cents_by_event(@event) %>
