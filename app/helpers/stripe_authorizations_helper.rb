@@ -9,7 +9,7 @@ module StripeAuthorizationsHelper
   end
 
   def humanized_merchant_name(merchant)
-    lookup_merchant(merchant["network_id"]) || merchant["name"].humanize.capitalize
+    lookup_merchant(merchant["network_id"]) || merchant["name"].titleize
   end
 
   def lookup_merchant(network_id)
