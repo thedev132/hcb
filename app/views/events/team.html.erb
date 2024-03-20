@@ -14,7 +14,7 @@
       Email everyone
     <% end %>
 
-    <%= link_to event_cards_new_path(event_id: @event.slug), class: "btn bg-success", data: { behavior: "modal_trigger", modal: "invite_member" }, disabled: !organizer_signed_in?(as: :manager) do %>
+    <%= link_to new_event_organizer_position_invite_path(event_id: @event.slug), class: "btn bg-success", data: { behavior: "modal_trigger", modal: "invite_member" }, disabled: !organizer_signed_in?(as: :manager) do %>
       <%= inline_icon "member-add" %>
       Invite
     <% end %>
