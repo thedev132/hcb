@@ -31,13 +31,22 @@ module Reimbursement
     belongs_to :report, inverse_of: :expenses, foreign_key: "reimbursement_report_id", touch: true
     monetize :amount_cents
     validates :amount_cents, numericality: { greater_than_or_equal_to: 0 }
+    attribute :expense_number, :integer
     has_one :expense_payout
     has_one :event, through: :report
-    attribute :expense_number, :integer, default: 0
     include AASM
     include Receiptable
     include Hashid::Rails
     has_paper_trail
+    acts_as_paranoid
+
+    validates :expense_number, uniqueness: { scope: :reimbursement_report_id }
+
+    before_validation do
+      unless self.expense_number
+        self.expense_number = self.report.expenses.with_deleted.count + 1
+      end
+    end
 
     scope :complete, -> { where.not(memo: nil, amount_cents: 0) }
 
@@ -57,16 +66,6 @@ module Reimbursement
         after do
           ReimbursementMailer.with(report: self.report, expense: self).expense_unapproved.deliver_later
         end
-      end
-    end
-
-    validates :expense_number, uniqueness: { scope: :reimbursement_report_id }
-
-    before_validation do
-      if self.expense_number == 0
-        self.expense_number = self.report.expense_number + 1
-        self.report.expense_number += 1
-        self.report.save!
       end
     end
 

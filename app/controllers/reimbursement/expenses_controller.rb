@@ -36,8 +36,8 @@ module Reimbursement
     def update
       authorize @expense
 
-      if @expense.reimbursement_report_id != expense_params[:reimbursement_report_id]
-        @expense.assign_attributes(expense_number: 0)
+      if expense_params[:reimbursement_report_id] && @expense.reimbursement_report_id != expense_params[:reimbursement_report_id]
+        @expense.assign_attributes(expense_number: nil)
       end
       @expense.assign_attributes(expense_params.except(:event_id))
 
@@ -45,11 +45,11 @@ module Reimbursement
 
       if expense_params[:event_id].presence
         event = Event.friendly.find(expense_params[:event_id])
-        report = event.reimbursement_reports.build({ user: @expense.report.user, expense_number: 1 })
+        report = event.reimbursement_reports.build({ user: @expense.report.user })
         authorize report
         ActiveRecord::Base.transaction do
           report.save!
-          @expense.update!(reimbursement_report_id: report.id, expense_number: 1)
+          @expense.update!(reimbursement_report_id: report.id, expense_number: nil)
         end
       end
 
