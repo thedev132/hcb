@@ -4,6 +4,13 @@
       <%= render "documents/preview", document: %>
     </div>
     <strong class="brand-sans h3 block mt1 line-height-2"><%= document.name %></strong>
-    <%= user_mention document.user %>
+    <%= unless document.common? %>
+      <span class="inline-flex w-100 mt1 items-center muted">
+        <%= user_mention document.user %>
+        <span class="column right-align">
+          <%= document.updated_at.strftime("%b %d, %Y") %>
+        </span>
+      </span>
+    <% end %>
   </li>
 <% end %>
