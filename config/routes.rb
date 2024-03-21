@@ -55,6 +55,7 @@ Rails.application.routes.draw do
     get "settings/security", to: "users#edit_security"
     get "settings/admin", to: "users#edit_admin"
     get "inbox", to: "static_pages#my_inbox", as: :my_inbox
+    get "receipt_bin/suggested_pairings", to: "static_pages#suggested_pairings", as: :suggested_pairings
     get "reimbursements", to: "static_pages#my_reimbursements", as: :my_reimbursements
     get "draft_reimbursements_icon", to: "static_pages#my_draft_reimbursements_icon", as: :my_draft_reimbursements_icon
     post "receipts/upload", to: "static_pages#receipt", as: :my_receipts_upload

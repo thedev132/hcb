@@ -236,6 +236,10 @@ class User < ApplicationRecord
     self.mailbox_addresses.activated.first
   end
 
+  def receipt_bin
+    User::ReceiptBin.new(self)
+  end
+
   def transactions_missing_receipt
     @transactions_missing_receipt ||= begin
       user_cards = stripe_cards.includes(:event) + emburse_cards.includes(:emburse_transactions)

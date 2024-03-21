@@ -468,6 +468,23 @@ document.addEventListener("turbo:load", () => {
   }
 })
 
+document.addEventListener("turbo:before-stream-render", ((event) => {
+  const fallbackToDefaultActions = event.detail.render
+  event.detail.render = function (streamElement) {
+    if (streamElement.action == "refresh_link_modals") {
+      const turboStreamElements = document.querySelectorAll('turbo-frame');
+      turboStreamElements.forEach(element => {
+        if (element.id.startsWith('link_modal')) {
+          element.innerHTML = "<strong>Loading...</strong>"
+          element.reload();
+        }
+      });
+    } else {
+      fallbackToDefaultActions(streamElement)
+    }
+  }
+}))
+
 let hankIndex = 0
 $(document).on('keydown', function (e) {
   if (e.originalEvent.key === 'hank'[hankIndex]) {

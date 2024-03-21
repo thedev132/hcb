@@ -135,14 +135,14 @@ module ApplicationHelper
     end
   end
 
-  def carousel(content, &block)
-    content_tag :div, class: "carousel", data: { "controller": "carousel", "carousel-target": "carousel", "carousel-slide-value": "0", "carousel-length-value": content.length.to_s } do
+  def carousel(content, current_slide, &block)
+    content_tag :div, class: "carousel", data: { "controller": "carousel", "carousel-target": "carousel", "carousel-slide-value": current_slide.to_s, "carousel-length-value": content.length.to_s } do
       (content_tag :button, class: "carousel__button carousel__button--left pop", data: { "carousel-target": "left" } do
         inline_icon "view-back", size: 40
       end) +
         (content_tag :div, class: "carousel__items" do
           (content.map.with_index do |item, index|
-            content_tag :div, class: "carousel__item #{index == 0 ? 'carousel__item--active' : ''}" do
+            content_tag :div, class: "carousel__item #{index == current_slide ? 'carousel__item--active' : ''}" do
               block.call(item, index)
             end
           end).join.html_safe

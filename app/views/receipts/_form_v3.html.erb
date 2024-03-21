@@ -1,113 +1,137 @@
 <% instance = local_assigns.__id__ %>
-<div class="<%= "mb3" if defined?(include_spacing) %>">
-  <%= form_with model: nil, url: receipts_path, method: :post, class: "flex flex-column justify-center#{" my-inbox-dropzone" if defined?(restricted_dropzone)}", data: {
-        controller: "file-drop form",
-        action: "
-          dragover#{"@window" unless defined?(restricted_dropzone)}->file-drop#dragover
-          drop#{"@window" unless defined?(restricted_dropzone)}->file-drop#drop
-          dragenter#{"@window" unless defined?(restricted_dropzone)}->file-drop#dragenter
-          dragleave#{"@window" unless defined?(restricted_dropzone)}->file-drop#dragleave
-        ",
-        "file-drop-target" => ("dropzone" if defined?(restricted_dropzone)),
-        "file-drop-title-value" => defined?(restricted_dropzone) ? "Drop to add to Receipt Bin." : "Drop to instantly add a receipt."
-      }.compact do |form| %>
-    <div class="card <%= "mt2" if defined?(include_spacing) %> flex flex-column<%= " pt0" if defined?(show_banner) && defined?(receiptable) && (receiptable.receipts.any? || receiptable.no_or_lost_receipt?) %>" id="link_receipt_<%= instance %>_form">
-      <% if defined?(show_banner) %>
-        <% if defined?(receiptable) && receiptable.receipts.any? %>
-          <p class="card__banner bg-success white bold flex items-center mt0 mb2">
-            <%= inline_icon "checkmark", size: 24, class: "mr2" %>
-            <%= pluralize receiptable.receipts.count, "receipt" %>
-            added
-          </p>
-        <% elsif defined?(receiptable) && receiptable.no_or_lost_receipt? %>
-          <p class="card__banner bg-muted white bold flex items-center mt0 mb2">
-            <%= inline_icon "view-close", size: 24, class: "mr2" %>
-            Marked no/lost receipt
-          </p>
-        <% end %>
-      <% end %>
-      <div class="container container--md pt2">
+<div id="receipt_upload_form">
+  <div class="<%= "mb3" if defined?(include_spacing) %>" style="position: relative;">
+    <%= form_with model: nil, url: receipts_path, method: :post, remote: true, class: "flex flex-column justify-center#{" my-inbox-dropzone" if defined?(restricted_dropzone)}", data: {
+          turbo: defined?(turbo) ? turbo : "false",
+          controller: "file-drop form",
+          action: "
+            dragover#{"@window" unless defined?(restricted_dropzone)}->file-drop#dragover
+            drop#{"@window" unless defined?(restricted_dropzone)}->file-drop#drop
+            dragenter#{"@window" unless defined?(restricted_dropzone)}->file-drop#dragenter
+            dragleave#{"@window" unless defined?(restricted_dropzone)}->file-drop#dragleave
+          ",
+          "file-drop-target" => ("dropzone" if defined?(restricted_dropzone)),
+          "file-drop-title-value" => defined?(restricted_dropzone) ? "Drop to add to Receipt Bin." : "Drop to instantly add a receipt."
+        }.compact, html: {
+          onsubmit: "
+            const button = $('#upload-receipt-button', this);
+            $('span', button).text('Uploading...');
+            button.attr('disabled', 'disabled');
+          "
+        } do |form| %>
 
-        <% if local_assigns[:redirect_url] %>
-          <%= form.hidden_field :redirect_url, value: local_assigns[:redirect_url] %>
-        <% end %>
-        <%= (form.hidden_field :receiptable_type, value: receiptable.class) if defined?(receiptable) %>
-        <%= (form.hidden_field :receiptable_id, value: receiptable.id) if defined?(receiptable) %>
-        <%= (form.hidden_field :popover, value: local_assigns[:popover]) %>
-        <%= (form.hidden_field :show_link, value: true) if defined?(inline_linking) %>
-        <%= form.hidden_field :upload_method, value: upload_method, data: { "file-drop-target" => "uploadMethod" } %>
-        <%= (form.hidden_field :s, value: secret) if defined?(secret) %>
-
-        <%= form.file_field :file,
-                            multiple: true,
-                            include_hidden: false,
-                            required: true,
-                            class: "display-none",
-                            accept: "image/*,image/heic,.pdf",
-                            data: {
-                              "file-drop-target" => "fileInput",
-                              "action"           => "change->form#submit"
-                            } %>
-        <span class="flex items-center justify-center flex-row flex-wrap" style="margin: -8px;">
-          <%= form.label :file, class: "btn m1" do %>
-            <%= inline_icon "share" %>
-            <% if defined?(photo_upload_button) %>
-              <span class="md-hide lg-hide">Take photo</span>
-              <span class="xs-hide sm-hide">Upload photo</span>
-            <% else %>
-              <span>Upload receipt</span>
-            <% end %>
+      <div class="card <%= "mt2" if defined?(include_spacing) %> flex flex-column<%= " pt0" if defined?(show_banner) && defined?(receiptable) && (receiptable.receipts.any? || receiptable.no_or_lost_receipt?) %>" id="link_receipt_<%= instance %>_form">
+        <% if defined?(show_banner) %>
+          <% if defined?(receiptable) && receiptable.receipts.any? %>
+            <p class="card__banner bg-success white bold flex items-center mt0 mb2">
+              <%= inline_icon "checkmark", size: 24, class: "mr2" %>
+              <%= pluralize receiptable.receipts.count, "receipt" %>
+              added
+            </p>
+          <% elsif defined?(receiptable) && receiptable.no_or_lost_receipt? %>
+            <p class="card__banner bg-muted white bold flex items-center mt0 mb2">
+              <%= inline_icon "view-close", size: 24, class: "mr2" %>
+              Marked no/lost receipt
+            </p>
           <% end %>
-          <% if Flipper.enabled?(:receipt_bin_2023_04_07, current_user) %>
-            <% if defined?(enable_linking) %>
+        <% end %>
+        <div class="container container--md pt2">
 
-              <%= link_to my_receipts_upload_path(current_user), class: "btn bg-primary m1", data: defined?(inline_linking) ? nil : { behavior: "modal_trigger", modal: "link_receipt_#{instance}" }, onclick: defined?(inline_linking) ? "event.preventDefault(); $('#link_receipt_#{instance}_select').show(); $('#link_receipt_#{instance}_form').hide();" : "" do %>
-                <%= inline_icon "payment-docs" %>
-                <span>Select from Receipt Bin</span>
+          <% if local_assigns[:redirect_url] %>
+            <%= form.hidden_field :redirect_url, value: local_assigns[:redirect_url] %>
+          <% end %>
+          <%= (form.hidden_field :receiptable_type, value: receiptable.class) if defined?(receiptable) %>
+          <%= (form.hidden_field :receiptable_id, value: receiptable.id) if defined?(receiptable) %>
+          <%= (form.hidden_field :popover, value: local_assigns[:popover]) %>
+          <%= (form.hidden_field :show_link, value: true) if defined?(inline_linking) %>
+          <%= form.hidden_field :upload_method, value: upload_method, data: { "file-drop-target" => "uploadMethod" } %>
+          <%= (form.hidden_field :s, value: secret) if defined?(secret) %>
+
+          <%= form.file_field :file,
+                              multiple: true,
+                              include_hidden: false,
+                              required: true,
+                              class: "display-none",
+                              accept: "image/*,image/heic,.pdf",
+                              direct_upload: true,
+                              data: {
+                                "file-drop-target" => "fileInput",
+                                "action"           => "change->form#submit"
+                              } %>
+          <span class="flex items-center justify-center flex-row flex-wrap" style="margin: -8px;">
+            <%= form.label :file, class: "btn m1 #{"bg-success" if local_assigns[:success]} #{"bg-error" if local_assigns[:error]}", id: "upload-receipt-button" do %>
+              <%= inline_icon "share" %>
+              <% if defined?(photo_upload_button) %>
+                <span class="md-hide lg-hide">Take photo</span>
+                <span class="xs-hide sm-hide">Upload photo</span>
+              <% else %>
+                <% if local_assigns[:success] || local_assigns[:error] %>
+                  <span id="upload-receipt-button-text"><%= local_assigns[:success] || local_assigns[:error] %></span>
+                  <script>
+                    // JavaScript to revert changes after 2 seconds
+                    if (document.getElementById("upload-receipt-button") && document.getElementById("upload-receipt-button-text")) {
+                      setTimeout(function() {
+                        document.getElementById("upload-receipt-button-text").innerHTML = 'Upload receipt';
+                        document.getElementById("upload-receipt-button").classList.remove("bg-success", "bg-error");
+                      }, 2000);
+                    }
+                  </script>
+                <% else %>
+                  <span>Upload receipt</span>
+                <% end %>
               <% end %>
             <% end %>
-          <% end %>
-        </span>
+            <% if Flipper.enabled?(:receipt_bin_2023_04_07, current_user) %>
+              <% if defined?(enable_linking) %>
 
-        <p class="center muted">Or drag & drop your receipt here</p>
+                <%= link_to my_receipts_upload_path(current_user), class: "btn bg-primary m1", data: defined?(inline_linking) ? nil : { behavior: "modal_trigger", modal: "link_receipt_#{instance}" }, onclick: defined?(inline_linking) ? "event.preventDefault(); $('#link_receipt_#{instance}_select').show(); $('#link_receipt_#{instance}_form').hide();" : "" do %>
+                  <%= inline_icon "payment-docs" %>
+                  <span>Select from Receipt Bin</span>
+                <% end %>
+              <% end %>
+            <% end %>
+          </span>
+
+          <p class="center muted">Or drag & drop your receipt here</p>
+        </div>
       </div>
-    </div>
-    <% if defined?(enable_linking) && defined?(receiptable) && defined?(inline_linking) %>
-      <section class="card pt0 mt2" id="link_receipt_<%= instance %>_select" style="display: none;">
-        <header class="pb2" style="z-index: 1000;<% if local_assigns[:popover] %> padding-top: 1rem;<% end %>">
-          <%= pop_icon_to "view-close", nil, class: "modal__close muted m1", tabindex: 0, onclick: "event.preventDefault(); $('#link_receipt_#{instance.to_json}_select').hide(); $('#link_receipt_#{instance.to_json}_form').show();" %>
-          <h2 class="h1 mt0 mb0 pb0 border-none">Select receipt</h2>
-        </header>
-        <%= async_frame_to link_modal_receipts_path(receiptable_type: receiptable.class, receiptable_id: receiptable.id, popover: local_assigns[:popover]), as: :span do %>
-          <img style="display: none;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" onload="let e = this.parentElement; $.get($(e).data('src'), data => $(e).replaceWith(data));">  <!-- This inline JS is needed to load an async frame that enters the DOM after the initial page load. -->
+      <% if defined?(enable_linking) && defined?(receiptable) && defined?(inline_linking) %>
+        <section class="card pt0 mt2" id="link_receipt_<%= instance %>_select" style="display: none;">
+          <header class="pb2" style="z-index: 1000;<% if local_assigns[:popover] %> padding-top: 1rem;<% end %>">
+            <%= pop_icon_to "view-close", nil, class: "modal__close muted m1", tabindex: 0, onclick: "event.preventDefault(); $('#link_receipt_#{instance.to_json}_select').hide(); $('#link_receipt_#{instance.to_json}_form').show();" %>
+            <h2 class="h1 mt0 mb0 pb0 border-none">Select receipt</h2>
+          </header>
+          <%= async_frame_to link_modal_receipts_path(receiptable_type: receiptable.class, receiptable_id: receiptable.id, popover: local_assigns[:popover]), as: :span do %>
+            <img style="display: none;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" onload="let e = this.parentElement; $.get($(e).data('src'), data => $(e).replaceWith(data));">  <!-- This inline JS is needed to load an async frame that enters the DOM after the initial page load. -->
+            <strong>Loading...</strong>
+          <% end %>
+        </section>
+      <% end %>
+
+    <% end %>
+
+    <% if defined?(receiptable) && receiptable.missing_receipt? %>
+      <div class="flex muted justify-end items-center mt1">
+        <%= inline_icon "forbidden", size: 20 %>
+        <%= link_to receiptable_mark_no_or_lost_path(receiptable_type: receiptable.class, receiptable_id: receiptable.id), method: :post do %>
+          <small class="mt0 mb0">
+            No/lost receipt?
+          </small>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+
+  <hr>
+
+  <% if Flipper.enabled?(:receipt_bin_2023_04_07, current_user) %>
+    <% if defined?(enable_linking) && defined?(receiptable) && !defined?(inline_linking) %>
+      <section class="modal modal--huge modal--scroll bg-snow" data-behavior="modal" role="dialog" id="link_receipt_<%= instance %>">
+        <%= modal_header "Select receipt" %>
+        <%= async_frame_to link_modal_receipts_path(receiptable_type: receiptable.class, receiptable_id: receiptable.id, streams: defined?(turbo) ? turbo : "false"), as: :span do %>
           <strong>Loading...</strong>
         <% end %>
       </section>
     <% end %>
-
-  <% end %>
-
-  <% if defined?(receiptable) && receiptable.missing_receipt? %>
-    <div class="flex muted justify-end items-center mt1">
-      <%= inline_icon "forbidden", size: 20 %>
-      <%= link_to receiptable_mark_no_or_lost_path(receiptable_type: receiptable.class, receiptable_id: receiptable.id), method: :post do %>
-        <small class="mt0 mb0">
-          No/lost receipt?
-        </small>
-      <% end %>
-    </div>
   <% end %>
 </div>
-
-<hr>
-
-<% if Flipper.enabled?(:receipt_bin_2023_04_07, current_user) %>
-  <% if defined?(enable_linking) && defined?(receiptable) && !defined?(inline_linking) %>
-    <section class="modal modal--huge modal--scroll bg-snow" data-behavior="modal" role="dialog" id="link_receipt_<%= instance %>">
-      <%= modal_header "Select receipt" %>
-      <%= async_frame_to link_modal_receipts_path(receiptable_type: receiptable.class, receiptable_id: receiptable.id), as: :span do %>
-        <strong>Loading...</strong>
-      <% end %>
-    </section>
-  <% end %>
-<% end %>

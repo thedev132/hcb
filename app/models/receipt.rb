@@ -49,7 +49,9 @@ class Receipt < ApplicationRecord
 
   after_create_commit do
     # Queue async job to extract text from newly upload receipt
+    # and to suggest pairings
     ReceiptJob::ExtractTextualContent.perform_later(self)
+    ReceiptJob::SuggestPairings.perform_later(self)
   end
   validate :has_owner
 

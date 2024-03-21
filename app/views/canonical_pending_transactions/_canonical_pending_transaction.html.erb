@@ -98,8 +98,8 @@
   </td>
   <% if local_assigns[:receipt_upload_button] %>
     <td style="width: 1%">
-      <% if pt.local_hcb_code.missing_receipt? %>
-        <%= form_with url: receipts_path, data: { controller: "form", "file-drop-target" => "form" } do |form| %>
+      <% if pt.local_hcb_code.missing_receipt? || !local_assigns[:updated_via_turbo_stream] %>
+        <%= form_with url: receipts_path, data: { controller: "form", "file-drop-target" => "form", "turbo" => true } do |form| %>
           <%= form.file_field :file, id: "file_#{pt.local_hcb_code.hashid}", multiple: true, include_hidden: false, required: true, class: "display-none", data: { action: "change->form#submit", "file-drop-target" => "fileInput" } %>
           <%= form.hidden_field :redirect_url, value: @card_grant ? card_grant_path(@card_grant) : my_inbox_path %>
           <% unless @card_grant.present? %>
@@ -122,13 +122,18 @@
             <% end %>
           </div>
         <% end %>
+      <% else %>
+        <div class="btn bg-success" style="font-size: 0.875rem; font-weight: 600; padding: 0.25rem 1rem; width: 100%">
+          <%= inline_icon "attachment", size: 14 %>
+          <span>Uploaded Successfully</span>
+        </div>
       <% end %>
     </td>
 
     <% if Flipper.enabled?(:receipt_bin_2023_04_07, current_user) %>
       <section class="modal modal--huge modal--scroll bg-snow" data-behavior="modal" role="dialog" id="link_receipt_<%= instance %>">
         <%= modal_header "Select receipt" %>
-        <%= async_frame_to link_modal_receipts_path(receiptable_type: "HcbCode", receiptable_id: pt.local_hcb_code.id), as: :span do %>
+        <%= turbo_frame_tag "link_modal_#{pt.local_hcb_code.id}", src: link_modal_receipts_path(receiptable_type: "HcbCode", receiptable_id: pt.local_hcb_code.id), turbo_frame: "_top" do %>
           <strong>Loading...</strong>
         <% end %>
       </section>

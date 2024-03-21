@@ -84,8 +84,8 @@
       <% if defined?(show_delete_button) %>
         <%= pop_icon_to "view-close",
             receipt_path(receipt, popover: local_assigns[:popover]),
-            method: :delete,
-            data: { behavior: "modal_ignore" },
+            method: !local_assigns[:turbo_for_deletion] ? :delete : nil,
+            data: { behavior: "modal_ignore", turbo: local_assigns[:turbo_for_deletion] ? "true" : "false", "turbo-method": "delete" },
             size: 24,
             class: "error tooltipped tooltipped--w",
             'aria-label': "Delete this receipt" %>

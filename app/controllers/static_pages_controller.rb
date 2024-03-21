@@ -89,19 +89,8 @@ class StaticPagesController < ApplicationController
 
     if Flipper.enabled?(:receipt_bin_2023_04_07, current_user)
       @mailbox_address = current_user.active_mailbox_address
-
       @receipts = Receipt.in_receipt_bin.where(user: current_user)
-
-      # Don't suggest receipts ignored more than twice
-      ineligible_receipt_ids = SuggestedPairing.ignored.group("receipt_id").having("COUNT(*) >= 2").pluck(:receipt_id)
-
-      @pairings = SuggestedPairing
-                  .unreviewed
-                  .where(receipt_id: @receipts.ids - ineligible_receipt_ids)
-                  .where("distance <= ?", 1500) # With at least a certain confidence level
-                  # Only get the closest pairing for each receipt
-                  .order(:receipt_id, distance: :asc)
-                  .select("DISTINCT ON (receipt_id) suggested_pairings.*")
+      @pairings = current_user.receipt_bin.suggested_receipt_pairings
     end
 
     if flash[:popover]
