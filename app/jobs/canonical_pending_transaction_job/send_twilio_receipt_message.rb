@@ -22,7 +22,7 @@ module CanonicalPendingTransactionJob
       hcb_code = @cpt.local_hcb_code
       message = "Your card was charged $#{@cpt.amount.abs} at '#{@cpt.memo}'."
       if hcb_code.receipt_required? && Flipper.enabled?(:receipt_bin_2023_04_07, @user)
-        message += " Upload your receipt to this transaction at #{attach_receipt_url hcb_code} or to your Receipt Bin by replying with an image."
+        message += " To attach a receipt, text us a image in the next five minutes, or upload one to #{attach_receipt_url hcb_code}."
       elsif hcb_code.receipt_required?
         message += " Upload your receipt to this transaction at #{attach_receipt_url hcb_code}."
       end

@@ -21,14 +21,24 @@ class TwilioController < ActionController::Base
       If you're looking for HCB support, please reach out to hcb@hackclub.com.
     MSG
 
+    receiptable = nil
+
+    if last_sent_message_hcb_code && last_sent_message_hcb_code.cpt.created_at > 5.mins.ago
+      receiptable = last_sent_message_hcb_code
+    end
+
     receipts = ::ReceiptService::Create.new(
-      receiptable: nil,
+      receiptable:,
       uploader: @user,
       attachments: @attachments,
       upload_method: "sms"
     ).run!
 
-    reply_with("Added #{receipts.count} #{"receipt".pluralize(receipts.count)} to your Receipt Bin (https://hcb.hackclub.com/my/inbox)!")
+    if receiptable
+      reply_with("Attached #{receipts.count} #{"receipt".pluralize(receipts.count)} to #{receiptable.memo} (#{hcb_code_url(receiptable)})!")
+    else
+      reply_with("Added #{receipts.count} #{"receipt".pluralize(receipts.count)} to your Receipt Bin (https://hcb.hackclub.com/my/inbox)!")
+    end
   end
 
   private
