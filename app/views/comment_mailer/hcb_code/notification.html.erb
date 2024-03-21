@@ -1,7 +1,17 @@
 <% hcb_code = @commentable %>
 
-<%= @comment.user.name %> has left a comment on <i><%= hcb_code.memo %></i> in <i><%= hcb_code.event.name %></i>:
+<% if @comment.content? %>
 
-<blockquote><%== MarkdownService.instance.renderer.render @comment.content %></blockquote>
+  <%= @comment.user.name %> has left a comment on <%= "and attached a file to" if @comment.file %> <i><%= hcb_code.memo %></i> in <i><%= hcb_code.event.name %></i>:
 
-<%= link_to "Click here to view and reply to the comment on HCB.", "#{hcb_code_url(hcb_code)}#comment-#{@comment.hashid}" %>
+  <blockquote><%== MarkdownService.instance.renderer.render @comment.content %></blockquote>
+
+  <%= link_to "Click here to view and reply to the comment on HCB.", "#{hcb_code_url(hcb_code)}#comment-#{@comment.hashid}" %>
+
+<% else %>
+
+ <%= @comment.user.name %> has attached a file to <i><%= hcb_code.memo %></i> in <i><%= hcb_code.event.name %></i>.
+
+ <%= link_to "Click here to view and reply to the comment on HCB.", "#{hcb_code_url(hcb_code)}#comment-#{@comment.hashid}" %>
+
+<% end %>
