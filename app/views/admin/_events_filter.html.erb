@@ -37,6 +37,11 @@
   <%= form.select :transparent, [["Both", "both"], ["Not Transparent", "not_transparent"], ["Transparent", "transparent"]], selected: @transparent %>
 <% end %>
 |
+<%= form.label :fee do %>
+  Current Fee
+  <%= form.select :fee, Event.unscoped.select(:sponsorship_fee).distinct.pluck(:sponsorship_fee).sort, { include_blank: "all", selected: @fee } %>
+<% end %>
+|
 <%= form.label :omitted do %>
   Omitted
   <%= form.select :omitted, [["Both", "both"], ["Not Omitted", "not_omitted"], ["Omitted", "omitted"]], selected: @omitted %>
