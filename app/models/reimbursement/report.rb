@@ -6,6 +6,7 @@
 #
 #  id                         :bigint           not null, primary key
 #  aasm_state                 :string
+#  deleted_at                 :datetime
 #  expense_number             :integer          default(0), not null
 #  invite_message             :text
 #  maximum_amount_cents       :integer
@@ -58,6 +59,8 @@ module Reimbursement
     include AASM
     include Commentable
     include Hashid::Rails
+
+    acts_as_paranoid
 
     after_create_commit do
       ReimbursementMailer.with(report: self).invitation.deliver_later if inviter != user
