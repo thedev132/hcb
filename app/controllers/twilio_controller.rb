@@ -23,7 +23,7 @@ class TwilioController < ActionController::Base
 
     receiptable = nil
 
-    if last_sent_message_hcb_code && last_sent_message_hcb_code.pt.created_at > 5.mins.ago
+    if last_sent_message_hcb_code && last_sent_message_hcb_code.pt.created_at > 5.minutes.ago
       receiptable = last_sent_message_hcb_code
     end
 
