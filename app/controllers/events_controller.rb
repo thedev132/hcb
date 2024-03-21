@@ -730,6 +730,7 @@ class EventsController < ApplicationController
       :can_front_balance,
       :emburse_department_id,
       :country,
+      :postal_code,
       :category,
       :club_airtable_id,
       :point_of_contact_id,

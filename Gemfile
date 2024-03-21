@@ -134,6 +134,7 @@ gem "chronic" # time/date parsing
 gem "rinku", require: "rails_rinku" # auto-linking URLs in text
 
 gem "geocoder" # lookup lat/lng for Stripe Cards shipment tracking
+gem "validates_zipcode" # validation for event's zip codes
 
 gem "rqrcode" # QR code generation
 

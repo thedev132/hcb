@@ -773,6 +773,8 @@ GEM
     unicode-display_width (2.4.2)
     validates_email_format_of (1.7.2)
       i18n
+    validates_zipcode (0.5.2)
+      activemodel (>= 4.2.0)
     web-console (4.2.1)
       actionview (>= 6.0.0)
       activemodel (>= 6.0.0)
@@ -915,6 +917,7 @@ DEPENDENCIES
   turbo-rails (~> 1.4)
   twilio-ruby
   validates_email_format_of
+  validates_zipcode
   web-console (>= 3.3.0)
   webauthn (~> 3.0)
   wicked_pdf

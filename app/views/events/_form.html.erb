@@ -284,6 +284,11 @@
     </div>
 
     <div class="field">
+      <%= form.label :postal_code %>
+      <%= form.text_field :postal_code, placeholder: "90069" %>
+    </div>
+
+    <div class="field">
       <%= form.label :country %>
       <%= form.collection_select :country, Event.countries_for_select, :first, :last, { include_blank: "Select a country" } %>
     </div>

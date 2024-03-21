@@ -328,6 +328,7 @@ class Event < ApplicationRecord
   validates :website, format: URI::DEFAULT_PARSER.make_regexp(%w[http https]), if: -> { website.present? }
 
   validates :sponsorship_fee, numericality: { in: 0..0.5, message: "must be between 0 and 0.5" }
+  validates :postal_code, zipcode: { country_code_attribute: :country, message: "is not valid" }, allow_nil: true
 
   before_create { self.increase_account_id ||= IncreaseService::AccountIds::FS_MAIN }
 

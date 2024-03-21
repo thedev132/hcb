@@ -729,6 +729,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_20_282456) do
     t.date "owner_birthdate"
     t.string "webhook_url"
     t.integer "country"
+    t.string "postal_code"
     t.boolean "holiday_features", default: true, null: false
     t.string "custom_css_url"
     t.integer "category"
