@@ -6,7 +6,7 @@ module HasAttachments
   included do
     private
 
-    def set_attachments
+    def set_attachments(include_body: true)
       files = mail.attachments.map do |atta|
         {
           io: StringIO.new(atta.decoded),
@@ -17,7 +17,7 @@ module HasAttachments
 
       return @attachments = files if files.any?
 
-      if (content = html || text || body)
+      if (content = html || text || body) && include_body
         @attachments = [{
           io: StringIO.new(WickedPdf.new.pdf_from_string(content, encoding: "UTF-8")),
           content_type: "application/pdf",

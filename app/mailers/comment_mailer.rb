@@ -11,7 +11,7 @@ class CommentMailer < ApplicationMailer
 
     mail_settings = {
       bcc: @commentable.comment_recipients_for(@comment),
-      reply_to: @comment.user.email,
+      reply_to: "comments+#{@comment.public_id}@hcb.hackclub.com",
       subject: @commentable.comment_mailer_subject,
       template_path: "comment_mailer/#{@commentable.class.name.underscore}",
       from: email_address_with_name("hcb@hackclub.com", "#{@comment.user.name} via HCB")

@@ -7,6 +7,8 @@ class ApplicationMailbox < ActionMailbox::Base
   # ie. "receipts+hcb-123abc@hcb.hackclub.com" for HcbCodes
   routing /^receipts\+/i => :hcb_code
 
+  routing /^comments\+/i => :comment
+
   # ie. "animal.1234" for Users
   routing /#{MailboxAddress::VALIDATION_REGEX}/i => :receipt_bin
 
