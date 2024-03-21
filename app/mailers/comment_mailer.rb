@@ -9,10 +9,6 @@ class CommentMailer < ApplicationMailer
 
     return unless @comment.content || @comment.file
 
-    if @comment.file
-      attachments[@comment.file.filename.to_s] = @comment.file.download
-    end
-
     mail_settings = {
       bcc: @commentable.comment_recipients_for(@comment),
       reply_to: @comment.user.email,
