@@ -1159,6 +1159,7 @@ class AdminController < ApplicationController
       @category = params[:category].present? ? params[:category] : "all"
     end
     @point_of_contact_id = params[:point_of_contact_id].present? ? params[:point_of_contact_id] : "all"
+    @fee = params[:fee].present? ? params[:fee] : "all"
     if params[:country] == 9999.to_s
       @country = 9999
     else
@@ -1186,6 +1187,7 @@ class AdminController < ApplicationController
     relation = relation.demo_mode if @demo_mode == "demo"
     relation = relation.not_demo_mode if @demo_mode == "full"
     relation = relation.joins(:canonical_transactions).where("canonical_transactions.date >= ?", @activity_since_date) if @activity_since_date.present?
+    relation = relation.where("sponsorship_fee = ?", @fee) if @fee != "all"
     if @category == "none"
       relation = relation.where(category: nil)
     elsif @category != "all"
