@@ -95,19 +95,20 @@
           <p class="center muted">Or drag & drop your receipt here</p>
         </div>
       </div>
-      <% if defined?(enable_linking) && defined?(receiptable) && defined?(inline_linking) %>
-        <section class="card pt0 mt2" id="link_receipt_<%= instance %>_select" style="display: none;">
-          <header class="pb2" style="z-index: 1000;<% if local_assigns[:popover] %> padding-top: 1rem;<% end %>">
-            <%= pop_icon_to "view-close", nil, class: "modal__close muted m1", tabindex: 0, onclick: "event.preventDefault(); $('#link_receipt_#{instance.to_json}_select').hide(); $('#link_receipt_#{instance.to_json}_form').show();" %>
-            <h2 class="h1 mt0 mb0 pb0 border-none">Select receipt</h2>
-          </header>
-          <%= async_frame_to link_modal_receipts_path(receiptable_type: receiptable.class, receiptable_id: receiptable.id, popover: local_assigns[:popover]), as: :span do %>
-            <img style="display: none;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" onload="let e = this.parentElement; $.get($(e).data('src'), data => $(e).replaceWith(data));">  <!-- This inline JS is needed to load an async frame that enters the DOM after the initial page load. -->
-            <strong>Loading...</strong>
-          <% end %>
-        </section>
-      <% end %>
 
+    <% end %>
+
+    <% if defined?(enable_linking) && defined?(receiptable) && defined?(inline_linking) %>
+      <section class="card pt0 mt2" id="link_receipt_<%= instance %>_select" style="display: none;">
+        <header class="pb2" style="z-index: 1000;<% if local_assigns[:popover] %> padding-top: 1rem;<% end %>">
+          <%= pop_icon_to "view-close", nil, class: "modal__close muted m1", tabindex: 0, onclick: "event.preventDefault(); $('#link_receipt_#{instance.to_json}_select').hide(); $('#link_receipt_#{instance.to_json}_form').show();" %>
+          <h2 class="h1 mt0 mb0 pb0 border-none">Select receipt</h2>
+        </header>
+        <%= async_frame_to link_modal_receipts_path(receiptable_type: receiptable.class, receiptable_id: receiptable.id, popover: local_assigns[:popover], streams: defined?(turbo) ? turbo : "false"), as: :span do %>
+          <img style="display: none;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" onload="let e = this.parentElement; $.get($(e).data('src'), data => $(e).replaceWith(data));">  <!-- This inline JS is needed to load an async frame that enters the DOM after the initial page load. -->
+          <strong>Loading...</strong>
+        <% end %>
+      </section>
     <% end %>
 
     <% if defined?(receiptable) && receiptable.missing_receipt? %>
