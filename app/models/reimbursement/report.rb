@@ -121,6 +121,9 @@ module Reimbursement
     end
 
     def status_text
+      return "Pending" if reimbursement_requested?
+      return "Approved" if reimbursement_approved?
+
       aasm_state.humanize.titleize
     end
 

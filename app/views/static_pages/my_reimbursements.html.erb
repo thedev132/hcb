@@ -73,11 +73,10 @@
       <thead>
       <tr>
         <th>Status</th>
-        <th>Report Name</th>
+        <th>Report</th>
         <th>Event</th>
         <th>Amount</th>
         <th>Created</th>
-        <th></th>
       </tr>
       </thead>
       <tbody>
@@ -86,10 +85,10 @@
             <td>
                <span class="ml0 badge bg-<%= report.status_color %>"><%= report.status_text %></span>
             </td>
-            <td>
-              <%= report.name %>
+            <td style="max-width: 350px; overflow: hidden; text-overflow: ellipsis;">
+              <%= link_to report.name, report %>
             </td>
-            <td>
+            <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis;">
                <%= report.event.name %>
             </td>
             <td>
@@ -97,9 +96,6 @@
             </td>
             <td>
                <%= format_date report.created_at %>
-            </td>
-            <td>
-               <%= link_to "View", report %>
             </td>
           </tr>
         <% end %>
