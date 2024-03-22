@@ -196,13 +196,23 @@ class ReceiptsController < ApplicationController
   def generate_streams
     streams = []
 
-    streams.append(
-      turbo_stream.replace(
-        "suggested_pairings",
-        partial: "static_pages/suggested_pairings",
-        locals: { pairings: current_user.receipt_bin.suggested_receipt_pairings, current_slide: 0 }
+    if current_user
+      streams.append(
+        turbo_stream.replace(
+          "suggested_pairings",
+          partial: "static_pages/suggested_pairings",
+          locals: { pairings: current_user.receipt_bin.suggested_receipt_pairings, current_slide: 0 }
+        )
       )
-    )
+      streams.append(
+        turbo_stream.replace(
+          "receipts_blankslate",
+          partial: "receipts/blankslate", locals: {
+            count: Receipt.in_receipt_bin.where(user: current_user).count
+          }
+        )
+      )
+    end
 
     if @receiptable
       if @receiptable.canonical_transactions&.any?
@@ -229,15 +239,6 @@ class ReceiptsController < ApplicationController
     end
 
     streams.append(turbo_stream.refresh_link_modals)
-
-    streams.append(
-      turbo_stream.replace(
-        "receipts_blankslate",
-        partial: "receipts/blankslate", locals: {
-          count: Receipt.in_receipt_bin.where(user: current_user).count
-        }
-      )
-    )
 
     streams
   end
