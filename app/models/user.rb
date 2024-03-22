@@ -242,7 +242,7 @@ class User < ApplicationRecord
 
   def transactions_missing_receipt
     @transactions_missing_receipt ||= begin
-      user_cards = stripe_cards.includes(:event) + emburse_cards.includes(:emburse_transactions)
+      user_cards = stripe_cards.includes(:event).where.not(event: { category: :salary }) + emburse_cards.includes(:emburse_transactions)
       user_hcb_code_ids = user_cards.flat_map { |card| card.hcb_codes.pluck(:id) }
       user_hcb_codes = HcbCode.where(id: user_hcb_code_ids)
 
