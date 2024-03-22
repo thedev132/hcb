@@ -314,7 +314,7 @@ class Invoice < ApplicationRecord
 
   def paid_at
     timestamp = remote_invoice&.status_transitions&.paid_at
-    timestamp ? Time.at(timestamp) : nil
+    timestamp ? Time.at(timestamp, in: "UTC") : nil
   end
 
   def remote_status

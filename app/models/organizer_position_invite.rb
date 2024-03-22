@@ -57,7 +57,7 @@ class OrganizerPositionInvite < ApplicationRecord
   has_paper_trail
 
   include PublicIdentifiable
-  set_public_id_prefix :inv
+  set_public_id_prefix :ivt
 
   include FriendlyId
   include OrganizerPosition::HasRole
