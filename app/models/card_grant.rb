@@ -105,7 +105,7 @@ class CardGrant < ApplicationRecord
 
   def cancel!(canceled_by)
     if balance > 0
-      custom_memo = "Cancelled: grant to #{user.name}"
+      custom_memo = "Return of funds from cancellation of grant to #{user.name}"
 
       disbursement = DisbursementService::Create.new(
         source_event_id: event_id,
