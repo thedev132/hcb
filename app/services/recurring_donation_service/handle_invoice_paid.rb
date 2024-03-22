@@ -10,6 +10,8 @@ module RecurringDonationService
       recurring_donation = RecurringDonation.find_by(stripe_subscription_id: @stripe_invoice.subscription)
       return unless recurring_donation
 
+      first_donation = recurring_donation.donations.none?
+
       donation = recurring_donation.donations.build(
         aasm_state: :in_transit,
         amount: @stripe_invoice.amount_due,
@@ -19,7 +21,7 @@ module RecurringDonationService
         anonymous: recurring_donation.anonymous
       )
 
-      if recurring_donation.message.present? && recurring_donation.donations.none?
+      if recurring_donation.message.present? && first_donation
         donation.message = recurring_donation.message
       end
 
