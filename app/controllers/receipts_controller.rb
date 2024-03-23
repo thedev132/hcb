@@ -214,7 +214,7 @@ class ReceiptsController < ApplicationController
       )
     end
 
-    if @receiptable
+    if @receiptable.is_a?(HcbCode)
       if @receiptable.canonical_transactions&.any?
         @receiptable.canonical_transactions.each do |ct|
           streams.append(turbo_stream.replace(
