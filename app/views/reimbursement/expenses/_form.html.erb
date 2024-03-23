@@ -27,12 +27,12 @@
   </div>
   <% if admin_signed_in? || expense.report.event.users.include?(current_user) %>
     <% if !expense.approved? && expense.report.submitted? %>
-      <%= link_to reimbursement_expense_toggle_approved_path(expense_id: expense.id), class: "btn bg-success", method: :post do %>
+      <%= link_to reimbursement_expense_approve_path(expense_id: expense.id), class: "btn bg-success", data: { turbo: true, "turbo-method": "post" } do %>
         <%= inline_icon "thumbsup" %>
         Approve
       <% end %>
     <% elsif expense.report.submitted? %>
-      <%= link_to reimbursement_expense_toggle_approved_path(expense_id: expense.id), class: "btn bg-muted", method: :post do %>
+      <%= link_to reimbursement_expense_unapprove_path(expense_id: expense.id), class: "btn bg-muted", data: { turbo: true, "turbo-method": "post" } do %>
         <%= inline_icon "reply" %>
         Remove Approval
       <% end %>

@@ -63,14 +63,21 @@ module Reimbursement
       end
     end
 
-    def toggle_approved
+    def approve
       authorize @expense
 
-      if @expense.pending?
-        @expense.mark_approved!
-      else
-        @expense.mark_pending!
+      @expense.mark_approved! if @expense.may_mark_approved?
+
+      respond_to do |format|
+        format.turbo_stream { render turbo_stream: on_update_streams }
+        format.html { redirect_to @expense.report }
       end
+    end
+
+    def unapprove
+      authorize @expense
+
+      @expense.mark_pending! if @expense.may_mark_pending?
 
       respond_to do |format|
         format.turbo_stream { render turbo_stream: on_update_streams }

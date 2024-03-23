@@ -413,7 +413,8 @@ Rails.application.routes.draw do
     get "start/:event_name", to: "reports#start", as: "start_reimbursement_report"
 
     resources :expenses, only: [:create, :edit, :update, :destroy] do
-      post "toggle_approved"
+      post "approve"
+      post "unapprove"
     end
   end
 

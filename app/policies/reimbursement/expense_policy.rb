@@ -18,7 +18,11 @@ module Reimbursement
       unlocked && (admin || team_member || creator)
     end
 
-    def toggle_approved?
+    def approve?
+      (admin || team_member) && record.report.submitted?
+    end
+
+    def unapprove?
       (admin || team_member) && record.report.submitted?
     end
 
