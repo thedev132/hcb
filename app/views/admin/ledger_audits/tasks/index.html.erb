@@ -8,6 +8,7 @@
       <tr>
         <th class="w-40">Date</th>
         <th>Flagged By</th>
+        <th>Event Point of Contact</th>
         <th>Memo</th>
         <th>Amount</th>
         <th>Receipts</th>
@@ -23,6 +24,12 @@
             <span style="display: flex; align-items: center; gap: 8px;">
               <%= avatar_for task.reviewer, 24, { class: "avatar" } %>
               <%= task.reviewer&.name %>
+            </span>
+          </td>
+          <td>
+            <span style="display: flex; align-items: center; gap: 8px;">
+              <%= avatar_for hcb_code.event.point_of_contact, 24, { class: "avatar" } %>
+              <%= hcb_code.event.point_of_contact&.name %>
             </span>
           </td>
           <td>
