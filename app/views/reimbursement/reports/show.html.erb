@@ -35,7 +35,11 @@
 </section>
 
 <section data-behavior="modal" role="dialog" id="request_changes" class="modal modal--scroll bg-snow">
-  <%= modal_header "Request Changes" %>
+  <%= modal_header "Return Report" %>
+  <p>
+    Returning the report to <%= @report.user.first_name %> will allow them (as well as you and other team members) to make changes
+    to the report. <span class="bold">If you have specific changes you'd like to see made, list them below:</span>
+  </p>
   <%= form_with url: reimbursement_report_request_changes_path(report_id: @report.id), model: [@report, Comment.new] do |form| %>
     <%= form.hidden_field :commentable_type, value: @commentable.class %>
     <%= form.hidden_field :commentable_id, value: @report.id %>
@@ -43,7 +47,7 @@
 
     <%= form.hidden_field :action, value: :changes_requested %>
 
-    <%= form.submit "Request Changes" %>
+    <%= form.submit "Return this report to #{@report.user.first_name}" %>
   <% end %>
 </section>
 
