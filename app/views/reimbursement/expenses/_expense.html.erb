@@ -73,7 +73,7 @@
   </div>
   <section data-behavior="modal" role="dialog" id="move_<%= expense.id %>" class="modal modal--scroll bg-snow">
     <%= modal_header "Move Expense" %>
-    <%= form_with(model: expense, class: "mb3 mt1", style: "max-width: 600px;", local: true, data: { turbo: false }) do |form| %>
+    <%= form_with(model: expense, class: "mb3 mt1", style: "max-width: 600px;", html: { "x-data" => "{valid: false}" }, local: true, data: { turbo: false }) do |form| %>
       <div class="field event-select-target">
         <%= form.label :reimbursement_report_id, "Move To A Pre-Existing Report", class: "mt2 bold" %>
         <%= form.select(:reimbursement_report_id,
@@ -82,7 +82,7 @@
             current_user == expense.report.user ?
               current_user.reimbursement_reports.excluding(expense.report).reject(&:locked?).map { |report| [report.name, report.id] } :
               expense.report.event.reimbursement_reports.excluding(expense.report).reject(&:locked?).map { |report| [report.name, report.id] },
-            { prompt: "Select a report…", required: true, include_blank: "Select a report..." }) %>
+            { prompt: "Select a report…", required: true, include_blank: "Select a report..." }, "x-model": "valid") %>
         <% unless admin_signed_in? %>
           <span class="muted mt1">You can transfer an expense to any report of yours.</span>
         <% end %>
@@ -93,12 +93,14 @@
             current_user.admin? ?
               Event.all.reorder(Event::CUSTOM_SORT).map { |event| [event.name, event.id] } :
               current_user.events.not_hidden.filter_demo_mode(false).map { |event| [event.name, event.id] },
-            { prompt: "Select an event…", required: true }) %>
+            { prompt: "Select an event…", required: true }, "x-model": "valid") %>
         <% unless admin_signed_in? %>
           <span class="muted mt1">You can transfer an expense to any report of yours.</span>
         <% end %>
       </div>
-      <%= form.submit "Update Expense", class: "mt2" %>
+      <template x-if="valid" x-transition>
+        <%= form.submit "Update Expense", class: "mt2" %>
+      </template>
     <% end %>
   </section>
 <% end %>
