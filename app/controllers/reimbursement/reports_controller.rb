@@ -230,6 +230,8 @@ module Reimbursement
       @report = Reimbursement::Report.find(params[:report_id] || params[:id])
       @event = @report.event
       @user = @report.user
+    rescue ActiveRecord::RecordNotFound
+      return redirect_to root_path, flash: { error: "We couldn’t find that report; it may have been deleted." }
     end
 
     def report_params
