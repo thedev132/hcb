@@ -18,13 +18,19 @@
       "
       data-expense-form-target="card">
       <div class="card__banner secondary mb2 border-bottom flex items-center" style="gap: 8px">
-          <code
-            data-behavior="mention"
-            data-mention-title="<%= expense.memo %>"
-            class="bg-white tooltipped tooltipped--e pointer click_to_mention"
-            aria-label="Click to reference in comment">
-            #<%= expense.expense_number %>
-          </code>
+          <% if expense.report.initial_draft? %>
+            <code class="bg-white click_to_mention">
+              #<%= expense.expense_number %>
+            </code>
+          <% else %>
+            <code
+              data-behavior="mention"
+              data-mention-title="<%= expense.memo %>"
+              class="bg-white tooltipped tooltipped--e pointer click_to_mention"
+              aria-label="Click to reference in comment">
+              #<%= expense.expense_number %>
+            </code>
+          <% end %>
           <div style="flex-grow: 1" data-expense-form-target="memo" class="bold <%= "muted" unless expense.memo.presence %>">
             <%= expense.memo.presence || "Untitled Expense" %>
           </div>
