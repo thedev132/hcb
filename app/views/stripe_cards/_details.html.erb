@@ -32,61 +32,60 @@
         </span>
       </p>
     <% end %>
-    <% if stripe_card.virtual? %>
 
-        <% if stripe_card.user == current_user %>
-          <div class="fs-mask">
-            <strong>
-              Card number
-            </strong>
-            <div class="flex justify-between mono items-center">
-              <% if @show_card_details %>
-                  <%= stripe_card.formatted_card_number %>
-                  <%= link_to stripe_card_path(stripe_card), data: { turbo: true } do %>
-                    <%= inline_icon "view-fill", class: "align-middle" %>
-                  <% end %>
-              <% else %>
-                  <%= stripe_card.hidden_card_number_with_last_four %>
-                  <%= link_to stripe_card_path(stripe_card, show_details: "true"), data: { turbo: true } do %>
-                    <%= inline_icon "view", class: "align-middle" %>
-                  <% end %>
-                </div>
-              <% end %>
-            </div>
+    <div class="fs-mask">
+      <strong>Card number</strong>
+      <div class="flex justify-between mono items-center">
+        <% if stripe_card.user == current_user && stripe_card.virtual? %>
+          <%= copy_to_clipboard(stripe_card.full_card_number, class: "w-fit", tooltip_direction: "e") do %>
+            <% if @show_card_details %>
+              <%= stripe_card.formatted_card_number %>
+            <% else %>
+              <%= stripe_card.hidden_card_number_with_last_four %>
+            <% end %>
+          <% end %>
+          <%= link_to stripe_card_path(stripe_card, show_details: (!@show_card_details).to_s), data: { turbo: true } do %>
+            <%= inline_icon @show_card_details ? "view-fill" : "view", class: "align-middle" %>
+          <% end %>
+        <% else %>
+          <%= stripe_card.hidden_card_number %>
+          <div class="right tooltipped tooltipped--w" aria-label="Hidden to protect security">
+            <%= inline_icon "private", size: 32, class: "muted" %>
           </div>
         <% end %>
+      </div>
+    </div>
 
-        <% if stripe_card.user == current_user %>
-        <div class="fs-mask mono">
-          <strong>CVC</strong>
-          <% if @show_card_details %>
-            <%= stripe_card.cvc %>
-          <% else %>
-            <%= stripe_card.hidden_cvc %>
+    <div class="fs-mask">
+      <strong>CVC</strong>
+      <div class="flex justify-between mono items-center">
+        <% if stripe_card.user == current_user && stripe_card.virtual? %>
+          <%= copy_to_clipboard(stripe_card.cvc, class: "w-fit", tooltip_direction: "e") do %>
+            <% if @show_card_details %>
+              <%= stripe_card.cvc %>
+            <% else %>
+              <%= stripe_card.hidden_cvc %>
+            <% end %>
           <% end %>
-        </div>
+        <% else %>
+          <%= stripe_card.hidden_cvc %>
+          <div class="right tooltipped tooltipped--w" aria-label="Hidden to protect security">
+            <%= inline_icon "private", size: 32, class: "muted" %>
+          </div>
         <% end %>
+      </div>
+    </div>
 
-      <div class="fs-mask">
-        <strong>Expiration date</strong>
-        <%= render_exp_date stripe_card %>
-      </div>
+    <div class="fs-mask">
+      <strong>Expiration date</strong>
+      <%= render_exp_date stripe_card %>
+    </div>
 
-      <div>
-        <strong>ZIP/Postal code</strong>
-        <%= stripe_card.stripe_cardholder.address_postal_code %>
-      </div>
-    <% else %>
-      <div>
-        <strong>
-          Card number
-        </strong>
-        <%= stripe_card.formatted_card_number %>
-        <div class="right tooltipped tooltipped--w" aria-label="Full number hidden to protect security">
-          <%= inline_icon "private", size: 32, class: "smoke" %>
-        </div>
-      </div>
-    <% end %>
+    <div class="fs-mask">
+      <strong>ZIP/Postal code</strong>
+      <%= stripe_card.stripe_cardholder.address_postal_code %>
+    </div>
+
     <div>
       <strong class="inline-flex items-center" style="gap: 4px">
         Billing address
@@ -100,10 +99,11 @@
         <%= render_address stripe_card.cardholder %>
       </div>
     </div>
-    <p>
+
+    <div>
       <strong>Type</strong>
       <%= stripe_card.virtual? ? "Virtual" : "Physical" %>
-    </p>
+    </div>
   </section>
   <% admin_tool "details" do %>
     <div>
