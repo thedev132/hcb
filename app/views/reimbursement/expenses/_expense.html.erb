@@ -98,9 +98,7 @@
           <span class="muted mt1">You can transfer an expense to any report of yours.</span>
         <% end %>
       </div>
-      <template x-if="valid" x-transition>
-        <%= form.submit "Update Expense", class: "mt2" %>
-      </template>
+      <%= form.submit "Update Expense", class: "mt2", 'x-show': "valid", 'x-transition.duration.500ms': "" %>
     <% end %>
   </section>
 <% end %>
