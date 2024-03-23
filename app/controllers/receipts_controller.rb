@@ -234,6 +234,24 @@ class ReceiptsController < ApplicationController
       end
     end
 
+    if @receiptable.is_a?(Reimbursement::Expense)
+      streams.append(
+        turbo_stream.replace(
+          "receipts_for_#{@receiptable.id}",
+          partial: "reimbursement/expenses/receipts", locals: {
+            expense: @receiptable
+          }
+        )
+      )
+      streams.append(
+        turbo_stream.replace(
+          "action-wrapper",
+          partial: "reimbursement/reports/actions",
+          locals: { report: @receiptable.report, user: @receiptable.report.user }
+        )
+      )
+    end
+
     if @receipt
       streams.append(turbo_stream.remove("receipt_#{@receipt.id}"))
     end

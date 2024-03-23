@@ -1,8 +1,8 @@
-<%= turbo_frame_tag "receipts_for_" + expense.to_s do %>
+<%= turbo_frame_tag "receipts_for_#{expense.id}" do %>
   <div class="w-100 h-100 flex">
     <%= form_with(url: receipts_path, method: "post", class: "w-100 h-100 flex flex-column justify-center reimbursement-dropzone",
       data: {
-        turbo: "false",
+        turbo: "true",
         controller: "file-drop form",
         action: expense.report.locked? ? "" : "
           dragover->file-drop#dragover
@@ -12,7 +12,14 @@
         ",
         "file-drop-target" => "dropzone",
         "file-drop-title-value" => "Add receipt"
-      }.compact) do |form| %>
+      }.compact, html: {
+        onsubmit: "
+          const button = $('#upload-receipt-button', this);
+          $('span', button).text('Uploading...');
+          $('b', button).text('⌛');
+          button.attr('disabled', 'disabled');
+        "
+      }) do |form| %>
 
       <% if expense.receipts.any? %>
         <div class="flex flex-column p1" id="link_receipt__form">
@@ -21,7 +28,7 @@
             <% unless expense.report.locked? %>
               <label for="file_<%= expense.id %>" class="card card--sunken flex flex-column items-center justify-center flash info" style="cursor: pointer;">
                 <span class="flex items-center justify-center">
-                  <h1 class="mt0 mb0 text-info add">+</h1>
+                  <h1 class="mt0 mb0 text-info add" id="upload-receipt-button"><b>+</b></h1>
                 </span>
               </label>
             <% end %>
@@ -31,7 +38,7 @@
       <% else %>
         <div class="card card--sunken flex flex-column items-center justify-center g2 h-100" id="link_receipt__form">
           <span class="flex items-center justify-center flex-row flex-wrap" style="margin: -8px;">
-            <label for="file_<%= expense.id %>" class="btn m1">
+            <label for="file_<%= expense.id %>" class="btn m1" id="upload-receipt-button">
               <%= inline_icon "share" %>
               <span>Upload</span>
             </label>
