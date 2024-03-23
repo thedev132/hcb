@@ -19,7 +19,7 @@ module Reimbursement
     end
 
     def toggle_approved?
-      admin || team_member
+      (admin || team_member) && record.report.submitted?
     end
 
     def user_made_expense?
