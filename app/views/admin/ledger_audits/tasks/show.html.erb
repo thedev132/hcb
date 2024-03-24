@@ -7,7 +7,7 @@
 <h2>Fraud-O-Matic: Ledger Auditor (<%= link_to @hcb_code.hcb_code, @hcb_code, target: "_blank" %>)</h2>
 
 <div class="hcb_code mt2">
-  <div class="hcb_code_wrapper" style="margin-top: -16px;">
+  <div class="hcb_code_wrapper <%= event.hack_club_hq? ? "hack_club_hq" : "" %>" style="margin-top: -16px;">
     <%= render partial: "hcb_codes/rich_metadata" %>
   </div>
   <div class="receipts_wrapper_mobile">
@@ -122,6 +122,9 @@
   .hcb_code_wrapper {
     flex: 1;
     min-width: 440px;
+  }
+  .hack_club_hq > div > .card {
+    border: 2px solid var(--hcb-primary);
   }
   .event_wrapper {
     display: flex;
