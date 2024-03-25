@@ -1186,7 +1186,7 @@ class AdminController < ApplicationController
     relation = relation.not_organized_by_teenagers if @organized_by == "adults"
     relation = relation.demo_mode if @demo_mode == "demo"
     relation = relation.not_demo_mode if @demo_mode == "full"
-    relation = relation.joins(:canonical_transactions).where("canonical_transactions.date >= ?", @activity_since_date) if @activity_since_date.present?
+    relation = relation.where(id: events.joins(:canonical_transactions).where("canonical_transactions.date >= ?", @activity_since_date)) if @activity_since_date.present?
     relation = relation.where("sponsorship_fee = ?", @fee) if @fee != "all"
     if @category == "none"
       relation = relation.where(category: nil)
