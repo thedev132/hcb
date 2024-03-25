@@ -68,23 +68,25 @@
         <%= organizer_signed_in? ? @hcb_code.ach_transfer.bank_name : "Sign in to view" %>
       </p>
 
-      <p class="fs-mask">
-        <strong>Routing number</strong>
-        <% if @show_ach_details %>
-          <%= @hcb_code.ach_transfer.routing_number %>
-        <% else %>
-          <%= link_to "Reveal", hcb_code_path(@hcb_code, show_details: "true"), data: { turbo: true } %>
-        <% end %>
-      </p>
+      <% if policy(@hcb_code.ach_transfer).view_account_routing_numbers? %>
+        <p class="fs-mask">
+          <strong>Routing number</strong>
+          <% if @show_ach_details %>
+            <%= @hcb_code.ach_transfer.routing_number %>
+          <% else %>
+            <%= link_to "Reveal", hcb_code_path(@hcb_code, show_details: "true"), data: { turbo: true } %>
+          <% end %>
+        </p>
 
-      <p class="fs-mask">
-        <strong>Account number</strong>
-        <% if @show_ach_details %>
-          <%= @hcb_code.ach_transfer.account_number %>
-        <% else %>
-          <%= link_to "Reveal", hcb_code_path(@hcb_code, show_details: "true"), data: { turbo: true } %>
-        <% end %>
-      </p>
+        <p class="fs-mask">
+          <strong>Account number</strong>
+          <% if @show_ach_details %>
+            <%= @hcb_code.ach_transfer.account_number %>
+          <% else %>
+            <%= link_to "Reveal", hcb_code_path(@hcb_code, show_details: "true"), data: { turbo: true } %>
+          <% end %>
+        </p>
+      <% end %>
 
       <p>
         <strong>Amount</strong>

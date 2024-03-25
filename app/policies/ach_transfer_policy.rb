@@ -18,6 +18,10 @@ class AchTransferPolicy < ApplicationPolicy
     is_public? || user_who_can_transfer?
   end
 
+  def view_account_routing_numbers?
+    admin_or_manager?
+  end
+
   def cancel?
     user_who_can_transfer?
   end
@@ -42,6 +46,10 @@ class AchTransferPolicy < ApplicationPolicy
 
   def user_who_can_transfer?
     user&.admin? || EventPolicy.new(user, record.event).new_transfer?
+  end
+
+  def admin_or_manager?
+    user&.admin? || OrganizerPosition.find_by(user:, event: record.event)&.manager?
   end
 
   def is_public?
