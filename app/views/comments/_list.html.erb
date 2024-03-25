@@ -1,11 +1,8 @@
 <section class="comments">
-  <% (@comments || []).each do |comment| %>
-    <% if comment.admin_only %>
-      <% admin_tool do %>
-        <%= render "comments/item", comment: %>
-      <% end %>
-    <% else %>
-      <%= render "comments/item", comment: %>
-    <% end %>
+
+  <%= render partial: "comments/item", collection: policy_scope(comments).order(created_at: :asc), as: :comment %>
+
+  <% if policy_scope(comments).empty? && local_assigns[:blankslate?] %>
+    <%= blankslate "No comments yet." %>
   <% end %>
 </section>

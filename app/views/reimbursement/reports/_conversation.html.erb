@@ -17,7 +17,7 @@
     <% (versions + comments).sort_by(&:created_at).each do |item| %>
       <% if item.instance_of?(Comment) %>
         <div class="conversation_item">
-          <%= render "comments/item_v2", comment: item %>
+          <%= render "comments/item", comment: item %>
         </div>
       <% else %>
         <% state_change = item.changeset["aasm_state"]&.second %>
@@ -80,5 +80,5 @@
       <% end %>
     <% end %>
   </ul>
-  <%= render "comments/form" %>
+  <%= render "comments/form", commentable: @report %>
 </article>

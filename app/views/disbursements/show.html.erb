@@ -105,6 +105,6 @@
       } %>
 
   <h2>Comments</h2>
-  <%= render "comments/list_v2" %>
-  <%= render "comments/form_v2" %>
+  <%= render "comments/list", comments: @hcb_code.comments %>
+  <%= render "comments/form", commentable: @hcb_code %>
 <% end %>
