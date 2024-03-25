@@ -65,7 +65,7 @@ class EventPolicy < ApplicationPolicy
   end
 
   def demo_mode_request_meeting?
-    admin_or_user?
+    admin_or_manager? && record.demo_mode? && record.demo_mode_request_meeting_at.nil?
   end
 
   # (@eilla1) these pages are for the wip resources page and should be moved later

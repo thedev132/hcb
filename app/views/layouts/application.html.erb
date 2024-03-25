@@ -113,12 +113,25 @@
       </style>
       <div class="w-full dev-banner dev-banner--info rounded-bottom">
         <div class="flex flex-column container container--md center pb2">
-          <p class="bold center m0" style="font-size: 2rem;">Playground Mode</p>
+          <p class="h1 bold center m0">Playground Mode</p>
           <div class="grid g3 banner-content">
-            <%= link_to event_demo_mode_request_meeting_path(@event), method: :post, class: "btn bg-primary shrink-none nowrap #{"disabled" unless can_request_activation? }", data: { tour_step: "activate_account" } do %>
+            <%= link_to event_demo_mode_request_meeting_path(@event), method: :post, class: "btn bg-primary shrink-none nowrap #{"disabled" unless policy(@event).demo_mode_request_meeting? }", data: { tour_step: "activate_account" } do %>
               <%= inline_icon "welcome" %>Request Activation
             <% end %>
-            <p class="center m0 playground-desc">While in Playground mode, explore the dashboard with mock data, and invite your team.<br>To utilise financial features, activate your account!</p>
+            <div class="center h5 playground-desc" style="text-wrap: pretty;">
+              <% meeting_req = @event.demo_mode_request_meeting_at %>
+              <p class="m0 <%= "muted" if meeting_req %>">
+                While in Playground mode, explore the dashboard with mock data, and invite your team.
+                To utilise financial features, request activation!
+              </p>
+              <p class="m0">
+                <% if meeting_req %>
+                  You requested activation on <%= meeting_req.strftime("#{meeting_req.day.ordinalize} %B") %>
+                  (<%= distance_of_time_in_words_to_now meeting_req %> ago).
+                  Please expect an email from our team soon.
+                <% end %>
+              </p>
+            </div>
             <button
               id="mock-data-toggle"
               data-mock-data-status="<%= show_mock_data? %>"
