@@ -208,5 +208,5 @@ end
 
 gem "jbuilder", "~> 2.11"
 
-gem "libledger"
+gem "ledgerjournal"
 gem "doorkeeper", "~> 5.6"

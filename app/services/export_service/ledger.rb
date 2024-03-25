@@ -1,42 +1,56 @@
 # frozen_string_literal: true
 
-require "libledger"
+require "ledgerjournal"
 
 module ExportService
   class Ledger
     BATCH_SIZE = 1000
 
-    def initialize(event_id:)
+    def initialize(event_id:, public_only: false)
       @event_id = event_id
+      @public_only = public_only
     end
 
     def run
-      entries = []
+      journal = ::Ledger::Journal.new
       event.canonical_transactions.order("date desc").each do |ct|
         if ct.amount_cents <= 0
-          entries.push(
-            ::Ledger::Entry.new(
-              name: ct.local_hcb_code.memo,
-              date: ct.date,
-              actions: [
-                { name: "Expenses", amount: (ct.amount_cents.abs.to_f / 100).to_s }
-              ]
-            )
+          hcb_code = ct.local_hcb_code
+          merchant = ct.raw_stripe_transaction ? ct.raw_stripe_transaction.stripe_transaction["merchant_data"] : nil
+          category = "Transfer"
+          metadata = {}
+          if merchant && !@public_only
+            category = merchant["category"].humanize.titleize.delete(" ")
+            metadata[:merchant] = merchant
+          elsif merchant
+            category = "CardCharge"
+          end
+          journal.transactions << ::Ledger::Transaction.new(
+            date: ct.date,
+            payee: ct.local_hcb_code.memo,
+            metadata:,
+            postings: [
+              ::Ledger::Posting.new(account: "Expenses:#{category}", currency: "USD", amount: BigDecimal(ct.amount_cents.to_f, 2))
+            ]
           )
         else
-          entries.push(
-            ::Ledger::Entry.new(
-              name: ct.local_hcb_code.memo,
-              date: ct.date,
-              actions: [
-                { name: "Income", amount: (ct.amount_cents.to_f / 100).to_s }
-              ]
-            )
+          income_type = "Transfer"
+          hcb_code = ct.local_hcb_code
+          if hcb_code.donation?
+            income_type = "Donation"
+          elsif hcb_code.invoice?
+            income_type = "Invoice"
+          end
+          journal.transactions << ::Ledger::Transaction.new(
+            date: ct.date,
+            payee: ct.local_hcb_code.memo,
+            postings: [
+              ::Ledger::Posting.new(account: "Income:#{income_type}", currency: "USD", amount: BigDecimal(ct.amount_cents.to_f, 2))
+            ]
           )
         end
       end
-      ledger = ::Ledger::Journal.new(entries:)
-      return ledger.to_s
+      return journal.to_s
     end
 
     private

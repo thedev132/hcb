@@ -62,7 +62,6 @@ class ExportsController < ApplicationController
         end
         render pdf: "statement", page_height: "11in", page_width: "8.5in"
       end
-
     end
   end
 
@@ -87,13 +86,13 @@ class ExportsController < ApplicationController
   def handle_large_export(file_extension)
     if current_user
       export_job = export_options[file_extension]
-      export_job.perform_later(event_id: @event.id, email: current_user.email)
+      export_job.perform_later(event_id: @event.id, email: current_user.email, public_only: !organizer_signed_in?)
       flash[:success] = "This export is too big, so we'll send you an email when it's ready."
       redirect_back fallback_location: @event and return
     elsif params[:email]
       # this handles the second stage of large transparent exports
       export_job = export_options[file_extension]
-      export_job.perform_later(event_id: @event.id, email: params[:email])
+      export_job.perform_later(event_id: @event.id, email: params[:email], public_only: true)
       flash[:success] = "We'll send you an email when your export is ready."
       redirect_to @event and return
     else
@@ -154,7 +153,7 @@ class ExportsController < ApplicationController
   end
 
   def transactions_ledger
-    ::ExportService::Ledger.new(event_id: @event.id).run
+    ::ExportService::Ledger.new(event_id: @event.id, public_only: !organizer_signed_in?).run
   end
 
 end

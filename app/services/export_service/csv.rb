@@ -6,8 +6,9 @@ module ExportService
   class Csv
     BATCH_SIZE = 1000
 
-    def initialize(event_id:)
+    def initialize(event_id:, public_only: false)
       @event_id = event_id
+      @public_only = public_only
     end
 
     def run

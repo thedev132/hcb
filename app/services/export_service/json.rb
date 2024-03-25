@@ -4,8 +4,9 @@ require "json"
 
 module ExportService
   class Json
-    def initialize(event_id:)
+    def initialize(event_id:, public_only: false)
       @event_id = event_id
+      @public_only = public_only
     end
 
     # NOTE: technicall not streaming at this time

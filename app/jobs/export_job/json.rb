@@ -3,7 +3,7 @@
 module ExportJob
   class Json < ApplicationJob
     queue_as :default
-    def perform(event_id:, email:)
+    def perform(event_id:, email:, public_only: false)
       @event = Event.find(event_id)
 
       datetime = Time.now.to_formatted_s(:db)
@@ -11,7 +11,7 @@ module ExportJob
               .gsub(/[^0-9a-z_]/i, "-").gsub(" ", "_")
       title += ".json"
 
-      json = ExportService::Json.new(event_id:).run
+      json = ExportService::Json.new(event_id:, public_only:).run
 
       ExportMailer.export_ready(
         event: @event,
