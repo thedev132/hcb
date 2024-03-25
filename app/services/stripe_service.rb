@@ -29,7 +29,6 @@ module StripeService
     end
   end
 
-  Stripe.api_key = self.secret_key
   include Stripe
 
   module StatementDescriptor
