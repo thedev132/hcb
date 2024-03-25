@@ -1,0 +1,10 @@
+<p>Hi <%= @recurring_donation.name %>,</p>
+
+We attempted to charge your card ending in <strong><%= @recurring_donation.last4 %></strong> for your monthly donation to <strong><%= @recurring_donation.event.name %></strong>. Unfortunately, the payment failed.
+
+<p>If you need to update your payment details, please visit <%= link_to "this page", recurring_donation_url(@recurring_donation.url_hash) %>. In a couple of days we'll attempt to charge your card again.</p>
+
+<p>
+  Best regards,<br>
+  The HCB Team
+</p>

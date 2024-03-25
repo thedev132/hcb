@@ -14,6 +14,12 @@ class RecurringDonationMailer < ApplicationMailer
     mail to: @recurring_donation.email, subject: "[#{@recurring_donation.event.name}] Payment details updated"
   end
 
+  def payment_failed
+    @recurring_donation = params[:recurring_donation]
+
+    mail to: @recurring_donation.email, subject: "[#{@recurring_donation.event.name}] Donation payment failed"
+  end
+
   def canceled
     @recurring_donation = params[:recurring_donation]
 

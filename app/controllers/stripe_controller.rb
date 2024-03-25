@@ -112,6 +112,18 @@ class StripeController < ActionController::Base
     head :ok
   end
 
+  def handle_invoice_payment_failed(event)
+    stripe_invoice = event[:data][:object]
+
+    if stripe_invoice.subscription.present?
+      recurring_donation = RecurringDonation.find_by!(stripe_subscription_id: stripe_invoice.subscription)
+      RecurringDonationMailer.with(recurring_donation:).payment_failed.deliver_later
+    end
+
+    head :ok
+    return
+  end
+
   def handle_customer_subscription_updated(event)
     recurring_donation = RecurringDonation.find_by(stripe_subscription_id: event.data.object.id)
     return unless recurring_donation
