@@ -171,6 +171,7 @@ class AdminController < ApplicationController
 
     @events = filtered_events
     @count = @events.count
+    @tags = EventTag.all
 
     respond_to do |format|
       format.html do
@@ -1153,6 +1154,7 @@ class AdminController < ApplicationController
     @funded = params[:funded].present? ? params[:funded] : "both" # both by default
     @hidden = params[:hidden].present? ? params[:hidden] : "both" # both by default
     @organized_by = params[:organized_by].presence || "anyone"
+    @tagged_with = params[:tagged_with].presence || "anything"
     if params[:category] == "none"
       @category = "none"
     else
@@ -1186,6 +1188,7 @@ class AdminController < ApplicationController
     relation = relation.not_organized_by_teenagers if @organized_by == "adults"
     relation = relation.demo_mode if @demo_mode == "demo"
     relation = relation.not_demo_mode if @demo_mode == "full"
+    relation = relation.includes(:event_tags).where(event_tags: { id: @tagged_with }) unless @tagged_with == "anything"
     relation = relation.where(id: events.joins(:canonical_transactions).where("canonical_transactions.date >= ?", @activity_since_date)) if @activity_since_date.present?
     relation = relation.where("sponsorship_fee = ?", @fee) if @fee != "all"
     if @category == "none"

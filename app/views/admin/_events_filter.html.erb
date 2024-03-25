@@ -62,6 +62,11 @@
   <%= form.select :funded, [["Both", "both"], ["Not Funded", "not_funded"], ["Funded", "funded"]], selected: @funded %>
 <% end %>
 |
+<%= form.label :tagged_with do %>
+  Tagged with
+  <%= form.select :tagged_with, @tags.map { |t| [t.full_name, t.id] }, { include_blank: "anything", selected: @tagged_with } %>
+<% end %>
+|
 <%= form.label :organized_by do %>
   Organized by
   <%= form.select :organized_by, [["Anyone", "anyone"], ["Teenagers", "teenagers"], ["Hack Clubbers", "hack_clubbers"], ["Adults", "adults"]], selected: @organized_by %>

@@ -31,6 +31,12 @@ class EventTag < ApplicationRecord
     components.compact.join("_").parameterize.underscore
   end
 
+  def full_name
+    return name unless purpose.present?
+
+    "#{purpose}: #{name}"
+  end
+
   module Tags
     ORGANIZED_BY_HACK_CLUBBERS = "Organized by Hack Clubbers"
     ORGANIZED_BY_TEENAGERS = "Organized by Teenagers"
