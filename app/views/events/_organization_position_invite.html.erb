@@ -9,11 +9,10 @@
       </div>
       <div class="flex flex-column justify-center">
         <p class="h2 bold m0"><%= position.user.name %></p>
-
         <% if Flipper.enabled?(:user_permissions_2024_03_09, @event) %>
           <div class="flex g0 line-height-0 items-center">
             <p class="h4 medium info"><%= position.role.capitalize %></p>
-            <% if organizer_signed_in?(as: :manager) %>
+            <% if policy(position).change_position_role? %>
               <div data-controller="menu" data-menu-placement-value="bottom-start" data-action="click->menu#toggle click@document->menu#close keydown@document->menu#keydown" data-menu-target="toggle">
                 <%= inline_icon "down-caret", class: "info menu__toggle" %>
                 <div data-menu-target="content" class="menu__content menu__content--2 menu__content--compact">
