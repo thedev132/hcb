@@ -41,6 +41,63 @@ class StaticPagesController < ApplicationController
   end
 
   def roles
+    # Ironically, don't put prefaces at the start of a hash here.
+    # (It'll erroneously offset the title padding top calculation.)
+    @perms = {
+      Team: {
+        "Invite a user": :manager,
+        "Request removal of a user": :manager,
+        "Cancel invite made by another user": :manager,
+        "Cancel invite made by yourself": :member,
+        "Change another user's role": :manager,
+      },
+      Transfers: {
+        Checks: {
+          "Send a mailed check": :manager,
+          "View a mailed check": :member,
+        },
+        "Check Deposit": {
+          "Deposit a check": :member,
+          "View a check deposit": :member,
+          "View images of a check deposit": :manager,
+          _preface: "For depositing a check by taking a picture of it"
+        },
+        "ACH Transfers": {
+          "Send an ACH Transfer": :manager,
+          "Cancel an ACH Transfer": :manager,
+          "View an ACH Transfer": :member,
+          "View recipient's payment details": :manager,
+        },
+        "Account & Routing numbers": {
+          "View the organization's account & routing numbers": :manager
+        },
+        "HCB Transfers": {
+          "Create an HCB Transfer": :manager,
+          "Cancel an HCB Transfer": :manager,
+          "View an HCB Transfer": :member
+        },
+        _preface: "As a general rule, only managers can create/modify financial transfers"
+      },
+      Cards: {
+        "Order a card": :member,
+        "Freeze/defrost your own card": :member,
+        "Freeze/defrost another user's card": :manager,
+        "Rename your own card": :member,
+        "Rename another user's card": :manager,
+        "View another user's card number": :manager,
+        "View card expiration date": :member,
+        "View card billing address": :member,
+      },
+      "Google Workspace": {
+        "Create an account": :manager,
+        "Suspend an account": :manager,
+        "Reset an account's password": :manager,
+      },
+      "Settings": {
+        "View settings": :member,
+        "Edit settings": :manager,
+      }
+    }
   end
 
   def faq

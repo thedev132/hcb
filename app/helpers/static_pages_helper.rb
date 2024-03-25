@@ -142,4 +142,43 @@ module StaticPagesHelper
       }
     }
   end
+
+  def render_permissions(permissions, depth = 0)
+    capture do
+      permissions.each_with_index do |(k, v), i|
+
+        # Nested title (for feature groups)
+        if v.is_a?(Hash)
+          concat(content_tag(:tr) do
+            content_tag(:th, class: "h#{depth + 2} #{"pt3" unless i.zero?}", style: "padding-left: #{depth * 2}rem") do
+              concat k
+
+              if v[:_preface]
+                concat content_tag(:span, v[:_preface], class: "muted regular pl2 h5")
+              end
+            end
+          end)
+
+          concat render_permissions(v, depth + 1)
+
+        # Row for feature with permission icons
+        elsif v.is_a?(Symbol)
+          concat(content_tag(:tr) do
+            concat content_tag(:th, k, class: "regular", style: "padding-left: #{depth * 2}rem")
+
+            needed_role_num = OrganizerPosition.roles[v]
+
+            OrganizerPosition.roles.each do |_role, role_num|
+              if role_num >= needed_role_num
+                concat content_tag(:td, "✅")
+              else
+                concat content_tag(:td, "❌")
+              end
+            end
+          end)
+        end
+
+      end
+    end
+  end
 end
