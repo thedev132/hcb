@@ -7,7 +7,7 @@
   <%= render "settings_nav", active: "admin" %>
   <% admin_tool override_pretend: true do %>
     <section>
-      Updating <%= user_mention @user %>'s profile that was created on <%= @user.created_at.strftime("%B %d, %Y %I:%M %P") %>
+      Updating <%= user_mention @user %>'s profile that was created on <%= @user.created_at.strftime("%B %d, %Y at %I:%M %P") %>
       <h2 id="admin">Admin configurations</h2>
 
       <%= form_with(model: @user, local: true, html: { onsubmit: "onSubmit()" }, data: { turbo_frame: "_top" }) do |form| %>
@@ -57,7 +57,7 @@
           <h2>Organizations</h2>
           <ul>
             <% @user.events.each do |event| %>
-              <li><%= link_to "#{event.name} (#{render_money(event.balance_v2_cents)})", event_path(event) %></li>
+              <li><%= link_to "#{event.name} (#{render_money(event.balance_v2_cents)})", event_path(event), data: { turbo_frame: "_top" } %></li>
             <% end %>
           </ul>
         <% end %>
@@ -75,8 +75,18 @@
               <tr>
                 <td><%= card.last4 %></td>
                 <td><%= card.card_type %></td>
-                <td><%= card.status_text %></td>
-                <td><%= card.stripe_exp_month %>/<%= card.stripe_exp_year %>
+                <td class="inline-flex items-center w-100">
+                  <% if card.status_text  == "Active" %>
+                    Active
+                  <% elsif card.status_text == "Frozen" %>
+                    <%= inline_icon "freeze", size: 25 %> Frozen
+                  <% elsif card.status_text == "Canceled" %>
+                    <%= inline_icon "forbidden", size: 25 %> Canceled
+                  <% elsif card.status_text == "Inactive" %>
+                    Inactive
+                  <% end %>
+                </td>
+                <td class="<%= "primary bold" if card.expired? %>"><%= Date.parse("#{card.stripe_exp_month}/#{card.stripe_exp_year}").strftime("%m/%y") %></td>
                   <td><%= link_to "View", stripe_card_path(card), data: { turbo_frame: "_top" } %></td>
                 </tr>
               <% end %>
@@ -93,8 +103,18 @@
               </tr>
               <% @user.emburse_cards.each do |card| %>
                 <td><%= card.last_four %></td>
-                <td><%= card.status_text %></td>
-                <td><%= card.expiration_month %>/<%= card.expiration_year %>
+                <td class="inline-flex">
+                  <% if card.status_text == "active" %>
+                    Active
+                  <% elsif card.status_text == "suspended" %>
+                    <%= inline_icon "freeze", size: 25 %> Suspended
+                  <% elsif card.status_text == "unactivated" %>
+                    <%= inline_icon "forbidden", size: 25 %> Unactivated
+                  <% elsif card.status_text == "terminated" %>
+                    <%= inline_icon "forbidden", size: 25 %> Terminated
+                  <% end %>
+                </td>
+                <td><% Date.parse("#{card.stripe_exp_month}/#{card.stripe_exp_year}").strftime("%m/%y") %></td>
                   <td><%= link_to "View", emburse_card_path(card), data: { turbo_frame: "_top" } %></td>
                 </tr>
               <% end %>
@@ -112,8 +132,8 @@
               <% @invoices.each do |invoice| %>
                 <tr>
                   <td><%= invoice.id %></td>
-                  <td><%= invoice.total %></td>
-                  <td><%= invoice.status %></td>
+                  <td><%= render_money invoice.total %></td>
+                  <td><%= invoice.state_text %></td>
                   <td><%= link_to "View", hcb_code_path(invoice.hcb_code), data: { turbo_frame: "_top" } %></td>
                 </tr>
               <% end %>
@@ -125,14 +145,14 @@
               <tr>
                 <th>Status</th>
                 <th>Rejection reason</th>
-                <th>Amount (cents)</th>
+                <th>Amount</th>
                 <th>Date</th>
               </tr>
               <% @checks_deposits.each do |check| %>
                 <tr>
                   <td><%= check.increase_status %></td>
                   <td><%= check.rejection_reason %></td>
-                  <td><%= check.amount_cents %></td>
+                  <td><%= render_money check.amount_cents %></td>
                   <td><%= check.created_at %></td>
                 </tr>
               <% end %>
@@ -145,7 +165,7 @@
                 <th>Payment for</th>
                 <th>Memo</th>
                 <th>Amount</th>
-                <th>State</th>
+                <th>Status</th>
                 <th>Approved at</th>
                 <th></th>
               </tr>
@@ -153,7 +173,7 @@
                 <tr>
                   <td><%= check.payment_for %></td>
                   <td><%= check.memo %></td>
-                  <td><%= check.amount %></td>
+                  <td><%= render_money check.amount %></td>
                   <td><%= check.aasm_state %></td>
                   <td><%= check.approved_at %></td>
                   <td><%= link_to "View", hcb_code_path(check.hcb_code), data: { turbo_frame: "_top" } %></td>
@@ -168,7 +188,7 @@
                 <th>Payment for</th>
                 <th>Memo</th>
                 <th>Amount</th>
-                <th>State</th>
+                <th>Status</th>
                 <th>Approved at</th>
                 <th></th>
               </tr>
@@ -176,7 +196,7 @@
                 <tr>
                   <td><%= check.payment_for %></td>
                   <td><%= check.memo %></td>
-                  <td><%= check.amount %></td>
+                  <td><%= render_money check.amount %></td>
                   <td><%= check.aasm_state %></td>
                   <td><%= check.approved_at %></td>
                   <td><%= link_to "View", hcb_code_path(check.hcb_code), data: { turbo_frame: "_top" } %></td>
@@ -185,7 +205,7 @@
             </table>
           <% end %>
           <% if @ach_transfers.present? %>
-            <h2>Ach Transfers</h2>
+            <h2>ACH Transfers</h2>
             <table>
               <tr>
                 <th>Recipient name</th>
@@ -197,7 +217,7 @@
               <% @ach_transfers.each do |ach| %>
                 <tr>
                   <td><%= ach.recipient_name %></td>
-                  <td><%= ach.amount %></td>
+                  <td><%= render_money ach.amount %></td>
                   <td><%= ach.payment_for %></td>
                   <td><%= ach.scheduled_on %></td>
                   <td><%= link_to "View", hcb_code_path(ach.hcb_code), data: { turbo_frame: "_top" } %></td>
@@ -208,18 +228,16 @@
           <% if @disbursements.present? %>
             <h2>Disbursement</h2>
             <table>
-              <th>
+              <tr>
                 <th>Name</th>
                 <th>Amount</th>
-                <th>State</th>
-                <th></th>
-              </th>
+                <th>Status</th>
+              </tr>
               <% @disbursements.each do |disbursement| %>
                 <tr>
-                  <td><%= disbursement.name %></td>
-                  <td><%= disbursement.amount %></td>
-                  <td><%= disbursement.aasm_state %></td>
-                  <td><%= link_to "View", hcb_code_path(disbursement.hcb_code), data: { turbo_frame: "_top" } %></td>
+                  <td><%= link_to disbursement.name, hcb_code_path(disbursement.hcb_code), data: { turbo_frame: "_top" } %></td>
+                  <td><%= render_money disbursement.amount %></td>
+                  <td><%= disbursement.state_text %></td>
                 </tr>
               <% end %>
             </table>
