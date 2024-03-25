@@ -59,7 +59,7 @@
     <% end %>
   </div>
   <% if organizer_signed_in? %>
-    <div class="organizer-position-invite__contact-block g1 flex muted ">
+    <div class="organizer-position-invite__contact-block g1 flex muted overflow-auto">
       <p class="m0">
         <%= copy_to_clipboard(position.user.email, class: "inline-flex items-center g1 line-height-0") do %>
           <%= inline_icon("email", size: 20) %>
