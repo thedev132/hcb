@@ -6,7 +6,7 @@ class CheckDepositPolicy < ApplicationPolicy
   end
 
   def create?
-    !record.event.demo_mode? && !record.event.outernet_guild? && user_who_can_transfer?
+    admin_or_user? && !record.event.demo_mode? && !record.event.outernet_guild?
   end
 
   private
