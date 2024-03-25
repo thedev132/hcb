@@ -91,7 +91,7 @@ class HcbCode < ApplicationRecord
     return :donation if donation?
     return :partner_donation if partner_donation?
     return :ach if ach_transfer?
-    return :check if check?
+    return :check if check? || increase_check?
     return :disbursement if disbursement?
     return :card_charge if stripe_card?
     return :bank_fee if bank_fee?
@@ -410,19 +410,24 @@ class HcbCode < ApplicationRecord
     canonical_transactions.last
   end
 
+  # The `:receipt_required` scope determines the type of
+  # transaction based on its HCB Code, for reference:
+  # HCB-300: ACH Transfers (receipts required starting from Feb. 2024)
+  # HCB-400 & HCB-402: Checks & Increase Checks (receipts required starting from Feb. 2024)
+  # HCB-600: Stripe card charges (always required)
+  # @sampoder
+
   scope :receipt_required, -> {
     joins("LEFT JOIN canonical_pending_transactions ON canonical_pending_transactions.hcb_code = hcb_codes.hcb_code")
       .joins("LEFT JOIN canonical_pending_declined_mappings ON canonical_pending_declined_mappings.canonical_pending_transaction_id = canonical_pending_transactions.id")
-      .joins("LEFT JOIN canonical_transactions ON canonical_transactions.hcb_code = hcb_codes.hcb_code")
-      .where("canonical_transactions.transaction_source_type = 'RawEmburseTransaction'
-              OR (hcb_codes.hcb_code LIKE 'HCB-600%' AND canonical_pending_declined_mappings.id IS NULL)
+      .where("(hcb_codes.hcb_code LIKE 'HCB-600%' AND canonical_pending_declined_mappings.id IS NULL)
               OR (hcb_codes.hcb_code LIKE 'HCB-300%' AND hcb_codes.created_at >= '2024-02-01' AND canonical_pending_declined_mappings.id IS NULL)
               OR (hcb_codes.hcb_code LIKE 'HCB-400%' AND hcb_codes.created_at >= '2024-02-01' AND canonical_pending_declined_mappings.id IS NULL)
+              OR (hcb_codes.hcb_code LIKE 'HCB-402%' AND hcb_codes.created_at >= '2024-02-01' AND canonical_pending_declined_mappings.id IS NULL)
               ")
   }
 
   def receipt_required?
-    return true if raw_emburse_transaction
     return false if pt&.declined?
 
     (type == :card_charge) ||
