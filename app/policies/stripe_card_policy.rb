@@ -6,40 +6,52 @@ class StripeCardPolicy < ApplicationPolicy
   end
 
   def shipping?
-    user&.admin? || record&.event&.users&.include?(user) || record&.user == user
+    user&.admin? || organizer?
   end
 
   def freeze?
-    admin_or_manager? || record&.user == user
+    admin_or_manager? || organizer_and_cardholder?
   end
 
   def defrost?
-    admin_or_manager? || record&.user == user
+    freeze?
   end
 
   def activate?
-    admin_or_manager? || record&.user == user
+    user&.admin? || organizer_and_cardholder?
   end
 
   def show?
-    user&.admin? || record&.event&.users&.include?(user) || record&.user == user
+    user&.admin? || organizer?
   end
 
   def edit?
-    admin_or_manager? || record&.user == user
+    admin_or_manager? || organizer_and_cardholder?
   end
 
   def update?
-    admin_or_manager? || record&.user == user
+    admin_or_manager? || organizer_and_cardholder?
   end
 
   def transactions?
-    user&.admin? || record&.event&.users&.include?(user) || record&.user == user
+    user&.admin? || organizer? || cardholder?
   end
 
   alias_method :update_name?, :update?
 
   private
+
+  def organizer_and_cardholder?
+    organizer? && cardholder?
+  end
+
+  def organizer?
+    record&.event&.users&.include?(user)
+  end
+
+  def cardholder?
+    record&.user == user
+  end
 
   def admin_or_manager?
     user&.admin? || OrganizerPosition.find_by(user:, event: record.event)&.manager?
