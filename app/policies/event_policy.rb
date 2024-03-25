@@ -56,6 +56,14 @@ class EventPolicy < ApplicationPolicy
     is_public || admin_or_user?
   end
 
+  def new_stripe_card?
+    create_stripe_card?
+  end
+
+  def create_stripe_card?
+    admin_or_user? && is_not_demo_mode?
+  end
+
   def documentation?
     is_public || admin_or_user?
   end
@@ -165,11 +173,11 @@ class EventPolicy < ApplicationPolicy
     admin_or_user?
   end
 
+  private
+
   def admin_or_user?
     user&.admin? || record.users.include?(user)
   end
-
-  private
 
   def admin_or_manager?
     user&.admin? || OrganizerPosition.find_by(user:, event: record)&.manager?
