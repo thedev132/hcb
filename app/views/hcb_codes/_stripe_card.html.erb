@@ -86,10 +86,26 @@
 
     <section class="details details--wide pt2 pb2 details--tall">
       <% if @hcb_code.pt&.declined? %>
-      <p>
-      <strong>Declined</strong>
-      <span><em>This transaction was declined.</em></span>
-      </p>
+        <% reason = @hcb_code.pt.raw_pending_stripe_transaction.stripe_transaction["request_history"][0]["reason"] %>
+        <% webhook_declined_reason = @hcb_code.pt.raw_pending_stripe_transaction.stripe_transaction.dig("metadata", "declined_reason") %>
+        <p>
+        <strong>Declined</strong>
+        <span>
+          <% if reason == "card_inactive" && !@hcb_code.stripe_card.activated? %>
+            <em>This transaction was declined by HCB as this card isn't activated.</em>
+          <% elsif reason == "card_inactive" %>
+            <em>This transaction was declined by HCB as this card is frozen.</em>
+          <% elsif reason == "suspected_fraud" || reason == "verification_failed" %>
+            <em>This transaction was declined by HCB due to failed suspected fraud / failed checks.</em>
+          <% elsif reason == "webhook_declined" && webhook_declined_reason == "merchant_not_allowed" %>
+            <em>This transaction was declined by HCB because this merchant is not allowed.</em>
+          <% elsif reason == "webhook_declined" %>
+            <em>This transaction was declined by HCB due to insufficient funds.</em>
+          <% else %>
+            <em>This transaction was declined by the merchant.</em>
+          <% end %>
+        </span>
+        </p>
       <% end %>
       <% if @hcb_code.pt&.unsettled? %>
       <p>
