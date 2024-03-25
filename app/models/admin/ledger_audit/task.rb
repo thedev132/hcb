@@ -28,7 +28,7 @@
 module Admin
   class LedgerAudit
     class Task < ApplicationRecord
-      belongs_to :admin_ledger_audit, class_name: "Admin::LedgerAudit"
+      belongs_to :admin_ledger_audit, class_name: "Admin::LedgerAudit", optional: true
       belongs_to :hcb_code
       belongs_to :reviewer, class_name: "User", optional: true
       scope :pending, -> { where("status = ?", "pending") }

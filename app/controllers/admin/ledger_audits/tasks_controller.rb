@@ -32,6 +32,22 @@ module Admin
         redirect_to admin_ledger_audits_tasks_path
       end
 
+      def create
+        hcb_code = HcbCode.find(params[:hcb_code])
+        if Admin::LedgerAudit::Task.where(hcb_code:, status: "flagged").none?
+          @task = Admin::LedgerAudit::Task.create(hcb_code:, status: "flagged", reviewer: current_user)
+          if @task.save
+            flash[:success] = "Transaction flagged, thanks."
+          else
+            flash[:error] = "Failed to flag this HCB code."
+          end
+        else
+          flash[:success] = "This transaction has already flagged, thanks."
+        end
+
+        redirect_to hcb_code
+      end
+
     end
   end
 end

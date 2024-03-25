@@ -225,7 +225,7 @@ Rails.application.routes.draw do
 
   namespace :admin do
     namespace :ledger_audits do
-      resources :tasks, only: [:index, :show] do
+      resources :tasks, only: [:index, :show, :create] do
         post :reviewed
         post :flagged
       end
