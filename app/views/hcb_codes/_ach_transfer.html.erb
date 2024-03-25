@@ -110,9 +110,16 @@
   </turbo-frame>
 
   <% if @hcb_code.ach_transfer.may_mark_rejected? %>
-    <section class="card__banner card__darker border-top overflow-hidden">
-      <%= button_to "Cancel transfer", cancel_ach_transfer_path(@hcb_code.ach_transfer), class: "btn bg-error" %>
-    </section>
+    <div class="card__banner card__darker border-top overflow-hidden">
+      <% cancel_button = button_to "Cancel transfer", cancel_ach_transfer_path(@hcb_code.ach_transfer), class: "btn bg-error #{"disabled" unless policy(@hcb_code.ach_transfer).cancel?}" %>
+      <% if policy(@hcb_code.ach_transfer).cancel? %>
+        <%= cancel_button %>
+      <% else %>
+        <div class="tooltipped tooltipped--e w-fit" aria-label="Only managers can cancel ACHs!">
+          <%= cancel_button %>
+        </div>
+      <% end %>
+    </div>
   <% end %>
 </article>
 
