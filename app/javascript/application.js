@@ -35,7 +35,10 @@ import { Turbo } from '@hotwired/turbo-rails'
 window.Turbo = Turbo
 
 import Alpine from 'alpinejs'
+import persist from '@alpinejs/persist'
+
 window.Alpine = Alpine
+Alpine.plugin(persist)
 Alpine.start()
 
 import LocalTime from 'local-time'

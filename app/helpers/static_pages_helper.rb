@@ -11,12 +11,15 @@ module StaticPagesHelper
                 badge_for "⏳", class: "bg-muted pr2"
               end
             else
-              ""
+              content_tag(:div, "") # Empty div if no badge is present
             end
-    link_to content_tag(:li,
-                        [content_tag(:strong, name), badge].join.html_safe,
-                        class: "card card--item card--hover flex justify-between overflow-visible line-height-3 items-center"),
-            path, method: options[:method]
+    pin = inline_icon("pin", class: "pin", size: 28, ':color': "isPinned($el.closest('a').parentElement.id) ? 'orange' : 'inherit'", '@click.prevent': "pin($el.closest('a').parentElement.id, $el.closest('.grid').id)")
+    content_tag(:div, id: "card-#{name.parameterize}") do
+      link_to content_tag(:div,
+                          [pin, content_tag(:strong, name, class: "card-name"), badge].join.html_safe,
+                          class: "card card--item card--hover flex justify-between items-center"),
+              path, class: "link-reset", method: options[:method]
+    end
   end
 
   def flavor_text
