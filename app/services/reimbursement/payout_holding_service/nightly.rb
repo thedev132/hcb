@@ -10,7 +10,7 @@ module Reimbursement
             begin
               check = clearinghouse.increase_checks.build(
                 memo: "Reimbursement for #{payout_holding.report.name}.",
-                amount_cents: payout_holding.amount_cents,
+                amount: payout_holding.amount_cents,
                 payment_for: "Reimbursement for #{payout_holding.report.name}.",
                 recipient_name: payout_holding.report.user.name,
                 address_line1: payout_holding.report.user.payout_method.address_line1,
