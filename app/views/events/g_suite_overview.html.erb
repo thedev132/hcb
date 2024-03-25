@@ -13,13 +13,13 @@
   <%= content_tag :span, @g_suite.domain, class: "badge info h3 ml0" if @g_suite %>
 </h1>
 <% if !@event.g_suites.exists? && !Flipper.enabled?(:google_workspace, @event) %>
-  <div class="card center container--sm mx-auto mt5">
+  <div class="card center container--sm mx-auto">
     <h2>Google Workspace Waitlist</h2>
     <p>We're now relaunching our Google Workspace perk! Fill out the form to join the waitlist.</p>
     <%= link_to (@waitlist_form_submitted ? "You're on the waitlist!" : "Join the Waitlist"),
     (@waitlist_form_submitted ? "#" : fillout_form("52bVNmqdeQus", { "OrgName" => @event.name, "OrgURL" => event_url(@event), "UserEmail" => current_user.email, "OrgID" => @event.id, "OrgBal" => @event.balance_available_v2_cents / 100 })),
-    class: "btn mr1 #{'disabled' if @waitlist_form_submitted}",
-    tooltip: (@waitlist_form_submitted ? "You're already on the waitlist." : "Join the waitlist.") %>
+    class: "btn mr1 #{'disabled' if @waitlist_form_submitted || !policy(@event).g_suite_create?}",
+    tooltip: (@waitlist_form_submitted ? "You're already on the waitlist." : !policy(@event).g_suite_create? ? "Only managers can sign up for this." : "Join the waitlist.") %>
   </div>
 <% else %>
   <%= render partial: "admin_viewer", locals: { record: @g_suite } %>
@@ -225,20 +225,16 @@
       If you <strong>already own</strong> a domain you would like to use, you can connect it to Google Workspace below.
     </p>
     <hr>
-    <% if @event.demo_mode? %>
-      <%= blankslate "Disabled in Playground Mode" %>
-    <% else %>
-      <%= form_with(local: true, url: event_g_suite_create_path(event_id: @event.id), method: :post) do %>
-        <%= hidden_field_tag :event_id, @event.id %>
-        <%= hidden_field_tag :creator_id, current_user.id %>
-        <div class="field">
-          <%= label_tag :domain, "Your domain" %>
-          <%= text_field_tag :domain, nil, placeholder: "yourdomain.com", 'data-behavior': "prevent_whitespace", required: true %>
-        </div>
-        <div class="actions">
-          <%= submit_tag "Configure" %>
-        </div>
-      <% end %>
+    <%= form_with(local: true, url: event_g_suite_create_path(event_id: @event.id), method: :post) do %>
+      <%= hidden_field_tag :event_id, @event.id %>
+      <%= hidden_field_tag :creator_id, current_user.id %>
+      <div class="field">
+        <%= label_tag :domain, "Your domain" %>
+        <%= text_field_tag :domain, nil, placeholder: "yourdomain.com", 'data-behavior': "prevent_whitespace", required: true, disabled: !policy(@event).g_suite_create? %>
+      </div>
+      <div class="actions">
+        <%= submit_tag "Configure", disabled: !policy(@event).g_suite_create? %>
+      </div>
     <% end %>
   <% end %>
 <% end %>

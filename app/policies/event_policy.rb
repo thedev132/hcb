@@ -90,15 +90,15 @@ class EventPolicy < ApplicationPolicy
   end
 
   def g_suite_overview?
-    admin_or_user? && !record.hardware_grant?
-  end
-
-  def g_suite_create?
     admin_or_user? && is_not_demo_mode? && !record.hardware_grant?
   end
 
+  def g_suite_create?
+    admin_or_manager? && is_not_demo_mode? && !record.hardware_grant?
+  end
+
   def g_suite_verify?
-    admin_or_user?
+    admin_or_user? && is_not_demo_mode? && !record.hardware_grant?
   end
 
   def transfers?
