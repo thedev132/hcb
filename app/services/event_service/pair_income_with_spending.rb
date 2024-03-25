@@ -12,12 +12,12 @@ module EventService
       negative = @event.canonical_transactions.includes(local_hcb_code: [:canonical_transactions, :canonical_pending_transactions])
                        .order("date asc").filter_map do |ct|
         if ct.amount_cents > 0
-          @income[ct.id.to_s] = {
+          @income[ct.id] = {
             id: ct.id,
-            memo: ct.local_hcb_code.memo,
             amount: ct.amount_cents,
             spent_on: [],
-            available: ct.amount_cents
+            available: ct.amount_cents,
+            hcb_code: ct.hcb_code
           }
           next
         end
@@ -43,9 +43,8 @@ module EventService
           current[:spent_on].append(
             {
               id: ct.id,
-              memo: ct.local_hcb_code.memo,
-              url: Rails.application.routes.url_helpers.hcb_code_url(ct.local_hcb_code),
-              amount: to_distribute
+              amount: to_distribute,
+              hcb_code: ct.hcb_code
             }
           )
           current[:available] -= to_distribute
@@ -56,8 +55,8 @@ module EventService
           current[:spent_on].append(
             {
               id: ct.id,
-              memo: ct.local_hcb_code.memo,
-              amount: available_on_current
+              amount: available_on_current,
+              hcb_code: ct.hcb_code
             }
           )
           distributed += available_on_current

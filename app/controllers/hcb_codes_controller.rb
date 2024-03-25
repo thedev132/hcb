@@ -245,27 +245,10 @@ class HcbCodesController < ApplicationController
     @event = @hcb_code.event
     @event = @hcb_code.disbursement.destination_event if @hcb_code.disbursement?
 
-    @income = ::EventService::PairIncomeWithSpending.new(event: @event).run
+    usage_breakdown = @hcb_code.usage_breakdown
 
-    @spent_on = []
-    @available = 0
-
-    # PairIncomeWithSpending is done on a per CanonicalTransaction basis
-    # This compute it for this specific HcbCode
-    @hcb_code.canonical_transactions.each do |ct|
-      if (ct[:amount_cents] > 0) && @income[ct[:id].to_s]
-        @spent_on.concat @income[ct[:id].to_s][:spent_on]
-        @available += @income[ct[:id].to_s][:available]
-      end
-    end
-
-    @spent_on = @spent_on.group_by { |hash| hash[:memo] }.map do |memo, group|
-      total_amount = group.sum(0) { |item| item[:amount] }
-      significant_transaction = group.max_by { |t| t[:amount] }
-      { id: significant_transaction[:id], memo:, amount: total_amount, url: significant_transaction[:url] }
-    end
-
-    @spent_on.sort_by! { |t| t[:id] }
+    @spent_on = usage_breakdown[:spent_on]
+    @available = usage_breakdown[:available]
 
     respond_to do |format|
 

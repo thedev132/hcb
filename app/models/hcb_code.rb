@@ -475,6 +475,46 @@ class HcbCode < ApplicationRecord
                                        end
   end
 
+  def usage_breakdown
+    spent_on = []
+    spent_on_event = disbursement? ? self.disbursement.destination_event : self.event
+    available = 0
+    if self.canonical_transactions.any? { |ct| ct.amount_cents.positive? }
+
+      income = ::EventService::PairIncomeWithSpending.new(event: self.event).run
+
+      # PairIncomeWithSpending is done on a per CanonicalTransaction basis
+      # This compute it for this specific HcbCode
+
+      self.canonical_transactions.each do |ct|
+        if (ct.amount_cents > 0) && income[ct.id]
+          spent_on.concat income[ct.id][:spent_on]
+          available += income[ct.id][:available]
+        end
+      end
+
+      spent_on.map! { |transaction|
+        hcb_code = HcbCode.find_by(hcb_code: transaction[:hcb_code])
+        {
+          id: ct.id,
+          memo: hcb_code.memo,
+          url: Rails.application.routes.url_helpers.hcb_code_url(hcb_code),
+          amount: transaction[:amount]
+        }
+      }
+
+      spent_on = spent_on.group_by { |hash| hash[:memo] }.map do |memo, group|
+        total_amount = group.sum(0) { |item| item[:amount] }
+        significant_transaction = group.max_by { |t| t[:amount] }
+        { id: significant_transaction[:id], memo:, amount: total_amount, url: significant_transaction[:url] }
+      end
+
+      spent_on.sort_by! { |t| t[:id] }
+
+    end
+    return { spent_on:, available: }
+  end
+
   def pinnable?
     !no_transactions? && event
   end
