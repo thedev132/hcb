@@ -20,7 +20,7 @@ module Reimbursement
                 recipient_email: payout_holding.report.user.email,
                 send_email_notification: false,
                 address_zip: payout_holding.report.user.payout_method.address_postal_code,
-                user: User.find_by(email: "hcb@hackclub.com")
+                user: User.find_by(email: "bank@hackclub.com")
               )
               check.save!
               check.send_check!
@@ -38,10 +38,10 @@ module Reimbursement
                 send_email_notification: false,
                 routing_number: payout_holding.report.user.payout_method.routing_number,
                 account_number: payout_holding.report.user.payout_method.account_number,
-                creator: User.find_by(email: "hcb@hackclub.com")
+                creator: User.find_by(email: "bank@hackclub.com")
               )
               ach_transfer.save!
-              ach_transfer.approve!(User.find_by(email: "hcb@hackclub.com"))
+              ach_transfer.approve!(User.find_by(email: "bank@hackclub.com"))
               payout_holding.mark_sent!
             rescue => e
               Airbrake.notify(e)
