@@ -24,6 +24,8 @@ module Reimbursement
               )
               check.save!
               check.send_check!
+              payout_holding.increase_check = check
+              payout_holding.save!
               payout_holding.mark_sent!
             rescue => e
               Airbrake.notify(e)
@@ -42,6 +44,8 @@ module Reimbursement
               )
               ach_transfer.save!
               ach_transfer.approve!(User.find_by(email: "bank@hackclub.com"))
+              payout_holding.ach_transfer = ach_transfer
+              payout_holding.save!
               payout_holding.mark_sent!
             rescue => e
               Airbrake.notify(e)
