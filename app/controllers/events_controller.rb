@@ -701,6 +701,25 @@ class EventsController < ApplicationController
     @end_date = Date.today.prev_month.beginning_of_month.to_date
   end
 
+  def termination
+    authorize @event
+
+    @successor = params[:successor] || "The Hack Foundation"
+
+    @start = params[:start]&.to_datetime || @event.activated_at || @event.created_at
+
+    @end = params[:end]&.to_datetime || Time.now
+
+    respond_to do |format|
+      format.html do
+        redirect_to @event
+      end
+      format.pdf do
+        render pdf: "Termination Letter for #{@event.name}", page_height: "11in", page_width: "8.5in"
+      end
+    end
+  end
+
   def validate_slug
     authorize @event
 

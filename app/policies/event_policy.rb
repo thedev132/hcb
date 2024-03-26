@@ -173,6 +173,10 @@ class EventPolicy < ApplicationPolicy
     admin_or_user?
   end
 
+  def termination?
+    user.admin?
+  end
+
   private
 
   def admin_or_user?

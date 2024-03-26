@@ -678,6 +678,7 @@ Rails.application.routes.draw do
 
     resources :payment_recipients, only: [:destroy]
 
+
     member do
       post "disable_feature"
       post "enable_feature"
@@ -686,6 +687,7 @@ Rails.application.routes.draw do
       post "toggle_event_tag/:event_tag_id", to: "events#toggle_event_tag", as: :toggle_event_tag
       get "audit_log"
       post "validate_slug"
+      get "termination"
     end
   end
 
