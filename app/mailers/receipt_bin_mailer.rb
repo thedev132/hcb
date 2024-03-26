@@ -12,20 +12,20 @@ class ReceiptBinMailer < ApplicationMailer
           references: -> { [@inbound_mail&.mail&.header&.[]("References")&.value, @inbound_mail&.message_id].compact.join(" ") }
 
   def bounce_missing_user
-    mail subject: "Unknown Receipt Bin inbox"
+    mail subject: @inbound_mail&.mail&.subject || "Unknown Receipt Bin inbox"
   end
 
   def bounce_missing_attachment
-    mail subject: "Missing attachment(s)"
+    mail subject: @inbound_mail&.mail&.subject || "Missing attachment(s)"
   end
 
   def bounce_success
     @receipts_count = params[:receipts_count]
-    mail subject: "Thank you for your #{"receipt".pluralize(@receipts_count)}!"
+    mail subject: @inbound_mail&.mail&.subject || "Thank you for your #{"receipt".pluralize(@receipts_count)}!"
   end
 
   def bounce_error
-    mail subject: "An unknown error occured"
+    mail subject: @inbound_mail&.mail&.subject || "An unknown error occured"
   end
 
 end
