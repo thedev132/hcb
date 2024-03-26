@@ -136,10 +136,10 @@ class StripeController < ActionController::Base
 
   def handle_setup_intent_succeeded(event)
     setup_intent = event.data.object
-    return unless setup_intent.metadata.recurring_donation_id
+    return unless setup_intent.metadata[:recurring_donation_id]
 
     suppress(ActiveRecord::RecordNotFound) do
-      recurring_donation = RecurringDonation.find(setup_intent.metadata.recurring_donation_id)
+      recurring_donation = RecurringDonation.find(setup_intent.metadata[:recurring_donation_id])
       StripeService::Subscription.update(recurring_donation.stripe_subscription_id, default_payment_method: setup_intent.payment_method)
       recurring_donation.sync_with_stripe_subscription!
       recurring_donation.save!
