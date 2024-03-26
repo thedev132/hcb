@@ -31,7 +31,7 @@
     </section>
   <% else %>
     <section class="pl2 mb1 text-shadow-lg flex flex-column" style="gap: 8px;">
-      <%= render_address OpenStruct.new(card.attributes.transform_keys { |key| key.gsub(/^stripe_shipping_/, "") }) %>
+      <%= render_address OpenStruct.new(stripe_card.attributes.transform_keys { |key| key.gsub(/^stripe_shipping_/, "") }) %>
       <% eta = stripe_card.stripe_obj&.shipping&.eta %>
       <span>
         <% if eta %>
