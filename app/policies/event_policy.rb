@@ -86,7 +86,7 @@ class EventPolicy < ApplicationPolicy
   end
 
   def new_transfer?
-    admin_or_manager?
+    admin_or_manager? && !record.demo_mode?
   end
 
   def receive_check?
