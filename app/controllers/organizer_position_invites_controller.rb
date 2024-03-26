@@ -103,7 +103,7 @@ class OrganizerPositionInvitesController < ApplicationController
     to = params[:to]
 
     if was != to
-      organizer_position_invite.update(role: to)
+      organizer_position_invite.update!(role: to)
 
       flash[:success] = "Changed #{organizer_position_invite.user.name}'s role from #{was} to #{to}."
     end
