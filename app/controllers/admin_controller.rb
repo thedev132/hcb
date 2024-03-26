@@ -171,7 +171,6 @@ class AdminController < ApplicationController
 
     @events = filtered_events
     @count = @events.count
-    @tags = EventTag.all
 
     respond_to do |format|
       format.html do

@@ -64,7 +64,7 @@
 |
 <%= form.label :tagged_with do %>
   Tagged with
-  <%= form.select :tagged_with, @tags.map { |t| [t.full_name, t.id] }, { include_blank: "anything", selected: @tagged_with } %>
+  <%= form.select :tagged_with, EventTag.all.map { |t| [t.full_name, t.id] }, { include_blank: "anything", selected: @tagged_with } %>
 <% end %>
 |
 <%= form.label :organized_by do %>
