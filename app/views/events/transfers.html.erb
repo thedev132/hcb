@@ -144,28 +144,30 @@
   <%= blankslate "No transfers yet" %>
 <% end %>
 
-<section class="modal modal--scroll bg-snow" data-behavior="modal" role="dialog" id="send_transfer">
-  <%= turbo_frame_tag :transfer_form do %>
-    <%= modal_header "Transfer money" %>
-    <% if !policy(@event).new_transfer? %>
-      <div class="card border b--info pb0 mt3 mb3">
-        <div class="flex items-center info">
-          <%= inline_icon "info", size: 32, class: "mr1" %>
-          <p class="bold mt0 mb0">You can't transfer money.</p>
+<% if organizer_signed_in? %>
+  <section class="modal modal--scroll bg-snow" data-behavior="modal" role="dialog" id="send_transfer">
+    <%= turbo_frame_tag :transfer_form do %>
+      <%= modal_header "Transfer money" %>
+      <% if !policy(@event).new_transfer? %>
+        <div class="card border b--info pb0 mt3 mb3">
+          <div class="flex items-center info">
+            <%= inline_icon "info", size: 32, class: "mr1" %>
+            <p class="bold mt0 mb0">You can't transfer money.</p>
+          </div>
+          <ul>
+            <li>
+              This is because you're not a manager.
+              (You're a <%= OrganizerPosition.find_by(user: current_user, event: @event).role %>)
+            </li>
+            <li>You can view the forms, but not submit them.</li>
+            <li>If you need to move money, ask your manager to change your role on the <%= link_to "team page", event_team_path, target: "_blank" %>.</li>
+          </ul>
+          <div class="border-top card__banner card__darker secondary">
+            <%= link_to "Read more about roles here", roles_path, target: "_blank" %>
+          </div>
         </div>
-        <ul>
-          <li>
-            This is because you're not a manager.
-            (You're a <%= OrganizerPosition.find_by(user: current_user, event: @event).role %>)
-          </li>
-          <li>You can view the forms, but not submit them.</li>
-          <li>If you need to move money, ask your manager to change your role on the <%= link_to "team page", event_team_path, target: "_blank" %>.</li>
-        </ul>
-        <div class="border-top card__banner card__darker secondary">
-          <%= link_to "Read more about roles here", roles_path, target: "_blank" %>
-        </div>
-      </div>
+      <% end %>
+      <%= render "transfer_form" %>
     <% end %>
-    <%= render "transfer_form" %>
-  <% end %>
-</section>
+  </section>
+<% end %>
