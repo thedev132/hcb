@@ -174,7 +174,7 @@ class EventPolicy < ApplicationPolicy
   end
 
   def termination?
-    user.admin?
+    user&.admin?
   end
 
   private
