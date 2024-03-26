@@ -91,8 +91,8 @@
       <% end %>
     </tbody>
   </table>
-  <%= form.collection_select(:event_id, Event.reorder(Event::CUSTOM_SORT).not_demo_mode, :id, :admin_dropdown_description, { include_blank: true }, { width: 300, style: "max-width: 300px; margin-right: 16px;" }) %>
-  <%= form.submit "Bulk Map to Event" %>
+  <%= form.collection_select(:event_id, Event.reorder(Event::CUSTOM_SORT).not_demo_mode, :id, :admin_dropdown_description, { prompt: "Select an Organization" }, { required: true, width: 300, style: "max-width: 300px; margin-right: 16px;" }) %>
+  <%= form.submit "Bulk Map to Event", "data-turbo-confirm": "Are you sure you want to bulk map these transactions?" %>
 <% end %>
 
 <% if @canonical_transactions.empty? %>

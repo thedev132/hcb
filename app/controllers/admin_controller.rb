@@ -40,6 +40,13 @@ class AdminController < ApplicationController
     @canonical_pending_transactions = CanonicalPendingTransaction.unmapped.where(amount_cents: @canonical_transaction.amount_cents)
     @ahoy_events = Ahoy::Event.where("name in (?) and (properties->'canonical_transaction'->>'id')::int = ?", [::SystemEventService::Write::SettledTransactionMapped::NAME, ::SystemEventService::Write::SettledTransactionCreated::NAME], @canonical_transaction.id).order("time desc")
 
+    # Mapping confirm message
+    @mapping_confirm_msg = if !@canonical_transaction.local_hcb_code.unknown?
+                             "Woaaahaa! 😯 This seems like a transaction that SHOULD NOT be manually mapped! Are you sure you want to do this? 👀"
+                           elsif @canonical_transaction.amount_cents.abs >= 5_000_00 # $5k
+                             "Are you really really sure you want to map this transaction? 🤔 it seems like a big one :)"
+                           end
+
     render layout: "admin"
   end
 
