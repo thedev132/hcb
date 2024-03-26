@@ -223,7 +223,7 @@ class StripeCard < ApplicationRecord
   def stripe_obj
     @stripe_obj ||= ::Stripe::Issuing::Card.retrieve(id: stripe_id)
   rescue => e
-    OpenStruct.new({ number: "XXXX", cvc: "XXX", created: Time.now.utc.to_i, shipping: { status: "delivered" } })
+    OpenStruct.new({ number: "XXXX", cvc: "XXX", created: Time.now.utc.to_i, shipping: { status: "delivered", carrier: "USPS", eta: 2.weeks.ago, tracking_number: "12345678s9" } })
   end
 
   def secret_details

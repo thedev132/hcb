@@ -1,13 +1,4 @@
 <% if @stripe_cards.any? %>
-  <div class="banner bg-pending black flex items-center mt2 mb2">
-    <%= inline_icon "card-pin", size: 32 %>
-    <strong class="ml2">
-      Your
-      <%= pluralize @stripe_cards.size, "card" %>
-      <%= "is".pluralize(@stripe_cards.size) %>
-      on the way!
-    </strong>
-  </div>
   <div class="grid grid--split mb3">
     <% @stripe_cards.each do |card| %>
       <%= render partial: "stripe_cards/shipping", locals: { stripe_card: card } %>
