@@ -136,10 +136,10 @@
       </div>
     <% elsif Flipper.enabled?(:anonymous_donations_2024_01_29, @event) %>
       <%# Feature is enabled, let the user opt-out %>
-      <%= link_to "Disable", disable_feature_event_path(feature: :anonymous_donations_2024_01_29), method: :post, class: "btn bg-accent" %>
+      <%= link_to "Disable", disable_feature_event_path(feature: :anonymous_donations_2024_01_29), method: :post, class: "btn bg-accent #{"disabled" unless policy(@event).disable_feature?}" %>
     <% else %>
       <%# Feature is disabled, let the user opt-in %>
-      <%= link_to "Enable", enable_feature_event_path(feature: :anonymous_donations_2024_01_29), method: :post, class: "btn bg-info" %>
+      <%= link_to "Enable", enable_feature_event_path(feature: :anonymous_donations_2024_01_29), method: :post, class: "btn bg-info #{"disabled" unless policy(@event).enable_feature?}" %>
     <% end %>
   </div>
   <p>

@@ -33,7 +33,7 @@ class EventPolicy < ApplicationPolicy
   end
 
   def edit?
-    admin_or_manager?
+    admin_or_user?
   end
 
   def update?
