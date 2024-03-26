@@ -1,24 +1,32 @@
-<p>Hi there, <%= @position.user.first_name %>! 👋</p>
-
-<p><%= @changer == @position.user ? "You've" : "#{@changer.name} has" %> changed your role in <%= @position.event.name %>.</p>
-<p>Previously, you were a <%= @previous_role %>. <em>Now, you're a <%= @position.role %>.</em></p>
+<p>Hi <%= @position.user.first_name %>,</p>
 
 <p>
-  This is a
-  <%= OrganizerPosition.roles[@previous_role.to_sym] < OrganizerPosition.roles[@position.role.to_sym] ? "higher" : "lower" %>
-  level of access than you had before.
-  For info on what this change means, please check out
-  <a href="https://hcb.hackclub.com/branding">our user permissions explainer page.</a>
+  <%= @changer.name %> has updated your role in <%= @position.event.name %>
+  to <%= @position.role.titleize %>.
+</p>
+
+<p>
+  Previously, you were a <%= @previous_role.titleize %>. <%= @position.role.titleize %>
+  is a
+  <%= OrganizerPosition.roles[@previous_role] < OrganizerPosition.roles[@position.role] ? "more" : "less" %>
+  permissive role.
+  <br>
+  For more information on roles, please visit the
+  <%= link_to "User Roles", roles_url %>
+  explainer page.
 </p>
 
 <% if @position.event.demo_mode? %>
-  <p>Remember, your organization is still in Playground mode; nobody has access to real money.
-    You can request to fully activate your account at any time from the HCB dashboard.
+  <p>
+    Remember, your organization is still in Playground mode; nobody has access
+    to real money.
+    You can request to fully activate your account at any time from the HCB
+    dashboard.
     Don't hesitate to reply to this email if you have any questions!
   </p>
 <% end %>
 
 <p>
   Best,<br>
-  The <%= link_to "HCB", "https://hackclub.com/hcb" %> Team
+  The HCB Team
 </p>
