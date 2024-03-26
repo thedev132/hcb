@@ -25,12 +25,6 @@
     <%= render partial: "details", locals: { stripe_card: @card } if @card.activated? %>
     <% if @card.physical? && !@card.activated? %>
       <div class="mt2 max-width-2 w-100 mx-auto">
-        <div class="banner bg-pending black flex items-center mt2 mb2">
-          <%= inline_icon "card-pin", size: 32 %>
-          <strong class="ml2">
-            Your card is on the way!
-          </strong>
-        </div>
         <div class="grid mb3" style="max-width: 36rem; margin: 0px auto; width: 100%;">
           <%= render partial: "stripe_cards/shipping", locals: { stripe_card: @card } %>
         </div>

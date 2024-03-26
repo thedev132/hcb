@@ -1,5 +1,5 @@
 <% style = card_shipping_map_url(stripe_card) ?
-            "linear-gradient(to bottom, rgba(20, 20, 20, 0.75), rgba(0, 0, 9, 0.5)), url(#{card_shipping_map_url(stripe_card)}); height: 250px"
+            "background: linear-gradient(to bottom, rgba(20, 20, 20, 0.75), rgba(0, 0, 9, 0.5)), url(#{card_shipping_map_url(stripe_card)}); height: 250px"
             : "" %>
 
 <div class="card p0 flex flex-column justify-between" style="<%= style %>">
@@ -30,7 +30,7 @@
       </p>
     </section>
   <% else %>
-    <section class="pl2 mb1 text-shadow-lg flex flex-column" style="gap: 8px;">
+    <section class="pl2 mb2 text-shadow-lg flex flex-column" style="gap: 8px;">
       <%= render_address OpenStruct.new(stripe_card.attributes.transform_keys { |key| key.gsub(/^stripe_shipping_/, "") }) %>
       <% eta = stripe_card.stripe_obj&.shipping&.eta %>
       <span>
