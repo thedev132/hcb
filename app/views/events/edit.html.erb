@@ -26,17 +26,6 @@
 
 <div class="card mb3">
   <section class="details">
-    <% if Flipper.enabled?(:incoming_ach_payments_2023_02_17, @event) %>
-      <p>
-        <strong>Account number</strong>
-        <span><%= @event.account_number %></span>
-      </p>
-      <p>
-        <strong>Routing number</strong>
-        <span><%= @event.routing_number %></span>
-      </p>
-    <% end %>
-
     <p>
       <strong>Current plan</strong>
       <span><%= @event.plan_name.titleize %></span>
