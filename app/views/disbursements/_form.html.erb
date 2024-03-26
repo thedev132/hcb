@@ -1,3 +1,5 @@
+<% disabled = !policy(@source_event).new_transfer? %>
+
 <%= form_with(model: disbursement, local: true, url: disbursements_path, html: { "x-data" => "{fee: null}" }) do |form| %>
   <%= form_errors(disbursement, "Disbursements") %>
 
@@ -9,7 +11,7 @@
                                 current_user.admin? ? :admin_dropdown_description : :disbursement_dropdown_description,
                                 { prompt: "Select one…", disabled: ->(e) { e != @source_event && !current_user.admin? && e.balance_available <= 0 } },
                                 required: true,
-                                disabled: @source_event&.demo_mode?) %>
+                                disabled: ) %>
   </div>
 
   <div class="field event-select-target">
@@ -24,7 +26,7 @@
                     end,
                     { prompt: "Select one…" },
                     required: true,
-                    disabled: @source_event&.demo_mode?,
+                    disabled:,
                     "x-on:input" => "fee = $event.target.options[$event.target.selectedIndex].dataset.fee") %>
     <% unless admin_signed_in? %>
       <span class="muted">You can transfer to any organization you're a part of.</span>
@@ -49,18 +51,20 @@
                                      step: 0.01,
                                      min: 0.01,
                                      required: true,
-                                     disabled: @source_event&.demo_mode?,
+                                     disabled:,
                                      data: { controller: "truncate-decimal", action: "truncate-decimal#truncate" } %>
     </div>
   </div>
 
   <div class="field">
     <%= form.label :name, "What is the transfer for?" %>
-    <%= form.text_field :name, placeholder: "Donating extra funds to another organization", maxlength: 60, required: true, disabled: @source_event&.demo_mode? %>
+    <%= form.text_field :name, placeholder: "Donating extra funds to another organization", maxlength: 60, required: true, disabled: %>
     <span class="muted">This is to help HCB keep record of our transactions. It will be used as the memo on your transaction list.</span>
   </div>
 
-  <div class="actions inline-block">
-    <%= form.submit "Make transfer", class: "btn", disabled: @source_event&.demo_mode? %>
+  <div
+      class="<%= "actions inline-block #{"tooltipped tooltipped--e" if disabled}" %>"
+      aria-label="<%= @event.demo_mode? ? "Transfers are disabled in Playground mode" : disabled ? "Only managers can make transfers!" : nil %>">
+    <%= form.submit "Make transfer", class: "btn", disabled: %>
   </div>
 <% end %>
