@@ -17,6 +17,14 @@ class ApplicationController < ActionController::Base
   # Redirect users to the onboarding page if they haven't completed it yet
   before_action :redirect_to_onboarding
 
+  # This cookie is used for Safari PWA prompts
+  before_action do
+    next if current_user.nil?
+
+    @first_visit = cookies[:first_visit] != "1"
+    cookies.permanent[:first_visit] = 1
+  end
+
   # Force usage of Pundit on actions
   after_action :verify_authorized, unless: -> { controller_path.starts_with?("doorkeeper/") }
 

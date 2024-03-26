@@ -443,6 +443,10 @@ $('[data-behavior~=ctrl_enter_submit]').keydown(function (event) {
   }
 })
 
+function hidePWAPrompt() {
+  document.body.classList.add("hide__pwa__prompt")
+}
+
 $(document).on('click', '[data-behavior~=expand_receipt]', function (e) {
   const controlOrCommandClick = e.ctrlKey || e.metaKey;
   if ($(this).attr('href') || $(e.target).attr('href')) {

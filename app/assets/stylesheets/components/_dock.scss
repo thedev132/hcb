@@ -68,6 +68,7 @@
     overflow: visible;
     align-items: center;
     justify-content: space-between;
+    flex-wrap: wrap;
     z-index: 3;
     background-color: rgba(255, 255, 255, 0.98);
     @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
@@ -103,12 +104,49 @@
   }
 }
 
+.hide__pwa__prompt .pwa__prompt {
+  display: none!important
+}
+
+.pwa__prompt__hide {
+  position: absolute; 
+  right: 5px; 
+  top: 5px; 
+  cursor: pointer;
+}
+
+.pwa__prompt {
+  display: none;
+  @supports (-webkit-touch-callout: none) {
+    display: block;
+  }
+  @media (min-width: 56em) {
+    display: none!important;
+  }
+  flex: 1 0 100%; 
+  background: #ec3750; 
+  padding: 8px 16px; 
+  text-align: center; 
+  color: white;
+  margin-bottom: -16px
+}
+
+
+.pwa__prompt > b {
+  font-weight: 600;
+}
+
+.pwa__prompt__icon {
+  transform: translateY(2.5px)
+}
+
 .dock__item {
   font-size: 0.875rem;
   text-decoration: none;
   width: 100%;
   font-weight: 600;
   flex-shrink: 1;
+  flex: 1;
   display: inline-flex;
   align-items: center;
   overflow: visible; // for tooltips
