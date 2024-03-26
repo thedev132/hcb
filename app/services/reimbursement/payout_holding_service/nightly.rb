@@ -9,7 +9,7 @@ module Reimbursement
           if payout_holding.report.user.payout_method.is_a?(User::PayoutMethod::Check)
             begin
               check = clearinghouse.increase_checks.build(
-                memo: "Reimbursement for #{payout_holding.report.name}.",
+                memo: "Reimbursement for #{payout_holding.report.name}."[0...40],
                 amount: payout_holding.amount_cents,
                 payment_for: "Reimbursement for #{payout_holding.report.name}.",
                 recipient_name: payout_holding.report.user.name,
@@ -22,7 +22,7 @@ module Reimbursement
                 address_zip: payout_holding.report.user.payout_method.address_postal_code,
                 user: User.find_by(email: "hcb@hackclub.com")
               )
-              check.save
+              check.save!
               check.send_check!
               payout_holding.mark_sent!
             rescue => e
@@ -40,7 +40,7 @@ module Reimbursement
                 account_number: payout_holding.report.user.payout_method.account_number,
                 creator: User.find_by(email: "hcb@hackclub.com")
               )
-              ach_transfer.save
+              ach_transfer.save!
               ach_transfer.approve!(User.find_by(email: "hcb@hackclub.com"))
               payout_holding.mark_sent!
             rescue => e
