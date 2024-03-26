@@ -46,47 +46,54 @@
 
 <%= page_entries_info @canonical_transactions, entry_name: "transactions" %>
 
-<table>
-  <thead>
-    <tr>
-      <th class="w-32">ID</th>
-      <th class="w-32">Date</th>
-      <th>Memo</th>
-      <th>Bank account</th>
-      <th class="w-24">Amount</th>
-      <th clas="w-64">HCB Code</th>
-      <th class="w-24">Event</th>
-      <th class="w-24">Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @canonical_transactions.each do |ct| %>
-      <tr class="<%= "admin-bg-pending" unless ct.canonical_event_mapping || !ct.local_hcb_code.unknown? || ct.memo.include?("BUSBILLPAY") %>">
-        <td><%= ct.id %></td>
-        <td><%= ct.date %></td>
-        <td><%= link_to ct.memo, transaction_path(ct) %></td>
-        <td><%= ct.bank_account_name %></td>
-        <td class="nowrap"><%= ct.amount.format %></td>
-        <td><%= ct.hcb_code %></td>
-        <td><%= link_to ct.canonical_event_mapping.event.id, ct.canonical_event_mapping.event if ct.canonical_event_mapping.try(:event) %></td>
-        <td>
-          <%= link_to "Process", transaction_admin_path(ct) unless ct.event.present? %>
-          <%= link_to "View", transaction_admin_path(ct) if ct.event.present? %>
-
-          <% if !ct.event.present? && ct.memo.include?("BUSBILLPAY") %>
-            <br>
-            🕐 This ACH should auto-map within 24 hours
-          <% end %>
-
-          <% if ct.canonical_event_mapping.try(:user) %>
-            <br>
-            <%= ct.canonical_event_mapping.try(:user).try(:email) %>
-          <% end %>
-        </td>
+<%= form_with local: true, url: set_event_multiple_transactions_path, method: :post do |form| %>
+  <table>
+    <thead>
+      <tr>
+        <th class="w-8"></th>
+        <th class="w-32">ID</th>
+        <th class="w-32">Date</th>
+        <th>Memo</th>
+        <th>Bank account</th>
+        <th class="w-24">Amount</th>
+        <th clas="w-64">HCB Code</th>
+        <th class="w-24">Event</th>
+        <th class="w-24">Actions</th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      <% @canonical_transactions.each do |ct| %>
+        <tr class="<%= "admin-bg-pending" unless ct.canonical_event_mapping || !ct.local_hcb_code.unknown? || ct.memo.include?("BUSBILLPAY") %>">
+          <td>
+            <%= form.check_box ct.id %>
+          </td>
+          <td><%= ct.id %></td>
+          <td><%= ct.date %></td>
+          <td><%= link_to ct.memo, transaction_path(ct) %></td>
+          <td><%= ct.bank_account_name %></td>
+          <td class="nowrap"><%= ct.amount.format %></td>
+          <td><%= ct.hcb_code %></td>
+          <td><%= link_to ct.canonical_event_mapping.event.id, ct.canonical_event_mapping.event if ct.canonical_event_mapping.try(:event) %></td>
+          <td>
+            <%= link_to "Process", transaction_admin_path(ct) unless ct.event.present? %>
+            <%= link_to "View", transaction_admin_path(ct) if ct.event.present? %>
+            <% if !ct.event.present? && ct.memo.include?("BUSBILLPAY") %>
+              <br>
+              🕐 This ACH should auto-map within 24 hours
+            <% end %>
+
+            <% if ct.canonical_event_mapping.try(:user) %>
+              <br>
+              <%= ct.canonical_event_mapping.try(:user).try(:email) %>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <%= form.collection_select(:event_id, Event.reorder(Event::CUSTOM_SORT).not_demo_mode, :id, :admin_dropdown_description, { include_blank: true }, { width: 300, style: "max-width: 300px; margin-right: 16px;" }) %>
+  <%= form.submit "Bulk Map to Event" %>
+<% end %>
 
 <% if @canonical_transactions.empty? %>
   <%= blankslate "No transaction match your search parameters" %>

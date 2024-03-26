@@ -233,6 +233,7 @@ Rails.application.routes.draw do
     resources :ledger_audits, only: [:index, :show]
   end
 
+  post "set_event", to: "admin#set_event_multiple_transactions", as: :set_event_multiple_transactions
   post "set_event/:id", to: "admin#set_event", as: :set_event
 
   resources :organizer_position_invites, only: [:show], path: "invites" do

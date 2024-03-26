@@ -986,6 +986,25 @@ class AdminController < ApplicationController
     redirect_to transaction_admin_path(params[:id]), flash: { error: e.message }
   end
 
+  def set_event_multiple_transactions
+    ActiveRecord::Base.transaction do
+      params.each do |key, value|
+        next unless value == "1" && CanonicalTransaction.find(key)
+
+        begin
+          @canonical_transaction = ::CanonicalTransactionService::SetEvent.new(
+            canonical_transaction_id: key,
+            event_id: params[:event_id],
+            user: current_user
+          ).run
+        rescue => e
+          return redirect_to transaction_admin_path(id), flash: { error: e.message }
+        end
+      end
+    end
+    redirect_back fallback_location: ledger_admin_index_path
+  end
+
   def audit
     @topups = StripeService::Topup.list[:data]
   end
