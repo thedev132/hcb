@@ -97,9 +97,9 @@
         <strong>Status</strong>
         <span>
           <%= @hcb_code.ach_transfer.status_text_long %>
-          <% if @hcb_code.ach_transfer.deposited? %>
+          <% if @hcb_code.ach_transfer.deposited? && policy(@hcb_code.ach_transfer).transfer_confirmation_letter? %>
             <span class="muted">
-              <%= link_to "(#{ organizer_signed_in? ? 'view confirmation letter' : 'sign in to view' })", ach_transfer_confirmation_path(@hcb_code.ach_transfer, format: :pdf), target: "_blank" %>
+              <%= link_to "(view confirmation letter)", ach_transfer_confirmation_path(@hcb_code.ach_transfer, format: :pdf), target: "_blank" %>
             </span>
           <% end %>
         </span>
