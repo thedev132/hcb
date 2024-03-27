@@ -18,10 +18,6 @@ module CanonicalPendingTransactionService
           @canonical_transaction.custom_memo = @canonical_pending_transaction.custom_memo
           @canonical_transaction.save!
         end
-
-        if @canonical_pending_transaction.raw_pending_stripe_transaction && (@canonical_pending_transaction.amount_cents != @canonical_transaction.amount_cents)
-          CanonicalPendingTransactionMailer.with(canonical_pending_transaction_id: cpt.id).notify_settled.deliver_later
-        end
       end
     end
 

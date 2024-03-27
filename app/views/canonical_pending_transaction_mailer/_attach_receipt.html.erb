@@ -1,9 +1,0 @@
-<% if hcb_code.receipt_required? %>
-  <%= link_to "Upload your receipt for this charge (this link can used by anyone for two weeks)", upload_url %>.
-
-  <% if receipt_upload_feature %>
-    <p>
-      Alternatively, <em>reply to this email with an image or PDF receipt attached</em>. When responding with a receipt, include a line beginning with <em>@rename</em> to rename the transaction or with <em>@tag</em> to tag the transaction.
-    </p>
-  <% end %>
-<% end %>
