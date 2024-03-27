@@ -155,16 +155,23 @@
             <p class="bold mt0 mb0">You can't transfer money.</p>
           </div>
           <ul>
-            <li>
-              This is because you're not a manager.
-              (You're a <%= OrganizerPosition.find_by(user: current_user, event: @event)&.role %>)
-            </li>
+            <% if @event.demo_mode? %>
+              <li>This is because your organization is in demo mode.</li>
+            <% else %>
+              <%# They're not authorized due to role lacking permissions %>
+              <li>
+                This is because you're not a Manager.
+                (You're a <%= OrganizerPosition.find_by(user: current_user, event: @event)&.role&.titleize %>)
+              </li>
+              <li>If you need to move money, ask your manager to change your role on the <%= link_to "team page", event_team_path, target: "_blank" %>.</li>
+            <% end %>
             <li>You can view the forms, but not submit them.</li>
-            <li>If you need to move money, ask your manager to change your role on the <%= link_to "team page", event_team_path, target: "_blank" %>.</li>
           </ul>
-          <div class="border-top card__banner card__darker secondary">
-            <%= link_to "Read more about roles here", roles_path, target: "_blank" %>
-          </div>
+          <% unless @event.demo_mode? %>
+            <div class="border-top card__banner card__darker secondary">
+              <%= link_to "Read more about roles", roles_path, target: "_blank" %>
+            </div>
+          <% end %>
         </div>
       <% end %>
       <%= render "transfer_form" %>
