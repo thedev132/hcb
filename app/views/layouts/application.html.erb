@@ -94,6 +94,11 @@
       </div>
     <% end %>
 
+    <%= render "maintenance_banner",
+               datetime: Time.parse("2024-04-03T22:00:00-0700"),
+               duration: 1.hour,
+               learn_more_url: "https://changelog.hcb.hackclub.com/scheduled-maintenance-289134" %>
+
     <% if @event&.demo_mode? && !@no_app_shell && !@no_transparency_header %>
       <style>
         .banner-content {
