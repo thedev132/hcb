@@ -1,4 +1,7 @@
-<% if signed_in? && local_assigns.has_key?(:datetime) && local_assigns.has_key?(:duration) %>
+<% has_window = local_assigns.key?(:datetime) && local_assigns.key?(:duration) %>
+<% not_demo_mode = !@event&.demo_mode? %>
+
+<% if signed_in? && has_window && not_demo_mode %>
   <% if (datetime + duration) > Time.now %><%# if it hasn't already passed %>
 
     <div class="w-100 px3 bg-white transparency-banner" data-behavior="hide_iframe">
