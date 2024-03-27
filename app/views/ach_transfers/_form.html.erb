@@ -124,9 +124,15 @@
       <%= form.date_select :scheduled_on, prompt: true, order: [:month, :day, :year], start_year: Date.today.year %>
       <p class="h5 muted mt0 mb1">Leave blank to send instantly</p>
     </div>
+
+    <div class="field field--checkbox">
+      <%= form.check_box :same_day %>
+      <%= form.label :same_day, "Process same-day? May incur a fee on HCB's end." %>
+    </div>
+    <p class="h5 muted mt0 mb1">See <%= link_to "this page", "https://column.com/docs/ach/timing", target: "_blank" %> for ACH timing details.</p>
   <% end %>
 
   <div class="actions tooltipped tooltipped--n inline-block" aria-label="ACH transfers can't be cancelled">
-    <%= form.submit "Transfer money now", class: "btn bg-warning", disabled: (!organizer_signed_in? || @event.demo_mode?) %>
+    <%= form.submit "Transfer money now", class: "btn", disabled: (!organizer_signed_in? || @event.demo_mode?) %>
   </div>
 <% end %>

@@ -17,6 +17,7 @@
 #  recipient_tel             :string
 #  rejected_at               :datetime
 #  routing_number            :string
+#  same_day                  :boolean          default(FALSE), not null
 #  scheduled_arrival_date    :datetime
 #  scheduled_on              :date
 #  send_email_notification   :boolean          default(FALSE)
@@ -160,6 +161,7 @@ class AchTransfer < ApplicationRecord
       company_name: event.name[0...16],
       description: payment_for,
       account_number_id:,
+      same_day:,
     }.compact_blank)
 
     mark_in_transit
