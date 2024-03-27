@@ -1,7 +1,6 @@
 name: Admin feature request
 description: got a small feature for Ops or admins? let us hear you out
-title: "Admin: [feature name here]"
-labels: []
+title: "[Admin] feature name here"
 body:
   - type: markdown
     attributes:
