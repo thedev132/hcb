@@ -41,6 +41,7 @@ class CommentsController < ApplicationController
       # because that's the only place comments show up as a list.
       redirect_to @comment.commentable
     else
+      @commentable = @comment.commentable
       render :edit, status: :unprocessable_entity
     end
   end

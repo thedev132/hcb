@@ -1,5 +1,6 @@
 <%= form_with model: [commentable, @comment || Comment.new] do |form| %>
   <%= form.hidden_field :redirect_url, value: url_for(only_path: false) %>
+  <%= form_errors @comment || Comment.new, "message", "We couldn't update your" %>
 
   <div class="comment__name mt2">
     <%= user_mention current_user if organizer_signed_in? %>
@@ -30,8 +31,8 @@
       </div>
     <% end %>
 
-    <%= form.hidden_field :commentable_type, value: commentable.class %>
-    <%= form.hidden_field :commentable_id, value: commentable.id %>
+    <%= form.hidden_field :commentable_type, value: commentable&.class %>
+    <%= form.hidden_field :commentable_id, value: commentable&.id %>
 
     <% admin_tool("inline-flex", "span") do %>
       <div class="field field--checkbox mb0">
