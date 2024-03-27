@@ -32,6 +32,10 @@ class User
         "email"
       end
 
+      def name
+        "a check"
+      end
+
     end
   end
 

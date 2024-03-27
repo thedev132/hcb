@@ -110,7 +110,11 @@ module Reimbursement
 
       begin
         @report.mark_submitted!
-        flash[:success] = "Report submitted for review. To make further changes, mark it as a draft."
+        flash[:success] = {
+          text: "You report has been submitted for review. When it's approved, you'll be reimbursed via #{@report.user.payout_method.name}.",
+          link: settings_payouts_path,
+          link_text: "If needed, you can still edit your payout settings."
+        }
       rescue => e
         flash[:error] = e.message
       end

@@ -26,6 +26,10 @@ class User
         "bank-account"
       end
 
+      def name
+        "an ACH transfer"
+      end
+
     end
   end
 

@@ -9,6 +9,11 @@ class User
     def icon
       "docs"
     end
+
+    def name
+      "an unknown method"
+    end
+
   end
 
 end
