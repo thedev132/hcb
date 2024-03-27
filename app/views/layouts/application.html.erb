@@ -131,7 +131,7 @@
               </p>
               <p class="m0">
                 <% if meeting_req %>
-                  You requested activation on <%= meeting_req.strftime("#{meeting_req.day.ordinalize} %B") %>
+                  You requested activation on <%= format_date meeting_req %>
                   (<%= distance_of_time_in_words_to_now meeting_req %> ago).
                   Please expect an email from our team soon.
                 <% end %>
