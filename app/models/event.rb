@@ -55,7 +55,7 @@
 #  increase_account_id               :string           not null
 #  partner_id                        :bigint
 #  point_of_contact_id               :bigint
-#
+#  postal_code                       :string
 # Indexes
 #
 #  index_events_on_club_airtable_id                        (club_airtable_id) UNIQUE
