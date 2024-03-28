@@ -27,8 +27,8 @@ module Reimbursement
 
     has_many :expense_payouts, class_name: "Reimbursement::ExpensePayout", foreign_key: "reimbursement_payout_holdings_id", inverse_of: :payout_holding
     belongs_to :report, foreign_key: "reimbursement_reports_id", inverse_of: :payout_holding
-    belongs_to :ach_transfer, optional: true
-    belongs_to :increase_check, optional: true
+    belongs_to :ach_transfer, optional: true, foreign_key: "ach_transfers_id", inverse_of: :reimbursement_payout_holding
+    belongs_to :increase_check, optional: true, foreign_key: "increase_checks_id", inverse_of: :reimbursement_payout_holding
 
     after_create :set_and_create_hcb_code
     belongs_to :local_hcb_code, foreign_key: "hcb_code", primary_key: "hcb_code", class_name: "HcbCode", inverse_of: :reimbursement_payout_holding, optional: true
