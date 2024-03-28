@@ -32,7 +32,7 @@ class CanonicalPendingTransactionMailer < ApplicationMailer
     )
 
     to = @cpt.stripe_card.user.email
-    subject = "#{@cpt.smart_memo} settled at #{render_money(@cpt.amount)}."
+    subject = "#{@cpt.smart_memo} settled at #{ApplicationController.helpers.render_money(@cpt.amount)}."
     reply_to = if @receipt_upload_feature
                  HcbCode.find_or_create_by(hcb_code: @cpt.hcb_code).receipt_upload_email
                else
