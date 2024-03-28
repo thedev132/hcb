@@ -93,6 +93,12 @@
   <h2 class="flex items-center">
     <span style="flex-grow: 1">Expenses</span>
   </h2>
+<% elsif @report.submitted? && !organizer_signed_in? %>
+  <% admin_tool("card mt2 p2", "div") do %>
+    <p class="mt0 mb0">
+      This report is currently being reviewed by <%= @event.name %>'s team. As an admin you may approve expenses, however, keep in mind that <span class="bold">all actions you take at this point will be on behalf of <%= @event.name %>.</span>
+    </p>
+  <% end %>
 <% end %>
 
 <div id="expenses">
