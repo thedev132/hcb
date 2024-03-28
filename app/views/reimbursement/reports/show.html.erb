@@ -64,13 +64,17 @@
 
 <% if @report.draft? %>
   <section class="flex items-start justify-center mt2 mb2" style="gap: 16px; position: relative;">
-    <article class="card">
+    <article class="card w-100">
       <p class="mt0">
         Paid for something out of pocket? Get reimbursed by uploading your receipts.
       </p>
       <p>
-        Begin by adding an expense to this report below; for each expense, you'll need to attach
-        a receipt, provide a memo describing the expense, and specify the amount you are seeking reimbursement for.
+        Begin by adding an expense to this report below; for each expense, you'll need to:
+        <ol>
+          <li>Attach a receipt.</li>
+          <li>Provide a memo describing the expense.</li>
+          <li>Specify the amount you are seeking reimbursement for.</li>
+        </ol>
       </p>
       <p>
         Once you've added all of your expenses to the report, click <i>Submit</i> to begin the review process.
