@@ -48,7 +48,7 @@ module Reimbursement
       end
     end
 
-    scope :complete, -> { where.not(memo: nil, amount_cents: 0) }
+    scope :complete, -> { where.not(memo: nil, amount_cents: 0).merge(self.with_receipt) }
 
     aasm do
       state :pending, initial: true
