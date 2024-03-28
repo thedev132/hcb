@@ -392,7 +392,11 @@ class UsersController < ApplicationController
         flash[:success] = "Profile created!"
         redirect_to root_path
       else
-        flash[:success] = @user == current_user ? "Updated your profile!" : "Updated #{@user.first_name}'s profile!"
+        if @user.payout_method.saved_changes? && @user == current_user
+          flash[:success] = "Your payout details have been updated. We'll use this information for all payouts going forward."
+        else
+          flash[:success] = @user == current_user ? "Updated your profile!" : "Updated #{@user.first_name}'s profile!"
+        end
 
         ::StripeCardholderService::Update.new(current_user: @user).run
 
