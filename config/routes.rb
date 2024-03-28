@@ -625,6 +625,7 @@ Rails.application.routes.draw do
     get "transfers/new", to: "events#new_transfer"
 
     get "async_balance", to: "events#async_balance", as: :async_balance
+    get "reimbursements_pending_review_icon", to: "events#reimbursements_pending_review_icon", as: :reimbursements_pending_review_icon
 
     # (@eilla1) these pages are for the wip resources page and will be moved later
     get "connect_gofundme", to: "events#connect_gofundme", as: :connect_gofundme

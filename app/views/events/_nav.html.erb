@@ -74,6 +74,7 @@
         selected: local_assigns[:selected] == :transfers %>
       <%= dock_item "Reimbursements",
         event_reimbursements_path(event_id: @event.slug),
+        async_badge: event_reimbursements_pending_review_icon_path(@event),
         tooltip: "Reimburse team members & volunteers",
         icon: "attachment",
         selected: local_assigns[:selected] == :reimbursements if Flipper.enabled?(:reimbursements_2024_03_10, @event) && policy(@event).reimbursements? %>

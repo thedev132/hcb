@@ -117,6 +117,10 @@ class EventPolicy < ApplicationPolicy
     (is_public || admin_or_user?) && !record.hardware_grant? && !record.outernet_guild?
   end
 
+  def reimbursements_pending_review_icon?
+    is_public || admin_or_user?
+  end
+
   def reimbursements?
     admin_or_user?
   end

@@ -603,6 +603,13 @@ class EventsController < ApplicationController
     @reports = @reports.search(params[:q]) if params[:q].present?
   end
 
+  def reimbursements_pending_review_icon
+    authorize @event
+    @reimbursements_pending_review_count = @event.reimbursement_reports.submitted.count
+
+    render :reimbursements_pending_review_icon, layout: false
+  end
+
   def toggle_hidden
     authorize @event
 
