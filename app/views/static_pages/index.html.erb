@@ -37,7 +37,7 @@
   </div>
 <% end %>
 
-<main class="flex flex-column items-center center pb3">
+<main class="flex flex-col items-center center pb3">
   <% if signed_in? %>
     <% if @events.any? %>
       <% if @show_event_reorder_tip %>
@@ -55,7 +55,7 @@
         data-action="sortable:stop->event-sort#sort">
         <% @events.not_hidden.each do |event| %>
           <%= link_to event, style: "max-width: 90vw", class: "draggable text-decoration-none" do %>
-            <li class="card card--hover flex flex-column justify-between h-100 mx-auto <%= "card--background-image" if event.background_image.attached? %>" style="<%= "--bg-image: url(#{url_for(event.background_image).dump})" if event.background_image.attached? %>">
+            <li class="card card--hover flex flex-col justify-between h-100 mx-auto <%= "card--background-image" if event.background_image.attached? %>" style="<%= "--bg-image: url(#{url_for(event.background_image).dump})" if event.background_image.attached? %>">
               <div id="event-<%= event.id %>-title" class="flex mb2">
                 <% if event.logo.attached? %>
                   <div style="display: flex; gap: 8px; align-items: center;">
@@ -112,7 +112,7 @@
           <ul class="grid grid--narrow left-align mt0">
             <% @events.hidden.each do |event| %>
               <%= link_to event do %>
-                <li class="card card--hover flex flex-column justify-between">
+                <li class="card card--hover flex flex-col justify-between">
                   <strong class="h3 line-height-2 mb1"><%= event.name %></strong>
                   <div class="avatar-row">
                     <% event.organizer_positions.each do |position| %>

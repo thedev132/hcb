@@ -49,12 +49,6 @@ h4,
   font-family: $font-family;
 }
 
-pre,
-code,
-.mono {
-  font-family: $mono;
-}
-
 a {
   color: currentColor;
 }
@@ -417,3 +411,4 @@ summary {
 @import 'kbar';
 @import 'utilities';
 @import 'dark';
+@import '../builds/application-tailwind'

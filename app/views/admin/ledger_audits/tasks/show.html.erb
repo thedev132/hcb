@@ -15,7 +15,7 @@
   </div>
   <div class="event_wrapper">
     <%= link_to event, style: "max-width: 90vw", class: "draggable text-decoration-none" do %>
-      <li style="min-width: 270px;" class="card card--hover flex flex-column justify-between h-100 mx-auto <%= "card--background-image" if event.background_image.attached? %>" style="<%= "--bg-image: url(#{url_for(event.background_image).dump})" if event.background_image.attached? %>">
+      <li style="min-width: 270px;" class="card card--hover flex flex-col justify-between h-100 mx-auto <%= "card--background-image" if event.background_image.attached? %>" style="<%= "--bg-image: url(#{url_for(event.background_image).dump})" if event.background_image.attached? %>">
         <div id="event-<%= event.id %>-title" class="flex mb2">
           <% if event.logo.attached? %>
             <div style="display: flex; gap: 8px; align-items: center;">

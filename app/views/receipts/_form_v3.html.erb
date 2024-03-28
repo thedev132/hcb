@@ -1,7 +1,7 @@
 <% instance = local_assigns.__id__ %>
 <div id="receipt_upload_form">
   <div class="<%= "mb3" if defined?(include_spacing) %>" style="position: relative;">
-    <%= form_with model: nil, url: receipts_path, method: :post, remote: true, class: "flex flex-column justify-center#{" my-inbox-dropzone" if defined?(restricted_dropzone)}", data: {
+    <%= form_with model: nil, url: receipts_path, method: :post, remote: true, class: "flex flex-col justify-center#{" my-inbox-dropzone" if defined?(restricted_dropzone)}", data: {
           turbo: defined?(turbo) ? turbo : "false",
           controller: "file-drop form",
           action: "
@@ -20,7 +20,7 @@
           "
         } do |form| %>
 
-      <div class="card <%= "mt2" if defined?(include_spacing) %> flex flex-column<%= " pt0" if defined?(show_banner) && defined?(receiptable) && (receiptable.receipts.any? || receiptable.no_or_lost_receipt?) %>" id="link_receipt_<%= instance %>_form">
+      <div class="card <%= "mt2" if defined?(include_spacing) %> flex flex-col<%= " pt0" if defined?(show_banner) && defined?(receiptable) && (receiptable.receipts.any? || receiptable.no_or_lost_receipt?) %>" id="link_receipt_<%= instance %>_form">
         <% if defined?(show_banner) %>
           <% if defined?(receiptable) && receiptable.receipts.any? %>
             <p class="card__banner bg-success white bold flex items-center mt0 mb2">

@@ -35,7 +35,7 @@
 
     <div class="fs-mask">
       <strong>Card number</strong>
-      <div class="flex justify-between mono items-center">
+      <div class="flex justify-between font-mono items-center">
         <% if stripe_card.user == current_user && stripe_card.virtual? %>
           <% if @show_card_details %>
             <%= copy_to_clipboard(stripe_card.full_card_number, class: "w-fit", tooltip_direction: "e") do %>
@@ -58,7 +58,7 @@
 
     <div class="fs-mask">
       <strong>CVC</strong>
-      <div class="flex justify-between mono items-center">
+      <div class="flex justify-between font-mono items-center">
         <% if stripe_card.user == current_user && stripe_card.virtual? %>
           <% if @show_card_details %>
             <%= copy_to_clipboard(stripe_card.cvc, class: "w-fit", tooltip_direction: "e") do %>

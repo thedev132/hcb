@@ -58,7 +58,7 @@ module UsersHelper
   def avatar_for(user, size = 24, options = {})
     src = profile_picture_for(user, size)
 
-    klasses = ["circle", "shrink-none"]
+    klasses = ["rounded-full", "shrink-none"]
     klasses << "avatar--current-user" if user == current_user
     klasses << options[:class] if options[:class]
     klass = klasses.join(" ")

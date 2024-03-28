@@ -187,6 +187,8 @@ GEM
     crass (1.0.6)
     css_parser (1.11.0)
       addressable
+    cssbundling-rails (1.4.0)
+      railties (>= 6.0.0)
     date (3.3.4)
     declarative (0.0.20)
     device_detector (1.1.0)
@@ -830,6 +832,7 @@ DEPENDENCIES
   comma (~> 4.7)
   countries
   country_select (~> 8.0)
+  cssbundling-rails (~> 1.4)
   diffy
   docusign_esign (~> 3.24)
   doorkeeper (~> 5.6)

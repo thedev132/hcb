@@ -70,7 +70,7 @@
       <div class="field">
         <div class="flex items-center">
           <span class="bold muted" style="width: 1rem;">$</span>
-          <div class="flex flex-column">
+          <div class="flex flex-col">
             <%= form.number_field :amount,
               placeholder: "500.00",
               value: (@check.amount.nil? ? nil : ("%.2f" % (@check.amount.to_f / 100))),

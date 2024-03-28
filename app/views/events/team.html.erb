@@ -43,7 +43,7 @@
     <%= badge_for @pending.size, class: "bg-muted" %>
   </h2>
 
-  <div class="flex flex-column" style="gap: 0.5rem">
+  <div class="flex flex-col" style="gap: 0.5rem">
     <%= render partial: "organization_position_invite_pending", collection: @pending, as: :invite %>
   </div>
 <% end %>
