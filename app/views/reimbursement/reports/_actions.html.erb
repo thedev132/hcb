@@ -124,6 +124,14 @@
               <span class="bold warning">Warning</span>: your report is above <%= report.event.name %>'s limit. To continue, lower the amount requested.
             <% end %>
           </div>
+        <% elsif report.draft? && !report.initial_draft? %>
+          <%= link_to "#", class: "btn bg-info", data: { behavior: "modal_trigger", modal: "submit" } do %>
+            <%= inline_icon "send" %>
+            Submit & Request Review
+            <% button_hint = capture do %>
+              <span class="bold">Your next step:</span> after adding all of your expenses, submit the report to request a review.
+            <% end %>
+          <% end %>
         <% elsif report.draft? %>
           <%= link_to reimbursement_report_submit_path(report_id: report.id), class: "btn bg-info", method: :post do %>
             <%= inline_icon "send" %>

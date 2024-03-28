@@ -110,6 +110,17 @@ module Reimbursement
 
       begin
         @report.mark_submitted!
+
+        comment_params = params[:comment]&.permit(:content, :admin_only, :action)
+
+        unless comment_params.nil? || comment_params[:content].blank? && comment_params[:file].blank?
+          @comment = @report.comments.build(comment_params.merge(user: current_user))
+          unless @comment.save
+            flash[:error] = @report.errors.full_messages.to_sentence
+            redirect_to @report and return
+          end
+        end
+
         flash[:success] = {
           text: "You report has been submitted for review. When it's approved, you'll be reimbursed via #{@report.user.payout_method.name}.",
           link: settings_payouts_path,

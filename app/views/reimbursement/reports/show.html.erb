@@ -51,6 +51,17 @@
   <% end %>
 </section>
 
+<section data-behavior="modal" role="dialog" id="submit" class="modal modal--scroll bg-snow">
+  <%= modal_header "Submit Report" %>
+  <%= form_with url: reimbursement_report_submit_path(report_id: @report.id), model: [@report, Comment.new] do |form| %>
+    <%= form.hidden_field :commentable_type, value: @commentable.class %>
+    <%= form.hidden_field :commentable_id, value: @report.id %>
+    <%= form.text_area :content, class: "card mb2 overflow-visible", placeholder: "(Optional) Describe your changes…", "data-behavior": "ctrl_enter_submit", style: "min-height: 100px" %>
+
+    <%= form.submit "Submit" %>
+  <% end %>
+</section>
+
 <% if @report.invite_message.presence %>
   <article class="card mt2 pt0">
     <%== MarkdownService.instance.renderer.render @report.invite_message %>
