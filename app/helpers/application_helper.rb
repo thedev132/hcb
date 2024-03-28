@@ -154,7 +154,7 @@ module ApplicationHelper
   end
 
   def relative_timestamp(time, options = {})
-    content_tag :span, "#{options[:prefix]}#{time_ago_in_words time} ago", options.merge(title: time)
+    content_tag :span, "#{options[:prefix]}#{time_ago_in_words time} ago#{options[:suffix]}", options.merge(title: time)
   end
 
   def auto_link_new_tab(text)
