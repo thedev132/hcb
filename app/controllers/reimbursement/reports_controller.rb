@@ -3,10 +3,10 @@
 module Reimbursement
   class ReportsController < ApplicationController
     include SetEvent
-    before_action :set_report_user_and_event, except: [:create, :quick_expense, :start]
-    before_action :set_event, only: [:start]
-    skip_before_action :signed_in_user, only: [:show, :start, :create]
-    skip_after_action :verify_authorized, only: [:start]
+    before_action :set_report_user_and_event, except: [:create, :quick_expense, :start, :finished]
+    before_action :set_event, only: [:start, :finished]
+    skip_before_action :signed_in_user, only: [:show, :start, :create, :finished]
+    skip_after_action :verify_authorized, only: [:start, :finished]
 
     # POST /reimbursement_reports
     def create
@@ -23,8 +23,7 @@ module Reimbursement
           redirect_to event_reimbursements_path(@event), flash: { success: "Report successfully created." }
         else
           # User not signed in (creating via public page)
-          flash[:success] = "We've sent an invitation to your email."
-          redirect_back(fallback_location: reimbursement_start_reimbursement_report_path(@event))
+          redirect_to finished_reimbursement_reports_path(@event)
         end
       else
         redirect_to event_reimbursements_path(@event), flash: { error: @report.errors.full_messages.to_sentence }
@@ -72,6 +71,9 @@ module Reimbursement
       if !@event.public_reimbursement_page_enabled?
         return not_found
       end
+    end
+
+    def finished
     end
 
     def edit

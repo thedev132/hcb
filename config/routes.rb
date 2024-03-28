@@ -408,6 +408,7 @@ Rails.application.routes.draw do
       post "draft"
       collection do
         post "quick_expense"
+        get "/:event_name/finished", to: "reports#finished", as: "finished"
       end
     end
 
