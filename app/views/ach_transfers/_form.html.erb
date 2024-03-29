@@ -1,3 +1,5 @@
+<% disabled = !policy(@event).new_transfer? %>
+
 <%= form_with(model: @ach_transfer, local: true, url: event_ach_transfers_path(@event), data: { controller: "form input" }) do |form| %>
   <%= form_errors(@ach_transfer, "ACH transfer", "We couldn't send this") %>
 
@@ -6,7 +8,7 @@
     <%= form.text_field :recipient_name,
                         placeholder: "Max Kern",
                         required: true,
-                        disabled: @event.demo_mode?,
+                        disabled:,
                         role: "combobox",
                         "aria-controls": "payment-recipient-search",
                         data: {
@@ -51,13 +53,13 @@
 
   <div class="field">
     <%= form.label :payment_for, "What are you paying for with this deposit?" %>
-    <%= form.text_field :payment_for, placeholder: "Shipment of potions", required: true, disabled: @event.demo_mode?, data: { input_target: "input" } %>
+    <%= form.text_field :payment_for, placeholder: "Shipment of potions", required: true, disabled:, data: { input_target: "input" } %>
     <span class="muted">This is to help HCB keep record of our transactions. HCB team will see this.</span>
   </div>
 
   <div class="field">
     <%= form.label :bank_name %>
-    <%= form.text_field :bank_name, placeholder: "Name of the bank", required: true, disabled: @event.demo_mode? %>
+    <%= form.text_field :bank_name, placeholder: "Name of the bank", required: true, disabled: %>
   </div>
 
   <div
@@ -68,30 +70,30 @@
     <% end %>>
 
     <%= form.label :routing_number %>
-    <%= form.text_field :routing_number, placeholder: "123456789", required: true, disabled: @event.demo_mode?, class: "fs-mask", data: { action: "input->external-validation#validate" } %>
+    <%= form.text_field :routing_number, placeholder: "123456789", required: true, disabled:, class: "fs-mask", data: { action: "input->external-validation#validate" } %>
     <span class="muted" data-external-validation-target="hint"></span>
   </div>
 
   <div class="field">
     <%= form.label :account_number %>
-    <%= form.text_field :account_number, placeholder: "0913338883", required: true, disabled: @event.demo_mode?, class: "fs-mask" %>
+    <%= form.text_field :account_number, placeholder: "0913338883", required: true, disabled:, class: "fs-mask" %>
   </div>
 
   <%= form.label :amount_money, "Amount" %>
   <div class="field">
     <div class="flex items-center">
       <span class="bold muted" style="width: 1rem;">$</span>
-      <%= form.number_field :amount_money, placeholder: "500.00", step: 0.01, min: 0.01, required: true, disabled: @event.demo_mode?, data: { controller: "truncate-decimal", action: "truncate-decimal#truncate" } %>
+      <%= form.number_field :amount_money, placeholder: "500.00", step: 0.01, min: 0.01, required: true, disabled:, data: { controller: "truncate-decimal", action: "truncate-decimal#truncate" } %>
     </div>
   </div>
 
   <div class="field">
     <%= form.label :recipient_email, "Recipient Email" %>
-    <%= form.email_field :recipient_email, placeholder: "fionah@gmail.com", required: true %>
+    <%= form.email_field :recipient_email, placeholder: "fionah@gmail.com", required: true, disabled: %>
   </div>
 
   <div class="field field--checkbox">
-    <%= form.check_box :send_email_notification %>
+    <%= form.check_box :send_email_notification, disabled: %>
     <%= form.label :send_email_notification, "Would you like us to notify the recipient?" %>
   </div>
 
@@ -114,7 +116,8 @@
         class: "field--fileupload__field",
         data: {
           "file-drop-target" => "fileInput"
-        } %>
+        },
+        disabled: %>
   </div>
   <p class="muted mt0 mb2">Required for reimbursements / goods & services payments.</p>
 
@@ -133,6 +136,6 @@
   <% end %>
 
   <div class="actions tooltipped tooltipped--n inline-block" aria-label="ACH transfers can't be cancelled">
-    <%= form.submit "Transfer money now", class: "btn", disabled: (!organizer_signed_in? || @event.demo_mode?) %>
+    <%= form.submit "Transfer money now", class: "btn", disabled: %>
   </div>
 <% end %>

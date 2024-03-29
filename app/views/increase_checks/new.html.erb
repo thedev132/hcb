@@ -1,3 +1,5 @@
+<% disabled = !policy(@event).new_transfer? %>
+
 <% title "Send a Check" %>
 <%= render "events/nav", selected: :transfers %>
 
@@ -60,7 +62,7 @@
             placeholder: "for venue payment",
             required: true,
             'data-behavior': "check_memo_field",
-            disabled: @event.demo_mode? %>
+            disabled: %>
         <span class="muted" data-behavior="check_characters_update">
           This will appear on the physical check. You have 40 characters remaining.
         </span>
@@ -74,7 +76,7 @@
             <%= form.number_field :amount,
               placeholder: "500.00",
               value: (@check.amount.nil? ? nil : ("%.2f" % (@check.amount.to_f / 100))),
-              disabled: (@event.balance <= 0 || @event.demo_mode?),
+              disabled: (@event.balance <= 0 || disabled),
               step: 0.01,
               min: 1,
               required: true,
@@ -91,7 +93,7 @@
 
       <div class="field">
         <%= form.label :payment_for, "What are you paying for with this check?" %>
-        <%= form.text_field :payment_for, placeholder: "Event venue", required: true, disabled: @event.demo_mode? %>
+        <%= form.text_field :payment_for, placeholder: "Event venue", required: true, disabled: %>
         <span class="muted">This is to help HCB keep record of our transactions. The HCB team will see this.</span>
       </div>
 
@@ -99,22 +101,22 @@
 
       <div class="field mt2">
         <%= form.label :recipient_name, "Name (use company name if applicable)" %>
-        <%= form.text_field :recipient_name, placeholder: "Raviga Capital", required: true, disabled: @event.demo_mode?, data: { 'behavior': "check_payee_name_field" }, maxlength: 250 %>
+        <%= form.text_field :recipient_name, placeholder: "Raviga Capital", required: true, disabled:, data: { 'behavior': "check_payee_name_field" }, maxlength: 250 %>
       </div>
 
       <div class="field">
         <%= form.label :address_line1, "Street address (where we’re mailing it to)" %>
-        <%= form.text_field :address_line1, placeholder: "1 Letterman Drive", required: true, disabled: @event.demo_mode? %>
+        <%= form.text_field :address_line1, placeholder: "1 Letterman Drive", required: true, disabled: %>
       </div>
 
       <div class="field">
-        <%= form.text_field :address_line2, placeholder: "Suite 500", disabled: @event.demo_mode? %>
+        <%= form.text_field :address_line2, placeholder: "Suite 500", disabled: %>
       </div>
 
       <div class="flex">
         <div class="field flex-auto mr1">
           <%= form.label :address_city, "City" %>
-          <%= form.text_field :address_city, placeholder: "San Francisco", required: true, disabled: @event.demo_mode? %>
+          <%= form.text_field :address_city, placeholder: "San Francisco", required: true, disabled: %>
         </div>
         <div class="field flex-auto ml1">
           <%= form.label :address_state, "State" %>
@@ -170,7 +172,7 @@
                 ["West Virginia", "WV"],
                 ["Wisconsin", "WI"],
                 ["Wyoming", "WY"],
-              ], { prompt: "Select a state" }, disabled: @event.demo_mode? %>
+              ], { prompt: "Select a state" }, disabled: %>
           <% @check.errors.messages_for(:address_state).each do |message| %>
             <div class="primary"><%= message %></div>
           <% end %>
@@ -179,18 +181,18 @@
 
       <div class="field">
         <%= form.label :address_zip, "ZIP" %>
-        <%= form.text_field :address_zip, placeholder: "94129", required: true, disabled: @event.demo_mode? %>
+        <%= form.text_field :address_zip, placeholder: "94129", required: true, disabled: %>
         <% @check.errors.messages_for(:address_zip).each do |message| %>
           <div class="primary"><%= message %></div>
         <% end %>
       </div>
       <div class="field">
         <%= form.label :recipient_email, "Recipient Email" %>
-        <%= form.email_field :recipient_email, placeholder: "fionah@gmail.com", required: true %>
+        <%= form.email_field :recipient_email, placeholder: "fionah@gmail.com", required: true, disabled: %>
       </div>
 
       <div class="field field--checkbox">
-        <%= form.check_box :send_email_notification %>
+        <%= form.check_box :send_email_notification, disabled: %>
         <%= form.label :send_email_notification, "Would you like us to notify the recipient?" %>
       </div>
 
@@ -212,12 +214,13 @@
             class: "field--fileupload__field",
             data: {
               "file-drop-target" => "fileInput"
-            } %>
+            },
+            disabled: %>
       </div>
       <p class="muted mt0 mb2">Required for reimbursements / goods & services payments.</p>
 
       <div class="actions tooltipped tooltipped--n inline-block mt1" aria-label="Your check will be mailed out on the next business day.">
-        <%= form.submit "Send check", disabled: (!organizer_signed_in? || @event.demo_mode?) %>
+        <%= form.submit "Send check", disabled: %>
       </div>
     <% end %>
   </div>

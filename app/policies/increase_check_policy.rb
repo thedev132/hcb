@@ -2,7 +2,7 @@
 
 class IncreaseCheckPolicy < ApplicationPolicy
   def new?
-    user_who_can_transfer?
+    admin_or_user
   end
 
   def create?
