@@ -13,9 +13,15 @@
   </div>
 
   <% if Flipper.enabled?(:user_permissions_2024_03_09, @event) %>
-    <div class="field">
-      <%= form.label :role, class: "mb1" %>
-      <%= form.select :role, OrganizerPosition.roles.keys.map { |role| [role.humanize, role] }, { include_blank: false  }, { class: "form-select", id: "inviteFormRolePicker" } %>
+    <%= form.label :role, class: "mb1" %>
+    <div class="field field--options">
+      <% OrganizerPositionInvite.roles.keys.map do |role| %>
+        <%= form.radio_button :role, role %>
+        <%= form.label :role, value: role do %>
+          <strong><%= role.titleize %></strong>
+        <% end %>
+      <% end %>
+    </div>
 
       <p class="muted mb1">
         Someone invited as a <span class="bold info">manager</span> can do everything in the organization.
