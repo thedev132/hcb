@@ -12,34 +12,18 @@
     <% end %>
     is on the way!
   </h3>
-  <% if stripe_card.shipping_has_tracking? %>
-    <section class="mb1 flex items-center">
-      <p>
-        <strong>Carrier</strong>
-        <%= stripe_card.stripe_obj&.shipping&.carrier&.capitalize %>
-      </p>
-      <p>
-        <strong>ETA</strong>
-        <%= format_date Time.at(stripe_card.stripe_obj&.shipping&.eta).to_date %>
-      </p>
-      <p>
-        <strong>Tracking #</strong>
-        <%= link_to stripe_card.stripe_obj&.shipping&.tracking_url do %>
-          <%= stripe_card.stripe_obj&.shipping&.tracking_number %>
-        <% end %>
-      </p>
-    </section>
-  <% else %>
-    <section class="pl2 mb2 text-shadow-lg flex flex-col" style="gap: 8px;">
-      <%= render_address OpenStruct.new(stripe_card.attributes.transform_keys { |key| key.gsub(/^stripe_shipping_/, "") }) %>
-      <% eta = stripe_card.stripe_obj&.shipping&.eta %>
-      <span>
-        <% if eta %>
-          Estimated to arrive <%= format_date Time.at(stripe_card.stripe_obj&.shipping&.eta).to_date %>.
-        <% else %>
-          No estimated arrival date at this time.
-        <% end %>
-      </span>
-    </section>
-  <% end %>
+  <section class="pl2 mb2 text-shadow-lg flex flex-col" style="gap: 8px;">
+    <%= render_address OpenStruct.new(stripe_card.attributes.transform_keys { |key| key.gsub(/^stripe_shipping_/, "") }) %>
+    <% eta = stripe_card.stripe_obj&.shipping&.eta %>
+    <span>
+      <% if eta %>
+        Estimated to arrive <%= format_date Time.at(stripe_card.stripe_obj&.shipping&.eta).to_date %>.
+      <% else %>
+        No estimated arrival date at this time.
+      <% end %>
+    </span>
+    <% if stripe_card.shipping_has_tracking? %>
+      <span>Tracking: <%= link_to stripe_card.stripe_obj&.shipping&.tracking_number, stripe_card.stripe_obj&.shipping&.tracking_url %></span>
+    <% end %>
+  </section>
 </div>
