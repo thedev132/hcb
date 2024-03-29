@@ -321,23 +321,18 @@ Rails.application.routes.draw do
   resources :ach_transfers, only: [:show] do
     member do
       post "cancel"
+      post "toggle_speed"
     end
     collection do
       post "validate_routing_number"
     end
-    resources :comments
-  end
-
-  resources :ach_transfers do
     get "confirmation", to: "ach_transfers#transfer_confirmation_letter"
+    resources :comments
   end
 
   resources :disbursements, only: [:index, :new, :create, :show, :edit, :update] do
     post "mark_fulfilled"
     post "reject"
-  end
-
-  resources :disbursements do
     get "confirmation", to: "disbursements#transfer_confirmation_letter"
   end
 

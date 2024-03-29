@@ -244,6 +244,20 @@ class AchTransfer < ApplicationRecord
     @local_hcb_code ||= HcbCode.find_or_create_by(hcb_code:)
   end
 
+  def estimated_arrival
+    # https://column.com/docs/ach/timing
+
+    now = ActiveSupport::TimeZone.new("America/Los_Angeles").now
+
+    if same_day? && now.workday?
+      return now.change(hour: 10, minute: 0, second: 0) if now < now.change(hour: 7, min: 15, sec: 0)
+      return now.change(hour: 14, minute: 0, second: 0) if now < now.change(hour: 11, min: 30, sec: 0)
+      return now.change(hour: 15, minute: 0, second: 0) if now < now.change(hour: 13, min: 30, sec: 0)
+    end
+
+    return 1.business_day.after(now).change(hour: 5, min: 30, sec: 0)
+  end
+
   private
 
   def scheduled_on_must_be_in_the_future

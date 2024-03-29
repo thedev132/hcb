@@ -42,6 +42,10 @@ class AchTransferPolicy < ApplicationPolicy
     user&.admin?
   end
 
+  def toggle_speed?
+    user&.admin?
+  end
+
   private
 
   def user_who_can_transfer?
