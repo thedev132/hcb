@@ -25,10 +25,7 @@
     <% end %>
   </div>
 <% else %>
-  <%= button_to new_stripe_cards_activation_path,
-                method: :get,
-                data: { turbo: false },
-                class: "btn bg-success" do %>
+  <%= link_to new_stripe_cards_activation_path, data: { turbo_frame: "_top" }, class: "btn bg-success" do %>
     <%= inline_icon "rep", size: home_action_size %>
     Activate card
   <% end %>
