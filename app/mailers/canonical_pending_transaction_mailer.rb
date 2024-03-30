@@ -23,7 +23,7 @@ class CanonicalPendingTransactionMailer < ApplicationMailer
 
   def notify_settled
     @cpt = CanonicalPendingTransaction.find(params[:canonical_pending_transaction_id])
-    @ct = @cpt.local_hcb_code.ct
+    @ct = CanonicalTransaction.find(params[:canonical_transaction_id])
     @user = @cpt.stripe_card.user
     @receipt_upload_feature = Flipper.enabled?(:receipt_email_upload_2022_05_10, @cpt.stripe_card.user)
     @upload_url = Rails.application.routes.url_helpers.attach_receipt_hcb_code_url(
