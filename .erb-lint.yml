@@ -56,3 +56,14 @@ linters:
         Enabled: false
       Rails/Present:
         Enabled: false
+  DeprecatedClasses:
+    enabled: true
+    rule_set:
+      - deprecated: ['circle']
+        suggestion: 'Use rounded-full instead'
+      - deprecated: ['flex-column']
+        suggestion: 'Use flex-col instead'
+      - deprecated: ['mono']
+        suggestion: 'Use font-mono instead'
+      - deprecated: ['rounded-top', 'rounded-bottom']
+        suggestion: 'Use rounded-t/rounded-b instead'

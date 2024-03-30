@@ -76,7 +76,7 @@
   <%= paginate @paginated_stripe_cards %>
 
   <% if organizer_signed_in? || @event.used_emburse? %>
-    <div class="flex flex-column justify-center mt4">
+    <div class="flex flex-col justify-center mt4">
       <section class="grid">
         <% if organizer_signed_in? %>
           <%= link_to my_cards_path,
