@@ -38,6 +38,15 @@
     </button>
   </h1>
 
+  <% unless show_mock_data? %>
+    <div style="text-align: center;" class="mb2">
+      <%= link_to "All", event_cards_overview_path(event_id: @event.slug), class: "filterbar__item", "aria-selected": @status.nil?, role: "tab" %>
+      <% %w[virtual physical active inactive].each do |status| %>
+        <%= link_to status.humanize, "?status=#{status}", class: "filterbar__item", "aria-selected": @status == status, role: "tab" %>
+      <% end %>
+    </div>
+  <% end %>
+
   <% if organizer_signed_in? %>
 
     <section class="modal modal--scroll bg-snow" data-behavior="modal" role="dialog" id="order_card">
@@ -45,50 +54,45 @@
       <%= render "stripe_cards/form", stripe_card: StripeCard.new %>
     </section>
 
-    <h4>Your Cards</h4>
-    <% if @session_user_stripe_cards.blank? %>
-      <%= blankslate "You haven’t requested any cards yet." %>
-    <% else %>
-
-      <% if params[:view] == "list" %>
-        <%= render "event_cards_table", stripe_cards: @session_user_stripe_cards %>
-      <% else %>
-        <article class="mixed-grid grid--spacious">
-          <%= render @session_user_stripe_cards %>
-        </article>
-      <% end %>
-
-    <% end %>
   <% end %>
-
-  <% if organizer_signed_in? || @event.used_emburse? %>
-    <section class="grid grid--split pt4 pb4">
-      <% if organizer_signed_in? %>
-        <%= link_to my_cards_path,
-                    class: "card card--hover block pt4 pb4 card--promo card--sunset cursor-pointer" do %>
-          <h3 class="mt0 mb0">See all your cards →</h3>
-        <% end %>
-      <% end %>
-      <% if @event.used_emburse? %>
-        <%= link_to event_emburse_cards_overview_path(event_id: @event.slug),
-                    class: "card card--hover block pt4 pb4 card--promo cursor-pointer",
-                    style: "background-image: url(https://cloud-awvmmj0xe.vercel.app/grey_card.png);" do %>
-          <h3 class="mt0 mb0">Previous Emburse cards →</h3>
-        <% end %>
-      <% end %>
-    </section>
-  <% end %>
-
-  <h4>Organization Cards</h4>
 
   <% if params[:view] == "list" %>
-    <%= render "event_cards_table", stripe_cards: @paginated_stripe_cards %>
+    <%= render "event_cards_table", stripe_cards: @paginated_stripe_cards, status: @status %>
   <% else %>
     <article class="mixed-grid grid--spacious">
-      <%= render @paginated_stripe_cards %>
+      <%= render partial: "stripe_cards/stripe_card", collection: @paginated_stripe_cards %>
     </article>
+
+    <% if @paginated_stripe_cards.blank? %>
+      <% if organizer_signed_in? %>
+        <%= blankslate "You don't have any #{@status} cards yet." %>
+      <% else %>
+        <%= blankslate "This organization doesn't have any #{@status} cards" %>
+      <% end %>
+    <% end %>
+
   <% end %>
 
   <%= paginate @paginated_stripe_cards %>
+
+  <% if organizer_signed_in? || @event.used_emburse? %>
+    <div class="flex flex-column justify-center mt4">
+      <section class="grid">
+        <% if organizer_signed_in? %>
+          <%= link_to my_cards_path,
+                      class: "card card--hover block pt4 pb4 card--promo card--sunset cursor-pointer" do %>
+            <h3 class="mt0 mb0">See all your cards →</h3>
+          <% end %>
+        <% end %>
+        <% if @event.used_emburse? %>
+          <%= link_to event_emburse_cards_overview_path(event_id: @event.slug),
+                      class: "card card--hover block pt4 pb4 card--promo cursor-pointer",
+                      style: "background-image: url(https://cloud-awvmmj0xe.vercel.app/grey_card.png);" do %>
+            <h3 class="mt0 mb0">Previous Emburse cards →</h3>
+          <% end %>
+        <% end %>
+      </section>
+    </div>
+  <% end %>
 
 <% end %>

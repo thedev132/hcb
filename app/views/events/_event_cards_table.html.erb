@@ -1,5 +1,5 @@
 <% if stripe_cards.blank? %>
-  <%= blankslate "No cards found!" %>
+  <%= blankslate "You don't have any #{status} cards yet." %>
 <% else %>
   <article class="table-container">
     <table>
