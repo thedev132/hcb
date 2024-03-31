@@ -100,7 +100,7 @@ class CanonicalTransaction < ApplicationRecord
 
   after_create :write_hcb_code
   after_create_commit :write_system_event
-  after_create do
+  after_create_commit do
     if likely_stripe_card_transaction?
       PendingEventMappingEngine::Settle::Single::Stripe.new(canonical_transaction: self).run
       EventMappingEngine::Map::Single::Stripe.new(canonical_transaction: self).run
