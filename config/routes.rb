@@ -90,6 +90,9 @@ Rails.application.routes.draw do
     end
   end
 
+  post "/to/the/moon", to: "users#to_the_moon"
+  post "/back/to/earth", to: "users#back_to_earth"
+
   resources :users, only: [:edit, :update] do
     collection do
       get "auth", to: "users#auth"

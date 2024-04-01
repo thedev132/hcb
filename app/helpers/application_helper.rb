@@ -23,6 +23,15 @@ module ApplicationHelper
     end
   end
 
+  def number_to_currency(num, opts = {})
+    if @current_user && Flipper.enabled?(:april_fools_2024_04_01, @current_user)
+      opts[:unit] = (!opts[:unit]) || (opts[:unit] == "$") ? "Ɖ" : opts[:unit]
+      super(num * 4.53, opts)
+    else
+      super(num, opts)
+    end
+  end
+
   def render_money_short(amount, opts = {})
     render_money(amount, opts).remove(".00")
   end

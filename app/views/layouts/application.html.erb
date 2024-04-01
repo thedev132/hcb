@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" data-dark="<%= !!@dark %>" <%= "data-ignore-theme" unless @dark.nil? %>>
+<% to_the_moon_enabled = Flipper.enabled?(:april_fools_2024_04_01, @current_user) %>
+<html lang="en" data-dark="<%= !!@dark %>" data-crater="<%= !!to_the_moon_enabled %>" <%= "data-ignore-theme" unless @dark.nil? %>>
   <!-- come hack with us on hcb! <%= Rails.configuration.constants.hack_on_hcb_form_url %> -->
   <head>
     <title>
@@ -28,6 +29,25 @@
         })
       </script>
       <script async src="https://cdn.headwayapp.co/widget.js"></script>
+    <% end %>
+
+    <% april_fools_2024 = {
+         doge: {
+           text: "USD",
+           path: back_to_earth_path,
+           img: "https://cloud-d2rr6p9fp-hack-club-bot.vercel.app/1us_one_cent_obv.png"
+         },
+         usd: {
+           text: "DOGE",
+           img: "https://cloud-d2rr6p9fp-hack-club-bot.vercel.app/0dogecoin_logo.png",
+           path: to_the_moon_path
+         }
+       }[to_the_moon_enabled ? :doge : :usd] %>
+
+    <%= link_to april_fools_2024[:path], style: "position: absolute; top: 16px; right: 16px; display: flex; gap: 8px; text-decoration: none; color: initial;", class: "tooltipped tooltipped--w", 'aria-label': "Switch to #{april_fools_2024[:text]}", data: { "turbo": true, "turbo-method": :post }, method: :post do %>
+
+      <img src="<%= april_fools_2024[:img] %>" height="24" width="24">
+
     <% end %>
 
     <script>
@@ -257,4 +277,12 @@
       </script>
     <% end %>
   </body>
+
+  <% if Flipper.enabled?(:april_fools_2024_04_01, @current_user) %>
+    <style>
+      .stat:not(.stat--plain) .stat__value:before {
+        content: 'Ɖ'!important;
+      }
+    </style>
+  <% end %>
 </html>
