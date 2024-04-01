@@ -450,14 +450,14 @@ class HcbCode < ApplicationRecord
   def comment_recipients_for(comment)
     users = []
     users += self.comments.map(&:user)
-    users += self.events.flat_map(&:users)
+    users += self.events.flat_map(&:users).reject(&:my_threads?)
 
     if comment.admin_only?
       users += self.events.map(&:point_of_contact)
-      return users.select(&:admin?).collect(&:email).excluding(comment.user.email)
+      return users.select(&:admin?).reject(&:no_threads?).excluding(comment.user).collect(&:email_address_with_name)
     end
 
-    users.excluding(comment.user).collect(&:email_address_with_name)
+    users.excluding(comment.user).reject(&:no_threads?).collect(&:email_address_with_name)
   end
 
   def comment_mailer_subject

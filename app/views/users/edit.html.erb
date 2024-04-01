@@ -128,6 +128,29 @@
         </fieldset>
       <% end %>
       <fieldset>
+        <legend class="heading h2 pt2">Comment Notifications</legend>
+        <p class="h5 muted mt1 mb2">
+          Which comments would you like to receive notifications for?
+        </p>
+        <div class="field field--options field--green trio" style="max-width: 420px">
+          <%= form.radio_button :comment_notifications, :all_threads %>
+          <%= form.label :comment_notifications, value: :all_threads do %>
+            <%= inline_icon "like-fill", size: 28 %>
+            <strong>Everything</strong>
+          <% end %>
+          <%= form.radio_button :comment_notifications, :my_threads %>
+          <%= form.label :comment_notifications, value: :my_threads do %>
+            <%= inline_icon "thread", size: 28 %>
+            <strong>My Threads</strong>
+          <% end %>
+          <%= form.radio_button :comment_notifications, :no_threads %>
+          <%= form.label :comment_notifications, value: :no_threads do %>
+            <%= inline_icon "support", size: 28 %>
+            <strong>Nothing</strong>
+          <% end %>
+        </div>
+      </fieldset>
+      <fieldset>
         <legend class="heading h2 pt2">Share usage data with us</legend>
         <p class="h5 muted mt1 mb2">
           Help us improve HCB by sending usage data.

@@ -495,7 +495,8 @@ class UsersController < ApplicationController
       :receipt_report_option,
       :birthday,
       :seasonal_themes_enabled,
-      :payout_method_type
+      :payout_method_type,
+      :comment_notifications
     ]
 
     if @user.stripe_cardholder

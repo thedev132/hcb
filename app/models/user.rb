@@ -7,6 +7,7 @@
 #  id                       :bigint           not null, primary key
 #  access_level             :integer          default("user"), not null
 #  birthday_ciphertext      :text
+#  comment_notifications    :integer          default(0), not null
 #  email                    :text
 #  full_name                :string
 #  locked_at                :datetime
@@ -132,6 +133,8 @@ class User < ApplicationRecord
   validates :preferred_name, length: { maximum: 30 }
 
   validate :profile_picture_format
+
+  enum comment_notifications: { all_threads: 0, my_threads: 1, no_threads: 2 }
 
   # admin? takes into account an admin user's preference
   # to pretend to be a non-admin, normal user

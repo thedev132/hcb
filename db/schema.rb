@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_03_27_170817) do
+ActiveRecord::Schema[7.0].define(version: 2024_03_28_025846) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_stat_statements"
@@ -1911,6 +1911,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_27_170817) do
     t.text "birthday_ciphertext"
     t.string "payout_method_type"
     t.bigint "payout_method_id"
+    t.integer "comment_notifications", default: 0, null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["slug"], name: "index_users_on_slug", unique: true
   end
