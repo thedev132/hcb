@@ -1,4 +1,4 @@
-<% disabled = !policy(@source_event).new_transfer? %>
+<% disabled = @source_event.present? && !policy(@source_event).new_transfer? %>
 
 <%= form_with(model: disbursement, local: true, url: disbursements_path, html: { "x-data" => "{fee: null}" }) do |form| %>
   <%= form_errors(disbursement, "Disbursements") %>
@@ -64,7 +64,7 @@
 
   <div
       class="<%= "actions inline-block #{"tooltipped tooltipped--e" if disabled}" %>"
-      aria-label="<%= @event.demo_mode? ? "Transfers are disabled in Playground mode" : disabled ? "Only managers can make transfers!" : nil %>">
+      aria-label="<%= @event&.demo_mode? ? "Transfers are disabled in Playground mode" : disabled ? "Only managers can make transfers!" : nil %>">
     <%= form.submit "Make transfer", class: "btn", disabled: %>
   </div>
 <% end %>
