@@ -14,20 +14,12 @@
       transactions. By default, this is HCB's address.
     </p>
 
-    <div class="card border b--warning pb0 mt2 mb2">
-      <div class="flex items-center warning">
-        <%= inline_icon "info", size: 32, class: "mr1" %>
-        <p class="bold mt0 mb0">Important info about changing your billing address</p>
-      </div>
-      <ul class="mt1 mb2">
+    <%= render "callout", type: "warning", title: "Important info about changing your billing address", footer: :questions do %>
+      <ul class="m0 mt1">
         <li>Changing your address applies immedietly to all of your cards.</li>
         <li>Recurring card charges like subscriptions might break when your billing address changes.</li>
       </ul>
-      <div class="border-top card__banner card__darker secondary">
-        <strong>Questions?</strong>
-        <%= help_message %>
-      </div>
-    </div>
+    <% end %>
 
     <%= form_with model: @user, data: { turbo_frame: "_top" } do |form| %>
       <%= form.fields_for :stripe_cardholder, @user.stripe_cardholder do |form| %>

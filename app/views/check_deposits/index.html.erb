@@ -8,24 +8,24 @@
   <div class="flex-auto" style="flex-basis: calc(50% - 40px);">
     <%= render "new" %>
   </div>
-  <div>
-    <div class="card border pb0 mb2 max-width-1 mt2">
-      <div class="flex items-center warning">
-        <%= inline_icon "info", size: 32, class: "mr1" %>
-        <p class="bold mt0 mb0">Important info about depositing checks:</p>
-      </div>
-      <ul class="mt1 mb2">
-        <li>The check must be made out to "<strong class="primary nowrap">Hack Club</strong>" or "<strong class="primary nowrap">The Hack Foundation</strong>".</li>
+  <div class="max-width-1">
+    <%= render "callout", type: "warning", title: "Important info about depositing checks", footer: :questions do %>
+      <ul>
+        <li>
+          The check must be made out to
+          <strong class='primary nowrap'>Hack Club</strong> or
+          <strong class='primary nowrap'>The Hack Foundation</strong>.
+        </li>
         <li>Take clear photos of the entire front & back of the check.</li>
         <li>You don't need to sign the back of the check.</li>
-        <li>Make sure the amount you enter here matches the amount on the check.</li>
-        <li>We only accept checks from U.S. financial institutions, in U.S. dollars.</li>
+        <li>Make sure the amount you enter here matches the amount on the
+          check.
+        </li>
+        <li>We only accept checks from U.S. financial institutions, in U.S.
+          dollars.
+        </li>
       </ul>
-      <div class="border-top card__banner card__darker secondary">
-        <strong>Questions?</strong>
-          <%= help_message %>
-      </div>
-    </div>
+    <% end %>
   </div>
 </div>
 

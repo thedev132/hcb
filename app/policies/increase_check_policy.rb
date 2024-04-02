@@ -2,7 +2,7 @@
 
 class IncreaseCheckPolicy < ApplicationPolicy
   def new?
-    admin_or_user
+    admin_or_user?
   end
 
   def create?
@@ -19,7 +19,7 @@ class IncreaseCheckPolicy < ApplicationPolicy
 
   private
 
-  def admin_or_user
+  def admin_or_user?
     user&.admin? || record.event.users.include?(user)
   end
 

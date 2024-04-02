@@ -34,22 +34,22 @@
     </div>
     <link href="https://fonts.googleapis.com/css?family=Damion" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Space+Mono" rel="stylesheet">
-    <div class="card border b--warning pb0 mb2 max-width-2">
-        <div class="flex items-center warning">
-          <%= inline_icon "info", size: 32, class: "mr1" %>
-          <p class="bold mt0 mb0">Important info about checks:</p>
-        </div>
-        <ul class="mt1 mb2">
-          <li>Need to reimburse someone? Checks are not intended for that purpose. Visit <%= link_to "reimbursements", event_reimbursements_path(@event), class: "info" %> to learn about using Expensify instead.</li>
-          <li>This check will be valid for 30 days, until <%= format_date DateTime.now + 1.month %></li>
-          <li>Checks can only be sent within the US. The recipient must have a U.S. bank account to cash the check.</li>
-          <!--<li>HCB team needs to approve your check before it's sent out. This usually takes 1 business day.</li>-->
-        </ul>
-        <div class="border-top card__banner card__darker secondary">
-          <strong>Questions?</strong>
-            <%= help_message %>
-        </div>
-    </div>
+
+    <%= render "callout", type: "warning", title: "Important info about checks", footer: :questions do %>
+      <ul>
+        <li>
+          Need to reimburse someone? Checks are not intended for that purpose.
+          Visit <%= link_to "reimbursements", event_reimbursements_path(@event), class: "info" %> to learn about using Expensify instead.
+        </li>
+        <li>This check will be valid for 30 days, until <span class="bold"><%= format_date DateTime.now + 1.month %></span>.</li>
+        <li>Checks can only be sent within the US. The recipient must have a U.S. bank account to cash the check.</li>
+        <li>HCB team needs to approve your check before it's sent out. This usually takes 1 business day.</li>
+      </ul>
+    <% end %>
+
+    <% if @event.present? && !policy(@event).new_transfer? %>
+      <%= render "events/transfers/unauthorized_callout" %>
+    <% end %>
   </aside>
 
   <div class="container--xs">
