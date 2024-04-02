@@ -91,7 +91,9 @@ class OrganizerPositionInvitesController < ApplicationController
 
   def toggle_signee_status
     authorize @invite
-    @invite.toggle!(:is_signee)
+    unless @invite.update(is_signee: !@invite.is_signee?)
+      flash[:error] = @invite.errors.full_messages.to_sentence.presence || "Failed to toggle signee status."
+    end
     redirect_back(fallback_location: event_team_path(@invite.event))
   end
 
@@ -110,7 +112,7 @@ class OrganizerPositionInvitesController < ApplicationController
 
   rescue => e
     Airbrake.notify(e)
-    flash[:error] = "Failed to change the role."
+    flash[:error] = organizer_position_invite&.errors&.full_messages&.to_sentence.presence || "Failed to change the role."
   ensure
     redirect_back(fallback_location: event_team_path(organizer_position_invite.event))
   end
