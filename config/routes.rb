@@ -640,6 +640,7 @@ Rails.application.routes.draw do
     get "donations", to: "events#donation_overview", as: :donation_overview
     get "partner_donations", to: "events#partner_donation_overview", as: :partner_donation_overview
     post "demo_mode_request_meeting", to: "events#demo_mode_request_meeting", as: :demo_mode_request_meeting
+    post "finish_signee_backfill"
     resources :disbursements, only: [:new, :create]
     resources :increase_checks, only: [:new, :create], path: "checks"
     resources :ach_transfers, only: [:new, :create]

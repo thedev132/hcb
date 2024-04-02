@@ -47,3 +47,12 @@
     <%= render partial: "organization_position_invite_pending", collection: @pending, as: :invite %>
   </div>
 <% end %>
+
+<% admin_tool("flex justify-center mt2") do %>
+  <%= link_to @event.organizer_positions.where(is_signee: nil).any? ? "Finish signee backfill" : "✅ Signee backfill complete, thanks.",
+              event_finish_signee_backfill_path(@event),
+              method: :post,
+              disabled: @event.organizer_positions.where(is_signee: nil).none?,
+              "data-confirm": "Are you sure you have backfilled all organizers of #{@event.name} with their correct contract signee status? Continuing will convert #{@event.organizer_positions.where(is_signee: nil).count} null(s) to false.",
+              class: "btn" %>
+<% end %>
