@@ -547,6 +547,9 @@ class UsersController < ApplicationController
         params[:return_to] = uri.to_s
       end
     end
+
+  rescue URI::InvalidURIError
+    params.delete(:return_to)
   end
 
 end
