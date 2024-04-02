@@ -75,7 +75,7 @@
               <% end %>
               <div class="brand-sans h4 line-height-2 mb2 flex justify-between item-center">
                 <span style="white-space: nowrap; gap: 4px;" class="flex items-center">
-                  <%= inline_icon "payment", size: 16, class: "muted align-middle", 'aria-label': "Dollar sign", style: "transform: scale(2)" unless Flipper.enabled?(:april_fools_2024_04_01, @current_user) %>
+                  <%= inline_icon "payment", size: 16, class: "muted align-middle", 'aria-label': "Dollar sign", style: "transform: scale(2)" %>
                   <%= turbo_frame_tag "event_balance_#{event.public_id}", src: event_async_balance_path(event), data: { turbo_permanent: true } do %>
                     <strong>-</strong>
                   <% end %>

@@ -182,16 +182,6 @@ summary {
   cursor: pointer;
 }
 
-html[data-crater='true'] body {
-  background-image: url('https://cloud-rl9eflauk-hack-club-bot.vercel.app/0adobestock_512255822_preview_1.png');
-  background-repeat: repeat;
-  background-size: 300px;
-}
-
-html[data-crater='true'][data-dark='true'] body {
-  background-image: url('https://cloud-ep7ue7slm-hack-club-bot.vercel.app/0adobestock_512255822_preview_1__1_.png');
-}
-
 @import 'components/avatars';
 @import 'components/badges';
 @import 'components/banners'; //TODO: Rename

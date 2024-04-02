@@ -290,20 +290,6 @@ class UsersController < ApplicationController
     redirect_back fallback_location: settings_previews_path
   end
 
-  def to_the_moon
-    Flipper.enable_actor(:april_fools_2024_04_01, current_user)
-    confetti!(emojis: %w[🚀 🌕 💸 👩‍🚀])
-    flash[:success] = "👩‍🚀 Welcome to the moon, my friend. Enjoy..."
-    redirect_back fallback_location: root_path
-  end
-
-  def back_to_earth
-    Flipper.disable_actor(:april_fools_2024_04_01, current_user)
-    confetti!(emojis: %w[🌍 🌎 🌏])
-    flash[:success] = "🌍 Things are a bit more familiar down here, aren't they now?"
-    redirect_back fallback_location: root_path
-  end
-
   def edit
     @user = params[:id] ? User.friendly.find(params[:id]) : current_user
     @onboarding = @user.onboarding?
