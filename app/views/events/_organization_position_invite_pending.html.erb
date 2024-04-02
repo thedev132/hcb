@@ -34,7 +34,7 @@
   <div class="inline muted h6 m0">
     Invited <%= relative_timestamp(invite.created_at) %>
 
-    <% if Flipper.enabled?(:user_permissions_2024_03_09, @event) %>
+    <% if Flipper.enabled?(:user_permissions_2024_03_09, @event) && organizer_signed_in? %>
       as a
       <div class="inline" data-controller="menu" data-action="click->menu#toggle click@document->menu#close keydown@document->menu#keydown" data-menu-target="toggle">
         <% can_change_role = organizer_signed_in?(as: :manager) %>
