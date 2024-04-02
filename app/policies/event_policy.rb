@@ -185,6 +185,10 @@ class EventPolicy < ApplicationPolicy
     user&.admin?
   end
 
+  def can_invite_user?
+    admin_or_manager?
+  end
+
   private
 
   def admin_or_user?
