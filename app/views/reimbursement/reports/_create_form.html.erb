@@ -53,7 +53,7 @@
       <%= form.select :event_id, current_user.events.not_demo_mode.pluck(:name, :id) %>
     <% end %>
     <div class="tooltipped tooltipped--e inline-block" aria-label="<%= @event&.demo_mode? ? "You don't have access to this feature at the moment." : "This will start your reimbursement report." %>">
-      <%= form.submit "Start report", class: "mt2", disabled: (!organizer_signed_in? || @event&.demo_mode?) %>
+      <%= form.submit "Start report", class: "mt2", disabled: @event && (!organizer_signed_in? || @event&.demo_mode?) %>
     </div>
   <% end %>
 </section>
