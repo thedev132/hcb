@@ -1027,7 +1027,7 @@ class AdminController < ApplicationController
       flash[:info] = "Do you really want the Start Date to be after the End Date?"
     end
 
-    @events = filtered_events.includes(:event_tags)
+    @events = filtered_events
 
     render_balance = ->(event, type) {
       ApplicationController.helpers.render_money(event.send(type, start_date: @start_date, end_date: @end_date))
@@ -1213,7 +1213,8 @@ class AdminController < ApplicationController
     relation = relation.not_organized_by_teenagers if @organized_by == "adults"
     relation = relation.demo_mode if @demo_mode == "demo"
     relation = relation.not_demo_mode if @demo_mode == "full"
-    relation = relation.includes(:event_tags).where(event_tags: { id: @tagged_with }) unless @tagged_with == "anything"
+    relation = relation.includes(:event_tags)
+    relation = relation.where(event_tags: { id: @tagged_with }) unless @tagged_with == "anything"
     relation = relation.where(id: events.joins(:canonical_transactions).where("canonical_transactions.date >= ?", @activity_since_date)) if @activity_since_date.present?
     relation = relation.where("sponsorship_fee = ?", @fee) if @fee != "all"
     if @category == "none"
