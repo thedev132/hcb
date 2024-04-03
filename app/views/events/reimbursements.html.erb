@@ -39,6 +39,15 @@
   </div>
 </div>
 
+<% if @event.created_at.before?(Date.parse("2024-04-05")) %>
+  <%= render "callout", type: "info", title: "Looking for Expensify?" do %>
+    <p class="mt0 mb0">
+      We've switched to our new built-in reimbursements flow, reach out to
+      <%= help_email %> for help migrating.
+    </p>
+  <% end %>
+<% end %>
+
 <hr>
 
 <div style="text-align: center;">
