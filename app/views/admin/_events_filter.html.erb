@@ -39,7 +39,7 @@
 |
 <%= form.label :fee do %>
   Current Fee
-  <%= form.select :fee, Event.unscoped.select(:sponsorship_fee).distinct.pluck(:sponsorship_fee).sort, { include_blank: "all", selected: @fee } %>
+  <%= form.select :fee, Event.unscoped.select(:sponsorship_fee).distinct.pluck(:sponsorship_fee).sort.map { |fee| [number_to_percentage(fee * 100, strip_insignificant_zeros: true), fee] }, { include_blank: "all", selected: @fee } %>
 <% end %>
 |
 <%= form.label :omitted do %>
