@@ -74,6 +74,10 @@ module EventsHelper
       return Event.find(value).name
     end
 
+    if field == "reviewer_id"
+      return User.find(value).name
+    end
+
     return "Yes" if value == true
     return "No" if value == false
 

@@ -19,6 +19,12 @@
       <span class="muted">You can transfer a report to any organization you're a part of.</span>
     <% end %>
   </div>
+  <% if organizer_signed_in? %>
+   <div class="field">
+      <%= form.label :reviewer_id, "Assigned Reviewer", class: "mt2 bold" %>
+      <%= form.collection_select :reviewer_id, @report.event.users, :id, :name, include_blank: "Anyone" %>
+    </div>
+  <% end %>
   <%= form.submit "Update Report", class: "mt2" %>
 <% end %>
 

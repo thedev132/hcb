@@ -22,7 +22,11 @@ class ReimbursementMailer < ApplicationMailer
   def review_requested
     @report = params[:report]
 
-    mail to: @report.event.users.excluding(@report.user).map(&:email_address_with_name), subject: "[Reimbursements] Review Requested: #{@report.name}"
+    if @report.reviewer.present?
+      mail to: @report.reviewer.email_address_with_name, subject: "[Reimbursements] Your Review Was Requested: #{@report.name}"
+    else
+      mail to: @report.event.users.excluding(@report.user).map(&:email_address_with_name), subject: "[Reimbursements] Review Requested: #{@report.name}"
+    end
   end
 
   def expense_approved

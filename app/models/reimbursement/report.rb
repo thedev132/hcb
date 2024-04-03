@@ -20,12 +20,14 @@
 #  updated_at                 :datetime         not null
 #  event_id                   :bigint           not null
 #  invited_by_id              :bigint
+#  reviewer_id                :bigint
 #  user_id                    :bigint           not null
 #
 # Indexes
 #
 #  index_reimbursement_reports_on_event_id       (event_id)
 #  index_reimbursement_reports_on_invited_by_id  (invited_by_id)
+#  index_reimbursement_reports_on_reviewer_id    (reviewer_id)
 #  index_reimbursement_reports_on_user_id        (user_id)
 #
 # Foreign Keys
@@ -40,6 +42,7 @@ module Reimbursement
     belongs_to :user
     belongs_to :event
     belongs_to :inviter, class_name: "User", foreign_key: "invited_by_id", optional: true, inverse_of: :created_reimbursement_reports
+    belongs_to :reviewer, class_name: "User", optional: true, inverse_of: :reimbursement_reports_to_review
 
     has_paper_trail ignore: :expense_number
 
