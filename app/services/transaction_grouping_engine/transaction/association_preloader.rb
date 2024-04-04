@@ -21,7 +21,7 @@ module TransactionGroupingEngine
           { canonical_pending_transactions: [:event, :canonical_pending_declined_mapping] },
           { reimbursement_expense_payout: { expense: [:report] } }
         ]
-        included_models << { tags: { hcb_code_tags: :tags } } if Flipper.enabled?(:transaction_tags_2022_07_29, @event)
+        included_models << :tags if Flipper.enabled?(:transaction_tags_2022_07_29, @event)
         hcb_code_objects = HcbCode
                            .includes(included_models)
                            .where(hcb_code: hcb_code_codes)
