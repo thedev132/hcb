@@ -108,6 +108,7 @@ class StripeCard < ApplicationRecord
                         if: -> { self.stripe_id.present? }
 
   validate :only_physical_cards_can_be_lost_in_shipping
+  validates_length_of :name, maximum: 40
 
   def full_card_number
     secret_details[:number]
