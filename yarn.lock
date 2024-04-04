@@ -4169,6 +4169,11 @@ reusify@^1.0.4:
   resolved "https://registry.npmjs.org/reusify/-/reusify-1.0.4.tgz"
   integrity sha512-U9nH88a3fc/ekCF1l0/UP1IosiuIjyTh7hBvXVMHYgVcfGvt897Xguj2UOLDeI5BG2m7/uwyaLVT6fbtCwTyzw==
 
+rich-textarea@^0.24.4:
+  version "0.24.4"
+  resolved "https://registry.yarnpkg.com/rich-textarea/-/rich-textarea-0.24.4.tgz#4ec2f557cc4884ccc32007d41f48ac7cb06a2c85"
+  integrity sha512-bbKYYkLNwo0BxX2/e5rcwqKsw3cTQaNuczUjBPPLkxMWEW3INb+7yg6ZTdkdtgOD1r2oHVMK6XPw3X8NnSWEeQ==
+
 rimraf@^3.0.2:
   version "3.0.2"
   resolved "https://registry.npmjs.org/rimraf/-/rimraf-3.0.2.tgz"
