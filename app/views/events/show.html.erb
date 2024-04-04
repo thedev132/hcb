@@ -88,7 +88,7 @@
 
 <h2 class="heading">
   Transactions
-  <% if @event.canonical_transactions.exists? %>
+  <% if @event.canonical_transactions.any? %>
     <div data-controller="menu" data-menu-placement-value="bottom-end" class="ml-auto">
       <button
         type="button"

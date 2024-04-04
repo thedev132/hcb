@@ -20,14 +20,14 @@
   <td class="transaction__icon tooltipped tooltipped--e" aria-label="Outgoing ACH">
     <%= inline_icon "payment-transfer" %>
   </td>
-<% elsif tx.try(:stripe_refund?) || tx.local_hcb_code.stripe_refund? %>
-  <td class="transaction__icon tooltipped tooltipped--e" aria-label="Card transaction refund">
-    <%= inline_icon "view-reload" %>
-  </td>
 <% elsif tx.local_hcb_code.reimbursement_expense_payout? %>
   <% user = tx.local_hcb_code.reimbursement_expense_payout.expense.report.user %>
   <td class="transaction__icon tooltipped tooltipped--e" aria-label="Reimbursed to <%= user.name %>">
     <%= avatar_for user, 24 %>
+  </td>
+<% elsif tx.try(:stripe_refund?) || tx.local_hcb_code.stripe_refund? %>
+  <td class="transaction__icon tooltipped tooltipped--e" aria-label="Card transaction refund">
+    <%= inline_icon "view-reload" %>
   </td>
 <% elsif tx.try(:raw_stripe_transaction) || tx.try(:raw_pending_stripe_transaction_id) %>
   <td class="transaction__icon tooltipped tooltipped--e" aria-label="Card transaction<%= !local_assigns[:authorless] && tx.stripe_cardholder ? " by " + tx.stripe_cardholder.user.initial_name : "" %>">

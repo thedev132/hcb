@@ -1,4 +1,5 @@
 <% instance = ct.__id__ %>
+<% tagged_with = ct.local_hcb_code.tags.filter { |tag| !@event || tag.event == @event } %>
 <tr
   class="transaction--<%= ct.amount.negative? ? "negative" : ct.amount.positive? ? "positive" : "zero" %> <%= ct.local_hcb_code.disbursement.special_appearance[:css_class] if !ct.amount.negative? && ct.local_hcb_code.disbursement&.special_appearance? %>"
   id="<%= ct.local_hcb_code.hashid %>"
@@ -45,14 +46,14 @@
             <% end %>
           <% end %>
 
-          <% if !defined?(receipt_upload_button) && !defined?(hide_tags) && organizer_signed_in? && ct&.local_hcb_code&.event && !ct&.local_hcb_code&.event&.demo_mode? && Flipper.enabled?(:transaction_tags_2022_07_29, @event || ct.local_hcb_code.event) %>
+          <% if !defined?(receipt_upload_button) && !defined?(hide_tags) && organizer_signed_in? && !ct.instance_of?(OpenStruct) && Flipper.enabled?(:transaction_tags_2022_07_29, @event || ct.local_hcb_code.event) %>
             <div class="overflow-visible relative" style="margin-left: 0.5rem;" data-controller="menu" data-menu-append-to-value="turbo-frame#ledger">
               <button class="list-badge add-tag-badge ml0 menu__toggle menu__toggle--arrowless" data-menu-target="toggle" data-action="menu#toggle click@document->menu#close keydown@document->menu#keydown">+ Add tag</button>
               <div class="menu__content menu__content--2 menu__content--compact menu__content--left h6" data-menu-target="content">
                 <% (@event || ct.local_hcb_code.event).tags.each do |tag| %>
                   <div class="flex items-center">
                     <%= button_to toggle_tag_hcb_code_path(id: ct.local_hcb_code.hashid, tag_id: tag.id), class: "menu__action #{tag_dom_id(ct.local_hcb_code, tag, "_toggle")}", form_class: "flex-auto", form: { "data-turbo" => "true" } do %>
-                      <%= "✓" if ct.local_hcb_code.tags.include?(tag) %>
+                      <%= "✓" if tagged_with.include?(tag) %>
 
                       <%= tag.label %>
                     <% end %>
@@ -75,7 +76,7 @@
 
         <% if Flipper.enabled?(:transaction_tags_2022_07_29, @event) && !@event&.demo_mode? %>
           <div class="flex flex-wrap" style="gap: 0.25rem" id="hcb_code_<%= ct.local_hcb_code.hashid %>_tags">
-            <%= render partial: "canonical_transactions/tag", collection: ct.local_hcb_code.tags.filter { |tag| !@event || tag.event == @event }, locals: { hcb_code: ct.local_hcb_code } %>
+            <%= render partial: "canonical_transactions/tag", collection: tagged_with, locals: { hcb_code: ct.local_hcb_code } %>
           </div>
         <% end %>
       </div>
@@ -151,9 +152,9 @@
   <% end %>
 </tr>
 
-<% if Flipper.enabled?(:hcb_code_popovers_2023_06_16, current_user) && ct.local_hcb_code.event.present? %>
+<% if Flipper.enabled?(:hcb_code_popovers_2023_06_16, current_user) && (@event || ct.local_hcb_code.event).present? %>
   <section class="modal modal--scroll modal--popover bg-snow" data-behavior="modal" role="dialog" id="transaction_details_<%= instance %>">
-    <%= modal_header(ct.local_hcb_code.pretty_title(show_event_name: defined?(show_event_name), show_amount: defined?(show_amount)), level: "h1", external_link: ct.local_hcb_code.url) %>
+    <%= modal_header(ct.local_hcb_code.pretty_title(show_event_name: defined?(show_event_name), show_amount: defined?(show_amount), event_name: @event&.name, amount_cents: ct.amount), level: "h1", external_link: ct.local_hcb_code.url) %>
     <%= async_frame_to ct.local_hcb_code.popover_url, as: :span, lazy: true do %>
       <div class="shimmer mb1 mt3">
         <div class="shimmer__border"></div>

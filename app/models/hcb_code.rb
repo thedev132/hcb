@@ -112,7 +112,7 @@ class HcbCode < ApplicationRecord
 
   def amount_cents
     @amount_cents ||= begin
-      return canonical_transactions.sum(:amount_cents) if canonical_transactions.exists?
+      return canonical_transactions.sum(:amount_cents) if canonical_transactions.any?
 
       # ACH transfers that haven't been sent don't have any CPTs
       return -ach_transfer.amount if ach_transfer?
@@ -122,7 +122,7 @@ class HcbCode < ApplicationRecord
   end
 
   def amount_cents_by_event(event)
-    if canonical_transactions.exists?
+    if canonical_transactions.any?
       return canonical_transactions
              .includes(:canonical_event_mapping)
              .where(canonical_event_mapping: { event_id: event.id })
@@ -183,7 +183,7 @@ class HcbCode < ApplicationRecord
       end
   end
 
-  def pretty_title(show_event_name: true, show_amount: false)
+  def pretty_title(show_event_name: true, show_amount: false, event_name: event.name, amount_cents: self.amount_cents)
     event_preposition = [:unknown, :invoice, :ach, :check, :card_charge, :bank_fee].include?(type || :unknown) ? "in" : "to"
     amount_preposition = [:transaction, :donation, :partner_donation, :disbursement, :card_charge, :bank_fee].include?(type || :unknown) ? "of" : "for"
 
@@ -191,7 +191,7 @@ class HcbCode < ApplicationRecord
 
     title = [humanized_type]
     title << amount_preposition << ApplicationController.helpers.render_money(stripe_card? ? amount_cents.abs : amount_cents) if show_amount
-    title << event_preposition << event.name if show_event_name
+    title << event_preposition << event_name if show_event_name
 
     title.join(" ")
   end
@@ -217,7 +217,7 @@ class HcbCode < ApplicationRecord
   end
 
   def stripe_refund?
-    (stripe_force_capture? || (stripe_card? && amount_cents > 0)) && ct&.stripe_refund?
+    ct&.stripe_refund? && (stripe_force_capture? || (stripe_card? && amount_cents > 0))
   end
 
   def stripe_auth_dashboard_url
