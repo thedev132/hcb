@@ -464,6 +464,17 @@ class HcbCode < ApplicationRecord
     return "New comment on #{self.memo}."
   end
 
+
+  def comment_mentionable(current_user: nil)
+    users = []
+    users += self.comments.includes(:user).map(&:user)
+    users += self.comments.flat_map(&:mentioned_users)
+    users += self.events.includes(:users).select { |e| !current_user || Pundit.policy(current_user, e).team? }.flat_map(&:users)
+    users += self.events.includes(:point_of_contact).map(&:point_of_contact)
+
+    users.uniq
+  end
+
   def not_admin_only_comments_count
     # `not_admin_only.count` always issues a new query to the DB because a scope is being applied.
     # However, if comments have been preloaded, it's more likely to be faster to count

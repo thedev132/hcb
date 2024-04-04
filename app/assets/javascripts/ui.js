@@ -392,7 +392,7 @@ $(document).on('turbo:load', function () {
   }
 
   $('[data-behavior~=mention]').on('click', e => {
-    BK.s('comment').val(`${BK.s('comment').val() + (BK.s('comment').val().length > 0 ? " " : "")}${e.target.innerText}`)
+    BK.s('comment').val(`${BK.s('comment').val() + (BK.s('comment').val().length > 0 ? " " : "")}${e.target.dataset.mentionValue || e.target.innerText}`)
     BK.s('comment')[0].scrollIntoView();
   })  
 
@@ -500,4 +500,3 @@ $(document).on('keydown', function (e) {
     return (hankIndex = 0)
   }
 })
-

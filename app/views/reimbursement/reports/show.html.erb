@@ -6,7 +6,7 @@
 <div class="mt4">
   <h3 class="mt2 mb1 muted flex" style="font-weight: 400; gap: 4px;">
     <span style="flex-grow: 1;">
-      <%= user_mention @user, class: "tooltipped--s align-top" %>
+      <%= user_mention @user %>
       <%= "will be reimbursed " if @report.reimbursement_approved? %>
       <%= "was reimbursed " if @report.reimbursed? %>
       <%= "requested " if @report.rejected? %>
