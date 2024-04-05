@@ -43,7 +43,8 @@
             <%= inline_icon "private" %>
             Expense Report Locked
           <% elsif report.locked? && report.submitted? && report.expenses.approved.count > 0 && report.amount_to_reimburse > 0 && ::Shared::AmpleBalance.ample_balance?(report.amount_to_reimburse_cents, report.event) %>
-            <%= link_to reimbursement_report_request_reimbursement_path(report_id: report.id), class: "btn bg-info", method: :post do %>
+            <% turbo_confirm = report.expenses.pending.count != 0 ? "#{report.expenses.pending.count} #{"expense".pluralize(report.expenses.pending.count)} #{report.expenses.pending.count == 1 ? "hasn't" : "haven't"} been approved; if you continue, #{report.expenses.pending.count == 1 ? "it" : "these"} will not be reimbursed." : nil %>
+            <%= link_to reimbursement_report_request_reimbursement_path(report), class: "btn bg-info", data: { turbo_confirm:, turbo_method: "post" } do %>
               <%= inline_icon "payment-transfer" %>
               Reimburse <%= render_money report.amount_to_reimburse %>
             <% end %>
