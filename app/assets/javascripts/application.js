@@ -13,3 +13,4 @@
 //= require comments
 //= require anchor_links
 //= require changelog
+//= require mentions

@@ -189,6 +189,15 @@ module Reimbursement
       users.excluding(comment.user).reject(&:no_threads?).collect(&:email_address_with_name)
     end
 
+    def comment_mentionable(current_user: nil)
+      users = []
+      users += self.comments.includes(:user).map(&:user)
+      users += self.comments.flat_map(&:mentioned_users)
+      users += self.event.users
+
+      users.uniq
+    end
+
     def comment_mailer_subject
       return "New comment on #{self.name}."
     end

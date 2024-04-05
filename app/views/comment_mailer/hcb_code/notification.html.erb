@@ -4,7 +4,7 @@
 
   <%= @comment.user.name %> has left a comment on <%= "and attached a file to" if @comment.file %> <i><%= hcb_code.memo %></i> in <i><%= hcb_code.event.name %></i>:
 
-  <blockquote><%== MarkdownService.instance.renderer.render @comment.content %></blockquote>
+  <blockquote><%== MarkdownService.instance.renderer(record: @comment).render @comment.content %></blockquote>
 
   <%= link_to "Click here to view and reply to the comment on HCB.", "#{hcb_code_url(hcb_code)}#comment-#{@comment.hashid}" %>
 

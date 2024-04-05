@@ -67,6 +67,14 @@ class Comment < ApplicationRecord
     return "commented"
   end
 
+  # This regex was stolen from URI::MailTo::EMAIL_REGEXP
+  USER_MENTION_REGEX = /@([a-zA-Z0-9.!\#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*)/
+
+  def mentioned_users
+    emails = content.scan(USER_MENTION_REGEX).flatten
+    User.where(email: emails)
+  end
+
   private
 
   def commentable_includes_concern
