@@ -76,7 +76,7 @@
       </div>
       <%= form.label :profile_picture %>
       <p class="flex items-center mt1">
-        <%= avatar_for @user, 48, { class: "mr2" } %>
+        <%= avatar_for @user, 48, class: "mr2" %>
         <span>
             <% if @user.profile_picture.attached? %>
             You're currently using an uploaded profile picture.<br>

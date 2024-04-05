@@ -440,8 +440,4 @@ html[data-dark='true'] {
       @include gradient(info);
     }
   }
-  
-  .mention-suggestions {
-    border: 1px solid map-get($palette, slate);
-  }
 }

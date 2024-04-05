@@ -156,10 +156,6 @@ $shades: (
   border-color: map-get($palette, info);
 }
 
-.b--muted {
-  border-color: map-get($palette, muted);
-}
-
 .b--success {
   border-color: map-get($palette, success);
 }

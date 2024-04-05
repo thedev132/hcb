@@ -1129,18 +1129,6 @@
   dependencies:
     "@floating-ui/dom" "^1.0.0"
 
-"@github/combobox-nav@^2.0.2":
-  version "2.3.1"
-  resolved "https://registry.yarnpkg.com/@github/combobox-nav/-/combobox-nav-2.3.1.tgz#76da4c47f1e33af56392c5c9cf661a28d5b4168e"
-  integrity sha512-gwxPzLw8XKecy1nP63i9lOBritS3bWmxl02UX6G0TwMQZbMem1BCS1tEZgYd3mkrkiDrUMWaX+DbFCuDFo3K+A==
-
-"@github/text-expander-element@^2.6.1":
-  version "2.6.1"
-  resolved "https://registry.yarnpkg.com/@github/text-expander-element/-/text-expander-element-2.6.1.tgz#2e1517af471b2132a965ea167b9fb776ab2d79f0"
-  integrity sha512-i6krPGXJRABfKXut0WArFd365Je4PT0MljtDoXUoCOEp+lGrmdosDMxmO0EfOYc97jBn+Hd2XO1mMsuI5+fwmQ==
-  dependencies:
-    "@github/combobox-nav" "^2.0.2"
-
 "@github/webauthn-json@^1.0.0":
   version "1.0.0"
   resolved "https://registry.npmjs.org/@github/webauthn-json/-/webauthn-json-1.0.0.tgz"
@@ -1305,11 +1293,6 @@
   dependencies:
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
-
-"@oddbird/popover-polyfill@^0.4.1":
-  version "0.4.1"
-  resolved "https://registry.yarnpkg.com/@oddbird/popover-polyfill/-/popover-polyfill-0.4.1.tgz#e28a9ac4ca8d473402e35153006e4d193c597ad7"
-  integrity sha512-1MBMy92urkxoIy3qQecs6DzSgtVg9WElUhPXZ7GejqH8AmoakP6uMZGO1vyf0Cf9dBujqb0C+cXyZTTBLHWs0A==
 
 "@pkgjs/parseargs@^0.11.0":
   version "0.11.0"

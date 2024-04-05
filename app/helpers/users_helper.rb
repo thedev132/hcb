@@ -55,9 +55,8 @@ module UsersHelper
     ]
   end
 
-  def avatar_for(user, size = 24, options = {}, click_to_mention: false)
+  def avatar_for(user, size = 24, options = {})
     src = profile_picture_for(user, size)
-    current_user = defined?(current_user) ? current_user : nil
 
     klasses = ["rounded-full", "shrink-none"]
     klasses << "avatar--current-user" if user == current_user
@@ -68,20 +67,16 @@ module UsersHelper
     alt ||= user&.initials
     alt ||= "Brown dog grinning and gazing off into the distance"
 
-    options[:data] = (options[:data] || {}).merge(behavior: "mention", mention_value: "@#{user.email}") if click_to_mention
-
     image_tag(src, options.merge(loading: "lazy", alt:, width: size, height: size, class: klass))
   end
 
-  def user_mention(user, options = {}, default_name = "No User", click_to_mention: false, comment_mention: false)
+  def user_mention(user, options = {}, default_name = "No User")
     name = content_tag :span, (user&.initial_name || default_name)
-    current_user = defined?(current_user) ? current_user : nil
-    avi = avatar_for user, 24, options[:avatar] || {}, click_to_mention:
+    avi = avatar_for user, 24, options[:avatar] || {}
 
     klasses = ["mention"]
-    klasses << %w[mention--admin tooltipped tooltipped--n] if user&.admin? && !options[:disable_tooltip]
-    klasses << %w[mention--current-user tooltipped tooltipped--n] if current_user && (user&.id == current_user.id) && !options[:disable_tooltip]
-    klasses << %w[badge bg-muted ml0] if comment_mention
+    klasses << %w[mention--admin tooltipped tooltipped--n] if user&.admin?
+    klasses << %w[mention--current-user tooltipped tooltipped--n] if current_user && (user&.id == current_user.id)
     klasses << options[:class] if options[:class]
     klass = klasses.uniq.join(" ")
 
