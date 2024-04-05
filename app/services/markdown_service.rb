@@ -81,7 +81,7 @@ class MarkdownService
       return nil unless link_type == :email
 
       u = User.find_by(email: link)
-      return nil unless u && Pundit.policy(u, @record).show?
+      return nil unless u && @record && Pundit.policy(u, @record)&.show?
 
       user_mention(u, click_to_mention: true, comment_mention: true)
     end
