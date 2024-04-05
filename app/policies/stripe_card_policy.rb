@@ -39,6 +39,10 @@ class StripeCardPolicy < ApplicationPolicy
 
   alias_method :update_name?, :update?
 
+  def ephemeral_keys?
+    cardholder?
+  end
+
   private
 
   def organizer_and_cardholder?
