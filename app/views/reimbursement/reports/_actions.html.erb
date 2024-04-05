@@ -117,7 +117,7 @@
               <% end %>
             <% end %>
           </div>
-        <% elsif report.maximum_amount_cents && report.amount_cents >= report.maximum_amount_cents %>
+        <% elsif report.maximum_amount_cents && report.amount_cents > report.maximum_amount_cents %>
           <div class="btn bg-info disabled">
             <%= inline_icon "send" %>
             Submit & Request Review
