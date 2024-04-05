@@ -3,6 +3,7 @@ import $ from 'jquery'
 // Support component names relative to this directory:
 var componentRequireContext = require.context('./components', true)
 import ReactRailsUJS from 'react_ujs'
+// eslint-disable-next-line react-hooks/rules-of-hooks
 ReactRailsUJS.useContext(componentRequireContext)
 
 ReactRailsUJS.handleEvent('turbo:load', ReactRailsUJS.handleMount)
