@@ -1155,6 +1155,14 @@ class AdminController < ApplicationController
     render layout: "admin"
   end
 
+  def hq_receipts
+    @page = params[:page] || 1
+    @per = params[:per] || 20
+    @users = User.where(id: Event.hack_club_hq.or(Event.omitted).includes(:users).flat_map(&:users).map(&:id)).page(@page).per(@per).order(created_at: :desc)
+
+    render layout: "admin"
+  end
+
   private
 
   def stream_data(content_type, filename, data, download = true)
