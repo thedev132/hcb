@@ -68,7 +68,7 @@ module UsersHelper
     alt ||= user&.initials
     alt ||= "Brown dog grinning and gazing off into the distance"
 
-    options[:data] = (options[:data] || {}).merge(behavior: "mention", mention_value: "@#{user.email}") if click_to_mention
+    options[:data] = (options[:data] || {}).merge(behavior: "mention", mention_value: "@#{user.email}") if click_to_mention && user
 
     image_tag(src, options.merge(loading: "lazy", alt:, width: size, height: size, class: klass))
   end
