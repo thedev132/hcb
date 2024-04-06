@@ -1158,8 +1158,7 @@ class AdminController < ApplicationController
   def hq_receipts
     @page = params[:page] || 1
     @per = params[:per] || 20
-    @users = User.where(id: Event.hack_club_hq.or(Event.omitted).includes(:users).flat_map(&:users).map(&:id))
-    @users = Kaminari.paginate_array(@users.sort_by(&:transactions_missing_receipt_count).reverse).page(@page).per(@per)
+    @users = User.where(id: Event.hack_club_hq.or(Event.omitted).includes(:users).flat_map(&:users).map(&:id)).page(@page).per(@per).order(created_at: :desc)
 
     render layout: "admin"
   end
