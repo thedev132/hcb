@@ -256,6 +256,12 @@ class User < ApplicationRecord
     end
   end
 
+  def transactions_missing_receipt_count
+    @transactions_missing_receipt_count ||= begin
+      transactions_missing_receipt.size
+    end
+  end
+
   def build_payout_method(params)
     return unless payout_method_type
 
