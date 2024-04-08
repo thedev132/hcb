@@ -194,6 +194,7 @@ module Reimbursement
       users += self.comments.includes(:user).map(&:user)
       users += self.comments.flat_map(&:mentioned_users)
       users += self.event.users
+      users << self.user
 
       users.uniq
     end
