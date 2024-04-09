@@ -179,14 +179,15 @@ module Reimbursement
     def comment_recipients_for(comment)
       users = []
       users += self.comments.map(&:user)
+      users += self.comments.flat_map(&:mentioned_users)
       users << self.user
 
       if comment.admin_only?
         users << self.event.point_of_contact
-        return users.select(&:admin?).reject(&:no_threads?).excluding(comment.user).collect(&:email_address_with_name)
+        return users.uniq.select(&:admin?).reject(&:no_threads?).excluding(comment.user).collect(&:email_address_with_name)
       end
 
-      users.excluding(comment.user).reject(&:no_threads?).collect(&:email_address_with_name)
+      users.uniq.excluding(comment.user).reject(&:no_threads?).collect(&:email_address_with_name)
     end
 
     def comment_mentionable(current_user: nil)
