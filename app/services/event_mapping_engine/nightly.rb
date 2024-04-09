@@ -23,7 +23,7 @@ module EventMappingEngine
       map_hack_club_bank_issued_cards!
       map_stripe_top_ups!
       map_outgoing_fee_reimbursements!
-      map_increase_interest!
+      map_interest_payments!
 
       map_bank_fees! # TODO: move to using hcb short codes
 
@@ -120,10 +120,14 @@ module EventMappingEngine
       end
     end
 
-    def map_increase_interest!
+    def map_interest_payments!
       return unless Rails.env.production?
 
       CanonicalTransaction.unmapped.increase_interest.find_each(batch_size: 100) do |ct|
+        CanonicalEventMapping.create!(canonical_transaction: ct, event_id: EventMappingEngine::EventIds::HACK_FOUNDATION_INTEREST)
+      end
+
+      CanonicalTransaction.unmapped.likely_column_interest.find_each(batch_size: 100) do |ct|
         CanonicalEventMapping.create!(canonical_transaction: ct, event_id: EventMappingEngine::EventIds::HACK_FOUNDATION_INTEREST)
       end
     end
