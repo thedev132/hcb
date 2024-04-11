@@ -15,7 +15,7 @@
       Welcome to <span class="primary">HCB</span>
     </span>
   </div>
-  <span class="badge ml0 h5 caps <%= Rails.env.development? ? "bg-success" : by_season("", fall: "bg-warning") %>" id="flavor-text" data-turbo-permanent><%= flavor_text %></span>
+  <span class="badge ml0 h5 caps <%= Rails.env.development? ? "bg-success" : by_season("bg-muted", fall: "bg-warning") %>" id="flavor-text" data-turbo-permanent><%= flavor_text %></span>
 </h1>
 
 <% if current_user.card_grants.not_activated.size > 0 %>
