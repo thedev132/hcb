@@ -1,6 +1,6 @@
 <% if policy(comment).show? %>
   <div class="mt2 mb2">
-    <div class="card border b--muted pb0 pt0 mb2 max-width-4<%= " current-user" if comment.user == current_user %>  <%= " comment--admin" if comment.admin_only? %>" id="comment-<%= comment.hashid %>">
+    <div class="card border pb0 pt0 mb2 max-width-4<%= " current-user" if comment.user == current_user %>  <%= " comment--admin" if comment.admin_only? %>" id="comment-<%= comment.hashid %>">
       <div class="border-bottom card__banner secondary">
         <%= user_mention comment.user, click_to_mention: true %> <%= comment.action_text %>
         <%= link_to "#comment-#{comment.hashid}", class: "anchor-link", 'data-anchor': "comment-#{comment.hashid}", title: comment.created_at do %>
