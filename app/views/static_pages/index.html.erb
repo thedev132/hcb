@@ -3,15 +3,15 @@
 
 <%= render "users/nav", selected: :home if signed_in? %>
 
-<h1 class="heading items-center md-items-baseline justify-center md-justify-between center md-left-align w-auto">
+<h1 class="heading items-center sm:items-baseline justify-center sm:justify-between center sm:text-left w-auto">
   <div>
     <a
-      class="h4 caps muted block text-decoration-none"
+      class="text-base caps muted block no-underline"
       href="https://github.com/hackclub/hcb-expansions/tree/main#hcb-what-does-it-stand-for"
       target="_blank">
       <%= @hcb_expansion %>
     </a>
-    <span class="<%= "nowrap" unless fall? %> <%= "warning" if fall? %>">
+    <span class="<%= "warning" if fall? %>">
       Welcome to <span class="primary">HCB</span>
     </span>
   </div>

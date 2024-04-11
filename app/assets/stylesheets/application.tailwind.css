@@ -8,3 +8,9 @@
     @apply font-mono;
   }
 }
+
+@layer utilities {
+  .caps {
+    @apply uppercase tracking-widest;
+  }
+}

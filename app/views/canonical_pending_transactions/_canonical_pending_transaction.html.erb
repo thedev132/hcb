@@ -88,7 +88,7 @@
       <% end %>
     </div>
   </td>
-  <td class="nowrap<%= " strikethrough" if pt.declined? %><%= " italic" if pt.unsettled? %>">
+  <td class="nowrap<%= " line-through" if pt.declined? %><%= " italic" if pt.unsettled? %>">
     <%= number_to_currency pt.amount %>
   </td>
   <% if @show_running_balance %>

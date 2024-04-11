@@ -67,3 +67,5 @@ linters:
         suggestion: 'Use font-mono instead'
       - deprecated: ['rounded-top', 'rounded-bottom']
         suggestion: 'Use rounded-t/rounded-b instead'
+      - deprecated: ['strikethrough']
+        suggestion: 'Use line-through instead'
