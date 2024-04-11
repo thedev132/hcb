@@ -9,7 +9,7 @@
     </div>
   </div>
   <div class="field event-select-target">
-    <%= form.label :event_id, "Event", class: "mt2 bold" %>
+    <%= form.label :event_id, "Organization", class: "mt2 bold" %>
     <%= form.select(:event_id,
         current_user.admin? ?
           Event.not_demo_mode.reorder(Event::CUSTOM_SORT).map { |event| [event.name, event.id] } :
