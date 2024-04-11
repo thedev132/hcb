@@ -19,7 +19,7 @@ module Reimbursement
     end
 
     def update?
-      admin || team_member || (creator && unlocked)
+      admin || team_member || (creator && open)
     end
 
     def submit?
