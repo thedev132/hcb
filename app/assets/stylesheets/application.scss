@@ -6,6 +6,12 @@ $font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
 $brand-font-family: ui-rounded, $font-family;
 $mono: 'SFMono-Regular', 'Roboto Mono', Menlo, Consolas, monospace;
 
+:root {
+  @each $name, $value in $palette {
+    --#{$name}: #{$value};
+  }
+}
+
 * {
   box-sizing: border-box;
   font-family: inherit;
