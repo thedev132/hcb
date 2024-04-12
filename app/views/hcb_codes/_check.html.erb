@@ -2,7 +2,7 @@
 <link href="https://fonts.googleapis.com/css?family=Space+Mono" rel="stylesheet">
 
 <div class="check xs-hide w-100 mt3 mb3" data-behavior="hover_tilt">
-  <div class="check__number"><%= @hcb_code.check.check_number %></div>
+  <div class="font-check text-right"><%= @hcb_code.check.check_number %></div>
 
   <div class="flex w-100 justify-end mb1">
     <div class="check__field check__field--date" data-label="Date"><%= (@hcb_code.check.send_date || @hcb_code.check.created_at).strftime("%b %d, %Y") %></div>
@@ -23,7 +23,7 @@
 
   </div>
 
-  <p class="check__meta">
+  <p class="mb-0 -mt-4 font-check">
       &#9286;
       00000<%= @hcb_code.check.check_number %>
       &#9286;

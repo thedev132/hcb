@@ -7,10 +7,23 @@
   code {
     @apply font-mono;
   }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  .heading,
+  .stat__value {
+    @apply font-brand;
+  }
 }
 
 @layer utilities {
   .caps {
     @apply uppercase tracking-widest;
+  }
+
+  .line-height-0 {
+    @apply leading-[0];
   }
 }

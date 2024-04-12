@@ -69,3 +69,7 @@ linters:
         suggestion: 'Use rounded-t/rounded-b instead'
       - deprecated: ['strikethrough']
         suggestion: 'Use line-through instead'
+      - deprecated: ['brand-sans']
+        suggestion: 'Use font-brand instead'
+      - deprecated: ['sans']
+        suggestion: 'Use font-sans instead'

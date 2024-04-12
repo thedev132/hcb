@@ -56,11 +56,6 @@ $bg: #E2ECF5;
   padding: 1rem;
 }
 
-.check__number {
-  font-family: 'Space Mono', $mono;
-  text-align: right;
-}
-
 .check__row {
   display: flex;
   width: 100%;
@@ -147,10 +142,4 @@ $bg: #E2ECF5;
   background-repeat: no-repeat;
   height: 4rem;
   width: 6rem;
-}
-
-.check__meta {
-  font-family: 'Space Mono', $mono;
-  margin-top: -1rem;
-  margin-bottom: 0;
 }
