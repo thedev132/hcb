@@ -51,7 +51,7 @@ module StripeCardsHelper
   end
 
   def prefill(field)
-    return nil unless current_user && !current_user.stripe_cardholder.default_billing_address?
+    return nil unless current_user && !current_user.stripe_cardholder&.default_billing_address?
 
     suggested(field)
   end
