@@ -56,6 +56,10 @@
 
   <% end %>
 
+  <%= form_with method: :get do |form| %>
+    <%= form.text_field :q, value: @q, placeholder: "Search by cardholder", class: "mb3 w-100", style: "max-width: 100%" %>
+  <% end %>
+
   <% if params[:view] == "list" %>
     <%= render "event_cards_table", stripe_cards: @paginated_stripe_cards, status: @status %>
   <% else %>

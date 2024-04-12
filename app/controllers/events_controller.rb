@@ -293,9 +293,12 @@ class EventsController < ApplicationController
 
   def card_overview
     @status = %w[virtual physical active inactive].include?(params[:status]) ? params[:status] : nil
+    @q = params[:q].presence
 
-    all_stripe_cards = @event.stripe_cards.where.missing(:card_grant).includes(:stripe_cardholder, :user)
+    all_stripe_cards = @event.stripe_cards.where.missing(:card_grant).joins(:stripe_cardholder, :user)
                              .order("stripe_status asc, created_at desc")
+
+    all_stripe_cards = all_stripe_cards.where("users.full_name ILIKE :query OR users.email ILIKE :query OR stripe_cards.name ILIKE :query", query: "%#{User.sanitize_sql_like(@q)}%") if @q
 
     all_stripe_cards = case @status
                        when "active"
