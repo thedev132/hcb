@@ -262,7 +262,7 @@
   }
 
   &.disabled {
-    opacity: 0.5;
+    color: map-get($palette, muted);
     cursor: not-allowed;
   }
 }
