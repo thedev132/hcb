@@ -238,7 +238,7 @@
         <p>
           <strong>Recipient email</strong>
           <% if organizer_signed_in? %>
-            <%= mail_to @sponsor.contact_email, @sponsor.contact_email.downcase, class: "slate underline" %>
+            <%= mail_to @sponsor.contact_email, @sponsor.contact_email.downcase %>
           <% else %>
             <strong>Sign in to view</strong>
           <% end %>

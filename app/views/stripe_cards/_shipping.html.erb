@@ -12,7 +12,7 @@
     <% end %>
     is on the way!
   </h3>
-  <section class="pl2 mb2 text-shadow-lg flex flex-col" style="gap: 8px;">
+  <section class="pl2 mb2 drop-shadow-lg flex flex-col" style="gap: 8px;">
     <%= render_address OpenStruct.new(stripe_card.attributes.transform_keys { |key| key.gsub(/^stripe_shipping_/, "") }) %>
     <% eta = stripe_card.stripe_obj&.shipping&.eta %>
     <span>

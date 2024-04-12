@@ -58,9 +58,6 @@
 .nowrap {
   white-space: nowrap;
 }
-.break-word {
-  word-wrap: break-word;
-}
 .line-height-1 {
   line-height: 1;
 }
@@ -72,9 +69,6 @@
 }
 .line-height-4 {
   line-height: 1.5;
-}
-.underline {
-  text-decoration: underline;
 }
 .no-select {
   -webkit-user-select: none;

@@ -4,12 +4,12 @@
       <% if event.logo.attached? %>
         <div class="flex gap-2 items-center">
           <%= image_tag event.logo, height: 24, width: 24, class: "rounded align-bottom" %>
-          <strong class="font-brand text-xl leading-4">
+          <strong class="font-brand text-xl leading-tight">
             <%= event.name %>
           </strong>
         </div>
       <% else %>
-        <strong class="font-brand text-xl leading-4">
+        <strong class="font-brand text-xl leading-tight">
           <%= event.name %>
         </strong>
       <% end %>

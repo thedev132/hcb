@@ -12,18 +12,6 @@
   cursor: help;
 }
 
-.overflow-x-auto {
-  overflow-x: auto;
-}
-
-.overflow-y-auto {
-  overflow-y: auto;
-}
-
-.line-height-0 {
-  line-height: 0;
-}
-
 .shrink-none {
   flex-shrink: 0;
 }
@@ -176,24 +164,8 @@ $shades: (
   width: 100%;
 }
 
-.w-max {
-  width: max-content;
-}
-
-.w-min {
-  width: min-content;
-}
-
-.w-fit {
-  width: fit-content;
-}
-
 .h-100 {
   height: 100%;
-}
-
-.h-auto {
-  height: auto;
 }
 
 @media screen and (min-width: 32em) {
@@ -214,25 +186,8 @@ $shades: (
   }
 }
 
-.break-normal {
-  word-break: normal;
-}
-
-.break-all {
-  word-break: break-all;
-}
-
-.break-word {
-  word-break: break-word;
-}
-
 .break-none {
   word-break: keep-all;
-}
-
-.text-shadow-lg {
-  filter: drop-shadow(0 10px 8px rgba(0, 0, 0, 0.04))
-    drop-shadow(0 4px 3px rgba(0, 0, 0, 0.1));
 }
 
 .column {
