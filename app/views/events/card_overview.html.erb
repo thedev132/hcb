@@ -42,7 +42,7 @@
     <div style="text-align: center;" class="mb2">
       <%= link_to "All", event_cards_overview_path(event_id: @event.slug), class: "filterbar__item", "aria-selected": @status.nil?, role: "tab" %>
       <% %w[virtual physical active inactive].each do |status| %>
-        <%= link_to status.humanize, "?status=#{status}", class: "filterbar__item", "aria-selected": @status == status, role: "tab" %>
+        <%= link_to status.humanize, "?status=#{status}#{"&q=#{@q}" if @q}", class: "filterbar__item", "aria-selected": @status == status, role: "tab" %>
       <% end %>
     </div>
   <% end %>
@@ -57,6 +57,9 @@
   <% end %>
 
   <%= form_with method: :get do |form| %>
+    <% if @status %>
+      <%= form.hidden_field :status, value: @status %>
+    <% end %>
     <%= form.text_field :q, value: @q, placeholder: "Search by cardholder", class: "mb3 w-100", style: "max-width: 100%" %>
   <% end %>
 
