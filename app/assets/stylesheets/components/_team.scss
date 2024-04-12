@@ -18,6 +18,10 @@
   & .organizer-position-invite__date {
     grid-area: invite-date;
   }
+  
+  & .organizer-position-invite__contact-block {
+    flex-wrap: wrap;
+  }
 
   .avatar-container__admin-bolt {
     position: absolute;
