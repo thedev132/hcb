@@ -4,7 +4,7 @@ require "cgi"
 
 module EventsHelper
   def dock_item(name, url = nil, icon:, tooltip: nil, async_badge: nil, disabled: false, selected: false, **options)
-    link_to (url unless disabled), options.merge(
+    link_to (disabled ? "javascript:" : url), options.merge(
       class: "dock__item #{"dock__item--selected" if selected} #{"tooltipped tooltipped--e" if tooltip} #{"disabled" if disabled}",
       'aria-label': tooltip
     ) do
