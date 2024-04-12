@@ -6,6 +6,8 @@
   <%= form.text_field :q, value: @q, placeholder: "Search" %>
 <% end %>
 
+<%= page_entries_info @cards, entry_name: "cards" %>
+
 <table>
   <thead>
     <tr>
@@ -14,6 +16,7 @@
       <th>Last 4</th>
       <th>Created</th>
       <th>Card name</th>
+      <th>Status</th>
       <th>Type</th>
       <th></th>
     </tr>
@@ -26,9 +29,12 @@
         <td><%= card.last4 %></td>
         <td><%= card.created_at %></td>
         <td><%= card.name %></td>
+        <td><%= card.status_text %></td>
         <td><%= card.physical? ? "💳 Physical" : "🔢 Virtual" %></td>
         <td><%= link_to "View", card %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
+
+<%= paginate @cards %>
