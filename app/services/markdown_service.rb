@@ -8,9 +8,10 @@ class MarkdownService
     include UsersHelper # for mention users helper
     include Rails.application.routes.url_helpers
 
-    def context(current_user: nil, record: nil)
+    def context(current_user: nil, record: nil, location: nil)
       @current_user = current_user
       @record = record
+      @location = location
       self
     end
 
@@ -35,6 +36,7 @@ class MarkdownService
       # the email portion of that string.
 
       fulldoc.gsub!("@<span class=\"mention", "<span class=\"mention")
+      fulldoc.gsub!("@<a class=\"mention", "<a class=\"mention")
 
       fulldoc
     end
@@ -82,6 +84,10 @@ class MarkdownService
 
       u = User.find_by(email: link)
       return nil unless u && @record && Pundit.policy(u, @record)&.show?
+
+      if @location == :email
+        return mail_to link, "@#{u.name}", class: "mention"
+      end
 
       user_mention(u, click_to_mention: true, comment_mention: true)
     end
@@ -140,9 +146,9 @@ class MarkdownService
 
   end
 
-  def renderer(current_user: nil, record: nil)
+  def renderer(current_user: nil, record: nil, location: nil)
     markdown_renderer = MarkdownRenderer.new(hard_wrap: true, filter_html: true)
-                                        .context(current_user:, record:)
+                                        .context(current_user:, record:, location:)
     Redcarpet::Markdown.new(markdown_renderer, strikethrough: true,
                                                tables: true,
                                                autolink: true)
