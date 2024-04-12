@@ -38,17 +38,14 @@
     </div>
   <% end %>
 
-  <% admin_tool("mb2 flex g1 w-fit") do %>
-    <div class="field field--checkbox mb0 line-height-0" data-controller="team-invite-form" data-action="click->team-invite-form#toggle">
-      <%= form.check_box :is_signee, "data-team-invite-form-target": "realCheckbox", style: "display: none;" %>
-
-      <div class="warning">
-        <div data-team-invite-form-target="docsPos" style="translate: 1px -1px; display: none;"><%= inline_icon("docs-positive", size: 20) %></div>
-        <div data-team-invite-form-target="docsNeg" style="translate: -1.5px 0; display: none;"><%= inline_icon("docs-negative", size: 20) %></div>
-      </div>
+  <% admin_tool("mb2 flex g1") do %>
+    <div class="field field--select w-100">
+      <%= form.select :is_signee,
+      [
+        ["📃 Contract Signee", "true"],
+        ["❌ Hasn't Signed The Contract", "false"],
+      ], {}, style: "width: 100%" %>
     </div>
-
-    <%= form.label :is_signee, "Is a contract signee?", class: "m0 no-select" %>
   <% end %>
 
   <%= form.submit "Submit" %>
