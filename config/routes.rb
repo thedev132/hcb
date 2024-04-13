@@ -609,6 +609,8 @@ Rails.application.routes.draw do
     get "edit", to: redirect("/%{event_id}/settings")
     put "toggle_hidden", to: "events#toggle_hidden"
 
+    post "claim_point_of_contact", to: "events#claim_point_of_contact"
+
     post "remove_header_image"
     post "remove_background_image"
     post "remove_logo"

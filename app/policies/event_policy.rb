@@ -189,6 +189,10 @@ class EventPolicy < ApplicationPolicy
     admin_or_manager?
   end
 
+  def claim_point_of_contact?
+    user&.admin?
+  end
+
   private
 
   def admin_or_user?

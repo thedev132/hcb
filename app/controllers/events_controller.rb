@@ -780,6 +780,18 @@ class EventsController < ApplicationController
     end
   end
 
+  def claim_point_of_contact
+    authorize @event
+
+    if @event.update(point_of_contact: current_user)
+      flash[:success] = "You're now the point of contact for #{@event.name}."
+    else
+      flash[:error] = "Failed to assign you as point of contact."
+    end
+
+    redirect_back fallback_location: edit_event_path(@event.slug)
+  end
+
   private
 
   # Only allow a trusted parameter "white list" through.
