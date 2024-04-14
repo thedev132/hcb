@@ -42,7 +42,7 @@ module LoginCodeService
         user_agent: @user_agent
       )
 
-      LoginCodeMailer.send_code(user.email, login_code.pretty).deliver_now
+      LoginCodeMailer.send_code(user.email_address_with_name, login_code.pretty).deliver_now
 
       {
         id: user.id,

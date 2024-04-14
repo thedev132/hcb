@@ -10,7 +10,7 @@ class CanonicalPendingTransactionMailer < ApplicationMailer
       s: @cpt.local_hcb_code.signed_id(expires_in: 2.weeks, purpose: :receipt_upload)
     )
 
-    to = @cpt.stripe_card.user.email
+    to = @cpt.stripe_card.user.email_address_with_name
     subject = "#{@cpt.local_hcb_code.receipt_required? ? "Upload a receipt for your transaction" : "New transaction"} at #{@cpt.smart_memo}"
     reply_to = if @receipt_upload_feature
                  HcbCode.find_or_create_by(hcb_code: @cpt.hcb_code).receipt_upload_email
@@ -31,7 +31,7 @@ class CanonicalPendingTransactionMailer < ApplicationMailer
       s: @cpt.local_hcb_code.signed_id(expires_in: 2.weeks, purpose: :receipt_upload)
     )
 
-    to = @cpt.stripe_card.user.email
+    to = @cpt.stripe_card.user.email_address_with_name
     subject = "#{@cpt.smart_memo} settled at #{ApplicationController.helpers.render_money(@cpt.amount)}."
     reply_to = if @receipt_upload_feature
                  HcbCode.find_or_create_by(hcb_code: @cpt.hcb_code).receipt_upload_email
@@ -53,7 +53,7 @@ class CanonicalPendingTransactionMailer < ApplicationMailer
 
     @failed_verification_checks = @cpt.raw_pending_stripe_transaction.stripe_transaction["verification_data"].select { |k, v| k.end_with?("check") && v == "mismatch" }.keys
 
-    mail to: @user.email,
+    mail to: @user.email_address_with_name,
          subject: "Purchase declined at #{@merchant}"
   end
 
