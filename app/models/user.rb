@@ -272,6 +272,10 @@ class User < ApplicationRecord
     ActionMailer::Base.email_address_with_name(email, name)
   end
 
+  def hack_clubber?
+    return events.organized_by_hack_clubbers.any?
+  end
+
   private
 
   def update_stripe_cardholder
