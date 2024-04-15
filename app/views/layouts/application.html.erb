@@ -104,15 +104,17 @@
             <% end %>
             <div class="center h5 playground-desc" style="text-wrap: pretty;">
               <% meeting_req = @event.demo_mode_request_meeting_at %>
-              <p class="m0 <%= "muted" if meeting_req %>">
-                While in Playground mode, explore the dashboard with mock data, and invite your team.
-                To utilise financial features, request activation!
-              </p>
               <p class="m0">
                 <% if meeting_req %>
                   You requested activation on <%= format_date meeting_req %>
                   (<%= distance_of_time_in_words_to_now meeting_req %> ago).
-                  Please expect an email from our team soon.
+                  We are prioritizing organizations ran by Hack Clubbers, teens,
+                  FIRST teams, as well as groups with an annual budget greater
+                  than $50k. If you fall outside of these categories, you will
+                  hear back from us by May 1st, 2024.
+                <% else %>
+                  While in Playground mode, explore the dashboard with mock data, and invite your team.
+                  To utilize financial features, request activation!
                 <% end %>
               </p>
             </div>
