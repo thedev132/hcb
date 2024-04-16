@@ -276,6 +276,9 @@
 .display-none-not-important {
   display: none;
 }
+.w-fit-content {
+  width: fit-content;
+}
 .h-fit-content {
   height: fit-content;
 }
