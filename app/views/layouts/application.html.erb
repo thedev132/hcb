@@ -96,9 +96,9 @@
 
     <% if @event&.demo_mode? && !@no_app_shell && !@no_transparency_header %>
       <div class="w-full dev-banner dev-banner--info rounded-b">
-        <div class="flex flex-col container container--md center pb2">
+        <div class="flex flex-col container container--md center pb2" style="max-width: unset;">
           <p class="h1 bold center m0">Playground Mode</p>
-          <div class="grid g3 banner-content">
+          <div class="flex g3 banner-content">
             <%= link_to event_demo_mode_request_meeting_path(@event), method: :post, class: "btn bg-primary shrink-none nowrap #{"disabled" unless policy(@event).demo_mode_request_meeting? }", data: { tour_step: "activate_account" } do %>
               <%= inline_icon "welcome" %>Request Activation
             <% end %>
