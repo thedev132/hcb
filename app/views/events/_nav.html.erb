@@ -110,7 +110,7 @@
       <%= dock_item "Settings",
         edit_event_path(@event),
         tooltip: "Edit organization settings",
-        icon: "project-settings",
+        icon: "settings",
         disabled: !policy(@event).edit?,
         selected: local_assigns[:selected] == :settings %>
     <% end %>
