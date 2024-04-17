@@ -645,6 +645,15 @@ class Event < ApplicationRecord
     options[hashid.codepoints.first % options.size]
   end
 
+  def service_level
+    return 1 if organized_by_hack_clubbers?
+    return 1 if organized_by_teenagers?
+    return 1 if robotics_team?
+    return 1 if balance_available_v2_cents > 50_000_00
+
+    2
+  end
+
   private
 
   def point_of_contact_is_admin
