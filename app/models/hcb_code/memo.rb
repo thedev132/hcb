@@ -65,7 +65,13 @@ class HcbCode
       end
 
       def bank_fee_memo
-        bank_fee.amount_cents.negative? ? "FISCAL SPONSORSHIP" : "FISCAL SPONSORSHIP FEE CREDIT"
+        if bank_fee.amount_cents.negative? && bank_fee.fee_revenue.present?
+          return "FISCAL SPONSORSHIP FOR #{bank_fee.fee_revenue.start.strftime("%-m/%-d")} TO #{bank_fee.fee_revenue.end.strftime("%-m/%-d")}"
+        elsif bank_fee.amount_cents.negative?
+          return "FISCAL SPONSORSHIP"
+        else
+          return "FISCAL SPONSORSHIP FEE CREDIT"
+        end
       end
 
       def ach_transfer_memo
