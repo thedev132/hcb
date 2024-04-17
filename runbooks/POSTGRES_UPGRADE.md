@@ -11,7 +11,7 @@ In the current HCB setup, a Postgres major version upgrade requires downtime. So
 1. Read through https://devcenter.heroku.com/articles/upgrading-heroku-postgres-databases and https://devcenter.heroku.com/articles/testing-postgresql-version-upgrades
 2. Read the release notes between the latest release of the major version you are upgrading to and the version you are upgrading from on https://www.postgresql.org/docs/release/. You can aso use a page like https://why-upgrade.depesz.com/show?from=12.17&to=13.14 to collate all the changes. Typically Postgres maintains good backwards compatibility, but keep an eye out for any changes that may cause us problems.
 3. Do the upgrade locally. Depending on your set up this may be as simple as changing the version in a `Dockerfile` and rebuilding. Run test suite and fix any issues that are broken due to the new Postgres version. The confidence this gives us depends on the current test coverage (currently low until https://github.com/hackclub/hcb/issues/4488 is completed).
-4. Pick a date and time to run the upgrade. We aim for times with low traffic. Historically, Pacific Time evenings are a good option (especially Tuesday and Wednesday evenings). There are a couple of ways to determine low-traffic periods:
+4. Pick a date and time to run the upgrade. We aim for times with low traffic. Historically, Pacific Time evenings are a good option (especially Tuesday and Wednesday evenings). Also, we should do our best to avoid scheduled sidekiq jobs that won't run again for a while. There are a couple of ways to determine low-traffic periods:
 
    - Heroku metrics (look at the RPM rate)
    - Logtail (look at the request rate)
@@ -62,15 +62,13 @@ This is based heavily on https://github.com/hackclub/hcb/issues/3302#issuecommen
 
 2. **Staging only** [Fork the prod database](https://devcenter.heroku.com/articles/heroku-postgres-fork)
 
-```
+   ```
+   heroku addons:create heroku-postgresql:standard-0 --fork bank-hackclub::DATABASE_URL --as PROD_DB_FORK -a bank-staging-postgres-upgrade
 
-heroku addons:create heroku-postgresql:standard-0 --fork bank-hackclub::DATABASE_URL --as PROD_DB_FORK -a bank-staging-postgres-upgrade
+   heroku pg:wait -a bank-staging-postgres-upgrade
+   ```
 
-heroku pg:wait -a bank-staging-postgres-upgrade
-
-```
-
-This will take ~30 minutes.
+   This will take ~30 minutes.
 
 3. **Staging only** Create a redis instance for the staging environment if there isn't one already, ~1 minute.
 4. **Staging only** Attach `PROD_DB_FORK` to `bank-staging-postgres-upgrade` as `DATABASE` via the UI.
@@ -81,72 +79,66 @@ This will take ~30 minutes.
 
 7. Create a follower for `PROD_DB_FORK`
 
-```
+   ```
+   heroku addons:create heroku-postgresql:standard-0 --follow bank-staging-postgres-upgrade::PROD_DB_FORK --as TEST_UPGRADE_FOLLOWER --app bank-staging-postgres-upgrade
 
-heroku addons:create heroku-postgresql:standard-0 --follow bank-staging-postgres-upgrade::PROD_DB_FORK --as TEST_UPGRADE_FOLLOWER --app bank-staging-postgres-upgrade
+   heroku pg:wait -a bank-staging-postgres-upgrade
+   ```
 
-heroku pg:wait -a bank-staging-postgres-upgrade
-
-```
-
-It may take a few minutes for heroku to accept this command if it thinks `PROD_DB_FORK` is too new. Creating the follower will take about 5-6 minutes.
+   It may take a few minutes for heroku to accept this command if it thinks `PROD_DB_FORK` is too new. Creating the follower will take about 5-6 minutes.
 
 8. Set maintenance mode page to database upgrade explanation `heroku config:set MAINTENANCE_PAGE_URL=<DATABASE_UPGRADE_URL> -a bank-staging-postgres-upgrade`. Past examples of `DATABASE_UPGRADE_URL` are https://changelog.hcb.hackclub.com/scheduled-maintenance-april-3rd-2024-289134 and https://postal.hackclub.com/w/ohsB1xRMhhuwbFeWwVihLQ.
 9. Turn on maintenance mode with `heroku maintenance:on --app bank-staging-postgres-upgrade`
 10. Verify the follower is caught up to primary with `heroku pg:info -a bank-staging-postgres-upgrade`
 
-```
+    ```
+    === DATABASE_URL, PROD_DB_FORK_URL
+    Plan: Standard 0
+    <REDACTED>
 
-=== DATABASE_URL, PROD_DB_FORK_URL
-Plan: Standard 0
-<REDACTED>
-
-=== TEST_UPGRADE_FOLLOWER_URL
-Plan: Standard 0
-<REDACTED>
-Following: PROD_DB_FORK
-Behind By: 0 commits
-
-```
+    === TEST_UPGRADE_FOLLOWER_URL
+    Plan: Standard 0
+    <REDACTED>
+    Following: PROD_DB_FORK
+    Behind By: 0 commits
+    ```
 
 11. Upgrade the follower to `NEW_MAJOR_VERSION` (e.g. 13, 14) with
 
-```
+    ```
+    heroku pg:upgrade TEST_UPGRADE_FOLLOWER --version <NEW_MAJOR_VERSION> --app bank-staging-postgres-upgrade
 
-heroku pg:upgrade TEST_UPGRADE_FOLLOWER --version <NEW_MAJOR_VERSION> --app bank-staging-postgres-upgrade
+    heroku pg:wait -a bank-staging-postgres-upgrade
+    ```
 
-heroku pg:wait -a bank-staging-postgres-upgrade
-
-```
-
-This will take about 6 minutes.
+    This will take about 6 minutes.
 
 12. Promote the follower, turn off maintenance and smoke test the app. We can verify that new writes only go to the upgraded, newly promoted database and not the old primary.
 
-```
-heroku pg:promote TEST_UPGRADE_FOLLOWER --app bank-staging-postgres-upgrade
-```
+    ```
+    heroku pg:promote TEST_UPGRADE_FOLLOWER --app bank-staging-postgres-upgrade
+    ```
 
-Even if the above command finishes, it might take some time for the promotion to finish and for the app to reconnect. Try starting a heroku rails console and check you can connect to the database (e.g. `Disbursement.last`) before continuing.
+    Even if the above command finishes, it might take some time for the promotion to finish and for the app to reconnect. Try starting a heroku rails console and check you can connect to the database (e.g. `Disbursement.last`) before continuing.
 
-```
-heroku maintenance:off --app bank-staging-postgres-upgrade
-```
+    ```
+    heroku maintenance:off --app bank-staging-postgres-upgrade
+    ```
 
 13. Use the HCB app to write something to the database (e.g. creating a disbursement). Then run psql on new primary vs old primary to verify the data is only in the new database.
 
-```
-heroku pg:psql prod_db_fork -a bank-staging-postgres-upgrade
+    ```
+    heroku pg:psql prod_db_fork -a bank-staging-postgres-upgrade
 
-heroku pg:psql -a bank-staging-postgres-upgrade
-```
+    heroku pg:psql -a bank-staging-postgres-upgrade
+    ```
 
-13. **Staging only** Tear down staging database instances, or delete `bank-staging-postgres-upgrade`, which should delete the affiliated databases.
+14. **Staging only** Tear down staging database instances, or delete `bank-staging-postgres-upgrade`, which should delete the affiliated databases.
 
-```
-heroku addons:destroy PROD_DB_FORK --app bank-staging-postgres-upgrade
-heroku addons:destroy DATABASE --app bank-staging-postgres-upgrade
-```
+    ```
+    heroku addons:destroy PROD_DB_FORK --app bank-staging-postgres-upgrade
+    heroku addons:destroy DATABASE --app bank-staging-postgres-upgrade
+    ```
 
 ## Prod upgrade
 
@@ -154,93 +146,104 @@ This is based heavily on https://github.com/hackclub/hcb/issues/3302#issuecommen
 
 1. Communicate that you are starting the process so other HCB engineers and team members are aware (even if they should already know this because it is the start of the scheduled maintenance).
 
-2. Create a follower for `DATABASE`
+### The next 2 steps can be done in advance of the maintenance time
 
-````
+2. Create a follower for `DATABASE`.
 
-heroku addons:create heroku-postgresql:standard-0 --follow bank-hackclub::DATABASE --app bank-hackclub
+   ```
+   heroku addons:create heroku-postgresql:standard-0 --follow bank-hackclub::DATABASE --app bank-hackclub
 
-heroku pg:wait -a bank-hackclub
+   heroku pg:wait -a bank-hackclub
+   ```
 
-```
+   It may take a few minutes for heroku to accept this command since the follower database is too new. Creating the follower after may take about 5-6 minutes.
 
-It may take a few minutes for heroku to accept this command since `PROD_DB_FORK` is too new. Creating the follower after may take about 5-6 minutes.
+3. Set maintenance mode page to database upgrade explanation `heroku config:set MAINTENANCE_PAGE_URL="<DATABASE_UPGRADE_URL>" -a bank-hackclub`. Past examples of `DATABASE_UPGRADE_URL` are https://changelog.hcb.hackclub.com/scheduled-maintenance-april-3rd-2024-289134 and https://postal.hackclub.com/w/ohsB1xRMhhuwbFeWwVihLQ.
 
-3. Set maintenance mode page to database upgrade explanation `heroku config:set MAINTENANCE_PAGE_URL=<DATABASE_UPGRADE_URL> -a bank-hackclub`. Past examples of `DATABASE_UPGRADE_URL` are https://changelog.hcb.hackclub.com/scheduled-maintenance-april-3rd-2024-289134 and https://postal.hackclub.com/w/ohsB1xRMhhuwbFeWwVihLQ.
+### The next steps are to guarantee that there won't be any more writes to the database.
+
 4. Turn on maintenance mode with `heroku maintenance:on --app bank-hackclub`
-5. **prod only** Scale down web and worker dynos `heroku ps:scale worker=0`
-6. Verify the follower is caught up to primary with `heroku pg:info -a bank-hackclub`. You may have to wait a few minutes to make sure all the dynos from the above step are down and that the follower has fully caught up.
+5. **prod only** Turn off preboot and scale down web and worker dynos
+   ```
+   heroku features:disable preboot -a bank-hackclub
+   heroku ps:scale web=0 -a bank-hackclub
+   heroku ps:scale worker=0 -a bank-hackclub
+   ```
+6. **prod only** Verify in Resources tab of the Heroku UI that all the dynos have scaled down to 0.
+7. Verify the follower is caught up to primary with `heroku pg:info -a bank-hackclub`. You may have to wait a few minutes to make sure all the dynos from the above step are down and that the follower has fully caught up (i.e. `Behind by: 0 commits`).
 
-```
+   ```
+   === DATABASE_URL
+   Plan: Standard 0
+   <REDACTED>
 
-=== DATABASE_URL
-Plan: Standard 0
-<REDACTED>
+   === <FOLLOWER_DATABASE>_URL
+   Plan: Standard 0
+   <REDACTED>
+   Following: DATABASE
+   Behind By: 0 commits
+   ```
 
-=== FOLLOWER
-Plan: Standard 0
-<REDACTED>
-Following: DATABASE
-Behind By: 0 commits
+### At this point there won't be any more writes to the database and the follower has fully caught up (i.e. is a 100% clone)
 
-```
+8. **prod only** Create a manual database backup on Heroku. In case something goes wrong, we can hopefully use this to restore the DB with the older Postgres version.
 
-7. **prod only** Create a manual database backup on Heroku. In case something goes wrong, we can hopefully use this to restore the DB with the older Postgres version.
+9. Upgrade the follower to `NEW_MAJOR_VERSION` (e.g. 13, 14) with
 
-8. Upgrade the follower to `NEW_MAJOR_VERSION` (e.g. 13, 14) with
+   ```
+   heroku pg:upgrade <FOLLOWER_DATABASE> --version <NEW_MAJOR_VERSION> --app bank-hackclub
 
-```
+   heroku pg:wait -a bank-hackclub
+   ```
 
-heroku pg:upgrade FOLLOWER --version <NEW_MAJOR_VERSION> --app bank-hackclub
+   This takes about 6 minutes.
 
-heroku pg:wait -a bank-hackclub
+10. Promote the follower
 
-```
+    ```
+    heroku pg:promote <FOLLOWER_DB_NAME> --app bank-hackclub
+    ```
 
-This takes about 6 minutes.
+11. Scale number of web and worker dynos back and re-enable preboot
 
-9. Promote the follower, reset number of web and worker dynos, turn off maintenance and smoke test the app. We can verify that new writes only go to the upgraded, newly promoted database and not the old primary.
+    ```
+    $ heroku ps:scale web=2 -a bank-hackclub
+    Scaling dynos... done, now running web at 2:Performance-M
 
-```
+    $ heroku ps:scale worker=1 -a bank-hackclub
+    Scaling dynos... done, now running worker at 1:Performance-M
 
-heroku pg:promote <FOLLOWER_DB_NAME> --app bank-hackclub
+    $ heroku features:enable preboot -a bank-hackclub
+    Enabling preboot for ⬢ bank-hackclub... done
+    ```
 
-heroku maintenance:off --app bank-hackclub
+12. Turn off maintenance mode and smoke test the app in browser. We can verify that new writes only go to the upgraded, newly promoted database and not the old primary.
 
-```
+    ```
+    heroku maintenance:off --app bank-hackclub
+    ```
 
-Scaling dynos back
+    Run psql on new primary vs old primary
 
-```
+    ```
+    heroku pg:psql DATABASE_URL -a bank-hackclub
 
-$ heroku ps:scale web=2
-Scaling dynos... !
-▸ Cannot change formation for a preboot app until preboot is complete
-$ heroku features:disable preboot -a bank-hackclub
-Disabling preboot for ⬢ bank-hackclub... done
-$ heroku ps:scale web=2 -a bank-hackclub
-Scaling dynos... done, now running web at 2:Performance-M
-$ heroku features:enable preboot -a bank-hackclub
-Enabling preboot for ⬢ bank-hackclub... done
+    heroku pg:psql <OLD_PRIMARY_DB_NAME> -a bank-hackclub
+    ```
 
-```
+13. **prod only** Reset maintenance mode to generic page
 
-Run psql on new primary vs old primary
+    ```
+    heroku config:set MAINTENANCE_PAGE_URL=https://hackclub.github.io/hcb/maintenance-mode.html -a bank-hackclub
+    ```
 
-```
+14. **prod only** A few days later, if there are no major issues, delete the old DB.
+    N.B. On Heroku specifically, you may notice commit activity on the old database. This is [expected due to heroku automation](https://help.heroku.com/3C0QEC75/why-does-the-data-dashboard-show-commit-activity-on-an-unused-heroku-postgres-instance), but verify that the queries you are seeing match that by querying `pg_stat_activity`
 
-heroku pg:psql DATABASE_URL -a bank-hackclub
+    > Issue
 
-heroku pg:psql <OLD_PRIMARY_DB_NAME> -a bank-hackclub
+    > The Data Dashboard for Heroku Postgres instances shows commit activity, under the I/O section, even when the database is not being used.
+    
+    > Resolution
 
-````
-
-10. **prod only** Reset maintenance mode to generic page
-
-```
-heroku config:set MAINTENANCE_PAGE_URL=https://hackclub.github.io/hcb/maintenance-mode.html -a bank-hackclub
-```
-
-```
-
-```
+    > This is expected behaviour. Postgres treats each executed SQL statement as being implicitly wrapped in a transaction, so SELECT 1; is treated as BEGIN; SELECT 1; COMMIT;. As a result, each time a statement is executed successfully xact_commit is incremented in pg_stat_database, which is what we use to determine the commit activity. As our monitoring tooling executes queries to check the health of your database, there will be a baseline level of commits being recorded.
