@@ -51,7 +51,7 @@
     bottom: 0;
     z-index: -1;
     pointer-events: none;
-    @include gradient(primary);
+    @include gradient(info);
     border-radius: 1rem;
     transform: scale(0);
     transition: transform 250ms ease-in-out;

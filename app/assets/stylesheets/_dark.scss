@@ -300,7 +300,7 @@ html[data-dark='true'] {
 
   .filterbar__item:active,
   .filterbar__item[aria-selected='true'] {
-    background-color: rgba(map-get($palette, primary), 0.125);
+    background-color: rgba(map-get($palette, info), 0.125);
   }
   .badge.bg-info,
   .flash.info,
