@@ -41,10 +41,14 @@
   <% admin_tool("mb2 flex g1") do %>
     <div class="field field--select w-100">
       <%= form.select :is_signee,
-      [
-        ["📃 Contract Signee", "true"],
-        ["❌ Hasn't Signed The Contract", "false"],
-      ], {}, style: "width: 100%" %>
+          [
+            ["📃 Contract Signee", "true"],
+            ["❌ Hasn't Signed The Contract", "false"],
+          ],
+          prompt: "Select a contract signee status",
+          required: true,
+          style: "width: 100%"
+      %>
     </div>
   <% end %>
 
