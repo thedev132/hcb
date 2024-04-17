@@ -44,7 +44,7 @@
       <% if @hcb_code.reimbursement_payout_holding.increase_check %>
         <p>
           <strong>Check</strong>
-          <%= link_to "View", @hcb_code.reimbursement_payout_holding.increase_check %>
+          <%= link_to "View", @hcb_code.reimbursement_payout_holding.increase_check.local_hcb_code %>
         </p>
       <% end %>
     </section>
