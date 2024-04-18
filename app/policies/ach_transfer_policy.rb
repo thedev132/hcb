@@ -49,7 +49,7 @@ class AchTransferPolicy < ApplicationPolicy
   private
 
   def user_who_can_transfer?
-    user&.admin? || EventPolicy.new(user, record.event).new_transfer?
+    EventPolicy.new(user, record.event).create_transfer?
   end
 
   def admin_or_manager?

@@ -1,4 +1,4 @@
-<% disabled = @source_event.present? && !policy(@source_event).new_transfer? %>
+<% disabled = @source_event.present? && !policy(@source_event).create_transfer? %>
 
 <%= form_with(model: disbursement, local: true, url: disbursements_path, html: { "x-data" => "{fee: null}" }) do |form| %>
   <%= form_errors(disbursement, "Disbursements") %>

@@ -1,4 +1,4 @@
-<% disabled = !policy(@event).new_transfer? %>
+<% disabled = !policy(@event).create_transfer? %>
 
 <% title "Send a Check" %>
 <%= render "events/nav", selected: :transfers %>
@@ -47,7 +47,7 @@
       </ul>
     <% end %>
 
-    <% if @event.present? && !policy(@event).new_transfer? %>
+    <% if @event.present? && !policy(@event).create_transfer? %>
       <%= render "events/transfers/unauthorized_callout" %>
     <% end %>
   </aside>

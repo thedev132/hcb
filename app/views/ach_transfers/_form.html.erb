@@ -1,4 +1,4 @@
-<% disabled = !policy(@event).new_transfer? %>
+<% disabled = !policy(@event).create_transfer? %>
 
 <%= form_with(model: @ach_transfer, local: true, url: event_ach_transfers_path(@event), data: { controller: "form input" }) do |form| %>
   <%= form_errors(@ach_transfer, "ACH transfer", "We couldn't send this") %>
