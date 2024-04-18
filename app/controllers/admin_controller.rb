@@ -793,8 +793,8 @@ class AdminController < ApplicationController
 
     relation = HcbCode
 
-    relation = relation.where("hcb_code ilike '%#{@q}%'") if @q
-    relation = relation.missing_receipt if @has_receipt == "no"
+    relation = relation.where("hcb_codes.hcb_code ilike '%#{@q}%'") if @q
+    relation = relation.receipt_required.missing_receipt if @has_receipt == "no"
     relation = relation.has_receipt_or_marked_no_or_lost if @has_receipt == "yes"
     relation = relation.lost_receipt if @has_receipt == "lost"
 

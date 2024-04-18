@@ -38,6 +38,9 @@
     <tr>
       <th>Date</th>
       <th>HCB Code</th>
+      <th>Event</th>
+      <th>User</th>
+      <th>Amount</th>
       <th>Pending TXs</th>
       <th>Canonical TXs</th>
       <th>Comments</th>
@@ -49,7 +52,14 @@
     <% @hcb_codes.each do |hcb_code| %>
       <tr>
         <td><%= hcb_code.created_at.strftime("%Y-%m-%d") %></td>
-        <td><%= link_to hcb_code.hcb_code, hcb_code.url %></td>
+        <td><%= link_to hcb_code.memo, hcb_code.url %></td>
+        <td><%= link_to hcb_code.event.name, hcb_code.event %></td>
+        <td>
+          <% if hcb_code.stripe_card? && hcb_code.card&.user %>
+           <%= link_to hcb_code.card.user.name, hcb_code.card.user %>
+          <% end %>
+        </td>
+        <td><%= render_money hcb_code.amount %></td>
         <td>
           <% hcb_code.canonical_pending_transactions.each do |cpt| %>
             <% if cpt.event %>
