@@ -83,6 +83,8 @@ class UsersController < ApplicationController
 
     resp = LoginCodeService::Request.new(email: @email, sms: @use_sms_auth, ip_address: request.ip, user_agent: request.user_agent).run
 
+    @use_sms_auth = resp[:method] == :sms
+
     if resp[:error].present?
       flash[:error] = resp[:error]
       return redirect_to auth_users_path

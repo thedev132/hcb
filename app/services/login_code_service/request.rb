@@ -20,21 +20,26 @@ module LoginCodeService
     end
 
     def send_login_code_by_sms(user)
-      return { error: "no phone number provided" } if user.phone_number.empty?
+      return { error: "no phone number provided", method: :sms } if user.phone_number.empty?
 
-      TwilioVerificationService.new.send_verification_request(user.phone_number)
+      begin
+        TwilioVerificationService.new.send_verification_request(user.phone_number)
+      rescue
+        return send_login_code_by_email(user)
+      end
 
       {
         id: user.id,
         email: user.email,
-        status: "login code sent"
+        status: "login code sent",
+        method: :sms
       }
     end
 
     def send_login_code_by_email(user)
       user.save if user.new_record?
       if user.new_record? && !user.save
-        return { error: user.errors }
+        return { error: user.errors, method: :email }
       end
 
       login_code = user.login_codes.create(
@@ -48,6 +53,7 @@ module LoginCodeService
         id: user.id,
         email: user.email,
         status: "login code sent",
+        method: :email,
         browser_token: login_code.browser_token,
         login_code:
       }
