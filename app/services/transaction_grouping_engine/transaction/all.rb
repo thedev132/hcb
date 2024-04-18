@@ -3,12 +3,14 @@
 module TransactionGroupingEngine
   module Transaction
     class All
-      def initialize(event_id:, search: nil, tag_id: nil, expenses: false, revenue: false)
+      def initialize(event_id:, search: nil, tag_id: nil, expenses: false, revenue: false, minimum_amount: nil, maximum_amount: nil)
         @event_id = event_id
         @search = ActiveRecord::Base.connection.quote_string(search || "")
         @tag_id = tag_id
         @expenses = expenses
         @revenue = revenue
+        @minimum_amount = minimum_amount
+        @maximum_amount = maximum_amount
       end
 
       def run
@@ -80,6 +82,8 @@ module TransactionGroupingEngine
 
         conditions << "q1.amount_cents < 0" if @expenses
         conditions << "q1.amount_cents >= 0" if @revenue
+        conditions << "ABS(q1.amount_cents) >= #{@minimum_amount.cents}" if @minimum_amount
+        conditions << "ABS(q1.amount_cents) <= #{@maximum_amount.cents}" if @maximum_amount
 
         return if conditions.none?
 

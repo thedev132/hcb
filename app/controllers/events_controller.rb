@@ -79,6 +79,8 @@ class EventsController < ApplicationController
     @type = params[:type]
     @start_date = params[:start].presence
     @end_date = params[:end].presence
+    @minimum_amount = params[:minimum_amount].presence ? Money.from_amount(params[:minimum_amount].to_f) : nil
+    @maximum_amount = params[:maximum_amount].presence ? Money.from_amount(params[:maximum_amount].to_f) : nil
 
     @organizers = @event.organizer_positions.includes(:user).order(created_at: :desc)
     @pending_transactions = _show_pending_transactions
@@ -87,7 +89,13 @@ class EventsController < ApplicationController
       @hide_seasonal_decorations = true
     end
 
-    @all_transactions = TransactionGroupingEngine::Transaction::All.new(event_id: @event.id, search: params[:q], tag_id: @tag&.id).run
+    @all_transactions = TransactionGroupingEngine::Transaction::All.new(
+      event_id: @event.id,
+      search: params[:q],
+      tag_id: @tag&.id,
+      minimum_amount: @minimum_amount,
+      maximum_amount: @maximum_amount
+    ).run
 
     if @user
       @all_transactions = @all_transactions.select { |t| t.stripe_cardholder&.user == @user }
