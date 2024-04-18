@@ -6,12 +6,16 @@
 
   <blockquote><%== MarkdownService.instance.renderer(record: @comment, location: :email).render @comment.content %></blockquote>
 
-  <%= link_to "Click here to view and reply to the comment on HCB.", "#{hcb_code_url(hcb_code)}#comment-#{@comment.hashid}" %>
-
 <% else %>
 
  <%= @comment.user.name %> has attached a file to <i><%= hcb_code.memo %></i> in <i><%= hcb_code.event.name %></i>.
 
- <%= link_to "Click here to view and reply to the comment on HCB.", "#{hcb_code_url(hcb_code)}#comment-#{@comment.hashid}" %> Alternatively, send a reply to this email.
-
 <% end %>
+
+<%= link_to "Click here to view and reply to the comment on HCB.", "#{hcb_code_url(hcb_code)}#comment-#{@comment.hashid}", class: "info" %> Alternatively, send a reply to this email.
+
+<p>
+  <small>
+    <%= link_to "Manage the comments you get notified for.", my_settings_url %>
+  </small>
+</p>
