@@ -17,7 +17,7 @@ function extractId(dataTransfer) {
     receiptId = imgTag.getAttribute('data-receipt-id')
   } catch (err) {
     console.error(err)
-    airbrake?.notify(err)
+    // airbrake?.notify(err)
   }
 
   if (!receiptId) {
