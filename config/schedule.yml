@@ -122,3 +122,7 @@ calculate_subjects_metrics:
 ledger_audit_weekly_job:
   cron: "0 0 * * MON" # run first day of each week
   class: "GenerateLedgerAuditJob"
+
+send_admin_reminders_job:
+  cron: "30 * * * *" # run every hour
+  class: "SendAdminRemindersJob"

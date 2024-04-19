@@ -1,0 +1,7 @@
+Here are tasks that are older than 24 hours:
+
+<ul>
+  <% @tasks.each do |task| %>
+    <li style="margin-top: 8px;"><%= link_to task[:label], task[:url] %></li>
+  <% end %>
+</ul>

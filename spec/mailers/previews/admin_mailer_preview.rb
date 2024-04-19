@@ -5,4 +5,8 @@ class AdminMailerPreview < ActionMailer::Preview
     AdminMailer.with(opdr: OrganizerPositionDeletionRequest.last).opdr_notification
   end
 
+  def reminders
+    AdminMailer.reminders
+  end
+
 end
