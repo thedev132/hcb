@@ -104,6 +104,17 @@ Rails.application.configure do
     config.logger    = ActiveSupport::TaggedLogging.new(logger)
   end
 
+  # Use lograge to tame log output to AppSignal.
+  config.lograge.enabled = true
+  config.lograge.ignore_actions = ["Rails::HealthController#show"]
+  config.log_tags = [:request_id]
+  config.lograge.custom_payload { |controller| { request_id: controller.request.uuid } }
+  config.lograge.keep_original_rails_log = true
+  config.lograge.logger = Appsignal::Logger.new(
+    "rails",
+    format: Appsignal::Logger::LOGFMT
+  )
+
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
 
