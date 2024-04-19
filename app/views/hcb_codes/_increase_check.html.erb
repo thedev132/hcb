@@ -76,6 +76,12 @@
         <%= format_datetime @hcb_code.increase_check.created_at %>
       </p>
     <% end %>
+    <% if @hcb_code.increase_check.reimbursement_payout_holding.present? %>
+      <p>
+        <strong>Reimbursing</strong>
+       <%= link_to @hcb_code.increase_check.reimbursement_payout_holding.report.name, @hcb_code.increase_check.reimbursement_payout_holding.report %>
+      </p>
+    <% end %>
   </section>
 
   <section class="details pt2 pb2">
