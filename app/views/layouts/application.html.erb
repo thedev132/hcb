@@ -212,7 +212,7 @@
       </main>
     <% end %>
 
-    <%= render "application/feedback_form" if current_user&.events&.not_demo_mode&.any? %>
+    <%= render "application/feedback_form" if !@no_app_shell && current_user&.events&.not_demo_mode&.any? %>
 
     <% if Rails.env.production? %>
       <%= render "application/fullstory" if current_user&.sessions_reported %>

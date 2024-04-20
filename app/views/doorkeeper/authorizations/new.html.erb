@@ -1,5 +1,12 @@
 <% page_xs %>
 <% no_app_shell if params[:no_app_shell] %>
+<%
+  if params[:theme] == "dark"
+    @dark = true
+  elsif params[:theme] == "light"
+    @dark = false
+  end
+%>
 <% @hide_footer = true %>
 
 <h2 class="border-none center regular mt5 mb2">Connect <strong><%= @pre_auth.client.name %></strong> to your HCB account?</h2>
