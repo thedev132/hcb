@@ -124,5 +124,5 @@ ledger_audit_weekly_job:
   class: "GenerateLedgerAuditJob"
 
 send_admin_reminders_job:
-  cron: "30 * * * *" # run every hour
+  cron: "0 7 * * *" # run at 7am UTC each morning
   class: "SendAdminRemindersJob"
