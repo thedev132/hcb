@@ -22,7 +22,6 @@ gem "mini_magick"
 
 gem "jsbundling-rails", "~> 1.1"
 gem "terser", "~> 1.1" # JS compressor
-gem "sassc-rails"
 gem "jquery-rails"
 gem "react-rails"
 gem "turbo-rails", "~> 1.4"
@@ -213,3 +212,5 @@ gem "ledgerjournal"
 gem "doorkeeper", "~> 5.6"
 
 gem "cssbundling-rails", "~> 1.4"
+
+gem "sprockets-rails", "~> 3.4"

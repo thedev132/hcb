@@ -694,4 +694,6 @@ video {
   min-width: 0;
 }
 
-@import '../builds/application-tailwind'
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

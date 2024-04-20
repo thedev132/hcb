@@ -1,4 +1,4 @@
-@import 'variables';
+@import '../variables';
 
 .dev-banner {
     $col1: rgba(map-get($palette, info), 0.15);
