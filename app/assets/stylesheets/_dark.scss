@@ -347,26 +347,6 @@ html[data-dark='true'] {
     color: map-get($palette, smoke);
   }
 
-  .check,
-  .transfer-preview--check {
-    background: #193046;
-    color: inherit;
-  }
-  .check__field {
-    color: map-get($palette, white);
-
-    &:before {
-      border-color: #193046;
-      color: map-get($palette, smoke);
-    }
-  }
-  .check__field--num {
-    border-color: map-get($palette, slate);
-  }
-  .check__sig {
-    filter: invert(1) hue-rotate(180deg);
-  }
-
   pre.bg-smoke {
     background: $darkless;
     color: map-get($palette, white);

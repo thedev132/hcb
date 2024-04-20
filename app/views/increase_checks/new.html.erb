@@ -3,39 +3,22 @@
 <% title "Send a Check" %>
 <%= render "events/nav", selected: :transfers %>
 
-<article class="check--form flex align-start justify-center mt2">
-  <aside class="mr3">
-    <div class="check mb3 mt2" data-behavior="hover_tilt">
-      <div class="font-check text-right">1024</div>
-
-      <div class="flex w-100 justify-end mb1">
-        <div class="check__field check__field--date" data-label="Date"><%= Date.today.strftime("%b %d, %Y") %></div>
-      </div>
-
-      <div class="check__row">
-        <div class="check__field check__field--orderof" data-label="Pay to the order of" data-behavior="check_orderof"><%= @check.recipient_name || "　" %></div>
-        <div class="check__field check__field--num" data-label="$" data-behavior="check_amount"><%= @check.amount.nil? ? "　" : "%.2f" % (@check.amount / 100) %></div>
-      </div>
-
-      <div class="check__field check__field--dollars" data-label="Dollars" data-behavior="check_amount_words">　</div>
-
-      <div class="check__row items-start">
-        <div class="check__field check__field--memo truncate" data-label="Memo" data-behavior="check_memo"><%= @check.memo || "　" %></div>
-        <div class="check__sig"></div>
-      </div>
-
-      <p class="mb-0 -mt-4 font-check">
-        &#9286;
-        00000000000
-        &#9286;
-        123456789
-        &#9286;
-      </p>
-    </div>
+<article class="flex align-start justify-center mt2 flex-col lg:flex-row gap-8">
+  <aside class="min-w-0">
     <link href="https://fonts.googleapis.com/css?family=Damion" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Space+Mono" rel="stylesheet">
 
-    <%= render "callout", type: "warning", title: "Important info about checks", footer: :questions do %>
+    <%= render "increase_checks/paper_check",
+          check_number: "1024",
+          date: Date.today.strftime("%b %d, %Y"),
+          recipient_name: @check.recipient_name || "　",
+          amount: @check.amount || 0,
+          memo: @check.memo || "　",
+          account_details: @event.column_account_number,
+          editable: true,
+          class: "hidden xl:block" %>
+
+    <%= render "callout", type: "warning", title: "Important info about checks", footer: :questions, class: "mb-0" do %>
       <ul>
         <li>
           Need to reimburse someone? Checks are not intended for that purpose.

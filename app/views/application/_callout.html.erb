@@ -1,4 +1,4 @@
-<% icon ||= type == "error" ? "important" : (type == "success" ? "emoji" : "info") %> <!-- (success | info | warning | error) -->
+<% icon ||= type == "error" ? "important" : (type == "success" ? "emoji" : "info") %> <%# (success | info | warning | error) %>
 <% color ||= type == "error" ? "primary" : type %>
 
 <div class="<%= "card border b--#{color} #{"pb0" if local_assigns[:footer].present? } mt3 mb3 #{local_assigns[:class]}" %>">
