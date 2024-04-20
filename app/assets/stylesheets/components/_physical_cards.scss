@@ -63,13 +63,13 @@
 .emburse-card {
   background-color: #54d;
   background-image: radial-gradient(ellipse at top right, #867ae7, transparent);
-  background-image: #{image-url('emburse-swoosh-plastic.svg')},
+  background-image: url('emburse-swoosh-plastic.svg'),
     radial-gradient(ellipse at top right, #867ae7, transparent);
   &:before {
     content: '';
     width: 10rem;
     height: 3rem;
-    background: #{image-url('emburse-logo-plastic.svg')};
+    background: url('emburse-logo-plastic.svg');
     background-repeat: no-repeat !important;
     background-size: 100% !important;
     flex: 1 1 auto;
@@ -77,10 +77,10 @@
   }
 
   &.virtual {
-    background-image: #{image-url('emburse-swoosh-digital.svg')},
+    background-image: url('emburse-swoosh-digital.svg'),
       radial-gradient(ellipse at top right, #867ae7, transparent);
     &:before {
-      background: #{image-url('emburse-logo-digital.svg')};
+      background: url('emburse-logo-digital.svg');
     }
   }
 
@@ -91,7 +91,7 @@
     top: 35%;
     height: 3.5rem;
     width: 3.5rem;
-    background: #{image-url('emburse-chip.svg')} no-repeat;
+    background: url('emburse-chip.svg') no-repeat;
     background-size: contain;
     // transform: translateZ(10px);
   }
@@ -162,7 +162,7 @@
     top: 35%;
     height: 3.5rem;
     width: 3.5rem;
-    background: #{image-url('emburse-chip.svg')} no-repeat;
+    background: url('emburse-chip.svg') no-repeat;
     background-size: contain;
     mix-blend-mode: add;
   }

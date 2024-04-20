@@ -5,6 +5,6 @@ module.exports = {
     '@csstools/postcss-sass': {},
     tailwindcss: {},
     autoprefixer: {},
-    cssnano: {},
+    cssnano: process.env.NODE_ENV !== 'development' ? {} : false,
   },
 }

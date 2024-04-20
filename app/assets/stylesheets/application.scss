@@ -8,7 +8,7 @@ $mono: 'SFMono-Regular', 'Roboto Mono', Menlo, Consolas, monospace;
 
 :root {
   @each $name, $value in $palette {
-    --#{$name}: #{$value};
+    --#{"" + $name}: #{$value};
   }
 }
 

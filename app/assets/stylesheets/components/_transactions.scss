@@ -42,7 +42,7 @@
       right: 0;
       bottom: 0;
       opacity: 0.1;
-      background-image: #{image-url('frc-background.png')};
+      background-image: url('frc-background.png');
       background-size: 24em;
       background-position: center;
       background-attachment: fixed;
