@@ -14,7 +14,7 @@ class IncreaseCheckPolicy < ApplicationPolicy
   end
 
   def reject?
-    user&.admin?
+    user_who_can_transfer?
   end
 
   private
