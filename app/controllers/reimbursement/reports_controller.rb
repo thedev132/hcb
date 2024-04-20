@@ -85,6 +85,11 @@ module Reimbursement
 
       if @report.update(update_reimbursement_report_params)
         flash[:success] = "Report successfully updated."
+        if @report.event_id_previously_changed?
+          PaperTrail.request(whodunnit: nil) do
+            @report.expenses.update(aasm_state: :pending)
+          end
+        end
         redirect_to @report
       else
         render :edit, status: :unprocessable_entity

@@ -37,7 +37,7 @@ module Reimbursement
       authorize @expense
 
       if expense_params[:reimbursement_report_id] && @expense.reimbursement_report_id != expense_params[:reimbursement_report_id]
-        @expense.assign_attributes(expense_number: nil)
+        @expense.assign_attributes(expense_number: nil, aasm_state: :pending)
       end
       @expense.assign_attributes(expense_params.except(:event_id))
 
@@ -49,7 +49,7 @@ module Reimbursement
         authorize report
         ActiveRecord::Base.transaction do
           report.save!
-          @expense.update!(reimbursement_report_id: report.id, expense_number: nil)
+          @expense.update!(reimbursement_report_id: report.id, expense_number: nil, aasm_state: :pending)
         end
       end
 

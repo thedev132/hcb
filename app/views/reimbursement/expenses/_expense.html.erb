@@ -34,7 +34,7 @@
           <div style="flex-grow: 1" data-expense-form-target="memo" class="bold <%= "muted" unless expense.memo.presence %>">
             <%= expense.memo.presence || "Untitled Expense" %>
           </div>
-          <% if latest_state_change %>
+          <% if latest_state_change && latest_state_change.changeset["reimbursement_report_id"]&.first.nil? && latest_state_change.whodunnit %>
             <% if latest_state_change.changeset["aasm_state"].second == "approved" %>
               Approved by
             <% else %>

@@ -1,7 +1,7 @@
 <%= form_with(model: @report, class: "mt1 mb1", style: "max-width: 600px;", local: true) do |form| %>
   <%= form.label :report_name, "Report Name", class: "bold" %>
   <%= form.text_field :report_name, placeholder: "Chicago Trip Expenses", required: true %>
-  <% if organizer_signed_in? %>
+  <% if organizer_signed_in? && (@report.submitted? || @report.draft?) %>
     <%= form.label :maximum_amount, "Maximum Reimbursable Value (Optional)", class: "mt2 bold" %>
     <div class="field">
       <div class="flex items-center">
@@ -10,18 +10,20 @@
       </div>
     </div>
   <% end %>
-  <div class="field event-select-target">
-    <%= form.label :event_id, "Organization", class: "mt2 bold" %>
-    <%= form.select(:event_id,
-        current_user.admin? ?
-          Event.not_demo_mode.reorder(Event::CUSTOM_SORT).map { |event| [event.name, event.id] } :
-          ([@report.event] + current_user.events.not_hidden.filter_demo_mode(false)).uniq.map { |event| [event.name, event.id] },
-        { prompt: "Select an event…", required: true }) %>
-    <% unless admin_signed_in? %>
-      <span class="muted">You can transfer a report to any organization you're a part of.</span>
-    <% end %>
-  </div>
-  <% if organizer_signed_in? %>
+  <% if @report.submitted? || @report.draft? %>
+    <div class="field event-select-target">
+      <%= form.label :event_id, "Organization", class: "mt2 bold" %>
+      <%= form.select(:event_id,
+          current_user.admin? ?
+            Event.not_demo_mode.reorder(Event::CUSTOM_SORT).map { |event| [event.name, event.id] } :
+            ([@report.event] + current_user.events.not_hidden.filter_demo_mode(false)).uniq.map { |event| [event.name, event.id] },
+          { prompt: "Select an event…", required: true }) %>
+      <% unless admin_signed_in? %>
+        <span class="muted">You can transfer a report to any organization you're a part of.</span>
+      <% end %>
+    </div>
+  <% end %>
+  <% if organizer_signed_in? && (@report.submitted? || @report.draft?) %>
    <div class="field">
       <%= form.label :reviewer_id, "Assigned Reviewer", class: "mt2 bold" %>
       <%= form.collection_select :reviewer_id, @report.event.users, :id, :name, include_blank: "Anyone" %>
