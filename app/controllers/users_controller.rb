@@ -2,7 +2,7 @@
 
 class UsersController < ApplicationController
   skip_before_action :signed_in_user, only: [:auth, :auth_submit, :choose_login_preference, :set_login_preference, :webauthn_options, :webauthn_auth, :login_code, :exchange_login_code]
-  skip_before_action :redirect_to_onboarding, only: [:edit, :update, :logout]
+  skip_before_action :redirect_to_onboarding, only: [:edit, :update, :logout, :unimpersonate]
   skip_after_action :verify_authorized, except: [:edit, :update]
   before_action :set_shown_private_feature_previews, only: [:edit, :edit_featurepreviews, :edit_security, :edit_admin]
   before_action :migrate_return_to, only: [:auth, :auth_submit, :choose_login_preference, :login_code, :exchange_login_code, :webauthn_auth]
