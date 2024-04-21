@@ -307,8 +307,6 @@ Rails.application.routes.draw do
   resources :emburse_cards, except: %i[new create]
 
   resources :checks, only: [:show] do
-    get "view_scan"
-
     resources :comments
   end
 

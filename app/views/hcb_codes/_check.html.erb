@@ -77,11 +77,4 @@
 
     <%= render "hcb_codes/tags", hcb_code: @hcb_code, event: (@event || @hcb_code.event) %>
   </section>
-
-  <section class="card__banner card__darker border-top overflow-hidden">
-    <%= link_to "View scan",
-        check_view_scan_path(@hcb_code.check),
-        target: :_blank,
-        class: "btn bg-info" if @hcb_code.check.lob_url.present? %>
-  </section>
 </article>
