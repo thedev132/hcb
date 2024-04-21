@@ -51,14 +51,12 @@
         account_number_event_path(@event),
         tooltip: "Receive payouts from GoFundMe, Shopify, Venmo, and more",
         icon: "bank-account",
-        selected: local_assigns[:selected] == :account_number,
-        disabled: !organizer_signed_in? if Flipper.enabled?(:incoming_ach_payments_2023_02_17, @event) && policy(@event).account_number? %>
+        selected: local_assigns[:selected] == :account_number if Flipper.enabled?(:incoming_ach_payments_2023_02_17, @event) && policy(@event).account_number? && organizer_signed_in? %>
       <%= dock_item "Check deposit",
         event_check_deposits_path(@event),
         tooltip: "Deposit checks",
-        disabled: !organizer_signed_in?,
         icon: "cheque",
-        selected: local_assigns[:selected] == :deposit_check if Flipper.enabled?(:check_deposits_2023_04_17, @event) %>
+        selected: local_assigns[:selected] == :deposit_check if Flipper.enabled?(:check_deposits_2023_04_17, @event) && organizer_signed_in? %>
       <h4 class="mb0 h5 muted">Spend</h4>
       <hr>
       <%= dock_item "Cards",
@@ -100,8 +98,8 @@
         event_g_suite_overview_path(event_id: @event.slug),
         tooltip: (@event.hardware_grant? ? "Not available for Winter Hardware Wonderland accounts" : @event.outernet_guild? ? "Not available for Outernet Guilds" : @event.demo_mode? ? "Not available for organizations in Playground mode" : @event.g_suites.any? ? "Manage domain Google Workspace" : Flipper.enabled?(:google_workspace, @event) ? "Set up domain Google Workspace" : "Register for Google Workspace Waitlist"),
         icon: "google",
-        disabled: @event.hardware_grant? || @event.demo_mode? || !organizer_signed_in?,
-        selected: local_assigns[:selected] == :google_workspace %>
+        disabled: @event.hardware_grant? || @event.demo_mode?,
+        selected: local_assigns[:selected] == :google_workspace if organizer_signed_in? %>
       <%= dock_item "Documents",
         event_documentation_path(event_id: @event.slug),
         tooltip: "View legal documents, financial statements, and FAQ",
@@ -112,7 +110,7 @@
         tooltip: "Edit organization settings",
         icon: "settings",
         disabled: !policy(@event).edit?,
-        selected: local_assigns[:selected] == :settings %>
+        selected: local_assigns[:selected] == :settings if organizer_signed_in? %>
     <% end %>
   </nav>
   <nav class="dock dock--mobile">
