@@ -318,6 +318,28 @@ summary {
   animation-delay: 50s;
 }
 
+.card.hash-highlight {
+  animation: highlight 2s;
+  border: 1px solid;
+  border-color: rgba(map-get($palette, warning), 0.25);
+  
+  .card__banner {
+    border-color: inherit;
+  }
+}
+
+@keyframes highlight {
+  from {
+    border: 1px solid map-get($palette, warning);
+    background-color: map-get($palette, warning);
+  }
+  to {
+    border: 1px solid rgba(map-get($palette, warning), 0.25);
+    background-color: unset;
+  }
+}
+
+
 // Make mobile views nice. Full-bleed separator lines
 @media screen and (max-width: 32em) {
 

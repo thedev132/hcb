@@ -95,65 +95,23 @@
     <% end %>
 
     <% if @event&.demo_mode? && !@no_app_shell && !@no_transparency_header %>
-      <div class="w-full dev-banner dev-banner--info rounded-b">
-        <div class="flex flex-col container container--md center pb2" style="max-width: unset;">
-          <p class="h1 bold center m0">Playground Mode</p>
-          <div class="flex g3 banner-content">
-            <%= link_to event_demo_mode_request_meeting_path(@event), method: :post, class: "btn bg-primary shrink-none nowrap #{"disabled" unless policy(@event).demo_mode_request_meeting? }", data: { tour_step: "activate_account" } do %>
-              <%= inline_icon "welcome" %>Request Activation
-            <% end %>
-            <div class="center h5 playground-desc" style="text-wrap: pretty;">
-              <% meeting_req = @event.demo_mode_request_meeting_at %>
-              <p class="m0">
-                <% if meeting_req %>
-                  You requested activation on <%= format_date meeting_req %>
-                  (<%= distance_of_time_in_words_to_now meeting_req %> ago).
-                  We are prioritizing organizations ran by Hack Clubbers, teens,
-                  FIRST teams, as well as groups with an annual budget greater
-                  than $50k. If you fall outside of these categories, you will
-                  hear back from us by May 1st, 2024.
-                <% else %>
-                  While in Playground mode, explore the dashboard with mock data, and invite your team.
-                  To utilize financial features, request activation!
-                <% end %>
-              </p>
-            </div>
-            <button
-              id="mock-data-toggle"
-              data-mock-data-status="<%= show_mock_data? %>"
-              class="btn btn-small shrink-none nowrap">
-              <%= inline_icon "view" %>
-              <%= show_mock_data? ? "Hide" : "Show" %> Mock Data
-            </button>
-            <script>
-              document.getElementById("mock-data-toggle").addEventListener("click", ({ target }) => {
-                const currentStatus = target.dataset.mockDataStatus === "true" ? true : false;
-                const url = new URL(window.location.href);
-                url.searchParams.set("show_mock_data", !currentStatus);
-                window.location.href = url.toString();
-              });
-            </script>
-          </div>
+      <%= link_to "#{event_url @event}#playground-callout", class: "w-full dev-banner dev-banner--info rounded-b no-underline", style: "color: unset" do %>
+        <div class="flex flex-col md:flex-row gap-y-2 gap-x-6 py-6 items-center justify-center">
+          <p class="font-semibold text-xl m0">Playground Mode</p>
+          <button id="mock-data-toggle" data-mock-data-status="<%= show_mock_data? %>" class="btn btn-small w-fit shrink-none nowrap">
+            <%= inline_icon "view" %>
+            <%= show_mock_data? ? "Hide" : "Show" %> Mock Data
+          </button>
+          <script>
+            document.getElementById("mock-data-toggle").addEventListener("click", ({ target }) => {
+              const currentStatus = target.dataset.mockDataStatus === "true" ? true : false;
+              const url = new URL(window.location.href);
+              url.searchParams.set("show_mock_data", !currentStatus);
+              window.location.href = url.toString();
+            });
+          </script>
         </div>
-      </div>
-      <section class="modal modal--scroll bg-snow" data-behavior="modal" role="dialog" id="demo_mode">
-        <%= modal_header "Playground Mode" %>
-        <% if organizer_signed_in? %>
-          <p>
-            Your account is in <strong>Playground Mode</strong>. You can sign in and poke around, but many features are disabled. Once you're ready to activate your account, you can schedule a call with the HCB team.
-          </p>
-          <% if @event.demo_mode_request_meeting_at.blank? %>
-            <%= link_to event_demo_mode_request_meeting_path(@event), method: :post, class: "btn btn-success" do %>
-              Request activation
-            <% end %>
-            <p class="muted">After requesting, we'll be in touch within 24 hours on business days.</p>
-          <% else %>
-            <p class="muted">You requested to activate your account around <%= local_time_ago @event.demo_mode_request_meeting_at %>.</p>
-          <% end %>
-        <% else %>
-          <p>This is a <strong>demo account</strong>. Someone created this account about <%= local_time_ago @event.created_at %> to take it for a test drive, but hasn't fully activated their account yet.</p>
-        <% end %>
-      </section>
+      <% end %>
     <% end %>
 
     <%# LET THERE BE SNOW %>
