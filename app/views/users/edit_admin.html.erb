@@ -53,6 +53,14 @@
     </section>
     <% if admin_signed_in? %>
       <section>
+        <% if @user.transactions_missing_receipt.any? %>
+          <h2>Missing Receipts</h2>
+          <table>
+            <% @user.transactions_missing_receipt.each do |tx| %>
+              <%= render "canonical_transactions/canonical_transaction", ct: tx %>
+            <% end %>
+          </table>
+        <% end %>
         <% if @user.events.present? %>
           <h2>Organizations</h2>
           <ul>
