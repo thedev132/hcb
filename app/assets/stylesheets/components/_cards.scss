@@ -42,16 +42,6 @@
       background-image: linear-gradient(rgba(37, 36, 41, 0.5) 0%, rgba(37, 36, 41, 0.85) 75%), var(--bg-image);
     }
   }
-  
-  &:hover,
-  &:focus {
-    .on-hover {
-      display: block;
-    }
-  }
-  .on-hover {
-    display: none;
-  }
 }
 
 .draggable-mirror {
