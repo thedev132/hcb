@@ -3,8 +3,8 @@
 <%= render "events/nav", selected: :reimbursements unless @use_user_nav %>
 <%= render "users/nav", selected: :reimbursements if @use_user_nav %>
 
-<div class="mt4">
-  <h3 class="mt2 mb1 muted flex" style="font-weight: 400; gap: 4px;">
+<div class="md:mt-12">
+  <h3 class="mt2 mb1 muted flex items-start" style="font-weight: 400; gap: 4px;">
     <span style="flex-grow: 1;">
       <%= user_mention @user, { class: "tooltipped--s align-top" } %>
       <%= "will be reimbursed " if @report.reimbursement_approved? %>
@@ -22,7 +22,7 @@
     <% end %>
     <span class="ml0 badge bg-<%= @report.status_color %>"><%= @report.status_text %></span>
   </h3>
-  <h2 class="heading mt0 mb1 flex justify-start">
+  <h2 class="heading mt0 mb1 flex justify-start flex-row">
     <span><%= @report.name %></span>
     <% if !@report.closed? %>
       <%= link_to "#", class: "ml0 info text-decoration-none muted tooltipped tooltipped--e", data: { behavior: "modal_trigger", modal: "edit" }, style: "padding: 0px; line-height: 0px; align-self: center;", "aria-label": "Edit this report's properties." do %>
@@ -77,7 +77,7 @@
 <% end %>
 
 <% if @report.draft? %>
-  <section class="flex items-start justify-center mt2 mb2" style="gap: 16px; position: relative;">
+  <section class="hidden md:flex items-start justify-center mt2 mb2" style="gap: 16px; position: relative;">
     <article class="card w-100">
       <p class="mt0">
         Paid for something out of pocket? Get reimbursed by uploading your receipts.
@@ -108,7 +108,7 @@
     </article>
   </section>
 
-  <h2 class="flex items-center">
+  <h2 class="hidden md:flex items-center">
     <span style="flex-grow: 1">Expenses</span>
   </h2>
 <% elsif @report.submitted? && !organizer_signed_in? %>
