@@ -11,19 +11,21 @@
     <% if defined? @event %>
       <fieldset data-behavior="reimbursement_report_create_form_type_selection" class="mt2">
         <legend class="bold pb2">Who is this reimbursement for?</legend>
-        <div class="field field--options trio">
+        <div class="field field--options flex">
           <%= form.radio_button :for, "myself", checked: true %>
-          <%= form.label :for, value: "myself" do %>
+          <%= form.label :for, value: "myself", class: "flex-1" do %>
             <%= inline_icon "like", size: 28 %>
             <strong>Myself</strong>
           <% end %>
-          <%= form.radio_button :for, "organizer" %>
-          <%= form.label :for, value: "organizer" do %>
-            <%= inline_icon "friend", size: 28 %>
-            <strong>Another Organizer</strong>
+          <% if @event.users.excluding(current_user).any? %>
+            <%= form.radio_button :for, "organizer" %>
+            <%= form.label :for, value: "organizer", class: "flex-1" do %>
+              <%= inline_icon "friend", size: 28 %>
+              <strong>Another Organizer</strong>
+            <% end %>
           <% end %>
           <%= form.radio_button :for, "external" %>
-          <%= form.label :for, value: "external" do %>
+          <%= form.label :for, value: "external", class: "flex-1" do %>
             <%= inline_icon "person", size: 28 %>
             <strong>External Contributor</strong>
           <% end %>
