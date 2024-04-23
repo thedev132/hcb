@@ -500,3 +500,9 @@ $(document).on('keydown', function (e) {
     return (hankIndex = 0)
   }
 })
+
+// Disable scrolling on <input type="number" /> elements
+$(document).on("wheel", "input[type=number]", e => {
+  e.preventDefault()
+  e.target.blur()
+})
