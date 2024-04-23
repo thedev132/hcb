@@ -1,4 +1,4 @@
-<%= form_with model: user, data: { turbo: false } do |form| %>
+<%= form_with model: user do |form| %>
   <fieldset>
     <legend class="heading h3 pb2">How would you like to reimbursed?</legend>
     <div class="field field--options">
@@ -16,6 +16,11 @@
       <% end %>
     </div>
   </fieldset>
+  <% if user.payout_method.errors.any? %>
+    <p class="error">
+      <%= user.payout_method.errors.full_messages.to_sentence %>.
+    </p>
+  <% end %>
   <section data-behavior="check_payout_method_inputs" class="<%= "display-none-not-important" unless user.payout_method.instance_of?(User::PayoutMethod::Check) %>">
     <%= form.fields_for :payout_method, user.payout_method.instance_of?(User::PayoutMethod::Check) ? user.payout_method : User::PayoutMethod::Check.new do |form| %>
       <div class="field">
@@ -48,20 +53,64 @@
       </div>
     <% end %>
   </section>
-  <section data-behavior="ach_transfer_payout_method_inputs" class="<%= "display-none-not-important" unless user.payout_method.instance_of?(User::PayoutMethod::AchTransfer) %>">
+  <% if user.payout_method.instance_of?(User::PayoutMethod::AchTransfer) %>
+    <% errored = !user.payout_method.valid? %>
+    <% r_no = user.payout_method.routing_number %>
+    <% obfuscated_routing_number = "•" * [r_no.length - 4, 0].max + r_no[[-4, -1 * r_no.length].max..] %>
+    <% a_no = user.payout_method.account_number %>
+    <% obfuscated_account_number = "•" * [a_no.length - 4, 0].max + a_no[[-4, -1 * a_no.length].max..] %>
+  <% else %>
+    <% errored = false %>
+    <% r_no = "" %>
+    <% obfuscated_routing_number = "" %>
+    <% a_no = "" %>
+    <% obfuscated_account_number = "" %>
+  <% end %>
+  <section
+    data-behavior="ach_transfer_payout_method_inputs"
+    class="<%= "display-none-not-important" unless user.payout_method.instance_of?(User::PayoutMethod::AchTransfer) %>"
+    x-data="
+    {
+      routingNumber: '<%= errored ? r_no : obfuscated_routing_number %>',
+      accountNumber: '<%= errored ? a_no : obfuscated_account_number %>',
+      editing: <%= errored %>,
+      toggle() {
+        if(!this.editing) {
+          this.routingNumber = '';
+          this.accountNumber = '';
+          this.editing = true;
+        } else if (this.routingNumber == '' && this.accountNumber == '') {
+          this.editing = false;
+          this.routingNumber = '<%= errored ? "" : obfuscated_routing_number %>';
+          this.accountNumber = '<%= errored ? "" : obfuscated_account_number %>';
+        }
+      }
+    }">
     <%= form.fields_for :payout_method, user.payout_method.instance_of?(User::PayoutMethod::AchTransfer) ? user.payout_method : User::PayoutMethod::AchTransfer.new do |form| %>
       <div class="field">
         <%= form.label :routing_number, "Bank routing number" %>
-        <%= form.text_field :routing_number, placeholder: "123456789", class: "fs-mask" %>
+        <%= form.text_field :routing_number,
+                            placeholder: "123456789",
+                            class: "fs-mask",
+                            "@focus": "toggle()",
+                            "@blur": "toggle()",
+                            "x-model": "routingNumber",
+                            value: "" %>
       </div>
 
       <div class="field">
         <%= form.label :account_number, "Bank account number" %>
-        <%= form.text_field :account_number, placeholder: "0913338883", class: "fs-mask" %>
+        <%= form.text_field :account_number,
+                            placeholder: "0913338883",
+                            class: "fs-mask",
+                            "@focus": "toggle()",
+                            "@blur": "toggle()",
+                            "x-model": "accountNumber",
+                            value: "" %>
       </div>
 
       <div class="actions inline-block mt1">
-        <%= form.submit "Save" %>
+        <%= form.submit "Save", 'x-show': "editing", 'x-transition.duration.500ms': "" %>
       </div>
     <% end %>
   </section>
