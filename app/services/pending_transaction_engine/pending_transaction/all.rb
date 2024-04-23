@@ -3,10 +3,12 @@
 module PendingTransactionEngine
   module PendingTransaction
     class All
-      def initialize(event_id:, search: nil, tag_id: nil)
+      def initialize(event_id:, search: nil, tag_id: nil, minimum_amount: nil, maximum_amount: nil)
         @event_id = event_id
         @search = search
         @tag_id = tag_id
+        @minimum_amount = minimum_amount
+        @maximum_amount = maximum_amount
       end
 
       def run
@@ -39,6 +41,14 @@ module PendingTransactionEngine
                 cpts.joins("LEFT JOIN hcb_codes ON hcb_codes.hcb_code = canonical_pending_transactions.hcb_code")
                     .joins("LEFT JOIN hcb_codes_tags ON hcb_codes_tags.hcb_code_id = hcb_codes.id")
                     .where("hcb_codes_tags.tag_id = ?", @tag_id)
+            end
+
+            if @minimum_amount
+              cpts = cpts.where("ABS(canonical_pending_transactions.amount_cents) >= #{@minimum_amount.cents}")
+            end
+
+            if @maximum_amount
+              cpts = cpts.where("ABS(canonical_pending_transactions.amount_cents) <= #{@maximum_amount.cents}")
             end
 
             if event.can_front_balance?
