@@ -16,7 +16,7 @@
       <% end %>
     </div>
   </fieldset>
-  <% if user.payout_method.errors.any? %>
+  <% if user.payout_method&.errors&.any? %>
     <p class="error">
       <%= user.payout_method.errors.full_messages.to_sentence %>.
     </p>
