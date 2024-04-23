@@ -2,7 +2,7 @@
 <link href="https://fonts.googleapis.com/css?family=Space+Mono" rel="stylesheet">
 
 <%= render "increase_checks/paper_check",
-      check_number: @hcb_code.check.check_number,
+      check_number: @hcb_code.check.check_number&.to_s,
       date: (@hcb_code.check.send_date || @hcb_code.check.created_at).strftime("%b %d, %Y"),
       recipient_name: @hcb_code.check.lob_address.name,
       amount: @hcb_code.check.amount,
