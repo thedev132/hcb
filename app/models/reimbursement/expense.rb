@@ -44,7 +44,7 @@ module Reimbursement
 
     before_validation do
       unless self.expense_number
-        self.expense_number = self.report.expenses.with_deleted.count + 1
+        self.expense_number = (self.report.expenses.with_deleted.pluck(:expense_number).max || 0) + 1
       end
     end
 
