@@ -43,4 +43,12 @@ class ReimbursementMailer < ApplicationMailer
     mail to: @report.user.email_address_with_name, subject: "An update on your reimbursement for #{@expense.memo}", from: hcb_email_with_name_of(@report.event)
   end
 
+  def ach_failed
+    @payout_holding = params[:reimbursement_payout_holding]
+    @report = @payout_holding.report
+    @reason = params[:reason]
+
+    mail subject: "[Reimbursements] ACH transfer for #{@report.name} failed to send", to: @report.user.email_address_with_name
+  end
+
 end

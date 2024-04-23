@@ -119,7 +119,12 @@ class AchTransfer < ApplicationRecord
 
     event :mark_failed do
       after do |reason: nil|
-        AchTransferMailer.with(ach_transfer: self, reason:).notify_failed.deliver_later
+        if reimbursement_payout_holding.present?
+          ReimbursementMailer.with(reimbursement_payout_holding:, reason:).ach_failed.deliver_later
+          reimbursement_payout_holding.mark_failed!
+        else
+          AchTransferMailer.with(ach_transfer: self, reason:).notify_failed.deliver_later
+        end
       end
       transitions from: [:in_transit, :deposited], to: :failed
     end

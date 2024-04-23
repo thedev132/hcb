@@ -39,17 +39,22 @@ module Reimbursement
       state :in_transit
       state :settled
       state :sent
+      state :failed
 
       event :mark_in_transit do
         transitions from: :pending, to: :in_transit
       end
 
       event :mark_settled do
-        transitions from: :in_transit, to: :settled
+        transitions from: [:in_transit, :failed], to: :settled
       end
 
       event :mark_sent do
         transitions from: :settled, to: :sent
+      end
+
+      event :mark_failed do
+        transitions from: :sent, to: :failed
       end
     end
 
