@@ -514,6 +514,7 @@ class AdminController < ApplicationController
     @count = relation.count
     @reports = relation.page(@page).per(@per).order(
       Arel.sql("aasm_state = 'reimbursement_requested' DESC"),
+      Arel.sql("aasm_state = 'draft' ASC"),
       "reimbursement_reports.created_at desc"
     )
 

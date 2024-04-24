@@ -130,6 +130,13 @@ module Reimbursement
       aasm_state.humanize.titleize
     end
 
+    def admin_status_text
+      return "Review Required" if reimbursement_requested?
+      return "Organizers Reviewing" if submitted?
+
+      status_text
+    end
+
     def status_color
       return "muted" if draft?
       return "info" if submitted?
