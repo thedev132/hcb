@@ -1,7 +1,13 @@
 <% disabled = !policy(@event).create_transfer? %>
 
-<%= form_with(model: @ach_transfer, local: true, url: event_ach_transfers_path(@event), data: { controller: "form input" }) do |form| %>
+<%= form_with(model: @ach_transfer, local: true, url: event_ach_transfers_path(@event), data: { controller: "form input" }, html: { "x-data" => "{ payment_recipient: null, editing: false }" }) do |form| %>
   <%= form_errors(@ach_transfer, "ACH transfer", "We couldn't send this") %>
+
+  <%= form.hidden_field :payment_recipient_id, ":value" => "payment_recipient?.id" %>
+
+  <% if Rails.env.development? %>
+    <pre x-text="'Debug info:\n\n' + JSON.stringify(payment_recipient || {}, null, 2)" class="fixed left-2 bottom-2 min-w-60 hidden lg:block"></pre>
+  <% end %>
 
   <div class="field" id="ach_transfer_name_field" data-controller="menu text-filter" data-menu-content-id-value="payment-recipient-search" data-menu-append-to-value="#ach_transfer_name_field" data-text-filter-empty-class="display-none">
     <%= form.label :recipient_name %>
@@ -23,7 +29,9 @@
                             input->text-filter#query
                           ",
                           menu_target: "toggle",
-                        } %>
+                        },
+                        "x-ref" => "name_input",
+                        "@input" => "payment_recipient = null; editing = false" %>
     <span class="muted">This is only for your reference— it doesn't need to match the name on the recipient's bank account.</span>
     <% if organizer_signed_in? && Flipper.enabled?(:payment_recipients_2024_01_10, @event) && @event.payment_recipients.any? %>
       <div class="menu__content menu__content--2" data-menu-target="content" role="listbox" style="width: 24rem">
@@ -32,13 +40,15 @@
             <button
               type="button"
               class="menu__action flex justify-between flex-auto mr1"
-              data-action="form#fill input#focus menu#close"
-              data-form-values-param="<%= {
-                                            ach_transfer_recipient_name: payment_recipient.name,
-                                            ach_transfer_bank_name: payment_recipient.bank_name,
-                                            ach_transfer_routing_number: payment_recipient.routing_number,
-                                            ach_transfer_account_number: payment_recipient.account_number,
-                                          }.to_json %>">
+              data-action="input#focus menu#close"
+              data-recipient="<%= {
+                id: payment_recipient.id,
+                name: payment_recipient.name,
+                masked_account_number: payment_recipient.masked_account_number,
+                bank_name: payment_recipient.bank_name,
+                routing_number: payment_recipient.routing_number,
+              }.to_json %>"
+              @click="payment_recipient = JSON.parse($el.dataset.recipient); $refs.name_input.value = payment_recipient.name; editing = false">
               <span class="truncate"><%= payment_recipient.name %></span>
               <span class="muted ml1">••••<%= payment_recipient.account_number.slice(-4, 4) %></span>
             </button>
@@ -57,26 +67,44 @@
     <span class="muted">This is to help HCB keep record of our transactions. HCB team will see this.</span>
   </div>
 
-  <div class="field">
-    <%= form.label :bank_name %>
-    <%= form.text_field :bank_name, placeholder: "Name of the bank", required: true, disabled: %>
-  </div>
+  <h3 class="mb-2">Payment details</h3>
+  <div class="card mb-4 relative">
+    <template x-if="!payment_recipient || editing">
+      <div>
+        <div class="field">
+          <%= form.label :bank_name %>
+          <%= form.text_field :bank_name, placeholder: "Name of the bank", required: true, disabled:, ":value" => "payment_recipient?.bank_name" %>
+        </div>
 
-  <div
-    class="field"
-    <% if Flipper.enabled?(:routing_number_validation, current_user) %>
-      data-controller="external-validation"
-      data-external-validation-url-value="<%= validate_routing_number_ach_transfers_path %>"
-    <% end %>>
+        <div
+          class="field"
+          <% if Flipper.enabled?(:routing_number_validation, current_user) %>
+            data-controller="external-validation"
+            data-external-validation-url-value="<%= validate_routing_number_ach_transfers_path %>"
+          <% end %>>
 
-    <%= form.label :routing_number %>
-    <%= form.text_field :routing_number, placeholder: "123456789", required: true, disabled:, class: "fs-mask", data: { action: "input->external-validation#validate" } %>
-    <span class="muted" data-external-validation-target="hint"></span>
-  </div>
+          <%= form.label :routing_number %>
+          <%= form.text_field :routing_number, placeholder: "123456789", required: true, disabled:, class: "fs-mask", data: { action: "input->external-validation#validate" }, ":value" => "payment_recipient?.routing_number" %>
+          <span class="muted" data-external-validation-target="hint"></span>
+        </div>
 
-  <div class="field">
-    <%= form.label :account_number %>
-    <%= form.text_field :account_number, placeholder: "0913338883", required: true, disabled:, class: "fs-mask" %>
+        <div class="field">
+          <%= form.label :account_number %>
+          <%= form.text_field :account_number, placeholder: "0913338883", required: true, disabled:, class: "fs-mask" %>
+        </div>
+      </div>
+    </template>
+    <template x-if="payment_recipient && !editing">
+      <div>
+        <button type="button" class="text-muted cursor-pointer select-none tooltipped tooltipped--w bg-transparent border-none absolute top-3 right-3" aria-label="Edit payment details" @click="editing = true; $nextTick(() => document.getElementById('ach_transfer_bank_name').focus())">
+          <%= inline_icon "pen", size: 18 %>
+        </button>
+
+        <div class="field"><label>Bank name</label>     <input disabled class="!text-muted bg-transparent" type="text" :value="payment_recipient.bank_name"></div>
+        <div class="field"><label>Routing number</label><input disabled class="!text-muted bg-transparent" type="text" :value="payment_recipient.routing_number"></div>
+        <div class="field"><label>Account number</label><input disabled class="!text-muted bg-transparent" type="text" :value="payment_recipient.masked_account_number"></div>
+      </div>                                                                                             
+    </template>
   </div>
 
   <%= form.label :amount_money, "Amount" %>

@@ -34,4 +34,8 @@ class PaymentRecipient < ApplicationRecord
 
   scope :order_by_last_used, -> { includes(:ach_transfers).order("ach_transfers.created_at DESC") }
 
+  def masked_account_number
+    account_number.slice(-4, 4).rjust(account_number.length, "•")
+  end
+
 end
