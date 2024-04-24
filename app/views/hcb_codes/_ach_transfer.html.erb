@@ -96,7 +96,7 @@
       <% if @hcb_code.ach_transfer.reimbursement_payout_holding.present? %>
         <p>
           <strong>Reimbursing</strong>
-         <%= link_to @hcb_code.ach_transfer.reimbursement_payout_holding.report.name, @hcb_code.ach_transfer.reimbursement_payout_holding.report %>
+         <%= link_to @hcb_code.ach_transfer.reimbursement_payout_holding.report.name, @hcb_code.ach_transfer.reimbursement_payout_holding.report, data: { turbo_frame: "_top" } %>
         </p>
       <% end %>
 
