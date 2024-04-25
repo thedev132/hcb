@@ -278,6 +278,14 @@ class Event < ApplicationRecord
   has_many :canonical_event_mappings, -> { on_main_ledger }
   has_many :canonical_transactions, through: :canonical_event_mappings
 
+  scope :engaged, -> {
+    Event.where(id: Event.joins(:canonical_transactions)
+        .where("canonical_transactions.date >= ?", 6.months.ago)
+        .distinct)
+  }
+
+  scope :dormant, -> { where.not(id: Event.engaged) }
+
   has_many :fees, through: :canonical_event_mappings
   has_many :bank_fees
 
@@ -654,6 +662,14 @@ class Event < ApplicationRecord
     return 1 if balance_available_v2_cents > 50_000_00
 
     2
+  end
+
+  def engaged?
+    canonical_transactions.where("date >= ?", 6.months.ago).any?
+  end
+
+  def dormant?
+    !engaged?
   end
 
   private

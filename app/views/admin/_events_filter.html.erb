@@ -96,3 +96,8 @@
   Sort By
   <%= form.select :sort_by, [["Balance Ascending", "balance_asc"], ["Balance Descending", "balance_desc"], ["Date Descending", "date_desc"]], selected: @sort_by %>
 <% end %>
+|
+<%= form.label :engaged do %>
+  <%= form.check_box :engaged, checked: @engaged %>
+  Engaged Only
+<% end %>

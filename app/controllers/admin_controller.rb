@@ -1185,6 +1185,7 @@ class AdminController < ApplicationController
   def filtered_events(events: Event.all)
     @q = params[:q].present? ? params[:q] : nil
     @demo_mode = params[:demo_mode].present? ? params[:demo_mode] : "full" # full accounts only by default
+    @engaged = params[:engaged] == "1" # unchecked by default
     @pending = params[:pending] == "0" ? nil : true # checked by default
     @unapproved = params[:unapproved] == "0" ? nil : true # checked by default
     @approved = params[:approved] == "0" ? nil : true # checked by default
@@ -1215,6 +1216,7 @@ class AdminController < ApplicationController
     # Omit orgs if they were created after the end date
     relation = relation.where("events.created_at <= ?", @end_date) if @end_date
     relation = relation.search_name(@q) if @q
+    relation = relation.engaged if @engaged
     relation = relation.transparent if @transparent == "transparent"
     relation = relation.not_transparent if @transparent == "not_transparent"
     relation = relation.omitted if @omitted == "omitted"
