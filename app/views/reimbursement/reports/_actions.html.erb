@@ -175,7 +175,7 @@
     </div>
   <% end %>
   <% if report.expenses.any? %>
-    <div class="card mt2" id="summary">
+    <div class="card mt2 <%= "closed" if report.closed? %>" id="summary">
       <div class="stat stat--small" style="flex-shrink: 0;">
         <span class="stat__label">Amount Requested</span>
         <span class="stat__value"><%= render_money report.amount_cents, unit: "" %></span>
