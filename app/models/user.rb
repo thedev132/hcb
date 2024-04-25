@@ -137,6 +137,14 @@ class User < ApplicationRecord
 
   enum comment_notifications: { all_threads: 0, my_threads: 1, no_threads: 2 }
 
+  comma do
+    id
+    name
+    slug "url" do |slug| "https://hcb.hackclub.com/users/#{slug}/admin" end
+    email
+    transactions_missing_receipt_count "Missing Receipts"
+  end
+
   # admin? takes into account an admin user's preference
   # to pretend to be a non-admin, normal user
   def admin?
@@ -247,12 +255,14 @@ class User < ApplicationRecord
   def transactions_missing_receipt
     @transactions_missing_receipt ||= begin
       user_cards = stripe_cards.includes(:event).where.not(event: { category: :salary }) + emburse_cards.includes(:emburse_transactions)
+      return HcbCode.none unless user_cards.any?
+
       user_hcb_code_ids = user_cards.flat_map { |card| card.hcb_codes.pluck(:id) }
+      return HcbCode.none unless user_hcb_code_ids.any?
+
       user_hcb_codes = HcbCode.where(id: user_hcb_code_ids)
 
-      hcb_codes_missing_ids = user_hcb_codes.missing_receipt.receipt_required.pluck(:id)
-
-      HcbCode.where(id: hcb_codes_missing_ids).order(created_at: :desc)
+      user_hcb_codes.missing_receipt.receipt_required.order(created_at: :desc)
     end
   end
 

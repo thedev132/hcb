@@ -277,6 +277,7 @@ class AdminController < ApplicationController
     @q = params[:q].present? ? params[:q] : nil
     @access_level = params[:access_level]
     @event_id = params[:event_id].present? ? params[:event_id] : nil
+    @params = params.permit(:page, :per, :q, :access_level, :event_id)
 
     if @event_id
       @event = Event.find(@event_id)
@@ -294,7 +295,12 @@ class AdminController < ApplicationController
 
     @users = relation.page(@page).per(@per).order(created_at: :desc)
 
-    render layout: "admin"
+    respond_to do |format|
+      format.html do
+        render layout: "admin"
+      end
+      format.csv { render csv: @users.includes(:stripe_cards, :emburse_cards) }
+    end
   end
 
   def stripe_cards

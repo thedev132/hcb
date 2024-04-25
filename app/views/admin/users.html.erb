@@ -14,6 +14,10 @@
   |
 
   <%= form.submit "Search" %>
+  |
+  <%= link_to @params.merge(format: :csv) do %>
+    <button type="button" <%= "disabled" if @users.count == 0 %>>Export <%= pluralize @users.count, "record" %></button>
+  <% end %>
 <% end %>
 
 <%= page_entries_info @users, entry_name: "users" %>
@@ -27,6 +31,7 @@
       <th>Email</th>
       <th>Org Positions</th>
       <th class="w-48">Card Grants</th>
+      <th># Receipts Missing</th>
       <th class="w-32">Actions</th>
     </tr>
   </thead>
@@ -36,7 +41,7 @@
         <td><%= user.id %></td>
         <td><%= user.created_at.strftime("%Y-%m-%d") %></td>
         <td>
-          <%= link_to edit_user_path(user) do %>
+          <%= link_to admin_user_path(user) do %>
             <%= user.name %>
           <% end %>
         </td>
@@ -69,6 +74,9 @@
           <% else %>
             None
           <% end %>
+        </td>
+        <td>
+          <%= user.transactions_missing_receipt.count %>
         </td>
         <td>
           <%= link_to "Impersonate", impersonate_user_path(user.id), data: { turbo_confirm: "Are you sure?", turbo_method: "post" } %>
