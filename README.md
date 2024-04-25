@@ -43,12 +43,12 @@ See the [Codespaces](./Codespaces.md) page for more information on developing in
 
 ### Docker
 
-If you are running macOS or Ubuntu, you can clone the repository and run the [docker_setup.sh](./docker_setup.sh) script to automatically set up a development environment with Docker. Append `--with-solargraph` to the command to also setup [Solargraph](https://solargraph.org), a language server for Ruby. You may also need to install the [Solargraph extension](https://github.com/castwide/solargraph#using-solargraph) for your editor. This script should also work for Windows; although it's recommended that Window users run it (docker) within [WSL](https://learn.microsoft.com/en-us/windows/wsl/install)
+If you are running macOS or Ubuntu, you can clone the repository and run the [docker_dev_setup.sh](./docker_dev_setup.sh) script to automatically set up a development environment with Docker. Append `--with-solargraph` to the command to also setup [Solargraph](https://solargraph.org), a language server for Ruby. You may also need to install the [Solargraph extension](https://github.com/castwide/solargraph#using-solargraph) for your editor. This script should also work for Windows; although it's recommended that Window users run it (docker) within [WSL](https://learn.microsoft.com/en-us/windows/wsl/install)
 
 ```bash
-./docker_setup.sh
+./docker_dev_setup.sh
 # or with Solargraph
-./docker_setup.sh --with-solargraph
+./docker_dev_setup.sh --with-solargraph
 ```
 
 Then, to start the development server:
