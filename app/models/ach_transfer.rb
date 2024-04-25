@@ -64,11 +64,16 @@ class AchTransfer < ApplicationRecord
   belongs_to :payment_recipient, optional: true
 
   validates :amount, numericality: { greater_than: 0, message: "must be greater than 0" }
-  validates :routing_number, presence: true, format: { with: /\A\d{9}\z/, message: "must be 9 digits" }
-  validates :account_number, presence: true, format: { with: /\A\d+\z/, message: "must be only numbers" }
-  validates :bank_name, presence: true, on: :create
+
+  validates :routing_number, presence: true, unless: :payment_recipient
+  validates :account_number, presence: true, unless: :payment_recipient
+  validates :recipient_name, presence: true, unless: :payment_recipient
+
+  validates :account_number, format: { with: /\A\d+\z/, message: "must be only numbers" }, allow_blank: true
+  validates :routing_number, format: { with: /\A\d{9}\z/, message: "must be 9 digits" }, allow_blank: true
+  validates :bank_name, presence: true, on: :create, unless: :payment_recipient
+
   validates :recipient_email, format: { with: URI::MailTo::EMAIL_REGEXP, message: "must be a valid email address" }, allow_nil: true
-  validates :recipient_name, presence: true
   validates_presence_of :recipient_email, on: :create
   validate :scheduled_on_must_be_in_the_future, on: :create
   validate on: :create do
@@ -134,8 +139,8 @@ class AchTransfer < ApplicationRecord
   end
 
   before_validation { self.recipient_name = recipient_name.presence&.strip }
-  before_validation :set_fields_from_payment_recipient, on: :create, if: -> { payment_recipient.present? }
-  before_validation :create_payment_recipient, on: :create, if: -> { payment_recipient_id.nil? }
+  before_create :set_fields_from_payment_recipient, if: -> { payment_recipient.present? }
+  before_create :create_payment_recipient, if: -> { payment_recipient_id.nil? }
 
   after_create :update_payment_recipient
 
