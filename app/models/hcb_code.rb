@@ -473,7 +473,7 @@ class HcbCode < ApplicationRecord
     users += self.events.includes(:users).select { |e| !current_user || Pundit.policy(current_user, e).team? }.flat_map(&:users)
     users += self.events.includes(:point_of_contact).map(&:point_of_contact)
 
-    users.uniq
+    users.compact.uniq
   end
 
   def not_admin_only_comments_count
