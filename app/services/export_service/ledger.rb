@@ -14,6 +14,8 @@ module ExportService
     def run
       journal = ::Ledger::Journal.new
       event.canonical_transactions.order("date desc").each do |ct|
+        clean_amount = @public_only && ct.likely_account_verification_related? ? 0 : ct.amount_cents
+
         if ct.amount_cents <= 0
           hcb_code = ct.local_hcb_code
           merchant = ct.raw_stripe_transaction ? ct.raw_stripe_transaction.stripe_transaction["merchant_data"] : nil
@@ -30,7 +32,7 @@ module ExportService
             payee: ct.local_hcb_code.memo,
             metadata:,
             postings: [
-              ::Ledger::Posting.new(account: "Expenses:#{category}", currency: "USD", amount: BigDecimal(ct.amount_cents.to_f, 2))
+              ::Ledger::Posting.new(account: "Expenses:#{category}", currency: "USD", amount: BigDecimal(clean_amount.to_f, 2))
             ]
           )
         else
@@ -45,7 +47,7 @@ module ExportService
             date: ct.date,
             payee: ct.local_hcb_code.memo,
             postings: [
-              ::Ledger::Posting.new(account: "Income:#{income_type}", currency: "USD", amount: BigDecimal(ct.amount_cents.to_f, 2))
+              ::Ledger::Posting.new(account: "Income:#{income_type}", currency: "USD", amount: BigDecimal(clean_amount.to_f, 2))
             ]
           )
         end
