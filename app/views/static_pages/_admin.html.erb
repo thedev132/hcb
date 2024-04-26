@@ -107,7 +107,6 @@
         <%= render partial: "static_pages/card", locals: { task_path: new_bank_account_path, human_name: "Setup HCB" } %>
         <%= card_to "Bank Accounts", bank_accounts_admin_index_path, { badge: BankAccount.failing.count } %>
         <%= card_to "HCB Codes", hcb_codes_admin_index_path %>
-        <%= card_to "Transaction CSVs", transaction_csvs_admin_index_path %>
         <%= card_to "Raw Transactions", raw_transactions_admin_index_path, { badge: RawCsvTransaction.unhashed.count } %>
       </ul>
     </details>
