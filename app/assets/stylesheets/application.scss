@@ -204,7 +204,6 @@ summary {
 @import 'components/tooltips';
 @import 'components/transactions';
 @import 'components/withdraw_breakdown';
-@import 'components/faq';
 @import 'components/promos';
 @import 'components/features';
 @import 'components/settings';
@@ -453,5 +452,11 @@ summary {
 
   .line-height-0 {
     @apply leading-[0];
+  }
+
+  .text-shadow {
+    text-shadow:
+      0 1px 2px rgba(0, 0, 0, 0.25),
+      0 2px 4px rgba(0, 0, 0, 0.125);
   }
 }

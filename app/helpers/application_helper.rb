@@ -186,7 +186,7 @@ module ApplicationHelper
   end
 
   def anchor_link(id)
-    link_to "##{id}", class: "anchor-link tooltipped tooltipped--s", 'aria-label': "Copy link", 'data-anchor': id, 'data-turbo': false do
+    link_to "##{id}", class: "absolute top-0 -left-8 transition-opacity opacity-0 group-hover/summary:opacity-100 group-target/item:opacity-100 anchor-link tooltipped tooltipped--s", 'aria-label': "Copy link", data: { turbo: false, controller: "clipboard", clipboard_text_value: url_for(only_path: false, anchor: id), action: "clipboard#copy" } do
       inline_icon "link", size: 28
     end
   end
