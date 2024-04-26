@@ -149,8 +149,6 @@ gem "appsignal" # error tracking + performance monitoring
 gem "lograge" # Log formatting
 gem "statsd-instrument", "~> 3.5", ">= 3.5.12" # For reporting to HC Grafana
 
-gem "mrsk" # deployments
-
 group :production do
   gem "skylight"
 
