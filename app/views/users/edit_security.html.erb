@@ -11,12 +11,10 @@
 <fieldset>
   <% unless @user.phone_number.blank? %>
     <%= turbo_frame_tag :sms_auth_card do %>
-      <div class="session-header mt3 pb2">
-        <legend class="heading flex flex-row justify-start items-center">
-          <span class="h2">Login codes</span>
-          <%= badge_for @user.use_sms_auth ? "SMS" : "Email", class: "bg-muted" %>
-        </legend>
-      </div>
+      <legend class="flex flex-row justify-start items-center mt3 pb2">
+        <span class="h2">Login codes</span>
+        <%= badge_for @user.use_sms_auth ? "SMS" : "Email", class: "bg-muted" %>
+      </legend>
       <div class="card border b--info mt1 mb3">
         <% if @user.phone_number_verified %>
           <% if @user.use_sms_auth %>
@@ -40,8 +38,8 @@
       </div>
     <% end %>
   <% end %>
-  <div class="session-header mt3 pb2" id="security-keys">
-    <legend class="heading flex flex-row justify-start items-center">
+  <div class="flex items-center justify-between flex-wrap gap-x-5 gap-y-2 mt3 pb2" id="security-keys">
+    <legend class="flex flex-row justify-start items-center">
       <span class="h2">Security keys</span>
       <%= badge_for @user.webauthn_credentials.count, class: "bg-muted" %>
     </legend>
@@ -61,13 +59,13 @@
       Sign in to HCB using your fingerprint or a hardware security key.
     </div>
   <% end %>
-  <div class="session-header pb2">
-    <legend class="heading flex flex-row justify-start items-center">
+  <div class="flex items-center justify-between flex-wrap gap-x-5 gap-y-2 mt3 pb2">
+    <legend class="flex flex-row justify-start items-center">
       <span class="h2">Sessions</span>
       <%= badge_for @all_sessions.count, class: "bg-muted" %>
     </legend>
     <%= link_to logout_all_users_path, method: :delete,
-            class: "btn bg-error mt1 py1 px2 h4", disabled: @sessions.count <= 1 do %>
+            class: "btn bg-error py1 px2 h4", disabled: @sessions.count <= 1 do %>
       <%= inline_icon "door-leave", size: home_action_size %>
       Sign out everywhere else
     <% end %>
