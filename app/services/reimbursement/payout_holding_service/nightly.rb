@@ -40,7 +40,7 @@ module Reimbursement
                 send_email_notification: false,
                 routing_number: payout_holding.report.user.payout_method.routing_number,
                 account_number: payout_holding.report.user.payout_method.account_number,
-                bank_name: Increase::RoutingNumbers.list(routing_number: payout_holding.report.user.payout_method.routing_number).first&.dig("name")&.titleize || "Bank Account",
+                bank_name: (ColumnService.get("/institutions/#{payout_holding.report.user.payout_method.routing_number}")["full_name"] rescue "Bank Account"),
                 creator: User.find_by(email: "bank@hackclub.com")
               )
               ach_transfer.save!
