@@ -402,7 +402,7 @@ class Event < ApplicationRecord
   end
 
   def admin_dropdown_description
-    "#{name} - #{id}"
+    "#{name} - #{id}#{" (DEMO)" if demo_mode?}"
 
     # Causing n+1 queries on admin pages with an event dropdown
 
