@@ -24,7 +24,7 @@
                 class: "display-none",
                 data: { "file-drop-target" => "fileInput" } %>
           <% end %>
-        <% elsif !report.event.users.include?(current_user) %>
+        <% elsif current_user == report.user && !admin_signed_in? %>
           <div class="btn bg-success disabled" class="tooltipped tooltipped--n" aria-label="Expenses can't be added to locked reports">
             <%= inline_icon "docs" %>
             Add <%= report.expenses.count > 0 ? "Another" : "An" %> Expense
@@ -37,9 +37,9 @@
         <% end %>
       </div>
 
-      <% if report.locked? && (!(report.event.users.include?(current_user) || admin_signed_in?) || report.submitted? || report.reimbursement_requested?) %>
+      <% if report.locked? && (current_user != report.user || report.submitted? || report.reimbursement_requested?) %>
         <div style="flex-grow: 1;" class="flex justify-center items-center" style="gap: 4px;">
-          <% if !report.event.users.include?(current_user) && !admin_signed_in? && report.locked? %>
+          <% if current_user == report.user && !admin_signed_in? && report.locked? %>
             <%= inline_icon "private" %>
             Expense Report Locked
           <% elsif report.locked? && report.submitted? && report.expenses.approved.count > 0 && report.amount_to_reimburse > 0 && ::Shared::AmpleBalance.ample_balance?(report.amount_to_reimburse_cents, report.event) %>
@@ -125,6 +125,14 @@
               <span class="bold warning">Warning</span>: your report is above <%= report.event.name %>'s limit. To continue, lower the amount requested.
             <% end %>
           </div>
+        <% elsif report.draft? && !::Shared::AmpleBalance.ample_balance?(report.amount_cents, report.event) && !report.team_review_required? %>
+          <div class="btn bg-info disabled">
+            <%= inline_icon "send" %>
+            Submit & Request Review
+            <% button_hint = capture do %>
+              <span class="bold warning">Warning</span>: your report is beyond your balance. To continue, lower the amount requested.
+            <% end %>
+          </div>
         <% elsif report.draft? && !report.initial_draft? %>
           <%= link_to "#", class: "btn bg-info", data: { behavior: "modal_trigger", modal: "submit" } do %>
             <%= inline_icon "send" %>
@@ -141,7 +149,15 @@
               <span class="bold">Your next step:</span> after adding all of your expenses, submit the report to request a review.
             <% end %>
           <% end %>
-        <% elsif !report.event.users.include?(current_user) && report.unlockable? && !admin_signed_in? %>
+        <% elsif report.reimbursement_requested? && report.unlockable? %>
+          <%= link_to reimbursement_report_draft_path(report_id: report.id), class: "btn bg-muted", method: :post do %>
+            <%= inline_icon "reply" %>
+            Mark As Draft
+            <% button_hint = capture do %>
+              <span class="bold">Status:</span> the HCB team is reviewing this report. To make further changes, mark it as a draft.
+            <% end %>
+          <% end %>
+        <% elsif (!report.event.users.include?(current_user) || current_user == report.user) && report.unlockable? && !admin_signed_in? %>
           <%= link_to reimbursement_report_draft_path(report_id: report.id), class: "btn bg-muted", method: :post do %>
             <%= inline_icon "reply" %>
             Mark As Draft
@@ -149,7 +165,7 @@
               <span class="bold">Status:</span> your report is currently under review. To make further changes, mark it as a draft.
             <% end %>
           <% end %>
-        <% elsif !report.event.users.include?(current_user) && !admin_signed_in? %>
+        <% elsif current_user == report.user && !admin_signed_in? %>
           <div class="btn bg-success disabled">
             <%= inline_icon "docs" %>
             Mark As Draft

@@ -177,9 +177,14 @@
     </div>
 
     <% if Flipper.enabled?(:reimbursements_2024_03_10, @event) %>
-      <h3 class="mb1" id="public-reimbursements">Public Reimbursements</h3>
-
+      <h3 class="mb1" id="reimbursements">Reimbursements</h3>
       <div class="card">
+        <% if @event.users.size > 1 %>
+          <div class="field field--checkbox">
+            <%= form.check_box :reimbursements_require_organizer_peer_review, disabled: !policy(@event).update? %>
+            <%= form.label :reimbursements_require_organizer_peer_review, "Require a peer review for reports submitted by team members." %>
+          </div>
+        <% end %>
         <div class="field field--checkbox">
           <%= form.check_box :public_reimbursement_page_enabled, disabled: !policy(@event).update? %>
           <%= form.label :public_reimbursement_page_enabled, "Enable public reimbursement page" %>

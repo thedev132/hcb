@@ -19,11 +19,11 @@ module Reimbursement
     end
 
     def approve?
-      (admin || team_member) && record.report.submitted?
+      (admin || (team_member && !creator)) && record.report.submitted?
     end
 
     def unapprove?
-      (admin || team_member) && record.report.submitted?
+      (admin || (team_member && !creator)) && record.report.submitted?
     end
 
     def user_made_expense?
