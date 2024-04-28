@@ -153,7 +153,7 @@ module ReceiptService
     end
 
     def potential_txns
-      user.stripe_cards.flat_map(&:hcb_codes).select { |hcb_code| hcb_code.missing_receipt? }
+      user.transactions_missing_receipt
     end
 
   end
