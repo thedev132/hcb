@@ -9,7 +9,7 @@
 <%= render partial: "canceled_warning", locals: { stripe_card: @card } %>
 
 <turbo-frame id="details">
-  <article class="check--form flex items-start justify-center mt2 mb3" style="gap: 16px;">
+  <article class="check--form flex items-start justify-center mt3 mb3" style="gap: 16px;">
     <section class="center mt0 mx-auto" style="width: 400px; max-width: 100%;">
       <% if @card.card_grant.present? %>
         <% admin_tool do %>
@@ -17,7 +17,7 @@
         <% end %>
       <% end %>
 
-      <%= render @card %>
+      <%= render @card, headless: true %>
 
       <%= render partial: "actions", locals: { stripe_card: @card } %>
     </section>

@@ -1,6 +1,6 @@
 <%# locals: (stripe_card:) %>
 
-<article class="card max-width-2 mx-auto mt3">
+<article class="card max-width-2 mx-auto">
   <h2 class="mt0 heading">
     <span class="flex-auto">
       <%= user_mention stripe_card.user, { class: "align-bottom tooltipped--s" } %><span class="medium muted">'s</span>
@@ -104,7 +104,13 @@
       <strong>Type</strong>
       <%= stripe_card.virtual? ? "Virtual" : "Physical" %>
     </div>
+
+    <div>
+      <strong>Network</strong>
+      Visa
+    </div>
   </section>
+
   <% admin_tool "details" do %>
     <div>
       <strong>Ordered at</strong>
