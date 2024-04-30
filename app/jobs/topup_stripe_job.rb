@@ -44,7 +44,7 @@ class TopupStripeJob < ApplicationJob
       # we may need to increase our buffer.
       Airbrake.notify(<<~MSG.squish)
         Stripe Issuing balance: Low age of money.
-        We only have #{helper.number_to_percentage((available / buffer.to_f) * 100, precision: 2)}
+        We only have #{ActionController::Base.helpers.number_to_percentage((available / buffer.to_f) * 100, precision: 2)}
         of the buffer available for spending.
         Available: #{available}
       MSG
