@@ -140,7 +140,7 @@ gem "rqrcode" # QR code generation
 gem "brakeman" # static security vulnerability scanner
 
 gem "awesome_print" # pretty print objects in console
-gem "byebug", platforms: [:mri, :mingw, :x64_mingw]
+gem "byebug", platforms: [:windows]
 gem "dry-validation"
 
 gem "bootsnap", ">= 1.4.4", require: false # reduces boot times through caching; required in config/boot.rb
