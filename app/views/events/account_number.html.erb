@@ -28,6 +28,15 @@
           </div>
         <% end %>
 
+        <% admin_tool "mb-3" do %>
+          <%= button_to @event.column_account_number.deposit_only? ? "Enable debits" : "Make deposit-only",
+                        event_column_account_number_path(@event),
+                        method: :patch,
+                        params: { column_account_number: { deposit_only: !@event.column_account_number.deposit_only } },
+                        class: "btn bg-muted text-sm py-1 px-3",
+                        data: { turbo_confirm: "Are you sure you want to change this? Debits are usually disabled for account security." } %>
+        <% end %>
+
         <div class="flex items-start justify-around h2 mb2" style="gap: 1rem">
           <span class="flex flex-col" data-controller="<%= "clipboard" if organizer_signed_in? %>" data-clipboard-text-value="<%= @event.account_number if organizer_signed_in? %>">
             <span class="font-mono pointer tooltipped tooltipped--n fs-mask" aria-label="<%= organizer_signed_in? ? "Click to copy" : "Sign in to view" %>" data-action="click->clipboard#copy" data-controller="<%= "reveal-animation" if @animated %>">

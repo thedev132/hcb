@@ -670,7 +670,7 @@ Rails.application.routes.draw do
 
     resources :grants, only: [:index, :new, :create]
 
-    resource :column_account_number, controller: "column/account_number", only: [:create], path: "account-number"
+    resource :column_account_number, controller: "column/account_number", only: [:create, :update], path: "account-number"
 
     resources :organizer_positions, path: "team", as: "organizer", only: [] do
       resources :organizer_position_deletion_requests, path: "removal-requests", as: "remove", only: [:new]
