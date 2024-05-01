@@ -227,6 +227,11 @@ class HcbCodesController < ApplicationController
       return redirect_to hcb_code
     end
 
+    if hcb_code.personal_transaction
+      flash[:error] = "A repayment invoice already exists for this transaction."
+      return redirect_to hcb_code.personal_transaction.invoice
+    end
+
     personal_tx = HcbCode::PersonalTransaction.create(hcb_code:, reporter: current_user)
 
     flash[:success] = "We've sent an invoice for repayment to #{personal_tx.invoice.sponsor.contact_email}."
