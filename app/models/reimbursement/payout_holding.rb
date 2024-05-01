@@ -58,6 +58,10 @@ module Reimbursement
       end
     end
 
+    def payout_transfer
+      ach_transfer || increase_check
+    end
+
     private
 
     def set_and_create_hcb_code
