@@ -54,7 +54,7 @@ module Reimbursement
       end
 
       event :mark_failed do
-        transitions from: :sent, to: :failed
+        transitions from: [:sent, :settled], to: :failed
       end
     end
 

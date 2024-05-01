@@ -44,10 +44,20 @@ module Reimbursement
                 creator: User.find_by(email: "bank@hackclub.com")
               )
               ach_transfer.save!
-              ach_transfer.approve!(User.find_by(email: "bank@hackclub.com"))
-              payout_holding.ach_transfer = ach_transfer
-              payout_holding.save!
-              payout_holding.mark_sent!
+              begin
+                ach_transfer.approve!(User.find_by(email: "bank@hackclub.com"))
+              rescue
+                ach_transfer.mark_rejected!(User.find_by(email: "bank@hackclub.com"))
+                payout_holding.mark_failed!
+                ReimbursementMailer.with(
+                  reimbursement_payout_holding: payout_holding,
+                  reason: "Your routing number / account number was invalid."
+                ).ach_failed.deliver_later
+              else
+                payout_holding.ach_transfer = ach_transfer
+                payout_holding.save!
+                payout_holding.mark_sent!
+              end
             rescue => e
               Airbrake.notify(e)
             end
