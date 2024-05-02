@@ -51,9 +51,9 @@ class ColumnService
 
     dates = reports.pluck "from_date"
 
-    if (from_date.to_date..to_date.to_date).reject { |date| dates.include?(date.to_date.iso8601) }.any?
-      raise StandardError.new("Missing Column reports for #{from_date.to_date.iso8601} to #{to_date.to_date.iso8601}")
-    end
+    # if (from_date.to_date..to_date.to_date).reject { |date| dates.include?(date.to_date.iso8601) }.any?
+    #  raise StandardError.new("Missing Column reports for #{from_date.to_date.iso8601} to #{to_date.to_date.iso8601}")
+    # end
 
     reports.to_h do |report|
       url = get("/documents/#{report["json_document_id"]}")["url"]

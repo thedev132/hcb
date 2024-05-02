@@ -12,6 +12,8 @@
       <th class="w-48">Month</th>
       <th class="w-32">Start Date</th>
       <th class="w-32">End Date</th>
+      <th class="w-32">Starting Balance</th>
+      <th class="w-32">Closing Balance</th>
       <th>Statement</th>
     </tr>
   </thead>
@@ -21,6 +23,8 @@
         <td><%= statement.start_date.strftime("%B, %Y") %></td>
         <td><%= statement.start_date.strftime("%Y-%m-%d") %></td>
         <td><%= statement.end_date.strftime("%Y-%m-%d") %></td>
+        <td><%= render_money statement.starting_balance %></td>
+        <td><%= render_money statement.closing_balance %></td>
         <td><%= link_to "Download Statement", statement.file %></td>
       </tr>
     <% end %>
