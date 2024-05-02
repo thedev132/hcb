@@ -46,7 +46,6 @@ const animatorStyle = {
 
 function SearchAndResults() {
   const [actions, setActions] = useState([])
-
   const { search, searching, searched, searchedFor, currentRootActionId } =
     useKBar(state => {
       return {

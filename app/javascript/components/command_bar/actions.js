@@ -5,6 +5,11 @@ import Icon from '@hackclub/icons'
 import csrf from '../../common/csrf'
 import React from 'react'
 
+const restrictedCategories = ['outernet guild', 'hardware grant']
+
+const restrictedFilter = e =>
+  !restrictedCategories.includes(e.category) && !e.demo_mode
+
 export const generateEventActions = data => {
   return [
     ...data.map(event => ({
@@ -31,21 +36,21 @@ export const generateEventActions = data => {
       icon: <Icon glyph="home" size={16} />,
       parent: event.slug,
     })),
-    ...data.map(event => ({
+    ...data.filter(restrictedFilter).map(event => ({
       id: `${event.slug}-donations`,
       name: 'Donations',
       perform: navigate(`/${event.slug}/donations`),
       icon: <Icon glyph="support" size={16} />,
       parent: event.slug,
     })),
-    ...data.map(event => ({
+    ...data.filter(restrictedFilter).map(event => ({
       id: `${event.slug}-invoices`,
       name: 'Invoices',
       perform: navigate(`/${event.slug}/invoices`),
       icon: <Icon glyph="briefcase" size={16} />,
       parent: event.slug,
     })),
-    ...data.map(event => ({
+    ...data.filter(restrictedFilter).map(event => ({
       id: `${event.slug}-account-number`,
       name: 'Account & routing number',
       perform: () =>
@@ -53,7 +58,7 @@ export const generateEventActions = data => {
       icon: <Icon glyph="bank-account" size={16} />,
       parent: event.slug,
     })),
-    ...data.map(event => ({
+    ...data.filter(restrictedFilter).map(event => ({
       id: `${event.slug}-check-deposit`,
       name: 'Check deposit',
       perform: () =>
@@ -68,7 +73,7 @@ export const generateEventActions = data => {
       icon: <Icon glyph="card" size={16} />,
       parent: event.slug,
     })),
-    ...data.map(event => ({
+    ...data.filter(restrictedFilter).map(event => ({
       id: `${event.slug}-transfers`,
       name: 'Transfers',
       perform: navigate(`/${event.slug}/transfers`),
@@ -83,14 +88,14 @@ export const generateEventActions = data => {
       icon: <Icon glyph="leader" size={16} />,
       parent: event.slug,
     })),
-    ...data.map(event => ({
+    ...data.filter(restrictedFilter).map(event => ({
       id: `${event.slug}-perks`,
       name: 'Perks',
       perform: navigate(`/${event.slug}/promotions`),
       icon: <Icon glyph="shirt" size={16} />,
       parent: event.slug,
     })),
-    ...data.map(event => ({
+    ...data.filter(restrictedFilter).map(event => ({
       id: `${event.slug}-documentation`,
       name: 'Documentation',
       perform: () =>
@@ -98,7 +103,7 @@ export const generateEventActions = data => {
       icon: <Icon glyph="info" size={16} />,
       parent: event.slug,
     })),
-    ...data.map(event => ({
+    ...data.filter(restrictedFilter).map(event => ({
       id: `${event.slug}-settings`,
       name: 'Settings',
       perform: navigate(`/${event.slug}/settings`),

@@ -24,18 +24,22 @@ class EventsController < ApplicationController
           {
             name: x.name,
             slug: x.slug,
+            category: x.category,
             logo: x.logo.attached? ? Rails.application.routes.url_helpers.url_for(x.logo) : "none",
+            demo_mode: x.demo_mode,
             member: true
           }
         }
 
         if admin_signed_in?
           events.concat(
-            Event.not_demo_mode.excluding(@current_user.events).with_attached_logo.select([:slug, :name]).map { |e|
+            Event.not_demo_mode.excluding(@current_user.events).with_attached_logo.select([:slug, :name, :category]).map { |e|
               {
                 slug: e.slug,
                 name: e.name,
+                category: e.category,
                 logo: e.logo.attached? ? Rails.application.routes.url_helpers.url_for(e.logo) : "none",
+                demo_mode: false,
                 member: false
               }
             }
