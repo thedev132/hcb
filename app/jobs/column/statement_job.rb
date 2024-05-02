@@ -3,7 +3,7 @@
 module Column
   class StatementJob < ApplicationJob
     queue_as :low
-    def perform(date = Date.today.prev_month)
+    def perform(date = DateTime.current.prev_month)
       start_date = date.beginning_of_month
       end_date = date.end_of_month
 

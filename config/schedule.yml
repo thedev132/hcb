@@ -87,7 +87,7 @@ receipt_report_weekly_job:
   class: "ReceiptReportJob::Weekly"
 
 receipt_report_monthly_job:
-  cron: "0 0 1 * *" # run first day of each month
+  cron: "0 0 3 * *" # run first day of each month
   class: "ReceiptReportJob::Monthly"
 
 column_statement_monthly_job:
