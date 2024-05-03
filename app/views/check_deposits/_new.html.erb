@@ -30,7 +30,8 @@
       <% if @event.demo_mode? %>
         <%= form.submit "Unavailable in Playground Mode", disabled: true %>
       <% else %>
-        <%= form.submit "Submit deposit", data: { disable_with: "Uploading..." } %>
+        <%= form.submit "Submit deposit", class: "shrink-0", data: { disable_with: "Uploading..." } %>
+        <div class="warning flex mt-3 gap-2"><%= inline_icon "important" %> <span>Check deposits are currently delayed and may take up to <span class="whitespace-nowrap font-bold">1 week</span> to process.</span></div>
       <% end %>
     </div>
   <% end %>

@@ -42,7 +42,10 @@ class CheckDeposit < ApplicationRecord
   belongs_to :created_by, class_name: "User"
   has_one :canonical_pending_transaction
 
-  after_create_commit :submit!
+  # after_create_commit :submit!
+  after_create_commit do
+    create_canonical_pending_transaction!(event:, amount_cents:, memo: "CHECK DEPOSIT", date: created_at)
+  end
 
   after_update if: -> { increase_status_previously_changed?(to: "rejected") } do
     canonical_pending_transaction.decline!
@@ -66,7 +69,7 @@ class CheckDeposit < ApplicationRecord
     submitted: "submitted",
     rejected: "rejected",
     returned: "returned",
-  }
+  }, default: :pending
 
   enum :rejection_reason, {
     incomplete_image: "incomplete_image",
