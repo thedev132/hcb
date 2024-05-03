@@ -1,10 +1,11 @@
-<% title "Check deposits" %>
+<% title "Check Deposits" %>
 
-<h1>Check deposits</h1>
-
-<%= paginate @check_deposits %>
-
-<%= page_entries_info @check_deposits %>
+<div class="flex items-center mb2">
+  <div class="flex-grow">
+    <%= page_entries_info @check_deposits %>
+  </div>
+  <%= paginate @check_deposits %>
+</div>
 
 <table>
   <thead>

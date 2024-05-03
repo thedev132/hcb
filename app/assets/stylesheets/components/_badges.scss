@@ -46,6 +46,10 @@
     background-color: rgba(map-get($palette, muted), 0.125);
     color: map-get($palette, muted);
   }
+  &.muted {
+    background-color: map-get($palette, muted);
+    color: $white;
+  }
 
   svg:last-child {
     margin-left: 0.25rem;
