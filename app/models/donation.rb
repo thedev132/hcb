@@ -55,6 +55,9 @@ class Donation < ApplicationRecord
   include AASM
   include Commentable
 
+  include HasStripeDashboardUrl
+  has_stripe_dashboard_url "payments", :stripe_payment_intent_id
+
   include PgSearch::Model
   pg_search_scope :search_name, against: [:name, :email], using: { tsearch: { prefix: true, dictionary: "english" } }, ranked_by: "donations.created_at"
 
@@ -123,10 +126,6 @@ class Donation < ApplicationRecord
 
   def donated_at
     in_transit_at || created_at
-  end
-
-  def stripe_dashboard_url
-    "https://dashboard.stripe.com/payments/#{self.stripe_payment_intent_id}"
   end
 
   def state

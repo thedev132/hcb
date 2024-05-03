@@ -30,6 +30,9 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class StripeCardholder < ApplicationRecord
+  include HasStripeDashboardUrl
+  has_stripe_dashboard_url "issuing/cardholders", :stripe_id
+
   enum cardholder_type: { individual: 0, company: 1 }
 
   belongs_to :user
@@ -55,10 +58,6 @@ class StripeCardholder < ApplicationRecord
   after_validation :update_cardholder_in_stripe, on: :update, if: -> { errors.none? }
 
   before_validation :set_default_billing_address
-
-  def stripe_dashboard_url
-    "https://dashboard.stripe.com/issuing/cardholders/#{self.stripe_id}"
-  end
 
   def state
     return :success if remote_status == "active"

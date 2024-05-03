@@ -101,6 +101,9 @@ class Invoice < ApplicationRecord
   include PublicIdentifiable
   set_public_id_prefix :inv
 
+  include HasStripeDashboardUrl
+  has_stripe_dashboard_url "invoices", :stripe_invoice_id
+
   extend FriendlyId
   include AASM
   include Commentable
@@ -281,16 +284,6 @@ class Invoice < ApplicationRecord
       self.payment_method_ach_credit_transfer_account_number = details.account_number
       self.payment_method_ach_credit_transfer_swift_code = details.swift_code
     end
-  end
-
-  def stripe_dashboard_url
-    url = "https://dashboard.stripe.com"
-
-    url += "/test" if StripeService.mode == :test
-
-    url += "/invoices/#{self.stripe_invoice_id}"
-
-    url
   end
 
   def arrival_date

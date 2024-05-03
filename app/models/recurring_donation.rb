@@ -37,6 +37,9 @@
 class RecurringDonation < ApplicationRecord
   include Hashid::Rails
 
+  include HasStripeDashboardUrl
+  has_stripe_dashboard_url "subscriptions", :stripe_subscription_id
+
   has_paper_trail
 
   belongs_to :event

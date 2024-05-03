@@ -51,6 +51,9 @@ class StripeCard < ApplicationRecord
   include PublicIdentifiable
   set_public_id_prefix :crd
 
+  include HasStripeDashboardUrl
+  has_stripe_dashboard_url "issuing/cards", :stripe_id
+
   has_paper_trail
 
   after_create_commit :notify_user, unless: :skip_notify_user
@@ -166,10 +169,6 @@ class StripeCard < ApplicationRecord
 
   def state
     status_badge_type
-  end
-
-  def stripe_dashboard_url
-    "https://dashboard.stripe.com/issuing/cards/#{self.stripe_id}"
   end
 
   def freeze!
