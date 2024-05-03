@@ -15,7 +15,8 @@
 
 <div class="flex items-center mb2">
   <div class="flex-grow">
-    <%= page_entries_info @events, entry_name: "organizations" %>
+    <%= page_entries_info @events, entry_name: "organizations" %>.
+    <%= link_to "Create a new organization", event_new_admin_index_path %>.
   </div>
   <%= paginate @events %>
 </div>
