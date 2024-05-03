@@ -129,7 +129,7 @@
     <%= render "application/command_bar" %>
     <script>
       const details = document.querySelectorAll(".details");
-      window.onresize = () => {
+      const updateAdminDropdowns = () => {
         if(window.innerWidth >= 800){
           details.forEach((detail) => {
             detail.open = true;
@@ -140,7 +140,9 @@
             detail.open = false;
           });
         }
-      };
+      }
+      window.onresize = updateAdminDropdowns
+      updateAdminDropdowns()
     </script>
   </body>
 </html>
