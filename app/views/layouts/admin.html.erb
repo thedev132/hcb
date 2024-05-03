@@ -29,7 +29,7 @@
          },
          Ledger: {
            Ledger: [ledger_admin_index_path, CanonicalTransaction.not_stripe_top_up.unmapped.count, %i[]],
-           "Pending Ledger": [pending_ledger_admin_index_path, CanonicalPendingTransaction.unsettled.count, %i[]],
+           "Pending Ledger": [pending_ledger_admin_index_path, CanonicalPendingTransaction.unsettled.count, %i[counter]],
            "Raw Transactions": [raw_transactions_admin_index_path, RawCsvTransaction.unhashed.count, %i[]],
            "HCB codes": [hcb_codes_admin_index_path, 0, %i[counter]],
            "Audits": [admin_ledger_audits_path, Admin::LedgerAudit.pending.count, %i[]]
