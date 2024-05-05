@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_04_05_185833) do
+ActiveRecord::Schema[7.0].define(version: 2024_04_28_154337) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_stat_statements"
@@ -1602,6 +1602,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_05_185833) do
     t.datetime "updated_at", null: false
     t.integer "expense_number", null: false
     t.datetime "deleted_at", precision: nil
+    t.string "type"
+    t.decimal "value", default: "0.0", null: false
     t.index ["approved_by_id"], name: "index_reimbursement_expenses_on_approved_by_id"
     t.index ["reimbursement_report_id"], name: "index_reimbursement_expenses_on_reimbursement_report_id"
   end

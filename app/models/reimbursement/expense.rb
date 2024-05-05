@@ -8,9 +8,12 @@
 #  aasm_state              :string
 #  amount_cents            :integer          default(0), not null
 #  approved_at             :datetime
+#  deleted_at              :datetime
 #  description             :text
-#  expense_number          :integer          default(1), not null
+#  expense_number          :integer          not null
 #  memo                    :text
+#  type                    :string
+#  value                   :decimal(, )      default(0.0), not null
 #  created_at              :datetime         not null
 #  updated_at              :datetime         not null
 #  approved_by_id          :bigint
@@ -28,6 +31,7 @@
 #
 module Reimbursement
   class Expense < ApplicationRecord
+    include ApplicationHelper
     belongs_to :report, inverse_of: :expenses, foreign_key: "reimbursement_report_id", touch: true
     monetize :amount_cents
     validates :amount_cents, numericality: { greater_than_or_equal_to: 0 }
@@ -40,7 +44,10 @@ module Reimbursement
     has_paper_trail
     acts_as_paranoid
 
+    before_validation :set_amount_cents
+
     validates :expense_number, uniqueness: { scope: :reimbursement_report_id }
+    validate :valid_expense_type
 
     before_validation do
       unless self.expense_number
@@ -86,6 +93,33 @@ module Reimbursement
       report.rejected? || pending? && report.closed?
     end
 
+    # multiplier for value -> amount_cents
+    def rate
+      100
+    end
+
+    def value_label
+      "Amount"
+    end
+
+    def set_amount_cents
+      self.amount_cents = (rate * value).round
+    end
+
+    def is_standard?
+      type.nil? || type == "Reimbursement::Expense"
+    end
+
+    def card_label
+      return memo + " (#{render_money(amount_cents)})" if memo && !is_standard?
+
+      memo
+    end
+
+    def policy_class
+      Reimbursement::ExpensePolicy
+    end
+
     delegate :locked?, to: :report
 
     def status_color
@@ -94,6 +128,12 @@ module Reimbursement
       return "warning" if pending?
 
       "success"
+    end
+
+    def valid_expense_type
+      unless type.nil? || [Reimbursement::Expense.name, Reimbursement::Expense::Mileage.name].include?(type)
+        errors.add(:type, "must be a valid expense type.")
+      end
     end
 
   end

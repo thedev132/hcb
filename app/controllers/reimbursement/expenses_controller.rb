@@ -101,7 +101,7 @@ module Reimbursement
     private
 
     def expense_params
-      params.require(:reimbursement_expense).permit(:amount, :memo, :description, :reimbursement_report_id, :event_id).compact_blank
+      params.require(:reimbursement_expense).permit(:value, :memo, :description, :reimbursement_report_id, :event_id, :type).compact_blank
     end
 
     def set_expense
@@ -121,7 +121,9 @@ module Reimbursement
     end
 
     def replace_expense_turbo_stream
-      turbo_stream.replace(@expense, partial: "reimbursement/expenses/expense", locals: { expense: @expense })
+      turbo_stream.replace(@expense, partial: "reimbursement/expenses/expense", locals: {
+                             expense: @expense.becomes(@expense.type&.constantize || Reimbursement::Expense)
+                           })
     end
 
     def new_expense_turbo_stream
