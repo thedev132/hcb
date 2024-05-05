@@ -439,6 +439,12 @@ class HcbCode < ApplicationRecord
     !receipt_required?
   end
 
+  def receipts
+    return reimbursement_expense_payout.expense.receipts if reimbursement_expense_payout.present?
+
+    super
+  end
+
   def local_hcb_code
     self
   end
@@ -464,7 +470,6 @@ class HcbCode < ApplicationRecord
   def comment_mailer_subject
     return "New comment on #{self.memo}."
   end
-
 
   def comment_mentionable(current_user: nil)
     users = []
