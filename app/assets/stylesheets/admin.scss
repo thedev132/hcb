@@ -730,7 +730,7 @@ video {
     flex-direction: row;
   }
 
-  .details:active {
+  .admin-nav-item:active {
     pointer-events: none;
   }
 
@@ -740,13 +740,13 @@ video {
     flex-wrap: wrap;
     gap: 8px;
   }
-  .details[open] {
+  .admin-nav-item[open] {
     /* Adjust the <details> padding while open */
     padding-bottom: 0rem;
     margin-bottom: 0!important;
   }
   
-  .details[open] summary {
+  .admin-nav-item[open] summary {
     /* Adjust the <details> padding while open */
     margin-bottom: 0px!important;
   }
@@ -842,11 +842,11 @@ video {
   height: 38px;
 }
 
-.details {
+.admin-nav-item {
   position: relative;
 }
 
-.details {
+.admin-nav-item {
   /* Make the <details> look more "clickable" */
   padding: 0!important;
   background: none!important;

@@ -85,7 +85,7 @@
       <div class="nav-row" style="width: 100%; display: flex; padding: 8px 0px;">
         <% nav.each do |name, items| %>
           <% badge_number = items.map { |name, item| item.second }.sum %>
-          <details open class="details pb0">
+          <details open class="admin-nav-item pb0">
             <summary class="nav-item" style="<%= name == parent ? "color: var(--hcb-accent)" : "color: var(--hcb-tx-1)" %>">
               <%= name %>
               <span class="badge <%= items.map { |name, item| item.last.any? ? item.last : nil }.flatten.reject { |item| item == :counter }.empty? || badge_number.zero? ? "bg-muted" : "bg-success" %> pr2 h-fit-content">
@@ -128,21 +128,23 @@
     <%= render "application/footer" unless (@no_app_shell || @hide_footer) %>
     <%= render "application/command_bar" %>
     <script>
-      const details = document.querySelectorAll(".details");
-      const updateAdminDropdowns = () => {
-        if(window.innerWidth >= 800){
-          details.forEach((detail) => {
-            detail.open = true;
-          });
+      document.addEventListener("turbo:load", () => {
+        const updateAdminDropdowns = () => {
+          let details = document.querySelectorAll(".admin-nav-item");
+          if(window.innerWidth >= 800){
+            details.forEach((detail) => {
+              detail.open = true;
+            });
+          }
+          else {
+            details.forEach((detail) => {
+              detail.open = false;
+            });
+          }
         }
-        else {
-          details.forEach((detail) => {
-            detail.open = false;
-          });
-        }
-      }
-      window.onresize = updateAdminDropdowns
-      updateAdminDropdowns()
+        updateAdminDropdowns()
+        window.onresize = updateAdminDropdowns
+      })
     </script>
   </body>
 </html>
