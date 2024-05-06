@@ -39,7 +39,7 @@
 #  pending_transaction_engine_at                :datetime         default(Sat, 13 Feb 2021 22:49:40.981965000 UTC +00:00)
 #  postal_code                                  :string
 #  public_message                               :text
-#  public_reimbursement_page_enabled            :boolean          default(FALSE)
+#  public_reimbursement_page_enabled            :boolean          default(FALSE), not null
 #  public_reimbursement_page_message            :text
 #  redirect_url                                 :string
 #  reimbursements_require_organizer_peer_review :boolean          default(FALSE), not null
