@@ -84,10 +84,22 @@ class AchTransfersController < ApplicationController
 
     bank = ColumnService.get "/institutions/#{params[:value]}" # This is safe since params[:value] is validated to only contain digits above
 
-    render json: {
-      valid: true,
-      hint: bank["full_name"].titleize,
-    }
+    if bank["routing_number_type"] != "aba"
+      render json: {
+        valid: false,
+        hint: "Please enter an ABA routing number."
+      }
+    elsif bank["ach_eligible"] == false
+      render json: {
+        valid: false,
+        hint: "This routing number cannot accept ACH transfers."
+      }
+    else
+      render json: {
+        valid: true,
+        hint: bank["full_name"].titleize,
+      }
+    end
   rescue Faraday::BadRequestError
     return render json: { valid: false, hint: "Bank not found for this routing number." }
   rescue => e
