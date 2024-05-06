@@ -7,7 +7,7 @@
 #  id                       :bigint           not null, primary key
 #  access_level             :integer          default("user"), not null
 #  birthday_ciphertext      :text
-#  comment_notifications    :integer          default(0), not null
+#  comment_notifications    :integer          default("all_threads"), not null
 #  email                    :text
 #  full_name                :string
 #  locked_at                :datetime
