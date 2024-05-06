@@ -13,7 +13,6 @@ module EventMappingEngine
       map_column_account_number_transactions!
 
       map_stripe_transactions!
-      map_github!
       map_checks!
       map_increase_checks!
       map_clearing_checks!
@@ -57,10 +56,6 @@ module EventMappingEngine
 
     def map_stripe_transactions!
       ::EventMappingEngine::Map::StripeTransactions.new(start_date: @start_date).run
-    end
-
-    def map_github!
-      ::EventMappingEngine::Map::Github.new.run
     end
 
     def map_checks!
