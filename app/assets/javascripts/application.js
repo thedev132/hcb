@@ -10,6 +10,5 @@
 //= require ui
 //= require filterbar
 //= require checks
-//= require comments
 //= require changelog
 //= require mentions

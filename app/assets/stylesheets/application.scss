@@ -313,7 +313,7 @@ summary {
   animation-delay: 50s;
 }
 
-.card.hash-highlight {
+.card:target {
   animation: highlight 2s;
   border: 1px solid;
   border-color: rgba(map-get($palette, warning), 0.25);
