@@ -10,6 +10,13 @@
     <h2 id="feature-previews">Feature previews</h2>
 
     <%= render partial: "users/feature_preview", locals: {
+          id: "command_bar",
+          feature_flag: :command_bar_2024_02_05,
+          name: "Command Bar (⌘+K)",
+          description: "Looking to whizz around HCB's interface? Enable the command bar and use it to switch between different organizations and pages. It also features a search tool that allows you to search transactions, cards and events."
+        } %>
+
+    <%= render partial: "users/feature_preview", locals: {
           id: "rename_on_homepage",
           feature_flag: :rename_on_homepage_2023_12_06,
           name: "Rename Transactions on the Ledger",
