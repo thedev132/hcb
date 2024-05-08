@@ -44,7 +44,7 @@
                         "x-ref" => "name_input",
                         "@input" => "payment_recipient = null" %>
     <span class="muted">This is only for your reference— it doesn't need to match the name on the recipient's bank account.</span>
-    <% if organizer_signed_in? && Flipper.enabled?(:payment_recipients_2024_01_10, @event) && @event.payment_recipients.any? %>
+    <% if organizer_signed_in? && @event.payment_recipients.any? %>
       <div class="menu__content menu__content--2" data-menu-target="content" role="listbox" style="width: 24rem">
         <% @event.payment_recipients.each do |payment_recipient| %>
           <div data-name="<%= payment_recipient.name %>" class="flex items-center" data-payment-recipient="<%= payment_recipient.id %>">
