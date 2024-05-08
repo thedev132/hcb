@@ -141,3 +141,29 @@ html[data-dark='true'] {
     background-color: none;
   }
 }
+
+.transaction__icon--selected {
+  display: none;
+}
+
+.transaction__icon--selected svg {
+  fill: black;
+}
+
+html[data-dark='true'] {
+  .transaction__icon--selected svg {
+    fill: white!important;
+  }
+}
+
+.selected__transaction > .transaction__icon--selected {
+  display: table-cell!important;
+}
+
+.selected__transaction > .transaction__icon {
+  display: none;
+}
+
+.transaction__icon {
+  padding-left: 1rem; 
+}

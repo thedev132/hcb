@@ -3,6 +3,10 @@
 <tr
   class="transaction--<%= ct.amount.negative? ? "negative" : ct.amount.positive? ? "positive" : "zero" %> <%= ct.local_hcb_code.disbursement.special_appearance[:css_class] if !ct.amount.negative? && ct.local_hcb_code.disbursement&.special_appearance? %>"
   id="<%= ct.local_hcb_code.hashid %>"
+  <% if defined?(selectable) && selectable %>
+    data-action="click->transactions#select"
+    data-transactions-target="transaction"
+  <% end %>
   <% if local_assigns[:receipt_upload_button] %>
     data-controller="file-drop"
     data-file-drop-target="dropzone"
@@ -14,8 +18,16 @@
       drop->file-drop#drop
       dragenter->file-drop#dragenter
       dragleave->file-drop#dragleave
+      <% if defined?(selectable) && selectable %>
+        click->transactions#select
+      <% end %>
     "
   <% end %>>
+  <% if defined?(selectable) && selectable %>
+    <td class="transaction__icon transaction__icon--selected">
+      <%= inline_icon "checkmark" %>
+    </td>
+  <% end %>
   <%= render "hcb_codes/icon", tx: ct, authorless: local_assigns[:authorless] %>
   <td>
     <%= ct.date %>
