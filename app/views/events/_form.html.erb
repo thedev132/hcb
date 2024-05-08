@@ -176,31 +176,29 @@
       <%= form.submit "Update", class: ("disabled" unless policy(@event).update?) %>
     </div>
 
-    <% if Flipper.enabled?(:reimbursements_2024_03_10, @event) %>
-      <h3 class="mb1" id="reimbursements">Reimbursements</h3>
-      <div class="card">
-        <% if @event.users.size > 1 %>
-          <div class="field field--checkbox">
-            <%= form.check_box :reimbursements_require_organizer_peer_review, disabled: !policy(@event).update? %>
-            <% if Flipper.enabled?(:user_permissions_2024_03_09, @event) %>
-              <%= form.label :reimbursements_require_organizer_peer_review, "Require a peer review for reports submitted by managers." %>
-            <% else %>
-              <%= form.label :reimbursements_require_organizer_peer_review, "Require a peer review for reports submitted by team members." %>
-            <% end %>
-          </div>
-        <% end %>
+    <h3 class="mb1" id="reimbursements">Reimbursements</h3>
+    <div class="card">
+      <% if @event.users.size > 1 %>
         <div class="field field--checkbox">
-          <%= form.check_box :public_reimbursement_page_enabled, disabled: !policy(@event).update? %>
-          <%= form.label :public_reimbursement_page_enabled, "Enable public reimbursement page" %>
+          <%= form.check_box :reimbursements_require_organizer_peer_review, disabled: !policy(@event).update? %>
+          <% if Flipper.enabled?(:user_permissions_2024_03_09, @event) %>
+            <%= form.label :reimbursements_require_organizer_peer_review, "Require a peer review for reports submitted by managers." %>
+          <% else %>
+            <%= form.label :reimbursements_require_organizer_peer_review, "Require a peer review for reports submitted by team members." %>
+          <% end %>
         </div>
-        <div class="field">
-          <%= form.label :public_reimbursement_page_message, "Message to show on public reimbursement page" %>
-          <%= form.text_area :public_reimbursement_page_message, placeholder: "#{@event.name} uses HCB to reimburse its volunteers...", class: "w-100 fit", disabled: !policy(@event).update? %>
-          <%= inline_icon "markdown", size: 32, class: "muted right" %>
-        </div>
-        <%= form.submit "Update", disabled: !policy(@event).update? %>
+      <% end %>
+      <div class="field field--checkbox">
+        <%= form.check_box :public_reimbursement_page_enabled, disabled: !policy(@event).update? %>
+        <%= form.label :public_reimbursement_page_enabled, "Enable public reimbursement page" %>
       </div>
-    <% end %>
+      <div class="field">
+        <%= form.label :public_reimbursement_page_message, "Message to show on public reimbursement page" %>
+        <%= form.text_area :public_reimbursement_page_message, placeholder: "#{@event.name} uses HCB to reimburse its volunteers...", class: "w-100 fit", disabled: !policy(@event).update? %>
+        <%= inline_icon "markdown", size: 32, class: "muted right" %>
+      </div>
+      <%= form.submit "Update", disabled: !policy(@event).update? %>
+    </div>
   <% end %>
 
   <h3 class="mb1" id="transparency_mode_heading">Transparency Mode</h3>

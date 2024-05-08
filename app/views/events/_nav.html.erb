@@ -56,7 +56,7 @@
       async_badge: event_reimbursements_pending_review_icon_path(@event),
       tooltip: "Reimburse team members & volunteers",
       icon: "attachment",
-      selected: local_assigns[:selected] == :reimbursements if Flipper.enabled?(:reimbursements_2024_03_10, @event) && policy(@event).reimbursements? %>
+      selected: local_assigns[:selected] == :reimbursements if policy(@event).reimbursements? %>
     <%= dock_item "Grants",
       event_grants_path(@event),
       tooltip: "Send & manage grants",
@@ -120,7 +120,7 @@
         <div class="menu__divider"></div>
         <%= link_to "Cards", event_cards_overview_path(@event) %>
         <%= link_to "Transfers", event_transfers_path(@event) %>
-        <%= link_to "Reimbursements", event_reimbursements_path(@event) if Flipper.enabled?(:reimbursements_2024_03_10, @event) && policy(@event).reimbursements? %>
+        <%= link_to "Reimbursements", event_reimbursements_path(@event) if policy(@event).reimbursements? %>
       </div>
     </button>
     <div class="dock__overflow">
