@@ -70,7 +70,7 @@
           <%= render partial: "users/feature_preview", locals: {
                 id: "weekly-receipt-email",
                 classes: ["feature-weekly-receipt-email", "feature-generic"],
-                feature_flag: :receipt_report_2023_04_19,
+                fully_shipped: true,
                 name: "Receipt Report",
                 description: "Opting into this preview will send you a weekly reminder with a list of all your missing receipts.",
                 footer: "Try #{link_to "triggering an email for yourself", trigger_receipt_report_path, method: :post}!"
